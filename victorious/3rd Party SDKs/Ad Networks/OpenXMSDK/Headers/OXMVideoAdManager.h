@@ -126,7 +126,10 @@ typedef NS_ENUM(NSUInteger, AutoPlayConfig) {
 /** The OXMVideoAdManager gives you the ability to create a VAST-capable video player object to be used in your project.
  */
 @interface OXMVideoAdManager : NSObject
-
+/**
+ @param hideControls BOOL value that controls whether or not the OXMVideoAdManager shows video controls or not
+ */
+@property (nonatomic) BOOL hideControls;
 /**
  @param isInFeed BOOL value that controls whether or not the OXMVideoAdManager is being used in-feed
  */

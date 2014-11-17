@@ -2,7 +2,7 @@
 //  VSequence.h
 //  victorious
 //
-//  Created by Will Long on 11/13/14.
+//  Created by Lawrence Leach on 11/14/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
@@ -20,6 +20,8 @@
 @property (nonatomic, retain) NSDate * expiresAt;
 @property (nonatomic, retain) NSString * gameStatus;
 @property (nonatomic, retain) NSNumber * isComplete;
+@property (nonatomic, retain) NSNumber * isRemix;
+@property (nonatomic, retain) NSNumber * isRepost;
 @property (nonatomic, retain) NSNumber * nameEmbeddedInContent;
 @property (nonatomic, retain) NSNumber * parentUserId;
 @property (nonatomic, retain) NSNumber * permissions;
@@ -28,9 +30,9 @@
 @property (nonatomic, retain) NSNumber * repostCount;
 @property (nonatomic, retain) NSString * sequenceDescription;
 @property (nonatomic, retain) NSString * status;
-@property (nonatomic, retain) NSNumber * isRepost;
-@property (nonatomic, retain) NSNumber * isRemix;
-@property (nonatomic, retain) NSSet *adBreaks;
+@property (nonatomic, retain) id previewData;
+@property (nonatomic, retain) NSString * previewType;
+@property (nonatomic, retain) NSOrderedSet *adBreaks;
 @property (nonatomic, retain) NSOrderedSet *comments;
 @property (nonatomic, retain) NSOrderedSet *nodes;
 @property (nonatomic, retain) VUser *parentUser;
@@ -40,18 +42,20 @@
 @property (nonatomic, retain) VTracking *tracking;
 @property (nonatomic, retain) VUser *user;
 @property (nonatomic, retain) NSSet *voteResults;
-@property (nonatomic, retain) NSString *previewType;
-@property (nonatomic, retain) id previewData;
-
 @end
 
 @interface VSequence (CoreDataGeneratedAccessors)
 
+- (void)insertObject:(VAdBreak *)value inAdBreaksAtIndex:(NSUInteger)idx;
+- (void)removeObjectFromAdBreaksAtIndex:(NSUInteger)idx;
+- (void)insertAdBreaks:(NSArray *)value atIndexes:(NSIndexSet *)indexes;
+- (void)removeAdBreaksAtIndexes:(NSIndexSet *)indexes;
+- (void)replaceObjectInAdBreaksAtIndex:(NSUInteger)idx withObject:(VAdBreak *)value;
+- (void)replaceAdBreaksAtIndexes:(NSIndexSet *)indexes withAdBreaks:(NSArray *)values;
 - (void)addAdBreaksObject:(VAdBreak *)value;
 - (void)removeAdBreaksObject:(VAdBreak *)value;
-- (void)addAdBreaks:(NSSet *)values;
-- (void)removeAdBreaks:(NSSet *)values;
-
+- (void)addAdBreaks:(NSOrderedSet *)values;
+- (void)removeAdBreaks:(NSOrderedSet *)values;
 - (void)insertObject:(VComment *)value inCommentsAtIndex:(NSUInteger)idx;
 - (void)removeObjectFromCommentsAtIndex:(NSUInteger)idx;
 - (void)insertComments:(NSArray *)value atIndexes:(NSIndexSet *)indexes;

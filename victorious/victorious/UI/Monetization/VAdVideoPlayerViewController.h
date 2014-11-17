@@ -48,7 +48,7 @@
  @param monetizationPartner enum value for which ad network to use
  @param options             Dictionary of keys/values for setting ad display options and parameters
  */
-- (void)assignMonetizationPartner:(VMonetizationPartner)monetizationPartner withOptions:(NSDictionary *)options;
+- (void)assignMonetizationPartner:(VMonetizationPartner)monetizationPartner withDetails:(NSArray *)details;
 
 /**
  Method tha starts the ad manager

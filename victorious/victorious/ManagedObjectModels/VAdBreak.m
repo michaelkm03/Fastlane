@@ -2,7 +2,7 @@
 //  VAdBreak.m
 //  victorious
 //
-//  Created by Lawrence Leach on 10/22/14.
+//  Created by Lawrence Leach on 11/14/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
@@ -14,7 +14,7 @@
 @implementation VAdBreak
 
 @dynamic startPosition;
-@dynamic sequence;
 @dynamic fallbacks;
+@dynamic sequence;
 
 @end

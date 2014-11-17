@@ -11,6 +11,7 @@
 #import "VAdViewController.h"
 #import "VLiveRailAdViewController.h"
 #import "VOpenXAdViewController.h"
+#import "VSettingManager.h"
 
 #define EnableLiveRailsLogging 0 // Set to "1" to see LiveRails ad server logging, but please remember to set it back to "0" before committing your changes.
 
@@ -38,12 +39,14 @@
 {
     [super viewDidLoad];
     
+    self.view.backgroundColor = [[VSettingManager sharedManager] settingEnabledForKey:VExperimentsClearVideoBackground] ? [UIColor clearColor] : [UIColor blackColor];
+
     [self.adViewController startAdManager];
 }
 
 #pragma mark - Monetization setter
 
-- (void)assignMonetizationPartner:(VMonetizationPartner)monetizationPartner withOptions:(NSDictionary *)options
+- (void)assignMonetizationPartner:(VMonetizationPartner)monetizationPartner withDetails:(NSArray *)details
 {
     _monetizationPartner = monetizationPartner;
     
@@ -60,7 +63,7 @@
             break;
     }
     self.adViewController.delegate = self;
-    self.adViewController.adServerMonetizationParameters = options;
+    self.adViewController.adServerMonetizationDetails = details;
     self.adViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.adViewController.view.frame = CGRectMake(0.0f, 40.0f, 320.0f, 280.0f);
 }
