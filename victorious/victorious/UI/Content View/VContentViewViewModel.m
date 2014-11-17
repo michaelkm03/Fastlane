@@ -181,14 +181,26 @@ NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentV
         [self.experienceEnhancerController updateData];
          
         // Sets up the monetization chain
-        [self createAdChainWithCompletion:^(void)
+         if (self.sequence.adBreaks.count > 0)
          {
-            self.videoViewModel = [VVideoCellViewModel videoCellViewModelWithItemURL:[self videoURL]
-                                                                        withAdSystem:self.monetizationPartner
-                                                                         withDetails:self.adChain];
-            [[NSNotificationCenter defaultCenter] postNotificationName:VContentViewViewModelDidUpdateContentNotification
-                                                                object:self];
-        }];
+             [self createAdChainWithCompletion:^(void)
+              {
+                  self.videoViewModel = [VVideoCellViewModel videoCellViewModelWithItemURL:[self videoURL]
+                                                                              withAdSystem:self.monetizationPartner
+                                                                               withDetails:self.adChain];
+                  [[NSNotificationCenter defaultCenter] postNotificationName:VContentViewViewModelDidUpdateContentNotification
+                                                                      object:self];
+              }];
+         }
+         else
+         {
+             self.videoViewModel = [VVideoCellViewModel videoCellViewModelWithItemURL:[self videoURL]
+                                                                         withAdSystem:VMonetizationPartnerNone
+                                                                          withDetails:nil];
+             [[NSNotificationCenter defaultCenter] postNotificationName:VContentViewViewModelDidUpdateContentNotification
+                                                                 object:self];
+
+         }
     }
                                             failBlock:nil];
 }
