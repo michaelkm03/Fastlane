@@ -10,12 +10,12 @@
 
 @implementation VNavigationMenuItem
 
-- (instancetype)initWithLabel:(NSString *)label icon:(UIImage *)icon destination:(id)destination
+- (instancetype)initWithTitle:(NSString *)title icon:(UIImage *)icon destination:(id)destination
 {
     self = [super init];
     if (self)
     {
-        _label = [label copy];
+        _title = [title copy];
         _icon = icon;
         _destination = destination;
     }
@@ -30,7 +30,7 @@
     {
         return NO;
     }
-    return [self.label isEqualToString:menuItem.label] && [self.icon isEqual:menuItem.icon] && [self.destination isEqual:menuItem.destination];
+    return [self.title isEqualToString:menuItem.title] && [self.icon isEqual:menuItem.icon] && [self.destination isEqual:menuItem.destination];
 }
 
 @end

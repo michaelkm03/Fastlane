@@ -14,10 +14,10 @@
  */
 @interface VNavigationMenuItem : NSObject
 
-@property (nonatomic, copy, readonly) NSString *label; ///< The text to display in the menu
+@property (nonatomic, copy, readonly) NSString *title; ///< The text to display in the menu
 @property (nonatomic, strong, readonly) UIImage *icon; ///< An icon to display next to the label in the menu
 @property (nonatomic, strong, readonly) id destination; ///< This menu item's destination. Should be either a UIViewController subclass or an implementation of VNavigationDestination
 
-- (instancetype)initWithLabel:(NSString *)label icon:(UIImage *)icon destination:(id)destination NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithTitle:(NSString *)title icon:(UIImage *)icon destination:(id)destination NS_DESIGNATED_INITIALIZER;
 
 @end

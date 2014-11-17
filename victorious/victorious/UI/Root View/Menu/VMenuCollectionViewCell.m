@@ -46,7 +46,7 @@ static const CGFloat kCellHeight = 50.0f;
 
 - (void)setNavigationMenuItem:(VNavigationMenuItem *)navigationMenuItem
 {
-    self.menuLabel.text = navigationMenuItem.label;
+    self.menuLabel.text = navigationMenuItem.title;
 }
 
 - (void)prepareForReuse

@@ -105,15 +105,15 @@ static const CGFloat kSectionHeaderHeight = 36.0f;
     
     NSArray *menuSections = @[
         @[
-            [[VNavigationMenuItem alloc] initWithLabel:NSLocalizedString(@"Home", @"") icon:nil destination:homeVC],
-            [[VNavigationMenuItem alloc] initWithLabel:ownerChannelName icon:nil destination:ownerChannelVC],
-            [[VNavigationMenuItem alloc] initWithLabel:NSLocalizedString(@"Community", @"") icon:nil destination:communityVC],
-            [[VNavigationMenuItem alloc] initWithLabel:NSLocalizedString(@"Discover", @"") icon:nil destination:[VDiscoverContainerViewController instantiateFromStoryboard:@"Discover"]]
+            [[VNavigationMenuItem alloc] initWithTitle:NSLocalizedString(@"Home", @"") icon:nil destination:homeVC],
+            [[VNavigationMenuItem alloc] initWithTitle:ownerChannelName icon:nil destination:ownerChannelVC],
+            [[VNavigationMenuItem alloc] initWithTitle:NSLocalizedString(@"Community", @"") icon:nil destination:communityVC],
+            [[VNavigationMenuItem alloc] initWithTitle:NSLocalizedString(@"Discover", @"") icon:nil destination:[VDiscoverContainerViewController instantiateFromStoryboard:@"Discover"]]
         ],
         @[
-            [[VNavigationMenuItem alloc] initWithLabel:NSLocalizedString(@"Inbox", @"") icon:nil destination:[VInboxContainerViewController inboxContainer]],
-            [[VNavigationMenuItem alloc] initWithLabel:NSLocalizedString(@"Profile", @"") icon:nil destination:[[VUserProfileNavigationDestination alloc] initWithObjectManager:[VObjectManager sharedManager]]],
-            [[VNavigationMenuItem alloc] initWithLabel:NSLocalizedString(@"Settings", @"") icon:nil destination:[VSettingsViewController settingsContainer]]
+            [[VNavigationMenuItem alloc] initWithTitle:NSLocalizedString(@"Inbox", @"") icon:nil destination:[VInboxContainerViewController inboxContainer]],
+            [[VNavigationMenuItem alloc] initWithTitle:NSLocalizedString(@"Profile", @"") icon:nil destination:[[VUserProfileNavigationDestination alloc] initWithObjectManager:[VObjectManager sharedManager]]],
+            [[VNavigationMenuItem alloc] initWithTitle:NSLocalizedString(@"Settings", @"") icon:nil destination:[VSettingsViewController settingsContainer]]
         ]
     ];
     return menuSections;
