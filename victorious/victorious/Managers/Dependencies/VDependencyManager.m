@@ -47,11 +47,10 @@ NSString * const VDependencyManagerLabel4FontKey = @"font.label4";
 NSString * const VDependencyManagerButton1FontKey = @"font.button1";
 NSString * const VDependencyManagerButton2FontKey = @"font.button2";
 
-static NSString * const kFontNameKey = @"fontName";
-static NSString * const kFontSizeKey = @"fontSize";
-
 // Keys for dependency metadata
 static NSString * const kClassNameKey = @"name";
+static NSString * const kFontNameKey = @"fontName";
+static NSString * const kFontSizeKey = @"fontSize";
 
 // Keys for experiments
 NSString * const VDependencyManagerHistogramEnabledKey = @"experiments.histogram_enabled";
@@ -92,11 +91,11 @@ NSString * const VDependencyManagerScaffoldViewControllerKey = @"scaffold";
     return self;
 }
 
-#pragma mark - Public dependency getters
+#pragma mark - High-level dependency getters
 
 - (UIColor *)colorForKey:(NSString *)key
 {
-    NSDictionary *colorDictionary = [self templateValueOfType:[NSDictionary class] forKeyPath:key];
+    NSDictionary *colorDictionary = [self templateValueOfType:[NSDictionary class] forKey:key];
     
     if (![colorDictionary isKindOfClass:[NSDictionary class]])
     {
@@ -121,7 +120,7 @@ NSString * const VDependencyManagerScaffoldViewControllerKey = @"scaffold";
 
 - (UIFont *)fontForKey:(NSString *)key
 {
-    NSDictionary *fontDictionary = [self templateValueOfType:[NSDictionary class] forKeyPath:key];
+    NSDictionary *fontDictionary = [self templateValueOfType:[NSDictionary class] forKey:key];
     
     NSString *fontName = fontDictionary[kFontNameKey];
     NSNumber *fontSize = fontDictionary[kFontSizeKey];
@@ -138,45 +137,45 @@ NSString * const VDependencyManagerScaffoldViewControllerKey = @"scaffold";
 
 - (NSString *)stringForKey:(NSString *)key
 {
-    return [self templateValueOfType:[NSString class] forKeyPath:key];
+    return [self templateValueOfType:[NSString class] forKey:key];
 }
 
 - (NSNumber *)numberForKey:(NSString *)key
 {
-    return [self templateValueOfType:[NSNumber class] forKeyPath:key];
+    return [self templateValueOfType:[NSNumber class] forKey:key];
 }
 
 - (UIViewController *)viewControllerForKey:(NSString *)key
 {
-    return [self objectOfClass:[UIViewController class] forKeyPath:key];
+    return [self templateValueOfType:[UIViewController class] forKey:key];
 }
 
 - (NSArray *)arrayForKey:(NSString *)key
 {
-    return [self templateValueOfType:[NSArray class] forKeyPath:key];
+    return [self templateValueOfType:[NSArray class] forKey:key];
 }
 
-- (NSObject *)objectFromDictionary:(NSDictionary *)configurationDictionary
-{
-    return [self objectOfClass:[NSObject class] fromDictionary:configurationDictionary];
-}
+#pragma mark - Dependency getter primatives
 
-#pragma mark - Internal dependency getter primatives
-
-/**
- Returns a new object for the specified key after checking 
- to make sure the class of the object matches an 
- expected class
- */
-- (id)objectOfClass:(Class)expectedClass forKeyPath:(NSString *)keyPath
+- (id)templateValueOfType:(Class)expectedType forKey:(NSString *)keyPath
 {
-    NSDictionary *dependencyDictionary = [self templateValueOfType:[NSDictionary class] forKeyPath:keyPath];
+    id value = [self.configuration valueForKeyPath:keyPath];
     
-    if (dependencyDictionary == nil)
+    if (value == nil)
     {
-        return nil;
+        return [self.parentManager templateValueOfType:expectedType forKey:keyPath];
     }
-    return [self objectOfClass:expectedClass fromDictionary:dependencyDictionary];
+    
+    if ([value isKindOfClass:expectedType])
+    {
+        return value;
+    }
+    else if ([value isKindOfClass:[NSDictionary class]])
+    {
+        return [self objectOfClass:expectedType fromDictionary:value];
+    }
+    
+    return nil;
 }
 
 - (id)objectOfClass:(Class)expectedClass fromDictionary:(NSDictionary *)configurationDictionary
@@ -203,29 +202,6 @@ NSString * const VDependencyManagerScaffoldViewControllerKey = @"scaffold";
             object = [[templateClass alloc] init];
         }
         return object;
-    }
-    return nil;
-}
-
-/**
- Returns the value stored for the specified key in the configuration
- dictionary of this instance, if present, or the closest ancestor.
- 
- @param expectedType if the value found at keyPath is not this kind
-                     of class, we return nil.
- */
-- (id)templateValueOfType:(Class)expectedType forKeyPath:(NSString *)keyPath
-{
-    id value = [self.configuration valueForKeyPath:keyPath];
-    
-    if (value == nil)
-    {
-        return [self.parentManager templateValueOfType:expectedType forKeyPath:keyPath];
-    }
-    
-    if ([value isKindOfClass:expectedType])
-    {
-        return value;
     }
     return nil;
 }

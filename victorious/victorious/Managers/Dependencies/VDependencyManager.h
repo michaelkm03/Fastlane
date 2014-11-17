@@ -94,8 +94,22 @@ extern NSString * const VDependencyManagerScaffoldViewControllerKey; ///< The "s
 - (NSArray *)arrayForKey:(NSString *)key;
 
 /**
- Returns a new object defined by the given configuration dictionary
+ Returns the value stored for the specified key in the configuration
+ dictionary of this instance, if present, or the closest ancestor.
+ 
+ @param expectedType if the value found at keyPath is not this kind
+ of class, we return nil.
  */
-- (NSObject *)objectFromDictionary:(NSDictionary *)configurationDictionary;
+- (id)templateValueOfType:(Class)expectedType forKey:(NSString *)key;
+
+/**
+ Returns a new object defined by the given configuration dictionary
+ 
+ @param expectedClass The type of object you expect to get back
+ @param configurationDictionary A dictionary of configuration attributes that describes the object
+ @return An object described by the configurationDictionary,
+ or nil if no such key exists or is of the wrong type.
+ */
+- (id)objectOfClass:(Class)expectedClass fromDictionary:(NSDictionary *)configurationDictionary;
 
 @end

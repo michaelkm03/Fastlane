@@ -134,10 +134,24 @@ static NSString * const kTestViewControllerNewMethodTemplateName = @"testNewMeth
     XCTAssert([viewController calledNewMethod]);
 }
 
+- (void)testViewControllerViaGenericMethod
+{
+    id viewController = [self.dependencyManager templateValueOfType:[UIViewController class] forKey:@"nvc"];
+    XCTAssert([viewController isKindOfClass:[VTestViewControllerWithNewMethod class]]);
+    XCTAssert([viewController calledNewMethod]);
+}
+
 - (void)testString
 {
     NSString *expected = @"medium";
     NSString *actual = [self.dependencyManager stringForKey:@"video_quality.capture"];
+    XCTAssertEqualObjects(expected, actual);
+}
+
+- (void)testStringViaGenericMethod
+{
+    NSString *expected = @"medium";
+    NSString *actual = [self.dependencyManager templateValueOfType:[NSString class] forKey:@"video_quality.capture"];
     XCTAssertEqualObjects(expected, actual);
 }
 
@@ -182,7 +196,7 @@ static NSString * const kTestViewControllerNewMethodTemplateName = @"testNewMeth
 {
     NSDictionary *configuration = @{ @"name": kTestViewControllerNewMethodTemplateName, @"one": @1, @"two": @2 };
     
-    VTestViewControllerWithNewMethod *vc = (VTestViewControllerWithNewMethod *)[self.dependencyManager objectFromDictionary:configuration];
+    VTestViewControllerWithNewMethod *vc = (VTestViewControllerWithNewMethod *)[self.dependencyManager objectOfClass:[UIViewController class] fromDictionary:configuration];
     XCTAssertNotNil(vc);
     XCTAssertEqualObjects([vc.dependencyManager numberForKey:@"one"], @1);
     XCTAssertEqualObjects([vc.dependencyManager numberForKey:@"two"], @2);
