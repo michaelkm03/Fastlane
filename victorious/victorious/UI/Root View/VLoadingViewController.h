@@ -8,14 +8,22 @@
 
 #import <UIKit/UIKit.h>
 
-extern NSString * const VLoadingViewControllerLoadingCompletedNotification; ///< Posted when the init server call returns successfully
+@class VLoadingViewController;
+
+@protocol VLoadingViewControllerDelegate <NSObject>
+
+@optional
+
+/**
+ Notifies the delegate that the init call has completed
+ */
+- (void)loadingViewController:(VLoadingViewController *)loadingViewController didFinishLoadingWithInitResponse:(NSDictionary *)initResponse;
+
+@end
 
 @interface VLoadingViewController : UIViewController
 
-@property (nonatomic, weak) IBOutlet UIImageView        *backgroundImageView;
-@property (nonatomic, weak) IBOutlet UILabel            *reachabilityLabel;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *reachabilityLabelPositionConstraint;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *reachabilityLabelHeightConstraint;
+@property (nonatomic, weak) id<VLoadingViewControllerDelegate> delegate;
 
 + (VLoadingViewController *)loadingViewController; ///< Instantiates VLoadingViewController from the storyboard
 

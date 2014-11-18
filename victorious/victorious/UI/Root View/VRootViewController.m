@@ -19,7 +19,7 @@
 
 static const NSTimeInterval kAnimationDuration = 0.2;
 
-@interface VRootViewController ()
+@interface VRootViewController () <VLoadingViewControllerDelegate>
 
 @property (nonatomic) BOOL appearing;
 @property (nonatomic) BOOL shouldPresentForceUpgradeScreenOnNextAppearance;
@@ -57,7 +57,6 @@ static const NSTimeInterval kAnimationDuration = 0.2;
     self.sessionTimer = [[VSessionTimer alloc] init];
     [self.sessionTimer start];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadingCompleted:) name:VLoadingViewControllerLoadingCompletedNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newSessionShouldStart:) name:VSessionTimerNewSessionShouldStart object:nil];
     [self showLoadingViewController];
 }
@@ -133,6 +132,7 @@ static const NSTimeInterval kAnimationDuration = 0.2;
 - (void)showLoadingViewController
 {
     VLoadingViewController *loadingViewController = [VLoadingViewController loadingViewController];
+    loadingViewController.delegate = self;
     [self showViewController:loadingViewController animated:NO];
 }
 
@@ -205,17 +205,19 @@ static const NSTimeInterval kAnimationDuration = 0.2;
 
 #pragma mark - NSNotifications
 
-- (void)loadingCompleted:(NSNotification *)notification
-{
-    [self showHomeStream];
-}
-
 - (void)newSessionShouldStart:(NSNotification *)notification
 {
     [self showViewController:nil animated:NO];
     [RKObjectManager setSharedManager:nil];
     [VObjectManager setupObjectManager];
     [self showLoadingViewController];
+}
+
+#pragma mark - VLoadingViewControllerDelegate
+
+- (void)loadingViewController:(VLoadingViewController *)loadingViewController didFinishLoadingWithInitResponse:(NSDictionary *)initResponse
+{
+    [self showHomeStream];
 }
 
 @end

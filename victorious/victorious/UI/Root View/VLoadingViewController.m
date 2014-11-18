@@ -22,14 +22,16 @@
 
 #import "MBProgressHUD.h"
 
-NSString * const VLoadingViewControllerLoadingCompletedNotification = @"VLoadingViewControllerLoadingCompletedNotification";
-
 static const NSTimeInterval kTimeBetweenRetries = 1.0;
 static const NSUInteger kRetryAttempts = 5;
 
 @interface VLoadingViewController()
 
-@property (nonatomic)         NSUInteger     failCount;
+@property (nonatomic, weak) IBOutlet UIImageView *backgroundImageView;
+@property (nonatomic, weak) IBOutlet UILabel *reachabilityLabel;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *reachabilityLabelPositionConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *reachabilityLabelHeightConstraint;
+@property (nonatomic) NSUInteger failCount;
 @property (nonatomic, strong) MBProgressHUD *progressHUD;
 
 @end
@@ -156,11 +158,11 @@ static const NSUInteger kRetryAttempts = 5;
     {
         [[VUserManager sharedInstance] loginViaSavedCredentialsOnCompletion:^(VUser *user, BOOL created)
         {
-            [self onDoneLoading];
+            [self onDoneLoadingWithInitData:fullResponse];
         }
                                                                     onError:^(NSError *error)
         {
-            [self onDoneLoading];
+            [self onDoneLoadingWithInitData:fullResponse];
         }];
     }
                                                   failBlock:^(NSOperation *operation, NSError *error)
@@ -170,10 +172,20 @@ static const NSUInteger kRetryAttempts = 5;
     }];
 }
 
-- (void)onDoneLoading
+- (void)onDoneLoadingWithInitData:(id)initData
 {
+    NSDictionary *initDictionary = nil;
+    if ([initData isKindOfClass:[NSDictionary class]])
+    {
+        initDictionary = initData;
+    }
+    
     [[VPushNotificationManager sharedPushNotificationManager] startPushNotificationManager];
-    [[NSNotificationCenter defaultCenter] postNotificationName:VLoadingViewControllerLoadingCompletedNotification object:self];
+    
+    if ([self.delegate respondsToSelector:@selector(loadingViewController:didFinishLoadingWithInitResponse:)])
+    {
+        [self.delegate loadingViewController:self didFinishLoadingWithInitResponse:initDictionary];
+    }
 }
 
 - (void)scheduleRetry
