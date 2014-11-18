@@ -64,6 +64,8 @@
     [self v_addNewNavHeaderWithTitles:nil];
     self.navHeaderView.delegate = self;
     
+    [self.navHeaderView setRightButtonTitle:NSLocalizedString( @"Invite", @"") withAction:@selector(pressedInvite:) onTarget:self];
+    
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.containerView
                                                           attribute:NSLayoutAttributeTop
                                                           relatedBy:NSLayoutRelationEqual
