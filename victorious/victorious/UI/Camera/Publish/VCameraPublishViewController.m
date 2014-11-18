@@ -97,6 +97,10 @@ static const CGFloat kCanvasOffsetForSmallPhones = 20.0f; ///< The amount of spa
 // To preserve user's original text
 @property (nonatomic, strong) NSString *userEnteredText;
 
+// These are only useful for iOS 7.0
+@property (nonatomic, assign) BOOL autoCorrecting;
+@property (nonatomic, assign) NSRange autoCorrectRange;
+
 // Share Controllers
 @property (nonatomic, strong) VPublishShareController *saveToCameraController;
 @property (nonatomic, strong) VPublishShareController *shareToTwitterController;
@@ -153,8 +157,6 @@ static const CGFloat kShareMargin = 34.0f;
     [self configureShareViews];
     [self configureCloseButton];
     [self configureNavigationBar];
-        
-    self.userEnteredText = @"";
     
     // Force Meme text to start at max
     self.memeTextView.font = [self.memeTextView.font fontWithSize:kPublishMinMemeFontSize];
@@ -256,14 +258,12 @@ static const CGFloat kShareMargin = 34.0f;
             break;
         case VCaptionTypeMeme:
         {
-            NSRange currentCursorLocation = [self.memeTextView selectedRange];
             self.memeTextView.attributedText = [[NSAttributedString alloc] initWithString:[self.userEnteredText uppercaseString] ?: @""
                                                                                attributes:[self memeAttributes]];
             changedTextView = self.memeTextView;
             self.memePlaceholderLabel.hidden = (([self.memeTextView.text length] > 0) || [self.memeTextView isFirstResponder]);
             self.memeTextView.textAlignment = NSTextAlignmentCenter;
             self.memeTextView.hidden = NO;
-            [self.memeTextView setSelectedRange:currentCursorLocation];
             
             // When we clear out the text view reset meme's font to min
             if (self.userEnteredText.length == 0)
@@ -853,6 +853,33 @@ static const CGFloat kShareMargin = 34.0f;
 
 - (void)textViewDidChange:(UITextView *)textView
 {
+    if (UI_IS_IOS8_AND_HIGHER)
+    {
+        // iOS 8 behavior
+        if (textView.text.length < self.userEnteredText.length)
+        {
+            self.userEnteredText = textView.text;
+            
+        }
+//        self.userEnteredText = textView.text;
+    }
+    else
+    {
+        // Before iOS 8 behavior
+        if (textView.text.length < self.userEnteredText.length && !self.autoCorrecting)
+        {
+            self.autoCorrecting = YES;
+            self.autoCorrectRange = NSMakeRange(textView.text.length, self.userEnteredText.length - textView.text.length);
+            return;
+        }
+        
+        if (self.autoCorrecting)
+        {
+            NSString *autoCorrectedText = [textView.text substringFromIndex:self.autoCorrectRange.location];
+            self.userEnteredText = [self.userEnteredText stringByReplacingCharactersInRange:self.autoCorrectRange withString:autoCorrectedText];
+            self.autoCorrecting = NO;
+        }
+    }
     self.memeTextFits = NO;
     [self updateUI];
 }
@@ -877,9 +904,22 @@ static const CGFloat kShareMargin = 34.0f;
         return NO;
     }
     
-    self.userEnteredText = newString;
-    
-    return YES;
+    if (!UI_IS_IOS8_AND_HIGHER)
+    {
+        // Pre-8 Behavior
+        self.autoCorrecting = NO;
+        self.userEnteredText = newString;
+        return YES;
+    }
+    else
+    {
+        if (range.location < textView.text.length)
+        {
+            self.autoCorrecting = YES;
+        }
+        self.userEnteredText = newString;
+        return YES;
+    }
 }
 
 - (void)textViewDidEndEditing:(UITextView *)textView
