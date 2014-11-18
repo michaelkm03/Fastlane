@@ -3175,6 +3175,7 @@
 				A7EF97BB19F889F800972E74 /* VExperienceEnhancerTests.m */,
 				A709635719EEE87300CE6633 /* VFileCache+VoteTypeTests.m */,
 				A7FE8C3F19EDF14700B91EF2 /* VFileCacheTests.m */,
+				A7672B991A1BFF150063AF46 /* VFirstInstallTests.m */,
 				A70AFE631A1684880027549F /* VFlurryTrackingTests.m */,
 				A70564CC19E78250004A8387 /* VFollowersTextFormatterTests.m */,
 				D805CE301A005A470014EE2A /* VFollowUserControlTests.m */,
@@ -3206,7 +3207,6 @@
 				A7AB4FE819F5A6A300BFFE35 /* VVoteTypeFetcherTests.m */,
 				D871A4011A157D650046A12C /* VVRTCUserPostedAtFormatterTests.m */,
 				A769C3F41A131F5C00698D0C /* VWebViewFactoryTests.m */,
-				A7672B991A1BFF150063AF46 /* VFirstInstallTests.m */,
 			);
 			path = victoriousTests;
 			sourceTree = "<group>";

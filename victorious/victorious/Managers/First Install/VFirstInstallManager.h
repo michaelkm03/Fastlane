@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+extern NSString * const VAppInstalledOldTrackingDefaultsKey;
 extern NSString * const VAppInstalledDefaultsKey;
 
 @interface VFirstInstallManager : NSObject

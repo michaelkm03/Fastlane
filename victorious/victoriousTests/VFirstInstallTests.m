@@ -7,7 +7,9 @@
 //
 
 #import <XCTest/XCTest.h>
+#import "VTrackingManager.h"
 #import "VFirstInstallManager.h"
+#import "VObjectManager+Analytics.h"
 #import "NSObject+VMethodSwizzling.h"
 
 @interface VFirstInstallManager (UnitTests)
@@ -19,12 +21,6 @@
 
 @interface VFirstInstallTests : XCTestCase
 
-@property (nonatomic, assign) BOOL wasOldTrackingMethodCalled;
-@property (nonatomic, assign) BOOL wasNewTrackingMethodCalled;
-
-@property (nonatomic, assign) IMP oldTrackingMethodImp;
-@property (nonatomic, assign) IMP newTrackingMethodImp;
-
 @end
 
 @implementation VFirstInstallTests
@@ -33,43 +29,98 @@
 {
     [super setUp];
     
+    [VObjectManager setSharedManager:[[VObjectManager alloc] init]];
+    
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:VAppInstalledDefaultsKey];
     XCTAssertNil( [[NSUserDefaults standardUserDefaults] valueForKey:VAppInstalledDefaultsKey] );
     
-    self.oldTrackingMethodImp = [VFirstInstallManager v_swizzleMethod:@selector(trackEventWithOldMethod) withBlock:^void
-                                 {
-                                     self.wasOldTrackingMethodCalled = YES;
-                                 }];
-    
-    self.newTrackingMethodImp = [VFirstInstallManager v_swizzleMethod:@selector(trackEvent) withBlock:^void
-                                 {
-                                     self.wasNewTrackingMethodCalled = YES;
-                                 }];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:VAppInstalledOldTrackingDefaultsKey];
+    XCTAssertNil( [[NSUserDefaults standardUserDefaults] valueForKey:VAppInstalledOldTrackingDefaultsKey] );
 }
 
 - (void)tearDown
 {
     [super tearDown];
+}
+
+- (void)testFirstInstallOld
+{
+    __block BOOL wasTrackingEventCalled = NO;
+    [VObjectManager v_swizzleMethod:@selector(addEvents:successBlock:failBlock:) withBlock:^void
+     {
+         [[NSUserDefaults standardUserDefaults] setValue:@YES forKey:VAppInstalledOldTrackingDefaultsKey];
+         wasTrackingEventCalled = YES;
+     }
+                       executeBlock:^void
+     {
+         [[[VFirstInstallManager alloc] init] trackEventWithOldMethod];
+         id defaultsValue = [[NSUserDefaults standardUserDefaults] valueForKey:VAppInstalledOldTrackingDefaultsKey];
+         XCTAssertEqualObjects( defaultsValue, @YES );
+         XCTAssert( wasTrackingEventCalled );
+     }];
     
-    [VFirstInstallManager v_restoreOriginalImplementation:self.oldTrackingMethodImp forMethod:@selector(trackEventWithOldMethod)];
-    [VFirstInstallManager v_restoreOriginalImplementation:self.newTrackingMethodImp forMethod:@selector(trackEvent)];
+    wasTrackingEventCalled = NO;
+    [VObjectManager v_swizzleMethod:@selector(addEvents:successBlock:failBlock:) withBlock:^void
+     {
+         wasTrackingEventCalled = YES;
+     }
+                       executeBlock:^void
+     {
+         [[[VFirstInstallManager alloc] init] trackEventWithOldMethod];
+         id defaultsValue = [[NSUserDefaults standardUserDefaults] valueForKey:VAppInstalledOldTrackingDefaultsKey];
+         XCTAssertEqualObjects( defaultsValue, @YES );
+         XCTAssertFalse( wasTrackingEventCalled, @"Tracking event response should only be called once." );
+     }];
 }
 
 - (void)testFirstInstall
 {
-    [[[VFirstInstallManager alloc] init] reportFirstInstall];
-    XCTAssertNotNil( [[NSUserDefaults standardUserDefaults] valueForKey:VAppInstalledDefaultsKey] );
-    XCTAssertEqualObjects( [[NSUserDefaults standardUserDefaults] valueForKey:VAppInstalledDefaultsKey], @YES );
-    XCTAssert( self.wasOldTrackingMethodCalled );
-    XCTAssert( self.wasNewTrackingMethodCalled );
+    __block BOOL wasTrackingEventCalled = NO;
+    [VTrackingManager v_swizzleMethod:@selector(trackEvent:parameters:) withBlock:^void
+     {
+         wasTrackingEventCalled = YES;
+     }
+                         executeBlock:^void
+     {
+         [[[VFirstInstallManager alloc] init] trackEvent];
+         id defaultsValue = [[NSUserDefaults standardUserDefaults] valueForKey:VAppInstalledDefaultsKey];
+         XCTAssertEqualObjects( defaultsValue, @YES );
+         XCTAssert( wasTrackingEventCalled );
+     }];
     
-    self.wasOldTrackingMethodCalled = NO;
-    self.wasNewTrackingMethodCalled = NO;
+    wasTrackingEventCalled = NO;
+    [VTrackingManager v_swizzleMethod:@selector(trackEvent:parameters:) withBlock:^void
+     {
+         wasTrackingEventCalled = YES;
+     }
+                         executeBlock:^void
+     {
+         [[[VFirstInstallManager alloc] init] trackEvent];
+         id defaultsValue = [[NSUserDefaults standardUserDefaults] valueForKey:VAppInstalledDefaultsKey];
+         XCTAssertEqualObjects( defaultsValue, @YES );
+         XCTAssertFalse( wasTrackingEventCalled, @"Tracking event response should only be called once." );
+     }];
+}
+
+- (void)testFirstInstallBoth
+{
+    __block BOOL wasNewMethodCalled = NO;
+    __block BOOL wasOldMethodCalled = NO;
+    IMP newMethod = [VFirstInstallManager v_swizzleMethod:@selector(trackEvent) withBlock:^void
+                     {
+                         wasNewMethodCalled = YES;
+                     }];
+    IMP oldMethod = [VFirstInstallManager v_swizzleMethod:@selector(trackEventWithOldMethod) withBlock:^void
+                     {
+                         wasOldMethodCalled = YES;
+                     }];
+    
     [[[VFirstInstallManager alloc] init] reportFirstInstall];
-    XCTAssertNotNil( [[NSUserDefaults standardUserDefaults] valueForKey:VAppInstalledDefaultsKey] );
-    XCTAssertEqualObjects( [[NSUserDefaults standardUserDefaults] valueForKey:VAppInstalledDefaultsKey], @YES );
-    XCTAssertFalse( self.wasOldTrackingMethodCalled );
-    XCTAssertFalse( self.wasNewTrackingMethodCalled );
+    XCTAssert( wasNewMethodCalled );
+    XCTAssert( wasOldMethodCalled );
+    
+    [VFirstInstallManager v_restoreOriginalImplementation:newMethod forMethod:@selector(trackEvent)];
+    [VFirstInstallManager v_restoreOriginalImplementation:oldMethod forMethod:@selector(trackEventWithOldMethod)];
 }
 
 @end
