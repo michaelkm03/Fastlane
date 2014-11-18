@@ -9,6 +9,7 @@
 #import "VPasswordValidator.h"
 #import "VConstants.h"
 
+NSInteger const VErrorCodeCurrentPasswordIsIncorrect        = 5000;
 NSInteger const VErrorCodeCurrentPasswordIsInvalid          = 5050;
 NSInteger const VErrorCodeInvalidPasswordEntered            = 5051;
 NSInteger const VErrorCodeInvalidPasswordsDoNotMatch        = 5052;
@@ -82,6 +83,10 @@ NSInteger const VErrorCodeInvalidPasswordsNewEqualsCurrent  = 5053;
     
     switch ( error.code )
     {
+        case VErrorCodeCurrentPasswordIsIncorrect:
+            *title = NSLocalizedString( @"ResetPasswordErrorIncorrectTitle", @"");
+            *message = NSLocalizedString( @"ResetPasswordErrorMessage", @"");
+            break;
         case VErrorCodeInvalidPasswordEntered:
             *title = NSLocalizedString( @"PasswordError", @"");
             *message = NSLocalizedString( @"PasswordValidation", @"" );
@@ -91,8 +96,8 @@ NSInteger const VErrorCodeInvalidPasswordsNewEqualsCurrent  = 5053;
             *message = NSLocalizedString( @"PasswordNotMatching", @"");
             break;
         case VErrorCodeCurrentPasswordIsInvalid:
-            *title = NSLocalizedString( @"ResetPasswordErrorIncorrectTitle", @"");
-            *message = NSLocalizedString( @"ResetPasswordErrorIncorrectMessage", @"");
+            *title = NSLocalizedString( @"ResetPasswordErrorInvalidTitle", @"");
+            *message = NSLocalizedString( @"ResetPasswordErrorMessage", @"");
             break;
         case VErrorCodeInvalidPasswordsNewEqualsCurrent:
             *title = NSLocalizedString( @"ResetPasswordNewEqualsCurrentTitle", @"");
