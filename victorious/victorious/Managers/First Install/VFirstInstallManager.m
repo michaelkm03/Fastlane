@@ -24,7 +24,7 @@ NSString * const VAppInstalledDefaultsKey = @"com.victorious.VAppDelegate.AppIns
     [self trackEventWithOldMethod];
     [self trackEvent];
     
-    [[NSUserDefaults standardUserDefaults] setValue:@(YES) forKey:VAppInstalledDefaultsKey];
+    [[NSUserDefaults standardUserDefaults] setValue:@YES forKey:VAppInstalledDefaultsKey];
 }
 
 - (void)trackEvent
