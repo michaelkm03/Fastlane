@@ -45,6 +45,8 @@
     XCTAssertEqualObjects( self.flurryTracking.appVersionString, versionString );
 }
 
+#if TARGET_IPHONE_SIMULATOR
+
 - (void)testAppAPIKeys
 {
     // See the run script build phase of the test target for how project directorty is read
@@ -65,6 +67,7 @@
      {
          NSString *filepath = [NSString stringWithFormat:filepathFormat, key];
          NSDictionary *info = [[NSDictionary alloc] initWithContentsOfFile:filepath];
+         
          NSString *apiKey = info[ @"FlurryAPIKey" ];
          XCTAssertNotNil( apiKey );
          XCTAssertEqualObjects( value, apiKey );
@@ -74,5 +77,7 @@
     XCTAssertNotEqual( checkedCount, (NSUInteger)0 );
     XCTAssertEqual( checkedCount, expectedKeys.count );
 }
+
+#endif
 
 @end
