@@ -25,7 +25,6 @@
 #import "VConstants.h"
 #import "VSettingManager.h"
 #import "VObjectManager.h"
-#import "VObjectManager+Analytics.h"
 
 #import <ADEUMInstrumentation/ADEUMInstrumentation.h>
 #import <Crashlytics/Crashlytics.h>
@@ -33,16 +32,11 @@
 #import "VApplicationTracking.h"
 #import "VFlurryTracking.h"
 #import "VGoogleAnalyticsTracking.h"
+#import "VFirstInstallManager.h"
 
 @import AVFoundation;
 @import MediaPlayer;
 @import CoreLocation;
-
-@interface VAppDelegate ()
-
-@property (strong, nonatomic) VTrackingManager *trackingManager;
-
-@end
 
 static BOOL isRunningTests(void) __attribute__((const));
 
@@ -77,7 +71,9 @@ static BOOL isRunningTests(void) __attribute__((const));
     [VObjectManager setupObjectManager];
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
 
-    [self reportFirstInstall];
+    VFirstInstallManager *firstInstall = [[VFirstInstallManager alloc] init];
+    [firstInstall reportFirstInstall];
+    [firstInstall reportFirstInstallWithOldTracking];
     
     [[VTrackingManager sharedInstance] addDelegate:[[VApplicationTracking alloc] init]];
     [[VTrackingManager sharedInstance] addDelegate:[[VFlurryTracking alloc] init]];
@@ -187,7 +183,6 @@ static BOOL isRunningTests(void)
 
 - (void)initializeTracking
 {
-    self.trackingManager = [[VTrackingManager alloc] init];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onInitResponse:) name:kInitResponseNotification object:nil];
 }
 
@@ -198,26 +193,6 @@ static BOOL isRunningTests(void)
     
     // Only receive this once
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kInitResponseNotification object:nil];
-}
-
-- (void)reportFirstInstall
-{
-    NSString *key = @"appInstallDate";
-    NSDate *installDate = [[NSUserDefaults standardUserDefaults] valueForKey:key];
-    if ( installDate == nil )
-    {
-       installDate = [NSDate date];
-        
-        // Modern tracking
-        NSDictionary *params = @{ VTrackingKeyTimeStamp : installDate };
-        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventApplicationFirstInstall parameters:params];
-        
-        // Deprecated tracking:
-        NSDictionary *installEvent = [[VObjectManager sharedManager] dictionaryForInstallEventWithDate:installDate];
-        [[VObjectManager sharedManager] addEvents:@[installEvent] successBlock:nil failBlock:nil];
-        
-        [[NSUserDefaults standardUserDefaults] setValue:installDate forKey:key];
-    }
 }
 
 @end
