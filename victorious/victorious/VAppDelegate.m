@@ -67,13 +67,12 @@ static BOOL isRunningTests(void) __attribute__((const));
     
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     [[VReachability reachabilityForInternetConnection] startNotifier];
-
+    
+    // Start listening for response to init method from server:
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onInitResponse:) name:kInitResponseNotification object:nil];
     [VObjectManager setupObjectManager];
-    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
 
-    VFirstInstallManager *firstInstall = [[VFirstInstallManager alloc] init];
-    [firstInstall reportFirstInstall];
-    [firstInstall reportFirstInstallWithOldTracking];
+    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
     
     [[VTrackingManager sharedInstance] addDelegate:[[VApplicationTracking alloc] init]];
     [[VTrackingManager sharedInstance] addDelegate:[[VFlurryTracking alloc] init]];
@@ -85,13 +84,13 @@ static BOOL isRunningTests(void) __attribute__((const));
         [[VDeeplinkManager sharedManager] handleOpenURL:openURL];
     }
     
+    [[[VFirstInstallManager alloc] init] reportFirstInstall];
+    
     NSString *pushNotificationDeeplink = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey][@"deeplink"];
     if (pushNotificationDeeplink)
     {
         [[VDeeplinkManager sharedManager] handleOpenURL:[NSURL URLWithString:pushNotificationDeeplink]];
     }
-    
-    [self initializeTracking];
     
     return YES;
 }
@@ -177,13 +176,6 @@ static BOOL isRunningTests(void)
     NSDictionary *environment = [[NSProcessInfo processInfo] environment];
     NSString *injectBundle = environment[@"XCInjectBundle"];
     return [[injectBundle pathExtension] isEqualToString:@"xctest"];
-}
-
-#pragma mark - VTrackingManager and App Event Tracking
-
-- (void)initializeTracking
-{
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onInitResponse:) name:kInitResponseNotification object:nil];
 }
 
 - (void)onInitResponse:(NSNotification *)notification

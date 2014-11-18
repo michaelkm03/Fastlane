@@ -8,17 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
+extern NSString * const VAppInstalledDefaultsKey;
+
 @interface VFirstInstallManager : NSObject
 
 /**
  Check if this is the first time the app has been installed and track the event.
  */
 - (void)reportFirstInstall;
-
-/**
- Check if this is the first time the app has been installed and track the event
- using the now-deprecated tracking methods and old install detection.
- */
-- (void)reportFirstInstallWithOldTracking;
 
 @end

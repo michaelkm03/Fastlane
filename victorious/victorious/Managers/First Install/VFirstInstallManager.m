@@ -9,32 +9,45 @@
 #import "VFirstInstallManager.h"
 #import "VObjectManager+Analytics.h"
 
-static NSString * const kAppInstalledDefaultsKey = @"com.victorious.VAppDelegate.AppInstalled";
+NSString * const VAppInstalledDefaultsKey = @"com.victorious.VAppDelegate.AppInstalled";
 
 @implementation VFirstInstallManager
 
 - (void)reportFirstInstall
 {
-    NSDate *installDate = [[NSUserDefaults standardUserDefaults] valueForKey:kAppInstalledDefaultsKey];
-    if ( installDate == nil )
+    id userDefaultsValue = [[NSUserDefaults standardUserDefaults] valueForKey:VAppInstalledDefaultsKey];
+    if ( userDefaultsValue != nil )
     {
-        installDate = [NSDate date];
-        NSDictionary *params = @{ VTrackingKeyTimeStamp : installDate };
-        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventApplicationFirstInstall parameters:params];
-        [[NSUserDefaults standardUserDefaults] setValue:installDate forKey:kAppInstalledDefaultsKey];
+        return;
     }
+    
+    [self trackEventWithOldMethod];
+    [self trackEvent];
+    
+    [[NSUserDefaults standardUserDefaults] setValue:@(YES) forKey:VAppInstalledDefaultsKey];
 }
 
-- (void)reportFirstInstallWithOldTracking
+- (void)trackEvent
 {
-    NSDate *installDate = [[NSUserDefaults standardUserDefaults] valueForKey:kAppInstalledDefaultsKey];
-    if ( installDate == nil )
-    {
-        installDate = [NSDate date];
-        NSDictionary *installEvent = [[VObjectManager sharedManager] dictionaryForInstallEventWithDate:installDate];
-        [[VObjectManager sharedManager] addEvents:@[installEvent] successBlock:nil failBlock:nil];
-        [[NSUserDefaults standardUserDefaults] setValue:installDate forKey:kAppInstalledDefaultsKey];
-    }
+    // Modern tracking
+    NSDate *installDate = [NSDate date];
+    NSDictionary *params = @{ VTrackingKeyTimeStamp : installDate };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventApplicationFirstInstall parameters:params];
+}
+
+- (void)trackEventWithOldMethod
+{
+    // Deprecated tracking using "/api/events/add" endpoint
+    VObjectManager *objManager = [VObjectManager sharedManager];
+    NSDictionary *installEvent = [objManager dictionaryForInstallEventWithDate:[NSDate date]];
+    [[VObjectManager sharedManager] addEvents:@[installEvent] successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+     {
+         [[NSUserDefaults standardUserDefaults] setObject:@(YES) forKey:VAppInstalledDefaultsKey];
+     }
+                                    failBlock:^(NSOperation *operation, NSError *error)
+     {
+         NSLog(@"Error reporting install event: %@", [error localizedDescription]);
+     }];
 }
 
 @end
