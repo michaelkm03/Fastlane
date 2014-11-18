@@ -19,10 +19,12 @@
 
 typedef NS_OPTIONS(NSInteger, VSequencePermissionOptions)
 {
-    VSequencePermissionOptionsNone      = 0,
-    VSequencePermissionOptionsDelete    = 1 << 0,
-    VSequencePermissionOptionsRemix     = 1 << 1,
-    VSequencePermissionOptionsVoteCount = 1 << 2,
+    VSequencePermissionOptionsNone        = 0,
+    VSequencePermissionOptionsDelete      = 1 << 0,
+    VSequencePermissionOptionsRemix       = 1 << 1,
+    VSequencePermissionOptionsVoteCount   = 1 << 2,
+    VSequencePermissionOptionsCanComment  = 1 << 3,
+    VSequencePermissionOptionsCanRepost   = 1 << 4,
 };
 
 @implementation VSequence (Fetcher)
@@ -208,6 +210,28 @@ typedef NS_OPTIONS(NSInteger, VSequencePermissionOptions)
     {
         NSInteger permissionsMask = [self.permissions integerValue];
         return (permissionsMask & VSequencePermissionOptionsRemix);
+    }
+    
+    return YES;
+}
+
+- (BOOL)canComment
+{
+    if (self.permissions)
+    {
+        NSInteger permissionsMask = [self.permissions integerValue];
+        return (permissionsMask & VSequencePermissionOptionsCanComment);
+    }
+    
+    return YES;
+}
+
+- (BOOL)canRepost
+{
+    if (self.permissions)
+    {
+        NSInteger permissionsMask = [self.permissions integerValue];
+        return (permissionsMask & VSequencePermissionOptionsCanRepost);
     }
     
     return YES;
