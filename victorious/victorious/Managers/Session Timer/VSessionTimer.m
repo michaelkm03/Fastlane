@@ -10,6 +10,8 @@
 #import "VObjectManager+Analytics.h"
 #import "VSessionTimer.h"
 
+#define TEST_NEW_SESSION 0 // Set to '1' to start a new session by leaving the app for only 10 seconds.
+
 NSTimeInterval kVFirstLaunch = DBL_MAX;
 
 NSString * const VSessionTimerNewSessionShouldStart     = @"VSessionTimerNewSessionShouldStart";
@@ -28,7 +30,7 @@ static NSTimeInterval const kMinimumTimeBetweenSessions = 1800.0; // 30 minutes
 @interface VSessionTimer ()
 
 @property (nonatomic, strong) NSMutableArray *previousSessions;
-@property (nonatomic, readwrite) NSTimeInterval  previousBackgroundTime;
+@property (nonatomic, readwrite) NSTimeInterval previousBackgroundTime;
 @property (nonatomic) BOOL firstLaunch;
 @property (nonatomic) BOOL transitioningFromBackgroundToForeground;
 @property (nonatomic, strong) NSDate *sessionStartTime;
