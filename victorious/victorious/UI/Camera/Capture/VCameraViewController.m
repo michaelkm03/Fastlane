@@ -257,7 +257,20 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
     [[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
     if (self.captureController.captureSession.running)
     {
-        [self.captureController stopRunningWithCompletion:nil];
+        [self.captureController stopRunningWithCompletion:^{
+            NSDate *methodStart = [NSDate date];
+            
+            /* ... Do whatever you need to do ... */
+            
+
+            NSLog(@"Stopped 1 private thread");
+            dispatch_async(dispatch_get_main_queue(), ^{
+                NSLog(@"Stopped 2 main thread");
+                NSDate *methodFinish = [NSDate date];
+                NSTimeInterval executionTime = [methodFinish timeIntervalSinceDate:methodStart];
+                NSLog(@"executionTime = %f", executionTime);
+            });
+        }];
     }
     [MBProgressHUD hideAllHUDsForView:self.previewSnapshot animated:NO];
 }

@@ -259,7 +259,9 @@ static const char kUploadProgressYConstraintKey;
     {
         if (!finished || !capturedMediaURL)
         {
-            [self dismissViewControllerAnimated:YES completion:nil];
+            [self dismissViewControllerAnimated:YES completion:^{
+                NSLog(@"finished dismisisng camera");
+            }];
         }
         else
         {
