@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "VValidator.h"
 
+extern NSInteger const VErrorCodeCurrentPasswordIsIncorrect;
 extern NSInteger const VErrorCodeCurrentPasswordIsInvalid;
 extern NSInteger const VErrorCodeInvalidPasswordEntered;
 extern NSInteger const VErrorCodeInvalidPasswordsDoNotMatch;
