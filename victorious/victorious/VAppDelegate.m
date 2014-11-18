@@ -25,6 +25,7 @@
 #import "VConstants.h"
 #import "VSettingManager.h"
 #import "VObjectManager.h"
+#import "VObjectManager+Analytics.h"
 
 #import <ADEUMInstrumentation/ADEUMInstrumentation.h>
 #import <Crashlytics/Crashlytics.h>
@@ -206,8 +207,15 @@ static BOOL isRunningTests(void)
     if ( installDate == nil )
     {
        installDate = [NSDate date];
+        
+        // Modern tracking
         NSDictionary *params = @{ VTrackingKeyTimeStamp : installDate };
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventApplicationFirstInstall parameters:params];
+        
+        // Deprecated tracking:
+        NSDictionary *installEvent = [[VObjectManager sharedManager] dictionaryForInstallEventWithDate:installDate];
+        [[VObjectManager sharedManager] addEvents:@[installEvent] successBlock:nil failBlock:nil];
+        
         [[NSUserDefaults standardUserDefaults] setValue:installDate forKey:key];
     }
 }
