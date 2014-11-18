@@ -133,11 +133,11 @@
     self.twitterInnerViewController = [[VFindTwitterFriendsTableViewController alloc] init];
     
     self.contactsInnerViewController.shouldAutoselectNewFriends = self.shouldAutoselectNewFriends;
-    self.contactsInnerViewController.shouldDisplayInviteButton = !self.inviteButton.hidden;
+    self.contactsInnerViewController.shouldDisplayInvite = !self.inviteButton.hidden;
     self.facebookInnerViewController.shouldAutoselectNewFriends = self.shouldAutoselectNewFriends;
-    self.facebookInnerViewController.shouldDisplayInviteButton = !self.inviteButton.hidden;
+    self.facebookInnerViewController.shouldDisplayInvite = !self.inviteButton.hidden;
     self.twitterInnerViewController.shouldAutoselectNewFriends = self.shouldAutoselectNewFriends;
-    self.twitterInnerViewController.shouldDisplayInviteButton = !self.inviteButton.hidden;
+    self.twitterInnerViewController.shouldDisplayInvite = !self.inviteButton.hidden;
     
     tabViewController.viewControllers = @[v_newTab(self.contactsInnerViewController, [UIImage imageNamed:@"inviteContacts"]),
                                           v_newTab(self.facebookInnerViewController, [UIImage imageNamed:@"inviteFacebook"]),
