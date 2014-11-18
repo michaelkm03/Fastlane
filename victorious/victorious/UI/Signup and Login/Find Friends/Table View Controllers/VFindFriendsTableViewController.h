@@ -40,7 +40,7 @@ typedef NS_ENUM(NSInteger, VFindFriendsTableViewState)
 @property (nonatomic, readonly) VFindFriendsTableView      *tableView; ///< Returns the same object as the "view" property
 @property (nonatomic, readonly) VFindFriendsTableViewState  state;
 @property (nonatomic)           BOOL                        shouldAutoselectNewFriends; ///< If YES, new friends will be automatically selected as they're displayed
-@property (nonatomic) BOOL shouldDisplayInvite; ///< If YES, an invite button will appear if no friends are available to add. Default is YES
+@property (nonatomic) BOOL shouldDisplayInviteButton; ///< If YES, an invite button will appear if no friends are available to add. Default is YES
 
 /**
  Not to be called directly. Subclasses should override this method.
