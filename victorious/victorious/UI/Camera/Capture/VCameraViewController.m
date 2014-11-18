@@ -146,14 +146,6 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
     [self.recordButton addGestureRecognizer:[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleRecordLongTapGesture:)]];
     [self setRecordButtonEnabled:YES];
     
-    if ([self.initialCaptureMode isEqualToString:AVCaptureSessionPresetPhoto])
-    {
-        [self configureUIforPhotoCaptureAnimated:NO completion:nil];
-    }
-    else
-    {
-        [self configureUIforVideoCaptureAnimated:NO completion:nil];
-    }
     if (!self.allowVideo || !self.allowPhotos)
     {
         self.switchCameraModeButton.hidden = YES;
@@ -175,6 +167,15 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
     if (self.previewSnapshot)
     {
         [self restoreLivePreview];
+    }
+    
+    if ([self.initialCaptureMode isEqualToString:AVCaptureSessionPresetPhoto])
+    {
+        [self configureUIforPhotoCaptureAnimated:NO completion:nil];
+    }
+    else
+    {
+        [self configureUIforVideoCaptureAnimated:NO completion:nil];
     }
     
     [self setAllControlsEnabled:NO];
