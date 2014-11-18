@@ -861,7 +861,6 @@ static const CGFloat kShareMargin = 34.0f;
             self.userEnteredText = textView.text;
             
         }
-//        self.userEnteredText = textView.text;
     }
     else
     {
