@@ -343,9 +343,9 @@ NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentV
     return (realTimeComments.count > 0) ? YES : NO;
 }
 
-- (NSArray *)comments
+- (void)setComments:(NSArray *)comments
 {
-    NSArray *comments = [self.sequence.comments sortedArrayUsingComparator:^NSComparisonResult(VComment *comment1, VComment *comment2)
+    NSArray *sortedComments = [comments sortedArrayUsingComparator:^NSComparisonResult(VComment *comment1, VComment *comment2)
      {
          NSComparisonResult result = [comment1.postedAt compare:comment2.postedAt];
          switch (result)
@@ -357,10 +357,11 @@ NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentV
              case NSOrderedDescending:
                  return NSOrderedAscending;
          }
-    }];
-
-    _comments = [NSArray arrayWithArray:_comments];
-    return comments;
+     }];
+    _comments = sortedComments;
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:VContentViewViewModelDidUpdateCommentsNotification
+                                                        object:self];
 }
 
 #pragma mark - Public Methods
@@ -418,13 +419,13 @@ NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentV
 - (void)fetchComments
 {
     // give it what we have for now.
+    self.comments = [self.sequence.comments array];
     
     [[VObjectManager sharedManager] loadCommentsOnSequence:self.sequence
                                                  isRefresh:NO
                                               successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
-         [[NSNotificationCenter defaultCenter] postNotificationName:VContentViewViewModelDidUpdateCommentsNotification
-                                                             object:self];
+         self.comments = [self.sequence.comments array];
      }
                                                  failBlock:nil];
 }
@@ -435,8 +436,7 @@ NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentV
                                                  isRefresh:NO
                                               successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
-         [[NSNotificationCenter defaultCenter] postNotificationName:VContentViewViewModelDidUpdateCommentsNotification
-                                                             object:self];
+         self.comments = [self.sequence.comments array];
      }
                                                  failBlock:nil];
 }
