@@ -303,7 +303,6 @@ static CGFloat const kTemplateCLineSpacing = 8;
         VStream *marquee = [VStream streamForMarqueeInContext:[VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext];
         _marquee = [[VMarqueeController alloc] initWithStream:marquee];
         _marquee.delegate = self;
-        [_marquee refreshWithSuccess:nil failure:nil];
     }
     return _marquee;
 }
