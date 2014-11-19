@@ -16,6 +16,7 @@ extern NSString * const VInviteFriendTableViewCellNibName;
 @property (nonatomic, copy) void (^followAction)(void);
 @property (nonatomic, readonly) BOOL haveRelationship;
 @property (nonatomic, weak) IBOutlet VFollowUserControl *followUserControl;
+@property (nonatomic, assign) BOOL shouldAnimateFollowing;
 
 - (void)updateFollowStatus;
 

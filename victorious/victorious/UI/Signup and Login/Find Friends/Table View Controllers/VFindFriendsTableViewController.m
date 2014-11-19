@@ -268,7 +268,10 @@
 
 - (IBAction)selectAllButtonTapped:(id)sender
 {
+    self.tableView.selectAllButton.hidden = YES;
+    self.tableView.inviteFriendsButton.hidden = NO;
     [self selectAllRows:sender];
+    
 }
 
 - (IBAction)inviteButtonTapped:(id)sender
@@ -284,15 +287,20 @@
         VUser *mainUser = [[VObjectManager sharedManager] mainUser];
         NSManagedObjectContext *moc = mainUser.managedObjectContext;
 
-        for (NSUInteger n = 0; n < self.usersNotFollowing.count; n++)
+        NSArray *indexPaths = [self.tableView.tableView indexPathsForVisibleRows];
+        for (NSIndexPath *indexPath in indexPaths)
         {
-            NSIndexPath *indexPath = [NSIndexPath indexPathForItem:n inSection:0];
+            // Get table row
             VInviteFriendTableViewCell *cell = (VInviteFriendTableViewCell *)[self.tableView.tableView cellForRowAtIndexPath:indexPath];
 
             // Add user to persistent store
             VUser *user = cell.profile;
             [mainUser addFollowingObject:user];
             [moc saveToPersistentStore:nil];
+            
+            // Update follow/unfollow icon
+            cell.shouldAnimateFollowing = YES;
+            [cell updateFollowStatus];
         }
     };
     [[VObjectManager sharedManager] followUsers:self.usersNotFollowing withSuccessBlock:successBlock failBlock:nil];
