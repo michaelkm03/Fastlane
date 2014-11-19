@@ -34,19 +34,29 @@
 #import "VNode+Fetcher.h"
 
 //Managers
+#import "VDependencyManager+VObjectManager.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Login.h"
 #import "VThemeManager.h"
 #import "VSettingManager.h"
 
 //Categories
+#import "NSArray+VMap.h"
 #import "UIImage+ImageCreation.h"
 #import "UIImageView+Blurring.h"
+#import "UIStoryboard+VMainStoryboard.h"
 #import "UIViewController+VNavMenu.h"
 
 #import "VConstants.h"
 #import "VTracking.h"
 
+static NSString * const kStreamsKey = @"streams";
+static NSString * const kInitialKey = @"initial";
+static NSString * const kMarqueeKey = @"marquee";
+static NSString * const kStreamURLPathKey = @"streamUrlPath";
+static NSString * const kTitleKey = @"title";
+static NSString * const kIsHomeKey = @"isHome";
+static NSString * const kCanAddContentKey = @"canAddContent";
 static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
 static CGFloat const kTemplateCLineSpacing = 8;
 
@@ -137,13 +147,56 @@ static CGFloat const kTemplateCLineSpacing = 8;
 
 + (instancetype)streamViewControllerForStream:(VStream *)stream
 {
-    UIViewController *currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-    VStreamCollectionViewController *streamColllection = (VStreamCollectionViewController *)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kStreamCollectionStoryboardId];
+    VStreamCollectionViewController *streamCollection = (VStreamCollectionViewController *)[[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier:kStreamCollectionStoryboardId];
     
-    streamColllection.defaultStream = stream;
-    streamColllection.currentStream = stream;
+    streamCollection.defaultStream = stream;
+    streamCollection.currentStream = stream;
     
-    return streamColllection;
+    return streamCollection;
+}
+
+#pragma mark VHasManagedDependencies
+
++ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    NSAssert([NSThread isMainThread], @"This method must be called on the main thread");
+    
+    __block VStream *defaultStream = nil;
+    NSArray *streamConfiguration = [dependencyManager arrayForKey:kStreamsKey];
+    NSArray *allStreams = [streamConfiguration v_map:^(NSDictionary *streamConfig)
+                           {
+                               VStream *stream = [VStream streamForPath:streamConfig[kStreamURLPathKey] inContext:dependencyManager.objectManager.managedObjectStore.mainQueueManagedObjectContext];
+                               stream.name = streamConfig[kTitleKey];
+                               if ([streamConfig[kInitialKey] boolValue])
+                               {
+                                   defaultStream = stream;
+                               }
+                               return stream;
+                           }];
+    
+    if (defaultStream == nil && allStreams.count > 0)
+    {
+        defaultStream = allStreams[0];
+    }
+    
+    VStreamCollectionViewController *streamCollectionVC = [self streamViewControllerForDefaultStream:defaultStream andAllStreams:allStreams title:[dependencyManager stringForKey:kTitleKey]];
+    
+    if ( [[dependencyManager numberForKey:kIsHomeKey] boolValue] )
+    {
+        [streamCollectionVC v_addUploadProgressView];
+        streamCollectionVC.uploadProgressViewController.delegate = streamCollectionVC;
+    }
+    
+    if ( [[dependencyManager numberForKey:@"experiments.marquee_enabled"] boolValue] )
+    {
+        streamCollectionVC.shouldDisplayMarquee = YES;
+    }
+    
+    if ( [[dependencyManager numberForKey:kCanAddContentKey] boolValue] )
+    {
+        [streamCollectionVC v_addCreateSequenceButton];
+    }
+    return streamCollectionVC;
 }
 
 #pragma mark - View Heirarchy
@@ -250,7 +303,6 @@ static CGFloat const kTemplateCLineSpacing = 8;
         VStream *marquee = [VStream streamForMarqueeInContext:[VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext];
         _marquee = [[VMarqueeController alloc] initWithStream:marquee];
         _marquee.delegate = self;
-        [_marquee refreshWithSuccess:nil failure:nil];
     }
     return _marquee;
 }
@@ -284,7 +336,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
     _shouldDisplayMarquee = shouldDisplayMarquee;
     if (self.currentStream == self.defaultStream)
     {
-        self.streamDataSource.hasHeaderCell = shouldDisplayMarquee && self.marquee.streamDataSource.count;
+        self.streamDataSource.hasHeaderCell = shouldDisplayMarquee;
     }
 }
 
@@ -295,9 +347,12 @@ static CGFloat const kTemplateCLineSpacing = 8;
     self.streamDataSource.hasHeaderCell = self.marquee.streamDataSource.count;
 }
 
-- (void)marquee:(VMarqueeController *)marquee selectedItem:(VStreamItem *)streamItem atIndexPath:(NSIndexPath *)path
+- (void)marquee:(VMarqueeController *)marquee selectedItem:(VStreamItem *)streamItem atIndexPath:(NSIndexPath *)path previewImage:(UIImage *)image
 {
-    [self collectionView:self.collectionView didSelectItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+    if ( [streamItem isKindOfClass:[VSequence class]] )
+    {
+        [self showContentViewForSequence:(VSequence *)streamItem withPreviewImage:image];
+    }
 }
 
 - (void)marquee:(VMarqueeController *)marquee selectedUser:(VUser *)user atIndexPath:(NSIndexPath *)path
@@ -324,39 +379,26 @@ static CGFloat const kTemplateCLineSpacing = 8;
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    if ( indexPath.section != [self.streamDataSource sectionIndexForContent] )
+    {
+        return;
+    }
+    
     self.lastSelectedIndexPath = indexPath;
     
     VSequence *sequence = (VSequence *)[self.streamDataSource itemAtIndexPath:indexPath];
-    
-    //Every time we go to the content view, update the sequence
-    [[VObjectManager sharedManager] fetchSequenceByID:sequence.remoteId
-                                         successBlock:nil
-                                            failBlock:nil];
-    
-    NSDictionary *params = @{ VTrackingKeySequenceId : sequence.remoteId,
-                              VTrackingKeyStreamId : self.currentStream.remoteId,
-                              VTrackingKeyTimeStamp : [NSDate date],
-                              VTrackingKeyUrls : sequence.tracking.cellClick };
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventSequenceSelected parameters:params];
-    
-    if ( [sequence isWebContent] )
+    UIImageView *previewImageView = nil;
+    UICollectionViewCell *cell = (VStreamCollectionCell *)[collectionView cellForItemAtIndexPath:indexPath];
+    if ([cell isKindOfClass:[VStreamCollectionCell class]])
     {
-        [self showWebContentWithSequence:sequence];
+        previewImageView = ((VStreamCollectionCell *)cell).previewImageView;
     }
-    else
+    else if ([cell isKindOfClass:[VMarqueeCollectionCell class]])
     {
-        UIImageView *previewImageView = nil;
-        UICollectionViewCell *cell = (VStreamCollectionCell *)[collectionView cellForItemAtIndexPath:indexPath];
-        if ([cell isKindOfClass:[VStreamCollectionCell class]])
-        {
-            previewImageView = ((VStreamCollectionCell *)cell).previewImageView;
-        }
-        else if ([cell isKindOfClass:[VMarqueeCollectionCell class]])
-        {
-            previewImageView = ((VMarqueeCollectionCell *)cell).currentPreviewImageView;
-        }
-        [self showContentViewWithSequence:sequence placeHolderImage:previewImageView.image];
+        previewImageView = ((VMarqueeCollectionCell *)cell).currentPreviewImageView;
     }
+    
+    [self showContentViewForSequence:sequence withPreviewImage:previewImageView.image];
 }
 
 - (void)showContentViewWithSequence:(VSequence *)sequence placeHolderImage:(UIImage *)placeHolderImage
@@ -497,7 +539,8 @@ static CGFloat const kTemplateCLineSpacing = 8;
 - (BOOL)navSelector:(UIView<VNavigationSelectorProtocol> *)navSelector changedToIndex:(NSInteger)index
 {
     VStream *stream = self.allStreams[index];
-    if ([stream.apiPath rangeOfString:VStreamFollowerStreamPath].location != NSNotFound
+    if ( stream.apiPath != nil
+        && [stream.apiPath rangeOfString:VStreamFollowerStreamPath].location != NSNotFound
         && ![VObjectManager sharedManager].authorized)
     {
         [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
@@ -619,10 +662,37 @@ static CGFloat const kTemplateCLineSpacing = 8;
     self.collectionView.backgroundView = newBackgroundView;
 }
 
+- (void)showContentViewForSequence:(VSequence *)sequence withPreviewImage:(UIImage *)previewImage
+{
+    //Every time we go to the content view, update the sequence
+    [[VObjectManager sharedManager] fetchSequenceByID:sequence.remoteId
+                                         successBlock:nil
+                                            failBlock:nil];
+    
+    NSDictionary *params = @{ VTrackingKeySequenceId : sequence.remoteId,
+                              VTrackingKeyStreamId : self.currentStream.remoteId,
+                              VTrackingKeyTimeStamp : [NSDate date],
+                              VTrackingKeyUrls : sequence.tracking.cellClick };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventSequenceSelected parameters:params];
+    
+    if ( [sequence isWebContent] )
+    {
+        [self showWebContentWithSequence:sequence];
+    }
+    else
+    {
+        [self showContentViewWithSequence:sequence placeHolderImage:previewImage];
+    }
+}
+
 #pragma mark - VNewContentViewControllerDelegate
 
 - (void)newContentViewControllerDidClose:(VNewContentViewController *)contentViewController
 {
+    if ( self.lastSelectedIndexPath != nil )
+    {
+        [self.collectionView reloadItemsAtIndexPaths:@[self.lastSelectedIndexPath]];
+    }
     [self dismissViewControllerAnimated:YES
                              completion:nil];
 }

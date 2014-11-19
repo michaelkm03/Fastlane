@@ -139,6 +139,18 @@ NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamColl
     return [[[VObjectManager sharedManager] paginationManager] isLoadingFilter:self.filter];
 }
 
+- (NSInteger)sectionIndexForContent
+{
+    if ( self.hasHeaderCell )
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
 #pragma mark - UICollectionViewDataSource
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section

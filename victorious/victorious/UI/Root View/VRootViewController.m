@@ -8,19 +8,20 @@
 
 #import "VAppDelegate.h"
 #import "VForceUpgradeViewController.h"
+#import "VDependencyManager.h"
+#import "VDependencyManager+VObjectManager.h"
 #import "VLoadingViewController.h"
-#import "VMultipleStreamViewController.h"
 #import "VObjectManager.h"
 #import "VRootViewController.h"
 #import "VSessionTimer.h"
-#import "VSettingManager.h"
-#import "VStreamCollectionViewController.h"
 #import "VConstants.h"
+#import "VTemplateGenerator.h"
 
 static const NSTimeInterval kAnimationDuration = 0.2;
 
 @interface VRootViewController () <VLoadingViewControllerDelegate>
 
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic) BOOL appearing;
 @property (nonatomic) BOOL shouldPresentForceUpgradeScreenOnNextAppearance;
 @property (nonatomic, strong, readwrite) UIViewController *currentViewController;
@@ -136,13 +137,19 @@ static const NSTimeInterval kAnimationDuration = 0.2;
     [self showViewController:loadingViewController animated:NO];
 }
 
-- (void)showHomeStream
+- (void)startAppWithInitData:(NSDictionary *)initData
 {
-    VSideMenuViewController *sideMenuViewController = [self.storyboard instantiateViewControllerWithIdentifier:NSStringFromClass([VSideMenuViewController class])];
-    BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
-    UIViewController *homeVC = isTemplateC ? [VMultipleStreamViewController homeStream] : [VStreamCollectionViewController homeStreamCollection];
-    [sideMenuViewController transitionToNavStack:@[homeVC]];
-    [self showViewController:sideMenuViewController animated:YES];
+    VDependencyManager *basicDependencies = [[VDependencyManager alloc] initWithParentManager:nil
+                                                                                configuration:@{ VDependencyManagerObjectManagerKey:[VObjectManager sharedManager] }
+                                                            dictionaryOfClassesByTemplateName:nil];
+    
+    VTemplateGenerator *templateGenerator = [[VTemplateGenerator alloc] initWithInitData:initData];
+    self.dependencyManager = [[VDependencyManager alloc] initWithParentManager:basicDependencies
+                                                                 configuration:[templateGenerator configurationDict]
+                                             dictionaryOfClassesByTemplateName:nil];
+    
+    UIViewController *scaffold = [self.dependencyManager viewControllerForKey:VDependencyManagerScaffoldViewControllerKey];
+    [self showViewController:scaffold animated:YES];
 }
 
 - (void)showViewController:(UIViewController *)viewController animated:(BOOL)animated
@@ -217,7 +224,7 @@ static const NSTimeInterval kAnimationDuration = 0.2;
 
 - (void)loadingViewController:(VLoadingViewController *)loadingViewController didFinishLoadingWithInitResponse:(NSDictionary *)initResponse
 {
-    [self showHomeStream];
+    [self startAppWithInitData:initResponse];
 }
 
 @end

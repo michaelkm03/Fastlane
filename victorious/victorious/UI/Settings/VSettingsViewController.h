@@ -10,6 +10,4 @@
 
 @interface VSettingsViewController : UITableViewController
 
-+ (UIViewController *)settingsContainer;//This contains a slight hack to get the header working, since the nav header doesn't play nicely with tableVCs
-
 @end

@@ -69,6 +69,11 @@
     : UIStatusBarStyleDefault;
 }
 
+- (NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
 #pragma mark - Actions
 
 - (IBAction)saveChanges:(id)sender

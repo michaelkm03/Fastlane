@@ -1,6 +1,6 @@
 /* Class = "IBUITextField"; placeholder = "Search people"; ObjectID = "RxD-Py-mcF"; */
 "RxD-Py-mcF.placeholder" = "Buscar personas";
 
-/* Class = "IBUILabel"; text = "Discover"; ObjectID = "sc4-7o-qW7"; */
-"sc4-7o-qW7.text" = "Descubrir";
+/* Class = "IBUIViewController"; title = "Discover"; ObjectID = "Uac-Xm-78P"; */
+"Uac-Xm-78P.title" = "Descubrir";
 

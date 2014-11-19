@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "VHasManagedDependencies.h"
 #import "VNavigationDestination.h"
 
 #import <Foundation/Foundation.h>
@@ -15,7 +16,7 @@
 /**
  A navigation destination of the current user's own profile
  */
-@interface VUserProfileNavigationDestination : NSObject <VNavigationDestination>
+@interface VUserProfileNavigationDestination : NSObject <VHasManagedDependancies, VNavigationDestination>
 
 @property (nonatomic, strong, readonly) VObjectManager *objectManager; ///< The object manager provided in the -init call
 
