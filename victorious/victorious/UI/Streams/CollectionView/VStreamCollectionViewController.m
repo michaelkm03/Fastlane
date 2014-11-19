@@ -303,7 +303,6 @@ static CGFloat const kTemplateCLineSpacing = 8;
         VStream *marquee = [VStream streamForMarqueeInContext:[VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext];
         _marquee = [[VMarqueeController alloc] initWithStream:marquee];
         _marquee.delegate = self;
-        [_marquee refreshWithSuccess:nil failure:nil];
     }
     return _marquee;
 }
@@ -348,9 +347,12 @@ static CGFloat const kTemplateCLineSpacing = 8;
     self.streamDataSource.hasHeaderCell = self.marquee.streamDataSource.count;
 }
 
-- (void)marquee:(VMarqueeController *)marquee selectedItem:(VStreamItem *)streamItem atIndexPath:(NSIndexPath *)path
+- (void)marquee:(VMarqueeController *)marquee selectedItem:(VStreamItem *)streamItem atIndexPath:(NSIndexPath *)path previewImage:(UIImage *)image
 {
-    [self collectionView:self.collectionView didSelectItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+    if ( [streamItem isKindOfClass:[VSequence class]] )
+    {
+        [self showContentViewForSequence:(VSequence *)streamItem withPreviewImage:image];
+    }
 }
 
 - (void)marquee:(VMarqueeController *)marquee selectedUser:(VUser *)user atIndexPath:(NSIndexPath *)path
@@ -377,39 +379,26 @@ static CGFloat const kTemplateCLineSpacing = 8;
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    if ( indexPath.section != [self.streamDataSource sectionIndexForContent] )
+    {
+        return;
+    }
+    
     self.lastSelectedIndexPath = indexPath;
     
     VSequence *sequence = (VSequence *)[self.streamDataSource itemAtIndexPath:indexPath];
-    
-    //Every time we go to the content view, update the sequence
-    [[VObjectManager sharedManager] fetchSequenceByID:sequence.remoteId
-                                         successBlock:nil
-                                            failBlock:nil];
-    
-    NSDictionary *params = @{ VTrackingKeySequenceId : sequence.remoteId,
-                              VTrackingKeyStreamId : self.currentStream.remoteId,
-                              VTrackingKeyTimeStamp : [NSDate date],
-                              VTrackingKeyUrls : sequence.tracking.cellClick };
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventSequenceSelected parameters:params];
-    
-    if ( [sequence isWebContent] )
+    UIImageView *previewImageView = nil;
+    UICollectionViewCell *cell = (VStreamCollectionCell *)[collectionView cellForItemAtIndexPath:indexPath];
+    if ([cell isKindOfClass:[VStreamCollectionCell class]])
     {
-        [self showWebContentWithSequence:sequence];
+        previewImageView = ((VStreamCollectionCell *)cell).previewImageView;
     }
-    else
+    else if ([cell isKindOfClass:[VMarqueeCollectionCell class]])
     {
-        UIImageView *previewImageView = nil;
-        UICollectionViewCell *cell = (VStreamCollectionCell *)[collectionView cellForItemAtIndexPath:indexPath];
-        if ([cell isKindOfClass:[VStreamCollectionCell class]])
-        {
-            previewImageView = ((VStreamCollectionCell *)cell).previewImageView;
-        }
-        else if ([cell isKindOfClass:[VMarqueeCollectionCell class]])
-        {
-            previewImageView = ((VMarqueeCollectionCell *)cell).currentPreviewImageView;
-        }
-        [self showContentViewWithSequence:sequence placeHolderImage:previewImageView.image];
+        previewImageView = ((VMarqueeCollectionCell *)cell).currentPreviewImageView;
     }
+    
+    [self showContentViewForSequence:sequence withPreviewImage:previewImageView.image];
 }
 
 - (void)showContentViewWithSequence:(VSequence *)sequence placeHolderImage:(UIImage *)placeHolderImage
@@ -672,11 +661,37 @@ static CGFloat const kTemplateCLineSpacing = 8;
     self.collectionView.backgroundView = newBackgroundView;
 }
 
+- (void)showContentViewForSequence:(VSequence *)sequence withPreviewImage:(UIImage *)previewImage
+{
+    //Every time we go to the content view, update the sequence
+    [[VObjectManager sharedManager] fetchSequenceByID:sequence.remoteId
+                                         successBlock:nil
+                                            failBlock:nil];
+    
+    NSDictionary *params = @{ VTrackingKeySequenceId : sequence.remoteId,
+                              VTrackingKeyStreamId : self.currentStream.remoteId,
+                              VTrackingKeyTimeStamp : [NSDate date],
+                              VTrackingKeyUrls : sequence.tracking.cellClick };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventSequenceSelected parameters:params];
+    
+    if ( [sequence isWebContent] )
+    {
+        [self showWebContentWithSequence:sequence];
+    }
+    else
+    {
+        [self showContentViewWithSequence:sequence placeHolderImage:previewImage];
+    }
+}
+
 #pragma mark - VNewContentViewControllerDelegate
 
 - (void)newContentViewControllerDidClose:(VNewContentViewController *)contentViewController
 {
-    [self.collectionView reloadItemsAtIndexPaths:@[self.lastSelectedIndexPath]];
+    if ( self.lastSelectedIndexPath != nil )
+    {
+        [self.collectionView reloadItemsAtIndexPaths:@[self.lastSelectedIndexPath]];
+    }
     [self dismissViewControllerAnimated:YES
                              completion:nil];
 }
