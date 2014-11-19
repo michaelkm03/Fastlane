@@ -133,6 +133,12 @@ static NSString * const kUserSpecificKey = @"isUserSpecific";
                     kDestinationKey: @{
                         kClassNameKey: @"currentUserProfile.screen"
                     }
+                },
+                @{
+                    kTitleKey: NSLocalizedString(@"Settings", @""),
+                    kDestinationKey: @{
+                        kClassNameKey: @"settings.screen"
+                    }
                 }
             ]
         ]

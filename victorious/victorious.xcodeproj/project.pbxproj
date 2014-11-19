@@ -170,6 +170,7 @@
 		03449FE51A0C7EBB0070EC80 /* VSessionTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 03449FE41A0C7EBB0070EC80 /* VSessionTimer.m */; };
 		03484BFE192E9D2100403FB1 /* NSLayoutConstraint+CenterConstraints.m in Sources */ = {isa = PBXBuildFile; fileRef = 03484BFD192E9D2100403FB1 /* NSLayoutConstraint+CenterConstraints.m */; };
 		03484C071930294D00403FB1 /* NSURL+MediaType.m in Sources */ = {isa = PBXBuildFile; fileRef = 03484C061930294D00403FB1 /* NSURL+MediaType.m */; };
+		034AA04B1A1C675700936EA3 /* VSettingsContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 034AA04A1A1C675700936EA3 /* VSettingsContainerViewController.m */; };
 		034BCC3F19F5CF5D00114F6C /* MuseoSans-500.otf in Resources */ = {isa = PBXBuildFile; fileRef = 03C1859019B42CEA00E27D05 /* MuseoSans-500.otf */; };
 		0350426A194F711A008D78A3 /* NSIndexSet+Map.m in Sources */ = {isa = PBXBuildFile; fileRef = 03504269194F711A008D78A3 /* NSIndexSet+Map.m */; };
 		03610584194140AA0069D49E /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 03610583194140AA0069D49E /* libsqlite3.dylib */; };
@@ -942,6 +943,8 @@
 		03484BFD192E9D2100403FB1 /* NSLayoutConstraint+CenterConstraints.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSLayoutConstraint+CenterConstraints.m"; sourceTree = "<group>"; };
 		03484C051930294D00403FB1 /* NSURL+MediaType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+MediaType.h"; sourceTree = "<group>"; };
 		03484C061930294D00403FB1 /* NSURL+MediaType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+MediaType.m"; sourceTree = "<group>"; };
+		034AA0491A1C675700936EA3 /* VSettingsContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSettingsContainerViewController.h; sourceTree = "<group>"; };
+		034AA04A1A1C675700936EA3 /* VSettingsContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSettingsContainerViewController.m; sourceTree = "<group>"; };
 		03504268194F711A008D78A3 /* NSIndexSet+Map.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSIndexSet+Map.h"; sourceTree = "<group>"; };
 		03504269194F711A008D78A3 /* NSIndexSet+Map.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSIndexSet+Map.m"; sourceTree = "<group>"; };
 		03610583194140AA0069D49E /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
@@ -2264,6 +2267,8 @@
 				0314D3F919B46B5E00FA363C /* VPrivacyPoliciesViewController.m */,
 				0314D3FA19B46B5E00FA363C /* VServerEnvironmentTableViewController.h */,
 				0314D3FB19B46B5E00FA363C /* VServerEnvironmentTableViewController.m */,
+				034AA0491A1C675700936EA3 /* VSettingsContainerViewController.h */,
+				034AA04A1A1C675700936EA3 /* VSettingsContainerViewController.m */,
 				0314D3FC19B46B5E00FA363C /* VSettingsViewController.h */,
 				0314D3FD19B46B5E00FA363C /* VSettingsViewController.m */,
 				0314D3FE19B46B5E00FA363C /* VTOSViewController.h */,
@@ -4472,6 +4477,7 @@
 				3F9B6657187F80780046F826 /* NSDate+timeSince.m in Sources */,
 				DBC45CD819F4CBD0003079C4 /* VAdVideoPlayerViewController.m in Sources */,
 				DBDBE6EB1A16736B00DA1BB2 /* VAdBreakFallback.m in Sources */,
+				034AA04B1A1C675700936EA3 /* VSettingsContainerViewController.m in Sources */,
 				BE11F26519CCADD200DEC776 /* VStreamItem+Fetcher.m in Sources */,
 				0314D4A719B46B5E00FA363C /* VConversationCell.m in Sources */,
 				BEBF512A19BA15B6007AB3BA /* VConversation.m in Sources */,

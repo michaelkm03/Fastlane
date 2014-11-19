@@ -14,5 +14,7 @@
 	<string>VInboxContainerViewController</string>
 	<key>currentUserProfile.screen</key>
 	<string>VUserProfileNavigationDestination</string>
+	<key>settings.screen</key>
+	<string>VSettingsContainerViewController</string>
 </dict>
 </plist>
