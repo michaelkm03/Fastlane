@@ -539,7 +539,8 @@ static CGFloat const kTemplateCLineSpacing = 8;
 - (BOOL)navSelector:(UIView<VNavigationSelectorProtocol> *)navSelector changedToIndex:(NSInteger)index
 {
     VStream *stream = self.allStreams[index];
-    if ([stream.apiPath rangeOfString:VStreamFollowerStreamPath].location != NSNotFound
+    if ( stream.apiPath != nil
+        && [stream.apiPath rangeOfString:VStreamFollowerStreamPath].location != NSNotFound
         && ![VObjectManager sharedManager].authorized)
     {
         [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
