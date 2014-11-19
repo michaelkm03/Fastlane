@@ -335,7 +335,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
     _shouldDisplayMarquee = shouldDisplayMarquee;
     if (self.currentStream == self.defaultStream)
     {
-        self.streamDataSource.hasHeaderCell = shouldDisplayMarquee && self.marquee.streamDataSource.count;
+        self.streamDataSource.hasHeaderCell = shouldDisplayMarquee;
     }
 }
 
