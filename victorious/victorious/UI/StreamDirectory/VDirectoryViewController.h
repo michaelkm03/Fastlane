@@ -9,14 +9,14 @@
 #import <UIKit/UIKit.h>
 
 #import "VAbstractStreamCollectionViewController.h"
+#import "VHasManagedDependencies.h"
 
 @class VStream, VStreamCollectionViewDataSource;
 
 /**
  *  A view controller that uses a UICollectionView to display the streamItems in a VStream.
  */
-
-@interface VDirectoryViewController : VAbstractStreamCollectionViewController
+@interface VDirectoryViewController : VAbstractStreamCollectionViewController <VHasManagedDependancies>
 
 /**
  *  Instantiates a VDirectoryViewController from the main storyboard.

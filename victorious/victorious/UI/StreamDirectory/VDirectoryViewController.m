@@ -28,9 +28,13 @@
 #import "VStream+Fetcher.h"
 #import "VSequence.h"
 
+#import "VDependencyManager+VObjectManager.h"
+#import "VObjectManager.h"
 #import "VSettingManager.h"
 
 static NSString * const kStreamDirectoryStoryboardId = @"kStreamDirectory";
+static NSString * const kStreamURLPathKey = @"streamUrlPath";
+static NSString * const kTitleKey = @"title";
 
 static CGFloat const kDirectoryInset = 10.0f;
 
@@ -39,6 +43,8 @@ static CGFloat const kDirectoryInset = 10.0f;
 @end
 
 @implementation VDirectoryViewController
+
+#pragma mark - Initializers
 
 + (instancetype)streamDirectoryForStream:(VStream *)stream
 {
@@ -53,6 +59,18 @@ static CGFloat const kDirectoryInset = 10.0f;
     
     return streamDirectory;
 }
+
+#pragma mark VHasManagedDependencies conforming initializer
+
++ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    NSAssert([NSThread isMainThread], @"This method must be called on the main thread");
+    VStream *stream = [VStream streamForPath:[dependencyManager stringForKey:kStreamURLPathKey] inContext:dependencyManager.objectManager.managedObjectStore.mainQueueManagedObjectContext];
+    stream.name = [dependencyManager stringForKey:kTitleKey];
+    return [self streamDirectoryForStream:stream];
+}
+
+#pragma mark - UIView overrides
 
 - (void)viewDidLoad
 {

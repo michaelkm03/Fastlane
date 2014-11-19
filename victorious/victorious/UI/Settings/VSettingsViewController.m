@@ -50,16 +50,6 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
 
 @implementation VSettingsViewController
 
-+ (UIViewController *)settingsContainer
-{
-    UIViewController *settingsContainer = [[UIStoryboard storyboardWithName:@"settings" bundle:nil] instantiateInitialViewController];
-    settingsContainer.title = NSLocalizedString(@"Settings", nil);
-    [settingsContainer v_addNewNavHeaderWithTitles:nil];
-    settingsContainer.navHeaderView.delegate = (UIViewController<VNavigationHeaderDelegate> *)settingsContainer;
-    settingsContainer.automaticallyAdjustsScrollViewInsets = NO;
-    return settingsContainer;
-}
-
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];

@@ -7,12 +7,15 @@
 //
 
 #import "VAuthorizationViewControllerFactory.h"
+#import "VDependencyManager+VObjectManager.h"
 #import "VObjectManager.h"
 #import "VRootViewController.h"
 #import "VUserProfileNavigationDestination.h"
 #import "VUserProfileViewController.h"
 
 @implementation VUserProfileNavigationDestination
+
+#pragma mark - Initializers
 
 - (instancetype)initWithObjectManager:(VObjectManager *)objectManager
 {
@@ -23,6 +26,15 @@
     }
     return self;
 }
+
+#pragma mark VHasManagedDependencies
+
+- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    return [self initWithObjectManager:dependencyManager.objectManager];
+}
+
+#pragma mark - VNavigationDestination conformance
 
 - (BOOL)shouldNavigateWithAlternateDestination:(UIViewController *__autoreleasing *)alternateViewController
 {

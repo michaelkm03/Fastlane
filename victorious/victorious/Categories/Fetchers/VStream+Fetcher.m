@@ -37,13 +37,13 @@ NSString * const VStreamFilterTypePopular = @"popular";
 + (VStream *)remixStreamForSequence:(VSequence *)sequence
 {
     NSString *apiPath = [@"/api/sequence/remixes_by_sequence/" stringByAppendingString: sequence.remoteId ?: @"0"];
-    return [self streamForPath:apiPath managedObjectContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
+    return [self streamForPath:apiPath inContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
 }
 
 + (VStream *)streamForUser:(VUser *)user
 {
     NSString *apiPath = [@"/api/sequence/detail_list_by_user/" stringByAppendingString: user.remoteId.stringValue ?: @"0"];
-    return [self streamForPath:apiPath managedObjectContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
+    return [self streamForPath:apiPath inContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
 }
 
 + (VStream *)streamForCategories:(NSArray *)categories
@@ -51,7 +51,7 @@ NSString * const VStreamFilterTypePopular = @"popular";
     NSAssert([NSThread isMainThread], @"Filters should be created on the main thread");
     NSString *categoryString = [categories componentsJoinedByString:@","];
     NSString *apiPath = [@"/api/sequence/detail_list_by_category/" stringByAppendingString: categoryString ?: @"0"];
-    VStream *stream = [self streamForPath:apiPath managedObjectContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
+    VStream *stream = [self streamForPath:apiPath inContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
     stream.name = NSLocalizedString(@"Recent", nil);
     return stream;
 }
@@ -60,7 +60,7 @@ NSString * const VStreamFilterTypePopular = @"popular";
 {
     NSAssert([NSThread isMainThread], @"Filters should be created on the main thread");
     NSString *apiPath = [@"/api/sequence/hot_detail_list_by_stream/" stringByAppendingString: streamName];
-    VStream *stream = [self streamForPath:apiPath managedObjectContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
+    VStream *stream = [self streamForPath:apiPath inContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
     stream.name = NSLocalizedString(@"Featured", nil);
     return stream;
 }
@@ -70,7 +70,7 @@ NSString * const VStreamFilterTypePopular = @"popular";
     NSAssert([NSThread isMainThread], @"Filters should be created on the main thread");
     NSString *apiPath = [@"/api/sequence/detail_list_by_hashtag/" stringByAppendingString: hashTag];
     NSManagedObjectContext *context = [[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext];
-    VStream *stream = [self streamForPath:apiPath managedObjectContext:context];
+    VStream *stream = [self streamForPath:apiPath inContext:context];
     stream.hashtag = hashTag;
     return stream;
 }
@@ -83,7 +83,7 @@ NSString * const VStreamFilterTypePopular = @"popular";
     
     NSString *apiPath = [@"/api/sequence/follows_detail_list_by_stream/" stringByAppendingString: user.remoteId.stringValue ?: @"0"];
     apiPath = [apiPath stringByAppendingPathComponent:streamName];
-    VStream *stream = [self streamForPath:apiPath managedObjectContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
+    VStream *stream = [self streamForPath:apiPath inContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
     stream.name = NSLocalizedString(@"Following", nil);
     return stream;
 }
@@ -103,7 +103,7 @@ NSString * const VStreamFilterTypePopular = @"popular";
 
 + (VStream *)streamForMarqueeInContext:(NSManagedObjectContext *)context
 {
-    return [self streamForRemoteId:@"marquee" filterName:nil managedObjectContext:context];
+    return [self streamForRemoteId:@"marquee" filterName:@"0" managedObjectContext:context];
 }
 
 + (VStream *)streamForRemoteId:(NSString *)remoteId
@@ -119,7 +119,7 @@ NSString * const VStreamFilterTypePopular = @"popular";
         apiPath = [apiPath stringByAppendingPathComponent:filterIdKey];
     }
     
-    VStream *stream = [self streamForPath:apiPath managedObjectContext:context];
+    VStream *stream = [self streamForPath:apiPath inContext:context];
     stream.remoteId = remoteId;
     stream.filterName = filterName;
     [stream.managedObjectContext saveToPersistentStore:nil];
@@ -127,7 +127,7 @@ NSString * const VStreamFilterTypePopular = @"popular";
 }
 
 + (VStream *)streamForPath:(NSString *)apiPath
-      managedObjectContext:(NSManagedObjectContext *)context
+                 inContext:(NSManagedObjectContext *)context
 {
     static NSCache *streamCache;
     static dispatch_once_t onceToken;

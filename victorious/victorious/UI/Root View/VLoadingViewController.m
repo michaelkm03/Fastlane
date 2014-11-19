@@ -158,11 +158,11 @@ static const NSUInteger kRetryAttempts = 5;
     {
         [[VUserManager sharedInstance] loginViaSavedCredentialsOnCompletion:^(VUser *user, BOOL created)
         {
-            [self onDoneLoadingWithInitData:fullResponse];
+            [self onDoneLoadingWithInitData:fullResponse[kVPayloadKey]];
         }
                                                                     onError:^(NSError *error)
         {
-            [self onDoneLoadingWithInitData:fullResponse];
+            [self onDoneLoadingWithInitData:fullResponse[kVPayloadKey]];
         }];
     }
                                                   failBlock:^(NSOperation *operation, NSError *error)

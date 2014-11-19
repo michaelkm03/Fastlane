@@ -1,0 +1,259 @@
+{
+    "appearance": {
+        "color": {
+            "red": "54",
+            "green": "37",
+            "blue": "78",
+            "alpha": "1"
+        },
+        "color.background": {
+            "red": "0",
+            "green": "0",
+            "blue": "0",
+            "alpha": "1"
+        },
+        "color.cancel": {
+            "red": "153",
+            "green": "153",
+            "blue": "153",
+            "alpha": "1"
+        },
+        "color.text": {
+            "red": "255",
+            "green": "255",
+            "blue": "255",
+            "alpha": "1"
+        },
+        "color.text.content": {
+            "red": "0",
+            "green": "0",
+            "blue": "0",
+            "alpha": "1"
+        },
+        "color.link.secondary": {
+            "red": "35",
+            "green": "35",
+            "blue": "35",
+            "alpha": "1"
+        },
+        "font.header": {
+            "fontName": "Cantarell",
+            "fontSize": "18"
+        },
+        "font.heading1": {
+            "fontName": "Cantarell",
+            "fontSize": "24"
+        },
+        "font.heading2": {
+            "fontName": "Cantarell",
+            "fontSize": "20"
+        },
+        "font.heading3": {
+            "fontName": "Cantarell",
+            "fontSize": "17"
+        },
+        "font.heading4": {
+            "fontName": "Cantarell",
+            "fontSize": "15"
+        },
+        "font.paragraph": {
+            "fontName": "Cantarell",
+            "fontSize": "13"
+        },
+        "font.label1": {
+            "fontName": "Cantarell",
+            "fontSize": "13"
+        },
+        "font.label2": {
+            "fontName": "Cantarell",
+            "fontSize": "12"
+        },
+        "font.label3": {
+            "fontName": "Cantarell",
+            "fontSize": "11"
+        },
+        "font.label4": {
+            "fontName": "Cantarell",
+            "fontSize": "10"
+        },
+        "font.button1": {
+            "fontName": "Cantarell Bold",
+            "fontSize": "25"
+        },
+        "font.button2": {
+            "fontName": "Cantarell Bold",
+            "fontSize": "17"
+        },
+        "theme": "Light Theme",
+        "color.link": {
+            "red": "1",
+            "green": "164",
+            "blue": "183",
+            "alpha": "1"
+        },
+        "color.accent": {
+            "red": "54",
+            "green": "37",
+            "blue": "78",
+            "alpha": "1"
+        },
+        "color.accent.secondary": {
+            "red": 46,
+            "green": 31,
+            "blue": 66,
+            "alpha": 1
+        }
+    },
+    "app_store_url": "https:\/\/itunes.apple.com\/us\/app\/id889351747",
+    "video_quality": {
+        "capture": "medium",
+        "remix": "medium"
+    },
+    "votetypes": [{
+                  "id": "5",
+                  "display_order": "2",
+                  "name": "tomato",
+                  "value": "-1",
+                  "images": ["http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/_static\/votetypes\/5\/tomato_00.png", "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/_static\/votetypes\/5\/tomato_01.png", "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/_static\/votetypes\/5\/tomato_02.png", "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/_static\/votetypes\/5\/tomato_03.png", "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/_static\/votetypes\/5\/tomato_04.png", "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/_static\/votetypes\/5\/tomato_05.png", "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/_static\/votetypes\/5\/tomato_06.png", "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/_static\/votetypes\/5\/tomato_07.png", "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/_static\/votetypes\/5\/tomato_08.png", "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/_static\/votetypes\/5\/tomato_09.png", "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/_static\/votetypes\/5\/tomato_10.png", "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/_static\/votetypes\/5\/tomato_11.png", "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/_static\/votetypes\/5\/tomato_12.png", "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/_static\/votetypes\/5\/tomato_13.png", "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/_static\/votetypes\/5\/tomato_14.png", "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/_static\/votetypes\/5\/tomato_15.png", "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/_static\/votetypes\/5\/tomato_16.png"],
+                  "animation_duration": "500",
+                  "flight_duration": "500",
+                  "frames": "17",
+                  "icon": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/_static\/ballistics\/5\/icon\/tomato_icon.png",
+                  "image_macro": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/_static\/ballistics\/5\/images\/tomato_XXXXX.png",
+                  "view_content_mode": null,
+                  "tracking": {
+                  "ballistic_count": ["http:\/\/dev.getvictorious.com\/api\/sequence\/save_vote\/%%SEQUENCE_ID%%\/5\/%%COUNT%%"]
+                  }
+                  }, {
+                  "id": "6",
+                  "display_order": "1",
+                  "name": "heart",
+                  "value": "1",
+                  "images": ["http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/_static\/votetypes\/6\/heart_00.png", "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/_static\/votetypes\/6\/heart_01.png", "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/_static\/votetypes\/6\/heart_02.png", "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/_static\/votetypes\/6\/heart_03.png", "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/_static\/votetypes\/6\/heart_04.png", "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/_static\/votetypes\/6\/heart_05.png", "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/_static\/votetypes\/6\/heart_06.png", "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/_static\/votetypes\/6\/heart_07.png", "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/_static\/votetypes\/6\/heart_08.png", "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/_static\/votetypes\/6\/heart_09.png", "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/_static\/votetypes\/6\/heart_10.png", "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/_static\/votetypes\/6\/heart_11.png", "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/_static\/votetypes\/6\/heart_12.png"],
+                  "animation_duration": "500",
+                  "flight_duration": "500",
+                  "frames": "13",
+                  "icon": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/_static\/ballistics\/6\/icon\/heart_icon.png",
+                  "image_macro": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/_static\/ballistics\/6\/images\/heart_XXXXX.png",
+                  "view_content_mode": null,
+                  "tracking": {
+                  "ballistic_count": ["http:\/\/dev.getvictorious.com\/api\/sequence\/save_vote\/%%SEQUENCE_ID%%\/6\/%%COUNT%%"]
+                  }
+                  }, {
+                  "id": "7",
+                  "display_order": "3",
+                  "name": "firework",
+                  "value": "0",
+                  "images": [],
+                  "animation_duration": "500",
+                  "flight_duration": "350",
+                  "frames": "21",
+                  "icon": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/_static\/ballistics\/7\/icon\/firework_icon.png",
+                  "image_macro": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/_static\/ballistics\/7\/images\/firework_XXXXX.png",
+                  "view_content_mode": null,
+                  "tracking": {
+                  "ballistic_count": ["http:\/\/dev.getvictorious.com\/api\/sequence\/save_vote\/%%SEQUENCE_ID%%\/7\/%%COUNT%%"]
+                  }
+                  }, {
+                  "id": "8",
+                  "display_order": "8",
+                  "name": "sadface",
+                  "value": "0",
+                  "images": [],
+                  "animation_duration": "500",
+                  "flight_duration": "0",
+                  "frames": "21",
+                  "icon": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/_static\/ballistics\/8\/icon\/sadface_icon.png",
+                  "image_macro": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/_static\/ballistics\/8\/images\/sadface_XXXXX.png",
+                  "view_content_mode": null,
+                  "tracking": {
+                  "ballistic_count": ["http:\/\/dev.getvictorious.com\/api\/sequence\/save_vote\/%%SEQUENCE_ID%%\/8\/%%COUNT%%"]
+                  }
+                  }, {
+                  "id": "9",
+                  "display_order": "7",
+                  "name": "lol",
+                  "value": "0",
+                  "images": [],
+                  "animation_duration": "500",
+                  "flight_duration": "0",
+                  "frames": "21",
+                  "icon": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/_static\/ballistics\/9\/icon\/lol_icon.png",
+                  "image_macro": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/_static\/ballistics\/9\/images\/lol_XXXXX.png",
+                  "view_content_mode": null,
+                  "tracking": {
+                  "ballistic_count": ["http:\/\/dev.getvictorious.com\/api\/sequence\/save_vote\/%%SEQUENCE_ID%%\/9\/%%COUNT%%"]
+                  }
+                  }, {
+                  "id": "10",
+                  "display_order": "6",
+                  "name": "wtf",
+                  "value": "0",
+                  "images": [],
+                  "animation_duration": "500",
+                  "flight_duration": "0",
+                  "frames": "23",
+                  "icon": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/_static\/ballistics\/10\/icon\/wtf_icon.png",
+                  "image_macro": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/_static\/ballistics\/10\/images\/wtf_XXXXX.png",
+                  "view_content_mode": null,
+                  "tracking": {
+                  "ballistic_count": ["http:\/\/dev.getvictorious.com\/api\/sequence\/save_vote\/%%SEQUENCE_ID%%\/10\/%%COUNT%%"]
+                  }
+                  }, {
+                  "id": "12",
+                  "display_order": "4",
+                  "name": "kiss",
+                  "value": "0",
+                  "images": [],
+                  "animation_duration": "500",
+                  "flight_duration": "0",
+                  "frames": "21",
+                  "icon": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/_static\/ballistics\/12\/icon\/kiss_icon.png",
+                  "image_macro": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/_static\/ballistics\/12\/images\/kiss_XXXXX.png",
+                  "view_content_mode": null,
+                  "tracking": {
+                  "ballistic_count": ["http:\/\/dev.getvictorious.com\/api\/sequence\/save_vote\/%%SEQUENCE_ID%%\/12\/%%COUNT%%"]
+                  }
+                  }, {
+                  "id": "13",
+                  "display_order": "9",
+                  "name": "thumbsup",
+                  "value": "0",
+                  "images": [],
+                  "animation_duration": "500",
+                  "flight_duration": "0",
+                  "frames": "19",
+                  "icon": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/_static\/ballistics\/13\/icon\/thumbsup_icon.png",
+                  "image_macro": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/_static\/ballistics\/13\/images\/thumbsup_XXXXX.png",
+                  "view_content_mode": null,
+                  "tracking": {
+                  "ballistic_count": ["http:\/\/dev.getvictorious.com\/api\/sequence\/save_vote\/%%SEQUENCE_ID%%\/13\/%%COUNT%%"]
+                  }
+                  }, {
+                  "id": "14",
+                  "display_order": "5",
+                  "name": "knife",
+                  "value": "0",
+                  "images": [],
+                  "animation_duration": "500",
+                  "flight_duration": "0",
+                  "frames": "21",
+                  "icon": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/_static\/ballistics\/14\/icon\/knife_icon.png",
+                  "image_macro": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/_static\/ballistics\/14\/images\/knife_XXXXX.png",
+                  "view_content_mode": null,
+                  "tracking": {
+                  "ballistic_count": ["http:\/\/dev.getvictorious.com\/api\/sequence\/save_vote\/%%SEQUENCE_ID%%\/14\/%%COUNT%%"]
+                  }
+                  }],
+    "experiments": {
+        "channels_enabled": true,
+        "histogram_enabled": true,
+        "require_profile_image": false,
+        "template_c_enabled": false
+    },
+    "tracking": {
+        "init": ["http:\/\/example.com\/app-init\/1", "http:\/\/example.org\/app-init\/1"],
+        "start": ["http:\/\/example.com\/app-start\/1", "http:\/\/example.org\/app-start\/1"],
+        "stop": ["http:\/\/example.com\/app-stop\/1", "http:\/\/example.org\/app-stop\/1"]
+    }
+}

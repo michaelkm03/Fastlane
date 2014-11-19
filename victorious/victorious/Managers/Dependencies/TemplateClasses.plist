@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>sideMenu.scaffold</key>
+	<string>VSideMenuViewController</string>
+	<key>simple.menu</key>
+	<string>VMenuController</string>
+	<key>stream.screen</key>
+	<string>VStreamCollectionViewController</string>
+	<key>streamDirectory.screen</key>
+	<string>VDirectoryViewController</string>
+	<key>inbox.screen</key>
+	<string>VInboxContainerViewController</string>
+	<key>currentUserProfile.screen</key>
+	<string>VUserProfileNavigationDestination</string>
+	<key>settings.screen</key>
+	<string>VSettingsContainerViewController</string>
+	<key>discover.screen</key>
+	<string>VDiscoverContainerViewController</string>
+</dict>
+</plist>
