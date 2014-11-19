@@ -12,5 +12,7 @@
 	<string>VDirectoryViewController</string>
 	<key>inbox.screen</key>
 	<string>VInboxContainerViewController</string>
+	<key>currentUserProfile.screen</key>
+	<string>VUserProfileNavigationDestination</string>
 </dict>
 </plist>

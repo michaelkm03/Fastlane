@@ -7,6 +7,7 @@
 //
 
 #import "VAuthorizationViewControllerFactory.h"
+#import "VDependencyManager+VObjectManager.h"
 #import "VObjectManager.h"
 #import "VRootViewController.h"
 #import "VUserProfileNavigationDestination.h"
@@ -22,6 +23,11 @@
         _objectManager = objectManager;
     }
     return self;
+}
+
+- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    return [self initWithObjectManager:dependencyManager.objectManager];
 }
 
 - (BOOL)shouldNavigateWithAlternateDestination:(UIViewController *__autoreleasing *)alternateViewController
