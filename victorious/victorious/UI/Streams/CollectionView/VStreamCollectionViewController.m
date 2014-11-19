@@ -623,6 +623,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
 
 - (void)newContentViewControllerDidClose:(VNewContentViewController *)contentViewController
 {
+    [self.collectionView reloadItemsAtIndexPaths:@[self.lastSelectedIndexPath]];
     [self dismissViewControllerAnimated:YES
                              completion:nil];
 }
