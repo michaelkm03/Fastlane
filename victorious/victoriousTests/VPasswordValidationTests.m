@@ -127,10 +127,17 @@
     
     title = nil;
     message = nil;
-    error = [NSError errorWithDomain:@"" code:VErrorCodeCurrentPasswordIsInvalid userInfo:nil];
+    error = [NSError errorWithDomain:@"" code:VErrorCodeCurrentPasswordIsIncorrect userInfo:nil];
     XCTAssert( [self.passwordValidator localizedErrorStringsForError:error title:&title message:&message] );
     XCTAssert( [title isEqualToString:NSLocalizedString( @"ResetPasswordErrorIncorrectTitle", @"")] );
-    XCTAssert( [message isEqualToString:NSLocalizedString( @"ResetPasswordErrorIncorrectMessage", @"")] );
+    XCTAssert( [message isEqualToString:NSLocalizedString( @"ResetPasswordErrorMessage", @"")] );
+    
+    title = nil;
+    message = nil;
+    error = [NSError errorWithDomain:@"" code:VErrorCodeCurrentPasswordIsInvalid userInfo:nil];
+    XCTAssert( [self.passwordValidator localizedErrorStringsForError:error title:&title message:&message] );
+    XCTAssert( [title isEqualToString:NSLocalizedString( @"ResetPasswordErrorInvalidTitle", @"")] );
+    XCTAssert( [message isEqualToString:NSLocalizedString( @"ResetPasswordErrorMessage", @"")] );
     
     title = nil;
     message = nil;

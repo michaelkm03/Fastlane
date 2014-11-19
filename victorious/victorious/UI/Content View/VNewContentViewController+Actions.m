@@ -153,7 +153,7 @@ static const char kSequenceActionControllerKey;
         [actionItems addObject:remixItem];
     }
     
-    if ( ![self.viewModel.sequence isPoll])
+    if (self.viewModel.sequence.canRepost)
     {
         NSString *localizedRepostRepostedText = self.viewModel.hasReposted ? NSLocalizedString(@"Reposted", @"") : NSLocalizedString(@"Repost", @"");
         VActionItem *repostItem = [VActionItem defaultActionItemWithTitle:localizedRepostRepostedText

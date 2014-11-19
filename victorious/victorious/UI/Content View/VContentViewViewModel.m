@@ -62,10 +62,10 @@ NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentV
 @property (nonatomic, strong, readwrite) VHistogramDataSource *histogramDataSource;
 @property (nonatomic, assign, readwrite) VVideoCellViewModel *videoViewModel;
 
-@property (nonatomic, strong) NSMutableDictionary *adChain;
+@property (nonatomic, strong) NSMutableArray *adChain;
 @property (nonatomic, assign, readwrite) NSInteger currentAdChainIndex;
 @property (nonatomic, assign, readwrite) VMonetizationPartner monetizationPartner;
-@property (nonatomic, assign, readwrite) NSDictionary *monetizationOptions;
+@property (nonatomic, assign, readwrite) NSArray *monetizationDetails;
 
 @property (nonatomic, assign) BOOL hasCreatedAdChain;
 
@@ -144,30 +144,23 @@ NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentV
         return;
     }
     
-    self.adChain = [[NSMutableDictionary alloc] init];
-    NSSet *adBreakSet = self.sequence.adBreaks;
+    self.adChain = [[NSMutableArray alloc] init];
+    NSOrderedSet *adBreakSet = self.sequence.adBreaks;
     
     for (VAdBreak *ad in adBreakSet)
     {
-        NSSet *fallbackSet = ad.fallbacks;
-        NSMutableDictionary *fallbacks = [[NSMutableDictionary alloc] init];
-        
+        NSOrderedSet *fallbackSet = ad.fallbacks;
         for (VAdBreakFallback *item in fallbackSet)
         {
-            [fallbacks setValue:item.adTag forKey:@"adTag"];
-            [fallbacks setValue:item.adSystem forKey:@"adSystem"];
-            [fallbacks setValue:item.timeout forKey:@"timeout"];
-            [fallbacks setValue:item.publisherId forKey:@"publisherId"];
-            
+            [self.adChain addObject:item];
         }
-        [self.adChain setValue:fallbacks forKey:[NSString stringWithFormat:@"%@", ad.startPosition]];
     }
     
     // Grab the preroll
-    NSDictionary *breakItems = [self.adChain valueForKey:[NSString stringWithFormat:@"%ld", (long)self.currentAdChainIndex]];
-    int adSystemPartner = [[breakItems valueForKey:@"adSystem"] intValue];
+    VAdBreakFallback *breakItem = [self.adChain objectAtIndex:(long)self.currentAdChainIndex];
+    int adSystemPartner = [[breakItem adSystem] intValue];
     self.monetizationPartner = adSystemPartner;
-    self.monetizationOptions = self.adChain;
+    self.monetizationDetails = self.adChain;
     
     self.hasCreatedAdChain = YES;
     
@@ -188,13 +181,26 @@ NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentV
         [self.experienceEnhancerController updateData];
          
         // Sets up the monetization chain
-        [self createAdChainWithCompletion:^(void)
+         if (self.sequence.adBreaks.count > 0)
          {
-            self.videoViewModel = [VVideoCellViewModel videoCelViewModelWithItemURL:[self videoURL]
-                                                                        withAdSystem:self.monetizationPartner withOptions:self.adChain];
-            [[NSNotificationCenter defaultCenter] postNotificationName:VContentViewViewModelDidUpdateContentNotification
-                                                                object:self];
-        }];
+             [self createAdChainWithCompletion:^(void)
+              {
+                  self.videoViewModel = [VVideoCellViewModel videoCellViewModelWithItemURL:[self videoURL]
+                                                                              withAdSystem:self.monetizationPartner
+                                                                               withDetails:self.adChain];
+                  [[NSNotificationCenter defaultCenter] postNotificationName:VContentViewViewModelDidUpdateContentNotification
+                                                                      object:self];
+              }];
+         }
+         else
+         {
+             self.videoViewModel = [VVideoCellViewModel videoCellViewModelWithItemURL:[self videoURL]
+                                                                         withAdSystem:VMonetizationPartnerNone
+                                                                          withDetails:nil];
+             [[NSNotificationCenter defaultCenter] postNotificationName:VContentViewViewModelDidUpdateContentNotification
+                                                                 object:self];
+
+         }
     }
                                             failBlock:nil];
 }

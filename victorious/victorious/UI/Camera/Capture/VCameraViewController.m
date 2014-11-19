@@ -146,14 +146,6 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
     [self.recordButton addGestureRecognizer:[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleRecordLongTapGesture:)]];
     [self setRecordButtonEnabled:YES];
     
-    if ([self.initialCaptureMode isEqualToString:AVCaptureSessionPresetPhoto])
-    {
-        [self configureUIforPhotoCaptureAnimated:NO completion:nil];
-    }
-    else
-    {
-        [self configureUIforVideoCaptureAnimated:NO completion:nil];
-    }
     if (!self.allowVideo || !self.allowPhotos)
     {
         self.switchCameraModeButton.hidden = YES;
@@ -175,6 +167,15 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
     if (self.previewSnapshot)
     {
         [self restoreLivePreview];
+    }
+    
+    if ([self.initialCaptureMode isEqualToString:AVCaptureSessionPresetPhoto])
+    {
+        [self configureUIforPhotoCaptureAnimated:NO completion:nil];
+    }
+    else
+    {
+        [self configureUIforVideoCaptureAnimated:NO completion:nil];
     }
     
     [self setAllControlsEnabled:NO];
@@ -247,17 +248,19 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
 {
     [super viewWillDisappear:animated];
     [[VTrackingManager sharedInstance] endEvent:VTrackingEventCameraDidAppear];
+
+    if (self.captureController.captureSession.running)
+    {
+        [self.captureController stopRunningWithCompletion:nil];
+    }
 }
 
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
     [[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
-    if (self.captureController.captureSession.running)
-    {
-        [self.captureController stopRunningWithCompletion:nil];
-    }
     [MBProgressHUD hideAllHUDsForView:self.previewSnapshot animated:NO];
 }
 

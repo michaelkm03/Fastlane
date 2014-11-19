@@ -91,7 +91,7 @@ static CGFloat const kGreyBackgroundColor = 0.94509803921;
 - (void)setTheme:(NSDictionary *)dictionary
 {
     [[NSUserDefaults standardUserDefaults] setObject:dictionary forKey:kVNewThemeKey];
-//    [[NSNotificationCenter defaultCenter] postNotificationName:kVThemeManagerThemeDidChange object:self userInfo:nil];
+    [self updateToNewTheme];
 }
 
 - (void)updateToNewTheme
@@ -122,9 +122,6 @@ static CGFloat const kGreyBackgroundColor = 0.94509803921;
     [[[[UIApplication sharedApplication] delegate] window] setTintColor:[self themedColorForKey:kVMainTextColor]];
     
     [self applyNormalNavBarStyling];
-    
-//    [[UITabBar appearanceWhenContainedIn:[UITabBar class], nil] setTintColor:[UIColor redColor]];
-//    [[UITabBar appearance] setSelectedImageTintColor:[UIColor greenColor]];
 }
 
 - (void)removeStyling
@@ -257,6 +254,7 @@ static CGFloat const kGreyBackgroundColor = 0.94509803921;
     CGFloat         blue            =   [colorDictionary[@"blue"] doubleValue] / 255.0;
     CGFloat         alpha           =   [colorDictionary[@"alpha"] doubleValue];
     UIColor        *color           =   [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
+    
     return color;
 }
 

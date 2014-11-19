@@ -26,11 +26,22 @@
 
 @implementation VDiscoverContainerViewController
 
+#pragma mark - Initializers
+
 + (VDiscoverContainerViewController *)instantiateFromStoryboard:(NSString *)storyboardName
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:storyboardName bundle:[NSBundle bundleForClass:[self class]]];
     return [storyboard instantiateViewControllerWithIdentifier:@"discover"];
 }
+
+#pragma mark VHasManagedDependencies conforming initializer
+
++ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    return [self instantiateFromStoryboard:@"Discover"];
+}
+
+#pragma mark -
 
 - (void)viewDidLoad
 {

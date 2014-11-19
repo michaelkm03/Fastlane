@@ -21,7 +21,7 @@
 
 @property (nonatomic, strong) VStreamCollectionViewDataSource *streamDataSource;///<The VStreamCollectionViewDataSource for the object.  NOTE: a subclass is responsible for creating / setting its on data source in view did load.
 
-@property (nonatomic, weak, readonly) UICollectionView *collectionView;///<The colletion view used to display the streamItems
+@property (nonatomic, weak, readonly) UICollectionView *collectionView;///<The collection view used to display the streamItems
 
 @property (nonatomic, weak) id<UIScrollViewDelegate> delegate;///<Optional scrollViewDelegate in case this VC is a child VC.
 

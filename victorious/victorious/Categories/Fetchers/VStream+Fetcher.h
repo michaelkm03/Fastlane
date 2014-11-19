@@ -28,5 +28,6 @@ extern NSString * const VStreamFollowerStreamPath;
 + (VStream *)followerStreamForStreamName:(NSString *)streamName user:(VUser *)user; ///<Returns the following stream for streamName.  Note: stream object will be the mainQueueManagedObjectContext.  Note: If no user is given, defaults to logged in user.
 + (VStream *)streamForChannelsDirectory;///<Returns the Channels stream.  Note: stream object will be the mainQueueManagedObjectContext.
 + (VStream *)streamForMarqueeInContext:(NSManagedObjectContext *)context;///<Returns the Marquee stream.
++ (VStream *)streamForPath:(NSString *)apiPath inContext:(NSManagedObjectContext *)context; ///< Returns a stream with the given api path
 
 @end

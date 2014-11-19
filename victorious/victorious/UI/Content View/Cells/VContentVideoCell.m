@@ -56,14 +56,14 @@
     
     self.contentURL = viewModel.itemURL;
     
-    if (viewModel.monetizationPartner == VMonetizationPartnerNone)
+    if ( viewModel.monetizationPartner == VMonetizationPartnerNone )
     {
         self.isPlayingAd = NO;
         self.videoPlayerViewController.itemURL = self.contentURL;
         return;
     }
     
-    [self showPreRollWithPartner:viewModel.monetizationPartner withOptions:viewModel.monetizationOptions];
+    [self showPreRollWithPartner:viewModel.monetizationPartner withDetails:viewModel.monetizationDetails];
 }
 
 - (void)setAlpha:(CGFloat)alpha
@@ -73,7 +73,7 @@
 
 #pragma mark - Playback Methods
 
-- (void)showPreRollWithPartner:(VMonetizationPartner)monetizationPartner withOptions:(NSDictionary *)options
+- (void)showPreRollWithPartner:(VMonetizationPartner)monetizationPartner withDetails:(NSArray *)details
 {
     // Set visibility
     self.isPlayingAd = YES;
@@ -82,7 +82,7 @@
     
     // Ad Video Player
     self.adPlayerViewController = [[VAdVideoPlayerViewController alloc] initWithNibName:nil bundle:nil];
-    [self.adPlayerViewController assignMonetizationPartner:monetizationPartner withOptions:options];
+    [self.adPlayerViewController assignMonetizationPartner:monetizationPartner withDetails:details];
     self.adPlayerViewController.delegate = self;
     self.adPlayerViewController.view.hidden = NO;
     [self.adPlayerViewController start];

@@ -31,6 +31,7 @@
 "Share"                 =   "Share";
 "Discover"              =   "Discover";
 "Share"                 =   "Share";
+"Profile"               =   "Profile";
 "Settings"              =   "Settings";
 "Save"                  =   "Save";
 
@@ -277,17 +278,18 @@
 "ResetPasswordPlaceholder" = "E-mail Address";
 
 "PasswordError"         =   "Password Error";
-"ResetPasswordErrorExpiredTitle" = "Reset code expired.";
-"ResetPasswordErrorExpiredMessage" = "Reset code expired.";
+"ResetPasswordErrorExpiredTitle" = "Reset code expired";
+"ResetPasswordErrorExpiredMessage" = "Please request another reset code and try again.";
 
-"ResetPasswordErrorIncorrectTitle" = "Current Password Invalid.";
-"ResetPasswordErrorIncorrectMessage" = "Please re-enter your current password.";
+"ResetPasswordErrorInvalidTitle" = "Current Password Invalid";
+"ResetPasswordErrorIncorrectTitle" = "Incorrect Password";
+"ResetPasswordErrorMessage" = "Please re-enter your current password.";
 
 "ResetPasswordErrorFailTitle" = "Password Reset Error";
-"ResetPasswordErrorFailMessage" = "We are unable to reset your password at this time.  Please try again later.";
+"ResetPasswordErrorFailMessage" = "We are unable to reset your password at this time. Please try again later.";
 
 "ResetPasswordNewEqualsCurrentTitle" = "Invalid New Password";
-"ResetPasswordNewEqualsCurrentMessage" = "Please enter a password that different than your current password.";
+"ResetPasswordNewEqualsCurrentMessage" = "Please enter a password that is different than your current password.";
 
 "EnterResetCodeMessage" =   "An email was sent to this address containing reset password instructions.";
 "EnterCodeTitle"        =   "ENTER CODE";
@@ -302,6 +304,7 @@
 "Pull up for more..."   =   "Pull up for more...";
 "No results"            =   "No results";
 
+"Invite"                =   "Invite";
 "InviteYourFriends"     =   "Invite your Friends!";
 "InviteUsingEmail"      =   "Invite using Email";
 "InviteUsingSMS"        =   "Invite using SMS";

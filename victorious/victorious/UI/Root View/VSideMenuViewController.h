@@ -6,9 +6,11 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "VHasManagedDependencies.h"
+
 #import <UIKit/UIKit.h>
 
-@interface VSideMenuViewController : UIViewController   <UIGestureRecognizerDelegate>
+@interface VSideMenuViewController : UIViewController <UIGestureRecognizerDelegate, VHasManagedDependancies>
 
 @property (assign, readwrite, nonatomic) NSTimeInterval animationDuration;
 @property (strong, readwrite, nonatomic) UIImage *backgroundImage;

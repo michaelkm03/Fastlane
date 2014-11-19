@@ -397,6 +397,15 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     return [super collectionView:collectionView layout:collectionViewLayout sizeForItemAtIndexPath:indexPath];
 }
 
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (self.streamDataSource.hasHeaderCell && indexPath.section == 0)
+    {
+        return;
+    }
+    [super collectionView:collectionView didSelectItemAtIndexPath:indexPath];
+}
+
 #pragma mark - KVO
 
 - (void)observeValueForKeyPath:(NSString *)keyPath

@@ -35,22 +35,17 @@
 /**
  Ad options and parameters
  */
-@property (nonatomic, strong) NSDictionary *adServerMonetizationParameters;
-
-/**
- Ad network VAST Tag
- */
-@property (nonatomic, strong) NSString *vastTag;
-
-/**
- Ad network publisher id
- */
-@property (nonatomic, strong) NSString *pubID;
+@property (nonatomic, strong) NSArray *adServerMonetizationDetails;
 
 /**
  UIView used for ad video playback
  */
 @property (nonatomic, strong) UIView *playerView;
+
+/**
+ Position in the VAdBreakFallback object where the ad should be played from
+ */
+@property (nonatomic, assign) NSInteger playbackPosition;
 
 /**
  Ad video player delegate object

@@ -7,6 +7,7 @@
 //
 
 #import "MBProgressHUD.h"
+#import "UIStoryboard+VMainStoryboard.h"
 #import "VInboxViewController.h"
 #import "VUserSearchViewController.h"
 #import "VLoginViewController.h"
@@ -46,8 +47,7 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
 
 + (instancetype)inboxViewController
 {
-    UIViewController   *currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-    return (VInboxViewController *)[currentViewController.storyboard instantiateViewControllerWithIdentifier: @"inbox"];
+    return [[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier:@"inbox"];
 }
 
 - (void)viewDidLoad
