@@ -119,6 +119,12 @@ static NSString * const kUserSpecificKey = @"isUserSpecific";
                             },
                         ]
                     }
+                },
+                @{
+                    kTitleKey: NSLocalizedString(@"Discover", @""),
+                    kDestinationKey: @{
+                        kClassNameKey: @"discover.screen"
+                    }
                 }
             ],
             @[

@@ -32,6 +32,11 @@
     return [storyboard instantiateViewControllerWithIdentifier:@"discover"];
 }
 
++ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    return [self instantiateFromStoryboard:@"Discover"];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
