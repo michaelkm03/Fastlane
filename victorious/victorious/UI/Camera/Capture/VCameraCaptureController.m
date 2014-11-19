@@ -287,11 +287,8 @@ static inline AVCaptureDevice *defaultCaptureDevice()
 
 - (void)_stopRunningWithCompletion:(void(^)(void))completion
 {
-    NSLog(@"capture session stop running");
     [self.captureSession stopRunning];
-    NSLog(@"end background task");
     [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskID];
-    NSLog(@"call completion");
     if (completion)
     {
         completion();
