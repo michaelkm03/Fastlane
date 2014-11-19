@@ -23,6 +23,7 @@ static NSString * const kDestinationKey = @"destination";
 
 // Stream properties
 static NSString * const kIsHomeKey = @"isHome";
+static NSString * const kMarqueeKey = @"marquee";
 static NSString * const kCanAddContentKey = @"canAddContent";
 static NSString * const kStreamsKey = @"streams";
 static NSString * const kInitialKey = @"initial";
@@ -155,6 +156,24 @@ static NSString * const kUserSpecificKey = @"isUserSpecific";
 {
     NSString *categoryString = [categories componentsJoinedByString:@","];
     return [@"/api/sequence/detail_list_by_category/" stringByAppendingString:(categoryString ?: @"0")];
+}
+
+- (NSDictionary *)homeRecentStream
+{
+    NSDictionary *stream = @{
+      kTitleKey: NSLocalizedString(@"Recent", @""),
+      kInitialKey: @YES,
+      kStreamUrlPathKey: [self urlPathForStreamCategories:[VUGCCategories() arrayByAddingObjectsFromArray:VOwnerCategories()]]
+    };
+    
+    NSNumber *marqueeEnabled = [self.dataFromInitCall valueForKeyPath:@"experiments.marquee_enabled"];
+    if ( [marqueeEnabled isKindOfClass:[NSNumber class]] && [marqueeEnabled boolValue] )
+    {
+        NSMutableDictionary *mutableStream = [stream mutableCopy];
+        mutableStream[kMarqueeKey] = @{ kStreamUrlPathKey: @"/api/sequence/detail_list_by_stream/marquee" };
+        return [mutableStream copy];
+    }
+    return stream;
 }
 
 - (NSDictionary *)ownerStreamMenuItem

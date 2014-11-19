@@ -52,6 +52,7 @@
 
 static NSString * const kStreamsKey = @"streams";
 static NSString * const kInitialKey = @"initial";
+static NSString * const kMarqueeKey = @"marquee";
 static NSString * const kStreamURLPathKey = @"streamUrlPath";
 static NSString * const kTitleKey = @"title";
 static NSString * const kIsHomeKey = @"isHome";
@@ -104,6 +105,11 @@ static CGFloat const kTemplateCLineSpacing = 8;
     {
         [streamCollectionVC v_addUploadProgressView];
         streamCollectionVC.uploadProgressViewController.delegate = streamCollectionVC;
+    }
+
+    if ( [[dependencyManager numberForKey:@"experiments.marquee_enabled"] boolValue] )
+    {
+        streamCollectionVC.shouldDisplayMarquee = YES;
     }
     
     if ( [[dependencyManager numberForKey:kCanAddContentKey] boolValue] )
