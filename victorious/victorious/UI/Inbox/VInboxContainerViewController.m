@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "UIStoryboard+VMainStoryboard.h"
 #import "VAuthorizationViewControllerFactory.h"
 #import "VInboxContainerViewController.h"
 #import "VInboxViewController.h"
@@ -22,6 +23,7 @@ typedef enum {
 } vFilterBy;
 
 @interface VInboxContainerViewController () <VNavigationHeaderDelegate>
+
 @property (weak, nonatomic) IBOutlet UIView *noMessagesView;
 @property (weak, nonatomic) IBOutlet UILabel *noMessagesTitleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *noMessagesMessageLabel;
@@ -33,10 +35,12 @@ typedef enum {
 
 + (instancetype)inboxContainer
 {
-    UIViewController   *currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-    VInboxContainerViewController *container = (VInboxContainerViewController *)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kInboxContainerID];
-    
-    return container;
+    return [[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier:kInboxContainerID];
+}
+
++ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    return [self inboxContainer];
 }
 
 - (void)viewWillAppear:(BOOL)animated

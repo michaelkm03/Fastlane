@@ -120,6 +120,14 @@ static NSString * const kUserSpecificKey = @"isUserSpecific";
                         ]
                     }
                 }
+            ],
+            @[
+                @{
+                    kTitleKey: NSLocalizedString(@"Inbox", @""),
+                    kDestinationKey: @{
+                        kClassNameKey: @"inbox.screen"
+                    }
+                }
             ]
         ]
     };

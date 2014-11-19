@@ -10,5 +10,7 @@
 	<string>VStreamCollectionViewController</string>
 	<key>streamDirectory.screen</key>
 	<string>VDirectoryViewController</string>
+	<key>inbox.screen</key>
+	<string>VInboxContainerViewController</string>
 </dict>
 </plist>
