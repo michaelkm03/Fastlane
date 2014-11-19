@@ -14,11 +14,15 @@
 @interface VTemplateGenerator : NSObject
 
 /**
- Returns a template dictionary for VDependencyManager
- with the given init data
+ Initializes the template generator with the given init data.
  
- @param initData a JSON object retrieved from the /api/init call
+ @param initData the return from the /api/init server call
  */
-+ (NSDictionary *)templateWithInitData:(NSDictionary *)initData;
+- (instancetype)initWithInitData:(NSDictionary *)initData;
+
+/**
+ Returns a configuration dictionary, suitable for passing to the init method on VDependencyManager
+ */
+- (NSDictionary *)configurationDict;
 
 @end

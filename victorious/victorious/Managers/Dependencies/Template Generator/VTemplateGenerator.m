@@ -26,12 +26,28 @@ static NSString * const kStreamsKey = @"streams";
 static NSString * const kInitialKey = @"initial";
 static NSString * const kUrlPathKey = @"urlPath";
 
+@interface VTemplateGenerator ()
+
+@property (nonatomic, strong) NSDictionary *dataFromInitCall;
+
+@end
+
 @implementation VTemplateGenerator
 
-+ (NSDictionary *)templateWithInitData:(NSDictionary *)initData
+- (instancetype)initWithInitData:(NSDictionary *)initData
+{
+    self = [super init];
+    if (self)
+    {
+        _dataFromInitCall = initData;
+    }
+    return self;
+}
+
+- (NSDictionary *)configurationDict
 {
     NSMutableDictionary *template = [[NSMutableDictionary alloc] init];
-    [initData enumerateKeysAndObjectsUsingBlock:^(NSString *key, id obj, BOOL *stop)
+    [self.dataFromInitCall enumerateKeysAndObjectsUsingBlock:^(NSString *key, id obj, BOOL *stop)
     {
         if ([key isEqual:kAppearanceKey])
         {
@@ -50,7 +66,7 @@ static NSString * const kUrlPathKey = @"urlPath";
     return template;
 }
 
-+ (NSDictionary *)menuComponent
+- (NSDictionary *)menuComponent
 {
     return @{
         kClassNameKey: @"simple.menu",
@@ -79,7 +95,7 @@ static NSString * const kUrlPathKey = @"urlPath";
     };
 }
 
-+ (NSString *)urlPathForStreamCategories:(NSArray *)categories
+- (NSString *)urlPathForStreamCategories:(NSArray *)categories
 {
     NSString *categoryString = [categories componentsJoinedByString:@","];
     return [@"/api/sequence/detail_list_by_category/" stringByAppendingString: categoryString ?: @"0"];

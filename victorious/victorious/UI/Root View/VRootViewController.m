@@ -143,8 +143,9 @@ static const NSTimeInterval kAnimationDuration = 0.2;
                                                                                 configuration:@{ VDependencyManagerObjectManagerKey:[VObjectManager sharedManager] }
                                                             dictionaryOfClassesByTemplateName:nil];
     
+    VTemplateGenerator *templateGenerator = [[VTemplateGenerator alloc] initWithInitData:initData];
     self.dependencyManager = [[VDependencyManager alloc] initWithParentManager:basicDependencies
-                                                                 configuration:[VTemplateGenerator templateWithInitData:initData]
+                                                                 configuration:[templateGenerator configurationDict]
                                              dictionaryOfClassesByTemplateName:nil];
     
     UIViewController *scaffold = [self.dependencyManager viewControllerForKey:VDependencyManagerScaffoldViewControllerKey];
