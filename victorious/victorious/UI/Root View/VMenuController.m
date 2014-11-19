@@ -47,12 +47,16 @@ static const CGFloat kSectionHeaderHeight = 36.0f;
 
 @implementation VMenuController
 
+#pragma mark VHasManagedDependencies conforming initializer
+
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     VMenuController *menuController = [[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier:NSStringFromClass([VMenuController class])];
     menuController.dependencyManager = dependencyManager;
     return menuController;
 }
+
+#pragma mark -
 
 - (void)viewDidLoad
 {

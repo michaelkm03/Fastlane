@@ -12,6 +12,8 @@
 
 @implementation VSettingsContainerViewController
 
+#pragma mark - VHasManagedDependencies conforming initializer
+
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     VSettingsContainerViewController *settingsContainer = [[UIStoryboard storyboardWithName:@"settings" bundle:nil] instantiateInitialViewController];

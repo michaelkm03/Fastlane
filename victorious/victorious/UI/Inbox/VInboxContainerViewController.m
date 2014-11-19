@@ -33,15 +33,21 @@ typedef enum {
 
 @implementation VInboxContainerViewController
 
+#pragma mark - Initializers
+
 + (instancetype)inboxContainer
 {
     return [[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier:kInboxContainerID];
 }
 
+#pragma mark VHasManagedDependencies conforming initializer
+
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     return [self inboxContainer];
 }
+
+#pragma mark -
 
 - (void)viewWillAppear:(BOOL)animated
 {

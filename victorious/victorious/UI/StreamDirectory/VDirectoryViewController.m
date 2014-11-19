@@ -44,6 +44,8 @@ static CGFloat const kDirectoryInset = 10.0f;
 
 @implementation VDirectoryViewController
 
+#pragma mark - Initializers
+
 + (instancetype)streamDirectoryForStream:(VStream *)stream
 {
     VDirectoryViewController *streamDirectory = [[VDirectoryViewController alloc] initWithNibName:nil
@@ -58,6 +60,8 @@ static CGFloat const kDirectoryInset = 10.0f;
     return streamDirectory;
 }
 
+#pragma mark VHasManagedDependencies conforming initializer
+
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     NSAssert([NSThread isMainThread], @"This method must be called on the main thread");
@@ -65,6 +69,8 @@ static CGFloat const kDirectoryInset = 10.0f;
     stream.name = [dependencyManager stringForKey:kTitleKey];
     return [self streamDirectoryForStream:stream];
 }
+
+#pragma mark - UIView overrides
 
 - (void)viewDidLoad
 {

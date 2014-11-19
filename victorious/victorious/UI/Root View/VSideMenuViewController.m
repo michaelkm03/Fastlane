@@ -33,12 +33,7 @@ static NSString * const kMenuKey = @"menu";
 
 @implementation VSideMenuViewController
 
-+ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
-{
-    VSideMenuViewController *sideMenuViewController = (VSideMenuViewController *)[[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier:NSStringFromClass([VSideMenuViewController class])];
-    sideMenuViewController.dependencyManager = dependencyManager;
-    return sideMenuViewController;
-}
+#pragma mark - Initializers
 
 - (instancetype)init
 {
@@ -79,6 +74,17 @@ static NSString * const kMenuKey = @"menu";
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(menuControllerDidSelectRow:) name:VMenuControllerDidSelectRowNotification object:nil];
 }
+
+#pragma mark VHasManagedDependencies conforming initializer
+
++ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    VSideMenuViewController *sideMenuViewController = (VSideMenuViewController *)[[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier:NSStringFromClass([VSideMenuViewController class])];
+    sideMenuViewController.dependencyManager = dependencyManager;
+    return sideMenuViewController;
+}
+
+#pragma mark -
 
 - (void)dealloc
 {

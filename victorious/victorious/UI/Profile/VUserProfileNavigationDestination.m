@@ -15,6 +15,8 @@
 
 @implementation VUserProfileNavigationDestination
 
+#pragma mark - Initializers
+
 - (instancetype)initWithObjectManager:(VObjectManager *)objectManager
 {
     self = [super init];
@@ -25,10 +27,14 @@
     return self;
 }
 
+#pragma mark VHasManagedDependencies
+
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     return [self initWithObjectManager:dependencyManager.objectManager];
 }
+
+#pragma mark - VNavigationDestination conformance
 
 - (BOOL)shouldNavigateWithAlternateDestination:(UIViewController *__autoreleasing *)alternateViewController
 {

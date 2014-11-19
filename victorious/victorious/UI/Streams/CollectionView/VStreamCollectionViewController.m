@@ -77,48 +77,6 @@ static CGFloat const kTemplateCLineSpacing = 8;
 
 #pragma mark - Factory methods
 
-+ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
-{
-    NSAssert([NSThread isMainThread], @"This method must be called on the main thread");
-    
-    __block VStream *defaultStream = nil;
-    NSArray *streamConfiguration = [dependencyManager arrayForKey:kStreamsKey];
-    NSArray *allStreams = [streamConfiguration v_map:^(NSDictionary *streamConfig)
-    {
-        VStream *stream = [VStream streamForPath:streamConfig[kStreamURLPathKey] inContext:dependencyManager.objectManager.managedObjectStore.mainQueueManagedObjectContext];
-        stream.name = streamConfig[kTitleKey];
-        if ([streamConfig[kInitialKey] boolValue])
-        {
-            defaultStream = stream;
-        }
-        return stream;
-    }];
-    
-    if (defaultStream == nil && allStreams.count > 0)
-    {
-        defaultStream = allStreams[0];
-    }
-    
-    VStreamCollectionViewController *streamCollectionVC = [self streamViewControllerForDefaultStream:defaultStream andAllStreams:allStreams title:[dependencyManager stringForKey:kTitleKey]];
-
-    if ( [[dependencyManager numberForKey:kIsHomeKey] boolValue] )
-    {
-        [streamCollectionVC v_addUploadProgressView];
-        streamCollectionVC.uploadProgressViewController.delegate = streamCollectionVC;
-    }
-
-    if ( [[dependencyManager numberForKey:@"experiments.marquee_enabled"] boolValue] )
-    {
-        streamCollectionVC.shouldDisplayMarquee = YES;
-    }
-    
-    if ( [[dependencyManager numberForKey:kCanAddContentKey] boolValue] )
-    {
-        [streamCollectionVC v_addCreateSequenceButton];
-    }
-    return streamCollectionVC;
-}
-
 + (instancetype)homeStreamCollection
 {
     VStream *recentStream = [VStream streamForCategories: [VUGCCategories() arrayByAddingObjectsFromArray:VOwnerCategories()]];
@@ -195,6 +153,50 @@ static CGFloat const kTemplateCLineSpacing = 8;
     streamCollection.currentStream = stream;
     
     return streamCollection;
+}
+
+#pragma mark VHasManagedDependencies
+
++ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    NSAssert([NSThread isMainThread], @"This method must be called on the main thread");
+    
+    __block VStream *defaultStream = nil;
+    NSArray *streamConfiguration = [dependencyManager arrayForKey:kStreamsKey];
+    NSArray *allStreams = [streamConfiguration v_map:^(NSDictionary *streamConfig)
+                           {
+                               VStream *stream = [VStream streamForPath:streamConfig[kStreamURLPathKey] inContext:dependencyManager.objectManager.managedObjectStore.mainQueueManagedObjectContext];
+                               stream.name = streamConfig[kTitleKey];
+                               if ([streamConfig[kInitialKey] boolValue])
+                               {
+                                   defaultStream = stream;
+                               }
+                               return stream;
+                           }];
+    
+    if (defaultStream == nil && allStreams.count > 0)
+    {
+        defaultStream = allStreams[0];
+    }
+    
+    VStreamCollectionViewController *streamCollectionVC = [self streamViewControllerForDefaultStream:defaultStream andAllStreams:allStreams title:[dependencyManager stringForKey:kTitleKey]];
+    
+    if ( [[dependencyManager numberForKey:kIsHomeKey] boolValue] )
+    {
+        [streamCollectionVC v_addUploadProgressView];
+        streamCollectionVC.uploadProgressViewController.delegate = streamCollectionVC;
+    }
+    
+    if ( [[dependencyManager numberForKey:@"experiments.marquee_enabled"] boolValue] )
+    {
+        streamCollectionVC.shouldDisplayMarquee = YES;
+    }
+    
+    if ( [[dependencyManager numberForKey:kCanAddContentKey] boolValue] )
+    {
+        [streamCollectionVC v_addCreateSequenceButton];
+    }
+    return streamCollectionVC;
 }
 
 #pragma mark - View Heirarchy
