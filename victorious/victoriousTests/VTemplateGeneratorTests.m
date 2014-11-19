@@ -24,7 +24,7 @@
     [super setUp];
     NSData *initData = [NSData dataWithContentsOfURL:[[NSBundle bundleForClass:[self class]] URLForResource:@"init" withExtension:@"json"]];
     NSDictionary *initObject = [NSJSONSerialization JSONObjectWithData:initData options:0 error:nil];
-    self.template = [VTemplateGenerator templateWithInitData:initObject];
+    self.template = [[[VTemplateGenerator alloc] initWithInitData:initObject] configurationDict];
 }
 
 - (void)testAppearance
