@@ -32,16 +32,11 @@
 #import "VApplicationTracking.h"
 #import "VFlurryTracking.h"
 #import "VGoogleAnalyticsTracking.h"
+#import "VFirstInstallManager.h"
 
 @import AVFoundation;
 @import MediaPlayer;
 @import CoreLocation;
-
-@interface VAppDelegate ()
-
-@property (strong, nonatomic) VTrackingManager *trackingManager;
-
-@end
 
 static BOOL isRunningTests(void) __attribute__((const));
 
@@ -72,11 +67,12 @@ static BOOL isRunningTests(void) __attribute__((const));
     
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     [[VReachability reachabilityForInternetConnection] startNotifier];
-
+    
+    // Start listening for response to init method from server:
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onInitResponse:) name:kInitResponseNotification object:nil];
     [VObjectManager setupObjectManager];
-    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
 
-    [self reportFirstInstall];
+    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
     
     [[VTrackingManager sharedInstance] addDelegate:[[VApplicationTracking alloc] init]];
     [[VTrackingManager sharedInstance] addDelegate:[[VFlurryTracking alloc] init]];
@@ -88,13 +84,13 @@ static BOOL isRunningTests(void) __attribute__((const));
         [[VDeeplinkManager sharedManager] handleOpenURL:openURL];
     }
     
+    [[[VFirstInstallManager alloc] init] reportFirstInstall];
+    
     NSString *pushNotificationDeeplink = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey][@"deeplink"];
     if (pushNotificationDeeplink)
     {
         [[VDeeplinkManager sharedManager] handleOpenURL:[NSURL URLWithString:pushNotificationDeeplink]];
     }
-    
-    [self initializeTracking];
     
     return YES;
 }
@@ -182,14 +178,6 @@ static BOOL isRunningTests(void)
     return [[injectBundle pathExtension] isEqualToString:@"xctest"];
 }
 
-#pragma mark - VTrackingManager and App Event Tracking
-
-- (void)initializeTracking
-{
-    self.trackingManager = [[VTrackingManager alloc] init];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onInitResponse:) name:kInitResponseNotification object:nil];
-}
-
 - (void)onInitResponse:(NSNotification *)notification
 {
     NSDictionary *params = @{ VTrackingKeyUrls : [VSettingManager sharedManager].applicationTracking };
@@ -197,19 +185,6 @@ static BOOL isRunningTests(void)
     
     // Only receive this once
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kInitResponseNotification object:nil];
-}
-
-- (void)reportFirstInstall
-{
-    NSString *key = @"appInstallDate";
-    NSDate *installDate = [[NSUserDefaults standardUserDefaults] valueForKey:key];
-    if ( installDate == nil )
-    {
-       installDate = [NSDate date];
-        NSDictionary *params = @{ VTrackingKeyTimeStamp : installDate };
-        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventApplicationFirstInstall parameters:params];
-        [[NSUserDefaults standardUserDefaults] setValue:installDate forKey:key];
-    }
 }
 
 @end
