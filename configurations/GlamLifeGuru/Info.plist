@@ -37,5 +37,7 @@
 	<integer>30</integer>
 	<key>QAAppID</key>
 	<integer>0</integer>
+	<key>GAID</key>
+	<string>UA-51702806-10</string>
 </dict>
 </plist>
