@@ -39,5 +39,7 @@
 	<string>XTJ4RY2KVKC3KKD9P7GH</string>
 	<key>QAAppID</key>
 	<integer>0</integer>
+	<key>GAID</key>
+	<string>UA-51702806-10</string>
 </dict>
 </plist>
