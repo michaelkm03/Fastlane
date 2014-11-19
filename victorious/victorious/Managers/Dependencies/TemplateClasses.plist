@@ -8,5 +8,7 @@
 	<string>VMenuController</string>
 	<key>stream.screen</key>
 	<string>VStreamCollectionViewController</string>
+	<key>streamDirectory.screen</key>
+	<string>VDirectoryViewController</string>
 </dict>
 </plist>

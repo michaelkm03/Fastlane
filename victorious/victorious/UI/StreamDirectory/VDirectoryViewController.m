@@ -28,9 +28,13 @@
 #import "VStream+Fetcher.h"
 #import "VSequence.h"
 
+#import "VDependencyManager+VObjectManager.h"
+#import "VObjectManager.h"
 #import "VSettingManager.h"
 
 static NSString * const kStreamDirectoryStoryboardId = @"kStreamDirectory";
+static NSString * const kStreamURLPathKey = @"streamUrlPath";
+static NSString * const kTitleKey = @"title";
 
 static CGFloat const kDirectoryInset = 10.0f;
 
@@ -52,6 +56,14 @@ static CGFloat const kDirectoryInset = 10.0f;
     streamDirectory.navHeaderView.delegate = streamDirectory;
     
     return streamDirectory;
+}
+
++ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    NSAssert([NSThread isMainThread], @"This method must be called on the main thread");
+    VStream *stream = [VStream streamForPath:[dependencyManager stringForKey:kStreamURLPathKey] inContext:dependencyManager.objectManager.managedObjectStore.mainQueueManagedObjectContext];
+    stream.name = [dependencyManager stringForKey:kTitleKey];
+    return [self streamDirectoryForStream:stream];
 }
 
 - (void)viewDidLoad

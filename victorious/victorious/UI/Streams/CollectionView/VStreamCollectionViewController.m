@@ -44,6 +44,7 @@
 #import "NSArray+VMap.h"
 #import "UIImage+ImageCreation.h"
 #import "UIImageView+Blurring.h"
+#import "UIStoryboard+VMainStoryboard.h"
 #import "UIViewController+VNavMenu.h"
 
 #import "VConstants.h"
@@ -51,8 +52,10 @@
 
 static NSString * const kStreamsKey = @"streams";
 static NSString * const kInitialKey = @"initial";
-static NSString * const kURLPathKey = @"urlPath";
+static NSString * const kStreamURLPathKey = @"streamUrlPath";
 static NSString * const kTitleKey = @"title";
+static NSString * const kIsHomeKey = @"isHome";
+static NSString * const kCanAddContentKey = @"canAddContent";
 static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
 static CGFloat const kTemplateCLineSpacing = 8;
 
@@ -81,7 +84,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
     NSArray *streamConfiguration = [dependencyManager arrayForKey:kStreamsKey];
     NSArray *allStreams = [streamConfiguration v_map:^(NSDictionary *streamConfig)
     {
-        VStream *stream = [VStream streamForPath:streamConfig[kURLPathKey] inContext:dependencyManager.objectManager.managedObjectStore.mainQueueManagedObjectContext];
+        VStream *stream = [VStream streamForPath:streamConfig[kStreamURLPathKey] inContext:dependencyManager.objectManager.managedObjectStore.mainQueueManagedObjectContext];
         stream.name = streamConfig[kTitleKey];
         if ([streamConfig[kInitialKey] boolValue])
         {
@@ -96,6 +99,17 @@ static CGFloat const kTemplateCLineSpacing = 8;
     }
     
     VStreamCollectionViewController *streamCollectionVC = [self streamViewControllerForDefaultStream:defaultStream andAllStreams:allStreams title:[dependencyManager stringForKey:kTitleKey]];
+
+    if ( [[dependencyManager numberForKey:kIsHomeKey] boolValue] )
+    {
+        [streamCollectionVC v_addUploadProgressView];
+        streamCollectionVC.uploadProgressViewController.delegate = streamCollectionVC;
+    }
+    
+    if ( [[dependencyManager numberForKey:kCanAddContentKey] boolValue] )
+    {
+        [streamCollectionVC v_addCreateSequenceButton];
+    }
     return streamCollectionVC;
 }
 
@@ -169,13 +183,12 @@ static CGFloat const kTemplateCLineSpacing = 8;
 
 + (instancetype)streamViewControllerForStream:(VStream *)stream
 {
-    UIViewController *currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-    VStreamCollectionViewController *streamColllection = (VStreamCollectionViewController *)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kStreamCollectionStoryboardId];
+    VStreamCollectionViewController *streamCollection = (VStreamCollectionViewController *)[[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier:kStreamCollectionStoryboardId];
     
-    streamColllection.defaultStream = stream;
-    streamColllection.currentStream = stream;
+    streamCollection.defaultStream = stream;
+    streamCollection.currentStream = stream;
     
-    return streamColllection;
+    return streamCollection;
 }
 
 #pragma mark - View Heirarchy
