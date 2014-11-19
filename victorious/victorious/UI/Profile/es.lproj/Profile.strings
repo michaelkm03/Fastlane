@@ -1,11 +1,14 @@
+/* Class = "IBUIViewController"; title = "Following"; ObjectID = "3LS-NU-4gO"; */
+"3LS-NU-4gO.title" = "Siguiendo";
+
 /* Class = "IBUINavigationItem"; title = "Edit Profile"; ObjectID = "AIv-0V-2Ca"; */
 "AIv-0V-2Ca.title" = "Editar perfil";
 
+/* Class = "IBUIViewController"; title = "Followers"; ObjectID = "Kuc-kN-9tL"; */
+"Kuc-kN-9tL.title" = "Seguidores";
+
 /* Class = "IBUINavigationItem"; title = "Followers"; ObjectID = "QIL-B4-Htr"; */
 "QIL-B4-Htr.title" = "Seguidores";
-
-/* Class = "IBUINavigationItem"; title = "Profile"; ObjectID = "SPx-xO-esM"; */
-"SPx-xO-esM.title" = "Perfil";
 
 /* Class = "IBUILabel"; text = "Tell us about yourself..."; ObjectID = "Trt-Yx-Qae"; */
 "Trt-Yx-Qae.text" = "Nos dicen algo acerca de ti...";
@@ -18,6 +21,9 @@
 
 /* Class = "IBUITextField"; placeholder = "Name"; ObjectID = "lvT-v5-J29"; */
 "lvT-v5-J29.placeholder" = "Nombre";
+
+/* Class = "IBUIViewController"; title = "Edit Profile"; ObjectID = "qcg-od-rNV"; */
+"qcg-od-rNV.title" = "Editar perfil";
 
 /* Class = "IBUILabel"; text = "Alias"; ObjectID = "uO9-eE-EdR"; */
 "uO9-eE-EdR.text" = "Alias";

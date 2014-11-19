@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
@@ -41,11 +41,11 @@
                         <action selector="pressedBack:" destination="Ay5-2H-sPn" eventType="touchUpInside" id="vrO-x2-GLc"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tkm-2G-q8x">
+                <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tkm-2G-q8x">
                     <rect key="frame" x="262" y="16" width="44" height="44"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="WIg-Rf-uP3"/>
-                        <constraint firstAttribute="width" constant="44" id="xGy-Fw-6pB"/>
+                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="44" id="xGy-Fw-6pB"/>
                     </constraints>
                     <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     <state key="normal">
@@ -88,11 +88,11 @@
                 <constraint firstItem="ba7-Bo-OPS" firstAttribute="top" secondItem="Ay5-2H-sPn" secondAttribute="top" constant="18" id="b9J-yD-MN0"/>
                 <constraint firstItem="PAi-gS-Qn7" firstAttribute="leading" secondItem="Ay5-2H-sPn" secondAttribute="leading" constant="20" id="hPZ-iJ-Q9b"/>
                 <constraint firstItem="ESN-J9-ft1" firstAttribute="top" secondItem="Ay5-2H-sPn" secondAttribute="top" constant="10" id="k7Y-No-Dfd"/>
-                <constraint firstAttribute="trailing" secondItem="ba7-Bo-OPS" secondAttribute="trailing" constant="55" id="mKT-Pc-3KL"/>
-                <constraint firstAttribute="trailing" secondItem="ESN-J9-ft1" secondAttribute="trailing" constant="55" id="ndY-dx-8J1"/>
                 <constraint firstAttribute="trailing" secondItem="PAi-gS-Qn7" secondAttribute="trailing" constant="20" id="ohb-qp-0FP"/>
                 <constraint firstItem="tkm-2G-q8x" firstAttribute="top" secondItem="Ay5-2H-sPn" secondAttribute="top" constant="16" id="s5H-5F-TWq"/>
+                <constraint firstItem="tkm-2G-q8x" firstAttribute="leading" secondItem="ESN-J9-ft1" secondAttribute="trailing" constant="-3" id="sBP-VS-zWL"/>
                 <constraint firstItem="PAi-gS-Qn7" firstAttribute="top" secondItem="ESN-J9-ft1" secondAttribute="bottom" id="sr0-zP-pNv"/>
+                <constraint firstItem="tkm-2G-q8x" firstAttribute="leading" secondItem="ba7-Bo-OPS" secondAttribute="trailing" constant="-3" id="vBQ-2n-jYt"/>
                 <constraint firstItem="DUT-ma-Cbr" firstAttribute="leading" secondItem="Ay5-2H-sPn" secondAttribute="leading" constant="14" id="zLI-kf-7se"/>
                 <constraint firstItem="sMx-qo-hHL" firstAttribute="leading" secondItem="Ay5-2H-sPn" secondAttribute="leading" constant="14" id="zjG-CK-3JC"/>
             </constraints>

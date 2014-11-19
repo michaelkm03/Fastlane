@@ -25,6 +25,9 @@
 /* Class = "IBUINavigationItem"; title = "Server Environment"; ObjectID = "Pog-vT-DdP"; */
 "Pog-vT-DdP.title" = "Ambiente del servidor";
 
+/* Class = "IBUIViewController"; title = "Change Password"; ObjectID = "Tch-Qc-dzd"; */
+"Tch-Qc-dzd.title" = "Cambiar contraseña";
+
 /* Class = "IBUILabel"; text = "Subtitle"; ObjectID = "U7G-Km-0yw"; */
 "U7G-Km-0yw.text" = "Subtítulo";
 
@@ -46,6 +49,9 @@
 /* Class = "IBUILabel"; text = "Not Connected"; ObjectID = "krN-Xu-bYv"; */
 "krN-Xu-bYv.text" = "No hay conexión";
 
+/* Class = "IBUIViewController"; title = "Privacy Policy"; ObjectID = "lSu-os-HMa"; */
+"lSu-os-HMa.title" = "Política de Privacidad";
+
 /* Class = "IBUILabel"; text = "Terms of Service"; ObjectID = "mrn-LJ-NES"; */
 "mrn-LJ-NES.text" = "Términos del Servicio";
 
@@ -54,6 +60,9 @@
 
 /* Class = "IBUITableViewSection"; headerTitle = "About"; ObjectID = "pML-Pk-7g5"; */
 "pML-Pk-7g5.headerTitle" = "Acerca de";
+
+/* Class = "IBUIViewController"; title = "Server Environment"; ObjectID = "qhc-hG-PIv"; */
+"qhc-hG-PIv.title" = "Ambiente del Servidor";
 
 /* Class = "IBUILabel"; text = "Current"; ObjectID = "trt-hC-hUf"; */
 "trt-hC-hUf.text" = "Actual";

@@ -22,9 +22,6 @@
 /* Class = "IBUILabel"; text = "Create Profile"; ObjectID = "A8K-lD-yg5"; */
 "A8K-lD-yg5.text" = "Crear perfil";
 
-/* Class = "IBUIButton"; normalTitle = "Invite"; ObjectID = "AQr-df-rJr"; */
-"AQr-df-rJr.normalTitle" = "Invitar";
-
 /* Class = "IBUILabel"; text = "ENTER CODE"; ObjectID = "CGW-Kx-wFZ"; */
 "CGW-Kx-wFZ.text" = "INGRESAR CÓDIGO";
 
@@ -70,9 +67,6 @@
 /* Class = "IBUILabel"; text = "Tell us about yourself..."; ObjectID = "kzi-75-z6l"; */
 "kzi-75-z6l.text" = "Nos dicen algo acerca de ti...";
 
-/* Class = "IBUILabel"; text = "Find Friends"; ObjectID = "nNU-ow-QSQ"; */
-"nNU-ow-QSQ.text" = "Encontrar amigos";
-
 /* Class = "IBUITextField"; placeholder = "Location"; ObjectID = "pDv-b6-X4m"; */
 "pDv-b6-X4m.placeholder" = "Ubicación";
 
@@ -81,6 +75,9 @@
 
 /* Class = "IBUITextField"; placeholder = "Name"; ObjectID = "qGa-ti-Owy"; */
 "qGa-ti-Owy.placeholder" = "Nombre";
+
+/* Class = "IBUIViewController"; title = "Find Friends"; ObjectID = "qXP-WV-BMp"; */
+"qXP-WV-BMp.title" = "Encontrar amigos";
 
 /* Class = "IBUIButton"; normalTitle = "Resend Email"; ObjectID = "ssT-3o-lsn"; */
 "ssT-3o-lsn.normalTitle" = "Reenviar E-mail";

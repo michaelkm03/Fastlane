@@ -7,6 +7,9 @@
 /* Class = "IBUILabel"; text = "Alice Irvine"; ObjectID = "ObS-hY-o4S"; */
 "ObS-hY-o4S.text" = "Alice Irvine";
 
+/* Class = "IBUITextView"; text = "Title"; ObjectID = "S8s-wt-Bcj"; */
+"S8s-wt-Bcj.text" = "Título";
+
 /* Class = "IBUILabel"; text = "Label"; ObjectID = "aii-ch-Yj8"; */
 "aii-ch-Yj8.text" = "Etiqueta";
 
