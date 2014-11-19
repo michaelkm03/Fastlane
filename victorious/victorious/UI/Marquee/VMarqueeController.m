@@ -118,7 +118,14 @@
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     VStreamItem *item = [self.streamDataSource itemAtIndexPath:indexPath];
-    [self.delegate marquee:self selectedItem:item atIndexPath:indexPath];
+    VMarqueeStreamItemCell *cell = (VMarqueeStreamItemCell *)[collectionView cellForItemAtIndexPath:indexPath];
+    UIImage *previewImage = nil;
+    if ( [cell isKindOfClass:[VMarqueeStreamItemCell class]] )
+    {
+        previewImage = cell.previewImageView.image;
+    }
+    
+    [self.delegate marquee:self selectedItem:item atIndexPath:indexPath previewImage:previewImage];
     [self.autoScrollTimer invalidate];
 }
 
