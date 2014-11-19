@@ -248,17 +248,19 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
 {
     [super viewWillDisappear:animated];
     [[VTrackingManager sharedInstance] endEvent:VTrackingEventCameraDidAppear];
+
+    if (self.captureController.captureSession.running)
+    {
+        [self.captureController stopRunningWithCompletion:nil];
+    }
 }
 
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
     [[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
-    if (self.captureController.captureSession.running)
-    {
-        [self.captureController stopRunningWithCompletion:nil];
-    }
     [MBProgressHUD hideAllHUDsForView:self.previewSnapshot animated:NO];
 }
 
