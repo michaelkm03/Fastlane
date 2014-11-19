@@ -24,7 +24,6 @@ NSString * const VInviteFriendTableViewCellNibName = @"VInviteFriendTableViewCel
 @property (nonatomic, weak) IBOutlet UIView *labelsSuperview;
 @property (nonatomic, strong) UIImage *followIcon;
 @property (nonatomic, strong) UIImage *unfollowIcon;
-@property (nonatomic, assign) BOOL shouldAnimateFollowing;
 
 @end
 

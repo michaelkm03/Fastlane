@@ -268,7 +268,10 @@
 
 - (IBAction)selectAllButtonTapped:(id)sender
 {
+    self.tableView.selectAllButton.hidden = YES;
+    self.tableView.inviteFriendsButton.hidden = NO;
     [self selectAllRows:sender];
+    
 }
 
 - (IBAction)inviteButtonTapped:(id)sender
@@ -296,6 +299,7 @@
             [moc saveToPersistentStore:nil];
             
             // Update follow/unfollow icon
+            cell.shouldAnimateFollowing = YES;
             [cell updateFollowStatus];
         }
     };
