@@ -68,6 +68,8 @@
 
 #import "VCameraPublishViewController.h"
 
+#import "VSequence+Fetcher.h"
+
 @interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate,VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelgetate, VExperienceEnhancerControllerDelegate>
 
 @property (nonatomic, strong, readwrite) VContentViewViewModel *viewModel;
@@ -230,7 +232,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    
     // Hack to remove margins stuff should probably refactor :(
     if ([self.view respondsToSelector:@selector(setLayoutMargins:)])
     {
@@ -246,44 +248,46 @@
     self.contentCollectionView.translatesAutoresizingMaskIntoConstraints = NO;
     self.contentCollectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
-    VKeyboardInputAccessoryView *inputAccessoryView = [VKeyboardInputAccessoryView defaultInputAccessoryView];
-    inputAccessoryView.translatesAutoresizingMaskIntoConstraints = NO;
-    inputAccessoryView.returnKeyType = UIReturnKeyDone;
-    inputAccessoryView.delegate = self;
-    self.textEntryView = inputAccessoryView;
-    NSLayoutConstraint *inputViewLeadingConstraint = [NSLayoutConstraint constraintWithItem:inputAccessoryView
-                                                                                  attribute:NSLayoutAttributeLeading
-                                                                                  relatedBy:NSLayoutRelationEqual
-                                                                                     toItem:self.view
-                                                                                  attribute:NSLayoutAttributeLeading
-                                                                                 multiplier:1.0f
-                                                                                   constant:0.0f];
-    NSLayoutConstraint *inputViewTrailingconstraint = [NSLayoutConstraint constraintWithItem:inputAccessoryView
-                                                                                   attribute:NSLayoutAttributeTrailing
-                                                                                   relatedBy:NSLayoutRelationEqual
-                                                                                      toItem:self.view
-                                                                                   attribute:NSLayoutAttributeTrailing
-                                                                                  multiplier:1.0f
-                                                                                    constant:0.0f];
-    self.keyboardInputBarHeightConstraint = [NSLayoutConstraint constraintWithItem:inputAccessoryView
-                                                                         attribute:NSLayoutAttributeHeight
-                                                                         relatedBy:NSLayoutRelationEqual
-                                                                            toItem:nil
-                                                                         attribute:NSLayoutAttributeNotAnAttribute
-                                                                        multiplier:1.0f
-                                                                          constant:VInputAccessoryViewDesiredMinimumHeight];
-    self.bottomKeyboardToContainerBottomConstraint = [NSLayoutConstraint constraintWithItem:inputAccessoryView
-                                                                                  attribute:NSLayoutAttributeBottom
-                                                                                  relatedBy:NSLayoutRelationEqual
-                                                                                     toItem:self.view
-                                                                                  attribute:NSLayoutAttributeBottom
-                                                                                 multiplier:1.0f
-                                                                                   constant:0.0f];
-    self.bottomKeyboardToContainerBottomConstraint.priority = UILayoutPriorityDefaultLow;
-    [self.view insertSubview:inputAccessoryView
-                belowSubview:self.landscapeMaskOverlay];
-    [self.view addConstraints:@[self.keyboardInputBarHeightConstraint, inputViewLeadingConstraint, inputViewTrailingconstraint, self.bottomKeyboardToContainerBottomConstraint]];
-
+    if (self.viewModel.sequence.canComment)
+    {
+        VKeyboardInputAccessoryView *inputAccessoryView = [VKeyboardInputAccessoryView defaultInputAccessoryView];
+        inputAccessoryView.translatesAutoresizingMaskIntoConstraints = NO;
+        inputAccessoryView.returnKeyType = UIReturnKeyDone;
+        inputAccessoryView.delegate = self;
+        self.textEntryView = inputAccessoryView;
+        NSLayoutConstraint *inputViewLeadingConstraint = [NSLayoutConstraint constraintWithItem:inputAccessoryView
+                                                                                      attribute:NSLayoutAttributeLeading
+                                                                                      relatedBy:NSLayoutRelationEqual
+                                                                                         toItem:self.view
+                                                                                      attribute:NSLayoutAttributeLeading
+                                                                                     multiplier:1.0f
+                                                                                       constant:0.0f];
+        NSLayoutConstraint *inputViewTrailingconstraint = [NSLayoutConstraint constraintWithItem:inputAccessoryView
+                                                                                       attribute:NSLayoutAttributeTrailing
+                                                                                       relatedBy:NSLayoutRelationEqual
+                                                                                          toItem:self.view
+                                                                                       attribute:NSLayoutAttributeTrailing
+                                                                                      multiplier:1.0f
+                                                                                        constant:0.0f];
+        self.keyboardInputBarHeightConstraint = [NSLayoutConstraint constraintWithItem:inputAccessoryView
+                                                                             attribute:NSLayoutAttributeHeight
+                                                                             relatedBy:NSLayoutRelationEqual
+                                                                                toItem:nil
+                                                                             attribute:NSLayoutAttributeNotAnAttribute
+                                                                            multiplier:1.0f
+                                                                              constant:VInputAccessoryViewDesiredMinimumHeight];
+        self.bottomKeyboardToContainerBottomConstraint = [NSLayoutConstraint constraintWithItem:inputAccessoryView
+                                                                                      attribute:NSLayoutAttributeBottom
+                                                                                      relatedBy:NSLayoutRelationEqual
+                                                                                         toItem:self.view
+                                                                                      attribute:NSLayoutAttributeBottom
+                                                                                     multiplier:1.0f
+                                                                                       constant:0.0f];
+        self.bottomKeyboardToContainerBottomConstraint.priority = UILayoutPriorityDefaultLow;
+        [self.view insertSubview:inputAccessoryView
+                    belowSubview:self.landscapeMaskOverlay];
+        [self.view addConstraints:@[self.keyboardInputBarHeightConstraint, inputViewLeadingConstraint, inputViewTrailingconstraint, self.bottomKeyboardToContainerBottomConstraint]];
+    }
     
     self.contentCollectionView.decelerationRate = UIScrollViewDecelerationRateFast;
     

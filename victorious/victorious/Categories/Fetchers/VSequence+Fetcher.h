@@ -23,6 +23,8 @@
 - (BOOL)isAnnouncement;
 - (BOOL)canDelete;
 - (BOOL)canRemix;
+- (BOOL)canComment;
+- (BOOL)canRepost;
 - (BOOL)isVoteCountVisible;
 
 - (VNode *)firstNode;
