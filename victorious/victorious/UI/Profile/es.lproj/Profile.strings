@@ -22,7 +22,7 @@
 /* Class = "IBUITextField"; placeholder = "Name"; ObjectID = "lvT-v5-J29"; */
 "lvT-v5-J29.placeholder" = "Nombre";
 
-/* Class = "IBUIViewController"; title = "EditProfile"; ObjectID = "qcg-od-rNV"; */
+/* Class = "IBUIViewController"; title = "Edit Profile"; ObjectID = "qcg-od-rNV"; */
 "qcg-od-rNV.title" = "Editar perfil";
 
 /* Class = "IBUILabel"; text = "Alias"; ObjectID = "uO9-eE-EdR"; */

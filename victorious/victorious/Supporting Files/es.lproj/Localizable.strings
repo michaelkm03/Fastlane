@@ -29,9 +29,9 @@
 "Quote" = "Cita";
 "Meme" = "Meme";
 "Share" = "Compartir";
-"Profile" = "Perfil";
 "Discover" = "Descubrir";
 "Share" = "Compartir";
+"Profile" = "Perfil";
 "Settings" = "Configuración";
 "Save" = "Guardar";
 
@@ -279,10 +279,11 @@
 
 "PasswordError" = "Error de contraseña";
 "ResetPasswordErrorExpiredTitle" = "Venció el código para restablecer.";
-"ResetPasswordErrorExpiredMessage" = "Venció el código para restablecer.";
+"ResetPasswordErrorExpiredMessage" = "Por favor solicita otro código para restablecer y vuelve a intentarlo.";
 
-"ResetPasswordErrorIncorrectTitle" = "Contraseña actual inválida.";
-"ResetPasswordErrorIncorrectMessage" = "Por favor vuelve a ingresar tu contraseña actual.";
+"ResetPasswordErrorInvalidTitle" = "La contraseña actual es inválida";
+"ResetPasswordErrorIncorrectTitle" = "Contraseña incorrecta";
+"ResetPasswordErrorMessage" = "Por favor vuelve a ingresar tu contraseña actual.";
 
 "ResetPasswordErrorFailTitle" = "Error al restablecer la contraseña";
 "ResetPasswordErrorFailMessage" = "No pudimos restablecer tu contraseña en este momento. Por favor vuelve a intentarlo más tarde.";
@@ -303,6 +304,7 @@
 "Pull up for more..." = "Jalar más...";
 "No results" = "Sin resultados";
 
+"Invite" = "Invitar";
 "InviteYourFriends" = "¡Invita a tus amigos!";
 "InviteUsingEmail" = "Invita usando un email";
 "InviteUsingSMS" = "Invita usando un SMS";
@@ -407,3 +409,4 @@
 "FacebookDenied" = "Por favor, autoriza el acceso a tu cuenta de Facebook en Configuración -> Facebook";
 "IncorrectOldPassword" = "La contraseña actual no es correcta.";
 "comments" = "comentarios";
+"ResetPasswordErrorIncorrectMessage" = "Por favor vuelve a ingresar tu contraseña actual.";

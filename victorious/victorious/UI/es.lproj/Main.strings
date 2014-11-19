@@ -4,9 +4,6 @@
 /* Class = "IBUILabel"; text = "No Results"; ObjectID = "5uI-FR-NGs"; */
 "5uI-FR-NGs.text" = "No hay resultados";
 
-/* Class = "IBUILabel"; text = "Community"; ObjectID = "7dZ-pL-tvb"; */
-"7dZ-pL-tvb.text" = "Comunidad";
-
 /* Class = "IBUILabel"; text = "We weren't able to find that user. You can try again or go to that user's profile and send a message from there!"; ObjectID = "9Sb-ui-Qjq"; */
 "9Sb-ui-Qjq.text" = "No pudimos encontrar ese usuario. ¡Puedes intentarlo de nuevo o ir al perfil de ese usuario y enviar un mensaje desde ahí!";
 
@@ -25,9 +22,6 @@
 /* Class = "IBUINavigationItem"; title = "Messages"; ObjectID = "AHd-Fh-04G"; */
 "AHd-Fh-04G.title" = "Mensajes";
 
-/* Class = "IBUILabel"; text = "Home"; ObjectID = "DH2-Te-odl"; */
-"DH2-Te-odl.text" = "Inicio";
-
 /* Class = "IBUISegmentedControl"; Fdy-7V-EvU.segmentTitles[0] = "Featured"; ObjectID = "Fdy-7V-EvU"; */
 "Fdy-7V-EvU.segmentTitles[0]" = "Destacado";
 
@@ -40,8 +34,8 @@
 /* Class = "IBUITextField"; placeholder = "Search for an image"; ObjectID = "GSS-PO-98I"; */
 "GSS-PO-98I.placeholder" = "Buscar una imagen";
 
-/* Class = "IBUILabel"; text = "Channel"; ObjectID = "JET-Uy-VNX"; */
-"JET-Uy-VNX.text" = "Canal";
+/* Class = "IBUILabel"; text = "Lorem Ipsum"; ObjectID = "LPw-0B-19t"; */
+"LPw-0B-19t.text" = "Lorem ipsum";
 
 /* Class = "IBUILabel"; text = "Pull up for more..."; ObjectID = "O7q-AE-sOJ"; */
 "O7q-AE-sOJ.text" = "Desliza hacia arriba para ver más...";
@@ -67,17 +61,11 @@
 /* Class = "IBUILabel"; text = "Vote that"; ObjectID = "aHa-OF-GOS"; */
 "aHa-OF-GOS.text" = "Votar por eso";
 
-/* Class = "IBUILabel"; text = "Inbox"; ObjectID = "ds5-08-fik"; */
-"ds5-08-fik.text" = "Entrada";
-
 /* Class = "IBUILabel"; text = "Type a reply..."; ObjectID = "gwv-3A-zYK"; */
 "gwv-3A-zYK.text" = "Escribe una respuesta...";
 
 /* Class = "IBUILabel"; text = "Ask a question..."; ObjectID = "hOL-9P-6fa"; */
 "hOL-9P-6fa.text" = "Haz una pregunta...";
-
-/* Class = "IBUILabel"; text = "Settings"; ObjectID = "jO3-8E-BGL"; */
-"jO3-8E-BGL.text" = "Configuración";
 
 /* Class = "IBUILabel"; text = "NEW POLL"; ObjectID = "kOI-QN-Gzl"; */
 "kOI-QN-Gzl.text" = "NUEVA ENCUESTA";
@@ -85,20 +73,11 @@
 /* Class = "IBUILabel"; text = "COMMENTS"; ObjectID = "kYy-hF-Nue"; */
 "kYy-hF-Nue.text" = "COMENTARIOS";
 
-/* Class = "IBUILabel"; text = "Profile"; ObjectID = "liW-Wt-Sy1"; */
-"liW-Wt-Sy1.text" = "Perfil";
-
 /* Class = "IBUISegmentedControl"; n7p-by-hQZ.segmentTitles[0] = "Message"; ObjectID = "n7p-by-hQZ"; */
 "n7p-by-hQZ.segmentTitles[0]" = "Mensaje";
 
 /* Class = "IBUISegmentedControl"; n7p-by-hQZ.segmentTitles[1] = "Notification"; ObjectID = "n7p-by-hQZ"; */
 "n7p-by-hQZ.segmentTitles[1]" = "Aviso";
-
-/* Class = "IBUILabel"; text = "Discover"; ObjectID = "naT-SW-PFZ"; */
-"naT-SW-PFZ.text" = "Descubrir";
-
-/* Class = "IBUILabel"; text = "Label"; ObjectID = "rNr-Dn-A7l"; */
-"rNr-Dn-A7l.text" = "Etiqueta";
 
 /* Class = "IBUIButton"; normalTitle = "Send"; ObjectID = "vPi-i8-4bG"; */
 "vPi-i8-4bG.normalTitle" = "Enviar";
