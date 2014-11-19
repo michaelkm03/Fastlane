@@ -134,8 +134,9 @@
 {
     [self setHasComments:YES];
     [self.tableView reloadData];
-    NSIndexPath *pathForComment = [NSIndexPath indexPathForRow:[self.sequence.comments indexOfObject:comment] inSection:0];
-    [self.tableView scrollToRowAtIndexPath:pathForComment atScrollPosition:UITableViewScrollPositionTop animated:YES];
+    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]
+                          atScrollPosition:UITableViewScrollPositionTop
+                                  animated:YES];
 }
 
 #pragma mark - IBActions
