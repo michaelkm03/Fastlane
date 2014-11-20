@@ -70,6 +70,8 @@
 
 #import "VSequence+Fetcher.h"
 
+static const CGFloat kMaxInputBarHeight = 200.0f;
+
 @interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate,VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelgetate, VExperienceEnhancerControllerDelegate>
 
 @property (nonatomic, strong, readwrite) VContentViewViewModel *viewModel;
@@ -1060,6 +1062,10 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 - (void)keyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inpoutAccessoryView
                          wantsSize:(CGSize)size
 {
+    if (size.height > kMaxInputBarHeight)
+    {
+        return;
+    }
     self.keyboardInputBarHeightConstraint.constant = size.height;
     [self.view layoutIfNeeded];
 }
