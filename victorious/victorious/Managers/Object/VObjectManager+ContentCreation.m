@@ -318,21 +318,19 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         VComment *newComment;
-        
         NSDictionary *payload = fullResponse[kVPayloadKey];
         NSNumber *commentID = @([payload[@"id"] integerValue]);
         newComment = [self newCommentWithID:commentID onSequence:sequence text:text mediaURLPath:[mediaURL absoluteString]];
         newComment.realtime = time;
         [self fetchCommentByID:[payload[@"id"] integerValue] successBlock:nil failBlock:nil];
-        
         if (asset)
         {
             [asset addCommentsObject: newComment];
         }
-        
+
         if (success)
         {
-            success(operation, fullResponse, @[newComment]);
+            success(operation, fullResponse, resultObjects);
         }
     };
     
