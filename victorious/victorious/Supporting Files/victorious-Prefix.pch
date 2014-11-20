@@ -24,10 +24,10 @@
 #import <CoreServices/CoreServices.h>
 #endif
 
-// Make RestKit globally available
+// Make globally available
 #import "RestKit.h"
 #import "VTrackingManager.h"
-
+#import "VAccessibilityConstants.h"
 
 #ifdef DEBUG
 #define VLog(fmt, ...) NSLog((@"%s [Line %d] " fmt),  __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);

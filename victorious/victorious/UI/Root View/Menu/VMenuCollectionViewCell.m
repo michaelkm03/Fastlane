@@ -47,12 +47,14 @@ static const CGFloat kCellHeight = 50.0f;
 - (void)setNavigationMenuItem:(VNavigationMenuItem *)navigationMenuItem
 {
     self.menuLabel.text = navigationMenuItem.title;
+    self.accessibilityIdentifier = [NSString stringWithFormat:kVAccessibilityIdMainMenuItem, navigationMenuItem.title];
 }
 
 - (void)prepareForReuse
 {
     self.menuLabel.text = @"";
     self.badgeLabel.text = @"";
+    self.accessibilityIdentifier = nil;
 }
 
 @end

@@ -49,6 +49,12 @@
     return header;
 }
 
+- (void)awakeFromNib
+{
+    self.backButton.accessibilityIdentifier = kVAccessibilityIdGenericBack;
+    self.menuButton.accessibilityIdentifier = kVAccessibilityIdMainMenu;
+}
+
 - (void)applyTheme
 {
     BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
@@ -156,20 +162,22 @@
     }
 }
 
-- (void)setRightButtonImage:(UIImage *)image withAction:(SEL)action onTarget:(id)target
+- (UIButton *)setRightButtonImage:(UIImage *)image withAction:(SEL)action onTarget:(id)target
 {
     self.addButton.hidden = !image;
     [self.addButton setTitle:@"" forState:UIControlStateNormal];
     [self.addButton setImage:[image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
     [self.addButton addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
+    return self.addButton;
 }
 
-- (void)setRightButtonTitle:(NSString *)title withAction:(SEL)action onTarget:(id)target
+- (UIButton *)setRightButtonTitle:(NSString *)title withAction:(SEL)action onTarget:(id)target
 {
     self.addButton.hidden = !title;
     [self.addButton setImage:nil forState:UIControlStateNormal];
     [self.addButton setTitle:title forState:UIControlStateNormal];
     [self.addButton addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
+    return self.addButton;
 }
 
 @end

@@ -96,6 +96,7 @@ static const char kUploadProgressYConstraintKey;
     else
     {
         self.navHeaderView = [VNavigationHeaderView backButtonNavHeaderWithControlTitles:titles];
+        
     }
     
     self.navHeaderView.headerText = self.title;//Set the title in case there is no logo
@@ -215,9 +216,10 @@ static const char kUploadProgressYConstraintKey;
     BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
 
     UIImage *image = isTemplateC ? [UIImage imageNamed:@"createContentButtonC"] : [UIImage imageNamed:@"createContentButton"];
-    [self.navHeaderView setRightButtonImage:image
+    UIButton *button = [self.navHeaderView setRightButtonImage:image
                                  withAction:@selector(createSequenceAction:)
-                                   onTarget:self];
+                                                      onTarget:self];
+    button.accessibilityIdentifier = kVAccessibilityIdAddPost;
 
 }
 
