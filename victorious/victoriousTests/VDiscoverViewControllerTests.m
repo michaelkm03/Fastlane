@@ -55,7 +55,6 @@ NSIndexPath *VIndexPathMake( NSInteger row, NSInteger section ) {
 @property (nonatomic, strong) VDiscoverViewController *viewController;
 @property (nonatomic, strong) UITableView *tableView;
 
-
 @end
 
 @implementation VDiscoverViewControllerTests

@@ -90,8 +90,7 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if ( [segue.identifier isEqualToString:@"embedDiscoverViewController"] &&
-        [segue.destinationViewController conformsToProtocol:@protocol(VDiscoverViewControllerProtocol)] )
+    if ( [segue.destinationViewController conformsToProtocol:@protocol(VDiscoverViewControllerProtocol)] )
     {
         self.childViewController = (id<VDiscoverViewControllerProtocol>)segue.destinationViewController;
     }
