@@ -9,8 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "VTableContainerViewController.h"
 #import "VHasManagedDependencies.h"
+#import "VNavigationDestination.h"
 
-@interface VDiscoverContainerViewController : VTableContainerViewController <VHasManagedDependancies>
+@interface VDiscoverContainerViewController : VTableContainerViewController <VHasManagedDependancies, VNavigationDestination>
 
 + (VDiscoverContainerViewController *)instantiateFromStoryboard:(NSString *)storyboardName;
 
