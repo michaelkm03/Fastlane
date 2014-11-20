@@ -159,13 +159,10 @@ NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentV
     // Grab the preroll
     NSPredicate *arrayPredicate = [NSPredicate predicateWithFormat:@"adSystem == %d OR adSystem == %d", VMonetizationPartnerLiveRail, VMonetizationPartnerOpenX];
     NSArray *filteredAdChain = [self.adChain filteredArrayUsingPredicate:arrayPredicate];
-    
     VAdBreakFallback *breakItem = [filteredAdChain objectAtIndex:(long)self.currentAdChainIndex];
     int adSystemPartner = [[breakItem adSystem] intValue];
     self.monetizationPartner = adSystemPartner;
-    self.monetizationDetails = filteredAdChain;
-    
-    
+    self.monetizationDetails = filteredAdChain;    
     self.hasCreatedAdChain = YES;
     
     if (completionBlock)
