@@ -98,7 +98,19 @@ static NSString * const VStoryboardViewControllerIndentifier    = @"suggestedPeo
 
 #pragma mark - Loading data
 
-- (void)refresh
+- (void)refresh:(BOOL)shouldClearCurrentContent
+{
+    if ( shouldClearCurrentContent )
+    {
+        self.hasLoadedOnce = NO;
+        self.suggestedUsers = @[];
+        [self.collectionView reloadData];
+    }
+    
+    [self reload];
+}
+
+- (void)reload
 {
     [[VObjectManager sharedManager] getSuggestedUsers:^(NSOperation *operation, id result, NSArray *resultObjects)
      {

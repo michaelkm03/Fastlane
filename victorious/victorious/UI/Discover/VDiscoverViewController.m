@@ -52,9 +52,7 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
     
     [self registerCells];
     
-    [self refresh];
-    [self.suggestedPeopleViewController refresh];
-    
+    [self refresh:YES];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -87,7 +85,21 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
     [self.tableView reloadData];
 }
 
-- (void)refresh
+- (void)refresh:(BOOL)shouldClearCurrentContent
+{
+    if ( shouldClearCurrentContent )
+    {
+        self.hasLoadedOnce = NO;
+        self.trendingTags = @[];
+        [self.tableView reloadData];
+    }
+    
+    [self.suggestedPeopleViewController refresh:shouldClearCurrentContent];
+    
+    [self reload];
+}
+
+- (void)reload
 {
     [[VObjectManager sharedManager] getSuggestedHashtags:^(NSOperation *operation, id result, NSArray *resultObjects)
      {

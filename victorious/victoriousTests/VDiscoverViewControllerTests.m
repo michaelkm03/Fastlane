@@ -36,17 +36,25 @@ NSIndexPath *VIndexPathMake( NSInteger row, NSInteger section ) {
 - (void)hashtagsDidFailToLoadWithError:(NSError *)error;
 - (void)hashtagsDidLoad:(NSArray *)hashtags;
 - (void)showStreamWithHashtag:(VHashtag *)hashtag;
+- (void)reload;
+- (void)refresh:(BOOL)shouldClearCurrentContent;
+
+@end
+
+@interface VSuggestedPeopleCollectionViewController (UnitTest)
+
+- (void)reload;
 
 @end
 
 @interface VDiscoverViewControllerTests : XCTestCase
-{
-    IMP _originalDiscoverRefresh;
-    IMP _originalSuggestedPeopleRefresh;
-    IMP _originalShowHashtagStream;
-    VDiscoverViewController *_viewController;
-    UITableView *_tableView;
-}
+
+@property (nonatomic, assign) IMP originalDiscoverRefresh;
+@property (nonatomic, assign) IMP originalSuggestedPeopleRefresh;
+@property (nonatomic, assign) IMP originalShowHashtagStream;
+@property (nonatomic, strong) VDiscoverViewController *viewController;
+@property (nonatomic, strong) UITableView *tableView;
+
 
 @end
 
@@ -57,75 +65,75 @@ NSIndexPath *VIndexPathMake( NSInteger row, NSInteger section ) {
     [super setUp];
     
     // Replace these with empty blocks to prevent them from making actual calls to the server
-    _originalDiscoverRefresh = [VDiscoverViewController v_swizzleMethod:@selector(refresh)
+    self.originalDiscoverRefresh = [VDiscoverViewController v_swizzleMethod:@selector(reload)
                                                               withBlock:^{}];
-    _originalSuggestedPeopleRefresh = [VSuggestedPeopleCollectionViewController v_swizzleMethod:@selector(refresh)
+    self.originalSuggestedPeopleRefresh = [VSuggestedPeopleCollectionViewController v_swizzleMethod:@selector(reload)
                                                                                       withBlock:^{}];
     
-    _viewController = [[VDiscoverViewController alloc] init];
-    XCTAssertNotNil( _viewController );
-    XCTAssertNotNil( _viewController.tableView );
-    XCTAssertNotNil( _viewController.suggestedPeopleViewController );
-    XCTAssertEqualObjects( _viewController, _viewController.suggestedPeopleViewController.delegate );
-    XCTAssertNotNil( _viewController.suggestedPeopleViewController.collectionView );
-    _tableView = _viewController.tableView;
+    self.viewController = [[VDiscoverViewController alloc] init];
+    XCTAssertNotNil( self.viewController );
+    XCTAssertNotNil( self.viewController.tableView );
+    XCTAssertNotNil( self.viewController.suggestedPeopleViewController );
+    XCTAssertEqualObjects( self.viewController, self.viewController.suggestedPeopleViewController.delegate );
+    XCTAssertNotNil( self.viewController.suggestedPeopleViewController.collectionView );
+    self.tableView = self.viewController.tableView;
 }
 
 - (void)tearDown
 {
     [super tearDown];
     
-    [VDiscoverViewController v_restoreOriginalImplementation:_originalDiscoverRefresh
-                                                   forMethod:@selector(refresh)];
-    [VSuggestedPeopleCollectionViewController v_restoreOriginalImplementation:_originalSuggestedPeopleRefresh
-                                                                    forMethod:@selector(refresh)];
+    [VDiscoverViewController v_restoreOriginalImplementation:self.originalDiscoverRefresh
+                                                   forMethod:@selector(reload)];
+    [VSuggestedPeopleCollectionViewController v_restoreOriginalImplementation:self.originalSuggestedPeopleRefresh
+                                                                    forMethod:@selector(reload)];
     
-    if ( _originalShowHashtagStream != nil )
+    if ( self.originalShowHashtagStream != nil )
     {
-        [VDiscoverViewController v_restoreOriginalImplementation:_originalShowHashtagStream
+        [VDiscoverViewController v_restoreOriginalImplementation:self.originalShowHashtagStream
                                                        forMethod:@selector(showStreamWithHashtag:)];
     }
 }
 
 - (void)testHeaderViews
 {
-    XCTAssertNotNil( [_viewController tableView:_tableView viewForHeaderInSection:VDiscoverViewControllerSectionSuggestedPeople] );
-    XCTAssertNotNil( [_viewController tableView:_tableView viewForHeaderInSection:VDiscoverViewControllerSectionTrendingTags] );
-    XCTAssertEqual( _viewController.sectionHeaders.count, (NSUInteger)2 );
+    XCTAssertNotNil( [self.viewController tableView:self.tableView viewForHeaderInSection:VDiscoverViewControllerSectionSuggestedPeople] );
+    XCTAssertNotNil( [self.viewController tableView:self.tableView viewForHeaderInSection:VDiscoverViewControllerSectionTrendingTags] );
+    XCTAssertEqual( self.viewController.sectionHeaders.count, (NSUInteger)2 );
     
     for ( NSInteger section = 0; section < VDiscoverViewControllerSectionsCount; section++ )
     {
-        UIView *headerView = _viewController.sectionHeaders[ section ];
-        CGFloat height = [_viewController tableView:_tableView heightForHeaderInSection:section];
+        UIView *headerView = self.viewController.sectionHeaders[ section ];
+        CGFloat height = [self.viewController tableView:self.tableView heightForHeaderInSection:section];
         XCTAssertEqual( height, CGRectGetHeight( headerView.frame ) );
     }
     
     // These are invalid sections (too low/high) and should return 0
-    XCTAssertEqual( [_viewController tableView:_tableView heightForHeaderInSection:-1], 0.0f );
-    XCTAssertEqual( [_viewController tableView:_tableView heightForHeaderInSection:VDiscoverViewControllerSectionsCount], 0.0f );
+    XCTAssertEqual( [self.viewController tableView:self.tableView heightForHeaderInSection:-1], 0.0f );
+    XCTAssertEqual( [self.viewController tableView:self.tableView heightForHeaderInSection:VDiscoverViewControllerSectionsCount], 0.0f );
 }
 
 - (void)testRowsAndSections
 {
     // Should be at least one table view cell even without data (for empty/error cell)
-    XCTAssertEqual( [_viewController tableView:_tableView numberOfRowsInSection:VDiscoverViewControllerSectionSuggestedPeople], (NSInteger)1 );
-    XCTAssertEqual( [_viewController tableView:_tableView numberOfRowsInSection:VDiscoverViewControllerSectionTrendingTags], (NSInteger)1 );
+    XCTAssertEqual( [self.viewController tableView:self.tableView numberOfRowsInSection:VDiscoverViewControllerSectionSuggestedPeople], (NSInteger)1 );
+    XCTAssertEqual( [self.viewController tableView:self.tableView numberOfRowsInSection:VDiscoverViewControllerSectionTrendingTags], (NSInteger)1 );
     
-    XCTAssertEqual( [_viewController numberOfSectionsInTableView:_tableView], VDiscoverViewControllerSectionsCount );
+    XCTAssertEqual( [self.viewController numberOfSectionsInTableView:self.tableView], VDiscoverViewControllerSectionsCount );
     
-    XCTAssertEqual( [_viewController tableView:_tableView numberOfRowsInSection:-1], (NSInteger)0 );
-    XCTAssertEqual( [_viewController tableView:_tableView numberOfRowsInSection:VDiscoverViewControllerSectionsCount], (NSInteger)0,
+    XCTAssertEqual( [self.viewController tableView:self.tableView numberOfRowsInSection:-1], (NSInteger)0 );
+    XCTAssertEqual( [self.viewController tableView:self.tableView numberOfRowsInSection:VDiscoverViewControllerSectionsCount], (NSInteger)0,
                    @"Should return 0 since there are only 2 sections." );
     
     for ( NSInteger i = 1; i < 10; i++ )
     {
-        _viewController.suggestedPeopleViewController.suggestedUsers = [VDummyModels createUsers:i];
-        XCTAssertEqual( [_viewController tableView:_tableView numberOfRowsInSection:0], (NSInteger)1,
+        self.viewController.suggestedPeopleViewController.suggestedUsers = [VDummyModels createUsers:i];
+        XCTAssertEqual( [self.viewController tableView:self.tableView numberOfRowsInSection:0], (NSInteger)1,
                        @"Even with many users, there should only be 1 row in section 0 because users are \
                        displayed in a collection view that is a subview of the table view cell." );
         
-        _viewController.trendingTags = [VDummyModels createHashtags:i];
-        XCTAssertEqual( [_viewController tableView:_tableView numberOfRowsInSection:VDiscoverViewControllerSectionTrendingTags], i );
+        self.viewController.trendingTags = [VDummyModels createHashtags:i];
+        XCTAssertEqual( [self.viewController tableView:self.tableView numberOfRowsInSection:VDiscoverViewControllerSectionTrendingTags], i );
     }
 }
 
@@ -134,14 +142,14 @@ NSIndexPath *VIndexPathMake( NSInteger row, NSInteger section ) {
     UITableViewCell *cell = nil;
     
     // No data has been added, so a VNoContentTableViewCell should be created
-    cell = [_viewController tableView:_tableView cellForRowAtIndexPath:VIndexPathMake(0, VDiscoverViewControllerSectionTrendingTags)];
+    cell = [self.viewController tableView:self.tableView cellForRowAtIndexPath:VIndexPathMake(0, VDiscoverViewControllerSectionTrendingTags)];
     XCTAssert( [cell isKindOfClass:[VNoContentTableViewCell class]],
               @"Cell should be a VNoContentTableViewCell before data is created." );
     
     // Add some data
-    _viewController.suggestedPeopleViewController.suggestedUsers = [VDummyModels createUsers:2];
+    self.viewController.suggestedPeopleViewController.suggestedUsers = [VDummyModels createUsers:2];
     
-    cell = [_viewController tableView:_tableView cellForRowAtIndexPath:VIndexPathMake(0, VDiscoverViewControllerSectionSuggestedPeople)];
+    cell = [self.viewController tableView:self.tableView cellForRowAtIndexPath:VIndexPathMake(0, VDiscoverViewControllerSectionSuggestedPeople)];
     XCTAssert( [cell isKindOfClass:[VSuggestedPeopleCell class]], @"Cell should be a valid VSuggestedPeopleCell" );
 }
 
@@ -149,76 +157,98 @@ NSIndexPath *VIndexPathMake( NSInteger row, NSInteger section ) {
 {
     __block UITableViewCell *cell = nil;
     
-    cell = [_viewController tableView:_tableView cellForRowAtIndexPath:VIndexPathMake(0, VDiscoverViewControllerSectionSuggestedPeople)];
+    cell = [self.viewController tableView:self.tableView cellForRowAtIndexPath:VIndexPathMake(0, VDiscoverViewControllerSectionSuggestedPeople)];
     XCTAssert( [cell isKindOfClass:[VNoContentTableViewCell class]],
               @"Cell should be a VNoContentTableViewCell before data is created." );
     
     // Add some data
-    _viewController.trendingTags = [VDummyModels createHashtags:5];
+    self.viewController.trendingTags = [VDummyModels createHashtags:5];
+    [self.viewController.tableView reloadData];
     
-    [_viewController.trendingTags enumerateObjectsUsingBlock:^(VHashtag *hashtag, NSUInteger idx, BOOL *stop) {
-        cell = [_viewController tableView:_tableView cellForRowAtIndexPath:VIndexPathMake(idx, VDiscoverViewControllerSectionTrendingTags)];
+    [self.viewController.trendingTags enumerateObjectsUsingBlock:^(VHashtag *hashtag, NSUInteger idx, BOOL *stop) {
+        NSIndexPath *indexPath = VIndexPathMake(idx, VDiscoverViewControllerSectionTrendingTags);
+        cell = [self.viewController tableView:self.tableView cellForRowAtIndexPath:indexPath];
         XCTAssert( [cell isKindOfClass:[VTrendingTagCell class]], @"Cell should be a valid VTrending" );
     }];
 }
 
 - (void)testInvalidSectionCell
 {
-    XCTAssertNil( [_viewController tableView:_tableView cellForRowAtIndexPath:VIndexPathMake(0, VDiscoverViewControllerSectionsCount)],
+    XCTAssertNil( [self.viewController tableView:self.tableView cellForRowAtIndexPath:VIndexPathMake(0, VDiscoverViewControllerSectionsCount)],
                  @"There are only 2 sections, so this should return nil" );
 }
 
 - (void)testNetworkRequestResponseSuccess
 {
-    XCTAssertFalse( _viewController.hasLoadedOnce );
+    XCTAssertFalse( self.viewController.hasLoadedOnce );
     NSUInteger objectsCount = 5;
-    [_viewController hashtagsDidLoad:[VDummyModels createHashtags:objectsCount]];
-    XCTAssertNil( _viewController.error );
-    XCTAssertEqual( _viewController.trendingTags.count, objectsCount );
-    XCTAssert( _viewController.hasLoadedOnce );
+    [self.viewController hashtagsDidLoad:[VDummyModels createHashtags:objectsCount]];
+    XCTAssertNil( self.viewController.error );
+    XCTAssertEqual( self.viewController.trendingTags.count, objectsCount );
+    XCTAssert( self.viewController.hasLoadedOnce );
 }
 
 - (void)testNetworkRequestResponseError
 {
-    XCTAssertFalse( _viewController.hasLoadedOnce );
-    [_viewController hashtagsDidFailToLoadWithError:[[NSError alloc] init]];
-    XCTAssertNotNil( _viewController.error );
-    XCTAssertEqual( _viewController.trendingTags.count, (NSUInteger)0 );
-    XCTAssert( _viewController.hasLoadedOnce );
+    XCTAssertFalse( self.viewController.hasLoadedOnce );
+    [self.viewController hashtagsDidFailToLoadWithError:[[NSError alloc] init]];
+    XCTAssertNotNil( self.viewController.error );
+    XCTAssertEqual( self.viewController.trendingTags.count, (NSUInteger)0 );
+    XCTAssert( self.viewController.hasLoadedOnce );
 }
 
 - (void)testNetworkRequestResponseErrorNil
 {
-    XCTAssertFalse( _viewController.hasLoadedOnce );
-    [_viewController hashtagsDidFailToLoadWithError:nil];
-    XCTAssertNotNil( _viewController.error );
-    XCTAssertEqual( _viewController.trendingTags.count, (NSUInteger)0 );
-    XCTAssert( _viewController.hasLoadedOnce );
+    XCTAssertFalse( self.viewController.hasLoadedOnce );
+    [self.viewController hashtagsDidFailToLoadWithError:nil];
+    XCTAssertNotNil( self.viewController.error );
+    XCTAssertEqual( self.viewController.trendingTags.count, (NSUInteger)0 );
+    XCTAssert( self.viewController.hasLoadedOnce );
 }
 
 - (void)testSelectRow
 {
     // Add some data
-    _viewController.trendingTags = [VDummyModels createHashtags:5];
+    self.viewController.trendingTags = [VDummyModels createHashtags:5];
     
     __block VHashtag *selectedHashtag = nil;
     
     // Replace this selector with one that sets our selectedHashtag variable to the
     // hashtag that tableView:didSelectRowAtIndexPath: uses as a parameter when showStreamWithHashtag: is called
-    _originalShowHashtagStream = [VDiscoverViewController v_swizzleMethod:@selector(showStreamWithHashtag:)
+    self.originalShowHashtagStream = [VDiscoverViewController v_swizzleMethod:@selector(showStreamWithHashtag:)
                                                                 withBlock:^void (VDiscoverViewController *obj, VHashtag *hashtag)
                                   {
                                       selectedHashtag = hashtag;
                                   }];
     
     // Simulate selection of each cell
-    [_viewController.trendingTags enumerateObjectsUsingBlock:^(VHashtag *hashtag, NSUInteger idx, BOOL *stop)
+    [self.viewController.trendingTags enumerateObjectsUsingBlock:^(VHashtag *hashtag, NSUInteger idx, BOOL *stop)
      {
-         [_viewController tableView:_tableView didSelectRowAtIndexPath:VIndexPathMake(idx, VDiscoverViewControllerSectionTrendingTags)];
+         [self.viewController tableView:self.tableView didSelectRowAtIndexPath:VIndexPathMake(idx, VDiscoverViewControllerSectionTrendingTags)];
          XCTAssertEqualObjects( selectedHashtag, hashtag,
                                @"The swizzled method above should be called and should set selectedHashtag \
-                               to the hashtag in _viewController.trendingTags that we're expecting." );
+                               to the hashtag in self.viewController.trendingTags that we're expecting." );
     }];
+}
+
+- (void)testRefresh
+{
+    NSUInteger count = 5;
+    
+    XCTAssertFalse( self.viewController.hasLoadedOnce );
+    
+    [self.viewController refresh:YES];
+    [self.viewController hashtagsDidLoad:[VDummyModels createHashtags:count]]; // Simulates successful reload response
+    XCTAssert( self.viewController.hasLoadedOnce );
+    XCTAssertEqual( self.viewController.trendingTags.count, count );
+    
+    [self.viewController refresh:NO];
+    XCTAssert( self.viewController.hasLoadedOnce );
+    XCTAssertEqual( self.viewController.trendingTags.count, count );
+    
+    [self.viewController refresh:YES];
+    XCTAssertFalse( self.viewController.hasLoadedOnce );
+    XCTAssertEqual( self.viewController.trendingTags.count, (NSUInteger)0 );
 }
 
 @end

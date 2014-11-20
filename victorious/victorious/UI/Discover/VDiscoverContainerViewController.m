@@ -10,10 +10,9 @@
 #import "VDiscoverConstants.h"
 #import "VUser.h"
 #import "VUserProfileViewController.h"
-
 #import "VSettingManager.h"
-
 #import "UIViewController+VNavMenu.h"
+#import "VDiscoverViewControllerProtocol.h"
 
 @interface VDiscoverContainerViewController () <VNavigationHeaderDelegate>
 
@@ -21,6 +20,7 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *searchBarHeightConstraint;
 
 @property (nonatomic, weak) IBOutlet UIView *searchBarContainer;
+@property (nonatomic, weak) id<VDiscoverViewControllerProtocol> childViewController;
 
 @end
 
@@ -88,6 +88,15 @@
     self.headerLabel.text = NSLocalizedString(@"Discover", nil);
 }
 
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ( [segue.identifier isEqualToString:@"embedDiscoverViewController"] &&
+        [segue.destinationViewController conformsToProtocol:@protocol(VDiscoverViewControllerProtocol)] )
+    {
+        self.childViewController = (id<VDiscoverViewControllerProtocol>)segue.destinationViewController;
+    }
+}
+
 - (void)showSuggestedPersonProfile:(NSNotification *)note
 {
     if ( note.userInfo == nil )
@@ -110,6 +119,15 @@
     {
         [self presentViewController:profileViewController animated:YES completion:nil];
     }
+}
+
+#pragma mark - VNativationDestination
+
+- (BOOL)shouldNavigateWithAlternateDestination:(UIViewController *__autoreleasing *)alternateViewController
+{
+    [self.childViewController refresh:YES];
+    
+    return YES;
 }
 
 @end

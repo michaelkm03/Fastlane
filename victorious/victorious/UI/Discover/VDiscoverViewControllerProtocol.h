@@ -32,4 +32,12 @@
  */
 @property (nonatomic, assign) BOOL hasLoadedOnce;
 
+/**
+ Requests that the view controller reload its data from the server.
+ 
+ @param shouldClearCurrentContent Whether or not any existing content should be clear
+ and the view controller restored to its loading state.
+ */
+- (void)refresh:(BOOL)shouldClearCurrentContent;
+
 @end
