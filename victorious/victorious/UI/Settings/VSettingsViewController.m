@@ -21,10 +21,9 @@
 #import "VEnvironment.h"
 #import "VAppDelegate.h"
 #import "VLoginViewController.h"
-
 #import "VObjectManager+Websites.h"
-
 #import "UIViewController+VNavMenu.h"
+#import "VAccessibilityConstants.h"
 
 static const NSInteger kSettingsSectionIndex         = 0;
 static const NSInteger kChangePasswordIndex          = 0;
@@ -96,6 +95,7 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
         self.logoutButton.layer.cornerRadius = 3.0;
         self.logoutButton.layer.borderColor = [UIColor colorWithWhite:0.14 alpha:1.0].CGColor;
         self.logoutButton.backgroundColor = [UIColor clearColor];
+        self.logoutButton.accessibilityIdentifier = kVAccessibilityIdSettingsLogOut;
     }
     else
     {
@@ -104,6 +104,7 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
         self.logoutButton.layer.borderWidth = 0.0;
         self.logoutButton.layer.cornerRadius = 0.0;
         self.logoutButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+        self.logoutButton.accessibilityIdentifier = kVAccessibilityIdSettingsLogIn;
     }
     
     self.serverEnvironmentCell.detailTextLabel.text = [[VObjectManager currentEnvironment] name];

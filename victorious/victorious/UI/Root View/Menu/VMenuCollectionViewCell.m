@@ -9,6 +9,7 @@
 #import "VMenuCollectionViewCell.h"
 #import "VNavigationMenuItem.h"
 #import "VThemeManager.h"
+#import "VAccessibilityConstants.h"
 
 static const CGFloat kCellHeight = 50.0f;
 

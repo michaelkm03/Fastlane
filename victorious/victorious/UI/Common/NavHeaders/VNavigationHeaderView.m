@@ -10,6 +10,7 @@
 
 #import "VThemeManager.h"
 #import "VSettingManager.h"
+#import "VAccessibilityConstants.h"
 
 @interface VNavigationHeaderView ()
 

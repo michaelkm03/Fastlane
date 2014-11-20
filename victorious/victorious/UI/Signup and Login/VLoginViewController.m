@@ -22,6 +22,7 @@
 #import "VLoginWithEmailViewController.h"
 #import "VSignupWithEmailViewController.h"
 #import "VObjectManager.h"
+#import "VAccessibilityConstants.h"
 
 @import Accounts;
 @import Social;
@@ -65,8 +66,10 @@
 
     self.fauxEmailLoginButton.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
     self.fauxEmailLoginButton.textColor = [UIColor whiteColor];
+    self.fauxEmailLoginButton.accessibilityIdentifier = kVAccessibilityIdSettingsSelectEmail;
     self.fauxPasswordLoginButton.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
     self.fauxPasswordLoginButton.textColor = [UIColor whiteColor];
+    self.fauxPasswordLoginButton.accessibilityIdentifier = kVAccessibilityIdSettingsSelectPassword;
     
     self.facebookButtonLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
     self.facebookButtonLabel.textColor = [UIColor whiteColor];

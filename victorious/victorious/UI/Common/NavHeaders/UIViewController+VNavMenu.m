@@ -19,6 +19,7 @@
 #import "VCreatePollViewController.h"
 #import "VAuthorizationViewControllerFactory.h"
 #import "UIActionSheet+VBlocks.h"
+#import "VAccessibilityConstants.h"
 
 static const char kNavHeaderViewKey;
 static const char kNavHeaderYConstraintKey;

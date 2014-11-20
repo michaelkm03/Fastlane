@@ -23,6 +23,7 @@
 #import "UIAlertView+VBlocks.h"
 #import "VPasswordValidator.h"
 #import "VEmailValidator.h"
+#import "VAccessibilityConstants.h"
 
 @interface VLoginWithEmailViewController () <UITextFieldDelegate, UINavigationControllerDelegate, UIAlertViewDelegate>
 @property (nonatomic, weak) IBOutlet    UITextField    *usernameTextField;
@@ -74,6 +75,12 @@
     
     self.usernameTextField.delegate  =   self;
     self.passwordTextField.delegate  =   self;
+    
+    self.usernameTextField.accessibilityIdentifier = kVAccessibilityIdLoginUsernameField;
+    self.passwordTextField.accessibilityIdentifier = kVAccessibilityIdLoginPasswordField;
+    self.forgotPasswordButton.accessibilityIdentifier = kVAccessibilityIdLoginForgotPassword;
+    self.cancelButton.accessibilityIdentifier = kVAccessibilityIdLoginCancel;
+    self.loginButton.accessibilityIdentifier = kVAccessibilityIdLoginSubmit;
     
     self.passwordValidator = [[VPasswordValidator alloc] init];
     self.emailValidator = [[VEmailValidator alloc] init];
