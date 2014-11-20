@@ -40,7 +40,7 @@
 
 @property (nonatomic, weak) IBOutlet    UILabel        *facebookButtonLabel;
 @property (nonatomic, weak) IBOutlet    UILabel        *twitterButtonLabel;
-@property (nonatomic, weak) IBOutlet    UIButton       *loginEmailButton;
+@property (nonatomic, weak) IBOutlet    UIButton       *signupWithEmailButton;
 
 @property (nonatomic, assign)           VLoginType      loginType;
 
@@ -66,16 +66,18 @@
 
     self.fauxEmailLoginButton.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
     self.fauxEmailLoginButton.textColor = [UIColor whiteColor];
-    self.fauxEmailLoginButton.accessibilityIdentifier = kVAccessibilityIdSettingsSelectEmail;
     self.fauxPasswordLoginButton.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
     self.fauxPasswordLoginButton.textColor = [UIColor whiteColor];
-    self.fauxPasswordLoginButton.accessibilityIdentifier = kVAccessibilityIdSettingsSelectPassword;
     
     self.facebookButtonLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
     self.facebookButtonLabel.textColor = [UIColor whiteColor];
     self.twitterButtonLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
     self.twitterButtonLabel.textColor = [UIColor whiteColor];
-    self.loginEmailButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
+    self.signupWithEmailButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
+    
+    self.fauxEmailLoginButton.accessibilityIdentifier = kVAccessibilityIdLoginSelectEmail;
+    self.fauxPasswordLoginButton.accessibilityIdentifier = kVAccessibilityIdLoginSelectPassword;
+    self.signupWithEmailButton.accessibilityIdentifier = kVAccessibilityIdLoginSignUp;
     
     [self.transitionPlaceholder addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(emailClicked:)]];
     self.transitionPlaceholder.userInteractionEnabled = YES;
@@ -273,7 +275,7 @@
 {
     self.facebookButton.enabled = NO;
     self.twitterButton.enabled = NO;
-    self.loginEmailButton.userInteractionEnabled = NO;
+    self.signupWithEmailButton.userInteractionEnabled = NO;
     self.transitionPlaceholder.userInteractionEnabled = NO;
 }
 
@@ -281,7 +283,7 @@
 {
     self.facebookButton.enabled = YES;
     self.twitterButton.enabled = YES;
-    self.loginEmailButton.userInteractionEnabled = YES;
+    self.signupWithEmailButton.userInteractionEnabled = YES;
     self.transitionPlaceholder.userInteractionEnabled = YES;
 }
 

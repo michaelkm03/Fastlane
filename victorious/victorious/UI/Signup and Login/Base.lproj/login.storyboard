@@ -142,7 +142,7 @@
                         <outlet property="facebookButtonLabel" destination="tgS-Dw-MLG" id="cU2-kY-S0W"/>
                         <outlet property="fauxEmailLoginButton" destination="PBd-jN-jOQ" id="SUU-Kc-yV6"/>
                         <outlet property="fauxPasswordLoginButton" destination="dbc-B9-jGE" id="vOX-ST-Omq"/>
-                        <outlet property="loginEmailButton" destination="yeM-Dh-LIB" id="5K1-gY-NYu"/>
+                        <outlet property="signupWithEmailButton" destination="yeM-Dh-LIB" id="wjM-KN-Xxy"/>
                         <outlet property="transitionPlaceholder" destination="t4p-sF-3n6" id="njl-QD-yfX"/>
                         <outlet property="twitterButton" destination="c2n-re-bSf" id="FIC-b1-Oi9"/>
                         <outlet property="twitterButtonLabel" destination="3q4-yP-lYm" id="Zjw-5c-fgR"/>
@@ -790,6 +790,6 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="qFR-HG-giH"/>
+        <segue reference="L0J-p9-vsT"/>
     </inferredMetricsTieBreakers>
 </document>
