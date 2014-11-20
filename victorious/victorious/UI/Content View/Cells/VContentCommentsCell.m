@@ -145,7 +145,7 @@ static NSCache *_sharedImageCache = nil;
 
 - (void)tappedOnMedia
 {
-    if (self.onMediaTapped && self.commentAndMediaView.mediaThumbnailView.image)
+    if ((self.onMediaTapped != nil) && (self.mediaURL != nil))
     {
         self.onMediaTapped();
     }
@@ -181,7 +181,7 @@ static NSCache *_sharedImageCache = nil;
         self.realTimeCommentText = @"";
     }
     self.hasMedia = comment.hasMedia;
-    if (self.hasMedia)
+    if (comment.hasMedia)
     {
         self.mediaPreviewURL = comment.previewImageURL;
         self.mediaIsVideo = [comment.mediaUrl v_hasVideoExtension];
@@ -298,6 +298,11 @@ static NSCache *_sharedImageCache = nil;
 - (UIView *)previewView
 {
     return self.commentAndMediaView.mediaThumbnailView;
+}
+
+- (NSURL *)mediaURL
+{
+    return [NSURL URLWithString:self.comment.mediaUrl];
 }
 
 @end
