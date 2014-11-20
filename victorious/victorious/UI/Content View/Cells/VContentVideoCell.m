@@ -94,7 +94,9 @@
     // Set visibility
     self.isPlayingAd = NO;
     self.adPlayerViewController.view.hidden = YES;
+    self.adPlayerViewController.view.alpha = 0.0f;
     self.videoPlayerViewController.view.hidden = NO;
+    self.videoPlayerViewController.view.alpha = 1.0f;
     self.videoPlayerViewController.itemURL = self.contentURL;
     
     // Play content Video

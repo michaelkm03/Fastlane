@@ -83,10 +83,12 @@
     self.adManager.videoPlayerView.frame = self.view.bounds;
     [self.view addSubview:self.adManager.videoPlayerView];
     
+    self.view.backgroundColor = [UIColor clearColor];
+    
     [self.adManager setVideoContainer:self.view];
     self.adManager.autoPlayConfig = AlwaysAutoPlay;
     self.adManager.isInFeed = YES;
-    self.adManager.hideControls = YES;
+    self.adManager.hideControls = NO;
     
     [self.adManager startAdManager];
 }
@@ -96,7 +98,7 @@
     if (self.adManager == nil)
     {
 #if DEBUG && EnableOpenXLogging
-        VLog(@"OpenX Ad Server is Starting");
+        VLog(@"OpenX Ad Manager is Starting");
 #warning OpenX ad server logging is enabled. Please remember to disable it when you're done debugging.
 #endif
         
@@ -112,8 +114,12 @@
     self.adViewAppeared = NO;
     self.adManager.videoPlayerView.hidden = YES;
     [self.adManager.videoPlayerView.player pause];
+    [self.adManager.videoPlayerView removeFromSuperview];
     self.adManager = nil;
     [self.activityIndicatorView stopAnimating];
+    [self.adManager.videoPlayerView removeFromSuperview];
+    [self.view removeFromSuperview];
+    self.view = nil;
 }
 
 - (BOOL)isAdPlaying
@@ -129,7 +135,6 @@
     VLog(@"OpenX ad did load!");
 #endif
     self.adPlaying = YES;
-    NSLog(@"\n\n----------\nOpenX ad loaded!\n----------\n");
     
     if ([self.delegate respondsToSelector:@selector(adDidLoadForAdViewController:)])
     {
@@ -143,12 +148,12 @@
     VLog(@"OpenX ad FAILED to load!");
 #endif
     
-    [self destroyAdInstance];
-    
     if ([self.delegate respondsToSelector:@selector(adHadErrorInAdViewController:withError:)])
     {
         [self.delegate adHadErrorInAdViewController:self withError:error];
     }
+    
+    [self videoInFeedCompelete];
 }
 
 - (void)videoAdManagerDidStart:(OXMVideoAdManager *)adManager

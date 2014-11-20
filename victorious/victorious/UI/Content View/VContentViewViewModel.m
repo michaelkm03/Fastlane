@@ -157,11 +157,12 @@ NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentV
     }
     
     // Grab the preroll
-    VAdBreakFallback *breakItem = [self.adChain objectAtIndex:(long)self.currentAdChainIndex];
+    NSPredicate *arrayPredicate = [NSPredicate predicateWithFormat:@"adSystem == %d OR adSystem == %d", VMonetizationPartnerLiveRail, VMonetizationPartnerOpenX];
+    NSArray *filteredAdChain = [self.adChain filteredArrayUsingPredicate:arrayPredicate];
+    VAdBreakFallback *breakItem = [filteredAdChain objectAtIndex:(long)self.currentAdChainIndex];
     int adSystemPartner = [[breakItem adSystem] intValue];
     self.monetizationPartner = adSystemPartner;
-    self.monetizationDetails = self.adChain;
-    
+    self.monetizationDetails = filteredAdChain;    
     self.hasCreatedAdChain = YES;
     
     if (completionBlock)
@@ -187,7 +188,7 @@ NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentV
               {
                   self.videoViewModel = [VVideoCellViewModel videoCellViewModelWithItemURL:[self videoURL]
                                                                               withAdSystem:self.monetizationPartner
-                                                                               withDetails:self.adChain];
+                                                                               withDetails:self.monetizationDetails];
                   [[NSNotificationCenter defaultCenter] postNotificationName:VContentViewViewModelDidUpdateContentNotification
                                                                       object:self];
               }];
