@@ -120,7 +120,7 @@
     }
 }
 
-#pragma mark - VNativationDestination
+#pragma mark - VNavigationDestination
 
 - (BOOL)shouldNavigateWithAlternateDestination:(UIViewController *__autoreleasing *)alternateViewController
 {
