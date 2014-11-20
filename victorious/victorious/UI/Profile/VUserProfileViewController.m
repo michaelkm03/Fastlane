@@ -122,10 +122,10 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
     
     [self.navigationController setNavigationBarHidden:YES animated:YES];
     
-    CGFloat height = CGRectGetHeight(self.collectionView.frame) - CGRectGetHeight(self.navHeaderView.frame);
+    CGFloat height = CGRectGetHeight(self.view.bounds) - CGRectGetHeight(self.navHeaderView.frame);
     height = self.streamDataSource.count ? kVSmallUserHeaderHeight : height;
     
-    CGFloat width = CGRectGetWidth(self.collectionView.frame);
+    CGFloat width = CGRectGetWidth(self.view.bounds);
     self.currentProfileSize = CGSizeMake(width, height);
     
     VUserProfileHeaderView *headerView =  [VUserProfileHeaderView newViewWithFrame:CGRectMake(0, 0, width, height)];

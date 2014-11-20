@@ -127,10 +127,9 @@
     
     VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        NSLog(@"%@", resultObjects);
         [progressHUD hide:YES];
     
-        [((VCommentsTableViewController *)self.conversationTableViewController) addedNewComment:[resultObjects firstObject]];
+        [((VCommentsTableViewController *)self.conversationTableViewController) addedNewComment:nil];
     };
     
     VFailBlock fail = ^(NSOperation *operation, NSError *error)
