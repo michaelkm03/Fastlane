@@ -140,6 +140,7 @@ static const NSInteger kCharacterLimit = 255;
     }
     void (^showCamera)(void) = ^void(void)
     {
+        [[VThemeManager sharedThemeManager] applyStyling];
         
         VCameraViewController *cameraViewController = [VCameraViewController cameraViewControllerStartingWithStillCapture];
         cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
@@ -166,9 +167,15 @@ static const NSInteger kCharacterLimit = 255;
     }
     
     // We already have a selected media does the user want to discard and re-take?
-    NSString *actionSheetTitle = NSLocalizedString(@"Discard selected media and re-take?", @"Discard selected picture or video and re-take?");
-    NSString *discardActionTitle = NSLocalizedString(@"Discard", @"Discard the previously selected item. This is a destructive operation.");
+    NSString *actionSheetTitle = NSLocalizedString(@"Delete this content and select something else?", @"User has already selected media (pictire/video) as an attachment for commenting.");
+    NSString *discardActionTitle = NSLocalizedString(@"Delete", @"Delete the previously selected item. This is a destructive operation.");
     NSString *cancelActionTitle = NSLocalizedString(@"Cancel", @"Cancel button.");
+    
+    void (^clearMediaSelection)(void) = ^void(void)
+    {
+        self.mediaURL = nil;
+        [self.mediaButton setImage:[UIImage imageNamed:@"MessageCamera"] forState:UIControlStateNormal];
+    };
     
     if (UI_IS_IOS8_AND_HIGHER)
     {
@@ -180,6 +187,7 @@ static const NSInteger kCharacterLimit = 255;
                                                                 style:UIAlertActionStyleDestructive
                                                               handler:^(UIAlertAction *action)
                                         {
+                                            clearMediaSelection();
                                             showCamera();
                                         }];
         [alertController addAction:discardAction];
@@ -200,7 +208,11 @@ static const NSInteger kCharacterLimit = 255;
                             cancelButtonTitle:cancelActionTitle
                                onCancelButton:nil
                        destructiveButtonTitle:discardActionTitle
-                          onDestructiveButton:showCamera
+                          onDestructiveButton:^
+        {
+            clearMediaSelection();
+            showCamera();
+        }
                    otherButtonTitlesAndBlocks:nil, nil] showInView:self.view];
     }
 

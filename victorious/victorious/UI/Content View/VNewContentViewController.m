@@ -1123,6 +1123,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
         __weak typeof(self) welf = self;
         cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
         {
+            [[VThemeManager sharedThemeManager] applyStyling];
             if (finished)
             {
                 welf.mediaURL = capturedMediaURL;
@@ -1153,6 +1154,12 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
         return;
     }
     
+    void (^clearMediaSelection)(void) = ^void(void)
+    {
+        self.mediaURL = nil;
+        [self.textEntryView setSelectedThumbnail:nil];
+    };
+    
     // We already have a selected media does the user want to discard and re-take?
     NSString *actionSheetTitle = NSLocalizedString(@"Delete this content and select something else?", @"User has already selected media (pictire/video) as an attachment for commenting.");
     NSString *discardActionTitle = NSLocalizedString(@"Delete", @"Delete the previously selected item. This is a destructive operation.");
@@ -1168,8 +1175,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
                                                                 style:UIAlertActionStyleDestructive
                                                               handler:^(UIAlertAction *action)
                                         {
-                                            self.mediaURL = nil;
-                                            [self.textEntryView setSelectedThumbnail:nil];
+                                            clearMediaSelection();
                                             showCamera();
                                         }];
         [alertController addAction:deleteAction];
@@ -1191,7 +1197,11 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
                             cancelButtonTitle:cancelActionTitle
                                onCancelButton:nil
                        destructiveButtonTitle:discardActionTitle
-                          onDestructiveButton:showCamera
+                          onDestructiveButton:^
+          {
+              clearMediaSelection();
+              showCamera();
+          }
                    otherButtonTitlesAndBlocks:nil, nil] showInView:self.view];
     }
 }
