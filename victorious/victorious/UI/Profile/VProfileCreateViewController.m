@@ -163,12 +163,12 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
     self.backButton.imageView.image = [self.backButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     
     // Accessibility IDs
-    self.doneButton.accessibilityIdentifier = kViewIdentifierProfileDone;
-    self.usernameTextField.accessibilityIdentifier = kViewIdentifierProfileUsernameField;
-    self.locationTextField.accessibilityIdentifier = kViewIdentifierProfileLocationField;
-    self.taglineTextView.accessibilityIdentifier = kViewIdentifierProfileTaglineField;
-    self.agreeSwitch.accessibilityIdentifier = kViewIdentifierProfileAgeAgreeSwitch;
-    self.profileImageView.accessibilityIdentifier = kViewIdentifierProfilSelectImage;
+    self.doneButton.accessibilityIdentifier = VAutomationIdentifierProfileDone;
+    self.usernameTextField.accessibilityIdentifier = VAutomationIdentifierProfileUsernameField;
+    self.locationTextField.accessibilityIdentifier = VAutomationIdentifierProfileLocationField;
+    self.taglineTextView.accessibilityIdentifier = VAutomationIdentifierProfileTaglineField;
+    self.agreeSwitch.accessibilityIdentifier = VAutomationIdentifierProfileAgeAgreeSwitch;
+    self.profileImageView.accessibilityIdentifier = VAutomationIdentifierProfilSelectImage;
 }
 
 - (void)viewWillAppear:(BOOL)animated

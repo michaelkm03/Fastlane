@@ -95,7 +95,7 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
         self.logoutButton.layer.cornerRadius = 3.0;
         self.logoutButton.layer.borderColor = [UIColor colorWithWhite:0.14 alpha:1.0].CGColor;
         self.logoutButton.backgroundColor = [UIColor clearColor];
-        self.logoutButton.accessibilityIdentifier = kViewIdentifierSettingsLogOut;
+        self.logoutButton.accessibilityIdentifier = VAutomationIdentifierSettingsLogOut;
     }
     else
     {
@@ -104,7 +104,7 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
         self.logoutButton.layer.borderWidth = 0.0;
         self.logoutButton.layer.cornerRadius = 0.0;
         self.logoutButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-        self.logoutButton.accessibilityIdentifier = kViewIdentifierSettingsLogIn;
+        self.logoutButton.accessibilityIdentifier = VAutomationIdentifierSettingsLogIn;
     }
     
     self.serverEnvironmentCell.detailTextLabel.text = [[VObjectManager currentEnvironment] name];

@@ -75,9 +75,9 @@
     self.twitterButtonLabel.textColor = [UIColor whiteColor];
     self.signupWithEmailButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
     
-    self.fauxEmailLoginButton.accessibilityIdentifier = kViewIdentifierLoginSelectEmail;
-    self.fauxPasswordLoginButton.accessibilityIdentifier = kViewIdentifierLoginSelectPassword;
-    self.signupWithEmailButton.accessibilityIdentifier = kViewIdentifierLoginSignUp;
+    self.fauxEmailLoginButton.accessibilityIdentifier = VAutomationIdentifierLoginSelectEmail;
+    self.fauxPasswordLoginButton.accessibilityIdentifier = VAutomationIdentifierLoginSelectPassword;
+    self.signupWithEmailButton.accessibilityIdentifier = VAutomationIdentifierLoginSignUp;
     
     [self.transitionPlaceholder addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(emailClicked:)]];
     self.transitionPlaceholder.userInteractionEnabled = YES;

@@ -52,8 +52,8 @@
 
 - (void)awakeFromNib
 {
-    self.backButton.accessibilityIdentifier = kViewIdentifierGenericBack;
-    self.menuButton.accessibilityIdentifier = kViewIdentifierMainMenu;
+    self.backButton.accessibilityIdentifier = VAutomationIdentifierGenericBack;
+    self.menuButton.accessibilityIdentifier = VAutomationIdentifierMainMenu;
 }
 
 - (void)applyTheme

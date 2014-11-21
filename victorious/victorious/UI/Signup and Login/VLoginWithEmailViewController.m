@@ -76,11 +76,11 @@
     self.usernameTextField.delegate  =   self;
     self.passwordTextField.delegate  =   self;
     
-    self.usernameTextField.accessibilityIdentifier = kViewIdentifierLoginUsernameField;
-    self.passwordTextField.accessibilityIdentifier = kViewIdentifierLoginPasswordField;
-    self.forgotPasswordButton.accessibilityIdentifier = kViewIdentifierLoginForgotPassword;
-    self.cancelButton.accessibilityIdentifier = kViewIdentifierLoginCancel;
-    self.loginButton.accessibilityIdentifier = kViewIdentifierLoginSubmit;
+    self.usernameTextField.accessibilityIdentifier = VAutomationIdentifierLoginUsernameField;
+    self.passwordTextField.accessibilityIdentifier = VAutomationIdentifierLoginPasswordField;
+    self.forgotPasswordButton.accessibilityIdentifier = VAutomationIdentifierLoginForgotPassword;
+    self.cancelButton.accessibilityIdentifier = VAutomationIdentifierLoginCancel;
+    self.loginButton.accessibilityIdentifier = VAutomationIdentifierLoginSubmit;
     
     self.passwordValidator = [[VPasswordValidator alloc] init];
     self.emailValidator = [[VEmailValidator alloc] init];

@@ -76,11 +76,11 @@
     self.emailValidator = [[VEmailValidator alloc] init];
     
     // Accessibility IDs
-    self.cancelButton.accessibilityIdentifier = kViewIdentifierSignupCancel;
-    self.signupButton.accessibilityIdentifier = kViewIdentifierSignupSubmit;
-    self.emailTextField.accessibilityIdentifier = kViewIdentifierSignupUsernameField;
-    self.passwordTextField.accessibilityIdentifier = kViewIdentifierSignupPasswordField;
-    self.confirmPasswordTextField.accessibilityIdentifier = kViewIdentifierSignupPasswordConfirmField;
+    self.cancelButton.accessibilityIdentifier = VAutomationIdentifierSignupCancel;
+    self.signupButton.accessibilityIdentifier = VAutomationIdentifierSignupSubmit;
+    self.emailTextField.accessibilityIdentifier = VAutomationIdentifierSignupUsernameField;
+    self.passwordTextField.accessibilityIdentifier = VAutomationIdentifierSignupPasswordField;
+    self.confirmPasswordTextField.accessibilityIdentifier = VAutomationIdentifierSignupPasswordConfirmField;
 }
 
 - (void)viewWillAppear:(BOOL)animated
