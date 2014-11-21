@@ -24,7 +24,7 @@
 #import <CoreServices/CoreServices.h>
 #endif
 
-// Make globally RestKit available
+// Make RestKit globally available
 #import "RestKit.h"
 #import "VTrackingManager.h"
 
