@@ -32,7 +32,7 @@ NSString *kInitResponseNotification             = @"InitResponseNotification";
 
 static NSString * const kVExperimentsKey        = @"experiments";
 static NSString * const kVAppearanceKey         = @"appearance";
-static NSString * const kVVideoQualityKey       = @"video_quality";
+static NSString * const kVideoQualityKey       = @"video_quality";
 static NSString * const kVAppTrackingKey        = @"video_quality";
 
 #pragma mark - Init
@@ -73,7 +73,7 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
 
 - (void)updateSettings:(VSettingManager *)settingsManager withResponsePayload:(NSDictionary *)payload
 {
-    NSDictionary *videoQuality = payload[kVVideoQualityKey];
+    NSDictionary *videoQuality = payload[kVideoQualityKey];
     if ([videoQuality isKindOfClass:[NSDictionary class]])
     {
         [settingsManager updateSettingsWithDictionary:videoQuality];

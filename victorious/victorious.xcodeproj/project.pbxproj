@@ -1220,7 +1220,6 @@
 		A709642219F0A13800CE6633 /* VTracking+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VTracking+RestKit.h"; sourceTree = "<group>"; };
 		A709642319F0A13800CE6633 /* VTracking+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VTracking+RestKit.m"; sourceTree = "<group>"; };
 		A70AFE631A1684880027549F /* VFlurryTrackingTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFlurryTrackingTests.m; sourceTree = "<group>"; };
-		A70DF3821A1D8E5E00953B27 /* VAccessibilityConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VAccessibilityConstants.h; sourceTree = "<group>"; };
 		A719CD5719F6D5030019E866 /* VFileSystemTestHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFileSystemTestHelpers.h; sourceTree = "<group>"; };
 		A719CD5819F6D5030019E866 /* VFileSystemTestHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFileSystemTestHelpers.m; sourceTree = "<group>"; };
 		A72004FA1A02FEC000285A9C /* sampleImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sampleImage.png; sourceTree = "<group>"; };
@@ -1297,6 +1296,7 @@
 		A769C3F61A13D69500698D0C /* WebBrowser.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = WebBrowser.storyboard; sourceTree = "<group>"; };
 		A769C3F81A13E7A400698D0C /* VSequenceWebContentTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSequenceWebContentTests.m; sourceTree = "<group>"; };
 		A771D0231A043AE8007CB0A5 /* VTrackingManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTrackingManagerTests.m; sourceTree = "<group>"; };
+		A77AD4C51A1EFA3D00142F24 /* VAutomation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAutomation.h; sourceTree = "<group>"; };
 		A7814A0919E5FD0600D89B90 /* VPasswordValidationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPasswordValidationTests.m; sourceTree = "<group>"; };
 		A790C8221A01980F00C4F208 /* VTrackingEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTrackingEvent.h; sourceTree = "<group>"; };
 		A790C8231A01980F00C4F208 /* VTrackingEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTrackingEvent.m; sourceTree = "<group>"; };
@@ -1826,7 +1826,7 @@
 		0314D2EA19B46B5D00FA363C /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				A70DF3811A1D8E4400953B27 /* Accessibility */,
+				A77AD4C41A1EFA3D00142F24 /* Automation */,
 				0314D2EB19B46B5D00FA363C /* Camera */,
 				0314D33E19B46B5E00FA363C /* Comments */,
 				0314D34819B46B5E00FA363C /* Common */,
@@ -2979,14 +2979,6 @@
 			path = HelveticaNeue;
 			sourceTree = "<group>";
 		};
-		A70DF3811A1D8E4400953B27 /* Accessibility */ = {
-			isa = PBXGroup;
-			children = (
-				A70DF3821A1D8E5E00953B27 /* VAccessibilityConstants.h */,
-			);
-			name = Accessibility;
-			sourceTree = "<group>";
-		};
 		A719CD5619F6D5030019E866 /* FileSystemTestHelpers */ = {
 			isa = PBXGroup;
 			children = (
@@ -3108,6 +3100,14 @@
 				A769C3F61A13D69500698D0C /* WebBrowser.storyboard */,
 			);
 			path = "Web View";
+			sourceTree = "<group>";
+		};
+		A77AD4C41A1EFA3D00142F24 /* Automation */ = {
+			isa = PBXGroup;
+			children = (
+				A77AD4C51A1EFA3D00142F24 /* VAutomation.h */,
+			);
+			path = Automation;
 			sourceTree = "<group>";
 		};
 		A781499919E3483E00D89B90 /* Followers */ = {

@@ -19,7 +19,7 @@
 #import "VCreatePollViewController.h"
 #import "VAuthorizationViewControllerFactory.h"
 #import "UIActionSheet+VBlocks.h"
-#import "VAccessibilityConstants.h"
+#import "VAutomation.h"
 
 static const char kNavHeaderViewKey;
 static const char kNavHeaderYConstraintKey;
@@ -220,7 +220,7 @@ static const char kUploadProgressYConstraintKey;
     UIButton *button = [self.navHeaderView setRightButtonImage:image
                                  withAction:@selector(createSequenceAction:)
                                                       onTarget:self];
-    button.accessibilityIdentifier = kVAccessibilityIdAddPost;
+    button.accessibilityIdentifier = kViewIdentifierAddPost;
 
 }
 

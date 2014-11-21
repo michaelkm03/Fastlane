@@ -28,7 +28,7 @@
 #import "VTOSViewController.h"
 
 #import "UIAlertView+VBlocks.h"
-#import "VAccessibilityConstants.h"
+#import "VAutomation.h"
 
 NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreateProfileAborted";
 
@@ -163,12 +163,12 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
     self.backButton.imageView.image = [self.backButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     
     // Accessibility IDs
-    self.doneButton.accessibilityIdentifier = kVAccessibilityIdProfileDone;
-    self.usernameTextField.accessibilityIdentifier = kVAccessibilityIdProfileUsernameField;
-    self.locationTextField.accessibilityIdentifier = kVAccessibilityIdProfileLocationField;
-    self.taglineTextView.accessibilityIdentifier = kVAccessibilityIdProfileTaglineField;
-    self.agreeSwitch.accessibilityIdentifier = kVAccessibilityIdProfileAgeAgreeSwitch;
-    self.profileImageView.accessibilityIdentifier = kVAccessibilityIdProfilSelectImage;
+    self.doneButton.accessibilityIdentifier = kViewIdentifierProfileDone;
+    self.usernameTextField.accessibilityIdentifier = kViewIdentifierProfileUsernameField;
+    self.locationTextField.accessibilityIdentifier = kViewIdentifierProfileLocationField;
+    self.taglineTextView.accessibilityIdentifier = kViewIdentifierProfileTaglineField;
+    self.agreeSwitch.accessibilityIdentifier = kViewIdentifierProfileAgeAgreeSwitch;
+    self.profileImageView.accessibilityIdentifier = kViewIdentifierProfilSelectImage;
 }
 
 - (void)viewWillAppear:(BOOL)animated

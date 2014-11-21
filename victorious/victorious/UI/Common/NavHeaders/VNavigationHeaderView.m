@@ -10,7 +10,7 @@
 
 #import "VThemeManager.h"
 #import "VSettingManager.h"
-#import "VAccessibilityConstants.h"
+#import "VAutomation.h"
 
 @interface VNavigationHeaderView ()
 
@@ -52,8 +52,8 @@
 
 - (void)awakeFromNib
 {
-    self.backButton.accessibilityIdentifier = kVAccessibilityIdGenericBack;
-    self.menuButton.accessibilityIdentifier = kVAccessibilityIdMainMenu;
+    self.backButton.accessibilityIdentifier = kViewIdentifierGenericBack;
+    self.menuButton.accessibilityIdentifier = kViewIdentifierMainMenu;
 }
 
 - (void)applyTheme

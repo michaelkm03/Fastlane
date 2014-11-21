@@ -22,7 +22,7 @@
 #import "VLoginWithEmailViewController.h"
 #import "VSignupWithEmailViewController.h"
 #import "VObjectManager.h"
-#import "VAccessibilityConstants.h"
+#import "VAutomation.h"
 
 @import Accounts;
 @import Social;
@@ -75,9 +75,9 @@
     self.twitterButtonLabel.textColor = [UIColor whiteColor];
     self.signupWithEmailButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
     
-    self.fauxEmailLoginButton.accessibilityIdentifier = kVAccessibilityIdLoginSelectEmail;
-    self.fauxPasswordLoginButton.accessibilityIdentifier = kVAccessibilityIdLoginSelectPassword;
-    self.signupWithEmailButton.accessibilityIdentifier = kVAccessibilityIdLoginSignUp;
+    self.fauxEmailLoginButton.accessibilityIdentifier = kViewIdentifierLoginSelectEmail;
+    self.fauxPasswordLoginButton.accessibilityIdentifier = kViewIdentifierLoginSelectPassword;
+    self.signupWithEmailButton.accessibilityIdentifier = kViewIdentifierLoginSignUp;
     
     [self.transitionPlaceholder addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(emailClicked:)]];
     self.transitionPlaceholder.userInteractionEnabled = YES;

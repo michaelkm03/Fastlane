@@ -19,6 +19,7 @@ static NSString * const kMenuKey = @"menu";
 // Menu properties
 static NSString * const kItemsKey = @"items";
 static NSString * const kTitleKey = @"title";
+static NSString * const kIdentifierKey = @"identifier";
 static NSString * const kDestinationKey = @"destination";
 
 // Stream properties
@@ -77,6 +78,7 @@ static NSString * const kUserSpecificKey = @"isUserSpecific";
         kItemsKey: @[
             @[
                 @{
+                    kIdentifierKey: @"Menu Home",
                     kTitleKey: NSLocalizedString(@"Home", @""),
                     kDestinationKey: @{
                         kClassNameKey: @"stream.screen",
@@ -103,6 +105,7 @@ static NSString * const kUserSpecificKey = @"isUserSpecific";
                 },
                 [self ownerStreamMenuItem],
                 @{
+                    kIdentifierKey: @"Menu Community",
                     kTitleKey: NSLocalizedString(@"Community", @""),
                     kDestinationKey: @{
                         kClassNameKey: @"stream.screen",
@@ -122,6 +125,7 @@ static NSString * const kUserSpecificKey = @"isUserSpecific";
                     }
                 },
                 @{
+                    kIdentifierKey: @"Menu Discover",
                     kTitleKey: NSLocalizedString(@"Discover", @""),
                     kDestinationKey: @{
                         kClassNameKey: @"discover.screen"
@@ -130,18 +134,21 @@ static NSString * const kUserSpecificKey = @"isUserSpecific";
             ],
             @[
                 @{
+                    kIdentifierKey: @"Menu Inbox",
                     kTitleKey: NSLocalizedString(@"Inbox", @""),
                     kDestinationKey: @{
                         kClassNameKey: @"inbox.screen"
                     }
                 },
                 @{
+                    kIdentifierKey: @"Menu Profile",
                     kTitleKey: NSLocalizedString(@"Profile", @""),
                     kDestinationKey: @{
                         kClassNameKey: @"currentUserProfile.screen"
                     }
                 },
                 @{
+                    kIdentifierKey: @"Menu Settings",
                     kTitleKey: NSLocalizedString(@"Settings", @""),
                     kDestinationKey: @{
                         kClassNameKey: @"settings.screen"
@@ -182,6 +189,7 @@ static NSString * const kUserSpecificKey = @"isUserSpecific";
     if ([channelsEnabled isKindOfClass:[NSNumber class]] && [channelsEnabled boolValue])
     {
         return @{
+            kIdentifierKey: @"Menu Channels",
             kTitleKey: NSLocalizedString(@"Channels", @""),
             kDestinationKey: @{
                 kClassNameKey: @"streamDirectory.screen",
@@ -193,6 +201,7 @@ static NSString * const kUserSpecificKey = @"isUserSpecific";
     else
     {
         return @{
+            kIdentifierKey: @"Menu Channel",
             kTitleKey: NSLocalizedString(@"Channel", @""),
             kDestinationKey: @{
                 kClassNameKey: @"stream.screen",
