@@ -9,8 +9,8 @@
 
 SCHEME=$1
 CONFIGURATION=$2
-DEFAULT_PROVISIONING_PROFILE_NAME="Victorious Ad Hoc 1/15/14"
-CODESIGN_ID="iPhone Distribution: Victorious Inc. (82T26U698A)"
+DEFAULT_PROVISIONING_PROFILE_NAME="Victorious Wildcard In-House Distribution"
+CODESIGN_ID="iPhone Distribution: Victorious, Inc"
 
 shift 2
 
