@@ -1154,8 +1154,8 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     }
     
     // We already have a selected media does the user want to discard and re-take?
-    NSString *actionSheetTitle = NSLocalizedString(@"Discard selected media and re-take?", @"Discard selected picture or video and re-take?");
-    NSString *discardActionTitle = NSLocalizedString(@"Discard", @"Discard the previously selected item. This is a destructive operation.");
+    NSString *actionSheetTitle = NSLocalizedString(@"Delete this content and select something else?", @"User has already selected media (pictire/video) as an attachment for commenting.");
+    NSString *discardActionTitle = NSLocalizedString(@"Delete", @"Delete the previously selected item. This is a destructive operation.");
     NSString *cancelActionTitle = NSLocalizedString(@"Cancel", @"Cancel button.");
     
     if (UI_IS_IOS8_AND_HIGHER)
@@ -1164,13 +1164,16 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
                                                                                  message:nil
                                                                           preferredStyle:UIAlertControllerStyleActionSheet];
         
-        UIAlertAction *discardAction = [UIAlertAction actionWithTitle:discardActionTitle
+        UIAlertAction *deleteAction = [UIAlertAction actionWithTitle:discardActionTitle
                                                                 style:UIAlertActionStyleDestructive
                                                               handler:^(UIAlertAction *action)
                                         {
+                                            self.mediaURL = nil;
+                                            [self.textEntryView setSelectedThumbnail:nil];
                                             showCamera();
                                         }];
-        [alertController addAction:discardAction];
+        [alertController addAction:deleteAction];
+        
         UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:cancelActionTitle
                                                                style:UIAlertActionStyleCancel
                                                              handler:^(UIAlertAction *action)
