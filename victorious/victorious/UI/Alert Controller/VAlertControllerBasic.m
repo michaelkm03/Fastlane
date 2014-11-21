@@ -15,27 +15,12 @@
 @property (nonatomic, strong) VAlertAction *cancelAction;
 @property (nonatomic, strong) VAlertAction *destructiveAction;
 @property (nonatomic, strong) NSMutableArray *defaultActions;
-@property (nonatomic, strong) NSString *message;
-@property (nonatomic, strong) NSString *title;
 @property (nonatomic, readonly) UIAlertView *alertView;
 @property (nonatomic, readonly) UIActionSheet *actionSheet;
-@property (nonatomic, readonly, assign) VAlertControllerStyle style;
 
 @end
 
 @implementation VAlertControllerBasic
-
-- (instancetype)initWithTitle:(NSString *)title message:(NSString *)message style:(VAlertControllerStyle)style
-{
-    self = [super init];
-    if (self)
-    {
-        _style = style;
-        _title = title;
-        _message = message;
-    }
-    return self;
-}
 
 - (void)addAction:(VAlertAction *)action
 {
@@ -51,6 +36,10 @@
             
         case VAlertActionStyleDefault:
         default:
+            if ( self.defaultActions == nil )
+            {
+                self.defaultActions = [[NSMutableArray alloc] init];
+            }
             [self.defaultActions addObject:action];
             break;
     }

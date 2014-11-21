@@ -10,6 +10,16 @@
 #import "VAlertControllerAdvanced.h"
 #import "VAlertControllerBasic.h"
 
+static const BOOL kForceBasicAlertController = NO;
+
+@interface VAlertController ()
+
+@property (nonatomic, readwrite, strong) NSString *title;
+@property (nonatomic, readwrite, strong) NSString *message;
+@property (nonatomic, readwrite, assign) VAlertControllerStyle style;
+
+@end
+
 @implementation VAlertController
 
 + (VAlertController *)alertControllerWithTitle:(NSString *)title message:(NSString *)message style:(VAlertControllerStyle)style
@@ -26,16 +36,21 @@
     return nil;
 }
 
-+ (BOOL)canUseAlertController
-{
-    return NSClassFromString( @"UIAlertController" ) != nil;
-}
-
 - (instancetype)initWithTitle:(NSString *)title message:(NSString *)message style:(VAlertControllerStyle)style
 {
-    NSAssert( NO, @"This method must be overidden in a subclass." );
-    
-    return nil;
+    self = [super init];
+    if (self)
+    {
+        _style = style;
+        _title = title;
+        _message = message;
+    }
+    return self;
+}
+
++ (BOOL)canUseAlertController
+{
+    return NSClassFromString( @"UIAlertController" ) != nil && !kForceBasicAlertController;
 }
 
 - (void)addAction:(VAlertAction *)action

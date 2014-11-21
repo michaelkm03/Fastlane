@@ -411,6 +411,7 @@
 		A77AD4F01A1FD8B600142F24 /* VAlertController.m in Sources */ = {isa = PBXBuildFile; fileRef = A77AD4E81A1FD8B600142F24 /* VAlertController.m */; };
 		A77AD4F11A1FD8B600142F24 /* VAlertControllerAdvanced.m in Sources */ = {isa = PBXBuildFile; fileRef = A77AD4EA1A1FD8B600142F24 /* VAlertControllerAdvanced.m */; };
 		A77AD4F21A1FD8B600142F24 /* VAlertControllerBasic.m in Sources */ = {isa = PBXBuildFile; fileRef = A77AD4EC1A1FD8B600142F24 /* VAlertControllerBasic.m */; };
+		A77AD4F71A1FDABA00142F24 /* VAlertControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A77AD4F61A1FDABA00142F24 /* VAlertControllerTests.m */; };
 		A790C8291A01980F00C4F208 /* VTrackingEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = A790C8231A01980F00C4F208 /* VTrackingEvent.m */; };
 		A790C82A1A01980F00C4F208 /* VTrackingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A790C8251A01980F00C4F208 /* VTrackingManager.m */; };
 		A7976D0719FAE8EA00B5A145 /* AVAsset+Orientation.m in Sources */ = {isa = PBXBuildFile; fileRef = A7976D0619FAE8EA00B5A145 /* AVAsset+Orientation.m */; };
@@ -1308,6 +1309,7 @@
 		A77AD4EA1A1FD8B600142F24 /* VAlertControllerAdvanced.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VAlertControllerAdvanced.m; path = "Alert Controller/VAlertControllerAdvanced.m"; sourceTree = "<group>"; };
 		A77AD4EB1A1FD8B600142F24 /* VAlertControllerBasic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VAlertControllerBasic.h; path = "Alert Controller/VAlertControllerBasic.h"; sourceTree = "<group>"; };
 		A77AD4EC1A1FD8B600142F24 /* VAlertControllerBasic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VAlertControllerBasic.m; path = "Alert Controller/VAlertControllerBasic.m"; sourceTree = "<group>"; };
+		A77AD4F61A1FDABA00142F24 /* VAlertControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAlertControllerTests.m; sourceTree = "<group>"; };
 		A7814A0919E5FD0600D89B90 /* VPasswordValidationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPasswordValidationTests.m; sourceTree = "<group>"; };
 		A790C8221A01980F00C4F208 /* VTrackingEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTrackingEvent.h; sourceTree = "<group>"; };
 		A790C8231A01980F00C4F208 /* VTrackingEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTrackingEvent.m; sourceTree = "<group>"; };
@@ -3305,6 +3307,7 @@
 				A7AB4FE819F5A6A300BFFE35 /* VVoteTypeFetcherTests.m */,
 				D871A4011A157D650046A12C /* VVRTCUserPostedAtFormatterTests.m */,
 				A769C3F41A131F5C00698D0C /* VWebViewFactoryTests.m */,
+				A77AD4F61A1FDABA00142F24 /* VAlertControllerTests.m */,
 			);
 			path = victoriousTests;
 			sourceTree = "<group>";
@@ -4736,6 +4739,7 @@
 				A771D0241A043AE8007CB0A5 /* VTrackingManagerTests.m in Sources */,
 				A769C3F91A13E7A400698D0C /* VSequenceWebContentTests.m in Sources */,
 				A720052B1A03073B00285A9C /* VMarqueeControllerTests.m in Sources */,
+				A77AD4F71A1FDABA00142F24 /* VAlertControllerTests.m in Sources */,
 				A72005401A03073B00285A9C /* VSuggestedPeopleTests.m in Sources */,
 				A743E7EC1A082AD200339CB3 /* VEmailValidatorTests.m in Sources */,
 				0343AF841A143FD20025B9F8 /* NSDate+timeSinceTests.m in Sources */,

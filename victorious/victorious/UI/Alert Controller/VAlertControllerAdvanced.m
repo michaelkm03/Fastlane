@@ -10,40 +10,38 @@
 
 @interface VAlertControllerAdvanced()
 
-@property (nonatomic, strong) UIAlertController *alertController;
+@property (nonatomic, strong) NSMutableArray *actions;
 
 @end
 
 @implementation VAlertControllerAdvanced
 
-- (instancetype)initWithTitle:(NSString *)title message:(NSString *)message style:(VAlertControllerStyle)style
-{
-    self = [super init];
-    if (self)
-    {
-        UIAlertControllerStyle preferredStyle = [self styleFromStyle:style];
-        self.alertController = [UIAlertController alertControllerWithTitle:title
-                                                                   message:message
-                                                            preferredStyle:preferredStyle];
-    }
-    return self;
-}
-
 #pragma mark - VAlertController Protocol
 
 - (void)addAction:(VAlertAction *)action
 {
-    NSParameterAssert( self.alertController != nil );
     NSParameterAssert( action != nil );
     
-    [self.alertController addAction:[self actionFromAction:action]];
+    if ( self.actions == nil )
+    {
+        self.actions = [[NSMutableArray alloc] init];
+    }
+    
+    [self.actions addObject:action];
 }
 
 - (void)presentInViewController:(UIViewController *)viewController animated:(BOOL)animated completion:(void (^)(void))completion
 {
-    NSParameterAssert( self.alertController != nil );
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:self.title
+                                                                             message:self.message
+                                                                      preferredStyle:[self styleFromStyle:self.style]];
     
-    [viewController presentViewController:self.alertController animated:animated completion:completion];
+    for ( VAlertAction *action in self.actions )
+    {
+        [alertController addAction:[self actionFromAction:action]];
+    }
+    
+    [viewController presentViewController:alertController animated:animated completion:completion];
 }
 
 #pragma mark - Helpers
