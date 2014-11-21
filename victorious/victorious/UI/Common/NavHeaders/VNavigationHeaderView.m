@@ -114,19 +114,15 @@
     self.headerLabel.text = self.headerText;
 }
 
+- (void)setShowHeaderLogoImage:(BOOL)showHeaderLogoImage
+{
+    _showHeaderLogoImage = showHeaderLogoImage;
+    [self updateHeaderImage];
+}
+
 - (void)updateUIForVC:(UIViewController *)viewController
 {
-    UIImage *headerImage = [[VThemeManager sharedThemeManager] themedImageForKey:VThemeManagerHomeHeaderImageKey];
-    if (self.showHeaderLogoImage && headerImage)
-    {
-        self.headerImageView.image = headerImage;
-        self.headerLabel.hidden = YES;
-    }
-    else
-    {
-        self.headerImageView.hidden = YES;
-        self.headerLabel.text = self.headerText;
-    }
+    [self updateHeaderImage];
     
     if (viewController.navigationController.viewControllers.count <= 1)
     {
@@ -138,6 +134,23 @@
         self.backButton.hidden = NO;
         self.menuButton.hidden = YES;
     }
+}
+
+- (void)updateHeaderImage
+{
+    UIImage *headerImage = [[VThemeManager sharedThemeManager] themedImageForKey:VThemeManagerHomeHeaderImageKey];
+    if (self.showHeaderLogoImage && headerImage)
+    {
+        self.headerImageView.image = headerImage;
+        self.headerImageView.hidden = NO;
+        self.headerLabel.hidden = YES;
+    }
+    else
+    {
+        self.headerImageView.hidden = YES;
+        self.headerLabel.text = self.headerText;
+    }
+    
 }
 
 - (IBAction)pressedBack:(id)sender
