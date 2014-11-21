@@ -34,29 +34,36 @@
 {
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:self.title
                                                                              message:self.message
-                                                                      preferredStyle:[self styleFromStyle:self.style]];
+                                                                      preferredStyle:[self systemStyleFromStyle:self.style]];
     
     for ( VAlertAction *action in self.actions )
     {
-        [alertController addAction:[self actionFromAction:action]];
+        [alertController addAction:[self systemActionFromAction:action]];
     }
     
     [viewController presentViewController:alertController animated:animated completion:completion];
 }
 
-#pragma mark - Helpers
-
-- (UIAlertAction *)actionFromAction:(VAlertAction *)action
+- (void)removeAllActions
 {
-    return [UIAlertAction actionWithTitle:action.title
-                                    style:[self actionStyleFromStyle:action.style]
-                                  handler:^(UIAlertAction *alertAction)
-            {
-                [action execute];
-            }];
+    self.actions = nil;
 }
 
-- (UIAlertControllerStyle)styleFromStyle:(VAlertControllerStyle)style
+#pragma mark - Helpers
+
+- (UIAlertAction *)systemActionFromAction:(VAlertAction *)action
+{
+    UIAlertAction *systemAction = [UIAlertAction actionWithTitle:action.title
+                                                           style:[self systemActionStyleFromActionStyle:action.style]
+                                                         handler:^(UIAlertAction *alertAction)
+                                   {
+                                       [action execute];
+                                   }];
+    systemAction.enabled = action.enabled;
+    return systemAction;
+}
+
+- (UIAlertControllerStyle)systemStyleFromStyle:(VAlertControllerStyle)style
 {
     switch (style)
     {
@@ -67,7 +74,7 @@
     }
 }
 
-- (UIAlertActionStyle)actionStyleFromStyle:(VAlertActionStyle)style
+- (UIAlertActionStyle)systemActionStyleFromActionStyle:(VAlertActionStyle)style
 {
     switch (style)
     {

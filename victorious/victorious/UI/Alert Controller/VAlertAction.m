@@ -18,6 +18,7 @@
         _title = title;
         _style = style;
         _handler = handler;
+        _enabled = YES;
     }
     return self;
 }

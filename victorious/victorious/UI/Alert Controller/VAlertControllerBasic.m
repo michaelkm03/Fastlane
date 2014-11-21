@@ -45,6 +45,13 @@
     }
 }
 
+- (void)removeAllActions
+{
+    self.defaultActions = nil;
+    self.cancelAction = nil;
+    self.destructiveAction = nil;
+}
+
 - (void)presentInViewController:(UIViewController *)viewController animated:(BOOL)animated completion:(void (^)(void))completion
 {
     if ( self.style == VAlertControllerStyleActionSheet )
@@ -59,6 +66,10 @@
 
 - (UIActionSheet *)actionSheet
 {
+    BOOL isStyleValid = self.style == VAlertControllerStyleActionSheet;
+    BOOL isContentValid = self.cancelAction != nil || self.destructiveAction != nil  || self.defaultActions.count > 0;
+    NSParameterAssert( isStyleValid && isContentValid );
+    
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:self.title
                                                     cancelButtonTitle:self.cancelAction != nil ? self.cancelAction.title : nil
                                                        onCancelButton:^void
@@ -91,6 +102,10 @@
 
 - (UIAlertView *)alertView
 {
+    BOOL isStyleValid = self.style == VAlertControllerStyleAlert;
+    BOOL isContentValid = self.cancelAction != nil || self.defaultActions.count > 0;
+    NSParameterAssert( isStyleValid && isContentValid );
+    
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:self.title
                                                         message:self.message
                                               cancelButtonTitle:self.cancelAction != nil ? self.cancelAction.title : nil

@@ -58,6 +58,11 @@ static const BOOL kForceBasicAlertController = NO;
     NSAssert( NO, @"This method must be overidden in a subclass." );
 }
 
+- (void)removeAllActions
+{
+    NSAssert( NO, @"This method must be overidden in a subclass." );
+}
+
 - (void)presentInViewController:(UIViewController *)viewController animated:(BOOL)animated completion:(void (^)(void))completion
 {
     NSAssert( NO, @"This method must be overidden in a subclass." );

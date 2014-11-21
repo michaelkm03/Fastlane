@@ -15,7 +15,8 @@
 
 @interface VAlertControllerTests : XCTestCase
 
-@property (nonatomic, strong) VAlertController *alertController;
+@property (nonatomic, strong) NSString *title;
+@property (nonatomic, strong) NSString *message;
 
 @end
 
@@ -24,6 +25,9 @@
 - (void)setUp
 {
     [super setUp];
+    
+    self.title = @"generic title";
+    self.message = @"generic message";
 }
 
 - (void)tearDown
@@ -33,7 +37,7 @@
 
 - (void)testCreationAdvanced
 {
-    __block id alertController = nil;
+    __block VAlertController *alertController = nil;
     __block BOOL blockWasCalled = NO;
     [VAlertController v_swizzleClassMethod:@selector(canUseAlertController) withBlock:^BOOL
      {
@@ -41,7 +45,9 @@
      }
                               executeBlock:^
      {
-         alertController = [VAlertController alertControllerWithTitle:@"" message:@"" style:VAlertControllerStyleActionSheet];
+         alertController = [VAlertController alertControllerWithTitle:self.title
+                                                              message:self.message
+                                                                style:VAlertControllerStyleActionSheet];
          XCTAssertNotNil( alertController );
          XCTAssert( [alertController isMemberOfClass:[VAlertControllerAdvanced class]] );
          XCTAssert( [alertController isKindOfClass:[VAlertController class]] );
@@ -52,7 +58,7 @@
 
 - (void)testCreationBasic
 {
-    __block id alertController = nil;
+    __block VAlertController *alertController = nil;
     __block BOOL blockWasCalled = NO;
     [VAlertController v_swizzleClassMethod:@selector(canUseAlertController) withBlock:^BOOL
      {
@@ -60,13 +66,27 @@
      }
                               executeBlock:^
      {
-         alertController = [VAlertController alertControllerWithTitle:@"" message:@"" style:VAlertControllerStyleActionSheet];
+         alertController = [VAlertController alertControllerWithTitle:self.title
+                                                              message:self.message
+                                                                style:VAlertControllerStyleActionSheet];
          XCTAssertNotNil( alertController );
          XCTAssert( [alertController isMemberOfClass:[VAlertControllerBasic class]] );
          XCTAssert( [alertController isKindOfClass:[VAlertController class]] );
          blockWasCalled = YES;
      }];
     XCTAssert( blockWasCalled );
+}
+
+- (void)testInit
+{
+    VAlertController *alertController = nil;
+    
+    alertController = [VAlertController alertControllerWithTitle:self.title
+                                                         message:self.message
+                                                           style:VAlertControllerStyleActionSheet];
+    XCTAssertEqualObjects( self.title, alertController.title );
+    XCTAssertEqualObjects( self.message, alertController.message );
+    XCTAssertEqual( VAlertControllerStyleActionSheet, alertController.style );
 }
 
 @end
