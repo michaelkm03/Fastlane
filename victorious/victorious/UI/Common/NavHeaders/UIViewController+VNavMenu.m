@@ -18,7 +18,8 @@
 #import "VCameraPublishViewController.h"
 #import "VCreatePollViewController.h"
 #import "VAuthorizationViewControllerFactory.h"
-#import "UIActionSheet+VBlocks.h"
+#import "VAlertController.h"
+#import "VThemeManager.h"
 
 static const char kNavHeaderViewKey;
 static const char kNavHeaderYConstraintKey;
@@ -229,26 +230,40 @@ static const char kUploadProgressYConstraintKey;
         return;
     }
     
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                    cancelButtonTitle:NSLocalizedString(@"CancelButton", @"Cancel button")
-                                                       onCancelButton:nil
-                                               destructiveButtonTitle:nil
-                                                  onDestructiveButton:nil
-                                           otherButtonTitlesAndBlocks:
-                                  NSLocalizedString(@"Create a Video Post", @""), ^(void)
-                                  {
-                                      [self presentCameraViewController:[VCameraViewController cameraViewController]];
-                                  },
-                                  NSLocalizedString(@"Create an Image Post", @""), ^(void)
-                                  {
-                                      [self presentCameraViewController:[VCameraViewController cameraViewControllerStartingWithStillCapture]];
-                                  },
-                                  NSLocalizedString(@"Create a Poll", @""), ^(void)
-                                  {
-                                      VCreatePollViewController *createViewController = [VCreatePollViewController newCreatePollViewController];
-                                      [self.navigationController pushViewController:createViewController animated:YES];
-                                  }, nil];
-    [actionSheet showInView:self.view];
+    [self showContentTypeSelection];
+}
+
+- (void)showContentTypeSelection
+{
+    VAlertController *alertControler = [VAlertController alertControllerWithTitle:nil
+                                                                          message:nil
+                                                                            style:VAlertControllerStyleActionSheet];
+    [alertControler addAction:[[VAlertAction alloc] initWithTitle:NSLocalizedString(@"CancelButton", @"Cancel button")
+                                                            style:VAlertActionStyleCancel
+                                                          handler:nil]];
+    [alertControler addAction:[[VAlertAction alloc] initWithTitle: NSLocalizedString(@"Create a Video Post", @"")
+                                                            style:VAlertActionStyleDefault
+                                                          handler:^(VAlertAction *action)
+                               {
+                                   
+                                   [self presentCameraViewController:[VCameraViewController cameraViewController]];
+                               }]];
+    [alertControler addAction:[[VAlertAction alloc] initWithTitle: NSLocalizedString(@"Create an Image Post", @"")
+                                                            style:VAlertActionStyleDefault
+                                                          handler:^(VAlertAction *action)
+                               {
+                                   
+                                   [self presentCameraViewController:[VCameraViewController cameraViewControllerStartingWithStillCapture]];
+                               }]];
+    [alertControler addAction:[[VAlertAction alloc] initWithTitle: NSLocalizedString(@"Create a Poll", @"")
+                                                            style:VAlertActionStyleDefault
+                                                          handler:^(VAlertAction *action)
+                               {
+                                   
+                                   VCreatePollViewController *createViewController = [VCreatePollViewController newCreatePollViewController];
+                                   [self.navigationController pushViewController:createViewController animated:YES];
+                               }]];
+    [alertControler presentInViewController:self animated:YES completion:nil];
 }
 
 - (void)presentCameraViewController:(VCameraViewController *)cameraViewController

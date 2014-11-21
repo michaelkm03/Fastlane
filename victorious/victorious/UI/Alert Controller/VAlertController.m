@@ -44,6 +44,9 @@ static const BOOL kForceBasicAlertController = NO;
         _style = style;
         _title = title;
         _message = message;
+        
+        // Default iOS7 blue color
+        _tintColor = [UIColor colorWithRed:0.0 green:122.0/255.0 blue:1.0 alpha:1.0];
     }
     return self;
 }

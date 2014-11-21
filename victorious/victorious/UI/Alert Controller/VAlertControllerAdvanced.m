@@ -16,7 +16,7 @@
 
 @implementation VAlertControllerAdvanced
 
-#pragma mark - VAlertController Protocol
+#pragma mark - VAlertController overrides
 
 - (void)addAction:(VAlertAction *)action
 {
@@ -35,10 +35,12 @@
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:self.title
                                                                              message:self.message
                                                                       preferredStyle:[self systemStyleFromStyle:self.style]];
+    alertController.view.tintColor = self.tintColor;
     
     for ( VAlertAction *action in self.actions )
     {
-        [alertController addAction:[self systemActionFromAction:action]];
+        UIAlertAction *systemAction = [self systemActionFromAction:action];
+        [alertController addAction:systemAction];
     }
     
     [viewController presentViewController:alertController animated:animated completion:completion];
@@ -55,7 +57,7 @@
 {
     UIAlertAction *systemAction = [UIAlertAction actionWithTitle:action.title
                                                            style:[self systemActionStyleFromActionStyle:action.style]
-                                                         handler:^(UIAlertAction *alertAction)
+                                                         handler:^(UIAlertAction *systemAction)
                                    {
                                        [action execute];
                                    }];

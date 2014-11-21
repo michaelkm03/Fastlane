@@ -76,4 +76,9 @@ typedef NS_ENUM(NSInteger, VAlertControllerStyle)
  */
 @property (nonatomic, readonly, assign) VAlertControllerStyle style;
 
+/**
+ Sets the tint color of the alert view or actionsheet
+ */
+@property (nonatomic, strong) UIColor *tintColor;
+
 @end

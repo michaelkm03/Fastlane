@@ -22,6 +22,8 @@
 
 @implementation VAlertControllerBasic
 
+#pragma mark - VAlertController overrides
+
 - (void)addAction:(VAlertAction *)action
 {
     switch (action.style)
@@ -63,6 +65,8 @@
         [self.alertView show];
     }
 }
+
+#pragma mark - Helpers
 
 - (UIActionSheet *)actionSheet
 {
