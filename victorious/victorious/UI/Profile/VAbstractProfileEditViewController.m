@@ -109,7 +109,7 @@
     [backgroundImageView setBlurredImageWithURL:[NSURL URLWithString:profile.pictureUrl]
                                placeholderImage:[UIImage imageNamed:@"profileGenericUser"]
                                       tintColor:[UIColor colorWithWhite:1.0 alpha:0.3]];
-    
+    backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
     self.tableView.backgroundView = backgroundImageView;
 
     
