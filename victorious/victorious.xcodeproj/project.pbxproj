@@ -405,8 +405,6 @@
 		A769C3F71A13D69500698D0C /* WebBrowser.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A769C3F61A13D69500698D0C /* WebBrowser.storyboard */; };
 		A769C3F91A13E7A400698D0C /* VSequenceWebContentTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A769C3F81A13E7A400698D0C /* VSequenceWebContentTests.m */; };
 		A771D0241A043AE8007CB0A5 /* VTrackingManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A771D0231A043AE8007CB0A5 /* VTrackingManagerTests.m */; };
-		A77AD4ED1A1FD8B600142F24 /* UIActionSheet+VBlocks.m in Sources */ = {isa = PBXBuildFile; fileRef = A77AD4E21A1FD8B600142F24 /* UIActionSheet+VBlocks.m */; };
-		A77AD4EE1A1FD8B600142F24 /* UIAlertView+VBlocks.m in Sources */ = {isa = PBXBuildFile; fileRef = A77AD4E41A1FD8B600142F24 /* UIAlertView+VBlocks.m */; };
 		A77AD4EF1A1FD8B600142F24 /* VAlertAction.m in Sources */ = {isa = PBXBuildFile; fileRef = A77AD4E61A1FD8B600142F24 /* VAlertAction.m */; };
 		A77AD4F01A1FD8B600142F24 /* VAlertController.m in Sources */ = {isa = PBXBuildFile; fileRef = A77AD4E81A1FD8B600142F24 /* VAlertController.m */; };
 		A77AD4F11A1FD8B600142F24 /* VAlertControllerAdvanced.m in Sources */ = {isa = PBXBuildFile; fileRef = A77AD4EA1A1FD8B600142F24 /* VAlertControllerAdvanced.m */; };
@@ -414,6 +412,8 @@
 		A77AD4F71A1FDABA00142F24 /* VAlertControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A77AD4F61A1FDABA00142F24 /* VAlertControllerTests.m */; };
 		A77AD4F91A1FEDD100142F24 /* VAlertControllerBasicTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A77AD4F81A1FEDD100142F24 /* VAlertControllerBasicTests.m */; };
 		A77AD4FB1A1FF33100142F24 /* VAlertControllerAdvancedTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A77AD4FA1A1FF33100142F24 /* VAlertControllerAdvancedTests.m */; };
+		A77AD5011A2011E000142F24 /* UIActionSheet+VBlocks.m in Sources */ = {isa = PBXBuildFile; fileRef = A77AD4FE1A2011E000142F24 /* UIActionSheet+VBlocks.m */; };
+		A77AD5021A2011E000142F24 /* UIAlertView+VBlocks.m in Sources */ = {isa = PBXBuildFile; fileRef = A77AD5001A2011E000142F24 /* UIAlertView+VBlocks.m */; };
 		A790C8291A01980F00C4F208 /* VTrackingEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = A790C8231A01980F00C4F208 /* VTrackingEvent.m */; };
 		A790C82A1A01980F00C4F208 /* VTrackingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A790C8251A01980F00C4F208 /* VTrackingManager.m */; };
 		A7976D0719FAE8EA00B5A145 /* AVAsset+Orientation.m in Sources */ = {isa = PBXBuildFile; fileRef = A7976D0619FAE8EA00B5A145 /* AVAsset+Orientation.m */; };
@@ -1299,10 +1299,7 @@
 		A769C3F61A13D69500698D0C /* WebBrowser.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = WebBrowser.storyboard; sourceTree = "<group>"; };
 		A769C3F81A13E7A400698D0C /* VSequenceWebContentTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSequenceWebContentTests.m; sourceTree = "<group>"; };
 		A771D0231A043AE8007CB0A5 /* VTrackingManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTrackingManagerTests.m; sourceTree = "<group>"; };
-		A77AD4E11A1FD8B600142F24 /* UIActionSheet+VBlocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIActionSheet+VBlocks.h"; sourceTree = "<group>"; };
-		A77AD4E21A1FD8B600142F24 /* UIActionSheet+VBlocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIActionSheet+VBlocks.m"; sourceTree = "<group>"; };
-		A77AD4E31A1FD8B600142F24 /* UIAlertView+VBlocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertView+VBlocks.h"; sourceTree = "<group>"; };
-		A77AD4E41A1FD8B600142F24 /* UIAlertView+VBlocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertView+VBlocks.m"; sourceTree = "<group>"; };
+		A77AD4C51A1EFA3D00142F24 /* VAutomation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAutomation.h; sourceTree = "<group>"; };
 		A77AD4E51A1FD8B600142F24 /* VAlertAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VAlertAction.h; path = "Alert Controller/VAlertAction.h"; sourceTree = "<group>"; };
 		A77AD4E61A1FD8B600142F24 /* VAlertAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VAlertAction.m; path = "Alert Controller/VAlertAction.m"; sourceTree = "<group>"; };
 		A77AD4E71A1FD8B600142F24 /* VAlertController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VAlertController.h; path = "Alert Controller/VAlertController.h"; sourceTree = "<group>"; };
@@ -1314,6 +1311,10 @@
 		A77AD4F61A1FDABA00142F24 /* VAlertControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAlertControllerTests.m; sourceTree = "<group>"; };
 		A77AD4F81A1FEDD100142F24 /* VAlertControllerBasicTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAlertControllerBasicTests.m; sourceTree = "<group>"; };
 		A77AD4FA1A1FF33100142F24 /* VAlertControllerAdvancedTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAlertControllerAdvancedTests.m; sourceTree = "<group>"; };
+		A77AD4FD1A2011E000142F24 /* UIActionSheet+VBlocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIActionSheet+VBlocks.h"; sourceTree = "<group>"; };
+		A77AD4FE1A2011E000142F24 /* UIActionSheet+VBlocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIActionSheet+VBlocks.m"; sourceTree = "<group>"; };
+		A77AD4FF1A2011E000142F24 /* UIAlertView+VBlocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertView+VBlocks.h"; sourceTree = "<group>"; };
+		A77AD5001A2011E000142F24 /* UIAlertView+VBlocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertView+VBlocks.m"; sourceTree = "<group>"; };
 		A7814A0919E5FD0600D89B90 /* VPasswordValidationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPasswordValidationTests.m; sourceTree = "<group>"; };
 		A790C8221A01980F00C4F208 /* VTrackingEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTrackingEvent.h; sourceTree = "<group>"; };
 		A790C8231A01980F00C4F208 /* VTrackingEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTrackingEvent.m; sourceTree = "<group>"; };
@@ -1844,6 +1845,7 @@
 			isa = PBXGroup;
 			children = (
 				A77AD4C91A1FC66300142F24 /* Alert Controller */,
+				A77AD4C41A1EFA3D00142F24 /* Automation */,
 				0314D2EB19B46B5D00FA363C /* Camera */,
 				0314D33E19B46B5E00FA363C /* Comments */,
 				0314D34819B46B5E00FA363C /* Common */,
@@ -3119,10 +3121,18 @@
 			path = "Web View";
 			sourceTree = "<group>";
 		};
+		A77AD4C41A1EFA3D00142F24 /* Automation */ = {
+			isa = PBXGroup;
+			children = (
+				A77AD4C51A1EFA3D00142F24 /* VAutomation.h */,
+			);
+			path = Automation;
+			sourceTree = "<group>";
+		};
 		A77AD4C91A1FC66300142F24 /* Alert Controller */ = {
 			isa = PBXGroup;
 			children = (
-				A77AD4E01A1FD8B600142F24 /* Categories */,
+				A77AD4FC1A2011E000142F24 /* Categories */,
 				A77AD4E51A1FD8B600142F24 /* VAlertAction.h */,
 				A77AD4E61A1FD8B600142F24 /* VAlertAction.m */,
 				A77AD4E71A1FD8B600142F24 /* VAlertController.h */,
@@ -3135,13 +3145,13 @@
 			name = "Alert Controller";
 			sourceTree = "<group>";
 		};
-		A77AD4E01A1FD8B600142F24 /* Categories */ = {
+		A77AD4FC1A2011E000142F24 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
-				A77AD4E11A1FD8B600142F24 /* UIActionSheet+VBlocks.h */,
-				A77AD4E21A1FD8B600142F24 /* UIActionSheet+VBlocks.m */,
-				A77AD4E31A1FD8B600142F24 /* UIAlertView+VBlocks.h */,
-				A77AD4E41A1FD8B600142F24 /* UIAlertView+VBlocks.m */,
+				A77AD4FD1A2011E000142F24 /* UIActionSheet+VBlocks.h */,
+				A77AD4FE1A2011E000142F24 /* UIActionSheet+VBlocks.m */,
+				A77AD4FF1A2011E000142F24 /* UIAlertView+VBlocks.h */,
+				A77AD5001A2011E000142F24 /* UIAlertView+VBlocks.m */,
 			);
 			name = Categories;
 			path = "Alert Controller/Categories";
@@ -4357,6 +4367,7 @@
 				0314D48219B46B5E00FA363C /* VCommentsContainerViewController.m in Sources */,
 				BE88FF911A00060E0064AB28 /* VSegmentedNavSelector.m in Sources */,
 				BE8AB6E719DB75C30048A6C0 /* VUser.m in Sources */,
+				A77AD5021A2011E000142F24 /* UIAlertView+VBlocks.m in Sources */,
 				D8C9CF2F19E4F417007B461E /* VHistogramCell.m in Sources */,
 				0314D46419B46B5E00FA363C /* VCameraPublishViewController.m in Sources */,
 				BE24782F193E9E8E0074191C /* VAbstractFilter+RestKit.m in Sources */,
@@ -4515,11 +4526,11 @@
 				0314D08C19B4690A00FA363C /* VDeeplinkManager.m in Sources */,
 				BE799BB419C8DF5B0023CE88 /* VAsset+OrderedSet.m in Sources */,
 				BE171D8C1868BE64004E5202 /* VAppDelegate.m in Sources */,
-				A77AD4EE1A1FD8B600142F24 /* UIAlertView+VBlocks.m in Sources */,
 				039ED29919C908F400305987 /* VCVideoPlayerToolbarSlider.m in Sources */,
 				BE171E151868C211004E5202 /* VNodeAction+RestKit.m in Sources */,
 				03CE670019B640CD0011BB9E /* VDeviceInfo.m in Sources */,
 				BE799BC219C93C210023CE88 /* VDirectoryViewController.m in Sources */,
+				A77AD5011A2011E000142F24 /* UIActionSheet+VBlocks.m in Sources */,
 				BE6C15251880A31A00469BA8 /* VAnswerAction.m in Sources */,
 				3F9B6657187F80780046F826 /* NSDate+timeSince.m in Sources */,
 				DBC45CD819F4CBD0003079C4 /* VAdVideoPlayerViewController.m in Sources */,
@@ -4542,7 +4553,6 @@
 				BE171E0C1868C211004E5202 /* VNode+Fetcher.m in Sources */,
 				D8E39BDF19CB7C80007FD86A /* VContentBackgroundSupplementaryView.m in Sources */,
 				D8E39BF119CB9D58007FD86A /* UIView+VShadows.m in Sources */,
-				A77AD4ED1A1FD8B600142F24 /* UIActionSheet+VBlocks.m in Sources */,
 				0314D47A19B46B5E00FA363C /* VFacebookPublishShareController.m in Sources */,
 				BE799B9519C8A91C0023CE88 /* VAnswer.m in Sources */,
 				A7AA647D19E78EAA0068D2B1 /* victoriOS.xcdatamodeld in Sources */,

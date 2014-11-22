@@ -75,22 +75,10 @@
     NSParameterAssert( isStyleValid && isContentValid );
     
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:self.title
-                                                    cancelButtonTitle:self.cancelAction != nil ? self.cancelAction.title : nil
-                                                       onCancelButton:^void
-                                  {
-                                      if ( self.cancelAction != nil )
-                                      {
-                                          [self.cancelAction execute];
-                                      }
-                                  }
-                                               destructiveButtonTitle:self.destructiveAction != nil ? self.destructiveAction.title : nil
-                                                  onDestructiveButton:^void
-                                  {
-                                      if ( self.destructiveAction != nil )
-                                      {
-                                          [self.destructiveAction execute];
-                                      }
-                                  }
+                                                    cancelButtonTitle:nil
+                                                       onCancelButton:nil
+                                               destructiveButtonTitle:nil
+                                                  onDestructiveButton:nil
                                            otherButtonTitlesAndBlocks:nil];
     
     for ( VAlertAction *action in self.defaultActions )
@@ -99,6 +87,22 @@
          {
              [action execute];
          }];
+    }
+    
+    if ( self.cancelAction != nil )
+    {
+        actionSheet.cancelButtonIndex = [actionSheet addButtonWithTitle:self.cancelAction.title block:^void
+                                         {
+                                             [self.cancelAction execute];
+                                         }];
+    }
+    
+    if ( self.destructiveAction != nil )
+    {
+        actionSheet.destructiveButtonIndex = [actionSheet addButtonWithTitle:self.destructiveAction.title block:^void
+                                              {
+                                                  [self.destructiveAction execute];
+                                              }];
     }
     
     return actionSheet;

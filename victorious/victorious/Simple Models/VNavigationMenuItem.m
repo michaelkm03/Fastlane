@@ -10,11 +10,12 @@
 
 @implementation VNavigationMenuItem
 
-- (instancetype)initWithTitle:(NSString *)title icon:(UIImage *)icon destination:(id)destination
+- (instancetype)initWithTitle:(NSString *)title identifier:(NSString *)identifier icon:(UIImage *)icon destination:(id)destination
 {
     self = [super init];
     if (self)
     {
+        _identifier = [identifier copy];
         _title = [title copy];
         _icon = icon;
         _destination = destination;

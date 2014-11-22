@@ -5,9 +5,9 @@
     <key>ProvisioningProfiles</key>
     <dict>
         <key>QA</key>
-        <string>Victorious QA Ad Hoc Distribution</string>
+        <string>Victorious QA In-House Distribution</string>
         <key>Staging</key>
-        <string>Victorious Staging Ad Hoc Distribution</string>
+        <string>Victorious Staging In-House Distribution</string>
     </dict>
 </dict>
 </plist>

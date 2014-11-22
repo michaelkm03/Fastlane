@@ -20,6 +20,8 @@
 #import "VAuthorizationViewControllerFactory.h"
 #import "VAlertController.h"
 #import "VThemeManager.h"
+#import "UIActionSheet+VBlocks.h"
+#import "VAutomation.h"
 
 static const char kNavHeaderViewKey;
 static const char kNavHeaderYConstraintKey;
@@ -216,9 +218,10 @@ static const char kUploadProgressYConstraintKey;
     BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
 
     UIImage *image = isTemplateC ? [UIImage imageNamed:@"createContentButtonC"] : [UIImage imageNamed:@"createContentButton"];
-    [self.navHeaderView setRightButtonImage:image
+    UIButton *button = [self.navHeaderView setRightButtonImage:image
                                  withAction:@selector(createSequenceAction:)
-                                   onTarget:self];
+                                                      onTarget:self];
+    button.accessibilityIdentifier = VAutomationIdentifierAddPost;
 
 }
 
