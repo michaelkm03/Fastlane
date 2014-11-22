@@ -5,7 +5,7 @@
     <key>ProvisioningProfiles</key>
     <dict>
         <key>Staging</key>
-        <string>Staging Eat Your Kimchi Ad Hoc Distribution</string>
+        <string>Eat Your Kimchi Staging In-House Distribution</string>
     </dict>
 </dict>
 </plist>

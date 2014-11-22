@@ -86,6 +86,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
     VStreamCollectionViewController *homeStream = [self streamViewControllerForDefaultStream:recentStream andAllStreams:@[hotStream, recentStream, followingStream] title:NSLocalizedString(@"Home", nil)];
     
     homeStream.shouldDisplayMarquee = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsMarqueeEnabled];
+    homeStream.navHeaderView.showHeaderLogoImage = YES;
     [homeStream v_addCreateSequenceButton];
     [homeStream v_addUploadProgressView];
     homeStream.uploadProgressViewController.delegate = homeStream;
@@ -164,15 +165,15 @@ static CGFloat const kTemplateCLineSpacing = 8;
     __block VStream *defaultStream = nil;
     NSArray *streamConfiguration = [dependencyManager arrayForKey:kStreamsKey];
     NSArray *allStreams = [streamConfiguration v_map:^(NSDictionary *streamConfig)
-                           {
-                               VStream *stream = [VStream streamForPath:streamConfig[kStreamURLPathKey] inContext:dependencyManager.objectManager.managedObjectStore.mainQueueManagedObjectContext];
-                               stream.name = streamConfig[kTitleKey];
-                               if ([streamConfig[kInitialKey] boolValue])
-                               {
-                                   defaultStream = stream;
-                               }
-                               return stream;
-                           }];
+    {
+        VStream *stream = [VStream streamForPath:streamConfig[kStreamURLPathKey] inContext:dependencyManager.objectManager.managedObjectStore.mainQueueManagedObjectContext];
+        stream.name = streamConfig[kTitleKey];
+        if ([streamConfig[kInitialKey] boolValue])
+        {
+            defaultStream = stream;
+        }
+        return stream;
+    }];
     
     if (defaultStream == nil && allStreams.count > 0)
     {
@@ -185,6 +186,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
     {
         [streamCollectionVC v_addUploadProgressView];
         streamCollectionVC.uploadProgressViewController.delegate = streamCollectionVC;
+        streamCollectionVC.navHeaderView.showHeaderLogoImage = YES;
     }
     
     if ( [[dependencyManager numberForKey:@"experiments.marquee_enabled"] boolValue] )

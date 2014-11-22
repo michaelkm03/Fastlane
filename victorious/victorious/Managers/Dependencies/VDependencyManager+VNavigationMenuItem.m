@@ -14,6 +14,7 @@ NSString * const VDependencyManagerMenuItemsKey = @"items";
 
 static NSString * const kTitleKey = @"title";
 static NSString * const kDestinationKey = @"destination";
+static NSString * const kIdentifierKey = @"identifier";
 
 @implementation VDependencyManager (VNavigationMenuItem)
 
@@ -37,11 +38,12 @@ static NSString * const kDestinationKey = @"destination";
                 if ([menuItemConfiguration isKindOfClass:[NSDictionary class]])
                 {
                     NSString *title = menuItemConfiguration[kTitleKey];
+                    NSString *identifier = menuItemConfiguration[kIdentifierKey];
                     id destination = [self objectOfType:[NSObject class] fromDictionary:menuItemConfiguration[kDestinationKey]];
                     
-                    if (title != nil && destination != nil)
+                    if (title != nil && destination != nil && identifier != nil)
                     {
-                        [menuItems addObject:[[VNavigationMenuItem alloc] initWithTitle:title icon:nil destination:destination]];
+                        [menuItems addObject:[[VNavigationMenuItem alloc] initWithTitle:title identifier:identifier icon:nil destination:destination]];
                     }
                 }
             };

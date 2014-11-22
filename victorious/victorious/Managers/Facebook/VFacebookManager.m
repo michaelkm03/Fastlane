@@ -11,6 +11,9 @@
 #import <FacebookSDK/FacebookSDK.h>
 
 static NSString * const kPublishActionsPermissionKey = @"publish_actions";
+static NSString * const kPublicProfilePermissionKey = @"public_profile";
+static NSString * const kUserBirthdayPermissionKey = @"user_birthday";
+static NSString * const kEmailPermissionKey = @"email";
 
 @implementation VFacebookManager
 
@@ -42,7 +45,7 @@ static NSString * const kPublishActionsPermissionKey = @"publish_actions";
 
 - (NSArray *)readPermissions
 {
-    return @[@"public_profile", @"user_birthday", @"email"];
+    return @[kPublicProfilePermissionKey, kUserBirthdayPermissionKey, kEmailPermissionKey];
 }
 
 - (NSArray *)publishPermissions

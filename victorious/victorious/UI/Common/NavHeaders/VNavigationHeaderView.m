@@ -10,6 +10,7 @@
 
 #import "VThemeManager.h"
 #import "VSettingManager.h"
+#import "VAutomation.h"
 
 @interface VNavigationHeaderView ()
 
@@ -47,6 +48,12 @@
     
     [header setupSegmentedControlWithTitles:titles];
     return header;
+}
+
+- (void)awakeFromNib
+{
+    self.backButton.accessibilityIdentifier = VAutomationIdentifierGenericBack;
+    self.menuButton.accessibilityIdentifier = VAutomationIdentifierMainMenu;
 }
 
 - (void)applyTheme
@@ -114,19 +121,15 @@
     self.headerLabel.text = self.headerText;
 }
 
+- (void)setShowHeaderLogoImage:(BOOL)showHeaderLogoImage
+{
+    _showHeaderLogoImage = showHeaderLogoImage;
+    [self updateHeaderImage];
+}
+
 - (void)updateUIForVC:(UIViewController *)viewController
 {
-    UIImage *headerImage = [[VThemeManager sharedThemeManager] themedImageForKey:VThemeManagerHomeHeaderImageKey];
-    if (self.showHeaderLogoImage && headerImage)
-    {
-        self.headerImageView.image = headerImage;
-        self.headerLabel.hidden = YES;
-    }
-    else
-    {
-        self.headerImageView.hidden = YES;
-        self.headerLabel.text = self.headerText;
-    }
+    [self updateHeaderImage];
     
     if (viewController.navigationController.viewControllers.count <= 1)
     {
@@ -138,6 +141,23 @@
         self.backButton.hidden = NO;
         self.menuButton.hidden = YES;
     }
+}
+
+- (void)updateHeaderImage
+{
+    UIImage *headerImage = [[VThemeManager sharedThemeManager] themedImageForKey:VThemeManagerHomeHeaderImageKey];
+    if (self.showHeaderLogoImage && headerImage)
+    {
+        self.headerImageView.image = headerImage;
+        self.headerImageView.hidden = NO;
+        self.headerLabel.hidden = YES;
+    }
+    else
+    {
+        self.headerImageView.hidden = YES;
+        self.headerLabel.text = self.headerText;
+    }
+    
 }
 
 - (IBAction)pressedBack:(id)sender
@@ -156,20 +176,22 @@
     }
 }
 
-- (void)setRightButtonImage:(UIImage *)image withAction:(SEL)action onTarget:(id)target
+- (UIButton *)setRightButtonImage:(UIImage *)image withAction:(SEL)action onTarget:(id)target
 {
     self.addButton.hidden = !image;
     [self.addButton setTitle:@"" forState:UIControlStateNormal];
     [self.addButton setImage:[image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
     [self.addButton addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
+    return self.addButton;
 }
 
-- (void)setRightButtonTitle:(NSString *)title withAction:(SEL)action onTarget:(id)target
+- (UIButton *)setRightButtonTitle:(NSString *)title withAction:(SEL)action onTarget:(id)target
 {
     self.addButton.hidden = !title;
     [self.addButton setImage:nil forState:UIControlStateNormal];
     [self.addButton setTitle:title forState:UIControlStateNormal];
     [self.addButton addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
+    return self.addButton;
 }
 
 @end

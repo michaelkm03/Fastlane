@@ -9,6 +9,7 @@
 #import "VMenuCollectionViewCell.h"
 #import "VNavigationMenuItem.h"
 #import "VThemeManager.h"
+#import "VAutomation.h"
 
 static const CGFloat kCellHeight = 50.0f;
 
@@ -47,12 +48,14 @@ static const CGFloat kCellHeight = 50.0f;
 - (void)setNavigationMenuItem:(VNavigationMenuItem *)navigationMenuItem
 {
     self.menuLabel.text = navigationMenuItem.title;
+    self.accessibilityIdentifier = navigationMenuItem.identifier;
 }
 
 - (void)prepareForReuse
 {
     self.menuLabel.text = @"";
     self.badgeLabel.text = @"";
+    self.accessibilityIdentifier = nil;
 }
 
 @end

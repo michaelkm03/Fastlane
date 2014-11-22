@@ -1293,6 +1293,7 @@
 		A769C3F81A13E7A400698D0C /* VSequenceWebContentTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSequenceWebContentTests.m; sourceTree = "<group>"; };
 		A771D0231A043AE8007CB0A5 /* VTrackingManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTrackingManagerTests.m; sourceTree = "<group>"; };
 		A77AD4C61A1EFDB400142F24 /* VSuggestedPersonCollectionViewCellTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSuggestedPersonCollectionViewCellTests.m; sourceTree = "<group>"; };
+		A77AD4C51A1EFA3D00142F24 /* VAutomation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAutomation.h; sourceTree = "<group>"; };
 		A7814A0919E5FD0600D89B90 /* VPasswordValidationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPasswordValidationTests.m; sourceTree = "<group>"; };
 		A790C8221A01980F00C4F208 /* VTrackingEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTrackingEvent.h; sourceTree = "<group>"; };
 		A790C8231A01980F00C4F208 /* VTrackingEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTrackingEvent.m; sourceTree = "<group>"; };
@@ -1822,6 +1823,7 @@
 		0314D2EA19B46B5D00FA363C /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				A77AD4C41A1EFA3D00142F24 /* Automation */,
 				0314D2EB19B46B5D00FA363C /* Camera */,
 				0314D33E19B46B5E00FA363C /* Comments */,
 				0314D34819B46B5E00FA363C /* Common */,
@@ -3095,6 +3097,23 @@
 				A769C3F61A13D69500698D0C /* WebBrowser.storyboard */,
 			);
 			path = "Web View";
+			sourceTree = "<group>";
+		};
+		A77AD4C41A1EFA3D00142F24 /* Automation */ = {
+			isa = PBXGroup;
+			children = (
+				A77AD4C51A1EFA3D00142F24 /* VAutomation.h */,
+			);
+			path = Automation;
+			sourceTree = "<group>";
+		};
+		A781499919E3483E00D89B90 /* Followers */ = {
+			isa = PBXGroup;
+			children = (
+				A70564C819E78220004A8387 /* VFollowersTextFormatter.h */,
+				A70564C919E78220004A8387 /* VFollowersTextFormatter.m */,
+			);
+			path = Followers;
 			sourceTree = "<group>";
 		};
 		A790C81C1A01980F00C4F208 /* Tracking */ = {
