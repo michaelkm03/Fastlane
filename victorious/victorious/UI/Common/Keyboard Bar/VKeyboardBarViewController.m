@@ -17,6 +17,7 @@
 #import "UIActionSheet+VBlocks.h"
 #import "VConstants.h"
 #import "VThemeManager.h"
+#import "VAppDelegate.h"
 
 static const NSInteger kCharacterLimit = 255;
 
@@ -204,6 +205,7 @@ static const NSInteger kCharacterLimit = 255;
     }
     else
     {
+        UIWindow *window = ((VAppDelegate *)[UIApplication sharedApplication].delegate).window;
         [[[UIActionSheet alloc] initWithTitle:actionSheetTitle
                             cancelButtonTitle:cancelActionTitle
                                onCancelButton:nil
@@ -213,7 +215,7 @@ static const NSInteger kCharacterLimit = 255;
             clearMediaSelection();
             showCamera();
         }
-                   otherButtonTitlesAndBlocks:nil, nil] showInView:self.view];
+                   otherButtonTitlesAndBlocks:nil, nil] showInView:window];
     }
 
 }
