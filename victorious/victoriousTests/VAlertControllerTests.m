@@ -13,6 +13,12 @@
 #import "VAlertControllerAdvanced.h"
 #import "VAlertControllerBasic.h"
 
+@interface VAlertController (UnitTests)
+
++ (VAlertController *)alertControllerWithTitle:(NSString *)title message:(NSString *)message style:(VAlertControllerStyle)style;
+
+@end
+
 @interface VAlertControllerTests : XCTestCase
 
 @property (nonatomic, strong) NSString *title;
@@ -81,12 +87,36 @@
 {
     VAlertController *alertController = nil;
     
-    alertController = [VAlertController alertControllerWithTitle:self.title
-                                                         message:self.message
-                                                           style:VAlertControllerStyleActionSheet];
+    alertController = [VAlertController alertWithTitle:self.title message:self.message];
+    XCTAssertEqualObjects( self.title, alertController.title );
+    XCTAssertEqualObjects( self.message, alertController.message );
+    XCTAssertEqual( VAlertControllerStyleAlert, alertController.style );
+    
+    alertController = [VAlertController actionSheetWithTitle:self.title message:self.message];
     XCTAssertEqualObjects( self.title, alertController.title );
     XCTAssertEqualObjects( self.message, alertController.message );
     XCTAssertEqual( VAlertControllerStyleActionSheet, alertController.style );
+}
+
+- (void)testActionInitializers
+{
+    NSString *actionTitle = @"actionTitle";
+    VAlertAction *actionDefault = [VAlertAction buttonWithTitle:actionTitle handler:^(VAlertAction *action) {}];
+    XCTAssertEqual( actionDefault.style, VAlertActionStyleDefault );
+    XCTAssertNotNil( actionDefault.handler );
+    XCTAssertEqualObjects( actionTitle, actionDefault.title );
+    
+    NSString *cancelTitle = @"cancelTitle";
+    VAlertAction *actionCancel = [VAlertAction cancelButtonWithTitle:cancelTitle handler:^(VAlertAction *action) {}];
+    XCTAssertEqual( actionCancel.style, VAlertActionStyleCancel );
+    XCTAssertNotNil( actionCancel.handler );
+    XCTAssertEqualObjects( cancelTitle, actionCancel.title );
+    
+    NSString *destructiveTitle = @"destructiveTitle";
+    VAlertAction *actionDestructive = [VAlertAction destructiveButtonWithTitle:destructiveTitle handler:^(VAlertAction *action) {}];
+    XCTAssertEqual( actionDestructive.style, VAlertActionStyleDestructive );
+    XCTAssertNotNil( actionDestructive.handler );
+    XCTAssertEqualObjects( destructiveTitle, actionDestructive.title );
 }
 
 @end

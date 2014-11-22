@@ -58,6 +58,8 @@
 {
     if ( self.style == VAlertControllerStyleActionSheet )
     {
+        NSParameterAssert( viewController != nil );
+        NSParameterAssert( viewController.view != nil );
         [self.actionSheet showInView:viewController.view];
     }
     else if ( self.style == VAlertControllerStyleAlert )
@@ -89,20 +91,20 @@
          }];
     }
     
-    if ( self.cancelAction != nil )
-    {
-        actionSheet.cancelButtonIndex = [actionSheet addButtonWithTitle:self.cancelAction.title block:^void
-                                         {
-                                             [self.cancelAction execute];
-                                         }];
-    }
-    
     if ( self.destructiveAction != nil )
     {
         actionSheet.destructiveButtonIndex = [actionSheet addButtonWithTitle:self.destructiveAction.title block:^void
                                               {
                                                   [self.destructiveAction execute];
                                               }];
+    }
+    
+    if ( self.cancelAction != nil )
+    {
+        actionSheet.cancelButtonIndex = [actionSheet addButtonWithTitle:self.cancelAction.title block:^void
+                                         {
+                                             [self.cancelAction execute];
+                                         }];
     }
     
     return actionSheet;

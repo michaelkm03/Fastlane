@@ -25,6 +25,18 @@ typedef NS_ENUM(NSInteger, VAlertActionStyle)
  */
 @interface VAlertAction : NSObject
 
+/** Conveninece initializer */
++ (VAlertAction *)cancelButtonWithTitle:(NSString *)title handler:(void(^)(VAlertAction *))handler;
+
+/** Conveninece initializer */
++ (VAlertAction *)buttonWithTitle:(NSString *)title handler:(void(^)(VAlertAction *))handler;
+
+/** Conveninece initializer */
++ (VAlertAction *)destructiveButtonWithTitle:(NSString *)title handler:(void(^)(VAlertAction *))handler;
+
+/**
+ Full initializer.
+ */
 - (instancetype)initWithTitle:(NSString *)title style:(VAlertActionStyle)style handler:(void(^)(VAlertAction *))handler;
 
 /**

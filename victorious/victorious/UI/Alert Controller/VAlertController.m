@@ -22,6 +22,16 @@ static const BOOL kForceBasicAlertController = NO;
 
 @implementation VAlertController
 
++ (VAlertController *)alertWithTitle:(NSString *)title message:(NSString *)message
+{
+    return [self alertControllerWithTitle:title message:message style:VAlertControllerStyleAlert];
+}
+
++ (VAlertController *)actionSheetWithTitle:(NSString *)title message:(NSString *)message
+{
+    return [self alertControllerWithTitle:title message:message style:VAlertControllerStyleActionSheet];
+}
+
 + (VAlertController *)alertControllerWithTitle:(NSString *)title message:(NSString *)message style:(VAlertControllerStyle)style
 {
     if ( [VAlertController canUseAlertController] )

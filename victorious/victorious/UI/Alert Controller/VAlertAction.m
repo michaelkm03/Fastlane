@@ -10,6 +10,21 @@
 
 @implementation VAlertAction
 
++ (VAlertAction *)cancelButtonWithTitle:(NSString *)title handler:(void(^)(VAlertAction *))handler
+{
+    return [[VAlertAction alloc] initWithTitle:title style:VAlertActionStyleCancel handler:handler];
+}
+
++ (VAlertAction *)buttonWithTitle:(NSString *)title handler:(void(^)(VAlertAction *))handler
+{
+    return [[VAlertAction alloc] initWithTitle:title style:VAlertActionStyleDefault handler:handler];
+}
+
++ (VAlertAction *)destructiveButtonWithTitle:(NSString *)title handler:(void(^)(VAlertAction *))handler
+{
+    return [[VAlertAction alloc] initWithTitle:title style:VAlertActionStyleDestructive handler:handler];
+}
+
 - (instancetype)initWithTitle:(NSString *)title style:(VAlertActionStyle)style handler:(void(^)(VAlertAction *))handler
 {
     self = [super init];

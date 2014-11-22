@@ -32,6 +32,8 @@
 
 - (void)presentInViewController:(UIViewController *)viewController animated:(BOOL)animated completion:(void (^)(void))completion
 {
+    NSParameterAssert( viewController != nil );
+    
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:self.title
                                                                              message:self.message
                                                                       preferredStyle:[self systemStyleFromStyle:self.style]];

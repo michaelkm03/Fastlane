@@ -238,31 +238,18 @@ static const char kUploadProgressYConstraintKey;
 
 - (void)showContentTypeSelection
 {
-    VAlertController *alertControler = [VAlertController alertControllerWithTitle:nil
-                                                                          message:nil
-                                                                            style:VAlertControllerStyleActionSheet];
-    [alertControler addAction:[[VAlertAction alloc] initWithTitle:NSLocalizedString(@"CancelButton", @"Cancel button")
-                                                            style:VAlertActionStyleCancel
-                                                          handler:nil]];
-    [alertControler addAction:[[VAlertAction alloc] initWithTitle: NSLocalizedString(@"Create a Video Post", @"")
-                                                            style:VAlertActionStyleDefault
-                                                          handler:^(VAlertAction *action)
+    VAlertController *alertControler = [VAlertController actionSheetWithTitle:nil message:nil];
+    [alertControler addAction:[VAlertAction cancelButtonWithTitle:NSLocalizedString(@"CancelButton", @"Cancel button") handler:nil]];
+    [alertControler addAction:[VAlertAction buttonWithTitle:NSLocalizedString(@"Create a Video Post", @"") handler:^(VAlertAction *action)
                                {
-                                   
                                    [self presentCameraViewController:[VCameraViewController cameraViewController]];
                                }]];
-    [alertControler addAction:[[VAlertAction alloc] initWithTitle: NSLocalizedString(@"Create an Image Post", @"")
-                                                            style:VAlertActionStyleDefault
-                                                          handler:^(VAlertAction *action)
+    [alertControler addAction:[VAlertAction buttonWithTitle:NSLocalizedString(@"Create an Image Post", @"") handler:^(VAlertAction *action)
                                {
-                                   
                                    [self presentCameraViewController:[VCameraViewController cameraViewControllerStartingWithStillCapture]];
                                }]];
-    [alertControler addAction:[[VAlertAction alloc] initWithTitle: NSLocalizedString(@"Create a Poll", @"")
-                                                            style:VAlertActionStyleDefault
-                                                          handler:^(VAlertAction *action)
+    [alertControler addAction:[VAlertAction buttonWithTitle:NSLocalizedString(@"Create a Poll", @"") handler:^(VAlertAction *action)
                                {
-                                   
                                    VCreatePollViewController *createViewController = [VCreatePollViewController newCreatePollViewController];
                                    [self.navigationController pushViewController:createViewController animated:YES];
                                }]];

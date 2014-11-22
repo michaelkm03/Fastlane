@@ -32,10 +32,16 @@ typedef NS_ENUM(NSInteger, VAlertControllerStyle)
 + (BOOL)canUseAlertController;
 
 /**
- Desginated method for creating action sheets or alert views appropriate for the device OS version.
+ Main method for creating alert views appropriate for the device OS version.
  Don't use initWithTitle:message:style: unless you know what you're doing.
  */
-+ (VAlertController *)alertControllerWithTitle:(NSString *)title message:(NSString *)message style:(VAlertControllerStyle)style;
++ (VAlertController *)alertWithTitle:(NSString *)title message:(NSString *)message;
+
+/**
+ Main method for creating action sheet appropriate for the device OS version.
+ Don't use initWithTitle:message:style: unless you know what you're doing.
+ */
++ (VAlertController *)actionSheetWithTitle:(NSString *)title message:(NSString *)message;
 
 /**
  Add actions to the alert controller.  Will map to the appropriate methods of UIAlertView, UIActionSheet or UIAlertController.
