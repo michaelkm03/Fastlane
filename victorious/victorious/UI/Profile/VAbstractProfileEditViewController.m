@@ -37,20 +37,14 @@
     self.cameraButton.layer.masksToBounds = YES;
     self.cameraButton.layer.cornerRadius = CGRectGetHeight(self.cameraButton.bounds)/2;
     self.cameraButton.clipsToBounds = YES;
+    
+    self.automaticallyAdjustsScrollViewInsets = NO;
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillShow:)
-                                                 name:UIKeyboardWillShowNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillHide:)
-                                                 name:UIKeyboardWillHideNotification
-                                               object:nil];
     [self restoreInsets];
     
     self.usernameTextField.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
@@ -156,12 +150,6 @@
 {
     self.tagLinePlaceholderLabel.hidden = ([textView.text length] > 0);
 
-    if (self.numberOfLines == (self.taglineTextView.contentSize.height / self.taglineTextView.font.lineHeight))
-    {
-        return;
-    }
-    
-    self.numberOfLines = self.taglineTextView.contentSize.height / self.taglineTextView.font.lineHeight;
     [self.tableView beginUpdates];
     [self.tableView endUpdates];
 }
@@ -179,49 +167,6 @@
     }
 
     return YES;
-}
-
-#pragma mark - Notification Handlers
-
-- (void)keyboardWillShow:(NSNotification *)notification
-{
-    NSNumber *durationValue = notification.userInfo[UIKeyboardAnimationDurationUserInfoKey];
-    NSTimeInterval animationDuration = durationValue.doubleValue;
-    
-    NSNumber *curveValue = notification.userInfo[UIKeyboardAnimationCurveUserInfoKey];
-    UIViewAnimationCurve animationCurve = curveValue.intValue;
-    
-    CGRect endFrame = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    UIEdgeInsets modifiedInsets = self.tableView.contentInset;
-    modifiedInsets.bottom = CGRectGetHeight(endFrame);
-    
-    [UIView animateWithDuration:animationDuration
-                          delay:0.0
-                        options:(animationCurve << 16) | UIViewAnimationOptionBeginFromCurrentState
-                     animations:^
-     {
-         self.tableView.contentInset = modifiedInsets;
-         self.tableView.scrollIndicatorInsets = modifiedInsets;
-     }
-                     completion:nil];
-}
-
-- (void)keyboardWillHide:(NSNotification *)notification
-{
-    NSNumber *durationValue = notification.userInfo[UIKeyboardAnimationDurationUserInfoKey];
-    NSTimeInterval animationDuration = durationValue.doubleValue;
-    
-    NSNumber *curveValue = notification.userInfo[UIKeyboardAnimationCurveUserInfoKey];
-    UIViewAnimationCurve animationCurve = curveValue.intValue;
-    
-    [UIView animateWithDuration:animationDuration
-                          delay:0.0
-                        options:(animationCurve << 16) | UIViewAnimationOptionBeginFromCurrentState
-                     animations:^
-     {
-         [self restoreInsets];
-     }
-                     completion:nil];
 }
 
 #pragma mark - Private Methods
