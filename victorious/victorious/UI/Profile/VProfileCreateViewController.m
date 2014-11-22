@@ -28,6 +28,7 @@
 #import "VTOSViewController.h"
 
 #import "UIAlertView+VBlocks.h"
+#import "VAutomation.h"
 
 NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreateProfileAborted";
 
@@ -160,6 +161,14 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
     self.agreeSwitch.onTintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     
     self.backButton.imageView.image = [self.backButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    
+    // Accessibility IDs
+    self.doneButton.accessibilityIdentifier = VAutomationIdentifierProfileDone;
+    self.usernameTextField.accessibilityIdentifier = VAutomationIdentifierProfileUsernameField;
+    self.locationTextField.accessibilityIdentifier = VAutomationIdentifierProfileLocationField;
+    self.taglineTextView.accessibilityIdentifier = VAutomationIdentifierProfileTaglineField;
+    self.agreeSwitch.accessibilityIdentifier = VAutomationIdentifierProfileAgeAgreeSwitch;
+    self.profileImageView.accessibilityIdentifier = VAutomationIdentifierProfilSelectImage;
 }
 
 - (void)viewWillAppear:(BOOL)animated

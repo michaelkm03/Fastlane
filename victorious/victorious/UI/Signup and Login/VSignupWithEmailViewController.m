@@ -19,6 +19,7 @@
 #import "MBProgressHUD.h"
 #import "VPasswordValidator.h"
 #import "VEmailValidator.h"
+#import "VAutomation.h"
 
 @interface VSignupWithEmailViewController ()    <UITextFieldDelegate, UINavigationControllerDelegate, TTTAttributedLabelDelegate>
 
@@ -73,6 +74,13 @@
     // Validators
     self.passwordValidator = [[VPasswordValidator alloc] init];
     self.emailValidator = [[VEmailValidator alloc] init];
+    
+    // Accessibility IDs
+    self.cancelButton.accessibilityIdentifier = VAutomationIdentifierSignupCancel;
+    self.signupButton.accessibilityIdentifier = VAutomationIdentifierSignupSubmit;
+    self.emailTextField.accessibilityIdentifier = VAutomationIdentifierSignupUsernameField;
+    self.passwordTextField.accessibilityIdentifier = VAutomationIdentifierSignupPasswordField;
+    self.confirmPasswordTextField.accessibilityIdentifier = VAutomationIdentifierSignupPasswordConfirmField;
 }
 
 - (void)viewWillAppear:(BOOL)animated

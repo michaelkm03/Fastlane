@@ -75,7 +75,7 @@
  *  Sets the image for the right button.  If the image is nil, it hides the button.  If its not nil, it unhides the button.
  *
  */
-- (void)setRightButtonImage:(UIImage *)image
+- (UIButton *)setRightButtonImage:(UIImage *)image
                  withAction:(SEL)action
                    onTarget:(id)target;
 
@@ -83,7 +83,7 @@
  *  Sets the title for the right button.  If the title is nil, it hides the button.  If its not nil, it unhides the button.
  *
  */
-- (void)setRightButtonTitle:(NSString *)title
+- (UIButton *)setRightButtonTitle:(NSString *)title
                  withAction:(SEL)action
                    onTarget:(id)target;
 
