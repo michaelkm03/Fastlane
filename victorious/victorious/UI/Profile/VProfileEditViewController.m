@@ -51,14 +51,9 @@
     [super viewWillAppear:animated];
     
     self.nameLabel.text = self.profile.name;
-    [self.usernameTextField becomeFirstResponder];
     
     [self.parentViewController.navHeaderView setRightButtonTitle:NSLocalizedString(@"Save", nil)
                                                       withAction:@selector(done:) onTarget:self];
-    
-    UIEdgeInsets insets = self.tableView.contentInset;
-    insets.top = CGRectGetHeight(self.parentViewController.navHeaderView.frame);
-    self.tableView.contentInset = insets;
 }
 
 - (void)viewDidAppear:(BOOL)animated
