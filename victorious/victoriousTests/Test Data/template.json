@@ -25,10 +25,10 @@
     },
     "deep": {
         "name": "deepReference",
-        "thing": {
+        "thing": [{
             "id": "10c8b593-b463-4845-bdf0-9d34fcd4e174",
             "name": "testNewMethod"
-        }
+        }]
     },
     "video_quality": {
         "capture": "medium",

@@ -60,6 +60,7 @@ NSString * const VDependencyManagerProfileImageRequiredKey = @"experiments.requi
 
 // Keys for view controllers
 NSString * const VDependencyManagerScaffoldViewControllerKey = @"scaffold";
+NSString * const VDependencyManagerInitialViewControllerKey = @"initialScreen";
 
 @interface VDependencyManager ()
 
@@ -86,11 +87,11 @@ NSString * const VDependencyManagerScaffoldViewControllerKey = @"scaffold";
         _configuration = configuration;
         _privateQueue = dispatch_queue_create("VDependencyManager private queue", DISPATCH_QUEUE_CONCURRENT);
         _singletonsByKey = [[NSMutableDictionary alloc] init];
+        _configurationDictionariesByID = [self findConfigurationDictionariesByIDInTemplateDictionary:configuration];
         
         if (_parentManager == nil)
         {
             _singletonsByID = [[NSMutableDictionary alloc] init];
-            _configurationDictionariesByID = [self findConfigurationDictionariesByIDInTemplateDictionary:configuration];
         }
         
         if (classesByTemplateName == nil)
@@ -174,7 +175,13 @@ NSString * const VDependencyManagerScaffoldViewControllerKey = @"scaffold";
 - (id)singletonObjectOfType:(Class)expectedType forKey:(NSString *)key
 {
     NSDictionary *singletonConfig = [self templateValueOfType:[NSDictionary class] forKey:key];
-    id singleton = [self singletonObjectOfType:expectedType fromDictionary:singletonConfig];
+    
+    if (singletonConfig == nil)
+    {
+        return nil;
+    }
+    
+    id singleton = [self singletonObjectOfType:expectedType orNilFromDictionary:singletonConfig];
     
     if (singleton == nil)
     {
@@ -183,13 +190,28 @@ NSString * const VDependencyManagerScaffoldViewControllerKey = @"scaffold";
         if (singleton == nil)
         {
             singleton = [self objectOfType:expectedType fromDictionary:singletonConfig];
-            [self setSingletonObject:singleton forKey:key];
+            
+            if (singleton != nil)
+            {
+                [self setSingletonObject:singleton forKey:key];
+            }
         }
     }
     return singleton;
 }
 
 - (id)singletonObjectOfType:(Class)expectedType fromDictionary:(NSDictionary *)configurationDictionary
+{
+    id singletonObject = [self singletonObjectOfType:expectedType orNilFromDictionary:configurationDictionary];
+    
+    if (singletonObject == nil)
+    {
+        singletonObject = [self objectOfType:expectedType fromDictionary:configurationDictionary];
+    }
+    return singletonObject;
+}
+
+- (id)singletonObjectOfType:(Class)expectedType orNilFromDictionary:(NSDictionary *)configurationDictionary
 {
     NSString *objID = configurationDictionary[kIDKey];
     
@@ -266,6 +288,9 @@ NSString * const VDependencyManagerScaffoldViewControllerKey = @"scaffold";
 
 - (void)setSingletonObject:(id)singletonObject forKey:(NSString *)key
 {
+    NSParameterAssert(singletonObject != nil);
+    NSParameterAssert(key != nil);
+    
     dispatch_barrier_async(self.privateQueue, ^(void)
     {
         self.singletonsByKey[key] = singletonObject;
@@ -330,14 +355,13 @@ NSString * const VDependencyManagerScaffoldViewControllerKey = @"scaffold";
 
 - (NSDictionary *)configurationDictionaryForID:(NSString *)objectID
 {
-    if (self.configurationDictionariesByID != nil)
-    {
-        return self.configurationDictionariesByID[objectID];
-    }
-    else
+    NSDictionary *configurationDictionary = self.configurationDictionariesByID[objectID];
+    
+    if (configurationDictionary == nil)
     {
         return [self.parentManager configurationDictionaryForID:objectID];
     }
+    return configurationDictionary;
 }
 
 #pragma mark - Helpers
@@ -350,8 +374,8 @@ NSString * const VDependencyManagerScaffoldViewControllerKey = @"scaffold";
 - (NSDictionary *)findConfigurationDictionariesByIDInTemplateDictionary:(NSDictionary *)template
 {
     NSMutableDictionary *configurationDictionariesByID = [[NSMutableDictionary alloc] init];
-    void (^__block __weak weakEnumerationBlock)(id, id, BOOL *);
-    void (^enumerationBlock)(id, id, BOOL *) = ^(id key, NSDictionary *obj, BOOL *stop)
+    void (^__block __weak weakEnumerationBlock)(id);
+    void (^enumerationBlock)(id) = ^(id obj)
     {
         if ([obj isKindOfClass:[NSDictionary class]])
         {
@@ -360,12 +384,25 @@ NSString * const VDependencyManagerScaffoldViewControllerKey = @"scaffold";
             {
                 configurationDictionariesByID[objID] = obj;
             }
-            [obj enumerateKeysAndObjectsUsingBlock:weakEnumerationBlock];
+            [obj enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop)
+            {
+                weakEnumerationBlock(obj);
+            }];
+        }
+        else if ([obj isKindOfClass:[NSArray class]])
+        {
+            [(NSArray *)obj enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop)
+            {
+                weakEnumerationBlock(obj);
+            }];
         }
     };
     weakEnumerationBlock = enumerationBlock;
     
-    [template enumerateKeysAndObjectsUsingBlock:enumerationBlock];
+    [template enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop)
+    {
+        weakEnumerationBlock(obj);
+    }];
     return configurationDictionariesByID;
 }
 

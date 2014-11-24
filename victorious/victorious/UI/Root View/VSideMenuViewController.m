@@ -140,9 +140,11 @@ static NSString * const kMenuKey = @"menu";
     
     [self addMenuViewControllerMotionEffects];
 
-    BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
-    UIViewController *homeVC = isTemplateC ? [VMultipleStreamViewController homeStream] : [VStreamCollectionViewController homeStreamCollection];
-    [self transitionToNavStack:@[homeVC]];
+    UIViewController *initialVC = [self.dependencyManager viewControllerForKey:VDependencyManagerInitialViewControllerKey];
+    if (initialVC != nil)
+    {
+        [self transitionToNavStack:@[initialVC]];
+    }
 }
 
 - (NSUInteger)supportedInterfaceOrientations

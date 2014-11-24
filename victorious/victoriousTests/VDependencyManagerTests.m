@@ -76,9 +76,12 @@ static NSString * const kTestViewControllerNewMethodTemplateName = @"testNewMeth
     NSDictionary *dictionaryOfClassesByTemplateName = @{ kTestViewControllerInitMethodTemplateName: @"VTestViewControllerWithInitMethod",
                                                          kTestViewControllerNewMethodTemplateName: @"VTestViewControllerWithNewMethod" };
     
+    // The presence of this "base" dependency manager (with an empty configuration dictionary) exposed a bug in a previous iteration of VDependencyManager.
+    VDependencyManager *baseDependencyManager = [[VDependencyManager alloc] initWithParentManager:nil configuration:@{} dictionaryOfClassesByTemplateName:dictionaryOfClassesByTemplateName];
+    
     NSData *testData = [NSData dataWithContentsOfURL:[[NSBundle bundleForClass:[self class]] URLForResource:@"template" withExtension:@"json"]];
     NSDictionary *configuration = [NSJSONSerialization JSONObjectWithData:testData options:0 error:nil];
-    self.dependencyManager = [[VDependencyManager alloc] initWithParentManager:nil configuration:configuration dictionaryOfClassesByTemplateName:dictionaryOfClassesByTemplateName];
+    self.dependencyManager = [[VDependencyManager alloc] initWithParentManager:baseDependencyManager configuration:configuration dictionaryOfClassesByTemplateName:dictionaryOfClassesByTemplateName];
     self.childDependencyManager = [[VDependencyManager alloc] initWithParentManager:self.dependencyManager configuration:@{} dictionaryOfClassesByTemplateName:dictionaryOfClassesByTemplateName];
 }
 
@@ -305,6 +308,14 @@ static NSString * const kTestViewControllerNewMethodTemplateName = @"testNewMeth
     XCTAssertNotNil(result1);
     XCTAssertNotNil(result2);
     XCTAssertEqual(result1, result2);
+}
+
+- (void)testSingletonObjectFromDictionaryWithoutID
+{
+    NSDictionary *configuration = @{ @"name": kTestViewControllerNewMethodTemplateName, @"one": @1, @"two": @2 };
+    
+    VTestViewControllerWithNewMethod *result = (VTestViewControllerWithNewMethod *)[self.dependencyManager singletonObjectOfType:[UIViewController class] fromDictionary:configuration];
+    XCTAssert([result isKindOfClass:[VTestViewControllerWithNewMethod class]]);
 }
 
 @end
