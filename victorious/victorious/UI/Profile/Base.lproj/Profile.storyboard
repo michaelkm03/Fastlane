@@ -163,6 +163,8 @@
                         <outlet property="tagLinePlaceholderLabel" destination="Trt-Yx-Qae" id="SxF-GN-FIl"/>
                         <outlet property="taglineTextView" destination="dwh-pj-t1S" id="0Be-Ll-Bl1"/>
                         <outlet property="usernameTextField" destination="lvT-v5-J29" id="E2V-lU-tZy"/>
+                        <outlet property="verticalSpaceTaglineTextViewBottomToContainer" destination="mZ0-F7-ilt" id="pvJ-Rr-UUq"/>
+                        <outlet property="verticalSpaceTaglineTextViewTopToContainer" destination="CLa-0S-9ov" id="Spb-mi-YGt"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="M4E-48-XjD" userLabel="First Responder" sceneMemberID="firstResponder"/>

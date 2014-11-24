@@ -19,6 +19,8 @@
 
 @property (nonatomic, weak) IBOutlet UITableViewCell *captionCell;
 @property (nonatomic, assign) NSInteger numberOfLines;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceTaglineTextViewTopToContainer;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceTaglineTextViewBottomToContainer;
 
 @end
 
@@ -94,9 +96,9 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([indexPath compare:[NSIndexPath indexPathForRow:3 inSection:0]] == NSOrderedSame)
+    if ([indexPath isEqual:[NSIndexPath indexPathForRow:3 inSection:0]])
     {
-        return [self.taglineTextView sizeThatFits:CGSizeMake(CGRectGetWidth(self.taglineTextView.bounds), FLT_MAX)].height + 15;
+        return [self.taglineTextView sizeThatFits:CGSizeMake(CGRectGetWidth(self.taglineTextView.bounds), FLT_MAX)].height + fabsf(self.verticalSpaceTaglineTextViewBottomToContainer.constant) + fabsf(self.verticalSpaceTaglineTextViewTopToContainer.constant);
     }
     return [super tableView:tableView
     heightForRowAtIndexPath:indexPath];
