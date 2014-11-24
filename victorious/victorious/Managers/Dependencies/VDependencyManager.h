@@ -39,6 +39,7 @@ extern NSString * const VDependencyManagerProfileImageRequiredKey;
 
 // Keys for view controllers
 extern NSString * const VDependencyManagerScaffoldViewControllerKey; ///< The "scaffold" is the view controller that sits at the root of the view controller heirarchy
+extern NSString * const VDependencyManagerInitialViewControllerKey; ///< The view controller to be displayed on launch
 
 /**
  Provides loose coupling between components.
@@ -103,6 +104,19 @@ extern NSString * const VDependencyManagerScaffoldViewControllerKey; ///< The "s
 - (id)templateValueOfType:(Class)expectedType forKey:(NSString *)key;
 
 /**
+ Returns a singleton object stored for the specified key in the configuration
+ dictionary of this instance, if present, or the closest ancestor.
+ 
+ @discussion
+ Calling this method twice with the same key will return the same
+ object both times.
+ 
+ @param expectedType if the value found at keyPath is not this kind
+ of class, we return nil.
+ */
+- (id)singletonObjectOfType:(Class)expectedType forKey:(NSString *)key;
+
+/**
  Returns a new object defined by the given configuration dictionary
  
  @param expectedType The type of object you expect to get back
@@ -111,5 +125,18 @@ extern NSString * const VDependencyManagerScaffoldViewControllerKey; ///< The "s
  or nil if no such key exists or is of the wrong type.
  */
 - (id)objectOfType:(Class)expectedType fromDictionary:(NSDictionary *)configurationDictionary;
+
+/**
+ Returns a singleton object defined by the given configuration dictionary
+ 
+ @discussion
+ Calling this method twice with the same dictionary will return the same
+ object both times.
+ 
+ @param expectedType if the value found at keyPath is not this kind
+                     of class, we return nil.
+ @param configurationDictionary A dictionary of configuration attributes that describes the object
+ */
+- (id)singletonObjectOfType:(Class)expectedType fromDictionary:(NSDictionary *)configurationDictionary;
 
 @end
