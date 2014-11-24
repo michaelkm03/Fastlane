@@ -12,8 +12,10 @@
 #import "UIImageView+Blurring.h"
 #import "UIImage+ImageEffects.h"
 #import "VThemeManager.h"
+#import "VContentInputAccessoryView.h"
+#import "VConstants.h"
 
-@interface VAbstractProfileEditViewController ()
+@interface VAbstractProfileEditViewController () <VContentInputAccessoryViewDelegate>
 
 @property (nonatomic, weak) IBOutlet UITableViewCell *captionCell;
 @property (nonatomic, assign) NSInteger numberOfLines;
@@ -39,6 +41,15 @@
     self.cameraButton.clipsToBounds = YES;
     
     self.automaticallyAdjustsScrollViewInsets = NO;
+    
+    self.taglineTextView.inputAccessoryView =
+    ({
+        VContentInputAccessoryView *inputAccessoryView = [[VContentInputAccessoryView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 44.0f)];
+        inputAccessoryView.delegate = self;
+        inputAccessoryView.textInputView = self.taglineTextView;
+        inputAccessoryView.tintColor = [UIColor colorWithRed:0.85f green:0.86f blue:0.87f alpha:1.0f];
+        inputAccessoryView;
+    });
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -167,6 +178,18 @@
     }
 
     return YES;
+}
+
+#pragma mark - VContentInputAccessoryViewDelegate
+
+- (BOOL)shouldLimitTextEntryForInputAccessoryView:(VContentInputAccessoryView *)inputAccessoryView
+{
+    return YES;
+}
+
+- (BOOL)shouldAddHashTagsForInputAccessoryView:(VContentInputAccessoryView *)inputAccessoryView
+{
+    return NO;
 }
 
 #pragma mark - Private Methods
