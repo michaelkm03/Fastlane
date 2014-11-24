@@ -97,9 +97,9 @@ const CGFloat VInputAccessoryViewDesiredMinimumHeight;
 @property (nonatomic, strong) NSString *placeholderText;
 
 /**
- *  The selected thumbnail image for the current attachment.
+ *  The selected thumbnail image for the current attachment. Setting this to nil will restore the original placeholder image.
  */
-@property (nonatomic, strong) UIImage *selectedThumbnail;
+- (void)setSelectedThumbnail:(UIImage *)selectedThumbnail;
 
 /**
  *  Assigning to this will determine the behavior of the return key. UIReturnKeyDefault will allow the user to insert newline characters into the text view while any other return key type will resign first responder status on the text field.
