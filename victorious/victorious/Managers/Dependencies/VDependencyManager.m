@@ -48,6 +48,8 @@ NSString * const VDependencyManagerButton1FontKey = @"font.button1";
 NSString * const VDependencyManagerButton2FontKey = @"font.button2";
 
 // Keys for dependency metadata
+static NSString * const kIDKey = @"id";
+static NSString * const kReferenceIDKey = @"referenceID";
 static NSString * const kClassNameKey = @"name";
 static NSString * const kFontNameKey = @"fontName";
 static NSString * const kFontSizeKey = @"fontSize";
@@ -64,20 +66,32 @@ NSString * const VDependencyManagerScaffoldViewControllerKey = @"scaffold";
 @property (nonatomic, strong) VDependencyManager *parentManager;
 @property (nonatomic, strong) NSDictionary *configuration;
 @property (nonatomic, copy) NSDictionary *classesByTemplateName;
+@property (nonatomic, strong) NSMutableDictionary *singletonsByID; ///< This dictionary should only be accessed from the privateQueue
+@property (nonatomic, strong) NSMutableDictionary *singletonsByKey; ///< This dictionary should only be accessed from the privateQueue
+@property (nonatomic, strong) NSDictionary *configurationDictionariesByID;
 @property (nonatomic) dispatch_queue_t privateQueue;
 
 @end
 
 @implementation VDependencyManager
 
-- (instancetype)initWithParentManager:(VDependencyManager *)parentManager configuration:(NSDictionary *)configuration dictionaryOfClassesByTemplateName:(NSDictionary *)classesByTemplateName
+- (instancetype)initWithParentManager:(VDependencyManager *)parentManager
+                        configuration:(NSDictionary *)configuration
+    dictionaryOfClassesByTemplateName:(NSDictionary *)classesByTemplateName
 {
     self = [super init];
     if (self)
     {
         _parentManager = parentManager;
         _configuration = configuration;
-        _privateQueue = dispatch_queue_create("VDependencyManager private queue", DISPATCH_QUEUE_SERIAL);
+        _privateQueue = dispatch_queue_create("VDependencyManager private queue", DISPATCH_QUEUE_CONCURRENT);
+        _singletonsByKey = [[NSMutableDictionary alloc] init];
+        
+        if (_parentManager == nil)
+        {
+            _singletonsByID = [[NSMutableDictionary alloc] init];
+            _configurationDictionariesByID = [self findConfigurationDictionariesByIDInTemplateDictionary:configuration];
+        }
         
         if (classesByTemplateName == nil)
         {
@@ -155,6 +169,109 @@ NSString * const VDependencyManagerScaffoldViewControllerKey = @"scaffold";
     return [self templateValueOfType:[NSArray class] forKey:key];
 }
 
+#pragma mark - Singleton dependencies
+
+- (id)singletonObjectOfType:(Class)expectedType forKey:(NSString *)key
+{
+    NSDictionary *singletonConfig = [self templateValueOfType:[NSDictionary class] forKey:key];
+    id singleton = [self singletonObjectOfType:expectedType fromDictionary:singletonConfig];
+    
+    if (singleton == nil)
+    {
+        singleton = [self singletonObjectForKey:key];
+        
+        if (singleton == nil)
+        {
+            singleton = [self objectOfType:expectedType fromDictionary:singletonConfig];
+            [self setSingletonObject:singleton forKey:key];
+        }
+    }
+    return singleton;
+}
+
+- (id)singletonObjectOfType:(Class)expectedType fromDictionary:(NSDictionary *)configurationDictionary
+{
+    NSString *objID = configurationDictionary[kIDKey];
+    
+    if (objID == nil)
+    {
+        return nil;
+    }
+    id singletonObject = [self singletonObjectForID:objID];
+    
+    if (singletonObject == nil)
+    {
+        singletonObject = [self objectOfType:expectedType fromDictionary:configurationDictionary];
+        
+        if (singletonObject != nil)
+        {
+            [self setSingletonObject:singletonObject forID:objID];
+        }
+    }
+    return singletonObject;
+}
+
+- (id)singletonObjectForID:(NSString *)objectID
+{
+    if (self.singletonsByID == nil)
+    {
+        return [self.parentManager singletonObjectForID:objectID];
+    }
+    
+    __block id singletonObject = nil;
+    dispatch_sync(self.privateQueue, ^(void)
+    {
+        singletonObject = self.singletonsByID[objectID];
+    });
+    
+    if (singletonObject == nil)
+    {
+        singletonObject = [self.parentManager singletonObjectForID:objectID];
+    }
+    return singletonObject;
+}
+
+- (void)setSingletonObject:(id)singletonObject forID:(NSString *)objectID
+{
+    NSParameterAssert(singletonObject != nil);
+    NSParameterAssert(objectID != nil);
+
+    if (self.singletonsByID)
+    {
+        dispatch_barrier_async(self.privateQueue, ^(void)
+        {
+            self.singletonsByID[objectID] = singletonObject;
+        });
+    }
+    else
+    {
+        [self.parentManager setSingletonObject:singletonObject forID:objectID];
+    }
+}
+
+- (id)singletonObjectForKey:(NSString *)key
+{
+    id __block singletonObject = nil;
+    dispatch_sync(self.privateQueue, ^(void)
+    {
+        singletonObject = self.singletonsByKey[key];
+    });
+    
+    if (singletonObject != nil)
+    {
+        return singletonObject;
+    }
+    return [self.parentManager singletonObjectForKey:key];
+}
+
+- (void)setSingletonObject:(id)singletonObject forKey:(NSString *)key
+{
+    dispatch_barrier_async(self.privateQueue, ^(void)
+    {
+        self.singletonsByKey[key] = singletonObject;
+    });
+}
+
 #pragma mark - Dependency getter primatives
 
 - (id)templateValueOfType:(Class)expectedType forKey:(NSString *)keyPath
@@ -164,6 +281,11 @@ NSString * const VDependencyManagerScaffoldViewControllerKey = @"scaffold";
     if (value == nil)
     {
         return [self.parentManager templateValueOfType:expectedType forKey:keyPath];
+    }
+    
+    if ([value isKindOfClass:[NSDictionary class]] && value[kReferenceIDKey] != nil)
+    {
+        value = [self configurationDictionaryForID:value[kReferenceIDKey]];
     }
     
     if ([value isKindOfClass:expectedType])
@@ -204,6 +326,47 @@ NSString * const VDependencyManagerScaffoldViewControllerKey = @"scaffold";
         return object;
     }
     return nil;
+}
+
+- (NSDictionary *)configurationDictionaryForID:(NSString *)objectID
+{
+    if (self.configurationDictionariesByID != nil)
+    {
+        return self.configurationDictionariesByID[objectID];
+    }
+    else
+    {
+        return [self.parentManager configurationDictionaryForID:objectID];
+    }
+}
+
+#pragma mark - Helpers
+
+/**
+ Scans the given template dictionary for configurations that specify an ID,
+ and returns a dictionary where the key is an ID and the value is the 
+ dictionary that specifies that key.
+ */
+- (NSDictionary *)findConfigurationDictionariesByIDInTemplateDictionary:(NSDictionary *)template
+{
+    NSMutableDictionary *configurationDictionariesByID = [[NSMutableDictionary alloc] init];
+    void (^__block __weak weakEnumerationBlock)(id, id, BOOL *);
+    void (^enumerationBlock)(id, id, BOOL *) = ^(id key, NSDictionary *obj, BOOL *stop)
+    {
+        if ([obj isKindOfClass:[NSDictionary class]])
+        {
+            NSString *objID = obj[kIDKey];
+            if (objID != nil)
+            {
+                configurationDictionariesByID[objID] = obj;
+            }
+            [obj enumerateKeysAndObjectsUsingBlock:weakEnumerationBlock];
+        }
+    };
+    weakEnumerationBlock = enumerationBlock;
+    
+    [template enumerateKeysAndObjectsUsingBlock:enumerationBlock];
+    return configurationDictionariesByID;
 }
 
 #pragma mark - Class name resolution

@@ -17,12 +17,18 @@
     },
     "app_store_url": "https:\/\/itunes.apple.com\/us\/app\/id889351747",
     "ivc": {
-        "id": "9ef1085d-4249-4bcc-8aca-126a657fbd65",
         "name": "testInitMethod"
     },
     "nvc": {
         "id": "ae742d8a-aaea-43db-b99a-707d72b147cb",
         "name": "testNewMethod"
+    },
+    "deep": {
+        "name": "deepReference",
+        "thing": {
+            "id": "10c8b593-b463-4845-bdf0-9d34fcd4e174",
+            "name": "testNewMethod"
+        }
     },
     "video_quality": {
         "capture": "medium",
@@ -34,5 +40,14 @@
         "require_profile_image": true,
         "template_c_enabled": false
     },
-    "arrayOfStrings": [ "red", "fish", "blue", "fish"]
+    "arrayOfStrings": [ "red", "fish", "blue", "fish"],
+    "otherNVC": {
+        "referenceID": "ae742d8a-aaea-43db-b99a-707d72b147cb"
+    },
+    "deeplyReferencedNVC": {
+        "referenceID": "10c8b593-b463-4845-bdf0-9d34fcd4e174"
+    },
+    "missingReference": {
+        "referenceID": "4327cba0-5a09-4f30-bf19-f4e36b250a9a"
+    }
 }

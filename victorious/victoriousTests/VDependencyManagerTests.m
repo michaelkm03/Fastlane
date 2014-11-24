@@ -82,6 +82,8 @@ static NSString * const kTestViewControllerNewMethodTemplateName = @"testNewMeth
     self.childDependencyManager = [[VDependencyManager alloc] initWithParentManager:self.dependencyManager configuration:@{} dictionaryOfClassesByTemplateName:dictionaryOfClassesByTemplateName];
 }
 
+#pragma mark - Colors, fonts
+
 - (void)testColor
 {
     UIColor *expected = [UIColor colorWithRed:0 green:0 blue:0 alpha:1];
@@ -120,6 +122,8 @@ static NSString * const kTestViewControllerNewMethodTemplateName = @"testNewMeth
     XCTAssertEqualObjects(expected, actual);
 }
 
+#pragma mark - VHasManagedDependencies conformance
+
 - (void)testViewControllerWithInitMethod
 {
     id viewController = [self.dependencyManager viewControllerForKey:@"ivc"];
@@ -140,6 +144,8 @@ static NSString * const kTestViewControllerNewMethodTemplateName = @"testNewMeth
     XCTAssert([viewController isKindOfClass:[VTestViewControllerWithNewMethod class]]);
     XCTAssert([viewController calledNewMethod]);
 }
+
+#pragma mark - Strings, numbers, arrays
 
 - (void)testString
 {
@@ -192,6 +198,8 @@ static NSString * const kTestViewControllerNewMethodTemplateName = @"testNewMeth
     XCTAssertEqualObjects(expected, actual);
 }
 
+#pragma mark - Instantiating objects via dictionaries and references
+
 - (void)testObjectFromDictionary
 {
     NSDictionary *configuration = @{ @"name": kTestViewControllerNewMethodTemplateName, @"one": @1, @"two": @2 };
@@ -201,6 +209,102 @@ static NSString * const kTestViewControllerNewMethodTemplateName = @"testNewMeth
     XCTAssertEqualObjects([vc.dependencyManager numberForKey:@"one"], @1);
     XCTAssertEqualObjects([vc.dependencyManager numberForKey:@"two"], @2);
     XCTAssertEqualObjects([vc.dependencyManager numberForKey:@"experiments.require_profile_image"], @YES);
+}
+
+- (void)testReferencedObject
+{
+    id viewController = [self.dependencyManager viewControllerForKey:@"otherNVC"];
+    XCTAssert([viewController isKindOfClass:[VTestViewControllerWithNewMethod class]]);
+    XCTAssert([viewController calledNewMethod]);
+}
+
+- (void)testDeepReference
+{
+    id viewController = [self.dependencyManager viewControllerForKey:@"deeplyReferencedNVC"];
+    XCTAssert([viewController isKindOfClass:[VTestViewControllerWithNewMethod class]]);
+    XCTAssert([viewController calledNewMethod]);
+}
+
+- (void)testMissingReferenceReturnsNil
+{
+    id result = [self.dependencyManager templateValueOfType:[NSObject class] forKey:@"missingReference"];
+    XCTAssertNil(result);
+}
+
+#pragma mark - Singletons
+
+- (void)testSingletonObject
+{
+    UIViewController *result1 = [self.dependencyManager singletonObjectOfType:[UIViewController class] forKey:@"nvc"];
+    UIViewController *result2 = [self.dependencyManager singletonObjectOfType:[UIViewController class] forKey:@"nvc"];
+    XCTAssertNotNil(result1);
+    XCTAssertNotNil(result2);
+    XCTAssertEqual(result1, result2);
+}
+
+- (void)testChildSingletonObject
+{
+    UIViewController *result1 = [self.dependencyManager singletonObjectOfType:[UIViewController class] forKey:@"nvc"];
+    UIViewController *result2 = [self.childDependencyManager singletonObjectOfType:[UIViewController class] forKey:@"nvc"];
+    XCTAssertNotNil(result1);
+    XCTAssertNotNil(result2);
+    XCTAssertEqual(result1, result2);
+}
+
+- (void)testSingletonObjectWithoutID
+{
+    UIViewController *result1 = [self.dependencyManager singletonObjectOfType:[UIViewController class] forKey:@"ivc"];
+    UIViewController *result2 = [self.dependencyManager singletonObjectOfType:[UIViewController class] forKey:@"ivc"];
+    XCTAssertNotNil(result1);
+    XCTAssertNotNil(result2);
+    XCTAssertEqual(result1, result2);
+}
+
+- (void)testChildSingletonObjectWithoutID
+{
+    UIViewController *result1 = [self.dependencyManager singletonObjectOfType:[UIViewController class] forKey:@"ivc"];
+    UIViewController *result2 = [self.childDependencyManager singletonObjectOfType:[UIViewController class] forKey:@"ivc"];
+    XCTAssertNotNil(result1);
+    XCTAssertNotNil(result2);
+    XCTAssertEqual(result1, result2);
+}
+
+- (void)testSingletonByID
+{
+    UIViewController *result1 = [self.dependencyManager singletonObjectOfType:[UIViewController class] forKey:@"nvc"];
+    UIViewController *result2 = [self.dependencyManager singletonObjectOfType:[UIViewController class] forKey:@"otherNVC"];
+    XCTAssertNotNil(result1);
+    XCTAssertNotNil(result2);
+    XCTAssertEqual(result1, result2);
+}
+
+- (void)testChildSingletonByID
+{
+    UIViewController *result1 = [self.dependencyManager singletonObjectOfType:[UIViewController class] forKey:@"nvc"];
+    UIViewController *result2 = [self.childDependencyManager singletonObjectOfType:[UIViewController class] forKey:@"otherNVC"];
+    XCTAssertNotNil(result1);
+    XCTAssertNotNil(result2);
+    XCTAssertEqual(result1, result2);
+}
+
+- (void)testNonSingletonObjectByID
+{
+    UIViewController *result1 = [self.dependencyManager templateValueOfType:[UIViewController class] forKey:@"nvc"];
+    UIViewController *result2 = [self.dependencyManager templateValueOfType:[UIViewController class] forKey:@"otherNVC"];
+    XCTAssert([result1 isKindOfClass:[UIViewController class]]);
+    XCTAssert([result2 isKindOfClass:[UIViewController class]]);
+    XCTAssertNotEqual(result1, result2);
+}
+
+- (void)testSingletonByDictionary
+{
+    NSDictionary *configuration = @{ @"id": [[NSUUID UUID] UUIDString], @"name": kTestViewControllerNewMethodTemplateName, @"one": @1, @"two": @2 };
+    
+    VTestViewControllerWithNewMethod *result1 = (VTestViewControllerWithNewMethod *)[self.dependencyManager singletonObjectOfType:[UIViewController class] fromDictionary:configuration];
+    VTestViewControllerWithNewMethod *result2 = (VTestViewControllerWithNewMethod *)[self.dependencyManager singletonObjectOfType:[UIViewController class] fromDictionary:configuration];
+    XCTAssertNotNil(result1);
+    XCTAssertNotNil(result2);
+    XCTAssertEqual(result1, result2);
 }
 
 @end
