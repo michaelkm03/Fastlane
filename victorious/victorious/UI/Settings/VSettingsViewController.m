@@ -24,11 +24,13 @@
 #import "VObjectManager+Websites.h"
 #import "UIViewController+VNavMenu.h"
 #import "VAutomation.h"
+#import "VNotificationSettingsViewController.h"
 
 static const NSInteger kSettingsSectionIndex         = 0;
 static const NSInteger kChangePasswordIndex          = 0;
 static const NSInteger kChromecastButtonIndex        = 2;
-static const NSInteger kServerEnvironmentButtonIndex = 3;
+static const NSInteger kPushNotificationsButtonIndex = 3;
+static const NSInteger kServerEnvironmentButtonIndex = 4;
 
 @interface VSettingsViewController ()   <MFMailComposeViewControllerDelegate, UIAlertViewDelegate>
 
@@ -37,6 +39,7 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
 
 @property (nonatomic, assign) BOOL    showChromeCastButton;
 @property (nonatomic, assign) BOOL    showEnvironmentSetting;
+@property (nonatomic, assign) BOOL    showPushNotificationSettings;
 
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *labels;
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *rightLabels;
@@ -114,6 +117,8 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
 #else
     self.showEnvironmentSetting = YES;
 #endif
+    
+    self.showPushNotificationSettings = YES;
     
     [self.navigationController setNavigationBarHidden:YES animated:YES];
     
@@ -232,6 +237,17 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
     else if (kSettingsSectionIndex == indexPath.section && kChangePasswordIndex == indexPath.row)
     {
         if ([VObjectManager sharedManager].mainUserLoggedIn)
+        {
+            return self.tableView.rowHeight;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+    else if (kSettingsSectionIndex == indexPath.section && kPushNotificationsButtonIndex == indexPath.row)
+    {
+        if (self.showPushNotificationSettings)
         {
             return self.tableView.rowHeight;
         }
