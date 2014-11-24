@@ -98,7 +98,7 @@
 {
     if ([indexPath isEqual:[NSIndexPath indexPathForRow:3 inSection:0]])
     {
-        return [self.taglineTextView sizeThatFits:CGSizeMake(CGRectGetWidth(self.taglineTextView.bounds), FLT_MAX)].height + fabsf(self.verticalSpaceTaglineTextViewBottomToContainer.constant) + fabsf(self.verticalSpaceTaglineTextViewTopToContainer.constant);
+        return [self.taglineTextView sizeThatFits:CGSizeMake(CGRectGetWidth(self.taglineTextView.bounds), FLT_MAX)].height + ABS(self.verticalSpaceTaglineTextViewBottomToContainer.constant) + ABS(self.verticalSpaceTaglineTextViewTopToContainer.constant);
     }
     return [super tableView:tableView
     heightForRowAtIndexPath:indexPath];
