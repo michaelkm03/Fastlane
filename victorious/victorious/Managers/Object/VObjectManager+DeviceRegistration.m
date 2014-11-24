@@ -24,4 +24,25 @@
             failBlock:failed];
 }
 
+- (RKManagedObjectRequestOperation *)getDevicePreferencesSuccessBlock:(VSuccessBlock)success
+                                                            failBlock:(VFailBlock)failed
+{
+    return [self GET:@"/api/device/preferences"
+               object:nil
+           parameters:nil
+         successBlock:success
+            failBlock:failed];
+}
+
+- (RKManagedObjectRequestOperation *)setDevicePreferences:(NSDictionary *)dictionary
+                                             SuccessBlock:(VSuccessBlock)success
+                                                failBlock:(VFailBlock)failed
+{
+    return [self POST:@"/api/device/preferences"
+               object:nil
+           parameters:nil
+         successBlock:success
+            failBlock:failed];
+}
+
 @end

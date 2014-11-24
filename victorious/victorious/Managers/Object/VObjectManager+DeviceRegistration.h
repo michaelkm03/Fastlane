@@ -14,4 +14,11 @@
                                           successBlock:(VSuccessBlock)success
                                              failBlock:(VFailBlock)failed;
 
+- (RKManagedObjectRequestOperation *)getDevicePreferencesSuccessBlock:(VSuccessBlock)success
+                                                            failBlock:(VFailBlock)failed;
+
+- (RKManagedObjectRequestOperation *)setDevicePreferences:(NSDictionary *)dictionary
+                                             SuccessBlock:(VSuccessBlock)success
+                                                failBlock:(VFailBlock)failed;
+
 @end

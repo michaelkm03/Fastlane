@@ -9,6 +9,7 @@
 #import "VNotificationSettingsViewController.h"
 #import "VNotificationSettingCell.h"
 #import "UIViewController+VNavMenu.h"
+#import "VObjectManager+DeviceRegistration.h"
 
 @implementation VNotificationSettingsSection
 
@@ -71,6 +72,20 @@
     
     [self.parentViewController v_addNewNavHeaderWithTitles:nil];
     self.parentViewController.navHeaderView.delegate = (UIViewController<VNavigationHeaderDelegate> *)self.parentViewController;
+    
+    [self refresh];
+}
+
+- (void)refresh
+{
+    [[VObjectManager sharedManager] getDevicePreferencesSuccessBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+    {
+        
+    }
+                                                           failBlock:^(NSOperation *operation, NSError *error)
+     {
+         
+     }];
 }
 
 #pragma mark - Actions
