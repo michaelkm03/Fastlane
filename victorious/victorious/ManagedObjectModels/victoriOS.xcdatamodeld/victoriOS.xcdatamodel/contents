@@ -130,11 +130,11 @@
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="notifications" inverseEntity="User" syncable="YES"/>
     </entity>
     <entity name="NotificationSettings" representedClassName="VNotificationSettings" syncable="YES">
-        <attribute name="isNewCommentOnMyPostEnabled" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="isNewFollowerEnabled" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="isNewPrivateMessageEnabled" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="isPostFromCreatorEnabled" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="isPostFromFollowedEnabled" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="isNewCommentOnMyPostEnabled" attributeType="Boolean" syncable="YES"/>
+        <attribute name="isNewFollowerEnabled" attributeType="Boolean" syncable="YES"/>
+        <attribute name="isNewPrivateMessageEnabled" attributeType="Boolean" syncable="YES"/>
+        <attribute name="isPostFromCreatorEnabled" attributeType="Boolean" syncable="YES"/>
+        <attribute name="isPostFromFollowedEnabled" attributeType="Boolean" syncable="YES"/>
     </entity>
     <entity name="PollResult" representedClassName="VPollResult" syncable="YES">
         <attribute name="answerId" optional="YES" attributeType="Integer 32" defaultValueString="0" indexed="YES" syncable="YES"/>
@@ -274,6 +274,7 @@
         <element name="Node" positionX="817" positionY="-180" width="128" height="133"/>
         <element name="NodeAction" positionX="835" positionY="-9" width="128" height="90"/>
         <element name="Notification" positionX="1582" positionY="135" width="128" height="148"/>
+        <element name="NotificationSettings" positionX="693" positionY="-648" width="128" height="120"/>
         <element name="PollResult" positionX="1582" positionY="-36" width="128" height="118"/>
         <element name="Rule" positionX="567" positionY="99" width="128" height="75"/>
         <element name="Sequence" positionX="1078" positionY="-540" width="128" height="465"/>
@@ -284,6 +285,5 @@
         <element name="VoteType" positionX="538" positionY="-738" width="128" height="210"/>
         <element name="VStream" positionX="1069" positionY="-792" width="128" height="135"/>
         <element name="VStreamItem" positionX="871" positionY="-765" width="128" height="103"/>
-        <element name="NotificationSettings" positionX="693" positionY="-648" width="128" height="118"/>
     </elements>
 </model>

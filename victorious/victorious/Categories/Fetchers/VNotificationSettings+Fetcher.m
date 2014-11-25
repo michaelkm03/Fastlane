@@ -17,6 +17,15 @@
     NSString *entityName = [VNotificationSettings entityName];
     id obj = [[VObjectManager sharedManager] objectWithEntityName:entityName subclass:[VNotificationSettings class]];
     NSAssert( [obj isKindOfClass:[VNotificationSettings class]], @"" );
+    
+    // Set defaults if object was created successfully
+    VNotificationSettings *settings = (VNotificationSettings *)obj;
+    settings.isPostFromCreatorEnabled = @NO;
+    settings.isNewFollowerEnabled = @NO;
+    settings.isNewPrivateMessageEnabled = @NO;
+    settings.isNewCommentOnMyPostEnabled = @NO;
+    settings.isPostFromFollowedEnabled = @NO;
+    
     return obj;
 }
 

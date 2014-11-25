@@ -13,6 +13,7 @@
 #import "VNotificationSettings.h"
 #import "VNoContentTableViewCell.h"
 #import "VNotificationSettings+Fetcher.h"
+#import "VAlertController.h"
 
 static const NSInteger kErrorCodeDeviceNotFound = 5000;
 
@@ -167,7 +168,11 @@ static const NSInteger kErrorCodeDeviceNotFound = 5000;
 {
     [[VObjectManager sharedManager] setDeviceSettings:self.settings successBlock:nil failBlock:^(NSOperation *operation, NSError *error)
     {
-        // TODO: Show alert that indicates error and says to try again laster
+        NSString *title = @"Error Saving Preferences";
+        NSString *message = @"Oops!  Something went wrong, please try again later.";
+        VAlertController *alertConroller = [VAlertController alertWithTitle:title message:message];
+        [alertConroller addAction:[VAlertAction cancelButtonWithTitle:@"OK" handler:nil]];
+        [alertConroller presentInViewController:self.navigationController animated:YES completion:nil];
     }];
 }
 

@@ -103,8 +103,7 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
 {
     [[VObjectManager sharedManager] getSuggestedHashtags:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
- //        [self hashtagsDidLoad:resultObjects];
-         [self hashtagsDidLoad:@[]];
+         [self hashtagsDidLoad:resultObjects];
      }
                                                failBlock:^(NSOperation *operation, NSError *error)
      {

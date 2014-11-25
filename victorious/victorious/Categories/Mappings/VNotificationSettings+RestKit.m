@@ -45,24 +45,13 @@
 
 - (NSDictionary *)parametersDictionary
 {
-    [self replaceNilValuesWithDefaults];
-    
     return @{
-             @"notification_creator_post"       : self.isPostFromCreatorEnabled,
-             @"notification_follow_post"        : self.isNewFollowerEnabled,
-             @"notification_comment_post"       : self.isNewPrivateMessageEnabled,
-             @"notification_private_message"    : self.isNewCommentOnMyPostEnabled,
-             @"notification_new_follower"       : self.isPostFromFollowedEnabled
+             @"notification_creator_post"       : self.isPostFromCreatorEnabled ?: @NO,
+             @"notification_follow_post"        : self.isNewFollowerEnabled ?: @NO,
+             @"notification_comment_post"       : self.isNewPrivateMessageEnabled ?: @NO,
+             @"notification_private_message"    : self.isNewCommentOnMyPostEnabled ?: @NO,
+             @"notification_new_follower"       : self.isPostFromFollowedEnabled ?: @NO
              };
-}
-
-- (void)replaceNilValuesWithDefaults
-{
-    self.isPostFromCreatorEnabled = self.isPostFromCreatorEnabled ?: @NO;
-    self.isNewFollowerEnabled = self.isNewFollowerEnabled ?: @NO;
-    self.isNewPrivateMessageEnabled = self.isNewPrivateMessageEnabled ?: @NO;
-    self.isNewCommentOnMyPostEnabled = self.isNewCommentOnMyPostEnabled ?: @NO;
-    self.isPostFromFollowedEnabled = self.isPostFromFollowedEnabled ?: @NO;
 }
 
 @end
