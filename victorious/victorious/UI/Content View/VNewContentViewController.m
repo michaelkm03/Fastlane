@@ -383,7 +383,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     }
     else
     {
-        self.textEntryView.placeholderText = NSLocalizedString(@"LaveAComment", @"");
+        self.textEntryView.placeholderText = NSLocalizedString(@"LeaveAComment", @"");
     }
     
     [self.viewModel reloadData];
