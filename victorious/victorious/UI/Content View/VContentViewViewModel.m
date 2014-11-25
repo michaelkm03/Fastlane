@@ -49,6 +49,8 @@ NSString * const VContentViewViewModelDidUpdateHistogramDataNotification = @"VCo
 NSString * const VContentViewViewModelDidUpdatePollDataNotification = @"VContentViewViewModelDidUpdatePollDataNotification";
 NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentViewViewModelDidUpdateContentNotification";
 
+NSString * const kPreferedMimeType = @"application/x-mpegURL";
+
 @interface VContentViewViewModel ()
 
 @property (nonatomic, strong, readwrite) VSequence *sequence;
@@ -104,7 +106,17 @@ NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentV
         _experienceEnhancerController = [[VExperienceEnhancerController alloc] initWithSequence:sequence];
 
         _currentNode = [sequence firstNode];
+        
         _currentAsset = [_currentNode.assets firstObject];
+        
+        [_currentNode.assets enumerateObjectsUsingBlock:^(VAsset *asset, NSUInteger idx, BOOL *stop)
+        {
+            if ([asset.type isEqualToString:kPreferedMimeType])
+            {
+                _currentAsset = asset;
+                *stop = YES;
+            }
+        }];
         
         // Set the default ad chain index
         self.currentAdChainIndex = 0;
