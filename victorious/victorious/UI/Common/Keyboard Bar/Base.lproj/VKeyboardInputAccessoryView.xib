@@ -93,6 +93,7 @@
                 <outlet property="verticalSpaceTextViewToBottomContainerConstraint" destination="dUC-yX-OIj" id="Wdd-DR-xCo"/>
                 <outlet property="verticalSpaceTextViewTopToContainerConstraint" destination="eRB-c0-lGG" id="njB-cf-D6T"/>
             </connections>
+            <point key="canvasLocation" x="143" y="511.5"/>
         </view>
     </objects>
     <resources>
