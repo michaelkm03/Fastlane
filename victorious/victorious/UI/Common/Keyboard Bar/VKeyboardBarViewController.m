@@ -14,6 +14,10 @@
 
 #import "VAuthorizationViewControllerFactory.h"
 #import "VObjectManager+Login.h"
+#import "UIActionSheet+VBlocks.h"
+#import "VConstants.h"
+#import "VThemeManager.h"
+#import "VAppDelegate.h"
 
 static const NSInteger kCharacterLimit = 255;
 
@@ -135,23 +139,85 @@ static const NSInteger kCharacterLimit = 255;
         [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
         return;
     }
-    
-    VCameraViewController *cameraViewController = [VCameraViewController cameraViewControllerStartingWithStillCapture];
-    cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
+    void (^showCamera)(void) = ^void(void)
     {
-        if (finished)
+        [[VThemeManager sharedThemeManager] applyStyling];
+        
+        VCameraViewController *cameraViewController = [VCameraViewController cameraViewControllerStartingWithStillCapture];
+        cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
         {
-            self.mediaURL = capturedMediaURL;
-            [self.mediaButton setImage:previewImage forState:UIControlStateNormal];
-        }
-        [self dismissViewControllerAnimated:YES
-                                 completion:^
-         {
-             [self enableOrDisableSendButtonAsAppropriate];
-         }];
+            if (finished)
+            {
+                self.mediaURL = capturedMediaURL;
+                [self.mediaButton setImage:previewImage forState:UIControlStateNormal];
+            }
+            [self dismissViewControllerAnimated:YES
+                                     completion:^
+             {
+                 [self enableOrDisableSendButtonAsAppropriate];
+             }];
+        };
+        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:cameraViewController];
+        [self presentViewController:navController animated:YES completion:nil];
     };
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:cameraViewController];
-    [self presentViewController:navController animated:YES completion:nil];
+    
+    if (self.mediaURL == nil)
+    {
+        showCamera();
+        return;
+    }
+    
+    // We already have a selected media does the user want to discard and re-take?
+    NSString *actionSheetTitle = NSLocalizedString(@"Delete this content and select something else?", @"User has already selected media (pictire/video) as an attachment for commenting.");
+    NSString *discardActionTitle = NSLocalizedString(@"Delete", @"Delete the previously selected item. This is a destructive operation.");
+    NSString *cancelActionTitle = NSLocalizedString(@"Cancel", @"Cancel button.");
+    
+    void (^clearMediaSelection)(void) = ^void(void)
+    {
+        self.mediaURL = nil;
+        [self.mediaButton setImage:[UIImage imageNamed:@"MessageCamera"] forState:UIControlStateNormal];
+    };
+    
+    if (UI_IS_IOS8_AND_HIGHER)
+    {
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:actionSheetTitle
+                                                                                 message:nil
+                                                                          preferredStyle:UIAlertControllerStyleActionSheet];
+        
+        UIAlertAction *discardAction = [UIAlertAction actionWithTitle:discardActionTitle
+                                                                style:UIAlertActionStyleDestructive
+                                                              handler:^(UIAlertAction *action)
+                                        {
+                                            clearMediaSelection();
+                                            showCamera();
+                                        }];
+        [alertController addAction:discardAction];
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:cancelActionTitle
+                                                               style:UIAlertActionStyleCancel
+                                                             handler:^(UIAlertAction *action)
+                                       {
+                                           [[VThemeManager sharedThemeManager] applyStyling];
+                                       }];
+        [alertController addAction:cancelAction];
+        
+        [[VThemeManager sharedThemeManager] removeStyling];
+        [self presentViewController:alertController animated:YES completion:nil];
+    }
+    else
+    {
+        UIWindow *window = ((VAppDelegate *)[UIApplication sharedApplication].delegate).window;
+        [[[UIActionSheet alloc] initWithTitle:actionSheetTitle
+                            cancelButtonTitle:cancelActionTitle
+                               onCancelButton:nil
+                       destructiveButtonTitle:discardActionTitle
+                          onDestructiveButton:^
+        {
+            clearMediaSelection();
+            showCamera();
+        }
+                   otherButtonTitlesAndBlocks:nil, nil] showInView:window];
+    }
+
 }
 
 - (NSAttributedString *)textViewText

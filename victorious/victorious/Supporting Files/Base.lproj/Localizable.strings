@@ -405,6 +405,10 @@
 "OpenSafari"            = "Open in Safari";
 "ShareSMS"              = "Send as Text";
 
+"Delete this content and select something else?" = "Delete this content and select something else?";
+"Delete" = "Delete";
+"Cancel" = "Cancel";
+
 "PostFromCreator"       = "Post from %@";
 "PostFromFollowed"      = "Post from someone I follow";
 "NewComment"            = "New comments on my post";

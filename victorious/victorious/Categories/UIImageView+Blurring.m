@@ -59,9 +59,7 @@ static const CGFloat kVSaturationDeltaFactor = 1.8f;
                              objc_setAssociatedObject(strongSelf, &kAssociatedObjectKey, image, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
                              dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^
                              {
-                                 UIImage *resizedImage = [image resizedImage:AVMakeRectWithAspectRatioInsideRect(image.size, weakSelf.bounds).size
-                                                        interpolationQuality:kCGInterpolationLow];
-                                 UIImage *blurredImage = [resizedImage applyBlurWithRadius:kVBlurRadius
+                                 UIImage *blurredImage = [image applyBlurWithRadius:kVBlurRadius
                                                                                  tintColor:tintColor
                                                                      saturationDeltaFactor:kVSaturationDeltaFactor
                                                                                  maskImage:nil];

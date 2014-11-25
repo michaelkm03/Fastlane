@@ -39,8 +39,9 @@
 #import "VSectionHandleReusableView.h"
 #import "VContentBackgroundSupplementaryView.h"
 
-// Input Acceossry
+// Input Accessory
 #import "VKeyboardInputAccessoryView.h"
+#import "UIActionSheet+VBlocks.h"
 
 // ViewControllers
 #import "VCameraViewController.h"
@@ -1116,32 +1117,93 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
         return;
     }
     
-    VCameraViewController *cameraViewController = [VCameraViewController cameraViewControllerStartingWithStillCapture];
-    __weak typeof(self) welf = self;
-    cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
+    void (^showCamera)(void) = ^void(void)
     {
-        if (finished)
+        VCameraViewController *cameraViewController = [VCameraViewController cameraViewControllerStartingWithStillCapture];
+        __weak typeof(self) welf = self;
+        cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
         {
-            welf.mediaURL = capturedMediaURL;
-            [welf.textEntryView setSelectedThumbnail:previewImage];
-        }
-        [welf dismissViewControllerAnimated:YES completion:^
-        {
+            [[VThemeManager sharedThemeManager] applyStyling];
             if (finished)
             {
-                [welf.textEntryView startEditing];
+                welf.mediaURL = capturedMediaURL;
+                [welf.textEntryView setSelectedThumbnail:previewImage];
             }
-            
-            [UIView animateWithDuration:0.0f
-                             animations:^
+            [welf dismissViewControllerAnimated:YES completion:^
              {
-                 [welf.contentCollectionView reloadData];
-                 [welf.contentCollectionView.collectionViewLayout invalidateLayout];
+                 if (finished)
+                 {
+                     [welf.textEntryView startEditing];
+                 }
+                 
+                 [UIView animateWithDuration:0.0f
+                                  animations:^
+                  {
+                      [welf.contentCollectionView reloadData];
+                      [welf.contentCollectionView.collectionViewLayout invalidateLayout];
+                  }];
              }];
-        }];
+        };
+        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:cameraViewController];
+        [self presentViewController:navController animated:YES completion:nil];
     };
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:cameraViewController];
-    [self presentViewController:navController animated:YES completion:nil];
+    
+    if (self.mediaURL == nil)
+    {
+        showCamera();
+        return;
+    }
+    
+    void (^clearMediaSelection)(void) = ^void(void)
+    {
+        self.mediaURL = nil;
+        [self.textEntryView setSelectedThumbnail:nil];
+    };
+    
+    // We already have a selected media does the user want to discard and re-take?
+    NSString *actionSheetTitle = NSLocalizedString(@"Delete this content and select something else?", @"User has already selected media (pictire/video) as an attachment for commenting.");
+    NSString *discardActionTitle = NSLocalizedString(@"Delete", @"Delete the previously selected item. This is a destructive operation.");
+    NSString *cancelActionTitle = NSLocalizedString(@"Cancel", @"Cancel button.");
+    
+    if (UI_IS_IOS8_AND_HIGHER)
+    {
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:actionSheetTitle
+                                                                                 message:nil
+                                                                          preferredStyle:UIAlertControllerStyleActionSheet];
+        
+        UIAlertAction *deleteAction = [UIAlertAction actionWithTitle:discardActionTitle
+                                                                style:UIAlertActionStyleDestructive
+                                                              handler:^(UIAlertAction *action)
+                                        {
+                                            clearMediaSelection();
+                                            showCamera();
+                                        }];
+        [alertController addAction:deleteAction];
+        
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:cancelActionTitle
+                                                               style:UIAlertActionStyleCancel
+                                                             handler:^(UIAlertAction *action)
+                                       {
+                                           [[VThemeManager sharedThemeManager] applyStyling];
+                                       }];
+        [alertController addAction:cancelAction];
+        
+        [[VThemeManager sharedThemeManager] removeStyling];
+        [self presentViewController:alertController animated:YES completion:nil];
+    }
+    else
+    {
+        [[[UIActionSheet alloc] initWithTitle:actionSheetTitle
+                            cancelButtonTitle:cancelActionTitle
+                               onCancelButton:nil
+                       destructiveButtonTitle:discardActionTitle
+                          onDestructiveButton:^
+          {
+              clearMediaSelection();
+              showCamera();
+          }
+                   otherButtonTitlesAndBlocks:nil, nil] showInView:self.view];
+    }
 }
 
 - (void)keyboardInputAccessoryViewDidClearInput:(VKeyboardInputAccessoryView *)inpoutAccessoryView
