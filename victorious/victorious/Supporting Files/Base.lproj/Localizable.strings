@@ -106,7 +106,7 @@
 "SuggestedFollowersNone" =   "No Followers";
 "SuggestedFollowersSing" =   "%@ Follower";
 "SuggestedFollowersPlur" =   "%@ Followers";
-"SuggestedFollowersK"    =   "%@K Followers";
+"SuggestedFollowersK"    =   "%@ Followers";
 
 "NoRepostersTitle"      =   "BE THE 1st TO REPOST!";
 "NoRepostersMessage"    =   "Share this content with all of your followers!";

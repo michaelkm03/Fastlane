@@ -2,13 +2,13 @@
 //  VFollowersTextFormatterTests.m
 //  victorious
 //
-//  Created by Patrick Lynch on 10/6/14.
+//  Created by Patrick Lynch on 11/20/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VFollowersTextFormatter.h"
-
+#import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
+#import "VFollowersTextFormatter.h"
 
 @interface VFollowersTextFormatterTests : XCTestCase
 
@@ -28,48 +28,37 @@
 
 - (void)testSingular
 {
-    XCTAssert( [[VFollowersTextFormatter shortLabelWithNumberOfFollowers:1] isEqualToString: @"1 Follower"] );
+    XCTAssertEqualObjects( [VFollowersTextFormatter followerTextWithNumberOfFollowers:1], @"1 Follower" );
 }
 
 - (void)testNone
 {
-    XCTAssert( [[VFollowersTextFormatter shortLabelWithNumberOfFollowers:0] isEqualToString: @"No Followers"] );
+    XCTAssertEqualObjects( [VFollowersTextFormatter followerTextWithNumberOfFollowers:0], @"No Followers" );
 }
 
 - (void)testPlural
 {
-    XCTAssert( [[VFollowersTextFormatter shortLabelWithNumberOfFollowers:9] isEqualToString: @"9 Followers"] );
-    XCTAssert( [[VFollowersTextFormatter shortLabelWithNumberOfFollowers:99] isEqualToString: @"99 Followers"] );
-    XCTAssert( [[VFollowersTextFormatter shortLabelWithNumberOfFollowers:999] isEqualToString: @"999 Followers"] );
+    XCTAssertEqualObjects( [VFollowersTextFormatter followerTextWithNumberOfFollowers:9], @"9 Followers" );
+    XCTAssertEqualObjects( [VFollowersTextFormatter followerTextWithNumberOfFollowers:99], @"99 Followers" );
+    XCTAssertEqualObjects( [VFollowersTextFormatter followerTextWithNumberOfFollowers:999], @"999 Followers" );
 }
 
 - (void)testThousands
 {
-    NSString *label = [VFollowersTextFormatter shortLabelWithNumberOfFollowers:1000];
-    XCTAssert( [label isEqualToString: @"1.0K Followers"] );
+    NSString *label = [VFollowersTextFormatter followerTextWithNumberOfFollowers:1000];
+    XCTAssertEqualObjects( label, @"1K Followers" );
     
-    label = [VFollowersTextFormatter shortLabelWithNumberOfFollowers:2500];
-    XCTAssert( [label isEqualToString: @"2.5K Followers"] );
+    label = [VFollowersTextFormatter followerTextWithNumberOfFollowers:2500];
+    XCTAssertEqualObjects( label, @"2K Followers" );
     
-    label = [VFollowersTextFormatter shortLabelWithNumberOfFollowers:5180];
-    XCTAssert( [label isEqualToString: @"5.2K Followers"] );
+    label = [VFollowersTextFormatter followerTextWithNumberOfFollowers:5180];
+    XCTAssertEqualObjects( label, @"5K Followers" );
     
-    label = [VFollowersTextFormatter shortLabelWithNumberOfFollowers:21225];
-    XCTAssert( [label isEqualToString: @"21.2K Followers"] );
+    label = [VFollowersTextFormatter followerTextWithNumberOfFollowers:21225];
+    XCTAssertEqualObjects( label, @"21K Followers" );
     
-    label = [VFollowersTextFormatter shortLabelWithNumberOfFollowers:1530500];
-    XCTAssert( [label isEqualToString: @"1,530.5K Followers"] );
-}
-
-- (void)testMethods
-{
-    NSString *result1 = [VFollowersTextFormatter shortLabelWithNumberOfFollowers:1];
-    NSString *result2 = [VFollowersTextFormatter shortLabelWithNumberOfFollowersObject:@1];
-    XCTAssert( [result1 isEqualToString:result2] );
-    
-    result1 = [VFollowersTextFormatter shortLabelWithNumberOfFollowers:9];
-    result2 = [VFollowersTextFormatter shortLabelWithNumberOfFollowersObject:@9];
-    XCTAssert( [result1 isEqualToString:result2] );
+    label = [VFollowersTextFormatter followerTextWithNumberOfFollowers:1530500];
+    XCTAssertEqualObjects( label, @"1M Followers" );
 }
 
 @end
