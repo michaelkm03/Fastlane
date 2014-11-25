@@ -660,7 +660,7 @@ NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentV
 
 - (VPollResult *)answerBResult
 {
-    if([self answerB].remoteId == nil)
+    if ([self answerB].remoteId == nil)
     {
         return nil;
     }
