@@ -77,6 +77,8 @@
     self.titleLabel.text =  NSLocalizedString(@"Comments", "");
     //Need to manually add this again so it appears over everything else.
     [self.view addSubview:self.backButton];
+    
+    self.keyboardBarViewController.promptLabel.text = NSLocalizedString(@"LeaveAComment", @"");
 }
 
 - (void)viewWillAppear:(BOOL)animated

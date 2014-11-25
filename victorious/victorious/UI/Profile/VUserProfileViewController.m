@@ -41,6 +41,7 @@
 static const CGFloat kVSmallUserHeaderHeight = 319.0f;
 
 static void * VUserProfileViewContext = &VUserProfileViewContext;
+static void * VUserProfileAttributesContext =  &VUserProfileAttributesContext;
 
 @interface VUserProfileViewController () <VUserProfileHeaderDelegate, VNavigationHeaderDelegate>
 
@@ -185,6 +186,10 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
 {
     [self.currentStream removeObserver:self forKeyPath:@"sequences"];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kLoggedInChangedNotification object:nil];
+    if (self.profile != nil)
+    {
+        [self stopObservingUserProfile];
+    }
 }
 
 #pragma mark - Find Friends
@@ -218,7 +223,20 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
 
 - (void)setProfile:(VUser *)profile
 {
+    if (profile == _profile)
+    {
+        return;
+    }
+    
+    [self stopObservingUserProfile];
+    
     _profile = profile;
+    
+    [_profile addObserver:self forKeyPath:NSStringFromSelector(@selector(name)) options:NSKeyValueObservingOptionNew context:VUserProfileAttributesContext];
+    [_profile addObserver:self forKeyPath:NSStringFromSelector(@selector(location)) options:NSKeyValueObservingOptionNew context:VUserProfileAttributesContext];
+    [_profile addObserver:self forKeyPath:NSStringFromSelector(@selector(tagline)) options:NSKeyValueObservingOptionNew context:VUserProfileAttributesContext];
+    [_profile addObserver:self forKeyPath:NSStringFromSelector(@selector(pictureUrl)) options:NSKeyValueObservingOptionNew context:VUserProfileAttributesContext];
+    
     self.currentStream = [VStream streamForUser:self.profile];
     if ([self isViewLoaded])
     {
@@ -227,6 +245,14 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
 }
 
 #pragma mark - Support
+
+- (void)stopObservingUserProfile
+{
+    [_profile removeObserver:self forKeyPath:NSStringFromSelector(@selector(name)) context:VUserProfileAttributesContext];
+    [_profile removeObserver:self forKeyPath:NSStringFromSelector(@selector(location)) context:VUserProfileAttributesContext];
+    [_profile removeObserver:self forKeyPath:NSStringFromSelector(@selector(tagline)) context:VUserProfileAttributesContext];
+    [_profile removeObserver:self forKeyPath:NSStringFromSelector(@selector(pictureUrl)) context:VUserProfileAttributesContext];
+}
 
 - (void)loginStateDidChange:(NSNotification *)notification
 {
@@ -413,6 +439,12 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
                         change:(NSDictionary *)change
                        context:(void *)context
 {
+    if (context == VUserProfileAttributesContext)
+    {
+        [self.collectionView reloadData];
+        return;
+    }
+    
     if (context != VUserProfileViewContext)
     {
         return;

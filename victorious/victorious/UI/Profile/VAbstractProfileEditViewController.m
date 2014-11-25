@@ -21,6 +21,7 @@
 @property (nonatomic, assign) NSInteger numberOfLines;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceTaglineTextViewTopToContainer;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceTaglineTextViewBottomToContainer;
+@property (nonatomic, weak) UIImageView *backgroundImageView;
 
 @end
 
@@ -124,7 +125,7 @@
                                       tintColor:[UIColor colorWithWhite:1.0 alpha:0.3]];
     backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
     self.tableView.backgroundView = backgroundImageView;
-
+    self.backgroundImageView = backgroundImageView;
     
     NSURL  *imageURL    =   [NSURL URLWithString:profile.pictureUrl];
     [self.profileImageView setImageWithURL:imageURL placeholderImage:nil];
@@ -143,6 +144,7 @@
         {
             self.profileImageView.image = previewImage;
             self.updatedProfileImage = capturedMediaURL;
+            [self.backgroundImageView setBlurredImageWithClearImage:previewImage placeholderImage:self.backgroundImageView.image tintColor:nil];
         }
     };
     [navigationController pushViewController:cameraViewController animated:NO];

@@ -25,6 +25,7 @@
 #import "VUserProfileViewController.h"
 #import "VSettingManager.h"
 
+static void * VUserProfileAttributesContext =  &VUserProfileAttributesContext;
 
 static VLargeNumberFormatter *largeNumberFormatter;
 
@@ -32,6 +33,11 @@ static const CGFloat kUserInfoViewMaxHeight = 25.0f;
 static const CGFloat kCommentButtonBuffer = 5.0f;
 
 @implementation VStreamCellHeaderView
+
+- (void)dealloc
+{
+    [self stopObservingUserProfile];
+}
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -127,12 +133,30 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
 
 - (void)setSequence:(VSequence *)sequence
 {
+    if (_sequence == sequence)
+    {
+        return;
+    }
+    
+    [self stopObservingUserProfile];
+    
     _sequence = sequence;
     
-    [self.profileImageButton setProfileImageURL:[NSURL URLWithString:sequence.user.pictureUrl] forState:UIControlStateNormal];
+    [_sequence.user addObserver:self forKeyPath:NSStringFromSelector(@selector(name)) options:NSKeyValueObservingOptionNew context:VUserProfileAttributesContext];
+    [_sequence.user addObserver:self forKeyPath:NSStringFromSelector(@selector(location)) options:NSKeyValueObservingOptionNew context:VUserProfileAttributesContext];
+    [_sequence.user addObserver:self forKeyPath:NSStringFromSelector(@selector(tagline)) options:NSKeyValueObservingOptionNew context:VUserProfileAttributesContext];
+    [_sequence.user addObserver:self forKeyPath:NSStringFromSelector(@selector(pictureUrl)) options:NSKeyValueObservingOptionNew context:VUserProfileAttributesContext];
+    
+    [self updateWithCurrentUser];
+}
+
+- (void)updateWithCurrentUser
+{
+    [self.profileImageButton setProfileImageURL:[NSURL URLWithString:self.sequence.user.pictureUrl]
+                                       forState:UIControlStateNormal];
     
     self.dateLabel.text = [self.sequence.releasedAt timeSince];
-
+    
     // Get comment count (if any)
     NSString *commentCount = self.sequence.commentCount.integerValue ? [largeNumberFormatter stringForInteger:self.sequence.commentCount.integerValue] : @"";
     [self.commentButton setTitle:commentCount forState:UIControlStateNormal];
@@ -168,6 +192,27 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
     if ([self.delegate respondsToSelector:@selector(willCommentOnSequence:fromView:)])
     {
         [self.delegate willCommentOnSequence:self.sequence fromView:self];
+    }
+}
+
+#pragma mark - KVO
+
+- (void)stopObservingUserProfile
+{
+    [self.sequence.user removeObserver:self forKeyPath:NSStringFromSelector(@selector(name)) context:VUserProfileAttributesContext];
+    [self.sequence.user removeObserver:self forKeyPath:NSStringFromSelector(@selector(location)) context:VUserProfileAttributesContext];
+    [self.sequence.user removeObserver:self forKeyPath:NSStringFromSelector(@selector(tagline)) context:VUserProfileAttributesContext];
+    [self.sequence.user removeObserver:self forKeyPath:NSStringFromSelector(@selector(pictureUrl)) context:VUserProfileAttributesContext];
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath
+                      ofObject:(id)object
+                        change:(NSDictionary *)change
+                       context:(void *)context
+{
+    if (context == VUserProfileAttributesContext)
+    {
+        [self updateWithCurrentUser];
     }
 }
 
