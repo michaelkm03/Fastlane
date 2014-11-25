@@ -10,6 +10,8 @@
 #import "VDependencyManager.h"
 #import "VTemplateGenerator.h"
 
+static NSString * const kIDKey = @"id";
+static NSString * const kReferenceIDKey = @"referenceID";
 static NSString * const kAppearanceKey = @"appearance";
 static NSString * const kClassNameKey = @"name";
 
@@ -34,6 +36,7 @@ static NSString * const kUserSpecificKey = @"isUserSpecific";
 @interface VTemplateGenerator ()
 
 @property (nonatomic, strong) NSDictionary *dataFromInitCall;
+@property (nonatomic, strong) NSString *firstMenuItemID;
 
 @end
 
@@ -45,6 +48,7 @@ static NSString * const kUserSpecificKey = @"isUserSpecific";
     if (self)
     {
         _dataFromInitCall = initData;
+        _firstMenuItemID = [[NSUUID UUID] UUIDString];
     }
     return self;
 }
@@ -67,7 +71,9 @@ static NSString * const kUserSpecificKey = @"isUserSpecific";
         }
     }];
     
-    template[VDependencyManagerScaffoldViewControllerKey] = @{ kClassNameKey: @"sideMenu.scaffold", kMenuKey: [self menuComponent] };
+    template[VDependencyManagerScaffoldViewControllerKey] = @{ kClassNameKey: @"sideMenu.scaffold",
+                                                               VDependencyManagerInitialViewControllerKey: @{ kReferenceIDKey: self.firstMenuItemID },
+                                                               kMenuKey: [self menuComponent] };
     return template;
 }
 
@@ -81,6 +87,7 @@ static NSString * const kUserSpecificKey = @"isUserSpecific";
                     kIdentifierKey: @"Menu Home",
                     kTitleKey: NSLocalizedString(@"Home", @""),
                     kDestinationKey: @{
+                        kIDKey: self.firstMenuItemID,
                         kClassNameKey: @"stream.screen",
                         kTitleKey: NSLocalizedString(@"Home", @""),
                         kIsHomeKey: @YES,

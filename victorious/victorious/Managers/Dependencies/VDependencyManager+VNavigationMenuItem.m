@@ -39,9 +39,9 @@ static NSString * const kIdentifierKey = @"identifier";
                 {
                     NSString *title = menuItemConfiguration[kTitleKey];
                     NSString *identifier = menuItemConfiguration[kIdentifierKey];
-                    id destination = [self objectOfType:[NSObject class] fromDictionary:menuItemConfiguration[kDestinationKey]];
+                    id destination = [self singletonObjectOfType:[NSObject class] fromDictionary:menuItemConfiguration[kDestinationKey]];
                     
-                    if (title != nil && destination != nil && identifier != nil)
+                    if (title != nil && destination != nil)
                     {
                         [menuItems addObject:[[VNavigationMenuItem alloc] initWithTitle:title identifier:identifier icon:nil destination:destination]];
                     }

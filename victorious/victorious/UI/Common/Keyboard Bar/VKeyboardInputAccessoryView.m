@@ -18,6 +18,8 @@ const CGFloat VInputAccessoryViewDesiredMinimumHeight = 47.0f;
 
 @interface VKeyboardInputAccessoryView () <UITextViewDelegate>
 
+@property (nonatomic, assign) BOOL selectedMedia;
+
 @property (weak, nonatomic) IBOutlet UIImageView *attachmentThumbnail;
 
 @property (nonatomic, weak) IBOutlet UIButton *attachmentsButton;
@@ -80,13 +82,12 @@ const CGFloat VInputAccessoryViewDesiredMinimumHeight = 47.0f;
 
 - (void)setSelectedThumbnail:(UIImage *)selectedThumbnail
 {
-    _selectedThumbnail = selectedThumbnail;
-
     self.attachmentThumbnail.layer.cornerRadius = 2.0f;
     self.attachmentThumbnail.layer.masksToBounds = YES;
     self.attachmentThumbnail.image = selectedThumbnail;
-    
-    [self.attachmentsButton setImage:nil
+
+    self.selectedMedia = (selectedThumbnail != nil);
+    [self.attachmentsButton setImage:(selectedThumbnail != nil) ? nil : [UIImage imageNamed:@"MessageCamera"]
                             forState:UIControlStateNormal];
     
     [self updateSendButton];
@@ -113,7 +114,7 @@ const CGFloat VInputAccessoryViewDesiredMinimumHeight = 47.0f;
     self.attachmentThumbnail.image = nil;
     self.selectedThumbnail = nil;
     self.attachmentsButton.alpha = 1.0f;
-    
+    self.selectedMedia = NO;
     [self.attachmentsButton setImage:[UIImage imageNamed:@"MessageCamera"]
                             forState:UIControlStateNormal];
     self.attachmentsButton.selected = NO;
@@ -211,7 +212,7 @@ shouldChangeTextInRange:(NSRange)range
 
 - (void)updateSendButton
 {
-    self.sendButton.enabled = (self.selectedThumbnail || (self.composedText.length > 0));
+    self.sendButton.enabled = (self.selectedMedia || (self.composedText.length > 0));
 }
 
 @end

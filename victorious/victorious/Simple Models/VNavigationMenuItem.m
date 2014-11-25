@@ -31,7 +31,10 @@
     {
         return NO;
     }
-    return [self.title isEqualToString:menuItem.title] && [self.icon isEqual:menuItem.icon] && [self.destination isEqual:menuItem.destination];
+    return [self.title isEqualToString:menuItem.title] &&
+        [self.icon isEqual:menuItem.icon] &&
+        [self.destination isEqual:menuItem.destination] &&
+        [self.identifier isEqual:menuItem.identifier];
 }
 
 @end
