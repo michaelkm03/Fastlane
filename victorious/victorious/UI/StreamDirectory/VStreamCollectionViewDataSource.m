@@ -59,7 +59,10 @@ NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamColl
     
     if (stream)
     {
-        [stream addObserver:self forKeyPath:NSStringFromSelector(@selector(streamItems)) options:(NSKeyValueObservingOptionPrior | NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld) context:&KVOContext];
+        [stream addObserver:self
+                 forKeyPath:NSStringFromSelector(@selector(streamItems))
+                    options:(NSKeyValueObservingOptionPrior | NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew)
+                    context:&KVOContext];
     }
 }
 
