@@ -9,6 +9,7 @@
 #import "VMenuCollectionViewDataSource.h"
 #import "VNavigationMenuItem.h"
 #import "VNavigationMenuItemCell.h"
+#import "VProvidesNavigationMenuItemBadge.h"
 
 #import <OCMock/OCMock.h>
 #import <UIKit/UIKit.h>
@@ -35,6 +36,8 @@ static NSString * const kFooterReuseID = @"SectionFooterView";
 @property (nonatomic, strong) id collectionViewMock;
 @property (nonatomic, strong) VNavigationMenuItem *sectionOneItem;
 @property (nonatomic, strong) VNavigationMenuItem *sectionTwoItem;
+@property (nonatomic) NSInteger badgeNumber;
+@property (nonatomic, copy) VNavigationMenuItemBadgeNumberUpdateBlock badgeNumberUpdateBlock;
 
 @end
 
@@ -44,7 +47,7 @@ static NSString * const kFooterReuseID = @"SectionFooterView";
 {
     [super setUp];
     
-    id sectionOneVC = [OCMockObject niceMockForClass:[UIViewController class]];
+    id sectionOneVC = [OCMockObject niceMockForProtocol:@protocol(VProvidesNavigationMenuItemBadge)];
     id sectionTwoVC = [OCMockObject niceMockForClass:[UIViewController class]];
     self.collectionViewMock = [OCMockObject niceMockForClass:[UICollectionView class]];
     
@@ -60,6 +63,21 @@ static NSString * const kFooterReuseID = @"SectionFooterView";
         ]
     ];
 
+    self.badgeNumber = 2;
+    [[[sectionOneVC stub] andDo:^(NSInvocation *invocation)
+    {
+        NSInteger badgeNumber = self.badgeNumber;
+        [invocation setReturnValue:&badgeNumber];
+    }]
+     badgeNumber];
+    [[[sectionOneVC stub] andDo:^(NSInvocation *invocation)
+    {
+        VNavigationMenuItemBadgeNumberUpdateBlock updateBlock;
+        [invocation getArgument:&updateBlock atIndex:2];
+        self.badgeNumberUpdateBlock = updateBlock;
+    }]
+     setBadgeNumberUpdateBlock:OCMOCK_ANY];
+    
     self.dataSource = [[VMenuCollectionViewDataSource alloc] initWithCellReuseID:kCellReuseID sectionsOfMenuItems:self.menuItemSections];
     self.dataSource.sectionHeaderReuseID = kHeaderReuseID;
     self.dataSource.sectionFooterReuseID = kFooterReuseID;
@@ -112,6 +130,47 @@ static NSString * const kFooterReuseID = @"SectionFooterView";
     
     id actual = [self.dataSource collectionView:self.collectionViewMock viewForSupplementaryElementOfKind:UICollectionElementKindSectionFooter atIndexPath:indexPath];
     XCTAssertEqualObjects(expected, actual);
+}
+
+- (void)testStartingBadgeTotal
+{
+    XCTAssertEqual(self.badgeNumber, [self.dataSource badgeTotal]);
+}
+
+- (void)testBadgeTotalAfterUpdate
+{
+    if (self.badgeNumberUpdateBlock == nil)
+    {
+        XCTFail();
+        return;
+    }
+
+    self.badgeNumber = 3;
+    self.badgeNumberUpdateBlock(self.badgeNumber);
+    XCTAssertEqual(self.badgeNumber, [self.dataSource badgeTotal]);
+}
+
+- (void)testCellUpdatedWhenBadgeUpdated
+{
+    if (self.badgeNumberUpdateBlock == nil)
+    {
+        XCTFail();
+        return;
+    }
+    
+    id cell = [OCMockObject niceMockForProtocol:@protocol(VNavigationMenuItemCell)];
+    [[cell expect] setBadgeNumber:self.badgeNumber];
+    
+    NSIndexPath *indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+    [[[self.collectionViewMock stub] andReturn:cell] dequeueReusableCellWithReuseIdentifier:kCellReuseID forIndexPath:indexPath];
+    [self.dataSource collectionView:self.collectionViewMock cellForItemAtIndexPath:indexPath];
+    
+    self.badgeNumber = 4;
+    
+    [[cell expect] setBadgeNumber:self.badgeNumber];
+    [[[self.collectionViewMock stub] andReturn:cell] cellForItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
+    self.badgeNumberUpdateBlock(self.badgeNumber);
+    [cell verify];
 }
 
 @end

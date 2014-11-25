@@ -20,6 +20,7 @@
 @property (nonatomic, copy, readonly) NSString *cellReuseID; ///< This reuse ID will be used to dequeue cells from the collection view
 @property (nonatomic, copy) NSString *sectionHeaderReuseID; ///< If set, this reuse ID will be used to dequeue a supplementary view for section headers
 @property (nonatomic, copy) NSString *sectionFooterReuseID; ///< If set, this reuse ID will be used to dequeue a supplementary view for section footers
+@property (nonatomic) NSInteger badgeTotal; ///< The total of all the badge numbers in this data source. KVO compliant.
 
 /**
  Initializes a new instance of the data source

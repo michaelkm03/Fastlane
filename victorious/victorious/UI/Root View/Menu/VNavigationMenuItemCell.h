@@ -19,6 +19,16 @@
 
 @required
 
+/**
+ Sets the navigation menu item being displayed by this cell
+ */
 - (void)setNavigationMenuItem:(VNavigationMenuItem *)navigationMenuItem;
+
+@optional
+
+/**
+ Sets the badge number displayed in this cell.
+ */
+- (void)setBadgeNumber:(NSInteger)badgeNumber;
 
 @end

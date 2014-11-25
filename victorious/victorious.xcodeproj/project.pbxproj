@@ -1197,6 +1197,7 @@
 		03D94C2919DE155400BFAA27 /* VAsyncTestHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAsyncTestHelper.m; sourceTree = "<group>"; };
 		03D94C2B19DE155400BFAA27 /* NSObject+VMethodSwizzling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+VMethodSwizzling.h"; sourceTree = "<group>"; };
 		03D94C2C19DE155400BFAA27 /* NSObject+VMethodSwizzling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+VMethodSwizzling.m"; sourceTree = "<group>"; };
+		03F24A8E1A23FC620011D46A /* VProvidesNavigationMenuItemBadge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VProvidesNavigationMenuItemBadge.h; sourceTree = "<group>"; };
 		03F28F4919F4459D008BB3F7 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/VEphemeralTimerView.strings; sourceTree = "<group>"; };
 		03F28F4A19F44728008BB3F7 /* VCommentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VCommentCell.xib; sourceTree = "<group>"; };
 		03F9D284191D77B000576AEE /* UIImage+VSolidColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+VSolidColor.h"; sourceTree = "<group>"; };
@@ -1792,6 +1793,7 @@
 				0309318B1A18425B004E9781 /* VMenuCollectionViewDataSource.m */,
 				037D2D561A1961F400947A22 /* VNavigationDestination.h */,
 				0309318C1A18425B004E9781 /* VNavigationMenuItemCell.h */,
+				03F24A8E1A23FC620011D46A /* VProvidesNavigationMenuItemBadge.h */,
 			);
 			path = Menu;
 			sourceTree = "<group>";

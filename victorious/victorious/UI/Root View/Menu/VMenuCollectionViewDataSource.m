@@ -7,7 +7,15 @@
 //
 
 #import "VMenuCollectionViewDataSource.h"
+#import "VNavigationMenuItem.h"
 #import "VNavigationMenuItemCell.h"
+#import "VProvidesNavigationMenuItemBadge.h"
+
+@interface VMenuCollectionViewDataSource ()
+
+@property (nonatomic, weak) UICollectionView *collectionView;
+
+@end
 
 @implementation VMenuCollectionViewDataSource
 
@@ -18,6 +26,8 @@
     {
         _cellReuseID = [cellReuseID copy];
         _menuSections = [menuSections copy];
+        _badgeTotal = [self calculateBadgeTotal];
+        [self setBadgeUpdateBlocks];
     }
     return self;
 }
@@ -28,6 +38,70 @@
     NSArray *section = self.menuSections[indexPath.section];
     NSAssert((NSUInteger)indexPath.item < section.count, @"Invalid item specified");
     return section[indexPath.item];
+}
+
+#pragma mark - Badge Numbers
+
+- (NSInteger)calculateBadgeTotal
+{
+    NSInteger total = 0;
+    for (NSArray *section in self.menuSections)
+    {
+        if ([section isKindOfClass:[NSArray class]])
+        {
+            for (VNavigationMenuItem *menuItem in section)
+            {
+                if ([menuItem isKindOfClass:[VNavigationMenuItem class]])
+                {
+                    id destination = menuItem.destination;
+                    if ([destination respondsToSelector:@selector(badgeNumber)])
+                    {
+                        total += [destination badgeNumber];
+                    }
+                }
+            }
+        }
+    }
+    return total;
+}
+
+- (void)setBadgeUpdateBlocks
+{
+    [self.menuSections enumerateObjectsUsingBlock:^(NSArray *section, NSUInteger sectionIndex, BOOL *stop)
+    {
+        if ( ![section isKindOfClass:[NSArray class]] )
+        {
+            return;
+        }
+        [section enumerateObjectsUsingBlock:^(VNavigationMenuItem *menuItem, NSUInteger itemIndex, BOOL *stop)
+        {
+            if ( ![menuItem isKindOfClass:[VNavigationMenuItem class]] )
+            {
+                return;
+            }
+            id destination = menuItem.destination;
+            
+            if ([destination respondsToSelector:@selector(setBadgeNumberUpdateBlock:)])
+            {
+                __typeof(self) __weak weakSelf = self;
+                NSIndexPath *indexPath = [NSIndexPath indexPathForItem:itemIndex inSection:sectionIndex];
+                [destination setBadgeNumberUpdateBlock:^(NSInteger badgeNumber)
+                {
+                    __typeof(weakSelf) strongSelf = weakSelf;
+                    
+                    if (strongSelf != nil)
+                    {
+                        id cell = [strongSelf.collectionView cellForItemAtIndexPath:indexPath];
+                        if ([cell respondsToSelector:@selector(setBadgeNumber:)])
+                        {
+                            [cell setBadgeNumber:badgeNumber];
+                        }
+                        self.badgeTotal = [strongSelf calculateBadgeTotal];
+                    }
+                }];
+            }
+        }];
+    }];
 }
 
 #pragma mark - UICollectionViewDataSource methods
@@ -46,11 +120,19 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    self.collectionView = collectionView;
     id cell = (UICollectionViewCell<VNavigationMenuItemCell> *)[collectionView dequeueReusableCellWithReuseIdentifier:self.cellReuseID
-                                                                                                                                                     forIndexPath:indexPath];
+                                                                                                         forIndexPath:indexPath];
+    VNavigationMenuItem *menuItem = [self menuItemAtIndexPath:indexPath];
+    
     if ([cell respondsToSelector:@selector(setNavigationMenuItem:)])
     {
-        [cell setNavigationMenuItem:[self menuItemAtIndexPath:indexPath]];
+        [cell setNavigationMenuItem:menuItem];
+    }
+    
+    if ([cell respondsToSelector:@selector(setBadgeNumber:)] && [menuItem.destination respondsToSelector:@selector(badgeNumber)])
+    {
+        [cell setBadgeNumber:[menuItem.destination badgeNumber]];
     }
     return cell;
 }
