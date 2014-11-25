@@ -99,7 +99,7 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
     
     self.dateImageView.tintColor = self.dateLabel.textColor;
     
-    self.isObserving = NO;
+    self.observingSequence = NO;
 }
 
 - (void)hideCommentsButton
