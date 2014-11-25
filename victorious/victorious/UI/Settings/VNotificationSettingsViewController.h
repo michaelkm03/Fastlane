@@ -23,7 +23,7 @@
 - (instancetype)initWithTitle:(NSString *)title enabled:(BOOL)isEnabled;
 
 @property (nonatomic, readonly) NSString *title;
-@property (nonatomic, readonly) BOOL isEnabled;
+@property (nonatomic, assign) BOOL isEnabled;
 
 @end
 

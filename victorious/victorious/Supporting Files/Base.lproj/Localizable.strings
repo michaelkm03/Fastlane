@@ -404,3 +404,10 @@
 "ShareTwitter"          = "Share to Twitter";
 "OpenSafari"            = "Open in Safari";
 "ShareSMS"              = "Send as Text";
+
+"PostFromCreator"       = "Post from %@";
+"PostFromFollowed"      = "Post from someone I follow";
+"NewComment"            = "New comments on my post";
+"NewPrivateMessage"     = "New Private Message";
+"NewFollower"           = "Someone follows me";
+"ErrorPushNotificationsNotEnabled" = "Push notifications are not enabled.\nPlease edit your system preferences to enable push notifications for your device.";

@@ -18,13 +18,33 @@
 
 @implementation VNotificationSettingCell
 
-- (void)setLabel:(NSString *)label withValue:(BOOL)value
+- (void)awakeFromNib
 {
-    self.settingLabel.text = label;
-    self.settingSwitch.on = value;
+    [super awakeFromNib];
     
     self.settingLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
     self.settingSwitch.onTintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+}
+
+- (void)prepareForReuse
+{
+    self.indexPath = nil;
+}
+
+- (void)setTitle:(NSString *)title value:(BOOL)value
+{
+    self.settingLabel.text = title;
+    self.settingSwitch.on = value;
+}
+
+#pragma mark - Actions
+
+- (IBAction)settingValueDidchange:(UISwitch *)settingSwitch
+{
+    if ( self.delegate != nil && self.indexPath != nil && [self.delegate respondsToSelector:@selector(userDidUpdateSettingAtIndex:withValue:)] )
+    {
+        [self.delegate userDidUpdateSettingAtIndex:self.indexPath withValue:settingSwitch.on];
+    }
 }
 
 @end

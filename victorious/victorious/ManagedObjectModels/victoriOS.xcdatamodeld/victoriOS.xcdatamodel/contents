@@ -129,6 +129,13 @@
         <relationship name="message" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Message" inverseName="notification" inverseEntity="Message" syncable="YES"/>
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="notifications" inverseEntity="User" syncable="YES"/>
     </entity>
+    <entity name="NotificationSettings" representedClassName="VNotificationSettings" syncable="YES">
+        <attribute name="isNewCommentOnMyPostEnabled" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="isNewFollowerEnabled" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="isNewPrivateMessageEnabled" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="isPostFromCreatorEnabled" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="isPostFromFollowedEnabled" optional="YES" attributeType="Boolean" syncable="YES"/>
+    </entity>
     <entity name="PollResult" representedClassName="VPollResult" syncable="YES">
         <attribute name="answerId" optional="YES" attributeType="Integer 32" defaultValueString="0" indexed="YES" syncable="YES"/>
         <attribute name="count" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
@@ -277,5 +284,6 @@
         <element name="VoteType" positionX="538" positionY="-738" width="128" height="210"/>
         <element name="VStream" positionX="1069" positionY="-792" width="128" height="135"/>
         <element name="VStreamItem" positionX="871" positionY="-765" width="128" height="103"/>
+        <element name="NotificationSettings" positionX="693" positionY="-648" width="128" height="118"/>
     </elements>
 </model>

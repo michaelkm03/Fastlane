@@ -247,7 +247,7 @@ static const NSInteger kServerEnvironmentButtonIndex = 4;
     }
     else if (kSettingsSectionIndex == indexPath.section && kPushNotificationsButtonIndex == indexPath.row)
     {
-        if (self.showPushNotificationSettings)
+        if (self.showPushNotificationSettings && [VObjectManager sharedManager].mainUserLoggedIn)
         {
             return self.tableView.rowHeight;
         }

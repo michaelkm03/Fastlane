@@ -14,7 +14,7 @@ static NSString *const kVNoContentMessageFontName           = @"Helvetica Neue L
 
 @interface VNoContentTableViewCell()
 
-@property (weak, nonatomic) IBOutlet UILabel *messageLabel;
+@property (weak, nonatomic) IBOutlet UITextView *messageTextView;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
 @end
@@ -38,25 +38,35 @@ static NSString *const kVNoContentMessageFontName           = @"Helvetica Neue L
 - (void)awakeFromNib
 {
     [super awakeFromNib];
-    self.messageLabel.hidden = YES;
+    [self applyTheme];
+    self.messageTextView.hidden = YES;
     self.activityIndicator.hidden = YES;
 }
 
 - (void)prepareForReuse
 {
     [super prepareForReuse];
-    self.messageLabel.hidden = YES;
+    self.messageTextView.hidden = YES;
     self.activityIndicator.hidden = YES;
 }
 
 #pragma mark - Public properties for configuration
 
+- (void)setIsCentered:(BOOL)isCentered
+{
+    self.messageTextView.textAlignment = isCentered ? NSTextAlignmentCenter : NSTextAlignmentLeft;
+}
+
+- (BOOL)isCentered
+{
+    return self.messageTextView.textAlignment == NSTextAlignmentCenter;
+}
+
 - (void)setMessage:(NSString *)message
 {
-    self.messageLabel.text = message;
-    self.messageLabel.hidden = NO;
+    self.messageTextView.text = message;
+    self.messageTextView.hidden = NO;
     self.activityIndicator.hidden = YES;
-    [self applyTheme];
 }
 
 - (NSString *)message
@@ -69,7 +79,7 @@ static NSString *const kVNoContentMessageFontName           = @"Helvetica Neue L
     if ( isLoading )
     {
         [self.activityIndicator startAnimating];
-        self.messageLabel.hidden = YES;
+        self.messageTextView.hidden = YES;
         self.activityIndicator.hidden = NO;
     }
     else
@@ -87,8 +97,9 @@ static NSString *const kVNoContentMessageFontName           = @"Helvetica Neue L
 
 - (void)applyTheme
 {
-    CGFloat currentSize = self.messageLabel.font.pointSize;
-    self.messageLabel.font = [UIFont fontWithName:kVNoContentMessageFontName size:currentSize];
+    CGFloat currentSize = self.messageTextView.font.pointSize;
+    UIFont *font = [UIFont fontWithName:kVNoContentMessageFontName size:currentSize];
+    self.messageTextView.font = font;
 }
 
 @end

@@ -376,6 +376,8 @@
 		A72005701A03ECDC00285A9C /* VTrackingURLRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = A720056F1A03ECDC00285A9C /* VTrackingURLRequest.m */; };
 		A724EBDC1A099D4D00A8865F /* VStreamCollectionCellWebContent.m in Sources */ = {isa = PBXBuildFile; fileRef = A724EBDB1A099D4D00A8865F /* VStreamCollectionCellWebContent.m */; };
 		A724EBDE1A099DF900A8865F /* VStreamCollectionCellWebContent.xib in Resources */ = {isa = PBXBuildFile; fileRef = A724EBDD1A099DF900A8865F /* VStreamCollectionCellWebContent.xib */; };
+		A733D8FC1A23D0980053E9F1 /* VNotificationSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = A733D8FB1A23D0980053E9F1 /* VNotificationSettings.m */; };
+		A733D8FF1A23D0C70053E9F1 /* VNotificationSettings+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A733D8FE1A23D0C70053E9F1 /* VNotificationSettings+RestKit.m */; };
 		A73AFB7A19F1F6930005A9EA /* VFollowersTextFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = A70564C919E78220004A8387 /* VFollowersTextFormatter.m */; };
 		A743E7DF1A08160300339CB3 /* VFileCache+VVoteType.m in Sources */ = {isa = PBXBuildFile; fileRef = A743E7DC1A08160300339CB3 /* VFileCache+VVoteType.m */; };
 		A743E7E01A08160300339CB3 /* VFileCache.m in Sources */ = {isa = PBXBuildFile; fileRef = A743E7DE1A08160300339CB3 /* VFileCache.m */; };
@@ -422,6 +424,7 @@
 		A7CFC1CA19FEE24300726772 /* front_landscape_right.m4v in Resources */ = {isa = PBXBuildFile; fileRef = A7CFC1C619FEE17B00726772 /* front_landscape_right.m4v */; };
 		A7CFC1CB19FEE24300726772 /* front_portrait_upsidedown.m4v in Resources */ = {isa = PBXBuildFile; fileRef = A7CFC1C719FEE17B00726772 /* front_portrait_upsidedown.m4v */; };
 		A7CFC1CC19FEE24300726772 /* front_portrait.m4v in Resources */ = {isa = PBXBuildFile; fileRef = A7CFC1C819FEE17B00726772 /* front_portrait.m4v */; };
+		A7D288141A23F6CF006CF0EC /* VNotificationSettings+Fetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D288131A23F6CF006CF0EC /* VNotificationSettings+Fetcher.m */; };
 		A7D8532419F6F3B100EDBFF8 /* VTracking.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D8532319F6F3B100EDBFF8 /* VTracking.m */; };
 		A7F8DD4D1A0B065800F82256 /* VHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F8DD4C1A0B065800F82256 /* VHeaderView.m */; };
 		A7F8DD631A0B1A8B00F82256 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F8DD621A0B1A8B00F82256 /* WebKit.framework */; };
@@ -1239,6 +1242,10 @@
 		A724EBDA1A099D4D00A8865F /* VStreamCollectionCellWebContent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamCollectionCellWebContent.h; sourceTree = "<group>"; };
 		A724EBDB1A099D4D00A8865F /* VStreamCollectionCellWebContent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamCollectionCellWebContent.m; sourceTree = "<group>"; };
 		A724EBDD1A099DF900A8865F /* VStreamCollectionCellWebContent.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VStreamCollectionCellWebContent.xib; sourceTree = "<group>"; };
+		A733D8FA1A23D0980053E9F1 /* VNotificationSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNotificationSettings.h; sourceTree = "<group>"; };
+		A733D8FB1A23D0980053E9F1 /* VNotificationSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNotificationSettings.m; sourceTree = "<group>"; };
+		A733D8FD1A23D0C70053E9F1 /* VNotificationSettings+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VNotificationSettings+RestKit.h"; sourceTree = "<group>"; };
+		A733D8FE1A23D0C70053E9F1 /* VNotificationSettings+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VNotificationSettings+RestKit.m"; sourceTree = "<group>"; };
 		A735323119DB60600040DB30 /* VAuthorizationViewControllerFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAuthorizationViewControllerFactory.h; sourceTree = "<group>"; };
 		A735323219DB60600040DB30 /* VAuthorizationViewControllerFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAuthorizationViewControllerFactory.m; sourceTree = "<group>"; };
 		A73AFB7B19F573AB0005A9EA /* VVideoTrackingTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVideoTrackingTests.m; sourceTree = "<group>"; };
@@ -1323,6 +1330,8 @@
 		A7CFC1C619FEE17B00726772 /* front_landscape_right.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = front_landscape_right.m4v; sourceTree = "<group>"; };
 		A7CFC1C719FEE17B00726772 /* front_portrait_upsidedown.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = front_portrait_upsidedown.m4v; sourceTree = "<group>"; };
 		A7CFC1C819FEE17B00726772 /* front_portrait.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = front_portrait.m4v; sourceTree = "<group>"; };
+		A7D288121A23F6CF006CF0EC /* VNotificationSettings+Fetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VNotificationSettings+Fetcher.h"; sourceTree = "<group>"; };
+		A7D288131A23F6CF006CF0EC /* VNotificationSettings+Fetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VNotificationSettings+Fetcher.m"; sourceTree = "<group>"; };
 		A7D8532219F6F3B100EDBFF8 /* VTracking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTracking.h; sourceTree = "<group>"; };
 		A7D8532319F6F3B100EDBFF8 /* VTracking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTracking.m; sourceTree = "<group>"; };
 		A7EF97BB19F889F800972E74 /* VExperienceEnhancerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VExperienceEnhancerTests.m; sourceTree = "<group>"; };
@@ -3394,6 +3403,8 @@
 				BE89D980192141D600D97E7F /* VUser+Fetcher.m */,
 				BEDF0FC718DBCB5500750EF6 /* VVoteType+Fetcher.h */,
 				BEDF0FC818DBCB5500750EF6 /* VVoteType+Fetcher.m */,
+				A7D288121A23F6CF006CF0EC /* VNotificationSettings+Fetcher.h */,
+				A7D288131A23F6CF006CF0EC /* VNotificationSettings+Fetcher.m */,
 			);
 			path = Fetchers;
 			sourceTree = "<group>";
@@ -3431,6 +3442,8 @@
 				BE171DC81868C211004E5202 /* VNodeAction+RestKit.m */,
 				DB58EF3F199401E500D2A07F /* VNotification+RestKit.h */,
 				DB58EF40199401E500D2A07F /* VNotification+RestKit.m */,
+				A733D8FD1A23D0C70053E9F1 /* VNotificationSettings+RestKit.h */,
+				A733D8FE1A23D0C70053E9F1 /* VNotificationSettings+RestKit.m */,
 				BEF2C29418845EF500AAE975 /* VPollResult+RestKit.h */,
 				BEF2C29518845EF500AAE975 /* VPollResult+RestKit.m */,
 				BE171DC91868C211004E5202 /* VRule+RestKit.h */,
@@ -3516,6 +3529,8 @@
 				BE5C7378187E36E800A3340D /* VNodeAction.m */,
 				DB58EF4E1994174900D2A07F /* VNotification.h */,
 				DB58EF4F1994174900D2A07F /* VNotification.m */,
+				A733D8FA1A23D0980053E9F1 /* VNotificationSettings.h */,
+				A733D8FB1A23D0980053E9F1 /* VNotificationSettings.m */,
 				BEC833BC19D364A500341EA9 /* VPollResult.h */,
 				BEC833BD19D364A500341EA9 /* VPollResult.m */,
 				BE5C7368187E36E800A3340D /* VRule.h */,
@@ -3989,7 +4004,7 @@
 				ORGANIZATIONNAME = Victorious;
 				TargetAttributes = {
 					BE171D751868BE64004E5202 = {
-						DevelopmentTeam = 82T26U698A;
+						DevelopmentTeam = ABHRJGEGKA;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 0;
@@ -4597,12 +4612,14 @@
 				D8E39BD619CB7C80007FD86A /* VContentCell.m in Sources */,
 				A769C3F01A13176700698D0C /* VWebViewFactory.m in Sources */,
 				0314D4D419B46B5E00FA363C /* VUserSearchViewController.m in Sources */,
+				A733D8FC1A23D0980053E9F1 /* VNotificationSettings.m in Sources */,
 				0314D48819B46B5E00FA363C /* VCommentTextAndMediaView.m in Sources */,
 				0314D4BD19B46B5E00FA363C /* VFollowerTableViewCell.m in Sources */,
 				0314D4C219B46B5E00FA363C /* VUserProfileHeaderView.m in Sources */,
 				0314D4B019B46B5E00FA363C /* VFetchedResultsTableViewController.m in Sources */,
 				0314D4ED19B46B5E00FA363C /* VLoginTransitionAnimator.m in Sources */,
 				BE5C736A187E36E800A3340D /* VRule.m in Sources */,
+				A733D8FF1A23D0C70053E9F1 /* VNotificationSettings+RestKit.m in Sources */,
 				0314D0B319B4698800FA363C /* VObjectManager+ImageSearch.m in Sources */,
 				0314D47C19B46B5E00FA363C /* VPublishShareView.m in Sources */,
 				A743E7E41A0816D500339CB3 /* VPasswordValidator.m in Sources */,
@@ -4623,6 +4640,7 @@
 				0314D47E19B46B5E00FA363C /* VTwitterPublishShareController.m in Sources */,
 				0314D46019B46B5E00FA363C /* VImagePreviewViewController.m in Sources */,
 				0314D4CB19B46B5E00FA363C /* VRemixStitchViewController.m in Sources */,
+				A7D288141A23F6CF006CF0EC /* VNotificationSettings+Fetcher.m in Sources */,
 				BE799BBF19C93C210023CE88 /* VDirectoryItemCell.m in Sources */,
 				0314D0AF19B4698800FA363C /* VObjectManager+ContentCreation.m in Sources */,
 				03C185BB19B42E5D00E27D05 /* TWAPIManager.m in Sources */,

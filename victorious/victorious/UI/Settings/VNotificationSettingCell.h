@@ -8,8 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol VNotificationSettingCellDelegate <NSObject>
+
+- (void)userDidUpdateSettingAtIndex:(NSIndexPath *)indexPath withValue:(BOOL)value;
+
+@end
+
 @interface VNotificationSettingCell : UITableViewCell
 
-- (void)setLabel:(NSString *)label withValue:(BOOL)value;
+@property (nonatomic, strong) NSIndexPath *indexPath;
+@property (nonatomic, weak) id<VNotificationSettingCellDelegate> delegate;
+
+- (void)setTitle:(NSString *)title value:(BOOL)value;
 
 @end

@@ -14,6 +14,8 @@
 
 @property (nonatomic, weak) NSString *message;
 
+@property (nonatomic, assign) BOOL isCentered;
+
 + (VNoContentTableViewCell *)createCellFromTableView:(UITableView *)tableView;
 
 + (void)registerNibWithTableView:(UITableView *)tableView;

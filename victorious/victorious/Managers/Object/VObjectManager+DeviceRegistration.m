@@ -9,6 +9,14 @@
 #import "NSString+VStringWithData.h"
 #import "VObjectManager+DeviceRegistration.h"
 #import "VObjectManager+Private.h"
+#import "VNotificationSettings+RestKit.h"
+#import "VObjectManager+Login.h"
+
+@interface VObjectManager()
+
+@property (nonatomic, readonly) NSError *userNotLoggedInError;
+
+@end
 
 @implementation VObjectManager (DeviceRegistration)
 
@@ -24,9 +32,15 @@
             failBlock:failed];
 }
 
-- (RKManagedObjectRequestOperation *)getDevicePreferencesSuccessBlock:(VSuccessBlock)success
-                                                            failBlock:(VFailBlock)failed
+- (RKManagedObjectRequestOperation *)getDeviceSettingsSuccessBlock:(VSuccessBlock)success
+                                                         failBlock:(VFailBlock)failed
 {
+    if ( ! self.mainUserLoggedIn )
+    {
+        failed( nil, self.userNotLoggedInError );
+        return nil;
+    }
+    
     return [self GET:@"/api/device/preferences"
                object:nil
            parameters:nil
@@ -34,15 +48,26 @@
             failBlock:failed];
 }
 
-- (RKManagedObjectRequestOperation *)setDevicePreferences:(NSDictionary *)dictionary
-                                             SuccessBlock:(VSuccessBlock)success
-                                                failBlock:(VFailBlock)failed
+- (RKManagedObjectRequestOperation *)setDeviceSettings:(VNotificationSettings *)settings
+                                          successBlock:(VSuccessBlock)success
+                                             failBlock:(VFailBlock)failed
 {
+    if ( ! self.mainUserLoggedIn )
+    {
+        failed( nil, self.userNotLoggedInError );
+        return nil;
+    }
+    
     return [self POST:@"/api/device/preferences"
                object:nil
-           parameters:nil
+           parameters:settings.parametersDictionary
          successBlock:success
             failBlock:failed];
+}
+
+- (NSError *)userNotLoggedInError
+{
+    return [NSError errorWithDomain:@"A user must be logged in to call this end point." code:-1 userInfo:nil];
 }
 
 @end

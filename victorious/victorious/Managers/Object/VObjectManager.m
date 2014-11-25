@@ -34,6 +34,7 @@
 #import "VVoteType+RestKit.h"
 #import "VNotification+RestKit.h"
 #import "VStream+RestKit.h"
+#import "VNotificationSettings+RestKit.h"
 
 #define EnableRestKitLogs 0 // Set to "1" to see RestKit logging, but please remember to set it back to "0" before committing your changes.
 
@@ -116,6 +117,7 @@
     [self addResponseDescriptorsFromArray:[VNotification descriptors]];
     [self addResponseDescriptorsFromArray:[VStream descriptors]];
     [self addResponseDescriptorsFromArray:[VHashtag descriptors]];
+    [self addResponseDescriptorsFromArray:[VNotificationSettings descriptors]];
     
     [self addResponseDescriptorsFromArray: @[errorDescriptor,
                                              verrorDescriptor,
