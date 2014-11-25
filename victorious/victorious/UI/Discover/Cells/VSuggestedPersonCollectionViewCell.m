@@ -10,7 +10,7 @@
 #import "VThemeManager.h"
 #import "VDefaultProfileImageView.h"
 #import "VFollowUserControl.h"
-#import "VLargeNumberFormatter.h"
+#import "VFollowersTextFormatter.h"
 
 @interface VSuggestedPersonCollectionViewCell()
 
@@ -24,17 +24,6 @@
 @end
 
 @implementation VSuggestedPersonCollectionViewCell
-
-+ (VLargeNumberFormatter *)numberFormatter
-{
-    static VLargeNumberFormatter *formatter;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^(void)
-                  {
-                      formatter = [[VLargeNumberFormatter alloc] init];
-                  });
-    return formatter;
-}
 
 + (UIImage *)followedImage
 {
@@ -94,7 +83,8 @@
 
 - (void)populateData
 {
-    self.descriptionLabel.text = [self followerTextWithNumberOfFollowers:self.user.numberOfFollowers.integerValue];
+    NSInteger intValue = self.user.numberOfFollowers.integerValue;
+    self.descriptionLabel.text = [VFollowersTextFormatter followerTextWithNumberOfFollowers:intValue];
     
     self.usernameLabel.text = self.user.name;
     
@@ -104,31 +94,6 @@
     }
     
     [self applyTheme];
-}
-
-- (NSString *)followerTextWithNumberOfFollowers:(NSInteger)numberOfFollwers
-{
-    NSString *numberString = [[[self class] numberFormatter] stringForInteger:numberOfFollwers];
-    
-    if ( numberOfFollwers == 0 )
-    {
-        return NSLocalizedString( @"SuggestedFollowersNone", nil);
-    }
-    else if ( numberOfFollwers == 1 )
-    {
-        NSString *format = NSLocalizedString( @"SuggestedFollowersSing", nil);
-        return [NSString stringWithFormat:format, numberString];
-    }
-    else if ( numberOfFollwers >= 1000 )
-    {
-        NSString *format = NSLocalizedString( @"SuggestedFollowersK", nil);
-        return [NSString stringWithFormat:format, numberString];
-    }
-    else
-    {
-        NSString *format = NSLocalizedString( @"SuggestedFollowersPlur", nil);
-        return [NSString stringWithFormat:format, numberString];
-    }
 }
 
 - (void)updateFollowingAnimated:(BOOL)animated
