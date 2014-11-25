@@ -32,6 +32,12 @@ static VLargeNumberFormatter *largeNumberFormatter;
 static const CGFloat kUserInfoViewMaxHeight = 25.0f;
 static const CGFloat kCommentButtonBuffer = 5.0f;
 
+@interface VStreamCellHeaderView ()
+
+@property (nonatomic, assign, getter=isObservingSequence) BOOL observingSequence;
+
+@end
+
 @implementation VStreamCellHeaderView
 
 - (void)dealloc
@@ -92,6 +98,8 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
     }
     
     self.dateImageView.tintColor = self.dateLabel.textColor;
+    
+    self.isObserving = NO;
 }
 
 - (void)hideCommentsButton
@@ -146,6 +154,8 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
     [_sequence.user addObserver:self forKeyPath:NSStringFromSelector(@selector(location)) options:NSKeyValueObservingOptionNew context:VUserProfileAttributesContext];
     [_sequence.user addObserver:self forKeyPath:NSStringFromSelector(@selector(tagline)) options:NSKeyValueObservingOptionNew context:VUserProfileAttributesContext];
     [_sequence.user addObserver:self forKeyPath:NSStringFromSelector(@selector(pictureUrl)) options:NSKeyValueObservingOptionNew context:VUserProfileAttributesContext];
+
+    self.observingSequence = YES;
     
     [self updateWithCurrentUser];
 }
@@ -199,10 +209,15 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
 
 - (void)stopObservingUserProfile
 {
+    if (!self.isObservingSequence)
+    {
+        return;
+    }
     [self.sequence.user removeObserver:self forKeyPath:NSStringFromSelector(@selector(name)) context:VUserProfileAttributesContext];
     [self.sequence.user removeObserver:self forKeyPath:NSStringFromSelector(@selector(location)) context:VUserProfileAttributesContext];
     [self.sequence.user removeObserver:self forKeyPath:NSStringFromSelector(@selector(tagline)) context:VUserProfileAttributesContext];
     [self.sequence.user removeObserver:self forKeyPath:NSStringFromSelector(@selector(pictureUrl)) context:VUserProfileAttributesContext];
+    self.observingSequence = NO;
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath
