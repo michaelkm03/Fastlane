@@ -15,8 +15,6 @@
 
 + (NSString *)entityName;
 
-+ (RKEntityMapping *)entityMapping;
-
 @property (nonatomic, readonly) NSDictionary *parametersDictionary;
 
 @end

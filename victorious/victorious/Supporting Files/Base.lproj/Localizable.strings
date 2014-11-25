@@ -414,4 +414,10 @@
 "NewComment"            = "New comments on my post";
 "NewPrivateMessage"     = "New Private Message";
 "NewFollower"           = "Someone follows me";
-"ErrorPushNotificationsNotEnabled" = "Push notifications are not enabled.\nPlease edit your system preferences to enable push notifications for your device.";
+"NotificationSettingSectionFeeds" = "Feeds";
+"NotificationSettingSectionPeople" = "People";
+
+"ErrorPushNotificationsNotEnabled"      = "Push notifications are not enabled for your device.\nPlease edit your System Preferences to enable them.";
+"ErrorPushNotificationsUnknown"         = "Error loading notification settings.";
+"ErrorPushNotificationsNotSaved"        = "Error Saving Preferences";
+"ErrorPushNotificationsNotSavedMessage" = "Oops!  Something went wrong, please try again later.";

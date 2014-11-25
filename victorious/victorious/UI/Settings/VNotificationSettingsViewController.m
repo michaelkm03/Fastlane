@@ -14,39 +14,9 @@
 #import "VNoContentTableViewCell.h"
 #import "VNotificationSettings+Fetcher.h"
 #import "VAlertController.h"
+#import "VNotificationSettingsTableSection.h"
 
 static const NSInteger kErrorCodeDeviceNotFound = 5000;
-
-@implementation VNotificationSettingsSection
-
-- (instancetype)initWithTitle:(NSString *)title data:(NSArray *)data
-{
-    self = [super init];
-    if (self)
-    {
-        _title = title;
-        _data = data;
-    }
-    return self;
-}
-
-@end
-
-@implementation VNotificationSetting
-
-- (instancetype)initWithTitle:(NSString *)title enabled:(BOOL)isEnabled
-{
-    self = [super init];
-    if (self)
-    {
-        _title = title;
-        _isEnabled = isEnabled;
-    }
-    return self;
-}
-
-@end
-
 
 @interface VNotificationSettingsViewController() <VNavigationHeaderDelegate, VNotificationSettingCellDelegate>
 
@@ -54,9 +24,9 @@ static const NSInteger kErrorCodeDeviceNotFound = 5000;
 @property (nonatomic, strong) NSOrderedSet *sections;
 @property (nonatomic, assign, readonly) BOOL hasValidSettings;
 @property (nonatomic, strong) NSError *settingsError;
+@property (nonatomic, assign) BOOL didSettingsChange;
 
 @end
-
 
 @implementation VNotificationSettingsViewController
 
@@ -85,10 +55,13 @@ static const NSInteger kErrorCodeDeviceNotFound = 5000;
 {
     [super viewWillDisappear:animated];
     
-    [self saveSettings];
+    if ( self.didSettingsChange && self.settingsError == nil )
+    {
+        [self saveSettings];
+    }
 }
 
-#pragma mark -
+#pragma mark - Settings Management
 
 - (void)loadSettings
 {
@@ -97,31 +70,37 @@ static const NSInteger kErrorCodeDeviceNotFound = 5000;
     
     [[VObjectManager sharedManager] getDeviceSettingsSuccessBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
-         self.settingsError = nil;
-         self.settings = [self evalulateFetchedResult:resultObjects.firstObject];
-         [self.tableView reloadData];
+         [self settingsDidLoadWithResults:resultObjects];
      }
                                                         failBlock:^(NSOperation *operation, NSError *error)
      {
-         if ( error.code == kErrorCodeDeviceNotFound )
-         {
-             NSString *domain = NSLocalizedString( @"ErrorPushNotificationsNotEnabled", nil );
-             self.settingsError = [NSError errorWithDomain:domain code:error.code userInfo:nil];
-         }
-         [self.tableView reloadData];
+         [self settingsDidFailWithError:error];
      }];
 }
 
-- (VNotificationSettings *)evalulateFetchedResult:(id)result
+- (void)settingsDidLoadWithResults:(NSArray *)resultObjects
 {
-    if ( result != nil && [result isKindOfClass:[VNotificationSettings class]])
+    self.settingsError = nil;
+    id result = resultObjects.firstObject;
+    BOOL resultIsValid = result != nil && [result isKindOfClass:[VNotificationSettings class]];
+    self.settings = resultIsValid ? (VNotificationSettings *)result : [VNotificationSettings createDefaultSettings];
+    [self.tableView reloadData];
+}
+
+- (void)settingsDidFailWithError:(NSError *)error
+{
+    NSString *domain = nil;
+    self.settings = nil;
+    if ( error != nil && error.code == kErrorCodeDeviceNotFound )
     {
-        return result;
+        domain = NSLocalizedString( @"ErrorPushNotificationsNotEnabled", nil );
     }
     else
     {
-       return [VNotificationSettings createDefaultSettings];
+        domain = NSLocalizedString( @"ErrorPushNotificationsUnknown", nil );
     }
+    self.settingsError = [NSError errorWithDomain:domain code:error.code userInfo:nil];
+    [self.tableView reloadData];
 }
 
 - (void)setSettings:(VNotificationSettings *)settings
@@ -134,51 +113,81 @@ static const NSInteger kErrorCodeDeviceNotFound = 5000;
         return;
     }
     
+    // Feed section
     NSString *format = NSLocalizedString( @"PostFromCreator", nil);
     NSString *creatorName = [[NSBundle bundleForClass:[self class]] objectForInfoDictionaryKey:@"CFBundleDisplayName"];
-    NSArray *sectionFeedData = @[ [[VNotificationSetting alloc] initWithTitle:[NSString stringWithFormat:format, creatorName]
-                                                                      enabled:_settings.isNewCommentOnMyPostEnabled.boolValue],
-                                  [[VNotificationSetting alloc] initWithTitle:NSLocalizedString( @"PostFromFollowed", nil)
-                                                                      enabled:_settings.isPostFromFollowedEnabled.boolValue],
-                                  [[VNotificationSetting alloc] initWithTitle:NSLocalizedString( @"NewComment", nil)
-                                                                      enabled:_settings.isNewCommentOnMyPostEnabled.boolValue],
-                                  [[VNotificationSetting alloc] initWithTitle:NSLocalizedString( @"NewPrivateMessage", nil)
-                                                                      enabled:_settings.isNewPrivateMessageEnabled.boolValue]];
-    VNotificationSettingsSection *sectionFeed = [[VNotificationSettingsSection alloc] initWithTitle:@"Feed" data:sectionFeedData ];
+    NSArray *sectionFeedRows = @[ [[VNotificationSettingsTableRow alloc] initWithTitle:[NSString stringWithFormat:format, creatorName]
+                                                                               enabled:_settings.isPostFromCreatorEnabled.boolValue],
+                                  [[VNotificationSettingsTableRow alloc] initWithTitle:NSLocalizedString( @"PostFromFollowed", nil)
+                                                                               enabled:_settings.isPostFromFollowedEnabled.boolValue],
+                                  [[VNotificationSettingsTableRow alloc] initWithTitle:NSLocalizedString( @"NewComment", nil)
+                                                                               enabled:_settings.isNewCommentOnMyPostEnabled.boolValue],
+                                  [[VNotificationSettingsTableRow alloc] initWithTitle:NSLocalizedString( @"NewPrivateMessage", nil)
+                                                                               enabled:_settings.isNewPrivateMessageEnabled.boolValue]];
+    NSString *sectionFeedTitle = NSLocalizedString( @"NotificationSettingSectionFeeds", nil);
+    VNotificationSettingsTableSection *sectionFeed = [[VNotificationSettingsTableSection alloc] initWithTitle:sectionFeedTitle
+                                                                                                         rows:sectionFeedRows ];
     
-    NSArray *sectionPeopleData = @[ [[VNotificationSetting alloc] initWithTitle:NSLocalizedString( @"NewFollower", nil)
-                                                                        enabled:_settings.isNewFollowerEnabled.boolValue]];
-    VNotificationSettingsSection *sectionPeople = [[VNotificationSettingsSection alloc] initWithTitle:@"People" data:sectionPeopleData ];
+    // People Section
+    NSArray *sectionPeopleRows = @[ [[VNotificationSettingsTableRow alloc] initWithTitle:NSLocalizedString( @"NewFollower", nil)
+                                                                                 enabled:_settings.isNewFollowerEnabled.boolValue]];
+    NSString *sectionPeopleTitle = NSLocalizedString( @"NotificationSettingSectionPeople", nil);
+    VNotificationSettingsTableSection *sectionPeople = [[VNotificationSettingsTableSection alloc] initWithTitle:sectionPeopleTitle
+                                                                                                           rows:sectionPeopleRows ];
     
+    // Add both sections
     self.sections = [[NSOrderedSet alloc] initWithObjects:sectionFeed, sectionPeople, nil];
 }
 
 - (void)updateSettings
 {
-    VNotificationSettingsSection *section = self.sections[ 0 ];
-    self.settings.isNewCommentOnMyPostEnabled = @( ((VNotificationSetting *)section.data[ 0 ]).isEnabled );
-    self.settings.isPostFromFollowedEnabled = @( ((VNotificationSetting *)section.data[ 1 ]).isEnabled );
-    self.settings.isNewCommentOnMyPostEnabled = @( ((VNotificationSetting *)section.data[ 2 ]).isEnabled );
-    self.settings.isNewPrivateMessageEnabled = @( ((VNotificationSetting *)section.data[ 3 ]).isEnabled );
+    VNotificationSettingsTableSection *section;
+    section = self.sections[ 0 ];
+    self.settings.isPostFromCreatorEnabled = @( [section rowAtIndex:0].isEnabled );
+    self.settings.isPostFromFollowedEnabled = @( [section rowAtIndex:1].isEnabled );
+    self.settings.isNewCommentOnMyPostEnabled = @( [section rowAtIndex:2].isEnabled );
+    self.settings.isNewPrivateMessageEnabled = @( [section rowAtIndex:3].isEnabled );
     section = self.sections[ 1 ];
-    self.settings.isNewFollowerEnabled = @( ((VNotificationSetting *)section.data[ 0 ]).isEnabled );
+    self.settings.isNewFollowerEnabled = @( [section rowAtIndex:0].isEnabled );
 }
 
 - (void)saveSettings
 {
+    // Because this method is called on viewWillDisappear, it's possible that this view controller will no
+    // longer exist when the failBlock is called.  So, we'll present the error alert in the navigation controller.
+    __weak UINavigationController *navigationController = self.navigationController;
+
+    // Save and show alert only if there was an error
     [[VObjectManager sharedManager] setDeviceSettings:self.settings successBlock:nil failBlock:^(NSOperation *operation, NSError *error)
     {
-        NSString *title = @"Error Saving Preferences";
-        NSString *message = @"Oops!  Something went wrong, please try again later.";
-        VAlertController *alertConroller = [VAlertController alertWithTitle:title message:message];
-        [alertConroller addAction:[VAlertAction cancelButtonWithTitle:@"OK" handler:nil]];
-        [alertConroller presentInViewController:self.navigationController animated:YES completion:nil];
+        // The navigationController could be nil if the user exits this view and then exists the previous
+        // view in the nav stack fast enough (or with a network connection slow enough) that navigationController
+        // is deallocated by the time the failBlock is called.  The weak reference ensures that if that happens,
+        // it is read as nil, in which case we don't present the alert.
+        if ( navigationController != nil )
+        {
+            NSString *title = NSLocalizedString( @"ErrorPushNotificationsNotSaved", nil );
+            NSString *message = NSLocalizedString( @"ErrorPushNotificationsNotSavedMessage", nil );
+            VAlertController *alertConroller = [VAlertController alertWithTitle:title message:message];
+            [alertConroller addAction:[VAlertAction cancelButtonWithTitle:NSLocalizedString( @"OKButton", nil ) handler:nil]];
+            [alertConroller presentInViewController:navigationController animated:YES completion:nil];
+        }
     }];
 }
 
 - (BOOL)hasValidSettings
 {
     return self.sections != nil && self.sections.count != 0;
+}
+
+- (BOOL)isValidIndexPath:(NSIndexPath *)indexPath
+{
+    if ( indexPath.section < 0 || indexPath.section >= (NSInteger)self.sections.count )
+    {
+        return NO;
+    }
+    VNotificationSettingsTableSection *section = self.sections[ indexPath.section ];
+    return [section rowAtIndex:indexPath.row] != nil;
 }
 
 #pragma mark - VNotificationSettingCellDelegate
@@ -190,25 +199,19 @@ static const NSInteger kErrorCodeDeviceNotFound = 5000;
         return;
     }
     
-    VNotificationSettingsSection *section = self.sections[ indexPath.section ];
-    VNotificationSetting *setting = section.data[ indexPath.row ];
-    setting.isEnabled = value;
+    // Update our sections and rows rows with changes from the UI
+    VNotificationSettingsTableSection *section = self.sections[ indexPath.section ];
+    VNotificationSettingsTableRow *row = section.rows[ indexPath.row ];
     
-    [self updateSettings];
-}
-
-#pragma mark - Actions
-
-- (IBAction)goBack:(id)sender
-{
-    [self.navigationController popViewControllerAnimated:YES];
-}
-
-#pragma mark - VNavigationHeaderDelegate
-
-- (void)backPressedOnNavHeader:(VNavigationHeaderView *)navHeaderView
-{
-    [self.navigationController popViewControllerAnimated:YES];
+    if ( row.isEnabled != value )
+    {
+        self.didSettingsChange = YES;
+        
+        row.isEnabled = value;
+        
+        // Update our underlying rows model with section and row rows
+        [self updateSettings];
+    }
 }
 
 #pragma mark - UITableViewDataSource
@@ -217,19 +220,32 @@ static const NSInteger kErrorCodeDeviceNotFound = 5000;
 {
     if ( self.hasValidSettings )
     {
+        // Only return cells for sections and rows that exist
+        if ( ![self isValidIndexPath:indexPath] )
+        {
+            return nil;
+        }
+        
+        // Create cell from VNotificationSettingsTableSection and VNotificationSettingsTableRow rows
         NSString *reuseId = NSStringFromClass([VNotificationSettingCell class]);
         VNotificationSettingCell *cell = [self.tableView dequeueReusableCellWithIdentifier:reuseId];
         
-        VNotificationSettingsSection *section = self.sections[ indexPath.section ];
-        VNotificationSetting *setting = section.data[ indexPath.row ];
-        [cell setTitle:setting.title value:setting.isEnabled];
+        VNotificationSettingsTableSection *section = self.sections[ indexPath.section ];
+        VNotificationSettingsTableRow *row = [section rowAtIndex:indexPath.row];
         cell.indexPath = indexPath;
         cell.delegate = self;
-        
+        [cell setTitle:row.title value:row.isEnabled];
         return cell;
     }
     else
     {
+        // Only ever return one NoContentCell in the first section
+        if ( indexPath.section != 0 || indexPath.row != 0 )
+        {
+            return nil;
+        }
+        
+        // Show loading or error message
         VNoContentTableViewCell *cell = [VNoContentTableViewCell createCellFromTableView:tableView];
         if ( self.settingsError != nil )
         {
@@ -251,20 +267,23 @@ static const NSInteger kErrorCodeDeviceNotFound = 5000;
         return 1;
     }
     
-    VNotificationSettingsSection *sectionData = self.sections[ section ];
-    return sectionData.data.count;
+    VNotificationSettingsTableSection *sectionData = self.sections[ section ];
+    return sectionData.rows.count;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
+    // Must have at least one section to show error/loading when there is not rows in self.sections
     return MAX( self.sections.count, (NSUInteger)1 );
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    VNotificationSettingsSection *sectionData = self.sections[ section ];
+    VNotificationSettingsTableSection *sectionData = self.sections[ section ];
     return sectionData.title;
 }
+
+#pragma mark - UITableViewDelegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {

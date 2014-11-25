@@ -13,4 +13,6 @@
 
 + (VNotificationSettings *)createDefaultSettings;
 
+- (BOOL)equals:(VNotificationSettings *)settings;
+
 @end
