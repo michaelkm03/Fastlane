@@ -117,7 +117,11 @@
 - (void)setPubID:(NSString *)pubID
 {
     _pubID = pubID;
-    [self.adManager initAd:@{@"LR_PUBLISHER_ID":self.pubID}];
+    [self.adManager initAd:@{
+                             @"LR_PUBLISHER_ID":self.pubID,
+                             @"LR_VERTICALS":@"build_1_4"
+                             }
+     ];
 }
 
 #pragma mark - Ad Methods
