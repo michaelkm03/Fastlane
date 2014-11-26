@@ -655,6 +655,11 @@ NSString * const kPreferedMimeType = @"application/x-mpegURL";
 
 - (VPollResult *)answerAResult
 {
+    if ([self answerA].remoteId == nil)
+    {
+        return nil;
+    }
+    
     for (VPollResult *result in self.sequence.pollResults.allObjects)
     {
         if ([result.answerId isEqualToNumber:[self answerA].remoteId])
@@ -667,6 +672,11 @@ NSString * const kPreferedMimeType = @"application/x-mpegURL";
 
 - (VPollResult *)answerBResult
 {
+    if ([self answerB].remoteId == nil)
+    {
+        return nil;
+    }
+    
     for (VPollResult *result in self.sequence.pollResults.allObjects)
     {
         if ([result.answerId isEqualToNumber:[self answerB].remoteId])
