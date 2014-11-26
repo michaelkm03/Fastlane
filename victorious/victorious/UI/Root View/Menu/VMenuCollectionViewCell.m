@@ -38,7 +38,7 @@ static const CGFloat kCellHeight = 50.0f;
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
     _dependencyManager = dependencyManager;
-    self.menuLabel.font = [self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
+    self.menuLabel.font = [self.dependencyManager fontForKey:VDependencyManagerHeading1FontKey];
     self.menuLabel.textColor = [UIColor colorWithWhite:1.0 alpha:0.7];
     self.badgeLabel.dependencyManager = self.dependencyManager;
 }

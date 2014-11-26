@@ -9,6 +9,8 @@
 #import "VBadgeLabel.h"
 #import "VDependencyManager.h"
 
+static CGFloat const kMarginWidth = 4.0f;
+
 @implementation VBadgeLabel
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -40,16 +42,21 @@
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
     _dependencyManager = dependencyManager;
-    self.font = [self.dependencyManager fontForKey:VDependencyManagerLabel2FontKey];
-    self.textColor = [UIColor blackColor]; // [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
-    self.backgroundColor = [UIColor whiteColor]; // [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
+    self.font = [self.dependencyManager fontForKey:VDependencyManagerHeading2FontKey];
+    self.textColor = [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
+    self.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
 }
 
 - (CGSize)intrinsicContentSize
 {
     CGSize size = [super intrinsicContentSize];
     CGFloat biggerDimension = MAX(size.width, size.height);
-    return CGSizeMake(biggerDimension, biggerDimension);
+    
+    if (biggerDimension == 0)
+    {
+        return CGSizeZero;
+    }
+    return CGSizeMake(biggerDimension + kMarginWidth, biggerDimension + kMarginWidth);
 }
 
 - (void)layoutSubviews
@@ -62,6 +69,12 @@
     {
         self.layer.cornerRadius = newCornerRadius;
     }
+}
+
+- (void)drawTextInRect:(CGRect)rect
+{
+    CGRect fixedRect = CGRectApplyAffineTransform(rect, CGAffineTransformMakeTranslation(0, 1));
+    [super drawTextInRect:fixedRect];
 }
 
 @end
