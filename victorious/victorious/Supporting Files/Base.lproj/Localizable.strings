@@ -418,6 +418,6 @@
 "NotificationSettingSectionPeople" = "People";
 
 "ErrorPushNotificationsNotEnabled"      = "Push notifications are not enabled for your device.\nPlease edit your System Preferences to enable them.";
-"ErrorPushNotificationsUnknown"         = "Error loading notification settings.";
+"ErrorPushNotificationsUnknown"         = "Error loading notification settings.\nPlease try again later.";
 "ErrorPushNotificationsNotSaved"        = "Error Saving Preferences";
 "ErrorPushNotificationsNotSavedMessage" = "Oops!  Something went wrong, please try again later.";

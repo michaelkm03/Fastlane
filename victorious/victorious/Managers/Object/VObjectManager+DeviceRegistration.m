@@ -11,6 +11,7 @@
 #import "VObjectManager+Private.h"
 #import "VNotificationSettings+RestKit.h"
 #import "VObjectManager+Login.h"
+#import "VConstants.h"
 
 @interface VObjectManager()
 
@@ -67,7 +68,8 @@
 
 - (NSError *)userNotLoggedInError
 {
-    return [NSError errorWithDomain:@"A user must be logged in to call this end point." code:-1 userInfo:nil];
+    return [NSError errorWithDomain:@"A user must be logged in to call this end point."
+                               code:kErrorCodeDeviceUserNotLoggedIn userInfo:nil];
 }
 
 @end

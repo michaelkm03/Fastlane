@@ -20,4 +20,6 @@
 
 + (void)registerNibWithTableView:(UITableView *)tableView;
 
+- (void)showActionButtonWithLabel:(NSString *)label callback:(void(^)(void))callback;
+
 @end

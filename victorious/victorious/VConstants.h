@@ -48,6 +48,10 @@ static NSString * const kVictoriousErrorDomain          = @"com.getvictorious.vi
 static NSUInteger const kVStillTranscodingError         = 5500;
 static NSUInteger const kVConversationDoesNotExistError = 5000;
 
+static NSInteger const kErrorCodeDeviceNotFound         = 5000;
+static NSInteger const kErrorCodeUserNotRegistered      = 5080;
+static NSInteger const kErrorCodeDeviceUserNotLoggedIn  = 5090;
+
 static NSUInteger const kVPasswordResetCodeExpired = 6700;
 
 static NSUInteger const kVFollowsRelationshipDoesNotExistError = 5001;
