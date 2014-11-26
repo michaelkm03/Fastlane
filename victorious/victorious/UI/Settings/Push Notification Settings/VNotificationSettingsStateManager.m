@@ -93,37 +93,36 @@ static const char *VNotificationSettingsStateNames[] = {
         case VNotificationSettingsStateRegistered:
             // Stop listening for the the notification that device was registered and load settings from server
             [self stopListeningForRegistrationNotification];
-            [self.delegate setLoading];
-            [self.delegate loadSettings];
+            [self.delegate onDeviceDidRegisterWithOS];
             break;
             
         case VNotificationSettingsStateNotRegistered:
             // Show the 'not enabled' error in the table view and start listening for notification
             // that indicates notifications were enabled
             [self startListeningForRegistrationNotification];
-            [self.delegate setError:self.errorNotRegistered];
+            [self.delegate onError:self.errorNotRegistered];
             break;
             
         case VNotificationSettingsStateLoadSettingsSucceeded:
             // Clear any error and reload to display the settings
-            [self.delegate clearError];
+            [self.delegate onErrorResolved];
             break;
             
         case VNotificationSettingsStateRegistrationFailed:
         case VNotificationSettingsStateLoadSettingsFailed:
             // Show failure station with message describing unknown error
-            [self.delegate setError:self.errorUnknown];
+            [self.delegate onError:self.errorUnknown];
             break;
             
         case VNotificationSettingsStateDeviceNotFound:
             // The OS has told us that the device is registered for push notifications, but the server is missing
             // the APNs token required to make it work.  So, we'll send it:
-            [self.delegate setLoading];
-            [self sendToken];
+            self.state = VNotificationSettingsStateReregistering;
             break;
             
         case VNotificationSettingsStateReregistering:
-            [self.delegate setLoading];
+            [self.delegate onDeviceWillRegisterWithServer];
+            [self sendToken];
             break;
             
         case VNotificationSettingsStateUninitialized:

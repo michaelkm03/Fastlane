@@ -66,11 +66,35 @@
 
 #pragma mark - VNotificiationSettingsStateManagerDelegate
 
+- (void)onDeviceDidRegisterWithOS
+{
+    [self loadSettings];
+}
+
+- (void)onError:(NSError *)error
+{
+    self.settings = nil;
+    self.settingsError = error;
+    [self.tableView reloadData];
+}
+
+- (void)onErrorResolved
+{
+    self.settingsError = nil;
+    [self.tableView reloadData];
+}
+
+- (void)onDeviceWillRegisterWithServer
+{
+    [self setLoading];
+}
+
+#pragma mark - Settings Table Data Management
+
 - (void)loadSettings
 {
     self.settingsError = nil;
     self.settings = nil;
-    
     [[VObjectManager sharedManager] getDeviceSettingsSuccessBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
          [self settingsDidLoadWithResults:resultObjects];
@@ -81,19 +105,6 @@
          BOOL isDeviceNotFound = error != nil && error.code == kErrorCodeDeviceNotFound;
          self.stateManager.state = isDeviceNotFound ? VNotificationSettingsStateDeviceNotFound : VNotificationSettingsStateLoadSettingsFailed;
      }];
-}
-
-- (void)setError:(NSError *)error
-{
-    self.settings = nil;
-    self.settingsError = error;
-    [self.tableView reloadData];
-}
-
-- (void)clearError
-{
-    self.settingsError = nil;
-    [self.tableView reloadData];
 }
 
 - (void)setLoading
@@ -108,8 +119,6 @@
         [self.tableView reloadData];
     }
 }
-
-#pragma mark - Settings Table Data Management
 
 - (void)setSettings:(VNotificationSettings *)settings
 {

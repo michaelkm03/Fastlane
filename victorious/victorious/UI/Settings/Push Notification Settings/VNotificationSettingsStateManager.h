@@ -21,12 +21,14 @@ typedef NS_ENUM( NSInteger, VNotificationSettingsState )
     VNotificationSettingsStateDeviceNotFound
 };
 
+@class VNotificationSettingsStateManager;
+
 @protocol VNotificiationSettingsStateManagerDelegate <NSObject>
 
-- (void)loadSettings;
-- (void)setError:(NSError *)error;
-- (void)clearError;
-- (void)setLoading;
+- (void)onDeviceDidRegisterWithOS;
+- (void)onError:(NSError *)error;
+- (void)onErrorResolved;
+- (void)onDeviceWillRegisterWithServer;
 
 @end
 
