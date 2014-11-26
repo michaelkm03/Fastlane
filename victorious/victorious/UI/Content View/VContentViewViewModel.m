@@ -49,6 +49,8 @@ NSString * const VContentViewViewModelDidUpdateHistogramDataNotification = @"VCo
 NSString * const VContentViewViewModelDidUpdatePollDataNotification = @"VContentViewViewModelDidUpdatePollDataNotification";
 NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentViewViewModelDidUpdateContentNotification";
 
+NSString * const kPreferedMimeType = @"application/x-mpegURL";
+
 @interface VContentViewViewModel ()
 
 @property (nonatomic, strong, readwrite) VSequence *sequence;
@@ -104,7 +106,17 @@ NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentV
         _experienceEnhancerController = [[VExperienceEnhancerController alloc] initWithSequence:sequence];
 
         _currentNode = [sequence firstNode];
+        
         _currentAsset = [_currentNode.assets firstObject];
+        
+        [_currentNode.assets enumerateObjectsUsingBlock:^(VAsset *asset, NSUInteger idx, BOOL *stop)
+        {
+            if ([asset.type isEqualToString:kPreferedMimeType])
+            {
+                _currentAsset = asset;
+                *stop = YES;
+            }
+        }];
         
         // Set the default ad chain index
         self.currentAdChainIndex = 0;
@@ -348,16 +360,7 @@ NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentV
 {
     NSArray *sortedComments = [comments sortedArrayUsingComparator:^NSComparisonResult(VComment *comment1, VComment *comment2)
      {
-         NSComparisonResult result = [comment1.postedAt compare:comment2.postedAt];
-         switch (result)
-         {
-             case NSOrderedAscending:
-                 return NSOrderedDescending;
-             case NSOrderedSame:
-                 return NSOrderedSame;
-             case NSOrderedDescending:
-                 return NSOrderedAscending;
-         }
+         return [comment2.postedAt compare:comment1.postedAt];
      }];
     _comments = sortedComments;
     
@@ -643,6 +646,11 @@ NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentV
 
 - (VPollResult *)answerAResult
 {
+    if ([self answerA].remoteId == nil)
+    {
+        return nil;
+    }
+    
     for (VPollResult *result in self.sequence.pollResults.allObjects)
     {
         if ([result.answerId isEqualToNumber:[self answerA].remoteId])
@@ -655,6 +663,11 @@ NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentV
 
 - (VPollResult *)answerBResult
 {
+    if ([self answerB].remoteId == nil)
+    {
+        return nil;
+    }
+    
     for (VPollResult *result in self.sequence.pollResults.allObjects)
     {
         if ([result.answerId isEqualToNumber:[self answerB].remoteId])
