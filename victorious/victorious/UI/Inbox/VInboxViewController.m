@@ -53,6 +53,8 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
     return [[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier:@"inbox"];
 }
 
+#pragma mark - View Lifecycle
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -168,7 +170,7 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
     [self.messageViewControllers removeObjectForKey:otherUser.remoteId];
 }
 
-#pragma mark - UITabvleViewDataSource
+#pragma mark - UITableViewDataSource
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
