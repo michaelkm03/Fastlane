@@ -45,6 +45,13 @@
     {
         self.adViewAppeared = YES;
     }
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resumePlayback:) name:UIApplicationDidBecomeActiveNotification object:nil];
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -58,6 +65,11 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+}
+
+- (void)resumePlayback:(NSNotification *)notification
+{
+    [self.adManager.videoPlayerView.player play];
 }
 
 - (void)setVastTag:(NSString *)vastTag
@@ -88,7 +100,7 @@
     [self.adManager setVideoContainer:self.view];
     self.adManager.autoPlayConfig = AlwaysAutoPlay;
     self.adManager.isInFeed = YES;
-    self.adManager.hideControls = NO;
+    self.adManager.hideControls = YES;
     
     [self.adManager startAdManager];
 }
