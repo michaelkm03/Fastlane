@@ -135,16 +135,7 @@
 {
     NSArray *sortedComments = [comments sortedArrayUsingComparator:^NSComparisonResult(VComment *comment1, VComment *comment2)
                                {
-                                   NSComparisonResult result = [comment1.postedAt compare:comment2.postedAt];
-                                   switch (result)
-                                   {
-                                       case NSOrderedAscending:
-                                           return NSOrderedDescending;
-                                       case NSOrderedSame:
-                                           return NSOrderedSame;
-                                       case NSOrderedDescending:
-                                           return NSOrderedAscending;
-                                   }
+                                   return [comment2.postedAt compare:comment1.postedAt];
                                }];
     _comments = sortedComments;
 }
