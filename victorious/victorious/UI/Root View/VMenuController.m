@@ -64,6 +64,7 @@ static const CGFloat kSectionHeaderHeight = 36.0f;
     
     self.collectionViewDataSource = [[VMenuCollectionViewDataSource alloc] initWithCellReuseID:[VMenuCollectionViewCell suggestedReuseIdentifier]
                                                                            sectionsOfMenuItems:[self.dependencyManager menuItemSections]];
+    self.collectionViewDataSource.dependencyManager = self.dependencyManager;
     self.collectionViewDataSource.sectionHeaderReuseID = kSectionHeaderReuseID;
     self.collectionView.dataSource = self.collectionViewDataSource;
     

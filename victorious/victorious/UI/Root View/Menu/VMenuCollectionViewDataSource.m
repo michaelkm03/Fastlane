@@ -134,6 +134,11 @@
     {
         [cell setBadgeNumber:[menuItem.destination badgeNumber]];
     }
+    
+    if ([cell respondsToSelector:@selector(setDependencyManager:)])
+    {
+        [cell setDependencyManager:self.dependencyManager];
+    }
     return cell;
 }
 
