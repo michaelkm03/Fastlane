@@ -44,6 +44,8 @@
 @property (nonatomic, assign) BOOL hasComments;
 @property (nonatomic, assign) BOOL needsRefresh;
 
+@property (nonatomic, strong) NSArray *comments;
+
 @end
 
 @implementation VCommentsTableViewController
@@ -126,6 +128,16 @@
         self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
         self.tableView.backgroundView = nil;
     }
+    self.comments = [self.sequence.comments array];
+}
+
+- (void)setComments:(NSArray *)comments
+{
+    NSArray *sortedComments = [comments sortedArrayUsingComparator:^NSComparisonResult(VComment *comment1, VComment *comment2)
+                               {
+                                   return [comment2.postedAt compare:comment1.postedAt];
+                               }];
+    _comments = sortedComments;
 }
 
 #pragma mark - Public Mehtods
@@ -147,6 +159,7 @@
                                                                                               isRefresh:YES
                                                                                            successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
                                                   {
+                                                      self.comments = [self.sequence.comments array];
                                                       self.needsRefresh = NO;
                                                       [self.tableView reloadData];
                                                       [self.refreshControl endRefreshing];
@@ -166,9 +179,10 @@
 - (void)loadNextPageAction
 {
     [[VObjectManager sharedManager] loadCommentsOnSequence:self.sequence
-                                                 isRefresh:YES
+                                                 isRefresh:NO
                                               successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
      {
+         self.comments = [self.sequence.comments array];
          [self.tableView reloadData];
      }
                                                  failBlock:nil];
@@ -183,19 +197,21 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [self.sequence.comments count];
+    return self.comments.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    VComment *comment = (VComment *)[self.sequence.comments objectAtIndex:indexPath.row];
-    return [VCommentCell estimatedHeightWithWidth:CGRectGetWidth(tableView.bounds) text:comment.text withMedia:comment.hasMedia];
+    VComment *comment = (VComment *)self.comments[indexPath.row];
+    return [VCommentCell estimatedHeightWithWidth:CGRectGetWidth(tableView.bounds)
+                                             text:comment.text
+                                        withMedia:comment.hasMedia];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     VCommentCell *cell = [tableView dequeueReusableCellWithIdentifier:kVCommentCellNibName forIndexPath:indexPath];
-    VComment *comment = [self.sequence.comments objectAtIndex:indexPath.row];
+    VComment *comment = self.comments[indexPath.row];
     
     cell.timeLabel.text = [comment.postedAt timeSince];
     if (comment.realtime.integerValue < 0)
@@ -249,7 +265,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    VComment *comment = [self.sequence.comments objectAtIndex:indexPath.row];
+    VComment *comment = self.comments[indexPath.row];
     NSString *reportTitle = NSLocalizedString(@"ReportInappropriate", @"Comment report inappropriate button");
     NSString *reply = NSLocalizedString(@"Reply", @"Comment reply button");
     
