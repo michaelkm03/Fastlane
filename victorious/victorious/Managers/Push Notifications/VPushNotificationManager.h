@@ -9,12 +9,6 @@
 #import <Foundation/Foundation.h>
 
 /**
- Notification that will be posted in response to application:didRegisterForRemoteNotificationsWithDeviceToken in AppDelegate.
- A valid APNs token should be available at this point.
- */
-NSString * const VPushNotificationManagerDidRegister;
-
-/**
  This class registers for push notifications,
  notifies the server of the push token,
  keeps the server updated of login changes.

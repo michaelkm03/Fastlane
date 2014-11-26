@@ -13,10 +13,8 @@ typedef NS_ENUM( NSInteger, VNotificationSettingsState )
     VNotificationSettingsStateUninitialized,
     VNotificationSettingsStateDefault,
     VNotificationSettingsStateNotRegistered,
-    VNotificationSettingsStateReregistering,
     VNotificationSettingsStateRegistered,
     VNotificationSettingsStateRegistrationFailed,
-    VNotificationSettingsStateLoadSettingsSucceeded,
     VNotificationSettingsStateLoadSettingsFailed,
     VNotificationSettingsStateDeviceNotFound
 };
@@ -27,7 +25,6 @@ typedef NS_ENUM( NSInteger, VNotificationSettingsState )
 
 - (void)onDeviceDidRegisterWithOS;
 - (void)onError:(NSError *)error;
-- (void)onErrorResolved;
 - (void)onDeviceWillRegisterWithServer;
 
 @end

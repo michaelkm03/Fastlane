@@ -55,7 +55,6 @@ NSString * const VPushNotificationManagerDidRegister = @"com.getvictorious.PushN
 {
     self.apnsToken = deviceToken;
     [self sendAPNStokenToServer];
-    [[NSNotificationCenter defaultCenter] postNotificationName:VPushNotificationManagerDidRegister object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loggedInChanged:) name:kLoggedInChangedNotification object:nil];
 }
 
@@ -65,7 +64,7 @@ NSString * const VPushNotificationManagerDidRegister = @"com.getvictorious.PushN
     if ( self.apnsToken == nil )
     {
         NSString *domain = NSLocalizedString( @"ErrorPushNotificationsUnknown", nil );
-        failure( [NSError errorWithDomain:domain code:5000 userInfo:nil] );
+        failure( [NSError errorWithDomain:domain code:-1 userInfo:nil] );
         return;
     }
     

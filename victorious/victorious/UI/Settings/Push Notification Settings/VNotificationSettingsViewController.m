@@ -78,12 +78,6 @@
     [self.tableView reloadData];
 }
 
-- (void)onErrorResolved
-{
-    self.settingsError = nil;
-    [self.tableView reloadData];
-}
-
 - (void)onDeviceWillRegisterWithServer
 {
     [self setLoading];
@@ -98,7 +92,8 @@
     [[VObjectManager sharedManager] getDeviceSettingsSuccessBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
          [self settingsDidLoadWithResults:resultObjects];
-         self.stateManager.state = VNotificationSettingsStateLoadSettingsSucceeded;
+         self.settingsError = nil;
+         [self.tableView reloadData];
      }
                                                         failBlock:^(NSOperation *operation, NSError *error)
      {
@@ -279,7 +274,7 @@
             BOOL canOpenSettings = (&UIApplicationOpenSettingsURLString != NULL);
             if ( canOpenSettings && self.settingsError.code == kErrorCodeUserNotRegistered )
             {
-                [cell showActionButtonWithLabel:@"Open System Preferences" callback:^void
+                [cell showActionButtonWithLabel:NSLocalizedString( @"Open Settings", nil) callback:^void
                  {
                      NSURL *url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
                      [[UIApplication sharedApplication] openURL:url];

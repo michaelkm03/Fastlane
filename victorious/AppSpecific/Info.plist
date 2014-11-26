@@ -15,7 +15,7 @@
 		<string>Icon-60</string>
 	</array>
 	<key>CFBundleIdentifier</key>
-	<string>com.getvictorious.${ProductPrefix}victorious</string>
+	<string>com.getvictorious.$(ProductPrefix)victorious870t</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -41,6 +41,8 @@
 	<string>1374328719478033</string>
 	<key>FacebookDisplayName</key>
 	<string>VictoriousApp Dev</string>
+	<key>FlurryAPIKey</key>
+	<string>XXXXXXXXXX</string>
 	<key>GAID</key>
 	<string>UA-51702806-9</string>
 	<key>LSRequiresIPhoneOS</key>
@@ -150,7 +152,5 @@
 	<integer>1</integer>
 	<key>VictoriousServerEnvironment</key>
 	<string>${DefaultEnvironment}</string>
-	<key>FlurryAPIKey</key>
-	<string>XXXXXXXXXX</string>
 </dict>
 </plist>

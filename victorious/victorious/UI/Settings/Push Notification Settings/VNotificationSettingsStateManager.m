@@ -23,10 +23,8 @@ static const char *VNotificationSettingsStateNames[] = {
     "VNotificationSettingsStateUninitialized",
     "VNotificationSettingsStateDefault",
     "VNotificationSettingsStateNotRegistered",
-    "VNotificationSettingsStateReregistering",
     "VNotificationSettingsStateRegistered",
     "VNotificationSettingsStateRegistrationFailed",
-    "VNotificationSettingsStateLoadSettingsSucceeded",
     "VNotificationSettingsStateLoadSettingsFailed",
     "VNotificationSettingsStateDeviceNotFound"
 };
@@ -48,6 +46,7 @@ static const char *VNotificationSettingsStateNames[] = {
     if (self)
     {
         _delegate = delegate;
+        [self startListeningForRegistrationNotification];
     }
     return self;
 }
@@ -92,20 +91,13 @@ static const char *VNotificationSettingsStateNames[] = {
             
         case VNotificationSettingsStateRegistered:
             // Stop listening for the the notification that device was registered and load settings from server
-            [self stopListeningForRegistrationNotification];
             [self.delegate onDeviceDidRegisterWithOS];
             break;
             
         case VNotificationSettingsStateNotRegistered:
             // Show the 'not enabled' error in the table view and start listening for notification
             // that indicates notifications were enabled
-            [self startListeningForRegistrationNotification];
             [self.delegate onError:self.errorNotRegistered];
-            break;
-            
-        case VNotificationSettingsStateLoadSettingsSucceeded:
-            // Clear any error and reload to display the settings
-            [self.delegate onErrorResolved];
             break;
             
         case VNotificationSettingsStateRegistrationFailed:
@@ -117,10 +109,6 @@ static const char *VNotificationSettingsStateNames[] = {
         case VNotificationSettingsStateDeviceNotFound:
             // The OS has told us that the device is registered for push notifications, but the server is missing
             // the APNs token required to make it work.  So, we'll send it:
-            self.state = VNotificationSettingsStateReregistering;
-            break;
-            
-        case VNotificationSettingsStateReregistering:
             [self.delegate onDeviceWillRegisterWithServer];
             [self sendToken];
             break;
@@ -135,14 +123,14 @@ static const char *VNotificationSettingsStateNames[] = {
 {
     [self stopListeningForRegistrationNotification];
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(userDidRegisterForPushNotifications:)
-                                                 name:VPushNotificationManagerDidRegister
+                                             selector:@selector(applicationDidBecomeActive:)
+                                                 name:UIApplicationDidBecomeActiveNotification
                                                object:nil];
 }
 
 - (void)stopListeningForRegistrationNotification
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:VPushNotificationManagerDidRegister object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
 - (NSError *)errorNotRegistered
@@ -160,9 +148,9 @@ static const char *VNotificationSettingsStateNames[] = {
     return [NSError errorWithDomain:NSLocalizedString( @"ErrorPushNotificationsUnknown", nil ) code:-1 userInfo:nil];
 }
 
-- (void)userDidRegisterForPushNotifications:(NSNotification *)notification
+- (void)applicationDidBecomeActive:(NSNotification *)notification
 {
-    self.state = VNotificationSettingsStateRegistered;
+    self.state = VNotificationSettingsStateDefault;
 }
 
 - (void)sendToken

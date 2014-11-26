@@ -1,5 +1,5 @@
 //
-//  VNotificationSettingsTests.m
+//  VNotificationSettingsViewControllerTests.m
 //  victorious
 //
 //  Created by Patrick Lynch on 11/25/14.
@@ -24,9 +24,9 @@
 @interface VNotificationSettingsViewController (UnitTests)
 
 - (void)settingsDidLoadWithResults:(NSArray *)resultObjects;
-- (void)settingsDidFailWithError:(NSError *)error;
 - (void)updateSettings;
 - (void)saveSettings;
+- (void)onError:(NSError *)error;
 - (void)userDidUpdateSettingAtIndex:(NSIndexPath *)indexPath withValue:(BOOL)value;
 
 @property (nonatomic, assign, readonly) BOOL hasValidSettings;
@@ -37,7 +37,7 @@
 
 @end
 
-@interface VNotificationSettingsTests : XCTestCase
+@interface VNotificationSettingsViewControllerTests : XCTestCase
 
 @property (nonatomic, strong) VNotificationSettingsViewController *viewController;
 @property (nonatomic, strong) VNotificationSettings *randomSettings;
@@ -45,7 +45,7 @@
 
 @end
 
-@implementation VNotificationSettingsTests
+@implementation VNotificationSettingsViewControllerTests
 
 - (void)setUp
 {
@@ -136,7 +136,7 @@
     
     UITableViewCell *cell = nil;
     NSIndexPath *indexPath = VIndexPathMake(0, 0);
-    [self.viewController settingsDidFailWithError:[NSError errorWithDomain:@"" code:-1 userInfo:nil]];
+    [self.viewController onError:[NSError errorWithDomain:@"" code:-1 userInfo:nil]];
     cell = [self.viewController tableView:self.viewController.tableView cellForRowAtIndexPath:indexPath];
     XCTAssert( [cell isKindOfClass:[VNoContentTableViewCell class]] );
     XCTAssertNotNil( cell );
@@ -207,17 +207,13 @@
     NSError *error = nil;
     
     error = [NSError errorWithDomain:@"" code:5000 userInfo:nil];
-    [self.viewController settingsDidFailWithError:error];
+    [self.viewController onError:error];
     XCTAssertNotNil( self.viewController.settingsError );
-    XCTAssertEqualObjects( NSLocalizedString( @"ErrorPushNotificationsNotEnabled", nil ),
-                          self.viewController.settingsError.domain );
     XCTAssertFalse( self.viewController.hasValidSettings );
     
     error = [NSError errorWithDomain:@"" code:-1 userInfo:nil];
-    [self.viewController settingsDidFailWithError:error];
+    [self.viewController onError:error];
     XCTAssertNotNil( self.viewController.settingsError );
-    XCTAssertEqualObjects( NSLocalizedString( @"ErrorPushNotificationsUnknown", nil ),
-                          self.viewController.settingsError.domain );
     XCTAssertFalse( self.viewController.hasValidSettings );
 }
 
