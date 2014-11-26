@@ -27,8 +27,8 @@
 
 @implementation VObjectManager (Login)
 
-NSString *kLoggedInChangedNotification          = @"LoggedInChangedNotification";
-NSString *kInitResponseNotification             = @"InitResponseNotification";
+NSString * const kLoggedInChangedNotification          = @"com.getvictorious.LoggedInChangedNotification";
+NSString * const kInitResponseNotification             = @"com.getvictorious.InitResponseNotification";
 
 static NSString * const kVExperimentsKey        = @"experiments";
 static NSString * const kVAppearanceKey         = @"appearance";

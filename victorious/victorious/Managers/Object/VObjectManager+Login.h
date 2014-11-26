@@ -8,8 +8,8 @@
 
 #import "VObjectManager.h"
 
-extern NSString *kLoggedInChangedNotification;
-extern NSString *kInitResponseNotification;
+extern NSString * const kLoggedInChangedNotification;
+extern NSString * const kInitResponseNotification;
 
 @interface VObjectManager (Login)
 

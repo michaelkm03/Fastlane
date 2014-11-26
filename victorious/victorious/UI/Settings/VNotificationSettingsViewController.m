@@ -15,6 +15,18 @@
 #import "VNotificationSettings+Fetcher.h"
 #import "VAlertController.h"
 #import "VNotificationSettingsTableSection.h"
+#import "VPushNotificationManager.h"
+
+typedef NS_ENUM( NSInteger, VNotificationSettingsState )
+{
+    VNotificationSettingsStateDefault,
+    VNotificationSettingsStateNotRegistered,
+    VNotificationSettingsStateReregistering,
+    VNotificationSettingsStateRegistered,
+    VNotificationSettingsStateRegistrationFailed,
+    VNotificationSettingsStateLoadSettingsSucceeded,
+    VNotificationSettingsStateLoadSettingsFailed
+};
 
 static const NSInteger kErrorCodeDeviceNotFound = 5000;
 
@@ -25,6 +37,7 @@ static const NSInteger kErrorCodeDeviceNotFound = 5000;
 @property (nonatomic, assign, readonly) BOOL hasValidSettings;
 @property (nonatomic, strong) NSError *settingsError;
 @property (nonatomic, assign) BOOL didSettingsChange;
+@property (nonatomic, assign) VNotificationSettingsState state;
 
 @end
 
@@ -47,8 +60,19 @@ static const NSInteger kErrorCodeDeviceNotFound = 5000;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    self.state = VNotificationSettingsStateDefault;
 
-    [self loadSettings];
+    if ( [VPushNotificationManager sharedPushNotificationManager].isRegisteredForPushNotifications )
+    {
+        self.state = VNotificationSettingsStateRegistered;
+    }
+    else
+    {
+        NSString *domain = NSLocalizedString( @"ErrorPushNotificationsNotEnabled", nil );
+        self.settingsError = [NSError errorWithDomain:domain code:kErrorCodeDeviceNotFound userInfo:nil];
+        [self.tableView reloadData];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -61,6 +85,97 @@ static const NSInteger kErrorCodeDeviceNotFound = 5000;
     }
 }
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:VPushNotificationManagerDidRegister object:nil];
+}
+
+#pragma mark - Registration state management
+
+- (void)setState:(VNotificationSettingsState)state
+{
+    if ( _state == state )
+    {
+        return;
+    }
+    
+    _state = state;
+    switch (_state)
+    {
+        case VNotificationSettingsStateDefault:
+            // Determine if user is registered and continue to next state accordingly
+            if ( [VPushNotificationManager sharedPushNotificationManager].isRegisteredForPushNotifications )
+            {
+                self.state = VNotificationSettingsStateRegistered;
+            }
+            else
+            {
+                self.state = VNotificationSettingsStateNotRegistered;
+            }
+            break;
+            
+        case VNotificationSettingsStateRegistered:
+            // Stop listening for the the notification that device was registered and load settings from server
+            [[NSNotificationCenter defaultCenter] removeObserver:self name:VPushNotificationManagerDidRegister object:nil];
+            [self loadSettings];
+            break;
+            
+        case VNotificationSettingsStateNotRegistered:
+            // Show the 'not enabled' error in the table view and start listening for notification
+            // that indicates notifications were enabled
+            self.settings = nil;
+            self.settingsError = [NSError errorWithDomain:NSLocalizedString( @"ErrorPushNotificationsNotEnabled", nil )
+                                                     code:kErrorCodeDeviceNotFound userInfo:nil];
+            [[NSNotificationCenter defaultCenter] addObserver:self
+                                                     selector:@selector(userDidRegisterForPushNotifications:)
+                                                         name:VPushNotificationManagerDidRegister
+                                                       object:nil];
+            [self.tableView reloadData];
+            break;
+            
+        case VNotificationSettingsStateLoadSettingsSucceeded:
+            // Clear any error and reload to display the settings
+            self.settingsError = nil;
+            [self.tableView reloadData];
+            break;
+            
+        case VNotificationSettingsStateRegistrationFailed:
+        case VNotificationSettingsStateLoadSettingsFailed:
+            // Show failure station with message describing unknown error
+            self.settings = nil;
+            self.settingsError = [NSError errorWithDomain:NSLocalizedString( @"ErrorPushNotificationsUnknown", nil )
+                                                     code:-1 userInfo:nil];
+            [self.tableView reloadData];
+            break;
+            
+        case VNotificationSettingsStateReregistering:
+            // Update the table view to show a loading state
+            self.settings = nil;
+            self.settingsError = nil;
+            [self.tableView reloadData];
+            break;
+    }
+}
+
+- (void)userDidRegisterForPushNotifications:(NSNotification *)notification
+{
+    self.state = VNotificationSettingsStateRegistered;
+}
+
+- (void)registerForPushNotifications
+{
+    VPushNotificationManager *pushNotificationManager = [VPushNotificationManager sharedPushNotificationManager];
+    [pushNotificationManager sendTokenWithSuccessBlock:^
+     {
+         self.state = VNotificationSettingsStateRegistered;
+         [self loadSettings];
+     }
+                                                                failBlock:^(NSError *error)
+     {
+         self.state = VNotificationSettingsStateRegistrationFailed;
+     }];
+}
+
 #pragma mark - Settings Management
 
 - (void)loadSettings
@@ -71,36 +186,26 @@ static const NSInteger kErrorCodeDeviceNotFound = 5000;
     [[VObjectManager sharedManager] getDeviceSettingsSuccessBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
          [self settingsDidLoadWithResults:resultObjects];
+         self.state = VNotificationSettingsStateLoadSettingsSucceeded;
      }
                                                         failBlock:^(NSOperation *operation, NSError *error)
      {
-         [self settingsDidFailWithError:error];
+         if ( error != nil && error.code == kErrorCodeDeviceNotFound )
+         {
+             self.state = VNotificationSettingsStateNotRegistered;
+         }
+         else
+         {
+             self.state = VNotificationSettingsStateLoadSettingsFailed;
+         }
      }];
 }
 
 - (void)settingsDidLoadWithResults:(NSArray *)resultObjects
 {
-    self.settingsError = nil;
     id result = resultObjects.firstObject;
     BOOL resultIsValid = result != nil && [result isKindOfClass:[VNotificationSettings class]];
     self.settings = resultIsValid ? (VNotificationSettings *)result : [VNotificationSettings createDefaultSettings];
-    [self.tableView reloadData];
-}
-
-- (void)settingsDidFailWithError:(NSError *)error
-{
-    NSString *domain = nil;
-    self.settings = nil;
-    if ( error != nil && error.code == kErrorCodeDeviceNotFound )
-    {
-        domain = NSLocalizedString( @"ErrorPushNotificationsNotEnabled", nil );
-    }
-    else
-    {
-        domain = NSLocalizedString( @"ErrorPushNotificationsUnknown", nil );
-    }
-    self.settingsError = [NSError errorWithDomain:domain code:error.code userInfo:nil];
-    [self.tableView reloadData];
 }
 
 - (void)setSettings:(VNotificationSettings *)settings
