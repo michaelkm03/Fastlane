@@ -49,7 +49,7 @@ NSString * const VContentViewViewModelDidUpdateHistogramDataNotification = @"VCo
 NSString * const VContentViewViewModelDidUpdatePollDataNotification = @"VContentViewViewModelDidUpdatePollDataNotification";
 NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentViewViewModelDidUpdateContentNotification";
 
-NSString * const kPreferedMimeType = @"application/x-mpegURL";
+static NSString * const kPreferedMimeType = @"application/x-mpegURL";
 
 @interface VContentViewViewModel ()
 
