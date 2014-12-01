@@ -29,13 +29,4 @@
     return obj;
 }
 
-- (BOOL)equals:(VNotificationSettings *)settings
-{
-    return settings.isPostFromCreatorEnabled.boolValue == self.isPostFromCreatorEnabled.boolValue &&
-        settings.isNewFollowerEnabled.boolValue == self.isNewFollowerEnabled.boolValue &&
-        settings.isNewPrivateMessageEnabled.boolValue == self.isNewPrivateMessageEnabled.boolValue &&
-        settings.isNewCommentOnMyPostEnabled.boolValue == self.isNewCommentOnMyPostEnabled.boolValue &&
-        settings.isPostFromFollowedEnabled.boolValue == self.isPostFromFollowedEnabled.boolValue;
-}
-
 @end

@@ -271,14 +271,17 @@
             cell.message = self.settingsError.domain;
             cell.isCentered = YES;
             
-            BOOL canOpenSettings = (&UIApplicationOpenSettingsURLString != NULL);
-            if ( canOpenSettings && self.settingsError.code == kErrorCodeUserNotRegistered )
+            if ( UI_IS_IOS8_AND_HIGHER)
             {
-                [cell showActionButtonWithLabel:NSLocalizedString( @"Open Settings", nil) callback:^void
-                 {
-                     NSURL *url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
-                     [[UIApplication sharedApplication] openURL:url];
-                }];
+                BOOL canOpenSettings = (&UIApplicationOpenSettingsURLString != NULL);
+                if ( canOpenSettings && self.settingsError.code == kErrorCodeUserNotRegistered )
+                {
+                    [cell showActionButtonWithLabel:NSLocalizedString( @"Open Settings", nil) callback:^void
+                     {
+                         NSURL *url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+                         [[UIApplication sharedApplication] openURL:url];
+                     }];
+                }
             }
         }
         else
