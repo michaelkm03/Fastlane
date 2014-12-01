@@ -334,6 +334,7 @@
 		A709642419F0A13800CE6633 /* VTracking+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A709642319F0A13800CE6633 /* VTracking+RestKit.m */; };
 		A70AFE641A1684880027549F /* VFlurryTrackingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A70AFE631A1684880027549F /* VFlurryTrackingTests.m */; };
 		A70FC0F41A268FF100F5BBDE /* VNotificationSettingsTestDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A70FC0F31A268FF100F5BBDE /* VNotificationSettingsTestDelegate.m */; };
+		A70FC0F71A2D012E00F5BBDE /* VNotificationSettingsTableRow.m in Sources */ = {isa = PBXBuildFile; fileRef = A70FC0F61A2D012E00F5BBDE /* VNotificationSettingsTableRow.m */; };
 		A72004FB1A02FEC000285A9C /* sampleImage.png in Resources */ = {isa = PBXBuildFile; fileRef = A72004FA1A02FEC000285A9C /* sampleImage.png */; };
 		A72005251A03073B00285A9C /* NSStringVCryptoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 03AC453B19BA1F7900CE4351 /* NSStringVCryptoTests.m */; };
 		A72005261A03073B00285A9C /* VAuthorizationViewControllerFactoryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BE9674F619E335060072E87A /* VAuthorizationViewControllerFactoryTests.m */; };
@@ -1233,6 +1234,8 @@
 		A70AFE631A1684880027549F /* VFlurryTrackingTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFlurryTrackingTests.m; sourceTree = "<group>"; };
 		A70FC0F21A268FF100F5BBDE /* VNotificationSettingsTestDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNotificationSettingsTestDelegate.h; sourceTree = "<group>"; };
 		A70FC0F31A268FF100F5BBDE /* VNotificationSettingsTestDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNotificationSettingsTestDelegate.m; sourceTree = "<group>"; };
+		A70FC0F51A2D012E00F5BBDE /* VNotificationSettingsTableRow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNotificationSettingsTableRow.h; sourceTree = "<group>"; };
+		A70FC0F61A2D012E00F5BBDE /* VNotificationSettingsTableRow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNotificationSettingsTableRow.m; sourceTree = "<group>"; };
 		A719CD5719F6D5030019E866 /* VFileSystemTestHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFileSystemTestHelpers.h; sourceTree = "<group>"; };
 		A719CD5819F6D5030019E866 /* VFileSystemTestHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFileSystemTestHelpers.m; sourceTree = "<group>"; };
 		A72004FA1A02FEC000285A9C /* sampleImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sampleImage.png; sourceTree = "<group>"; };
@@ -3221,12 +3224,14 @@
 			isa = PBXGroup;
 			children = (
 				A7B98A361A264D0900C58335 /* Cells */,
+				A7B98A401A264D1D00C58335 /* VNotificationSettingsStateManager.h */,
+				A7B98A411A264D1D00C58335 /* VNotificationSettingsStateManager.m */,
+				A70FC0F51A2D012E00F5BBDE /* VNotificationSettingsTableRow.h */,
+				A70FC0F61A2D012E00F5BBDE /* VNotificationSettingsTableRow.m */,
 				A7B98A391A264D0900C58335 /* VNotificationSettingsTableSection.h */,
 				A7B98A3A1A264D0900C58335 /* VNotificationSettingsTableSection.m */,
 				A7B98A3B1A264D0900C58335 /* VNotificationSettingsViewController.h */,
 				A7B98A3C1A264D0900C58335 /* VNotificationSettingsViewController.m */,
-				A7B98A401A264D1D00C58335 /* VNotificationSettingsStateManager.h */,
-				A7B98A411A264D1D00C58335 /* VNotificationSettingsStateManager.m */,
 			);
 			path = "Push Notification Settings";
 			sourceTree = "<group>";
@@ -4634,6 +4639,7 @@
 				BE5C7382187E37C700A3340D /* VMessage+RestKit.m in Sources */,
 				0314D48319B46B5E00FA363C /* VCommentsTableViewController.m in Sources */,
 				03CE66F719B47B590011BB9E /* VTwitterManager.m in Sources */,
+				A70FC0F71A2D012E00F5BBDE /* VNotificationSettingsTableRow.m in Sources */,
 				BEDF0FC918DBCB5500750EF6 /* VVoteType+Fetcher.m in Sources */,
 				037CB73E19CFE8550084BBED /* VMultipartFormDataWriter.m in Sources */,
 				A7D8532419F6F3B100EDBFF8 /* VTracking.m in Sources */,

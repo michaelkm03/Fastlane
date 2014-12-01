@@ -26,24 +26,24 @@
     self.settingSwitch.onTintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
 }
 
-- (void)prepareForReuse
-{
-    self.indexPath = nil;
-}
-
 - (void)setTitle:(NSString *)title value:(BOOL)value
 {
     self.settingLabel.text = title;
     self.settingSwitch.on = value;
 }
 
+- (BOOL)value
+{
+    return self.settingSwitch.on;
+}
+
 #pragma mark - Actions
 
 - (IBAction)settingValueDidchange:(UISwitch *)settingSwitch
 {
-    if ( self.delegate != nil && self.indexPath != nil && [self.delegate respondsToSelector:@selector(userDidUpdateSettingAtIndex:withValue:)] )
+    if ( self.delegate != nil && [self.delegate respondsToSelector:@selector(settingsDidUpdateFromCell:)] )
     {
-        [self.delegate userDidUpdateSettingAtIndex:self.indexPath withValue:settingSwitch.on];
+        [self.delegate settingsDidUpdateFromCell:self];
     }
 }
 

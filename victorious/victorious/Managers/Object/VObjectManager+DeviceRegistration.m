@@ -36,12 +36,6 @@
 - (RKManagedObjectRequestOperation *)getDeviceSettingsSuccessBlock:(VSuccessBlock)success
                                                          failBlock:(VFailBlock)failed
 {
-    if ( ! self.mainUserLoggedIn )
-    {
-        failed( nil, self.userNotLoggedInError );
-        return nil;
-    }
-    
     return [self GET:@"/api/device/preferences"
                object:nil
            parameters:nil
@@ -53,12 +47,6 @@
                                           successBlock:(VSuccessBlock)success
                                              failBlock:(VFailBlock)failed
 {
-    if ( ! self.mainUserLoggedIn )
-    {
-        failed( nil, self.userNotLoggedInError );
-        return nil;
-    }
-    
     return [self POST:@"/api/device/preferences"
                object:nil
            parameters:settings.parametersDictionary

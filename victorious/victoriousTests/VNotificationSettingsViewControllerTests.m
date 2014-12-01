@@ -27,7 +27,8 @@
 - (void)updateSettings;
 - (void)saveSettings;
 - (void)onError:(NSError *)error;
-- (void)userDidUpdateSettingAtIndex:(NSIndexPath *)indexPath withValue:(BOOL)value;
+- (void)settingsDidUpdateFromCell:(VNotificationSettingCell *)cell;
+- (void)updateSettingsAtIndexPath:(NSIndexPath *)indexPath withValue:(BOOL)value;
 
 @property (nonatomic, assign, readonly) BOOL hasValidSettings;
 @property (nonatomic, strong) NSError *settingsError;
@@ -187,19 +188,30 @@
 - (void)testUpdateSettings
 {
     // Set the initial settings
-    VNotificationSettings *startingSettings = self.defaultSettings;
-    self.viewController.settings = startingSettings;
+    self.viewController.settings = self.defaultSettings;
     [self assertSectionsAndRowsDefined];
     
-    // Simulate updates from UI
-    [self.viewController userDidUpdateSettingAtIndex:VIndexPathMake(0, 0) withValue:YES];
-    startingSettings.isPostFromCreatorEnabled = @YES;
-    [self.viewController userDidUpdateSettingAtIndex:VIndexPathMake(2, 0) withValue:YES];
-    startingSettings.isNewCommentOnMyPostEnabled = @YES;
-    [self.viewController userDidUpdateSettingAtIndex:VIndexPathMake(0, 1) withValue:YES];
-    startingSettings.isNewFollowerEnabled = @YES;
+    // Set our expected values
+    VNotificationSettings *expectedSettings = self.defaultSettings;
+    expectedSettings.isPostFromCreatorEnabled = @YES;
+    expectedSettings.isNewFollowerEnabled = @YES;
+    expectedSettings.isNewPrivateMessageEnabled = @YES;
+    expectedSettings.isNewCommentOnMyPostEnabled = @YES;
+    expectedSettings.isPostFromFollowedEnabled = @YES;
     
-    XCTAssertEqualObjects( self.viewController.settings, startingSettings );
+    // Simulate updates from UI
+    [self.viewController updateSettingsAtIndexPath:VIndexPathMake(0, 0) withValue:YES];
+    [self.viewController updateSettingsAtIndexPath:VIndexPathMake(1, 0) withValue:YES];
+    [self.viewController updateSettingsAtIndexPath:VIndexPathMake(2, 0) withValue:YES];
+    [self.viewController updateSettingsAtIndexPath:VIndexPathMake(3, 0) withValue:YES];
+    [self.viewController updateSettingsAtIndexPath:VIndexPathMake(0, 1) withValue:YES];
+    
+    // Ensure that updates from UI update the view controller's settings
+    XCTAssertEqual( self.viewController.settings.isPostFromCreatorEnabled, expectedSettings.isPostFromCreatorEnabled );
+    XCTAssertEqual( self.viewController.settings.isNewFollowerEnabled, expectedSettings.isNewFollowerEnabled );
+    XCTAssertEqual( self.viewController.settings.isNewPrivateMessageEnabled, expectedSettings.isNewPrivateMessageEnabled );
+    XCTAssertEqual( self.viewController.settings.isNewCommentOnMyPostEnabled, expectedSettings.isNewCommentOnMyPostEnabled );
+    XCTAssertEqual( self.viewController.settings.isPostFromFollowedEnabled, expectedSettings.isPostFromFollowedEnabled );
 }
 
 - (void)testHandleErrorResponse

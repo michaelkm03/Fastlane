@@ -15,7 +15,7 @@ NSString * const VPushNotificationManagerDidRegister = @"com.getvictorious.PushN
 
 @interface VPushNotificationManager ()
 
-@property (nonatomic, strong, readwrite) NSData *apnsToken;
+@property (nonatomic, strong) NSData *apnsToken;
 
 @end
 

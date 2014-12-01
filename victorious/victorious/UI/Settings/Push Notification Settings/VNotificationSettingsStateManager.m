@@ -65,14 +65,8 @@ static const char *VNotificationSettingsStateNames[] = {
     _state = state;
     
 #if DEBUG && NOTIFICATION_SETTINGS_STATE_LOGGING_ENABLED
-    [self performSelector:@selector(updateStateOnDelay) withObject:nil afterDelay:1.0f];
-}
-
-- (void)updateStateOnDelay
-{
     const char *name = VNotificationSettingsStateNames[ self.state ];
     VLog( @">>>>>>> %@", [NSString stringWithCString:name encoding:NSUTF8StringEncoding] );
-
 #endif
     
     switch (_state)
@@ -135,17 +129,20 @@ static const char *VNotificationSettingsStateNames[] = {
 
 - (NSError *)errorNotRegistered
 {
-    return [NSError errorWithDomain:NSLocalizedString( @"ErrorPushNotificationsNotEnabled", nil ) code:kErrorCodeUserNotRegistered userInfo:nil];
+    NSString *localized = NSLocalizedString( @"ErrorPushNotificationsNotEnabled", nil );
+    return [NSError errorWithDomain:localized code:kErrorCodeUserNotRegistered userInfo:@{ NSLocalizedDescriptionKey : localized }];
 }
 
 - (NSError *)errorDeviceNotFound
 {
-    return [NSError errorWithDomain:NSLocalizedString( @"ErrorPushNotificationsNotEnabled", nil ) code:kErrorCodeDeviceNotFound userInfo:nil];
+    NSString *localized = NSLocalizedString( @"ErrorPushNotificationsNotEnabled", nil );
+    return [NSError errorWithDomain:localized code:kErrorCodeDeviceNotFound userInfo:@{ NSLocalizedDescriptionKey : localized }];
 }
 
 - (NSError *)errorUnknown
 {
-    return [NSError errorWithDomain:NSLocalizedString( @"ErrorPushNotificationsUnknown", nil ) code:-1 userInfo:nil];
+    NSString *localized = NSLocalizedString( @"ErrorPushNotificationsUnknown", nil );
+    return [NSError errorWithDomain:localized code:-1 userInfo:@{ NSLocalizedDescriptionKey : localized }];
 }
 
 - (void)applicationDidBecomeActive:(NSNotification *)notification

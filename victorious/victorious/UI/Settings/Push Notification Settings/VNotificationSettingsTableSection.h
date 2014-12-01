@@ -7,15 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-
-@interface VNotificationSettingsTableRow : NSObject
-
-- (instancetype)initWithTitle:(NSString *)title enabled:(BOOL)isEnabled;
-
-@property (nonatomic, readonly) NSString *title;
-@property (nonatomic, assign) BOOL isEnabled;
-
-@end
+#import "VNotificationSettingsTableRow.h"
 
 @interface VNotificationSettingsTableSection : NSObject
 

@@ -8,21 +8,6 @@
 
 #import "VNotificationSettingsTableSection.h"
 
-@implementation VNotificationSettingsTableRow
-
-- (instancetype)initWithTitle:(NSString *)title enabled:(BOOL)isEnabled
-{
-    self = [super init];
-    if (self)
-    {
-        _title = title;
-        _isEnabled = isEnabled;
-    }
-    return self;
-}
-
-@end
-
 @implementation VNotificationSettingsTableSection
 
 - (instancetype)initWithTitle:(NSString *)title rows:(NSArray *)rows

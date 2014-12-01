@@ -209,15 +209,8 @@
     return [section rowAtIndex:indexPath.row] != nil;
 }
 
-#pragma mark - VNotificationSettingCellDelegate
-
-- (void)userDidUpdateSettingAtIndex:(NSIndexPath *)indexPath withValue:(BOOL)value
+- (void)updateSettingsAtIndexPath:(NSIndexPath *)indexPath withValue:(BOOL)value
 {
-    if (self.settings == nil )
-    {
-        return;
-    }
-    
     // Update our sections and rows rows with changes from the UI
     VNotificationSettingsTableSection *section = self.sections[ indexPath.section ];
     VNotificationSettingsTableRow *row = section.rows[ indexPath.row ];
@@ -231,6 +224,20 @@
         // Update our underlying rows model with section and row rows
         [self updateSettings];
     }
+}
+
+#pragma mark - VNotificationSettingCellDelegate
+
+- (void)settingsDidUpdateFromCell:(VNotificationSettingCell *)cell
+{
+    if (self.settings == nil )
+    {
+        return;
+    }
+    
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+    BOOL value = cell.value;
+    [self updateSettingsAtIndexPath:indexPath withValue:value];
 }
 
 #pragma mark - UITableViewDataSource
@@ -251,7 +258,6 @@
         
         VNotificationSettingsTableSection *section = self.sections[ indexPath.section ];
         VNotificationSettingsTableRow *row = [section rowAtIndex:indexPath.row];
-        cell.indexPath = indexPath;
         cell.delegate = self;
         [cell setTitle:row.title value:row.isEnabled];
         return cell;
@@ -271,17 +277,14 @@
             cell.message = self.settingsError.domain;
             cell.isCentered = YES;
             
-            if ( UI_IS_IOS8_AND_HIGHER)
+            BOOL canOpenSettings = (&UIApplicationOpenSettingsURLString != NULL);
+            if ( canOpenSettings && self.settingsError.code == kErrorCodeUserNotRegistered )
             {
-                BOOL canOpenSettings = (&UIApplicationOpenSettingsURLString != NULL);
-                if ( canOpenSettings && self.settingsError.code == kErrorCodeUserNotRegistered )
-                {
-                    [cell showActionButtonWithLabel:NSLocalizedString( @"Open Settings", nil) callback:^void
-                     {
-                         NSURL *url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
-                         [[UIApplication sharedApplication] openURL:url];
-                     }];
-                }
+                [cell showActionButtonWithLabel:NSLocalizedString( @"Open Settings", nil) callback:^void
+                 {
+                     NSURL *url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+                     [[UIApplication sharedApplication] openURL:url];
+                 }];
             }
         }
         else
