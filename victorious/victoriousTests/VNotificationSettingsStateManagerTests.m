@@ -18,6 +18,7 @@
 @property (nonatomic, readonly) NSError *errorDeviceNotFound;
 @property (nonatomic, readonly) NSError *errorUnknown;
 @property (nonatomic, readonly) NSError *errorNotRegistered;
+@property (nonatomic, assign, readwrite) VNotificationSettingsState state;
 
 - (void)startListeningForRegistrationNotification;
 - (void)stopListeningForRegistrationNotification;
@@ -119,17 +120,22 @@
 - (void)testNotificationListeners
 {
     __block BOOL wasSelectorCalled = NO;
+    
     [VNotificationSettingsStateManager v_swizzleMethod:@selector(applicationDidBecomeActive:) withBlock:^void
     {
         wasSelectorCalled = YES;
     } executeBlock:^
      {
-         wasSelectorCalled = NO;
          [self.stateManager stopListeningForRegistrationNotification];
          [[NSNotificationCenter defaultCenter] postNotificationName:UIApplicationDidBecomeActiveNotification object:nil];
-         XCTAssertFalse( wasSelectorCalled );
-         
-         wasSelectorCalled = NO;
+     }];
+    
+    wasSelectorCalled = NO;
+    [VNotificationSettingsStateManager v_swizzleMethod:@selector(applicationDidBecomeActive:) withBlock:^void
+     {
+         wasSelectorCalled = YES;
+     } executeBlock:^
+     {
          [self.stateManager startListeningForRegistrationNotification];
          [[NSNotificationCenter defaultCenter] postNotificationName:UIApplicationDidBecomeActiveNotification object:nil];
          XCTAssert( wasSelectorCalled );
