@@ -51,7 +51,7 @@
 {
     [super viewWillAppear:animated];
     
-    self.stateManager.state = VNotificationSettingsStateDefault;
+    [self.stateManager reset];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -97,8 +97,7 @@
      }
                                                         failBlock:^(NSOperation *operation, NSError *error)
      {
-         BOOL isDeviceNotFound = error != nil && error.code == kErrorCodeDeviceNotFound;
-         self.stateManager.state = isDeviceNotFound ? VNotificationSettingsStateDeviceNotFound : VNotificationSettingsStateLoadSettingsFailed;
+         [self.stateManager errorDidOccur:error];
      }];
 }
 

@@ -35,6 +35,7 @@ static const char *VNotificationSettingsStateNames[] = {
 @property (nonatomic, readonly) NSError *errorDeviceNotFound;
 @property (nonatomic, readonly) NSError *errorUnknown;
 @property (nonatomic, readonly) NSError *errorNotRegistered;
+@property (nonatomic, assign, readwrite) VNotificationSettingsState state;
 
 @end
 
@@ -111,6 +112,17 @@ static const char *VNotificationSettingsStateNames[] = {
         default:
             break;
     }
+}
+
+- (void)reset
+{
+    self.state = VNotificationSettingsStateDefault;
+}
+
+- (void)errorDidOccur:(NSError *)error
+{
+    BOOL isDeviceNotFound = error != nil && error.code == kErrorCodeDeviceNotFound;
+    self.state = isDeviceNotFound ? VNotificationSettingsStateDeviceNotFound : VNotificationSettingsStateLoadSettingsFailed;
 }
 
 - (void)startListeningForRegistrationNotification

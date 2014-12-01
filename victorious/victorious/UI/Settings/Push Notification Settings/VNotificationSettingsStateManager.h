@@ -36,7 +36,22 @@ typedef NS_ENUM( NSInteger, VNotificationSettingsState )
 
 - (instancetype)initWithDelegate:(id<VNotificiationSettingsStateManagerDelegate>)delegate;
 
+/**
+ Resets back to default state.
+ */
+- (void)reset;
+
+/**
+ Allows state manager to react by updating state according to the
+ type of error received.
+ */
+- (void)errorDidOccur:(NSError *)error;
+
+/**
+ Get the current state of notification settings.
+ */
+@property (nonatomic, assign, readonly) VNotificationSettingsState state;
+
 @property (nonatomic, weak) id<VNotificiationSettingsStateManagerDelegate> delegate;
-@property (nonatomic, assign) VNotificationSettingsState state;
 
 @end
