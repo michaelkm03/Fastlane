@@ -408,3 +408,18 @@
 "Delete this content and select something else?" = "Delete this content and select something else?";
 "Delete" = "Delete";
 "Cancel" = "Cancel";
+
+"PostFromCreator"       = "Post from %@";
+"PostFromFollowed"      = "Post from someone I follow";
+"NewComment"            = "New comments on my post";
+"NewPrivateMessage"     = "New Private Message";
+"NewFollower"           = "Someone follows me";
+
+"NotificationSettingSectionFeeds" = "Feeds";
+"NotificationSettingSectionPeople" = "People";
+"Open Settings" = "Open Settings";
+
+"ErrorPushNotificationsNotEnabled"      = "Push notifications are not enabled for your device.\nPlease allow notifications in your device settings to enable them.";
+"ErrorPushNotificationsUnknown"         = "Error loading notification settings.\nPlease try again later.";
+"ErrorPushNotificationsNotSaved"        = "Error Saving Preferences";
+"ErrorPushNotificationsNotSavedMessage" = "Please try again later.";

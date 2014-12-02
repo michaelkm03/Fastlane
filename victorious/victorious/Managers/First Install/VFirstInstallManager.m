@@ -46,7 +46,7 @@ NSString * const VAppInstalledDefaultsKey = @"com.victorious.VAppDelegate.AppIns
     // Deprecated tracking using "/api/events/add" endpoint
     VObjectManager *objManager = [VObjectManager sharedManager];
     NSDictionary *installEvent = [objManager dictionaryForInstallEventWithDate:[NSDate date]];
-    [[VObjectManager sharedManager] addEvents:@[installEvent] successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+    [objManager addEvents:@[installEvent] successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
          [[NSUserDefaults standardUserDefaults] setValue:@YES forKey:VAppInstalledOldTrackingDefaultsKey];
     }
