@@ -203,8 +203,8 @@
     [self.viewController updateSettingsAtIndexPath:VIndexPathMake(0, 0) withValue:YES];
     [self.viewController updateSettingsAtIndexPath:VIndexPathMake(1, 0) withValue:YES];
     [self.viewController updateSettingsAtIndexPath:VIndexPathMake(2, 0) withValue:YES];
-    [self.viewController updateSettingsAtIndexPath:VIndexPathMake(3, 0) withValue:YES];
     [self.viewController updateSettingsAtIndexPath:VIndexPathMake(0, 1) withValue:YES];
+    [self.viewController updateSettingsAtIndexPath:VIndexPathMake(1, 1) withValue:YES];
     
     // Ensure that updates from UI update the view controller's settings
     XCTAssertEqual( self.viewController.settings.isPostFromCreatorEnabled, expectedSettings.isPostFromCreatorEnabled );
@@ -271,9 +271,9 @@
                    settings.isPostFromFollowedEnabled.boolValue );
     XCTAssertEqual( [self.viewController.sections[0] rowAtIndex:2].isEnabled,
                    settings.isNewCommentOnMyPostEnabled.boolValue );
-    XCTAssertEqual( [self.viewController.sections[0] rowAtIndex:3].isEnabled,
-                   settings.isNewPrivateMessageEnabled.boolValue );
     XCTAssertEqual( [self.viewController.sections[1] rowAtIndex:0].isEnabled,
+                   settings.isNewPrivateMessageEnabled.boolValue );
+    XCTAssertEqual( [self.viewController.sections[1] rowAtIndex:1].isEnabled,
                    settings.isNewFollowerEnabled.boolValue );
 }
 
@@ -283,8 +283,8 @@
     XCTAssertNotNil( [self.viewController.sections[0] rowAtIndex:0] );
     XCTAssertNotNil( [self.viewController.sections[0] rowAtIndex:1] );
     XCTAssertNotNil( [self.viewController.sections[0] rowAtIndex:2] );
-    XCTAssertNotNil( [self.viewController.sections[0] rowAtIndex:3] );
     XCTAssertNotNil( [self.viewController.sections[1] rowAtIndex:0] );
+    XCTAssertNotNil( [self.viewController.sections[1] rowAtIndex:1] );
 }
 
 - (void)testSection
