@@ -14,12 +14,15 @@
 static NSString * const kTitleKey = @"title";
 static NSString * const kIconKey = @"icon";
 static NSString * const kSubtoolsKey = @"subtools";
+static NSString * const kPickerKey = @"picker";
 
 @interface VCategoryWorkspaceTool ()
 
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, strong) UIImage *icon;
 @property (nonatomic, strong) NSArray *subTools;
+
+@property (nonatomic, strong, readwrite) UIViewController *toolPicker;
 
 @end
 
@@ -34,6 +37,7 @@ static NSString * const kSubtoolsKey = @"subtools";
     {
         _title = [dependencyManager stringForKey:kTitleKey];
         _subTools = [dependencyManager tools];
+        _toolPicker = [dependencyManager viewControllerForKey:kPickerKey];
     }
     return self;
 }
@@ -62,6 +66,11 @@ static NSString * const kSubtoolsKey = @"subtools";
 - (NSArray *)subTools
 {
     return _subTools;
+}
+
+- (UIViewController *)toolPicker
+{
+    return _toolPicker;
 }
 
 @end

@@ -15,12 +15,17 @@
 #import <MBProgressHUD/MBProgressHUD.h>
 
 #import "VWorkspaceTool.h"
+#import "VCategoryWorkspaceTool.h"
+
+#import "VToolPickerViewController.h"
 
 @interface VWorkspaceViewController ()
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) NSArray *tools;
 @property (nonatomic, weak) IBOutlet UIToolbar *bottomToolbar;
+
+@property (nonatomic, strong) UIViewController *toolPicker;
 
 @end
 
@@ -87,10 +92,39 @@
 
 - (void)toolSelected:(UIBarButtonItem *)sender
 {
+    [self setSelectedBarButtonItem:sender];
+    
+    VCategoryWorkspaceTool *category = [self.tools firstObject];
+    
+    if (self.toolPicker)
+    {
+        [self.toolPicker.view removeFromSuperview];
+    }
+    
+    self.toolPicker = [category toolPicker];
+    [self addChildViewController:self.toolPicker];
+    [self.view addSubview:self.toolPicker.view];
+    [self.toolPicker didMoveToParentViewController:self];
+    self.toolPicker.view.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[picker]|"
+                                                                      options:kNilOptions
+                                                                      metrics:nil
+                                                                        views:@{@"picker":self.toolPicker.view}]];
+    NSDictionary *verticalMetrics = @{@"toolbarHeight":@(CGRectGetHeight(self.bottomToolbar.bounds))};
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[picker(80.0)]-toolbarHeight-|"
+                                                                      options:kNilOptions
+                                                                      metrics:verticalMetrics
+                                                                        views:@{@"picker":self.toolPicker.view}]];
+}
+
+#pragma mark - Private Methods
+
+- (void)setSelectedBarButtonItem:(UIBarButtonItem *)itemToSelect
+{
     [self.bottomToolbar.items enumerateObjectsUsingBlock:^(UIBarButtonItem *item, NSUInteger idx, BOOL *stop) {
         item.tintColor = [UIColor whiteColor];
     }];
-    sender.tintColor = [UIColor magentaColor];
+    itemToSelect.tintColor = [UIColor magentaColor];
 }
 
 @end

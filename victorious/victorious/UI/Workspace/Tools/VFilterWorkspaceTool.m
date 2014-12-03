@@ -33,6 +33,13 @@ static NSString * const kTitleKey = @"title";
     return self;
 }
 
+#pragma mark - NSObject
+
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"%@, title: %@, icon: %@", [super description], self.title, self.icon];
+}
+
 #pragma mark - VWorkspaceTool
 
 - (NSString *)title

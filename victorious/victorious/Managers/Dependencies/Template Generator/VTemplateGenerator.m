@@ -35,6 +35,7 @@ static NSString * const kUserSpecificKey = @"isUserSpecific";
 
 // Workspace properties
 static NSString * const kToolsKey = @"tools";
+static NSString * const kPickerKey = @"picker";
 
 @interface VTemplateGenerator ()
 
@@ -86,11 +87,17 @@ static NSString * const kToolsKey = @"tools";
 {
     return @{
              kClassNameKey: @"workspace.screen",
-             kToolsKey: @[
+             kToolsKey:
+                 @[
                      @{
                          kClassNameKey: @"category.tool",
                          kTitleKey: @"text",
-                         kToolsKey: @[
+                         kPickerKey:
+                             @{
+                                 kClassNameKey: @"vertical.picker",
+                                 },
+                         kToolsKey:
+                             @[
                                  @{
                                      kClassNameKey: @"meme.tool",
                                      kTitleKey: @"meme",
@@ -104,7 +111,12 @@ static NSString * const kToolsKey = @"tools";
                      @{
                          kClassNameKey: @"category.tool",
                          kTitleKey: @"filters",
-                         kToolsKey: @[
+                         kPickerKey:
+                             @{
+                                 kClassNameKey: @"vertical.picker",
+                                 },
+                         kToolsKey:
+                             @[
                                  @{
                                      kClassNameKey: @"filter.tool",
                                      kTitleKey: @"Amsterdam"
