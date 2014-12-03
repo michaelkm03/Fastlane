@@ -62,6 +62,9 @@ NSString * const VDependencyManagerProfileImageRequiredKey = @"experiments.requi
 NSString * const VDependencyManagerScaffoldViewControllerKey = @"scaffold";
 NSString * const VDependencyManagerInitialViewControllerKey = @"initialScreen";
 
+// Keys for Workspace
+NSString * const VDependencyManagerWorkspaceKey = @"workspace";
+
 @interface VDependencyManager ()
 
 @property (nonatomic, strong) VDependencyManager *parentManager;

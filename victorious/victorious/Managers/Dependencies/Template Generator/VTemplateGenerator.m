@@ -33,6 +33,10 @@ static NSString * const kInitialKey = @"initial";
 static NSString * const kStreamUrlPathKey = @"streamUrlPath";
 static NSString * const kUserSpecificKey = @"isUserSpecific";
 
+// Workspace properties
+static NSString * const kToolsKey = @"tools";
+static NSString * const kSubToolsKey = @"subTools";
+
 @interface VTemplateGenerator ()
 
 @property (nonatomic, strong) NSDictionary *dataFromInitCall;
@@ -73,8 +77,37 @@ static NSString * const kUserSpecificKey = @"isUserSpecific";
     
     template[VDependencyManagerScaffoldViewControllerKey] = @{ kClassNameKey: @"sideMenu.scaffold",
                                                                VDependencyManagerInitialViewControllerKey: @{ kReferenceIDKey: self.firstMenuItemID },
-                                                               kMenuKey: [self menuComponent] };
+                                                               kMenuKey: [self menuComponent],
+                                                               VDependencyManagerWorkspaceKey: [self workspaceComponent] };
+    
     return template;
+}
+
+- (NSDictionary *)workspaceComponent
+{
+    return @{
+             kClassNameKey: @"workspace.screen",
+             kToolsKey: @[
+                     @{
+                         kClassNameKey: @"category.tool",
+                         kTitleKey: @"text",
+                         kSubToolsKey: @[
+                                 @{
+                                     kClassNameKey: @"meme.tool",
+                                     kTitleKey: @"meme",
+                                     },
+                                 @{
+                                     kClassNameKey: @"quote.tool",
+                                     kTitleKey: @"quote",
+                                     }
+                                 ]
+                         },
+                     @{
+                         kClassNameKey: @"crop.tool",
+                         kTitleKey: @"crop",
+                         }
+                     ]
+             };
 }
 
 - (NSDictionary *)menuComponent

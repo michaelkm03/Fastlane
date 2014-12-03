@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="63Q-Vo-LWD">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <scenes>
+        <!--Workspace View Controller-->
+        <scene sceneID="8UX-Af-L1N">
+            <objects>
+                <viewController storyboardIdentifier="VWorkspaceViewController" id="63Q-Vo-LWD" customClass="VWorkspaceViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="9wC-ZN-KU8"/>
+                        <viewControllerLayoutGuide type="bottom" id="jpg-hF-EPF"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="i4i-d2-DXm">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" barStyle="black" translatesAutoresizingMaskIntoConstraints="NO" id="uLJ-ZJ-TSs">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                <items>
+                                    <barButtonItem title="Close" id="by5-os-pzS">
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <action selector="close:" destination="63Q-Vo-LWD" id="6Lb-w0-Gu9"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="9tq-gs-IN4">
+                                        <color key="tintColor" red="0.5" green="0.0" blue="0.5" alpha="1" colorSpace="calibratedRGB"/>
+                                    </barButtonItem>
+                                    <barButtonItem title="Publish" id="wbF-Jm-Fnh">
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <action selector="publish:" destination="63Q-Vo-LWD" id="1Q5-i3-8b5"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" barStyle="black" translatesAutoresizingMaskIntoConstraints="NO" id="tla-hc-Ct5">
+                                <rect key="frame" x="0.0" y="556" width="600" height="44"/>
+                                <items>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="sCe-si-Rnv"/>
+                                    <barButtonItem title="Filter" id="y1o-Az-Ngb">
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    </barButtonItem>
+                                    <barButtonItem title="Aa" id="6eP-Lp-CQT">
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    </barButtonItem>
+                                    <barButtonItem title="Crop" id="m6c-St-rq1">
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="3HR-FV-2oA"/>
+                                </items>
+                            </toolbar>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="uLJ-ZJ-TSs" firstAttribute="top" secondItem="9wC-ZN-KU8" secondAttribute="bottom" id="5nm-ZB-J1k"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="uLJ-ZJ-TSs" secondAttribute="trailing" constant="-16" id="Bum-mH-xCd"/>
+                            <constraint firstItem="jpg-hF-EPF" firstAttribute="top" secondItem="tla-hc-Ct5" secondAttribute="bottom" id="KO2-dC-aYK"/>
+                            <constraint firstItem="uLJ-ZJ-TSs" firstAttribute="leading" secondItem="i4i-d2-DXm" secondAttribute="leadingMargin" constant="-16" id="f1w-A7-g2J"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="tla-hc-Ct5" secondAttribute="trailing" constant="-16" id="khU-vL-UyN"/>
+                            <constraint firstItem="tla-hc-Ct5" firstAttribute="leading" secondItem="i4i-d2-DXm" secondAttribute="leadingMargin" constant="-16" id="wp7-6T-ajH"/>
+                        </constraints>
+                    </view>
+                    <nil key="simulatedStatusBarMetrics"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="29c-Qz-2Z5" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="385" y="253"/>
+        </scene>
+    </scenes>
+</document>

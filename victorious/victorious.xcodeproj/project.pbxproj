@@ -573,6 +573,10 @@
 		D8CA63C119D5DEE2002046E5 /* UIView+MotionEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = D8CA63C019D5DEE2002046E5 /* UIView+MotionEffects.m */; };
 		D8D8958919E88C2100632663 /* VExperienceEnhancerBarCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D8958819E88C2100632663 /* VExperienceEnhancerBarCell.m */; };
 		D8D8958B19E88D5500632663 /* VExperienceEnhancerBarCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8D8958A19E88D5500632663 /* VExperienceEnhancerBarCell.xib */; };
+		D8D945F31A2E88510089D271 /* Workspace.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D8D945F21A2E88510089D271 /* Workspace.storyboard */; };
+		D8D945F61A2E8A760089D271 /* VWorkspaceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D945F51A2E8A760089D271 /* VWorkspaceViewController.m */; };
+		D8D945FD1A2EA9940089D271 /* VDependencyManager+VWorkspaceTool.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D945FC1A2EA9940089D271 /* VDependencyManager+VWorkspaceTool.m */; };
+		D8D946001A2EB5C00089D271 /* VCategoryWorkspaceTool.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D945FF1A2EB5C00089D271 /* VCategoryWorkspaceTool.m */; };
 		D8E39BB819CB7C3C007FD86A /* VContentViewViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E39BB519CB7C3C007FD86A /* VContentViewViewModel.m */; };
 		D8E39BB919CB7C3C007FD86A /* VNewContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E39BB719CB7C3C007FD86A /* VNewContentViewController.m */; };
 		D8E39BBC19CB7C58007FD86A /* VRealtimeCommentsViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E39BBB19CB7C58007FD86A /* VRealtimeCommentsViewModel.m */; };
@@ -1639,6 +1643,14 @@
 		D8D8958719E88C2100632663 /* VExperienceEnhancerBarCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VExperienceEnhancerBarCell.h; sourceTree = "<group>"; };
 		D8D8958819E88C2100632663 /* VExperienceEnhancerBarCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VExperienceEnhancerBarCell.m; sourceTree = "<group>"; };
 		D8D8958A19E88D5500632663 /* VExperienceEnhancerBarCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VExperienceEnhancerBarCell.xib; sourceTree = "<group>"; };
+		D8D945F21A2E88510089D271 /* Workspace.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Workspace.storyboard; sourceTree = "<group>"; };
+		D8D945F41A2E8A760089D271 /* VWorkspaceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VWorkspaceViewController.h; sourceTree = "<group>"; };
+		D8D945F51A2E8A760089D271 /* VWorkspaceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VWorkspaceViewController.m; sourceTree = "<group>"; };
+		D8D945FB1A2EA9940089D271 /* VDependencyManager+VWorkspaceTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VDependencyManager+VWorkspaceTool.h"; sourceTree = "<group>"; };
+		D8D945FC1A2EA9940089D271 /* VDependencyManager+VWorkspaceTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VDependencyManager+VWorkspaceTool.m"; sourceTree = "<group>"; };
+		D8D945FE1A2EB5C00089D271 /* VCategoryWorkspaceTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCategoryWorkspaceTool.h; sourceTree = "<group>"; };
+		D8D945FF1A2EB5C00089D271 /* VCategoryWorkspaceTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCategoryWorkspaceTool.m; sourceTree = "<group>"; };
+		D8D946011A2EBC120089D271 /* VWorkspaceTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VWorkspaceTool.h; sourceTree = "<group>"; };
 		D8E39BB419CB7C3C007FD86A /* VContentViewViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentViewViewModel.h; sourceTree = "<group>"; };
 		D8E39BB519CB7C3C007FD86A /* VContentViewViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VContentViewViewModel.m; sourceTree = "<group>"; };
 		D8E39BB619CB7C3C007FD86A /* VNewContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNewContentViewController.h; sourceTree = "<group>"; };
@@ -1902,6 +1914,7 @@
 				BE799BB619C93C210023CE88 /* StreamDirectory */,
 				0314D43319B46B5E00FA363C /* Streams */,
 				A769C3D81A13176700698D0C /* Web View */,
+				D8A93F131A2E84A9009B8A18 /* Workspace */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -2747,6 +2760,8 @@
 				037D2D5E1A1A6D7400947A22 /* VDependencyManager+VNavigationMenuItem.m */,
 				037D2D5A1A1A588D00947A22 /* VDependencyManager+VObjectManager.h */,
 				037D2D5B1A1A588D00947A22 /* VDependencyManager+VObjectManager.m */,
+				D8D945FB1A2EA9940089D271 /* VDependencyManager+VWorkspaceTool.h */,
+				D8D945FC1A2EA9940089D271 /* VDependencyManager+VWorkspaceTool.m */,
 				039D02AB1A1043D300DB9236 /* VHasManagedDependencies.h */,
 			);
 			path = Dependencies;
@@ -3866,6 +3881,17 @@
 			path = Histogram;
 			sourceTree = "<group>";
 		};
+		D8A93F131A2E84A9009B8A18 /* Workspace */ = {
+			isa = PBXGroup;
+			children = (
+				D8D945F71A2EA51D0089D271 /* Tools */,
+				D8D945F21A2E88510089D271 /* Workspace.storyboard */,
+				D8D945F41A2E8A760089D271 /* VWorkspaceViewController.h */,
+				D8D945F51A2E8A760089D271 /* VWorkspaceViewController.m */,
+			);
+			path = Workspace;
+			sourceTree = "<group>";
+		};
 		D8B0500E19AD2A740048E2BE /* Simple Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -3914,6 +3940,16 @@
 				D8B827DC19D5FDFE00CCD6D9 /* VDescriptionTableViewCell.m */,
 			);
 			path = "Action Sheet";
+			sourceTree = "<group>";
+		};
+		D8D945F71A2EA51D0089D271 /* Tools */ = {
+			isa = PBXGroup;
+			children = (
+				D8D945FE1A2EB5C00089D271 /* VCategoryWorkspaceTool.h */,
+				D8D945FF1A2EB5C00089D271 /* VCategoryWorkspaceTool.m */,
+				D8D946011A2EBC120089D271 /* VWorkspaceTool.h */,
+			);
+			path = Tools;
 			sourceTree = "<group>";
 		};
 		D8E39BC119CB7C80007FD86A /* Cells */ = {
@@ -4243,6 +4279,7 @@
 				036F38671A0C4DEA0014DF66 /* Bitter-Bold.ttf in Resources */,
 				D8D8958B19E88D5500632663 /* VExperienceEnhancerBarCell.xib in Resources */,
 				0390086E19F39F9900FD7EDF /* VMessageCell.xib in Resources */,
+				D8D945F31A2E88510089D271 /* Workspace.storyboard in Resources */,
 				036F386F1A0C4DEA0014DF66 /* JosefinSlab-Bold.ttf in Resources */,
 				036F38711A0C4DEA0014DF66 /* Junction-bold.otf in Resources */,
 				A769C3F71A13D69500698D0C /* WebBrowser.storyboard in Resources */,
@@ -4487,6 +4524,7 @@
 				0314D4EB19B46B5E00FA363C /* VEnterResetTokenViewController.m in Sources */,
 				0314D4FD19B46B5E00FA363C /* VTableViewCell.m in Sources */,
 				A769C3EA1A13176700698D0C /* VWebBrowserHeaderViewController.m in Sources */,
+				D8D945FD1A2EA9940089D271 /* VDependencyManager+VWorkspaceTool.m in Sources */,
 				BE799BC119C93C210023CE88 /* VStreamCollectionViewDataSource.m in Sources */,
 				0314D4A119B46B5E00FA363C /* VImageSearchResultsFooterView.m in Sources */,
 				D8CA63BE19D5DB06002046E5 /* VActionSheetTransitioningDelegate.m in Sources */,
@@ -4510,6 +4548,7 @@
 				0314D46519B46B5E00FA363C /* VCompositeSnapshotController.m in Sources */,
 				03484BFE192E9D2100403FB1 /* NSLayoutConstraint+CenterConstraints.m in Sources */,
 				0314D50319B46B5E00FA363C /* VStreamTableDataSource.m in Sources */,
+				D8D946001A2EB5C00089D271 /* VCategoryWorkspaceTool.m in Sources */,
 				0385FEE918EF41B4009FBD68 /* VImageSearchResult.m in Sources */,
 				A70564C319E781EE004A8387 /* VNoContentTableViewCell.m in Sources */,
 				0314D0AE19B4698800FA363C /* VObjectManager+Comment.m in Sources */,
@@ -4642,6 +4681,7 @@
 				A70FC0F71A2D012E00F5BBDE /* VNotificationSettingsTableRow.m in Sources */,
 				BEDF0FC918DBCB5500750EF6 /* VVoteType+Fetcher.m in Sources */,
 				037CB73E19CFE8550084BBED /* VMultipartFormDataWriter.m in Sources */,
+				D8D945F61A2E8A760089D271 /* VWorkspaceViewController.m in Sources */,
 				A7D8532419F6F3B100EDBFF8 /* VTracking.m in Sources */,
 				BEF2C2A818848B3B00AAE975 /* VUnreadConversation.m in Sources */,
 				BEF2C29618845EF500AAE975 /* VPollResult+RestKit.m in Sources */,

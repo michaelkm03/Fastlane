@@ -41,6 +41,9 @@ extern NSString * const VDependencyManagerProfileImageRequiredKey;
 extern NSString * const VDependencyManagerScaffoldViewControllerKey; ///< The "scaffold" is the view controller that sits at the root of the view controller heirarchy
 extern NSString * const VDependencyManagerInitialViewControllerKey; ///< The view controller to be displayed on launch
 
+// Keys for Workspace
+extern NSString * const VDependencyManagerWorkspaceKey;
+
 /**
  Provides loose coupling between components.
  Acts as both repository of shared objects

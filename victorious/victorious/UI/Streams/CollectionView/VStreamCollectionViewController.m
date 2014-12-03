@@ -71,6 +71,8 @@ static CGFloat const kTemplateCLineSpacing = 8;
 
 @property (nonatomic, assign) BOOL hasRefreshed;
 
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
+
 @end
 
 @implementation VStreamCollectionViewController
@@ -198,7 +200,15 @@ static CGFloat const kTemplateCLineSpacing = 8;
     {
         [streamCollectionVC v_addCreateSequenceButton];
     }
+    
+    streamCollectionVC.dependencyManager = dependencyManager;
+    
     return streamCollectionVC;
+}
+
+- (VDependencyManager *)dependencyManager
+{
+    return _dependencyManager;
 }
 
 #pragma mark - View Heirarchy

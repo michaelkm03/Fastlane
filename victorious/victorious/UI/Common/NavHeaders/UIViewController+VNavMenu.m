@@ -9,6 +9,9 @@
 #import "UIViewController+VNavMenu.h"
 #import "UIViewController+VSideMenuViewController.h"
 
+// DON'T COMMIT ME
+#import "VHasManagedDependencies.h"
+#import "VDependencyManager.h"
 #import <objc/runtime.h>
 
 //Create Sequence import
@@ -22,6 +25,7 @@
 #import "VThemeManager.h"
 #import "UIActionSheet+VBlocks.h"
 #import "VAutomation.h"
+#import "VWorkspaceViewController.h"
 
 static const char kNavHeaderViewKey;
 static const char kNavHeaderYConstraintKey;
@@ -258,35 +262,48 @@ static const char kUploadProgressYConstraintKey;
 
 - (void)presentCameraViewController:(VCameraViewController *)cameraViewController
 {
-    UINavigationController *navigationController = [[UINavigationController alloc] init];
-    UINavigationController *__weak weakNav = navigationController;
-    cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
+    VDependencyManager *dependencyManager = [((id <VHasManagedDependancies>)self) dependencyManager];
+
+    VWorkspaceViewController *workspaceViewController = (VWorkspaceViewController *)[dependencyManager viewControllerForKey:VDependencyManagerWorkspaceKey];
+    workspaceViewController.completionBlock = ^void(BOOL finished, UIImage *previewImage)
     {
-        if (!finished || !capturedMediaURL)
-        {
-            [self dismissViewControllerAnimated:YES completion:nil];
-        }
-        else
-        {
-            VCameraPublishViewController *publishViewController = [VCameraPublishViewController cameraPublishViewController];
-            publishViewController.previewImage = previewImage;
-            publishViewController.mediaURL = capturedMediaURL;
-            publishViewController.completion = ^(BOOL complete)
-            {
-                if (complete)
-                {
-                    [self dismissViewControllerAnimated:YES completion:nil];
-                }
-                else
-                {
-                    [weakNav popViewControllerAnimated:YES];
-                }
-            };
-            [weakNav pushViewController:publishViewController animated:YES];
-        }
+        [self dismissViewControllerAnimated:YES
+                                 completion:nil];
     };
-    [navigationController pushViewController:cameraViewController animated:NO];
-    [self presentViewController:navigationController animated:YES completion:nil];
+    [self presentViewController:workspaceViewController
+                       animated:YES
+                     completion:nil];
+    
+//    
+//    UINavigationController *navigationController = [[UINavigationController alloc] init];
+//    UINavigationController *__weak weakNav = navigationController;
+//    cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
+//    {
+//        if (!finished || !capturedMediaURL)
+//        {
+//            [self dismissViewControllerAnimated:YES completion:nil];
+//        }
+//        else
+//        {
+//            VCameraPublishViewController *publishViewController = [VCameraPublishViewController cameraPublishViewController];
+//            publishViewController.previewImage = previewImage;
+//            publishViewController.mediaURL = capturedMediaURL;
+//            publishViewController.completion = ^(BOOL complete)
+//            {
+//                if (complete)
+//                {
+//                    [self dismissViewControllerAnimated:YES completion:nil];
+//                }
+//                else
+//                {
+//                    [weakNav popViewControllerAnimated:YES];
+//                }
+//            };
+//            [weakNav pushViewController:publishViewController animated:YES];
+//        }
+//    };
+//    [navigationController pushViewController:cameraViewController animated:NO];
+//    [self presentViewController:navigationController animated:YES completion:nil];
 }
 
 @end

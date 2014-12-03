@@ -16,6 +16,8 @@
 
 @optional // One of the following two methods should be implemented
 
+@property (nonatomic, readonly) VDependencyManager *dependencyManager;
+
 /**
  Initializes the receiver with an instance of VDependencyManager
  */
