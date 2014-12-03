@@ -45,5 +45,7 @@
 	<integer>1</integer>
 	<key>QAAppID</key>
 	<integer>1</integer>
+	<key>FlurryAPIKey</key>
+	<string>XXXXXXXXXX</string>
 </dict>
 </plist>
