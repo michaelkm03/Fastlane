@@ -1,4 +1,4 @@
-//
+ //
 //  VPushNotificationManager.m
 //  victorious
 //
@@ -9,6 +9,9 @@
 #import "VObjectManager+DeviceRegistration.h"
 #import "VObjectManager+Login.h"
 #import "VPushNotificationManager.h"
+#import "VConstants.h"
+
+NSString * const VPushNotificationManagerDidRegister = @"com.getvictorious.PushNotificationManagerDidRegister";
 
 @interface VPushNotificationManager ()
 
@@ -55,6 +58,27 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loggedInChanged:) name:kLoggedInChangedNotification object:nil];
 }
 
+- (void)sendTokenWithSuccessBlock:(void(^)())success failBlock:(void(^)(NSError *error))failure
+{
+    // If, for whatever reason, we still do not have the token, the user is unforunately out of luck:
+    if ( self.apnsToken == nil )
+    {
+        NSString *domain = NSLocalizedString( @"ErrorPushNotificationsUnknown", nil );
+        failure( [NSError errorWithDomain:domain code:-1 userInfo:nil] );
+        return;
+    }
+    
+    // If we've got the token, send it to the server:
+    [[VObjectManager sharedManager] registerAPNSToken:self.apnsToken successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+     {
+         success();
+     }
+                                            failBlock:^(NSOperation *operation, NSError *error)
+     {
+         failure( error );
+     }];
+}
+
 - (void)didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
 {
     VLog(@"Error registering for push notifications: %@", [error localizedDescription]);
@@ -71,6 +95,22 @@
     {
         [self sendAPNStokenToServer];
     }
+}
+
+- (BOOL)isRegisteredForPushNotifications
+{
+    UIApplication *app = [UIApplication sharedApplication];
+    BOOL isRegistered = NO;
+    if ( UI_IS_IOS8_AND_HIGHER )
+    {
+        isRegistered = app.isRegisteredForRemoteNotifications;
+    }
+    else
+    {
+        isRegistered = app.enabledRemoteNotificationTypes != UIRemoteNotificationTypeNone;
+    }
+    
+    return isRegistered;
 }
 
 @end

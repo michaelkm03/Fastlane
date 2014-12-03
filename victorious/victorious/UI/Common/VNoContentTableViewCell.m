@@ -14,8 +14,12 @@ static NSString *const kVNoContentMessageFontName           = @"Helvetica Neue L
 
 @interface VNoContentTableViewCell()
 
-@property (weak, nonatomic) IBOutlet UILabel *messageLabel;
+@property (weak, nonatomic) IBOutlet UITextView *messageTextView;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+@property (weak, nonatomic) IBOutlet UIButton *actionButton;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *actionButtonHeightConstraint;
+@property (nonatomic, assign) CGFloat actionButtonVisibleHeight;
+@property (nonatomic, weak) void (^actionButtonBlock)(void);
 
 @end
 
@@ -38,25 +42,43 @@ static NSString *const kVNoContentMessageFontName           = @"Helvetica Neue L
 - (void)awakeFromNib
 {
     [super awakeFromNib];
-    self.messageLabel.hidden = YES;
+    self.messageTextView.hidden = YES;
     self.activityIndicator.hidden = YES;
+    self.actionButtonVisibleHeight = self.actionButtonHeightConstraint.constant;
+    [self.actionButton setTitle:@"" forState:UIControlStateNormal];
+    self.selectionStyle = UITableViewCellSelectionStyleNone;
+    self.userInteractionEnabled = YES;
 }
 
 - (void)prepareForReuse
 {
     [super prepareForReuse];
-    self.messageLabel.hidden = YES;
+    self.messageTextView.hidden = YES;
     self.activityIndicator.hidden = YES;
 }
 
 #pragma mark - Public properties for configuration
 
+- (void)setIsCentered:(BOOL)isCentered
+{
+    self.messageTextView.textAlignment = isCentered ? NSTextAlignmentCenter : NSTextAlignmentLeft;
+}
+
+- (BOOL)isCentered
+{
+    return self.messageTextView.textAlignment == NSTextAlignmentCenter;
+}
+
 - (void)setMessage:(NSString *)message
 {
-    self.messageLabel.text = message;
-    self.messageLabel.hidden = NO;
+    self.messageTextView.text = message;
+    self.messageTextView.hidden = NO;
     self.activityIndicator.hidden = YES;
-    [self applyTheme];
+    [self hideActionButton];
+    
+    CGFloat currentSize = self.messageTextView.font.pointSize;
+    UIFont *font = [UIFont fontWithName:kVNoContentMessageFontName size:currentSize];
+    self.messageTextView.font = font;
 }
 
 - (NSString *)message
@@ -69,8 +91,9 @@ static NSString *const kVNoContentMessageFontName           = @"Helvetica Neue L
     if ( isLoading )
     {
         [self.activityIndicator startAnimating];
-        self.messageLabel.hidden = YES;
+        self.messageTextView.hidden = YES;
         self.activityIndicator.hidden = NO;
+        [self hideActionButton];
     }
     else
     {
@@ -83,12 +106,38 @@ static NSString *const kVNoContentMessageFontName           = @"Helvetica Neue L
     return self.activityIndicator.hidden = NO;
 }
 
-#pragma mark - Theme
+#pragma mark - Action button
 
-- (void)applyTheme
+- (void)hideActionButton
 {
-    CGFloat currentSize = self.messageLabel.font.pointSize;
-    self.messageLabel.font = [UIFont fontWithName:kVNoContentMessageFontName size:currentSize];
+    self.actionButtonHeightConstraint.constant = 0.0;
+    [self setNeedsLayout];
+}
+
+- (void)showActionButton
+{
+    self.actionButtonHeightConstraint.constant = self.actionButtonVisibleHeight;
+    [self setNeedsLayout];
+}
+
+- (void)showActionButtonWithLabel:(NSString *)label callback:(void(^)(void))callback
+{
+    [self.actionButton setTitle:label forState:UIControlStateNormal];
+    self.actionButtonBlock = callback;
+    
+    self.actionButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    UIFont *buttonFont = [[VThemeManager sharedThemeManager] themedFontForKey:kVButton2Font];
+    [self.actionButton.titleLabel setFont:buttonFont];
+    
+    [self showActionButton];
+}
+
+- (IBAction)onAction:(id)sender
+{
+    if ( self.actionButtonBlock != nil )
+    {
+        self.actionButtonBlock();
+    }
 }
 
 @end

@@ -15,11 +15,7 @@
 #import "VTrendingTagCell.h"
 #import "VSuggestedPeopleCollectionViewController.h"
 #import "VDummyModels.h"
-
-// Quick and dirty convenience method to avoid cluttering code
-NSIndexPath *VIndexPathMake( NSInteger row, NSInteger section ) {
-    return [NSIndexPath indexPathForRow:row inSection:section];
-}
+#import "VTestHelpers.h"
 
 @interface VDiscoverViewController (UnitTest)
 

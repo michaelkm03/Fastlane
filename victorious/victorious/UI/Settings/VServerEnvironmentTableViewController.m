@@ -26,16 +26,15 @@
     self.serverEnvironments = [VObjectManager allEnvironments];
 }
 
-- (void)viewWillAppear:(BOOL)animated
+- (void)viewDidLoad
 {
-    [super viewWillAppear:animated];
+    [super viewDidLoad];
+    
+    self.tableView.backgroundColor = [UIColor colorWithWhite:0.97 alpha:1.0];
+    
     self.startingEnvironment = [VObjectManager currentEnvironment];
     [self.parentViewController v_addNewNavHeaderWithTitles:nil];
     self.parentViewController.navHeaderView.delegate = (UIViewController<VNavigationHeaderDelegate> *)self.parentViewController;
-    
-    UIEdgeInsets insets = self.tableView.contentInset;
-    insets.top = CGRectGetHeight(self.parentViewController.navHeaderView.frame);
-    self.tableView.contentInset = insets;
 }
 
 - (void)viewDidDisappear:(BOOL)animated

@@ -23,4 +23,6 @@ typedef void (^VFailBlock) (NSOperation *operation, NSError *error);
 
 + (void)setupObjectManager;
 
+- (id)objectWithEntityName:(NSString *)entityName subclass:(Class)subclass;
+
 @end
