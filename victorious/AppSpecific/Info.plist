@@ -48,9 +48,9 @@
 	<key>FacebookDisplayName</key>
 	<string>VictoriousApp Dev</string>
 	<key>FlurryAPIKey</key>
-	<string>XXXXXXXXXX</string>
+	<string>YB44YS7TR59PT4WXKD5C</string>
 	<key>GAID</key>
-	<string>UA-51702806-9</string>
+	<string>UA-51702806-1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSLocationWhenInUseUsageDescription</key>
