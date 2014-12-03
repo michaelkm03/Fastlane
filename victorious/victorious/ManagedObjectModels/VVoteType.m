@@ -22,5 +22,7 @@
 @dynamic tracking;
 @dynamic imageContentMode;
 @dynamic settingsIndex;
+@dynamic isPaid;
+@dynamic productIdentifier;
 
 @end
