@@ -11,7 +11,7 @@
 
 @class VProduct;
 
-typedef void (^VPurchaseSuccessBlock) (VProduct *product);
+typedef void (^VPurchaseSuccessBlock) (NSArray *products);
 typedef void (^VPurchaseFailBlock) (NSError *error);
 
 @interface VPurchase : NSObject

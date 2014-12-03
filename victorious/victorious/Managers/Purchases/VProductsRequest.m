@@ -24,8 +24,6 @@
     self = [super init];
     if (self)
     {
-        NSParameterAssert( successCallback != nil );
-        NSParameterAssert( failureCallback != nil );
         NSParameterAssert( productIndenfiters != nil );
         NSParameterAssert( productIndenfiters.count > 0 );
         

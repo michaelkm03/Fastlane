@@ -19,6 +19,7 @@
 #import "VVoteType.h"
 #import "VVoteResult.h"
 #import "VTracking.h"
+#import "VPurchaseManager.h"
 
 @interface VExperienceEnhancerController ()
 
@@ -27,6 +28,7 @@
 @property (nonatomic, strong) NSArray *experienceEnhancers;
 @property (nonatomic, strong) NSArray *validExperienceEnhancers;
 @property (nonatomic, strong) NSMutableArray *collectedTrackingItems;
+@property (nonatomic, strong) VPurchaseManager *purchaseManager;
 
 @end
 
@@ -57,15 +59,37 @@
         
         NSArray *voteTypes = [[VSettingManager sharedManager] voteTypes];
         
+        self.purchaseManager = [[VPurchaseManager alloc] init];
+        
         // Start saving images to disk if not already downloaded
         [self.fileCache cacheImagesForVoteTypes:voteTypes];
         
         self.experienceEnhancers = [self createExperienceEnhancersFromVoteTypes:voteTypes sequence:self.sequence];
         self.validExperienceEnhancers = self.experienceEnhancers;
         
+        // Pre-load any purchaseable products
+        NSArray *productIds = [self getProductIdentifiersFromExperienceEnhancerrs:self.validExperienceEnhancers];
+        [self.purchaseManager fetchProductsWithIdentifiers:productIds success:nil failure:nil];
+        
         [self.enhancerBar reloadData];
+        
     }
     return self;
+}
+
+- (NSArray *)getProductIdentifiersFromExperienceEnhancerrs:(NSArray *)experienceEnhancers
+{
+    NSMutableArray *productIdentifiers = [[NSMutableArray alloc] init];
+    
+    [experienceEnhancers enumerateObjectsUsingBlock:^(VExperienceEnhancer *experienceEnhancer, NSUInteger idx, BOOL *stop)
+    {
+        /*if ( experienceEnhancer.isPaid && experienceEnhancers.productIdentifier != nil )
+        {
+            [productIdentifiers addObject:experienceEnhancer.productIdentifier];
+        }*/
+    }];
+    
+    return [NSArray arrayWithArray:productIdentifiers];
 }
 
 - (NSArray *)createExperienceEnhancersFromVoteTypes:(NSArray *)voteTypes sequence:(VSequence *)sequence

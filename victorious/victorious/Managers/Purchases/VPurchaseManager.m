@@ -8,9 +8,9 @@
 
 @import StoreKit;
 
-#define SHOULD_SIMULATE_ACTIONS ((DEBUG || TARGET_IPHONE_SIMULATOR) && 0)
+#define SHOULD_SIMULATE_ACTIONS TARGET_IPHONE_SIMULATOR || (DEBUG && 1)
 #define SIMULATION_DELAY 1.0f
-#define SIMULATE_PURCHASE_ERROR 1
+#define SIMULATE_PURCHASE_ERROR 0
 #define SIMULATE_FETCH_PRODUCTS_ERROR 0
 #define SIMULATE_RESTORE_PURCHASE_ERROR 0
 
@@ -19,10 +19,12 @@
 #endif
 
 #import "VPurchaseManager.h"
-#import "VProduct.h"
 #import "VPurchase.h"
 
 @interface VPurchaseManager() <SKProductsRequestDelegate, SKPaymentTransactionObserver>
+
+@property (nonatomic, readwrite) NSArray *purchaseableProducts;
+@property (nonatomic, readwrite) NSArray *purchasedProducts;
 
 // These are products currently in some state or purchasing
 @property (nonatomic, strong) VPurchase *activePurchase;
@@ -33,6 +35,19 @@
 
 @implementation VPurchaseManager
 
+- (instancetype)init
+{
+    self = [super init];
+    if (self)
+    {
+        _purchaseableProducts = @[];
+        
+         // TODO: Load purchases products (however that's going to be done)
+        _purchasedProducts = @[];
+    }
+    return self;
+}
+
 #pragma mark - Public methods
 
 - (void)purchaseProduct:(VProduct *)product success:(VPurchaseSuccessBlock)successCallback failure:(VPurchaseFailBlock)failureCallback
@@ -40,11 +55,13 @@
     self.activePurchase = [[VPurchase alloc] initWithProduct:product success:successCallback failure:failureCallback];
     
 #if SHOULD_SIMULATE_ACTIONS
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(SIMULATION_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(SIMULATION_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+    {
+        NSString *productIdentifier = @"test";
 #if SIMULATE_PURCHASE_ERROR
-        [self transactionDidFailWithErrorCode:SKErrorUnknown productIdentifier:product.storeKitProduct.productIdentifier];
+        [self transactionDidFailWithErrorCode:SKErrorUnknown productIdentifier:productIdentifier];
 #else
-        [self transationDidCompleteWithProductIdentifier:product.storeKitProduct.productIdentifier];
+        [self transactionDidCompleteWithProductIdentifier:productIdentifier];
 #endif
     });
     return;
@@ -59,12 +76,12 @@
     self.activePurchaseRestore = [[VPurchase alloc] initWithSuccess:successCallback failure:failureCallback];
     
 #if SHOULD_SIMULATE_ACTIONS
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(SIMULATION_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(SIMULATION_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+    {
 #if SIMULATE_RESTORE_PURCHASE_ERROR
         [self transactionDidFailWithErrorCode:error.code productIdentifier:nil];
 #else
-        self.activePurchaseRestore.successCallback( self.activeProductRequest.products );
-        self.activePurchaseRestore = nil;
+        [self transactionDidCompleteWithProductIdentifier:nil];
 #endif
     });
     return;
@@ -77,19 +94,34 @@
                              success:(VProductsRequestSuccessBlock)successCallback
                              failure:(VProductsRequestFailureBlock)failureCallback
 {
+    if ( productIdenfiters == nil || productIdenfiters.count == 0 )
+    {
+        if ( successCallback != nil )
+        {
+            successCallback( @[] );
+        }
+        return;
+    }
+    
     self.activeProductRequest = [[VProductsRequest alloc] initWithProductIdentifiers:productIdenfiters
                                                                              success:successCallback
                                                                              failure:failureCallback];
 #if SHOULD_SIMULATE_ACTIONS
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(SIMULATION_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(SIMULATION_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+    {
+        NSArray *testIdentifiers = @[ @"test1", @"test2", @"test3" ];
 #if SIMULATE_FETCH_PRODUCTS_ERROR
-        for ( identifier in productIdenfiters )
+        for ( NSString *identifier in testIdentifiers )
         {
             [self.activeProductRequest productIdentifierFailedToFetch:identifier];
         }
+        [self productsRequestDidFailWithError:[NSError errorWithDomain:@"Failed to fetch products" code:-1 userInfo:nil]];
 #else
-        self.activeProductRequest.successCallback( self.activeProductRequest.products );
-        self.activeProductRequest = nil;
+        for ( __unused NSString *identifier in testIdentifiers )
+        {
+            [self.activeProductRequest productFetched:[[VProduct alloc] init]];
+        }
+        [self productsRequestDidSucceed];
 #endif
     });
 return;
@@ -135,7 +167,10 @@ return;
     }
     else if ( self.activeProductRequest != nil && [self.activeProductRequest.productIdentifiers containsObject:productIdentifier] )
     {
-        self.activeProductRequest.failureCallback( error );
+        if ( self.activeProductRequest.failureCallback != nil )
+        {
+            self.activeProductRequest.failureCallback( error );
+        }
         self.activeProductRequest = nil;
     }
     else if ( self.activePurchase != nil && [self.activePurchase.product.storeKitProduct.productIdentifier isEqualToString:productIdentifier] )
@@ -156,11 +191,33 @@ return;
 
 - (void)transactionDidCompleteWithProductIdentifier:(NSString *)productIdentifier
 {
-    if ( self.activePurchase != nil && [self.activePurchase.product.storeKitProduct.productIdentifier isEqualToString:productIdentifier] )
+#if SHOULD_SIMULATE_ACTIONS
+    BOOL isValidProduct = YES;
+#else
+    BOOL isValidProduct = [self.activePurchase.product.storeKitProduct.productIdentifier isEqualToString:productIdentifier];
+#endif
+    if ( self.activePurchase != nil && isValidProduct )
     {
-        self.activePurchase.successCallback( self.activePurchase.product );
+        self.purchasedProducts = [self.purchasedProducts arrayByAddingObject:self.activePurchase.product];
+        self.activePurchase.successCallback( @[ self.activePurchase.product ] );
         self.activePurchase = nil;
     }
+}
+
+- (void)productsRequestDidSucceed
+{
+    self.purchaseableProducts = [NSArray arrayWithArray:self.activeProductRequest.products];
+    if ( self.activeProductRequest != nil )
+    {
+        self.activeProductRequest.successCallback( self.purchaseableProducts );
+    }
+    self.activeProductRequest = nil;
+}
+
+- (void)productsRequestDidFailWithError:(NSError *)error
+{
+    self.activeProductRequest.failureCallback( error );
+    self.activeProductRequest = nil;
 }
 
 #pragma mark - SKProductsRequestDelegate
@@ -184,8 +241,14 @@ return;
     
     if ( self.activeProductRequest.isFetchComplete )
     {
-        self.activeProductRequest.successCallback( self.activeProductRequest.products );
-        self.activeProductRequest = nil;
+        [self productsRequestDidSucceed];
+    }
+    else
+    {
+        NSString *message = NSLocalizedString( @"Purchase error unknown.", nil);
+        NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : message };
+        NSError *error = [NSError errorWithDomain:message code:-1 userInfo:userInfo];
+        [self productsRequestDidFailWithError:error];
     }
 }
 
