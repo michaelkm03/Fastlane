@@ -35,7 +35,6 @@ static NSString * const kUserSpecificKey = @"isUserSpecific";
 
 // Workspace properties
 static NSString * const kToolsKey = @"tools";
-static NSString * const kSubToolsKey = @"subTools";
 
 @interface VTemplateGenerator ()
 
@@ -91,7 +90,7 @@ static NSString * const kSubToolsKey = @"subTools";
                      @{
                          kClassNameKey: @"category.tool",
                          kTitleKey: @"text",
-                         kSubToolsKey: @[
+                         kToolsKey: @[
                                  @{
                                      kClassNameKey: @"meme.tool",
                                      kTitleKey: @"meme",
@@ -100,6 +99,28 @@ static NSString * const kSubToolsKey = @"subTools";
                                      kClassNameKey: @"quote.tool",
                                      kTitleKey: @"quote",
                                      }
+                                 ]
+                         },
+                     @{
+                         kClassNameKey: @"category.tool",
+                         kTitleKey: @"filters",
+                         kToolsKey: @[
+                                 @{
+                                     kClassNameKey: @"filter.tool",
+                                     kTitleKey: @"Amsterdam"
+                                     },
+                                 @{
+                                     kClassNameKey: @"filter.tool",
+                                     kTitleKey: @"London"
+                                     },
+                                 @{
+                                     kClassNameKey: @"filter.tool",
+                                     kTitleKey: @"Zurich"
+                                     },
+                                 @{
+                                     kClassNameKey: @"filter.tool",
+                                     kTitleKey: @"Sochi"
+                                     },
                                  ]
                          },
                      @{

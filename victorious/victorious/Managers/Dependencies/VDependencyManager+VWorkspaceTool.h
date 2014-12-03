@@ -12,6 +12,6 @@ extern NSString *const VDependencyManagerWorkspaceToolsKey;
 
 @interface VDependencyManager (VWorkspaceTool)
 
-- (NSArray /* NSArray of VWorkspaceTools */ *)topLevelWorkspaceTools;
+- (NSArray /* NSArray of VWorkspaceTools */ *)tools;
 
 @end

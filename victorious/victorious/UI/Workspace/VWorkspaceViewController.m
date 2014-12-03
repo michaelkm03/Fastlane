@@ -14,10 +14,13 @@
 // Views
 #import <MBProgressHUD/MBProgressHUD.h>
 
+#import "VWorkspaceTool.h"
+
 @interface VWorkspaceViewController ()
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) NSArray *tools;
+@property (nonatomic, weak) IBOutlet UIToolbar *bottomToolbar;
 
 @end
 
@@ -30,7 +33,7 @@
     UIStoryboard *workspaceStoryboard = [UIStoryboard storyboardWithName:@"Workspace" bundle:nil];
     VWorkspaceViewController *workspaceViewController = [workspaceStoryboard instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
     workspaceViewController.dependencyManager = dependencyManager;
-    workspaceViewController.tools = [dependencyManager topLevelWorkspaceTools];
+    workspaceViewController.tools = [dependencyManager tools];
     return workspaceViewController;
 }
 
@@ -47,9 +50,22 @@
 {
     [super viewDidLoad];
     
+    NSMutableArray *toolBarItems = [[NSMutableArray alloc] init];
+    [toolBarItems addObject:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil]];
+    for (id <VWorkspaceTool> tool in self.tools)
+    {
+        UIBarButtonItem *itemForTool = [[UIBarButtonItem alloc] initWithTitle:tool.title
+                                                                        style:UIBarButtonItemStylePlain
+                                                                       target:self
+                                                                       action:@selector(toolSelected:)];
+        itemForTool.tintColor = [UIColor whiteColor];
+        [toolBarItems addObject:itemForTool];
+    }
+    [toolBarItems addObject:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil]];
+    self.bottomToolbar.items = toolBarItems;
 }
 
-#pragma mark - IBActions
+#pragma mark - Target/Action
 
 - (IBAction)close:(id)sender
 {
@@ -67,6 +83,14 @@
                              animated:YES];
         self.completionBlock(YES, nil);
     });
+}
+
+- (void)toolSelected:(UIBarButtonItem *)sender
+{
+    [self.bottomToolbar.items enumerateObjectsUsingBlock:^(UIBarButtonItem *item, NSUInteger idx, BOOL *stop) {
+        item.tintColor = [UIColor whiteColor];
+    }];
+    sender.tintColor = [UIColor magentaColor];
 }
 
 @end

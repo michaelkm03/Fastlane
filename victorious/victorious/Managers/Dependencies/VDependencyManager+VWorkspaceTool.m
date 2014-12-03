@@ -10,14 +10,13 @@
 #import "VWorkspaceTool.h"
 #import "VCategoryWorkspaceTool.h"
 
-NSString *const VDependencyManagerWorkspaceToolsKey = @"tools";
+#import "NSArray+VMap.h"
 
-static NSString * const kTitleKey = @"title";
-static NSString * const kSubtoolsKey = @"subTools";
+NSString *const VDependencyManagerWorkspaceToolsKey = @"tools";
 
 @implementation VDependencyManager (VWorkspaceTool)
 
-- (NSArray *)topLevelWorkspaceTools
+- (NSArray /* VWorkspaceTools */ *)tools
 {
     NSArray *toolConfigurations = [self arrayForKey:VDependencyManagerWorkspaceToolsKey];
     
@@ -25,31 +24,16 @@ static NSString * const kSubtoolsKey = @"subTools";
     {
         return nil;
     }
-
-    NSMutableArray *topLevelTools = [NSMutableArray arrayWithCapacity:toolConfigurations.count];
-    for (NSDictionary *toolConfiguration in toolConfigurations)
+    
+    if (toolConfigurations.count == 0)
     {
-        [topLevelTools addObject:[self workspaceToolWithConfiguration:toolConfiguration]];
+        return nil;
     }
     
-    return topLevelTools;
-}
-
-- (id<VWorkspaceTool> )workspaceToolWithConfiguration:(NSDictionary *)configuration
-{
-    NSString *title = configuration[kTitleKey];
-    
-    NSArray *subToolConfigurations = configuration[kSubtoolsKey];
-    NSMutableArray *subtools = [NSMutableArray arrayWithCapacity:subToolConfigurations.count];
-    for (NSDictionary *subtoolConfiguration in subToolConfigurations)
+    return [toolConfigurations v_map:^id(NSDictionary *configuration)
     {
-        [subtools addObject:[self workspaceToolWithConfiguration:subtoolConfiguration]];
-    }
-    
-    VCategoryWorkspaceTool *tool = [[VCategoryWorkspaceTool alloc] initWithTitle:title
-                                                                            icon:nil
-                                                                        subTools:subtools];
-    return tool;
+        return [self objectOfType:[NSObject class] fromDictionary:configuration];
+    }];
 }
 
 @end

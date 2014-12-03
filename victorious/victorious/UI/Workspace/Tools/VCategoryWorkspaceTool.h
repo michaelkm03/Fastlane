@@ -9,11 +9,10 @@
 #import <Foundation/Foundation.h>
 
 #import "VWorkspaceTool.h"
+#import "VHasManagedDependencies.h"
 
-@interface VCategoryWorkspaceTool : NSObject <VWorkspaceTool>
+@interface VCategoryWorkspaceTool : NSObject <VWorkspaceTool, VHasManagedDependancies>
 
-- (instancetype)initWithTitle:(NSString *)title
-                         icon:(UIImage *)icon
-                     subTools:(NSArray *)subTools;
+@property (nonatomic, strong, readonly) NSArray *subTools; ///< The subtools if any for this tool
 
 @end

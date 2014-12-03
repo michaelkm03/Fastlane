@@ -2,8 +2,16 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>textCategory.tool</key>
-	<string></string>
+	<key>filter.tool</key>
+	<string>VFilterWorkspaceTool</string>
+	<key>quote.tool</key>
+	<string>VQuoteWorkspaceTool</string>
+	<key>meme.tool</key>
+	<string>VMemeWorkspaceTool</string>
+	<key>crop.tool</key>
+	<string>VCropWorkspaceTool</string>
+	<key>category.tool</key>
+	<string>VCategoryWorkspaceTool</string>
 	<key>workspace.screen</key>
 	<string>VWorkspaceViewController</string>
 	<key>sideMenu.scaffold</key>
