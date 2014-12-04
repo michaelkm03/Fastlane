@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>basic.crop</key>
+	<string>VCropWorkspaceToolViewController</string>
 	<key>vertical.picker</key>
 	<string>VToolPickerViewController</string>
 	<key>filter.tool</key>

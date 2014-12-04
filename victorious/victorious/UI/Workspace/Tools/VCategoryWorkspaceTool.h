@@ -15,6 +15,4 @@
 
 @property (nonatomic, strong, readonly) NSArray *subTools; ///< The subtools if any for this tool
 
-@property (nonatomic, strong, readonly) UIViewController *toolPicker;
-
 @end

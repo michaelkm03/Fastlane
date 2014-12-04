@@ -53,6 +53,16 @@ static NSString * const kPickerKey = @"picker";
 
 #pragma mark - VWorkspaceTool
 
+- (UIViewController *)toolViewController
+{
+    return _toolPicker;
+}
+
+- (VWorkspaceToolLocation)toolLocation
+{
+    return VWorkspaceToolLocationInspector;
+}
+
 - (NSString *)title
 {
     return _title;

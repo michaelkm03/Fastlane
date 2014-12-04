@@ -36,6 +36,7 @@ static NSString * const kUserSpecificKey = @"isUserSpecific";
 // Workspace properties
 static NSString * const kToolsKey = @"tools";
 static NSString * const kPickerKey = @"picker";
+static NSString * const kToolInterfaceKey = @"toolInterface";
 
 @interface VTemplateGenerator ()
 
@@ -138,6 +139,10 @@ static NSString * const kPickerKey = @"picker";
                      @{
                          kClassNameKey: @"crop.tool",
                          kTitleKey: @"crop",
+                         kToolInterfaceKey:
+                             @{
+                                 kClassNameKey: @"basic.crop",
+                                 }
                          }
                      ]
              };

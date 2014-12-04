@@ -25,7 +25,7 @@
 @property (weak, nonatomic) IBOutlet UIView *canvasView;
 
 @property (nonatomic, strong) id <VWorkspaceTool> selectedTool;
-@property (nonatomic, strong) UIViewController *toolPicker;
+@property (nonatomic, strong) UIViewController *toolViewController;
 
 @end
 
@@ -118,18 +118,14 @@
     self.selectedTool = selectedTool;
     
     // Hide picker if any
-    if (self.toolPicker)
+    if (self.toolViewController)
     {
-        [self.toolPicker willMoveToParentViewController:nil];
-        [self.toolPicker.view removeFromSuperview];
-        [self.toolPicker didMoveToParentViewController:nil];
+        [self.toolViewController willMoveToParentViewController:nil];
+        [self.toolViewController.view removeFromSuperview];
+        [self.toolViewController didMoveToParentViewController:nil];
     }
-    
-    // Show picker if category tool
-    if ([selectedTool isKindOfClass:[VCategoryWorkspaceTool class]])
-    {
-        [self showPickerForCategory:(VCategoryWorkspaceTool *)selectedTool];
-    }
+
+    [self showToolViewControllerForTool:self.selectedTool];
 }
 
 #pragma mark - Private Methods
@@ -151,23 +147,65 @@
     return self.tools[tag];
 }
 
-- (void)showPickerForCategory:(VCategoryWorkspaceTool *)category
+- (void)showToolViewControllerForTool:(id<VWorkspaceTool>)tool
 {
-    self.toolPicker = [category toolPicker];
-    [self addChildViewController:self.toolPicker];
-    [self.view addSubview:self.toolPicker.view];
-    [self.toolPicker didMoveToParentViewController:self];
-    self.toolPicker.view.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[picker]|"
-                                                                      options:kNilOptions
-                                                                      metrics:nil
-                                                                        views:@{@"picker":self.toolPicker.view}]];
-    NSDictionary *verticalMetrics = @{@"toolbarHeight":@(CGRectGetHeight(self.bottomToolbar.bounds))};
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[canvas][picker]-toolbarHeight-|"
-                                                                      options:kNilOptions
-                                                                      metrics:verticalMetrics
-                                                                        views:@{@"picker":self.toolPicker.view,
-                                                                                @"canvas":self.canvasView}]];
+    if ([tool toolViewController] == nil)
+    {
+        return;
+    }
+    
+    self.toolViewController = [tool toolViewController];
+    [self addChildViewController:self.toolViewController];
+    [self.view addSubview:self.toolViewController.view];
+    [self.toolViewController didMoveToParentViewController:self];
+    self.toolViewController.view.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    switch (self.selectedTool.toolLocation)
+    {
+        case VWorkspaceToolLocationInspector:
+        {
+            [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[picker]|"
+                                                                              options:kNilOptions
+                                                                              metrics:nil
+                                                                                views:@{@"picker":self.toolViewController.view}]];
+            NSDictionary *verticalMetrics = @{@"toolbarHeight":@(CGRectGetHeight(self.bottomToolbar.bounds))};
+            [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[canvas][picker]-toolbarHeight-|"
+                                                                              options:kNilOptions
+                                                                              metrics:verticalMetrics
+                                                                                views:@{@"picker":self.toolViewController.view,
+                                                                                        @"canvas":self.canvasView}]];
+        }
+            break;
+        case VWorkspaceToolLocationCanvas:
+        {
+            NSDictionary *viewMap = @{@"canvas": self.canvasView,
+                                      @"toolInterface": self.toolViewController.view};
+            [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[toolInterface(==canvas)]"
+                                                                              options:kNilOptions
+                                                                              metrics:nil
+                                                                                views:viewMap]];
+            [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[toolInterface(==canvas)]"
+                                                                              options:kNilOptions
+                                                                              metrics:nil
+                                                                                views:viewMap]];
+            [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.toolViewController.view
+                                                                  attribute:NSLayoutAttributeLeft
+                                                                  relatedBy:NSLayoutRelationEqual
+                                                                     toItem:self.canvasView
+                                                                  attribute:NSLayoutAttributeLeft
+                                                                 multiplier:1.0f
+                                                                   constant:0.0f]];
+            [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.toolViewController.view
+                                                                  attribute:NSLayoutAttributeTop
+                                                                  relatedBy:NSLayoutRelationEqual
+                                                                     toItem:self.canvasView
+                                                                  attribute:NSLayoutAttributeTop
+                                                                 multiplier:1.0f
+                                                                   constant:0.0f]];
+        }
+            break;
+    }
+
 }
 
 @end

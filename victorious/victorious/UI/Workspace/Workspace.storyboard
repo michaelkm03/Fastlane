@@ -19,12 +19,21 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" horizontalHuggingPriority="249" verticalHuggingPriority="249" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="8c5-o3-ehb" userLabel="Canvas Container">
+                            <view contentMode="scaleToFill" horizontalHuggingPriority="249" verticalHuggingPriority="249" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8c5-o3-ehb" userLabel="Canvas Container">
                                 <rect key="frame" x="140" y="44" width="320" height="320"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="bike" translatesAutoresizingMaskIntoConstraints="NO" id="MnD-fK-hOO">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
+                                    </imageView>
+                                </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" priority="750" constant="320" id="AwY-Ez-oaG"/>
+                                    <constraint firstItem="MnD-fK-hOO" firstAttribute="leading" secondItem="8c5-o3-ehb" secondAttribute="leading" id="N4R-1X-mgS"/>
                                     <constraint firstAttribute="width" secondItem="8c5-o3-ehb" secondAttribute="height" multiplier="1:1" id="O18-Ux-5Zy"/>
+                                    <constraint firstAttribute="bottom" secondItem="MnD-fK-hOO" secondAttribute="bottom" id="fQT-eY-rWa"/>
+                                    <constraint firstAttribute="trailing" secondItem="MnD-fK-hOO" secondAttribute="trailing" id="pZa-uY-8jR"/>
+                                    <constraint firstItem="MnD-fK-hOO" firstAttribute="top" secondItem="8c5-o3-ehb" secondAttribute="top" id="x6B-eh-HZH"/>
                                 </constraints>
                             </view>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" barStyle="black" translatesAutoresizingMaskIntoConstraints="NO" id="uLJ-ZJ-TSs" userLabel="Top Toolbar">
@@ -134,5 +143,38 @@
             </objects>
             <point key="canvasLocation" x="-121" y="343"/>
         </scene>
+        <!--Crop Workspace Tool View Controller-->
+        <scene sceneID="3yx-bR-QwV">
+            <objects>
+                <viewController storyboardIdentifier="VCropWorkspaceToolViewController" id="68P-kQ-eWn" customClass="VCropWorkspaceToolViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="k23-nw-3wG"/>
+                        <viewControllerLayoutGuide type="bottom" id="ZAx-4g-MB6"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="FDL-Lx-k9b">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Crop" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U2A-dz-UKS">
+                                <rect key="frame" x="281" y="289" width="38" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="centerY" secondItem="U2A-dz-UKS" secondAttribute="centerY" constant="0.5" id="UtZ-AU-U6V"/>
+                            <constraint firstAttribute="centerX" secondItem="U2A-dz-UKS" secondAttribute="centerX" id="aUC-3J-zX2"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="aij-9r-rg5" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="550" y="343"/>
+        </scene>
     </scenes>
+    <resources>
+        <image name="bike" width="1440" height="1440"/>
+    </resources>
 </document>
