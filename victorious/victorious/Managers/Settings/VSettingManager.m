@@ -113,13 +113,18 @@ NSString * const kVPrivacyUrl = @"url.privacy";
 #warning testing only
     [voteTypes enumerateObjectsUsingBlock:^(VVoteType *voteType, NSUInteger idx, BOOL *stop)
     {
-        voteType.isPaid = @YES;
-        voteType.productIdentifier = [NSString stringWithFormat:@"test_%lu", (unsigned long)idx];
+        NSUInteger order = voteType.displayOrder.unsignedIntegerValue;
+        if ( order == 1 )
+        {
+            voteType.isPaid = @YES;
+            voteType.productIdentifier = [NSString stringWithFormat:@"com.getvictorious.eatyourkimchi.testpurchase.000%lu", (unsigned long)order];
+            *stop = YES;
+        }
     }];
     
     [self.fileCache cacheImagesForVoteTypes:voteTypes];
     NSArray *productIdentifiers = [VVoteType productIdentifiersFromVoteTypes:voteTypes];
-    [[[VPurchaseManager alloc] init] fetchProductsWithIdentifiers:productIdentifiers success:^(NSArray *products)
+    [[VPurchaseManager sharedInstance] fetchProductsWithIdentifiers:productIdentifiers success:^(NSArray *products)
     {
         // TODO: Use nil instead of block here, this is fire and forget
     }

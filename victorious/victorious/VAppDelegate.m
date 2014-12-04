@@ -33,6 +33,7 @@
 #import "VFlurryTracking.h"
 #import "VGoogleAnalyticsTracking.h"
 #import "VFirstInstallManager.h"
+#import "VPurchaseManager.h"
 
 @import AVFoundation;
 @import MediaPlayer;
@@ -48,6 +49,9 @@ static BOOL isRunningTests(void) __attribute__((const));
     {
         return YES;
     }
+    
+    // We don't need this yet, but it must be initialized now (see comments for sharedInstance method)
+    [VPurchaseManager sharedInstance];
     
     [ADEumInstrumentation initWithKey:@"AD-AAB-AAA-JWA"];
     

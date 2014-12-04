@@ -18,6 +18,18 @@
 @interface VPurchaseManager : NSObject
 
 /**
+ Returns the singleton instance.  For better or for worse, this manager should be
+ a singleton because of the nature of StoreKit's transaction and product request queues.
+ During development, some transactions will be left unfinished between app launches,
+ which causes StoreKit to try to finish them upon the next app launch.  Not only can this
+ mess up state management, but if the SKProductsRequestDelegate and SKPaymentTransactionObserver
+ relations are not set up soon after app launch, StoreKit will try to call methods
+ on non-existent delegate objects and the app will crash without so much as a meaningful
+ stack trace.
+ */
++ (VPurchaseManager *)sharedInstance;
+
+/**
  Begin the process of purchasing the supplied product as an In-App Purchase
  through the App Store.  The user will seubsequently have to confirm and
  enter his or her iTunes credentials.  To get a product to purchase, first
@@ -26,6 +38,11 @@
 - (void)purchaseProduct:(VProduct *)product
                 success:(VPurchaseSuccessBlock)successCallback
                 failure:(VPurchaseFailBlock)failureCallback;
+
+
+- (void)purchaseProductWithIdentifier:(NSString *)productIdentifier
+                              success:(VPurchaseSuccessBlock)successCallback
+                              failure:(VPurchaseFailBlock)failureCallback;
 
 /**
  Begin the process of retriving all previously purchased products so that they may be
@@ -45,6 +62,5 @@
                              success:(VProductsRequestSuccessBlock)successCallback
                              failure:(VProductsRequestFailureBlock)failureCallback;
 
-- (VProduct *)purcahseableProductForIdenfitier:(NSString *)identifier;
 
 @end

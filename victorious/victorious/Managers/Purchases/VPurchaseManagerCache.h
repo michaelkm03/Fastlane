@@ -8,9 +8,15 @@
 
 #import <Foundation/Foundation.h>
 
+@interface VProductCache : NSCache
+
+- (NSArray *)objectsForKeys:(NSArray *)keys;
+
+@end
+
 @interface VPurchaseManagerCache : NSObject
 
-@property (nonatomic, strong) NSCache *purchaseableProducts;
-@property (nonatomic, strong) NSCache *purchasedProducts;
+@property (nonatomic, strong) VProductCache *purchaseableProducts;
+@property (nonatomic, strong) VProductCache *purchasedProducts;
 
 @end

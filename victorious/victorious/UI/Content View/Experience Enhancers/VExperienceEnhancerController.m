@@ -59,7 +59,7 @@
         
         NSArray *voteTypes = [[VSettingManager sharedManager] voteTypes];
         
-        self.purchaseManager = [[VPurchaseManager alloc] init];
+        self.purchaseManager = [VPurchaseManager sharedInstance];
         
         // Start saving images to disk if not already downloaded
         [self.fileCache cacheImagesForVoteTypes:voteTypes];

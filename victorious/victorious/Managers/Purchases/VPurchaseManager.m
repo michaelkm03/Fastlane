@@ -8,7 +8,7 @@
 
 @import StoreKit;
 
-#define SHOULD_SIMULATE_ACTIONS TARGET_IPHONE_SIMULATOR || (DEBUG && 1)
+#define SHOULD_SIMULATE_ACTIONS TARGET_IPHONE_SIMULATOR || (DEBUG && 0)
 #define SIMULATION_DELAY 1.0f
 #define SIMULATE_PURCHASE_ERROR 0
 #define SIMULATE_FETCH_PRODUCTS_ERROR 0
@@ -28,29 +28,54 @@
 @property (nonatomic, strong) VPurchase *activePurchase;
 @property (nonatomic, strong) VProductsRequest *activeProductRequest;
 @property (nonatomic, strong) VPurchase *activePurchaseRestore;
+@property (nonatomic, strong) VPurchaseManagerCache *cache;
 
 @end
 
 @implementation VPurchaseManager
 
-+ (VPurchaseManagerCache *)sharedCache
+#pragma mark - Initialization
+
++ (VPurchaseManager *)sharedInstance
 {
-    static VPurchaseManagerCache *cache;
+    static VPurchaseManager *instance;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^(void)
                   {
-                      cache = [[VPurchaseManagerCache alloc] init];
+                      instance = [[VPurchaseManager alloc] init];
                   });
-    return cache;
+    return instance;
+}
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self)
+    {
+        self.cache = [[VPurchaseManagerCache alloc] init];
+        [[SKPaymentQueue defaultQueue] addTransactionObserver:self];
+    }
+    return self;
 }
 
 #pragma mark - Public methods
+- (void)purchaseProductWithIdentifier:(NSString *)productIdentifier success:(VPurchaseSuccessBlock)successCallback failure:(VPurchaseFailBlock)failureCallback
+{
+    VProduct *product = [self purcahseableProductForIdenfitier:productIdentifier];
+    [self purchaseProduct:product success:successCallback failure:failureCallback];
+}
 
 - (void)purchaseProduct:(VProduct *)product success:(VPurchaseSuccessBlock)successCallback failure:(VPurchaseFailBlock)failureCallback
 {
-    self.activePurchase = [[VPurchase alloc] initWithProduct:product success:successCallback failure:failureCallback];
+    if ( product == nil )
+    {
+        NSString *message = NSLocalizedString( @"Invalid product.", nil);
+        failureCallback( [NSError errorWithDomain:message code:-1 userInfo:@{ NSLocalizedDescriptionKey : message }] );
+        return;
+    }
     
 #if SHOULD_SIMULATE_ACTIONS
+    self.activePurchase = [[VPurchase alloc] initWithProduct:[[VProduct alloc] init] success:successCallback failure:failureCallback];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(SIMULATION_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
     {
         NSString *productIdentifier = @"test";
@@ -63,6 +88,7 @@
     return;
 #endif
     
+    self.activePurchase = [[VPurchase alloc] initWithProduct:product success:successCallback failure:failureCallback];
     SKPayment *payment = [SKPayment paymentWithProduct:product.storeKitProduct];
     [[SKPaymentQueue defaultQueue] addPayment:payment];
 }
@@ -90,12 +116,18 @@
                              success:(VProductsRequestSuccessBlock)successCallback
                              failure:(VProductsRequestFailureBlock)failureCallback
 {
+    if ( self.activeProductRequest != nil )
+    {
+        // Do not allow two product requests to occur
+        return;
+    }
+    
     NSArray *uncachedProductIndentifiers = [self productIdentifiersFilteredForUncachedProducts:productIdenfiters];
     if ( uncachedProductIndentifiers == nil || uncachedProductIndentifiers.count == 0 )
     {
         if ( successCallback != nil )
         {
-            NSArray *products = nil; //[[[self class] sharedCache] purchaseableProducts]
+            NSArray *products = nil; //[self.cache purchaseableProducts]
             successCallback( products );
         }
         return;
@@ -132,7 +164,7 @@ return;
 
 - (VProduct *)purcahseableProductForIdenfitier:(NSString *)identifier
 {
-    return [[[[self class] sharedCache] purchaseableProducts] objectForKey:identifier];
+    return [[self.cache purchaseableProducts] objectForKey:identifier];
 }
 
 #pragma mark - StoreKit Helpers
@@ -146,7 +178,7 @@ return;
     
     NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL (NSString *identifier, NSDictionary *bindings)
     {
-        BOOL isCached = [[[[self class] sharedCache] purchaseableProducts] objectForKey:identifier] != nil;
+        BOOL isCached = [[self.cache purchaseableProducts] objectForKey:identifier] != nil;
         return !isCached;
     }];
     return [productIdentifiers filteredArrayUsingPredicate:predicate];
@@ -216,7 +248,7 @@ return;
 #endif
     if ( self.activePurchase != nil && isValidProduct )
     {
-        [[[[self class] sharedCache] purchasedProducts] setObject:self.activePurchase.product forKey:productIdentifier];
+        [[self.cache purchasedProducts] setObject:self.activePurchase.product forKey:productIdentifier];
         self.activePurchase.successCallback( @[ self.activePurchase.product ] );
         self.activePurchase = nil;
     }
@@ -233,10 +265,13 @@ return;
 #else
              NSString *productIdentifier = product.storeKitProduct.productIdentifier;
 #endif
-             [[[[self class] sharedCache] purchaseableProducts] setObject:product forKey:productIdentifier];
+             [[self.cache purchaseableProducts] setObject:product forKey:productIdentifier];
          }];
-        NSArray *products = nil; //[[[self class] sharedCache] purchaseableProducts]
-        self.activeProductRequest.successCallback( products );
+        NSArray *products = [[self.cache purchaseableProducts] objectsForKeys:self.activeProductRequest.productIdentifiers];
+        if ( self.activeProductRequest.successCallback != nil )
+        {
+            self.activeProductRequest.successCallback( products );
+        }
     }
     self.activeProductRequest = nil;
 }
@@ -288,7 +323,6 @@ return;
         switch ( transaction.transactionState )
         {
             case SKPaymentTransactionStatePurchased:
-                VLog( @"Purchase of product '%@' completed", transaction.payment.productIdentifier );
                 [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
                 [self transactionDidCompleteWithProductIdentifier:transaction.payment.productIdentifier];
                 break;
@@ -319,7 +353,6 @@ return;
         switch ( transaction.transactionState )
         {
             case SKPaymentTransactionStatePurchased:
-                VLog( @"Purchase of product '%@' completed", transaction.payment.productIdentifier );
                 [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
                 break;
             case SKPaymentTransactionStateFailed:

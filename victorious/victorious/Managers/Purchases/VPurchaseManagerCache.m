@@ -7,6 +7,25 @@
 //
 
 #import "VPurchaseManagerCache.h"
+#import "VProduct.h"
+
+@implementation VProductCache
+
+- (NSArray *)objectsForKeys:(NSArray *)keys
+{
+    NSMutableArray *objects = [[NSMutableArray alloc] init];
+    [keys enumerateObjectsUsingBlock:^(NSString *key, NSUInteger idx, BOOL *stop)
+    {
+        id obj = [self objectForKey:key];
+        if ( obj != nil && [obj isKindOfClass:[VProduct class]] )
+        {
+            [objects addObject:obj];
+        }
+    }];
+    return [NSArray arrayWithArray:objects];
+}
+
+@end
 
 @implementation VPurchaseManagerCache
 
@@ -15,8 +34,8 @@
     self = [super init];
     if (self)
     {
-        _purchaseableProducts = [[NSCache alloc] init];
-        _purchasedProducts = [[NSCache alloc] init];
+        _purchaseableProducts = [[VProductCache alloc] init];
+        _purchasedProducts = [[VProductCache alloc] init];
     }
     return self;
 }

@@ -9,6 +9,7 @@
 #import "VPurchaseViewController.h"
 #import "UIViewController+VNavMenu.h"
 #import "VPurchaseManager.h"
+#import "VSettingManager.h"
 
 @interface VPurchaseViewController ()
 
@@ -22,10 +23,21 @@
 {
     [super viewDidLoad];
     
-    self.purchaseManager = [[VPurchaseManager alloc] init];
+    self.purchaseManager = [VPurchaseManager sharedInstance];
     
     NSString *title = NSLocalizedString( @"Buy This Emotive Ballstic", nil);
     [self v_addNewNavHeaderWithTitles:@[ title ]];
+    
+    [self.navHeaderView setRightButtonImage:[UIImage imageNamed:@"close-btn"]
+                                 withAction:@selector(dismiss)
+                                   onTarget:self];
+    
+    [self.navHeaderView setLeftButtonImage:nil withAction:nil onTarget:nil];
+}
+
+- (void)dismiss
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (IBAction)buyTapped:(id)sender
@@ -41,10 +53,10 @@
         return;
     }
     
-    VProduct *product = [self.purchaseManager purcahseableProductForIdenfitier:productIdentifier];
-    [self.purchaseManager purchaseProduct:product success:^(NSArray *products)
+    [self.purchaseManager purchaseProductWithIdentifier:productIdentifier success:^(NSArray *products)
      {
-         
+         [[VSettingManager sharedManager] updateSettingsWithPurchasedProductIdentifier:productIdentifier];
+         [self dismissViewControllerAnimated:YES completion:nil];
      }
                                   failure:^(NSError *error)
      {
