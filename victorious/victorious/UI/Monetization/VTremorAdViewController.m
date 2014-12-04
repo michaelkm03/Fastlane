@@ -8,6 +8,7 @@
 
 #import "VTremorAdViewController.h"
 #import "TremorVideoAd.h"
+#import "VAdBreakFallback.h"
 
 @interface VTremorAdViewController () <TremorVideoAdDelegate>
 
@@ -34,6 +35,18 @@
 {
     [super viewDidLoad];
     
+    VAdBreakFallback *adBreak = [self.adServerMonetizationDetails objectAtIndex:0];
+    NSString *appId = adBreak.tremorAppId;
+    
+    if ([appId isEqualToString:@""] || [appId isKindOfClass:[NSNull class]] || appId == nil)
+    {
+        [self didAdComplete];
+        return;
+    }
+    
+    [TremorVideoAd initWithAppID:appId];
+    [TremorVideoAd start];
+
     [TremorVideoAd setDelegate:self];
     
 }

@@ -92,7 +92,7 @@
 
 - (void)adDidFinishForAdViewController:(VAdViewController *)adViewController
 {
-    NSLog(@"\n\nAd playback finished in VAdVideoPlayerViewController");
+    //VLog(@"\n\nAd playback finished in VAdVideoPlayerViewController");
     
     self.adPlaying = adViewController.isAdPlaying;
     [self.delegate adDidFinishForAdVideoPlayerViewController:self];

@@ -11,6 +11,9 @@
 
 @class VAdVideoPlayerViewController;
 
+/**
+ Reports on ad playback events
+ */
 @protocol VAdVideoPlayerViewControllerDelegate <NSObject>
 
 @required
@@ -27,9 +30,11 @@
 
 @end
 
-
 @interface VAdVideoPlayerViewController : UIViewController
 
+/**
+ Boolean that reports if an ad is currently playing
+ */
 @property (nonatomic, readonly) BOOL adPlaying; ///< YES if ad video is playing
 
 /**

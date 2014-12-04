@@ -52,7 +52,7 @@ static BOOL isRunningTests(void) __attribute__((const));
     }
     
     // Tremor Ad Network
-    NSString *appID = @"test";
+    NSString *appID = @"";
     [TremorVideoAd initWithAppID:appID];
     [TremorVideoAd start];
 
