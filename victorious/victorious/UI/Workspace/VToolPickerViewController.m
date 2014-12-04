@@ -19,4 +19,19 @@
     return toolPicker;
 }
 
+#pragma mark - UICollectionViewDataSource
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView
+     numberOfItemsInSection:(NSInteger)section
+{
+    return 100;
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
+                  cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    return [collectionView dequeueReusableCellWithReuseIdentifier:@"cell"
+                                                     forIndexPath:indexPath];
+}
+
 @end

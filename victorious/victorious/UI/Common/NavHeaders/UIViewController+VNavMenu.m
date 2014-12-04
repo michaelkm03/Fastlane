@@ -273,8 +273,6 @@ static const char kUploadProgressYConstraintKey;
     [self presentViewController:workspaceViewController
                        animated:YES
                      completion:nil];
-    
-//    
 //    UINavigationController *navigationController = [[UINavigationController alloc] init];
 //    UINavigationController *__weak weakNav = navigationController;
 //    cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)

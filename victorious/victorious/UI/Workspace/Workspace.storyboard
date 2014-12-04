@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -18,8 +19,19 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <view contentMode="scaleToFill" horizontalHuggingPriority="249" verticalHuggingPriority="249" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="8c5-o3-ehb" userLabel="Canvas Container">
+                                <rect key="frame" x="140" y="44" width="320" height="320"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" priority="750" constant="320" id="AwY-Ez-oaG"/>
+                                    <constraint firstAttribute="width" secondItem="8c5-o3-ehb" secondAttribute="height" multiplier="1:1" id="O18-Ux-5Zy"/>
+                                </constraints>
+                            </view>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" barStyle="black" translatesAutoresizingMaskIntoConstraints="NO" id="uLJ-ZJ-TSs" userLabel="Top Toolbar">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="u6w-gn-U2Y"/>
+                                </constraints>
                                 <items>
                                     <barButtonItem title="Close" id="by5-os-pzS">
                                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -45,24 +57,30 @@
                                 <color key="barTintColor" red="0.19607843137254902" green="0.19607843137254902" blue="0.19607843137254902" alpha="1" colorSpace="calibratedRGB"/>
                             </toolbar>
                         </subviews>
-                        <color key="backgroundColor" red="0.11764705882352941" green="0.11764705882352941" blue="0.11764705882352941" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.1176470588" green="0.1176470588" blue="0.1176470588" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="uLJ-ZJ-TSs" firstAttribute="top" secondItem="9wC-ZN-KU8" secondAttribute="bottom" id="5nm-ZB-J1k"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="uLJ-ZJ-TSs" secondAttribute="trailing" constant="-16" id="Bum-mH-xCd"/>
-                            <constraint firstItem="jpg-hF-EPF" firstAttribute="top" secondItem="tla-hc-Ct5" secondAttribute="bottom" id="KO2-dC-aYK"/>
-                            <constraint firstItem="uLJ-ZJ-TSs" firstAttribute="leading" secondItem="i4i-d2-DXm" secondAttribute="leadingMargin" constant="-16" id="f1w-A7-g2J"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="tla-hc-Ct5" secondAttribute="trailing" constant="-16" id="khU-vL-UyN"/>
-                            <constraint firstItem="tla-hc-Ct5" firstAttribute="leading" secondItem="i4i-d2-DXm" secondAttribute="leadingMargin" constant="-16" id="wp7-6T-ajH"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="uLJ-ZJ-TSs" secondAttribute="trailing" constant="-16" id="7Ye-Dk-Lgz"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="tla-hc-Ct5" secondAttribute="trailing" constant="-16" id="9HD-AO-jIy"/>
+                            <constraint firstItem="8c5-o3-ehb" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="i4i-d2-DXm" secondAttribute="leading" id="IrH-KS-hgs"/>
+                            <constraint firstItem="uLJ-ZJ-TSs" firstAttribute="top" secondItem="9wC-ZN-KU8" secondAttribute="bottom" id="Wch-on-DA4"/>
+                            <constraint firstItem="uLJ-ZJ-TSs" firstAttribute="leading" secondItem="i4i-d2-DXm" secondAttribute="leadingMargin" constant="-16" id="dhy-kg-bS3"/>
+                            <constraint firstItem="8c5-o3-ehb" firstAttribute="top" secondItem="uLJ-ZJ-TSs" secondAttribute="bottom" id="h0M-kY-7EG"/>
+                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="8c5-o3-ehb" secondAttribute="trailing" id="mnj-S4-eXt"/>
+                            <constraint firstItem="tla-hc-Ct5" firstAttribute="leading" secondItem="i4i-d2-DXm" secondAttribute="leadingMargin" constant="-16" id="pdG-8B-6bD"/>
+                            <constraint firstItem="jpg-hF-EPF" firstAttribute="top" secondItem="tla-hc-Ct5" secondAttribute="bottom" id="pnB-hJ-LMB"/>
+                            <constraint firstItem="jpg-hF-EPF" firstAttribute="top" relation="greaterThanOrEqual" secondItem="8c5-o3-ehb" secondAttribute="bottom" priority="250" constant="44" id="vtj-8b-Y1E"/>
+                            <constraint firstAttribute="centerX" secondItem="8c5-o3-ehb" secondAttribute="centerX" id="wKX-j8-99B"/>
                         </constraints>
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
                     <connections>
                         <outlet property="bottomToolbar" destination="tla-hc-Ct5" id="QiO-Fi-Arc"/>
+                        <outlet property="canvasView" destination="8c5-o3-ehb" id="DSZ-xC-dlK"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="29c-Qz-2Z5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="333" y="-297"/>
+            <point key="canvasLocation" x="-121" y="-336"/>
         </scene>
         <!--Tool Picker View Controller-->
         <scene sceneID="4nq-PE-ZjB">
@@ -71,15 +89,15 @@
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="pi5-F3-QKh">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="0.35000000000000003" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.96078431372549022" green="1" blue="1" alpha="0.35000000000000003" colorSpace="calibratedRGB"/>
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="D59-AO-FIm">
                             <size key="itemSize" width="50" height="50"/>
                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            <inset key="sectionInset" minX="10" minY="10" maxX="10" maxY="10"/>
                         </collectionViewFlowLayout>
                         <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="xpu-Iq-Llo">
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="cell" id="xpu-Iq-Llo">
                                 <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -87,7 +105,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             </collectionViewCell>
                         </cells>
                         <connections>

@@ -17,14 +17,14 @@
 #import "VWorkspaceTool.h"
 #import "VCategoryWorkspaceTool.h"
 
-#import "VToolPickerViewController.h"
-
 @interface VWorkspaceViewController ()
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) NSArray *tools;
 @property (nonatomic, weak) IBOutlet UIToolbar *bottomToolbar;
+@property (weak, nonatomic) IBOutlet UIView *canvasView;
 
+@property (nonatomic, strong) id <VWorkspaceTool> selectedTool;
 @property (nonatomic, strong) UIViewController *toolPicker;
 
 @end
@@ -49,6 +49,16 @@
     return YES;
 }
 
+- (BOOL)shouldAutorotate
+{
+    return NO;
+}
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
 #pragma mark Lifecycle
 
 - (void)viewDidLoad
@@ -57,7 +67,8 @@
     
     NSMutableArray *toolBarItems = [[NSMutableArray alloc] init];
     [toolBarItems addObject:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil]];
-    for (id <VWorkspaceTool> tool in self.tools)
+    
+    [self.tools enumerateObjectsUsingBlock:^(id <VWorkspaceTool> tool, NSUInteger idx, BOOL *stop)
     {
         UIBarButtonItem *itemForTool = [[UIBarButtonItem alloc] initWithTitle:tool.title
                                                                         style:UIBarButtonItemStylePlain
@@ -65,7 +76,9 @@
                                                                        action:@selector(toolSelected:)];
         itemForTool.tintColor = [UIColor whiteColor];
         [toolBarItems addObject:itemForTool];
-    }
+        itemForTool.tag = idx;
+    }];
+    
     [toolBarItems addObject:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil]];
     self.bottomToolbar.items = toolBarItems;
 }
@@ -94,27 +107,29 @@
 {
     [self setSelectedBarButtonItem:sender];
     
-    VCategoryWorkspaceTool *category = [self.tools firstObject];
+    id <VWorkspaceTool> selectedTool = [self toolForTag:sender.tag];
     
-    if (self.toolPicker)
+    // Re-selected current tool should we dismiss?
+    if (selectedTool == self.selectedTool)
     {
-        [self.toolPicker.view removeFromSuperview];
+        return;
     }
     
-    self.toolPicker = [category toolPicker];
-    [self addChildViewController:self.toolPicker];
-    [self.view addSubview:self.toolPicker.view];
-    [self.toolPicker didMoveToParentViewController:self];
-    self.toolPicker.view.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[picker]|"
-                                                                      options:kNilOptions
-                                                                      metrics:nil
-                                                                        views:@{@"picker":self.toolPicker.view}]];
-    NSDictionary *verticalMetrics = @{@"toolbarHeight":@(CGRectGetHeight(self.bottomToolbar.bounds))};
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[picker(80.0)]-toolbarHeight-|"
-                                                                      options:kNilOptions
-                                                                      metrics:verticalMetrics
-                                                                        views:@{@"picker":self.toolPicker.view}]];
+    self.selectedTool = selectedTool;
+    
+    // Hide picker if any
+    if (self.toolPicker)
+    {
+        [self.toolPicker willMoveToParentViewController:nil];
+        [self.toolPicker.view removeFromSuperview];
+        [self.toolPicker didMoveToParentViewController:nil];
+    }
+    
+    // Show picker if category tool
+    if ([selectedTool isKindOfClass:[VCategoryWorkspaceTool class]])
+    {
+        [self showPickerForCategory:(VCategoryWorkspaceTool *)selectedTool];
+    }
 }
 
 #pragma mark - Private Methods
@@ -125,6 +140,34 @@
         item.tintColor = [UIColor whiteColor];
     }];
     itemToSelect.tintColor = [UIColor magentaColor];
+}
+
+- (id <VWorkspaceTool>)toolForTag:(NSInteger)tag
+{
+    if ((self.tools.count == 0) && ((NSInteger)self.tools.count < tag))
+    {
+        return nil;
+    }
+    return self.tools[tag];
+}
+
+- (void)showPickerForCategory:(VCategoryWorkspaceTool *)category
+{
+    self.toolPicker = [category toolPicker];
+    [self addChildViewController:self.toolPicker];
+    [self.view addSubview:self.toolPicker.view];
+    [self.toolPicker didMoveToParentViewController:self];
+    self.toolPicker.view.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[picker]|"
+                                                                      options:kNilOptions
+                                                                      metrics:nil
+                                                                        views:@{@"picker":self.toolPicker.view}]];
+    NSDictionary *verticalMetrics = @{@"toolbarHeight":@(CGRectGetHeight(self.bottomToolbar.bounds))};
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[canvas][picker]-toolbarHeight-|"
+                                                                      options:kNilOptions
+                                                                      metrics:verticalMetrics
+                                                                        views:@{@"picker":self.toolPicker.view,
+                                                                                @"canvas":self.canvasView}]];
 }
 
 @end
