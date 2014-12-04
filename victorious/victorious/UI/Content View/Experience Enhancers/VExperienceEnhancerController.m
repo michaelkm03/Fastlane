@@ -16,7 +16,7 @@
 #import "UIImageView+AFNetworking.h"
 #import "VFileCache.h"
 #import "VFileCache+VVoteType.h"
-#import "VVoteType.h"
+#import "VVoteType+Fetcher.h"
 #import "VVoteResult.h"
 #import "VTracking.h"
 #import "VPurchaseManager.h"
@@ -67,29 +67,17 @@
         self.experienceEnhancers = [self createExperienceEnhancersFromVoteTypes:voteTypes sequence:self.sequence];
         self.validExperienceEnhancers = self.experienceEnhancers;
         
-        // Pre-load any purchaseable products
-        NSArray *productIds = [self getProductIdentifiersFromExperienceEnhancerrs:self.validExperienceEnhancers];
+        // Pre-load any purchaseable products that might not have already been cached
+        // This is also called from VSettingsManager during app initialization, so ideally
+        // most of the purchaseable products are already fetched from the App Store.
+        // If not, we'll cache them now.
+        NSArray *productIds = [VVoteType productIdentifiersFromVoteTypes:voteTypes];
         [self.purchaseManager fetchProductsWithIdentifiers:productIds success:nil failure:nil];
         
         [self.enhancerBar reloadData];
         
     }
     return self;
-}
-
-- (NSArray *)getProductIdentifiersFromExperienceEnhancerrs:(NSArray *)experienceEnhancers
-{
-    NSMutableArray *productIdentifiers = [[NSMutableArray alloc] init];
-    
-    [experienceEnhancers enumerateObjectsUsingBlock:^(VExperienceEnhancer *experienceEnhancer, NSUInteger idx, BOOL *stop)
-    {
-        /*if ( experienceEnhancer.isPaid && experienceEnhancers.productIdentifier != nil )
-        {
-            [productIdentifiers addObject:experienceEnhancer.productIdentifier];
-        }*/
-    }];
-    
-    return [NSArray arrayWithArray:productIdentifiers];
 }
 
 - (NSArray *)createExperienceEnhancersFromVoteTypes:(NSArray *)voteTypes sequence:(VSequence *)sequence
@@ -106,14 +94,15 @@
           {
               if ( images == nil || images.count == 0 )
               {
-                  enhancer.iconImage = nil; // This effectively marks it as invalid and it will not display
+                  // This effectively marks it as invalid and it will not display
+                  // until the required images are loaded
+                  enhancer.iconImage = nil;
               }
               else
               {
                   enhancer.animationSequence = images;
                   enhancer.flightImage = images.firstObject;
               }
-              
           }];
          
          // Get icon image synhronously (we need it right away)

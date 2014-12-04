@@ -49,6 +49,7 @@
 #import "VImageLightboxViewController.h"
 #import "VUserProfileViewController.h"
 #import "VAuthorizationViewControllerFactory.h"
+#import "VPurchaseViewController.h"
 
 // Transitioning
 #import "VLightboxTransitioningDelegate.h"
@@ -357,7 +358,11 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(showLoginViewController:)
-                                                 name:VExperienceEnhancerBarDidRequiredLoginNotification
+                                                 name:VExperienceEnhancerBarDidRequireLoginNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(showPurchaseViewController:)
+                                                 name:VExperienceEnhancerBarDidRequirePurcahsePrompt
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(onRemixPublished:)
@@ -441,6 +446,26 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 }
 
 #pragma mark - Notification Handlers
+
+- (void)showPurchaseViewController:(NSNotification *)notification
+{
+    if ( notification.userInfo == nil )
+    {
+        return;
+    }
+    
+    VExperienceEnhancer *experienceEnhander = (VExperienceEnhancer *)notification.userInfo[ @"experienceEnhancer" ];
+    if ( experienceEnhander == nil )
+    {
+        return;
+    }
+    
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"ContentView" bundle:[NSBundle mainBundle]];
+    NSString *identifier = NSStringFromClass( [VPurchaseViewController class] );
+    VPurchaseViewController *purcahseViewController = [storyboard instantiateViewControllerWithIdentifier:identifier];
+    purcahseViewController.voteType = experienceEnhander.voteType;
+    [self presentViewController:purcahseViewController animated:YES completion:nil];
+}
 
 - (void)showLoginViewController:(NSNotification *)notification
 {

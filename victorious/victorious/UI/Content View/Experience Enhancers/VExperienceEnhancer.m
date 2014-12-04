@@ -53,18 +53,6 @@
     return self;
 }
 
-- (BOOL)hasRequiredImages
-{
-    if ( self.isBallistic && self.flightImage == nil )
-    {
-        return NO;
-    }
-    else
-    {
-        return self.iconImage != nil && self.animationSequence != nil && self.animationSequence.count > 0;
-    }
-}
-
 - (BOOL)isBallistic
 {
     return self.flightDuration > 0.0;
@@ -88,6 +76,11 @@
 - (void)resetStartingVoteCount:(NSUInteger)voteCount
 {
     self.startingVoteCount = voteCount;
+}
+
+- (BOOL)mustBePurchased
+{
+    return self.voteType.mustBePurchased;
 }
 
 @end

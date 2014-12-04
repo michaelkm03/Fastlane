@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="9O1-S6-jeB">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="9O1-S6-jeB">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
@@ -113,6 +113,57 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rXP-pS-SbF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="267" y="188"/>
+        </scene>
+        <!--Purchase View Controller-->
+        <scene sceneID="ttN-eJ-EZI">
+            <objects>
+                <viewController storyboardIdentifier="VPurchaseViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="3Oe-37-MmH" customClass="VPurchaseViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="9hY-zK-LuT"/>
+                        <viewControllerLayoutGuide type="bottom" id="83Y-vV-B4D"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="W2n-MH-IuH">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1tN-S4-eMF">
+                                <rect key="frame" x="38" y="33" width="245" height="374"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <mutableString key="text">What better way is there to express yourself than to temporarily vandalize content posted in this app?  If you're anything like us, you agree there just ain't one.  That's why we invented emotive ballstics!  Go hog wild with upvotes, downvotes, upside-down votes, side votes, LOLs, stabbings, lightning, kisses and more.  But wait just a second—you don't want to be limited to just the free ones, do you?  For only %@ you can purchase our premium emotive ballstics and show what a hardcore fan you really are.  Tap the "BUY" button below to get crackin'.</mutableString>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YY2-4u-epL">
+                                <rect key="frame" x="16" y="434" width="288" height="50"/>
+                                <color key="backgroundColor" red="1" green="0.035351606610000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="oTE-wt-fXp"/>
+                                </constraints>
+                                <state key="normal" title="BUY">
+                                    <color key="titleColor" red="0.96470588239999999" green="0.96470588239999999" blue="0.96470588239999999" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="buyTapped:" destination="3Oe-37-MmH" eventType="touchUpInside" id="2aS-m3-UCs"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="YY2-4u-epL" secondAttribute="trailing" constant="16" id="4WB-5J-UxR"/>
+                            <constraint firstItem="YY2-4u-epL" firstAttribute="leading" secondItem="W2n-MH-IuH" secondAttribute="leading" constant="16" id="TZs-fz-22d"/>
+                            <constraint firstItem="YY2-4u-epL" firstAttribute="top" secondItem="1tN-S4-eMF" secondAttribute="bottom" constant="27" id="Y2s-sQ-hCj"/>
+                            <constraint firstItem="83Y-vV-B4D" firstAttribute="top" secondItem="YY2-4u-epL" secondAttribute="bottom" constant="20" id="Yzc-jb-zmg"/>
+                            <constraint firstItem="1tN-S4-eMF" firstAttribute="leading" secondItem="W2n-MH-IuH" secondAttribute="leading" constant="38" id="dEv-SU-u5x"/>
+                            <constraint firstItem="1tN-S4-eMF" firstAttribute="top" secondItem="9hY-zK-LuT" secondAttribute="bottom" constant="33" id="f45-Md-3eg"/>
+                            <constraint firstAttribute="trailing" secondItem="1tN-S4-eMF" secondAttribute="trailing" constant="37" id="wcJ-ww-DiG"/>
+                        </constraints>
+                    </view>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="N12-GK-9Kd" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="737" y="188"/>
         </scene>
     </scenes>
     <resources>

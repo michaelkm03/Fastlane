@@ -50,6 +50,7 @@ extern NSString * const kVChannelURLSupport;
 
 - (void)clearVoteTypes;
 - (void)updateSettingsWithVoteTypes:(NSArray *)voteTypes;
+- (void)updateSettingsWithPurchasedProductIdentifier:(NSString *)productIdentifier;
 
 - (void)updateSettingsWithAppTracking:(VTracking *)tracking;
 

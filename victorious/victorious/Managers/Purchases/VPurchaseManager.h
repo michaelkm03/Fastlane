@@ -18,26 +18,10 @@
 @interface VPurchaseManager : NSObject
 
 /**
- An array of VProduct objects that represents any purchases made or restored
- during the lifetime of this instance of VPurchaseManager.
- */
-@property (nonatomic, readonly) NSArray *purchaseableProducts;
-
-/**
- An array of VProduct objects that contains the results of any calls
- to fetchProductsWithIdentifiers:success:failure.
- */
-@property (nonatomic, readonly) NSArray *purchasedProducts;
-
-/**
  Begin the process of purchasing the supplied product as an In-App Purchase
  through the App Store.  The user will seubsequently have to confirm and
  enter his or her iTunes credentials.  To get a product to purchase, first
  use fetchProductsWithIdentifiers:success:failsure.
- 
- In addition to providing the VProduct object that was just purchased, that same product
- and any other purchased products as a parameter in the success callback, this instance
- VPurchaseManager provides the same VProduct objects in its purchasedProducts property.
  */
 - (void)purchaseProduct:(VProduct *)product
                 success:(VPurchaseSuccessBlock)successCallback
@@ -48,10 +32,6 @@
  supplied to the user.  This is necessary if the user has re-installed the app after 
  having previously made purchases.  The user will seubsequently have to confirm and
  enter his or her iTunes credentials.
- 
- In addition to providing an array of VProduct objects for each of the previously
- purchased products as a parameter in the success callback, this instance VPurchaseManager
- provides the same VProduct objects in its purchasedProducts property.
  */
 - (void)restorePurchasesSuccess:(VPurchaseSuccessBlock)successCallback
                         failure:(VPurchaseFailBlock)failureCallback;
@@ -64,5 +44,7 @@
 - (void)fetchProductsWithIdentifiers:(NSArray *)productIdenfiters
                              success:(VProductsRequestSuccessBlock)successCallback
                              failure:(VProductsRequestFailureBlock)failureCallback;
+
+- (VProduct *)purcahseableProductForIdenfitier:(NSString *)identifier;
 
 @end

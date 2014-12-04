@@ -24,5 +24,6 @@
 @dynamic settingsIndex;
 @dynamic isPaid;
 @dynamic productIdentifier;
+@dynamic isPurchased;
 
 @end

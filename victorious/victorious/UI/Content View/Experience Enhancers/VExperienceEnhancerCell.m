@@ -7,7 +7,6 @@
 //
 
 #import "VExperienceEnhancerCell.h"
-
 #import "VThemeManager.h"
 
 static const CGFloat kVExperienceEnhancerCellWidth = 50.0f;
@@ -75,6 +74,11 @@ static const CGFloat kTopSpaceIconCompactVertical = 5.0f;
     _experienceEnhancerIcon = experienceEnhancerIcon;
     self.experienceEnhancerIconImageView.image = [_experienceEnhancerIcon imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     self.experienceEnhancerIconImageView.tintColor = [UIColor whiteColor];
+}
+
+- (void)setIsPurchaseable:(BOOL)purchaseable
+{
+    // TODO: Show purchaseable state
 }
 
 @end

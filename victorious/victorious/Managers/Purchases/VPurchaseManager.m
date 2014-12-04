@@ -46,17 +46,6 @@
 
 #pragma mark - Public methods
 
-- (NSArray *)purchasedProducts
-{
-    return nil;
-}
-
-- (NSArray *)purchaseableProducts
-{
-    
-    return nil;
-}
-
 - (void)purchaseProduct:(VProduct *)product success:(VPurchaseSuccessBlock)successCallback failure:(VPurchaseFailBlock)failureCallback
 {
     self.activePurchase = [[VPurchase alloc] initWithProduct:product success:successCallback failure:failureCallback];
@@ -101,31 +90,31 @@
                              success:(VProductsRequestSuccessBlock)successCallback
                              failure:(VProductsRequestFailureBlock)failureCallback
 {
-    if ( productIdenfiters == nil || productIdenfiters.count == 0 )
+    NSArray *uncachedProductIndentifiers = [self productIdentifiersFilteredForUncachedProducts:productIdenfiters];
+    if ( uncachedProductIndentifiers == nil || uncachedProductIndentifiers.count == 0 )
     {
         if ( successCallback != nil )
         {
-            successCallback( self.purchaseableProducts );
+            NSArray *products = nil; //[[[self class] sharedCache] purchaseableProducts]
+            successCallback( products );
         }
         return;
     }
     
-    NSArray *uncachedProductIndentifiers = [self productIdentifiersFilteredForUncachedProducts:productIdenfiters];
     self.activeProductRequest = [[VProductsRequest alloc] initWithProductIdentifiers:uncachedProductIndentifiers
                                                                              success:successCallback
                                                                              failure:failureCallback];
 #if SHOULD_SIMULATE_ACTIONS
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(SIMULATION_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
     {
-        NSArray *testIdentifiers = @[ @"test1", @"test2", @"test3" ];
 #if SIMULATE_FETCH_PRODUCTS_ERROR
-        for ( NSString *identifier in testIdentifiers )
+        for ( NSString *identifier in uncachedProductIndentifiers )
         {
             [self.activeProductRequest productIdentifierFailedToFetch:identifier];
         }
         [self productsRequestDidFailWithError:[NSError errorWithDomain:@"Failed to fetch products" code:-1 userInfo:nil]];
 #else
-        for ( __unused NSString *identifier in testIdentifiers )
+        for ( __unused NSString *identifier in uncachedProductIndentifiers )
         {
             [self.activeProductRequest productFetched:[[VProduct alloc] init]];
         }
@@ -141,13 +130,24 @@ return;
     [request start];
 }
 
+- (VProduct *)purcahseableProductForIdenfitier:(NSString *)identifier
+{
+    return [[[[self class] sharedCache] purchaseableProducts] objectForKey:identifier];
+}
+
 #pragma mark - StoreKit Helpers
 
 - (NSArray *)productIdentifiersFilteredForUncachedProducts:(NSArray *)productIdentifiers
 {
-    NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL( NSString* identifier, NSDictionary *bindings)
+    if ( productIdentifiers == nil )
     {
-        return [[[[self class] sharedCache] purchaseableProducts] valueForKey:identifier] != nil;
+        return nil;
+    }
+    
+    NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL (NSString *identifier, NSDictionary *bindings)
+    {
+        BOOL isCached = [[[[self class] sharedCache] purchaseableProducts] objectForKey:identifier] != nil;
+        return !isCached;
     }];
     return [productIdentifiers filteredArrayUsingPredicate:predicate];
 }
@@ -216,7 +216,7 @@ return;
 #endif
     if ( self.activePurchase != nil && isValidProduct )
     {
-        [[[[self class] sharedCache] purchasedProducts] setValue:self.activePurchase.product forKey:productIdentifier];
+        [[[[self class] sharedCache] purchasedProducts] setObject:self.activePurchase.product forKey:productIdentifier];
         self.activePurchase.successCallback( @[ self.activePurchase.product ] );
         self.activePurchase = nil;
     }
@@ -228,9 +228,15 @@ return;
     {
         [self.activeProductRequest.products enumerateObjectsUsingBlock:^(VProduct *product, NSUInteger idx, BOOL *stop)
          {
-             [[[[self class] sharedCache] purchaseableProducts] setValue:product forKey:product.storeKitProduct.productIdentifier];
+#if SHOULD_SIMULATE_ACTIONS
+             NSString *productIdentifier = [NSString stringWithFormat:@"test_%lu", (unsigned long)idx];
+#else
+             NSString *productIdentifier = product.storeKitProduct.productIdentifier;
+#endif
+             [[[[self class] sharedCache] purchaseableProducts] setObject:product forKey:productIdentifier];
          }];
-        self.activeProductRequest.successCallback( self.purchaseableProducts );
+        NSArray *products = nil; //[[[self class] sharedCache] purchaseableProducts]
+        self.activeProductRequest.successCallback( products );
     }
     self.activeProductRequest = nil;
 }

@@ -26,5 +26,6 @@
 @property (nonatomic, retain) NSString *imageContentMode;
 @property (nonatomic, retain) NSString *productIdentifier;
 @property (nonatomic, retain) VTracking *tracking;
+@property (nonatomic, retain) NSNumber *isPurchased;
 
 @end

@@ -21,10 +21,9 @@ NSString * const VVoteTypeImageIndexReplacementMacro = @"XXXXX";
     {
         if ( voteType.isPaid && voteType.productIdentifier != nil )
         {
-            [productIdentifiers addObject:voteType];
+            [productIdentifiers addObject:voteType.productIdentifier];
         }
     }];
-    
     return [NSArray arrayWithArray:productIdentifiers];
 }
 
@@ -35,6 +34,19 @@ NSString * const VVoteTypeImageIndexReplacementMacro = @"XXXXX";
     self.name.length > 0 &&
     self.iconImage != nil &&
     self.iconImage.length != 0;
+}
+
+- (BOOL)mustBePurchased
+{
+    return self.productIdentifier != nil && self.isPaid && !self.isPurchased.boolValue;
+}
+
+- (void)purchaseWithProductIdentifier:(NSString *)productIdentifier
+{
+    if ( self.mustBePurchased && [productIdentifier isEqualToString:self.productIdentifier] )
+    {
+        self.isPurchased = @YES;
+    }
 }
 
 - (BOOL)hasValidTrackingData

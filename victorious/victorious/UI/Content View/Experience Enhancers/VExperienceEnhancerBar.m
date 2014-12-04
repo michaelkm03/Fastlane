@@ -12,9 +12,11 @@
 #import "VLargeNumberFormatter.h"
 #import "VObjectManager+Login.h"
 
-NSString * const VExperienceEnhancerBarDidRequiredLoginNotification = @"VExperienceEnhancerBarDidRequiredLoginNotification";
+NSString * const VExperienceEnhancerBarDidRequireLoginNotification = @"VExperienceEnhancerBarDidRequiredLoginNotification";
+NSString * const VExperienceEnhancerBarDidRequirePurcahsePrompt = @"VExperienceEnhancerBarDidRequirePurcahsePrompt";
 
 const CGFloat VExperienceEnhancerDesiredMinimumHeight = 60.0f;
+
 static const CGFloat kExperienceEnhancerSelectionScale = 1.5f;
 static const CGFloat kExperienceEnhancerSelectionAnimationGrowDuration = 0.1f;
 static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
@@ -110,6 +112,14 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
     VExperienceEnhancer *enhancerForIndexPath = [self.enhancers objectAtIndex:indexPath.row];
     experienceEnhancerCell.experienceEnhancerTitle = [self.numberFormatter stringForInteger:enhancerForIndexPath.totalVoteCount];
     experienceEnhancerCell.experienceEnhancerIcon = enhancerForIndexPath.iconImage;
+    // Check if the user must buy this experience enhancer first
+   
+    if ( enhancerForIndexPath.mustBePurchased )
+    {
+        // TODO: Show locked state
+        experienceEnhancerCell.alpha = 0.5f;
+    }
+        
     return experienceEnhancerCell;
 }
 
@@ -124,30 +134,47 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    // Check if the user is logged in first
     if ( ![VObjectManager sharedManager].authorized )
     {
-        [[NSNotificationCenter defaultCenter] postNotificationName:VExperienceEnhancerBarDidRequiredLoginNotification object:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:VExperienceEnhancerBarDidRequireLoginNotification object:nil];
         return;
     }
     
-    
     VExperienceEnhancer *enhancerForIndexPath = [self.enhancers objectAtIndex:indexPath.row];
+    
+    // Check if the user must buy this experience enhancer first
+    if ( enhancerForIndexPath.mustBePurchased  )
+    {
+        NSDictionary *userInfo = @{ @"experienceEnhancer" : enhancerForIndexPath };
+        [[NSNotificationCenter defaultCenter] postNotificationName:VExperienceEnhancerBarDidRequirePurcahsePrompt object:nil userInfo:userInfo];
+        return;
+    }
+    
+    // Incrememnt the vote count
     [enhancerForIndexPath vote];
     
+    // Update the cell with the incremenet vote count
     VExperienceEnhancerCell *experienceEnhancerCell = (VExperienceEnhancerCell *)[collectionView cellForItemAtIndexPath:indexPath];
     experienceEnhancerCell.experienceEnhancerTitle = [self.numberFormatter stringForInteger:enhancerForIndexPath.totalVoteCount];
     
+    // Call the selection block (configured in VNewContentViewController) to play the animations
     if (self.selectionBlock)
     {
         UICollectionViewCell *selectedCell = [self.collectionView cellForItemAtIndexPath:indexPath];
-        CGPoint convertedCenter = [selectedCell.superview convertPoint:selectedCell.center
-                                                                toView:self];
+        CGPoint convertedCenter = [selectedCell.superview convertPoint:selectedCell.center toView:self];
         self.selectionBlock(enhancerForIndexPath, convertedCenter);
     }
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didHighlightItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    VExperienceEnhancer *enhancerForIndexPath = [self.enhancers objectAtIndex:indexPath.row];
+    if ( enhancerForIndexPath.mustBePurchased  )
+    {
+        return;
+    }
+    
     UICollectionViewCell *selectedCell = [self.collectionView cellForItemAtIndexPath:indexPath];
     [UIView animateWithDuration:kExperienceEnhancerSelectionAnimationGrowDuration
                           delay:0.0f
@@ -161,6 +188,12 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
 
 - (void)collectionView:(UICollectionView *)collectionView didUnhighlightItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    VExperienceEnhancer *enhancerForIndexPath = [self.enhancers objectAtIndex:indexPath.row];
+    if ( enhancerForIndexPath.mustBePurchased  )
+    {
+        return;
+    }
+    
     UICollectionViewCell *selectedCell = [self.collectionView cellForItemAtIndexPath:indexPath];
     [UIView animateWithDuration:kExperienceEnhancerSelectionAnimationDecayDuration
                           delay:0.0f

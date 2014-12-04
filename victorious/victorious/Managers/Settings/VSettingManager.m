@@ -110,16 +110,34 @@ NSString * const kVPrivacyUrl = @"url.privacy";
                               }];
     self.voteTypes = [voteTypes filteredArrayUsingPredicate:predicate];
     
+#warning testing only
+    [voteTypes enumerateObjectsUsingBlock:^(VVoteType *voteType, NSUInteger idx, BOOL *stop)
+    {
+        voteType.isPaid = @YES;
+        voteType.productIdentifier = [NSString stringWithFormat:@"test_%lu", (unsigned long)idx];
+    }];
+    
     [self.fileCache cacheImagesForVoteTypes:voteTypes];
     NSArray *productIdentifiers = [VVoteType productIdentifiersFromVoteTypes:voteTypes];
     [[[VPurchaseManager alloc] init] fetchProductsWithIdentifiers:productIdentifiers success:^(NSArray *products)
     {
-        // TODO: Use nil instead of block here
+        // TODO: Use nil instead of block here, this is fire and forget
     }
                                                           failure:^(NSError *error)
-    {
-        // TODO: Use nil instead of block here
+     {
+         // TODO: Use nil instead of block here, this is fire and forget
     }];
+}
+
+- (void)updateSettingsWithPurchasedProductIdentifier:(NSString *)productIdentifier
+{
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"productIdentifier == %@", productIdentifier];
+    NSArray *matches = [self.voteTypes filteredArrayUsingPredicate:predicate];
+    if ( matches.firstObject != nil && [matches.firstObject isKindOfClass:[VVoteType class]] )
+    {
+        VVoteType *voteType = matches.firstObject;
+        [voteType purchaseWithProductIdentifier:productIdentifier];
+    }
 }
 
 - (void)updateSettingsWithDictionary:(NSDictionary *)dictionary

@@ -8,9 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-const CGFloat VExperienceEnhancerDesiredMinimumHeight;
-
-extern NSString * const VExperienceEnhancerBarDidRequiredLoginNotification;
+extern const CGFloat VExperienceEnhancerDesiredMinimumHeight;
+extern NSString * const VExperienceEnhancerBarDidRequirePurcahsePrompt;
+extern NSString * const VExperienceEnhancerBarDidRequireLoginNotification;
 
 @class VExperienceEnhancerBar;
 @class VExperienceEnhancer;

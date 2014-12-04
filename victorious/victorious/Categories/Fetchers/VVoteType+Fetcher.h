@@ -14,10 +14,13 @@ extern NSString * const VVoteTypeImageIndexReplacementMacro;
 
 + (NSArray *)productIdentifiersFromVoteTypes:(NSArray *)voteTypes;
 
+- (void)purchaseWithProductIdentifier:(NSString *)productIdentifier;
+
 @property (nonatomic, readonly) UIViewContentMode contentMode;
 @property (nonatomic, readonly) NSArray *images;
 @property (nonatomic, readonly) BOOL canCreateImages;
 @property (nonatomic, readonly) BOOL containsRequiredData;
 @property (nonatomic, readonly) BOOL hasValidTrackingData;
+@property (nonatomic, readonly) BOOL mustBePurchased;
 
 @end
