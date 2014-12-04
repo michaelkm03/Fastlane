@@ -60,6 +60,15 @@
     [super viewDidAppear:animated];
 }
 
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    [self willMoveToParentViewController:nil];
+    [self.view removeFromSuperview];
+    [self removeFromParentViewController];
+}
+
 - (void)setVastTag:(NSString *)vastTag
 {
 #if DEBUG && EnableOpenXLogging

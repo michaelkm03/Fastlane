@@ -85,8 +85,9 @@
     [self.adPlayerViewController assignMonetizationPartner:monetizationPartner withDetails:details];
     self.adPlayerViewController.delegate = self;
     self.adPlayerViewController.view.hidden = NO;
-    [self.adPlayerViewController start];
     [self.contentView addSubview:self.adPlayerViewController.view];
+    
+    [self.adPlayerViewController start];
 }
 
 - (void)resumeContentPlayback

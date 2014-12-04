@@ -611,6 +611,8 @@
 		DB6FDC3A19C10CC600CEF5BF /* VStreamCellHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = DB6FDC3919C10CC600CEF5BF /* VStreamCellHeaderView.m */; };
 		DB82857A19F6DD3D006C6E2F /* VAdPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = DB82857919F6DD3C006C6E2F /* VAdPlayerView.m */; };
 		DB8D3A1319803A03005DD36D /* VHashTags.m in Sources */ = {isa = PBXBuildFile; fileRef = DB8D3A1219803A03005DD36D /* VHashTags.m */; };
+		DBAD6C9C1A2FD67F00AB5A4B /* libTremorVideoAd.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DBAD6C9A1A2FD67F00AB5A4B /* libTremorVideoAd.a */; };
+		DBAD6C9F1A2FD7B700AB5A4B /* VTremorAdViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBAD6C9E1A2FD7B700AB5A4B /* VTremorAdViewController.m */; };
 		DBAD776719F7752D00B6A939 /* VAdBreak+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = DBAD776619F7752D00B6A939 /* VAdBreak+RestKit.m */; };
 		DBAD88FD19F5B83A00D678A0 /* libOpenXMSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DBAD88FB19F5B83A00D678A0 /* libOpenXMSDK.a */; };
 		DBAD88FE19F5B83B00D678A0 /* OpenXMSDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DBAD88FC19F5B83A00D678A0 /* OpenXMSDKResources.bundle */; };
@@ -1687,6 +1689,10 @@
 		DB82857919F6DD3C006C6E2F /* VAdPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAdPlayerView.m; sourceTree = "<group>"; };
 		DB8D3A1119803A03005DD36D /* VHashTags.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHashTags.h; sourceTree = "<group>"; };
 		DB8D3A1219803A03005DD36D /* VHashTags.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHashTags.m; sourceTree = "<group>"; };
+		DBAD6C9A1A2FD67F00AB5A4B /* libTremorVideoAd.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libTremorVideoAd.a; sourceTree = "<group>"; };
+		DBAD6C9B1A2FD67F00AB5A4B /* TremorVideoAd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TremorVideoAd.h; sourceTree = "<group>"; };
+		DBAD6C9D1A2FD7B700AB5A4B /* VTremorAdViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTremorAdViewController.h; sourceTree = "<group>"; };
+		DBAD6C9E1A2FD7B700AB5A4B /* VTremorAdViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTremorAdViewController.m; sourceTree = "<group>"; };
 		DBAD776519F7752D00B6A939 /* VAdBreak+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VAdBreak+RestKit.h"; sourceTree = "<group>"; };
 		DBAD776619F7752D00B6A939 /* VAdBreak+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VAdBreak+RestKit.m"; sourceTree = "<group>"; };
 		DBAD88ED19F5B83A00D678A0 /* OpenXMSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenXMSDK.h; sourceTree = "<group>"; };
@@ -1740,6 +1746,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DBAD6C9C1A2FD67F00AB5A4B /* libTremorVideoAd.a in Frameworks */,
 				A7F8DD631A0B1A8B00F82256 /* WebKit.framework in Frameworks */,
 				DBAD890A19F5BBAD00D678A0 /* CoreLocation.framework in Frameworks */,
 				DBAD890819F5BB9C00D678A0 /* MediaPlayer.framework in Frameworks */,
@@ -3967,6 +3974,15 @@
 			path = HashTags;
 			sourceTree = "<group>";
 		};
+		DBAD6C991A2FD49300AB5A4B /* Tremor */ = {
+			isa = PBXGroup;
+			children = (
+				DBAD6C9A1A2FD67F00AB5A4B /* libTremorVideoAd.a */,
+				DBAD6C9B1A2FD67F00AB5A4B /* TremorVideoAd.h */,
+			);
+			path = Tremor;
+			sourceTree = "<group>";
+		};
 		DBAD775B19F711D900B6A939 /* Monetization */ = {
 			isa = PBXGroup;
 			children = (
@@ -3980,6 +3996,8 @@
 				DB34DC5B1A09B5AF001EC711 /* VLiveRailAdViewController.m */,
 				DBB1A04E1A00AF4500E16D62 /* VOpenXAdViewController.h */,
 				DBB1A04F1A00AF4500E16D62 /* VOpenXAdViewController.m */,
+				DBAD6C9D1A2FD7B700AB5A4B /* VTremorAdViewController.h */,
+				DBAD6C9E1A2FD7B700AB5A4B /* VTremorAdViewController.m */,
 			);
 			path = Monetization;
 			sourceTree = "<group>";
@@ -3989,6 +4007,7 @@
 			children = (
 				DBC45CD219F4C496003079C4 /* LiveRail */,
 				DBAD88EB19F5B83A00D678A0 /* OpenXMSDK */,
+				DBAD6C991A2FD49300AB5A4B /* Tremor */,
 			);
 			path = "Ad Networks";
 			sourceTree = "<group>";
@@ -4089,7 +4108,7 @@
 				ORGANIZATIONNAME = Victorious;
 				TargetAttributes = {
 					BE171D751868BE64004E5202 = {
-						DevelopmentTeam = ABHRJGEGKA;
+						DevelopmentTeam = 82T26U698A;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 0;
@@ -4452,6 +4471,7 @@
 				A769C3ED1A13176700698D0C /* VWebContentViewController.m in Sources */,
 				DBB1A04A1A0025F600E16D62 /* VAdViewController.m in Sources */,
 				0314D46919B46B5E00FA363C /* VSetExpirationViewController.m in Sources */,
+				DBAD6C9F1A2FD7B700AB5A4B /* VTremorAdViewController.m in Sources */,
 				0314D05E19B4663C00FA363C /* UINavigationController+RotationMethodForwarding.m in Sources */,
 				BE88FF8D1A00060E0064AB28 /* UIViewController+VNavMenu.m in Sources */,
 				BE11F27119CCF5B300DEC776 /* VObjectManager+Streams.m in Sources */,
@@ -5095,6 +5115,7 @@
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/GoogleAnalytics",
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/Ad\\ Networks/LiveRail",
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/Ad\\ Networks/OpenXMSDK",
+					"$(SRCROOT)/3rd\\ Party\\ SDKs/Ad\\ Networks/Tremor",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -5258,6 +5279,7 @@
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/GoogleAnalytics",
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/Ad\\ Networks/LiveRail",
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/Ad\\ Networks/OpenXMSDK",
+					"$(SRCROOT)/3rd\\ Party\\ SDKs/Ad\\ Networks/Tremor",
 				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -5288,6 +5310,7 @@
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/GoogleAnalytics",
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/Ad\\ Networks/LiveRail",
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/Ad\\ Networks/OpenXMSDK",
+					"$(SRCROOT)/3rd\\ Party\\ SDKs/Ad\\ Networks/Tremor",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -5428,6 +5451,7 @@
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/GoogleAnalytics",
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/Ad\\ Networks/LiveRail",
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/Ad\\ Networks/OpenXMSDK",
+					"$(SRCROOT)/3rd\\ Party\\ SDKs/Ad\\ Networks/Tremor",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";

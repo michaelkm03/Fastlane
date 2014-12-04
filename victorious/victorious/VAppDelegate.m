@@ -34,6 +34,8 @@
 #import "VGoogleAnalyticsTracking.h"
 #import "VFirstInstallManager.h"
 
+#import "TremorVideoAd.h"
+
 @import AVFoundation;
 @import MediaPlayer;
 @import CoreLocation;
@@ -49,6 +51,11 @@ static BOOL isRunningTests(void) __attribute__((const));
         return YES;
     }
     
+    // Tremor Ad Network
+    NSString *appID = @"test";
+    [TremorVideoAd initWithAppID:appID];
+    [TremorVideoAd start];
+
     [ADEumInstrumentation initWithKey:@"AD-AAB-AAA-JWA"];
     
     [TestFlight setOptions:@{ TFOptionReportCrashes: @NO }];
