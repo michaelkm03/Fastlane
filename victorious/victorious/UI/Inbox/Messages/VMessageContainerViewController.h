@@ -8,12 +8,13 @@
 
 #import "VKeyboardBarContainerViewController.h"
 
-@class VUser;
+@class VUnreadMessageCountCoordinator, VUser;
 
 @interface VMessageContainerViewController : VKeyboardBarContainerViewController
 
-@property (nonatomic, readonly)          VUser  *otherUser;
-@property (nonatomic, weak)     IBOutlet UIView *busyView;
+@property (nonatomic, readonly) VUser  *otherUser;
+@property (nonatomic, weak) IBOutlet UIView *busyView;
+@property (nonatomic, strong) VUnreadMessageCountCoordinator *messageCountCoordinator;
 
 + (instancetype)messageViewControllerForUser:(VUser *)otherUser;
 

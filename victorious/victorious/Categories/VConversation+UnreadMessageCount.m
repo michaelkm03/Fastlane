@@ -7,36 +7,24 @@
 //
 
 #import "VConversation+UnreadMessageCount.h"
-
 #import "VMessage.h"
-
 #import "VObjectManager.h"
 #import "VUser.h"
-#import "VUnreadConversation.h"
 
 @implementation VConversation (UnreadMessageCount)
 
-- (void)markMessagesAsRead
+- (NSInteger)markMessagesAsRead
 {
     NSInteger unreadMessages = 0;
-    for (VMessage *message in  self.messages)
+    for (VMessage *message in self.messages)
     {
         if (!message.isRead.boolValue)
         {
             unreadMessages++;
             message.isRead = @(YES);
-            [message.managedObjectContext saveToPersistentStore:nil];
         }
     }
-    
-    NSManagedObjectID *objectId = [VObjectManager sharedManager].mainUser.unreadConversation.objectID;
-    if (objectId)//Since the object may be nil.
-    {
-        VUnreadConversation *unreadCounts = (VUnreadConversation *)[self.managedObjectContext objectWithID:objectId];
-        unreadCounts.count = @(unreadCounts.count.integerValue - unreadMessages);
-        [self.managedObjectContext saveToPersistentStore:nil];
-        [[UIApplication sharedApplication] setApplicationIconBadgeNumber:MAX(unreadCounts.count.integerValue, 0)];
-    }
+    return unreadMessages;
 }
 
 @end

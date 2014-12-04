@@ -6,15 +6,17 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "VConstants.h"
 #import "VObjectManager+DirectMessaging.h"
 #import "VObjectManager+Private.h"
 #import "VObjectManager+Pagination.h"
 
 #import "VMessage.h"
 #import "VUser.h"
-#import "VUnreadConversation.h"
 
 #import "VConversation+RestKit.h"
+
+static NSString * const kUnreadCountKey = @"unread_count";
 
 @implementation VObjectManager (DirectMessaging)
 
@@ -78,7 +80,7 @@
                                                successBlock:(VSuccessBlock)success
                                                   failBlock:(VFailBlock)fail
 {
-    //Mark the most recent message as read so there is no server delay.
+    // Mark the most recent message as read so there is no server delay.
     conversation.isRead = @(YES);
     [conversation.managedObjectContext saveToPersistentStore:nil];
     
@@ -90,29 +92,52 @@
     
 }
 
-- (RKManagedObjectRequestOperation *)updateUnreadMessageCountWithSuccessBlock:(VSuccessBlock)success
-                                                              failBlock:(VFailBlock)fail
+- (RKManagedObjectRequestOperation *)unreadMessageCountWithCompletion:(VUnreadMessageCountCompletionBlock)completion
 {
-    
-    VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    VSuccessBlock success = ^(NSOperation *operation, NSDictionary *fullResponse, NSArray *resultObjects)
     {
-        if ([resultObjects firstObject])
+        if ( completion == nil )
         {
-            self.mainUser.unreadConversation = (VUnreadConversation *)[self.mainUser.managedObjectContext objectWithID:[[resultObjects firstObject] objectID]];
-            
-            [[UIApplication sharedApplication] setApplicationIconBadgeNumber:self.mainUser.unreadConversation.count.integerValue];
+            return;
         }
-    
-        if (success)
+        
+        if ( ![fullResponse isKindOfClass:[NSDictionary class]] )
         {
-            success(operation, fullResponse, resultObjects);
+            completion(nil, nil);
+            return;
+        }
+        NSDictionary *payload = fullResponse[kVPayloadKey];
+        
+        if ( ![payload isKindOfClass:[NSDictionary class]] )
+        {
+            completion(nil, nil);
+            return;
+        }
+        
+        NSNumber *unreadCount = payload[kUnreadCountKey];
+        
+        if ( [unreadCount isKindOfClass:[NSNumber class]] )
+        {
+            completion(unreadCount, nil);
+        }
+        else
+        {
+            completion(nil, nil);
+        }
+    };
+    
+    VFailBlock fail = ^(NSOperation *operation, NSError *error)
+    {
+        if (completion)
+        {
+            completion(nil, error);
         }
     };
     
     return [self GET:@"/api/message/unread_message_count"
               object:nil
           parameters:nil
-        successBlock:fullSuccess
+        successBlock:success
            failBlock:fail];
 }
 
