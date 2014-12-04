@@ -9,9 +9,11 @@
 #import "UIViewController+VNavMenu.h"
 #import "UIViewController+VSideMenuViewController.h"
 
-// DON'T COMMIT ME
+// Dependency Management
 #import "VHasManagedDependencies.h"
 #import "VDependencyManager.h"
+
+// Runtime
 #import <objc/runtime.h>
 
 //Create Sequence import
