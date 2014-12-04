@@ -9,7 +9,8 @@
 #import <UIKit/UIKit.h>
 
 #import "VHasManagedDependencies.h"
+#import "VToolPicker.h"
 
-@interface VToolPickerViewController : UICollectionViewController <VHasManagedDependancies>
+@interface VToolPickerViewController : UICollectionViewController <VHasManagedDependancies, VToolPicker>
 
 @end

@@ -10,6 +10,7 @@
 
 #import "VDependencyManager.h"
 #import "VDependencyManager+VWorkspaceTool.h"
+#import "VToolPicker.h"
 
 static NSString * const kTitleKey = @"title";
 static NSString * const kIconKey = @"icon";
@@ -22,7 +23,7 @@ static NSString * const kPickerKey = @"picker";
 @property (nonatomic, strong) UIImage *icon;
 @property (nonatomic, strong) NSArray *subTools;
 
-@property (nonatomic, strong, readwrite) UIViewController *toolPicker;
+@property (nonatomic, strong, readwrite) UIViewController  *toolPicker;
 
 @end
 
@@ -38,6 +39,7 @@ static NSString * const kPickerKey = @"picker";
         _title = [dependencyManager stringForKey:kTitleKey];
         _subTools = [dependencyManager tools];
         _toolPicker = [dependencyManager viewControllerForKey:kPickerKey];
+        [(id<VToolPicker>)_toolPicker setTools:_subTools];
     }
     return self;
 }
