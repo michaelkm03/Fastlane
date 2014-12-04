@@ -60,9 +60,11 @@
             
         case VMonetizationPartnerOpenX:
             self.adViewController = [[VOpenXAdViewController alloc] initWithNibName:nil bundle:nil];
+            break;
             
         case VMonetizationPartnerTremor:
             self.adViewController = [[VTremorAdViewController alloc] initWithNibName:nil bundle:nil];
+            break;
             
         default:
             break;
