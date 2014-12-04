@@ -14,6 +14,20 @@ NSString * const VVoteTypeImageIndexReplacementMacro = @"XXXXX";
 
 @implementation VVoteType (Fetcher)
 
++ (NSArray *)productIdentifiersFromVoteTypes:(NSArray *)voteTypes
+{
+    NSMutableArray *productIdentifiers = [[NSMutableArray alloc] init];
+    [voteTypes enumerateObjectsUsingBlock:^(VVoteType *voteType, NSUInteger idx, BOOL *stop)
+    {
+        if ( voteType.isPaid && voteType.productIdentifier != nil )
+        {
+            [productIdentifiers addObject:voteType];
+        }
+    }];
+    
+    return [NSArray arrayWithArray:productIdentifiers];
+}
+
 - (BOOL)containsRequiredData
 {
     return  self.canCreateImages &&

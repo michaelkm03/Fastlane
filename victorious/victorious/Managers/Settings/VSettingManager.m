@@ -17,6 +17,7 @@
 #import "VFileCache+VVoteType.h"
 #import "VVoteType+Fetcher.h"
 #import "VTracking.h"
+#import "VPurchaseManager.h"
 
 //Settings
 NSString * const kVCaptureVideoQuality =   @"capture";
@@ -110,6 +111,15 @@ NSString * const kVPrivacyUrl = @"url.privacy";
     self.voteTypes = [voteTypes filteredArrayUsingPredicate:predicate];
     
     [self.fileCache cacheImagesForVoteTypes:voteTypes];
+    NSArray *productIdentifiers = [VVoteType productIdentifiersFromVoteTypes:voteTypes];
+    [[[VPurchaseManager alloc] init] fetchProductsWithIdentifiers:productIdentifiers success:^(NSArray *products)
+    {
+        // TODO: Use nil instead of block here
+    }
+                                                          failure:^(NSError *error)
+    {
+        // TODO: Use nil instead of block here
+    }];
 }
 
 - (void)updateSettingsWithDictionary:(NSDictionary *)dictionary

@@ -20,11 +20,9 @@
 
 #import "VPurchaseManager.h"
 #import "VPurchase.h"
+#import "VPurchaseManagerCache.h"
 
 @interface VPurchaseManager() <SKProductsRequestDelegate, SKPaymentTransactionObserver>
-
-@property (nonatomic, readwrite) NSArray *purchaseableProducts;
-@property (nonatomic, readwrite) NSArray *purchasedProducts;
 
 // These are products currently in some state or purchasing
 @property (nonatomic, strong) VPurchase *activePurchase;
@@ -35,20 +33,29 @@
 
 @implementation VPurchaseManager
 
-- (instancetype)init
++ (VPurchaseManagerCache *)sharedCache
 {
-    self = [super init];
-    if (self)
-    {
-        _purchaseableProducts = @[];
-        
-         // TODO: Load purchases products (however that's going to be done)
-        _purchasedProducts = @[];
-    }
-    return self;
+    static VPurchaseManagerCache *cache;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^(void)
+                  {
+                      cache = [[VPurchaseManagerCache alloc] init];
+                  });
+    return cache;
 }
 
 #pragma mark - Public methods
+
+- (NSArray *)purchasedProducts
+{
+    return nil;
+}
+
+- (NSArray *)purchaseableProducts
+{
+    
+    return nil;
+}
 
 - (void)purchaseProduct:(VProduct *)product success:(VPurchaseSuccessBlock)successCallback failure:(VPurchaseFailBlock)failureCallback
 {
@@ -98,12 +105,13 @@
     {
         if ( successCallback != nil )
         {
-            successCallback( @[] );
+            successCallback( self.purchaseableProducts );
         }
         return;
     }
     
-    self.activeProductRequest = [[VProductsRequest alloc] initWithProductIdentifiers:productIdenfiters
+    NSArray *uncachedProductIndentifiers = [self productIdentifiersFilteredForUncachedProducts:productIdenfiters];
+    self.activeProductRequest = [[VProductsRequest alloc] initWithProductIdentifiers:uncachedProductIndentifiers
                                                                              success:successCallback
                                                                              failure:failureCallback];
 #if SHOULD_SIMULATE_ACTIONS
@@ -127,12 +135,22 @@
 return;
 #endif
 
-    SKProductsRequest *request = [[SKProductsRequest alloc] initWithProductIdentifiers:[NSSet setWithArray:productIdenfiters]];
+    NSSet *productIdentifiersSet = [NSSet setWithArray:uncachedProductIndentifiers];
+    SKProductsRequest *request = [[SKProductsRequest alloc] initWithProductIdentifiers:productIdentifiersSet];
     request.delegate = self;
     [request start];
 }
 
 #pragma mark - StoreKit Helpers
+
+- (NSArray *)productIdentifiersFilteredForUncachedProducts:(NSArray *)productIdentifiers
+{
+    NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL( NSString* identifier, NSDictionary *bindings)
+    {
+        return [[[[self class] sharedCache] purchaseableProducts] valueForKey:identifier] != nil;
+    }];
+    return [productIdentifiers filteredArrayUsingPredicate:predicate];
+}
 
 - (void)transactionDidFailWithErrorCode:(NSInteger)errorCode productIdentifier:(NSString *)productIdentifier
 {
@@ -198,7 +216,7 @@ return;
 #endif
     if ( self.activePurchase != nil && isValidProduct )
     {
-        self.purchasedProducts = [self.purchasedProducts arrayByAddingObject:self.activePurchase.product];
+        [[[[self class] sharedCache] purchasedProducts] setValue:self.activePurchase.product forKey:productIdentifier];
         self.activePurchase.successCallback( @[ self.activePurchase.product ] );
         self.activePurchase = nil;
     }
@@ -206,9 +224,12 @@ return;
 
 - (void)productsRequestDidSucceed
 {
-    self.purchaseableProducts = [NSArray arrayWithArray:self.activeProductRequest.products];
     if ( self.activeProductRequest != nil )
     {
+        [self.activeProductRequest.products enumerateObjectsUsingBlock:^(VProduct *product, NSUInteger idx, BOOL *stop)
+         {
+             [[[[self class] sharedCache] purchaseableProducts] setValue:product forKey:product.storeKitProduct.productIdentifier];
+         }];
         self.activeProductRequest.successCallback( self.purchaseableProducts );
     }
     self.activeProductRequest = nil;
