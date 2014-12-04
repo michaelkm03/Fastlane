@@ -325,6 +325,8 @@
 		03FDA09F197A0AEC00405361 /* CIImage+VImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 03FDA09E197A0AEC00405361 /* CIImage+VImage.m */; };
 		3F9B6657187F80780046F826 /* NSDate+timeSince.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F9B6656187F80780046F826 /* NSDate+timeSince.m */; };
 		6617DB3A19F3EB53008C1FF5 /* VContentPollCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6617DB3919F3EB53008C1FF5 /* VContentPollCell.xib */; };
+		669EBBE41A30239100DE317D /* VBasicToolPickerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 669EBBE01A30239100DE317D /* VBasicToolPickerCell.m */; };
+		669EBBE51A30239100DE317D /* VToolPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 669EBBE31A30239100DE317D /* VToolPickerViewController.m */; };
 		99F4DB51782658B7D034EC2F /* libPods-victorious-test.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C7B45F61E6B2831D5E9459C3 /* libPods-victorious-test.a */; };
 		9F95A0FBA78C16AF3EA43793 /* libPods-victorious.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A7B5532F9C5AF61978DBF51E /* libPods-victorious.a */; };
 		A70564BC19E7817C004A8387 /* VObjectManager+Discover.m in Sources */ = {isa = PBXBuildFile; fileRef = A70564BB19E7817C004A8387 /* VObjectManager+Discover.m */; };
@@ -540,7 +542,6 @@
 		D811BBBF19B92F75007398BF /* homeHeaderImage.png in Resources */ = {isa = PBXBuildFile; fileRef = D811BBBD19B92F75007398BF /* homeHeaderImage.png */; };
 		D81AF38F1A015EC60056F474 /* VDirectoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D81AF38E1A015EC60056F474 /* VDirectoryViewController.xib */; };
 		D8208A551A2FA7E3003C187D /* VFilterWorkspaceTool.m in Sources */ = {isa = PBXBuildFile; fileRef = D8208A541A2FA7E3003C187D /* VFilterWorkspaceTool.m */; };
-		D8208A581A2FBFDB003C187D /* VToolPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8208A571A2FBFDB003C187D /* VToolPickerViewController.m */; };
 		D82E76DE19F5BFED00FFB722 /* VContentPollQuestionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D82E76DD19F5BFED00FFB722 /* VContentPollQuestionCell.m */; };
 		D82E76E019F5BFF900FFB722 /* VContentPollQuestionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D82E76DF19F5BFF900FFB722 /* VContentPollQuestionCell.xib */; };
 		D82E76E319F5C06100FFB722 /* VContentPollBallotCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D82E76E219F5C06100FFB722 /* VContentPollBallotCell.m */; };
@@ -552,7 +553,6 @@
 		D836884419C3718A00070F22 /* VBaseSupplementaryView.m in Sources */ = {isa = PBXBuildFile; fileRef = D836884319C3718A00070F22 /* VBaseSupplementaryView.m */; };
 		D84FD73D19D5E5F200E7F9F2 /* VActionItem.m in Sources */ = {isa = PBXBuildFile; fileRef = D84FD73C19D5E5F200E7F9F2 /* VActionItem.m */; };
 		D871A4021A157D650046A12C /* VVRTCUserPostedAtFormatterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D871A4011A157D650046A12C /* VVRTCUserPostedAtFormatterTests.m */; };
-		D873517D1A300304006D97B2 /* VBasicToolPickerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D873517C1A300304006D97B2 /* VBasicToolPickerCell.m */; };
 		D8917EA219F8498F0070BDBB /* VVideoCellViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D8917EA119F8498F0070BDBB /* VVideoCellViewModel.m */; };
 		D89A500B1A000E790010D050 /* VFollowUserControl.m in Sources */ = {isa = PBXBuildFile; fileRef = D89A500A1A000E790010D050 /* VFollowUserControl.m */; };
 		D89AC2BC19F1FD6B00921131 /* VHistogramDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = D89AC2B919F1FD6B00921131 /* VHistogramDataSource.m */; };
@@ -1225,6 +1225,11 @@
 		55FAA5574E7F158AB4EF865B /* Pods-victorious.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious.staging.xcconfig"; path = "Pods/Target Support Files/Pods-victorious/Pods-victorious.staging.xcconfig"; sourceTree = "<group>"; };
 		6617DB3919F3EB53008C1FF5 /* VContentPollCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VContentPollCell.xib; sourceTree = "<group>"; };
 		662F0867152745B2B2F08301 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		669EBBDF1A30239100DE317D /* VBasicToolPickerCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VBasicToolPickerCell.h; sourceTree = "<group>"; };
+		669EBBE01A30239100DE317D /* VBasicToolPickerCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VBasicToolPickerCell.m; sourceTree = "<group>"; };
+		669EBBE11A30239100DE317D /* VToolPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VToolPicker.h; sourceTree = "<group>"; };
+		669EBBE21A30239100DE317D /* VToolPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VToolPickerViewController.h; sourceTree = "<group>"; };
+		669EBBE31A30239100DE317D /* VToolPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VToolPickerViewController.m; sourceTree = "<group>"; };
 		83063D73BF2679FF010A2245 /* Pods-victorious.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious.qa.xcconfig"; path = "Pods/Target Support Files/Pods-victorious/Pods-victorious.qa.xcconfig"; sourceTree = "<group>"; };
 		8E360EC509E852CE3E872948 /* Pods-victorious-test.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious-test.debug.xcconfig"; path = "Pods/Target Support Files/Pods-victorious-test/Pods-victorious-test.debug.xcconfig"; sourceTree = "<group>"; };
 		910A7A7036C6609BF5F7723D /* Pods-victorious-test.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious-test.staging.xcconfig"; path = "Pods/Target Support Files/Pods-victorious-test/Pods-victorious-test.staging.xcconfig"; sourceTree = "<group>"; };
@@ -1590,8 +1595,6 @@
 		D81AF38E1A015EC60056F474 /* VDirectoryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VDirectoryViewController.xib; sourceTree = "<group>"; };
 		D8208A531A2FA7E3003C187D /* VFilterWorkspaceTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFilterWorkspaceTool.h; sourceTree = "<group>"; };
 		D8208A541A2FA7E3003C187D /* VFilterWorkspaceTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFilterWorkspaceTool.m; sourceTree = "<group>"; };
-		D8208A561A2FBFDB003C187D /* VToolPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VToolPickerViewController.h; sourceTree = "<group>"; };
-		D8208A571A2FBFDB003C187D /* VToolPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VToolPickerViewController.m; sourceTree = "<group>"; };
 		D82E76DC19F5BFED00FFB722 /* VContentPollQuestionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentPollQuestionCell.h; sourceTree = "<group>"; };
 		D82E76DD19F5BFED00FFB722 /* VContentPollQuestionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VContentPollQuestionCell.m; sourceTree = "<group>"; };
 		D82E76DF19F5BFF900FFB722 /* VContentPollQuestionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VContentPollQuestionCell.xib; sourceTree = "<group>"; };
@@ -1612,9 +1615,6 @@
 		D84FD73B19D5E5F200E7F9F2 /* VActionItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VActionItem.h; sourceTree = "<group>"; };
 		D84FD73C19D5E5F200E7F9F2 /* VActionItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VActionItem.m; sourceTree = "<group>"; };
 		D871A4011A157D650046A12C /* VVRTCUserPostedAtFormatterTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVRTCUserPostedAtFormatterTests.m; sourceTree = "<group>"; };
-		D873517A1A30005C006D97B2 /* VToolPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VToolPicker.h; sourceTree = "<group>"; };
-		D873517B1A300304006D97B2 /* VBasicToolPickerCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VBasicToolPickerCell.h; sourceTree = "<group>"; };
-		D873517C1A300304006D97B2 /* VBasicToolPickerCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VBasicToolPickerCell.m; sourceTree = "<group>"; };
 		D8917EA019F8498F0070BDBB /* VVideoCellViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VVideoCellViewModel.h; sourceTree = "<group>"; };
 		D8917EA119F8498F0070BDBB /* VVideoCellViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVideoCellViewModel.m; sourceTree = "<group>"; };
 		D89A50091A000E790010D050 /* VFollowUserControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFollowUserControl.h; sourceTree = "<group>"; };
@@ -3059,6 +3059,18 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		669EBBDE1A30234A00DE317D /* Pickers */ = {
+			isa = PBXGroup;
+			children = (
+				669EBBDF1A30239100DE317D /* VBasicToolPickerCell.h */,
+				669EBBE01A30239100DE317D /* VBasicToolPickerCell.m */,
+				669EBBE11A30239100DE317D /* VToolPicker.h */,
+				669EBBE21A30239100DE317D /* VToolPickerViewController.h */,
+				669EBBE31A30239100DE317D /* VToolPickerViewController.m */,
+			);
+			path = Pickers;
+			sourceTree = "<group>";
+		};
 		A705646019E737A5004A8387 /* HelveticaNeue */ = {
 			isa = PBXGroup;
 			children = (
@@ -3903,15 +3915,11 @@
 		D8A93F131A2E84A9009B8A18 /* Workspace */ = {
 			isa = PBXGroup;
 			children = (
+				669EBBDE1A30234A00DE317D /* Pickers */,
 				D8D945F71A2EA51D0089D271 /* Tools */,
 				D8D945F21A2E88510089D271 /* Workspace.storyboard */,
 				D8D945F41A2E8A760089D271 /* VWorkspaceViewController.h */,
 				D8D945F51A2E8A760089D271 /* VWorkspaceViewController.m */,
-				D8208A561A2FBFDB003C187D /* VToolPickerViewController.h */,
-				D8208A571A2FBFDB003C187D /* VToolPickerViewController.m */,
-				D873517A1A30005C006D97B2 /* VToolPicker.h */,
-				D873517B1A300304006D97B2 /* VBasicToolPickerCell.h */,
-				D873517C1A300304006D97B2 /* VBasicToolPickerCell.m */,
 			);
 			path = Workspace;
 			sourceTree = "<group>";
@@ -4673,7 +4681,6 @@
 				0314D4C119B46B5E00FA363C /* VProfileEditViewController.m in Sources */,
 				0314D08C19B4690A00FA363C /* VDeeplinkManager.m in Sources */,
 				BE799BB419C8DF5B0023CE88 /* VAsset+OrderedSet.m in Sources */,
-				D873517D1A300304006D97B2 /* VBasicToolPickerCell.m in Sources */,
 				BE171D8C1868BE64004E5202 /* VAppDelegate.m in Sources */,
 				039ED29919C908F400305987 /* VCVideoPlayerToolbarSlider.m in Sources */,
 				BE171E151868C211004E5202 /* VNodeAction+RestKit.m in Sources */,
@@ -4682,6 +4689,7 @@
 				BE799BC219C93C210023CE88 /* VDirectoryViewController.m in Sources */,
 				A77AD5011A2011E000142F24 /* UIActionSheet+VBlocks.m in Sources */,
 				BE6C15251880A31A00469BA8 /* VAnswerAction.m in Sources */,
+				669EBBE51A30239100DE317D /* VToolPickerViewController.m in Sources */,
 				3F9B6657187F80780046F826 /* NSDate+timeSince.m in Sources */,
 				DBC45CD819F4CBD0003079C4 /* VAdVideoPlayerViewController.m in Sources */,
 				DBDBE6EB1A16736B00DA1BB2 /* VAdBreakFallback.m in Sources */,
@@ -4706,6 +4714,7 @@
 				0314D47A19B46B5E00FA363C /* VFacebookPublishShareController.m in Sources */,
 				BE799B9519C8A91C0023CE88 /* VAnswer.m in Sources */,
 				A7AA647D19E78EAA0068D2B1 /* victoriOS.xcdatamodeld in Sources */,
+				669EBBE41A30239100DE317D /* VBasicToolPickerCell.m in Sources */,
 				0314D4B119B46B5E00FA363C /* VInboxContainerViewController.m in Sources */,
 				DB82857A19F6DD3D006C6E2F /* VAdPlayerView.m in Sources */,
 				0314D0B519B4698800FA363C /* VObjectManager+Pagination.m in Sources */,
@@ -4736,7 +4745,6 @@
 				039ED29E19C908F400305987 /* VVideoDownloadProgressIndicatorView.m in Sources */,
 				0314D4D719B46B5E00FA363C /* VEnvironment.m in Sources */,
 				D8B827DD19D5FDFE00CCD6D9 /* VDescriptionTableViewCell.m in Sources */,
-				D8208A581A2FBFDB003C187D /* VToolPickerViewController.m in Sources */,
 				BE799B9219C8A91C0023CE88 /* VNode.m in Sources */,
 				BE5C7379187E36E800A3340D /* VNodeAction.m in Sources */,
 				0314D4B719B46B5E00FA363C /* VLightboxViewController.m in Sources */,
