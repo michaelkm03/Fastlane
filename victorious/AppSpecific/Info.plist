@@ -15,7 +15,7 @@
 		<string>Icon-60</string>
 	</array>
 	<key>CFBundleIdentifier</key>
-	<string>com.getvictorious.$(ProductPrefix)victorious</string>
+	<string>com.getvictorious.${ProductPrefix}victorious</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -32,6 +32,12 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>fb1374328719478033</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>${ProductPrefix}victorious</string>
 			</array>
 		</dict>
 	</array>
