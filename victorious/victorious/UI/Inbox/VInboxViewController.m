@@ -23,6 +23,7 @@
 #import "VPaginationManager.h"
 #import "VThemeManager.h"
 #import "VNoContentView.h"
+#import "VUser.h"
 
 #import "VAuthorizationViewControllerFactory.h"
 #import "VObjectManager+Login.h"
@@ -38,8 +39,9 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
 
 @interface VInboxViewController ()
 
-@property (weak, nonatomic)   IBOutlet UISegmentedControl *modeSelectControl;
-@property (weak, nonatomic)   IBOutlet UIView             *headerView;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *modeSelectControl;
+@property (weak, nonatomic) IBOutlet UIView *headerView;
+@property (strong, nonatomic) NSMutableDictionary *messageViewControllers;
 
 @end
 
@@ -127,6 +129,37 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
     [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:kMessageCellViewIdentifier bundle:nil] forCellReuseIdentifier:kMessageCellViewIdentifier];
 }
 
+#pragma mark - Message View Controller Cache
+
+- (VMessageContainerViewController *)messageViewControllerForUser:(VUser *)otherUser
+{
+    NSAssert([NSThread isMainThread], @"This method should be called from the main thread only");
+    
+    if ( self.messageViewControllers == nil )
+    {
+        self.messageViewControllers = [[NSMutableDictionary alloc] init];
+    }
+    VMessageContainerViewController *messageViewController = self.messageViewControllers[otherUser.remoteId];
+    
+    if ( messageViewController == nil )
+    {
+        messageViewController = [VMessageContainerViewController messageViewControllerForUser:otherUser];
+        self.messageViewControllers[otherUser.remoteId] = messageViewController;
+    }
+    [(VMessageViewController *)messageViewController.conversationTableViewController setShouldRefreshOnAppearance:YES];
+    
+    return messageViewController;
+}
+
+- (void)removeCachedViewControllerForUser:(VUser *)otherUser
+{
+    if ( self.messageViewControllers == nil || otherUser.remoteId == nil )
+    {
+        return;
+    }
+    [self.messageViewControllers removeObjectForKey:otherUser.remoteId];
+}
+
 #pragma mark - UITabvleViewDataSource
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
@@ -210,7 +243,7 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
                                               successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
         {
             [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
-            [VMessageContainerViewController removeCachedViewControllerForUser:conversation.user];
+            [self removeCachedViewControllerForUser:conversation.user];
             NSManagedObjectContext *context =   conversation.managedObjectContext;
             [context deleteObject:conversation];
             [context saveToPersistentStore:nil];
@@ -232,7 +265,7 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
     VConversation *conversation = [self.fetchedResultsController objectAtIndexPath:indexPath];
     if (conversation.user)
     {
-        VMessageContainerViewController *detailVC = [VMessageContainerViewController messageViewControllerForUser:conversation.user];
+        VMessageContainerViewController *detailVC = [self messageViewControllerForUser:conversation.user];
         [self.navigationController pushViewController:detailVC animated:YES];
     }
 }

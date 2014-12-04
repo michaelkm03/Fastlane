@@ -16,6 +16,5 @@
 @property (nonatomic, weak)     IBOutlet UIView *busyView;
 
 + (instancetype)messageViewControllerForUser:(VUser *)otherUser;
-+ (void)removeCachedViewControllerForUser:(VUser *)otherUser; ///< Should be called if the VConversation object for this user is removed from Core Data
 
 @end
