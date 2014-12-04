@@ -147,12 +147,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Crop" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U2A-dz-UKS">
-                                <rect key="frame" x="281" y="289" width="38" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eSH-vN-sA1">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <connections>
@@ -171,8 +165,6 @@
                             <constraint firstItem="eSH-vN-sA1" firstAttribute="leading" secondItem="FDL-Lx-k9b" secondAttribute="leading" id="FDX-V2-rKV"/>
                             <constraint firstAttribute="trailing" secondItem="iTp-H1-xI3" secondAttribute="trailing" id="FU1-th-Z2O"/>
                             <constraint firstItem="ZAx-4g-MB6" firstAttribute="top" secondItem="iTp-H1-xI3" secondAttribute="bottom" id="FiI-wN-P4A"/>
-                            <constraint firstAttribute="centerY" secondItem="U2A-dz-UKS" secondAttribute="centerY" constant="0.5" id="UtZ-AU-U6V"/>
-                            <constraint firstAttribute="centerX" secondItem="U2A-dz-UKS" secondAttribute="centerX" id="aUC-3J-zX2"/>
                             <constraint firstAttribute="trailing" secondItem="eSH-vN-sA1" secondAttribute="trailing" id="p0i-Dp-oS6"/>
                             <constraint firstItem="ZAx-4g-MB6" firstAttribute="top" secondItem="eSH-vN-sA1" secondAttribute="bottom" id="qEy-jf-xv8"/>
                             <constraint firstItem="iTp-H1-xI3" firstAttribute="top" secondItem="k23-nw-3wG" secondAttribute="bottom" id="uYz-h2-ovl"/>
