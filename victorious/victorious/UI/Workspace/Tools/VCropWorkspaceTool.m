@@ -11,6 +11,8 @@
 #import "VDependencyManager.h"
 #import "VDependencyManager+VWorkspaceTool.h"
 
+#import "VCropWorkspaceToolViewController.h"
+
 static NSString * const kTitleKey = @"title";
 static NSString * const kIconKey = @"icon";
 static NSString * const kToolInterfaceKey = @"toolInterface";
@@ -19,7 +21,7 @@ static NSString * const kToolInterfaceKey = @"toolInterface";
 
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, strong) UIImage *icon;
-@property (nonatomic, strong, readwrite) UIViewController *toolViewController;
+@property (nonatomic, strong, readwrite) VCropWorkspaceToolViewController *cropViewController;
 
 @end
 
@@ -31,7 +33,7 @@ static NSString * const kToolInterfaceKey = @"toolInterface";
     if (self)
     {
         _title = [dependencyManager stringForKey:kTitleKey];
-        _toolViewController = [dependencyManager viewControllerForKey:kToolInterfaceKey];
+        _cropViewController = (VCropWorkspaceToolViewController *)[dependencyManager viewControllerForKey:kToolInterfaceKey];
     }
     return self;
 }
@@ -40,7 +42,7 @@ static NSString * const kToolInterfaceKey = @"toolInterface";
 
 - (UIViewController *)toolViewController
 {
-    return _toolViewController;
+    return (UIViewController *)_cropViewController;
 }
 
 - (VWorkspaceToolLocation)toolLocation
@@ -56,6 +58,18 @@ static NSString * const kToolInterfaceKey = @"toolInterface";
 - (UIImage *)icon
 {
     return _icon;
+}
+
+#pragma mark - Public Interface
+
+- (void)setImage:(UIImage *)imageToCrop
+{
+    [self.cropViewController setImage:imageToCrop];
+}
+
+- (UIImage *)croppedImage
+{
+    return [self.cropViewController croppedImage];
 }
 
 @end

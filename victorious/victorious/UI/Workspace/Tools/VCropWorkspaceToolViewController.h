@@ -12,4 +12,8 @@
 
 @interface VCropWorkspaceToolViewController : UIViewController <VHasManagedDependancies>
 
+- (void)setImage:(UIImage *)imageToCrop;
+
+- (UIImage *)croppedImage;
+
 @end
