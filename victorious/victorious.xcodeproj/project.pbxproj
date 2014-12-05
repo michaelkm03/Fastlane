@@ -3998,6 +3998,8 @@
 			children = (
 				D8D945FE1A2EB5C00089D271 /* VCategoryWorkspaceTool.h */,
 				D8D945FF1A2EB5C00089D271 /* VCategoryWorkspaceTool.m */,
+				D87351811A3112A3006D97B2 /* VCropOverlayView.h */,
+				D87351821A3112A3006D97B2 /* VCropOverlayView.m */,
 				D8E178A61A2F8BCE00C3572B /* VCropWorkspaceTool.h */,
 				D8E178A71A2F8BCE00C3572B /* VCropWorkspaceTool.m */,
 				D873517E1A30E443006D97B2 /* VCropWorkspaceToolViewController.h */,
@@ -4009,8 +4011,6 @@
 				D8E178AC1A2F8BEA00C3572B /* VQuoteWorkspaceTool.h */,
 				D8E178AD1A2F8BEA00C3572B /* VQuoteWorkspaceTool.m */,
 				D8D946011A2EBC120089D271 /* VWorkspaceTool.h */,
-				D87351811A3112A3006D97B2 /* VCropOverlayView.h */,
-				D87351821A3112A3006D97B2 /* VCropOverlayView.m */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
