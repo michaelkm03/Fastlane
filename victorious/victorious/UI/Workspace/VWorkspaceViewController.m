@@ -211,7 +211,6 @@
         }
             break;
     }
-
     
     if ([self.toolViewController isKindOfClass:[VCropWorkspaceToolViewController class]])
     {
@@ -221,13 +220,11 @@
         __weak typeof(self) welf = self;
         cropVC.onCropBoundsChange = ^void(CGRect croppedBounds)
         {
-            CGRect transformRect = CGRectMake(croppedBounds.origin.x,
-                                              croppedBounds.origin.y - 44,
-                                              croppedBounds.size.width,
-                                              croppedBounds.size.height);
-            [welf.canvasView setCroppedBounds:transformRect];
+            [welf.canvasView setCroppedBounds:[welf.view convertRect:croppedBounds
+                                                              toView:welf.canvasView]];
         };
     }
+    
 }
 
 @end
