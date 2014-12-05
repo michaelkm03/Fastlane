@@ -15,6 +15,7 @@
 #import "VUser.h"
 
 #import "VConversation+RestKit.h"
+#import "VConversation+UnreadMessageCount.h"
 
 static NSString * const kUnreadCountKey = @"unread_count";
 
@@ -77,11 +78,27 @@ static NSString * const kUnreadCountKey = @"unread_count";
 }
 
 - (RKManagedObjectRequestOperation *)markConversationAsRead:(VConversation *)conversation
-                                               successBlock:(VSuccessBlock)success
-                                                  failBlock:(VFailBlock)fail
+                                             withCompletion:(VUnreadMessageCountCompletionBlock)completion
 {
+    VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    {
+        if ( completion != nil )
+        {
+            completion([self unreadMessageCountFromResponse:fullResponse], nil);
+        }
+    };
+    
+    VFailBlock fail = ^(NSOperation *operation, NSError *error)
+    {
+        if (completion)
+        {
+            completion(nil, error);
+        }
+    };
+    
     // Mark the most recent message as read so there is no server delay.
     conversation.isRead = @(YES);
+    [conversation markMessagesAsRead];
     [conversation.managedObjectContext saveToPersistentStore:nil];
     
     return [self POST:@"/api/message/mark_conversation_read"
@@ -94,35 +111,11 @@ static NSString * const kUnreadCountKey = @"unread_count";
 
 - (RKManagedObjectRequestOperation *)unreadMessageCountWithCompletion:(VUnreadMessageCountCompletionBlock)completion
 {
-    VSuccessBlock success = ^(NSOperation *operation, NSDictionary *fullResponse, NSArray *resultObjects)
+    VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        if ( completion == nil )
+        if ( completion != nil )
         {
-            return;
-        }
-        
-        if ( ![fullResponse isKindOfClass:[NSDictionary class]] )
-        {
-            completion(nil, nil);
-            return;
-        }
-        NSDictionary *payload = fullResponse[kVPayloadKey];
-        
-        if ( ![payload isKindOfClass:[NSDictionary class]] )
-        {
-            completion(nil, nil);
-            return;
-        }
-        
-        NSNumber *unreadCount = payload[kUnreadCountKey];
-        
-        if ( [unreadCount isKindOfClass:[NSNumber class]] )
-        {
-            completion(unreadCount, nil);
-        }
-        else
-        {
-            completion(nil, nil);
+            completion([self unreadMessageCountFromResponse:fullResponse], nil);
         }
     };
     
@@ -139,6 +132,31 @@ static NSString * const kUnreadCountKey = @"unread_count";
           parameters:nil
         successBlock:success
            failBlock:fail];
+}
+
+- (NSNumber *)unreadMessageCountFromResponse:(id)fullResponse
+{
+    if ( ![fullResponse isKindOfClass:[NSDictionary class]] )
+    {
+        return nil;
+    }
+    NSDictionary *payload = fullResponse[kVPayloadKey];
+    
+    if ( ![payload isKindOfClass:[NSDictionary class]] )
+    {
+        return nil;
+    }
+    
+    NSNumber *unreadCount = payload[kUnreadCountKey];
+    
+    if ( [unreadCount isKindOfClass:[NSNumber class]] )
+    {
+        return unreadCount;
+    }
+    else
+    {
+        return nil;
+    }
 }
 
 - (RKManagedObjectRequestOperation *)deleteConversation:(VConversation *)conversation

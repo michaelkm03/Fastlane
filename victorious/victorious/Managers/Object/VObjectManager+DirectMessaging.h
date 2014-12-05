@@ -23,8 +23,7 @@ typedef void (^VUnreadMessageCountCompletionBlock)(NSNumber *unreadMessages, NSE
                                             failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)markConversationAsRead:(VConversation *)conversation
-                                               successBlock:(VSuccessBlock)success
-                                                  failBlock:(VFailBlock)fail;
+                                             withCompletion:(VUnreadMessageCountCompletionBlock)completion;
 
 - (RKManagedObjectRequestOperation *)unreadMessageCountWithCompletion:(VUnreadMessageCountCompletionBlock)completion;
 

@@ -14,7 +14,13 @@
 @property (nonatomic, readwrite) NSInteger unreadMessageCount;
 @property (nonatomic, readwrite) BOOL loadingUnreadMessageCount; ///< Are we waiting for the server to give us the unread message count?
 @property (nonatomic, readwrite) BOOL shouldLoadUnreadMessageCountAgain; ///< If YES, when the current message count loading is done, do it again.
-@property (nonatomic, strong) dispatch_queue_t privateQueue; ///< Synchronizes access to the two BOOL properties above.
+
+/**
+ Synchronizes access to the two BOOL properties: loadingUnreadMessageCount and shouldLoadUnreadMessageCountAgain.
+ 
+ WARNING: Do not dispatch on this queue synchronously from the main thread, or you might introduce a deadlock!
+ */
+@property (nonatomic, strong) dispatch_queue_t privateQueue;
 
 @end
 
@@ -61,6 +67,29 @@
             });
         }];
     });
+}
+
+- (void)markConversationRead:(VConversation *)conversation
+{
+    [self.objectManager markConversationAsRead:conversation
+                                withCompletion:^(NSNumber *unreadMessages, NSError *error)
+    {
+        if ( unreadMessages != nil )
+        {
+            dispatch_async(self.privateQueue, ^(void)
+            {
+                if (self.loadingUnreadMessageCount)
+                {
+                    self.shouldLoadUnreadMessageCountAgain = YES;
+                    return;
+                }
+                dispatch_sync(dispatch_get_main_queue(), ^(void)
+                {
+                    self.unreadMessageCount = [unreadMessages integerValue];
+                });
+            });
+        }
+    }];
 }
 
 @end

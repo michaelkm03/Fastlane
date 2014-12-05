@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class VObjectManager;
+@class VConversation, VObjectManager;
 
 /**
  This class coordinates updates to the global
@@ -33,5 +33,10 @@
  observing the unreadMessageCount property.
  */
 - (void)updateUnreadMessageCount;
+
+/**
+ Marks a conversation as read and updates the unreadMessageCount property asynchronously
+ */
+- (void)markConversationRead:(VConversation *)conversation;
 
 @end

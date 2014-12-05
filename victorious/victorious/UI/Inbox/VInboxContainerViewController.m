@@ -148,7 +148,10 @@ static char kKVOContext;
         
         if ( [newUnreadCount isKindOfClass:[NSNumber class]] )
         {
-            [[UIApplication sharedApplication] setApplicationIconBadgeNumber:[newUnreadCount integerValue]];
+            dispatch_async(dispatch_get_main_queue(), ^(void)
+            {
+                [[UIApplication sharedApplication] setApplicationIconBadgeNumber:[newUnreadCount integerValue]];
+            });
         }
     }
 }

@@ -112,15 +112,8 @@ static       char    kKVOContext;
                                               successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
         {
             self.isLoading = NO;
-            [self.conversation markMessagesAsRead];
             [self.conversation.managedObjectContext saveToPersistentStore:nil];
-            
-            [[VObjectManager sharedManager] markConversationAsRead:self.conversation
-                                                      successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-            {
-                [self.messageCountCoordinator updateUnreadMessageCount];
-            }
-                                                         failBlock:nil];
+            [self.messageCountCoordinator markConversationRead:self.conversation];
             
             if (completion)
             {
@@ -350,12 +343,8 @@ static       char    kKVOContext;
             if (resultObjects.count > 0)
             {
                 // mark these messages as read on the server
-                [[VObjectManager sharedManager] markConversationAsRead:self.conversation successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-                {
-                    [self.messageCountCoordinator updateUnreadMessageCount];
-                    scheduleAnotherPoll();
-                }
-                                                             failBlock:nil];
+                [self.messageCountCoordinator markConversationRead:self.conversation];
+                scheduleAnotherPoll();
             }
             else
             {
