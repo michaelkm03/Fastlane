@@ -102,9 +102,7 @@ static NSString * const kMenuKey = @"menu";
     
     
     self.menuViewController = [self.dependencyManager viewControllerForKey:kMenuKey];
-    self.contentViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"contentController"];
-    
-    NSAssert([self.contentViewController isKindOfClass:[UINavigationController class]], @"contentController should be a UINavigationController");
+    self.contentViewController = [[UINavigationController alloc] init];
     self.contentViewController.delegate = self;
     
     if (!_contentViewInLandscapeOffsetCenterX)

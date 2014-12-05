@@ -477,18 +477,6 @@
             </objects>
             <point key="canvasLocation" x="-4157" y="-2359"/>
         </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="YV9-l0-kDH">
-            <objects>
-                <navigationController storyboardIdentifier="contentController" definesPresentationContext="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="OPb-Ic-5E4" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="2ta-Hu-rne">
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="g0Z-1A-ZGe" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-4168" y="-1691"/>
-        </scene>
         <!--Loading View Controller-->
         <scene sceneID="dyI-d4-gTi">
             <objects>
