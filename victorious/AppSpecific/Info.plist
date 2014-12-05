@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>${ProductPrefix}victorious</string>
+	<string>com.getvictorious.eatyourkimchi</string>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIconFiles</key>
@@ -15,7 +15,7 @@
 		<string>Icon-60</string>
 	</array>
 	<key>CFBundleIdentifier</key>
-	<string>com.getvictorious.${ProductPrefix}victorious</string>
+	<string>com.getvictorious.eatyourkimchi</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>

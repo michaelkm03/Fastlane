@@ -32,17 +32,24 @@
 /**
  Begin the process of purchasing the supplied product as an In-App Purchase
  through the App Store.  The user will seubsequently have to confirm and
+ enter his or her iTunes credentials.  To obtain information about this product,
+ such as its price, use fetchProductsWithIdentifiers:success:failure.
+ */
+- (void)purchaseProductWithIdentifier:(NSString *)productIdentifier
+                              success:(VPurchaseSuccessBlock)successCallback
+                              failure:(VPurchaseFailBlock)failureCallback;
+
+/**
+ Begin the process of purchasing the supplied product as an In-App Purchase
+ through the App Store.  The user will seubsequently have to confirm and
  enter his or her iTunes credentials.  To get a product to purchase, first
- use fetchProductsWithIdentifiers:success:failsure.
+ use fetchProductsWithIdentifiers:success:failure and grab a reference to the
+ product in the parameter of the success callback, or use purcahseableProductForProductIdenfitier
+ to access it from the internal cache of fetched products.
  */
 - (void)purchaseProduct:(VProduct *)product
                 success:(VPurchaseSuccessBlock)successCallback
                 failure:(VPurchaseFailBlock)failureCallback;
-
-
-- (void)purchaseProductWithIdentifier:(NSString *)productIdentifier
-                              success:(VPurchaseSuccessBlock)successCallback
-                              failure:(VPurchaseFailBlock)failureCallback;
 
 /**
  Begin the process of retriving all previously purchased products so that they may be
@@ -61,5 +68,12 @@
 - (void)fetchProductsWithIdentifiers:(NSArray *)productIdenfiters
                              success:(VProductsRequestSuccessBlock)successCallback
                              failure:(VProductsRequestFailureBlock)failureCallback;
+
+/**
+ Returns a VProduct object that corresponds to the suppied product identifier
+ if that product has successfully fetched from the App Store from a previous call to
+ fetchProductsWithIdentifiers:success:failure.
+ */
+- (VProduct *)purcahseableProductForProductIdenfitier:(NSString *)productIdentifier;
 
 @end

@@ -430,3 +430,6 @@
 "ProductsRequestError"                  = "Unable to load product information from the App Store.  Please try again laster.";
 "RestorePurchasesErrorTitle"            = "Error Restoring Purchases";
 "RestorePurchasesError"                 = "Unable to restore purchases at this time.  Please try again laster.";
+"ActivityRestoring"                     = "  Restoring...";
+"ActivityPurchasing"                    = "  Purchasing...";
+"PurchaseUnlockWithPrice"               = "Unlock for %@"; //e.g. "Unlock for $0.99"

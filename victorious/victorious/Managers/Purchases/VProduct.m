@@ -6,7 +6,15 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+@import StoreKit;
+
 #import "VProduct.h"
+
+@interface VProduct()
+
+@property (nonatomic, readonly) NSNumberFormatter *priceNumberFormatter;
+
+@end
 
 @implementation VProduct
 
@@ -20,6 +28,31 @@
         _storeKitProduct = storeKitProduct;
     }
     return self;
+}
+
+- (NSNumberFormatter *)priceNumberFormatter
+{
+    static NSNumberFormatter *formatter;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^(void)
+                  {
+                      formatter = [[NSNumberFormatter alloc] init];
+                      [formatter setFormatterBehavior:NSNumberFormatterBehavior10_4];
+                      [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+                      [formatter setLocale:[self.storeKitProduct priceLocale]];
+                  });
+    return formatter;
+}
+
+- (NSString *)price
+{
+    NSDecimalNumber *decimalPrice = [self.storeKitProduct price];
+    return [self.priceNumberFormatter stringFromNumber:decimalPrice];
+}
+
+- (NSString *)productIdentifier
+{
+    return self.productIdentifier;
 }
 
 @end

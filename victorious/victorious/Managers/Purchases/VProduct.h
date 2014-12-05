@@ -6,9 +6,8 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
-@import StoreKit;
+@import Foundation;
+@class SKProduct;
 
 /**
  A wrapper for SKPRoduct to abstract away any StoreKit functionality from calling code.
@@ -17,6 +16,10 @@
 
 - (instancetype)initWithStoreKitProduct:(SKProduct *)storeKitProduct;
 
-@property (nonatomic, readonly) SKProduct *storeKitProduct;
+@property (nonatomic, readonly) NSString *price;
+
+@property (nonatomic, readonly) NSString *productIdentifier;
+
+@property (nonatomic, strong) SKProduct *storeKitProduct;
 
 @end

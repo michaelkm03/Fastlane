@@ -51,7 +51,7 @@ static BOOL isRunningTests(void) __attribute__((const));
     }
     
     // We don't need this yet, but it must be initialized now (see comments for sharedInstance method)
-    [VPurchaseManager sharedInstance];
+    //[VPurchaseManager sharedInstance];
     
     [ADEumInstrumentation initWithKey:@"AD-AAB-AAA-JWA"];
     

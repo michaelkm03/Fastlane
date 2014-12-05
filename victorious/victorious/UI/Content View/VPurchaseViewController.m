@@ -11,11 +11,21 @@
 #import "VPurchaseManager.h"
 #import "VSettingManager.h"
 #import "VAlertController.h"
+#import "VThemeManager.h"
 
 @interface VPurchaseViewController ()
 
-@property (weak, nonatomic) VPurchaseManager *purchaseManager;
+@property (strong, nonatomic) VPurchaseManager *purchaseManager;
+@property (strong, nonatomic) VProduct *product;
+
 @property (weak, nonatomic) IBOutlet UIView *loadingOverlay;
+@property (weak, nonatomic) IBOutlet UILabel *loadingOverlayLabel;
+
+@property (weak, nonatomic) IBOutlet UILabel *producttitleLabel;
+@property (weak, nonatomic) IBOutlet UITextView *productDescriptionTextView;
+@property (weak, nonatomic) IBOutlet UIImageView *productImage;
+
+@property (weak, nonatomic) IBOutlet UIButton *unlockButton;
 
 @end
 
@@ -31,23 +41,27 @@
     
     self.purchaseManager = [VPurchaseManager sharedInstance];
     
-    NSString *title = NSLocalizedString( @"PurchasePromptTitle", nil);
-    [self v_addNewNavHeaderWithTitles:@[ title ]];
+    self.product = [self.purchaseManager purcahseableProductForProductIdenfitier:self.voteType.productIdentifier];
     
-    [self.navHeaderView setRightButtonImage:[UIImage imageNamed:@"close-btn"]
-                                 withAction:@selector(dismiss)
-                                   onTarget:self];
-    
-    [self.navHeaderView setLeftButtonImage:nil withAction:nil onTarget:nil];
+    NSString *localizedFormat = NSLocalizedString( @"PurchaseUnlockWithPrice", nil);
+    NSString *unlockTitle = [NSString stringWithFormat:localizedFormat, self.product.price];
+    [self.unlockButton setTitle:unlockTitle forState:UIControlStateNormal];
+    self.unlockButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
 }
 
 #pragma mark - Helpers
 
-- (void)dismiss
+- (void)showLoadingOverlayWithLabelText:(NSString *)text
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    self.loadingOverlayLabel.text = text;
+    self.loadingOverlay.hidden = NO;
 }
 
+- (void)hideLoadingOverlay
+{
+    self.loadingOverlayLabel.text = @"";
+    self.loadingOverlay.hidden = YES;
+}
 - (void)showError:(NSError *)error withTitle:(NSString *)title
 {
     NSString *message = error.localizedDescription;
@@ -58,20 +72,25 @@
 
 #pragma mark - IB Actions
 
+- (IBAction)close:(id)sender
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
 - (IBAction)restorePurchasesTapped:(id)sender
 {
-    self.loadingOverlay.hidden = NO;
+    [self showLoadingOverlayWithLabelText:NSLocalizedString( @"ActivityRestoring", nil)];
     
     [self.purchaseManager restorePurchasesSuccess:^(NSArray *productIdentifiers)
      {
          [[VSettingManager sharedManager].voteSettings didCompletePurchaseWithProductIdentifiers:productIdentifiers];
          
-         self.loadingOverlay.hidden = YES;
+         [self hideLoadingOverlay];
          [self dismissViewControllerAnimated:YES completion:nil];
      }
                                                 failure:^(NSError *error)
      {
-         self.loadingOverlay.hidden = YES;
+         [self hideLoadingOverlay];
          NSString *title = NSLocalizedString( @"RestorePurchasesErrorTitle", nil );
          [self showError:error withTitle:title];
      }];
@@ -84,22 +103,25 @@
         return;
     }
     
-    NSString *productIdentifier = self.voteType.productIdentifier;
-    if ( productIdentifier == nil )
-    {
-        return;
-    }
+    [self showLoadingOverlayWithLabelText:NSLocalizedString( @"ActivityPurchasing", nil)];
     
+    NSString *productIdentifier = self.voteType.productIdentifier;
     [self.purchaseManager purchaseProductWithIdentifier:productIdentifier success:^(NSArray *productIdentifiers)
      {
          [[VSettingManager sharedManager].voteSettings didCompletePurchaseWithProductIdentifiers:@[ productIdentifier ]];
          
+         [self hideLoadingOverlay];
          [self dismissViewControllerAnimated:YES completion:nil];
      }
                                   failure:^(NSError *error)
      {
-         NSString *title = NSLocalizedString( @"PurchaseErrorTitle", nil );
-         [self showError:error withTitle:title];
+         [self hideLoadingOverlay];
+         // If error is nil, the user cancelled the purchase
+         if ( error != nil )
+         {
+             NSString *title = NSLocalizedString( @"PurchaseErrorTitle", nil );
+             [self showError:error withTitle:title];
+         }
      }];
 }
 
