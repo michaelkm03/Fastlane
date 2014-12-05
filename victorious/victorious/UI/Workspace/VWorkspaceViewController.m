@@ -15,11 +15,17 @@
 #import "VCanvasView.h"
 #import <MBProgressHUD/MBProgressHUD.h>
 
+// Protocols
 #import "VWorkspaceTool.h"
 #import "VCategoryWorkspaceTool.h"
+#import "VCanvasTool.h"
 
 // Should move me out of here
 #import "VCropWorkspaceToolViewController.h"
+#import "VToolPickerViewController.h"
+
+// Filters
+#import "VPhotoFilterSerialization.h"
 
 @interface VWorkspaceViewController ()
 
@@ -152,7 +158,13 @@
 
 - (void)removeCurrentToolViewController
 {
-    // Hide picker if any
+//    if ([self.toolViewController respondsToSelector:@selector(shouldPersistAfterDeselection)])
+//    {
+//        if ([(id <VCanvasTool>)self.toolViewController shouldPersistAfterDeselection])
+//        {
+//            return;
+//        }
+//    }
     if (self.toolViewController)
     {
         [self.toolViewController willMoveToParentViewController:nil];
@@ -236,16 +248,32 @@
     [self addChildToolViewController:[tool toolViewController]
                              forTool:tool];
     
+    __weak typeof(self) welf = self;
     if ([self.toolViewController isKindOfClass:[VCropWorkspaceToolViewController class]])
     {
         VCropWorkspaceToolViewController *cropVC = (VCropWorkspaceToolViewController *)self.toolViewController;
         
         [cropVC setAssetSize:self.canvasView.sourceImage.size];
-        __weak typeof(self) welf = self;
         cropVC.onCropBoundsChange = ^void(CGRect croppedBounds)
         {
             [welf.canvasView setCroppedBounds:[welf.view convertRect:croppedBounds
                                                               toView:welf.canvasView]];
+        };
+    }
+    else if ([self.toolViewController isKindOfClass:[VToolPickerViewController class]])
+    {
+        VToolPickerViewController *toolPicker = (VToolPickerViewController *)self.toolViewController;
+        toolPicker.onToolSelection = ^(id<VWorkspaceTool> selectedTool)
+        {
+//            if (![selectedTool isKindOfClass:[VPhotoFilter class]])
+//            {
+//                [self addChildToolViewController:[selectedTool toolViewController]
+//                                         forTool:selectedTool];
+//                return;
+//            }
+            NSURL *filters = [[NSBundle bundleForClass:[self class]] URLForResource:@"filters" withExtension:@"xml"];
+            NSArray *rFilters = [VPhotoFilterSerialization filtersFromPlistFile:filters];
+            welf.canvasView.filter = rFilters[arc4random()%rFilters.count];
         };
     }
     

@@ -16,6 +16,7 @@
 @implementation VToolPickerViewController
 
 @synthesize tools = _tools;
+@synthesize onToolSelection = _onToolSelection;
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
@@ -55,7 +56,23 @@
     return pickerCell;
 }
 
+#pragma mark - UICollectionViewDelegate
+
+- (void)collectionView:(UICollectionView *)collectionView
+didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (self.onToolSelection)
+    {
+        self.onToolSelection([self selectedTool]);
+    }
+}
+
 #pragma mark - VToolPicker
+
+- (void)setOnToolSelection:(void (^)(id<VWorkspaceTool>))onToolSelection
+{
+    _onToolSelection = [onToolSelection copy];
+}
 
 - (void)setTools:(NSArray *)tools
 {

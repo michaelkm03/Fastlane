@@ -10,6 +10,7 @@
 
 @interface VCanvasView ()
 
+@property (nonatomic, strong) CIContext *context;
 @property (nonatomic, strong) UIImageView *imageView;
 
 @end
@@ -46,6 +47,8 @@
     _imageView.translatesAutoresizingMaskIntoConstraints = NO;
     _imageView.contentMode = UIViewContentModeScaleAspectFill;
     [self addSubview:_imageView];
+    
+    self.context = [CIContext contextWithOptions:@{}];
 }
 
 - (void)layoutSubviews
@@ -83,19 +86,16 @@
 
 - (void)setSourceImage:(UIImage *)sourceImage
 {
+    _sourceImage = sourceImage;
     self.imageView.image = sourceImage;
-    
     [self layoutIfNeeded];
-}
-
-- (UIImage *)sourceImage
-{
-    return self.imageView.image;
 }
 
 - (void)setFilter:(VPhotoFilter *)filter
 {
     _filter = filter;
+    self.imageView.image = [filter imageByFilteringImage:self.sourceImage
+                                           withCIContext:self.context];
 }
 
 #pragma mark - Public Methods

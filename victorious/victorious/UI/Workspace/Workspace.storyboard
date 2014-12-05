@@ -6,6 +6,11 @@
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="Impact.ttf">
+            <string>Impact</string>
+        </mutableArray>
+    </customFonts>
     <scenes>
         <!--Workspace View Controller-->
         <scene sceneID="8UX-Af-L1N">
@@ -134,6 +139,45 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="noe-Zt-QpP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-121" y="343"/>
+        </scene>
+        <!--Meme Workspace Tool View Controller-->
+        <scene sceneID="ooc-1r-Tci">
+            <objects>
+                <viewController storyboardIdentifier="VMemeWorkspaceToolViewController" id="iqf-u2-nzW" customClass="VMemeWorkspaceToolViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="aU6-N8-wDk"/>
+                        <viewControllerLayoutGuide type="bottom" id="q6N-GL-x5c"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="mWt-oo-Tjc">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="THIS IS A MEME" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="UrN-l4-5TC">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" name="Impact" family="Impact" pointSize="30"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done"/>
+                                <connections>
+                                    <outlet property="delegate" destination="iqf-u2-nzW" id="RIQ-Ax-PDs"/>
+                                </connections>
+                            </textView>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="q6N-GL-x5c" firstAttribute="top" secondItem="UrN-l4-5TC" secondAttribute="bottom" id="bNC-4t-0Lv"/>
+                            <constraint firstItem="UrN-l4-5TC" firstAttribute="leading" secondItem="mWt-oo-Tjc" secondAttribute="leading" id="eAy-N6-z8B"/>
+                            <constraint firstAttribute="trailing" secondItem="UrN-l4-5TC" secondAttribute="trailing" id="q68-N9-pqU"/>
+                            <constraint firstItem="UrN-l4-5TC" firstAttribute="top" secondItem="aU6-N8-wDk" secondAttribute="bottom" id="xyl-sZ-YaO"/>
+                        </constraints>
+                    </view>
+                    <nil key="simulatedStatusBarMetrics"/>
+                    <connections>
+                        <outlet property="memeTextView" destination="UrN-l4-5TC" id="PCd-bu-gUT"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="aSE-Jk-rdh" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="550" y="-336"/>
         </scene>
         <!--Crop Workspace Tool View Controller-->
         <scene sceneID="3yx-bR-QwV">

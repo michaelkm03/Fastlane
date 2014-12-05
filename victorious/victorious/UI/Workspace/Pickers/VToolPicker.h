@@ -10,10 +10,13 @@
 
 #import "VWorkspaceTool.h"
 
+
 @protocol VToolPicker <NSObject>
 
 @property (nonatomic, copy) NSArray /* That implement VWorkspaceTool */ *tools;
 
 @property (nonatomic, readonly) id <VWorkspaceTool> selectedTool;
+
+@property (nonatomic, copy) void (^onToolSelection)(id <VWorkspaceTool> selectedTool);
 
 @end
