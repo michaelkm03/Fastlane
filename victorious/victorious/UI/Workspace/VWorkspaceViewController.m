@@ -113,25 +113,22 @@
 {
     [self setSelectedBarButtonItem:sender];
     
-    id <VWorkspaceTool> selectedTool = [self toolForTag:sender.tag];
-    
+    self.selectedTool = (id <VWorkspaceTool>)[self toolForTag:sender.tag];
+
+    [self showToolViewControllerForTool:self.selectedTool];
+}
+
+#pragma mark - Property Accessors
+
+- (void)setSelectedTool:(id<VWorkspaceTool>)selectedTool
+{
     // Re-selected current tool should we dismiss?
-    if (selectedTool == self.selectedTool)
+    if (selectedTool == _selectedTool)
     {
         return;
     }
     
-    self.selectedTool = selectedTool;
-    
-    // Hide picker if any
-    if (self.toolViewController)
-    {
-        [self.toolViewController willMoveToParentViewController:nil];
-        [self.toolViewController.view removeFromSuperview];
-        [self.toolViewController didMoveToParentViewController:nil];
-    }
-
-    [self showToolViewControllerForTool:self.selectedTool];
+    _selectedTool = selectedTool;
 }
 
 #pragma mark - Private Methods
@@ -153,20 +150,40 @@
     return self.tools[tag];
 }
 
-- (void)showToolViewControllerForTool:(id<VWorkspaceTool>)tool
+- (void)removeCurrentToolViewController
 {
-    if ([tool toolViewController] == nil)
+    // Hide picker if any
+    if (self.toolViewController)
+    {
+        [self.toolViewController willMoveToParentViewController:nil];
+        [self.toolViewController.view removeFromSuperview];
+        [self.toolViewController didMoveToParentViewController:nil];
+    }
+}
+
+- (void)addChildToolViewController:(UIViewController *)toolViewController
+                           forTool:(id<VWorkspaceTool>)tool
+{
+    if (toolViewController == nil)
     {
         return;
     }
     
-    self.toolViewController = [tool toolViewController];
+    self.toolViewController = toolViewController;
     [self addChildViewController:self.toolViewController];
     [self.view addSubview:self.toolViewController.view];
     [self.toolViewController didMoveToParentViewController:self];
     self.toolViewController.view.translatesAutoresizingMaskIntoConstraints = NO;
     
-    switch (self.selectedTool.toolLocation)
+    [self positionToolViewController:toolViewController
+                             forTool:tool];
+}
+
+
+- (void)positionToolViewController:(UIViewController *)toolViewController
+                           forTool:(id <VWorkspaceTool>)tool
+{
+    switch (tool.toolLocation)
     {
         case VWorkspaceToolLocationInspector:
         {
@@ -211,6 +228,13 @@
         }
             break;
     }
+}
+
+- (void)showToolViewControllerForTool:(id<VWorkspaceTool>)tool
+{
+    [self removeCurrentToolViewController];
+    [self addChildToolViewController:[tool toolViewController]
+                             forTool:tool];
     
     if ([self.toolViewController isKindOfClass:[VCropWorkspaceToolViewController class]])
     {

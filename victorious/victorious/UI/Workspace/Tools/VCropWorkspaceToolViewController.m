@@ -87,7 +87,6 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    NSLog(@"Visible bounds of image: %@", NSStringFromCGRect(scrollView.bounds));
     if (self.onCropBoundsChange)
     {
         self.onCropBoundsChange(scrollView.bounds);
