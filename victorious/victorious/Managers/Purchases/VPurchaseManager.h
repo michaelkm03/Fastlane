@@ -62,5 +62,4 @@
                              success:(VProductsRequestSuccessBlock)successCallback
                              failure:(VProductsRequestFailureBlock)failureCallback;
 
-
 @end

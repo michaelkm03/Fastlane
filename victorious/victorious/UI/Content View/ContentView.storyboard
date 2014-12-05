@@ -126,19 +126,80 @@
                         <rect key="frame" x="0.0" y="64" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" textAlignment="center" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1tN-S4-eMF">
-                                <rect key="frame" x="38" y="95" width="245" height="387"/>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1tN-S4-eMF">
+                                <rect key="frame" x="16" y="70" width="288" height="317"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <string key="text">What better way is there to express yourself than to temporarily vandalize content posted in this app with emotive ballistics?  But wait just a second—you don't want to be limited to just the free ones, do you?  For only %@ you can purchase our premium emotive ballstics and show what a hardcore fan you really are.  Tap the "BUY" button below to get crackin'.</string>
+                                <mutableString key="text">For only %@ you can purchase this premium emotive ballstic and show what a hardcore fan you really are.
+
+What better way is there to express yourself than to temporarily vandalize content posted in this app with emotive ballistics?  But wait just a second—you don't want to be limited to just the free ones, do you?  Tap the "BUY" button below to get crackin'.
+    
+Got the sneaking suspiscion that you've bought this item before?  You just might be right.  Tap the "RESTORE PURCHASES" button below to download anything you've previously purchased witn your iTunes account.</mutableString>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dFx-6u-BFW">
+                                <rect key="frame" x="16" y="513" width="288" height="35"/>
+                                <color key="backgroundColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="35" id="BbJ-Md-FT6"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="13"/>
+                                <state key="normal" title="RESTORE PURCHASES">
+                                    <color key="titleColor" red="0.96470588239999999" green="0.96470588239999999" blue="0.96470588239999999" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="restorePurchasesTapped:" destination="3Oe-37-MmH" eventType="touchUpInside" id="SwA-4J-60t"/>
+                                </connections>
+                            </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RuS-Gp-u3z">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <subviews>
+                                    <view alpha="0.75000000000000022" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gCE-Ru-xd4">
+                                        <rect key="frame" x="74" y="200" width="172" height="167"/>
+                                        <subviews>
+                                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="gf6-jP-PlP">
+                                                <rect key="frame" x="68" y="62" width="37" height="37"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="37" id="Hz0-KB-oqg"/>
+                                                    <constraint firstAttribute="height" constant="37" id="LQP-kF-5ll"/>
+                                                </constraints>
+                                            </activityIndicatorView>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="  Restoring..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lk5-dG-kSc">
+                                                <rect key="frame" x="21" y="118" width="130" height="41"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="41" id="2tQ-yq-275"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
+                                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="trailingMargin" secondItem="lk5-dG-kSc" secondAttribute="trailing" constant="13" id="HAi-Ok-yIL"/>
+                                            <constraint firstItem="lk5-dG-kSc" firstAttribute="bottom" secondItem="gCE-Ru-xd4" secondAttribute="bottomMargin" id="RTe-CF-wWw"/>
+                                            <constraint firstAttribute="centerY" secondItem="gf6-jP-PlP" secondAttribute="centerY" constant="3" id="WpG-O5-zA4"/>
+                                            <constraint firstAttribute="height" constant="167" id="aE2-bR-54x"/>
+                                            <constraint firstAttribute="centerX" secondItem="gf6-jP-PlP" secondAttribute="centerX" constant="-0.5" id="h0U-6b-0mH"/>
+                                            <constraint firstItem="lk5-dG-kSc" firstAttribute="leading" secondItem="gCE-Ru-xd4" secondAttribute="leadingMargin" constant="13" id="plh-FP-RXF"/>
+                                            <constraint firstAttribute="width" constant="172" id="qUk-7g-fwF"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="centerX" secondItem="gCE-Ru-xd4" secondAttribute="centerX" id="N1u-RB-479"/>
+                                    <constraint firstAttribute="centerY" secondItem="gCE-Ru-xd4" secondAttribute="centerY" constant="0.5" id="wZd-o6-2dZ"/>
+                                </constraints>
+                            </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YY2-4u-epL">
-                                <rect key="frame" x="16" y="498" width="288" height="50"/>
+                                <rect key="frame" x="16" y="470" width="288" height="35"/>
                                 <color key="backgroundColor" red="1" green="0.035351606610000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="oTE-wt-fXp"/>
+                                    <constraint firstAttribute="height" constant="35" id="XVX-6a-sIa"/>
                                 </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="13"/>
                                 <state key="normal" title="BUY">
                                     <color key="titleColor" red="0.96470588239999999" green="0.96470588239999999" blue="0.96470588239999999" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -150,17 +211,27 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="YY2-4u-epL" secondAttribute="trailing" constant="16" id="4WB-5J-UxR"/>
-                            <constraint firstItem="1tN-S4-eMF" firstAttribute="leading" secondItem="W2n-MH-IuH" secondAttribute="leading" constant="38" id="9XE-c1-RnW"/>
-                            <constraint firstItem="YY2-4u-epL" firstAttribute="leading" secondItem="W2n-MH-IuH" secondAttribute="leading" constant="16" id="TZs-fz-22d"/>
-                            <constraint firstItem="83Y-vV-B4D" firstAttribute="top" secondItem="YY2-4u-epL" secondAttribute="bottom" constant="20" id="Yzc-jb-zmg"/>
-                            <constraint firstAttribute="trailing" secondItem="1tN-S4-eMF" secondAttribute="trailing" constant="37" id="gbv-am-ynb"/>
-                            <constraint firstItem="1tN-S4-eMF" firstAttribute="top" secondItem="9hY-zK-LuT" secondAttribute="bottom" constant="95" id="ov0-R9-kDp"/>
-                            <constraint firstItem="YY2-4u-epL" firstAttribute="top" secondItem="1tN-S4-eMF" secondAttribute="bottom" constant="16" id="pJg-ic-f6Q"/>
+                            <constraint firstAttribute="trailing" secondItem="1tN-S4-eMF" secondAttribute="trailing" constant="16" id="26y-kd-5fs"/>
+                            <constraint firstItem="RuS-Gp-u3z" firstAttribute="top" secondItem="9hY-zK-LuT" secondAttribute="bottom" id="4Zz-iA-T2P"/>
+                            <constraint firstItem="RuS-Gp-u3z" firstAttribute="leading" secondItem="W2n-MH-IuH" secondAttribute="leading" id="8oK-Pt-fRj"/>
+                            <constraint firstAttribute="trailing" secondItem="RuS-Gp-u3z" secondAttribute="trailing" id="9tD-xQ-Dfd"/>
+                            <constraint firstItem="YY2-4u-epL" firstAttribute="leading" secondItem="W2n-MH-IuH" secondAttribute="leading" constant="16" id="JmN-mK-W4b"/>
+                            <constraint firstItem="1tN-S4-eMF" firstAttribute="leading" secondItem="W2n-MH-IuH" secondAttribute="leading" constant="16" id="NLL-92-JRc"/>
+                            <constraint firstAttribute="trailing" secondItem="YY2-4u-epL" secondAttribute="trailing" constant="16" id="NiT-xO-u7V"/>
+                            <constraint firstItem="dFx-6u-BFW" firstAttribute="top" secondItem="YY2-4u-epL" secondAttribute="bottom" constant="8" id="Oiz-5r-ZJ2"/>
+                            <constraint firstItem="dFx-6u-BFW" firstAttribute="leading" secondItem="W2n-MH-IuH" secondAttribute="leading" constant="16" id="crR-74-G1f"/>
+                            <constraint firstItem="83Y-vV-B4D" firstAttribute="top" secondItem="RuS-Gp-u3z" secondAttribute="bottom" id="czt-7y-rKO"/>
+                            <constraint firstItem="83Y-vV-B4D" firstAttribute="top" secondItem="dFx-6u-BFW" secondAttribute="bottom" constant="20" id="hb8-OX-D8G"/>
+                            <constraint firstAttribute="trailing" secondItem="dFx-6u-BFW" secondAttribute="trailing" constant="16" id="oZQ-5d-WKR"/>
+                            <constraint firstItem="YY2-4u-epL" firstAttribute="top" secondItem="1tN-S4-eMF" secondAttribute="bottom" constant="83" id="wck-P7-1r6"/>
+                            <constraint firstItem="1tN-S4-eMF" firstAttribute="top" secondItem="9hY-zK-LuT" secondAttribute="bottom" constant="70" id="zIe-pn-eKH"/>
                         </constraints>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <nil key="simulatedStatusBarMetrics"/>
+                    <connections>
+                        <outlet property="loadingOverlay" destination="RuS-Gp-u3z" id="2fI-X8-d9G"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="N12-GK-9Kd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

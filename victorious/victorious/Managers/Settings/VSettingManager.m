@@ -13,11 +13,7 @@
 #import "VObjectManager+Environment.h"
 #import "VEnvironment.h"
 #import "VVoteType.h"
-#import "VFileCache.h"
-#import "VFileCache+VVoteType.h"
-#import "VVoteType+Fetcher.h"
 #import "VTracking.h"
-#import "VPurchaseManager.h"
 
 //Settings
 NSString * const kVCaptureVideoQuality =   @"capture";
@@ -45,13 +41,6 @@ NSString * const kVTermsOfServiceURL = @"url.tos";
 NSString * const kVAppStoreURL = @"url.appstore";
 NSString * const kVPrivacyUrl = @"url.privacy";
 
-@interface VSettingManager()
-
-@property (nonatomic, strong) VFileCache *fileCache;
-@property (nonatomic, readwrite) NSArray *voteTypes;
-
-@end
-
 @implementation VSettingManager
 
 + (instancetype)sharedManager
@@ -75,74 +64,15 @@ NSString * const kVPrivacyUrl = @"url.privacy";
         NSURL  *defaultExperimentsURL =   [[NSBundle mainBundle] URLForResource:@"defaultSettings" withExtension:@"plist"];
         [[NSUserDefaults standardUserDefaults] registerDefaults:[NSDictionary dictionaryWithContentsOfURL:defaultExperimentsURL]];
         
-        self.fileCache = [[VFileCache alloc] init];
-        
-        [self clearVoteTypes];
+        _voteSettings = [[VVoteSettings alloc] init];
     }
     
     return self;
 }
 
-- (void)clearVoteTypes
-{
-    self.voteTypes = @[];
-}
-
 - (void)updateSettingsWithAppTracking:(VTracking *)tracking
 {
     _applicationTracking = tracking;
-}
-
-- (void)updateSettingsWithVoteTypes:(NSArray *)voteTypes
-{
-    // Error checking
-    if ( voteTypes == nil || voteTypes.count == 0 )
-    {
-        return;
-    }
-    
-    // Check that only objects of type VVoteType are accepted
-    NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(VVoteType *voteType, NSDictionary *bindings)
-                              {
-                                  return [voteType isMemberOfClass:[VVoteType class]] &&
-                                        voteType.containsRequiredData &&
-                                        voteType.hasValidTrackingData;
-                              }];
-    self.voteTypes = [voteTypes filteredArrayUsingPredicate:predicate];
-    
-#warning testing only
-    [voteTypes enumerateObjectsUsingBlock:^(VVoteType *voteType, NSUInteger idx, BOOL *stop)
-    {
-        NSUInteger order = voteType.displayOrder.unsignedIntegerValue;
-        if ( order == 1 )
-        {
-            voteType.isPaid = @YES;
-            voteType.productIdentifier = [NSString stringWithFormat:@"com.getvictorious.eatyourkimchi.testpurchase.000%lu", (unsigned long)order];
-            *stop = YES;
-        }
-    }];
-    
-    [self.fileCache cacheImagesForVoteTypes:voteTypes];
-    NSArray *productIdentifiers = [VVoteType productIdentifiersFromVoteTypes:voteTypes];
-    [[VPurchaseManager sharedInstance] fetchProductsWithIdentifiers:productIdentifiers success:^(NSArray *products)
-    {
-        // TODO: Use nil instead of block here, this is fire and forget
-    }
-                                                          failure:^(NSError *error)
-     {
-         // TODO: Use nil instead of block here, this is fire and forget
-    }];
-}
-
-- (void)updateSettingsWithPurchasedProductIdentifier:(NSString *)productIdentifier
-{
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"productIdentifier == %@", productIdentifier];
-    NSArray *matches = [self.voteTypes filteredArrayUsingPredicate:predicate];
-    if ( matches.firstObject != nil && [matches.firstObject isKindOfClass:[VVoteType class]] )
-    {
-        VVoteType *voteType = matches.firstObject;
-        [voteType purchaseWithProductIdentifier:productIdentifier];
-    }
 }
 
 - (void)updateSettingsWithDictionary:(NSDictionary *)dictionary

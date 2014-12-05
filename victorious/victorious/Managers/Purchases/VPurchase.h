@@ -11,8 +11,8 @@
 
 @class VProduct;
 
-typedef void (^VPurchaseSuccessBlock) (NSArray *products);
-typedef void (^VPurchaseFailBlock) (NSError *error);
+typedef void (^VPurchaseSuccessBlock) (NSArray *);
+typedef void (^VPurchaseFailBlock) (NSError *);
 
 @interface VPurchase : NSObject
 
@@ -26,5 +26,7 @@ typedef void (^VPurchaseFailBlock) (NSError *error);
 @property (nonatomic, readonly) VProduct *product;
 @property (nonatomic, readonly) VPurchaseSuccessBlock successCallback;
 @property (nonatomic, readonly) VPurchaseFailBlock failureCallback;
+
+@property (nonatomic, strong) NSMutableArray *restoreProductIdentifiers;
 
 @end

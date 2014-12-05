@@ -57,7 +57,7 @@
         
         self.fileCache = [[VFileCache alloc] init];
         
-        NSArray *voteTypes = [[VSettingManager sharedManager] voteTypes];
+        NSArray *voteTypes = [VSettingManager sharedManager].voteSettings.voteTypes;
         
         self.purchaseManager = [VPurchaseManager sharedInstance];
         
@@ -74,10 +74,20 @@
         NSArray *productIds = [VVoteType productIdentifiersFromVoteTypes:voteTypes];
         [self.purchaseManager fetchProductsWithIdentifiers:productIds success:nil failure:nil];
         
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(updateData)
+                                                     name:VVoteSettingsDidUpdateNotification
+                                                   object:nil];
+        
         [self.enhancerBar reloadData];
         
     }
     return self;
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (NSArray *)createExperienceEnhancersFromVoteTypes:(NSArray *)voteTypes sequence:(VSequence *)sequence

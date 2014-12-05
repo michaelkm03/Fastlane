@@ -41,14 +41,6 @@ NSString * const VVoteTypeImageIndexReplacementMacro = @"XXXXX";
     return self.productIdentifier != nil && self.isPaid && !self.isPurchased.boolValue;
 }
 
-- (void)purchaseWithProductIdentifier:(NSString *)productIdentifier
-{
-    if ( self.mustBePurchased && [productIdentifier isEqualToString:self.productIdentifier] )
-    {
-        self.isPurchased = @YES;
-    }
-}
-
 - (BOOL)hasValidTrackingData
 {
     if ( self.tracking == nil || self.tracking.ballisticCount == nil )

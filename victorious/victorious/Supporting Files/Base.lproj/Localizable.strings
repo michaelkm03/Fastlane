@@ -423,3 +423,10 @@
 "ErrorPushNotificationsUnknown"         = "Error loading notification settings.\nPlease try again later.";
 "ErrorPushNotificationsNotSaved"        = "Error Saving Preferences";
 "ErrorPushNotificationsNotSavedMessage" = "Please try again later.";
+
+"PurchaseErrorTitle"                    = "Error Making Purchase";
+"PurchaseErrorProductNotAvailable"      = "Sorry, this product is not currently available.  Please try again laster.";
+"PurchaseErrorTransaction"              = "Unable to complete transaction.  Please try again laster.";
+"ProductsRequestError"                  = "Unable to load product information from the App Store.  Please try again laster.";
+"RestorePurchasesErrorTitle"            = "Error Restoring Purchases";
+"RestorePurchasesError"                 = "Unable to restore purchases at this time.  Please try again laster.";

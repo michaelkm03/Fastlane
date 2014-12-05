@@ -10,9 +10,9 @@
 
 #define SHOULD_SIMULATE_ACTIONS TARGET_IPHONE_SIMULATOR || (DEBUG && 0)
 #define SIMULATION_DELAY 1.0f
-#define SIMULATE_PURCHASE_ERROR 0
-#define SIMULATE_FETCH_PRODUCTS_ERROR 0
-#define SIMULATE_RESTORE_PURCHASE_ERROR 0
+#define SIMULATE_PURCHASE_ERROR 1
+#define SIMULATE_FETCH_PRODUCTS_ERROR 1
+#define SIMULATE_RESTORE_PURCHASE_ERROR 1
 
 #if SHOULD_SIMULATE_ACTIONS
 #warning VPurchaseManager is simulating success and/or failures
@@ -58,7 +58,8 @@
     return self;
 }
 
-#pragma mark - Public methods
+#pragma mark - Primary public methods
+
 - (void)purchaseProductWithIdentifier:(NSString *)productIdentifier success:(VPurchaseSuccessBlock)successCallback failure:(VPurchaseFailBlock)failureCallback
 {
     VProduct *product = [self purcahseableProductForIdenfitier:productIdentifier];
@@ -69,7 +70,7 @@
 {
     if ( product == nil )
     {
-        NSString *message = NSLocalizedString( @"Invalid product.", nil);
+        NSString *message = NSLocalizedString( @"ProductsRequestError", nil);
         failureCallback( [NSError errorWithDomain:message code:-1 userInfo:@{ NSLocalizedDescriptionKey : message }] );
         return;
     }
@@ -95,15 +96,21 @@
 
 - (void)restorePurchasesSuccess:(VPurchaseSuccessBlock)successCallback failure:(VPurchaseFailBlock)failureCallback
 {
+    if ( self.activePurchaseRestore != nil )
+    {
+        // Do not allow two product requests to occur
+        return;
+    }
+    
     self.activePurchaseRestore = [[VPurchase alloc] initWithSuccess:successCallback failure:failureCallback];
     
 #if SHOULD_SIMULATE_ACTIONS
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(SIMULATION_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
     {
 #if SIMULATE_RESTORE_PURCHASE_ERROR
-        [self transactionDidFailWithErrorCode:error.code productIdentifier:nil];
+        [self transactionDidFailWithErrorCode:SKErrorUnknown productIdentifier:nil];
 #else
-        [self transactionDidCompleteWithProductIdentifier:nil];
+        [self restorePurchasesDidComplete];
 #endif
     });
     return;
@@ -127,7 +134,7 @@
     {
         if ( successCallback != nil )
         {
-            NSArray *products = nil; //[self.cache purchaseableProducts]
+            NSArray *products = [[self.cache purchaseableProducts] objectsForKeys:productIdenfiters];
             successCallback( products );
         }
         return;
@@ -144,7 +151,8 @@
         {
             [self.activeProductRequest productIdentifierFailedToFetch:identifier];
         }
-        [self productsRequestDidFailWithError:[NSError errorWithDomain:@"Failed to fetch products" code:-1 userInfo:nil]];
+        NSString *message = NSLocalizedString( @"Failed to fetch products", nil );
+        [self productsRequestDidFailWithError:[NSError errorWithDomain:message code:-1 userInfo:nil]];
 #else
         for ( __unused NSString *identifier in uncachedProductIndentifiers )
         {
@@ -162,12 +170,12 @@ return;
     [request start];
 }
 
+#pragma mark - Purchase product helpers
+
 - (VProduct *)purcahseableProductForIdenfitier:(NSString *)identifier
 {
     return [[self.cache purchaseableProducts] objectForKey:identifier];
 }
-
-#pragma mark - StoreKit Helpers
 
 - (NSArray *)productIdentifiersFilteredForUncachedProducts:(NSArray *)productIdentifiers
 {
@@ -189,33 +197,20 @@ return;
     NSString *message = nil;
     switch ( errorCode )
     {
-        case SKErrorClientInvalid:
-            message = NSLocalizedString( @"Purchase error invalid.", nil);
-            break;
         case SKErrorPaymentCancelled:
-            message = NSLocalizedString( @"Purchase cancelled.", nil);
-            break;
-        case SKErrorPaymentInvalid:
-        case SKErrorPaymentNotAllowed:
-            message = NSLocalizedString( @"Purchase error not allowed.", nil);
+            message = @"Purchase cancelled."; // This doens't display to the user, but domain can't be nil
             break;
         case SKErrorStoreProductNotAvailable:
-            message = NSLocalizedString( @"Purchase error unavailable.", nil);
+            message = NSLocalizedString( @"PurchaseErrorProductNotAvailable", nil);
             break;
         default:
-        case SKErrorUnknown:
-            message = NSLocalizedString( @"Purchase error unknown.", nil);
+            message = NSLocalizedString( @"PurchaseErrorTransaction.", nil);
             break;
     }
     NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : message };
-    NSError *error = [NSError errorWithDomain:message code:-1 userInfo:userInfo];
+    NSError *error = [NSError errorWithDomain:message code:errorCode userInfo:userInfo];
     
-    if ( productIdentifier == nil )
-    {
-        self.activePurchaseRestore.failureCallback( error );
-        self.activePurchaseRestore = nil;
-    }
-    else if ( self.activeProductRequest != nil && [self.activeProductRequest.productIdentifiers containsObject:productIdentifier] )
+    if ( self.activeProductRequest != nil && [self.activeProductRequest.productIdentifiers containsObject:productIdentifier] )
     {
         if ( self.activeProductRequest.failureCallback != nil )
         {
@@ -227,15 +222,6 @@ return;
     {
         self.activePurchase.failureCallback( error );
         self.activePurchase = nil;
-    }
-}
-
-- (void)transactionRestoreDidComplete:(SKPaymentTransaction *)transaction
-{
-    if ( self.activePurchaseRestore != nil )
-    {
-        self.activePurchaseRestore.successCallback( nil );
-        self.activePurchaseRestore = nil;
     }
 }
 
@@ -253,6 +239,8 @@ return;
         self.activePurchase = nil;
     }
 }
+
+#pragma mark - Products request helpers
 
 - (void)productsRequestDidSucceed
 {
@@ -278,8 +266,39 @@ return;
 
 - (void)productsRequestDidFailWithError:(NSError *)error
 {
-    self.activeProductRequest.failureCallback( error );
+    if ( self.activeProductRequest.failureCallback != nil )
+    {
+        self.activeProductRequest.failureCallback( error );
+    }
     self.activeProductRequest = nil;
+}
+
+#pragma mark - Restore purchases helpers
+
+- (void)restorePurchaseTransactionDidCompleteWithProductIdentifier:(NSString *)productIdentifier
+{
+    if ( self.activePurchaseRestore != nil )
+    {
+        [self.activePurchaseRestore.restoreProductIdentifiers addObject:productIdentifier];
+    }
+}
+
+- (void)restorePurchasesDidComplete
+{
+    if ( self.activePurchaseRestore != nil )
+    {
+        self.activePurchaseRestore.successCallback( self.activePurchaseRestore.restoreProductIdentifiers );
+        self.activePurchaseRestore = nil;
+    }
+}
+
+- (void)restorePurchasesDidFailWithError:(NSError *)error
+{
+    NSString *message = NSLocalizedString( @"RestorePurchasesError", nil);
+    NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : message };
+    NSError *userFacingError = [NSError errorWithDomain:message code:error.code userInfo:userInfo];
+    self.activePurchaseRestore.failureCallback( userFacingError );
+    self.activePurchaseRestore = nil;
 }
 
 #pragma mark - SKProductsRequestDelegate
@@ -307,7 +326,7 @@ return;
     }
     else
     {
-        NSString *message = NSLocalizedString( @"Purchase error unknown.", nil);
+        NSString *message = NSLocalizedString( @"ProductsRequestError", nil);
         NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : message };
         NSError *error = [NSError errorWithDomain:message code:-1 userInfo:userInfo];
         [self productsRequestDidFailWithError:error];
@@ -333,7 +352,7 @@ return;
                 
             case SKPaymentTransactionStateRestored:
                 [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
-                [self transactionRestoreDidComplete:transaction];
+                [self restorePurchaseTransactionDidCompleteWithProductIdentifier:transaction.payment.productIdentifier];
                 break;
                 
             case SKPaymentTransactionStatePurchasing:
@@ -375,7 +394,13 @@ return;
 // Sent when an error is encountered while adding transactions from the user's purchase history back to the queue.
 - (void)paymentQueue:(SKPaymentQueue *)queue restoreCompletedTransactionsFailedWithError:(NSError *)error
 {
-    [self transactionDidFailWithErrorCode:error.code productIdentifier:nil];
+    [self restorePurchasesDidFailWithError:error];
+}
+
+// Sent when all transactions from the user's purchase history have successfully been added back to the queue.
+- (void)paymentQueueRestoreCompletedTransactionsFinished:(SKPaymentQueue *)queue
+{
+    [self restorePurchasesDidComplete];
 }
 
 @end
