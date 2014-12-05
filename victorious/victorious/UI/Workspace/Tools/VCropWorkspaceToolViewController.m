@@ -30,6 +30,13 @@
 #pragma mark - UIViewController
 #pragma mark Lifecycle
 
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    self.croppingScrollView.decelerationRate = UIScrollViewDecelerationRateFast;
+}
+
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
