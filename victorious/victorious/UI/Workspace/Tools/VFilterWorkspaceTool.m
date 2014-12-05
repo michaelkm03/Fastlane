@@ -7,15 +7,22 @@
 //
 
 #import "VFilterWorkspaceTool.h"
+#import "VToolPicker.h"
 
 #import "VDependencyManager.h"
+#import "VDependencyManager+VWorkspaceTool.h"
 
 static NSString * const kTitleKey = @"title";
+static NSString * const kIconKey = @"icon";
+static NSString * const kSubtoolsKey = @"subtools";
+static NSString * const kPickerKey = @"picker";
 
 @interface VFilterWorkspaceTool ()
 
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, strong) UIImage *icon;
+@property (nonatomic, strong) UIViewController *toolPicker;
+@property (nonatomic, strong) NSArray *subtools;
 
 @end
 
@@ -29,6 +36,9 @@ static NSString * const kTitleKey = @"title";
     if (self)
     {
         _title = [dependencyManager stringForKey:kTitleKey];
+        _subtools = [dependencyManager tools];
+        _toolPicker = [dependencyManager viewControllerForKey:kPickerKey];
+        [(id<VToolPicker>)_toolPicker setTools:_subtools];
     }
     return self;
 }
@@ -42,14 +52,14 @@ static NSString * const kTitleKey = @"title";
 
 #pragma mark - VWorkspaceTool
 
-- (UIViewController *)toolViewController
+- (UIViewController *)canvasToolViewController
 {
     return nil;
 }
 
-- (VWorkspaceToolLocation)toolLocation
+- (UIViewController *)inspectorToolViewController
 {
-    return VWorkspaceToolLocationCanvas;
+    return self.toolPicker;
 }
 
 - (NSString *)title

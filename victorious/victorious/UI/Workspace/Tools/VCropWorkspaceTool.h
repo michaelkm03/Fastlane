@@ -13,4 +13,8 @@
 
 @interface VCropWorkspaceTool : NSObject <VWorkspaceTool, VHasManagedDependancies>
 
+@property (nonatomic, copy) void (^onCropBoundsChange)(CGRect cropBounds);
+
+@property (nonatomic, assign) CGSize assetSize;
+
 @end

@@ -37,14 +37,14 @@ static NSString * const kTitleKey = @"title";
 
 #pragma mark - VWorkspaceTool
 
-- (UIViewController *)toolViewController
+- (UIViewController *)canvasToolViewController
 {
     return _toolViewController;
 }
 
-- (VWorkspaceToolLocation)toolLocation
+- (UIViewController *)inspectorToolViewController
 {
-    return VWorkspaceToolLocationCanvas;
+    return nil;
 }
 
 - (NSString *)title

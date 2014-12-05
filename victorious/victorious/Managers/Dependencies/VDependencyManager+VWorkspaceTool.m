@@ -8,8 +8,6 @@
 
 #import "VDependencyManager+VWorkspaceTool.h"
 #import "VWorkspaceTool.h"
-#import "VCategoryWorkspaceTool.h"
-
 #import "NSArray+VMap.h"
 
 NSString *const VDependencyManagerWorkspaceToolsKey = @"tools";

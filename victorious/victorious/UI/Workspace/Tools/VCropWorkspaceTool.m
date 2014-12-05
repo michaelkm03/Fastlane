@@ -38,16 +38,38 @@ static NSString * const kToolInterfaceKey = @"toolInterface";
     return self;
 }
 
-#pragma mark - VWorkspaceTool
+#pragma mark - Property Accessors
 
-- (UIViewController *)toolViewController
+- (void)setAssetSize:(CGSize)assetSize
 {
-    return (UIViewController *)_cropViewController;
+    _cropViewController.assetSize = assetSize;
 }
 
-- (VWorkspaceToolLocation)toolLocation
+- (CGSize)assetSize
 {
-    return VWorkspaceToolLocationCanvas;
+    return _cropViewController.assetSize;
+}
+
+- (void)setOnCropBoundsChange:(void (^)(CGRect))onCropBoundsChange
+{
+    _cropViewController.onCropBoundsChange = onCropBoundsChange;
+}
+
+- (void (^)(CGRect cropBounds))onCropBoundsChange
+{
+    return _cropViewController.onCropBoundsChange;
+}
+
+#pragma mark - VWorkspaceTool
+
+- (UIViewController *)canvasToolViewController
+{
+    return _cropViewController;
+}
+
+- (UIViewController *)inspectorToolViewController
+{
+    return nil;
 }
 
 - (NSString *)title

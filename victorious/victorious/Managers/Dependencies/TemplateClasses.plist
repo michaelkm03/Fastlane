@@ -14,8 +14,8 @@
 	<string>VMemeWorkspaceTool</string>
 	<key>crop.tool</key>
 	<string>VCropWorkspaceTool</string>
-	<key>category.tool</key>
-	<string>VCategoryWorkspaceTool</string>
+	<key>text.tool</key>
+	<string>VTextWorkspaceTool</string>
 	<key>workspace.screen</key>
 	<string>VWorkspaceViewController</string>
 	<key>sideMenu.scaffold</key>

@@ -17,15 +17,15 @@
 
 // Protocols
 #import "VWorkspaceTool.h"
-#import "VCategoryWorkspaceTool.h"
 #import "VCanvasTool.h"
 
-// Should move me out of here
-#import "VCropWorkspaceToolViewController.h"
-#import "VToolPickerViewController.h"
+// Tools
+#import "VCropWorkspaceTool.h"
 
+#warning Move me out of here
 // Filters
 #import "VPhotoFilterSerialization.h"
+#import "VFilterWorkspaceTool.h"
 
 @interface VWorkspaceViewController ()
 
@@ -35,7 +35,8 @@
 @property (weak, nonatomic) IBOutlet VCanvasView *canvasView;
 
 @property (nonatomic, strong) id <VWorkspaceTool> selectedTool;
-@property (nonatomic, strong) UIViewController *toolViewController;
+@property (nonatomic, strong) UIViewController *canvasToolViewController;
+@property (nonatomic, strong) UIViewController *inspectorToolViewController;
 
 @end
 
@@ -83,7 +84,7 @@
         UIBarButtonItem *itemForTool = [[UIBarButtonItem alloc] initWithTitle:tool.title
                                                                         style:UIBarButtonItemStylePlain
                                                                        target:self
-                                                                       action:@selector(toolSelected:)];
+                                                                       action:@selector(selectedBarButtonItem:)];
         itemForTool.tintColor = [UIColor whiteColor];
         [toolBarItems addObject:itemForTool];
         itemForTool.tag = idx;
@@ -115,13 +116,11 @@
     });
 }
 
-- (void)toolSelected:(UIBarButtonItem *)sender
+- (void)selectedBarButtonItem:(UIBarButtonItem *)sender
 {
     [self setSelectedBarButtonItem:sender];
     
     self.selectedTool = (id <VWorkspaceTool>)[self toolForTag:sender.tag];
-
-    [self showToolViewControllerForTool:self.selectedTool];
 }
 
 #pragma mark - Property Accessors
@@ -133,8 +132,43 @@
     {
         return;
     }
+
+    [self setCanvasToolViewController:[selectedTool canvasToolViewController]
+                              forTool:selectedTool];
+    [self setInspectorToolViewController:[selectedTool inspectorToolViewController]
+                                 forTool:selectedTool];
+
+    __weak typeof(self) welf = self;
+    if ([selectedTool isKindOfClass:[VCropWorkspaceTool class]])
+    {
+        VCropWorkspaceTool *cropTool = (VCropWorkspaceTool *)selectedTool;
+        
+        [cropTool setAssetSize:self.canvasView.sourceImage.size];
+        cropTool.onCropBoundsChange = ^void(CGRect croppedBounds)
+        {
+            [welf.canvasView setCroppedBounds:[welf.view convertRect:croppedBounds
+                                                              toView:welf.canvasView]];
+        };
+    }
+//    else if ([self.inspectorToolViewController isKindOfClass:[VToolPickerViewController class]])
+//    {
+//        VToolPickerViewController *toolPicker = (VToolPickerViewController *)self.inspectorToolViewController;
+//        toolPicker.onToolSelection = ^(id<VWorkspaceTool> selectedTool)
+//        {
+//            welf.selectedTool = selectedTool;
+//        };
+//    }
     
     _selectedTool = selectedTool;
+    
+    if ([_selectedTool respondsToSelector:@selector(setOnCanvasToolUpdate:)])
+    {
+        [_selectedTool setOnCanvasToolUpdate:^
+         {
+             [welf setCanvasToolViewController:[welf.selectedTool canvasToolViewController]
+                                       forTool:welf.selectedTool];
+         }];
+    }
 }
 
 #pragma mark - Private Methods
@@ -156,127 +190,99 @@
     return self.tools[tag];
 }
 
-- (void)removeCurrentToolViewController
+- (void)removeToolViewController:(UIViewController *)toolViewController
 {
-//    if ([self.toolViewController respondsToSelector:@selector(shouldPersistAfterDeselection)])
-//    {
-//        if ([(id <VCanvasTool>)self.toolViewController shouldPersistAfterDeselection])
-//        {
-//            return;
-//        }
-//    }
-    if (self.toolViewController)
-    {
-        [self.toolViewController willMoveToParentViewController:nil];
-        [self.toolViewController.view removeFromSuperview];
-        [self.toolViewController didMoveToParentViewController:nil];
-    }
+    [toolViewController willMoveToParentViewController:nil];
+    [toolViewController.view removeFromSuperview];
+    [toolViewController didMoveToParentViewController:nil];
 }
 
-- (void)addChildToolViewController:(UIViewController *)toolViewController
-                           forTool:(id<VWorkspaceTool>)tool
+- (void)addToolViewController:(UIViewController *)viewController
 {
-    if (toolViewController == nil)
+    [self addChildViewController:viewController];
+    [self.view addSubview:viewController.view];
+    [viewController didMoveToParentViewController:self];
+}
+
+- (void)setCanvasToolViewController:(UIViewController *)canvasToolViewController
+                            forTool:(id<VWorkspaceTool>)tool
+{
+    [self removeToolViewController:self.canvasToolViewController];
+    self.canvasToolViewController = canvasToolViewController;
+    
+    if (canvasToolViewController == nil)
     {
         return;
     }
+    [self addToolViewController:canvasToolViewController];
+    [self positionToolViewControllerOnCanvas:self.canvasToolViewController];
+}
+
+- (void)setInspectorToolViewController:(UIViewController *)inspectorToolViewController
+                               forTool:(id<VWorkspaceTool>)tool
+{
+    [self removeToolViewController:self.inspectorToolViewController];
+    self.inspectorToolViewController = inspectorToolViewController;
     
-    self.toolViewController = toolViewController;
-    [self addChildViewController:self.toolViewController];
-    [self.view addSubview:self.toolViewController.view];
-    [self.toolViewController didMoveToParentViewController:self];
-    self.toolViewController.view.translatesAutoresizingMaskIntoConstraints = NO;
-    
-    [self positionToolViewController:toolViewController
-                             forTool:tool];
+    if (inspectorToolViewController == nil)
+    {
+        return;
+    }
+    [self addToolViewController:inspectorToolViewController];
+    [self positionToolViewControllerOnInspector:inspectorToolViewController];
 }
 
 
-- (void)positionToolViewController:(UIViewController *)toolViewController
-                           forTool:(id <VWorkspaceTool>)tool
+
+- (void)positionToolViewControllerOnCanvas:(UIViewController *)toolViewController
 {
-    switch (tool.toolLocation)
-    {
-        case VWorkspaceToolLocationInspector:
-        {
-            [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[picker]|"
-                                                                              options:kNilOptions
-                                                                              metrics:nil
-                                                                                views:@{@"picker":self.toolViewController.view}]];
-            NSDictionary *verticalMetrics = @{@"toolbarHeight":@(CGRectGetHeight(self.bottomToolbar.bounds))};
-            [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[canvas][picker]-toolbarHeight-|"
-                                                                              options:kNilOptions
-                                                                              metrics:verticalMetrics
-                                                                                views:@{@"picker":self.toolViewController.view,
-                                                                                        @"canvas":self.canvasView}]];
-        }
-            break;
-        case VWorkspaceToolLocationCanvas:
-        {
-            NSDictionary *viewMap = @{@"canvas": self.canvasView,
-                                      @"toolInterface": self.toolViewController.view};
-            [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[toolInterface(==canvas)]"
-                                                                              options:kNilOptions
-                                                                              metrics:nil
-                                                                                views:viewMap]];
-            [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[toolInterface(==canvas)]"
-                                                                              options:kNilOptions
-                                                                              metrics:nil
-                                                                                views:viewMap]];
-            [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.toolViewController.view
-                                                                  attribute:NSLayoutAttributeLeft
-                                                                  relatedBy:NSLayoutRelationEqual
-                                                                     toItem:self.canvasView
-                                                                  attribute:NSLayoutAttributeLeft
-                                                                 multiplier:1.0f
-                                                                   constant:0.0f]];
-            [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.toolViewController.view
-                                                                  attribute:NSLayoutAttributeTop
-                                                                  relatedBy:NSLayoutRelationEqual
-                                                                     toItem:self.canvasView
-                                                                  attribute:NSLayoutAttributeTop
-                                                                 multiplier:1.0f
-                                                                   constant:0.0f]];
-        }
-            break;
-    }
+    toolViewController.view.translatesAutoresizingMaskIntoConstraints = NO;
+    NSDictionary *viewMap = @{@"canvas": self.canvasView,
+                              @"toolInterface": toolViewController.view};
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[toolInterface(==canvas)]"
+                                                                      options:kNilOptions
+                                                                      metrics:nil
+                                                                        views:viewMap]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[toolInterface(==canvas)]"
+                                                                      options:kNilOptions
+                                                                      metrics:nil
+                                                                        views:viewMap]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:toolViewController.view
+                                                          attribute:NSLayoutAttributeLeft
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.canvasView
+                                                          attribute:NSLayoutAttributeLeft
+                                                         multiplier:1.0f
+                                                           constant:0.0f]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:toolViewController.view
+                                                          attribute:NSLayoutAttributeTop
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.canvasView
+                                                          attribute:NSLayoutAttributeTop
+                                                         multiplier:1.0f
+                                                           constant:0.0f]];
 }
 
-- (void)showToolViewControllerForTool:(id<VWorkspaceTool>)tool
+- (void)positionToolViewControllerOnInspector:(UIViewController *)toolViewController
 {
-    [self removeCurrentToolViewController];
-    [self addChildToolViewController:[tool toolViewController]
-                             forTool:tool];
-    
-    __weak typeof(self) welf = self;
-    if ([self.toolViewController isKindOfClass:[VCropWorkspaceToolViewController class]])
-    {
-        VCropWorkspaceToolViewController *cropVC = (VCropWorkspaceToolViewController *)self.toolViewController;
-        
-        [cropVC setAssetSize:self.canvasView.sourceImage.size];
-        cropVC.onCropBoundsChange = ^void(CGRect croppedBounds)
-        {
-            [welf.canvasView setCroppedBounds:[welf.view convertRect:croppedBounds
-                                                              toView:welf.canvasView]];
-        };
-    }
-    else if ([self.toolViewController isKindOfClass:[VToolPickerViewController class]])
-    {
-        VToolPickerViewController *toolPicker = (VToolPickerViewController *)self.toolViewController;
-        toolPicker.onToolSelection = ^(id<VWorkspaceTool> selectedTool)
-        {
-//            if (![selectedTool isKindOfClass:[VPhotoFilter class]])
-//            {
-//                [self addChildToolViewController:[selectedTool toolViewController]
-//                                         forTool:selectedTool];
-//                return;
-//            }
-            NSURL *filters = [[NSBundle bundleForClass:[self class]] URLForResource:@"filters" withExtension:@"xml"];
-            NSArray *rFilters = [VPhotoFilterSerialization filtersFromPlistFile:filters];
-            welf.canvasView.filter = rFilters[arc4random()%rFilters.count];
-        };
-    }
-    
+    toolViewController.view.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[picker]|"
+                                                                      options:kNilOptions
+                                                                      metrics:nil
+                                                                        views:@{@"picker":toolViewController.view}]];
+    NSDictionary *verticalMetrics = @{@"toolbarHeight":@(CGRectGetHeight(self.bottomToolbar.bounds))};
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[canvas][picker]-toolbarHeight-|"
+                                                                      options:kNilOptions
+                                                                      metrics:verticalMetrics
+                                                                        views:@{@"picker":toolViewController.view,
+                                                                                @"canvas":self.canvasView}]];
+}
+
+- (void)applyFilterTool:(VFilterWorkspaceTool *)filterTool
+{
+    NSURL *filters = [[NSBundle bundleForClass:[self class]] URLForResource:@"filters" withExtension:@"xml"];
+    NSArray *rFilters = [VPhotoFilterSerialization filtersFromPlistFile:filters];
+    self.canvasView.filter = rFilters[arc4random()%rFilters.count];
 }
 
 @end

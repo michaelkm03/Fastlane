@@ -8,23 +8,18 @@
 
 #import <Foundation/Foundation.h>
 
-typedef NS_ENUM(NSInteger, VWorkspaceToolLocation)
-{
-    VWorkspaceToolLocationInspector,
-    VWorkspaceToolLocationCanvas,
-};
-
 /**
  *  VWorkspaceTool defines a common interface for all workspace tools. Tools must specify their tool's location in the workspace and the UIViewController to use.
  */
 @protocol VWorkspaceTool <NSObject>
 
 @required
-@property (nonatomic, assign, readonly) VWorkspaceToolLocation toolLocation; ///< The location to display this tool's UI.
-@property (nonatomic, strong, readonly) UIViewController *toolViewController; ///< The interface for this tool.
+@property (nonatomic, strong, readonly) UIViewController *canvasToolViewController; ///< The tool to display in the canvas if any.
+@property (nonatomic, strong, readonly) UIViewController *inspectorToolViewController; ///< The tool to display in the inspector if any.
 
 @optional
 @property (nonatomic, copy, readonly) NSString *title; ///< The text to display while selecting tool.
 @property (nonatomic, strong, readonly) UIImage *icon; ///< The icon to display for this tool.
+@property (nonatomic, copy) void (^onCanvasToolUpdate)(void); ///< Called whenever a subtool has been selected that needs to swap tools on the canvas
 
 @end

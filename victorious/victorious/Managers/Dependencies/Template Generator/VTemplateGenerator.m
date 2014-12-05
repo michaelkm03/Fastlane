@@ -91,7 +91,7 @@ static NSString * const kToolInterfaceKey = @"toolInterface";
              kToolsKey:
                  @[
                      @{
-                         kClassNameKey: @"category.tool",
+                         kClassNameKey: @"text.tool",
                          kTitleKey: @"text",
                          kPickerKey:
                              @{
@@ -110,7 +110,7 @@ static NSString * const kToolInterfaceKey = @"toolInterface";
                                  ]
                          },
                      @{
-                         kClassNameKey: @"category.tool",
+                         kClassNameKey: @"filter.tool",
                          kTitleKey: @"filters",
                          kPickerKey:
                              @{
@@ -118,22 +118,22 @@ static NSString * const kToolInterfaceKey = @"toolInterface";
                                  },
                          kToolsKey:
                              @[
-                                 @{
-                                     kClassNameKey: @"filter.tool",
-                                     kTitleKey: @"Amsterdam"
-                                     },
-                                 @{
-                                     kClassNameKey: @"filter.tool",
-                                     kTitleKey: @"London"
-                                     },
-                                 @{
-                                     kClassNameKey: @"filter.tool",
-                                     kTitleKey: @"Zurich"
-                                     },
-                                 @{
-                                     kClassNameKey: @"filter.tool",
-                                     kTitleKey: @"Sochi"
-                                     },
+//                                 @{
+//                                     kClassNameKey: @"filter.tool",
+//                                     kTitleKey: @"Amsterdam"
+//                                     },
+//                                 @{
+//                                     kClassNameKey: @"filter.tool",
+//                                     kTitleKey: @"London"
+//                                     },
+//                                 @{
+//                                     kClassNameKey: @"filter.tool",
+//                                     kTitleKey: @"Zurich"
+//                                     },
+//                                 @{
+//                                     kClassNameKey: @"filter.tool",
+//                                     kTitleKey: @"Sochi"
+//                                     },
                                  ]
                          },
                      @{
