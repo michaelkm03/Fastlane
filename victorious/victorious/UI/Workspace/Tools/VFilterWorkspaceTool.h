@@ -11,6 +11,10 @@
 #import "VHasManagedDependencies.h"
 #import "VWorkspaceTool.h"
 
+#import "VPhotoFilter.h"
+
 @interface VFilterWorkspaceTool : NSObject <VHasManagedDependancies, VWorkspaceTool>
+
+@property (nonatomic, copy) void (^onFilterChange)(VPhotoFilter *filter);
 
 @end

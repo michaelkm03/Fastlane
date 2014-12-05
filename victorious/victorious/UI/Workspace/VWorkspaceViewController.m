@@ -21,11 +21,8 @@
 
 // Tools
 #import "VCropWorkspaceTool.h"
-
-#warning Move me out of here
-// Filters
-#import "VPhotoFilterSerialization.h"
 #import "VFilterWorkspaceTool.h"
+
 
 @interface VWorkspaceViewController ()
 
@@ -137,11 +134,13 @@
                               forTool:selectedTool];
     [self setInspectorToolViewController:[selectedTool inspectorToolViewController]
                                  forTool:selectedTool];
-
+    
+    _selectedTool = selectedTool;
+    
     __weak typeof(self) welf = self;
-    if ([selectedTool isKindOfClass:[VCropWorkspaceTool class]])
+    if ([_selectedTool isKindOfClass:[VCropWorkspaceTool class]])
     {
-        VCropWorkspaceTool *cropTool = (VCropWorkspaceTool *)selectedTool;
+        VCropWorkspaceTool *cropTool = (VCropWorkspaceTool *)_selectedTool;
         
         [cropTool setAssetSize:self.canvasView.sourceImage.size];
         cropTool.onCropBoundsChange = ^void(CGRect croppedBounds)
@@ -150,16 +149,14 @@
                                                               toView:welf.canvasView]];
         };
     }
-//    else if ([self.inspectorToolViewController isKindOfClass:[VToolPickerViewController class]])
-//    {
-//        VToolPickerViewController *toolPicker = (VToolPickerViewController *)self.inspectorToolViewController;
-//        toolPicker.onToolSelection = ^(id<VWorkspaceTool> selectedTool)
-//        {
-//            welf.selectedTool = selectedTool;
-//        };
-//    }
-    
-    _selectedTool = selectedTool;
+    else if ([_selectedTool isKindOfClass:[VFilterWorkspaceTool class]])
+    {
+        VFilterWorkspaceTool *filterTool = (VFilterWorkspaceTool *)_selectedTool;
+        filterTool.onFilterChange = ^void(VPhotoFilter *filter)
+        {
+            welf.canvasView.filter = filter;
+        };
+    }
     
     if ([_selectedTool respondsToSelector:@selector(setOnCanvasToolUpdate:)])
     {
@@ -276,13 +273,6 @@
                                                                       metrics:verticalMetrics
                                                                         views:@{@"picker":toolViewController.view,
                                                                                 @"canvas":self.canvasView}]];
-}
-
-- (void)applyFilterTool:(VFilterWorkspaceTool *)filterTool
-{
-    NSURL *filters = [[NSBundle bundleForClass:[self class]] URLForResource:@"filters" withExtension:@"xml"];
-    NSArray *rFilters = [VPhotoFilterSerialization filtersFromPlistFile:filters];
-    self.canvasView.filter = rFilters[arc4random()%rFilters.count];
 }
 
 @end

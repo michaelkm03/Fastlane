@@ -558,6 +558,7 @@
 		D87351881A3120F5006D97B2 /* VCanvasView.m in Sources */ = {isa = PBXBuildFile; fileRef = D87351871A3120F5006D97B2 /* VCanvasView.m */; };
 		D873518F1A316727006D97B2 /* VMemeWorkspaceToolViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D873518E1A316727006D97B2 /* VMemeWorkspaceToolViewController.m */; };
 		D87351961A324E7F006D97B2 /* VTextWorkspaceTool.m in Sources */ = {isa = PBXBuildFile; fileRef = D87351951A324E7F006D97B2 /* VTextWorkspaceTool.m */; };
+		D87351991A3260AC006D97B2 /* VImageFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = D87351981A3260AC006D97B2 /* VImageFilter.m */; };
 		D8917EA219F8498F0070BDBB /* VVideoCellViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D8917EA119F8498F0070BDBB /* VVideoCellViewModel.m */; };
 		D89A500B1A000E790010D050 /* VFollowUserControl.m in Sources */ = {isa = PBXBuildFile; fileRef = D89A500A1A000E790010D050 /* VFollowUserControl.m */; };
 		D89AC2BC19F1FD6B00921131 /* VHistogramDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = D89AC2B919F1FD6B00921131 /* VHistogramDataSource.m */; };
@@ -1630,6 +1631,8 @@
 		D87351901A3167AA006D97B2 /* VCanvasTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCanvasTool.h; sourceTree = "<group>"; };
 		D87351941A324E7F006D97B2 /* VTextWorkspaceTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextWorkspaceTool.h; sourceTree = "<group>"; };
 		D87351951A324E7F006D97B2 /* VTextWorkspaceTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextWorkspaceTool.m; sourceTree = "<group>"; };
+		D87351971A3260AC006D97B2 /* VImageFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VImageFilter.h; sourceTree = "<group>"; };
+		D87351981A3260AC006D97B2 /* VImageFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VImageFilter.m; sourceTree = "<group>"; };
 		D8917EA019F8498F0070BDBB /* VVideoCellViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VVideoCellViewModel.h; sourceTree = "<group>"; };
 		D8917EA119F8498F0070BDBB /* VVideoCellViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVideoCellViewModel.m; sourceTree = "<group>"; };
 		D89A50091A000E790010D050 /* VFollowUserControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFollowUserControl.h; sourceTree = "<group>"; };
@@ -4018,6 +4021,8 @@
 				D873518E1A316727006D97B2 /* VMemeWorkspaceToolViewController.m */,
 				D87351941A324E7F006D97B2 /* VTextWorkspaceTool.h */,
 				D87351951A324E7F006D97B2 /* VTextWorkspaceTool.m */,
+				D87351971A3260AC006D97B2 /* VImageFilter.h */,
+				D87351981A3260AC006D97B2 /* VImageFilter.m */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -4808,6 +4813,7 @@
 				BE88FF981A0006710064AB28 /* VProfileHeaderCell.m in Sources */,
 				D87351961A324E7F006D97B2 /* VTextWorkspaceTool.m in Sources */,
 				DB58EF41199401E500D2A07F /* VNotification+RestKit.m in Sources */,
+				D87351991A3260AC006D97B2 /* VImageFilter.m in Sources */,
 				A720055E1A030E4700285A9C /* VApplicationTracking.m in Sources */,
 				A77AD4F21A1FD8B600142F24 /* VAlertControllerBasic.m in Sources */,
 				D8E39BEB19CB7D92007FD86A /* VKeyboardInputAccessoryView.m in Sources */,
