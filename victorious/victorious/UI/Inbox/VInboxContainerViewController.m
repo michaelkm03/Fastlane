@@ -30,6 +30,7 @@ typedef enum {
 @property (weak, nonatomic) IBOutlet UILabel *noMessagesMessageLabel;
 @property (weak, nonatomic) VInboxViewController *inboxViewController;
 @property (strong, nonatomic) VUnreadMessageCountCoordinator *messageCountCoordinator;
+@property (strong, nonatomic) VDependencyManager *dependencyManager;
 
 @end
 
@@ -49,6 +50,7 @@ static char kKVOContext;
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     VInboxContainerViewController *container = [self inboxContainer];
+    container.dependencyManager = dependencyManager;
     container.messageCountCoordinator = [[VUnreadMessageCountCoordinator alloc] initWithObjectManager:[dependencyManager objectManager]];
     return container;
 }
@@ -99,7 +101,11 @@ static char kKVOContext;
     if (messageCountCoordinator)
     {
         [messageCountCoordinator addObserver:self forKeyPath:NSStringFromSelector(@selector(unreadMessageCount)) options:NSKeyValueObservingOptionNew context:&kKVOContext];
-        [messageCountCoordinator updateUnreadMessageCount];
+        
+        if ( [self.dependencyManager.objectManager mainUserLoggedIn] )
+        {
+            [messageCountCoordinator updateUnreadMessageCount];
+        }
     }
 }
 
@@ -117,7 +123,7 @@ static char kKVOContext;
 
 - (BOOL)shouldNavigateWithAlternateDestination:(UIViewController *__autoreleasing *)alternateViewController
 {
-    UIViewController *authorizationViewController = [VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]];
+    UIViewController *authorizationViewController = [VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:self.dependencyManager.objectManager];
     if (authorizationViewController)
     {
         [[VRootViewController rootViewController] presentViewController:authorizationViewController animated:YES completion:nil];
@@ -130,7 +136,10 @@ static char kKVOContext;
 
 - (void)loggedInChanged:(NSNotification *)notification
 {
-    [self.messageCountCoordinator updateUnreadMessageCount];
+    if ( self.dependencyManager.objectManager.mainUserLoggedIn )
+    {
+        [self.messageCountCoordinator updateUnreadMessageCount];
+    }
 }
 
 #pragma mark - Key-Value Observation
