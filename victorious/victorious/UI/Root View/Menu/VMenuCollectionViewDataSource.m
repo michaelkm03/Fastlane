@@ -87,17 +87,20 @@
                 NSIndexPath *indexPath = [NSIndexPath indexPathForItem:itemIndex inSection:sectionIndex];
                 [destination setBadgeNumberUpdateBlock:^(NSInteger badgeNumber)
                 {
-                    __typeof(weakSelf) strongSelf = weakSelf;
-                    
-                    if (strongSelf != nil)
+                    dispatch_async(dispatch_get_main_queue(), ^(void)
                     {
-                        id cell = [strongSelf.collectionView cellForItemAtIndexPath:indexPath];
-                        if ([cell respondsToSelector:@selector(setBadgeNumber:)])
+                        __typeof(weakSelf) strongSelf = weakSelf;
+                        
+                        if (strongSelf != nil)
                         {
-                            [cell setBadgeNumber:badgeNumber];
+                            id cell = [strongSelf.collectionView cellForItemAtIndexPath:indexPath];
+                            if ([cell respondsToSelector:@selector(setBadgeNumber:)])
+                            {
+                                [cell setBadgeNumber:badgeNumber];
+                            }
+                            self.badgeTotal = [strongSelf calculateBadgeTotal];
                         }
-                        self.badgeTotal = [strongSelf calculateBadgeTotal];
-                    }
+                    });
                 }];
             }
         }];
