@@ -12,17 +12,21 @@
 #import "VDependencyManager+VWorkspaceTool.h"
 
 // Views
+#import "VCanvasView.h"
 #import <MBProgressHUD/MBProgressHUD.h>
 
 #import "VWorkspaceTool.h"
 #import "VCategoryWorkspaceTool.h"
+
+// Should move me out of here
+#import "VCropWorkspaceToolViewController.h"
 
 @interface VWorkspaceViewController ()
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) NSArray *tools;
 @property (nonatomic, weak) IBOutlet UIToolbar *bottomToolbar;
-@property (weak, nonatomic) IBOutlet UIView *canvasView;
+@property (weak, nonatomic) IBOutlet VCanvasView *canvasView;
 
 @property (nonatomic, strong) id <VWorkspaceTool> selectedTool;
 @property (nonatomic, strong) UIViewController *toolViewController;
@@ -81,6 +85,8 @@
     
     [toolBarItems addObject:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil]];
     self.bottomToolbar.items = toolBarItems;
+    
+    self.canvasView.sourceImage = [UIImage imageNamed:@"spaceman.jpg"];
 }
 
 #pragma mark - Target/Action
@@ -206,6 +212,22 @@
             break;
     }
 
+    
+    if ([self.toolViewController isKindOfClass:[VCropWorkspaceToolViewController class]])
+    {
+        VCropWorkspaceToolViewController *cropVC = (VCropWorkspaceToolViewController *)self.toolViewController;
+        
+        [cropVC setAssetSize:self.canvasView.sourceImage.size];
+        __weak typeof(self) welf = self;
+        cropVC.onCropBoundsChange = ^void(CGRect croppedBounds)
+        {
+            CGRect transformRect = CGRectMake(croppedBounds.origin.x,
+                                              croppedBounds.origin.y - 44,
+                                              croppedBounds.size.width,
+                                              croppedBounds.size.height);
+            [welf.canvasView setCroppedBounds:transformRect];
+        };
+    }
 }
 
 @end

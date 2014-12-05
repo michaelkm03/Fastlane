@@ -10,11 +10,9 @@
 
 @interface VCropWorkspaceToolViewController () <UIScrollViewDelegate>
 
-@property (nonatomic, strong) UIImage *imageToCrop;
-
 @property (weak, nonatomic) IBOutlet UIScrollView *croppingScrollView;
 
-@property (nonatomic, strong) UIImageView *imageView;
+@property (nonatomic, strong) UIView *proxyView;
 
 @end
 
@@ -32,70 +30,61 @@
 #pragma mark - UIViewController
 #pragma mark Lifecycle
 
-- (void)viewDidLoad
+- (void)viewDidLayoutSubviews
 {
-    [super viewDidLoad];
+    [super viewDidLayoutSubviews];
     
-    self.croppingScrollView.minimumZoomScale = 1.0f;
-    self.croppingScrollView.maximumZoomScale = 4.0f;
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
+    CGRect proxyViewFrame;
     
-    [self setImage:[UIImage imageNamed:@"spaceman.jpg"]];
+    if (self.assetSize.height > self.assetSize.width)
+    {
+        CGFloat scaleFactor = self.assetSize.width / CGRectGetWidth(self.croppingScrollView.bounds);
+        proxyViewFrame = CGRectMake(CGRectGetMinX(self.croppingScrollView.bounds),
+                                    CGRectGetMinY(self.croppingScrollView.bounds),
+                                    CGRectGetWidth(self.croppingScrollView.bounds),
+                                    self.assetSize.height * (1/scaleFactor));
+    }
+    else
+    {
+        CGFloat scaleFactor = self.assetSize.height / CGRectGetHeight(self.croppingScrollView.bounds);
+        proxyViewFrame = CGRectMake(CGRectGetMinX(self.croppingScrollView.bounds),
+                                    CGRectGetMinY(self.croppingScrollView.bounds),
+                                    self.assetSize.width * (1/scaleFactor),
+                                    CGRectGetHeight(self.croppingScrollView.bounds));
+    }
+    
+    self.proxyView = [[UIView alloc] initWithFrame:proxyViewFrame];
+    [self.croppingScrollView addSubview:self.proxyView];
+    self.croppingScrollView.contentSize = proxyViewFrame.size;
 }
 
 #pragma mark - Public Interface
 
-- (void)setImage:(UIImage *)imageToCrop
+- (void)setAssetSize:(CGSize)assetSize
 {
-    if (_imageToCrop != nil)
+    if (CGSizeEqualToSize(_assetSize, assetSize))
     {
-        _imageToCrop = nil;
-        [_imageView removeFromSuperview];
-        _imageView = nil;
-        self.croppingScrollView.contentSize = CGSizeMake(CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds));
+        return;
     }
     
-    _imageToCrop = imageToCrop;
-    
-    CGRect imageViewFrame;
-    
-    if (imageToCrop.size.height > imageToCrop.size.width)
+    if (_proxyView != nil)
     {
-        CGFloat scaleFactor = imageToCrop.size.width / CGRectGetWidth(self.croppingScrollView.bounds);
-        imageViewFrame = CGRectMake(CGRectGetMinX(self.croppingScrollView.bounds),
-                                    CGRectGetMinY(self.croppingScrollView.bounds),
-                                    CGRectGetWidth(self.croppingScrollView.bounds),
-                                    imageToCrop.size.height * (1/scaleFactor));
-    }
-    else
-    {
-        CGFloat scaleFactor = imageToCrop.size.height / CGRectGetHeight(self.croppingScrollView.bounds);
-        imageViewFrame = CGRectMake(CGRectGetMinX(self.croppingScrollView.bounds),
-                                    CGRectGetMinY(self.croppingScrollView.bounds),
-                                    imageToCrop.size.width * (1/scaleFactor),
-                                    CGRectGetHeight(self.croppingScrollView.bounds));
+        [_proxyView removeFromSuperview];
+        _proxyView = nil;
     }
     
-    self.imageView = [[UIImageView alloc] initWithImage:imageToCrop];
-    self.imageView.frame = imageViewFrame;
-    [self.croppingScrollView addSubview:self.imageView];
-    self.croppingScrollView.contentSize = self.imageView.bounds.size;
-}
-
-- (UIImage *)croppedImage
-{
-    return _imageToCrop;
+    _assetSize = assetSize;
 }
 
 #pragma mark - UIScrollViewDelegate
 
-- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    return self.imageView;
+    NSLog(@"Visible bounds of image: %@", NSStringFromCGRect(scrollView.bounds));
+    if (self.onCropBoundsChange)
+    {
+        self.onCropBoundsChange(scrollView.bounds);
+    }
 }
 
 @end

@@ -555,6 +555,7 @@
 		D871A4021A157D650046A12C /* VVRTCUserPostedAtFormatterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D871A4011A157D650046A12C /* VVRTCUserPostedAtFormatterTests.m */; };
 		D87351801A30E443006D97B2 /* VCropWorkspaceToolViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D873517F1A30E443006D97B2 /* VCropWorkspaceToolViewController.m */; };
 		D87351831A3112A3006D97B2 /* VCropOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = D87351821A3112A3006D97B2 /* VCropOverlayView.m */; };
+		D87351881A3120F5006D97B2 /* VCanvasView.m in Sources */ = {isa = PBXBuildFile; fileRef = D87351871A3120F5006D97B2 /* VCanvasView.m */; };
 		D8917EA219F8498F0070BDBB /* VVideoCellViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D8917EA119F8498F0070BDBB /* VVideoCellViewModel.m */; };
 		D89A500B1A000E790010D050 /* VFollowUserControl.m in Sources */ = {isa = PBXBuildFile; fileRef = D89A500A1A000E790010D050 /* VFollowUserControl.m */; };
 		D89AC2BC19F1FD6B00921131 /* VHistogramDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = D89AC2B919F1FD6B00921131 /* VHistogramDataSource.m */; };
@@ -1621,6 +1622,8 @@
 		D873517F1A30E443006D97B2 /* VCropWorkspaceToolViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCropWorkspaceToolViewController.m; sourceTree = "<group>"; };
 		D87351811A3112A3006D97B2 /* VCropOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCropOverlayView.h; sourceTree = "<group>"; };
 		D87351821A3112A3006D97B2 /* VCropOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCropOverlayView.m; sourceTree = "<group>"; };
+		D87351861A3120F5006D97B2 /* VCanvasView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCanvasView.h; sourceTree = "<group>"; };
+		D87351871A3120F5006D97B2 /* VCanvasView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCanvasView.m; sourceTree = "<group>"; };
 		D8917EA019F8498F0070BDBB /* VVideoCellViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VVideoCellViewModel.h; sourceTree = "<group>"; };
 		D8917EA119F8498F0070BDBB /* VVideoCellViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVideoCellViewModel.m; sourceTree = "<group>"; };
 		D89A50091A000E790010D050 /* VFollowUserControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFollowUserControl.h; sourceTree = "<group>"; };
@@ -3890,6 +3893,15 @@
 			path = UICollectionView;
 			sourceTree = "<group>";
 		};
+		D87351851A3120DB006D97B2 /* Canvas */ = {
+			isa = PBXGroup;
+			children = (
+				D87351861A3120F5006D97B2 /* VCanvasView.h */,
+				D87351871A3120F5006D97B2 /* VCanvasView.m */,
+			);
+			path = Canvas;
+			sourceTree = "<group>";
+		};
 		D89A50071A000D540010D050 /* Controls */ = {
 			isa = PBXGroup;
 			children = (
@@ -3921,6 +3933,7 @@
 		D8A93F131A2E84A9009B8A18 /* Workspace */ = {
 			isa = PBXGroup;
 			children = (
+				D87351851A3120DB006D97B2 /* Canvas */,
 				669EBBDE1A30234A00DE317D /* Pickers */,
 				D8D945F71A2EA51D0089D271 /* Tools */,
 				D8D945F41A2E8A760089D271 /* VWorkspaceViewController.h */,
@@ -4611,6 +4624,7 @@
 				030931931A184285004E9781 /* VNavigationMenuItem.m in Sources */,
 				DBB1A0501A00AF4500E16D62 /* VOpenXAdViewController.m in Sources */,
 				D8E39BDA19CB7C80007FD86A /* VContentImageCell.m in Sources */,
+				D87351881A3120F5006D97B2 /* VCanvasView.m in Sources */,
 				A72005601A030E4700285A9C /* VGoogleAnalyticsTracking.m in Sources */,
 				A743E7EA1A081FFF00339CB3 /* VValidator.m in Sources */,
 				0314D4A419B46B5E00FA363C /* VForceUpgradeAnimatedTransition.m in Sources */,

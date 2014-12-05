@@ -60,16 +60,4 @@ static NSString * const kToolInterfaceKey = @"toolInterface";
     return _icon;
 }
 
-#pragma mark - Public Interface
-
-- (void)setImage:(UIImage *)imageToCrop
-{
-    [self.cropViewController setImage:imageToCrop];
-}
-
-- (UIImage *)croppedImage
-{
-    return [self.cropViewController croppedImage];
-}
-
 @end

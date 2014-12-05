@@ -12,8 +12,8 @@
 
 @interface VCropWorkspaceToolViewController : UIViewController <VHasManagedDependancies>
 
-- (void)setImage:(UIImage *)imageToCrop;
+@property (nonatomic, copy) void (^onCropBoundsChange)(CGRect cropBounds);
 
-- (UIImage *)croppedImage;
+@property (nonatomic, assign) CGSize assetSize;
 
 @end

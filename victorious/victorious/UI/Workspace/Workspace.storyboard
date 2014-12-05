@@ -19,7 +19,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" horizontalHuggingPriority="249" verticalHuggingPriority="249" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="8c5-o3-ehb" userLabel="Canvas Container">
+                            <view contentMode="scaleToFill" horizontalHuggingPriority="249" verticalHuggingPriority="249" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="8c5-o3-ehb" userLabel="Canvas Container" customClass="VCanvasView">
                                 <rect key="frame" x="140" y="44" width="320" height="320"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
@@ -62,9 +62,9 @@
                             <constraint firstAttribute="trailingMargin" secondItem="uLJ-ZJ-TSs" secondAttribute="trailing" constant="-16" id="7Ye-Dk-Lgz"/>
                             <constraint firstAttribute="trailingMargin" secondItem="tla-hc-Ct5" secondAttribute="trailing" constant="-16" id="9HD-AO-jIy"/>
                             <constraint firstItem="8c5-o3-ehb" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="i4i-d2-DXm" secondAttribute="leading" id="IrH-KS-hgs"/>
+                            <constraint firstItem="8c5-o3-ehb" firstAttribute="top" secondItem="9wC-ZN-KU8" secondAttribute="bottom" constant="44" id="Uz7-kB-w8t"/>
                             <constraint firstItem="uLJ-ZJ-TSs" firstAttribute="top" secondItem="9wC-ZN-KU8" secondAttribute="bottom" id="Wch-on-DA4"/>
                             <constraint firstItem="uLJ-ZJ-TSs" firstAttribute="leading" secondItem="i4i-d2-DXm" secondAttribute="leadingMargin" constant="-16" id="dhy-kg-bS3"/>
-                            <constraint firstItem="8c5-o3-ehb" firstAttribute="top" secondItem="uLJ-ZJ-TSs" secondAttribute="bottom" id="h0M-kY-7EG"/>
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="8c5-o3-ehb" secondAttribute="trailing" id="mnj-S4-eXt"/>
                             <constraint firstItem="tla-hc-Ct5" firstAttribute="leading" secondItem="i4i-d2-DXm" secondAttribute="leadingMargin" constant="-16" id="pdG-8B-6bD"/>
                             <constraint firstItem="jpg-hF-EPF" firstAttribute="top" secondItem="tla-hc-Ct5" secondAttribute="bottom" id="pnB-hJ-LMB"/>
