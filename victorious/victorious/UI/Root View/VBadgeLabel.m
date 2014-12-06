@@ -85,7 +85,6 @@ static NSInteger const kLargeNumberCutoff = 100; ///< Numbers equal to or greate
     else if (badgeNumber < kLargeNumberCutoff)
     {
         super.text = [NSString stringWithFormat:@"%ld", (long)badgeNumber];
-    
     }
     else
     {
