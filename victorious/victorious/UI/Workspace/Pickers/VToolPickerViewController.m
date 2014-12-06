@@ -67,6 +67,25 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     }
 }
 
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    NSIndexPath *selectedIndexPath = [[self.collectionView indexPathsForSelectedItems] firstObject];
+    NSIndexPath *indexPathForPoint = [self.collectionView indexPathForItemAtPoint:CGPointMake(scrollView.contentOffset.x + 20,
+                                                                                              scrollView.contentOffset.y + 20)];
+    if ([indexPathForPoint compare:selectedIndexPath] == NSOrderedSame)
+    {
+        return;
+    }
+    
+    [self.collectionView selectItemAtIndexPath:indexPathForPoint
+                                      animated:NO
+                                scrollPosition:UICollectionViewScrollPositionNone];
+    if (self.onToolSelection)
+    {
+        self.onToolSelection([self selectedTool]);
+    }
+}
+
 #pragma mark - VToolPicker
 
 - (void)setOnToolSelection:(void (^)(id<VWorkspaceTool>))onToolSelection

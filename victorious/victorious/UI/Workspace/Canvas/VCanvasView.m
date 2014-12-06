@@ -102,8 +102,20 @@
 - (void)setFilter:(VPhotoFilter *)filter
 {
     _filter = filter;
-    self.imageView.image = [filter imageByFilteringImage:self.sourceImage
-                                           withCIContext:self.context];
+    __block UIImage *filteredImage = nil;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^
+    {
+        filteredImage = [filter imageByFilteringImage:self.sourceImage
+                                        withCIContext:self.context];
+        dispatch_async(dispatch_get_main_queue(), ^
+        {
+            if (_filter.name == filter.name)
+            {
+                self.imageView.image = filteredImage;
+            }
+        });
+    });
+
 }
 
 #pragma mark - UIScrollViewDelegate
