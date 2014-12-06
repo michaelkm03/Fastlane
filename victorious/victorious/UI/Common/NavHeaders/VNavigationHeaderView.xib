@@ -76,14 +76,14 @@
                     </connections>
                 </view>
                 <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Q1S-Ju-Pei" userLabel="Badge Border" customClass="VPerfectCircleView">
-                    <rect key="frame" x="43" y="25" width="14" height="25"/>
+                    <rect key="frame" x="46" y="25.5" width="14" height="24.5"/>
                     <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <accessibility key="accessibilityConfiguration">
                         <accessibilityTraits key="traits" none="YES" notEnabled="YES"/>
                     </accessibility>
                 </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wOC-gY-Cxx" userLabel="Badge Label" customClass="VBadgeLabel">
-                    <rect key="frame" x="45" y="27" width="10" height="21"/>
+                    <rect key="frame" x="48" y="27.5" width="10" height="20.5"/>
                     <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <accessibility key="accessibilityConfiguration">
                         <accessibilityTraits key="traits" none="YES" staticText="YES" notEnabled="YES"/>
@@ -99,7 +99,7 @@
                 <constraint firstAttribute="trailing" secondItem="tkm-2G-q8x" secondAttribute="trailing" constant="14" id="588-PD-2ge"/>
                 <constraint firstAttribute="width" secondItem="Ay5-2H-sPn" secondAttribute="height" multiplier="16:5" id="ECt-Xu-bck"/>
                 <constraint firstItem="ba7-Bo-OPS" firstAttribute="leading" secondItem="Ay5-2H-sPn" secondAttribute="leading" constant="55" id="PAa-Hr-gey"/>
-                <constraint firstItem="wOC-gY-Cxx" firstAttribute="centerX" secondItem="DUT-ma-Cbr" secondAttribute="centerX" constant="13.5" id="TfX-ll-64B"/>
+                <constraint firstItem="wOC-gY-Cxx" firstAttribute="centerX" secondItem="DUT-ma-Cbr" secondAttribute="centerX" constant="17" id="TfX-ll-64B"/>
                 <constraint firstItem="wOC-gY-Cxx" firstAttribute="centerY" secondItem="DUT-ma-Cbr" secondAttribute="centerY" id="U8Z-g1-8Dk"/>
                 <constraint firstItem="ESN-J9-ft1" firstAttribute="leading" secondItem="Ay5-2H-sPn" secondAttribute="leading" constant="55" id="WKP-Hw-E3j"/>
                 <constraint firstItem="DUT-ma-Cbr" firstAttribute="top" secondItem="Ay5-2H-sPn" secondAttribute="top" constant="16" id="YmN-Y0-2qK"/>

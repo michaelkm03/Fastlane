@@ -99,7 +99,7 @@
     self.headerLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:headerFontKey];
     self.headerLabel.text = self.headerText;
     
-    self.badgeLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
+    self.badgeLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont];
 }
 
 - (void)setupSegmentedControlWithTitles:(NSArray *)titles

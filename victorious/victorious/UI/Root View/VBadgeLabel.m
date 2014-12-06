@@ -38,6 +38,8 @@ static NSInteger const kLargeNumberCutoff = 100; ///< Numbers equal to or greate
 {
     self.textAlignment = NSTextAlignmentCenter;
     self.clipsToBounds = YES;
+    self.backgroundColor = [UIColor colorWithRed:0.88f green:0.18f blue:0.22f alpha:1.0f];
+    self.textColor = [UIColor whiteColor];
 }
 
 - (CGSize)intrinsicContentSize
