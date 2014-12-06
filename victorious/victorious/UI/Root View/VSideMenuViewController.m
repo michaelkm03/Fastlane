@@ -478,6 +478,15 @@ static NSString * const kMenuKey = @"menu";
     }
 }
 
+- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    if ( [self.menuViewController respondsToSelector:@selector(badgeNumber)] )
+    {
+        NSInteger badgeNumber = [(id<VProvidesNavigationMenuItemBadge>)self.menuViewController badgeNumber];
+        [viewController.navHeaderView setBadgeNumber:badgeNumber];
+    }
+}
+
 #pragma mark - NSNotification handlers
 
 - (void)menuControllerDidSelectRow:(NSNotification *)notification

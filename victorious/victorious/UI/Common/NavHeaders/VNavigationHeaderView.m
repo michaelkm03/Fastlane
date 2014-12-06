@@ -28,8 +28,6 @@
 
 @end
 
-static NSInteger _badgeNumber = 0; // I am SO SORRY about how hacky this is. I promise I'll fix it soon.
-
 @implementation VNavigationHeaderView
 
 + (instancetype)menuButtonNavHeaderWithControlTitles:(NSArray *)titles
@@ -100,7 +98,6 @@ static NSInteger _badgeNumber = 0; // I am SO SORRY about how hacky this is. I p
     self.headerLabel.text = self.headerText;
     
     self.badgeLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
-    [self setBadgeNumber:_badgeNumber];
 }
 
 - (void)setupSegmentedControlWithTitles:(NSArray *)titles
@@ -214,7 +211,6 @@ static NSInteger _badgeNumber = 0; // I am SO SORRY about how hacky this is. I p
 
 - (void)setBadgeNumber:(NSInteger)badgeNumber
 {
-    _badgeNumber = badgeNumber;
     [self.badgeLabel setBadgeNumber:badgeNumber];
 }
 
