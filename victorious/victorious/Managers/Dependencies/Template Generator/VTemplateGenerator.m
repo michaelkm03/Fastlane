@@ -118,22 +118,6 @@ static NSString * const kToolInterfaceKey = @"toolInterface";
                                  },
                          kToolsKey:
                              @[
-//                                 @{
-//                                     kClassNameKey: @"filter.tool",
-//                                     kTitleKey: @"Amsterdam"
-//                                     },
-//                                 @{
-//                                     kClassNameKey: @"filter.tool",
-//                                     kTitleKey: @"London"
-//                                     },
-//                                 @{
-//                                     kClassNameKey: @"filter.tool",
-//                                     kTitleKey: @"Zurich"
-//                                     },
-//                                 @{
-//                                     kClassNameKey: @"filter.tool",
-//                                     kTitleKey: @"Sochi"
-//                                     },
                                  ]
                          },
                      @{

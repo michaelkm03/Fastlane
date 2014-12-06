@@ -46,7 +46,6 @@ static NSString * const kPickerKey = @"picker";
         
         NSURL *filters = [[NSBundle mainBundle] URLForResource:@"filters" withExtension:@"xml"];
         NSArray *rFilters = [VPhotoFilterSerialization filtersFromPlistFile:filters];
-        
         NSArray *filterTools = [rFilters v_map:^id(VPhotoFilter *photoFilter)
         {
             VImageFilter *imageFilter = [[VImageFilter alloc] init];
