@@ -9,6 +9,7 @@
 #import "MBProgressHUD.h"
 #import "UIStoryboard+VMainStoryboard.h"
 #import "VInboxViewController.h"
+#import "VUnreadMessageCountCoordinator.h"
 #import "VUserSearchViewController.h"
 #import "VLoginViewController.h"
 #import "UIViewController+VSideMenuViewController.h"
@@ -63,6 +64,13 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
     
     self.navigationController.navigationBar.barTintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
     self.headerView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self.refreshControl beginRefreshing];
+    [self refresh:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -266,6 +274,7 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
     if (conversation.user)
     {
         VMessageContainerViewController *detailVC = [self messageViewControllerForUser:conversation.user];
+        detailVC.messageCountCoordinator = self.messageCountCoordinator;
         [self.navigationController pushViewController:detailVC animated:YES];
     }
 }
@@ -298,11 +307,11 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
         [self.tableView reloadData];
         [self.refreshControl endRefreshing];
         [self setHasMessages:self.fetchedResultsController.fetchedObjects.count];
+        [self.messageCountCoordinator updateUnreadMessageCount];
     };
 
     if (VModeSelect == kMessageModeSelect)
     {
-        [[VObjectManager sharedManager] updateUnreadMessageCountWithSuccessBlock:nil failBlock:nil];
         [[VObjectManager sharedManager] refreshConversationListWithSuccessBlock:success failBlock:fail];
     }
     else if (VModeSelect == kNotificationModeSelect)

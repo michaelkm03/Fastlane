@@ -6,15 +6,18 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "VConstants.h"
 #import "VObjectManager+DirectMessaging.h"
 #import "VObjectManager+Private.h"
 #import "VObjectManager+Pagination.h"
 
 #import "VMessage.h"
 #import "VUser.h"
-#import "VUnreadConversation.h"
 
 #import "VConversation+RestKit.h"
+#import "VConversation+UnreadMessageCount.h"
+
+static NSString * const kUnreadCountKey = @"unread_count";
 
 @implementation VObjectManager (DirectMessaging)
 
@@ -75,11 +78,27 @@
 }
 
 - (RKManagedObjectRequestOperation *)markConversationAsRead:(VConversation *)conversation
-                                               successBlock:(VSuccessBlock)success
-                                                  failBlock:(VFailBlock)fail
+                                             withCompletion:(VUnreadMessageCountCompletionBlock)completion
 {
-    //Mark the most recent message as read so there is no server delay.
+    VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    {
+        if ( completion != nil )
+        {
+            completion([self unreadMessageCountFromResponse:fullResponse], nil);
+        }
+    };
+    
+    VFailBlock fail = ^(NSOperation *operation, NSError *error)
+    {
+        if (completion)
+        {
+            completion(nil, error);
+        }
+    };
+    
+    // Mark the most recent message as read so there is no server delay.
     conversation.isRead = @(YES);
+    [conversation markMessagesAsRead];
     [conversation.managedObjectContext saveToPersistentStore:nil];
     
     return [self POST:@"/api/message/mark_conversation_read"
@@ -90,30 +109,54 @@
     
 }
 
-- (RKManagedObjectRequestOperation *)updateUnreadMessageCountWithSuccessBlock:(VSuccessBlock)success
-                                                              failBlock:(VFailBlock)fail
+- (RKManagedObjectRequestOperation *)unreadMessageCountWithCompletion:(VUnreadMessageCountCompletionBlock)completion
 {
-    
-    VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        if ([resultObjects firstObject])
+        if ( completion != nil )
         {
-            self.mainUser.unreadConversation = (VUnreadConversation *)[self.mainUser.managedObjectContext objectWithID:[[resultObjects firstObject] objectID]];
-            
-            [[UIApplication sharedApplication] setApplicationIconBadgeNumber:self.mainUser.unreadConversation.count.integerValue];
+            completion([self unreadMessageCountFromResponse:fullResponse], nil);
         }
+    };
     
-        if (success)
+    VFailBlock fail = ^(NSOperation *operation, NSError *error)
+    {
+        if (completion)
         {
-            success(operation, fullResponse, resultObjects);
+            completion(nil, error);
         }
     };
     
     return [self GET:@"/api/message/unread_message_count"
               object:nil
           parameters:nil
-        successBlock:fullSuccess
+        successBlock:success
            failBlock:fail];
+}
+
+- (NSNumber *)unreadMessageCountFromResponse:(id)fullResponse
+{
+    if ( ![fullResponse isKindOfClass:[NSDictionary class]] )
+    {
+        return nil;
+    }
+    NSDictionary *payload = fullResponse[kVPayloadKey];
+    
+    if ( ![payload isKindOfClass:[NSDictionary class]] )
+    {
+        return nil;
+    }
+    
+    NSNumber *unreadCount = payload[kUnreadCountKey];
+    
+    if ( [unreadCount isKindOfClass:[NSNumber class]] )
+    {
+        return unreadCount;
+    }
+    else
+    {
+        return nil;
+    }
 }
 
 - (RKManagedObjectRequestOperation *)deleteConversation:(VConversation *)conversation
