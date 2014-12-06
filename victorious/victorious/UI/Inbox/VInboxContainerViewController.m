@@ -8,12 +8,13 @@
 
 #import "UIStoryboard+VMainStoryboard.h"
 #import "VAuthorizationViewControllerFactory.h"
+#import "VDependencyManager+VObjectManager.h"
 #import "VInboxContainerViewController.h"
 #import "VInboxViewController.h"
-#import "VObjectManager.h"
+#import "VObjectManager+Login.h"
 #import "VRootViewController.h"
+#import "VUnreadMessageCountCoordinator.h"
 #import "VConstants.h"
-
 #import "UIViewController+VNavMenu.h"
 
 typedef enum {
@@ -28,8 +29,12 @@ typedef enum {
 @property (weak, nonatomic) IBOutlet UILabel *noMessagesTitleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *noMessagesMessageLabel;
 @property (weak, nonatomic) VInboxViewController *inboxViewController;
+@property (strong, nonatomic) VUnreadMessageCountCoordinator *messageCountCoordinator;
+@property (strong, nonatomic) VDependencyManager *dependencyManager;
 
 @end
+
+static char kKVOContext;
 
 @implementation VInboxContainerViewController
 
@@ -44,10 +49,25 @@ typedef enum {
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    return [self inboxContainer];
+    VInboxContainerViewController *container = [self inboxContainer];
+    container.dependencyManager = dependencyManager;
+    container.messageCountCoordinator = [[VUnreadMessageCountCoordinator alloc] initWithObjectManager:[dependencyManager objectManager]];
+    return container;
 }
 
 #pragma mark -
+
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loggedInChanged:) name:kLoggedInChangedNotification object:nil];
+}
+
+- (void)dealloc
+{
+    self.messageCountCoordinator = nil; // calling property setter to remove KVO
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -70,17 +90,79 @@ typedef enum {
     [[VInboxViewController inboxViewController] toggleFilterControl:self.filterControls.selectedSegmentIndex];
 }
 
+- (void)setMessageCountCoordinator:(VUnreadMessageCountCoordinator *)messageCountCoordinator
+{
+    if (_messageCountCoordinator)
+    {
+        [_messageCountCoordinator removeObserver:self forKeyPath:NSStringFromSelector(@selector(unreadMessageCount))];
+    }
+    _messageCountCoordinator = messageCountCoordinator;
+    
+    if (messageCountCoordinator)
+    {
+        [messageCountCoordinator addObserver:self forKeyPath:NSStringFromSelector(@selector(unreadMessageCount)) options:NSKeyValueObservingOptionNew context:&kKVOContext];
+        
+        if ( [self.dependencyManager.objectManager mainUserLoggedIn] )
+        {
+            [messageCountCoordinator updateUnreadMessageCount];
+        }
+    }
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    VInboxViewController *inboxViewController = segue.destinationViewController;
+
+    if ( [inboxViewController isKindOfClass:[VInboxViewController class]] )
+    {
+        inboxViewController.messageCountCoordinator = self.messageCountCoordinator;
+    }
+}
+
 #pragma mark - VNavigationDestination methods
 
 - (BOOL)shouldNavigateWithAlternateDestination:(UIViewController *__autoreleasing *)alternateViewController
 {
-    UIViewController *authorizationViewController = [VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]];
+    UIViewController *authorizationViewController = [VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:self.dependencyManager.objectManager];
     if (authorizationViewController)
     {
         [[VRootViewController rootViewController] presentViewController:authorizationViewController animated:YES completion:nil];
         return NO;
     }
     return YES;
+}
+
+#pragma mark - NSNotification handlers
+
+- (void)loggedInChanged:(NSNotification *)notification
+{
+    if ( self.dependencyManager.objectManager.mainUserLoggedIn )
+    {
+        [self.messageCountCoordinator updateUnreadMessageCount];
+    }
+}
+
+#pragma mark - Key-Value Observation
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if ( context != &kKVOContext )
+    {
+        return;
+    }
+    
+    if ( object == self.messageCountCoordinator && [keyPath isEqualToString:NSStringFromSelector(@selector(unreadMessageCount))] )
+    {
+        NSNumber *newUnreadCount = change[NSKeyValueChangeNewKey];
+        
+        if ( [newUnreadCount isKindOfClass:[NSNumber class]] )
+        {
+            dispatch_async(dispatch_get_main_queue(), ^(void)
+            {
+                [[UIApplication sharedApplication] setApplicationIconBadgeNumber:[newUnreadCount integerValue]];
+            });
+        }
+    }
 }
 
 @end

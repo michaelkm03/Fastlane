@@ -6,12 +6,13 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-@class VMessageTableDataSource, VUser;
+@class VMessageTableDataSource, VUnreadMessageCountCoordinator, VUser;
 
 @interface VMessageViewController : UITableViewController
 
-@property (nonatomic, strong)           VUser                   *otherUser; ///< The user with whom the logged-in user is conversing
+@property (nonatomic, strong) VUser *otherUser; ///< The user with whom the logged-in user is conversing
 @property (nonatomic, strong, readonly) VMessageTableDataSource *tableDataSource;
+@property (nonatomic, strong) VUnreadMessageCountCoordinator *messageCountCoordinator;
 
 /**
  If YES, the receiver will refresh from the server on -viewWillAppear.
