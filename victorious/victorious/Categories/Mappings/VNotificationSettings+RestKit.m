@@ -19,10 +19,10 @@
 {
     NSDictionary *propertyMap = @{
                                   @"notification_creator_post"       : VSelectorName(isPostFromCreatorEnabled),
-                                  @"notification_follow_post"        : VSelectorName(isNewFollowerEnabled),
+                                  @"notification_new_follower"        : VSelectorName(isNewFollowerEnabled),
                                   @"notification_comment_post"       : VSelectorName(isNewPrivateMessageEnabled),
                                   @"notification_private_message"    : VSelectorName(isNewCommentOnMyPostEnabled),
-                                  @"notification_new_follower"       : VSelectorName(isPostFromFollowedEnabled)
+                                  @"notification_follow_post"       : VSelectorName(isPostFromFollowedEnabled)
                                   };
     
     RKEntityMapping *mapping = [RKEntityMapping
