@@ -10,9 +10,11 @@
 
 @interface VCropWorkspaceToolViewController () <UIScrollViewDelegate>
 
-@property (weak, nonatomic) IBOutlet UIScrollView *croppingScrollView;
+@property (nonatomic, weak) IBOutlet UIScrollView *croppingScrollView;
 
 @property (nonatomic, strong) UIView *proxyView;
+
+@property (nonatomic, assign) BOOL hasLayedOutScrollView;
 
 @end
 
@@ -35,11 +37,19 @@
     [super viewDidLoad];
     
     self.croppingScrollView.decelerationRate = UIScrollViewDecelerationRateFast;
+    self.croppingScrollView.minimumZoomScale = 1.0f;
+    self.croppingScrollView.maximumZoomScale = 4.0f;
+    self.croppingScrollView.bouncesZoom = NO;
 }
 
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
+    
+    if (self.hasLayedOutScrollView)
+    {
+        return;
+    }
     
     CGRect proxyViewFrame;
     
@@ -63,6 +73,7 @@
     self.proxyView = [[UIView alloc] initWithFrame:proxyViewFrame];
     [self.croppingScrollView addSubview:self.proxyView];
     self.croppingScrollView.contentSize = proxyViewFrame.size;
+    self.hasLayedOutScrollView = YES;
 }
 
 #pragma mark - Public Interface
@@ -74,10 +85,10 @@
         return;
     }
     
-    if (_proxyView != nil)
+    if (self.proxyView != nil)
     {
-        [_proxyView removeFromSuperview];
-        _proxyView = nil;
+        [self.proxyView removeFromSuperview];
+        self.proxyView = nil;
     }
     
     _assetSize = assetSize;
@@ -85,11 +96,16 @@
 
 #pragma mark - UIScrollViewDelegate
 
+- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
+{
+    return self.proxyView;
+}
+
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     if (self.onCropBoundsChange)
     {
-        self.onCropBoundsChange(scrollView.bounds);
+        self.onCropBoundsChange(scrollView);
     }
 }
 

@@ -129,7 +129,7 @@
     {
         return;
     }
-
+ 
     [self setCanvasToolViewController:[selectedTool canvasToolViewController]
                               forTool:selectedTool];
     [self setInspectorToolViewController:[selectedTool inspectorToolViewController]
@@ -143,10 +143,10 @@
         VCropWorkspaceTool *cropTool = (VCropWorkspaceTool *)_selectedTool;
         
         [cropTool setAssetSize:self.canvasView.sourceImage.size];
-        cropTool.onCropBoundsChange = ^void(CGRect croppedBounds)
+        cropTool.onCropBoundsChange = ^void(UIScrollView *croppingScrollView)
         {
-            [welf.canvasView setCroppedBounds:[welf.view convertRect:croppedBounds
-                                                              toView:welf.canvasView]];
+            [welf.canvasView.canvasScrollView setZoomScale:croppingScrollView.zoomScale];
+            [welf.canvasView.canvasScrollView setContentOffset:croppingScrollView.contentOffset];
         };
     }
     else if ([_selectedTool isKindOfClass:[VFilterWorkspaceTool class]])

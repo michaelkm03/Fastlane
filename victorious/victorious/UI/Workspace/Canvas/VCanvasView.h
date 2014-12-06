@@ -16,6 +16,6 @@
 
 @property (nonatomic, strong) VPhotoFilter *filter;
 
-- (void)setCroppedBounds:(CGRect)croppedBounds;
+@property (nonatomic, readonly) UIScrollView *canvasScrollView;
 
 @end

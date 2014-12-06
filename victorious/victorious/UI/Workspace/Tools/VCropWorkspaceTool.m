@@ -50,12 +50,12 @@ static NSString * const kToolInterfaceKey = @"toolInterface";
     return _cropViewController.assetSize;
 }
 
-- (void)setOnCropBoundsChange:(void (^)(CGRect))onCropBoundsChange
+- (void)setOnCropBoundsChange:(void (^)(UIScrollView *croppingScrollVIew))onCropBoundsChange
 {
     _cropViewController.onCropBoundsChange = onCropBoundsChange;
 }
 
-- (void (^)(CGRect cropBounds))onCropBoundsChange
+- (void (^)(UIScrollView *croppingScrollVIew))onCropBoundsChange
 {
     return _cropViewController.onCropBoundsChange;
 }

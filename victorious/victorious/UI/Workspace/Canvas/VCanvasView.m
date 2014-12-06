@@ -8,10 +8,11 @@
 
 #import "VCanvasView.h"
 
-@interface VCanvasView ()
+@interface VCanvasView () <UIScrollViewDelegate>
 
 @property (nonatomic, strong) CIContext *context;
 @property (nonatomic, strong) UIImageView *imageView;
+@property (nonatomic, strong) UIScrollView *canvasScrollView;
 
 @end
 
@@ -43,10 +44,16 @@
 {
     self.clipsToBounds = YES;
     
+    _canvasScrollView = [[UIScrollView alloc] initWithFrame:self.bounds];
+    _canvasScrollView.minimumZoomScale = 1.0f;
+    _canvasScrollView.maximumZoomScale = 4.0f;
+    _canvasScrollView.userInteractionEnabled = NO;
+    _canvasScrollView.delegate = self;
+    [self addSubview:_canvasScrollView];
+    
     _imageView = [[UIImageView alloc] initWithImage:nil];
-    _imageView.translatesAutoresizingMaskIntoConstraints = NO;
     _imageView.contentMode = UIViewContentModeScaleAspectFill;
-    [self addSubview:_imageView];
+    [_canvasScrollView addSubview:_imageView];
     
     self.context = [CIContext contextWithOptions:@{}];
 }
@@ -80,6 +87,7 @@
     }
     
     _imageView.frame = imageViewFrame;
+    self.canvasScrollView.contentSize = imageViewFrame.size;
 }
 
 #pragma mark - Property Accessors
@@ -98,14 +106,11 @@
                                            withCIContext:self.context];
 }
 
-#pragma mark - Public Methods
+#pragma mark - UIScrollViewDelegate
 
-- (void)setCroppedBounds:(CGRect)croppedBounds
+- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
 {
-    self.imageView.frame = CGRectMake(-croppedBounds.origin.x,
-                                      -croppedBounds.origin.y,
-                                      croppedBounds.size.width,
-                                      croppedBounds.size.height);
+    return self.imageView;
 }
 
 @end
