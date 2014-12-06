@@ -47,6 +47,8 @@
     VNavigationHeaderView *header = [[[NSBundle mainBundle] loadNibNamed:nibName owner:nil options:nil] firstObject];
     header.backButton.hidden = NO;
     header.menuButton.hidden = YES;
+    header.badgeLabel.hidden = YES;
+    header.badgeBorder.hidden = YES;
     
     [header setupSegmentedControlWithTitles:titles];
     return header;
