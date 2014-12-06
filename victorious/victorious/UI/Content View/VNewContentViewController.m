@@ -129,7 +129,6 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     contentViewController.viewModel = viewModel;
     contentViewController.hasAutoPlayed = NO;
     contentViewController.elapsedTimeFormatter = [[VElapsedTimeFormatter alloc] init];
-    contentViewController.transitionDelegate = [[VViewControllerTransition alloc] init];
     
     return contentViewController;
 }
@@ -465,14 +464,11 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
         return;
     }
     
-    VPurchaseViewController *purcahseViewController = [VPurchaseViewController instantiateFromStoryboard:@"ContentView"
+    VPurchaseViewController *viewController = [VPurchaseViewController instantiateFromStoryboard:@"ContentView"
                                                                                             withVoteType:experienceEnhander.voteType];
-    self.transitioningDelegate = self.transitionDelegate;
-    self.modalPresentationStyle = UIModalPresentationCustom;
-    [self presentViewController:purcahseViewController animated:YES completion:^
-    {
-        self.transitionDelegate = nil;
-    }];
+    self.transitionDelegate = [[VViewControllerTransition alloc] init];
+    viewController.transitioningDelegate = self.transitionDelegate;
+    [self presentViewController:viewController animated:YES completion:nil];
 }
 
 - (void)showLoginViewController:(NSNotification *)notification

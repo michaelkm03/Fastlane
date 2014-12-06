@@ -41,6 +41,7 @@
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:storyboardName bundle:[NSBundle mainBundle]];
     NSString *identifier = NSStringFromClass( [VPurchaseViewController class] );
     VPurchaseViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:identifier];
+    viewController.modalPresentationStyle = UIModalPresentationCustom;
     viewController.voteType = voteType;
     return viewController;
 }
@@ -100,7 +101,7 @@
 
 - (IBAction)close:(id)sender
 {
-    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (IBAction)restorePurchasesTapped:(id)sender

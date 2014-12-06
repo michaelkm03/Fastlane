@@ -22,8 +22,7 @@
     UIViewController *fromViewController = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
     UIViewController *toViewController = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
     
-    const BOOL isUnwinding = [toViewController presentedViewController] == fromViewController;
-    const BOOL isPresenting = !isUnwinding;
+    const BOOL isPresenting = [toViewController presentedViewController] != fromViewController;
     
     UIImageView *imageView = nil;
     id<VAnimatedTransitionViewController> animateableViewController = nil;
@@ -34,7 +33,7 @@
         
         if ( [animateableViewController requiresImageViewFromOriginViewController] )
         {
-            imageView = [fromViewController rederedAsImageView];
+            //imageView = [fromViewController rederedAsImageView];
         }
     }
     
@@ -42,33 +41,34 @@
     {
         toViewController.view.frame = fromViewController.view.frame;
         
+        fromViewController.view.userInteractionEnabled = NO;
+        
         [transitionContext.containerView addSubview:fromViewController.view];
         [transitionContext.containerView addSubview:toViewController.view];
         
-        if ( animateableViewController != nil )
+        /*if ( animateableViewController != nil )
         {
             [animateableViewController prepareForTransitionIn:imageView];
             [animateableViewController performTransitionIn:[self transitionDuration:transitionContext]];
-        }
+        }*/
         
+        [transitionContext completeTransition:YES];
     }
     else
     {
+        fromViewController.view.userInteractionEnabled = YES;
+        
         [transitionContext.containerView addSubview:toViewController.view];
         [transitionContext.containerView addSubview:fromViewController.view];
         
-        if ( animateableViewController != nil )
+        /*if ( animateableViewController != nil )
         {
             [animateableViewController prepareForTransitionOut:imageView];
             [animateableViewController performTransitionOut:[self transitionDuration:transitionContext]];
-        }
+        }*/
         
+        [transitionContext completeTransition:YES];
     }
-}
-
-- (void)animationEnded:(BOOL)transitionCompleted
-{
-    
 }
 
 @end
@@ -81,26 +81,16 @@
 
 @implementation VViewControllerTransition
 
-- (instancetype)init
-{
-    self = [super init];
-    if (self)
-    {
-        self.animator = [[VViewControllerTransitionAnimator alloc] init];
-    }
-    return self;
-}
-
 - (id <UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented
                                                                    presentingController:(UIViewController *)presenting
                                                                        sourceController:(UIViewController *)source
 {
-    return self.animator;
+    return [[VViewControllerTransitionAnimator alloc] init];
 }
 
 - (id <UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed
 {
-    return self.animator;
+    return [[VViewControllerTransitionAnimator alloc] init];
 }
 
 @end
