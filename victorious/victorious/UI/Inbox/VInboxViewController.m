@@ -160,7 +160,7 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
     [self.messageViewControllers removeObjectForKey:otherUser.remoteId];
 }
 
-#pragma mark - UITabvleViewDataSource
+#pragma mark - UITableViewDataSource
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
@@ -255,7 +255,8 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
             hud.mode = MBProgressHUDModeText;
             hud.labelText = NSLocalizedString(@"ConversationDelError", @"");
             [hud hide:YES afterDelay:3.0];
-            VLog(@"Failed to delete conversation: %@", error)
+            [tableView setEditing:NO animated:YES];
+            VLog(@"Failed to delete conversation: %@", [error localizedDescription]);
         }];
     }
 }
@@ -287,17 +288,25 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
 {
     VFailBlock fail = ^(NSOperation *operation, NSError *error)
     {
-        [self.tableView reloadData];
-        NSLog(@"%@", error.localizedDescription);
         [self.refreshControl endRefreshing];
-        [self setHasMessages:0];
+        UIView *viewForHUD = self.parentViewController.view;
+        
+        if (viewForHUD == nil )
+        {
+            viewForHUD = self.view;
+        }
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:viewForHUD animated:YES];
+        hud.mode = MBProgressHUDModeText;
+        hud.labelText = NSLocalizedString(@"RefreshError", @"");
+        [hud hide:YES afterDelay:3.0];
+        VLog(@"Failed to refresh conversation list: %@", [error localizedDescription]);
     };
     
     VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         [self.tableView reloadData];
         [self.refreshControl endRefreshing];
-        [self setHasMessages:self.fetchedResultsController.fetchedObjects.count];
+        [self setHasMessages:(self.fetchedResultsController.fetchedObjects.count > 0)];
     };
 
     if (VModeSelect == kMessageModeSelect)

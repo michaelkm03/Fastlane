@@ -163,7 +163,7 @@
     RKManagedObjectRequestOperation *requestOperation =
     [self  appropriateObjectRequestOperationWithObject:object method:method path:path parameters:parameters];
 
-     void (^rkSuccessBlock) (RKObjectRequestOperation *, RKMappingResult *) = ^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult)
+    void (^rkSuccessBlock) (RKObjectRequestOperation *, RKMappingResult *) = ^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult)
     {
         NSMutableArray *mappedObjects = [mappingResult.array mutableCopy];
         VErrorMessage *error;

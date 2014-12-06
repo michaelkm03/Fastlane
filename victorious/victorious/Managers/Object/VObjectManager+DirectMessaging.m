@@ -121,7 +121,7 @@
                                               failBlock:(VFailBlock)fail
 {
     return [self POST:@"/api/message/delete_conversation"
-               object:conversation
+               object:nil
            parameters:@{@"conversation_id" : conversation.remoteId}
          successBlock:success
             failBlock:fail];
