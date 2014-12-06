@@ -17,7 +17,6 @@
 
 // Protocols
 #import "VWorkspaceTool.h"
-#import "VCanvasTool.h"
 
 // Tools
 #import "VCropWorkspaceTool.h"

@@ -19,8 +19,6 @@
 #import "VPhotoFilterSerialization.h"
 
 static NSString * const kTitleKey = @"title";
-static NSString * const kIconKey = @"icon";
-static NSString * const kSubtoolsKey = @"subtools";
 static NSString * const kPickerKey = @"picker";
 
 @interface VFilterWorkspaceTool ()
@@ -52,7 +50,6 @@ static NSString * const kPickerKey = @"picker";
             imageFilter.filter = photoFilter;
             return imageFilter;
         }];
-        
         
         [(id<VToolPicker>)_toolPicker setTools:filterTools];
     }

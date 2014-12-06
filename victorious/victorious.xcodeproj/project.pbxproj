@@ -1628,7 +1628,6 @@
 		D87351871A3120F5006D97B2 /* VCanvasView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCanvasView.m; sourceTree = "<group>"; };
 		D873518D1A316727006D97B2 /* VMemeWorkspaceToolViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMemeWorkspaceToolViewController.h; sourceTree = "<group>"; };
 		D873518E1A316727006D97B2 /* VMemeWorkspaceToolViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMemeWorkspaceToolViewController.m; sourceTree = "<group>"; };
-		D87351901A3167AA006D97B2 /* VCanvasTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCanvasTool.h; sourceTree = "<group>"; };
 		D87351941A324E7F006D97B2 /* VTextWorkspaceTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextWorkspaceTool.h; sourceTree = "<group>"; };
 		D87351951A324E7F006D97B2 /* VTextWorkspaceTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextWorkspaceTool.m; sourceTree = "<group>"; };
 		D87351971A3260AC006D97B2 /* VImageFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VImageFilter.h; sourceTree = "<group>"; };
@@ -3905,7 +3904,6 @@
 			children = (
 				D87351861A3120F5006D97B2 /* VCanvasView.h */,
 				D87351871A3120F5006D97B2 /* VCanvasView.m */,
-				D87351901A3167AA006D97B2 /* VCanvasTool.h */,
 			);
 			path = Canvas;
 			sourceTree = "<group>";

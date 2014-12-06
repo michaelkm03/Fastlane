@@ -8,9 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-#import "VCanvasTool.h"
-
-@interface VMemeWorkspaceToolViewController : UIViewController <VCanvasTool>
+@interface VMemeWorkspaceToolViewController : UIViewController
 
 + (instancetype)memeToolViewController;
 

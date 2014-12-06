@@ -38,13 +38,6 @@ static const CGFloat kPublishMinMemeFontSize = 50.0f;
                                                                        attributes:[self memeAttributes]];
 }
 
-#pragma mark - VCanvasTool
-
-- (BOOL)shouldPersistAfterDeselection
-{
-    return (self.memeTextView.text.length > 0);
-}
-
 #pragma mark - UITextViewDelegate
 
 - (BOOL)textView:(UITextView *)textView
