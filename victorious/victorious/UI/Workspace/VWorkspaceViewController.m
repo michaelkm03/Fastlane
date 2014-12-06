@@ -22,7 +22,7 @@
 // Tools
 #import "VCropWorkspaceTool.h"
 #import "VFilterWorkspaceTool.h"
-
+#import "VTextWorkspaceTool.h"
 
 @interface VWorkspaceViewController ()
 
@@ -130,17 +130,12 @@
         return;
     }
  
-    [self setCanvasToolViewController:[selectedTool canvasToolViewController]
-                              forTool:selectedTool];
-    [self setInspectorToolViewController:[selectedTool inspectorToolViewController]
-                                 forTool:selectedTool];
-    
-    _selectedTool = selectedTool;
+ 
     
     __weak typeof(self) welf = self;
-    if ([_selectedTool isKindOfClass:[VCropWorkspaceTool class]])
+    if ([selectedTool isKindOfClass:[VCropWorkspaceTool class]])
     {
-        VCropWorkspaceTool *cropTool = (VCropWorkspaceTool *)_selectedTool;
+        VCropWorkspaceTool *cropTool = (VCropWorkspaceTool *)selectedTool;
         
         [cropTool setAssetSize:self.canvasView.sourceImage.size];
         cropTool.onCropBoundsChange = ^void(UIScrollView *croppingScrollView)
@@ -149,23 +144,40 @@
             [welf.canvasView.canvasScrollView setContentOffset:croppingScrollView.contentOffset];
         };
     }
-    else if ([_selectedTool isKindOfClass:[VFilterWorkspaceTool class]])
+    else if ([selectedTool isKindOfClass:[VFilterWorkspaceTool class]])
     {
-        VFilterWorkspaceTool *filterTool = (VFilterWorkspaceTool *)_selectedTool;
+        VFilterWorkspaceTool *filterTool = (VFilterWorkspaceTool *)selectedTool;
         filterTool.onFilterChange = ^void(VPhotoFilter *filter)
         {
             welf.canvasView.filter = filter;
         };
     }
     
-    if ([_selectedTool respondsToSelector:@selector(setOnCanvasToolUpdate:)])
+    if ([_selectedTool isKindOfClass:[VTextWorkspaceTool class]] && ![selectedTool isKindOfClass:[VTextWorkspaceTool class]])
     {
-        [_selectedTool setOnCanvasToolUpdate:^
+        _canvasToolViewController.view.userInteractionEnabled = NO;
+        _canvasToolViewController = nil;
+    }
+    else
+    {
+        [selectedTool canvasToolViewController].view.userInteractionEnabled = YES;
+    }
+    
+    if ([selectedTool respondsToSelector:@selector(setOnCanvasToolUpdate:)])
+    {
+        [selectedTool setOnCanvasToolUpdate:^
          {
              [welf setCanvasToolViewController:[welf.selectedTool canvasToolViewController]
                                        forTool:welf.selectedTool];
          }];
     }
+    
+    [self setCanvasToolViewController:[selectedTool canvasToolViewController]
+                              forTool:selectedTool];
+    [self setInspectorToolViewController:[selectedTool inspectorToolViewController]
+                                 forTool:selectedTool];
+    
+   _selectedTool = selectedTool;
 }
 
 #pragma mark - Private Methods

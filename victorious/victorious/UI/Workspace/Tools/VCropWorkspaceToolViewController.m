@@ -76,6 +76,19 @@
     self.hasLayedOutScrollView = YES;
 }
 
+- (IBAction)doubleTapCrop:(UITapGestureRecognizer *)sender
+{
+    CGPoint locationInView = [sender locationInView:self.croppingScrollView];
+    CGFloat zoomedWidth = CGRectGetWidth(self.croppingScrollView.bounds) * ( 1 / self.croppingScrollView.maximumZoomScale);
+    CGRect zoomedRect = CGRectMake(locationInView.x - (zoomedWidth/2), locationInView.y - (zoomedWidth/2), zoomedWidth, zoomedWidth);
+    
+    CGPoint centerOfContentView = CGPointMake(CGRectGetMidX(self.croppingScrollView.frame), CGRectGetMidY(self.croppingScrollView.frame));
+    CGFloat normalWidth = CGRectGetWidth(self.croppingScrollView.bounds);
+    CGRect normalRect = CGRectMake(centerOfContentView.x - (normalWidth / 2), centerOfContentView.y - (normalWidth / 2), normalWidth, normalWidth);
+    [self.croppingScrollView zoomToRect:self.croppingScrollView.zoomScale > self.croppingScrollView.minimumZoomScale ? normalRect : zoomedRect
+                               animated:YES];
+}
+
 #pragma mark - Public Interface
 
 - (void)setAssetSize:(CGSize)assetSize
