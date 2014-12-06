@@ -25,6 +25,7 @@
 #import "UIViewController+VNavMenu.h"
 #import "VAutomation.h"
 #import "VNotificationSettingsViewController.h"
+#import "VButton.h"
 
 static const NSInteger kSettingsSectionIndex         = 0;
 static const NSInteger kChangePasswordIndex          = 0;
@@ -34,7 +35,7 @@ static const NSInteger kServerEnvironmentButtonIndex = 4;
 
 @interface VSettingsViewController ()   <MFMailComposeViewControllerDelegate, UIAlertViewDelegate>
 
-@property (weak, nonatomic) IBOutlet UIButton *logoutButton;
+@property (weak, nonatomic) IBOutlet VButton *logoutButton;
 @property (weak, nonatomic) IBOutlet UITableViewCell *serverEnvironmentCell;
 
 @property (nonatomic, assign) BOOL    showChromeCastButton;
@@ -90,25 +91,7 @@ static const NSInteger kServerEnvironmentButtonIndex = 4;
     insets.top = 50;
     self.tableView.contentInset = insets;
     
-    if ([VObjectManager sharedManager].mainUserLoggedIn)
-    {
-        [self.logoutButton setTitle:NSLocalizedString(@"Logout", @"") forState:UIControlStateNormal];
-        [self.logoutButton setTitleColor:[UIColor colorWithWhite:0.14 alpha:1.0] forState:UIControlStateNormal];
-        self.logoutButton.layer.borderWidth = 2.0;
-        self.logoutButton.layer.cornerRadius = 3.0;
-        self.logoutButton.layer.borderColor = [UIColor colorWithWhite:0.14 alpha:1.0].CGColor;
-        self.logoutButton.backgroundColor = [UIColor clearColor];
-        self.logoutButton.accessibilityIdentifier = VAutomationIdentifierSettingsLogOut;
-    }
-    else
-    {
-        [self.logoutButton setTitle:NSLocalizedString(@"Login", @"") forState:UIControlStateNormal];
-        [self.logoutButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        self.logoutButton.layer.borderWidth = 0.0;
-        self.logoutButton.layer.cornerRadius = 0.0;
-        self.logoutButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-        self.logoutButton.accessibilityIdentifier = VAutomationIdentifierSettingsLogIn;
-    }
+    [self updateLogoutButtonState];
     
     self.serverEnvironmentCell.detailTextLabel.text = [[VObjectManager currentEnvironment] name];
     
@@ -169,6 +152,24 @@ static const NSInteger kServerEnvironmentButtonIndex = 4;
     [self.tableView endUpdates];
 }
 
+- (void)updateLogoutButtonState
+{
+    self.logoutButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    
+    if ([VObjectManager sharedManager].mainUserLoggedIn)
+    {
+        [self.logoutButton setTitle:NSLocalizedString(@"Logout", @"") forState:UIControlStateNormal];
+        self.logoutButton.style = VButtonStyleSecondary;
+        self.logoutButton.accessibilityIdentifier = VAutomationIdentifierSettingsLogOut;
+    }
+    else
+    {
+        [self.logoutButton setTitle:NSLocalizedString(@"Login", @"") forState:UIControlStateNormal];
+        self.logoutButton.style = VButtonStylePrimary;
+        self.logoutButton.accessibilityIdentifier = VAutomationIdentifierSettingsLogIn;
+    }
+}
+
 #pragma mark - Actions
 
 - (IBAction)logout:(id)sender
@@ -178,11 +179,8 @@ static const NSInteger kServerEnvironmentButtonIndex = 4;
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidLogOut];
         
         [[VUserManager sharedInstance] logout];
-        [self.logoutButton setTitle:NSLocalizedString(@"Login", @"") forState:UIControlStateNormal];
-        [self.logoutButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        self.logoutButton.layer.borderWidth = 0.0;
-        self.logoutButton.layer.cornerRadius = 0.0;
-        self.logoutButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+        
+        [self updateLogoutButtonState];
     }
     else
     {

@@ -12,24 +12,38 @@
 #import "VSettingManager.h"
 #import "VAlertController.h"
 #import "VThemeManager.h"
+#import "VButton.h"
+#import "VLoadingOverlayViewController.h"
 
 @interface VPurchaseViewController ()
 
 @property (strong, nonatomic) VPurchaseManager *purchaseManager;
 @property (strong, nonatomic) VProduct *product;
+@property (strong, nonatomic) VLoadingOverlayViewController *loadingOverlay;
 
-@property (weak, nonatomic) IBOutlet UIView *loadingOverlay;
-@property (weak, nonatomic) IBOutlet UILabel *loadingOverlayLabel;
-
-@property (weak, nonatomic) IBOutlet UILabel *producttitleLabel;
+@property (weak, nonatomic) IBOutlet UIView *backgroundScreen;
+@property (weak, nonatomic) IBOutlet UILabel *productTitleLabel;
+@property (weak, nonatomic) IBOutlet UILabel *createNameLabel;
 @property (weak, nonatomic) IBOutlet UITextView *productDescriptionTextView;
 @property (weak, nonatomic) IBOutlet UIImageView *productImage;
 
-@property (weak, nonatomic) IBOutlet UIButton *unlockButton;
+@property (weak, nonatomic) IBOutlet VButton *unlockButton;
+@property (weak, nonatomic) IBOutlet VButton *restoreButton;
 
 @end
 
 @implementation VPurchaseViewController
+
+#pragma mark - Initialization
+
++ (VPurchaseViewController *)instantiateFromStoryboard:(NSString *)storyboardName withVoteType:(VVoteType *)voteType
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:storyboardName bundle:[NSBundle mainBundle]];
+    NSString *identifier = NSStringFromClass( [VPurchaseViewController class] );
+    VPurchaseViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:identifier];
+    viewController.voteType = voteType;
+    return viewController;
+}
 
 #pragma mark - View controller lifecycle
 
@@ -37,31 +51,43 @@
 {
     [super viewDidLoad];
     
-    self.loadingOverlay.hidden = YES;
-    
     self.purchaseManager = [VPurchaseManager sharedInstance];
-    
     self.product = [self.purchaseManager purcahseableProductForProductIdenfitier:self.voteType.productIdentifier];
+    
+    self.loadingOverlay = [VLoadingOverlayViewController instantiateFromStoryboard:@"ContentView"];
+    [self.loadingOverlay configureForUseInViewController:self];
     
     NSString *localizedFormat = NSLocalizedString( @"PurchaseUnlockWithPrice", nil);
     NSString *unlockTitle = [NSString stringWithFormat:localizedFormat, self.product.price];
     [self.unlockButton setTitle:unlockTitle forState:UIControlStateNormal];
+    
+    [self applyTheme];
+}
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
+- (BOOL)prefersStatusBarHidden
+{
+    return YES;
+}
+
+#pragma mark - Theme
+
+- (void)applyTheme
+{
     self.unlockButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    self.unlockButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVButton2Font];
+    self.unlockButton.style = VButtonStylePrimary;
+    
+    self.restoreButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVButton2Font];
+    self.restoreButton.style = VButtonStyleSecondary;
 }
 
 #pragma mark - Helpers
 
-- (void)showLoadingOverlayWithLabelText:(NSString *)text
-{
-    self.loadingOverlayLabel.text = text;
-    self.loadingOverlay.hidden = NO;
-}
-
-- (void)hideLoadingOverlay
-{
-    self.loadingOverlayLabel.text = @"";
-    self.loadingOverlay.hidden = YES;
-}
 - (void)showError:(NSError *)error withTitle:(NSString *)title
 {
     NSString *message = error.localizedDescription;
@@ -74,23 +100,23 @@
 
 - (IBAction)close:(id)sender
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (IBAction)restorePurchasesTapped:(id)sender
 {
-    [self showLoadingOverlayWithLabelText:NSLocalizedString( @"ActivityRestoring", nil)];
+    [self.loadingOverlay showWithText:NSLocalizedString( @"ActivityRestoring", nil) animated:YES];
     
     [self.purchaseManager restorePurchasesSuccess:^(NSArray *productIdentifiers)
      {
          [[VSettingManager sharedManager].voteSettings didCompletePurchaseWithProductIdentifiers:productIdentifiers];
          
-         [self hideLoadingOverlay];
+         [self.loadingOverlay hideAnimated:YES];
          [self dismissViewControllerAnimated:YES completion:nil];
      }
                                                 failure:^(NSError *error)
      {
-         [self hideLoadingOverlay];
+         [self.loadingOverlay hideAnimated:YES];
          NSString *title = NSLocalizedString( @"RestorePurchasesErrorTitle", nil );
          [self showError:error withTitle:title];
      }];
@@ -103,19 +129,19 @@
         return;
     }
     
-    [self showLoadingOverlayWithLabelText:NSLocalizedString( @"ActivityPurchasing", nil)];
+    [self.loadingOverlay showWithText:NSLocalizedString( @"ActivityPurchasing", nil) animated:YES];
     
     NSString *productIdentifier = self.voteType.productIdentifier;
     [self.purchaseManager purchaseProductWithIdentifier:productIdentifier success:^(NSArray *productIdentifiers)
      {
          [[VSettingManager sharedManager].voteSettings didCompletePurchaseWithProductIdentifiers:@[ productIdentifier ]];
          
-         [self hideLoadingOverlay];
+         [self.loadingOverlay hideAnimated:YES];
          [self dismissViewControllerAnimated:YES completion:nil];
      }
                                   failure:^(NSError *error)
      {
-         [self hideLoadingOverlay];
+         [self.loadingOverlay hideAnimated:YES];
          // If error is nil, the user cancelled the purchase
          if ( error != nil )
          {
@@ -123,6 +149,29 @@
              [self showError:error withTitle:title];
          }
      }];
+}
+
+#pragma mark - VAnimatedTransitionViewController
+
+- (void)prepareForTransitionIn:(UIImageView *)imageViewOfOriginViewControllerOrNil
+{
+}
+
+- (void)performTransitionIn:(NSTimeInterval)duration
+{
+}
+
+- (void)prepareForTransitionOut:(UIImageView *)imageViewOfOriginViewControllerOrNil
+{
+}
+
+- (void)performTransitionOut:(NSTimeInterval)duration
+{
+}
+
+- (BOOL)requiresImageViewFromOriginViewController
+{
+    return NO;
 }
 
 @end

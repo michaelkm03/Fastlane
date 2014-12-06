@@ -11,6 +11,8 @@
 
 @interface VPurchaseViewController : UIViewController
 
++ (VPurchaseViewController *)instantiateFromStoryboard:(NSString *)storyboardName withVoteType:(VVoteType *)voteType;
+
 @property (nonatomic, strong) VVoteType *voteType;
 
 @end

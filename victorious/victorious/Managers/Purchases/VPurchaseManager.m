@@ -53,8 +53,6 @@
     {
         self.cache = [[VPurchaseManagerCache alloc] init];
         [[SKPaymentQueue defaultQueue] addTransactionObserver:self];
-        
-        //[self refreshReceipt];
     }
     return self;
 }
@@ -167,15 +165,6 @@ return;
 
     NSSet *productIdentifiersSet = [NSSet setWithArray:uncachedProductIndentifiers];
     SKProductsRequest *request = [[SKProductsRequest alloc] initWithProductIdentifiers:productIdentifiersSet];
-    request.delegate = self;
-    [request start];
-}
-
-#pragma mark - Receipt Refresh
-
-- (void)refreshReceipt
-{
-    SKReceiptRefreshRequest *request = [[SKReceiptRefreshRequest alloc] init];
     request.delegate = self;
     [request start];
 }

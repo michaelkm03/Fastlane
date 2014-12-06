@@ -72,6 +72,8 @@
 
 #import "VSequence+Fetcher.h"
 
+#import "VViewControllerTransition.h"
+
 static const CGFloat kMaxInputBarHeight = 200.0f;
 
 @interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate,VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelgetate, VExperienceEnhancerControllerDelegate>
@@ -113,6 +115,8 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 @property (nonatomic, assign) BOOL enteringRealTimeComment;
 @property (nonatomic, assign) CMTime realtimeCommentBeganTime;
 
+@property (nonatomic, strong) VViewControllerTransition *transitionDelegate;
+
 @end
 
 @implementation VNewContentViewController
@@ -125,6 +129,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     contentViewController.viewModel = viewModel;
     contentViewController.hasAutoPlayed = NO;
     contentViewController.elapsedTimeFormatter = [[VElapsedTimeFormatter alloc] init];
+    contentViewController.transitionDelegate = [[VViewControllerTransition alloc] init];
     
     return contentViewController;
 }
@@ -460,11 +465,14 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
         return;
     }
     
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"ContentView" bundle:[NSBundle mainBundle]];
-    NSString *identifier = NSStringFromClass( [VPurchaseViewController class] );
-    VPurchaseViewController *purcahseViewController = [storyboard instantiateViewControllerWithIdentifier:identifier];
-    purcahseViewController.voteType = experienceEnhander.voteType;
-    [self presentViewController:purcahseViewController animated:YES completion:nil];
+    VPurchaseViewController *purcahseViewController = [VPurchaseViewController instantiateFromStoryboard:@"ContentView"
+                                                                                            withVoteType:experienceEnhander.voteType];
+    self.transitioningDelegate = self.transitionDelegate;
+    self.modalPresentationStyle = UIModalPresentationCustom;
+    [self presentViewController:purcahseViewController animated:YES completion:^
+    {
+        self.transitionDelegate = nil;
+    }];
 }
 
 - (void)showLoginViewController:(NSNotification *)notification
