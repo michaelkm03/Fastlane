@@ -18,10 +18,10 @@
 + (RKEntityMapping *)entityMapping
 {
     NSDictionary *propertyMap = @{
-                                  @"notification_creator_post"       : VSelectorName(isPostFromCreatorEnabled),
-                                  @"notification_new_follower"        : VSelectorName(isNewFollowerEnabled),
-                                  @"notification_comment_post"       : VSelectorName(isNewPrivateMessageEnabled),
-                                  @"notification_private_message"    : VSelectorName(isNewCommentOnMyPostEnabled),
+                                  @"notification_creator_post"      : VSelectorName(isPostFromCreatorEnabled),
+                                  @"notification_new_follower"      : VSelectorName(isNewFollowerEnabled),
+                                  @"notification_private_message"   : VSelectorName(isNewPrivateMessageEnabled),
+                                  @"notification_comment_post"      : VSelectorName(isNewCommentOnMyPostEnabled),
                                   @"notification_follow_post"       : VSelectorName(isPostFromFollowedEnabled)
                                   };
     
@@ -47,10 +47,10 @@
 {
     return @{
              @"notification_creator_post"       : self.isPostFromCreatorEnabled ?: @NO,
-             @"notification_follow_post"        : self.isNewFollowerEnabled ?: @NO,
-             @"notification_comment_post"       : self.isNewPrivateMessageEnabled ?: @NO,
-             @"notification_private_message"    : self.isNewCommentOnMyPostEnabled ?: @NO,
-             @"notification_new_follower"       : self.isPostFromFollowedEnabled ?: @NO
+             @"notification_new_follower"       : self.isNewFollowerEnabled ?: @NO,
+             @"notification_private_message"    : self.isNewPrivateMessageEnabled ?: @NO,
+             @"notification_comment_post"       : self.isNewCommentOnMyPostEnabled ?: @NO,
+             @"notification_follow_post"        : self.isPostFromFollowedEnabled ?: @NO
              };
 }
 
