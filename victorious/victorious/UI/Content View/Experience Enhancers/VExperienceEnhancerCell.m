@@ -15,6 +15,7 @@ static const CGFloat kTopSpaceIconCompactVertical = 5.0f;
 
 @interface VExperienceEnhancerCell ()
 
+@property (weak, nonatomic) IBOutlet UIImageView *experienceEnhancerBackgroundImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *experienceEnhancerIconImageView;
 @property (weak, nonatomic) IBOutlet UILabel *experienceEnhancerLabel;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *topSpaceIconImageViewToContianerConstraint;
@@ -41,6 +42,8 @@ static const CGFloat kTopSpaceIconCompactVertical = 5.0f;
     {
         self.topSpaceIconImageViewToContianerConstraint.constant = kTopSpaceIconCompactVertical;
     }
+    
+    self.isLocked = NO;
 }
 
 #pragma mark - UICollectionReusableView
@@ -72,13 +75,27 @@ static const CGFloat kTopSpaceIconCompactVertical = 5.0f;
 - (void)setExperienceEnhancerIcon:(UIImage *)experienceEnhancerIcon
 {
     _experienceEnhancerIcon = experienceEnhancerIcon;
-    self.experienceEnhancerIconImageView.image = [_experienceEnhancerIcon imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    self.experienceEnhancerIconImageView.tintColor = [UIColor whiteColor];
+    self.experienceEnhancerIconImageView.image = experienceEnhancerIcon;
 }
 
-- (void)setIsPurchaseable:(BOOL)purchaseable
+- (void)setIsLocked:(BOOL)isLocked
 {
-    // TODO: Show purchaseable state
+    _isLocked = isLocked;
+    
+    UIImage *image = nil;
+    if ( _isLocked )
+    {
+        image = [UIImage imageNamed:@"ballistic-bg-locked"];
+    }
+    else
+    {
+        image = [UIImage imageNamed:@"ballistic-bg"];
+    }
+    
+    if ( image != nil )
+    {
+        self.experienceEnhancerBackgroundImageView.image = image;
+    }
 }
 
 @end

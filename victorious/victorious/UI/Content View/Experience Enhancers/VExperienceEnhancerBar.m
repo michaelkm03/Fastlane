@@ -112,14 +112,7 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
     VExperienceEnhancer *enhancerForIndexPath = [self.enhancers objectAtIndex:indexPath.row];
     experienceEnhancerCell.experienceEnhancerTitle = [self.numberFormatter stringForInteger:enhancerForIndexPath.totalVoteCount];
     experienceEnhancerCell.experienceEnhancerIcon = enhancerForIndexPath.iconImage;
-    // Check if the user must buy this experience enhancer first
-   
-    if ( enhancerForIndexPath.mustBePurchased )
-    {
-        // TODO: Show locked state
-        experienceEnhancerCell.alpha = 0.5f;
-    }
-        
+    experienceEnhancerCell.isLocked = enhancerForIndexPath.mustBePurchased;
     return experienceEnhancerCell;
 }
 

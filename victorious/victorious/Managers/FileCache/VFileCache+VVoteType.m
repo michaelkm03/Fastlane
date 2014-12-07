@@ -13,6 +13,7 @@
 NSString * const VVoteTypeFilepathFormat     = @"com.getvictorious.vote_types/%@";
 NSString * const VVoteTypeSpriteNameFormat   = @"sprite_%lu.png";
 NSString * const VVoteTypeIconName           = @"icon.png";
+NSString * const VVoteTypeIconLargeName      = @"icon-large.png";
 
 @implementation VFileCache (VVoteType)
 
@@ -46,6 +47,9 @@ NSString * const VVoteTypeIconName           = @"icon.png";
          {
              NSString *iconSavePath = [self savePathForImage:VVoteTypeIconName forVote:voteType];
              [self cacheFileAtUrl:voteType.iconImage withSavePath:iconSavePath];
+             
+             NSString *largeIconSavePath = [self savePathForImage:VVoteTypeIconLargeName forVote:voteType];
+             [self cacheFileAtUrl:voteType.iconImageLarge withSavePath:largeIconSavePath];
          }
      }];
     

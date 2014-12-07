@@ -26,6 +26,7 @@
                                   @"frames"             : VSelectorName(imageCount),
                                   @"image_macro"        : VSelectorName(imageFormat),
                                   @"icon"               : VSelectorName(iconImage),
+                                  @"icon_large"         : VSelectorName(iconImageLarge),
                                   @"animation_duration" : VSelectorName(animationDuration),
                                   @"flight_duration"    : VSelectorName(flightDuration),
                                   @"view_content_mode"  : VSelectorName(imageContentMode),

@@ -128,6 +128,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     VNewContentViewController *contentViewController = [[UIStoryboard storyboardWithName:@"ContentView" bundle:nil] instantiateInitialViewController];
     contentViewController.viewModel = viewModel;
     contentViewController.hasAutoPlayed = NO;
+    contentViewController.transitionDelegate = [[VViewControllerTransition alloc] init];
     contentViewController.elapsedTimeFormatter = [[VElapsedTimeFormatter alloc] init];
     
     return contentViewController;
@@ -466,7 +467,6 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     
     VPurchaseViewController *viewController = [VPurchaseViewController instantiateFromStoryboard:@"ContentView"
                                                                                             withVoteType:experienceEnhander.voteType];
-    self.transitionDelegate = [[VViewControllerTransition alloc] init];
     viewController.transitioningDelegate = self.transitionDelegate;
     [self presentViewController:viewController animated:YES completion:nil];
 }

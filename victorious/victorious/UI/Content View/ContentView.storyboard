@@ -12,9 +12,9 @@
             <string>MuseoSans-300</string>
             <string>MuseoSans-300</string>
             <string>MuseoSans-300</string>
+            <string>MuseoSans-300</string>
         </mutableArray>
         <mutableArray key="MuseoSans-500.otf">
-            <string>MuseoSans-500</string>
             <string>MuseoSans-500</string>
         </mutableArray>
     </customFonts>
@@ -183,9 +183,10 @@ Tap below to restore all of your purchases.</string>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Unlocking..." textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5l0-Bh-Xfb" userLabel="Restoring Message">
                                                         <rect key="frame" x="8" y="2" width="153" height="41"/>
                                                         <fontDescription key="fontDescription" name="MuseoSans-300" family="Museo Sans" pointSize="18"/>
+                                                        <color key="textColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Xvc-hL-VFo">
+                                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Xvc-hL-VFo">
                                                         <rect key="frame" x="170" y="13" width="20" height="20"/>
                                                     </activityIndicatorView>
                                                 </subviews>
@@ -218,7 +219,7 @@ Tap below to restore all of your purchases.</string>
                                         </constraints>
                                     </view>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YY2-4u-epL" userLabel="Unlock Button" customClass="VButton">
-                                        <rect key="frame" x="16" y="327" width="258" height="45"/>
+                                        <rect key="frame" x="16" y="367" width="258" height="45"/>
                                         <color key="backgroundColor" red="1" green="0.035351606610000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="45" id="5HM-tr-Lne"/>
@@ -234,14 +235,15 @@ Tap below to restore all of your purchases.</string>
                                         </connections>
                                     </button>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Pat-gu-lrH" userLabel="Unlock Loading View">
-                                        <rect key="frame" x="16" y="327" width="258" height="45"/>
+                                        <rect key="frame" x="16" y="367" width="258" height="45"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Unlocking..." textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IvI-y9-4Zx" userLabel="Unlocking Message">
                                                 <rect key="frame" x="8" y="2" width="155" height="41"/>
                                                 <fontDescription key="fontDescription" name="MuseoSans-300" family="Museo Sans" pointSize="18"/>
+                                                <color key="textColor" white="0.9660093246" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="h6E-6r-rRc">
+                                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="h6E-6r-rRc">
                                                 <rect key="frame" x="171" y="13" width="20" height="20"/>
                                             </activityIndicatorView>
                                         </subviews>
@@ -268,62 +270,83 @@ Tap below to restore all of your purchases.</string>
                                             <action selector="close:" destination="3Oe-37-MmH" eventType="touchUpInside" id="SiB-Or-BoO"/>
                                         </connections>
                                     </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TITLE" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3mh-OH-cQ7" userLabel="Product Title">
-                                        <rect key="frame" x="16" y="35" width="252" height="41"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Product Title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3mh-OH-cQ7" userLabel="Product Title">
+                                        <rect key="frame" x="16" y="24" width="252" height="41"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="41" id="HPJ-6g-ipl"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="MuseoSans-500" family="Museo Sans" pointSize="18"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-From Creator" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8b2-mE-xhl" userLabel="Creator Name">
-                                        <rect key="frame" x="15" y="269" width="259" height="41"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Creator Salutation" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8b2-mE-xhl" userLabel="Creator Name">
+                                        <rect key="frame" x="125" y="319" width="149" height="41"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="41" id="M3m-hc-uHv"/>
+                                            <constraint firstAttribute="height" constant="41" id="s1i-X0-wsZ"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" name="MuseoSans-500" family="Museo Sans" pointSize="16"/>
+                                        <fontDescription key="fontDescription" name="MuseoSans-300" family="Museo Sans" pointSize="11"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="uJf-DU-Uok" userLabel="Creator Image">
+                                        <rect key="frame" x="82" y="321" width="35" height="35"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="35" id="HZM-ux-Vj9"/>
+                                            <constraint firstAttribute="width" constant="35" id="Htt-ME-9X3"/>
+                                        </constraints>
+                                    </imageView>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="speech_bubble" translatesAutoresizingMaskIntoConstraints="NO" id="kn7-GH-aHs" userLabel="Speech Bubble">
+                                        <rect key="frame" x="17" y="170" width="255" height="157"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="157" id="ixr-Jb-cJ5"/>
+                                        </constraints>
+                                    </imageView>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="1tN-S4-eMF" userLabel="Product Description">
-                                        <rect key="frame" x="16" y="196" width="258" height="79"/>
+                                        <rect key="frame" x="49" y="197" width="192" height="98"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="79" id="CZe-u6-lGa"/>
+                                            <constraint firstAttribute="height" constant="98" id="Hdh-9e-5ad"/>
                                         </constraints>
-                                        <string key="text">What better way is there to express yourself than to temporarily vandalize content posted in this app with emotive ballistics?  But wait just a second—you don't want to be limited to just the free ones, do you? </string>
+                                        <string key="text">In-App
+Purchase
+Product
+Description</string>
                                         <fontDescription key="fontDescription" name="MuseoSans-300" family="Museo Sans" pointSize="17"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                     </textView>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="QwH-71-PhH" userLabel="Product Image">
-                                        <rect key="frame" x="16" y="62" width="258" height="137"/>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="QwH-71-PhH" userLabel="Product Image">
+                                        <rect key="frame" x="67" y="62" width="156" height="100"/>
                                     </imageView>
                                 </subviews>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.95999999999999996" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
+                                    <constraint firstItem="QwH-71-PhH" firstAttribute="top" secondItem="3mh-OH-cQ7" secondAttribute="bottom" constant="-3" id="5R1-Fu-AxP"/>
                                     <constraint firstItem="g2s-0e-U4c" firstAttribute="leading" secondItem="XDA-Pl-HCe" secondAttribute="leading" id="6Ub-mL-coG"/>
-                                    <constraint firstAttribute="trailing" secondItem="QwH-71-PhH" secondAttribute="trailing" constant="16" id="6vc-eL-0pE"/>
-                                    <constraint firstAttribute="trailing" secondItem="1tN-S4-eMF" secondAttribute="trailing" constant="16" id="Ahm-Rx-CDs"/>
-                                    <constraint firstItem="8b2-mE-xhl" firstAttribute="top" secondItem="1tN-S4-eMF" secondAttribute="bottom" constant="-6" id="Arg-dm-AEk"/>
-                                    <constraint firstAttribute="trailing" secondItem="8b2-mE-xhl" secondAttribute="trailing" constant="16" id="BmR-Yp-gRR"/>
-                                    <constraint firstItem="QwH-71-PhH" firstAttribute="leading" secondItem="XDA-Pl-HCe" secondAttribute="leading" constant="16" id="DVE-Iw-Ok1"/>
+                                    <constraint firstItem="QwH-71-PhH" firstAttribute="leading" secondItem="XDA-Pl-HCe" secondAttribute="leading" constant="67" id="Aan-j8-KUM"/>
                                     <constraint firstAttribute="centerX" secondItem="YY2-4u-epL" secondAttribute="centerX" id="Djn-bM-dzy"/>
                                     <constraint firstItem="3mh-OH-cQ7" firstAttribute="leading" secondItem="XDA-Pl-HCe" secondAttribute="leading" constant="16" id="FJR-IG-nNp"/>
-                                    <constraint firstItem="8b2-mE-xhl" firstAttribute="leading" secondItem="XDA-Pl-HCe" secondAttribute="leading" constant="15" id="GEY-sk-QLI"/>
+                                    <constraint firstAttribute="trailing" secondItem="1tN-S4-eMF" secondAttribute="trailing" constant="49" id="HWd-87-gIw"/>
                                     <constraint firstItem="Pat-gu-lrH" firstAttribute="width" secondItem="YY2-4u-epL" secondAttribute="width" id="IAb-Bf-ZoX"/>
+                                    <constraint firstItem="8b2-mE-xhl" firstAttribute="leading" secondItem="uJf-DU-Uok" secondAttribute="trailing" constant="8" id="LX4-wa-UtF"/>
                                     <constraint firstAttribute="trailing" secondItem="3mh-OH-cQ7" secondAttribute="trailing" constant="22" id="M4q-dj-0mT"/>
                                     <constraint firstAttribute="trailing" secondItem="g2s-0e-U4c" secondAttribute="trailing" id="PTi-0L-UFc"/>
-                                    <constraint firstItem="3mh-OH-cQ7" firstAttribute="top" secondItem="XDA-Pl-HCe" secondAttribute="top" constant="35" id="PhW-xr-JhV"/>
+                                    <constraint firstItem="3mh-OH-cQ7" firstAttribute="top" secondItem="XDA-Pl-HCe" secondAttribute="top" constant="24" id="PhW-xr-JhV"/>
                                     <constraint firstAttribute="trailing" secondItem="qPJ-sJ-zM0" secondAttribute="trailing" constant="-3" id="R1c-Ht-b05"/>
-                                    <constraint firstItem="YY2-4u-epL" firstAttribute="top" secondItem="8b2-mE-xhl" secondAttribute="bottom" constant="17" id="aAT-sV-9y2"/>
-                                    <constraint firstItem="1tN-S4-eMF" firstAttribute="top" secondItem="QwH-71-PhH" secondAttribute="bottom" constant="-3" id="cw4-8X-j9a"/>
+                                    <constraint firstItem="Pat-gu-lrH" firstAttribute="top" secondItem="uJf-DU-Uok" secondAttribute="bottom" constant="11" id="ROc-EK-L8N"/>
+                                    <constraint firstItem="kn7-GH-aHs" firstAttribute="leading" secondItem="XDA-Pl-HCe" secondAttribute="leading" constant="17" id="UkM-Oc-TQA"/>
+                                    <constraint firstAttribute="trailing" secondItem="kn7-GH-aHs" secondAttribute="trailing" constant="18" id="VCY-AC-VGD"/>
+                                    <constraint firstAttribute="trailing" secondItem="8b2-mE-xhl" secondAttribute="trailing" constant="16" id="XY1-Zw-hyG"/>
+                                    <constraint firstItem="1tN-S4-eMF" firstAttribute="leading" secondItem="XDA-Pl-HCe" secondAttribute="leading" constant="49" id="Yha-bx-tFN"/>
+                                    <constraint firstItem="kn7-GH-aHs" firstAttribute="top" secondItem="1tN-S4-eMF" secondAttribute="bottom" constant="-125" id="a8M-wa-SKH"/>
                                     <constraint firstItem="Pat-gu-lrH" firstAttribute="height" secondItem="YY2-4u-epL" secondAttribute="height" id="g0A-Nu-3sp"/>
-                                    <constraint firstItem="QwH-71-PhH" firstAttribute="top" secondItem="3mh-OH-cQ7" secondAttribute="bottom" constant="-14" id="ofM-lY-Ui8"/>
+                                    <constraint firstAttribute="trailing" secondItem="QwH-71-PhH" secondAttribute="trailing" constant="67" id="jYx-iw-c4V"/>
                                     <constraint firstItem="Pat-gu-lrH" firstAttribute="centerX" secondItem="YY2-4u-epL" secondAttribute="centerX" id="p6P-hB-fqE"/>
-                                    <constraint firstItem="1tN-S4-eMF" firstAttribute="leading" secondItem="XDA-Pl-HCe" secondAttribute="leading" constant="16" id="sF9-HQ-odh"/>
-                                    <constraint firstItem="Ahj-OZ-QKm" firstAttribute="top" secondItem="YY2-4u-epL" secondAttribute="bottom" constant="57" id="sJX-px-mgS"/>
+                                    <constraint firstItem="uJf-DU-Uok" firstAttribute="leading" secondItem="XDA-Pl-HCe" secondAttribute="leading" constant="82" id="pfW-Ui-4mI"/>
+                                    <constraint firstItem="kn7-GH-aHs" firstAttribute="top" secondItem="QwH-71-PhH" secondAttribute="bottom" constant="8" id="qSV-oZ-tJx"/>
+                                    <constraint firstItem="Pat-gu-lrH" firstAttribute="top" secondItem="8b2-mE-xhl" secondAttribute="bottom" constant="7" id="qux-O6-kso"/>
+                                    <constraint firstItem="Ahj-OZ-QKm" firstAttribute="top" secondItem="YY2-4u-epL" secondAttribute="bottom" constant="17" id="sJX-px-mgS"/>
                                     <constraint firstItem="Pat-gu-lrH" firstAttribute="centerY" secondItem="YY2-4u-epL" secondAttribute="centerY" id="tl4-FP-keX"/>
                                     <constraint firstItem="qPJ-sJ-zM0" firstAttribute="top" secondItem="XDA-Pl-HCe" secondAttribute="top" id="xKU-vs-oyr"/>
                                     <constraint firstAttribute="bottom" secondItem="g2s-0e-U4c" secondAttribute="bottom" id="zT7-6n-3xO"/>
+                                    <constraint firstItem="Pat-gu-lrH" firstAttribute="top" secondItem="kn7-GH-aHs" secondAttribute="bottom" constant="40" id="zeO-nw-ojx"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -345,10 +368,11 @@ Tap below to restore all of your purchases.</string>
                     <size key="freeformSize" width="320" height="568"/>
                     <connections>
                         <outlet property="backgroundScreen" destination="T0y-OL-BDI" id="ZMS-cI-AXb"/>
-                        <outlet property="createNameLabel" destination="8b2-mE-xhl" id="SOe-x0-zdO"/>
+                        <outlet property="creatorAvatarImageView" destination="uJf-DU-Uok" id="0dJ-ub-iF6"/>
+                        <outlet property="creatorSalutationLabel" destination="8b2-mE-xhl" id="7VD-iW-f1p"/>
                         <outlet property="modalContainer" destination="XDA-Pl-HCe" id="Rjc-fC-uXu"/>
                         <outlet property="productDescriptionTextView" destination="1tN-S4-eMF" id="mFG-TE-2XA"/>
-                        <outlet property="productImage" destination="QwH-71-PhH" id="ax3-EG-eaq"/>
+                        <outlet property="productImageView" destination="QwH-71-PhH" id="rWh-Qx-Zc2"/>
                         <outlet property="productTitleLabel" destination="3mh-OH-cQ7" id="3GF-Ty-Reb"/>
                         <outlet property="restoreButton" destination="dFx-6u-BFW" id="VYk-LE-5vb"/>
                         <outlet property="restoreLoadingLabel" destination="5l0-Bh-Xfb" id="oeY-fL-vVP"/>
@@ -368,6 +392,7 @@ Tap below to restore all of your purchases.</string>
         <image name="close-btn" width="17" height="18"/>
         <image name="more-btn" width="22" height="8"/>
         <image name="purchase-prompt-footer-bg" width="1" height="111"/>
+        <image name="speech_bubble" width="245" height="157"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

@@ -17,6 +17,7 @@
 @property (nonatomic, retain) NSString *name;
 @property (nonatomic, retain) NSNumber *remoteId;
 @property (nonatomic, retain) NSString *iconImage;
+@property (nonatomic, retain) NSString *iconImageLarge;
 @property (nonatomic, retain) NSString *imageFormat;
 @property (nonatomic, retain) NSNumber *imageCount;
 @property (nonatomic, retain) NSNumber *flightDuration;

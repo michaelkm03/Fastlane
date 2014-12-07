@@ -13,6 +13,8 @@
 #import "VAlertController.h"
 #import "VThemeManager.h"
 #import "VButton.h"
+#import "VFileCache.h"
+#import "VFileCache+VVoteType.h"
 
 @interface VPurchaseViewController ()
 
@@ -20,17 +22,16 @@
 @property (strong, nonatomic) VProduct *product;
 
 @property (weak, nonatomic) IBOutlet UILabel *productTitleLabel;
-@property (weak, nonatomic) IBOutlet UILabel *createNameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *creatorSalutationLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *creatorAvatarImageView;
 @property (weak, nonatomic) IBOutlet UITextView *productDescriptionTextView;
-@property (weak, nonatomic) IBOutlet UIImageView *productImage;
-
-@property (weak, nonatomic) IBOutlet VButton *unlockButton;
-@property (weak, nonatomic) IBOutlet VButton *restoreButton;
-
+@property (weak, nonatomic) IBOutlet UIImageView *productImageView;
 @property (weak, nonatomic) IBOutlet UIView *unlockLoadingView;
 @property (weak, nonatomic) IBOutlet UILabel *unlockLoadingLabel;
 @property (weak, nonatomic) IBOutlet UIView *restoreLoadingView;
 @property (weak, nonatomic) IBOutlet UILabel *restoreLoadingLabel;
+@property (weak, nonatomic) IBOutlet VButton *unlockButton;
+@property (weak, nonatomic) IBOutlet VButton *restoreButton;
 
 @end
 
@@ -55,21 +56,14 @@
     [super viewDidLoad];
     
     self.purchaseManager = [VPurchaseManager sharedInstance];
+    
     self.product = [self.purchaseManager purcahseableProductForProductIdenfitier:self.voteType.productIdentifier];
     
-    [self applyTheme];
+    self.creatorAvatarImageView.layer.cornerRadius = 17.0f; // Enough to make it a circle
+    self.creatorAvatarImageView.layer.borderWidth = 1.0f;
+    self.creatorAvatarImageView.layer.masksToBounds = YES;
     
-    [self populateDataWithProduct:self.product];
-}
-
-- (void)populateDataWithProduct:(VProduct *)product
-{
-    NSString *localizedFormat = NSLocalizedString( @"PurchaseUnlockWithPrice", nil);
-    NSString *unlockTitle = [NSString stringWithFormat:localizedFormat, product.price];
-    [self.unlockButton setTitle:unlockTitle forState:UIControlStateNormal];
-    
-    self.productTitleLabel.text = product.localizedTitle;
-    self.productDescriptionTextView.text = product.localizedDescription;
+    [self resetLoadingState];
 }
 
 - (NSUInteger)supportedInterfaceOrientations
@@ -82,22 +76,56 @@
     return YES;
 }
 
-#pragma mark - Theme
+#pragma mark - Helpers
 
 - (void)applyTheme
 {
-    self.unlockButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-    self.unlockButton.titleLabel.font = [UIFont fontWithName:@"MuseoSans-300" size:18.0f];
+    UIColor *linkColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    
+    NSString *fontNameRegular = @"MuseoSans-300";
+    NSString *fontNameBold = @"MuseoSans-500";
+    
+    self.unlockButton.backgroundColor = linkColor;
+    self.unlockButton.titleLabel.font = [UIFont fontWithName:fontNameRegular size:18.0f];
+    
     self.unlockButton.style = VButtonStylePrimary;
     
-    self.restoreButton.titleLabel.font = [UIFont fontWithName:@"MuseoSans-300" size:15.0f];
+    self.restoreButton.titleLabel.font = [UIFont fontWithName:fontNameRegular size:15.0f];
     self.restoreButton.style = VButtonStyleSecondary;
     
-    self.productDescriptionTextView.font = [UIFont fontWithName:@"MuseoSans-300" size:17.0f];
-    self.productTitleLabel.font = [UIFont fontWithName:@"MuseoSans-500" size:15.0f];
+    self.productDescriptionTextView.font = [UIFont fontWithName:fontNameRegular size:17.0f];
+    
+    self.productTitleLabel.font = [UIFont fontWithName:fontNameRegular size:20.0f];
+    
+    self.creatorSalutationLabel.font = [UIFont fontWithName:fontNameBold size:11.0f];
+    
+    self.creatorAvatarImageView.layer.borderColor = linkColor.CGColor;
 }
 
-#pragma mark - Helpers
+- (void)populateDataFromBundle
+{
+    NSBundle *bundle = [NSBundle mainBundle];
+    
+    NSString *salutation = [bundle objectForInfoDictionaryKey:@"CreatorSalutation"];
+    self.creatorSalutationLabel.text = [NSString stringWithFormat:@"–%@", salutation];
+    self.creatorAvatarImageView.image = [UIImage imageNamed:@"creator-avatar"];
+}
+
+- (void)populateDataWithVoteType:(VVoteType *)voteType
+{
+    VFileCache *fileCache = [[VFileCache alloc] init];
+    self.productImageView.image = [fileCache getImageWithName:VVoteTypeIconLargeName forVoteType:self.voteType];
+}
+
+- (void)populateDataWithProduct:(VProduct *)product
+{
+    NSString *localizedFormat = NSLocalizedString( @"PurchaseUnlockWithPrice", nil);
+    NSString *unlockTitle = [NSString stringWithFormat:localizedFormat, product.price];
+    [self.unlockButton setTitle:unlockTitle forState:UIControlStateNormal];
+    
+    self.productTitleLabel.text = product.localizedTitle.uppercaseString;
+    self.productDescriptionTextView.text = product.localizedDescription;
+}
 
 - (void)showError:(NSError *)error withTitle:(NSString *)title
 {
@@ -109,38 +137,41 @@
 
 - (void)showRestoringWithMessage:(NSString *)message
 {
-    self.unlockButton.hidden = NO;
-    self.restoreButton.enabled = NO;
     self.unlockButton.enabled = NO;
     self.unlockLoadingView.hidden = YES;
     
     self.restoreButton.hidden = YES;
+    
     self.restoreLoadingView.hidden = NO;
     self.restoreLoadingLabel.text = message;
 }
 
 - (void)showUnlockingWithMessage:(NSString *)message
 {
-    self.restoreButton.hidden = NO;
     self.restoreButton.enabled = NO;
-    self.unlockButton.enabled = NO;
     self.restoreLoadingView.hidden = YES;
     
-    self.unlockButton.hidden = YES;
+    self.unlockButton.enabled = NO;
+    self.unlockButton.backgroundColor = [UIColor grayColor];
+    [self.unlockButton setTitle:nil forState:UIControlStateNormal];
+    
     self.unlockLoadingView.hidden = NO;
     self.unlockLoadingLabel.text = message;
 }
 
 - (void)resetLoadingState
 {
-    self.restoreButton.hidden = NO;
-    self.unlockButton.hidden = NO;
     self.restoreButton.enabled = YES;
     self.unlockButton.enabled = YES;
     self.unlockLoadingView.hidden = YES;
     self.restoreLoadingView.hidden = YES;
     self.unlockLoadingLabel.text = nil;
     self.unlockLoadingLabel.text = nil;
+    
+    [self populateDataWithProduct:self.product];
+    [self populateDataWithVoteType:self.voteType];
+    [self populateDataFromBundle];
+    [self applyTheme];
 }
 
 #pragma mark - IB Actions

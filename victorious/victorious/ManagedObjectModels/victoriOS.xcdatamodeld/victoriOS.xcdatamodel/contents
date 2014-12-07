@@ -236,6 +236,7 @@
         <attribute name="displayOrder" optional="YES" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
         <attribute name="flightDuration" optional="YES" attributeType="Float" minValueString="0" defaultValueString="0" syncable="YES"/>
         <attribute name="iconImage" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="iconImageLarge" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="imageContentMode" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="imageCount" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="imageFormat" optional="YES" attributeType="String" syncable="YES"/>
@@ -285,7 +286,7 @@
         <element name="UnreadConversation" positionX="1251" positionY="-459" width="128" height="73"/>
         <element name="User" positionX="1321" positionY="-324" width="128" height="373"/>
         <element name="VoteResult" positionX="864" positionY="164" width="128" height="90"/>
-        <element name="VoteType" positionX="538" positionY="-738" width="128" height="255"/>
+        <element name="VoteType" positionX="538" positionY="-738" width="128" height="268"/>
         <element name="VStream" positionX="1069" positionY="-792" width="128" height="135"/>
         <element name="VStreamItem" positionX="871" positionY="-765" width="128" height="103"/>
     </elements>

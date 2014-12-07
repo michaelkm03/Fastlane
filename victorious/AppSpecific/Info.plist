@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>com.getvictorious.eatyourkimchi</string>
+	<string>${ProductPrefix}victorious</string>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIconFiles</key>
@@ -156,6 +156,8 @@
 	</array>
 	<key>VictoriousAppID</key>
 	<integer>1</integer>
+	<key>CreatorSalutation</key>
+	<string>Debug Victorious</string>
 	<key>VictoriousServerEnvironment</key>
 	<string>${DefaultEnvironment}</string>
 </dict>

@@ -29,11 +29,10 @@ NSString * const VVoteTypeImageIndexReplacementMacro = @"XXXXX";
 
 - (BOOL)containsRequiredData
 {
-    return  self.canCreateImages &&
-    self.name != nil &&
-    self.name.length > 0 &&
-    self.iconImage != nil &&
-    self.iconImage.length != 0;
+    BOOL isNonPaidAndValid = self.canCreateImages && self.name != nil && self.name.length > 0 && self.iconImage != nil && self.iconImage.length > 0;
+    BOOL isUnlockableAndValid = self.iconImageLarge != nil && self.iconImageLarge.length > 0;
+    
+    return isNonPaidAndValid || (isUnlockableAndValid && isNonPaidAndValid);
 }
 
 - (BOOL)mustBePurchased
