@@ -14,14 +14,6 @@
 #import "VThemeManager.h"
 #import "VButton.h"
 
-typedef NS_ENUM( NSUInteger, VLoadingState ) {
-    VLoadingStateDefault,
-    VLoadingStatePurchasing,
-    VLoadingStateRestoring,
-    VLoadingStateRestoreComplete,
-    VLoadingStatePuchaseComplete
-};
-
 @interface VPurchaseViewController ()
 
 @property (strong, nonatomic) VPurchaseManager *purchaseManager;
@@ -36,11 +28,9 @@ typedef NS_ENUM( NSUInteger, VLoadingState ) {
 @property (weak, nonatomic) IBOutlet VButton *restoreButton;
 
 @property (weak, nonatomic) IBOutlet UIView *unlockLoadingView;
-@property (weak, nonatomic) IBOutlet UIView *unlockLoadingLabel;
-@property (weak, nonatomic) IBOutlet UILabel *restoreLoadingView;
+@property (weak, nonatomic) IBOutlet UILabel *unlockLoadingLabel;
+@property (weak, nonatomic) IBOutlet UIView *restoreLoadingView;
 @property (weak, nonatomic) IBOutlet UILabel *restoreLoadingLabel;
-
-@property (nonatomic, assign) VLoadingState loadingState;
 
 @end
 
@@ -117,52 +107,40 @@ typedef NS_ENUM( NSUInteger, VLoadingState ) {
     [alertConroller presentInViewController:self animated:YES completion:nil];
 }
 
-- (void)setLoadingState:(VLoadingState)loadingState
+- (void)showRestoringWithMessage:(NSString *)message
 {
-    if ( _loadingState == loadingState )
-    {
-        return;
-    }
+    self.unlockButton.hidden = NO;
+    self.restoreButton.enabled = NO;
+    self.unlockButton.enabled = NO;
+    self.unlockLoadingView.hidden = YES;
     
-    _loadingState = loadingState;
-    switch ( _loadingState )
-    {
-        case VLoadingStateDefault:
-            self.restoreButton.hidden = NO;
-            self.unlockButton.hidden = NO;
-            self.restoreButton.enabled = YES;
-            self.unlockButton.enabled = YES;
-            self.unlockLoadingView.hidden = YES;
-            self.restoreLoadingView.hidden = YES;
-            break;
-            
-        case VLoadingStatePuchaseComplete:
-            break;
-            
-        case VLoadingStatePurchasing:
-            self.restoreButton.hidden = NO;
-            self.unlockButton.hidden = YES;
-            self.restoreButton.enabled = NO;
-            self.unlockButton.enabled = NO;
-            self.unlockLoadingView.hidden = NO;
-            self.restoreLoadingView.hidden = YES;
-            break;
-            
-        case VLoadingStateRestoreComplete:
-            break;
-            
-        case VLoadingStateRestoring:
-            self.restoreButton.hidden = YES;
-            self.unlockButton.hidden = NO;
-            self.restoreButton.enabled = NO;
-            self.unlockButton.enabled = NO;
-            self.unlockLoadingView.hidden = YES;
-            self.restoreLoadingView.hidden = NO;
-            break;
-            
-        default:
-            break;
-    }
+    self.restoreButton.hidden = YES;
+    self.restoreLoadingView.hidden = NO;
+    self.restoreLoadingLabel.text = message;
+}
+
+- (void)showUnlockingWithMessage:(NSString *)message
+{
+    self.restoreButton.hidden = NO;
+    self.restoreButton.enabled = NO;
+    self.unlockButton.enabled = NO;
+    self.restoreLoadingView.hidden = YES;
+    
+    self.unlockButton.hidden = YES;
+    self.unlockLoadingView.hidden = NO;
+    self.unlockLoadingLabel.text = message;
+}
+
+- (void)resetLoadingState
+{
+    self.restoreButton.hidden = NO;
+    self.unlockButton.hidden = NO;
+    self.restoreButton.enabled = YES;
+    self.unlockButton.enabled = YES;
+    self.unlockLoadingView.hidden = YES;
+    self.restoreLoadingView.hidden = YES;
+    self.unlockLoadingLabel.text = nil;
+    self.unlockLoadingLabel.text = nil;
 }
 
 #pragma mark - IB Actions
@@ -174,14 +152,17 @@ typedef NS_ENUM( NSUInteger, VLoadingState ) {
 
 - (IBAction)restorePurchasesTapped:(id)sender
 {
+    [self showRestoringWithMessage:NSLocalizedString( @"ActivityRestoring", nil)];
     [self.purchaseManager restorePurchasesSuccess:^(NSArray *productIdentifiers)
      {
          [[VSettingManager sharedManager].voteSettings didCompletePurchaseWithProductIdentifiers:productIdentifiers];
          
+         [self resetLoadingState];
          [self dismissViewControllerAnimated:YES completion:nil];
      }
                                                 failure:^(NSError *error)
      {
+         [self resetLoadingState];
          NSString *title = NSLocalizedString( @"RestorePurchasesErrorTitle", nil );
          [self showError:error withTitle:title];
      }];
@@ -194,15 +175,19 @@ typedef NS_ENUM( NSUInteger, VLoadingState ) {
         return;
     }
     
+    [self showUnlockingWithMessage:NSLocalizedString( @"ActivityPurchasing", nil)];
     NSString *productIdentifier = self.voteType.productIdentifier;
     [self.purchaseManager purchaseProductWithIdentifier:productIdentifier success:^(NSArray *productIdentifiers)
      {
          [[VSettingManager sharedManager].voteSettings didCompletePurchaseWithProductIdentifiers:@[ productIdentifier ]];
          
+         [self resetLoadingState];
          [self dismissViewControllerAnimated:YES completion:nil];
      }
                                   failure:^(NSError *error)
      {
+         [self resetLoadingState];
+         
          // If error is nil, the user cancelled the purchase
          if ( error != nil )
          {
