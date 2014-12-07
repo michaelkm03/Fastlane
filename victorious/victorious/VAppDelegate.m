@@ -148,14 +148,24 @@ static BOOL isRunningTests(void) __attribute__((const));
     [[VThemeManager sharedThemeManager] updateToNewTheme];
     [[VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext saveToPersistentStore:nil];
     
-    NSDictionary *params = @{ VTrackingKeyUrls : [VSettingManager sharedManager].applicationTracking.appEnterBackground };
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventApplicationDidEnterBackground parameters:params];
+    id appEnterBackgroundTracking = [VSettingManager sharedManager].applicationTracking.appEnterBackground;
+    
+    if ( appEnterBackgroundTracking != nil )
+    {
+        NSDictionary *params = @{ VTrackingKeyUrls : appEnterBackgroundTracking };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventApplicationDidEnterBackground parameters:params];
+    }
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
-    NSDictionary *params = @{ VTrackingKeyUrls : [VSettingManager sharedManager].applicationTracking.appEnterForeground };
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventApplicationDidEnterForeground parameters:params];
+    id appEnterForegroundTracking = [VSettingManager sharedManager].applicationTracking.appEnterForeground;
+    
+    if ( appEnterForegroundTracking != nil )
+    {
+        NSDictionary *params = @{ VTrackingKeyUrls : appEnterForegroundTracking };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventApplicationDidEnterForeground parameters:params];
+    }
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
@@ -169,6 +179,24 @@ static BOOL isRunningTests(void) __attribute__((const));
     [[VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext saveToPersistentStore:nil];
 }
 
+#pragma mark - NSNotification handlers
+
+- (void)onInitResponse:(NSNotification *)notification
+{
+    VTracking *applicationTracking = [VSettingManager sharedManager].applicationTracking;
+    
+    if ( applicationTracking != nil )
+    {
+        NSDictionary *params = @{ VTrackingKeyUrls : applicationTracking };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventApplicationDidLaunch parameters:params];
+    }
+    
+    // Only receive this once
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kInitResponseNotification object:nil];
+}
+
+@end
+
 #pragma mark -
 
 static BOOL isRunningTests(void)
@@ -177,14 +205,3 @@ static BOOL isRunningTests(void)
     NSString *injectBundle = environment[@"XCInjectBundle"];
     return [[injectBundle pathExtension] isEqualToString:@"xctest"];
 }
-
-- (void)onInitResponse:(NSNotification *)notification
-{
-    NSDictionary *params = @{ VTrackingKeyUrls : [VSettingManager sharedManager].applicationTracking };
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventApplicationDidLaunch parameters:params];
-    
-    // Only receive this once
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:kInitResponseNotification object:nil];
-}
-
-@end
