@@ -13,13 +13,19 @@
 #import "VAlertController.h"
 #import "VThemeManager.h"
 #import "VButton.h"
-#import "VLoadingOverlayViewController.h"
+
+typedef NS_ENUM( NSUInteger, VLoadingState ) {
+    VLoadingStateDefault,
+    VLoadingStatePurchasing,
+    VLoadingStateRestoring,
+    VLoadingStateRestoreComplete,
+    VLoadingStatePuchaseComplete
+};
 
 @interface VPurchaseViewController ()
 
 @property (strong, nonatomic) VPurchaseManager *purchaseManager;
 @property (strong, nonatomic) VProduct *product;
-@property (strong, nonatomic) VLoadingOverlayViewController *loadingOverlay;
 
 @property (weak, nonatomic) IBOutlet UILabel *productTitleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *createNameLabel;
@@ -28,6 +34,13 @@
 
 @property (weak, nonatomic) IBOutlet VButton *unlockButton;
 @property (weak, nonatomic) IBOutlet VButton *restoreButton;
+
+@property (weak, nonatomic) IBOutlet UIView *unlockLoadingView;
+@property (weak, nonatomic) IBOutlet UIView *unlockLoadingLabel;
+@property (weak, nonatomic) IBOutlet UILabel *restoreLoadingView;
+@property (weak, nonatomic) IBOutlet UILabel *restoreLoadingLabel;
+
+@property (nonatomic, assign) VLoadingState loadingState;
 
 @end
 
@@ -53,9 +66,6 @@
     
     self.purchaseManager = [VPurchaseManager sharedInstance];
     self.product = [self.purchaseManager purcahseableProductForProductIdenfitier:self.voteType.productIdentifier];
-    
-    self.loadingOverlay = [VLoadingOverlayViewController instantiateFromStoryboard:@"ContentView"];
-    [self.loadingOverlay configureForUseInViewController:self];
     
     [self applyTheme];
     
@@ -107,6 +117,54 @@
     [alertConroller presentInViewController:self animated:YES completion:nil];
 }
 
+- (void)setLoadingState:(VLoadingState)loadingState
+{
+    if ( _loadingState == loadingState )
+    {
+        return;
+    }
+    
+    _loadingState = loadingState;
+    switch ( _loadingState )
+    {
+        case VLoadingStateDefault:
+            self.restoreButton.hidden = NO;
+            self.unlockButton.hidden = NO;
+            self.restoreButton.enabled = YES;
+            self.unlockButton.enabled = YES;
+            self.unlockLoadingView.hidden = YES;
+            self.restoreLoadingView.hidden = YES;
+            break;
+            
+        case VLoadingStatePuchaseComplete:
+            break;
+            
+        case VLoadingStatePurchasing:
+            self.restoreButton.hidden = NO;
+            self.unlockButton.hidden = YES;
+            self.restoreButton.enabled = NO;
+            self.unlockButton.enabled = NO;
+            self.unlockLoadingView.hidden = NO;
+            self.restoreLoadingView.hidden = YES;
+            break;
+            
+        case VLoadingStateRestoreComplete:
+            break;
+            
+        case VLoadingStateRestoring:
+            self.restoreButton.hidden = YES;
+            self.unlockButton.hidden = NO;
+            self.restoreButton.enabled = NO;
+            self.unlockButton.enabled = NO;
+            self.unlockLoadingView.hidden = YES;
+            self.restoreLoadingView.hidden = NO;
+            break;
+            
+        default:
+            break;
+    }
+}
+
 #pragma mark - IB Actions
 
 - (IBAction)close:(id)sender
@@ -116,18 +174,14 @@
 
 - (IBAction)restorePurchasesTapped:(id)sender
 {
-    [self.loadingOverlay showWithText:NSLocalizedString( @"ActivityRestoring", nil) animated:YES];
-    
     [self.purchaseManager restorePurchasesSuccess:^(NSArray *productIdentifiers)
      {
          [[VSettingManager sharedManager].voteSettings didCompletePurchaseWithProductIdentifiers:productIdentifiers];
          
-         [self.loadingOverlay hideAnimated:YES];
          [self dismissViewControllerAnimated:YES completion:nil];
      }
                                                 failure:^(NSError *error)
      {
-         [self.loadingOverlay hideAnimated:YES];
          NSString *title = NSLocalizedString( @"RestorePurchasesErrorTitle", nil );
          [self showError:error withTitle:title];
      }];
@@ -140,19 +194,15 @@
         return;
     }
     
-    [self.loadingOverlay showWithText:NSLocalizedString( @"ActivityPurchasing", nil) animated:YES];
-    
     NSString *productIdentifier = self.voteType.productIdentifier;
     [self.purchaseManager purchaseProductWithIdentifier:productIdentifier success:^(NSArray *productIdentifiers)
      {
          [[VSettingManager sharedManager].voteSettings didCompletePurchaseWithProductIdentifiers:@[ productIdentifier ]];
          
-         [self.loadingOverlay hideAnimated:YES];
          [self dismissViewControllerAnimated:YES completion:nil];
      }
                                   failure:^(NSError *error)
      {
-         [self.loadingOverlay hideAnimated:YES];
          // If error is nil, the user cancelled the purchase
          if ( error != nil )
          {

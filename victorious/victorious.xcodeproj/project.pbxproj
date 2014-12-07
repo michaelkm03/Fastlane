@@ -429,7 +429,6 @@
 		A790C82A1A01980F00C4F208 /* VTrackingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A790C8251A01980F00C4F208 /* VTrackingManager.m */; };
 		A7976D0719FAE8EA00B5A145 /* AVAsset+Orientation.m in Sources */ = {isa = PBXBuildFile; fileRef = A7976D0619FAE8EA00B5A145 /* AVAsset+Orientation.m */; };
 		A7A390C51A32441E00709812 /* VButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A390C41A32441E00709812 /* VButton.m */; };
-		A7A390C81A3253F600709812 /* VLoadingOverlayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A390C71A3253F600709812 /* VLoadingOverlayViewController.m */; };
 		A7A390CA1A3257A300709812 /* ContentView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7A390C91A3257A300709812 /* ContentView.storyboard */; };
 		A7A390D01A32684600709812 /* UIViewController+RenderToImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A390CF1A32684600709812 /* UIViewController+RenderToImageView.m */; };
 		A7A390D31A326DB100709812 /* VViewControllerTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A390D21A326DB100709812 /* VViewControllerTransition.m */; };
@@ -1371,8 +1370,6 @@
 		A7976D0819FAE94300B5A145 /* AVAsset+OrientationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AVAsset+OrientationTests.m"; sourceTree = "<group>"; };
 		A7A390C31A32441E00709812 /* VButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VButton.h; sourceTree = "<group>"; };
 		A7A390C41A32441E00709812 /* VButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VButton.m; sourceTree = "<group>"; };
-		A7A390C61A3253F600709812 /* VLoadingOverlayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLoadingOverlayViewController.h; sourceTree = "<group>"; };
-		A7A390C71A3253F600709812 /* VLoadingOverlayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VLoadingOverlayViewController.m; sourceTree = "<group>"; };
 		A7A390C91A3257A300709812 /* ContentView.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ContentView.storyboard; sourceTree = "<group>"; };
 		A7A390CE1A32684600709812 /* UIViewController+RenderToImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+RenderToImageView.h"; sourceTree = "<group>"; };
 		A7A390CF1A32684600709812 /* UIViewController+RenderToImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+RenderToImageView.m"; sourceTree = "<group>"; };
@@ -2131,8 +2128,6 @@
 				D8917EA119F8498F0070BDBB /* VVideoCellViewModel.m */,
 				A70FC11D1A301DE600F5BBDE /* VPurchaseViewController.h */,
 				A70FC11E1A301DE600F5BBDE /* VPurchaseViewController.m */,
-				A7A390C61A3253F600709812 /* VLoadingOverlayViewController.h */,
-				A7A390C71A3253F600709812 /* VLoadingOverlayViewController.m */,
 				A71D24291A33D7CD00BEE562 /* VPurchaseViewController+Transitions.h */,
 				A71D242A1A33D7CD00BEE562 /* VPurchaseViewController+Transitions.m */,
 			);
@@ -4550,7 +4545,6 @@
 				A7976D0719FAE8EA00B5A145 /* AVAsset+Orientation.m in Sources */,
 				0314D46119B46B5E00FA363C /* VMediaPreviewViewController.m in Sources */,
 				0314D4E019B46B5E00FA363C /* VFindFriendsTableView.m in Sources */,
-				A7A390C81A3253F600709812 /* VLoadingOverlayViewController.m in Sources */,
 				BE89D98D1921531400D97E7F /* VAbstractFilter.m in Sources */,
 				A7B98A3F1A264D0900C58335 /* VNotificationSettingsViewController.m in Sources */,
 				0314D0B819B4698800FA363C /* VObjectManager+Websites.m in Sources */,
