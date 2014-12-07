@@ -350,6 +350,11 @@ NSString * const VDependencyManagerWorkspaceKey = @"workspace";
         else
         {
             object = [[templateClass alloc] init];
+            
+            if ([object respondsToSelector:@selector(setDependencyManager:)])
+            {
+                [object setDependencyManager:dependencyManager];
+            }
         }
         return object;
     }

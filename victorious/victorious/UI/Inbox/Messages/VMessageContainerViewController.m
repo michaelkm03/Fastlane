@@ -8,6 +8,7 @@
 
 #import "UIImage+ImageEffects.h"
 #import "UIImageView+Blurring.h"
+#import "UIStoryboard+VMainStoryboard.h"
 #import "VMessageContainerViewController.h"
 #import "VMessageTableDataSource.h"
 #import "VMessageViewController.h"
@@ -22,8 +23,6 @@
 #import "UIActionSheet+VBlocks.h"
 
 #import "MBProgressHUD.h"
-
-static NSMutableDictionary *messageViewControllers;
 
 @interface VMessageContainerViewController ()
 
@@ -40,32 +39,9 @@ static NSMutableDictionary *messageViewControllers;
 
 + (instancetype)messageViewControllerForUser:(VUser *)otherUser
 {
-    NSAssert([NSThread isMainThread], @"This method should be called from the main thread only");
-    if (!messageViewControllers)
-    {
-        messageViewControllers = [[NSMutableDictionary alloc] init];
-    }
-    
-    VMessageContainerViewController *messageViewController = messageViewControllers[otherUser.remoteId];
-    if (!messageViewController)
-    {
-        UIViewController *rootViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-        messageViewController = (VMessageContainerViewController *)[rootViewController.storyboard instantiateViewControllerWithIdentifier:kMessageContainerID];
-        messageViewController.otherUser = otherUser;
-        messageViewControllers[otherUser.remoteId] = messageViewController;
-    }
-    [(VMessageViewController *)messageViewController.conversationTableViewController setShouldRefreshOnAppearance:YES];
-    
+    VMessageContainerViewController *messageViewController = (VMessageContainerViewController *)[[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier:kMessageContainerID];
+    messageViewController.otherUser = otherUser;
     return messageViewController;
-}
-
-+ (void)removeCachedViewControllerForUser:(VUser *)otherUser
-{
-    if (!messageViewControllers || !otherUser.remoteId)
-    {
-        return;
-    }
-    [messageViewControllers removeObjectForKey:otherUser.remoteId];
 }
 
 - (void)viewDidLoad
@@ -174,6 +150,16 @@ static NSMutableDictionary *messageViewControllers;
     }
 }
 
+- (void)setMessageCountCoordinator:(VUnreadMessageCountCoordinator *)messageCountCoordinator
+{
+    _messageCountCoordinator = messageCountCoordinator;
+    
+    if ( [self.conversationTableViewController isKindOfClass:[VMessageViewController class]] )
+    {
+        [(VMessageViewController *)self.conversationTableViewController setMessageCountCoordinator:messageCountCoordinator];
+    }
+}
+
 - (BOOL)prefersStatusBarHidden
 {
     return YES;
@@ -183,7 +169,9 @@ static NSMutableDictionary *messageViewControllers;
 {
     if (_conversationTableViewController == nil)
     {
-        _conversationTableViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"messages"];
+        VMessageViewController *messageViewController = (VMessageViewController *)[self.storyboard instantiateViewControllerWithIdentifier:@"messages"];
+        messageViewController.messageCountCoordinator = self.messageCountCoordinator;
+        _conversationTableViewController = messageViewController;
     }
     
     return _conversationTableViewController;

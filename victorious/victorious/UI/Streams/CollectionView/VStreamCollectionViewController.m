@@ -206,11 +206,6 @@ static CGFloat const kTemplateCLineSpacing = 8;
     return streamCollectionVC;
 }
 
-- (VDependencyManager *)dependencyManager
-{
-    return _dependencyManager;
-}
-
 #pragma mark - View Heirarchy
 
 - (void)dealloc

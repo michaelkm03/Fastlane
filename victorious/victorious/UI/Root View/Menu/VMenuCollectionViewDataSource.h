@@ -6,20 +6,24 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "VHasManagedDependencies.h"
+
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-@class VNavigationMenuItem;
+@class VDependencyManager, VNavigationMenuItem;
 
 /**
  A collection view data source for menus
  */
-@interface VMenuCollectionViewDataSource : NSObject <UICollectionViewDataSource>
+@interface VMenuCollectionViewDataSource : NSObject <UICollectionViewDataSource, VHasManagedDependancies>
 
+@property (nonatomic, strong) VDependencyManager *dependencyManager; ///< An instance of VDependencyManager for supplying theme colors and fonts
 @property (nonatomic, copy, readonly) NSArray *menuSections; ///< Array of Arrays of VNavigationMenuItems
 @property (nonatomic, copy, readonly) NSString *cellReuseID; ///< This reuse ID will be used to dequeue cells from the collection view
 @property (nonatomic, copy) NSString *sectionHeaderReuseID; ///< If set, this reuse ID will be used to dequeue a supplementary view for section headers
 @property (nonatomic, copy) NSString *sectionFooterReuseID; ///< If set, this reuse ID will be used to dequeue a supplementary view for section footers
+@property (nonatomic) NSInteger badgeTotal; ///< The total of all the badge numbers in this data source. KVO compliant.
 
 /**
  Initializes a new instance of the data source

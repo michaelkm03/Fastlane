@@ -10,13 +10,13 @@
 #import "VWorkspaceTool.h"
 #import "NSArray+VMap.h"
 
-NSString *const VDependencyManagerWorkspaceToolsKey = @"tools";
+static NSString *const kToolsKey = @"tools";
 
 @implementation VDependencyManager (VWorkspaceTool)
 
-- (NSArray /* VWorkspaceTools */ *)tools
+- (NSArray /* VWorkspaceTool */ *)tools
 {
-    NSArray *toolConfigurations = [self arrayForKey:VDependencyManagerWorkspaceToolsKey];
+    NSArray *toolConfigurations = [self arrayForKey:kToolsKey];
     
     if (toolConfigurations == nil)
     {
