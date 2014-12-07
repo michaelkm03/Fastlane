@@ -64,18 +64,28 @@ NSString * const VPushNotificationManagerDidRegister = @"com.getvictorious.PushN
     if ( self.apnsToken == nil )
     {
         NSString *domain = NSLocalizedString( @"ErrorPushNotificationsUnknown", nil );
-        failure( [NSError errorWithDomain:domain code:-1 userInfo:nil] );
+        
+        if ( failure != nil )
+        {
+            failure( [NSError errorWithDomain:domain code:-1 userInfo:nil] );
+        }
         return;
     }
     
     // If we've got the token, send it to the server:
     [[VObjectManager sharedManager] registerAPNSToken:self.apnsToken successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
-         success();
+         if ( success != nil )
+         {
+             success();
+         }
      }
                                             failBlock:^(NSOperation *operation, NSError *error)
      {
-         failure( error );
+         if ( failure != nil )
+         {
+             failure( error );
+         }
      }];
 }
 

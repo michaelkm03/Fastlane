@@ -10,6 +10,12 @@
 
 @interface VConversation (UnreadMessageCount)
 
-- (void)markMessagesAsRead;
+/**
+ Finds unread messages within the conversation
+ and marks them as read
+ 
+ @return the number of messages marked as read
+ */
+- (NSInteger)markMessagesAsRead;
 
 @end

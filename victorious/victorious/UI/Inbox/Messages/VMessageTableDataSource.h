@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class VConversation, VMessage, VMessageTableDataSource, VObjectManager, VUser;
+@class VConversation, VMessage, VMessageTableDataSource, VObjectManager, VUnreadMessageCountCoordinator, VUser;
 
 @protocol VMessageTableDataDelegate <NSObject>
 
@@ -34,6 +34,7 @@
 @property (nonatomic, strong)   VUser                         *otherUser; ///< The user with whom we are conversing
 @property (nonatomic, readonly) VConversation                 *conversation; ///< Might be nil if we haven't yet sent or received any messages from this user.
 @property (nonatomic, strong)   VObjectManager                *objectManager;
+@property (nonatomic, strong)  VUnreadMessageCountCoordinator *messageCountCoordinator;
 
 /**
  Creates a new instance of the receiver, adds it as the dataSource

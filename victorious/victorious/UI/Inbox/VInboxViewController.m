@@ -9,6 +9,7 @@
 #import "MBProgressHUD.h"
 #import "UIStoryboard+VMainStoryboard.h"
 #import "VInboxViewController.h"
+#import "VUnreadMessageCountCoordinator.h"
 #import "VUserSearchViewController.h"
 #import "VLoginViewController.h"
 #import "UIViewController+VSideMenuViewController.h"
@@ -23,6 +24,7 @@
 #import "VPaginationManager.h"
 #import "VThemeManager.h"
 #import "VNoContentView.h"
+#import "VUser.h"
 
 #import "VAuthorizationViewControllerFactory.h"
 #import "VObjectManager+Login.h"
@@ -38,8 +40,9 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
 
 @interface VInboxViewController ()
 
-@property (weak, nonatomic)   IBOutlet UISegmentedControl *modeSelectControl;
-@property (weak, nonatomic)   IBOutlet UIView             *headerView;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *modeSelectControl;
+@property (weak, nonatomic) IBOutlet UIView *headerView;
+@property (strong, nonatomic) NSMutableDictionary *messageViewControllers;
 
 @end
 
@@ -49,6 +52,8 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
 {
     return [[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier:@"inbox"];
 }
+
+#pragma mark - View Lifecycle
 
 - (void)viewDidLoad
 {
@@ -61,6 +66,13 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
     
     self.navigationController.navigationBar.barTintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
     self.headerView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self.refreshControl beginRefreshing];
+    [self refresh:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -127,7 +139,38 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
     [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:kMessageCellViewIdentifier bundle:nil] forCellReuseIdentifier:kMessageCellViewIdentifier];
 }
 
-#pragma mark - UITabvleViewDataSource
+#pragma mark - Message View Controller Cache
+
+- (VMessageContainerViewController *)messageViewControllerForUser:(VUser *)otherUser
+{
+    NSAssert([NSThread isMainThread], @"This method should be called from the main thread only");
+    
+    if ( self.messageViewControllers == nil )
+    {
+        self.messageViewControllers = [[NSMutableDictionary alloc] init];
+    }
+    VMessageContainerViewController *messageViewController = self.messageViewControllers[otherUser.remoteId];
+    
+    if ( messageViewController == nil )
+    {
+        messageViewController = [VMessageContainerViewController messageViewControllerForUser:otherUser];
+        self.messageViewControllers[otherUser.remoteId] = messageViewController;
+    }
+    [(VMessageViewController *)messageViewController.conversationTableViewController setShouldRefreshOnAppearance:YES];
+    
+    return messageViewController;
+}
+
+- (void)removeCachedViewControllerForUser:(VUser *)otherUser
+{
+    if ( self.messageViewControllers == nil || otherUser.remoteId == nil )
+    {
+        return;
+    }
+    [self.messageViewControllers removeObjectForKey:otherUser.remoteId];
+}
+
+#pragma mark - UITableViewDataSource
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
@@ -210,7 +253,7 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
                                               successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
         {
             [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
-            [VMessageContainerViewController removeCachedViewControllerForUser:conversation.user];
+            [self removeCachedViewControllerForUser:conversation.user];
             NSManagedObjectContext *context =   conversation.managedObjectContext;
             [context deleteObject:conversation];
             [context saveToPersistentStore:nil];
@@ -222,7 +265,8 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
             hud.mode = MBProgressHUDModeText;
             hud.labelText = NSLocalizedString(@"ConversationDelError", @"");
             [hud hide:YES afterDelay:3.0];
-            VLog(@"Failed to delete conversation: %@", error)
+            [tableView setEditing:NO animated:YES];
+            VLog(@"Failed to delete conversation: %@", [error localizedDescription]);
         }];
     }
 }
@@ -232,7 +276,8 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
     VConversation *conversation = [self.fetchedResultsController objectAtIndexPath:indexPath];
     if (conversation.user)
     {
-        VMessageContainerViewController *detailVC = [VMessageContainerViewController messageViewControllerForUser:conversation.user];
+        VMessageContainerViewController *detailVC = [self messageViewControllerForUser:conversation.user];
+        detailVC.messageCountCoordinator = self.messageCountCoordinator;
         [self.navigationController pushViewController:detailVC animated:YES];
     }
 }
@@ -254,22 +299,30 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
 {
     VFailBlock fail = ^(NSOperation *operation, NSError *error)
     {
-        [self.tableView reloadData];
-        NSLog(@"%@", error.localizedDescription);
         [self.refreshControl endRefreshing];
-        [self setHasMessages:0];
+        UIView *viewForHUD = self.parentViewController.view;
+        
+        if (viewForHUD == nil )
+        {
+            viewForHUD = self.view;
+        }
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:viewForHUD animated:YES];
+        hud.mode = MBProgressHUDModeText;
+        hud.labelText = NSLocalizedString(@"RefreshError", @"");
+        [hud hide:YES afterDelay:3.0];
+        VLog(@"Failed to refresh conversation list: %@", [error localizedDescription]);
     };
     
     VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         [self.tableView reloadData];
         [self.refreshControl endRefreshing];
-        [self setHasMessages:self.fetchedResultsController.fetchedObjects.count];
+        [self setHasMessages:(self.fetchedResultsController.fetchedObjects.count > 0)];
+        [self.messageCountCoordinator updateUnreadMessageCount];
     };
 
     if (VModeSelect == kMessageModeSelect)
     {
-        [[VObjectManager sharedManager] updateUnreadMessageCountWithSuccessBlock:nil failBlock:nil];
         [[VObjectManager sharedManager] refreshConversationListWithSuccessBlock:success failBlock:fail];
     }
     else if (VModeSelect == kNotificationModeSelect)
