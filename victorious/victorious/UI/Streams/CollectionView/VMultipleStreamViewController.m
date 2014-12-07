@@ -26,7 +26,7 @@
 #import "VThemeManager.h"
 #import "VObjectManager+Login.h"
 #import "VAuthorizationViewControllerFactory.h"
-
+#import "UIStoryboard+VMainStoryboard.h"
 
 @interface VMultipleStreamViewController () <VSequenceActionsDelegate, UIScrollViewDelegate, VNavigationHeaderDelegate, VUploadProgressViewControllerDelegate>
 
@@ -87,8 +87,7 @@ static NSString * const kVMultiStreamStoryboardID = @"kMultiStream";
 
 + (instancetype)multiStreamVCForDefaultStream:(VStream *)stream andAllStreams:(NSArray *)allStreams title:(NSString *)title
 {
-    UIViewController *currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-    VMultipleStreamViewController *streamPager =  (VMultipleStreamViewController *)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kVMultiStreamStoryboardID];
+    VMultipleStreamViewController *streamPager = (VMultipleStreamViewController *)[[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier: kVMultiStreamStoryboardID];
     streamPager.title = title;
     streamPager.defaultStream = stream;
     streamPager.allStreams = allStreams;
