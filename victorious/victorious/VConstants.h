@@ -8,6 +8,28 @@
 
 @import CoreGraphics;
 
+/**
+ Enumeration of supported ad networks
+ */
+typedef NS_ENUM(NSInteger, VMonetizationPartner){
+    /**
+     No ad network present
+     */
+    VMonetizationPartnerNone     = 0,
+    /**
+     LiveRail
+     */
+    VMonetizationPartnerLiveRail = 1,
+    /**
+     OpenX
+     */
+    VMonetizationPartnerOpenX    = 2,
+    /**
+     Tremor Video
+     */
+    VMonetizationPartnerTremor   = 3
+};
+
 typedef NS_ENUM(NSUInteger, VLoopType)
 {
     VLoopOnce       =   0,

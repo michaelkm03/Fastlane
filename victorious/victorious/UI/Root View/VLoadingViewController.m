@@ -20,6 +20,9 @@
 #import "VThemeManager.h"
 #import "VUserManager.h"
 
+// Monetization Networks
+#import "TremorVideoAd.h"
+
 #import "MBProgressHUD.h"
 
 static const NSTimeInterval kTimeBetweenRetries = 1.0;
@@ -182,6 +185,9 @@ static const NSUInteger kRetryAttempts = 5;
     
     [[VPushNotificationManager sharedPushNotificationManager] startPushNotificationManager];
     
+    // Pre-load any monetization networks (if needed)
+    [self seedMonetizationNetworks:initDictionary];
+    
     if ([self.delegate respondsToSelector:@selector(loadingViewController:didFinishLoadingWithInitResponse:)])
     {
         [self.delegate loadingViewController:self didFinishLoadingWithInitResponse:initDictionary];
@@ -216,6 +222,41 @@ static const NSUInteger kRetryAttempts = 5;
     if ([[VReachability reachabilityForInternetConnection] currentReachabilityStatus] != VNetworkStatusNotReachable)
     {
         [self loadInitData];
+    }
+}
+
+- (void)seedMonetizationNetworks:(NSDictionary *)initDictionary
+{
+    NSArray *adSystems = [initDictionary valueForKey:@"ad_systems"];
+    if (adSystems)
+    {
+        NSUInteger i;
+        NSString *appID;
+        
+        for (i = 0; i < adSystems.count; i++)
+        {
+            //NSDictionary *item = adSystems[i];
+            //VMonetizationPartner adSystem = (VMonetizationPartner)[item valueForKey:@"ad_system"];
+            VMonetizationPartner adSystem = VMonetizationPartnerTremor;
+            
+            switch (adSystem)
+            {
+                case VMonetizationPartnerTremor:
+                    //appID = [item valueForKey:@"tremor_app_id"];
+                    appID = @"test";
+                    
+                    if (appID)
+                    {
+                        // Seed the Tremor Ad Network
+                        [TremorVideoAd initWithAppID:appID];
+                        [TremorVideoAd start];
+                    }
+                    break;
+                    
+                default:
+                    break;
+            }
+        }
     }
 }
 

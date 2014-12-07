@@ -51,11 +51,6 @@ static BOOL isRunningTests(void) __attribute__((const));
         return YES;
     }
     
-    // Tremor Ad Network
-    NSString *appID = @"";
-    [TremorVideoAd initWithAppID:appID];
-    [TremorVideoAd start];
-
     [ADEumInstrumentation initWithKey:@"AD-AAB-AAA-JWA"];
     
     [TestFlight setOptions:@{ TFOptionReportCrashes: @NO }];
