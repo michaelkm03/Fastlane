@@ -521,8 +521,8 @@
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IbV-1T-B2E" userLabel="Badge Label">
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IbV-1T-B2E" userLabel="Badge Label" customClass="VBadgeLabel">
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -532,7 +532,7 @@
                                         <constraints>
                                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="IbV-1T-B2E" secondAttribute="trailing" constant="16" id="GVp-8w-7hl"/>
                                             <constraint firstAttribute="centerY" secondItem="LPw-0B-19t" secondAttribute="centerY" id="WFC-Ly-qdz"/>
-                                            <constraint firstItem="IbV-1T-B2E" firstAttribute="baseline" secondItem="LPw-0B-19t" secondAttribute="baseline" id="g8w-8y-zCk"/>
+                                            <constraint firstItem="IbV-1T-B2E" firstAttribute="baseline" secondItem="LPw-0B-19t" secondAttribute="baseline" id="XLh-fX-nYz"/>
                                             <constraint firstItem="LPw-0B-19t" firstAttribute="leading" secondItem="jhs-qR-I26" secondAttribute="leading" constant="26" id="gkx-lY-BzP"/>
                                             <constraint firstItem="IbV-1T-B2E" firstAttribute="leading" secondItem="LPw-0B-19t" secondAttribute="trailing" constant="16" id="kQT-09-f0Q"/>
                                         </constraints>

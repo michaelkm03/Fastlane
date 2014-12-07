@@ -13,7 +13,6 @@
 #import "VObjectManager+Pagination.h"
 
 #import "VUser+RestKit.h"
-#import "VUnreadConversation.h"
 
 #import "VConversation.h"
 #import "VPollResult+RestKit.h"
@@ -421,7 +420,6 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
     
     [self refreshConversationListWithSuccessBlock:nil failBlock:nil];
     [self pollResultsForUser:user successBlock:nil failBlock:nil];
-    [self updateUnreadMessageCountWithSuccessBlock:nil failBlock:nil];
 
     // Add followers and following to main user object
     [[VObjectManager sharedManager] refreshFollowersForUser:user successBlock:nil failBlock:nil];

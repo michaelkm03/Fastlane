@@ -8,7 +8,11 @@
 
 #import "VFetchedResultsTableViewController.h"
 
+@class VUnreadMessageCountCoordinator;
+
 @interface VInboxViewController : VFetchedResultsTableViewController
+
+@property (nonatomic, strong) VUnreadMessageCountCoordinator *messageCountCoordinator;
 
 + (instancetype)inboxViewController;
 

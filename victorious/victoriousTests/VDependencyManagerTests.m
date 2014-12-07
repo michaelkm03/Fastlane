@@ -14,6 +14,7 @@
 
 static NSString * const kTestViewControllerInitMethodTemplateName = @"testInitMethod";
 static NSString * const kTestViewControllerNewMethodTemplateName = @"testNewMethod";
+static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
 
 #pragma mark - VTestViewControllerWithInitMethod
 
@@ -58,6 +59,18 @@ static NSString * const kTestViewControllerNewMethodTemplateName = @"testNewMeth
 
 @end
 
+#pragma mark - VTestObjectWithProperty
+
+@interface VTestObjectWithProperty : NSObject <VHasManagedDependancies>
+
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
+
+@end
+
+@implementation VTestObjectWithProperty
+
+@end
+
 #pragma mark -
 
 @interface VDependencyManagerTests : XCTestCase
@@ -74,7 +87,9 @@ static NSString * const kTestViewControllerNewMethodTemplateName = @"testNewMeth
     [super setUp];
     
     NSDictionary *dictionaryOfClassesByTemplateName = @{ kTestViewControllerInitMethodTemplateName: @"VTestViewControllerWithInitMethod",
-                                                         kTestViewControllerNewMethodTemplateName: @"VTestViewControllerWithNewMethod" };
+                                                         kTestViewControllerNewMethodTemplateName: @"VTestViewControllerWithNewMethod",
+                                                         kTestObjectWithPropertyTemplateName: @"VTestObjectWithProperty"
+                                                      };
     
     // The presence of this "base" dependency manager (with an empty configuration dictionary) exposed a bug in a previous iteration of VDependencyManager.
     VDependencyManager *baseDependencyManager = [[VDependencyManager alloc] initWithParentManager:nil configuration:@{} dictionaryOfClassesByTemplateName:dictionaryOfClassesByTemplateName];
@@ -146,6 +161,13 @@ static NSString * const kTestViewControllerNewMethodTemplateName = @"testNewMeth
     id viewController = [self.dependencyManager templateValueOfType:[UIViewController class] forKey:@"nvc"];
     XCTAssert([viewController isKindOfClass:[VTestViewControllerWithNewMethod class]]);
     XCTAssert([viewController calledNewMethod]);
+}
+
+- (void)testPropertySetter
+{
+    VTestObjectWithProperty *obj = [self.dependencyManager templateValueOfType:[VTestObjectWithProperty class] forKey:@"testProp"];
+    XCTAssert([obj isKindOfClass:[VTestObjectWithProperty class]]);
+    XCTAssertNotNil(obj.dependencyManager);
 }
 
 #pragma mark - Strings, numbers, arrays

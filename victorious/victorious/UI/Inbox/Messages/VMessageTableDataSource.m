@@ -10,12 +10,11 @@
 
 #import "VConstants.h"
 #import "VMessageCell.h"
-
 #import "VObjectManager+ContentCreation.h"
 #import "VObjectManager+DirectMessaging.h"
 #import "VObjectManager+Pagination.h"
 #import "VPaginationManager.h"
-
+#import "VUnreadMessageCountCoordinator.h"
 #import "VUser.h"
 #import "VUser+RestKit.h"
 #import "VConversation.h"
@@ -113,7 +112,8 @@ static       char    kKVOContext;
                                               successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
         {
             self.isLoading = NO;
-            [self.conversation markMessagesAsRead];
+            [self.conversation.managedObjectContext saveToPersistentStore:nil];
+            [self.messageCountCoordinator markConversationRead:self.conversation];
             
             if (completion)
             {
@@ -177,6 +177,7 @@ static       char    kKVOContext;
         {
             self.isLoading = NO;
             [self.conversation markMessagesAsRead];
+            [self.conversation.managedObjectContext saveToPersistentStore:nil];
             
             if (completion)
             {
@@ -331,9 +332,23 @@ static       char    kKVOContext;
             
             [self.tableView scrollToRowAtIndexPath:indexPathForNewMessage atScrollPosition:UITableViewScrollPositionBottom animated:YES];
             
-            if (self.liveUpdating)
+            void (^scheduleAnotherPoll)(void) = ^(void)
             {
-                [self beginLiveUpdates]; // schedule another poll
+                if (self.liveUpdating)
+                {
+                    [self beginLiveUpdates];
+                }
+            };
+            
+            if (resultObjects.count > 0)
+            {
+                // mark these messages as read on the server
+                [self.messageCountCoordinator markConversationRead:self.conversation];
+                scheduleAnotherPoll();
+            }
+            else
+            {
+                scheduleAnotherPoll();
             }
         }
                                                    failBlock:^(NSOperation *operation, NSError *error)

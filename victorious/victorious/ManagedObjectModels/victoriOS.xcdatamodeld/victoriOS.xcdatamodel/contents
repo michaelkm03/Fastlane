@@ -196,10 +196,6 @@
         <relationship name="sequence" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Sequence" inverseName="tracking" inverseEntity="Sequence" syncable="YES"/>
         <relationship name="voteType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="VoteType" inverseName="tracking" inverseEntity="VoteType" syncable="YES"/>
     </entity>
-    <entity name="UnreadConversation" representedClassName="VUnreadConversation" syncable="YES">
-        <attribute name="count" optional="YES" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
-        <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="unreadConversation" inverseEntity="User" syncable="YES"/>
-    </entity>
     <entity name="User" representedClassName="VUser" syncable="YES">
         <attribute name="accessLevel" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="email" optional="YES" attributeType="String" syncable="YES"/>
@@ -225,7 +221,6 @@
         <relationship name="postedSequences" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Sequence" inverseName="user" inverseEntity="Sequence" syncable="YES"/>
         <relationship name="remixedSequences" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Sequence" inverseName="remixers" inverseEntity="Sequence" syncable="YES"/>
         <relationship name="repostedSequences" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Sequence" inverseName="reposters" inverseEntity="Sequence" syncable="YES"/>
-        <relationship name="unreadConversation" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UnreadConversation" inverseName="user" inverseEntity="UnreadConversation" syncable="YES"/>
     </entity>
     <entity name="VoteResult" representedClassName="VVoteResult" syncable="YES">
         <attribute name="count" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
@@ -280,8 +275,7 @@
         <element name="Rule" positionX="567" positionY="99" width="128" height="75"/>
         <element name="Sequence" positionX="1078" positionY="-540" width="128" height="465"/>
         <element name="Tracking" positionX="828" positionY="-630" width="128" height="283"/>
-        <element name="UnreadConversation" positionX="1251" positionY="-459" width="128" height="73"/>
-        <element name="User" positionX="1321" positionY="-324" width="128" height="373"/>
+        <element name="User" positionX="1321" positionY="-324" width="128" height="405"/>
         <element name="VoteResult" positionX="864" positionY="164" width="128" height="90"/>
         <element name="VoteType" positionX="538" positionY="-738" width="128" height="210"/>
         <element name="VStream" positionX="1069" positionY="-792" width="128" height="135"/>

@@ -30,7 +30,6 @@
 #import "VImageSearchResult.h"
 #import "VPollResult+RestKit.h"
 #import "VMessage+RestKit.h"
-#import "VUnreadConversation+RestKit.h"
 #import "VVoteType+RestKit.h"
 #import "VNotification+RestKit.h"
 #import "VStream+RestKit.h"
@@ -125,7 +124,6 @@
                                              [VPollResult descriptor],
                                              [VPollResult createPollResultDescriptor],
                                              [VPollResult byUserDescriptor],
-                                             [VUnreadConversation descriptor],
                                              [VVoteType descriptor],
                                              [VTracking descriptor],
                                              [VImageSearchResult descriptor]
@@ -163,7 +161,7 @@
     RKManagedObjectRequestOperation *requestOperation =
     [self  appropriateObjectRequestOperationWithObject:object method:method path:path parameters:parameters];
 
-     void (^rkSuccessBlock) (RKObjectRequestOperation *, RKMappingResult *) = ^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult)
+    void (^rkSuccessBlock) (RKObjectRequestOperation *, RKMappingResult *) = ^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult)
     {
         NSMutableArray *mappedObjects = [mappingResult.array mutableCopy];
         VErrorMessage *error;
