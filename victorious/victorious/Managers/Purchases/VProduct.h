@@ -17,7 +17,8 @@
 - (instancetype)initWithStoreKitProduct:(SKProduct *)storeKitProduct;
 
 @property (nonatomic, readonly) NSString *price;
-
+@property (nonatomic, readonly) NSString *localizedDescription;
+@property (nonatomic, readonly) NSString *localizedTitle;
 @property (nonatomic, readonly) NSString *productIdentifier;
 
 @property (nonatomic, strong) SKProduct *storeKitProduct;

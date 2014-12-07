@@ -55,4 +55,14 @@
     return self.productIdentifier;
 }
 
+- (NSString *)localizedTitle
+{
+    return self.storeKitProduct.localizedTitle;
+}
+
+- (NSString *)localizedDescription
+{
+    return self.storeKitProduct.localizedDescription;
+}
+
 @end

@@ -94,34 +94,18 @@
 
 @end
 
-@interface VViewControllerTransition()
-
-@property (nonatomic, strong) id<UIViewControllerAnimatedTransitioning> animator;
-
-@end
-
 @implementation VViewControllerTransition
-
-- (instancetype)init
-{
-    self = [super init];
-    if (self)
-    {
-        self.animator = [[VViewControllerTransitionAnimator alloc] init];
-    }
-    return self;
-}
 
 - (id <UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented
                                                                    presentingController:(UIViewController *)presenting
                                                                        sourceController:(UIViewController *)source
 {
-    return self.animator;
+    return [[VViewControllerTransitionAnimator alloc] init];
 }
 
 - (id <UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed
 {
-    return self.animator;
+    return [[VViewControllerTransitionAnimator alloc] init];
 }
 
 @end

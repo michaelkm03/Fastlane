@@ -53,16 +53,10 @@ NSString * const VVoteSettingsDidUpdateKeyVoteType = @"VVoteSettingsDidUpdateKey
     [self.fileCache cacheImagesForVoteTypes:_voteTypes];
     
 #warning Testing only to create correctly configurd purchaseable products
-    [voteTypes enumerateObjectsUsingBlock:^(VVoteType *voteType, NSUInteger idx, BOOL *stop)
-     {
-         NSUInteger order = voteType.displayOrder.unsignedIntegerValue;
-         if ( order == 1 )
-         {
-             voteType.isPaid = @YES;
-             voteType.productIdentifier = [NSString stringWithFormat:@"com.getvictorious.eatyourkimchi.testpurchase.000%lu", (unsigned long)order];
-             *stop = YES;
-         }
-     }];
+    ((VVoteType *)_voteTypes[0]).isPaid = @YES;
+    ((VVoteType *)_voteTypes[0]).productIdentifier = @"com.getvictorious.eatyourkimchi.ballistic.spudgy";
+    ((VVoteType *)_voteTypes[1]).isPaid = @YES;
+    ((VVoteType *)_voteTypes[1]).productIdentifier = @"com.getvictorious.eatyourkimchi.ballistic.meemers";
     
     [self fetchProducts];
 }

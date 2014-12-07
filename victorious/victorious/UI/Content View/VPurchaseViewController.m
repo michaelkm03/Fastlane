@@ -57,11 +57,19 @@
     self.loadingOverlay = [VLoadingOverlayViewController instantiateFromStoryboard:@"ContentView"];
     [self.loadingOverlay configureForUseInViewController:self];
     
+    [self applyTheme];
+    
+    [self populateDataWithProduct:self.product];
+}
+
+- (void)populateDataWithProduct:(VProduct *)product
+{
     NSString *localizedFormat = NSLocalizedString( @"PurchaseUnlockWithPrice", nil);
-    NSString *unlockTitle = [NSString stringWithFormat:localizedFormat, self.product.price];
+    NSString *unlockTitle = [NSString stringWithFormat:localizedFormat, product.price];
     [self.unlockButton setTitle:unlockTitle forState:UIControlStateNormal];
     
-    [self applyTheme];
+    self.productTitleLabel.text = product.localizedTitle;
+    self.productDescriptionTextView.text = product.localizedDescription;
 }
 
 - (NSUInteger)supportedInterfaceOrientations
@@ -79,11 +87,14 @@
 - (void)applyTheme
 {
     self.unlockButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-    self.unlockButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVButton2Font];
+    self.unlockButton.titleLabel.font = [UIFont fontWithName:@"MuseoSans-300" size:18.0f];
     self.unlockButton.style = VButtonStylePrimary;
     
-    self.restoreButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVButton2Font];
+    self.restoreButton.titleLabel.font = [UIFont fontWithName:@"MuseoSans-300" size:15.0f];
     self.restoreButton.style = VButtonStyleSecondary;
+    
+    self.productDescriptionTextView.font = [UIFont fontWithName:@"MuseoSans-300" size:17.0f];
+    self.productTitleLabel.font = [UIFont fontWithName:@"MuseoSans-500" size:15.0f];
 }
 
 #pragma mark - Helpers
