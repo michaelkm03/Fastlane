@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="2yS-vh-N7a">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="2yS-vh-N7a">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
@@ -233,108 +233,6 @@
             </objects>
             <point key="canvasLocation" x="-1990" y="-2405"/>
         </scene>
-        <!--Stream Container View Controller-->
-        <scene sceneID="xR8-1U-DTx">
-            <objects>
-                <viewController storyboardIdentifier="streamcontainer" useStoryboardIdentifierAsRestorationIdentifier="YES" id="OrJ-Wr-Uhc" customClass="VStreamContainerViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="Oem-1Y-kAK"/>
-                        <viewControllerLayoutGuide type="bottom" id="Ak4-0Q-P1S"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="Pyo-eX-Cfs">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <containerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5Mf-9l-SXM">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                            </containerView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uAX-J4-ubb" userLabel="Header View">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="100"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qF3-Sw-Tm6">
-                                        <rect key="frame" x="14" y="16" width="44" height="44"/>
-                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                                        <state key="normal" image="Menu">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="showMenu" destination="OrJ-Wr-Uhc" eventType="touchUpInside" id="Tu3-At-nxw"/>
-                                        </connections>
-                                    </button>
-                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oOz-qF-TD2">
-                                        <rect key="frame" x="262" y="16" width="44" height="44"/>
-                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                                        <state key="normal" image="createContentButton">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="createButtonAction:" destination="OrJ-Wr-Uhc" eventType="touchUpInside" id="BLU-tB-0gH"/>
-                                        </connections>
-                                    </button>
-                                    <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="1" translatesAutoresizingMaskIntoConstraints="NO" id="Fdy-7V-EvU">
-                                        <rect key="frame" x="20" y="59" width="280" height="29"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="28" id="e3o-K7-Qpn"/>
-                                        </constraints>
-                                        <segments>
-                                            <segment title="Featured"/>
-                                            <segment title="Recent"/>
-                                            <segment title="Following"/>
-                                        </segments>
-                                        <color key="tintColor" white="1" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                                        <connections>
-                                            <action selector="changedFilterControls:" destination="OrJ-Wr-Uhc" eventType="valueChanged" id="ZWO-So-Mqe"/>
-                                        </connections>
-                                    </segmentedControl>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QiD-8u-6Dv" userLabel="Header Label">
-                                        <rect key="frame" x="55" y="10" width="210" height="50"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wXn-4e-5VR" userLabel="Header Image">
-                                        <rect key="frame" x="55" y="18" width="210" height="40"/>
-                                    </imageView>
-                                </subviews>
-                                <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="100" id="JFE-TS-zO0"/>
-                                    <constraint firstItem="Fdy-7V-EvU" firstAttribute="top" secondItem="uAX-J4-ubb" secondAttribute="top" constant="59" id="mm0-oI-poj"/>
-                                    <constraint firstAttribute="trailing" secondItem="Fdy-7V-EvU" secondAttribute="trailing" constant="20" id="r83-iL-j7O"/>
-                                    <constraint firstItem="Fdy-7V-EvU" firstAttribute="leading" secondItem="uAX-J4-ubb" secondAttribute="leading" constant="20" id="sfk-tu-Ujm"/>
-                                </constraints>
-                            </view>
-                        </subviews>
-                        <constraints>
-                            <constraint firstItem="5Mf-9l-SXM" firstAttribute="leading" secondItem="Pyo-eX-Cfs" secondAttribute="leading" id="0M6-6z-WCg"/>
-                            <constraint firstItem="uAX-J4-ubb" firstAttribute="leading" secondItem="Pyo-eX-Cfs" secondAttribute="leading" id="BQV-Qu-pgd"/>
-                            <constraint firstAttribute="trailing" secondItem="uAX-J4-ubb" secondAttribute="trailing" id="Ktc-GO-koe"/>
-                            <constraint firstAttribute="trailing" secondItem="5Mf-9l-SXM" secondAttribute="trailing" id="Xpf-AX-Eop"/>
-                            <constraint firstItem="Ak4-0Q-P1S" firstAttribute="top" secondItem="5Mf-9l-SXM" secondAttribute="bottom" placeholder="YES" id="Zqw-D1-23t"/>
-                            <constraint firstItem="5Mf-9l-SXM" firstAttribute="top" secondItem="Oem-1Y-kAK" secondAttribute="bottom" placeholder="YES" id="fmD-8s-p8b"/>
-                            <constraint firstItem="uAX-J4-ubb" firstAttribute="top" secondItem="Pyo-eX-Cfs" secondAttribute="top" id="sbd-TC-btl"/>
-                        </constraints>
-                    </view>
-                    <nil key="simulatedStatusBarMetrics"/>
-                    <nil key="simulatedTopBarMetrics"/>
-                    <connections>
-                        <outlet property="createButton" destination="oOz-qF-TD2" id="zlN-c0-Oz4"/>
-                        <outlet property="filterControls" destination="Fdy-7V-EvU" id="nuT-B0-rLP"/>
-                        <outlet property="headerImageView" destination="wXn-4e-5VR" id="K1i-aL-9Ep"/>
-                        <outlet property="headerLabel" destination="QiD-8u-6Dv" id="lNi-dD-Ckb"/>
-                        <outlet property="headerView" destination="uAX-J4-ubb" id="hnT-wI-TLl"/>
-                        <outlet property="headerYConstraint" destination="sbd-TC-btl" id="yOm-aI-O3B"/>
-                        <outlet property="menuButton" destination="qF3-Sw-Tm6" id="bNI-IU-10B"/>
-                        <outlet property="tableContainerView" destination="5Mf-9l-SXM" id="ieR-MO-v2c"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="lMP-vx-TNe" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-3304" y="-1691"/>
-        </scene>
         <!--Keyboard Bar View Controller-->
         <scene sceneID="mYy-rg-OQ6">
             <objects>
@@ -521,7 +419,7 @@
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IbV-1T-B2E" userLabel="Badge Label" customClass="VBadgeLabel">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IbV-1T-B2E" userLabel="Badge Label" customClass="VBadgeLabel">
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
@@ -1563,7 +1461,6 @@
         <image name="SearchIcon" width="30" height="31"/>
         <image name="SearchIconSmall" width="20" height="20"/>
         <image name="cameraButtonBack" width="22" height="17"/>
-        <image name="createContentButton" width="27" height="27"/>
         <image name="profileCompose" width="27" height="27"/>
         <image name="refreshIcon" width="13" height="15"/>
         <image name="user-icon" width="51" height="74"/>
