@@ -53,6 +53,8 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
     return [[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier:@"inbox"];
 }
 
+#pragma mark - View Lifecycle
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];

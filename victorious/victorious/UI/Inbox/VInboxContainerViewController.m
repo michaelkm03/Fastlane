@@ -31,6 +31,8 @@ typedef enum {
 @property (weak, nonatomic) VInboxViewController *inboxViewController;
 @property (strong, nonatomic) VUnreadMessageCountCoordinator *messageCountCoordinator;
 @property (strong, nonatomic) VDependencyManager *dependencyManager;
+@property (nonatomic) NSInteger badgeNumber;
+@property (copy, nonatomic) VNavigationMenuItemBadgeNumberUpdateBlock badgeNumberUpdateBlock;
 
 @end
 
@@ -157,10 +159,12 @@ static char kKVOContext;
         
         if ( [newUnreadCount isKindOfClass:[NSNumber class]] )
         {
-            dispatch_async(dispatch_get_main_queue(), ^(void)
+            self.badgeNumber = [newUnreadCount integerValue];
+            
+            if ( self.badgeNumberUpdateBlock != nil )
             {
-                [[UIApplication sharedApplication] setApplicationIconBadgeNumber:[newUnreadCount integerValue]];
-            });
+                self.badgeNumberUpdateBlock(self.badgeNumber);
+            }
         }
     }
 }
