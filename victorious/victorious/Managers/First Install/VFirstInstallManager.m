@@ -43,14 +43,18 @@ NSString * const VAppInstalledDefaultsKey = @"com.victorious.VAppDelegate.AppIns
         return;
     }
     
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     // Deprecated tracking using "/api/events/add" endpoint
     VObjectManager *objManager = [VObjectManager sharedManager];
     NSDictionary *installEvent = [objManager dictionaryForInstallEventWithDate:[NSDate date]];
-    [objManager addEvents:@[installEvent] successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-     {
-         [[NSUserDefaults standardUserDefaults] setValue:@YES forKey:VAppInstalledOldTrackingDefaultsKey];
+    [objManager addEvents:@[installEvent]
+             successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+    {
+        [[NSUserDefaults standardUserDefaults] setValue:@YES forKey:VAppInstalledOldTrackingDefaultsKey];
     }
-                                    failBlock:nil];
+                failBlock:nil];
+#pragma clang diagnostic pop
 }
 
 @end

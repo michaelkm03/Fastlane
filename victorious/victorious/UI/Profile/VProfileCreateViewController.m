@@ -94,10 +94,14 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
     
     self.usernameTextField.delegate = self;
     self.usernameTextField.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
+    
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     if (![self.profile.name isEqualToString:kNoUserName])
     {
         self.usernameTextField.text = self.profile.name;
     }
+#pragma clang diagnostic pop
     self.usernameTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.usernameTextField.placeholder attributes:@{NSForegroundColorAttributeName :[UIColor colorWithWhite:0.355 alpha:1.000]}];
 
     

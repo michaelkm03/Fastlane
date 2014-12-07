@@ -125,6 +125,8 @@ static NSTimeInterval const kMinimumTimeBetweenSessions = 1800.0; // 30 minutes
                                     return [[VObjectManager sharedManager] dictionaryForSessionEventWithDate:session[kSessionEndTimePropertyListKey] length:[session[kSessionLengthPropertyListKey] doubleValue]];
                                 }];
     
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     requestOperation = [[VObjectManager sharedManager] addEvents:analyticsEvents
                                                     successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
                         {
@@ -137,6 +139,7 @@ static NSTimeInterval const kMinimumTimeBetweenSessions = 1800.0; // 30 minutes
                             NSLog(@"Error posting session events to the server: %@", [error localizedDescription]);
                             [[UIApplication sharedApplication] endBackgroundTask:task];
                         }];
+#pragma clang diagnostic pop
 }
 
 - (NSArray *)loadPreviousSessionsFromDisk
