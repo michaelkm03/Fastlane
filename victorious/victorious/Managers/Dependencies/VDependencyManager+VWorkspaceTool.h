@@ -8,10 +8,11 @@
 
 #import "VDependencyManager.h"
 
-extern NSString *const VDependencyManagerWorkspaceToolsKey;
-
 @interface VDependencyManager (VWorkspaceTool)
 
-- (NSArray /* NSArray of VWorkspaceTools */ *)tools;
+/** 
+ The top-level tools in a workspace. Each item implements the VWorkspaceTool protocol.
+ */
+- (NSArray /* VWorkspaceTool */ *)tools;
 
 @end
