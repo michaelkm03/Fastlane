@@ -15,4 +15,8 @@
 
 @property (nonatomic, strong) VVoteType *voteType;
 
+// These are public so that they can be accessed by the +Transitions category for animations
+@property (weak, nonatomic) IBOutlet UIView *backgroundScreen;
+@property (weak, nonatomic) IBOutlet UIView *modalContainer;
+
 @end

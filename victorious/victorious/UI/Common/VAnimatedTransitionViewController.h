@@ -10,13 +10,19 @@
 
 @protocol VAnimatedTransitionViewController <NSObject>
 
-- (void)prepareForTransitionIn:(UIImageView *)imageViewOfOriginViewControllerOrNil;
+@property (nonatomic, readonly) NSTimeInterval transitionInDuration;
 
-- (void)performTransitionIn:(NSTimeInterval)duration;
+@property (nonatomic, readonly) NSTimeInterval transitionOutDuration;
 
-- (void)prepareForTransitionOut:(UIImageView *)imageViewOfOriginViewControllerOrNil;
+- (void)prepareForTransitionIn:(UIImageView *)fromViewImage;
 
-- (void)performTransitionOut:(NSTimeInterval)duration;
+- (void)performTransitionIn:(NSTimeInterval)duration completion:(void(^)(BOOL))completion;
+
+- (void)prepareForTransitionOut:(UIImageView *)fromViewImage;
+
+- (void)performTransitionOut:(NSTimeInterval)duration completion:(void(^)(BOOL))completion;
+
+@optional
 
 - (BOOL)requiresImageViewFromOriginViewController;
 

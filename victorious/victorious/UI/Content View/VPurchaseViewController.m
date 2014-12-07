@@ -21,7 +21,6 @@
 @property (strong, nonatomic) VProduct *product;
 @property (strong, nonatomic) VLoadingOverlayViewController *loadingOverlay;
 
-@property (weak, nonatomic) IBOutlet UIView *backgroundScreen;
 @property (weak, nonatomic) IBOutlet UILabel *productTitleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *createNameLabel;
 @property (weak, nonatomic) IBOutlet UITextView *productDescriptionTextView;
@@ -41,7 +40,7 @@
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:storyboardName bundle:[NSBundle mainBundle]];
     NSString *identifier = NSStringFromClass( [VPurchaseViewController class] );
     VPurchaseViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:identifier];
-    viewController.modalPresentationStyle = UIModalPresentationCustom;
+    viewController.modalPresentationStyle = UIModalPresentationFullScreen;
     viewController.voteType = voteType;
     return viewController;
 }
@@ -150,29 +149,6 @@
              [self showError:error withTitle:title];
          }
      }];
-}
-
-#pragma mark - VAnimatedTransitionViewController
-
-- (void)prepareForTransitionIn:(UIImageView *)imageViewOfOriginViewControllerOrNil
-{
-}
-
-- (void)performTransitionIn:(NSTimeInterval)duration
-{
-}
-
-- (void)prepareForTransitionOut:(UIImageView *)imageViewOfOriginViewControllerOrNil
-{
-}
-
-- (void)performTransitionOut:(NSTimeInterval)duration
-{
-}
-
-- (BOOL)requiresImageViewFromOriginViewController
-{
-    return NO;
 }
 
 @end

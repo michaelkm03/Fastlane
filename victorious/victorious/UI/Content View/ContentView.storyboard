@@ -281,8 +281,9 @@ Tap below to restore all of your purchases.</string>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="320" height="568"/>
                     <connections>
-                        <outlet property="backgroundScreen" destination="T0y-OL-BDI" id="xU5-MA-66o"/>
+                        <outlet property="backgroundScreen" destination="T0y-OL-BDI" id="ZMS-cI-AXb"/>
                         <outlet property="createNameLabel" destination="8b2-mE-xhl" id="SOe-x0-zdO"/>
+                        <outlet property="modalContainer" destination="XDA-Pl-HCe" id="Rjc-fC-uXu"/>
                         <outlet property="productDescriptionTextView" destination="1tN-S4-eMF" id="mFG-TE-2XA"/>
                         <outlet property="productImage" destination="QwH-71-PhH" id="ax3-EG-eaq"/>
                         <outlet property="productTitleLabel" destination="3mh-OH-cQ7" id="3GF-Ty-Reb"/>

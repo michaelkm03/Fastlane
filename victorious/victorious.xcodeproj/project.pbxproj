@@ -342,6 +342,7 @@
 		A70FC11C1A2FD60C00F5BBDE /* VPurchaseManagerCache.m in Sources */ = {isa = PBXBuildFile; fileRef = A70FC11B1A2FD60C00F5BBDE /* VPurchaseManagerCache.m */; };
 		A70FC11F1A301DE600F5BBDE /* VPurchaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A70FC11E1A301DE600F5BBDE /* VPurchaseViewController.m */; };
 		A70FC1251A31207400F5BBDE /* VVoteSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = A70FC1241A31207400F5BBDE /* VVoteSettings.m */; };
+		A71D242B1A33D7CD00BEE562 /* VPurchaseViewController+Transitions.m in Sources */ = {isa = PBXBuildFile; fileRef = A71D242A1A33D7CD00BEE562 /* VPurchaseViewController+Transitions.m */; };
 		A72004FB1A02FEC000285A9C /* sampleImage.png in Resources */ = {isa = PBXBuildFile; fileRef = A72004FA1A02FEC000285A9C /* sampleImage.png */; };
 		A72005251A03073B00285A9C /* NSStringVCryptoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 03AC453B19BA1F7900CE4351 /* NSStringVCryptoTests.m */; };
 		A72005261A03073B00285A9C /* VAuthorizationViewControllerFactoryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BE9674F619E335060072E87A /* VAuthorizationViewControllerFactoryTests.m */; };
@@ -1263,6 +1264,8 @@
 		A70FC1241A31207400F5BBDE /* VVoteSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVoteSettings.m; sourceTree = "<group>"; };
 		A719CD5719F6D5030019E866 /* VFileSystemTestHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFileSystemTestHelpers.h; sourceTree = "<group>"; };
 		A719CD5819F6D5030019E866 /* VFileSystemTestHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFileSystemTestHelpers.m; sourceTree = "<group>"; };
+		A71D24291A33D7CD00BEE562 /* VPurchaseViewController+Transitions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VPurchaseViewController+Transitions.h"; sourceTree = "<group>"; };
+		A71D242A1A33D7CD00BEE562 /* VPurchaseViewController+Transitions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VPurchaseViewController+Transitions.m"; sourceTree = "<group>"; };
 		A72004FA1A02FEC000285A9C /* sampleImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sampleImage.png; sourceTree = "<group>"; };
 		A720054A1A030D9300285A9C /* VTrackingConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTrackingConstants.h; sourceTree = "<group>"; };
 		A720054B1A030D9300285A9C /* VTrackingConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTrackingConstants.m; sourceTree = "<group>"; };
@@ -2130,6 +2133,8 @@
 				A70FC11E1A301DE600F5BBDE /* VPurchaseViewController.m */,
 				A7A390C61A3253F600709812 /* VLoadingOverlayViewController.h */,
 				A7A390C71A3253F600709812 /* VLoadingOverlayViewController.m */,
+				A71D24291A33D7CD00BEE562 /* VPurchaseViewController+Transitions.h */,
+				A71D242A1A33D7CD00BEE562 /* VPurchaseViewController+Transitions.m */,
 			);
 			path = "Content View";
 			sourceTree = "<group>";
@@ -4825,6 +4830,7 @@
 				0314D4BC19B46B5E00FA363C /* VAbstractProfileEditViewController.m in Sources */,
 				D84FD73D19D5E5F200E7F9F2 /* VActionItem.m in Sources */,
 				BE171E0E1868C211004E5202 /* VAnswerAction+RestKit.m in Sources */,
+				A71D242B1A33D7CD00BEE562 /* VPurchaseViewController+Transitions.m in Sources */,
 				D82E76DE19F5BFED00FFB722 /* VContentPollQuestionCell.m in Sources */,
 				0314D45B19B46B5E00FA363C /* VCompositeImageFilter.m in Sources */,
 				0314D49619B46B5E00FA363C /* VResultView.m in Sources */,
