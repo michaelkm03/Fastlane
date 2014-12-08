@@ -34,7 +34,7 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
 
 @interface VStreamCellHeaderView ()
 
-@property (nonatomic, strong) NSMutableSet *observingKeyPaths;
+@property (nonatomic, assign, getter=isObservingUser) BOOL observingUser;
 
 @end
 
@@ -99,7 +99,7 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
     
     self.dateImageView.tintColor = self.dateLabel.textColor;
     
-    self.observingKeyPaths = [[NSMutableSet alloc] init];
+    self.observingUser = NO;
 }
 
 - (void)hideCommentsButton
@@ -150,26 +150,18 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
     
     _sequence = sequence;
     
-    if (sequence.user.name != nil)
+    if (sequence.user == nil)
     {
-        [_sequence.user addObserver:self forKeyPath:NSStringFromSelector(@selector(name)) options:NSKeyValueObservingOptionNew context:VUserProfileAttributesContext];
-        [self.observingKeyPaths addObject:NSStringFromSelector(@selector(name))];
+        return;
     }
-    if (sequence.user.location != nil)
-    {
-        [_sequence.user addObserver:self forKeyPath:NSStringFromSelector(@selector(location)) options:NSKeyValueObservingOptionNew context:VUserProfileAttributesContext];
-        [self.observingKeyPaths addObject:NSStringFromSelector(@selector(location))];
-    }
-    if (sequence.user.tagline != nil)
-    {
-        [_sequence.user addObserver:self forKeyPath:NSStringFromSelector(@selector(tagline)) options:NSKeyValueObservingOptionNew context:VUserProfileAttributesContext];
-        [self.observingKeyPaths addObject:NSStringFromSelector(@selector(tagline))];
-    }
-    if (sequence.user.pictureUrl != nil)
-    {
-        [_sequence.user addObserver:self forKeyPath:NSStringFromSelector(@selector(pictureUrl)) options:NSKeyValueObservingOptionNew context:VUserProfileAttributesContext];
-        [self.observingKeyPaths addObject:NSStringFromSelector(@selector(pictureUrl))];
-    }
+    
+
+    [_sequence.user addObserver:self forKeyPath:NSStringFromSelector(@selector(location)) options:NSKeyValueObservingOptionNew context:VUserProfileAttributesContext];
+    [_sequence.user addObserver:self forKeyPath:NSStringFromSelector(@selector(name)) options:NSKeyValueObservingOptionNew context:VUserProfileAttributesContext];
+    [_sequence.user addObserver:self forKeyPath:NSStringFromSelector(@selector(pictureUrl)) options:NSKeyValueObservingOptionNew context:VUserProfileAttributesContext];
+    [_sequence.user addObserver:self forKeyPath:NSStringFromSelector(@selector(tagline)) options:NSKeyValueObservingOptionNew context:VUserProfileAttributesContext];
+    
+    self.observingUser = YES;
     
     [self updateWithCurrentUser];
 }
@@ -223,11 +215,15 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
 
 - (void)stopObservingUserProfile
 {
-    [self.observingKeyPaths enumerateObjectsUsingBlock:^(NSString *observedKeyPath, BOOL *stop)
+    if (self.observingUser)
     {
-        [self.sequence.user removeObserver:self forKeyPath:observedKeyPath context:VUserProfileAttributesContext];
-    }];
-    [self.observingKeyPaths removeAllObjects];
+        return;
+    }
+    
+    [self.sequence.user removeObserver:self forKeyPath:NSStringFromSelector(@selector(location)) context:VUserProfileAttributesContext];
+    [self.sequence.user removeObserver:self forKeyPath:NSStringFromSelector(@selector(name)) context:VUserProfileAttributesContext];
+    [self.sequence.user removeObserver:self forKeyPath:NSStringFromSelector(@selector(pictureUrl)) context:VUserProfileAttributesContext];
+    [self.sequence.user removeObserver:self forKeyPath:NSStringFromSelector(@selector(tagline)) context:VUserProfileAttributesContext];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath
