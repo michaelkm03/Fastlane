@@ -46,8 +46,6 @@ static const NSInteger kServerEnvironmentButtonIndex = 4;
 
 @property (nonatomic, weak) IBOutlet    UILabel    *versionString;
 
-- (NSString *)collectDeviceInfo:(id)sender;
-
 @end
 
 @implementation VSettingsViewController

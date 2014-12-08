@@ -8,14 +8,28 @@
 
 #import <Foundation/Foundation.h>
 
-@class VSequence;
+extern NSString * const VDeeplinkManagerInboxMessageNotification; ///< Posted for deep links that resolve to inbox messages
 
+/**
+ Analyze deep link URLs and perform appropriate actions
+ */
 @interface VDeeplinkManager : NSObject
 
-+ (instancetype)sharedManager;
+@property (nonatomic, strong, readonly) NSURL *url; ///< The URL passed to the init method
 
-- (void)handleOpenURL:(NSURL *)aURL;
+/**
+ Initializes a new instance of this class with a deep link
+ */
+- (instancetype)initWithURL:(NSURL *)url NS_DESIGNATED_INITIALIZER;
 
-- (NSURL *)contentDeeplinkForSequence:(VSequence *)sequence;
+/**
+ Navigate to the item represented by the url
+ */
+- (void)performNavigation;
+
+/**
+ Post an appropriate notification for the url
+ */
+- (void)postNotification;
 
 @end

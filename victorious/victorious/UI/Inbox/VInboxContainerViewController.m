@@ -8,10 +8,12 @@
 
 #import "UIStoryboard+VMainStoryboard.h"
 #import "VAuthorizationViewControllerFactory.h"
+#import "VDeeplinkManager.h"
 #import "VDependencyManager+VObjectManager.h"
 #import "VInboxContainerViewController.h"
 #import "VInboxViewController.h"
 #import "VObjectManager+Login.h"
+#import "VObjectManager+Pagination.h"
 #import "VRootViewController.h"
 #import "VUnreadMessageCountCoordinator.h"
 #import "VConstants.h"
@@ -63,6 +65,7 @@ static char kKVOContext;
 {
     [super awakeFromNib];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loggedInChanged:) name:kLoggedInChangedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(inboxMessageNotification:) name:VDeeplinkManagerInboxMessageNotification object:nil];
 }
 
 - (void)dealloc
@@ -121,6 +124,20 @@ static char kKVOContext;
     }
 }
 
+- (void)setBadgeNumber:(NSInteger)badgeNumber
+{
+    if ( badgeNumber == _badgeNumber )
+    {
+        return;
+    }
+    _badgeNumber = badgeNumber;
+    
+    if ( self.badgeNumberUpdateBlock != nil )
+    {
+        self.badgeNumberUpdateBlock(self.badgeNumber);
+    }
+}
+
 #pragma mark - VNavigationDestination methods
 
 - (BOOL)shouldNavigateWithAlternateDestination:(UIViewController *__autoreleasing *)alternateViewController
@@ -142,6 +159,21 @@ static char kKVOContext;
     {
         [self.messageCountCoordinator updateUnreadMessageCount];
     }
+    else
+    {
+        self.badgeNumber = 0;
+    }
+}
+
+- (void)inboxMessageNotification:(NSNotification *)notification
+{
+    if ( self.dependencyManager.objectManager.mainUserLoggedIn )
+    {
+        [self.dependencyManager.objectManager refreshConversationListWithSuccessBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+        {
+            [self.messageCountCoordinator updateUnreadMessageCount];
+        } failBlock:nil];
+    }
 }
 
 #pragma mark - Key-Value Observation
@@ -160,11 +192,6 @@ static char kKVOContext;
         if ( [newUnreadCount isKindOfClass:[NSNumber class]] )
         {
             self.badgeNumber = [newUnreadCount integerValue];
-            
-            if ( self.badgeNumberUpdateBlock != nil )
-            {
-                self.badgeNumberUpdateBlock(self.badgeNumber);
-            }
         }
     }
 }

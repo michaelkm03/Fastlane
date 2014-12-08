@@ -9,7 +9,8 @@
 #import "VBadgeLabel.h"
 #import "VDependencyManager.h"
 
-static CGFloat const kMarginWidth = 4.0f;
+static CGFloat const kMargin = 4.0f;
+static NSInteger const kLargeNumberCutoff = 100; ///< Numbers equal to or greater than this cutoff will not display
 
 @implementation VBadgeLabel
 
@@ -37,26 +38,21 @@ static CGFloat const kMarginWidth = 4.0f;
 {
     self.textAlignment = NSTextAlignmentCenter;
     self.clipsToBounds = YES;
-}
-
-- (void)setDependencyManager:(VDependencyManager *)dependencyManager
-{
-    _dependencyManager = dependencyManager;
-    self.font = [self.dependencyManager fontForKey:VDependencyManagerHeading2FontKey];
-    self.textColor = [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
-    self.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
+    self.backgroundColor = [UIColor colorWithRed:0.88f green:0.18f blue:0.22f alpha:1.0f];
+    self.textColor = [UIColor whiteColor];
 }
 
 - (CGSize)intrinsicContentSize
 {
     CGSize size = [super intrinsicContentSize];
-    CGFloat biggerDimension = MAX(size.width, size.height);
     
-    if (biggerDimension == 0)
+    if ( size.width == 0 || size.height == 0 )
     {
         return CGSizeZero;
     }
-    return CGSizeMake(biggerDimension + kMarginWidth, biggerDimension + kMarginWidth);
+    
+    // The label should be at least as wide as it is tall, or it looks lemon-shaped with the corner radius!
+    return CGSizeMake(MAX(size.width + kMargin, size.height + kMargin), size.height + kMargin);
 }
 
 - (void)layoutSubviews
@@ -75,6 +71,27 @@ static CGFloat const kMarginWidth = 4.0f;
 {
     CGRect fixedRect = CGRectApplyAffineTransform(rect, CGAffineTransformMakeTranslation(0, 1));
     [super drawTextInRect:fixedRect];
+}
+
+- (void)setText:(NSString *)text
+{
+    NSAssert(NO, @"unsupported. Use -setBadgeNumber: instead");
+}
+
+- (void)setBadgeNumber:(NSInteger)badgeNumber
+{
+    if (badgeNumber == 0)
+    {
+        super.text = @"";
+    }
+    else if (badgeNumber < kLargeNumberCutoff)
+    {
+        super.text = [NSString stringWithFormat:@"%ld", (long)badgeNumber];
+    }
+    else
+    {
+        super.text = [NSString stringWithFormat:NSLocalizedString(@"%ld+", @"Number and symbol meaning \"more than\", e.g. \"99+ items\". (%ld is a placeholder for a number)"), (long)(kLargeNumberCutoff - 1)];
+    }
 }
 
 @end

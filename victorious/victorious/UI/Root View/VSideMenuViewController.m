@@ -10,12 +10,14 @@
 #import "VMenuController.h"
 #import "VMultipleStreamViewController.h"
 #import "VNavigationDestination.h"
+#import "VProvidesNavigationMenuItemBadge.h"
 #import "VSettingManager.h"
 #import "VSideMenuViewController.h"
 #import "VStreamCollectionViewController.h"
 #import "VThemeManager.h"
 #import "UIImage+ImageEffects.h"
 #import "UIStoryboard+VMainStoryboard.h"
+#import "UIViewController+VNavMenu.h"
 #import "UIViewController+VSideMenuViewController.h"
 
 // Keys for managed dependencies
@@ -390,7 +392,33 @@ static NSString * const kMenuKey = @"menu";
 
 - (void)setMenuViewController:(UIViewController *)menuViewController
 {
-    if (!_menuViewController)
+    if ( _menuViewController == menuViewController )
+    {
+        return;
+    }
+    
+    __typeof(self) __weak weakSelf = self;
+    VNavigationMenuItemBadgeNumberUpdateBlock badgeNumberUpdateBlock = ^(NSInteger badgeNumber)
+    {
+        [[UIApplication sharedApplication] setApplicationIconBadgeNumber:badgeNumber];
+        [weakSelf.contentViewController.viewControllers enumerateObjectsUsingBlock:^(UIViewController *viewController, NSUInteger idx, BOOL *stop)
+        {
+            [viewController.navHeaderView setBadgeNumber:badgeNumber];
+        }];
+    };
+    
+    if ( [menuViewController respondsToSelector:@selector(setBadgeNumberUpdateBlock:)] )
+    {
+        [(id<VProvidesNavigationMenuItemBadge>)menuViewController setBadgeNumberUpdateBlock:badgeNumberUpdateBlock];
+    }
+    
+    if ( [menuViewController respondsToSelector:@selector(badgeNumber)] )
+    {
+        NSInteger badgeNumber = [(id<VProvidesNavigationMenuItemBadge>)menuViewController badgeNumber];
+        badgeNumberUpdateBlock(badgeNumber);
+    }
+    
+    if ( _menuViewController == nil )
     {
         _menuViewController = menuViewController;
         return;
@@ -447,6 +475,15 @@ static NSString * const kMenuKey = @"menu";
     else
     {
         return nil;
+    }
+}
+
+- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    if ( [self.menuViewController respondsToSelector:@selector(badgeNumber)] )
+    {
+        NSInteger badgeNumber = [(id<VProvidesNavigationMenuItemBadge>)self.menuViewController badgeNumber];
+        [viewController.navHeaderView setBadgeNumber:badgeNumber];
     }
 }
 

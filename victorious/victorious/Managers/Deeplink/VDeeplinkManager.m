@@ -30,29 +30,39 @@
 #import "VMultipleStreamViewController.h"
 #import "VStreamCollectionViewController.h"
 
-
-static NSString * const kVContentDeeplinkScheme = @"//content/";
+NSString * const VDeeplinkManagerInboxMessageNotification = @"VDeeplinkManagerInboxMessageNotification";
 
 @implementation VDeeplinkManager
 
-+ (instancetype)sharedManager
+- (instancetype)initWithURL:(NSURL *)url
 {
-    static  VDeeplinkManager  *sharedManager;
-    static  dispatch_once_t onceToken;
-    
-    dispatch_once(&onceToken,
-                  ^{
-                      sharedManager = [[self alloc] init];
-                  });
-    
-    return sharedManager;
+    self = [super init];
+    if ( self != nil )
+    {
+        _url = url;
+    }
+    return self;
 }
 
-- (void)handleOpenURL:(NSURL *)aURL
+#pragma mark - Notification
+
+- (void)postNotification
 {
-    NSString *linkString = [aURL resourceSpecifier];
+    NSString *host = [self.url host];
+
+    if ( [host isEqualToString:@"inbox"] )
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:VDeeplinkManagerInboxMessageNotification object:self];
+    }
+}
+
+#pragma mark - Navigation
+
+- (void)performNavigation
+{
+    NSString *linkString = [self.url resourceSpecifier];
     
-    if (!linkString)
+    if ( linkString == nil )
     {
         return;
     }
@@ -330,14 +340,6 @@ static NSString * const kVContentDeeplinkScheme = @"//content/";
     {
         [((VSideMenuViewController *)root.currentViewController).contentViewController pushViewController:enterTokenVC animated:YES];
     }
-}
-
-#pragma mark - Deeplink generation
-
-- (NSURL *)contentDeeplinkForSequence:(VSequence *)sequence
-{
-    //TODO: Fetch the actual deeplink prefix from the info.plist
-    return [NSURL URLWithString:[[@"qa-mp:" stringByAppendingString:kVContentDeeplinkScheme] stringByAppendingPathComponent:sequence.remoteId]];
 }
 
 @end

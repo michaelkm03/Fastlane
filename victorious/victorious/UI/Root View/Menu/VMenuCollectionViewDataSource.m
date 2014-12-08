@@ -87,7 +87,7 @@
                 NSIndexPath *indexPath = [NSIndexPath indexPathForItem:itemIndex inSection:sectionIndex];
                 [destination setBadgeNumberUpdateBlock:^(NSInteger badgeNumber)
                 {
-                    dispatch_async(dispatch_get_main_queue(), ^(void)
+                    void (^updateBadgeBlock)() = ^(void)
                     {
                         __typeof(weakSelf) strongSelf = weakSelf;
                         
@@ -100,7 +100,16 @@
                             }
                             self.badgeTotal = [strongSelf calculateBadgeTotal];
                         }
-                    });
+                    };
+                    
+                    if ( [NSThread isMainThread] )
+                    {
+                        updateBadgeBlock();
+                    }
+                    else
+                    {
+                        dispatch_async(dispatch_get_main_queue(), updateBadgeBlock);
+                    }
                 }];
             }
         }];

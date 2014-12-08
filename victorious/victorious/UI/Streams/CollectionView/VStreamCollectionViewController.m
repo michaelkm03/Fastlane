@@ -507,7 +507,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
         cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:[VStreamCollectionCell suggestedReuseIdentifier]
                                                               forIndexPath:indexPath];
     }
-    cell.delegate = self.actionDelegate ? self.actionDelegate : self;
+    cell.delegate = self.actionDelegate ?: self;
     cell.sequence = sequence;
     
     [self preloadSequencesAfterIndexPath:indexPath forDataSource:dataSource];

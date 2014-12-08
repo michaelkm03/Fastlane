@@ -30,7 +30,6 @@
 "Meme" = "Meme";
 "Share" = "Compartir";
 "Discover" = "Descubrir";
-"Share" = "Compartir";
 "Profile" = "Perfil";
 "Settings" = "Configuración";
 "Save" = "Guardar";
@@ -274,11 +273,11 @@
 "follow" = "Seguir";
 
 "ResetPassword" = "Restablecer contraseña";
-"ResetPasswordPrompt" = "Por favor ingresa tu dirección de email";
+"ResetPasswordPrompt" = "Por favor ingresa tu dirección de email.";
 "ResetPasswordPlaceholder" = "Dirección de email";
 
 "PasswordError" = "Error de contraseña";
-"ResetPasswordErrorExpiredTitle" = "Venció el código para restablecer.";
+"ResetPasswordErrorExpiredTitle" = "Venció el código para restablecer";
 "ResetPasswordErrorExpiredMessage" = "Por favor solicita otro código para restablecer y vuelve a intentarlo.";
 
 "ResetPasswordErrorInvalidTitle" = "La contraseña actual es inválida";
@@ -288,10 +287,10 @@
 "ResetPasswordErrorFailTitle" = "Error al restablecer la contraseña";
 "ResetPasswordErrorFailMessage" = "No pudimos restablecer tu contraseña en este momento. Por favor vuelve a intentarlo más tarde.";
 
-"ResetPasswordNewEqualsCurrentTitle" = "Nueva contraseña inválida.";
+"ResetPasswordNewEqualsCurrentTitle" = "Nueva contraseña inválida";
 "ResetPasswordNewEqualsCurrentMessage" = "Por favor ingresa una contraseña diferente de tu contraseña actual.";
 
-"EnterResetCodeMessage" = "Se envió un email a esta dirección con las instrucciones para restablecer la contraseña";
+"EnterResetCodeMessage" = "Se envió un email a esta dirección con las instrucciones para restablecer la contraseña.";
 "EnterCodeTitle" = "INGRESAR CÓDIGO";
 "ResendEmail" = "Volver a enviar email";
 
@@ -309,7 +308,7 @@
 "InviteUsingEmail" = "Invita usando un email";
 "InviteUsingSMS" = "Invita usando un SMS";
 "InviteFriendsSubject" = "Checa la nueva aplicación de %@";
-"InviteFriendsBody" = "¡Oye!\n\nDescargué una nueva aplicación de %@. Es una comunidad para que gente como nosotros interactúe.";
+"InviteFriendsBody" = "¡Oye!\n\nDescargué una nueva aplicación de %@. Es una comunidad para que gente como nosotros interactúen. Descárgala ahora en:";
 
 "FindContacts" = "Busca a los amigos de tus contactos";
 "Access Your Contacts" = "Ten acceso a tus Contactos";
