@@ -21,8 +21,9 @@
 
 #import "VPurchaseManager.h"
 #import "VPurchase.h"
-#import "VPurchaseManagerCache.h"
 #import "VPurchaseRecord.h"
+
+NSString * const VPurchaseManagerProductsDidUpdateNotification = @"VPurchaseManagerProductsDidUpdateNotification";
 
 static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.devicelog"; // A touch of obscurity
 
@@ -31,8 +32,8 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
 @property (nonatomic, strong) VPurchase *activePurchase;
 @property (nonatomic, strong) VProductsRequest *activeProductRequest;
 @property (nonatomic, strong) VPurchase *activePurchaseRestore;
-@property (nonatomic, strong) VPurchaseManagerCache *cache;
 @property (nonatomic, strong) VPurchaseRecord *purchaseRecord;
+@property (nonatomic, strong) NSMutableDictionary *fetchedProducts;
 
 @end
 
@@ -56,7 +57,7 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
     self = [super init];
     if (self)
     {
-        self.cache = [[VPurchaseManagerCache alloc] init];
+        self.fetchedProducts = [[NSMutableDictionary alloc] init];
         self.purchaseRecord = [[VPurchaseRecord alloc] initWithRelativeFilePath:kDocumentDirectoryRelativePath];
         [self.purchaseRecord loadPurchasedProductIdentifiers];
         [[SKPaymentQueue defaultQueue] addTransactionObserver:self];
@@ -105,6 +106,17 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
     return;
 #endif
     
+    // This could happen if product requests are consistently failing
+    if ( product == nil )
+    {
+        if ( failureCallback )
+        {
+            NSString *message = NSLocalizedString( @"PurchaseErrorProductNotAvailable", nil);
+            NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : message };
+            failureCallback( [NSError errorWithDomain:@"" code:-1 userInfo:userInfo] );
+        }
+    }
+    
     self.activePurchase = [[VPurchase alloc] initWithProduct:product success:successCallback failure:failureCallback];
     SKPayment *payment = [SKPayment paymentWithProduct:product.storeKitProduct];
     [[SKPaymentQueue defaultQueue] addPayment:payment];
@@ -142,8 +154,7 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
     {
         if ( successCallback != nil )
         {
-            NSArray *products = [[self.cache purchaseableProducts] objectsForKeys:productIdentifiers];
-            successCallback( products );
+            successCallback( [self.fetchedProducts allValues] );
         }
         return;
     }
@@ -178,7 +189,6 @@ return;
     [request start];
 }
 
-
 #ifndef V_NO_RESET_PURCHASES
 
 - (void)resetPurchases
@@ -192,8 +202,10 @@ return;
 
 - (VProduct *)purchaseableProductForProductIdentifier:(NSString *)productIdentifier
 {
-    return [[self.cache purchaseableProducts] objectForKey:productIdentifier];
+    return [self.fetchedProducts objectForKey:productIdentifier];
 }
+
+#pragma mark - Purchase product helpers
 
 - (NSArray *)productIdentifiersFilteredForUncachedProducts:(NSArray *)productIdentifiers
 {
@@ -204,7 +216,7 @@ return;
     
     NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL (NSString *identifier, NSDictionary *bindings)
     {
-        BOOL isCached = [[self.cache purchaseableProducts] objectForKey:identifier] != nil;
+        BOOL isCached = [self.fetchedProducts objectForKey:identifier] != nil;
         return !isCached;
     }];
     return [productIdentifiers filteredArrayUsingPredicate:predicate];
@@ -222,7 +234,7 @@ return;
             message = NSLocalizedString( @"PurchaseErrorProductNotAvailable", nil);
             break;
         default:
-            message = NSLocalizedString( @"PurchaseErrorTransaction.", nil);
+            message = NSLocalizedString( @"PurchaseErrorTransaction", nil);
             break;
     }
     
@@ -257,7 +269,6 @@ return;
 #endif
     if ( self.activePurchase != nil && isValidProduct )
     {
-        [[self.cache purchasedProducts] setObject:self.activePurchase.product forKey:productIdentifier];
         [self.purchaseRecord addProductIdentifier:productIdentifier];
         self.activePurchase.successCallback( @[ self.activePurchase.product ] );
         self.activePurchase = nil;
@@ -277,15 +288,16 @@ return;
 #else
              NSString *productIdentifier = product.storeKitProduct.productIdentifier;
 #endif
-             [[self.cache purchaseableProducts] setObject:product forKey:productIdentifier];
+             [self.fetchedProducts setValue:product forKey:productIdentifier];
          }];
-        NSArray *products = [[self.cache purchaseableProducts] objectsForKeys:self.activeProductRequest.productIdentifiers];
         if ( self.activeProductRequest.successCallback != nil )
         {
-            self.activeProductRequest.successCallback( products );
+            self.activeProductRequest.successCallback( [self.fetchedProducts allValues] );
         }
     }
     self.activeProductRequest = nil;
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:VPurchaseManagerProductsDidUpdateNotification object:nil];
 }
 
 - (void)productsRequestDidFailWithError:(NSError *)error

@@ -14,9 +14,6 @@
 
 #define OVERWRITE_WITH_PAID_BALLISTICS 0
 
-NSString * const VVoteSettingsDidUpdateNotification = @"VVoteSettingsDidUpdateNotification";
-NSString * const VVoteSettingsDidUpdateKeyVoteType = @"VVoteSettingsDidUpdateKeyVoteType";
-
 @interface VVoteSettings()
 
 @property (nonatomic, strong) VFileCache *fileCache;

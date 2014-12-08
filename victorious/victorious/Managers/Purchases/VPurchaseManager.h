@@ -13,6 +13,12 @@
 #import "VPurchase.h"
 
 /**
+ Posted when a successful call to `fetchProductsWithIdentifiers:success:failure` returns.
+ This is needed to update and UI that lists purchaseable products.
+ */
+NSString * const VPurchaseManagerProductsDidUpdateNotification;
+
+/**
  The API for In-App Purchases in this application.
  */
 @interface VPurchaseManager : NSObject
