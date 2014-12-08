@@ -25,21 +25,26 @@
 #import "UIViewController+VNavMenu.h"
 #import "VAutomation.h"
 #import "VNotificationSettingsViewController.h"
+#import "VButton.h"
+#import "VPurchaseManager.h"
 
 static const NSInteger kSettingsSectionIndex         = 0;
 static const NSInteger kChangePasswordIndex          = 0;
 static const NSInteger kChromecastButtonIndex        = 2;
 static const NSInteger kPushNotificationsButtonIndex = 3;
 static const NSInteger kServerEnvironmentButtonIndex = 4;
+static const NSInteger kResetPurchasesButtonIndex = 5;
 
 @interface VSettingsViewController ()   <MFMailComposeViewControllerDelegate, UIAlertViewDelegate>
 
-@property (weak, nonatomic) IBOutlet UIButton *logoutButton;
+@property (weak, nonatomic) IBOutlet VButton *logoutButton;
 @property (weak, nonatomic) IBOutlet UITableViewCell *serverEnvironmentCell;
+@property (weak, nonatomic) IBOutlet UITableViewCell *resetPurchasesCell;
 
 @property (nonatomic, assign) BOOL    showChromeCastButton;
 @property (nonatomic, assign) BOOL    showEnvironmentSetting;
 @property (nonatomic, assign) BOOL    showPushNotificationSettings;
+@property (nonatomic, assign) BOOL    showPurchaseReset;
 
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *labels;
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *rightLabels;
@@ -88,32 +93,22 @@ static const NSInteger kServerEnvironmentButtonIndex = 4;
     insets.top = 50;
     self.tableView.contentInset = insets;
     
-    if ([VObjectManager sharedManager].mainUserLoggedIn)
-    {
-        [self.logoutButton setTitle:NSLocalizedString(@"Logout", @"") forState:UIControlStateNormal];
-        [self.logoutButton setTitleColor:[UIColor colorWithWhite:0.14 alpha:1.0] forState:UIControlStateNormal];
-        self.logoutButton.layer.borderWidth = 2.0;
-        self.logoutButton.layer.cornerRadius = 3.0;
-        self.logoutButton.layer.borderColor = [UIColor colorWithWhite:0.14 alpha:1.0].CGColor;
-        self.logoutButton.backgroundColor = [UIColor clearColor];
-        self.logoutButton.accessibilityIdentifier = VAutomationIdentifierSettingsLogOut;
-    }
-    else
-    {
-        [self.logoutButton setTitle:NSLocalizedString(@"Login", @"") forState:UIControlStateNormal];
-        [self.logoutButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        self.logoutButton.layer.borderWidth = 0.0;
-        self.logoutButton.layer.cornerRadius = 0.0;
-        self.logoutButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-        self.logoutButton.accessibilityIdentifier = VAutomationIdentifierSettingsLogIn;
-    }
+    [self updateLogoutButtonState];
     
     self.serverEnvironmentCell.detailTextLabel.text = [[VObjectManager currentEnvironment] name];
+    
+    [self updatePurchasesCount];
     
 #ifdef V_NO_SWITCH_ENVIRONMENTS
     self.showEnvironmentSetting = NO;
 #else
     self.showEnvironmentSetting = YES;
+#endif
+    
+#ifdef V_NO_RESET_PURCHASES
+    self.showPurchaseReset = NO;
+#else
+    self.showPurchaseReset = YES;
 #endif
     
     self.showPushNotificationSettings = YES;
@@ -142,7 +137,6 @@ static const NSInteger kServerEnvironmentButtonIndex = 4;
 {
     return NO;
 }
-
 - (NSUInteger)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskPortrait;
@@ -153,18 +147,53 @@ static const NSInteger kServerEnvironmentButtonIndex = 4;
     return NO;
 }
 
+- (void)updatePurchasesCount
+{
+    self.resetPurchasesCell.detailTextLabel.text = @( [[VPurchaseManager sharedInstance] numberOfPurchasedItems] ).stringValue;
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (0 == indexPath.section && 1 == indexPath.row)
     {
         [self sendHelp:self];
     }
+    
+#ifndef V_NO_RESET_PURCHASES
+    if (kSettingsSectionIndex == indexPath.section && kResetPurchasesButtonIndex == indexPath.row)
+    {
+        if (self.showPurchaseReset)
+        {
+            [[VPurchaseManager sharedInstance] resetPurchases];
+            [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+            [self updatePurchasesCount];
+        }
+    }
+#endif
 }
 
 - (void)loginStatusDidChange:(NSNotification *)note
 {
     [self.tableView beginUpdates];
     [self.tableView endUpdates];
+}
+
+- (void)updateLogoutButtonState
+{
+    self.logoutButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    
+    if ([VObjectManager sharedManager].mainUserLoggedIn)
+    {
+        [self.logoutButton setTitle:NSLocalizedString(@"Logout", @"") forState:UIControlStateNormal];
+        self.logoutButton.style = VButtonStyleSecondary;
+        self.logoutButton.accessibilityIdentifier = VAutomationIdentifierSettingsLogOut;
+    }
+    else
+    {
+        [self.logoutButton setTitle:NSLocalizedString(@"Login", @"") forState:UIControlStateNormal];
+        self.logoutButton.style = VButtonStylePrimary;
+        self.logoutButton.accessibilityIdentifier = VAutomationIdentifierSettingsLogIn;
+    }
 }
 
 #pragma mark - Actions
@@ -176,11 +205,8 @@ static const NSInteger kServerEnvironmentButtonIndex = 4;
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidLogOut];
         
         [[VUserManager sharedInstance] logout];
-        [self.logoutButton setTitle:NSLocalizedString(@"Login", @"") forState:UIControlStateNormal];
-        [self.logoutButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        self.logoutButton.layer.borderWidth = 0.0;
-        self.logoutButton.layer.cornerRadius = 0.0;
-        self.logoutButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+        
+        [self updateLogoutButtonState];
     }
     else
     {
@@ -246,6 +272,17 @@ static const NSInteger kServerEnvironmentButtonIndex = 4;
     else if (kSettingsSectionIndex == indexPath.section && kPushNotificationsButtonIndex == indexPath.row)
     {
         if (self.showPushNotificationSettings && [VObjectManager sharedManager].mainUserLoggedIn)
+        {
+            return self.tableView.rowHeight;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+    else if (kSettingsSectionIndex == indexPath.section && kResetPurchasesButtonIndex == indexPath.row)
+    {
+        if (self.showPurchaseReset)
         {
             return self.tableView.rowHeight;
         }

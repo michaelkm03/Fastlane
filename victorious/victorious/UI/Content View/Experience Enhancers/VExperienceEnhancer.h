@@ -43,6 +43,8 @@
  */
 - (void)resetStartingVoteCount:(NSUInteger)voteCount;
 
+@property (nonatomic, assign) BOOL isLocked;
+
 @property (nonatomic, readonly) NSUInteger sessionVoteCount;
 @property (nonatomic, readonly) NSUInteger totalVoteCount;
 
@@ -53,7 +55,6 @@
 @property (nonatomic, strong) UIImage *flightImage;
 @property (nonatomic, assign) UIViewContentMode contentMode;
 @property (nonatomic, readonly) VVoteType *voteType;
-@property (nonatomic, readonly) BOOL hasRequiredImages;
 @property (nonatomic, readonly) BOOL isBallistic;
 
 @end

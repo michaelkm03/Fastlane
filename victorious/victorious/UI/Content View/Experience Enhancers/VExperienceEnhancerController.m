@@ -16,9 +16,10 @@
 #import "UIImageView+AFNetworking.h"
 #import "VFileCache.h"
 #import "VFileCache+VVoteType.h"
-#import "VVoteType.h"
+#import "VVoteType+Fetcher.h"
 #import "VVoteResult.h"
 #import "VTracking.h"
+#import "VPurchaseManager.h"
 
 @interface VExperienceEnhancerController ()
 
@@ -27,6 +28,7 @@
 @property (nonatomic, strong) NSArray *experienceEnhancers;
 @property (nonatomic, strong) NSArray *validExperienceEnhancers;
 @property (nonatomic, strong) NSMutableArray *collectedTrackingItems;
+@property (nonatomic, strong) VPurchaseManager *purchaseManager;
 
 @end
 
@@ -55,7 +57,9 @@
         
         self.fileCache = [[VFileCache alloc] init];
         
-        NSArray *voteTypes = [[VSettingManager sharedManager] voteTypes];
+        NSArray *voteTypes = [VSettingManager sharedManager].voteSettings.voteTypes;
+        
+        self.purchaseManager = [VPurchaseManager sharedInstance];
         
         // Start saving images to disk if not already downloaded
         [self.fileCache cacheImagesForVoteTypes:voteTypes];
@@ -63,9 +67,30 @@
         self.experienceEnhancers = [self createExperienceEnhancersFromVoteTypes:voteTypes sequence:self.sequence];
         self.validExperienceEnhancers = self.experienceEnhancers;
         
+        // Pre-load any purchaseable products that might not have already been cached
+        // This is also called from VSettingsManager during app initialization, so ideally
+        // most of the purchaseable products are already fetched from the App Store.
+        // If not, we'll cache them now.
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(updateData)
+                                                     name:VPurchaseManagerProductsDidUpdateNotification
+                                                   object:nil];
+        NSArray *productIdentifiers = [VVoteType productIdentifiersFromVoteTypes:voteTypes];
+        
+        if ( !self.purchaseManager.isPurchaseRequestActive )
+        {
+            [self.purchaseManager fetchProductsWithIdentifiers:productIdentifiers success:nil failure:nil];
+        }
+        
         [self.enhancerBar reloadData];
+        
     }
     return self;
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (NSArray *)createExperienceEnhancersFromVoteTypes:(NSArray *)voteTypes sequence:(VSequence *)sequence
@@ -82,14 +107,15 @@
           {
               if ( images == nil || images.count == 0 )
               {
-                  enhancer.iconImage = nil; // This effectively marks it as invalid and it will not display
+                  // This effectively marks it as invalid and it will not display
+                  // until the required images are loaded
+                  enhancer.iconImage = nil;
               }
               else
               {
                   enhancer.animationSequence = images;
                   enhancer.flightImage = images.firstObject;
               }
-              
           }];
          
          // Get icon image synhronously (we need it right away)
@@ -116,7 +142,10 @@
 
 - (void)updateData
 {
-    [self updateExperience:self.experienceEnhancers withSequence:self.sequence];
+    // The setter will re-filter accordingly
+    self.validExperienceEnhancers = self.experienceEnhancers;
+    
+    [self updateExperience:self.validExperienceEnhancers withSequence:self.sequence];
     [self.enhancerBar reloadData];
 }
 
@@ -159,8 +188,30 @@
 {
     NSArray *newValue = validExperienceEnhancers;
     newValue = [VExperienceEnhancer experienceEnhancersFilteredByHasRequiredImages:newValue];
+    newValue = [self experienceEnhancersFilteredByCanBeUnlockedWithPurchase:newValue];
     newValue = [VExperienceEnhancer experienceEnhancersSortedByDisplayOrder:newValue];
     _validExperienceEnhancers = newValue;
+}
+
+- (NSArray *)experienceEnhancersFilteredByCanBeUnlockedWithPurchase:(NSArray *)experienceEnhancers
+{
+    VPurchaseManager *purchaseManager = [VPurchaseManager sharedInstance];
+    NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(VExperienceEnhancer *enhancer, NSDictionary *bindings)
+    {
+        NSString *productIdentifier = enhancer.voteType.productIdentifier;
+        if ( productIdentifier != nil )
+        {
+            enhancer.isLocked = ![purchaseManager isProductIdentifierPurchased:productIdentifier];
+            
+            // If there's an error of any kind that has led to the product not being present in purchase manager,
+            // we should not even show the enhancer because it will be locked and will fail when the user tries to purchase it.
+            // There is frequent call to fetchProducts (every time VExperienceEnhancerViewController is initialized)
+            // so we don't have to worry here about re-fetching.
+            return [purchaseManager purchaseableProductForProductIdentifier:productIdentifier] != nil;
+        }
+        return YES;
+    }];
+    return [experienceEnhancers filteredArrayUsingPredicate:predicate];
 }
 
 - (void)sendTrackingEvents

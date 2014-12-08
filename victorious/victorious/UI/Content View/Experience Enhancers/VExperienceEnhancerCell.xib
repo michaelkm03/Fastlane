@@ -15,9 +15,14 @@
                 <rect key="frame" x="0.0" y="0.0" width="50" height="73"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Y89-2q-oh8">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="1Vo-yn-Uct" userLabel="Background">
+                        <rect key="frame" x="0.0" y="5" width="50" height="57"/>
+                        <constraints>
+                            <constraint firstAttribute="width" secondItem="1Vo-yn-Uct" secondAttribute="height" multiplier="50:57" id="lcg-AP-GQ4"/>
+                        </constraints>
+                    </imageView>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Y89-2q-oh8" userLabel="Icon">
                         <rect key="frame" x="0.0" y="12" width="50" height="50"/>
-                        <color key="tintColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="width" secondItem="Y89-2q-oh8" secondAttribute="height" multiplier="1:1" id="Y12-Ti-LUR"/>
                         </constraints>
@@ -33,14 +38,18 @@
             </view>
             <constraints>
                 <constraint firstItem="OTw-YD-uun" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Ljv-sO-Hft" secondAttribute="leading" id="LYc-MA-Ccf"/>
+                <constraint firstItem="1Vo-yn-Uct" firstAttribute="top" secondItem="Ljv-sO-Hft" secondAttribute="top" constant="5" id="XgV-b8-kqY"/>
                 <constraint firstItem="OTw-YD-uun" firstAttribute="top" secondItem="Y89-2q-oh8" secondAttribute="bottom" constant="5" id="YDb-AK-dbI"/>
                 <constraint firstItem="Y89-2q-oh8" firstAttribute="leading" secondItem="Ljv-sO-Hft" secondAttribute="leading" id="ZJo-Ut-lDB"/>
                 <constraint firstAttribute="centerX" secondItem="OTw-YD-uun" secondAttribute="centerX" id="Zc0-ru-b5W"/>
                 <constraint firstAttribute="trailing" secondItem="Y89-2q-oh8" secondAttribute="trailing" id="d5m-D7-Ci1"/>
+                <constraint firstItem="1Vo-yn-Uct" firstAttribute="leading" secondItem="Ljv-sO-Hft" secondAttribute="leading" id="eL3-VU-smm"/>
                 <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="OTw-YD-uun" secondAttribute="trailing" id="mze-MD-3Wl"/>
                 <constraint firstItem="Y89-2q-oh8" firstAttribute="top" secondItem="Ljv-sO-Hft" secondAttribute="top" constant="12" id="udN-M3-g4G"/>
+                <constraint firstAttribute="trailing" secondItem="1Vo-yn-Uct" secondAttribute="trailing" id="wRZ-ca-Lki"/>
             </constraints>
             <connections>
+                <outlet property="experienceEnhancerBackgroundImageView" destination="1Vo-yn-Uct" id="jMx-gy-2P8"/>
                 <outlet property="experienceEnhancerIconImageView" destination="Y89-2q-oh8" id="0Fe-hn-km4"/>
                 <outlet property="experienceEnhancerLabel" destination="OTw-YD-uun" id="dBC-ow-2b9"/>
                 <outlet property="topSpaceIconImageViewToContianerConstraint" destination="udN-M3-g4G" id="mM6-ZL-6KB"/>

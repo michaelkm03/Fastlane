@@ -103,7 +103,7 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
     [settingsManager updateSettingsWithAppTracking:tracking];
     
     NSArray *voteTypes = [self filteredArrayFromArray:resultObjects withObjectsOfClass:[VVoteType class]];
-    [settingsManager updateSettingsWithVoteTypes:voteTypes];
+    settingsManager.voteSettings.voteTypes = voteTypes;
 }
 
 - (NSArray *)filteredArrayFromArray:(NSArray *)array withObjectsOfClass:(Class)class

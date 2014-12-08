@@ -58,6 +58,8 @@ copyFile "Icon-40@2x.png"
 copyFile "Icon-60@2x.png"
 copyFile "homeHeaderImage.png"
 copyFile "homeHeaderImage@2x.png"
+copyFile "creator-avatar.png"
+copyFile "creator-avatar@2x.png"
 
 
 ### Modify Info.plist

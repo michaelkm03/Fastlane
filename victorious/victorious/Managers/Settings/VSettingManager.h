@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "VVoteSettings.h"
 
 //Settings
 extern NSString * const kVCaptureVideoQuality;
@@ -48,14 +49,11 @@ extern NSString * const kVChannelURLSupport;
 - (NSString *)exportVideoQuality;
 - (NSString *)captureVideoQuality;
 
-- (void)clearVoteTypes;
-- (void)updateSettingsWithVoteTypes:(NSArray *)voteTypes;
-
 - (void)updateSettingsWithAppTracking:(VTracking *)tracking;
 
 - (NSString *)fetchMonetizationItemByKey:(NSString *)key;
 
-@property (nonatomic, readonly) NSArray *voteTypes;
 @property (nonatomic, readonly) VTracking *applicationTracking;
+@property (nonatomic, readonly) VVoteSettings *voteSettings;
 
 @end

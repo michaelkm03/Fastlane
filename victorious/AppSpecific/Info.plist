@@ -43,6 +43,8 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>900</string>
+	<key>CreatorSalutation</key>
+	<string>Debug Victorious</string>
 	<key>FacebookAppID</key>
 	<string>1374328719478033</string>
 	<key>FacebookDisplayName</key>

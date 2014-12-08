@@ -65,25 +65,6 @@
     XCTAssertEqualObjects( self.settingsManager.applicationTracking, tracking1 );
 }
 
-- (void)testUpdateVoteTypes
-{
-    NSArray *resultObjects = [VDummyModels createVoteTypes:5];
-    [self.obejctManager updateSettings:self.settingsManager withResultObjects:resultObjects];
-    XCTAssertNotNil( self.settingsManager.voteTypes );
-    XCTAssertEqual( self.settingsManager.voteTypes.count, resultObjects.count );
-}
-
-- (void)testUpdateSettingsFilter
-{
-    NSArray *resultObjects = [VDummyModels createVoteTypes:5];
-    NSArray *nonVoteTypes = @[ [NSString new], [NSNull new], [NSDictionary new] ];
-    resultObjects = [resultObjects arrayByAddingObjectsFromArray:nonVoteTypes];
-    
-    [self.obejctManager updateSettings:self.settingsManager withResultObjects:resultObjects];
-    XCTAssertNotNil( self.settingsManager.voteTypes );
-    XCTAssertEqual( self.settingsManager.voteTypes.count, resultObjects.count - nonVoteTypes.count );
-}
-
 - (void)testUpdateSettingsInvalid
 {
     [self.obejctManager updateSettings:self.settingsManager withResultObjects:@[]];

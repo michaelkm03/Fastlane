@@ -67,7 +67,7 @@
 "ProfileUpdateFailed"   =   "Profile Update Failed";
 
 "WereSorry"             =   "We're Sorry";
-"ErrorOccured"          =   "For some reason we can't connect to the server.  Please try again later!";
+"ErrorOccured"          =   "For some reason we can't connect to the server. Please try again later!";
 
 "NoEmail"               =   "No Email Accounts";
 "NoEmailDetail"         =   "There are no email accounts, would you like to setup one now?";
@@ -166,7 +166,7 @@
 "Create Poll"           =   "Create Poll";
 
 "TranscodingMediaTitle" =   "Transcoding Upload";
-"TranscodingMediaBody"  =   "Your upload is taking longer than usual to transcode.  It will appear once we've finished.";
+"TranscodingMediaBody"  =   "Your upload is taking longer than usual to transcode. It will appear once we've finished.";
 "PollUploadTitle"       =   "Poll Upload Failed";
 "PollUploadBody"        =   "Unable to upload Poll to server";
 
@@ -423,3 +423,13 @@
 "ErrorPushNotificationsUnknown"         = "Error loading notification settings.\nPlease try again later.";
 "ErrorPushNotificationsNotSaved"        = "Error Saving Preferences";
 "ErrorPushNotificationsNotSavedMessage" = "Please try again later.";
+
+"PurchaseErrorTitle"                    = "Error Making Purchase";
+"PurchaseErrorProductNotAvailable"      = "Sorry, this product is not currently available. Please try again later.";
+"PurchaseErrorTransaction"              = "Unable to complete transaction. Please try again later.";
+"ProductsRequestError"                  = "Unable to load product information from the App Store. Please try again later.";
+"RestorePurchasesErrorTitle"            = "Error Restoring Purchases";
+"RestorePurchasesError"                 = "Unable to restore purchases at this time. Please try again later.";
+"ActivityRestoring"                     = "  Restoring...";
+"ActivityPurchasing"                    = "  Purchasing...";
+"PurchaseUnlockWithPrice"               = "Unlock for %@"; //e.g. "Unlock for $0.99"
