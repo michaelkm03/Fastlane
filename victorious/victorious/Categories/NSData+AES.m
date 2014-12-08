@@ -20,7 +20,7 @@
 
 @implementation NSData(AES)
 
-- (NSData *)encryptedDataWithWithAESKey:(NSData *)key
+- (NSData *)encryptedDataWithAESKey:(NSData *)key
 {
 	uint8_t iv[kCCBlockSizeAES128];
 	
@@ -41,8 +41,6 @@
 		return nil;
 	}
 	
-	// Prefix the data with the IV (the textbook method).
-	// This requires adding sizeof(iv) in a few places later; oh well.
 	void *retPtr = malloc( retSize + sizeof(iv) );
 	if ( !retPtr )
     {
@@ -56,7 +54,8 @@
 					 [key bytes], [key length],
 					 iv,
 					 [self bytes], [self length],
-					 retPtr+sizeof(iv),retSize,
+					 retPtr+sizeof(iv),
+                     retSize,
 					 &retSize);
     
 	if ( result != kCCSuccess )
@@ -75,7 +74,7 @@
 	return ret;
 }
 
-- (NSData* )decryptedDataWithWithAESKey:(NSData *)key
+- (NSData *)decryptedDataWithAESKey:(NSData *)key
 {
 	const uint8_t *bytesPointer = [self bytes];
 	size_t length = [self length];

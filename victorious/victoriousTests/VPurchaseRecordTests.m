@@ -51,7 +51,7 @@ static NSString * const kUnitTestFilePath = @"unit.test.filepath";
 - (void)testSaveAndReload
 {
     NSString *identifier = @"test.product.identifier.0";
-    [self.purchaseRecord userDidPurchaseProductWithIdentifier:identifier];
+    [self.purchaseRecord addProductIdentifier:identifier];
     XCTAssertNotNil( self.purchaseRecord.purchasedProductIdentifiers);
     XCTAssertEqual( self.purchaseRecord.purchasedProductIdentifiers.count, (NSUInteger)1 );
     XCTAssertEqualObjects( self.purchaseRecord.purchasedProductIdentifiers.firstObject, identifier );
