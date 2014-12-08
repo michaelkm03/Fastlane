@@ -385,9 +385,15 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
             [locationDictionary setObject:mapLocation.administrativeArea forKey:(__bridge NSString *)kABPersonAddressStateKey];
         }
 
-        [locationDictionary setObject:[(NSLocale *)[NSLocale autoupdatingCurrentLocale] objectForKey:NSLocaleCountryCode] forKey:(__bridge NSString *)kABPersonAddressCountryCodeKey];
+        [locationDictionary setObject:[(NSLocale *)[NSLocale autoupdatingCurrentLocale] objectForKey:NSLocaleCountryCode]
+                               forKey:(__bridge NSString *)kABPersonAddressCountryCodeKey];
+        
         NSString *city = [locationDictionary valueForKey:@"City"];
         NSString *state = [locationDictionary valueForKey:@"State"];
+        if ((city == nil) || (state == nil))
+        {
+            return;
+        }
         self.locationTextField.text = [NSString stringWithFormat:@"%@, %@", city, state];
         self.registrationModel.locationText = self.locationTextField.text;
     }];
