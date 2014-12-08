@@ -10,10 +10,11 @@
 
 @implementation VBasicToolPickerCell
 
-- (void)setSelected:(BOOL)selected
+#pragma mark - VSharedCollectionReusableViewMethods
+
++ (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {
-    [super setSelected:selected];
-    self.contentView.backgroundColor = selected ? [UIColor lightGrayColor] : [UIColor clearColor];
+    return CGSizeMake(CGRectGetWidth(bounds), 44.0f);
 }
 
 @end

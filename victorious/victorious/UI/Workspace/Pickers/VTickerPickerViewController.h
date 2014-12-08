@@ -11,6 +11,6 @@
 #import "VHasManagedDependencies.h"
 #import "VToolPicker.h"
 
-@interface VToolPickerViewController : UICollectionViewController <VHasManagedDependancies, VToolPicker>
+@interface VTickerPickerViewController : UICollectionViewController <VHasManagedDependancies, VToolPicker>
 
 @end

@@ -5,7 +5,7 @@
 	<key>basic.crop</key>
 	<string>VCropWorkspaceToolViewController</string>
 	<key>vertical.picker</key>
-	<string>VToolPickerViewController</string>
+	<string>VTickerPickerViewController</string>
 	<key>filter.tool</key>
 	<string>VFilterWorkspaceTool</string>
 	<key>quote.tool</key>
