@@ -57,7 +57,7 @@
     
     self.purchaseManager = [VPurchaseManager sharedInstance];
     
-    self.product = [self.purchaseManager purchaseableProductForProductIdentifier:self.voteType.productIdentifier];
+    self.product = [self.purchaseManager purchaseableProductForProductIdenfitier:self.voteType.productIdentifier];
     
     self.creatorAvatarImageView.layer.cornerRadius = 17.0f; // Enough to make it a circle
     self.creatorAvatarImageView.layer.borderWidth = 1.0f;
