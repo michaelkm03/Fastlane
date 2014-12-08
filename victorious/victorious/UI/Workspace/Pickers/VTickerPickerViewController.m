@@ -104,8 +104,8 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     self.selectionIndicatorView.frame = [self selectionFrame];
     
     NSIndexPath *selectedIndexPath = [[self.collectionView indexPathsForSelectedItems] firstObject];
-    NSIndexPath *indexPathForPoint = [self.collectionView indexPathForItemAtPoint:CGPointMake(scrollView.contentOffset.x + 20,
-                                                                                              scrollView.contentOffset.y + 20)];
+    NSIndexPath *indexPathForPoint = [self.collectionView indexPathForItemAtPoint:CGPointMake(CGRectGetMidX(self.collectionView.bounds),
+                                                                                              self.collectionView.contentOffset.y + ([VBasicToolPickerCell desiredSizeWithCollectionViewBounds:self.collectionView.bounds].height / 2))];
     if ([indexPathForPoint compare:selectedIndexPath] == NSOrderedSame)
     {
         return;
@@ -115,8 +115,6 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
                                       animated:YES
                                 scrollPosition:UICollectionViewScrollPositionNone];
     [self notifyNewSelection];
-    
-
 }
 
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView
