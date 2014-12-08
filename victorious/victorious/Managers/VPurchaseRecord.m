@@ -14,6 +14,7 @@
 @property (nonatomic, readwrite) NSArray *purchasedProductIdentifiers;
 @property (nonatomic, strong) NSString *filepath;
 @property (nonatomic, readonly) NSString *absoluteFilepath;
+@property (nonatomic, readonly) NSString *deviceIdentifier;
 
 @end
 
@@ -26,6 +27,7 @@
     {
         NSParameterAssert( filepath != nil );
         _filepath = filepath;
+        _purchasedProductIdentifiers = @[];
     }
     return self;
 }
@@ -39,7 +41,7 @@
         return;
     }
     
-    self.purchasedProductIdentifiers = [(self.purchasedProductIdentifiers ?: @[]) arrayByAddingObject:productIdentifier];
+    self.purchasedProductIdentifiers = [self.purchasedProductIdentifiers arrayByAddingObject:productIdentifier];
     
     if ( ![self writeArray:self.purchasedProductIdentifiers toFileWithFilepath:self.absoluteFilepath] )
     {
@@ -51,6 +53,21 @@
 {
     self.purchasedProductIdentifiers = [self readFromFile:self.absoluteFilepath];
     return self.purchasedProductIdentifiers;
+}
+
+- (void)clear
+{
+    _purchasedProductIdentifiers = @[];
+    
+    NSError *error = nil;
+    BOOL isDirectory;
+    if ( [[NSFileManager defaultManager] fileExistsAtPath:self.absoluteFilepath isDirectory:&isDirectory] && !isDirectory )
+    {
+        if ( ![[NSFileManager defaultManager] removeItemAtPath:self.absoluteFilepath error:&error] )
+        {
+            VLog( @"Error deleting purchases record: %@", error.localizedDescription );
+        }
+    }
 }
 
 #pragma mark - Helpers
@@ -73,7 +90,7 @@
         return NO;
     }
     
-    unichar *key = [self generateKey];
+    unichar *key = [self generateKeyWithDeviceIdentifier:self.deviceIdentifier];
     NSData *encrypedData = [data encryptedDataWithAESKey:[NSData dataWithBytes:key length:16]];
     free( key );
     
@@ -89,7 +106,7 @@
         return [[NSArray alloc] init];
     }
     
-    unichar *key = [self generateKey];
+    unichar *key = [self generateKeyWithDeviceIdentifier:self.deviceIdentifier];
     NSData *decryptedData = [encryptedData decryptedDataWithAESKey:[NSData dataWithBytes:key length:16]];
     free( key );
     
@@ -123,8 +140,16 @@
     return compoundPath;
 }
 
-- (unichar *)generateKey
+- (NSString *)deviceIdentifier
 {
+    return [UIDevice currentDevice].identifierForVendor.UUIDString;
+}
+
+- (unichar *)generateKeyWithDeviceIdentifier:(NSString *)deviceIdentifier
+{
+    NSParameterAssert( deviceIdentifier != nil );
+    NSParameterAssert( deviceIdentifier.length >= 20 );
+    
     int indices[16] = {
         5,  4, 19, 13,
         5,  8,  7,  6,
@@ -135,7 +160,7 @@
     unichar *output = (unichar *)malloc( size );
     for ( NSUInteger i = 0; i < sizeof(indices) / sizeof(int); i++ )
     {
-        output[i] = (unichar)[[UIDevice currentDevice].identifierForVendor.UUIDString characterAtIndex:indices[i]];
+        output[i] = (unichar)[deviceIdentifier characterAtIndex:indices[i]];
     }
     return output;
 }

@@ -18,6 +18,20 @@
 @interface VPurchaseManager : NSObject
 
 /**
+ Returns YES if a products fetch request, purchase restore or purchase is in progress.
+ Proper state management in this class depends on only one request being active and will
+ throw an assertion if calling code tries to send another request of these kinds.  Make sure
+ this property returns NO before doing any of these things.
+ */
+@property (nonatomic, readonly) BOOL isPurchaseRequestActive;
+
+/**
+ Returns the number of items stored in the purchased record, i.e. how many In-App purchases
+ the user has made or restored on this device.
+ */
+@property (nonatomic, readonly) NSUInteger numberOfPurchasedItems;
+
+/**
  Returns the singleton instance.  For better or for worse, this manager should be
  a singleton because of the nature of StoreKit's transaction and product request queues.
  During development, some transactions will be left unfinished between app launches,
@@ -33,6 +47,7 @@
  Returns YES if productIdentifier is listed in the local purchased record.
  */
 - (BOOL)isProductIdentifierPurchased:(NSString *)productIdentifier;
+
 
 /**
  Begin the process of purchasing the supplied product as an In-App Purchase
@@ -81,12 +96,13 @@
  */
 - (VProduct *)purchaseableProductForProductIdentifier:(NSString *)productIdentifier;
 
+#ifndef V_NO_RESET_PURCHASES
+
 /**
- Returns YES if a products fetch request, purchase restore or purchase is in progress.
- Proper state management in this class depends on only one request being active and will
- throw an assertion if calling code tries to send another request of these kinds.  Make sure
- this property returns NO before doing any of these things.
+ For testing a debugging purposes, this will erase the local purchase record.
  */
-@property (nonatomic, readonly) BOOL isPurchaseRequestActive;
+- (void)resetPurchases;
+
+#endif
 
 @end

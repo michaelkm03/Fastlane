@@ -2,7 +2,7 @@
 //  VPurchaseRecordTests.m
 //  victorious
 //
-//  Created by Patrick Lynch on 12/7/14.
+//  Created by Patrick Lynch on 12/8/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
@@ -11,11 +11,16 @@
 
 #import "VPurchaseRecord.h"
 
-static NSString * const kUnitTestFilePath = @"unit.test.filepath";
+static NSString * const kTestFilePath = @"unit.test.filepath";
 
 @interface VPurchaseRecord (UnitTests)
 
+@property (nonatomic, readwrite) NSArray *purchasedProductIdentifiers;
+@property (nonatomic, strong) NSString *filepath;
 @property (nonatomic, readonly) NSString *absoluteFilepath;
+
+- (NSString *)getDocumentDirectoryPathWithRelativePath:(NSString *)path;
+- (unichar *)generateKeyWithDeviceIdentifier:(NSString *)deviceIdentifier;
 
 @end
 
@@ -31,36 +36,54 @@ static NSString * const kUnitTestFilePath = @"unit.test.filepath";
 {
     [super setUp];
     
-    self.purchaseRecord = [[VPurchaseRecord alloc] initWithRelativeFilePath:kUnitTestFilePath];
-    
-    // In case you want to look and verify for yourself:
-    NSLog( @"Unit test file path: %@", self.purchaseRecord.absoluteFilepath );
+    self.purchaseRecord = [[VPurchaseRecord alloc] initWithRelativeFilePath:kTestFilePath];
 }
 
 - (void)tearDown
 {
-    [[NSFileManager defaultManager] removeItemAtPath:self.purchaseRecord.absoluteFilepath error:nil];
-}
-
-- (void)testLoadEmpty
-{
-    [self.purchaseRecord loadPurchasedProductIdentifiers];
-    XCTAssertEqual( self.purchaseRecord.purchasedProductIdentifiers.count, (NSUInteger)0 );
-}
-
-- (void)testSaveAndReload
-{
-    NSString *identifier = @"test.product.identifier.0";
-    [self.purchaseRecord addProductIdentifier:identifier];
-    XCTAssertNotNil( self.purchaseRecord.purchasedProductIdentifiers);
-    XCTAssertEqual( self.purchaseRecord.purchasedProductIdentifiers.count, (NSUInteger)1 );
-    XCTAssertEqualObjects( self.purchaseRecord.purchasedProductIdentifiers.firstObject, identifier );
+    [super tearDown];
     
-    self.purchaseRecord = [[VPurchaseRecord alloc] initWithRelativeFilePath:kUnitTestFilePath];
-    XCTAssertEqual( self.purchaseRecord.purchasedProductIdentifiers.count, (NSUInteger)0 );
-    [self.purchaseRecord loadPurchasedProductIdentifiers];
+    [self.purchaseRecord clear];
+}
+
+- (void)testAbsoluteFilepath
+{
+    NSString *expected = [ self.purchaseRecord getDocumentDirectoryPathWithRelativePath:self.purchaseRecord.filepath];
+    XCTAssertEqualObjects( self.purchaseRecord.absoluteFilepath, expected );
+}
+
+- (void)testGenerateKeyError
+{
+    XCTAssertThrows( [self.purchaseRecord generateKeyWithDeviceIdentifier:@"abcdefg6789"],
+                    @"Device ID must be at least 20 chars long." );
+    XCTAssertThrows( [self.purchaseRecord generateKeyWithDeviceIdentifier:nil] );
+}
+
+- (void)testGenerateKey
+{
+    XCTAssertNoThrow( [self.purchaseRecord generateKeyWithDeviceIdentifier:@"abcdefghijklmnopqrstuvwxyz0123456789"] );
+}
+
+- (void)testReadAndWrite
+{
+    [self.purchaseRecord addProductIdentifier:@"product1"];
+    XCTAssert( [self.purchaseRecord.purchasedProductIdentifiers containsObject:@"product1"] );
     XCTAssertEqual( self.purchaseRecord.purchasedProductIdentifiers.count, (NSUInteger)1 );
-    XCTAssertEqualObjects( self.purchaseRecord.purchasedProductIdentifiers.firstObject, identifier );
+    
+    self.purchaseRecord = nil;
+    self.purchaseRecord = [[VPurchaseRecord alloc] initWithRelativeFilePath:kTestFilePath];
+    [self.purchaseRecord loadPurchasedProductIdentifiers];
+    XCTAssert( [self.purchaseRecord.purchasedProductIdentifiers containsObject:@"product1"] );
+    XCTAssertEqual( self.purchaseRecord.purchasedProductIdentifiers.count, (NSUInteger)1 );
+    
+    [self.purchaseRecord clear];
+    XCTAssertEqual( self.purchaseRecord.purchasedProductIdentifiers.count, (NSUInteger)0 );
+    
+    self.purchaseRecord = nil;
+    self.purchaseRecord = [[VPurchaseRecord alloc] initWithRelativeFilePath:kTestFilePath];
+    [self.purchaseRecord loadPurchasedProductIdentifiers];
+    XCTAssertEqual( self.purchaseRecord.purchasedProductIdentifiers.count, (NSUInteger)0 );
+    XCTAssertFalse( [self.purchaseRecord.purchasedProductIdentifiers containsObject:@"product1"] );
 }
 
 @end

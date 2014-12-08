@@ -26,21 +26,25 @@
 #import "VAutomation.h"
 #import "VNotificationSettingsViewController.h"
 #import "VButton.h"
+#import "VPurchaseManager.h"
 
 static const NSInteger kSettingsSectionIndex         = 0;
 static const NSInteger kChangePasswordIndex          = 0;
 static const NSInteger kChromecastButtonIndex        = 2;
 static const NSInteger kPushNotificationsButtonIndex = 3;
 static const NSInteger kServerEnvironmentButtonIndex = 4;
+static const NSInteger kResetPurchasesButtonIndex = 5;
 
 @interface VSettingsViewController ()   <MFMailComposeViewControllerDelegate, UIAlertViewDelegate>
 
 @property (weak, nonatomic) IBOutlet VButton *logoutButton;
 @property (weak, nonatomic) IBOutlet UITableViewCell *serverEnvironmentCell;
+@property (weak, nonatomic) IBOutlet UITableViewCell *resetPurchasesCell;
 
 @property (nonatomic, assign) BOOL    showChromeCastButton;
 @property (nonatomic, assign) BOOL    showEnvironmentSetting;
 @property (nonatomic, assign) BOOL    showPushNotificationSettings;
+@property (nonatomic, assign) BOOL    showPurchaseReset;
 
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *labels;
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *rightLabels;
@@ -93,10 +97,18 @@ static const NSInteger kServerEnvironmentButtonIndex = 4;
     
     self.serverEnvironmentCell.detailTextLabel.text = [[VObjectManager currentEnvironment] name];
     
+    [self updatePurchasesCount];
+    
 #ifdef V_NO_SWITCH_ENVIRONMENTS
     self.showEnvironmentSetting = NO;
 #else
     self.showEnvironmentSetting = YES;
+#endif
+    
+#ifdef V_NO_RESET_PURCHASES
+    self.showPurchaseReset = NO;
+#else
+    self.showPurchaseReset = YES;
 #endif
     
     self.showPushNotificationSettings = YES;
@@ -125,7 +137,6 @@ static const NSInteger kServerEnvironmentButtonIndex = 4;
 {
     return NO;
 }
-
 - (NSUInteger)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskPortrait;
@@ -136,12 +147,29 @@ static const NSInteger kServerEnvironmentButtonIndex = 4;
     return NO;
 }
 
+- (void)updatePurchasesCount
+{
+    self.resetPurchasesCell.detailTextLabel.text = @( [[VPurchaseManager sharedInstance] numberOfPurchasedItems] ).stringValue;
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (0 == indexPath.section && 1 == indexPath.row)
     {
         [self sendHelp:self];
     }
+    
+#ifndef V_NO_RESET_PURCHASES
+    if (kSettingsSectionIndex == indexPath.section && kResetPurchasesButtonIndex == indexPath.row)
+    {
+        if (self.showPurchaseReset)
+        {
+            [[VPurchaseManager sharedInstance] resetPurchases];
+            [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+            [self updatePurchasesCount];
+        }
+    }
+#endif
 }
 
 - (void)loginStatusDidChange:(NSNotification *)note
@@ -244,6 +272,17 @@ static const NSInteger kServerEnvironmentButtonIndex = 4;
     else if (kSettingsSectionIndex == indexPath.section && kPushNotificationsButtonIndex == indexPath.row)
     {
         if (self.showPushNotificationSettings && [VObjectManager sharedManager].mainUserLoggedIn)
+        {
+            return self.tableView.rowHeight;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+    else if (kSettingsSectionIndex == indexPath.section && kResetPurchasesButtonIndex == indexPath.row)
+    {
+        if (self.showPurchaseReset)
         {
             return self.tableView.rowHeight;
         }

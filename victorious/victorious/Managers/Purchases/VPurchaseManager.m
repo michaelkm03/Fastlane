@@ -71,6 +71,11 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
     return self.activeProductRequest != nil || self.activePurchase != nil || self.activePurchaseRestore != nil;
 }
 
+- (NSUInteger)numberOfPurchasedItems
+{
+    return self.purchaseRecord.purchasedProductIdentifiers.count;
+}
+
 - (BOOL)isProductIdentifierPurchased:(NSString *)productIdentifier
 {
     return [self.purchaseRecord.purchasedProductIdentifiers containsObject:productIdentifier];
@@ -172,6 +177,16 @@ return;
     request.delegate = self;
     [request start];
 }
+
+
+#ifndef V_NO_RESET_PURCHASES
+
+- (void)resetPurchases
+{
+    [self.purchaseRecord clear];
+}
+
+#endif
 
 #pragma mark - Purchase product helpers
 

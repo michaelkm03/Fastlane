@@ -28,6 +28,11 @@
 - (NSArray *)loadPurchasedProductIdentifiers;
 
 /**
+ Deletes the purchase record from disk.
+ */
+- (void)clear;
+
+/**
  All of the currently purchased product identifiers.  All other methods of this class
  will automatically read and write when necessary to keep this property up to date.
  */
