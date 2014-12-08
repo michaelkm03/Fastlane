@@ -79,17 +79,19 @@ static BOOL isRunningTests(void) __attribute__((const));
     [[VTrackingManager sharedInstance] addDelegate:[[VGoogleAnalyticsTracking alloc] init]];
     
     NSURL *openURL = launchOptions[UIApplicationLaunchOptionsURLKey];
-    if (openURL)
+    
+    if ( openURL != nil )
     {
-        [[VDeeplinkManager sharedManager] handleOpenURL:openURL];
+        [[[VDeeplinkManager alloc] initWithURL:openURL] performNavigation];
     }
     
     [[[VFirstInstallManager alloc] init] reportFirstInstall];
     
     NSString *pushNotificationDeeplink = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey][@"deeplink"];
-    if (pushNotificationDeeplink)
+    
+    if ( pushNotificationDeeplink != nil )
     {
-        [[VDeeplinkManager sharedManager] handleOpenURL:[NSURL URLWithString:pushNotificationDeeplink]];
+        [[[VDeeplinkManager alloc] initWithURL:[NSURL URLWithString:pushNotificationDeeplink]] performNavigation];
     }
     
     return YES;
@@ -98,9 +100,19 @@ static BOOL isRunningTests(void) __attribute__((const));
 - (void)application:(UIApplication *)app didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
     NSString *pushNotificationDeeplink = userInfo[@"deeplink"];
-    if ([UIApplication sharedApplication].applicationState != UIApplicationStateActive && pushNotificationDeeplink)
+    
+    if ( pushNotificationDeeplink != nil )
     {
-        [[VDeeplinkManager sharedManager] handleOpenURL:[NSURL URLWithString:pushNotificationDeeplink]];
+        VDeeplinkManager *deeplinkManager = [[VDeeplinkManager alloc] initWithURL:[NSURL URLWithString:pushNotificationDeeplink]];
+        
+        if ( [UIApplication sharedApplication].applicationState != UIApplicationStateActive )
+        {
+            [deeplinkManager performNavigation];
+        }
+        else
+        {
+            [deeplinkManager postNotification];
+        }
     }
 }
 
@@ -123,7 +135,7 @@ static BOOL isRunningTests(void) __attribute__((const));
         return YES;
     }
     
-    [[VDeeplinkManager sharedManager] handleOpenURL:url];
+    [[[VDeeplinkManager alloc] initWithURL:url] performNavigation];
     return YES;
 }
 
@@ -148,14 +160,24 @@ static BOOL isRunningTests(void) __attribute__((const));
     [[VThemeManager sharedThemeManager] updateToNewTheme];
     [[VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext saveToPersistentStore:nil];
     
-    NSDictionary *params = @{ VTrackingKeyUrls : [VSettingManager sharedManager].applicationTracking.appEnterBackground };
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventApplicationDidEnterBackground parameters:params];
+    id appEnterBackgroundTracking = [VSettingManager sharedManager].applicationTracking.appEnterBackground;
+    
+    if ( appEnterBackgroundTracking != nil )
+    {
+        NSDictionary *params = @{ VTrackingKeyUrls : appEnterBackgroundTracking };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventApplicationDidEnterBackground parameters:params];
+    }
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
-    NSDictionary *params = @{ VTrackingKeyUrls : [VSettingManager sharedManager].applicationTracking.appEnterForeground };
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventApplicationDidEnterForeground parameters:params];
+    id appEnterForegroundTracking = [VSettingManager sharedManager].applicationTracking.appEnterForeground;
+    
+    if ( appEnterForegroundTracking != nil )
+    {
+        NSDictionary *params = @{ VTrackingKeyUrls : appEnterForegroundTracking };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventApplicationDidEnterForeground parameters:params];
+    }
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
@@ -169,6 +191,24 @@ static BOOL isRunningTests(void) __attribute__((const));
     [[VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext saveToPersistentStore:nil];
 }
 
+#pragma mark - NSNotification handlers
+
+- (void)onInitResponse:(NSNotification *)notification
+{
+    VTracking *applicationTracking = [VSettingManager sharedManager].applicationTracking;
+    
+    if ( applicationTracking != nil )
+    {
+        NSDictionary *params = @{ VTrackingKeyUrls : applicationTracking };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventApplicationDidLaunch parameters:params];
+    }
+    
+    // Only receive this once
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kInitResponseNotification object:nil];
+}
+
+@end
+
 #pragma mark -
 
 static BOOL isRunningTests(void)
@@ -177,14 +217,3 @@ static BOOL isRunningTests(void)
     NSString *injectBundle = environment[@"XCInjectBundle"];
     return [[injectBundle pathExtension] isEqualToString:@"xctest"];
 }
-
-- (void)onInitResponse:(NSNotification *)notification
-{
-    NSDictionary *params = @{ VTrackingKeyUrls : [VSettingManager sharedManager].applicationTracking };
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventApplicationDidLaunch parameters:params];
-    
-    // Only receive this once
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:kInitResponseNotification object:nil];
-}
-
-@end

@@ -26,6 +26,7 @@
                                              failBlock:(VFailBlock)failed
 {
     NSString *apnsString = [NSString v_stringWithData:apnsToken];
+    VLog(@"Push Notification Token: %@", apnsString);
     return [self POST:@"/api/device/register_push_id"
                object:nil
            parameters:@{ @"push_id": apnsString }

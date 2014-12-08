@@ -23,6 +23,9 @@
         "id": "ae742d8a-aaea-43db-b99a-707d72b147cb",
         "name": "testNewMethod"
     },
+    "testProp": {
+        "name": "testProperty"
+    },
     "deep": {
         "name": "deepReference",
         "thing": [{

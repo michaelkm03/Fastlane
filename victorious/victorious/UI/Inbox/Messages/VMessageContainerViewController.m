@@ -150,6 +150,16 @@
     }
 }
 
+- (void)setMessageCountCoordinator:(VUnreadMessageCountCoordinator *)messageCountCoordinator
+{
+    _messageCountCoordinator = messageCountCoordinator;
+    
+    if ( [self.conversationTableViewController isKindOfClass:[VMessageViewController class]] )
+    {
+        [(VMessageViewController *)self.conversationTableViewController setMessageCountCoordinator:messageCountCoordinator];
+    }
+}
+
 - (BOOL)prefersStatusBarHidden
 {
     return YES;
@@ -159,7 +169,9 @@
 {
     if (_conversationTableViewController == nil)
     {
-        _conversationTableViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"messages"];
+        VMessageViewController *messageViewController = (VMessageViewController *)[self.storyboard instantiateViewControllerWithIdentifier:@"messages"];
+        messageViewController.messageCountCoordinator = self.messageCountCoordinator;
+        _conversationTableViewController = messageViewController;
     }
     
     return _conversationTableViewController;

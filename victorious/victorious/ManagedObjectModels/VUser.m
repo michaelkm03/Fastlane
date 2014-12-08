@@ -13,7 +13,6 @@
 #import "VNotification.h"
 #import "VPollResult.h"
 #import "VSequence.h"
-#import "VUnreadConversation.h"
 #import "VUser.h"
 
 
@@ -40,7 +39,6 @@
 @dynamic postedSequences;
 @dynamic remixedSequences;
 @dynamic repostedSequences;
-@dynamic unreadConversation;
 @dynamic status;
 @dynamic isFollowing;
 @dynamic numberOfFollowers;

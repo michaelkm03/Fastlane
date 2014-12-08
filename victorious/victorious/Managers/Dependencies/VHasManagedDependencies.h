@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#include <Foundation/Foundation.h>
+
 @class VDependencyManager;
 
 /**
@@ -14,7 +16,7 @@
  */
 @protocol VHasManagedDependancies <NSObject>
 
-@optional // One of the following two methods should be implemented
+@optional // One or more of the following three methods should be implemented.
 
 /**
  Initializes the receiver with an instance of VDependencyManager
@@ -25,5 +27,10 @@
  Creates a new instance of the receiver by passing in an instance of VDependencyManager
  */
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager;
+
+/**
+ Provides the receiver with an instance of VDependencyManager
+ */
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager;
 
 @end
