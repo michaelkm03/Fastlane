@@ -71,8 +71,12 @@
         // This is also called from VSettingsManager during app initialization, so ideally
         // most of the purchaseable products are already fetched from the App Store.
         // If not, we'll cache them now.
-        NSArray *productIds = [VVoteType productIdentifiersFromVoteTypes:voteTypes];
-        [self.purchaseManager fetchProductsWithIdentifiers:productIds success:nil failure:nil];
+        NSArray *productIdentifiers = [VVoteType productIdentifiersFromVoteTypes:voteTypes];
+        
+        if ( !self.purchaseManager.isPurchaseRequestActive )
+        {
+            [self.purchaseManager fetchProductsWithIdentifiers:productIdentifiers success:nil failure:nil];
+        }
         
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(updateData)

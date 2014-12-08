@@ -12,7 +12,7 @@
 #import "VVoteType+Fetcher.h"
 #import "VPurchaseManager.h"
 
-#define OVERWRITE_WITH_PAID_BALLISTICS 1
+#define OVERWRITE_WITH_PAID_BALLISTICS 0
 
 NSString * const VVoteSettingsDidUpdateNotification = @"VVoteSettingsDidUpdateNotification";
 NSString * const VVoteSettingsDidUpdateKeyVoteType = @"VVoteSettingsDidUpdateKeyVoteType";
@@ -78,7 +78,11 @@ NSString * const VVoteSettingsDidUpdateKeyVoteType = @"VVoteSettingsDidUpdateKey
     }
     
     NSArray *productIdentifiers = [VVoteType productIdentifiersFromVoteTypes:self.voteTypes];
-    [[VPurchaseManager sharedInstance] fetchProductsWithIdentifiers:productIdentifiers success:nil failure:nil];
+    VPurchaseManager *purchaseManager = [VPurchaseManager sharedInstance];
+    if ( !purchaseManager.isPurchaseRequestActive )
+    {
+        [purchaseManager fetchProductsWithIdentifiers:productIdentifiers success:nil failure:nil];
+    }
 }
 
 @end

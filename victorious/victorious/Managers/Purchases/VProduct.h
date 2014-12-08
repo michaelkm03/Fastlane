@@ -21,6 +21,6 @@
 @property (nonatomic, readonly) NSString *localizedTitle;
 @property (nonatomic, readonly) NSString *productIdentifier;
 
-@property (nonatomic, strong) SKProduct *storeKitProduct;
+@property (nonatomic, readonly) SKProduct *storeKitProduct;
 
 @end

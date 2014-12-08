@@ -13,18 +13,18 @@ typedef void (^VProductsRequestSuccessBlock) (NSArray *products);
 
 @interface VProductsRequest : NSObject
 
-- (instancetype)initWithProductIdentifiers:(NSArray *)productIdenfiters
+@property (nonatomic, readonly) NSArray *productIdentifiers;
+@property (nonatomic, readonly) VProductsRequestFailureBlock failureCallback;
+@property (nonatomic, readonly) VProductsRequestSuccessBlock successCallback;
+@property (nonatomic, readonly, assign) BOOL isFetchComplete;
+@property (nonatomic, strong) NSMutableArray *products;
+
+- (instancetype)initWithProductIdentifiers:(NSArray *)productIdentifiers
                                    success:(VProductsRequestSuccessBlock)successCallback
                                    failure:(VProductsRequestFailureBlock)failureCallback;
 
 - (void)productFetched:(VProduct *)product;
 
 - (void)productIdentifierFailedToFetch:(NSString *)productIdentifier;
-
-@property (nonatomic, readonly) NSArray *productIdentifiers;
-@property (nonatomic, readonly) VProductsRequestFailureBlock failureCallback;
-@property (nonatomic, readonly) VProductsRequestSuccessBlock successCallback;
-@property (nonatomic, readonly, assign) BOOL isFetchComplete;
-@property (nonatomic, strong) NSMutableArray *products;
 
 @end

@@ -70,7 +70,7 @@
  be called first in order to provide VProduct objects, which are required to make a
  purchase of the corresponding product on iTunesConnect.
  */
-- (void)fetchProductsWithIdentifiers:(NSArray *)productIdenfiters
+- (void)fetchProductsWithIdentifiers:(NSArray *)productIdentifiers
                              success:(VProductsRequestSuccessBlock)successCallback
                              failure:(VProductsRequestFailureBlock)failureCallback;
 
@@ -80,5 +80,13 @@
  fetchProductsWithIdentifiers:success:failure.
  */
 - (VProduct *)purchaseableProductForProductIdenfitier:(NSString *)productIdentifier;
+
+/**
+ Returns YES if a products fetch request, purchase restore or purchase is in progress.
+ Proper state management in this class depends on only one request being active and will
+ throw an assertion if calling code tries to send another request of these kinds.  Make sure
+ this property returns NO before doing any of these things.
+ */
+@property (nonatomic, readonly) BOOL isPurchaseRequestActive;
 
 @end

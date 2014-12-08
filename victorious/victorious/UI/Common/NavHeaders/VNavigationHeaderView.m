@@ -194,22 +194,4 @@
     return self.addButton;
 }
 
-- (UIButton *)setLeftButtonImage:(UIImage *)image withAction:(SEL)action onTarget:(id)target
-{
-    self.menuButton.hidden = !image;
-    [self.menuButton setTitle:@"" forState:UIControlStateNormal];
-    [self.menuButton setImage:[image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
-    [self.menuButton addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
-    return self.menuButton;
-}
-
-- (UIButton *)setLeftButtonTitle:(NSString *)title withAction:(SEL)action onTarget:(id)target
-{
-    self.menuButton.hidden = !title;
-    [self.menuButton setImage:nil forState:UIControlStateNormal];
-    [self.menuButton setTitle:title forState:UIControlStateNormal];
-    [self.menuButton addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
-    return self.menuButton;
-}
-
 @end

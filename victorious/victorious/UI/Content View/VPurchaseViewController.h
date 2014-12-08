@@ -13,10 +13,18 @@
 
 + (VPurchaseViewController *)instantiateFromStoryboard:(NSString *)storyboardName withVoteType:(VVoteType *)voteType;
 
+/**
+ The vote type that a user is trying to unlock.  This is where the product identifier
+ used to make purchases in the App Store comes from.  This property should be set immediately after
+ initialization.  The convenience initializer instantiateFromStoryboard:withVoteType will handle
+ setting this using the supplied vote type parameter.
+ */
 @property (nonatomic, strong) VVoteType *voteType;
 
-// These are public so that they can be accessed by the +Transitions category for animations
+/** Exposing public property so that external classes/categories can animate it */
 @property (weak, nonatomic) IBOutlet UIView *backgroundScreen;
+
+/** Exposing public property so that external classes/categories can animate it */
 @property (weak, nonatomic) IBOutlet UIView *modalContainer;
 
 @end

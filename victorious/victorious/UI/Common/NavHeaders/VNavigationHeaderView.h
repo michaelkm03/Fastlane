@@ -87,20 +87,4 @@
                  withAction:(SEL)action
                    onTarget:(id)target;
 
-/**
- *  Sets the title for the left button.  If the title is nil, it hides the button.  If its not nil, it unhides the button.
- *
- */
-- (UIButton *)setLeftButtonImage:(UIImage *)image
-                      withAction:(SEL)action
-                        onTarget:(id)target;
-
-/**
- *  Sets the title for the left button.  If the title is nil, it hides the button.  If its not nil, it unhides the button.
- *
- */
-- (UIButton *)setLeftButtonTitle:(NSString *)title
-                      withAction:(SEL)action
-                        onTarget:(id)target;
-
 @end

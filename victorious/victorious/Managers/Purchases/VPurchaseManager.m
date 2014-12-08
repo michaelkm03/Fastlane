@@ -66,6 +66,11 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
 
 #pragma mark - Primary public methods
 
+- (BOOL)isPurchaseRequestActive
+{
+    return self.activeProductRequest != nil || self.activePurchase != nil || self.activePurchaseRestore != nil;
+}
+
 - (BOOL)isProductIdentifierPurchased:(NSString *)productIdentifier
 {
     return [self.purchaseRecord.purchasedProductIdentifiers containsObject:productIdentifier];
@@ -79,12 +84,7 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
 
 - (void)purchaseProduct:(VProduct *)product success:(VPurchaseSuccessBlock)successCallback failure:(VPurchaseFailBlock)failureCallback
 {
-    if ( product == nil )
-    {
-        NSString *message = NSLocalizedString( @"ProductsRequestError", nil);
-        failureCallback( [NSError errorWithDomain:message code:-1 userInfo:@{ NSLocalizedDescriptionKey : message }] );
-        return;
-    }
+    NSAssert( !self.isPurchaseRequestActive, @"A purchase is already in progress." );
     
 #if SHOULD_SIMULATE_ACTIONS
     self.activePurchase = [[VPurchase alloc] initWithProduct:[[VProduct alloc] init] success:successCallback failure:failureCallback];
@@ -107,11 +107,7 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
 
 - (void)restorePurchasesSuccess:(VPurchaseSuccessBlock)successCallback failure:(VPurchaseFailBlock)failureCallback
 {
-    if ( self.activePurchaseRestore != nil )
-    {
-        // Do not allow two product requests to occur
-        return;
-    }
+    NSAssert( !self.isPurchaseRequestActive, @"A purchase restore is already in progress." );
     
     self.activePurchaseRestore = [[VPurchase alloc] initWithSuccess:successCallback failure:failureCallback];
     
@@ -130,22 +126,18 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
     [[SKPaymentQueue defaultQueue] restoreCompletedTransactions];
 }
 
-- (void)fetchProductsWithIdentifiers:(NSArray *)productIdenfiters
+- (void)fetchProductsWithIdentifiers:(NSArray *)productIdentifiers
                              success:(VProductsRequestSuccessBlock)successCallback
                              failure:(VProductsRequestFailureBlock)failureCallback
 {
-    if ( self.activeProductRequest != nil )
-    {
-        // Do not allow two product requests to occur
-        return;
-    }
+    NSAssert( !self.isPurchaseRequestActive, @"A products fetch is already in progress." );
     
-    NSArray *uncachedProductIndentifiers = [self productIdentifiersFilteredForUncachedProducts:productIdenfiters];
+    NSArray *uncachedProductIndentifiers = [self productIdentifiersFilteredForUncachedProducts:productIdentifiers];
     if ( uncachedProductIndentifiers == nil || uncachedProductIndentifiers.count == 0 )
     {
         if ( successCallback != nil )
         {
-            NSArray *products = [[self.cache purchaseableProducts] objectsForKeys:productIdenfiters];
+            NSArray *products = [[self.cache purchaseableProducts] objectsForKeys:productIdentifiers];
             successCallback( products );
         }
         return;
