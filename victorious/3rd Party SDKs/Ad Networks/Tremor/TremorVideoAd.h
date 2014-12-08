@@ -89,6 +89,11 @@ typedef enum  {
 @optional
 - (void)didAdComplete;
 - (void)didAdComplete:(BOOL)adCompleted;
+
+- (void)willLeaveApplicaton;
+- (void)willPresentInterstitial;
+- (void)willDismissInterstitial;
+
 @end
 
 
@@ -118,4 +123,12 @@ typedef enum  {
 + (void)handleAnalyticsEvent:(NSString *)event;
 + (void)handleAnalyticsEvent:(NSString *)event parameters:(NSDictionary *)parameters;
 + (void)handleAnalyticsStateChange:(NSString *)newState;
+
++ (BOOL)isAdReady;
++ (BOOL)isAdReadyWithAppID:(NSString *)appID;
++ (BOOL)isAdReadyForFrame;
++ (BOOL)isAdReadyForFrameWithAppID:(NSString *)appID;
++ (void)registerAvailableImpression;
++ (void)registerAvailableImpressionWithAppID:(NSString *)appID;
+
 @end
