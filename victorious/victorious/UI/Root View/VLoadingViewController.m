@@ -235,19 +235,17 @@ static const NSUInteger kRetryAttempts = 5;
         
         for (i = 0; i < adSystems.count; i++)
         {
-            //NSDictionary *item = adSystems[i];
-            //VMonetizationPartner adSystem = (VMonetizationPartner)[item valueForKey:@"ad_system"];
-            VMonetizationPartner adSystem = VMonetizationPartnerTremor;
+            NSDictionary *item = adSystems[i];
+            NSInteger adSystem = [[item valueForKey:@"ad_system"] integerValue];
             
             switch (adSystem)
             {
                 case VMonetizationPartnerTremor:
-                    //appID = [item valueForKey:@"tremor_app_id"];
-                    appID = @"test";
+                    appID = [item valueForKey:@"tremor_app_id"];
                     
+                    // If we have an appID, seed the Tremor Ad Network
                     if (appID)
                     {
-                        // Seed the Tremor Ad Network
                         [TremorVideoAd initWithAppID:appID];
                         [TremorVideoAd start];
                     }

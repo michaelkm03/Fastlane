@@ -171,8 +171,7 @@ static NSString * const kPreferedMimeType = @"application/x-mpegURL";
     // Grab the preroll
     VAdBreakFallback *breakItem = [self.adChain objectAtIndex:(long)self.currentAdChainIndex];
     int adSystemPartner = [[breakItem adSystem] intValue];
-#warning Remove this after testing
-    self.monetizationPartner = VMonetizationPartnerTremor;
+    self.monetizationPartner = adSystemPartner;
     self.monetizationDetails = self.adChain;
     self.hasCreatedAdChain = YES;
     
