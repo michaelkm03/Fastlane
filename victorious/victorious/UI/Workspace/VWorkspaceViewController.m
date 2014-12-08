@@ -49,6 +49,11 @@
     return workspaceViewController;
 }
 
+- (void)dealloc
+{
+    
+}
+
 #pragma mark - UIViewController
 
 - (BOOL)prefersStatusBarHidden

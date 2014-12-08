@@ -9,8 +9,6 @@
 #import "VTickerPickerViewController.h"
 #import "VBasicToolPickerCell.h"
 
-@import AudioToolbox;
-
 @interface VTickerPickerViewController () <UICollectionViewDelegateFlowLayout>
 
 @property (nonatomic, strong) UIView *selectionIndicatorView;
@@ -155,13 +153,6 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     if (self.onToolSelection)
     {
-        NSURL *fileURL = [NSURL URLWithString:@"/System/Library/Audio/UISounds/Tock.caf"]; // see list below
-        SystemSoundID soundID;
-        CFURLRef cfFileURL = (__bridge_retained CFURLRef)fileURL;
-        AudioServicesCreateSystemSoundID(cfFileURL, &soundID);
-        AudioServicesPlaySystemSound(soundID);
-        CFRelease(cfFileURL);
-
         self.onToolSelection([self selectedTool]);
     }
 }
