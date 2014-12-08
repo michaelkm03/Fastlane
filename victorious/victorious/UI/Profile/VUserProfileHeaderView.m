@@ -94,20 +94,18 @@ static void * VProfileHeaderContext = &VProfileHeaderContext;
     {
         self.taglineLabel.text = @"";
     }
-        
-    __block VLargeNumberFormatter *largeNumberFormatter = [[VLargeNumberFormatter alloc] init];
     
     [[VObjectManager sharedManager] countOfFollowsForUser:self.user
                                              successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-     {
-         self.followersLabel.text = [largeNumberFormatter stringForInteger:[resultObjects[0] integerValue]];
-         self.followingLabel.text = [largeNumberFormatter stringForInteger:[resultObjects[1] integerValue]];
-     }
+    {
+        self.numberOfFollowers = [resultObjects[0] integerValue];
+        self.numberOfFollowing = [resultObjects[1] integerValue];
+    }
                                                 failBlock:^(NSOperation *operation, NSError *error)
-     {
-         self.followersLabel.text = [largeNumberFormatter stringForInteger:0];
-         self.followingLabel.text = [largeNumberFormatter stringForInteger:0];
-     }];
+    {
+        self.numberOfFollowers = 0;
+        self.numberOfFollowing = 0;
+    }];
     
     if (_user.remoteId.integerValue == [VObjectManager sharedManager].mainUser.remoteId.integerValue)
     {
@@ -138,6 +136,18 @@ static void * VProfileHeaderContext = &VProfileHeaderContext;
             self.editProfileButton.selected = NO;
         }
     }
+}
+
+- (void)setNumberOfFollowers:(NSInteger)numberOfFollowers
+{
+    _numberOfFollowers = numberOfFollowers;
+    self.followersLabel.text = [[[VLargeNumberFormatter alloc] init] stringForInteger:numberOfFollowers];
+}
+
+- (void)setNumberOfFollowing:(NSInteger)numberOfFollowing
+{
+    _numberOfFollowing = numberOfFollowing;
+    self.followingLabel.text = [[[VLargeNumberFormatter alloc] init] stringForInteger:numberOfFollowing];
 }
 
 - (IBAction)pressedEditProfile:(id)sender
