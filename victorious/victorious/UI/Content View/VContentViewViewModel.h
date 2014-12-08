@@ -9,7 +9,7 @@
 #import "VSequence.h"
 
 #import "VRealtimeCommentsViewModel.h"
-#import "VVideoCellViewModel.h"
+#import "VAdViewController.h"
 
 #import "VExperienceEnhancerController.h"
 

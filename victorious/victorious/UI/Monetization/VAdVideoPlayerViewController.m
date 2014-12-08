@@ -11,6 +11,7 @@
 #import "VAdViewController.h"
 #import "VLiveRailAdViewController.h"
 #import "VOpenXAdViewController.h"
+#import "VTremorAdViewController.h"
 #import "VSettingManager.h"
 
 #define EnableLiveRailsLogging 0 // Set to "1" to see LiveRails ad server logging, but please remember to set it back to "0" before committing your changes.
@@ -20,6 +21,7 @@
 @property (nonatomic, assign) BOOL adViewAppeared;
 @property (nonatomic, strong) VAdViewController *adViewController;
 @property (nonatomic, readwrite) BOOL adPlaying;
+@property (nonatomic, strong) NSArray *adDetails;
 
 @end
 
@@ -41,13 +43,13 @@
     
     self.view.backgroundColor = [[VSettingManager sharedManager] settingEnabledForKey:VExperimentsClearVideoBackground] ? [UIColor clearColor] : [UIColor blackColor];
 
-    [self.adViewController startAdManager];
 }
 
 #pragma mark - Monetization setter
 
 - (void)assignMonetizationPartner:(VMonetizationPartner)monetizationPartner withDetails:(NSArray *)details
 {
+    self.adDetails = details;
     _monetizationPartner = monetizationPartner;
     
     switch (_monetizationPartner)
@@ -58,19 +60,29 @@
             
         case VMonetizationPartnerOpenX:
             self.adViewController = [[VOpenXAdViewController alloc] initWithNibName:nil bundle:nil];
-        
+            break;
+            
+        case VMonetizationPartnerTremor:
+            self.adViewController = [[VTremorAdViewController alloc] initWithNibName:nil bundle:nil];
+            break;
+            
         default:
             break;
     }
-    self.adViewController.delegate = self;
-    self.adViewController.adServerMonetizationDetails = details;
-    self.adViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    self.adViewController.view.frame = CGRectMake(0.0f, 40.0f, 320.0f, 280.0f);
 }
 
 - (void)start
 {
+    self.adViewController.delegate = self;
+    self.adViewController.adServerMonetizationDetails = self.adDetails;
+    self.adViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    self.adViewController.view.frame = CGRectMake(0.0f, 40.0f, 320.0f, 280.0f);
+    [self addChildViewController:self.adViewController];
     [self.view addSubview:self.adViewController.view];
+    [self.adViewController didMoveToParentViewController:self];
+    
+    // Start the Ad Manager
+    [self.adViewController startAdManager];
 }
 
 #pragma mark - VAdViewControllerDelegate
@@ -82,16 +94,32 @@
 
 - (void)adDidFinishForAdViewController:(VAdViewController *)adViewController
 {
-    NSLog(@"\n\nAd playback finished in VAdVideoPlayerViewController");
+    // Set ad playback flag
+    self.adPlaying = NO;
     
-    self.adPlaying = adViewController.isAdPlaying;
+    // Remove the adViewController from the view hierarchy
+    [self.adViewController willMoveToParentViewController:nil];
+    [self.adViewController.view removeFromSuperview];
+    [self.adViewController removeFromParentViewController];
+    
+    // Go to content video
     [self.delegate adDidFinishForAdVideoPlayerViewController:self];
 }
 
 // Optional delegate methods
 - (void)adHadErrorInAdViewController:(VAdViewController *)adViewController
 {
-    self.adPlaying = adViewController.isAdPlaying;
+    // Set ad playback flag
+    self.adPlaying = NO;
+
+    // Remove the adViewController from the view hierarchy
+    [self.adViewController willMoveToParentViewController:nil];
+    [self.adViewController.view removeFromSuperview];
+    [self.adViewController removeFromParentViewController];
+    
+    // Set ad playback flag
+    self.adPlaying = NO;
+
     if ([self.delegate respondsToSelector:@selector(adHadErrorForAdVideoPlayerViewController:)])
     {
         [self.delegate adHadErrorForAdVideoPlayerViewController:self];
