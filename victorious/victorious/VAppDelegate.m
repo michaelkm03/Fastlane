@@ -34,8 +34,6 @@
 #import "VGoogleAnalyticsTracking.h"
 #import "VFirstInstallManager.h"
 
-#import "TremorVideoAd.h"
-
 @import AVFoundation;
 @import MediaPlayer;
 @import CoreLocation;
