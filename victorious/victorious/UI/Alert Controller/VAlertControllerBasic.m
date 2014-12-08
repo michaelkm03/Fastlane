@@ -72,9 +72,11 @@
 
 - (UIActionSheet *)actionSheet
 {
+#ifndef NS_BLOCK_ASSERTIONS
     BOOL isStyleValid = self.style == VAlertControllerStyleActionSheet;
     BOOL isContentValid = self.cancelAction != nil || self.destructiveAction != nil  || self.defaultActions.count > 0;
     NSParameterAssert( isStyleValid && isContentValid );
+#endif
     
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:self.title
                                                     cancelButtonTitle:nil
@@ -112,9 +114,11 @@
 
 - (UIAlertView *)alertView
 {
+#ifndef NS_BLOCK_ASSERTIONS
     BOOL isStyleValid = self.style == VAlertControllerStyleAlert;
     BOOL isContentValid = self.cancelAction != nil || self.defaultActions.count > 0;
     NSParameterAssert( isStyleValid && isContentValid );
+#endif
     
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:self.title
                                                         message:self.message

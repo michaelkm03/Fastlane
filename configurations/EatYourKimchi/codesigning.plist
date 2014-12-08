@@ -6,15 +6,21 @@
     <dict>
         <key>Staging</key>
         <string>EatYourKimchi Staging Ad-Hoc Distribution</string>
+        <key>QA</key>
+        <string>EatYourKimchi QA Ad-Hoc Distribution</string>
     </dict>
     <key>SigningIdentities</key>
     <dict>
         <key>Staging</key>
         <string>iPhone Distribution: Simon Stawski (KYRQV9CPB2)</string>
+        <key>QA</key>
+        <string>iPhone Distribution: Simon Stawski (KYRQV9CPB2)</string>
     </dict>
     <key>DevAccounts</key>
     <dict>
         <key>Staging</key>
+        <string>eatyourkimchi@getappsubmit.com</string>
+        <key>QA</key>
         <string>eatyourkimchi@getappsubmit.com</string>
     </dict>
 </dict>

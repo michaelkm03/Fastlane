@@ -94,10 +94,14 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
     
     self.usernameTextField.delegate = self;
     self.usernameTextField.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
+    
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     if (![self.profile.name isEqualToString:kNoUserName])
     {
         self.usernameTextField.text = self.profile.name;
     }
+#pragma clang diagnostic pop
     self.usernameTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.usernameTextField.placeholder attributes:@{NSForegroundColorAttributeName :[UIColor colorWithWhite:0.355 alpha:1.000]}];
 
     
@@ -381,9 +385,15 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
             [locationDictionary setObject:mapLocation.administrativeArea forKey:(__bridge NSString *)kABPersonAddressStateKey];
         }
 
-        [locationDictionary setObject:[(NSLocale *)[NSLocale autoupdatingCurrentLocale] objectForKey:NSLocaleCountryCode] forKey:(__bridge NSString *)kABPersonAddressCountryCodeKey];
+        [locationDictionary setObject:[(NSLocale *)[NSLocale autoupdatingCurrentLocale] objectForKey:NSLocaleCountryCode]
+                               forKey:(__bridge NSString *)kABPersonAddressCountryCodeKey];
+        
         NSString *city = [locationDictionary valueForKey:@"City"];
         NSString *state = [locationDictionary valueForKey:@"State"];
+        if ((city == nil) || (state == nil))
+        {
+            return;
+        }
         self.locationTextField.text = [NSString stringWithFormat:@"%@, %@", city, state];
         self.registrationModel.locationText = self.locationTextField.text;
     }];

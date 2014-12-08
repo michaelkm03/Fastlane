@@ -2,7 +2,7 @@
 //  VAdBreakFallback.h
 //  victorious
 //
-//  Created by Lawrence Leach on 11/14/14.
+//  Created by Lawrence Leach on 12/3/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
@@ -17,6 +17,7 @@
 @property (nonatomic, retain) NSString * adTag;
 @property (nonatomic, retain) NSString * publisherId;
 @property (nonatomic, retain) NSNumber * timeout;
+@property (nonatomic, retain) NSString * tremorAppId;
 @property (nonatomic, retain) VAdBreak *adbreak;
 
 @end
