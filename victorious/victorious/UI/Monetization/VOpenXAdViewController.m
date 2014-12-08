@@ -60,6 +60,11 @@
     [super viewDidAppear:animated];
 }
 
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+}
+
 - (void)setVastTag:(NSString *)vastTag
 {
 #if DEBUG && EnableOpenXLogging

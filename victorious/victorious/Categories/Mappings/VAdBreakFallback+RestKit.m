@@ -23,6 +23,7 @@
                                   @"ad_tag" : VSelectorName(adTag),
                                   @"timeout" : VSelectorName(timeout),
                                   @"publisher_id": VSelectorName(publisherId),
+                                  @"tremor_app_id": VSelectorName(tremorAppId),
                                   };
     
     RKEntityMapping *mapping = [RKEntityMapping

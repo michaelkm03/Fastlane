@@ -11,6 +11,9 @@
 
 @class VAdVideoPlayerViewController;
 
+/**
+ Reports on ad playback events
+ */
 @protocol VAdVideoPlayerViewControllerDelegate <NSObject>
 
 @required
@@ -27,9 +30,11 @@
 
 @end
 
-
 @interface VAdVideoPlayerViewController : UIViewController
 
+/**
+ Boolean that reports if an ad is currently playing
+ */
 @property (nonatomic, readonly) BOOL adPlaying; ///< YES if ad video is playing
 
 /**
@@ -46,12 +51,12 @@
  Sets the monetization type and options for the Ad Video Player
  
  @param monetizationPartner enum value for which ad network to use
- @param options             Dictionary of keys/values for setting ad display options and parameters
+ @param options             Array of keys/values for setting ad display options and parameters
  */
 - (void)assignMonetizationPartner:(VMonetizationPartner)monetizationPartner withDetails:(NSArray *)details;
 
 /**
- Method tha starts the ad manager
+ Method that starts the ad manager
  */
 - (void)start;
 
