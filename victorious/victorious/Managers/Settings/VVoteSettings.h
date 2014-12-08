@@ -8,9 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-extern NSString * const VVoteSettingsDidUpdateNotification;
-extern NSString * const VVoteSettingsDidUpdateKeyVoteType;
-
 @interface VVoteSettings : NSObject
 
 @property (nonatomic, strong) NSArray *voteTypes;

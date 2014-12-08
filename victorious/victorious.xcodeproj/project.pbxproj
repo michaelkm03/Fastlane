@@ -341,7 +341,6 @@
 		A70FC10A1A2D558200F5BBDE /* VPurchase.m in Sources */ = {isa = PBXBuildFile; fileRef = A70FC1091A2D558200F5BBDE /* VPurchase.m */; };
 		A70FC1101A2D619300F5BBDE /* VProduct.m in Sources */ = {isa = PBXBuildFile; fileRef = A70FC10F1A2D619300F5BBDE /* VProduct.m */; };
 		A70FC1131A2D61A000F5BBDE /* VProductsRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = A70FC1121A2D61A000F5BBDE /* VProductsRequest.m */; };
-		A70FC11C1A2FD60C00F5BBDE /* VPurchaseManagerCache.m in Sources */ = {isa = PBXBuildFile; fileRef = A70FC11B1A2FD60C00F5BBDE /* VPurchaseManagerCache.m */; };
 		A70FC11F1A301DE600F5BBDE /* VPurchaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A70FC11E1A301DE600F5BBDE /* VPurchaseViewController.m */; };
 		A70FC1251A31207400F5BBDE /* VVoteSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = A70FC1241A31207400F5BBDE /* VVoteSettings.m */; };
 		A71D242B1A33D7CD00BEE562 /* VPurchaseViewController+Transitions.m in Sources */ = {isa = PBXBuildFile; fileRef = A71D242A1A33D7CD00BEE562 /* VPurchaseViewController+Transitions.m */; };
@@ -1265,8 +1264,6 @@
 		A70FC10F1A2D619300F5BBDE /* VProduct.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VProduct.m; path = Purchases/VProduct.m; sourceTree = "<group>"; };
 		A70FC1111A2D61A000F5BBDE /* VProductsRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VProductsRequest.h; path = Purchases/VProductsRequest.h; sourceTree = "<group>"; };
 		A70FC1121A2D61A000F5BBDE /* VProductsRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VProductsRequest.m; path = Purchases/VProductsRequest.m; sourceTree = "<group>"; };
-		A70FC11A1A2FD60C00F5BBDE /* VPurchaseManagerCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VPurchaseManagerCache.h; path = Purchases/VPurchaseManagerCache.h; sourceTree = "<group>"; };
-		A70FC11B1A2FD60C00F5BBDE /* VPurchaseManagerCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VPurchaseManagerCache.m; path = Purchases/VPurchaseManagerCache.m; sourceTree = "<group>"; };
 		A70FC11D1A301DE600F5BBDE /* VPurchaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPurchaseViewController.h; sourceTree = "<group>"; };
 		A70FC11E1A301DE600F5BBDE /* VPurchaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPurchaseViewController.m; sourceTree = "<group>"; };
 		A70FC1231A31207400F5BBDE /* VVoteSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VVoteSettings.h; sourceTree = "<group>"; };
@@ -3106,8 +3103,6 @@
 				A70FC1091A2D558200F5BBDE /* VPurchase.m */,
 				A70FC0FC1A2D412200F5BBDE /* VPurchaseManager.h */,
 				A70FC0FD1A2D412200F5BBDE /* VPurchaseManager.m */,
-				A70FC11A1A2FD60C00F5BBDE /* VPurchaseManagerCache.h */,
-				A70FC11B1A2FD60C00F5BBDE /* VPurchaseManagerCache.m */,
 				A7E398671A35648A000E4CAC /* VPurchaseRecord.h */,
 				A7E398681A35648A000E4CAC /* VPurchaseRecord.m */,
 			);
@@ -4876,7 +4871,6 @@
 				0314D4EE19B46B5E00FA363C /* VLoginViewController.m in Sources */,
 				0314D4AC19B46B5E00FA363C /* VMessageTableDataSource.m in Sources */,
 				0314D4CA19B46B5E00FA363C /* VRemixSliderRight.m in Sources */,
-				A70FC11C1A2FD60C00F5BBDE /* VPurchaseManagerCache.m in Sources */,
 				BE88FF721A0005E70064AB28 /* VStreamCellActionView.m in Sources */,
 				BEC833BB19D3646E00341EA9 /* VComment.m in Sources */,
 				BE88FF8F1A00060E0064AB28 /* VNavigationHeaderView.m in Sources */,

@@ -71,17 +71,16 @@
         // This is also called from VSettingsManager during app initialization, so ideally
         // most of the purchaseable products are already fetched from the App Store.
         // If not, we'll cache them now.
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(updateData)
+                                                     name:VPurchaseManagerProductsDidUpdateNotification
+                                                   object:nil];
         NSArray *productIdentifiers = [VVoteType productIdentifiersFromVoteTypes:voteTypes];
         
         if ( !self.purchaseManager.isPurchaseRequestActive )
         {
             [self.purchaseManager fetchProductsWithIdentifiers:productIdentifiers success:nil failure:nil];
         }
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(updateData)
-                                                     name:VVoteSettingsDidUpdateNotification
-                                                   object:nil];
         
         [self.enhancerBar reloadData];
         
@@ -143,7 +142,10 @@
 
 - (void)updateData
 {
-    [self updateExperience:self.experienceEnhancers withSequence:self.sequence];
+    // The setter will re-filter accordingly
+    self.validExperienceEnhancers = self.experienceEnhancers;
+    
+    [self updateExperience:self.validExperienceEnhancers withSequence:self.sequence];
     [self.enhancerBar reloadData];
 }
 
@@ -186,8 +188,30 @@
 {
     NSArray *newValue = validExperienceEnhancers;
     newValue = [VExperienceEnhancer experienceEnhancersFilteredByHasRequiredImages:newValue];
+    newValue = [self experienceEnhancersFilteredByCanBeUnlockedWithPurchase:newValue];
     newValue = [VExperienceEnhancer experienceEnhancersSortedByDisplayOrder:newValue];
     _validExperienceEnhancers = newValue;
+}
+
+- (NSArray *)experienceEnhancersFilteredByCanBeUnlockedWithPurchase:(NSArray *)experienceEnhancers
+{
+    VPurchaseManager *purchaseManager = [VPurchaseManager sharedInstance];
+    NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(VExperienceEnhancer *enhancer, NSDictionary *bindings)
+    {
+        NSString *productIdentifier = enhancer.voteType.productIdentifier;
+        if ( productIdentifier != nil )
+        {
+            enhancer.isLocked = ![purchaseManager isProductIdentifierPurchased:productIdentifier];
+            
+            // If there's an error of any kind that has led to the product not being present in purchase manager,
+            // we should not even show the enhancer because it will be locked and will fail when the user tries to purchase it.
+            // There is frequent call to fetchProducts (every time VExperienceEnhancerViewController is initialized)
+            // so we don't have to worry here about re-fetching.
+            return [purchaseManager purchaseableProductForProductIdentifier:productIdentifier] != nil;
+        }
+        return YES;
+    }];
+    return [experienceEnhancers filteredArrayUsingPredicate:predicate];
 }
 
 - (void)sendTrackingEvents

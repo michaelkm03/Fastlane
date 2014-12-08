@@ -92,11 +92,6 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
     for (NSInteger enhancerIndex = 0; enhancerIndex < enhancerCount; enhancerIndex++)
     {
         VExperienceEnhancer *enhancerForIndex = [self.dataSource experienceEnhancerForIndex:enhancerIndex];
-        if ( enhancerForIndex.voteType.mustBePurchased )
-        {
-            NSString *productIdentifier = enhancerForIndex.voteType.productIdentifier;
-            enhancerForIndex.isLocked = ![[VPurchaseManager sharedInstance] isProductIdentifierPurchased:productIdentifier];
-        }
         [enhancers addObject:enhancerForIndex];
     }
     
