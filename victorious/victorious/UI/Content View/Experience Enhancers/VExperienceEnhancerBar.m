@@ -11,6 +11,8 @@
 #import "VExperienceEnhancerCell.h"
 #import "VLargeNumberFormatter.h"
 #import "VObjectManager+Login.h"
+#import "VPurchaseManager.h"
+#import "VVoteType+Fetcher.h"
 
 NSString * const VExperienceEnhancerBarDidRequireLoginNotification = @"VExperienceEnhancerBarDidRequiredLoginNotification";
 NSString * const VExperienceEnhancerBarDidRequirePurchasePrompt = @"VExperienceEnhancerBarDidRequirePurchasePrompt";
@@ -90,6 +92,11 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
     for (NSInteger enhancerIndex = 0; enhancerIndex < enhancerCount; enhancerIndex++)
     {
         VExperienceEnhancer *enhancerForIndex = [self.dataSource experienceEnhancerForIndex:enhancerIndex];
+        if ( enhancerForIndex.voteType.mustBePurchased )
+        {
+            NSString *productIdentifier = enhancerForIndex.voteType.productIdentifier;
+            enhancerForIndex.isLocked = ![[VPurchaseManager sharedInstance] isProductIdentifierPurchased:productIdentifier];
+        }
         [enhancers addObject:enhancerForIndex];
     }
     
@@ -112,7 +119,7 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
     VExperienceEnhancer *enhancerForIndexPath = [self.enhancers objectAtIndex:indexPath.row];
     experienceEnhancerCell.experienceEnhancerTitle = [self.numberFormatter stringForInteger:enhancerForIndexPath.totalVoteCount];
     experienceEnhancerCell.experienceEnhancerIcon = enhancerForIndexPath.iconImage;
-    experienceEnhancerCell.isLocked = enhancerForIndexPath.mustBePurchased;
+    experienceEnhancerCell.isLocked = enhancerForIndexPath.isLocked;
     return experienceEnhancerCell;
 }
 
@@ -137,7 +144,7 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
     VExperienceEnhancer *enhancerForIndexPath = [self.enhancers objectAtIndex:indexPath.row];
     
     // Check if the user must buy this experience enhancer first
-    if ( enhancerForIndexPath.mustBePurchased  )
+    if ( enhancerForIndexPath.isLocked  )
     {
         NSDictionary *userInfo = @{ @"experienceEnhancer" : enhancerForIndexPath };
         [[NSNotificationCenter defaultCenter] postNotificationName:VExperienceEnhancerBarDidRequirePurchasePrompt object:nil userInfo:userInfo];
@@ -163,7 +170,7 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
 - (void)collectionView:(UICollectionView *)collectionView didHighlightItemAtIndexPath:(NSIndexPath *)indexPath
 {
     VExperienceEnhancer *enhancerForIndexPath = [self.enhancers objectAtIndex:indexPath.row];
-    if ( enhancerForIndexPath.mustBePurchased  )
+    if ( enhancerForIndexPath.isLocked  )
     {
         return;
     }
@@ -182,7 +189,7 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
 - (void)collectionView:(UICollectionView *)collectionView didUnhighlightItemAtIndexPath:(NSIndexPath *)indexPath
 {
     VExperienceEnhancer *enhancerForIndexPath = [self.enhancers objectAtIndex:indexPath.row];
-    if ( enhancerForIndexPath.mustBePurchased  )
+    if ( enhancerForIndexPath.isLocked  )
     {
         return;
     }

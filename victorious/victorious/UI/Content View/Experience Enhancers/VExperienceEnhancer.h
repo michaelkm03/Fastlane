@@ -43,7 +43,7 @@
  */
 - (void)resetStartingVoteCount:(NSUInteger)voteCount;
 
-@property (nonatomic, readonly) BOOL mustBePurchased;
+@property (nonatomic, assign) BOOL isLocked;
 
 @property (nonatomic, readonly) NSUInteger sessionVoteCount;
 @property (nonatomic, readonly) NSUInteger totalVoteCount;

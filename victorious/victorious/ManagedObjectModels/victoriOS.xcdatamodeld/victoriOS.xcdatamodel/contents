@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6252" systemVersion="14B25" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6252" systemVersion="14A389" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="AbstractFilter" representedClassName="VAbstractFilter" syncable="YES">
         <attribute name="currentPageNumber" optional="YES" attributeType="Integer 16" minValueString="0" defaultValueString="0" syncable="YES"/>
         <attribute name="filterAPIPath" optional="YES" attributeType="String" minValueString="0" syncable="YES"/>
@@ -236,7 +236,6 @@
         <attribute name="imageCount" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="imageFormat" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="isPaid" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
-        <attribute name="isPurchased" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="name" attributeType="String" syncable="YES"/>
         <attribute name="productIdentifier" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="remoteId" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
@@ -280,7 +279,7 @@
         <element name="Tracking" positionX="828" positionY="-630" width="128" height="283"/>
         <element name="User" positionX="1321" positionY="-324" width="128" height="405"/>
         <element name="VoteResult" positionX="864" positionY="164" width="128" height="90"/>
-        <element name="VoteType" positionX="538" positionY="-738" width="128" height="268"/>
+        <element name="VoteType" positionX="538" positionY="-738" width="128" height="255"/>
         <element name="VStream" positionX="1069" positionY="-792" width="128" height="135"/>
         <element name="VStreamItem" positionX="871" positionY="-765" width="128" height="103"/>
     </elements>

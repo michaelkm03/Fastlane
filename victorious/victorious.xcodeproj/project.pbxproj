@@ -454,6 +454,10 @@
 		A7D8532419F6F3B100EDBFF8 /* VTracking.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D8532319F6F3B100EDBFF8 /* VTracking.m */; };
 		A7E3985F1A34F6E1000E4CAC /* creator-avatar.png in Resources */ = {isa = PBXBuildFile; fileRef = A7E3985D1A34F6E1000E4CAC /* creator-avatar.png */; };
 		A7E398601A34F6E1000E4CAC /* creator-avatar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A7E3985E1A34F6E1000E4CAC /* creator-avatar@2x.png */; };
+		A7E398691A35648A000E4CAC /* VPurchaseRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = A7E398681A35648A000E4CAC /* VPurchaseRecord.m */; };
+		A7E3986C1A3565D7000E4CAC /* NSData+AES.m in Sources */ = {isa = PBXBuildFile; fileRef = A7E3986B1A3565D7000E4CAC /* NSData+AES.m */; };
+		A7E3986E1A356B1B000E4CAC /* NSData+AESTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7E3986D1A356B1B000E4CAC /* NSData+AESTests.m */; };
+		A7E398701A356E4A000E4CAC /* VPurchaseRecordTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7E3986F1A356E4A000E4CAC /* VPurchaseRecordTests.m */; };
 		A7F8DD4D1A0B065800F82256 /* VHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F8DD4C1A0B065800F82256 /* VHeaderView.m */; };
 		A7F8DD631A0B1A8B00F82256 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F8DD621A0B1A8B00F82256 /* WebKit.framework */; };
 		A7F8DD651A0BF55900F82256 /* VSequenceActionControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F8DD641A0BF55900F82256 /* VSequenceActionControllerTests.m */; };
@@ -1409,6 +1413,12 @@
 		A7D8532319F6F3B100EDBFF8 /* VTracking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTracking.m; sourceTree = "<group>"; };
 		A7E3985D1A34F6E1000E4CAC /* creator-avatar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "creator-avatar.png"; sourceTree = "<group>"; };
 		A7E3985E1A34F6E1000E4CAC /* creator-avatar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "creator-avatar@2x.png"; sourceTree = "<group>"; };
+		A7E398671A35648A000E4CAC /* VPurchaseRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPurchaseRecord.h; sourceTree = "<group>"; };
+		A7E398681A35648A000E4CAC /* VPurchaseRecord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPurchaseRecord.m; sourceTree = "<group>"; };
+		A7E3986A1A3565D7000E4CAC /* NSData+AES.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSData+AES.h"; path = "../../../../../Downloads/HiArt/HiArt/NSData+AES.h"; sourceTree = "<group>"; };
+		A7E3986B1A3565D7000E4CAC /* NSData+AES.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSData+AES.m"; path = "../../../../../Downloads/HiArt/HiArt/NSData+AES.m"; sourceTree = "<group>"; };
+		A7E3986D1A356B1B000E4CAC /* NSData+AESTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSData+AESTests.m"; path = "../../../../Downloads/HiArt/HiArtTests/NSData+AESTests.m"; sourceTree = "<group>"; };
+		A7E3986F1A356E4A000E4CAC /* VPurchaseRecordTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPurchaseRecordTests.m; sourceTree = "<group>"; };
 		A7EF97BB19F889F800972E74 /* VExperienceEnhancerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VExperienceEnhancerTests.m; sourceTree = "<group>"; };
 		A7F8DD4B1A0B065800F82256 /* VHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHeaderView.h; sourceTree = "<group>"; };
 		A7F8DD4C1A0B065800F82256 /* VHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHeaderView.m; sourceTree = "<group>"; };
@@ -3089,6 +3099,8 @@
 				A70FC1121A2D61A000F5BBDE /* VProductsRequest.m */,
 				A70FC1081A2D558200F5BBDE /* VPurchase.h */,
 				A70FC1091A2D558200F5BBDE /* VPurchase.m */,
+				A7E398671A35648A000E4CAC /* VPurchaseRecord.h */,
+				A7E398681A35648A000E4CAC /* VPurchaseRecord.m */,
 				A70FC0FC1A2D412200F5BBDE /* VPurchaseManager.h */,
 				A70FC0FD1A2D412200F5BBDE /* VPurchaseManager.m */,
 				A70FC11A1A2FD60C00F5BBDE /* VPurchaseManagerCache.h */,
@@ -3453,6 +3465,8 @@
 				A7AB4FE819F5A6A300BFFE35 /* VVoteTypeFetcherTests.m */,
 				D871A4011A157D650046A12C /* VVRTCUserPostedAtFormatterTests.m */,
 				A769C3F41A131F5C00698D0C /* VWebViewFactoryTests.m */,
+				A7E3986F1A356E4A000E4CAC /* VPurchaseRecordTests.m */,
+				A7E3986D1A356B1B000E4CAC /* NSData+AESTests.m */,
 			);
 			path = victoriousTests;
 			sourceTree = "<group>";
@@ -3477,6 +3491,8 @@
 				BE171DB61868C211004E5202 /* Mappings */,
 				03CF151E195CFBE600F6477B /* NSArray+VMap.h */,
 				03CF151F195CFBE600F6477B /* NSArray+VMap.m */,
+				A7E3986A1A3565D7000E4CAC /* NSData+AES.h */,
+				A7E3986B1A3565D7000E4CAC /* NSData+AES.m */,
 				3F9B6655187F80780046F826 /* NSDate+timeSince.h */,
 				3F9B6656187F80780046F826 /* NSDate+timeSince.m */,
 				03504268194F711A008D78A3 /* NSIndexSet+Map.h */,
@@ -3615,7 +3631,6 @@
 		BE171DD91868C211004E5202 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
-				A70FC0F81A2D40B400F5BBDE /* Purchases */,
 				BE6464E419511F1B0089A34F /* Deeplink */,
 				039D02A71A1043D300DB9236 /* Dependencies */,
 				03CE66FD19B640CD0011BB9E /* Device Info */,
@@ -3625,6 +3640,7 @@
 				DB8D3A10198039BD005DD36D /* HashTags */,
 				0314D08D19B4694600FA363C /* Interaction */,
 				0314D09119B4698800FA363C /* Object */,
+				A70FC0F81A2D40B400F5BBDE /* Purchases */,
 				0326BBB719A8181B00D995DA /* Push Notifications */,
 				036AE5EA18FF0C0600A74BDA /* Reachability */,
 				03449FE21A0C7EBB0070EC80 /* Session Timer */,
@@ -4603,6 +4619,7 @@
 				0314D4DE19B46B5E00FA363C /* VFindContactsTableViewController.m in Sources */,
 				D8D8958919E88C2100632663 /* VExperienceEnhancerBarCell.m in Sources */,
 				D8360CF019E3768300D7E260 /* VExperienceEnhancerController.m in Sources */,
+				A7E3986C1A3565D7000E4CAC /* NSData+AES.m in Sources */,
 				BEC833BE19D364A500341EA9 /* VPollResult.m in Sources */,
 				0314D4FE19B46B5E00FA363C /* VEphemeralTimerView.m in Sources */,
 				0314D4F719B46B5E00FA363C /* VLargeNumberFormatter.m in Sources */,
@@ -4700,6 +4717,7 @@
 				BE799B9519C8A91C0023CE88 /* VAnswer.m in Sources */,
 				A7AA647D19E78EAA0068D2B1 /* victoriOS.xcdatamodeld in Sources */,
 				0314D4B119B46B5E00FA363C /* VInboxContainerViewController.m in Sources */,
+				A7E398691A35648A000E4CAC /* VPurchaseRecord.m in Sources */,
 				DB82857A19F6DD3D006C6E2F /* VAdPlayerView.m in Sources */,
 				0314D0B519B4698800FA363C /* VObjectManager+Pagination.m in Sources */,
 				D8C8F5761A0403D4006BE3E8 /* VStream.m in Sources */,
@@ -4866,6 +4884,7 @@
 			files = (
 				A77AD4FB1A1FF33100142F24 /* VAlertControllerAdvancedTests.m in Sources */,
 				039D02BB1A109CA800DB9236 /* VTemplateGeneratorTests.m in Sources */,
+				A7E398701A356E4A000E4CAC /* VPurchaseRecordTests.m in Sources */,
 				A720052E1A03073B00285A9C /* VPhotoFilterSerializationTests.m in Sources */,
 				A720052C1A03073B00285A9C /* VMultipartFormDataWriterTests.m in Sources */,
 				A72005331A03073B00285A9C /* VUploadManagerURLSessionTests.m in Sources */,
@@ -4906,6 +4925,7 @@
 				A72005251A03073B00285A9C /* NSStringVCryptoTests.m in Sources */,
 				A72005281A03073B00285A9C /* VHashTagsTest.m in Sources */,
 				A72005461A03074800285A9C /* VFileSystemTestHelpers.m in Sources */,
+				A7E3986E1A356B1B000E4CAC /* NSData+AESTests.m in Sources */,
 				D871A4021A157D650046A12C /* VVRTCUserPostedAtFormatterTests.m in Sources */,
 				A72005431A03073B00285A9C /* VVideoTrackingTests.m in Sources */,
 				039D02AF1A10441500DB9236 /* VDependencyManagerTests.m in Sources */,

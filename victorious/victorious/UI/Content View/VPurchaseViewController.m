@@ -186,8 +186,6 @@
     [self showRestoringWithMessage:NSLocalizedString( @"ActivityRestoring", nil)];
     [self.purchaseManager restorePurchasesSuccess:^(NSArray *productIdentifiers)
      {
-         [[VSettingManager sharedManager].voteSettings didCompletePurchaseWithProductIdentifiers:productIdentifiers];
-         
          [self resetLoadingState];
          [self dismissViewControllerAnimated:YES completion:nil];
      }
@@ -210,8 +208,6 @@
     NSString *productIdentifier = self.voteType.productIdentifier;
     [self.purchaseManager purchaseProductWithIdentifier:productIdentifier success:^(NSArray *productIdentifiers)
      {
-         [[VSettingManager sharedManager].voteSettings didCompletePurchaseWithProductIdentifiers:@[ productIdentifier ]];
-         
          [self resetLoadingState];
          [self dismissViewControllerAnimated:YES completion:nil];
      }

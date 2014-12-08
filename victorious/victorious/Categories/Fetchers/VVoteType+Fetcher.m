@@ -37,7 +37,7 @@ NSString * const VVoteTypeImageIndexReplacementMacro = @"XXXXX";
 
 - (BOOL)mustBePurchased
 {
-    return self.productIdentifier != nil && self.isPaid && !self.isPurchased.boolValue;
+    return self.productIdentifier != nil && self.isPaid;
 }
 
 - (BOOL)hasValidTrackingData

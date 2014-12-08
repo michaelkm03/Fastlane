@@ -78,9 +78,4 @@
     self.startingVoteCount = voteCount;
 }
 
-- (BOOL)mustBePurchased
-{
-    return self.voteType.mustBePurchased;
-}
-
 @end

@@ -81,25 +81,4 @@ NSString * const VVoteSettingsDidUpdateKeyVoteType = @"VVoteSettingsDidUpdateKey
     [[VPurchaseManager sharedInstance] fetchProductsWithIdentifiers:productIdentifiers success:nil failure:nil];
 }
 
-- (void)didCompletePurchaseWithProductIdentifiers:(NSArray *)productIdentifiers
-{
-    NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(VVoteType *voteType, NSDictionary *bindings)
-    {
-        return [productIdentifiers containsObject:voteType.productIdentifier];
-    }];
-    
-    NSArray *matches = [self.voteTypes filteredArrayUsingPredicate:predicate];
-    if ( matches.count == 0 )
-    {
-        return;
-    }
-    
-    [matches enumerateObjectsUsingBlock:^(VVoteType *voteType, NSUInteger idx, BOOL *stop)
-     {
-         voteType.isPurchased = @YES;
-     }];
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:VVoteSettingsDidUpdateNotification object:nil];
-}
-
 @end

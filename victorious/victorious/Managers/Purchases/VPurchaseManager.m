@@ -22,6 +22,9 @@
 #import "VPurchaseManager.h"
 #import "VPurchase.h"
 #import "VPurchaseManagerCache.h"
+#import "VPurchaseRecord.h"
+
+static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.devicelog"; // A touch of obscurity
 
 @interface VPurchaseManager() <SKProductsRequestDelegate, SKPaymentTransactionObserver>
 
@@ -29,6 +32,7 @@
 @property (nonatomic, strong) VProductsRequest *activeProductRequest;
 @property (nonatomic, strong) VPurchase *activePurchaseRestore;
 @property (nonatomic, strong) VPurchaseManagerCache *cache;
+@property (nonatomic, strong) VPurchaseRecord *purchaseRecord;
 
 @end
 
@@ -53,12 +57,19 @@
     if (self)
     {
         self.cache = [[VPurchaseManagerCache alloc] init];
+        self.purchaseRecord = [[VPurchaseRecord alloc] initWithRelativeFilePath:kDocumentDirectoryRelativePath];
+        [self.purchaseRecord loadPurchasedProductIdentifiers];
         [[SKPaymentQueue defaultQueue] addTransactionObserver:self];
     }
     return self;
 }
 
 #pragma mark - Primary public methods
+
+- (BOOL)isProductIdentifierPurchased:(NSString *)productIdentifier
+{
+    return [self.purchaseRecord.purchasedProductIdentifiers containsObject:productIdentifier];
+}
 
 - (void)purchaseProductWithIdentifier:(NSString *)productIdentifier success:(VPurchaseSuccessBlock)successCallback failure:(VPurchaseFailBlock)failureCallback
 {
@@ -240,6 +251,7 @@ return;
     if ( self.activePurchase != nil && isValidProduct )
     {
         [[self.cache purchasedProducts] setObject:self.activePurchase.product forKey:productIdentifier];
+        [self.purchaseRecord addProductIdentifier:productIdentifier];
         self.activePurchase.successCallback( @[ self.activePurchase.product ] );
         self.activePurchase = nil;
     }
@@ -299,6 +311,10 @@ return;
 {
     if ( self.activePurchaseRestore != nil )
     {
+        [self.activePurchaseRestore.restoreProductIdentifiers enumerateObjectsUsingBlock:^(NSString *identifier, NSUInteger idx, BOOL *stop)
+        {
+            [self.purchaseRecord addProductIdentifier:identifier];
+        }];
         self.activePurchaseRestore.successCallback( self.activePurchaseRestore.restoreProductIdentifiers );
         self.activePurchaseRestore = nil;
     }

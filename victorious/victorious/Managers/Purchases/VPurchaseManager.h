@@ -30,6 +30,11 @@
 + (VPurchaseManager *)sharedInstance;
 
 /**
+ Returns YES if productIdentifier is listed in the local purchased record.
+ */
+- (BOOL)isProductIdentifierPurchased:(NSString *)productIdentifier;
+
+/**
  Begin the process of purchasing the supplied product as an In-App Purchase
  through the App Store.  The user will seubsequently have to confirm and
  enter his or her iTunes credentials.  To obtain information about this product,

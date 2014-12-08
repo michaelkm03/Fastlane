@@ -13,8 +13,6 @@ extern NSString * const VVoteSettingsDidUpdateKeyVoteType;
 
 @interface VVoteSettings : NSObject
 
-- (void)didCompletePurchaseWithProductIdentifiers:(NSArray *)productIdentifiers;
-
 @property (nonatomic, strong) NSArray *voteTypes;
 
 @end
