@@ -10,7 +10,8 @@
 SCHEME=$1
 CONFIGURATION=$2
 DEFAULT_PROVISIONING_PROFILE_NAME="Victorious Wildcard In-House Distribution"
-CODESIGN_ID="iPhone Distribution: Victorious, Inc"
+DEFAULT_CODESIGN_ID="iPhone Distribution: Victorious, Inc"
+DEFAULT_DEV_ACCOUNT="build.server@getvictorious.com"
 
 shift 2
 
@@ -83,7 +84,7 @@ xcodebuild -workspace victorious.xcworkspace -scheme $SCHEME -destination generi
 
 xcodebuild -workspace victorious.xcworkspace -scheme "$SCHEME" -destination generic/platform=iOS \
            -archivePath "../victorious.xcarchive" PROVISIONING_PROFILE="$DEFAULT_PROVISIONING_PROFILE_UUID" \
-           CODE_SIGN_IDENTITY="$CODESIGN_ID" archive
+           CODE_SIGN_IDENTITY="$DEFAULT_CODESIGN_ID" archive
 BUILDRESULT=$?
 if [ $BUILDRESULT == 0 ]; then
     pushd ../victorious.xcarchive/dSYMs > /dev/null
@@ -112,12 +113,23 @@ applyConfiguration(){
     # Copy standard provisioning profile
     cp "$HOME/Library/MobileDevice/Provisioning Profiles/$DEFAULT_PROVISIONING_PROFILE_UUID.mobileprovision" "victorious.xcarchive/Products/Applications/victorious.app/embedded.mobileprovision"
 
-    # Check for special provisioning profile
-    PLIST_FILE="configurations/$1/codesigning.plist"
-    if [ -e "$PLIST_FILE" ]; then
-        CUSTOM_PROVISIONING_PROFILE=$(/usr/libexec/PlistBuddy -c "Print ProvisioningProfiles:$CONFIGURATION" "$PLIST_FILE")
+    CODESIGN_ID=$DEFAULT_CODESIGN_ID
+    DEV_ACCOUNT=$DEFAULT_DEV_ACCOUNT
+    CODESIGNING_PLIST_FILE="configurations/$1/codesigning.plist"
+
+    # Check for special dev account
+    if [ -e "$CODESIGNING_PLIST_FILE" ]; then
+        CUSTOM_DEV_ACCOUNT=$(/usr/libexec/PlistBuddy -c "Print DevAccounts:$CONFIGURATION" "$CODESIGNING_PLIST_FILE")
         if [ $? == 0 ]; then
-            ios profiles:download "$CUSTOM_PROVISIONING_PROFILE" --type distribution
+            DEV_ACCOUNT=$CUSTOM_DEV_ACCOUNT
+        fi
+    fi
+
+    # Check for special provisioning profile
+    if [ -e "$CODESIGNING_PLIST_FILE" ]; then
+        CUSTOM_PROVISIONING_PROFILE=$(/usr/libexec/PlistBuddy -c "Print ProvisioningProfiles:$CONFIGURATION" "$CODESIGNING_PLIST_FILE")
+        if [ $? == 0 ]; then
+            ios profiles:download "$CUSTOM_PROVISIONING_PROFILE" --type distribution -u "$DEV_ACCOUNT"
             if [ $? != 0 ]; then
                 echo "Unable to download provisioning profile \"$CUSTOM_PROVISIONING_PROFILE\" for app \"$1\""
                 exit 1
@@ -125,6 +137,14 @@ applyConfiguration(){
             CPP_PATH=$(find . -iname *.mobileprovision -depth 1 -print -quit)
             CPP_UUID=`/usr/libexec/PlistBuddy -c 'Print :UUID' /dev/stdin <<< $(security cms -D -i "$CPP_PATH")`
             mv "$CPP_PATH" "victorious.xcarchive/Products/Applications/victorious.app/embedded.mobileprovision"
+        fi
+    fi
+
+    # Check for special signing identity
+    if [ -e "$CODESIGNING_PLIST_FILE" ]; then
+        CUSTOM_CODESIGN_ID=$(/usr/libexec/PlistBuddy -c "Print SigningIdentities:$CONFIGURATION" "$CODESIGNING_PLIST_FILE")
+        if [ $? == 0 ]; then
+            CODESIGN_ID=$CUSTOM_CODESIGN_ID
         fi
     fi
 
