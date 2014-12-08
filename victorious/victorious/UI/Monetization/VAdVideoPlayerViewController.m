@@ -98,7 +98,7 @@
     self.adPlaying = NO;
     
     // Remove the adViewController from the view hierarchy
-    [self.adViewController willMoveToParentViewController:self];
+    [self.adViewController willMoveToParentViewController:nil];
     [self.adViewController.view removeFromSuperview];
     [self.adViewController removeFromParentViewController];
     
@@ -113,7 +113,7 @@
     self.adPlaying = NO;
 
     // Remove the adViewController from the view hierarchy
-    [self.adViewController willMoveToParentViewController:self];
+    [self.adViewController willMoveToParentViewController:nil];
     [self.adViewController.view removeFromSuperview];
     [self.adViewController removeFromParentViewController];
     
