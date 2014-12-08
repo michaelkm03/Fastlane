@@ -78,7 +78,7 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
 
 - (void)purchaseProductWithIdentifier:(NSString *)productIdentifier success:(VPurchaseSuccessBlock)successCallback failure:(VPurchaseFailBlock)failureCallback
 {
-    VProduct *product = [self purchaseableProductForProductIdenfitier:productIdentifier];
+    VProduct *product = [self purchaseableProductForProductIdentifier:productIdentifier];
     [self purchaseProduct:product success:successCallback failure:failureCallback];
 }
 
@@ -175,7 +175,7 @@ return;
 
 #pragma mark - Purchase product helpers
 
-- (VProduct *)purchaseableProductForProductIdenfitier:(NSString *)productIdentifier
+- (VProduct *)purchaseableProductForProductIdentifier:(NSString *)productIdentifier
 {
     return [[self.cache purchaseableProducts] objectForKey:productIdentifier];
 }
