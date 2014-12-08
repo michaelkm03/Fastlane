@@ -52,6 +52,7 @@
 
 - (void)awakeFromNib
 {
+    [super awakeFromNib];
     self.backButton.accessibilityIdentifier = VAutomationIdentifierGenericBack;
     self.menuButton.accessibilityIdentifier = VAutomationIdentifierMainMenu;
 }
