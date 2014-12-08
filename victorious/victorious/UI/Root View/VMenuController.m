@@ -36,6 +36,7 @@ NSString * const VMenuControllerDestinationViewControllerKey = @"VMenuController
 
 static NSString * const kSectionHeaderReuseID = @"SectionHeaderView";
 static const CGFloat kSectionHeaderHeight = 36.0f;
+static char kKVOContext;
 
 @interface VMenuController () <UICollectionViewDelegateFlowLayout>
 
@@ -58,14 +59,27 @@ static const CGFloat kSectionHeaderHeight = 36.0f;
 
 #pragma mark -
 
+- (void)dealloc
+{
+    if ( _collectionViewDataSource != nil )
+    {
+        [_collectionViewDataSource removeObserver:self forKeyPath:NSStringFromSelector(@selector(badgeTotal)) context:&kKVOContext];
+    }
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
     self.collectionViewDataSource = [[VMenuCollectionViewDataSource alloc] initWithCellReuseID:[VMenuCollectionViewCell suggestedReuseIdentifier]
                                                                            sectionsOfMenuItems:[self.dependencyManager menuItemSections]];
+    self.collectionViewDataSource.dependencyManager = self.dependencyManager;
     self.collectionViewDataSource.sectionHeaderReuseID = kSectionHeaderReuseID;
     self.collectionView.dataSource = self.collectionViewDataSource;
+    [self.collectionViewDataSource addObserver:self
+                                    forKeyPath:NSStringFromSelector(@selector(badgeTotal))
+                                       options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew)
+                                       context:&kKVOContext];
     
     if ([[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
     {
@@ -123,6 +137,26 @@ static const CGFloat kSectionHeaderHeight = 36.0f;
 
     VNavigationMenuItem *menuItem = [self.collectionViewDataSource menuItemAtIndexPath:indexPath];
     [[NSNotificationCenter defaultCenter] postNotificationName:VMenuControllerDidSelectRowNotification object:self userInfo:@{ VMenuControllerDestinationViewControllerKey: menuItem.destination }];
+}
+
+#pragma mark - Key-Value Observation
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if ( context != &kKVOContext )
+    {
+        return;
+    }
+    
+    if ( object == self.collectionViewDataSource && [keyPath isEqualToString:NSStringFromSelector(@selector(badgeTotal))] )
+    {
+        NSNumber *newBadgeTotal = change[NSKeyValueChangeNewKey];
+        
+        if ( [newBadgeTotal isKindOfClass:[NSNumber class]] )
+        {
+            [[UIApplication sharedApplication] setApplicationIconBadgeNumber:[newBadgeTotal integerValue]];
+        }
+    }
 }
 
 @end

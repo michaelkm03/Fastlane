@@ -10,6 +10,8 @@
 
 @class VConversation;
 
+typedef void (^VUnreadMessageCountCompletionBlock)(NSNumber *unreadMessages, NSError *error);
+
 @interface VObjectManager (DirectMessaging)
 
 - (RKManagedObjectRequestOperation *)conversationWithUser:(VUser *)user
@@ -21,11 +23,9 @@
                                             failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)markConversationAsRead:(VConversation *)conversation
-                                               successBlock:(VSuccessBlock)success
-                                                  failBlock:(VFailBlock)fail;
+                                             withCompletion:(VUnreadMessageCountCompletionBlock)completion;
 
-- (RKManagedObjectRequestOperation *)updateUnreadMessageCountWithSuccessBlock:(VSuccessBlock)success
-                                                              failBlock:(VFailBlock)fail;
+- (RKManagedObjectRequestOperation *)unreadMessageCountWithCompletion:(VUnreadMessageCountCompletionBlock)completion;
 
 - (RKManagedObjectRequestOperation *)deleteConversation:(VConversation *)conversation
                                            successBlock:(VSuccessBlock)success

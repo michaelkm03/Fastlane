@@ -67,11 +67,6 @@
     [self.tableView reloadData];
     
     [self performFetch];
-    
-    if (![self.fetchedResultsController.fetchedObjects count] < 5)
-    {
-        [self refresh:self.refreshControl];
-    }
 }
 
 - (IBAction)refresh:(UIRefreshControl *)sender

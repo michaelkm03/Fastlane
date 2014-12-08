@@ -22,6 +22,7 @@
 #import "VObjectManager.h"
 #import "VPaginationManager.h"
 #import "VThemeManager.h"
+#import "VUnreadMessageCountCoordinator.h"
 #import "VUser+RestKit.h"
 #import "VUserProfileViewController.h"
 #import "VObjectManager+DirectMessaging.h"
@@ -72,6 +73,7 @@
     self.tableDataSource.otherUser = self.otherUser;
     self.tableDataSource.tableView = self.tableView;
     self.tableDataSource.delegate = self;
+    self.tableDataSource.messageCountCoordinator = self.messageCountCoordinator;
     self.tableView.dataSource = self.tableDataSource;
 
     if (self.shouldRefreshOnAppearance)
@@ -102,8 +104,6 @@
         self.shouldScrollToBottom = YES;
     }
 
-    [[VObjectManager sharedManager] markConversationAsRead:self.tableDataSource.conversation successBlock:nil failBlock:nil];
-    
     [self.tableView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapped:)]];
 }
 

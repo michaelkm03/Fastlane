@@ -47,8 +47,6 @@ static const NSInteger kServerEnvironmentButtonIndex = 4;
 
 @property (nonatomic, weak) IBOutlet    UILabel    *versionString;
 
-- (NSString *)collectDeviceInfo:(id)sender;
-
 @end
 
 @implementation VSettingsViewController
@@ -270,7 +268,9 @@ static const NSInteger kServerEnvironmentButtonIndex = 4;
         MFMailComposeViewController    *mailComposer = [[MFMailComposeViewController alloc] init];
         mailComposer.mailComposeDelegate = self;
         
-        NSString *msgBody = [self collectDeviceInfo:nil];
+        NSString *msgBody = [NSString stringWithFormat:@"%@\n\n-------------------------\n%@",
+                             NSLocalizedString(@"Type your feedback here...", @""),
+                             [self deviceInfo]];
         NSString *subjString = NSLocalizedString(@"SupportEmailSubject", @"Feedback / Help");
         NSString *msgSubj = [NSString stringWithFormat:@"%@ %@", subjString,[appName capitalizedString]];
         
@@ -295,7 +295,7 @@ static const NSInteger kServerEnvironmentButtonIndex = 4;
     }
 }
 
-- (NSString *)collectDeviceInfo:(id)sender
+- (NSString *)deviceInfo
 {
     // Grab App Version
     NSString *appVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"] ?: @"";
@@ -309,7 +309,6 @@ static const NSInteger kServerEnvironmentButtonIndex = 4;
     
     // Return the Compiled String of Variables
     NSMutableString *deviceInfo = [[NSMutableString alloc] init];
-    [deviceInfo appendString:@"\n\n-------------------------\n"];
     [deviceInfo appendFormat:@"%@ %@\n", NSLocalizedString(@"Device:", @""), device];
     [deviceInfo appendFormat:@"%@ %@ %@\n", NSLocalizedString(@"OS Version:", @""), iosName, iosVersion];
     [deviceInfo appendFormat:@"%@ %@ (%@)\n", NSLocalizedString(@"App Version:", @""), appVersion, appBuildNumber];

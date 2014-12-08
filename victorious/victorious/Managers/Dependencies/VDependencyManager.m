@@ -347,6 +347,11 @@ NSString * const VDependencyManagerInitialViewControllerKey = @"initialScreen";
         else
         {
             object = [[templateClass alloc] init];
+            
+            if ([object respondsToSelector:@selector(setDependencyManager:)])
+            {
+                [object setDependencyManager:dependencyManager];
+            }
         }
         return object;
     }

@@ -6,17 +6,19 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "VAutomation.h"
+#import "VBadgeLabel.h"
+#import "VDependencyManager.h"
 #import "VMenuCollectionViewCell.h"
 #import "VNavigationMenuItem.h"
 #import "VThemeManager.h"
-#import "VAutomation.h"
 
 static const CGFloat kCellHeight = 50.0f;
 
 @interface VMenuCollectionViewCell ()
 
 @property (nonatomic, weak) IBOutlet UILabel *menuLabel; ///< A label to hold the menu item (e.g. "Home", "Channel", etc.)
-@property (nonatomic, weak) IBOutlet UILabel *badgeLabel; ///< A label to hold a badge number (typically for the inbox menu item)
+@property (nonatomic, weak) IBOutlet VBadgeLabel *badgeLabel; ///< A label to hold a badge number (typically for the inbox menu item)
 
 @end
 
@@ -33,17 +35,22 @@ static const CGFloat kCellHeight = 50.0f;
     return CGSizeMake(CGRectGetWidth(bounds), kCellHeight);
 }
 
-- (void)awakeFromNib
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
-    [super awakeFromNib];
-    UIFont *font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
-    self.menuLabel.font = [font fontWithSize:22.0];
+    _dependencyManager = dependencyManager;
+    self.menuLabel.font = [self.dependencyManager fontForKey:VDependencyManagerHeading1FontKey];
     self.menuLabel.textColor = [UIColor colorWithWhite:1.0 alpha:0.7];
-
-    self.badgeLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
-    self.badgeLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
-    self.badgeLabel.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+    self.badgeLabel.dependencyManager = self.dependencyManager;
 }
+
+- (void)prepareForReuse
+{
+    self.menuLabel.text = @"";
+    [self setBadgeNumber:0];
+    self.accessibilityIdentifier = nil;
+}
+
+#pragma mark - VNavigationMenuItemCell methods
 
 - (void)setNavigationMenuItem:(VNavigationMenuItem *)navigationMenuItem
 {
@@ -51,11 +58,16 @@ static const CGFloat kCellHeight = 50.0f;
     self.accessibilityIdentifier = navigationMenuItem.identifier;
 }
 
-- (void)prepareForReuse
+- (void)setBadgeNumber:(NSInteger)badgeNumber
 {
-    self.menuLabel.text = @"";
-    self.badgeLabel.text = @"";
-    self.accessibilityIdentifier = nil;
+    if (badgeNumber == 0)
+    {
+        self.badgeLabel.text = @"";
+    }
+    else
+    {
+        self.badgeLabel.text = [NSString stringWithFormat:@"%ld", (long)badgeNumber];
+    }
 }
 
 @end
