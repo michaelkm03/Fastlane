@@ -80,11 +80,6 @@
         [self.adManager stopAd];
         self.adManager = nil;
     }
-    
-    [self willMoveToParentViewController:nil];
-    [self.view removeFromSuperview];
-    [self removeFromParentViewController];
-
 }
 
 - (void)didReceiveMemoryWarning

@@ -21,6 +21,7 @@
 #import "VUserManager.h"
 
 // Monetization Networks
+#import "VAdViewController.h"
 #import "TremorVideoAd.h"
 
 #import "MBProgressHUD.h"

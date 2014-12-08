@@ -26,7 +26,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self)
     {
-        //[TremorVideoAd start];
+        
     }
     return self;
 }
@@ -56,9 +56,6 @@
     [super viewWillDisappear:animated];
     [self destroyAdInstance];
     
-    [self willMoveToParentViewController:nil];
-    [self.view removeFromSuperview];
-    [self removeFromParentViewController];
 }
 
 # pragma mark - Ad Lifecycle

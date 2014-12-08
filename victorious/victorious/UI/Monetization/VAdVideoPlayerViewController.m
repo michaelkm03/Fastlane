@@ -94,16 +94,32 @@
 
 - (void)adDidFinishForAdViewController:(VAdViewController *)adViewController
 {
-    //VLog(@"\n\nAd playback finished in VAdVideoPlayerViewController");
+    // Set ad playback flag
+    self.adPlaying = NO;
     
-    self.adPlaying = adViewController.isAdPlaying;
+    // Remove the adViewController from the view hierarchy
+    [self.adViewController willMoveToParentViewController:self];
+    [self.adViewController.view removeFromSuperview];
+    [self.adViewController removeFromParentViewController];
+    
+    // Go to content video
     [self.delegate adDidFinishForAdVideoPlayerViewController:self];
 }
 
 // Optional delegate methods
 - (void)adHadErrorInAdViewController:(VAdViewController *)adViewController
 {
-    self.adPlaying = adViewController.isAdPlaying;
+    // Set ad playback flag
+    self.adPlaying = NO;
+
+    // Remove the adViewController from the view hierarchy
+    [self.adViewController willMoveToParentViewController:self];
+    [self.adViewController.view removeFromSuperview];
+    [self.adViewController removeFromParentViewController];
+    
+    // Set ad playback flag
+    self.adPlaying = NO;
+
     if ([self.delegate respondsToSelector:@selector(adHadErrorForAdVideoPlayerViewController:)])
     {
         [self.delegate adHadErrorForAdVideoPlayerViewController:self];
