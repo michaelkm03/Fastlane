@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 extern const CGFloat VExperienceEnhancerDesiredMinimumHeight;
-extern NSString * const VExperienceEnhancerBarDidRequirePurcahsePrompt;
+extern NSString * const VExperienceEnhancerBarDidRequirePurchasePrompt;
 extern NSString * const VExperienceEnhancerBarDidRequireLoginNotification;
 
 @class VExperienceEnhancerBar;

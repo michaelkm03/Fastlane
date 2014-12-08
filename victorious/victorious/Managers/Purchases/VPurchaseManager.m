@@ -62,7 +62,7 @@
 
 - (void)purchaseProductWithIdentifier:(NSString *)productIdentifier success:(VPurchaseSuccessBlock)successCallback failure:(VPurchaseFailBlock)failureCallback
 {
-    VProduct *product = [self purcahseableProductForProductIdenfitier:productIdentifier];
+    VProduct *product = [self purchaseableProductForProductIdenfitier:productIdentifier];
     [self purchaseProduct:product success:successCallback failure:failureCallback];
 }
 
@@ -172,7 +172,7 @@ return;
 
 #pragma mark - Purchase product helpers
 
-- (VProduct *)purcahseableProductForProductIdenfitier:(NSString *)productIdentifier
+- (VProduct *)purchaseableProductForProductIdenfitier:(NSString *)productIdentifier
 {
     return [[self.cache purchaseableProducts] objectForKey:productIdentifier];
 }

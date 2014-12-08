@@ -44,7 +44,7 @@
  through the App Store.  The user will seubsequently have to confirm and
  enter his or her iTunes credentials.  To get a product to purchase, first
  use fetchProductsWithIdentifiers:success:failure and grab a reference to the
- product in the parameter of the success callback, or use purcahseableProductForProductIdenfitier
+ product in the parameter of the success callback, or use purchaseableProductForProductIdenfitier
  to access it from the internal cache of fetched products.
  */
 - (void)purchaseProduct:(VProduct *)product
@@ -74,6 +74,6 @@
  if that product has successfully fetched from the App Store from a previous call to
  fetchProductsWithIdentifiers:success:failure.
  */
-- (VProduct *)purcahseableProductForProductIdenfitier:(NSString *)productIdentifier;
+- (VProduct *)purchaseableProductForProductIdenfitier:(NSString *)productIdentifier;
 
 @end

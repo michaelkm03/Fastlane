@@ -367,7 +367,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(showPurchaseViewController:)
-                                                 name:VExperienceEnhancerBarDidRequirePurcahsePrompt
+                                                 name:VExperienceEnhancerBarDidRequirePurchasePrompt
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(onRemixPublished:)

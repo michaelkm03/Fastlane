@@ -13,7 +13,7 @@
 #import "VObjectManager+Login.h"
 
 NSString * const VExperienceEnhancerBarDidRequireLoginNotification = @"VExperienceEnhancerBarDidRequiredLoginNotification";
-NSString * const VExperienceEnhancerBarDidRequirePurcahsePrompt = @"VExperienceEnhancerBarDidRequirePurcahsePrompt";
+NSString * const VExperienceEnhancerBarDidRequirePurchasePrompt = @"VExperienceEnhancerBarDidRequirePurchasePrompt";
 
 const CGFloat VExperienceEnhancerDesiredMinimumHeight = 60.0f;
 
@@ -140,7 +140,7 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
     if ( enhancerForIndexPath.mustBePurchased  )
     {
         NSDictionary *userInfo = @{ @"experienceEnhancer" : enhancerForIndexPath };
-        [[NSNotificationCenter defaultCenter] postNotificationName:VExperienceEnhancerBarDidRequirePurcahsePrompt object:nil userInfo:userInfo];
+        [[NSNotificationCenter defaultCenter] postNotificationName:VExperienceEnhancerBarDidRequirePurchasePrompt object:nil userInfo:userInfo];
         return;
     }
     
