@@ -215,7 +215,7 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
 
 - (void)stopObservingUserProfile
 {
-    if (self.observingUser)
+    if (!self.isObservingUser)
     {
         return;
     }
