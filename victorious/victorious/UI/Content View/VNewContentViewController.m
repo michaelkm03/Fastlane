@@ -426,6 +426,9 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:VInputAccessoryViewKeyboardFrameDidChangeNotification
                                                   object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:VExperienceEnhancerBarDidRequirePurchasePrompt
+                                                  object:nil];
     
     [self.viewModel.experienceEnhancerController sendTrackingEvents];
     
