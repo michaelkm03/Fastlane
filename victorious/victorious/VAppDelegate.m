@@ -79,17 +79,19 @@ static BOOL isRunningTests(void) __attribute__((const));
     [[VTrackingManager sharedInstance] addDelegate:[[VGoogleAnalyticsTracking alloc] init]];
     
     NSURL *openURL = launchOptions[UIApplicationLaunchOptionsURLKey];
-    if (openURL)
+    
+    if ( openURL != nil )
     {
-        [[VDeeplinkManager sharedManager] handleOpenURL:openURL];
+        [[[VDeeplinkManager alloc] initWithURL:openURL] performNavigation];
     }
     
     [[[VFirstInstallManager alloc] init] reportFirstInstall];
     
     NSString *pushNotificationDeeplink = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey][@"deeplink"];
-    if (pushNotificationDeeplink)
+    
+    if ( pushNotificationDeeplink != nil )
     {
-        [[VDeeplinkManager sharedManager] handleOpenURL:[NSURL URLWithString:pushNotificationDeeplink]];
+        [[[VDeeplinkManager alloc] initWithURL:[NSURL URLWithString:pushNotificationDeeplink]] performNavigation];
     }
     
     return YES;
@@ -98,9 +100,19 @@ static BOOL isRunningTests(void) __attribute__((const));
 - (void)application:(UIApplication *)app didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
     NSString *pushNotificationDeeplink = userInfo[@"deeplink"];
-    if ([UIApplication sharedApplication].applicationState != UIApplicationStateActive && pushNotificationDeeplink)
+    
+    if ( pushNotificationDeeplink != nil )
     {
-        [[VDeeplinkManager sharedManager] handleOpenURL:[NSURL URLWithString:pushNotificationDeeplink]];
+        VDeeplinkManager *deeplinkManager = [[VDeeplinkManager alloc] initWithURL:[NSURL URLWithString:pushNotificationDeeplink]];
+        
+        if ( [UIApplication sharedApplication].applicationState != UIApplicationStateActive )
+        {
+            [deeplinkManager performNavigation];
+        }
+        else
+        {
+            [deeplinkManager postNotification];
+        }
     }
 }
 
@@ -123,7 +135,7 @@ static BOOL isRunningTests(void) __attribute__((const));
         return YES;
     }
     
-    [[VDeeplinkManager sharedManager] handleOpenURL:url];
+    [[[VDeeplinkManager alloc] initWithURL:url] performNavigation];
     return YES;
 }
 
