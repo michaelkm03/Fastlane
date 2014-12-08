@@ -14,11 +14,11 @@
 
 @property (nonatomic, readonly) NSTimeInterval transitionOutDuration;
 
-- (void)prepareForTransitionIn:(UIImageView *)fromViewImage;
+- (void)prepareForTransitionIn:(UIView *)snapshotOfOriginView;
 
 - (void)performTransitionIn:(NSTimeInterval)duration completion:(void(^)(BOOL))completion;
 
-- (void)prepareForTransitionOut:(UIImageView *)fromViewImage;
+- (void)prepareForTransitionOut:(UIView *)snapshotOfOriginView;
 
 - (void)performTransitionOut:(NSTimeInterval)duration completion:(void(^)(BOOL))completion;
 

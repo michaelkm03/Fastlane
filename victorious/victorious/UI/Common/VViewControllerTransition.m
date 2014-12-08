@@ -7,13 +7,12 @@
 //
 
 #import "VViewControllerTransition.h"
-#import "UIViewController+RenderToImageView.h"
 
 @interface VViewControllerTransitionModel : NSObject
 
 @property (nonatomic, readonly, strong) UIViewController *fromViewController;
 @property (nonatomic, readonly, strong) UIViewController *toViewController;
-@property (nonatomic, readonly, strong) UIImageView *fromImageView;
+@property (nonatomic, readonly, strong) UIView *snapshotOfOriginView;
 @property (nonatomic, readonly, strong) id<VAnimatedTransitionViewController> animatedTranstionViewController;
 @property (nonatomic, readonly, assign) NSTimeInterval animationDuration;
 @property (nonatomic, readonly, assign) BOOL isPresenting;
@@ -40,7 +39,7 @@
             _animationDuration = _isPresenting ? _animatedTranstionViewController.transitionInDuration : _animatedTranstionViewController.transitionOutDuration;
             if ( [self.animatedTranstionViewController requiresImageViewFromOriginViewController] )
             {
-                _fromImageView = [_fromViewController rederedAsImageView];
+                _snapshotOfOriginView = [_fromViewController.view snapshotViewAfterScreenUpdates:NO];
             }
         }
     }
@@ -70,7 +69,7 @@
         [transitionContext.containerView addSubview:model.toViewController.view];
         
         NSTimeInterval duration = model.animationDuration;
-        [model.animatedTranstionViewController prepareForTransitionIn:model.fromImageView];
+        [model.animatedTranstionViewController prepareForTransitionIn:model.snapshotOfOriginView];
         [model.animatedTranstionViewController performTransitionIn:duration completion:^(BOOL didComplete)
         {
             [transitionContext completeTransition:![transitionContext transitionWasCancelled]];
@@ -84,7 +83,7 @@
         [transitionContext.containerView addSubview:model.fromViewController.view];
         
         NSTimeInterval duration = model.animationDuration;
-        [model.animatedTranstionViewController prepareForTransitionOut:model.fromImageView];
+        [model.animatedTranstionViewController prepareForTransitionOut:model.snapshotOfOriginView];
         [model.animatedTranstionViewController performTransitionOut:duration completion:^(BOOL didComplete)
          {
              [transitionContext completeTransition:![transitionContext transitionWasCancelled]];

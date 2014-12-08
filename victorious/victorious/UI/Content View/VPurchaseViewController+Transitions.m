@@ -12,12 +12,12 @@
 
 #pragma mark - VAnimatedTransitionViewController
 
-- (void)prepareForTransitionIn:(UIImageView *)fromViewImage
+- (void)prepareForTransitionIn:(UIView *)snapshotOfOriginView
 {
-    if ( fromViewImage != nil )
+    if ( snapshotOfOriginView != nil )
     {
-        [self.view addSubview:fromViewImage];
-        [self.view sendSubviewToBack:fromViewImage];
+        [self.view addSubview:snapshotOfOriginView];
+        [self.view sendSubviewToBack:snapshotOfOriginView];
     }
     
     self.backgroundScreen.alpha = 0.0f;
@@ -51,7 +51,7 @@
      }];
 }
 
-- (void)prepareForTransitionOut:(UIImageView *)fromViewImage
+- (void)prepareForTransitionOut:(UIView *)snapshotOfOriginView
 {
 }
 

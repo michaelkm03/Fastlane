@@ -431,7 +431,6 @@
 		A7976D0719FAE8EA00B5A145 /* AVAsset+Orientation.m in Sources */ = {isa = PBXBuildFile; fileRef = A7976D0619FAE8EA00B5A145 /* AVAsset+Orientation.m */; };
 		A7A390C51A32441E00709812 /* VButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A390C41A32441E00709812 /* VButton.m */; };
 		A7A390CA1A3257A300709812 /* ContentView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7A390C91A3257A300709812 /* ContentView.storyboard */; };
-		A7A390D01A32684600709812 /* UIViewController+RenderToImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A390CF1A32684600709812 /* UIViewController+RenderToImageView.m */; };
 		A7A390D31A326DB100709812 /* VViewControllerTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A390D21A326DB100709812 /* VViewControllerTransition.m */; };
 		A7A7D61819DE178F00B18AB7 /* VAuthorizationViewControllerFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = A735323219DB60600040DB30 /* VAuthorizationViewControllerFactory.m */; };
 		A7AA647D19E78EAA0068D2B1 /* victoriOS.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A7AA647B19E78EAA0068D2B1 /* victoriOS.xcdatamodeld */; };
@@ -1375,8 +1374,6 @@
 		A7A390C31A32441E00709812 /* VButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VButton.h; sourceTree = "<group>"; };
 		A7A390C41A32441E00709812 /* VButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VButton.m; sourceTree = "<group>"; };
 		A7A390C91A3257A300709812 /* ContentView.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ContentView.storyboard; sourceTree = "<group>"; };
-		A7A390CE1A32684600709812 /* UIViewController+RenderToImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+RenderToImageView.h"; sourceTree = "<group>"; };
-		A7A390CF1A32684600709812 /* UIViewController+RenderToImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+RenderToImageView.m"; sourceTree = "<group>"; };
 		A7A390D11A326DB100709812 /* VViewControllerTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VViewControllerTransition.h; sourceTree = "<group>"; };
 		A7A390D21A326DB100709812 /* VViewControllerTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VViewControllerTransition.m; sourceTree = "<group>"; };
 		A7A390D41A326E1700709812 /* VAnimatedTransitionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAnimatedTransitionViewController.h; sourceTree = "<group>"; };
@@ -3529,8 +3526,6 @@
 				D8E39BF019CB9D58007FD86A /* UIView+VShadows.m */,
 				03A2AD951926B9460034EB80 /* UIViewController+ForceOrientationChange.h */,
 				03A2AD961926B9460034EB80 /* UIViewController+ForceOrientationChange.m */,
-				A7A390CE1A32684600709812 /* UIViewController+RenderToImageView.h */,
-				A7A390CF1A32684600709812 /* UIViewController+RenderToImageView.m */,
 				03811D3219353486005687FF /* VAlertViewBlockDelegate.h */,
 				03811D3319353486005687FF /* VAlertViewBlockDelegate.m */,
 				BE46F02B19D0CC3700CD7EF6 /* VConversation+UnreadMessageCount.h */,
@@ -4593,7 +4588,6 @@
 				D8E39BDA19CB7C80007FD86A /* VContentImageCell.m in Sources */,
 				A72005601A030E4700285A9C /* VGoogleAnalyticsTracking.m in Sources */,
 				A743E7EA1A081FFF00339CB3 /* VValidator.m in Sources */,
-				A7A390D01A32684600709812 /* UIViewController+RenderToImageView.m in Sources */,
 				0314D4A419B46B5E00FA363C /* VForceUpgradeAnimatedTransition.m in Sources */,
 				037CB74219CFE8B20084BBED /* VUploadManager.m in Sources */,
 				03B83B6219E0D2CC00DC04E4 /* VUploadProgressViewController.m in Sources */,
