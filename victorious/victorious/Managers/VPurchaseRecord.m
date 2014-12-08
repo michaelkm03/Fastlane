@@ -74,7 +74,7 @@
     }
     
     unichar *key = [self generateKey];
-    NSData *encrypedData = [data encryptedDataUsingAESKey:[NSData dataWithBytes:key length:16]];
+    NSData *encrypedData = [data encryptedDataWithAESKey:[NSData dataWithBytes:key length:16]];
     free( key );
     
     NSError *error = nil;
@@ -90,7 +90,7 @@
     }
     
     unichar *key = [self generateKey];
-    NSData *decryptedData = [encryptedData decryptedDataUsingAESKey:[NSData dataWithBytes:key length:16]];
+    NSData *decryptedData = [encryptedData decryptedDataWithAESKey:[NSData dataWithBytes:key length:16]];
     free( key );
     
     if ( decryptedData == nil )
