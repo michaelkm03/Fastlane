@@ -44,6 +44,11 @@ static char kKVOContext;
 @property (nonatomic, strong) VMenuCollectionViewDataSource *collectionViewDataSource;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
+#pragma mark properties for VProvidesNavigationMenuItemBadge compliance
+
+@property (nonatomic) NSInteger badgeNumber;
+@property (nonatomic, copy) VNavigationMenuItemBadgeNumberUpdateBlock badgeNumberUpdateBlock;
+
 @end
 
 @implementation VMenuController
@@ -154,7 +159,12 @@ static char kKVOContext;
         
         if ( [newBadgeTotal isKindOfClass:[NSNumber class]] )
         {
-            [[UIApplication sharedApplication] setApplicationIconBadgeNumber:[newBadgeTotal integerValue]];
+            self.badgeNumber = [newBadgeTotal integerValue];
+            
+            if ( self.badgeNumberUpdateBlock != nil )
+            {
+                self.badgeNumberUpdateBlock(self.badgeNumber);
+            }
         }
     }
 }

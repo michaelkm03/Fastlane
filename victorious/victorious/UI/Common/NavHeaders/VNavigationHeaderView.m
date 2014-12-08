@@ -7,7 +7,7 @@
 //
 
 #import "VNavigationHeaderView.h"
-
+#import "VBadgeLabel.h"
 #import "VThemeManager.h"
 #import "VSettingManager.h"
 #import "VAutomation.h"
@@ -18,6 +18,8 @@
 @property (nonatomic, weak) IBOutlet UILabel *headerLabel;
 @property (nonatomic, weak) IBOutlet UIButton *backButton;
 @property (nonatomic, weak) IBOutlet UIButton *menuButton;
+@property (nonatomic, weak) IBOutlet VBadgeLabel *badgeLabel;
+@property (nonatomic, weak) IBOutlet UIView *badgeBorder;
 @property (nonatomic, weak) IBOutlet UIButton *addButton;
 @property (nonatomic, weak, readwrite) IBOutlet UIView<VNavigationSelectorProtocol> *navSelector;
 @property (nonatomic) NSInteger lastSelectedControl;
@@ -45,6 +47,8 @@
     VNavigationHeaderView *header = [[[NSBundle mainBundle] loadNibNamed:nibName owner:nil options:nil] firstObject];
     header.backButton.hidden = NO;
     header.menuButton.hidden = YES;
+    header.badgeLabel.hidden = YES;
+    header.badgeBorder.hidden = YES;
     
     [header setupSegmentedControlWithTitles:titles];
     return header;
@@ -55,6 +59,15 @@
     [super awakeFromNib];
     self.backButton.accessibilityIdentifier = VAutomationIdentifierGenericBack;
     self.menuButton.accessibilityIdentifier = VAutomationIdentifierMainMenu;
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    if ( CGRectGetHeight(self.badgeLabel.frame) == 0 || CGRectGetWidth(self.badgeLabel.frame) == 0 )
+    {
+        self.badgeBorder.bounds = CGRectZero;
+    }
 }
 
 - (void)applyTheme
@@ -72,6 +85,7 @@
     [self.addButton setTitleColor:tintColor forState:UIControlStateNormal];
     
     self.backgroundColor = isTemplateC ? [UIColor whiteColor] : [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+    self.badgeBorder.backgroundColor = self.backgroundColor;
     
     UIImage *image = [self.menuButton.currentImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     [self.menuButton setImage:image forState:UIControlStateNormal];
@@ -84,6 +98,8 @@
     NSString *headerFontKey = isTemplateC ? kVHeading2Font : kVHeaderFont;
     self.headerLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:headerFontKey];
     self.headerLabel.text = self.headerText;
+    
+    self.badgeLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont];
 }
 
 - (void)setupSegmentedControlWithTitles:(NSArray *)titles
@@ -193,6 +209,11 @@
     [self.addButton setTitle:title forState:UIControlStateNormal];
     [self.addButton addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
     return self.addButton;
+}
+
+- (void)setBadgeNumber:(NSInteger)badgeNumber
+{
+    [self.badgeLabel setBadgeNumber:badgeNumber];
 }
 
 @end

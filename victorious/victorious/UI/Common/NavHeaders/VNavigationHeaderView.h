@@ -11,7 +11,7 @@
 #import "VNavigationSelectorProtocol.h"
 #import "VHeaderView.h"
 
-@class  VNavigationHeaderView;
+@class VNavigationHeaderView;
 
 @protocol VNavigationHeaderDelegate <NSObject>
 
@@ -86,5 +86,10 @@
 - (UIButton *)setRightButtonTitle:(NSString *)title
                  withAction:(SEL)action
                    onTarget:(id)target;
+
+/**
+ Updates the number in the badge on the menu button
+ */
+- (void)setBadgeNumber:(NSInteger)badgeNumber;
 
 @end
