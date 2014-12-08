@@ -40,7 +40,7 @@ static const CGFloat kCellHeight = 50.0f;
     _dependencyManager = dependencyManager;
     self.menuLabel.font = [self.dependencyManager fontForKey:VDependencyManagerHeading1FontKey];
     self.menuLabel.textColor = [UIColor colorWithWhite:1.0 alpha:0.7];
-    self.badgeLabel.dependencyManager = self.dependencyManager;
+    self.badgeLabel.font = [self.dependencyManager fontForKey:VDependencyManagerHeading2FontKey];
 }
 
 - (void)prepareForReuse
@@ -60,14 +60,7 @@ static const CGFloat kCellHeight = 50.0f;
 
 - (void)setBadgeNumber:(NSInteger)badgeNumber
 {
-    if (badgeNumber == 0)
-    {
-        self.badgeLabel.text = @"";
-    }
-    else
-    {
-        self.badgeLabel.text = [NSString stringWithFormat:@"%ld", (long)badgeNumber];
-    }
+    [self.badgeLabel setBadgeNumber:badgeNumber];
 }
 
 @end
