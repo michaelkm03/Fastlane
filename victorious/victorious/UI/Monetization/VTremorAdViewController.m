@@ -49,6 +49,12 @@
 
     [TremorVideoAd setDelegate:self];
     
+    // Return if we do not have an ad loaded
+    if (![TremorVideoAd isAdReady])
+    {
+        [self didAdComplete];
+    }
+    
 }
 
 - (void)viewWillDisappear:(BOOL)animated
