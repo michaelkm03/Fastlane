@@ -2120,10 +2120,10 @@
 		0314D35B19B46B5E00FA363C /* Content View */ = {
 			isa = PBXGroup;
 			children = (
-				A7A390C91A3257A300709812 /* ContentView.storyboard */,
 				0314D35C19B46B5E00FA363C /* Animators */,
 				D8E39BC119CB7C80007FD86A /* Cells */,
 				0314D36519B46B5E00FA363C /* Content Info */,
+				A7A390C91A3257A300709812 /* ContentView.storyboard */,
 				D8C7CF5319DCCC3000BA33E5 /* Experience Enhancers */,
 				D89AC2B719F1FD6B00921131 /* Histogram */,
 				D82C08F419D0C04200273E0D /* Layouts */,
@@ -2137,12 +2137,12 @@
 				D8E39BB719CB7C3C007FD86A /* VNewContentViewController.m */,
 				D8360CE819E3640000D7E260 /* VNewContentViewController+Actions.h */,
 				D8360CE919E3640000D7E260 /* VNewContentViewController+Actions.m */,
-				D8917EA019F8498F0070BDBB /* VVideoCellViewModel.h */,
-				D8917EA119F8498F0070BDBB /* VVideoCellViewModel.m */,
 				A70FC11D1A301DE600F5BBDE /* VPurchaseViewController.h */,
 				A70FC11E1A301DE600F5BBDE /* VPurchaseViewController.m */,
 				A71D24291A33D7CD00BEE562 /* VPurchaseViewController+Transitions.h */,
 				A71D242A1A33D7CD00BEE562 /* VPurchaseViewController+Transitions.m */,
+				D8917EA019F8498F0070BDBB /* VVideoCellViewModel.h */,
+				D8917EA119F8498F0070BDBB /* VVideoCellViewModel.m */,
 			);
 			path = "Content View";
 			sourceTree = "<group>";
@@ -3104,12 +3104,12 @@
 				A70FC1121A2D61A000F5BBDE /* VProductsRequest.m */,
 				A70FC1081A2D558200F5BBDE /* VPurchase.h */,
 				A70FC1091A2D558200F5BBDE /* VPurchase.m */,
-				A7E398671A35648A000E4CAC /* VPurchaseRecord.h */,
-				A7E398681A35648A000E4CAC /* VPurchaseRecord.m */,
 				A70FC0FC1A2D412200F5BBDE /* VPurchaseManager.h */,
 				A70FC0FD1A2D412200F5BBDE /* VPurchaseManager.m */,
 				A70FC11A1A2FD60C00F5BBDE /* VPurchaseManagerCache.h */,
 				A70FC11B1A2FD60C00F5BBDE /* VPurchaseManagerCache.m */,
+				A7E398671A35648A000E4CAC /* VPurchaseRecord.h */,
+				A7E398681A35648A000E4CAC /* VPurchaseRecord.m */,
 			);
 			name = Purchases;
 			sourceTree = "<group>";
