@@ -12,7 +12,7 @@
 #import "VVoteType+Fetcher.h"
 #import "VPurchaseManager.h"
 
-#define OVERWRITE_WITH_PAID_BALLISTICS 1
+#define OVERWRITE_WITH_PAID_BALLISTICS 0
 
 NSString * const VVoteSettingsDidUpdateNotification = @"VVoteSettingsDidUpdateNotification";
 NSString * const VVoteSettingsDidUpdateKeyVoteType = @"VVoteSettingsDidUpdateKeyVoteType";
@@ -53,7 +53,7 @@ NSString * const VVoteSettingsDidUpdateKeyVoteType = @"VVoteSettingsDidUpdateKey
     _voteTypes = [(_voteTypes ?: @[]) arrayByAddingObjectsFromArray:voteTypes];
     _voteTypes = [voteTypes filteredArrayUsingPredicate:predicate];
     
-#if OVERWRITE_WITH_PAID_BALLISTICS && DEBUG
+#if OVERWRITE_WITH_PAID_BALLISTICS
 #warning Testing only to create correctly configurd purchaseable products
     ((VVoteType *)_voteTypes[0]).isPaid = @YES;
     ((VVoteType *)_voteTypes[0]).productIdentifier = @"com.getvictorious.eatyourkimchi.ballistic.meemers";
