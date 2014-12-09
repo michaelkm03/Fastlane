@@ -55,7 +55,7 @@
     _imageView.contentMode = UIViewContentModeScaleAspectFill;
     [_canvasScrollView addSubview:_imageView];
     
-    self.context = [CIContext contextWithOptions:@{}];
+    _context = [CIContext contextWithOptions:@{}];
 }
 
 - (void)layoutSubviews
