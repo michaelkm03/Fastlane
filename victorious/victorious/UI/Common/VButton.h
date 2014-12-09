@@ -37,4 +37,6 @@ typedef NS_ENUM( NSUInteger, VButtonStyle )
  */
 @property (nonatomic, assign) VButtonStyle style;
 
+@property (nonatomic, strong) UIColor *primaryColor;
+
 @end

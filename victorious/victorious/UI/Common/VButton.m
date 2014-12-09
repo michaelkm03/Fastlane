@@ -9,13 +9,15 @@
 #import "VButton.h"
 #import "UIColor+Brightness.h"
 
-static const CGFloat kCornderRadius         = 3.0f;
-static const CGFloat kBorderWidth           = 1.5f;
-static const CGFloat kSecondaryGray         = 0.2f;
+static const CGFloat kCornderRadius             = 3.0f;
+static const CGFloat kBorderWidth               = 1.5f;
+static const CGFloat kPrimaryHighlightModAmount = 0.1f;
+static const CGFloat kSecondaryHighlightAlpha   = 0.1f;
+static const CGFloat kSecondaryGray             = 0.2f;
+static const CGFloat kStartScale                = 0.97f;
 
 @interface VButton ()
 
-@property (nonatomic, strong) UIColor *primaryColor;
 @property (nonatomic, readonly) UIColor *secondaryColor;
 
 @end
@@ -30,6 +32,7 @@ static const CGFloat kSecondaryGray         = 0.2f;
     {
         case VButtonStylePrimary:
             self.layer.borderWidth = 0.0;
+            self.layer.borderColor = [UIColor clearColor].CGColor;
             self.backgroundColor = self.primaryColor;
             [self setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
             break;
@@ -43,6 +46,8 @@ static const CGFloat kSecondaryGray         = 0.2f;
     }
     
     self.layer.cornerRadius = kCornderRadius;
+    
+    self.transform = CGAffineTransformMakeScale( kStartScale, kStartScale );
     
     [self setNeedsDisplay];
 }
@@ -68,15 +73,43 @@ static const CGFloat kSecondaryGray         = 0.2f;
 
 - (void)setHighlighted:(BOOL)highlighted
 {
+    [UIView animateWithDuration:highlighted ? 0.3f : 0.5f
+                          delay:0.0f
+         usingSpringWithDamping:0.8f
+          initialSpringVelocity:0.8f
+                        options:kNilOptions animations:^
+     {
+         [self applyAnimatedHighlight:highlighted];
+     } completion:nil];
+    
+}
+
+- (void)applyAnimatedHighlight:(BOOL)highlighted
+{
     switch ( self.style )
     {
         case VButtonStylePrimary:
-            [self privateSetBackgroundColor:highlighted ? [self.primaryColor darkenBy:0.1f] : self.primaryColor];
+        {
+            UIColor *modded = [self.primaryColor lightenBy:kPrimaryHighlightModAmount];
+            UIColor *color = highlighted ? modded : self.primaryColor;
+            [self privateSetBackgroundColor:color];
             break;
-            
+        }
         case VButtonStyleSecondary:
-            [self privateSetBackgroundColor:highlighted ? [self.secondaryColor colorWithAlphaComponent:0.07f] : [UIColor clearColor]];
+        {
+            UIColor *color = highlighted ? self.primaryColor : self.secondaryColor;
+            self.layer.borderColor = color.CGColor;
+            [self setTitleColor:color forState:UIControlStateNormal];
             break;
+        }
+    }
+    if ( highlighted )
+    {
+        self.transform = CGAffineTransformIdentity;
+    }
+    else
+    {
+        self.transform = CGAffineTransformMakeScale( kStartScale, kStartScale );
     }
 }
 
