@@ -430,6 +430,7 @@
 		A790C8291A01980F00C4F208 /* VTrackingEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = A790C8231A01980F00C4F208 /* VTrackingEvent.m */; };
 		A790C82A1A01980F00C4F208 /* VTrackingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A790C8251A01980F00C4F208 /* VTrackingManager.m */; };
 		A7976D0719FAE8EA00B5A145 /* AVAsset+Orientation.m in Sources */ = {isa = PBXBuildFile; fileRef = A7976D0619FAE8EA00B5A145 /* AVAsset+Orientation.m */; };
+		A7A2DFFF1A37813D00F8C705 /* VPurchaseActionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A2DFFE1A37813D00F8C705 /* VPurchaseActionCell.m */; };
 		A7A390C51A32441E00709812 /* VButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A390C41A32441E00709812 /* VButton.m */; };
 		A7A390CA1A3257A300709812 /* ContentView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7A390C91A3257A300709812 /* ContentView.storyboard */; };
 		A7A390D31A326DB100709812 /* VViewControllerTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A390D21A326DB100709812 /* VViewControllerTransition.m */; };
@@ -458,6 +459,8 @@
 		A7E398691A35648A000E4CAC /* VPurchaseRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = A7E398681A35648A000E4CAC /* VPurchaseRecord.m */; };
 		A7E398731A362578000E4CAC /* NSData+AES.m in Sources */ = {isa = PBXBuildFile; fileRef = A7E398721A362578000E4CAC /* NSData+AES.m */; };
 		A7E398751A3627AD000E4CAC /* NSData+AESTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7E398741A3627AD000E4CAC /* NSData+AESTests.m */; };
+		A7EECAD51A377FA000A8BAE1 /* VPurchaseSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7EECAD41A377FA000A8BAE1 /* VPurchaseSettingsViewController.m */; };
+		A7EECAD81A37802500A8BAE1 /* VPurchaseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7EECAD71A37802500A8BAE1 /* VPurchaseCell.m */; };
 		A7F8DD4D1A0B065800F82256 /* VHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F8DD4C1A0B065800F82256 /* VHeaderView.m */; };
 		A7F8DD631A0B1A8B00F82256 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F8DD621A0B1A8B00F82256 /* WebKit.framework */; };
 		A7F8DD651A0BF55900F82256 /* VSequenceActionControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F8DD641A0BF55900F82256 /* VSequenceActionControllerTests.m */; };
@@ -1378,6 +1381,8 @@
 		A7976D0519FAE8EA00B5A145 /* AVAsset+Orientation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AVAsset+Orientation.h"; sourceTree = "<group>"; };
 		A7976D0619FAE8EA00B5A145 /* AVAsset+Orientation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AVAsset+Orientation.m"; sourceTree = "<group>"; };
 		A7976D0819FAE94300B5A145 /* AVAsset+OrientationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AVAsset+OrientationTests.m"; sourceTree = "<group>"; };
+		A7A2DFFD1A37813D00F8C705 /* VPurchaseActionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPurchaseActionCell.h; sourceTree = "<group>"; };
+		A7A2DFFE1A37813D00F8C705 /* VPurchaseActionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPurchaseActionCell.m; sourceTree = "<group>"; };
 		A7A390C31A32441E00709812 /* VButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VButton.h; sourceTree = "<group>"; };
 		A7A390C41A32441E00709812 /* VButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VButton.m; sourceTree = "<group>"; };
 		A7A390C91A3257A300709812 /* ContentView.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ContentView.storyboard; sourceTree = "<group>"; };
@@ -1421,6 +1426,10 @@
 		A7E398711A362578000E4CAC /* NSData+AES.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+AES.h"; sourceTree = "<group>"; };
 		A7E398721A362578000E4CAC /* NSData+AES.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+AES.m"; sourceTree = "<group>"; };
 		A7E398741A3627AD000E4CAC /* NSData+AESTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSData+AESTests.m"; path = "../../../../Downloads/HiArt/HiArtTests/NSData+AESTests.m"; sourceTree = "<group>"; };
+		A7EECAD31A377FA000A8BAE1 /* VPurchaseSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPurchaseSettingsViewController.h; sourceTree = "<group>"; };
+		A7EECAD41A377FA000A8BAE1 /* VPurchaseSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPurchaseSettingsViewController.m; sourceTree = "<group>"; };
+		A7EECAD61A37802500A8BAE1 /* VPurchaseCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPurchaseCell.h; sourceTree = "<group>"; };
+		A7EECAD71A37802500A8BAE1 /* VPurchaseCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPurchaseCell.m; sourceTree = "<group>"; };
 		A7EF97BB19F889F800972E74 /* VExperienceEnhancerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VExperienceEnhancerTests.m; sourceTree = "<group>"; };
 		A7F8DD4B1A0B065800F82256 /* VHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHeaderView.h; sourceTree = "<group>"; };
 		A7F8DD4C1A0B065800F82256 /* VHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHeaderView.m; sourceTree = "<group>"; };
@@ -2379,6 +2388,7 @@
 		0314D3F219B46B5E00FA363C /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				A7EECAD21A377FA000A8BAE1 /* Purchase Settings */,
 				A7B98A351A264D0900C58335 /* Push Notification Settings */,
 				DB2A494519DF44CF00CB687B /* settings.storyboard */,
 				0314D3F419B46B5E00FA363C /* VChangePasswordViewController.h */,
@@ -3326,6 +3336,19 @@
 				A7B98A381A264D0900C58335 /* VNotificationSettingCell.m */,
 			);
 			path = Cells;
+			sourceTree = "<group>";
+		};
+		A7EECAD21A377FA000A8BAE1 /* Purchase Settings */ = {
+			isa = PBXGroup;
+			children = (
+				A7EECAD31A377FA000A8BAE1 /* VPurchaseSettingsViewController.h */,
+				A7EECAD41A377FA000A8BAE1 /* VPurchaseSettingsViewController.m */,
+				A7EECAD61A37802500A8BAE1 /* VPurchaseCell.h */,
+				A7EECAD71A37802500A8BAE1 /* VPurchaseCell.m */,
+				A7A2DFFD1A37813D00F8C705 /* VPurchaseActionCell.h */,
+				A7A2DFFE1A37813D00F8C705 /* VPurchaseActionCell.m */,
+			);
+			path = "Purchase Settings";
 			sourceTree = "<group>";
 		};
 		BE171D6D1868BE64004E5202 = {
@@ -4559,6 +4582,7 @@
 				BE11F27119CCF5B300DEC776 /* VObjectManager+Streams.m in Sources */,
 				D836884419C3718A00070F22 /* VBaseSupplementaryView.m in Sources */,
 				0314D4A319B46B5E00FA363C /* VCreatePollViewController.m in Sources */,
+				A7EECAD51A377FA000A8BAE1 /* VPurchaseSettingsViewController.m in Sources */,
 				A72005701A03ECDC00285A9C /* VTrackingURLRequest.m in Sources */,
 				D8E39BD819CB7C80007FD86A /* VContentCommentsCell.m in Sources */,
 				D836884119C370C400070F22 /* VBaseCollectionViewCell.m in Sources */,
@@ -4634,6 +4658,7 @@
 				BE88FF921A00060E0064AB28 /* VSwipeNavSelector.m in Sources */,
 				BE88FF7A1A0005E70064AB28 /* VMultipleStreamViewController.m in Sources */,
 				0314D4E819B46B5E00FA363C /* VTabBarViewController.m in Sources */,
+				A7A2DFFF1A37813D00F8C705 /* VPurchaseActionCell.m in Sources */,
 				D89AC2BC19F1FD6B00921131 /* VHistogramDataSource.m in Sources */,
 				A75FAF1B19E8AC1E00EB87C1 /* VTrendingTagCell.m in Sources */,
 				BE799B8F19C8A91C0023CE88 /* VInteraction.m in Sources */,
@@ -4749,6 +4774,7 @@
 				A70FC1251A31207400F5BBDE /* VVoteSettings.m in Sources */,
 				A70FC0F71A2D012E00F5BBDE /* VNotificationSettingsTableRow.m in Sources */,
 				BEDF0FC918DBCB5500750EF6 /* VVoteType+Fetcher.m in Sources */,
+				A7EECAD81A37802500A8BAE1 /* VPurchaseCell.m in Sources */,
 				037CB73E19CFE8550084BBED /* VMultipartFormDataWriter.m in Sources */,
 				A7D8532419F6F3B100EDBFF8 /* VTracking.m in Sources */,
 				BEF2C29618845EF500AAE975 /* VPollResult+RestKit.m in Sources */,

@@ -203,14 +203,14 @@
                                             <segue destination="qhc-hG-PIv" kind="push" id="OJ4-bd-gwX"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="16U-jQ-75p" detailTextLabel="mv4-9Z-Mit" style="IBUITableViewCellStyleValue1" id="OQL-l9-rlJ">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="16U-jQ-75p" detailTextLabel="mv4-9Z-Mit" style="IBUITableViewCellStyleValue1" id="OQL-l9-rlJ">
                                         <rect key="frame" x="0.0" y="231" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="OQL-l9-rlJ" id="N4F-ho-eiL">
                                             <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Reset In-App Purchases" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="16U-jQ-75p">
+                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="In-App Purchases" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="16U-jQ-75p">
                                                     <rect key="frame" x="15" y="11" width="151" height="21"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -226,6 +226,9 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="ms7-gO-8Gm" kind="push" id="NXO-8D-13b"/>
+                                        </connections>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
@@ -539,10 +542,10 @@
             </objects>
             <point key="canvasLocation" x="-4318" y="-1339"/>
         </scene>
-        <!--Server Environment-->
+        <!--Server Environment Container-->
         <scene sceneID="52i-TC-0Lr">
             <objects>
-                <viewController title="Server Environment" id="qhc-hG-PIv" customClass="VContainerViewController" sceneMemberID="viewController">
+                <viewController title="Server Environment" id="qhc-hG-PIv" userLabel="Server Environment Container" customClass="VContainerViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="EHA-Hk-x7j"/>
                         <viewControllerLayoutGuide type="bottom" id="p93-1Z-KHo"/>
@@ -570,7 +573,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4V4-NE-ryA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3905" y="-2023"/>
+            <point key="canvasLocation" x="-3113" y="-2157"/>
         </scene>
         <!--Server Environment-->
         <scene sceneID="quU-xZ-2Jq">
@@ -609,7 +612,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Imd-KZ-Wo5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3471" y="-2023"/>
+            <point key="canvasLocation" x="-2679" y="-2157"/>
         </scene>
         <!--Push Notifications-->
         <scene sceneID="G6z-QB-WOZ">
@@ -643,6 +646,108 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dWx-pz-Gcw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-3900" y="-2680"/>
+        </scene>
+        <!--Purchase Settings Container-->
+        <scene sceneID="Qhc-wh-GVF">
+            <objects>
+                <viewController title="Server Environment" id="ms7-gO-8Gm" userLabel="Purchase Settings Container" customClass="VContainerViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="aud-gm-Lfu"/>
+                        <viewControllerLayoutGuide type="bottom" id="vAf-SI-1C8"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="ICE-RV-FtE">
+                        <rect key="frame" x="0.0" y="44" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LxP-9y-ztQ">
+                                <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                                <connections>
+                                    <segue destination="0nf-aa-3V6" kind="embed" id="Enw-qd-WVK"/>
+                                </connections>
+                            </containerView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="vAf-SI-1C8" firstAttribute="top" secondItem="LxP-9y-ztQ" secondAttribute="bottom" id="FYr-XG-DdC"/>
+                            <constraint firstItem="LxP-9y-ztQ" firstAttribute="top" secondItem="aud-gm-Lfu" secondAttribute="bottom" id="TmH-Hv-LHa"/>
+                            <constraint firstItem="LxP-9y-ztQ" firstAttribute="leading" secondItem="ICE-RV-FtE" secondAttribute="leading" id="fwz-Bi-y7B"/>
+                            <constraint firstAttribute="trailing" secondItem="LxP-9y-ztQ" secondAttribute="trailing" id="g8Z-Fu-ngn"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="68D-LE-M8l"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ilW-3R-GZr" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-3687" y="-1507"/>
+        </scene>
+        <!--Purchase Settings-->
+        <scene sceneID="oSl-bU-Faw">
+            <objects>
+                <tableViewController title="Server Environment" id="0nf-aa-3V6" userLabel="Purchase Settings" customClass="VPurchaseSettingsViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="qpQ-jJ-EMf">
+                        <rect key="frame" x="0.0" y="44" width="320" height="460"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <color key="separatorColor" red="0.96470588239999999" green="0.96470588239999999" blue="0.8862745098" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="serverCell" id="mpA-RI-nLv" userLabel="Purchase Cell" customClass="VPurchaseCell">
+                                <rect key="frame" x="0.0" y="22" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="mpA-RI-nLv" id="JvS-e3-CXt">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                                <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
+                            </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="serverCell" id="CWE-b8-fYB" userLabel="Action Cell" customClass="VPurchaseActionCell">
+                                <rect key="frame" x="0.0" y="22" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="CWE-b8-fYB" id="iUO-cb-0C0">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N5S-6f-jb6" userLabel="Action" customClass="VButton">
+                                            <rect key="frame" x="20" y="0.0" width="280" height="43"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <state key="normal" title="Action">
+                                                <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="logout:" destination="kYh-dZ-t7J" eventType="touchUpInside" id="9xK-uj-YFf"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="N5S-6f-jb6" firstAttribute="top" secondItem="iUO-cb-0C0" secondAttribute="top" id="VEY-De-lJ4"/>
+                                        <constraint firstItem="N5S-6f-jb6" firstAttribute="leading" secondItem="iUO-cb-0C0" secondAttribute="leading" constant="20" id="r0B-Ta-1uT"/>
+                                        <constraint firstAttribute="trailing" secondItem="N5S-6f-jb6" secondAttribute="trailing" constant="20" id="w0p-k5-muS"/>
+                                        <constraint firstAttribute="bottom" secondItem="N5S-6f-jb6" secondAttribute="bottom" id="xEa-DC-M8d"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="0nf-aa-3V6" id="PhO-4z-y9a"/>
+                            <outlet property="delegate" destination="0nf-aa-3V6" id="3wN-2U-SFi"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="In-App Purchases" id="5FP-jo-7Mh">
+                        <barButtonItem key="leftBarButtonItem" image="cameraButtonBack" id="HqR-wx-2sm">
+                            <connections>
+                                <action selector="goBack:" destination="0nf-aa-3V6" id="6Wb-6s-qn8"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="mG7-xu-zJg" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-3263" y="-1507"/>
         </scene>
     </scenes>
     <resources>
