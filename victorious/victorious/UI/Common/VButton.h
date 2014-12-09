@@ -35,6 +35,6 @@ typedef NS_ENUM( NSUInteger, VButtonStyle )
 /**
  Sets the style according to the specified value and redraws right away.
  */
-@property (nonatomic, assign) IBInspectable VButtonStyle style;
+@property (nonatomic, assign) VButtonStyle style;
 
 @end

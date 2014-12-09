@@ -12,13 +12,14 @@
 #import "UIImage+ImageEffects.h"
 #import "VConstants.h"
 #import "VPasswordValidator.h"
+#import "VButton.h"
 
 @interface VResetPasswordViewController ()  <UITextFieldDelegate>
 
 @property (nonatomic, weak) IBOutlet    UITextField    *passwordTextField;
 @property (nonatomic, weak) IBOutlet    UITextField    *confirmPasswordTextField;
-@property (nonatomic, weak) IBOutlet    UIButton       *updateButton;
-@property (nonatomic, weak) IBOutlet    UIButton       *cancelButton;
+@property (nonatomic, weak) IBOutlet    VButton        *updateButton;
+@property (nonatomic, weak) IBOutlet    VButton        *cancelButton;
 
 @property (nonatomic, strong) VPasswordValidator *passwordValidator;
 
@@ -39,16 +40,12 @@
     self.confirmPasswordTextField.textColor = [UIColor colorWithWhite:0.14 alpha:1.0];
     self.confirmPasswordTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.confirmPasswordTextField.placeholder attributes:@{NSForegroundColorAttributeName : [UIColor colorWithWhite:0.14 alpha:1.0]}];
     
-    self.cancelButton.layer.borderColor = [UIColor colorWithWhite:0.14 alpha:1.0].CGColor;
-    self.cancelButton.layer.borderWidth = 2.0;
-    self.cancelButton.layer.cornerRadius = 3.0;
-    self.cancelButton.backgroundColor = [UIColor clearColor];
     self.cancelButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
-    [self.cancelButton setTitleColor:[UIColor colorWithWhite:0.14 alpha:1.0] forState:UIControlStateNormal];
+    self.cancelButton.style = VButtonStyleSecondary;
     
     self.updateButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     self.updateButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
-    [self.updateButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    self.updateButton.style = VButtonStylePrimary;
     
     self.passwordTextField.delegate  =   self;
     self.confirmPasswordTextField.delegate  =   self;

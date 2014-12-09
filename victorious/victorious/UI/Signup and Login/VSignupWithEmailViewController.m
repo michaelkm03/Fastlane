@@ -20,14 +20,15 @@
 #import "VPasswordValidator.h"
 #import "VEmailValidator.h"
 #import "VAutomation.h"
+#import "VButton.h"
 
 @interface VSignupWithEmailViewController ()    <UITextFieldDelegate, UINavigationControllerDelegate, TTTAttributedLabelDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *emailTextField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
 @property (weak, nonatomic) IBOutlet UITextField *confirmPasswordTextField;
-@property (nonatomic, weak) IBOutlet    UIButton       *cancelButton;
-@property (nonatomic, weak) IBOutlet    UIButton       *signupButton;
+@property (nonatomic, weak) IBOutlet    VButton       *cancelButton;
+@property (nonatomic, weak) IBOutlet    VButton       *signupButton;
 @property (nonatomic, strong)   VUser  *profile;
 @property (nonatomic, strong)   VRegistrationModel *registrationModel;
 @property (nonatomic, strong)   VPasswordValidator *passwordValidator;
@@ -47,17 +48,12 @@
     self.passwordTextField.delegate = self;
     self.confirmPasswordTextField.delegate = self;
 
-    self.cancelButton.layer.borderColor = [UIColor colorWithWhite:0.14 alpha:1.0].CGColor;
-    self.cancelButton.layer.borderWidth = 2.0;
-    self.cancelButton.layer.cornerRadius = 3.0;
-    self.cancelButton.backgroundColor = [UIColor clearColor];
+    self.cancelButton.style = VButtonStyleSecondary;
     self.cancelButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
-    [self.cancelButton setTitleColor:[UIColor colorWithWhite:0.14 alpha:1.0] forState:UIControlStateNormal];
     
+    self.signupButton.style = VButtonStylePrimary;
     self.signupButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-    self.signupButton.layer.cornerRadius = 3.0;
     self.signupButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
-    [self.signupButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     
     self.emailTextField.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
     self.emailTextField.textColor = [UIColor colorWithWhite:0.14 alpha:1.0];
