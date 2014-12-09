@@ -204,7 +204,6 @@
     [toolViewController willMoveToParentViewController:nil];
     [toolViewController.view removeFromSuperview];
     [toolViewController removeFromParentViewController];
-    VLog(@"%@", self.childViewControllers);
 }
 
 - (void)addToolViewController:(UIViewController *)viewController
@@ -212,7 +211,6 @@
     [self addChildViewController:viewController];
     [self.view addSubview:viewController.view];
     [viewController didMoveToParentViewController:self];
-    VLog(@"%@", self.childViewControllers);
 }
 
 - (void)setCanvasToolViewController:(UIViewController *)canvasToolViewController
