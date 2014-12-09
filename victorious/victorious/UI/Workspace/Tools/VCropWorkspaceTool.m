@@ -74,25 +74,24 @@ static NSString * const kFilterIndexKey = @"filterIndex";
 
 - (CIImage *)imageByApplyingToolToInputImage:(CIImage *)inputImage
 {
-    // Apply transform (scale + translation)
-    CIFilter *transformFilter = [CIFilter filterWithName:@"CIAffineTransform"];
-    CGFloat zoomScale = self.cropViewController.croppingScrollView.zoomScale;
-    CGAffineTransform transform = CGAffineTransformMakeScale(zoomScale, zoomScale);
-    [transformFilter setValue:[NSValue valueWithBytes:&transform objCType:@encode(CGAffineTransform)]
-                       forKey:@"inputTransform"];
-    
-    [transformFilter setValue:inputImage forKey:kCIInputImageKey];
+    // Apply scale
+//    CIFilter *transformFilter = [CIFilter filterWithName:@"CIAffineTransform"];
+//    // Scale
+//    CGFloat zoomScale = self.cropViewController.croppingScrollView.zoomScale;
+//    CGAffineTransform transform = CGAffineTransformMakeScale( zoomScale, zoomScale);
+//    [transformFilter setValue:[NSValue valueWithBytes:&transform objCType:@encode(CGAffineTransform)]
+//                       forKey:@"inputTransform"];
+//    
+//    [transformFilter setValue:inputImage forKey:kCIInputImageKey];
     
     // Apply crop
     CIFilter *cropFilter = [CIFilter filterWithName:@"CICrop"];
-    CGRect croppingBounds = self.cropViewController.croppingScrollView.bounds;
+    CIVector *cropVector = [CIVector vectorWithCGRect:CGRectMake(((self.cropViewController.croppingScrollView.contentOffset.x / self.cropViewController.croppingScrollView.contentSize.width)* [inputImage extent].size.width),
+                                                                 [inputImage extent].size.height - ((self.cropViewController.croppingScrollView.contentOffset.y / self.cropViewController.croppingScrollView.contentSize.height)* [inputImage extent].size.height),
+                                                                 ((self.cropViewController.croppingScrollView.bounds.size.width / self.cropViewController.croppingScrollView.contentSize.width)* [inputImage extent].size.width),
+                                                                 -((self.cropViewController.croppingScrollView.bounds.size.height / self.cropViewController.croppingScrollView.contentSize.height)* [inputImage extent].size.height))];
     
-    CIVector *cropVector = [CIVector vectorWithCGRect:CGRectMake(0,
-                                                                 0,
-                                                                 ((croppingBounds.size.width * 0.5f) / self.cropViewController.assetSize.width) * inputImage.extent.size.width,
-                                                                 ((croppingBounds.size.height * 0.5f) / self.cropViewController.assetSize.height) * inputImage.extent.size.height)];
-    
-    [cropFilter setValue:[transformFilter outputImage] forKey:kCIInputImageKey];
+    [cropFilter setValue:inputImage forKey:kCIInputImageKey];
     [cropFilter setValue:cropVector forKey:@"inputRectangle"];
     
     return [cropFilter outputImage];

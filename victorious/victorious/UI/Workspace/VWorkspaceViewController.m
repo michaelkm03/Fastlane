@@ -105,13 +105,17 @@
                                                      animated:YES];
     hudForView.labelText = @"Publishing...";
     
-    UIImage *renderedImage = [self renderedImageForCurrentState];
-    
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^
     {
-        [MBProgressHUD hideHUDForView:self.view
-                             animated:YES];
-        self.completionBlock(YES, nil);
+        NSDate *tick = [NSDate date];
+        UIImage *renderedImage = [self renderedImageForCurrentState];
+        NSDate *tock = [NSDate date];
+        VLog(@"Render time: %@", @([tock timeIntervalSinceDate:tick]));
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [MBProgressHUD hideHUDForView:self.view
+                                 animated:YES];
+            self.completionBlock(YES, nil);
+        });
     });
 }
 
