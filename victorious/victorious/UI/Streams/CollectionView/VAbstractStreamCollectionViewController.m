@@ -72,6 +72,11 @@ const CGFloat kVLoadNextPagePoint = .75f;
         self.contentInset = insets;
     }
 
+    if ( !self.refreshControl.isRefreshing && self.streamDataSource.count == 0 )
+    {
+        [self refresh:nil];
+    }
+    
     [self.refreshControl removeFromSuperview];
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
