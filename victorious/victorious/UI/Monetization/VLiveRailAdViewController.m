@@ -54,6 +54,10 @@
         self.adManager.frame = self.view.bounds;
         [self.view addSubview:self.adManager];
     }
+    else
+    {
+        [self.adManager resumeAd];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -77,8 +81,7 @@
     
     if (self.adManager != nil)
     {
-        [self.adManager stopAd];
-        self.adManager = nil;
+        [self.adManager pauseAd];
     }
 }
 
@@ -183,7 +186,6 @@
                                              selector:@selector(adDidStartPlayback:)
                                                  name:LiveRailEventAdStarted
                                                object:self.adManager];
-    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(adDidStopPlayback:)
                                                  name:LiveRailEventAdStopped
@@ -253,7 +255,6 @@
 #if EnableLiveRailLogging
     VLog(@"AdDidStopPlayback Fired");
 #endif
-    [self destroyAdInstance];
     
     if ([self.delegate respondsToSelector:@selector(adDidStopPlaybackInAdViewController:)])
     {
