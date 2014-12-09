@@ -10,7 +10,7 @@
 
 @interface VCropWorkspaceToolViewController () <UIScrollViewDelegate>
 
-@property (nonatomic, weak) IBOutlet UIScrollView *croppingScrollView;
+@property (nonatomic, weak, readwrite) IBOutlet UIScrollView *croppingScrollView;
 
 @property (nonatomic, strong) UIView *proxyView;
 

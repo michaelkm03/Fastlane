@@ -16,4 +16,6 @@
 
 @property (nonatomic, assign) CGSize assetSize;
 
+@property (nonatomic, readonly) UIScrollView *croppingScrollView;
+
 @end

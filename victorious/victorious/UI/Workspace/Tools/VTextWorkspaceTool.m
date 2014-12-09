@@ -17,11 +17,13 @@ static NSString * const kTitleKey = @"title";
 static NSString * const kIconKey = @"icon";
 static NSString * const kSubtoolsKey = @"subtools";
 static NSString * const kPickerKey = @"picker";
+static NSString * const kFilterIndexKey = @"filterIndex";
 
 @interface VTextWorkspaceTool ()
 
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, strong) UIImage *icon;
+@property (nonatomic, strong) NSNumber *renderIndexNumber;
 @property (nonatomic, strong) NSArray *subTools;
 @property (nonatomic, strong) UIViewController <VToolPicker> *toolPicker;
 @property (nonatomic, strong) UIViewController *activeTextTool;
@@ -41,6 +43,7 @@ static NSString * const kPickerKey = @"picker";
     {
         _title = [dependencyManager stringForKey:kTitleKey];
         _subTools = [dependencyManager tools];
+        _renderIndexNumber = [dependencyManager numberForKey:kFilterIndexKey];
         _toolPicker = (UIViewController<VToolPicker> *)[dependencyManager viewControllerForKey:kPickerKey];
         [(id<VToolPicker>)_toolPicker setTools:_subTools];
     }
@@ -48,6 +51,16 @@ static NSString * const kPickerKey = @"picker";
 }
 
 #pragma mark - VWorkspaceTool
+
+- (CIImage *)imageByApplyingToolToInputImage:(CIImage *)inputImage
+{
+    return inputImage;
+}
+
+- (NSInteger)renderIndex
+{
+    return [self.renderIndexNumber integerValue];
+}
 
 - (BOOL)shouldLeaveToolOnCanvas
 {

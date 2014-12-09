@@ -15,10 +15,14 @@
  */
 @protocol VWorkspaceTool <NSObject>
 
+#pragma mark - Rendering
+- (CIImage *)imageByApplyingToolToInputImage:(CIImage *)inputImage;
+@property (nonatomic, readonly) NSInteger renderIndex; ///< The index at which this tool should be applied. Lower comes first.
+
 @optional
 
 #pragma mark - Editing
-@property (nonatomic, readonly) BOOL shouldLeaveToolOnCanvas; ///< Tools should implement this getter if they would like their UI to remain layered on top of the canvas. However their canavsToolViewController's View will have its userInteractionEnabled property set to NO. Upon reselection of the tool the workspace will re-enable interaction on the canavsToolViewController's View
+@property (nonatomic, readonly) BOOL shouldLeaveToolOnCanvas; ///< Tools should implement this getter if they would like their UI to remain layered on top of the canvas. However their canavsToolViewController's View will have its userInteractionEnabled property set to NO. Upon reselection of the tool the workspace will re-enable interaction on the canavsToolViewController's View.
 
 @property (nonatomic, weak) VCanvasView *canvasView;
 
@@ -27,6 +31,6 @@
 
 @property (nonatomic, copy, readonly) NSString *title; ///< The text to display while selecting tool.
 @property (nonatomic, strong, readonly) UIImage *icon; ///< The icon to display for this tool.
-@property (nonatomic, copy) void (^onCanvasToolUpdate)(void); ///< Tools should call this to inform the workspace they need to swap their canvas ToolVC
+@property (nonatomic, copy) void (^onCanvasToolUpdate)(void); ///< Tools should call this to inform the workspace they need to swap their canvas ToolVC.
 
 @end

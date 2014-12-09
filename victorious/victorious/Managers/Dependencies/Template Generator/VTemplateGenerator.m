@@ -37,6 +37,7 @@ static NSString * const kUserSpecificKey = @"isUserSpecific";
 static NSString * const kToolsKey = @"tools";
 static NSString * const kPickerKey = @"picker";
 static NSString * const kToolInterfaceKey = @"toolInterface";
+static NSString * const kFilterIndexKey = @"filterIndex";
 
 @interface VTemplateGenerator ()
 
@@ -93,6 +94,7 @@ static NSString * const kToolInterfaceKey = @"toolInterface";
                      @{
                          kClassNameKey: @"text.tool",
                          kTitleKey: @"text",
+                         kFilterIndexKey: @2,
                          kPickerKey:
                              @{
                                  kClassNameKey: @"vertical.picker",
@@ -112,6 +114,7 @@ static NSString * const kToolInterfaceKey = @"toolInterface";
                      @{
                          kClassNameKey: @"filter.tool",
                          kTitleKey: @"filters",
+                         kFilterIndexKey: @1,
                          kPickerKey:
                              @{
                                  kClassNameKey: @"vertical.picker",
@@ -123,6 +126,7 @@ static NSString * const kToolInterfaceKey = @"toolInterface";
                      @{
                          kClassNameKey: @"crop.tool",
                          kTitleKey: @"crop",
+                         kFilterIndexKey: @0,
                          kToolInterfaceKey:
                              @{
                                  kClassNameKey: @"basic.crop",

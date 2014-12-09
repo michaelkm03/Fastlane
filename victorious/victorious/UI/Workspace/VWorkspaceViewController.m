@@ -104,6 +104,9 @@
     MBProgressHUD *hudForView = [MBProgressHUD showHUDAddedTo:self.view
                                                      animated:YES];
     hudForView.labelText = @"Publishing...";
+    
+    UIImage *renderedImage = [self renderedImageForCurrentState];
+    
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
     {
         [MBProgressHUD hideHUDForView:self.view
@@ -181,6 +184,36 @@
 }
 
 #pragma mark - Private Methods
+
+- (UIImage *)renderedImageForCurrentState
+{
+    CIContext *renderingContext = [CIContext contextWithOptions:@{kCIContextUseSoftwareRenderer:@YES}];
+    __block CIImage *filteredImage = [CIImage imageWithCGImage:self.canvasView.sourceImage.CGImage];
+    
+    NSArray *filterOrderTools = [self.tools sortedArrayUsingComparator:^NSComparisonResult(id <VWorkspaceTool> tool1, id <VWorkspaceTool> tool2)
+    {
+        if (tool1.renderIndex < tool2.renderIndex)
+        {
+            return NSOrderedAscending;
+        }
+        if (tool1.renderIndex > tool2.renderIndex)
+        {
+            return NSOrderedDescending;
+        }
+        return NSOrderedSame;
+    }];
+
+    [filterOrderTools enumerateObjectsUsingBlock:^(id <VWorkspaceTool> tool, NSUInteger idx, BOOL *stop)
+    {
+        filteredImage = [tool imageByApplyingToolToInputImage:filteredImage];
+    }];
+    
+    CGImageRef renderedImage = [renderingContext createCGImage:filteredImage
+                                                      fromRect:[filteredImage extent]];
+    UIImage *image = [UIImage imageWithCGImage:renderedImage];
+    CGImageRelease(renderedImage);
+    return image;
+}
 
 - (void)setSelectedBarButtonItem:(UIBarButtonItem *)itemToSelect
 {
