@@ -12,7 +12,7 @@
 #import "VVoteType+Fetcher.h"
 #import "VPurchaseManager.h"
 
-#define OVERWRITE_WITH_PAID_BALLISTICS 0
+#define OVERWRITE_WITH_PAID_BALLISTICS 1
 
 @interface VVoteSettings()
 
@@ -39,7 +39,6 @@
     {
         return;
     }
-    
     // Check that only objects of type VVoteType are accepted
     NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(VVoteType *voteType, NSDictionary *bindings)
                               {
@@ -65,6 +64,12 @@
     [self.fileCache cacheImagesForVoteTypes:_voteTypes];
     
     [self fetchProducts];
+}
+
+- (VVoteType *)voteTypeWithProductIdentifier:(NSString *)productIdentifier
+{
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"productIdentifier == %@", productIdentifier];
+    return [self.voteTypes filteredArrayUsingPredicate:predicate].firstObject;
 }
 
 - (void)fetchProducts

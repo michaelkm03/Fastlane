@@ -10,4 +10,6 @@
 
 @interface VPurchaseCell : UITableViewCell
 
+- (void)setProductImage:(UIImage *)image withTitle:(NSString *)title;
+
 @end

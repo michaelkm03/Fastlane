@@ -7,17 +7,34 @@
 //
 
 #import "VPurchaseActionCell.h"
+#import "VButton.h"
+#import "VThemeManager.h"
+
+@interface VPurchaseActionCell ()
+
+@property (weak, nonatomic) IBOutlet VButton *button;
+@property (strong, nonatomic) void(^actionCallback)(VPurchaseActionCell *);
+
+@end
 
 @implementation VPurchaseActionCell
 
-- (void)awakeFromNib {
-    // Initialization code
+- (void)setAction:(void(^)(VPurchaseActionCell *))actionCallback withTitle:(NSString *)labelTitle
+{
+    self.actionCallback = actionCallback;
+    [self.button setTitle:labelTitle forState:UIControlStateNormal];
+    self.button.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    self.button.style = VButtonStylePrimary;
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    [super setSelected:selected animated:animated];
+#pragma mark - IBActions
 
-    // Configure the view for the selected state
+- (IBAction)onButtonTapped:(id)sender
+{
+    if ( self.actionCallback != nil )
+    {
+        self.actionCallback( self );
+    }
 }
 
 @end

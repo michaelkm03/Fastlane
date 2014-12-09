@@ -67,14 +67,19 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
 
 #pragma mark - Primary public methods
 
+- (BOOL)isPurchasingEnabled
+{
+    return self.fetchedProducts.count > 0;
+}
+
 - (BOOL)isPurchaseRequestActive
 {
     return self.activeProductRequest != nil || self.activePurchase != nil || self.activePurchaseRestore != nil;
 }
 
-- (NSUInteger)numberOfPurchasedItems
+- (NSArray *)purchasedProductIdentifiers
 {
-    return self.purchaseRecord.purchasedProductIdentifiers.count;
+    return self.purchaseRecord.purchasedProductIdentifiers;
 }
 
 - (BOOL)isProductIdentifierPurchased:(NSString *)productIdentifier

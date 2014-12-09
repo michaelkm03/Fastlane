@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -691,16 +692,43 @@
                         <color key="separatorColor" red="0.96470588239999999" green="0.96470588239999999" blue="0.8862745098" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="serverCell" id="mpA-RI-nLv" userLabel="Purchase Cell" customClass="VPurchaseCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="VPurchaseCell" rowHeight="60" id="mpA-RI-nLv" userLabel="Purchase Cell" customClass="VPurchaseCell">
                                 <rect key="frame" x="0.0" y="22" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="mpA-RI-nLv" id="JvS-e3-CXt">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Product" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IJf-ZD-6J8">
+                                            <rect key="frame" x="64" y="8" width="248" height="44"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="DVp-DM-qW5">
+                                            <rect key="frame" x="8" y="8" width="44" height="44"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" secondItem="DVp-DM-qW5" secondAttribute="height" multiplier="1:1" id="xx5-TW-orZ"/>
+                                            </constraints>
+                                        </imageView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="bottom" secondItem="IJf-ZD-6J8" secondAttribute="bottom" constant="7" id="2ge-3a-Q4L"/>
+                                        <constraint firstItem="DVp-DM-qW5" firstAttribute="top" secondItem="JvS-e3-CXt" secondAttribute="top" constant="8" id="6Gl-Co-4Lm"/>
+                                        <constraint firstItem="DVp-DM-qW5" firstAttribute="leading" secondItem="JvS-e3-CXt" secondAttribute="leading" constant="8" id="JTM-QM-9uc"/>
+                                        <constraint firstItem="IJf-ZD-6J8" firstAttribute="top" secondItem="JvS-e3-CXt" secondAttribute="top" constant="8" id="jIg-4W-qHy"/>
+                                        <constraint firstItem="IJf-ZD-6J8" firstAttribute="leading" secondItem="DVp-DM-qW5" secondAttribute="trailing" constant="12" id="o7M-5g-T24"/>
+                                        <constraint firstAttribute="bottom" secondItem="DVp-DM-qW5" secondAttribute="bottom" constant="7" id="rpS-vD-tXh"/>
+                                        <constraint firstAttribute="trailing" secondItem="IJf-ZD-6J8" secondAttribute="trailing" constant="8" id="xGd-2E-N7U"/>
+                                    </constraints>
                                 </tableViewCellContentView>
                                 <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <connections>
+                                    <outlet property="productImageView" destination="DVp-DM-qW5" id="Ypj-ee-3Mj"/>
+                                    <outlet property="productTitle" destination="IJf-ZD-6J8" id="Sub-MZ-vHT"/>
+                                </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="serverCell" id="CWE-b8-fYB" userLabel="Action Cell" customClass="VPurchaseActionCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="VPurchaseActionCell" id="CWE-b8-fYB" userLabel="Action Cell" customClass="VPurchaseActionCell">
                                 <rect key="frame" x="0.0" y="22" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="CWE-b8-fYB" id="iUO-cb-0C0">
@@ -716,7 +744,7 @@
                                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                             </state>
                                             <connections>
-                                                <action selector="logout:" destination="kYh-dZ-t7J" eventType="touchUpInside" id="9xK-uj-YFf"/>
+                                                <action selector="onButtonTapped:" destination="CWE-b8-fYB" eventType="touchUpInside" id="7gS-lL-jqt"/>
                                             </connections>
                                         </button>
                                     </subviews>
@@ -729,6 +757,9 @@
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <connections>
+                                    <outlet property="button" destination="N5S-6f-jb6" id="Wk3-ua-D5o"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -747,7 +778,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mG7-xu-zJg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3263" y="-1507"/>
+            <point key="canvasLocation" x="-3263" y="-1514"/>
         </scene>
     </scenes>
     <resources>

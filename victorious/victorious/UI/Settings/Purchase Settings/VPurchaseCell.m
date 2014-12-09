@@ -7,17 +7,21 @@
 //
 
 #import "VPurchaseCell.h"
+#import "VThemeManager.h"
+
+@interface VPurchaseCell ()
+
+@property (weak, nonatomic) IBOutlet UIImageView *productImageView;
+@property (weak, nonatomic) IBOutlet UILabel *productTitle;
+
+@end
 
 @implementation VPurchaseCell
 
-- (void)awakeFromNib {
-    // Initialization code
-}
-
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
+- (void)setProductImage:(UIImage *)image withTitle:(NSString *)title
+{
+    self.productImageView.image = image;
+    self.productTitle.text = title;
 }
 
 @end
