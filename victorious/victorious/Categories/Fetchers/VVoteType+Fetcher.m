@@ -14,13 +14,30 @@ NSString * const VVoteTypeImageIndexReplacementMacro = @"XXXXX";
 
 @implementation VVoteType (Fetcher)
 
++ (NSArray *)productIdentifiersFromVoteTypes:(NSArray *)voteTypes
+{
+    NSMutableArray *productIdentifiers = [[NSMutableArray alloc] init];
+    [voteTypes enumerateObjectsUsingBlock:^(VVoteType *voteType, NSUInteger idx, BOOL *stop)
+    {
+        if ( voteType.isPaid && voteType.productIdentifier != nil )
+        {
+            [productIdentifiers addObject:voteType.productIdentifier];
+        }
+    }];
+    return [NSArray arrayWithArray:productIdentifiers];
+}
+
 - (BOOL)containsRequiredData
 {
-    return  self.canCreateImages &&
-    self.name != nil &&
-    self.name.length > 0 &&
-    self.iconImage != nil &&
-    self.iconImage.length != 0;
+    BOOL isNonPaidAndValid = self.canCreateImages && self.name != nil && self.name.length > 0 && self.iconImage != nil && self.iconImage.length > 0;
+    BOOL isUnlockableAndValid = self.iconImageLarge != nil && self.iconImageLarge.length > 0;
+    
+    return isNonPaidAndValid || (isUnlockableAndValid && isNonPaidAndValid);
+}
+
+- (BOOL)mustBePurchased
+{
+    return self.productIdentifier != nil && self.isPaid;
 }
 
 - (BOOL)hasValidTrackingData

@@ -26,9 +26,12 @@
                                   @"frames"             : VSelectorName(imageCount),
                                   @"image_macro"        : VSelectorName(imageFormat),
                                   @"icon"               : VSelectorName(iconImage),
+                                  @"icon_large"         : VSelectorName(iconImageLarge),
                                   @"animation_duration" : VSelectorName(animationDuration),
                                   @"flight_duration"    : VSelectorName(flightDuration),
-                                  @"view_content_mode"  : VSelectorName(imageContentMode)
+                                  @"view_content_mode"  : VSelectorName(imageContentMode),
+                                  @"is_paid"            : VSelectorName(isPaid),
+                                  @"apple_product_id"   : VSelectorName(productIdentifier)
                                   };
     
     RKEntityMapping *mapping = [RKEntityMapping

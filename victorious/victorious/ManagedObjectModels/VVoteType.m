@@ -17,10 +17,13 @@
 @dynamic imageCount;
 @dynamic imageFormat;
 @dynamic iconImage;
+@dynamic iconImageLarge;
 @dynamic animationDuration;
 @dynamic flightDuration;
 @dynamic tracking;
 @dynamic imageContentMode;
 @dynamic settingsIndex;
+@dynamic isPaid;
+@dynamic productIdentifier;
 
 @end

@@ -12,5 +12,6 @@
 
 @property (nonatomic, copy) NSString *experienceEnhancerTitle;
 @property (nonatomic, strong) UIImage *experienceEnhancerIcon;
+@property (nonatomic, assign) BOOL isLocked;
 
 @end

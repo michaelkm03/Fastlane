@@ -1,5 +1,5 @@
 //
-//  VSettingManagerTests.m
+//  VVoteSettingManagerTests.m
 //  victorious
 //
 //  Created by Patrick Lynch on 10/10/14.
@@ -7,26 +7,26 @@
 //
 
 #import <XCTest/XCTest.h>
-#import "VSettingManager.h"
+#import "VVoteSettings.h"
 #import "VVoteType.h"
 #import "VDummyModels.h"
 #import "NSObject+VMethodSwizzling.h"
 #import "VFileCache.h"
 
-@interface VSettingManager()
+@interface VVoteSettings()
 
 - (void)cacheVoteTypeImagesWithFileCache:(VFileCache *)fileCache;
 
 @end
 
-@interface VSettingManagerTests : XCTestCase
+@interface VVoteSettingManagerTests : XCTestCase
 
 @property (nonatomic, assign) IMP cacheVoteTypesImp;
-@property (nonatomic, strong) VSettingManager *settingsManager;
+@property (nonatomic, strong) VVoteSettings *settings;
 
 @end
 
-@implementation VSettingManagerTests
+@implementation VVoteSettingManagerTests
 
 - (void)setUp
 {
@@ -34,7 +34,7 @@
     
     self.cacheVoteTypesImp = nil;
     
-    self.settingsManager = [VSettingManager sharedManager];
+    self.settings = [[VVoteSettings alloc] init];
 }
 
 - (void)tearDown
@@ -43,16 +43,14 @@
     
     if ( self.cacheVoteTypesImp != nil )
     {
-        [VSettingManager v_restoreOriginalImplementation:self.cacheVoteTypesImp forMethod:@selector(cacheVoteTypeImagesWithFileCache:)];
+        [VVoteSettings v_restoreOriginalImplementation:self.cacheVoteTypesImp forMethod:@selector(cacheVoteTypeImagesWithFileCache:)];
     }
-    
-    [self.settingsManager clearVoteTypes];
 }
 
 - (void)swizzleCacheVotesMethod
 {
     // Prevents images from being downloaded
-    self.cacheVoteTypesImp = [VSettingManager v_swizzleMethod:@selector(cacheVoteTypeImagesWithFileCache:) withBlock:^{}];
+    self.cacheVoteTypesImp = [VVoteSettings v_swizzleMethod:@selector(cacheVoteTypeImagesWithFileCache:) withBlock:^{}];
 }
 
 - (void)testVoteTypes
@@ -60,8 +58,8 @@
     [self swizzleCacheVotesMethod];
     
     NSArray *voteTypes = [VDummyModels createVoteTypes:5];
-    [self.settingsManager updateSettingsWithVoteTypes:voteTypes];
-    XCTAssertEqual( self.settingsManager.voteTypes.count, voteTypes.count );
+    self.settings.voteTypes = voteTypes;
+    XCTAssertEqual( self.settings.voteTypes.count, voteTypes.count );
 }
 
 - (void)testVoteTypesFiltered
@@ -71,19 +69,19 @@
     NSArray *voteTypes = [VDummyModels createVoteTypes:5];
     NSArray *invalidObjects = @[ [NSObject new], [NSObject new], [NSObject new] ];
     NSArray *combined = [voteTypes arrayByAddingObjectsFromArray:invalidObjects];
-    [self.settingsManager updateSettingsWithVoteTypes:combined];
-    XCTAssertEqual( self.settingsManager.voteTypes.count, voteTypes.count );
+    self.settings.voteTypes = combined;
+    XCTAssertEqual( self.settings.voteTypes.count, voteTypes.count );
 }
 
 - (void)testVoteTypesInvalid
 {
     [self swizzleCacheVotesMethod];
     
-    [self.settingsManager updateSettingsWithVoteTypes:@[]];
-    XCTAssertEqual( self.settingsManager.voteTypes.count, (NSUInteger)0 );
+    self.settings.voteTypes = @[];
+    XCTAssertEqual( self.settings.voteTypes.count, (NSUInteger)0 );
     
-    [self.settingsManager updateSettingsWithVoteTypes:nil];
-    XCTAssertEqual( self.settingsManager.voteTypes.count, (NSUInteger)0 );
+    self.settings.voteTypes = nil;
+    XCTAssertEqual( self.settings.voteTypes.count, (NSUInteger)0 );
 }
 
 @end

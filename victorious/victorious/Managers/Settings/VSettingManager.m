@@ -13,9 +13,6 @@
 #import "VObjectManager+Environment.h"
 #import "VEnvironment.h"
 #import "VVoteType.h"
-#import "VFileCache.h"
-#import "VFileCache+VVoteType.h"
-#import "VVoteType+Fetcher.h"
 #import "VTracking.h"
 
 //Settings
@@ -44,13 +41,6 @@ NSString * const kVTermsOfServiceURL = @"url.tos";
 NSString * const kVAppStoreURL = @"url.appstore";
 NSString * const kVPrivacyUrl = @"url.privacy";
 
-@interface VSettingManager()
-
-@property (nonatomic, strong) VFileCache *fileCache;
-@property (nonatomic, readwrite) NSArray *voteTypes;
-
-@end
-
 @implementation VSettingManager
 
 + (instancetype)sharedManager
@@ -74,42 +64,15 @@ NSString * const kVPrivacyUrl = @"url.privacy";
         NSURL  *defaultExperimentsURL =   [[NSBundle mainBundle] URLForResource:@"defaultSettings" withExtension:@"plist"];
         [[NSUserDefaults standardUserDefaults] registerDefaults:[NSDictionary dictionaryWithContentsOfURL:defaultExperimentsURL]];
         
-        self.fileCache = [[VFileCache alloc] init];
-        
-        [self clearVoteTypes];
+        _voteSettings = [[VVoteSettings alloc] init];
     }
     
     return self;
 }
 
-- (void)clearVoteTypes
-{
-    self.voteTypes = @[];
-}
-
 - (void)updateSettingsWithAppTracking:(VTracking *)tracking
 {
     _applicationTracking = tracking;
-}
-
-- (void)updateSettingsWithVoteTypes:(NSArray *)voteTypes
-{
-    // Error checking
-    if ( voteTypes == nil || voteTypes.count == 0 )
-    {
-        return;
-    }
-    
-    // Check that only objects of type VVoteType are accepted
-    NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(VVoteType *voteType, NSDictionary *bindings)
-                              {
-                                  return [voteType isMemberOfClass:[VVoteType class]] &&
-                                        voteType.containsRequiredData &&
-                                        voteType.hasValidTrackingData;
-                              }];
-    self.voteTypes = [voteTypes filteredArrayUsingPredicate:predicate];
-    
-    [self.fileCache cacheImagesForVoteTypes:voteTypes];
 }
 
 - (void)updateSettingsWithDictionary:(NSDictionary *)dictionary

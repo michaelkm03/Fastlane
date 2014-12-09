@@ -12,6 +12,7 @@
 extern NSString * const VVoteTypeFilepathFormat;
 extern NSString * const VVoteTypeSpriteNameFormat;
 extern NSString * const VVoteTypeIconName;
+extern NSString * const VVoteTypeIconLargeName;
 
 @class VVoteType;
 

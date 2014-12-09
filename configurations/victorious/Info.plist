@@ -47,6 +47,8 @@
 	<integer>1</integer>
 	<key>GAID</key>
 	<string>UA-51702806-9</string>
+	<key>CreatorSalutation</key>
+	<string>Debug Victorious</string>
 	<key>FlurryAPIKey</key>
 	<string>XXXXXXXXXX</string>
 </dict>

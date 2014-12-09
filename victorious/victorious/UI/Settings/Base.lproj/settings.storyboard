@@ -203,6 +203,30 @@
                                             <segue destination="qhc-hG-PIv" kind="push" id="OJ4-bd-gwX"/>
                                         </connections>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="16U-jQ-75p" detailTextLabel="mv4-9Z-Mit" style="IBUITableViewCellStyleValue1" id="OQL-l9-rlJ">
+                                        <rect key="frame" x="0.0" y="231" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="OQL-l9-rlJ" id="N4F-ho-eiL">
+                                            <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Reset In-App Purchases" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="16U-jQ-75p">
+                                                    <rect key="frame" x="15" y="11" width="151" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="#" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="mv4-9Z-Mit">
+                                                    <rect key="frame" x="226" y="11" width="59" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                             <tableViewSection headerTitle="About" id="pML-Pk-7g5">
@@ -258,7 +282,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LM5-sK-eej">
+                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LM5-sK-eej" customClass="VButton">
                                                     <rect key="frame" x="20" y="0.0" width="280" height="43"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -312,6 +336,7 @@
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
                         <outlet property="logoutButton" destination="LM5-sK-eej" id="uSu-zC-V8M"/>
+                        <outlet property="resetPurchasesCell" destination="OQL-l9-rlJ" id="xe9-fy-rX8"/>
                         <outlet property="serverEnvironmentCell" destination="nwQ-31-lr9" id="9C9-vy-t7z"/>
                         <outlet property="versionString" destination="OZa-mN-lgJ" id="DGz-Dz-6bv"/>
                         <outletCollection property="labels" destination="xmy-by-M88" id="3hy-7b-8ZA"/>
@@ -323,6 +348,8 @@
                         <outletCollection property="rightLabels" destination="krN-Xu-bYv" id="Xq8-8d-m4l"/>
                         <outletCollection property="rightLabels" destination="U7G-Km-0yw" id="XgP-fu-OiJ"/>
                         <outletCollection property="labels" destination="c84-Tn-JWi" id="TcN-bH-kKJ"/>
+                        <outletCollection property="rightLabels" destination="mv4-9Z-Mit" id="jD0-Yq-QCI"/>
+                        <outletCollection property="labels" destination="16U-jQ-75p" id="Bhd-bE-lra"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pFQ-S7-584" userLabel="First Responder" sceneMemberID="firstResponder"/>

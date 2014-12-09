@@ -49,6 +49,7 @@
 #import "VImageLightboxViewController.h"
 #import "VUserProfileViewController.h"
 #import "VAuthorizationViewControllerFactory.h"
+#import "VPurchaseViewController.h"
 
 // Transitioning
 #import "VLightboxTransitioningDelegate.h"
@@ -70,6 +71,8 @@
 #import "VCameraPublishViewController.h"
 
 #import "VSequence+Fetcher.h"
+
+#import "VViewControllerTransition.h"
 
 static const CGFloat kMaxInputBarHeight = 200.0f;
 
@@ -112,6 +115,8 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 @property (nonatomic, assign) BOOL enteringRealTimeComment;
 @property (nonatomic, assign) CMTime realtimeCommentBeganTime;
 
+@property (nonatomic, strong) VViewControllerTransition *transitionDelegate;
+
 @end
 
 @implementation VNewContentViewController
@@ -123,6 +128,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     VNewContentViewController *contentViewController = [[UIStoryboard storyboardWithName:@"ContentView" bundle:nil] instantiateInitialViewController];
     contentViewController.viewModel = viewModel;
     contentViewController.hasAutoPlayed = NO;
+    contentViewController.transitionDelegate = [[VViewControllerTransition alloc] init];
     contentViewController.elapsedTimeFormatter = [[VElapsedTimeFormatter alloc] init];
     
     return contentViewController;
@@ -357,7 +363,11 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(showLoginViewController:)
-                                                 name:VExperienceEnhancerBarDidRequiredLoginNotification
+                                                 name:VExperienceEnhancerBarDidRequireLoginNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(showPurchaseViewController:)
+                                                 name:VExperienceEnhancerBarDidRequirePurchasePrompt
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(onRemixPublished:)
@@ -416,6 +426,9 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:VInputAccessoryViewKeyboardFrameDidChangeNotification
                                                   object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:VExperienceEnhancerBarDidRequirePurchasePrompt
+                                                  object:nil];
     
     [self.viewModel.experienceEnhancerController sendTrackingEvents];
     
@@ -441,6 +454,25 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 }
 
 #pragma mark - Notification Handlers
+
+- (void)showPurchaseViewController:(NSNotification *)notification
+{
+    if ( notification.userInfo == nil )
+    {
+        return;
+    }
+    
+    VExperienceEnhancer *experienceEnhander = (VExperienceEnhancer *)notification.userInfo[ @"experienceEnhancer" ];
+    if ( experienceEnhander == nil )
+    {
+        return;
+    }
+    
+    VPurchaseViewController *viewController = [VPurchaseViewController instantiateFromStoryboard:@"ContentView"
+                                                                                            withVoteType:experienceEnhander.voteType];
+    viewController.transitioningDelegate = self.transitionDelegate;
+    [self presentViewController:viewController animated:YES completion:nil];
+}
 
 - (void)showLoginViewController:(NSNotification *)notification
 {
