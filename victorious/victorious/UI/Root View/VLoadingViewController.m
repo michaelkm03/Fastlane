@@ -245,7 +245,7 @@ static const NSUInteger kRetryAttempts = 5;
                     appID = [item valueForKey:@"tremor_app_id"];
                     
                     // If we have an appID, seed the Tremor Ad Network
-                    if (appID)
+                    if (appID && (appID != nil && ![appID isKindOfClass:[NSNull class]]))
                     {
                         [TremorVideoAd initWithAppID:appID];
                         [TremorVideoAd start];
