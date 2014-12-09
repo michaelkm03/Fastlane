@@ -15,6 +15,4 @@
 
 @property (nonatomic, copy) void (^onCropBoundsChange)(UIScrollView *croppingScrollView);
 
-@property (nonatomic, assign) CGSize assetSize;
-
 @end

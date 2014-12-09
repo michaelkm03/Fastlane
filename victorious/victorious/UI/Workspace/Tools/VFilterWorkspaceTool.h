@@ -15,6 +15,4 @@
 
 @interface VFilterWorkspaceTool : NSObject <VHasManagedDependancies, VWorkspaceTool>
 
-@property (nonatomic, copy) void (^onFilterChange)(VPhotoFilter *filter);
-
 @end

@@ -8,6 +8,8 @@
 
 #import "VCropWorkspaceTool.h"
 
+#import "VCanvasView.h"
+
 #import "VDependencyManager.h"
 #import "VDependencyManager+VWorkspaceTool.h"
 
@@ -19,6 +21,7 @@ static NSString * const kToolInterfaceKey = @"toolInterface";
 
 @interface VCropWorkspaceTool ()
 
+@property (nonatomic, assign) CGSize assetSize;
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, strong) UIImage *icon;
 @property (nonatomic, strong, readwrite) VCropWorkspaceToolViewController *cropViewController;
@@ -26,6 +29,8 @@ static NSString * const kToolInterfaceKey = @"toolInterface";
 @end
 
 @implementation VCropWorkspaceTool
+
+@synthesize canvasView = _canvasView;
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
@@ -40,9 +45,22 @@ static NSString * const kToolInterfaceKey = @"toolInterface";
 
 #pragma mark - Property Accessors
 
+- (void)setCanvasView:(VCanvasView *)canvasView
+{
+    _canvasView = canvasView;
+    self.assetSize = canvasView.sourceImage.size;
+}
+
 - (void)setAssetSize:(CGSize)assetSize
 {
     _cropViewController.assetSize = assetSize;
+    
+    __weak typeof(self) welf = self;
+    _cropViewController.onCropBoundsChange = ^void(UIScrollView *croppingScrollView)
+    {
+        [welf.canvasView.canvasScrollView setZoomScale:croppingScrollView.zoomScale];
+        [welf.canvasView.canvasScrollView setContentOffset:croppingScrollView.contentOffset];
+    };
 }
 
 - (CGSize)assetSize

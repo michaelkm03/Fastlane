@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+@class VCanvasView;
+
 /**
  *  VWorkspaceTool defines a common interface for all workspace tools. Tools must specify their tool's location in the workspace and the UIViewController to use.
  */
@@ -15,14 +17,16 @@
 
 @optional
 
-@property (nonatomic, strong, readonly) CIFilter *toolFilter; ///< The filter to use for this corresponding 
-@property (nonatomic, copy) void (^onFilterUpdate)(void);
+#pragma mark - Editing
+@property (nonatomic, readonly) BOOL shouldLeaveToolOnCanvas; ///< Tools should implement this getter if they would like their UI to remain layered on top of the canvas. However their canavsToolViewController's View will have its userInteractionEnabled property set to NO. Upon reselection of the tool the workspace will re-enable interaction on the canavsToolViewController's View
+
+@property (nonatomic, weak) VCanvasView *canvasView;
 
 @property (nonatomic, strong, readonly) UIViewController *canvasToolViewController; ///< The tool to display in the canvas if any.
 @property (nonatomic, strong, readonly) UIViewController *inspectorToolViewController; ///< The tool to display in the inspector if any.
 
 @property (nonatomic, copy, readonly) NSString *title; ///< The text to display while selecting tool.
 @property (nonatomic, strong, readonly) UIImage *icon; ///< The icon to display for this tool.
-@property (nonatomic, copy) void (^onCanvasToolUpdate)(void); ///< Called whenever a subtool has been selected that needs to swap tools on the canvas
+@property (nonatomic, copy) void (^onCanvasToolUpdate)(void); ///< Tools should call this to inform the workspace they need to swap their canvas ToolVC
 
 @end

@@ -49,6 +49,11 @@ static NSString * const kPickerKey = @"picker";
 
 #pragma mark - VWorkspaceTool
 
+- (BOOL)shouldLeaveToolOnCanvas
+{
+    return YES;
+}
+
 - (UIViewController *)canvasToolViewController
 {
     return _activeTextTool;

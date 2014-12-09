@@ -18,11 +18,6 @@
 // Protocols
 #import "VWorkspaceTool.h"
 
-// Tools
-#import "VCropWorkspaceTool.h"
-#import "VFilterWorkspaceTool.h"
-#import "VTextWorkspaceTool.h"
-
 @interface VWorkspaceViewController ()
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
@@ -134,40 +129,21 @@
         return;
     }
  
-    __weak typeof(self) welf = self;
-    if ([selectedTool isKindOfClass:[VCropWorkspaceTool class]])
+    if ([selectedTool respondsToSelector:@selector(setCanvasView:)])
     {
-        VCropWorkspaceTool *cropTool = (VCropWorkspaceTool *)selectedTool;
-        
-        [cropTool setAssetSize:self.canvasView.sourceImage.size];
-        cropTool.onCropBoundsChange = ^void(UIScrollView *croppingScrollView)
-        {
-            [welf.canvasView.canvasScrollView setZoomScale:croppingScrollView.zoomScale];
-            [welf.canvasView.canvasScrollView setContentOffset:croppingScrollView.contentOffset];
-        };
-    }
-    else if ([selectedTool isKindOfClass:[VFilterWorkspaceTool class]])
-    {
-        VFilterWorkspaceTool *filterTool = (VFilterWorkspaceTool *)selectedTool;
-        filterTool.onFilterChange = ^void(VPhotoFilter *filter)
-        {
-            welf.canvasView.filter = filter;
-        };
+        selectedTool.canvasView = self.canvasView;
     }
     
-    if ([_selectedTool isKindOfClass:[VTextWorkspaceTool class]] && ![selectedTool isKindOfClass:[VTextWorkspaceTool class]])
+    if ([_selectedTool respondsToSelector:@selector(shouldLeaveToolOnCanvas)])
     {
-        _canvasToolViewController.view.userInteractionEnabled = NO;
-        _canvasToolViewController = nil;
-    }
-    else
-    {
-        if ([selectedTool respondsToSelector:@selector(canvasToolViewController)])
+        if (_selectedTool.shouldLeaveToolOnCanvas)
         {
-            [selectedTool canvasToolViewController].view.userInteractionEnabled = YES;
+            _canvasToolViewController.view.userInteractionEnabled = NO;
+            _canvasToolViewController = nil;
         }
     }
     
+    __weak typeof(self) welf = self;
     if ([selectedTool respondsToSelector:@selector(setOnCanvasToolUpdate:)])
     {
         [selectedTool setOnCanvasToolUpdate:^
@@ -179,12 +155,25 @@
     
     if ([selectedTool respondsToSelector:@selector(canvasToolViewController)])
     {
+        // In case this viewController's view was disabled but left on the canvas
+        [selectedTool canvasToolViewController].view.userInteractionEnabled = YES;
         [self setCanvasToolViewController:[selectedTool canvasToolViewController]
                                   forTool:selectedTool];
     }
+    else
+    {
+        [self setCanvasToolViewController:nil
+                                  forTool:selectedTool];
+    }
+    
     if ([selectedTool respondsToSelector:@selector(inspectorToolViewController)])
     {
         [self setInspectorToolViewController:[selectedTool inspectorToolViewController]
+                                     forTool:selectedTool];
+    }
+    else
+    {
+        [self setInspectorToolViewController:nil
                                      forTool:selectedTool];
     }
     
@@ -214,7 +203,8 @@
 {
     [toolViewController willMoveToParentViewController:nil];
     [toolViewController.view removeFromSuperview];
-    [toolViewController didMoveToParentViewController:nil];
+    [toolViewController removeFromParentViewController];
+    VLog(@"%@", self.childViewControllers);
 }
 
 - (void)addToolViewController:(UIViewController *)viewController
@@ -222,6 +212,7 @@
     [self addChildViewController:viewController];
     [self.view addSubview:viewController.view];
     [viewController didMoveToParentViewController:self];
+    VLog(@"%@", self.childViewControllers);
 }
 
 - (void)setCanvasToolViewController:(UIViewController *)canvasToolViewController

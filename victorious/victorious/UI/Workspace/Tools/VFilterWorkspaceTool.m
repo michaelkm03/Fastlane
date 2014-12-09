@@ -11,6 +11,7 @@
 #import "VImageFilter.h"
 
 #import "NSArray+VMap.h"
+#import "VCanvasView.h"
 
 #import "VDependencyManager.h"
 #import "VDependencyManager+VWorkspaceTool.h"
@@ -30,6 +31,8 @@ static NSString * const kPickerKey = @"picker";
 @end
 
 @implementation VFilterWorkspaceTool
+
+@synthesize canvasView = _canvasView;
 
 #pragma mark - VHasManagedDependencies
 
@@ -65,16 +68,19 @@ static NSString * const kPickerKey = @"picker";
 
 #pragma mark - VWorkspaceTool
 
-- (UIViewController *)inspectorToolViewController
+- (void)setCanvasView:(VCanvasView *)canvasView
 {
+    _canvasView = canvasView;
+    
     __weak typeof(self) welf = self;
     self.toolPicker.onToolSelection = ^void(VImageFilter <VWorkspaceTool> *selectedTool)
     {
-        if (welf.onFilterChange)
-        {
-            welf.onFilterChange(selectedTool.filter);
-        }
+        welf.canvasView.filter = selectedTool.filter;
     };
+}
+
+- (UIViewController *)inspectorToolViewController
+{
     return (UIViewController *)self.toolPicker;
 }
 
