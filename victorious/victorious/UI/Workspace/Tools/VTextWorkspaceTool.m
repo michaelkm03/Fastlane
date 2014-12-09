@@ -59,6 +59,10 @@ static NSString * const kPickerKey = @"picker";
     __weak typeof(self) welf = self;
     self.toolPicker.onToolSelection = ^(id <VWorkspaceTool> selectedTool)
     {
+        if (![selectedTool respondsToSelector:@selector(canvasToolViewController)])
+        {
+            return;
+        }
         welf.activeTextTool = [selectedTool canvasToolViewController];
         if (welf.onCanvasToolUpdate)
         {

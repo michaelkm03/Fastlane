@@ -67,11 +67,6 @@ static NSString * const kToolInterfaceKey = @"toolInterface";
     return _cropViewController;
 }
 
-- (UIViewController *)inspectorToolViewController
-{
-    return nil;
-}
-
 - (NSString *)title
 {
     return _title;

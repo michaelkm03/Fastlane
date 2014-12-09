@@ -42,11 +42,6 @@ static NSString * const kTitleKey = @"title";
     return _toolViewController;
 }
 
-- (UIViewController *)inspectorToolViewController
-{
-    return nil;
-}
-
 - (NSString *)title
 {
     return _title;

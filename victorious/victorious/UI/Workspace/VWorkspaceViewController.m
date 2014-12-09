@@ -134,8 +134,6 @@
         return;
     }
  
- 
-    
     __weak typeof(self) welf = self;
     if ([selectedTool isKindOfClass:[VCropWorkspaceTool class]])
     {
@@ -164,7 +162,10 @@
     }
     else
     {
-        [selectedTool canvasToolViewController].view.userInteractionEnabled = YES;
+        if ([selectedTool respondsToSelector:@selector(canvasToolViewController)])
+        {
+            [selectedTool canvasToolViewController].view.userInteractionEnabled = YES;
+        }
     }
     
     if ([selectedTool respondsToSelector:@selector(setOnCanvasToolUpdate:)])
@@ -176,10 +177,16 @@
          }];
     }
     
-    [self setCanvasToolViewController:[selectedTool canvasToolViewController]
-                              forTool:selectedTool];
-    [self setInspectorToolViewController:[selectedTool inspectorToolViewController]
-                                 forTool:selectedTool];
+    if ([selectedTool respondsToSelector:@selector(canvasToolViewController)])
+    {
+        [self setCanvasToolViewController:[selectedTool canvasToolViewController]
+                                  forTool:selectedTool];
+    }
+    if ([selectedTool respondsToSelector:@selector(inspectorToolViewController)])
+    {
+        [self setInspectorToolViewController:[selectedTool inspectorToolViewController]
+                                     forTool:selectedTool];
+    }
     
    _selectedTool = selectedTool;
 }
@@ -244,8 +251,6 @@
     [self addToolViewController:inspectorToolViewController];
     [self positionToolViewControllerOnInspector:inspectorToolViewController];
 }
-
-
 
 - (void)positionToolViewControllerOnCanvas:(UIViewController *)toolViewController
 {

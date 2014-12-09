@@ -65,11 +65,6 @@ static NSString * const kPickerKey = @"picker";
 
 #pragma mark - VWorkspaceTool
 
-- (UIViewController *)canvasToolViewController
-{
-    return nil;
-}
-
 - (UIViewController *)inspectorToolViewController
 {
     __weak typeof(self) welf = self;

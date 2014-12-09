@@ -13,11 +13,14 @@
  */
 @protocol VWorkspaceTool <NSObject>
 
-@required
+@optional
+
+@property (nonatomic, strong, readonly) CIFilter *toolFilter; ///< The filter to use for this corresponding 
+@property (nonatomic, copy) void (^onFilterUpdate)(void);
+
 @property (nonatomic, strong, readonly) UIViewController *canvasToolViewController; ///< The tool to display in the canvas if any.
 @property (nonatomic, strong, readonly) UIViewController *inspectorToolViewController; ///< The tool to display in the inspector if any.
 
-@optional
 @property (nonatomic, copy, readonly) NSString *title; ///< The text to display while selecting tool.
 @property (nonatomic, strong, readonly) UIImage *icon; ///< The icon to display for this tool.
 @property (nonatomic, copy) void (^onCanvasToolUpdate)(void); ///< Called whenever a subtool has been selected that needs to swap tools on the canvas
