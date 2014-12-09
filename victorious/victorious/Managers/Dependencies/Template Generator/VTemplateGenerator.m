@@ -114,7 +114,7 @@ static NSString * const kFilterIndexKey = @"filterIndex";
                      @{
                          kClassNameKey: @"filter.tool",
                          kTitleKey: @"filters",
-                         kFilterIndexKey: @1,
+                         kFilterIndexKey: @0,
                          kPickerKey:
                              @{
                                  kClassNameKey: @"vertical.picker",
@@ -126,7 +126,7 @@ static NSString * const kFilterIndexKey = @"filterIndex";
                      @{
                          kClassNameKey: @"crop.tool",
                          kTitleKey: @"crop",
-                         kFilterIndexKey: @0,
+                         kFilterIndexKey: @1,
                          kToolInterfaceKey:
                              @{
                                  kClassNameKey: @"basic.crop",
