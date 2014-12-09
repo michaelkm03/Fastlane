@@ -40,10 +40,11 @@
     self.confirmPasswordTextField.textColor = [UIColor colorWithWhite:0.14 alpha:1.0];
     self.confirmPasswordTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.confirmPasswordTextField.placeholder attributes:@{NSForegroundColorAttributeName : [UIColor colorWithWhite:0.14 alpha:1.0]}];
     
+    self.updateButton.primaryColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     self.cancelButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
     self.cancelButton.style = VButtonStyleSecondary;
     
-    self.updateButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    self.updateButton.primaryColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     self.updateButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
     self.updateButton.style = VButtonStylePrimary;
     

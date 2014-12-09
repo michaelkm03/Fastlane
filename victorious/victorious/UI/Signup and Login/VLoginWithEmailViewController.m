@@ -61,11 +61,11 @@
     self.passwordTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.passwordTextField.placeholder attributes:@{NSForegroundColorAttributeName : [UIColor colorWithWhite:0.14 alpha:1.0]}];
     
     self.cancelButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
-    self.cancelButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    self.cancelButton.primaryColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     self.cancelButton.style = VButtonStyleSecondary;
 
     self.loginButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
-    self.loginButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    self.loginButton.primaryColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     self.loginButton.style = VButtonStylePrimary;
     
     self.forgotPasswordButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
