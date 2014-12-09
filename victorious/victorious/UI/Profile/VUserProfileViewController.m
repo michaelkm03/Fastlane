@@ -129,10 +129,13 @@ static void * VUserProfileAttributesContext =  &VUserProfileAttributesContext;
     CGFloat width = CGRectGetWidth(self.view.bounds);
     self.currentProfileSize = CGSizeMake(width, height);
     
-    VUserProfileHeaderView *headerView =  [VUserProfileHeaderView newViewWithFrame:CGRectMake(0, 0, width, height)];
-    headerView.user = self.profile;
-    headerView.delegate = self;
-    self.profileHeaderView = headerView;
+    if ( self.profileHeaderView == nil )
+    {
+        VUserProfileHeaderView *headerView =  [VUserProfileHeaderView newViewWithFrame:CGRectMake(0, 0, width, height)];
+        headerView.user = self.profile;
+        headerView.delegate = self;
+        self.profileHeaderView = headerView;
+    }
 
     UIImage    *defaultBackgroundImage;
     if (self.backgroundImageView.image)
@@ -342,9 +345,20 @@ static void * VUserProfileAttributesContext =  &VUserProfileAttributesContext;
         VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *objects)
         {
             header.editProfileButton.enabled = YES;
-            header.editProfileButton.selected = !header.editProfileButton.selected;
+            
+            if ( header.editProfileButton.selected )
+            {
+                header.editProfileButton.selected = NO;
+                header.numberOfFollowers--;
+            }
+            else
+            {
+                header.editProfileButton.selected = YES;
+                header.numberOfFollowers++;
+            }
+            
+            
             [header.followButtonActivityIndicator stopAnimating];
-            header.user = header.user;
         };
         
         if (header.editProfileButton.selected)
