@@ -14,6 +14,7 @@
 #import "VImageSearchViewController.h"
 #import "VThemeManager.h"
 #import "VObjectManager+ContentCreation.h"
+#import "UIStoryboard+VMainStoryboard.h"
 
 static const CGFloat kPreviewImageWidth = 160.0f;
 
@@ -64,8 +65,7 @@ static char KVOContext;
 
 + (instancetype)newCreatePollViewController
 {
-    UIViewController *currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-    VCreatePollViewController *createView = (VCreatePollViewController *)[currentViewController.storyboard instantiateViewControllerWithIdentifier: NSStringFromClass([VCreatePollViewController class])];
+    VCreatePollViewController *createView = (VCreatePollViewController *)[[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier: NSStringFromClass([VCreatePollViewController class])];
     return createView;
 }
 

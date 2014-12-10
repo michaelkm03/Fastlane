@@ -16,6 +16,7 @@
 #import "VObjectManager+ContentCreation.h"
 #import "UIImageView+Blurring.h"
 #import "UIImage+ImageCreation.h"
+#import "UIStoryboard+VMainStoryboard.h"
 
 #import "VThemeManager.h"
 
@@ -38,9 +39,7 @@
 
 + (instancetype)commentsContainerView
 {
-    UIViewController   *currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-    VCommentsContainerViewController *commentsContainerViewController = (VCommentsContainerViewController *)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kCommentsContainerStoryboardID];
-
+    VCommentsContainerViewController *commentsContainerViewController = (VCommentsContainerViewController *)[[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier:kCommentsContainerStoryboardID];
     return commentsContainerViewController;
 }
 
