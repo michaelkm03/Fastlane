@@ -10,12 +10,15 @@
 
 #import "VPhotoFilter.h"
 
+/*
+ VCanvasView is a representation of the current state of the workspace while editing an image.
+ */
 @interface VCanvasView : UIView
 
-@property (nonatomic, strong) UIImage *sourceImage;
+@property (nonatomic, strong) UIImage *sourceImage; ///< The image to use as the base of the canvas.
 
-@property (nonatomic, strong) VPhotoFilter *filter;
+@property (nonatomic, strong) VPhotoFilter *filter; ///< The Filter to use on the image.
 
-@property (nonatomic, readonly) UIScrollView *canvasScrollView;
+@property (nonatomic, readonly) UIScrollView *canvasScrollView; ///< A zooming scrollview for providing crop functionality.
 
 @end
