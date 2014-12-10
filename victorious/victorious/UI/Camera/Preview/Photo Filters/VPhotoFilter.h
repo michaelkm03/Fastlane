@@ -24,4 +24,6 @@
  */
 - (UIImage *)imageByFilteringImage:(UIImage *)sourceImage withCIContext:(CIContext *)context;
 
+- (CIImage *)filteredImageWithInputImage:(CIImage *)inputImage;
+
 @end

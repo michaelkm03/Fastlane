@@ -74,19 +74,21 @@ static NSString * const kFilterIndexKey = @"filterIndex";
 
 - (CIImage *)imageByApplyingToolToInputImage:(CIImage *)inputImage
 {
-// Scale image up
+    // Scale image up
     CIFilter *lanczosScaleFilter = [CIFilter filterWithName:@"CILanczosScaleTransform"];
-    [lanczosScaleFilter setValue:inputImage forKey:kCIInputImageKey];
+    [lanczosScaleFilter setValue:inputImage
+                          forKey:kCIInputImageKey];
     CGFloat zoomScale = self.cropViewController.croppingScrollView.zoomScale;
-    [lanczosScaleFilter setValue:@(zoomScale) forKey:@"inputScale"];
+    [lanczosScaleFilter setValue:@(zoomScale)
+                          forKey:@"inputScale"];
     
-// Crop at new size
+    // Crop at new size
     CIFilter *cropFilter = [CIFilter filterWithName:@"CICrop"];
-    [cropFilter setValue:[lanczosScaleFilter outputImage] forKey:kCIInputImageKey];
+    [cropFilter setValue:[lanczosScaleFilter outputImage]
+                  forKey:kCIInputImageKey];
     
     CGFloat zoomedWidth = [inputImage extent].size.width * zoomScale;
     CGFloat zoomedHeight = [inputImage extent].size.height * zoomScale;
-    
     CGPoint contentOffset = self.cropViewController.croppingScrollView.contentOffset;
     CGSize contentSize = self.cropViewController.croppingScrollView.contentSize;
     CGRect croppingBounds = self.cropViewController.croppingScrollView.bounds;
@@ -94,7 +96,8 @@ static NSString * const kFilterIndexKey = @"filterIndex";
                                                                  zoomedHeight - ((contentOffset.y / contentSize.height)* zoomedHeight) ,
                                                                  (croppingBounds.size.width / contentSize.width)* zoomedWidth,
                                                                  -((croppingBounds.size.height / contentSize.height)* zoomedHeight))];
-    [cropFilter setValue:cropVector forKey:@"inputRectangle"];
+    [cropFilter setValue:cropVector
+                  forKey:@"inputRectangle"];
     
     return [cropFilter outputImage];
 }

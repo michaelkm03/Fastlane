@@ -29,6 +29,7 @@ static NSString * const kFilterIndexKey = @"filterIndex";
 @property (nonatomic, strong) UIImage *icon;
 @property (nonatomic, strong) NSNumber *filterIndexNumber;
 @property (nonatomic, strong) UIViewController <VToolPicker> *toolPicker;
+@property (nonatomic, strong) VImageFilter *selectedFilter;
 
 @end
 
@@ -72,7 +73,7 @@ static NSString * const kFilterIndexKey = @"filterIndex";
 
 - (CIImage *)imageByApplyingToolToInputImage:(CIImage *)inputImage
 {
-    return inputImage;
+    return [self.selectedFilter.filter filteredImageWithInputImage:inputImage];
 }
 
 - (NSInteger)renderIndex
@@ -88,6 +89,7 @@ static NSString * const kFilterIndexKey = @"filterIndex";
     self.toolPicker.onToolSelection = ^void(VImageFilter <VWorkspaceTool> *selectedTool)
     {
         welf.canvasView.filter = selectedTool.filter;
+        welf.selectedFilter = selectedTool;
     };
 }
 
