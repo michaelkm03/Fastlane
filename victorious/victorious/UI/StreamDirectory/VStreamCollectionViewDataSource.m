@@ -66,7 +66,7 @@ NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamColl
     }
 }
 
-- (void)removeKVOObservers  
+- (void)removeKVOObservers
 {
     [_stream removeObserver:self forKeyPath:NSStringFromSelector(@selector(streamItems)) context:&KVOContext];
 }
