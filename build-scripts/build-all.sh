@@ -27,13 +27,16 @@ else
 fi
 
 if [ "$SCHEME" == "" -o "$CONFIGURATION" == "" ]; then
-    echo "Usage: `basename $0` <scheme> <configuration> [app name(s) (optional)]"
+    echo "Usage: `basename $0` <scheme> <configuration> [--prefix <prefix>] [app name(s) (optional)]"
     exit 1
 fi
 
-if [ "$APP_NAME" != "" -a ! -d "configurations/$APP_NAME" ]; then
-    echo "App $APP_NAME not found."
-    exit 1
+if [ "$1" == "--prefix" ]; then
+    shift
+    SPECIAL_PREFIX="ProductPrefix=$1-"
+    shift
+else
+    SPECIAL_PREFIX=""
 fi
 
 
@@ -84,7 +87,7 @@ xcodebuild -workspace victorious.xcworkspace -scheme $SCHEME -destination generi
 
 xcodebuild -workspace victorious.xcworkspace -scheme "$SCHEME" -destination generic/platform=iOS \
            -archivePath "../victorious.xcarchive" PROVISIONING_PROFILE="$DEFAULT_PROVISIONING_PROFILE_UUID" \
-           CODE_SIGN_IDENTITY="$DEFAULT_CODESIGN_ID" archive
+           CODE_SIGN_IDENTITY="$DEFAULT_CODESIGN_ID" $SPECIAL_PREFIX archive
 BUILDRESULT=$?
 if [ $BUILDRESULT == 0 ]; then
     pushd ../victorious.xcarchive/dSYMs > /dev/null
