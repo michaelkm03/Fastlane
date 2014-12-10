@@ -22,6 +22,7 @@
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) NSArray *tools;
+@property (weak, nonatomic) IBOutlet UIToolbar *topToolbar;
 @property (nonatomic, weak) IBOutlet UIToolbar *bottomToolbar;
 @property (weak, nonatomic) IBOutlet VCanvasView *canvasView;
 
@@ -281,30 +282,36 @@
 - (void)positionToolViewControllerOnCanvas:(UIViewController *)toolViewController
 {
     toolViewController.view.translatesAutoresizingMaskIntoConstraints = NO;
-    NSDictionary *viewMap = @{@"canvas": self.canvasView,
-                              @"toolInterface": toolViewController.view};
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[toolInterface(==canvas)]"
-                                                                      options:kNilOptions
-                                                                      metrics:nil
-                                                                        views:viewMap]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[toolInterface(==canvas)]"
-                                                                      options:kNilOptions
-                                                                      metrics:nil
-                                                                        views:viewMap]];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:toolViewController.view
-                                                          attribute:NSLayoutAttributeLeft
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.canvasView
-                                                          attribute:NSLayoutAttributeLeft
-                                                         multiplier:1.0f
-                                                           constant:0.0f]];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:toolViewController.view
-                                                          attribute:NSLayoutAttributeTop
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.canvasView
-                                                          attribute:NSLayoutAttributeTop
-                                                         multiplier:1.0f
-                                                           constant:0.0f]];
+    [self.view addConstraints:@[
+                                [NSLayoutConstraint constraintWithItem:toolViewController.view
+                                                             attribute:NSLayoutAttributeTop
+                                                             relatedBy:NSLayoutRelationEqual
+                                                                toItem:self.canvasView
+                                                             attribute:NSLayoutAttributeTop
+                                                            multiplier:1.0f
+                                                              constant:0.0f],
+                                [NSLayoutConstraint constraintWithItem:toolViewController.view
+                                                             attribute:NSLayoutAttributeLeft
+                                                             relatedBy:NSLayoutRelationEqual
+                                                                toItem:self.canvasView
+                                                             attribute:NSLayoutAttributeLeft
+                                                            multiplier:1.0f
+                                                              constant:0.0f],
+                                [NSLayoutConstraint constraintWithItem:toolViewController.view
+                                                             attribute:NSLayoutAttributeRight
+                                                             relatedBy:NSLayoutRelationEqual
+                                                                toItem:self.canvasView
+                                                             attribute:NSLayoutAttributeRight
+                                                            multiplier:1.0f
+                                                              constant:0.0f],
+                                [NSLayoutConstraint constraintWithItem:toolViewController.view
+                                                             attribute:NSLayoutAttributeBottom
+                                                             relatedBy:NSLayoutRelationEqual
+                                                                toItem:self.canvasView
+                                                             attribute:NSLayoutAttributeBottom
+                                                            multiplier:1.0f
+                                                              constant:0.0f],
+                                ]];
 }
 
 - (void)positionToolViewControllerOnInspector:(UIViewController *)toolViewController
