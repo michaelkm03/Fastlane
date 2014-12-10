@@ -16,6 +16,9 @@
 #import "VStreamCollectionViewController.h"
 #import "VNoContentTableViewCell.h"
 #import "VDiscoverViewControllerProtocol.h"
+#import "VObjectManager+Login.h"
+#import "VObjectManager+Users.h"
+#import "VUser.h"
 #import "VAuthorizationViewControllerFactory.h"
 
 static NSString * const kVSuggestedPeopleIdentifier          = @"VSuggestedPeopleCell";
@@ -28,6 +31,8 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
 @property (nonatomic, strong) NSArray *trendingTags;
 @property (nonatomic, strong) NSArray *sectionHeaders;
 @property (nonatomic, strong) NSError *error;
+
+
 
 @end
 
@@ -251,6 +256,18 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
             VTrendingTagCell *customCell = (VTrendingTagCell *)[tableView dequeueReusableCellWithIdentifier:kVTrendingTagIdentifier forIndexPath:indexPath];
             VHashtag *hashtag = self.trendingTags[ indexPath.row ];
             [customCell setHashtag:hashtag];
+            customCell.followTagAction = ^(void)
+            {
+                // Check if logged in before attempting to follow / unfollow
+                if (![VObjectManager sharedManager].authorized)
+                {
+                    [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
+                    return;
+                }
+                
+                // PUT TAG CHECK HERE
+                
+            };
             cell = customCell;
         }
     }

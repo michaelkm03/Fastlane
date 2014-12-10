@@ -48,4 +48,41 @@
            failBlock:fail];
 }
 
+- (RKManagedObjectRequestOperation *)getHashtagsSubscribedTo:(VSuccessBlock)success
+                                                   failBlock:(VFailBlock)fail
+{
+    VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    {
+        if (success)
+        {
+            success(operation, fullResponse, resultObjects);
+        }
+    };
+    
+    return [self GET:@"/api/hashtag/subscribed_to_list"
+              object:nil
+          parameters:nil
+        successBlock:fullSuccess
+           failBlock:fail];
+}
+
+- (RKManagedObjectRequestOperation *)unsubscribeToHashtag:(NSString *)hashtag
+                                             successBlock:(VSuccessBlock)success
+                                                failBlock:(VFailBlock)fail
+{
+    VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    {
+        if (success)
+        {
+            success(operation, fullResponse, resultObjects);
+        }
+    };
+    
+    return [self GET:@"/api/hashtag/unfollow"
+              object:nil
+          parameters:@{@"hasthtag": hashtag}
+        successBlock:fullSuccess
+           failBlock:fail];    
+}
+
 @end

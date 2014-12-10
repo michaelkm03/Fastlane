@@ -16,4 +16,10 @@
 - (RKManagedObjectRequestOperation *)getSuggestedHashtags:(VSuccessBlock)success
                                                 failBlock:(VFailBlock)fail;
 
+- (RKManagedObjectRequestOperation *)getHashtagsSubscribedTo:(VSuccessBlock)success
+                                                   failBlock:(VFailBlock)fail;
+
+- (RKManagedObjectRequestOperation *)unsubscribeToHashtag:(NSString *)hashtag
+                                             successBlock:(VSuccessBlock)success
+                                                failBlock:(VFailBlock)fail;
 @end

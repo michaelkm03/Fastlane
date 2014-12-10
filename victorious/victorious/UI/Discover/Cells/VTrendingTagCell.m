@@ -41,7 +41,8 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
 
 @interface VTrendingTagCell()
 
-@property (weak, nonatomic) IBOutlet VHashtagLabel *hashTagLabel;
+@property (nonatomic, weak) IBOutlet VHashtagLabel *hashTagLabel;
+@property (nonatomic, weak) IBOutlet UIButton *followUnfollowButton;
 
 @end
 
@@ -57,6 +58,10 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
     self.hashTagLabel.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     self.hashTagLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
     self.hashTagLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
+    
+    // Follow / Unfollow Button
+    [self.followUnfollowButton setImage:[self.followUnfollowButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
+    self.followUnfollowButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
 }
 
 - (void)setHashtag:(VHashtag *)hashtag

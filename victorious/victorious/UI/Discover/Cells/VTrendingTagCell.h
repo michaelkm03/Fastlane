@@ -11,6 +11,8 @@
 
 @interface VTrendingTagCell : UITableViewCell
 
+@property (nonatomic, copy) void (^followTagAction)(void);
+
 + (NSInteger)cellHeight;
 
 - (void)setHashtag:(VHashtag *)hashtag;
