@@ -13,6 +13,7 @@
 #import "VImageSearchResultsFooterView.h"
 #import "VImageSearchViewController.h"
 #import "VThemeManager.h"
+#import "UIStoryboard+VMainStoryboard.h"
 
 static NSString * const kSearchResultCellReuseIdentifier          = @"kSearchResultCellReuseIdentifier";
 static NSString * const kSearchResultSectionFooterReuseIdentifier = @"kSearchResultSectionFooterReuseIdentifier";
@@ -47,8 +48,7 @@ static const CGFloat    kHeightRatioForRefresh                    =  0.1f;
 
 + (instancetype)newImageSearchViewController
 {
-    UIViewController *currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-    VImageSearchViewController *imageSearchViewController = (VImageSearchViewController *)[currentViewController.storyboard instantiateViewControllerWithIdentifier:NSStringFromClass([VImageSearchViewController class])];
+    VImageSearchViewController *imageSearchViewController = (VImageSearchViewController *)[[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier:NSStringFromClass([VImageSearchViewController class])];
     return imageSearchViewController;
 }
 

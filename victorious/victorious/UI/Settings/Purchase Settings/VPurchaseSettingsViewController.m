@@ -56,7 +56,7 @@ typedef NS_ENUM( NSInteger, VPurchaseSettingsAction )
     [VNoContentTableViewCell registerNibWithTableView:self.tableView];
     self.tableView.backgroundColor = [UIColor colorWithWhite:0.97 alpha:1.0];
     
-    [self.parentViewController v_addNewNavHeaderWithTitles:@[ @"In-App Purchases" ]];
+    [self.parentViewController v_addNewNavHeaderWithTitles:nil];
     self.parentViewController.navHeaderView.delegate = (UIViewController<VNavigationHeaderDelegate> *)self.parentViewController;
 }
 
@@ -120,11 +120,11 @@ typedef NS_ENUM( NSInteger, VPurchaseSettingsAction )
 {
     if ( self.isRestoringPurchases )
     {
-        return NSLocalizedString( @"  Restoring...", nil);
+        return NSLocalizedString( @"ActivityRestoring", nil);
     }
     else
     {
-        return NSLocalizedString( @"Restore Purchases", nil);
+        return NSLocalizedString( @"SettingsRestorePurchases", nil);
     }
 }
 
@@ -149,7 +149,7 @@ typedef NS_ENUM( NSInteger, VPurchaseSettingsAction )
         {
             VNoContentTableViewCell *cell = [VNoContentTableViewCell createCellFromTableView:tableView];
             cell.isCentered = YES;
-            [cell setMessage:@"You haven't purchased anything on this device.\nIf you've made purchases on another device, tap Restore Purchases to restore them."];
+            [cell setMessage:NSLocalizedString( @"SettingsRestorePurchasesPrompt", nil)];
             return cell;
         }
     }
@@ -168,7 +168,7 @@ typedef NS_ENUM( NSInteger, VPurchaseSettingsAction )
 #ifndef V_NO_RESET_PURCHASES
         else if ( indexPath.row == VPurchaseSettingsActionReset )
         {
-            NSString *title = NSLocalizedString( @"Reset Purchases", nil);
+            NSString *title = @"Reset Purchases";
             [cell setIsActionEnabled:YES withTitle:title];
             [cell setAction:^(VPurchaseActionCell *actionCell)
              {

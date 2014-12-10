@@ -434,3 +434,5 @@
 "ActivityRestoring"                     = "  Restoring...";
 "ActivityPurchasing"                    = "  Purchasing...";
 "PurchaseUnlockWithPrice"               = "Unlock for %@"; //e.g. "Unlock for $0.99"
+"SettingsRestorePurchases"              = "Restore Purchases";
+"SettingsRestorePurchasesPrompt"        = "You haven't purchased anything on this device.\nIf you've made purchases on another device, tap Restore Purchases to restore them.";

@@ -432,6 +432,7 @@
 		A7A2E0071A38E44B00F8C705 /* VPurchaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A2E0041A38E44B00F8C705 /* VPurchaseViewController.m */; };
 		A7A2E0081A38E44B00F8C705 /* VPurchaseViewController+Transitions.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A2E0061A38E44B00F8C705 /* VPurchaseViewController+Transitions.m */; };
 		A7A2E00C1A38E47400F8C705 /* Purchases.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7A2E00B1A38E47400F8C705 /* Purchases.storyboard */; };
+		A7A2E0011A38C7B700F8C705 /* NSData+AESTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A2E0001A38C7B700F8C705 /* NSData+AESTests.m */; };
 		A7A390C51A32441E00709812 /* VButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A390C41A32441E00709812 /* VButton.m */; };
 		A7A390CA1A3257A300709812 /* ContentView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7A390C91A3257A300709812 /* ContentView.storyboard */; };
 		A7A390D31A326DB100709812 /* VViewControllerTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A390D21A326DB100709812 /* VViewControllerTransition.m */; };
@@ -1385,6 +1386,7 @@
 		A7A2E0051A38E44B00F8C705 /* VPurchaseViewController+Transitions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "VPurchaseViewController+Transitions.h"; path = "Purchases/VPurchaseViewController+Transitions.h"; sourceTree = "<group>"; };
 		A7A2E0061A38E44B00F8C705 /* VPurchaseViewController+Transitions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "VPurchaseViewController+Transitions.m"; path = "Purchases/VPurchaseViewController+Transitions.m"; sourceTree = "<group>"; };
 		A7A2E00B1A38E47400F8C705 /* Purchases.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Purchases.storyboard; path = Purchases/Purchases.storyboard; sourceTree = "<group>"; };
+		A7A2E0001A38C7B700F8C705 /* NSData+AESTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+AESTests.m"; sourceTree = "<group>"; };
 		A7A390C31A32441E00709812 /* VButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VButton.h; sourceTree = "<group>"; };
 		A7A390C41A32441E00709812 /* VButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VButton.m; sourceTree = "<group>"; };
 		A7A390C91A3257A300709812 /* ContentView.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ContentView.storyboard; sourceTree = "<group>"; };
@@ -3454,7 +3456,7 @@
 				A75FAEFC19E8AB2C00EB87C1 /* DummyModels */,
 				A719CD5619F6D5030019E866 /* FileSystemTestHelpers */,
 				A7B98A2D1A251CEE00C58335 /* Helpers */,
-				A7E398741A3627AD000E4CAC /* NSData+AESTests.m */,
+				A7A2E0001A38C7B700F8C705 /* NSData+AESTests.m */,
 				BE49323519E338CE00C0912E /* NSDate+timeSinceTests.m */,
 				03AC453B19BA1F7900CE4351 /* NSStringVCryptoTests.m */,
 				BE171D9F1868BE64004E5202 /* Supporting Files */,
@@ -4985,7 +4987,7 @@
 				A72005461A03074800285A9C /* VFileSystemTestHelpers.m in Sources */,
 				D871A4021A157D650046A12C /* VVRTCUserPostedAtFormatterTests.m in Sources */,
 				A72005431A03073B00285A9C /* VVideoTrackingTests.m in Sources */,
-				A7E398751A3627AD000E4CAC /* NSData+AESTests.m in Sources */,
+				A7A2E0011A38C7B700F8C705 /* NSData+AESTests.m in Sources */,
 				039D02AF1A10441500DB9236 /* VDependencyManagerTests.m in Sources */,
 				A771D0241A043AE8007CB0A5 /* VTrackingManagerTests.m in Sources */,
 				A77AD4C71A1EFDB400142F24 /* VFollowersTextFormatterTests.m in Sources */,
