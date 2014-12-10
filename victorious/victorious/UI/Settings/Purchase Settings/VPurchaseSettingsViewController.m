@@ -17,8 +17,6 @@
 #import "VAlertController.h"
 #import "VNoContentTableViewCell.h"
 
-#define V_NO_RESET_PURCHASES 1
-
 typedef NS_ENUM( NSInteger, VPurchaseSettingsTableViewSections )
 {
     VPurchaseSettingsTableViewSectionPurchases,

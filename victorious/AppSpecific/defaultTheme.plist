@@ -11,7 +11,7 @@
 	<key>email.support</key>
 	<string>support@victorious.com</string>
 	<key>channel.name</key>
-	<string>EatYourKimchi</string>
+	<string>Michelle Phan</string>
 	<key>channel.url.about</key>
 	<string>http://dev.getvictorious.com/api/static/about</string>
 	<key>channel.url.acknowledgements</key>
@@ -78,11 +78,11 @@
 	<key>color.link</key>
 	<dict>
 		<key>red</key>
-		<integer>97</integer>
+		<integer>236</integer>
 		<key>green</key>
-		<integer>4</integer>
+		<integer>52</integer>
 		<key>blue</key>
-		<integer>119</integer>
+		<integer>112</integer>
 		<key>alpha</key>
 		<integer>1</integer>
 	</dict>
@@ -100,106 +100,106 @@
 	<key>color.accent</key>
 	<dict>
 		<key>red</key>
-		<integer>99</integer>
+		<integer>161</integer>
 		<key>green</key>
-		<integer>207</integer>
+		<integer>132</integer>
 		<key>blue</key>
-		<integer>225</integer>
+		<integer>114</integer>
 		<key>alpha</key>
 		<integer>1</integer>
 	</dict>
 	<key>color.accent.secondary</key>
 	<dict>
 		<key>red</key>
-		<integer>5</integer>
+		<integer>137</integer>
 		<key>green</key>
 		<integer>112</integer>
 		<key>blue</key>
-		<integer>137</integer>
+		<integer>97</integer>
 		<key>alpha</key>
 		<integer>1</integer>
 	</dict>
 	<key>font.header</key>
 	<dict>
 		<key>fontName</key>
-		<string>TrebuchetMS</string>
+		<string>STHeitiSC-Light</string>
 		<key>fontSize</key>
 		<integer>18</integer>
 	</dict>
 	<key>font.heading1</key>
 	<dict>
 		<key>fontName</key>
-		<string>TrebuchetMS</string>
+		<string>STHeitiSC-Light</string>
 		<key>fontSize</key>
 		<integer>24</integer>
 	</dict>
 	<key>font.heading2</key>
 	<dict>
 		<key>fontName</key>
-		<string>TrebuchetMS</string>
+		<string>STHeitiSC-Light</string>
 		<key>fontSize</key>
 		<integer>20</integer>
 	</dict>
 	<key>font.heading3</key>
 	<dict>
 		<key>fontName</key>
-		<string>TrebuchetMS</string>
+		<string>STHeitiSC-Medium</string>
 		<key>fontSize</key>
 		<integer>17</integer>
 	</dict>
 	<key>font.heading4</key>
 	<dict>
 		<key>fontName</key>
-		<string>TrebuchetMS</string>
+		<string>STHeitiSC-Light</string>
 		<key>fontSize</key>
 		<integer>15</integer>
 	</dict>
 	<key>font.paragraph</key>
 	<dict>
 		<key>fontName</key>
-		<string>TrebuchetMS</string>
+		<string>STHeitiSC-Light</string>
 		<key>fontSize</key>
 		<integer>13</integer>
 	</dict>
 	<key>font.label1</key>
 	<dict>
 		<key>fontName</key>
-		<string>TrebuchetMS</string>
+		<string>STHeitiSC-Medium</string>
 		<key>fontSize</key>
 		<integer>13</integer>
 	</dict>
 	<key>font.label2</key>
 	<dict>
 		<key>fontName</key>
-		<string>TrebuchetMS</string>
+		<string>STHeitiSC-Light</string>
 		<key>fontSize</key>
 		<integer>12</integer>
 	</dict>
 	<key>font.label3</key>
 	<dict>
 		<key>fontName</key>
-		<string>TrebuchetMS</string>
+		<string>STHeitiSC-Light</string>
 		<key>fontSize</key>
 		<integer>11</integer>
 	</dict>
 	<key>font.label4</key>
 	<dict>
 		<key>fontName</key>
-		<string>TrebuchetMS</string>
+		<string>STHeitiSC-Light</string>
 		<key>fontSize</key>
 		<integer>10</integer>
 	</dict>
 	<key>font.button1</key>
 	<dict>
 		<key>fontName</key>
-		<string>TrebuchetMS-Bold</string>
+		<string>STHeitiSC-Medium</string>
 		<key>fontSize</key>
 		<integer>25</integer>
 	</dict>
 	<key>font.button2</key>
 	<dict>
 		<key>fontName</key>
-		<string>TrebuchetMS-Bold</string>
+		<string>STHeitiSC-Medium</string>
 		<key>fontSize</key>
 		<integer>17</integer>
 	</dict>
