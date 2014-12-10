@@ -10,16 +10,6 @@
 
 @implementation VImageFilter
 
-- (UIViewController *)canvasToolViewController
-{
-    return nil;
-}
-
-- (UIViewController *)inspectorToolViewController
-{
-    return nil;
-}
-
 - (NSString *)title
 {
     return self.filter.name;
