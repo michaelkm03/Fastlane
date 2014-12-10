@@ -8,8 +8,11 @@
 
 #import "VBaseCollectionViewCell.h"
 
+/*
+ The basic tool picker cell is used for representing a string within a UICollectionViewCell.
+ */
 @interface VBasicToolPickerCell : VBaseCollectionViewCell
 
-@property (weak, nonatomic) IBOutlet UILabel *label;
+- (void)setTitle:(NSString *)title; ///< The title for this picker cell.
 
 @end

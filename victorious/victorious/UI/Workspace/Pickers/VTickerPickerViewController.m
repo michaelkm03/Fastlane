@@ -76,7 +76,7 @@
     VBasicToolPickerCell *pickerCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VBasicToolPickerCell suggestedReuseIdentifier]
                                                                                  forIndexPath:indexPath];
     id <VWorkspaceTool> toolForIndexPath = self.tools[indexPath.row];
-    pickerCell.label.text = toolForIndexPath.title;
+    [pickerCell setTitle:toolForIndexPath.title];
     
     return pickerCell;
 }

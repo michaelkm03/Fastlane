@@ -10,13 +10,15 @@
 
 #import "VWorkspaceTool.h"
 
-
+/**
+ *  VToolPicker describes a generalized protocol that can be used by tool picker classes.
+ */
 @protocol VToolPicker <NSObject>
 
-@property (nonatomic, copy) NSArray /* That implement VWorkspaceTool */ *tools;
+@property (nonatomic, copy) NSArray /* That implement VWorkspaceTool */ *tools; ///< The tools to chose from.
 
-@property (nonatomic, readonly) id <VWorkspaceTool> selectedTool;
+@property (nonatomic, readonly) id <VWorkspaceTool> selectedTool; ///< The currently selected tool, if any.
 
-@property (nonatomic, copy) void (^onToolSelection)(id <VWorkspaceTool> selectedTool);
+@property (nonatomic, copy) void (^onToolSelection)(id <VWorkspaceTool> selectedTool); ///< A block that is called whenever a new tool has been selected.
 
 @end
