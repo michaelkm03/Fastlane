@@ -1,5 +1,5 @@
 //
-//  VToolPickerViewontroller.m
+//  VTickerPickerViewController.h
 //  victorious
 //
 //  Created by Michael Sena on 12/3/14.
@@ -12,12 +12,12 @@
 @interface VTickerPickerViewController () <UICollectionViewDelegateFlowLayout>
 
 @property (nonatomic, strong) UIView *selectionIndicatorView;
+@property (nonatomic, copy) NSArray *tools;
 
 @end
 
 @implementation VTickerPickerViewController
 
-@synthesize tools = _tools;
 @synthesize onToolSelection = _onToolSelection;
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager

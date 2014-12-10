@@ -15,7 +15,7 @@
  */
 @protocol VToolPicker <NSObject>
 
-@property (nonatomic, copy) NSArray /* That implement VWorkspaceTool */ *tools; ///< The tools to chose from.
+- (void)setTools:(NSArray /* That implement VWorkspaceTool */ *)tools; ///< The tools to chose from. Retains a copy of the array.
 
 @property (nonatomic, readonly) id <VWorkspaceTool> selectedTool; ///< The currently selected tool, if any.
 

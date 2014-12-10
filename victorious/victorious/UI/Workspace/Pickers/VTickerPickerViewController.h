@@ -1,5 +1,5 @@
 //
-//  VToolPickerViewontroller.h
+//  VTickerPickerViewController.h
 //  victorious
 //
 //  Created by Michael Sena on 12/3/14.
