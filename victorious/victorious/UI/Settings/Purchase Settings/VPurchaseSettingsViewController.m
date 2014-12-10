@@ -17,6 +17,8 @@
 #import "VAlertController.h"
 #import "VNoContentTableViewCell.h"
 
+#define V_NO_RESET_PURCHASES 1
+
 typedef NS_ENUM( NSInteger, VPurchaseSettingsTableViewSections )
 {
     VPurchaseSettingsTableViewSectionPurchases,
@@ -141,7 +143,7 @@ typedef NS_ENUM( NSInteger, VPurchaseSettingsAction )
             NSString *productIdentifier = [self.purchaseManager.purchasedProductIdentifiers.allObjects objectAtIndex:indexPath.row];
             VProduct *product = [self.purchaseManager purchaseableProductForProductIdentifier:productIdentifier];
             VVoteType *voteType = [[VSettingManager sharedManager].voteSettings voteTypeWithProductIdentifier:productIdentifier];
-            UIImage *image = [self.fileCache getImageWithName:VVoteTypeIconLargeName forVoteType:voteType];
+            UIImage *image = [self.fileCache getImageWithName:VVoteTypeIconName forVoteType:voteType];
             [cell setProductImage:image withTitle:product.localizedTitle];
             return cell;
         }
@@ -207,13 +209,23 @@ typedef NS_ENUM( NSInteger, VPurchaseSettingsAction )
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ( indexPath.section == VPurchaseSettingsTableViewSectionPurchases &&
-         self.purchaseManager.purchasedProductIdentifiers.count == 0)
+    BOOL isNoPurchasesCell = indexPath.section == VPurchaseSettingsTableViewSectionPurchases
+                                && self.purchaseManager.purchasedProductIdentifiers.count == 0;
+    
+    BOOL isActionCell = indexPath.section == VPurchaseSettingsTableViewSectionActions;
+    
+    if ( isNoPurchasesCell )
     {
         return 85.0f;
     }
-    
-    return 60.0f;
+    else if ( isActionCell )
+    {
+        return 60.0f;
+    }
+    else
+    {
+        return 60.0f;
+    }
 }
 
 @end
