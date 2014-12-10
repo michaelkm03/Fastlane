@@ -14,7 +14,7 @@ static NSString *const kToolsKey = @"tools";
 
 @implementation VDependencyManager (VWorkspaceTool)
 
-- (NSArray /* VWorkspaceTool */ *)tools
+- (NSArray /* VWorkspaceTool */ *)workspaceTools
 {
     NSArray *toolConfigurations = [self arrayForKey:kToolsKey];
     

@@ -42,7 +42,7 @@ static NSString * const kFilterIndexKey = @"filterIndex";
     if (self)
     {
         _title = [dependencyManager stringForKey:kTitleKey];
-        _subTools = [dependencyManager tools];
+        _subTools = [dependencyManager workspaceTools];
         _renderIndexNumber = [dependencyManager numberForKey:kFilterIndexKey];
         _toolPicker = (UIViewController<VToolPicker> *)[dependencyManager viewControllerForKey:kPickerKey];
         [(id<VToolPicker>)_toolPicker setTools:_subTools];

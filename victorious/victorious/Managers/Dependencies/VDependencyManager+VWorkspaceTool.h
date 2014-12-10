@@ -13,6 +13,6 @@
 /** 
  The top-level tools in a workspace. Each item implements the VWorkspaceTool protocol.
  */
-- (NSArray /* VWorkspaceTool */ *)tools;
+- (NSArray /* VWorkspaceTool */ *)workspaceTools;
 
 @end

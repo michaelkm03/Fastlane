@@ -40,7 +40,7 @@
     UIStoryboard *workspaceStoryboard = [UIStoryboard storyboardWithName:@"Workspace" bundle:nil];
     VWorkspaceViewController *workspaceViewController = [workspaceStoryboard instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
     workspaceViewController.dependencyManager = dependencyManager;
-    workspaceViewController.tools = [dependencyManager tools];
+    workspaceViewController.tools = [dependencyManager workspaceTools];
     return workspaceViewController;
 }
 
