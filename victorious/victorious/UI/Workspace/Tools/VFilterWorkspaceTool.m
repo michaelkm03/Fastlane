@@ -30,12 +30,11 @@ static NSString * const kFilterIndexKey = @"filterIndex";
 @property (nonatomic, strong) NSNumber *filterIndexNumber;
 @property (nonatomic, strong) UIViewController <VToolPicker> *toolPicker;
 @property (nonatomic, strong) VImageFilter *selectedFilter;
+@property (nonatomic, strong) VCanvasView *canvasView;
 
 @end
 
 @implementation VFilterWorkspaceTool
-
-@synthesize canvasView = _canvasView;
 
 #pragma mark - VHasManagedDependencies
 

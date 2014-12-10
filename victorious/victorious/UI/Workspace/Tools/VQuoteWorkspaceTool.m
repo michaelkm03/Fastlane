@@ -21,6 +21,8 @@ static NSString * const kTitleKey = @"title";
 
 @implementation VQuoteWorkspaceTool
 
+@synthesize renderIndex = _renderIndex;
+
 #pragma mark - VHasManagedDependencies
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
@@ -35,6 +37,11 @@ static NSString * const kTitleKey = @"title";
 }
 
 #pragma mark - VWorkspaceTool
+
+- (CIImage *)imageByApplyingToolToInputImage:(CIImage *)inputImage
+{
+    return inputImage;
+}
 
 - (NSString *)title
 {

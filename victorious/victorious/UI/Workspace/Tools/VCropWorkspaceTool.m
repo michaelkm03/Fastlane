@@ -26,12 +26,11 @@ static NSString * const kFilterIndexKey = @"filterIndex";
 @property (nonatomic, strong) UIImage *icon;
 @property (nonatomic, strong) NSNumber *filterIndexNumber;
 @property (nonatomic, strong, readwrite) VCropWorkspaceToolViewController *cropViewController;
+@property (nonatomic, strong) VCanvasView *canvasView;
 
 @end
 
 @implementation VCropWorkspaceTool
-
-@synthesize canvasView = _canvasView;
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {

@@ -138,7 +138,7 @@
  
     if ([selectedTool respondsToSelector:@selector(setCanvasView:)])
     {
-        selectedTool.canvasView = self.canvasView;
+        [selectedTool setCanvasView:self.canvasView];
     }
     
     if ([_selectedTool respondsToSelector:@selector(shouldLeaveToolOnCanvas)])
