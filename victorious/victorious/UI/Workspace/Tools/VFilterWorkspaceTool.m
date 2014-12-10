@@ -27,7 +27,6 @@ static NSString * const kFilterIndexKey = @"filterIndex";
 
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, strong) UIImage *icon;
-@property (nonatomic, strong) NSNumber *filterIndexNumber;
 @property (nonatomic, strong) UIViewController <VToolPicker> *toolPicker;
 @property (nonatomic, strong) VImageFilter *selectedFilter;
 @property (nonatomic, strong) VCanvasView *canvasView;
@@ -35,6 +34,8 @@ static NSString * const kFilterIndexKey = @"filterIndex";
 @end
 
 @implementation VFilterWorkspaceTool
+
+@synthesize renderIndex = _renderIndex;
 
 #pragma mark - VHasManagedDependencies
 
@@ -44,7 +45,7 @@ static NSString * const kFilterIndexKey = @"filterIndex";
     if (self)
     {
         _title = [dependencyManager stringForKey:kTitleKey];
-        _filterIndexNumber = [dependencyManager numberForKey:kFilterIndexKey];
+        _renderIndex = [[dependencyManager numberForKey:kFilterIndexKey] integerValue];
         _toolPicker = (UIViewController<VToolPicker> *)[dependencyManager viewControllerForKey:kPickerKey];
         
         NSURL *filters = [[NSBundle mainBundle] URLForResource:@"filters" withExtension:@"xml"];
@@ -73,11 +74,6 @@ static NSString * const kFilterIndexKey = @"filterIndex";
 - (CIImage *)imageByApplyingToolToInputImage:(CIImage *)inputImage
 {
     return [self.selectedFilter.filter filteredImageWithInputImage:inputImage];
-}
-
-- (NSInteger)renderIndex
-{
-    return [self.filterIndexNumber integerValue];
 }
 
 - (void)setCanvasView:(VCanvasView *)canvasView
