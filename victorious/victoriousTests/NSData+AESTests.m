@@ -26,30 +26,30 @@
     [super tearDown];
 }
 
-- (void) testEncryption
+- (void)testEncryption
 {
-	NSString* myData = @"{ \"something\" : \"value\" }";
-	NSData* key = [@"my_symmetric_key" dataUsingEncoding:NSUTF8StringEncoding];
-	NSData* data = [myData dataUsingEncoding:NSUTF8StringEncoding];
-	NSData* encrypedData = [data encryptedDataWithAESKey:key];
+	NSString *myData = @"{ \"something\" : \"value\" }";
+	NSData *key = [@"my_symmetric_key" dataUsingEncoding:NSUTF8StringEncoding];
+	NSData *data = [myData dataUsingEncoding:NSUTF8StringEncoding];
+	NSData *encrypedData = [data encryptedDataWithAESKey:key];
 	
-	NSString* encrptedString = [[NSString alloc] initWithData:encrypedData encoding:NSStringEncodingConversionExternalRepresentation];
+	NSString *encrptedString = [[NSString alloc] initWithData:encrypedData encoding:NSStringEncodingConversionExternalRepresentation];
 	NSLog( @"encryptedString = %@", encrptedString );
 	
 	XCTAssertNotNil( encrypedData, @"Encryption failed." );
 	XCTAssertTrue( encrypedData.length > 0, @"Encryption failed." );
     
     NSString *documentsDirectory = NSSearchPathForDirectoriesInDomains( NSCachesDirectory, NSUserDomainMask, YES ).firstObject;
-    NSString* filepath = [documentsDirectory stringByAppendingPathComponent:@"test_encryption"];
+    NSString *filepath = [documentsDirectory stringByAppendingPathComponent:@"test_encryption"];
     [encrypedData writeToFile:filepath atomically:YES];
 	
-	NSData* readEncryptedData = [NSData dataWithContentsOfFile:filepath];
-	NSData* decryptedData = [readEncryptedData decryptedDataWithAESKey:key];
+	NSData *readEncryptedData = [NSData dataWithContentsOfFile:filepath];
+	NSData *decryptedData = [readEncryptedData decryptedDataWithAESKey:key];
 	
 	XCTAssertNotNil( decryptedData, @"Decryption failed." );
 	XCTAssertTrue( decryptedData.length > 0, @"Decryption failed." );
 	
-	NSString* decryptedString = [[NSString alloc] initWithData:decryptedData encoding:NSUTF8StringEncoding];
+	NSString *decryptedString = [[NSString alloc] initWithData:decryptedData encoding:NSUTF8StringEncoding];
 	NSLog( @"decryptedString = %@", decryptedString );
 }
 
