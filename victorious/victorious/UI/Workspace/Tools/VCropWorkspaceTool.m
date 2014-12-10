@@ -17,7 +17,6 @@
 
 static NSString * const kTitleKey = @"title";
 static NSString * const kIconKey = @"icon";
-static NSString * const kToolInterfaceKey = @"toolInterface";
 static NSString * const kFilterIndexKey = @"filterIndex";
 
 @interface VCropWorkspaceTool ()
@@ -41,7 +40,7 @@ static NSString * const kFilterIndexKey = @"filterIndex";
     {
         _title = [dependencyManager stringForKey:kTitleKey];
         _filterIndexNumber = [dependencyManager numberForKey:kFilterIndexKey];
-        _cropViewController = (VCropWorkspaceToolViewController *)[dependencyManager viewControllerForKey:kToolInterfaceKey];
+        _cropViewController = [VCropWorkspaceToolViewController cropViewController];
     }
     return self;
 }

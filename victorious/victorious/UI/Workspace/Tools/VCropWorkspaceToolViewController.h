@@ -12,10 +12,12 @@
 
 @interface VCropWorkspaceToolViewController : UIViewController <VHasManagedDependancies>
 
++ (instancetype)cropViewController;
+
 @property (nonatomic, copy) void (^onCropBoundsChange)(UIScrollView *croppingScrollView);
 
 @property (nonatomic, assign) CGSize assetSize;
 
-@property (nonatomic, readonly) UIScrollView *croppingScrollView;
+@property (nonatomic, weak, readonly) UIScrollView *croppingScrollView;
 
 @end

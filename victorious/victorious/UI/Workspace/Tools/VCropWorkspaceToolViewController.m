@@ -20,7 +20,7 @@
 
 @implementation VCropWorkspaceToolViewController
 
-+ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
++ (instancetype)cropViewController
 {
     UIStoryboard *workspaceStoryboard = [UIStoryboard storyboardWithName:@"Workspace"
                                                                   bundle:nil];
