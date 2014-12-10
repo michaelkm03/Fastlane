@@ -6,6 +6,11 @@
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="MuseoSans-300.otf">
+            <string>MuseoSans-300</string>
+        </mutableArray>
+    </customFonts>
     <scenes>
         <!--Settings Container View Controller-->
         <scene sceneID="rUK-Y4-cAu">
@@ -651,7 +656,7 @@
         <!--Purchase Settings Container-->
         <scene sceneID="Qhc-wh-GVF">
             <objects>
-                <viewController title="Server Environment" id="ms7-gO-8Gm" userLabel="Purchase Settings Container" customClass="VContainerViewController" sceneMemberID="viewController">
+                <viewController title="In-App Purchases" id="ms7-gO-8Gm" userLabel="Purchase Settings Container" customClass="VContainerViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="aud-gm-Lfu"/>
                         <viewControllerLayoutGuide type="bottom" id="vAf-SI-1C8"/>
@@ -692,7 +697,7 @@
                         <color key="separatorColor" red="0.96470588239999999" green="0.96470588239999999" blue="0.8862745098" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="VPurchaseCell" rowHeight="60" id="mpA-RI-nLv" userLabel="Purchase Cell" customClass="VPurchaseCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="VPurchaseCell" rowHeight="70" id="mpA-RI-nLv" userLabel="Purchase Cell" customClass="VPurchaseCell">
                                 <rect key="frame" x="0.0" y="22" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="mpA-RI-nLv" id="JvS-e3-CXt">
@@ -700,26 +705,26 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Product" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IJf-ZD-6J8">
-                                            <rect key="frame" x="64" y="8" width="248" height="44"/>
+                                            <rect key="frame" x="85" y="10" width="219" height="53"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="DVp-DM-qW5">
-                                            <rect key="frame" x="8" y="8" width="44" height="44"/>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="DVp-DM-qW5">
+                                            <rect key="frame" x="14" y="8" width="53" height="53"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" secondItem="DVp-DM-qW5" secondAttribute="height" multiplier="1:1" id="xx5-TW-orZ"/>
+                                                <constraint firstAttribute="width" secondItem="DVp-DM-qW5" secondAttribute="height" multiplier="1:1" id="DjM-WM-Zdk"/>
                                             </constraints>
                                         </imageView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstAttribute="bottom" secondItem="IJf-ZD-6J8" secondAttribute="bottom" constant="7" id="2ge-3a-Q4L"/>
-                                        <constraint firstItem="DVp-DM-qW5" firstAttribute="top" secondItem="JvS-e3-CXt" secondAttribute="top" constant="8" id="6Gl-Co-4Lm"/>
-                                        <constraint firstItem="DVp-DM-qW5" firstAttribute="leading" secondItem="JvS-e3-CXt" secondAttribute="leading" constant="8" id="JTM-QM-9uc"/>
-                                        <constraint firstItem="IJf-ZD-6J8" firstAttribute="top" secondItem="JvS-e3-CXt" secondAttribute="top" constant="8" id="jIg-4W-qHy"/>
-                                        <constraint firstItem="IJf-ZD-6J8" firstAttribute="leading" secondItem="DVp-DM-qW5" secondAttribute="trailing" constant="12" id="o7M-5g-T24"/>
-                                        <constraint firstAttribute="bottom" secondItem="DVp-DM-qW5" secondAttribute="bottom" constant="7" id="rpS-vD-tXh"/>
-                                        <constraint firstAttribute="trailing" secondItem="IJf-ZD-6J8" secondAttribute="trailing" constant="8" id="xGd-2E-N7U"/>
+                                        <constraint firstItem="IJf-ZD-6J8" firstAttribute="top" secondItem="JvS-e3-CXt" secondAttribute="top" constant="10" id="0BG-Ab-bJh"/>
+                                        <constraint firstItem="IJf-ZD-6J8" firstAttribute="leading" secondItem="DVp-DM-qW5" secondAttribute="trailing" constant="18" id="E9B-Lo-Mw0"/>
+                                        <constraint firstItem="DVp-DM-qW5" firstAttribute="leading" secondItem="JvS-e3-CXt" secondAttribute="leading" constant="14" id="Lid-TY-GQZ"/>
+                                        <constraint firstItem="DVp-DM-qW5" firstAttribute="top" secondItem="JvS-e3-CXt" secondAttribute="top" constant="8" id="VKU-4o-3cm"/>
+                                        <constraint firstAttribute="trailing" secondItem="IJf-ZD-6J8" secondAttribute="trailing" constant="16" id="jEX-8f-hFh"/>
+                                        <constraint firstAttribute="bottom" secondItem="DVp-DM-qW5" secondAttribute="bottom" constant="8" id="ufe-Qh-Jfu"/>
+                                        <constraint firstAttribute="bottom" secondItem="IJf-ZD-6J8" secondAttribute="bottom" constant="6" id="wvA-p4-27t"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -728,7 +733,7 @@
                                     <outlet property="productTitle" destination="IJf-ZD-6J8" id="Sub-MZ-vHT"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="VPurchaseActionCell" id="CWE-b8-fYB" userLabel="Action Cell" customClass="VPurchaseActionCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="VPurchaseActionCell" rowHeight="70" id="CWE-b8-fYB" userLabel="Action Cell" customClass="VPurchaseActionCell">
                                 <rect key="frame" x="0.0" y="22" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="CWE-b8-fYB" id="iUO-cb-0C0">
@@ -736,7 +741,11 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N5S-6f-jb6" userLabel="Action" customClass="VButton">
-                                            <rect key="frame" x="20" y="0.0" width="280" height="43"/>
+                                            <rect key="frame" x="14" y="14" width="292" height="44"/>
+                                            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="44" id="cLT-6M-AaK"/>
+                                            </constraints>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <state key="normal" title="Action">
@@ -747,18 +756,45 @@
                                                 <action selector="onButtonTapped:" destination="CWE-b8-fYB" eventType="touchUpInside" id="7gS-lL-jqt"/>
                                             </connections>
                                         </button>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="df0-hh-KLf" userLabel="Loading View">
+                                            <rect key="frame" x="14" y="14" width="292" height="44"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Unlocking..." textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YwP-dh-Rfq" userLabel="Loading Message">
+                                                    <rect key="frame" x="8" y="3" width="189" height="39"/>
+                                                    <fontDescription key="fontDescription" name="MuseoSans-300" family="Museo Sans" pointSize="18"/>
+                                                    <color key="textColor" white="0.9660093246" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="I1e-aZ-Uqx">
+                                                    <rect key="frame" x="205" y="13" width="20" height="20"/>
+                                                </activityIndicatorView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="YwP-dh-Rfq" firstAttribute="leading" secondItem="df0-hh-KLf" secondAttribute="leading" constant="8" id="2Qt-Es-qKK"/>
+                                                <constraint firstItem="I1e-aZ-Uqx" firstAttribute="top" secondItem="df0-hh-KLf" secondAttribute="top" constant="13" id="DGW-LQ-LJd"/>
+                                                <constraint firstAttribute="bottom" secondItem="YwP-dh-Rfq" secondAttribute="bottom" constant="2" id="SBh-1t-F1w"/>
+                                                <constraint firstItem="I1e-aZ-Uqx" firstAttribute="leading" secondItem="YwP-dh-Rfq" secondAttribute="trailing" constant="8" id="edF-Vf-SGQ"/>
+                                                <constraint firstItem="YwP-dh-Rfq" firstAttribute="top" secondItem="df0-hh-KLf" secondAttribute="top" constant="3" id="frx-ay-ong"/>
+                                                <constraint firstAttribute="trailing" secondItem="I1e-aZ-Uqx" secondAttribute="trailing" constant="67" id="l6f-3O-wMe"/>
+                                            </constraints>
+                                        </view>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="N5S-6f-jb6" firstAttribute="top" secondItem="iUO-cb-0C0" secondAttribute="top" id="VEY-De-lJ4"/>
-                                        <constraint firstItem="N5S-6f-jb6" firstAttribute="leading" secondItem="iUO-cb-0C0" secondAttribute="leading" constant="20" id="r0B-Ta-1uT"/>
-                                        <constraint firstAttribute="trailing" secondItem="N5S-6f-jb6" secondAttribute="trailing" constant="20" id="w0p-k5-muS"/>
-                                        <constraint firstAttribute="bottom" secondItem="N5S-6f-jb6" secondAttribute="bottom" id="xEa-DC-M8d"/>
+                                        <constraint firstItem="N5S-6f-jb6" firstAttribute="height" secondItem="df0-hh-KLf" secondAttribute="height" id="2CO-ov-EXi"/>
+                                        <constraint firstItem="N5S-6f-jb6" firstAttribute="centerX" secondItem="df0-hh-KLf" secondAttribute="centerX" id="Gb1-Lm-1vH"/>
+                                        <constraint firstAttribute="trailing" secondItem="N5S-6f-jb6" secondAttribute="trailing" constant="14" id="KUL-fQ-yes"/>
+                                        <constraint firstItem="N5S-6f-jb6" firstAttribute="leading" secondItem="iUO-cb-0C0" secondAttribute="leading" constant="14" id="OZU-M9-rE2"/>
+                                        <constraint firstItem="N5S-6f-jb6" firstAttribute="centerY" secondItem="df0-hh-KLf" secondAttribute="centerY" id="Pub-Po-IrK"/>
+                                        <constraint firstAttribute="centerYWithinMargins" secondItem="N5S-6f-jb6" secondAttribute="centerYWithinMargins" constant="-1" id="cBk-05-5Wh"/>
+                                        <constraint firstItem="N5S-6f-jb6" firstAttribute="width" secondItem="df0-hh-KLf" secondAttribute="width" id="z3g-yc-CeD"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <connections>
                                     <outlet property="button" destination="N5S-6f-jb6" id="Wk3-ua-D5o"/>
+                                    <outlet property="loadingLabel" destination="YwP-dh-Rfq" id="8Cg-gy-uur"/>
+                                    <outlet property="loadingOverlay" destination="df0-hh-KLf" id="m0E-nI-Qde"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -767,7 +803,7 @@
                             <outlet property="delegate" destination="0nf-aa-3V6" id="3wN-2U-SFi"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="In-App Purchases" id="5FP-jo-7Mh">
+                    <navigationItem key="navigationItem" id="5FP-jo-7Mh">
                         <barButtonItem key="leftBarButtonItem" image="cameraButtonBack" id="HqR-wx-2sm">
                             <connections>
                                 <action selector="goBack:" destination="0nf-aa-3V6" id="6Wb-6s-qn8"/>
@@ -778,7 +814,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mG7-xu-zJg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3263" y="-1514"/>
+            <point key="canvasLocation" x="-3263" y="-1521"/>
         </scene>
     </scenes>
     <resources>

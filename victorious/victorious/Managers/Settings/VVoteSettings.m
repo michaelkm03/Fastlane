@@ -79,7 +79,7 @@
         return;
     }
     
-    NSArray *productIdentifiers = [VVoteType productIdentifiersFromVoteTypes:self.voteTypes];
+    NSSet *productIdentifiers = [VVoteType productIdentifiersFromVoteTypes:self.voteTypes];
     VPurchaseManager *purchaseManager = [VPurchaseManager sharedInstance];
     if ( !purchaseManager.isPurchaseRequestActive )
     {

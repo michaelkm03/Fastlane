@@ -10,6 +10,8 @@
 
 @interface VPurchaseActionCell : UITableViewCell
 
-- (void)setAction:(void(^)(VPurchaseActionCell *))actionCallback withTitle:(NSString *)labelTitle;
+- (void)setAction:(void(^)(VPurchaseActionCell *))actionCallback;
+
+- (void)setIsActionEnabled:(BOOL)isActionEnabled withTitle:(NSString *)labelTitle;
 
 @end

@@ -291,8 +291,6 @@ const NSUInteger VFileCacheMaximumSaveFileRetries = 1;
             VLog( @"Error setting NSURLIsExcludedFromBackupKey to YES:\n%@\n%@", filepath, [setValueError localizedDescription] );
         }
     }
-#warning remove this!!!
-    NSLog( @"Error setting NSURLIsExcludedFromBackupKey to YES:\n%@", filepath );
     
     return didSucceed;
 }

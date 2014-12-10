@@ -148,18 +148,18 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
     [[SKPaymentQueue defaultQueue] restoreCompletedTransactions];
 }
 
-- (void)fetchProductsWithIdentifiers:(NSArray *)productIdentifiers
+- (void)fetchProductsWithIdentifiers:(NSSet *)productIdentifiers
                              success:(VProductsRequestSuccessBlock)successCallback
                              failure:(VProductsRequestFailureBlock)failureCallback
 {
     NSAssert( !self.isPurchaseRequestActive, @"A products fetch is already in progress." );
     
-    NSArray *uncachedProductIndentifiers = [self productIdentifiersFilteredForUncachedProducts:productIdentifiers];
+    NSSet *uncachedProductIndentifiers = [self productIdentifiersFilteredForUncachedProducts:productIdentifiers];
     if ( uncachedProductIndentifiers == nil || uncachedProductIndentifiers.count == 0 )
     {
         if ( successCallback != nil )
         {
-            successCallback( [self.fetchedProducts allValues] );
+            successCallback( [NSSet setWithArray:[self.fetchedProducts allValues]] );
         }
         return;
     }
@@ -188,8 +188,7 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
 return;
 #endif
 
-    NSSet *productIdentifiersSet = [NSSet setWithArray:uncachedProductIndentifiers];
-    SKProductsRequest *request = [[SKProductsRequest alloc] initWithProductIdentifiers:productIdentifiersSet];
+    SKProductsRequest *request = [[SKProductsRequest alloc] initWithProductIdentifiers:uncachedProductIndentifiers];
     request.delegate = self;
     [request start];
 }
@@ -212,7 +211,7 @@ return;
 
 #pragma mark - Purchase product helpers
 
-- (NSArray *)productIdentifiersFilteredForUncachedProducts:(NSArray *)productIdentifiers
+- (NSSet *)productIdentifiersFilteredForUncachedProducts:(NSSet *)productIdentifiers
 {
     if ( productIdentifiers == nil )
     {
@@ -224,7 +223,7 @@ return;
         BOOL isCached = [self.fetchedProducts objectForKey:identifier] != nil;
         return !isCached;
     }];
-    return [productIdentifiers filteredArrayUsingPredicate:predicate];
+    return [productIdentifiers filteredSetUsingPredicate:predicate];
 }
 
 - (void)transactionDidFailWithErrorCode:(NSInteger)errorCode productIdentifier:(NSString *)productIdentifier
@@ -275,7 +274,7 @@ return;
     if ( self.activePurchase != nil && isValidProduct )
     {
         [self.purchaseRecord addProductIdentifier:productIdentifier];
-        self.activePurchase.successCallback( @[ self.activePurchase.product ] );
+        self.activePurchase.successCallback( [NSSet setWithObject:self.activePurchase.product] );
         self.activePurchase = nil;
     }
 }
@@ -297,7 +296,7 @@ return;
          }];
         if ( self.activeProductRequest.successCallback != nil )
         {
-            self.activeProductRequest.successCallback( [self.fetchedProducts allValues] );
+            self.activeProductRequest.successCallback( [NSSet setWithArray:[self.fetchedProducts allValues]] );
         }
     }
     self.activeProductRequest = nil;
@@ -335,7 +334,7 @@ return;
 {
     if ( self.activePurchaseRestore != nil )
     {
-        [self.activePurchaseRestore.restoreProductIdentifiers enumerateObjectsUsingBlock:^(NSString *identifier, NSUInteger idx, BOOL *stop)
+        [self.activePurchaseRestore.restoreProductIdentifiers enumerateObjectsUsingBlock:^(NSString *identifier, BOOL *stop)
         {
             [self.purchaseRecord addProductIdentifier:identifier];
         }];

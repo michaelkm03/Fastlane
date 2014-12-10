@@ -13,18 +13,43 @@
 @interface VPurchaseActionCell ()
 
 @property (weak, nonatomic) IBOutlet VButton *button;
+@property (weak, nonatomic) IBOutlet UIView *loadingOverlay;
+@property (weak, nonatomic) IBOutlet UILabel *loadingLabel;
+
 @property (strong, nonatomic) void(^actionCallback)(VPurchaseActionCell *);
 
 @end
 
 @implementation VPurchaseActionCell
 
-- (void)setAction:(void(^)(VPurchaseActionCell *))actionCallback withTitle:(NSString *)labelTitle
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    
+    self.button.style = VButtonStylePrimary;
+}
+
+- (void)setAction:(void(^)(VPurchaseActionCell *))actionCallback
 {
     self.actionCallback = actionCallback;
-    [self.button setTitle:labelTitle forState:UIControlStateNormal];
-    self.button.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-    self.button.style = VButtonStylePrimary;
+}
+
+- (void)setIsActionEnabled:(BOOL)isActionEnabled withTitle:(NSString *)labelTitle
+{
+    if ( isActionEnabled )
+    {
+        [self.button setTitle:labelTitle forState:UIControlStateNormal];
+        self.button.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    }
+    else
+    {
+        [self.button setTitle:nil forState:UIControlStateNormal];
+        self.loadingLabel.text = labelTitle;
+        self.button.backgroundColor = [UIColor grayColor];
+    }
+    
+    self.button.enabled = isActionEnabled;
+    self.loadingOverlay.hidden = isActionEnabled;
 }
 
 #pragma mark - IBActions

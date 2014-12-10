@@ -12,7 +12,7 @@ extern NSString * const VVoteTypeImageIndexReplacementMacro;
 
 @interface VVoteType (Fetcher)
 
-+ (NSArray *)productIdentifiersFromVoteTypes:(NSArray *)voteTypes;
++ (NSSet *)productIdentifiersFromVoteTypes:(NSArray *)voteTypes;
 
 @property (nonatomic, readonly) UIViewContentMode contentMode;
 @property (nonatomic, readonly) NSArray *images;

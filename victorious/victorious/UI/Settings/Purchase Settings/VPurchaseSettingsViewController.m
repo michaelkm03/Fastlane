@@ -14,6 +14,8 @@
 #import "VFileCache.h"
 #import "VFileCache+VVoteType.h"
 #import "VSettingManager.h"
+#import "VAlertController.h"
+#import "VNoContentTableViewCell.h"
 
 typedef NS_ENUM( NSInteger, VPurchaseSettingsTableViewSections )
 {
@@ -35,6 +37,7 @@ typedef NS_ENUM( NSInteger, VPurchaseSettingsAction )
 
 @property (nonatomic, strong) VFileCache *fileCache;
 @property (nonatomic, strong) VPurchaseManager *purchaseManager;
+@property (nonatomic, assign) BOOL isRestoringPurchases;
 
 @end
 
@@ -49,8 +52,10 @@ typedef NS_ENUM( NSInteger, VPurchaseSettingsAction )
     self.fileCache = [[VFileCache alloc] init];
     self.purchaseManager = [VPurchaseManager sharedInstance];
     
+    [VNoContentTableViewCell registerNibWithTableView:self.tableView];
     self.tableView.backgroundColor = [UIColor colorWithWhite:0.97 alpha:1.0];
-    [self.parentViewController v_addNewNavHeaderWithTitles:nil];
+    
+    [self.parentViewController v_addNewNavHeaderWithTitles:@[ @"In-App Purchases" ]];
     self.parentViewController.navHeaderView.delegate = (UIViewController<VNavigationHeaderDelegate> *)self.parentViewController;
 }
 
@@ -58,52 +63,86 @@ typedef NS_ENUM( NSInteger, VPurchaseSettingsAction )
 
 - (void)restorePurchases
 {
-    [self.purchaseManager restorePurchasesSuccess:^(NSArray *restoredProducts)
+    if ( self.purchaseManager.isPurchaseRequestActive )
+    {
+        NSString *title = NSLocalizedString( @"RestorePurchasesErrorTitle", nil );
+        NSError *error = [NSError errorWithDomain:@"" code:-1 userInfo:nil];
+        [self showError:error withTitle:title];
+        return;
+    }
+    
+    self.isRestoringPurchases = YES;
+    
+    [self.purchaseManager restorePurchasesSuccess:^(NSSet *restoredProducts)
      {
-         [self.tableView reloadData];
+         self.isRestoringPurchases = NO;
      }
                                           failure:^(NSError *error)
      {
-         
+         NSString *title = NSLocalizedString( @"RestorePurchasesErrorTitle", nil );
+         [self showError:error withTitle:title];
+         self.isRestoringPurchases = NO;
      }];
+}
+
+- (void)showError:(NSError *)error withTitle:(NSString *)title
+{
+    NSString *message = error.localizedDescription;
+    VAlertController *alertConroller = [VAlertController alertWithTitle:title message:message];
+    [alertConroller addAction:[VAlertAction cancelButtonWithTitle:NSLocalizedString( @"OKButton", nil ) handler:nil]];
+    [alertConroller presentInViewController:self animated:YES completion:nil];
 }
 
 #pragma mark - UITableViewDataSource
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ( indexPath.section ==  VPurchaseSettingsTableViewSectionPurchases )
+    if ( indexPath.section == VPurchaseSettingsTableViewSectionPurchases )
     {
-        NSString *identifier = NSStringFromClass( [VPurchaseCell class] );
-        VPurchaseCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
-        NSString *productIdentifier = [self.purchaseManager.purchasedProductIdentifiers objectAtIndex:indexPath.row];
-        VProduct *product = [self.purchaseManager purchaseableProductForProductIdentifier:productIdentifier];
-        VVoteType *voteType = [[VSettingManager sharedManager].voteSettings voteTypeWithProductIdentifier:productIdentifier];
-        UIImage *image = [self.fileCache getImageWithName:VVoteTypeIconLargeName forVoteType:voteType];
-        [cell setProductImage:image withTitle:product.localizedTitle];
-        return cell;
+        if ( self.purchaseManager.purchasedProductIdentifiers.count > 0 )
+        {
+            NSString *identifier = NSStringFromClass( [VPurchaseCell class] );
+            VPurchaseCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
+            NSString *productIdentifier = [self.purchaseManager.purchasedProductIdentifiers.allObjects objectAtIndex:indexPath.row];
+            VProduct *product = [self.purchaseManager purchaseableProductForProductIdentifier:productIdentifier];
+            VVoteType *voteType = [[VSettingManager sharedManager].voteSettings voteTypeWithProductIdentifier:productIdentifier];
+            UIImage *image = [self.fileCache getImageWithName:VVoteTypeIconLargeName forVoteType:voteType];
+            [cell setProductImage:image withTitle:product.localizedTitle];
+            return cell;
+        }
+        else
+        {
+            VNoContentTableViewCell *cell = [VNoContentTableViewCell createCellFromTableView:tableView];
+            cell.isCentered = YES;
+            [cell setMessage:@"You haven't purchased anything on this device.\nIf you've made purchases on another device, tap Restore Purchases to restore them."];
+            return cell;
+        }
     }
-    else if ( indexPath.section ==  VPurchaseSettingsTableViewSectionActions )
+    else if ( indexPath.section == VPurchaseSettingsTableViewSectionActions )
     {
         NSString *identifier = NSStringFromClass( [VPurchaseActionCell class] );
         VPurchaseActionCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
+        NSString *title = self.isRestoringPurchases ? @"  Restoring..." : NSLocalizedString( @"Restore Purchases", nil);
+        [cell setIsActionEnabled:!self.isRestoringPurchases withTitle:title];
         if ( indexPath.row == VPurchaseSettingsActionRestore )
         {
             [cell setAction:^(VPurchaseActionCell *actionCell)
              {
                  [self restorePurchases];
                 
-            } withTitle:NSLocalizedString( @"Restore Purchases", nil)];
+             }];
         }
 #ifndef V_NO_RESET_PURCHASES
         else if ( indexPath.row == VPurchaseSettingsActionReset )
         {
+            NSString *title = NSLocalizedString( @"Reset Purchases", nil);
+            [cell setIsActionEnabled:YES withTitle:title];
             [cell setAction:^(VPurchaseActionCell *actionCell)
              {
                  [self.purchaseManager resetPurchases];
                  [self.tableView reloadData];
                  
-             } withTitle:NSLocalizedString( @"Reset Purchases", nil)];
+             }];
         }
 #endif
         return cell;
@@ -112,13 +151,20 @@ typedef NS_ENUM( NSInteger, VPurchaseSettingsAction )
     return nil;
 }
 
+- (void)setIsRestoringPurchases:(BOOL)isRestoringPurchases
+{
+    _isRestoringPurchases = isRestoringPurchases;
+    
+    [self.tableView reloadData];
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if ( section ==  VPurchaseSettingsTableViewSectionPurchases )
+    if ( section == VPurchaseSettingsTableViewSectionPurchases )
     {
-        return self.purchaseManager.purchasedProductIdentifiers.count;
+        return MAX( self.purchaseManager.purchasedProductIdentifiers.count, (NSUInteger)1 );
     }
-    else if ( section ==  VPurchaseSettingsTableViewSectionActions )
+    else if ( section == VPurchaseSettingsTableViewSectionActions )
     {
         return VPurchaseSettingsActionCount;
     }
@@ -135,14 +181,13 @@ typedef NS_ENUM( NSInteger, VPurchaseSettingsAction )
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ( indexPath.section ==  VPurchaseSettingsTableViewSectionActions )
+    if ( indexPath.section == VPurchaseSettingsTableViewSectionPurchases &&
+         self.purchaseManager.purchasedProductIdentifiers.count == 0)
     {
-        return 44.0;
+        return 85.0f;
     }
-    else
-    {
-        return 60.0f;
-    }
+    
+    return 60.0f;
 }
 
 @end

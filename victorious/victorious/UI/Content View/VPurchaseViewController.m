@@ -184,7 +184,7 @@
 - (IBAction)restorePurchasesTapped:(id)sender
 {
     [self showRestoringWithMessage:NSLocalizedString( @"ActivityRestoring", nil)];
-    [self.purchaseManager restorePurchasesSuccess:^(NSArray *productIdentifiers)
+    [self.purchaseManager restorePurchasesSuccess:^(NSSet *productIdentifiers)
      {
          [self resetLoadingState];
          [self dismissViewControllerAnimated:YES completion:nil];
@@ -206,7 +206,7 @@
     
     [self showUnlockingWithMessage:NSLocalizedString( @"ActivityPurchasing", nil)];
     NSString *productIdentifier = self.voteType.productIdentifier;
-    [self.purchaseManager purchaseProductWithIdentifier:productIdentifier success:^(NSArray *productIdentifiers)
+    [self.purchaseManager purchaseProductWithIdentifier:productIdentifier success:^(NSSet *productIdentifiers)
      {
          [self resetLoadingState];
          [self dismissViewControllerAnimated:YES completion:nil];

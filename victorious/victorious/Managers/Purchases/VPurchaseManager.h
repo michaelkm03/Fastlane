@@ -44,7 +44,7 @@ NSString * const VPurchaseManagerProductsDidUpdateNotification;
  Returns the product identifiers of In-App purchases
  the user has made or restored on this device as stored in the purchased record.
  */
-@property (nonatomic, readonly) NSArray *purchasedProductIdentifiers;
+@property (nonatomic, readonly) NSSet *purchasedProductIdentifiers;
 
 /**
  Returns the singleton instance.  For better or for worse, this manager should be
@@ -100,7 +100,7 @@ NSString * const VPurchaseManagerProductsDidUpdateNotification;
  be called first in order to provide VProduct objects, which are required to make a
  purchase of the corresponding product on iTunesConnect.
  */
-- (void)fetchProductsWithIdentifiers:(NSArray *)productIdentifiers
+- (void)fetchProductsWithIdentifiers:(NSSet *)productIdentifiers
                              success:(VProductsRequestSuccessBlock)successCallback
                              failure:(VProductsRequestFailureBlock)failureCallback;
 

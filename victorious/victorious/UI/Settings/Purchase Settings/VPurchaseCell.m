@@ -22,6 +22,7 @@
 {
     self.productImageView.image = image;
     self.productTitle.text = title;
+    self.productTitle.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
 }
 
 @end
