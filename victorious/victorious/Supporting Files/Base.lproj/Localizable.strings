@@ -427,6 +427,7 @@
 "PurchaseErrorTitle"                    = "Error Making Purchase";
 "PurchaseErrorProductNotAvailable"      = "Sorry, this product is not currently available. Please try again later.";
 "PurchaseErrorTransaction"              = "Unable to complete transaction. Please try again later.";
+"RestorePurchasesNoPurchases"           = "There were no purchases found for your iTunes account.";
 "ProductsRequestError"                  = "Unable to load product information from the App Store. Please try again later.";
 "RestorePurchasesErrorTitle"            = "Error Restoring Purchases";
 "RestorePurchasesError"                 = "Unable to restore purchases at this time. Please try again later.";

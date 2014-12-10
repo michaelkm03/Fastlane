@@ -39,11 +39,10 @@
 
 #pragma mark - Initialization
 
-+ (VPurchaseViewController *)instantiateFromStoryboard:(NSString *)storyboardName withVoteType:(VVoteType *)voteType
++ (VPurchaseViewController *)purchaseViewControllerWithVoteType:(VVoteType *)voteType
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:storyboardName bundle:[NSBundle mainBundle]];
-    NSString *identifier = NSStringFromClass( [VPurchaseViewController class] );
-    VPurchaseViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:identifier];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Purchases" bundle:[NSBundle mainBundle]];
+    VPurchaseViewController *viewController = [storyboard instantiateInitialViewController];
     viewController.modalPresentationStyle = UIModalPresentationFullScreen;
     viewController.voteType = voteType;
     return viewController;
@@ -130,6 +129,11 @@
 - (void)showError:(NSError *)error withTitle:(NSString *)title
 {
     NSString *message = error.localizedDescription;
+    [self showAlertWithTitle:title message:message];
+}
+
+- (void)showAlertWithTitle:(NSString *)title message:(NSString *)message
+{
     VAlertController *alertConroller = [VAlertController alertWithTitle:title message:message];
     [alertConroller addAction:[VAlertAction cancelButtonWithTitle:NSLocalizedString( @"OKButton", nil ) handler:nil]];
     [alertConroller presentInViewController:self animated:YES completion:nil];
@@ -184,10 +188,18 @@
 - (IBAction)restorePurchasesTapped:(id)sender
 {
     [self showRestoringWithMessage:NSLocalizedString( @"ActivityRestoring", nil)];
-    [self.purchaseManager restorePurchasesSuccess:^(NSSet *productIdentifiers)
+    [self.purchaseManager restorePurchasesSuccess:^(NSSet *restoreProductIdentifiers)
      {
          [self resetLoadingState];
-         [self dismissViewControllerAnimated:YES completion:nil];
+
+         if ( restoreProductIdentifiers.count == 0 )
+         {
+             [self showAlertWithTitle:nil message:NSLocalizedString( @"RestorePurchasesNoPurchases", nil )];
+         }
+         else
+         {
+             [self dismissViewControllerAnimated:YES completion:nil];
+         }
      }
                                                 failure:^(NSError *error)
      {

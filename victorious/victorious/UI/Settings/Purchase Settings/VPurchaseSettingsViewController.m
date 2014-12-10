@@ -35,6 +35,7 @@ typedef NS_ENUM( NSInteger, VPurchaseSettingsAction )
 
 @interface VPurchaseSettingsViewController()
 
+@property (nonatomic, readonly) NSString *purchaseActionCellTitle;
 @property (nonatomic, strong) VFileCache *fileCache;
 @property (nonatomic, strong) VPurchaseManager *purchaseManager;
 @property (nonatomic, assign) BOOL isRestoringPurchases;
@@ -72,25 +73,59 @@ typedef NS_ENUM( NSInteger, VPurchaseSettingsAction )
     }
     
     self.isRestoringPurchases = YES;
+    [self.tableView reloadData];
     
-    [self.purchaseManager restorePurchasesSuccess:^(NSSet *restoredProducts)
+    [self.purchaseManager restorePurchasesSuccess:^(NSSet *restoreProductIdentifiers)
      {
          self.isRestoringPurchases = NO;
+         
+         if ( restoreProductIdentifiers.count == 0 )
+         {
+             [self showAlertWithTitle:nil message:NSLocalizedString( @"RestorePurchasesNoPurchases", nil )];
+             [self.tableView reloadData];
+         }
+         else
+         {
+             NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:VPurchaseSettingsTableViewSectionPurchases];
+             [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
+             
+             NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:VPurchaseSettingsTableViewSectionActions];
+             VPurchaseActionCell *cell = (VPurchaseActionCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+             [cell setIsActionEnabled:!self.isRestoringPurchases withTitle:self.purchaseActionCellTitle];
+         }
      }
                                           failure:^(NSError *error)
      {
          NSString *title = NSLocalizedString( @"RestorePurchasesErrorTitle", nil );
          [self showError:error withTitle:title];
          self.isRestoringPurchases = NO;
+         [self.tableView reloadData];
      }];
 }
 
 - (void)showError:(NSError *)error withTitle:(NSString *)title
 {
     NSString *message = error.localizedDescription;
+    [self showAlertWithTitle:title message:message];
+}
+
+- (void)showAlertWithTitle:(NSString *)title message:(NSString *)message
+{
     VAlertController *alertConroller = [VAlertController alertWithTitle:title message:message];
     [alertConroller addAction:[VAlertAction cancelButtonWithTitle:NSLocalizedString( @"OKButton", nil ) handler:nil]];
     [alertConroller presentInViewController:self animated:YES completion:nil];
+}
+
+- (NSString *)purchaseActionCellTitle
+{
+    if ( self.isRestoringPurchases )
+    {
+        return NSLocalizedString( @"  Restoring...", nil);
+    }
+    else
+    {
+        return NSLocalizedString( @"Restore Purchases", nil);
+    }
 }
 
 #pragma mark - UITableViewDataSource
@@ -122,14 +157,12 @@ typedef NS_ENUM( NSInteger, VPurchaseSettingsAction )
     {
         NSString *identifier = NSStringFromClass( [VPurchaseActionCell class] );
         VPurchaseActionCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
-        NSString *title = self.isRestoringPurchases ? @"  Restoring..." : NSLocalizedString( @"Restore Purchases", nil);
-        [cell setIsActionEnabled:!self.isRestoringPurchases withTitle:title];
+        [cell setIsActionEnabled:!self.isRestoringPurchases withTitle:self.purchaseActionCellTitle];
         if ( indexPath.row == VPurchaseSettingsActionRestore )
         {
             [cell setAction:^(VPurchaseActionCell *actionCell)
              {
                  [self restorePurchases];
-                
              }];
         }
 #ifndef V_NO_RESET_PURCHASES
@@ -140,8 +173,8 @@ typedef NS_ENUM( NSInteger, VPurchaseSettingsAction )
             [cell setAction:^(VPurchaseActionCell *actionCell)
              {
                  [self.purchaseManager resetPurchases];
-                 [self.tableView reloadData];
-                 
+                 NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:VPurchaseSettingsTableViewSectionPurchases];
+                 [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
              }];
         }
 #endif
@@ -149,13 +182,6 @@ typedef NS_ENUM( NSInteger, VPurchaseSettingsAction )
     }
     
     return nil;
-}
-
-- (void)setIsRestoringPurchases:(BOOL)isRestoringPurchases
-{
-    _isRestoringPurchases = isRestoringPurchases;
-    
-    [self.tableView reloadData];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
