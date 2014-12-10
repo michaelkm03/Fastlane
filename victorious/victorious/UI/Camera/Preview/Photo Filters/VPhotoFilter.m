@@ -44,7 +44,9 @@
 {
     for (id<VPhotoFilterComponent> filter in self.components)
     {
-        inputImage = [filter imageByFilteringImage:inputImage size:[inputImage extent].size orientation:UIImageOrientationUp];
+        inputImage = [filter imageByFilteringImage:inputImage 
+                                              size:[inputImage extent].size
+                                       orientation:UIImageOrientationUp];
     }
     return inputImage;
 }

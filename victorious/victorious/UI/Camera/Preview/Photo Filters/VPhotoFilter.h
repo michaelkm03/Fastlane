@@ -24,6 +24,9 @@
  */
 - (UIImage *)imageByFilteringImage:(UIImage *)sourceImage withCIContext:(CIContext *)context;
 
+/**
+ Applies this filter to the input image over it's extent. Assumes UIImageOrientationUP.
+ */
 - (CIImage *)filteredImageWithInputImage:(CIImage *)inputImage;
 
 @end
