@@ -56,7 +56,7 @@ static NSString * const kFilterIndexKey = @"filterIndex";
             return imageFilter;
         }];
         
-        [(id<VToolPicker>)_toolPicker setTools:filterTools];
+        [_toolPicker setTools:filterTools];
     }
     return self;
 }
