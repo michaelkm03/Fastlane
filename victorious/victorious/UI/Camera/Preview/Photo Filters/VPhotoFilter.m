@@ -28,11 +28,8 @@
 - (UIImage *)imageByFilteringImage:(UIImage *)sourceImage withCIContext:(CIContext *)context
 {
     CGRect canvas = CGRectMake(0, 0, sourceImage.size.width * sourceImage.scale, sourceImage.size.height * sourceImage.scale);
-    CIImage *filteredImage = [CIImage v_imageWithUImage:sourceImage];
-    for (id<VPhotoFilterComponent> filter in self.components)
-    {
-        filteredImage = [filter imageByFilteringImage:filteredImage size:canvas.size orientation:sourceImage.imageOrientation];
-    }
+    
+    CIImage *filteredImage = [self filteredImageWithInputImage:[CIImage v_imageWithUImage:sourceImage]];
     
     CGImageRef finishedImage = [context createCGImage:filteredImage fromRect:canvas];
     UIImage *retVal = [UIImage imageWithCGImage:finishedImage scale:sourceImage.scale orientation:sourceImage.imageOrientation];
