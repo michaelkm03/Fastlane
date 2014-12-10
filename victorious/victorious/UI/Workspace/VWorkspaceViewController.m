@@ -18,6 +18,9 @@
 // Protocols
 #import "VWorkspaceTool.h"
 
+// Rendering Utilities
+#import "CIImage+VImage.h"
+
 @interface VWorkspaceViewController ()
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
@@ -193,7 +196,7 @@
 - (UIImage *)renderedImageForCurrentState
 {
     CIContext *renderingContext = [CIContext contextWithOptions:@{kCIContextUseSoftwareRenderer:@YES}];
-    __block CIImage *filteredImage = [CIImage imageWithCGImage:self.canvasView.sourceImage.CGImage];
+    __block CIImage *filteredImage = [CIImage v_imageWithUImage:self.canvasView.sourceImage];
     
     NSArray *filterOrderTools = [self.tools sortedArrayUsingComparator:^NSComparisonResult(id <VWorkspaceTool> tool1, id <VWorkspaceTool> tool2)
     {
