@@ -42,14 +42,4 @@ static NSString * const kTitleKey = @"title";
     return _toolViewController;
 }
 
-- (NSString *)title
-{
-    return _title;
-}
-
-- (UIImage *)icon
-{
-    return _icon;
-}
-
 @end

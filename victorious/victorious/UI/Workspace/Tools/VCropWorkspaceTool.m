@@ -111,14 +111,4 @@ static NSString * const kFilterIndexKey = @"filterIndex";
     return _cropViewController;
 }
 
-- (NSString *)title
-{
-    return _title;
-}
-
-- (UIImage *)icon
-{
-    return _icon;
-}
-
 @end

@@ -43,14 +43,4 @@ static NSString * const kTitleKey = @"title";
     return inputImage;
 }
 
-- (NSString *)title
-{
-    return _title;
-}
-
-- (UIImage *)icon
-{
-    return _icon;
-}
-
 @end

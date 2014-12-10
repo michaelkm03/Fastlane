@@ -93,14 +93,4 @@ static NSString * const kFilterIndexKey = @"filterIndex";
     return (UIViewController *)self.toolPicker;
 }
 
-- (NSString *)title
-{
-    return _title;
-}
-
-- (UIImage *)icon
-{
-    return _icon;
-}
-
 @end
