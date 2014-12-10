@@ -26,7 +26,7 @@ static NSString * const kFilterIndexKey = @"filterIndex";
 @property (nonatomic, strong) UIImage *icon;
 @property (nonatomic, strong) NSNumber *filterIndexNumber;
 @property (nonatomic, strong, readwrite) VCropWorkspaceToolViewController *cropViewController;
-@property (nonatomic, strong) VCanvasView *canvasView;
+@property (nonatomic, weak) VCanvasView *canvasView;
 
 @end
 
@@ -61,11 +61,6 @@ static NSString * const kFilterIndexKey = @"filterIndex";
 - (CGSize)assetSize
 {
     return _cropViewController.assetSize;
-}
-
-- (void (^)(UIScrollView *croppingScrollVIew))onCropBoundsChange
-{
-    return _cropViewController.onCropBoundsChange;
 }
 
 #pragma mark - VWorkspaceTool
@@ -105,17 +100,11 @@ static NSString * const kFilterIndexKey = @"filterIndex";
     return [self.filterIndexNumber integerValue];
 }
 
-- (void)setOnCropBoundsChange:(void (^)(UIScrollView *croppingScrollVIew))onCropBoundsChange
-{
-    _cropViewController.onCropBoundsChange = onCropBoundsChange;
-}
-
 - (void)setCanvasView:(VCanvasView *)canvasView
 {
     _canvasView = canvasView;
     self.assetSize = canvasView.sourceImage.size;
 }
-
 
 - (UIViewController *)canvasToolViewController
 {
