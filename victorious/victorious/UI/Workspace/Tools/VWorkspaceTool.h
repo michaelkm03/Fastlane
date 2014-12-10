@@ -16,13 +16,18 @@
 @protocol VWorkspaceTool <NSObject>
 
 #pragma mark - Rendering
-- (CIImage *)imageByApplyingToolToInputImage:(CIImage *)inputImage;
+
+- (CIImage *)imageByApplyingToolToInputImage:(CIImage *)inputImage; ///< A hook into the rendering process that each tool can use to apply its effects.
+
 @property (nonatomic, readonly) NSInteger renderIndex; ///< The index at which this tool should be applied. Lower comes first.
 
 @optional
 
 #pragma mark - Editing
-@property (nonatomic, readonly) BOOL shouldLeaveToolOnCanvas; ///< Tools should implement this getter if they would like their UI to remain layered on top of the canvas. However their canavsToolViewController's View will have its userInteractionEnabled property set to NO. Upon reselection of the tool the workspace will re-enable interaction on the canavsToolViewController's View.
+/*
+ Tools should implement this getter if they would like their UI to remain layered on top of the canvas. However their canavsToolViewController's View will have its userInteractionEnabled property set to NO. Upon reselection of the tool the workspace will re-enable interaction on the canavsToolViewController's View.
+ */
+@property (nonatomic, readonly) BOOL shouldLeaveToolOnCanvas;
 
 - (void)setCanvasView:(VCanvasView *)canvasView;
 
