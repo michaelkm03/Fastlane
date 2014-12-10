@@ -45,6 +45,11 @@
         [self.collectionView addSubview:selectionView];
         selectionView;
     });
+    
+    [self.collectionView selectItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]
+                                      animated:NO
+                                scrollPosition:UICollectionViewScrollPositionNone];
+    [self notifyNewSelection];
 }
 
 - (void)viewDidLayoutSubviews

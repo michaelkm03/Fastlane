@@ -154,16 +154,6 @@
         }
     }
     
-    __weak typeof(self) welf = self;
-    if ([selectedTool respondsToSelector:@selector(setOnCanvasToolUpdate:)])
-    {
-        [selectedTool setOnCanvasToolUpdate:^
-         {
-             [welf setCanvasToolViewController:[welf.selectedTool canvasToolViewController]
-                                       forTool:welf.selectedTool];
-         }];
-    }
-    
     if ([selectedTool respondsToSelector:@selector(canvasToolViewController)])
     {
         // In case this viewController's view was disabled but left on the canvas

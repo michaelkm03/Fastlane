@@ -25,14 +25,14 @@ static NSString * const kFilterIndexKey = @"filterIndex";
 @property (nonatomic, strong) UIImage *icon;
 @property (nonatomic, strong) NSNumber *renderIndexNumber;
 @property (nonatomic, strong) NSArray *subTools;
+@property (nonatomic, strong) id <VWorkspaceTool> activeTextTool;
+@property (nonatomic, strong) UIViewController *activeTextToolViewController;
 @property (nonatomic, strong) UIViewController <VToolPicker> *toolPicker;
-@property (nonatomic, strong) UIViewController *activeTextTool;
+@property (nonatomic, strong) UIViewController *canvasTextContainer;
 
 @end
 
 @implementation VTextWorkspaceTool
-
-@synthesize onCanvasToolUpdate;
 
 #pragma mark - VHasManagedDependancies
 
@@ -45,9 +45,39 @@ static NSString * const kFilterIndexKey = @"filterIndex";
         _subTools = [dependencyManager workspaceTools];
         _renderIndexNumber = [dependencyManager numberForKey:kFilterIndexKey];
         _toolPicker = (UIViewController<VToolPicker> *)[dependencyManager viewControllerForKey:kPickerKey];
+        
         [(id<VToolPicker>)_toolPicker setTools:_subTools];
     }
     return self;
+}
+
+#pragma mark - Property Accessors
+
+- (void)setActiveTextTool:(id<VWorkspaceTool>)activeTextTool
+{
+    if (activeTextTool == _activeTextTool)
+    {
+        return;
+    }
+    
+    // Swap childrenVCs
+    if (self.activeTextToolViewController != nil)
+    {
+        [self.activeTextToolViewController willMoveToParentViewController:nil];
+        [self.activeTextToolViewController.view removeFromSuperview];
+        [self.activeTextToolViewController removeFromParentViewController];
+    }
+    
+    if ([activeTextTool canvasToolViewController] != nil)
+    {
+        [self.canvasTextContainer addChildViewController:[activeTextTool canvasToolViewController]];
+        [self.canvasTextContainer.view addSubview:[activeTextTool canvasToolViewController].view];
+        [[activeTextTool canvasToolViewController] didMoveToParentViewController:self.canvasTextContainer];
+        
+        [self positionActiveTool:[activeTextTool canvasToolViewController].view];
+    }
+    
+    _activeTextTool = activeTextTool;
 }
 
 #pragma mark - VWorkspaceTool
@@ -69,7 +99,7 @@ static NSString * const kFilterIndexKey = @"filterIndex";
 
 - (UIViewController *)canvasToolViewController
 {
-    return _activeTextTool;
+    return self.canvasTextContainer;
 }
 
 - (UIViewController *)inspectorToolViewController
@@ -81,11 +111,7 @@ static NSString * const kFilterIndexKey = @"filterIndex";
         {
             return;
         }
-        welf.activeTextTool = [selectedTool canvasToolViewController];
-        if (welf.onCanvasToolUpdate)
-        {
-            welf.onCanvasToolUpdate();
-        }
+        welf.activeTextTool = selectedTool;
     };
     return (UIViewController *)self.toolPicker;
 }
@@ -93,6 +119,36 @@ static NSString * const kFilterIndexKey = @"filterIndex";
 - (NSString *)title
 {
     return _title;
+}
+
+#pragma mark - Internal Methods
+
+- (void)positionActiveTool:(UIView *)viewForActiveTool
+{
+    viewForActiveTool.translatesAutoresizingMaskIntoConstraints = NO;
+    NSDictionary *viewMap = @{@"viewForActiveTool":viewForActiveTool};
+    [self.canvasTextContainer.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[viewForActiveTool]|"
+                                                                                          options:kNilOptions
+                                                                                          metrics:nil
+                                                                                            views:viewMap]];
+    [self.canvasTextContainer.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[viewForActiveTool]|"
+                                                                                          options:kNilOptions
+                                                                                          metrics:nil
+                                                                                            views:viewMap]];
+}
+
+- (UIViewController *)canvasTextContainer
+{
+    if (_canvasTextContainer != nil)
+    {
+        return _canvasTextContainer;
+    }
+
+    _canvasTextContainer = [[UIViewController alloc] initWithNibName:nil
+                                                              bundle:nil];
+    _canvasTextContainer.view = [[UIView alloc] initWithFrame:CGRectZero];
+    _canvasTextContainer.view.backgroundColor = [UIColor clearColor];
+    return _canvasTextContainer;
 }
 
 @end
