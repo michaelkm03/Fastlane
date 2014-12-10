@@ -44,7 +44,7 @@ fi
 # If this step fails or hangs, you may need to store or update the dev center credentials
 # in the keychain. Use the "ios login" command.
 
-ios profiles:download "$DEFAULT_PROVISIONING_PROFILE_NAME" --type distribution
+ios profiles:download "$DEFAULT_PROVISIONING_PROFILE_NAME" --type distribution -u "$DEFAULT_DEV_ACCOUNT"
 
 if [ $? != 0 ]; then
     echo "Unable to download provisioning profile \"$DEFAULT_PROVISIONING_PROFILE_NAME\""
