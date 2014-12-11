@@ -116,8 +116,7 @@
         return @[];
     }
     NSError *error = nil;
-    NSString *jsonString = [[NSString alloc] initWithData:decryptedData encoding:NSUTF8StringEncoding];
-    NSData *data = [NSJSONSerialization JSONObjectWithData:[jsonString dataUsingEncoding:NSUTF8StringEncoding]
+    NSData *data = [NSJSONSerialization JSONObjectWithData:decryptedData
                                                    options:NSJSONReadingAllowFragments error:&error];
     if ( data == nil || ![data isKindOfClass:[NSArray class]] )
     {
