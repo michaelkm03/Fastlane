@@ -28,11 +28,10 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
 
 @property (nonatomic, strong) VSuggestedPeopleCollectionViewController *suggestedPeopleViewController;
 
+@property (nonatomic, strong) NSArray *userTags;
 @property (nonatomic, strong) NSArray *trendingTags;
 @property (nonatomic, strong) NSArray *sectionHeaders;
 @property (nonatomic, strong) NSError *error;
-
-
 
 @end
 
@@ -87,7 +86,8 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
     self.hasLoadedOnce = YES;
     self.error = nil;
     self.trendingTags = hashtags;
-    [self.tableView reloadData];
+
+    [self retrieveHashtagsForLoggedInUser];
 }
 
 - (void)refresh:(BOOL)shouldClearCurrentContent
@@ -114,6 +114,25 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
      {
          [self hashtagsDidFailToLoadWithError:error];
      }];
+}
+
+#pragma mark - Get / Format Logged In Users Tags
+
+- (void)retrieveHashtagsForLoggedInUser
+{
+    [[VObjectManager sharedManager] getHashtagsSubscribedTo:^(NSOperation *operation, id result, NSArray *resultObjects)
+    {
+        [self reconcileUserHashtags:resultObjects
+               withTrendingHashtags:self.trendingTags];
+    }
+                                                  failBlock:nil];
+}
+
+- (void)reconcileUserHashtags:(NSArray *)hashtags
+         withTrendingHashtags:(NSArray *)trendingTags
+{
+    self.userTags = hashtags;
+    [self.tableView reloadData];
 }
 
 #pragma mark - VDiscoverViewControllerProtocol

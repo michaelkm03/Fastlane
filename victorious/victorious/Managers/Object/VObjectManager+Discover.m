@@ -66,6 +66,25 @@
            failBlock:fail];
 }
 
+- (RKManagedObjectRequestOperation *)subscribeToHashtag:(NSString *)hashtag
+                                           successBlock:(VSuccessBlock)success
+                                              failBlock:(VFailBlock)fail
+{
+    VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    {
+        if (success)
+        {
+            success(operation, fullResponse, resultObjects);
+        }
+    };
+    
+    return [self GET:@"/api/hashtag/follow"
+              object:nil
+          parameters:@{@"hasthtag": hashtag}
+        successBlock:fullSuccess
+           failBlock:fail];
+}
+
 - (RKManagedObjectRequestOperation *)unsubscribeToHashtag:(NSString *)hashtag
                                              successBlock:(VSuccessBlock)success
                                                 failBlock:(VFailBlock)fail
@@ -82,7 +101,7 @@
               object:nil
           parameters:@{@"hasthtag": hashtag}
         successBlock:fullSuccess
-           failBlock:fail];    
+           failBlock:fail];
 }
 
 @end

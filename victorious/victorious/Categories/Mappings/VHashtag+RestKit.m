@@ -39,13 +39,7 @@
                                                         method:RKRequestMethodAny
                                                    pathPattern:@"/api/discover/hashtags"
                                                        keyPath:@"payload"
-                                                   statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
-              
-              [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
-                                                           method:RKRequestMethodAny
-                                                      pathPattern:@"/api/discover/hashtags"
-                                                          keyPath:@"payload"
-                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)]
+                                                   statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)]
               ];
 }
 

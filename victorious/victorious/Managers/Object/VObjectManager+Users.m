@@ -12,6 +12,7 @@
 #import "VObjectManager+Users.h"
 #import "VObjectManager+Private.h"
 
+#import "VUserHashtag+RestKit.h"
 #import "VConversation+RestKit.h"
 #import "VUser.h"
 

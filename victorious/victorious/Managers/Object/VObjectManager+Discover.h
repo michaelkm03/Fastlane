@@ -22,4 +22,5 @@
 - (RKManagedObjectRequestOperation *)unsubscribeToHashtag:(NSString *)hashtag
                                              successBlock:(VSuccessBlock)success
                                                 failBlock:(VFailBlock)fail;
+
 @end

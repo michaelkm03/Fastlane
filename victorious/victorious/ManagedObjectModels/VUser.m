@@ -2,7 +2,7 @@
 //  VUser.m
 //  victorious
 //
-//  Created by Will Long on 9/30/14.
+//  Created by Lawrence Leach on 12/10/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
@@ -14,6 +14,7 @@
 #import "VPollResult.h"
 #import "VSequence.h"
 #import "VUser.h"
+#import "VUserHashtag.h"
 
 
 @implementation VUser
@@ -21,10 +22,13 @@
 @dynamic accessLevel;
 @dynamic email;
 @dynamic isDirectMessagingDisabled;
+@dynamic isFollowing;
 @dynamic location;
 @dynamic name;
+@dynamic numberOfFollowers;
 @dynamic pictureUrl;
 @dynamic remoteId;
+@dynamic status;
 @dynamic tagline;
 @dynamic token;
 @dynamic tokenUpdatedAt;
@@ -39,8 +43,6 @@
 @dynamic postedSequences;
 @dynamic remixedSequences;
 @dynamic repostedSequences;
-@dynamic status;
-@dynamic isFollowing;
-@dynamic numberOfFollowers;
+@dynamic hashtags;
 
 @end

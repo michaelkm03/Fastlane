@@ -33,6 +33,7 @@
                                   @"status" : VSelectorName(status),
                                   @"following" : VSelectorName(isFollowing),
                                   @"number_of_followers" : VSelectorName(numberOfFollowers),
+                                  @"hashtags" : VSelectorName(hashtags),
                                   };
 
     RKEntityMapping *mapping = [RKEntityMapping
@@ -164,6 +165,12 @@
              [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
                                                           method:RKRequestMethodAny
                                                      pathPattern:@"/api/discover/users"
+                                                         keyPath:@"payload"
+                                                     statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
+             
+             [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
+                                                          method:RKRequestMethodAny
+                                                     pathPattern:@"/api/hashtag/subscribed_to_list"
                                                          keyPath:@"payload"
                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)]
              ];
