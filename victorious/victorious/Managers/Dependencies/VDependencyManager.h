@@ -154,8 +154,7 @@ extern NSString * const VDependencyManagerInitialViewControllerKey; ///< The vie
  Calling this method twice with the same dictionary will return the same
  object both times.
  
- @param expectedType if the value found at keyPath is not this kind
-                     of class, we return nil.
+ @param expectedType The type of object you expect to get back
  @param configurationDictionary A dictionary of configuration attributes that describes the object
  */
 - (id)singletonObjectOfType:(Class)expectedType fromDictionary:(NSDictionary *)configurationDictionary;

@@ -85,7 +85,7 @@ NSString * const VDependencyManagerInitialViewControllerKey = @"initialScreen";
     {
         _parentManager = parentManager;
         _configuration = configuration;
-        _privateQueue = dispatch_queue_create("VDependencyManager private queue", DISPATCH_QUEUE_CONCURRENT);
+        _privateQueue = dispatch_queue_create("com.getvictorious.VDependencyManager", DISPATCH_QUEUE_CONCURRENT);
         _singletonsByKey = [[NSMutableDictionary alloc] init];
         _configurationDictionariesByID = [self findConfigurationDictionariesByIDInTemplateDictionary:configuration];
         
