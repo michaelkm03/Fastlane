@@ -24,6 +24,11 @@
 @property (nonatomic) BOOL didSelectAssetFromLibrary;
 
 /**
+ *  If YES, the camera will call it's completion block immediately after taking the picture/video.
+ */
+@property (nonatomic, assign) BOOL shouldSkipPreview;
+
+/**
  Returns an instance of this class that will initially show a video capture screen.
  */
 + (VCameraViewController *)cameraViewController;

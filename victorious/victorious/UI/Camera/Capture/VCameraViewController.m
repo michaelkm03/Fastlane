@@ -1018,6 +1018,16 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
 
 - (void)moveToPreviewViewControllerWithContentURL:(NSURL *)contentURL
 {
+    if (self.shouldSkipPreview)
+    {
+        if (self.completionBlock != nil)
+        {
+            UIImage *imageFromURL = [[UIImage alloc] initWithContentsOfFile:[contentURL path]];
+            self.completionBlock(YES, imageFromURL, contentURL);
+            return;
+        }
+    }
+    
     VMediaPreviewViewController *previewViewController = [VMediaPreviewViewController previewViewControllerForMediaAtURL:contentURL];
     previewViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
     {
