@@ -80,7 +80,7 @@
     {
         NSError *error = nil;
         data = [NSJSONSerialization dataWithJSONObject:array options:NSJSONWritingPrettyPrinted error:&error];
-        if ( error != nil )
+        if ( data == nil || ![data isKindOfClass:[NSData class]] )
         {
             return NO;
         }
@@ -103,7 +103,7 @@
     NSData *encryptedData = [NSData dataWithContentsOfFile:filepath];
     if ( encryptedData == nil )
     {
-        return [[NSArray alloc] init];
+        return @[];
     }
     
     unichar *key = [self generateKeyWithDeviceIdentifier:self.deviceIdentifier];
@@ -112,19 +112,27 @@
     
     if ( decryptedData == nil )
     {
-        // Error decrypting: assume file has been tampered with or replaced
-        exit( 1 );
+        [self decryptionDidFail];
+        return @[];
     }
     NSError *error = nil;
     NSString *jsonString = [[NSString alloc] initWithData:decryptedData encoding:NSUTF8StringEncoding];
-    NSData *data = [NSJSONSerialization JSONObjectWithData:[jsonString dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingAllowFragments error:&error];
-    if ( error != nil )
+    NSData *data = [NSJSONSerialization JSONObjectWithData:[jsonString dataUsingEncoding:NSUTF8StringEncoding]
+                                                   options:NSJSONReadingAllowFragments error:&error];
+    if ( data == nil || ![data isKindOfClass:[NSArray class]] )
     {
-        // Error decrypting: assume file has been tampered with or replaced
-        exit( 1 );
+        [self decryptionDidFail];
+        return @[];
     }
     
     return (NSArray *)data;
+}
+
+- (void)decryptionDidFail
+{
+    // If decryption fails (due to tampering or legitimate error)
+    // start over with a clear purchase record on disk
+    [self clear];
 }
 
 - (NSString *)absoluteFilepath
