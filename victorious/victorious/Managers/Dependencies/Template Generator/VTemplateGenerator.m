@@ -33,6 +33,11 @@ static NSString * const kInitialKey = @"initial";
 static NSString * const kStreamUrlPathKey = @"streamUrlPath";
 static NSString * const kUserSpecificKey = @"isUserSpecific";
 
+// Workspace properties
+static NSString * const kToolsKey = @"tools";
+static NSString * const kPickerKey = @"picker";
+static NSString * const kFilterIndexKey = @"filterIndex";
+
 @interface VTemplateGenerator ()
 
 @property (nonatomic, strong) NSDictionary *dataFromInitCall;
@@ -73,8 +78,57 @@ static NSString * const kUserSpecificKey = @"isUserSpecific";
     
     template[VDependencyManagerScaffoldViewControllerKey] = @{ kClassNameKey: @"sideMenu.scaffold",
                                                                VDependencyManagerInitialViewControllerKey: @{ kReferenceIDKey: self.firstMenuItemID },
-                                                               kMenuKey: [self menuComponent] };
+                                                               kMenuKey: [self menuComponent],
+                                                               VDependencyManagerWorkspaceKey: [self workspaceComponent] };
+    
     return template;
+}
+
+- (NSDictionary *)workspaceComponent
+{
+    return @{
+             kClassNameKey: @"workspace.screen",
+             kToolsKey:
+                 @[
+                     @{
+                         kClassNameKey: @"text.tool",
+                         kTitleKey: @"text",
+                         kFilterIndexKey: @2,
+                         kPickerKey:
+                             @{
+                                 kClassNameKey: @"vertical.picker",
+                                 },
+                         kToolsKey:
+                             @[
+                                 @{
+                                     kClassNameKey: @"meme.tool",
+                                     kTitleKey: @"meme",
+                                     },
+                                 @{
+                                     kClassNameKey: @"quote.tool",
+                                     kTitleKey: @"quote",
+                                     }
+                                 ]
+                         },
+                     @{
+                         kClassNameKey: @"filter.tool",
+                         kTitleKey: @"filters",
+                         kFilterIndexKey: @0,
+                         kPickerKey:
+                             @{
+                                 kClassNameKey: @"vertical.picker",
+                                 },
+                         kToolsKey:
+                             @[
+                                 ]
+                         },
+                     @{
+                         kClassNameKey: @"crop.tool",
+                         kTitleKey: @"crop",
+                         kFilterIndexKey: @1,
+                         }
+                     ]
+             };
 }
 
 - (NSDictionary *)menuComponent
