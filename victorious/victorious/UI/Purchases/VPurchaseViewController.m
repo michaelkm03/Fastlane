@@ -15,11 +15,13 @@
 #import "VButton.h"
 #import "VFileCache.h"
 #import "VFileCache+VVoteType.h"
+#import "VPurchaseStringMaker.h"
 
 @interface VPurchaseViewController ()
 
 @property (strong, nonatomic) VPurchaseManager *purchaseManager;
 @property (strong, nonatomic) VProduct *product;
+@property (strong, nonatomic) VPurchaseStringMaker *stringMaker;
 
 @property (weak, nonatomic) IBOutlet UILabel *productTitleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *creatorSalutationLabel;
@@ -55,7 +57,7 @@
     [super viewDidLoad];
     
     self.purchaseManager = [VPurchaseManager sharedInstance];
-    
+    self.stringMaker = [[VPurchaseStringMaker alloc] init];
     self.product = [self.purchaseManager purchaseableProductForProductIdentifier:self.voteType.productIdentifier];
     
     self.creatorAvatarImageView.layer.cornerRadius = 17.0f; // Enough to make it a circle
@@ -129,23 +131,15 @@
 - (void)showError:(NSError *)error withTitle:(NSString *)title
 {
     NSString *message = error.localizedDescription;
-    [self showAlertWithTitle:title message:message];
-}
-
-- (void)showAlertWithTitle:(NSString *)title message:(NSString *)message
-{
     VAlertController *alertConroller = [VAlertController alertWithTitle:title message:message];
     [alertConroller addAction:[VAlertAction cancelButtonWithTitle:NSLocalizedString( @"OKButton", nil ) handler:nil]];
-    [alertConroller presentInViewController:self animated:YES completion:nil];
 }
 
 - (void)showRestoringWithMessage:(NSString *)message
 {
     self.unlockButton.enabled = NO;
     self.unlockLoadingView.hidden = YES;
-    
     self.restoreButton.hidden = YES;
-    
     self.restoreLoadingView.hidden = NO;
     self.restoreLoadingLabel.text = message;
 }
@@ -154,11 +148,9 @@
 {
     self.restoreButton.enabled = NO;
     self.restoreLoadingView.hidden = YES;
-    
     self.unlockButton.enabled = NO;
     self.unlockButton.backgroundColor = [UIColor grayColor];
     [self.unlockButton setTitle:nil forState:UIControlStateNormal];
-    
     self.unlockLoadingView.hidden = NO;
     self.unlockLoadingLabel.text = message;
 }
@@ -179,6 +171,28 @@
     [self applyTheme];
 }
 
+- (void)handlePurchasesRestoredWithProductIdentifiers:(NSSet *)productIdentifiers
+{
+    NSString *title = [self.stringMaker localizedSuccessTitleWithProductsCount:productIdentifiers.count];
+    NSString *message = [self.stringMaker localizedSuccessMessageWithProductsCount:productIdentifiers.count];
+    [self showAlertWithTitle:title message:message handler:^(VAlertAction *action)
+    {
+        // If the product for which this view controller was instantiated was returned during
+        // a purchase restore, then we should dismiss since there's no need to buy it anymore
+        if ( [productIdentifiers containsObject:self.voteType.productIdentifier] )
+        {
+            [self dismissViewControllerAnimated:YES completion:nil];
+        }
+    }];
+}
+
+- (void)showAlertWithTitle:(NSString *)title message:(NSString *)message handler:(void(^)(VAlertAction *))handler
+{
+    VAlertController *alertConroller = [VAlertController alertWithTitle:title message:message];
+    [alertConroller addAction:[VAlertAction cancelButtonWithTitle:NSLocalizedString( @"OKButton", nil ) handler:handler]];
+    [alertConroller presentInViewController:self animated:YES completion:nil];
+}
+
 #pragma mark - IB Actions
 
 - (IBAction)close:(id)sender
@@ -193,14 +207,7 @@
      {
          [self resetLoadingState];
 
-         if ( restoreProductIdentifiers.count == 0 )
-         {
-             [self showAlertWithTitle:nil message:NSLocalizedString( @"RestorePurchasesNoPurchases", nil )];
-         }
-         else
-         {
-             [self dismissViewControllerAnimated:YES completion:nil];
-         }
+         [self handlePurchasesRestoredWithProductIdentifiers:restoreProductIdentifiers];
      }
                                                 failure:^(NSError *error)
      {

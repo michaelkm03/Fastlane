@@ -16,6 +16,7 @@
 #import "VSettingManager.h"
 #import "VAlertController.h"
 #import "VNoContentTableViewCell.h"
+#import "VPurchaseStringMaker.h"
 
 typedef NS_ENUM( NSInteger, VPurchaseSettingsTableViewSections )
 {
@@ -39,6 +40,7 @@ typedef NS_ENUM( NSInteger, VPurchaseSettingsAction )
 @property (nonatomic, strong) VFileCache *fileCache;
 @property (nonatomic, strong) VPurchaseManager *purchaseManager;
 @property (nonatomic, assign) BOOL isRestoringPurchases;
+@property (strong, nonatomic) VPurchaseStringMaker *stringMaker;
 
 @end
 
@@ -50,8 +52,11 @@ typedef NS_ENUM( NSInteger, VPurchaseSettingsAction )
 {
     [super viewDidLoad];
     
+    self.stringMaker = [[VPurchaseStringMaker alloc] init];
     self.fileCache = [[VFileCache alloc] init];
     self.purchaseManager = [VPurchaseManager sharedInstance];
+    
+    self.parentViewController.title = NSLocalizedString( @"SettingsPurchasesTitle", nil);
     
     [VNoContentTableViewCell registerNibWithTableView:self.tableView];
     self.tableView.backgroundColor = [UIColor colorWithWhite:0.97 alpha:1.0];
@@ -81,7 +86,8 @@ typedef NS_ENUM( NSInteger, VPurchaseSettingsAction )
          
          if ( restoreProductIdentifiers.count == 0 )
          {
-             [self showAlertWithTitle:nil message:NSLocalizedString( @"RestorePurchasesNoPurchases", nil )];
+             [self showAlertWithTitle:[self.stringMaker localizedSuccessTitleWithProductsCount:0]
+                              message:[self.stringMaker localizedSuccessMessageWithProductsCount:0]];
              [self.tableView reloadData];
          }
          else

@@ -6,10 +6,11 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-@import StoreKit;
-
-#import "VPurchaseManager+Debug.h"
+#if DEBUG || TARGET_IOS_SIMULATOR
+#import "VPurchaseDebugSettings.h"
 #endif
+
+@import StoreKit;
 
 #import "VPurchaseManager.h"
 #import "VPurchase.h"
@@ -89,17 +90,17 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
 {
     NSAssert( !self.isPurchaseRequestActive, @"A purchase is already in progress." );
     
-#if SIMULATE_PURCHASE
-    [self simulateSuccessfulPurchaseProduct:product success:successCallback failure:failureCallback];
-    return;
+#if SIMULATE_STOREKIT
+    product.productIdentifier = SIMULATED_PRODUCT_IDENTIFIER;
+    self.activePurchase = [[VPurchase alloc] initWithProduct:product success:successCallback failure:failureCallback];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(SIMULATION_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+                   {
 #if SIMULATE_PURCHASE_ERROR
-    [self simulatePurchaseProduct:product success:successCallback failure:failureCallback];
-    return;
-        [self transactionDidFailWithErrorCode:SKErrorUnknown productIdentifier:productIdentifier];
+                       [self transactionDidFailWithErrorCode:SKErrorUnknown productIdentifier:SIMULATED_PRODUCT_IDENTIFIER];
 #else
-        [self transactionDidCompleteWithProductIdentifier:productIdentifier];
+                       [self transactionDidCompleteWithProductIdentifier:SIMULATED_PRODUCT_IDENTIFIER];
 #endif
-    });
+                   });
     return;
 #endif
     
@@ -125,11 +126,16 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
     
     self.activePurchaseRestore = [[VPurchase alloc] initWithSuccess:successCallback failure:failureCallback];
     
-#if SHOULD_SIMULATE_ACTIONS
+#if SIMULATE_STOREKIT
+    for ( NSUInteger i = 0; i < SIMULATED_RESTORED_PURCHASE_COUNT; i++ )
+    {
+        NSString *identifier = [NSString stringWithFormat:@"%@%lu", SIMULATED_PRODUCT_IDENTIFIER, (unsigned long)i];
+        [self.activePurchaseRestore.restoredProductIdentifiers addObject:identifier];
+    }
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(SIMULATION_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
     {
 #if SIMULATE_RESTORE_PURCHASE_ERROR
-        [self transactionDidFailWithErrorCode:SKErrorUnknown productIdentifier:nil];
+        [self purchasesDidFailToRestoreWithError:[NSError errorWithDomain:@"Failed to restore." code:-1 userInfo:nil]];
 #else
         [self purchasesDidRestore];
 #endif
@@ -159,7 +165,7 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
     self.activeProductRequest = [[VProductsRequest alloc] initWithProductIdentifiers:uncachedProductIndentifiers
                                                                              success:successCallback
                                                                              failure:failureCallback];
-#if SHOULD_SIMULATE_ACTIONS
+#if SIMULATE_STOREKIT
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(SIMULATION_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
     {
 #if SIMULATE_FETCH_PRODUCTS_ERROR
@@ -194,10 +200,13 @@ return;
 
 #endif
 
-#pragma mark - Purchase product helpers
-
 - (VProduct *)purchaseableProductForProductIdentifier:(NSString *)productIdentifier
 {
+#if SIMULATE_STOREKIT
+    VProduct *product = [[VProduct alloc] init];
+    product.productIdentifier = SIMULATED_PRODUCT_IDENTIFIER;
+    return product;
+#endif
     return [self.fetchedProducts objectForKey:productIdentifier];
 }
 
@@ -241,7 +250,7 @@ return;
         error = [NSError errorWithDomain:message code:errorCode userInfo:userInfo];
     }
     
-    if ( self.activeProductRequest != nil && [self.activeProductRequest.productIdentifiers containsObject:productIdentifier] )
+    if ( self.activeProductRequest != nil )
     {
         if ( self.activeProductRequest.failureCallback != nil )
         {
@@ -249,7 +258,7 @@ return;
         }
         self.activeProductRequest = nil;
     }
-    else if ( self.activePurchase != nil && [self.activePurchase.product.storeKitProduct.productIdentifier isEqualToString:productIdentifier] )
+    else if ( self.activePurchase != nil )
     {
         self.activePurchase.failureCallback( error );
         self.activePurchase = nil;
@@ -258,7 +267,7 @@ return;
 
 - (void)transactionDidCompleteWithProductIdentifier:(NSString *)productIdentifier
 {
-#if SHOULD_SIMULATE_ACTIONS
+#if SIMULATE_STOREKIT
     BOOL isValidProduct = YES;
 #else
     BOOL isValidProduct = [self.activePurchase.product.storeKitProduct.productIdentifier isEqualToString:productIdentifier];
@@ -279,7 +288,7 @@ return;
     {
         [self.activeProductRequest.products enumerateObjectsUsingBlock:^(VProduct *product, NSUInteger idx, BOOL *stop)
          {
-#if SHOULD_SIMULATE_ACTIONS
+#if SIMULATE_STOREKIT
              NSString *productIdentifier = [NSString stringWithFormat:@"test_%lu", (unsigned long)idx];
 #else
              NSString *productIdentifier = product.storeKitProduct.productIdentifier;
@@ -318,7 +327,7 @@ return;
 {
     if ( self.activePurchaseRestore != nil )
     {
-        [self.activePurchaseRestore.restoreProductIdentifiers addObject:productIdentifier];
+        [self.activePurchaseRestore.restoredProductIdentifiers addObject:productIdentifier];
     }
 }
 
@@ -326,12 +335,11 @@ return;
 {
     if ( self.activePurchaseRestore != nil )
     {
-        [self.activePurchaseRestore.restoreProductIdentifiers enumerateObjectsUsingBlock:^(NSString *identifier, BOOL *stop)
+        [self.activePurchaseRestore.restoredProductIdentifiers enumerateObjectsUsingBlock:^(NSString *identifier, BOOL *stop)
         {
             [self.purchaseRecord addProductIdentifier:identifier];
         }];
-#warning Fix this
-        self.activePurchaseRestore.successCallback( [NSSet set] );// self.activePurchaseRestore.restoreProductIdentifiers );
+        self.activePurchaseRestore.successCallback( self.activePurchaseRestore.restoredProductIdentifiers );
         self.activePurchaseRestore = nil;
     }
 }

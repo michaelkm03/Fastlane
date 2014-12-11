@@ -433,7 +433,6 @@
 		A7A2E0071A38E44B00F8C705 /* VPurchaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A2E0041A38E44B00F8C705 /* VPurchaseViewController.m */; };
 		A7A2E0081A38E44B00F8C705 /* VPurchaseViewController+Transitions.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A2E0061A38E44B00F8C705 /* VPurchaseViewController+Transitions.m */; };
 		A7A2E00C1A38E47400F8C705 /* Purchases.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7A2E00B1A38E47400F8C705 /* Purchases.storyboard */; };
-		A7A2E00F1A391A6300F8C705 /* VPurchaseManager+Debug.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A2E00E1A391A6300F8C705 /* VPurchaseManager+Debug.m */; };
 		A7A2E0121A391A7D00F8C705 /* VPurchaseRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A2E0111A391A7D00F8C705 /* VPurchaseRecord.m */; };
 		A7A390C51A32441E00709812 /* VButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A390C41A32441E00709812 /* VButton.m */; };
 		A7A390CA1A3257A300709812 /* ContentView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7A390C91A3257A300709812 /* ContentView.storyboard */; };
@@ -463,6 +462,7 @@
 		A7E398731A362578000E4CAC /* NSData+AES.m in Sources */ = {isa = PBXBuildFile; fileRef = A7E398721A362578000E4CAC /* NSData+AES.m */; };
 		A7EECAD51A377FA000A8BAE1 /* VPurchaseSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7EECAD41A377FA000A8BAE1 /* VPurchaseSettingsViewController.m */; };
 		A7EECAD81A37802500A8BAE1 /* VPurchaseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7EECAD71A37802500A8BAE1 /* VPurchaseCell.m */; };
+		A7F593701A39436000B5E3A2 /* VPurchaseStringMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F5936F1A39436000B5E3A2 /* VPurchaseStringMaker.m */; };
 		A7F8DD4D1A0B065800F82256 /* VHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F8DD4C1A0B065800F82256 /* VHeaderView.m */; };
 		A7F8DD631A0B1A8B00F82256 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F8DD621A0B1A8B00F82256 /* WebKit.framework */; };
 		A7F8DD651A0BF55900F82256 /* VSequenceActionControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F8DD641A0BF55900F82256 /* VSequenceActionControllerTests.m */; };
@@ -1387,8 +1387,6 @@
 		A7A2E0051A38E44B00F8C705 /* VPurchaseViewController+Transitions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "VPurchaseViewController+Transitions.h"; path = "Purchases/VPurchaseViewController+Transitions.h"; sourceTree = "<group>"; };
 		A7A2E0061A38E44B00F8C705 /* VPurchaseViewController+Transitions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "VPurchaseViewController+Transitions.m"; path = "Purchases/VPurchaseViewController+Transitions.m"; sourceTree = "<group>"; };
 		A7A2E00B1A38E47400F8C705 /* Purchases.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Purchases.storyboard; path = Purchases/Purchases.storyboard; sourceTree = "<group>"; };
-		A7A2E00D1A391A6300F8C705 /* VPurchaseManager+Debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "VPurchaseManager+Debug.h"; path = "Purchases/VPurchaseManager+Debug.h"; sourceTree = "<group>"; };
-		A7A2E00E1A391A6300F8C705 /* VPurchaseManager+Debug.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "VPurchaseManager+Debug.m"; path = "Purchases/VPurchaseManager+Debug.m"; sourceTree = "<group>"; };
 		A7A2E0101A391A7D00F8C705 /* VPurchaseRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VPurchaseRecord.h; path = Purchases/VPurchaseRecord.h; sourceTree = "<group>"; };
 		A7A2E0111A391A7D00F8C705 /* VPurchaseRecord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VPurchaseRecord.m; path = Purchases/VPurchaseRecord.m; sourceTree = "<group>"; };
 		A7A390C31A32441E00709812 /* VButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VButton.h; sourceTree = "<group>"; };
@@ -1436,6 +1434,9 @@
 		A7EECAD61A37802500A8BAE1 /* VPurchaseCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPurchaseCell.h; sourceTree = "<group>"; };
 		A7EECAD71A37802500A8BAE1 /* VPurchaseCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPurchaseCell.m; sourceTree = "<group>"; };
 		A7EF97BB19F889F800972E74 /* VExperienceEnhancerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VExperienceEnhancerTests.m; sourceTree = "<group>"; };
+		A7F5936D1A392B4100B5E3A2 /* VPurchaseDebugSettings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VPurchaseDebugSettings.h; sourceTree = "<group>"; };
+		A7F5936E1A39436000B5E3A2 /* VPurchaseStringMaker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VPurchaseStringMaker.h; path = Purchases/VPurchaseStringMaker.h; sourceTree = "<group>"; };
+		A7F5936F1A39436000B5E3A2 /* VPurchaseStringMaker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VPurchaseStringMaker.m; path = Purchases/VPurchaseStringMaker.m; sourceTree = "<group>"; };
 		A7F8DD4B1A0B065800F82256 /* VHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHeaderView.h; sourceTree = "<group>"; };
 		A7F8DD4C1A0B065800F82256 /* VHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHeaderView.m; sourceTree = "<group>"; };
 		A7F8DD621A0B1A8B00F82256 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
@@ -3120,10 +3121,9 @@
 				A70FC1121A2D61A000F5BBDE /* VProductsRequest.m */,
 				A70FC1081A2D558200F5BBDE /* VPurchase.h */,
 				A70FC1091A2D558200F5BBDE /* VPurchase.m */,
+				A7F5936D1A392B4100B5E3A2 /* VPurchaseDebugSettings.h */,
 				A70FC0FC1A2D412200F5BBDE /* VPurchaseManager.h */,
 				A70FC0FD1A2D412200F5BBDE /* VPurchaseManager.m */,
-				A7A2E00D1A391A6300F8C705 /* VPurchaseManager+Debug.h */,
-				A7A2E00E1A391A6300F8C705 /* VPurchaseManager+Debug.m */,
 				A7A2E0101A391A7D00F8C705 /* VPurchaseRecord.h */,
 				A7A2E0111A391A7D00F8C705 /* VPurchaseRecord.m */,
 			);
@@ -3310,6 +3310,8 @@
 			isa = PBXGroup;
 			children = (
 				A7A2E00B1A38E47400F8C705 /* Purchases.storyboard */,
+				A7F5936E1A39436000B5E3A2 /* VPurchaseStringMaker.h */,
+				A7F5936F1A39436000B5E3A2 /* VPurchaseStringMaker.m */,
 				A7A2E0031A38E44B00F8C705 /* VPurchaseViewController.h */,
 				A7A2E0041A38E44B00F8C705 /* VPurchaseViewController.m */,
 				A7A2E0051A38E44B00F8C705 /* VPurchaseViewController+Transitions.h */,
@@ -4548,6 +4550,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0314D45D19B46B5E00FA363C /* VPhotoFilterCollectionViewCell.m in Sources */,
+				A7F593701A39436000B5E3A2 /* VPurchaseStringMaker.m in Sources */,
 				03484C071930294D00403FB1 /* NSURL+MediaType.m in Sources */,
 				BE171E0F1868C211004E5202 /* VAsset+RestKit.m in Sources */,
 				BE171E131868C211004E5202 /* VInteractionAction+RestKit.m in Sources */,
@@ -4924,7 +4927,6 @@
 				A7A390D31A326DB100709812 /* VViewControllerTransition.m in Sources */,
 				BE2C071219D5E842002AB82A /* VMarqueeTabIndicatorView.m in Sources */,
 				A769C3EE1A13176700698D0C /* VWebViewAdvanced.m in Sources */,
-				A7A2E00F1A391A6300F8C705 /* VPurchaseManager+Debug.m in Sources */,
 				0314D47F19B46B5E00FA363C /* VCameraViewController.m in Sources */,
 				BE46F02D19D0CC3700CD7EF6 /* VConversation+UnreadMessageCount.m in Sources */,
 				0314D4C419B46B5E00FA363C /* VUserProfileViewController.m in Sources */,

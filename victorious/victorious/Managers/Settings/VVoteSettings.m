@@ -50,7 +50,7 @@
     _voteTypes = [voteTypes filteredArrayUsingPredicate:predicate];
     
 #if OVERWRITE_WITH_PAID_BALLISTICS
-#warning Testing only to create correctly configurd purchaseable products
+#warning Testing only to create correctly configured purchaseable products
     ((VVoteType *)_voteTypes[0]).isPaid = @YES;
     ((VVoteType *)_voteTypes[0]).productIdentifier = @"com.getvictorious.eatyourkimchi.ballistic.meemers";
     ((VVoteType *)_voteTypes[0]).iconImage = @"http://10.18.11.38:8000/meemers-icon.png";

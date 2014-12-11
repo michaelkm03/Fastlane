@@ -27,6 +27,6 @@ typedef void (^VPurchaseFailBlock) (NSError *);
 @property (nonatomic, readonly) VPurchaseSuccessBlock successCallback;
 @property (nonatomic, readonly) VPurchaseFailBlock failureCallback;
 
-@property (nonatomic, strong) NSMutableSet *restoreProductIdentifiers;
+@property (nonatomic, strong) NSMutableSet *restoredProductIdentifiers;
 
 @end
