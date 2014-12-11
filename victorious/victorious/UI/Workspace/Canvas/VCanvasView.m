@@ -18,6 +18,13 @@
 
 @implementation VCanvasView
 
+#pragma mark - Dealloc
+
+- (void)dealloc
+{
+    _canvasScrollView.delegate = nil;
+}
+
 #pragma mark - Initializers
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder

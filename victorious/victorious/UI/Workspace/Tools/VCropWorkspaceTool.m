@@ -73,7 +73,7 @@ static NSString * const kFilterIndexKey = @"filterIndex";
                           forKey:kCIInputImageKey];
     CGFloat zoomScale = self.cropViewController.croppingScrollView.zoomScale;
     [lanczosScaleFilter setValue:@(zoomScale)
-                          forKey:@"inputScale"];
+                          forKey:kCIInputScaleKey];
     
     // Crop at new size
     CIFilter *cropFilter = [CIFilter filterWithName:@"CICrop"];
