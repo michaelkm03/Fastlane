@@ -88,9 +88,12 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
 
 - (void)purchaseProduct:(VProduct *)product success:(VPurchaseSuccessBlock)successCallback failure:(VPurchaseFailBlock)failureCallback
 {
+    NSParameterAssert( failureCallback != nil );
+    NSParameterAssert( successCallback != nil );
     NSAssert( !self.isPurchaseRequestActive, @"A purchase is already in progress." );
     
 #if SIMULATE_STOREKIT
+#if !SIMULATE_FETCH_PRODUCTS_ERROR
     product.productIdentifier = SIMULATED_PRODUCT_IDENTIFIER;
     self.activePurchase = [[VPurchase alloc] initWithProduct:product success:successCallback failure:failureCallback];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(SIMULATION_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
@@ -103,16 +106,15 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
                    });
     return;
 #endif
+#endif
     
-    // This could happen if product requests are consistently failing
+    // This could happen if product requests are failing
     if ( product == nil )
     {
-        if ( failureCallback )
-        {
-            NSString *message = NSLocalizedString( @"PurchaseErrorProductNotAvailable", nil);
-            NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : message };
-            failureCallback( [NSError errorWithDomain:@"" code:-1 userInfo:userInfo] );
-        }
+        NSString *message = NSLocalizedString( @"PurchaseErrorProductNotAvailable", nil);
+        NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : message };
+        failureCallback( [NSError errorWithDomain:@"" code:-1 userInfo:userInfo] );
+        return;
     }
     
     self.activePurchase = [[VPurchase alloc] initWithProduct:product success:successCallback failure:failureCallback];
@@ -203,9 +205,11 @@ return;
 - (VProduct *)purchaseableProductForProductIdentifier:(NSString *)productIdentifier
 {
 #if SIMULATE_STOREKIT
+#if !SIMULATE_FETCH_PRODUCTS_ERROR
     VProduct *product = [[VProduct alloc] init];
     product.productIdentifier = SIMULATED_PRODUCT_IDENTIFIER;
     return product;
+#endif
 #endif
     return [self.fetchedProducts objectForKey:productIdentifier];
 }
@@ -289,7 +293,7 @@ return;
         [self.activeProductRequest.products enumerateObjectsUsingBlock:^(VProduct *product, NSUInteger idx, BOOL *stop)
          {
 #if SIMULATE_STOREKIT
-             NSString *productIdentifier = [NSString stringWithFormat:@"test_%lu", (unsigned long)idx];
+             NSString *productIdentifier = [NSString stringWithFormat:@"%@%.lu", SIMULATED_PRODUCT_IDENTIFIER, (unsigned long)idx];
 #else
              NSString *productIdentifier = product.storeKitProduct.productIdentifier;
 #endif

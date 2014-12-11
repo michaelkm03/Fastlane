@@ -15,6 +15,7 @@
 @property (weak, nonatomic) IBOutlet VButton *button;
 @property (weak, nonatomic) IBOutlet UIView *loadingOverlay;
 @property (weak, nonatomic) IBOutlet UILabel *loadingLabel;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
 @property (strong, nonatomic) void(^actionCallback)(VPurchaseActionCell *);
 
@@ -46,6 +47,7 @@
         [self.button setTitle:nil forState:UIControlStateNormal];
         self.loadingLabel.text = labelTitle;
         self.button.backgroundColor = [UIColor grayColor];
+        [self.activityIndicator startAnimating];
     }
     
     self.button.enabled = isActionEnabled;

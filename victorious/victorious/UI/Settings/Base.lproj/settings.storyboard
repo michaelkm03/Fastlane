@@ -402,8 +402,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pu3-pe-rTO">
-                                <rect key="frame" x="0.0" y="111" width="320" height="136"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pu3-pe-rTO">
+                                <rect key="frame" x="0.0" y="131" width="320" height="136"/>
                                 <subviews>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="750" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Your current password" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="oCZ-Jb-QHR">
                                         <rect key="frame" x="98" y="13" width="150" height="19"/>
@@ -792,6 +792,7 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <connections>
+                                    <outlet property="activityIndicator" destination="I1e-aZ-Uqx" id="nKG-WF-4Ci"/>
                                     <outlet property="button" destination="N5S-6f-jb6" id="Wk3-ua-D5o"/>
                                     <outlet property="loadingLabel" destination="YwP-dh-Rfq" id="8Cg-gy-uur"/>
                                     <outlet property="loadingOverlay" destination="df0-hh-KLf" id="m0E-nI-Qde"/>
