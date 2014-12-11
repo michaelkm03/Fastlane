@@ -8,15 +8,7 @@
 
 @import StoreKit;
 
-#define FORCE_SIMULATE_ACTIONS 0
-#define SHOULD_SIMULATE_ACTIONS TARGET_IPHONE_SIMULATOR || (DEBUG && FORCE_SIMULATE_ACTIONS)
-#define SIMULATION_DELAY 2.0f
-#define SIMULATE_PURCHASE_ERROR 0
-#define SIMULATE_FETCH_PRODUCTS_ERROR 0
-#define SIMULATE_RESTORE_PURCHASE_ERROR 0
-
-#if FORCE_SIMULATE_ACTIONS
-#warning VPurchaseManager is simulating success and/or failures
+#import "VPurchaseManager+Debug.h"
 #endif
 
 #import "VPurchaseManager.h"
@@ -97,12 +89,12 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
 {
     NSAssert( !self.isPurchaseRequestActive, @"A purchase is already in progress." );
     
-#if SHOULD_SIMULATE_ACTIONS
-    self.activePurchase = [[VPurchase alloc] initWithProduct:[[VProduct alloc] init] success:successCallback failure:failureCallback];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(SIMULATION_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
-    {
-        NSString *productIdentifier = @"test";
+#if SIMULATE_PURCHASE
+    [self simulateSuccessfulPurchaseProduct:product success:successCallback failure:failureCallback];
+    return;
 #if SIMULATE_PURCHASE_ERROR
+    [self simulatePurchaseProduct:product success:successCallback failure:failureCallback];
+    return;
         [self transactionDidFailWithErrorCode:SKErrorUnknown productIdentifier:productIdentifier];
 #else
         [self transactionDidCompleteWithProductIdentifier:productIdentifier];
@@ -338,7 +330,8 @@ return;
         {
             [self.purchaseRecord addProductIdentifier:identifier];
         }];
-        self.activePurchaseRestore.successCallback( self.activePurchaseRestore.restoreProductIdentifiers );
+#warning Fix this
+        self.activePurchaseRestore.successCallback( [NSSet set] );// self.activePurchaseRestore.restoreProductIdentifiers );
         self.activePurchaseRestore = nil;
     }
 }

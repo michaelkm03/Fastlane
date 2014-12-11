@@ -61,7 +61,6 @@ NSString * const VVoteTypeIconLargeName      = @"icon-large.png";
              NSArray *spriteImages = (NSArray *)voteType.images;
              NSArray *spriteSavePaths = [self savePathsForVoteTypeSprites:voteType];
              [self cacheFilesAtUrls:spriteImages withSavePaths:spriteSavePaths];
-             
          }
      }];
 }

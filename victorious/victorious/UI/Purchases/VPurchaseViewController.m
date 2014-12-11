@@ -165,6 +165,7 @@
 
 - (void)resetLoadingState
 {
+    self.restoreButton.hidden = NO;
     self.restoreButton.enabled = YES;
     self.unlockButton.enabled = YES;
     self.unlockLoadingView.hidden = YES;

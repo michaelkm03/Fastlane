@@ -12,7 +12,7 @@
 #import "VVoteType+Fetcher.h"
 #import "VPurchaseManager.h"
 
-#define OVERWRITE_WITH_PAID_BALLISTICS 0
+#define OVERWRITE_WITH_PAID_BALLISTICS 1
 
 @interface VVoteSettings()
 
