@@ -25,9 +25,10 @@
 
 #pragma mark - Editing
 
-/*
- Tools should implement this getter if they would like their UI to remain layered on top of the canvas. However their canavsToolViewController's View will have its userInteractionEnabled property set to NO. Upon reselection of the tool the workspace will re-enable interaction on the canavsToolViewController's View.
+/**
+ *  Tools should implement this getter if they would like their UI to remain layered on top of the canvas. However their canavsToolViewController's View will have its userInteractionEnabled property set to NO. Upon reselection of the tool the workspace will re-enable interaction on the canavsToolViewController's View.
  */
+
 @property (nonatomic, readonly) BOOL shouldLeaveToolOnCanvas;
 
 - (void)setCanvasView:(VCanvasView *)canvasView;
