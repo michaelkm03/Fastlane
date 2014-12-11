@@ -15,13 +15,13 @@
  */
 @protocol VWorkspaceTool <NSObject>
 
+@optional
+
 #pragma mark - Rendering
 
-- (CIImage *)imageByApplyingToolToInputImage:(CIImage *)inputImage; ///< A hook into the rendering process that each tool can use to apply its effects.
+- (CIImage *)imageByApplyingToolToInputImage:(CIImage *)inputImage; ///< A hook into the rendering process that each tool can use to apply its effects. Top-level tools must implement this method
 
-@property (nonatomic, readonly) NSInteger renderIndex; ///< The index at which this tool should be applied. Lower comes first.
-
-@optional
+@property (nonatomic, readonly) NSInteger renderIndex; ///< The index at which this tool should be applied. Lower comes first. Top-level tools must implement this method
 
 #pragma mark - Editing
 
