@@ -11,10 +11,13 @@
 
 @interface VTrendingTagCell : UITableViewCell
 
-@property (nonatomic, copy) void (^followTagAction)(void);
+@property (nonatomic, copy) void (^subscribeToTagAction)(void);
+@property (nonatomic, assign) BOOL subscribedToTag;
+@property (nonatomic, assign) BOOL shouldAnimateSubscription;
 
 + (NSInteger)cellHeight;
 
 - (void)setHashtag:(VHashtag *)hashtag;
+- (void)updateSubscribeStatus;
 
 @end

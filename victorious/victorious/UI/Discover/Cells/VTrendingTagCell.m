@@ -74,4 +74,9 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
     [self applyTheme];
 }
 
+- (BOOL)subscribedToTag
+{
+    
+}
+
 @end

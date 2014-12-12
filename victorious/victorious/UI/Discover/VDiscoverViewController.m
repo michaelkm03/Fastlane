@@ -20,6 +20,7 @@
 #import "VObjectManager+Users.h"
 #import "VUser.h"
 #import "VAuthorizationViewControllerFactory.h"
+#import "VConstants.h"
 
 static NSString * const kVSuggestedPeopleIdentifier          = @"VSuggestedPeopleCell";
 static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCell";
@@ -275,7 +276,10 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
             VTrendingTagCell *customCell = (VTrendingTagCell *)[tableView dequeueReusableCellWithIdentifier:kVTrendingTagIdentifier forIndexPath:indexPath];
             VHashtag *hashtag = self.trendingTags[ indexPath.row ];
             [customCell setHashtag:hashtag];
-            customCell.followTagAction = ^(void)
+            
+            customCell.subscribedToTag = [self subscribedToTag:hashtag];
+            
+            customCell.subscribeToTagAction = ^(void)
             {
                 // Check if logged in before attempting to follow / unfollow
                 if (![VObjectManager sharedManager].authorized)
@@ -314,5 +318,45 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
     [self.navigationController pushViewController:stream animated:YES];
     
 }
+
+- (BOOL)subscribedToTag:(NSString *)tag
+{
+    return [self.userTags containsObject:tag];
+}
+
+#pragma mark - Subscribe / Unsubscribe Actions
+
+- (void)subscribeToTagAction:(NSString *)tag
+{
+    VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    {
+        VLog(@"Error in hashtag UNSUBSCRIBE");
+    };
+    
+    VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
+    {
+        VLog(@"Error in hashtag SUBSCRIBE");
+    };
+    
+    // Backend Subscribe to Hashtag call
+    [[VObjectManager sharedManager] subscribeToHashtag:tag successBlock:successBlock failBlock:failureBlock];
+}
+
+- (void)unsubscribeToTagAction:(NSString *)tag
+{
+    VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    {
+        VLog(@"%@", resultObjects);
+    };
+    
+    VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
+    {
+        VLog(@"Error in hashtag UNSUBSCRIBE");
+    };
+    
+    // Backend Unsubscribe to Hashtag call
+    [[VObjectManager sharedManager] unsubscribeToHashtag:tag successBlock:successBlock failBlock:failureBlock];
+}
+
 
 @end

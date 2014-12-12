@@ -23,4 +23,8 @@
                                              successBlock:(VSuccessBlock)success
                                                 failBlock:(VFailBlock)fail;
 
+- (RKManagedObjectRequestOperation *)subscribeToHashtag:(NSString *)hashtag
+                                           successBlock:(VSuccessBlock)success
+                                              failBlock:(VFailBlock)fail;
+
 @end
