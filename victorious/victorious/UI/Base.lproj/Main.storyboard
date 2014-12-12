@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="2yS-vh-N7a">
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
@@ -414,28 +413,26 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lorem Ipsum" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LPw-0B-19t" userLabel="Menu Label">
-                                                    <rect key="frame" x="26" y="14" width="106" height="21.5"/>
+                                                    <rect key="frame" x="26" y="14" width="106" height="22"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IbV-1T-B2E" userLabel="Badge Label" customClass="VBadgeLabel">
-                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
+                                                <view opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" placeholderIntrinsicWidth="0.0" placeholderIntrinsicHeight="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="LDl-eN-NHa" userLabel="Numerical Badge" customClass="VNumericalBadgeView">
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                </view>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
                                         <constraints>
-                                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="IbV-1T-B2E" secondAttribute="trailing" constant="16" id="GVp-8w-7hl"/>
                                             <constraint firstAttribute="centerY" secondItem="LPw-0B-19t" secondAttribute="centerY" id="WFC-Ly-qdz"/>
-                                            <constraint firstItem="IbV-1T-B2E" firstAttribute="baseline" secondItem="LPw-0B-19t" secondAttribute="baseline" id="XLh-fX-nYz"/>
+                                            <constraint firstItem="LDl-eN-NHa" firstAttribute="leading" secondItem="LPw-0B-19t" secondAttribute="trailing" constant="16" id="bPf-Lm-IO8"/>
+                                            <constraint firstItem="LPw-0B-19t" firstAttribute="centerY" secondItem="LDl-eN-NHa" secondAttribute="centerY" id="bqE-0x-WRR"/>
+                                            <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="LDl-eN-NHa" secondAttribute="trailing" constant="16" id="cAv-5R-DBy"/>
                                             <constraint firstItem="LPw-0B-19t" firstAttribute="leading" secondItem="jhs-qR-I26" secondAttribute="leading" constant="26" id="gkx-lY-BzP"/>
-                                            <constraint firstItem="IbV-1T-B2E" firstAttribute="leading" secondItem="LPw-0B-19t" secondAttribute="trailing" constant="16" id="kQT-09-f0Q"/>
                                         </constraints>
                                         <connections>
-                                            <outlet property="badgeLabel" destination="IbV-1T-B2E" id="goI-fi-cZA"/>
+                                            <outlet property="badgeView" destination="LDl-eN-NHa" id="Zjq-xI-GDa"/>
                                             <outlet property="menuLabel" destination="LPw-0B-19t" id="a5I-pU-EPb"/>
                                         </connections>
                                     </collectionViewCell>
