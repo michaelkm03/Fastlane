@@ -11,7 +11,7 @@
 
 #define canvasRenderLoggingEnabled 0
 
-static const CGFloat kRelatvieScaleFactor = 0.75f;
+static const CGFloat kRelatvieScaleFactor = 0.55f;
 
 @interface VCanvasView () <UIScrollViewDelegate, NSCacheDelegate>
 
@@ -216,6 +216,7 @@ static const CGFloat kRelatvieScaleFactor = 0.75f;
 }
 
 #pragma mark - NSCacheDelegate
+
 #if canvasRenderLoggingEnabled
 - (void)cache:(NSCache *)cache willEvictObject:(id)obj
 {
