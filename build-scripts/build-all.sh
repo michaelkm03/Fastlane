@@ -175,21 +175,27 @@ applyConfiguration(){
     fi
 }
 
+ANY_APP_BUILT=0
+
 if [ $# == 0 ]; then
     CONFIGS=`find configurations -type d -depth 1 -exec basename {} \;`
     IFS=$'\n'
-    for CONFIG in $CONFIGS
-    do
-        if [ "$DEFAULT_APP_ID_KEY" != "" ]; then
-            DEFAULT_APP_ID=$(/usr/libexec/PlistBuddy -c "Print $DEFAULT_APP_ID_KEY" "configurations/$CONFIG/Info.plist")
-            if [ "$DEFAULT_APP_ID" != "0" ]; then # don't build apps with app ID of 0
-                applyConfiguration $CONFIG
-            fi
-        fi
-    done
 else
-    for CONFIG in $@
-    do
-        applyConfiguration $CONFIG
-    done
+    CONFIGS=$*
+fi
+
+for CONFIG in $CONFIGS
+do
+    if [ "$DEFAULT_APP_ID_KEY" != "" ]; then
+        DEFAULT_APP_ID=$(/usr/libexec/PlistBuddy -c "Print $DEFAULT_APP_ID_KEY" "configurations/$CONFIG/Info.plist")
+        if [ "$DEFAULT_APP_ID" != "0" ]; then # don't build apps with app ID of 0
+            applyConfiguration $CONFIG
+            ANY_APP_BUILT=1
+        fi
+    fi
+done
+
+if [ $ANY_APP_BUILT == 0 ]; then
+    echo "No apps were built."
+    exit 1
 fi
