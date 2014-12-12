@@ -76,46 +76,45 @@
                     </connections>
                 </view>
                 <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Q1S-Ju-Pei" userLabel="Badge Border" customClass="VPerfectCircleView">
-                    <rect key="frame" x="46" y="25.5" width="14" height="24.5"/>
+                    <rect key="frame" x="46" y="26" width="14" height="25"/>
                     <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <accessibility key="accessibilityConfiguration">
                         <accessibilityTraits key="traits" none="YES" notEnabled="YES"/>
                     </accessibility>
                 </view>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wOC-gY-Cxx" userLabel="Badge Label" customClass="VBadgeLabel">
-                    <rect key="frame" x="48" y="27.5" width="10" height="20.5"/>
-                    <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                    <accessibility key="accessibilityConfiguration">
-                        <accessibilityTraits key="traits" none="YES" staticText="YES" notEnabled="YES"/>
-                    </accessibility>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <nil key="highlightedColor"/>
-                </label>
+                <view opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" placeholderIntrinsicWidth="10" placeholderIntrinsicHeight="21" translatesAutoresizingMaskIntoConstraints="NO" id="AkI-hg-b9F" userLabel="Badge View" customClass="VNumericalBadgeView">
+                    <rect key="frame" x="48" y="28" width="10" height="21"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="badgeNumber">
+                            <integer key="value" value="1"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </view>
             </subviews>
             <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
-                <constraint firstItem="Q1S-Ju-Pei" firstAttribute="width" secondItem="wOC-gY-Cxx" secondAttribute="width" constant="4" id="24e-KK-Ix9"/>
                 <constraint firstAttribute="trailing" secondItem="tkm-2G-q8x" secondAttribute="trailing" constant="14" id="588-PD-2ge"/>
+                <constraint firstItem="Q1S-Ju-Pei" firstAttribute="width" secondItem="AkI-hg-b9F" secondAttribute="width" constant="4" id="5gY-fj-mzZ"/>
                 <constraint firstAttribute="width" secondItem="Ay5-2H-sPn" secondAttribute="height" multiplier="16:5" id="ECt-Xu-bck"/>
+                <constraint firstItem="AkI-hg-b9F" firstAttribute="centerY" secondItem="Q1S-Ju-Pei" secondAttribute="centerY" id="NmF-TK-GxQ"/>
                 <constraint firstItem="ba7-Bo-OPS" firstAttribute="leading" secondItem="Ay5-2H-sPn" secondAttribute="leading" constant="55" id="PAa-Hr-gey"/>
-                <constraint firstItem="wOC-gY-Cxx" firstAttribute="centerX" secondItem="DUT-ma-Cbr" secondAttribute="centerX" constant="17" id="TfX-ll-64B"/>
-                <constraint firstItem="wOC-gY-Cxx" firstAttribute="centerY" secondItem="DUT-ma-Cbr" secondAttribute="centerY" id="U8Z-g1-8Dk"/>
+                <constraint firstItem="AkI-hg-b9F" firstAttribute="centerX" secondItem="DUT-ma-Cbr" secondAttribute="centerX" constant="17" id="Tgh-fY-QOQ"/>
                 <constraint firstItem="ESN-J9-ft1" firstAttribute="leading" secondItem="Ay5-2H-sPn" secondAttribute="leading" constant="55" id="WKP-Hw-E3j"/>
                 <constraint firstItem="DUT-ma-Cbr" firstAttribute="top" secondItem="Ay5-2H-sPn" secondAttribute="top" constant="16" id="YmN-Y0-2qK"/>
                 <constraint firstItem="sMx-qo-hHL" firstAttribute="top" secondItem="Ay5-2H-sPn" secondAttribute="top" constant="16" id="a3L-cG-gAe"/>
                 <constraint firstItem="PAi-gS-Qn7" firstAttribute="top" secondItem="Ay5-2H-sPn" secondAttribute="top" constant="60" id="a3r-vZ-7DX"/>
-                <constraint firstItem="wOC-gY-Cxx" firstAttribute="centerX" secondItem="Q1S-Ju-Pei" secondAttribute="centerX" id="a9A-VQ-rOR"/>
                 <constraint firstItem="ba7-Bo-OPS" firstAttribute="top" secondItem="Ay5-2H-sPn" secondAttribute="top" constant="18" id="b9J-yD-MN0"/>
+                <constraint firstItem="Q1S-Ju-Pei" firstAttribute="height" secondItem="AkI-hg-b9F" secondAttribute="height" constant="4" id="deu-2t-wfJ"/>
                 <constraint firstItem="PAi-gS-Qn7" firstAttribute="leading" secondItem="Ay5-2H-sPn" secondAttribute="leading" constant="20" id="hPZ-iJ-Q9b"/>
                 <constraint firstItem="ESN-J9-ft1" firstAttribute="top" secondItem="Ay5-2H-sPn" secondAttribute="top" constant="10" id="k7Y-No-Dfd"/>
-                <constraint firstItem="Q1S-Ju-Pei" firstAttribute="height" secondItem="wOC-gY-Cxx" secondAttribute="height" constant="4" id="kQZ-hI-aoL"/>
+                <constraint firstItem="AkI-hg-b9F" firstAttribute="centerY" secondItem="DUT-ma-Cbr" secondAttribute="centerY" id="now-3i-vuR"/>
                 <constraint firstAttribute="trailing" secondItem="PAi-gS-Qn7" secondAttribute="trailing" constant="20" id="ohb-qp-0FP"/>
-                <constraint firstItem="wOC-gY-Cxx" firstAttribute="centerY" secondItem="Q1S-Ju-Pei" secondAttribute="centerY" id="pXb-2A-gZL"/>
                 <constraint firstItem="tkm-2G-q8x" firstAttribute="top" secondItem="Ay5-2H-sPn" secondAttribute="top" constant="16" id="s5H-5F-TWq"/>
                 <constraint firstItem="tkm-2G-q8x" firstAttribute="leading" secondItem="ESN-J9-ft1" secondAttribute="trailing" constant="-3" id="sBP-VS-zWL"/>
                 <constraint firstItem="PAi-gS-Qn7" firstAttribute="top" secondItem="ESN-J9-ft1" secondAttribute="bottom" id="sr0-zP-pNv"/>
                 <constraint firstItem="tkm-2G-q8x" firstAttribute="leading" secondItem="ba7-Bo-OPS" secondAttribute="trailing" constant="-3" id="vBQ-2n-jYt"/>
+                <constraint firstItem="AkI-hg-b9F" firstAttribute="centerX" secondItem="Q1S-Ju-Pei" secondAttribute="centerX" id="yiP-y2-x1Z"/>
                 <constraint firstItem="DUT-ma-Cbr" firstAttribute="leading" secondItem="Ay5-2H-sPn" secondAttribute="leading" constant="14" id="zLI-kf-7se"/>
                 <constraint firstItem="sMx-qo-hHL" firstAttribute="leading" secondItem="Ay5-2H-sPn" secondAttribute="leading" constant="14" id="zjG-CK-3JC"/>
             </constraints>
@@ -125,13 +124,14 @@
                 <outlet property="addButton" destination="tkm-2G-q8x" id="0r6-R8-SWC"/>
                 <outlet property="backButton" destination="sMx-qo-hHL" id="FpG-G8-Y6k"/>
                 <outlet property="badgeBorder" destination="Q1S-Ju-Pei" id="UHt-8W-gX7"/>
-                <outlet property="badgeLabel" destination="wOC-gY-Cxx" id="XCL-yR-T9J"/>
+                <outlet property="badgeView" destination="AkI-hg-b9F" id="X28-Gi-MM0"/>
                 <outlet property="headerImageView" destination="ba7-Bo-OPS" id="hE7-58-zrY"/>
                 <outlet property="headerLabel" destination="ESN-J9-ft1" id="agR-0G-lDG"/>
                 <outlet property="menuButton" destination="DUT-ma-Cbr" id="Qut-bS-chd"/>
                 <outlet property="navSelector" destination="PAi-gS-Qn7" id="I5B-Lg-I8G"/>
                 <outlet property="ratioConstraint" destination="ECt-Xu-bck" id="d2h-Ic-DeF"/>
             </connections>
+            <point key="canvasLocation" x="340" y="336"/>
         </view>
     </objects>
     <resources>

@@ -124,7 +124,7 @@
 		0314D4CC19B46B5E00FA363C /* VRemixTrimViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D3DF19B46B5E00FA363C /* VRemixTrimViewController.m */; };
 		0314D4CD19B46B5E00FA363C /* VRemixVideoRangeSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D3E119B46B5E00FA363C /* VRemixVideoRangeSlider.m */; };
 		0314D4CE19B46B5E00FA363C /* UIViewController+VSideMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D3E419B46B5E00FA363C /* UIViewController+VSideMenuViewController.m */; };
-		0314D4CF19B46B5E00FA363C /* VBadgeLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D3E619B46B5E00FA363C /* VBadgeLabel.m */; };
+		0314D4CF19B46B5E00FA363C /* VNumericalBadgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D3E619B46B5E00FA363C /* VNumericalBadgeView.m */; };
 		0314D4D019B46B5E00FA363C /* VLoadingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D3E819B46B5E00FA363C /* VLoadingViewController.m */; };
 		0314D4D119B46B5E00FA363C /* VMenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D3EA19B46B5E00FA363C /* VMenuController.m */; };
 		0314D4D219B46B5E00FA363C /* VRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D3EC19B46B5E00FA363C /* VRootViewController.m */; };
@@ -893,8 +893,8 @@
 		0314D3E119B46B5E00FA363C /* VRemixVideoRangeSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VRemixVideoRangeSlider.m; sourceTree = "<group>"; };
 		0314D3E319B46B5E00FA363C /* UIViewController+VSideMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+VSideMenuViewController.h"; sourceTree = "<group>"; };
 		0314D3E419B46B5E00FA363C /* UIViewController+VSideMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+VSideMenuViewController.m"; sourceTree = "<group>"; };
-		0314D3E519B46B5E00FA363C /* VBadgeLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VBadgeLabel.h; sourceTree = "<group>"; };
-		0314D3E619B46B5E00FA363C /* VBadgeLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VBadgeLabel.m; sourceTree = "<group>"; };
+		0314D3E519B46B5E00FA363C /* VNumericalBadgeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNumericalBadgeView.h; sourceTree = "<group>"; };
+		0314D3E619B46B5E00FA363C /* VNumericalBadgeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNumericalBadgeView.m; sourceTree = "<group>"; };
 		0314D3E719B46B5E00FA363C /* VLoadingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLoadingViewController.h; sourceTree = "<group>"; };
 		0314D3E819B46B5E00FA363C /* VLoadingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VLoadingViewController.m; sourceTree = "<group>"; };
 		0314D3E919B46B5E00FA363C /* VMenuController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMenuController.h; sourceTree = "<group>"; };
@@ -2351,8 +2351,8 @@
 				030931871A18425B004E9781 /* Menu */,
 				0314D3E319B46B5E00FA363C /* UIViewController+VSideMenuViewController.h */,
 				0314D3E419B46B5E00FA363C /* UIViewController+VSideMenuViewController.m */,
-				0314D3E519B46B5E00FA363C /* VBadgeLabel.h */,
-				0314D3E619B46B5E00FA363C /* VBadgeLabel.m */,
+				0314D3E519B46B5E00FA363C /* VNumericalBadgeView.h */,
+				0314D3E619B46B5E00FA363C /* VNumericalBadgeView.m */,
 				0314D3E719B46B5E00FA363C /* VLoadingViewController.h */,
 				0314D3E819B46B5E00FA363C /* VLoadingViewController.m */,
 				0314D3E919B46B5E00FA363C /* VMenuController.h */,
@@ -4652,7 +4652,7 @@
 				0314D4DC19B46B5E00FA363C /* VFacebookActivity.m in Sources */,
 				0314D4BF19B46B5E00FA363C /* VFollowingTableViewController.m in Sources */,
 				D8B14E0819DA3B0B004D72D2 /* VShrinkingContentLayout.m in Sources */,
-				0314D4CF19B46B5E00FA363C /* VBadgeLabel.m in Sources */,
+				0314D4CF19B46B5E00FA363C /* VNumericalBadgeView.m in Sources */,
 				0314D07319B4670A00FA363C /* UIImageView+Blurring.m in Sources */,
 				A70FC10A1A2D558200F5BBDE /* VPurchase.m in Sources */,
 				DB34DC5C1A09B5AF001EC711 /* VLiveRailAdViewController.m in Sources */,
