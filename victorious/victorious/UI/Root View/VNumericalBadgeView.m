@@ -120,6 +120,12 @@ static NSInteger const kLargeNumberCutoff = 100; ///< Numbers equal to or greate
 
 - (void)setBadgeNumber:(NSInteger)badgeNumber
 {
+    if (badgeNumber == _badgeNumber)
+    {
+        return;
+    }
+    _badgeNumber = badgeNumber;
+    
     if (badgeNumber == 0)
     {
         self.label.text = @"";

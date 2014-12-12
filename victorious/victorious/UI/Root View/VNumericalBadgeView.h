@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 Will Long. All rights reserved.
 //
 
+IB_DESIGNABLE
+
 /**
  A label-like view for displaying
  a badge next to a menu item or
@@ -14,10 +16,6 @@
 @interface VNumericalBadgeView : UIView
 
 @property (nonatomic, strong) UIFont *font; ///< The font for display
-
-/**
- Sets the number displayed
- */
-- (void)setBadgeNumber:(NSInteger)badgeNumber;
+@property (nonatomic) IBInspectable NSInteger badgeNumber; ///< The number to display
 
 @end
