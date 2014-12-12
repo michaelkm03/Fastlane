@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VCropWorkspaceTool.h"
+#import "VCropTool.h"
 
 #import "VCanvasView.h"
 
@@ -19,7 +19,7 @@ static NSString * const kTitleKey = @"title";
 static NSString * const kIconKey = @"icon";
 static NSString * const kFilterIndexKey = @"filterIndex";
 
-@interface VCropWorkspaceTool ()
+@interface VCropTool ()
 
 @property (nonatomic, assign) CGSize assetSize;
 @property (nonatomic, copy) NSString *title;
@@ -30,7 +30,7 @@ static NSString * const kFilterIndexKey = @"filterIndex";
 
 @end
 
-@implementation VCropWorkspaceTool
+@implementation VCropTool
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {

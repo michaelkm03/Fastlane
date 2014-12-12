@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VFilterWorkspaceTool.h"
+#import "VFilterTool.h"
 #import "VToolPicker.h"
 #import "VImageFilter.h"
 
@@ -23,7 +23,7 @@ static NSString * const kTitleKey = @"title";
 static NSString * const kPickerKey = @"picker";
 static NSString * const kFilterIndexKey = @"filterIndex";
 
-@interface VFilterWorkspaceTool ()
+@interface VFilterTool ()
 
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, strong) UIImage *icon;
@@ -33,7 +33,7 @@ static NSString * const kFilterIndexKey = @"filterIndex";
 
 @end
 
-@implementation VFilterWorkspaceTool
+@implementation VFilterTool
 
 @synthesize renderIndex = _renderIndex;
 

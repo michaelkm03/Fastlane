@@ -1,12 +1,12 @@
 //
-//  VTextTool.m
+//  VTextWorkspaceTool.m
 //  victorious
 //
 //  Created by Michael Sena on 12/5/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VTextWorkspaceTool.h"
+#import "VTextTool.h"
 #import "VMemeWorkspaceToolViewController.h"
 #import "VToolPicker.h"
 
@@ -19,7 +19,7 @@ static NSString * const kSubtoolsKey = @"subtools";
 static NSString * const kPickerKey = @"picker";
 static NSString * const kFilterIndexKey = @"filterIndex";
 
-@interface VTextWorkspaceTool ()
+@interface VTextTool ()
 
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, strong) UIImage *icon;
@@ -32,7 +32,7 @@ static NSString * const kFilterIndexKey = @"filterIndex";
 
 @end
 
-@implementation VTextWorkspaceTool
+@implementation VTextTool
 
 #pragma mark - VHasManagedDependancies
 

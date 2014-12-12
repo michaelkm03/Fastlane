@@ -7,15 +7,15 @@
 	<key>vertical.picker</key>
 	<string>VTickerPickerViewController</string>
 	<key>filter.tool</key>
-	<string>VFilterWorkspaceTool</string>
+	<string>VFilterTool</string>
 	<key>quote.tool</key>
 	<string>VQuoteWorkspaceTool</string>
 	<key>meme.tool</key>
 	<string>VMemeWorkspaceTool</string>
 	<key>crop.tool</key>
-	<string>VCropWorkspaceTool</string>
+	<string>VCropTool</string>
 	<key>text.tool</key>
-	<string>VTextWorkspaceTool</string>
+	<string>VTextTool</string>
 	<key>workspace.screen</key>
 	<string>VWorkspaceViewController</string>
 	<key>sideMenu.scaffold</key>

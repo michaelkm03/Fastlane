@@ -220,6 +220,7 @@ static NSString * const kMediaExtensionJPG       = @"jpg";
 
 - (UIImage *)renderedImageForCurrentState
 {
+    // Once we drop 7 we can use the GPU Renderer
     CIContext *renderingContext = [CIContext contextWithOptions:@{kCIContextUseSoftwareRenderer:@YES}];
     __block CIImage *filteredImage = [CIImage v_imageWithUImage:self.canvasView.sourceImage];
     

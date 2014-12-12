@@ -557,7 +557,7 @@
 		D80C615B19D0F692006AE41A /* VProgressBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = D80C615A19D0F692006AE41A /* VProgressBarView.m */; };
 		D811BBBF19B92F75007398BF /* homeHeaderImage.png in Resources */ = {isa = PBXBuildFile; fileRef = D811BBBD19B92F75007398BF /* homeHeaderImage.png */; };
 		D81AF38F1A015EC60056F474 /* VDirectoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D81AF38E1A015EC60056F474 /* VDirectoryViewController.xib */; };
-		D8208A551A2FA7E3003C187D /* VFilterWorkspaceTool.m in Sources */ = {isa = PBXBuildFile; fileRef = D8208A541A2FA7E3003C187D /* VFilterWorkspaceTool.m */; };
+		D8208A551A2FA7E3003C187D /* VFilterTool.m in Sources */ = {isa = PBXBuildFile; fileRef = D8208A541A2FA7E3003C187D /* VFilterTool.m */; };
 		D82E76DE19F5BFED00FFB722 /* VContentPollQuestionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D82E76DD19F5BFED00FFB722 /* VContentPollQuestionCell.m */; };
 		D82E76E019F5BFF900FFB722 /* VContentPollQuestionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D82E76DF19F5BFF900FFB722 /* VContentPollQuestionCell.xib */; };
 		D82E76E319F5C06100FFB722 /* VContentPollBallotCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D82E76E219F5C06100FFB722 /* VContentPollBallotCell.m */; };
@@ -573,7 +573,7 @@
 		D87351831A3112A3006D97B2 /* VCropOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = D87351821A3112A3006D97B2 /* VCropOverlayView.m */; };
 		D87351881A3120F5006D97B2 /* VCanvasView.m in Sources */ = {isa = PBXBuildFile; fileRef = D87351871A3120F5006D97B2 /* VCanvasView.m */; };
 		D873518F1A316727006D97B2 /* VMemeWorkspaceToolViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D873518E1A316727006D97B2 /* VMemeWorkspaceToolViewController.m */; };
-		D87351961A324E7F006D97B2 /* VTextWorkspaceTool.m in Sources */ = {isa = PBXBuildFile; fileRef = D87351951A324E7F006D97B2 /* VTextWorkspaceTool.m */; };
+		D87351961A324E7F006D97B2 /* VTextTool.m in Sources */ = {isa = PBXBuildFile; fileRef = D87351951A324E7F006D97B2 /* VTextTool.m */; };
 		D87351991A3260AC006D97B2 /* VImageFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = D87351981A3260AC006D97B2 /* VImageFilter.m */; };
 		D8917EA219F8498F0070BDBB /* VVideoCellViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D8917EA119F8498F0070BDBB /* VVideoCellViewModel.m */; };
 		D89A500B1A000E790010D050 /* VFollowUserControl.m in Sources */ = {isa = PBXBuildFile; fileRef = D89A500A1A000E790010D050 /* VFollowUserControl.m */; };
@@ -601,7 +601,7 @@
 		D8D945F31A2E88510089D271 /* Workspace.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D8D945F21A2E88510089D271 /* Workspace.storyboard */; };
 		D8D945F61A2E8A760089D271 /* VWorkspaceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D945F51A2E8A760089D271 /* VWorkspaceViewController.m */; };
 		D8D945FD1A2EA9940089D271 /* VDependencyManager+VWorkspaceTool.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D945FC1A2EA9940089D271 /* VDependencyManager+VWorkspaceTool.m */; };
-		D8E178A81A2F8BCE00C3572B /* VCropWorkspaceTool.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E178A71A2F8BCE00C3572B /* VCropWorkspaceTool.m */; };
+		D8E178A81A2F8BCE00C3572B /* VCropTool.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E178A71A2F8BCE00C3572B /* VCropTool.m */; };
 		D8E178AB1A2F8BDB00C3572B /* VMemeWorkspaceTool.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E178AA1A2F8BDB00C3572B /* VMemeWorkspaceTool.m */; };
 		D8E178AE1A2F8BEA00C3572B /* VQuoteWorkspaceTool.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E178AD1A2F8BEA00C3572B /* VQuoteWorkspaceTool.m */; };
 		D8E39BB819CB7C3C007FD86A /* VContentViewViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E39BB519CB7C3C007FD86A /* VContentViewViewModel.m */; };
@@ -1644,8 +1644,8 @@
 		D811BBBD19B92F75007398BF /* homeHeaderImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = homeHeaderImage.png; sourceTree = "<group>"; };
 		D811BBBE19B92F75007398BF /* homeHeaderImage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "homeHeaderImage@2x.png"; sourceTree = "<group>"; };
 		D81AF38E1A015EC60056F474 /* VDirectoryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VDirectoryViewController.xib; sourceTree = "<group>"; };
-		D8208A531A2FA7E3003C187D /* VFilterWorkspaceTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFilterWorkspaceTool.h; sourceTree = "<group>"; };
-		D8208A541A2FA7E3003C187D /* VFilterWorkspaceTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFilterWorkspaceTool.m; sourceTree = "<group>"; };
+		D8208A531A2FA7E3003C187D /* VFilterTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFilterTool.h; sourceTree = "<group>"; };
+		D8208A541A2FA7E3003C187D /* VFilterTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFilterTool.m; sourceTree = "<group>"; };
 		D82E76DC19F5BFED00FFB722 /* VContentPollQuestionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentPollQuestionCell.h; sourceTree = "<group>"; };
 		D82E76DD19F5BFED00FFB722 /* VContentPollQuestionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VContentPollQuestionCell.m; sourceTree = "<group>"; };
 		D82E76DF19F5BFF900FFB722 /* VContentPollQuestionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VContentPollQuestionCell.xib; sourceTree = "<group>"; };
@@ -1674,8 +1674,8 @@
 		D87351871A3120F5006D97B2 /* VCanvasView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCanvasView.m; sourceTree = "<group>"; };
 		D873518D1A316727006D97B2 /* VMemeWorkspaceToolViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMemeWorkspaceToolViewController.h; sourceTree = "<group>"; };
 		D873518E1A316727006D97B2 /* VMemeWorkspaceToolViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMemeWorkspaceToolViewController.m; sourceTree = "<group>"; };
-		D87351941A324E7F006D97B2 /* VTextWorkspaceTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextWorkspaceTool.h; sourceTree = "<group>"; };
-		D87351951A324E7F006D97B2 /* VTextWorkspaceTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextWorkspaceTool.m; sourceTree = "<group>"; };
+		D87351941A324E7F006D97B2 /* VTextTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextTool.h; sourceTree = "<group>"; };
+		D87351951A324E7F006D97B2 /* VTextTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextTool.m; sourceTree = "<group>"; };
 		D87351971A3260AC006D97B2 /* VImageFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VImageFilter.h; sourceTree = "<group>"; };
 		D87351981A3260AC006D97B2 /* VImageFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VImageFilter.m; sourceTree = "<group>"; };
 		D8917EA019F8498F0070BDBB /* VVideoCellViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VVideoCellViewModel.h; sourceTree = "<group>"; };
@@ -1725,8 +1725,8 @@
 		D8D945FB1A2EA9940089D271 /* VDependencyManager+VWorkspaceTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VDependencyManager+VWorkspaceTool.h"; sourceTree = "<group>"; };
 		D8D945FC1A2EA9940089D271 /* VDependencyManager+VWorkspaceTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VDependencyManager+VWorkspaceTool.m"; sourceTree = "<group>"; };
 		D8D946011A2EBC120089D271 /* VWorkspaceTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VWorkspaceTool.h; sourceTree = "<group>"; };
-		D8E178A61A2F8BCE00C3572B /* VCropWorkspaceTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCropWorkspaceTool.h; sourceTree = "<group>"; };
-		D8E178A71A2F8BCE00C3572B /* VCropWorkspaceTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCropWorkspaceTool.m; sourceTree = "<group>"; };
+		D8E178A61A2F8BCE00C3572B /* VCropTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCropTool.h; sourceTree = "<group>"; };
+		D8E178A71A2F8BCE00C3572B /* VCropTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCropTool.m; sourceTree = "<group>"; };
 		D8E178A91A2F8BDB00C3572B /* VMemeWorkspaceTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMemeWorkspaceTool.h; sourceTree = "<group>"; };
 		D8E178AA1A2F8BDB00C3572B /* VMemeWorkspaceTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMemeWorkspaceTool.m; sourceTree = "<group>"; };
 		D8E178AC1A2F8BEA00C3572B /* VQuoteWorkspaceTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VQuoteWorkspaceTool.h; sourceTree = "<group>"; };
@@ -4090,12 +4090,12 @@
 			children = (
 				D87351811A3112A3006D97B2 /* VCropOverlayView.h */,
 				D87351821A3112A3006D97B2 /* VCropOverlayView.m */,
-				D8E178A61A2F8BCE00C3572B /* VCropWorkspaceTool.h */,
-				D8E178A71A2F8BCE00C3572B /* VCropWorkspaceTool.m */,
+				D8E178A61A2F8BCE00C3572B /* VCropTool.h */,
+				D8E178A71A2F8BCE00C3572B /* VCropTool.m */,
 				D873517E1A30E443006D97B2 /* VCropWorkspaceToolViewController.h */,
 				D873517F1A30E443006D97B2 /* VCropWorkspaceToolViewController.m */,
-				D8208A531A2FA7E3003C187D /* VFilterWorkspaceTool.h */,
-				D8208A541A2FA7E3003C187D /* VFilterWorkspaceTool.m */,
+				D8208A531A2FA7E3003C187D /* VFilterTool.h */,
+				D8208A541A2FA7E3003C187D /* VFilterTool.m */,
 				D87351971A3260AC006D97B2 /* VImageFilter.h */,
 				D87351981A3260AC006D97B2 /* VImageFilter.m */,
 				D8E178A91A2F8BDB00C3572B /* VMemeWorkspaceTool.h */,
@@ -4104,8 +4104,8 @@
 				D873518E1A316727006D97B2 /* VMemeWorkspaceToolViewController.m */,
 				D8E178AC1A2F8BEA00C3572B /* VQuoteWorkspaceTool.h */,
 				D8E178AD1A2F8BEA00C3572B /* VQuoteWorkspaceTool.m */,
-				D87351941A324E7F006D97B2 /* VTextWorkspaceTool.h */,
-				D87351951A324E7F006D97B2 /* VTextWorkspaceTool.m */,
+				D87351941A324E7F006D97B2 /* VTextTool.h */,
+				D87351951A324E7F006D97B2 /* VTextTool.m */,
 				D8D946011A2EBC120089D271 /* VWorkspaceTool.h */,
 			);
 			path = Tools;
@@ -4760,7 +4760,7 @@
 				0314D4F719B46B5E00FA363C /* VLargeNumberFormatter.m in Sources */,
 				03CF1520195CFBE600F6477B /* NSArray+VMap.m in Sources */,
 				0314D4E119B46B5E00FA363C /* VFindFriendsTableViewController.m in Sources */,
-				D8208A551A2FA7E3003C187D /* VFilterWorkspaceTool.m in Sources */,
+				D8208A551A2FA7E3003C187D /* VFilterTool.m in Sources */,
 				D82E76E319F5C06100FFB722 /* VContentPollBallotCell.m in Sources */,
 				A7E398731A362578000E4CAC /* NSData+AES.m in Sources */,
 				0314D4F119B46B5E00FA363C /* VResetPasswordViewController.m in Sources */,
@@ -4918,7 +4918,7 @@
 				0314D4B319B46B5E00FA363C /* VImageLightboxViewController.m in Sources */,
 				0314D46719B46B5E00FA363C /* VExpirationPickerTextField.m in Sources */,
 				BE88FF981A0006710064AB28 /* VProfileHeaderCell.m in Sources */,
-				D87351961A324E7F006D97B2 /* VTextWorkspaceTool.m in Sources */,
+				D87351961A324E7F006D97B2 /* VTextTool.m in Sources */,
 				DB58EF41199401E500D2A07F /* VNotification+RestKit.m in Sources */,
 				D87351991A3260AC006D97B2 /* VImageFilter.m in Sources */,
 				A720055E1A030E4700285A9C /* VApplicationTracking.m in Sources */,
@@ -4954,7 +4954,7 @@
 				0314D4C019B46B5E00FA363C /* VProfileCreateViewController.m in Sources */,
 				03FDA09F197A0AEC00405361 /* CIImage+VImage.m in Sources */,
 				D8E39BBC19CB7C58007FD86A /* VRealtimeCommentsViewModel.m in Sources */,
-				D8E178A81A2F8BCE00C3572B /* VCropWorkspaceTool.m in Sources */,
+				D8E178A81A2F8BCE00C3572B /* VCropTool.m in Sources */,
 				A790C82A1A01980F00C4F208 /* VTrackingManager.m in Sources */,
 				A790C8291A01980F00C4F208 /* VTrackingEvent.m in Sources */,
 				0314D4F019B46B5E00FA363C /* VRegistrationModel.m in Sources */,
