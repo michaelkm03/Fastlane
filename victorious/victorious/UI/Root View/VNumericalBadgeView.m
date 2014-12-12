@@ -12,10 +12,11 @@
 @interface VNumericalBadgeView ()
 
 @property (nonatomic, weak) UILabel *label;
+@property (nonatomic, strong) UIColor *circleColor;
 
 @end
 
-static CGFloat const kMargin = 4.0f;
+static UIEdgeInsets const kMargin = { 2.0f, 4.0f, 2.0f, 4.0f };
 static NSInteger const kLargeNumberCutoff = 100; ///< Numbers equal to or greater than this cutoff will not display
 
 @implementation VNumericalBadgeView
@@ -42,6 +43,10 @@ static NSInteger const kLargeNumberCutoff = 100; ///< Numbers equal to or greate
 
 - (void)commonInit
 {
+    _circleColor = [UIColor colorWithRed:0.88f green:0.18f blue:0.22f alpha:1.0f];
+    super.backgroundColor = [UIColor clearColor];
+    self.contentMode = UIViewContentModeRedraw;
+    
     UILabel *label = [[UILabel alloc] init];
     label.translatesAutoresizingMaskIntoConstraints = NO;
     label.textAlignment = NSTextAlignmentCenter;
@@ -77,9 +82,6 @@ static NSInteger const kLargeNumberCutoff = 100; ///< Numbers equal to or greate
                                                      attribute:NSLayoutAttributeCenterY
                                                     multiplier:1.0f
                                                       constant:1.0f]];
-    
-    self.clipsToBounds = YES;
-    self.backgroundColor = [UIColor colorWithRed:0.88f green:0.18f blue:0.22f alpha:1.0f];
 }
 
 - (CGSize)intrinsicContentSize
@@ -92,19 +94,16 @@ static NSInteger const kLargeNumberCutoff = 100; ///< Numbers equal to or greate
     }
     
     // We should be at least as wide as we are tall, or we look lemon-shaped with the corner radius!
-    return CGSizeMake(MAX(size.width + kMargin, size.height + kMargin), size.height + kMargin);
+    return CGSizeMake(MAX(size.width + kMargin.left + kMargin.right, size.height + kMargin.top + kMargin.bottom),
+                      size.height + kMargin.top + kMargin.bottom);
 }
 
-- (void)layoutSubviews
+- (void)drawRect:(CGRect)rect
 {
-    [super layoutSubviews];
-    
-    CGFloat newCornerRadius = CGRectGetHeight(self.bounds) * 0.5f;
-    
-    if (newCornerRadius != self.layer.cornerRadius)
-    {
-        self.layer.cornerRadius = newCornerRadius;
-    }
+    CGFloat cornerRadius = CGRectGetHeight(rect) * 0.5f;
+    UIBezierPath *background = [UIBezierPath bezierPathWithRoundedRect:rect cornerRadius:cornerRadius];
+    [self.backgroundColor setFill];
+    [background fill];
 }
 
 - (UIFont *)font
@@ -116,6 +115,26 @@ static NSInteger const kLargeNumberCutoff = 100; ///< Numbers equal to or greate
 {
     self.label.font = font;
     [self invalidateIntrinsicContentSize];
+}
+
+- (UIColor *)backgroundColor
+{
+    return self.circleColor;
+}
+
+- (void)setBackgroundColor:(UIColor *)backgroundColor
+{
+    self.circleColor = backgroundColor;
+}
+
+- (UIColor *)textColor
+{
+    return self.label.textColor;
+}
+
+- (void)setTextColor:(UIColor *)textColor
+{
+    self.label.textColor = textColor;
 }
 
 - (void)setBadgeNumber:(NSInteger)badgeNumber

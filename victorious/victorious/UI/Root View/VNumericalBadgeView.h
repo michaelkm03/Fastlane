@@ -16,6 +16,7 @@ IB_DESIGNABLE
 @interface VNumericalBadgeView : UIView
 
 @property (nonatomic, strong) UIFont *font; ///< The font for display
+@property (nonatomic, strong) IBInspectable UIColor *textColor; ///< The color of the number inside the circle
 @property (nonatomic) IBInspectable NSInteger badgeNumber; ///< The number to display
 
 @end
