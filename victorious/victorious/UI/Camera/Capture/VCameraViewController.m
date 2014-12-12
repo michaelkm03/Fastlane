@@ -551,7 +551,7 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
 - (void)moveToPreviewControllerWithImage:(UIImage *)image
 {
     NSURL *fileURL = [self temporaryFileURLWithExtension:VConstantMediaExtensionJPG];
-    NSData *jpegData = UIImageJPEGRepresentation([self squareImageByCroppingImage:image], VConstantJPEGCompressionQuality);
+    NSData *jpegData = UIImageJPEGRepresentation(self.didSelectAssetFromLibrary ? image : [self squareImageByCroppingImage:image], VConstantJPEGCompressionQuality);
     [jpegData writeToURL:fileURL atomically:YES]; // TODO: the preview view should take a UIImage
     [self moveToPreviewViewControllerWithContentURL:fileURL];
 }
@@ -1018,6 +1018,16 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
 
 - (void)moveToPreviewViewControllerWithContentURL:(NSURL *)contentURL
 {
+    if (self.shouldSkipPreview)
+    {
+        if (self.completionBlock != nil)
+        {
+            UIImage *imageFromURL = [[UIImage alloc] initWithContentsOfFile:[contentURL path]];
+            self.completionBlock(YES, imageFromURL, contentURL);
+            return;
+        }
+    }
+    
     VMediaPreviewViewController *previewViewController = [VMediaPreviewViewController previewViewControllerForMediaAtURL:contentURL];
     previewViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
     {
@@ -1106,36 +1116,39 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
-
-    self.didSelectAssetFromLibrary = YES;
-    NSString *mediaType = info[UIImagePickerControllerMediaType];
-    
-    if ([mediaType isEqualToString:(__bridge NSString *)kUTTypeImage])
-    {
-        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraUserDidPickImageFromLibrary];
-        
-        UIImage *originalImage = (UIImage *)info[UIImagePickerControllerOriginalImage];
-        [self moveToPreviewControllerWithImage:originalImage];
-    }
-    else if ([mediaType isEqualToString:(__bridge NSString *)kUTTypeMovie])
-    {
-        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraUserDidPickVideoFromLibrary];
-        
-        NSURL *movieURL = info[UIImagePickerControllerMediaURL];
-        
-        if (movieURL)
-        {
-            [self moveToPreviewViewControllerWithContentURL:movieURL];
-        }
-        else
-        {
-            MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.previewView animated:YES];
-            hud.mode = MBProgressHUDModeText;
-            hud.labelText = NSLocalizedString(@"UnableSelectVideo", @"");
-            [hud hide:YES afterDelay:5.0];
-        }
-    }
+    __weak typeof(self) welf = self;
+    [self dismissViewControllerAnimated:YES
+                             completion:^
+     {
+         welf.didSelectAssetFromLibrary = YES;
+         NSString *mediaType = info[UIImagePickerControllerMediaType];
+         
+         if ([mediaType isEqualToString:(__bridge NSString *)kUTTypeImage])
+         {
+             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraUserDidPickImageFromLibrary];
+             
+             UIImage *originalImage = (UIImage *)info[UIImagePickerControllerOriginalImage];
+             [self moveToPreviewControllerWithImage:originalImage];
+         }
+         else if ([mediaType isEqualToString:(__bridge NSString *)kUTTypeMovie])
+         {
+             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraUserDidPickVideoFromLibrary];
+             
+             NSURL *movieURL = info[UIImagePickerControllerMediaURL];
+             
+             if (movieURL)
+             {
+                 [welf moveToPreviewViewControllerWithContentURL:movieURL];
+             }
+             else
+             {
+                 MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:welf.previewView animated:YES];
+                 hud.mode = MBProgressHUDModeText;
+                 hud.labelText = NSLocalizedString(@"UnableSelectVideo", @"");
+                 [hud hide:YES afterDelay:5.0];
+             }
+         }
+     }];
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker

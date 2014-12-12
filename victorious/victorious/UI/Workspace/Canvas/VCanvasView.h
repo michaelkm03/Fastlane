@@ -11,7 +11,7 @@
 #import "VPhotoFilter.h"
 
 /*
- VCanvasView is a representation of the current state of the workspace while editing an image.
+ VCanvasView is a representation of the current state of the workspace while editing an image. VCanvasView is optimized for performance and may scale sourceImage down to provide fast render times.
  */
 @interface VCanvasView : UIView
 

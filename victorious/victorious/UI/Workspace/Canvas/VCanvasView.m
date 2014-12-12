@@ -7,12 +7,21 @@
 //
 
 #import "VCanvasView.h"
+#import "CIImage+VImage.h"
 
-@interface VCanvasView () <UIScrollViewDelegate>
+#define canvasRenderLoggingEnabled 0
+
+static const CGFloat kRelatvieScaleFactor = 0.55f;
+
+@interface VCanvasView () <UIScrollViewDelegate, NSCacheDelegate>
 
 @property (nonatomic, strong) CIContext *context;
+@property (nonatomic, strong) UIImage *scaledImage;
 @property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, strong) UIScrollView *canvasScrollView;
+@property (nonatomic, strong) NSCache *renderedImageCache;
+@property (nonatomic, strong) dispatch_queue_t renderingQueue;
+@property (nonatomic, strong) NSMutableArray *rendertimes;
 
 @end
 
@@ -23,6 +32,7 @@
 - (void)dealloc
 {
     _canvasScrollView.delegate = nil;
+    _renderedImageCache.delegate = nil;
 }
 
 #pragma mark - Initializers
@@ -51,6 +61,10 @@
 {
     self.clipsToBounds = YES;
     
+    _renderingQueue = dispatch_queue_create("com.victorious.canvasRenderingQueue", DISPATCH_QUEUE_SERIAL);
+    _renderedImageCache = [[NSCache alloc] init];
+    _renderedImageCache.delegate = self;
+    
     _canvasScrollView = [[UIScrollView alloc] initWithFrame:self.bounds];
     _canvasScrollView.minimumZoomScale = 1.0f;
     _canvasScrollView.maximumZoomScale = 4.0f;
@@ -63,6 +77,8 @@
     [_canvasScrollView addSubview:_imageView];
     
     _context = [CIContext contextWithOptions:@{}];
+    
+    _rendertimes = [[NSMutableArray alloc] init];
 }
 
 - (void)layoutSubviews
@@ -102,27 +118,94 @@
 - (void)setSourceImage:(UIImage *)sourceImage
 {
     _sourceImage = sourceImage;
-    self.imageView.image = sourceImage;
+
+    CGImageRef scaledImageRef = [self.context createCGImage:[self scaledImageForCurrentFrameAndMaxZoomLevel]
+                                                fromRect:[[self scaledImageForCurrentFrameAndMaxZoomLevel] extent]];
+    _scaledImage = [UIImage imageWithCGImage:scaledImageRef];
+    CGImageRelease(scaledImageRef);
+    
+    self.imageView.image = _scaledImage;
     [self layoutIfNeeded];
 }
 
 - (void)setFilter:(VPhotoFilter *)filter
 {
     _filter = filter;
-    __block UIImage *filteredImage = nil;
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^
-    {
-        filteredImage = [filter imageByFilteringImage:self.sourceImage
-                                        withCIContext:self.context];
-        dispatch_async(dispatch_get_main_queue(), ^
-        {
-            if (_filter.name == filter.name)
-            {
-                self.imageView.image = filteredImage;
-            }
-        });
-    });
 
+    if ([self.renderedImageCache objectForKey:filter.description] != nil)
+    {
+        self.imageView.image = [self.renderedImageCache objectForKey:filter.description];
+        return;
+    }
+    
+    __block UIImage *filteredImage = nil;
+#if canvasRenderLoggingEnabled
+    __block NSDate *tick;
+    __block NSDate *tock;
+#endif
+    
+    dispatch_async(self.renderingQueue, ^
+    {
+        // Render
+#if canvasRenderLoggingEnabled
+            tick = [NSDate date];
+#endif
+        
+        filteredImage = [filter imageByFilteringImage:self.scaledImage
+                                        withCIContext:self.context];
+
+        
+        // Cache
+        [self.renderedImageCache setObject:filteredImage
+                                    forKey:filter.description];
+#if canvasRenderLoggingEnabled
+            tock = [NSDate date];
+#endif
+        
+        dispatch_async(dispatch_get_main_queue(), ^
+                       {
+#if canvasRenderLoggingEnabled
+                               NSNumber *renderTime = @([tock timeIntervalSinceDate:tick]);
+                               [self.rendertimes addObject:renderTime];
+                               __block NSTimeInterval totalTime = 0.0f;
+                               [self.rendertimes enumerateObjectsUsingBlock:^(NSNumber *renderTime, NSUInteger idx, BOOL *stop)
+                                {
+                                    totalTime = totalTime + [renderTime floatValue];
+                                }];
+                               VLog(@"Render time: %@ Average render time: %@", renderTime, @(totalTime/self.rendertimes.count));
+#endif
+                           
+                           if (_filter.name == filter.name)
+                           {
+                               self.imageView.image = filteredImage;
+                           }
+                       });
+    });
+}
+
+#pragma mark - Private Mehtods
+
+- (CIImage *)scaledImageForCurrentFrameAndMaxZoomLevel
+{
+    CIImage *scaledImage = [CIImage v_imageWithUImage:_sourceImage];
+    
+    CGFloat scaleFactor = 1.0f;
+    CGRect sourceExtent = [scaledImage extent];
+    if (CGRectGetWidth(sourceExtent) > CGRectGetWidth(self.bounds) * self.canvasScrollView.maximumZoomScale * kRelatvieScaleFactor)
+    {
+        scaleFactor = (CGRectGetWidth(self.bounds) * self.canvasScrollView.maximumZoomScale * kRelatvieScaleFactor)  / CGRectGetWidth(sourceExtent);
+    }
+    else if (CGRectGetHeight(sourceExtent) > CGRectGetHeight(self.bounds) * self.canvasScrollView.maximumZoomScale * kRelatvieScaleFactor)
+    {
+        scaleFactor = (CGRectGetHeight(self.bounds) * self.canvasScrollView.maximumZoomScale * kRelatvieScaleFactor) / CGRectGetHeight(sourceExtent);
+    }
+    
+    CIFilter *lanczosScaleFilter = [CIFilter filterWithName:@"CILanczosScaleTransform"];
+    [lanczosScaleFilter setValue:scaledImage
+                          forKey:kCIInputImageKey];
+    [lanczosScaleFilter setValue:@(scaleFactor)
+                          forKey:kCIInputScaleKey];
+    return [lanczosScaleFilter outputImage];
 }
 
 #pragma mark - UIScrollViewDelegate
@@ -131,5 +214,14 @@
 {
     return self.imageView;
 }
+
+#pragma mark - NSCacheDelegate
+
+#if canvasRenderLoggingEnabled
+- (void)cache:(NSCache *)cache willEvictObject:(id)obj
+{
+    VLog(@"evicting: %@", obj);
+}
+#endif
 
 @end

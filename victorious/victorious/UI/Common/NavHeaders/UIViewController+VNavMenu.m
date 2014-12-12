@@ -252,7 +252,9 @@ static const char kUploadProgressYConstraintKey;
                                }]];
     [alertControler addAction:[VAlertAction buttonWithTitle:NSLocalizedString(@"Create an Image Post", @"") handler:^(VAlertAction *action)
                                {
-                                   [self presentCameraViewController:[VCameraViewController cameraViewControllerStartingWithStillCapture]];
+                                   VCameraViewController *cameraViewController = [VCameraViewController cameraViewControllerStartingWithStillCapture];
+                                   cameraViewController.shouldSkipPreview = YES;
+                                   [self presentCameraViewController:cameraViewController];
                                }]];
     [alertControler addAction:[VAlertAction buttonWithTitle:NSLocalizedString(@"Create a Poll", @"") handler:^(VAlertAction *action)
                                {
@@ -264,46 +266,37 @@ static const char kUploadProgressYConstraintKey;
 
 - (void)presentCameraViewController:(VCameraViewController *)cameraViewController
 {
-    VDependencyManager *dependencyManager = [((id <VHasManagedDependancies>)self) dependencyManager];
-
-    VWorkspaceViewController *workspaceViewController = (VWorkspaceViewController *)[dependencyManager viewControllerForKey:VDependencyManagerWorkspaceKey];
-    workspaceViewController.completionBlock = ^void(BOOL finished, UIImage *previewImage)
+    __weak typeof(self) welf = self;
+    UINavigationController *navigationController = [[UINavigationController alloc] init];
+    cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
     {
-        [self dismissViewControllerAnimated:YES
+        if (!finished || !capturedMediaURL)
+        {
+            [welf dismissViewControllerAnimated:YES completion:nil];
+        }
+        else
+        {
+            [welf dismissViewControllerAnimated:YES
+                                     completion:^
+            {
+                VDependencyManager *dependencyManager = [((id <VHasManagedDependancies>)welf) dependencyManager];
+                
+                VWorkspaceViewController *workspaceViewController = (VWorkspaceViewController *)[dependencyManager viewControllerForKey:VDependencyManagerWorkspaceKey];
+                workspaceViewController.previewImage = previewImage;
+                workspaceViewController.mediaURL = capturedMediaURL;
+                workspaceViewController.completionBlock = ^void(BOOL finished, UIImage *previewImage)
+                {
+                    [welf dismissViewControllerAnimated:YES
+                                             completion:nil];
+                };
+                [welf presentViewController:workspaceViewController
+                                   animated:YES
                                  completion:nil];
+            }];
+        }
     };
-    [self presentViewController:workspaceViewController
-                       animated:YES
-                     completion:nil];
-//    UINavigationController *navigationController = [[UINavigationController alloc] init];
-//    UINavigationController *__weak weakNav = navigationController;
-//    cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
-//    {
-//        if (!finished || !capturedMediaURL)
-//        {
-//            [self dismissViewControllerAnimated:YES completion:nil];
-//        }
-//        else
-//        {
-//            VCameraPublishViewController *publishViewController = [VCameraPublishViewController cameraPublishViewController];
-//            publishViewController.previewImage = previewImage;
-//            publishViewController.mediaURL = capturedMediaURL;
-//            publishViewController.completion = ^(BOOL complete)
-//            {
-//                if (complete)
-//                {
-//                    [self dismissViewControllerAnimated:YES completion:nil];
-//                }
-//                else
-//                {
-//                    [weakNav popViewControllerAnimated:YES];
-//                }
-//            };
-//            [weakNav pushViewController:publishViewController animated:YES];
-//        }
-//    };
-//    [navigationController pushViewController:cameraViewController animated:NO];
-//    [self presentViewController:navigationController animated:YES completion:nil];
+    [navigationController pushViewController:cameraViewController animated:NO];
+    [self presentViewController:navigationController animated:YES completion:nil];
 }
 
 @end

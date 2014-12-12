@@ -21,6 +21,14 @@
 // Rendering Utilities
 #import "CIImage+VImage.h"
 
+#warning Move this to publishVC when that is created
+// Publishing
+#import "VObjectManager+ContentCreation.h"
+
+
+static const CGFloat kJPEGCompressionQuality    = 0.8f;
+static NSString * const kMediaExtensionJPG       = @"jpg";
+
 @interface VWorkspaceViewController ()
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
@@ -93,7 +101,7 @@
     [toolBarItems addObject:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil]];
     self.bottomToolbar.items = toolBarItems;
     
-    self.canvasView.sourceImage = [UIImage imageNamed:@"spaceman.jpg"];
+    self.canvasView.sourceImage = self.previewImage;
 }
 
 #pragma mark - Target/Action
@@ -115,11 +123,38 @@
         UIImage *renderedImage = [self renderedImageForCurrentState];
         NSDate *tock = [NSDate date];
         VLog(@"Render time: %@", @([tock timeIntervalSinceDate:tick]));
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [MBProgressHUD hideHUDForView:self.view
-                                 animated:YES];
-            self.completionBlock(YES, nil);
-        });
+        
+        NSURL *originalMediaURL = self.mediaURL;
+        NSData *filteredImageData = UIImageJPEGRepresentation(renderedImage, kJPEGCompressionQuality);
+        NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
+        NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:kMediaExtensionJPG];
+        if ([filteredImageData writeToURL:tempFile atomically:NO])
+        {
+            self.mediaURL = tempFile;
+            [[NSFileManager defaultManager] removeItemAtURL:originalMediaURL error:nil];
+        }
+        
+        [[VObjectManager sharedManager] uploadMediaWithName:@"workspace"
+                                                description:nil
+                                               previewImage:renderedImage
+                                                captionType:VCaptionTypeQuote
+                                                  expiresAt:nil
+                                           parentSequenceId:nil
+                                               parentNodeId:nil
+                                                      speed:1.0f 
+                                                   loopType:VLoopOnce
+                                                   mediaURL:self.mediaURL
+                                              facebookShare:NO
+                                               twitterShare:NO
+                                                 completion:^(NSURLResponse *response, NSData *responseData, NSDictionary *jsonResponse, NSError *error)
+        {
+            dispatch_async(dispatch_get_main_queue(), ^
+                           {
+                               [MBProgressHUD hideHUDForView:self.view
+                                                    animated:YES];
+                               self.completionBlock(YES, renderedImage);
+                           });
+        }];
     });
 }
 
