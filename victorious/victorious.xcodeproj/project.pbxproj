@@ -4228,7 +4228,7 @@
 				ORGANIZATIONNAME = Victorious;
 				TargetAttributes = {
 					BE171D751868BE64004E5202 = {
-						DevelopmentTeam = 82T26U698A;
+						DevelopmentTeam = ABHRJGEGKA;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 0;
@@ -5441,8 +5441,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 138B5A4A675BB6176F7DA761 /* Pods-victorious.release.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: Simon Stawski (PPXXKVAH38)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Simon Stawski (PPXXKVAH38)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/**",
