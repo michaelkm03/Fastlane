@@ -551,8 +551,7 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
 - (void)moveToPreviewControllerWithImage:(UIImage *)image
 {
     NSURL *fileURL = [self temporaryFileURLWithExtension:VConstantMediaExtensionJPG];
-    UIImage *finishedImage = self.shouldPreserveOriginalAspectRatio ? image : [self squareImageByCroppingImage:image];
-    NSData *jpegData = UIImageJPEGRepresentation( finishedImage, VConstantJPEGCompressionQuality);
+    NSData *jpegData = UIImageJPEGRepresentation(self.didSelectAssetFromLibrary ? image : [self squareImageByCroppingImage:image], VConstantJPEGCompressionQuality);
     [jpegData writeToURL:fileURL atomically:YES]; // TODO: the preview view should take a UIImage
     [self moveToPreviewViewControllerWithContentURL:fileURL];
 }

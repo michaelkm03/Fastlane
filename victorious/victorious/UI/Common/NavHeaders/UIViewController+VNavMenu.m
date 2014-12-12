@@ -254,7 +254,6 @@ static const char kUploadProgressYConstraintKey;
                                {
                                    VCameraViewController *cameraViewController = [VCameraViewController cameraViewControllerStartingWithStillCapture];
                                    cameraViewController.shouldSkipPreview = YES;
-                                   cameraViewController.shouldPreserveOriginalAspectRatio = YES;
                                    [self presentCameraViewController:cameraViewController];
                                }]];
     [alertControler addAction:[VAlertAction buttonWithTitle:NSLocalizedString(@"Create a Poll", @"") handler:^(VAlertAction *action)

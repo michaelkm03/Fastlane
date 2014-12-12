@@ -10,7 +10,15 @@
 #import "VPhotoFilter.h"
 #import "VPhotoFilterComponent.h"
 
+@interface VPhotoFilter ()
+
+@property (nonatomic, strong) NSString *description;
+
+@end
+
 @implementation VPhotoFilter
+
+@synthesize description = _description;
 
 - (id)copyWithZone:(NSZone *)zone
 {
@@ -25,13 +33,21 @@
     return copy;
 }
 
+- (NSString *)description
+{
+    if (_description == nil)
+    {
+        _description = [NSString stringWithFormat:@"%@, %@", [super description], self.name];
+    }
+
+    return _description;
+}
+
 - (UIImage *)imageByFilteringImage:(UIImage *)sourceImage withCIContext:(CIContext *)context
 {
-    CGRect canvas = CGRectMake(0, 0, sourceImage.size.width * sourceImage.scale, sourceImage.size.height * sourceImage.scale);
-    
     CIImage *filteredImage = [self filteredImageWithInputImage:[CIImage v_imageWithUImage:sourceImage]];
     
-    CGImageRef finishedImage = [context createCGImage:filteredImage fromRect:canvas];
+    CGImageRef finishedImage = [context createCGImage:filteredImage fromRect:[filteredImage extent]];
     UIImage *retVal = [UIImage imageWithCGImage:finishedImage scale:sourceImage.scale orientation:sourceImage.imageOrientation];
     CGImageRelease(finishedImage);
     return retVal;

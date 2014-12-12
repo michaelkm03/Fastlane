@@ -29,11 +29,6 @@
 @property (nonatomic, assign) BOOL shouldSkipPreview;
 
 /**
- *  If YES, the camera will not crop to a square.
- */
-@property (nonatomic, assign) BOOL shouldPreserveOriginalAspectRatio;
-
-/**
  Returns an instance of this class that will initially show a video capture screen.
  */
 + (VCameraViewController *)cameraViewController;
