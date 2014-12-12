@@ -34,6 +34,10 @@ typedef NS_ENUM( NSInteger, VPurchaseSettingsAction )
     VPurchaseSettingsActionCount
 };
 
+static const CGFloat kNoPurchasesCelRowlHeight      = 85.0f;
+static const CGFloat kActionCellRowHeight           = 60.0f;
+static const CGFloat kPurchasedItemCellRowHeight    = 60.0f;
+
 @interface VPurchaseSettingsViewController()
 
 @property (nonatomic, readonly) NSString *purchaseActionCellTitle;
@@ -220,15 +224,15 @@ typedef NS_ENUM( NSInteger, VPurchaseSettingsAction )
     
     if ( isNoPurchasesCell )
     {
-        return 85.0f;
+        return kNoPurchasesCelRowlHeight;
     }
     else if ( isActionCell )
     {
-        return 60.0f;
+        return kActionCellRowHeight;
     }
     else
     {
-        return 60.0f;
+        return kPurchasedItemCellRowHeight;
     }
 }
 
