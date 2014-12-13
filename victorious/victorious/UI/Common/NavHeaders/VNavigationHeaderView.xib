@@ -75,12 +75,17 @@
                         <outlet property="delegate" destination="Ay5-2H-sPn" id="j1S-2h-jhK"/>
                     </connections>
                 </view>
-                <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Q1S-Ju-Pei" userLabel="Badge Border" customClass="VPerfectCircleView">
+                <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Q1S-Ju-Pei" userLabel="Badge Border" customClass="VBadgeBackgroundView">
                     <rect key="frame" x="46" y="26" width="14" height="25"/>
-                    <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <accessibility key="accessibilityConfiguration">
                         <accessibilityTraits key="traits" none="YES" notEnabled="YES"/>
                     </accessibility>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="color" keyPath="color">
+                            <color key="value" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
                 </view>
                 <view opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" placeholderIntrinsicWidth="10" placeholderIntrinsicHeight="21" translatesAutoresizingMaskIntoConstraints="NO" id="AkI-hg-b9F" userLabel="Badge View" customClass="VNumericalBadgeView">
                     <rect key="frame" x="48" y="28" width="10" height="21"/>
