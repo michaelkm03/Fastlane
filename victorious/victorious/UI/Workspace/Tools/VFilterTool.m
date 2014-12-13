@@ -8,7 +8,7 @@
 
 #import "VFilterTool.h"
 #import "VToolPicker.h"
-#import "VImageFilter.h"
+#import "VFilterTypeTool.h"
 
 #import "NSArray+VMap.h"
 #import "VCanvasView.h"
@@ -28,7 +28,7 @@ static NSString * const kFilterIndexKey = @"filterIndex";
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, strong) UIImage *icon;
 @property (nonatomic, strong) UIViewController <VToolPicker> *toolPicker;
-@property (nonatomic, strong) VImageFilter *selectedFilter;
+@property (nonatomic, strong) VFilterTypeTool *selectedFilter;
 @property (nonatomic, strong) VCanvasView *canvasView;
 
 @end
@@ -52,7 +52,7 @@ static NSString * const kFilterIndexKey = @"filterIndex";
         NSArray *rFilters = [VPhotoFilterSerialization filtersFromPlistFile:filters];
         NSArray *filterTools = [rFilters v_map:^id(VPhotoFilter *photoFilter)
         {
-            VImageFilter *imageFilter = [[VImageFilter alloc] init];
+            VFilterTypeTool *imageFilter = [[VFilterTypeTool alloc] init];
             imageFilter.filter = photoFilter;
             return imageFilter;
         }];
@@ -81,7 +81,7 @@ static NSString * const kFilterIndexKey = @"filterIndex";
     _canvasView = canvasView;
     
     __weak typeof(self) welf = self;
-    self.toolPicker.onToolSelection = ^void(VImageFilter <VWorkspaceTool> *selectedTool)
+    self.toolPicker.onToolSelection = ^void(VFilterTypeTool <VWorkspaceTool> *selectedTool)
     {
         welf.canvasView.filter = selectedTool.filter;
         welf.selectedFilter = selectedTool;

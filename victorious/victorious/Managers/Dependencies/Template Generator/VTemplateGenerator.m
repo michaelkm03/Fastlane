@@ -101,11 +101,11 @@ static NSString * const kFilterIndexKey = @"filterIndex";
                          kToolsKey:
                              @[
                                  @{
-                                     kClassNameKey: @"meme.tool",
+                                     kClassNameKey: @"textType.tool",
                                      kTitleKey: @"meme",
                                      },
                                  @{
-                                     kClassNameKey: @"quote.tool",
+                                     kClassNameKey: @"textType.tool",
                                      kTitleKey: @"quote",
                                      }
                                  ]

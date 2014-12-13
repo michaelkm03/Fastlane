@@ -16,6 +16,8 @@
 	<string>VCropTool</string>
 	<key>text.tool</key>
 	<string>VTextTool</string>
+	<key>textType.tool</key>
+	<string>VTextTypeTool</string>
 	<key>workspace.screen</key>
 	<string>VWorkspaceViewController</string>
 	<key>sideMenu.scaffold</key>

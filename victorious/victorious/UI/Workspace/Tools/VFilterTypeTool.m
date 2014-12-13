@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VImageFilter.h"
+#import "VFilterTypeTool.h"
 
-@implementation VImageFilter
+@implementation VFilterTypeTool
 
 - (NSString *)title
 {

@@ -14,7 +14,7 @@
 /**
  *  VImageFilter is a simple model class for use in VPickers.
  */
-@interface VImageFilter : NSObject <VWorkspaceTool>
+@interface VFilterTypeTool : NSObject <VWorkspaceTool>
 
 @property (nonatomic, strong) VPhotoFilter *filter;
 
