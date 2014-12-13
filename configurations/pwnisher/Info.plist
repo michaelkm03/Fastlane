@@ -36,7 +36,7 @@
 	<key>StagingAppID</key>
 	<integer>7</integer>
 	<key>QAAppID</key>
-	<integer>0</integer>
+	<integer>10</integer>
 	<key>GAID</key>
 	<string>UA-51702806-3</string>
 	<key>FlurryAPIKey</key>

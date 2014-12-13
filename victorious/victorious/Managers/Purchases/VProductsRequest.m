@@ -17,7 +17,7 @@
 
 @implementation VProductsRequest
 
-- (instancetype)initWithProductIdentifiers:(NSArray *)productIndenfiters
+- (instancetype)initWithProductIdentifiers:(NSSet *)productIndenfiters
                                    success:(VProductsRequestSuccessBlock)successCallback
                                    failure:(VProductsRequestFailureBlock)failureCallback
 {

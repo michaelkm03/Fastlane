@@ -101,7 +101,7 @@ NSString * const VPushNotificationManagerDidRegister = @"com.getvictorious.PushN
 
 - (void)loggedInChanged:(NSNotification *)notification
 {
-    if ([[VObjectManager sharedManager] mainUser])
+    if ([[VObjectManager sharedManager] mainUserLoggedIn])
     {
         [self sendAPNStokenToServer];
     }

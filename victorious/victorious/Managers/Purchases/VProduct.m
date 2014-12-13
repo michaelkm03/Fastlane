@@ -52,7 +52,11 @@
 
 - (NSString *)productIdentifier
 {
-    return self.productIdentifier;
+#if SIMULATE_STOREKIT
+    return _productIdentifier;
+#else
+    return _storeKitProduct.productIdentifier;
+#endif
 }
 
 - (NSString *)localizedTitle

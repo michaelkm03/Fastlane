@@ -468,8 +468,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
         return;
     }
     
-    VPurchaseViewController *viewController = [VPurchaseViewController instantiateFromStoryboard:@"ContentView"
-                                                                                            withVoteType:experienceEnhander.voteType];
+    VPurchaseViewController *viewController = [VPurchaseViewController purchaseViewControllerWithVoteType:experienceEnhander.voteType];
     viewController.transitioningDelegate = self.transitionDelegate;
     [self presentViewController:viewController animated:YES completion:nil];
 }
