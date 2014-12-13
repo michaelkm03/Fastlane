@@ -7,7 +7,6 @@
 //
 
 #import "VTextTool.h"
-#import "VTextToolViewController.h"
 #import "VToolPicker.h"
 
 #import "VDependencyManager.h"
