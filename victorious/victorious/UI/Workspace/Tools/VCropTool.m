@@ -13,7 +13,7 @@
 #import "VDependencyManager.h"
 #import "VDependencyManager+VWorkspaceTool.h"
 
-#import "VCropWorkspaceToolViewController.h"
+#import "VCropToolViewController.h"
 
 static NSString * const kTitleKey = @"title";
 static NSString * const kIconKey = @"icon";
@@ -25,7 +25,7 @@ static NSString * const kFilterIndexKey = @"filterIndex";
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, strong) UIImage *icon;
 @property (nonatomic, strong) NSNumber *filterIndexNumber;
-@property (nonatomic, strong, readwrite) VCropWorkspaceToolViewController *cropViewController;
+@property (nonatomic, strong, readwrite) VCropToolViewController *cropViewController;
 @property (nonatomic, weak) VCanvasView *canvasView;
 
 @end
@@ -39,7 +39,7 @@ static NSString * const kFilterIndexKey = @"filterIndex";
     {
         _title = [dependencyManager stringForKey:kTitleKey];
         _filterIndexNumber = [dependencyManager numberForKey:kFilterIndexKey];
-        _cropViewController = [VCropWorkspaceToolViewController cropViewController];
+        _cropViewController = [VCropToolViewController cropViewController];
     }
     return self;
 }

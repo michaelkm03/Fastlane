@@ -6,23 +6,23 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VMemeWorkspaceTool.h"
+#import "VMemeTool.h"
 
 #import "VDependencyManager.h"
 #import "VDependencyManager+VWorkspaceTool.h"
-#import "VMemeWorkspaceToolViewController.h"
+#import "VTextToolViewController.h"
 
 static NSString * const kTitleKey = @"title";
 
-@interface VMemeWorkspaceTool ()
+@interface VMemeTool ()
 
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, strong) UIImage *icon;
-@property (nonatomic, strong) VMemeWorkspaceToolViewController *toolViewController;
+@property (nonatomic, strong) VTextToolViewController *toolViewController;
 
 @end
 
-@implementation VMemeWorkspaceTool
+@implementation VMemeTool
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
@@ -30,7 +30,7 @@ static NSString * const kTitleKey = @"title";
     if (self)
     {
         _title = [dependencyManager stringForKey:kTitleKey];
-        _toolViewController = [VMemeWorkspaceToolViewController memeToolViewController];
+        _toolViewController = [VTextToolViewController memeToolViewController];
     }
     return self;
 }

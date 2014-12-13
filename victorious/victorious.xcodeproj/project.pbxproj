@@ -569,10 +569,10 @@
 		D836884419C3718A00070F22 /* VBaseSupplementaryView.m in Sources */ = {isa = PBXBuildFile; fileRef = D836884319C3718A00070F22 /* VBaseSupplementaryView.m */; };
 		D84FD73D19D5E5F200E7F9F2 /* VActionItem.m in Sources */ = {isa = PBXBuildFile; fileRef = D84FD73C19D5E5F200E7F9F2 /* VActionItem.m */; };
 		D871A4021A157D650046A12C /* VVRTCUserPostedAtFormatterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D871A4011A157D650046A12C /* VVRTCUserPostedAtFormatterTests.m */; };
-		D87351801A30E443006D97B2 /* VCropWorkspaceToolViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D873517F1A30E443006D97B2 /* VCropWorkspaceToolViewController.m */; };
+		D87351801A30E443006D97B2 /* VCropToolViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D873517F1A30E443006D97B2 /* VCropToolViewController.m */; };
 		D87351831A3112A3006D97B2 /* VCropOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = D87351821A3112A3006D97B2 /* VCropOverlayView.m */; };
 		D87351881A3120F5006D97B2 /* VCanvasView.m in Sources */ = {isa = PBXBuildFile; fileRef = D87351871A3120F5006D97B2 /* VCanvasView.m */; };
-		D873518F1A316727006D97B2 /* VMemeWorkspaceToolViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D873518E1A316727006D97B2 /* VMemeWorkspaceToolViewController.m */; };
+		D873518F1A316727006D97B2 /* VTextToolViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D873518E1A316727006D97B2 /* VTextToolViewController.m */; };
 		D87351961A324E7F006D97B2 /* VTextTool.m in Sources */ = {isa = PBXBuildFile; fileRef = D87351951A324E7F006D97B2 /* VTextTool.m */; };
 		D87351991A3260AC006D97B2 /* VImageFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = D87351981A3260AC006D97B2 /* VImageFilter.m */; };
 		D8917EA219F8498F0070BDBB /* VVideoCellViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D8917EA119F8498F0070BDBB /* VVideoCellViewModel.m */; };
@@ -602,8 +602,8 @@
 		D8D945F61A2E8A760089D271 /* VWorkspaceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D945F51A2E8A760089D271 /* VWorkspaceViewController.m */; };
 		D8D945FD1A2EA9940089D271 /* VDependencyManager+VWorkspaceTool.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D945FC1A2EA9940089D271 /* VDependencyManager+VWorkspaceTool.m */; };
 		D8E178A81A2F8BCE00C3572B /* VCropTool.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E178A71A2F8BCE00C3572B /* VCropTool.m */; };
-		D8E178AB1A2F8BDB00C3572B /* VMemeWorkspaceTool.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E178AA1A2F8BDB00C3572B /* VMemeWorkspaceTool.m */; };
-		D8E178AE1A2F8BEA00C3572B /* VQuoteWorkspaceTool.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E178AD1A2F8BEA00C3572B /* VQuoteWorkspaceTool.m */; };
+		D8E178AB1A2F8BDB00C3572B /* VMemeTool.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E178AA1A2F8BDB00C3572B /* VMemeTool.m */; };
+		D8E178AE1A2F8BEA00C3572B /* VQuoteTool.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E178AD1A2F8BEA00C3572B /* VQuoteTool.m */; };
 		D8E39BB819CB7C3C007FD86A /* VContentViewViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E39BB519CB7C3C007FD86A /* VContentViewViewModel.m */; };
 		D8E39BB919CB7C3C007FD86A /* VNewContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E39BB719CB7C3C007FD86A /* VNewContentViewController.m */; };
 		D8E39BBC19CB7C58007FD86A /* VRealtimeCommentsViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E39BBB19CB7C58007FD86A /* VRealtimeCommentsViewModel.m */; };
@@ -1666,14 +1666,14 @@
 		D84FD73B19D5E5F200E7F9F2 /* VActionItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VActionItem.h; sourceTree = "<group>"; };
 		D84FD73C19D5E5F200E7F9F2 /* VActionItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VActionItem.m; sourceTree = "<group>"; };
 		D871A4011A157D650046A12C /* VVRTCUserPostedAtFormatterTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVRTCUserPostedAtFormatterTests.m; sourceTree = "<group>"; };
-		D873517E1A30E443006D97B2 /* VCropWorkspaceToolViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCropWorkspaceToolViewController.h; sourceTree = "<group>"; };
-		D873517F1A30E443006D97B2 /* VCropWorkspaceToolViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCropWorkspaceToolViewController.m; sourceTree = "<group>"; };
+		D873517E1A30E443006D97B2 /* VCropToolViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCropToolViewController.h; sourceTree = "<group>"; };
+		D873517F1A30E443006D97B2 /* VCropToolViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCropToolViewController.m; sourceTree = "<group>"; };
 		D87351811A3112A3006D97B2 /* VCropOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCropOverlayView.h; sourceTree = "<group>"; };
 		D87351821A3112A3006D97B2 /* VCropOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCropOverlayView.m; sourceTree = "<group>"; };
 		D87351861A3120F5006D97B2 /* VCanvasView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCanvasView.h; sourceTree = "<group>"; };
 		D87351871A3120F5006D97B2 /* VCanvasView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCanvasView.m; sourceTree = "<group>"; };
-		D873518D1A316727006D97B2 /* VMemeWorkspaceToolViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMemeWorkspaceToolViewController.h; sourceTree = "<group>"; };
-		D873518E1A316727006D97B2 /* VMemeWorkspaceToolViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMemeWorkspaceToolViewController.m; sourceTree = "<group>"; };
+		D873518D1A316727006D97B2 /* VTextToolViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextToolViewController.h; sourceTree = "<group>"; };
+		D873518E1A316727006D97B2 /* VTextToolViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextToolViewController.m; sourceTree = "<group>"; };
 		D87351941A324E7F006D97B2 /* VTextTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextTool.h; sourceTree = "<group>"; };
 		D87351951A324E7F006D97B2 /* VTextTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextTool.m; sourceTree = "<group>"; };
 		D87351971A3260AC006D97B2 /* VImageFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VImageFilter.h; sourceTree = "<group>"; };
@@ -1727,10 +1727,10 @@
 		D8D946011A2EBC120089D271 /* VWorkspaceTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VWorkspaceTool.h; sourceTree = "<group>"; };
 		D8E178A61A2F8BCE00C3572B /* VCropTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCropTool.h; sourceTree = "<group>"; };
 		D8E178A71A2F8BCE00C3572B /* VCropTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCropTool.m; sourceTree = "<group>"; };
-		D8E178A91A2F8BDB00C3572B /* VMemeWorkspaceTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMemeWorkspaceTool.h; sourceTree = "<group>"; };
-		D8E178AA1A2F8BDB00C3572B /* VMemeWorkspaceTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMemeWorkspaceTool.m; sourceTree = "<group>"; };
-		D8E178AC1A2F8BEA00C3572B /* VQuoteWorkspaceTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VQuoteWorkspaceTool.h; sourceTree = "<group>"; };
-		D8E178AD1A2F8BEA00C3572B /* VQuoteWorkspaceTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VQuoteWorkspaceTool.m; sourceTree = "<group>"; };
+		D8E178A91A2F8BDB00C3572B /* VMemeTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMemeTool.h; sourceTree = "<group>"; };
+		D8E178AA1A2F8BDB00C3572B /* VMemeTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMemeTool.m; sourceTree = "<group>"; };
+		D8E178AC1A2F8BEA00C3572B /* VQuoteTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VQuoteTool.h; sourceTree = "<group>"; };
+		D8E178AD1A2F8BEA00C3572B /* VQuoteTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VQuoteTool.m; sourceTree = "<group>"; };
 		D8E39BB419CB7C3C007FD86A /* VContentViewViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentViewViewModel.h; sourceTree = "<group>"; };
 		D8E39BB519CB7C3C007FD86A /* VContentViewViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VContentViewViewModel.m; sourceTree = "<group>"; };
 		D8E39BB619CB7C3C007FD86A /* VNewContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNewContentViewController.h; sourceTree = "<group>"; };
@@ -4092,18 +4092,18 @@
 				D87351821A3112A3006D97B2 /* VCropOverlayView.m */,
 				D8E178A61A2F8BCE00C3572B /* VCropTool.h */,
 				D8E178A71A2F8BCE00C3572B /* VCropTool.m */,
-				D873517E1A30E443006D97B2 /* VCropWorkspaceToolViewController.h */,
-				D873517F1A30E443006D97B2 /* VCropWorkspaceToolViewController.m */,
+				D873517E1A30E443006D97B2 /* VCropToolViewController.h */,
+				D873517F1A30E443006D97B2 /* VCropToolViewController.m */,
 				D8208A531A2FA7E3003C187D /* VFilterTool.h */,
 				D8208A541A2FA7E3003C187D /* VFilterTool.m */,
 				D87351971A3260AC006D97B2 /* VImageFilter.h */,
 				D87351981A3260AC006D97B2 /* VImageFilter.m */,
-				D8E178A91A2F8BDB00C3572B /* VMemeWorkspaceTool.h */,
-				D8E178AA1A2F8BDB00C3572B /* VMemeWorkspaceTool.m */,
-				D873518D1A316727006D97B2 /* VMemeWorkspaceToolViewController.h */,
-				D873518E1A316727006D97B2 /* VMemeWorkspaceToolViewController.m */,
-				D8E178AC1A2F8BEA00C3572B /* VQuoteWorkspaceTool.h */,
-				D8E178AD1A2F8BEA00C3572B /* VQuoteWorkspaceTool.m */,
+				D8E178A91A2F8BDB00C3572B /* VMemeTool.h */,
+				D8E178AA1A2F8BDB00C3572B /* VMemeTool.m */,
+				D873518D1A316727006D97B2 /* VTextToolViewController.h */,
+				D873518E1A316727006D97B2 /* VTextToolViewController.m */,
+				D8E178AC1A2F8BEA00C3572B /* VQuoteTool.h */,
+				D8E178AD1A2F8BEA00C3572B /* VQuoteTool.m */,
 				D87351941A324E7F006D97B2 /* VTextTool.h */,
 				D87351951A324E7F006D97B2 /* VTextTool.m */,
 				D8D946011A2EBC120089D271 /* VWorkspaceTool.h */,
@@ -4717,7 +4717,7 @@
 				0314D4D919B46B5E00FA363C /* VServerEnvironmentTableViewController.m in Sources */,
 				D8E7EBCB19CCA540007DA693 /* VSectionHandleReusableView.m in Sources */,
 				0314D4AE19B46B5E00FA363C /* VNotificationCell.m in Sources */,
-				D87351801A30E443006D97B2 /* VCropWorkspaceToolViewController.m in Sources */,
+				D87351801A30E443006D97B2 /* VCropToolViewController.m in Sources */,
 				A720055F1A030E4700285A9C /* VFlurryTracking.m in Sources */,
 				DB58EF501994174900D2A07F /* VNotification.m in Sources */,
 				0314D4E919B46B5E00FA363C /* VTabInfo.m in Sources */,
@@ -4726,7 +4726,7 @@
 				BE40559418A1828D00092AE1 /* UIButton+VImageLoading.m in Sources */,
 				0314D46519B46B5E00FA363C /* VCompositeSnapshotController.m in Sources */,
 				03484BFE192E9D2100403FB1 /* NSLayoutConstraint+CenterConstraints.m in Sources */,
-				D8E178AE1A2F8BEA00C3572B /* VQuoteWorkspaceTool.m in Sources */,
+				D8E178AE1A2F8BEA00C3572B /* VQuoteTool.m in Sources */,
 				0314D50319B46B5E00FA363C /* VStreamTableDataSource.m in Sources */,
 				0385FEE918EF41B4009FBD68 /* VImageSearchResult.m in Sources */,
 				A70564C319E781EE004A8387 /* VNoContentTableViewCell.m in Sources */,
@@ -4780,7 +4780,7 @@
 				D89A500B1A000E790010D050 /* VFollowUserControl.m in Sources */,
 				0314D48519B46B5E00FA363C /* VKeyboardBarContainerViewController.m in Sources */,
 				0314D49919B46B5E00FA363C /* VActionBarViewController.m in Sources */,
-				D873518F1A316727006D97B2 /* VMemeWorkspaceToolViewController.m in Sources */,
+				D873518F1A316727006D97B2 /* VTextToolViewController.m in Sources */,
 				0314D4BE19B46B5E00FA363C /* VFollowerTableViewController.m in Sources */,
 				0314D49819B46B5E00FA363C /* VRTCUserPostedAtFormatter.m in Sources */,
 				BE88FF711A0005E70064AB28 /* VSequenceActionController.m in Sources */,
@@ -4802,7 +4802,7 @@
 				0314D4A919B46B5E00FA363C /* VMessageCell.m in Sources */,
 				A724EBDC1A099D4D00A8865F /* VStreamCollectionCellWebContent.m in Sources */,
 				0314D2E619B46B0E00FA363C /* VPaginationManager.m in Sources */,
-				D8E178AB1A2F8BDB00C3572B /* VMemeWorkspaceTool.m in Sources */,
+				D8E178AB1A2F8BDB00C3572B /* VMemeTool.m in Sources */,
 				D8C7CF5819DCCC6E00BA33E5 /* VExperienceEnhancerBar.m in Sources */,
 				DBE1077F1A2FFDCD005D303E /* VAdBreakFallback.m in Sources */,
 				0314D06F19B4670A00FA363C /* UIImage+Cropping.m in Sources */,

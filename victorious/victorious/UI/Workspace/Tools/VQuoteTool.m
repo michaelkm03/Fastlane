@@ -6,20 +6,20 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VQuoteWorkspaceTool.h"
+#import "VQuoteTool.h"
 
 #import "VDependencyManager.h"
 
 static NSString * const kTitleKey = @"title";
 
-@interface VQuoteWorkspaceTool ()
+@interface VQuoteTool ()
 
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, strong) UIImage *icon;
 
 @end
 
-@implementation VQuoteWorkspaceTool
+@implementation VQuoteTool
 
 @synthesize renderIndex = _renderIndex;
 

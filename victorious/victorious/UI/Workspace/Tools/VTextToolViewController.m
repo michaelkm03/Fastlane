@@ -6,20 +6,20 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VMemeWorkspaceToolViewController.h"
+#import "VTextToolViewController.h"
 
 static NSString *kMemeFont = @"Impact";
 
 static const CGFloat kPublishMaxMemeFontSize = 120.0f;
 static const CGFloat kPublishMinMemeFontSize = 50.0f;
 
-@interface VMemeWorkspaceToolViewController () <UITextViewDelegate>
+@interface VTextToolViewController () <UITextViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextView *memeTextView;
 
 @end
 
-@implementation VMemeWorkspaceToolViewController
+@implementation VTextToolViewController
 
 + (instancetype)memeToolViewController
 {

@@ -3,15 +3,15 @@
 <plist version="1.0">
 <dict>
 	<key>basic.crop</key>
-	<string>VCropWorkspaceToolViewController</string>
+	<string>VCropToolViewController</string>
 	<key>vertical.picker</key>
 	<string>VTickerPickerViewController</string>
 	<key>filter.tool</key>
 	<string>VFilterTool</string>
 	<key>quote.tool</key>
-	<string>VQuoteWorkspaceTool</string>
+	<string>VQuoteTool</string>
 	<key>meme.tool</key>
-	<string>VMemeWorkspaceTool</string>
+	<string>VMemeTool</string>
 	<key>crop.tool</key>
 	<string>VCropTool</string>
 	<key>text.tool</key>

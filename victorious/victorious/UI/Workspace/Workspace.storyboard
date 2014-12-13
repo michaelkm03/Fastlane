@@ -141,10 +141,10 @@
             </objects>
             <point key="canvasLocation" x="-121" y="343"/>
         </scene>
-        <!--Meme Workspace Tool View Controller-->
+        <!--Text Tool View Controller-->
         <scene sceneID="ooc-1r-Tci">
             <objects>
-                <viewController storyboardIdentifier="VMemeWorkspaceToolViewController" id="iqf-u2-nzW" customClass="VMemeWorkspaceToolViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="VTextToolViewController" id="iqf-u2-nzW" customClass="VTextToolViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="aU6-N8-wDk"/>
                         <viewControllerLayoutGuide type="bottom" id="q6N-GL-x5c"/>
@@ -162,17 +162,9 @@
                                     <outlet property="delegate" destination="iqf-u2-nzW" id="RIQ-Ax-PDs"/>
                                 </connections>
                             </textView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Meme Placeholder" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o0A-GO-zXb">
-                                <rect key="frame" x="36" y="560" width="528" height="20"/>
-                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="o0A-GO-zXb" firstAttribute="leading" secondItem="mWt-oo-Tjc" secondAttribute="leadingMargin" constant="20" id="8VY-QU-2IR"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="o0A-GO-zXb" secondAttribute="trailing" constant="20" id="RiH-Y6-lUU"/>
-                            <constraint firstItem="q6N-GL-x5c" firstAttribute="top" secondItem="o0A-GO-zXb" secondAttribute="bottom" constant="20" id="SMk-yk-T5Z"/>
                             <constraint firstItem="q6N-GL-x5c" firstAttribute="top" secondItem="UrN-l4-5TC" secondAttribute="bottom" id="bNC-4t-0Lv"/>
                             <constraint firstItem="UrN-l4-5TC" firstAttribute="leading" secondItem="mWt-oo-Tjc" secondAttribute="leading" id="eAy-N6-z8B"/>
                             <constraint firstAttribute="trailing" secondItem="UrN-l4-5TC" secondAttribute="trailing" id="q68-N9-pqU"/>
@@ -188,10 +180,10 @@
             </objects>
             <point key="canvasLocation" x="550" y="-336"/>
         </scene>
-        <!--Crop Workspace Tool View Controller-->
+        <!--Crop Tool View Controller-->
         <scene sceneID="3yx-bR-QwV">
             <objects>
-                <viewController storyboardIdentifier="VCropWorkspaceToolViewController" id="68P-kQ-eWn" customClass="VCropWorkspaceToolViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="VCropToolViewController" id="68P-kQ-eWn" customClass="VCropToolViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="k23-nw-3wG"/>
                         <viewControllerLayoutGuide type="bottom" id="ZAx-4g-MB6"/>

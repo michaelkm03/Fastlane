@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VCropWorkspaceToolViewController.h"
+#import "VCropToolViewController.h"
 
-@interface VCropWorkspaceToolViewController () <UIScrollViewDelegate>
+@interface VCropToolViewController () <UIScrollViewDelegate>
 
 @property (nonatomic, weak, readwrite) IBOutlet UIScrollView *croppingScrollView;
 
@@ -18,13 +18,13 @@
 
 @end
 
-@implementation VCropWorkspaceToolViewController
+@implementation VCropToolViewController
 
 + (instancetype)cropViewController
 {
     UIStoryboard *workspaceStoryboard = [UIStoryboard storyboardWithName:@"Workspace"
                                                                   bundle:nil];
-    VCropWorkspaceToolViewController *cropTool = [workspaceStoryboard instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
+    VCropToolViewController *cropTool = [workspaceStoryboard instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
 
     return cropTool;
 }
