@@ -8,11 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
-/**
- *  VMemeWorkspaceToolViewController contains the UI for editing a meme. Namely a textview with attributes corresponding to meme text.
- */
+#import "VTextTypeTool.h"
+
 @interface VTextToolViewController : UIViewController
 
-+ (instancetype)memeToolViewController;
++ (instancetype)textToolViewController;
+
+/**
+ *  Setting this properly will reconfigure the textToolViewController with the attributes of the text type.
+ */
+@property (nonatomic, strong) VTextTypeTool *textType;
 
 @end

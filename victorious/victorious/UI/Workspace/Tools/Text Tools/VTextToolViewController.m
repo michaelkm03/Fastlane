@@ -8,20 +8,15 @@
 
 #import "VTextToolViewController.h"
 
-static NSString *kMemeFont = @"Impact";
-
-static const CGFloat kPublishMaxMemeFontSize = 120.0f;
-static const CGFloat kPublishMinMemeFontSize = 50.0f;
-
 @interface VTextToolViewController () <UITextViewDelegate>
 
-@property (weak, nonatomic) IBOutlet UITextView *memeTextView;
+@property (weak, nonatomic) IBOutlet UITextView *textView;
 
 @end
 
 @implementation VTextToolViewController
 
-+ (instancetype)memeToolViewController
++ (instancetype)textToolViewController
 {
     UIStoryboard *workspaceStoryboard = [UIStoryboard storyboardWithName:@"Workspace"
                                                                   bundle:nil];
@@ -34,8 +29,23 @@ static const CGFloat kPublishMinMemeFontSize = 50.0f;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.memeTextView.attributedText = [[NSAttributedString alloc] initWithString:@"TYPE YO MEME"
-                                                                       attributes:[self memeAttributes]];
+    self.textView.attributedText = [[NSAttributedString alloc] initWithString:@"TYPE YO MEME"
+                                                                       attributes:[[self textType] attributes]];
+}
+
+#pragma mark - Property Accessors
+
+- (void)setTextType:(VTextTypeTool *)textType
+{
+    if (_textType == textType)
+    {
+        return;
+    }
+    
+    self.textView.attributedText = [[NSAttributedString alloc] initWithString:self.textView.text
+                                                                       attributes:[textType attributes]];
+    
+    _textType = textType;
 }
 
 #pragma mark - UITextViewDelegate
@@ -50,21 +60,6 @@ shouldChangeTextInRange:(NSRange)range
         return NO;
     }
     return YES;
-}
-
-#pragma mark - Internal Methods
-
-- (NSDictionary *)memeAttributes
-{
-    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    paragraphStyle.alignment                = NSTextAlignmentCenter;
-    return @{
-             NSParagraphStyleAttributeName : paragraphStyle,
-             NSFontAttributeName : [UIFont fontWithName:kMemeFont size:kPublishMinMemeFontSize],
-             NSForegroundColorAttributeName : [UIColor whiteColor],
-             NSStrokeColorAttributeName : [UIColor blackColor],
-             NSStrokeWidthAttributeName : @(-5.0)
-             };
 }
 
 @end

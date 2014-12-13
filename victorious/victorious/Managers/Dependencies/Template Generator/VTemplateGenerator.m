@@ -38,6 +38,20 @@ static NSString * const kToolsKey = @"tools";
 static NSString * const kPickerKey = @"picker";
 static NSString * const kFilterIndexKey = @"filterIndex";
 
+// Text properties
+static NSString * const kTextToolHorizontalAlignment = @"textToolHorizontalAlignment";
+static NSString * const kTextToolVerticalAlignment = @"textToolVerticalAlignment";
+static NSString * const kTextToolFont = @"textToolFont";
+static NSString * const kTextToolColor = @"textToolColor";
+static NSString * const kTextToolStrokeColor = @"textToolStrokeColor";
+static NSString * const kTextToolStrokeWidth = @"textToolStrokeWidth";
+static NSString * const kRedKey = @"red";
+static NSString * const kGreenKey = @"green";
+static NSString * const kBlueKey = @"blue";
+static NSString * const kAlphaKey = @"alpha";
+static NSString * const kFontNameKey = @"fontName";
+static NSString * const kFontSizeKey = @"fontSize";
+
 @interface VTemplateGenerator ()
 
 @property (nonatomic, strong) NSDictionary *dataFromInitCall;
@@ -103,11 +117,29 @@ static NSString * const kFilterIndexKey = @"filterIndex";
                                  @{
                                      kClassNameKey: @"textType.tool",
                                      kTitleKey: @"meme",
+                                     kTextToolHorizontalAlignment: @"center",
+                                     kTextToolVerticalAlignment: @"bottom",
+                                     kTextToolFont:
+                                         @{
+                                             kFontNameKey: @"Impact",
+                                             kFontSizeKey: @20,
+                                             },
+                                     kTextToolColor:
+                                         @{
+                                             kRedKey: @1.0f,
+                                             kGreenKey: @1.0f,
+                                             kBlueKey: @1.0f,
+                                             kAlphaKey: @1.0f,
+                                         },
+                                     kTextToolStrokeColor:
+                                         @{
+                                             kRedKey: @0.0f,
+                                             kGreenKey: @0.0f,
+                                             kBlueKey: @0.0f,
+                                             kAlphaKey: @1.0f,
+                                             },
+                                     kTextToolStrokeWidth: @-5.0f,
                                      },
-                                 @{
-                                     kClassNameKey: @"textType.tool",
-                                     kTitleKey: @"quote",
-                                     }
                                  ]
                          },
                      @{

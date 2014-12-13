@@ -17,10 +17,11 @@ typedef NS_ENUM(NSInteger, VTextTypeVerticalAlignment)
     VTextTypeVerticalAlignmentBottomUp, ///< Text should be aligned to the bottom and grow up
 };
 
-@interface VTextTypeTool : NSObject
+@interface VTextTypeTool : NSObject <VHasManagedDependancies, VWorkspaceTool>
 
 @property (nonatomic, readonly) VTextTypeVerticalAlignment verticalAlignment;
 @property (nonatomic, readonly) NSDictionary *attributes;
 @property (nonatomic, readonly) UIColor *dimmingBackgroundColor;
+@property (nonatomic, readonly) NSString *placeholderText;
 
 @end
