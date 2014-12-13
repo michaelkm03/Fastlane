@@ -66,6 +66,7 @@ static char kKVOContext;
     [super awakeFromNib];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loggedInChanged:) name:kLoggedInChangedNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(inboxMessageNotification:) name:VDeeplinkManagerInboxMessageNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
 - (void)dealloc
@@ -173,6 +174,14 @@ static char kKVOContext;
         {
             [self.messageCountCoordinator updateUnreadMessageCount];
         } failBlock:nil];
+    }
+}
+
+- (void)applicationDidBecomeActive:(NSNotification *)notification
+{
+    if ( self.dependencyManager.objectManager.mainUserLoggedIn )
+    {
+        [self.messageCountCoordinator updateUnreadMessageCount];
     }
 }
 
