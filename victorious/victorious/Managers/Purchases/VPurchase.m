@@ -42,7 +42,7 @@
         _failureCallback = failureCallback;
         _successCallback = successCallback;
         
-        _restoreProductIdentifiers = [[NSMutableArray alloc] init];
+        _restoredProductIdentifiers = [[NSMutableSet alloc] init];
     }
     return self;
 }

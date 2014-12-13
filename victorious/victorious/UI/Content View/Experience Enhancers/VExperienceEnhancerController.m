@@ -75,7 +75,7 @@
                                                  selector:@selector(updateData)
                                                      name:VPurchaseManagerProductsDidUpdateNotification
                                                    object:nil];
-        NSArray *productIdentifiers = [VVoteType productIdentifiersFromVoteTypes:voteTypes];
+        NSSet *productIdentifiers = [VVoteType productIdentifiersFromVoteTypes:voteTypes];
         
         if ( !self.purchaseManager.isPurchaseRequestActive )
         {

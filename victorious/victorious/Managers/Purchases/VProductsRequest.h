@@ -9,17 +9,17 @@
 @class VProduct;
 
 typedef void (^VProductsRequestFailureBlock) (NSError *error);
-typedef void (^VProductsRequestSuccessBlock) (NSArray *products);
+typedef void (^VProductsRequestSuccessBlock) (NSSet *products);
 
 @interface VProductsRequest : NSObject
 
-@property (nonatomic, readonly) NSArray *productIdentifiers;
+@property (nonatomic, readonly) NSSet *productIdentifiers;
 @property (nonatomic, readonly) VProductsRequestFailureBlock failureCallback;
 @property (nonatomic, readonly) VProductsRequestSuccessBlock successCallback;
 @property (nonatomic, readonly, assign) BOOL isFetchComplete;
 @property (nonatomic, strong) NSMutableArray *products;
 
-- (instancetype)initWithProductIdentifiers:(NSArray *)productIdentifiers
+- (instancetype)initWithProductIdentifiers:(NSSet *)productIdentifiers
                                    success:(VProductsRequestSuccessBlock)successCallback
                                    failure:(VProductsRequestFailureBlock)failureCallback;
 

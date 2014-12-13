@@ -24,6 +24,15 @@ NSString * const VPurchaseManagerProductsDidUpdateNotification;
 @interface VPurchaseManager : NSObject
 
 /**
+ Returns YES if a successful products request has returned and there are products
+ available for purchase (or that are already purchased).  The idea is that if no valid
+ products can be found, we should assume that purchasing is not enabled.  This could
+ also be the case if an error is preventing products from being loaded, but in most cases
+ the application should behave in the same way.
+ */
+@property (nonatomic, readonly) BOOL isPurchasingEnabled;
+
+/**
  Returns YES if a products fetch request, purchase restore or purchase is in progress.
  Proper state management in this class depends on only one request being active and will
  throw an assertion if calling code tries to send another request of these kinds.  Make sure
@@ -32,10 +41,10 @@ NSString * const VPurchaseManagerProductsDidUpdateNotification;
 @property (nonatomic, readonly) BOOL isPurchaseRequestActive;
 
 /**
- Returns the number of items stored in the purchased record, i.e. how many In-App purchases
- the user has made or restored on this device.
+ Returns the product identifiers of In-App purchases
+ the user has made or restored on this device as stored in the purchased record.
  */
-@property (nonatomic, readonly) NSUInteger numberOfPurchasedItems;
+@property (nonatomic, readonly) NSSet *purchasedProductIdentifiers;
 
 /**
  Returns the singleton instance.  For better or for worse, this manager should be
@@ -91,7 +100,7 @@ NSString * const VPurchaseManagerProductsDidUpdateNotification;
  be called first in order to provide VProduct objects, which are required to make a
  purchase of the corresponding product on iTunesConnect.
  */
-- (void)fetchProductsWithIdentifiers:(NSArray *)productIdentifiers
+- (void)fetchProductsWithIdentifiers:(NSSet *)productIdentifiers
                              success:(VProductsRequestSuccessBlock)successCallback
                              failure:(VProductsRequestFailureBlock)failureCallback;
 

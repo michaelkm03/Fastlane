@@ -44,7 +44,7 @@ static const NSInteger kResetPurchasesButtonIndex = 5;
 @property (nonatomic, assign) BOOL    showChromeCastButton;
 @property (nonatomic, assign) BOOL    showEnvironmentSetting;
 @property (nonatomic, assign) BOOL    showPushNotificationSettings;
-@property (nonatomic, assign) BOOL    showPurchaseReset;
+@property (nonatomic, assign) BOOL    showPurchaseSettings;
 
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *labels;
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *rightLabels;
@@ -105,11 +105,7 @@ static const NSInteger kResetPurchasesButtonIndex = 5;
     self.showEnvironmentSetting = YES;
 #endif
     
-#ifdef V_NO_RESET_PURCHASES
-    self.showPurchaseReset = NO;
-#else
-    self.showPurchaseReset = YES;
-#endif
+    self.showPurchaseSettings = [VPurchaseManager sharedInstance].isPurchasingEnabled;
     
     self.showPushNotificationSettings = YES;
     
@@ -149,7 +145,8 @@ static const NSInteger kResetPurchasesButtonIndex = 5;
 
 - (void)updatePurchasesCount
 {
-    self.resetPurchasesCell.detailTextLabel.text = @( [[VPurchaseManager sharedInstance] numberOfPurchasedItems] ).stringValue;
+    NSUInteger count = [VPurchaseManager sharedInstance].purchasedProductIdentifiers.count;
+    self.resetPurchasesCell.detailTextLabel.text = @( count ).stringValue;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -158,18 +155,6 @@ static const NSInteger kResetPurchasesButtonIndex = 5;
     {
         [self sendHelp:self];
     }
-    
-#ifndef V_NO_RESET_PURCHASES
-    if (kSettingsSectionIndex == indexPath.section && kResetPurchasesButtonIndex == indexPath.row)
-    {
-        if (self.showPurchaseReset)
-        {
-            [[VPurchaseManager sharedInstance] resetPurchases];
-            [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-            [self updatePurchasesCount];
-        }
-    }
-#endif
 }
 
 - (void)loginStatusDidChange:(NSNotification *)note
@@ -282,7 +267,7 @@ static const NSInteger kResetPurchasesButtonIndex = 5;
     }
     else if (kSettingsSectionIndex == indexPath.section && kResetPurchasesButtonIndex == indexPath.row)
     {
-        if (self.showPurchaseReset)
+        if (self.showPurchaseSettings)
         {
             return self.tableView.rowHeight;
         }
