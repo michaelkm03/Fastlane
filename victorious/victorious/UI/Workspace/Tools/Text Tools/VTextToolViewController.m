@@ -17,6 +17,9 @@
 
 @property (weak, nonatomic) IBOutlet UIImageView *renderedTextImagePreviewView;
 
+@property (nonatomic, strong) NSOperationQueue *textRenderingQueue;
+@property (nonatomic, strong) dispatch_queue_t searialTextRenderingQueue;
+
 @end
 
 @implementation VTextToolViewController
@@ -34,14 +37,27 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.searialTextRenderingQueue = dispatch_queue_create("com.victorious.textToolRenderingQueue", DISPATCH_QUEUE_SERIAL);
+    self.textRenderingQueue = [[NSOperationQueue alloc] init];
+    self.textRenderingQueue.maxConcurrentOperationCount = 1;
+    
     self.textView.attributedText = [[NSAttributedString alloc] initWithString:@"TYPE YO MEME"
                                                                        attributes:[[self textType] attributes]];
+    self.textView.textContainerInset = UIEdgeInsetsZero;
+    self.textView.scrollEnabled = NO;
+    
     UITapGestureRecognizer *tapToEditGesture = [[UITapGestureRecognizer alloc] initWithTarget:self
                                                                                        action:@selector(startEditing:)];
     [self.view addGestureRecognizer:tapToEditGesture];
 }
 
 #pragma mark - Property Accessors
+
+- (UIImage *)renderedImage
+{
+    return self.renderedTextImagePreviewView.image;
+}
 
 - (void)setTextType:(VTextTypeTool *)textType
 {
@@ -55,9 +71,14 @@
     
     if (_textType.verticalAlignment != textType.verticalAlignment)
     {
-        
-        [self.view removeConstraints:self.centerVerticalAlignmentConstraints];
-        [self.view removeConstraints:self.bottomVerticalAlignmentConstraints];
+        [self.centerVerticalAlignmentConstraints enumerateObjectsUsingBlock:^(NSLayoutConstraint *constraint, NSUInteger idx, BOOL *stop)
+         {
+             [self.view removeConstraint:constraint];
+         }];
+        [self.bottomVerticalAlignmentConstraints enumerateObjectsUsingBlock:^(NSLayoutConstraint *constraint, NSUInteger idx, BOOL *stop)
+         {
+             [self.view removeConstraint:constraint];
+         }];
         
         NSDictionary *viewMap = @{@"textView": self.textView};
         
@@ -113,7 +134,6 @@
         [self.view layoutIfNeeded];
         
     }
-    
     _textType = textType;
 }
 
@@ -138,25 +158,35 @@ shouldChangeTextInRange:(NSRange)range
     return YES;
 }
 
-- (void)textViewDidChange:(UITextView *)textView
+- (void)textViewDidEndEditing:(UITextView *)textView
 {
-    CGFloat scaleFactor = 1024 / CGRectGetWidth(self.view.bounds);
-    CGRect scaledRect = CGRectMake(0,
-                                   0,
-                                   CGRectGetWidth(self.view.bounds) * scaleFactor,
-                                   CGRectGetHeight(self.view.bounds) * scaleFactor);
-    UIGraphicsBeginImageContextWithOptions(scaledRect.size, NO, scaleFactor);
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextSaveGState(context);
-    {
-        CGContextScaleCTM(context, scaleFactor, scaleFactor);
-        [self.textView.attributedText drawWithRect:self.textView.frame
-                                           options:NSStringDrawingUsesLineFragmentOrigin
-                                           context:nil];
-        self.renderedTextImagePreviewView.image = UIGraphicsGetImageFromCurrentImageContext();
-    }
-    CGContextRestoreGState(context);
-    UIGraphicsEndImageContext();
+    [self.textRenderingQueue cancelAllOperations];
+    [self.textRenderingQueue addOperation:[NSBlockOperation blockOperationWithBlock:^
+                                           {
+                                               CGFloat scaleFactor = 512 / CGRectGetWidth(self.view.bounds);
+                                               CGRect scaledRect = CGRectMake(0,
+                                                                              0,
+                                                                              CGRectGetWidth(self.view.bounds) * scaleFactor,
+                                                                              CGRectGetHeight(self.view.bounds) * scaleFactor);
+                                               UIGraphicsBeginImageContextWithOptions(scaledRect.size, NO, scaleFactor);
+                                               CGContextRef context = UIGraphicsGetCurrentContext();
+                                               __block UIImage *renderedImage;
+                                               CGContextSaveGState(context);
+                                               {
+                                                   CGContextScaleCTM(context, scaleFactor, scaleFactor);
+                                                   [self.textView.attributedText drawWithRect:self.textView.frame
+                                                                                      options:NSStringDrawingUsesLineFragmentOrigin
+                                                                                      context:nil];
+                                                   renderedImage = UIGraphicsGetImageFromCurrentImageContext();
+                                               }
+                                               CGContextRestoreGState(context);
+                                               UIGraphicsEndImageContext();
+                                               
+                                               dispatch_async(dispatch_get_main_queue(), ^
+                                                              {
+                                                                  self.renderedTextImagePreviewView.image = renderedImage;
+                                                              });
+                                           }]];
 }
 
 @end

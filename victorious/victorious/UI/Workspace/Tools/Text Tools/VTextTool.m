@@ -18,6 +18,9 @@
 #import "VDependencyManager.h"
 #import "VDependencyManager+VWorkspaceTool.h"
 
+// Rendering
+#import "CIImage+VImage.h"
+
 static NSString * const kTitleKey = @"title";
 static NSString * const kIconKey = @"icon";
 static NSString * const kSubtoolsKey = @"subtools";
@@ -77,7 +80,39 @@ static NSString * const kFilterIndexKey = @"filterIndex";
 
 - (CIImage *)imageByApplyingToolToInputImage:(CIImage *)inputImage
 {
-    return inputImage;
+    CIImage *textImage = [CIImage v_imageWithUImage:self.canvasToolViewController.renderedImage];
+    
+    // Apply scale
+    CGFloat widthScaleFactor = inputImage.extent.size.width / textImage.extent.size.width;
+    CGFloat heightScaleFactor = inputImage.extent.size.height / textImage.extent.size.height;
+    CGAffineTransform scaleTransform = CGAffineTransformMakeScale(widthScaleFactor, heightScaleFactor);
+    
+    CIFilter *transformScaleFilter = [CIFilter filterWithName:@"CIAffineTransform"];
+    [transformScaleFilter setValue:[NSValue valueWithBytes:&scaleTransform
+                                             objCType:@encode(CGAffineTransform)]
+                       forKey:kCIInputTransformKey];
+    [transformScaleFilter setValue:textImage
+                       forKey:kCIInputImageKey];
+    
+    // Adjust origin
+    CGFloat originXDifference = [transformScaleFilter outputImage].extent.origin.x - textImage.extent.origin.x;
+    CGFloat originYDifference = [transformScaleFilter outputImage].extent.origin.y - textImage.extent.origin.y;
+    CGAffineTransform originTransofrm = CGAffineTransformMakeTranslation(originXDifference, originYDifference);
+    CIFilter *transformOriginFilter = [CIFilter filterWithName:@"CIAffineTransform"];
+    [transformOriginFilter setValue:[NSValue valueWithBytes:&originTransofrm
+                                                  objCType:@encode(CGAffineTransform)]
+                            forKey:kCIInputTransformKey];
+    [transformOriginFilter setValue:[transformScaleFilter outputImage]
+                            forKey:kCIInputImageKey];
+    
+    // Composite
+    CIFilter *compositionFilter = [CIFilter filterWithName:@"CISourceOverCompositing"];
+    [compositionFilter setValue:inputImage
+                         forKey:kCIInputBackgroundImageKey];
+    [compositionFilter setValue:[transformOriginFilter outputImage]
+                         forKey:kCIInputImageKey];
+    
+    return [compositionFilter outputImage];
 }
 
 - (NSInteger)renderIndex

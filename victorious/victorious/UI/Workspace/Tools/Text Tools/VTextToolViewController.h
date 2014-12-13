@@ -19,4 +19,6 @@
  */
 @property (nonatomic, strong) VTextTypeTool *textType;
 
+@property (nonatomic, readonly) UIImage *renderedImage;
+
 @end
