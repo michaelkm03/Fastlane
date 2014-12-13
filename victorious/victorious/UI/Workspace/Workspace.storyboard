@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="63Q-Vo-LWD">
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -152,8 +153,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="THIS IS A MEME" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="UrN-l4-5TC">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" placeholderIntrinsicWidth="215.5" placeholderIntrinsicHeight="53" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" text="This is a text tool" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="UrN-l4-5TC">
+                                <rect key="frame" x="193" y="527" width="215.5" height="53"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" name="Impact" family="Impact" pointSize="30"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done"/>
@@ -161,17 +162,23 @@
                                     <outlet property="delegate" destination="iqf-u2-nzW" id="RIQ-Ax-PDs"/>
                                 </connections>
                             </textView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="z1b-m2-nSt" userLabel="Rendered Image Preview">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="q6N-GL-x5c" firstAttribute="top" secondItem="UrN-l4-5TC" secondAttribute="bottom" id="bNC-4t-0Lv"/>
-                            <constraint firstItem="UrN-l4-5TC" firstAttribute="leading" secondItem="mWt-oo-Tjc" secondAttribute="leading" id="eAy-N6-z8B"/>
-                            <constraint firstAttribute="trailing" secondItem="UrN-l4-5TC" secondAttribute="trailing" id="q68-N9-pqU"/>
-                            <constraint firstItem="UrN-l4-5TC" firstAttribute="top" secondItem="aU6-N8-wDk" secondAttribute="bottom" id="xyl-sZ-YaO"/>
+                            <constraint firstAttribute="centerX" secondItem="UrN-l4-5TC" secondAttribute="centerX" constant="-1" placeholder="YES" id="8ic-wb-deT"/>
+                            <constraint firstItem="z1b-m2-nSt" firstAttribute="leading" secondItem="mWt-oo-Tjc" secondAttribute="leading" id="NAi-xM-1D9"/>
+                            <constraint firstItem="z1b-m2-nSt" firstAttribute="top" secondItem="aU6-N8-wDk" secondAttribute="bottom" id="kij-QG-ehG"/>
+                            <constraint firstAttribute="trailing" secondItem="z1b-m2-nSt" secondAttribute="trailing" id="mJ1-eD-GO8"/>
+                            <constraint firstItem="q6N-GL-x5c" firstAttribute="top" secondItem="UrN-l4-5TC" secondAttribute="bottom" constant="20" placeholder="YES" id="pKK-II-Kzo"/>
+                            <constraint firstItem="q6N-GL-x5c" firstAttribute="top" secondItem="z1b-m2-nSt" secondAttribute="bottom" id="yxV-cz-BaP"/>
                         </constraints>
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
                     <connections>
+                        <outlet property="renderedTextImagePreviewView" destination="z1b-m2-nSt" id="6Kb-qk-KzP"/>
                         <outlet property="textView" destination="UrN-l4-5TC" id="ikY-jo-pBI"/>
                     </connections>
                 </viewController>

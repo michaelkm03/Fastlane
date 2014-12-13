@@ -22,7 +22,7 @@ static NSString * const kTextToolStrokeWidth = @"textToolStrokeWidth";
 @property (nonatomic, copy, readwrite) NSString *title;
 @property (nonatomic, strong, readwrite) NSDictionary *attributes;
 @property (nonatomic, strong, readwrite) UIColor *dimmingBackgroundColor;
-//@property (nonatomic, copy, readwrite) NSString *placeholderText;
+@property (nonatomic, strong, readwrite) NSString *placeholderText;
 @property (nonatomic, assign, readwrite) VTextTypeVerticalAlignment verticalAlignment;
 
 @end
@@ -38,20 +38,62 @@ static NSString * const kTextToolStrokeWidth = @"textToolStrokeWidth";
     {
         _title = [dependencyManager stringForKey:kTitleKey];
         
-        NSMutableDictionary *textAttributes = [[NSMutableDictionary alloc] init];
-
-        textAttributes[NSParagraphStyleAttributeName] = [self paragraphStyleWithDependencyManager:dependencyManager];
-        textAttributes[NSFontAttributeName] = [dependencyManager fontForKey:kTextToolFont];
-        textAttributes[NSForegroundColorAttributeName] = [dependencyManager colorForKey:kTextToolColor];
-        textAttributes[NSStrokeColorAttributeName] = [dependencyManager colorForKey:kTextToolStrokeColor];
-        textAttributes[NSStrokeWidthAttributeName] = [dependencyManager numberForKey:kTextToolStrokeWidth];
+        _attributes = [self textAttributesWithDependencyManager:dependencyManager];
         
-        _attributes = [NSDictionary dictionaryWithDictionary:textAttributes];
+        _verticalAlignment = [self verticalAlignmentWithDependencyManager:dependencyManager];
     }
     return self;
 }
 
 #pragma mark - Internal Methods
+
+- (NSDictionary *)textAttributesWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    NSMutableDictionary *textAttributes = [[NSMutableDictionary alloc] init];
+    
+    textAttributes[NSParagraphStyleAttributeName] = [self paragraphStyleWithDependencyManager:dependencyManager];
+    
+    if ([dependencyManager fontForKey:kTextToolFont] != nil)
+    {
+        textAttributes[NSFontAttributeName] = [dependencyManager fontForKey:kTextToolFont];
+    }
+    if ([dependencyManager colorForKey:kTextToolColor])
+    {
+        textAttributes[NSForegroundColorAttributeName] = [dependencyManager colorForKey:kTextToolColor];
+    }
+    if ([dependencyManager colorForKey:kTextToolStrokeColor])
+    {
+        textAttributes[NSStrokeColorAttributeName] = [dependencyManager colorForKey:kTextToolStrokeColor];
+    }
+    if ([dependencyManager numberForKey:kTextToolStrokeWidth])
+    {
+        textAttributes[NSStrokeWidthAttributeName] = [dependencyManager numberForKey:kTextToolStrokeWidth];
+    }
+    
+    return textAttributes;
+}
+
+- (VTextTypeVerticalAlignment)verticalAlignmentWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    if ([dependencyManager stringForKey:kTextToolVerticalAlignment] == nil)
+    {
+        return VTextTypeVerticalAlignmentCenter;
+    }
+    
+    NSString *textToolVerticalAlignment = [dependencyManager stringForKey:kTextToolVerticalAlignment];
+    if ([textToolVerticalAlignment isEqualToString:@"bottom"])
+    {
+        return VTextTypeVerticalAlignmentBottomUp;
+    }
+    else if ([textToolVerticalAlignment isEqualToString:@"center"])
+    {
+        return VTextTypeVerticalAlignmentCenter;
+    }
+    else
+    {
+        return VTextTypeVerticalAlignmentCenter;
+    }
+}
 
 - (NSParagraphStyle *)paragraphStyleWithDependencyManager:(VDependencyManager *)dependencyManager
 {

@@ -122,7 +122,7 @@ static NSString * const kFontSizeKey = @"fontSize";
                                      kTextToolFont:
                                          @{
                                              kFontNameKey: @"Impact",
-                                             kFontSizeKey: @20,
+                                             kFontSizeKey: @50,
                                              },
                                      kTextToolColor:
                                          @{
@@ -139,6 +139,32 @@ static NSString * const kFontSizeKey = @"fontSize";
                                              kAlphaKey: @1.0f,
                                              },
                                      kTextToolStrokeWidth: @-5.0f,
+                                     },
+                                 @{
+                                     kClassNameKey: @"textType.tool",
+                                     kTitleKey: @"quote",
+                                     kTextToolHorizontalAlignment: @"center",
+                                     kTextToolVerticalAlignment: @"center",
+                                     kTextToolFont:
+                                         @{
+                                             kFontNameKey: @"PTSans-Narrow",
+                                             kFontSizeKey: @23,
+                                             },
+                                     kTextToolColor:
+                                         @{
+                                             kRedKey: @1.0f,
+                                             kGreenKey: @1.0f,
+                                             kBlueKey: @1.0f,
+                                             kAlphaKey: @1.0f,
+                                             },
+                                     kTextToolStrokeColor:
+                                         @{
+                                             kRedKey: @1.0f,
+                                             kGreenKey: @1.0f,
+                                             kBlueKey: @1.0f,
+                                             kAlphaKey: @1.0f,
+                                             },
+                                     kTextToolStrokeWidth: @0.0f,
                                      },
                                  ]
                          },
