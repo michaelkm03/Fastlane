@@ -6,13 +6,14 @@
 //  Copyright (c) 2014 Will Long. All rights reserved.
 //
 
-#import "VNumericalBadgeView.h"
+#import "VBadgeBackgroundView.h"
 #import "VDependencyManager.h"
+#import "VNumericalBadgeView.h"
 
 @interface VNumericalBadgeView ()
 
 @property (nonatomic, weak) UILabel *label;
-@property (nonatomic, strong) UIColor *circleColor;
+@property (nonatomic, weak) VBadgeBackgroundView *backgroundView;
 
 @end
 
@@ -43,9 +44,22 @@ static NSInteger const kLargeNumberCutoff = 100; ///< Numbers equal to or greate
 
 - (void)commonInit
 {
-    _circleColor = [UIColor colorWithRed:0.88f green:0.18f blue:0.22f alpha:1.0f];
     super.backgroundColor = [UIColor clearColor];
-    self.contentMode = UIViewContentModeRedraw;
+    
+    VBadgeBackgroundView *backgroundView = [[VBadgeBackgroundView alloc] init];
+    backgroundView.color = [UIColor colorWithRed:0.88f green:0.18f blue:0.22f alpha:1.0f];
+    backgroundView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self addSubview:backgroundView];
+    _backgroundView = backgroundView;
+    
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[backgroundView]|"
+                                                                 options:0
+                                                                 metrics:nil
+                                                                   views:NSDictionaryOfVariableBindings(backgroundView)]];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[backgroundView]|"
+                                                                 options:0
+                                                                 metrics:nil
+                                                                   views:NSDictionaryOfVariableBindings(backgroundView)]];
     
     UILabel *label = [[UILabel alloc] init];
     label.translatesAutoresizingMaskIntoConstraints = NO;
@@ -93,17 +107,9 @@ static NSInteger const kLargeNumberCutoff = 100; ///< Numbers equal to or greate
         return CGSizeZero;
     }
     
-    // We should be at least as wide as we are tall, or we look lemon-shaped with the corner radius!
+    // We should be at least as wide as we are tall, or the badge background will be lemon-shaped!
     return CGSizeMake(MAX(size.width + kMargin.left + kMargin.right, size.height + kMargin.top + kMargin.bottom),
                       size.height + kMargin.top + kMargin.bottom);
-}
-
-- (void)drawRect:(CGRect)rect
-{
-    CGFloat cornerRadius = CGRectGetHeight(rect) * 0.5f;
-    UIBezierPath *background = [UIBezierPath bezierPathWithRoundedRect:rect cornerRadius:cornerRadius];
-    [self.backgroundColor setFill];
-    [background fill];
 }
 
 - (UIFont *)font
@@ -119,12 +125,12 @@ static NSInteger const kLargeNumberCutoff = 100; ///< Numbers equal to or greate
 
 - (UIColor *)backgroundColor
 {
-    return self.circleColor;
+    return self.backgroundView.color;
 }
 
 - (void)setBackgroundColor:(UIColor *)backgroundColor
 {
-    self.circleColor = backgroundColor;
+    self.backgroundView.color = backgroundColor;
 }
 
 - (UIColor *)textColor

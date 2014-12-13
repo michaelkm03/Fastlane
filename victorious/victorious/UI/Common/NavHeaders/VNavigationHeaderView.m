@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "VBadgeBackgroundView.h"
 #import "VNavigationHeaderView.h"
 #import "VNumericalBadgeView.h"
 #import "VThemeManager.h"
@@ -19,7 +20,7 @@
 @property (nonatomic, weak) IBOutlet UIButton *backButton;
 @property (nonatomic, weak) IBOutlet UIButton *menuButton;
 @property (nonatomic, weak) IBOutlet VNumericalBadgeView *badgeView;
-@property (nonatomic, weak) IBOutlet UIView *badgeBorder;
+@property (nonatomic, weak) IBOutlet VBadgeBackgroundView *badgeBorder;
 @property (nonatomic, weak) IBOutlet UIButton *addButton;
 @property (nonatomic, weak, readwrite) IBOutlet UIView<VNavigationSelectorProtocol> *navSelector;
 @property (nonatomic) NSInteger lastSelectedControl;
@@ -85,7 +86,7 @@
     [self.addButton setTitleColor:tintColor forState:UIControlStateNormal];
     
     self.backgroundColor = isTemplateC ? [UIColor whiteColor] : [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
-    self.badgeBorder.backgroundColor = self.backgroundColor;
+    self.badgeBorder.color = self.backgroundColor;
     
     UIImage *image = [self.menuButton.currentImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     [self.menuButton setImage:image forState:UIControlStateNormal];
