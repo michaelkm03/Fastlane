@@ -341,7 +341,7 @@ NSString * const VDeeplinkManagerInboxMessageNotification = @"VDeeplinkManagerIn
     
     if ([root.currentViewController isKindOfClass:[VSideMenuViewController class]])
     {
-        [((VSideMenuViewController *)root.currentViewController).contentViewController pushViewController:enterTokenVC animated:YES];
+        [(VSideMenuViewController *)root.currentViewController transitionToNavStack:@[enterTokenVC]];
     }
 }
 
