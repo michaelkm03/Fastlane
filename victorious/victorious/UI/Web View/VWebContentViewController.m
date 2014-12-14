@@ -77,8 +77,6 @@
     [self.navigationController.navigationBar setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
     self.navigationController.navigationBar.shadowImage = nil;
     self.navigationController.navigationBar.translucent = NO;
-    
-    [[VThemeManager sharedThemeManager] applyNormalNavBarStyling];
 }
 
 - (void)setShouldShowLoadingState:(BOOL)shouldShowLoadingState

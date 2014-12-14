@@ -141,8 +141,6 @@ static const NSInteger kCharacterLimit = 255;
     }
     void (^showCamera)(void) = ^void(void)
     {
-        [[VThemeManager sharedThemeManager] applyStyling];
-        
         VCameraViewController *cameraViewController = [VCameraViewController cameraViewControllerStartingWithStillCapture];
         cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
         {
@@ -194,13 +192,9 @@ static const NSInteger kCharacterLimit = 255;
         [alertController addAction:discardAction];
         UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:cancelActionTitle
                                                                style:UIAlertActionStyleCancel
-                                                             handler:^(UIAlertAction *action)
-                                       {
-                                           [[VThemeManager sharedThemeManager] applyStyling];
-                                       }];
+                                                             handler:nil];
         [alertController addAction:cancelAction];
         
-        [[VThemeManager sharedThemeManager] removeStyling];
         [self presentViewController:alertController animated:YES completion:nil];
     }
     else

@@ -9,6 +9,7 @@
 #import "VDependencyManager.h"
 #import "VMenuController.h"
 #import "VMultipleStreamViewController.h"
+#import "VNavigationController.h"
 #import "VNavigationDestination.h"
 #import "VProvidesNavigationMenuItemBadge.h"
 #import "VSettingManager.h"
@@ -102,8 +103,11 @@ static NSString * const kMenuKey = @"menu";
     
     
     self.menuViewController = [self.dependencyManager viewControllerForKey:kMenuKey];
-    self.contentViewController = [[UINavigationController alloc] init];
-    self.contentViewController.delegate = self;
+    self.contentViewController = [[VNavigationController alloc] initWithDependencyManager:self.dependencyManager];
+    self.contentViewController.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Menu"]
+                                                                                    style:UIBarButtonItemStylePlain
+                                                                                   target:self
+                                                                                   action:@selector(presentMenuViewController)];
     
     if (!_contentViewInLandscapeOffsetCenterX)
     {
@@ -316,12 +320,12 @@ static NSString * const kMenuKey = @"menu";
 - (void)transitionToNavStack:(NSArray *)navStack
 {
     //Dismiss any modals in the stack or they will cover the new VC
-    for (UIViewController *vc in self.contentViewController.viewControllers)
+    for (UIViewController *vc in self.contentViewController.navigationController.viewControllers)
     {
         [vc dismissViewControllerAnimated:NO completion:nil];
     }
     
-    self.contentViewController.viewControllers = navStack;
+    self.contentViewController.navigationController.viewControllers = navStack;
 }
 
 #pragma mark - Motion effects
@@ -381,7 +385,7 @@ static NSString * const kMenuKey = @"menu";
     }
 }
 
-- (void)setContentViewController:(UINavigationController *)contentViewController
+- (void)setContentViewController:(VNavigationController *)contentViewController
 {
     NSAssert(!_contentViewController, @"contentViewController should only be set once");
     _contentViewController = contentViewController;
@@ -399,7 +403,7 @@ static NSString * const kMenuKey = @"menu";
     VNavigationMenuItemBadgeNumberUpdateBlock badgeNumberUpdateBlock = ^(NSInteger badgeNumber)
     {
         [[UIApplication sharedApplication] setApplicationIconBadgeNumber:badgeNumber];
-        [weakSelf.contentViewController.viewControllers enumerateObjectsUsingBlock:^(UIViewController *viewController, NSUInteger idx, BOOL *stop)
+        [weakSelf.contentViewController.navigationController.viewControllers enumerateObjectsUsingBlock:^(UIViewController *viewController, NSUInteger idx, BOOL *stop)
         {
             [viewController.navHeaderView setBadgeNumber:badgeNumber];
         }];

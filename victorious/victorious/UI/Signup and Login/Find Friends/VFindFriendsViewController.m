@@ -214,9 +214,6 @@
 {
     if ([MFMailComposeViewController canSendMail])
     {
-        // The style is removed then re-applied so the mail compose view controller has the default appearance
-        [[VThemeManager sharedThemeManager] removeStyling];
-        
         NSString *appName = [[VThemeManager sharedThemeManager] themedStringForKey:kVChannelName];
         NSString *msgSubj = [NSLocalizedString(@"InviteFriendsSubject", @"") stringByReplacingOccurrencesOfString:@"%@" withString:appName];
         
@@ -238,9 +235,6 @@
 {
     if ([MFMessageComposeViewController canSendText])
     {
-        // The style is removed then re-applied so the mail compose view controller has the default appearance
-        [[VThemeManager sharedThemeManager] removeStyling];
-        
         NSString *appName = [[VThemeManager sharedThemeManager] themedStringForKey:kVChannelName];
         NSString *msgSubj = [NSLocalizedString(@"InviteFriendsSubject", @"") stringByReplacingOccurrencesOfString:@"%@" withString:appName];
         
@@ -265,20 +259,14 @@
 
 - (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
 {
-    [self dismissViewControllerAnimated:YES completion:^(void)
-    {
-        [[VThemeManager sharedThemeManager] applyStyling];
-    }];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - MFMessageComposeViewControllerDelegate methods
 
 - (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result
 {
-    [self dismissViewControllerAnimated:YES completion:^(void)
-    {
-        [[VThemeManager sharedThemeManager] applyStyling];
-    }];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

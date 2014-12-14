@@ -52,15 +52,6 @@ const CGFloat kVLoadNextPagePoint = .75f;
     self.collectionView.delegate = nil;
 }
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-
-    self.automaticallyAdjustsScrollViewInsets = NO;
-    
-    self.collectionView.alwaysBounceVertical = YES;
-}
-
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -86,8 +77,6 @@ const CGFloat kVLoadNextPagePoint = .75f;
     //Since we're using the collection flow delegate method for the insets, we need to manually position the frame of the refresh control.
     subView.frame = CGRectMake(CGRectGetMinX(subView.frame), CGRectGetMinY(subView.frame) + self.contentInset.top / 2,
                                CGRectGetWidth(subView.frame), CGRectGetHeight(subView.frame));
-    
-    self.collectionView.contentInset = UIEdgeInsetsZero;
 }
 
 - (BOOL)prefersStatusBarHidden

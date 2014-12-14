@@ -284,9 +284,6 @@ static const NSInteger kResetPurchasesButtonIndex = 5;
 {
     if ([MFMailComposeViewController canSendMail])
     {
-        // The style is removed then re-applied so the mail compose view controller has the default appearance
-        [[VThemeManager sharedThemeManager] removeStyling];
-        
         NSString *appName = [[VThemeManager sharedThemeManager] themedStringForKey:kVChannelName];
         
         MFMailComposeViewController    *mailComposer = [[MFMailComposeViewController alloc] init];
@@ -303,10 +300,7 @@ static const NSInteger kResetPurchasesButtonIndex = 5;
         [mailComposer setMessageBody:msgBody isHTML:NO];
         
         //  Dismiss the menu controller first, since we want to be a child of the root controller
-        [self presentViewController:mailComposer animated:YES completion:
-         ^{
-             [[VThemeManager sharedThemeManager] applyStyling];
-         }];
+        [self presentViewController:mailComposer animated:YES completion:nil];
     }
     else
     {

@@ -215,9 +215,6 @@
 
 - (void)shareFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence node:(VNode *)node
 {
-    //Remove the styling for the mail view.
-    [[VThemeManager sharedThemeManager] removeStyling];
-    
     VFacebookActivity *fbActivity = [[VFacebookActivity alloc] init];
     UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[sequence ?: [NSNull null],
                                                                                                                  [self shareTextForSequence:sequence],
@@ -234,8 +231,6 @@
             NSDictionary *params = @{ VTrackingKeySequenceCategory : sequence.category, VTrackingKeyActivityType : activityType };
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidShare parameters:params];
         }
-        
-        [[VThemeManager sharedThemeManager] applyStyling];
         [viewController reloadInputViews];
     };
     

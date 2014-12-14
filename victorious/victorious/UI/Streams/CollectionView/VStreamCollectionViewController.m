@@ -16,15 +16,16 @@
 
 //Controllers
 #import "VCommentsContainerViewController.h"
+#import "VUploadProgressViewController.h"
 #import "VUserProfileViewController.h"
 #import "VMarqueeController.h"
 #import "VAuthorizationViewControllerFactory.h"
 #import "VSequenceActionController.h"
 #import "VWebBrowserViewController.h"
+#import "VNavigationController.h"
 #import "VNewContentViewController.h"
 
 //Views
-#import "VNavigationHeaderView.h"
 #import "VNoContentView.h"
 #import "MBProgressHUD.h"
 
@@ -45,7 +46,6 @@
 #import "UIImage+ImageCreation.h"
 #import "UIImageView+Blurring.h"
 #import "UIStoryboard+VMainStoryboard.h"
-#import "UIViewController+VNavMenu.h"
 
 #import "VConstants.h"
 #import "VTracking.h"
@@ -59,7 +59,7 @@ static NSString * const kCanAddContentKey = @"canAddContent";
 static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
 static CGFloat const kTemplateCLineSpacing = 8;
 
-@interface VStreamCollectionViewController () <VNavigationHeaderDelegate, VNewContentViewControllerDelegate, VMarqueeDelegate, VSequenceActionsDelegate, VUploadProgressViewControllerDelegate>
+@interface VStreamCollectionViewController () <VNewContentViewControllerDelegate, VMarqueeDelegate, VSequenceActionsDelegate, VUploadProgressViewControllerDelegate>
 
 @property (strong, nonatomic) VStreamCollectionViewDataSource *directoryDataSource;
 @property (strong, nonatomic) NSIndexPath *lastSelectedIndexPath;
@@ -94,13 +94,6 @@ static CGFloat const kTemplateCLineSpacing = 8;
     
     VStreamCollectionViewController *streamCollectionVC = [self streamViewControllerForStream:stream];
     
-    if ( [[dependencyManager numberForKey:kIsHomeKey] boolValue] )
-    {
-        [streamCollectionVC v_addUploadProgressView];
-        streamCollectionVC.uploadProgressViewController.delegate = streamCollectionVC;
-        streamCollectionVC.navHeaderView.showHeaderLogoImage = YES;
-    }
-    
     if ( [[dependencyManager numberForKey:@"experiments.marquee_enabled"] boolValue] )
     {
         streamCollectionVC.shouldDisplayMarquee = YES;
@@ -108,7 +101,8 @@ static CGFloat const kTemplateCLineSpacing = 8;
     
     if ( [[dependencyManager numberForKey:kCanAddContentKey] boolValue] )
     {
-        [streamCollectionVC v_addCreateSequenceButton];
+        // TODO
+//        [streamCollectionVC v_addCreateSequenceButton];
     }
     return streamCollectionVC;
 }
@@ -150,7 +144,6 @@ static CGFloat const kTemplateCLineSpacing = 8;
                                                  name:VStreamCollectionDataSourceDidChangeNotification
                                                object:self.streamDataSource];
     
-    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(didEnterBackground:)
                                                  name:UIApplicationDidEnterBackgroundNotification
@@ -164,8 +157,6 @@ static CGFloat const kTemplateCLineSpacing = 8;
     NSDictionary *params = @{ VTrackingKeyStreamName : self.currentStream.name };
     [[VTrackingManager sharedInstance] startEvent:VTrackingEventStreamDidAppear parameters:params];
 
-    [self.navHeaderView updateUIForVC:self];//Update the header view in case the nav stack has changed.
-    
     if (!self.streamDataSource.count)
     {
         [self refresh:self.refreshControl];
@@ -175,9 +166,6 @@ static CGFloat const kTemplateCLineSpacing = 8;
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
-    [self.collectionView flashScrollIndicators];
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -432,19 +420,39 @@ static CGFloat const kTemplateCLineSpacing = 8;
     }
 }
 
-#pragma mark - VUploadProgressViewControllerDelegate methods
+#pragma mark - VNavigationHeaderDelegate
 
-- (void)uploadProgressViewController:(VUploadProgressViewController *)upvc isNowDisplayingThisManyUploads:(NSInteger)uploadCount
+// TODO
+#if 0
+- (BOOL)navSelector:(UIView<VNavigationSelectorProtocol> *)navSelector changedToIndex:(NSInteger)index
 {
-    if (uploadCount)
+    VStream *stream = self.allStreams[index];
+    if ( stream.apiPath != nil
+        && [stream.apiPath rangeOfString:VStreamFollowerStreamPath].location != NSNotFound
+        && ![VObjectManager sharedManager].authorized)
     {
-        [self v_showUploads];
+        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
+        return NO;
     }
-    else
+    
+    if (self.allStreams.count <= (NSUInteger)index)
     {
-        [self v_hideUploads];
+        return NO;
     }
+    
+    [[VTrackingManager sharedInstance] trackQueuedEventsWithName:VTrackingEventSequenceDidAppearInStream];
+    
+    self.currentStream = self.allStreams[index];
+    
+    //Only reload if we have no items, the filter is not loading, and we have a refresh control (if theres no refreshControl the view isn't done loading)
+    if (!self.currentStream.streamItems.count && !self.streamDataSource.isFilterLoading && self.refreshControl)
+    {
+        [self refresh:self.refreshControl];
+    }
+    
+    return YES;
 }
+#endif
 
 #pragma mark - VSequenceActionsDelegate
 
