@@ -832,7 +832,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
         if ((id)status != [NSNull null])
         {
             switch (status.integerValue)
-            {
+            {Applica
                 case AVPlayerItemStatusReadyToPlay:
                 {
                     [self notifyDelegateReadyToPlayIfReallyReady];
@@ -843,12 +843,6 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
                     if ([self.delegate respondsToSelector:@selector(videoPlayerFailed:)])
                     {
                         [self.delegate videoPlayerFailed:self];
-                    }
-                    if ( self.isTrackingEnabled )
-                    {
-                        NSDictionary *params = @{ VTrackingKeyTimeCurrent : @( CMTimeGetSeconds( self.currentTime ) ),
-                                                  VTrackingKeyUrls : self.trackingItem.videoError };
-                        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventVideoDidError parameters:params];
                     }
                     break;
                 }
