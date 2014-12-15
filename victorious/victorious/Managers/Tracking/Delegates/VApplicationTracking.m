@@ -159,17 +159,25 @@ static const NSUInteger kMaximumURLRequestRetryCount = 5;
     
     __block NSString *output = originalString;
     
-    [macros enumerateKeysAndObjectsUsingBlock:^(NSString *macroKey, NSString *macroValue, BOOL *stop) {
+    // Iterate through supplied parameters to replace keys present in string with values
+    [parameters enumerateKeysAndObjectsUsingBlock:^(NSString *macroKey, NSString *macroValue, BOOL *stop) {
         
-        // For each macro, find a value in the parameters dictionary
-        id value = parameters[ macroKey ];
-        if ( value != nil )
+        BOOL isRegisteredMacro = [self.parameterMacroMapping.allValues containsObject:macroKey];
+        BOOL isMacroPresentInString = [output rangeOfString:macroKey].location != NSNotFound;
+        if ( isRegisteredMacro && isMacroPresentInString )
         {
-            NSString *stringWithNextMacro = [self stringFromString:output byReplacingString:macroValue withValue:value];
+            // If registered and present, replace it
+            NSString *stringWithNextMacro = nil;
+            stringWithNextMacro = [self stringFromString:output byReplacingString:macroKey withValue:macroValue];
             if ( stringWithNextMacro != nil )
             {
                 output = stringWithNextMacro;
             }
+        }
+        else
+        {
+            // Otherwise, remove it
+            output = [output stringByReplacingOccurrencesOfString:macroKey withString:@""];
         }
     }];
     
