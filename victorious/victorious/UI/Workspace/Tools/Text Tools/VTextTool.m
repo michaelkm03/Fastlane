@@ -89,14 +89,14 @@ static NSString * const kFilterIndexKey = @"filterIndex";
     
     CIFilter *transformScaleFilter = [CIFilter filterWithName:@"CIAffineTransform"];
     [transformScaleFilter setValue:[NSValue valueWithBytes:&scaleTransform
-                                             objCType:@encode(CGAffineTransform)]
-                       forKey:kCIInputTransformKey];
+                                                  objCType:@encode(CGAffineTransform)]
+                            forKey:kCIInputTransformKey];
     [transformScaleFilter setValue:textImage
-                       forKey:kCIInputImageKey];
+                            forKey:kCIInputImageKey];
     
     // Adjust origin
-    CGFloat originXDifference = [transformScaleFilter outputImage].extent.origin.x - inputImage.extent.origin.x;
-    CGFloat originYDifference = [transformScaleFilter outputImage].extent.origin.y - inputImage.extent.origin.y;
+    CGFloat originXDifference = inputImage.extent.origin.x - [transformScaleFilter outputImage].extent.origin.x ;
+    CGFloat originYDifference = inputImage.extent.origin.y - [transformScaleFilter outputImage].extent.origin.y;
     CGAffineTransform originTransofrm = CGAffineTransformMakeTranslation(originXDifference, originYDifference);
     CIFilter *transformOriginFilter = [CIFilter filterWithName:@"CIAffineTransform"];
     [transformOriginFilter setValue:[NSValue valueWithBytes:&originTransofrm

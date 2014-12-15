@@ -221,7 +221,7 @@ static NSString * const kMediaExtensionJPG       = @"jpg";
 - (UIImage *)renderedImageForCurrentState
 {
     // Once we drop 7 we can use the GPU Renderer
-    CIContext *renderingContext = [CIContext contextWithOptions:@{kCIContextUseSoftwareRenderer:@YES}];
+    CIContext *renderingContext = [CIContext contextWithOptions:@{}];
     __block CIImage *filteredImage = [CIImage v_imageWithUImage:self.canvasView.sourceImage];
     
     NSArray *filterOrderTools = [self.tools sortedArrayUsingComparator:^NSComparisonResult(id <VWorkspaceTool> tool1, id <VWorkspaceTool> tool2)
@@ -239,7 +239,9 @@ static NSString * const kMediaExtensionJPG       = @"jpg";
 
     [filterOrderTools enumerateObjectsUsingBlock:^(id <VWorkspaceTool> tool, NSUInteger idx, BOOL *stop)
     {
+        VLog(@"Applying tool: %@, to image: %@", tool, filteredImage);
         filteredImage = [tool imageByApplyingToolToInputImage:filteredImage];
+        VLog(@"Post tool: %@", filteredImage);
     }];
     
     CGImageRef renderedImage = [renderingContext createCGImage:filteredImage
