@@ -288,7 +288,7 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
                     return;
                 }
                 
-                // PUT TAG CHECK HERE
+                // PUT TAG ASSIGNMENT HERE
                 
             };
             cell = customCell;
@@ -319,9 +319,9 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
     
 }
 
-- (BOOL)subscribedToTag:(NSString *)tag
+- (BOOL)subscribedToTag:(VHashtag *)tag
 {
-    return [self.userTags containsObject:tag];
+    return [self.userTags containsObject:tag.tag];
 }
 
 #pragma mark - Subscribe / Unsubscribe Actions
