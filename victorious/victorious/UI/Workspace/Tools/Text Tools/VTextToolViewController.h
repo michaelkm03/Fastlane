@@ -1,5 +1,5 @@
 //
-//  VMemeWorkspaceToolViewController.h
+//  VTextToolViewController.h
 //  victorious
 //
 //  Created by Michael Sena on 12/4/14.
@@ -19,6 +19,10 @@
  */
 @property (nonatomic, strong) VTextTypeTool *textType;
 
+
+/**
+ *  VTextToolViewController will render the text to an image 
+ */
 @property (nonatomic, readonly) UIImage *renderedImage;
 
 @end

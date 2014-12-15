@@ -67,6 +67,12 @@ static NSString * const kFilterIndexKey = @"filterIndex";
 
 - (CIImage *)imageByApplyingToolToInputImage:(CIImage *)inputImage
 {
+    // Bail out if we don't have any operations to do.
+    if (self.cropViewController.croppingScrollView == nil)
+    {
+        return inputImage;
+    }
+    
     // Scale image up
     CIFilter *lanczosScaleFilter = [CIFilter filterWithName:@"CILanczosScaleTransform"];
     [lanczosScaleFilter setValue:inputImage

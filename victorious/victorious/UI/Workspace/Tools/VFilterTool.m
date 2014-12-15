@@ -73,7 +73,7 @@ static NSString * const kFilterIndexKey = @"filterIndex";
 
 - (CIImage *)imageByApplyingToolToInputImage:(CIImage *)inputImage
 {
-    return [self.selectedFilter.filter filteredImageWithInputImage:inputImage];
+    return self.selectedFilter ? [self.selectedFilter.filter filteredImageWithInputImage:inputImage] : inputImage;
 }
 
 - (void)setCanvasView:(VCanvasView *)canvasView

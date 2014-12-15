@@ -1,5 +1,5 @@
 //
-//  VMemeWorkspaceToolViewController.m
+//  VTextToolViewController.h
 //  victorious
 //
 //  Created by Michael Sena on 12/4/14.
@@ -15,10 +15,9 @@
 @property (nonatomic, strong) NSArray *centerVerticalAlignmentConstraints;
 @property (nonatomic, strong) NSArray *bottomVerticalAlignmentConstraints;
 
-@property (weak, nonatomic) IBOutlet UIImageView *renderedTextImagePreviewView;
-
-@property (nonatomic, strong) NSOperationQueue *textRenderingQueue;
 @property (nonatomic, strong) dispatch_queue_t searialTextRenderingQueue;
+
+@property (nonatomic, strong, readwrite) UIImage *renderedImage;
 
 @end
 
@@ -39,8 +38,6 @@
     [super viewDidLoad];
     
     self.searialTextRenderingQueue = dispatch_queue_create("com.victorious.textToolRenderingQueue", DISPATCH_QUEUE_SERIAL);
-    self.textRenderingQueue = [[NSOperationQueue alloc] init];
-    self.textRenderingQueue.maxConcurrentOperationCount = 1;
     
     self.textView.attributedText = [[NSAttributedString alloc] initWithString:@"TYPE YO MEME"
                                                                        attributes:[[self textType] attributes]];
@@ -53,11 +50,6 @@
 }
 
 #pragma mark - Property Accessors
-
-- (UIImage *)renderedImage
-{
-    return self.renderedTextImagePreviewView.image;
-}
 
 - (void)setTextType:(VTextTypeTool *)textType
 {
@@ -137,6 +129,21 @@
     _textType = textType;
 }
 
+- (UIImage *)renderedImage
+{
+    if (_renderedImage != nil)
+    {
+        return _renderedImage;
+    }
+    
+    dispatch_sync(self.searialTextRenderingQueue, ^
+    {
+        // Wait for render to complete
+    });
+    
+    return _renderedImage;
+}
+
 #pragma mark - Target/Action
 
 - (void)startEditing:(UITapGestureRecognizer *)tapGesture
@@ -160,33 +167,29 @@ shouldChangeTextInRange:(NSRange)range
 
 - (void)textViewDidEndEditing:(UITextView *)textView
 {
-    [self.textRenderingQueue cancelAllOperations];
-    [self.textRenderingQueue addOperation:[NSBlockOperation blockOperationWithBlock:^
-                                           {
-                                               CGFloat scaleFactor = 512 / CGRectGetWidth(self.view.bounds);
-                                               CGRect scaledRect = CGRectMake(0,
-                                                                              0,
-                                                                              CGRectGetWidth(self.view.bounds) * scaleFactor,
-                                                                              CGRectGetHeight(self.view.bounds) * scaleFactor);
-                                               UIGraphicsBeginImageContextWithOptions(scaledRect.size, NO, scaleFactor);
-                                               CGContextRef context = UIGraphicsGetCurrentContext();
-                                               __block UIImage *renderedImage;
-                                               CGContextSaveGState(context);
-                                               {
-                                                   CGContextScaleCTM(context, scaleFactor, scaleFactor);
-                                                   [self.textView.attributedText drawWithRect:self.textView.frame
-                                                                                      options:NSStringDrawingUsesLineFragmentOrigin
-                                                                                      context:nil];
-                                                   renderedImage = UIGraphicsGetImageFromCurrentImageContext();
-                                               }
-                                               CGContextRestoreGState(context);
-                                               UIGraphicsEndImageContext();
-                                               
-                                               dispatch_async(dispatch_get_main_queue(), ^
-                                                              {
-                                                                  self.renderedTextImagePreviewView.image = renderedImage;
-                                                              });
-                                           }]];
+    dispatch_async(self.searialTextRenderingQueue, ^
+    {
+        CGFloat scaleFactor = 512 / CGRectGetWidth(self.view.bounds);
+        CGRect scaledRect = CGRectMake(0,
+                                       0,
+                                       CGRectGetWidth(self.view.bounds) * scaleFactor,
+                                       CGRectGetHeight(self.view.bounds) * scaleFactor);
+        UIGraphicsBeginImageContextWithOptions(scaledRect.size, NO, scaleFactor);
+        CGContextRef context = UIGraphicsGetCurrentContext();
+        __block UIImage *renderedImage;
+        CGContextSaveGState(context);
+        {
+            CGContextScaleCTM(context, scaleFactor, scaleFactor);
+            [self.textView.attributedText drawWithRect:self.textView.frame
+                                               options:NSStringDrawingUsesLineFragmentOrigin
+                                               context:nil];
+            renderedImage = UIGraphicsGetImageFromCurrentImageContext();
+        }
+        CGContextRestoreGState(context);
+        UIGraphicsEndImageContext();
+        
+        self.renderedImage = renderedImage;
+    });
 }
 
 @end

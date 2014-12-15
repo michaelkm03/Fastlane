@@ -239,9 +239,7 @@ static NSString * const kMediaExtensionJPG       = @"jpg";
 
     [filterOrderTools enumerateObjectsUsingBlock:^(id <VWorkspaceTool> tool, NSUInteger idx, BOOL *stop)
     {
-        VLog(@"Applying tool: %@, to image: %@", tool, filteredImage);
         filteredImage = [tool imageByApplyingToolToInputImage:filteredImage];
-        VLog(@"Post tool: %@", filteredImage);
     }];
     
     CGImageRef renderedImage = [renderingContext createCGImage:filteredImage
