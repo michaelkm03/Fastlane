@@ -8,8 +8,13 @@
 
 #import "VTrendingTagCell.h"
 #import "VThemeManager.h"
+#import "VObjectManager+Users.h"
+#import "VUser.h"
+#import "VUserHashtag.h"
 #import "VHashTags.h"
 #import "VConstants.h"
+#import "VHashtag.h"
+#import "VFollowHashtagControl.h"
 
 static const UIEdgeInsets kHashtagLabelEdgeInsets = { 0, 6, 0, 7 };
 
@@ -43,6 +48,8 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
 
 @property (nonatomic, weak) IBOutlet VHashtagLabel *hashTagLabel;
 @property (nonatomic, weak) IBOutlet UIButton *followUnfollowButton;
+@property (nonatomic, strong) NSString *hashtagText;
+
 
 @end
 
@@ -67,16 +74,44 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
 - (void)setHashtag:(VHashtag *)hashtag
 {
     // Make sure there's a # at the beginning of the text
-    NSString *text = [VHashTags stringWithPrependedHashmarkFromString:hashtag.tag];
+    self.hashtagText = [VHashTags stringWithPrependedHashmarkFromString:hashtag.tag];
     
-    [self.hashTagLabel setText:text];
+    [self.hashTagLabel setText:self.hashtagText];
     
     [self applyTheme];
 }
 
 - (BOOL)subscribedToTag
 {
+    VUser *mainUser = [[VObjectManager sharedManager] mainUser];
+    BOOL subscription = [mainUser.hashtags containsObject:self.hashtagText];
+    return subscription;
+}
+
+- (void)updateSubscribeStatus
+{
+    //If we get into a weird state and the relaionships are the same don't do anything
+    if (self.followHashtagControl.subscribed == self.subscribedToTag)
+    {
+        return;
+    }
+    if (!self.shouldAnimateSubscription)
+    {
+        self.followHashtagControl.subscribed = self.subscribedToTag;
+        return;
+    }
     
+    [self.followHashtagControl setSubscribed:self.subscribedToTag
+                                    animated:YES];
+}
+
+- (IBAction)followUnfollowHashtag:(id)sender
+{
+    self.shouldAnimateSubscription = YES;
+    if (self.subscribeToTagAction)
+    {
+        self.subscribeToTagAction();
+    }
 }
 
 @end

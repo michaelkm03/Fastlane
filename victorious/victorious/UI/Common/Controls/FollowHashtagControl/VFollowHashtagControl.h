@@ -8,6 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
+IB_DESIGNABLE
+
 @interface VFollowHashtagControl : UIControl
+
+@property (nonatomic) IBInspectable BOOL subscribed;
+
+- (void)setSubscribed:(BOOL)subscribed
+             animated:(BOOL)animated;
 
 @end

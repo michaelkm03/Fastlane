@@ -7,13 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "VHashtag.h"
+
+@class VHashtag, VFollowHashtagControl;
 
 @interface VTrendingTagCell : UITableViewCell
 
 @property (nonatomic, copy) void (^subscribeToTagAction)(void);
-@property (nonatomic, assign) BOOL subscribedToTag;
+@property (nonatomic, readonly) BOOL subscribedToTag;
 @property (nonatomic, assign) BOOL shouldAnimateSubscription;
+@property (nonatomic, weak) IBOutlet VFollowHashtagControl *followHashtagControl;
 
 + (NSInteger)cellHeight;
 

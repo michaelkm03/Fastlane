@@ -56,6 +56,9 @@
                             <constraint firstAttribute="width" constant="42" id="4Ea-1i-tRY"/>
                             <constraint firstAttribute="height" constant="27" id="YM4-0C-zHI"/>
                         </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="following" value="YES"/>
+                        </userDefinedRuntimeAttributes>
                         <connections>
                             <action selector="followUnfollowUser:" destination="afQ-rA-05v" eventType="touchUpInside" id="4mw-in-d7e"/>
                         </connections>

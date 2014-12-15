@@ -276,9 +276,7 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
             VTrendingTagCell *customCell = (VTrendingTagCell *)[tableView dequeueReusableCellWithIdentifier:kVTrendingTagIdentifier forIndexPath:indexPath];
             VHashtag *hashtag = self.trendingTags[ indexPath.row ];
             [customCell setHashtag:hashtag];
-            
-            customCell.subscribedToTag = [self subscribedToTag:hashtag];
-            
+                        
             customCell.subscribeToTagAction = ^(void)
             {
                 // Check if logged in before attempting to follow / unfollow
@@ -288,7 +286,14 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
                     return;
                 }
                 
-                // PUT TAG ASSIGNMENT HERE
+                if ([self subscribedToTag:hashtag])
+                {
+                    [self unsubscribeToTagAction:hashtag.tag];
+                }
+                else
+                {
+                    [self subscribeToTagAction:hashtag.tag];
+                }
                 
             };
             cell = customCell;
@@ -319,12 +324,12 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
     
 }
 
+#pragma mark - Subscribe / Unsubscribe Actions
+
 - (BOOL)subscribedToTag:(VHashtag *)tag
 {
     return [self.userTags containsObject:tag.tag];
 }
-
-#pragma mark - Subscribe / Unsubscribe Actions
 
 - (void)subscribeToTagAction:(NSString *)tag
 {
