@@ -326,6 +326,10 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
                                          forDecorationViewOfKind:VShrinkingContentLayoutContentBackgroundView];
     
     self.viewModel.experienceEnhancerController.delegate = self;
+    
+    NSDictionary *params = @{ VTrackingKeyTimeCurrent : [NSDate date],
+                              VTrackingKeySequenceId : self.viewModel.sequence.remoteId };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
 }
 
 - (void)viewWillAppear:(BOOL)animated

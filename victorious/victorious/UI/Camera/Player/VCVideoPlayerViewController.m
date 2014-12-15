@@ -803,7 +803,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
                     {
                         NSDictionary *params = @{ VTrackingKeyTimeCurrent : @( CMTimeGetSeconds( self.currentTime ) ),
                                                   VTrackingKeyUrls : self.trackingItem.videoStart };
-                        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventVideoDidStart parameters:params];
+                        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
                     }
                 }
             }

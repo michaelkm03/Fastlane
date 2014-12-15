@@ -343,7 +343,7 @@ NSString * const kVAnalyticsKeyValue            = @"GA_value";
         return @{ kVAnalyticsKeyCategory : kVAnalyticsEventCategoryInteraction,
                   kVAnalyticsKeyAction : @"Post Comment" };
     }
-    else if ( [eventName isEqualToString:VTrackingEventVideoDidStart] )
+    else if ( [eventName isEqualToString:VTrackingEventViewDidStart] )
     {
         return @{ kVAnalyticsKeyCategory : kVAnalyticsEventCategoryVideo,
                   kVAnalyticsKeyAction : @"Video Play Start"  };
