@@ -832,7 +832,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
         if ((id)status != [NSNull null])
         {
             switch (status.integerValue)
-            {Applica
+            {
                 case AVPlayerItemStatusReadyToPlay:
                 {
                     [self notifyDelegateReadyToPlayIfReallyReady];
