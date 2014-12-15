@@ -8,6 +8,8 @@
 
 #import "VTextToolViewController.h"
 
+static const CGFloat kTextRenderingSize = 1024;
+
 @interface VTextToolViewController () <UITextViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextView *textView;
@@ -60,72 +62,14 @@
     
     self.textView.attributedText = [[NSAttributedString alloc] initWithString:self.textView.text
                                                                        attributes:[textType attributes]];
-    
+
     if (_textType.verticalAlignment != textType.verticalAlignment)
     {
-        [self.centerVerticalAlignmentConstraints enumerateObjectsUsingBlock:^(NSLayoutConstraint *constraint, NSUInteger idx, BOOL *stop)
-         {
-             [self.view removeConstraint:constraint];
-         }];
-        [self.bottomVerticalAlignmentConstraints enumerateObjectsUsingBlock:^(NSLayoutConstraint *constraint, NSUInteger idx, BOOL *stop)
-         {
-             [self.view removeConstraint:constraint];
-         }];
-        
-        NSDictionary *viewMap = @{@"textView": self.textView};
-        
-        switch (textType.verticalAlignment)
-        {
-            case VTextTypeVerticalAlignmentCenter:
-            {
-                NSMutableArray *centerConstraints = [[NSMutableArray alloc] init];
-                [centerConstraints addObject:[NSLayoutConstraint constraintWithItem:self.textView
-                                                                          attribute:NSLayoutAttributeCenterY
-                                                                          relatedBy:NSLayoutRelationEqual
-                                                                             toItem:self.view
-                                                                          attribute:NSLayoutAttributeCenterY
-                                                                         multiplier:1.0f
-                                                                           constant:0.0f]];
-                [centerConstraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"|-[textView]-|"
-                                                                                               options:kNilOptions
-                                                                                               metrics:nil
-                                                                                                 views:viewMap]];
-                [self.view addConstraints:centerConstraints];
-                self.centerVerticalAlignmentConstraints = centerConstraints;
-            }
-                break;
-            case VTextTypeVerticalAlignmentBottomUp:
-            {
-                NSMutableArray *bottomConstraints = [[NSMutableArray alloc] init];
-                
-                NSLayoutConstraint *constraintToTop = [NSLayoutConstraint constraintWithItem:self.textView
-                                                                                   attribute:NSLayoutAttributeTop
-                                                                                   relatedBy:NSLayoutRelationGreaterThanOrEqual
-                                                                                      toItem:self.view
-                                                                                   attribute:NSLayoutAttributeTop
-                                                                                  multiplier:1.0f
-                                                                                    constant:0.0f];
-                
-                [bottomConstraints addObject:constraintToTop];
-                [bottomConstraints addObject:[NSLayoutConstraint constraintWithItem:self.textView
-                                                                          attribute:NSLayoutAttributeBottom
-                                                                          relatedBy:NSLayoutRelationEqual
-                                                                             toItem:self.view
-                                                                          attribute:NSLayoutAttributeBottom
-                                                                         multiplier:1.0f
-                                                                           constant:0.0f]];
-                [bottomConstraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"|-[textView]-|"
-                                                                                               options:kNilOptions
-                                                                                               metrics:nil
-                                                                                                 views:viewMap]];
-                [self.view addConstraints:bottomConstraints];
-                self.bottomVerticalAlignmentConstraints = bottomConstraints;
-            }
-                break;
-        }
-        [self.view layoutIfNeeded];
-        
+        [self updateTextViewConstraintsForTextType:textType];
     }
+    
+    [self.view layoutIfNeeded];
+    
     _textType = textType;
 }
 
@@ -165,11 +109,16 @@ shouldChangeTextInRange:(NSRange)range
     return YES;
 }
 
+- (void)textViewDidChange:(UITextView *)textView
+{
+    _renderedImage = nil;
+}
+
 - (void)textViewDidEndEditing:(UITextView *)textView
 {
     dispatch_async(self.searialTextRenderingQueue, ^
     {
-        CGFloat scaleFactor = 512 / CGRectGetWidth(self.view.bounds);
+        CGFloat scaleFactor = kTextRenderingSize / CGRectGetWidth(self.view.bounds);
         CGRect scaledRect = CGRectMake(0,
                                        0,
                                        CGRectGetWidth(self.view.bounds) * scaleFactor,
@@ -190,6 +139,70 @@ shouldChangeTextInRange:(NSRange)range
         
         self.renderedImage = renderedImage;
     });
+}
+
+#pragma mark - Private Methods
+
+- (void)updateTextViewConstraintsForTextType:(VTextTypeTool *)textType
+{
+    [self.centerVerticalAlignmentConstraints enumerateObjectsUsingBlock:^(NSLayoutConstraint *constraint, NSUInteger idx, BOOL *stop)
+     {
+         [self.view removeConstraint:constraint];
+     }];
+    [self.bottomVerticalAlignmentConstraints enumerateObjectsUsingBlock:^(NSLayoutConstraint *constraint, NSUInteger idx, BOOL *stop)
+     {
+         [self.view removeConstraint:constraint];
+     }];
+    
+    NSDictionary *viewMap = @{@"textView": self.textView};
+    
+    switch (textType.verticalAlignment)
+    {
+        case VTextTypeVerticalAlignmentCenter:
+        {
+            NSMutableArray *centerConstraints = [[NSMutableArray alloc] init];
+            [centerConstraints addObject:[NSLayoutConstraint constraintWithItem:self.textView
+                                                                      attribute:NSLayoutAttributeCenterY
+                                                                      relatedBy:NSLayoutRelationEqual
+                                                                         toItem:self.view
+                                                                      attribute:NSLayoutAttributeCenterY
+                                                                     multiplier:1.0f
+                                                                       constant:0.0f]];
+            [centerConstraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"|-[textView]-|"
+                                                                                           options:kNilOptions
+                                                                                           metrics:nil
+                                                                                             views:viewMap]];
+            [self.view addConstraints:centerConstraints];
+            self.centerVerticalAlignmentConstraints = centerConstraints;
+        }
+            break;
+        case VTextTypeVerticalAlignmentBottomUp:
+        {
+            NSMutableArray *bottomConstraints = [[NSMutableArray alloc] init];
+            NSLayoutConstraint *constraintToTop = [NSLayoutConstraint constraintWithItem:self.textView
+                                                                               attribute:NSLayoutAttributeTop
+                                                                               relatedBy:NSLayoutRelationGreaterThanOrEqual
+                                                                                  toItem:self.view
+                                                                               attribute:NSLayoutAttributeTop
+                                                                              multiplier:1.0f
+                                                                                constant:0.0f];
+            [bottomConstraints addObject:constraintToTop];
+            [bottomConstraints addObject:[NSLayoutConstraint constraintWithItem:self.textView
+                                                                      attribute:NSLayoutAttributeBottom
+                                                                      relatedBy:NSLayoutRelationEqual
+                                                                         toItem:self.view
+                                                                      attribute:NSLayoutAttributeBottom
+                                                                     multiplier:1.0f
+                                                                       constant:0.0f]];
+            [bottomConstraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"|-[textView]-|"
+                                                                                           options:kNilOptions
+                                                                                           metrics:nil
+                                                                                             views:viewMap]];
+            [self.view addConstraints:bottomConstraints];
+            self.bottomVerticalAlignmentConstraints = bottomConstraints;
+        }
+            break;
+    }
 }
 
 @end
