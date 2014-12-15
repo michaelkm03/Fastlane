@@ -21,7 +21,7 @@
 
 
 /**
- *  VTextToolViewController will render the text to an image 
+ *  VTextToolViewController will render the text entered to an image, if the image has not yet been renedered this call will block the calling thread until rendering is complete. ¡This is a blocking operation!
  */
 @property (nonatomic, readonly) UIImage *renderedImage;
 
