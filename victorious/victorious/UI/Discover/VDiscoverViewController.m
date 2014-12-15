@@ -363,5 +363,4 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
     [[VObjectManager sharedManager] unsubscribeToHashtag:tag successBlock:successBlock failBlock:failureBlock];
 }
 
-
 @end

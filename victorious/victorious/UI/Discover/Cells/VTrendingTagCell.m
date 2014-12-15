@@ -50,7 +50,6 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
 @property (nonatomic, weak) IBOutlet UIButton *followUnfollowButton;
 @property (nonatomic, strong) NSString *hashtagText;
 
-
 @end
 
 @implementation VTrendingTagCell
