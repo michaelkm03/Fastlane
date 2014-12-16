@@ -268,7 +268,7 @@ static const char kUploadProgressYConstraintKey;
 {
     __weak typeof(self) welf = self;
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:cameraViewController];
-    __weak typeof(UINavigationController) *weakNavController = navigationController;
+    __weak UINavigationController *weakNavController = navigationController;
     cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
     {
         if (!finished || !capturedMediaURL)
