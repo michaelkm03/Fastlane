@@ -157,7 +157,8 @@ NSString * const VDeeplinkManagerInboxMessageNotification = @"VDeeplinkManagerIn
          }
          else
          {
-             homeStream = [VStreamCollectionViewController homeStreamCollection];
+             // TODO
+//             homeStream = [VStreamCollectionViewController homeStreamCollection];
              contentViewController.delegate = (VStreamCollectionViewController *)homeStream;
          }
          
@@ -199,7 +200,8 @@ NSString * const VDeeplinkManagerInboxMessageNotification = @"VDeeplinkManagerIn
          }
          else
          {
-             homeStream = [VStreamCollectionViewController homeStreamCollection];
+             // TODO
+//             homeStream = [VStreamCollectionViewController homeStreamCollection];
          }
          
          VRootViewController *root = [VRootViewController rootViewController];
@@ -294,7 +296,8 @@ NSString * const VDeeplinkManagerInboxMessageNotification = @"VDeeplinkManagerIn
          }
          else
          {
-             homeStream = [VStreamCollectionViewController homeStreamCollection];
+             // TODO
+//             homeStream = [VStreamCollectionViewController homeStreamCollection];
              contentViewController.delegate = (VStreamCollectionViewController *)homeStream;
          }
          

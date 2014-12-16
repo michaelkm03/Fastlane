@@ -9,6 +9,7 @@
 #import <MBProgressHUD.h>
 #import "VDiscoverViewController.h"
 #import "VSuggestedPeopleCell.h"
+#import "VStream+Fetcher.h"
 #import "VTrendingTagCell.h"
 #import "VDiscoverTableHeaderViewController.h"
 #import "VSuggestedPeopleCollectionViewController.h"
@@ -365,7 +366,7 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
 
 - (void)showStreamWithHashtag:(VHashtag *)hashtag
 {
-    VStreamCollectionViewController *stream = [VStreamCollectionViewController hashtagStreamWithHashtag:hashtag.tag];
+    VStreamCollectionViewController *stream = [VStreamCollectionViewController streamViewControllerForStream:[VStream streamForHashTag:hashtag.tag]];
     [self.navigationController pushViewController:stream animated:YES];
 }
 

@@ -16,8 +16,6 @@
 
 @property (nonatomic, strong) UIRefreshControl *refreshControl;///<Refresh control for the collectionview
 @property (nonatomic, strong) VStream *currentStream;///<The stream to display
-@property (nonatomic, strong) VStream *defaultStream;///<The default stream
-@property (nonatomic, strong) NSArray *allStreams;///<All streams that can display
 
 @property (nonatomic, strong) VStreamCollectionViewDataSource *streamDataSource;///<The VStreamCollectionViewDataSource for the object.  NOTE: a subclass is responsible for creating / setting its on data source in view did load.
 

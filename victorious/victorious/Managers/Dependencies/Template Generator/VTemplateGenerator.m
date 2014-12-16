@@ -90,24 +90,9 @@ static NSString * const kUserSpecificKey = @"isUserSpecific";
                         kIDKey: self.firstMenuItemID,
                         kClassNameKey: @"stream.screen",
                         kTitleKey: NSLocalizedString(@"Home", @""),
+                        kStreamUrlPathKey: @"/api/sequence/hot_detail_list_by_stream/home",
                         kIsHomeKey: @YES,
                         kCanAddContentKey: @YES,
-                        kStreamsKey: @[
-                            @{
-                                kTitleKey: NSLocalizedString(@"Featured", @""),
-                                kStreamUrlPathKey: @"/api/sequence/hot_detail_list_by_stream/home"
-                            },
-                            @{
-                                kTitleKey: NSLocalizedString(@"Recent", @""),
-                                kInitialKey: @YES,
-                                kStreamUrlPathKey: [self urlPathForStreamCategories:[VUGCCategories() arrayByAddingObjectsFromArray:VOwnerCategories()]]
-                            },
-                            @{
-                                kTitleKey: NSLocalizedString(@"Following", @""),
-                                kUserSpecificKey: @YES,
-                                kStreamUrlPathKey: @"/api/sequence/follows_detail_list_by_stream/0/home"
-                            }
-                        ]
                     }
                 },
                 [self ownerStreamMenuItem],

@@ -50,7 +50,6 @@ static CGFloat const kDirectoryInset = 10.0f;
 {
     VDirectoryViewController *streamDirectory = [[VDirectoryViewController alloc] initWithNibName:nil
                                                                                            bundle:nil];
-    streamDirectory.defaultStream = stream;
     streamDirectory.currentStream = stream;
     streamDirectory.title = stream.name;
     
@@ -138,7 +137,7 @@ static CGFloat const kDirectoryInset = 10.0f;
     //Commented out code is the inital logic for supporting other stream types / sequences in streams.
     if ([item isKindOfClass:[VStream class]] && [((VStream *)item) onlyContainsSequences])
     {
-        VStreamCollectionViewController *streamCollection = [VStreamCollectionViewController streamViewControllerForDefaultStream: (VStream *)item andAllStreams:nil title:item.name];
+        VStreamCollectionViewController *streamCollection = [VStreamCollectionViewController streamViewControllerForStream:(VStream *)item];
         [self.navigationController pushViewController:streamCollection animated:YES];
     }
     else if ([item isKindOfClass:[VStream class]])

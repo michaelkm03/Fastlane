@@ -97,7 +97,7 @@ static const char kSequenceActionControllerKey;
     VActionItem *descripTionItem = [VActionItem descriptionActionItemWithText:self.viewModel.name
                                                       hashTagSelectionHandler:^(NSString *hashTag)
                                     {
-                                        VStreamCollectionViewController *stream = [VStreamCollectionViewController hashtagStreamWithHashtag:hashTag];
+                                        VStreamCollectionViewController *stream = [VStreamCollectionViewController streamViewControllerForStream:[VStream streamForHashTag:hashTag]];
                                         
                                         [contentViewController dismissViewControllerAnimated:YES
                                                                  completion:^

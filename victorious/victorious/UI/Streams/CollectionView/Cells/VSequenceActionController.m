@@ -156,7 +156,8 @@
 - (void)showRemixStreamFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence
 {
     VStream *stream = [VStream remixStreamForSequence:sequence];
-    VStreamCollectionViewController  *streamCollection = [VStreamCollectionViewController streamViewControllerForDefaultStream:stream andAllStreams:@[stream] title:NSLocalizedString(@"Remixes", nil)];
+    stream.name = NSLocalizedString(@"Remixes", nil);
+    VStreamCollectionViewController  *streamCollection = [VStreamCollectionViewController streamViewControllerForStream:stream];
     
     VNoContentView *noRemixView = [VNoContentView noContentViewWithFrame:streamCollection.view.bounds];
     noRemixView.titleLabel.text = NSLocalizedString(@"NoRemixersTitle", @"");

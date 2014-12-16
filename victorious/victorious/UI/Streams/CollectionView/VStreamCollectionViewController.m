@@ -50,7 +50,6 @@
 #import "VConstants.h"
 #import "VTracking.h"
 
-static NSString * const kStreamsKey = @"streams";
 static NSString * const kInitialKey = @"initial";
 static NSString * const kMarqueeKey = @"marquee";
 static NSString * const kStreamURLPathKey = @"streamUrlPath";
@@ -77,110 +76,23 @@ static CGFloat const kTemplateCLineSpacing = 8;
 
 #pragma mark - Factory methods
 
-+ (instancetype)homeStreamCollection
-{
-    VStream *recentStream = [VStream streamForCategories: [VUGCCategories() arrayByAddingObjectsFromArray:VOwnerCategories()]];
-    VStream *hotStream = [VStream hotSteamForSteamName:@"home"];
-    VStream *followingStream = [VStream followerStreamForStreamName:@"home" user:nil];
-    
-    VStreamCollectionViewController *homeStream = [self streamViewControllerForDefaultStream:recentStream andAllStreams:@[hotStream, recentStream, followingStream] title:NSLocalizedString(@"Home", nil)];
-    
-    homeStream.shouldDisplayMarquee = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsMarqueeEnabled];
-    homeStream.navHeaderView.showHeaderLogoImage = YES;
-    [homeStream v_addCreateSequenceButton];
-    [homeStream v_addUploadProgressView];
-    homeStream.uploadProgressViewController.delegate = homeStream;
-    
-    return homeStream;
-}
-
-+ (instancetype)communityStreamCollection
-{
-    VStream *recentStream = [VStream streamForCategories: VUGCCategories()];
-    VStream *hotStream = [VStream hotSteamForSteamName:@"ugc"];
-    
-    VStreamCollectionViewController *communityStream = [self streamViewControllerForDefaultStream:recentStream andAllStreams:@[hotStream, recentStream] title:NSLocalizedString(@"Community", nil)];
-    [communityStream v_addCreateSequenceButton];
-    
-    return communityStream;
-}
-
-+ (instancetype)ownerStreamCollection
-{
-    VStream *recentStream = [VStream streamForCategories: VOwnerCategories()];
-    VStream *hotStream = [VStream hotSteamForSteamName:@"owner"];
-    
-    VStreamCollectionViewController *ownerStream = [self streamViewControllerForDefaultStream:recentStream andAllStreams:@[hotStream, recentStream] title:NSLocalizedString(@"Owner", nil)];
-    
-    return ownerStream;
-}
-
-+ (instancetype)hashtagStreamWithHashtag:(NSString *)hashtag
-{
-    NSString *title = [@"#" stringByAppendingString:hashtag];
-    VStream *defaultStream = [VStream streamForHashTag:hashtag];
-    VStreamCollectionViewController *streamVC = [self streamViewControllerForDefaultStream:defaultStream
-                                                                             andAllStreams:@[ defaultStream ]
-                                                                                     title:title];
-    return streamVC;
-}
-
-+ (instancetype)streamViewControllerForDefaultStream:(VStream *)stream andAllStreams:(NSArray *)allStreams title:(NSString *)title
-{
-    VStreamCollectionViewController *streamColllection = [self streamViewControllerForStream:stream];
-    
-    streamColllection.allStreams = allStreams;
-    
-    NSMutableArray *titles = [[NSMutableArray alloc] initWithCapacity:allStreams.count];
-    for (VStream *stream in allStreams)
-    {
-        [titles addObject:stream.name];
-    }
-    
-    streamColllection.title = title;
-    [streamColllection v_addNewNavHeaderWithTitles:titles];
-    streamColllection.navHeaderView.delegate = streamColllection;
-    NSInteger selectedStream = [allStreams indexOfObject:stream];
-    streamColllection.navHeaderView.navSelector.currentIndex = selectedStream;
-    
-    return streamColllection;
-}
-
 + (instancetype)streamViewControllerForStream:(VStream *)stream
 {
     VStreamCollectionViewController *streamCollection = (VStreamCollectionViewController *)[[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier:kStreamCollectionStoryboardId];
-    
-    streamCollection.defaultStream = stream;
     streamCollection.currentStream = stream;
-    
     return streamCollection;
 }
 
-#pragma mark VHasManagedDependencies
+#pragma mark VHasManagedDependencies constructor
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     NSAssert([NSThread isMainThread], @"This method must be called on the main thread");
     
-    __block VStream *defaultStream = nil;
-    NSArray *streamConfiguration = [dependencyManager arrayForKey:kStreamsKey];
-    NSArray *allStreams = [streamConfiguration v_map:^(NSDictionary *streamConfig)
-    {
-        VStream *stream = [VStream streamForPath:streamConfig[kStreamURLPathKey] inContext:dependencyManager.objectManager.managedObjectStore.mainQueueManagedObjectContext];
-        stream.name = streamConfig[kTitleKey];
-        if ([streamConfig[kInitialKey] boolValue])
-        {
-            defaultStream = stream;
-        }
-        return stream;
-    }];
+    VStream *stream = [VStream streamForPath:[dependencyManager stringForKey:kStreamURLPathKey] inContext:dependencyManager.objectManager.managedObjectStore.mainQueueManagedObjectContext];
+    stream.name = [dependencyManager stringForKey:kTitleKey];
     
-    if (defaultStream == nil && allStreams.count > 0)
-    {
-        defaultStream = allStreams[0];
-    }
-    
-    VStreamCollectionViewController *streamCollectionVC = [self streamViewControllerForDefaultStream:defaultStream andAllStreams:allStreams title:[dependencyManager stringForKey:kTitleKey]];
+    VStreamCollectionViewController *streamCollectionVC = [self streamViewControllerForStream:stream];
     
     if ( [[dependencyManager numberForKey:kIsHomeKey] boolValue] )
     {
@@ -321,25 +233,9 @@ static CGFloat const kTemplateCLineSpacing = 8;
 
 - (void)setCurrentStream:(VStream *)currentStream
 {
-    if ([currentStream.apiPath isEqualToString:self.defaultStream.apiPath])
-    {
-        self.streamDataSource.hasHeaderCell =  self.shouldDisplayMarquee && self.marquee.streamDataSource.count;
-    }
-    else
-    {
-        self.streamDataSource.hasHeaderCell = NO;
-    }
-    
+    self.streamDataSource.hasHeaderCell = NO;
+    self.title = currentStream.name;
     [super setCurrentStream:currentStream];
-}
-
-- (void)setShouldDisplayMarquee:(BOOL)shouldDisplayMarquee
-{
-    _shouldDisplayMarquee = shouldDisplayMarquee;
-    if (self.currentStream == self.defaultStream)
-    {
-        self.streamDataSource.hasHeaderCell = shouldDisplayMarquee;
-    }
 }
 
 #pragma mark - VMarqueeDelegate
@@ -536,37 +432,6 @@ static CGFloat const kTemplateCLineSpacing = 8;
     }
 }
 
-#pragma mark - VNavigationHeaderDelegate
-
-- (BOOL)navSelector:(UIView<VNavigationSelectorProtocol> *)navSelector changedToIndex:(NSInteger)index
-{
-    VStream *stream = self.allStreams[index];
-    if ( stream.apiPath != nil
-        && [stream.apiPath rangeOfString:VStreamFollowerStreamPath].location != NSNotFound
-        && ![VObjectManager sharedManager].authorized)
-    {
-        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
-        return NO;
-    }
-    
-    if (self.allStreams.count <= (NSUInteger)index)
-    {
-        return NO;
-    }
-    
-    [[VTrackingManager sharedInstance] trackQueuedEventsWithName:VTrackingEventSequenceDidAppearInStream];
-    
-    self.currentStream = self.allStreams[index];
-    
-    //Only reload if we have no items, the filter is not loading, and we have a refresh control (if theres no refreshControl the view isn't done loading)
-    if (!self.currentStream.streamItems.count && !self.streamDataSource.isFilterLoading && self.refreshControl)
-    {
-        [self refresh:self.refreshControl];
-    }
-    
-    return YES;
-}
-
 #pragma mark - VUploadProgressViewControllerDelegate methods
 
 - (void)uploadProgressViewController:(VUploadProgressViewController *)upvc isNowDisplayingThisManyUploads:(NSInteger)uploadCount
@@ -639,8 +504,8 @@ static CGFloat const kTemplateCLineSpacing = 8;
         }
     }
     
-    // Instanitate and push to stack
-    VStreamCollectionViewController *hashtagStream = [VStreamCollectionViewController hashtagStreamWithHashtag:hashtag];
+    // Instantiate and push to stack
+    VStreamCollectionViewController *hashtagStream = [VStreamCollectionViewController streamViewControllerForStream:[VStream streamForHashTag:hashtag]];
     [self.navigationController pushViewController:hashtagStream animated:YES];
 }
 
