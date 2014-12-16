@@ -47,6 +47,7 @@ static NSString * const kFilterIndexKey = @"filterIndex";
         _title = [dependencyManager stringForKey:kTitleKey];
         _renderIndex = [[dependencyManager numberForKey:kFilterIndexKey] integerValue];
         _toolPicker = (UIViewController<VToolPicker> *)[dependencyManager viewControllerForKey:kPickerKey];
+        _icon = [UIImage imageNamed:@"filter_icon"];
         
         NSURL *filters = [[NSBundle mainBundle] URLForResource:@"filters" withExtension:@"xml"];
         NSArray *rFilters = [VPhotoFilterSerialization filtersFromPlistFile:filters];

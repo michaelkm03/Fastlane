@@ -42,6 +42,7 @@ static NSString * const kMediaExtensionJPG       = @"jpg";
 @property (nonatomic, weak) IBOutlet UIToolbar *bottomToolbar;
 @property (nonatomic, weak) IBOutlet VCanvasView *canvasView;
 @property (nonatomic, weak) IBOutlet UIImageView *blurredBackgroundImageVIew;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceCanvasToTopOfContainerConstraint;
 
 @property (nonatomic, strong) id <VWorkspaceTool> selectedTool;
 @property (nonatomic, strong) UIViewController *canvasToolViewController;
@@ -99,19 +100,56 @@ static NSString * const kMediaExtensionJPG       = @"jpg";
     
     [self.tools enumerateObjectsUsingBlock:^(id <VWorkspaceTool> tool, NSUInteger idx, BOOL *stop)
     {
-        UIBarButtonItem *itemForTool = [[UIBarButtonItem alloc] initWithTitle:tool.title
-                                                                        style:UIBarButtonItemStylePlain
-                                                                       target:self
-                                                                       action:@selector(selectedBarButtonItem:)];
+        UIBarButtonItem *itemForTool;
+        if (![tool respondsToSelector:@selector(icon)])
+        {
+            itemForTool = [[UIBarButtonItem alloc] initWithTitle:tool.title
+                                                           style:UIBarButtonItemStylePlain
+                                                          target:self
+                                                          action:@selector(selectedBarButtonItem:)];
+        }
+        else if ([tool icon] != nil)
+        {
+            itemForTool = [[UIBarButtonItem alloc] initWithImage:[tool icon]
+                                                           style:UIBarButtonItemStylePlain
+                                                          target:self
+                                                          action:@selector(selectedBarButtonItem:)];
+        }
+        else
+        {
+            itemForTool = [[UIBarButtonItem alloc] initWithTitle:tool.title
+                                                           style:UIBarButtonItemStylePlain
+                                                          target:self
+                                                          action:@selector(selectedBarButtonItem:)];
+        }
+        
         itemForTool.tintColor = [UIColor whiteColor];
         [toolBarItems addObject:itemForTool];
         itemForTool.tag = idx;
+        
+        if (tool != self.tools.lastObject)
+        {
+            UIBarButtonItem *fixedSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
+                                                                                        target:nil
+                                                                                        action:nil];
+            fixedSpace.width = 20.0f;
+            [toolBarItems addObject:fixedSpace];
+        }
     }];
     
     [toolBarItems addObject:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil]];
     self.bottomToolbar.items = toolBarItems;
     
     self.canvasView.sourceImage = self.previewImage;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
 }
 
 #pragma mark - Target/Action
@@ -224,6 +262,59 @@ static NSString * const kMediaExtensionJPG       = @"jpg";
     }
     
    _selectedTool = selectedTool;
+}
+
+#pragma mark - Notification Handlers
+
+- (void)keyboardWillShow:(NSNotification *)notification
+{
+    NSDictionary *userInfo = notification.userInfo;
+    
+    NSValue *endFrameValue = userInfo[UIKeyboardFrameEndUserInfoKey];
+    CGRect keyboardEndFrame = [self.view convertRect:endFrameValue.CGRectValue fromView:nil];
+    
+    CGRect overlap = CGRectIntersection(self.canvasView.frame, keyboardEndFrame);
+    
+    NSNumber *durationValue = userInfo[UIKeyboardAnimationDurationUserInfoKey];
+    NSTimeInterval animationDuration = durationValue.doubleValue;
+    
+    NSNumber *curveValue = userInfo[UIKeyboardAnimationCurveUserInfoKey];
+    UIViewAnimationCurve animationCurve = curveValue.intValue;
+    
+    void (^animations)() = ^()
+    {
+        self.verticalSpaceCanvasToTopOfContainerConstraint.constant = -CGRectGetHeight(overlap) + CGRectGetHeight(self.topToolbar.frame);
+        [self.view layoutIfNeeded];
+    };
+    
+    [UIView animateWithDuration:animationDuration
+                          delay:0.0
+                        options:(animationCurve << 16)
+                     animations:animations
+                     completion:nil];
+}
+
+- (void)keyboardWillHide:(NSNotification *)notification
+{
+    NSDictionary *userInfo = notification.userInfo;
+    
+    NSNumber *durationValue = userInfo[UIKeyboardAnimationDurationUserInfoKey];
+    NSTimeInterval animationDuration = durationValue.doubleValue;
+    
+    NSNumber *curveValue = userInfo[UIKeyboardAnimationCurveUserInfoKey];
+    UIViewAnimationCurve animationCurve = curveValue.intValue;
+    
+    void (^animations)() = ^()
+    {
+        self.verticalSpaceCanvasToTopOfContainerConstraint.constant = CGRectGetHeight(self.topToolbar.frame);
+        [self.view layoutIfNeeded];
+    };
+    
+    [UIView animateWithDuration:animationDuration
+                          delay:0.0
+                        options:(animationCurve << 16)
+                     animations:animations
+                     completion:nil];
 }
 
 #pragma mark - Private Methods

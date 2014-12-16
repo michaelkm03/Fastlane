@@ -9,6 +9,7 @@
     <customFonts key="customFonts">
         <mutableArray key="Impact.ttf">
             <string>Impact</string>
+            <string>Impact</string>
         </mutableArray>
     </customFonts>
     <scenes>
@@ -52,7 +53,7 @@
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="9tq-gs-IN4">
                                         <color key="tintColor" red="0.5" green="0.0" blue="0.5" alpha="1" colorSpace="calibratedRGB"/>
                                     </barButtonItem>
-                                    <barButtonItem title="Publish" id="wbF-Jm-Fnh">
+                                    <barButtonItem image="check_icon" id="wbF-Jm-Fnh">
                                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <action selector="publish:" destination="63Q-Vo-LWD" id="1Q5-i3-8b5"/>
@@ -93,6 +94,7 @@
                         <outlet property="bottomToolbar" destination="tla-hc-Ct5" id="QiO-Fi-Arc"/>
                         <outlet property="canvasView" destination="8c5-o3-ehb" id="DSZ-xC-dlK"/>
                         <outlet property="topToolbar" destination="uLJ-ZJ-TSs" id="VtT-RG-Hlb"/>
+                        <outlet property="verticalSpaceCanvasToTopOfContainerConstraint" destination="Uz7-kB-w8t" id="Yca-9A-jZ7"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="29c-Qz-2Z5" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -164,7 +166,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" placeholderIntrinsicWidth="215.5" placeholderIntrinsicHeight="53" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" text="This is a text tool" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="UrN-l4-5TC">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" placeholderIntrinsicWidth="215.5" placeholderIntrinsicHeight="53" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="UrN-l4-5TC" userLabel="TextToolTextView">
                                 <rect key="frame" x="193" y="527" width="216" height="53"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" name="Impact" family="Impact" pointSize="30"/>
@@ -173,16 +175,27 @@
                                     <outlet property="delegate" destination="iqf-u2-nzW" id="RIQ-Ax-PDs"/>
                                 </connections>
                             </textView>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" placeholderIntrinsicWidth="215.5" placeholderIntrinsicHeight="53" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" editable="NO" text="Placeholder Text" textAlignment="center" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xHi-vX-94s" userLabel="PlaceholderTextView">
+                                <rect key="frame" x="192" y="527" width="216" height="53"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" name="Impact" family="Impact" pointSize="30"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done"/>
+                            </textView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="q6N-GL-x5c" firstAttribute="top" secondItem="xHi-vX-94s" secondAttribute="bottom" constant="20" placeholder="YES" id="82B-ke-jYK"/>
                             <constraint firstAttribute="centerX" secondItem="UrN-l4-5TC" secondAttribute="centerX" constant="-1" placeholder="YES" id="8ic-wb-deT"/>
+                            <constraint firstAttribute="centerX" secondItem="xHi-vX-94s" secondAttribute="centerX" placeholder="YES" id="GDM-Fd-Vts"/>
                             <constraint firstItem="q6N-GL-x5c" firstAttribute="top" secondItem="UrN-l4-5TC" secondAttribute="bottom" constant="20" placeholder="YES" id="pKK-II-Kzo"/>
                         </constraints>
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
                     <connections>
+                        <outlet property="placeholderTextView" destination="xHi-vX-94s" id="OAn-vn-Wjb"/>
                         <outlet property="textView" destination="UrN-l4-5TC" id="ikY-jo-pBI"/>
+                        <outletCollection property="textViews" destination="UrN-l4-5TC" id="eHj-TN-y5e"/>
+                        <outletCollection property="textViews" destination="xHi-vX-94s" id="vi6-9d-J1H"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aSE-Jk-rdh" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -241,4 +254,7 @@
             <point key="canvasLocation" x="550" y="343"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="check_icon" width="32" height="22"/>
+    </resources>
 </document>
