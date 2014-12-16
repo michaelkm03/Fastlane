@@ -40,7 +40,7 @@ static NSString * const kFilterIndexKey = @"filterIndex";
         _title = [dependencyManager stringForKey:kTitleKey];
         _filterIndexNumber = [dependencyManager numberForKey:kFilterIndexKey];
         _cropViewController = [VCropToolViewController cropViewController];
-        _icon = [UIImage imageNamed:@"crop_icon"];
+        _icon = [UIImage imageNamed:@"cropIcon"];
     }
     return self;
 }

@@ -53,7 +53,7 @@
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="9tq-gs-IN4">
                                         <color key="tintColor" red="0.5" green="0.0" blue="0.5" alpha="1" colorSpace="calibratedRGB"/>
                                     </barButtonItem>
-                                    <barButtonItem image="check_icon" id="wbF-Jm-Fnh">
+                                    <barButtonItem image="checkIcon" id="wbF-Jm-Fnh">
                                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <action selector="publish:" destination="63Q-Vo-LWD" id="1Q5-i3-8b5"/>
@@ -256,6 +256,6 @@
     </scenes>
     <resources>
         <image name="cameraButtonBack" width="22" height="17"/>
-        <image name="check_icon" width="32" height="22"/>
+        <image name="checkIcon" width="32" height="22"/>
     </resources>
 </document>
