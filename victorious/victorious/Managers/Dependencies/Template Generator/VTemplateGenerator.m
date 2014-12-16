@@ -128,16 +128,16 @@ static NSString * const kFontSizeKey = @"fontSize";
                                              },
                                      kTextToolColor:
                                          @{
-                                             kRedKey: @1.0f,
-                                             kGreenKey: @1.0f,
-                                             kBlueKey: @1.0f,
+                                             kRedKey: @255,
+                                             kGreenKey: @255,
+                                             kBlueKey: @255,
                                              kAlphaKey: @1.0f,
                                          },
                                      kTextToolStrokeColor:
                                          @{
-                                             kRedKey: @0.0f,
-                                             kGreenKey: @0.0f,
-                                             kBlueKey: @0.0f,
+                                             kRedKey: @0,
+                                             kGreenKey: @0,
+                                             kBlueKey: @0,
                                              kAlphaKey: @1.0f,
                                              },
                                      kTextToolStrokeWidth: @-5.0f,
@@ -155,16 +155,16 @@ static NSString * const kFontSizeKey = @"fontSize";
                                              },
                                      kTextToolColor:
                                          @{
-                                             kRedKey: @1.0f,
-                                             kGreenKey: @1.0f,
-                                             kBlueKey: @1.0f,
+                                             kRedKey: @255,
+                                             kGreenKey: @255,
+                                             kBlueKey: @255,
                                              kAlphaKey: @1.0f,
                                              },
                                      kTextToolStrokeColor:
                                          @{
-                                             kRedKey: @1.0f,
-                                             kGreenKey: @1.0f,
-                                             kBlueKey: @1.0f,
+                                             kRedKey: @255,
+                                             kGreenKey: @255,
+                                             kBlueKey: @255,
                                              kAlphaKey: @1.0f,
                                              },
                                      kTextToolStrokeWidth: @0.0f,
