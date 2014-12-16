@@ -336,16 +336,7 @@ static NSString * const kAccentColorKey = @"color.accent";
 
 - (UIImage *)renderedImageForCurrentState
 {
-    // Once we drop 7 we can use the GPU Renderer
-    CIContext *renderingContext;
-    if (UI_IS_IOS8_AND_HIGHER)
-    {
-        renderingContext = [CIContext contextWithOptions:@{}];
-    }
-    else
-    {
-        renderingContext = [CIContext contextWithOptions:@{kCIContextUseSoftwareRenderer:@YES}];
-    }
+    CIContext *renderingContext = [CIContext contextWithOptions:@{}];
     
     __block CIImage *filteredImage = [CIImage v_imageWithUImage:self.canvasView.sourceImage];
     

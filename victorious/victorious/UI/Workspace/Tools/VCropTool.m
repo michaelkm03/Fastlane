@@ -98,7 +98,6 @@ static NSString * const kFilterIndexKey = @"filterIndex";
                                                                  -((croppingBounds.size.height / contentSize.height)* zoomedHeight))];
     [cropFilter setValue:cropVector
                   forKey:@"inputRectangle"];
-    
     return [cropFilter outputImage];
 }
 
