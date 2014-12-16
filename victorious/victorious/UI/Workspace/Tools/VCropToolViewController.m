@@ -31,6 +31,13 @@
     return cropTool;
 }
 
+#pragma mark - NSObject
+
+- (void)dealloc
+{
+    self.croppingScrollView.delegate = nil;
+}
+
 #pragma mark - UIViewController
 #pragma mark Lifecycle
 

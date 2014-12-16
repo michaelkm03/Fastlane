@@ -61,7 +61,7 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
 
 - (void)dealloc
 {
-    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - UIViewController

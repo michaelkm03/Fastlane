@@ -32,6 +32,14 @@
     return toolPicker;
 }
 
+#pragma mark - NSObject
+
+- (void)dealloc
+{
+    self.collectionView.delegate = nil;
+    self.collectionView.dataSource = nil;
+}
+
 #pragma mark - UIViewController
 #pragma mark Lifecycle Methods
 
