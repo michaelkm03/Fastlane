@@ -20,6 +20,7 @@ static const CGFloat kTextRenderingSize = 1024;
 @property (nonatomic, strong) NSArray *bottomVerticalAlignmentConstraints;
 
 @property (nonatomic, strong) dispatch_queue_t searialTextRenderingQueue;
+@property (nonatomic, assign, getter=isRendering) BOOL rendering; // Only access on searialTextRenderingQueue
 
 @property (nonatomic, strong, readwrite) UIImage *renderedImage;
 
@@ -86,7 +87,7 @@ static const CGFloat kTextRenderingSize = 1024;
     {
         dispatch_sync(self.searialTextRenderingQueue, ^
                       {
-                          // Wait for render to complete
+                          [self renderText];
                       });
     }
     
@@ -136,30 +137,45 @@ shouldChangeTextInRange:(NSRange)range
     
     dispatch_async(self.searialTextRenderingQueue, ^
     {
-        CGFloat scaleFactor = kTextRenderingSize / CGRectGetWidth(self.view.bounds);
-        CGRect scaledRect = CGRectMake(0,
-                                       0,
-                                       CGRectGetWidth(self.view.bounds) * scaleFactor,
-                                       CGRectGetHeight(self.view.bounds) * scaleFactor);
-        UIGraphicsBeginImageContextWithOptions(scaledRect.size, NO, scaleFactor);
-        CGContextRef context = UIGraphicsGetCurrentContext();
-        __block UIImage *renderedImage;
-        CGContextSaveGState(context);
-        {
-            CGContextScaleCTM(context, scaleFactor, scaleFactor);
-            [self.textView.attributedText drawWithRect:self.textView.frame
-                                               options:NSStringDrawingUsesLineFragmentOrigin
-                                               context:nil];
-            renderedImage = UIGraphicsGetImageFromCurrentImageContext();
-        }
-        CGContextRestoreGState(context);
-        UIGraphicsEndImageContext();
-        
-        self.renderedImage = renderedImage;
+        [self renderText];
     });
 }
 
 #pragma mark - Private Methods
+
+ /**
+ *  Only call this method on searialTextRenderingQueue
+ */
+- (void)renderText
+{
+    if (self.isRendering)
+    {
+        return;
+    }
+    self.rendering = YES;
+    
+    CGFloat scaleFactor = kTextRenderingSize / CGRectGetWidth(self.view.bounds);
+    CGRect scaledRect = CGRectMake(0,
+                                   0,
+                                   CGRectGetWidth(self.view.bounds) * scaleFactor,
+                                   CGRectGetHeight(self.view.bounds) * scaleFactor);
+    UIGraphicsBeginImageContextWithOptions(scaledRect.size, NO, scaleFactor);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    __block UIImage *renderedImage;
+    CGContextSaveGState(context);
+    {
+        CGContextScaleCTM(context, scaleFactor, scaleFactor);
+        [self.textView.attributedText drawWithRect:self.textView.frame
+                                           options:NSStringDrawingUsesLineFragmentOrigin
+                                           context:nil];
+        renderedImage = UIGraphicsGetImageFromCurrentImageContext();
+    }
+    CGContextRestoreGState(context);
+    UIGraphicsEndImageContext();
+    
+    self.renderedImage = renderedImage;
+    self.rendering = NO;
+}
 
 - (void)updateTextAttributesForTextType:(VTextTypeTool *)textType
 {
