@@ -26,9 +26,7 @@
 // Publishing
 #import "VObjectManager+ContentCreation.h"
 
-
 static const CGFloat kJPEGCompressionQuality    = 0.8f;
-static NSString * const kMediaExtensionJPG       = @"jpg";
 static NSString * const kAccentColorKey = @"color.accent";
 
 @interface VWorkspaceViewController ()
@@ -174,7 +172,7 @@ static NSString * const kAccentColorKey = @"color.accent";
         NSURL *originalMediaURL = self.mediaURL;
         NSData *filteredImageData = UIImageJPEGRepresentation(renderedImage, kJPEGCompressionQuality);
         NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
-        NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:kMediaExtensionJPG];
+        NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:VConstantMediaExtensionJPG];
         if ([filteredImageData writeToURL:tempFile atomically:NO])
         {
             self.mediaURL = tempFile;
