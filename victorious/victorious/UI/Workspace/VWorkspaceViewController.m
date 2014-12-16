@@ -337,7 +337,16 @@ static NSString * const kAccentColorKey = @"color.accent";
 - (UIImage *)renderedImageForCurrentState
 {
     // Once we drop 7 we can use the GPU Renderer
-    CIContext *renderingContext = [CIContext contextWithOptions:@{}];
+    CIContext *renderingContext;
+    if (UI_IS_IOS8_AND_HIGHER)
+    {
+        renderingContext = [CIContext contextWithOptions:@{}];
+    }
+    else
+    {
+        renderingContext = [CIContext contextWithOptions:@{kCIContextUseSoftwareRenderer:@YES}];
+    }
+    
     __block CIImage *filteredImage = [CIImage v_imageWithUImage:self.canvasView.sourceImage];
     
     NSArray *filterOrderTools = [self.tools sortedArrayUsingComparator:^NSComparisonResult(id <VWorkspaceTool> tool1, id <VWorkspaceTool> tool2)

@@ -158,6 +158,12 @@ shouldChangeTextInRange:(NSRange)range
  */
 - (void)renderText
 {
+    if (self.textView == nil)
+    {
+        // Nothing to render
+        return;
+    }
+    
     CGFloat scaleFactor = kTextRenderingSize / CGRectGetWidth(self.view.bounds);
     CGRect scaledRect = CGRectMake(0,
                                    0,
