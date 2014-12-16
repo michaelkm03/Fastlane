@@ -974,10 +974,10 @@
 		0314D42E19B46B5E00FA363C /* VSignupTransitionAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSignupTransitionAnimator.m; sourceTree = "<group>"; };
 		0314D42F19B46B5E00FA363C /* VSignupWithEmailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSignupWithEmailViewController.h; sourceTree = "<group>"; };
 		0314D43019B46B5E00FA363C /* VSignupWithEmailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSignupWithEmailViewController.m; sourceTree = "<group>"; };
-		0314D43A19B46B5E00FA363C /* VLargeNumberFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLargeNumberFormatter.h; path = ../../Cells/VLargeNumberFormatter.h; sourceTree = "<group>"; };
-		0314D43B19B46B5E00FA363C /* VLargeNumberFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VLargeNumberFormatter.m; path = ../../Cells/VLargeNumberFormatter.m; sourceTree = "<group>"; };
-		0314D44319B46B5E00FA363C /* VTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VTableViewCell.h; path = ../Streams/Cells/VTableViewCell.h; sourceTree = "<group>"; };
-		0314D44419B46B5E00FA363C /* VTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VTableViewCell.m; path = ../Streams/Cells/VTableViewCell.m; sourceTree = "<group>"; };
+		0314D43A19B46B5E00FA363C /* VLargeNumberFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLargeNumberFormatter.h; sourceTree = "<group>"; };
+		0314D43B19B46B5E00FA363C /* VLargeNumberFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VLargeNumberFormatter.m; sourceTree = "<group>"; };
+		0314D44319B46B5E00FA363C /* VTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTableViewCell.h; sourceTree = "<group>"; };
+		0314D44419B46B5E00FA363C /* VTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTableViewCell.m; sourceTree = "<group>"; };
 		0314D44519B46B5E00FA363C /* VEphemeralTimerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEphemeralTimerView.h; sourceTree = "<group>"; };
 		0314D44619B46B5E00FA363C /* VEphemeralTimerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEphemeralTimerView.m; sourceTree = "<group>"; };
 		0314D44E19B46B5E00FA363C /* VStreamTableDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamTableDataSource.h; sourceTree = "<group>"; };
@@ -1126,7 +1126,7 @@
 		0390088319F3A63C00FD7EDF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/FindFriendsTableView.xib; sourceTree = "<group>"; };
 		0390088419F3A64600FD7EDF /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/FindFriendsTableView.strings; sourceTree = "<group>"; };
 		0390088519F3A76200FD7EDF /* VStreamDirectoryItemCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VStreamDirectoryItemCell.xib; sourceTree = "<group>"; };
-		0390088719F3A7CC00FD7EDF /* VStreamCellHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = VStreamCellHeaderView.xib; path = ../../Cells/VStreamCellHeaderView.xib; sourceTree = "<group>"; };
+		0390088719F3A7CC00FD7EDF /* VStreamCellHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VStreamCellHeaderView.xib; sourceTree = "<group>"; };
 		0390088F19F3A99100FD7EDF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/VEphemeralTimerView.xib; sourceTree = "<group>"; };
 		0395575819C14439005E32FB /* VCameraCaptureController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCameraCaptureController.h; sourceTree = "<group>"; };
 		0395575919C14439005E32FB /* VCameraCaptureController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCameraCaptureController.m; sourceTree = "<group>"; };
@@ -1607,7 +1607,7 @@
 		BE88FF941A0006150064AB28 /* VContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VContainerViewController.m; sourceTree = "<group>"; };
 		BE88FF961A0006710064AB28 /* VProfileHeaderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VProfileHeaderCell.h; sourceTree = "<group>"; };
 		BE88FF971A0006710064AB28 /* VProfileHeaderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VProfileHeaderCell.m; sourceTree = "<group>"; };
-		BE88FF991A001D3D0064AB28 /* VStreamCellHeaderView-C.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "VStreamCellHeaderView-C.xib"; path = "../../Cells/VStreamCellHeaderView-C.xib"; sourceTree = "<group>"; };
+		BE88FF991A001D3D0064AB28 /* VStreamCellHeaderView-C.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "VStreamCellHeaderView-C.xib"; sourceTree = "<group>"; };
 		BE89D97F192141D600D97E7F /* VUser+Fetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VUser+Fetcher.h"; sourceTree = "<group>"; };
 		BE89D980192141D600D97E7F /* VUser+Fetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VUser+Fetcher.m"; sourceTree = "<group>"; };
 		BE89D98B1921531400D97E7F /* VAbstractFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAbstractFilter.h; sourceTree = "<group>"; };
@@ -1784,8 +1784,8 @@
 		DB58EF40199401E500D2A07F /* VNotification+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VNotification+RestKit.m"; sourceTree = "<group>"; };
 		DB58EF4E1994174900D2A07F /* VNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNotification.h; sourceTree = "<group>"; };
 		DB58EF4F1994174900D2A07F /* VNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNotification.m; sourceTree = "<group>"; };
-		DB6FDC3819C10CC600CEF5BF /* VStreamCellHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VStreamCellHeaderView.h; path = ../../Cells/VStreamCellHeaderView.h; sourceTree = "<group>"; };
-		DB6FDC3919C10CC600CEF5BF /* VStreamCellHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VStreamCellHeaderView.m; path = ../../Cells/VStreamCellHeaderView.m; sourceTree = "<group>"; };
+		DB6FDC3819C10CC600CEF5BF /* VStreamCellHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamCellHeaderView.h; sourceTree = "<group>"; };
+		DB6FDC3919C10CC600CEF5BF /* VStreamCellHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamCellHeaderView.m; sourceTree = "<group>"; };
 		DB82857819F6DD3C006C6E2F /* VAdPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAdPlayerView.h; sourceTree = "<group>"; };
 		DB82857919F6DD3C006C6E2F /* VAdPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAdPlayerView.m; sourceTree = "<group>"; };
 		DB8D3A1119803A03005DD36D /* VHashTags.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHashTags.h; sourceTree = "<group>"; };
@@ -2136,12 +2136,21 @@
 				D836883C19C36FF200070F22 /* UICollectionView */,
 				0314D34E19B46B5E00FA363C /* VActivityIndicatorView.h */,
 				0314D34F19B46B5E00FA363C /* VActivityIndicatorView.m */,
+				A7A390D41A326E1700709812 /* VAnimatedTransitionViewController.h */,
+				A7A390C31A32441E00709812 /* VButton.h */,
+				A7A390C41A32441E00709812 /* VButton.m */,
 				0314D35019B46B5E00FA363C /* VCommentTextAndMediaView.h */,
 				0314D35119B46B5E00FA363C /* VCommentTextAndMediaView.m */,
 				BE88FF931A0006150064AB28 /* VContainerViewController.h */,
 				BE88FF941A0006150064AB28 /* VContainerViewController.m */,
 				0314D35219B46B5E00FA363C /* VContentInputAccessoryView.h */,
 				0314D35319B46B5E00FA363C /* VContentInputAccessoryView.m */,
+				D8C8F5711A0400DF006BE3E8 /* VExtendedView.h */,
+				D8C8F5721A0400DF006BE3E8 /* VExtendedView.m */,
+				D8AF00ED1A128A7200B147C4 /* VHashTagTextView.h */,
+				D8AF00EE1A128A7200B147C4 /* VHashTagTextView.m */,
+				A7F8DD4B1A0B065800F82256 /* VHeaderView.h */,
+				A7F8DD4C1A0B065800F82256 /* VHeaderView.m */,
 				A70564C019E781EE004A8387 /* VNoContentTableViewCell.h */,
 				A70564C119E781EE004A8387 /* VNoContentTableViewCell.m */,
 				03FD87D419F96F6900D93BAA /* VNoContentTableViewCell.xib */,
@@ -2156,15 +2165,6 @@
 				0314D35A19B46B5E00FA363C /* VTableContainerViewController.m */,
 				0314D44319B46B5E00FA363C /* VTableViewCell.h */,
 				0314D44419B46B5E00FA363C /* VTableViewCell.m */,
-				D8C8F5711A0400DF006BE3E8 /* VExtendedView.h */,
-				D8C8F5721A0400DF006BE3E8 /* VExtendedView.m */,
-				A7F8DD4B1A0B065800F82256 /* VHeaderView.h */,
-				A7F8DD4C1A0B065800F82256 /* VHeaderView.m */,
-				D8AF00ED1A128A7200B147C4 /* VHashTagTextView.h */,
-				D8AF00EE1A128A7200B147C4 /* VHashTagTextView.m */,
-				A7A390C31A32441E00709812 /* VButton.h */,
-				A7A390C41A32441E00709812 /* VButton.m */,
-				A7A390D41A326E1700709812 /* VAnimatedTransitionViewController.h */,
 				A7A390D11A326DB100709812 /* VViewControllerTransition.h */,
 				A7A390D21A326DB100709812 /* VViewControllerTransition.m */,
 			);
@@ -2174,13 +2174,13 @@
 		0314D34919B46B5E00FA363C /* Keyboard Bar */ = {
 			isa = PBXGroup;
 			children = (
-				D8E39BE819CB7D92007FD86A /* VKeyboardInputAccessoryView.h */,
-				D8E39BE919CB7D92007FD86A /* VKeyboardInputAccessoryView.m */,
-				0390085F19F38D5C00FD7EDF /* VKeyboardInputAccessoryView.xib */,
 				0314D34A19B46B5E00FA363C /* VKeyboardBarContainerViewController.h */,
 				0314D34B19B46B5E00FA363C /* VKeyboardBarContainerViewController.m */,
 				0314D34C19B46B5E00FA363C /* VKeyboardBarViewController.h */,
 				0314D34D19B46B5E00FA363C /* VKeyboardBarViewController.m */,
+				D8E39BE819CB7D92007FD86A /* VKeyboardInputAccessoryView.h */,
+				D8E39BE919CB7D92007FD86A /* VKeyboardInputAccessoryView.m */,
+				0390085F19F38D5C00FD7EDF /* VKeyboardInputAccessoryView.xib */,
 			);
 			path = "Keyboard Bar";
 			sourceTree = "<group>";
@@ -2188,7 +2188,6 @@
 		0314D35B19B46B5E00FA363C /* Content View */ = {
 			isa = PBXGroup;
 			children = (
-				0314D35C19B46B5E00FA363C /* Animators */,
 				D8E39BC119CB7C80007FD86A /* Cells */,
 				0314D36519B46B5E00FA363C /* Content Info */,
 				A7A390C91A3257A300709812 /* ContentView.storyboard */,
@@ -2209,13 +2208,6 @@
 				D8917EA119F8498F0070BDBB /* VVideoCellViewModel.m */,
 			);
 			path = "Content View";
-			sourceTree = "<group>";
-		};
-		0314D35C19B46B5E00FA363C /* Animators */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Animators;
 			sourceTree = "<group>";
 		};
 		0314D36519B46B5E00FA363C /* Content Info */ = {
@@ -2470,6 +2462,8 @@
 			children = (
 				0314D40419B46B5E00FA363C /* Find Friends */,
 				DB2A494919DF44EE00CB687B /* login.storyboard */,
+				A735323119DB60600040DB30 /* VAuthorizationViewControllerFactory.h */,
+				A735323219DB60600040DB30 /* VAuthorizationViewControllerFactory.m */,
 				0314D41F19B46B5E00FA363C /* VEnterResetTokenViewController.h */,
 				0314D42019B46B5E00FA363C /* VEnterResetTokenViewController.m */,
 				0314D42319B46B5E00FA363C /* VLoginTransitionAnimator.h */,
@@ -2486,8 +2480,6 @@
 				0314D42E19B46B5E00FA363C /* VSignupTransitionAnimator.m */,
 				0314D42F19B46B5E00FA363C /* VSignupWithEmailViewController.h */,
 				0314D43019B46B5E00FA363C /* VSignupWithEmailViewController.m */,
-				A735323119DB60600040DB30 /* VAuthorizationViewControllerFactory.h */,
-				A735323219DB60600040DB30 /* VAuthorizationViewControllerFactory.m */,
 			);
 			path = "Signup and Login";
 			sourceTree = "<group>";
@@ -3430,12 +3422,12 @@
 		A7EECAD21A377FA000A8BAE1 /* Purchase Settings */ = {
 			isa = PBXGroup;
 			children = (
-				A7EECAD31A377FA000A8BAE1 /* VPurchaseSettingsViewController.h */,
-				A7EECAD41A377FA000A8BAE1 /* VPurchaseSettingsViewController.m */,
-				A7EECAD61A37802500A8BAE1 /* VPurchaseCell.h */,
-				A7EECAD71A37802500A8BAE1 /* VPurchaseCell.m */,
 				A7A2DFFD1A37813D00F8C705 /* VPurchaseActionCell.h */,
 				A7A2DFFE1A37813D00F8C705 /* VPurchaseActionCell.m */,
+				A7EECAD61A37802500A8BAE1 /* VPurchaseCell.h */,
+				A7EECAD71A37802500A8BAE1 /* VPurchaseCell.m */,
+				A7EECAD31A377FA000A8BAE1 /* VPurchaseSettingsViewController.h */,
+				A7EECAD41A377FA000A8BAE1 /* VPurchaseSettingsViewController.m */,
 			);
 			path = "Purchase Settings";
 			sourceTree = "<group>";
@@ -3925,10 +3917,10 @@
 		BE88FF5D1A0005E70064AB28 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				0314D43A19B46B5E00FA363C /* VLargeNumberFormatter.h */,
-				0314D43B19B46B5E00FA363C /* VLargeNumberFormatter.m */,
 				A7D288191A240F74006CF0EC /* VFollowersTextFormatter.h */,
 				A7D2881A1A240F74006CF0EC /* VFollowersTextFormatter.m */,
+				0314D43A19B46B5E00FA363C /* VLargeNumberFormatter.h */,
+				0314D43B19B46B5E00FA363C /* VLargeNumberFormatter.m */,
 				BE88FF5E1A0005E70064AB28 /* VSequenceActionController.h */,
 				BE88FF5F1A0005E70064AB28 /* VSequenceActionController.m */,
 				BE88FF601A0005E70064AB28 /* VStreamCellActionView.h */,
@@ -4027,11 +4019,11 @@
 		D836883C19C36FF200070F22 /* UICollectionView */ = {
 			isa = PBXGroup;
 			children = (
-				D836883D19C3706600070F22 /* VSharedCollectionReusableViewMethods.h */,
 				D836883F19C370C400070F22 /* VBaseCollectionViewCell.h */,
 				D836884019C370C400070F22 /* VBaseCollectionViewCell.m */,
 				D836884219C3718A00070F22 /* VBaseSupplementaryView.h */,
 				D836884319C3718A00070F22 /* VBaseSupplementaryView.m */,
+				D836883D19C3706600070F22 /* VSharedCollectionReusableViewMethods.h */,
 			);
 			path = UICollectionView;
 			sourceTree = "<group>";
@@ -4119,17 +4111,17 @@
 		D8CA63AF19D51C8D002046E5 /* Action Sheet */ = {
 			isa = PBXGroup;
 			children = (
-				D8CA63B019D51CB6002046E5 /* VActionSheetViewController.h */,
-				D8CA63B119D51CB6002046E5 /* VActionSheetViewController.m */,
 				0390085619F38BC600FD7EDF /* ActionSheet.storyboard */,
-				D8CA63B919D5240C002046E5 /* VActionSheetPresentationAnimator.h */,
-				D8CA63BA19D5240C002046E5 /* VActionSheetPresentationAnimator.m */,
-				D8CA63BC19D5DB06002046E5 /* VActionSheetTransitioningDelegate.h */,
-				D8CA63BD19D5DB06002046E5 /* VActionSheetTransitioningDelegate.m */,
 				D84FD73B19D5E5F200E7F9F2 /* VActionItem.h */,
 				D84FD73C19D5E5F200E7F9F2 /* VActionItem.m */,
 				D8B827D819D5FD8900CCD6D9 /* VActionItemTableViewCell.h */,
 				D8B827D919D5FD8900CCD6D9 /* VActionItemTableViewCell.m */,
+				D8CA63B919D5240C002046E5 /* VActionSheetPresentationAnimator.h */,
+				D8CA63BA19D5240C002046E5 /* VActionSheetPresentationAnimator.m */,
+				D8CA63BC19D5DB06002046E5 /* VActionSheetTransitioningDelegate.h */,
+				D8CA63BD19D5DB06002046E5 /* VActionSheetTransitioningDelegate.m */,
+				D8CA63B019D51CB6002046E5 /* VActionSheetViewController.h */,
+				D8CA63B119D51CB6002046E5 /* VActionSheetViewController.m */,
 				D8B827DB19D5FDFE00CCD6D9 /* VDescriptionTableViewCell.h */,
 				D8B827DC19D5FDFE00CCD6D9 /* VDescriptionTableViewCell.m */,
 			);

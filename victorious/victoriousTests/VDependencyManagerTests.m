@@ -104,14 +104,14 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
 
 - (void)testColor
 {
-    UIColor *expected = [UIColor colorWithRed:0 green:0 blue:0 alpha:1];
+    UIColor *expected = [UIColor colorWithRed:0.2 green:0.6 blue:0.4 alpha:1];
     UIColor *actual = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     XCTAssertEqualObjects(expected, actual);
 }
 
 - (void)testParentColor
 {
-    UIColor *expected = [UIColor colorWithRed:0 green:0 blue:0 alpha:1];
+    UIColor *expected = [UIColor colorWithRed:0.2 green:0.6 blue:0.4 alpha:1];
     UIColor *actual = [self.childDependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     XCTAssertEqualObjects(expected, actual);
 }
