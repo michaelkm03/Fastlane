@@ -225,6 +225,7 @@
     </entity>
     <entity name="UserHashtag" representedClassName="VUserHashtag" syncable="YES">
         <attribute name="tag" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="userId" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="hashtags" inverseEntity="User" syncable="YES"/>
     </entity>
     <entity name="VoteResult" representedClassName="VVoteResult" syncable="YES">
@@ -284,10 +285,10 @@
         <element name="Sequence" positionX="1078" positionY="-540" width="128" height="465"/>
         <element name="Tracking" positionX="828" positionY="-630" width="128" height="283"/>
         <element name="User" positionX="1321" positionY="-324" width="128" height="418"/>
+        <element name="UserHashtag" positionX="702" positionY="-639" width="128" height="88"/>
         <element name="VoteResult" positionX="864" positionY="164" width="128" height="90"/>
         <element name="VoteType" positionX="538" positionY="-738" width="128" height="255"/>
         <element name="VStream" positionX="1069" positionY="-792" width="128" height="135"/>
         <element name="VStreamItem" positionX="871" positionY="-765" width="128" height="103"/>
-        <element name="UserHashtag" positionX="702" positionY="-639" width="128" height="73"/>
     </elements>
 </model>

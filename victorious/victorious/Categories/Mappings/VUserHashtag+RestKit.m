@@ -27,6 +27,8 @@
     
     mapping.identificationAttributes = @[ VSelectorName(tag) ];
     
+    [mapping addConnectionForRelationship:@"user" connectedBy:@{@"userId" : @"remoteId"}];
+    
     [mapping addAttributeMappingsFromDictionary:propertyMap];
     
     return mapping;
@@ -37,7 +39,7 @@
     return @[ [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
                                                            method:RKRequestMethodAny
                                                       pathPattern:@"/api/hashtag/subscribed_to_list/:page/:perpage"
-                                                          keyPath:@"payload"
+                                                          keyPath:@"payload.tags"
                                                       statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
               
               [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
@@ -51,7 +53,6 @@
                                                       pathPattern:@"/api/hashtag/unfollow"
                                                           keyPath:@"payload"
                                                       statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)]
-
               ];
 }
 

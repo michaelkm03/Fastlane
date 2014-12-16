@@ -14,5 +14,6 @@
 
 @dynamic tag;
 @dynamic user;
+@dynamic userId;
 
 @end

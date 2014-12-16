@@ -19,6 +19,7 @@
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Users.h"
 #import "VUser.h"
+#import "VUserHashtag.h"
 #import "VAuthorizationViewControllerFactory.h"
 #import "VConstants.h"
 
@@ -29,7 +30,7 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
 
 @property (nonatomic, strong) VSuggestedPeopleCollectionViewController *suggestedPeopleViewController;
 
-@property (nonatomic, strong) NSArray *userTags;
+@property (nonatomic, strong) NSMutableArray *userTags;
 @property (nonatomic, strong) NSArray *trendingTags;
 @property (nonatomic, strong) NSArray *sectionHeaders;
 @property (nonatomic, strong) NSError *error;
@@ -143,7 +144,15 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
 - (void)reconcileUserHashtags:(NSArray *)hashtags
          withTrendingHashtags:(NSArray *)trendingTags
 {
-    self.userTags = hashtags;
+    self.userTags = [[NSMutableArray alloc] init];
+    
+    for (VUserHashtag *ht in hashtags)
+    {
+        NSString *tag = ht.tag;
+        
+        [self.userTags addObject:tag];
+    }
+    
     [self.tableView reloadData];
 }
 

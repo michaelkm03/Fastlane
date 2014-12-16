@@ -15,5 +15,6 @@
 
 @property (nonatomic, retain) NSString * tag;
 @property (nonatomic, retain) VUser *user;
+@property (nonatomic, retain) NSNumber * userId;
 
 @end

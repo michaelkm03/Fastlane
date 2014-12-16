@@ -9,6 +9,7 @@
 #import "VObjectManager+Discover.h"
 #import "VObjectManager+Private.h"
 #import "VUser.h"
+#import "VUserHashtag+RestKit.h"
 
 @implementation VObjectManager (Discover)
 
@@ -102,9 +103,20 @@
 {
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
+        [self removeHashtagFromLocalObjectStore:hashtag];
+        
         if (success)
         {
             success(operation, fullResponse, resultObjects);
+        }
+    };
+    
+    VFailBlock fullFailure = ^(NSOperation *operation, NSError *error)
+    {
+        if (fail)
+        {
+            VLog(@"%@", error);
+            fail(operation, error);
         }
     };
     
@@ -112,7 +124,21 @@
               object:nil
           parameters:@{@"hasthtag": hashtag}
         successBlock:fullSuccess
-           failBlock:fail];
+           failBlock:fullFailure];
+}
+
+- (void)removeHashtagFromLocalObjectStore:(NSString *)tag
+{
+    NSManagedObjectContext *moc = [[VObjectManager sharedManager] managedObjectStore].mainQueueManagedObjectContext;
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[VUserHashtag entityName]];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"tag==%@", tag];
+    NSArray *result = [moc executeFetchRequest:fetchRequest error:nil];
+    
+    if (result)
+    {
+        [moc deleteObject:(VUserHashtag *)result];
+    }
+
 }
 
 @end
