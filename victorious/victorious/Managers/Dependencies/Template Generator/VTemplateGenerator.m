@@ -45,6 +45,7 @@ static NSString * const kTextToolFont = @"textToolFont";
 static NSString * const kTextToolColor = @"textToolColor";
 static NSString * const kTextToolStrokeColor = @"textToolStrokeColor";
 static NSString * const kTextToolStrokeWidth = @"textToolStrokeWidth";
+static NSString * const kTextToolPlaceholderText = @"textToolPlaceholderText";
 static NSString * const kRedKey = @"red";
 static NSString * const kGreenKey = @"green";
 static NSString * const kBlueKey = @"blue";
@@ -119,6 +120,7 @@ static NSString * const kFontSizeKey = @"fontSize";
                                      kTitleKey: @"meme",
                                      kTextToolHorizontalAlignment: @"center",
                                      kTextToolVerticalAlignment: @"bottom",
+                                     kTextToolPlaceholderText: @"create a meme",
                                      kTextToolFont:
                                          @{
                                              kFontNameKey: @"Impact",
@@ -145,6 +147,7 @@ static NSString * const kFontSizeKey = @"fontSize";
                                      kTitleKey: @"quote",
                                      kTextToolHorizontalAlignment: @"center",
                                      kTextToolVerticalAlignment: @"center",
+                                     kTextToolPlaceholderText: @"share a secret",
                                      kTextToolFont:
                                          @{
                                              kFontNameKey: @"PTSans-Narrow",

@@ -154,12 +154,16 @@ shouldChangeTextInRange:(NSRange)range
 
 - (void)updateTextAttributesForTextType:(VTextTypeTool *)textType
 {
-    [self.textViews enumerateObjectsUsingBlock:^(UITextView *textView, NSUInteger idx, BOOL *stop)
+    if (!textType)
     {
-        textView.attributedText = [[NSAttributedString alloc] initWithString:textView.text
-                                                                  attributes:textType.attributes];
-        textView.typingAttributes = textType.attributes;
-    }];
+        return;
+    }
+    
+    self.placeholderTextView.attributedText = [[NSAttributedString alloc] initWithString:textType.placeholderText
+                                                                              attributes:textType.attributes];
+    self.textView.attributedText = [[NSAttributedString alloc] initWithString:self.textView.text
+                                                                   attributes:textType.attributes];
+    self.textView.typingAttributes = textType.attributes;
 }
 
 - (void)updateTextViewConstraintsForTextType:(VTextTypeTool *)textType

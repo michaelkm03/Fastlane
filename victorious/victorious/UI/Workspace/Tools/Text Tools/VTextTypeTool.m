@@ -16,6 +16,7 @@ static NSString * const kTextToolFont = @"textToolFont";
 static NSString * const kTextToolColor = @"textToolColor";
 static NSString * const kTextToolStrokeColor = @"textToolStrokeColor";
 static NSString * const kTextToolStrokeWidth = @"textToolStrokeWidth";
+static NSString * const kTextToolPlaceholderText = @"textToolPlaceholderText";
 
 @interface VTextTypeTool ()
 
@@ -41,6 +42,8 @@ static NSString * const kTextToolStrokeWidth = @"textToolStrokeWidth";
         _attributes = [self textAttributesWithDependencyManager:dependencyManager];
         
         _verticalAlignment = [self verticalAlignmentWithDependencyManager:dependencyManager];
+
+        _placeholderText = [dependencyManager stringForKey:kTextToolPlaceholderText];
     }
     return self;
 }
