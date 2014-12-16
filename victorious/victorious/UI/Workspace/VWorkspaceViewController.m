@@ -14,9 +14,6 @@
 // Views
 #import "VCanvasView.h"
 #import <MBProgressHUD/MBProgressHUD.h>
-
-// Themeing
-#import "VThemeManager.h"
 #import "UIImageView+Blurring.h"
 
 // Protocols
@@ -32,6 +29,7 @@
 
 static const CGFloat kJPEGCompressionQuality    = 0.8f;
 static NSString * const kMediaExtensionJPG       = @"jpg";
+static NSString * const kAccentColorKey = @"color.accent";
 
 @interface VWorkspaceViewController ()
 
@@ -372,7 +370,7 @@ static NSString * const kMediaExtensionJPG       = @"jpg";
     [self.bottomToolbar.items enumerateObjectsUsingBlock:^(UIBarButtonItem *item, NSUInteger idx, BOOL *stop) {
         item.tintColor = [UIColor whiteColor];
     }];
-    itemToSelect.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+    itemToSelect.tintColor = [self.dependencyManager colorForKey:kAccentColorKey];
 }
 
 - (id <VWorkspaceTool>)toolForTag:(NSInteger)tag

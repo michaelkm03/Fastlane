@@ -1,5 +1,5 @@
 //
-//  VCropWorkspaceTool.m
+//  VCropTool.m
 //  victorious
 //
 //  Created by Michael Sena on 12/3/14.

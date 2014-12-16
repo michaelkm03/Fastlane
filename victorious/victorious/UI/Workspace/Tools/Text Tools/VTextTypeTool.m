@@ -42,11 +42,8 @@ static NSString * const kTextToolPlaceholderText = @"placeholderText";
     if (self)
     {
         _title = [dependencyManager stringForKey:kTitleKey];
-        
         _attributes = [self textAttributesWithDependencyManager:dependencyManager];
-        
         _verticalAlignment = [self verticalAlignmentWithDependencyManager:dependencyManager];
-
         _placeholderText = [dependencyManager stringForKey:kTextToolPlaceholderText];
     }
     return self;
