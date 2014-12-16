@@ -5388,7 +5388,7 @@
 					"-DNDEBUG",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "8ae5cf4b-9469-445a-aed4-613df017a60d";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Staging;
@@ -5558,7 +5558,7 @@
 					Reveal,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "8ae5cf4b-9469-445a-aed4-613df017a60d";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -5593,7 +5593,7 @@
 					"-DNDEBUG",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "8ae5cf4b-9469-445a-aed4-613df017a60d";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -5734,7 +5734,7 @@
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/Ad\\ Networks/Tremor",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "8ae5cf4b-9469-445a-aed4-613df017a60d";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = QA;
