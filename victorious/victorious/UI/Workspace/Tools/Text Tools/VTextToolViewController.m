@@ -20,7 +20,6 @@ static const CGFloat kTextRenderingSize = 1024;
 @property (nonatomic, strong) NSArray *bottomVerticalAlignmentConstraints;
 
 @property (nonatomic, strong) dispatch_queue_t searialTextRenderingQueue;
-@property (nonatomic, assign, getter=isRendering) BOOL rendering; // Only access on searialTextRenderingQueue
 
 @property (nonatomic, strong, readwrite) UIImage *renderedImage;
 
@@ -35,6 +34,15 @@ static const CGFloat kTextRenderingSize = 1024;
     return [workspaceStoryboard instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
 }
 
+#pragma mark - NSObject
+
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    
+    self.searialTextRenderingQueue = dispatch_queue_create("com.victorious.textToolRenderingQueue", DISPATCH_QUEUE_SERIAL);
+}
+
 #pragma mark - UIViewController
 #pragma mark Lifecycle Methods
 
@@ -42,8 +50,6 @@ static const CGFloat kTextRenderingSize = 1024;
 {
     [super viewDidLoad];
     
-    self.searialTextRenderingQueue = dispatch_queue_create("com.victorious.textToolRenderingQueue", DISPATCH_QUEUE_SERIAL);
-
     [self updateTextAttributesForTextType:self.textType];
     
     [self.textViews enumerateObjectsUsingBlock:^(UITextView *textView, NSUInteger idx, BOOL *stop)
@@ -78,21 +84,22 @@ static const CGFloat kTextRenderingSize = 1024;
 
 - (UIImage *)renderedImage
 {
-    if (_renderedImage != nil)
-    {
-        return _renderedImage;
-    }
+    __block UIImage *renderedImageFromQueue;
     
     if (self.searialTextRenderingQueue != nil)
     {
         dispatch_sync(self.searialTextRenderingQueue, ^
                       {
+                          if (_renderedImage != nil)
+                          {
+                              renderedImageFromQueue = _renderedImage;
+                          }
                           [self renderText];
+                          renderedImageFromQueue = _renderedImage;
                       });
     }
     
-    
-    return _renderedImage;
+    return renderedImageFromQueue;
 }
 
 - (BOOL)userEnteredText
@@ -123,7 +130,10 @@ shouldChangeTextInRange:(NSRange)range
 
 - (void)textViewDidChange:(UITextView *)textView
 {
-    _renderedImage = nil;
+    dispatch_async(self.searialTextRenderingQueue, ^
+    {
+        self.renderedImage = nil;
+    });
 }
 
 - (void)textViewDidBeginEditing:(UITextView *)textView
@@ -148,12 +158,6 @@ shouldChangeTextInRange:(NSRange)range
  */
 - (void)renderText
 {
-    if (self.isRendering)
-    {
-        return;
-    }
-    self.rendering = YES;
-    
     CGFloat scaleFactor = kTextRenderingSize / CGRectGetWidth(self.view.bounds);
     CGRect scaledRect = CGRectMake(0,
                                    0,
@@ -174,7 +178,6 @@ shouldChangeTextInRange:(NSRange)range
     UIGraphicsEndImageContext();
     
     self.renderedImage = renderedImage;
-    self.rendering = NO;
 }
 
 - (void)updateTextAttributesForTextType:(VTextTypeTool *)textType
