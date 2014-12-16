@@ -24,6 +24,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="rB7-pY-luZ" userLabel="Blurred Image Background">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </imageView>
                             <view contentMode="scaleToFill" horizontalHuggingPriority="249" verticalHuggingPriority="249" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="8c5-o3-ehb" userLabel="Canvas Container" customClass="VCanvasView">
                                 <rect key="frame" x="140" y="44" width="320" height="320"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -32,8 +36,9 @@
                                     <constraint firstAttribute="width" secondItem="8c5-o3-ehb" secondAttribute="height" multiplier="1:1" id="O18-Ux-5Zy"/>
                                 </constraints>
                             </view>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" barStyle="black" translatesAutoresizingMaskIntoConstraints="NO" id="uLJ-ZJ-TSs" userLabel="Top Toolbar">
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uLJ-ZJ-TSs" userLabel="Top Toolbar">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="u6w-gn-U2Y"/>
                                 </constraints>
@@ -54,31 +59,37 @@
                                         </connections>
                                     </barButtonItem>
                                 </items>
-                                <color key="barTintColor" red="0.19607843137254902" green="0.19607843137254902" blue="0.19607843137254902" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="barTintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </toolbar>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" barStyle="black" translatesAutoresizingMaskIntoConstraints="NO" id="tla-hc-Ct5" userLabel="Bottom Toolbar">
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tla-hc-Ct5" userLabel="Bottom Toolbar">
                                 <rect key="frame" x="0.0" y="556" width="600" height="44"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <items/>
-                                <color key="barTintColor" red="0.19607843137254902" green="0.19607843137254902" blue="0.19607843137254902" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="barTintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </toolbar>
                         </subviews>
                         <color key="backgroundColor" red="0.1176470588" green="0.1176470588" blue="0.1176470588" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="uLJ-ZJ-TSs" secondAttribute="trailing" constant="-16" id="7Ye-Dk-Lgz"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="tla-hc-Ct5" secondAttribute="trailing" constant="-16" id="9HD-AO-jIy"/>
+                            <constraint firstAttribute="trailing" secondItem="uLJ-ZJ-TSs" secondAttribute="trailing" id="7Ye-Dk-Lgz"/>
+                            <constraint firstAttribute="trailing" secondItem="tla-hc-Ct5" secondAttribute="trailing" id="9HD-AO-jIy"/>
+                            <constraint firstAttribute="trailing" secondItem="rB7-pY-luZ" secondAttribute="trailing" id="AHv-Vk-wIg"/>
                             <constraint firstItem="8c5-o3-ehb" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="i4i-d2-DXm" secondAttribute="leading" id="IrH-KS-hgs"/>
                             <constraint firstItem="8c5-o3-ehb" firstAttribute="top" secondItem="9wC-ZN-KU8" secondAttribute="bottom" constant="44" id="Uz7-kB-w8t"/>
                             <constraint firstItem="uLJ-ZJ-TSs" firstAttribute="top" secondItem="9wC-ZN-KU8" secondAttribute="bottom" id="Wch-on-DA4"/>
-                            <constraint firstItem="uLJ-ZJ-TSs" firstAttribute="leading" secondItem="i4i-d2-DXm" secondAttribute="leadingMargin" constant="-16" id="dhy-kg-bS3"/>
+                            <constraint firstItem="rB7-pY-luZ" firstAttribute="leading" secondItem="i4i-d2-DXm" secondAttribute="leading" id="bTn-W9-qxk"/>
+                            <constraint firstItem="uLJ-ZJ-TSs" firstAttribute="leading" secondItem="i4i-d2-DXm" secondAttribute="leading" id="dhy-kg-bS3"/>
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="8c5-o3-ehb" secondAttribute="trailing" id="mnj-S4-eXt"/>
-                            <constraint firstItem="tla-hc-Ct5" firstAttribute="leading" secondItem="i4i-d2-DXm" secondAttribute="leadingMargin" constant="-16" id="pdG-8B-6bD"/>
+                            <constraint firstItem="tla-hc-Ct5" firstAttribute="leading" secondItem="i4i-d2-DXm" secondAttribute="leading" id="pdG-8B-6bD"/>
                             <constraint firstItem="jpg-hF-EPF" firstAttribute="top" secondItem="tla-hc-Ct5" secondAttribute="bottom" id="pnB-hJ-LMB"/>
+                            <constraint firstItem="rB7-pY-luZ" firstAttribute="top" secondItem="9wC-ZN-KU8" secondAttribute="bottom" id="t5H-Iv-3np"/>
                             <constraint firstItem="jpg-hF-EPF" firstAttribute="top" relation="greaterThanOrEqual" secondItem="8c5-o3-ehb" secondAttribute="bottom" constant="44" id="vtj-8b-Y1E"/>
                             <constraint firstAttribute="centerX" secondItem="8c5-o3-ehb" secondAttribute="centerX" id="wKX-j8-99B"/>
+                            <constraint firstItem="jpg-hF-EPF" firstAttribute="top" secondItem="rB7-pY-luZ" secondAttribute="bottom" id="wke-BM-e98"/>
                         </constraints>
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
                     <connections>
+                        <outlet property="blurredBackgroundImageVIew" destination="rB7-pY-luZ" id="6iI-Qb-xYm"/>
                         <outlet property="bottomToolbar" destination="tla-hc-Ct5" id="QiO-Fi-Arc"/>
                         <outlet property="canvasView" destination="8c5-o3-ehb" id="DSZ-xC-dlK"/>
                         <outlet property="topToolbar" destination="uLJ-ZJ-TSs" id="VtT-RG-Hlb"/>

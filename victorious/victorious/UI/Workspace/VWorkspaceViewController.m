@@ -15,6 +15,10 @@
 #import "VCanvasView.h"
 #import <MBProgressHUD/MBProgressHUD.h>
 
+// Themeing
+#import "VThemeManager.h"
+#import "UIImageView+Blurring.h"
+
 // Protocols
 #import "VWorkspaceTool.h"
 
@@ -33,9 +37,11 @@ static NSString * const kMediaExtensionJPG       = @"jpg";
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) NSArray *tools;
-@property (weak, nonatomic) IBOutlet UIToolbar *topToolbar;
+
+@property (nonatomic, weak) IBOutlet UIToolbar *topToolbar;
 @property (nonatomic, weak) IBOutlet UIToolbar *bottomToolbar;
-@property (weak, nonatomic) IBOutlet VCanvasView *canvasView;
+@property (nonatomic, weak) IBOutlet VCanvasView *canvasView;
+@property (nonatomic, weak) IBOutlet UIImageView *blurredBackgroundImageVIew;
 
 @property (nonatomic, strong) id <VWorkspaceTool> selectedTool;
 @property (nonatomic, strong) UIViewController *canvasToolViewController;
@@ -83,6 +89,10 @@ static NSString * const kMediaExtensionJPG       = @"jpg";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [self.blurredBackgroundImageVIew setBlurredImageWithClearImage:self.previewImage
+                                                  placeholderImage:nil
+                                                         tintColor:[[UIColor blackColor] colorWithAlphaComponent:0.5f]];
     
     NSMutableArray *toolBarItems = [[NSMutableArray alloc] init];
     [toolBarItems addObject:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil]];
@@ -254,7 +264,7 @@ static NSString * const kMediaExtensionJPG       = @"jpg";
     [self.bottomToolbar.items enumerateObjectsUsingBlock:^(UIBarButtonItem *item, NSUInteger idx, BOOL *stop) {
         item.tintColor = [UIColor whiteColor];
     }];
-    itemToSelect.tintColor = [UIColor magentaColor];
+    itemToSelect.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
 }
 
 - (id <VWorkspaceTool>)toolForTag:(NSInteger)tag

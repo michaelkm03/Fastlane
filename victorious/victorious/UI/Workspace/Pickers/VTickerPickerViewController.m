@@ -8,6 +8,7 @@
 
 #import "VTickerPickerViewController.h"
 #import "VBasicToolPickerCell.h"
+#import "VThemeManager.h"
 
 @interface VTickerPickerViewController () <UICollectionViewDelegateFlowLayout>
 
@@ -41,7 +42,7 @@
     self.selectionIndicatorView =
     ({
         UIView *selectionView = [[UIView alloc] initWithFrame:[self selectionFrame]];
-        selectionView.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.5f];
+        selectionView.backgroundColor = [[[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor] colorWithAlphaComponent:0.5f];
         [self.collectionView addSubview:selectionView];
         selectionView;
     });
