@@ -42,9 +42,6 @@
     self.croppingScrollView.minimumZoomScale = 1.0f;
     self.croppingScrollView.maximumZoomScale = 4.0f;
     self.croppingScrollView.bouncesZoom = NO;
-    
-    UIRotationGestureRecognizer *rotationGesture = [[UIRotationGestureRecognizer alloc] initWithTarget:self action:@selector(rotate:)];
-    [self.croppingScrollView addGestureRecognizer:rotationGesture];
 }
 
 - (void)viewDidLayoutSubviews
@@ -79,13 +76,6 @@
     [self.croppingScrollView addSubview:self.proxyView];
     self.croppingScrollView.contentSize = proxyViewFrame.size;
     self.hasLayedOutScrollView = YES;
-}
-
-- (void)rotate:(UIRotationGestureRecognizer *)rotationGestureRecognizer
-{
-    CGFloat rotation = 0.0 - (self.lastRotation - rotationGestureRecognizer.rotation);
-    rotationGestureRecognizer.view.transform = CGAffineTransformRotate(rotationGestureRecognizer.view.transform, rotation);
-    self.lastRotation = rotationGestureRecognizer.rotation;
 }
 
 - (IBAction)doubleTapCrop:(UITapGestureRecognizer *)sender
