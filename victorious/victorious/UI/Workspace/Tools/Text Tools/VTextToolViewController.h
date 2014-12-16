@@ -25,4 +25,9 @@
  */
 @property (nonatomic, readonly) UIImage *renderedImage;
 
+/**
+ *  YES, if the user has entered text.
+ */
+@property (nonatomic, readonly) BOOL userEnteredText;
+
 @end

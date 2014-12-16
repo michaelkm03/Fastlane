@@ -122,7 +122,7 @@ static NSString * const kFilterIndexKey = @"filterIndex";
 
 - (BOOL)shouldLeaveToolOnCanvas
 {
-    return YES;
+    return self.canvasToolViewController.userEnteredText;
 }
 
 - (UIViewController *)inspectorToolViewController

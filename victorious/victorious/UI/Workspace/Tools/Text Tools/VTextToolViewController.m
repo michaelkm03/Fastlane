@@ -90,6 +90,11 @@ static const CGFloat kTextRenderingSize = 1024;
     return _renderedImage;
 }
 
+- (BOOL)userEnteredText
+{
+    return (self.textView.text.length > 0) ? YES : NO;
+}
+
 #pragma mark - Target/Action
 
 - (void)startEditing:(UITapGestureRecognizer *)tapGesture
