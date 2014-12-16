@@ -31,15 +31,22 @@ fi
 pushd victorious > /dev/null
 
 
+ UDID=`system_profiler SPUSBDataType | sed -n -e '/iPod/,/Serial/p' | grep "Serial Number:" | awk -F ": " '{print $2}'`
+
 
 if [ "device" == $Deploy ]; then
-    UDID=`system_profiler SPUSBDataType | sed -n -e '/iPod/,/Serial/p' | grep "Serial Number:" | awk -F ": " '{print $2}'`
-    xcodebuild -workspace victorious.xcworkspace -scheme $SCHEME -destination "platform=iOS,id=$UDID" clean ### Clean
-    xcodebuild -workspace victorious.xcworkspace -scheme $SCHEME -destination "platform=iOS,id=$UDID" ### Build for iPod Touch
+    dest='platform=iOS,id=$UDID'
 else
-    xcodebuild -workspace victorious.xcworkspace -scheme $SCHEME -destination  "platform=iOS Simulator,name=iPhone 6,OS=8.1" clean ### OS default to latest
-    xcodebuild -workspace victorious.xcworkspace -scheme $SCHEME -destination "platform=iOS Simulator,name=iPhone 6,OS=8.1" ### Build for simulator
+    dest='platform=iOS Simulator,name=iPhone 6,OS=8.1'
 fi
+
+
+### Clean
+xcodebuild -workspace victorious.xcworkspace -scheme $SCHEME -destination  "$dest" clean 
+
+### Build 
+xcodebuild -workspace victorious.xcworkspace -scheme $SCHEME -destination "$dest"
+
 
 BUILDRESULT=$?
 if [ $BUILDRESULT == 0 ]; then
