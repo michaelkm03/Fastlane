@@ -31,14 +31,22 @@ fi
 pushd victorious > /dev/null
 
 
- UDID=`system_profiler SPUSBDataType | sed -n -e '/iPod/,/Serial/p' | grep "Serial Number:" | awk -F ": " '{print $2}'`
 
 
 if [ "device" == $Deploy ]; then
-    dest='platform=iOS,id=$UDID'
+    ### work order of attached devices: iPhone > iPod > iPad 
+    UDID=`system_profiler SPUSBDataType | sed -n -e '/iPhone/,/Serial/p' | grep "Serial Number:" | awk -F ": " '{print $2}'`
+    if [ -z "$UDID" ]; then 
+        UDID=`system_profiler SPUSBDataType | sed -n -e '/iPod/,/Serial/p' | grep "Serial Number:" | awk -F ": " '{print $2}'`
+    fi
+    if [ -z "$UDID" ]; then 
+        UDID=`system_profiler SPUSBDataType | sed -n -e '/iPad/,/Serial/p' | grep "Serial Number:" | awk -F ": " '{print $2}'`
+    fi
+    dest="platform=iOS,id=$UDID"
 else
     dest='platform=iOS Simulator,name=iPhone 6,OS=8.1'
 fi
+
 
 
 ### Clean
