@@ -7,7 +7,10 @@
 //
 
 #import "VUserHashtag.h"
+#import "NSManagedObject+RestKit.h"
 
 @interface VUserHashtag (RestKit)
+
++ (NSArray *)descriptors;
 
 @end

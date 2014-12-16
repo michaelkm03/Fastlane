@@ -73,11 +73,17 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
 - (void)setHashtag:(VHashtag *)hashtag
 {
     // Make sure there's a # at the beginning of the text
-    self.hashtagText = [VHashTags stringWithPrependedHashmarkFromString:hashtag.tag];
+    self.hashtagText = hashtag.tag;
+    NSString *text = [VHashTags stringWithPrependedHashmarkFromString:self.hashtagText];
     
-    [self.hashTagLabel setText:self.hashtagText];
+    [self.hashTagLabel setText:text];
     
     [self applyTheme];
+    
+    if (self.subscribedToTag)
+    {
+        self.followHashtagControl.subscribed = YES;
+    }
 }
 
 - (BOOL)subscribedToTag

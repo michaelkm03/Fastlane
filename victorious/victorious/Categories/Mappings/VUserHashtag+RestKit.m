@@ -36,7 +36,7 @@
 {
     return @[ [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
                                                            method:RKRequestMethodAny
-                                                      pathPattern:@"/api/hashtag/subscribe_to_list"
+                                                      pathPattern:@"/api/hashtag/subscribed_to_list/:page/:perpage"
                                                           keyPath:@"payload"
                                                       statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
               

@@ -48,8 +48,10 @@
            failBlock:fail];
 }
 
-- (RKManagedObjectRequestOperation *)getHashtagsSubscribedTo:(VSuccessBlock)success
-                                                   failBlock:(VFailBlock)fail
+- (RKManagedObjectRequestOperation *)getHashtagsSubscribedToForPage:(NSInteger)page
+                                                   withPerPageCount:(NSInteger)perpage
+                                                   withSuccessBlock:(VSuccessBlock)success
+                                                      withFailBlock:(VFailBlock)fail
 {
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
@@ -59,7 +61,7 @@
         }
     };
     
-    return [self GET:@"/api/hashtag/subscribed_to_list"
+    return [self GET:[NSString stringWithFormat:@"/api/hashtag/subscribed_to_list/%ld/%ld", page, perpage]
               object:nil
           parameters:nil
         successBlock:fullSuccess
@@ -78,11 +80,20 @@
         }
     };
     
-    return [self GET:@"/api/hashtag/follow"
-              object:nil
-          parameters:@{@"hasthtag": hashtag}
-        successBlock:fullSuccess
-           failBlock:fail];
+    VFailBlock fullFailure = ^(NSOperation *operation, NSError *error)
+    {
+        if (fail)
+        {
+            VLog(@"%@", error);
+            fail(operation, error);
+        }
+    };
+    
+    return [self POST:@"/api/hashtag/follow"
+               object:nil
+           parameters:@{@"hashtag": hashtag}
+         successBlock:fullSuccess
+            failBlock:fullFailure];
 }
 
 - (RKManagedObjectRequestOperation *)unsubscribeToHashtag:(NSString *)hashtag
@@ -97,7 +108,7 @@
         }
     };
     
-    return [self GET:@"/api/hashtag/unfollow"
+    return [self POST:@"/api/hashtag/unfollow"
               object:nil
           parameters:@{@"hasthtag": hashtag}
         successBlock:fullSuccess

@@ -121,12 +121,23 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
 
 - (void)retrieveHashtagsForLoggedInUser
 {
-    [[VObjectManager sharedManager] getHashtagsSubscribedTo:^(NSOperation *operation, id result, NSArray *resultObjects)
+    
+    VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         [self reconcileUserHashtags:resultObjects
                withTrendingHashtags:self.trendingTags];
-    }
-                                                  failBlock:nil];
+    };
+    
+    VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
+    {
+        VLog(@"%@\n%@", operation, error);
+        
+    };
+    
+    [[VObjectManager sharedManager] getHashtagsSubscribedToForPage:1
+                                                  withPerPageCount:100
+                                                  withSuccessBlock:successBlock
+                                                     withFailBlock:failureBlock];
 }
 
 - (void)reconcileUserHashtags:(NSArray *)hashtags
@@ -335,7 +346,7 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
 {
     VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        VLog(@"Error in hashtag UNSUBSCRIBE");
+        VLog(@"Success following hashtag SUBSCRIBE");
     };
     
     VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
