@@ -114,29 +114,11 @@ static NSString * const kSelectorKey =  @"selector";
                     kTitleKey: NSLocalizedString(@"Home", @""),
                     kDestinationKey: @{
                         kIDKey: self.firstMenuItemID,
-                        kClassNameKey: @"basic.multiScreen",
-                        kScreensKey: @[
-                            @{
-                                kClassNameKey: @"stream.screen",
-                                kTitleKey: NSLocalizedString(@"Featured", @""),
-                                kStreamUrlPathKey: @"/api/sequence/hot_detail_list_by_stream/home",
-                                kIsHomeKey: @YES,
-                            },
-                            @{
-                                kIDKey: self.homeRecentID,
-                                kClassNameKey: @"stream.screen",
-                                kTitleKey: NSLocalizedString(@"Recent", @""),
-                                kStreamUrlPathKey: [self urlPathForStreamCategories:[VUGCCategories() arrayByAddingObjectsFromArray:VOwnerCategories()]],
-                                kCanAddContentKey: @YES,
-                            }
-                        ],
-                        kSelectorKey: @{
-                            kClassNameKey: @"basic.multiScreenSelector",
-                            VDependencyManagerBackgroundColorKey: self.accentColor,
-                        },
-                        kInitialKey: @{
-                            kReferenceIDKey: self.homeRecentID,
-                        }
+                        kClassNameKey: @"stream.screen",
+                        kTitleKey: NSLocalizedString(@"Home", @""),
+                        kStreamUrlPathKey: @"/api/sequence/hot_detail_list_by_stream/home",
+                        kIsHomeKey: @YES,
+                        kCanAddContentKey: @YES,
                     }
                 },
                 [self ownerStreamMenuItem],
