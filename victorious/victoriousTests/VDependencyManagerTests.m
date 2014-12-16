@@ -223,6 +223,31 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
     XCTAssertEqualObjects(expected, actual);
 }
 
+- (void)testArrayOfSpecificType
+{
+    NSArray *array = [self.dependencyManager arrayOfValuesOfType:[VTestViewControllerWithNewMethod class] forKey:@"arrayOfObjects"];
+    XCTAssertEqual(array.count, 2u);
+    XCTAssert([array[0] isKindOfClass:[VTestViewControllerWithNewMethod class]]);
+    XCTAssert([array[0] calledNewMethod]);
+    XCTAssert([array[1] isKindOfClass:[VTestViewControllerWithNewMethod class]]);
+    XCTAssert([array[1] calledNewMethod]);
+}
+
+- (void)testSingletonArrayOfSpecificType
+{
+    NSArray *array = [self.dependencyManager arrayOfSingletonValuesOfType:[VTestViewControllerWithNewMethod class] forKey:@"arrayOfObjects"];
+    XCTAssertEqual(array.count, 2u);
+    XCTAssert([array[0] isKindOfClass:[VTestViewControllerWithNewMethod class]]);
+    XCTAssert([array[0] calledNewMethod]);
+    XCTAssert([array[1] isKindOfClass:[VTestViewControllerWithNewMethod class]]);
+    XCTAssert([array[1] calledNewMethod]);
+    
+    NSArray *otherArray = [self.dependencyManager arrayOfSingletonValuesOfType:[VTestViewControllerWithNewMethod class] forKey:@"arrayOfObjects"];
+    XCTAssertEqual(otherArray.count, 2u);
+    XCTAssertEqual(array[0], otherArray[0]);
+    XCTAssertEqual(array[1], otherArray[1]);
+}
+
 #pragma mark - Instantiating objects via dictionaries and references
 
 - (void)testObjectFromDictionary

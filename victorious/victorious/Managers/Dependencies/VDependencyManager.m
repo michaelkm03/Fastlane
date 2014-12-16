@@ -168,9 +168,67 @@ NSString * const VDependencyManagerInitialViewControllerKey = @"initialScreen";
     return [self templateValueOfType:[UIViewController class] forKey:key];
 }
 
+#pragma mark - Arrays of dependencies
+
 - (NSArray *)arrayForKey:(NSString *)key
 {
     return [self templateValueOfType:[NSArray class] forKey:key];
+}
+
+- (NSArray *)arrayOfValuesOfType:(Class)expectedType forKey:(NSString *)key
+{
+    return [self arrayOfValuesOfType:expectedType
+                              forKey:key
+                withTranslationBlock:^id(__unsafe_unretained Class expectedType, NSDictionary *dict)
+    {
+        return [self objectOfType:expectedType fromDictionary:dict];
+    }];
+}
+
+- (NSArray *)arrayOfSingletonValuesOfType:(Class)expectedType forKey:(NSString *)key
+{
+    return [self arrayOfValuesOfType:expectedType
+                              forKey:key
+                withTranslationBlock:^id(__unsafe_unretained Class expectedType, NSDictionary *dict)
+    {
+        return [self singletonObjectOfType:expectedType fromDictionary:dict];
+    }];
+}
+
+/**
+ Returns an array of dependent objects created from a JSON array
+ 
+ @param array An array pulled straight from within the template configuration
+ @param translation A block that, given an expected type and a configuration dictionary, will return an object described by that dictionary
+ */
+- (NSArray *)arrayOfValuesOfType:(Class)expectedType forKey:(NSString *)key withTranslationBlock:(id(^)(Class, NSDictionary *))translation
+{
+    NSParameterAssert(translation != nil);
+    NSArray *templateArray = [self arrayForKey:key];
+    
+    if ( templateArray.count == 0 )
+    {
+        return @[];
+    }
+    
+    NSMutableArray *returnValue = [[NSMutableArray alloc] initWithCapacity:templateArray.count];
+    for (id templateObject in templateArray)
+    {
+        if ( [templateObject isKindOfClass:expectedType] )
+        {
+            [returnValue addObject:templateObject];
+        }
+        else if ( [templateObject isKindOfClass:[NSDictionary class]] )
+        {
+            id realObject = translation(expectedType, templateObject);
+            
+            if ( realObject != nil )
+            {
+                [returnValue addObject:realObject];
+            }
+        }
+    }
+    return [returnValue copy];
 }
 
 #pragma mark - Singleton dependencies
