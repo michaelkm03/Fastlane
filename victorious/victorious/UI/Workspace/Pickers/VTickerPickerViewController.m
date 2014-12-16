@@ -10,8 +10,6 @@
 #import "VBasicToolPickerCell.h"
 #import "VDependencyManager.h"
 
-NSString * const kAccentColorKey = @"color.accent";
-
 @interface VTickerPickerViewController () <UICollectionViewDelegateFlowLayout>
 
 @property (nonatomic, strong) UIView *selectionIndicatorView;
@@ -30,7 +28,7 @@ NSString * const kAccentColorKey = @"color.accent";
                                                                   bundle:nil];
     VTickerPickerViewController *toolPicker = [workspaceStoryboard instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
     toolPicker.clearsSelectionOnViewWillAppear = NO;
-    toolPicker.accentColor = [dependencyManager colorForKey:kAccentColorKey];
+    toolPicker.accentColor = [dependencyManager colorForKey:VDependencyManagerAccentColorKey];
     return toolPicker;
 }
 
