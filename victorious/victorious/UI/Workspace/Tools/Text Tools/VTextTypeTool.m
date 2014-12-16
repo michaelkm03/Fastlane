@@ -9,12 +9,6 @@
 #import "VTextTypeTool.h"
 #import "VDependencyManager.h"
 
-// Keys for fonts
-NSString * const kParagraphFontKey = @"font.paragraph";
-
-// Keys for colors
-NSString * const kMainTextColorKey = @"color.text";
-
 static NSString * const kTitleKey = @"title";
 static NSString * const kTextToolHorizontalAlignment = @"horizontalAlignment";
 static NSString * const kTextToolVerticalAlignment = @"verticalAlignment";
@@ -57,13 +51,13 @@ static NSString * const kTextToolPlaceholderText = @"placeholderText";
     
     textAttributes[NSParagraphStyleAttributeName] = [self paragraphStyleWithDependencyManager:dependencyManager];
     
-    if ([dependencyManager fontForKey:kParagraphFontKey] != nil)
+    if ([dependencyManager fontForKey:VDependencyManagerParagraphFontKey] != nil)
     {
-        textAttributes[NSFontAttributeName] = [dependencyManager fontForKey:kParagraphFontKey];
+        textAttributes[NSFontAttributeName] = [dependencyManager fontForKey:VDependencyManagerParagraphFontKey];
     }
-    if ([dependencyManager colorForKey:kMainTextColorKey])
+    if ([dependencyManager colorForKey:VDependencyManagerMainTextColorKey])
     {
-        textAttributes[NSForegroundColorAttributeName] = [dependencyManager colorForKey:kMainTextColorKey];
+        textAttributes[NSForegroundColorAttributeName] = [dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     }
     if ([dependencyManager colorForKey:kTextToolStrokeColor])
     {
