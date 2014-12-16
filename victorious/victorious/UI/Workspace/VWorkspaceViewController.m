@@ -286,7 +286,7 @@ static NSString * const kMediaExtensionJPG       = @"jpg";
     CGRect inspectorFrame = self.inspectorToolViewController.view.frame;
     [self.inspectorConstraints enumerateObjectsUsingBlock:^(NSLayoutConstraint *constraint, NSUInteger idx, BOOL *stop)
     {
-        constraint.active = NO;
+        [self.view removeConstraint:constraint];
     }];
     
     void (^animations)() = ^()
@@ -318,7 +318,7 @@ static NSString * const kMediaExtensionJPG       = @"jpg";
     self.inspectorToolViewController.view.translatesAutoresizingMaskIntoConstraints = NO;
     [self.inspectorConstraints enumerateObjectsUsingBlock:^(NSLayoutConstraint *constraint, NSUInteger idx, BOOL *stop)
      {
-         constraint.active = YES;
+         [self.view addConstraint:constraint];
      }];
     
     void (^animations)() = ^()
