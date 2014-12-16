@@ -93,6 +93,7 @@ static const CGFloat kTextRenderingSize = 1024;
                           if (_renderedImage != nil)
                           {
                               renderedImageFromQueue = _renderedImage;
+                              return;
                           }
                           [self renderText];
                           renderedImageFromQueue = _renderedImage;
