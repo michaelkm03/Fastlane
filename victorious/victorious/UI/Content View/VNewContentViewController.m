@@ -588,6 +588,8 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 - (void)updateInitialExperienceEnhancerState
 {
     // Disable the enhancer bar if a video ad will play (it will enable when the ad video stops playing)
+    // This method is designed to be called from 2 or more places during initialization, each time checking
+    // that both the enhancer bar and a video cell are initialized
     VExperienceEnhancerBar *enhancerBar = self.viewModel.experienceEnhancerController.enhancerBar;
     if ( enhancerBar != nil && self.videoCell != nil )
     {
