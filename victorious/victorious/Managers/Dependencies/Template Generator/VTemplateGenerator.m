@@ -33,25 +33,28 @@ static NSString * const kInitialKey = @"initial";
 static NSString * const kStreamUrlPathKey = @"streamUrlPath";
 static NSString * const kUserSpecificKey = @"isUserSpecific";
 
+// Keys for colors
+static NSString * const kMainTextColorKey = @"color.text";
+
+static NSString * const kRedKey = @"red";
+static NSString * const kGreenKey = @"green";
+static NSString * const kBlueKey = @"blue";
+static NSString * const kAlphaKey = @"alpha";
+
 // Workspace properties
 static NSString * const kToolsKey = @"tools";
 static NSString * const kPickerKey = @"picker";
 static NSString * const kFilterIndexKey = @"filterIndex";
 
 // Text properties
-static NSString * const kTextToolHorizontalAlignment = @"textToolHorizontalAlignment";
-static NSString * const kTextToolVerticalAlignment = @"textToolVerticalAlignment";
-static NSString * const kTextToolFont = @"textToolFont";
-static NSString * const kTextToolColor = @"textToolColor";
-static NSString * const kTextToolStrokeColor = @"textToolStrokeColor";
-static NSString * const kTextToolStrokeWidth = @"textToolStrokeWidth";
-static NSString * const kTextToolPlaceholderText = @"textToolPlaceholderText";
-static NSString * const kRedKey = @"red";
-static NSString * const kGreenKey = @"green";
-static NSString * const kBlueKey = @"blue";
-static NSString * const kAlphaKey = @"alpha";
+static NSString * const kParagraphFontKey = @"font.paragraph";
 static NSString * const kFontNameKey = @"fontName";
 static NSString * const kFontSizeKey = @"fontSize";
+static NSString * const kTextHorizontalAlignmentKey = @"horizontalAlignment";
+static NSString * const kTextVerticalAlignmentKey = @"verticalAlignment";
+static NSString * const kTextStrokeColorKey = @"strokeColor";
+static NSString * const kTextStrokeWidthKey = @"strokeWidth";
+static NSString * const kTextPlaceholderTextKey = @"placeholderText";
 
 @interface VTemplateGenerator ()
 
@@ -118,56 +121,56 @@ static NSString * const kFontSizeKey = @"fontSize";
                                  @{
                                      kClassNameKey: @"textType.tool",
                                      kTitleKey: @"meme",
-                                     kTextToolHorizontalAlignment: @"center",
-                                     kTextToolVerticalAlignment: @"bottom",
-                                     kTextToolPlaceholderText: @"create a meme",
-                                     kTextToolFont:
+                                     kTextHorizontalAlignmentKey: @"center",
+                                     kTextVerticalAlignmentKey: @"bottom",
+                                     kTextPlaceholderTextKey: @"create a meme",
+                                     kParagraphFontKey:
                                          @{
                                              kFontNameKey: @"Impact",
                                              kFontSizeKey: @50,
                                              },
-                                     kTextToolColor:
+                                     kMainTextColorKey:
                                          @{
                                              kRedKey: @255,
                                              kGreenKey: @255,
                                              kBlueKey: @255,
                                              kAlphaKey: @1.0f,
                                          },
-                                     kTextToolStrokeColor:
+                                     kTextStrokeColorKey:
                                          @{
                                              kRedKey: @0,
                                              kGreenKey: @0,
                                              kBlueKey: @0,
                                              kAlphaKey: @1.0f,
                                              },
-                                     kTextToolStrokeWidth: @-5.0f,
+                                     kTextStrokeWidthKey: @-5.0f,
                                      },
                                  @{
                                      kClassNameKey: @"textType.tool",
                                      kTitleKey: @"quote",
-                                     kTextToolHorizontalAlignment: @"center",
-                                     kTextToolVerticalAlignment: @"center",
-                                     kTextToolPlaceholderText: @"share a secret",
-                                     kTextToolFont:
+                                     kTextHorizontalAlignmentKey: @"center",
+                                     kTextVerticalAlignmentKey: @"center",
+                                     kTextPlaceholderTextKey: @"share a secret",
+                                     kParagraphFontKey:
                                          @{
                                              kFontNameKey: @"PTSans-Narrow",
                                              kFontSizeKey: @23,
                                              },
-                                     kTextToolColor:
+                                     kMainTextColorKey:
                                          @{
                                              kRedKey: @255,
                                              kGreenKey: @255,
                                              kBlueKey: @255,
                                              kAlphaKey: @1.0f,
                                              },
-                                     kTextToolStrokeColor:
+                                     kTextStrokeColorKey:
                                          @{
                                              kRedKey: @255,
                                              kGreenKey: @255,
                                              kBlueKey: @255,
                                              kAlphaKey: @1.0f,
                                              },
-                                     kTextToolStrokeWidth: @0.0f,
+                                     kTextStrokeWidthKey: @0.0f,
                                      },
                                  ]
                          },

@@ -184,9 +184,9 @@ shouldChangeTextInRange:(NSRange)range
         return;
     }
     
-    self.placeholderTextView.attributedText = [[NSAttributedString alloc] initWithString:textType.placeholderText
+    self.placeholderTextView.attributedText = [[NSAttributedString alloc] initWithString:textType.placeholderText ? textType.placeholderText : @""
                                                                               attributes:textType.attributes];
-    self.textView.attributedText = [[NSAttributedString alloc] initWithString:self.textView.text
+    self.textView.attributedText = [[NSAttributedString alloc] initWithString:self.textView.text ? self.textView.text : @""
                                                                    attributes:textType.attributes];
     self.textView.typingAttributes = textType.attributes;
 }

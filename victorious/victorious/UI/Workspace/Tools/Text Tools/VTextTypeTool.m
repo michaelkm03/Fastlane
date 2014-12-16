@@ -9,14 +9,18 @@
 #import "VTextTypeTool.h"
 #import "VDependencyManager.h"
 
+// Keys for fonts
+NSString * const kParagraphFontKey = @"font.paragraph";
+
+// Keys for colors
+NSString * const kMainTextColorKey = @"color.text";
+
 static NSString * const kTitleKey = @"title";
-static NSString * const kTextToolHorizontalAlignment = @"textToolHorizontalAlignment";
-static NSString * const kTextToolVerticalAlignment = @"textToolVerticalAlignment";
-static NSString * const kTextToolFont = @"textToolFont";
-static NSString * const kTextToolColor = @"textToolColor";
-static NSString * const kTextToolStrokeColor = @"textToolStrokeColor";
-static NSString * const kTextToolStrokeWidth = @"textToolStrokeWidth";
-static NSString * const kTextToolPlaceholderText = @"textToolPlaceholderText";
+static NSString * const kTextToolHorizontalAlignment = @"horizontalAlignment";
+static NSString * const kTextToolVerticalAlignment = @"verticalAlignment";
+static NSString * const kTextToolStrokeColor = @"strokeColor";
+static NSString * const kTextToolStrokeWidth = @"strokeWidth";
+static NSString * const kTextToolPlaceholderText = @"placeholderText";
 
 @interface VTextTypeTool ()
 
@@ -56,13 +60,13 @@ static NSString * const kTextToolPlaceholderText = @"textToolPlaceholderText";
     
     textAttributes[NSParagraphStyleAttributeName] = [self paragraphStyleWithDependencyManager:dependencyManager];
     
-    if ([dependencyManager fontForKey:kTextToolFont] != nil)
+    if ([dependencyManager fontForKey:kParagraphFontKey] != nil)
     {
-        textAttributes[NSFontAttributeName] = [dependencyManager fontForKey:kTextToolFont];
+        textAttributes[NSFontAttributeName] = [dependencyManager fontForKey:kParagraphFontKey];
     }
-    if ([dependencyManager colorForKey:kTextToolColor])
+    if ([dependencyManager colorForKey:kMainTextColorKey])
     {
-        textAttributes[NSForegroundColorAttributeName] = [dependencyManager colorForKey:kTextToolColor];
+        textAttributes[NSForegroundColorAttributeName] = [dependencyManager colorForKey:kMainTextColorKey];
     }
     if ([dependencyManager colorForKey:kTextToolStrokeColor])
     {
