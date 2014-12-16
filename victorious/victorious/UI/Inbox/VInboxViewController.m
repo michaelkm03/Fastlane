@@ -53,6 +53,11 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
     return [[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier:@"inbox"];
 }
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 #pragma mark - View Lifecycle
 
 - (void)viewDidLoad
@@ -73,6 +78,7 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
     [super viewWillAppear:animated];
     [self.refreshControl beginRefreshing];
     [self refresh:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -85,6 +91,7 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
 {
     [super viewWillDisappear:animated];
     [[VTrackingManager sharedInstance] endEvent:@"Inbox"];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
 #pragma mark - Segmented Control
@@ -364,6 +371,13 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
     {
         [self.delegate scrollViewDidScroll:scrollView];
     }
+}
+
+#pragma mark - NSNotification handlers
+
+- (void)applicationDidBecomeActive:(NSNotification *)notification
+{
+    [self refresh:nil];
 }
 
 @end

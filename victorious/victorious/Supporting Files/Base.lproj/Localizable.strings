@@ -427,9 +427,16 @@
 "PurchaseErrorTitle"                    = "Error Making Purchase";
 "PurchaseErrorProductNotAvailable"      = "Sorry, this product is not currently available. Please try again later.";
 "PurchaseErrorTransaction"              = "Unable to complete transaction. Please try again later.";
+"RestorePurchasesNoPurchasesTitle"      = "No Purchases Restored";
+"RestorePurchasesNoPurchases"           = "Unable to find any In-App Purchases for your iTunes account.";
 "ProductsRequestError"                  = "Unable to load product information from the App Store. Please try again later.";
 "RestorePurchasesErrorTitle"            = "Error Restoring Purchases";
 "RestorePurchasesError"                 = "Unable to restore purchases at this time. Please try again later.";
+"RestorePurchasesSuccessTitleSingular"  = "%lu Purchase Restored!"; //e.g. "1 Purchase Restored!""
+"RestorePurchasesSuccessTitlePlural"    = "%lu Purchases Restored!"; //e.g. "5 PurchaseS Restored!""
+"RestorePurchasesSuccess"               = "You can review your purchases in the Settings section.";
 "ActivityRestoring"                     = "  Restoring...";
 "ActivityPurchasing"                    = "  Purchasing...";
 "PurchaseUnlockWithPrice"               = "Unlock for %@"; //e.g. "Unlock for $0.99"
+"SettingsRestorePurchases"              = "Restore Purchases";
+"SettingsRestorePurchasesPrompt"        = "You haven't purchased anything on this device.\nIf you've made purchases on another device, tap Restore Purchases to restore them.";

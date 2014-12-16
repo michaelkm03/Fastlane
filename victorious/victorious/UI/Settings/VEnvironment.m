@@ -8,8 +8,6 @@
 
 #import "VEnvironment.h"
 
-#import "VConstants.h"
-
 @implementation VEnvironment
 
 - (instancetype)initWithName:(NSString *)name baseURL:(NSURL *)baseURL appID:(NSNumber *)appID
@@ -19,9 +17,7 @@
     {
         _name = [name copy];
         _baseURL = baseURL;
-
-        //If the app ID is less 1 its invalid.  Use the dev app ID so they can log in and try to change servers.
-        _appID = appID.integerValue < 1 ? @(kDevAppID) : appID;
+        _appID = appID;
     }
     return self;
 }
