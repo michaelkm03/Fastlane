@@ -27,13 +27,16 @@ else
 fi
 
 if [ "$SCHEME" == "" -o "$CONFIGURATION" == "" ]; then
-    echo "Usage: `basename $0` <scheme> <configuration> [app name(s) (optional)]"
+    echo "Usage: `basename $0` <scheme> <configuration> [--prefix <prefix>] [app name(s) (optional)]"
     exit 1
 fi
 
-if [ "$APP_NAME" != "" -a ! -d "configurations/$APP_NAME" ]; then
-    echo "App $APP_NAME not found."
-    exit 1
+if [ "$1" == "--prefix" ]; then
+    shift
+    SPECIAL_PREFIX="ProductPrefix=$1-"
+    shift
+else
+    SPECIAL_PREFIX=""
 fi
 
 
@@ -41,7 +44,7 @@ fi
 # If this step fails or hangs, you may need to store or update the dev center credentials
 # in the keychain. Use the "ios login" command.
 
-ios profiles:download "$DEFAULT_PROVISIONING_PROFILE_NAME" --type distribution
+ios profiles:download "$DEFAULT_PROVISIONING_PROFILE_NAME" --type distribution -u "$DEFAULT_DEV_ACCOUNT"
 
 if [ $? != 0 ]; then
     echo "Unable to download provisioning profile \"$DEFAULT_PROVISIONING_PROFILE_NAME\""
@@ -84,7 +87,7 @@ xcodebuild -workspace victorious.xcworkspace -scheme $SCHEME -destination generi
 
 xcodebuild -workspace victorious.xcworkspace -scheme "$SCHEME" -destination generic/platform=iOS \
            -archivePath "../victorious.xcarchive" PROVISIONING_PROFILE="$DEFAULT_PROVISIONING_PROFILE_UUID" \
-           CODE_SIGN_IDENTITY="$DEFAULT_CODESIGN_ID" archive
+           CODE_SIGN_IDENTITY="$DEFAULT_CODESIGN_ID" $SPECIAL_PREFIX archive
 BUILDRESULT=$?
 if [ $BUILDRESULT == 0 ]; then
     pushd ../victorious.xcarchive/dSYMs > /dev/null
@@ -172,21 +175,27 @@ applyConfiguration(){
     fi
 }
 
+ANY_APP_BUILT=0
+
 if [ $# == 0 ]; then
     CONFIGS=`find configurations -type d -depth 1 -exec basename {} \;`
     IFS=$'\n'
-    for CONFIG in $CONFIGS
-    do
-        if [ "$DEFAULT_APP_ID_KEY" != "" ]; then
-            DEFAULT_APP_ID=$(/usr/libexec/PlistBuddy -c "Print $DEFAULT_APP_ID_KEY" "configurations/$CONFIG/Info.plist")
-            if [ "$DEFAULT_APP_ID" != "0" ]; then # don't build apps with app ID of 0
-                applyConfiguration $CONFIG
-            fi
-        fi
-    done
 else
-    for CONFIG in $@
-    do
-        applyConfiguration $CONFIG
-    done
+    CONFIGS=$*
+fi
+
+for CONFIG in $CONFIGS
+do
+    if [ "$DEFAULT_APP_ID_KEY" != "" ]; then
+        DEFAULT_APP_ID=$(/usr/libexec/PlistBuddy -c "Print $DEFAULT_APP_ID_KEY" "configurations/$CONFIG/Info.plist")
+        if [ "$DEFAULT_APP_ID" != "0" ]; then # don't build apps with app ID of 0
+            applyConfiguration $CONFIG
+            ANY_APP_BUILT=1
+        fi
+    fi
+done
+
+if [ $ANY_APP_BUILT == 0 ]; then
+    echo "No apps were built."
+    exit 1
 fi

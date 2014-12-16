@@ -326,6 +326,10 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
                                          forDecorationViewOfKind:VShrinkingContentLayoutContentBackgroundView];
     
     self.viewModel.experienceEnhancerController.delegate = self;
+    
+    NSDictionary *params = @{ VTrackingKeyTimeCurrent : [NSDate date],
+                              VTrackingKeySequenceId : self.viewModel.sequence.remoteId };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -468,8 +472,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
         return;
     }
     
-    VPurchaseViewController *viewController = [VPurchaseViewController instantiateFromStoryboard:@"ContentView"
-                                                                                            withVoteType:experienceEnhander.voteType];
+    VPurchaseViewController *viewController = [VPurchaseViewController purchaseViewControllerWithVoteType:experienceEnhander.voteType];
     viewController.transitioningDelegate = self.transitionDelegate;
     [self presentViewController:viewController animated:YES completion:nil];
 }

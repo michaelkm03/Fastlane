@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDisplayName</key>
+	<string>${ProductPrefix}Taryn Southern</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.getvictorious.${ProductPrefix}tarynsouthern</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb926967107314381</string>
+			</array>
+		</dict>
+	</array>
+	<key>FacebookAppID</key>
+	<string>926967107314381</string>
+	<key>FacebookDisplayName</key>
+	<string>Taryn Southern</string>
+	<key>TWITTER_CONSUMER_KEY</key>
+	<string>1v1WsmJKosBKdBVbmxvs9Hc9k</string>
+	<key>TWITTER_CONSUMER_SECRET</key>
+	<string>JSRhCpKHpWh4nCOYFKOMJX8u23JbHoFf0RJ7E40NUEeljqADr8</string>
+	<key>TestflightReleaseAppToken</key>
+	<string>7764da92-95c8-4de1-9a16-53ce32d7a2fd</string>
+	<key>TestflightQAAppToken</key>
+	<string>715df009-cf3d-41ae-8c7d-085650dbdab7</string>
+	<key>TestflightStagingAppToken</key>
+	<string>6006d9d5-7f27-4783-8373-6df605c1d02a</string>
+	<key>VictoriousAppID</key>
+	<integer>16</integer>
+	<key>StagingAppID</key>
+	<integer>31</integer>
+	<key>QAAppID</key>
+	<integer>13</integer>
+	<key>GAID</key>
+	<string>UA-51702806-11</string>
+	<key>CreatorSalutation</key>
+	<string>Taryn Southern</string>
+	<key>FlurryAPIKey</key>
+	<string>3KJNJF6J5CNC83QQMK4M</string>
+</dict>
+</plist>

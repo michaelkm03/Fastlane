@@ -11,7 +11,7 @@
 
 @interface VPurchaseViewController : UIViewController
 
-+ (VPurchaseViewController *)instantiateFromStoryboard:(NSString *)storyboardName withVoteType:(VVoteType *)voteType;
++ (VPurchaseViewController *)purchaseViewControllerWithVoteType:(VVoteType *)voteType;
 
 /**
  The vote type that a user is trying to unlock.  This is where the product identifier

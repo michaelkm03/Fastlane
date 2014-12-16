@@ -8,8 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
+@class VVoteType;
+
 @interface VVoteSettings : NSObject
 
 @property (nonatomic, strong) NSArray *voteTypes;
+
+- (VVoteType *)voteTypeWithProductIdentifier:(NSString *)productIdentifier;
 
 @end

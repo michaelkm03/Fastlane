@@ -2,9 +2,9 @@
     "id": "d07ab13a-1e39-4a66-952f-f04c638a9adc",
     "name": "application",
     "color.background": {
-        "red": 0,
-        "green": 0,
-        "blue": 0,
+        "red": 51,
+        "green": 153,
+        "blue": 102,
         "alpha": 1
     },
     "font.header": {

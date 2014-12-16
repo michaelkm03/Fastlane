@@ -38,6 +38,7 @@
 
 #import "VAuthorizationViewControllerFactory.h"
 #import "VObjectManager+Login.h"
+#import "UIStoryboard+VMainStoryboard.h"
 
 @interface VUserSearchViewController () <UITextFieldDelegate>
 @property (nonatomic, weak) IBOutlet UIView *noResultsView;
@@ -69,11 +70,8 @@
 
 + (instancetype)sharedInstance
 {
-
-    UIViewController *currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-    VUserSearchViewController *userSearchViewController = (VUserSearchViewController *)[currentViewController.storyboard instantiateViewControllerWithIdentifier:NSStringFromClass([VUserSearchViewController class])];
+    VUserSearchViewController *userSearchViewController = (VUserSearchViewController *)[[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier:NSStringFromClass([VUserSearchViewController class])];
     return userSearchViewController;
-
 }
 
 - (void)viewDidLoad

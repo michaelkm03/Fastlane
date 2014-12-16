@@ -6,18 +6,11 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-@import StoreKit;
-
-#define FORCE_SIMULATE_ACTIONS 0
-#define SHOULD_SIMULATE_ACTIONS TARGET_IPHONE_SIMULATOR || (DEBUG && FORCE_SIMULATE_ACTIONS)
-#define SIMULATION_DELAY 2.0f
-#define SIMULATE_PURCHASE_ERROR 0
-#define SIMULATE_FETCH_PRODUCTS_ERROR 0
-#define SIMULATE_RESTORE_PURCHASE_ERROR 0
-
-#if FORCE_SIMULATE_ACTIONS
-#warning VPurchaseManager is simulating success and/or failures
+#if DEBUG || TARGET_IOS_SIMULATOR
+#import "VPurchaseDebugSettings.h"
 #endif
+
+@import StoreKit;
 
 #import "VPurchaseManager.h"
 #import "VPurchase.h"
@@ -67,14 +60,19 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
 
 #pragma mark - Primary public methods
 
+- (BOOL)isPurchasingEnabled
+{
+    return self.fetchedProducts.count > 0;
+}
+
 - (BOOL)isPurchaseRequestActive
 {
     return self.activeProductRequest != nil || self.activePurchase != nil || self.activePurchaseRestore != nil;
 }
 
-- (NSUInteger)numberOfPurchasedItems
+- (NSArray *)purchasedProductIdentifiers
 {
-    return self.purchaseRecord.purchasedProductIdentifiers.count;
+    return self.purchaseRecord.purchasedProductIdentifiers;
 }
 
 - (BOOL)isProductIdentifierPurchased:(NSString *)productIdentifier
@@ -90,31 +88,33 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
 
 - (void)purchaseProduct:(VProduct *)product success:(VPurchaseSuccessBlock)successCallback failure:(VPurchaseFailBlock)failureCallback
 {
+    NSParameterAssert( failureCallback != nil );
+    NSParameterAssert( successCallback != nil );
     NSAssert( !self.isPurchaseRequestActive, @"A purchase is already in progress." );
     
-#if SHOULD_SIMULATE_ACTIONS
-    self.activePurchase = [[VPurchase alloc] initWithProduct:[[VProduct alloc] init] success:successCallback failure:failureCallback];
+#if SIMULATE_STOREKIT
+#if !SIMULATE_FETCH_PRODUCTS_ERROR
+    product.productIdentifier = SIMULATED_PRODUCT_IDENTIFIER;
+    self.activePurchase = [[VPurchase alloc] initWithProduct:product success:successCallback failure:failureCallback];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(SIMULATION_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
-    {
-        NSString *productIdentifier = @"test";
+                   {
 #if SIMULATE_PURCHASE_ERROR
-        [self transactionDidFailWithErrorCode:SKErrorUnknown productIdentifier:productIdentifier];
+                       [self transactionDidFailWithErrorCode:SKErrorUnknown productIdentifier:SIMULATED_PRODUCT_IDENTIFIER];
 #else
-        [self transactionDidCompleteWithProductIdentifier:productIdentifier];
+                       [self transactionDidCompleteWithProductIdentifier:SIMULATED_PRODUCT_IDENTIFIER];
 #endif
-    });
+                   });
     return;
 #endif
+#endif
     
-    // This could happen if product requests are consistently failing
+    // This could happen if product requests are failing
     if ( product == nil )
     {
-        if ( failureCallback )
-        {
-            NSString *message = NSLocalizedString( @"PurchaseErrorProductNotAvailable", nil);
-            NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : message };
-            failureCallback( [NSError errorWithDomain:@"" code:-1 userInfo:userInfo] );
-        }
+        NSString *message = NSLocalizedString( @"PurchaseErrorProductNotAvailable", nil);
+        NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : message };
+        failureCallback( [NSError errorWithDomain:@"" code:-1 userInfo:userInfo] );
+        return;
     }
     
     self.activePurchase = [[VPurchase alloc] initWithProduct:product success:successCallback failure:failureCallback];
@@ -128,11 +128,16 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
     
     self.activePurchaseRestore = [[VPurchase alloc] initWithSuccess:successCallback failure:failureCallback];
     
-#if SHOULD_SIMULATE_ACTIONS
+#if SIMULATE_STOREKIT
+    for ( NSUInteger i = 0; i < SIMULATED_RESTORED_PURCHASE_COUNT; i++ )
+    {
+        NSString *identifier = [NSString stringWithFormat:@"%@%lu", SIMULATED_PRODUCT_IDENTIFIER, (unsigned long)i];
+        [self.activePurchaseRestore.restoredProductIdentifiers addObject:identifier];
+    }
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(SIMULATION_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
     {
 #if SIMULATE_RESTORE_PURCHASE_ERROR
-        [self transactionDidFailWithErrorCode:SKErrorUnknown productIdentifier:nil];
+        [self purchasesDidFailToRestoreWithError:[NSError errorWithDomain:@"Failed to restore." code:-1 userInfo:nil]];
 #else
         [self purchasesDidRestore];
 #endif
@@ -143,18 +148,18 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
     [[SKPaymentQueue defaultQueue] restoreCompletedTransactions];
 }
 
-- (void)fetchProductsWithIdentifiers:(NSArray *)productIdentifiers
+- (void)fetchProductsWithIdentifiers:(NSSet *)productIdentifiers
                              success:(VProductsRequestSuccessBlock)successCallback
                              failure:(VProductsRequestFailureBlock)failureCallback
 {
     NSAssert( !self.isPurchaseRequestActive, @"A products fetch is already in progress." );
     
-    NSArray *uncachedProductIndentifiers = [self productIdentifiersFilteredForUncachedProducts:productIdentifiers];
+    NSSet *uncachedProductIndentifiers = [self productIdentifiersFilteredForUncachedProducts:productIdentifiers];
     if ( uncachedProductIndentifiers == nil || uncachedProductIndentifiers.count == 0 )
     {
         if ( successCallback != nil )
         {
-            successCallback( [self.fetchedProducts allValues] );
+            successCallback( [NSSet setWithArray:[self.fetchedProducts allValues]] );
         }
         return;
     }
@@ -162,7 +167,7 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
     self.activeProductRequest = [[VProductsRequest alloc] initWithProductIdentifiers:uncachedProductIndentifiers
                                                                              success:successCallback
                                                                              failure:failureCallback];
-#if SHOULD_SIMULATE_ACTIONS
+#if SIMULATE_STOREKIT
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(SIMULATION_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
     {
 #if SIMULATE_FETCH_PRODUCTS_ERROR
@@ -183,8 +188,7 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
 return;
 #endif
 
-    NSSet *productIdentifiersSet = [NSSet setWithArray:uncachedProductIndentifiers];
-    SKProductsRequest *request = [[SKProductsRequest alloc] initWithProductIdentifiers:productIdentifiersSet];
+    SKProductsRequest *request = [[SKProductsRequest alloc] initWithProductIdentifiers:uncachedProductIndentifiers];
     request.delegate = self;
     [request start];
 }
@@ -198,16 +202,21 @@ return;
 
 #endif
 
-#pragma mark - Purchase product helpers
-
 - (VProduct *)purchaseableProductForProductIdentifier:(NSString *)productIdentifier
 {
+#if SIMULATE_STOREKIT
+#if !SIMULATE_FETCH_PRODUCTS_ERROR
+    VProduct *product = [[VProduct alloc] init];
+    product.productIdentifier = SIMULATED_PRODUCT_IDENTIFIER;
+    return product;
+#endif
+#endif
     return [self.fetchedProducts objectForKey:productIdentifier];
 }
 
 #pragma mark - Purchase product helpers
 
-- (NSArray *)productIdentifiersFilteredForUncachedProducts:(NSArray *)productIdentifiers
+- (NSSet *)productIdentifiersFilteredForUncachedProducts:(NSSet *)productIdentifiers
 {
     if ( productIdentifiers == nil )
     {
@@ -219,7 +228,7 @@ return;
         BOOL isCached = [self.fetchedProducts objectForKey:identifier] != nil;
         return !isCached;
     }];
-    return [productIdentifiers filteredArrayUsingPredicate:predicate];
+    return [productIdentifiers filteredSetUsingPredicate:predicate];
 }
 
 - (void)transactionDidFailWithErrorCode:(NSInteger)errorCode productIdentifier:(NSString *)productIdentifier
@@ -245,7 +254,7 @@ return;
         error = [NSError errorWithDomain:message code:errorCode userInfo:userInfo];
     }
     
-    if ( self.activeProductRequest != nil && [self.activeProductRequest.productIdentifiers containsObject:productIdentifier] )
+    if ( self.activeProductRequest != nil )
     {
         if ( self.activeProductRequest.failureCallback != nil )
         {
@@ -253,7 +262,7 @@ return;
         }
         self.activeProductRequest = nil;
     }
-    else if ( self.activePurchase != nil && [self.activePurchase.product.storeKitProduct.productIdentifier isEqualToString:productIdentifier] )
+    else if ( self.activePurchase != nil )
     {
         self.activePurchase.failureCallback( error );
         self.activePurchase = nil;
@@ -262,7 +271,7 @@ return;
 
 - (void)transactionDidCompleteWithProductIdentifier:(NSString *)productIdentifier
 {
-#if SHOULD_SIMULATE_ACTIONS
+#if SIMULATE_STOREKIT
     BOOL isValidProduct = YES;
 #else
     BOOL isValidProduct = [self.activePurchase.product.storeKitProduct.productIdentifier isEqualToString:productIdentifier];
@@ -270,7 +279,7 @@ return;
     if ( self.activePurchase != nil && isValidProduct )
     {
         [self.purchaseRecord addProductIdentifier:productIdentifier];
-        self.activePurchase.successCallback( @[ self.activePurchase.product ] );
+        self.activePurchase.successCallback( [NSSet setWithObject:self.activePurchase.product] );
         self.activePurchase = nil;
     }
 }
@@ -283,8 +292,8 @@ return;
     {
         [self.activeProductRequest.products enumerateObjectsUsingBlock:^(VProduct *product, NSUInteger idx, BOOL *stop)
          {
-#if SHOULD_SIMULATE_ACTIONS
-             NSString *productIdentifier = [NSString stringWithFormat:@"test_%lu", (unsigned long)idx];
+#if SIMULATE_STOREKIT
+             NSString *productIdentifier = [NSString stringWithFormat:@"%@%.lu", SIMULATED_PRODUCT_IDENTIFIER, (unsigned long)idx];
 #else
              NSString *productIdentifier = product.storeKitProduct.productIdentifier;
 #endif
@@ -292,7 +301,7 @@ return;
          }];
         if ( self.activeProductRequest.successCallback != nil )
         {
-            self.activeProductRequest.successCallback( [self.fetchedProducts allValues] );
+            self.activeProductRequest.successCallback( [NSSet setWithArray:[self.fetchedProducts allValues]] );
         }
     }
     self.activeProductRequest = nil;
@@ -322,7 +331,7 @@ return;
 {
     if ( self.activePurchaseRestore != nil )
     {
-        [self.activePurchaseRestore.restoreProductIdentifiers addObject:productIdentifier];
+        [self.activePurchaseRestore.restoredProductIdentifiers addObject:productIdentifier];
     }
 }
 
@@ -330,11 +339,11 @@ return;
 {
     if ( self.activePurchaseRestore != nil )
     {
-        [self.activePurchaseRestore.restoreProductIdentifiers enumerateObjectsUsingBlock:^(NSString *identifier, NSUInteger idx, BOOL *stop)
+        [self.activePurchaseRestore.restoredProductIdentifiers enumerateObjectsUsingBlock:^(NSString *identifier, BOOL *stop)
         {
             [self.purchaseRecord addProductIdentifier:identifier];
         }];
-        self.activePurchaseRestore.successCallback( self.activePurchaseRestore.restoreProductIdentifiers );
+        self.activePurchaseRestore.successCallback( self.activePurchaseRestore.restoredProductIdentifiers );
         self.activePurchaseRestore = nil;
     }
 }

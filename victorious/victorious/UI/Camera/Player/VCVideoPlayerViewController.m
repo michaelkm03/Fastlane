@@ -803,7 +803,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
                     {
                         NSDictionary *params = @{ VTrackingKeyTimeCurrent : @( CMTimeGetSeconds( self.currentTime ) ),
                                                   VTrackingKeyUrls : self.trackingItem.videoStart };
-                        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventVideoDidStart parameters:params];
+                        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
                     }
                 }
             }
@@ -843,12 +843,6 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
                     if ([self.delegate respondsToSelector:@selector(videoPlayerFailed:)])
                     {
                         [self.delegate videoPlayerFailed:self];
-                    }
-                    if ( self.isTrackingEnabled )
-                    {
-                        NSDictionary *params = @{ VTrackingKeyTimeCurrent : @( CMTimeGetSeconds( self.currentTime ) ),
-                                                  VTrackingKeyUrls : self.trackingItem.videoError };
-                        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventVideoDidError parameters:params];
                     }
                     break;
                 }

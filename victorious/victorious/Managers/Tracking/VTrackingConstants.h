@@ -17,7 +17,7 @@ extern NSString * const VTrackingEventVideoDidComplete100;
 extern NSString * const VTrackingEventVideoDidError;
 extern NSString * const VTrackingEventVideoDidSkip;
 extern NSString * const VTrackingEventVideoDidStall;
-extern NSString * const VTrackingEventVideoDidStart;
+extern NSString * const VTrackingEventViewDidStart;
 extern NSString * const VTrackingEventUserDidVoteSequence;
 extern NSString * const VTrackingEventApplicationDidEnterForeground;
 extern NSString * const VTrackingEventApplicationDidLaunch;

@@ -15,11 +15,13 @@
 #import "VButton.h"
 #import "VFileCache.h"
 #import "VFileCache+VVoteType.h"
+#import "VPurchaseStringMaker.h"
 
 @interface VPurchaseViewController ()
 
 @property (strong, nonatomic) VPurchaseManager *purchaseManager;
 @property (strong, nonatomic) VProduct *product;
+@property (strong, nonatomic) VPurchaseStringMaker *stringMaker;
 
 @property (weak, nonatomic) IBOutlet UILabel *productTitleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *creatorSalutationLabel;
@@ -39,11 +41,10 @@
 
 #pragma mark - Initialization
 
-+ (VPurchaseViewController *)instantiateFromStoryboard:(NSString *)storyboardName withVoteType:(VVoteType *)voteType
++ (VPurchaseViewController *)purchaseViewControllerWithVoteType:(VVoteType *)voteType
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:storyboardName bundle:[NSBundle mainBundle]];
-    NSString *identifier = NSStringFromClass( [VPurchaseViewController class] );
-    VPurchaseViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:identifier];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Purchases" bundle:[NSBundle mainBundle]];
+    VPurchaseViewController *viewController = [storyboard instantiateInitialViewController];
     viewController.modalPresentationStyle = UIModalPresentationFullScreen;
     viewController.voteType = voteType;
     return viewController;
@@ -56,7 +57,7 @@
     [super viewDidLoad];
     
     self.purchaseManager = [VPurchaseManager sharedInstance];
-    
+    self.stringMaker = [[VPurchaseStringMaker alloc] init];
     self.product = [self.purchaseManager purchaseableProductForProductIdentifier:self.voteType.productIdentifier];
     
     self.creatorAvatarImageView.layer.cornerRadius = 17.0f; // Enough to make it a circle
@@ -139,9 +140,7 @@
 {
     self.unlockButton.enabled = NO;
     self.unlockLoadingView.hidden = YES;
-    
     self.restoreButton.hidden = YES;
-    
     self.restoreLoadingView.hidden = NO;
     self.restoreLoadingLabel.text = message;
 }
@@ -150,17 +149,16 @@
 {
     self.restoreButton.enabled = NO;
     self.restoreLoadingView.hidden = YES;
-    
     self.unlockButton.enabled = NO;
     self.unlockButton.backgroundColor = [UIColor grayColor];
     [self.unlockButton setTitle:nil forState:UIControlStateNormal];
-    
     self.unlockLoadingView.hidden = NO;
     self.unlockLoadingLabel.text = message;
 }
 
 - (void)resetLoadingState
 {
+    self.restoreButton.hidden = NO;
     self.restoreButton.enabled = YES;
     self.unlockButton.enabled = YES;
     self.unlockLoadingView.hidden = YES;
@@ -174,6 +172,28 @@
     [self applyTheme];
 }
 
+- (void)handlePurchasesRestoredWithProductIdentifiers:(NSSet *)productIdentifiers
+{
+    NSString *title = [self.stringMaker localizedSuccessTitleWithProductsCount:productIdentifiers.count];
+    NSString *message = [self.stringMaker localizedSuccessMessageWithProductsCount:productIdentifiers.count];
+    [self showAlertWithTitle:title message:message handler:^(VAlertAction *action)
+    {
+        // If the product for which this view controller was instantiated was returned during
+        // a purchase restore, then we should dismiss since there's no need to buy it anymore
+        if ( [productIdentifiers containsObject:self.voteType.productIdentifier] )
+        {
+            [self dismissViewControllerAnimated:YES completion:nil];
+        }
+    }];
+}
+
+- (void)showAlertWithTitle:(NSString *)title message:(NSString *)message handler:(void(^)(VAlertAction *))handler
+{
+    VAlertController *alertConroller = [VAlertController alertWithTitle:title message:message];
+    [alertConroller addAction:[VAlertAction cancelButtonWithTitle:NSLocalizedString( @"OKButton", nil ) handler:handler]];
+    [alertConroller presentInViewController:self animated:YES completion:nil];
+}
+
 #pragma mark - IB Actions
 
 - (IBAction)close:(id)sender
@@ -184,10 +204,11 @@
 - (IBAction)restorePurchasesTapped:(id)sender
 {
     [self showRestoringWithMessage:NSLocalizedString( @"ActivityRestoring", nil)];
-    [self.purchaseManager restorePurchasesSuccess:^(NSArray *productIdentifiers)
+    [self.purchaseManager restorePurchasesSuccess:^(NSSet *restoreProductIdentifiers)
      {
          [self resetLoadingState];
-         [self dismissViewControllerAnimated:YES completion:nil];
+
+         [self handlePurchasesRestoredWithProductIdentifiers:restoreProductIdentifiers];
      }
                                                 failure:^(NSError *error)
      {
@@ -206,7 +227,7 @@
     
     [self showUnlockingWithMessage:NSLocalizedString( @"ActivityPurchasing", nil)];
     NSString *productIdentifier = self.voteType.productIdentifier;
-    [self.purchaseManager purchaseProductWithIdentifier:productIdentifier success:^(NSArray *productIdentifiers)
+    [self.purchaseManager purchaseProductWithIdentifier:productIdentifier success:^(NSSet *productIdentifiers)
      {
          [self resetLoadingState];
          [self dismissViewControllerAnimated:YES completion:nil];
