@@ -132,7 +132,10 @@ NSString * const VDependencyManagerWorkspaceKey = @"workspace";
         return nil;
     }
     
-    UIColor *color = [UIColor colorWithRed:[red CGFLOAT_VALUE] green:[green CGFLOAT_VALUE] blue:[blue CGFLOAT_VALUE] alpha:[alpha CGFLOAT_VALUE]];
+    UIColor *color = [UIColor colorWithRed:[red CGFLOAT_VALUE] / 255.0f
+                                     green:[green CGFLOAT_VALUE] / 255.0f
+                                      blue:[blue CGFLOAT_VALUE] / 255.0f
+                                     alpha:[alpha CGFLOAT_VALUE]];
     return color;
 }
 
