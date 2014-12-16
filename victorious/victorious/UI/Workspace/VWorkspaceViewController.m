@@ -42,7 +42,8 @@ static NSString * const kMediaExtensionJPG       = @"jpg";
 @property (nonatomic, weak) IBOutlet UIToolbar *bottomToolbar;
 @property (nonatomic, weak) IBOutlet VCanvasView *canvasView;
 @property (nonatomic, weak) IBOutlet UIImageView *blurredBackgroundImageVIew;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceCanvasToTopOfContainerConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *verticalSpaceCanvasToTopOfContainerConstraint;
+@property (nonatomic, strong) NSMutableArray *inspectorConstraints;
 
 @property (nonatomic, strong) id <VWorkspaceTool> selectedTool;
 @property (nonatomic, strong) UIViewController *canvasToolViewController;
@@ -281,9 +282,18 @@ static NSString * const kMediaExtensionJPG       = @"jpg";
     NSNumber *curveValue = userInfo[UIKeyboardAnimationCurveUserInfoKey];
     UIViewAnimationCurve animationCurve = curveValue.intValue;
     
+    // We don't want the inspector to move here
+    CGRect inspectorFrame = self.inspectorToolViewController.view.frame;
+    [self.inspectorConstraints enumerateObjectsUsingBlock:^(NSLayoutConstraint *constraint, NSUInteger idx, BOOL *stop)
+    {
+        constraint.active = NO;
+    }];
+    
     void (^animations)() = ^()
     {
         self.verticalSpaceCanvasToTopOfContainerConstraint.constant = -CGRectGetHeight(overlap) + CGRectGetHeight(self.topToolbar.frame);
+        self.inspectorToolViewController.view.translatesAutoresizingMaskIntoConstraints = YES;
+        self.inspectorToolViewController.view.frame = inspectorFrame;
         [self.view layoutIfNeeded];
     };
     
@@ -303,6 +313,13 @@ static NSString * const kMediaExtensionJPG       = @"jpg";
     
     NSNumber *curveValue = userInfo[UIKeyboardAnimationCurveUserInfoKey];
     UIViewAnimationCurve animationCurve = curveValue.intValue;
+    
+    // Undo what we did in keyboardWillShow:
+    self.inspectorToolViewController.view.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.inspectorConstraints enumerateObjectsUsingBlock:^(NSLayoutConstraint *constraint, NSUInteger idx, BOOL *stop)
+     {
+         constraint.active = YES;
+     }];
     
     void (^animations)() = ^()
     {
@@ -447,16 +464,19 @@ static NSString * const kMediaExtensionJPG       = @"jpg";
 - (void)positionToolViewControllerOnInspector:(UIViewController *)toolViewController
 {
     toolViewController.view.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[picker]|"
-                                                                      options:kNilOptions
-                                                                      metrics:nil
-                                                                        views:@{@"picker":toolViewController.view}]];
+    self.inspectorConstraints = [[NSMutableArray alloc] init];
+    [self.inspectorConstraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"|[picker]|"
+                                                                                           options:kNilOptions
+                                                                                           metrics:nil
+                                                                                             views:@{@"picker":toolViewController.view}]];
+    
     NSDictionary *verticalMetrics = @{@"toolbarHeight":@(CGRectGetHeight(self.bottomToolbar.bounds))};
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[canvas][picker]-toolbarHeight-|"
-                                                                      options:kNilOptions
-                                                                      metrics:verticalMetrics
-                                                                        views:@{@"picker":toolViewController.view,
-                                                                                @"canvas":self.canvasView}]];
+    [self.inspectorConstraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[canvas][picker]-toolbarHeight-|"
+                                                                                           options:kNilOptions
+                                                                                           metrics:verticalMetrics
+                                                                                             views:@{@"picker":toolViewController.view,
+                                                                                                     @"canvas":self.canvasView}]];
+    [self.view addConstraints:self.inspectorConstraints];
 }
 
 @end
