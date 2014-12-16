@@ -15,7 +15,7 @@
 
 @property (nonatomic, strong, readwrite) VCVideoPlayerViewController *videoPlayerViewController;
 @property (nonatomic, strong, readwrite) VAdVideoPlayerViewController *adPlayerViewController;
-@property (nonatomic, assign, readwrite) BOOL isPlayingAd;
+@property (nonatomic, assign, readwrite) BOOL adPlaying;
 @property (nonatomic, strong) NSURL *contentURL;
 
 @end
@@ -58,7 +58,7 @@
     
     if ( viewModel.monetizationPartner == VMonetizationPartnerNone )
     {
-        self.isPlayingAd = NO;
+        self.adPlaying = NO;
         self.videoPlayerViewController.itemURL = self.contentURL;
         return;
     }
@@ -76,7 +76,7 @@
 - (void)showPreRollWithPartner:(VMonetizationPartner)monetizationPartner withDetails:(NSArray *)details
 {
     // Set visibility
-    self.isPlayingAd = YES;
+    self.adPlaying = YES;
     
     self.videoPlayerViewController.view.hidden = YES;
     
@@ -93,7 +93,7 @@
 - (void)resumeContentPlayback
 {
     // Set visibility
-    self.isPlayingAd = NO;
+    self.adPlaying = NO;
     self.adPlayerViewController.view.hidden = YES;
     self.adPlayerViewController.view.alpha = 0.0f;
     self.videoPlayerViewController.view.hidden = NO;
@@ -188,12 +188,12 @@
 
 - (void)adDidStartPlaybackForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController
 {
-    
+    [self.delegate videoCellDidStartPlayingVideoAd:self];
 }
 
 - (void)adDidStopPlaybackForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController
 {
-    NSLog(@"\n\nAdVideo was stopped");
+    [self.delegate videoCellDidStopPlayingVideoAd:self];
 }
 
 - (void)adDidFinishForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController

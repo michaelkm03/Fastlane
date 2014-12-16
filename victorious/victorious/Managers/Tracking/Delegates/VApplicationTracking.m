@@ -159,25 +159,14 @@ static const NSUInteger kMaximumURLRequestRetryCount = 5;
     
     __block NSString *output = originalString;
     
-    // Iterate through supplied parameters to replace keys present in string with values
-    [parameters enumerateKeysAndObjectsUsingBlock:^(NSString *macroKey, NSString *macroValue, BOOL *stop) {
+    [macros enumerateKeysAndObjectsUsingBlock:^(NSString *macroKey, NSString *macroValue, BOOL *stop) {
         
-        BOOL isRegisteredMacro = [self.parameterMacroMapping.allValues containsObject:macroKey];
-        BOOL isMacroPresentInString = [output rangeOfString:macroKey].location != NSNotFound;
-        if ( isRegisteredMacro && isMacroPresentInString )
+        // For each macro, find a value in the parameters dictionary
+        id value = parameters[ macroKey ];
+        NSString *stringWithNextMacro = [self stringFromString:output byReplacingString:macroValue withValue:value ?: @""];
+        if ( stringWithNextMacro != nil )
         {
-            // If registered and present, replace it
-            NSString *stringWithNextMacro = nil;
-            stringWithNextMacro = [self stringFromString:output byReplacingString:macroKey withValue:macroValue];
-            if ( stringWithNextMacro != nil )
-            {
-                output = stringWithNextMacro;
-            }
-        }
-        else
-        {
-            // Otherwise, remove it
-            output = [output stringByReplacingOccurrencesOfString:macroKey withString:@""];
+            output = stringWithNextMacro;
         }
     }];
     
@@ -207,7 +196,7 @@ static const NSUInteger kMaximumURLRequestRetryCount = 5;
             replacementValue = [NSString stringWithFormat:@"%i", ((NSNumber *)value).intValue];
         }
     }
-    else if ( [value isKindOfClass:[NSString class]] && ((NSString *)value).length > 0 )
+    else if ( [value isKindOfClass:[NSString class]] )
     {
         replacementValue = value;
     }
@@ -217,7 +206,7 @@ static const NSUInteger kMaximumURLRequestRetryCount = 5;
         return nil;
     }
     
-    return [originalString stringByReplacingOccurrencesOfString:stringToReplace withString:replacementValue];
+    return[originalString stringByReplacingOccurrencesOfString:stringToReplace withString:replacementValue];
 }
 
 - (void)sendRequest:(NSURLRequest *)request

@@ -76,7 +76,7 @@
 
 static const CGFloat kMaxInputBarHeight = 200.0f;
 
-@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate,VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelgetate, VExperienceEnhancerControllerDelegate>
+@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate,VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate>
 
 @property (nonatomic, strong, readwrite) VContentViewViewModel *viewModel;
 @property (nonatomic, strong) NSURL *mediaURL;
@@ -163,7 +163,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 
 - (BOOL)shouldAutorotate
 {
-    BOOL shouldRotate = ((self.viewModel.type == VContentViewTypeVideo) && (self.videoCell.status == AVPlayerStatusReadyToPlay) && !self.presentedViewController && !self.videoCell.isPlayingAd);
+    BOOL shouldRotate = ((self.viewModel.type == VContentViewTypeVideo) && (self.videoCell.status == AVPlayerStatusReadyToPlay) && !self.presentedViewController && !self.videoCell.adPlaying);
     return shouldRotate;
 }
 
@@ -434,8 +434,6 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
                                                     name:VExperienceEnhancerBarDidRequirePurchasePrompt
                                                   object:nil];
     
-    [self.viewModel.experienceEnhancerController sendTrackingEvents];
-    
     self.contentCollectionView.delegate = nil;
     self.videoCell.delegate = nil;
 }
@@ -587,6 +585,17 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 
 #pragma mark - Private Mehods
 
+- (void)updateInitialExperienceEnhancerState
+{
+    // Disable the enhancer bar if a video ad will play (it will enable when the ad video stops playing)
+    VExperienceEnhancerBar *enhancerBar = self.viewModel.experienceEnhancerController.enhancerBar;
+    if ( enhancerBar != nil && self.videoCell != nil )
+    {
+        BOOL willSequencePlayVideoAd = self.videoCell.viewModel.monetizationPartner != VMonetizationPartnerNone;
+        self.viewModel.experienceEnhancerController.enhancerBar.enabled = willSequencePlayVideoAd;
+    }
+}
+
 - (NSIndexPath *)indexPathForContentView
 {
     return [NSIndexPath indexPathForRow:0
@@ -722,6 +731,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
                 videoCell.speed = self.viewModel.speed;
                 videoCell.loop = self.viewModel.loop;
                 self.videoCell = videoCell;
+                [self updateInitialExperienceEnhancerState];
                 self.contentCell = videoCell;
                 __weak typeof(self) welf = self;
                 [self.videoCell setAnimateAlongsizePlayControlsBlock:^(BOOL playControlsHidden)
@@ -850,6 +860,8 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
             self.experienceEnhancerCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VExperienceEnhancerBarCell suggestedReuseIdentifier]
                                                                                     forIndexPath:indexPath];
             self.viewModel.experienceEnhancerController.enhancerBar = self.experienceEnhancerCell.experienceEnhancerBar;
+            
+            [self updateInitialExperienceEnhancerState];
             
             __weak typeof(self) welf = self;
             self.experienceEnhancerCell.experienceEnhancerBar.selectionBlock = ^(VExperienceEnhancer *selectedEnhancer, CGPoint selectionCenter)
@@ -1054,7 +1066,17 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     }
 }
 
-#pragma mark - VContentVideoCellDelgetate
+#pragma mark - VContentVideoCellDelegate
+
+- (void)videoCellDidStartPlayingVideoAd:(VContentVideoCell *)videoCell
+{
+    self.experienceEnhancerCell.experienceEnhancerBar.enabled = NO;
+}
+
+- (void)videoCellDidStopPlayingVideoAd:(VContentVideoCell *)videoCell
+{
+    self.experienceEnhancerCell.experienceEnhancerBar.enabled = YES;
+}
 
 - (void)videoCell:(VContentVideoCell *)videoCell
     didPlayToTime:(CMTime)time
@@ -1283,6 +1305,19 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 - (void)experienceEnhancersDidUpdate
 {
     // Do nothing, eventually a nice animation to reveal experience enhancers
+}
+
+- (float)currentVideoTime
+{
+    if ( self.videoCell != nil )
+    {
+        float seconds = CMTimeGetSeconds( self.videoCell.currentTime );
+        if ( !isnan( seconds ) )
+        {
+            return CMTimeGetSeconds( self.videoCell.currentTime );
+        }
+    }
+    return 0.0f;
 }
 
 @end
