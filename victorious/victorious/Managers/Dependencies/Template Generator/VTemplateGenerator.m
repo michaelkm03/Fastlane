@@ -35,6 +35,7 @@ static NSString * const kUserSpecificKey = @"isUserSpecific";
 
 // Keys for colors
 static NSString * const kMainTextColorKey = @"color.text";
+static NSString * const kAccentColorKey = @"color.accent";
 
 static NSString * const kRedKey = @"red";
 static NSString * const kGreenKey = @"green";

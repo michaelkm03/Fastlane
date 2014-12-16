@@ -8,12 +8,15 @@
 
 #import "VTickerPickerViewController.h"
 #import "VBasicToolPickerCell.h"
-#import "VThemeManager.h"
+#import "VDependencyManager.h"
+
+NSString * const kAccentColorKey = @"color.accent";
 
 @interface VTickerPickerViewController () <UICollectionViewDelegateFlowLayout>
 
 @property (nonatomic, strong) UIView *selectionIndicatorView;
 @property (nonatomic, copy) NSArray *tools;
+@property (nonatomic, strong) UIColor *accentColor;
 
 @end
 
@@ -27,6 +30,7 @@
                                                                   bundle:nil];
     VTickerPickerViewController *toolPicker = [workspaceStoryboard instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
     toolPicker.clearsSelectionOnViewWillAppear = NO;
+    toolPicker.accentColor = [dependencyManager colorForKey:kAccentColorKey];
     return toolPicker;
 }
 
@@ -42,7 +46,7 @@
     self.selectionIndicatorView =
     ({
         UIView *selectionView = [[UIView alloc] initWithFrame:[self selectionFrame]];
-        selectionView.backgroundColor = [[[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor] colorWithAlphaComponent:0.5f];
+        selectionView.backgroundColor = [self.accentColor colorWithAlphaComponent:0.5f];
         [self.collectionView addSubview:selectionView];
         selectionView;
     });
@@ -61,7 +65,6 @@
     UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
     CGFloat singleCellHeight = [VBasicToolPickerCell desiredSizeWithCollectionViewBounds:self.collectionView.bounds].height;
     layout.sectionInset = UIEdgeInsetsMake(0, 0, CGRectGetHeight(self.collectionView.bounds) - singleCellHeight, 0);
- 
 }
 
 #pragma mark - UICollectionViewDataSource
