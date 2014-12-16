@@ -33,10 +33,6 @@ static NSString * const kInitialKey = @"initial";
 static NSString * const kStreamUrlPathKey = @"streamUrlPath";
 static NSString * const kUserSpecificKey = @"isUserSpecific";
 
-// Keys for colors
-static NSString * const kMainTextColorKey = @"color.text";
-static NSString * const kAccentColorKey = @"color.accent";
-
 static NSString * const kRedKey = @"red";
 static NSString * const kGreenKey = @"green";
 static NSString * const kBlueKey = @"blue";
@@ -130,7 +126,7 @@ static NSString * const kTextPlaceholderTextKey = @"placeholderText";
                                              kFontNameKey: @"Impact",
                                              kFontSizeKey: @50,
                                              },
-                                     kMainTextColorKey:
+                                     VDependencyManagerMainTextColorKey:
                                          @{
                                              kRedKey: @255,
                                              kGreenKey: @255,
@@ -157,7 +153,7 @@ static NSString * const kTextPlaceholderTextKey = @"placeholderText";
                                              kFontNameKey: @"PTSans-Narrow",
                                              kFontSizeKey: @23,
                                              },
-                                     kMainTextColorKey:
+                                     VDependencyManagerMainTextColorKey:
                                          @{
                                              kRedKey: @255,
                                              kGreenKey: @255,
