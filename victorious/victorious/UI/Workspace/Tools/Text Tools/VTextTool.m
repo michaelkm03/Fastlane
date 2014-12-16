@@ -80,6 +80,11 @@ static NSString * const kFilterIndexKey = @"filterIndex";
 
 - (CIImage *)imageByApplyingToolToInputImage:(CIImage *)inputImage
 {
+    if (self.canvasToolViewController.renderedImage == nil)
+    {
+        return inputImage;
+    }
+    
     CIImage *textImage = [CIImage v_imageWithUImage:self.canvasToolViewController.renderedImage];
     
     // Apply scale

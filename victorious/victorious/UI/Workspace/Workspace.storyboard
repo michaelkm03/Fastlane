@@ -44,7 +44,7 @@
                                     <constraint firstAttribute="height" constant="44" id="u6w-gn-U2Y"/>
                                 </constraints>
                                 <items>
-                                    <barButtonItem image="cameraButtonClose" id="by5-os-pzS">
+                                    <barButtonItem image="cameraButtonBack" id="by5-os-pzS">
                                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <action selector="close:" destination="63Q-Vo-LWD" id="6Lb-w0-Gu9"/>
@@ -255,7 +255,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="cameraButtonClose" width="24" height="24"/>
+        <image name="cameraButtonBack" width="22" height="17"/>
         <image name="check_icon" width="32" height="22"/>
     </resources>
 </document>

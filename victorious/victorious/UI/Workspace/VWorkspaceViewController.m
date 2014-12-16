@@ -183,7 +183,7 @@ static NSString * const kMediaExtensionJPG       = @"jpg";
             [[NSFileManager defaultManager] removeItemAtURL:originalMediaURL error:nil];
         }
         
-        [[VObjectManager sharedManager] uploadMediaWithName:@"workspace"
+        [[VObjectManager sharedManager] uploadMediaWithName:[[NSUUID UUID] UUIDString]
                                                 description:nil
                                                previewImage:renderedImage
                                                 captionType:VCaptionTypeQuote

@@ -267,7 +267,8 @@ static const char kUploadProgressYConstraintKey;
 - (void)presentCameraViewController:(VCameraViewController *)cameraViewController
 {
     __weak typeof(self) welf = self;
-    UINavigationController *navigationController = [[UINavigationController alloc] init];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:cameraViewController];
+    __weak typeof(UINavigationController) *weakNavController = navigationController;
     cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
     {
         if (!finished || !capturedMediaURL)
@@ -276,26 +277,26 @@ static const char kUploadProgressYConstraintKey;
         }
         else
         {
-            [welf dismissViewControllerAnimated:YES
-                                     completion:^
+            VDependencyManager *dependencyManager = [((id <VHasManagedDependancies>)welf) dependencyManager];
+            
+            VWorkspaceViewController *workspaceViewController = (VWorkspaceViewController *)[dependencyManager viewControllerForKey:VDependencyManagerWorkspaceKey];
+            workspaceViewController.previewImage = previewImage;
+            workspaceViewController.mediaURL = capturedMediaURL;
+            workspaceViewController.completionBlock = ^void(BOOL finished, UIImage *previewImage)
             {
-                VDependencyManager *dependencyManager = [((id <VHasManagedDependancies>)welf) dependencyManager];
-                
-                VWorkspaceViewController *workspaceViewController = (VWorkspaceViewController *)[dependencyManager viewControllerForKey:VDependencyManagerWorkspaceKey];
-                workspaceViewController.previewImage = previewImage;
-                workspaceViewController.mediaURL = capturedMediaURL;
-                workspaceViewController.completionBlock = ^void(BOOL finished, UIImage *previewImage)
+                if (finished)
                 {
                     [welf dismissViewControllerAnimated:YES
                                              completion:nil];
-                };
-                [welf presentViewController:workspaceViewController
-                                   animated:YES
-                                 completion:nil];
-            }];
+                }
+                else
+                {
+                    [weakNavController popViewControllerAnimated:YES];
+                }
+            };
+            [weakNavController pushViewController:workspaceViewController animated:YES];
         }
     };
-    [navigationController pushViewController:cameraViewController animated:NO];
     [self presentViewController:navigationController animated:YES completion:nil];
 }
 
