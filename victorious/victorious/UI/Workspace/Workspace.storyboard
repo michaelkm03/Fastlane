@@ -21,7 +21,7 @@
                         <viewControllerLayoutGuide type="top" id="9wC-ZN-KU8"/>
                         <viewControllerLayoutGuide type="bottom" id="jpg-hF-EPF"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="i4i-d2-DXm">
+                    <view key="view" clipsSubviews="YES" contentMode="scaleToFill" id="i4i-d2-DXm">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
