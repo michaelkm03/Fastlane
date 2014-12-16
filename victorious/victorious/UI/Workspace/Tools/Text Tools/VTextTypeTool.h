@@ -1,5 +1,5 @@
 //
-//  VTextType.h
+//  VTextTypeTool.h
 //  victorious
 //
 //  Created by Michael Sena on 12/13/14.
@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-
 #import "VHasManagedDependencies.h"
 #import "VWorkspaceTool.h"
 
@@ -17,11 +16,14 @@ typedef NS_ENUM(NSInteger, VTextTypeVerticalAlignment)
     VTextTypeVerticalAlignmentBottomUp, ///< Text should be aligned to the bottom and grow up
 };
 
+/**
+ *   VTextTypeTool represents a type of a text tool. Such as meme, quote, etc.
+ */
 @interface VTextTypeTool : NSObject <VHasManagedDependancies, VWorkspaceTool>
 
-@property (nonatomic, readonly) VTextTypeVerticalAlignment verticalAlignment;
-@property (nonatomic, readonly) NSDictionary *attributes;
-@property (nonatomic, readonly) UIColor *dimmingBackgroundColor;
-@property (nonatomic, readonly) NSString *placeholderText;
+@property (nonatomic, readonly) VTextTypeVerticalAlignment verticalAlignment; ///< Should this be center or bottom aligned
+@property (nonatomic, readonly) NSDictionary *attributes; ///< They attributes for use in NSAttributedStrings
+@property (nonatomic, readonly) UIColor *dimmingBackgroundColor; ///< A dimming background color, if any
+@property (nonatomic, readonly) NSString *placeholderText; ///< Placeholder text for when the user has yet to enter any text
 
 @end

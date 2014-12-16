@@ -1,5 +1,5 @@
 //
-//  VTextType.m
+//  VTextTypeTool.m
 //  victorious
 //
 //  Created by Michael Sena on 12/13/14.
