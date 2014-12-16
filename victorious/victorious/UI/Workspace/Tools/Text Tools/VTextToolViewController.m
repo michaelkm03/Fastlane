@@ -90,12 +90,10 @@ static const CGFloat kTextRenderingSize = 1024;
     {
         dispatch_sync(self.searialTextRenderingQueue, ^
                       {
-                          if (_renderedImage != nil)
+                          if (_renderedImage == nil)
                           {
-                              renderedImageFromQueue = _renderedImage;
-                              return;
+                              [self renderText];
                           }
-                          [self renderText];
                           renderedImageFromQueue = _renderedImage;
                       });
     }

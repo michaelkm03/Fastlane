@@ -27,7 +27,6 @@
 #import "VObjectManager+ContentCreation.h"
 
 static const CGFloat kJPEGCompressionQuality    = 0.8f;
-static NSString * const kAccentColorKey = @"color.accent";
 
 @interface VWorkspaceViewController ()
 
@@ -368,7 +367,7 @@ static NSString * const kAccentColorKey = @"color.accent";
     [self.bottomToolbar.items enumerateObjectsUsingBlock:^(UIBarButtonItem *item, NSUInteger idx, BOOL *stop) {
         item.tintColor = [UIColor whiteColor];
     }];
-    itemToSelect.tintColor = [self.dependencyManager colorForKey:kAccentColorKey];
+    itemToSelect.tintColor = [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
 }
 
 - (id <VWorkspaceTool>)toolForTag:(NSInteger)tag
