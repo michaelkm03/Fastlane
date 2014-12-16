@@ -1,5 +1,5 @@
 //
-//  VTextWorkspaceTool.m
+//  VTextTool.m
 //  victorious
 //
 //  Created by Michael Sena on 12/5/14.
@@ -31,7 +31,7 @@ static NSString * const kFilterIndexKey = @"filterIndex";
 
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, strong) UIImage *icon;
-@property (nonatomic, strong) NSNumber *renderIndexNumber;
+@property (nonatomic, assign) NSInteger renderIndex;
 @property (nonatomic, strong) NSArray *subTools;
 @property (nonatomic, strong) id <VWorkspaceTool> activeTextTool;
 @property (nonatomic, strong) UIViewController <VToolPicker> *toolPicker;
@@ -50,7 +50,7 @@ static NSString * const kFilterIndexKey = @"filterIndex";
     {
         _title = [dependencyManager stringForKey:kTitleKey];
         _subTools = [dependencyManager workspaceTools];
-        _renderIndexNumber = [dependencyManager numberForKey:kFilterIndexKey];
+        _renderIndex = [[dependencyManager numberForKey:kFilterIndexKey] integerValue];
         _toolPicker = (UIViewController<VToolPicker> *)[dependencyManager viewControllerForKey:kPickerKey];
         _canvasToolViewController = [VTextToolViewController textToolViewController];
         _icon = [UIImage imageNamed:@"textIcon"];
@@ -122,7 +122,7 @@ static NSString * const kFilterIndexKey = @"filterIndex";
 
 - (NSInteger)renderIndex
 {
-    return [self.renderIndexNumber integerValue];
+    return _renderIndex;
 }
 
 - (BOOL)shouldLeaveToolOnCanvas
