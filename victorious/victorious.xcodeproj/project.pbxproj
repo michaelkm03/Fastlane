@@ -385,7 +385,7 @@
 		A724EBDE1A099DF900A8865F /* VStreamCollectionCellWebContent.xib in Resources */ = {isa = PBXBuildFile; fileRef = A724EBDD1A099DF900A8865F /* VStreamCollectionCellWebContent.xib */; };
 		A733D8FC1A23D0980053E9F1 /* VNotificationSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = A733D8FB1A23D0980053E9F1 /* VNotificationSettings.m */; };
 		A733D8FF1A23D0C70053E9F1 /* VNotificationSettings+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A733D8FE1A23D0C70053E9F1 /* VNotificationSettings+RestKit.m */; };
-		A73EAEC01A4134C10021BB31 /* NSString+EmojiTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A73EAEBF1A4134C10021BB31 /* NSString+EmojiTests.m */; };
+		A73EAEC01A4134C10021BB31 /* NSString+Unicode_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = A73EAEBF1A4134C10021BB31 /* NSString+Unicode_Tests.m */; };
 		A73EAEC31A41453C0021BB31 /* NSString+Unicode.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73EAEC21A41453C0021BB31 /* NSString+Unicode.swift */; };
 		A73EAEC51A41F7BD0021BB31 /* NSString+Unicode.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73EAEC21A41453C0021BB31 /* NSString+Unicode.swift */; };
 		A743E7DF1A08160300339CB3 /* VFileCache+VVoteType.m in Sources */ = {isa = PBXBuildFile; fileRef = A743E7DC1A08160300339CB3 /* VFileCache+VVoteType.m */; };
@@ -1301,7 +1301,7 @@
 		A735323119DB60600040DB30 /* VAuthorizationViewControllerFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAuthorizationViewControllerFactory.h; sourceTree = "<group>"; };
 		A735323219DB60600040DB30 /* VAuthorizationViewControllerFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAuthorizationViewControllerFactory.m; sourceTree = "<group>"; };
 		A73AFB7B19F573AB0005A9EA /* VVideoTrackingTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVideoTrackingTests.m; sourceTree = "<group>"; };
-		A73EAEBF1A4134C10021BB31 /* NSString+EmojiTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+EmojiTests.m"; sourceTree = "<group>"; };
+		A73EAEBF1A4134C10021BB31 /* NSString+Unicode_Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Unicode_Tests.m"; sourceTree = "<group>"; };
 		A73EAEC21A41453C0021BB31 /* NSString+Unicode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSString+Unicode.swift"; sourceTree = "<group>"; };
 		A743E7DB1A08160300339CB3 /* VFileCache+VVoteType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VFileCache+VVoteType.h"; sourceTree = "<group>"; };
 		A743E7DC1A08160300339CB3 /* VFileCache+VVoteType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VFileCache+VVoteType.m"; sourceTree = "<group>"; };
@@ -3512,7 +3512,7 @@
 				A7AB4FE819F5A6A300BFFE35 /* VVoteTypeFetcherTests.m */,
 				D871A4011A157D650046A12C /* VVRTCUserPostedAtFormatterTests.m */,
 				A769C3F41A131F5C00698D0C /* VWebViewFactoryTests.m */,
-				A73EAEBF1A4134C10021BB31 /* NSString+EmojiTests.m */,
+				A73EAEBF1A4134C10021BB31 /* NSString+Unicode_Tests.m */,
 			);
 			path = victoriousTests;
 			sourceTree = "<group>";
@@ -4954,7 +4954,7 @@
 				A720052E1A03073B00285A9C /* VPhotoFilterSerializationTests.m in Sources */,
 				A720052C1A03073B00285A9C /* VMultipartFormDataWriterTests.m in Sources */,
 				A72005331A03073B00285A9C /* VUploadManagerURLSessionTests.m in Sources */,
-				A73EAEC01A4134C10021BB31 /* NSString+EmojiTests.m in Sources */,
+				A73EAEC01A4134C10021BB31 /* NSString+Unicode_Tests.m in Sources */,
 				A720052A1A03073B00285A9C /* VLargeNumberFormatterTests.m in Sources */,
 				A720052D1A03073B00285A9C /* VObjectManagerStringTest.m in Sources */,
 				A72005371A03073B00285A9C /* VVoteSettingManagerTests.m in Sources */,

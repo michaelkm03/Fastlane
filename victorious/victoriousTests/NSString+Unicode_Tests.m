@@ -8,13 +8,14 @@
 
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
-#import "victoriousTests-Swift.h"
 
-@interface NSString_EmojiTests : XCTestCase
+#import "victoriousTests-Swift.h" // for NSString+Unicode (imports all Swift files)
+
+@interface NSString_Unicode_Tests : XCTestCase
 
 @end
 
-@implementation NSString_EmojiTests
+@implementation NSString_Unicode_Tests
 
 - (void)setUp
 {
