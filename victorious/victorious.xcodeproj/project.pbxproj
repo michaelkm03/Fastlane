@@ -3549,6 +3549,7 @@
 				0314D06019B4666A00FA363C /* NSManagedObject+RestKit.m */,
 				03AFF99019CBB99B004B8CD9 /* NSNotificationCenter+VNotificationDebugger.h */,
 				03AFF99119CBB99B004B8CD9 /* NSNotificationCenter+VNotificationDebugger.m */,
+				A73EAEC21A41453C0021BB31 /* NSString+Unicode.swift */,
 				03AC453819BA1F1000CE4351 /* NSString+VCrypto.h */,
 				03AC453919BA1F1000CE4351 /* NSString+VCrypto.m */,
 				BE171E371868C266004E5202 /* NSString+VParseHelp.h */,
@@ -3592,7 +3593,6 @@
 				03811D3319353486005687FF /* VAlertViewBlockDelegate.m */,
 				BE46F02B19D0CC3700CD7EF6 /* VConversation+UnreadMessageCount.h */,
 				BE46F02C19D0CC3700CD7EF6 /* VConversation+UnreadMessageCount.m */,
-				A73EAEC21A41453C0021BB31 /* NSString+Unicode.swift */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
