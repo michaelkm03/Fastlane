@@ -95,6 +95,22 @@ extern NSString * const VDependencyManagerInitialViewControllerKey; ///< The vie
 - (NSArray *)arrayForKey:(NSString *)key;
 
 /**
+ Returns an NSArray with the specified key. The array
+ will be filtered for objects conforming to the 
+ specified type.
+ */
+- (NSArray *)arrayOfValuesOfType:(Class)expectedType forKey:(NSString *)key;
+
+/**
+ Returns an NSArray with the specified key. The array
+ will be filtered for objects conforming to the
+ specified type. If any of the array elements have
+ been previously returned, the previous value will
+ be returned again.
+ */
+- (NSArray *)arrayOfSingletonValuesOfType:(Class)expectedType forKey:(NSString *)key;
+
+/**
  Returns the value stored for the specified key in the configuration
  dictionary of this instance, if present, or the closest ancestor.
  
