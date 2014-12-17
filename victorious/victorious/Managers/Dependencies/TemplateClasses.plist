@@ -10,6 +10,10 @@
 	<string>VStreamCollectionViewController</string>
 	<key>streamDirectory.screen</key>
 	<string>VDirectoryViewController</string>
+	<key>basic.multiScreen</key>
+	<string>VMultipleContainerViewController</string>
+	<key>basic.multiScreenSelector</key>
+	<string>VBasicViewSelectorViewController</string>
 	<key>inbox.screen</key>
 	<string>VInboxContainerViewController</string>
 	<key>currentUserProfile.screen</key>

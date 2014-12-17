@@ -282,6 +282,7 @@
 		03AFF99219CBB99B004B8CD9 /* NSNotificationCenter+VNotificationDebugger.m in Sources */ = {isa = PBXBuildFile; fileRef = 03AFF99119CBB99B004B8CD9 /* NSNotificationCenter+VNotificationDebugger.m */; };
 		03B3D3D01A3BBCE900F0634A /* VBadgeBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B3D3CF1A3BBCE900F0634A /* VBadgeBackgroundView.m */; };
 		03B3D3D31A3BC4DD00F0634A /* VNumericalBadgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B3D3D21A3BC4DD00F0634A /* VNumericalBadgeView.m */; };
+		03B3D3DE1A3ECCB500F0634A /* VMultipleContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B3D3DD1A3ECCB500F0634A /* VMultipleContainerViewController.m */; };
 		03B83B5519E066AF00DC04E4 /* VUploadTaskSerializer.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B83B5419E066AF00DC04E4 /* VUploadTaskSerializer.m */; };
 		03B83B5D19E0990E00DC04E4 /* VUploadProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B83B5C19E0990E00DC04E4 /* VUploadProgressView.m */; };
 		03B83B6219E0D2CC00DC04E4 /* VUploadProgressViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B83B6119E0D2CC00DC04E4 /* VUploadProgressViewController.m */; };
@@ -310,6 +311,8 @@
 		03C185BC19B42E5D00E27D05 /* TWSignedRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C185B719B42E5D00E27D05 /* TWSignedRequest.m */; settings = {COMPILER_FLAGS = "-w"; }; };
 		03C185BF19B42F0E00E27D05 /* VSequenceUserInteractions.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C185BE19B42F0E00E27D05 /* VSequenceUserInteractions.m */; };
 		03C185C819B42FD600E27D05 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C185C519B42FD600E27D05 /* main.m */; };
+		03CCEB161A4116D700B0F6F6 /* VViewSelectorViewControllerBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CCEB151A4116D700B0F6F6 /* VViewSelectorViewControllerBase.m */; };
+		03CCEB191A413C6400B0F6F6 /* VBasicViewSelectorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CCEB181A413C6400B0F6F6 /* VBasicViewSelectorViewController.m */; };
 		03CE66F619B47B590011BB9E /* VFacebookManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CE66F219B47B590011BB9E /* VFacebookManager.m */; };
 		03CE66F719B47B590011BB9E /* VTwitterManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CE66F519B47B590011BB9E /* VTwitterManager.m */; };
 		03CE66FC19B59F260011BB9E /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CE66FB19B59F260011BB9E /* UIImage+ImageEffects.m */; };
@@ -1156,6 +1159,8 @@
 		03B3D3CF1A3BBCE900F0634A /* VBadgeBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VBadgeBackgroundView.m; sourceTree = "<group>"; };
 		03B3D3D11A3BC4DD00F0634A /* VNumericalBadgeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNumericalBadgeView.h; sourceTree = "<group>"; };
 		03B3D3D21A3BC4DD00F0634A /* VNumericalBadgeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNumericalBadgeView.m; sourceTree = "<group>"; };
+		03B3D3DC1A3ECCB500F0634A /* VMultipleContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMultipleContainerViewController.h; sourceTree = "<group>"; };
+		03B3D3DD1A3ECCB500F0634A /* VMultipleContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMultipleContainerViewController.m; sourceTree = "<group>"; };
 		03B83B5319E066AF00DC04E4 /* VUploadTaskSerializer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUploadTaskSerializer.h; sourceTree = "<group>"; };
 		03B83B5419E066AF00DC04E4 /* VUploadTaskSerializer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUploadTaskSerializer.m; sourceTree = "<group>"; };
 		03B83B5B19E0990E00DC04E4 /* VUploadProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUploadProgressView.h; sourceTree = "<group>"; };
@@ -1209,6 +1214,10 @@
 		03C185C519B42FD600E27D05 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		03C185C619B42FD600E27D05 /* victorious-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "victorious-Prefix.pch"; sourceTree = "<group>"; };
 		03C185CE19B4308400E27D05 /* VAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAnimation.h; sourceTree = "<group>"; };
+		03CCEB141A4116D700B0F6F6 /* VViewSelectorViewControllerBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VViewSelectorViewControllerBase.h; sourceTree = "<group>"; };
+		03CCEB151A4116D700B0F6F6 /* VViewSelectorViewControllerBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VViewSelectorViewControllerBase.m; sourceTree = "<group>"; };
+		03CCEB171A413C6400B0F6F6 /* VBasicViewSelectorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VBasicViewSelectorViewController.h; sourceTree = "<group>"; };
+		03CCEB181A413C6400B0F6F6 /* VBasicViewSelectorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VBasicViewSelectorViewController.m; sourceTree = "<group>"; };
 		03CE66F119B47B590011BB9E /* VFacebookManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFacebookManager.h; sourceTree = "<group>"; };
 		03CE66F219B47B590011BB9E /* VFacebookManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFacebookManager.m; sourceTree = "<group>"; };
 		03CE66F419B47B590011BB9E /* VTwitterManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTwitterManager.h; sourceTree = "<group>"; };
@@ -2112,6 +2121,7 @@
 				D8AF00EE1A128A7200B147C4 /* VHashTagTextView.m */,
 				A7F8DD4B1A0B065800F82256 /* VHeaderView.h */,
 				A7F8DD4C1A0B065800F82256 /* VHeaderView.m */,
+				03B3D3DB1A3ECC9500F0634A /* VMultipleContainerViewController */,
 				A70564C019E781EE004A8387 /* VNoContentTableViewCell.h */,
 				A70564C119E781EE004A8387 /* VNoContentTableViewCell.m */,
 				03FD87D419F96F6900D93BAA /* VNoContentTableViewCell.xib */,
@@ -2862,6 +2872,19 @@
 				039ED29819C908F400305987 /* VVideoDownloadProgressIndicatorView.m */,
 			);
 			path = Player;
+			sourceTree = "<group>";
+		};
+		03B3D3DB1A3ECC9500F0634A /* VMultipleContainerViewController */ = {
+			isa = PBXGroup;
+			children = (
+				03CCEB171A413C6400B0F6F6 /* VBasicViewSelectorViewController.h */,
+				03CCEB181A413C6400B0F6F6 /* VBasicViewSelectorViewController.m */,
+				03B3D3DC1A3ECCB500F0634A /* VMultipleContainerViewController.h */,
+				03B3D3DD1A3ECCB500F0634A /* VMultipleContainerViewController.m */,
+				03CCEB141A4116D700B0F6F6 /* VViewSelectorViewControllerBase.h */,
+				03CCEB151A4116D700B0F6F6 /* VViewSelectorViewControllerBase.m */,
+			);
+			path = VMultipleContainerViewController;
 			sourceTree = "<group>";
 		};
 		03B83B5819E0988200DC04E4 /* Upload Progress View */ = {
@@ -4671,6 +4694,7 @@
 				037D2D591A196B9800947A22 /* VUserProfileNavigationDestination.m in Sources */,
 				030931931A184285004E9781 /* VNavigationMenuItem.m in Sources */,
 				DBB1A0501A00AF4500E16D62 /* VOpenXAdViewController.m in Sources */,
+				03CCEB191A413C6400B0F6F6 /* VBasicViewSelectorViewController.m in Sources */,
 				D8E39BDA19CB7C80007FD86A /* VContentImageCell.m in Sources */,
 				A72005601A030E4700285A9C /* VGoogleAnalyticsTracking.m in Sources */,
 				A743E7EA1A081FFF00339CB3 /* VValidator.m in Sources */,
@@ -4684,6 +4708,7 @@
 				BE88FF7A1A0005E70064AB28 /* VMultipleStreamViewController.m in Sources */,
 				0314D4E819B46B5E00FA363C /* VTabBarViewController.m in Sources */,
 				A7A2DFFF1A37813D00F8C705 /* VPurchaseActionCell.m in Sources */,
+				03B3D3DE1A3ECCB500F0634A /* VMultipleContainerViewController.m in Sources */,
 				D89AC2BC19F1FD6B00921131 /* VHistogramDataSource.m in Sources */,
 				A75FAF1B19E8AC1E00EB87C1 /* VTrendingTagCell.m in Sources */,
 				BE799B8F19C8A91C0023CE88 /* VInteraction.m in Sources */,
@@ -4753,6 +4778,7 @@
 				0350426A194F711A008D78A3 /* NSIndexSet+Map.m in Sources */,
 				BE11447E19D4ADCC006A6D65 /* UIImageView+VLoadingAnimations.m in Sources */,
 				0314D4C119B46B5E00FA363C /* VProfileEditViewController.m in Sources */,
+				03CCEB161A4116D700B0F6F6 /* VViewSelectorViewControllerBase.m in Sources */,
 				0314D08C19B4690A00FA363C /* VDeeplinkManager.m in Sources */,
 				BE799BB419C8DF5B0023CE88 /* VAsset+OrderedSet.m in Sources */,
 				BE171D8C1868BE64004E5202 /* VAppDelegate.m in Sources */,

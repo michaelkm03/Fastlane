@@ -33,10 +33,22 @@ static NSString * const kInitialKey = @"initial";
 static NSString * const kStreamUrlPathKey = @"streamUrlPath";
 static NSString * const kUserSpecificKey = @"isUserSpecific";
 
+// Color properties
+static NSString * const kRedKey = @"red";
+static NSString * const kGreenKey = @"green";
+static NSString * const kBlueKey = @"blue";
+static NSString * const kAlphaKey = @"alpha";
+
+// Other misc. properties
+static NSString * const kScreensKey = @"screens";
+static NSString * const kSelectorKey =  @"selector";
+
 @interface VTemplateGenerator ()
 
 @property (nonatomic, strong) NSDictionary *dataFromInitCall;
 @property (nonatomic, strong) NSString *firstMenuItemID;
+@property (nonatomic, strong) NSString *homeRecentID;
+@property (nonatomic, strong) NSDictionary *accentColor;
 
 @end
 
@@ -49,6 +61,7 @@ static NSString * const kUserSpecificKey = @"isUserSpecific";
     {
         _dataFromInitCall = initData;
         _firstMenuItemID = [[NSUUID UUID] UUIDString];
+        _homeRecentID = [[NSUUID UUID] UUIDString];
     }
     return self;
 }
@@ -63,6 +76,19 @@ static NSString * const kUserSpecificKey = @"isUserSpecific";
             if ([obj isKindOfClass:[NSDictionary class]])
             {
                 [template addEntriesFromDictionary:obj];
+                
+                NSDictionary *accentColor = obj[VDependencyManagerAccentColorKey];
+                
+                if ( accentColor == nil )
+                {
+                    accentColor = @{
+                        kRedKey: @0,
+                        kBlueKey: @0,
+                        kGreenKey: @0,
+                        kAlphaKey: @1
+                    };
+                }
+                self.accentColor = accentColor;
             }
         }
         else
@@ -88,11 +114,29 @@ static NSString * const kUserSpecificKey = @"isUserSpecific";
                     kTitleKey: NSLocalizedString(@"Home", @""),
                     kDestinationKey: @{
                         kIDKey: self.firstMenuItemID,
-                        kClassNameKey: @"stream.screen",
-                        kTitleKey: NSLocalizedString(@"Home", @""),
-                        kStreamUrlPathKey: @"/api/sequence/hot_detail_list_by_stream/home",
-                        kIsHomeKey: @YES,
-                        kCanAddContentKey: @YES,
+                        kClassNameKey: @"basic.multiScreen",
+                        kScreensKey: @[
+                            @{
+                                kClassNameKey: @"stream.screen",
+                                kTitleKey: NSLocalizedString(@"Featured", @""),
+                                kStreamUrlPathKey: @"/api/sequence/hot_detail_list_by_stream/home",
+                                kIsHomeKey: @YES,
+                            },
+                            @{
+                                kIDKey: self.homeRecentID,
+                                kClassNameKey: @"stream.screen",
+                                kTitleKey: NSLocalizedString(@"Recent", @""),
+                                kStreamUrlPathKey: [self urlPathForStreamCategories:[VUGCCategories() arrayByAddingObjectsFromArray:VOwnerCategories()]],
+                                kCanAddContentKey: @YES,
+                            }
+                        ],
+                        kSelectorKey: @{
+                            kClassNameKey: @"basic.multiScreenSelector",
+                            VDependencyManagerBackgroundColorKey: self.accentColor,
+                        },
+                        kInitialKey: @{
+                            kReferenceIDKey: self.homeRecentID,
+                        }
                     }
                 },
                 [self ownerStreamMenuItem],
