@@ -47,7 +47,7 @@
 @property (nonatomic, weak) id <VContentVideoCellDelegate> delegate;
 
 // KVO off of this to disable any disruptive actions
-@property (nonatomic, readonly) BOOL adPlaying;
+@property (nonatomic, readonly) BOOL isPlayingAd;
 
 /**
  *  Instruct the video cell's video player to play. Will respect the speed and loop properties.

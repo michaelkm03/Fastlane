@@ -15,7 +15,7 @@
 
 @property (nonatomic, strong, readwrite) VCVideoPlayerViewController *videoPlayerViewController;
 @property (nonatomic, strong, readwrite) VAdVideoPlayerViewController *adPlayerViewController;
-@property (nonatomic, assign, readwrite) BOOL isAdPlaying;
+@property (nonatomic, assign, readwrite) BOOL isPlayingAd;
 @property (nonatomic, strong) NSURL *contentURL;
 
 @end
@@ -58,7 +58,7 @@
    
     if ( viewModel.monetizationPartner == VMonetizationPartnerNone )
     {
-        self.isAdPlaying = NO;
+        self.isPlayingAd = NO;
         self.videoPlayerViewController.itemURL = self.contentURL;
         return;
     }
@@ -76,7 +76,7 @@
 - (void)showPreRollWithPartner:(VMonetizationPartner)monetizationPartner withDetails:(NSArray *)details
 {
     // Set visibility
-    self.isAdPlaying = YES;
+    self.isPlayingAd = YES;
     
     self.videoPlayerViewController.view.hidden = YES;
     
@@ -93,7 +93,7 @@
 - (void)resumeContentPlayback
 {
     // Set visibility
-    self.isAdPlaying = NO;
+    self.isPlayingAd = NO;
     self.adPlayerViewController.view.hidden = YES;
     self.adPlayerViewController.view.alpha = 0.0f;
     self.videoPlayerViewController.view.hidden = NO;
