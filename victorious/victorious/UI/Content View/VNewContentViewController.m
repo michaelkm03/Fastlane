@@ -1070,16 +1070,6 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 
 #pragma mark - VContentVideoCellDelegate
 
-- (void)videoCellDidStartPlayingVideoAd:(VContentVideoCell *)videoCell
-{
-    self.experienceEnhancerCell.experienceEnhancerBar.enabled = NO;
-}
-
-- (void)videoCellDidStopPlayingVideoAd:(VContentVideoCell *)videoCell
-{
-    self.experienceEnhancerCell.experienceEnhancerBar.enabled = YES;
-}
-
 - (void)videoCell:(VContentVideoCell *)videoCell
     didPlayToTime:(CMTime)time
         totalTime:(CMTime)totalTime
@@ -1100,6 +1090,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     {
         [self.videoCell play];
         self.hasAutoPlayed = YES;
+        self.experienceEnhancerCell.experienceEnhancerBar.enabled = YES;
     }
 }
 

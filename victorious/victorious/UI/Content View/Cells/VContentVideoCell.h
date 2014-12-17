@@ -35,10 +35,6 @@
 
 - (void)videoCellWillStartPlaying:(VContentVideoCell *)videoCell;
 
-- (void)videoCellDidStartPlayingVideoAd:(VContentVideoCell *)videoCell;
-
-- (void)videoCellDidStopPlayingVideoAd:(VContentVideoCell *)videoCell;
-
 @end
 
 /**

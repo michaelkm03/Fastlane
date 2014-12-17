@@ -55,7 +55,7 @@
     _viewModel = viewModel;
     
     self.contentURL = viewModel.itemURL;
-    
+   
     if ( viewModel.monetizationPartner == VMonetizationPartnerNone )
     {
         self.isAdPlaying = NO;
@@ -188,12 +188,10 @@
 
 - (void)adDidStartPlaybackForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController
 {
-    [self.delegate videoCellDidStartPlayingVideoAd:self];
 }
 
 - (void)adDidStopPlaybackForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController
 {
-    [self.delegate videoCellDidStopPlayingVideoAd:self];
 }
 
 - (void)adDidFinishForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController
