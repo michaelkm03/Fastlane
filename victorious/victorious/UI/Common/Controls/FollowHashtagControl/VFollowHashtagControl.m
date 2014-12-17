@@ -55,10 +55,10 @@ static const CGFloat kForcedAntiAliasingConstant = 0.01f;
     
 #if TARGET_INTERFACE_BUILDER
     _subscribeImage = [UIImage imageNamed:@"folllow_tag" inBundle:[NSBundle bundleForClass:[self class]] compatibleWithTraitCollection:nil];
-    _unSubscribeImage = [UIImage imageNamed:@"unfolllow_tag" inBundle:[NSBundle bundleForClass:[self class]] compatibleWithTraitCollection:nil];
+    _unSubscribeImage = [UIImage imageNamed:@"followed_hashtag" inBundle:[NSBundle bundleForClass:[self class]] compatibleWithTraitCollection:nil];
 #else
     _subscribeImage = [UIImage imageNamed:@"folllow_tag"];
-    _unSubscribeImage = [UIImage imageNamed:@"unfolllow_tag"];
+    _unSubscribeImage = [UIImage imageNamed:@"followed_hashtag"];
 #endif
     
     if (self.subscribed)
