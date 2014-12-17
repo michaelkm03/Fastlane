@@ -159,8 +159,8 @@ static const NSUInteger kMaximumURLRequestRetryCount = 5;
     
     __block NSString *output = originalString;
     
-    [macros enumerateKeysAndObjectsUsingBlock:^(NSString *macroKey, NSString *macroValue, BOOL *stop) {
-        
+    [macros enumerateKeysAndObjectsUsingBlock:^(NSString *macroKey, NSString *macroValue, BOOL *stop)
+    {
         // For each macro, find a value in the parameters dictionary
         id value = parameters[ macroKey ];
         NSString *stringWithNextMacro = [self stringFromString:output byReplacingString:macroValue withValue:value ?: @""];
@@ -250,7 +250,7 @@ static const NSUInteger kMaximumURLRequestRetryCount = 5;
     NSParameterAssert( objectManager != nil );
     
     NSURL *url = [NSURL URLWithString:urlString];
-    if ( !url )
+    if ( url == nil )
     {
 #if DEBUG && APPLICATION_TRACKING_LOGGING_ENABLED
         VLog( @"Applicaiton Tracking :: ERROR :: Invalid URL %@.", urlString );
@@ -269,8 +269,10 @@ static const NSUInteger kMaximumURLRequestRetryCount = 5;
 
 - (void)trackEventWithName:(NSString *)eventName parameters:(NSDictionary *)parameters
 {
+    // Application tracking works by replacing macros in supplied URLs
+    // If calling code doesn't supply any URLs, we can't proceed any further
     NSArray *urls = parameters[ VTrackingKeyUrls ];
-    if ( urls )
+    if ( urls != nil && urls.count > 0 )
     {
         [self trackEventWithUrls:urls andParameters:parameters];
     }

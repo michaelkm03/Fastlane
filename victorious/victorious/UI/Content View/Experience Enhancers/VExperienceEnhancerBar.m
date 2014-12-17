@@ -85,7 +85,10 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
 - (void)setEnabled:(BOOL)enabled
 {
     _enabled = enabled;
-    [self.collectionView reloadData];
+    [self.collectionView.visibleCells enumerateObjectsUsingBlock:^(VExperienceEnhancerCell *cell, NSUInteger idx, BOOL *stop)
+    {
+        cell.enabled = _enabled;
+    }];
 }
 
 #pragma mark - Public Methods
@@ -176,7 +179,10 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
         self.selectionBlock(enhancerForIndexPath, convertedCenter);
     }
     
-    [self.delegate experienceEnhancerSelected:enhancerForIndexPath];
+    if ( [self.delegate respondsToSelector:@selector(experienceEnhancerSelected:)] )
+    {
+        [self.delegate experienceEnhancerSelected:enhancerForIndexPath];
+    }
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didHighlightItemAtIndexPath:(NSIndexPath *)indexPath

@@ -25,6 +25,8 @@ extern NSString * const VExperienceEnhancerBarDidRequireLoginNotification;
 
 @protocol VExperienceEnhancerBarDelegate <NSObject>
 
+@optional
+
 - (void)experienceEnhancerSelected:(VExperienceEnhancer *)enhancer;
 
 @end

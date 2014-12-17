@@ -47,6 +47,11 @@ static const CGFloat kTopSpaceIconCompactVertical = 5.0f;
     self.enabled = YES;
 }
 
+- (void)prepareForReuse
+{
+    self.contentView.alpha = 1.0f;
+}
+
 #pragma mark - UICollectionReusableView
 
 - (void)setHighlighted:(BOOL)highlighted
@@ -82,7 +87,7 @@ static const CGFloat kTopSpaceIconCompactVertical = 5.0f;
 - (void)setEnabled:(BOOL)enabled
 {
     _enabled = enabled;
-    self.alpha = _enabled ? 1.0f : 0.5f;
+    self.contentView.alpha = _enabled ? 1.0f : 0.5f;
 }
 
 - (void)setIsLocked:(BOOL)isLocked
