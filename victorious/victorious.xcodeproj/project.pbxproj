@@ -3460,6 +3460,7 @@
 				A7B98A2D1A251CEE00C58335 /* Helpers */,
 				A7A2E0001A38C7B700F8C705 /* NSData+AESTests.m */,
 				BE49323519E338CE00C0912E /* NSDate+timeSinceTests.m */,
+				A73EAEBF1A4134C10021BB31 /* NSString+Unicode_Tests.m */,
 				03AC453B19BA1F7900CE4351 /* NSStringVCryptoTests.m */,
 				BE171D9F1868BE64004E5202 /* Supporting Files */,
 				03D94C2A19DE155400BFAA27 /* Swizzling Support */,
@@ -3512,7 +3513,6 @@
 				A7AB4FE819F5A6A300BFFE35 /* VVoteTypeFetcherTests.m */,
 				D871A4011A157D650046A12C /* VVRTCUserPostedAtFormatterTests.m */,
 				A769C3F41A131F5C00698D0C /* VWebViewFactoryTests.m */,
-				A73EAEBF1A4134C10021BB31 /* NSString+Unicode_Tests.m */,
 			);
 			path = victoriousTests;
 			sourceTree = "<group>";
