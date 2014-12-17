@@ -395,6 +395,10 @@
 "HashtagSubscribeError"  = "Sorry, an error occurred attempting to follow this hashtag.";
 "HashtagUnsubscribeError"  = "Sorry, an error occurred attempting to unfollow this hashtag.";
 
+"NoFollowingHashtagsTitle"      =   "WHAT?? YOU'RE NOT FOLLOWING ANY TAGS YET";
+"NoFollowingHashtagsMessage"    =   "Build a list of your favorite content by following content that has been tagged.";
+
+
 "Type your feedback here..." = "Type your feedback here...";
 "Device:"               = "Device:";
 "OS Version:"           = "OS Version:";

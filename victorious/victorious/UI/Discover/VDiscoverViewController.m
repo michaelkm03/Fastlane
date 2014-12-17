@@ -301,7 +301,7 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
         {
             VTrendingTagCell *customCell = (VTrendingTagCell *)[tableView dequeueReusableCellWithIdentifier:kVTrendingTagIdentifier forIndexPath:indexPath];
             VHashtag *hashtag = self.trendingTags[ indexPath.row ];
-            [customCell setHashtag:hashtag];
+            [customCell setHashtag:hashtag.tag];
                         
             customCell.subscribeToTagAction = ^(void)
             {

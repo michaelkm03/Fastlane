@@ -47,9 +47,9 @@
 /**
  Hashtag setter
  
- @param hashtag The VHashtag object to present for this cell
+ @param hashtag The NSString object to present for this cell
  */
-- (void)setHashtag:(VHashtag *)hashtag;
+- (void)setHashtag:(NSString *)hashtag;
 
 /**
  Checks to see if hashtag is subscribed to or not and animates the subscribe button accordingly.

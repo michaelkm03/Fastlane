@@ -69,10 +69,10 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
     self.followUnfollowButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
 }
 
-- (void)setHashtag:(VHashtag *)hashtag
+- (void)setHashtag:(NSString *)hashtag
 {
     // Make sure there's a # at the beginning of the text
-    self.hashtagText = hashtag.tag;
+    self.hashtagText = hashtag;
     NSString *text = [VHashTags stringWithPrependedHashmarkFromString:self.hashtagText];
     
     [self.hashTagLabel setText:text];

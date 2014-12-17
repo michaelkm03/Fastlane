@@ -16,7 +16,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="#Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R24-gj-ok1" customClass="VHashtagLabel">
-                        <rect key="frame" x="17" y="0.0" width="52" height="28"/>
+                        <rect key="frame" x="17" y="7" width="52" height="28"/>
                         <color key="backgroundColor" red="1" green="0.035351606610000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="28" id="3mp-Zu-WRf"/>
@@ -26,7 +26,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rD5-fh-Jty" customClass="VFollowHashtagControl">
-                        <rect key="frame" x="277" y="0.0" width="28" height="28"/>
+                        <rect key="frame" x="277" y="7" width="28" height="28"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="28" id="wCY-9S-P8B"/>

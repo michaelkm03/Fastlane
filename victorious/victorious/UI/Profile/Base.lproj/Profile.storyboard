@@ -271,6 +271,7 @@
         <!--Following-->
         <scene sceneID="jlq-rd-pfy">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="d2V-yy-Pkc" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController title="Following" id="0P3-ku-CO7" customClass="VContainerViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="iKa-VG-4Ta"/>
@@ -280,10 +281,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="T3K-gm-xvz">
+                            <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QWc-Fn-yKk">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <connections>
-                                    <segue destination="86q-5Y-HrO" kind="embed" id="Vva-9r-xrE"/>
+                                    <segue destination="86q-5Y-HrO" kind="embed" id="TnJ-QW-WEJ"/>
                                 </connections>
                             </containerView>
                         </subviews>
@@ -291,7 +292,6 @@
                     </view>
                     <navigationItem key="navigationItem" id="PD2-FI-hY4"/>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="d2V-yy-Pkc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="119" y="1511"/>
         </scene>
@@ -306,8 +306,23 @@
                     <view key="view" contentMode="scaleToFill" id="bFt-nf-xe8">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <containerView opaque="NO" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5de-sT-TwA">
+                                <rect key="frame" x="0.0" y="57" width="320" height="511"/>
+                            </containerView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="nBb-NB-dHn" firstAttribute="top" secondItem="5de-sT-TwA" secondAttribute="bottom" id="6fe-GV-VDY"/>
+                            <constraint firstItem="5de-sT-TwA" firstAttribute="leading" secondItem="bFt-nf-xe8" secondAttribute="leadingMargin" constant="-16" id="FJp-Yu-bwn"/>
+                            <constraint firstItem="5de-sT-TwA" firstAttribute="top" secondItem="PoE-cr-IZB" secondAttribute="bottom" constant="37" id="OTG-Vo-Qpj"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="5de-sT-TwA" secondAttribute="trailing" constant="-16" id="yoI-Uk-v4O"/>
+                        </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="5Ss-xa-8iX"/>
+                    <connections>
+                        <outlet property="containerView" destination="5de-sT-TwA" id="2F7-6w-7Dc"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zzv-qW-p4V" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

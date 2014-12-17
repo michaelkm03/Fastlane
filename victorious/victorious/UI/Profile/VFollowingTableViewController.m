@@ -65,6 +65,8 @@
     UIEdgeInsets insets = self.tableView.contentInset;
     insets.top = CGRectGetHeight(self.parentViewController.navHeaderView.frame);
     self.tableView.contentInset = insets;
+    
+    //[self.tableView setSeparatorInset:UIEdgeInsetsZero];
 }
 
 - (BOOL)shouldAutorotate

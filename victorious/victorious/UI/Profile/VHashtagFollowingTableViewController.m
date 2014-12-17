@@ -7,94 +7,277 @@
 //
 
 #import "VHashtagFollowingTableViewController.h"
+#import "VTrendingTagCell.h"
+#import "VObjectManager+Discover.h"
+#import "VNoContentTableViewCell.h"
+#import "VObjectManager+Users.h"
+#import "VUser.h"
+#import "VUserHashtag+RestKit.h"
+#import "VHashtag.h"
+#import "VConstants.h"
+#import "VStreamCollectionViewController.h"
+#import <MBProgressHUD.h>
+
+static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
 
 @interface VHashtagFollowingTableViewController ()
+
+@property (nonatomic, strong) NSMutableArray *userTags;
+@property (nonatomic, strong) NSError *error;
+
+@property (nonatomic, weak) MBProgressHUD *failureHud;
 
 @end
 
 @implementation VHashtagFollowingTableViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
+    [self configureTableView];
+    [self loadHashtagData];
+}
+
+#pragma mark - Loading data
+
+- (void)loadHashtagData
+{
+    self.userTags = [[NSMutableArray alloc] init];
     
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    [self retrieveHashtagsForUser];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
+ #pragma mark - Get / Format Logged In Users Tags
 
-#pragma mark - Table view data source
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-#warning Potentially incomplete method implementation.
-    // Return the number of sections.
-    return 0;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-#warning Incomplete method implementation.
-    // Return the number of rows in the section.
-    return 0;
-}
-
-/*
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
+- (void)retrieveHashtagsForUser
+{
     
-    // Configure the cell...
+    VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    {
+        [self reconcileUserHashtags:resultObjects];
+    };
+    
+    VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
+    {
+        VLog(@"%@\n%@", operation, error);
+        
+    };
+    
+    [[VObjectManager sharedManager] getHashtagsSubscribedToForPage:1
+                                                  withPerPageCount:100
+                                                  withSuccessBlock:successBlock
+                                                     withFailBlock:failureBlock];
+}
+
+- (void)reconcileUserHashtags:(NSArray *)hashtags
+{
+    VUser *mainUser = [[VObjectManager sharedManager] mainUser];
+    
+    for (VUserHashtag *ht in hashtags)
+    {
+        NSString *tag = ht.tag;
+        
+        [mainUser addHashtagsObject:ht];
+        [self.userTags addObject:tag];
+    }
+    [mainUser.managedObjectContext saveToPersistentStore:nil];
+    
+    [self.tableView reloadData];
+}
+
+#pragma mark - UI setup
+
+- (void)configureTableView
+{
+    [self.tableView registerNib:[UINib nibWithNibName:kVFollowingTagIdentifier bundle:nil] forCellReuseIdentifier:kVFollowingTagIdentifier];
+    [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+    
+    [VNoContentTableViewCell registerNibWithTableView:self.tableView];
+}
+
+#pragma mark - UITableViewDataSource Methods
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return [self.userTags count];
+}
+
+#pragma mark - UITableViewDelegate Methods
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 15.0f;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return [VTrendingTagCell cellHeight];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = nil;
+    
+    if ([self.userTags count] > 0)
+    {
+        VTrendingTagCell *customCell = (VTrendingTagCell *)[tableView dequeueReusableCellWithIdentifier:kVFollowingTagIdentifier forIndexPath:indexPath];
+        NSString *hashtag = self.userTags[ indexPath.row ];
+        [customCell setHashtag:hashtag];
+        
+        customCell.subscribeToTagAction = ^(void)
+        {
+            // Check if already subscribed to hashtag then subscribe or unsubscribe accordingly
+            if ([self userSubscribedToHashtag:hashtag])
+            {
+                [self unsubscribeFromHashtagAction:hashtag];
+            }
+            else
+            {
+                [self subscribeToHashtagAction:hashtag];
+            }
+            
+        };
+        cell = customCell;
+    }
+    else
+    {
+        VNoContentTableViewCell *defaultCell = [VNoContentTableViewCell createCellFromTableView:tableView];
+        defaultCell.message = NSLocalizedString( @"NoFollowingHashtagsMessage", @"");
+        cell = defaultCell;
+    }
     
     return cell;
 }
-*/
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+        // Show hashtag stream
+        NSString *hashtag = self.userTags[ indexPath.row ];
+        [self showStreamWithHashtag:hashtag];
 }
-*/
 
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
+#pragma mark - VStreamCollectionViewController List of Tags
+
+- (void)showStreamWithHashtag:(NSString *)hashtag
+{
+    VStreamCollectionViewController *stream = [VStreamCollectionViewController hashtagStreamWithHashtag:hashtag];
+    [self.navigationController pushViewController:stream animated:YES];
+    
 }
-*/
 
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
+#pragma mark - Subscribe / Unsubscribe Actions
+
+- (BOOL)userSubscribedToHashtag:(NSString *)tag
+{
+    return [self.userTags containsObject:tag];
 }
-*/
 
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
+- (void)subscribeToHashtagAction:(NSString *)hashtag
+{
+    VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    {
+        // Add tag to user tags object
+        [self.userTags addObject:hashtag];
+        
+        
+        // Add hashtag to logged in user object
+        NSManagedObjectContext *moc = [VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext;
+        VUserHashtag *userHashtag = [NSEntityDescription insertNewObjectForEntityForName:[VUserHashtag entityName] inManagedObjectContext:moc];
+        userHashtag.tag = hashtag;
+        
+        VUser *mainUser = [[VObjectManager sharedManager] mainUser];
+        [mainUser addHashtagsObject:userHashtag];
+        [moc saveToPersistentStore:nil];
+        
+        // Animate the subscribe button
+        NSArray *indexPaths = [self.tableView indexPathsForVisibleRows];
+        
+        for (NSIndexPath *idxPath in indexPaths)
+        {
+            VTrendingTagCell *cell = (VTrendingTagCell *)[self.tableView cellForRowAtIndexPath:idxPath];
+            
+            if ([cell.hashtagText isEqualToString:userHashtag.tag])
+            {
+                [cell updateSubscribeStatus];
+                return;
+            }
+        }
+    };
+    
+    VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
+    {
+        self.failureHud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        self.failureHud.mode = MBProgressHUDModeAnnularDeterminate;
+        self.failureHud.labelText = NSLocalizedString(@"HashtagSubscribeError", @"");
+        [self.failureHud hide:YES afterDelay:0.3f];
+    };
+    
+    // Backend Subscribe to Hashtag
+    [[VObjectManager sharedManager] subscribeToHashtag:hashtag
+                                          successBlock:successBlock
+                                             failBlock:failureBlock];
 }
-*/
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (void)unsubscribeFromHashtagAction:(NSString *)hashtag
+{
+    VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    {
+        VLog(@"Success following hashtag UNSUBSCRIBE");
+        
+        // Remove tag to user tags object
+        [self.userTags removeObject:hashtag];
+        
+        
+        NSManagedObjectContext *moc = [VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext;
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+        [fetchRequest setEntity:[NSEntityDescription entityForName:[VUserHashtag entityName] inManagedObjectContext:moc]];
+        [fetchRequest setIncludesPropertyValues:NO]; //only fetch the managedObjectID
+        
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"tag = %@", hashtag];
+        [fetchRequest setPredicate:predicate];
+        
+        NSArray *results = [moc executeFetchRequest:fetchRequest error:nil];
+        
+        VUserHashtag *userHashtag = (VUserHashtag *)[results firstObject];
+        [moc deleteObject:userHashtag];
+        
+        VUser *mainUser = [[VObjectManager sharedManager] mainUser];
+        [mainUser removeHashtagsObject:userHashtag];
+        [moc saveToPersistentStore:nil];
+        
+        // Animate the subscribe button
+        NSArray *indexPaths = [self.tableView indexPathsForVisibleRows];
+        
+        for (NSIndexPath *idxPath in indexPaths)
+        {
+            VTrendingTagCell *cell = (VTrendingTagCell *)[self.tableView cellForRowAtIndexPath:idxPath];
+            
+            if ([cell.hashtagText isEqualToString:hashtag])
+            {
+                [cell updateSubscribeStatus];
+                return;
+            }
+        }
+    };
+    
+    VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
+    {
+        self.failureHud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        self.failureHud.mode = MBProgressHUDModeAnnularDeterminate;
+        self.failureHud.labelText = NSLocalizedString(@"HashtagUnsubscribeError", @"");
+        [self.failureHud hide:YES afterDelay:0.3f];
+    };
+    
+    // Backend Unsubscribe to Hashtag call
+    [[VObjectManager sharedManager] unsubscribeToHashtag:hashtag
+                                            successBlock:successBlock
+                                               failBlock:failureBlock];
 }
-*/
 
 @end
