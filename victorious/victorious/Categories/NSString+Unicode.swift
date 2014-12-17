@@ -11,7 +11,7 @@ import Foundation
 public extension NSString {
     
     @objc public var lengthWithUnicode: Int {
-        return countElements( (self as String) )
+        return countElements( self as String )
     }
     
 }
