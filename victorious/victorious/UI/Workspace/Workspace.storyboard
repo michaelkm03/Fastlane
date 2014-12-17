@@ -9,6 +9,7 @@
     <customFonts key="customFonts">
         <mutableArray key="Impact.ttf">
             <string>Impact</string>
+            <string>Impact</string>
         </mutableArray>
     </customFonts>
     <scenes>
@@ -20,10 +21,14 @@
                         <viewControllerLayoutGuide type="top" id="9wC-ZN-KU8"/>
                         <viewControllerLayoutGuide type="bottom" id="jpg-hF-EPF"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="i4i-d2-DXm">
+                    <view key="view" clipsSubviews="YES" contentMode="scaleToFill" id="i4i-d2-DXm">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="rB7-pY-luZ" userLabel="Blurred Image Background">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </imageView>
                             <view contentMode="scaleToFill" horizontalHuggingPriority="249" verticalHuggingPriority="249" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="8c5-o3-ehb" userLabel="Canvas Container" customClass="VCanvasView">
                                 <rect key="frame" x="140" y="44" width="320" height="320"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -32,13 +37,14 @@
                                     <constraint firstAttribute="width" secondItem="8c5-o3-ehb" secondAttribute="height" multiplier="1:1" id="O18-Ux-5Zy"/>
                                 </constraints>
                             </view>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" barStyle="black" translatesAutoresizingMaskIntoConstraints="NO" id="uLJ-ZJ-TSs" userLabel="Top Toolbar">
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uLJ-ZJ-TSs" userLabel="Top Toolbar">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="u6w-gn-U2Y"/>
                                 </constraints>
                                 <items>
-                                    <barButtonItem title="Close" id="by5-os-pzS">
+                                    <barButtonItem image="cameraButtonBack" id="by5-os-pzS">
                                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <action selector="close:" destination="63Q-Vo-LWD" id="6Lb-w0-Gu9"/>
@@ -47,41 +53,48 @@
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="9tq-gs-IN4">
                                         <color key="tintColor" red="0.5" green="0.0" blue="0.5" alpha="1" colorSpace="calibratedRGB"/>
                                     </barButtonItem>
-                                    <barButtonItem title="Publish" id="wbF-Jm-Fnh">
+                                    <barButtonItem image="checkIcon" id="wbF-Jm-Fnh">
                                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <action selector="publish:" destination="63Q-Vo-LWD" id="1Q5-i3-8b5"/>
                                         </connections>
                                     </barButtonItem>
                                 </items>
-                                <color key="barTintColor" red="0.19607843137254902" green="0.19607843137254902" blue="0.19607843137254902" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="barTintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </toolbar>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" barStyle="black" translatesAutoresizingMaskIntoConstraints="NO" id="tla-hc-Ct5" userLabel="Bottom Toolbar">
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tla-hc-Ct5" userLabel="Bottom Toolbar">
                                 <rect key="frame" x="0.0" y="556" width="600" height="44"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <items/>
-                                <color key="barTintColor" red="0.19607843137254902" green="0.19607843137254902" blue="0.19607843137254902" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="barTintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </toolbar>
                         </subviews>
                         <color key="backgroundColor" red="0.1176470588" green="0.1176470588" blue="0.1176470588" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="uLJ-ZJ-TSs" secondAttribute="trailing" constant="-16" id="7Ye-Dk-Lgz"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="tla-hc-Ct5" secondAttribute="trailing" constant="-16" id="9HD-AO-jIy"/>
+                            <constraint firstAttribute="trailing" secondItem="uLJ-ZJ-TSs" secondAttribute="trailing" id="7Ye-Dk-Lgz"/>
+                            <constraint firstAttribute="trailing" secondItem="tla-hc-Ct5" secondAttribute="trailing" id="9HD-AO-jIy"/>
+                            <constraint firstAttribute="trailing" secondItem="rB7-pY-luZ" secondAttribute="trailing" id="AHv-Vk-wIg"/>
                             <constraint firstItem="8c5-o3-ehb" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="i4i-d2-DXm" secondAttribute="leading" id="IrH-KS-hgs"/>
                             <constraint firstItem="8c5-o3-ehb" firstAttribute="top" secondItem="9wC-ZN-KU8" secondAttribute="bottom" constant="44" id="Uz7-kB-w8t"/>
                             <constraint firstItem="uLJ-ZJ-TSs" firstAttribute="top" secondItem="9wC-ZN-KU8" secondAttribute="bottom" id="Wch-on-DA4"/>
-                            <constraint firstItem="uLJ-ZJ-TSs" firstAttribute="leading" secondItem="i4i-d2-DXm" secondAttribute="leadingMargin" constant="-16" id="dhy-kg-bS3"/>
+                            <constraint firstItem="rB7-pY-luZ" firstAttribute="leading" secondItem="i4i-d2-DXm" secondAttribute="leading" id="bTn-W9-qxk"/>
+                            <constraint firstItem="uLJ-ZJ-TSs" firstAttribute="leading" secondItem="i4i-d2-DXm" secondAttribute="leading" id="dhy-kg-bS3"/>
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="8c5-o3-ehb" secondAttribute="trailing" id="mnj-S4-eXt"/>
-                            <constraint firstItem="tla-hc-Ct5" firstAttribute="leading" secondItem="i4i-d2-DXm" secondAttribute="leadingMargin" constant="-16" id="pdG-8B-6bD"/>
+                            <constraint firstItem="tla-hc-Ct5" firstAttribute="leading" secondItem="i4i-d2-DXm" secondAttribute="leading" id="pdG-8B-6bD"/>
                             <constraint firstItem="jpg-hF-EPF" firstAttribute="top" secondItem="tla-hc-Ct5" secondAttribute="bottom" id="pnB-hJ-LMB"/>
+                            <constraint firstItem="rB7-pY-luZ" firstAttribute="top" secondItem="9wC-ZN-KU8" secondAttribute="bottom" id="t5H-Iv-3np"/>
                             <constraint firstItem="jpg-hF-EPF" firstAttribute="top" relation="greaterThanOrEqual" secondItem="8c5-o3-ehb" secondAttribute="bottom" constant="44" id="vtj-8b-Y1E"/>
                             <constraint firstAttribute="centerX" secondItem="8c5-o3-ehb" secondAttribute="centerX" id="wKX-j8-99B"/>
+                            <constraint firstItem="jpg-hF-EPF" firstAttribute="top" secondItem="rB7-pY-luZ" secondAttribute="bottom" id="wke-BM-e98"/>
                         </constraints>
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
                     <connections>
+                        <outlet property="blurredBackgroundImageVIew" destination="rB7-pY-luZ" id="6iI-Qb-xYm"/>
                         <outlet property="bottomToolbar" destination="tla-hc-Ct5" id="QiO-Fi-Arc"/>
                         <outlet property="canvasView" destination="8c5-o3-ehb" id="DSZ-xC-dlK"/>
                         <outlet property="topToolbar" destination="uLJ-ZJ-TSs" id="VtT-RG-Hlb"/>
+                        <outlet property="verticalSpaceCanvasToTopOfContainerConstraint" destination="Uz7-kB-w8t" id="Yca-9A-jZ7"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="29c-Qz-2Z5" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -141,10 +154,10 @@
             </objects>
             <point key="canvasLocation" x="-121" y="343"/>
         </scene>
-        <!--Meme Workspace Tool View Controller-->
+        <!--Text Tool View Controller-->
         <scene sceneID="ooc-1r-Tci">
             <objects>
-                <viewController storyboardIdentifier="VMemeWorkspaceToolViewController" id="iqf-u2-nzW" customClass="VMemeWorkspaceToolViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="VTextToolViewController" id="iqf-u2-nzW" customClass="VTextToolViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="aU6-N8-wDk"/>
                         <viewControllerLayoutGuide type="bottom" id="q6N-GL-x5c"/>
@@ -153,8 +166,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="THIS IS A MEME" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="UrN-l4-5TC">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" placeholderIntrinsicWidth="215.5" placeholderIntrinsicHeight="53" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="UrN-l4-5TC" userLabel="TextToolTextView">
+                                <rect key="frame" x="193" y="527" width="216" height="53"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" name="Impact" family="Impact" pointSize="30"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done"/>
@@ -162,36 +175,37 @@
                                     <outlet property="delegate" destination="iqf-u2-nzW" id="RIQ-Ax-PDs"/>
                                 </connections>
                             </textView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Meme Placeholder" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o0A-GO-zXb">
-                                <rect key="frame" x="36" y="560" width="528" height="20"/>
-                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" placeholderIntrinsicWidth="215.5" placeholderIntrinsicHeight="53" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" editable="NO" text="Placeholder Text" textAlignment="center" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xHi-vX-94s" userLabel="PlaceholderTextView">
+                                <rect key="frame" x="192" y="527" width="216" height="53"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" name="Impact" family="Impact" pointSize="30"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done"/>
+                            </textView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="o0A-GO-zXb" firstAttribute="leading" secondItem="mWt-oo-Tjc" secondAttribute="leadingMargin" constant="20" id="8VY-QU-2IR"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="o0A-GO-zXb" secondAttribute="trailing" constant="20" id="RiH-Y6-lUU"/>
-                            <constraint firstItem="q6N-GL-x5c" firstAttribute="top" secondItem="o0A-GO-zXb" secondAttribute="bottom" constant="20" id="SMk-yk-T5Z"/>
-                            <constraint firstItem="q6N-GL-x5c" firstAttribute="top" secondItem="UrN-l4-5TC" secondAttribute="bottom" id="bNC-4t-0Lv"/>
-                            <constraint firstItem="UrN-l4-5TC" firstAttribute="leading" secondItem="mWt-oo-Tjc" secondAttribute="leading" id="eAy-N6-z8B"/>
-                            <constraint firstAttribute="trailing" secondItem="UrN-l4-5TC" secondAttribute="trailing" id="q68-N9-pqU"/>
-                            <constraint firstItem="UrN-l4-5TC" firstAttribute="top" secondItem="aU6-N8-wDk" secondAttribute="bottom" id="xyl-sZ-YaO"/>
+                            <constraint firstItem="q6N-GL-x5c" firstAttribute="top" secondItem="xHi-vX-94s" secondAttribute="bottom" constant="20" placeholder="YES" id="82B-ke-jYK"/>
+                            <constraint firstAttribute="centerX" secondItem="UrN-l4-5TC" secondAttribute="centerX" constant="-1" placeholder="YES" id="8ic-wb-deT"/>
+                            <constraint firstAttribute="centerX" secondItem="xHi-vX-94s" secondAttribute="centerX" placeholder="YES" id="GDM-Fd-Vts"/>
+                            <constraint firstItem="q6N-GL-x5c" firstAttribute="top" secondItem="UrN-l4-5TC" secondAttribute="bottom" constant="20" placeholder="YES" id="pKK-II-Kzo"/>
                         </constraints>
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
                     <connections>
-                        <outlet property="memeTextView" destination="UrN-l4-5TC" id="PCd-bu-gUT"/>
+                        <outlet property="placeholderTextView" destination="xHi-vX-94s" id="OAn-vn-Wjb"/>
+                        <outlet property="textView" destination="UrN-l4-5TC" id="ikY-jo-pBI"/>
+                        <outletCollection property="textViews" destination="UrN-l4-5TC" id="eHj-TN-y5e"/>
+                        <outletCollection property="textViews" destination="xHi-vX-94s" id="vi6-9d-J1H"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aSE-Jk-rdh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="550" y="-336"/>
         </scene>
-        <!--Crop Workspace Tool View Controller-->
+        <!--Crop Tool View Controller-->
         <scene sceneID="3yx-bR-QwV">
             <objects>
-                <viewController storyboardIdentifier="VCropWorkspaceToolViewController" id="68P-kQ-eWn" customClass="VCropWorkspaceToolViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="VCropToolViewController" id="68P-kQ-eWn" customClass="VCropToolViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="k23-nw-3wG"/>
                         <viewControllerLayoutGuide type="bottom" id="ZAx-4g-MB6"/>
@@ -240,4 +254,8 @@
             <point key="canvasLocation" x="550" y="343"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="cameraButtonBack" width="22" height="17"/>
+        <image name="checkIcon" width="32" height="22"/>
+    </resources>
 </document>

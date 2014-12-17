@@ -33,10 +33,24 @@ static NSString * const kInitialKey = @"initial";
 static NSString * const kStreamUrlPathKey = @"streamUrlPath";
 static NSString * const kUserSpecificKey = @"isUserSpecific";
 
+static NSString * const kRedKey = @"red";
+static NSString * const kGreenKey = @"green";
+static NSString * const kBlueKey = @"blue";
+static NSString * const kAlphaKey = @"alpha";
+
 // Workspace properties
 static NSString * const kToolsKey = @"tools";
 static NSString * const kPickerKey = @"picker";
 static NSString * const kFilterIndexKey = @"filterIndex";
+
+// Text properties
+static NSString * const kFontNameKey = @"fontName";
+static NSString * const kFontSizeKey = @"fontSize";
+static NSString * const kTextHorizontalAlignmentKey = @"horizontalAlignment";
+static NSString * const kTextVerticalAlignmentKey = @"verticalAlignment";
+static NSString * const kTextStrokeColorKey = @"strokeColor";
+static NSString * const kTextStrokeWidthKey = @"strokeWidth";
+static NSString * const kTextPlaceholderTextKey = @"placeholderText";
 
 @interface VTemplateGenerator ()
 
@@ -101,13 +115,59 @@ static NSString * const kFilterIndexKey = @"filterIndex";
                          kToolsKey:
                              @[
                                  @{
-                                     kClassNameKey: @"meme.tool",
+                                     kClassNameKey: @"textType.tool",
                                      kTitleKey: @"meme",
+                                     kTextHorizontalAlignmentKey: @"center",
+                                     kTextVerticalAlignmentKey: @"bottom",
+                                     kTextPlaceholderTextKey: @"create a meme",
+                                     VDependencyManagerParagraphFontKey:
+                                         @{
+                                             kFontNameKey: @"Impact",
+                                             kFontSizeKey: @50,
+                                             },
+                                     VDependencyManagerMainTextColorKey:
+                                         @{
+                                             kRedKey: @255,
+                                             kGreenKey: @255,
+                                             kBlueKey: @255,
+                                             kAlphaKey: @1.0f,
+                                         },
+                                     kTextStrokeColorKey:
+                                         @{
+                                             kRedKey: @0,
+                                             kGreenKey: @0,
+                                             kBlueKey: @0,
+                                             kAlphaKey: @1.0f,
+                                             },
+                                     kTextStrokeWidthKey: @-5.0f,
                                      },
                                  @{
-                                     kClassNameKey: @"quote.tool",
+                                     kClassNameKey: @"textType.tool",
                                      kTitleKey: @"quote",
-                                     }
+                                     kTextHorizontalAlignmentKey: @"center",
+                                     kTextVerticalAlignmentKey: @"center",
+                                     kTextPlaceholderTextKey: @"share a secret",
+                                     VDependencyManagerParagraphFontKey:
+                                         @{
+                                             kFontNameKey: @"PTSans-Narrow",
+                                             kFontSizeKey: @23,
+                                             },
+                                     VDependencyManagerMainTextColorKey:
+                                         @{
+                                             kRedKey: @255,
+                                             kGreenKey: @255,
+                                             kBlueKey: @255,
+                                             kAlphaKey: @1.0f,
+                                             },
+                                     kTextStrokeColorKey:
+                                         @{
+                                             kRedKey: @255,
+                                             kGreenKey: @255,
+                                             kBlueKey: @255,
+                                             kAlphaKey: @1.0f,
+                                             },
+                                     kTextStrokeWidthKey: @0.0f,
+                                     },
                                  ]
                          },
                      @{

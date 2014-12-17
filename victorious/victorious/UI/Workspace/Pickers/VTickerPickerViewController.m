@@ -8,11 +8,13 @@
 
 #import "VTickerPickerViewController.h"
 #import "VBasicToolPickerCell.h"
+#import "VDependencyManager.h"
 
 @interface VTickerPickerViewController () <UICollectionViewDelegateFlowLayout>
 
 @property (nonatomic, strong) UIView *selectionIndicatorView;
 @property (nonatomic, copy) NSArray *tools;
+@property (nonatomic, strong) UIColor *accentColor;
 
 @end
 
@@ -26,7 +28,16 @@
                                                                   bundle:nil];
     VTickerPickerViewController *toolPicker = [workspaceStoryboard instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
     toolPicker.clearsSelectionOnViewWillAppear = NO;
+    toolPicker.accentColor = [dependencyManager colorForKey:VDependencyManagerAccentColorKey];
     return toolPicker;
+}
+
+#pragma mark - NSObject
+
+- (void)dealloc
+{
+    self.collectionView.delegate = nil;
+    self.collectionView.dataSource = nil;
 }
 
 #pragma mark - UIViewController
@@ -41,7 +52,7 @@
     self.selectionIndicatorView =
     ({
         UIView *selectionView = [[UIView alloc] initWithFrame:[self selectionFrame]];
-        selectionView.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.5f];
+        selectionView.backgroundColor = [self.accentColor colorWithAlphaComponent:0.5f];
         [self.collectionView addSubview:selectionView];
         selectionView;
     });

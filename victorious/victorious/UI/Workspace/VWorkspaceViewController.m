@@ -14,6 +14,7 @@
 // Views
 #import "VCanvasView.h"
 #import <MBProgressHUD/MBProgressHUD.h>
+#import "UIImageView+Blurring.h"
 
 // Protocols
 #import "VWorkspaceTool.h"
@@ -25,17 +26,19 @@
 // Publishing
 #import "VObjectManager+ContentCreation.h"
 
-
 static const CGFloat kJPEGCompressionQuality    = 0.8f;
-static NSString * const kMediaExtensionJPG       = @"jpg";
 
 @interface VWorkspaceViewController ()
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) NSArray *tools;
-@property (weak, nonatomic) IBOutlet UIToolbar *topToolbar;
+
+@property (nonatomic, weak) IBOutlet UIToolbar *topToolbar;
 @property (nonatomic, weak) IBOutlet UIToolbar *bottomToolbar;
-@property (weak, nonatomic) IBOutlet VCanvasView *canvasView;
+@property (nonatomic, weak) IBOutlet VCanvasView *canvasView;
+@property (nonatomic, weak) IBOutlet UIImageView *blurredBackgroundImageVIew;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *verticalSpaceCanvasToTopOfContainerConstraint;
+@property (nonatomic, strong) NSMutableArray *inspectorConstraints;
 
 @property (nonatomic, strong) id <VWorkspaceTool> selectedTool;
 @property (nonatomic, strong) UIViewController *canvasToolViewController;
@@ -58,7 +61,7 @@ static NSString * const kMediaExtensionJPG       = @"jpg";
 
 - (void)dealloc
 {
-    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - UIViewController
@@ -84,24 +87,65 @@ static NSString * const kMediaExtensionJPG       = @"jpg";
 {
     [super viewDidLoad];
     
+    [self.blurredBackgroundImageVIew setBlurredImageWithClearImage:self.previewImage
+                                                  placeholderImage:nil
+                                                         tintColor:[[UIColor blackColor] colorWithAlphaComponent:0.5f]];
+    
     NSMutableArray *toolBarItems = [[NSMutableArray alloc] init];
     [toolBarItems addObject:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil]];
     
     [self.tools enumerateObjectsUsingBlock:^(id <VWorkspaceTool> tool, NSUInteger idx, BOOL *stop)
     {
-        UIBarButtonItem *itemForTool = [[UIBarButtonItem alloc] initWithTitle:tool.title
-                                                                        style:UIBarButtonItemStylePlain
-                                                                       target:self
-                                                                       action:@selector(selectedBarButtonItem:)];
+        UIBarButtonItem *itemForTool;
+        if (![tool respondsToSelector:@selector(icon)])
+        {
+            itemForTool = [[UIBarButtonItem alloc] initWithTitle:tool.title
+                                                           style:UIBarButtonItemStylePlain
+                                                          target:self
+                                                          action:@selector(selectedBarButtonItem:)];
+        }
+        else if ([tool icon] != nil)
+        {
+            itemForTool = [[UIBarButtonItem alloc] initWithImage:[tool icon]
+                                                           style:UIBarButtonItemStylePlain
+                                                          target:self
+                                                          action:@selector(selectedBarButtonItem:)];
+        }
+        else
+        {
+            itemForTool = [[UIBarButtonItem alloc] initWithTitle:tool.title
+                                                           style:UIBarButtonItemStylePlain
+                                                          target:self
+                                                          action:@selector(selectedBarButtonItem:)];
+        }
+        
         itemForTool.tintColor = [UIColor whiteColor];
         [toolBarItems addObject:itemForTool];
         itemForTool.tag = idx;
+        
+        if (tool != self.tools.lastObject)
+        {
+            UIBarButtonItem *fixedSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
+                                                                                        target:nil
+                                                                                        action:nil];
+            fixedSpace.width = 20.0f;
+            [toolBarItems addObject:fixedSpace];
+        }
     }];
     
     [toolBarItems addObject:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil]];
     self.bottomToolbar.items = toolBarItems;
     
     self.canvasView.sourceImage = self.previewImage;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
 }
 
 #pragma mark - Target/Action
@@ -127,14 +171,14 @@ static NSString * const kMediaExtensionJPG       = @"jpg";
         NSURL *originalMediaURL = self.mediaURL;
         NSData *filteredImageData = UIImageJPEGRepresentation(renderedImage, kJPEGCompressionQuality);
         NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
-        NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:kMediaExtensionJPG];
+        NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:VConstantMediaExtensionJPG];
         if ([filteredImageData writeToURL:tempFile atomically:NO])
         {
             self.mediaURL = tempFile;
             [[NSFileManager defaultManager] removeItemAtURL:originalMediaURL error:nil];
         }
         
-        [[VObjectManager sharedManager] uploadMediaWithName:@"workspace"
+        [[VObjectManager sharedManager] uploadMediaWithName:[[NSUUID UUID] UUIDString]
                                                 description:nil
                                                previewImage:renderedImage
                                                 captionType:VCaptionTypeQuote
@@ -216,11 +260,81 @@ static NSString * const kMediaExtensionJPG       = @"jpg";
    _selectedTool = selectedTool;
 }
 
+#pragma mark - Notification Handlers
+
+- (void)keyboardWillShow:(NSNotification *)notification
+{
+    NSDictionary *userInfo = notification.userInfo;
+    
+    NSValue *endFrameValue = userInfo[UIKeyboardFrameEndUserInfoKey];
+    CGRect keyboardEndFrame = [self.view convertRect:endFrameValue.CGRectValue fromView:nil];
+    
+    CGRect overlap = CGRectIntersection(self.canvasView.frame, keyboardEndFrame);
+    
+    NSNumber *durationValue = userInfo[UIKeyboardAnimationDurationUserInfoKey];
+    NSTimeInterval animationDuration = durationValue.doubleValue;
+    
+    NSNumber *curveValue = userInfo[UIKeyboardAnimationCurveUserInfoKey];
+    UIViewAnimationCurve animationCurve = curveValue.intValue;
+    
+    // We don't want the inspector to move here
+    CGRect inspectorFrame = self.inspectorToolViewController.view.frame;
+    [self.inspectorConstraints enumerateObjectsUsingBlock:^(NSLayoutConstraint *constraint, NSUInteger idx, BOOL *stop)
+    {
+        [self.view removeConstraint:constraint];
+    }];
+    
+    void (^animations)() = ^()
+    {
+        self.verticalSpaceCanvasToTopOfContainerConstraint.constant = -CGRectGetHeight(overlap) + CGRectGetHeight(self.topToolbar.frame);
+        self.inspectorToolViewController.view.translatesAutoresizingMaskIntoConstraints = YES;
+        self.inspectorToolViewController.view.frame = inspectorFrame;
+        [self.view layoutIfNeeded];
+    };
+    
+    [UIView animateWithDuration:animationDuration
+                          delay:0.0
+                        options:(animationCurve << 16)
+                     animations:animations
+                     completion:nil];
+}
+
+- (void)keyboardWillHide:(NSNotification *)notification
+{
+    NSDictionary *userInfo = notification.userInfo;
+    
+    NSNumber *durationValue = userInfo[UIKeyboardAnimationDurationUserInfoKey];
+    NSTimeInterval animationDuration = durationValue.doubleValue;
+    
+    NSNumber *curveValue = userInfo[UIKeyboardAnimationCurveUserInfoKey];
+    UIViewAnimationCurve animationCurve = curveValue.intValue;
+    
+    // Undo what we did in keyboardWillShow:
+    self.inspectorToolViewController.view.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.inspectorConstraints enumerateObjectsUsingBlock:^(NSLayoutConstraint *constraint, NSUInteger idx, BOOL *stop)
+     {
+         [self.view addConstraint:constraint];
+     }];
+    
+    void (^animations)() = ^()
+    {
+        self.verticalSpaceCanvasToTopOfContainerConstraint.constant = CGRectGetHeight(self.topToolbar.frame);
+        [self.view layoutIfNeeded];
+    };
+    
+    [UIView animateWithDuration:animationDuration
+                          delay:0.0
+                        options:(animationCurve << 16)
+                     animations:animations
+                     completion:nil];
+}
+
 #pragma mark - Private Methods
 
 - (UIImage *)renderedImageForCurrentState
 {
-    CIContext *renderingContext = [CIContext contextWithOptions:@{kCIContextUseSoftwareRenderer:@YES}];
+    CIContext *renderingContext = [CIContext contextWithOptions:@{}];
+    
     __block CIImage *filteredImage = [CIImage v_imageWithUImage:self.canvasView.sourceImage];
     
     NSArray *filterOrderTools = [self.tools sortedArrayUsingComparator:^NSComparisonResult(id <VWorkspaceTool> tool1, id <VWorkspaceTool> tool2)
@@ -253,7 +367,7 @@ static NSString * const kMediaExtensionJPG       = @"jpg";
     [self.bottomToolbar.items enumerateObjectsUsingBlock:^(UIBarButtonItem *item, NSUInteger idx, BOOL *stop) {
         item.tintColor = [UIColor whiteColor];
     }];
-    itemToSelect.tintColor = [UIColor magentaColor];
+    itemToSelect.tintColor = [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
 }
 
 - (id <VWorkspaceTool>)toolForTag:(NSInteger)tag
@@ -345,16 +459,19 @@ static NSString * const kMediaExtensionJPG       = @"jpg";
 - (void)positionToolViewControllerOnInspector:(UIViewController *)toolViewController
 {
     toolViewController.view.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[picker]|"
-                                                                      options:kNilOptions
-                                                                      metrics:nil
-                                                                        views:@{@"picker":toolViewController.view}]];
+    self.inspectorConstraints = [[NSMutableArray alloc] init];
+    [self.inspectorConstraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"|[picker]|"
+                                                                                           options:kNilOptions
+                                                                                           metrics:nil
+                                                                                             views:@{@"picker":toolViewController.view}]];
+    
     NSDictionary *verticalMetrics = @{@"toolbarHeight":@(CGRectGetHeight(self.bottomToolbar.bounds))};
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[canvas][picker]-toolbarHeight-|"
-                                                                      options:kNilOptions
-                                                                      metrics:verticalMetrics
-                                                                        views:@{@"picker":toolViewController.view,
-                                                                                @"canvas":self.canvasView}]];
+    [self.inspectorConstraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[canvas][picker]-toolbarHeight-|"
+                                                                                           options:kNilOptions
+                                                                                           metrics:verticalMetrics
+                                                                                             views:@{@"picker":toolViewController.view,
+                                                                                                     @"canvas":self.canvasView}]];
+    [self.view addConstraints:self.inspectorConstraints];
 }
 
 @end

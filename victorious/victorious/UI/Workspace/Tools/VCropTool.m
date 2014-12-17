@@ -1,36 +1,36 @@
 //
-//  VCropWorkspaceTool.m
+//  VCropTool.m
 //  victorious
 //
 //  Created by Michael Sena on 12/3/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VCropWorkspaceTool.h"
+#import "VCropTool.h"
 
 #import "VCanvasView.h"
 
 #import "VDependencyManager.h"
 #import "VDependencyManager+VWorkspaceTool.h"
 
-#import "VCropWorkspaceToolViewController.h"
+#import "VCropToolViewController.h"
 
 static NSString * const kTitleKey = @"title";
 static NSString * const kIconKey = @"icon";
 static NSString * const kFilterIndexKey = @"filterIndex";
 
-@interface VCropWorkspaceTool ()
+@interface VCropTool ()
 
 @property (nonatomic, assign) CGSize assetSize;
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, strong) UIImage *icon;
 @property (nonatomic, strong) NSNumber *filterIndexNumber;
-@property (nonatomic, strong, readwrite) VCropWorkspaceToolViewController *cropViewController;
+@property (nonatomic, strong, readwrite) VCropToolViewController *cropViewController;
 @property (nonatomic, weak) VCanvasView *canvasView;
 
 @end
 
-@implementation VCropWorkspaceTool
+@implementation VCropTool
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
@@ -39,7 +39,8 @@ static NSString * const kFilterIndexKey = @"filterIndex";
     {
         _title = [dependencyManager stringForKey:kTitleKey];
         _filterIndexNumber = [dependencyManager numberForKey:kFilterIndexKey];
-        _cropViewController = [VCropWorkspaceToolViewController cropViewController];
+        _cropViewController = [VCropToolViewController cropViewController];
+        _icon = [UIImage imageNamed:@"cropIcon"];
     }
     return self;
 }
@@ -67,6 +68,12 @@ static NSString * const kFilterIndexKey = @"filterIndex";
 
 - (CIImage *)imageByApplyingToolToInputImage:(CIImage *)inputImage
 {
+    // Bail out if we don't have any operations to do.
+    if (self.cropViewController.croppingScrollView == nil)
+    {
+        return inputImage;
+    }
+    
     // Scale image up
     CIFilter *lanczosScaleFilter = [CIFilter filterWithName:@"CILanczosScaleTransform"];
     [lanczosScaleFilter setValue:inputImage
@@ -91,7 +98,6 @@ static NSString * const kFilterIndexKey = @"filterIndex";
                                                                  -((croppingBounds.size.height / contentSize.height)* zoomedHeight))];
     [cropFilter setValue:cropVector
                   forKey:@"inputRectangle"];
-    
     return [cropFilter outputImage];
 }
 

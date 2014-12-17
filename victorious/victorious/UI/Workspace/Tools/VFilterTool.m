@@ -1,14 +1,14 @@
 //
-//  VFilterWorkspaceTool.m
+//  VFilterTool.m
 //  victorious
 //
 //  Created by Michael Sena on 12/3/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VFilterWorkspaceTool.h"
+#import "VFilterTool.h"
 #import "VToolPicker.h"
-#import "VImageFilter.h"
+#import "VFilterTypeTool.h"
 
 #import "NSArray+VMap.h"
 #import "VCanvasView.h"
@@ -23,17 +23,17 @@ static NSString * const kTitleKey = @"title";
 static NSString * const kPickerKey = @"picker";
 static NSString * const kFilterIndexKey = @"filterIndex";
 
-@interface VFilterWorkspaceTool ()
+@interface VFilterTool ()
 
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, strong) UIImage *icon;
 @property (nonatomic, strong) UIViewController <VToolPicker> *toolPicker;
-@property (nonatomic, strong) VImageFilter *selectedFilter;
+@property (nonatomic, strong) VFilterTypeTool *selectedFilter;
 @property (nonatomic, strong) VCanvasView *canvasView;
 
 @end
 
-@implementation VFilterWorkspaceTool
+@implementation VFilterTool
 
 @synthesize renderIndex = _renderIndex;
 
@@ -47,12 +47,13 @@ static NSString * const kFilterIndexKey = @"filterIndex";
         _title = [dependencyManager stringForKey:kTitleKey];
         _renderIndex = [[dependencyManager numberForKey:kFilterIndexKey] integerValue];
         _toolPicker = (UIViewController<VToolPicker> *)[dependencyManager viewControllerForKey:kPickerKey];
+        _icon = [UIImage imageNamed:@"filterIcon"];
         
         NSURL *filters = [[NSBundle mainBundle] URLForResource:@"filters" withExtension:@"xml"];
         NSArray *rFilters = [VPhotoFilterSerialization filtersFromPlistFile:filters];
         NSArray *filterTools = [rFilters v_map:^id(VPhotoFilter *photoFilter)
         {
-            VImageFilter *imageFilter = [[VImageFilter alloc] init];
+            VFilterTypeTool *imageFilter = [[VFilterTypeTool alloc] init];
             imageFilter.filter = photoFilter;
             return imageFilter;
         }];
@@ -73,7 +74,7 @@ static NSString * const kFilterIndexKey = @"filterIndex";
 
 - (CIImage *)imageByApplyingToolToInputImage:(CIImage *)inputImage
 {
-    return [self.selectedFilter.filter filteredImageWithInputImage:inputImage];
+    return self.selectedFilter ? [self.selectedFilter.filter filteredImageWithInputImage:inputImage] : inputImage;
 }
 
 - (void)setCanvasView:(VCanvasView *)canvasView
@@ -81,7 +82,7 @@ static NSString * const kFilterIndexKey = @"filterIndex";
     _canvasView = canvasView;
     
     __weak typeof(self) welf = self;
-    self.toolPicker.onToolSelection = ^void(VImageFilter <VWorkspaceTool> *selectedTool)
+    self.toolPicker.onToolSelection = ^void(VFilterTypeTool <VWorkspaceTool> *selectedTool)
     {
         welf.canvasView.filter = selectedTool.filter;
         welf.selectedFilter = selectedTool;

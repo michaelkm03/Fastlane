@@ -18,7 +18,7 @@
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSaveGState(context);
     {
-        [[[UIColor blackColor] colorWithAlphaComponent:0.5f] setStroke];
+        [[[UIColor blackColor] colorWithAlphaComponent:0.2f] setStroke];
         
         // First Vertical
         UIBezierPath *firstVertical = [UIBezierPath bezierPath];

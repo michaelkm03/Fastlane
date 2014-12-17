@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VCropWorkspaceToolViewController.h"
+#import "VCropToolViewController.h"
 
-@interface VCropWorkspaceToolViewController () <UIScrollViewDelegate>
+@interface VCropToolViewController () <UIScrollViewDelegate>
 
 @property (nonatomic, weak, readwrite) IBOutlet UIScrollView *croppingScrollView;
 
@@ -16,17 +16,26 @@
 
 @property (nonatomic, assign) BOOL hasLayedOutScrollView;
 
+@property (nonatomic, assign) CGFloat lastRotation;
+
 @end
 
-@implementation VCropWorkspaceToolViewController
+@implementation VCropToolViewController
 
 + (instancetype)cropViewController
 {
     UIStoryboard *workspaceStoryboard = [UIStoryboard storyboardWithName:@"Workspace"
                                                                   bundle:nil];
-    VCropWorkspaceToolViewController *cropTool = [workspaceStoryboard instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
+    VCropToolViewController *cropTool = [workspaceStoryboard instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
 
     return cropTool;
+}
+
+#pragma mark - NSObject
+
+- (void)dealloc
+{
+    self.croppingScrollView.delegate = nil;
 }
 
 #pragma mark - UIViewController
