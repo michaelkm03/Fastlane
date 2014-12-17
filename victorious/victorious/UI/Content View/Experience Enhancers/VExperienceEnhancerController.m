@@ -240,7 +240,7 @@
 
 - (void)experienceEnhancerSelected:(VExperienceEnhancer *)enhancer
 {
-    float currentVideoTime = self.delegate.currentVideoTime;
+    Float64 currentVideoTime = self.delegate.currentVideoTime;
     NSDictionary *params = @{ VTrackingKeyVoteCount : @( 1 ),
                               VTrackingKeySequenceId : self.sequence.remoteId,
                               VTrackingKeyTimeCurrent : @( currentVideoTime ),

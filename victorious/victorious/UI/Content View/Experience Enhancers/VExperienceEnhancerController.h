@@ -14,7 +14,7 @@
 
 - (void)experienceEnhancersDidUpdate;
 
-@property (nonatomic, assign, readonly) float currentVideoTime;
+@property (nonatomic, assign, readonly) Float64 currentVideoTime;
 
 @end
 

@@ -587,14 +587,15 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 
 - (void)updateInitialExperienceEnhancerState
 {
-    // Disable the enhancer bar if a video ad will play (it will enable when the ad video stops playing)
-    // This method is designed to be called from 2 or more places during initialization, each time checking
-    // that both the enhancer bar and a video cell are initialized
+   /**
+    When the enhancer bar is initialized and if a video cell is initialized (meaning the asset is a video),
+    set the initial enhancer bar state as disabled.  It will become enabled when the video asset starts playing.
+    This may happen right away if there is no ad, or after any ad is finished playing.
+    */
     VExperienceEnhancerBar *enhancerBar = self.viewModel.experienceEnhancerController.enhancerBar;
     if ( enhancerBar != nil && self.videoCell != nil )
     {
-        BOOL willSequencePlayVideoAd = self.videoCell.viewModel.monetizationPartner != VMonetizationPartnerNone;
-        self.viewModel.experienceEnhancerController.enhancerBar.enabled = willSequencePlayVideoAd;
+        self.viewModel.experienceEnhancerController.enhancerBar.enabled = NO;
     }
 }
 
@@ -733,7 +734,6 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
                 videoCell.speed = self.viewModel.speed;
                 videoCell.loop = self.viewModel.loop;
                 self.videoCell = videoCell;
-                [self updateInitialExperienceEnhancerState];
                 self.contentCell = videoCell;
                 __weak typeof(self) welf = self;
                 [self.videoCell setAnimateAlongsizePlayControlsBlock:^(BOOL playControlsHidden)
@@ -1090,6 +1090,10 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     {
         [self.videoCell play];
         self.hasAutoPlayed = YES;
+        
+        // The enhacer bar starts out disabled by default when a video asset is displayed.
+        // If the video asset is playing, any ad (if there was one) is now over, and the
+        // bar should be enabled.
         self.experienceEnhancerCell.experienceEnhancerBar.enabled = YES;
     }
 }
@@ -1300,11 +1304,11 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     // Do nothing, eventually a nice animation to reveal experience enhancers
 }
 
-- (float)currentVideoTime
+- (Float64)currentVideoTime
 {
     if ( self.videoCell != nil )
     {
-        float seconds = CMTimeGetSeconds( self.videoCell.currentTime );
+        Float64 seconds = CMTimeGetSeconds( self.videoCell.currentTime );
         if ( !isnan( seconds ) )
         {
             return CMTimeGetSeconds( self.videoCell.currentTime );
