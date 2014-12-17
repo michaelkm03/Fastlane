@@ -44,7 +44,6 @@ static NSString * const kPickerKey = @"picker";
 static NSString * const kFilterIndexKey = @"filterIndex";
 
 // Text properties
-static NSString * const kParagraphFontKey = @"font.paragraph";
 static NSString * const kFontNameKey = @"fontName";
 static NSString * const kFontSizeKey = @"fontSize";
 static NSString * const kTextHorizontalAlignmentKey = @"horizontalAlignment";
@@ -121,7 +120,7 @@ static NSString * const kTextPlaceholderTextKey = @"placeholderText";
                                      kTextHorizontalAlignmentKey: @"center",
                                      kTextVerticalAlignmentKey: @"bottom",
                                      kTextPlaceholderTextKey: @"create a meme",
-                                     kParagraphFontKey:
+                                     VDependencyManagerParagraphFontKey:
                                          @{
                                              kFontNameKey: @"Impact",
                                              kFontSizeKey: @50,
@@ -148,7 +147,7 @@ static NSString * const kTextPlaceholderTextKey = @"placeholderText";
                                      kTextHorizontalAlignmentKey: @"center",
                                      kTextVerticalAlignmentKey: @"center",
                                      kTextPlaceholderTextKey: @"share a secret",
-                                     kParagraphFontKey:
+                                     VDependencyManagerParagraphFontKey:
                                          @{
                                              kFontNameKey: @"PTSans-Narrow",
                                              kFontSizeKey: @23,
