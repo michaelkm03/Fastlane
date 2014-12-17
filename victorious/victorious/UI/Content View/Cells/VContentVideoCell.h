@@ -20,7 +20,7 @@
 /**
  *  Informs delegate of play progress. Forwards from an internal VCVideoPlayerViewController
  */
-@protocol VContentVideoCellDelgetate <NSObject>
+@protocol VContentVideoCellDelegate <NSObject>
 
 - (void)videoCell:(VContentVideoCell *)videoCell
     didPlayToTime:(CMTime)time
@@ -44,7 +44,7 @@
 
 @property (nonatomic, strong) VVideoCellViewModel *viewModel;
 
-@property (nonatomic, weak) id <VContentVideoCellDelgetate> delegate;
+@property (nonatomic, weak) id <VContentVideoCellDelegate> delegate;
 
 // KVO off of this to disable any disruptive actions
 @property (nonatomic, readonly) BOOL isPlayingAd;

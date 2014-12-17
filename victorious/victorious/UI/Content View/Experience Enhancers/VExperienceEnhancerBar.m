@@ -69,6 +69,7 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
     layout.minimumInteritemSpacing = 15.0f;
     layout.sectionInset = UIEdgeInsetsMake(0, 10, 0, 10);
     
+    self.enabled = YES;
     [self reloadData];
 }
 
@@ -79,6 +80,15 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
     _dataSource = dataSource;
     
     [self reloadData];
+}
+
+- (void)setEnabled:(BOOL)enabled
+{
+    _enabled = enabled;
+    [self.collectionView.visibleCells enumerateObjectsUsingBlock:^(VExperienceEnhancerCell *cell, NSUInteger idx, BOOL *stop)
+    {
+        cell.enabled = _enabled;
+    }];
 }
 
 #pragma mark - Public Methods
@@ -115,6 +125,7 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
     experienceEnhancerCell.experienceEnhancerTitle = [self.numberFormatter stringForInteger:enhancerForIndexPath.totalVoteCount];
     experienceEnhancerCell.experienceEnhancerIcon = enhancerForIndexPath.iconImage;
     experienceEnhancerCell.isLocked = enhancerForIndexPath.isLocked;
+    experienceEnhancerCell.enabled = self.enabled;
     return experienceEnhancerCell;
 }
 
@@ -136,6 +147,13 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
         return;
     }
     
+    
+    VExperienceEnhancerCell *experienceEnhancerCell = (VExperienceEnhancerCell *)[collectionView cellForItemAtIndexPath:indexPath];
+    if ( !experienceEnhancerCell.enabled )
+    {
+        return;
+    }
+    
     VExperienceEnhancer *enhancerForIndexPath = [self.enhancers objectAtIndex:indexPath.row];
     
     // Check if the user must buy this experience enhancer first
@@ -150,8 +168,8 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
     [enhancerForIndexPath vote];
     
     // Update the cell with the incremenet vote count
-    VExperienceEnhancerCell *experienceEnhancerCell = (VExperienceEnhancerCell *)[collectionView cellForItemAtIndexPath:indexPath];
-    experienceEnhancerCell.experienceEnhancerTitle = [self.numberFormatter stringForInteger:enhancerForIndexPath.totalVoteCount];
+    NSString *totalVoteCountString = [self.numberFormatter stringForInteger:enhancerForIndexPath.totalVoteCount];
+    experienceEnhancerCell.experienceEnhancerTitle = totalVoteCountString;
     
     // Call the selection block (configured in VNewContentViewController) to play the animations
     if (self.selectionBlock)
@@ -160,10 +178,20 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
         CGPoint convertedCenter = [selectedCell.superview convertPoint:selectedCell.center toView:self];
         self.selectionBlock(enhancerForIndexPath, convertedCenter);
     }
+    
+    if ( [self.delegate respondsToSelector:@selector(experienceEnhancerSelected:)] )
+    {
+        [self.delegate experienceEnhancerSelected:enhancerForIndexPath];
+    }
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didHighlightItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    if ( !self.enabled )
+    {
+        return;
+    }
+    
     VExperienceEnhancer *enhancerForIndexPath = [self.enhancers objectAtIndex:indexPath.row];
     if ( enhancerForIndexPath.isLocked  )
     {
@@ -183,6 +211,11 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
 
 - (void)collectionView:(UICollectionView *)collectionView didUnhighlightItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    if ( !self.enabled )
+    {
+        return;
+    }
+    
     VExperienceEnhancer *enhancerForIndexPath = [self.enhancers objectAtIndex:indexPath.row];
     if ( enhancerForIndexPath.isLocked  )
     {
