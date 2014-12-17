@@ -34,7 +34,6 @@
                                   @"status" : VSelectorName(status),
                                   @"following" : VSelectorName(isFollowing),
                                   @"number_of_followers" : VSelectorName(numberOfFollowers),
-                                  //@"hashtags" : VSelectorName(hashtags),
                                   };
 
     RKEntityMapping *mapping = [RKEntityMapping
@@ -50,12 +49,6 @@
     [mapping addConnectionForRelationship:@"messages" connectedBy:@{@"remoteId" : @"senderUserId"}];
     [mapping addConnectionForRelationship:@"hashtags" connectedBy:@{@"remoteId" : @"userId"}];
     
-//    RKRelationshipMapping *hashtagsMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"hashtags"
-//                                                                                          toKeyPath:VSelectorName(hashtags)
-//                                                                                        withMapping:[VUserHashtag entityMapping]];
-//    [mapping addPropertyMapping:hashtagsMapping];
-
-
     return mapping;
 }
 

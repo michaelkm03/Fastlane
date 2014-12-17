@@ -120,7 +120,17 @@ static const CGFloat kForcedAntiAliasingConstant = 0.01f;
     
     [self sendActionsForControlEvents:UIControlEventValueChanged];
     
-    self.imageView.image = _subscribed ? self.unSubscribeImage : self.subscribeImage;
+    if (self.subscribed)
+    {
+        [self.imageView setImage:_unSubscribeImage];
+    }
+    else
+    {
+        UIImage *sImg = [_subscribeImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        self.imageView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+        self.imageView.image = sImg;
+    }
+
 }
 
 #pragma mark - Public Interface

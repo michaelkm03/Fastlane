@@ -85,7 +85,6 @@
     {
         if (fail)
         {
-            VLog(@"%@", error);
             fail(operation, error);
         }
     };
@@ -103,8 +102,6 @@
 {
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        [self removeHashtagFromLocalObjectStore:hashtag];
-        
         if (success)
         {
             success(operation, fullResponse, resultObjects);
@@ -115,30 +112,15 @@
     {
         if (fail)
         {
-            VLog(@"%@", error);
             fail(operation, error);
         }
     };
     
     return [self POST:@"/api/hashtag/unfollow"
               object:nil
-          parameters:@{@"hasthtag": hashtag}
+          parameters:@{@"hashtag": hashtag}
         successBlock:fullSuccess
            failBlock:fullFailure];
-}
-
-- (void)removeHashtagFromLocalObjectStore:(NSString *)tag
-{
-    NSManagedObjectContext *moc = [[VObjectManager sharedManager] managedObjectStore].mainQueueManagedObjectContext;
-    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[VUserHashtag entityName]];
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"tag==%@", tag];
-    NSArray *result = [moc executeFetchRequest:fetchRequest error:nil];
-    
-    if (result)
-    {
-        [moc deleteObject:(VUserHashtag *)result];
-    }
-
 }
 
 @end

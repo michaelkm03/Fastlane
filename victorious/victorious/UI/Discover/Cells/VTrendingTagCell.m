@@ -48,7 +48,6 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
 
 @property (nonatomic, weak) IBOutlet VHashtagLabel *hashTagLabel;
 @property (nonatomic, weak) IBOutlet UIButton *followUnfollowButton;
-@property (nonatomic, strong) NSString *hashtagText;
 
 @end
 
@@ -88,8 +87,18 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
 
 - (BOOL)subscribedToTag
 {
+    BOOL subscription = NO;
     VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-    BOOL subscription = [mainUser.hashtags containsObject:self.hashtagText];
+    
+    for (VUserHashtag *hashtag in mainUser.hashtags)
+    {
+        if ([hashtag.tag isEqualToString:self.hashtagText])
+        {
+            subscription = YES;
+            break;
+        }
+    }
+    
     return subscription;
 }
 

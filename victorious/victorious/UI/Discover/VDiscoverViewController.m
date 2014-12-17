@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import <MBProgressHUD.h>
 #import "VDiscoverViewController.h"
 #import "VSuggestedPeopleCell.h"
 #import "VTrendingTagCell.h"
@@ -19,7 +20,7 @@
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Users.h"
 #import "VUser.h"
-#import "VUserHashtag.h"
+#import "VUserHashtag+RestKit.h"
 #import "VAuthorizationViewControllerFactory.h"
 #import "VConstants.h"
 
@@ -34,6 +35,8 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
 @property (nonatomic, strong) NSArray *trendingTags;
 @property (nonatomic, strong) NSArray *sectionHeaders;
 @property (nonatomic, strong) NSError *error;
+
+@property (nonatomic, weak) MBProgressHUD *failureHud;
 
 @end
 
@@ -144,14 +147,17 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
 - (void)reconcileUserHashtags:(NSArray *)hashtags
          withTrendingHashtags:(NSArray *)trendingTags
 {
+    VUser *mainUser = [[VObjectManager sharedManager] mainUser];
     self.userTags = [[NSMutableArray alloc] init];
     
     for (VUserHashtag *ht in hashtags)
     {
         NSString *tag = ht.tag;
         
+        [mainUser addHashtagsObject:ht];
         [self.userTags addObject:tag];
     }
+    [mainUser.managedObjectContext saveToPersistentStore:nil];
     
     [self.tableView reloadData];
 }
@@ -299,14 +305,15 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
                         
             customCell.subscribeToTagAction = ^(void)
             {
-                // Check if logged in before attempting to follow / unfollow
+                // Check if logged in before attempting to subscribe / unsubscribe
                 if (![VObjectManager sharedManager].authorized)
                 {
                     [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
                     return;
                 }
                 
-                if ([self subscribedToTag:hashtag])
+                // Check if already subscribed to hashtag then subscribe or unsubscribe accordingly
+                if ([self userSubscribedToHashtag:hashtag])
                 {
                     [self unsubscribeToTagAction:hashtag.tag];
                 }
@@ -346,41 +353,117 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
 
 #pragma mark - Subscribe / Unsubscribe Actions
 
-- (BOOL)subscribedToTag:(VHashtag *)tag
+- (BOOL)userSubscribedToHashtag:(VHashtag *)tag
 {
     return [self.userTags containsObject:tag.tag];
 }
 
-- (void)subscribeToTagAction:(NSString *)tag
+- (void)subscribeToTagAction:(NSString *)hashtag
 {
     VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        VLog(@"Success following hashtag SUBSCRIBE");
+        // Add tag to user tags object
+        [self.userTags addObject:hashtag];
+        
+        
+        // Add hashtag to logged in user object
+        NSManagedObjectContext *moc = [VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext;
+        VUserHashtag *userHashtag = [NSEntityDescription insertNewObjectForEntityForName:[VUserHashtag entityName] inManagedObjectContext:moc];
+        userHashtag.tag = hashtag;
+
+        VUser *mainUser = [[VObjectManager sharedManager] mainUser];
+        [mainUser addHashtagsObject:userHashtag];
+        [moc saveToPersistentStore:nil];
+
+        // Animate the subscribe button
+        NSArray *indexPaths = [self.tableView indexPathsForVisibleRows];
+        
+        for (NSIndexPath *idxPath in indexPaths)
+        {
+            if (idxPath.section == VDiscoverViewControllerSectionTrendingTags)
+            {
+                VTrendingTagCell *cell = (VTrendingTagCell *)[self.tableView cellForRowAtIndexPath:idxPath];
+                
+                if ([cell.hashtagText isEqualToString:userHashtag.tag])
+                {
+                    [cell updateSubscribeStatus];
+                    return;
+                }
+            }
+        }
     };
     
     VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
     {
-        VLog(@"Error in hashtag SUBSCRIBE");
+        self.failureHud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        self.failureHud.mode = MBProgressHUDModeAnnularDeterminate;
+        self.failureHud.labelText = NSLocalizedString(@"HashtagSubscribeError", @"");
+        [self.failureHud hide:YES afterDelay:0.3f];
     };
     
-    // Backend Subscribe to Hashtag call
-    [[VObjectManager sharedManager] subscribeToHashtag:tag successBlock:successBlock failBlock:failureBlock];
+    // Backend Subscribe to Hashtag
+    [[VObjectManager sharedManager] subscribeToHashtag:hashtag
+                                          successBlock:successBlock
+                                             failBlock:failureBlock];
 }
 
-- (void)unsubscribeToTagAction:(NSString *)tag
+- (void)unsubscribeToTagAction:(NSString *)hashtag
 {
     VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        VLog(@"%@", resultObjects);
+        VLog(@"Success following hashtag UNSUBSCRIBE");
+        
+        // Remove tag to user tags object
+        [self.userTags removeObject:hashtag];
+        
+        
+        NSManagedObjectContext *moc = [VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext;
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+        [fetchRequest setEntity:[NSEntityDescription entityForName:[VUserHashtag entityName] inManagedObjectContext:moc]];
+        [fetchRequest setIncludesPropertyValues:NO]; //only fetch the managedObjectID
+
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"tag = %@", hashtag];
+        [fetchRequest setPredicate:predicate];
+
+        NSArray *results = [moc executeFetchRequest:fetchRequest error:nil];
+        
+        VUserHashtag *userHashtag = (VUserHashtag *)[results firstObject];
+        [moc deleteObject:userHashtag];
+        
+        VUser *mainUser = [[VObjectManager sharedManager] mainUser];
+        [mainUser removeHashtagsObject:userHashtag];
+        [moc saveToPersistentStore:nil];
+        
+        // Animate the subscribe button
+        NSArray *indexPaths = [self.tableView indexPathsForVisibleRows];
+        
+        for (NSIndexPath *idxPath in indexPaths)
+        {
+            if (idxPath.section == VDiscoverViewControllerSectionTrendingTags)
+            {
+                VTrendingTagCell *cell = (VTrendingTagCell *)[self.tableView cellForRowAtIndexPath:idxPath];
+                
+                if ([cell.hashtagText isEqualToString:hashtag])
+                {
+                    [cell updateSubscribeStatus];
+                    return;
+                }
+            }
+        }
     };
     
     VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
     {
-        VLog(@"Error in hashtag UNSUBSCRIBE");
+        self.failureHud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        self.failureHud.mode = MBProgressHUDModeAnnularDeterminate;
+        self.failureHud.labelText = NSLocalizedString(@"HashtagUnsubscribeError", @"");
+        [self.failureHud hide:YES afterDelay:0.3f];
     };
     
     // Backend Unsubscribe to Hashtag call
-    [[VObjectManager sharedManager] unsubscribeToHashtag:tag successBlock:successBlock failBlock:failureBlock];
+    [[VObjectManager sharedManager] unsubscribeToHashtag:hashtag
+                                            successBlock:successBlock
+                                               failBlock:failureBlock];
 }
 
 @end
