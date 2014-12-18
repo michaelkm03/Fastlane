@@ -22,13 +22,15 @@
 // Rendering Utilities
 #import "CIImage+VImage.h"
 
-#warning Move this to publishVC when that is created
-// Publishing
-#import "VObjectManager+ContentCreation.h"
+// Constants
+#import "VConstants.h"
+
+#warning Move me out of here to the flow controller
+#import "VPublishBlurOverAnimator.h"
 
 static const CGFloat kJPEGCompressionQuality    = 0.8f;
 
-@interface VWorkspaceViewController ()
+@interface VWorkspaceViewController () <UINavigationControllerDelegate>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) NSArray *tools;
@@ -44,6 +46,8 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
 @property (nonatomic, strong) UIViewController *canvasToolViewController;
 @property (nonatomic, strong) UIViewController *inspectorToolViewController;
 
+@property (nonatomic, strong) VPublishBlurOverAnimator *transitionAnimator;
+
 @end
 
 @implementation VWorkspaceViewController
@@ -56,6 +60,8 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
     VWorkspaceViewController *workspaceViewController = [workspaceStoryboard instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
     workspaceViewController.dependencyManager = dependencyManager;
     workspaceViewController.tools = [dependencyManager workspaceTools];
+    workspaceViewController.transitionAnimator = [[VPublishBlurOverAnimator alloc] init];
+    
     return workspaceViewController;
 }
 
@@ -159,7 +165,7 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
 {
     MBProgressHUD *hudForView = [MBProgressHUD showHUDAddedTo:self.view
                                                      animated:YES];
-    hudForView.labelText = @"Publishing...";
+    hudForView.labelText = @"Rendering...";
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^
     {
@@ -177,28 +183,12 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
             self.mediaURL = tempFile;
             [[NSFileManager defaultManager] removeItemAtURL:originalMediaURL error:nil];
         }
-        
-        [[VObjectManager sharedManager] uploadMediaWithName:[[NSUUID UUID] UUIDString]
-                                                description:nil
-                                               previewImage:renderedImage
-                                                captionType:VCaptionTypeQuote
-                                                  expiresAt:nil
-                                           parentSequenceId:nil
-                                               parentNodeId:nil
-                                                      speed:1.0f 
-                                                   loopType:VLoopOnce
-                                                   mediaURL:self.mediaURL
-                                              facebookShare:NO
-                                               twitterShare:NO
-                                                 completion:^(NSURLResponse *response, NSData *responseData, NSDictionary *jsonResponse, NSError *error)
-        {
-            dispatch_async(dispatch_get_main_queue(), ^
-                           {
-                               [MBProgressHUD hideHUDForView:self.view
-                                                    animated:YES];
-                               self.completionBlock(YES, renderedImage);
-                           });
-        }];
+        dispatch_async(dispatch_get_main_queue(), ^
+                       {
+                           [MBProgressHUD hideHUDForView:self.view
+                                                animated:YES];
+                           self.completionBlock(YES, renderedImage);
+                       });
     });
 }
 
@@ -327,6 +317,17 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
                         options:(animationCurve << 16)
                      animations:animations
                      completion:nil];
+}
+
+#pragma mark - UINavigationControllerDelegate
+
+- (id <UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
+                                   animationControllerForOperation:(UINavigationControllerOperation)operation
+                                                fromViewController:(UIViewController *)fromVC
+                                                  toViewController:(UIViewController *)toVC
+{
+    self.transitionAnimator.presenting = (operation == UINavigationControllerOperationPush) ? YES : NO;
+    return self.transitionAnimator;
 }
 
 #pragma mark - Private Methods
