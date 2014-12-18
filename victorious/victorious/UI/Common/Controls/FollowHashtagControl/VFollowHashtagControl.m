@@ -164,14 +164,6 @@ static const CGFloat kForcedAntiAliasingConstant = 0.01f;
      }];
 }
 
-- (void)setDefaultState:(UIControlState)defaultState
-{
-    _defaultState = defaultState;
-    UIImage *sImg = [_subscribeImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    self.imageView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-    self.imageView.image = sImg;
-}
-
 #pragma mark - Animations
 
 - (void)performHighlightAnimations:(void (^)(void))animations
