@@ -15,7 +15,15 @@
 #import "VLargeNumberFormatter.h"
 #import "VDefaultProfileImageView.h"
 
+#import <KVOController/FBKVOController.h>
+
 static void * VProfileHeaderContext = &VProfileHeaderContext;
+
+@interface VUserProfileHeaderView ()
+
+@property (nonatomic, strong) FBKVOController *kvoController;
+
+@end
 
 @implementation VUserProfileHeaderView
 
@@ -79,62 +87,83 @@ static void * VProfileHeaderContext = &VProfileHeaderContext;
 
 - (void)setUser:(VUser *)user
 {
+    if (_user == user)
+    {
+        return;
+    }
+    
     _user = user;
-    [self.profileImageView setProfileImageURL:[NSURL URLWithString:user.pictureUrl]];
     
-    // Set Profile data
-    self.nameLabel.text = self.user.name;
-    self.locationLabel.text = self.user.location;
-    
-    if (self.user.tagline && self.user.tagline.length)
+    if (_user)
     {
-        self.taglineLabel.text = self.user.tagline;
-    }
-    else
-    {
-        self.taglineLabel.text = @"";
-    }
-    
-    [[VObjectManager sharedManager] countOfFollowsForUser:self.user
-                                             successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-    {
-        self.numberOfFollowers = [resultObjects[0] integerValue];
-        self.numberOfFollowing = [resultObjects[1] integerValue];
-    }
-                                                failBlock:^(NSOperation *operation, NSError *error)
-    {
-        self.numberOfFollowers = 0;
-        self.numberOfFollowing = 0;
-    }];
-    
-    if (_user.remoteId.integerValue == [VObjectManager sharedManager].mainUser.remoteId.integerValue)
-    {
-        [self.editProfileButton setTitle:NSLocalizedString(@"editProfileButton", @"") forState:UIControlStateNormal];
-        self.editProfileButton.layer.borderColor = [UIColor whiteColor].CGColor;
-        self.editProfileButton.backgroundColor = [UIColor clearColor];
-    }
-    else
-    {
-        if ([VObjectManager sharedManager].mainUser)
+        __weak typeof(self) welf = self;
+        self.kvoController = [FBKVOController controllerWithObserver:self];
+        
+        void (^userUpdateBlock)(id observer, VUser *user, NSDictionary *change) = ^void(id observer, VUser *user, NSDictionary *change)
         {
-            self.editProfileButton.alpha = 0.0f;
-            [[VObjectManager sharedManager] isUser:[VObjectManager sharedManager].mainUser
-                                         following:self.user
-                                      successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+            [welf.profileImageView setProfileImageURL:[NSURL URLWithString:user.pictureUrl]];
+            welf.nameLabel.text = user.name;
+            welf.locationLabel.text = user.location;
+            
+            if (user.tagline && user.tagline.length)
+            {
+                welf.taglineLabel.text = user.tagline;
+            }
+            else
+            {
+                welf.taglineLabel.text = @"";
+            }
+            
+            [[VObjectManager sharedManager] countOfFollowsForUser:user
+                                                     successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
              {
-                 self.editProfileButton.selected = [resultObjects[0] boolValue];
-                 [UIView animateWithDuration:0.2f
-                                  animations:^
-                  {
-                      self.editProfileButton.alpha = 1.0f;
-                  }];
+                 welf.numberOfFollowers = [resultObjects[0] integerValue];
+                 welf.numberOfFollowing = [resultObjects[1] integerValue];
              }
-                                         failBlock:nil];
-        }
-        else
-        {
-            self.editProfileButton.selected = NO;
-        }
+                                                        failBlock:^(NSOperation *operation, NSError *error)
+             {
+                 welf.numberOfFollowers = 0;
+                 welf.numberOfFollowing = 0;
+             }];
+            
+            if (user.remoteId.integerValue == [VObjectManager sharedManager].mainUser.remoteId.integerValue)
+            {
+                [welf.editProfileButton setTitle:NSLocalizedString(@"editProfileButton", @"") forState:UIControlStateNormal];
+                welf.editProfileButton.layer.borderColor = [UIColor whiteColor].CGColor;
+                welf.editProfileButton.backgroundColor = [UIColor clearColor];
+            }
+            else
+            {
+                if ([VObjectManager sharedManager].mainUser)
+                {
+                    welf.editProfileButton.alpha = 0.0f;
+                    [[VObjectManager sharedManager] isUser:[VObjectManager sharedManager].mainUser
+                                                 following:user
+                                              successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+                     {
+                         welf.editProfileButton.selected = [resultObjects[0] boolValue];
+                         [UIView animateWithDuration:0.2f
+                                          animations:^
+                          {
+                              welf.editProfileButton.alpha = 1.0f;
+                          }];
+                     }
+                                                 failBlock:nil];
+                }
+                else
+                {
+                    welf.editProfileButton.selected = NO;
+                }
+            }
+        };
+        
+        [self.kvoController observe:user
+                            keyPaths:@[NSStringFromSelector(@selector(name)),
+                                       NSStringFromSelector(@selector(pictureUrl)),
+                                       NSStringFromSelector(@selector(tagline)),
+                                       NSStringFromSelector(@selector(location))]
+                            options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew
+                              block:userUpdateBlock];
     }
 }
 
