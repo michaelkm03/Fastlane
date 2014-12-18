@@ -11,7 +11,8 @@
 
 #import "VPublishViewController.h"
 
-static const NSTimeInterval kBlurOverTransitionDuration = 0.5f;
+static const NSTimeInterval kBlurOverPresentTransitionDuration = 0.75f;
+static const NSTimeInterval kBlurOverDismissTransitionDuration = 0.5f;
 
 @interface VPublishBlurOverAnimator ()
 
@@ -23,7 +24,7 @@ static const NSTimeInterval kBlurOverTransitionDuration = 0.5f;
 
 - (NSTimeInterval)transitionDuration:(id<UIViewControllerContextTransitioning>)transitionContext
 {
-    return kBlurOverTransitionDuration;
+    return self.presenting ? kBlurOverPresentTransitionDuration : kBlurOverDismissTransitionDuration;
 }
 
 - (void)animateTransition:(id<UIViewControllerContextTransitioning>)transitionContext
