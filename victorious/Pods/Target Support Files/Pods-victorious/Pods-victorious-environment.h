@@ -34,7 +34,7 @@
 #define COCOAPODS_POD_AVAILABLE_IGDigest
 #define COCOAPODS_VERSION_MAJOR_IGDigest 1
 #define COCOAPODS_VERSION_MINOR_IGDigest 1
-#define COCOAPODS_VERSION_PATCH_IGDigest 0
+#define COCOAPODS_VERSION_PATCH_IGDigest 2
 
 // ISO8601DateFormatterValueTransformer
 #define COCOAPODS_POD_AVAILABLE_ISO8601DateFormatterValueTransformer
