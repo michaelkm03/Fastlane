@@ -54,12 +54,6 @@
 #define COCOAPODS_VERSION_MINOR_MBProgressHUD 9
 #define COCOAPODS_VERSION_PATCH_MBProgressHUD 0
 
-// MarqueeLabel
-#define COCOAPODS_POD_AVAILABLE_MarqueeLabel
-#define COCOAPODS_VERSION_MAJOR_MarqueeLabel 2
-#define COCOAPODS_VERSION_MINOR_MarqueeLabel 0
-#define COCOAPODS_VERSION_PATCH_MarqueeLabel 8
-
 // Nocilla
 #define COCOAPODS_POD_AVAILABLE_Nocilla
 #define COCOAPODS_VERSION_MAJOR_Nocilla 0
