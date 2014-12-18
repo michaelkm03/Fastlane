@@ -150,23 +150,6 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
                                                              failBlock:failureBlock];
 }
 
-- (void)fetchNextPageOfUserHashtags
-{
-    VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-    {
-        [self updateUserHashtags:resultObjects];
-    };
-    
-    VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
-    {
-        VLog(@"%@\n%@", operation, error);
-    };
-    
-    [[VObjectManager sharedManager] getHashtagsSubscribedToWithRefresh:NO
-                                                          successBlock:successBlock
-                                                             failBlock:failureBlock];
-}
-
 - (void)updateUserHashtags:(NSArray *)hashtags
 {
     for (VHashtag *hashtag in hashtags)
@@ -222,16 +205,6 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
 - (void)didAttemptActionThatRequiresLogin
 {
     [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:nil];
-}
-
-#pragma mark UIScrollViewDelegate
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-    if (CGRectGetMidY(scrollView.bounds) > (scrollView.contentSize.height * 0.8f))
-    {
-        [self fetchNextPageOfUserHashtags];
-    }
 }
 
 #pragma mark - UITableViewDataSource
@@ -340,11 +313,11 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
                 // Check if already subscribed to hashtag then subscribe or unsubscribe accordingly
                 if ([self userSubscribedToHashtag:hashtag.tag])
                 {
-                    [self unsubscribeToTagAction:hashtag.tag];
+                    [self unsubscribeToTagAction:hashtag];
                 }
                 else
                 {
-                    [self subscribeToTagAction:hashtag.tag];
+                    [self subscribeToTagAction:hashtag];
                 }
                 
             };
@@ -383,7 +356,7 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
     return [self.userTags containsObject:tag];
 }
 
-- (void)subscribeToTagAction:(NSString *)hashtag
+- (void)subscribeToTagAction:(VHashtag *)hashtag
 {
     VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
@@ -396,7 +369,7 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
             {
                 VTrendingTagCell *cell = (VTrendingTagCell *)[self.tableView cellForRowAtIndexPath:idxPath];
                 
-                if ([cell.hashtagText isEqualToString:hashtag])
+                if ([cell.hashtagText isEqualToString:hashtag.tag])
                 {
                     [cell updateSubscribeStatus];
                     return;
@@ -414,7 +387,7 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
     };
     
     // Add tag to user tags object
-    [self.userTags addObject:hashtag];
+    [self.userTags addObject:hashtag.tag];
     
     // Backend Subscribe to Hashtag
     [[VObjectManager sharedManager] subscribeToHashtag:hashtag
@@ -422,12 +395,12 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
                                              failBlock:failureBlock];
 }
 
-- (void)unsubscribeToTagAction:(NSString *)hashtag
+- (void)unsubscribeToTagAction:(VHashtag *)hashtag
 {
     VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         // Remove tag to user tags object
-        [self.userTags removeObject:hashtag];
+        [self.userTags removeObject:hashtag.tag];
         
         // Animate the subscribe button
         NSArray *indexPaths = [self.tableView indexPathsForVisibleRows];
@@ -438,7 +411,7 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
             {
                 VTrendingTagCell *cell = (VTrendingTagCell *)[self.tableView cellForRowAtIndexPath:idxPath];
                 
-                if ([cell.hashtagText isEqualToString:hashtag])
+                if ([cell.hashtagText isEqualToString:hashtag.tag])
                 {
                     [cell updateSubscribeStatus];
                     return;

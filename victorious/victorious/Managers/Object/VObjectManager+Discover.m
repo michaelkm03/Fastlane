@@ -89,6 +89,7 @@
         }
     };
 
+    NSAssert([NSThread isMainThread], @"This VAbstractFilter object is intended to be called on the main thread");
     VAbstractFilter *hashtagFilter = [self.paginationManager filterForPath:@"/api/hashtag/subscribed_to_list"
                                                                 entityName:[VAbstractFilter entityName]
                                                       managedObjectContext:self.managedObjectStore.mainQueueManagedObjectContext];
@@ -103,29 +104,17 @@
     }
 }
 
-- (RKManagedObjectRequestOperation *)subscribeToHashtag:(NSString *)hashtag
+- (RKManagedObjectRequestOperation *)subscribeToHashtag:(VHashtag *)hashtag
                                            successBlock:(VSuccessBlock)success
                                               failBlock:(VFailBlock)fail
 {
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        // Add hashtag to logged in user object
-        NSManagedObjectContext *moc = [VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext;
-        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-        [fetchRequest setEntity:[NSEntityDescription entityForName:[VHashtag entityName] inManagedObjectContext:moc]];
-        
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"tag = %@", hashtag];
-        [fetchRequest setPredicate:predicate];
-        
-        NSArray *results = [moc executeFetchRequest:fetchRequest error:nil];
-        
-        VHashtag *userHashtag = (VHashtag *)[results firstObject];
-
         VUser *mainUser = [[VObjectManager sharedManager] mainUser];
         NSMutableOrderedSet *hashtagSet = [mainUser.hashtags mutableCopy];
-        [hashtagSet addObject:userHashtag];
+        [hashtagSet addObject:hashtag];
         mainUser.hashtags = hashtagSet;
-        [moc saveToPersistentStore:nil];
+        [mainUser.managedObjectContext saveToPersistentStore:nil];
         
         if (success)
         {
@@ -143,25 +132,25 @@
     
     return [self POST:@"/api/hashtag/follow"
                object:nil
-           parameters:@{@"hashtag": hashtag}
+           parameters:@{@"hashtag":hashtag.tag}
          successBlock:fullSuccess
             failBlock:fullFailure];
 }
 
-- (RKManagedObjectRequestOperation *)unsubscribeToHashtag:(NSString *)hashtag
+- (RKManagedObjectRequestOperation *)unsubscribeToHashtag:(VHashtag *)hashtag
                                              successBlock:(VSuccessBlock)success
                                                 failBlock:(VFailBlock)fail
 {
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        NSManagedObjectContext *moc = [VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext;
-        
         VUser *mainUser = [[VObjectManager sharedManager] mainUser];
         NSMutableOrderedSet *hashtagSet = [mainUser.hashtags mutableCopy];
-        [hashtagSet filterUsingPredicate:[NSPredicate predicateWithFormat:@"tag != %@", hashtag]];
-        
-        mainUser.hashtags = hashtagSet;
-        [moc saveToPersistentStore:nil];
+        if ([hashtagSet containsObject:hashtag])
+        {
+            [hashtagSet removeObject:hashtag];
+            mainUser.hashtags = hashtagSet;
+            [mainUser.managedObjectContext saveToPersistentStore:nil];
+        }
 
         if (success)
         {
@@ -179,7 +168,7 @@
     
     return [self POST:@"/api/hashtag/unfollow"
               object:nil
-          parameters:@{@"hashtag": hashtag}
+          parameters:@{@"hashtag":hashtag.tag}
         successBlock:fullSuccess
            failBlock:fullFailure];
 }
