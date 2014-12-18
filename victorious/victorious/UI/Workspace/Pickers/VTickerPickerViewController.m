@@ -12,6 +12,7 @@
 
 @interface VTickerPickerViewController () <UICollectionViewDelegateFlowLayout>
 
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) UIView *selectionIndicatorView;
 @property (nonatomic, copy) NSArray *tools;
 @property (nonatomic, strong) UIColor *accentColor;
@@ -27,6 +28,7 @@
     UIStoryboard *workspaceStoryboard = [UIStoryboard storyboardWithName:@"Workspace"
                                                                   bundle:nil];
     VTickerPickerViewController *toolPicker = [workspaceStoryboard instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
+    toolPicker.dependencyManager = dependencyManager;
     toolPicker.clearsSelectionOnViewWillAppear = NO;
     toolPicker.accentColor = [dependencyManager colorForKey:VDependencyManagerAccentColorKey];
     return toolPicker;
@@ -87,7 +89,9 @@
     VBasicToolPickerCell *pickerCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VBasicToolPickerCell suggestedReuseIdentifier]
                                                                                  forIndexPath:indexPath];
     id <VWorkspaceTool> toolForIndexPath = self.tools[indexPath.row];
-    [pickerCell setTitle:toolForIndexPath.title];
+    
+    pickerCell.label.text = toolForIndexPath.title;
+    pickerCell.label.font = [self.dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
     
     return pickerCell;
 }
