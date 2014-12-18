@@ -7,6 +7,7 @@ PODS:
   - IGDigest (1.1.0)
   - ISO8601DateFormatterValueTransformer (0.5.0):
     - RKValueTransformers (~> 1.0.0)
+  - KVOController (1.0.3)
   - MarqueeLabel (2.0.8)
   - MBProgressHUD (0.9)
   - Nocilla (0.8.1)
@@ -38,6 +39,7 @@ DEPENDENCIES:
   - CCHLinkTextView
   - FlurrySDK (~> 5.4)
   - IGDigest (~> 1.1.0)
+  - KVOController
   - MarqueeLabel (from `https://github.com/TouchFrame/MarqueeLabel.git`)
   - MBProgressHUD (~> 0.8)
   - Nocilla (from `https://github.com/TouchFrame/Nocilla.git`, branch `block-response`)
@@ -58,6 +60,7 @@ SPEC CHECKSUMS:
   FlurrySDK: bed9e5598353f867508d164795a451e3ada92cb6
   IGDigest: 9d142a7926ecc2983e6208d938ac5dddd26ed9c2
   ISO8601DateFormatterValueTransformer: a7e1ecf4380d0b561306ced1a3f01bd5f65d2213
+  KVOController: b1139ef1fc373b6757e4b69493fedd7b56eb1272
   MarqueeLabel: f7eeaffa9eae1cc5c75b3ca7c7201d73f5a80eb1
   MBProgressHUD: 2038dbcf3dce73215abed6001657043d53aa79a8
   Nocilla: 8302b85f1e428a719ac76f78669d64a6872586bf
