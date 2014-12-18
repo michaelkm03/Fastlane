@@ -46,7 +46,6 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
 @interface VTrendingTagCell()
 
 @property (nonatomic, weak) IBOutlet VHashtagLabel *hashTagLabel;
-@property (nonatomic, weak) IBOutlet UIButton *followUnfollowButton;
 
 @end
 
@@ -62,10 +61,6 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
     self.hashTagLabel.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     self.hashTagLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
     self.hashTagLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
-    
-    // Follow / Unfollow Button
-    [self.followUnfollowButton setImage:[self.followUnfollowButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
-    self.followUnfollowButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
 }
 
 - (void)setHashtag:(VHashtag *)hashtag
@@ -82,7 +77,7 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
     {
         self.followHashtagControl.subscribed = YES;
     }
-    [self updateSubscribeStatus];    
+    [self updateSubscribeStatus:NO];
 }
 
 - (BOOL)subscribedToTag
@@ -102,7 +97,7 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
     return subscription;
 }
 
-- (void)updateSubscribeStatus
+- (void)updateSubscribeStatus:(BOOL)animate
 {
     //If we get into a weird state and the relaionships are the same don't do anything
     if (self.followHashtagControl.subscribed == self.subscribedToTag)
@@ -116,7 +111,7 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
     }
     
     [self.followHashtagControl setSubscribed:self.subscribedToTag
-                                    animated:YES];
+                                    animated:animate];
 }
 
 - (IBAction)followUnfollowHashtag:(id)sender

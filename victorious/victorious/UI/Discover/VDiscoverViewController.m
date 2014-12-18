@@ -68,7 +68,7 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
 {
     [super viewWillAppear:animated];
     [self.suggestedPeopleViewController viewWillAppear:animated];
-    [self.tableView reloadData];
+    [self refresh:YES];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -371,7 +371,7 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
                 
                 if ([cell.hashtagText isEqualToString:hashtag.tag])
                 {
-                    [cell updateSubscribeStatus];
+                    [cell updateSubscribeStatus:YES];
                     return;
                 }
             }
@@ -381,9 +381,9 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
     VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
     {
         self.failureHud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
-        self.failureHud.mode = MBProgressHUDModeAnnularDeterminate;
+        self.failureHud.mode = MBProgressHUDModeText;
         self.failureHud.labelText = NSLocalizedString(@"HashtagSubscribeError", @"");
-        [self.failureHud hide:YES afterDelay:0.3f];
+        [self.failureHud hide:YES afterDelay:1.0f];
     };
     
     // Add tag to user tags object
@@ -413,7 +413,7 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
                 
                 if ([cell.hashtagText isEqualToString:hashtag.tag])
                 {
-                    [cell updateSubscribeStatus];
+                    [cell updateSubscribeStatus:YES];
                     return;
                 }
             }

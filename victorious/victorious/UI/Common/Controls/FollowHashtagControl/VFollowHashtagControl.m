@@ -100,6 +100,7 @@ static const CGFloat kForcedAntiAliasingConstant = 0.01f;
     [self addConstraints:@[topConstraint, rightContstraint, bottomConstraint, leftConstraint]];
     
     _imageView = imageView;
+    
 }
 
 #pragma mark - Property Accessors
@@ -161,6 +162,14 @@ static const CGFloat kForcedAntiAliasingConstant = 0.01f;
          self.imageView.layer.transform = highlighted ? [self highlightTransform] : CATransform3DIdentity;
          self.imageView.layer.shadowOpacity = kForcedAntiAliasingConstant;
      }];
+}
+
+- (void)setDefaultState:(UIControlState)defaultState
+{
+    _defaultState = defaultState;
+    UIImage *sImg = [_subscribeImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    self.imageView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    self.imageView.image = sImg;
 }
 
 #pragma mark - Animations
