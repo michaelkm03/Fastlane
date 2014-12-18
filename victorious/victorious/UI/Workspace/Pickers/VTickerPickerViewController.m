@@ -50,6 +50,7 @@
     [super viewDidLoad];
     
     self.collectionView.allowsMultipleSelection = NO;
+    self.collectionView.decelerationRate = UIScrollViewDecelerationRateFast;
     
     self.selectionIndicatorView =
     ({
@@ -140,7 +141,8 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
               targetContentOffset:(inout CGPoint *)targetContentOffset
 {
     // Always land on a cell
-    NSIndexPath *indexPathForTargetOffset = [self.collectionView indexPathForItemAtPoint:*targetContentOffset];
+    NSIndexPath *indexPathForTargetOffset = [self.collectionView indexPathForItemAtPoint:CGPointMake(targetContentOffset->x + CGRectGetMidX([self selectionFrame]) - CGRectGetMinX([self selectionFrame]),
+                                                                                                     targetContentOffset->y + CGRectGetMidY([self selectionFrame]) - CGRectGetMinY([self selectionFrame]))];
     *targetContentOffset = [self.collectionView layoutAttributesForItemAtIndexPath:indexPathForTargetOffset].frame.origin;
 }
 
