@@ -32,12 +32,6 @@ static VLargeNumberFormatter *largeNumberFormatter;
 static const CGFloat kUserInfoViewMaxHeight = 25.0f;
 static const CGFloat kCommentButtonBuffer = 5.0f;
 
-@interface VStreamCellHeaderView ()
-
-@property (nonatomic, strong) FBKVOController *kvoController;
-
-@end
-
 @implementation VStreamCellHeaderView
 
 - (id)initWithFrame:(CGRect)frame
@@ -139,7 +133,7 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
         return;
     }
     
-    [self.kvoController unobserveAll];
+    [self.KVOController unobserveAll];
     
     _sequence = sequence;
     
@@ -149,7 +143,6 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
     }
     
     __weak typeof(self) welf = self;
-    self.KVOController = [FBKVOController controllerWithObserver:self];
     [self.KVOController observe:sequence.user
                        keyPaths:@[NSStringFromSelector(@selector(name)), NSStringFromSelector(@selector(pictureUrl))]
                         options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew

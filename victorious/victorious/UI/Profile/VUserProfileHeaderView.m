@@ -17,14 +17,6 @@
 
 #import <KVOController/FBKVOController.h>
 
-static void * VProfileHeaderContext = &VProfileHeaderContext;
-
-@interface VUserProfileHeaderView ()
-
-@property (nonatomic, strong) FBKVOController *kvoController;
-
-@end
-
 @implementation VUserProfileHeaderView
 
 + (instancetype)newViewWithFrame:(CGRect)frame
@@ -34,11 +26,6 @@ static void * VProfileHeaderContext = &VProfileHeaderContext;
     view.frame = frame;
     
     return view;
-}
-
-- (void)dealloc
-{
-    [self.editProfileButton removeObserver:self forKeyPath:@"selected"];
 }
 
 - (void)awakeFromNib
@@ -79,10 +66,24 @@ static void * VProfileHeaderContext = &VProfileHeaderContext;
     self.followButtonActivityIndicator.center = CGPointMake(CGRectGetWidth(self.editProfileButton.frame) / 2.0, CGRectGetHeight(self.editProfileButton.frame) / 2.0);
     [self.editProfileButton addSubview:self.followButtonActivityIndicator];
     
-    [self.editProfileButton addObserver:self
-                         forKeyPath:@"selected"
-                            options:NSKeyValueObservingOptionNew
-                            context:VProfileHeaderContext];
+    [self.KVOController observe:self.editProfileButton
+                        keyPath:@"selected"
+                        options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
+                          block:^(id observer, UIButton *editProfileButton, NSDictionary *change)
+     {
+         if (editProfileButton.selected)
+         {
+             [editProfileButton setTitle:NSLocalizedString(@"following", @"") forState:UIControlStateNormal];
+             editProfileButton.layer.borderColor = [UIColor whiteColor].CGColor;
+             editProfileButton.backgroundColor = [UIColor clearColor];
+         }
+         else
+         {
+             [editProfileButton setTitle:NSLocalizedString(@"follow", @"") forState:UIControlStateNormal];
+             editProfileButton.layer.borderColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor].CGColor;
+             editProfileButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+         }
+     }];
 }
 
 - (void)setUser:(VUser *)user
@@ -97,7 +98,6 @@ static void * VProfileHeaderContext = &VProfileHeaderContext;
     if (_user)
     {
         __weak typeof(self) welf = self;
-        self.kvoController = [FBKVOController controllerWithObserver:self];
         
         void (^userUpdateBlock)(id observer, VUser *user, NSDictionary *change) = ^void(id observer, VUser *user, NSDictionary *change)
         {
@@ -157,7 +157,7 @@ static void * VProfileHeaderContext = &VProfileHeaderContext;
             }
         };
         
-        [self.kvoController observe:user
+        [self.KVOController observe:user
                             keyPaths:@[NSStringFromSelector(@selector(name)),
                                        NSStringFromSelector(@selector(pictureUrl)),
                                        NSStringFromSelector(@selector(tagline)),
@@ -200,32 +200,6 @@ static void * VProfileHeaderContext = &VProfileHeaderContext;
     if ([self.delegate respondsToSelector:@selector(followingHandler)])
     {
         [self.delegate followingHandler];
-    }
-}
-
-#pragma mark - KVO
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-    if (context != VProfileHeaderContext)
-    {
-        return;
-    }
-    
-    if (object == self.editProfileButton && [keyPath isEqualToString:@"selected"])
-    {
-        if (self.editProfileButton.selected)
-        {
-            [self.editProfileButton setTitle:NSLocalizedString(@"following", @"") forState:UIControlStateNormal];
-            self.editProfileButton.layer.borderColor = [UIColor whiteColor].CGColor;
-            self.editProfileButton.backgroundColor = [UIColor clearColor];
-        }
-        else
-        {
-            [self.editProfileButton setTitle:NSLocalizedString(@"follow", @"") forState:UIControlStateNormal];
-            self.editProfileButton.layer.borderColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor].CGColor;
-            self.editProfileButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-        }
     }
 }
 
