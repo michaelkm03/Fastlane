@@ -32,6 +32,8 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
 
 @interface VWorkspaceViewController () <UINavigationControllerDelegate>
 
+@property (nonatomic, strong, readwrite) NSURL *renderedMediaURL;
+
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) NSArray *tools;
 
@@ -143,6 +145,11 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
     self.bottomToolbar.items = toolBarItems;
     
     self.canvasView.sourceImage = self.previewImage;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillShow:)
@@ -152,6 +159,14 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
                                              selector:@selector(keyboardWillHide:)
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
 
 #pragma mark - Target/Action
@@ -174,14 +189,12 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
         NSDate *tock = [NSDate date];
         VLog(@"Render time: %@", @([tock timeIntervalSinceDate:tick]));
         
-        NSURL *originalMediaURL = self.mediaURL;
         NSData *filteredImageData = UIImageJPEGRepresentation(renderedImage, kJPEGCompressionQuality);
         NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
         NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:VConstantMediaExtensionJPG];
         if ([filteredImageData writeToURL:tempFile atomically:NO])
         {
-            self.mediaURL = tempFile;
-            [[NSFileManager defaultManager] removeItemAtURL:originalMediaURL error:nil];
+            self.renderedMediaURL = tempFile;
         }
         dispatch_async(dispatch_get_main_queue(), ^
                        {

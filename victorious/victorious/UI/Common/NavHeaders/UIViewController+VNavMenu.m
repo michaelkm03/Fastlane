@@ -288,7 +288,7 @@ static const char kUploadProgressYConstraintKey;
             workspaceViewController.completionBlock = ^void(BOOL finished, UIImage *previewImage)
             {
                 VPublishViewController *publishViewController = [VPublishViewController newWithDependencyManager:dependencyManager];
-                publishViewController.mediaToUploadURL = weakWorkspace.mediaURL;
+                publishViewController.mediaToUploadURL = weakWorkspace.renderedMediaURL;
                 publishViewController.completion = ^void(BOOL published)
                 {
                     if (published)

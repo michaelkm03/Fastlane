@@ -166,7 +166,6 @@ static const CGFloat kSnapDampingConstant = 0.9f;
     CGPoint velocity = [gestureRecognizer velocityInView:self.view];
     CGFloat velocityMagnitude = hypot(velocity.x, velocity.y);
     
-    VLog(@"velocity at gesture end: %@, magnitude: %@", NSStringFromCGPoint(velocity), @(velocityMagnitude));
     if (velocityMagnitude < kTriggerVelocity)
     {
         [self.animator addBehavior:self.snapBehavior];
@@ -213,6 +212,7 @@ static const CGFloat kSnapDampingConstant = 0.9f;
    withBoundaryIdentifier:(id<NSCopying>)identifier
                   atPoint:(CGPoint)p
 {
+    [self.animator removeAllBehaviors];
     self.completion(NO);
 }
 
