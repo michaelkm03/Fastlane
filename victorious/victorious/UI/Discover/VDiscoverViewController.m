@@ -326,7 +326,7 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
         {
             VTrendingTagCell *customCell = (VTrendingTagCell *)[tableView dequeueReusableCellWithIdentifier:kVTrendingTagIdentifier forIndexPath:indexPath];
             VHashtag *hashtag = self.trendingTags[ indexPath.row ];
-            [customCell setHashtag:hashtag];
+            [customCell setHashtag:hashtag.tag];
 
             customCell.subscribeToTagAction = ^(void)
             {
@@ -338,7 +338,7 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
                 }
                 
                 // Check if already subscribed to hashtag then subscribe or unsubscribe accordingly
-                if ([self userSubscribedToHashtag:hashtag])
+                if ([self userSubscribedToHashtag:hashtag.tag])
                 {
                     [self unsubscribeToTagAction:hashtag.tag];
                 }
@@ -378,9 +378,9 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
 
 #pragma mark - Subscribe / Unsubscribe Actions
 
-- (BOOL)userSubscribedToHashtag:(VHashtag *)tag
+- (BOOL)userSubscribedToHashtag:(NSString *)tag
 {
-    return [self.userTags containsObject:tag.tag];
+    return [self.userTags containsObject:tag];
 }
 
 - (void)subscribeToTagAction:(NSString *)hashtag
