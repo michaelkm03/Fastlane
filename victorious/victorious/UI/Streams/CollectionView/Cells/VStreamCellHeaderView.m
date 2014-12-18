@@ -151,9 +151,10 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
     [self.KVOController observe:sequence.user
                        keyPaths:@[NSStringFromSelector(@selector(name)), NSStringFromSelector(@selector(pictureUrl))]
                         options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew
-                          block:^(id observer, id object, NSDictionary *change) {
-                              [welf updateWithCurrentUser];
-                          }];
+                          block:^(id observer, id object, NSDictionary *change)
+     {
+         [welf updateWithCurrentUser];
+     }];
 }
 
 - (void)updateWithCurrentUser
