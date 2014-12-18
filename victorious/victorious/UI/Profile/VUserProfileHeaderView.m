@@ -65,6 +65,22 @@
     self.followButtonActivityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     self.followButtonActivityIndicator.center = CGPointMake(CGRectGetWidth(self.editProfileButton.frame) / 2.0, CGRectGetHeight(self.editProfileButton.frame) / 2.0);
     [self.editProfileButton addSubview:self.followButtonActivityIndicator];
+}
+
+- (void)setUser:(VUser *)user
+{
+    if (_user == user)
+    {
+        return;
+    }
+    
+    [self.KVOController unobserveAll];
+    _user = user;
+    
+    if (_user == nil)
+    {
+        return;
+    }
     
     [self.KVOController observe:self.editProfileButton
                         keyPath:@"selected"
@@ -84,88 +100,74 @@
              editProfileButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
          }
      }];
-}
-
-- (void)setUser:(VUser *)user
-{
-    if (_user == user)
-    {
-        return;
-    }
     
-    [self.KVOController unobserveAll];
-    _user = user;
+    __weak typeof(self) welf = self;
     
-    if (_user)
+    void (^userUpdateBlock)(id observer, VUser *user, NSDictionary *change) = ^void(id observer, VUser *user, NSDictionary *change)
     {
-        __weak typeof(self) welf = self;
+        [welf.profileImageView setProfileImageURL:[NSURL URLWithString:user.pictureUrl]];
+        welf.nameLabel.text = user.name;
+        welf.locationLabel.text = user.location;
         
-        void (^userUpdateBlock)(id observer, VUser *user, NSDictionary *change) = ^void(id observer, VUser *user, NSDictionary *change)
+        if (user.tagline && user.tagline.length)
         {
-            [welf.profileImageView setProfileImageURL:[NSURL URLWithString:user.pictureUrl]];
-            welf.nameLabel.text = user.name;
-            welf.locationLabel.text = user.location;
-            
-            if (user.tagline && user.tagline.length)
-            {
-                welf.taglineLabel.text = user.tagline;
-            }
-            else
-            {
-                welf.taglineLabel.text = @"";
-            }
-            
-            [[VObjectManager sharedManager] countOfFollowsForUser:user
-                                                     successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-             {
-                 welf.numberOfFollowers = [resultObjects[0] integerValue];
-                 welf.numberOfFollowing = [resultObjects[1] integerValue];
-             }
-                                                        failBlock:^(NSOperation *operation, NSError *error)
-             {
-                 welf.numberOfFollowers = 0;
-                 welf.numberOfFollowing = 0;
-             }];
-            
-            if (user.remoteId.integerValue == [VObjectManager sharedManager].mainUser.remoteId.integerValue)
-            {
-                [welf.editProfileButton setTitle:NSLocalizedString(@"editProfileButton", @"") forState:UIControlStateNormal];
-                welf.editProfileButton.layer.borderColor = [UIColor whiteColor].CGColor;
-                welf.editProfileButton.backgroundColor = [UIColor clearColor];
-            }
-            else
-            {
-                if ([VObjectManager sharedManager].mainUser)
-                {
-                    welf.editProfileButton.alpha = 0.0f;
-                    [[VObjectManager sharedManager] isUser:[VObjectManager sharedManager].mainUser
-                                                 following:user
-                                              successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-                     {
-                         welf.editProfileButton.selected = [resultObjects[0] boolValue];
-                         [UIView animateWithDuration:0.2f
-                                          animations:^
-                          {
-                              welf.editProfileButton.alpha = 1.0f;
-                          }];
-                     }
-                                                 failBlock:nil];
-                }
-                else
-                {
-                    welf.editProfileButton.selected = NO;
-                }
-            }
-        };
+            welf.taglineLabel.text = user.tagline;
+        }
+        else
+        {
+            welf.taglineLabel.text = @"";
+        }
         
-        [self.KVOController observe:user
-                            keyPaths:@[NSStringFromSelector(@selector(name)),
-                                       NSStringFromSelector(@selector(pictureUrl)),
-                                       NSStringFromSelector(@selector(tagline)),
-                                       NSStringFromSelector(@selector(location))]
-                            options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew
-                              block:userUpdateBlock];
-    }
+        [[VObjectManager sharedManager] countOfFollowsForUser:user
+                                                 successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+         {
+             welf.numberOfFollowers = [resultObjects[0] integerValue];
+             welf.numberOfFollowing = [resultObjects[1] integerValue];
+         }
+                                                    failBlock:^(NSOperation *operation, NSError *error)
+         {
+             welf.numberOfFollowers = 0;
+             welf.numberOfFollowing = 0;
+         }];
+        
+        if (user.remoteId.integerValue == [VObjectManager sharedManager].mainUser.remoteId.integerValue)
+        {
+            [welf.editProfileButton setTitle:NSLocalizedString(@"editProfileButton", @"") forState:UIControlStateNormal];
+            welf.editProfileButton.layer.borderColor = [UIColor whiteColor].CGColor;
+            welf.editProfileButton.backgroundColor = [UIColor clearColor];
+        }
+        else
+        {
+            if ([VObjectManager sharedManager].mainUser)
+            {
+                welf.editProfileButton.alpha = 0.0f;
+                [[VObjectManager sharedManager] isUser:[VObjectManager sharedManager].mainUser
+                                             following:user
+                                          successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+                 {
+                     welf.editProfileButton.selected = [resultObjects[0] boolValue];
+                     [UIView animateWithDuration:0.2f
+                                      animations:^
+                      {
+                          welf.editProfileButton.alpha = 1.0f;
+                      }];
+                 }
+                                             failBlock:nil];
+            }
+            else
+            {
+                welf.editProfileButton.selected = NO;
+            }
+        }
+    };
+    
+    [self.KVOController observe:user
+                       keyPaths:@[NSStringFromSelector(@selector(name)),
+                                  NSStringFromSelector(@selector(pictureUrl)),
+                                  NSStringFromSelector(@selector(tagline)),
+                                  NSStringFromSelector(@selector(location))]
+                        options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew
+                          block:userUpdateBlock];
 }
 
 - (void)setNumberOfFollowers:(NSInteger)numberOfFollowers
