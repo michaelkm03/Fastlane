@@ -9,7 +9,7 @@
 #import "VObjectManager+Discover.h"
 #import "VObjectManager+Private.h"
 #import "VUser.h"
-#import "VUserHashtag+RestKit.h"
+#import "VHashtag+RestKit.h"
 
 @implementation VObjectManager (Discover)
 
@@ -75,6 +75,15 @@
 {
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
+        // Add hashtag to logged in user object
+        NSManagedObjectContext *moc = [VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext;
+        VHashtag *userHashtag = [NSEntityDescription insertNewObjectForEntityForName:[VHashtag entityName] inManagedObjectContext:moc];
+        userHashtag.tag = hashtag;
+        
+        VUser *mainUser = [[VObjectManager sharedManager] mainUser];
+        [mainUser addHashtagsObject:userHashtag];
+        [moc saveToPersistentStore:nil];
+        
         if (success)
         {
             success(operation, fullResponse, resultObjects);
@@ -102,6 +111,22 @@
 {
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
+        NSManagedObjectContext *moc = [VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext;
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+        [fetchRequest setEntity:[NSEntityDescription entityForName:[VHashtag entityName] inManagedObjectContext:moc]];
+        
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"tag = %@", hashtag];
+        [fetchRequest setPredicate:predicate];
+        
+        NSArray *results = [moc executeFetchRequest:fetchRequest error:nil];
+        
+        VHashtag *userHashtag = (VHashtag *)[results firstObject];
+        [moc deleteObject:userHashtag];
+        
+        VUser *mainUser = [[VObjectManager sharedManager] mainUser];
+        [mainUser removeHashtagsObject:userHashtag];
+        [moc saveToPersistentStore:nil];
+
         if (success)
         {
             success(operation, fullResponse, resultObjects);

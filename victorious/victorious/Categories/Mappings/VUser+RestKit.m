@@ -7,7 +7,6 @@
 //
 
 #import "VUser+RestKit.h"
-#import "VUserHashtag+RestKit.h"
 
 @implementation VUser (RestKit)
 
@@ -47,7 +46,6 @@
     [mapping addConnectionForRelationship:@"comments" connectedBy:@{@"remoteId" : @"userId"}];
     [mapping addConnectionForRelationship:@"conversation" connectedBy:@{@"remoteId" : @"other_interlocutor_user_id"}];
     [mapping addConnectionForRelationship:@"messages" connectedBy:@{@"remoteId" : @"senderUserId"}];
-    [mapping addConnectionForRelationship:@"hashtags" connectedBy:@{@"remoteId" : @"userId"}];
     
     return mapping;
 }

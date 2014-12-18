@@ -2,19 +2,19 @@
 //  VUser.m
 //  victorious
 //
-//  Created by Lawrence Leach on 12/10/14.
+//  Created by Lawrence Leach on 12/17/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
 #import "VUser.h"
 #import "VComment.h"
 #import "VConversation.h"
+#import "VHashtag.h"
 #import "VMessage.h"
 #import "VNotification.h"
 #import "VPollResult.h"
 #import "VSequence.h"
 #import "VUser.h"
-#import "VUserHashtag.h"
 
 
 @implementation VUser
@@ -37,12 +37,12 @@
 @dynamic conversation;
 @dynamic followers;
 @dynamic following;
+@dynamic hashtags;
 @dynamic messages;
 @dynamic notifications;
 @dynamic pollResults;
 @dynamic postedSequences;
 @dynamic remixedSequences;
 @dynamic repostedSequences;
-@dynamic hashtags;
 
 @end
