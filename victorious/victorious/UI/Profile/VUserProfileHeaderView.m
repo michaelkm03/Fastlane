@@ -93,6 +93,7 @@
         return;
     }
     
+    [self.KVOController unobserveAll];
     _user = user;
     
     if (_user)
