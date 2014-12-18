@@ -16,10 +16,9 @@
 - (RKManagedObjectRequestOperation *)getSuggestedHashtags:(VSuccessBlock)success
                                                 failBlock:(VFailBlock)fail;
 
-- (RKManagedObjectRequestOperation *)getHashtagsSubscribedToForPage:(NSInteger)page
-                                                   withPerPageCount:(NSInteger)perpage
-                                                   withSuccessBlock:(VSuccessBlock)success
-                                                      withFailBlock:(VFailBlock)fail;
+- (RKManagedObjectRequestOperation *)getHashtagsSubscribedToWithRefresh:(BOOL)refresh
+                                                           successBlock:(VSuccessBlock)success
+                                                              failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)unsubscribeToHashtag:(NSString *)hashtag
                                              successBlock:(VSuccessBlock)success

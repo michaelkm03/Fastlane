@@ -54,7 +54,7 @@ static const CGFloat kForcedAntiAliasingConstant = 0.01f;
     imageView.contentMode = self.contentMode;
     
     _subscribeImage = [UIImage imageNamed:@"followTag"];
-    _unSubscribeImage = [UIImage imageNamed:@"unfollowTag"];
+    _unSubscribeImage = [UIImage imageNamed:@"followedHashtag"];
     
     if (self.subscribed)
     {

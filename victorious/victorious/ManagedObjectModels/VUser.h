@@ -31,7 +31,7 @@
 @property (nonatomic, retain) VConversation *conversation;
 @property (nonatomic, retain) NSSet *followers;
 @property (nonatomic, retain) NSSet *following;
-@property (nonatomic, retain) NSSet *hashtags;
+@property (nonatomic, retain) NSOrderedSet *hashtags;
 @property (nonatomic, retain) NSSet *messages;
 @property (nonatomic, retain) VNotification *notifications;
 @property (nonatomic, retain) NSSet *pollResults;
@@ -62,11 +62,16 @@
 - (void)addFollowing:(NSSet *)values;
 - (void)removeFollowing:(NSSet *)values;
 
+- (void)insertObject:(VHashtag *)value inHashtagsAtIndex:(NSUInteger)idx;
+- (void)removeObjectFromHashtagsAtIndex:(NSUInteger)idx;
+- (void)insertHashtags:(NSArray *)value atIndexes:(NSIndexSet *)indexes;
+- (void)removeHashtagsAtIndexes:(NSIndexSet *)indexes;
+- (void)replaceObjectInHashtagsAtIndex:(NSUInteger)idx withObject:(VHashtag *)value;
+- (void)replaceHashtagsAtIndexes:(NSIndexSet *)indexes withHashtags:(NSArray *)values;
 - (void)addHashtagsObject:(VHashtag *)value;
 - (void)removeHashtagsObject:(VHashtag *)value;
-- (void)addHashtags:(NSSet *)values;
-- (void)removeHashtags:(NSSet *)values;
-
+- (void)addHashtags:(NSOrderedSet *)values;
+- (void)removeHashtags:(NSOrderedSet *)values;
 - (void)addMessagesObject:(VMessage *)value;
 - (void)removeMessagesObject:(VMessage *)value;
 - (void)addMessages:(NSSet *)values;

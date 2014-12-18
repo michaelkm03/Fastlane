@@ -10,6 +10,8 @@
 #import "VObjectManager+Private.h"
 #import "VUser.h"
 #import "VHashtag+RestKit.h"
+#import "VPaginationManager.h"
+#import "VAbstractFilter.h"
 
 @implementation VObjectManager (Discover)
 
@@ -49,24 +51,56 @@
            failBlock:fail];
 }
 
-- (RKManagedObjectRequestOperation *)getHashtagsSubscribedToForPage:(NSInteger)page
-                                                   withPerPageCount:(NSInteger)perpage
-                                                   withSuccessBlock:(VSuccessBlock)success
-                                                      withFailBlock:(VFailBlock)fail
+- (RKManagedObjectRequestOperation *)getHashtagsSubscribedToWithRefresh:(BOOL)refresh
+                                                           successBlock:(VSuccessBlock)success
+                                                              failBlock:(VFailBlock)fail
 {
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
+        VUser *mainUser = [[VObjectManager sharedManager] mainUser];
+        
+        // Zap the existing hashtags if this is a refresh
+        if (refresh)
+        {
+            mainUser.hashtags = nil;
+        }
+        
+        // Add hashtags to main user object
+        if (resultObjects.count > 0)
+        {
+            NSMutableOrderedSet *hashtagSet = [mainUser.hashtags mutableCopy];
+            [hashtagSet addObjectsFromArray:resultObjects];
+            
+            mainUser.hashtags = hashtagSet;
+            [mainUser.managedObjectContext saveToPersistentStore:nil];
+        }
+
         if (success)
         {
             success(operation, fullResponse, resultObjects);
         }
     };
     
-    return [self GET:[NSString stringWithFormat:@"/api/hashtag/subscribed_to_list/%ld/%ld", page, perpage]
-              object:nil
-          parameters:nil
-        successBlock:fullSuccess
-           failBlock:fail];
+    VFailBlock fullFailure = ^(NSOperation *operation, NSError *error)
+    {
+        if (fail)
+        {
+            fail(operation, error);
+        }
+    };
+
+    VAbstractFilter *hashtagFilter = [self.paginationManager filterForPath:@"/api/hashtag/subscribed_to_list"
+                                                                entityName:[VAbstractFilter entityName]
+                                                      managedObjectContext:self.managedObjectStore.mainQueueManagedObjectContext];
+    
+    if (refresh)
+    {
+        return [self.paginationManager refreshFilter:hashtagFilter successBlock:fullSuccess failBlock:fullFailure];
+    }
+    else
+    {
+        return [self.paginationManager loadNextPageOfFilter:hashtagFilter successBlock:fullSuccess failBlock:fullFailure];
+    }
 }
 
 - (RKManagedObjectRequestOperation *)subscribeToHashtag:(NSString *)hashtag
@@ -77,11 +111,20 @@
     {
         // Add hashtag to logged in user object
         NSManagedObjectContext *moc = [VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext;
-        VHashtag *userHashtag = [NSEntityDescription insertNewObjectForEntityForName:[VHashtag entityName] inManagedObjectContext:moc];
-        userHashtag.tag = hashtag;
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+        [fetchRequest setEntity:[NSEntityDescription entityForName:[VHashtag entityName] inManagedObjectContext:moc]];
         
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"tag = %@", hashtag];
+        [fetchRequest setPredicate:predicate];
+        
+        NSArray *results = [moc executeFetchRequest:fetchRequest error:nil];
+        
+        VHashtag *userHashtag = (VHashtag *)[results firstObject];
+
         VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-        [mainUser addHashtagsObject:userHashtag];
+        NSMutableOrderedSet *hashtagSet = [mainUser.hashtags mutableCopy];
+        [hashtagSet addObject:userHashtag];
+        mainUser.hashtags = hashtagSet;
         [moc saveToPersistentStore:nil];
         
         if (success)
@@ -112,19 +155,12 @@
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         NSManagedObjectContext *moc = [VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext;
-        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-        [fetchRequest setEntity:[NSEntityDescription entityForName:[VHashtag entityName] inManagedObjectContext:moc]];
-        
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"tag = %@", hashtag];
-        [fetchRequest setPredicate:predicate];
-        
-        NSArray *results = [moc executeFetchRequest:fetchRequest error:nil];
-        
-        VHashtag *userHashtag = (VHashtag *)[results firstObject];
-        [moc deleteObject:userHashtag];
         
         VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-        [mainUser removeHashtagsObject:userHashtag];
+        NSMutableOrderedSet *hashtagSet = [mainUser.hashtags mutableCopy];
+        [hashtagSet filterUsingPredicate:[NSPredicate predicateWithFormat:@"tag != %@", hashtag]];
+        
+        mainUser.hashtags = hashtagSet;
         [moc saveToPersistentStore:nil];
 
         if (success)

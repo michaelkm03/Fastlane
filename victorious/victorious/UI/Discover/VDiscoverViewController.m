@@ -13,6 +13,7 @@
 #import "VDiscoverTableHeaderViewController.h"
 #import "VSuggestedPeopleCollectionViewController.h"
 #import "VObjectManager+Discover.h"
+#import "VObjectManager+Pagination.h"
 #import "VHashtag.h"
 #import "VStreamCollectionViewController.h"
 #import "VNoContentTableViewCell.h"
@@ -136,34 +137,42 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
 {
     VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        [self reconcileUserHashtags:resultObjects
-               withTrendingHashtags:self.trendingTags];
+        [self updateUserHashtags:resultObjects];
     };
     
     VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
     {
         VLog(@"%@\n%@", operation, error);
-        
     };
     
-    [[VObjectManager sharedManager] getHashtagsSubscribedToForPage:1
-                                                  withPerPageCount:100
-                                                  withSuccessBlock:successBlock
-                                                     withFailBlock:failureBlock];
+    [[VObjectManager sharedManager] getHashtagsSubscribedToWithRefresh:YES
+                                                          successBlock:successBlock
+                                                             failBlock:failureBlock];
 }
 
-- (void)reconcileUserHashtags:(NSArray *)hashtags
-         withTrendingHashtags:(NSArray *)trendingTags
+- (void)fetchNextPageOfUserHashtags
 {
-    VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-    
-    for (VHashtag *ht in hashtags)
+    VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        NSString *tag = ht.tag;
-        [mainUser addHashtagsObject:ht];
-        [self.userTags addObject:tag];
+        [self updateUserHashtags:resultObjects];
+    };
+    
+    VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
+    {
+        VLog(@"%@\n%@", operation, error);
+    };
+    
+    [[VObjectManager sharedManager] getHashtagsSubscribedToWithRefresh:NO
+                                                          successBlock:successBlock
+                                                             failBlock:failureBlock];
+}
+
+- (void)updateUserHashtags:(NSArray *)hashtags
+{
+    for (VHashtag *hashtag in hashtags)
+    {
+        [self.userTags addObject:hashtag.tag];
     }
-    [mainUser.managedObjectContext saveToPersistentStore:nil];
     
     [self.tableView reloadData];
 }
@@ -213,6 +222,16 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
 - (void)didAttemptActionThatRequiresLogin
 {
     [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:nil];
+}
+
+#pragma mark UIScrollViewDelegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    if (CGRectGetMidY(scrollView.bounds) > (scrollView.contentSize.height * 0.8f))
+    {
+        [self fetchNextPageOfUserHashtags];
+    }
 }
 
 #pragma mark - UITableViewDataSource
@@ -368,9 +387,6 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
 {
     VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        // Add tag to user tags object
-        [self.userTags addObject:hashtag];
-        
         // Animate the subscribe button
         NSArray *indexPaths = [self.tableView indexPathsForVisibleRows];
         
@@ -396,6 +412,9 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
         self.failureHud.labelText = NSLocalizedString(@"HashtagSubscribeError", @"");
         [self.failureHud hide:YES afterDelay:0.3f];
     };
+    
+    // Add tag to user tags object
+    [self.userTags addObject:hashtag];
     
     // Backend Subscribe to Hashtag
     [[VObjectManager sharedManager] subscribeToHashtag:hashtag
