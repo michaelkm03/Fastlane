@@ -4251,7 +4251,7 @@
 				ORGANIZATIONNAME = Victorious;
 				TargetAttributes = {
 					BE171D751868BE64004E5202 = {
-						DevelopmentTeam = ABHRJGEGKA;
+						DevelopmentTeam = 82T26U698A;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 0;

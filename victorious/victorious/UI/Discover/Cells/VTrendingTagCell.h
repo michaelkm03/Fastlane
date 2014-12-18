@@ -53,7 +53,9 @@
 
 /**
  Checks to see if hashtag is subscribed to or not and animates the subscribe button accordingly.
+ 
+ @param animate BOOL to tell the control to animate it's changing state
  */
-- (void)updateSubscribeStatus;
+- (void)updateSubscribeStatus:(BOOL)animate;
 
 @end
