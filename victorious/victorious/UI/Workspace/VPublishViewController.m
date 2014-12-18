@@ -12,10 +12,12 @@
 
 #import "VObjectManager+ContentCreation.h"
 
+#import <MBProgressHUD/MBProgressHUD.h>
+
 static const CGFloat kTriggerVelocity = 500.0f;
 static const CGFloat kSnapDampingConstant = 0.9f;
 
-@interface VPublishViewController () <UICollisionBehaviorDelegate, UITextViewDelegate>
+@interface VPublishViewController () <UICollisionBehaviorDelegate, UITextViewDelegate, UIGestureRecognizerDelegate>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
@@ -23,6 +25,8 @@ static const CGFloat kSnapDampingConstant = 0.9f;
 @property (weak, nonatomic) IBOutlet UIImageView *previewImageView;
 @property (weak, nonatomic) IBOutlet UITextView *captionTextView;
 @property (weak, nonatomic) IBOutlet UIButton *publishButton;
+@property (strong, nonatomic) IBOutlet UIPanGestureRecognizer *panGestureRecognizer;
+@property (strong, nonatomic) IBOutlet UITapGestureRecognizer *tapGestureRecognizer;
 
 @property (nonatomic, strong) UIDynamicAnimator *animator;
 @property (nonatomic, strong) UIAttachmentBehavior *attachmentBehavior;
@@ -137,6 +141,17 @@ static const CGFloat kSnapDampingConstant = 0.9f;
      }];
 }
 
+- (IBAction)dismiss:(UITapGestureRecognizer *)tapGesture
+{
+    if ((tapGesture.state == UIGestureRecognizerStateEnded) && (self.panGestureRecognizer.state == UIGestureRecognizerStateFailed))
+    {
+        if (self.completion)
+        {
+            self.completion(NO);
+        }
+    }
+}
+
 #pragma mark - gesture handling
 
 - (void)handleGestureBegin:(UIPanGestureRecognizer *)gestureRecognizer
@@ -227,6 +242,15 @@ shouldChangeTextInRange:(NSRange)range
         [textView resignFirstResponder];
         return NO;
     }
+    
+    return YES;
+}
+
+#pragma mark - UIGestureRecognizerDelegate
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer
+shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
+{
     
     return YES;
 }

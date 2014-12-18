@@ -8,9 +8,11 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="VPublishViewController">
             <connections>
                 <outlet property="captionTextView" destination="k7t-Et-LrO" id="oyc-Xm-Phf"/>
+                <outlet property="panGestureRecognizer" destination="n8g-k8-NP3" id="HOh-RU-ymC"/>
                 <outlet property="previewImageView" destination="izj-dr-ITJ" id="P3r-gC-KuE"/>
                 <outlet property="publishButton" destination="13Q-pZ-iXL" id="KSz-tL-MB2"/>
                 <outlet property="publishPrompt" destination="MUp-lJ-Tpj" id="648-up-W0f"/>
+                <outlet property="tapGestureRecognizer" destination="4Sh-u7-tu5" id="Tbt-8g-z0X"/>
                 <outlet property="view" destination="iN0-l3-epB" id="O17-mW-j1j"/>
             </connections>
         </placeholder>
@@ -55,14 +57,22 @@
             <gestureRecognizers/>
             <connections>
                 <outletCollection property="gestureRecognizers" destination="n8g-k8-NP3" appends="YES" id="STr-Cg-G3W"/>
+                <outletCollection property="gestureRecognizers" destination="4Sh-u7-tu5" appends="YES" id="uTq-SS-SMx"/>
             </connections>
             <point key="canvasLocation" x="112" y="321"/>
         </view>
         <panGestureRecognizer minimumNumberOfTouches="1" id="n8g-k8-NP3">
             <connections>
                 <action selector="handlePanGesture:" destination="-1" id="8DE-rv-wBU"/>
+                <outlet property="delegate" destination="-1" id="Wrv-0a-nEC"/>
             </connections>
         </panGestureRecognizer>
+        <tapGestureRecognizer id="4Sh-u7-tu5">
+            <connections>
+                <action selector="dismiss:" destination="-1" id="4yG-yG-OSJ"/>
+                <outlet property="delegate" destination="-1" id="FfH-WF-Cex"/>
+            </connections>
+        </tapGestureRecognizer>
     </objects>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
