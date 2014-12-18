@@ -139,6 +139,8 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
         return;
     }
     
+    [self.kvoController unobserveAll];
+    
     _sequence = sequence;
     
     if (sequence.user == nil)
