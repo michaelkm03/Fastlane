@@ -10,7 +10,6 @@
 #import "VThemeManager.h"
 #import "VObjectManager+Users.h"
 #import "VUser.h"
-#import "VUserHashtag.h"
 #import "VHashTags.h"
 #import "VConstants.h"
 #import "VHashtag.h"
@@ -83,6 +82,7 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
     {
         self.followHashtagControl.subscribed = YES;
     }
+    [self updateSubscribeStatus];    
 }
 
 - (BOOL)subscribedToTag
@@ -90,7 +90,7 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
     BOOL subscription = NO;
     VUser *mainUser = [[VObjectManager sharedManager] mainUser];
     
-    for (VUserHashtag *hashtag in mainUser.hashtags)
+    for (VHashtag *hashtag in mainUser.hashtags)
     {
         if ([hashtag.tag isEqualToString:self.hashtagText])
         {

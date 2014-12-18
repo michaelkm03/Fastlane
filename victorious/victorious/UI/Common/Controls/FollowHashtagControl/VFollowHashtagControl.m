@@ -18,8 +18,8 @@ static const CGFloat kForcedAntiAliasingConstant = 0.01f;
 
 @property (nonatomic, weak) UIImageView *imageView;
 
-@property (nonatomic) UIImage *subscribeImage;
-@property (nonatomic) UIImage *unSubscribeImage;
+@property (nonatomic, strong) UIImage *subscribeImage;
+@property (nonatomic, strong) UIImage *unSubscribeImage;
 
 @end
 
@@ -53,13 +53,8 @@ static const CGFloat kForcedAntiAliasingConstant = 0.01f;
     imageView.frame = self.bounds;
     imageView.contentMode = self.contentMode;
     
-#if TARGET_INTERFACE_BUILDER
-    _subscribeImage = [UIImage imageNamed:@"folllow_tag" inBundle:[NSBundle bundleForClass:[self class]] compatibleWithTraitCollection:nil];
-    _unSubscribeImage = [UIImage imageNamed:@"followed_hashtag" inBundle:[NSBundle bundleForClass:[self class]] compatibleWithTraitCollection:nil];
-#else
-    _subscribeImage = [UIImage imageNamed:@"folllow_tag"];
-    _unSubscribeImage = [UIImage imageNamed:@"followed_hashtag"];
-#endif
+    _subscribeImage = [UIImage imageNamed:@"followTag"];
+    _unSubscribeImage = [UIImage imageNamed:@"followedHashtag"];
     
     if (self.subscribed)
     {
@@ -130,7 +125,6 @@ static const CGFloat kForcedAntiAliasingConstant = 0.01f;
         self.imageView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
         self.imageView.image = sImg;
     }
-
 }
 
 #pragma mark - Public Interface
@@ -190,13 +184,6 @@ static const CGFloat kForcedAntiAliasingConstant = 0.01f;
     highLightTranform = CATransform3DRotate(highLightTranform, kHighlightedTiltRotationAngle, 1, 0, 0);
     
     return highLightTranform;
-}
-
-#pragma mark - Interface Builder
-
-- (void)prepareForInterfaceBuilder
-{
-    [self sharedInit];
 }
 
 @end
