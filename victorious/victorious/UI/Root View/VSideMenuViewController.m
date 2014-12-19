@@ -142,7 +142,7 @@ static NSString * const kMenuKey = @"menu";
     
     [self addMenuViewControllerMotionEffects];
 
-    UIViewController *initialVC = [self.dependencyManager viewControllerForKey:VDependencyManagerInitialViewControllerKey];
+    UIViewController *initialVC = [self.dependencyManager singletonViewControllerForKey:VDependencyManagerInitialViewControllerKey];
     if (initialVC != nil)
     {
         [self transitionToNavStack:@[initialVC]];

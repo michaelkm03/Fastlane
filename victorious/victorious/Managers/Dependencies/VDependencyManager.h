@@ -87,6 +87,11 @@ extern NSString * const VDependencyManagerInitialViewControllerKey; ///< The vie
 - (UIViewController *)viewControllerForKey:(NSString *)key;
 
 /**
+ Returns a singleton instance of a view controller with the specified key
+ */
+- (UIViewController *)singletonViewControllerForKey:(NSString *)key;
+
+/**
  Returns the NSArray with the specified key. If the array
  elements contain configuration dictionaries for dependant
  objects, those configuration dictionaries can be passed

@@ -168,6 +168,11 @@ NSString * const VDependencyManagerInitialViewControllerKey = @"initialScreen";
     return [self templateValueOfType:[UIViewController class] forKey:key];
 }
 
+- (UIViewController *)singletonViewControllerForKey:(NSString *)key
+{
+    return [self singletonObjectOfType:[UIViewController class] forKey:key];
+}
+
 #pragma mark - Arrays of dependencies
 
 - (NSArray *)arrayForKey:(NSString *)key
