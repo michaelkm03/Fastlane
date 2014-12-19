@@ -97,7 +97,7 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
     return subscription;
 }
 
-- (void)updateSubscribeStatus:(BOOL)animate
+- (void)updateSubscribeStatus:(BOOL)animated
 {
     //If we get into a weird state and the relaionships are the same don't do anything
     if (self.followHashtagControl.subscribed == self.subscribedToTag)
@@ -111,7 +111,7 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
     }
     
     [self.followHashtagControl setSubscribed:self.subscribedToTag
-                                    animated:animate];
+                                    animated:animated];
 }
 
 - (IBAction)followUnfollowHashtag:(id)sender
