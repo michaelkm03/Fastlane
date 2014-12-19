@@ -155,4 +155,10 @@ extern NSString * const VDependencyManagerInitialViewControllerKey; ///< The vie
  */
 - (id)singletonObjectOfType:(Class)expectedType fromDictionary:(NSDictionary *)configurationDictionary;
 
+/**
+ Returns a new dependency manager that returns the same values as the receiver,
+ in addition to the values in the given configuration dictionary.
+ */
+- (VDependencyManager *)childDependencyManagerWithAddedConfiguration:(NSDictionary *)configuration;
+
 @end
