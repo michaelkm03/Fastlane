@@ -371,7 +371,7 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
                 
                 if ([cell.hashtagText isEqualToString:hashtag.tag])
                 {
-                    [cell updateSubscribeStatus:YES];
+                    [cell updateSubscribeStatusAnimated:YES];
                     return;
                 }
             }
@@ -413,7 +413,7 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
                 
                 if ([cell.hashtagText isEqualToString:hashtag.tag])
                 {
-                    [cell updateSubscribeStatus:YES];
+                    [cell updateSubscribeStatusAnimated:YES];
                     return;
                 }
             }

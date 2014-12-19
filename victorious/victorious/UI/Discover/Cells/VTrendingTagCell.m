@@ -77,7 +77,7 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
     {
         self.followHashtagControl.subscribed = YES;
     }
-    [self updateSubscribeStatus:NO];
+    [self updateSubscribeStatusAnimated:NO];
 }
 
 - (BOOL)subscribedToTag
@@ -97,7 +97,7 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
     return subscription;
 }
 
-- (void)updateSubscribeStatus:(BOOL)animated
+- (void)updateSubscribeStatusAnimated:(BOOL)animated
 {
     //If we get into a weird state and the relaionships are the same don't do anything
     if (self.followHashtagControl.subscribed == self.subscribedToTag)

@@ -56,6 +56,6 @@
  
  @param animate BOOL to tell the control to animate it's changing state
  */
-- (void)updateSubscribeStatus:(BOOL)animated;
+- (void)updateSubscribeStatusAnimated:(BOOL)animated;
 
 @end
