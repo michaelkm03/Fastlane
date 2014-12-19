@@ -289,6 +289,7 @@ static const char kUploadProgressYConstraintKey;
             {
                 VPublishViewController *publishViewController = [VPublishViewController newWithDependencyManager:dependencyManager];
                 publishViewController.mediaToUploadURL = weakWorkspace.renderedMediaURL;
+                __weak VPublishViewController *weakPublishViewController = publishViewController;
                 publishViewController.completion = ^void(BOOL published)
                 {
                     if (published)
@@ -299,6 +300,7 @@ static const char kUploadProgressYConstraintKey;
                     else
                     {
                         [weakNavController popViewControllerAnimated:YES];
+                        weakPublishViewController.completion = nil;
                     }
                 };
                 if (finished)

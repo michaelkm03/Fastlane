@@ -228,7 +228,10 @@ static const CGFloat kSnapDampingConstant = 0.9f;
                   atPoint:(CGPoint)p
 {
     [self.animator removeAllBehaviors];
-    self.completion(NO);
+    if (self.completion)
+    {
+        self.completion(NO);
+    }
 }
 
 #pragma mark - UITextViewDelegate
@@ -251,7 +254,15 @@ shouldChangeTextInRange:(NSRange)range
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer
 shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
 {
-    
+    return YES;
+}
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
+{
+    if (CGRectContainsPoint(self.publishPrompt.frame, [touch locationInView:self.view]))
+    {
+        return NO;
+    }
     return YES;
 }
 
