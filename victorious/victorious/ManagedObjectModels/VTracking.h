@@ -22,7 +22,7 @@
 @property (nonatomic, retain) id videoError;
 @property (nonatomic, retain) id videoSkip;
 @property (nonatomic, retain) id videoStall;
-@property (nonatomic, retain) id videoStart;
+@property (nonatomic, retain) id viewStart;
 @property (nonatomic, retain) id ballisticCount;
 @property (nonatomic, retain) id appEnterForeground;
 @property (nonatomic, retain) id appLaunch;

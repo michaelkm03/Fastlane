@@ -21,7 +21,7 @@
 @dynamic videoError;
 @dynamic videoSkip;
 @dynamic videoStall;
-@dynamic videoStart;
+@dynamic viewStart;
 @dynamic ballisticCount;
 @dynamic appEnterForeground;
 @dynamic appLaunch;

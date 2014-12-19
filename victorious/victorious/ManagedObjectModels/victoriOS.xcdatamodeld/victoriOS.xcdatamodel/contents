@@ -192,7 +192,7 @@
         <attribute name="videoError" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="videoSkip" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="videoStall" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="videoStart" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="viewStart" optional="YES" attributeType="Transformable" syncable="YES"/>
         <relationship name="sequence" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Sequence" inverseName="tracking" inverseEntity="Sequence" syncable="YES"/>
         <relationship name="voteType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="VoteType" inverseName="tracking" inverseEntity="VoteType" syncable="YES"/>
     </entity>
@@ -258,30 +258,30 @@
         <relationship name="streams" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="VStream" inverseName="streamItems" inverseEntity="VStream" syncable="YES"/>
     </entity>
     <elements>
-        <element name="AbstractFilter" positionX="1366" positionY="-600" width="128" height="105"/>
-        <element name="AdBreak" positionX="504" positionY="-322" width="128" height="90"/>
-        <element name="AdBreakFallback" positionX="891" positionY="-324" width="128" height="135"/>
-        <element name="Answer" positionX="727" positionY="99" width="128" height="178"/>
-        <element name="AnswerAction" positionX="718" positionY="330" width="128" height="75"/>
-        <element name="Asset" positionX="646" positionY="-441" width="128" height="163"/>
-        <element name="Comment" positionX="1078" positionY="38" width="128" height="330"/>
-        <element name="Conversation" positionX="1528" positionY="-468" width="128" height="148"/>
-        <element name="Hashtag" positionX="1087" positionY="-630" width="128" height="73"/>
-        <element name="Interaction" positionX="646" positionY="-208" width="128" height="208"/>
-        <element name="InteractionAction" positionX="495" positionY="-162" width="128" height="105"/>
-        <element name="Message" positionX="1582" positionY="-271" width="128" height="178"/>
-        <element name="Node" positionX="817" positionY="-180" width="128" height="133"/>
-        <element name="NodeAction" positionX="835" positionY="-9" width="128" height="90"/>
-        <element name="Notification" positionX="1582" positionY="135" width="128" height="148"/>
-        <element name="NotificationSettings" positionX="693" positionY="-648" width="128" height="120"/>
-        <element name="PollResult" positionX="1582" positionY="-36" width="128" height="118"/>
-        <element name="Rule" positionX="567" positionY="99" width="128" height="75"/>
-        <element name="Sequence" positionX="1078" positionY="-540" width="128" height="465"/>
-        <element name="Tracking" positionX="828" positionY="-630" width="128" height="283"/>
-        <element name="User" positionX="1321" positionY="-324" width="128" height="405"/>
-        <element name="VoteResult" positionX="864" positionY="164" width="128" height="90"/>
-        <element name="VoteType" positionX="538" positionY="-738" width="128" height="255"/>
-        <element name="VStream" positionX="1069" positionY="-792" width="128" height="135"/>
-        <element name="VStreamItem" positionX="871" positionY="-765" width="128" height="103"/>
+        <element name="AbstractFilter" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="AdBreak" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="AdBreakFallback" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Answer" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="AnswerAction" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Asset" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Comment" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Conversation" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Hashtag" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Interaction" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="InteractionAction" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Message" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Node" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="NodeAction" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Notification" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="NotificationSettings" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="PollResult" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Rule" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Sequence" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Tracking" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="User" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="VoteResult" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="VoteType" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="VStream" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="VStreamItem" positionX="0" positionY="0" width="0" height="0"/>
     </elements>
 </model>
