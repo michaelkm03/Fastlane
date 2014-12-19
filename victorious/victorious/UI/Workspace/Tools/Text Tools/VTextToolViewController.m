@@ -7,14 +7,16 @@
 //
 
 #import "VTextToolViewController.h"
+#import "VCapitalizingTextStorage.h"
 
 static const CGFloat kTextRenderingSize = 1024;
 
 @interface VTextToolViewController () <UITextViewDelegate, NSTextStorageDelegate>
 
-@property (nonatomic, weak) IBOutlet UITextView *placeholderTextView;
-@property (nonatomic, weak) IBOutlet UITextView *textView;
-@property (nonatomic, strong) IBOutletCollection(UITextView) NSArray *textViews;
+@property (nonatomic, strong) UITextView *placeholderTextView;
+@property (nonatomic, strong) UITextView *textView;
+
+@property (nonatomic, strong) NSArray *textViews;
 
 @property (nonatomic, strong) NSArray *centerVerticalAlignmentConstraints;
 @property (nonatomic, strong) NSArray *bottomVerticalAlignmentConstraints;
@@ -25,24 +27,18 @@ static const CGFloat kTextRenderingSize = 1024;
 
 @property (nonatomic, assign, getter=isSwappingTextTypes) BOOL swappingTextTypes;
 
+@property (nonatomic, strong) VCapitalizingTextStorage *textStorage;
+
 @end
 
 @implementation VTextToolViewController
 
 + (instancetype)textToolViewController
 {
-    UIStoryboard *workspaceStoryboard = [UIStoryboard storyboardWithName:@"Workspace"
-                                                                  bundle:nil];
-    return [workspaceStoryboard instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
-}
-
-#pragma mark - NSObject
-
-- (void)awakeFromNib
-{
-    [super awakeFromNib];
-    
-    self.searialTextRenderingQueue = dispatch_queue_create("com.victorious.textToolRenderingQueue", DISPATCH_QUEUE_SERIAL);
+    VTextToolViewController *textToolViewController = [[VTextToolViewController alloc] initWithNibName:nil
+                                                                                                bundle:nil];
+    textToolViewController.searialTextRenderingQueue = dispatch_queue_create("com.victorious.textToolRenderingQueue", DISPATCH_QUEUE_SERIAL);
+    return textToolViewController;// [workspaceStoryboard instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
 }
 
 #pragma mark - UIViewController
@@ -52,15 +48,43 @@ static const CGFloat kTextRenderingSize = 1024;
 {
     [super viewDidLoad];
     
+    self.view.backgroundColor = [UIColor clearColor];
+
+    self.placeholderTextView =
+    ({
+        UITextView *placeholderTextView = [[UITextView alloc] initWithFrame:self.view.bounds textContainer:nil];
+        [self.view addSubview:placeholderTextView];
+        placeholderTextView.userInteractionEnabled = NO;
+        placeholderTextView;
+    });
+    self.textView =
+    ({
+        self.textStorage = [[VCapitalizingTextStorage alloc] init];
+        self.textStorage.delegate = self;
+        
+        NSLayoutManager *layoutManager = [[NSLayoutManager alloc] init];
+        [self.textStorage addLayoutManager:layoutManager];
+        
+        NSTextContainer *textContainer = [[NSTextContainer alloc] init];
+        [layoutManager addTextContainer:textContainer];
+        
+        UITextView *textView = [[UITextView alloc] initWithFrame:self.view.bounds
+                                                   textContainer:textContainer];
+        textView.delegate = self;
+        [self.view addSubview:textView];
+        textView;
+    });
+    self.textViews = @[self.placeholderTextView, self.textView];
     [self updateTextAttributesForTextType:self.textType];
     
     [self.textViews enumerateObjectsUsingBlock:^(UITextView *textView, NSUInteger idx, BOOL *stop)
     {
+        textView.translatesAutoresizingMaskIntoConstraints = NO;
+        textView.backgroundColor = [UIColor clearColor];
+        textView.scrollEnabled = NO;
         textView.textContainerInset = UIEdgeInsetsZero;
         textView.scrollEnabled = NO;
     }];
-    
-    self.textView.textStorage.delegate = self;
     
     UITapGestureRecognizer *tapToEditGesture = [[UITapGestureRecognizer alloc] initWithTarget:self
                                                                                        action:@selector(startEditing:)];
@@ -110,7 +134,7 @@ static const CGFloat kTextRenderingSize = 1024;
 
 - (BOOL)userEnteredText
 {
-    return (self.textView.text.length > 0) ? YES : NO;
+    return (self.textStorage.string.length > 0) ? YES : NO;
 }
 
 #pragma mark - Target/Action
@@ -136,6 +160,11 @@ shouldChangeTextInRange:(NSRange)range
 
 - (void)textViewDidChange:(UITextView *)textView
 {
+    if (textView.text.length == 0)
+    {
+        textView.typingAttributes = self.textType.attributes;
+    }
+\
     dispatch_async(self.searialTextRenderingQueue, ^
     {
         self.renderedImage = nil;
@@ -149,7 +178,7 @@ shouldChangeTextInRange:(NSRange)range
 
 - (void)textViewDidEndEditing:(UITextView *)textView
 {
-    self.placeholderTextView.hidden = (textView.text.length > 0) ? YES : NO;
+    self.placeholderTextView.hidden = (self.textStorage.string.length > 0) ? YES : NO;
     
     dispatch_async(self.searialTextRenderingQueue, ^
     {
@@ -175,18 +204,21 @@ shouldChangeTextInRange:(NSRange)range
                                    0,
                                    CGRectGetWidth(self.view.bounds) * scaleFactor,
                                    CGRectGetHeight(self.view.bounds) * scaleFactor);
-    UIGraphicsBeginImageContextWithOptions(scaledRect.size, NO, scaleFactor);
-    CGContextRef context = UIGraphicsGetCurrentContext();
+    
     __block UIImage *renderedImage;
-    CGContextSaveGState(context);
+    UIGraphicsBeginImageContextWithOptions(scaledRect.size, NO, scaleFactor);
     {
-        CGContextScaleCTM(context, scaleFactor, scaleFactor);
-        [self.textView.attributedText drawWithRect:self.textView.frame
-                                           options:NSStringDrawingUsesLineFragmentOrigin
-                                           context:nil];
-        renderedImage = UIGraphicsGetImageFromCurrentImageContext();
+        CGContextRef context = UIGraphicsGetCurrentContext();
+        CGContextSaveGState(context);
+        {
+            CGContextScaleCTM(context, scaleFactor, scaleFactor);
+            [self.textView.attributedText drawWithRect:self.textView.frame
+                                               options:NSStringDrawingUsesLineFragmentOrigin
+                                               context:nil];
+            renderedImage = UIGraphicsGetImageFromCurrentImageContext();
+        }
+        CGContextRestoreGState(context);
     }
-    CGContextRestoreGState(context);
     UIGraphicsEndImageContext();
     
     self.renderedImage = renderedImage;
@@ -201,14 +233,15 @@ shouldChangeTextInRange:(NSRange)range
     
     NSString *placeholderText = textType.placeholderText ? textType.placeholderText : @"";
     placeholderText = textType.shouldForceUppercase ? [placeholderText uppercaseString] : placeholderText;
-    NSString *enteredText = self.textView.text ? self.textView.text : @"";
-    enteredText = textType.shouldForceUppercase ? [enteredText uppercaseString] : enteredText;
-    
     self.placeholderTextView.attributedText = [[NSAttributedString alloc] initWithString:placeholderText
                                                                               attributes:textType.attributes];
-    self.textView.attributedText = [[NSAttributedString alloc] initWithString:enteredText
-                                                                   attributes:textType.attributes];
+
+    NSRange fullTextStorageRange = NSMakeRange(0, self.textStorage.string.length);
+    self.textStorage.shouldForceUppercase = textType.shouldForceUppercase ? YES : NO;
+    [self.textStorage setAttributes:textType.attributes range:fullTextStorageRange];
     self.textView.typingAttributes = textType.attributes;
+    [self.textStorage replaceCharactersInRange:fullTextStorageRange
+                          withAttributedString:[self.textStorage.enteredText attributedSubstringFromRange:fullTextStorageRange]];
 }
 
 - (void)updateTextViewConstraintsForTextType:(VTextTypeTool *)textType
@@ -275,29 +308,6 @@ shouldChangeTextInRange:(NSRange)range
                  break;
          }
      }];
-}
-
-#pragma mark - NSTextStorageDelegate
-
-// Sent inside -processEditing right before fixing attributes.  Delegates can change the characters or attributes.
-- (void)textStorage:(NSTextStorage *)textStorage
- willProcessEditing:(NSTextStorageEditActions)editedMask
-              range:(NSRange)editedRange
-     changeInLength:(NSInteger)delta
-{
-    if (self.isSwappingTextTypes)
-    {
-        return;
-    }
-    
-    if (editedMask & NSTextStorageEditedCharacters)
-    {
-        if ((delta > 0) && self.textType.shouldForceUppercase)
-        {
-            [textStorage replaceCharactersInRange:editedRange
-                                       withString:[[textStorage.string substringWithRange:editedRange] uppercaseString]];
-        }
-    }
 }
 
 @end
