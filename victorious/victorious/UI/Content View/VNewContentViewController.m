@@ -332,7 +332,6 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     NSDictionary *params = @{ VTrackingKeyTimeCurrent : [NSDate date],
                               VTrackingKeySequenceId : self.viewModel.sequence.remoteId,
                               VTrackingKeyUrls : self.viewModel.sequence.tracking.viewStart ?: @[] };
-    
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
 }
 
