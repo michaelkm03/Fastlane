@@ -100,7 +100,6 @@ static const CGFloat kForcedAntiAliasingConstant = 0.01f;
     [self addConstraints:@[topConstraint, rightContstraint, bottomConstraint, leftConstraint]];
     
     _imageView = imageView;
-    
 }
 
 #pragma mark - Property Accessors
