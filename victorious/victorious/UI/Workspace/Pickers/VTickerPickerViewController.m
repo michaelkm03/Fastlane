@@ -57,6 +57,7 @@
         UIView *selectionView = [[UIView alloc] initWithFrame:[self selectionFrame]];
         selectionView.backgroundColor = [self.accentColor colorWithAlphaComponent:0.5f];
         [self.collectionView addSubview:selectionView];
+        [self.collectionView sendSubviewToBack:selectionView];
         selectionView;
     });
     
@@ -69,6 +70,8 @@
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
+    
+    [self.collectionView sendSubviewToBack:self.selectionIndicatorView];
     
     // Inset enough at the bottom to show only one row at the top when fully scrolled
     UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
@@ -91,8 +94,16 @@
                                                                                  forIndexPath:indexPath];
     id <VWorkspaceTool> toolForIndexPath = self.tools[indexPath.row];
     
-    pickerCell.label.text = toolForIndexPath.title;
-    pickerCell.label.font = [self.dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
+    if (self.configureItemLabel)
+    {
+        self.configureItemLabel(pickerCell.label, toolForIndexPath);
+    }
+    else
+    {
+        pickerCell.label.text = toolForIndexPath.title;
+        pickerCell.label.font = [self.dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
+    }
+    
     
     return pickerCell;
 }

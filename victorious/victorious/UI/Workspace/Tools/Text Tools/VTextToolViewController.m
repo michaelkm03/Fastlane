@@ -10,7 +10,7 @@
 
 static const CGFloat kTextRenderingSize = 1024;
 
-@interface VTextToolViewController () <UITextViewDelegate>
+@interface VTextToolViewController () <UITextViewDelegate, NSTextStorageDelegate>
 
 @property (nonatomic, weak) IBOutlet UITextView *placeholderTextView;
 @property (nonatomic, weak) IBOutlet UITextView *textView;
@@ -22,6 +22,8 @@ static const CGFloat kTextRenderingSize = 1024;
 @property (nonatomic, strong) dispatch_queue_t searialTextRenderingQueue;
 
 @property (nonatomic, strong, readwrite) UIImage *renderedImage;
+
+@property (nonatomic, assign, getter=isSwappingTextTypes) BOOL swappingTextTypes;
 
 @end
 
@@ -58,6 +60,8 @@ static const CGFloat kTextRenderingSize = 1024;
         textView.scrollEnabled = NO;
     }];
     
+    self.textView.textStorage.delegate = self;
+    
     UITapGestureRecognizer *tapToEditGesture = [[UITapGestureRecognizer alloc] initWithTarget:self
                                                                                        action:@selector(startEditing:)];
     [self.view addGestureRecognizer:tapToEditGesture];
@@ -72,14 +76,17 @@ static const CGFloat kTextRenderingSize = 1024;
         return;
     }
     
-    [self updateTextAttributesForTextType:textType];
-    if (_textType.verticalAlignment != textType.verticalAlignment)
+    self.swappingTextTypes = YES;
     {
-        [self updateTextViewConstraintsForTextType:textType];
+        [self updateTextAttributesForTextType:textType];
+        if (_textType.verticalAlignment != textType.verticalAlignment)
+        {
+            [self updateTextViewConstraintsForTextType:textType];
+        }
+        [self.view layoutIfNeeded];
+        _textType = textType;
     }
-    [self.view layoutIfNeeded];
-    
-    _textType = textType;
+    self.swappingTextTypes = NO;
 }
 
 - (UIImage *)renderedImage
@@ -192,7 +199,10 @@ shouldChangeTextInRange:(NSRange)range
         return;
     }
     
-    self.placeholderTextView.attributedText = [[NSAttributedString alloc] initWithString:textType.placeholderText ? textType.placeholderText : @""
+    NSString *placeholderText = textType.placeholderText ? textType.placeholderText : @"";
+    placeholderText = textType.shouldForceUppercase ? [placeholderText uppercaseString] : placeholderText;
+    
+    self.placeholderTextView.attributedText = [[NSAttributedString alloc] initWithString:placeholderText
                                                                               attributes:textType.attributes];
     self.textView.attributedText = [[NSAttributedString alloc] initWithString:self.textView.text ? self.textView.text : @""
                                                                    attributes:textType.attributes];
@@ -263,6 +273,29 @@ shouldChangeTextInRange:(NSRange)range
                  break;
          }
      }];
+}
+
+#pragma mark - NSTextStorageDelegate
+
+// Sent inside -processEditing right before fixing attributes.  Delegates can change the characters or attributes.
+- (void)textStorage:(NSTextStorage *)textStorage
+ willProcessEditing:(NSTextStorageEditActions)editedMask
+              range:(NSRange)editedRange
+     changeInLength:(NSInteger)delta
+{
+    if (self.isSwappingTextTypes)
+    {
+        return;
+    }
+    
+    if (editedMask & NSTextStorageEditedCharacters)
+    {
+        if ((delta > 0) && self.textType.shouldForceUppercase)
+        {
+            [textStorage replaceCharactersInRange:editedRange
+                                       withString:[[textStorage.string substringWithRange:editedRange] uppercaseString]];
+        }
+    }
 }
 
 @end
