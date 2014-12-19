@@ -1304,6 +1304,11 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     // Do nothing, eventually a nice animation to reveal experience enhancers
 }
 
+- (BOOL)isVideoContent
+{
+    return self.videoCell != nil;
+}
+
 - (Float64)currentVideoTime
 {
     if ( self.videoCell != nil )
