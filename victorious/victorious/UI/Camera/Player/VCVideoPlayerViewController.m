@@ -799,6 +799,12 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
                 if (!self.startedVideo)
                 {
                     self.startedVideo = YES;
+                    if ( self.isTrackingEnabled )
+                    {
+                        NSDictionary *params = @{ VTrackingKeyTimeCurrent : @( CMTimeGetSeconds( self.currentTime ) ),
+                                                  VTrackingKeyUrls : self.trackingItem.videoStart };
+                        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
+                    }
                 }
             }
             else if ([oldRate floatValue] != 0 && [newRate floatValue] == 0)
