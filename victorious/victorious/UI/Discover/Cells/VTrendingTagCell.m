@@ -110,12 +110,14 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
         return;
     }
     
+    self.followHashtagControl.enabled = YES;
     [self.followHashtagControl setSubscribed:self.subscribedToTag
                                     animated:animated];
 }
 
 - (IBAction)followUnfollowHashtag:(id)sender
 {
+    self.followHashtagControl.enabled = NO;
     self.shouldAnimateSubscription = YES;
     if (self.subscribeToTagAction)
     {
