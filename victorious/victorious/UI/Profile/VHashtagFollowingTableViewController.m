@@ -21,7 +21,7 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
 
 @interface VHashtagFollowingTableViewController ()
 
-@property (nonatomic, strong) NSMutableArray *userTags;
+@property (nonatomic, strong) NSMutableOrderedSet *userTags;
 @property (nonatomic, strong) NSError *error;
 
 @property (nonatomic, weak) MBProgressHUD *failureHud;
@@ -42,7 +42,8 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
 
 - (void)loadHashtagData
 {
-    self.userTags = [[NSMutableArray alloc] init];
+    VUser *mainUser = [[VObjectManager sharedManager] mainUser];
+    self.userTags = [mainUser.hashtags mutableCopy];
     
     [self retrieveHashtagsForLoggedInUser];
 }
@@ -87,7 +88,7 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
 {
     for (VHashtag *hashtag in hashtags)
     {
-        [self.userTags addObject:hashtag.tag];
+        [self.userTags addObject:hashtag];
     }
     
     [self.tableView reloadData];
@@ -97,8 +98,13 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
 
 - (void)configureTableView
 {
+    self.tableView.backgroundColor = [UIColor colorWithWhite:0.97 alpha:1.0];
+    
     [self.tableView registerNib:[UINib nibWithNibName:kVFollowingTagIdentifier bundle:nil] forCellReuseIdentifier:kVFollowingTagIdentifier];
     [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+    
+    UIEdgeInsets insets = UIEdgeInsetsMake(10.0f, 0.0f, 0.0f, 0.0f);
+    self.tableView.contentInset = insets;
     
     [VNoContentTableViewCell registerNibWithTableView:self.tableView];
 }
@@ -127,11 +133,6 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
 
 #pragma mark - UITableViewDelegate Methods
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return 15.0f;
-}
-
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return [VTrendingTagCell cellHeight];
@@ -144,8 +145,8 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
     if ([self.userTags count] > 0)
     {
         VTrendingTagCell *customCell = (VTrendingTagCell *)[tableView dequeueReusableCellWithIdentifier:kVFollowingTagIdentifier forIndexPath:indexPath];
-        NSString *hashtag = self.userTags[ indexPath.row ];
-        [customCell setHashtag:hashtag];
+        VHashtag *hashtag = self.userTags[ indexPath.row ];
+        [customCell setHashtag:hashtag.tag];
         
         customCell.subscribeToTagAction = ^(void)
         {
@@ -174,9 +175,10 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-        // Show hashtag stream
-        NSString *hashtag = self.userTags[ indexPath.row ];
-        [self showStreamWithHashtag:hashtag];
+    // Show hashtag stream
+    VHashtag *hashtag = self.userTags[ indexPath.row ];
+    NSString *tagText = hashtag.tag;
+    [self showStreamWithHashtag:tagText];
 }
 
 #pragma mark - VStreamCollectionViewController List of Tags
@@ -190,12 +192,12 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
 
 #pragma mark - Subscribe / Unsubscribe Actions
 
-- (BOOL)userSubscribedToHashtag:(NSString *)tag
+- (BOOL)userSubscribedToHashtag:(VHashtag *)tag
 {
     return [self.userTags containsObject:tag];
 }
 
-- (void)subscribeToTagAction:(NSString *)hashtag
+- (void)subscribeToTagAction:(VHashtag *)hashtag
 {
     VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
@@ -206,9 +208,9 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
         {
             VTrendingTagCell *cell = (VTrendingTagCell *)[self.tableView cellForRowAtIndexPath:idxPath];
             
-            if ([cell.hashtagText isEqualToString:hashtag])
+            if ([cell.hashtagText isEqualToString:hashtag.tag])
             {
-                [cell updateSubscribeStatus];
+                [cell updateSubscribeStatusAnimated:YES];
                 return;
             }
         }
@@ -223,7 +225,7 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
     };
     
     // Add tag to user tags object
-    [self.userTags addObject:hashtag];
+    [self.userTags addObject:hashtag.tag];
     
     // Backend Subscribe to Hashtag
     [[VObjectManager sharedManager] subscribeToHashtag:hashtag
@@ -231,12 +233,12 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
                                              failBlock:failureBlock];
 }
 
-- (void)unsubscribeToTagAction:(NSString *)hashtag
+- (void)unsubscribeToTagAction:(VHashtag *)hashtag
 {
     VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         // Remove tag to user tags object
-        [self.userTags removeObject:hashtag];
+        [self.userTags removeObject:hashtag.tag];
         
         // Animate the subscribe button
         NSArray *indexPaths = [self.tableView indexPathsForVisibleRows];
@@ -245,9 +247,9 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
         {
             VTrendingTagCell *cell = (VTrendingTagCell *)[self.tableView cellForRowAtIndexPath:idxPath];
             
-            if ([cell.hashtagText isEqualToString:hashtag])
+            if ([cell.hashtagText isEqualToString:hashtag.tag])
             {
-                [cell updateSubscribeStatus];
+                [cell updateSubscribeStatusAnimated:YES];
                 return;
             }
         }
@@ -256,7 +258,7 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
     VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
     {
         self.failureHud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
-        self.failureHud.mode = MBProgressHUDModeAnnularDeterminate;
+        self.failureHud.mode = MBProgressHUDModeText;
         self.failureHud.labelText = NSLocalizedString(@"HashtagUnsubscribeError", @"");
         [self.failureHud hide:YES afterDelay:0.3f];
     };
