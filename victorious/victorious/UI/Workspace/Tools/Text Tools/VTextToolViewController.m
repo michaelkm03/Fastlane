@@ -201,10 +201,12 @@ shouldChangeTextInRange:(NSRange)range
     
     NSString *placeholderText = textType.placeholderText ? textType.placeholderText : @"";
     placeholderText = textType.shouldForceUppercase ? [placeholderText uppercaseString] : placeholderText;
+    NSString *enteredText = self.textView.text ? self.textView.text : @"";
+    enteredText = textType.shouldForceUppercase ? [enteredText uppercaseString] : enteredText;
     
     self.placeholderTextView.attributedText = [[NSAttributedString alloc] initWithString:placeholderText
                                                                               attributes:textType.attributes];
-    self.textView.attributedText = [[NSAttributedString alloc] initWithString:self.textView.text ? self.textView.text : @""
+    self.textView.attributedText = [[NSAttributedString alloc] initWithString:enteredText
                                                                    attributes:textType.attributes];
     self.textView.typingAttributes = textType.attributes;
 }
