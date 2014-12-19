@@ -74,7 +74,8 @@
         return;
     }
     
-    [self.KVOController unobserveAll];
+    [self.KVOController unobserve:_user];
+
     _user = user;
     
     if (_user == nil)

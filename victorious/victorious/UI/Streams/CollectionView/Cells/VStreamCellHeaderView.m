@@ -133,7 +133,7 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
         return;
     }
     
-    [self.KVOController unobserveAll];
+    [self.KVOController unobserve:sequence.user];
     
     _sequence = sequence;
     
