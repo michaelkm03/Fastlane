@@ -51,6 +51,18 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
 
 @implementation VTrendingTagCell
 
+- (void)setShouldCellRespond:(BOOL)shouldCellRespond
+{
+    if (_shouldCellRespond == shouldCellRespond)
+    {
+        return;
+    }
+    
+    _shouldCellRespond = shouldCellRespond;
+    
+    self.followHashtagControl.shouldRespondToTap = shouldCellRespond;
+}
+
 + (NSInteger)cellHeight
 {
     return kTrendingTagCellRowHeight;
@@ -110,19 +122,29 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
         return;
     }
     
-    self.followHashtagControl.enabled = YES;
     [self.followHashtagControl setSubscribed:self.subscribedToTag
                                     animated:animated];
 }
 
 - (IBAction)followUnfollowHashtag:(id)sender
 {
-    self.followHashtagControl.enabled = NO;
-    self.shouldAnimateSubscription = YES;
-    if (self.subscribeToTagAction)
+    if (!self.shouldCellRespond)
     {
-        self.subscribeToTagAction();
+        return;
     }
+    else
+    {
+        self.shouldAnimateSubscription = YES;
+        if (self.subscribeToTagAction != nil)
+        {
+            self.subscribeToTagAction();
+        }
+    }
+}
+
+- (void)prepareForReuse
+{
+    self.shouldCellRespond = YES;
 }
 
 @end

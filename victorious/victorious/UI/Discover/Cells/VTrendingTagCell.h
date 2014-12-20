@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "VFollowHashtagControl.h"
 
-@class VHashtag, VFollowHashtagControl;
+@class VHashtag;
 
 @interface VTrendingTagCell : UITableViewCell
 
@@ -36,6 +37,8 @@
  The actual text of the hashtag (minus the #)
  */
 @property (nonatomic, strong) NSString *hashtagText;
+
+@property (nonatomic, assign) BOOL shouldCellRespond;
 
 /**
  Returns an integer value for the height of the cell

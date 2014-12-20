@@ -13,6 +13,7 @@ IB_DESIGNABLE
 @interface VFollowHashtagControl : UIControl
 
 @property (nonatomic) IBInspectable BOOL subscribed;
+@property (nonatomic, readwrite) BOOL shouldRespondToTap;
 
 - (void)setSubscribed:(BOOL)subscribed
              animated:(BOOL)animated;
