@@ -7,9 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "VFollowHashtagControl.h"
 
-@class VHashtag;
+@class VHashtag, VFollowHashtagControl;
 
 @interface VTrendingTagCell : UITableViewCell
 
@@ -38,6 +37,9 @@
  */
 @property (nonatomic, strong) NSString *hashtagText;
 
+/**
+ Set to NO to disable any action
+ */
 @property (nonatomic, assign) BOOL shouldCellRespond;
 
 /**

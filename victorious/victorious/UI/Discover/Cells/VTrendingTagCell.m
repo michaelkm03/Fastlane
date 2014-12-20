@@ -59,8 +59,6 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
     }
     
     _shouldCellRespond = shouldCellRespond;
-    
-    self.followHashtagControl.shouldRespondToTap = shouldCellRespond;
 }
 
 + (NSInteger)cellHeight

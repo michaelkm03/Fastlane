@@ -341,13 +341,6 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
     // No actions available for kTableViewSectionSuggestedPeople
     if ( indexPath.section == VDiscoverViewControllerSectionTrendingTags && self.isShowingNoData == NO )
     {
-        VTrendingTagCell *cell = (VTrendingTagCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-        
-        if (!cell.shouldCellRespond)
-        {
-            return;
-        }
-        
         // Show hashtag stream
         VHashtag *hashtag = self.trendingTags[ indexPath.row ];
         [self showStreamWithHashtag:hashtag];
