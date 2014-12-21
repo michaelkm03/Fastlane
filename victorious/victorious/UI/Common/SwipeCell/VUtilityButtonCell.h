@@ -8,13 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface VUtilityButtonConfig : NSObject
-
-@property (nonatomic, strong) UIImage *iconImage;
-@property (nonatomic, strong) UIColor *backgroundColor;
-
-@end
-
 @interface VUtilityButtonCell : UICollectionViewCell
 
 + (NSString *)reuseIdentifier;
@@ -27,10 +20,6 @@
  */
 @property (nonatomic, assign) CGFloat intendedFullWidth;
 
-/**
- Configures properties of the cell and its subviews according to properties of
- the provided VUtilityButtonConfig object.
- */
-- (void)applyConfiguration:(VUtilityButtonConfig *)config;
+@property (weak, nonatomic) IBOutlet UIImageView *iconImageView;
 
 @end

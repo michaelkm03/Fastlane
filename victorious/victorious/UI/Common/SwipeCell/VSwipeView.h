@@ -11,6 +11,18 @@
 
 @protocol VSwipeViewControllerDelegate <NSObject>
 
+/**
+ Allow the controller to respond to the showing of utility buttons on a cell,
+ trigger either programmatically or from a swipe by the user.  Usually the response
+ will be to close any other cells that are showing utility buttons so that only
+ on is visible at a time
+*/
+- (void)cellWillShowUtilityButtons:(UIView *)cellView;
+
+@end
+
+@protocol VSwipeViewCellDelegate <NSObject>
+
 // Called when one the provided utility button at the provided index is selected
 - (void)utilityButton:(VUtilityButtonCell *)button selectedAtIndex:(NSUInteger)index;
 
@@ -20,17 +32,16 @@
 // Provide the width for each utlity button
 - (CGFloat)utilityButtonWidth;
 
-// Called during initialization and after a call to `reloadData` to allow calling code to customize the button
-- (VUtilityButtonConfig *)configurationForUtilityButtonAtIndex:(NSUInteger)index;
+// Provide an icon image for the btuton
+- (UIImage *)iconImageForButtonAtIndex:(NSUInteger)index;
 
-- (void)cellWillShowUtilityButtons:(UIView *)cellView;
+// Provide a background color
+- (UIColor *)backgroundColorForButtonAtIndex:(NSUInteger)index;
 
-@end
-
-@protocol VSwipeViewCellDelegate <NSObject>
-
-// The UITableViewCell or UICollectionViewCell in which the swipe view lives
-// Do not return the cell's contentView, it must use the root cell
+/**
+ The UITableViewCell or UICollectionViewCell in which the swipe view lives
+ Do not return the cell's contentView, it must use the root cell
+*/
 @property (nonatomic, readonly) UIView *parentCellView;
 
 @end

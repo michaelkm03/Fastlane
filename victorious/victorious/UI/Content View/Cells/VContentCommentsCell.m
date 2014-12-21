@@ -25,6 +25,8 @@
 #import "VComment+Fetcher.h"
 #import "NSURL+MediaType.h"
 
+#import "VEditCommentsController.h"
+
 static const UIEdgeInsets kTextInsets        = { 36.0f, 56.0f, 11.0f, 25.0f };
 
 static const CGFloat kImagePreviewLoadedAnimationDuration = 0.25f;
@@ -50,6 +52,7 @@ static NSCache *_sharedImageCache = nil;
 @property (nonatomic, assign) BOOL hasMedia;
 @property (nonatomic, copy) NSURL *mediaPreviewURL;
 @property (nonatomic, assign) BOOL mediaIsVideo;
+@property (nonatomic, strong) VEditCommentsController *editCommentsController;
 
 @end
 
@@ -113,6 +116,9 @@ static NSCache *_sharedImageCache = nil;
     self.realtimeCommentLocationLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font];
     self.commentAndMediaView.textFont = [[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont];
     self.commentersAvatarImageView.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    [self setupSwipeView];
+    [self.swipeView addConstraintsToFitContainerView:self.contentView];
 }
 
 - (void)prepareContentAndMediaView
@@ -186,6 +192,9 @@ static NSCache *_sharedImageCache = nil;
         self.mediaPreviewURL = comment.previewImageURL;
         self.mediaIsVideo = [comment.mediaUrl v_hasVideoExtension];
     }
+    
+    self.editCommentsController = [[VEditCommentsController alloc] initWithComment:self.comment cellView:self];
+    self.swipeView.cellDelegate = self.editCommentsController;
 }
 
 - (void)setHasMedia:(BOOL)hasMedia

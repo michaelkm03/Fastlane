@@ -9,8 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "VSwipeView.h"
 
-@interface VSwipeCollectionViewCell : UICollectionViewCell <VSwipeViewCellDelegate>
+@interface VSwipeCollectionViewCell : UICollectionViewCell
 
 @property (nonatomic, strong) VSwipeView *swipeView;
+
+- (void)setupSwipeView;
 
 @end

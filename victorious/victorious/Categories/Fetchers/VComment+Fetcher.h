@@ -13,4 +13,8 @@
 - (BOOL)hasMedia;
 - (NSURL *)previewImageURL;
 
+@property (nonatomic, assign, readonly) BOOL isEditable;
+@property (nonatomic, assign, readonly) BOOL isDeletable;
+@property (nonatomic, assign, readonly) BOOL isFlaggable;
+
 @end

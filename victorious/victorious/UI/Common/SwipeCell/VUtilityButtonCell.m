@@ -8,13 +8,8 @@
 
 #import "VUtilityButtonCell.h"
 
-@implementation VUtilityButtonConfig
-
-@end
-
 @interface VUtilityButtonCell ()
 
-@property (weak, nonatomic) IBOutlet UIImageView *iconImageView;
 @property (strong, nonatomic) NSLayoutConstraint *constraintMinLeading;
 
 @end
@@ -39,12 +34,6 @@
                                                               constant:0.0f];
     self.constraintMinLeading.priority = 1000;
     [self addConstraint:self.constraintMinLeading];
-}
-
-- (void)applyConfiguration:(VUtilityButtonConfig *)config
-{
-    self.iconImageView.image = config.iconImage;
-    self.backgroundColor = config.backgroundColor;
 }
 
 - (void)prepareForReuse

@@ -68,26 +68,22 @@ static const CGFloat kCollectionViewSectionsCount = 1;
     [self setScrollViewContraints];
     [self setContentContainerConstraints];
     [self setCollectionViewConstraints];
-    
 }
 
-- (void)setControllerDelegate:(id<VSwipeViewControllerDelegate>)controllerDelegate
+- (void)setCellDelegate:(id<VSwipeViewCellDelegate>)cellDelegate
 {
-    NSParameterAssert( controllerDelegate != nil );
-    
-    if ( _controllerDelegate != nil )
+    if ( _cellDelegate != nil )
     {
         return;
     }
     
-    _controllerDelegate = controllerDelegate;
+    _cellDelegate = cellDelegate;
     
-    CGFloat buttonWidth = [self.controllerDelegate utilityButtonWidth];
-    NSUInteger buttonCount = [self.controllerDelegate numberOfUtilityButtons];
+    CGFloat buttonWidth = [_cellDelegate utilityButtonWidth];
+    NSUInteger buttonCount = [_cellDelegate numberOfUtilityButtons];
     self.contentContainerViewWidthConstraint.constant = buttonWidth * buttonCount;
     
     [self.scrollView layoutIfNeeded];
-    
 }
 
 - (void)addConstraintsToFitContainerView:(UIView *)containerView
@@ -251,8 +247,8 @@ static const CGFloat kCollectionViewSectionsCount = 1;
 
 - (void)showUtilityButtons
 {
-    CGFloat buttonWidth = [self.controllerDelegate utilityButtonWidth];
-    NSUInteger buttonCount = [self.controllerDelegate numberOfUtilityButtons];
+    CGFloat buttonWidth = [self.cellDelegate utilityButtonWidth];
+    NSUInteger buttonCount = [self.cellDelegate numberOfUtilityButtons];
     CGFloat maxContentOffsetX = buttonWidth * buttonCount;
     [self.scrollView setContentOffset:CGPointMake( maxContentOffsetX, 0.0f ) animated:YES];
 }
@@ -262,9 +258,10 @@ static const CGFloat kCollectionViewSectionsCount = 1;
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     CGFloat gutterWidth = ceil( scrollView.contentOffset.x );
+    
     self.collectionViewWidthConstraint.constant = MAX( gutterWidth, 0.0f );
     self.collectionViewTrainingConstraint.constant = -gutterWidth;
-    [self.collectionViewLayout invalidateLayout];
+   [self.collectionViewLayout invalidateLayout];
     self.collectionViewLayout.sectionInset = UIEdgeInsetsZero;
     
     // Calculate current scroll direction based on comparising to previous contentOffset
@@ -302,9 +299,9 @@ static const CGFloat kCollectionViewSectionsCount = 1;
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     VUtilityButtonCell *buttonCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VUtilityButtonCell reuseIdentifier] forIndexPath:indexPath];
-    VUtilityButtonConfig *config = [self.controllerDelegate configurationForUtilityButtonAtIndex:indexPath.row];
-    [buttonCell applyConfiguration:config];
-    buttonCell.intendedFullWidth = [self.controllerDelegate utilityButtonWidth];
+    buttonCell.iconImageView.image = [self.cellDelegate iconImageForButtonAtIndex:indexPath.row];
+    buttonCell.backgroundColor = [self.cellDelegate backgroundColorForButtonAtIndex:indexPath.row];
+    buttonCell.intendedFullWidth = [self.cellDelegate utilityButtonWidth];
     return buttonCell;
 }
 
@@ -315,7 +312,7 @@ static const CGFloat kCollectionViewSectionsCount = 1;
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return [self.controllerDelegate numberOfUtilityButtons];
+    return [self.cellDelegate numberOfUtilityButtons];
 }
 
 #pragma mark - UICollectionViewDelegateFlowLayout
@@ -324,7 +321,7 @@ static const CGFloat kCollectionViewSectionsCount = 1;
 {
     CGFloat height = CGRectGetHeight( self.collectionView.frame );
     CGFloat totalWidth = CGRectGetWidth( self.collectionView.frame);
-    NSUInteger buttonCount = [self.controllerDelegate numberOfUtilityButtons];
+    NSUInteger buttonCount = [self.cellDelegate numberOfUtilityButtons];
     CGFloat width = totalWidth / (CGFloat)buttonCount;
     return CGSizeMake( width, height );
 }
@@ -334,7 +331,7 @@ static const CGFloat kCollectionViewSectionsCount = 1;
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     VUtilityButtonCell *buttonCell = (VUtilityButtonCell *)[collectionView cellForItemAtIndexPath:indexPath];
-    [self.controllerDelegate utilityButton:buttonCell selectedAtIndex:indexPath.row];
+    [self.cellDelegate utilityButton:buttonCell selectedAtIndex:indexPath.row];
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didHighlightItemAtIndexPath:(NSIndexPath *)indexPath

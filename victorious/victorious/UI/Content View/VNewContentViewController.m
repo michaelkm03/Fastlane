@@ -76,7 +76,7 @@
 
 static const CGFloat kMaxInputBarHeight = 200.0f;
 
-@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate,VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate>
+@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate,VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate>
 
 @property (nonatomic, strong, readwrite) VContentViewViewModel *viewModel;
 @property (nonatomic, strong) NSURL *mediaURL;
@@ -929,7 +929,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
         {
             VContentCommentsCell *commentCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentCommentsCell suggestedReuseIdentifier]
                                                                                           forIndexPath:indexPath];
-            
+            commentCell.swipeView.controllerDelegate = self;
             [self configureCommentCell:commentCell
                              withIndex:indexPath.row];
             
@@ -1315,6 +1315,21 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
         }
     }
     return 0.0f;
+}
+
+#pragma mark - VSwipeViewControllerDelegate
+
+- (void)cellWillShowUtilityButtons:(UIView *)cellView
+{
+    // Close any other cells showing utility buttons
+    
+    for ( VContentCommentsCell *cell in self.contentCollectionView.visibleCells )
+    {
+        if ( [cell isKindOfClass:[VContentCommentsCell class]] && cellView != cell )
+        {
+            [cell.swipeView hideUtilityButtons];
+        }
+    }
 }
 
 @end

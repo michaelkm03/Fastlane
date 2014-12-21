@@ -41,8 +41,9 @@
         return;
     }
     
+    self.clipsToBounds = NO;
+    
     self.swipeView = [[VSwipeView alloc] initWithFrame:self.bounds];
-    self.swipeView.cellDelegate = self;
     [self.contentView addSubview:self.swipeView];
     [self.contentView sendSubviewToBack:self.swipeView];
 }
@@ -60,13 +61,6 @@
     }
     
     return [super hitTest:point withEvent:event];
-}
-
-#pragma mark - VSwipeViewCellDelegate
-
-- (UIView *)parentCellView
-{
-    return self;
 }
 
 @end

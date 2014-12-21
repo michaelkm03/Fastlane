@@ -403,6 +403,7 @@
 		A75FAF2019E8AC1E00EB87C1 /* VDiscoverTableHeaderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A75FAF1119E8AC1E00EB87C1 /* VDiscoverTableHeaderViewController.xib */; };
 		A75FAF2119E8AC1E00EB87C1 /* VDiscoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAF1319E8AC1E00EB87C1 /* VDiscoverViewController.m */; };
 		A75FAF2219E8AC1E00EB87C1 /* VSuggestedPeopleCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAF1619E8AC1E00EB87C1 /* VSuggestedPeopleCollectionViewController.m */; };
+		A761C9CE1A46743A00F0D0F9 /* VCommentsUtilityButtonConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = A761C9CD1A46743A00F0D0F9 /* VCommentsUtilityButtonConfiguration.m */; };
 		A7672B981A1BF6E50063AF46 /* VFirstInstallManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A7672B971A1BF6E50063AF46 /* VFirstInstallManager.m */; };
 		A7672B9A1A1BFF150063AF46 /* VFirstInstallTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7672B991A1BFF150063AF46 /* VFirstInstallTests.m */; };
 		A769C3D71A12DD5000698D0C /* VUserManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A769C3D61A12DD5000698D0C /* VUserManagerTests.m */; };
@@ -446,6 +447,8 @@
 		A7B514541A4517A80074282F /* VSwipeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B5144E1A4517A80074282F /* VSwipeTableViewCell.m */; };
 		A7B514551A4517A80074282F /* VSwipeView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B514501A4517A80074282F /* VSwipeView.m */; };
 		A7B514561A4517A80074282F /* VUtilityButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B514521A4517A80074282F /* VUtilityButtonCell.m */; };
+		A7B514581A464E770074282F /* VUtilityButtonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7B514571A464E770074282F /* VUtilityButtonCell.xib */; };
+		A7B5145B1A4653760074282F /* VEditCommentsController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B5145A1A4653760074282F /* VEditCommentsController.m */; };
 		A7B98A331A251D7D00C58335 /* VTestHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B98A321A251D7D00C58335 /* VTestHelpers.m */; };
 		A7B98A3D1A264D0900C58335 /* VNotificationSettingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B98A381A264D0900C58335 /* VNotificationSettingCell.m */; };
 		A7B98A3E1A264D0900C58335 /* VNotificationSettingsTableSection.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B98A3A1A264D0900C58335 /* VNotificationSettingsTableSection.m */; };
@@ -1339,6 +1342,8 @@
 		A75FAF1419E8AC1E00EB87C1 /* VDiscoverViewControllerProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDiscoverViewControllerProtocol.h; sourceTree = "<group>"; };
 		A75FAF1519E8AC1E00EB87C1 /* VSuggestedPeopleCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSuggestedPeopleCollectionViewController.h; sourceTree = "<group>"; };
 		A75FAF1619E8AC1E00EB87C1 /* VSuggestedPeopleCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSuggestedPeopleCollectionViewController.m; sourceTree = "<group>"; };
+		A761C9CC1A46743A00F0D0F9 /* VCommentsUtilityButtonConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCommentsUtilityButtonConfiguration.h; sourceTree = "<group>"; };
+		A761C9CD1A46743A00F0D0F9 /* VCommentsUtilityButtonConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCommentsUtilityButtonConfiguration.m; sourceTree = "<group>"; };
 		A7672B961A1BF6E50063AF46 /* VFirstInstallManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VFirstInstallManager.h; path = "First Install/VFirstInstallManager.h"; sourceTree = "<group>"; };
 		A7672B971A1BF6E50063AF46 /* VFirstInstallManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VFirstInstallManager.m; path = "First Install/VFirstInstallManager.m"; sourceTree = "<group>"; };
 		A7672B991A1BFF150063AF46 /* VFirstInstallTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFirstInstallTests.m; sourceTree = "<group>"; };
@@ -1415,6 +1420,9 @@
 		A7B514501A4517A80074282F /* VSwipeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSwipeView.m; sourceTree = "<group>"; };
 		A7B514511A4517A80074282F /* VUtilityButtonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUtilityButtonCell.h; sourceTree = "<group>"; };
 		A7B514521A4517A80074282F /* VUtilityButtonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUtilityButtonCell.m; sourceTree = "<group>"; };
+		A7B514571A464E770074282F /* VUtilityButtonCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VUtilityButtonCell.xib; sourceTree = "<group>"; };
+		A7B514591A4653760074282F /* VEditCommentsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEditCommentsController.h; sourceTree = "<group>"; };
+		A7B5145A1A4653760074282F /* VEditCommentsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEditCommentsController.m; sourceTree = "<group>"; };
 		A7B5532F9C5AF61978DBF51E /* libPods-victorious.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-victorious.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7B98A311A251D7D00C58335 /* VTestHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VTestHelpers.h; path = "Test Helpers/VTestHelpers.h"; sourceTree = "<group>"; };
 		A7B98A321A251D7D00C58335 /* VTestHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VTestHelpers.m; path = "Test Helpers/VTestHelpers.m"; sourceTree = "<group>"; };
@@ -2180,6 +2188,10 @@
 				D8360CE919E3640000D7E260 /* VNewContentViewController+Actions.m */,
 				D8917EA019F8498F0070BDBB /* VVideoCellViewModel.h */,
 				D8917EA119F8498F0070BDBB /* VVideoCellViewModel.m */,
+				A7B514591A4653760074282F /* VEditCommentsController.h */,
+				A7B5145A1A4653760074282F /* VEditCommentsController.m */,
+				A761C9CC1A46743A00F0D0F9 /* VCommentsUtilityButtonConfiguration.h */,
+				A761C9CD1A46743A00F0D0F9 /* VCommentsUtilityButtonConfiguration.m */,
 			);
 			path = "Content View";
 			sourceTree = "<group>";
@@ -3341,6 +3353,7 @@
 				A7B514501A4517A80074282F /* VSwipeView.m */,
 				A7B514511A4517A80074282F /* VUtilityButtonCell.h */,
 				A7B514521A4517A80074282F /* VUtilityButtonCell.m */,
+				A7B514571A464E770074282F /* VUtilityButtonCell.xib */,
 			);
 			path = SwipeCell;
 			sourceTree = "<group>";
@@ -4386,6 +4399,7 @@
 				036F38961A0C4DEA0014DF66 /* Ubuntu-Regular.ttf in Resources */,
 				D8E39BD919CB7C80007FD86A /* VContentCommentsCell.xib in Resources */,
 				D8C7CF6119DCD23D00BA33E5 /* VExperienceEnhancerBar.xib in Resources */,
+				A7B514581A464E770074282F /* VUtilityButtonCell.xib in Resources */,
 				036F38721A0C4DEA0014DF66 /* Junction-regular.otf in Resources */,
 				D8E39BE219CB7C80007FD86A /* VTickerCell.xib in Resources */,
 				0390085D19F38D5C00FD7EDF /* VKeyboardInputAccessoryView.xib in Resources */,
@@ -4699,6 +4713,7 @@
 				A743E7EA1A081FFF00339CB3 /* VValidator.m in Sources */,
 				0314D4A419B46B5E00FA363C /* VForceUpgradeAnimatedTransition.m in Sources */,
 				037CB74219CFE8B20084BBED /* VUploadManager.m in Sources */,
+				A7B5145B1A4653760074282F /* VEditCommentsController.m in Sources */,
 				03B83B6219E0D2CC00DC04E4 /* VUploadProgressViewController.m in Sources */,
 				BE88FF7B1A0005E70064AB28 /* VStreamCollectionViewController.m in Sources */,
 				0314D49F19B46B5E00FA363C /* VImageSearchDataSource.m in Sources */,
@@ -4718,6 +4733,7 @@
 				0314D4F719B46B5E00FA363C /* VLargeNumberFormatter.m in Sources */,
 				03CF1520195CFBE600F6477B /* NSArray+VMap.m in Sources */,
 				0314D4E119B46B5E00FA363C /* VFindFriendsTableViewController.m in Sources */,
+				A761C9CE1A46743A00F0D0F9 /* VCommentsUtilityButtonConfiguration.m in Sources */,
 				A7A2E0081A38E44B00F8C705 /* VPurchaseViewController+Transitions.m in Sources */,
 				D82E76E319F5C06100FFB722 /* VContentPollBallotCell.m in Sources */,
 				A7E398731A362578000E4CAC /* NSData+AES.m in Sources */,
