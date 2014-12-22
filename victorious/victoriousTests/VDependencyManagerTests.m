@@ -365,4 +365,33 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
     XCTAssert([result isKindOfClass:[VTestViewControllerWithNewMethod class]]);
 }
 
+#pragma mark - Children
+
+- (void)testChildManagerReturnsValuesFromParent
+{
+    VDependencyManager *childManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:@{ }];
+    
+    NSString *expected = @"medium";
+    NSString *actual = [childManager stringForKey:@"video_quality.capture"];
+    XCTAssertEqualObjects(expected, actual);
+}
+
+- (void)testChildManagerReturnsNewValues
+{
+    VDependencyManager *childManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:@{ @"new": @"hotness" }];
+    
+    NSString *expected = @"hotness";
+    NSString *actual = [childManager stringForKey:@"new"];
+    XCTAssertEqualObjects(expected, actual);
+}
+
+- (void)testChildManagerOverridesParent
+{
+    VDependencyManager *childManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:@{ @"video_quality.capture": @"low" }];
+    
+    NSString *expected = @"low";
+    NSString *actual = [childManager stringForKey:@"video_quality.capture"];
+    XCTAssertEqualObjects(expected, actual);
+}
+
 @end

@@ -168,6 +168,11 @@ NSString * const VDependencyManagerInitialViewControllerKey = @"initialScreen";
     return [self templateValueOfType:[UIViewController class] forKey:key];
 }
 
+- (UIViewController *)singletonViewControllerForKey:(NSString *)key
+{
+    return [self singletonObjectOfType:[UIViewController class] forKey:key];
+}
+
 #pragma mark - Arrays of dependencies
 
 - (NSArray *)arrayForKey:(NSString *)key
@@ -393,9 +398,7 @@ NSString * const VDependencyManagerInitialViewControllerKey = @"initialScreen";
     if ([templateClass isSubclassOfClass:expectedType])
     {
         id object;
-        VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self
-                                                                                    configuration:configurationDictionary
-                                                                dictionaryOfClassesByTemplateName:self.classesByTemplateName];
+        VDependencyManager *dependencyManager = [self childDependencyManagerWithAddedConfiguration:configurationDictionary];
         
         if ([templateClass instancesRespondToSelector:@selector(initWithDependencyManager:)])
         {
@@ -470,6 +473,11 @@ NSString * const VDependencyManagerInitialViewControllerKey = @"initialScreen";
         weakEnumerationBlock(obj);
     }];
     return configurationDictionariesByID;
+}
+
+- (VDependencyManager *)childDependencyManagerWithAddedConfiguration:(NSDictionary *)configuration
+{
+    return [[VDependencyManager alloc] initWithParentManager:self configuration:configuration dictionaryOfClassesByTemplateName:self.classesByTemplateName];
 }
 
 #pragma mark - Class name resolution
