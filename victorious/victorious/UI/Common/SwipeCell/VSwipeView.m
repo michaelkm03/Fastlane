@@ -66,6 +66,21 @@
     return self;
 }
 
+#pragma mark - Public
+
+- (void)hideUtilityButtons
+{
+    [self.scrollView setContentOffset:CGPointZero animated:YES];
+}
+
+- (void)showUtilityButtons
+{
+    CGFloat buttonWidth = [self.cellDelegate utilityButtonWidth];
+    NSUInteger buttonCount = [self.cellDelegate numberOfUtilityButtons];
+    CGFloat maxContentOffsetX = buttonWidth * buttonCount;
+    [self.scrollView setContentOffset:CGPointMake( maxContentOffsetX, 0.0f ) animated:YES];
+}
+
 - (void)setupViews
 {
     [self createScrollView];
@@ -102,10 +117,22 @@
     [self.scrollView layoutIfNeeded];
 }
 
+- (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event
+{
+    if ( CGRectContainsPoint( self.utilityButtonsViewController.view.frame, point) )
+    {
+        return YES;
+    }
+    
+    return [super pointInside:point withEvent:event];
+}
+
 - (UIView *)utilityButtonsContainer
 {
     return self.utilityButtonsViewController.view;
 }
+
+#pragma mark - Subview creation
 
 - (void)createBlockerButtonOverlay
 {
@@ -117,50 +144,11 @@
     [self.cellDelegate.parentCellView bringSubviewToFront:self.blockerButtonOverlay];
 }
 
-- (void)setBlockerButtonOverlayConstraints
-{
-    NSDictionary *views = @{ @"button" : self.blockerButtonOverlay };
-    self.leftGutterView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.cellDelegate.parentCellView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[button]|"
-                                                                                             options:kNilOptions
-                                                                                             metrics:nil
-                                                                                               views:views]];
-    [self.cellDelegate.parentCellView  addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[button]|"
-                                                                                              options:kNilOptions
-                                                                                              metrics:nil
-                                                                                                views:views]];
-}
-
 - (void)createLeftGutterView
 {
     CGRect startingFrame = CGRectMake( 0.0, 0.0, 0.0, CGRectGetHeight(self.frame));
     self.leftGutterView = [[UIView alloc] initWithFrame:startingFrame];
     [self addSubview:self.leftGutterView];
-}
-
-- (void)setLeftGutterViewConstraints
-{
-    NSDictionary *views = @{ @"leftGutterView" : self.leftGutterView };
-    self.leftGutterView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[leftGutterView]|"
-                                                                 options:kNilOptions
-                                                                 metrics:nil
-                                                                   views:views]];
-    NSArray *constraintsH = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|[leftGutterView]"
-                                                                    options:kNilOptions
-                                                                    metrics:nil
-                                                                      views:views];
-    self.leftGutterViewLeadingConstraint = constraintsH.firstObject;
-    [self addConstraints:constraintsH];
-    self.leftGutterViewWidthConstraint = [NSLayoutConstraint constraintWithItem:self.leftGutterView
-                                                                      attribute:NSLayoutAttributeWidth
-                                                                      relatedBy:NSLayoutRelationEqual
-                                                                         toItem:nil
-                                                                      attribute:NSLayoutAttributeNotAnAttribute
-                                                                     multiplier:1.0f
-                                                                       constant:50.0f];
-    
-    [self.leftGutterView addConstraint:self.leftGutterViewWidthConstraint];
 }
 
 - (void)createScrollView
@@ -187,6 +175,45 @@
 }
 
 #pragma mark - Constraints
+
+- (void)setBlockerButtonOverlayConstraints
+{
+    NSDictionary *views = @{ @"button" : self.blockerButtonOverlay };
+    self.leftGutterView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.cellDelegate.parentCellView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[button]|"
+                                                                                             options:kNilOptions
+                                                                                             metrics:nil
+                                                                                               views:views]];
+    [self.cellDelegate.parentCellView  addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[button]|"
+                                                                                              options:kNilOptions
+                                                                                              metrics:nil
+                                                                                                views:views]];
+}
+
+- (void)setLeftGutterViewConstraints
+{
+    NSDictionary *views = @{ @"leftGutterView" : self.leftGutterView };
+    self.leftGutterView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[leftGutterView]|"
+                                                                 options:kNilOptions
+                                                                 metrics:nil
+                                                                   views:views]];
+    NSArray *constraintsH = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|[leftGutterView]"
+                                                                    options:kNilOptions
+                                                                    metrics:nil
+                                                                      views:views];
+    self.leftGutterViewLeadingConstraint = constraintsH.firstObject;
+    [self addConstraints:constraintsH];
+    self.leftGutterViewWidthConstraint = [NSLayoutConstraint constraintWithItem:self.leftGutterView
+                                                                      attribute:NSLayoutAttributeWidth
+                                                                      relatedBy:NSLayoutRelationEqual
+                                                                         toItem:nil
+                                                                      attribute:NSLayoutAttributeNotAnAttribute
+                                                                     multiplier:1.0f
+                                                                       constant:50.0f];
+    
+    [self.leftGutterView addConstraint:self.leftGutterViewWidthConstraint];
+}
 
 - (void)setScrollViewContraints
 {
@@ -262,17 +289,18 @@
     [self.scrollView addConstraint:self.contentContainerViewWidthConstraint];
 }
 
-- (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event
+#pragma mark - State management
+
+- (void)onHide
 {
-    if ( CGRectContainsPoint( self.utilityButtonsViewController.view.frame, point) )
-    {
-        return YES;
-    }
-    
-    return [super pointInside:point withEvent:event];
+    self.blockerButtonOverlay.hidden = YES;
 }
 
-#pragma mark - State management
+- (void)onShow
+{
+    self.blockerButtonOverlay.hidden = NO;
+    [self.controllerDelegate cellWillShowUtilityButtons:self.cellDelegate.parentCellView];
+}
 
 - (void)reset
 {
@@ -281,17 +309,15 @@
     [self.scrollView setContentOffset:CGPointZero animated:NO];
 }
 
-- (void)hideUtilityButtons
+- (void)utlityButtonsDidHide
 {
-    [self.scrollView setContentOffset:CGPointZero animated:YES];
+    self.blockerButtonOverlay.hidden = YES;
 }
 
-- (void)showUtilityButtons
+- (void)utilityButtonsDidShow
 {
-    CGFloat buttonWidth = [self.cellDelegate utilityButtonWidth];
-    NSUInteger buttonCount = [self.cellDelegate numberOfUtilityButtons];
-    CGFloat maxContentOffsetX = buttonWidth * buttonCount;
-    [self.scrollView setContentOffset:CGPointMake( maxContentOffsetX, 0.0f ) animated:YES];
+    self.blockerButtonOverlay.hidden = NO;
+    [self.controllerDelegate cellWillShowUtilityButtons:self.cellDelegate.parentCellView];
 }
 
 - (void)updateGutterViews:(CGFloat)gutterWidth
@@ -306,9 +332,13 @@
     self.leftGutterViewWidthConstraint.constant = MAX( -gutterWidth, 0.0f );
     self.leftGutterViewLeadingConstraint.constant = gutterWidth;
     self.leftGutterView.backgroundColor = [self.controllerDelegate backgroundColorForGutter];
+    
+    // Slide the cell to the side following the scrollview
+    UIView *view = self.cellDelegate.parentCellView;
+    view.transform = CGAffineTransformMakeTranslation( -gutterWidth, 0.0f );
 }
 
-- (void)updateScrollState:(UIScrollView *)scrollView didHide:(BOOL *)didHide didShow:(BOOL *)didShow
+- (void)updateScrollState:(UIScrollView *)scrollView
 {
     // Calculate current scroll direction based on comparising to previous contentOffset
     self.scrollDirection = CGPointMake(scrollView.contentOffset.x - self.previousContentOffset.x,
@@ -318,8 +348,14 @@
     // Allow the delegate to respond to the opening of the utlity buttons
     BOOL wasShwoing = self.isShowingUtilityButtons;
     self.isShowingUtilityButtons = scrollView.contentOffset.x > 0.0f;
-    *didShow = !wasShwoing && self.isShowingUtilityButtons;
-    *didHide = wasShwoing && !self.isShowingUtilityButtons;
+    if ( !wasShwoing && self.isShowingUtilityButtons )
+    {
+        [self utilityButtonsDidShow];
+    }
+    if ( wasShwoing && !self.isShowingUtilityButtons )
+    {
+        [self utlityButtonsDidHide];
+    }
 }
 
 #pragma mark - UIScrollViewDelegate
@@ -328,27 +364,7 @@
 {
     CGFloat gutterWidth = ceil( scrollView.contentOffset.x );
     [self updateGutterViews:gutterWidth];
-    
-    BOOL didShow = NO;
-    BOOL didHide = NO;
-    [self updateScrollState:scrollView didHide:&didHide didShow:&didShow];
-    
-    if ( didShow )
-    {
-        [self.controllerDelegate cellWillShowUtilityButtons:self.cellDelegate.parentCellView];
-    }
-    
-    // Slide the cell to the side following the scrollview
-    UIView *view = self.cellDelegate.parentCellView;
-    view.transform = CGAffineTransformMakeTranslation( -gutterWidth, 0.0f );
-    if ( didShow )
-    {
-        self.blockerButtonOverlay.hidden = NO;
-    }
-    else if ( didHide )
-    {
-        self.blockerButtonOverlay.hidden = YES;
-    }
+    [self updateScrollState:scrollView];
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
