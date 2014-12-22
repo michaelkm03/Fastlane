@@ -120,8 +120,15 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
         return;
     }
     
+    // Animate it
     [self.followHashtagControl setSubscribed:self.subscribedToTag
                                     animated:animated];
+    
+    // Re-enable the control
+    self.followHashtagControl.alpha = 1.0f;
+    self.followHashtagControl.userInteractionEnabled = YES;
+    [self enableSubscriptionIcon:nil];
+    
 }
 
 - (IBAction)followUnfollowHashtag:(id)sender
@@ -132,6 +139,9 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
     }
     else
     {
+        // Disable the control
+        [self disableSubscriptionIcon:nil];
+
         self.shouldAnimateSubscription = YES;
         if (self.subscribeToTagAction != nil)
         {
@@ -143,6 +153,38 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
 - (void)prepareForReuse
 {
     self.shouldCellRespond = YES;
+}
+
+#pragma mark - Disable / Enable Tag Subscription Button
+
+- (void)disableSubscriptionIcon:(id)sender
+{
+    void (^animations)() = ^(void)
+    {
+        self.followHashtagControl.alpha = 0.3f;
+        self.followHashtagControl.userInteractionEnabled = NO;
+    };
+    
+    [UIView transitionWithView:self.followHashtagControl
+                      duration:0.3
+                       options:UIViewAnimationOptionTransitionCrossDissolve
+                    animations:animations
+                    completion:nil];
+}
+
+- (void)enableSubscriptionIcon:(id)sender
+{
+    void (^animations)() = ^(void)
+    {
+        self.followHashtagControl.alpha = 1.0f;
+        self.followHashtagControl.userInteractionEnabled = YES;
+    };
+    
+    [UIView transitionWithView:self.followHashtagControl
+                      duration:0.3
+                       options:UIViewAnimationOptionTransitionCrossDissolve
+                    animations:animations
+                    completion:nil];
 }
 
 @end

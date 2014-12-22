@@ -218,6 +218,18 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
     
     VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
     {
+        // Re-enable the subscribe button
+        NSArray *indexPaths = [self.tableView indexPathsForVisibleRows];
+        
+        for (NSIndexPath *idxPath in indexPaths)
+        {
+            VTrendingTagCell *cell = (VTrendingTagCell *)[self.tableView cellForRowAtIndexPath:idxPath];
+            if ([cell.hashtagText isEqualToString:hashtag.tag])
+            {
+                cell.shouldCellRespond = YES;
+            }
+        }
+        
         self.failureHud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
         self.failureHud.mode = MBProgressHUDModeAnnularDeterminate;
         self.failureHud.labelText = NSLocalizedString(@"HashtagSubscribeError", @"");
@@ -257,6 +269,18 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
     
     VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
     {
+        // Re-enable the subscribe button
+        NSArray *indexPaths = [self.tableView indexPathsForVisibleRows];
+        
+        for (NSIndexPath *idxPath in indexPaths)
+        {
+            VTrendingTagCell *cell = (VTrendingTagCell *)[self.tableView cellForRowAtIndexPath:idxPath];
+            if ([cell.hashtagText isEqualToString:hashtag.tag])
+            {
+                cell.shouldCellRespond = YES;
+            }
+        }
+        
         self.failureHud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
         self.failureHud.mode = MBProgressHUDModeText;
         self.failureHud.labelText = NSLocalizedString(@"HashtagUnsubscribeError", @"");
