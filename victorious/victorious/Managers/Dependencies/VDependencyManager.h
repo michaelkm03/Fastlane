@@ -161,8 +161,12 @@ extern NSString * const VDependencyManagerInitialViewControllerKey; ///< The vie
 - (id)singletonObjectOfType:(Class)expectedType fromDictionary:(NSDictionary *)configurationDictionary;
 
 /**
- Returns a new dependency manager that returns the same values as the receiver,
- in addition to the values in the given configuration dictionary.
+ Creates and returns a new dependency manager with the given configuration dictionary. The
+ new dependency manager will have the receiver as its parent, and any dependencies
+ it can't resolve will be passed up the heirarchy.
+ 
+ @param configuration A dictionary describing the dependencies that will be provided
+                      by the new manager.
  */
 - (VDependencyManager *)childDependencyManagerWithAddedConfiguration:(NSDictionary *)configuration;
 
