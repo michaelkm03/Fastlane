@@ -51,7 +51,7 @@
     [self.enteredText replaceCharactersInRange:range
                                     withString:str];
     [self.capitalizedText replaceCharactersInRange:range
-                                        withString:str];
+                                        withString:[str uppercaseString]];
     [self edited:NSTextStorageEditedCharacters
            range:range
   changeInLength:str.length - (NSInteger)range.length];
@@ -69,15 +69,6 @@
 }
 
 #pragma mark - Other overrides
-
-- (void)processEditing
-{
-    [self.capitalizedText replaceCharactersInRange:NSMakeRange(0, self.capitalizedText.string.length)
-                                        withString:[self.capitalizedText.string uppercaseString]];
-
-    [super processEditing];
-}
-
 #pragma mark - Property Accessors
 
 - (void)setShouldForceUppercase:(BOOL)shouldForceUppercase
