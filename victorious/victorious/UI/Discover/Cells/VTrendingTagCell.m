@@ -123,12 +123,11 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
     // Animate it
     [self.followHashtagControl setSubscribed:self.subscribedToTag
                                     animated:animated];
-    
+
     // Re-enable the control
+    [self enableSubscriptionIcon:nil];
     self.followHashtagControl.alpha = 1.0f;
     self.followHashtagControl.userInteractionEnabled = YES;
-    [self enableSubscriptionIcon:nil];
-    
 }
 
 - (IBAction)followUnfollowHashtag:(id)sender
