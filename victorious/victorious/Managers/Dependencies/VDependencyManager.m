@@ -240,34 +240,33 @@ NSString * const VDependencyManagerInitialViewControllerKey = @"initialScreen";
 
 - (id)singletonObjectOfType:(Class)expectedType forKey:(NSString *)key
 {
-    id singletonTemplate = [self templateValueOfType:[NSObject class] forKey:key];
+    id previouslyCreatedSingleton = [self singletonObjectForKey:key];
     
-    if ( [singletonTemplate isKindOfClass:expectedType] )
+    if ( previouslyCreatedSingleton != nil )
     {
-        return singletonTemplate;
+        return previouslyCreatedSingleton;
     }
-    
-    if ( ![singletonTemplate isKindOfClass:[NSDictionary class]] )
+
+    id singleton = nil;
+    id templateValue = [self templateValueOfType:[NSObject class] forKey:key];
+
+    if ( [templateValue isKindOfClass:[NSDictionary class]] )
     {
-        return nil;
-    }
-    
-    NSDictionary *singletonConfig = (NSDictionary *)singletonTemplate;
-    id singleton = [self singletonObjectOfType:expectedType orNilFromDictionary:singletonConfig];
-    
-    if (singleton == nil)
-    {
-        singleton = [self singletonObjectForKey:key];
+        singleton = [self singletonObjectOfType:expectedType orNilFromDictionary:templateValue];
         
-        if (singleton == nil)
+        if ( singleton == nil )
         {
-            singleton = [self objectOfType:expectedType fromDictionary:singletonConfig];
-            
-            if (singleton != nil)
-            {
-                [self setSingletonObject:singleton forKey:key];
-            }
+            singleton = [self objectOfType:expectedType fromDictionary:templateValue];
         }
+    }
+    else if ( [templateValue isKindOfClass:expectedType] )
+    {
+        singleton = templateValue;
+    }
+    
+    if ( singleton != nil )
+    {
+        [self setSingletonObject:singleton forKey:key];
     }
     return singleton;
 }
@@ -425,6 +424,11 @@ NSString * const VDependencyManagerInitialViewControllerKey = @"initialScreen";
         }
         return object;
     }
+    else if ( [expectedType isSubclassOfClass:[NSDictionary class]] )
+    {
+        return configurationDictionary;
+    }
+    
     return nil;
 }
 

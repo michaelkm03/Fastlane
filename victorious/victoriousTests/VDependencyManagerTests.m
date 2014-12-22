@@ -249,6 +249,36 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
     XCTAssertEqual(array[1], otherArray[1]);
 }
 
+#pragma mark - Dictionaries
+
+- (void)testDictionary
+{
+    NSDictionary *expected = @{
+        @"channels_enabled": @YES,
+        @"histogram_enabled": @NO,
+        @"require_profile_image": @YES,
+        @"template_c_enabled": @NO
+    };
+    NSDictionary *actual = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:@"experiments"];
+    XCTAssertEqualObjects(expected, actual);
+}
+
+/**
+ Dictionaries should always be immutable, so a singleton dictionary doesn't make a lot of sense. However,
+ if you insist on asking VDependencyManager for a singleton dictionary, it should still work.
+ */
+- (void)testSingletonDictionary
+{
+    NSDictionary *expected = @{
+        @"channels_enabled": @YES,
+        @"histogram_enabled": @NO,
+        @"require_profile_image": @YES,
+        @"template_c_enabled": @NO
+    };
+    NSDictionary *actual = [self.dependencyManager singletonObjectOfType:[NSDictionary class] forKey:@"experiments"];
+    XCTAssertEqualObjects(expected, actual);
+}
+
 #pragma mark - Instantiating objects via dictionaries and references
 
 - (void)testObjectFromDictionary
