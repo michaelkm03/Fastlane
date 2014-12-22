@@ -60,15 +60,19 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
     [super viewDidLoad];
     
     [self registerCells];
-    
     [self refresh:YES];
+    
+    // Watch for a change in the login status
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(loginStatusChanged:)
+                                                 name:kLoggedInChangedNotification
+                                               object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     [self.suggestedPeopleViewController viewWillAppear:animated];
-    [self refresh:YES];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -77,7 +81,19 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
     [self.suggestedPeopleViewController viewWillDisappear:animated];
 }
 
+- (void)dealloc
+{
+    // Kill the login notification
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+
+}
+
 #pragma mark - Loading data
+
+- (void)loginStatusChanged:(NSNotification *)notification
+{
+    [self refresh:YES];
+}
 
 - (void)hashtagsDidFailToLoadWithError:(NSError *)error
 {
@@ -115,7 +131,6 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
     }
     
     [self.suggestedPeopleViewController refresh:shouldClearCurrentContent];
-    
     [self reload];
 }
 
@@ -404,7 +419,7 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
         self.failureHud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
         self.failureHud.mode = MBProgressHUDModeText;
         self.failureHud.labelText = NSLocalizedString(@"HashtagSubscribeError", @"");
-        [self.failureHud hide:YES afterDelay:1.0f];
+        [self.failureHud hide:YES afterDelay:3.0f];
     };
     
     // Add tag to user tags object
@@ -461,8 +476,8 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
         
         self.failureHud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
         self.failureHud.mode = MBProgressHUDModeText;
-        self.failureHud.labelText = NSLocalizedString(@"HashtagSubscribeError", @"");
-        [self.failureHud hide:YES afterDelay:1.0f];
+        self.failureHud.labelText = NSLocalizedString(@"HashtagUnsubscribeError", @"");
+        [self.failureHud hide:YES afterDelay:3.0f];
     };
     
     // Backend Unsubscribe to Hashtag call
