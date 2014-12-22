@@ -16,6 +16,8 @@ static const CGFloat kCollectionViewSectionsCount = 1;
 @property (nonatomic, assign) CGPoint scrollDirection;
 @property (nonatomic, assign) BOOL isShowingUtilityButtons;
 
+@property (nonatomic, strong) UIButton *blockerButtonOverlay;
+
 @property (strong, nonatomic) UICollectionView *collectionView;
 @property (strong, nonatomic) UICollectionViewFlowLayout *collectionViewLayout;
 
@@ -26,9 +28,15 @@ static const CGFloat kCollectionViewSectionsCount = 1;
 // that follows the scroll views built-in bouncing
 @property (strong, nonatomic) UIScrollView *scrollView;
 
+// This view occupies the space to the left of the cell when swiping to prevent
+// background content from showing through
+@property (strong, nonatomic) UIView *leftGutterView;
+@property (strong, nonatomic) NSLayoutConstraint *leftGutterViewWidthConstraint;
+@property (strong, nonatomic) NSLayoutConstraint *leftGutterViewLeadingConstraint;
+
 @property (strong, nonatomic) NSLayoutConstraint *contentContainerViewWidthConstraint;
 @property (strong, nonatomic) NSLayoutConstraint *collectionViewWidthConstraint;
-@property (strong, nonatomic) NSLayoutConstraint *collectionViewTrainingConstraint;
+@property (strong, nonatomic) NSLayoutConstraint *collectionViewTrailingConstraint;
 
 @end
 
@@ -64,10 +72,12 @@ static const CGFloat kCollectionViewSectionsCount = 1;
     [self createScrollView];
     [self createContentContainerView];
     [self createUtilityButtonsCollectionView];
+    [self createLeftGutterView];
     
     [self setScrollViewContraints];
     [self setContentContainerConstraints];
     [self setCollectionViewConstraints];
+    [self setLeftGutterViewConstraints];
 }
 
 - (void)setCellDelegate:(id<VSwipeViewCellDelegate>)cellDelegate
@@ -82,6 +92,9 @@ static const CGFloat kCollectionViewSectionsCount = 1;
     CGFloat buttonWidth = [_cellDelegate utilityButtonWidth];
     NSUInteger buttonCount = [_cellDelegate numberOfUtilityButtons];
     self.contentContainerViewWidthConstraint.constant = buttonWidth * buttonCount;
+    
+    [self createBlockerButtonOverlay];
+    [self setBlockerButtonOverlayConstraints];
     
     [self.scrollView layoutIfNeeded];
 }
@@ -105,6 +118,62 @@ static const CGFloat kCollectionViewSectionsCount = 1;
 - (UIView *)utilityButtonsContainer
 {
     return self.collectionView;
+}
+
+- (void)createBlockerButtonOverlay
+{
+    self.blockerButtonOverlay = [[UIButton alloc] initWithFrame:self.cellDelegate.parentCellView.bounds];
+    self.blockerButtonOverlay.backgroundColor = [UIColor clearColor];
+    self.blockerButtonOverlay.hidden = YES;
+    [self.blockerButtonOverlay addTarget:self action:@selector(blockerButtonOverlayTapped:) forControlEvents:UIControlEventTouchDown];
+    [self.cellDelegate.parentCellView addSubview:self.blockerButtonOverlay];
+    [self.cellDelegate.parentCellView bringSubviewToFront:self.blockerButtonOverlay];
+}
+
+- (void)setBlockerButtonOverlayConstraints
+{
+    NSDictionary *views = @{ @"button" : self.blockerButtonOverlay };
+    self.leftGutterView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.cellDelegate.parentCellView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[button]|"
+                                                                                             options:kNilOptions
+                                                                                             metrics:nil
+                                                                                               views:views]];
+    [self.cellDelegate.parentCellView  addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[button]|"
+                                                                                              options:kNilOptions
+                                                                                              metrics:nil
+                                                                                                views:views]];
+}
+
+- (void)createLeftGutterView
+{
+    CGRect startingFrame = CGRectMake( 0.0, 0.0, 0.0, CGRectGetHeight(self.frame));
+    self.leftGutterView = [[UIView alloc] initWithFrame:startingFrame];
+    [self addSubview:self.leftGutterView];
+}
+
+- (void)setLeftGutterViewConstraints
+{
+    NSDictionary *views = @{ @"leftGutterView" : self.leftGutterView };
+    self.leftGutterView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[leftGutterView]|"
+                                                                 options:kNilOptions
+                                                                 metrics:nil
+                                                                   views:views]];
+    NSArray *constraintsH = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|[leftGutterView]"
+                                                                    options:kNilOptions
+                                                                    metrics:nil
+                                                                      views:views];
+    self.leftGutterViewLeadingConstraint = constraintsH.firstObject;
+    [self addConstraints:constraintsH];
+    self.leftGutterViewWidthConstraint = [NSLayoutConstraint constraintWithItem:self.leftGutterView
+                                                                      attribute:NSLayoutAttributeWidth
+                                                                      relatedBy:NSLayoutRelationEqual
+                                                                         toItem:nil
+                                                                      attribute:NSLayoutAttributeNotAnAttribute
+                                                                     multiplier:1.0f
+                                                                       constant:50.0f];
+    
+    [self.leftGutterView addConstraint:self.leftGutterViewWidthConstraint];
 }
 
 - (void)createScrollView
@@ -131,8 +200,8 @@ static const CGFloat kCollectionViewSectionsCount = 1;
     self.collectionViewLayout.sectionInset = UIEdgeInsetsZero;
     self.collectionViewLayout.minimumInteritemSpacing = 0.0;
     
-    CGRect collectionViewStartingFrame = CGRectMake( CGRectGetWidth(self.frame), 0.0f, 0.0f, CGRectGetHeight(self.frame));
-    self.collectionView = [[UICollectionView alloc] initWithFrame:collectionViewStartingFrame
+    CGRect startingFrame = CGRectMake( CGRectGetWidth(self.frame), 0.0f, 0.0f, CGRectGetHeight(self.frame));
+    self.collectionView = [[UICollectionView alloc] initWithFrame:startingFrame
                                              collectionViewLayout:self.collectionViewLayout];
     self.collectionView.scrollEnabled = NO;
     self.collectionView.delaysContentTouches = NO;
@@ -144,6 +213,11 @@ static const CGFloat kCollectionViewSectionsCount = 1;
     [self.collectionView registerNib:nib forCellWithReuseIdentifier:reuseIdentifier];
     
     [self addSubview:self.collectionView];
+}
+
+- (void)blockerButtonOverlayTapped:(UIButton *)blockerButtonOverlay
+{
+    [self hideUtilityButtons];
 }
 
 #pragma mark - Constraints
@@ -174,7 +248,7 @@ static const CGFloat kCollectionViewSectionsCount = 1;
                                                                     options:kNilOptions
                                                                     metrics:nil
                                                                       views:views];
-    self.collectionViewTrainingConstraint = constraintsH.firstObject;
+    self.collectionViewTrailingConstraint = constraintsH.firstObject;
     [self addConstraints:constraintsH];
     self.collectionViewWidthConstraint = [NSLayoutConstraint constraintWithItem:self.collectionView
                                                                       attribute:NSLayoutAttributeWidth
@@ -253,17 +327,22 @@ static const CGFloat kCollectionViewSectionsCount = 1;
     [self.scrollView setContentOffset:CGPointMake( maxContentOffsetX, 0.0f ) animated:YES];
 }
 
-#pragma mark - UIScrollViewDelegate
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+- (void)updateGutterViews:(CGFloat)gutterWidth
 {
-    CGFloat gutterWidth = ceil( scrollView.contentOffset.x );
-    
+    // Size the collection view containing utility buttons to fit the space created when scrolled
     self.collectionViewWidthConstraint.constant = MAX( gutterWidth, 0.0f );
-    self.collectionViewTrainingConstraint.constant = -gutterWidth;
-   [self.collectionViewLayout invalidateLayout];
+    self.collectionViewTrailingConstraint.constant = -gutterWidth;
+    [self.collectionViewLayout invalidateLayout];
     self.collectionViewLayout.sectionInset = UIEdgeInsetsZero;
     
+    // Size the gutter view fit the space created when scrolled (mainly to avoid seeing content behind cell)
+    self.leftGutterViewWidthConstraint.constant = MAX( -gutterWidth, 0.0f );
+    self.leftGutterViewLeadingConstraint.constant = gutterWidth;
+    self.leftGutterView.backgroundColor = [self.controllerDelegate backgroundColorForGutter];
+}
+
+- (void)updateScrollState:(UIScrollView *)scrollView didHide:(BOOL *)didHide didShow:(BOOL *)didShow
+{
     // Calculate current scroll direction based on comparising to previous contentOffset
     self.scrollDirection = CGPointMake(scrollView.contentOffset.x - self.previousContentOffset.x,
                                        scrollView.contentOffset.y - self.previousContentOffset.y );
@@ -272,7 +351,22 @@ static const CGFloat kCollectionViewSectionsCount = 1;
     // Allow the delegate to respond to the opening of the utlity buttons
     BOOL wasShwoing = self.isShowingUtilityButtons;
     self.isShowingUtilityButtons = scrollView.contentOffset.x > 0.0f;
-    if ( !wasShwoing && self.isShowingUtilityButtons )
+    *didShow = !wasShwoing && self.isShowingUtilityButtons;
+    *didHide = wasShwoing && !self.isShowingUtilityButtons;
+}
+
+#pragma mark - UIScrollViewDelegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    CGFloat gutterWidth = ceil( scrollView.contentOffset.x );
+    [self updateGutterViews:gutterWidth];
+    
+    BOOL didShow = NO;
+    BOOL didHide = NO;
+    [self updateScrollState:scrollView didHide:&didHide didShow:&didShow];
+    
+    if ( didShow )
     {
         [self.controllerDelegate cellWillShowUtilityButtons:self.cellDelegate.parentCellView];
     }
@@ -280,6 +374,14 @@ static const CGFloat kCollectionViewSectionsCount = 1;
     // Slide the cell to the side following the scrollview
     UIView *view = self.cellDelegate.parentCellView;
     view.transform = CGAffineTransformMakeTranslation( -gutterWidth, 0.0f );
+    if ( didShow )
+    {
+        self.blockerButtonOverlay.hidden = NO;
+    }
+    else if ( didHide )
+    {
+        self.blockerButtonOverlay.hidden = YES;
+    }
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate

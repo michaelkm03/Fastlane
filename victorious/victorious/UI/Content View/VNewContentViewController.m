@@ -1319,6 +1319,11 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 
 #pragma mark - VSwipeViewControllerDelegate
 
+- (UIColor *)backgroundColorForGutter
+{
+    return [UIColor colorWithWhite:0.96f alpha:1.0f];
+}
+
 - (void)cellWillShowUtilityButtons:(UIView *)cellView
 {
     // Close any other cells showing utility buttons

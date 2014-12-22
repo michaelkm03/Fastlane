@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "VUtilityButtonCell.h"
 
+@class VSwipeView;
+
 @protocol VSwipeViewControllerDelegate <NSObject>
 
 /**
@@ -18,6 +20,8 @@
  on is visible at a time
 */
 - (void)cellWillShowUtilityButtons:(UIView *)cellView;
+
+- (UIColor *)backgroundColorForGutter;
 
 @end
 
