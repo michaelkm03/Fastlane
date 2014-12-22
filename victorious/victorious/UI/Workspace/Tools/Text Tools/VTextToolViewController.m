@@ -150,7 +150,7 @@ static const CGFloat kTextRenderingSize = 1024;
 shouldChangeTextInRange:(NSRange)range
  replacementText:(NSString *)text
 {
-    if ([text isEqualToString:@"\n"])
+    if ([text rangeOfCharacterFromSet:[NSCharacterSet newlineCharacterSet]].location != NSNotFound)
     {
         [textView resignFirstResponder];
         return NO;
@@ -160,11 +160,6 @@ shouldChangeTextInRange:(NSRange)range
 
 - (void)textViewDidChange:(UITextView *)textView
 {
-    if (textView.text.length == 0)
-    {
-        textView.typingAttributes = self.textType.attributes;
-    }
-\
     dispatch_async(self.searialTextRenderingQueue, ^
     {
         self.renderedImage = nil;

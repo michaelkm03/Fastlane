@@ -43,7 +43,7 @@
     [self ensureAttributesAreFixedInRange:NSMakeRange(0, [self v_activeInternalString].string.length)];
     return [[self v_activeInternalString] attributesAtIndex:location
                                       longestEffectiveRange:range
-                                                    inRange:NSMakeRange(0, self.string.length)];
+                                                    inRange:NSMakeRange(0, [self string].length)];
 }
 
 - (void)replaceCharactersInRange:(NSRange)range withString:(NSString *)str
@@ -54,7 +54,7 @@
                                         withString:str];
     [self edited:NSTextStorageEditedCharacters
            range:range
-  changeInLength:(NSInteger)str.length - (NSInteger)range.length];
+  changeInLength:str.length - (NSInteger)range.length];
 }
 
 - (void)setAttributes:(NSDictionary *)attrs range:(NSRange)range
