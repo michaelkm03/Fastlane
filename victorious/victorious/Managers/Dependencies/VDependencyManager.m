@@ -240,13 +240,19 @@ NSString * const VDependencyManagerInitialViewControllerKey = @"initialScreen";
 
 - (id)singletonObjectOfType:(Class)expectedType forKey:(NSString *)key
 {
-    NSDictionary *singletonConfig = [self templateValueOfType:[NSDictionary class] forKey:key];
+    id singletonTemplate = [self templateValueOfType:[NSObject class] forKey:key];
     
-    if (singletonConfig == nil)
+    if ( [singletonTemplate isKindOfClass:expectedType] )
+    {
+        return singletonTemplate;
+    }
+    
+    if ( ![singletonTemplate isKindOfClass:[NSDictionary class]] )
     {
         return nil;
     }
     
+    NSDictionary *singletonConfig = (NSDictionary *)singletonTemplate;
     id singleton = [self singletonObjectOfType:expectedType orNilFromDictionary:singletonConfig];
     
     if (singleton == nil)
