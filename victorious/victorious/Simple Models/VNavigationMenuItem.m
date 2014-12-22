@@ -15,17 +15,25 @@ static NSString * const kDestinationKey = @"destination";
 
 @implementation VNavigationMenuItem
 
-- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
+- (instancetype)initWithTitle:(NSString *)title identifier:(NSString *)identifier icon:(UIImage *)icon destination:(id)destination
 {
     self = [super init];
     if (self)
     {
-        _identifier = [dependencyManager stringForKey:kIdentifierKey];
-        _title = [dependencyManager stringForKey:kTitleKey];
-        _icon = nil;
-        _destination = [dependencyManager singletonObjectOfType:[NSObject class] forKey:kDestinationKey];
+        _identifier = [identifier copy];
+        _title = [title copy];
+        _icon = icon;
+        _destination = destination;
     }
     return self;
+}
+
+- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    NSString *title = [dependencyManager stringForKey:kTitleKey];
+    NSString *identifier = [dependencyManager stringForKey:kIdentifierKey];
+    id destination = [dependencyManager singletonObjectOfType:[NSObject class] forKey:kDestinationKey];
+    return [self initWithTitle:title identifier:identifier icon:nil destination:destination];
 }
 
 - (BOOL)isEqual:(id)object

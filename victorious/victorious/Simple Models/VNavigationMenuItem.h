@@ -22,9 +22,14 @@
 @property (nonatomic, strong, readonly) id destination; ///< This menu item's destination. Should be either a UIViewController subclass or an implementation of VNavigationDestination
 
 /**
+ Initializes a new instance of VNavigationMenuItem with the provided property values
+ */
+- (instancetype)initWithTitle:(NSString *)title identifier:(NSString *)identifier icon:(UIImage *)icon destination:(id)destination NS_DESIGNATED_INITIALIZER;
+
+/**
  initializes a new instance of VNavigationMenuItem, reading 
  property values from the provided dependencyManager
  */
-- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager;
 
 @end
