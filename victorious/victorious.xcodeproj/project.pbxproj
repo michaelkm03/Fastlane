@@ -406,6 +406,7 @@
 		A761C9CE1A46743A00F0D0F9 /* VCommentsUtilityButtonConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = A761C9CD1A46743A00F0D0F9 /* VCommentsUtilityButtonConfiguration.m */; };
 		A761C9D11A48A97C00F0D0F9 /* VUtilityButtonsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A761C9D01A48A97C00F0D0F9 /* VUtilityButtonsViewController.m */; };
 		A761C9D41A48B1E500F0D0F9 /* UIVIew+AutoLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = A761C9D31A48B1E500F0D0F9 /* UIVIew+AutoLayout.m */; };
+		A761C9D71A48CB9800F0D0F9 /* VSwipeView.m in Sources */ = {isa = PBXBuildFile; fileRef = A761C9D61A48CB9800F0D0F9 /* VSwipeView.m */; };
 		A7672B981A1BF6E50063AF46 /* VFirstInstallManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A7672B971A1BF6E50063AF46 /* VFirstInstallManager.m */; };
 		A7672B9A1A1BFF150063AF46 /* VFirstInstallTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7672B991A1BFF150063AF46 /* VFirstInstallTests.m */; };
 		A769C3D71A12DD5000698D0C /* VUserManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A769C3D61A12DD5000698D0C /* VUserManagerTests.m */; };
@@ -447,7 +448,7 @@
 		A7AA647D19E78EAA0068D2B1 /* victoriOS.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A7AA647B19E78EAA0068D2B1 /* victoriOS.xcdatamodeld */; };
 		A7B514531A4517A80074282F /* VSwipeCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B5144C1A4517A80074282F /* VSwipeCollectionViewCell.m */; };
 		A7B514541A4517A80074282F /* VSwipeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B5144E1A4517A80074282F /* VSwipeTableViewCell.m */; };
-		A7B514551A4517A80074282F /* VSwipeView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B514501A4517A80074282F /* VSwipeView.m */; };
+		A7B514551A4517A80074282F /* VSwipeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B514501A4517A80074282F /* VSwipeViewController.m */; };
 		A7B514561A4517A80074282F /* VUtilityButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B514521A4517A80074282F /* VUtilityButtonCell.m */; };
 		A7B514581A464E770074282F /* VUtilityButtonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7B514571A464E770074282F /* VUtilityButtonCell.xib */; };
 		A7B5145B1A4653760074282F /* VEditCommentsController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B5145A1A4653760074282F /* VEditCommentsController.m */; };
@@ -1350,6 +1351,8 @@
 		A761C9D01A48A97C00F0D0F9 /* VUtilityButtonsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUtilityButtonsViewController.m; sourceTree = "<group>"; };
 		A761C9D21A48B1E500F0D0F9 /* UIVIew+AutoLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIVIew+AutoLayout.h"; sourceTree = "<group>"; };
 		A761C9D31A48B1E500F0D0F9 /* UIVIew+AutoLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIVIew+AutoLayout.m"; sourceTree = "<group>"; };
+		A761C9D51A48CB9800F0D0F9 /* VSwipeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSwipeView.h; sourceTree = "<group>"; };
+		A761C9D61A48CB9800F0D0F9 /* VSwipeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSwipeView.m; sourceTree = "<group>"; };
 		A7672B961A1BF6E50063AF46 /* VFirstInstallManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VFirstInstallManager.h; path = "First Install/VFirstInstallManager.h"; sourceTree = "<group>"; };
 		A7672B971A1BF6E50063AF46 /* VFirstInstallManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VFirstInstallManager.m; path = "First Install/VFirstInstallManager.m"; sourceTree = "<group>"; };
 		A7672B991A1BFF150063AF46 /* VFirstInstallTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFirstInstallTests.m; sourceTree = "<group>"; };
@@ -1422,8 +1425,8 @@
 		A7B5144C1A4517A80074282F /* VSwipeCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSwipeCollectionViewCell.m; sourceTree = "<group>"; };
 		A7B5144D1A4517A80074282F /* VSwipeTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSwipeTableViewCell.h; sourceTree = "<group>"; };
 		A7B5144E1A4517A80074282F /* VSwipeTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSwipeTableViewCell.m; sourceTree = "<group>"; };
-		A7B5144F1A4517A80074282F /* VSwipeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSwipeView.h; sourceTree = "<group>"; };
-		A7B514501A4517A80074282F /* VSwipeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSwipeView.m; sourceTree = "<group>"; };
+		A7B5144F1A4517A80074282F /* VSwipeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSwipeViewController.h; sourceTree = "<group>"; };
+		A7B514501A4517A80074282F /* VSwipeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSwipeViewController.m; sourceTree = "<group>"; };
 		A7B514511A4517A80074282F /* VUtilityButtonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUtilityButtonCell.h; sourceTree = "<group>"; };
 		A7B514521A4517A80074282F /* VUtilityButtonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUtilityButtonCell.m; sourceTree = "<group>"; };
 		A7B514571A464E770074282F /* VUtilityButtonCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VUtilityButtonCell.xib; sourceTree = "<group>"; };
@@ -3355,8 +3358,10 @@
 				A7B5144C1A4517A80074282F /* VSwipeCollectionViewCell.m */,
 				A7B5144D1A4517A80074282F /* VSwipeTableViewCell.h */,
 				A7B5144E1A4517A80074282F /* VSwipeTableViewCell.m */,
-				A7B5144F1A4517A80074282F /* VSwipeView.h */,
-				A7B514501A4517A80074282F /* VSwipeView.m */,
+				A7B5144F1A4517A80074282F /* VSwipeViewController.h */,
+				A7B514501A4517A80074282F /* VSwipeViewController.m */,
+				A761C9D51A48CB9800F0D0F9 /* VSwipeView.h */,
+				A761C9D61A48CB9800F0D0F9 /* VSwipeView.m */,
 				A7B514511A4517A80074282F /* VUtilityButtonCell.h */,
 				A7B514521A4517A80074282F /* VUtilityButtonCell.m */,
 				A7B514571A464E770074282F /* VUtilityButtonCell.xib */,
@@ -4608,7 +4613,7 @@
 				0314D4AD19B46B5E00FA363C /* VMessageViewController.m in Sources */,
 				0314D4A219B46B5E00FA363C /* VImageSearchViewController.m in Sources */,
 				03C185BA19B42E5D00E27D05 /* OAuthCore.m in Sources */,
-				A7B514551A4517A80074282F /* VSwipeView.m in Sources */,
+				A7B514551A4517A80074282F /* VSwipeViewController.m in Sources */,
 				0314D50A19B46BCB00FA363C /* UIView+Masking.m in Sources */,
 				A75FAF2119E8AC1E00EB87C1 /* VDiscoverViewController.m in Sources */,
 				0314D48919B46B5E00FA363C /* VContentInputAccessoryView.m in Sources */,
@@ -4956,6 +4961,7 @@
 				A73EAEC31A41453C0021BB31 /* NSString+Unicode.swift in Sources */,
 				BE171E111868C211004E5202 /* VComment+RestKit.m in Sources */,
 				03CE66F619B47B590011BB9E /* VFacebookManager.m in Sources */,
+				A761C9D71A48CB9800F0D0F9 /* VSwipeView.m in Sources */,
 				0314D4E619B46B5E00FA363C /* VInviteFriendTableViewCell.m in Sources */,
 				DB6FDC3A19C10CC600CEF5BF /* VStreamCellHeaderView.m in Sources */,
 				A769C3EB1A13176700698D0C /* VWebBrowserViewController.m in Sources */,

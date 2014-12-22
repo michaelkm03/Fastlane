@@ -25,6 +25,7 @@
 #import "VComment+Fetcher.h"
 #import "NSURL+MediaType.h"
 
+#import "UIView+AutoLayout.h"
 #import "VEditCommentsController.h"
 
 static const UIEdgeInsets kTextInsets        = { 36.0f, 56.0f, 11.0f, 25.0f };
@@ -118,7 +119,7 @@ static NSCache *_sharedImageCache = nil;
     self.commentersAvatarImageView.translatesAutoresizingMaskIntoConstraints = NO;
     
     [self setupSwipeView];
-    [self.swipeView addConstraintsToFitContainerView:self.contentView];
+    [self.swipeViewController.view addConstraintsToFitContainerView:self.contentView];
 }
 
 - (void)prepareContentAndMediaView
@@ -194,7 +195,7 @@ static NSCache *_sharedImageCache = nil;
     }
     
     self.editCommentsController = [[VEditCommentsController alloc] initWithComment:self.comment cellView:self];
-    self.swipeView.cellDelegate = self.editCommentsController;
+    self.swipeViewController.cellDelegate = self.editCommentsController;
 }
 
 - (void)setHasMedia:(BOOL)hasMedia

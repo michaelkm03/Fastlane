@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "VSwipeView.h"
+#import "VSwipeViewController.h"
 
 @interface VUtilityButtonsViewController : UIViewController
 

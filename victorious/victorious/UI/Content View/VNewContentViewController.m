@@ -929,7 +929,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
         {
             VContentCommentsCell *commentCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentCommentsCell suggestedReuseIdentifier]
                                                                                           forIndexPath:indexPath];
-            commentCell.swipeView.controllerDelegate = self;
+            commentCell.swipeViewController.controllerDelegate = self;
             [self configureCommentCell:commentCell
                              withIndex:indexPath.row];
             
@@ -1332,7 +1332,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     {
         if ( [cell isKindOfClass:[VContentCommentsCell class]] && cellView != cell )
         {
-            [cell.swipeView hideUtilityButtons];
+            [cell.swipeViewController hideUtilityButtons];
         }
     }
 }

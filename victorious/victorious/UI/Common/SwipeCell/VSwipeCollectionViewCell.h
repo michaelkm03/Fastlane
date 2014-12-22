@@ -7,11 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "VSwipeView.h"
+#import "VSwipeViewController.h"
 
 @interface VSwipeCollectionViewCell : UICollectionViewCell
 
-@property (nonatomic, strong) VSwipeView *swipeView;
+@property (nonatomic, strong) VSwipeViewController *swipeViewController;
 
 - (void)setupSwipeView;
 

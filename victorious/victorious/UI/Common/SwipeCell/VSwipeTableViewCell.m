@@ -31,29 +31,29 @@
 {
     [super prepareForReuse];
     
-    [self.swipeView reset];
+    [self.swipeViewController reset];
 }
 
 - (void)setupSwipeView
 {
-    if ( self.swipeView != nil )
+    if ( self.swipeViewController != nil )
     {
         return;
     }
     
     self.clipsToBounds = NO;
     
-    self.swipeView = [[VSwipeView alloc] initWithFrame:self.bounds];
-    [self.contentView addSubview:self.swipeView];
-    [self.contentView sendSubviewToBack:self.swipeView];
+    self.swipeViewController = [[VSwipeViewController alloc] initWithFrame:self.bounds];
+    [self.contentView addSubview:self.swipeViewController.view];
+    [self.contentView sendSubviewToBack:self.swipeViewController.view];
 }
 
 - (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
 {
     if ( !self.clipsToBounds && !self.hidden && self.alpha > 0 )
     {
-        CGPoint subPoint = [self.swipeView.utilityButtonsContainer convertPoint:point fromView:self];
-        UIView *result = [self.swipeView.utilityButtonsContainer hitTest:subPoint withEvent:event];
+        CGPoint subPoint = [self.swipeViewController.utilityButtonsContainer convertPoint:point fromView:self];
+        UIView *result = [self.swipeViewController.utilityButtonsContainer hitTest:subPoint withEvent:event];
         if ( result != nil )
         {
             return result;

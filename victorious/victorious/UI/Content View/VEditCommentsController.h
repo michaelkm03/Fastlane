@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "VSwipeView.h"
+#import "VSwipeViewController.h"
 #import "VComment.h"
 
 @interface VEditCommentsController : NSObject <VSwipeViewCellDelegate>
