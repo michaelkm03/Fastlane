@@ -7,10 +7,10 @@
 //
 
 #import "VSwipeView.h"
+#import "VUtilityButtonsViewController.h"
+#import "UIView+AutoLayout.h"
 
-static const CGFloat kCollectionViewSectionsCount = 1;
-
-@interface VSwipeView () <UIScrollViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIGestureRecognizerDelegate>
+@interface VSwipeView () <UIScrollViewDelegate>
 
 @property (nonatomic, assign) CGPoint previousContentOffset;
 @property (nonatomic, assign) CGPoint scrollDirection;
@@ -18,8 +18,7 @@ static const CGFloat kCollectionViewSectionsCount = 1;
 
 @property (nonatomic, strong) UIButton *blockerButtonOverlay;
 
-@property (strong, nonatomic) UICollectionView *collectionView;
-@property (strong, nonatomic) UICollectionViewFlowLayout *collectionViewLayout;
+@property (strong, nonatomic) VUtilityButtonsViewController *utilityButtonsViewController;
 
 // The subview of the scroll view drives the scroll view's content size
 @property (strong, nonatomic) UIView *contentContainerView;
@@ -71,12 +70,10 @@ static const CGFloat kCollectionViewSectionsCount = 1;
 {
     [self createScrollView];
     [self createContentContainerView];
-    [self createUtilityButtonsCollectionView];
     [self createLeftGutterView];
     
     [self setScrollViewContraints];
     [self setContentContainerConstraints];
-    [self setCollectionViewConstraints];
     [self setLeftGutterViewConstraints];
 }
 
@@ -93,31 +90,21 @@ static const CGFloat kCollectionViewSectionsCount = 1;
     NSUInteger buttonCount = [_cellDelegate numberOfUtilityButtons];
     self.contentContainerViewWidthConstraint.constant = buttonWidth * buttonCount;
     
+    CGRect startingFrame = CGRectMake( CGRectGetWidth(self.frame), 0.0f, 0.0f, CGRectGetHeight(self.frame));
+    self.utilityButtonsViewController = [[VUtilityButtonsViewController alloc] initWithFrame:startingFrame];
+    self.utilityButtonsViewController.cellDelegate = _cellDelegate;
+    [self addSubview:self.utilityButtonsViewController.view];
+    [self setCollectionViewConstraints];
+    
     [self createBlockerButtonOverlay];
     [self setBlockerButtonOverlayConstraints];
     
     [self.scrollView layoutIfNeeded];
 }
 
-- (void)addConstraintsToFitContainerView:(UIView *)containerView
-{
-    NSParameterAssert( containerView == self.superview );
-    
-    NSDictionary *views = @{ @"view" : self };
-    self.translatesAutoresizingMaskIntoConstraints = NO;
-    [containerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[view]|"
-                                                                          options:kNilOptions
-                                                                          metrics:nil
-                                                                            views:views]];
-    [containerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[view]|"
-                                                                          options:kNilOptions
-                                                                          metrics:nil
-                                                                            views:views]];
-}
-
 - (UIView *)utilityButtonsContainer
 {
-    return self.collectionView;
+    return self.utilityButtonsViewController.view;
 }
 
 - (void)createBlockerButtonOverlay
@@ -194,27 +181,6 @@ static const CGFloat kCollectionViewSectionsCount = 1;
     [self.scrollView addSubview:self.contentContainerView];
 }
 
-- (void)createUtilityButtonsCollectionView
-{
-    self.collectionViewLayout = [[UICollectionViewFlowLayout alloc] init];
-    self.collectionViewLayout.sectionInset = UIEdgeInsetsZero;
-    self.collectionViewLayout.minimumInteritemSpacing = 0.0;
-    
-    CGRect startingFrame = CGRectMake( CGRectGetWidth(self.frame), 0.0f, 0.0f, CGRectGetHeight(self.frame));
-    self.collectionView = [[UICollectionView alloc] initWithFrame:startingFrame
-                                             collectionViewLayout:self.collectionViewLayout];
-    self.collectionView.scrollEnabled = NO;
-    self.collectionView.delaysContentTouches = NO;
-    self.collectionView.delegate = self;
-    self.collectionView.dataSource = self;
-    
-    NSString *reuseIdentifier = [VUtilityButtonCell reuseIdentifier];
-    UINib *nib = [UINib nibWithNibName:reuseIdentifier bundle:[NSBundle mainBundle]];
-    [self.collectionView registerNib:nib forCellWithReuseIdentifier:reuseIdentifier];
-    
-    [self addSubview:self.collectionView];
-}
-
 - (void)blockerButtonOverlayTapped:(UIButton *)blockerButtonOverlay
 {
     [self hideUtilityButtons];
@@ -238,8 +204,9 @@ static const CGFloat kCollectionViewSectionsCount = 1;
 
 - (void)setCollectionViewConstraints
 {
-    NSDictionary *views = @{ @"collectionView" : self.collectionView };
-    self.collectionView.translatesAutoresizingMaskIntoConstraints = NO;
+    UIView *collectionView = self.utilityButtonsViewController.view;
+    NSDictionary *views = @{ @"collectionView" : collectionView };
+    collectionView.translatesAutoresizingMaskIntoConstraints = NO;
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[collectionView]|"
                                                                  options:kNilOptions
                                                                  metrics:nil
@@ -250,7 +217,7 @@ static const CGFloat kCollectionViewSectionsCount = 1;
                                                                       views:views];
     self.collectionViewTrailingConstraint = constraintsH.firstObject;
     [self addConstraints:constraintsH];
-    self.collectionViewWidthConstraint = [NSLayoutConstraint constraintWithItem:self.collectionView
+    self.collectionViewWidthConstraint = [NSLayoutConstraint constraintWithItem:collectionView
                                                                       attribute:NSLayoutAttributeWidth
                                                                       relatedBy:NSLayoutRelationEqual
                                                                          toItem:nil
@@ -258,7 +225,7 @@ static const CGFloat kCollectionViewSectionsCount = 1;
                                                                      multiplier:1.0f
                                                                        constant:0.0f];
     
-    [self.collectionView addConstraint:self.collectionViewWidthConstraint];
+    [collectionView addConstraint:self.collectionViewWidthConstraint];
 }
 
 - (void)setContentContainerConstraints
@@ -297,7 +264,7 @@ static const CGFloat kCollectionViewSectionsCount = 1;
 
 - (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event
 {
-    if ( CGRectContainsPoint( self.collectionView.frame, point) )
+    if ( CGRectContainsPoint( self.utilityButtonsViewController.view.frame, point) )
     {
         return YES;
     }
@@ -332,8 +299,8 @@ static const CGFloat kCollectionViewSectionsCount = 1;
     // Size the collection view containing utility buttons to fit the space created when scrolled
     self.collectionViewWidthConstraint.constant = MAX( gutterWidth, 0.0f );
     self.collectionViewTrailingConstraint.constant = -gutterWidth;
-    [self.collectionViewLayout invalidateLayout];
-    self.collectionViewLayout.sectionInset = UIEdgeInsetsZero;
+    
+    [self.utilityButtonsViewController constraintsDidUpdate];
     
     // Size the gutter view fit the space created when scrolled (mainly to avoid seeing content behind cell)
     self.leftGutterViewWidthConstraint.constant = MAX( -gutterWidth, 0.0f );
@@ -394,58 +361,6 @@ static const CGFloat kCollectionViewSectionsCount = 1;
     {
         [self showUtilityButtons];
     }
-}
-
-#pragma mark - UICollectionViewDataSource
-
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    VUtilityButtonCell *buttonCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VUtilityButtonCell reuseIdentifier] forIndexPath:indexPath];
-    buttonCell.iconImageView.image = [self.cellDelegate iconImageForButtonAtIndex:indexPath.row];
-    buttonCell.backgroundColor = [self.cellDelegate backgroundColorForButtonAtIndex:indexPath.row];
-    buttonCell.intendedFullWidth = [self.cellDelegate utilityButtonWidth];
-    return buttonCell;
-}
-
-- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
-{
-    return kCollectionViewSectionsCount;
-}
-
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
-{
-    return [self.cellDelegate numberOfUtilityButtons];
-}
-
-#pragma mark - UICollectionViewDelegateFlowLayout
-
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    CGFloat height = CGRectGetHeight( self.collectionView.frame );
-    CGFloat totalWidth = CGRectGetWidth( self.collectionView.frame);
-    NSUInteger buttonCount = [self.cellDelegate numberOfUtilityButtons];
-    CGFloat width = totalWidth / (CGFloat)buttonCount;
-    return CGSizeMake( width, height );
-}
-
-#pragma mark - UICollectionViewDelegate
-
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    VUtilityButtonCell *buttonCell = (VUtilityButtonCell *)[collectionView cellForItemAtIndexPath:indexPath];
-    [self.cellDelegate utilityButton:buttonCell selectedAtIndex:indexPath.row];
-}
-
-- (void)collectionView:(UICollectionView *)collectionView didHighlightItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    VUtilityButtonCell *buttonCell = (VUtilityButtonCell *)[collectionView cellForItemAtIndexPath:indexPath];
-    buttonCell.highlighted = YES;
-}
-
-- (void)collectionView:(UICollectionView *)collectionView didUnhighlightItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    VUtilityButtonCell *buttonCell = (VUtilityButtonCell *)[collectionView cellForItemAtIndexPath:indexPath];
-    buttonCell.highlighted = NO;
 }
 
 @end

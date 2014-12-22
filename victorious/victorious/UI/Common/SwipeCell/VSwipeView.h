@@ -7,9 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "VUtilityButtonCell.h"
 
 @class VSwipeView;
+@class VUtilityButtonCell;
 
 @protocol VSwipeViewControllerDelegate <NSObject>
 
@@ -70,8 +70,6 @@
  Hides the utility buttons without animation.
  */
 - (void)reset;
-
-- (void)addConstraintsToFitContainerView:(UIView *)containerView;
 
 /**
  Delegate the provides support and handles events for all cells;
