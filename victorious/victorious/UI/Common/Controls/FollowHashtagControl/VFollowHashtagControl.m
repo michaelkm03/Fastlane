@@ -104,26 +104,6 @@ static const CGFloat kForcedAntiAliasingConstant = 0.01f;
 
 #pragma mark - Property Accessors
 
-- (void)setShouldRespondToTap:(BOOL)shouldRespondToTap
-{
-    if (_shouldRespondToTap == shouldRespondToTap)
-    {
-        return;
-    }
-    
-    _shouldRespondToTap = shouldRespondToTap;
-    
-    if (self.shouldRespondToTap)
-    {
-        self.enabled = YES;
-        
-    }
-    else
-    {
-        self.enabled = NO;
-    }
-}
-
 - (void)setSubscribed:(BOOL)subscribed
 {
     if (_subscribed == subscribed)
