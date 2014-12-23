@@ -335,7 +335,9 @@ static NSString * const kMenuKey = @"menu";
     if (self.parallaxEnabled)
     {
        for (UIMotionEffect *effect in self.menuViewController.view.motionEffects)
+       {
            [self.menuViewController.view removeMotionEffect:effect];
+       }
 
        UIInterpolatingMotionEffect *interpolationHorizontal = [[UIInterpolatingMotionEffect alloc]initWithKeyPath:@"center.x" type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
        interpolationHorizontal.minimumRelativeValue = self.parallaxMenuMinimumRelativeValue;

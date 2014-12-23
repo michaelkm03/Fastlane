@@ -114,11 +114,34 @@ static NSString * const kSelectorKey =  @"selector";
                     kTitleKey: NSLocalizedString(@"Home", @""),
                     kDestinationKey: @{
                         kIDKey: self.firstMenuItemID,
-                        kClassNameKey: @"stream.screen",
-                        kTitleKey: NSLocalizedString(@"Home", @""),
-                        kStreamUrlPathKey: @"/api/sequence/hot_detail_list_by_stream/home",
-                        kIsHomeKey: @YES,
-                        kCanAddContentKey: @YES,
+                        kClassNameKey: @"basic.multiScreen",
+                        kScreensKey: @[
+                            @{
+                                kClassNameKey: @"stream.screen",
+                                kTitleKey: NSLocalizedString(@"Featured", @""),
+                                kStreamUrlPathKey: @"/api/sequence/hot_detail_list_by_stream/home",
+                                kIsHomeKey: @YES,
+                            },
+                            @{
+                                kIDKey: self.homeRecentID,
+                                kClassNameKey: @"stream.screen",
+                                kTitleKey: NSLocalizedString(@"Recent", @""),
+                                kStreamUrlPathKey: [self urlPathForStreamCategories:[VUGCCategories() arrayByAddingObjectsFromArray:VOwnerCategories()]],
+                                kCanAddContentKey: @YES,
+                            },
+                            @{
+                                kClassNameKey: @"followingStream.screen",
+                                kTitleKey: NSLocalizedString(@"Following", @""),
+                                kStreamUrlPathKey: @"/api/sequence/follows_detail_list_by_stream/0/home",
+                            }
+                        ],
+                        kSelectorKey: @{
+                            kClassNameKey: @"basic.multiScreenSelector",
+                            VDependencyManagerBackgroundColorKey: self.accentColor,
+                        },
+                        kInitialKey: @{
+                            kReferenceIDKey: self.homeRecentID,
+                        },
                     }
                 },
                 [self ownerStreamMenuItem],

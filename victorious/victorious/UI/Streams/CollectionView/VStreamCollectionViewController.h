@@ -13,6 +13,8 @@
 #import "VSequenceActionsDelegate.h"
 #import "VNewContentViewController.h"
 
+extern NSString * const VDependencyManagerStreamURLPathKey;
+
 @class VStreamCollectionViewDataSource;
 
 @interface VStreamCollectionViewController : VAbstractStreamCollectionViewController <VNewContentViewControllerDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, VSequenceActionsDelegate, VHasManagedDependancies>

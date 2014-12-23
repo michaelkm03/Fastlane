@@ -8,6 +8,8 @@
 	<string>VMenuController</string>
 	<key>stream.screen</key>
 	<string>VStreamCollectionViewController</string>
+	<key>followingStream.screen</key>
+	<string>VFollowingStreamCollectionViewController</string>
 	<key>streamDirectory.screen</key>
 	<string>VDirectoryViewController</string>
 	<key>basic.multiScreen</key>

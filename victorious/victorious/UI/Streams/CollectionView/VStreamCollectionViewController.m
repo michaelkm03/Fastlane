@@ -50,14 +50,12 @@
 #import "VConstants.h"
 #import "VTracking.h"
 
-static NSString * const kInitialKey = @"initial";
-static NSString * const kMarqueeKey = @"marquee";
-static NSString * const kStreamURLPathKey = @"streamUrlPath";
-static NSString * const kTitleKey = @"title";
 static NSString * const kIsHomeKey = @"isHome";
 static NSString * const kCanAddContentKey = @"canAddContent";
 static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
 static CGFloat const kTemplateCLineSpacing = 8;
+
+NSString * const VDependencyManagerStreamURLPathKey = @"streamUrlPath";
 
 @interface VStreamCollectionViewController () <VNewContentViewControllerDelegate, VMarqueeDelegate, VSequenceActionsDelegate, VUploadProgressViewControllerDelegate>
 
@@ -89,8 +87,8 @@ static CGFloat const kTemplateCLineSpacing = 8;
 {
     NSAssert([NSThread isMainThread], @"This method must be called on the main thread");
     
-    VStream *stream = [VStream streamForPath:[dependencyManager stringForKey:kStreamURLPathKey] inContext:dependencyManager.objectManager.managedObjectStore.mainQueueManagedObjectContext];
-    stream.name = [dependencyManager stringForKey:kTitleKey];
+    VStream *stream = [VStream streamForPath:[dependencyManager stringForKey:VDependencyManagerStreamURLPathKey] inContext:dependencyManager.objectManager.managedObjectStore.mainQueueManagedObjectContext];
+    stream.name = [dependencyManager stringForKey:VDependencyManagerTitleKey];
     
     VStreamCollectionViewController *streamCollectionVC = [self streamViewControllerForStream:stream];
     

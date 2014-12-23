@@ -9,6 +9,9 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+// multi-purpose keys
+extern NSString * const VDependencyManagerTitleKey;
+
 // Keys for colors
 extern NSString * const VDependencyManagerBackgroundColorKey;
 extern NSString * const VDependencyManagerSecondaryBackgroundColorKey;

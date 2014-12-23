@@ -18,6 +18,9 @@
 static NSString * const kTemplateClassesFilename = @"TemplateClasses";
 static NSString * const kPlistFileExtension = @"plist";
 
+// multi-purpose keys
+NSString * const VDependencyManagerTitleKey = @"title";
+
 // Keys for colors
 NSString * const VDependencyManagerBackgroundColorKey = @"color.background";
 NSString * const VDependencyManagerSecondaryBackgroundColorKey = @"color.bacground.secondary";
