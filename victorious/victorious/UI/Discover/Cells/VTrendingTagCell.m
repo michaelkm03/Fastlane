@@ -8,8 +8,12 @@
 
 #import "VTrendingTagCell.h"
 #import "VThemeManager.h"
+#import "VObjectManager+Users.h"
+#import "VUser.h"
 #import "VHashTags.h"
 #import "VConstants.h"
+#import "VHashtag.h"
+#import "VFollowHashtagControl.h"
 
 static const UIEdgeInsets kHashtagLabelEdgeInsets = { 0, 6, 0, 7 };
 
@@ -41,11 +45,21 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
 
 @interface VTrendingTagCell()
 
-@property (weak, nonatomic) IBOutlet VHashtagLabel *hashTagLabel;
+@property (nonatomic, weak) IBOutlet VHashtagLabel *hashTagLabel;
 
 @end
 
 @implementation VTrendingTagCell
+
+- (void)setShouldCellRespond:(BOOL)shouldCellRespond
+{
+    if (_shouldCellRespond == shouldCellRespond)
+    {
+        return;
+    }
+    
+    _shouldCellRespond = shouldCellRespond;
+}
 
 + (NSInteger)cellHeight
 {
@@ -62,11 +76,73 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
 - (void)setHashtag:(VHashtag *)hashtag
 {
     // Make sure there's a # at the beginning of the text
-    NSString *text = [VHashTags stringWithPrependedHashmarkFromString:hashtag.tag];
+    self.hashtagText = hashtag.tag;
+    NSString *text = [VHashTags stringWithPrependedHashmarkFromString:self.hashtagText];
     
     [self.hashTagLabel setText:text];
     
     [self applyTheme];
+    
+    if (self.subscribedToTag)
+    {
+        self.followHashtagControl.subscribed = YES;
+    }
+    [self updateSubscribeStatusAnimated:NO];
+}
+
+- (BOOL)subscribedToTag
+{
+    BOOL subscription = NO;
+    VUser *mainUser = [[VObjectManager sharedManager] mainUser];
+    
+    for (VHashtag *hashtag in mainUser.hashtags)
+    {
+        if ([hashtag.tag isEqualToString:self.hashtagText])
+        {
+            subscription = YES;
+            break;
+        }
+    }
+    
+    return subscription;
+}
+
+- (void)updateSubscribeStatusAnimated:(BOOL)animated
+{
+    //If we get into a weird state and the relaionships are the same don't do anything
+    if (self.followHashtagControl.subscribed == self.subscribedToTag)
+    {
+        return;
+    }
+    if (!self.shouldAnimateSubscription)
+    {
+        self.followHashtagControl.subscribed = self.subscribedToTag;
+        return;
+    }
+    
+    [self.followHashtagControl setSubscribed:self.subscribedToTag
+                                    animated:animated];
+}
+
+- (IBAction)followUnfollowHashtag:(id)sender
+{
+    if (!self.shouldCellRespond)
+    {
+        return;
+    }
+    else
+    {
+        self.shouldAnimateSubscription = YES;
+        if (self.subscribeToTagAction != nil)
+        {
+            self.subscribeToTagAction();
+        }
+    }
+}
+
+- (void)prepareForReuse
+{
+    self.shouldCellRespond = YES;
 }
 
 @end
