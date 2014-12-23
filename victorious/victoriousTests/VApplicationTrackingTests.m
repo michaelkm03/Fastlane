@@ -130,18 +130,27 @@
 {
     NSString *macro1 = self.applicaitonTracking.parameterMacroMapping.allValues[0];
     NSString *macro2 = self.applicaitonTracking.parameterMacroMapping.allValues[1];
-    NSString *macro3 = @"%%unregistered_macro%%";
+    NSString *macro3 = self.applicaitonTracking.parameterMacroMapping.allValues[2];
+    
+    NSString *paramKey1 = self.applicaitonTracking.parameterMacroMapping.allKeys[0];
+    NSString *paramKey3 = self.applicaitonTracking.parameterMacroMapping.allKeys[2];
+    
     NSString *string = [NSString stringWithFormat:@"%@/%@/%@", macro1, macro2, macro3 ];
     
     NSString *output;
     NSString *expected;
     NSDictionary *parameters;
     
-    parameters = @{ macro1 : @"value1" , macro2 : @"value2", macro3 : @"value3" };
-    output = [self.applicaitonTracking stringByReplacingMacros:self.applicaitonTracking.parameterMacroMapping inString:string withCorrspondingParameters:parameters];
-    expected = [string stringByReplacingOccurrencesOfString:macro1 withString:parameters[ macro1 ]];
-    expected = [expected stringByReplacingOccurrencesOfString:macro2 withString:parameters[ macro2 ]];
-    expected = [expected stringByReplacingOccurrencesOfString:macro3 withString:@""];
+    parameters = @{ paramKey1 : @"value1",
+                    // macro2 is missing intentionally to test the removal of the macro
+                    paramKey3 : @"value3" };
+    
+    output = [self.applicaitonTracking stringByReplacingMacros:self.applicaitonTracking.parameterMacroMapping
+                                                      inString:string
+                                    withCorrspondingParameters:parameters];
+    expected = [string stringByReplacingOccurrencesOfString:macro1 withString:parameters[ paramKey1 ]];
+    expected = [expected stringByReplacingOccurrencesOfString:macro2 withString:@""];
+    expected = [expected stringByReplacingOccurrencesOfString:macro3 withString:parameters[ paramKey3 ]];
     XCTAssertEqualObjects( output, expected, @"URL should only have registerd macros replaced, otherwise the macros should be removed." );
 }
 
@@ -203,7 +212,6 @@
     NSString *macro = @"%%macro%%";
     NSString *urlWithMacro = [NSString stringWithFormat:@"http://www.example.com/%@", macro];
     
-    XCTAssertNil( [self.applicaitonTracking stringFromString:urlWithMacro byReplacingString:macro withValue:@""] );
     XCTAssertNil( [self.applicaitonTracking stringFromString:urlWithMacro byReplacingString:macro withValue:nil] );
     XCTAssertNil( [self.applicaitonTracking stringFromString:urlWithMacro byReplacingString:macro withValue:[NSObject new]] );
     

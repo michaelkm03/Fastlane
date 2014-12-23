@@ -25,25 +25,14 @@
 #import "VUserProfileViewController.h"
 #import "VSettingManager.h"
 
-static void * VUserProfileAttributesContext =  &VUserProfileAttributesContext;
+#import <KVOController/FBKVOController.h>
 
 static VLargeNumberFormatter *largeNumberFormatter;
 
 static const CGFloat kUserInfoViewMaxHeight = 25.0f;
 static const CGFloat kCommentButtonBuffer = 5.0f;
 
-@interface VStreamCellHeaderView ()
-
-@property (nonatomic, assign, getter=isObservingUser) BOOL observingUser;
-
-@end
-
 @implementation VStreamCellHeaderView
-
-- (void)dealloc
-{
-    [self stopObservingUserProfile];
-}
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -98,8 +87,6 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
     }
     
     self.dateImageView.tintColor = self.dateLabel.textColor;
-    
-    self.observingUser = NO;
 }
 
 - (void)hideCommentsButton
@@ -146,7 +133,7 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
         return;
     }
     
-    [self stopObservingUserProfile];
+    [self.KVOController unobserve:sequence.user];
     
     _sequence = sequence;
     
@@ -155,19 +142,23 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
         return;
     }
     
-
-    [_sequence.user addObserver:self forKeyPath:NSStringFromSelector(@selector(location)) options:NSKeyValueObservingOptionNew context:VUserProfileAttributesContext];
-    [_sequence.user addObserver:self forKeyPath:NSStringFromSelector(@selector(name)) options:NSKeyValueObservingOptionNew context:VUserProfileAttributesContext];
-    [_sequence.user addObserver:self forKeyPath:NSStringFromSelector(@selector(pictureUrl)) options:NSKeyValueObservingOptionNew context:VUserProfileAttributesContext];
-    [_sequence.user addObserver:self forKeyPath:NSStringFromSelector(@selector(tagline)) options:NSKeyValueObservingOptionNew context:VUserProfileAttributesContext];
-    
-    self.observingUser = YES;
-    
-    [self updateWithCurrentUser];
+    __weak typeof(self) welf = self;
+    [self.KVOController observe:sequence.user
+                       keyPaths:@[NSStringFromSelector(@selector(name)), NSStringFromSelector(@selector(pictureUrl))]
+                        options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew
+                          block:^(id observer, id object, NSDictionary *change)
+     {
+         [welf updateWithCurrentUser];
+     }];
 }
 
 - (void)updateWithCurrentUser
 {
+    if (self.sequence.user == nil)
+    {
+        return;
+    }
+    
     [self.profileImageButton setProfileImageURL:[NSURL URLWithString:self.sequence.user.pictureUrl]
                                        forState:UIControlStateNormal];
     
@@ -208,32 +199,6 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
     if ([self.delegate respondsToSelector:@selector(willCommentOnSequence:fromView:)])
     {
         [self.delegate willCommentOnSequence:self.sequence fromView:self];
-    }
-}
-
-#pragma mark - KVO
-
-- (void)stopObservingUserProfile
-{
-    if (!self.isObservingUser)
-    {
-        return;
-    }
-    
-    [self.sequence.user removeObserver:self forKeyPath:NSStringFromSelector(@selector(location)) context:VUserProfileAttributesContext];
-    [self.sequence.user removeObserver:self forKeyPath:NSStringFromSelector(@selector(name)) context:VUserProfileAttributesContext];
-    [self.sequence.user removeObserver:self forKeyPath:NSStringFromSelector(@selector(pictureUrl)) context:VUserProfileAttributesContext];
-    [self.sequence.user removeObserver:self forKeyPath:NSStringFromSelector(@selector(tagline)) context:VUserProfileAttributesContext];
-}
-
-- (void)observeValueForKeyPath:(NSString *)keyPath
-                      ofObject:(id)object
-                        change:(NSDictionary *)change
-                       context:(void *)context
-{
-    if (context == VUserProfileAttributesContext)
-    {
-        [self updateWithCurrentUser];
     }
 }
 
