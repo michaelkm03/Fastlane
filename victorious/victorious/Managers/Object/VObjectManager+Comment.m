@@ -142,7 +142,7 @@
     };
     
     return [self POST:@"/api/comment/remove"
-               object:nil
+               object:comment
            parameters:@{ @"comment_id" : comment.remoteId.stringValue ?: [NSNull null],
                          @"removal_reason" : removalReason ?: [NSNull null]
                        }
@@ -156,7 +156,9 @@
 {
     return [self POST:@"/api/comment/edit"
                object:comment
-           parameters:nil
+           parameters:@{ @"comment_id" : comment.remoteId.stringValue ?: [NSNull null],
+                         @"text" : comment.text ?: [NSNull null]
+                         }
          successBlock:success
             failBlock:fail];
 }

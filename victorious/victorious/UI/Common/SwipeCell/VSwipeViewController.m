@@ -129,7 +129,6 @@
     self.blockerButtonOverlay = [[UIButton alloc] initWithFrame:self.cellDelegate.parentCellView.bounds];
     self.blockerButtonOverlay.backgroundColor = [UIColor clearColor];
     self.blockerButtonOverlay.hidden = YES;
-    self.blockerButtonOverlay.backgroundColor = [[UIColor redColor] colorWithAlphaComponent:0.1f];
     [self.blockerButtonOverlay addTarget:self action:@selector(blockerButtonOverlayTapped:) forControlEvents:UIControlEventTouchDown];
     [self.cellDelegate.parentCellView addSubview:self.blockerButtonOverlay];
     [self.cellDelegate.parentCellView bringSubviewToFront:self.blockerButtonOverlay];

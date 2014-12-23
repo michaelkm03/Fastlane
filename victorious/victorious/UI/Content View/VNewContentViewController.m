@@ -73,10 +73,11 @@
 #import "VSequence+Fetcher.h"
 
 #import "VViewControllerTransition.h"
+#import "VEditCommentViewController.h"
 
 static const CGFloat kMaxInputBarHeight = 200.0f;
 
-@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate,VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate>
+@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate,VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate>
 
 @property (nonatomic, strong, readwrite) VContentViewViewModel *viewModel;
 @property (nonatomic, strong) NSURL *mediaURL;
@@ -442,9 +443,15 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
                      animated:(BOOL)flag
                    completion:(void (^)(void))completion
 {
-    [super presentViewController:viewControllerToPresent
-                        animated:flag
-                      completion:completion];
+    @try {
+        
+        [super presentViewController:viewControllerToPresent
+                            animated:flag
+                          completion:completion];
+    }
+    @catch (NSException *exception) {
+        NSLog( @"%@", exception.description );
+    }
     
     // Pause playback on presentation
     [self.videoCell pause];
@@ -1351,13 +1358,22 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 
 - (void)editComment:(VComment *)comment
 {
-    // TODO: Show edit comments
-    VLog( @"Edit comment \"%@\"", comment.text );
+    VEditCommentViewController *editViewController = [VEditCommentViewController instantiateFromStoryboardWithComment:comment];
+    editViewController.transitioningDelegate = self.transitionDelegate;
+    editViewController.delegate = self;
+    [self presentViewController:editViewController animated:YES completion:nil];
 }
 
 - (void)didSelectActionRequiringLogin
 {
     [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+}
+
+#pragma mark - VEditCommentViewControllerDelegate
+
+- (void)didFinishEditingComment:(VComment *)comment
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end
