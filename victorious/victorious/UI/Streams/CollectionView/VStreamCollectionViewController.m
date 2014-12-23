@@ -32,6 +32,8 @@
 #import "VStream+Fetcher.h"
 #import "VSequence+Fetcher.h"
 #import "VNode+Fetcher.h"
+#import "VUser.h"
+#import "VHashtag.h"
 
 //Managers
 #import "VDependencyManager+VObjectManager.h"
@@ -70,6 +72,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
 @property (strong, nonatomic) VSequenceActionController *sequenceActionController;
 
 @property (nonatomic, assign) BOOL hasRefreshed;
+@property (nonatomic, assign) BOOL subscribedToHashtag;
 
 @end
 
@@ -117,11 +120,36 @@ static CGFloat const kTemplateCLineSpacing = 8;
 
 + (instancetype)hashtagStreamWithHashtag:(NSString *)hashtag
 {
-    NSString *title = [@"#" stringByAppendingString:hashtag];
+    
+    // Check if hashtag is being followed or not
+    NSString *tagTitle = [@"#" stringByAppendingString:hashtag];
+
     VStream *defaultStream = [VStream streamForHashTag:hashtag];
     VStreamCollectionViewController *streamVC = [self streamViewControllerForDefaultStream:defaultStream
                                                                              andAllStreams:@[ defaultStream ]
-                                                                                     title:title];
+                                                                                     title:tagTitle];
+    
+    VUser *mainUser = [[VObjectManager sharedManager] mainUser];
+    NSOrderedSet *tagSet = mainUser.hashtags;
+    NSString *buttonImageName = @"followTag";
+    BOOL subscribed = NO;
+    
+    for (VHashtag *tag in tagSet)
+    {
+        if ([tag.tag isEqualToString:tagTitle])
+        {
+            buttonImageName = @"unfollowTag";
+            subscribed = YES;
+            break;
+        }
+    }
+    
+    UIImage *hashtagButtonImage = [[UIImage imageNamed:buttonImageName]  imageWithRenderingMode:UIImageRenderingModeAutomatic];
+    hashtagButtonImage = [hashtagButtonImage scaleToSize:CGSizeMake(24, 24)];
+
+    [streamVC.navHeaderView setRightButtonImage:hashtagButtonImage withAction:@selector(hashtagButtonAction:) onTarget:nil];
+    streamVC.subscribedToHashtag = subscribed;
+    
     return streamVC;
 }
 
@@ -142,6 +170,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
     streamColllection.navHeaderView.delegate = streamColllection;
     NSInteger selectedStream = [allStreams indexOfObject:stream];
     streamColllection.navHeaderView.navSelector.currentIndex = selectedStream;
+    
     
     return streamColllection;
 }
@@ -645,6 +674,18 @@ static CGFloat const kTemplateCLineSpacing = 8;
 }
 
 #pragma mark - Actions
+
+- (void)hashtagButtonAction:(id)sender
+{
+    if (self.subscribedToHashtag)
+    {
+        VLog(@"Unsubscribe from hashtag");
+    }
+    else
+    {
+        VLog(@"Subscribe to hashtag");
+    }
+}
 
 - (void)setBackgroundImageWithURL:(NSURL *)url
 {
