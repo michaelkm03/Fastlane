@@ -46,7 +46,8 @@
                                                     inRange:NSMakeRange(0, [self string].length)];
 }
 
-- (void)replaceCharactersInRange:(NSRange)range withString:(NSString *)str
+- (void)replaceCharactersInRange:(NSRange)range
+                      withString:(NSString *)str
 {
     [self.enteredText replaceCharactersInRange:range
                                     withString:str];
@@ -68,7 +69,6 @@
   changeInLength:0];
 }
 
-#pragma mark - Other overrides
 #pragma mark - Property Accessors
 
 - (void)setShouldForceUppercase:(BOOL)shouldForceUppercase

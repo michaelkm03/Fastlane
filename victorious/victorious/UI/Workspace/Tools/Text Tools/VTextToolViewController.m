@@ -160,6 +160,7 @@ shouldChangeTextInRange:(NSRange)range
 
 - (void)textViewDidChange:(UITextView *)textView
 {
+    textView.attributedText = [[NSAttributedString alloc] initWithString:self.textView.text attributes:self.textType.attributes];
     dispatch_async(self.searialTextRenderingQueue, ^
     {
         self.renderedImage = nil;
