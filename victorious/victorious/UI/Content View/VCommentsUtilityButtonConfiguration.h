@@ -8,10 +8,18 @@
 
 @import UIKit;
 
+typedef NS_ENUM( NSUInteger, VCommentCellUtilityType )
+{
+    VCommentCellUtilityTypeEdit,
+    VCommentCellUtilityTypeDelete,
+    VCommentCellUtilityTypeFlag
+};
+
 @interface VUtilityButtonConfig : NSObject
 
 @property (nonatomic, strong) UIImage *iconImage;
 @property (nonatomic, strong) UIColor *backgroundColor;
+@property (nonatomic, assign) VCommentCellUtilityType type;
 
 @end
 

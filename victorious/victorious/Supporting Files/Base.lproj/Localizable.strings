@@ -151,6 +151,7 @@
 "ReportContentMessage"  =   "We will review this content within 24 hours.";
 "ReportCommentMessage"  =   "We will review this content within 24 hours.";
 "ReportUserMessage"     =   "This user will be reviewed within 24 hours";
+"CommentAlreadyReported" =  "Comment Already Flagged";
 
 "BlockUser"             =   "Block User";
 "CopyProfileURL"        =   "Copy Profile URL";

@@ -11,7 +11,7 @@
 #import "UIView+AutoLayout.h"
 #import "VSwipeView.h"
 
-@interface VSwipeViewController () <UIScrollViewDelegate>
+@interface VSwipeViewController () <UIScrollViewDelegate, VUtilityButtonsViewControllerDelegate>
 
 @property (nonatomic, assign) CGPoint previousContentOffset;
 @property (nonatomic, assign) CGPoint scrollDirection;
@@ -107,7 +107,7 @@
     
     CGRect startingFrame = CGRectMake( CGRectGetWidth(self.view.frame), 0.0f, 0.0f, CGRectGetHeight(self.view.frame));
     self.utilityButtonsViewController = [[VUtilityButtonsViewController alloc] initWithFrame:startingFrame];
-    self.utilityButtonsViewController.cellDelegate = _cellDelegate;
+    self.utilityButtonsViewController.delegate = self;
     [self.view addSubview:self.utilityButtonsViewController.view];
     [self setCollectionViewConstraints];
     
@@ -129,6 +129,7 @@
     self.blockerButtonOverlay = [[UIButton alloc] initWithFrame:self.cellDelegate.parentCellView.bounds];
     self.blockerButtonOverlay.backgroundColor = [UIColor clearColor];
     self.blockerButtonOverlay.hidden = YES;
+    self.blockerButtonOverlay.backgroundColor = [[UIColor redColor] colorWithAlphaComponent:0.1f];
     [self.blockerButtonOverlay addTarget:self action:@selector(blockerButtonOverlayTapped:) forControlEvents:UIControlEventTouchDown];
     [self.cellDelegate.parentCellView addSubview:self.blockerButtonOverlay];
     [self.cellDelegate.parentCellView bringSubviewToFront:self.blockerButtonOverlay];
@@ -277,6 +278,13 @@
                                                                              constant:0.0f];
     
     [self.scrollView addConstraint:self.contentContainerViewWidthConstraint];
+}
+
+#pragma mark - VUtilityButtonsViewControllerDelegate
+
+- (void)utilityButtonSelected
+{
+    [self hideUtilityButtons];
 }
 
 #pragma mark - State management

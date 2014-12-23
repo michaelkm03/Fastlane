@@ -31,19 +31,4 @@
     return url;
 }
 
-- (BOOL)isEditable
-{
-    return NO;
-}
-
-- (BOOL)isDeletable
-{
-    return NO;
-}
-
-- (BOOL)isFlaggable
-{
-    return YES;
-}
-
 @end

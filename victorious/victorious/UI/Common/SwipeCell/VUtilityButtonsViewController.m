@@ -24,7 +24,7 @@ static const CGFloat kCollectionViewSectionsCount = 1;
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super init];
-    if (self)
+        if (self)
     {
         _startingFrame = frame;
     }
@@ -63,9 +63,9 @@ static const CGFloat kCollectionViewSectionsCount = 1;
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     VUtilityButtonCell *buttonCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VUtilityButtonCell reuseIdentifier] forIndexPath:indexPath];
-    buttonCell.iconImageView.image = [self.cellDelegate iconImageForButtonAtIndex:indexPath.row];
-    buttonCell.backgroundColor = [self.cellDelegate backgroundColorForButtonAtIndex:indexPath.row];
-    buttonCell.intendedFullWidth = [self.cellDelegate utilityButtonWidth];
+    buttonCell.iconImageView.image = [self.delegate.cellDelegate iconImageForButtonAtIndex:indexPath.row];
+    buttonCell.backgroundColor = [self.delegate.cellDelegate backgroundColorForButtonAtIndex:indexPath.row];
+    buttonCell.intendedFullWidth = [self.delegate.cellDelegate utilityButtonWidth];
     return buttonCell;
 }
 
@@ -76,7 +76,7 @@ static const CGFloat kCollectionViewSectionsCount = 1;
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return [self.cellDelegate numberOfUtilityButtons];
+    return [self.delegate.cellDelegate numberOfUtilityButtons];
 }
 
 #pragma mark - UICollectionViewDelegateFlowLayout
@@ -85,7 +85,7 @@ static const CGFloat kCollectionViewSectionsCount = 1;
 {
     CGFloat height = CGRectGetHeight( collectionView.frame );
     CGFloat totalWidth = CGRectGetWidth( collectionView.frame);
-    NSUInteger buttonCount = [self.cellDelegate numberOfUtilityButtons];
+    NSUInteger buttonCount = [self.delegate.cellDelegate numberOfUtilityButtons];
     CGFloat width = totalWidth / (CGFloat)buttonCount;
     return CGSizeMake( width, height );
 }
@@ -95,7 +95,8 @@ static const CGFloat kCollectionViewSectionsCount = 1;
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     VUtilityButtonCell *buttonCell = (VUtilityButtonCell *)[collectionView cellForItemAtIndexPath:indexPath];
-    [self.cellDelegate utilityButton:buttonCell selectedAtIndex:indexPath.row];
+    [self.delegate.cellDelegate utilityButton:buttonCell selectedAtIndex:indexPath.row];
+    [self.delegate utilityButtonSelected];
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didHighlightItemAtIndexPath:(NSIndexPath *)indexPath

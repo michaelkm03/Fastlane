@@ -26,7 +26,7 @@
 #import "NSURL+MediaType.h"
 
 #import "UIView+AutoLayout.h"
-#import "VEditCommentsController.h"
+#import "VCommentCellUtilitesController.h"
 
 static const UIEdgeInsets kTextInsets        = { 36.0f, 56.0f, 11.0f, 25.0f };
 
@@ -34,7 +34,7 @@ static const CGFloat kImagePreviewLoadedAnimationDuration = 0.25f;
 
 static NSCache *_sharedImageCache = nil;
 
-@interface VContentCommentsCell ()
+@interface VContentCommentsCell () <VCommentCellUtilitiesDelegate>
 
 @property (weak, nonatomic) IBOutlet VDefaultProfileImageView *commentersAvatarImageView;
 @property (weak, nonatomic) IBOutlet UILabel *commentersUsernameLabel;
@@ -53,7 +53,7 @@ static NSCache *_sharedImageCache = nil;
 @property (nonatomic, assign) BOOL hasMedia;
 @property (nonatomic, copy) NSURL *mediaPreviewURL;
 @property (nonatomic, assign) BOOL mediaIsVideo;
-@property (nonatomic, strong) VEditCommentsController *editCommentsController;
+@property (nonatomic, strong) VCommentCellUtilitesController *commentCellUtilitiesController;
 
 @end
 
@@ -194,8 +194,10 @@ static NSCache *_sharedImageCache = nil;
         self.mediaIsVideo = [comment.mediaUrl v_hasVideoExtension];
     }
     
-    self.editCommentsController = [[VEditCommentsController alloc] initWithComment:self.comment cellView:self];
-    self.swipeViewController.cellDelegate = self.editCommentsController;
+    self.commentCellUtilitiesController = [[VCommentCellUtilitesController alloc] initWithComment:self.comment
+                                                                                         cellView:self
+                                                                                         delegate:self];
+    self.swipeViewController.cellDelegate = self.commentCellUtilitiesController;
 }
 
 - (void)setHasMedia:(BOOL)hasMedia
@@ -313,6 +315,23 @@ static NSCache *_sharedImageCache = nil;
 - (NSURL *)mediaURL
 {
     return [NSURL URLWithString:self.comment.mediaUrl];
+}
+
+#pragma mark - VCommentCellUtilitiesDelegate
+
+- (void)commentRemoved:(VComment *)comment
+{
+    [self.delegate commentRemoved:comment];
+}
+
+- (void)editComment:(VComment *)comment
+{
+    [self.delegate editComment:comment];
+}
+
+- (void)didSelectActionRequiringLogin
+{
+    [self.delegate didSelectActionRequiringLogin];
 }
 
 @end

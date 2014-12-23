@@ -31,14 +31,17 @@
     self.editButtonConfig = [[VUtilityButtonConfig alloc] init];
     self.editButtonConfig.backgroundColor = [UIColor colorWithWhite:0.75f alpha:1.0f];
     self.editButtonConfig.iconImage = [UIImage imageNamed:@"edit_icon"];
+    self.editButtonConfig.type = VCommentCellUtilityTypeEdit;
     
     self.deleteButtonConfig = [[VUtilityButtonConfig alloc] init];
     self.deleteButtonConfig.backgroundColor = [UIColor colorWithWhite:0.47f alpha:1.0f];
     self.deleteButtonConfig.iconImage = [UIImage imageNamed:@"trash_icon"];
+    self.deleteButtonConfig.type = VCommentCellUtilityTypeDelete;
     
     self.flagButtonConfig = [[VUtilityButtonConfig alloc] init];
     self.flagButtonConfig.backgroundColor = [UIColor colorWithWhite:0.75f alpha:1.0f];
     self.flagButtonConfig.iconImage = [UIImage imageNamed:@"warning_icon"];
+    self.flagButtonConfig.type = VCommentCellUtilityTypeFlag;
 }
 
 @end

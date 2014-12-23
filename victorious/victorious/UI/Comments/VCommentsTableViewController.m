@@ -263,55 +263,6 @@
     }
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    VComment *comment = self.comments[indexPath.row];
-    NSString *reportTitle = NSLocalizedString(@"ReportInappropriate", @"Comment report inappropriate button");
-    NSString *reply = NSLocalizedString(@"Reply", @"Comment reply button");
-    
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                    cancelButtonTitle:NSLocalizedString(@"CancelButton", @"Cancel button")
-                                                       onCancelButton:nil
-                                               destructiveButtonTitle:reportTitle
-                                                  onDestructiveButton:^(void)
-    {
-        [[VObjectManager sharedManager] flagComment:comment
-                                       successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-         {
-             VLog(@"resultObjects: %@", resultObjects);
-             
-             UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ReportedTitle", @"")
-                                                                    message:NSLocalizedString(@"ReportCommentMessage", @"")
-                                                                   delegate:nil
-                                                          cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
-                                                          otherButtonTitles:nil];
-             [alert show];
-
-         }
-                                          failBlock:^(NSOperation *operation, NSError *error)
-         {
-             VLog(@"Failed to flag comment %@", comment);
-            
-             UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"WereSorry", @"")
-                                                                    message:NSLocalizedString(@"ErrorOccured", @"")
-                                                                   delegate:nil
-                                                          cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
-                                                          otherButtonTitles:nil];
-             [alert show];
-         }];
-    }
-                                           otherButtonTitlesAndBlocks:
-                                  reply, ^(void)
-    {
-        [self.delegate streamsCommentsController:self shouldReplyToUser:comment.user];
-    },
-                                  nil];
-
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    UIWindow *window = [[[UIApplication sharedApplication] delegate] window];
-    [actionSheet showInView:window];
-}
-
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];

@@ -76,7 +76,7 @@
 
 static const CGFloat kMaxInputBarHeight = 200.0f;
 
-@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate,VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate>
+@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate,VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate>
 
 @property (nonatomic, strong, readwrite) VContentViewViewModel *viewModel;
 @property (nonatomic, strong) NSURL *mediaURL;
@@ -609,6 +609,8 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
                    withIndex:(NSInteger)index
 {
     commentCell.comment = self.viewModel.comments[index];
+    commentCell.swipeViewController.controllerDelegate = self;
+    commentCell.delegate = self;
     
     __weak typeof(commentCell) wCommentCell = commentCell;
     __weak typeof(self) welf = self;
@@ -929,10 +931,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
         {
             VContentCommentsCell *commentCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentCommentsCell suggestedReuseIdentifier]
                                                                                           forIndexPath:indexPath];
-            commentCell.swipeViewController.controllerDelegate = self;
-            [self configureCommentCell:commentCell
-                             withIndex:indexPath.row];
-            
+            [self configureCommentCell:commentCell withIndex:indexPath.row];
             return commentCell;
         }
         case VContentViewSectionCount:
@@ -1335,6 +1334,30 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
             [cell.swipeViewController hideUtilityButtons];
         }
     }
+}
+
+#pragma mark - VCommentCellUtilitiesDelegate
+
+- (void)commentRemoved:(VComment *)comment
+{
+    [self.contentCollectionView performBatchUpdates:^void
+     {
+         NSUInteger row = [self.viewModel.comments indexOfObject:comment];
+         [self.viewModel removeCommentAtIndex:row];
+         NSArray *indexPaths = @[ [NSIndexPath indexPathForRow:row inSection:VContentViewSectionAllComments] ];
+         [self.contentCollectionView deleteItemsAtIndexPaths:indexPaths];
+     } completion:nil];
+}
+
+- (void)editComment:(VComment *)comment
+{
+    // TODO: Show edit comments
+    VLog( @"Edit comment \"%@\"", comment.text );
+}
+
+- (void)didSelectActionRequiringLogin
+{
+    [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
 }
 
 @end

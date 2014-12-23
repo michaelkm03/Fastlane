@@ -150,6 +150,17 @@
             failBlock:fail];
 }
 
+- (RKManagedObjectRequestOperation *)editComment:(VComment *)comment
+                                    successBlock:(VSuccessBlock)success
+                                       failBlock:(VFailBlock)fail
+{
+    return [self POST:@"/api/comment/edit"
+               object:comment
+           parameters:nil
+         successBlock:success
+            failBlock:fail];
+}
+
 - (RKManagedObjectRequestOperation *)flagComment:(VComment *)comment
                                     successBlock:(VSuccessBlock)success
                                        failBlock:(VFailBlock)fail

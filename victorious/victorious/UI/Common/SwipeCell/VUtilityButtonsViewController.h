@@ -9,12 +9,20 @@
 #import <UIKit/UIKit.h>
 #import "VSwipeViewController.h"
 
+@protocol VUtilityButtonsViewControllerDelegate <NSObject>
+
+- (void)utilityButtonSelected;
+
+@property (nonatomic, readonly) id<VSwipeViewCellDelegate> cellDelegate;
+
+@end
+
 @interface VUtilityButtonsViewController : UIViewController
 
 // Call this whenever constraints are changed, it invalidates the collection view's layout
 - (void)constraintsDidUpdate;
 
-@property (weak, nonatomic) id<VSwipeViewCellDelegate> cellDelegate;
+@property (weak, nonatomic) id<VUtilityButtonsViewControllerDelegate> delegate;
 
 - (instancetype)initWithFrame:(CGRect)frame;
 
