@@ -186,17 +186,15 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
 {
     // Show hashtag stream
     VHashtag *hashtag = self.userTags[ indexPath.row ];
-    NSString *tagText = hashtag.tag;
-    [self showStreamWithHashtag:tagText];
+    [self showStreamWithHashtag:hashtag];
 }
 
 #pragma mark - VStreamCollectionViewController List of Tags
 
-- (void)showStreamWithHashtag:(NSString *)hashtag
+- (void)showStreamWithHashtag:(VHashtag *)hashtag
 {
     VStreamCollectionViewController *stream = [VStreamCollectionViewController hashtagStreamWithHashtag:hashtag];
-    [self.navigationController pushViewController:stream animated:YES];
-    
+    [self.navigationController pushViewController:stream animated:YES];    
 }
 
 #pragma mark - Subscribe / Unsubscribe Actions

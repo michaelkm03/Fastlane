@@ -13,7 +13,7 @@
 #import "VSequenceActionsDelegate.h"
 #import "VNewContentViewController.h"
 
-@class VStreamCollectionViewDataSource;
+@class VStreamCollectionViewDataSource, VHashtag;
 
 @interface VStreamCollectionViewController : VAbstractStreamCollectionViewController <VNewContentViewControllerDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, VSequenceActionsDelegate, VHasManagedDependancies>
 
@@ -24,7 +24,7 @@
 + (instancetype)homeStreamCollection;
 + (instancetype)communityStreamCollection;
 + (instancetype)ownerStreamCollection;
-+ (instancetype)hashtagStreamWithHashtag:(NSString *)hashtag;
++ (instancetype)hashtagStreamWithHashtag:(VHashtag *)hashtag;
 
 /**
  *  Returns a stream collection view controller with a victorious themed nav header.
