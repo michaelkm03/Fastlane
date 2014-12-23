@@ -57,6 +57,9 @@ static NSUInteger const kVPasswordResetCodeExpired = 6700;
 static NSUInteger const kVFollowsRelationshipDoesNotExistError = 5001;
 static NSUInteger const kVFollowsRelationshipAlreadyExistsError = 6001;
 
+static NSUInteger const kVHashTagSubscriptionDoesNotExistError = 5000;
+static NSUInteger const kVHashTagSubscriptionAlreadyExistsError = 1001;
+
 static NSUInteger const kVAccountAlreadyExistsError     = 1003;
 static NSUInteger const kVUserBannedError               = 1007;
 

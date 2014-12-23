@@ -393,6 +393,9 @@
 "Trending Tags"         = "Trending Tags";
 "Voters"                = "Voters";
 
+"HashtagSubscribeError"  = "Sorry, an error occurred attempting to follow this hashtag. Please try again.";
+"HashtagUnsubscribeError"  = "Sorry, an error occurred attempting to unfollow this hashtag. Please try again.";
+
 "Type your feedback here..." = "Type your feedback here...";
 "Device:"               = "Device:";
 "OS Version:"           = "OS Version:";

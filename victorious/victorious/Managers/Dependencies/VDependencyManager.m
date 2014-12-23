@@ -168,6 +168,11 @@ NSString * const VDependencyManagerInitialViewControllerKey = @"initialScreen";
     return [self templateValueOfType:[UIViewController class] forKey:key];
 }
 
+- (UIViewController *)singletonViewControllerForKey:(NSString *)key
+{
+    return [self singletonObjectOfType:[UIViewController class] forKey:key];
+}
+
 #pragma mark - Arrays of dependencies
 
 - (NSArray *)arrayForKey:(NSString *)key
@@ -235,28 +240,33 @@ NSString * const VDependencyManagerInitialViewControllerKey = @"initialScreen";
 
 - (id)singletonObjectOfType:(Class)expectedType forKey:(NSString *)key
 {
-    NSDictionary *singletonConfig = [self templateValueOfType:[NSDictionary class] forKey:key];
+    id previouslyCreatedSingleton = [self singletonObjectForKey:key];
     
-    if (singletonConfig == nil)
+    if ( previouslyCreatedSingleton != nil )
     {
-        return nil;
+        return previouslyCreatedSingleton;
+    }
+
+    id singleton = nil;
+    id templateValue = [self templateValueOfType:[NSObject class] forKey:key];
+
+    if ( [templateValue isKindOfClass:[NSDictionary class]] )
+    {
+        singleton = [self singletonObjectOfType:expectedType orNilFromDictionary:templateValue];
+        
+        if ( singleton == nil )
+        {
+            singleton = [self objectOfType:expectedType fromDictionary:templateValue];
+        }
+    }
+    else if ( [templateValue isKindOfClass:expectedType] )
+    {
+        singleton = templateValue;
     }
     
-    id singleton = [self singletonObjectOfType:expectedType orNilFromDictionary:singletonConfig];
-    
-    if (singleton == nil)
+    if ( singleton != nil )
     {
-        singleton = [self singletonObjectForKey:key];
-        
-        if (singleton == nil)
-        {
-            singleton = [self objectOfType:expectedType fromDictionary:singletonConfig];
-            
-            if (singleton != nil)
-            {
-                [self setSingletonObject:singleton forKey:key];
-            }
-        }
+        [self setSingletonObject:singleton forKey:key];
     }
     return singleton;
 }
@@ -393,9 +403,7 @@ NSString * const VDependencyManagerInitialViewControllerKey = @"initialScreen";
     if ([templateClass isSubclassOfClass:expectedType])
     {
         id object;
-        VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self
-                                                                                    configuration:configurationDictionary
-                                                                dictionaryOfClassesByTemplateName:self.classesByTemplateName];
+        VDependencyManager *dependencyManager = [self childDependencyManagerWithAddedConfiguration:configurationDictionary];
         
         if ([templateClass instancesRespondToSelector:@selector(initWithDependencyManager:)])
         {
@@ -416,6 +424,11 @@ NSString * const VDependencyManagerInitialViewControllerKey = @"initialScreen";
         }
         return object;
     }
+    else if ( [expectedType isSubclassOfClass:[NSDictionary class]] )
+    {
+        return configurationDictionary;
+    }
+    
     return nil;
 }
 
@@ -470,6 +483,11 @@ NSString * const VDependencyManagerInitialViewControllerKey = @"initialScreen";
         weakEnumerationBlock(obj);
     }];
     return configurationDictionariesByID;
+}
+
+- (VDependencyManager *)childDependencyManagerWithAddedConfiguration:(NSDictionary *)configuration
+{
+    return [[VDependencyManager alloc] initWithParentManager:self configuration:configuration dictionaryOfClassesByTemplateName:self.classesByTemplateName];
 }
 
 #pragma mark - Class name resolution
