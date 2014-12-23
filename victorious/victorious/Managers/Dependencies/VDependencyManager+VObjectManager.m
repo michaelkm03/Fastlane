@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VObjectManager.h"
 #import "VDependencyManager+VObjectManager.h"
+#import "VObjectManager.h"
 
 NSString * const VDependencyManagerObjectManagerKey = @"objectManager";
 
@@ -15,7 +15,7 @@ NSString * const VDependencyManagerObjectManagerKey = @"objectManager";
 
 - (VObjectManager *)objectManager
 {
-    return (VObjectManager *)[self templateValueOfType:[VObjectManager class] forKey:VDependencyManagerObjectManagerKey];
+    return (VObjectManager *)[self singletonObjectOfType:[VObjectManager class] forKey:VDependencyManagerObjectManagerKey];
 }
 
 @end

@@ -75,6 +75,7 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
 
 @interface VDependencyManagerTests : XCTestCase
 
+@property (nonatomic, strong) NSDictionary *dictionaryOfClassesByTemplateName;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VDependencyManager *childDependencyManager;
 
@@ -86,18 +87,18 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
 {
     [super setUp];
     
-    NSDictionary *dictionaryOfClassesByTemplateName = @{ kTestViewControllerInitMethodTemplateName: @"VTestViewControllerWithInitMethod",
-                                                         kTestViewControllerNewMethodTemplateName: @"VTestViewControllerWithNewMethod",
-                                                         kTestObjectWithPropertyTemplateName: @"VTestObjectWithProperty"
-                                                      };
+    self.dictionaryOfClassesByTemplateName = @{ kTestViewControllerInitMethodTemplateName: @"VTestViewControllerWithInitMethod",
+                                                kTestViewControllerNewMethodTemplateName: @"VTestViewControllerWithNewMethod",
+                                                kTestObjectWithPropertyTemplateName: @"VTestObjectWithProperty"
+                                            };
     
     // The presence of this "base" dependency manager (with an empty configuration dictionary) exposed a bug in a previous iteration of VDependencyManager.
-    VDependencyManager *baseDependencyManager = [[VDependencyManager alloc] initWithParentManager:nil configuration:@{} dictionaryOfClassesByTemplateName:dictionaryOfClassesByTemplateName];
+    VDependencyManager *baseDependencyManager = [[VDependencyManager alloc] initWithParentManager:nil configuration:@{} dictionaryOfClassesByTemplateName:self.dictionaryOfClassesByTemplateName];
     
     NSData *testData = [NSData dataWithContentsOfURL:[[NSBundle bundleForClass:[self class]] URLForResource:@"template" withExtension:@"json"]];
     NSDictionary *configuration = [NSJSONSerialization JSONObjectWithData:testData options:0 error:nil];
-    self.dependencyManager = [[VDependencyManager alloc] initWithParentManager:baseDependencyManager configuration:configuration dictionaryOfClassesByTemplateName:dictionaryOfClassesByTemplateName];
-    self.childDependencyManager = [[VDependencyManager alloc] initWithParentManager:self.dependencyManager configuration:@{} dictionaryOfClassesByTemplateName:dictionaryOfClassesByTemplateName];
+    self.dependencyManager = [[VDependencyManager alloc] initWithParentManager:baseDependencyManager configuration:configuration dictionaryOfClassesByTemplateName:self.dictionaryOfClassesByTemplateName];
+    self.childDependencyManager = [[VDependencyManager alloc] initWithParentManager:self.dependencyManager configuration:@{} dictionaryOfClassesByTemplateName:self.dictionaryOfClassesByTemplateName];
 }
 
 #pragma mark - Colors, fonts
@@ -248,6 +249,36 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
     XCTAssertEqual(array[1], otherArray[1]);
 }
 
+#pragma mark - Dictionaries
+
+- (void)testDictionary
+{
+    NSDictionary *expected = @{
+        @"channels_enabled": @YES,
+        @"histogram_enabled": @NO,
+        @"require_profile_image": @YES,
+        @"template_c_enabled": @NO
+    };
+    NSDictionary *actual = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:@"experiments"];
+    XCTAssertEqualObjects(expected, actual);
+}
+
+/**
+ Dictionaries should always be immutable, so a singleton dictionary doesn't make a lot of sense. However,
+ if you insist on asking VDependencyManager for a singleton dictionary, it should still work.
+ */
+- (void)testSingletonDictionary
+{
+    NSDictionary *expected = @{
+        @"channels_enabled": @YES,
+        @"histogram_enabled": @NO,
+        @"require_profile_image": @YES,
+        @"template_c_enabled": @NO
+    };
+    NSDictionary *actual = [self.dependencyManager singletonObjectOfType:[NSDictionary class] forKey:@"experiments"];
+    XCTAssertEqualObjects(expected, actual);
+}
+
 #pragma mark - Instantiating objects via dictionaries and references
 
 - (void)testObjectFromDictionary
@@ -363,6 +394,54 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
     
     VTestViewControllerWithNewMethod *result = (VTestViewControllerWithNewMethod *)[self.dependencyManager singletonObjectOfType:[UIViewController class] fromDictionary:configuration];
     XCTAssert([result isKindOfClass:[VTestViewControllerWithNewMethod class]]);
+}
+
+/**
+ A "prefab" object is one that doesn't need to be instantiated--it was "prefabricated" and placed directly into
+ the configuration dictionary (rather than the usual case of the configuration dictionary containing strings
+ describing the object and how to initialize it). These prefab objects are ALWAYS singletons
+ */
+- (void)testPrefabSingletonObject
+{
+    static NSString * const kPFkey = @"pf";
+    char bytes[] = {0x1, 0x2, 0x3, 0x4};
+    size_t bytesLength = sizeof(char) * 4;
+    
+    NSData *prefab = [NSData dataWithBytes:&bytes length:bytesLength];
+    
+    NSDictionary *configuration = @{ kPFkey: prefab };
+    VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:nil
+                                                                                configuration:configuration
+                                                            dictionaryOfClassesByTemplateName:self.dictionaryOfClassesByTemplateName];
+    
+    id result = [dependencyManager singletonObjectOfType:[NSData class] forKey:kPFkey];
+    XCTAssertEqual(result, prefab);
+    
+    id result2 = [dependencyManager templateValueOfType:[NSData class] forKey:kPFkey];
+    XCTAssertEqual(result2, prefab);
+}
+
+- (void)testPrefabObjectInParentManager
+{
+    static NSString * const kPFkey = @"pf";
+    char bytes[] = {0x1, 0x2, 0x3, 0x4};
+    size_t bytesLength = sizeof(char) * 4;
+    
+    NSData *prefab = [NSData dataWithBytes:&bytes length:bytesLength];
+    
+    NSDictionary *configuration = @{ kPFkey: prefab };
+    VDependencyManager *parentDependencyManager = [[VDependencyManager alloc] initWithParentManager:nil
+                                                                                configuration:configuration
+                                                            dictionaryOfClassesByTemplateName:self.dictionaryOfClassesByTemplateName];
+    VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:parentDependencyManager
+                                                                                configuration:@{ }
+                                                            dictionaryOfClassesByTemplateName:self.dictionaryOfClassesByTemplateName];
+    
+    id result = [dependencyManager singletonObjectOfType:[NSData class] forKey:kPFkey];
+    XCTAssertEqual(result, prefab);
+    
+    id result2 = [dependencyManager templateValueOfType:[NSData class] forKey:kPFkey];
+    XCTAssertEqual(result2, prefab);
 }
 
 #pragma mark - Children
