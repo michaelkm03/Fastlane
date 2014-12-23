@@ -39,4 +39,21 @@
     return [super hitTest:point withEvent:event];
 }
 
+#pragma mark - VCommentCellUtilitiesDelegate
+
+- (void)commentRemoved:(VComment *)comment
+{
+    [self.commentsUtilitiesDelegate commentRemoved:comment];
+}
+
+- (void)editComment:(VComment *)comment
+{
+    [self.commentsUtilitiesDelegate editComment:comment];
+}
+
+- (void)didSelectActionRequiringLogin
+{
+    [self.commentsUtilitiesDelegate didSelectActionRequiringLogin];
+}
+
 @end

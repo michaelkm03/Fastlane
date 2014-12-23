@@ -68,6 +68,7 @@
 
 - (void)hideUtilityButtons
 {
+    self.blockerButtonOverlay.hidden = YES;
     [self.scrollView setContentOffset:CGPointZero animated:YES];
 }
 
@@ -114,7 +115,7 @@
     [self createBlockerButtonOverlay];
     [self setBlockerButtonOverlayConstraints];
     
-    [self.scrollView layoutIfNeeded];
+    [self reset];
 }
 
 - (UIView *)utilityButtonsContainer
@@ -288,22 +289,12 @@
 
 #pragma mark - State management
 
-- (void)onHide
-{
-    self.blockerButtonOverlay.hidden = YES;
-}
-
-- (void)onShow
-{
-    self.blockerButtonOverlay.hidden = NO;
-    [self.controllerDelegate cellWillShowUtilityButtons:self.cellDelegate.parentCellView];
-}
-
 - (void)reset
 {
     UIView *view = self.cellDelegate.parentCellView;
     view.transform = CGAffineTransformIdentity;
     [self.scrollView setContentOffset:CGPointZero animated:NO];
+    self.blockerButtonOverlay.hidden = YES;
 }
 
 - (void)utlityButtonsDidHide

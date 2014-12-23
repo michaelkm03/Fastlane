@@ -41,12 +41,13 @@
     self.modalContainer.layer.borderColor = [UIColor colorWithWhite:0.9f alpha:1.0f].CGColor;
     self.modalContainer.layer.borderWidth = 1.0f;
     
-    self.editTextView.delegate = self;
-    self.editTextView.text = self.comment.text;
-    
     self.editTextView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     self.editTextView.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel1Font];
     self.editTextView.returnKeyType = UIReturnKeyDone;
+    
+    self.editTextView.delegate = self;
+    self.editTextView.text = self.comment.text;
+    
     [self updateSize];
 }
 
@@ -58,6 +59,8 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     
     [self.editTextView becomeFirstResponder];
+    
+    [self updateSize];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -92,6 +95,9 @@
 
 - (void)dismiss
 {
+    // Prevents another return key press from dismissing previous view as well
+    self.editTextView.delegate = nil;
+
     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -171,7 +177,7 @@
 {
     if ( [text isEqualToString:@"\r"] || [text isEqualToString:@"\n"] )
     {
-        [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+        [self dismiss];
         return NO;
     }
     

@@ -10,30 +10,6 @@
 
 @implementation VSwipeTableViewCell 
 
-- (void)awakeFromNib
-{
-    [super awakeFromNib];
-    
-    [self setupSwipeView];
-}
-
-- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
-{
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-    if (self)
-    {
-        [self setupSwipeView];
-    }
-    return self;
-}
-
-- (void)prepareForReuse
-{
-    [super prepareForReuse];
-    
-    [self.swipeViewController reset];
-}
-
 - (void)setupSwipeView
 {
     if ( self.swipeViewController != nil )
@@ -50,7 +26,7 @@
 
 - (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
 {
-    if ( !self.clipsToBounds && !self.hidden && self.alpha > 0 )
+    if ( !self.clipsToBounds && self.swipeViewController != nil && !self.hidden && self.alpha > 0 )
     {
         CGPoint subPoint = [self.swipeViewController.utilityButtonsContainer convertPoint:point fromView:self];
         UIView *result = [self.swipeViewController.utilityButtonsContainer hitTest:subPoint withEvent:event];
@@ -61,6 +37,23 @@
     }
     
     return [super hitTest:point withEvent:event];
+}
+
+#pragma mark - VCommentCellUtilitiesDelegate
+
+- (void)commentRemoved:(VComment *)comment
+{
+    [self.commentsUtilitiesDelegate commentRemoved:comment];
+}
+
+- (void)editComment:(VComment *)comment
+{
+    [self.commentsUtilitiesDelegate editComment:comment];
+}
+
+- (void)didSelectActionRequiringLogin
+{
+    [self.commentsUtilitiesDelegate didSelectActionRequiringLogin];
 }
 
 @end

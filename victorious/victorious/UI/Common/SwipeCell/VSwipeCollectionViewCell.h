@@ -8,11 +8,17 @@
 
 #import <UIKit/UIKit.h>
 #import "VSwipeViewController.h"
+#import "VCommentCellUtilitiesDelegate.h"
+#import "VCommentCellUtilitesController.h"
 
-@interface VSwipeCollectionViewCell : UICollectionViewCell
+@interface VSwipeCollectionViewCell : UICollectionViewCell <VCommentCellUtilitiesDelegate>
+
+- (void)setupSwipeView;
 
 @property (nonatomic, strong) VSwipeViewController *swipeViewController;
 
-- (void)setupSwipeView;
+@property (nonatomic, weak) id<VCommentCellUtilitiesDelegate> commentsUtilitiesDelegate;
+
+@property (nonatomic, strong) VCommentCellUtilitesController *commentCellUtilitiesController;
 
 @end

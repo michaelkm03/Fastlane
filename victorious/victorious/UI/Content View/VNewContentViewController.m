@@ -617,7 +617,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 {
     commentCell.comment = self.viewModel.comments[index];
     commentCell.swipeViewController.controllerDelegate = self;
-    commentCell.delegate = self;
+    commentCell.commentsUtilitiesDelegate = self;
     
     __weak typeof(commentCell) wCommentCell = commentCell;
     __weak typeof(self) welf = self;

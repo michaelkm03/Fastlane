@@ -8,7 +8,6 @@
 
 #import "VBaseCollectionViewCell.h"
 #import "VComment.h"
-#import "VCommentCellUtilitiesDelegate.h"
 
 /**
  *  UICollectionViewCell for representing a general comment on an item.
@@ -24,8 +23,6 @@
 @property (nonatomic, readonly) UIImage *previewImage;
 @property (nonatomic, readonly) UIView *previewView;
 @property (nonatomic, readonly) BOOL mediaIsVideo;
-
-@property (nonatomic, weak) id<VCommentCellUtilitiesDelegate> delegate;
 
 + (NSCache *)sharedImageCached;
 

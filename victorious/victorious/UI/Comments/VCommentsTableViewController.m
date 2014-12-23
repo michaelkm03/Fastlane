@@ -36,13 +36,18 @@
 #import "VNoContentView.h"
 #import "VDefaultProfileImageView.h"
 
+#import "VEditCommentViewController.h"
+#import "VViewControllerTransition.h"
+
 @import Social;
 
-@interface VCommentsTableViewController ()
+@interface VCommentsTableViewController () <VEditCommentViewControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate>
 
 @property (nonatomic, strong) UIImageView *backgroundImageView;
 @property (nonatomic, assign) BOOL hasComments;
 @property (nonatomic, assign) BOOL needsRefresh;
+
+@property (nonatomic, strong) VViewControllerTransition *transitionDelegate;
 
 @property (nonatomic, strong) NSArray *comments;
 
@@ -55,6 +60,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.transitionDelegate = [[VViewControllerTransition alloc] init];
     
     [self.tableView registerNib:[UINib nibWithNibName:kVCommentCellNibName bundle:nil]
          forCellReuseIdentifier:kVCommentCellNibName];
@@ -213,6 +220,7 @@
     VCommentCell *cell = [tableView dequeueReusableCellWithIdentifier:kVCommentCellNibName forIndexPath:indexPath];
     VComment *comment = self.comments[indexPath.row];
     
+    
     cell.timeLabel.text = [comment.postedAt timeSince];
     if (comment.realtime.integerValue < 0)
     {
@@ -250,6 +258,12 @@
     };
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
+    // Setup required for swipe-to-reveal utility buttons
+    cell.commentCellUtilitiesController = [[VCommentCellUtilitesController alloc] initWithComment:comment cellView:cell delegate:cell];
+    cell.swipeViewController.cellDelegate = cell.commentCellUtilitiesController;
+    cell.swipeViewController.controllerDelegate = self;
+    cell.commentsUtilitiesDelegate = self;
+    
     return cell;
 }
 
@@ -267,6 +281,61 @@
 {
     [super viewWillDisappear:animated];
     [[VTrackingManager sharedInstance] endEvent:VTrackingEventCommentsDidAppear];
+}
+
+#pragma mark - VSwipeViewControllerDelegate
+
+- (UIColor *)backgroundColorForGutter
+{
+    return [UIColor colorWithWhite:0.96f alpha:1.0f];
+}
+
+- (void)cellWillShowUtilityButtons:(UIView *)cellView
+{
+    // Close any other cells showing utility buttons
+    
+    for ( VCommentCell *cell in self.tableView.visibleCells )
+    {
+        if ( [cell isKindOfClass:[VCommentCell class]] && cellView != cell )
+        {
+            [cell.swipeViewController hideUtilityButtons];
+        }
+    }
+}
+
+#pragma mark - VCommentCellUtilitiesDelegate
+
+- (void)commentRemoved:(VComment *)comment
+{
+    NSUInteger index = [self.comments indexOfObject:comment];
+    NSMutableArray *updatedComments = [self.comments mutableCopy];
+    [updatedComments removeObjectAtIndex:index];
+    self.comments = [NSArray arrayWithArray:updatedComments];
+    
+    [self.tableView beginUpdates];
+    NSArray *indexPaths = @[ [NSIndexPath indexPathForRow:index inSection:0] ];
+    [self.tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
+    [self.tableView endUpdates];
+}
+
+- (void)editComment:(VComment *)comment
+{
+    VEditCommentViewController *editViewController = [VEditCommentViewController instantiateFromStoryboardWithComment:comment];
+    editViewController.transitioningDelegate = self.transitionDelegate;
+    editViewController.delegate = self;
+    [self presentViewController:editViewController animated:YES completion:nil];
+}
+
+- (void)didSelectActionRequiringLogin
+{
+    [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+}
+
+#pragma mark - VEditCommentViewControllerDelegate
+
+- (void)didFinishEditingComment:(VComment *)comment
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end
