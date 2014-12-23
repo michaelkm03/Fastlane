@@ -315,6 +315,7 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
 
             VHashtag *hashtag = self.trendingTags[ indexPath.row ];
             [customCell setHashtag:hashtag.tag];
+            customCell.shouldCellRespond = YES;
             
             __weak typeof(customCell) weakCell = customCell;
             customCell.subscribeToTagAction = ^(void)

@@ -44,6 +44,20 @@
         "template_c_enabled": false
     },
     "arrayOfStrings": [ "red", "fish", "blue", "fish"],
+    "arrayOfObjects": [
+        {
+            "id": "4d6d10be-6742-4a0d-8b37-091730e05b59",
+            "name": "testNewMethod"
+        },
+        {
+            "id": "58302c7d-b15f-4094-9ee1-8b4c3121cb6c",
+            "name": "testNewMethod"
+        },
+        {
+            "id": "b5b15ccc-151d-40ed-8d12-a9fcde6413f8",
+            "name": "testInitMethod"
+        }
+    ],
     "otherNVC": {
         "referenceID": "ae742d8a-aaea-43db-b99a-707d72b147cb"
     },

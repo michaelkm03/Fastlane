@@ -6,7 +6,12 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "VDependencyManager.h"
 #import "VNavigationMenuItem.h"
+
+static NSString * const kTitleKey = @"title";
+static NSString * const kIdentifierKey = @"identifier";
+static NSString * const kDestinationKey = @"destination";
 
 @implementation VNavigationMenuItem
 
@@ -23,11 +28,19 @@
     return self;
 }
 
+- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    NSString *title = [dependencyManager stringForKey:kTitleKey];
+    NSString *identifier = [dependencyManager stringForKey:kIdentifierKey];
+    id destination = [dependencyManager singletonObjectOfType:[NSObject class] forKey:kDestinationKey];
+    return [self initWithTitle:title identifier:identifier icon:nil destination:destination];
+}
+
 - (BOOL)isEqual:(id)object
 {
     VNavigationMenuItem *menuItem = object;
     
-    if ( ![menuItem isKindOfClass:[VNavigationMenuItem class]])
+    if ( ![menuItem isKindOfClass:[VNavigationMenuItem class]] )
     {
         return NO;
     }
