@@ -147,9 +147,18 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
         VTrendingTagCell *customCell = (VTrendingTagCell *)[tableView dequeueReusableCellWithIdentifier:kVFollowingTagIdentifier forIndexPath:indexPath];
         VHashtag *hashtag = self.userTags[ indexPath.row ];
         [customCell setHashtag:hashtag.tag];
+        customCell.shouldCellRespond = YES;
         
+        __weak typeof(customCell) weakCell = customCell;
         customCell.subscribeToTagAction = ^(void)
         {
+            // Disable follow / unfollow button
+            if (!weakCell.shouldCellRespond)
+            {
+                return;
+            }
+            weakCell.shouldCellRespond = NO;
+
             // Check if already subscribed to hashtag then subscribe or unsubscribe accordingly
             if ([self userSubscribedToHashtag:hashtag])
             {
@@ -201,6 +210,9 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
 {
     VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
+        // Add tag to user tags object
+        [self.userTags addObject:hashtag];
+        
         // Animate the subscribe button
         NSArray *indexPaths = [self.tableView indexPathsForVisibleRows];
         
@@ -210,6 +222,7 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
             
             if ([cell.hashtagText isEqualToString:hashtag.tag])
             {
+                cell.shouldCellRespond = YES;
                 [cell updateSubscribeStatusAnimated:YES];
                 return;
             }
@@ -236,9 +249,6 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
         [self.failureHud hide:YES afterDelay:0.3f];
     };
     
-    // Add tag to user tags object
-    [self.userTags addObject:hashtag.tag];
-    
     // Backend Subscribe to Hashtag
     [[VObjectManager sharedManager] subscribeToHashtag:hashtag
                                           successBlock:successBlock
@@ -250,7 +260,7 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
     VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         // Remove tag to user tags object
-        [self.userTags removeObject:hashtag.tag];
+        [self.userTags removeObject:hashtag];
         
         // Animate the subscribe button
         NSArray *indexPaths = [self.tableView indexPathsForVisibleRows];
@@ -261,6 +271,7 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
             
             if ([cell.hashtagText isEqualToString:hashtag.tag])
             {
+                cell.shouldCellRespond = YES;
                 [cell updateSubscribeStatusAnimated:YES];
                 return;
             }

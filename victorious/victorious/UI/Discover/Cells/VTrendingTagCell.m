@@ -153,6 +153,8 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
 - (void)prepareForReuse
 {
     self.shouldCellRespond = YES;
+    self.userInteractionEnabled = YES;
+    self.followHashtagControl.alpha = 1.0f;
 }
 
 #pragma mark - Disable / Enable Tag Subscription Button
