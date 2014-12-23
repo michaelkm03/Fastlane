@@ -85,7 +85,6 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
 {
     // Kill the login notification
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-
 }
 
 #pragma mark - Loading data
@@ -381,6 +380,9 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
 {
     VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
+        // Add tag to user tags object
+        [self.userTags addObject:hashtag.tag];
+        
         // Animate the subscribe button
         NSArray *indexPaths = [self.tableView indexPathsForVisibleRows];
         
@@ -418,12 +420,9 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
 
         self.failureHud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
         self.failureHud.mode = MBProgressHUDModeText;
-        self.failureHud.labelText = NSLocalizedString(@"HashtagSubscribeError", @"");
+        self.failureHud.detailsLabelText = NSLocalizedString(@"HashtagSubscribeError", @"");
         [self.failureHud hide:YES afterDelay:3.0f];
     };
-    
-    // Add tag to user tags object
-    [self.userTags addObject:hashtag.tag];
     
     // Backend Subscribe to Hashtag
     [[VObjectManager sharedManager] subscribeToHashtag:hashtag
@@ -476,7 +475,7 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
         
         self.failureHud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
         self.failureHud.mode = MBProgressHUDModeText;
-        self.failureHud.labelText = NSLocalizedString(@"HashtagUnsubscribeError", @"");
+        self.failureHud.detailsLabelText = NSLocalizedString(@"HashtagUnsubscribeError", @"");
         [self.failureHud hide:YES afterDelay:3.0f];
     };
     
