@@ -10,6 +10,8 @@
 #import "VCapitalizingTextStorage.h"
 
 static const CGFloat kTextRenderingSize = 1024;
+static const CGFloat kMaximumTypyingTextAreaHeight = 60.0f;
+static const CGFloat kMinimumTypingTextAreaHeight = 30.0f;
 
 @interface VTextToolViewController () <UITextViewDelegate, NSTextStorageDelegate>
 
@@ -160,7 +162,25 @@ shouldChangeTextInRange:(NSRange)range
 
 - (void)textViewDidChange:(UITextView *)textView
 {
-    textView.attributedText = [[NSAttributedString alloc] initWithString:self.textView.text attributes:self.textType.attributes];
+    UIFont *styledFont = self.textType.attributes[NSFontAttributeName];
+    styledFont = [styledFont fontWithSize:self.textView.font.pointSize];
+    
+    NSMutableDictionary *sizedAttributes = [[NSMutableDictionary alloc] initWithDictionary:self.textType.attributes];
+    sizedAttributes[NSFontAttributeName] = styledFont;
+    
+    textView.attributedText = [[NSAttributedString alloc] initWithString:self.textView.text
+                                                              attributes:sizedAttributes];
+    
+    while (((CGSize) [self.textView sizeThatFits:self.textView.frame.size]).height > kMaximumTypyingTextAreaHeight)
+    {
+        self.textView.font = [styledFont fontWithSize:self.textView.font.pointSize-1];
+    }
+    
+    while (((CGSize) [self.textView sizeThatFits:self.textView.frame.size]).height < kMinimumTypingTextAreaHeight)
+    {
+        self.textView.font = [styledFont fontWithSize:self.textView.font.pointSize+1];
+    }
+    
     dispatch_async(self.searialTextRenderingQueue, ^
     {
         self.renderedImage = nil;
