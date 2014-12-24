@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "VAnimatedTransitionViewController.h"
 #import "VTransitionModel.h"
 #import "VAnimatedTransition.h"
 
@@ -15,7 +14,7 @@
 
 @end
 
-@interface VViewControllerTransition : NSObject <UIViewControllerTransitioningDelegate>
+@interface VTransitionDelegate : NSObject <UIViewControllerTransitioningDelegate>
 
 - (instancetype)initWithTransition:(id<VAnimatedTransition>)transition;
 

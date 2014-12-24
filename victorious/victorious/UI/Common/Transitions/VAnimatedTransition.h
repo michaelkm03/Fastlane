@@ -16,19 +16,25 @@
  */
 @protocol VAnimatedTransition <NSObject>
 
+// Set initial state (if required) before animation will actually start
 - (void)prepareForTransitionIn:(VTransitionModel *)model;
 
+// Do the actual work of the animation, always call `completion` block when finished
 - (void)performTransitionIn:(VTransitionModel *)model completion:(void (^)(BOOL))completion;
 
+// Set initial state (if required) before animation will actually start
 - (void)prepareForTransitionOut:(VTransitionModel *)model;
 
+// Do the actual work of the animation, always call `completion` block when finished
 - (void)performTransitionOut:(VTransitionModel *)model completion:(void (^)(BOOL))completion;
 
 // To save on performance and memory, return NO here if the transition doesn't need the snapshot
 @property (nonatomic, readonly) BOOL requiresImageViewFromOriginViewController;
 
+// To total duration of the transition in animation
 @property (nonatomic, readonly) NSTimeInterval transitionInDuration;
 
+// To total duration of the transition out animation
 @property (nonatomic, readonly) NSTimeInterval transitionOutDuration;
 
 @end

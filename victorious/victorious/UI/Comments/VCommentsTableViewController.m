@@ -37,7 +37,7 @@
 #import "VDefaultProfileImageView.h"
 
 #import "VEditCommentViewController.h"
-#import "VViewControllerTransition.h"
+#import "VTransitionDelegate.h"
 
 @import Social;
 
@@ -47,7 +47,7 @@
 @property (nonatomic, assign) BOOL hasComments;
 @property (nonatomic, assign) BOOL needsRefresh;
 
-@property (nonatomic, strong) VViewControllerTransition *transitionDelegate;
+@property (nonatomic, strong) VTransitionDelegate *transitionDelegate;
 
 @property (nonatomic, strong) NSArray *comments;
 
@@ -62,7 +62,7 @@
     [super viewDidLoad];
     
     VModalTransition *modalTransition = [[VModalTransition alloc] init];
-    self.transitionDelegate = [[VViewControllerTransition alloc] initWithTransition:modalTransition];
+    self.transitionDelegate = [[VTransitionDelegate alloc] initWithTransition:modalTransition];
     
     [self.tableView registerNib:[UINib nibWithNibName:kVCommentCellNibName bundle:nil]
          forCellReuseIdentifier:kVCommentCellNibName];

@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VViewControllerTransition.h"
+#import "VTransitionDelegate.h"
 
 @interface VViewControllerTransitionAnimator ()
 
@@ -67,13 +67,14 @@
 
 @end
 
-@interface VViewControllerTransition ()
+@interface VTransitionDelegate ()
 
 @property (nonatomic, strong) id<VAnimatedTransition> transition;
+@property (nonatomic, strong) VViewControllerTransitionAnimator *animator;
 
 @end
 
-@implementation VViewControllerTransition
+@implementation VTransitionDelegate
 
 - (instancetype)initWithTransition:(id<VAnimatedTransition>)transition
 {
@@ -81,6 +82,7 @@
     if (self)
     {
         _transition = transition;
+        _animator = [[VViewControllerTransitionAnimator alloc] initWithTransition:self.transition];
     }
     return self;
 }
@@ -89,12 +91,12 @@
                                                                    presentingController:(UIViewController *)presenting
                                                                        sourceController:(UIViewController *)source
 {
-    return [[VViewControllerTransitionAnimator alloc] initWithTransition:self.transition];
+    return self.animator;
 }
 
 - (id <UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed
 {
-    return [[VViewControllerTransitionAnimator alloc] initWithTransition:self.transition];
+    return self.animator;
 }
 
 @end

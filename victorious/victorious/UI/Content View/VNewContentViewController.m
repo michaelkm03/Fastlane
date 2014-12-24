@@ -72,7 +72,7 @@
 
 #import "VSequence+Fetcher.h"
 
-#import "VViewControllerTransition.h"
+#import "VTransitionDelegate.h"
 #import "VEditCommentViewController.h"
 #import "VModalTransition.h"
 
@@ -117,7 +117,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 @property (nonatomic, assign) BOOL enteringRealTimeComment;
 @property (nonatomic, assign) CMTime realtimeCommentBeganTime;
 
-@property (nonatomic, strong) VViewControllerTransition *transitionDelegate;
+@property (nonatomic, strong) VTransitionDelegate *transitionDelegate;
 
 @end
 
@@ -132,7 +132,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     contentViewController.hasAutoPlayed = NO;
     
     VModalTransition *modalTransition = [[VModalTransition alloc] init];
-    contentViewController.transitionDelegate = [[VViewControllerTransition alloc] initWithTransition:modalTransition];
+    contentViewController.transitionDelegate = [[VTransitionDelegate alloc] initWithTransition:modalTransition];
     contentViewController.elapsedTimeFormatter = [[VElapsedTimeFormatter alloc] init];
     
     return contentViewController;
