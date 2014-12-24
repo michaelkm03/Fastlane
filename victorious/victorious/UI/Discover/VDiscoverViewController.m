@@ -69,18 +69,6 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
                                                object:nil];
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    [self.suggestedPeopleViewController viewWillAppear:animated];
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    [self.suggestedPeopleViewController viewWillDisappear:animated];
-}
-
 - (void)dealloc
 {
     // Kill the login notification
@@ -288,7 +276,15 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
         else
         {
             VSuggestedPeopleCell *customCell = (VSuggestedPeopleCell *) [tableView dequeueReusableCellWithIdentifier:kVSuggestedPeopleIdentifier forIndexPath:indexPath];
-            customCell.collectionView = self.suggestedPeopleViewController.collectionView;
+                        
+            if ( ![customCell.subviews containsObject:self.suggestedPeopleViewController.collectionView] )
+            {
+                [self addChildViewController:self.suggestedPeopleViewController];
+                [customCell addSubview:self.suggestedPeopleViewController.collectionView];
+                [self.suggestedPeopleViewController didMoveToParentViewController:self];
+                self.suggestedPeopleViewController.collectionView.frame = customCell.bounds;
+            }
+            
             cell = customCell;
             self.suggestedPeopleViewController.hasLoadedOnce = YES;
         }
