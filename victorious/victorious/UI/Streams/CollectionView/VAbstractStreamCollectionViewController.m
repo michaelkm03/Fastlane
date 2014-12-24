@@ -11,7 +11,6 @@
 #import "VStreamCollectionViewDataSource.h"
 #import "VDirectoryItemCell.h"
 
-#import "VNavigationHeaderView.h"
 #import "MBProgressHUD.h"
 
 #import "UIActionSheet+VBlocks.h"
@@ -32,11 +31,9 @@
 
 #import "VSettingManager.h"
 
-#import "UIViewController+VNavMenu.h"
-
 const CGFloat kVLoadNextPagePoint = .75f;
 
-@interface VAbstractStreamCollectionViewController () <UICollectionViewDelegate, VNavigationHeaderDelegate>
+@interface VAbstractStreamCollectionViewController () <UICollectionViewDelegate>
 
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 
@@ -56,13 +53,6 @@ const CGFloat kVLoadNextPagePoint = .75f;
 {
     [super viewWillAppear:animated];
     
-    if (self.navHeaderView)
-    {
-        UIEdgeInsets insets = self.collectionView.contentInset;
-        insets.top = CGRectGetHeight(self.navHeaderView.bounds);
-        self.contentInset = insets;
-    }
-
     if ( !self.refreshControl.isRefreshing && self.streamDataSource.count == 0 )
     {
         [self refresh:nil];
@@ -77,17 +67,6 @@ const CGFloat kVLoadNextPagePoint = .75f;
     //Since we're using the collection flow delegate method for the insets, we need to manually position the frame of the refresh control.
     subView.frame = CGRectMake(CGRectGetMinX(subView.frame), CGRectGetMinY(subView.frame) + self.contentInset.top / 2,
                                CGRectGetWidth(subView.frame), CGRectGetHeight(subView.frame));
-}
-
-- (BOOL)prefersStatusBarHidden
-{
-    return !CGRectContainsRect(self.view.frame, self.navHeaderView.frame);
-}
-
-- (UIStatusBarStyle)preferredStatusBarStyle
-{
-    return ![[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled] ? UIStatusBarStyleLightContent
-    : UIStatusBarStyleDefault;
 }
 
 - (void)setCurrentStream:(VStream *)currentStream
@@ -175,22 +154,6 @@ const CGFloat kVLoadNextPagePoint = .75f;
         scrollView.contentOffset.y + CGRectGetHeight(scrollView.bounds) > scrollThreshold)
     {
         [self loadNextPageAction];
-    }
-    
-    CGPoint translation = [scrollView.panGestureRecognizer translationInView:scrollView.superview];
-    if (translation.y < 0 && scrollView.contentOffset.y > CGRectGetHeight(self.navHeaderView.frame))
-    {
-        [UIView animateWithDuration:.2f animations:^
-         {
-             [self v_hideHeader];
-         }];
-    }
-    else if (translation.y > 0)
-    {
-        [UIView animateWithDuration:.2f animations:^
-         {
-             [self v_showHeader];
-         }];
     }
     
     if ([self.delegate respondsToSelector:@selector(scrollViewDidScroll:)])

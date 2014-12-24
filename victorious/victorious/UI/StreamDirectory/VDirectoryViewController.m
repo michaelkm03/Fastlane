@@ -15,12 +15,7 @@
 #import "VStreamCollectionViewController.h"
 #import "VNewContentViewController.h"
 
-// Menu
-#import "UIViewController+VSideMenuViewController.h"
-#import "UIViewController+VNavMenu.h"
-
 // Views
-#import "VNavigationHeaderView.h"
 #import "MBProgressHUD.h"
 #import "VDirectoryItemCell.h"
 
@@ -38,7 +33,7 @@ static NSString * const kTitleKey = @"title";
 
 static CGFloat const kDirectoryInset = 10.0f;
 
-@interface VDirectoryViewController () <UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, VNavigationHeaderDelegate, VStreamCollectionDataDelegate, VNewContentViewControllerDelegate, VNavigationHeaderDelegate>
+@interface VDirectoryViewController () <UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, VStreamCollectionDataDelegate, VNewContentViewControllerDelegate>
 
 @end
 
@@ -52,10 +47,6 @@ static CGFloat const kDirectoryInset = 10.0f;
                                                                                            bundle:nil];
     streamDirectory.currentStream = stream;
     streamDirectory.title = stream.name;
-    
-    [streamDirectory v_addNewNavHeaderWithTitles:nil];
-    streamDirectory.navHeaderView.delegate = streamDirectory;
-    
     return streamDirectory;
 }
 
@@ -86,24 +77,11 @@ static CGFloat const kDirectoryInset = 10.0f;
     self.collectionView.delegate = self;
     
     [self refresh:self.refreshControl];
-
-    [self.view layoutIfNeeded];
 }
 
 - (BOOL)shouldAutorotate
 {
     return NO;
-}
-
-- (BOOL)prefersStatusBarHidden
-{
-    return !CGRectContainsRect(self.view.frame, self.navHeaderView.frame);
-}
-
-- (UIStatusBarStyle)preferredStatusBarStyle
-{
-    return ![[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled] ? UIStatusBarStyleLightContent
-    : UIStatusBarStyleDefault;
 }
 
 #pragma mark - CollectionViewDelegate
