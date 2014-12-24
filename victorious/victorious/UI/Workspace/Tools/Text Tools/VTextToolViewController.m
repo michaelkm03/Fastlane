@@ -102,6 +102,7 @@ static const CGFloat kTextRenderingSize = 1024;
     self.renderedImage = nil;
     
     self.swappingTextTypes = YES;
+    
     {
         [self updateTextAttributesForTextType:textType];
         if (_textType.verticalAlignment != textType.verticalAlignment)
@@ -111,6 +112,7 @@ static const CGFloat kTextRenderingSize = 1024;
         [self.view layoutIfNeeded];
         _textType = textType;
     }
+    
     self.swappingTextTypes = NO;
 }
 
@@ -173,12 +175,12 @@ shouldChangeTextInRange:(NSRange)range
     textView.attributedText = [[NSAttributedString alloc] initWithString:self.textView.text
                                                               attributes:sizedAttributes];
     textView.selectedRange = selectedRange;
-    while (((CGSize) [self.textView sizeThatFits:self.textView.frame.size]).height > prefferedFont.pointSize)
+    while (([self.textView sizeThatFits:self.textView.frame.size]).height > prefferedFont.pointSize)
     {
         self.textView.font = [styledFont fontWithSize:self.textView.font.pointSize-1];
     }
     
-    while (((CGSize)[self.textView sizeThatFits:self.textView.frame.size]).height < prefferedFont.pointSize)
+    while (([self.textView sizeThatFits:self.textView.frame.size]).height < prefferedFont.pointSize)
     {
         self.textView.font = [styledFont fontWithSize:self.textView.font.pointSize+1];
     }

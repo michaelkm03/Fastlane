@@ -49,14 +49,14 @@ static NSString * const kFilterIndexKey = @"filterIndex";
         _toolPicker = (UIViewController<VToolPicker> *)[dependencyManager viewControllerForKey:kPickerKey];
         _icon = [UIImage imageNamed:@"filterIcon"];
         
-        NSURL *filters = [[NSBundle mainBundle] URLForResource:@"filters" withExtension:@"xml"];
-        NSArray *rFilters = [VPhotoFilterSerialization filtersFromPlistFile:filters];
-        rFilters = [rFilters sortedArrayUsingComparator:^NSComparisonResult(VPhotoFilter *filter1, VPhotoFilter *filter2)
+        NSURL *filterFileURL = [[NSBundle mainBundle] URLForResource:@"filters" withExtension:@"xml"];
+        NSArray *photoFilters = [VPhotoFilterSerialization filtersFromPlistFile:filterFileURL];
+        photoFilters = [photoFilters sortedArrayUsingComparator:^NSComparisonResult(VPhotoFilter *filter1, VPhotoFilter *filter2)
         {
             return [filter1.name caseInsensitiveCompare:filter2.name];
         }];
         
-        NSArray *filterTools = [rFilters v_map:^id(VPhotoFilter *photoFilter)
+        NSArray *filterTools = [photoFilters v_map:^id(VPhotoFilter *photoFilter)
         {
             VFilterTypeTool *imageFilter = [[VFilterTypeTool alloc] init];
             photoFilter.name = [photoFilter.name uppercaseString];
