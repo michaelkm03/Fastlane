@@ -7,6 +7,7 @@
 //
 
 #import "VDependencyManager.h"
+#import "VHamburgerButton.h"
 #import "VMenuController.h"
 #import "VMultipleStreamViewController.h"
 #import "VNavigationController.h"
@@ -31,6 +32,7 @@ static NSString * const kMenuKey = @"menu";
 @property (assign, readwrite, nonatomic) BOOL visible;
 @property (assign, readwrite, nonatomic) CGPoint originalPoint;
 @property (strong, readwrite, nonatomic) UIButton *contentButton;
+@property (strong, readwrite, nonatomic) VHamburgerButton *hamburgerButton;
 
 @end
 
@@ -104,10 +106,11 @@ static NSString * const kMenuKey = @"menu";
     
     self.menuViewController = [self.dependencyManager viewControllerForKey:kMenuKey];
     self.contentViewController = [[VNavigationController alloc] initWithDependencyManager:self.dependencyManager];
-    self.contentViewController.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Menu"]
-                                                                                    style:UIBarButtonItemStylePlain
-                                                                                   target:self
-                                                                                   action:@selector(presentMenuViewController)];
+    
+    self.hamburgerButton = [VHamburgerButton hamburgerButtonFromNib];
+    self.hamburgerButton.dependencyManager = self.dependencyManager;
+    [self.hamburgerButton addTarget:self action:@selector(presentMenuViewController) forControlEvents:UIControlEventTouchUpInside];
+    self.contentViewController.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.hamburgerButton];
     
     if (!_contentViewInLandscapeOffsetCenterX)
     {
@@ -401,14 +404,9 @@ static NSString * const kMenuKey = @"menu";
         return;
     }
     
-    __typeof(self) __weak weakSelf = self;
     VNavigationMenuItemBadgeNumberUpdateBlock badgeNumberUpdateBlock = ^(NSInteger badgeNumber)
     {
-        [[UIApplication sharedApplication] setApplicationIconBadgeNumber:badgeNumber];
-        [weakSelf.contentViewController.navigationController.viewControllers enumerateObjectsUsingBlock:^(UIViewController *viewController, NSUInteger idx, BOOL *stop)
-        {
-            [viewController.navHeaderView setBadgeNumber:badgeNumber];
-        }];
+        [self.hamburgerButton setBadgeNumber:badgeNumber];
     };
     
     if ( [menuViewController respondsToSelector:@selector(setBadgeNumberUpdateBlock:)] )
