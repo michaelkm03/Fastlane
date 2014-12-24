@@ -74,6 +74,7 @@
 
 #import "VViewControllerTransition.h"
 #import "VEditCommentViewController.h"
+#import "VModalTransition.h"
 
 static const CGFloat kMaxInputBarHeight = 200.0f;
 
@@ -129,7 +130,9 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     VNewContentViewController *contentViewController = [[UIStoryboard storyboardWithName:@"ContentView" bundle:nil] instantiateInitialViewController];
     contentViewController.viewModel = viewModel;
     contentViewController.hasAutoPlayed = NO;
-    contentViewController.transitionDelegate = [[VViewControllerTransition alloc] init];
+    
+    VModalTransition *modalTransition = [[VModalTransition alloc] init];
+    contentViewController.transitionDelegate = [[VViewControllerTransition alloc] initWithTransition:modalTransition];
     contentViewController.elapsedTimeFormatter = [[VElapsedTimeFormatter alloc] init];
     
     return contentViewController;

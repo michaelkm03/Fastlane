@@ -8,11 +8,15 @@
 
 #import <Foundation/Foundation.h>
 #import "VAnimatedTransitionViewController.h"
+#import "VTransitionModel.h"
+#import "VAnimatedTransition.h"
 
 @interface VViewControllerTransitionAnimator : NSObject <UIViewControllerAnimatedTransitioning>
 
 @end
 
 @interface VViewControllerTransition : NSObject <UIViewControllerTransitioningDelegate>
+
+- (instancetype)initWithTransition:(id<VAnimatedTransition>)transition;
 
 @end

@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "VModalTransition.h"
 
 @class VComment;
 
@@ -16,7 +17,7 @@
 
 @end
 
-@interface VEditCommentViewController : UIViewController
+@interface VEditCommentViewController : UIViewController <VModalTransitionPresentedViewController>
 
 + (VEditCommentViewController *)instantiateFromStoryboardWithComment:(VComment *)comment;
 

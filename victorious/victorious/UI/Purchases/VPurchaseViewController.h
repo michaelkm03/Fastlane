@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "VVoteType+Fetcher.h"
+#import "VModalTransition.h"
 
-@interface VPurchaseViewController : UIViewController
+@interface VPurchaseViewController : UIViewController <VModalTransitionPresentedViewController>
 
 + (VPurchaseViewController *)purchaseViewControllerWithVoteType:(VVoteType *)voteType;
 
