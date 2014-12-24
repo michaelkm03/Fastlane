@@ -46,6 +46,7 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
 @interface VTrendingTagCell()
 
 @property (nonatomic, weak) IBOutlet VHashtagLabel *hashTagLabel;
+@property (nonatomic, readwrite) BOOL isSubscribedToTag;
 
 @end
 
@@ -73,62 +74,59 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
     self.hashTagLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
 }
 
-- (void)setHashtag:(NSString *)hashtag
+- (void)setHashtag:(VHashtag *)hashtag
 {
+    _hashtag = hashtag;
+    
     // Make sure there's a # at the beginning of the text
-    self.hashtagText = hashtag;
-    NSString *text = [VHashTags stringWithPrependedHashmarkFromString:self.hashtagText];
+    NSString *hashtagText = hashtag.tag;
+    NSString *text = [VHashTags stringWithPrependedHashmarkFromString:hashtagText];
     
     [self.hashTagLabel setText:text];
     
     [self applyTheme];
     
-    if (self.subscribedToTag)
+    if (self.isSubscribedToTag)
     {
         self.followHashtagControl.subscribed = YES;
     }
     [self updateSubscribeStatusAnimated:NO];
 }
 
-- (BOOL)subscribedToTag
+- (BOOL)isSubscribedToTag
 {
-    BOOL subscription = NO;
+    BOOL subscribed = NO;
     VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-    
-    for (VHashtag *hashtag in mainUser.hashtags)
+
+    if ([mainUser.hashtags containsObject:self.hashtag])
     {
-        if ([hashtag.tag isEqualToString:self.hashtagText])
-        {
-            subscription = YES;
-            break;
-        }
+        subscribed = YES;
     }
+    _isSubscribedToTag = subscribed;
     
-    return subscription;
+    return subscribed;
 }
 
 - (void)updateSubscribeStatusAnimated:(BOOL)animated
 {
     //If we get into a weird state and the relaionships are the same don't do anything
-    if (self.followHashtagControl.subscribed == self.subscribedToTag)
+    if (self.followHashtagControl.subscribed == self.isSubscribedToTag)
     {
         return;
     }
     if (!self.shouldAnimateSubscription)
     {
-        self.followHashtagControl.subscribed = self.subscribedToTag;
+        self.followHashtagControl.subscribed = self.isSubscribedToTag;
         return;
     }
     
     // Animate it
-    [self.followHashtagControl setSubscribed:self.subscribedToTag
+    [self.followHashtagControl setSubscribed:self.isSubscribedToTag
                                     animated:animated];
-    
+
     // Re-enable the control
-    self.followHashtagControl.alpha = 1.0f;
     self.followHashtagControl.userInteractionEnabled = YES;
     [self enableSubscriptionIcon:nil];
-    
 }
 
 - (IBAction)followUnfollowHashtag:(id)sender
@@ -140,6 +138,7 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
     else
     {
         // Disable the control
+        self.followHashtagControl.userInteractionEnabled = NO;
         [self disableSubscriptionIcon:nil];
 
         self.shouldAnimateSubscription = YES;
@@ -153,6 +152,7 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
 - (void)prepareForReuse
 {
     self.shouldCellRespond = YES;
+    self.isSubscribedToTag = NO;
     self.userInteractionEnabled = YES;
     self.followHashtagControl.alpha = 1.0f;
 }
@@ -164,7 +164,6 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
     void (^animations)() = ^(void)
     {
         self.followHashtagControl.alpha = 0.3f;
-        self.followHashtagControl.userInteractionEnabled = NO;
     };
     
     [UIView transitionWithView:self.followHashtagControl
@@ -179,7 +178,6 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
     void (^animations)() = ^(void)
     {
         self.followHashtagControl.alpha = 1.0f;
-        self.followHashtagControl.userInteractionEnabled = YES;
     };
     
     [UIView transitionWithView:self.followHashtagControl

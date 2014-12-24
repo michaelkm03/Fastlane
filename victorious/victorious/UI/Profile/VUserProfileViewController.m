@@ -17,7 +17,7 @@
 #import "VProfileEditViewController.h"
 #import "VFollowerTableViewController.h"
 #import "VFollowingTableViewController.h"
-#import "VProfileFollowingAndHashtagsViewController.h"
+#import "VProfileFollowingContainerViewController.h"
 #import "VMessageContainerViewController.h"
 #import "UIImage+ImageEffects.h"
 #import "UIImageView+Blurring.h"
@@ -55,7 +55,7 @@ static void * VUserProfileAttributesContext =  &VUserProfileAttributesContext;
 @property (nonatomic, strong) UIImageView              *backgroundImageView;
 @property (nonatomic) BOOL                            isMe;
 
-@property (nonatomic, strong) VProfileFollowingAndHashtagsViewController *followingAndHashtagsVC;
+@property (nonatomic, strong) VProfileFollowingContainerViewController *followingAndHashtagsVC;
 
 @end
 

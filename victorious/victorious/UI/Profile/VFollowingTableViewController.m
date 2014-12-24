@@ -65,7 +65,8 @@
     UIEdgeInsets insets = self.tableView.contentInset;
     insets.top = CGRectGetHeight(self.parentViewController.navHeaderView.frame);
     
-    if (insets.top == 0)
+    BOOL isHeaderVisible = (insets.top == 0);
+    if (isHeaderVisible)
     {
         insets = UIEdgeInsetsMake(10.0f, 0.0f, 0.0f, 0.0f);
         self.tableView.rowHeight = 50.0f;

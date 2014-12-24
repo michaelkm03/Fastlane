@@ -20,7 +20,7 @@
 /**
  Reports if the hashtag to be presented has been subscribed to
  */
-@property (nonatomic, readonly) BOOL subscribedToTag;
+@property (nonatomic, readonly) BOOL isSubscribedToTag;
 
 /**
  Flag for the view controller to specify if the subscribe / unsubscribe button should be animated when tapped
@@ -33,9 +33,9 @@
 @property (nonatomic, weak) IBOutlet VFollowHashtagControl *followHashtagControl;
 
 /**
- The actual text of the hashtag (minus the #)
+ Hashtag property to format
  */
-@property (nonatomic, strong) NSString *hashtagText;
+@property (nonatomic, strong) VHashtag *hashtag;
 
 /**
  Set to NO to disable any action
@@ -48,13 +48,6 @@
  @return NSInteger value for the cell height
  */
 + (NSInteger)cellHeight;
-
-/**
- Hashtag setter
- 
- @param hashtag The NSString object to present for this cell
- */
-- (void)setHashtag:(NSString *)hashtag;
 
 /**
  Checks to see if hashtag is subscribed to or not and animates the subscribe button accordingly.
