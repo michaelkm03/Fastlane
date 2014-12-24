@@ -17,13 +17,16 @@
 
 @end
 
+/**
+ Controller for the collection view of utility buttons that appears in VSwipeTableViewCell
+ */
 @interface VUtilityButtonsViewController : UIViewController
+
+- (instancetype)initWithFrame:(CGRect)frame;
 
 // Call this whenever constraints are changed, it invalidates the collection view's layout
 - (void)constraintsDidUpdate;
 
 @property (weak, nonatomic) id<VUtilityButtonsViewControllerDelegate> delegate;
-
-- (instancetype)initWithFrame:(CGRect)frame;
 
 @end

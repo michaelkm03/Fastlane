@@ -24,7 +24,7 @@ static const CGFloat kCollectionViewSectionsCount = 1;
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super init];
-        if (self)
+    if (self)
     {
         _startingFrame = frame;
     }

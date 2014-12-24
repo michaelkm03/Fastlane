@@ -10,6 +10,7 @@
 #import "VComment.h"
 #import "VThemeManager.h"
 #import "VObjectManager+Comment.h"
+#import "VAlertController.h"
 
 @interface VEditCommentViewController() <UITextViewDelegate>
 
@@ -87,18 +88,27 @@
                         options:kNilOptions animations:^void
      {
          self.modalContainerHeightConstraint.constant = size.height + self.textViewTopConstraint.constant + self.textViewBottomConstraint.constant;
-         [self.modalContainer layoutIfNeeded]; // Animates this element
-         [self.view layoutIfNeeded]; // Animates to attached buttons
+         
+         // Animates this element
+         [self.modalContainer layoutIfNeeded];
+
+         // Animates subviews, specifically the attached confirm/cancel buttons
+         [self.view layoutIfNeeded];
      }
                      completion:nil];
 }
 
 - (void)dismiss
 {
-    // Prevents another return key press from dismissing previous view as well
+    // Prevents another rapid return key press from dismissing previous view as well (mostly happens in simulator)
     self.editTextView.delegate = nil;
 
     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (BOOL)validateCommentText:(NSString *)text
+{
+    return text != nil && text.length > 0;
 }
 
 #pragma mark - IBActions
@@ -110,7 +120,6 @@
 
 - (IBAction)onConfirm:(id)sender
 {
-    // TODO: Validate
     self.comment.text = self.editTextView.text;
     
     [[VObjectManager sharedManager] editComment:self.comment
@@ -170,18 +179,29 @@
 
 - (void)textViewDidEndEditing:(UITextView *)textView
 {
-    [self.editTextView resignFirstResponder];
+    [textView resignFirstResponder];
+}
+
+- (void)textViewDidChange:(UITextView *)textView
+{
+    // As in other comment entry sections of the app, we just disable the confirm button
+    // if the comment text is invalid
+    self.buttonConfirm.enabled = [self validateCommentText:textView.text];
 }
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
-    if ( [text isEqualToString:@"\r"] || [text isEqualToString:@"\n"] )
+    if ( [text isEqualToString:@"\n"] )
     {
-        [self dismiss];
+        if ( [self validateCommentText:textView.text] )
+        {
+            [self onConfirm:nil];
+        }
         return NO;
     }
     
     [self updateSize];
+    
     return YES;
 }
 

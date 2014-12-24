@@ -23,6 +23,13 @@ typedef NS_ENUM( NSUInteger, VCommentCellUtilityType )
 
 @end
 
+/**
+ An object that creates several configurations for utility button cells
+ to be displayed in tableview or collection view cells that use VSwipeViewController.
+ This is done for convenience as well as to share UIImage instances between buttons
+ instead of using memory and performance to instantiate a new one for
+ each button on each cell.
+ */
 @interface VCommentsUtilityButtonConfiguration : NSObject
 
 + (VCommentsUtilityButtonConfiguration *)sharedInstance;

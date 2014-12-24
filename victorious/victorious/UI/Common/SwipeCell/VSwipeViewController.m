@@ -276,7 +276,6 @@
                                                                             attribute:NSLayoutAttributeWidth
                                                                            multiplier:1.0f
                                                                              constant:0.0f];
-    
     [self.scrollView addConstraint:self.contentContainerViewWidthConstraint];
 }
 
@@ -310,6 +309,10 @@
 
 - (void)updateGutterViews:(CGFloat)gutterWidth
 {
+    // Gutter width is driven by the scroll view's content offset, and all functionality
+    // in this method animates elements to follow it to that scroll view animation properties,
+    // such as bouncing and deceleration are applied
+    
     // Size the collection view containing utility buttons to fit the space created when scrolled
     self.collectionViewWidthConstraint.constant = MAX( gutterWidth, 0.0f );
     self.collectionViewTrailingConstraint.constant = -gutterWidth;
@@ -330,12 +333,13 @@
 
 - (void)updateScrollState:(UIScrollView *)scrollView
 {
-    // Calculate current scroll direction based on comparising to previous contentOffset
+    // Calculate current scroll direction based on comparison to previous contentOffset
     self.scrollDirection = CGPointMake(scrollView.contentOffset.x - self.previousContentOffset.x,
                                        scrollView.contentOffset.y - self.previousContentOffset.y );
     self.previousContentOffset = scrollView.contentOffset;
     
-    // Allow the delegate to respond to the opening of the utlity buttons
+    // Check on the appearance or disappearance of the utility buttons and
+    // call delegate methods to allow calling code to respond
     BOOL wasShwoing = self.isShowingUtilityButtons;
     self.isShowingUtilityButtons = scrollView.contentOffset.x > 0.0f;
     if ( !wasShwoing && self.isShowingUtilityButtons )
@@ -359,7 +363,8 @@
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
-    if ( self.scrollDirection.x < 0.0f )
+    BOOL isMovingRight = self.scrollDirection.x < 0.0f;
+    if ( isMovingRight )
     {
         [self hideUtilityButtons];
     }

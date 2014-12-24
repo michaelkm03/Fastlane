@@ -20,7 +20,7 @@
                                    leading:(CGFloat)leading
                                   trailing:(CGFloat)trailing
                                        top:(CGFloat)top
-                                     ottom:(CGFloat)bottom;
+                                    bottom:(CGFloat)bottom;
 
 /**
  Calls method `addFitToParentConstraintsToSubview:leading:trailing:top:bottom:' but

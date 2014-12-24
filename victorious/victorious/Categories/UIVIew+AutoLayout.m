@@ -23,7 +23,7 @@
                                @"trailing" : @(trailing),
                                @"top" : @(top),
                                @"bottom" : @(bottom) };
-    self.translatesAutoresizingMaskIntoConstraints = NO;
+    subview.translatesAutoresizingMaskIntoConstraints = NO;
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-leading-[subview]-trailing-|"
                                                                  options:kNilOptions
                                                                  metrics:metrics
