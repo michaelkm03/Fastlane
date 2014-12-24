@@ -38,7 +38,7 @@ static const CGFloat kTextRenderingSize = 1024;
     VTextToolViewController *textToolViewController = [[VTextToolViewController alloc] initWithNibName:nil
                                                                                                 bundle:nil];
     textToolViewController.searialTextRenderingQueue = dispatch_queue_create("com.victorious.textToolRenderingQueue", DISPATCH_QUEUE_SERIAL);
-    return textToolViewController;// [workspaceStoryboard instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
+    return textToolViewController;
 }
 
 #pragma mark - UIViewController
