@@ -51,10 +51,18 @@ static NSString * const kFilterIndexKey = @"filterIndex";
         
         NSURL *filterFileURL = [[NSBundle mainBundle] URLForResource:@"filters" withExtension:@"xml"];
         NSArray *photoFilters = [VPhotoFilterSerialization filtersFromPlistFile:filterFileURL];
+        
         photoFilters = [photoFilters sortedArrayUsingComparator:^NSComparisonResult(VPhotoFilter *filter1, VPhotoFilter *filter2)
         {
             return [filter1.name caseInsensitiveCompare:filter2.name];
         }];
+        
+        VPhotoFilter *noFilterFilter = [[VPhotoFilter alloc] init];
+        noFilterFilter.name = NSLocalizedString(@"No Filter", @"No Filter filter name.");
+        NSMutableArray *mutablePhotoFilters = [[NSMutableArray alloc] initWithArray:photoFilters];
+        [mutablePhotoFilters insertObject:noFilterFilter atIndex:0];
+        
+        photoFilters = [mutablePhotoFilters copy];
         
         NSArray *filterTools = [photoFilters v_map:^id(VPhotoFilter *photoFilter)
         {
@@ -101,3 +109,4 @@ static NSString * const kFilterIndexKey = @"filterIndex";
 }
 
 @end
+
