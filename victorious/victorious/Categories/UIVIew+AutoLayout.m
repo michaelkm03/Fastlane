@@ -10,20 +10,47 @@
 
 @implementation UIView (AutoLayout)
 
-- (void)addConstraintsToFitContainerView:(UIView *)containerView
+- (void)addFitToParentConstraintsToSubview:(UIView *)subview
+                                   leading:(CGFloat)leading
+                                  trailing:(CGFloat)trailing
+                                       top:(CGFloat)top
+                                    bottom:(CGFloat)bottom
 {
-    NSParameterAssert( containerView == self.superview );
+    NSParameterAssert( subview.superview == self );
     
-    NSDictionary *views = @{ @"view" : self };
-    self.translatesAutoresizingMaskIntoConstraints = NO;
-    [containerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[view]|"
-                                                                          options:kNilOptions
-                                                                          metrics:nil
-                                                                            views:views]];
-    [containerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[view]|"
-                                                                          options:kNilOptions
-                                                                          metrics:nil
-                                                                            views:views]];
+    NSDictionary *views = @{ @"subview" : subview };
+    NSDictionary *metrics = @{ @"leading" : @(leading),
+                               @"trailing" : @(trailing),
+                               @"top" : @(top),
+                               @"bottom" : @(bottom) };
+    subview.translatesAutoresizingMaskIntoConstraints = NO;
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-leading-[subview]-trailing-|"
+                                                                 options:kNilOptions
+                                                                 metrics:metrics
+                                                                   views:views]];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-top-[subview]-bottom-|"
+                                                                 options:kNilOptions
+                                                                 metrics:metrics
+                                                                   views:views]];
+}
+
+- (void)addFitToParentConstraintsToSubview:(UIView *)subview
+                                     space:(CGFloat)space
+{
+    [self addFitToParentConstraintsToSubview:subview
+                                     leading:space
+                                    trailing:space
+                                         top:space
+                                      bottom:space];
+}
+
+- (void)addFitToParentConstraintsToSubview:(UIView *)subview
+{
+    [self addFitToParentConstraintsToSubview:subview
+                                     leading:0.0
+                                    trailing:0.0
+                                         top:0.0
+                                      bottom:0.0];
 }
 
 @end

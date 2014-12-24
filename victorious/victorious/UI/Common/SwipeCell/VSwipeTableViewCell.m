@@ -26,7 +26,9 @@
 
 - (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
 {
-    if ( !self.clipsToBounds && self.swipeViewController != nil && !self.hidden && self.alpha > 0 )
+    BOOL shouldHitTestSubviewsOutSideBounds = !self.hidden && self.alpha > 0;
+    BOOL shouldHitTestSubviewsAtAll = !self.clipsToBounds && self.swipeViewController != nil;
+    if ( shouldHitTestSubviewsOutSideBounds && shouldHitTestSubviewsAtAll )
     {
         CGPoint subPoint = [self.swipeViewController.utilityButtonsContainer convertPoint:point fromView:self];
         UIView *result = [self.swipeViewController.utilityButtonsContainer hitTest:subPoint withEvent:event];

@@ -24,7 +24,7 @@ static const CGFloat kCollectionViewSectionsCount = 1;
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super init];
-        if (self)
+    if (self)
     {
         _startingFrame = frame;
     }
@@ -46,7 +46,7 @@ static const CGFloat kCollectionViewSectionsCount = 1;
     self.collectionView.dataSource = self;
     [self.view addSubview:self.collectionView];
     
-    [self.collectionView addConstraintsToFitContainerView:self.view];
+    [self.view addFitToParentConstraintsToSubview:self.collectionView];
     
     NSString *reuseIdentifier = [VUtilityButtonCell reuseIdentifier];
     UINib *nib = [UINib nibWithNibName:reuseIdentifier bundle:[NSBundle mainBundle]];

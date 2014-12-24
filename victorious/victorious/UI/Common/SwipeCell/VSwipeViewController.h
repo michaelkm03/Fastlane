@@ -34,20 +34,20 @@
 
 /**
  Provides data and callbacks for cell-specific events related to the use of
- swipe-to-reveal utility buttons.
+ VSwipeViewController for swipe-to-reveal utility buttons.
  */
 @protocol VSwipeViewCellDelegate <NSObject>
 
-// Called when one the provided utility button at the provided index is selected
+// Called when the provided utility button at the provided index is selected
 - (void)utilityButton:(VUtilityButtonCell *)button selectedAtIndex:(NSUInteger)index;
 
 // The number of utlity buttons to be created in the cell
 - (NSUInteger)numberOfUtilityButtons;
 
-// Provide the width for each utlity button
+// Provide the width for a single utility button
 - (CGFloat)utilityButtonWidth;
 
-// Provide an icon image for the btuton
+// Provide an icon image for the button
 - (UIImage *)iconImageForButtonAtIndex:(NSUInteger)index;
 
 // Provide a background color
@@ -55,7 +55,8 @@
 
 /**
  The UITableViewCell or UICollectionViewCell in which the swipe view lives
- Do not return the cell's contentView, it must use the root cell
+ Do not return the cell's contentView, it must use the root cell in order to
+ animate the swiping correctly.
 */
 @property (nonatomic, readonly) UIView *parentCellView;
 
@@ -72,7 +73,8 @@
 /**
  The utility buttons will reveal on swipe, but you can use this to open
  them programmatically with animation.  This is provided as a compliment to 
- `hideUtilityButtons`, which will likely be called much more commonly.
+ `hideUtilityButtons`, which is used much more frequently internally and is
+ probably more useful in calling code.
  */
 - (void)showUtilityButtons;
 
@@ -92,17 +94,19 @@
 @property (nonatomic, readonly) VSwipeView *swipeView;
 
 /**
- Delegate the provides support and handles events for all cells;
+ Delegate that provides support and handles events for things that are common to all cells.
  */
 @property (nonatomic, weak) id<VSwipeViewControllerDelegate> controllerDelegate;
 
 /**
- Delegate the provides support and handles events for a specific tableview or colectionview cell;
+ Delegate that provides support and handles events for a specific tableview or colectionview cell.
  */
 @property (nonatomic, weak) id<VSwipeViewCellDelegate> cellDelegate;
 
 /**
- The view that containts the utility buttons collection view.
+ The view that containts the utility buttons collection view.  This is exposed
+ to allow tableview or collection view cell implementors to hit test it for touches
+ that are beyond the bounds of the cell.
  */
 @property (nonatomic, readonly) UIView *utilityButtonsContainer;
 

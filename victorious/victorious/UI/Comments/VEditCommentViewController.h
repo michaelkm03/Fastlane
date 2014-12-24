@@ -23,8 +23,8 @@
 
 @property (weak, nonatomic) IBOutlet UIView *modalContainer;
 @property (weak, nonatomic) IBOutlet UIView *backgroundScreen;
-@property (weak, nonatomic) IBOutlet UIView *buttonConfirm;
-@property (weak, nonatomic) IBOutlet UIView *buttonCancel;
+@property (weak, nonatomic) IBOutlet UIButton *buttonConfirm;
+@property (weak, nonatomic) IBOutlet UIButton *buttonCancel;
 
 @property (strong, nonatomic) id<VEditCommentViewControllerDelegate> delegate;
 
