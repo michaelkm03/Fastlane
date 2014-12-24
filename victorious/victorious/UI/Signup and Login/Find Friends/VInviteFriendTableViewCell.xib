@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
@@ -56,6 +56,9 @@
                             <constraint firstAttribute="width" constant="42" id="4Ea-1i-tRY"/>
                             <constraint firstAttribute="height" constant="27" id="YM4-0C-zHI"/>
                         </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="following" value="YES"/>
+                        </userDefinedRuntimeAttributes>
                         <connections>
                             <action selector="followUnfollowUser:" destination="afQ-rA-05v" eventType="touchUpInside" id="4mw-in-d7e"/>
                         </connections>
