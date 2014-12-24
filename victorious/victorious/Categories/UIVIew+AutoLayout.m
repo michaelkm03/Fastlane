@@ -24,11 +24,11 @@
                                @"top" : @(top),
                                @"bottom" : @(bottom) };
     self.translatesAutoresizingMaskIntoConstraints = NO;
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-leading-[subview]-trailing-|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-leading-[subview]-trailing-|"
                                                                  options:kNilOptions
                                                                  metrics:metrics
                                                                    views:views]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-top-[subview]-bottom-|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-top-[subview]-bottom-|"
                                                                  options:kNilOptions
                                                                  metrics:metrics
                                                                    views:views]];
