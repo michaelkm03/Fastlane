@@ -99,6 +99,7 @@ static const CGFloat kTextRenderingSize = 1024;
     {
         return;
     }
+    self.renderedImage = nil;
     
     self.swappingTextTypes = YES;
     {

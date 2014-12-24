@@ -94,7 +94,7 @@
                                                                                  forIndexPath:indexPath];
     id <VWorkspaceTool> toolForIndexPath = self.tools[indexPath.row];
     
-    if (self.configureItemLabel)
+    if (self.configureItemLabel != nil)
     {
         self.configureItemLabel(pickerCell.label, toolForIndexPath);
     }
@@ -103,7 +103,6 @@
         pickerCell.label.text = toolForIndexPath.title;
         pickerCell.label.font = [self.dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
     }
-    
     
     return pickerCell;
 }
