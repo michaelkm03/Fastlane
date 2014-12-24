@@ -13,6 +13,7 @@
 #import "VSequence+Fetcher.h"
 #import "VUser.h"
 #import "VConstants.h"
+#import "VNavigationController.h"
 #import "VObjectManager+ContentCreation.h"
 #import "UIImageView+Blurring.h"
 #import "UIImage+ImageCreation.h"
@@ -24,7 +25,7 @@
 
 #import "MBProgressHUD.h"
 
-@interface VCommentsContainerViewController()   <VCommentsTableViewControllerDelegate, UINavigationControllerDelegate>
+@interface VCommentsContainerViewController() <VCommentsTableViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIButton *backButton;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
@@ -87,6 +88,11 @@
 }
 
 - (BOOL)prefersStatusBarHidden
+{
+    return YES;
+}
+
+- (BOOL)v_prefersNavigationBarHidden
 {
     return YES;
 }
