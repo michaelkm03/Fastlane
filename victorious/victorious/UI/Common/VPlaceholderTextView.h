@@ -10,6 +10,9 @@
 
 @interface VPlaceholderTextView : UITextView
 
-@property (nonatomic, copy) NSAttributedString *placeholderAttributedText;
+//@property (nonatomic, strong) UIColor *placeholderColor;
+@property (nonatomic, copy) NSString *placeholderText;
+
+//@property (nonatomic, copy) NSAttributedString *placeholderAttributedText;
 
 @end

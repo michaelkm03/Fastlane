@@ -10,6 +10,8 @@
 #import "UIView+VDynamicsHelpers.h"
 #import "VDependencyManager.h"
 
+#import "VPlaceholderTextView.h"
+
 #import "VObjectManager+ContentCreation.h"
 
 #import <MBProgressHUD/MBProgressHUD.h>
@@ -23,7 +25,7 @@ static const CGFloat kSnapDampingConstant = 0.9f;
 
 @property (nonatomic, weak) IBOutlet UIView *publishPrompt;
 @property (weak, nonatomic) IBOutlet UIImageView *previewImageView;
-@property (weak, nonatomic) IBOutlet UITextView *captionTextView;
+@property (weak, nonatomic) IBOutlet VPlaceholderTextView *captionTextView;
 @property (weak, nonatomic) IBOutlet UIButton *publishButton;
 @property (strong, nonatomic) IBOutlet UIPanGestureRecognizer *panGestureRecognizer;
 @property (strong, nonatomic) IBOutlet UITapGestureRecognizer *tapGestureRecognizer;
@@ -85,6 +87,8 @@ static const CGFloat kSnapDampingConstant = 0.9f;
     [self setupBehaviors];
     
     self.previewImageView.image = self.previewImage;
+
+    self.captionTextView.placeholderText = NSLocalizedString(@"TYPE A CAPTION & ADD AN #HASHTAG", @"Caption entry placeholder text");
 }
 
 - (void)viewDidLayoutSubviews
