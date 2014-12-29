@@ -89,8 +89,6 @@ static const CGFloat kTopSpacePublishPrompt = 50.0f;
         welf.publishPrompt.transform = CGAffineTransformIdentity;
     };
     
-
-    
     self.previewImageView.image = self.previewImage;
 
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
@@ -199,7 +197,6 @@ static const CGFloat kTopSpacePublishPrompt = 50.0f;
     self.attachmentBehavior.damping = 0.2f;
     [self.animator addBehavior:self.attachmentBehavior];
     [self.animator removeBehavior:self.snapBehavior];
-    [self.animator removeBehavior:self.gravityBehavior];
 }
 
 - (void)handleGestureMoved:(UIPanGestureRecognizer *)gestureRecognizer
