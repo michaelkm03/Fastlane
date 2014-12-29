@@ -110,7 +110,7 @@ static const CGFloat kSnapDampingConstant = 0.9f;
 
 - (IBAction)publish:(id)sender
 {
-    [[VObjectManager sharedManager] uploadMediaWithName:[[NSUUID UUID] UUIDString]
+    [[VObjectManager sharedManager] uploadMediaWithName:self.captionTextView.text
                                             description:nil
                                            previewImage:self.previewImage
                                             captionType:VCaptionTypeQuote
