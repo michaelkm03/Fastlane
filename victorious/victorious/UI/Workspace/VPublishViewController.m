@@ -11,6 +11,7 @@
 #import "VDependencyManager.h"
 
 #import "VPlaceholderTextView.h"
+#import "VContentInputAccessoryView.h"
 
 #import "VObjectManager+ContentCreation.h"
 
@@ -20,7 +21,7 @@ static const CGFloat kTriggerVelocity = 500.0f;
 static const CGFloat kSnapDampingConstant = 0.9f;
 static const CGFloat kTopSpacePublishPrompt = 50.0f;
 
-@interface VPublishViewController () <UICollisionBehaviorDelegate, UITextViewDelegate, UIGestureRecognizerDelegate>
+@interface VPublishViewController () <UICollisionBehaviorDelegate, UITextViewDelegate, UIGestureRecognizerDelegate, VContentInputAccessoryViewDelegate>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
@@ -36,8 +37,9 @@ static const CGFloat kTopSpacePublishPrompt = 50.0f;
 @property (nonatomic, strong) UIPushBehavior *pushBehavior;
 @property (nonatomic, strong) UISnapBehavior *snapBehavior;
 @property (nonatomic, strong) UICollisionBehavior *collisionBehavior;
-
 @property (nonatomic, copy, readwrite) void (^animateInBlock)(void);
+
+@property (nonatomic, assign) BOOL publishing;
 
 @end
 
@@ -74,18 +76,20 @@ static const CGFloat kTopSpacePublishPrompt = 50.0f;
 {
     [super viewDidLoad];
     
+    [self setupBehaviors];
+    
     self.publishButton.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
     self.publishButton.titleLabel.textColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     self.captionTextView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
     
     __weak typeof(self) welf = self;
-    self.publishPrompt.transform = CGAffineTransformMakeScale(1.5f, 1.5f);
+    self.publishPrompt.transform = CGAffineTransformMakeScale(2.5f, 2.5f);
     self.animateInBlock = ^void(void)
     {
         welf.publishPrompt.transform = CGAffineTransformIdentity;
     };
     
-    [self setupBehaviors];
+
     
     self.previewImageView.image = self.previewImage;
 
@@ -94,6 +98,12 @@ static const CGFloat kTopSpacePublishPrompt = 50.0f;
     self.captionTextView.placeholderText = NSLocalizedString(@"TYPE A CAPTION & ADD AN #HASHTAG", @"Caption entry placeholder text");
     self.captionTextView.typingAttributes = @{NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerParagraphFontKey],
                                               NSParagraphStyleAttributeName: paragraphStyle};
+    VContentInputAccessoryView *inputAccessoryView = [[VContentInputAccessoryView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 44.0f)];
+    inputAccessoryView.textInputView = self.captionTextView;
+    inputAccessoryView.maxCharacterLength = 120;
+    inputAccessoryView.delegate = self;
+    inputAccessoryView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
+    self.captionTextView.inputAccessoryView = inputAccessoryView;
 }
 
 - (void)viewDidLayoutSubviews
@@ -119,6 +129,18 @@ static const CGFloat kTopSpacePublishPrompt = 50.0f;
 
 - (IBAction)publish:(id)sender
 {
+    if (self.captionTextView.text.length < 1)
+    {
+        [self.captionTextView shakeShakeShakeShake];
+        return;
+    }
+    [self.captionTextView resignFirstResponder];
+    
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view
+                                              animated:YES];
+    hud.dimBackground = YES;
+    hud.labelText = NSLocalizedString(@"Publishing...", @"Publishing progress text.");
+    self.publishing = YES;
     [[VObjectManager sharedManager] uploadMediaWithName:self.captionTextView.text
                                             description:nil
                                            previewImage:self.previewImage
@@ -133,6 +155,8 @@ static const CGFloat kTopSpacePublishPrompt = 50.0f;
                                            twitterShare:NO
                                              completion:^(NSURLResponse *response, NSData *responseData, NSDictionary *jsonResponse, NSError *error)
      {
+         self.publishing = NO;
+         [hud hide:YES];
          if (error)
          {
              if (self.completion)
@@ -175,6 +199,7 @@ static const CGFloat kTopSpacePublishPrompt = 50.0f;
     self.attachmentBehavior.damping = 0.2f;
     [self.animator addBehavior:self.attachmentBehavior];
     [self.animator removeBehavior:self.snapBehavior];
+    [self.animator removeBehavior:self.gravityBehavior];
 }
 
 - (void)handleGestureMoved:(UIPanGestureRecognizer *)gestureRecognizer
@@ -236,6 +261,12 @@ static const CGFloat kTopSpacePublishPrompt = 50.0f;
    withBoundaryIdentifier:(id<NSCopying>)identifier
                   atPoint:(CGPoint)p
 {
+    if (self.publishing)
+    {
+        [self.animator addBehavior:self.snapBehavior];
+        return;
+    }
+    
     [self.animator removeAllBehaviors];
     if (self.completion)
     {
@@ -272,6 +303,18 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
     {
         return NO;
     }
+    return YES;
+}
+
+#pragma mark - VContentInputAccessoryViewDelegate
+
+- (BOOL)shouldLimitTextEntryForInputAccessoryView:(VContentInputAccessoryView *)inputAccessoryView
+{
+    return YES;
+}
+
+- (BOOL)shouldAddHashTagsForInputAccessoryView:(VContentInputAccessoryView *)inputAccessoryView
+{
     return YES;
 }
 

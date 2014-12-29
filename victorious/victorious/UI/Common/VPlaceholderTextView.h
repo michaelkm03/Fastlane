@@ -15,4 +15,6 @@
 
 @property (nonatomic, copy) NSString *placeholderText; ///< The placeholder text to display in the placeholder view.
 
+- (void)shakeShakeShakeShake; ///< Shake it off! (animation + vibrate indicating need to enter text) 
+
 @end
