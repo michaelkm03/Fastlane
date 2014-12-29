@@ -171,37 +171,105 @@ NSString * const VDependencyManagerWorkspaceKey = @"workspace";
     return [self templateValueOfType:[UIViewController class] forKey:key];
 }
 
+- (UIViewController *)singletonViewControllerForKey:(NSString *)key
+{
+    return [self singletonObjectOfType:[UIViewController class] forKey:key];
+}
+
+#pragma mark - Arrays of dependencies
+
 - (NSArray *)arrayForKey:(NSString *)key
 {
     return [self templateValueOfType:[NSArray class] forKey:key];
+}
+
+- (NSArray *)arrayOfValuesOfType:(Class)expectedType forKey:(NSString *)key
+{
+    return [self arrayOfValuesOfType:expectedType
+                              forKey:key
+                withTranslationBlock:^id(__unsafe_unretained Class expectedType, NSDictionary *dict)
+    {
+        return [self objectOfType:expectedType fromDictionary:dict];
+    }];
+}
+
+- (NSArray *)arrayOfSingletonValuesOfType:(Class)expectedType forKey:(NSString *)key
+{
+    return [self arrayOfValuesOfType:expectedType
+                              forKey:key
+                withTranslationBlock:^id(__unsafe_unretained Class expectedType, NSDictionary *dict)
+    {
+        return [self singletonObjectOfType:expectedType fromDictionary:dict];
+    }];
+}
+
+/**
+ Returns an array of dependent objects created from a JSON array
+ 
+ @param array An array pulled straight from within the template configuration
+ @param translation A block that, given an expected type and a configuration dictionary, will return an object described by that dictionary
+ */
+- (NSArray *)arrayOfValuesOfType:(Class)expectedType forKey:(NSString *)key withTranslationBlock:(id(^)(Class, NSDictionary *))translation
+{
+    NSParameterAssert(translation != nil);
+    NSArray *templateArray = [self arrayForKey:key];
+    
+    if ( templateArray.count == 0 )
+    {
+        return @[];
+    }
+    
+    NSMutableArray *returnValue = [[NSMutableArray alloc] initWithCapacity:templateArray.count];
+    for (id templateObject in templateArray)
+    {
+        if ( [templateObject isKindOfClass:expectedType] )
+        {
+            [returnValue addObject:templateObject];
+        }
+        else if ( [templateObject isKindOfClass:[NSDictionary class]] )
+        {
+            id realObject = translation(expectedType, templateObject);
+            
+            if ( realObject != nil )
+            {
+                [returnValue addObject:realObject];
+            }
+        }
+    }
+    return [returnValue copy];
 }
 
 #pragma mark - Singleton dependencies
 
 - (id)singletonObjectOfType:(Class)expectedType forKey:(NSString *)key
 {
-    NSDictionary *singletonConfig = [self templateValueOfType:[NSDictionary class] forKey:key];
+    id previouslyCreatedSingleton = [self singletonObjectForKey:key];
     
-    if (singletonConfig == nil)
+    if ( previouslyCreatedSingleton != nil )
     {
-        return nil;
+        return previouslyCreatedSingleton;
+    }
+
+    id singleton = nil;
+    id templateValue = [self templateValueOfType:[NSObject class] forKey:key];
+
+    if ( [templateValue isKindOfClass:[NSDictionary class]] )
+    {
+        singleton = [self singletonObjectOfType:expectedType orNilFromDictionary:templateValue];
+        
+        if ( singleton == nil )
+        {
+            singleton = [self objectOfType:expectedType fromDictionary:templateValue];
+        }
+    }
+    else if ( [templateValue isKindOfClass:expectedType] )
+    {
+        singleton = templateValue;
     }
     
-    id singleton = [self singletonObjectOfType:expectedType orNilFromDictionary:singletonConfig];
-    
-    if (singleton == nil)
+    if ( singleton != nil )
     {
-        singleton = [self singletonObjectForKey:key];
-        
-        if (singleton == nil)
-        {
-            singleton = [self objectOfType:expectedType fromDictionary:singletonConfig];
-            
-            if (singleton != nil)
-            {
-                [self setSingletonObject:singleton forKey:key];
-            }
-        }
+        [self setSingletonObject:singleton forKey:key];
     }
     return singleton;
 }
@@ -338,9 +406,7 @@ NSString * const VDependencyManagerWorkspaceKey = @"workspace";
     if ([templateClass isSubclassOfClass:expectedType])
     {
         id object;
-        VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self
-                                                                                    configuration:configurationDictionary
-                                                                dictionaryOfClassesByTemplateName:self.classesByTemplateName];
+        VDependencyManager *dependencyManager = [self childDependencyManagerWithAddedConfiguration:configurationDictionary];
         
         if ([templateClass instancesRespondToSelector:@selector(initWithDependencyManager:)])
         {
@@ -361,6 +427,11 @@ NSString * const VDependencyManagerWorkspaceKey = @"workspace";
         }
         return object;
     }
+    else if ( [expectedType isSubclassOfClass:[NSDictionary class]] )
+    {
+        return configurationDictionary;
+    }
+    
     return nil;
 }
 
@@ -415,6 +486,11 @@ NSString * const VDependencyManagerWorkspaceKey = @"workspace";
         weakEnumerationBlock(obj);
     }];
     return configurationDictionariesByID;
+}
+
+- (VDependencyManager *)childDependencyManagerWithAddedConfiguration:(NSDictionary *)configuration
+{
+    return [[VDependencyManager alloc] initWithParentManager:self configuration:configuration dictionaryOfClassesByTemplateName:self.classesByTemplateName];
 }
 
 #pragma mark - Class name resolution

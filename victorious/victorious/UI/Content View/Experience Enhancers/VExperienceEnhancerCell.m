@@ -44,6 +44,12 @@ static const CGFloat kTopSpaceIconCompactVertical = 5.0f;
     }
     
     self.isLocked = NO;
+    self.enabled = YES;
+}
+
+- (void)prepareForReuse
+{
+    self.contentView.alpha = 1.0f;
 }
 
 #pragma mark - UICollectionReusableView
@@ -76,6 +82,12 @@ static const CGFloat kTopSpaceIconCompactVertical = 5.0f;
 {
     _experienceEnhancerIcon = experienceEnhancerIcon;
     self.experienceEnhancerIconImageView.image = experienceEnhancerIcon;
+}
+
+- (void)setEnabled:(BOOL)enabled
+{
+    _enabled = enabled;
+    self.contentView.alpha = _enabled ? 1.0f : 0.5f;
 }
 
 - (void)setIsLocked:(BOOL)isLocked
