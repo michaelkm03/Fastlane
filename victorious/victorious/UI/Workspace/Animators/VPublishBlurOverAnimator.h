@@ -8,8 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
+/**
+ *  An animator object for blurring over the workspace while pushing.
+ */
 @interface VPublishBlurOverAnimator : NSObject <UIViewControllerAnimatedTransitioning>
 
-@property (nonatomic, assign) BOOL presenting;
+@property (nonatomic, assign) BOOL presenting; ///< If we are presenting or not.
 
 @end
