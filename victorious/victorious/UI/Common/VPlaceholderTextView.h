@@ -8,11 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+/**
+ *  VPlaceholderTextView maintains a placeholder subview for displaying placeholder text. This subview will be hidden according to the current state of editing. When empty the placeholder is visible at 0.5f alpha, when editing and no text is 0.2f alpha and when text is entered into the textView the placeholder view is hidden.
+ */
 @interface VPlaceholderTextView : UITextView
 
-//@property (nonatomic, strong) UIColor *placeholderColor;
-@property (nonatomic, copy) NSString *placeholderText;
-
-//@property (nonatomic, copy) NSAttributedString *placeholderAttributedText;
+@property (nonatomic, copy) NSString *placeholderText; ///< The placeholder text to display in the placeholder view.
 
 @end
