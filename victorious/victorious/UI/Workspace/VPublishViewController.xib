@@ -22,7 +22,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" id="MUp-lJ-Tpj" userLabel="publishPrompt">
-                    <rect key="frame" x="15" y="184" width="290" height="200"/>
+                    <rect key="frame" x="15" y="100" width="290" height="200"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="13Q-pZ-iXL">
@@ -35,7 +35,7 @@
                                 <action selector="publish:" destination="-1" eventType="touchUpInside" id="lIW-a8-qUn"/>
                             </connections>
                         </button>
-                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" bouncesZoom="NO" textAlignment="center" id="k7t-Et-LrO" customClass="VPlaceholderTextView">
+                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" bouncesZoom="NO" textAlignment="center" id="k7t-Et-LrO" customClass="VPlaceholderTextView">
                             <rect key="frame" x="137" y="16" width="145" height="117"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" heightSizable="YES"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -55,6 +55,7 @@
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <gestureRecognizers/>
+            <nil key="simulatedStatusBarMetrics"/>
             <connections>
                 <outletCollection property="gestureRecognizers" destination="n8g-k8-NP3" appends="YES" id="STr-Cg-G3W"/>
                 <outletCollection property="gestureRecognizers" destination="4Sh-u7-tu5" appends="YES" id="uTq-SS-SMx"/>

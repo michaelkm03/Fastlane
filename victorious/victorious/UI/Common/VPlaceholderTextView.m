@@ -113,6 +113,14 @@ static const CGFloat kPlaceholderAlphaEnteringText = 0.2f;
     [self hidePlaceholderIfUserEnteredText];
 }
 
+- (void)setTypingAttributes:(NSDictionary *)typingAttributes
+{
+    [super setTypingAttributes:typingAttributes];
+    
+    self.placeholderTextView.attributedText = [[NSAttributedString alloc] initWithString:self.placeholderTextView.text 
+                                                                              attributes:typingAttributes];
+}
+
 - (void)setText:(NSString *)text
 {
     [super setText:text];
@@ -156,7 +164,7 @@ static const CGFloat kPlaceholderAlphaEnteringText = 0.2f;
 
 - (void)beganEditing:(NSNotification *)notification
 {
-    self.placeholderTextView.alpha = kPlaceholderAlphaEnteringText;
+    self.placeholderTextView.alpha = (self.text.length > 0) ? 0.0f : kPlaceholderAlphaEnteringText;
 }
 
 - (void)textChanged:(NSNotification *)notificaion

@@ -18,6 +18,7 @@
 
 static const CGFloat kTriggerVelocity = 500.0f;
 static const CGFloat kSnapDampingConstant = 0.9f;
+static const CGFloat kTopSpacePublishPrompt = 50.0f;
 
 @interface VPublishViewController () <UICollisionBehaviorDelegate, UITextViewDelegate, UIGestureRecognizerDelegate>
 
@@ -88,7 +89,11 @@ static const CGFloat kSnapDampingConstant = 0.9f;
     
     self.previewImageView.image = self.previewImage;
 
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    paragraphStyle.alignment = NSTextAlignmentCenter;
     self.captionTextView.placeholderText = NSLocalizedString(@"TYPE A CAPTION & ADD AN #HASHTAG", @"Caption entry placeholder text");
+    self.captionTextView.typingAttributes = @{NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerParagraphFontKey],
+                                              NSParagraphStyleAttributeName: paragraphStyle};
 }
 
 - (void)viewDidLayoutSubviews
@@ -289,7 +294,8 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
     
     // This will snap our content back to the center of the screen
     UISnapBehavior *snap = [[UISnapBehavior alloc] initWithItem:self.publishPrompt
-                                                    snapToPoint:self.view.center];
+                                                    snapToPoint:CGPointMake(self.view.center.x,
+                                                                            kTopSpacePublishPrompt + (CGRectGetHeight(self.publishPrompt.frame) * 0.5f))];
     snap.damping = kSnapDampingConstant;
     self.snapBehavior = snap;
 }
