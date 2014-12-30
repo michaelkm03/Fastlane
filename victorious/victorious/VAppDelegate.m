@@ -203,7 +203,7 @@ static BOOL isRunningTests(void) __attribute__((const));
     
     if ( applicationTracking != nil )
     {
-        NSDictionary *params = @{ VTrackingKeyUrls : applicationTracking };
+        NSDictionary *params = @{ VTrackingKeyUrls : applicationTracking.appLaunch };
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventApplicationDidLaunch parameters:params];
     }
     

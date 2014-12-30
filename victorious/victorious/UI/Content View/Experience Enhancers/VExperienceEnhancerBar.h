@@ -23,11 +23,22 @@ extern NSString * const VExperienceEnhancerBarDidRequireLoginNotification;
 
 @end
 
+@protocol VExperienceEnhancerBarDelegate <NSObject>
+
+@optional
+
+- (void)experienceEnhancerSelected:(VExperienceEnhancer *)enhancer;
+
+@end
+
 @interface VExperienceEnhancerBar : UIView
 
 + (instancetype)experienceEnhancerBar;
 
 @property (nonatomic, weak) id <VExperienceEnhancerBarDataSource> dataSource;
+@property (nonatomic, weak) id <VExperienceEnhancerBarDelegate> delegate;
+
+@property (nonatomic, assign) BOOL enabled;
 
 - (void)reloadData;
 

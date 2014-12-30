@@ -76,7 +76,7 @@
 
 static const CGFloat kMaxInputBarHeight = 200.0f;
 
-@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate,VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelgetate, VExperienceEnhancerControllerDelegate>
+@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate,VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate>
 
 @property (nonatomic, strong, readwrite) VContentViewViewModel *viewModel;
 @property (nonatomic, strong) NSURL *mediaURL;
@@ -434,8 +434,6 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
                                                     name:VExperienceEnhancerBarDidRequirePurchasePrompt
                                                   object:nil];
     
-    [self.viewModel.experienceEnhancerController sendTrackingEvents];
-    
     self.contentCollectionView.delegate = nil;
     self.videoCell.delegate = nil;
 }
@@ -586,6 +584,20 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 }
 
 #pragma mark - Private Mehods
+
+- (void)updateInitialExperienceEnhancerState
+{
+   /**
+    When the enhancer bar is initialized and if a video cell is initialized (meaning the asset is a video),
+    set the initial enhancer bar state as disabled.  It will become enabled when the video asset starts playing.
+    This may happen right away if there is no ad, or after any ad is finished playing.
+    */
+    VExperienceEnhancerBar *enhancerBar = self.viewModel.experienceEnhancerController.enhancerBar;
+    if ( enhancerBar != nil && self.videoCell != nil )
+    {
+        self.viewModel.experienceEnhancerController.enhancerBar.enabled = NO;
+    }
+}
 
 - (NSIndexPath *)indexPathForContentView
 {
@@ -851,6 +863,8 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
                                                                                     forIndexPath:indexPath];
             self.viewModel.experienceEnhancerController.enhancerBar = self.experienceEnhancerCell.experienceEnhancerBar;
             
+            [self updateInitialExperienceEnhancerState];
+            
             __weak typeof(self) welf = self;
             self.experienceEnhancerCell.experienceEnhancerBar.selectionBlock = ^(VExperienceEnhancer *selectedEnhancer, CGPoint selectionCenter)
             {
@@ -1054,7 +1068,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     }
 }
 
-#pragma mark - VContentVideoCellDelgetate
+#pragma mark - VContentVideoCellDelegate
 
 - (void)videoCell:(VContentVideoCell *)videoCell
     didPlayToTime:(CMTime)time
@@ -1076,6 +1090,11 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     {
         [self.videoCell play];
         self.hasAutoPlayed = YES;
+        
+        // The enhacer bar starts out disabled by default when a video asset is displayed.
+        // If the video asset is playing, any ad (if there was one) is now over, and the
+        // bar should be enabled.
+        self.experienceEnhancerCell.experienceEnhancerBar.enabled = YES;
     }
 }
 
@@ -1283,6 +1302,19 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 - (void)experienceEnhancersDidUpdate
 {
     // Do nothing, eventually a nice animation to reveal experience enhancers
+}
+
+- (Float64)currentVideoTime
+{
+    if ( self.videoCell != nil )
+    {
+        Float64 seconds = CMTimeGetSeconds( self.videoCell.currentTime );
+        if ( !isnan( seconds ) )
+        {
+            return CMTimeGetSeconds( self.videoCell.currentTime );
+        }
+    }
+    return 0.0f;
 }
 
 @end
