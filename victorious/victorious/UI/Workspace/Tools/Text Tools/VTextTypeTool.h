@@ -25,5 +25,6 @@ typedef NS_ENUM(NSInteger, VTextTypeVerticalAlignment)
 @property (nonatomic, readonly) NSDictionary *attributes; ///< They attributes for use in NSAttributedStrings
 @property (nonatomic, readonly) UIColor *dimmingBackgroundColor; ///< A dimming background color, if any
 @property (nonatomic, readonly) NSString *placeholderText; ///< Placeholder text for when the user has yet to enter any text
+@property (nonatomic, readonly) BOOL shouldForceUppercase; ///< If a text tool 
 
 @end

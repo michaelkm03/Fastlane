@@ -13,6 +13,9 @@
 
 /**
  *  VTextWorkspaceTool manages selection among several different text tool types and provides an inspector picker. It also manages a container view controller that the different text tools place their UI in to. During rendering it renders an image of the active text tool's text and the composites that with the input image.
+ *
+ *  NOTE: VTextTool expects it's picker to be of type VTickerPickerViewController.
+ *
  */
 @interface VTextTool : NSObject <VHasManagedDependancies, VWorkspaceTool>
 

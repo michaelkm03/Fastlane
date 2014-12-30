@@ -7,14 +7,16 @@
 //
 
 #import "VTextToolViewController.h"
+#import "VCapitalizingTextStorage.h"
 
 static const CGFloat kTextRenderingSize = 1024;
 
-@interface VTextToolViewController () <UITextViewDelegate>
+@interface VTextToolViewController () <UITextViewDelegate, NSTextStorageDelegate>
 
-@property (nonatomic, weak) IBOutlet UITextView *placeholderTextView;
-@property (nonatomic, weak) IBOutlet UITextView *textView;
-@property (nonatomic, strong) IBOutletCollection(UITextView) NSArray *textViews;
+@property (nonatomic, strong) UITextView *placeholderTextView;
+@property (nonatomic, strong) UITextView *textView;
+
+@property (nonatomic, strong) NSArray *textViews;
 
 @property (nonatomic, strong) NSArray *centerVerticalAlignmentConstraints;
 @property (nonatomic, strong) NSArray *bottomVerticalAlignmentConstraints;
@@ -23,24 +25,20 @@ static const CGFloat kTextRenderingSize = 1024;
 
 @property (nonatomic, strong, readwrite) UIImage *renderedImage;
 
+@property (nonatomic, assign, getter=isSwappingTextTypes) BOOL swappingTextTypes;
+
+@property (nonatomic, strong) VCapitalizingTextStorage *textStorage;
+
 @end
 
 @implementation VTextToolViewController
 
 + (instancetype)textToolViewController
 {
-    UIStoryboard *workspaceStoryboard = [UIStoryboard storyboardWithName:@"Workspace"
-                                                                  bundle:nil];
-    return [workspaceStoryboard instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
-}
-
-#pragma mark - NSObject
-
-- (void)awakeFromNib
-{
-    [super awakeFromNib];
-    
-    self.searialTextRenderingQueue = dispatch_queue_create("com.victorious.textToolRenderingQueue", DISPATCH_QUEUE_SERIAL);
+    VTextToolViewController *textToolViewController = [[VTextToolViewController alloc] initWithNibName:nil
+                                                                                                bundle:nil];
+    textToolViewController.searialTextRenderingQueue = dispatch_queue_create("com.victorious.textToolRenderingQueue", DISPATCH_QUEUE_SERIAL);
+    return textToolViewController;
 }
 
 #pragma mark - UIViewController
@@ -50,10 +48,40 @@ static const CGFloat kTextRenderingSize = 1024;
 {
     [super viewDidLoad];
     
+    self.view.backgroundColor = [UIColor clearColor];
+
+    self.placeholderTextView =
+    ({
+        UITextView *placeholderTextView = [[UITextView alloc] initWithFrame:self.view.bounds textContainer:nil];
+        [self.view addSubview:placeholderTextView];
+        placeholderTextView.userInteractionEnabled = NO;
+        placeholderTextView;
+    });
+    self.textView =
+    ({
+        self.textStorage = [[VCapitalizingTextStorage alloc] init];
+        self.textStorage.delegate = self;
+        
+        NSLayoutManager *layoutManager = [[NSLayoutManager alloc] init];
+        [self.textStorage addLayoutManager:layoutManager];
+        
+        NSTextContainer *textContainer = [[NSTextContainer alloc] init];
+        [layoutManager addTextContainer:textContainer];
+        
+        UITextView *textView = [[UITextView alloc] initWithFrame:self.view.bounds
+                                                   textContainer:textContainer];
+        textView.delegate = self;
+        [self.view addSubview:textView];
+        textView;
+    });
+    self.textViews = @[self.placeholderTextView, self.textView];
     [self updateTextAttributesForTextType:self.textType];
     
     [self.textViews enumerateObjectsUsingBlock:^(UITextView *textView, NSUInteger idx, BOOL *stop)
     {
+        textView.translatesAutoresizingMaskIntoConstraints = NO;
+        textView.backgroundColor = [UIColor clearColor];
+        textView.scrollEnabled = NO;
         textView.textContainerInset = UIEdgeInsetsZero;
         textView.scrollEnabled = NO;
     }];
@@ -71,15 +99,21 @@ static const CGFloat kTextRenderingSize = 1024;
     {
         return;
     }
+    self.renderedImage = nil;
     
-    [self updateTextAttributesForTextType:textType];
-    if (_textType.verticalAlignment != textType.verticalAlignment)
+    self.swappingTextTypes = YES;
+    
     {
-        [self updateTextViewConstraintsForTextType:textType];
+        [self updateTextAttributesForTextType:textType];
+        if (_textType.verticalAlignment != textType.verticalAlignment)
+        {
+            [self updateTextViewConstraintsForTextType:textType];
+        }
+        [self.view layoutIfNeeded];
+        _textType = textType;
     }
-    [self.view layoutIfNeeded];
     
-    _textType = textType;
+    self.swappingTextTypes = NO;
 }
 
 - (UIImage *)renderedImage
@@ -103,7 +137,7 @@ static const CGFloat kTextRenderingSize = 1024;
 
 - (BOOL)userEnteredText
 {
-    return (self.textView.text.length > 0) ? YES : NO;
+    return (self.textStorage.string.length > 0) ? YES : NO;
 }
 
 #pragma mark - Target/Action
@@ -119,7 +153,7 @@ static const CGFloat kTextRenderingSize = 1024;
 shouldChangeTextInRange:(NSRange)range
  replacementText:(NSString *)text
 {
-    if ([text isEqualToString:@"\n"])
+    if ([text rangeOfCharacterFromSet:[NSCharacterSet newlineCharacterSet]].location != NSNotFound)
     {
         [textView resignFirstResponder];
         return NO;
@@ -129,6 +163,28 @@ shouldChangeTextInRange:(NSRange)range
 
 - (void)textViewDidChange:(UITextView *)textView
 {
+    UIFont *prefferedFont = self.textType.attributes[NSFontAttributeName];
+    
+    UIFont *styledFont = self.textType.attributes[NSFontAttributeName];
+    styledFont = [styledFont fontWithSize:self.textView.font.pointSize];
+    
+    NSMutableDictionary *sizedAttributes = [[NSMutableDictionary alloc] initWithDictionary:self.textType.attributes];
+    sizedAttributes[NSFontAttributeName] = styledFont;
+    
+    NSRange selectedRange = textView.selectedRange;
+    textView.attributedText = [[NSAttributedString alloc] initWithString:self.textView.text
+                                                              attributes:sizedAttributes];
+    textView.selectedRange = selectedRange;
+    while (([self.textView sizeThatFits:self.textView.frame.size]).height > prefferedFont.pointSize)
+    {
+        self.textView.font = [styledFont fontWithSize:self.textView.font.pointSize-1];
+    }
+    
+    while (([self.textView sizeThatFits:self.textView.frame.size]).height < prefferedFont.pointSize)
+    {
+        self.textView.font = [styledFont fontWithSize:self.textView.font.pointSize+1];
+    }
+    
     dispatch_async(self.searialTextRenderingQueue, ^
     {
         self.renderedImage = nil;
@@ -142,7 +198,7 @@ shouldChangeTextInRange:(NSRange)range
 
 - (void)textViewDidEndEditing:(UITextView *)textView
 {
-    self.placeholderTextView.hidden = (textView.text.length > 0) ? YES : NO;
+    self.placeholderTextView.hidden = (self.textStorage.string.length > 0) ? YES : NO;
     
     dispatch_async(self.searialTextRenderingQueue, ^
     {
@@ -168,18 +224,21 @@ shouldChangeTextInRange:(NSRange)range
                                    0,
                                    CGRectGetWidth(self.view.bounds) * scaleFactor,
                                    CGRectGetHeight(self.view.bounds) * scaleFactor);
-    UIGraphicsBeginImageContextWithOptions(scaledRect.size, NO, scaleFactor);
-    CGContextRef context = UIGraphicsGetCurrentContext();
+    
     __block UIImage *renderedImage;
-    CGContextSaveGState(context);
+    UIGraphicsBeginImageContextWithOptions(scaledRect.size, NO, scaleFactor);
     {
-        CGContextScaleCTM(context, scaleFactor, scaleFactor);
-        [self.textView.attributedText drawWithRect:self.textView.frame
-                                           options:NSStringDrawingUsesLineFragmentOrigin
-                                           context:nil];
-        renderedImage = UIGraphicsGetImageFromCurrentImageContext();
+        CGContextRef context = UIGraphicsGetCurrentContext();
+        CGContextSaveGState(context);
+        {
+            CGContextScaleCTM(context, scaleFactor, scaleFactor);
+            [self.textView.attributedText drawWithRect:self.textView.frame
+                                               options:NSStringDrawingUsesLineFragmentOrigin
+                                               context:nil];
+            renderedImage = UIGraphicsGetImageFromCurrentImageContext();
+        }
+        CGContextRestoreGState(context);
     }
-    CGContextRestoreGState(context);
     UIGraphicsEndImageContext();
     
     self.renderedImage = renderedImage;
@@ -192,11 +251,17 @@ shouldChangeTextInRange:(NSRange)range
         return;
     }
     
-    self.placeholderTextView.attributedText = [[NSAttributedString alloc] initWithString:textType.placeholderText ? textType.placeholderText : @""
+    NSString *placeholderText = textType.placeholderText ? textType.placeholderText : @"";
+    placeholderText = textType.shouldForceUppercase ? [placeholderText uppercaseString] : placeholderText;
+    self.placeholderTextView.attributedText = [[NSAttributedString alloc] initWithString:placeholderText
                                                                               attributes:textType.attributes];
-    self.textView.attributedText = [[NSAttributedString alloc] initWithString:self.textView.text ? self.textView.text : @""
-                                                                   attributes:textType.attributes];
+
+    NSRange fullTextStorageRange = NSMakeRange(0, self.textStorage.string.length);
+    self.textStorage.shouldForceUppercase = textType.shouldForceUppercase ? YES : NO;
+    [self.textStorage setAttributes:textType.attributes range:fullTextStorageRange];
     self.textView.typingAttributes = textType.attributes;
+    [self.textStorage replaceCharactersInRange:fullTextStorageRange
+                          withAttributedString:[self.textStorage.unalteredText attributedSubstringFromRange:fullTextStorageRange]];
 }
 
 - (void)updateTextViewConstraintsForTextType:(VTextTypeTool *)textType

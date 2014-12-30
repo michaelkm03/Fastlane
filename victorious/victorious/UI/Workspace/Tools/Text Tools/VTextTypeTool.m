@@ -15,6 +15,7 @@ static NSString * const kTextToolVerticalAlignment = @"verticalAlignment";
 static NSString * const kTextToolStrokeColor = @"strokeColor";
 static NSString * const kTextToolStrokeWidth = @"strokeWidth";
 static NSString * const kTextToolPlaceholderText = @"placeholderText";
+static NSString * const kshouldForceUppercaseKey = @"shouldForceUppercase";
 
 @interface VTextTypeTool ()
 
@@ -23,6 +24,7 @@ static NSString * const kTextToolPlaceholderText = @"placeholderText";
 @property (nonatomic, strong, readwrite) UIColor *dimmingBackgroundColor;
 @property (nonatomic, strong, readwrite) NSString *placeholderText;
 @property (nonatomic, assign, readwrite) VTextTypeVerticalAlignment verticalAlignment;
+@property (nonatomic, assign, readwrite) BOOL shouldForceUppercase;
 
 @end
 
@@ -66,6 +68,10 @@ static NSString * const kTextToolPlaceholderText = @"placeholderText";
     if ([dependencyManager numberForKey:kTextToolStrokeWidth])
     {
         textAttributes[NSStrokeWidthAttributeName] = [dependencyManager numberForKey:kTextToolStrokeWidth];
+    }
+    if ([dependencyManager numberForKey:kshouldForceUppercaseKey])
+    {
+        self.shouldForceUppercase = [[dependencyManager numberForKey:kshouldForceUppercaseKey] boolValue];
     }
     
     return textAttributes;

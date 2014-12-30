@@ -13,6 +13,9 @@
  */
 @interface VBasicToolPickerCell : VBaseCollectionViewCell
 
-- (void)setTitle:(NSString *)title; ///< The title for this picker cell.
+/**
+ *  The label to manipulate text in.
+ */
+@property (nonatomic, weak, readonly) IBOutlet UILabel *label;
 
 @end

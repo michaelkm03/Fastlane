@@ -9,7 +9,7 @@
 #import "VTextTool.h"
 
 // Picker
-#import "VToolPicker.h"
+#import "VTickerPickerViewController.h"
 
 // Interface
 #import "VTextToolViewController.h"
@@ -34,7 +34,7 @@ static NSString * const kFilterIndexKey = @"filterIndex";
 @property (nonatomic, assign) NSInteger renderIndex;
 @property (nonatomic, strong) NSArray *subTools;
 @property (nonatomic, strong) id <VWorkspaceTool> activeTextTool;
-@property (nonatomic, strong) UIViewController <VToolPicker> *toolPicker;
+@property (nonatomic, strong) VTickerPickerViewController *toolPicker;
 @property (nonatomic, strong) VTextToolViewController *canvasToolViewController;
 
 @end
@@ -49,9 +49,24 @@ static NSString * const kFilterIndexKey = @"filterIndex";
     if (self)
     {
         _title = [dependencyManager stringForKey:kTitleKey];
-        _subTools = [dependencyManager workspaceTools];
+        _subTools = [[dependencyManager workspaceTools] sortedArrayUsingComparator:^NSComparisonResult(id <VWorkspaceTool> tool1, id <VWorkspaceTool> tool2)
+        {
+            return [tool1.title caseInsensitiveCompare:tool2.title];
+        }];
+        
         _renderIndex = [[dependencyManager numberForKey:kFilterIndexKey] integerValue];
-        _toolPicker = (UIViewController<VToolPicker> *)[dependencyManager viewControllerForKey:kPickerKey];
+        _toolPicker = (VTickerPickerViewController *)[dependencyManager viewControllerForKey:kPickerKey];
+        if ([_toolPicker respondsToSelector:@selector(setConfigureItemLabel:)])
+        {
+            _toolPicker.configureItemLabel = ^void(UILabel *label, VTextTypeTool *textToolType)
+            {
+                UIFont *adjustedFont = [(UIFont *)textToolType.attributes[NSFontAttributeName] fontWithSize:label.font.pointSize];
+                NSMutableDictionary *mutableAttributes = [[NSMutableDictionary alloc] initWithDictionary:textToolType.attributes];
+                mutableAttributes[NSFontAttributeName] = adjustedFont;
+                label.attributedText = [[NSAttributedString alloc] initWithString:[textToolType.title uppercaseString]
+                                                                       attributes:mutableAttributes];
+            };
+        }
         _canvasToolViewController = [VTextToolViewController textToolViewController];
         _icon = [UIImage imageNamed:@"textIcon"];
         [_toolPicker setTools:_subTools];
