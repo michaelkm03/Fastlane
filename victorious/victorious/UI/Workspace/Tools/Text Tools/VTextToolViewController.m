@@ -111,6 +111,8 @@ static const CGFloat kTextRenderingSize = 1024;
         }
         [self.view layoutIfNeeded];
         _textType = textType;
+        
+        [self resizeText];
     }
     
     self.swappingTextTypes = NO;
@@ -163,8 +165,6 @@ shouldChangeTextInRange:(NSRange)range
 
 - (void)textViewDidChange:(UITextView *)textView
 {
-    UIFont *prefferedFont = self.textType.attributes[NSFontAttributeName];
-    
     UIFont *styledFont = self.textType.attributes[NSFontAttributeName];
     styledFont = [styledFont fontWithSize:self.textView.font.pointSize];
     
@@ -175,15 +175,8 @@ shouldChangeTextInRange:(NSRange)range
     textView.attributedText = [[NSAttributedString alloc] initWithString:self.textView.text
                                                               attributes:sizedAttributes];
     textView.selectedRange = selectedRange;
-    while (([self.textView sizeThatFits:self.textView.frame.size]).height > prefferedFont.pointSize)
-    {
-        self.textView.font = [styledFont fontWithSize:self.textView.font.pointSize-1];
-    }
     
-    while (([self.textView sizeThatFits:self.textView.frame.size]).height < prefferedFont.pointSize)
-    {
-        self.textView.font = [styledFont fontWithSize:self.textView.font.pointSize+1];
-    }
+    [self resizeText];
     
     dispatch_async(self.searialTextRenderingQueue, ^
     {
@@ -207,6 +200,21 @@ shouldChangeTextInRange:(NSRange)range
 }
 
 #pragma mark - Private Methods
+
+- (void)resizeText
+{
+    UIFont *prefferedFont = self.textType.attributes[NSFontAttributeName];
+    
+    while (([self.textView sizeThatFits:self.textView.frame.size]).height > prefferedFont.pointSize)
+    {
+        self.textView.font = [prefferedFont fontWithSize:self.textView.font.pointSize-1];
+    }
+    
+    while (([self.textView sizeThatFits:self.textView.frame.size]).height < prefferedFont.pointSize)
+    {
+        self.textView.font = [prefferedFont fontWithSize:self.textView.font.pointSize+1];
+    }
+}
 
  /**
  *  Only call this method on searialTextRenderingQueue
