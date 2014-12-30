@@ -28,6 +28,7 @@
 #import "UIActionSheet+VBlocks.h"
 #import "VAutomation.h"
 #import "VWorkspaceViewController.h"
+#import "VPublishViewController.h"
 
 static const char kNavHeaderViewKey;
 static const char kNavHeaderYConstraintKey;
@@ -280,17 +281,38 @@ static const char kUploadProgressYConstraintKey;
             VDependencyManager *dependencyManager = [((id <VHasManagedDependancies>)welf) dependencyManager];
             
             VWorkspaceViewController *workspaceViewController = (VWorkspaceViewController *)[dependencyManager viewControllerForKey:VDependencyManagerWorkspaceKey];
+            __weak VWorkspaceViewController *weakWorkspace = workspaceViewController;
             workspaceViewController.previewImage = previewImage;
             workspaceViewController.mediaURL = capturedMediaURL;
+            weakNavController.delegate = workspaceViewController;
             workspaceViewController.completionBlock = ^void(BOOL finished, UIImage *previewImage)
             {
+                VPublishViewController *publishViewController = [VPublishViewController newWithDependencyManager:dependencyManager];
+                publishViewController.mediaToUploadURL = weakWorkspace.renderedMediaURL;
+                __weak VPublishViewController *weakPublishViewController = publishViewController;
+                publishViewController.completion = ^void(BOOL published)
+                {
+                    if (published)
+                    {
+                        [welf dismissViewControllerAnimated:YES
+                                                 completion:nil];
+                    }
+                    else
+                    {
+                        [weakNavController popViewControllerAnimated:YES];
+                        weakPublishViewController.completion = nil;
+                    }
+                };
                 if (finished)
                 {
-                    [welf dismissViewControllerAnimated:YES
-                                             completion:nil];
+                    publishViewController.previewImage = previewImage;
+                    [weakNavController pushViewController:publishViewController
+                                                 animated:YES];
+
                 }
                 else
                 {
+                    weakNavController.delegate = nil;
                     [weakNavController popViewControllerAnimated:YES];
                 }
             };
