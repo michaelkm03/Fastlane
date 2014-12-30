@@ -257,6 +257,12 @@ static const char kUploadProgressYConstraintKey;
                                    cameraViewController.shouldSkipPreview = YES;
                                    [self presentCameraViewController:cameraViewController];
                                }]];
+    [alertControler addAction:[VAlertAction buttonWithTitle:NSLocalizedString(@"Create a GIF", @"Create a gif action button.")
+                                                    handler:^(VAlertAction *action)
+                               {
+                                   VCameraViewController *cameraViewController = [VCameraViewController cameraViewControllerLimitedToVideo];
+                                   [self presentCameraViewController:cameraViewController];
+                               }]];
     [alertControler addAction:[VAlertAction buttonWithTitle:NSLocalizedString(@"Create a Poll", @"") handler:^(VAlertAction *action)
                                {
                                    VCreatePollViewController *createViewController = [VCreatePollViewController newCreatePollViewController];
