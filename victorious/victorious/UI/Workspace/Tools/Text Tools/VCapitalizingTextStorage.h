@@ -15,6 +15,6 @@
 
 @property (nonatomic, assign) BOOL shouldForceUppercase; ///< Set to YES for the text storage to only return upper case text. NO returns the original text entered.
 
-@property (nonatomic, strong, readonly) NSMutableAttributedString *enteredText; ///< The original text entered regardless of shouldForceUppercase.
+@property (nonatomic, strong, readonly) NSAttributedString *unalteredText; ///< The original text entered regardless of shouldForceUppercase.
 
 @end

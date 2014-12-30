@@ -71,6 +71,11 @@
 
 #pragma mark - Property Accessors
 
+- (NSAttributedString *)unalteredText
+{
+    return [[NSAttributedString alloc] initWithAttributedString:self.enteredText];
+}
+
 - (void)setShouldForceUppercase:(BOOL)shouldForceUppercase
 {
     if (_shouldForceUppercase == shouldForceUppercase)

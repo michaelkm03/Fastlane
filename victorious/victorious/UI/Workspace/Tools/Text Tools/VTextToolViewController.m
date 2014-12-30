@@ -261,7 +261,7 @@ shouldChangeTextInRange:(NSRange)range
     [self.textStorage setAttributes:textType.attributes range:fullTextStorageRange];
     self.textView.typingAttributes = textType.attributes;
     [self.textStorage replaceCharactersInRange:fullTextStorageRange
-                          withAttributedString:[self.textStorage.enteredText attributedSubstringFromRange:fullTextStorageRange]];
+                          withAttributedString:[self.textStorage.unalteredText attributedSubstringFromRange:fullTextStorageRange]];
 }
 
 - (void)updateTextViewConstraintsForTextType:(VTextTypeTool *)textType
