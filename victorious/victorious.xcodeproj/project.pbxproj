@@ -562,6 +562,9 @@
 		BEDF0FC918DBCB5500750EF6 /* VVoteType+Fetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = BEDF0FC818DBCB5500750EF6 /* VVoteType+Fetcher.m */; };
 		BEEDF46119D2337B000DF6F5 /* VStreamItem.m in Sources */ = {isa = PBXBuildFile; fileRef = BEEDF46019D2337B000DF6F5 /* VStreamItem.m */; };
 		BEF2C29618845EF500AAE975 /* VPollResult+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF2C29518845EF500AAE975 /* VPollResult+RestKit.m */; };
+		D80A94D61A535E150035D788 /* VVideoPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = D80A94D51A535E150035D788 /* VVideoPlayerView.m */; };
+		D80A94DB1A536C8C0035D788 /* VTrimmerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D80A94DA1A536C8C0035D788 /* VTrimmerViewController.m */; };
+		D80A94DE1A53941D0035D788 /* VTrimControl.m in Sources */ = {isa = PBXBuildFile; fileRef = D80A94DD1A53941D0035D788 /* VTrimControl.m */; };
 		D80C615B19D0F692006AE41A /* VProgressBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = D80C615A19D0F692006AE41A /* VProgressBarView.m */; };
 		D811BBBF19B92F75007398BF /* homeHeaderImage.png in Resources */ = {isa = PBXBuildFile; fileRef = D811BBBD19B92F75007398BF /* homeHeaderImage.png */; };
 		D81AF38F1A015EC60056F474 /* VDirectoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D81AF38E1A015EC60056F474 /* VDirectoryViewController.xib */; };
@@ -1664,6 +1667,12 @@
 		BEF2C29518845EF500AAE975 /* VPollResult+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VPollResult+RestKit.m"; sourceTree = "<group>"; };
 		C7B45F61E6B2831D5E9459C3 /* libPods-victorious-test.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-victorious-test.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D805CE301A005A470014EE2A /* VFollowUserControlTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFollowUserControlTests.m; sourceTree = "<group>"; };
+		D80A94D41A535E150035D788 /* VVideoPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VVideoPlayerView.h; sourceTree = "<group>"; };
+		D80A94D51A535E150035D788 /* VVideoPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVideoPlayerView.m; sourceTree = "<group>"; };
+		D80A94D91A536C8C0035D788 /* VTrimmerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTrimmerViewController.h; sourceTree = "<group>"; };
+		D80A94DA1A536C8C0035D788 /* VTrimmerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTrimmerViewController.m; sourceTree = "<group>"; };
+		D80A94DC1A53941D0035D788 /* VTrimControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTrimControl.h; sourceTree = "<group>"; };
+		D80A94DD1A53941D0035D788 /* VTrimControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTrimControl.m; sourceTree = "<group>"; };
 		D80C615919D0F692006AE41A /* VProgressBarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VProgressBarView.h; sourceTree = "<group>"; };
 		D80C615A19D0F692006AE41A /* VProgressBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VProgressBarView.m; sourceTree = "<group>"; };
 		D811BBBD19B92F75007398BF /* homeHeaderImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = homeHeaderImage.png; sourceTree = "<group>"; };
@@ -4035,6 +4044,19 @@
 			path = OCMock;
 			sourceTree = "<group>";
 		};
+		D80A94D31A535DFA0035D788 /* Video */ = {
+			isa = PBXGroup;
+			children = (
+				D80A94DC1A53941D0035D788 /* VTrimControl.h */,
+				D80A94DD1A53941D0035D788 /* VTrimControl.m */,
+				D80A94D91A536C8C0035D788 /* VTrimmerViewController.h */,
+				D80A94DA1A536C8C0035D788 /* VTrimmerViewController.m */,
+				D80A94D41A535E150035D788 /* VVideoPlayerView.h */,
+				D80A94D51A535E150035D788 /* VVideoPlayerView.m */,
+			);
+			path = Video;
+			sourceTree = "<group>";
+		};
 		D82C08F419D0C04200273E0D /* Layouts */ = {
 			isa = PBXGroup;
 			children = (
@@ -4106,6 +4128,7 @@
 		D8A93F131A2E84A9009B8A18 /* Workspace */ = {
 			isa = PBXGroup;
 			children = (
+				D80A94D31A535DFA0035D788 /* Video */,
 				D86BF3591A42683E00C9F420 /* Animators */,
 				D87351851A3120DB006D97B2 /* Canvas */,
 				669EBBDE1A30234A00DE317D /* Pickers */,
@@ -4854,6 +4877,7 @@
 				0314D4F719B46B5E00FA363C /* VLargeNumberFormatter.m in Sources */,
 				03CF1520195CFBE600F6477B /* NSArray+VMap.m in Sources */,
 				0314D4E119B46B5E00FA363C /* VFindFriendsTableViewController.m in Sources */,
+				D80A94DE1A53941D0035D788 /* VTrimControl.m in Sources */,
 				D8208A551A2FA7E3003C187D /* VFilterTool.m in Sources */,
 				A7A2E0081A38E44B00F8C705 /* VPurchaseViewController+Transitions.m in Sources */,
 				D82E76E319F5C06100FFB722 /* VContentPollBallotCell.m in Sources */,
@@ -4888,6 +4912,7 @@
 				03C185BC19B42E5D00E27D05 /* TWSignedRequest.m in Sources */,
 				BEA78C2B19C008F0006A1ABC /* VStream+Fetcher.m in Sources */,
 				BE88FF791A0005E70064AB28 /* VAbstractStreamCollectionViewController.m in Sources */,
+				D80A94DB1A536C8C0035D788 /* VTrimmerViewController.m in Sources */,
 				0314D06419B466C100FA363C /* UIActivityViewController+VStatusBarHandling.m in Sources */,
 				0314D2E919B46B2200FA363C /* VErrorMessage.m in Sources */,
 				D8B827DA19D5FD8900CCD6D9 /* VActionItemTableViewCell.m in Sources */,
@@ -5092,6 +5117,7 @@
 				0314D4B219B46B5E00FA363C /* VInboxViewController.m in Sources */,
 				A7A2E0121A391A7D00F8C705 /* VPurchaseRecord.m in Sources */,
 				0314D4C519B46B5E00FA363C /* VAbstractVideoEditorViewController.m in Sources */,
+				D80A94D61A535E150035D788 /* VVideoPlayerView.m in Sources */,
 				BEDF0FC618DBC93B00750EF6 /* VVoteType.m in Sources */,
 				0314D2E319B46AF300FA363C /* VUserManager.m in Sources */,
 				D8360CF319E379C200D7E260 /* VExperienceEnhancer.m in Sources */,

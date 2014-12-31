@@ -28,6 +28,10 @@
 #warning Move me out of here to the flow controller
 #import "VPublishBlurOverAnimator.h"
 
+#warning Move me out of here
+#import "VVideoPlayerView.h"
+@import AVFoundation;
+
 static const CGFloat kJPEGCompressionQuality    = 0.8f;
 
 @interface VWorkspaceViewController () <UINavigationControllerDelegate>
@@ -145,6 +149,17 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
     self.bottomToolbar.items = toolBarItems;
     
     self.canvasView.sourceImage = self.previewImage;
+    
+    AVAsset *asset = [AVAsset assetWithURL:self.mediaURL];
+    if ([asset tracksWithMediaType:AVMediaTypeVideo] > 0)
+    {
+        VVideoPlayerView *videoPlayerView = [[VVideoPlayerView alloc] initWithFrame:self.canvasView.bounds];
+        AVPlayerItem *playerItem = [AVPlayerItem playerItemWithAsset:asset];
+        AVPlayer *playerWithItem = [AVPlayer playerWithPlayerItem:playerItem];
+        videoPlayerView.player = playerWithItem;
+        [playerWithItem play];
+        [self.canvasView addSubview:videoPlayerView];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
