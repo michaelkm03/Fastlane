@@ -17,6 +17,8 @@ static const CGFloat kTrimBodyWidth = 5.0f;
 @property (nonatomic, strong) UIView *trimThumbHead;
 @property (nonatomic, strong) UIView *trimThumbBody;
 
+@property (nonatomic, strong) UIView *dimmingView;
+
 @property (nonatomic, strong) UIPanGestureRecognizer *headGestureRecognizer;
 @property (nonatomic, strong) UIPanGestureRecognizer *bodyGestureRecognizer;
 
@@ -25,6 +27,19 @@ static const CGFloat kTrimBodyWidth = 5.0f;
 static inline CGFloat TrimHeadYCenter()
 {
     return 2 + kTrimHeadHeight * 0.5f;
+}
+
+static inline CGPoint ClampX(CGPoint point, CGFloat xMin, CGFloat xMax)
+{
+    if (point.x < xMin)
+    {
+        point.x = xMin;
+    }
+    else if (point.x > xMax)
+    {
+        point.x = xMax;
+    }
+    return point;
 }
 
 @implementation VTrimControl
@@ -55,7 +70,7 @@ static inline CGFloat TrimHeadYCenter()
     self.trimThumbHead.backgroundColor = [UIColor whiteColor];
     [self addSubview:self.trimThumbHead];
     self.headGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self
-                                                                         action:@selector(pannedHead:)];
+                                                                         action:@selector(pannedThumb:)];
     [self.trimThumbHead addGestureRecognizer:self.headGestureRecognizer];
     
     self.trimThumbBody = [[UIView alloc] initWithFrame:CGRectMake(CGRectGetMidX(self.trimThumbHead.frame) - 0.5f * kTrimBodyWidth,
@@ -65,24 +80,75 @@ static inline CGFloat TrimHeadYCenter()
     self.trimThumbBody.backgroundColor = [UIColor whiteColor];
     [self addSubview:self.trimThumbBody];
     self.bodyGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self
-                                                                         action:@selector(pannedBody:)];
+                                                                         action:@selector(pannedThumb:)];
     [self.trimThumbBody addGestureRecognizer:self.bodyGestureRecognizer];
+    
+    self.dimmingView = [[UIView alloc] initWithFrame:self.bounds];
+    self.dimmingView.userInteractionEnabled = NO;
+    self.dimmingView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.2f];
+    [self addSubview:self.dimmingView];
+}
+
+#pragma mark - UIView
+
+- (UIView *)hitTest:(CGPoint)point
+          withEvent:(UIEvent *)event
+{
+    // Pass through any touches which
+    UIView *hitView = [super hitTest:point withEvent:event];
+    
+    if ((hitView == self.trimThumbBody) || (hitView == self.trimThumbHead))
+    {
+        return hitView;
+    }
+    else
+    {
+        return nil;
+    }
 }
 
 #pragma mark - Gesture Recognizer
 
-- (void)pannedHead:(UIPanGestureRecognizer *)gestureRecognizer
+- (void)pannedThumb:(UIPanGestureRecognizer *)gestureRecognizer
 {
-    CGPoint location = [gestureRecognizer locationInView:self];
-    CGPoint newCenter = CGPointMake(kTrimHeadWidth * 0.5f, TrimHeadYCenter());
-    if (location.x < kTrimHeadWidth * 0.5f)
+    switch (gestureRecognizer.state)
     {
-        
+        case UIGestureRecognizerStateBegan:
+//            [self handleGestureBegin:gestureRecognizer];
+            self.bodyGestureRecognizer.enabled = (gestureRecognizer == self.bodyGestureRecognizer);
+            self.headGestureRecognizer.enabled = (gestureRecognizer == self.headGestureRecognizer);
+            break;
+        case UIGestureRecognizerStateChanged:
+        {
+//            [self handleGestureMoved:gestureRecognizer];
+            [self updateThumAndDimmingViewWithNewThumbCenter:[gestureRecognizer locationInView:self]];
+        }
+            break;
+        case UIGestureRecognizerStateCancelled:
+        case UIGestureRecognizerStateEnded:
+        case UIGestureRecognizerStateFailed:
+//            [self handleGestureEnd:gestureRecognizer];
+            self.bodyGestureRecognizer.enabled = YES;
+            self.headGestureRecognizer.enabled = YES;
+            break;
+        default:
+            break;
     }
 }
 
-- (void)pannedBody:(UIPanGestureRecognizer *)gestureRecognizer
+#pragma mark - Private Methods
+
+- (void)updateThumAndDimmingViewWithNewThumbCenter:(CGPoint)thumbCenter
 {
+    CGPoint newCenter = CGPointMake(thumbCenter.x, TrimHeadYCenter());
+    CGFloat minHeadX = kTrimHeadWidth * 0.5f;
+    CGFloat maxHeadX = CGRectGetWidth(self.bounds) - minHeadX;
+    self.trimThumbHead.center = ClampX(newCenter, minHeadX, maxHeadX);
+    self.trimThumbBody.center = CGPointMake(thumbCenter.x, self.trimThumbBody.center.y);
+    self.dimmingView.frame = CGRectMake(CGRectGetMaxX(self.trimThumbBody.frame),
+                                        CGRectGetMinY(self.trimThumbBody.frame),
+                                        CGRectGetWidth(self.bounds) - CGRectGetMaxX(self.trimThumbBody.frame),
+                                        CGRectGetHeight(self.bounds));
     
 }
 

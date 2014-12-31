@@ -30,6 +30,7 @@
 
 #warning Move me out of here
 #import "VVideoPlayerView.h"
+#import "VVideoTool.h"
 @import AVFoundation;
 
 static const CGFloat kJPEGCompressionQuality    = 0.8f;
@@ -228,6 +229,17 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
 }
 
 #pragma mark - Property Accessors
+
+- (void)setMediaURL:(NSURL *)mediaURL
+{
+    _mediaURL = mediaURL;
+    
+    AVAsset *assetWithURLl = [AVAsset assetWithURL:mediaURL];
+    if ([assetWithURLl tracksWithMediaType:AVMediaTypeVideo].count > 0)
+    {
+        self.tools = @[[VVideoTool new]];
+    }
+}
 
 - (void)setSelectedTool:(id<VWorkspaceTool>)selectedTool
 {

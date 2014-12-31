@@ -565,6 +565,10 @@
 		D80A94D61A535E150035D788 /* VVideoPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = D80A94D51A535E150035D788 /* VVideoPlayerView.m */; };
 		D80A94DB1A536C8C0035D788 /* VTrimmerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D80A94DA1A536C8C0035D788 /* VTrimmerViewController.m */; };
 		D80A94DE1A53941D0035D788 /* VTrimControl.m in Sources */ = {isa = PBXBuildFile; fileRef = D80A94DD1A53941D0035D788 /* VTrimControl.m */; };
+		D80A94E61A546DF90035D788 /* VThumbnailDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = D80A94E51A546DF90035D788 /* VThumbnailDataSource.m */; };
+		D80A94E91A546E5E0035D788 /* VThumbnailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D80A94E81A546E5E0035D788 /* VThumbnailCell.m */; };
+		D80A94EB1A546E680035D788 /* VThumbnailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D80A94EA1A546E680035D788 /* VThumbnailCell.xib */; };
+		D80A94EE1A5472FB0035D788 /* VVideoTool.m in Sources */ = {isa = PBXBuildFile; fileRef = D80A94ED1A5472FB0035D788 /* VVideoTool.m */; };
 		D80C615B19D0F692006AE41A /* VProgressBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = D80C615A19D0F692006AE41A /* VProgressBarView.m */; };
 		D811BBBF19B92F75007398BF /* homeHeaderImage.png in Resources */ = {isa = PBXBuildFile; fileRef = D811BBBD19B92F75007398BF /* homeHeaderImage.png */; };
 		D81AF38F1A015EC60056F474 /* VDirectoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D81AF38E1A015EC60056F474 /* VDirectoryViewController.xib */; };
@@ -1673,6 +1677,13 @@
 		D80A94DA1A536C8C0035D788 /* VTrimmerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTrimmerViewController.m; sourceTree = "<group>"; };
 		D80A94DC1A53941D0035D788 /* VTrimControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTrimControl.h; sourceTree = "<group>"; };
 		D80A94DD1A53941D0035D788 /* VTrimControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTrimControl.m; sourceTree = "<group>"; };
+		D80A94E41A546DF90035D788 /* VThumbnailDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VThumbnailDataSource.h; sourceTree = "<group>"; };
+		D80A94E51A546DF90035D788 /* VThumbnailDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VThumbnailDataSource.m; sourceTree = "<group>"; };
+		D80A94E71A546E5E0035D788 /* VThumbnailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VThumbnailCell.h; sourceTree = "<group>"; };
+		D80A94E81A546E5E0035D788 /* VThumbnailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VThumbnailCell.m; sourceTree = "<group>"; };
+		D80A94EA1A546E680035D788 /* VThumbnailCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VThumbnailCell.xib; sourceTree = "<group>"; };
+		D80A94EC1A5472FB0035D788 /* VVideoTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VVideoTool.h; sourceTree = "<group>"; };
+		D80A94ED1A5472FB0035D788 /* VVideoTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVideoTool.m; sourceTree = "<group>"; };
 		D80C615919D0F692006AE41A /* VProgressBarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VProgressBarView.h; sourceTree = "<group>"; };
 		D80C615A19D0F692006AE41A /* VProgressBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VProgressBarView.m; sourceTree = "<group>"; };
 		D811BBBD19B92F75007398BF /* homeHeaderImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = homeHeaderImage.png; sourceTree = "<group>"; };
@@ -4053,6 +4064,13 @@
 				D80A94DA1A536C8C0035D788 /* VTrimmerViewController.m */,
 				D80A94D41A535E150035D788 /* VVideoPlayerView.h */,
 				D80A94D51A535E150035D788 /* VVideoPlayerView.m */,
+				D80A94E41A546DF90035D788 /* VThumbnailDataSource.h */,
+				D80A94E51A546DF90035D788 /* VThumbnailDataSource.m */,
+				D80A94E71A546E5E0035D788 /* VThumbnailCell.h */,
+				D80A94E81A546E5E0035D788 /* VThumbnailCell.m */,
+				D80A94EA1A546E680035D788 /* VThumbnailCell.xib */,
+				D80A94EC1A5472FB0035D788 /* VVideoTool.h */,
+				D80A94ED1A5472FB0035D788 /* VVideoTool.m */,
 			);
 			path = Video;
 			sourceTree = "<group>";
@@ -4517,6 +4535,7 @@
 				036F38821A0C4DEA0014DF66 /* Oswald-Light.ttf in Resources */,
 				0362B42019F5F6950036B9C8 /* defaultTheme.plist in Resources */,
 				036F38891A0C4DEA0014DF66 /* PT_Serif-Web-Bold.ttf in Resources */,
+				D80A94EB1A546E680035D788 /* VThumbnailCell.xib in Resources */,
 				DB2A495719DF455D00CB687B /* VEphemeralTimerView.xib in Resources */,
 				DB2A48F719DF2D1000CB687B /* Localizable.strings in Resources */,
 				03F28F4B19F44728008BB3F7 /* VCommentCell.xib in Resources */,
@@ -4749,6 +4768,7 @@
 				0314D4C819B46B5E00FA363C /* VRemixSelectViewController.m in Sources */,
 				0314D0B619B4698800FA363C /* VObjectManager+Sequence.m in Sources */,
 				A7B98A3E1A264D0900C58335 /* VNotificationSettingsTableSection.m in Sources */,
+				D80A94EE1A5472FB0035D788 /* VVideoTool.m in Sources */,
 				0314D4DB19B46B5E00FA363C /* VTOSViewController.m in Sources */,
 				0314D48A19B46B5E00FA363C /* VNoContentView.m in Sources */,
 				039ED28219C6AB0900305987 /* AVCaptureConnection+VOrientation.m in Sources */,
@@ -4766,6 +4786,7 @@
 				A7B98A3D1A264D0900C58335 /* VNotificationSettingCell.m in Sources */,
 				BEA31EE9192292F300A90A10 /* VComment+Fetcher.m in Sources */,
 				0314D48219B46B5E00FA363C /* VCommentsContainerViewController.m in Sources */,
+				D80A94E91A546E5E0035D788 /* VThumbnailCell.m in Sources */,
 				033F77101A2D6B8A00E6A13A /* VUnreadMessageCountCoordinator.m in Sources */,
 				BE88FF911A00060E0064AB28 /* VSegmentedNavSelector.m in Sources */,
 				A77AD5021A2011E000142F24 /* UIAlertView+VBlocks.m in Sources */,
@@ -5111,6 +5132,7 @@
 				D82E76DE19F5BFED00FFB722 /* VContentPollQuestionCell.m in Sources */,
 				0314D45B19B46B5E00FA363C /* VCompositeImageFilter.m in Sources */,
 				0314D49619B46B5E00FA363C /* VResultView.m in Sources */,
+				D80A94E61A546DF90035D788 /* VThumbnailDataSource.m in Sources */,
 				A75FAF1F19E8AC1E00EB87C1 /* VDiscoverTableHeaderViewController.m in Sources */,
 				0314D46819B46B5E00FA363C /* VPickerTextField.m in Sources */,
 				BE11447919D49AA4006A6D65 /* VMarqueeStreamItemCell.m in Sources */,
