@@ -109,6 +109,15 @@ static inline CGPoint ClampX(CGPoint point, CGFloat xMin, CGFloat xMax)
 
 #pragma mark - UIView
 
+- (void)layoutSubviews
+{
+    self.trimThumbBody.frame = CGRectMake(CGRectGetMidX(self.trimThumbHead.frame) - 0.5f * kTrimBodyWidth,
+                                          CGRectGetMaxY(self.trimThumbHead.frame),
+                                          kTrimBodyWidth,
+                                          CGRectGetMaxY(self.bounds) - CGRectGetMaxY(self.trimThumbHead.frame));
+    [self updateThumAndDimmingViewWithNewThumbCenter:self.trimThumbHead.center];
+}
+
 - (UIView *)hitTest:(CGPoint)point
           withEvent:(UIEvent *)event
 {

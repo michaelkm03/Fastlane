@@ -42,7 +42,7 @@
                                                                       options:kNilOptions
                                                                       metrics:nil
                                                                         views:viewMap]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[collectionView]|"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-48-[collectionView]|"
                                                                       options:kNilOptions
                                                                       metrics:nil
                                                                         views:viewMap]];
