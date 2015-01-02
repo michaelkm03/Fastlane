@@ -15,6 +15,8 @@ static const CGFloat kTrimBodyWidth = 5.0f;
 
 @interface VTrimControl () <UICollisionBehaviorDelegate>
 
+@property (nonatomic, readwrite) CMTimeRange selectionRange;
+
 @property (nonatomic, strong) UIView *trimThumbHead;
 @property (nonatomic, strong) UIView *trimThumbBody;
 
@@ -221,6 +223,13 @@ static inline CGPoint ClampX(CGPoint point, CGFloat xMin, CGFloat xMax)
     [self.animator addBehavior:self.clampingBehavior];
 }
 
+- (void)sendActionsForControlEvents:(UIControlEvents)controlEvents
+{
+    CMTime selectedDuration = CMTimeMake(CGRectGetMidX(self.trimThumbBody.frame), CGRectGetWidth(self.bounds));
+    self.selectionRange = CMTimeRangeMake(self.startTime, selectedDuration);
+    [super sendActionsForControlEvents:controlEvents];
+}
+
 #pragma mark - Private Methods
 
 - (void)updateThumAndDimmingViewWithNewThumbCenter:(CGPoint)thumbCenter
@@ -235,6 +244,7 @@ static inline CGPoint ClampX(CGPoint point, CGFloat xMin, CGFloat xMax)
                                         CGRectGetWidth(self.bounds) - CGRectGetMaxX(self.trimThumbBody.frame),
                                         CGRectGetHeight(self.bounds));
     
+    [self sendActionsForControlEvents:UIControlEventValueChanged];
 }
 
 @end

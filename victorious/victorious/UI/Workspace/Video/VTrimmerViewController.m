@@ -34,7 +34,8 @@
                    forCellWithReuseIdentifier:[VThumbnailCell suggestedReuseIdentifier]];
     self.thumbnailCollecitonView.dataSource = self;
     self.thumbnailCollecitonView.delegate = self;
-    
+    self.thumbnailCollecitonView.backgroundColor = [UIColor clearColor];
+
     [self.view addSubview:self.thumbnailCollecitonView];
     self.thumbnailCollecitonView.translatesAutoresizingMaskIntoConstraints = NO;
     NSDictionary *viewMap = @{@"collectionView": self.thumbnailCollecitonView};
@@ -42,22 +43,34 @@
                                                                       options:kNilOptions
                                                                       metrics:nil
                                                                         views:viewMap]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-48-[collectionView]|"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-48-[collectionView]-30-|"
                                                                       options:kNilOptions
                                                                       metrics:nil
                                                                         views:viewMap]];
     self.trimControl = [[VTrimControl alloc] initWithFrame:CGRectMake(0, 0, 100, CGRectGetHeight(self.view.frame))];
     self.trimControl.translatesAutoresizingMaskIntoConstraints = NO;
+    self.trimControl.startTime = CMTimeMake(0, 24);
+    self.trimControl.maxDuration = CMTimeMake(30, 1);
+    [self.trimControl addTarget:self
+                         action:@selector(trimSelectionChanged:)
+               forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:self.trimControl];
     viewMap = @{@"trimControl": self.trimControl};
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[trimControl]|"
                                                                       options:kNilOptions
                                                                       metrics:nil
                                                                         views:viewMap]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[trimControl]|"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[trimControl]-30-|"
                                                                       options:kNilOptions
                                                                       metrics:nil
                                                                         views:viewMap]];
+}
+
+#pragma mark - Target/Action
+
+- (void)trimSelectionChanged:(VTrimControl *)trimControl
+{
+    VLog(@"%@, %@", @(trimControl.selectionRange.start.value),@(trimControl.selectionRange.duration.value) );
 }
 
 #pragma mark - UICollectionViewDataSource
