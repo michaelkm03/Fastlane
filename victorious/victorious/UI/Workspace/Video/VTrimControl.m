@@ -20,6 +20,8 @@ static const CGFloat kTrimBodyWidth = 5.0f;
 @property (nonatomic, strong) UIView *trimThumbHead;
 @property (nonatomic, strong) UIView *trimThumbBody;
 
+@property (nonatomic, strong) UILabel *thumbLabel;
+
 @property (nonatomic, strong) UIView *dimmingView;
 
 @property (nonatomic, strong) UIPanGestureRecognizer *headGestureRecognizer;
@@ -107,6 +109,9 @@ static inline CGPoint ClampX(CGPoint point, CGFloat xMin, CGFloat xMax)
     self.itemBehavior.resistance = 10.5f;
     self.itemBehavior.allowsRotation = NO;
     [self.animator addBehavior:self.collisionBehavior];
+    
+    self.thumbLabel = [[UILabel alloc] initWithFrame:self.trimThumbHead.bounds];
+    [self.trimThumbHead addSubview:self.thumbLabel];
 }
 
 #pragma mark - UIView
@@ -134,6 +139,19 @@ static inline CGPoint ClampX(CGPoint point, CGFloat xMin, CGFloat xMax)
     {
         return nil;
     }
+}
+
+#pragma mark - Property Accessors
+
+- (void)setAttributedTitle:(NSAttributedString *)attributedTitle
+{
+    self.thumbLabel.attributedText = attributedTitle;
+    self.thumbLabel.textAlignment = NSTextAlignmentCenter;
+}
+
+- (NSAttributedString *)attributedTitle
+{
+    return self.thumbLabel.attributedText;
 }
 
 #pragma mark - Gesture Recognizer
@@ -225,7 +243,9 @@ static inline CGPoint ClampX(CGPoint point, CGFloat xMin, CGFloat xMax)
 
 - (void)sendActionsForControlEvents:(UIControlEvents)controlEvents
 {
-    CMTime selectedDuration = CMTimeMake(CGRectGetMidX(self.trimThumbBody.frame), CGRectGetWidth(self.bounds));
+    CGFloat percentSelected = CGRectGetMidX(self.trimThumbBody.frame) / CGRectGetWidth(self.bounds);
+//    int32_t convertedSelect = percentSelected * self.maxDuration.timescale;
+    CMTime selectedDuration = CMTimeMake(percentSelected * self.maxDuration.value, self.maxDuration.timescale);
     self.selectionRange = CMTimeRangeMake(self.startTime, selectedDuration);
     [super sendActionsForControlEvents:controlEvents];
 }
