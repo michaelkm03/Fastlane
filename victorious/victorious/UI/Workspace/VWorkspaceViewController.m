@@ -31,6 +31,7 @@
 #warning Move me out of here
 #import "VVideoPlayerView.h"
 #import "VVideoTool.h"
+#import "VVideoCompositionController.h"
 @import AVFoundation;
 
 static const CGFloat kJPEGCompressionQuality    = 0.8f;
@@ -54,6 +55,9 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
 @property (nonatomic, strong) UIViewController *inspectorToolViewController;
 
 @property (nonatomic, strong) VPublishBlurOverAnimator *transitionAnimator;
+
+@property (nonatomic, strong) VVideoCompositionController *videoComposition;
+@property (nonatomic, strong) AVPlayer *player;
 
 @end
 
@@ -154,11 +158,22 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
     AVAsset *asset = [AVAsset assetWithURL:self.mediaURL];
     if ([asset tracksWithMediaType:AVMediaTypeVideo] > 0)
     {
+        
         VVideoPlayerView *videoPlayerView = [[VVideoPlayerView alloc] initWithFrame:self.canvasView.bounds];
-        AVPlayerItem *playerItem = [AVPlayerItem playerItemWithAsset:asset];
-        AVPlayer *playerWithItem = [AVPlayer playerWithPlayerItem:playerItem];
-        videoPlayerView.player = playerWithItem;
-        [playerWithItem play];
+        VVideoCompositionController *videoComposition = [[VVideoCompositionController alloc] init];
+        videoComposition.videoURL = self.mediaURL;
+        videoComposition.playerItemRedy = ^void(AVPlayerItem *playerItem)
+        {
+            self.player = [AVPlayer playerWithPlayerItem:playerItem];
+            self.player.actionAtItemEnd = AVPlayerActionAtItemEndNone;
+            [[NSNotificationCenter defaultCenter] addObserver:self
+                                                     selector:@selector(playerItemDidReachEnd:)
+                                                         name:AVPlayerItemDidPlayToEndTimeNotification
+                                                       object:[self.player currentItem]];
+            videoPlayerView.player = self.player;
+            [self.player play];
+        };
+        
         [self.canvasView addSubview:videoPlayerView];
     }
 }
@@ -291,6 +306,12 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
 }
 
 #pragma mark - Notification Handlers
+
+- (void)playerItemDidReachEnd:(NSNotification *)notification
+{
+    [self.player seekToTime:kCMTimeZero];
+    [self.player play];
+}
 
 - (void)keyboardWillShow:(NSNotification *)notification
 {

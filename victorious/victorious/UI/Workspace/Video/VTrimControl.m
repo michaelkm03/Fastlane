@@ -244,7 +244,6 @@ static inline CGPoint ClampX(CGPoint point, CGFloat xMin, CGFloat xMax)
 - (void)sendActionsForControlEvents:(UIControlEvents)controlEvents
 {
     CGFloat percentSelected = CGRectGetMidX(self.trimThumbBody.frame) / CGRectGetWidth(self.bounds);
-//    int32_t convertedSelect = percentSelected * self.maxDuration.timescale;
     CMTime selectedDuration = CMTimeMake(percentSelected * self.maxDuration.value, self.maxDuration.timescale);
     self.selectionRange = CMTimeRangeMake(self.startTime, selectedDuration);
     [super sendActionsForControlEvents:controlEvents];

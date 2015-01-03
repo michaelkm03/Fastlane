@@ -126,4 +126,11 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
     return 0.0f;
 }
 
+#pragma mark - UIScrollViewDelegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    
+}
+
 @end
