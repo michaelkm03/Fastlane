@@ -10,7 +10,6 @@
 
 #import "VDeviceInfo.h"
 #import "VSettingsViewController.h"
-#import "UIViewController+VSideMenuViewController.h"
 #import "VWebContentViewController.h"
 #import "VThemeManager.h"
 #import "VSettingManager.h"
@@ -55,6 +54,13 @@ static const NSInteger kResetPurchasesButtonIndex = 5;
 
 @implementation VSettingsViewController
 
+#pragma mark VHasManagedDependencies conforming initializer
+
++ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    return [[UIStoryboard storyboardWithName:@"settings" bundle:nil] instantiateInitialViewController];
+}
+
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -89,10 +95,6 @@ static const NSInteger kResetPurchasesButtonIndex = 5;
 {
     [super viewWillAppear:animated];
     
-    UIEdgeInsets insets = self.tableView.contentInset;
-    insets.top = 50;
-    self.tableView.contentInset = insets;
-    
     [self updateLogoutButtonState];
     
     self.serverEnvironmentCell.detailTextLabel.text = [[VObjectManager currentEnvironment] name];
@@ -108,8 +110,6 @@ static const NSInteger kResetPurchasesButtonIndex = 5;
     self.showPurchaseSettings = [VPurchaseManager sharedInstance].isPurchasingEnabled;
     
     self.showPushNotificationSettings = YES;
-    
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginStatusDidChange:) name:kLoggedInChangedNotification object:nil];
     [self.tableView reloadData];
@@ -133,6 +133,7 @@ static const NSInteger kResetPurchasesButtonIndex = 5;
 {
     return NO;
 }
+
 - (NSUInteger)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskPortrait;
@@ -200,11 +201,6 @@ static const NSInteger kResetPurchasesButtonIndex = 5;
     
     [self.tableView beginUpdates];
     [self.tableView endUpdates];
-}
-
-- (IBAction)showMenu
-{
-    [self.sideMenuViewController presentMenuViewController];
 }
 
 #pragma mark - Navigation

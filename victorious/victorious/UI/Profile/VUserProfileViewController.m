@@ -29,7 +29,6 @@
 
 #import "VUserProfileHeaderView.h"
 #import "VProfileHeaderCell.h"
-#import "VContainerViewController.h"
 
 #import "VAuthorizationViewControllerFactory.h"
 #import "VFindFriendsViewController.h"

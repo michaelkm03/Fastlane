@@ -21,7 +21,7 @@
 	<key>currentUserProfile.screen</key>
 	<string>VUserProfileNavigationDestination</string>
 	<key>settings.screen</key>
-	<string>VSettingsContainerViewController</string>
+	<string>VSettingsViewController</string>
 	<key>discover.screen</key>
 	<string>VDiscoverContainerViewController</string>
 </dict>
