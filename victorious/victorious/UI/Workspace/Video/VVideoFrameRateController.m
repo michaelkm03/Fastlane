@@ -6,9 +6,9 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VVideoFrameRateTool.h"
+#import "VVideoFrameRateController.h"
 
-@interface VVideoFrameRateTool ()
+@interface VVideoFrameRateController ()
 
 @property (nonatomic, strong, readwrite) NSURL *videoURL;
 @property (nonatomic, readwrite) CMTime frameDuration;
@@ -21,7 +21,7 @@
 
 @end
 
-@implementation VVideoFrameRateTool
+@implementation VVideoFrameRateController
 
 - (instancetype)initWithVideoURL:(NSURL *)videoURL
                    frameDuration:(CMTime)frameDuration

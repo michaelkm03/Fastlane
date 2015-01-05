@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+@import MobileCoreServices;
+
 #import "UIViewController+VNavMenu.h"
 #import "UIViewController+VSideMenuViewController.h"
 
@@ -286,7 +288,29 @@ static const char kUploadProgressYConstraintKey;
         {
             VDependencyManager *dependencyManager = [((id <VHasManagedDependancies>)welf) dependencyManager];
             
-            VWorkspaceViewController *workspaceViewController = (VWorkspaceViewController *)[dependencyManager viewControllerForKey:VDependencyManagerWorkspaceKey];
+            VWorkspaceViewController *workspaceViewController;
+            
+            CFStringRef fileExtension = (__bridge CFStringRef)[[capturedMediaURL absoluteString] pathExtension];
+            CFStringRef fileUTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, fileExtension, NULL);
+            
+            Boolean isImage = UTTypeConformsTo(fileUTI, kUTTypeImage);
+            Boolean isVideo = UTTypeConformsTo(fileUTI, kUTTypeMovie);
+            if (isImage)
+            {
+                // Image
+                workspaceViewController  = (VWorkspaceViewController *)[dependencyManager viewControllerForKey:VDependencyManagerWorkspaceKey];
+            }
+            else if (isVideo)
+            {
+                workspaceViewController  = (VWorkspaceViewController *)[dependencyManager viewControllerForKey:VDependencyManagerVideoWorkspaceKey];
+            }
+            CFRelease(fileUTI);
+            
+            if (workspaceViewController == nil)
+            {
+                return;
+            }
+
             __weak VWorkspaceViewController *weakWorkspace = workspaceViewController;
             workspaceViewController.previewImage = previewImage;
             workspaceViewController.mediaURL = capturedMediaURL;

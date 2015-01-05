@@ -568,7 +568,7 @@
 		D80A94E61A546DF90035D788 /* VThumbnailDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = D80A94E51A546DF90035D788 /* VThumbnailDataSource.m */; };
 		D80A94E91A546E5E0035D788 /* VThumbnailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D80A94E81A546E5E0035D788 /* VThumbnailCell.m */; };
 		D80A94EB1A546E680035D788 /* VThumbnailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D80A94EA1A546E680035D788 /* VThumbnailCell.xib */; };
-		D80A94EE1A5472FB0035D788 /* VVideoTool.m in Sources */ = {isa = PBXBuildFile; fileRef = D80A94ED1A5472FB0035D788 /* VVideoTool.m */; };
+		D80A94EE1A5472FB0035D788 /* VTrimVideoTool.m in Sources */ = {isa = PBXBuildFile; fileRef = D80A94ED1A5472FB0035D788 /* VTrimVideoTool.m */; };
 		D80C615B19D0F692006AE41A /* VProgressBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = D80C615A19D0F692006AE41A /* VProgressBarView.m */; };
 		D811BBBF19B92F75007398BF /* homeHeaderImage.png in Resources */ = {isa = PBXBuildFile; fileRef = D811BBBD19B92F75007398BF /* homeHeaderImage.png */; };
 		D81AF38F1A015EC60056F474 /* VDirectoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D81AF38E1A015EC60056F474 /* VDirectoryViewController.xib */; };
@@ -578,7 +578,7 @@
 		D82E76E019F5BFF900FFB722 /* VContentPollQuestionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D82E76DF19F5BFF900FFB722 /* VContentPollQuestionCell.xib */; };
 		D82E76E319F5C06100FFB722 /* VContentPollBallotCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D82E76E219F5C06100FFB722 /* VContentPollBallotCell.m */; };
 		D82E76E519F5C06B00FFB722 /* VContentPollBallotCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D82E76E419F5C06B00FFB722 /* VContentPollBallotCell.xib */; };
-		D82EA50E1A577FF70008FD3E /* VVideoFrameRateTool.m in Sources */ = {isa = PBXBuildFile; fileRef = D82EA50D1A577FF70008FD3E /* VVideoFrameRateTool.m */; };
+		D82EA50E1A577FF70008FD3E /* VVideoFrameRateController.m in Sources */ = {isa = PBXBuildFile; fileRef = D82EA50D1A577FF70008FD3E /* VVideoFrameRateController.m */; };
 		D8360CEA19E3640000D7E260 /* VNewContentViewController+Actions.m in Sources */ = {isa = PBXBuildFile; fileRef = D8360CE919E3640000D7E260 /* VNewContentViewController+Actions.m */; };
 		D8360CF019E3768300D7E260 /* VExperienceEnhancerController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8360CEF19E3768300D7E260 /* VExperienceEnhancerController.m */; };
 		D8360CF319E379C200D7E260 /* VExperienceEnhancer.m in Sources */ = {isa = PBXBuildFile; fileRef = D8360CF219E379C200D7E260 /* VExperienceEnhancer.m */; };
@@ -1683,8 +1683,8 @@
 		D80A94E71A546E5E0035D788 /* VThumbnailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VThumbnailCell.h; sourceTree = "<group>"; };
 		D80A94E81A546E5E0035D788 /* VThumbnailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VThumbnailCell.m; sourceTree = "<group>"; };
 		D80A94EA1A546E680035D788 /* VThumbnailCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VThumbnailCell.xib; sourceTree = "<group>"; };
-		D80A94EC1A5472FB0035D788 /* VVideoTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VVideoTool.h; sourceTree = "<group>"; };
-		D80A94ED1A5472FB0035D788 /* VVideoTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVideoTool.m; sourceTree = "<group>"; };
+		D80A94EC1A5472FB0035D788 /* VTrimVideoTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTrimVideoTool.h; sourceTree = "<group>"; };
+		D80A94ED1A5472FB0035D788 /* VTrimVideoTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTrimVideoTool.m; sourceTree = "<group>"; };
 		D80C615919D0F692006AE41A /* VProgressBarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VProgressBarView.h; sourceTree = "<group>"; };
 		D80C615A19D0F692006AE41A /* VProgressBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VProgressBarView.m; sourceTree = "<group>"; };
 		D811BBBD19B92F75007398BF /* homeHeaderImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = homeHeaderImage.png; sourceTree = "<group>"; };
@@ -1700,8 +1700,8 @@
 		D82E76E119F5C06100FFB722 /* VContentPollBallotCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentPollBallotCell.h; sourceTree = "<group>"; };
 		D82E76E219F5C06100FFB722 /* VContentPollBallotCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VContentPollBallotCell.m; sourceTree = "<group>"; };
 		D82E76E419F5C06B00FFB722 /* VContentPollBallotCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VContentPollBallotCell.xib; sourceTree = "<group>"; };
-		D82EA50C1A577FF70008FD3E /* VVideoFrameRateTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VVideoFrameRateTool.h; sourceTree = "<group>"; };
-		D82EA50D1A577FF70008FD3E /* VVideoFrameRateTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVideoFrameRateTool.m; sourceTree = "<group>"; };
+		D82EA50C1A577FF70008FD3E /* VVideoFrameRateController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VVideoFrameRateController.h; sourceTree = "<group>"; };
+		D82EA50D1A577FF70008FD3E /* VVideoFrameRateController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVideoFrameRateController.m; sourceTree = "<group>"; };
 		D8360CE819E3640000D7E260 /* VNewContentViewController+Actions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VNewContentViewController+Actions.h"; sourceTree = "<group>"; };
 		D8360CE919E3640000D7E260 /* VNewContentViewController+Actions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VNewContentViewController+Actions.m"; sourceTree = "<group>"; };
 		D8360CEE19E3768300D7E260 /* VExperienceEnhancerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VExperienceEnhancerController.h; sourceTree = "<group>"; };
@@ -4072,10 +4072,10 @@
 				D80A94E71A546E5E0035D788 /* VThumbnailCell.h */,
 				D80A94E81A546E5E0035D788 /* VThumbnailCell.m */,
 				D80A94EA1A546E680035D788 /* VThumbnailCell.xib */,
-				D80A94EC1A5472FB0035D788 /* VVideoTool.h */,
-				D80A94ED1A5472FB0035D788 /* VVideoTool.m */,
-				D82EA50C1A577FF70008FD3E /* VVideoFrameRateTool.h */,
-				D82EA50D1A577FF70008FD3E /* VVideoFrameRateTool.m */,
+				D80A94EC1A5472FB0035D788 /* VTrimVideoTool.h */,
+				D80A94ED1A5472FB0035D788 /* VTrimVideoTool.m */,
+				D82EA50C1A577FF70008FD3E /* VVideoFrameRateController.h */,
+				D82EA50D1A577FF70008FD3E /* VVideoFrameRateController.m */,
 			);
 			path = Video;
 			sourceTree = "<group>";
@@ -4773,7 +4773,7 @@
 				0314D4C819B46B5E00FA363C /* VRemixSelectViewController.m in Sources */,
 				0314D0B619B4698800FA363C /* VObjectManager+Sequence.m in Sources */,
 				A7B98A3E1A264D0900C58335 /* VNotificationSettingsTableSection.m in Sources */,
-				D80A94EE1A5472FB0035D788 /* VVideoTool.m in Sources */,
+				D80A94EE1A5472FB0035D788 /* VTrimVideoTool.m in Sources */,
 				0314D4DB19B46B5E00FA363C /* VTOSViewController.m in Sources */,
 				0314D48A19B46B5E00FA363C /* VNoContentView.m in Sources */,
 				039ED28219C6AB0900305987 /* AVCaptureConnection+VOrientation.m in Sources */,
@@ -5160,7 +5160,7 @@
 				BE46F02D19D0CC3700CD7EF6 /* VConversation+UnreadMessageCount.m in Sources */,
 				0314D4C419B46B5E00FA363C /* VUserProfileViewController.m in Sources */,
 				0314D4AB19B46B5E00FA363C /* VMessageContainerViewController.m in Sources */,
-				D82EA50E1A577FF70008FD3E /* VVideoFrameRateTool.m in Sources */,
+				D82EA50E1A577FF70008FD3E /* VVideoFrameRateController.m in Sources */,
 				A70FC0FE1A2D412200F5BBDE /* VPurchaseManager.m in Sources */,
 				039ED29C19C908F400305987 /* VCVideoPlayerViewController.m in Sources */,
 				BE42842C19DDD0D500AEDBA6 /* VDefaultProfileImageView.m in Sources */,

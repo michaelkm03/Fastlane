@@ -43,6 +43,7 @@ extern NSString * const VDependencyManagerInitialViewControllerKey; ///< The vie
 
 // Keys for Workspace
 extern NSString * const VDependencyManagerWorkspaceKey;
+extern NSString * const VDependencyManagerVideoWorkspaceKey;
 
 /**
  Provides loose coupling between components.

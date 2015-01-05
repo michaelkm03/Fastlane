@@ -30,8 +30,8 @@
 
 #warning Move me out of here
 #import "VVideoPlayerView.h"
-#import "VVideoTool.h"
-#import "VVideoFrameRateTool.h"
+#import "VTrimVideoTool.h"
+#import "VVideoFrameRateController.h"
 @import AVFoundation;
 
 static const CGFloat kJPEGCompressionQuality    = 0.8f;
@@ -56,7 +56,7 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
 
 @property (nonatomic, strong) VPublishBlurOverAnimator *transitionAnimator;
 
-@property (nonatomic, strong) VVideoFrameRateTool *videoComposition;
+@property (nonatomic, strong) VVideoFrameRateController *videoComposition;
 @property (nonatomic, strong) AVPlayer *player;
 
 @end
@@ -156,11 +156,11 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
     self.canvasView.sourceImage = self.previewImage;
     
     AVAsset *asset = [AVAsset assetWithURL:self.mediaURL];
-    if ([asset tracksWithMediaType:AVMediaTypeVideo] > 0)
+    if ([asset tracksWithMediaType:AVMediaTypeVideo].count > 0)
     {
         
         VVideoPlayerView *videoPlayerView = [[VVideoPlayerView alloc] initWithFrame:self.canvasView.bounds];
-        VVideoFrameRateTool *videoComposition = [[VVideoFrameRateTool alloc] initWithVideoURL:self.mediaURL
+        VVideoFrameRateController *videoComposition = [[VVideoFrameRateController alloc] initWithVideoURL:self.mediaURL
                                                                                 frameDuration:CMTimeMake(1, 10)
                                                                                     muteAudio:YES];
         videoComposition.playerItemReady = ^void(AVPlayerItem *playerItem)
@@ -250,12 +250,6 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
 - (void)setMediaURL:(NSURL *)mediaURL
 {
     _mediaURL = mediaURL;
-    
-    AVAsset *assetWithURLl = [AVAsset assetWithURL:mediaURL];
-    if ([assetWithURLl tracksWithMediaType:AVMediaTypeVideo].count > 0)
-    {
-        self.tools = @[[VVideoTool new]];
-    }
 }
 
 - (void)setSelectedTool:(id<VWorkspaceTool>)selectedTool

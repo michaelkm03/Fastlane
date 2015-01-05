@@ -11,7 +11,7 @@
 /**
  VVideoFrameRateTool provides a convenient interface for displaying and exporting a video with a custom frame rate.
  */
-@interface VVideoFrameRateTool : NSObject
+@interface VVideoFrameRateController : NSObject
 
 /**
  The designated initializer for this class. Pass in appropriate parameters.

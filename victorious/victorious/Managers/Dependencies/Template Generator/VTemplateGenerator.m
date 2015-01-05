@@ -53,6 +53,13 @@ static NSString * const kTextStrokeWidthKey = @"strokeWidth";
 static NSString * const kTextPlaceholderTextKey = @"placeholderText";
 static NSString * const kshouldForceUppercaseKey = @"shouldForceUppercase";
 
+// Video properties
+static NSString * const kVideoFrameDurationValue = @"frameDurationValue";
+static NSString * const kVideoFrameDurationTimescale = @"frameDurationTimescale";
+static NSString * const kVideoMaxDuration = @"videoMaxDuration";
+static NSString * const kVideoMinDuration = @"videoMinDuration";
+static NSString * const kVideoMuted = @"videoMuted";
+
 @interface VTemplateGenerator ()
 
 @property (nonatomic, strong) NSDictionary *dataFromInitCall;
@@ -94,9 +101,40 @@ static NSString * const kshouldForceUppercaseKey = @"shouldForceUppercase";
     template[VDependencyManagerScaffoldViewControllerKey] = @{ kClassNameKey: @"sideMenu.scaffold",
                                                                VDependencyManagerInitialViewControllerKey: @{ kReferenceIDKey: self.firstMenuItemID },
                                                                kMenuKey: [self menuComponent],
-                                                               VDependencyManagerWorkspaceKey: [self workspaceComponent] };
+                                                               VDependencyManagerWorkspaceKey: [self workspaceComponent],
+                                                               VDependencyManagerVideoWorkspaceKey: [self videoWorkspaceComponent]};
     
     return template;
+}
+
+- (NSArray *)videoTools
+{
+    return @[
+             @{
+                 kClassNameKey: @"trim.video.tool",
+                 kTitleKey: @"video",
+                 kVideoFrameDurationValue: @1,
+                 kVideoFrameDurationTimescale: @24,
+                 kVideoMuted: @NO
+                 },
+             @{
+                 kClassNameKey: @"trim.video.tool",
+                 kTitleKey: @"gif",
+                 kVideoFrameDurationValue: @1,
+                 kVideoFrameDurationTimescale: @8,
+                 kVideoMuted: @YES
+                 }
+             ];
+}
+
+- (NSDictionary *)videoWorkspaceComponent
+{
+    return @{
+             kClassNameKey: @"workspace.screen",
+             kToolsKey: [self videoTools],
+             kVideoMinDuration: @3,
+             kVideoMaxDuration: @15,
+             };
 }
 
 - (NSDictionary *)workspaceComponent
@@ -105,91 +143,106 @@ static NSString * const kshouldForceUppercaseKey = @"shouldForceUppercase";
              kClassNameKey: @"workspace.screen",
              kToolsKey:
                  @[
-                     @{
-                         kClassNameKey: @"text.tool",
-                         kTitleKey: @"text",
-                         kFilterIndexKey: @2,
-                         kPickerKey:
-                             @{
-                                 kClassNameKey: @"vertical.picker",
-                                 },
-                         kToolsKey:
-                             @[
-                                 @{
-                                     kClassNameKey: @"textType.tool",
-                                     kTitleKey: @"meme",
-                                     kTextHorizontalAlignmentKey: @"center",
-                                     kTextVerticalAlignmentKey: @"bottom",
-                                     kTextPlaceholderTextKey: @"create a meme",
-                                     kshouldForceUppercaseKey: @YES,
-                                     VDependencyManagerParagraphFontKey:
-                                         @{
-                                             kFontNameKey: @"Impact",
-                                             kFontSizeKey: @50,
-                                             },
-                                     VDependencyManagerMainTextColorKey:
-                                         @{
-                                             kRedKey: @255,
-                                             kGreenKey: @255,
-                                             kBlueKey: @255,
-                                             kAlphaKey: @1.0f,
-                                         },
-                                     kTextStrokeColorKey:
-                                         @{
-                                             kRedKey: @0,
-                                             kGreenKey: @0,
-                                             kBlueKey: @0,
-                                             kAlphaKey: @1.0f,
-                                             },
-                                     kTextStrokeWidthKey: @-5.0f,
-                                     },
-                                 @{
-                                     kClassNameKey: @"textType.tool",
-                                     kTitleKey: @"quote",
-                                     kTextHorizontalAlignmentKey: @"center",
-                                     kTextVerticalAlignmentKey: @"center",
-                                     kTextPlaceholderTextKey: @"create a quote",
-                                     VDependencyManagerParagraphFontKey:
-                                         @{
-                                             kFontNameKey: @"PTSans-Narrow",
-                                             kFontSizeKey: @23,
-                                             },
-                                     VDependencyManagerMainTextColorKey:
-                                         @{
-                                             kRedKey: @255,
-                                             kGreenKey: @255,
-                                             kBlueKey: @255,
-                                             kAlphaKey: @1.0f,
-                                             },
-                                     kTextStrokeColorKey:
-                                         @{
-                                             kRedKey: @255,
-                                             kGreenKey: @255,
-                                             kBlueKey: @255,
-                                             kAlphaKey: @1.0f,
-                                             },
-                                     kTextStrokeWidthKey: @0.0f,
-                                     },
-                                 ]
-                         },
-                     @{
-                         kClassNameKey: @"filter.tool",
-                         kTitleKey: @"filters",
-                         kFilterIndexKey: @0,
-                         kPickerKey:
-                             @{
-                                 kClassNameKey: @"vertical.picker",
-                                 },
-                         kToolsKey:
-                             @[
-                                 ]
-                         },
-                     @{
-                         kClassNameKey: @"crop.tool",
-                         kTitleKey: @"crop",
-                         kFilterIndexKey: @1,
-                         }
+                     [self textTool],
+                     [self filterTool],
+                     [self cropTool],
                      ]
+             };
+}
+
+- (NSDictionary *)textTool
+{
+    return @{
+             kClassNameKey: @"text.tool",
+             kTitleKey: @"text",
+             kFilterIndexKey: @2,
+             kPickerKey:
+                 @{
+                     kClassNameKey: @"vertical.picker",
+                     },
+             kToolsKey:
+                 @[
+                     @{
+                         kClassNameKey: @"textType.tool",
+                         kTitleKey: @"meme",
+                         kTextHorizontalAlignmentKey: @"center",
+                         kTextVerticalAlignmentKey: @"bottom",
+                         kTextPlaceholderTextKey: @"create a meme",
+                         kshouldForceUppercaseKey: @YES,
+                         VDependencyManagerParagraphFontKey:
+                             @{
+                                 kFontNameKey: @"Impact",
+                                 kFontSizeKey: @50,
+                                 },
+                         VDependencyManagerMainTextColorKey:
+                             @{
+                                 kRedKey: @255,
+                                 kGreenKey: @255,
+                                 kBlueKey: @255,
+                                 kAlphaKey: @1.0f,
+                                 },
+                         kTextStrokeColorKey:
+                             @{
+                                 kRedKey: @0,
+                                 kGreenKey: @0,
+                                 kBlueKey: @0,
+                                 kAlphaKey: @1.0f,
+                                 },
+                         kTextStrokeWidthKey: @-5.0f,
+                         },
+                     @{
+                         kClassNameKey: @"textType.tool",
+                         kTitleKey: @"quote",
+                         kTextHorizontalAlignmentKey: @"center",
+                         kTextVerticalAlignmentKey: @"center",
+                         kTextPlaceholderTextKey: @"create a quote",
+                         VDependencyManagerParagraphFontKey:
+                             @{
+                                 kFontNameKey: @"PTSans-Narrow",
+                                 kFontSizeKey: @23,
+                                 },
+                         VDependencyManagerMainTextColorKey:
+                             @{
+                                 kRedKey: @255,
+                                 kGreenKey: @255,
+                                 kBlueKey: @255,
+                                 kAlphaKey: @1.0f,
+                                 },
+                         kTextStrokeColorKey:
+                             @{
+                                 kRedKey: @255,
+                                 kGreenKey: @255,
+                                 kBlueKey: @255,
+                                 kAlphaKey: @1.0f,
+                                 },
+                         kTextStrokeWidthKey: @0.0f,
+                         },
+                     ]
+             };
+}
+
+- (NSDictionary *)filterTool
+{
+    return @{
+             kClassNameKey: @"filter.tool",
+             kTitleKey: @"filters",
+             kFilterIndexKey: @0,
+             kPickerKey:
+                 @{
+                     kClassNameKey: @"vertical.picker",
+                     },
+             kToolsKey:
+                 @[
+                     ]
+             };
+}
+
+- (NSDictionary *)cropTool
+{
+    return @{
+             kClassNameKey: @"crop.tool",
+             kTitleKey: @"crop",
+             kFilterIndexKey: @1,
              };
 }
 
