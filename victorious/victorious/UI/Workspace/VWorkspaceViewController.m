@@ -211,9 +211,6 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
 
 - (IBAction)publish:(id)sender
 {
-    [self.player play];
-    return;
-    
     MBProgressHUD *hudForView = [MBProgressHUD showHUDAddedTo:self.view
                                                      animated:YES];
     hudForView.labelText = @"Rendering...";
