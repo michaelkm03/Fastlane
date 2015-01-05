@@ -8,7 +8,6 @@
 
 #import "VNotificationSettingsViewController.h"
 #import "VNotificationSettingCell.h"
-#import "UIViewController+VNavMenu.h"
 #import "VObjectManager+DeviceRegistration.h"
 #import "VNotificationSettings.h"
 #import "VNoContentTableViewCell.h"
@@ -18,7 +17,7 @@
 #import "VNotificationSettingsStateManager.h"
 #import "VConstants.h"
 
-@interface VNotificationSettingsViewController() <VNavigationHeaderDelegate, VNotificationSettingCellDelegate, VNotificiationSettingsStateManagerDelegate>
+@interface VNotificationSettingsViewController() <VNotificationSettingCellDelegate, VNotificiationSettingsStateManagerDelegate>
 
 @property (nonatomic, strong) VNotificationSettings *settings;
 @property (nonatomic, strong) NSOrderedSet *sections;
@@ -42,9 +41,6 @@
     self.tableView.backgroundColor = [UIColor colorWithWhite:0.97 alpha:1.0];
     
     [VNoContentTableViewCell registerNibWithTableView:self.tableView];
-    
-    [self.parentViewController v_addNewNavHeaderWithTitles:nil];
-    self.parentViewController.navHeaderView.delegate = (UIViewController<VNavigationHeaderDelegate> *)self.parentViewController;
 }
 
 - (void)viewWillAppear:(BOOL)animated
