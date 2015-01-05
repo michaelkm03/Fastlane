@@ -24,7 +24,7 @@
 + (instancetype)homeStreamCollection;
 + (instancetype)communityStreamCollection;
 + (instancetype)ownerStreamCollection;
-+ (instancetype)hashtagStreamWithHashtag:(VHashtag *)hashtag;
++ (instancetype)hashtagStreamWithHashtag:(NSString *)hashtag;
 
 /**
  *  Returns a stream collection view controller with a victorious themed nav header.

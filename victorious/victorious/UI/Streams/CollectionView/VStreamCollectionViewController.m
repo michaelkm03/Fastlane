@@ -74,7 +74,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
 
 @property (nonatomic, assign) BOOL hasRefreshed;
 @property (nonatomic, assign) BOOL subscribedToHashtag;
-@property (nonatomic, strong) VHashtag *selectedHashtag;
+@property (nonatomic, strong) NSString *selectedHashtag;
 @property (nonatomic, weak) MBProgressHUD *failureHUD;
 
 @end
@@ -121,11 +121,11 @@ static CGFloat const kTemplateCLineSpacing = 8;
     return ownerStream;
 }
 
-+ (instancetype)hashtagStreamWithHashtag:(VHashtag *)hashtag
++ (instancetype)hashtagStreamWithHashtag:(NSString *)hashtag
 {
     // Check if hashtag is being followed or not
-    NSString *tagTitle = [@"#" stringByAppendingString:hashtag.tag];
-    NSString *tagString = [hashtag.tag lowercaseString];
+    NSString *tagTitle = [@"#" stringByAppendingString:hashtag];
+    NSString *tagString = [hashtag lowercaseString];
 
     VStream *defaultStream = [VStream streamForHashTag:tagString];
     VStreamCollectionViewController *streamVC = [self streamViewControllerForDefaultStream:defaultStream
@@ -661,10 +661,10 @@ static CGFloat const kTemplateCLineSpacing = 8;
     [self.sequenceActionController flagSheetFromViewController:self sequence:sequence];
 }
 
-- (void)hashTag:(VHashtag *)hashtag tappedFromSequence:(VSequence *)sequence fromView:(UIView *)view
+- (void)hashTag:(NSString *)hashtag tappedFromSequence:(VSequence *)sequence fromView:(UIView *)view
 {
     // Error checking
-    if ( !hashtag || !hashtag.tag.length )
+    if ( hashtag == nil || !hashtag.length )
     {
         return;
     }
@@ -672,7 +672,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
     // Prevent another stream view for the current tag from being pushed
     if ( self.currentStream.hashtag && self.currentStream.hashtag.length )
     {
-        if ( [[self.currentStream.hashtag lowercaseString] isEqualToString:[hashtag.tag lowercaseString]] )
+        if ( [[self.currentStream.hashtag lowercaseString] isEqualToString:[hashtag lowercaseString]] )
         {
             return;
         }
@@ -730,7 +730,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
 
 - (void)followHashtagButtonAction:(id)sender
 {
-    VLog(@"Follow #%@ action", self.selectedHashtag.tag);
+    VLog(@"Follow #%@ action", self.selectedHashtag);
     
     VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
@@ -748,14 +748,14 @@ static CGFloat const kTemplateCLineSpacing = 8;
     };
     
     // Backend Subscribe to Hashtag
-    [[VObjectManager sharedManager] subscribeToHashtag:self.selectedHashtag
-                                          successBlock:successBlock
-                                             failBlock:failureBlock];
+//    [[VObjectManager sharedManager] subscribeToHashtag:self.selectedHashtag
+//                                          successBlock:successBlock
+//                                             failBlock:failureBlock];
 }
 
 - (void)unfollowHashtagButtonAction:(id)sender
 {
-    VLog(@"Unfollow #%@ action", self.selectedHashtag.tag);
+    VLog(@"Unfollow #%@ action", self.selectedHashtag);
     
     VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
@@ -772,9 +772,9 @@ static CGFloat const kTemplateCLineSpacing = 8;
     };
     
     // Backend Unsubscribe to Hashtag call
-    [[VObjectManager sharedManager] unsubscribeToHashtag:self.selectedHashtag
-                                            successBlock:successBlock
-                                               failBlock:failureBlock];
+//    [[VObjectManager sharedManager] unsubscribeToHashtag:self.selectedHashtag
+//                                            successBlock:successBlock
+//                                               failBlock:failureBlock];
 }
 
 - (void)updateSubscribeStatusAnimated:(BOOL)animated

@@ -366,7 +366,7 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
 
 - (void)showStreamWithHashtag:(VHashtag *)hashtag
 {
-    VStreamCollectionViewController *stream = [VStreamCollectionViewController hashtagStreamWithHashtag:hashtag];
+    VStreamCollectionViewController *stream = [VStreamCollectionViewController hashtagStreamWithHashtag:hashtag.tag];
     [self.navigationController pushViewController:stream animated:YES];
 }
 
