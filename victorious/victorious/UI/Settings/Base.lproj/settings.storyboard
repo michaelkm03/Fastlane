@@ -204,7 +204,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="ms7-gO-8Gm" kind="push" id="NXO-8D-13b"/>
+                                            <segue destination="0nf-aa-3V6" kind="push" id="RfN-cX-kio"/>
                                         </connections>
                                     </tableViewCell>
                                 </cells>
@@ -529,45 +529,12 @@
             </objects>
             <point key="canvasLocation" x="-2679" y="-2157"/>
         </scene>
-        <!--Purchase Settings Container-->
-        <scene sceneID="Qhc-wh-GVF">
-            <objects>
-                <viewController title="In-App Purchases" id="ms7-gO-8Gm" userLabel="Purchase Settings Container" customClass="VContainerViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="aud-gm-Lfu"/>
-                        <viewControllerLayoutGuide type="bottom" id="vAf-SI-1C8"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="ICE-RV-FtE">
-                        <rect key="frame" x="0.0" y="44" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LxP-9y-ztQ">
-                                <rect key="frame" x="0.0" y="64" width="320" height="504"/>
-                                <connections>
-                                    <segue destination="0nf-aa-3V6" kind="embed" id="Enw-qd-WVK"/>
-                                </connections>
-                            </containerView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="vAf-SI-1C8" firstAttribute="top" secondItem="LxP-9y-ztQ" secondAttribute="bottom" id="FYr-XG-DdC"/>
-                            <constraint firstItem="LxP-9y-ztQ" firstAttribute="top" secondItem="aud-gm-Lfu" secondAttribute="bottom" id="TmH-Hv-LHa"/>
-                            <constraint firstItem="LxP-9y-ztQ" firstAttribute="leading" secondItem="ICE-RV-FtE" secondAttribute="leading" id="fwz-Bi-y7B"/>
-                            <constraint firstAttribute="trailing" secondItem="LxP-9y-ztQ" secondAttribute="trailing" id="g8Z-Fu-ngn"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" id="68D-LE-M8l"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="ilW-3R-GZr" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-3687" y="-1507"/>
-        </scene>
         <!--Purchase Settings-->
         <scene sceneID="oSl-bU-Faw">
             <objects>
                 <tableViewController title="Server Environment" id="0nf-aa-3V6" userLabel="Purchase Settings" customClass="VPurchaseSettingsViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="qpQ-jJ-EMf">
-                        <rect key="frame" x="0.0" y="44" width="320" height="460"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <color key="separatorColor" red="0.96470588239999999" green="0.96470588239999999" blue="0.8862745098" alpha="1" colorSpace="calibratedRGB"/>
@@ -680,23 +647,14 @@
                             <outlet property="delegate" destination="0nf-aa-3V6" id="3wN-2U-SFi"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="5FP-jo-7Mh">
-                        <barButtonItem key="leftBarButtonItem" image="cameraButtonBack" id="HqR-wx-2sm">
-                            <connections>
-                                <action selector="goBack:" destination="0nf-aa-3V6" id="6Wb-6s-qn8"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+                    <navigationItem key="navigationItem" title="In-App Purchases" id="5FP-jo-7Mh"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mG7-xu-zJg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-3263" y="-1521"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="cameraButtonBack" width="22" height="17"/>
-    </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

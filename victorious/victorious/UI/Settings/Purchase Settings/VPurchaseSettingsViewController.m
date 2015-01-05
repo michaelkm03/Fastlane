@@ -7,7 +7,6 @@
 //
 
 #import "VPurchaseSettingsViewController.h"
-#import "UIViewController+VNavMenu.h"
 #import "VPurchaseManager.h"
 #import "VPurchaseCell.h"
 #import "VPurchaseActionCell.h"
@@ -60,13 +59,8 @@ static const CGFloat kPurchasedItemCellRowHeight    = 60.0f;
     self.fileCache = [[VFileCache alloc] init];
     self.purchaseManager = [VPurchaseManager sharedInstance];
     
-    self.parentViewController.title = NSLocalizedString( @"SettingsPurchasesTitle", nil);
-    
     [VNoContentTableViewCell registerNibWithTableView:self.tableView];
     self.tableView.backgroundColor = [UIColor colorWithWhite:0.97 alpha:1.0];
-    
-    [self.parentViewController v_addNewNavHeaderWithTitles:nil];
-    self.parentViewController.navHeaderView.delegate = (UIViewController<VNavigationHeaderDelegate> *)self.parentViewController;
 }
 
 #pragma mark - Helpers
