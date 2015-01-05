@@ -7,12 +7,11 @@
 //
 
 #import "VWebContentViewController.h"
-#import "UIViewController+VNavMenu.h"
 #import "VThemeManager.h"
 #import "VSettingManager.h"
 #import "VWebViewFactory.h"
 
-@interface VWebContentViewController () <VNavigationHeaderDelegate, VWebViewDelegate>
+@interface VWebContentViewController () <VWebViewDelegate>
 
 @property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
 
@@ -34,7 +33,7 @@
     
     self.urlToView = self.urlToView;
     
-    [self addHeader];
+    [self addConstraintsToWebView:self.webView.asView];
 }
 
 - (void)setFailureWithError:(NSError *)error
@@ -42,41 +41,20 @@
     [self webView:self.webView didFailLoadWithError:error];
 }
 
-- (void)addHeader
-{
-    [self v_addNewNavHeaderWithTitles:nil];
-    self.navHeaderView.delegate = self;
-    [self addConstraintsToWebView:self.webView.asView withHeaderView:self.navHeaderView];
-}
-
-- (void)addConstraintsToWebView:(UIWebView *)webView withHeaderView:(UIView *)headerView
+- (void)addConstraintsToWebView:(UIView *)webView
 {
     NSParameterAssert( webView.superview != nil );
-    NSParameterAssert( headerView.superview != nil );
-    NSParameterAssert( [webView.superview isEqual:headerView.superview] );
     
     webView.translatesAutoresizingMaskIntoConstraints = NO;
     NSDictionary *viewsDict = @{ @"webView" : webView };
-    CGFloat headerHeight = CGRectGetHeight(headerView.frame);
-    CGFloat statusBarHeight = CGRectGetHeight( [[UIApplication sharedApplication] statusBarFrame] );
-    NSDictionary *metrics = @{ @"headerViewHeight" : @( headerHeight - statusBarHeight ) };
-    [webView.superview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-headerViewHeight-[webView]-0-|"
+    [webView.superview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[webView]-0-|"
                                                                               options:kNilOptions
-                                                                              metrics:metrics
+                                                                              metrics:nil
                                                                                 views:viewsDict]];
     [webView.superview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[webView]-0-|"
                                                                               options:kNilOptions
                                                                               metrics:nil
                                                                                 views:viewsDict]];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-    [self.navigationController.navigationBar setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
-    self.navigationController.navigationBar.shadowImage = nil;
-    self.navigationController.navigationBar.translucent = NO;
 }
 
 - (void)setShouldShowLoadingState:(BOOL)shouldShowLoadingState
@@ -131,17 +109,6 @@
     return UIInterfaceOrientationMaskPortrait;
 }
 
-- (BOOL)prefersStatusBarHidden
-{
-    return !CGRectContainsRect(self.view.frame, self.navHeaderView.frame);
-}
-
-- (UIStatusBarStyle)preferredStatusBarStyle
-{
-    return ![[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled] ? UIStatusBarStyleLightContent
-    : UIStatusBarStyleDefault;
-}
-
 #pragma mark - VWebViewDelegate
 
 - (void)webViewDidStartLoad:(id<VWebViewProtocol>)webView
@@ -167,5 +134,3 @@
 }
 
 @end
-
-

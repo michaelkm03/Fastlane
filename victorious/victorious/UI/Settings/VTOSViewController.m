@@ -42,11 +42,4 @@
     return !self.wantsStatusBar;
 }
 
-#pragma mark - Actions
-
-- (IBAction)goBack:(id)sender
-{
-    [self.navigationController popViewControllerAnimated:YES];
-}
-
 @end

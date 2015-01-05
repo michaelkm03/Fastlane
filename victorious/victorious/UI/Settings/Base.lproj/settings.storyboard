@@ -343,13 +343,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Terms of Service" id="4Bo-2y-3qa">
-                        <barButtonItem key="leftBarButtonItem" image="cameraButtonBack" id="jaT-ot-w8f">
-                            <connections>
-                                <action selector="goBack:" destination="uRj-bL-JcU" id="pz1-fm-UOa"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Terms of Service" id="4Bo-2y-3qa"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iy9-Va-wjh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -496,13 +490,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Privacy Policy" id="dAg-zH-vd2">
-                        <barButtonItem key="leftBarButtonItem" image="cameraButtonBack" id="3qK-H2-jrp">
-                            <connections>
-                                <action selector="goBack:" destination="lSu-os-HMa" id="FDl-5e-v9h"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Privacy Policy" id="dAg-zH-vd2"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UNw-LC-tuc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
