@@ -680,7 +680,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
             return 1;
         case VContentViewSectionHistogramOrQuestion:
         {
-            NSInteger ret = (self.viewModel.type == VContentViewTypePoll) ? 1 : 0;
+            NSInteger ret = ((self.viewModel.type == VContentViewTypePoll) || (self.viewModel.type == VContentViewTypeVideo))? 1 : 0;
             return ret;
         }
             
