@@ -45,17 +45,20 @@
              
              AVPlayerItem *playerItem = [AVPlayerItem playerItemWithAsset:[self.mutableComposition copy]];
              playerItem.videoComposition = [self videoComposition];
-             if (self.playerItemRedy)
+             if (self.playerItemReady)
              {
-                 self.playerItemRedy(playerItem);
+                 self.playerItemReady(playerItem);
              }
          }];
         
         _mutableComposition = [AVMutableComposition composition];
         _mutableCompositionVideoTrack = [_mutableComposition addMutableTrackWithMediaType:AVMediaTypeVideo
                                                                          preferredTrackID:kCMPersistentTrackID_Invalid];
-        _mutableCompositionAudioTrack = [_mutableComposition addMutableTrackWithMediaType:AVMediaTypeAudio
-                                                                         preferredTrackID:kCMPersistentTrackID_Invalid];
+        if (!muteAudio)
+        {
+            _mutableCompositionAudioTrack = [_mutableComposition addMutableTrackWithMediaType:AVMediaTypeAudio
+                                                                             preferredTrackID:kCMPersistentTrackID_Invalid];
+        }
         
     }
     return self;

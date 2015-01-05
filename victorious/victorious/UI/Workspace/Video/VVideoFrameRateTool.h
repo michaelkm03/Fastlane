@@ -6,26 +6,28 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
 @import AVFoundation;
 
+/**
+ VVideoFrameRateTool provides a convenient interface for displaying and exporting a video with a custom frame rate.
+ */
 @interface VVideoFrameRateTool : NSObject
 
+/**
+ The designated initializer for this class. Pass in appropriate parameters.
+ */
 - (instancetype)initWithVideoURL:(NSURL *)videoURL
                    frameDuration:(CMTime)frameDuration
                        muteAudio:(BOOL)muteAudio NS_DESIGNATED_INITIALIZER;
 
-@property (nonatomic, readonly) NSURL *videoURL;
+@property (nonatomic, readonly) NSURL *videoURL; // The url to create an AVAsset from.
 
-@property (nonatomic, readonly) CMTime frameDuration;
+@property (nonatomic, readonly) CMTime frameDuration; // Reciprocal of frame rate i.e. 1/30 = 30fps.
 
-#warning implement me
-@property (nonatomic, readonly) BOOL muteAudio;
+@property (nonatomic, readonly) BOOL muteAudio; // YES if audio is muted
 
-@property (nonatomic, copy) void (^playerItemRedy)(AVPlayerItem *playerItem);
+@property (nonatomic, copy) void (^playerItemReady)(AVPlayerItem *playerItem); // A completion block for when the video is ready to be played.
 
-#warning implement me
-- (AVAssetExportSession *)makeExportable;
+- (AVAssetExportSession *)makeExportable; // An export session for rendering.
 
 @end

@@ -162,8 +162,8 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
         VVideoPlayerView *videoPlayerView = [[VVideoPlayerView alloc] initWithFrame:self.canvasView.bounds];
         VVideoFrameRateTool *videoComposition = [[VVideoFrameRateTool alloc] initWithVideoURL:self.mediaURL
                                                                                 frameDuration:CMTimeMake(1, 10)
-                                                                                    muteAudio:NO];
-        videoComposition.playerItemRedy = ^void(AVPlayerItem *playerItem)
+                                                                                    muteAudio:YES];
+        videoComposition.playerItemReady = ^void(AVPlayerItem *playerItem)
         {
             self.player = [AVPlayer playerWithPlayerItem:playerItem];
             self.player.actionAtItemEnd = AVPlayerActionAtItemEndNone;
@@ -172,7 +172,6 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
                                                          name:AVPlayerItemDidPlayToEndTimeNotification
                                                        object:[self.player currentItem]];
             videoPlayerView.player = self.player;
-//            videoPlayerView.transform = preferredTransform;
             videoPlayerView.frame = self.canvasView.bounds;
             [self.player play];
         };
