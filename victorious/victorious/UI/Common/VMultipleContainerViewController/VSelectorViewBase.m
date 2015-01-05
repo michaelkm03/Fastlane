@@ -1,5 +1,5 @@
 //
-//  VViewSelectorViewControllerBase.m
+//  VSelectorViewBase.m
 //  victorious
 //
 //  Created by Josh Hinman on 12/16/14.
@@ -7,39 +7,20 @@
 //
 
 #import "VDependencyManager.h"
-#import "VViewSelectorViewControllerBase.h"
+#import "VSelectorViewBase.h"
 
-@implementation VViewSelectorViewControllerBase
-
-#pragma mark - Initializers
-
-- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self)
-    {
-        
-    }
-    return self;
-}
+@implementation VSelectorViewBase
 
 #pragma mark VHasManagedDependencies conforming initializer
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    self = [self initWithNibName:nil bundle:nil];
+    self = [super initWithFrame:CGRectZero];
     if (self)
     {
         _dependencyManager = dependencyManager;
     }
     return self;
-}
-
-#pragma mark - View Lifecycle
-
-- (void)loadView
-{
-    self.view = [[UIView alloc] init];
 }
 
 #pragma mark - Properties

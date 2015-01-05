@@ -16,6 +16,7 @@
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) UINavigationController *innerNavigationController;
+@property (nonatomic, strong) UIView *supplementaryHeaderView;
 
 @end
 
@@ -119,6 +120,126 @@
     return self.innerNavigationController.topViewController.shouldAutorotate;
 }
 
+#pragma mark - Supplementary Header Views
+
+- (void)addSupplementaryHeaderView:(UIView *)supplementaryHeaderView withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)transition
+{
+    if ( [transition isInteractive] )
+    {
+        [transition notifyWhenInteractionEndsUsingBlock:^(id<UIViewControllerTransitionCoordinatorContext> context)
+        {
+            if ( ![context isCancelled] )
+            {
+                [self addSupplementaryHeaderView:supplementaryHeaderView];
+                if ( [context isAnimated] )
+                {
+                    supplementaryHeaderView.alpha = 0;
+                    [UIView animateWithDuration:[context transitionDuration] / [context completionVelocity]
+                                          delay:0
+                                        options:[context completionCurve] << 16
+                                     animations:^(void)
+                    {
+                        supplementaryHeaderView.alpha = 1.0f;
+                    }
+                                     completion:nil];
+                }
+            }
+        }];
+    }
+    else
+    {
+        [self addSupplementaryHeaderView:supplementaryHeaderView];
+        if ( [transition isAnimated] )
+        {
+            supplementaryHeaderView.alpha = 0;
+            [transition animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context)
+            {
+                supplementaryHeaderView.alpha = 1.0f;
+            }
+                                        completion:nil];
+            
+        }
+    }
+}
+
+- (void)removeSupplementaryHeaderViewWithTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)transition
+{
+    if ( [transition isInteractive] )
+    {
+        [transition notifyWhenInteractionEndsUsingBlock:^(id<UIViewControllerTransitionCoordinatorContext> context)
+        {
+            if ( ![context isCancelled] )
+            {
+                if ( [context isAnimated] )
+                {
+                    [UIView animateWithDuration:[context transitionDuration] / [context completionVelocity]
+                                          delay:0
+                                        options:[context completionCurve] << 16
+                                     animations:^(void)
+                    {
+                        self.supplementaryHeaderView.alpha = 0;
+                    }
+                                    completion:^(BOOL finished)
+                    {
+                        [self removeSupplementaryHeaderView];
+                    }];
+                }
+                else
+                {
+                    [self removeSupplementaryHeaderView];
+                }
+            }
+        }];
+    }
+    else
+    {
+        if ( [transition isAnimated] )
+        {
+            [transition animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context)
+            {
+                self.supplementaryHeaderView.alpha = 0;
+            }
+                                        completion:^(id<UIViewControllerTransitionCoordinatorContext> context)
+            {
+                [self removeSupplementaryHeaderView];
+            }];
+        }
+        else
+        {
+            [self removeSupplementaryHeaderView];
+        }
+    }
+}
+
+- (void)removeSupplementaryHeaderView
+{
+    [self.supplementaryHeaderView removeFromSuperview];
+    self.supplementaryHeaderView = nil;
+}
+
+- (void)addSupplementaryHeaderView:(UIView *)supplementaryHeaderView
+{
+    if ( self.supplementaryHeaderView != nil )
+    {
+        [self removeSupplementaryHeaderView];
+    }
+    
+    [self.view addSubview:supplementaryHeaderView];
+    supplementaryHeaderView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.innerNavigationController.navigationBar
+                                                          attribute:NSLayoutAttributeBottom
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:supplementaryHeaderView
+                                                          attribute:NSLayoutAttributeTop
+                                                         multiplier:1.0f
+                                                           constant:0.0f]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[supplementaryHeaderView]|"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:NSDictionaryOfVariableBindings(supplementaryHeaderView)]];
+    self.supplementaryHeaderView = supplementaryHeaderView;
+}
+
 #pragma mark - UINavigationControllerDelegate methods
 
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
@@ -128,10 +249,38 @@
     if ( !prefersNavigationBarHidden && self.innerNavigationController.navigationBarHidden )
     {
         [self.innerNavigationController setNavigationBarHidden:NO animated:animated];
+        [self setNeedsStatusBarAppearanceUpdate];
     }
     else if ( prefersNavigationBarHidden && !self.innerNavigationController.navigationBarHidden )
     {
         [self.innerNavigationController setNavigationBarHidden:YES animated:animated];
+        [self setNeedsStatusBarAppearanceUpdate];
+    }
+    
+    UIView *newSupplementaryHeaderView = viewController.navigationItem.v_supplementaryHeaderView;
+    if ( self.supplementaryHeaderView != nil &&
+         self.supplementaryHeaderView != newSupplementaryHeaderView )
+    {
+        if ( viewController.transitionCoordinator == nil )
+        {
+            [self removeSupplementaryHeaderView];
+        }
+        else
+        {
+            [self removeSupplementaryHeaderViewWithTransitionCoordinator:viewController.transitionCoordinator];
+        }
+    }
+    
+    if ( !prefersNavigationBarHidden && newSupplementaryHeaderView != nil )
+    {
+        if ( viewController.transitionCoordinator == nil )
+        {
+            [self addSupplementaryHeaderView:newSupplementaryHeaderView];
+        }
+        else
+        {
+            [self addSupplementaryHeaderView:newSupplementaryHeaderView withTransitionCoordinator:viewController.transitionCoordinator];
+        }
     }
     
     if ( self.leftBarButtonItem != nil &&

@@ -8,14 +8,15 @@
 
 #import "VDependencyManager.h"
 #import "VMultipleContainerViewController.h"
-#import "VViewSelectorViewControllerBase.h"
+#import "VNavigationController.h"
+#import "VSelectorViewBase.h"
 
 @interface VMultipleContainerViewController () <UICollectionViewDataSource, UICollectionViewDelegate, VViewSelectorViewControllerDelegate>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, weak) UICollectionView *collectionView;
 @property (nonatomic, strong) UICollectionViewFlowLayout *flowLayout;
-@property (nonatomic, strong) VViewSelectorViewControllerBase *selector;
+@property (nonatomic, strong) VSelectorViewBase *selector;
 @property (nonatomic) BOOL didShowInitial;
 
 @end
@@ -34,6 +35,7 @@ static NSString * const kInitialKey = @"initial";
     if (self)
     {
         self.automaticallyAdjustsScrollViewInsets = NO;
+        self.extendedLayoutIncludesOpaqueBars = YES;
         _didShowInitial = NO;
     }
     return self;
@@ -48,9 +50,10 @@ static NSString * const kInitialKey = @"initial";
     {
         _dependencyManager = dependencyManager;
         _viewControllers = [dependencyManager arrayOfSingletonValuesOfType:[UIViewController class] forKey:kScreensKey];
-        _selector = [dependencyManager singletonObjectOfType:[VViewSelectorViewControllerBase class] forKey:kSelectorKey];
+        _selector = [dependencyManager singletonObjectOfType:[VSelectorViewBase class] forKey:kSelectorKey];
         _selector.viewControllers = _viewControllers;
         _selector.delegate = self;
+        self.navigationItem.v_supplementaryHeaderView = _selector;
         self.title = [dependencyManager stringForKey:kTitleKey];
     }
     return self;
@@ -75,22 +78,10 @@ static NSString * const kInitialKey = @"initial";
     [self.view addSubview:collectionView];
     self.collectionView = collectionView;
 
-    [self addChildViewController:self.selector];
-    UIView *selectorView = self.selector.view;
-    selectorView.translatesAutoresizingMaskIntoConstraints = NO;
-    [selectorView setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
-    [selectorView setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
-    [self.view addSubview:selectorView];
-    [self.selector didMoveToParentViewController:self];
-    
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[selectorView][collectionView]|"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[collectionView]|"
                                                                      options:0
                                                                      metrics:nil
-                                                                       views:NSDictionaryOfVariableBindings(selectorView, collectionView)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[selectorView]|"
-                                                                      options:0
-                                                                      metrics:nil
-                                                                        views:NSDictionaryOfVariableBindings(selectorView)]];
+                                                                       views:NSDictionaryOfVariableBindings(collectionView)]];
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[collectionView]|"
                                                                       options:0
                                                                       metrics:nil
@@ -212,7 +203,7 @@ static NSString * const kInitialKey = @"initial";
 
 #pragma mark - VViewSelectorViewControllerDelegate methods
 
-- (void)viewSelector:(VViewSelectorViewControllerBase *)viewSelector didSelectViewControllerAtIndex:(NSUInteger)index
+- (void)viewSelector:(VSelectorViewBase *)viewSelector didSelectViewControllerAtIndex:(NSUInteger)index
 {
     [self displayViewControllerAtIndex:index animated:NO];
 }

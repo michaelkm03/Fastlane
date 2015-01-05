@@ -1,5 +1,5 @@
 //
-//  VBasicViewSelectorViewController.m
+//  VBasicSelectorView.m
 //  victorious
 //
 //  Created by Josh Hinman on 12/16/14.
@@ -7,24 +7,25 @@
 //
 
 #import "NSArray+VMap.h"
-#import "VBasicViewSelectorViewController.h"
+#import "VBasicSelectorView.h"
 #import "VDependencyManager.h"
 
-@interface VBasicViewSelectorViewController ()
+@interface VBasicSelectorView ()
 
 @property (nonatomic, weak) UISegmentedControl *segmentedControl;
 
 @end
 
-@implementation VBasicViewSelectorViewController
+@implementation VBasicSelectorView
 
-#pragma mark - View Lifecycle
-
-- (void)loadView
+- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    [super loadView];
-    self.view.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
-    [self makeSegmentedControlWithCurrentItems];
+    self = [super initWithDependencyManager:dependencyManager];
+    if (self != nil)
+    {
+        self.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
+    }
+    return self;
 }
 
 #pragma mark - Properties
@@ -32,11 +33,7 @@
 - (void)setViewControllers:(NSArray *)viewControllers
 {
     [super setViewControllers:viewControllers];
-    
-    if ( [self isViewLoaded] )
-    {
-        [self makeSegmentedControlWithCurrentItems];
-    }
+    [self makeSegmentedControlWithCurrentItems];
 }
 
 - (NSUInteger)activeViewControllerIndex
@@ -65,7 +62,7 @@
     segmentedControl.translatesAutoresizingMaskIntoConstraints = NO;
     [segmentedControl setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
     [segmentedControl addTarget:self action:@selector(segmentedControlValueChanged:) forControlEvents:UIControlEventValueChanged];
-    [self.view addSubview:segmentedControl];
+    [self addSubview:segmentedControl];
     self.segmentedControl = segmentedControl;
     
     segmentedControl.tintColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
@@ -98,14 +95,14 @@
                                         forState:UIControlStateSelected];
     }
     
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[segmentedControl]-12-|"
-                                                                      options:0
-                                                                      metrics:nil
-                                                                        views:NSDictionaryOfVariableBindings(segmentedControl)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-10-[segmentedControl]-10-|"
-                                                                      options:0
-                                                                      metrics:nil
-                                                                        views:NSDictionaryOfVariableBindings(segmentedControl)]];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[segmentedControl]-12-|"
+                                                                 options:0
+                                                                 metrics:nil
+                                                                   views:NSDictionaryOfVariableBindings(segmentedControl)]];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-10-[segmentedControl]-10-|"
+                                                                 options:0
+                                                                 metrics:nil
+                                                                   views:NSDictionaryOfVariableBindings(segmentedControl)]];
 }
 
 #pragma mark - Actions

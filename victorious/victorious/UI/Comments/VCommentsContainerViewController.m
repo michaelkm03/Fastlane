@@ -81,12 +81,6 @@
     self.keyboardBarViewController.promptLabel.text = NSLocalizedString(@"LeaveAComment", @"");
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    [self.navigationController setNavigationBarHidden:YES animated:animated];
-}
-
 - (BOOL)prefersStatusBarHidden
 {
     return YES;

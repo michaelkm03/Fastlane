@@ -1,5 +1,5 @@
 //
-//  VViewSelectorViewControllerBase.h
+//  VSelectorViewBase.h
 //  victorious
 //
 //  Created by Josh Hinman on 12/16/14.
@@ -10,7 +10,7 @@
 
 #import <UIKit/UIKit.h>
 
-@class VViewSelectorViewControllerBase;
+@class VSelectorViewBase;
 
 @protocol VViewSelectorViewControllerDelegate <NSObject>
 
@@ -24,19 +24,22 @@
  
  @param index The index of the selected view controller in the sender's viewControllers array
  */
-- (void)viewSelector:(VViewSelectorViewControllerBase *)viewSelector didSelectViewControllerAtIndex:(NSUInteger)index;
+- (void)viewSelector:(VSelectorViewBase *)viewSelector didSelectViewControllerAtIndex:(NSUInteger)index;
 
 @end
 
 /**
- Base class for a view controller that offers the user a
- chance to select from multiple views (e.g. a tab bar)
+ Base class for a view that offers the user a
+ chance to select from multiple views 
+ (e.g. a tab bar)
  */
-@interface VViewSelectorViewControllerBase : UIViewController <VHasManagedDependancies>
+@interface VSelectorViewBase : UIView <VHasManagedDependancies>
 
 @property (nonatomic, readonly) VDependencyManager *dependencyManager;
 @property (nonatomic, weak) id<VViewSelectorViewControllerDelegate> delegate; ///< A delegate object to be notified when the selection changes
 @property (nonatomic, copy) NSArray /* UIViewController */ *viewControllers; ///< The views from which we are selecting
 @property (nonatomic) NSUInteger activeViewControllerIndex; ///< The index of the currently selected view controller in the viewControllers array
+
+- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager NS_DESIGNATED_INITIALIZER;
 
 @end
