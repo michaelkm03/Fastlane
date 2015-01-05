@@ -37,6 +37,7 @@
 #import "MBProgressHUD.h"
 
 #import "VAuthorizationViewControllerFactory.h"
+#import "VNavigationController.h"
 #import "VObjectManager+Login.h"
 #import "UIStoryboard+VMainStoryboard.h"
 
@@ -68,7 +69,7 @@
 
 @implementation VUserSearchViewController
 
-+ (instancetype)sharedInstance
++ (instancetype)newFromStoryboard
 {
     VUserSearchViewController *userSearchViewController = (VUserSearchViewController *)[[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier:NSStringFromClass([VUserSearchViewController class])];
     return userSearchViewController;
@@ -106,12 +107,6 @@
     [self.searchField becomeFirstResponder];
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    [self.navigationController setNavigationBarHidden:YES];
-}
-
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
@@ -136,6 +131,11 @@
 }
 
 - (BOOL)prefersStatusBarHidden
+{
+    return YES;
+}
+
+- (BOOL)v_prefersNavigationBarHidden
 {
     return YES;
 }

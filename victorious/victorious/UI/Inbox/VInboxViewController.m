@@ -347,7 +347,7 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
 
 - (IBAction)userSearchAction:(id)sender
 {
-    VUserSearchViewController *userSearch = [VUserSearchViewController sharedInstance];
+    VUserSearchViewController *userSearch = [VUserSearchViewController newFromStoryboard];
     [self.navigationController pushViewController:userSearch animated:YES];
 }
 
