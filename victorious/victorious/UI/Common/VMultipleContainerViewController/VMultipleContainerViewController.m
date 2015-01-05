@@ -136,6 +136,13 @@ static NSString * const kInitialKey = @"initial";
     return YES;
 }
 
+#pragma mark - Rotation
+
+- (BOOL)shouldAutorotate
+{
+    return NO;
+}
+
 #pragma mark - Properties
 
 - (void)setViewControllers:(NSArray *)viewControllers
