@@ -37,7 +37,6 @@ extern NSString * const kVButton2Font;
 
 //Colors
 extern NSString * const kVBackgroundColor;
-extern NSString * const kVSecondaryBackgroundColor;
 
 extern NSString * const kVMainTextColor;
 extern NSString * const kVContentTextColor;

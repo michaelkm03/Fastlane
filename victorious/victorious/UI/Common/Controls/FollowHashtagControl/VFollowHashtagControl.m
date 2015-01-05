@@ -49,12 +49,12 @@ static const CGFloat kForcedAntiAliasingConstant = 0.01f;
 
 - (void)sharedInit
 {
-    UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:nil]];
-    imageView.frame = self.bounds;
-    imageView.contentMode = self.contentMode;
-    
     _subscribeImage = [UIImage imageNamed:@"followTag"];
     _unSubscribeImage = [UIImage imageNamed:@"followedHashtag"];
+    
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:_subscribeImage];
+    imageView.frame = self.bounds;
+    imageView.contentMode = self.contentMode;
     
     if (self.subscribed)
     {

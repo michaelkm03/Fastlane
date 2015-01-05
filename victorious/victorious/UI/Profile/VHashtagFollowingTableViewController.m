@@ -122,8 +122,6 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
     
     UIEdgeInsets insets = UIEdgeInsetsMake(8.0f, 0.0f, 0.0f, 0.0f);
     self.tableView.contentInset = insets;
-    
-    [VNoContentTableViewCell registerNibWithTableView:self.tableView];
 }
 
 #pragma mark UIScrollViewDelegate

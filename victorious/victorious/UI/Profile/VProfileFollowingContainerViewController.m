@@ -39,14 +39,6 @@
     [self v_addNewNavHeaderWithTitles:nil];
     self.navHeaderView.delegate = self;
 
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.containerView
-                                                          attribute:NSLayoutAttributeTop
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.navHeaderView
-                                                          attribute:NSLayoutAttributeBottom
-                                                         multiplier:1.0f
-                                                           constant:0]];
-    
     self.headerView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
     
     [self addChildViewController:self.tabBarViewController];
@@ -57,7 +49,6 @@
     [self.tabBarViewController didMoveToParentViewController:self];
     self.tabBarViewController.buttonBackgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor];
     [self addInnerViewControllersToTabController:self.tabBarViewController];
-
 }
 
 - (void)viewWillAppear:(BOOL)animated
