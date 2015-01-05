@@ -289,4 +289,9 @@ static const char kUploadProgressYConstraintKey;
     [self presentViewController:navigationController animated:YES completion:nil];
 }
 
+- (CGFloat)headerPositionY
+{
+    return self.navHeaderYConstraint.constant;
+}
+
 @end

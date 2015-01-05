@@ -29,5 +29,6 @@
 
 - (IBAction)refresh:(UIRefreshControl *)sender;
 - (void)refreshWithCompletion:(void(^)(void))completionBlock;
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView;
 
 @end

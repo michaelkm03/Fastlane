@@ -769,6 +769,8 @@ static CGFloat const kTemplateCLineSpacing = 8;
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
+    [super scrollViewDidScroll:scrollView];
+    
     [self updateSequenceTracking];
 }
 
@@ -779,12 +781,14 @@ static CGFloat const kTemplateCLineSpacing = 8;
     // Cells need to have this much visible area to be tracked
     const float minimumRequiredVisibilityRatio = self.minimumRequiredCellVisibilityRatio;
     
-    // Some common values we'll need to calculate visibility ratio for each cell in the following loop
-    CGSize headerSize = self.navHeaderView.frame.size;
-    const CGRect visibleFrame = CGRectMake(self.view.frame.origin.x,
-                                           self.view.frame.origin.y + headerSize.height,
-                                           self.view.frame.size.width,
-                                           self.view.frame.size.height - headerSize.height );
+    // The visible rect must be offset by the visible height of the header, which may or may not be visible
+    // In the future, when contentView's use a contentInset.top value to position content under the header,
+    // a combiantion of the contentInset and contentOffset values can be used instead
+    const CGFloat headerOffset = CGRectGetHeight(self.navHeaderView.frame) + [self headerPositionY];
+    const CGRect streamVisibleRect = CGRectMake( CGRectGetMinX( self.collectionView.bounds ),
+                                                 CGRectGetMinY( self.collectionView.bounds ) + headerOffset,
+                                                 CGRectGetWidth( self.collectionView.bounds ),
+                                                 CGRectGetHeight (self.collectionView.bounds ) );
     
     NSArray *visibleCells = self.collectionView.visibleCells;
     [visibleCells enumerateObjectsUsingBlock:^(VStreamCollectionCell *cell, NSUInteger idx, BOOL *stop)
@@ -801,10 +805,8 @@ static CGFloat const kTemplateCLineSpacing = 8;
          }
          
          // Calculate visible ratio (consts are for performance since this is called very often)
-         const CGPoint originWithOffset = [self.view convertPoint:cell.frame.origin fromView:self.collectionView];
-         const CGRect cellFrame = CGRectMake( originWithOffset.x, originWithOffset.y, CGRectGetWidth(cell.frame), CGRectGetHeight(cell.frame) );
-         const CGRect intersection = CGRectIntersection( visibleFrame, cellFrame ); //< This is where the magic happens
-         const float visibleRatio = CGRectGetHeight( intersection ) / CGRectGetHeight( cellFrame );
+         const CGRect intersection = CGRectIntersection( streamVisibleRect, cell.frame );
+         const float visibleRatio = CGRectGetHeight( intersection ) / CGRectGetHeight( cell.frame );
          
          if ( visibleRatio >= minimumRequiredVisibilityRatio )
          {
@@ -814,7 +816,6 @@ static CGFloat const kTemplateCLineSpacing = 8;
                                        VTrackingKeyUrls : sequence.tracking.cellView };
              [[VTrackingManager sharedInstance] queueEvent:VTrackingEventSequenceDidAppearInStream parameters:params eventId:sequence.remoteId];
          }
-         
      }];
 }
 
