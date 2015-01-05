@@ -1053,7 +1053,6 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="YFY-fR-cea" secondAttribute="bottom" id="C9X-gd-VNt"/>
                             <constraint firstItem="YFY-fR-cea" firstAttribute="bottom" secondItem="vp3-HK-M7j" secondAttribute="bottomMargin" id="Id9-U3-cn4"/>
                             <constraint firstItem="YFY-fR-cea" firstAttribute="leading" secondItem="vp3-HK-M7j" secondAttribute="leading" id="cS8-Jx-qoU"/>
                             <constraint firstAttribute="trailing" secondItem="YFY-fR-cea" secondAttribute="trailing" id="pdT-Xb-ZkM"/>
