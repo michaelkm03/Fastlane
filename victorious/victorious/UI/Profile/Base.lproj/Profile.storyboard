@@ -147,7 +147,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Edit Profile" id="AIv-0V-2Ca">
-                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="MzP-qA-JLJ">
+                        <barButtonItem key="rightBarButtonItem" style="plain" systemItem="save" id="MzP-qA-JLJ">
                             <connections>
                                 <action selector="done:" destination="VKu-9O-01w" id="0gl-OQ-sw0"/>
                             </connections>
@@ -169,7 +169,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="M4E-48-XjD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="983" y="-161"/>
+            <point key="canvasLocation" x="736" y="66"/>
         </scene>
         <!--Following-->
         <scene sceneID="HVG-hQ-7jJ">
@@ -228,44 +228,14 @@
                     </view>
                     <connections>
                         <outlet property="collectionView" destination="Y5M-Rj-OwC" id="D71-Rk-eIv"/>
-                        <segue destination="qcg-od-rNV" kind="push" identifier="toEditProfile" id="lWx-SS-W2o"/>
                         <segue destination="BFj-Qd-5qN" kind="push" identifier="toFollowers" id="cIf-5R-Gec"/>
                         <segue destination="lpI-le-Hn9" kind="push" identifier="toFollowing" id="s31-G7-CnW"/>
+                        <segue destination="VKu-9O-01w" kind="push" identifier="toEditProfile" id="v6s-od-bSt"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bql-Kt-9t5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="19" y="66"/>
-        </scene>
-        <!--Edit Profile-->
-        <scene sceneID="CIW-jj-0Hh">
-            <objects>
-                <viewController title="Edit Profile" id="qcg-od-rNV" customClass="VContainerViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="t2c-Te-MDt"/>
-                        <viewControllerLayoutGuide type="bottom" id="X3u-sz-9F4"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="Vqp-9c-nYD">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="x5h-LS-Dax">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <connections>
-                                    <segue destination="VKu-9O-01w" kind="embed" id="VtG-Mv-518"/>
-                                </connections>
-                            </containerView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                    <navigationItem key="navigationItem" id="vMp-zD-ch5"/>
-                    <connections>
-                        <outlet property="containerView" destination="x5h-LS-Dax" id="dBt-QN-NrG"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="7GN-bI-vcp" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="507" y="66"/>
         </scene>
     </scenes>
     <resources>
