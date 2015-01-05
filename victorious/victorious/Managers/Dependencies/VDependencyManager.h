@@ -87,6 +87,11 @@ extern NSString * const VDependencyManagerInitialViewControllerKey; ///< The vie
 - (UIViewController *)viewControllerForKey:(NSString *)key;
 
 /**
+ Returns a singleton instance of a view controller with the specified key
+ */
+- (UIViewController *)singletonViewControllerForKey:(NSString *)key;
+
+/**
  Returns the NSArray with the specified key. If the array
  elements contain configuration dictionaries for dependant
  objects, those configuration dictionaries can be passed
@@ -154,5 +159,15 @@ extern NSString * const VDependencyManagerInitialViewControllerKey; ///< The vie
  @param configurationDictionary A dictionary of configuration attributes that describes the object
  */
 - (id)singletonObjectOfType:(Class)expectedType fromDictionary:(NSDictionary *)configurationDictionary;
+
+/**
+ Creates and returns a new dependency manager with the given configuration dictionary. The
+ new dependency manager will have the receiver as its parent, and any dependencies
+ it can't resolve will be passed up the heirarchy.
+ 
+ @param configuration A dictionary describing the dependencies that will be provided
+                      by the new manager.
+ */
+- (VDependencyManager *)childDependencyManagerWithAddedConfiguration:(NSDictionary *)configuration;
 
 @end
