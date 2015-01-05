@@ -31,7 +31,7 @@
 #warning Move me out of here
 #import "VVideoPlayerView.h"
 #import "VVideoTool.h"
-#import "VVideoCompositionController.h"
+#import "VVideoFrameRateTool.h"
 @import AVFoundation;
 
 static const CGFloat kJPEGCompressionQuality    = 0.8f;
@@ -56,7 +56,7 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
 
 @property (nonatomic, strong) VPublishBlurOverAnimator *transitionAnimator;
 
-@property (nonatomic, strong) VVideoCompositionController *videoComposition;
+@property (nonatomic, strong) VVideoFrameRateTool *videoComposition;
 @property (nonatomic, strong) AVPlayer *player;
 
 @end
@@ -160,8 +160,9 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
     {
         
         VVideoPlayerView *videoPlayerView = [[VVideoPlayerView alloc] initWithFrame:self.canvasView.bounds];
-        VVideoCompositionController *videoComposition = [[VVideoCompositionController alloc] init];
-        videoComposition.videoURL = self.mediaURL;
+        VVideoFrameRateTool *videoComposition = [[VVideoFrameRateTool alloc] initWithVideoURL:self.mediaURL
+                                                                                frameDuration:CMTimeMake(1, 10)
+                                                                                    muteAudio:NO];
         videoComposition.playerItemRedy = ^void(AVPlayerItem *playerItem)
         {
             self.player = [AVPlayer playerWithPlayerItem:playerItem];
@@ -171,6 +172,8 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
                                                          name:AVPlayerItemDidPlayToEndTimeNotification
                                                        object:[self.player currentItem]];
             videoPlayerView.player = self.player;
+//            videoPlayerView.transform = preferredTransform;
+            videoPlayerView.frame = self.canvasView.bounds;
             [self.player play];
         };
         
@@ -209,6 +212,9 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
 
 - (IBAction)publish:(id)sender
 {
+    [self.player play];
+    return;
+    
     MBProgressHUD *hudForView = [MBProgressHUD showHUDAddedTo:self.view
                                                      animated:YES];
     hudForView.labelText = @"Rendering...";
