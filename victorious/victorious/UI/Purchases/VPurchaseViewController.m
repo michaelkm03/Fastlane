@@ -7,7 +7,6 @@
 //
 
 #import "VPurchaseViewController.h"
-#import "UIViewController+VNavMenu.h"
 #import "VPurchaseManager.h"
 #import "VSettingManager.h"
 #import "VAlertController.h"

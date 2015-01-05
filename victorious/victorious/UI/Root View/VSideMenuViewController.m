@@ -19,13 +19,12 @@
 #import "VThemeManager.h"
 #import "UIImage+ImageEffects.h"
 #import "UIStoryboard+VMainStoryboard.h"
-#import "UIViewController+VNavMenu.h"
 #import "UIViewController+VSideMenuViewController.h"
 
 // Keys for managed dependencies
 static NSString * const kMenuKey = @"menu";
 
-@interface VSideMenuViewController () <UINavigationControllerDelegate>
+@interface VSideMenuViewController ()
 
 @property (strong, readwrite, nonatomic) VDependencyManager *dependencyManager;
 @property (strong, readwrite, nonatomic) UIImageView *backgroundImageView;
@@ -451,42 +450,6 @@ static NSString * const kMenuKey = @"menu";
 - (UIStatusBarAnimation)preferredStatusBarUpdateAnimation
 {
     return UIStatusBarAnimationFade;
-}
-
-#pragma mark - UINavigationControllerDelegate methods
-
-- (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
-                                  animationControllerForOperation:(UINavigationControllerOperation)operation
-                                               fromViewController:(UIViewController *)fromVC
-                                                 toViewController:(UIViewController *)toVC
-{
-    if ([fromVC respondsToSelector:@selector(navigationController:animationControllerForOperation:fromViewController:toViewController:)])
-    {
-        return [(UIViewController<UINavigationControllerDelegate> *)fromVC navigationController:navigationController
-                                                                animationControllerForOperation:operation
-                                                                             fromViewController:fromVC
-                                                                               toViewController:toVC];
-    }
-    else if ([toVC respondsToSelector:@selector(navigationController:animationControllerForOperation:fromViewController:toViewController:)])
-    {
-        return [(UIViewController<UINavigationControllerDelegate> *)toVC navigationController:navigationController
-                                                              animationControllerForOperation:operation
-                                                                           fromViewController:fromVC
-                                                                             toViewController:toVC];
-    }
-    else
-    {
-        return nil;
-    }
-}
-
-- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
-{
-    if ( [self.menuViewController respondsToSelector:@selector(badgeNumber)] )
-    {
-        NSInteger badgeNumber = [(id<VProvidesNavigationMenuItemBadge>)self.menuViewController badgeNumber];
-        [viewController.navHeaderView setBadgeNumber:badgeNumber];
-    }
 }
 
 #pragma mark - NSNotification handlers

@@ -21,7 +21,6 @@
 #import "VAppDelegate.h"
 #import "VLoginViewController.h"
 #import "VObjectManager+Websites.h"
-#import "UIViewController+VNavMenu.h"
 #import "VAutomation.h"
 #import "VNotificationSettingsViewController.h"
 #import "VButton.h"
