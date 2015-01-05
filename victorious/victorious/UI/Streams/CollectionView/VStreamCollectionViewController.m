@@ -198,6 +198,13 @@ static CGFloat const kTemplateCLineSpacing = 8;
     {
         [streamCollectionVC v_addCreateSequenceButton];
     }
+    
+    NSNumber *cellVisibilityRatio = [dependencyManager numberForKey:@"experiments.stream_atf_view_threshold"];
+    if ( cellVisibilityRatio != nil )
+    {
+        streamCollectionVC.minimumRequiredCellVisibilityRatio = cellVisibilityRatio.floatValue;
+    }
+    
     return streamCollectionVC;
 }
 
@@ -266,6 +273,8 @@ static CGFloat const kTemplateCLineSpacing = 8;
     
     [self.collectionView flashScrollIndicators];
     [self.navigationController setNavigationBarHidden:YES animated:YES];
+    
+    [self updateSequenceTracking];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -506,15 +515,6 @@ static CGFloat const kTemplateCLineSpacing = 8;
     cell.sequence = sequence;
     
     [self preloadSequencesAfterIndexPath:indexPath forDataSource:dataSource];
-    
-    if ( sequence != nil )
-    {
-        NSDictionary *params = @{ VTrackingKeySequenceId : sequence.remoteId,
-                                  VTrackingKeyStreamId : self.currentStream.remoteId,
-                                  VTrackingKeyTimeStamp : [NSDate date],
-                                  VTrackingKeyUrls : sequence.tracking.cellView };
-        [[VTrackingManager sharedInstance] queueEvent:VTrackingEventSequenceDidAppearInStream parameters:params eventId:sequence.remoteId];
-    }
     
     return cell;
 }
@@ -763,6 +763,59 @@ static CGFloat const kTemplateCLineSpacing = 8;
 - (void)didEnterBackground:(NSNotification *)notification
 {
     [[VTrackingManager sharedInstance] trackQueuedEventsWithName:VTrackingEventSequenceDidAppearInStream];
+}
+
+#pragma mark - UIScrollViewDelegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    [self updateSequenceTracking];
+}
+
+#pragma mark - Tracking
+
+- (void)updateSequenceTracking
+{
+    // Cells need to have this much visible area to be tracked
+    const float minimumRequiredVisibilityRatio = self.minimumRequiredCellVisibilityRatio;
+    
+    // Some common values we'll need to calculate visibility ratio for each cell in the following loop
+    CGSize headerSize = self.navHeaderView.frame.size;
+    const CGRect visibleFrame = CGRectMake(self.view.frame.origin.x,
+                                           self.view.frame.origin.y + headerSize.height,
+                                           self.view.frame.size.width,
+                                           self.view.frame.size.height - headerSize.height );
+    
+    NSArray *visibleCells = self.collectionView.visibleCells;
+    [visibleCells enumerateObjectsUsingBlock:^(VStreamCollectionCell *cell, NSUInteger idx, BOOL *stop)
+     {
+         if ( ![cell isKindOfClass:[VStreamCollectionCell class]] )
+         {
+             return;
+         }
+         
+         VSequence *sequence = cell.sequence;
+         if ( sequence == nil )
+         {
+             return;
+         }
+         
+         // Calculate visible ratio (consts are for performance since this is called very often)
+         const CGPoint originWithOffset = [self.view convertPoint:cell.frame.origin fromView:self.collectionView];
+         const CGRect cellFrame = CGRectMake( originWithOffset.x, originWithOffset.y, CGRectGetWidth(cell.frame), CGRectGetHeight(cell.frame) );
+         const CGRect intersection = CGRectIntersection( visibleFrame, cellFrame ); //< This is where the magic happens
+         const float visibleRatio = CGRectGetHeight( intersection ) / CGRectGetHeight( cellFrame );
+         
+         if ( visibleRatio >= minimumRequiredVisibilityRatio )
+         {
+             NSDictionary *params = @{ VTrackingKeySequenceId : sequence.remoteId,
+                                       VTrackingKeyStreamId : self.currentStream.remoteId,
+                                       VTrackingKeyTimeStamp : [NSDate date],
+                                       VTrackingKeyUrls : sequence.tracking.cellView };
+             [[VTrackingManager sharedInstance] queueEvent:VTrackingEventSequenceDidAppearInStream parameters:params eventId:sequence.remoteId];
+         }
+         
+     }];
 }
 
 @end
