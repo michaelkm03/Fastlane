@@ -69,8 +69,16 @@
                                                                            constant:0];
     [self.view addConstraint:searchTopConstraint];
     [self.view layoutIfNeeded];
-    
-    self.headerLabel.text = NSLocalizedString(@"Discover", nil);
+}
+
+- (BOOL)shouldAutorotate
+{
+    return NO;
+}
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskPortrait;
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
