@@ -30,6 +30,7 @@
                                   @"cell-view"          :   VSelectorName(cellView),
                                   @"cell-click"         :   VSelectorName(cellClick),
                                   @"init"               :   VSelectorName(appLaunch),
+                                  @"install"            :   VSelectorName(appInstall),
                                   @"start"              :   VSelectorName(appEnterForeground),
                                   @"stop"               :   VSelectorName(appEnterBackground),
                                   @"ballistic_count"    :   VSelectorName(ballisticCount),

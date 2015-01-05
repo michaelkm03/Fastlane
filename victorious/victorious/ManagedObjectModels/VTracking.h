@@ -26,6 +26,7 @@
 @property (nonatomic, retain) id ballisticCount;
 @property (nonatomic, retain) id appEnterForeground;
 @property (nonatomic, retain) id appLaunch;
+@property (nonatomic, retain) id appInstall;
 @property (nonatomic, retain) id appEnterBackground;
 @property (nonatomic, retain) VSequence *sequence;
 @property (nonatomic, retain) VVoteType *voteType;

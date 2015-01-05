@@ -25,6 +25,7 @@
 @dynamic ballisticCount;
 @dynamic appEnterForeground;
 @dynamic appLaunch;
+@dynamic appInstall;
 @dynamic appEnterBackground;
 @dynamic sequence;
 @dynamic voteType;
