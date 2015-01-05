@@ -20,7 +20,7 @@
  The navigation controller doing all the work. Please 
  don't replace the delegate on this controller.
  */
-@property (nonatomic, readonly) UINavigationController *navigationController;
+@property (nonatomic, readonly) UINavigationController *innerNavigationController;
 
 /**
  When only one item is on the navigation stack and that item

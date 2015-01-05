@@ -323,12 +323,12 @@ static NSString * const kMenuKey = @"menu";
 - (void)transitionToNavStack:(NSArray *)navStack
 {
     //Dismiss any modals in the stack or they will cover the new VC
-    for (UIViewController *vc in self.contentViewController.navigationController.viewControllers)
+    for (UIViewController *vc in self.contentViewController.innerNavigationController.viewControllers)
     {
         [vc dismissViewControllerAnimated:NO completion:nil];
     }
     
-    self.contentViewController.navigationController.viewControllers = navStack;
+    self.contentViewController.innerNavigationController.viewControllers = navStack;
 }
 
 #pragma mark - Motion effects

@@ -15,7 +15,7 @@
 @interface VNavigationController () <UINavigationControllerDelegate>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
-@property (nonatomic, strong) UINavigationController *navigationController;
+@property (nonatomic, strong) UINavigationController *innerNavigationController;
 
 @end
 
@@ -25,11 +25,11 @@
 
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
-    self = [super initWithNibName:nil bundle:nil];
-    if (self)
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self != nil)
     {
-        _navigationController = [[UINavigationController alloc] init];
-        _navigationController.delegate = self;
+        _innerNavigationController = [[UINavigationController alloc] init];
+        _innerNavigationController.delegate = self;
     }
     return self;
 }
@@ -37,7 +37,7 @@
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     self = [self initWithNibName:nil bundle:nil];
-    if (self)
+    if (self != nil)
     {
         _dependencyManager = dependencyManager;
     }
@@ -48,7 +48,7 @@
 
 - (void)dealloc
 {
-    self.navigationController.delegate = nil;
+    _innerNavigationController.delegate = nil;
 }
 
 #pragma mark - View Lifecycle
@@ -57,28 +57,28 @@
 {
     self.view = [[UIView alloc] init];
     
-    [self addChildViewController:self.navigationController];
-    UIView *navigationControllerView = self.navigationController.view;
-    navigationControllerView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.view addSubview:navigationControllerView];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[navigationControllerView]|"
+    [self addChildViewController:self.innerNavigationController];
+    UIView *innerNavigationControllerView = self.innerNavigationController.view;
+    innerNavigationControllerView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:innerNavigationControllerView];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[innerNavigationControllerView]|"
                                                                       options:0
                                                                       metrics:nil
-                                                                        views:NSDictionaryOfVariableBindings(navigationControllerView)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[navigationControllerView]|"
+                                                                        views:NSDictionaryOfVariableBindings(innerNavigationControllerView)]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[innerNavigationControllerView]|"
                                                                       options:0
                                                                       metrics:nil
-                                                                        views:NSDictionaryOfVariableBindings(navigationControllerView)]];
+                                                                        views:NSDictionaryOfVariableBindings(innerNavigationControllerView)]];
     [self addNavigationBarStyles];
-    [self.navigationController didMoveToParentViewController:self];
+    [self.innerNavigationController didMoveToParentViewController:self];
 }
 
 - (void)addNavigationBarStyles
 {
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage v_imageWithColor:[self.dependencyManager colorForKey:VDependencyManagerAccentColorKey]]
+    [self.innerNavigationController.navigationBar setBackgroundImage:[UIImage v_imageWithColor:[self.dependencyManager colorForKey:VDependencyManagerAccentColorKey]]
                                                  forBarPosition:UIBarPositionAny
                                                      barMetrics:UIBarMetricsDefault];
-    self.navigationController.navigationBar.shadowImage = [UIImage v_imageWithColor:[UIColor clearColor]];
+    self.innerNavigationController.navigationBar.shadowImage = [UIImage v_imageWithColor:[UIColor clearColor]];
     
     NSMutableDictionary *titleAttributes = [NSMutableDictionary dictionary];
     UIColor *navigationBarTitleTintColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
@@ -87,14 +87,14 @@
     if ( navigationBarTitleTintColor != nil )
     {
         titleAttributes[NSForegroundColorAttributeName] = navigationBarTitleTintColor;
-        self.navigationController.navigationBar.tintColor = navigationBarTitleTintColor;
+        self.innerNavigationController.navigationBar.tintColor = navigationBarTitleTintColor;
     }
     
     if ( navigationBarTitleFont != nil )
     {
         titleAttributes[NSFontAttributeName] = navigationBarTitleFont;
     }
-    self.navigationController.navigationBar.titleTextAttributes = titleAttributes;
+    self.innerNavigationController.navigationBar.titleTextAttributes = titleAttributes;
 }
 
 #pragma mark - Status bar & Rotation
@@ -106,17 +106,17 @@
 
 - (BOOL)prefersStatusBarHidden
 {
-    return self.navigationController.navigationBarHidden;
+    return self.innerNavigationController.navigationBarHidden;
 }
 
 - (NSUInteger)supportedInterfaceOrientations
 {
-    return [self.navigationController.topViewController supportedInterfaceOrientations];
+    return [self.innerNavigationController.topViewController supportedInterfaceOrientations];
 }
 
 - (BOOL)shouldAutorotate
 {
-    return self.navigationController.topViewController.shouldAutorotate;
+    return self.innerNavigationController.topViewController.shouldAutorotate;
 }
 
 #pragma mark - UINavigationControllerDelegate methods
@@ -125,13 +125,13 @@
 {
     BOOL prefersNavigationBarHidden = [viewController v_prefersNavigationBarHidden];
     
-    if ( !prefersNavigationBarHidden && self.navigationController.navigationBarHidden )
+    if ( !prefersNavigationBarHidden && self.innerNavigationController.navigationBarHidden )
     {
-        [self.navigationController setNavigationBarHidden:NO animated:animated];
+        [self.innerNavigationController setNavigationBarHidden:NO animated:animated];
     }
-    else if ( prefersNavigationBarHidden && !self.navigationController.navigationBarHidden )
+    else if ( prefersNavigationBarHidden && !self.innerNavigationController.navigationBarHidden )
     {
-        [self.navigationController setNavigationBarHidden:YES animated:animated];
+        [self.innerNavigationController setNavigationBarHidden:YES animated:animated];
     }
     
     if ( self.leftBarButtonItem != nil &&
