@@ -147,7 +147,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Edit Profile" id="AIv-0V-2Ca">
-                        <barButtonItem key="rightBarButtonItem" style="plain" systemItem="save" id="MzP-qA-JLJ">
+                        <barButtonItem key="rightBarButtonItem" style="done" systemItem="save" id="MzP-qA-JLJ">
                             <connections>
                                 <action selector="done:" destination="VKu-9O-01w" id="0gl-OQ-sw0"/>
                             </connections>

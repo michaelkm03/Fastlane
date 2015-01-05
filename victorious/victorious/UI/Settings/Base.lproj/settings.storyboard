@@ -455,7 +455,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Change Password" id="LKP-Bv-quY">
-                        <barButtonItem key="rightBarButtonItem" style="plain" systemItem="save" id="d31-1f-wnh">
+                        <barButtonItem key="rightBarButtonItem" style="done" systemItem="save" id="d31-1f-wnh">
                             <connections>
                                 <action selector="saveChanges:" destination="Tch-Qc-dzd" id="cMQ-hg-70K"/>
                             </connections>
