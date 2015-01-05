@@ -463,12 +463,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Change Password" id="LKP-Bv-quY">
-                        <barButtonItem key="leftBarButtonItem" image="cameraButtonBack" id="BUo-eA-wwk">
-                            <connections>
-                                <action selector="goBack:" destination="Tch-Qc-dzd" id="0QR-Vh-Kck"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="d31-1f-wnh">
+                        <barButtonItem key="rightBarButtonItem" style="plain" systemItem="save" id="d31-1f-wnh">
                             <connections>
                                 <action selector="saveChanges:" destination="Tch-Qc-dzd" id="cMQ-hg-70K"/>
                             </connections>
