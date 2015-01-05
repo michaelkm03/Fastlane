@@ -658,7 +658,7 @@
 		DBDBE6F11A16766400DA1BB2 /* VSequence.m in Sources */ = {isa = PBXBuildFile; fileRef = DBDBE6F01A16766400DA1BB2 /* VSequence.m */; };
 		DBDDB8891A3F5A3900696071 /* VFollowHashtagControl.m in Sources */ = {isa = PBXBuildFile; fileRef = DBDDB8881A3F5A3900696071 /* VFollowHashtagControl.m */; };
 		DBE1077F1A2FFDCD005D303E /* VAdBreakFallback.m in Sources */ = {isa = PBXBuildFile; fileRef = DBE1077E1A2FFDCD005D303E /* VAdBreakFallback.m */; };
-		DBF77A291A416A57005BF1BE /* VProfileFollowingAndHashtagsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBF77A281A416A57005BF1BE /* VProfileFollowingAndHashtagsViewController.m */; };
+		DBF77A291A416A57005BF1BE /* VProfileFollowingContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBF77A281A416A57005BF1BE /* VProfileFollowingContainerViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1805,8 +1805,8 @@
 		DBDDB8881A3F5A3900696071 /* VFollowHashtagControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFollowHashtagControl.m; sourceTree = "<group>"; };
 		DBE1077D1A2FFDCD005D303E /* VAdBreakFallback.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAdBreakFallback.h; sourceTree = "<group>"; };
 		DBE1077E1A2FFDCD005D303E /* VAdBreakFallback.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAdBreakFallback.m; sourceTree = "<group>"; };
-		DBF77A271A416A57005BF1BE /* VProfileFollowingAndHashtagsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VProfileFollowingAndHashtagsViewController.h; sourceTree = "<group>"; };
-		DBF77A281A416A57005BF1BE /* VProfileFollowingAndHashtagsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VProfileFollowingAndHashtagsViewController.m; sourceTree = "<group>"; };
+		DBF77A271A416A57005BF1BE /* VProfileFollowingContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VProfileFollowingContainerViewController.h; sourceTree = "<group>"; };
+		DBF77A281A416A57005BF1BE /* VProfileFollowingContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VProfileFollowingContainerViewController.m; sourceTree = "<group>"; };
 		E0F99C8D8C60943CBE645C0D /* Pods-victorious-test.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious-test.release.xcconfig"; path = "Pods/Target Support Files/Pods-victorious-test/Pods-victorious-test.release.xcconfig"; sourceTree = "<group>"; };
 		E8193ED8CA9746EB7E3D7AD2 /* Pods-victorious-test.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious-test.qa.xcconfig"; path = "Pods/Target Support Files/Pods-victorious-test/Pods-victorious-test.qa.xcconfig"; sourceTree = "<group>"; };
 		EDFC6598311E32933A2C83A7 /* Pods-test.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-test.staging.xcconfig"; path = "Pods/Target Support Files/Pods-test/Pods-test.staging.xcconfig"; sourceTree = "<group>"; };
@@ -2327,10 +2327,14 @@
 				0314D3C419B46B5E00FA363C /* VFollowerTableViewController.m */,
 				0314D3C519B46B5E00FA363C /* VFollowingTableViewController.h */,
 				0314D3C619B46B5E00FA363C /* VFollowingTableViewController.m */,
+				DB531B4E1A41F85500B4ADC8 /* VHashtagFollowingTableViewController.h */,
+				DB531B4F1A41F85500B4ADC8 /* VHashtagFollowingTableViewController.m */,
 				0314D3C719B46B5E00FA363C /* VProfileCreateViewController.h */,
 				0314D3C819B46B5E00FA363C /* VProfileCreateViewController.m */,
 				0314D3C919B46B5E00FA363C /* VProfileEditViewController.h */,
 				0314D3CA19B46B5E00FA363C /* VProfileEditViewController.m */,
+				DBF77A271A416A57005BF1BE /* VProfileFollowingContainerViewController.h */,
+				DBF77A281A416A57005BF1BE /* VProfileFollowingContainerViewController.m */,
 				BE88FF961A0006710064AB28 /* VProfileHeaderCell.h */,
 				BE88FF971A0006710064AB28 /* VProfileHeaderCell.m */,
 				0314D3CB19B46B5E00FA363C /* VUserProfileHeaderView.h */,
@@ -2340,10 +2344,6 @@
 				037D2D581A196B9800947A22 /* VUserProfileNavigationDestination.m */,
 				0314D3CE19B46B5E00FA363C /* VUserProfileViewController.h */,
 				0314D3CF19B46B5E00FA363C /* VUserProfileViewController.m */,
-				DBF77A271A416A57005BF1BE /* VProfileFollowingAndHashtagsViewController.h */,
-				DBF77A281A416A57005BF1BE /* VProfileFollowingAndHashtagsViewController.m */,
-				DB531B4E1A41F85500B4ADC8 /* VHashtagFollowingTableViewController.h */,
-				DB531B4F1A41F85500B4ADC8 /* VHashtagFollowingTableViewController.m */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -4626,7 +4626,7 @@
 				A769C3ED1A13176700698D0C /* VWebContentViewController.m in Sources */,
 				DBB1A04A1A0025F600E16D62 /* VAdViewController.m in Sources */,
 				0314D46919B46B5E00FA363C /* VSetExpirationViewController.m in Sources */,
-				DBF77A291A416A57005BF1BE /* VProfileFollowingAndHashtagsViewController.m in Sources */,
+				DBF77A291A416A57005BF1BE /* VProfileFollowingContainerViewController.m in Sources */,
 				DBAD6C9F1A2FD7B700AB5A4B /* VTremorAdViewController.m in Sources */,
 				0314D05E19B4663C00FA363C /* UINavigationController+RotationMethodForwarding.m in Sources */,
 				BE88FF8D1A00060E0064AB28 /* UIViewController+VNavMenu.m in Sources */,

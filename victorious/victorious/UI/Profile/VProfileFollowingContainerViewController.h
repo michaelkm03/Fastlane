@@ -1,5 +1,5 @@
 //
-//  VProfileFollowingAndHashtagsViewController.h
+//  VProfileFollowingContainerViewController.h
 //  victorious
 //
 //  Created by Lawrence Leach on 12/16/14.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface VProfileFollowingAndHashtagsViewController : UIViewController
+@interface VProfileFollowingContainerViewController : UIViewController
 
 @end
