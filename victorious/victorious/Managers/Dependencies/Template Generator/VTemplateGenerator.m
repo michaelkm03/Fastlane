@@ -51,6 +51,7 @@ static NSString * const kTextVerticalAlignmentKey = @"verticalAlignment";
 static NSString * const kTextStrokeColorKey = @"strokeColor";
 static NSString * const kTextStrokeWidthKey = @"strokeWidth";
 static NSString * const kTextPlaceholderTextKey = @"placeholderText";
+static NSString * const kshouldForceUppercaseKey = @"shouldForceUppercase";
 
 @interface VTemplateGenerator ()
 
@@ -120,6 +121,7 @@ static NSString * const kTextPlaceholderTextKey = @"placeholderText";
                                      kTextHorizontalAlignmentKey: @"center",
                                      kTextVerticalAlignmentKey: @"bottom",
                                      kTextPlaceholderTextKey: @"create a meme",
+                                     kshouldForceUppercaseKey: @YES,
                                      VDependencyManagerParagraphFontKey:
                                          @{
                                              kFontNameKey: @"Impact",
@@ -146,7 +148,7 @@ static NSString * const kTextPlaceholderTextKey = @"placeholderText";
                                      kTitleKey: @"quote",
                                      kTextHorizontalAlignmentKey: @"center",
                                      kTextVerticalAlignmentKey: @"center",
-                                     kTextPlaceholderTextKey: @"share a secret",
+                                     kTextPlaceholderTextKey: @"create a quote",
                                      VDependencyManagerParagraphFontKey:
                                          @{
                                              kFontNameKey: @"PTSans-Narrow",

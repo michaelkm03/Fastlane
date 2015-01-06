@@ -12,9 +12,11 @@
 
 @interface VTickerPickerViewController () <UICollectionViewDelegateFlowLayout>
 
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) UIView *selectionIndicatorView;
 @property (nonatomic, copy) NSArray *tools;
 @property (nonatomic, strong) UIColor *accentColor;
+@property (nonatomic, strong) NSIndexPath *blockScrollingSelectionUntilReached;
 
 @end
 
@@ -27,6 +29,7 @@
     UIStoryboard *workspaceStoryboard = [UIStoryboard storyboardWithName:@"Workspace"
                                                                   bundle:nil];
     VTickerPickerViewController *toolPicker = [workspaceStoryboard instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
+    toolPicker.dependencyManager = dependencyManager;
     toolPicker.clearsSelectionOnViewWillAppear = NO;
     toolPicker.accentColor = [dependencyManager colorForKey:VDependencyManagerAccentColorKey];
     return toolPicker;
@@ -48,12 +51,14 @@
     [super viewDidLoad];
     
     self.collectionView.allowsMultipleSelection = NO;
+    self.collectionView.decelerationRate = UIScrollViewDecelerationRateFast;
     
     self.selectionIndicatorView =
     ({
         UIView *selectionView = [[UIView alloc] initWithFrame:[self selectionFrame]];
         selectionView.backgroundColor = [self.accentColor colorWithAlphaComponent:0.5f];
         [self.collectionView addSubview:selectionView];
+        [self.collectionView sendSubviewToBack:selectionView];
         selectionView;
     });
     
@@ -63,9 +68,18 @@
     [self notifyNewSelection];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [self.collectionView flashScrollIndicators];
+}
+
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
+    
+    [self.collectionView sendSubviewToBack:self.selectionIndicatorView];
     
     // Inset enough at the bottom to show only one row at the top when fully scrolled
     UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
@@ -87,7 +101,16 @@
     VBasicToolPickerCell *pickerCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VBasicToolPickerCell suggestedReuseIdentifier]
                                                                                  forIndexPath:indexPath];
     id <VWorkspaceTool> toolForIndexPath = self.tools[indexPath.row];
-    [pickerCell setTitle:toolForIndexPath.title];
+    
+    if (self.configureItemLabel != nil)
+    {
+        self.configureItemLabel(pickerCell.label, toolForIndexPath);
+    }
+    else
+    {
+        pickerCell.label.text = toolForIndexPath.title;
+        pickerCell.label.font = [self.dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
+    }
     
     return pickerCell;
 }
@@ -103,12 +126,27 @@
 
 #pragma mark - UICollectionViewDelegate
 
+- (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    [[self.collectionView indexPathsForSelectedItems] enumerateObjectsUsingBlock:^(NSIndexPath *selectedIndexPath, NSUInteger idx, BOOL *stop)
+     {
+         if ([selectedIndexPath compare:indexPath] == NSOrderedSame)
+         {
+             [collectionView flashScrollIndicators];
+         }
+     }];
+    
+    return YES;
+}
+
 - (void)collectionView:(UICollectionView *)collectionView
 didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     [collectionView scrollToItemAtIndexPath:indexPath
                            atScrollPosition:UICollectionViewScrollPositionTop
                                    animated:YES];
+    self.blockScrollingSelectionUntilReached = indexPath;
+    [self notifyNewSelection];
 }
 
 #pragma mark - UIScrollViewDelegate
@@ -120,6 +158,16 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     NSIndexPath *selectedIndexPath = [[self.collectionView indexPathsForSelectedItems] firstObject];
     NSIndexPath *indexPathForPoint = [self.collectionView indexPathForItemAtPoint:CGPointMake(CGRectGetMidX(self.collectionView.bounds),
                                                                                               self.collectionView.contentOffset.y + ([VBasicToolPickerCell desiredSizeWithCollectionViewBounds:self.collectionView.bounds].height / 2))];
+    
+    if ([self.blockScrollingSelectionUntilReached compare:indexPathForPoint] != NSOrderedSame)
+    {
+        return;
+    }
+    else
+    {
+        self.blockScrollingSelectionUntilReached = nil;
+    }
+    
     if ([indexPathForPoint compare:selectedIndexPath] == NSOrderedSame)
     {
         return;
@@ -131,12 +179,18 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     [self notifyNewSelection];
 }
 
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    self.blockScrollingSelectionUntilReached = nil;
+}
+
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView
                      withVelocity:(CGPoint)velocity
               targetContentOffset:(inout CGPoint *)targetContentOffset
 {
     // Always land on a cell
-    NSIndexPath *indexPathForTargetOffset = [self.collectionView indexPathForItemAtPoint:*targetContentOffset];
+    NSIndexPath *indexPathForTargetOffset = [self.collectionView indexPathForItemAtPoint:CGPointMake(targetContentOffset->x + CGRectGetMidX([self selectionFrame]) - CGRectGetMinX([self selectionFrame]),
+                                                                                                     targetContentOffset->y + CGRectGetMidY([self selectionFrame]) - CGRectGetMinY([self selectionFrame]))];
     *targetContentOffset = [self.collectionView layoutAttributesForItemAtIndexPath:indexPathForTargetOffset].frame.origin;
 }
 

@@ -49,11 +49,25 @@ static NSString * const kFilterIndexKey = @"filterIndex";
         _toolPicker = (UIViewController<VToolPicker> *)[dependencyManager viewControllerForKey:kPickerKey];
         _icon = [UIImage imageNamed:@"filterIcon"];
         
-        NSURL *filters = [[NSBundle mainBundle] URLForResource:@"filters" withExtension:@"xml"];
-        NSArray *rFilters = [VPhotoFilterSerialization filtersFromPlistFile:filters];
-        NSArray *filterTools = [rFilters v_map:^id(VPhotoFilter *photoFilter)
+        NSURL *filterFileURL = [[NSBundle mainBundle] URLForResource:@"filters" withExtension:@"xml"];
+        NSArray *photoFilters = [VPhotoFilterSerialization filtersFromPlistFile:filterFileURL];
+        
+        photoFilters = [photoFilters sortedArrayUsingComparator:^NSComparisonResult(VPhotoFilter *filter1, VPhotoFilter *filter2)
+        {
+            return [filter1.name caseInsensitiveCompare:filter2.name];
+        }];
+        
+        VPhotoFilter *noFilterFilter = [[VPhotoFilter alloc] init];
+        noFilterFilter.name = NSLocalizedString(@"No Filter", @"No Filter filter name.");
+        NSMutableArray *mutablePhotoFilters = [[NSMutableArray alloc] initWithArray:photoFilters];
+        [mutablePhotoFilters insertObject:noFilterFilter atIndex:0];
+        
+        photoFilters = [mutablePhotoFilters copy];
+        
+        NSArray *filterTools = [photoFilters v_map:^id(VPhotoFilter *photoFilter)
         {
             VFilterTypeTool *imageFilter = [[VFilterTypeTool alloc] init];
+            photoFilter.name = [photoFilter.name uppercaseString];
             imageFilter.filter = photoFilter;
             return imageFilter;
         }];
@@ -95,3 +109,4 @@ static NSString * const kFilterIndexKey = @"filterIndex";
 }
 
 @end
+

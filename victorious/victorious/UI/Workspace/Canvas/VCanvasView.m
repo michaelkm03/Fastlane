@@ -70,6 +70,7 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
     _canvasScrollView.maximumZoomScale = 4.0f;
     _canvasScrollView.userInteractionEnabled = NO;
     _canvasScrollView.delegate = self;
+    _canvasScrollView.translatesAutoresizingMaskIntoConstraints = NO;
     [self addSubview:_canvasScrollView];
     
     _imageView = [[UIImageView alloc] initWithImage:nil];
@@ -120,8 +121,10 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
     _sourceImage = sourceImage;
 
     CGImageRef scaledImageRef = [self.context createCGImage:[self scaledImageForCurrentFrameAndMaxZoomLevel]
-                                                fromRect:[[self scaledImageForCurrentFrameAndMaxZoomLevel] extent]];
-    _scaledImage = [UIImage imageWithCGImage:scaledImageRef];
+                                                   fromRect:[[self scaledImageForCurrentFrameAndMaxZoomLevel] extent]];
+    _scaledImage = [UIImage imageWithCGImage:scaledImageRef
+                                       scale:sourceImage.scale
+                                 orientation:sourceImage.imageOrientation];
     CGImageRelease(scaledImageRef);
     
     self.imageView.image = _scaledImage;
