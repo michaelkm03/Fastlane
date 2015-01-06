@@ -240,12 +240,19 @@
 
 - (void)experienceEnhancerSelected:(VExperienceEnhancer *)enhancer
 {
-    Float64 currentVideoTime = self.delegate.currentVideoTime;
-    NSDictionary *params = @{ VTrackingKeyVoteCount : @( 1 ),
-                              VTrackingKeySequenceId : self.sequence.remoteId,
-                              VTrackingKeyTimeCurrent : @( currentVideoTime ),
-                              VTrackingKeyUrls : enhancer.voteType.tracking.ballisticCount };
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidVoteSequence parameters:params];
+    NSDictionary *sharedParams = @{ VTrackingKeyVoteCount : @( 1 ),
+                                    VTrackingKeySequenceId : self.sequence.remoteId,
+                                    VTrackingKeyUrls : enhancer.trackingUrls };
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] initWithDictionary:sharedParams];
+    
+    if ( self.delegate.isVideoContent )
+    {
+        Float64 currentVideoTime = self.delegate.currentVideoTime;
+        [params addEntriesFromDictionary:@{ VTrackingKeyTimeCurrent : @( currentVideoTime ) }];
+    }
+    
+    NSDictionary *finalParams = [NSDictionary dictionaryWithDictionary:params];
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidVoteSequence parameters:finalParams];
 }
 
 @end

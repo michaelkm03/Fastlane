@@ -16,6 +16,8 @@
 
 @property (nonatomic, assign, readonly) Float64 currentVideoTime;
 
+@property (nonatomic, assign, readonly) BOOL isVideoContent;
+
 @end
 
 @class VSequence;

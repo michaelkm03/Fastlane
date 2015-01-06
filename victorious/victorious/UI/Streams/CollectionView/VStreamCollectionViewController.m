@@ -460,7 +460,13 @@ static CGFloat const kTemplateCLineSpacing = 8;
     viewController.sequence = sequence;
     [self presentViewController:viewController
                        animated:YES
-                     completion:nil];
+                     completion:^{
+                         // Track view-start event, similar to how content is tracking in VNewContentViewController when loaded
+                         NSDictionary *params = @{ VTrackingKeyTimeCurrent : [NSDate date],
+                                                   VTrackingKeySequenceId : sequence.remoteId,
+                                                   VTrackingKeyUrls : sequence.tracking.viewStart ?: @[] };
+                         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
+                     }];
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView
