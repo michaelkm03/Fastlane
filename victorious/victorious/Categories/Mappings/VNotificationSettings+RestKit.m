@@ -52,7 +52,7 @@
              @"notification_private_message"    : self.isNewPrivateMessageEnabled ?: @NO,
              @"notification_comment_post"       : self.isNewCommentOnMyPostEnabled ?: @NO,
              @"notification_follow_post"        : self.isPostFromFollowedEnabled ?: @NO,
-             @"notification_followed_tag"       : self.isPostOnFollowedHashTagEnabled ?: @NO
+             @"notification_tag_post"           : self.isPostOnFollowedHashTagEnabled ?: @NO
              };
 }
 
