@@ -139,7 +139,10 @@ static const NSUInteger kMaximumURLRequestRetryCount = 5;
         return NO;
     }
     
-    [self sendRequest:request];
+    dispatch_queue_t queue = dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0 );
+    dispatch_async( queue, ^{
+        [self sendRequest:request];
+    });
     
     return YES;
 }
@@ -206,7 +209,7 @@ static const NSUInteger kMaximumURLRequestRetryCount = 5;
         return nil;
     }
     
-    return[originalString stringByReplacingOccurrencesOfString:stringToReplace withString:replacementValue];
+    return [originalString stringByReplacingOccurrencesOfString:stringToReplace withString:replacementValue];
 }
 
 - (void)sendRequest:(NSURLRequest *)request
@@ -216,33 +219,20 @@ static const NSUInteger kMaximumURLRequestRetryCount = 5;
         return;
     }
     
-    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
-                           completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError)
-     {
-         if ( [request isMemberOfClass:[VTrackingURLRequest class]] )
-         {
-             VTrackingURLRequest *trackingRequest = (VTrackingURLRequest *)request;
-             if ( connectionError && ++trackingRequest.retriesCount <= kMaximumURLRequestRetryCount )
-             {
+    NSURLResponse *response = nil;
+    NSError *connectionError = nil;
+    [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&connectionError];
+    
 #if DEBUG && APPLICATION_TRACKING_LOGGING_ENABLED
-                 VLog( @"Applicaiton Tracking :: Retrying... (%lu) :: URL %@.", (unsigned long)((VTrackingURLRequest *)request).retriesCount, request.URL.absoluteString );
+    if ( connectionError )
+    {
+        VLog( @"Applicaiton Tracking :: ERROR with URL %@ :: %@", request.URL.absoluteString, [connectionError localizedDescription] );
+    }
+    else
+    {
+        VLog( @"Applicaiton Tracking :: SUCCESS with URL %@", request.URL.absoluteString );
+    }
 #endif
-                 [self sendRequest:request];
-             }
-         }
-         
-         
-#if DEBUG && APPLICATION_TRACKING_LOGGING_ENABLED
-         if ( connectionError )
-         {
-             VLog( @"Applicaiton Tracking :: ERROR with URL %@ :: %@", request.URL.absoluteString, [connectionError localizedDescription] );
-         }
-         else
-         {
-             VLog( @"Applicaiton Tracking :: SUCCESS with URL %@", request.URL.absoluteString );
-         }
-#endif
-     }];
 }
 
 - (VTrackingURLRequest *)requestWithUrl:(NSString *)urlString objectManager:(VObjectManager *)objectManager
