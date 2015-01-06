@@ -74,6 +74,8 @@
 
 #import "VViewControllerTransition.h"
 
+#import "VTracking.h"
+
 static const CGFloat kMaxInputBarHeight = 200.0f;
 
 @interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate,VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate>
@@ -328,7 +330,8 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     self.viewModel.experienceEnhancerController.delegate = self;
     
     NSDictionary *params = @{ VTrackingKeyTimeCurrent : [NSDate date],
-                              VTrackingKeySequenceId : self.viewModel.sequence.remoteId };
+                              VTrackingKeySequenceId : self.viewModel.sequence.remoteId,
+                              VTrackingKeyUrls : self.viewModel.sequence.tracking.viewStart ?: @[] };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
 }
 
@@ -1302,6 +1305,11 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 - (void)experienceEnhancersDidUpdate
 {
     // Do nothing, eventually a nice animation to reveal experience enhancers
+}
+
+- (BOOL)isVideoContent
+{
+    return self.videoCell != nil;
 }
 
 - (Float64)currentVideoTime
