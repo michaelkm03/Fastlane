@@ -788,7 +788,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
     const CGRect streamVisibleRect = CGRectMake( CGRectGetMinX( self.collectionView.bounds ),
                                                  CGRectGetMinY( self.collectionView.bounds ) + headerOffset,
                                                  CGRectGetWidth( self.collectionView.bounds ),
-                                                 CGRectGetHeight (self.collectionView.bounds ) );
+                                                 CGRectGetHeight (self.collectionView.bounds ) - headerOffset);
     
     NSArray *visibleCells = self.collectionView.visibleCells;
     [visibleCells enumerateObjectsUsingBlock:^(VStreamCollectionCell *cell, NSUInteger idx, BOOL *stop)

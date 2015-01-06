@@ -12,7 +12,7 @@
 
 @class VStream, VNavigationHeaderView, VCollectionRefreshControl;
 
-@interface VAbstractStreamCollectionViewController : UIViewController <VStreamCollectionDataDelegate>
+@interface VAbstractStreamCollectionViewController : UIViewController <VStreamCollectionDataDelegate, UIScrollViewDelegate>
 
 @property (nonatomic, strong) UIRefreshControl *refreshControl;///<Refresh control for the collectionview
 @property (nonatomic, strong) VStream *currentStream;///<The stream to display
@@ -29,6 +29,5 @@
 
 - (IBAction)refresh:(UIRefreshControl *)sender;
 - (void)refreshWithCompletion:(void(^)(void))completionBlock;
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView;
 
 @end
