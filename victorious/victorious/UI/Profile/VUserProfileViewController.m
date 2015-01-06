@@ -12,7 +12,6 @@
 #import "VLoginViewController.h"
 #import "VObjectManager+Users.h"
 #import "VObjectManager+Pagination.h"
-#import "VStreamTableDataSource.h"
 #import "VObjectManager+DirectMessaging.h"
 #import "VProfileEditViewController.h"
 #import "VFollowerTableViewController.h"
