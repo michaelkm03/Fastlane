@@ -116,13 +116,11 @@ static NSString * const kVideoMuted = @"videoMuted";
                                                                               queue:[NSOperationQueue mainQueue]
                                                                          usingBlock:^(NSNotification *note)
                             {
-//                                VLog(@"Seeking to beginning, current time: %@, playback likely to keep-up: %@, error log: %@, access log: %@, dropped frames: %@", [NSValue valueWithCMTime:welf.player.currentTime], welf.playerItem.playbackLikelyToKeepUp ? @"YES" : @"NO", welf.playerItem.errorLog, welf.playerItem.accessLog);
                                 [welf.player seekToTime:kCMTimeZero
                                       completionHandler:^(BOOL finished)
                                  {
                                      [welf.player play];
                                  }];
-//                                welf.player = [AVPlayer playerWithPlayerItem:welf.playerItem];
                             }];
     
     self.player = [AVPlayer playerWithPlayerItem:playerItem];
@@ -133,31 +131,7 @@ static NSString * const kVideoMuted = @"videoMuted";
     _player = player;
     _player.actionAtItemEnd = AVPlayerActionAtItemEndPause;
     self.playerView.player = _player;
-    
-    __weak typeof(self) welf = self;
-    [self.KVOController observe:player
-                        keyPath:NSStringFromSelector(@selector(status))
-                        options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew
-                          block:^(id observer, id object, NSDictionary *change)
-     {
-         VLog(@"%@", change);
-         if (welf.player.status == AVPlayerStatusReadyToPlay)
-         {
-             VLog(@"Playing");
-             [welf.player play];
-         }
-         else if (welf.player.status == AVPlayerStatusFailed)
-         {
-             VLog(@"Player failed: %@", welf.player.error);
-         }
-     }];
-    [self.KVOController observe:player
-                        keyPath:NSStringFromSelector(@selector(rate))
-                        options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew
-                          block:^(id observer, id object, NSDictionary *change)
-     {
-         VLog(@"Rate Change: %@", change);
-     }];
+    [self observeStatus];
 }
 
 - (void)setSelected:(BOOL)selected
@@ -171,23 +145,7 @@ static NSString * const kVideoMuted = @"videoMuted";
     }
     else
     {
-        __weak typeof(self) welf = self;
-        
-        [self.KVOController observe:self.player
-                            keyPath:NSStringFromSelector(@selector(status))
-                            options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew
-                              block:^(id observer, id object, NSDictionary *change)
-         {
-             VLog(@"%@", change);
-             if (welf.player.status == AVPlayerStatusReadyToPlay)
-             {
-                 [welf.player play];
-             }
-             else if (welf.player.status == AVPlayerStatusFailed)
-             {
-                 VLog(@"Player failed: %@", welf.player.error);
-             }
-         }];
+        [self observeStatus];
     }
 }
 
@@ -196,6 +154,28 @@ static NSString * const kVideoMuted = @"videoMuted";
 - (UIViewController *)inspectorToolViewController
 {
     return self.trimViewController;
+}
+
+#pragma mark - Private Methods
+
+- (void)observeStatus
+{
+    __weak typeof(self) welf = self;
+    
+    [self.KVOController observe:self.player
+                        keyPath:NSStringFromSelector(@selector(status))
+                        options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew
+                          block:^(id observer, id object, NSDictionary *change)
+     {
+         if (welf.player.status == AVPlayerStatusReadyToPlay)
+         {
+             [welf.player play];
+         }
+         else if (welf.player.status == AVPlayerStatusFailed)
+         {
+             VLog(@"Player failed: %@", welf.player.error);
+         }
+     }];
 }
 
 @end
