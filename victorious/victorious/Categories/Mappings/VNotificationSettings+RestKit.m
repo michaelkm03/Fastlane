@@ -23,7 +23,7 @@
                                   @"notification_private_message"   : VSelectorName(isNewPrivateMessageEnabled),
                                   @"notification_comment_post"      : VSelectorName(isNewCommentOnMyPostEnabled),
                                   @"notification_follow_post"       : VSelectorName(isPostFromFollowedEnabled),
-                                  @"notification_followed_tag"      : VSelectorName(isPostOnFollowedHashTagEnabled)
+                                  @"notification_tag_post"          : VSelectorName(isPostOnFollowedHashTagEnabled)
                                   };
     
     RKEntityMapping *mapping = [RKEntityMapping
