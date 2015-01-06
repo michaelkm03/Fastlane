@@ -58,6 +58,7 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
 
 @property (nonatomic, strong) VVideoFrameRateController *videoComposition;
 @property (nonatomic, strong) AVPlayer *player;
+@property (nonatomic, strong) VVideoPlayerView *playerView;
 
 @end
 
@@ -158,25 +159,16 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
     AVAsset *asset = [AVAsset assetWithURL:self.mediaURL];
     if ([asset tracksWithMediaType:AVMediaTypeVideo].count > 0)
     {
-        
-        VVideoPlayerView *videoPlayerView = [[VVideoPlayerView alloc] initWithFrame:self.canvasView.bounds];
-        VVideoFrameRateController *videoComposition = [[VVideoFrameRateController alloc] initWithVideoURL:self.mediaURL
-                                                                                frameDuration:CMTimeMake(1, 10)
-                                                                                    muteAudio:YES];
-        videoComposition.playerItemReady = ^void(AVPlayerItem *playerItem)
-        {
-            self.player = [AVPlayer playerWithPlayerItem:playerItem];
-            self.player.actionAtItemEnd = AVPlayerActionAtItemEndNone;
-            [[NSNotificationCenter defaultCenter] addObserver:self
-                                                     selector:@selector(playerItemDidReachEnd:)
-                                                         name:AVPlayerItemDidPlayToEndTimeNotification
-                                                       object:[self.player currentItem]];
-            videoPlayerView.player = self.player;
-            videoPlayerView.frame = self.canvasView.bounds;
-            [self.player play];
-        };
-        
-        [self.canvasView addSubview:videoPlayerView];
+        self.playerView = [[VVideoPlayerView alloc] initWithFrame:self.canvasView.bounds];
+        [self.canvasView addSubview:self.playerView];
+        [self.canvasView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[playerView]|"
+                                                                                options:kNilOptions
+                                                                                metrics:nil
+                                                                                  views:@{@"playerView":self.playerView}]];
+        [self.canvasView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[playerView]|"
+                                                                                options:kNilOptions
+                                                                                metrics:nil
+                                                                                  views:@{@"playerView":self.playerView}]];
     }
 }
 
@@ -254,6 +246,22 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
 
 - (void)setSelectedTool:(id<VWorkspaceTool>)selectedTool
 {
+#warning Remove me
+    VTrimVideoTool *videoTool = (VTrimVideoTool *)selectedTool;
+    videoTool.mediaURL = self.mediaURL;
+    videoTool.playerItemReady = ^(AVPlayerItem *playerItem)
+    {
+        self.player = [AVPlayer playerWithPlayerItem:playerItem];
+        self.player.actionAtItemEnd = AVPlayerActionAtItemEndNone;
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(playerItemDidReachEnd:)
+                                                     name:AVPlayerItemDidPlayToEndTimeNotification
+                                                   object:[self.player currentItem]];
+        self.playerView.player = self.player;
+        [self.player play];
+
+    };
+    
     // Re-selected current tool should we dismiss?
     if (selectedTool == _selectedTool)
     {

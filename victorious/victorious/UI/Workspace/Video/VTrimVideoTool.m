@@ -12,6 +12,8 @@
 #import "VDependencyManager.h"
 #import "VVideoFrameRateController.h"
 
+static NSString * const kTitleKey = @"title";
+
 static NSString * const kVideoFrameDurationValue = @"frameDurationValue";
 static NSString * const kVideoFrameDurationTimescale = @"frameDurationTimescale";
 static NSString * const kVideoMaxDuration = @"videoMaxDuration";
@@ -27,6 +29,7 @@ static NSString * const kVideoMuted = @"videoMuted";
 @property (nonatomic, strong) NSNumber *maxDuration;
 @property (nonatomic, assign) BOOL muteAudio;
 @property (nonatomic, assign) CMTime frameDuration;
+@property (nonatomic, copy) NSString *title;
 
 @property (nonatomic, strong) VVideoFrameRateController *frameRateController;
 
@@ -40,6 +43,9 @@ static NSString * const kVideoMuted = @"videoMuted";
     if (self)
     {
         _dependencyManager = dependencyManager;
+        
+        _title = [dependencyManager stringForKey:kTitleKey];
+        
         _minDuration = [dependencyManager numberForKey:kVideoMinDuration];
         _maxDuration = [dependencyManager numberForKey:kVideoMaxDuration];
         
@@ -84,11 +90,6 @@ static NSString * const kVideoMuted = @"videoMuted";
 - (UIViewController *)inspectorToolViewController
 {
     return self.trimViewController;
-}
-
-- (NSString *)title
-{
-    return @"Video";
 }
 
 @end
