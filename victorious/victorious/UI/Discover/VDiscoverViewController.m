@@ -51,6 +51,9 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
     self.suggestedPeopleViewController = [VSuggestedPeopleCollectionViewController instantiateFromStoryboard:@"Discover"];
     self.suggestedPeopleViewController.delegate = self;
     
+    [self addChildViewController:self.suggestedPeopleViewController];
+    [self.suggestedPeopleViewController didMoveToParentViewController:self];
+    
     // Call this here to ensure that header views are ready by the time the tableview asks for them
     [self createSectionHeaderViews];
 }
@@ -176,7 +179,7 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
 - (void)registerCells
 {
     [self.tableView registerNib:[UINib nibWithNibName:kVTrendingTagIdentifier bundle:nil] forCellReuseIdentifier:kVTrendingTagIdentifier];
-    [self.tableView registerNib:[UINib nibWithNibName:kVSuggestedPeopleIdentifier bundle:nil] forCellReuseIdentifier:kVSuggestedPeopleIdentifier];
+    [self.tableView registerClass:[VSuggestedPeopleCell class] forCellReuseIdentifier:kVSuggestedPeopleIdentifier];
     
     [VNoContentTableViewCell registerNibWithTableView:self.tableView];
 }
@@ -256,9 +259,7 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
             
             if ( ![customCell.subviews containsObject:self.suggestedPeopleViewController.collectionView] )
             {
-                [self addChildViewController:self.suggestedPeopleViewController];
                 [customCell addSubview:self.suggestedPeopleViewController.collectionView];
-                [self.suggestedPeopleViewController didMoveToParentViewController:self];
                 self.suggestedPeopleViewController.collectionView.frame = customCell.bounds;
             }
             
