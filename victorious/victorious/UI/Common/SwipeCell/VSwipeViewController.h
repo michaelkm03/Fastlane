@@ -78,6 +78,8 @@
  */
 - (void)showUtilityButtons;
 
+- (void)showUtilityButtonsAnimated:(BOOL)animated;
+
 /**
  Hides the utility buttons with animation as if done by a swipe right.
  */

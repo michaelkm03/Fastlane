@@ -30,8 +30,8 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dP8-Ja-hRs" userLabel="Modal Container">
                                 <rect key="frame" x="15" y="200" width="570" height="201"/>
                                 <subviews>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VV7-qm-Y1W">
-                                        <rect key="frame" x="25" y="15" width="520" height="171"/>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VV7-qm-Y1W" customClass="VCommentTextView">
+                                        <rect key="frame" x="0.0" y="0.0" width="570" height="201"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -40,10 +40,10 @@
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="VV7-qm-Y1W" firstAttribute="leading" secondItem="dP8-Ja-hRs" secondAttribute="leading" constant="25" id="Dx0-3f-AGD"/>
-                                    <constraint firstAttribute="bottom" secondItem="VV7-qm-Y1W" secondAttribute="bottom" constant="15" id="FgM-Df-hVB"/>
-                                    <constraint firstAttribute="trailing" secondItem="VV7-qm-Y1W" secondAttribute="trailing" constant="25" id="bZS-7v-w7L"/>
-                                    <constraint firstItem="VV7-qm-Y1W" firstAttribute="top" secondItem="dP8-Ja-hRs" secondAttribute="top" constant="15" id="fCx-Su-5aZ"/>
+                                    <constraint firstItem="VV7-qm-Y1W" firstAttribute="leading" secondItem="dP8-Ja-hRs" secondAttribute="leading" id="Dx0-3f-AGD"/>
+                                    <constraint firstAttribute="bottom" secondItem="VV7-qm-Y1W" secondAttribute="bottom" id="FgM-Df-hVB"/>
+                                    <constraint firstAttribute="trailing" secondItem="VV7-qm-Y1W" secondAttribute="trailing" id="bZS-7v-w7L"/>
+                                    <constraint firstItem="VV7-qm-Y1W" firstAttribute="top" secondItem="dP8-Ja-hRs" secondAttribute="top" id="fCx-Su-5aZ"/>
                                     <constraint firstAttribute="height" constant="201" id="ush-eL-0ue"/>
                                 </constraints>
                             </view>
@@ -97,8 +97,6 @@
                         <outlet property="editTextView" destination="VV7-qm-Y1W" id="56t-lN-KEq"/>
                         <outlet property="modalContainer" destination="dP8-Ja-hRs" id="aAH-qn-1VP"/>
                         <outlet property="modalContainerHeightConstraint" destination="ush-eL-0ue" id="3V3-S8-uvk"/>
-                        <outlet property="textViewBottomConstraint" destination="FgM-Df-hVB" id="uXi-N3-Bzp"/>
-                        <outlet property="textViewTopConstraint" destination="fCx-Su-5aZ" id="8Go-io-4BL"/>
                         <outlet property="textViewVerticalAlignmentConstraint" destination="c25-7o-ksD" id="7Qg-zd-4eu"/>
                     </connections>
                 </viewController>

@@ -12,11 +12,24 @@
 #import "VObjectManager+Comment.h"
 #import "VAlertController.h"
 
+static const CGFloat kTextViewInsetsHorizontal  = 15.0f;
+static const CGFloat kTextViewInsetsVertical    = 18.0f;
+static const CGFloat kTextViewToViewRatioMax    =  0.4f;
+
+@implementation VCommentTextView
+
+- (void)paste:(id)sender
+{
+    [super paste:sender];
+    
+    NSLog( @"PASTE" );
+}
+
+@end
+
 @interface VEditCommentViewController() <UITextViewDelegate>
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *modalContainerHeightConstraint;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *textViewTopConstraint;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *textViewBottomConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *textViewVerticalAlignmentConstraint;
 @property (weak, nonatomic) IBOutlet UITextView *editTextView;
 
@@ -45,9 +58,12 @@
     self.editTextView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     self.editTextView.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel1Font];
     self.editTextView.returnKeyType = UIReturnKeyDone;
-    
     self.editTextView.delegate = self;
     self.editTextView.text = self.comment.text;
+    self.editTextView.textContainerInset = UIEdgeInsetsMake( kTextViewInsetsVertical,
+                                                            kTextViewInsetsHorizontal,
+                                                            kTextViewInsetsVertical,
+                                                            kTextViewInsetsHorizontal );
     
     [self updateSize];
 }
@@ -81,13 +97,14 @@
 - (void)updateSize
 {
     CGSize size = [self.editTextView sizeThatFits:CGSizeMake( CGRectGetWidth(self.editTextView.frame), CGFLOAT_MAX )];
+    size.height = MIN( size.height, CGRectGetHeight( self.view.frame ) * kTextViewToViewRatioMax );
     
     [UIView animateWithDuration:0.35f delay:0.0f
          usingSpringWithDamping:0.6f
           initialSpringVelocity:0.4f
                         options:kNilOptions animations:^void
      {
-         self.modalContainerHeightConstraint.constant = size.height + self.textViewTopConstraint.constant + self.textViewBottomConstraint.constant;
+         self.modalContainerHeightConstraint.constant = size.height;
          
          // Animates this element
          [self.modalContainer layoutIfNeeded];
@@ -187,6 +204,8 @@
     // As in other comment entry sections of the app, we just disable the confirm button
     // if the comment text is invalid
     self.buttonConfirm.enabled = [self validateCommentText:textView.text];
+    
+    [self updateSize];
 }
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
@@ -199,8 +218,6 @@
         }
         return NO;
     }
-    
-    [self updateSize];
     
     return YES;
 }

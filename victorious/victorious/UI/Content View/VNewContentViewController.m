@@ -334,6 +334,8 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
                               VTrackingKeySequenceId : self.viewModel.sequence.remoteId,
                               VTrackingKeyUrls : self.viewModel.sequence.tracking.viewStart ?: @[] };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
+    
+    [self.viewModel reloadData];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -403,8 +405,6 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     {
         self.textEntryView.placeholderText = NSLocalizedString(@"LeaveAComment", @"");
     }
-    
-    [self.viewModel reloadData];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -412,6 +412,14 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     [super viewDidAppear:animated];
 
     [self.contentCollectionView flashScrollIndicators];
+    
+    [self.contentCollectionView.visibleCells enumerateObjectsUsingBlock:^(VContentCommentsCell *cell, NSUInteger idx, BOOL *stop)
+     {
+         if ( [cell isKindOfClass:[VContentCommentsCell class]] )
+         {
+             [cell.swipeViewController hideUtilityButtons];
+         }
+     }];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -1342,13 +1350,13 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     // Close any other cells showing utility buttons
     
-    for ( VContentCommentsCell *cell in self.contentCollectionView.visibleCells )
-    {
-        if ( [cell isKindOfClass:[VContentCommentsCell class]] && cellView != cell )
-        {
-            [cell.swipeViewController hideUtilityButtons];
-        }
-    }
+    [self.contentCollectionView.visibleCells enumerateObjectsUsingBlock:^(VContentCommentsCell *cell, NSUInteger idx, BOOL *stop)
+     {
+         if ( [cell isKindOfClass:[VContentCommentsCell class]] && cellView != cell )
+         {
+             [cell.swipeViewController hideUtilityButtons];
+         }
+     }];
 }
 
 #pragma mark - VCommentCellUtilitiesDelegate
@@ -1382,6 +1390,24 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 - (void)didFinishEditingComment:(VComment *)comment
 {
     [self dismissViewControllerAnimated:YES completion:nil];
+    
+    __block NSIndexPath *indexPathToReload = nil;
+    
+    // Update the cell
+    [self.contentCollectionView.visibleCells enumerateObjectsUsingBlock:^(VContentCommentsCell *cell, NSUInteger idx, BOOL *stop)
+    {
+        if ( [cell isKindOfClass:[VContentCommentsCell class]] )
+        {
+            if ( [cell.comment.remoteId isEqualToNumber:comment.remoteId] )
+            {
+                cell.comment = comment;
+                [cell.swipeViewController showUtilityButtonsAnimated:NO];
+                *stop = YES;
+            }
+        }
+    }];
+    
+    [self.contentCollectionView layoutSubviews];
 }
 
 @end

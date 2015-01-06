@@ -72,12 +72,17 @@
     [self.scrollView setContentOffset:CGPointZero animated:YES];
 }
 
-- (void)showUtilityButtons
+- (void)showUtilityButtonsAnimated:(BOOL)animated
 {
     CGFloat buttonWidth = [self.cellDelegate utilityButtonWidth];
     NSUInteger buttonCount = [self.cellDelegate numberOfUtilityButtons];
     CGFloat maxContentOffsetX = buttonWidth * buttonCount;
-    [self.scrollView setContentOffset:CGPointMake( maxContentOffsetX, 0.0f ) animated:YES];
+    [self.scrollView setContentOffset:CGPointMake( maxContentOffsetX, 0.0f ) animated:animated];
+}
+
+- (void)showUtilityButtons
+{
+    [self showUtilityButtonsAnimated:YES];
 }
 
 - (void)viewDidLoad
