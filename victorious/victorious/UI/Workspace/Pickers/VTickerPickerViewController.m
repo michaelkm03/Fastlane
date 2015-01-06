@@ -126,6 +126,19 @@
 
 #pragma mark - UICollectionViewDelegate
 
+- (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    [[self.collectionView indexPathsForSelectedItems] enumerateObjectsUsingBlock:^(NSIndexPath *selectedIndexPath, NSUInteger idx, BOOL *stop)
+     {
+         if ([selectedIndexPath compare:indexPath] == NSOrderedSame)
+         {
+             [collectionView flashScrollIndicators];
+         }
+     }];
+    
+    return YES;
+}
+
 - (void)collectionView:(UICollectionView *)collectionView
 didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -134,14 +147,6 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
                                    animated:YES];
     self.blockScrollingSelectionUntilReached = indexPath;
     [self notifyNewSelection];
-    
-    [[self.collectionView indexPathsForSelectedItems] enumerateObjectsUsingBlock:^(NSIndexPath *selectedIndexPath, NSUInteger idx, BOOL *stop)
-    {
-        if ([selectedIndexPath compare:indexPath] == NSOrderedSame)
-        {
-            [collectionView flashScrollIndicators];
-        }
-    }];
 }
 
 #pragma mark - UIScrollViewDelegate
