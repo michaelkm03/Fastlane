@@ -41,6 +41,13 @@
     return [super hitTest:point withEvent:event];
 }
 
+- (void)prepareForReuse
+{
+    [super prepareForReuse];
+    
+    [self.swipeViewController reset];
+}
+
 #pragma mark - VCommentCellUtilitiesDelegate
 
 - (void)commentRemoved:(VComment *)comment
