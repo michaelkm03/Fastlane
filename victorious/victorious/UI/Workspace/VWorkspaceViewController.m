@@ -28,10 +28,8 @@
 #warning Move me out of here to the flow controller
 #import "VPublishBlurOverAnimator.h"
 
-#warning Move me out of here
-#import "VVideoPlayerView.h"
-#import "VTrimVideoTool.h"
-#import "VVideoFrameRateController.h"
+#import "VVideoWorkspaceTool.h"
+#import "VVideoPlayerView.h"mailto:joseph@getvictorious.com
 @import AVFoundation;
 
 static const CGFloat kJPEGCompressionQuality    = 0.8f;
@@ -56,8 +54,6 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
 
 @property (nonatomic, strong) VPublishBlurOverAnimator *transitionAnimator;
 
-@property (nonatomic, strong) VVideoFrameRateController *videoComposition;
-@property (nonatomic, strong) AVPlayer *player;
 @property (nonatomic, strong) VVideoPlayerView *playerView;
 
 @end
@@ -246,22 +242,6 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
 
 - (void)setSelectedTool:(id<VWorkspaceTool>)selectedTool
 {
-#warning Remove me
-    VTrimVideoTool *videoTool = (VTrimVideoTool *)selectedTool;
-    videoTool.mediaURL = self.mediaURL;
-    videoTool.playerItemReady = ^(AVPlayerItem *playerItem)
-    {
-        self.player = [AVPlayer playerWithPlayerItem:playerItem];
-        self.player.actionAtItemEnd = AVPlayerActionAtItemEndNone;
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(playerItemDidReachEnd:)
-                                                     name:AVPlayerItemDidPlayToEndTimeNotification
-                                                   object:[self.player currentItem]];
-        self.playerView.player = self.player;
-        [self.player play];
-
-    };
-    
     // Re-selected current tool should we dismiss?
     if (selectedTool == _selectedTool)
     {
@@ -306,16 +286,34 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
                                      forTool:selectedTool];
     }
     
+    if ([selectedTool conformsToProtocol:@protocol(VVideoWorkspaceTool)])
+    {
+        id <VVideoWorkspaceTool> videoTool = (id <VVideoWorkspaceTool>)selectedTool;
+        if ([videoTool respondsToSelector:@selector(setMediaURL:)])
+        {
+            [videoTool setMediaURL:self.mediaURL];
+        }
+        
+        if ([videoTool respondsToSelector:@selector(setPlayerView:)])
+        {
+            [videoTool setPlayerView:self.playerView];
+        }
+    }
+    
+    if ([_selectedTool respondsToSelector:@selector(setSelected:)])
+    {
+        [_selectedTool setSelected:NO];
+    }
+    
+    if ([selectedTool respondsToSelector:@selector(setSelected:)])
+    {
+        [selectedTool setSelected:YES];
+    }
+ 
    _selectedTool = selectedTool;
 }
 
 #pragma mark - Notification Handlers
-
-- (void)playerItemDidReachEnd:(NSNotification *)notification
-{
-    [self.player seekToTime:kCMTimeZero];
-    [self.player play];
-}
 
 - (void)keyboardWillShow:(NSNotification *)notification
 {

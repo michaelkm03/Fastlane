@@ -7,10 +7,11 @@
 //
 
 #import "VTrimVideoTool.h"
-
+#import "VVideoPlayerView.h"
 #import "VTrimmerViewController.h"
 #import "VDependencyManager.h"
 #import "VVideoFrameRateController.h"
+#import <KVOController/FBKVOController.h>
 
 static NSString * const kTitleKey = @"title";
 
@@ -25,17 +26,36 @@ static NSString * const kVideoMuted = @"videoMuted";
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VTrimmerViewController *trimViewController;
 
+@property (nonatomic, strong, readwrite) AVPlayerItem *playerItem;
+@property (nonatomic, strong, readwrite) AVPlayer *player;
+
 @property (nonatomic, strong) NSNumber *minDuration;
 @property (nonatomic, strong) NSNumber *maxDuration;
 @property (nonatomic, assign) BOOL muteAudio;
-@property (nonatomic, assign) CMTime frameDuration;
+@property (nonatomic, assign, readwrite) CMTime frameDuration;
 @property (nonatomic, copy) NSString *title;
-
 @property (nonatomic, strong) VVideoFrameRateController *frameRateController;
+
+@property (nonatomic, strong) id itemEndObserver;
 
 @end
 
 @implementation VTrimVideoTool
+
+@synthesize selected = _selected;
+@synthesize mediaURL = _mediaURL;
+@synthesize playerView = _playerView;
+
+- (void)dealloc
+{
+    if (self.itemEndObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:self.itemEndObserver
+                                                        name:AVPlayerItemDidPlayToEndTimeNotification
+                                                      object:_playerItem];
+        self.itemEndObserver = nil;
+    }
+}
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
@@ -65,7 +85,7 @@ static NSString * const kVideoMuted = @"videoMuted";
 
 - (void)setMediaURL:(NSURL *)mediaURL
 {
-    _mediaURL = mediaURL;
+    _mediaURL = [mediaURL copy];
     
     self.frameRateController = [[VVideoFrameRateController alloc] initWithVideoURL:mediaURL
                                                                      frameDuration:self.frameDuration
@@ -73,16 +93,102 @@ static NSString * const kVideoMuted = @"videoMuted";
     __weak typeof(self) welf = self;
     self.frameRateController.playerItemReady = ^(AVPlayerItem *playerItem)
     {
-        if (welf.playerItemReady)
-        {
-            welf.playerItemReady(playerItem);
-        }
+        welf.playerItem = playerItem;
     };
 }
 
-- (void)setPlayerItemReady:(void (^)(AVPlayerItem *))playerItemReady
+- (void)setPlayerItem:(AVPlayerItem *)playerItem
 {
-    _playerItemReady = [playerItemReady copy];
+    if (self.itemEndObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:self.itemEndObserver
+                                                        name:AVPlayerItemDidPlayToEndTimeNotification
+                                                      object:_playerItem];
+        self.itemEndObserver = nil;
+    }
+    
+    _playerItem = playerItem;
+    
+    __weak typeof(self) welf = self;
+
+    self.itemEndObserver = [[NSNotificationCenter defaultCenter] addObserverForName:AVPlayerItemDidPlayToEndTimeNotification
+                                                                             object:playerItem
+                                                                              queue:[NSOperationQueue mainQueue]
+                                                                         usingBlock:^(NSNotification *note)
+                            {
+//                                VLog(@"Seeking to beginning, current time: %@, playback likely to keep-up: %@, error log: %@, access log: %@, dropped frames: %@", [NSValue valueWithCMTime:welf.player.currentTime], welf.playerItem.playbackLikelyToKeepUp ? @"YES" : @"NO", welf.playerItem.errorLog, welf.playerItem.accessLog);
+                                [welf.player seekToTime:kCMTimeZero
+                                      completionHandler:^(BOOL finished)
+                                 {
+                                     [welf.player play];
+                                 }];
+//                                welf.player = [AVPlayer playerWithPlayerItem:welf.playerItem];
+                            }];
+    
+    self.player = [AVPlayer playerWithPlayerItem:playerItem];
+}
+
+- (void)setPlayer:(AVPlayer *)player
+{
+    _player = player;
+    _player.actionAtItemEnd = AVPlayerActionAtItemEndPause;
+    self.playerView.player = _player;
+    
+    __weak typeof(self) welf = self;
+    [self.KVOController observe:player
+                        keyPath:NSStringFromSelector(@selector(status))
+                        options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew
+                          block:^(id observer, id object, NSDictionary *change)
+     {
+         VLog(@"%@", change);
+         if (welf.player.status == AVPlayerStatusReadyToPlay)
+         {
+             VLog(@"Playing");
+             [welf.player play];
+         }
+         else if (welf.player.status == AVPlayerStatusFailed)
+         {
+             VLog(@"Player failed: %@", welf.player.error);
+         }
+     }];
+    [self.KVOController observe:player
+                        keyPath:NSStringFromSelector(@selector(rate))
+                        options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew
+                          block:^(id observer, id object, NSDictionary *change)
+     {
+         VLog(@"Rate Change: %@", change);
+     }];
+}
+
+- (void)setSelected:(BOOL)selected
+{
+    _selected = selected;
+    if (!selected)
+    {
+        [_player pause];
+        [_player.KVOController unobserve:self.player
+                                 keyPath:NSStringFromSelector(@selector(status))];
+    }
+    else
+    {
+        __weak typeof(self) welf = self;
+        
+        [self.KVOController observe:self.player
+                            keyPath:NSStringFromSelector(@selector(status))
+                            options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew
+                              block:^(id observer, id object, NSDictionary *change)
+         {
+             VLog(@"%@", change);
+             if (welf.player.status == AVPlayerStatusReadyToPlay)
+             {
+                 [welf.player play];
+             }
+             else if (welf.player.status == AVPlayerStatusFailed)
+             {
+                 VLog(@"Player failed: %@", welf.player.error);
+             }
+         }];
+    }
 }
 
 #pragma mark - VWorkspaceTool

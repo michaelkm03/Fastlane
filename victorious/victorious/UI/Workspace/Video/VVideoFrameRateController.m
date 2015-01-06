@@ -37,8 +37,7 @@
         _asset = [AVURLAsset URLAssetWithURL:videoURL
                                          options:@{AVURLAssetPreferPreciseDurationAndTimingKey:@YES}];
         [_asset loadValuesAsynchronouslyForKeys:@[NSStringFromSelector(@selector(duration)),
-                                                  NSStringFromSelector(@selector(tracks)),
-                                                  NSStringFromSelector(@selector(commonMetadata))]
+                                                  NSStringFromSelector(@selector(tracks))]
                               completionHandler:^
          {
              [self buildTracks];
@@ -52,6 +51,7 @@
          }];
         
         _mutableComposition = [AVMutableComposition composition];
+
         _mutableCompositionVideoTrack = [_mutableComposition addMutableTrackWithMediaType:AVMediaTypeVideo
                                                                          preferredTrackID:kCMPersistentTrackID_Invalid];
         if (!muteAudio)
@@ -78,6 +78,7 @@
 - (AVVideoComposition *)videoComposition
 {
     AVMutableVideoComposition *videoComposition = [[AVVideoComposition videoCompositionWithPropertiesOfAsset:_asset] mutableCopy];
+    
     videoComposition.frameDuration = self.frameDuration;
     return [videoComposition copy];
 }
