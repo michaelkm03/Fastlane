@@ -6,12 +6,12 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-#import "VTableContainerViewController.h"
 #import "VHasManagedDependencies.h"
 #import "VNavigationDestination.h"
 
-@interface VDiscoverContainerViewController : VTableContainerViewController <VHasManagedDependancies, VNavigationDestination>
+#import <UIKit/UIKit.h>
+
+@interface VDiscoverContainerViewController : UIViewController <VHasManagedDependancies, VNavigationDestination>
 
 + (VDiscoverContainerViewController *)instantiateFromStoryboard:(NSString *)storyboardName;
 

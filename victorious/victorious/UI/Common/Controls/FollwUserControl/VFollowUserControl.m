@@ -7,6 +7,7 @@
 //
 
 #import "VFollowUserControl.h"
+#import "VThemeManager.h"
 
 static const CGFloat kHighlightedTiltRotationAngle = M_PI / 4;
 static const NSTimeInterval kHighlightAnimationDuration = 0.3f;
@@ -61,7 +62,16 @@ static const CGFloat kForcedAntiAliasingConstant = 0.01f;
     _followedImage = [UIImage imageNamed:@"folllowedIcon"];
 #endif
     
-    imageView.image = self.following ? _followedImage : _followImage;
+    if (self.following)
+    {
+        [imageView setImage:_followedImage];
+    }
+    else
+    {
+        UIImage *sImg = [_followImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        imageView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+        imageView.image = sImg;
+    }
     [self addSubview:imageView];
     
     imageView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -111,7 +121,17 @@ static const CGFloat kForcedAntiAliasingConstant = 0.01f;
     
     [self sendActionsForControlEvents:UIControlEventValueChanged];
     
-    self.imageView.image = _following ? self.followedImage : self.followImage;
+    if (self.following)
+    {
+        [self.imageView setImage:_followedImage];
+    }
+    else
+    {
+        UIImage *sImg = [_followImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        self.imageView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+        self.imageView.image = sImg;
+    }
+
 }
 
 #pragma mark - Public Interface

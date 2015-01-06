@@ -75,6 +75,8 @@
 #import "VViewControllerTransition.h"
 #import "VEditCommentViewController.h"
 
+#import "VTracking.h"
+
 static const CGFloat kMaxInputBarHeight = 200.0f;
 
 @interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate,VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate>
@@ -329,7 +331,8 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     self.viewModel.experienceEnhancerController.delegate = self;
     
     NSDictionary *params = @{ VTrackingKeyTimeCurrent : [NSDate date],
-                              VTrackingKeySequenceId : self.viewModel.sequence.remoteId };
+                              VTrackingKeySequenceId : self.viewModel.sequence.remoteId,
+                              VTrackingKeyUrls : self.viewModel.sequence.tracking.viewStart ?: @[] };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
 }
 
@@ -689,7 +692,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
             return 1;
         case VContentViewSectionHistogramOrQuestion:
         {
-            NSInteger ret = (self.viewModel.type == VContentViewTypePoll) ? 1 : 0;
+            NSInteger ret = ((self.viewModel.type == VContentViewTypePoll) || (self.viewModel.type == VContentViewTypeVideo))? 1 : 0;
             return ret;
         }
             
@@ -1308,6 +1311,11 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 - (void)experienceEnhancersDidUpdate
 {
     // Do nothing, eventually a nice animation to reveal experience enhancers
+}
+
+- (BOOL)isVideoContent
+{
+    return self.videoCell != nil;
 }
 
 - (Float64)currentVideoTime
