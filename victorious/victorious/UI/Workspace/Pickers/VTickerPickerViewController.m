@@ -16,6 +16,7 @@
 @property (nonatomic, strong) UIView *selectionIndicatorView;
 @property (nonatomic, copy) NSArray *tools;
 @property (nonatomic, strong) UIColor *accentColor;
+@property (nonatomic, strong) NSIndexPath *blockScrollingSelectionUntilReached;
 
 @end
 
@@ -124,6 +125,8 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     [collectionView scrollToItemAtIndexPath:indexPath
                            atScrollPosition:UICollectionViewScrollPositionTop
                                    animated:YES];
+    self.blockScrollingSelectionUntilReached = indexPath;
+    [self notifyNewSelection];
 }
 
 #pragma mark - UIScrollViewDelegate
@@ -135,6 +138,16 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     NSIndexPath *selectedIndexPath = [[self.collectionView indexPathsForSelectedItems] firstObject];
     NSIndexPath *indexPathForPoint = [self.collectionView indexPathForItemAtPoint:CGPointMake(CGRectGetMidX(self.collectionView.bounds),
                                                                                               self.collectionView.contentOffset.y + ([VBasicToolPickerCell desiredSizeWithCollectionViewBounds:self.collectionView.bounds].height / 2))];
+    
+    if ([self.blockScrollingSelectionUntilReached compare:indexPathForPoint] != NSOrderedSame)
+    {
+        return;
+    }
+    else
+    {
+        self.blockScrollingSelectionUntilReached = nil;
+    }
+    
     if ([indexPathForPoint compare:selectedIndexPath] == NSOrderedSame)
     {
         return;
@@ -144,6 +157,11 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
                                       animated:YES
                                 scrollPosition:UICollectionViewScrollPositionNone];
     [self notifyNewSelection];
+}
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    self.blockScrollingSelectionUntilReached = nil;
 }
 
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView
