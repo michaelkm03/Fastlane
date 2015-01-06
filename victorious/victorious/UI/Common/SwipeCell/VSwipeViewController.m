@@ -114,8 +114,8 @@
     CGRect startingFrame = CGRectMake( CGRectGetWidth(self.view.frame), 0.0f, 0.0f, CGRectGetHeight(self.view.frame));
     self.utilityButtonsViewController = [[VUtilityButtonsViewController alloc] initWithFrame:startingFrame];
     self.utilityButtonsViewController.delegate = self;
-    [self.view addSubview:self.utilityButtonsViewController.view];
-    [self setCollectionViewConstraints];
+    [self.cellDelegate.parentCellView addSubview:self.utilityButtonsViewController.view];
+    [self setCollectionViewConstraints:cellDelegate.parentCellView];
     
     [self createBlockerButtonOverlay];
     [self setBlockerButtonOverlayConstraints];
@@ -132,12 +132,16 @@
 
 - (void)createBlockerButtonOverlay
 {
-    self.blockerButtonOverlay = [[UIButton alloc] initWithFrame:self.cellDelegate.parentCellView.bounds];
-    self.blockerButtonOverlay.backgroundColor = [UIColor clearColor];
+    CGRect frame = self.cellDelegate.parentCellView.bounds;
+    frame.size.height = 20.0;
+    self.blockerButtonOverlay = [[UIButton alloc] initWithFrame:frame];
+    self.blockerButtonOverlay.backgroundColor = [UIColor redColor]; //[UIColor clearColor];
     self.blockerButtonOverlay.hidden = YES;
+    self.blockerButtonOverlay.translatesAutoresizingMaskIntoConstraints = NO;
     [self.blockerButtonOverlay addTarget:self action:@selector(blockerButtonOverlayTapped:) forControlEvents:UIControlEventTouchDown];
     [self.cellDelegate.parentCellView addSubview:self.blockerButtonOverlay];
     [self.cellDelegate.parentCellView bringSubviewToFront:self.blockerButtonOverlay];
+    [self.cellDelegate.parentCellView addFitToParentConstraintsToSubview:self.blockerButtonOverlay];
 }
 
 - (void)createLeftGutterView
@@ -225,12 +229,12 @@
                                                                             views:views]];
 }
 
-- (void)setCollectionViewConstraints
+- (void)setCollectionViewConstraints:(UIView *)superview
 {
     UIView *collectionView = self.utilityButtonsViewController.view;
     NSDictionary *views = @{ @"collectionView" : collectionView };
     collectionView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[collectionView]|"
+    [superview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[collectionView]|"
                                                                  options:kNilOptions
                                                                  metrics:nil
                                                                    views:views]];
@@ -239,7 +243,7 @@
                                                                     metrics:nil
                                                                       views:views];
     self.collectionViewTrailingConstraint = constraintsH.firstObject;
-    [self.view addConstraints:constraintsH];
+    [superview addConstraints:constraintsH];
     self.collectionViewWidthConstraint = [NSLayoutConstraint constraintWithItem:collectionView
                                                                       attribute:NSLayoutAttributeWidth
                                                                       relatedBy:NSLayoutRelationEqual

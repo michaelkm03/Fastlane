@@ -412,14 +412,6 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     [super viewDidAppear:animated];
 
     [self.contentCollectionView flashScrollIndicators];
-    
-    [self.contentCollectionView.visibleCells enumerateObjectsUsingBlock:^(VContentCommentsCell *cell, NSUInteger idx, BOOL *stop)
-     {
-         if ( [cell isKindOfClass:[VContentCommentsCell class]] )
-         {
-             [cell.swipeViewController hideUtilityButtons];
-         }
-     }];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -1034,9 +1026,10 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
         case VContentViewSectionAllComments:
         {
             VComment *comment = self.viewModel.comments[indexPath.row];
-            return [VContentCommentsCell sizeWithFullWidth:CGRectGetWidth(self.contentCollectionView.bounds)
-                                               commentBody:comment.text
-                                               andHasMedia:comment.hasMedia];
+            CGSize size = [VContentCommentsCell sizeWithFullWidth:CGRectGetWidth(self.contentCollectionView.bounds)
+                                                      commentBody:comment.text
+                                                      andHasMedia:comment.hasMedia];
+            return size;
         }
         case VContentViewSectionCount:
             return CGSizeMake(CGRectGetWidth(self.view.bounds), CGRectGetWidth(self.view.bounds));
@@ -1389,25 +1382,31 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 
 - (void)didFinishEditingComment:(VComment *)comment
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
-    
-    __block NSIndexPath *indexPathToReload = nil;
-    
-    // Update the cell
-    [self.contentCollectionView.visibleCells enumerateObjectsUsingBlock:^(VContentCommentsCell *cell, NSUInteger idx, BOOL *stop)
-    {
-        if ( [cell isKindOfClass:[VContentCommentsCell class]] )
+    [self dismissViewControllerAnimated:YES completion:^{
+        
+       __block NSIndexPath *indexPathToInvalidate = nil;
+        
+        // Update the cell's comment to show the new text
+        [self.contentCollectionView.visibleCells enumerateObjectsUsingBlock:^(VContentCommentsCell *cell, NSUInteger idx, BOOL *stop)
+         {
+             if ( [cell isKindOfClass:[VContentCommentsCell class]] && [cell.comment.remoteId isEqualToNumber:comment.remoteId] )
+             {
+                 cell.comment = comment;
+                 indexPathToInvalidate = [self.contentCollectionView indexPathForCell:cell];
+                 *stop = YES;
+             }
+         }];
+        
+        // Invalidate the layout to resize the cell
+        if ( indexPathToInvalidate != nil )
         {
-            if ( [cell.comment.remoteId isEqualToNumber:comment.remoteId] )
-            {
-                cell.comment = comment;
-                [cell.swipeViewController showUtilityButtonsAnimated:NO];
-                *stop = YES;
-            }
+            UICollectionViewFlowLayoutInvalidationContext *context = [[UICollectionViewFlowLayoutInvalidationContext alloc] init];
+            context.invalidateFlowLayoutAttributes = YES;
+            [context invalidateItemsAtIndexPaths:@[ indexPathToInvalidate ]];
+            [self.contentCollectionView.collectionViewLayout invalidateLayoutWithContext:context];
         }
+        
     }];
-    
-    [self.contentCollectionView layoutSubviews];
 }
 
 @end
