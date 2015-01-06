@@ -23,8 +23,6 @@ NSString * const kMacroStreamId               = @"%%STREAM_ID%%";
 NSString * const kMacroSequenceId             = @"%%SEQUENCE_ID%%";
 NSString * const kMacroBallisticsCount        = @"%%COUNT%%";
 
-static const NSUInteger kMaximumURLRequestRetryCount = 5;
-
 #define APPLICATION_TRACKING_LOGGING_ENABLED 0
 
 #if DEBUG && APPLICATION_TRACKING_LOGGING_ENABLED
