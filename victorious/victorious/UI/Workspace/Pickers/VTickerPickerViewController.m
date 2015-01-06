@@ -68,6 +68,13 @@
     [self notifyNewSelection];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [self.collectionView flashScrollIndicators];
+}
+
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
@@ -127,6 +134,14 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
                                    animated:YES];
     self.blockScrollingSelectionUntilReached = indexPath;
     [self notifyNewSelection];
+    
+    [[self.collectionView indexPathsForSelectedItems] enumerateObjectsUsingBlock:^(NSIndexPath *selectedIndexPath, NSUInteger idx, BOOL *stop)
+    {
+        if ([selectedIndexPath compare:indexPath] == NSOrderedSame)
+        {
+            [collectionView flashScrollIndicators];
+        }
+    }];
 }
 
 #pragma mark - UIScrollViewDelegate
