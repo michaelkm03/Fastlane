@@ -336,6 +336,9 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
         self.verticalSpaceCanvasToTopOfContainerConstraint.constant = -CGRectGetHeight(overlap) + CGRectGetHeight(self.topToolbar.frame);
         self.inspectorToolViewController.view.translatesAutoresizingMaskIntoConstraints = YES;
         self.inspectorToolViewController.view.frame = inspectorFrame;
+        [self.topToolbar.items enumerateObjectsUsingBlock:^(UIBarButtonItem *item, NSUInteger idx, BOOL *stop) {
+            [item setEnabled:NO];
+        }];
         [self.view layoutIfNeeded];
     };
     
@@ -367,6 +370,9 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
     {
         self.verticalSpaceCanvasToTopOfContainerConstraint.constant = CGRectGetHeight(self.topToolbar.frame);
         [self.view layoutIfNeeded];
+        [self.topToolbar.items enumerateObjectsUsingBlock:^(UIBarButtonItem *item, NSUInteger idx, BOOL *stop) {
+            [item setEnabled:YES];
+        }];
     };
     
     [UIView animateWithDuration:animationDuration
