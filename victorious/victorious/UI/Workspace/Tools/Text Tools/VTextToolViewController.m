@@ -50,30 +50,24 @@ static const CGFloat kTextRenderingSize = 1024;
     
     self.view.backgroundColor = [UIColor clearColor];
 
-    self.placeholderTextView =
-    ({
-        UITextView *placeholderTextView = [[UITextView alloc] initWithFrame:self.view.bounds textContainer:nil];
-        [self.view addSubview:placeholderTextView];
-        placeholderTextView.userInteractionEnabled = NO;
-        placeholderTextView;
-    });
-    self.textView =
-    ({
-        self.textStorage = [[VCapitalizingTextStorage alloc] init];
-        self.textStorage.delegate = self;
-        
-        NSLayoutManager *layoutManager = [[NSLayoutManager alloc] init];
-        [self.textStorage addLayoutManager:layoutManager];
-        
-        NSTextContainer *textContainer = [[NSTextContainer alloc] init];
-        [layoutManager addTextContainer:textContainer];
-        
-        UITextView *textView = [[UITextView alloc] initWithFrame:self.view.bounds
-                                                   textContainer:textContainer];
-        textView.delegate = self;
-        [self.view addSubview:textView];
-        textView;
-    });
+    self.placeholderTextView = [[UITextView alloc] initWithFrame:self.view.bounds textContainer:nil];
+    [self.view addSubview:self.placeholderTextView];
+    self.placeholderTextView.userInteractionEnabled = NO;
+
+    self.textStorage = [[VCapitalizingTextStorage alloc] init];
+    self.textStorage.delegate = self;
+    
+    NSLayoutManager *layoutManager = [[NSLayoutManager alloc] init];
+    [self.textStorage addLayoutManager:layoutManager];
+    
+    NSTextContainer *textContainer = [[NSTextContainer alloc] init];
+    [layoutManager addTextContainer:textContainer];
+    
+    self.textView = [[UITextView alloc] initWithFrame:self.view.bounds
+                                        textContainer:textContainer];
+    self.textView.delegate = self;
+    [self.view addSubview:self.textView];
+
     self.textViews = @[self.placeholderTextView, self.textView];
     [self updateTextAttributesForTextType:self.textType];
     
@@ -259,7 +253,7 @@ shouldChangeTextInRange:(NSRange)range
         return;
     }
     
-    NSString *placeholderText = textType.placeholderText ? textType.placeholderText : @"";
+    NSString *placeholderText = textType.placeholderText ?: @"";
     placeholderText = textType.shouldForceUppercase ? [placeholderText uppercaseString] : placeholderText;
     self.placeholderTextView.attributedText = [[NSAttributedString alloc] initWithString:placeholderText
                                                                               attributes:textType.attributes];
