@@ -122,6 +122,18 @@
     [self setBlockerButtonOverlayConstraints];
     
     [self reset];
+    
+    UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(onSwipe:)];
+    swipe.direction = UISwipeGestureRecognizerDirectionLeft;
+    [self.cellDelegate.parentCellView addGestureRecognizer:swipe];
+}
+
+- (void)onSwipe:(UISwipeGestureRecognizer *)gestureRecognizer
+{
+    if ( !self.isShowingUtilityButtons )
+    {
+        [self showUtilityButtonsAnimated:YES];
+    }
 }
 
 - (UIView *)utilityButtonsContainer
