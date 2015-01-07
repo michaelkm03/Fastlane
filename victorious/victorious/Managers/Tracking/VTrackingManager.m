@@ -88,7 +88,6 @@
 #if DEBUG && TRACKING_LOGGING_ENABLED
              VLog( @"Event with duplicate key rejected.  Queued: %lu", (unsigned long)self.queuedEvents.count);
 #endif
-             
              doesEventExistForKey = YES;
              *stop = YES;
          }
@@ -103,6 +102,7 @@
         NSDictionary *completeParams = [self addTimeStampToParametersDictionary:parameters];
         VTrackingEvent *event = [[VTrackingEvent alloc] initWithName:eventName parameters:completeParams eventId:eventId];
         [self.queuedEvents addObject:event];
+        [self trackEvent:event.name parameters:event.parameters];
         
 #if DEBUG && TRACKING_LOGGING_ENABLED
         VLog( @"Event queued.  Queued: %lu", (unsigned long)self.queuedEvents.count);
@@ -119,7 +119,6 @@
 - (void)trackQueuedEventsWithName:(NSString *)eventName
 {
     NSArray *eventsForName = [self eventsForName:eventName fromQueue:self.queuedEvents];
-    [self trackEvents:eventsForName];
     [eventsForName enumerateObjectsUsingBlock:^(VTrackingEvent *event, NSUInteger idx, BOOL *stop)
      {
          [self.queuedEvents removeObject:event];

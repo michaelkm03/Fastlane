@@ -16,6 +16,7 @@
 #import "VUserProfileViewController.h"
 #import "VNoContentView.h"
 #import "VConstants.h"
+#import "VThemeManager.h"
 
 @interface VFollowingTableViewController ()
 
@@ -52,6 +53,14 @@
     }
     
     [self refreshFollowingList];
+    
+    // Set insets and layout margin
+    if (UI_IS_IOS8_AND_HIGHER)
+    {
+        [self.tableView setLayoutMargins:UIEdgeInsetsZero];
+    }
+
+    [self.tableView setSeparatorInset:UIEdgeInsetsZero];
 }
 
 - (BOOL)shouldAutorotate

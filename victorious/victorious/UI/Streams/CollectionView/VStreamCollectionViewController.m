@@ -46,6 +46,7 @@
 #import "UIImage+ImageCreation.h"
 #import "UIImageView+Blurring.h"
 #import "UIStoryboard+VMainStoryboard.h"
+#import "UIViewController+VLayoutInsets.h"
 
 #import "VConstants.h"
 #import "VTracking.h"
@@ -102,6 +103,13 @@ NSString * const VDependencyManagerStreamURLPathKey = @"streamUrlPath";
         // TODO
 //        [streamCollectionVC v_addCreateSequenceButton];
     }
+    
+    NSNumber *cellVisibilityRatio = [dependencyManager numberForKey:@"experiments.stream_atf_view_threshold"];
+    if ( cellVisibilityRatio != nil )
+    {
+        streamCollectionVC.minimumRequiredCellVisibilityRatio = cellVisibilityRatio.floatValue;
+    }
+    
     return streamCollectionVC;
 }
 
@@ -164,6 +172,7 @@ NSString * const VDependencyManagerStreamURLPathKey = @"streamUrlPath";
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    [self updateSequenceTracking];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -303,7 +312,13 @@ NSString * const VDependencyManagerStreamURLPathKey = @"streamUrlPath";
     viewController.sequence = sequence;
     [self presentViewController:viewController
                        animated:YES
-                     completion:nil];
+                     completion:^{
+                         // Track view-start event, similar to how content is tracking in VNewContentViewController when loaded
+                         NSDictionary *params = @{ VTrackingKeyTimeCurrent : [NSDate date],
+                                                   VTrackingKeySequenceId : sequence.remoteId,
+                                                   VTrackingKeyUrls : sequence.tracking.viewStart ?: @[] };
+                         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
+                     }];
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView
@@ -388,15 +403,6 @@ NSString * const VDependencyManagerStreamURLPathKey = @"streamUrlPath";
     cell.sequence = sequence;
     
     [self preloadSequencesAfterIndexPath:indexPath forDataSource:dataSource];
-    
-    if ( sequence != nil )
-    {
-        NSDictionary *params = @{ VTrackingKeySequenceId : sequence.remoteId,
-                                  VTrackingKeyStreamId : self.currentStream.remoteId,
-                                  VTrackingKeyTimeStamp : [NSDate date],
-                                  VTrackingKeyUrls : sequence.tracking.cellView };
-        [[VTrackingManager sharedInstance] queueEvent:VTrackingEventSequenceDidAppearInStream parameters:params eventId:sequence.remoteId];
-    }
     
     return cell;
 }
@@ -634,6 +640,60 @@ NSString * const VDependencyManagerStreamURLPathKey = @"streamUrlPath";
 - (void)didEnterBackground:(NSNotification *)notification
 {
     [[VTrackingManager sharedInstance] trackQueuedEventsWithName:VTrackingEventSequenceDidAppearInStream];
+}
+
+#pragma mark - UIScrollViewDelegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    [super scrollViewDidScroll:scrollView];
+    
+    [self updateSequenceTracking];
+}
+
+#pragma mark - Tracking
+
+- (void)updateSequenceTracking
+{
+    // Cells need to have this much visible area to be tracked
+    const float minimumRequiredVisibilityRatio = self.minimumRequiredCellVisibilityRatio;
+    
+    // The visible rect must be offset by the visible height of the header, which may or may not be visible
+    // In the future, when contentView's use a contentInset.top value to position content under the header,
+    // a combiantion of the contentInset and contentOffset values can be used instead
+    const CGFloat headerOffset = self.v_layoutInsets.top;
+    const CGRect streamVisibleRect = CGRectMake( CGRectGetMinX( self.collectionView.bounds ),
+                                                 CGRectGetMinY( self.collectionView.bounds ) + headerOffset,
+                                                 CGRectGetWidth( self.collectionView.bounds ),
+                                                 CGRectGetHeight (self.collectionView.bounds ) - headerOffset);
+    
+    NSArray *visibleCells = self.collectionView.visibleCells;
+    [visibleCells enumerateObjectsUsingBlock:^(VStreamCollectionCell *cell, NSUInteger idx, BOOL *stop)
+     {
+         if ( ![cell isKindOfClass:[VStreamCollectionCell class]] )
+         {
+             return;
+         }
+         
+         VSequence *sequence = cell.sequence;
+         if ( sequence == nil )
+         {
+             return;
+         }
+         
+         // Calculate visible ratio (consts are for performance since this is called very often)
+         const CGRect intersection = CGRectIntersection( streamVisibleRect, cell.frame );
+         const float visibleRatio = CGRectGetHeight( intersection ) / CGRectGetHeight( cell.frame );
+         
+         if ( visibleRatio >= minimumRequiredVisibilityRatio )
+         {
+             NSDictionary *params = @{ VTrackingKeySequenceId : sequence.remoteId,
+                                       VTrackingKeyStreamId : self.currentStream.remoteId,
+                                       VTrackingKeyTimeStamp : [NSDate date],
+                                       VTrackingKeyUrls : sequence.tracking.cellView };
+             [[VTrackingManager sharedInstance] queueEvent:VTrackingEventSequenceDidAppearInStream parameters:params eventId:sequence.remoteId];
+         }
+     }];
 }
 
 @end

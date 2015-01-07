@@ -147,7 +147,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Edit Profile" id="AIv-0V-2Ca">
-                        <barButtonItem key="rightBarButtonItem" style="done" systemItem="save" id="MzP-qA-JLJ">
+                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="MzP-qA-JLJ">
                             <connections>
                                 <action selector="done:" destination="VKu-9O-01w" id="0gl-OQ-sw0"/>
                             </connections>
@@ -169,7 +169,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="M4E-48-XjD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="736" y="66"/>
+            <point key="canvasLocation" x="983" y="-161"/>
         </scene>
         <!--Following-->
         <scene sceneID="HVG-hQ-7jJ">
@@ -195,7 +195,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WkX-cs-1hH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="218" y="816"/>
+            <point key="canvasLocation" x="886" y="816"/>
         </scene>
         <!--User Profile View Controller-->
         <scene sceneID="yKP-Pb-1QI">
@@ -228,14 +228,165 @@
                     </view>
                     <connections>
                         <outlet property="collectionView" destination="Y5M-Rj-OwC" id="D71-Rk-eIv"/>
-                        <segue destination="BFj-Qd-5qN" kind="push" identifier="toFollowers" id="cIf-5R-Gec"/>
-                        <segue destination="lpI-le-Hn9" kind="push" identifier="toFollowing" id="s31-G7-CnW"/>
-                        <segue destination="VKu-9O-01w" kind="push" identifier="toEditProfile" id="v6s-od-bSt"/>
+                        <segue destination="Kuc-kN-9tL" kind="push" identifier="toFollowers" id="OML-If-im7"/>
+                        <segue destination="3LS-NU-4gO" kind="push" identifier="toFollowing" id="pmh-7L-8ZI"/>
+                        <segue destination="qcg-od-rNV" kind="push" identifier="toEditProfile" id="lWx-SS-W2o"/>
+                        <segue destination="0P3-ku-CO7" kind="push" identifier="toHashtagsAndFollowing" id="6SA-uK-EZy"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bql-Kt-9t5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="19" y="66"/>
+        </scene>
+        <!--Followers-->
+        <scene sceneID="UKy-4c-biX">
+            <objects>
+                <viewController title="Followers" id="Kuc-kN-9tL" customClass="VContainerViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="kvq-XI-bEt"/>
+                        <viewControllerLayoutGuide type="bottom" id="ckh-1T-3cm"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="VYm-48-32i">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VNk-tP-8Ow">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <connections>
+                                    <segue destination="BFj-Qd-5qN" kind="embed" id="wpV-uE-D3k"/>
+                                </connections>
+                            </containerView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="NxB-cf-Doh"/>
+                    <connections>
+                        <outlet property="containerView" destination="VNk-tP-8Ow" id="pTS-1U-80C"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="pAm-Ep-wWc" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-601" y="816"/>
+        </scene>
+        <!--Following-->
+        <scene sceneID="jlq-rd-pfy">
+            <objects>
+                <viewController title="Following" id="0P3-ku-CO7" customClass="VContainerViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="iKa-VG-4Ta"/>
+                        <viewControllerLayoutGuide type="bottom" id="iZf-A6-x9w"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="T5s-hV-UAM">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QWc-Fn-yKk">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <connections>
+                                    <segue destination="86q-5Y-HrO" kind="embed" id="TnJ-QW-WEJ"/>
+                                </connections>
+                            </containerView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="PD2-FI-hY4"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="d2V-yy-Pkc" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="119" y="1511"/>
+        </scene>
+        <!--Profile Following Container View Controller-->
+        <scene sceneID="aSZ-yu-jMd">
+            <objects>
+                <viewController id="86q-5Y-HrO" customClass="VProfileFollowingContainerViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="PoE-cr-IZB"/>
+                        <viewControllerLayoutGuide type="bottom" id="nBb-NB-dHn"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="bFt-nf-xe8">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <containerView opaque="NO" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5de-sT-TwA">
+                                <rect key="frame" x="0.0" y="57" width="320" height="511"/>
+                            </containerView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="nBb-NB-dHn" firstAttribute="top" secondItem="5de-sT-TwA" secondAttribute="bottom" id="6fe-GV-VDY"/>
+                            <constraint firstItem="5de-sT-TwA" firstAttribute="leading" secondItem="bFt-nf-xe8" secondAttribute="leadingMargin" constant="-16" id="FJp-Yu-bwn"/>
+                            <constraint firstItem="5de-sT-TwA" firstAttribute="top" secondItem="PoE-cr-IZB" secondAttribute="bottom" constant="37" id="OTG-Vo-Qpj"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="5de-sT-TwA" secondAttribute="trailing" constant="-16" id="yoI-Uk-v4O"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="5Ss-xa-8iX"/>
+                    <connections>
+                        <outlet property="containerView" destination="5de-sT-TwA" id="2F7-6w-7Dc"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="zzv-qW-p4V" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="597" y="1511"/>
+        </scene>
+        <!--Following-->
+        <scene sceneID="fk2-Io-F9a">
+            <objects>
+                <viewController title="Following" id="3LS-NU-4gO" customClass="VContainerViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="MRd-Zo-Vbf"/>
+                        <viewControllerLayoutGuide type="bottom" id="fyN-0v-77y"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Z4R-Ys-fjO">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="z5F-Sk-4Wb">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <connections>
+                                    <segue destination="lpI-le-Hn9" kind="embed" id="Ymj-g3-SUK"/>
+                                </connections>
+                            </containerView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="M7Z-j3-os9"/>
+                    <connections>
+                        <outlet property="containerView" destination="z5F-Sk-4Wb" id="MON-eW-qir"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dFa-as-ulv" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="395" y="816"/>
+        </scene>
+        <!--Edit Profile-->
+        <scene sceneID="CIW-jj-0Hh">
+            <objects>
+                <viewController title="Edit Profile" id="qcg-od-rNV" customClass="VContainerViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="t2c-Te-MDt"/>
+                        <viewControllerLayoutGuide type="bottom" id="X3u-sz-9F4"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Vqp-9c-nYD">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="x5h-LS-Dax">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <connections>
+                                    <segue destination="VKu-9O-01w" kind="embed" id="VtG-Mv-518"/>
+                                </connections>
+                            </containerView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="vMp-zD-ch5"/>
+                    <connections>
+                        <outlet property="containerView" destination="x5h-LS-Dax" id="dBt-QN-NrG"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7GN-bI-vcp" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="507" y="66"/>
         </scene>
     </scenes>
     <resources>

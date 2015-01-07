@@ -87,8 +87,6 @@ static BOOL isRunningTests(void) __attribute__((const));
         [[[VDeeplinkManager alloc] initWithURL:openURL] performNavigation];
     }
     
-    [[[VFirstInstallManager alloc] init] reportFirstInstall];
-    
     NSString *pushNotificationDeeplink = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey][@"deeplink"];
     
     if ( pushNotificationDeeplink != nil )
@@ -162,24 +160,20 @@ static BOOL isRunningTests(void) __attribute__((const));
     [[VThemeManager sharedThemeManager] updateToNewTheme];
     [[VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext saveToPersistentStore:nil];
     
-    id appEnterBackgroundTracking = [VSettingManager sharedManager].applicationTracking.appEnterBackground;
+    VTracking *applicationTracking = [VSettingManager sharedManager].applicationTracking;
     
-    if ( appEnterBackgroundTracking != nil )
-    {
-        NSDictionary *params = @{ VTrackingKeyUrls : appEnterBackgroundTracking };
-        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventApplicationDidEnterBackground parameters:params];
-    }
+    NSArray* trackingURLs = applicationTracking != nil ? applicationTracking.appEnterBackground : @[];
+    NSDictionary *params = @{ VTrackingKeyUrls : trackingURLs };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventApplicationDidEnterBackground parameters:params];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
-    id appEnterForegroundTracking = [VSettingManager sharedManager].applicationTracking.appEnterForeground;
+    VTracking *applicationTracking = [VSettingManager sharedManager].applicationTracking;
     
-    if ( appEnterForegroundTracking != nil )
-    {
-        NSDictionary *params = @{ VTrackingKeyUrls : appEnterForegroundTracking };
-        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventApplicationDidEnterForeground parameters:params];
-    }
+    NSArray* trackingURLs = applicationTracking != nil ? applicationTracking.appEnterForeground : @[];
+    NSDictionary *params = @{ VTrackingKeyUrls : trackingURLs };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventApplicationDidEnterForeground parameters:params];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
@@ -199,12 +193,14 @@ static BOOL isRunningTests(void) __attribute__((const));
 {
     VTracking *applicationTracking = [VSettingManager sharedManager].applicationTracking;
     
-    if ( applicationTracking != nil )
-    {
-        NSDictionary *params = @{ VTrackingKeyUrls : applicationTracking.appLaunch };
-        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventApplicationDidLaunch parameters:params];
-    }
+    // Track first install
+    [[[VFirstInstallManager alloc] init] reportFirstInstallWithTracking:applicationTracking];
     
+    // Tracking init (cold start)
+    NSArray* trackingURLs = applicationTracking != nil ? applicationTracking.appLaunch : @[];
+    NSDictionary *params = @{ VTrackingKeyUrls : trackingURLs };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventApplicationDidLaunch parameters:params];
+
     // Only receive this once
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kInitResponseNotification object:nil];
 }
