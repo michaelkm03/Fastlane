@@ -289,7 +289,7 @@ NSString * const kPollResultsLoaded = @"kPollResultsLoaded";
           parameters:nil
         successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
             {
-                NSArray *payload = result[@"payload"];
+                NSArray *payload = result[kVPayloadKey][kVObjectsKey];
                 if ([payload isKindOfClass:[NSArray class]])
                 {
                     completion (payload, nil);
