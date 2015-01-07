@@ -71,6 +71,8 @@ static CGFloat const kTemplateCLineSpacing = 8;
 
 @property (nonatomic, assign) BOOL hasRefreshed;
 
+@property (strong, nonatomic) VDependencyManager *dependencyManager;
+
 @end
 
 @implementation VStreamCollectionViewController
@@ -205,6 +207,8 @@ static CGFloat const kTemplateCLineSpacing = 8;
         streamCollectionVC.minimumRequiredCellVisibilityRatio = cellVisibilityRatio.floatValue;
     }
     
+    streamCollectionVC.dependencyManager = dependencyManager;
+
     return streamCollectionVC;
 }
 
@@ -416,6 +420,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
 {
     VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithSequence:sequence];
     VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel];
+    contentViewController.dependencyManagerForHistogramExperiment = self.dependencyManager;
     contentViewController.placeholderImage = placeHolderImage;
     contentViewController.delegate = self;
     
