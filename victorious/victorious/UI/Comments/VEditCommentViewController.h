@@ -11,6 +11,10 @@
 
 @class VComment;
 
+@interface VCommentTextView : UITextView
+
+@end
+
 @protocol VEditCommentViewControllerDelegate <NSObject>
 
 - (void)didFinishEditingComment:(VComment *)comment;

@@ -36,7 +36,8 @@ static const UIEdgeInsets kTextInsets        = { 39.0f, 66.0f, 11.0f, 25.0f };
     self.usernameLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     
     [self setupSwipeView];
-    [self.contentView addFitToParentConstraintsToSubview:self.swipeViewController.view];}
+    [self.contentView addFitToParentConstraintsToSubview:self.swipeViewController.view];
+}
 
 + (CGFloat)estimatedHeightWithWidth:(CGFloat)width text:(NSString *)text withMedia:(BOOL)hasMedia
 {

@@ -8,6 +8,7 @@
 
 #import "VExperienceEnhancer.h"
 #import "VVoteType+Fetcher.h"
+#import "VTracking.h"
 
 @interface VExperienceEnhancer()
 
@@ -76,6 +77,15 @@
 - (void)resetStartingVoteCount:(NSUInteger)voteCount
 {
     self.startingVoteCount = voteCount;
+}
+
+- (NSArray *)trackingUrls
+{
+    if ( self.voteType.tracking.ballisticCount != nil )
+    {
+        return self.voteType.tracking.ballisticCount;
+    }
+    return @[];
 }
 
 @end

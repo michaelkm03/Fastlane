@@ -19,7 +19,7 @@
 + (RKEntityMapping *)entityMapping
 {
     NSDictionary *propertyMap = @{
-                                  @"view-start"         :   VSelectorName(videoStart),
+                                  @"view-start"         :   VSelectorName(viewStart),
                                   @"view-25-complete"   :   VSelectorName(videoComplete25),
                                   @"view-50-complete"   :   VSelectorName(videoComplete50),
                                   @"view-75-complete"   :   VSelectorName(videoComplete75),
@@ -30,6 +30,7 @@
                                   @"cell-view"          :   VSelectorName(cellView),
                                   @"cell-click"         :   VSelectorName(cellClick),
                                   @"init"               :   VSelectorName(appLaunch),
+                                  @"install"            :   VSelectorName(appInstall),
                                   @"start"              :   VSelectorName(appEnterForeground),
                                   @"stop"               :   VSelectorName(appEnterBackground),
                                   @"ballistic_count"    :   VSelectorName(ballisticCount),

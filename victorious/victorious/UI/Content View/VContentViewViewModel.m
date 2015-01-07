@@ -251,7 +251,7 @@ static NSString * const kPreferedMimeType = @"application/x-mpegURL";
 
 - (void)fetchHistogramData
 {
-    if (![self.sequence isVideo] || ![[VSettingManager sharedManager] settingEnabledForKey:VExperimentsHistogramEnabled])
+    if (![self.sequence isVideo])
     {
         return;
     }

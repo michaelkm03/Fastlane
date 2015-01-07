@@ -29,4 +29,6 @@
 
 @property (weak, nonatomic) id<VUtilityButtonsViewControllerDelegate> delegate;
 
+@property (nonatomic, strong) UICollectionView *collectionView;
+
 @end

@@ -21,10 +21,11 @@
 @dynamic videoError;
 @dynamic videoSkip;
 @dynamic videoStall;
-@dynamic videoStart;
+@dynamic viewStart;
 @dynamic ballisticCount;
 @dynamic appEnterForeground;
 @dynamic appLaunch;
+@dynamic appInstall;
 @dynamic appEnterBackground;
 @dynamic sequence;
 @dynamic voteType;

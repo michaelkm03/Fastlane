@@ -76,6 +76,8 @@
 #import "VEditCommentViewController.h"
 #import "VModalTransition.h"
 
+#import "VTracking.h"
+
 static const CGFloat kMaxInputBarHeight = 200.0f;
 
 @interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate,VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate>
@@ -332,8 +334,11 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     self.viewModel.experienceEnhancerController.delegate = self;
     
     NSDictionary *params = @{ VTrackingKeyTimeCurrent : [NSDate date],
-                              VTrackingKeySequenceId : self.viewModel.sequence.remoteId };
+                              VTrackingKeySequenceId : self.viewModel.sequence.remoteId,
+                              VTrackingKeyUrls : self.viewModel.sequence.tracking.viewStart ?: @[] };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
+    
+    [self.viewModel reloadData];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -403,8 +408,6 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     {
         self.textEntryView.placeholderText = NSLocalizedString(@"LeaveAComment", @"");
     }
-    
-    [self.viewModel reloadData];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -692,7 +695,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
             return 1;
         case VContentViewSectionHistogramOrQuestion:
         {
-            NSInteger ret = (self.viewModel.type == VContentViewTypePoll) ? 1 : 0;
+            NSInteger ret = ((self.viewModel.type == VContentViewTypePoll) || (self.viewModel.type == VContentViewTypeVideo))? 1 : 0;
             return ret;
         }
             
@@ -1026,9 +1029,10 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
         case VContentViewSectionAllComments:
         {
             VComment *comment = self.viewModel.comments[indexPath.row];
-            return [VContentCommentsCell sizeWithFullWidth:CGRectGetWidth(self.contentCollectionView.bounds)
-                                               commentBody:comment.text
-                                               andHasMedia:comment.hasMedia];
+            CGSize size = [VContentCommentsCell sizeWithFullWidth:CGRectGetWidth(self.contentCollectionView.bounds)
+                                                      commentBody:comment.text
+                                                      andHasMedia:comment.hasMedia];
+            return CGSizeMake( CGRectGetWidth(self.view.bounds), size.height );
         }
         case VContentViewSectionCount:
             return CGSizeMake(CGRectGetWidth(self.view.bounds), CGRectGetWidth(self.view.bounds));
@@ -1313,6 +1317,11 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     // Do nothing, eventually a nice animation to reveal experience enhancers
 }
 
+- (BOOL)isVideoContent
+{
+    return self.videoCell != nil;
+}
+
 - (Float64)currentVideoTime
 {
     if ( self.videoCell != nil )
@@ -1336,14 +1345,13 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 - (void)cellWillShowUtilityButtons:(UIView *)cellView
 {
     // Close any other cells showing utility buttons
-    
-    for ( VContentCommentsCell *cell in self.contentCollectionView.visibleCells )
-    {
-        if ( [cell isKindOfClass:[VContentCommentsCell class]] && cellView != cell )
-        {
-            [cell.swipeViewController hideUtilityButtons];
-        }
-    }
+    [self.contentCollectionView.visibleCells enumerateObjectsUsingBlock:^(VContentCommentsCell *cell, NSUInteger idx, BOOL *stop)
+     {
+         if ( [cell isKindOfClass:[VContentCommentsCell class]] && cellView != cell )
+         {
+             [cell.swipeViewController hideUtilityButtons];
+         }
+     }];
 }
 
 #pragma mark - VCommentCellUtilitiesDelegate
@@ -1376,7 +1384,27 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 
 - (void)didFinishEditingComment:(VComment *)comment
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self dismissViewControllerAnimated:YES completion:^void
+     {
+         for ( VContentCommentsCell *cell in self.contentCollectionView.subviews )
+         {
+             if ( [cell isKindOfClass:[VContentCommentsCell class]] && [cell.comment.remoteId isEqualToNumber:comment.remoteId] )
+             {
+                 // Update the cell's comment to show the new text
+                 cell.comment = comment;
+                 
+                 // Invalidate the layout to resize the cell
+                 [self.contentCollectionView performBatchUpdates:^void
+                  {
+                      NSIndexPath *indexPathToInvalidate = [self.contentCollectionView indexPathForCell:cell];
+                      [self.contentCollectionView reloadItemsAtIndexPaths:@[ indexPathToInvalidate ]];
+                  }
+                                                      completion:nil];
+                 
+                 return;
+             }
+         }
+     }];
 }
 
 @end

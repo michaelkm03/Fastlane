@@ -29,7 +29,6 @@ static NSTimeInterval const kMinimumTimeBetweenSessions = 1800.0; // 30 minutes
 
 @interface VSessionTimer ()
 
-@property (nonatomic, strong) NSMutableArray *previousSessions;
 @property (nonatomic, readwrite) NSTimeInterval previousBackgroundTime;
 @property (nonatomic) BOOL firstLaunch;
 @property (nonatomic) BOOL transitioningFromBackgroundToForeground;
@@ -51,8 +50,6 @@ static NSTimeInterval const kMinimumTimeBetweenSessions = 1800.0; // 30 minutes
 
 - (void)start
 {
-    self.previousSessions = [[self loadPreviousSessionsFromDisk] mutableCopy];
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground:)  name:UIApplicationDidEnterBackgroundNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:)     name:UIApplicationDidBecomeActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive:)    name:UIApplicationWillResignActiveNotification object:nil];
@@ -80,11 +77,6 @@ static NSTimeInterval const kMinimumTimeBetweenSessions = 1800.0; // 30 minutes
         self.previousBackgroundTime = -[lastSessionEnd timeIntervalSinceNow];
     }
     
-    if (self.previousSessions.count)
-    {
-        [self reportSessions];
-    }
-    
     if (!self.firstLaunch && self.previousBackgroundTime >= kMinimumTimeBetweenSessions)
     {
         [[NSNotificationCenter defaultCenter] postNotificationName:VSessionTimerNewSessionShouldStart object:self];
@@ -96,83 +88,6 @@ static NSTimeInterval const kMinimumTimeBetweenSessions = 1800.0; // 30 minutes
 {
     self.firstLaunch = NO;
     [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:kSessionEndTimeDefaultsKey];
-    NSTimeInterval sessionLength = -[self.sessionStartTime timeIntervalSinceNow];
-    [self addSessionToReportingQueueWithLength:sessionLength];
-    [self saveSessionsToDisk:self.previousSessions];
-    [self reportSessions];
-}
-
-#pragma mark - Reporting
-
-- (void)addSessionToReportingQueueWithLength:(NSTimeInterval)sessionLength
-{
-    NSDictionary *session = @{ kSessionEndTimePropertyListKey: [NSDate date],
-                               kSessionLengthPropertyListKey:  @(sessionLength)
-                               };
-    [self.previousSessions addObject:session];
-}
-
-- (void)reportSessions
-{
-    __block RKManagedObjectRequestOperation *requestOperation = nil;
-    UIBackgroundTaskIdentifier task = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^(void)
-                                       {
-                                           [requestOperation cancel];
-                                       }];
-    
-    NSArray *analyticsEvents = [self.previousSessions v_map:^id (NSDictionary *session)
-                                {
-                                    return [[VObjectManager sharedManager] dictionaryForSessionEventWithDate:session[kSessionEndTimePropertyListKey] length:[session[kSessionLengthPropertyListKey] doubleValue]];
-                                }];
-    
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-    requestOperation = [[VObjectManager sharedManager] addEvents:analyticsEvents
-                                                    successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-                        {
-                            [self.previousSessions removeAllObjects];
-                            [[NSFileManager defaultManager] removeItemAtURL:[self previousSessionSaveLocation] error:nil];
-                            [[UIApplication sharedApplication] endBackgroundTask:task];
-                        }
-                                                       failBlock:^(NSOperation *operation, NSError *error)
-                        {
-                            NSLog(@"Error posting session events to the server: %@", [error localizedDescription]);
-                            [[UIApplication sharedApplication] endBackgroundTask:task];
-                        }];
-#pragma clang diagnostic pop
-}
-
-- (NSArray *)loadPreviousSessionsFromDisk
-{
-    NSData *previousSessionData = [NSData dataWithContentsOfURL:[self previousSessionSaveLocation]];
-    if (previousSessionData)
-    {
-        return [NSPropertyListSerialization propertyListWithData:previousSessionData
-                                                         options:0
-                                                          format:NULL
-                                                           error:nil];
-    }
-    return @[];
-}
-
-- (void)saveSessionsToDisk:(NSArray *)sessions
-{
-    NSData *sessionsData = [NSPropertyListSerialization dataWithPropertyList:sessions
-                                                                      format:NSPropertyListXMLFormat_v1_0
-                                                                     options:0
-                                                                       error:nil];
-    [sessionsData writeToURL:[self previousSessionSaveLocation] atomically:NO];
-}
-
-- (NSURL *)previousSessionSaveLocation
-{
-    NSArray *searchResults = [[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask];
-    if (searchResults.count)
-    {
-        NSURL *documentsDirectory = searchResults[0];
-        return [documentsDirectory URLByAppendingPathComponent:@"sessions"];
-    }
-    return nil;
 }
 
 #pragma mark - NSNotification handlers

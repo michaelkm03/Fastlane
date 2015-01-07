@@ -11,11 +11,13 @@
 extern NSString * const VAppInstalledOldTrackingDefaultsKey;
 extern NSString * const VAppInstalledDefaultsKey;
 
+@class VTracking;
+
 @interface VFirstInstallManager : NSObject
 
 /**
  Check if this is the first time the app has been installed and track the event.
  */
-- (void)reportFirstInstall;
+- (void)reportFirstInstallWithTracking:(VTracking *)applicationTracking;
 
 @end

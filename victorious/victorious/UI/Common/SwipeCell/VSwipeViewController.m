@@ -72,12 +72,17 @@
     [self.scrollView setContentOffset:CGPointZero animated:YES];
 }
 
-- (void)showUtilityButtons
+- (void)showUtilityButtonsAnimated:(BOOL)animated
 {
     CGFloat buttonWidth = [self.cellDelegate utilityButtonWidth];
     NSUInteger buttonCount = [self.cellDelegate numberOfUtilityButtons];
     CGFloat maxContentOffsetX = buttonWidth * buttonCount;
-    [self.scrollView setContentOffset:CGPointMake( maxContentOffsetX, 0.0f ) animated:YES];
+    [self.scrollView setContentOffset:CGPointMake( maxContentOffsetX, 0.0f ) animated:animated];
+}
+
+- (void)showUtilityButtons
+{
+    [self showUtilityButtonsAnimated:YES];
 }
 
 - (void)viewDidLoad
@@ -110,7 +115,8 @@
     self.utilityButtonsViewController = [[VUtilityButtonsViewController alloc] initWithFrame:startingFrame];
     self.utilityButtonsViewController.delegate = self;
     [self.view addSubview:self.utilityButtonsViewController.view];
-    [self setCollectionViewConstraints];
+    [self setUtilityButtonViewConstraintsWithView:self.utilityButtonsViewController.view
+                                        superview:self.view ];
     
     [self createBlockerButtonOverlay];
     [self setBlockerButtonOverlayConstraints];
@@ -127,12 +133,16 @@
 
 - (void)createBlockerButtonOverlay
 {
-    self.blockerButtonOverlay = [[UIButton alloc] initWithFrame:self.cellDelegate.parentCellView.bounds];
+    CGRect frame = self.cellDelegate.parentCellView.bounds;
+    frame.size.height = 20.0;
+    self.blockerButtonOverlay = [[UIButton alloc] initWithFrame:frame];
     self.blockerButtonOverlay.backgroundColor = [UIColor clearColor];
     self.blockerButtonOverlay.hidden = YES;
+    self.blockerButtonOverlay.translatesAutoresizingMaskIntoConstraints = NO;
     [self.blockerButtonOverlay addTarget:self action:@selector(blockerButtonOverlayTapped:) forControlEvents:UIControlEventTouchDown];
     [self.cellDelegate.parentCellView addSubview:self.blockerButtonOverlay];
     [self.cellDelegate.parentCellView bringSubviewToFront:self.blockerButtonOverlay];
+    [self.cellDelegate.parentCellView addFitToParentConstraintsToSubview:self.blockerButtonOverlay];
 }
 
 - (void)createLeftGutterView
@@ -220,12 +230,13 @@
                                                                             views:views]];
 }
 
-- (void)setCollectionViewConstraints
+- (void)setUtilityButtonViewConstraintsWithView:(UIView *)collectionView superview:(UIView *)superview
 {
-    UIView *collectionView = self.utilityButtonsViewController.view;
+    NSParameterAssert( collectionView.superview == superview );
+    
     NSDictionary *views = @{ @"collectionView" : collectionView };
     collectionView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[collectionView]|"
+    [superview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[collectionView]|"
                                                                  options:kNilOptions
                                                                  metrics:nil
                                                                    views:views]];
@@ -234,7 +245,7 @@
                                                                     metrics:nil
                                                                       views:views];
     self.collectionViewTrailingConstraint = constraintsH.firstObject;
-    [self.view addConstraints:constraintsH];
+    [superview addConstraints:constraintsH];
     self.collectionViewWidthConstraint = [NSLayoutConstraint constraintWithItem:collectionView
                                                                       attribute:NSLayoutAttributeWidth
                                                                       relatedBy:NSLayoutRelationEqual
