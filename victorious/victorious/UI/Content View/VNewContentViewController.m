@@ -1381,27 +1381,26 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 
 - (void)didFinishEditingComment:(VComment *)comment
 {
-    [self dismissViewControllerAnimated:YES completion:^void
+    for ( VContentCommentsCell *cell in self.contentCollectionView.subviews )
      {
-         for ( VContentCommentsCell *cell in self.contentCollectionView.subviews )
+         if ( [cell isKindOfClass:[VContentCommentsCell class]] && [cell.comment.remoteId isEqualToNumber:comment.remoteId] )
          {
-             if ( [cell isKindOfClass:[VContentCommentsCell class]] && [cell.comment.remoteId isEqualToNumber:comment.remoteId] )
-             {
-                 // Update the cell's comment to show the new text
-                 cell.comment = comment;
-                 
-                 // Invalidate the layout to resize the cell
-                 [self.contentCollectionView performBatchUpdates:^void
-                  {
-                      NSIndexPath *indexPathToInvalidate = [self.contentCollectionView indexPathForCell:cell];
-                      [self.contentCollectionView reloadItemsAtIndexPaths:@[ indexPathToInvalidate ]];
-                  }
-                                                      completion:nil];
-                 
-                 return;
-             }
+             // Update the cell's comment to show the new text
+             cell.comment = comment;
+             
+             [self dismissViewControllerAnimated:YES completion:^void
+              {
+                  [self.contentCollectionView performBatchUpdates:^void
+                   {
+                       NSIndexPath *indexPathToInvalidate = [self.contentCollectionView indexPathForCell:cell];
+                       [self.contentCollectionView reloadItemsAtIndexPaths:@[ indexPathToInvalidate ]];
+                   }
+                                                       completion:nil];
+              }];
+             
+             break;
          }
-     }];
+     }
 }
 
 @end
