@@ -9,6 +9,7 @@
 #import "VDependencyManager.h"
 #import "VNavigationController.h"
 #import "UIImage+VSolidColor.h"
+#import "UIViewController+VLayoutInsets.h"
 
 #import <objc/runtime.h>
 
@@ -238,12 +239,35 @@
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(supplementaryHeaderView)]];
     self.supplementaryHeaderView = supplementaryHeaderView;
+    [self.view layoutIfNeeded];
+    [self provideLayoutInsetsToViewController:self.innerNavigationController.topViewController];
+}
+
+- (void)provideLayoutInsetsToViewController:(UIViewController *)viewController
+{
+    if ( [viewController v_prefersNavigationBarHidden] || ![self layoutWillExtendUnderNavigationBarForViewController:viewController] )
+    {
+        viewController.v_layoutInsets = UIEdgeInsetsZero;
+        return;
+    }
+    
+    CGFloat navigationBarHeight = CGRectGetHeight(self.innerNavigationController.navigationBar.frame) +
+                                  CGRectGetHeight(viewController.navigationItem.v_supplementaryHeaderView.frame) +
+                                  CGRectGetHeight([UIApplication sharedApplication].statusBarFrame);
+    viewController.v_layoutInsets = UIEdgeInsetsMake(navigationBarHeight, 0, 0, 0);
+}
+
+- (BOOL)layoutWillExtendUnderNavigationBarForViewController:(UIViewController *)viewController
+{
+    return self.innerNavigationController.navigationBar.translucent || viewController.extendedLayoutIncludesOpaqueBars;
 }
 
 #pragma mark - UINavigationControllerDelegate methods
 
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
+    [self provideLayoutInsetsToViewController:viewController];
+    
     BOOL prefersNavigationBarHidden = [viewController v_prefersNavigationBarHidden];
     
     if ( !prefersNavigationBarHidden && self.innerNavigationController.navigationBarHidden )

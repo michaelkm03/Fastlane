@@ -285,6 +285,7 @@
 		03B3D3D31A3BC4DD00F0634A /* VNumericalBadgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B3D3D21A3BC4DD00F0634A /* VNumericalBadgeView.m */; };
 		03B3D3D61A3D172800F0634A /* VNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B3D3D51A3D172800F0634A /* VNavigationController.m */; };
 		03B3D3DE1A3ECCB500F0634A /* VMultipleContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B3D3DD1A3ECCB500F0634A /* VMultipleContainerViewController.m */; };
+		03B7580F1A5CF8E600F3FCEC /* UIViewController+VLayoutInsets.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B7580E1A5CF8E600F3FCEC /* UIViewController+VLayoutInsets.m */; };
 		03B83B5519E066AF00DC04E4 /* VUploadTaskSerializer.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B83B5419E066AF00DC04E4 /* VUploadTaskSerializer.m */; };
 		03B83B5D19E0990E00DC04E4 /* VUploadProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B83B5C19E0990E00DC04E4 /* VUploadProgressView.m */; };
 		03B83B6219E0D2CC00DC04E4 /* VUploadProgressViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B83B6119E0D2CC00DC04E4 /* VUploadProgressViewController.m */; };
@@ -1165,6 +1166,8 @@
 		03B3D3D51A3D172800F0634A /* VNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNavigationController.m; sourceTree = "<group>"; };
 		03B3D3DC1A3ECCB500F0634A /* VMultipleContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMultipleContainerViewController.h; sourceTree = "<group>"; };
 		03B3D3DD1A3ECCB500F0634A /* VMultipleContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMultipleContainerViewController.m; sourceTree = "<group>"; };
+		03B7580D1A5CF8E600F3FCEC /* UIViewController+VLayoutInsets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+VLayoutInsets.h"; sourceTree = "<group>"; };
+		03B7580E1A5CF8E600F3FCEC /* UIViewController+VLayoutInsets.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+VLayoutInsets.m"; sourceTree = "<group>"; };
 		03B83B5319E066AF00DC04E4 /* VUploadTaskSerializer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUploadTaskSerializer.h; sourceTree = "<group>"; };
 		03B83B5419E066AF00DC04E4 /* VUploadTaskSerializer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUploadTaskSerializer.m; sourceTree = "<group>"; };
 		03B83B5B19E0990E00DC04E4 /* VUploadProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUploadProgressView.h; sourceTree = "<group>"; };
@@ -3611,6 +3614,8 @@
 				D8E39BF019CB9D58007FD86A /* UIView+VShadows.m */,
 				03A2AD951926B9460034EB80 /* UIViewController+ForceOrientationChange.h */,
 				03A2AD961926B9460034EB80 /* UIViewController+ForceOrientationChange.m */,
+				03B7580D1A5CF8E600F3FCEC /* UIViewController+VLayoutInsets.h */,
+				03B7580E1A5CF8E600F3FCEC /* UIViewController+VLayoutInsets.m */,
 				03811D3219353486005687FF /* VAlertViewBlockDelegate.h */,
 				03811D3319353486005687FF /* VAlertViewBlockDelegate.m */,
 				BE46F02B19D0CC3700CD7EF6 /* VConversation+UnreadMessageCount.h */,
@@ -4783,6 +4788,7 @@
 				0350426A194F711A008D78A3 /* NSIndexSet+Map.m in Sources */,
 				BE11447E19D4ADCC006A6D65 /* UIImageView+VLoadingAnimations.m in Sources */,
 				0314D4C119B46B5E00FA363C /* VProfileEditViewController.m in Sources */,
+				03B7580F1A5CF8E600F3FCEC /* UIViewController+VLayoutInsets.m in Sources */,
 				03CCEB161A4116D700B0F6F6 /* VSelectorViewBase.m in Sources */,
 				0314D08C19B4690A00FA363C /* VDeeplinkManager.m in Sources */,
 				BE799BB419C8DF5B0023CE88 /* VAsset+OrderedSet.m in Sources */,

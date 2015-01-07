@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "UIViewController+VLayoutInsets.h"
 #import "VDependencyManager.h"
 #import "VMultipleContainerViewController.h"
 #import "VNavigationController.h"
@@ -143,6 +144,18 @@ static NSString * const kInitialKey = @"initial";
     [self.collectionView reloadData];
 }
 
+- (void)v_setLayoutInsets:(UIEdgeInsets)layoutInsets
+{
+    [super v_setLayoutInsets:layoutInsets];
+    [self.viewControllers enumerateObjectsUsingBlock:^(UIViewController *obj, NSUInteger idx, BOOL *stop)
+    {
+        if ( [obj isKindOfClass:[UIViewController class]] )
+        {
+            obj.v_layoutInsets = layoutInsets;
+        }
+    }];
+}
+
 #pragma mark -
 
 - (UIViewController *)viewControllerAtIndexPath:(NSIndexPath *)indexPath
@@ -183,6 +196,7 @@ static NSString * const kInitialKey = @"initial";
 {
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kCellReuseID forIndexPath:indexPath];
     UIViewController *viewController = [self viewControllerAtIndexPath:indexPath];
+    viewController.v_layoutInsets = self.v_layoutInsets;
     UIView *viewControllerView = viewController.view;
     
     [self addChildViewController:viewController];

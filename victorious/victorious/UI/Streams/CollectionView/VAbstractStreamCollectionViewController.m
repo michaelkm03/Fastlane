@@ -14,6 +14,7 @@
 #import "MBProgressHUD.h"
 
 #import "UIActionSheet+VBlocks.h"
+#import "UIViewController+VLayoutInsets.h"
 #import "VObjectManager+Login.h"
 
 //View Controllers
@@ -23,6 +24,7 @@
 #import "VCreatePollViewController.h"
 #import "VFindFriendsViewController.h"
 #import "VAuthorizationViewControllerFactory.h"
+#import "VNavigationController.h"
 
 //Data Models
 #import "VStream+Fetcher.h"
@@ -43,10 +45,52 @@ const CGFloat kVLoadNextPagePoint = .75f;
 
 @implementation VAbstractStreamCollectionViewController
 
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self != nil)
+    {
+        [self commonInit];
+    }
+    return self;
+}
+
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if ( self != nil )
+    {
+        [self commonInit];
+    }
+    return self;
+}
+
+- (void)commonInit
+{
+    self.automaticallyAdjustsScrollViewInsets = NO;
+    self.extendedLayoutIncludesOpaqueBars = YES;
+}
+
 - (void)dealloc
 {
     self.collectionView.dataSource = nil;
     self.collectionView.delegate = nil;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    self.collectionView.contentInset = self.v_layoutInsets;
+}
+
+- (void)v_setLayoutInsets:(UIEdgeInsets)layoutInsets
+{
+    [super v_setLayoutInsets:layoutInsets];
+
+    if ( [self isViewLoaded] )
+    {
+        self.collectionView.contentInset = layoutInsets;
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
