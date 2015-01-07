@@ -9,6 +9,7 @@
 #import "VHashtagFollowingTableViewController.h"
 #import "VTrendingTagCell.h"
 #import "VObjectManager+Discover.h"
+#import "VObjectManager+Sequence.h"
 #import "VNoContentTableViewCell.h"
 #import "VObjectManager+Users.h"
 #import "VUser.h"
@@ -39,6 +40,11 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
     
     [self configureTableView];
     [self loadHashtagData];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(reloadHashtagData:)
+                                                 name:kHashtagStatusChangedNotification
+                                               object:nil];
 }
 
 #pragma mark - Loading data
@@ -49,6 +55,11 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
     self.userTags = self.followingTagSet = [mainUser.hashtags mutableCopy];
     
     [self retrieveHashtagsForLoggedInUser];
+}
+
+- (void)reloadHashtagData:(NSNotification *)notification
+{
+    [self loadHashtagData];
 }
 
  #pragma mark - Get / Format Logged In Users Tags
@@ -226,9 +237,9 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
     };
     
     // Backend Call to Subscribe to Hashtag
-    [[VObjectManager sharedManager] subscribeToHashtag:hashtag
-                                          successBlock:successBlock
-                                             failBlock:failureBlock];
+    [[VObjectManager sharedManager] subscribeToHashtagUsingVHashtagObject:hashtag
+                                                             successBlock:successBlock
+                                                                failBlock:failureBlock];
 }
 
 - (void)unsubscribeToTagAction:(VHashtag *)hashtag
@@ -247,9 +258,9 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
     };
     
     // Backend Call to Unsubscribe to Hashtag
-    [[VObjectManager sharedManager] unsubscribeToHashtag:hashtag
-                                            successBlock:successBlock
-                                               failBlock:failureBlock];
+    [[VObjectManager sharedManager] unsubscribeToHashtagUsingVHashtagObject:hashtag
+                                                               successBlock:successBlock
+                                                                  failBlock:failureBlock];
 }
 
 - (void)resetCellStateForHashtag:(VHashtag *)hashtag cellShouldRespond:(BOOL)respond failure:(BOOL)failed

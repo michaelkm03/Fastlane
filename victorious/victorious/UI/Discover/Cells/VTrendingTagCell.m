@@ -98,9 +98,13 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
     BOOL subscribed = NO;
     VUser *mainUser = [[VObjectManager sharedManager] mainUser];
 
-    if ([mainUser.hashtags containsObject:self.hashtag])
+    for (VHashtag *aTag in mainUser.hashtags)
     {
-        subscribed = YES;
+        if ([aTag.tag isEqualToString:self.hashtag.tag])
+        {
+            subscribed = YES;
+            break;
+        }
     }
     _isSubscribedToTag = subscribed;
 
