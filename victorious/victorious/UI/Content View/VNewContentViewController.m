@@ -50,6 +50,7 @@
 #import "VUserProfileViewController.h"
 #import "VAuthorizationViewControllerFactory.h"
 #import "VPurchaseViewController.h"
+#import "VCameraPublishViewController.h"
 
 // Transitioning
 #import "VLightboxTransitioningDelegate.h"
@@ -67,8 +68,7 @@
 
 // Experiments
 #import "VSettingManager.h"
-
-#import "VCameraPublishViewController.h"
+#import "VDependencyManager.h"
 
 #import "VSequence+Fetcher.h"
 
@@ -683,8 +683,17 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
             return 1;
         case VContentViewSectionHistogramOrQuestion:
         {
-            NSInteger ret = ((self.viewModel.type == VContentViewTypePoll) || (self.viewModel.type == VContentViewTypeVideo))? 1 : 0;
-            return ret;
+            if (self.viewModel.type == VContentViewTypePoll)
+            {
+                return 1;
+            }
+            
+            if ([self.dependencyManagerForHistogramExperiment numberForKey:VDependencyManagerHistogramEnabledKey])
+            {
+                return 1;
+            }
+            
+            return 0;
         }
             
         case VContentViewSectionExperienceEnhancers:
