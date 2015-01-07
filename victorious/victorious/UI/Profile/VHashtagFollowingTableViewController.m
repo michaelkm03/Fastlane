@@ -15,6 +15,7 @@
 #import "VHashtag.h"
 #import "VConstants.h"
 #import "VThemeManager.h"
+#import "VStream+Fetcher.h"
 #import "VStreamCollectionViewController.h"
 #import "VNoContentView.h"
 #import <MBProgressHUD.h>
@@ -200,8 +201,9 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
 
 - (void)showStreamWithHashtag:(NSString *)hashtag
 {
-    VStreamCollectionViewController *stream = [VStreamCollectionViewController hashtagStreamWithHashtag:hashtag];
-    [self.navigationController pushViewController:stream animated:YES];
+    VStream *stream = [VStream streamForHashTag:hashtag];
+    VStreamCollectionViewController *streamViewController = [VStreamCollectionViewController streamViewControllerForStream:stream];
+    [self.navigationController pushViewController:streamViewController animated:YES];
     
 }
 

@@ -230,6 +230,7 @@ NSString * const VDependencyManagerStreamURLPathKey = @"streamUrlPath";
 {
     self.streamDataSource.hasHeaderCell = NO;
     self.title = currentStream.name;
+    self.navigationItem.title = currentStream.name;
     [super setCurrentStream:currentStream];
 }
 
