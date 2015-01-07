@@ -51,7 +51,7 @@
 
 static const CGFloat kTemplateCYRatio = 1.34768211921; //407/302
 static const CGFloat kTemplateCXRatio = 0.94375;
-static const CGFloat kDescriptionBuffer = 15.0;
+static const CGFloat kDescriptionBuffer = 37.0;
 
 @implementation VStreamCollectionCell
 

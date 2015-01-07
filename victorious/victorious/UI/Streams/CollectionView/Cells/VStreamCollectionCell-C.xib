@@ -15,6 +15,13 @@
                 <rect key="frame" x="0.0" y="0.0" width="302" height="478"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="W6W-Ju-9kU" customClass="VStreamCellHeaderView">
+                        <rect key="frame" x="0.0" y="0.0" width="302" height="50"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="width" secondItem="W6W-Ju-9kU" secondAttribute="height" multiplier="151:25" id="BD6-vG-1Z5"/>
+                        </constraints>
+                    </view>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="De6-Pn-uJH" userLabel="Preview Image View">
                         <rect key="frame" x="0.0" y="50" width="302" height="302"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -25,10 +32,6 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qnr-LZ-FqW" userLabel="Shade View">
                         <rect key="frame" x="0.0" y="50" width="302" height="302"/>
                         <subviews>
-                            <view alpha="0.15000000596046448" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="i7f-e2-vae">
-                                <rect key="frame" x="0.0" y="0.0" width="302" height="302"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="topGradient" translatesAutoresizingMaskIntoConstraints="NO" id="KAf-77-Oi4">
                                 <rect key="frame" x="0.0" y="0.0" width="302" height="52"/>
                                 <constraints>
@@ -41,6 +44,10 @@
                                     <constraint firstAttribute="height" constant="102" id="AGg-C9-1On"/>
                                 </constraints>
                             </imageView>
+                            <view alpha="0.15000000596046448" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="i7f-e2-vae">
+                                <rect key="frame" x="0.0" y="0.0" width="302" height="302"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -56,21 +63,20 @@
                             <constraint firstItem="Cqz-ud-Eay" firstAttribute="leading" secondItem="qnr-LZ-FqW" secondAttribute="leading" id="zeD-9j-4YQ"/>
                         </constraints>
                     </view>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="W6W-Ju-9kU" customClass="VStreamCellHeaderView">
-                        <rect key="frame" x="0.0" y="0.0" width="302" height="50"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstAttribute="width" secondItem="W6W-Ju-9kU" secondAttribute="height" multiplier="151:25" id="BD6-vG-1Z5"/>
-                        </constraints>
-                    </view>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="PlayTriangle" translatesAutoresizingMaskIntoConstraints="NO" id="EYB-Sg-RQg">
                         <rect key="frame" x="125" y="175" width="52" height="52"/>
                     </imageView>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="PlayCircle" translatesAutoresizingMaskIntoConstraints="NO" id="IRG-lN-Zwl">
                         <rect key="frame" x="125" y="175" width="52" height="52"/>
                     </imageView>
+                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Lorem ipsum dolor sit amet" translatesAutoresizingMaskIntoConstraints="NO" id="QyC-HK-x2o" customClass="VHashTagTextView">
+                        <rect key="frame" x="25" y="366" width="252" height="71"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                    </textView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LDv-jo-7gZ" customClass="VStreamCellActionView">
-                        <rect key="frame" x="-1" y="432" width="304" height="41"/>
+                        <rect key="frame" x="-1" y="437" width="304" height="41"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="41" id="Lvh-Ay-jgk"/>
@@ -81,12 +87,15 @@
             </view>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="W6W-Ju-9kU" secondAttribute="trailing" id="3VU-4t-DFQ"/>
+                <constraint firstItem="QyC-HK-x2o" firstAttribute="leading" secondItem="4JO-Ba-PyN" secondAttribute="leading" constant="25" id="3sg-hz-drp"/>
                 <constraint firstItem="W6W-Ju-9kU" firstAttribute="top" secondItem="4JO-Ba-PyN" secondAttribute="top" id="44L-21-rKG"/>
                 <constraint firstAttribute="trailing" secondItem="LDv-jo-7gZ" secondAttribute="trailing" constant="-1" id="5Mm-nB-GND"/>
+                <constraint firstAttribute="trailing" secondItem="QyC-HK-x2o" secondAttribute="trailing" constant="25" id="CsX-Aq-3xz"/>
                 <constraint firstItem="qnr-LZ-FqW" firstAttribute="leading" secondItem="De6-Pn-uJH" secondAttribute="leading" id="GHQ-xD-hRB"/>
                 <constraint firstItem="LDv-jo-7gZ" firstAttribute="leading" secondItem="4JO-Ba-PyN" secondAttribute="leading" constant="-1" id="GHg-5D-n1d"/>
+                <constraint firstItem="LDv-jo-7gZ" firstAttribute="top" secondItem="QyC-HK-x2o" secondAttribute="bottom" id="HJq-4C-jDM"/>
                 <constraint firstItem="qnr-LZ-FqW" firstAttribute="trailing" secondItem="De6-Pn-uJH" secondAttribute="trailing" id="KTO-uV-zm5"/>
-                <constraint firstAttribute="bottom" secondItem="LDv-jo-7gZ" secondAttribute="bottom" constant="5" id="NgO-Wi-bMH"/>
+                <constraint firstAttribute="bottom" secondItem="LDv-jo-7gZ" secondAttribute="bottom" id="NgO-Wi-bMH"/>
                 <constraint firstItem="IRG-lN-Zwl" firstAttribute="centerY" secondItem="De6-Pn-uJH" secondAttribute="centerY" id="Qin-Ad-Vkb"/>
                 <constraint firstItem="qnr-LZ-FqW" firstAttribute="top" secondItem="De6-Pn-uJH" secondAttribute="top" id="VvG-Cj-4QJ"/>
                 <constraint firstItem="IRG-lN-Zwl" firstAttribute="centerY" secondItem="EYB-Sg-RQg" secondAttribute="centerY" id="XRg-Wl-KJB"/>
@@ -97,10 +106,12 @@
                 <constraint firstItem="W6W-Ju-9kU" firstAttribute="leading" secondItem="4JO-Ba-PyN" secondAttribute="leading" id="io7-oH-DPa"/>
                 <constraint firstItem="qnr-LZ-FqW" firstAttribute="bottom" secondItem="De6-Pn-uJH" secondAttribute="bottom" id="j3d-Xp-Sld"/>
                 <constraint firstItem="IRG-lN-Zwl" firstAttribute="centerX" secondItem="De6-Pn-uJH" secondAttribute="centerX" id="qdd-bK-q4S"/>
+                <constraint firstItem="QyC-HK-x2o" firstAttribute="top" secondItem="De6-Pn-uJH" secondAttribute="bottom" constant="14" id="rw4-c9-IKM"/>
             </constraints>
             <size key="customSize" width="543" height="313"/>
             <connections>
                 <outlet property="actionView" destination="LDv-jo-7gZ" id="1oO-81-IEN"/>
+                <outlet property="captionTextView" destination="QyC-HK-x2o" id="cMd-VE-Gge"/>
                 <outlet property="lowerGradientView" destination="Cqz-ud-Eay" id="R8Q-Z7-7hI"/>
                 <outlet property="playBackgroundImageView" destination="IRG-lN-Zwl" id="xkg-6p-V7g"/>
                 <outlet property="playImageView" destination="EYB-Sg-RQg" id="eFi-Uc-FSE"/>
