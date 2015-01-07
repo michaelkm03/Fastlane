@@ -49,8 +49,6 @@
                                                                         views:viewMap]];
     self.trimControl = [[VTrimControl alloc] initWithFrame:CGRectMake(0, 0, 100, CGRectGetHeight(self.view.frame))];
     self.trimControl.translatesAutoresizingMaskIntoConstraints = NO;
-    self.trimControl.startTime = CMTimeMake(0, 1);
-    self.trimControl.maxDuration = CMTimeMake(30, 1);
     [self.trimControl addTarget:self
                          action:@selector(trimSelectionChanged:)
                forControlEvents:UIControlEventValueChanged];
@@ -66,11 +64,30 @@
                                                                         views:viewMap]];
 }
 
+#pragma mark - Property Accessors
+
+- (void)setMinimumStartTime:(CMTime)minimumStartTime
+{
+    _minimumStartTime = minimumStartTime;
+    self.trimControl.startTime = minimumStartTime;
+}
+
+- (void)setMaximumTrimDuration:(CMTime)maximumTrimDuration
+{
+    _maximumTrimDuration = maximumTrimDuration;
+    self.trimControl.maxDuration = maximumTrimDuration;
+}
+
+- (void)setMaximumEndTime:(CMTime)maximumEndTime
+{
+    _maximumEndTime = maximumEndTime;
+}
+
 #pragma mark - Target/Action
 
 - (void)trimSelectionChanged:(VTrimControl *)trimControl
 {
-    trimControl.attributedTitle = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ secs", @(trimControl.selectionRange.duration.value / trimControl.selectionRange.duration.timescale)]
+    trimControl.attributedTitle = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ secs", [NSString stringWithFormat:@"%.0f", CMTimeGetSeconds(trimControl.selectionRange.duration)]]
                                                                   attributes:nil];
 }
 
@@ -84,7 +101,8 @@
 - (NSInteger)collectionView:(UICollectionView *)collectionView
      numberOfItemsInSection:(NSInteger)section
 {
-    return 15;
+    NSInteger visibleCells = CGRectGetWidth(collectionView.bounds) / CGRectGetHeight(collectionView.bounds);
+    return visibleCells;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
@@ -102,6 +120,7 @@
                   layout:(UICollectionViewLayout *)collectionViewLayout
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    
     return CGSizeMake(CGRectGetHeight(collectionView.frame), CGRectGetHeight(collectionView.frame));
 }
 

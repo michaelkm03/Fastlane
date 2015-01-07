@@ -90,10 +90,18 @@ static NSString * const kVideoMuted = @"videoMuted";
     self.frameRateController = [[VVideoFrameRateController alloc] initWithVideoURL:mediaURL
                                                                      frameDuration:self.frameDuration
                                                                          muteAudio:self.muteAudio];
+    self.trimViewController.minimumStartTime = kCMTimeZero;
+    self.trimViewController.maximumTrimDuration = CMTimeMake(15, 1);
+
     __weak typeof(self) welf = self;
     self.frameRateController.playerItemReady = ^(AVPlayerItem *playerItem)
     {
         welf.playerItem = playerItem;
+        welf.trimViewController.maximumEndTime = [playerItem duration];
+        if (CMTimeCompare(welf.trimViewController.maximumTrimDuration, [playerItem duration]) == NSOrderedDescending)
+        {
+            welf.trimViewController.maximumTrimDuration = [playerItem duration];
+        }
     };
 }
 
