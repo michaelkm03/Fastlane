@@ -19,12 +19,6 @@
 #import "VConstants.h"
 #import "UIViewController+VNavMenu.h"
 
-typedef enum {
-    vFilterBy_Messages = 0,
-    vFilterBy_Notifications = 1
-
-} vFilterBy;
-
 @interface VInboxContainerViewController () <VNavigationHeaderDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *noMessagesView;
@@ -79,8 +73,6 @@ static char kKVOContext;
 {
     [super viewWillAppear:animated];
     self.title = NSLocalizedString(@"Inbox", nil);
-    [self.filterControls setSelectedSegmentIndex:vFilterBy_Messages];
-    self.headerView.hidden = YES;
     
     self.inboxViewController = self.childViewControllers.firstObject;
     
@@ -91,9 +83,19 @@ static char kKVOContext;
                                    onTarget:self.inboxViewController];
 }
 
-- (IBAction)changedFilterControls:(id)sender
+- (BOOL)shouldAutorotate
 {
-    [[VInboxViewController inboxViewController] toggleFilterControl:self.filterControls.selectedSegmentIndex];
+    return NO;
+}
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
 }
 
 - (void)setMessageCountCoordinator:(VUnreadMessageCountCoordinator *)messageCountCoordinator

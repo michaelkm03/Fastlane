@@ -16,6 +16,7 @@
 #import "VProfileEditViewController.h"
 #import "VFollowerTableViewController.h"
 #import "VFollowingTableViewController.h"
+#import "VProfileFollowingContainerViewController.h"
 #import "VMessageContainerViewController.h"
 #import "UIImage+ImageEffects.h"
 #import "UIImageView+Blurring.h"
@@ -52,6 +53,8 @@ static void * VUserProfileAttributesContext =  &VUserProfileAttributesContext;
 
 @property (nonatomic, strong) UIImageView              *backgroundImageView;
 @property (nonatomic) BOOL                            isMe;
+
+@property (nonatomic, strong) VProfileFollowingContainerViewController *followingAndHashtagsVC;
 
 @end
 
@@ -384,7 +387,14 @@ static void * VUserProfileAttributesContext =  &VUserProfileAttributesContext;
 
 - (void)followingHandler
 {
-    [self performSegueWithIdentifier:@"toFollowing" sender:self];
+    if (self.isMe)
+    {
+        [self performSegueWithIdentifier:@"toHashtagsAndFollowing" sender:self];
+    }
+    else
+    {
+        [self performSegueWithIdentifier:@"toFollowing" sender:self];
+    }
 }
 
 #pragma mark - Animation
