@@ -183,6 +183,8 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
 
 @property (nonatomic, readonly) NSArray *comments;
 
+- (void)removeCommentAtIndex:(NSUInteger)index;
+
 #pragma mark - Actions
 
 - (void)repost;
