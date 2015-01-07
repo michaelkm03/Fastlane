@@ -26,6 +26,8 @@
 	<true/>
 	<key>template_c_enabled</key>
 	<true/>
+	<key>stream_atf_view_threshold</key>
+	<real>0.5</real>
 	<key>template_c_enabled - 2</key>
 	<false/>
 	<key>url.privacy</key>
