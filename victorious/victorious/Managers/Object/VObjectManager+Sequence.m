@@ -284,15 +284,15 @@ NSString * const kPollResultsLoaded = @"kPollResultsLoaded";
                                                          withAsset:(VAsset *)asset
                                                     withCompletion:(void(^)(NSArray *histogramData, NSError *error))completion
 {
-    return [self GET:[NSString stringWithFormat:@"api/realtime/all_by_asset_filtered/%@", asset.remoteId]
+    return [self GET:[NSString stringWithFormat:@"api/histogram/asset/%@", asset.remoteId]
               object:nil
           parameters:nil
         successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
             {
-                NSArray *buckets = result[@"payload"][@"buckets"];
-                if ([buckets isKindOfClass:[NSArray class]])
+                NSArray *payload = result[@"payload"];
+                if ([payload isKindOfClass:[NSArray class]])
                 {
-                    completion (buckets, nil);
+                    completion (payload, nil);
                 }
             }
            failBlock:^(NSOperation *operation, NSError *error)
