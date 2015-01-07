@@ -19,6 +19,9 @@
 
 static const CGFloat kSpacingBetweenTextAndMedia = 10.0f;
 
+// Necessary to balance interactivity of textView (select/copy) with swipeView
+static const CGFloat kSpacingBetweenTextAndEdge = 20.0f;
+
 @interface VCommentTextAndMediaView ()
 
 @property (nonatomic, strong) UITextView *textView;
@@ -307,7 +310,7 @@ static const CGFloat kSpacingBetweenTextAndMedia = 10.0f;
         return 0;
     }
     
-    CGRect boundingRect = [text boundingRectWithSize:CGSizeMake(width, CGFLOAT_MAX)
+    CGRect boundingRect = [text boundingRectWithSize:CGSizeMake(width - kSpacingBetweenTextAndEdge, CGFLOAT_MAX)
                                              options:NSStringDrawingUsesLineFragmentOrigin
                                           attributes:font ? [self attributesForTextWithFont:font] : [self attributesForText]
                                              context:[[NSStringDrawingContext alloc] init]];

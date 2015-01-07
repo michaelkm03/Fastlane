@@ -114,8 +114,9 @@
     CGRect startingFrame = CGRectMake( CGRectGetWidth(self.view.frame), 0.0f, 0.0f, CGRectGetHeight(self.view.frame));
     self.utilityButtonsViewController = [[VUtilityButtonsViewController alloc] initWithFrame:startingFrame];
     self.utilityButtonsViewController.delegate = self;
-    [self.cellDelegate.parentCellView addSubview:self.utilityButtonsViewController.view];
-    [self setCollectionViewConstraints:cellDelegate.parentCellView];
+    [self.view addSubview:self.utilityButtonsViewController.view];
+    [self setUtilityButtonViewConstraintsWithView:self.utilityButtonsViewController.view
+                                        superview:self.view ];
     
     [self createBlockerButtonOverlay];
     [self setBlockerButtonOverlayConstraints];
@@ -135,7 +136,7 @@
     CGRect frame = self.cellDelegate.parentCellView.bounds;
     frame.size.height = 20.0;
     self.blockerButtonOverlay = [[UIButton alloc] initWithFrame:frame];
-    self.blockerButtonOverlay.backgroundColor = [UIColor redColor]; //[UIColor clearColor];
+    self.blockerButtonOverlay.backgroundColor = [UIColor clearColor];
     self.blockerButtonOverlay.hidden = YES;
     self.blockerButtonOverlay.translatesAutoresizingMaskIntoConstraints = NO;
     [self.blockerButtonOverlay addTarget:self action:@selector(blockerButtonOverlayTapped:) forControlEvents:UIControlEventTouchDown];
@@ -229,9 +230,10 @@
                                                                             views:views]];
 }
 
-- (void)setCollectionViewConstraints:(UIView *)superview
+- (void)setUtilityButtonViewConstraintsWithView:(UIView *)collectionView superview:(UIView *)superview
 {
-    UIView *collectionView = self.utilityButtonsViewController.view;
+    NSParameterAssert( collectionView.superview == superview );
+    
     NSDictionary *views = @{ @"collectionView" : collectionView };
     collectionView.translatesAutoresizingMaskIntoConstraints = NO;
     [superview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[collectionView]|"

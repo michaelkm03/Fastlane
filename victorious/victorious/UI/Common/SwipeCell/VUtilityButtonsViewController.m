@@ -14,7 +14,6 @@ static const CGFloat kCollectionViewSectionsCount = 1;
 
 @interface VUtilityButtonsViewController () <UICollectionViewDataSource, UICollectionViewDelegate>
 
-@property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, assign) CGRect startingFrame;
 
 @end
@@ -53,6 +52,15 @@ static const CGFloat kCollectionViewSectionsCount = 1;
     [self.collectionView registerNib:nib forCellWithReuseIdentifier:reuseIdentifier];
 }
 
+- (void)dealloc
+{
+    // Since this view will be added to another view that persists beyond the lifetime
+    // of the view controller (self), we have to kill the collection view so it doesn't try to send
+    // its datasource and delegate methods to a deallocated instance (self).
+    [self.collectionView removeFromSuperview];
+    self.collectionView = nil;
+}
+
 - (void)constraintsDidUpdate
 {
     [self.collectionView.collectionViewLayout invalidateLayout];
@@ -84,8 +92,13 @@ static const CGFloat kCollectionViewSectionsCount = 1;
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     CGFloat height = CGRectGetHeight( collectionView.frame );
-    CGFloat totalWidth = CGRectGetWidth( collectionView.frame);
     NSUInteger buttonCount = [self.delegate.cellDelegate numberOfUtilityButtons];
+    if ( buttonCount == 0 )
+    {
+        // This prevents possibly dividing by zero below and returning NaN
+        return CGSizeMake( 0, height );
+    }
+    CGFloat totalWidth = CGRectGetWidth( collectionView.frame);
     CGFloat width = totalWidth / (CGFloat)buttonCount;
     return CGSizeMake( width, height );
 }

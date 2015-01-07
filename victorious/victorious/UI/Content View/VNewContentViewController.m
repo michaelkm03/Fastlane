@@ -1029,7 +1029,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
             CGSize size = [VContentCommentsCell sizeWithFullWidth:CGRectGetWidth(self.contentCollectionView.bounds)
                                                       commentBody:comment.text
                                                       andHasMedia:comment.hasMedia];
-            return size;
+            return CGSizeMake( CGRectGetWidth(self.view.bounds), size.height );
         }
         case VContentViewSectionCount:
             return CGSizeMake(CGRectGetWidth(self.view.bounds), CGRectGetWidth(self.view.bounds));
@@ -1342,7 +1342,6 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 - (void)cellWillShowUtilityButtons:(UIView *)cellView
 {
     // Close any other cells showing utility buttons
-    
     [self.contentCollectionView.visibleCells enumerateObjectsUsingBlock:^(VContentCommentsCell *cell, NSUInteger idx, BOOL *stop)
      {
          if ( [cell isKindOfClass:[VContentCommentsCell class]] && cellView != cell )
@@ -1382,31 +1381,27 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 
 - (void)didFinishEditingComment:(VComment *)comment
 {
-    [self dismissViewControllerAnimated:YES completion:^{
-        
-       __block NSIndexPath *indexPathToInvalidate = nil;
-        
-        // Update the cell's comment to show the new text
-        [self.contentCollectionView.visibleCells enumerateObjectsUsingBlock:^(VContentCommentsCell *cell, NSUInteger idx, BOOL *stop)
+    [self dismissViewControllerAnimated:YES completion:^void
+     {
+         for ( VContentCommentsCell *cell in self.contentCollectionView.subviews )
          {
              if ( [cell isKindOfClass:[VContentCommentsCell class]] && [cell.comment.remoteId isEqualToNumber:comment.remoteId] )
              {
+                 // Update the cell's comment to show the new text
                  cell.comment = comment;
-                 indexPathToInvalidate = [self.contentCollectionView indexPathForCell:cell];
-                 *stop = YES;
+                 
+                 // Invalidate the layout to resize the cell
+                 [self.contentCollectionView performBatchUpdates:^void
+                  {
+                      NSIndexPath *indexPathToInvalidate = [self.contentCollectionView indexPathForCell:cell];
+                      [self.contentCollectionView reloadItemsAtIndexPaths:@[ indexPathToInvalidate ]];
+                  }
+                                                      completion:nil];
+                 
+                 return;
              }
-         }];
-        
-        // Invalidate the layout to resize the cell
-        if ( indexPathToInvalidate != nil )
-        {
-            UICollectionViewFlowLayoutInvalidationContext *context = [[UICollectionViewFlowLayoutInvalidationContext alloc] init];
-            context.invalidateFlowLayoutAttributes = YES;
-            [context invalidateItemsAtIndexPaths:@[ indexPathToInvalidate ]];
-            [self.contentCollectionView.collectionViewLayout invalidateLayoutWithContext:context];
-        }
-        
-    }];
+         }
+     }];
 }
 
 @end

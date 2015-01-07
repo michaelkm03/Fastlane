@@ -142,8 +142,6 @@ static const CGFloat kTextViewToViewRatioMax    =  0.4f;
     [[VObjectManager sharedManager] editComment:self.comment
                                    successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
-         
-         VLog( @"Comment edit succeeded!" );
      }
                                       failBlock:^(NSOperation *operation, NSError *error)
      {
