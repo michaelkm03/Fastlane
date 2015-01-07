@@ -15,6 +15,11 @@
 
 + (NSString *)entityName;
 
+/**
+ Returns a serialized dictinoary representation of this object ready to send
+ to the server when preferences are saved.  If any value is undefined, it
+ will default to @NO.
+ */
 @property (nonatomic, readonly) NSDictionary *parametersDictionary;
 
 @end

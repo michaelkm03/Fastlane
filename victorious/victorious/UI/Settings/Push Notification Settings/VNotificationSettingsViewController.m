@@ -132,7 +132,9 @@
                                   [[VNotificationSettingsTableRow alloc] initWithTitle:NSLocalizedString( @"PostFromFollowed", nil)
                                                                                enabled:_settings.isPostFromFollowedEnabled.boolValue],
                                   [[VNotificationSettingsTableRow alloc] initWithTitle:NSLocalizedString( @"NewComment", nil)
-                                                                               enabled:_settings.isNewCommentOnMyPostEnabled.boolValue]];
+                                                                               enabled:_settings.isNewCommentOnMyPostEnabled.boolValue],
+                                  [[VNotificationSettingsTableRow alloc] initWithTitle:NSLocalizedString( @"PostOnFollowedHashTag", nil)
+                                                                               enabled:_settings.isPostOnFollowedHashTagEnabled.boolValue]];
     NSString *sectionFeedTitle = NSLocalizedString( @"NotificationSettingSectionFeeds", nil);
     VNotificationSettingsTableSection *sectionFeed = [[VNotificationSettingsTableSection alloc] initWithTitle:sectionFeedTitle
                                                                                                          rows:sectionFeedRows ];
@@ -157,6 +159,7 @@
     self.settings.isPostFromCreatorEnabled = @( [section rowAtIndex:0].isEnabled );
     self.settings.isPostFromFollowedEnabled = @( [section rowAtIndex:1].isEnabled );
     self.settings.isNewCommentOnMyPostEnabled = @( [section rowAtIndex:2].isEnabled );
+    self.settings.isPostOnFollowedHashTagEnabled = @( [section rowAtIndex:3].isEnabled );
     section = self.sections[ 1 ];
     self.settings.isNewPrivateMessageEnabled = @( [section rowAtIndex:0].isEnabled );
     self.settings.isNewFollowerEnabled = @( [section rowAtIndex:1].isEnabled );

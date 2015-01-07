@@ -16,5 +16,6 @@
 @dynamic isNewPrivateMessageEnabled;
 @dynamic isNewCommentOnMyPostEnabled;
 @dynamic isPostFromFollowedEnabled;
+@dynamic isPostOnFollowedHashTagEnabled;
 
 @end
