@@ -32,6 +32,7 @@
 @property (nonatomic, weak) IBOutlet UILabel *followingHeader;
 
 @property (nonatomic, weak) IBOutlet UIButton *editProfileButton;
+@property (nonatomic, weak) IBOutlet UIView *userStatsBar;
 
 @property (nonatomic, strong) UIActivityIndicatorView *followButtonActivityIndicator;
 
