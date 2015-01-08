@@ -29,40 +29,6 @@
                             <constraint firstAttribute="width" secondItem="De6-Pn-uJH" secondAttribute="height" multiplier="1:1" id="Obt-8T-jhm"/>
                         </constraints>
                     </imageView>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qnr-LZ-FqW" userLabel="Shade View">
-                        <rect key="frame" x="0.0" y="50" width="302" height="302"/>
-                        <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="topGradient" translatesAutoresizingMaskIntoConstraints="NO" id="KAf-77-Oi4">
-                                <rect key="frame" x="0.0" y="0.0" width="302" height="52"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="52" id="zDL-cH-9Nx"/>
-                                </constraints>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BottomGradient" translatesAutoresizingMaskIntoConstraints="NO" id="Cqz-ud-Eay">
-                                <rect key="frame" x="0.0" y="200" width="302" height="102"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="102" id="AGg-C9-1On"/>
-                                </constraints>
-                            </imageView>
-                            <view alpha="0.15000000596046448" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="i7f-e2-vae">
-                                <rect key="frame" x="0.0" y="0.0" width="302" height="302"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
-                        </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstAttribute="trailing" secondItem="i7f-e2-vae" secondAttribute="trailing" id="3DF-Qd-Yqq"/>
-                            <constraint firstAttribute="bottom" secondItem="Cqz-ud-Eay" secondAttribute="bottom" id="HzT-CV-ZW4"/>
-                            <constraint firstItem="KAf-77-Oi4" firstAttribute="top" secondItem="qnr-LZ-FqW" secondAttribute="top" id="LfO-5A-yzb"/>
-                            <constraint firstItem="i7f-e2-vae" firstAttribute="leading" secondItem="qnr-LZ-FqW" secondAttribute="leading" id="NRy-eU-FVJ"/>
-                            <constraint firstAttribute="trailing" secondItem="Cqz-ud-Eay" secondAttribute="trailing" id="OM6-59-DYC"/>
-                            <constraint firstItem="KAf-77-Oi4" firstAttribute="leading" secondItem="qnr-LZ-FqW" secondAttribute="leading" id="Pkw-Kz-y2p"/>
-                            <constraint firstAttribute="bottom" secondItem="i7f-e2-vae" secondAttribute="bottom" id="R4d-KO-3vJ"/>
-                            <constraint firstItem="i7f-e2-vae" firstAttribute="top" secondItem="qnr-LZ-FqW" secondAttribute="top" id="eOE-AG-Kn8"/>
-                            <constraint firstAttribute="trailing" secondItem="KAf-77-Oi4" secondAttribute="trailing" id="n8r-7F-MLw"/>
-                            <constraint firstItem="Cqz-ud-Eay" firstAttribute="leading" secondItem="qnr-LZ-FqW" secondAttribute="leading" id="zeD-9j-4YQ"/>
-                        </constraints>
-                    </view>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="PlayTriangle" translatesAutoresizingMaskIntoConstraints="NO" id="EYB-Sg-RQg">
                         <rect key="frame" x="125" y="175" width="52" height="52"/>
                     </imageView>
@@ -91,20 +57,16 @@
                 <constraint firstItem="W6W-Ju-9kU" firstAttribute="top" secondItem="4JO-Ba-PyN" secondAttribute="top" id="44L-21-rKG"/>
                 <constraint firstAttribute="trailing" secondItem="LDv-jo-7gZ" secondAttribute="trailing" constant="-1" id="5Mm-nB-GND"/>
                 <constraint firstAttribute="trailing" secondItem="QyC-HK-x2o" secondAttribute="trailing" constant="25" id="CsX-Aq-3xz"/>
-                <constraint firstItem="qnr-LZ-FqW" firstAttribute="leading" secondItem="De6-Pn-uJH" secondAttribute="leading" id="GHQ-xD-hRB"/>
                 <constraint firstItem="LDv-jo-7gZ" firstAttribute="leading" secondItem="4JO-Ba-PyN" secondAttribute="leading" constant="-1" id="GHg-5D-n1d"/>
                 <constraint firstItem="LDv-jo-7gZ" firstAttribute="top" secondItem="QyC-HK-x2o" secondAttribute="bottom" id="HJq-4C-jDM"/>
-                <constraint firstItem="qnr-LZ-FqW" firstAttribute="trailing" secondItem="De6-Pn-uJH" secondAttribute="trailing" id="KTO-uV-zm5"/>
                 <constraint firstAttribute="bottom" secondItem="LDv-jo-7gZ" secondAttribute="bottom" id="NgO-Wi-bMH"/>
                 <constraint firstItem="IRG-lN-Zwl" firstAttribute="centerY" secondItem="De6-Pn-uJH" secondAttribute="centerY" id="Qin-Ad-Vkb"/>
-                <constraint firstItem="qnr-LZ-FqW" firstAttribute="top" secondItem="De6-Pn-uJH" secondAttribute="top" id="VvG-Cj-4QJ"/>
                 <constraint firstItem="IRG-lN-Zwl" firstAttribute="centerY" secondItem="EYB-Sg-RQg" secondAttribute="centerY" id="XRg-Wl-KJB"/>
                 <constraint firstAttribute="trailing" secondItem="De6-Pn-uJH" secondAttribute="trailing" id="bOq-Lr-Ite"/>
                 <constraint firstItem="IRG-lN-Zwl" firstAttribute="centerX" secondItem="EYB-Sg-RQg" secondAttribute="centerX" id="dSC-bY-AJd"/>
                 <constraint firstItem="De6-Pn-uJH" firstAttribute="top" secondItem="W6W-Ju-9kU" secondAttribute="bottom" id="gXd-xy-YS1"/>
                 <constraint firstItem="De6-Pn-uJH" firstAttribute="leading" secondItem="4JO-Ba-PyN" secondAttribute="leading" id="i1L-gX-6Md"/>
                 <constraint firstItem="W6W-Ju-9kU" firstAttribute="leading" secondItem="4JO-Ba-PyN" secondAttribute="leading" id="io7-oH-DPa"/>
-                <constraint firstItem="qnr-LZ-FqW" firstAttribute="bottom" secondItem="De6-Pn-uJH" secondAttribute="bottom" id="j3d-Xp-Sld"/>
                 <constraint firstItem="IRG-lN-Zwl" firstAttribute="centerX" secondItem="De6-Pn-uJH" secondAttribute="centerX" id="qdd-bK-q4S"/>
                 <constraint firstItem="QyC-HK-x2o" firstAttribute="top" secondItem="De6-Pn-uJH" secondAttribute="bottom" constant="14" id="rw4-c9-IKM"/>
             </constraints>
@@ -112,20 +74,16 @@
             <connections>
                 <outlet property="actionView" destination="LDv-jo-7gZ" id="1oO-81-IEN"/>
                 <outlet property="captionTextView" destination="QyC-HK-x2o" id="cMd-VE-Gge"/>
-                <outlet property="lowerGradientView" destination="Cqz-ud-Eay" id="R8Q-Z7-7hI"/>
                 <outlet property="playBackgroundImageView" destination="IRG-lN-Zwl" id="xkg-6p-V7g"/>
                 <outlet property="playImageView" destination="EYB-Sg-RQg" id="eFi-Uc-FSE"/>
                 <outlet property="previewImageView" destination="De6-Pn-uJH" id="Ypz-2a-uiA"/>
-                <outlet property="shadeView" destination="qnr-LZ-FqW" id="pc1-Ac-Knk"/>
                 <outlet property="streamCellHeaderView" destination="W6W-Ju-9kU" id="8fB-eK-iAA"/>
             </connections>
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="BottomGradient" width="320" height="102"/>
         <image name="PlayCircle" width="52" height="52"/>
         <image name="PlayTriangle" width="52" height="52"/>
-        <image name="topGradient" width="320" height="52"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

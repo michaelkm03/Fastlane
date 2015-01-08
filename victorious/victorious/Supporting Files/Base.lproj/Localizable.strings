@@ -37,6 +37,8 @@
 "Featured"              =   "Featured";
 "Recent"                =   "Recent";
 "Following"             =   "Following";
+"FOLLOWERS"             =   "FOLLOWERS";
+"FOLLOWING"             =   "FOLLOWING";
 
 "TimeSeparator"         =   ":";
 "InvalidTimePlaceholder"=   "-:--";

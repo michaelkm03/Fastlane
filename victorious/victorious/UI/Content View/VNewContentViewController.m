@@ -80,7 +80,7 @@
 
 static const CGFloat kMaxInputBarHeight = 200.0f;
 
-@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate,VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate>
+@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate,VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate>
 
 @property (nonatomic, strong, readwrite) VContentViewViewModel *viewModel;
 @property (nonatomic, strong) NSURL *mediaURL;
@@ -485,6 +485,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     
     VPurchaseViewController *viewController = [VPurchaseViewController purchaseViewControllerWithVoteType:experienceEnhander.voteType];
     viewController.transitioningDelegate = self.transitionDelegate;
+    viewController.delegate = self;
     [self presentViewController:viewController animated:YES completion:nil];
 }
 
@@ -1416,6 +1417,16 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
              break;
          }
      }
+}
+
+#pragma mark VPurchaseViewControllerDelegate
+
+- (void)purchaseDidComplete
+{
+    [self.presentedViewController dismissViewControllerAnimated:YES completion:^void
+     {
+         [self.viewModel.experienceEnhancerController updateData];
+     }];
 }
 
 @end

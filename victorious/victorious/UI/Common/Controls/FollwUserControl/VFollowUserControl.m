@@ -50,10 +50,6 @@ static const CGFloat kForcedAntiAliasingConstant = 0.01f;
 
 - (void)sharedInit
 {
-    UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:nil]];
-    imageView.frame = self.bounds;
-    imageView.contentMode = self.contentMode;
-    
 #if TARGET_INTERFACE_BUILDER
     _followImage = [UIImage imageNamed:@"folllowIcon" inBundle:[NSBundle bundleForClass:[self class]] compatibleWithTraitCollection:nil];
     _followedImage = [UIImage imageNamed:@"folllowedIcon" inBundle:[NSBundle bundleForClass:[self class]] compatibleWithTraitCollection:nil];
@@ -61,6 +57,10 @@ static const CGFloat kForcedAntiAliasingConstant = 0.01f;
     _followImage = [UIImage imageNamed:@"folllowIcon"];
     _followedImage = [UIImage imageNamed:@"folllowedIcon"];
 #endif
+
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:_followImage];
+    imageView.frame = self.bounds;
+    imageView.contentMode = self.contentMode;
     
     if (self.following)
     {

@@ -16,6 +16,7 @@
 #import "VPollResult.h"
 
 NSString * const kPollResultsLoaded = @"kPollResultsLoaded";
+NSString * const kHashtagStatusChangedNotification = @"com.getvictorious.HashtagStatusChangedNotification";
 
 @implementation VObjectManager (Sequence)
 
