@@ -116,7 +116,7 @@
     self.queuedEvents = [[NSMutableArray alloc] init];
 }
 
-- (void)trackQueuedEventsWithName:(NSString *)eventName
+- (void)clearQueuedEventsWithName:(NSString *)eventName
 {
     NSArray *eventsForName = [self eventsForName:eventName fromQueue:self.queuedEvents];
     [eventsForName enumerateObjectsUsingBlock:^(VTrackingEvent *event, NSUInteger idx, BOOL *stop)

@@ -330,7 +330,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
     
     [[VTrackingManager sharedInstance] endEvent:VTrackingEventStreamDidAppear];
     
-    [[VTrackingManager sharedInstance] trackQueuedEventsWithName:VTrackingEventSequenceDidAppearInStream];
+    [[VTrackingManager sharedInstance] clearQueuedEventsWithName:VTrackingEventSequenceDidAppearInStream];
     
     [self.preloadImageCache removeAllObjects];
 }
@@ -608,7 +608,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
         return NO;
     }
     
-    [[VTrackingManager sharedInstance] trackQueuedEventsWithName:VTrackingEventSequenceDidAppearInStream];
+    [[VTrackingManager sharedInstance] clearQueuedEventsWithName:VTrackingEventSequenceDidAppearInStream];
     
     self.currentStream = self.allStreams[index];
     
@@ -884,7 +884,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
 
 - (void)didEnterBackground:(NSNotification *)notification
 {
-    [[VTrackingManager sharedInstance] trackQueuedEventsWithName:VTrackingEventSequenceDidAppearInStream];
+    [[VTrackingManager sharedInstance] clearQueuedEventsWithName:VTrackingEventSequenceDidAppearInStream];
 }
 
 #pragma mark - UIScrollViewDelegate

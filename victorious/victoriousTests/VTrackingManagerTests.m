@@ -56,6 +56,12 @@
     self.endCalled = YES;
 }
 
+
+- (void)resetTrackedEventCount
+{
+    self.trackedEventCount = 0;
+}
+
 @end
 
 @interface VTrackingManagerTests : XCTestCase
@@ -178,31 +184,39 @@
     
     NSString *eventName1 = @"queue_event_1";
     NSString *eventName2 = @"queue_event_2";
-    NSUInteger numEvents1 = 10;
-    NSUInteger numEvents2 = 20;
+    NSUInteger numEvents1 = 10 + arc4random() % 10;
+    NSUInteger numEvents2 = 40 + arc4random() % 10;
+    NSUInteger totalEvents = numEvents1 + numEvents2;
+    
+    [delegate resetTrackedEventCount];
     for ( NSUInteger i = 0; i < numEvents1; i++ )
     {
         [self.trackingMgr queueEvent:eventName1 parameters:nil eventId:@(i)];
     }
+    XCTAssertEqual( delegate.trackedEventCount, (NSUInteger)numEvents1, @"Events should be tracked when queued." );
+    
+    [delegate resetTrackedEventCount];
     for ( NSUInteger i = 0; i < numEvents2; i++ )
     {
         [self.trackingMgr queueEvent:eventName2 parameters:nil eventId:@(i)];
     }
+    XCTAssertEqual( delegate.trackedEventCount, (NSUInteger)numEvents2, @"Events should be tracked when queued." );
     
-    XCTAssertEqual( self.trackingMgr.queuedEvents.count, numEvents1 + numEvents2 );
+    XCTAssertEqual( self.trackingMgr.queuedEvents.count, totalEvents );
     NSUInteger eventsCount1 = [self.trackingMgr numberOfQueuedEventsForEventName:eventName1];
     XCTAssertEqual( eventsCount1, numEvents1 );
     NSUInteger eventsCount2 = [self.trackingMgr numberOfQueuedEventsForEventName:eventName2];
     XCTAssertEqual( eventsCount2, numEvents2 );
     
+    [delegate resetTrackedEventCount];
     [self.trackingMgr trackQueuedEventsWithName:eventName1];
-    XCTAssertEqual( self.trackingMgr.queuedEvents.count, numEvents2 );
-    XCTAssertEqual( delegate.trackedEventCount, (NSUInteger)numEvents1 );
+    XCTAssertEqual( self.trackingMgr.queuedEvents.count, totalEvents - numEvents1 );
+    XCTAssertEqual( delegate.trackedEventCount, (NSUInteger)0, @"No events should be tracked whened queue is cleared." );
     
     delegate.trackedEventCount = 0;
     [self.trackingMgr trackQueuedEventsWithName:eventName2];
     XCTAssertEqual( self.trackingMgr.queuedEvents.count, (NSUInteger)0 );
-    XCTAssertEqual( delegate.trackedEventCount, (NSUInteger)numEvents2 );
+    XCTAssertEqual( delegate.trackedEventCount, (NSUInteger)0, @"No events should be tracked whened queue is cleared." );
     
     
     for ( NSUInteger i = 0; i < numEvents1; i++ )
