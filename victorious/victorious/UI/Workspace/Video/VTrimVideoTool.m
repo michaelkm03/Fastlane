@@ -38,6 +38,7 @@ static NSString * const kVideoMuted = @"videoMuted";
 
 @property (nonatomic, strong) id itemEndObserver;
 @property (nonatomic, strong) id trimEndObserver;
+@property (nonatomic, strong) id currentTimeObserver;
 
 @end
 
@@ -59,6 +60,10 @@ static NSString * const kVideoMuted = @"videoMuted";
     if (self.trimEndObserver)
     {
         [self.player removeTimeObserver:self.trimEndObserver];
+    }
+    if (self.currentTimeObserver)
+    {
+        [self.player removeTimeObserver:self.currentTimeObserver];
     }
 }
 
@@ -97,7 +102,7 @@ static NSString * const kVideoMuted = @"videoMuted";
                                                                      frameDuration:self.frameDuration
                                                                          muteAudio:self.muteAudio];
     self.trimViewController.minimumStartTime = kCMTimeZero;
-    self.trimViewController.maximumTrimDuration = CMTimeMake(15, 1);
+    self.trimViewController.maximumTrimDuration = CMTimeMake(30, 1);
 
     __weak typeof(self) welf = self;
     self.frameRateController.playerItemReady = ^(AVPlayerItem *playerItem)
@@ -184,6 +189,13 @@ static NSString * const kVideoMuted = @"videoMuted";
          if (welf.player.status == AVPlayerStatusReadyToPlay)
          {
              [welf.player play];
+             
+             self.currentTimeObserver =  [welf.player addPeriodicTimeObserverForInterval:CMTimeMake(1, 24)
+                                                                                   queue:dispatch_get_main_queue()
+                                                                              usingBlock:^(CMTime time)
+                                          {
+                                              welf.trimViewController.currentPlayTime = time;
+                                          }];
          }
          else if (welf.player.status == AVPlayerStatusFailed)
          {

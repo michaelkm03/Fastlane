@@ -17,6 +17,9 @@
 
 @property (nonatomic, strong) VTrimControl *trimControl;
 
+@property (nonatomic, strong) UIView *currentPlayBackOverlayView;
+@property (nonatomic, strong) NSLayoutConstraint *currentPlayBackWidthConstraint;
+
 @end
 
 @implementation VTrimmerViewController
@@ -62,6 +65,40 @@
                                                                       options:kNilOptions
                                                                       metrics:nil
                                                                         views:viewMap]];
+    
+    self.currentPlayBackOverlayView = [[UIView alloc] initWithFrame:self.view.bounds];
+    self.currentPlayBackOverlayView.userInteractionEnabled = NO;
+    self.currentPlayBackOverlayView.backgroundColor = [[UIColor redColor] colorWithAlphaComponent:0.2f];
+    [self.view addSubview:self.currentPlayBackOverlayView];
+    self.currentPlayBackOverlayView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[overlayView]"
+                                                                      options:kNilOptions
+                                                                      metrics:nil
+                                                                        views:@{@"overlayView":self.currentPlayBackOverlayView}]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.currentPlayBackOverlayView
+                                                          attribute:NSLayoutAttributeTop
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.thumbnailCollecitonView
+                                                          attribute:NSLayoutAttributeTop
+                                                         multiplier:1.0f
+                                                           constant:0.0f]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.currentPlayBackOverlayView
+                                                          attribute:NSLayoutAttributeBottom
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.thumbnailCollecitonView
+                                                          attribute:NSLayoutAttributeBottom
+                                                         multiplier:1.0f
+                                                           constant:0.0f]];
+    self.currentPlayBackWidthConstraint = [NSLayoutConstraint constraintWithItem:self.currentPlayBackOverlayView
+                                                                       attribute:NSLayoutAttributeWidth
+                                                                       relatedBy:NSLayoutRelationEqual
+                                                                          toItem:nil
+                                                                       attribute:NSLayoutAttributeNotAnAttribute
+                                                                      multiplier:1.0f
+                                                                        constant:0.0f];
+    [self.view addConstraint:self.currentPlayBackWidthConstraint];
+    
+    
 }
 
 #pragma mark - Property Accessors
@@ -80,6 +117,17 @@
 - (CMTimeRange)selectedTimeRange
 {
     return CMTimeRangeMake(kCMTimeZero, self.trimControl.selectedDuration);
+}
+
+- (void)setCurrentPlayTime:(CMTime)currentPlayTime
+{
+    _currentPlayTime = currentPlayTime;
+    if (CMTimeCompare(currentPlayTime, kCMTimeZero))
+    {
+        Float64 progress = CMTimeGetSeconds(currentPlayTime) / CMTimeGetSeconds(self.maximumTrimDuration);
+        self.currentPlayBackWidthConstraint.constant = CGRectGetWidth(self.view.bounds) * progress;
+        [self.view layoutIfNeeded];
+    }
 }
 
 #pragma mark - Target/Action

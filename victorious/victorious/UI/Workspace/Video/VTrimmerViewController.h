@@ -24,6 +24,8 @@
 @property (nonatomic, assign) CMTime maximumEndTime;
 @property (nonatomic, assign) CMTime maximumTrimDuration;
 
+@property (nonatomic, assign) CMTime currentPlayTime;
+
 @property (nonatomic, readonly) CMTimeRange selectedTimeRange;
 
 @property (nonatomic, weak) id <VTrimmerViewControllerDelegate> delegate;
