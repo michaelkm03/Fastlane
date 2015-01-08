@@ -47,14 +47,14 @@
     [self.followersLabel addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(pressedFollowers:)]];
     self.followersLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
     
-    self.followersHeader.text = NSLocalizedString(@"followers", @"");
+    self.followersHeader.text = NSLocalizedString(@"FOLLOWERS", @"");
     self.followersHeader.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel4Font];
     
     self.followingLabel.userInteractionEnabled = YES;
     [self.followingLabel addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(pressedFollowering:)]];
     self.followingLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
     
-    self.followingHeader.text = NSLocalizedString(@"following", @"");
+    self.followingHeader.text = NSLocalizedString(@"FOLLOWING", @"");
     self.followingHeader.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel4Font];
     
     self.editProfileButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVButton2Font];
