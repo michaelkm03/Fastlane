@@ -153,7 +153,6 @@ static CGFloat const kTemplateCLineSpacing = 8;
     }
 
     UIImage *hashtagButtonImage = [[UIImage imageNamed:buttonImageName]  imageWithRenderingMode:UIImageRenderingModeAutomatic];
-    hashtagButtonImage = [hashtagButtonImage scaleToSize:CGSizeMake(24, 24)];
 
     if (subscribed)
     {
