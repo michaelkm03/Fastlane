@@ -760,6 +760,13 @@ static CGFloat const kTemplateCLineSpacing = 8;
         [self.failureHUD hide:YES afterDelay:3.0f];
     };
     
+    // Check if logged in before attempting to subscribe / unsubscribe
+    if (![VObjectManager sharedManager].authorized)
+    {
+        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
+        return;
+    }
+    
     // Backend Subscribe to Hashtag
     [[VObjectManager sharedManager] subscribeToHashtag:self.selectedHashtag
                                           successBlock:successBlock
