@@ -85,12 +85,16 @@ static const CGFloat kDescriptionBuffer = 37.0;
 
 - (void)setDescriptionText:(NSString *)text
 {
+    BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
     if (self.sequence.nameEmbeddedInContent.boolValue == NO)
     {
         NSMutableAttributedString *newAttributedCellText = [[NSMutableAttributedString alloc] initWithString:(text ?: @"")
                                                                                                   attributes:[VStreamCollectionCell sequenceDescriptionAttributes]];
         self.captionTextView.linkDelegate = self;
-        self.captionTextView.textContainer.maximumNumberOfLines = 3;
+        if ( !isTemplateC )
+        {
+            self.captionTextView.textContainer.maximumNumberOfLines = 3;
+        }
         self.captionTextView.textContainer.lineBreakMode = NSLineBreakByTruncatingTail;
         self.captionTextView.attributedText = newAttributedCellText;
     }
