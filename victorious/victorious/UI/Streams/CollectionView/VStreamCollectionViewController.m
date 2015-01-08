@@ -815,6 +815,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
     if ( self.lastSelectedIndexPath != nil )
     {
         [self.collectionView reloadItemsAtIndexPaths:@[self.lastSelectedIndexPath]];
+        self.lastSelectedIndexPath = nil;
     }
     [self dismissViewControllerAnimated:YES
                              completion:nil];
