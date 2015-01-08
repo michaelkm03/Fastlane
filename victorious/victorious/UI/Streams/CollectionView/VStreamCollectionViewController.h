@@ -13,7 +13,7 @@
 #import "VSequenceActionsDelegate.h"
 #import "VNewContentViewController.h"
 
-@class VStreamCollectionViewDataSource;
+@class VStreamCollectionViewDataSource, VHashtag;
 
 @interface VStreamCollectionViewController : VAbstractStreamCollectionViewController <VNewContentViewControllerDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, VSequenceActionsDelegate, VHasManagedDependancies>
 

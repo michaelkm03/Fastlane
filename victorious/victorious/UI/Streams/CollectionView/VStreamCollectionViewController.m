@@ -32,11 +32,14 @@
 #import "VStream+Fetcher.h"
 #import "VSequence+Fetcher.h"
 #import "VNode+Fetcher.h"
+#import "VUser.h"
+#import "VHashtag.h"
 
 //Managers
 #import "VDependencyManager+VObjectManager.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Login.h"
+#import "VObjectManager+Discover.h"
 #import "VThemeManager.h"
 #import "VSettingManager.h"
 
@@ -70,6 +73,9 @@ static CGFloat const kTemplateCLineSpacing = 8;
 @property (strong, nonatomic) VSequenceActionController *sequenceActionController;
 
 @property (nonatomic, assign) BOOL hasRefreshed;
+@property (nonatomic, assign) BOOL subscribedToHashtag;
+@property (nonatomic, strong) NSString *selectedHashtag;
+@property (nonatomic, weak) MBProgressHUD *failureHUD;
 
 @property (strong, nonatomic) VDependencyManager *dependencyManager;
 
@@ -119,11 +125,47 @@ static CGFloat const kTemplateCLineSpacing = 8;
 
 + (instancetype)hashtagStreamWithHashtag:(NSString *)hashtag
 {
-    NSString *title = [@"#" stringByAppendingString:hashtag];
-    VStream *defaultStream = [VStream streamForHashTag:hashtag];
+    // Check if hashtag is being followed or not
+    NSString *tagTitle = [@"#" stringByAppendingString:hashtag];
+    NSString *tagString = [hashtag lowercaseString];
+
+    VStream *defaultStream = [VStream streamForHashTag:tagString];
     VStreamCollectionViewController *streamVC = [self streamViewControllerForDefaultStream:defaultStream
                                                                              andAllStreams:@[ defaultStream ]
-                                                                                     title:title];
+                                                                                     title:tagTitle];
+    
+    // Get set of currently subscribed to hashtags
+    VUser *mainUser = [[VObjectManager sharedManager] mainUser];
+    NSOrderedSet *tagSet = mainUser.hashtags;
+    
+    NSString *buttonImageName = @"streamFollowHashtag";
+    BOOL subscribed = NO;
+    
+    // See if currently subscribed to selected hashtag
+    for (VHashtag *aTag in tagSet)
+    {
+        if ([aTag.tag isEqualToString:hashtag])
+        {
+            buttonImageName = @"followedHashtag";
+            subscribed = YES;
+            break;
+        }
+    }
+
+    UIImage *hashtagButtonImage = [[UIImage imageNamed:buttonImageName]  imageWithRenderingMode:UIImageRenderingModeAutomatic];
+    hashtagButtonImage = [hashtagButtonImage scaleToSize:CGSizeMake(24, 24)];
+
+    if (subscribed)
+    {
+        [streamVC.navHeaderView setRightButtonImage:hashtagButtonImage withAction:@selector(unfollowHashtagButtonAction:) onTarget:nil];
+    }
+    else
+    {
+        [streamVC.navHeaderView setRightButtonImage:hashtagButtonImage withAction:@selector(followHashtagButtonAction:) onTarget:nil];
+    }
+    streamVC.subscribedToHashtag = subscribed;
+    streamVC.selectedHashtag = hashtag;
+    
     return streamVC;
 }
 
@@ -144,6 +186,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
     streamColllection.navHeaderView.delegate = streamColllection;
     NSInteger selectedStream = [allStreams indexOfObject:stream];
     streamColllection.navHeaderView.navSelector.currentIndex = selectedStream;
+    
     
     return streamColllection;
 }
@@ -636,7 +679,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
 - (void)hashTag:(NSString *)hashtag tappedFromSequence:(VSequence *)sequence fromView:(UIView *)view
 {
     // Error checking
-    if ( !hashtag || !hashtag.length )
+    if ( hashtag == nil || !hashtag.length )
     {
         return;
     }
@@ -696,6 +739,73 @@ static CGFloat const kTemplateCLineSpacing = 8;
     {
         [self showContentViewWithSequence:sequence placeHolderImage:previewImage];
     }
+}
+
+#pragma mark - Hashtag Actions
+
+- (void)followHashtagButtonAction:(id)sender
+{
+    VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    {
+        // Animate follow button
+        self.subscribedToHashtag = YES;
+        [self updateSubscribeStatusAnimated:YES];
+    };
+    
+    VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
+    {
+        self.failureHUD = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        self.failureHUD.mode = MBProgressHUDModeText;
+        self.failureHUD.detailsLabelText = NSLocalizedString(@"HashtagSubscribeError", @"");
+        [self.failureHUD hide:YES afterDelay:3.0f];
+    };
+    
+    // Backend Subscribe to Hashtag
+    [[VObjectManager sharedManager] subscribeToHashtag:self.selectedHashtag
+                                          successBlock:successBlock
+                                             failBlock:failureBlock];
+}
+
+- (void)unfollowHashtagButtonAction:(id)sender
+{
+    VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    {
+        self.subscribedToHashtag = NO;
+        [self updateSubscribeStatusAnimated:YES];
+    };
+    
+    VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
+    {
+        self.failureHUD = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        self.failureHUD.mode = MBProgressHUDModeText;
+        self.failureHUD.detailsLabelText = NSLocalizedString(@"HashtagUnsubscribeError", @"");
+        [self.failureHUD hide:YES afterDelay:3.0f];
+    };
+    
+    // Backend Unsubscribe to Hashtag call
+    [[VObjectManager sharedManager] unsubscribeToHashtag:self.selectedHashtag
+                                            successBlock:successBlock
+                                               failBlock:failureBlock];
+}
+
+- (void)updateSubscribeStatusAnimated:(BOOL)animated
+{
+    NSString *buttonImageName = @"streamFollowHashtag";
+    
+    if (self.subscribedToHashtag)
+    {
+        buttonImageName = @"followedHashtag";
+    }
+
+    UIImage *hashtagButtonImage = [[UIImage imageNamed:buttonImageName]  imageWithRenderingMode:UIImageRenderingModeAutomatic];
+    dispatch_async(dispatch_get_main_queue(), ^(void)
+                   {
+                       [self.navHeaderView setRightButtonImage:hashtagButtonImage withAction:@selector(unfollowHashtagButtonAction:) onTarget:nil];
+                       
+                       // Fire NSNotification to signal change in the status of this hashtag
+                       [[NSNotificationCenter defaultCenter] postNotificationName:kHashtagStatusChangedNotification
+                                                                           object:nil];
+                   });
 }
 
 #pragma mark - VNewContentViewControllerDelegate
