@@ -49,7 +49,7 @@
 /**
  Removes events from queue and tracks thems using trackEvent:parameters
  */
-- (void)trackQueuedEventsWithName:(NSString *)eventName;
+- (void)clearQueuedEventsWithName:(NSString *)eventName;
 
 - (void)startEvent:(NSString *)eventName;
 
