@@ -114,7 +114,7 @@ static const CGFloat kVCommentCellUtilityButtonWidth = 55.0f;
 - (void)deleteComment
 {
     [[VObjectManager sharedManager] removeComment:self.comment
-                                       withReason:[NSString stringWithFormat:@"Author [id: %@] has removed comment.", self.comment.userId ]
+                                       withReason:nil
                                      successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
          [self.delegate commentRemoved:self.comment];

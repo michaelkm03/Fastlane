@@ -20,7 +20,7 @@
 static const CGFloat kSpacingBetweenTextAndMedia = 10.0f;
 
 // Necessary to balance interactivity of textView (select/copy) with swipeView
-static const CGFloat kSpacingBetweenTextAndEdge = 20.0f;
+static const CGFloat kSpacingBetweenTextAndEdge = 35.0f;
 
 @interface VCommentTextAndMediaView ()
 

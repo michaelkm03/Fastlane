@@ -336,7 +336,21 @@
 
 - (void)didFinishEditingComment:(VComment *)comment
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self.comments enumerateObjectsUsingBlock:^(VComment *existingComment, NSUInteger idx, BOOL *stop)
+     {
+         if ( [existingComment.remoteId isEqualToNumber:comment.remoteId] )
+         {
+             [self dismissViewControllerAnimated:YES completion:^void
+              {
+                  [self.tableView beginUpdates];
+                  NSIndexPath *indexPathToReload = [NSIndexPath indexPathForRow:idx inSection:0];
+                  [self.tableView reloadRowsAtIndexPaths:@[ indexPathToReload ] withRowAnimation:UITableViewRowAnimationAutomatic];
+                  [self.tableView endUpdates];
+              }];
+             
+             *stop = YES;
+         }
+     }];
 }
 
 @end

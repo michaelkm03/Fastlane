@@ -32,6 +32,7 @@ static const CGFloat kTextViewToViewRatioMax    =  0.4f;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *modalContainerHeightConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *textViewVerticalAlignmentConstraint;
 @property (weak, nonatomic) IBOutlet UITextView *editTextView;
+@property (nonatomic, assign) BOOL isDismissing;
 
 @property (strong, nonatomic) VComment *comment;
 
@@ -117,9 +118,11 @@ static const CGFloat kTextViewToViewRatioMax    =  0.4f;
 
 - (void)dismiss
 {
-    // Prevents another rapid return key press from dismissing previous view as well (mostly happens in simulator)
-    self.editTextView.delegate = nil;
-
+    if ( self.isDismissing )
+    {
+        return;
+    }
+    
     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -132,7 +135,8 @@ static const CGFloat kTextViewToViewRatioMax    =  0.4f;
 
 - (IBAction)onBackgroundTapped:(id)sender
 {
-    // Do nothing for now
+    [self dismiss];
+    self.isDismissing = YES;
 }
 
 - (IBAction)onConfirm:(id)sender
@@ -156,6 +160,7 @@ static const CGFloat kTextViewToViewRatioMax    =  0.4f;
     {
         [self dismiss];
     }
+    self.isDismissing = YES;
 }
 
 - (IBAction)onCancel:(id)sender

@@ -50,6 +50,7 @@
 #import "VUserProfileViewController.h"
 #import "VAuthorizationViewControllerFactory.h"
 #import "VPurchaseViewController.h"
+#import "VCameraPublishViewController.h"
 
 // Transitioning
 #import "VLightboxTransitioningDelegate.h"
@@ -67,8 +68,7 @@
 
 // Experiments
 #import "VSettingManager.h"
-
-#import "VCameraPublishViewController.h"
+#import "VDependencyManager.h"
 
 #import "VSequence+Fetcher.h"
 
@@ -695,8 +695,19 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
             return 1;
         case VContentViewSectionHistogramOrQuestion:
         {
-            NSInteger ret = ((self.viewModel.type == VContentViewTypePoll) || (self.viewModel.type == VContentViewTypeVideo))? 1 : 0;
-            return ret;
+            if (self.viewModel.type == VContentViewTypePoll)
+            {
+                return 1;
+            }
+            
+            if ([self.dependencyManagerForHistogramExperiment numberForKey:VDependencyManagerHistogramEnabledKey]
+                &&
+                self.viewModel.type == VContentViewTypeVideo)
+            {
+                return 1;
+            }
+            
+            return 0;
         }
             
         case VContentViewSectionExperienceEnhancers:
@@ -1114,6 +1125,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 - (void)videoCellPlayedToEnd:(VContentVideoCell *)videoCell
                withTotalTime:(CMTime)totalTime
 {
+    self.histogramCell.histogramView.progress = CMTimeGetSeconds(totalTime) / CMTimeGetSeconds(totalTime);
     if (!self.enteringRealTimeComment)
     {
         self.textEntryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), [self.elapsedTimeFormatter stringForCMTime:totalTime]];
@@ -1384,27 +1396,26 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 
 - (void)didFinishEditingComment:(VComment *)comment
 {
-    [self dismissViewControllerAnimated:YES completion:^void
+    for ( VContentCommentsCell *cell in self.contentCollectionView.subviews )
      {
-         for ( VContentCommentsCell *cell in self.contentCollectionView.subviews )
+         if ( [cell isKindOfClass:[VContentCommentsCell class]] && [cell.comment.remoteId isEqualToNumber:comment.remoteId] )
          {
-             if ( [cell isKindOfClass:[VContentCommentsCell class]] && [cell.comment.remoteId isEqualToNumber:comment.remoteId] )
-             {
-                 // Update the cell's comment to show the new text
-                 cell.comment = comment;
-                 
-                 // Invalidate the layout to resize the cell
-                 [self.contentCollectionView performBatchUpdates:^void
-                  {
-                      NSIndexPath *indexPathToInvalidate = [self.contentCollectionView indexPathForCell:cell];
-                      [self.contentCollectionView reloadItemsAtIndexPaths:@[ indexPathToInvalidate ]];
-                  }
-                                                      completion:nil];
-                 
-                 return;
-             }
+             // Update the cell's comment to show the new text
+             cell.comment = comment;
+             
+             [self dismissViewControllerAnimated:YES completion:^void
+              {
+                  [self.contentCollectionView performBatchUpdates:^void
+                   {
+                       NSIndexPath *indexPathToInvalidate = [self.contentCollectionView indexPathForCell:cell];
+                       [self.contentCollectionView reloadItemsAtIndexPaths:@[ indexPathToInvalidate ]];
+                   }
+                                                       completion:nil];
+              }];
+             
+             break;
          }
-     }];
+     }
 }
 
 @end
