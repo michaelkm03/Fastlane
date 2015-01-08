@@ -14,6 +14,7 @@
 #import "VObjectManager+Users.h"
 #import "VLargeNumberFormatter.h"
 #import "VDefaultProfileImageView.h"
+#import "VSettingManager.h"
 
 #import <KVOController/FBKVOController.h>
 
@@ -65,6 +66,46 @@
     self.followButtonActivityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     self.followButtonActivityIndicator.center = CGPointMake(CGRectGetWidth(self.editProfileButton.frame) / 2.0, CGRectGetHeight(self.editProfileButton.frame) / 2.0);
     [self.editProfileButton addSubview:self.followButtonActivityIndicator];
+    
+    self.userStatsBar.backgroundColor = [[VThemeManager sharedThemeManager] preferredBackgroundColor];
+    [self applyEditProfileButtonStyle];
+}
+
+- (void)applyEditProfileButtonStyle
+{
+    BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
+    if ( isTemplateC )
+    {
+        if (self.editProfileButton.selected)
+        {
+            [self.editProfileButton setTitle:NSLocalizedString(@"following", @"") forState:UIControlStateNormal];
+            [self.editProfileButton setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
+            self.editProfileButton.layer.borderColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor].CGColor;
+            self.editProfileButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+        }
+        else
+        {
+            [self.editProfileButton setTitle:NSLocalizedString(@"follow", @"") forState:UIControlStateNormal];
+            [self.editProfileButton setTitleColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor] forState:UIControlStateNormal];
+            self.editProfileButton.layer.borderColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor].CGColor;
+            self.editProfileButton.backgroundColor = [UIColor clearColor];
+        }
+    }
+    else
+    {
+        if (self.editProfileButton.selected)
+        {
+            [self.editProfileButton setTitle:NSLocalizedString(@"following", @"") forState:UIControlStateNormal];
+            self.editProfileButton.layer.borderColor = [UIColor whiteColor].CGColor;
+            self.editProfileButton.backgroundColor = [UIColor clearColor];
+        }
+        else
+        {
+            [self.editProfileButton setTitle:NSLocalizedString(@"follow", @"") forState:UIControlStateNormal];
+            self.editProfileButton.layer.borderColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor].CGColor;
+            self.editProfileButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+        }
+    }
 }
 
 - (void)setUser:(VUser *)user
@@ -88,18 +129,7 @@
                         options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
                           block:^(id observer, UIButton *editProfileButton, NSDictionary *change)
      {
-         if (editProfileButton.selected)
-         {
-             [editProfileButton setTitle:NSLocalizedString(@"following", @"") forState:UIControlStateNormal];
-             editProfileButton.layer.borderColor = [UIColor whiteColor].CGColor;
-             editProfileButton.backgroundColor = [UIColor clearColor];
-         }
-         else
-         {
-             [editProfileButton setTitle:NSLocalizedString(@"follow", @"") forState:UIControlStateNormal];
-             editProfileButton.layer.borderColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor].CGColor;
-             editProfileButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-         }
+         [self applyEditProfileButtonStyle];
      }];
     
     __weak typeof(self) welf = self;
@@ -134,8 +164,6 @@
         if (user.remoteId.integerValue == [VObjectManager sharedManager].mainUser.remoteId.integerValue)
         {
             [welf.editProfileButton setTitle:NSLocalizedString(@"editProfileButton", @"") forState:UIControlStateNormal];
-            welf.editProfileButton.layer.borderColor = [UIColor whiteColor].CGColor;
-            welf.editProfileButton.backgroundColor = [UIColor clearColor];
         }
         else
         {
