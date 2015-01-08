@@ -745,8 +745,6 @@ static CGFloat const kTemplateCLineSpacing = 8;
 
 - (void)followHashtagButtonAction:(id)sender
 {
-    VLog(@"Follow #%@ action", self.selectedHashtag);
-    
     VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         // Animate follow button
@@ -770,8 +768,6 @@ static CGFloat const kTemplateCLineSpacing = 8;
 
 - (void)unfollowHashtagButtonAction:(id)sender
 {
-    VLog(@"Unfollow #%@ action", self.selectedHashtag);
-    
     VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         self.subscribedToHashtag = NO;
