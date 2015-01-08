@@ -8,6 +8,16 @@
 
 @import CoreMedia;
 
+@class VTrimmerViewController;
+
+@protocol VTrimmerViewControllerDelegate <NSObject>
+
+@optional
+- (void)trimmerViewControllerDidUpdateSelectedTimeRange:(CMTimeRange)selectedTimeRange
+                                  trimmerViewController:(VTrimmerViewController *)trimmerViewController;
+
+@end
+
 @interface VTrimmerViewController : UIViewController
 
 @property (nonatomic, assign) CMTime minimumStartTime;
@@ -15,5 +25,7 @@
 @property (nonatomic, assign) CMTime maximumTrimDuration;
 
 @property (nonatomic, readonly) CMTimeRange selectedTimeRange;
+
+@property (nonatomic, weak) id <VTrimmerViewControllerDelegate> delegate;
 
 @end

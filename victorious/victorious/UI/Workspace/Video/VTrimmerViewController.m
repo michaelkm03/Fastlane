@@ -66,12 +66,6 @@
 
 #pragma mark - Property Accessors
 
-- (void)setMinimumStartTime:(CMTime)minimumStartTime
-{
-    _minimumStartTime = minimumStartTime;
-    self.trimControl.startTime = minimumStartTime;
-}
-
 - (void)setMaximumTrimDuration:(CMTime)maximumTrimDuration
 {
     _maximumTrimDuration = maximumTrimDuration;
@@ -83,12 +77,22 @@
     _maximumEndTime = maximumEndTime;
 }
 
+- (CMTimeRange)selectedTimeRange
+{
+    return CMTimeRangeMake(kCMTimeZero, self.trimControl.selectedDuration);
+}
+
 #pragma mark - Target/Action
 
 - (void)trimSelectionChanged:(VTrimControl *)trimControl
 {
-    trimControl.attributedTitle = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ secs", [NSString stringWithFormat:@"%.0f", CMTimeGetSeconds(trimControl.selectionRange.duration)]]
+    trimControl.attributedTitle = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ secs", [NSString stringWithFormat:@"%.0f", CMTimeGetSeconds(trimControl.selectedDuration)]]
                                                                   attributes:nil];
+    if ([self.delegate respondsToSelector:@selector(trimmerViewControllerDidUpdateSelectedTimeRange:trimmerViewController:)])
+    {
+        [self.delegate trimmerViewControllerDidUpdateSelectedTimeRange:[self selectedTimeRange]
+                                                 trimmerViewController:self];
+    }
 }
 
 #pragma mark - UICollectionViewDataSource

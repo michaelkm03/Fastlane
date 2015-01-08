@@ -18,11 +18,10 @@
  */
 @interface VTrimControl : UIControl
 
-@property (nonatomic, assign) CMTime startTime;
 @property (nonatomic, assign) CMTime maxDuration;
 
 @property (nonatomic, copy) NSAttributedString *attributedTitle;
 
-@property (nonatomic, readonly) CMTimeRange selectionRange;
+@property (nonatomic, readonly) CMTime selectedDuration;
 
 @end

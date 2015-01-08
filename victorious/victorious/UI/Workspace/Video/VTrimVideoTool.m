@@ -21,7 +21,7 @@ static NSString * const kVideoMaxDuration = @"videoMaxDuration";
 static NSString * const kVideoMinDuration = @"videoMinDuration";
 static NSString * const kVideoMuted = @"videoMuted";
 
-@interface VTrimVideoTool ()
+@interface VTrimVideoTool () <VTrimmerViewControllerDelegate>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VTrimmerViewController *trimViewController;
@@ -37,6 +37,7 @@ static NSString * const kVideoMuted = @"videoMuted";
 @property (nonatomic, strong) VVideoFrameRateController *frameRateController;
 
 @property (nonatomic, strong) id itemEndObserver;
+@property (nonatomic, strong) id trimEndObserver;
 
 @end
 
@@ -54,6 +55,10 @@ static NSString * const kVideoMuted = @"videoMuted";
                                                         name:AVPlayerItemDidPlayToEndTimeNotification
                                                       object:_playerItem];
         self.itemEndObserver = nil;
+    }
+    if (self.trimEndObserver)
+    {
+        [self.player removeTimeObserver:self.trimEndObserver];
     }
 }
 
@@ -77,6 +82,7 @@ static NSString * const kVideoMuted = @"videoMuted";
         
         _trimViewController = [[VTrimmerViewController alloc] initWithNibName:nil
                                                                        bundle:nil];
+        _trimViewController.delegate = self;
     }
     return self;
 }
@@ -184,6 +190,27 @@ static NSString * const kVideoMuted = @"videoMuted";
              VLog(@"Player failed: %@", welf.player.error);
          }
      }];
+}
+
+#pragma mark - VTrimmerViewControllerDelegate
+
+- (void)trimmerViewControllerDidUpdateSelectedTimeRange:(CMTimeRange)selectedTimeRange
+                                  trimmerViewController:(VTrimmerViewController *)trimmerViewController
+{
+    CMTime endTrimTime = CMTimeAdd(selectedTimeRange.start, selectedTimeRange.duration);
+    if (CMTimeCompare(self.player.currentTime, CMTimeAdd(selectedTimeRange.start, selectedTimeRange.duration)) == 1)
+    {
+        [self.player seekToTime:selectedTimeRange.start];
+    }
+    
+    __weak typeof(self) welf = self;
+    [welf.player removeTimeObserver:self.trimEndObserver];
+    self.trimEndObserver = [self.player addBoundaryTimeObserverForTimes:@[[NSValue valueWithCMTime:endTrimTime]]
+                                                                  queue:dispatch_get_main_queue()
+                                                             usingBlock:^
+                            {
+                                [welf.player seekToTime:welf.trimViewController.selectedTimeRange.start];
+                            }];
 }
 
 @end

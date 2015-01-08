@@ -29,7 +29,8 @@
 #import "VPublishBlurOverAnimator.h"
 
 #import "VVideoWorkspaceTool.h"
-#import "VVideoPlayerView.h"mailto:joseph@getvictorious.com
+#import "VVideoPlayerView.h"
+
 @import AVFoundation;
 
 static const CGFloat kJPEGCompressionQuality    = 0.8f;

@@ -15,7 +15,7 @@ static const CGFloat kTrimBodyWidth = 5.0f;
 
 @interface VTrimControl () <UICollisionBehaviorDelegate>
 
-@property (nonatomic, readwrite) CMTimeRange selectionRange;
+@property (nonatomic, readwrite) CMTime selectedDuration;
 
 @property (nonatomic, strong) UIView *trimThumbHead;
 @property (nonatomic, strong) UIView *trimThumbBody;
@@ -244,8 +244,7 @@ static inline CGPoint ClampX(CGPoint point, CGFloat xMin, CGFloat xMax)
 - (void)sendActionsForControlEvents:(UIControlEvents)controlEvents
 {
     CGFloat percentSelected = CGRectGetMidX(self.trimThumbBody.frame) / CGRectGetWidth(self.bounds);
-    CMTime selectedDuration = CMTimeMake(percentSelected * self.maxDuration.value, self.maxDuration.timescale);
-    self.selectionRange = CMTimeRangeMake(self.startTime, selectedDuration);
+    self.selectedDuration = CMTimeMake(percentSelected * self.maxDuration.value, self.maxDuration.timescale);
     [super sendActionsForControlEvents:controlEvents];
 }
 
