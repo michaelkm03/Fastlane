@@ -421,7 +421,6 @@
 		A7738B041A4A35DF008EA973 /* VModalTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = A7738B011A4A35DF008EA973 /* VModalTransition.m */; };
 		A7738B051A4A35DF008EA973 /* VTransitionDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A7738B031A4A35DF008EA973 /* VTransitionDelegate.m */; };
 		A7738B081A4A36C9008EA973 /* VTransitionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A7738B071A4A36C9008EA973 /* VTransitionModel.m */; };
-		A7738AF61A4910A7008EA973 /* VEditCommentViewController+Transitions.m in Sources */ = {isa = PBXBuildFile; fileRef = A7738AF51A4910A7008EA973 /* VEditCommentViewController+Transitions.m */; };
 		A7738B101A4B4A0D008EA973 /* VCommentCellUtilitesController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7738B0C1A4B4A0D008EA973 /* VCommentCellUtilitesController.m */; };
 		A7738B111A4B4A0D008EA973 /* VCommentsUtilityButtonConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = A7738B0F1A4B4A0D008EA973 /* VCommentsUtilityButtonConfiguration.m */; };
 		A77AD4C71A1EFDB400142F24 /* VFollowersTextFormatterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A77AD4C61A1EFDB400142F24 /* VFollowersTextFormatterTests.m */; };
@@ -1381,8 +1380,6 @@
 		A7738B061A4A36C9008EA973 /* VTransitionModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTransitionModel.h; sourceTree = "<group>"; };
 		A7738B071A4A36C9008EA973 /* VTransitionModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTransitionModel.m; sourceTree = "<group>"; };
 		A7738B091A4A3744008EA973 /* VAnimatedTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAnimatedTransition.h; sourceTree = "<group>"; };
-		A7738AF41A4910A7008EA973 /* VEditCommentViewController+Transitions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VEditCommentViewController+Transitions.h"; sourceTree = "<group>"; };
-		A7738AF51A4910A7008EA973 /* VEditCommentViewController+Transitions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VEditCommentViewController+Transitions.m"; sourceTree = "<group>"; };
 		A7738B0B1A4B4A0D008EA973 /* VCommentCellUtilitesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCommentCellUtilitesController.h; sourceTree = "<group>"; };
 		A7738B0C1A4B4A0D008EA973 /* VCommentCellUtilitesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCommentCellUtilitesController.m; sourceTree = "<group>"; };
 		A7738B0D1A4B4A0D008EA973 /* VCommentCellUtilitiesDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCommentCellUtilitiesDelegate.h; sourceTree = "<group>"; };
@@ -3304,10 +3301,10 @@
 				A7738B091A4A3744008EA973 /* VAnimatedTransition.h */,
 				A7738B001A4A35DF008EA973 /* VModalTransition.h */,
 				A7738B011A4A35DF008EA973 /* VModalTransition.m */,
-				A7738B061A4A36C9008EA973 /* VTransitionModel.h */,
-				A7738B071A4A36C9008EA973 /* VTransitionModel.m */,
 				A7738B021A4A35DF008EA973 /* VTransitionDelegate.h */,
 				A7738B031A4A35DF008EA973 /* VTransitionDelegate.m */,
+				A7738B061A4A36C9008EA973 /* VTransitionModel.h */,
+				A7738B071A4A36C9008EA973 /* VTransitionModel.m */,
 			);
 			path = Transitions;
 			sourceTree = "<group>";
@@ -4803,8 +4800,6 @@
 				0314D4F719B46B5E00FA363C /* VLargeNumberFormatter.m in Sources */,
 				03CF1520195CFBE600F6477B /* NSArray+VMap.m in Sources */,
 				0314D4E119B46B5E00FA363C /* VFindFriendsTableViewController.m in Sources */,
-				A761C9CE1A46743A00F0D0F9 /* VCommentsUtilityButtonConfiguration.m in Sources */,
-				A7A2E0081A38E44B00F8C705 /* VPurchaseViewController+Transitions.m in Sources */,
 				D82E76E319F5C06100FFB722 /* VContentPollBallotCell.m in Sources */,
 				A7E398731A362578000E4CAC /* NSData+AES.m in Sources */,
 				0314D4F119B46B5E00FA363C /* VResetPasswordViewController.m in Sources */,

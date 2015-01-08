@@ -10,8 +10,8 @@
 #import "VAnimatedTransition.h"
 
 /**
- To be animated in the transition style of VModalTransition, the preseted view
- controller must conform to this protocol
+ *  To be animated in the transition style of VModalTransition, the preseted view
+ *  controller must conform to this protocol
  */
 @protocol VModalTransitionPresentedViewController <NSObject>
 
@@ -27,8 +27,8 @@
 @end
 
 /**
- An animated transition designed for a 'present' transition type that
- fades in a background view and then scales up a modal view.
+ *  An animated transition designed for a 'present' transition type that
+ *  fades in a background view and then scales up a modal view.
  */
 @interface VModalTransition : NSObject <VAnimatedTransition>
 

@@ -10,9 +10,9 @@
 #import "VTransitionModel.h"
 
 /**
- Any classes that implement an animated transition through VViewControllerTransition
- must conform to this protocol.  VViewControllerTransition will configure the transition
- and then call these methods accordingly while the transition is being performed.
+ *  Any classes that implement an animated transition through VViewControllerTransition
+ *  must conform to this protocol.  VViewControllerTransition will configure the transition
+ *  and then call these methods accordingly while the transition is being performed.
  */
 @protocol VAnimatedTransition <NSObject>
 

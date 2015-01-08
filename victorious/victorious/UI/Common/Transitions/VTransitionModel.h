@@ -11,15 +11,15 @@
 @protocol VAnimatedTransition;
 
 /**
- An object that holds important information about the animation transition that
- is taking place, encapsulated here so that it can be pass to transition animation
- classes that conform to VAnimatedTransition protocol.
+ *  An object that holds important information about the animation transition that
+ *  is taking place, encapsulated here so that it can be pass to transition animation
+ *  classes that conform to VAnimatedTransition protocol.
  */
 @interface VTransitionModel : NSObject
 
 /**
- Creates the transition model from the transition context provided by iOS
- and a transition animator provided by you.
+ *  Creates the transition model from the transition context provided by iOS
+ *  and a transition animator provided by you.
  */
 - (instancetype)initWithTransitionContext:(id <UIViewControllerContextTransitioning>)transitionContext
                                transition:(id<VAnimatedTransition>)transition;

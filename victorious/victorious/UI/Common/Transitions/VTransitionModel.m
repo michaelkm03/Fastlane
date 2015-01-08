@@ -19,6 +19,10 @@
     {
         _fromViewController = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
         _toViewController = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
+        
+        NSParameterAssert( _fromViewController != nil );
+        NSParameterAssert( _toViewController != nil );
+        
         _isPresenting = [_toViewController presentedViewController] != _fromViewController;
         _animationDuration = _isPresenting ? transition.transitionInDuration : transition.transitionOutDuration;
         if ( [transition requiresImageViewFromOriginViewController] )
