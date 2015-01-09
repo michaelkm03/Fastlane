@@ -102,17 +102,17 @@ static NSString * const kVideoMuted = @"videoMuted";
                                                                      frameDuration:self.frameDuration
                                                                          muteAudio:self.muteAudio];
     self.trimViewController.minimumStartTime = kCMTimeZero;
-    self.trimViewController.maximumTrimDuration = CMTimeMake(30, 1);
+    self.trimViewController.maximumTrimDuration = CMTimeMake(15, 1);
 
     __weak typeof(self) welf = self;
     self.frameRateController.playerItemReady = ^(AVPlayerItem *playerItem)
     {
         welf.playerItem = playerItem;
         welf.trimViewController.maximumEndTime = [playerItem duration];
-        if (CMTimeCompare(welf.trimViewController.maximumTrimDuration, [playerItem duration]) == NSOrderedDescending)
-        {
-            welf.trimViewController.maximumTrimDuration = [playerItem duration];
-        }
+//        if (CMTimeCompare(welf.trimViewController.maximumTrimDuration, [playerItem duration]) == NSOrderedDescending)
+//        {
+//            welf.trimViewController.maximumTrimDuration = [playerItem duration];
+//        }
         
         VLog(@"Trim duration: %@", [NSValue valueWithCMTime:welf.trimViewController.selectedTimeRange.duration]);
         welf.trimEndObserver = [welf.player addBoundaryTimeObserverForTimes:@[[NSValue valueWithCMTime:welf.trimViewController.selectedTimeRange.duration]]

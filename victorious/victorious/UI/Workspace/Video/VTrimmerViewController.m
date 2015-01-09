@@ -14,6 +14,8 @@
 #import "VThumbnailCell.h"
 #import "VTrimControl.h"
 
+static NSString *const emptyCellIdentifier = @"emptyCell";
+
 @interface VTrimmerViewController () <UICollectionViewDelegateFlowLayout, UICollectionViewDataSource>
 
 @property (nonatomic, strong) UICollectionView *thumbnailCollecitonView;
@@ -25,6 +27,8 @@
 
 @property (nonatomic, strong) UIView *currentPlayBackOverlayView;
 @property (nonatomic, strong) NSLayoutConstraint *currentPlayBackWidthConstraint;
+
+@property (nonatomic, assign) CMTime offsetTime;
 
 @end
 
@@ -41,6 +45,8 @@
                                                       collectionViewLayout:layout];
     [self.thumbnailCollecitonView registerNib:[VThumbnailCell nibForCell]
                    forCellWithReuseIdentifier:[VThumbnailCell suggestedReuseIdentifier]];
+    [self.thumbnailCollecitonView registerClass:[UICollectionViewCell class]
+                     forCellWithReuseIdentifier:emptyCellIdentifier];
     self.thumbnailCollecitonView.dataSource = self;
     self.thumbnailCollecitonView.delegate = self;
     self.thumbnailCollecitonView.alwaysBounceHorizontal = YES;
@@ -199,8 +205,7 @@
 - (NSInteger)collectionView:(UICollectionView *)collectionView
      numberOfItemsInSection:(NSInteger)section
 {
-    CGFloat timelineWidthPerSecond = CGRectGetWidth(collectionView.bounds) / CMTimeGetSeconds(CMTimeMake(15, 1));
-    CGFloat neededTimeLineWidth = timelineWidthPerSecond * CMTimeGetSeconds(self.maximumEndTime);
+    CGFloat neededTimeLineWidth = [self timelineWidthPerSecond] * CMTimeGetSeconds(self.maximumEndTime);
     
     CGFloat frameWidth = CGRectGetHeight(collectionView.bounds);
     neededTimeLineWidth = neededTimeLineWidth - frameWidth;
@@ -212,7 +217,7 @@
         neededTimeLineWidth = neededTimeLineWidth - frameWidth;
     }
     
-    return numberOfFrames;
+    return numberOfFrames + 1; // 1 extra for a spacer cell
 //    return cgrect
 //    Float64 maxTimeOverMaxTrim = CMTimeGetSeconds(self.maximumEndTime) / CMTimeGetSeconds(self.maximumTrimDuration);
 //    VLog(@"Max end time: %@, Max trim duration: %@, maxTimeOverMaxTrim: %@", [NSValue valueWithCMTime:self.maximumEndTime], [NSValue valueWithCMTime:self.maximumTrimDuration], @(maxTimeOverMaxTrim));
@@ -222,6 +227,18 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
                   cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    NSInteger numberOfItems = [self collectionView:collectionView
+                            numberOfItemsInSection:indexPath.section];
+    
+    if (indexPath.row == --numberOfItems)
+    {
+        UICollectionViewCell *emptyCell = [collectionView dequeueReusableCellWithReuseIdentifier:emptyCellIdentifier
+                                                                                    forIndexPath:indexPath];
+        emptyCell.backgroundColor = [UIColor clearColor];
+        emptyCell.contentView.backgroundColor = [UIColor clearColor];
+        return emptyCell;
+    }
+    
     VThumbnailCell *thumnailCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VThumbnailCell suggestedReuseIdentifier]
                                                                              forIndexPath:indexPath];
     thumnailCell.thumbnail = [UIImage imageNamed:@"bike"];
@@ -234,7 +251,24 @@
                   layout:(UICollectionViewLayout *)collectionViewLayout
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    NSInteger numberOfItems = [self collectionView:collectionView
+                            numberOfItemsInSection:indexPath.section];
     
+    // Empty Cell
+    if (indexPath.row == --numberOfItems)
+    {
+        CGFloat timelinePercentOfWidth = CMTimeGetSeconds(self.maximumEndTime) / CMTimeGetSeconds(self.maximumTrimDuration);
+        if (timelinePercentOfWidth < 1)
+        {
+            CGFloat widthForTimeline = timelinePercentOfWidth * CGRectGetWidth(collectionView.bounds);
+            return CGSizeMake(CGRectGetWidth(collectionView.bounds) - widthForTimeline + [self timelineWidthPerSecond], CGRectGetHeight(collectionView.bounds));
+        }
+        else
+        {
+            return CGSizeMake(CGRectGetWidth(collectionView.bounds), CGRectGetHeight(collectionView.bounds) - [self timelineWidthPerSecond]);
+        }
+    }
+    // Frames
     return CGSizeMake(CGRectGetHeight(collectionView.frame), CGRectGetHeight(collectionView.frame));
 }
 
@@ -273,6 +307,11 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
     NSString *title = [NSString stringWithFormat:@"%@ secs", [NSString stringWithFormat:@"%.0f", CMTimeGetSeconds(time)]];
     self.trimControl.attributedTitle = [[NSAttributedString alloc] initWithString:title
                                                                   attributes:nil];
+}
+
+- (CGFloat)timelineWidthPerSecond
+{
+    return CGRectGetWidth(self.thumbnailCollecitonView.bounds) / CMTimeGetSeconds(self.maximumTrimDuration);
 }
 
 @end
