@@ -40,6 +40,7 @@
                    forCellWithReuseIdentifier:[VThumbnailCell suggestedReuseIdentifier]];
     self.thumbnailCollecitonView.dataSource = self;
     self.thumbnailCollecitonView.delegate = self;
+    self.thumbnailCollecitonView.alwaysBounceHorizontal = YES;
     self.thumbnailCollecitonView.backgroundColor = [UIColor clearColor];
 
     [self.view addSubview:self.thumbnailCollecitonView];
@@ -194,7 +195,7 @@
      numberOfItemsInSection:(NSInteger)section
 {
     NSInteger visibleCells = CGRectGetWidth(collectionView.bounds) / CGRectGetHeight(collectionView.bounds);
-    return visibleCells;
+    return 4;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView

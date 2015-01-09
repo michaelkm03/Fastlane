@@ -190,7 +190,7 @@ static NSString * const kVideoMuted = @"videoMuted";
          {
              [welf.player play];
              
-             self.currentTimeObserver =  [welf.player addPeriodicTimeObserverForInterval:CMTimeMake(1, 24)
+             self.currentTimeObserver =  [welf.player addPeriodicTimeObserverForInterval:CMTimeMake(1, 60)
                                                                                    queue:dispatch_get_main_queue()
                                                                               usingBlock:^(CMTime time)
                                           {
