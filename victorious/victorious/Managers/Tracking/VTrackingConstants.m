@@ -105,8 +105,3 @@ NSString * const VTrackingKeyActivityType          = @"ActivityType";
 NSString * const VTrackingKeySequenceCategory      = @"SequenceCategory";
 NSString * const VTrackingKeyStreamName            = @"StreamName";
 NSString * const VTrackingKeyAppViewName           = @"AppViewName";
-
-NSString * const VTrackingValueFacebookShare       = @"facebook";
-NSString * const VTrackingValueTwitterShare        = @"twitter";
-NSString * const VTrackingValueTextShare           = @"text";
-NSString * const VTrackingValueMailShare           = @"email";
