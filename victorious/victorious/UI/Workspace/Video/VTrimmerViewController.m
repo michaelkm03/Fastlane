@@ -8,6 +8,9 @@
 
 #import "VTrimmerViewController.h"
 
+#warning Remove me?
+@import AVFoundation;
+
 #import "VThumbnailCell.h"
 #import "VTrimControl.h"
 
@@ -145,11 +148,13 @@
 {
     _maximumTrimDuration = maximumTrimDuration;
     self.trimControl.maxDuration = maximumTrimDuration;
+    [self updateTrimControlTitleWithTime:self.trimControl.selectedDuration];
 }
 
 - (void)setMaximumEndTime:(CMTime)maximumEndTime
 {
     _maximumEndTime = maximumEndTime;
+    [self.thumbnailCollecitonView reloadData];
 }
 
 - (CMTimeRange)selectedTimeRange
@@ -172,8 +177,8 @@
 
 - (void)trimSelectionChanged:(VTrimControl *)trimControl
 {
-    trimControl.attributedTitle = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ secs", [NSString stringWithFormat:@"%.0f", CMTimeGetSeconds(trimControl.selectedDuration)]]
-                                                                  attributes:nil];
+    [self updateTrimControlTitleWithTime:trimControl.selectedDuration];
+    
     if ([self.delegate respondsToSelector:@selector(trimmerViewControllerDidUpdateSelectedTimeRange:trimmerViewController:)])
     {
         [self.delegate trimmerViewControllerDidUpdateSelectedTimeRange:[self selectedTimeRange]
@@ -194,8 +199,24 @@
 - (NSInteger)collectionView:(UICollectionView *)collectionView
      numberOfItemsInSection:(NSInteger)section
 {
-    NSInteger visibleCells = CGRectGetWidth(collectionView.bounds) / CGRectGetHeight(collectionView.bounds);
-    return 4;
+    CGFloat timelineWidthPerSecond = CGRectGetWidth(collectionView.bounds) / CMTimeGetSeconds(CMTimeMake(15, 1));
+    CGFloat neededTimeLineWidth = timelineWidthPerSecond * CMTimeGetSeconds(self.maximumEndTime);
+    
+    CGFloat frameWidth = CGRectGetHeight(collectionView.bounds);
+    neededTimeLineWidth = neededTimeLineWidth - frameWidth;
+    NSInteger numberOfFrames = 1;
+    
+    while (neededTimeLineWidth > 0)
+    {
+        numberOfFrames++;
+        neededTimeLineWidth = neededTimeLineWidth - frameWidth;
+    }
+    
+    return numberOfFrames;
+//    return cgrect
+//    Float64 maxTimeOverMaxTrim = CMTimeGetSeconds(self.maximumEndTime) / CMTimeGetSeconds(self.maximumTrimDuration);
+//    VLog(@"Max end time: %@, Max trim duration: %@, maxTimeOverMaxTrim: %@", [NSValue valueWithCMTime:self.maximumEndTime], [NSValue valueWithCMTime:self.maximumTrimDuration], @(maxTimeOverMaxTrim));
+//    return isnan(maxTimeOverMaxTrim) ? 4 : maxTimeOverMaxTrim;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
@@ -243,6 +264,15 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     
+}
+
+#pragma mark - Private Methods
+
+- (void)updateTrimControlTitleWithTime:(CMTime)time
+{
+    NSString *title = [NSString stringWithFormat:@"%@ secs", [NSString stringWithFormat:@"%.0f", CMTimeGetSeconds(time)]];
+    self.trimControl.attributedTitle = [[NSAttributedString alloc] initWithString:title
+                                                                  attributes:nil];
 }
 
 @end

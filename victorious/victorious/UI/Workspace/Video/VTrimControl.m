@@ -147,6 +147,13 @@ static inline CGPoint ClampX(CGPoint point, CGFloat xMin, CGFloat xMax)
     return self.thumbLabel.attributedText;
 }
 
+- (void)setMaxDuration:(CMTime)maxDuration
+{
+    _maxDuration = maxDuration;
+    
+    [self updateSelectedDuration];
+}
+
 #pragma mark - Gesture Recognizer
 
 - (void)pannedThumb:(UIPanGestureRecognizer *)gestureRecognizer
@@ -236,12 +243,17 @@ static inline CGPoint ClampX(CGPoint point, CGFloat xMin, CGFloat xMax)
 
 - (void)sendActionsForControlEvents:(UIControlEvents)controlEvents
 {
-    CGFloat percentSelected = CGRectGetMidX(self.trimThumbBody.frame) / CGRectGetWidth(self.bounds);
-    self.selectedDuration = CMTimeMake(percentSelected * self.maxDuration.value, self.maxDuration.timescale);
+    [self updateSelectedDuration];
     [super sendActionsForControlEvents:controlEvents];
 }
 
 #pragma mark - Private Methods
+
+- (void)updateSelectedDuration
+{
+    CGFloat percentSelected = CGRectGetMidX(self.trimThumbBody.frame) / CGRectGetWidth(self.bounds);
+    self.selectedDuration = CMTimeMake(percentSelected * self.maxDuration.value, self.maxDuration.timescale);
+}
 
 - (void)updateThumAndDimmingViewWithNewThumbCenter:(CGPoint)thumbCenter
 {

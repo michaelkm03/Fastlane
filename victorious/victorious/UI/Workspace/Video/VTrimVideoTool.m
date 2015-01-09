@@ -113,6 +113,14 @@ static NSString * const kVideoMuted = @"videoMuted";
         {
             welf.trimViewController.maximumTrimDuration = [playerItem duration];
         }
+        
+        VLog(@"Trim duration: %@", [NSValue valueWithCMTime:welf.trimViewController.selectedTimeRange.duration]);
+        welf.trimEndObserver = [welf.player addBoundaryTimeObserverForTimes:@[[NSValue valueWithCMTime:welf.trimViewController.selectedTimeRange.duration]]
+                                                                      queue:dispatch_get_main_queue()
+                                                                 usingBlock:^
+                                {
+                                    [welf playerPlaayedToTrimEndTime];
+                                }];
     };
 }
 
@@ -141,6 +149,7 @@ static NSString * const kVideoMuted = @"videoMuted";
                                      [welf.player play];
                                  }];
                             }];
+
     
     self.player = [AVPlayer playerWithPlayerItem:playerItem];
 }
@@ -190,7 +199,7 @@ static NSString * const kVideoMuted = @"videoMuted";
          {
              [welf.player play];
              
-             self.currentTimeObserver =  [welf.player addPeriodicTimeObserverForInterval:CMTimeMake(1, 60)
+             welf.currentTimeObserver =  [welf.player addPeriodicTimeObserverForInterval:CMTimeMake(1, 30)
                                                                                    queue:dispatch_get_main_queue()
                                                                               usingBlock:^(CMTime time)
                                           {
@@ -202,6 +211,18 @@ static NSString * const kVideoMuted = @"videoMuted";
              VLog(@"Player failed: %@", welf.player.error);
          }
      }];
+}
+
+- (void)playerPlaayedToTrimEndTime
+{
+    [self.player pause];
+    self.trimViewController.currentPlayTime = self.trimViewController.selectedTimeRange.start;
+    [self.player seekToTime:self.trimViewController.selectedTimeRange.start
+          completionHandler:^(BOOL finished)
+     {
+         [self.player play];
+     }];
+
 }
 
 #pragma mark - VTrimmerViewControllerDelegate
@@ -216,19 +237,15 @@ static NSString * const kVideoMuted = @"videoMuted";
     }
     
     __weak typeof(self) welf = self;
-    [welf.player removeTimeObserver:self.trimEndObserver];
+    if (self.trimEndObserver)
+    {
+        [self.player removeTimeObserver:self.trimEndObserver];
+    }
     self.trimEndObserver = [self.player addBoundaryTimeObserverForTimes:@[[NSValue valueWithCMTime:endTrimTime]]
                                                                   queue:dispatch_get_main_queue()
                                                              usingBlock:^
                             {
-                                [welf.player pause];
-                                welf.trimViewController.currentPlayTime = welf.trimViewController.selectedTimeRange.start;
-                                [welf.player seekToTime:welf.trimViewController.selectedTimeRange.start
-                                      completionHandler:^(BOOL finished)
-                                {
-                                    [welf.player play];
-                                }];
-                                
+                                [welf playerPlaayedToTrimEndTime];
                             }];
 }
 

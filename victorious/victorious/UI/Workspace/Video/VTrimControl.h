@@ -18,6 +18,9 @@
  */
 @interface VTrimControl : UIControl
 
+/**
+ *  Updates max duration that the trim control can select. Doesn't send control events.
+ */
 @property (nonatomic, assign) CMTime maxDuration;
 
 @property (nonatomic, copy) NSAttributedString *attributedTitle;
