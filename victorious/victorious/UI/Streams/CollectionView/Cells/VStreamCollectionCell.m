@@ -132,13 +132,15 @@ static const CGFloat kDescriptionBuffer = 37.0;
 {
     [self.actionView clearButtons];
     [self.actionView addShareButton];
-    if (![self.sequence isPoll])
+    if ( [self.sequence canRemix] )
     {
         [self.actionView addRemixButton];
     }
-    [self.actionView addRepostButton];
+    if ( [self.sequence canRepost] )
+    {
+        [self.actionView addRepostButton];
+    }
     [self.actionView addFlagButton];
-    [self.actionView layoutIfNeeded];
 }
 
 - (void)setHeight:(CGFloat)height

@@ -136,7 +136,6 @@ static CGFloat const kVActionButtonBuffer = 15;
     button.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
     [self addSubview:button];
     [self.actionButtons addObject:button];
-    [self setNeedsLayout];
     return button;
 }
 
