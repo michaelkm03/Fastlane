@@ -8,6 +8,8 @@
 
 #import "VVideoFrameRateController.h"
 
+#import <KVOController/FBKVOController.h>
+
 @interface VVideoFrameRateController ()
 
 @property (nonatomic, strong, readwrite) NSURL *videoURL;
@@ -43,7 +45,10 @@
              [self buildTracks];
              
              AVPlayerItem *playerItem = [AVPlayerItem playerItemWithAsset:[self.mutableComposition copy]];
+             playerItem.seekingWaitsForVideoCompositionRendering = YES;
              playerItem.videoComposition = [self videoComposition];
+             
+             VLog(@"Player item ready: %@, Player item status: %@", playerItem, @(playerItem.status));
              if (self.playerItemReady)
              {
                  self.playerItemReady(playerItem);
