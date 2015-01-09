@@ -73,7 +73,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
 @property (strong, nonatomic) VSequenceActionController *sequenceActionController;
 
 @property (nonatomic, assign) BOOL hasRefreshed;
-@property (nonatomic, assign) BOOL subscribedToHashtag;
+@property (nonatomic, assign) BOOL isSubscribedToHashtag;
 @property (nonatomic, strong) NSString *selectedHashtag;
 @property (nonatomic, weak) MBProgressHUD *failureHUD;
 
@@ -416,7 +416,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
         UIImage *hashtagButtonImage = [[UIImage imageNamed:buttonImageName]  imageWithRenderingMode:UIImageRenderingModeAutomatic];
         
         [self.navHeaderView setRightButtonImage:hashtagButtonImage withAction:@selector(followUnfollowHashtagButtonAction:) onTarget:nil];
-        self.subscribedToHashtag = subscribed;
+        self.isSubscribedToHashtag = subscribed;
     }
 }
 
@@ -778,7 +778,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
     sender.userInteractionEnabled = NO;
     sender.alpha = 0.3f;
 
-    if (self.subscribedToHashtag)
+    if (self.isSubscribedToHashtag)
     {
         [self unfollowHashtagAction:sender];
     }
@@ -793,7 +793,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
     VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         // Animate follow button
-        self.subscribedToHashtag = YES;
+        self.isSubscribedToHashtag = YES;
         [self updateSubscribeStatusAnimated:YES button:sender];
     };
     
@@ -819,7 +819,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
 {
     VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        self.subscribedToHashtag = NO;
+        self.isSubscribedToHashtag = NO;
         [self updateSubscribeStatusAnimated:YES button:sender];
     };
     
@@ -847,7 +847,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
 {
     NSString *buttonImageName = @"streamFollowHashtag";
     
-    if (self.subscribedToHashtag)
+    if (self.isSubscribedToHashtag)
     {
         buttonImageName = @"followedHashtag";
     }
