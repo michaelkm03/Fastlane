@@ -701,9 +701,9 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
                 return 1;
             }
             
-            if ([self.dependencyManagerForHistogramExperiment numberForKey:VDependencyManagerHistogramEnabledKey]
-                &&
-                self.viewModel.type == VContentViewTypeVideo)
+            BOOL histogramEnabled = [[self.dependencyManagerForHistogramExperiment numberForKey:VDependencyManagerHistogramEnabledKey] boolValue];
+            BOOL isVideo = (self.viewModel.type == VContentViewTypeVideo);
+            if (histogramEnabled && isVideo)
             {
                 return 1;
             }
