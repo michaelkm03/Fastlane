@@ -266,7 +266,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
                                                  name:VStreamCollectionDataSourceDidChangeNotification
                                                object:self.streamDataSource];
     
-    
+
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(didEnterBackground:)
                                                  name:UIApplicationDidEnterBackgroundNotification
@@ -393,29 +393,31 @@ static CGFloat const kTemplateCLineSpacing = 8;
 
 - (void)updateHashtagNavButton:(NSArray *)hashtags
 {
-    NSString *buttonImageName = @"streamFollowHashtag";
-    BOOL subscribed = NO;
+    __block NSString *buttonImageName = @"streamFollowHashtag";
+    __block BOOL subscribed = NO;
     
     VUser *mainUser = [[VObjectManager sharedManager] mainUser];
     NSMutableOrderedSet *tagSet = [mainUser.hashtags mutableCopy];
     
-    for (VHashtag *hashtag in hashtags)
-    {
+    [hashtags enumerateObjectsUsingBlock:^(VHashtag *hashtag, NSUInteger idx, BOOL *stop) {
         [tagSet addObject:hashtag];
         if ([hashtag.tag isEqualToString:self.selectedHashtag])
         {
             buttonImageName = @"followedHashtag";
             subscribed = YES;
         }
-    }
+    }];
     
     mainUser.hashtags = tagSet;
     [mainUser.managedObjectContext save:nil];
     
-    UIImage *hashtagButtonImage = [[UIImage imageNamed:buttonImageName]  imageWithRenderingMode:UIImageRenderingModeAutomatic];
-    
-    [self.navHeaderView setRightButtonImage:hashtagButtonImage withAction:@selector(followUnfollowHashtagButtonAction:) onTarget:nil];
-    self.subscribedToHashtag = subscribed;
+    if (self.selectedHashtag)
+    {
+        UIImage *hashtagButtonImage = [[UIImage imageNamed:buttonImageName]  imageWithRenderingMode:UIImageRenderingModeAutomatic];
+        
+        [self.navHeaderView setRightButtonImage:hashtagButtonImage withAction:@selector(followUnfollowHashtagButtonAction:) onTarget:nil];
+        self.subscribedToHashtag = subscribed;
+    }
 }
 
 #pragma mark - VMarqueeDelegate
@@ -765,9 +767,17 @@ static CGFloat const kTemplateCLineSpacing = 8;
 
 - (void)followUnfollowHashtagButtonAction:(UIButton *)sender
 {
+    // Check if logged in before attempting to subscribe / unsubscribe
+    if (![VObjectManager sharedManager].authorized)
+    {
+        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
+        return;
+    }
+    
+    // Disable the sub/unsub button
     sender.userInteractionEnabled = NO;
     sender.alpha = 0.3f;
-    
+
     if (self.subscribedToHashtag)
     {
         [self unfollowHashtagAction:sender];
@@ -798,13 +808,6 @@ static CGFloat const kTemplateCLineSpacing = 8;
         sender.userInteractionEnabled = YES;
         sender.alpha = 1.0f;
     };
-    
-    // Check if logged in before attempting to subscribe / unsubscribe
-    if (![VObjectManager sharedManager].authorized)
-    {
-        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
-        return;
-    }
     
     // Backend Subscribe to Hashtag call
     [[VObjectManager sharedManager] subscribeToHashtag:self.selectedHashtag
