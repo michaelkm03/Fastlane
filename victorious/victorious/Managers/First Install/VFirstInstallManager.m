@@ -18,8 +18,6 @@ NSString * const VAppInstalledDefaultsKey = @"com.victorious.VAppDelegate.AppIns
 
 - (void)reportFirstInstallWithTracking:(VTracking *)applicationTracking
 {
-    applicationTracking = nil;
-    
     // Check for value indicating app has already been installed before
     id userDefaultsValue = [[NSUserDefaults standardUserDefaults] valueForKey:VAppInstalledDefaultsKey];
     if ( userDefaultsValue != nil )
