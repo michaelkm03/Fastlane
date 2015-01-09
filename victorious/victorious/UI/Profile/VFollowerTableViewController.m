@@ -18,6 +18,7 @@
 #import "VUserProfileViewController.h"
 #import "VConstants.h"
 #import "UIViewController+VNavMenu.h"
+#import "MBProgressHUD.h"
 
 @interface VFollowerTableViewController ()
 
@@ -293,7 +294,7 @@
         }
     };
 
-    if (self.profile)
+    if (self.profile != nil)
     {
         [[VObjectManager sharedManager] refreshFollowersForUser:self.profile
                                                    successBlock:followerSuccess
@@ -313,9 +314,12 @@
         [self.tableView reloadData];
     };
     
-    [[VObjectManager sharedManager] loadNextPageOfFollowersForUser:self.profile
-                                                      successBlock:followerSuccess
-                                                         failBlock:nil];
+    if (self.profile != nil)
+    {
+        [[VObjectManager sharedManager] loadNextPageOfFollowersForUser:self.profile
+                                                          successBlock:followerSuccess
+                                                             failBlock:nil];
+    }
 }
 
 - (void)setHasFollowers:(BOOL)hasFollowers

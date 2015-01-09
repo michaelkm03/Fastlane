@@ -105,7 +105,7 @@ static       char    kKVOContext;
         }
     }
     
-    if (self.conversation)
+    if (self.conversation != nil)
     {
         self.isLoading = YES;
         [self.objectManager refreshMessagesForConversation:self.conversation
@@ -169,7 +169,7 @@ static       char    kKVOContext;
         }
     }
     
-    if (self.conversation || self.newConversation)
+    if (self.conversation != nil || self.newConversation)
     {
         self.isLoading = YES;
         [self.objectManager loadNextPageOfConversation:self.conversation
@@ -294,7 +294,7 @@ static       char    kKVOContext;
 
 - (void)goLiveUpdate
 {
-    if (self.conversation && !self.isLoading)
+    if (self.conversation != nil && !self.isLoading)
     {
         self.isLoading = YES;
         [self.objectManager loadNewestMessagesInConversation:self.conversation
@@ -454,7 +454,7 @@ static       char    kKVOContext;
         [self addNewMessage:message];
         if ([fullResponse isKindOfClass:[NSDictionary class]])
         {
-            if (self.conversation)
+            if (self.conversation != nil)
             {
                 self.conversation.lastMessageText = message.text;
                 self.conversation.postedAt = message.postedAt;

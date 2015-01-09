@@ -21,6 +21,7 @@
 #import "VSettingManager.h"
 #import "VVoteType.h"
 #import "VTracking.h"
+#import "MBProgressHUD.h"
 
 #import "VUserManager.h"
 
@@ -417,15 +418,18 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
 - (void)loggedInWithUser:(VUser *)user
 {
     self.mainUser = user;
-    
-    [self refreshConversationListWithSuccessBlock:nil failBlock:nil];
-    [self pollResultsForUser:user successBlock:nil failBlock:nil];
 
-    // Add followers and following to main user object
-    [[VObjectManager sharedManager] refreshFollowersForUser:user successBlock:nil failBlock:nil];
-    [[VObjectManager sharedManager] refreshFollowingsForUser:user successBlock:nil failBlock:nil];
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:kLoggedInChangedNotification object:self];
+    if (self.mainUser != nil)
+    {
+        [self refreshConversationListWithSuccessBlock:nil failBlock:nil];
+        [self pollResultsForUser:user successBlock:nil failBlock:nil];
+        
+        // Add followers and following to main user object
+        [[VObjectManager sharedManager] refreshFollowersForUser:user successBlock:nil failBlock:nil];
+        [[VObjectManager sharedManager] refreshFollowingsForUser:user successBlock:nil failBlock:nil];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:kLoggedInChangedNotification object:self];
+    }
 }
 
 #pragma mark - Logout

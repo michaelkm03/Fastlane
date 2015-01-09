@@ -58,7 +58,7 @@ static NSString * const VStoryboardViewControllerIndentifier    = @"suggestedPeo
 {
     VObjectManager *objectManager = [VObjectManager sharedManager];
     
-    if ( objectManager.mainUserLoggedIn )
+    if ( objectManager.mainUserLoggedIn && objectManager.mainUser != nil )
     {
         [objectManager refreshFollowingsForUser:objectManager.mainUser
                                         successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
