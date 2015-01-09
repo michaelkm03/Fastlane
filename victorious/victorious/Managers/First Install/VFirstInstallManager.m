@@ -18,6 +18,8 @@ NSString * const VAppInstalledDefaultsKey = @"com.victorious.VAppDelegate.AppIns
 
 - (void)reportFirstInstallWithTracking:(VTracking *)applicationTracking
 {
+    applicationTracking = nil;
+    
     // Check for value indicating app has already been installed before
     id userDefaultsValue = [[NSUserDefaults standardUserDefaults] valueForKey:VAppInstalledDefaultsKey];
     if ( userDefaultsValue != nil )
@@ -35,7 +37,7 @@ NSString * const VAppInstalledDefaultsKey = @"com.victorious.VAppDelegate.AppIns
     
     // Resport the install event
     NSDate *installDate = [NSDate date];
-    NSArray* urls = applicationTracking != nil ? applicationTracking.appInstall : @[];
+    NSArray *urls = applicationTracking.appInstall ?: @[];
     NSDictionary *params = @{ VTrackingKeyTimeStamp : installDate , VTrackingKeyUrls : urls };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventApplicationFirstInstall parameters:params];
     [[NSUserDefaults standardUserDefaults] setValue:@YES forKey:VAppInstalledDefaultsKey];
