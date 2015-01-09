@@ -17,6 +17,9 @@
 
 @property (nonatomic, strong) VTrimControl *trimControl;
 
+@property (nonatomic, strong) UIView *trimDimmingView;
+@property (nonatomic, strong) NSLayoutConstraint *dimmingViewWidthConstraint;
+
 @property (nonatomic, strong) UIView *currentPlayBackOverlayView;
 @property (nonatomic, strong) NSLayoutConstraint *currentPlayBackWidthConstraint;
 
@@ -50,6 +53,40 @@
                                                                       options:kNilOptions
                                                                       metrics:nil
                                                                         views:viewMap]];
+    
+    
+    self.trimDimmingView = [[UIView alloc] initWithFrame:self.view.bounds];
+    self.trimDimmingView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5f];
+    self.trimDimmingView.userInteractionEnabled = NO;
+    [self.view addSubview:self.trimDimmingView];
+    self.trimDimmingView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[trimDimmingView]|"
+                                                                      options:kNilOptions
+                                                                      metrics:nil
+                                                                        views:@{@"trimDimmingView":self.trimDimmingView}]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.trimDimmingView
+                                                          attribute:NSLayoutAttributeTop
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.thumbnailCollecitonView
+                                                          attribute:NSLayoutAttributeTop
+                                                         multiplier:1.0
+                                                           constant:0.0f]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.trimDimmingView
+                                                          attribute:NSLayoutAttributeBottom
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.thumbnailCollecitonView
+                                                          attribute:NSLayoutAttributeBottom
+                                                         multiplier:1.0f
+                                                           constant:0.0f]];
+    self.dimmingViewWidthConstraint = [NSLayoutConstraint constraintWithItem:self.trimDimmingView
+                                                                   attribute:NSLayoutAttributeWidth
+                                                                   relatedBy:NSLayoutRelationEqual
+                                                                      toItem:nil
+                                                                   attribute:NSLayoutAttributeNotAnAttribute
+                                                                  multiplier:1.0f
+                                                                    constant:0.0f];
+    [self.view addConstraint:self.dimmingViewWidthConstraint];
+    
     self.trimControl = [[VTrimControl alloc] initWithFrame:CGRectMake(0, 0, 100, CGRectGetHeight(self.view.frame))];
     self.trimControl.translatesAutoresizingMaskIntoConstraints = NO;
     [self.trimControl addTarget:self
@@ -141,6 +178,9 @@
         [self.delegate trimmerViewControllerDidUpdateSelectedTimeRange:[self selectedTimeRange]
                                                  trimmerViewController:self];
     }
+    Float64 progress = CMTimeGetSeconds(trimControl.selectedDuration) / CMTimeGetSeconds(trimControl.maxDuration);
+    self.dimmingViewWidthConstraint.constant = CGRectGetWidth(self.view.bounds) - (CGRectGetWidth(self.view.bounds) * progress);
+    [self.view layoutIfNeeded];
 }
 
 #pragma mark - UICollectionViewDataSource

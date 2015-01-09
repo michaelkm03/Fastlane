@@ -101,7 +101,7 @@ static NSString * const kVideoMuted = @"videoMuted";
     self.frameRateController = [[VVideoFrameRateController alloc] initWithVideoURL:mediaURL
                                                                      frameDuration:self.frameDuration
                                                                          muteAudio:self.muteAudio];
-    self.trimViewController.minimumStartTime = CMTimeMake(1, 1);
+    self.trimViewController.minimumStartTime = kCMTimeZero;
     self.trimViewController.maximumTrimDuration = CMTimeMake(30, 1);
 
     __weak typeof(self) welf = self;
