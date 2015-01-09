@@ -116,7 +116,7 @@
 
 - (CMTimeRange)selectedTimeRange
 {
-    return CMTimeRangeMake(kCMTimeZero, self.trimControl.selectedDuration);
+    return CMTimeRangeMake(self.minimumStartTime, self.trimControl.selectedDuration);
 }
 
 - (void)setCurrentPlayTime:(CMTime)currentPlayTime

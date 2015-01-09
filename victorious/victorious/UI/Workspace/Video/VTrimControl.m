@@ -22,8 +22,6 @@ static const CGFloat kTrimBodyWidth = 5.0f;
 
 @property (nonatomic, strong) UILabel *thumbLabel;
 
-@property (nonatomic, strong) UIView *dimmingView;
-
 @property (nonatomic, strong) UIPanGestureRecognizer *headGestureRecognizer;
 @property (nonatomic, strong) UIPanGestureRecognizer *bodyGestureRecognizer;
 
@@ -94,11 +92,6 @@ static inline CGPoint ClampX(CGPoint point, CGFloat xMin, CGFloat xMax)
     self.bodyGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self
                                                                          action:@selector(pannedThumb:)];
     [self.trimThumbBody addGestureRecognizer:self.bodyGestureRecognizer];
-    
-    self.dimmingView = [[UIView alloc] initWithFrame:self.bounds];
-    self.dimmingView.userInteractionEnabled = NO;
-    self.dimmingView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.2f];
-    [self addSubview:self.dimmingView];
     
     self.animator = [[UIDynamicAnimator alloc] initWithReferenceView:self];
     self.pushBehavior = [[UIPushBehavior alloc] initWithItems:@[self.trimThumbHead] mode:UIPushBehaviorModeInstantaneous];
@@ -257,10 +250,6 @@ static inline CGPoint ClampX(CGPoint point, CGFloat xMin, CGFloat xMax)
     CGFloat maxHeadX = CGRectGetWidth(self.bounds) - minHeadX;
     self.trimThumbHead.center = ClampX(newCenter, minHeadX, maxHeadX);
     self.trimThumbBody.center = CGPointMake(thumbCenter.x, self.trimThumbBody.center.y);
-    self.dimmingView.frame = CGRectMake(CGRectGetMaxX(self.trimThumbBody.frame),
-                                        CGRectGetMinY(self.trimThumbBody.frame),
-                                        CGRectGetWidth(self.bounds) - CGRectGetMaxX(self.trimThumbBody.frame),
-                                        CGRectGetHeight(self.bounds));
     
     [self sendActionsForControlEvents:UIControlEventValueChanged];
 }

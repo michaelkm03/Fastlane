@@ -101,7 +101,7 @@ static NSString * const kVideoMuted = @"videoMuted";
     self.frameRateController = [[VVideoFrameRateController alloc] initWithVideoURL:mediaURL
                                                                      frameDuration:self.frameDuration
                                                                          muteAudio:self.muteAudio];
-    self.trimViewController.minimumStartTime = kCMTimeZero;
+    self.trimViewController.minimumStartTime = CMTimeMake(1, 1);
     self.trimViewController.maximumTrimDuration = CMTimeMake(30, 1);
 
     __weak typeof(self) welf = self;
@@ -135,7 +135,7 @@ static NSString * const kVideoMuted = @"videoMuted";
                                                                               queue:[NSOperationQueue mainQueue]
                                                                          usingBlock:^(NSNotification *note)
                             {
-                                [welf.player seekToTime:kCMTimeZero
+                                [welf.player seekToTime:welf.trimViewController.selectedTimeRange.start
                                       completionHandler:^(BOOL finished)
                                  {
                                      [welf.player play];
@@ -221,7 +221,14 @@ static NSString * const kVideoMuted = @"videoMuted";
                                                                   queue:dispatch_get_main_queue()
                                                              usingBlock:^
                             {
-                                [welf.player seekToTime:welf.trimViewController.selectedTimeRange.start];
+                                [welf.player pause];
+                                welf.trimViewController.currentPlayTime = welf.trimViewController.selectedTimeRange.start;
+                                [welf.player seekToTime:welf.trimViewController.selectedTimeRange.start
+                                      completionHandler:^(BOOL finished)
+                                {
+                                    [welf.player play];
+                                }];
+                                
                             }];
 }
 
