@@ -15,6 +15,7 @@
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Pagination.h"
 #import "VRootViewController.h"
+#import "VSettingManager.h"
 #import "VUnreadMessageCountCoordinator.h"
 #import "VConstants.h"
 #import "UIViewController+VNavMenu.h"
@@ -95,7 +96,8 @@ static char kKVOContext;
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return UIStatusBarStyleLightContent;
+    BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
+    return isTemplateC ? UIStatusBarStyleDefault : UIStatusBarStyleLightContent;
 }
 
 - (void)setMessageCountCoordinator:(VUnreadMessageCountCoordinator *)messageCountCoordinator
