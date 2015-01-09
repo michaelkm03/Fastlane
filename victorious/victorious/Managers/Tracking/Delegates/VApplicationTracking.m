@@ -22,6 +22,7 @@ NSString * const kMacroNavigiationTo          = @"%%NAV_TO%%";
 NSString * const kMacroStreamId               = @"%%STREAM_ID%%";
 NSString * const kMacroSequenceId             = @"%%SEQUENCE_ID%%";
 NSString * const kMacroBallisticsCount        = @"%%COUNT%%";
+NSString * const kMacroShareDestination       = @"%%SHARE_DEST%%";
 
 #define APPLICATION_TRACKING_LOGGING_ENABLED 0
 
@@ -56,7 +57,8 @@ NSString * const kMacroBallisticsCount        = @"%%COUNT%%";
                                     VTrackingKeyPositionX          : kMacroPositionX,
                                     VTrackingKeyPositionY          : kMacroPositionY,
                                     VTrackingKeyNavigiationFrom    : kMacroNavigiationFrom,
-                                    VTrackingKeyNavigiationTo      : kMacroNavigiationTo };
+                                    VTrackingKeyNavigiationTo      : kMacroNavigiationTo,
+                                    VTrackingKeyActivityType       : kMacroShareDestination };
     }
     return self;
 }

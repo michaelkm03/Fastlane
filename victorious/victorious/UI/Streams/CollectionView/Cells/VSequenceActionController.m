@@ -14,6 +14,7 @@
 #import "VSequence+Fetcher.h"
 #import "VStream+Fetcher.h"
 #import "VUser+Fetcher.h"
+#import "VTracking.h"
 
 #pragma mark - Controllers
 #import "VRemixSelectViewController.h"
@@ -228,9 +229,12 @@
     activityViewController.excludedActivityTypes = @[UIActivityTypePostToFacebook];
     activityViewController.completionHandler = ^(NSString *activityType, BOOL completed)
     {
-        if (activityType != nil)
+        if ( activityType != nil )
         {
-            NSDictionary *params = @{ VTrackingKeySequenceCategory : sequence.category, VTrackingKeyActivityType : activityType };
+            NSString *formattedActivity = [self trackingActivityValueForSystemActivity:activityType];
+            NSDictionary *params = @{ VTrackingKeySequenceCategory : sequence.category,
+                                      VTrackingKeyActivityType : formattedActivity ?: @"",
+                                      VTrackingKeyUrls : sequence.tracking.share ?: @[] };
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidShare parameters:params];
         }
         
@@ -241,6 +245,29 @@
     [viewController presentViewController:activityViewController
                                  animated:YES
                                completion:nil];
+}
+
+- (NSString *)trackingActivityValueForSystemActivity:(NSString *)activity
+{
+    if ( [activity.lowercaseString rangeOfString:@"twitter"].location != NSNotFound )
+    {
+        return VTrackingValueTwitterShare;
+    }
+    else if ( [activity.lowercaseString rangeOfString:@"facebook"].location != NSNotFound )
+    {
+        return VTrackingValueFacebookShare;
+    }
+    else if ( [activity.lowercaseString rangeOfString:@"message"].location != NSNotFound )
+    {
+        return VTrackingValueTextShare;
+    }
+    else if ( [activity.lowercaseString rangeOfString:@"mail"].location != NSNotFound )
+    {
+        return VTrackingValueMailShare;
+    }
+    
+    // Return the system one if we can't match it something
+    return activity;
 }
 
 #pragma mark - Flag

@@ -105,3 +105,8 @@ extern NSString * const VTrackingKeyActivityType;
 extern NSString * const VTrackingKeySequenceCategory;
 extern NSString * const VTrackingKeyStreamName;
 extern NSString * const VTrackingKeyAppViewName;
+
+extern NSString * const VTrackingValueFacebookShare;
+extern NSString * const VTrackingValueTwitterShare;
+extern NSString * const VTrackingValueTextShare;
+extern NSString * const VTrackingValueMailShare;
