@@ -28,6 +28,7 @@
 @property (nonatomic, retain) id appLaunch;
 @property (nonatomic, retain) id appInstall;
 @property (nonatomic, retain) id appEnterBackground;
+@property (nonatomic, retain) id share;
 @property (nonatomic, retain) VSequence *sequence;
 @property (nonatomic, retain) VVoteType *voteType;
 
