@@ -120,7 +120,6 @@ static const char kUploadProgressYConstraintKey;
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(header)]];
-    
 }
 
 - (void)v_hideHeader

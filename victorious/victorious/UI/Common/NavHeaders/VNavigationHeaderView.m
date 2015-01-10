@@ -65,7 +65,7 @@
     self.badgeView.userInteractionEnabled = NO;
     self.badgeBorder.userInteractionEnabled = NO;
     
-    // This sets the maximum header height as it is configured in inteface builder
+    // This sets the maximum header height as it is configured in interface builder
     self.maximumHeaderHeight = self.heightconstraint.constant;
 }
 
