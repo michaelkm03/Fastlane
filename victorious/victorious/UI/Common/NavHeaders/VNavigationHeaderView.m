@@ -25,6 +25,7 @@
 @property (nonatomic, weak, readwrite) IBOutlet UIView<VNavigationSelectorProtocol> *navSelector;
 @property (nonatomic) NSInteger lastSelectedControl;
 
+@property (nonatomic, assign) CGFloat maximumHeaderHeight;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *heightconstraint;
 
 @end
@@ -63,6 +64,9 @@
     
     self.badgeView.userInteractionEnabled = NO;
     self.badgeBorder.userInteractionEnabled = NO;
+    
+    // This sets the maximum header height as it is configured in inteface builder
+    self.maximumHeaderHeight = self.heightconstraint.constant;
 }
 
 - (void)layoutSubviews
@@ -113,7 +117,7 @@
     if (titles.count > 1)
     {
         self.navSelector.titles = titles;
-        headerHeight += CGRectGetHeight(self.navSelector.frame);
+        headerHeight = self.maximumHeaderHeight;
     }
     
     self.heightconstraint.constant = headerHeight;
