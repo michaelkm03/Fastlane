@@ -101,6 +101,7 @@ static const char kUploadProgressYConstraintKey;
         self.navHeaderView = [VNavigationHeaderView backButtonNavHeaderWithControlTitles:titles];
     }
     
+    self.navHeaderView.translatesAutoresizingMaskIntoConstraints = NO;
     self.navHeaderView.headerText = self.title;//Set the title in case there is no logo
     [self.navHeaderView updateUIForVC:self];
     [self.view addSubview:self.navHeaderView];
@@ -119,6 +120,7 @@ static const char kUploadProgressYConstraintKey;
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(header)]];
+    
 }
 
 - (void)v_hideHeader

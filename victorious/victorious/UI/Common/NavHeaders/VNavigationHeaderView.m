@@ -121,7 +121,6 @@
     }
     
     self.heightconstraint.constant = headerHeight;
-    [self layoutIfNeeded];
 }
 
 - (void)setDelegate:(id<VNavigationHeaderDelegate>)delegate
