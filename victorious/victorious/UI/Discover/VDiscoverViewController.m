@@ -14,7 +14,6 @@
 #import "VSuggestedPeopleCollectionViewController.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Discover.h"
-#import "VObjectManager+Pagination.h"
 #import "VHashtag.h"
 #import "VStreamCollectionViewController.h"
 #import "VNoContentTableViewCell.h"
