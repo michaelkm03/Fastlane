@@ -25,7 +25,7 @@
 @property (nonatomic, weak, readwrite) IBOutlet UIView<VNavigationSelectorProtocol> *navSelector;
 @property (nonatomic) NSInteger lastSelectedControl;
 
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *ratioConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *heightconstraint;
 
 @end
 
@@ -60,6 +60,9 @@
     [super awakeFromNib];
     self.backButton.accessibilityIdentifier = VAutomationIdentifierGenericBack;
     self.menuButton.accessibilityIdentifier = VAutomationIdentifierMainMenu;
+    
+    self.badgeView.userInteractionEnabled = NO;
+    self.badgeBorder.userInteractionEnabled = NO;
 }
 
 - (void)layoutSubviews
@@ -105,26 +108,16 @@
 
 - (void)setupSegmentedControlWithTitles:(NSArray *)titles
 {
-    if (titles.count <= 1)
-    {
-        [self removeConstraint:self.ratioConstraint];
-        self.ratioConstraint = [NSLayoutConstraint constraintWithItem:self
-                                                            attribute:NSLayoutAttributeWidth
-                                                            relatedBy:NSLayoutRelationEqual
-                                                               toItem:self
-                                                            attribute:NSLayoutAttributeHeight
-                                                           multiplier:CGRectGetWidth(self.frame) / CGRectGetMinY(self.navSelector.frame)
-                                                             constant:0];
-        [self addConstraint:self.ratioConstraint];
-        
-        CGRect frame = self.frame;
-        frame.size.height = CGRectGetMinY(self.navSelector.frame);
-        self.frame = frame;
-    }
-    else
+    CGFloat headerHeight = CGRectGetMinY(self.navSelector.frame);
+    
+    if (titles.count > 1)
     {
         self.navSelector.titles = titles;
+        headerHeight += CGRectGetHeight(self.navSelector.frame);
     }
+    
+    self.heightconstraint.constant = headerHeight;
+    [self layoutIfNeeded];
 }
 
 - (void)setDelegate:(id<VNavigationHeaderDelegate>)delegate
