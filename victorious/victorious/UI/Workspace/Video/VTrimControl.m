@@ -9,6 +9,8 @@
 #import "VTrimControl.h"
 #import "UIView+VDynamicsHelpers.h"
 
+@import AVFoundation;
+
 static const CGFloat kTrimHeadHeight = 44.0f;
 static const CGFloat kTrimHeadWidth = 88.0f;
 static const CGFloat kTrimBodyWidth = 5.0f;
@@ -252,7 +254,9 @@ static inline CGPoint ClampX(CGPoint point, CGFloat xMin, CGFloat xMax)
 - (void)updateSelectedDuration
 {
     CGFloat percentSelected = CGRectGetMidX(self.trimThumbBody.frame) / CGRectGetWidth(self.bounds);
-    self.selectedDuration = CMTimeMake(percentSelected * self.maxDuration.value, self.maxDuration.timescale);
+    VLog(@"Percent selected: %@", @(percentSelected));
+    self.selectedDuration =  CMTimeMake(percentSelected * self.maxDuration.value, self.maxDuration.timescale);
+    VLog(@"Selected duration: %@", [NSValue valueWithCMTime:self.selectedDuration]);
 }
 
 - (void)updateThumAndDimmingViewWithNewThumbCenter:(CGPoint)thumbCenter
