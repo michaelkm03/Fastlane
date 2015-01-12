@@ -8,9 +8,10 @@
 
 #import "VTrimmerViewController.h"
 
-#warning Remove me?
+// Frameworks
 @import AVFoundation;
 
+// Views
 #import "VThumbnailCell.h"
 #import "VTrimControl.h"
 
@@ -28,124 +29,20 @@ static NSString *const emptyCellIdentifier = @"emptyCell";
 @property (nonatomic, strong) UIView *currentPlayBackOverlayView;
 @property (nonatomic, strong) NSLayoutConstraint *currentPlayBackWidthConstraint;
 
-@property (nonatomic, assign) CMTime offsetTime;
-
 @end
 
 @implementation VTrimmerViewController
+
+#pragma mark - UIViewController
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 
-    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-    layout.itemSize = CGSizeMake(CGRectGetHeight(self.view.frame), CGRectGetHeight(self.view.frame));
-    layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-    self.thumbnailCollecitonView = [[UICollectionView alloc] initWithFrame:self.view.bounds
-                                                      collectionViewLayout:layout];
-    [self.thumbnailCollecitonView registerNib:[VThumbnailCell nibForCell]
-                   forCellWithReuseIdentifier:[VThumbnailCell suggestedReuseIdentifier]];
-    [self.thumbnailCollecitonView registerClass:[UICollectionViewCell class]
-                     forCellWithReuseIdentifier:emptyCellIdentifier];
-    self.thumbnailCollecitonView.dataSource = self;
-    self.thumbnailCollecitonView.delegate = self;
-    self.thumbnailCollecitonView.alwaysBounceHorizontal = YES;
-    self.thumbnailCollecitonView.backgroundColor = [UIColor clearColor];
-
-    [self.view addSubview:self.thumbnailCollecitonView];
-    self.thumbnailCollecitonView.translatesAutoresizingMaskIntoConstraints = NO;
-    NSDictionary *viewMap = @{@"collectionView": self.thumbnailCollecitonView};
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[collectionView]|"
-                                                                      options:kNilOptions
-                                                                      metrics:nil
-                                                                        views:viewMap]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-48-[collectionView]-30-|"
-                                                                      options:kNilOptions
-                                                                      metrics:nil
-                                                                        views:viewMap]];
-    
-    
-    self.trimDimmingView = [[UIView alloc] initWithFrame:self.view.bounds];
-    self.trimDimmingView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5f];
-    self.trimDimmingView.userInteractionEnabled = NO;
-    [self.view addSubview:self.trimDimmingView];
-    self.trimDimmingView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[trimDimmingView]|"
-                                                                      options:kNilOptions
-                                                                      metrics:nil
-                                                                        views:@{@"trimDimmingView":self.trimDimmingView}]];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.trimDimmingView
-                                                          attribute:NSLayoutAttributeTop
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.thumbnailCollecitonView
-                                                          attribute:NSLayoutAttributeTop
-                                                         multiplier:1.0
-                                                           constant:0.0f]];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.trimDimmingView
-                                                          attribute:NSLayoutAttributeBottom
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.thumbnailCollecitonView
-                                                          attribute:NSLayoutAttributeBottom
-                                                         multiplier:1.0f
-                                                           constant:0.0f]];
-    self.dimmingViewWidthConstraint = [NSLayoutConstraint constraintWithItem:self.trimDimmingView
-                                                                   attribute:NSLayoutAttributeWidth
-                                                                   relatedBy:NSLayoutRelationEqual
-                                                                      toItem:nil
-                                                                   attribute:NSLayoutAttributeNotAnAttribute
-                                                                  multiplier:1.0f
-                                                                    constant:0.0f];
-    [self.view addConstraint:self.dimmingViewWidthConstraint];
-    
-    self.trimControl = [[VTrimControl alloc] initWithFrame:CGRectMake(0, 0, 100, CGRectGetHeight(self.view.frame))];
-    self.trimControl.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.trimControl addTarget:self
-                         action:@selector(trimSelectionChanged:)
-               forControlEvents:UIControlEventValueChanged];
-    [self.view addSubview:self.trimControl];
-    viewMap = @{@"trimControl": self.trimControl};
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[trimControl]|"
-                                                                      options:kNilOptions
-                                                                      metrics:nil
-                                                                        views:viewMap]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[trimControl]-30-|"
-                                                                      options:kNilOptions
-                                                                      metrics:nil
-                                                                        views:viewMap]];
-    
-    self.currentPlayBackOverlayView = [[UIView alloc] initWithFrame:self.view.bounds];
-    self.currentPlayBackOverlayView.userInteractionEnabled = NO;
-    self.currentPlayBackOverlayView.backgroundColor = [[UIColor redColor] colorWithAlphaComponent:0.2f];
-    [self.view addSubview:self.currentPlayBackOverlayView];
-    self.currentPlayBackOverlayView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[overlayView]"
-                                                                      options:kNilOptions
-                                                                      metrics:nil
-                                                                        views:@{@"overlayView":self.currentPlayBackOverlayView}]];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.currentPlayBackOverlayView
-                                                          attribute:NSLayoutAttributeTop
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.thumbnailCollecitonView
-                                                          attribute:NSLayoutAttributeTop
-                                                         multiplier:1.0f
-                                                           constant:0.0f]];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.currentPlayBackOverlayView
-                                                          attribute:NSLayoutAttributeBottom
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.thumbnailCollecitonView
-                                                          attribute:NSLayoutAttributeBottom
-                                                         multiplier:1.0f
-                                                           constant:0.0f]];
-    self.currentPlayBackWidthConstraint = [NSLayoutConstraint constraintWithItem:self.currentPlayBackOverlayView
-                                                                       attribute:NSLayoutAttributeWidth
-                                                                       relatedBy:NSLayoutRelationEqual
-                                                                          toItem:nil
-                                                                       attribute:NSLayoutAttributeNotAnAttribute
-                                                                      multiplier:1.0f
-                                                                        constant:0.0f];
-    [self.view addConstraint:self.currentPlayBackWidthConstraint];
-    
-    
+    [self prepareThumbnailCollectionView];
+    [self prepareDimmingView];
+    [self preparePlaybackOverlay];
+    [self prepareTrimControl];
 }
 
 #pragma mark - Property Accessors
@@ -209,10 +106,6 @@ static NSString *const emptyCellIdentifier = @"emptyCell";
     }
     
     return numberOfFrames + 1; // 1 extra for a spacer cell
-//    return cgrect
-//    Float64 maxTimeOverMaxTrim = CMTimeGetSeconds(self.maximumEndTime) / CMTimeGetSeconds(self.maximumTrimDuration);
-//    VLog(@"Max end time: %@, Max trim duration: %@, maxTimeOverMaxTrim: %@", [NSValue valueWithCMTime:self.maximumEndTime], [NSValue valueWithCMTime:self.maximumTrimDuration], @(maxTimeOverMaxTrim));
-//    return isnan(maxTimeOverMaxTrim) ? 4 : maxTimeOverMaxTrim;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
@@ -297,9 +190,6 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
 {
     [self updateTrimControlTitleWithTime:self.trimControl.selectedDuration];
     
-//    VLog(@"Content Offset: %@, Time offset: %@", NSStringFromCGPoint(self.thumbnailCollecitonView.contentOffset), @(self.thumbnailCollecitonView.contentOffset.x / [self timelineWidthPerSecond]));
-    VLog(@"Selected time range: %@", [NSValue valueWithCMTimeRange:[self selectedTimeRange]]);
-    
     if ([self.delegate respondsToSelector:@selector(trimmerViewControllerDidUpdateSelectedTimeRange:trimmerViewController:)])
     {
         [self.delegate trimmerViewControllerDidUpdateSelectedTimeRange:[self selectedTimeRange]
@@ -330,6 +220,125 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
 - (CMTime)currentTimeOffset
 {
     return CMTimeMake(self.thumbnailCollecitonView.contentOffset.x, [self timelineWidthPerSecond]);
+}
+
+#pragma mark View Hierarcy Setup
+
+- (void)prepareThumbnailCollectionView
+{
+    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
+    layout.itemSize = CGSizeMake(CGRectGetHeight(self.view.frame), CGRectGetHeight(self.view.frame));
+    layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+    self.thumbnailCollecitonView = [[UICollectionView alloc] initWithFrame:self.view.bounds
+                                                      collectionViewLayout:layout];
+    [self.thumbnailCollecitonView registerNib:[VThumbnailCell nibForCell]
+                   forCellWithReuseIdentifier:[VThumbnailCell suggestedReuseIdentifier]];
+    [self.thumbnailCollecitonView registerClass:[UICollectionViewCell class]
+                     forCellWithReuseIdentifier:emptyCellIdentifier];
+    self.thumbnailCollecitonView.dataSource = self;
+    self.thumbnailCollecitonView.delegate = self;
+    self.thumbnailCollecitonView.alwaysBounceHorizontal = YES;
+    self.thumbnailCollecitonView.backgroundColor = [UIColor clearColor];
+    [self.view addSubview:self.thumbnailCollecitonView];
+    self.thumbnailCollecitonView.translatesAutoresizingMaskIntoConstraints = NO;
+    NSDictionary *viewMap = @{@"collectionView": self.thumbnailCollecitonView};
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[collectionView]|"
+                                                                      options:kNilOptions
+                                                                      metrics:nil
+                                                                        views:viewMap]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-48-[collectionView]-30-|"
+                                                                      options:kNilOptions
+                                                                      metrics:nil
+                                                                        views:viewMap]];
+}
+
+- (void)prepareDimmingView
+{
+    self.trimDimmingView = [[UIView alloc] initWithFrame:self.view.bounds];
+    self.trimDimmingView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5f];
+    self.trimDimmingView.userInteractionEnabled = NO;
+    [self.view addSubview:self.trimDimmingView];
+    self.trimDimmingView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[trimDimmingView]|"
+                                                                      options:kNilOptions
+                                                                      metrics:nil
+                                                                        views:@{@"trimDimmingView":self.trimDimmingView}]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.trimDimmingView
+                                                          attribute:NSLayoutAttributeTop
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.thumbnailCollecitonView
+                                                          attribute:NSLayoutAttributeTop
+                                                         multiplier:1.0
+                                                           constant:0.0f]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.trimDimmingView
+                                                          attribute:NSLayoutAttributeBottom
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.thumbnailCollecitonView
+                                                          attribute:NSLayoutAttributeBottom
+                                                         multiplier:1.0f
+                                                           constant:0.0f]];
+    self.dimmingViewWidthConstraint = [NSLayoutConstraint constraintWithItem:self.trimDimmingView
+                                                                   attribute:NSLayoutAttributeWidth
+                                                                   relatedBy:NSLayoutRelationEqual
+                                                                      toItem:nil
+                                                                   attribute:NSLayoutAttributeNotAnAttribute
+                                                                  multiplier:1.0f
+                                                                    constant:0.0f];
+    [self.view addConstraint:self.dimmingViewWidthConstraint];
+}
+
+- (void)prepareTrimControl
+{
+    self.trimControl = [[VTrimControl alloc] initWithFrame:CGRectMake(0, 0, 100, CGRectGetHeight(self.view.frame))];
+    self.trimControl.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.trimControl addTarget:self
+                         action:@selector(trimSelectionChanged:)
+               forControlEvents:UIControlEventValueChanged];
+    [self.view addSubview:self.trimControl];
+    NSDictionary *viewMap = @{@"trimControl": self.trimControl};
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[trimControl]|"
+                                                                      options:kNilOptions
+                                                                      metrics:nil
+                                                                        views:viewMap]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[trimControl]-30-|"
+                                                                      options:kNilOptions
+                                                                      metrics:nil
+                                                                        views:viewMap]];
+}
+
+- (void)preparePlaybackOverlay
+{
+    self.currentPlayBackOverlayView = [[UIView alloc] initWithFrame:self.view.bounds];
+    self.currentPlayBackOverlayView.userInteractionEnabled = NO;
+    self.currentPlayBackOverlayView.backgroundColor = [[UIColor redColor] colorWithAlphaComponent:0.2f];
+    [self.view addSubview:self.currentPlayBackOverlayView];
+    self.currentPlayBackOverlayView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[overlayView]"
+                                                                      options:kNilOptions
+                                                                      metrics:nil
+                                                                        views:@{@"overlayView":self.currentPlayBackOverlayView}]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.currentPlayBackOverlayView
+                                                          attribute:NSLayoutAttributeTop
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.thumbnailCollecitonView
+                                                          attribute:NSLayoutAttributeTop
+                                                         multiplier:1.0f
+                                                           constant:0.0f]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.currentPlayBackOverlayView
+                                                          attribute:NSLayoutAttributeBottom
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.thumbnailCollecitonView
+                                                          attribute:NSLayoutAttributeBottom
+                                                         multiplier:1.0f
+                                                           constant:0.0f]];
+    self.currentPlayBackWidthConstraint = [NSLayoutConstraint constraintWithItem:self.currentPlayBackOverlayView
+                                                                       attribute:NSLayoutAttributeWidth
+                                                                       relatedBy:NSLayoutRelationEqual
+                                                                          toItem:nil
+                                                                       attribute:NSLayoutAttributeNotAnAttribute
+                                                                      multiplier:1.0f
+                                                                        constant:0.0f];
+    [self.view addConstraint:self.currentPlayBackWidthConstraint];
 }
 
 @end
