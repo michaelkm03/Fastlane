@@ -231,11 +231,14 @@ static NSString * const kVideoMuted = @"videoMuted";
                                   trimmerViewController:(VTrimmerViewController *)trimmerViewController
 {
     CMTime endTrimTime = CMTimeAdd(selectedTimeRange.start, selectedTimeRange.duration);
-    if (CMTimeCompare(self.player.currentTime, CMTimeAdd(selectedTimeRange.start, selectedTimeRange.duration)) == 1)
+
+    BOOL currentTimeEarlierThanTrimStart = CMTIME_COMPARE_INLINE(self.player.currentTime, <, selectedTimeRange.start);
+    BOOL currentTimeLaterThanTrimEnd = CMTIME_COMPARE_INLINE(self.player.currentTime, >, CMTimeAdd(selectedTimeRange.start, selectedTimeRange.duration));
+    if (currentTimeEarlierThanTrimStart || currentTimeLaterThanTrimEnd)
     {
         [self.player seekToTime:selectedTimeRange.start];
     }
-    
+
     __weak typeof(self) welf = self;
     if (self.trimEndObserver)
     {
