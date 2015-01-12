@@ -17,6 +17,7 @@
 #import "VNoContentView.h"
 #import "VConstants.h"
 #import "VThemeManager.h"
+#import "MBProgressHUD.h"
 
 @interface VFollowingTableViewController ()
 
@@ -278,9 +279,19 @@
         }
     };
     
-    [[VObjectManager sharedManager] refreshFollowingsForUser:self.profile
-                                                successBlock:followerSuccess
-                                                   failBlock:followerFail];
+    if (self.profile != nil)
+    {
+        [[VObjectManager sharedManager] refreshFollowingsForUser:self.profile
+                                                    successBlock:followerSuccess
+                                                       failBlock:followerFail];
+    }
+    else
+    {
+        MBProgressHUD *failureHUD = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        failureHUD.mode = MBProgressHUDModeText;
+        failureHUD.detailsLabelText = NSLocalizedString(@"NotLoggedInMessage", @"");
+        [failureHUD hide:YES afterDelay:3.0f];
+    }
 }
 
 - (void)loadMoreFollowings
@@ -295,9 +306,19 @@
         [self.tableView reloadData];
     };
     
-    [[VObjectManager sharedManager] loadNextPageOfFollowingsForUser:self.profile
-                                                       successBlock:followerSuccess
-                                                          failBlock:nil];
+    if (self.profile != nil)
+    {
+        [[VObjectManager sharedManager] loadNextPageOfFollowingsForUser:self.profile
+                                                           successBlock:followerSuccess
+                                                              failBlock:nil];
+    }
+    else
+    {
+        MBProgressHUD *failureHUD = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        failureHUD.mode = MBProgressHUDModeText;
+        failureHUD.detailsLabelText = NSLocalizedString(@"NotLoggedInMessage", @"");
+        [failureHUD hide:YES afterDelay:3.0f];
+    }
 }
 
 - (void)setIsFollowing:(BOOL)isFollowing

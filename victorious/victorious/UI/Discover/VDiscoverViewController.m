@@ -13,8 +13,8 @@
 #import "VTrendingTagCell.h"
 #import "VDiscoverTableHeaderViewController.h"
 #import "VSuggestedPeopleCollectionViewController.h"
+#import "VObjectManager+Sequence.h"
 #import "VObjectManager+Discover.h"
-#import "VObjectManager+Pagination.h"
 #import "VHashtag.h"
 #import "VStreamCollectionViewController.h"
 #import "VNoContentTableViewCell.h"
@@ -68,8 +68,13 @@ static CGFloat const kTopInset = 22.0f; ///< The space between the top of the vi
     
     // Watch for a change in the login status
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(loginStatusChanged:)
+                                             selector:@selector(viewStatusChanged:)
                                                  name:kLoggedInChangedNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(viewStatusChanged:)
+                                                 name:kHashtagStatusChangedNotification
                                                object:nil];
 }
 
@@ -93,7 +98,7 @@ static CGFloat const kTopInset = 22.0f; ///< The space between the top of the vi
 
 #pragma mark - Loading data
 
-- (void)loginStatusChanged:(NSNotification *)notification
+- (void)viewStatusChanged:(NSNotification *)notification
 {
     [self refresh:YES];
 }
@@ -397,9 +402,9 @@ static CGFloat const kTopInset = 22.0f; ///< The space between the top of the vi
     };
     
     // Backend Call to Subscribe to Hashtag
-    [[VObjectManager sharedManager] subscribeToHashtag:hashtag
-                                          successBlock:successBlock
-                                             failBlock:failureBlock];
+    [[VObjectManager sharedManager] subscribeToHashtagUsingVHashtagObject:hashtag
+                                                             successBlock:successBlock
+                                                                failBlock:failureBlock];
 }
 
 - (void)unsubscribeToTagAction:(VHashtag *)hashtag
@@ -418,9 +423,9 @@ static CGFloat const kTopInset = 22.0f; ///< The space between the top of the vi
     };
     
     // Backend Call to Unsubscribe to Hashtag
-    [[VObjectManager sharedManager] unsubscribeToHashtag:hashtag
-                                            successBlock:successBlock
-                                               failBlock:failureBlock];
+    [[VObjectManager sharedManager] unsubscribeToHashtagUsingVHashtagObject:hashtag
+                                                               successBlock:successBlock
+                                                                  failBlock:failureBlock];
 }
 
 - (void)resetCellStateForHashtag:(VHashtag *)hashtag cellShouldRespond:(BOOL)respond failure:(BOOL)failed

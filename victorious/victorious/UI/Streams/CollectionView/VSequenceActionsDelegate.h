@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class VSequence;
+@class VSequence, VHashtag;
 
 @protocol VSequenceActionsDelegate <NSObject>
 

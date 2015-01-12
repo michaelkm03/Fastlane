@@ -58,7 +58,7 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
     {
         return;
     }
-    
+
     _shouldCellRespond = shouldCellRespond;
 }
 
@@ -77,15 +77,15 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
 - (void)setHashtag:(VHashtag *)hashtag
 {
     _hashtag = hashtag;
-    
+
     // Make sure there's a # at the beginning of the text
     NSString *hashtagText = hashtag.tag;
     NSString *text = [VHashTags stringWithPrependedHashmarkFromString:hashtagText];
-    
+
     [self.hashTagLabel setText:text];
-    
+
     [self applyTheme];
-    
+
     if (self.isSubscribedToTag)
     {
         self.followHashtagControl.subscribed = YES;
@@ -98,12 +98,16 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
     BOOL subscribed = NO;
     VUser *mainUser = [[VObjectManager sharedManager] mainUser];
 
-    if ([mainUser.hashtags containsObject:self.hashtag])
+    for (VHashtag *aTag in mainUser.hashtags)
     {
-        subscribed = YES;
+        if ([aTag.tag isEqualToString:self.hashtag.tag])
+        {
+            subscribed = YES;
+            break;
+        }
     }
     _isSubscribedToTag = subscribed;
-    
+
     return subscribed;
 }
 
@@ -119,7 +123,7 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
         self.followHashtagControl.subscribed = self.isSubscribedToTag;
         return;
     }
-    
+
     // Animate it
     [self.followHashtagControl setSubscribed:self.isSubscribedToTag
                                     animated:animated];
@@ -165,7 +169,7 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
     {
         self.followHashtagControl.alpha = 0.3f;
     };
-    
+
     [UIView transitionWithView:self.followHashtagControl
                       duration:0.3
                        options:UIViewAnimationOptionTransitionCrossDissolve
@@ -179,7 +183,7 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
     {
         self.followHashtagControl.alpha = 1.0f;
     };
-    
+
     [UIView transitionWithView:self.followHashtagControl
                       duration:0.3
                        options:UIViewAnimationOptionTransitionCrossDissolve

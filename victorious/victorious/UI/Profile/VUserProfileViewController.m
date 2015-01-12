@@ -10,7 +10,6 @@
 #import "VUser.h"
 #import "VLoginViewController.h"
 #import "VObjectManager+Users.h"
-#import "VObjectManager+Pagination.h"
 #import "VObjectManager+DirectMessaging.h"
 #import "VProfileEditViewController.h"
 #import "VFollowerTableViewController.h"

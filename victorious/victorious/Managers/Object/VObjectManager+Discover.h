@@ -22,11 +22,19 @@
                                                            successBlock:(VSuccessBlock)success
                                                               failBlock:(VFailBlock)fail;
 
-- (RKManagedObjectRequestOperation *)unsubscribeToHashtag:(VHashtag *)hashtag
+- (RKManagedObjectRequestOperation *)unsubscribeToHashtagUsingVHashtagObject:(VHashtag *)hashtag
+                                                                successBlock:(VSuccessBlock)success
+                                                                   failBlock:(VFailBlock)fail;
+
+- (RKManagedObjectRequestOperation *)unsubscribeToHashtag:(NSString *)hashtag
                                              successBlock:(VSuccessBlock)success
                                                 failBlock:(VFailBlock)fail;
 
-- (RKManagedObjectRequestOperation *)subscribeToHashtag:(VHashtag *)hashtag
+- (RKManagedObjectRequestOperation *)subscribeToHashtagUsingVHashtagObject:(VHashtag *)hashtag
+                                                              successBlock:(VSuccessBlock)success
+                                                                 failBlock:(VFailBlock)fail;
+
+- (RKManagedObjectRequestOperation *)subscribeToHashtag:(NSString *)hashtag
                                            successBlock:(VSuccessBlock)success
                                               failBlock:(VFailBlock)fail;
 

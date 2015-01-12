@@ -6,11 +6,13 @@
 //  Copyright (c) 2013 Victorious, Inc. All rights reserved.
 //
 
+#import "VSwipeTableViewCell.h"
+
 @class VCommentTextAndMediaView, VDefaultProfileImageView;
 
 extern NSString * const kVCommentCellNibName;
 
-@interface VCommentCell : UITableViewCell
+@interface VCommentCell : VSwipeTableViewCell
 
 @property (nonatomic, weak, readwrite) IBOutlet UILabel                   *usernameLabel;
 @property (nonatomic, weak, readonly)  IBOutlet VCommentTextAndMediaView  *commentTextView;

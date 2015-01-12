@@ -33,6 +33,7 @@
                                   @"install"            :   VSelectorName(appInstall),
                                   @"start"              :   VSelectorName(appEnterForeground),
                                   @"stop"               :   VSelectorName(appEnterBackground),
+                                  @"share"              :   VSelectorName(share),
                                   @"ballistic_count"    :   VSelectorName(ballisticCount),
                                   };
     

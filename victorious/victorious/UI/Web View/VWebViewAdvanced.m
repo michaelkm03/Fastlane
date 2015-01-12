@@ -6,7 +6,11 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+@import MessageUI;
+
 #import "VWebViewAdvanced.h"
+
+static NSString * const kMailToPrefix = @"mailto";
 
 @interface VWebViewAdvanced() <WKNavigationDelegate>
 
@@ -124,6 +128,20 @@
                                                                     selector:@selector(updateProgress)
                                                                     userInfo:nil
                                                                      repeats:YES];
+}
+
+- (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler
+{
+    NSString *urlString = navigationAction.request.URL.absoluteString;
+    if ( [urlString rangeOfString:kMailToPrefix].location == 0 )
+    {
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString]];
+        decisionHandler( WKNavigationActionPolicyCancel );
+    }
+    else
+    {
+        decisionHandler( WKNavigationActionPolicyAllow );
+    }
 }
 
 @end

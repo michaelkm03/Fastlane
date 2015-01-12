@@ -11,6 +11,7 @@
 #import "VSequenceUserInteractions.h"
 
 extern NSString * const kPollResultsLoaded;
+extern NSString * const kHashtagStatusChangedNotification;
 
 @class VAnswer, VSequence, VVoteType, VAsset;
 

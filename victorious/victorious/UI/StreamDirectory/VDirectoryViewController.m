@@ -79,6 +79,14 @@ static CGFloat const kDirectoryInset = 10.0f;
     [self refresh:self.refreshControl];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    // Layout may have changed between awaking from nib and being added to the container of the SoS
+    [self.collectionView.collectionViewLayout invalidateLayout];
+}
+
 - (BOOL)shouldAutorotate
 {
     return NO;

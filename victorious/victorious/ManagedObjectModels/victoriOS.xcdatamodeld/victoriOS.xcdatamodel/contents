@@ -188,6 +188,7 @@
         <attribute name="ballisticCount" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="cellClick" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="cellView" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="share" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="videoComplete25" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="videoComplete50" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="videoComplete75" optional="YES" attributeType="Transformable" syncable="YES"/>
@@ -281,7 +282,7 @@
         <element name="PollResult" positionX="1582" positionY="-36" width="128" height="118"/>
         <element name="Rule" positionX="567" positionY="99" width="128" height="75"/>
         <element name="Sequence" positionX="1078" positionY="-540" width="128" height="465"/>
-        <element name="Tracking" positionX="828" positionY="-630" width="128" height="300"/>
+        <element name="Tracking" positionX="828" positionY="-630" width="128" height="315"/>
         <element name="User" positionX="1321" positionY="-324" width="128" height="418"/>
         <element name="VoteResult" positionX="864" positionY="164" width="128" height="90"/>
         <element name="VoteType" positionX="538" positionY="-738" width="128" height="255"/>

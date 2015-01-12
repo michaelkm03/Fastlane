@@ -10,7 +10,6 @@
 #import "VObjectManager+ContentCreation.h"
 
 #import "VObjectManager+Private.h"
-#import "VObjectManager+Pagination.h"
 #import "VUploadManager.h"
 #import "VUploadTaskCreator.h"
 

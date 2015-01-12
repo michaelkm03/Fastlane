@@ -33,11 +33,14 @@
 #import "VStream+Fetcher.h"
 #import "VSequence+Fetcher.h"
 #import "VNode+Fetcher.h"
+#import "VUser.h"
+#import "VHashtag.h"
 
 //Managers
 #import "VDependencyManager+VObjectManager.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Login.h"
+#import "VObjectManager+Discover.h"
 #import "VThemeManager.h"
 #import "VSettingManager.h"
 
@@ -68,6 +71,11 @@ NSString * const VDependencyManagerStreamURLPathKey = @"streamUrlPath";
 @property (strong, nonatomic) VSequenceActionController *sequenceActionController;
 
 @property (nonatomic, assign) BOOL hasRefreshed;
+@property (nonatomic, assign) BOOL isSubscribedToHashtag;
+@property (nonatomic, strong) NSString *selectedHashtag;
+@property (nonatomic, weak) MBProgressHUD *failureHUD;
+
+@property (strong, nonatomic) VDependencyManager *dependencyManager;
 
 @end
 
@@ -110,6 +118,8 @@ NSString * const VDependencyManagerStreamURLPathKey = @"streamUrlPath";
         streamCollectionVC.minimumRequiredCellVisibilityRatio = cellVisibilityRatio.floatValue;
     }
     
+    streamCollectionVC.dependencyManager = dependencyManager;
+
     return streamCollectionVC;
 }
 
@@ -145,11 +155,14 @@ NSString * const VDependencyManagerStreamURLPathKey = @"streamUrlPath";
     self.streamDataSource.collectionView = self.collectionView;
     self.collectionView.dataSource = self.streamDataSource;
     
+    // Fetch Users Hashtags
+   [self fetchHashtagsForLoggedInUser];
+    
+    // Notifications
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(dataSourceDidChange:)
                                                  name:VStreamCollectionDataSourceDidChangeNotification
                                                object:self.streamDataSource];
-    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(didEnterBackground:)
                                                  name:UIApplicationDidEnterBackgroundNotification
@@ -181,7 +194,7 @@ NSString * const VDependencyManagerStreamURLPathKey = @"streamUrlPath";
     
     [[VTrackingManager sharedInstance] endEvent:VTrackingEventStreamDidAppear];
     
-    [[VTrackingManager sharedInstance] trackQueuedEventsWithName:VTrackingEventSequenceDidAppearInStream];
+    [[VTrackingManager sharedInstance] clearQueuedEventsWithName:VTrackingEventSequenceDidAppearInStream];
     
     [self.preloadImageCache removeAllObjects];
 }
@@ -232,6 +245,55 @@ NSString * const VDependencyManagerStreamURLPathKey = @"streamUrlPath";
     self.title = currentStream.name;
     self.navigationItem.title = currentStream.name;
     [super setCurrentStream:currentStream];
+}
+
+#pragma mark - Fetch Users Tags
+
+- (void)fetchHashtagsForLoggedInUser
+{
+    VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    {
+        [self updateHashtagNavButton:resultObjects];
+    };
+    
+    VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
+    {
+        VLog(@"%@\n%@", operation, error);
+    };
+    
+    [[VObjectManager sharedManager] getHashtagsSubscribedToWithRefresh:YES
+                                                          successBlock:successBlock
+                                                             failBlock:failureBlock];
+}
+
+- (void)updateHashtagNavButton:(NSArray *)hashtags
+{
+    __block NSString *buttonImageName = @"streamFollowHashtag";
+    __block BOOL subscribed = NO;
+    
+    VUser *mainUser = [[VObjectManager sharedManager] mainUser];
+    NSMutableOrderedSet *tagSet = [mainUser.hashtags mutableCopy];
+    
+    [hashtags enumerateObjectsUsingBlock:^(VHashtag *hashtag, NSUInteger idx, BOOL *stop) {
+        [tagSet addObject:hashtag];
+        if ([hashtag.tag isEqualToString:self.selectedHashtag])
+        {
+            buttonImageName = @"followedHashtag";
+            subscribed = YES;
+        }
+    }];
+    
+    mainUser.hashtags = tagSet;
+    [mainUser.managedObjectContext save:nil];
+    
+    if (self.selectedHashtag)
+    {
+//        UIImage *hashtagButtonImage = [[UIImage imageNamed:buttonImageName]  imageWithRenderingMode:UIImageRenderingModeAutomatic];
+  
+        // TODO
+//        [self.navHeaderView setRightButtonImage:hashtagButtonImage withAction:@selector(followUnfollowHashtagButtonAction:) onTarget:nil];
+        self.isSubscribedToHashtag = subscribed;
+    }
 }
 
 #pragma mark - VMarqueeDelegate
@@ -299,6 +361,7 @@ NSString * const VDependencyManagerStreamURLPathKey = @"streamUrlPath";
 {
     VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithSequence:sequence];
     VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel];
+    contentViewController.dependencyManagerForHistogramExperiment = self.dependencyManager;
     contentViewController.placeholderImage = placeHolderImage;
     contentViewController.delegate = self;
     
@@ -445,7 +508,7 @@ NSString * const VDependencyManagerStreamURLPathKey = @"streamUrlPath";
         return NO;
     }
     
-    [[VTrackingManager sharedInstance] trackQueuedEventsWithName:VTrackingEventSequenceDidAppearInStream];
+    [[VTrackingManager sharedInstance] clearQueuedEventsWithName:VTrackingEventSequenceDidAppearInStream];
     
     self.currentStream = self.allStreams[index];
     
@@ -503,7 +566,7 @@ NSString * const VDependencyManagerStreamURLPathKey = @"streamUrlPath";
 - (void)hashTag:(NSString *)hashtag tappedFromSequence:(VSequence *)sequence fromView:(UIView *)view
 {
     // Error checking
-    if ( !hashtag || !hashtag.length )
+    if ( hashtag == nil || !hashtag.length )
     {
         return;
     }
@@ -565,6 +628,110 @@ NSString * const VDependencyManagerStreamURLPathKey = @"streamUrlPath";
     }
 }
 
+#pragma mark - Hashtag Button Actions
+
+- (void)followUnfollowHashtagButtonAction:(UIButton *)sender
+{
+    // Check if logged in before attempting to subscribe / unsubscribe
+    if (![VObjectManager sharedManager].authorized)
+    {
+        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
+        return;
+    }
+    
+    // Disable the sub/unsub button
+    sender.userInteractionEnabled = NO;
+    sender.alpha = 0.3f;
+
+    if (self.isSubscribedToHashtag)
+    {
+        [self unfollowHashtagAction:sender];
+    }
+    else
+    {
+        [self followHashtagAction:sender];
+    }
+}
+
+- (void)followHashtagAction:(UIButton *)sender
+{
+    VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    {
+        // Animate follow button
+        self.isSubscribedToHashtag = YES;
+        [self updateSubscribeStatusAnimated:YES button:sender];
+    };
+    
+    VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
+    {
+        self.failureHUD = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        self.failureHUD.mode = MBProgressHUDModeText;
+        self.failureHUD.detailsLabelText = NSLocalizedString(@"HashtagSubscribeError", @"");
+        [self.failureHUD hide:YES afterDelay:3.0f];
+        
+        // Set button back to normal state
+        sender.userInteractionEnabled = YES;
+        sender.alpha = 1.0f;
+    };
+    
+    // Backend Subscribe to Hashtag call
+    [[VObjectManager sharedManager] subscribeToHashtag:self.selectedHashtag
+                                          successBlock:successBlock
+                                             failBlock:failureBlock];
+}
+
+- (void)unfollowHashtagAction:(UIButton *)sender
+{
+    VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    {
+        self.isSubscribedToHashtag = NO;
+        [self updateSubscribeStatusAnimated:YES button:sender];
+    };
+    
+    VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
+    {
+        self.failureHUD = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        self.failureHUD.mode = MBProgressHUDModeText;
+        self.failureHUD.detailsLabelText = NSLocalizedString(@"HashtagUnsubscribeError", @"");
+        [self.failureHUD hide:YES afterDelay:3.0f];
+        
+        // Set button back to normal state
+        sender.userInteractionEnabled = YES;
+        sender.alpha = 1.0f;
+    };
+    
+    // Backend Unsubscribe to Hashtag call
+    [[VObjectManager sharedManager] unsubscribeToHashtag:self.selectedHashtag
+                                            successBlock:successBlock
+                                               failBlock:failureBlock];
+}
+
+#pragma mark - Follow / Unfollow Hashtag Completion Method
+
+- (void)updateSubscribeStatusAnimated:(BOOL)animated button:(UIButton *)sender
+{
+    NSString *buttonImageName = @"streamFollowHashtag";
+    
+    if (self.isSubscribedToHashtag)
+    {
+        buttonImageName = @"followedHashtag";
+    }
+
+    // Reset the hashtag button image
+    // TODO
+//    UIImage *hashtagButtonImage = [[UIImage imageNamed:buttonImageName] imageWithRenderingMode:UIImageRenderingModeAutomatic];
+//    [self.navHeaderView setRightButtonImage:hashtagButtonImage withAction:nil onTarget:nil];
+    
+    
+    // Set button back to normal state
+    sender.userInteractionEnabled = YES;
+    sender.alpha = 1.0f;
+
+    // Fire NSNotification to signal change in the status of this hashtag
+    [[NSNotificationCenter defaultCenter] postNotificationName:kHashtagStatusChangedNotification
+                                                        object:nil];
+}
+
 #pragma mark - VNewContentViewControllerDelegate
 
 - (void)newContentViewControllerDidClose:(VNewContentViewController *)contentViewController
@@ -572,6 +739,7 @@ NSString * const VDependencyManagerStreamURLPathKey = @"streamUrlPath";
     if ( self.lastSelectedIndexPath != nil )
     {
         [self.collectionView reloadItemsAtIndexPaths:@[self.lastSelectedIndexPath]];
+        self.lastSelectedIndexPath = nil;
     }
     [self dismissViewControllerAnimated:YES
                              completion:nil];
@@ -640,7 +808,7 @@ NSString * const VDependencyManagerStreamURLPathKey = @"streamUrlPath";
 
 - (void)didEnterBackground:(NSNotification *)notification
 {
-    [[VTrackingManager sharedInstance] trackQueuedEventsWithName:VTrackingEventSequenceDidAppearInStream];
+    [[VTrackingManager sharedInstance] clearQueuedEventsWithName:VTrackingEventSequenceDidAppearInStream];
 }
 
 #pragma mark - UIScrollViewDelegate

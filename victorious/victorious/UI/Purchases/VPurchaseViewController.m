@@ -181,7 +181,7 @@
         // a purchase restore, then we should dismiss since there's no need to buy it anymore
         if ( [productIdentifiers containsObject:self.voteType.productIdentifier] )
         {
-            [self dismissViewControllerAnimated:YES completion:nil];
+            [self.delegate purchaseDidComplete];
         }
     }];
 }
@@ -229,7 +229,7 @@
     [self.purchaseManager purchaseProductWithIdentifier:productIdentifier success:^(NSSet *productIdentifiers)
      {
          [self resetLoadingState];
-         [self dismissViewControllerAnimated:YES completion:nil];
+         [self.delegate purchaseDidComplete];
      }
                                   failure:^(NSError *error)
      {

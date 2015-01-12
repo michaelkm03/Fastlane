@@ -97,6 +97,18 @@
                                                            method:RKRequestMethodPOST | RKRequestMethodGET
                                                       pathPattern:@"/api/comment/add"
                                                           keyPath:@"payload"
+                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
+              
+              [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
+                                                           method:RKRequestMethodPOST | RKRequestMethodGET
+                                                      pathPattern:@"/api/comment/edit"
+                                                          keyPath:@"payload"
+                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
+              
+              [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
+                                                           method:RKRequestMethodPOST | RKRequestMethodGET
+                                                      pathPattern:@"/api/comment/remove"
+                                                          keyPath:@"payload"
                                                       statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)]
                ];
 }

@@ -37,6 +37,8 @@
 "Featured"              =   "Featured";
 "Recent"                =   "Recent";
 "Following"             =   "Following";
+"FOLLOWERS"             =   "FOLLOWERS";
+"FOLLOWING"             =   "FOLLOWING";
 
 "TimeSeparator"         =   ":";
 "InvalidTimePlaceholder"=   "-:--";
@@ -50,8 +52,8 @@
 "PasswordNotMatching"   =   "Passwords do not match";
 "PollAlreadyAnswered"   =   "Poll result was already answered";
 "LoginFail"             =   "Login Failed";
-"LoginFailMessage"      =   "Opps!  Something has gone wrong.";
-"NotLoggedInMessage"    =   "Opps!  It looks like you're not logged in.";
+"LoginFailMessage"      =   "Oops! Something has gone wrong.";
+"NotLoggedInMessage"    =   "Oops! It looks like you're not logged in.";
 "SignupFail"            =   "Account Creation Failed";
 "AccountUpdateFail"     =   "Account Update Failed";
 "ProfileSaveFail"       =   "Your profile information could not be saved because of a server error";
@@ -151,6 +153,7 @@
 "ReportContentMessage"  =   "We will review this content within 24 hours.";
 "ReportCommentMessage"  =   "We will review this content within 24 hours.";
 "ReportUserMessage"     =   "This user will be reviewed within 24 hours";
+"CommentAlreadyReported" =  "Comment Already Flagged";
 
 "BlockUser"             =   "Block User";
 "CopyProfileURL"        =   "Copy Profile URL";

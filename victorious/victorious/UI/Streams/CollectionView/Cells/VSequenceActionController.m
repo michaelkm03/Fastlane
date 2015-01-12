@@ -14,6 +14,7 @@
 #import "VSequence+Fetcher.h"
 #import "VStream+Fetcher.h"
 #import "VUser+Fetcher.h"
+#import "VTracking.h"
 
 #pragma mark - Controllers
 #import "VRemixSelectViewController.h"
@@ -231,9 +232,9 @@
             NSDictionary *params = @{ VTrackingKeySequenceCategory : sequence.category, VTrackingKeyActivityType : activityType };
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidShare parameters:params];
         }
+        
         [viewController reloadInputViews];
     };
-    
     [viewController presentViewController:activityViewController
                                  animated:YES
                                completion:nil];
