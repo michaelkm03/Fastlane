@@ -165,7 +165,7 @@ static NSString *const emptyCellIdentifier = @"emptyCell";
 
 - (CMTimeRange)selectedTimeRange
 {
-    return CMTimeRangeMake(self.minimumStartTime, self.trimControl.selectedDuration);
+    return CMTimeRangeMake([self currentTimeOffset], self.trimControl.selectedDuration);
 }
 
 - (void)setCurrentPlayTime:(CMTime)currentPlayTime
@@ -173,7 +173,7 @@ static NSString *const emptyCellIdentifier = @"emptyCell";
     _currentPlayTime = currentPlayTime;
     if (CMTimeCompare(currentPlayTime, kCMTimeZero))
     {
-        Float64 progress = CMTimeGetSeconds(currentPlayTime) / CMTimeGetSeconds(self.maximumTrimDuration);
+        Float64 progress = (CMTimeGetSeconds(currentPlayTime) - CMTimeGetSeconds([self currentTimeOffset])) / CMTimeGetSeconds(self.maximumTrimDuration);
         self.currentPlayBackWidthConstraint.constant = CGRectGetWidth(self.view.bounds) * progress;
         [self.view layoutIfNeeded];
     }
@@ -183,16 +183,7 @@ static NSString *const emptyCellIdentifier = @"emptyCell";
 
 - (void)trimSelectionChanged:(VTrimControl *)trimControl
 {
-    [self updateTrimControlTitleWithTime:trimControl.selectedDuration];
-    
-    if ([self.delegate respondsToSelector:@selector(trimmerViewControllerDidUpdateSelectedTimeRange:trimmerViewController:)])
-    {
-        [self.delegate trimmerViewControllerDidUpdateSelectedTimeRange:[self selectedTimeRange]
-                                                 trimmerViewController:self];
-    }
-    Float64 progress = CMTimeGetSeconds(trimControl.selectedDuration) / CMTimeGetSeconds(trimControl.maxDuration);
-    self.dimmingViewWidthConstraint.constant = CGRectGetWidth(self.view.bounds) - (CGRectGetWidth(self.view.bounds) * progress);
-    [self.view layoutIfNeeded];
+    [self updateAndNotify];
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -205,7 +196,7 @@ static NSString *const emptyCellIdentifier = @"emptyCell";
 - (NSInteger)collectionView:(UICollectionView *)collectionView
      numberOfItemsInSection:(NSInteger)section
 {
-    CGFloat neededTimeLineWidth = [self timelineWidthPerSecond] * CMTimeGetSeconds(self.maximumEndTime);
+    CGFloat neededTimeLineWidth = [self timelineWidthForFullTrack];
     
     CGFloat frameWidth = CGRectGetHeight(collectionView.bounds);
     neededTimeLineWidth = neededTimeLineWidth - frameWidth;
@@ -297,10 +288,27 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    
+    [self updateAndNotify];
 }
 
 #pragma mark - Private Methods
+
+- (void)updateAndNotify
+{
+    [self updateTrimControlTitleWithTime:self.trimControl.selectedDuration];
+    
+//    VLog(@"Content Offset: %@, Time offset: %@", NSStringFromCGPoint(self.thumbnailCollecitonView.contentOffset), @(self.thumbnailCollecitonView.contentOffset.x / [self timelineWidthPerSecond]));
+    VLog(@"Selected time range: %@", [NSValue valueWithCMTimeRange:[self selectedTimeRange]]);
+    
+    if ([self.delegate respondsToSelector:@selector(trimmerViewControllerDidUpdateSelectedTimeRange:trimmerViewController:)])
+    {
+        [self.delegate trimmerViewControllerDidUpdateSelectedTimeRange:[self selectedTimeRange]
+                                                 trimmerViewController:self];
+    }
+    Float64 progress = CMTimeGetSeconds(self.trimControl.selectedDuration) / CMTimeGetSeconds(self.trimControl.maxDuration);
+    self.dimmingViewWidthConstraint.constant = CGRectGetWidth(self.view.bounds) - (CGRectGetWidth(self.view.bounds) * progress);
+    [self.view layoutIfNeeded];
+}
 
 - (void)updateTrimControlTitleWithTime:(CMTime)time
 {
@@ -312,6 +320,16 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
 - (CGFloat)timelineWidthPerSecond
 {
     return CGRectGetWidth(self.thumbnailCollecitonView.bounds) / CMTimeGetSeconds(self.maximumTrimDuration);
+}
+
+- (CGFloat)timelineWidthForFullTrack
+{
+    return [self timelineWidthPerSecond] * CMTimeGetSeconds(self.maximumEndTime);
+}
+
+- (CMTime)currentTimeOffset
+{
+    return CMTimeMake(self.thumbnailCollecitonView.contentOffset.x, [self timelineWidthPerSecond]);
 }
 
 @end
