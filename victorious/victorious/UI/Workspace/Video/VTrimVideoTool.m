@@ -109,12 +109,7 @@ static NSString * const kVideoMuted = @"videoMuted";
     {
         welf.playerItem = playerItem;
         welf.trimViewController.maximumEndTime = [playerItem duration];
-//        if (CMTimeCompare(welf.trimViewController.maximumTrimDuration, [playerItem duration]) == NSOrderedDescending)
-//        {
-//            welf.trimViewController.maximumTrimDuration = [playerItem duration];
-//        }
         
-        VLog(@"Trim duration: %@", [NSValue valueWithCMTime:welf.trimViewController.selectedTimeRange.duration]);
         welf.trimEndObserver = [welf.player addBoundaryTimeObserverForTimes:@[[NSValue valueWithCMTime:welf.trimViewController.selectedTimeRange.duration]]
                                                                       queue:dispatch_get_main_queue()
                                                                  usingBlock:^
@@ -150,7 +145,6 @@ static NSString * const kVideoMuted = @"videoMuted";
                                  }];
                             }];
 
-    
     self.player = [AVPlayer playerWithPlayerItem:playerItem];
 }
 
