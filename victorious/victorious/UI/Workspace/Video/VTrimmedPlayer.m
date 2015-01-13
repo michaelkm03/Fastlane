@@ -12,6 +12,8 @@
 
 @property (nonatomic, strong) id perFrameTimeObserver;
 
+@property (nonatomic, assign, getter=isSeeking) BOOL seeking;
+
 @end
 
 @implementation VTrimmedPlayer
@@ -64,6 +66,7 @@
                                                                    queue:NULL
                                                               usingBlock:^(CMTime time)
                                  {
+                                     VLog(@"Played to time: %@, trimRange: %@", [NSValue valueWithCMTime:time], [NSValue valueWithCMTimeRange:[welf trimRange]]);
                                      if (CMTIME_COMPARE_INLINE(time, >, [welf trimEndTime]))
                                      {
                                          [welf seekToBeginningOfTrimRange];
@@ -79,11 +82,23 @@
 
 - (void)seekToBeginningOfTrimRange
 {
+    if (self.isSeeking)
+    {
+        return;
+    }
+    
+    VLog(@"Seeking to beginning");
     [self pause];
+    self.seeking = YES;
     [self seekToTime:self.trimRange.start
    completionHandler:^(BOOL finished)
     {
-        [self play];
+        if (finished)
+        {
+            self.seeking = NO;
+            VLog(@"finished seeking");
+            [self play];
+        }
     }];
 }
 
