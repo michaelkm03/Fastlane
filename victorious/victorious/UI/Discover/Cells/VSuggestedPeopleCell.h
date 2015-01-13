@@ -10,8 +10,6 @@
 
 @interface VSuggestedPeopleCell : UITableViewCell
 
-@property (nonatomic, weak) UICollectionView *collectionView;
-
 + (NSInteger)cellHeight;
 
 @end
