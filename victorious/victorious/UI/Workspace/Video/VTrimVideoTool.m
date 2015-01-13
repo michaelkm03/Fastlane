@@ -10,7 +10,7 @@
 #import "VVideoPlayerView.h"
 #import "VTrimmerViewController.h"
 #import "VDependencyManager.h"
-#import "VVideoFrameRateController.h"
+#import "VVideoFrameRateComposition.h"
 #import <KVOController/FBKVOController.h>
 
 static NSString * const kTitleKey = @"title";
@@ -34,7 +34,7 @@ static NSString * const kVideoMuted = @"videoMuted";
 @property (nonatomic, assign) BOOL muteAudio;
 @property (nonatomic, assign, readwrite) CMTime frameDuration;
 @property (nonatomic, copy) NSString *title;
-@property (nonatomic, strong) VVideoFrameRateController *frameRateController;
+@property (nonatomic, strong) VVideoFrameRateComposition *frameRateController;
 
 @property (nonatomic, strong) id itemEndObserver;
 @property (nonatomic, strong) id trimEndObserver;
@@ -102,7 +102,7 @@ static NSString * const kVideoMuted = @"videoMuted";
     
     self.trimViewController.thumbnailDataSource = self;
     
-    self.frameRateController = [[VVideoFrameRateController alloc] initWithVideoURL:mediaURL
+    self.frameRateController = [[VVideoFrameRateComposition alloc] initWithVideoURL:mediaURL
                                                                      frameDuration:self.frameDuration
                                                                          muteAudio:self.muteAudio];
     self.trimViewController.minimumStartTime = kCMTimeZero;

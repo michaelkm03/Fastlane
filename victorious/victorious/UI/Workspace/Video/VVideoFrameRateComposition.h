@@ -1,5 +1,5 @@
 //
-//  VVideoCompositionController.h
+//  VVideoFrameRateComposition.h
 //  victorious
 //
 //  Created by Michael Sena on 1/2/15.
@@ -11,7 +11,7 @@
 /**
  VVideoFrameRateTool provides a convenient interface for displaying and exporting a video with a custom frame rate.
  */
-@interface VVideoFrameRateController : NSObject
+@interface VVideoFrameRateComposition : NSObject
 
 /**
  The designated initializer for this class. Pass in appropriate parameters.

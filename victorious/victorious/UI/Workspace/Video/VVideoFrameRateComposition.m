@@ -1,16 +1,16 @@
 //
-//  VVideoCompositionController.m
+//  VVideoFrameRateComposition.m
 //  victorious
 //
 //  Created by Michael Sena on 1/2/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VVideoFrameRateController.h"
+#import "VVideoFrameRateComposition.h"
 
 #import <KVOController/FBKVOController.h>
 
-@interface VVideoFrameRateController ()
+@interface VVideoFrameRateComposition ()
 
 @property (nonatomic, strong, readwrite) NSURL *videoURL;
 @property (nonatomic, readwrite) CMTime frameDuration;
@@ -21,7 +21,7 @@
 
 @end
 
-@implementation VVideoFrameRateController
+@implementation VVideoFrameRateComposition
 
 - (instancetype)initWithVideoURL:(NSURL *)videoURL
                    frameDuration:(CMTime)frameDuration
