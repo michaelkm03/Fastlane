@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -16,6 +17,9 @@
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="FqD-Zu-TxQ" userLabel="Thumbnail Image View">
                         <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                        <constraints>
+                            <constraint firstAttribute="width" secondItem="FqD-Zu-TxQ" secondAttribute="height" multiplier="1:1" id="MPE-Dn-ONP"/>
+                        </constraints>
                     </imageView>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -23,7 +27,6 @@
             <constraints>
                 <constraint firstItem="FqD-Zu-TxQ" firstAttribute="leading" secondItem="4Cr-Ud-Cm3" secondAttribute="leading" id="DHh-lM-PEy"/>
                 <constraint firstItem="FqD-Zu-TxQ" firstAttribute="top" secondItem="4Cr-Ud-Cm3" secondAttribute="top" id="ggL-7F-VhB"/>
-                <constraint firstAttribute="trailing" secondItem="FqD-Zu-TxQ" secondAttribute="trailing" id="rto-C4-17K"/>
                 <constraint firstAttribute="bottom" secondItem="FqD-Zu-TxQ" secondAttribute="bottom" id="x8e-AU-Ftj"/>
             </constraints>
             <connections>
