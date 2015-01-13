@@ -15,8 +15,10 @@
 
 #import "VTrimmedPlayer.h"
 
-static NSString * const kTitleKey = @"title";
+static const int32_t kDefaultTimeScale = 600;
 
+// Dependency Manager Keys
+static NSString * const kTitleKey = @"title";
 static NSString * const kVideoFrameDurationValue = @"frameDurationValue";
 static NSString * const kVideoFrameDurationTimescale = @"frameDurationTimescale";
 static NSString * const kVideoMaxDuration = @"videoMaxDuration";
@@ -38,6 +40,7 @@ static NSString * const kVideoMuted = @"videoMuted";
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, strong) VVideoFrameRateComposition *frameRateController;
 
+//TODO: GET RID OF ME
 @property (nonatomic, strong) AVAssetImageGenerator *assetGenerator;
 
 @end
@@ -47,12 +50,6 @@ static NSString * const kVideoMuted = @"videoMuted";
 @synthesize selected = _selected;
 @synthesize mediaURL = _mediaURL;
 @synthesize playerView = _playerView;
-
-- (void)dealloc
-{
-    [self.KVOController unobserve:self.trimmedPlayer
-                          keyPath:NSStringFromSelector(@selector(status))];
-}
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
@@ -91,8 +88,8 @@ static NSString * const kVideoMuted = @"videoMuted";
                                                                      frameDuration:self.frameDuration
                                                                          muteAudio:self.muteAudio];
     self.trimViewController.minimumStartTime = kCMTimeZero;
-    int64_t maxTime = 15;
-    int32_t timeScale = 600;
+    int64_t maxTime = [self.maxDuration integerValue];
+    int32_t timeScale = kDefaultTimeScale;
     self.trimViewController.maximumTrimDuration = CMTimeMake(maxTime * timeScale, timeScale);
 
     __weak typeof(self) welf = self;
@@ -101,8 +98,11 @@ static NSString * const kVideoMuted = @"videoMuted";
         welf.playerItem = playerItem;
         welf.trimViewController.maximumEndTime = [playerItem duration];
         
-#warning Get me outta here!
+//TODO: Get me outta here!
         welf.assetGenerator = [[AVAssetImageGenerator alloc] initWithAsset:playerItem.asset];
+        welf.assetGenerator.maximumSize = CGSizeMake(128, 128);
+        welf.assetGenerator.appliesPreferredTrackTransform = YES;
+        welf.assetGenerator.apertureMode = AVAssetImageGeneratorApertureModeEncodedPixels;
     };
 }
 
@@ -118,28 +118,7 @@ static NSString * const kVideoMuted = @"videoMuted";
 {
     _trimmedPlayer = trimmedPlayer;
     self.playerView.player = trimmedPlayer;
-    
-    __weak typeof(self) welf = self;
-    [self.KVOController observe:trimmedPlayer
-                        keyPath:NSStringFromSelector(@selector(status))
-                        options:NSKeyValueObservingOptionNew
-                          block:^(id observer, id object, NSDictionary *change)
-     {
-         VTrimmedPlayer *trimmedPlayer = object;
-         switch (trimmedPlayer.status)
-         {
-             case AVPlayerStatusUnknown:
-                 [trimmedPlayer pause];
-                 break;
-             case AVPlayerStatusReadyToPlay:
-                 [trimmedPlayer play];
-                 trimmedPlayer.trimRange = welf.trimViewController.selectedTimeRange;
-                 break;
-             case AVPlayerStatusFailed:
-                 [trimmedPlayer pause];
-                 break;
-         }
-     }];
+    [self observeStatusOnTrimmedPlayer:trimmedPlayer];
 }
 
 - (void)setSelected:(BOOL)selected
@@ -153,6 +132,7 @@ static NSString * const kVideoMuted = @"videoMuted";
     }
     else
     {
+        [self observeStatusOnTrimmedPlayer:self.trimmedPlayer];
     }
 }
 
@@ -171,12 +151,12 @@ static NSString * const kVideoMuted = @"videoMuted";
     self.trimmedPlayer.trimRange = selectedTimeRange;
 }
 
+//TODO: Mōve me
 #pragma mark - VTrimmerThumbnailDataSource
 
 - (UIImage *)trimmerViewController:(VTrimmerViewController *)trimmer
                   thumbnailForTime:(CMTime)time
 {
-    VLog(@"Time: %@", [NSValue valueWithCMTime:time]);
     CGImageRef imageForTime = [self.assetGenerator copyCGImageAtTime:time
                                                           actualTime:NULL
                                                                error:nil];
@@ -185,6 +165,36 @@ static NSString * const kVideoMuted = @"videoMuted";
     CGImageRelease(imageForTime);
     
     return imageWithImageRef;
+}
+
+#pragma mark - Private Methods
+
+- (void)observeStatusOnTrimmedPlayer:(VTrimmedPlayer *)trimmedPlayer
+{
+    __weak typeof(self) welf = self;
+    [self.KVOController observe:trimmedPlayer
+                        keyPath:NSStringFromSelector(@selector(status))
+                        options:NSKeyValueObservingOptionNew
+                          block:^(id observer, id object, NSDictionary *change)
+     {
+         VTrimmedPlayer *trimmedPlayer = object;
+         switch (trimmedPlayer.status)
+         {
+             case AVPlayerStatusUnknown:
+                 VLog(@"Player status unkown");
+                 [trimmedPlayer pause];
+                 break;
+             case AVPlayerStatusReadyToPlay:
+                 VLog(@"Player status ready to play");
+                 trimmedPlayer.trimRange = welf.trimViewController.selectedTimeRange;
+                 [trimmedPlayer play];
+                 break;
+             case AVPlayerStatusFailed:
+                 VLog(@"Player status failed");
+                 [trimmedPlayer pause];
+                 break;
+         }
+     }];
 }
 
 @end

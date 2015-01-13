@@ -60,7 +60,7 @@
     }
     
     __weak typeof(self) welf = self;
-    self.perFrameTimeObserver = [self addPeriodicTimeObserverForInterval:CMTimeMake(1, 60)
+    self.perFrameTimeObserver = [self addPeriodicTimeObserverForInterval:CMTimeMake(1, 30)
                                                                    queue:NULL
                                                               usingBlock:^(CMTime time)
                                  {
