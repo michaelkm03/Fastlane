@@ -102,7 +102,9 @@ static NSString * const kVideoMuted = @"videoMuted";
                                                                      frameDuration:self.frameDuration
                                                                          muteAudio:self.muteAudio];
     self.trimViewController.minimumStartTime = kCMTimeZero;
-    self.trimViewController.maximumTrimDuration = CMTimeMake(15, 1);
+    int64_t maxTime = 15;
+    int32_t timeScale = 600;
+    self.trimViewController.maximumTrimDuration = CMTimeMake(maxTime * timeScale, timeScale);
 
     __weak typeof(self) welf = self;
     self.frameRateController.playerItemReady = ^(AVPlayerItem *playerItem)
@@ -201,7 +203,6 @@ static NSString * const kVideoMuted = @"videoMuted";
              {
                  VLog(@"playback will pause...");
                  [welf.player pause];
-                 
              }
 
              if (welf.currentTimeObserver)
