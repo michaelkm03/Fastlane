@@ -10,6 +10,13 @@
 
 @class VTrimmerViewController;
 
+@protocol VTrimmerThumbnailDataSource <NSObject>
+
+- (UIImage *)trimmerViewController:(VTrimmerViewController *)trimmer
+                  thumbnailForTime:(CMTime)time;
+
+@end
+
 @protocol VTrimmerViewControllerDelegate <NSObject>
 
 @optional
@@ -29,5 +36,9 @@
 @property (nonatomic, readonly) CMTimeRange selectedTimeRange;
 
 @property (nonatomic, weak) id <VTrimmerViewControllerDelegate> delegate;
+
+@property (nonatomic, weak) id <VTrimmerThumbnailDataSource> thumbnailDataSource;
+
+- (void)reloadThumbnails;
 
 @end

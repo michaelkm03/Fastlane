@@ -21,7 +21,7 @@ static NSString * const kVideoMaxDuration = @"videoMaxDuration";
 static NSString * const kVideoMinDuration = @"videoMinDuration";
 static NSString * const kVideoMuted = @"videoMuted";
 
-@interface VTrimVideoTool () <VTrimmerViewControllerDelegate>
+@interface VTrimVideoTool () <VTrimmerViewControllerDelegate, VTrimmerThumbnailDataSource>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VTrimmerViewController *trimViewController;
@@ -39,6 +39,8 @@ static NSString * const kVideoMuted = @"videoMuted";
 @property (nonatomic, strong) id itemEndObserver;
 @property (nonatomic, strong) id trimEndObserver;
 @property (nonatomic, strong) id currentTimeObserver;
+
+@property (nonatomic, strong) AVAssetImageGenerator *assetGenerator;
 
 @end
 
@@ -98,6 +100,8 @@ static NSString * const kVideoMuted = @"videoMuted";
 {
     _mediaURL = [mediaURL copy];
     
+    self.trimViewController.thumbnailDataSource = self;
+    
     self.frameRateController = [[VVideoFrameRateController alloc] initWithVideoURL:mediaURL
                                                                      frameDuration:self.frameDuration
                                                                          muteAudio:self.muteAudio];
@@ -118,6 +122,8 @@ static NSString * const kVideoMuted = @"videoMuted";
                                 {
                                     [welf playerPlaayedToTrimEndTime];
                                 }];
+        
+        welf.assetGenerator = [[AVAssetImageGenerator alloc] initWithAsset:playerItem.asset];
     };
 }
 
@@ -288,6 +294,22 @@ static NSString * const kVideoMuted = @"videoMuted";
                             {
                                 [welf playerPlaayedToTrimEndTime];
                             }];
+}
+
+#pragma mark - VTrimmerThumbnailDataSource
+
+- (UIImage *)trimmerViewController:(VTrimmerViewController *)trimmer
+                  thumbnailForTime:(CMTime)time
+{
+    VLog(@"Time: %@", [NSValue valueWithCMTime:time]);
+    CGImageRef imageForTime = [self.assetGenerator copyCGImageAtTime:time
+                                                          actualTime:NULL
+                                                               error:nil];
+    
+    UIImage *imageWithImageRef = [UIImage imageWithCGImage:imageForTime];
+    CGImageRelease(imageForTime);
+    
+    return imageWithImageRef;
 }
 
 @end

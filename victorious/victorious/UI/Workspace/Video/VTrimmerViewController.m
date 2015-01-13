@@ -79,6 +79,13 @@ static NSString *const emptyCellIdentifier = @"emptyCell";
     }
 }
 
+#pragma mark - Public Methods
+
+- (void)reloadThumbnails
+{
+    [self.thumbnailCollecitonView reloadData];
+}
+
 #pragma mark - Target/Action
 
 - (void)trimSelectionChanged:(VTrimControl *)trimControl
@@ -128,7 +135,12 @@ static NSString *const emptyCellIdentifier = @"emptyCell";
     
     VThumbnailCell *thumnailCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VThumbnailCell suggestedReuseIdentifier]
                                                                              forIndexPath:indexPath];
-    thumnailCell.thumbnail = [UIImage imageNamed:@"bike"];
+//TODO: FIX ME
+    CGPoint center = [self.thumbnailCollecitonView.collectionViewLayout layoutAttributesForItemAtIndexPath:indexPath].center;
+    CGFloat percentThrough = center.x / [self timelineWidthForFullTrack];
+    CMTime timeForCell = CMTimeMake(self.maximumEndTime.value * percentThrough, self.maximumEndTime.timescale);
+    thumnailCell.thumbnail = [self.thumbnailDataSource trimmerViewController:self
+                                                            thumbnailForTime:timeForCell];
     return thumnailCell;
 }
 
