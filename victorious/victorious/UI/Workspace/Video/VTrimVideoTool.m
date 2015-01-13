@@ -13,6 +13,8 @@
 #import "VVideoFrameRateComposition.h"
 #import <KVOController/FBKVOController.h>
 
+#import "VTrimmedPlayer.h"
+
 static NSString * const kTitleKey = @"title";
 
 static NSString * const kVideoFrameDurationValue = @"frameDurationValue";
@@ -27,7 +29,7 @@ static NSString * const kVideoMuted = @"videoMuted";
 @property (nonatomic, strong) VTrimmerViewController *trimViewController;
 
 @property (nonatomic, strong, readwrite) AVPlayerItem *playerItem;
-@property (nonatomic, strong, readwrite) AVPlayer *player;
+@property (nonatomic, strong) VTrimmedPlayer *trimmedPlayer;
 
 @property (nonatomic, strong) NSNumber *minDuration;
 @property (nonatomic, strong) NSNumber *maxDuration;
@@ -35,10 +37,6 @@ static NSString * const kVideoMuted = @"videoMuted";
 @property (nonatomic, assign, readwrite) CMTime frameDuration;
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, strong) VVideoFrameRateComposition *frameRateController;
-
-@property (nonatomic, strong) id itemEndObserver;
-@property (nonatomic, strong) id trimEndObserver;
-@property (nonatomic, strong) id currentTimeObserver;
 
 @property (nonatomic, strong) AVAssetImageGenerator *assetGenerator;
 
@@ -52,21 +50,8 @@ static NSString * const kVideoMuted = @"videoMuted";
 
 - (void)dealloc
 {
-    if (self.itemEndObserver)
-    {
-        [[NSNotificationCenter defaultCenter] removeObserver:self.itemEndObserver
-                                                        name:AVPlayerItemDidPlayToEndTimeNotification
-                                                      object:_playerItem];
-        self.itemEndObserver = nil;
-    }
-    if (self.trimEndObserver)
-    {
-        [self.player removeTimeObserver:self.trimEndObserver];
-    }
-    if (self.currentTimeObserver)
-    {
-        [self.player removeTimeObserver:self.currentTimeObserver];
-    }
+    [self.KVOController unobserve:self.trimmedPlayer
+                          keyPath:NSStringFromSelector(@selector(status))];
 }
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
@@ -116,52 +101,45 @@ static NSString * const kVideoMuted = @"videoMuted";
         welf.playerItem = playerItem;
         welf.trimViewController.maximumEndTime = [playerItem duration];
         
-        welf.trimEndObserver = [welf.player addBoundaryTimeObserverForTimes:@[[NSValue valueWithCMTime:welf.trimViewController.selectedTimeRange.duration]]
-                                                                      queue:dispatch_get_main_queue()
-                                                                 usingBlock:^
-                                {
-                                    [welf playerPlaayedToTrimEndTime];
-                                }];
-        
+#warning Get me outta here!
         welf.assetGenerator = [[AVAssetImageGenerator alloc] initWithAsset:playerItem.asset];
     };
 }
 
 - (void)setPlayerItem:(AVPlayerItem *)playerItem
 {
-    if (self.itemEndObserver)
-    {
-        [[NSNotificationCenter defaultCenter] removeObserver:self.itemEndObserver
-                                                        name:AVPlayerItemDidPlayToEndTimeNotification
-                                                      object:_playerItem];
-        self.itemEndObserver = nil;
-    }
-    playerItem.seekingWaitsForVideoCompositionRendering = YES;
     _playerItem = playerItem;
+    _playerItem.seekingWaitsForVideoCompositionRendering = YES;
     
-    __weak typeof(self) welf = self;
-
-    self.itemEndObserver = [[NSNotificationCenter defaultCenter] addObserverForName:AVPlayerItemDidPlayToEndTimeNotification
-                                                                             object:playerItem
-                                                                              queue:[NSOperationQueue mainQueue]
-                                                                         usingBlock:^(NSNotification *note)
-                            {
-                                [welf.player seekToTime:welf.trimViewController.selectedTimeRange.start
-                                      completionHandler:^(BOOL finished)
-                                 {
-                                     [welf.player play];
-                                 }];
-                            }];
-
-    self.player = [AVPlayer playerWithPlayerItem:playerItem];
+    self.trimmedPlayer = [VTrimmedPlayer playerWithPlayerItem:_playerItem];
 }
 
-- (void)setPlayer:(AVPlayer *)player
+- (void)setTrimmedPlayer:(VTrimmedPlayer *)trimmedPlayer
 {
-    _player = player;
-    _player.actionAtItemEnd = AVPlayerActionAtItemEndPause;
-    self.playerView.player = _player;
-    [self observeStatus];
+    _trimmedPlayer = trimmedPlayer;
+    self.playerView.player = trimmedPlayer;
+    
+    __weak typeof(self) welf = self;
+    [self.KVOController observe:trimmedPlayer
+                        keyPath:NSStringFromSelector(@selector(status))
+                        options:NSKeyValueObservingOptionNew
+                          block:^(id observer, id object, NSDictionary *change)
+     {
+         VTrimmedPlayer *trimmedPlayer = object;
+         switch (trimmedPlayer.status)
+         {
+             case AVPlayerStatusUnknown:
+                 [trimmedPlayer pause];
+                 break;
+             case AVPlayerStatusReadyToPlay:
+                 [trimmedPlayer play];
+                 trimmedPlayer.trimRange = welf.trimViewController.selectedTimeRange;
+                 break;
+             case AVPlayerStatusFailed:
+                 [trimmedPlayer pause];
+                 break;
+         }
+     }];
 }
 
 - (void)setSelected:(BOOL)selected
@@ -169,13 +147,12 @@ static NSString * const kVideoMuted = @"videoMuted";
     _selected = selected;
     if (!selected)
     {
-        [_player pause];
-        [_player.KVOController unobserve:self.player
-                                 keyPath:NSStringFromSelector(@selector(status))];
+        [self.KVOController unobserve:self.trimmedPlayer
+                              keyPath:NSStringFromSelector(@selector(status))];
+        [self.trimmedPlayer pause];
     }
     else
     {
-        [self observeStatus];
     }
 }
 
@@ -186,114 +163,12 @@ static NSString * const kVideoMuted = @"videoMuted";
     return self.trimViewController;
 }
 
-#pragma mark - Private Methods
-
-- (void)observeStatus
-{
-    __weak typeof(self) welf = self;
-    
-    [self.KVOController observe:self.player
-                        keyPath:NSStringFromSelector(@selector(status))
-                        options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew
-                          block:^(id observer, id object, NSDictionary *change)
-     {
-         if (welf.player.status == AVPlayerStatusReadyToPlay)
-         {
-             VLog(@"Player ready to play...");
-             if (welf.playerItem.isPlaybackLikelyToKeepUp)
-             {
-                 VLog(@"playback will continue...");
-                 [welf.player play];
-             }
-             else
-             {
-                 VLog(@"playback will pause...");
-                 [welf.player pause];
-             }
-
-             if (welf.currentTimeObserver)
-             {
-                 [welf.player removeTimeObserver:welf.currentTimeObserver];
-                 welf.currentTimeObserver = nil;
-             }
-             welf.currentTimeObserver =  [welf.player addPeriodicTimeObserverForInterval:CMTimeMake(1, 30)
-                                                                                   queue:dispatch_get_main_queue()
-                                                                              usingBlock:^(CMTime time)
-                                          {
-                                              welf.trimViewController.currentPlayTime = time;
-                                          }];
-         }
-         else if (welf.player.status == AVPlayerStatusFailed)
-         {
-             VLog(@"Player failed: %@", welf.player.error);
-         }
-         else if (welf.player.status == AVPlayerStatusUnknown)
-         {
-             VLog(@"player status unkown!!!!");
-             if (welf.playerItem.isPlaybackLikelyToKeepUp)
-             {
-                 VLog(@"playback will continue...");
-             }
-             else
-             {
-                 VLog(@"playback will pause...");
-             }
-             [self.player pause];
-         }
-     }];
-    [self.KVOController observe:self.player.currentItem
-                        keyPath:@"isPlaybackLikelyToKeepUp"
-                        options:NSKeyValueObservingOptionNew
-                          block:^(id observer, id object, NSDictionary *change)
-     {
-         if (welf.player.currentItem.isPlaybackLikelyToKeepUp)
-         {
-             VLog(@"playback will continue...");
-         }
-         else
-         {
-             VLog(@"playback will pause...");
-         }
-     }];
-}
-
-- (void)playerPlaayedToTrimEndTime
-{
-    [self.player pause];
-    self.trimViewController.currentPlayTime = self.trimViewController.selectedTimeRange.start;
-    [self.player seekToTime:self.trimViewController.selectedTimeRange.start
-          completionHandler:^(BOOL finished)
-     {
-         [self.player play];
-     }];
-
-}
-
 #pragma mark - VTrimmerViewControllerDelegate
 
 - (void)trimmerViewControllerDidUpdateSelectedTimeRange:(CMTimeRange)selectedTimeRange
                                   trimmerViewController:(VTrimmerViewController *)trimmerViewController
 {
-    CMTime endTrimTime = CMTimeAdd(selectedTimeRange.start, selectedTimeRange.duration);
-
-    BOOL currentTimeEarlierThanTrimStart = CMTIME_COMPARE_INLINE(self.player.currentTime, <, selectedTimeRange.start);
-    BOOL currentTimeLaterThanTrimEnd = CMTIME_COMPARE_INLINE(self.player.currentTime, >, CMTimeAdd(selectedTimeRange.start, selectedTimeRange.duration));
-    if (currentTimeEarlierThanTrimStart || currentTimeLaterThanTrimEnd)
-    {
-        [self.player seekToTime:selectedTimeRange.start];
-    }
-
-    __weak typeof(self) welf = self;
-    if (self.trimEndObserver)
-    {
-        [self.player removeTimeObserver:self.trimEndObserver];
-    }
-    self.trimEndObserver = [self.player addBoundaryTimeObserverForTimes:@[[NSValue valueWithCMTime:endTrimTime]]
-                                                                  queue:dispatch_get_main_queue()
-                                                             usingBlock:^
-                            {
-                                [welf playerPlaayedToTrimEndTime];
-                            }];
+    self.trimmedPlayer.trimRange = selectedTimeRange;
 }
 
 #pragma mark - VTrimmerThumbnailDataSource
