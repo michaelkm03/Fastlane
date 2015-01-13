@@ -153,6 +153,15 @@ static NSString *const emptyCellIdentifier = @"emptyCell";
         }
     }
     // Frames
+    if (indexPath.row == --numberOfItems)
+    {
+        CGFloat width = [self timelineWidthForFullTrack];
+        if (!isnan(width))
+        {
+            width = width - (numberOfItems * CGRectGetHeight(collectionView.frame));
+            return CGSizeMake(width, CGRectGetHeight(collectionView.frame));
+        }
+    }
     return CGSizeMake(CGRectGetHeight(collectionView.frame), CGRectGetHeight(collectionView.frame));
 }
 

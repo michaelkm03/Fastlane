@@ -18,8 +18,6 @@
 
 @property (nonatomic, strong) AVAsset *asset;
 @property (nonatomic, strong) AVMutableComposition *mutableComposition;
-@property (nonatomic, strong) AVMutableCompositionTrack *mutableCompositionVideoTrack;
-@property (nonatomic, strong) AVMutableCompositionTrack *mutableCompositionAudioTrack;
 
 @end
 
@@ -42,8 +40,12 @@
                                                   NSStringFromSelector(@selector(tracks))]
                               completionHandler:^
          {
-             [self buildTracks];
+             [self.mutableComposition insertTimeRange:CMTimeRangeMake(kCMTimeZero, [self.asset duration])
+                                              ofAsset:self.asset
+                                               atTime:kCMTimeZero
+                                                error:nil];
              
+             VLog(@"composition natural size: %@", NSStringFromCGSize(self.mutableComposition.naturalSize));
              AVPlayerItem *playerItem = [AVPlayerItem playerItemWithAsset:[self.mutableComposition copy]];
              playerItem.seekingWaitsForVideoCompositionRendering = YES;
              playerItem.videoComposition = [self videoComposition];
@@ -56,15 +58,6 @@
          }];
         
         _mutableComposition = [AVMutableComposition composition];
-
-        _mutableCompositionVideoTrack = [_mutableComposition addMutableTrackWithMediaType:AVMediaTypeVideo
-                                                                         preferredTrackID:kCMPersistentTrackID_Invalid];
-        if (!muteAudio)
-        {
-            _mutableCompositionAudioTrack = [_mutableComposition addMutableTrackWithMediaType:AVMediaTypeAudio
-                                                                             preferredTrackID:kCMPersistentTrackID_Invalid];
-        }
-        
     }
     return self;
 }
@@ -85,19 +78,8 @@
     AVMutableVideoComposition *videoComposition = [[AVVideoComposition videoCompositionWithPropertiesOfAsset:_asset] mutableCopy];
     
     videoComposition.frameDuration = self.frameDuration;
-    return [videoComposition copy];
-}
-
-- (void)buildTracks
-{
-    CMTime videoDuration = self.asset.duration;
-    CMTimeRange videoTimeRange = CMTimeRangeMake(kCMTimeZero, videoDuration);
     
-    AVAssetTrack *videoAssetTrack = [[self.asset tracksWithMediaType:AVMediaTypeVideo] firstObject];
-    [self.mutableCompositionVideoTrack insertTimeRange:videoTimeRange ofTrack:videoAssetTrack atTime:kCMTimeZero error:nil];
-
-    AVAssetTrack *audioAssetTrack = [[self.asset tracksWithMediaType:AVMediaTypeAudio] firstObject];
-    [self.mutableCompositionAudioTrack insertTimeRange:videoTimeRange ofTrack:audioAssetTrack atTime:kCMTimeZero error:nil];
+    return [videoComposition copy];
 }
 
 @end
