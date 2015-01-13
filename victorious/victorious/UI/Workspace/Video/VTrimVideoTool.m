@@ -128,7 +128,7 @@ static NSString * const kVideoMuted = @"videoMuted";
                                                       object:_playerItem];
         self.itemEndObserver = nil;
     }
-    
+    playerItem.seekingWaitsForVideoCompositionRendering = YES;
     _playerItem = playerItem;
     
     __weak typeof(self) welf = self;
@@ -191,8 +191,24 @@ static NSString * const kVideoMuted = @"videoMuted";
      {
          if (welf.player.status == AVPlayerStatusReadyToPlay)
          {
-             [welf.player play];
-             
+             VLog(@"Player ready to play...");
+             if (welf.playerItem.isPlaybackLikelyToKeepUp)
+             {
+                 VLog(@"playback will continue...");
+                 [welf.player play];
+             }
+             else
+             {
+                 VLog(@"playback will pause...");
+                 [welf.player pause];
+                 
+             }
+
+             if (welf.currentTimeObserver)
+             {
+                 [welf.player removeTimeObserver:welf.currentTimeObserver];
+                 welf.currentTimeObserver = nil;
+             }
              welf.currentTimeObserver =  [welf.player addPeriodicTimeObserverForInterval:CMTimeMake(1, 30)
                                                                                    queue:dispatch_get_main_queue()
                                                                               usingBlock:^(CMTime time)
@@ -203,6 +219,33 @@ static NSString * const kVideoMuted = @"videoMuted";
          else if (welf.player.status == AVPlayerStatusFailed)
          {
              VLog(@"Player failed: %@", welf.player.error);
+         }
+         else if (welf.player.status == AVPlayerStatusUnknown)
+         {
+             VLog(@"player status unkown!!!!");
+             if (welf.playerItem.isPlaybackLikelyToKeepUp)
+             {
+                 VLog(@"playback will continue...");
+             }
+             else
+             {
+                 VLog(@"playback will pause...");
+             }
+             [self.player pause];
+         }
+     }];
+    [self.KVOController observe:self.player.currentItem
+                        keyPath:@"isPlaybackLikelyToKeepUp"
+                        options:NSKeyValueObservingOptionNew
+                          block:^(id observer, id object, NSDictionary *change)
+     {
+         if (welf.player.currentItem.isPlaybackLikelyToKeepUp)
+         {
+             VLog(@"playback will continue...");
+         }
+         else
+         {
+             VLog(@"playback will pause...");
          }
      }];
 }
