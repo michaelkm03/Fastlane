@@ -52,12 +52,14 @@ static NSString *const emptyCellIdentifier = @"emptyCell";
     _maximumTrimDuration = maximumTrimDuration;
     self.trimControl.maxDuration = maximumTrimDuration;
     [self updateTrimControlTitleWithTime:self.trimControl.selectedDuration];
+    [self.thumbnailCollecitonView.collectionViewLayout invalidateLayout];
 }
 
 - (void)setMaximumEndTime:(CMTime)maximumEndTime
 {
     _maximumEndTime = maximumEndTime;
     [self.thumbnailCollecitonView reloadData];
+    [self.thumbnailCollecitonView.collectionViewLayout invalidateLayout];
 }
 
 - (CMTimeRange)selectedTimeRange
@@ -71,7 +73,8 @@ static NSString *const emptyCellIdentifier = @"emptyCell";
     if (CMTimeCompare(currentPlayTime, kCMTimeZero))
     {
         Float64 progress = (CMTimeGetSeconds(currentPlayTime) - CMTimeGetSeconds([self currentTimeOffset])) / CMTimeGetSeconds(self.maximumTrimDuration);
-        self.currentPlayBackWidthConstraint.constant = CGRectGetWidth(self.view.bounds) * progress;
+        CGFloat playbackOverlayWidth = CGRectGetWidth(self.view.bounds) * progress;
+        self.currentPlayBackWidthConstraint.constant = (playbackOverlayWidth >= 0) ? playbackOverlayWidth : 0.0f;
         [self.view layoutIfNeeded];
     }
 }
@@ -141,16 +144,7 @@ static NSString *const emptyCellIdentifier = @"emptyCell";
     // Empty Cell
     if (indexPath.row == --numberOfItems)
     {
-        CGFloat timelinePercentOfWidth = CMTimeGetSeconds(self.maximumEndTime) / CMTimeGetSeconds(self.maximumTrimDuration);
-        if (timelinePercentOfWidth < 1)
-        {
-            CGFloat widthForTimeline = timelinePercentOfWidth * CGRectGetWidth(collectionView.bounds);
-            return CGSizeMake(CGRectGetWidth(collectionView.bounds) - widthForTimeline + [self timelineWidthPerSecond], CGRectGetHeight(collectionView.bounds));
-        }
-        else
-        {
-            return CGSizeMake(CGRectGetWidth(collectionView.bounds), CGRectGetHeight(collectionView.bounds) - [self timelineWidthPerSecond]);
-        }
+        return CGSizeMake(CGRectGetWidth(collectionView.bounds) - [self timelineWidthPerSecond], CGRectGetHeight(collectionView.bounds));
     }
     // Frames
     if (indexPath.row == --numberOfItems)
