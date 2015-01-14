@@ -26,6 +26,7 @@
         self.webView = [[UIWebView alloc] init];
         self.webView.scalesPageToFit = NO;
         self.webView.delegate = self;
+        self.webView.dataDetectorTypes = UIDataDetectorTypeAll;
     }
     return self;
 }

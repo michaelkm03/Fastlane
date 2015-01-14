@@ -51,7 +51,7 @@
 
 static const CGFloat kTemplateCYRatio = 1.34768211921; //407/302
 static const CGFloat kTemplateCXRatio = 0.94375;
-static const CGFloat kDescriptionBuffer = 15.0;
+static const CGFloat kDescriptionBuffer = 37.0;
 
 @implementation VStreamCollectionCell
 
@@ -85,12 +85,16 @@ static const CGFloat kDescriptionBuffer = 15.0;
 
 - (void)setDescriptionText:(NSString *)text
 {
+    BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
     if (self.sequence.nameEmbeddedInContent.boolValue == NO)
     {
         NSMutableAttributedString *newAttributedCellText = [[NSMutableAttributedString alloc] initWithString:(text ?: @"")
                                                                                                   attributes:[VStreamCollectionCell sequenceDescriptionAttributes]];
         self.captionTextView.linkDelegate = self;
-        self.captionTextView.textContainer.maximumNumberOfLines = 3;
+        if ( !isTemplateC )
+        {
+            self.captionTextView.textContainer.maximumNumberOfLines = 3;
+        }
         self.captionTextView.textContainer.lineBreakMode = NSLineBreakByTruncatingTail;
         self.captionTextView.attributedText = newAttributedCellText;
     }
@@ -128,13 +132,15 @@ static const CGFloat kDescriptionBuffer = 15.0;
 {
     [self.actionView clearButtons];
     [self.actionView addShareButton];
-    if (![self.sequence isPoll])
+    if ( [self.sequence canRemix] )
     {
         [self.actionView addRemixButton];
     }
-    [self.actionView addRepostButton];
+    if ( [self.sequence canRepost] )
+    {
+        [self.actionView addRepostButton];
+    }
     [self.actionView addFlagButton];
-    [self.actionView layoutIfNeeded];
 }
 
 - (void)setHeight:(CGFloat)height

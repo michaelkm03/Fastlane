@@ -142,11 +142,24 @@
     };
     
     return [self POST:@"/api/comment/remove"
-               object:nil
+               object:comment
            parameters:@{ @"comment_id" : comment.remoteId.stringValue ?: [NSNull null],
                          @"removal_reason" : removalReason ?: [NSNull null]
                        }
          successBlock:fullSuccessBlock
+            failBlock:fail];
+}
+
+- (RKManagedObjectRequestOperation *)editComment:(VComment *)comment
+                                    successBlock:(VSuccessBlock)success
+                                       failBlock:(VFailBlock)fail
+{
+    return [self POST:@"/api/comment/edit"
+               object:comment
+           parameters:@{ @"comment_id" : comment.remoteId.stringValue ?: [NSNull null],
+                         @"text" : comment.text ?: [NSNull null]
+                         }
+         successBlock:success
             failBlock:fail];
 }
 

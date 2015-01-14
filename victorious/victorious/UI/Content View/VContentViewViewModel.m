@@ -251,7 +251,7 @@ static NSString * const kPreferedMimeType = @"application/x-mpegURL";
 
 - (void)fetchHistogramData
 {
-    if (![self.sequence isVideo] || ![[VSettingManager sharedManager] settingEnabledForKey:VExperimentsHistogramEnabled])
+    if (![self.sequence isVideo])
     {
         return;
     }
@@ -367,6 +367,13 @@ static NSString * const kPreferedMimeType = @"application/x-mpegURL";
 }
 
 #pragma mark - Public Methods
+
+- (void)removeCommentAtIndex:(NSUInteger)index
+{
+    NSMutableArray *updatedComments = [self.comments mutableCopy];
+    [updatedComments removeObjectAtIndex:index];
+    self.comments = [NSArray arrayWithArray:updatedComments];
+}
 
 - (void)addCommentWithText:(NSString *)text
                   mediaURL:(NSURL *)mediaURL

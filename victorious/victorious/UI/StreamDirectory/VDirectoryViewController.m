@@ -91,6 +91,14 @@ static CGFloat const kDirectoryInset = 10.0f;
     [self.view layoutIfNeeded];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    // Layout may have changed between awaking from nib and being added to the container of the SoS
+    [self.collectionView.collectionViewLayout invalidateLayout];
+}
+
 - (BOOL)shouldAutorotate
 {
     return NO;
@@ -143,8 +151,16 @@ static CGFloat const kDirectoryInset = 10.0f;
     }
     else if ([item isKindOfClass:[VStream class]])
     {
-        VDirectoryViewController *sos = [VDirectoryViewController streamDirectoryForStream:(VStream *)item];
-        [self.navigationController pushViewController:sos animated:YES];
+        VDirectoryViewController *streamDirectory = [[VDirectoryViewController alloc] initWithNibName:nil
+                                                                                               bundle:nil];
+        streamDirectory.defaultStream = (VStream *)item;
+        streamDirectory.currentStream = (VStream *)item;
+        streamDirectory.title = ((VStream *)item).name;
+
+        [self.navigationController pushViewController:streamDirectory animated:YES];
+
+        [streamDirectory v_addNewNavHeaderWithTitles:nil];
+        streamDirectory.navHeaderView.delegate = streamDirectory;
     }
     else if ([item isKindOfClass:[VSequence class]])
     {

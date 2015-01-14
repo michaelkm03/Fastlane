@@ -13,7 +13,6 @@
 #import "VPushNotificationManager.h"
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Sequence.h"
-#import "VObjectManager+Pagination.h"
 #import "VObjectManager+Users.h"
 #import "VUser.h"
 #import "VReachability.h"

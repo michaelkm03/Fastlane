@@ -16,6 +16,7 @@
 #import "VPollResult.h"
 
 NSString * const kPollResultsLoaded = @"kPollResultsLoaded";
+NSString * const kHashtagStatusChangedNotification = @"com.getvictorious.HashtagStatusChangedNotification";
 
 @implementation VObjectManager (Sequence)
 
@@ -284,15 +285,15 @@ NSString * const kPollResultsLoaded = @"kPollResultsLoaded";
                                                          withAsset:(VAsset *)asset
                                                     withCompletion:(void(^)(NSArray *histogramData, NSError *error))completion
 {
-    return [self GET:[NSString stringWithFormat:@"api/realtime/all_by_asset_filtered/%@", asset.remoteId]
+    return [self GET:[NSString stringWithFormat:@"api/histogram/asset/%@", asset.remoteId]
               object:nil
           parameters:nil
         successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
             {
-                NSArray *buckets = result[@"payload"][@"buckets"];
-                if ([buckets isKindOfClass:[NSArray class]])
+                NSArray *objects = result[kVPayloadKey][kVObjectsKey];
+                if ([objects isKindOfClass:[NSArray class]])
                 {
-                    completion (buckets, nil);
+                    completion (objects, nil);
                 }
             }
            failBlock:^(NSOperation *operation, NSError *error)
