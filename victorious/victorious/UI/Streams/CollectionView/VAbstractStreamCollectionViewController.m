@@ -169,6 +169,11 @@ const CGFloat kVLoadNextPagePoint = .75f;
     
     [self.streamDataSource loadNextPageWithSuccess:^(void)
      {
+         __weak typeof(self) welf = self;
+         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+                        {
+                            [welf.collectionView flashScrollIndicators];
+                        });
      }
                                               failure:^(NSError *error)
      {

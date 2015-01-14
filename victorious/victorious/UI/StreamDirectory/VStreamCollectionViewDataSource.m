@@ -120,7 +120,7 @@ NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamColl
 {
     self.isLoading = YES;
     [[VObjectManager sharedManager] loadStream:self.stream
-                                      pageType:VPageTypeFirst
+                                      pageType:VPageTypeNext
                                   successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
      {
          if (successBlock)

@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
+
 @interface VAbstractFilter : NSManagedObject
 
 @property (nonatomic, retain) NSNumber * currentPageNumber;

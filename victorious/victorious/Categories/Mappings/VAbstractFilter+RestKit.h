@@ -38,9 +38,9 @@ typedef NS_ENUM( NSUInteger, VPageType )
 
 /**
  An object that encapsulates the state of a series of requests that will return paginated
- results.  An instances persist sin the CoreData store and are retrieved by its `filterAPIPath`
+ results.  An instance persists in memory through CoreDAta and is retrieved by its `filterAPIPath`
  property.  This is what tracks the current page in context with the total number of pages
- and allows methods to return a single page of results.
+ and allows methods to return a single, specific page of results.
  */
 @interface VAbstractFilter (RestKit)
 
