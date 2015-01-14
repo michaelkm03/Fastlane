@@ -10,21 +10,6 @@
 
 @implementation UIViewController (VSideMenuViewController)
 
-- (void)displayController:(UIViewController *)controller frame:(CGRect)frame
-{
-    [self addChildViewController:controller];
-    controller.view.frame = frame;
-    [self.view addSubview:controller.view];
-    [controller didMoveToParentViewController:self];
-}
-
-- (void)hideController:(UIViewController *)controller
-{
-    [controller willMoveToParentViewController:nil];
-    [controller.view removeFromSuperview];
-    [controller removeFromParentViewController];
-}
-
 - (VSideMenuViewController *)sideMenuViewController
 {
     UIViewController *vc = self.parentViewController;

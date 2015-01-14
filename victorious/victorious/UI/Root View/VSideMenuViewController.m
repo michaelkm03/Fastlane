@@ -20,10 +20,7 @@
 #import "UIViewController+VNavMenu.h"
 #import "UIViewController+VSideMenuViewController.h"
 
-// Keys for managed dependencies
-static NSString * const kMenuKey = @"menu";
-
-@interface VSideMenuViewController () <UINavigationControllerDelegate>
+@interface VSideMenuViewController () <UIGestureRecognizerDelegate, UINavigationControllerDelegate>
 
 @property (strong, readwrite, nonatomic) VDependencyManager *dependencyManager;
 @property (strong, readwrite, nonatomic) UIImageView *backgroundImageView;
@@ -37,74 +34,69 @@ static NSString * const kMenuKey = @"menu";
 
 #pragma mark - Initializers
 
-- (instancetype)init
+- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    self = [super init];
-    if (self)
+    self = [super initWithDependencyManager:dependencyManager];
+    if ( self != nil )
     {
-        [self commonInit];
+        _animationDuration = 0.35f;
+        _scaleContentView      = YES;
+        _contentViewScaleValue = 0.7f;
+        
+        _scaleBackgroundImageView = YES;
+        
+        _parallaxEnabled = YES;
+        _parallaxMenuMinimumRelativeValue = @(-15);
+        _parallaxMenuMaximumRelativeValue = @(15);
+        
+        _parallaxContentMinimumRelativeValue = @(-25);
+        _parallaxContentMaximumRelativeValue = @(25);
+        
+        _bouncesHorizontally = YES;
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(menuControllerDidSelectRow:) name:VMenuControllerDidSelectRowNotification object:nil];
+        [self registerBadgeUpdateBlock];
     }
     return self;
 }
 
-- (instancetype)initWithCoder:(NSCoder *)decoder
+- (void)registerBadgeUpdateBlock
 {
-    self = [super initWithCoder:decoder];
-    if (self)
+    __typeof(self) __weak weakSelf = self;
+    VNavigationMenuItemBadgeNumberUpdateBlock badgeNumberUpdateBlock = ^(NSInteger badgeNumber)
     {
-        [self commonInit];
+        [[UIApplication sharedApplication] setApplicationIconBadgeNumber:badgeNumber];
+        [weakSelf.contentViewController.viewControllers enumerateObjectsUsingBlock:^(UIViewController *viewController, NSUInteger idx, BOOL *stop)
+         {
+             [viewController.navHeaderView setBadgeNumber:badgeNumber];
+         }];
+    };
+    
+    if ( [self.menuViewController respondsToSelector:@selector(setBadgeNumberUpdateBlock:)] )
+    {
+        [(id<VProvidesNavigationMenuItemBadge>)self.menuViewController setBadgeNumberUpdateBlock:badgeNumberUpdateBlock];
     }
-    return self;
+    
+    if ( [self.menuViewController respondsToSelector:@selector(badgeNumber)] )
+    {
+        NSInteger badgeNumber = [(id<VProvidesNavigationMenuItemBadge>)self.menuViewController badgeNumber];
+        badgeNumberUpdateBlock(badgeNumber);
+    }
 }
-
-- (void)commonInit
-{
-    _animationDuration = 0.35f;
-    _scaleContentView      = YES;
-    _contentViewScaleValue = 0.7f;
-    
-    _scaleBackgroundImageView = YES;
-    
-    _parallaxEnabled = YES;
-    _parallaxMenuMinimumRelativeValue = @(-15);
-    _parallaxMenuMaximumRelativeValue = @(15);
-    
-    _parallaxContentMinimumRelativeValue = @(-25);
-    _parallaxContentMaximumRelativeValue = @(25);
-    
-    _bouncesHorizontally = YES;
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(menuControllerDidSelectRow:) name:VMenuControllerDidSelectRowNotification object:nil];
-}
-
-#pragma mark VHasManagedDependencies conforming initializer
-
-+ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
-{
-    VSideMenuViewController *sideMenuViewController = (VSideMenuViewController *)[[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier:NSStringFromClass([VSideMenuViewController class])];
-    sideMenuViewController.dependencyManager = dependencyManager;
-    return sideMenuViewController;
-}
-
-#pragma mark -
 
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)viewDidLoad
+- (void)loadView
 {
-    [super viewDidLoad];
+    self.view = [[UIView alloc] init];
 
     self.backgroundImage = [[[VThemeManager sharedThemeManager] themedBackgroundImageForDevice]
                             applyBlurWithRadius:25 tintColor:[UIColor colorWithWhite:0.0 alpha:0.75] saturationDeltaFactor:1.8 maskImage:nil];
     
-    
-    self.menuViewController = [self.dependencyManager viewControllerForKey:kMenuKey];
-    self.contentViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"contentController"];
-    
-    NSAssert([self.contentViewController isKindOfClass:[UINavigationController class]], @"contentController should be a UINavigationController");
+    self.contentViewController = [[UINavigationController alloc] init];
     self.contentViewController.delegate = self;
     
     if (!_contentViewInLandscapeOffsetCenterX)
@@ -132,8 +124,17 @@ static NSString * const kMenuKey = @"menu";
     });
     
     [self.view addSubview:self.backgroundImageView];
-    [self displayController:self.menuViewController frame:self.view.bounds];
-    [self displayController:self.contentViewController frame:self.view.bounds];
+    
+    [self addChildViewController:self.menuViewController];
+    self.menuViewController.view.frame = self.view.bounds;
+    [self.view addSubview:self.menuViewController.view];
+    [self.menuViewController didMoveToParentViewController:self];
+
+    [self addChildViewController:self.contentViewController];
+    self.contentViewController.view.frame = self.view.bounds;
+    [self.view addSubview:self.contentViewController.view];
+    [self.contentViewController didMoveToParentViewController:self];
+    
     self.menuViewController.view.alpha = 0;
     if (self.scaleBackgroundImageView)
     {
@@ -225,7 +226,9 @@ static NSString * const kMenuKey = @"menu";
             self.contentViewController.view.transform = CGAffineTransformMakeScale(self.contentViewScaleValue, self.contentViewScaleValue);
         }
         
-        self.contentViewController.view.center = CGPointMake((UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation]) ? self.contentViewInLandscapeOffsetCenterX : self.contentViewInPortraitOffsetCenterX), self.contentViewController.view.center.y);
+        CGFloat contentViewOffsetCenterX = CGRectGetWidth(self.view.frame) + 30.f;
+        
+        self.contentViewController.view.center = CGPointMake(contentViewOffsetCenterX, self.contentViewController.view.center.y);
         
         self.menuViewController.view.alpha = 1.0f;
         self.menuViewController.view.transform = CGAffineTransformIdentity;
@@ -388,48 +391,6 @@ static NSString * const kMenuKey = @"menu";
     NSAssert(!_contentViewController, @"contentViewController should only be set once");
     _contentViewController = contentViewController;
     [self setNeedsStatusBarAppearanceUpdate];
-}
-
-- (void)setMenuViewController:(UIViewController *)menuViewController
-{
-    if ( _menuViewController == menuViewController )
-    {
-        return;
-    }
-    
-    __typeof(self) __weak weakSelf = self;
-    VNavigationMenuItemBadgeNumberUpdateBlock badgeNumberUpdateBlock = ^(NSInteger badgeNumber)
-    {
-        [[UIApplication sharedApplication] setApplicationIconBadgeNumber:badgeNumber];
-        [weakSelf.contentViewController.viewControllers enumerateObjectsUsingBlock:^(UIViewController *viewController, NSUInteger idx, BOOL *stop)
-        {
-            [viewController.navHeaderView setBadgeNumber:badgeNumber];
-        }];
-    };
-    
-    if ( [menuViewController respondsToSelector:@selector(setBadgeNumberUpdateBlock:)] )
-    {
-        [(id<VProvidesNavigationMenuItemBadge>)menuViewController setBadgeNumberUpdateBlock:badgeNumberUpdateBlock];
-    }
-    
-    if ( [menuViewController respondsToSelector:@selector(badgeNumber)] )
-    {
-        NSInteger badgeNumber = [(id<VProvidesNavigationMenuItemBadge>)menuViewController badgeNumber];
-        badgeNumberUpdateBlock(badgeNumber);
-    }
-    
-    if ( _menuViewController == nil )
-    {
-        _menuViewController = menuViewController;
-        return;
-    }
-
-    [self hideController:_menuViewController];
-    _menuViewController = menuViewController;
-    [self displayController:menuViewController frame:self.view.frame];
-    
-    [self addMenuViewControllerMotionEffects];
-    [self.view bringSubviewToFront:self.contentViewController.view];
 }
 
 #pragma mark - Status bar appearance management
