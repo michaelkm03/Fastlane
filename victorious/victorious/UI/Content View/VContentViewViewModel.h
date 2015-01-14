@@ -7,19 +7,34 @@
 //
 
 #import "VSequence.h"
+
 #import "VRealtimeCommentsViewModel.h"
 #import "VAdViewController.h"
+
 #import "VExperienceEnhancerController.h"
+
 #import "VHistogramDataSource.h"
 
 @protocol VContentViewViewModelDelegate <NSObject>
 
+/**
+ * Called whenever new comments are made available for a given sequence.
+ */
 - (void)didUpdateComments;
 
+/**
+ * Called whenever the server returns an updated state of this content.
+ */
 - (void)didUpdateContent;
 
+/**
+ * Called whenever new histogram data is made available.
+ */
 - (void)didUpdateHistogramData;
 
+/**
+ * Called whenever new poll data is made available.
+ */
 - (void)didUpdatePollsData;
 
 @end

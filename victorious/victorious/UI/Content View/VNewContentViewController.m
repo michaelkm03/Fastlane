@@ -80,6 +80,10 @@
 
 static const CGFloat kMaxInputBarHeight = 200.0f;
 
+// How much space before the reaching maximum or minimum scroll position
+// before reloading another page of comments should begin,
+static const CGFloat kVPaginationLoadTriggerMargin = 50.0f;
+
 @interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate,VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate>
 
 @property (nonatomic, strong, readwrite) VContentViewViewModel *viewModel;
@@ -1066,13 +1070,13 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
         const CGFloat maxContentOffset = scrollView.contentSize.height - visibleHeight;
         const CGFloat scrollPositionY = scrollView.contentOffset.y;
         
-        if ( scrollPositionY >= maxContentOffset - 50.0f )
+        if ( scrollPositionY >= maxContentOffset - kVPaginationLoadTriggerMargin )
         {
-            //[self.viewModel loadComments:VAbstractFilterPageTypeNext];
+            [self.viewModel attemptToLoadNextPageOfComments];
         }
-        else if ( scrollPositionY < visibleHeight + 50.0f )
+        else if ( scrollPositionY < visibleHeight + kVPaginationLoadTriggerMargin )
         {
-            //[self.viewModel loadComments:VAbstractFilterPageTypePrevious];
+            // TODO: Load previous page (when pagination supports this)
         }
     }
 }
