@@ -79,8 +79,6 @@ static CGFloat const kTemplateCLineSpacing = 8;
 
 @property (strong, nonatomic) VDependencyManager *dependencyManager;
 
-@property (nonatomic, strong) VDependencyManager *dependencyManager;
-
 @end
 
 @implementation VStreamCollectionViewController
