@@ -80,7 +80,7 @@
 
 static const CGFloat kMaxInputBarHeight = 200.0f;
 
-@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate,VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate>
+@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate,VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate>
 
 @property (nonatomic, strong, readwrite) VContentViewViewModel *viewModel;
 @property (nonatomic, strong) NSURL *mediaURL;
@@ -137,6 +137,8 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     contentViewController.transitionDelegate = [[VTransitionDelegate alloc] initWithTransition:modalTransition];
     contentViewController.elapsedTimeFormatter = [[VElapsedTimeFormatter alloc] init];
     
+    viewModel.delegate = contentViewController;
+    
     return contentViewController;
 }
 
@@ -147,6 +149,59 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     [VContentCommentsCell clearSharedImageCache];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+#pragma mark - VContentViewViewModelDelegate
+
+- (void)didUpdateComments
+{
+    if (self.viewModel.comments.count > 0)
+    {
+        if ([self.contentCollectionView numberOfItemsInSection:VContentViewSectionAllComments] > 0)
+        {
+            [self.contentCollectionView reloadData];
+            
+            __weak typeof(self) welf = self;
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+                           {
+                               [welf.contentCollectionView flashScrollIndicators];
+                           });
+        }
+        
+        self.handleView.numberOfComments = self.viewModel.sequence.commentCount.integerValue;
+    }
+}
+
+- (void)didUpdateContent
+{
+    self.videoCell.viewModel = self.viewModel.videoViewModel;
+}
+
+- (void)didUpdateHistogramData
+{
+    if (!self.viewModel.histogramDataSource)
+    {
+        return;
+    }
+    self.histogramCell.histogramView.dataSource = self.viewModel.histogramDataSource;
+    [self.contentCollectionView.collectionViewLayout invalidateLayout];
+}
+
+- (void)didUpdatePollsData
+{
+    if (!self.viewModel.votingEnabled)
+    {
+        [self.pollCell setAnswerAPercentage:self.viewModel.answerAPercentage
+                                   animated:YES];
+        [self.pollCell setAnswerBPercentage:self.viewModel.answerBPercentage
+                                   animated:YES];
+        
+        [self.ballotCell setVotingDisabledWithFavoredBallot:(self.viewModel.favoredAnswer == VPollAnswerA) ? VBallotA : VBallotB
+                                                   animated:YES];
+        self.pollCell.answerAIsFavored = (self.viewModel.favoredAnswer == VPollAnswerA);
+        self.pollCell.answerBIsFavored = (self.viewModel.favoredAnswer == VPollAnswerB);
+        self.pollCell.numberOfVotersText = self.viewModel.numberOfVotersText;
+    }
 }
 
 #pragma mark - UIResponder
@@ -346,23 +401,6 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     [super viewWillAppear:animated];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(commentsDidUpdate:)
-                                                 name:VContentViewViewModelDidUpdateCommentsNotification
-                                               object:self.viewModel];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(hitogramDataDidUpdate:)
-                                                 name:VContentViewViewModelDidUpdateHistogramDataNotification
-                                               object:self.viewModel];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(pollDataDidUpdate:)
-                                                 name:VContentViewViewModelDidUpdatePollDataNotification
-                                               object:self.viewModel];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(contentDataDidUpdate:)
-                                                 name:VContentViewViewModelDidUpdateContentNotification
-                                               object:self.viewModel];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardDidChangeFrame:)
                                                  name:UIKeyboardDidChangeFrameNotification
                                                object:nil];
@@ -422,15 +460,6 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     [super viewWillDisappear:animated];
     
     // We don't care about these notifications anymore but we still care about new user loggedin
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:VContentViewViewModelDidUpdateCommentsNotification
-                                                  object:self.viewModel];
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:VContentViewViewModelDidUpdateHistogramDataNotification
-                                                  object:self.viewModel];
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:VContentViewViewModelDidUpdatePollDataNotification
-                                                  object:self.viewModel];
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:UIKeyboardDidChangeFrameNotification
                                                   object:nil];
@@ -514,63 +543,6 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
         
         self.bottomKeyboardToContainerBottomConstraint.constant = newBottomKeyboardBarToContainerConstraintHeight;
         [self.view layoutIfNeeded];
-    }
-}
-
-- (void)contentDataDidUpdate:(NSNotification *)notification
-{
-    self.videoCell.viewModel = self.viewModel.videoViewModel;
-}
-
-- (void)commentsDidUpdate:(NSNotification *)notification
-{
-    if (self.viewModel.comments.count > 0)
-    {
-        if ([self.contentCollectionView numberOfItemsInSection:VContentViewSectionAllComments] > 0)
-        {
-            [self.contentCollectionView reloadData];
-            
-            __weak typeof(self) welf = self;
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
-            {
-                [welf.contentCollectionView flashScrollIndicators];
-            });
-        }
-        else
-        {
-            NSIndexSet *commentsIndexSet = [NSIndexSet indexSetWithIndex:VContentViewSectionAllComments];
-            [self.contentCollectionView reloadSections:commentsIndexSet];
-        }
-        
-        self.handleView.numberOfComments = self.viewModel.sequence.commentCount.integerValue;
-    }
-}
-
-- (void)hitogramDataDidUpdate:(NSNotification *)notification
-{
-    if (!self.viewModel.histogramDataSource)
-    {
-        return;
-    }
-    self.histogramCell.histogramView.dataSource = self.viewModel.histogramDataSource;
-    [self.contentCollectionView.collectionViewLayout invalidateLayout];
-}
-
-- (void)pollDataDidUpdate:(NSNotification *)notification
-{
-
-    if (!self.viewModel.votingEnabled)
-    {
-        [self.pollCell setAnswerAPercentage:self.viewModel.answerAPercentage
-                                   animated:YES];
-        [self.pollCell setAnswerBPercentage:self.viewModel.answerBPercentage
-                                   animated:YES];
-        
-        [self.ballotCell setVotingDisabledWithFavoredBallot:(self.viewModel.favoredAnswer == VPollAnswerA) ? VBallotA : VBallotB
-                                                   animated:YES];
-        self.pollCell.answerAIsFavored = (self.viewModel.favoredAnswer == VPollAnswerA);
-        self.pollCell.answerBIsFavored = (self.viewModel.favoredAnswer == VPollAnswerB);
-        self.pollCell.numberOfVotersText = self.viewModel.numberOfVotersText;
     }
 }
 
@@ -1087,9 +1059,21 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    if (CGRectGetMidY(scrollView.bounds) > (scrollView.contentSize.height * 0.8f))
+    const BOOL hasComments = self.viewModel.comments.count > 0;
+    if ( hasComments )
     {
-        [self.viewModel attemptToLoadNextPageOfComments];
+        const CGFloat visibleHeight = CGRectGetHeight(scrollView.frame) - scrollView.contentInset.bottom;
+        const CGFloat maxContentOffset = scrollView.contentSize.height - visibleHeight;
+        const CGFloat scrollPositionY = scrollView.contentOffset.y;
+        
+        if ( scrollPositionY >= maxContentOffset - 50.0f )
+        {
+            //[self.viewModel loadComments:VAbstractFilterPageTypeNext];
+        }
+        else if ( scrollPositionY < visibleHeight + 50.0f )
+        {
+            //[self.viewModel loadComments:VAbstractFilterPageTypePrevious];
+        }
     }
 }
 
@@ -1164,12 +1148,8 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
                               realTime:welf.realtimeCommentBeganTime
                             completion:^(BOOL succeeded)
      {
-         [welf.viewModel fetchComments];
-         [UIView animateWithDuration:0.0f
-                          animations:^
-          {
-              [welf commentsDidUpdate:nil];
-          }];
+         // Comment are ordered by most recent first, and we want to include the comment just made
+         [welf.viewModel reloadData];
      }];
     
     [inputAccessoryView clearTextAndResign];
@@ -1377,7 +1357,8 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
          [self.viewModel removeCommentAtIndex:row];
          NSArray *indexPaths = @[ [NSIndexPath indexPathForRow:row inSection:VContentViewSectionAllComments] ];
          [self.contentCollectionView deleteItemsAtIndexPaths:indexPaths];
-     } completion:nil];
+     }
+                                         completion:nil];
 }
 
 - (void)editComment:(VComment *)comment
