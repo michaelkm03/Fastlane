@@ -14,9 +14,6 @@
 
 - (instancetype)initWithAsset:(AVAsset *)asset;
 
-@property (nonatomic, assign) CMTime thumbnailInterval;
-
-- (void)generateThumbnailsOverRange:(CMTimeRange)timeRange
-                         completion:(void (^)(BOOL finished))completion;
+@property (nonatomic, assign) CMTime thumbnailInterval; // Defaults to 1 second
 
 @end

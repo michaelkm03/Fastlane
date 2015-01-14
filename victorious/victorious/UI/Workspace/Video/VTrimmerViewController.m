@@ -148,7 +148,10 @@ static NSString *const emptyCellIdentifier = @"emptyCell";
          CMTime timeValue = [weakCell.valueForThumbnail CMTimeValue];
          if (CMTIME_COMPARE_INLINE(timeValue, ==, timeForImage))
          {
-             weakCell.thumbnail = thumbnail;
+             dispatch_async(dispatch_get_main_queue(), ^
+                            {
+                                weakCell.thumbnail = thumbnail;
+                            });
          }
      }];
     return thumnailCell;

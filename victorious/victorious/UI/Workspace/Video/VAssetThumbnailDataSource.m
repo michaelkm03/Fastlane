@@ -23,28 +23,12 @@
     if (self)
     {
         _imageGenerator = [[AVAssetImageGenerator alloc] initWithAsset:asset];
-        _imageGenerator.appliesPreferredTrackTransform = YES;
+//        _imageGenerator.appliesPreferredTrackTransform = YES;
+        _imageGenerator.apertureMode = AVAssetImageGeneratorApertureModeCleanAperture;
+        _imageGenerator.maximumSize = CGSizeMake(128, 128);
+        _thumbnailInterval = CMTimeMake(1, 1);
     }
     return self;
-}
-
-- (void)generateThumbnailsOverRange:(CMTimeRange)timeRange
-                         completion:(void (^)(BOOL finished))completion
-{
-    NSMutableArray *times = [[NSMutableArray alloc] init];
-    CMTime totalTime = CMTimeAdd(timeRange.start, timeRange.duration);
-    CMTime createdTime = kCMTimeZero;
-    while (CMTIME_COMPARE_INLINE(createdTime, <, totalTime))
-    {
-        createdTime = CMTimeAdd(createdTime, self.thumbnailInterval);
-        [times addObject:[NSValue valueWithCMTime:createdTime]];
-    }
-    
-    [self.imageGenerator generateCGImagesAsynchronouslyForTimes:times
-                                              completionHandler:^(CMTime requestedTime, CGImageRef image, CMTime actualTime, AVAssetImageGeneratorResult result, NSError *error)
-    {
-        completion((result == AVAssetImageGeneratorSucceeded) ? YES : NO);
-    }];
 }
 
 #pragma mark - VTrimmerThumbnailDataSource

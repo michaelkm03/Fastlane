@@ -98,11 +98,6 @@ static NSString * const kVideoMuted = @"videoMuted";
         welf.trimViewController.maximumEndTime = [playerItem duration];
         
         welf.thumbnailDataSource = [[VAssetThumbnailDataSource alloc] initWithAsset:playerItem.asset];
-        [welf.thumbnailDataSource generateThumbnailsOverRange:CMTimeRangeMake(kCMTimeZero, playerItem.duration)
-                                                   completion:^(BOOL finished)
-         {
-             [welf.trimViewController reloadThumbnails];
-         }];
         welf.trimViewController.thumbnailDataSource = welf.thumbnailDataSource;
     };
 }
@@ -141,6 +136,7 @@ static NSString * const kVideoMuted = @"videoMuted";
 
 - (UIViewController *)inspectorToolViewController
 {
+    [self.trimViewController reloadThumbnails];
     return self.trimViewController;
 }
 
