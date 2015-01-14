@@ -27,7 +27,7 @@ static NSString * const kVideoMaxDuration = @"videoMaxDuration";
 static NSString * const kVideoMinDuration = @"videoMinDuration";
 static NSString * const kVideoMuted = @"videoMuted";
 
-@interface VTrimVideoTool () <VTrimmerViewControllerDelegate>
+@interface VTrimVideoTool () <VTrimmerViewControllerDelegate, VTrimmedPlayerDelegate>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VTrimmerViewController *trimViewController;
@@ -113,8 +113,10 @@ static NSString * const kVideoMuted = @"videoMuted";
 - (void)setTrimmedPlayer:(VTrimmedPlayer *)trimmedPlayer
 {
     _trimmedPlayer = trimmedPlayer;
+
     self.playerView.player = trimmedPlayer;
     [self observeStatusOnTrimmedPlayer:trimmedPlayer];
+    trimmedPlayer.delegate = self;
 }
 
 - (void)setSelected:(BOOL)selected
@@ -146,6 +148,14 @@ static NSString * const kVideoMuted = @"videoMuted";
                                   trimmerViewController:(VTrimmerViewController *)trimmerViewController
 {
     self.trimmedPlayer.trimRange = selectedTimeRange;
+}
+
+#pragma mark - VTrimmedPlayerDelegate
+
+- (void)trimmedPlayerPlayedToTime:(CMTime)currentPlayTime
+                    trimmedPlayer:(VTrimmedPlayer *)trimmedPlayer
+{
+    self.trimViewController.currentPlayTime = currentPlayTime;
 }
 
 #pragma mark - Private Methods

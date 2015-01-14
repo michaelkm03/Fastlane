@@ -45,6 +45,13 @@ static NSString *const emptyCellIdentifier = @"emptyCell";
     [self prepareTrimControl];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self reloadThumbnails];
+}
+
 #pragma mark - Property Accessors
 
 - (void)setMaximumTrimDuration:(CMTime)maximumTrimDuration
@@ -70,13 +77,20 @@ static NSString *const emptyCellIdentifier = @"emptyCell";
 - (void)setCurrentPlayTime:(CMTime)currentPlayTime
 {
     _currentPlayTime = currentPlayTime;
-    if (CMTimeCompare(currentPlayTime, kCMTimeZero))
+    if (CMTIME_COMPARE_INLINE(currentPlayTime, >, kCMTimeZero))
     {
         Float64 progress = (CMTimeGetSeconds(currentPlayTime) - CMTimeGetSeconds([self currentTimeOffset])) / CMTimeGetSeconds(self.maximumTrimDuration);
         CGFloat playbackOverlayWidth = CGRectGetWidth(self.view.bounds) * progress;
         self.currentPlayBackWidthConstraint.constant = (playbackOverlayWidth >= 0) ? playbackOverlayWidth : 0.0f;
         [self.view layoutIfNeeded];
     }
+}
+
+- (void)setThumbnailDataSource:(id<VTrimmerThumbnailDataSource>)thumbnailDataSource
+{
+    _thumbnailDataSource = thumbnailDataSource;
+    
+    [self reloadThumbnails];
 }
 
 #pragma mark - Public Methods

@@ -66,6 +66,9 @@
                                                                    queue:NULL
                                                               usingBlock:^(CMTime time)
                                  {
+                                     [welf.delegate trimmedPlayerPlayedToTime:time
+                                                                trimmedPlayer:welf];
+                                     
                                      VLog(@"Played to time: %@, trimRange: %@", [NSValue valueWithCMTime:time], [NSValue valueWithCMTimeRange:[welf trimRange]]);
                                      if (CMTIME_COMPARE_INLINE(time, >, [welf trimEndTime]))
                                      {
