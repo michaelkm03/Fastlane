@@ -330,17 +330,20 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
 
     if (VModeSelect == kMessageModeSelect)
     {
-        [[VObjectManager sharedManager] refreshConversationListWithSuccessBlock:success failBlock:fail];
+        [[VObjectManager sharedManager] loadConversationListWithPageType:VPageTypeFirst
+                                                            successBlock:success failBlock:fail];
     }
     else if (VModeSelect == kNotificationModeSelect)
     {
-        [[VObjectManager sharedManager] refreshListOfNotificationsWithSuccessBlock:success failBlock:fail];
+        [[VObjectManager sharedManager] loadNotificationsListWithPageType:VPageTypeFirst
+                                                             successBlock:success failBlock:fail];
     }
 }
 
 - (void)loadNextPageAction
 {
-    [[VObjectManager sharedManager] loadNextPageOfConversationListWithSuccessBlock:nil failBlock:nil];
+    [[VObjectManager sharedManager] loadConversationListWithPageType:VPageTypeNext
+                                                        successBlock:nil failBlock:nil];
 }
 
 #pragma mark - Content Creation

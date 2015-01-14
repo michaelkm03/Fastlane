@@ -164,7 +164,7 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
         VLog(@"%@\n%@", operation, error);
     };
     
-    [[VObjectManager sharedManager] getHashtagsSubscribedToWithRefresh:YES
+    [[VObjectManager sharedManager] getHashtagsSubscribedToWithPageType:VPageTypeFirst
                                                           successBlock:successBlock
                                                              failBlock:failureBlock];
 }

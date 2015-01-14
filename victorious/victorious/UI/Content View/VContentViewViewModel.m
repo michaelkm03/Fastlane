@@ -352,8 +352,6 @@ static NSString * const kPreferedMimeType = @"application/x-mpegURL";
          return [comment2.postedAt compare:comment1.postedAt];
      }];
     _comments = sortedComments;
-    
-    [self.delegate didUpdateComments];
 }
 
 #pragma mark - Public Methods
@@ -363,6 +361,7 @@ static NSString * const kPreferedMimeType = @"application/x-mpegURL";
     NSMutableArray *updatedComments = [self.comments mutableCopy];
     [updatedComments removeObjectAtIndex:index];
     self.comments = [NSArray arrayWithArray:updatedComments];
+    [self.delegate didUpdateCommentsWithPageType:VPageTypeFirst];
 }
 
 - (void)addCommentWithText:(NSString *)text
@@ -414,28 +413,22 @@ static NSString * const kPreferedMimeType = @"application/x-mpegURL";
          }];
     }
 }
-
 - (void)fetchComments
 {
     // give it what we have for now.
     self.comments = [self.sequence.comments array];
+    [self loadComments:VPageTypeFirst];
     
-    [[VObjectManager sharedManager] loadCommentsOnSequence:self.sequence
-                                                 isRefresh:NO
-                                              successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-     {
-         self.comments = [self.sequence.comments array];
-     }
-                                                 failBlock:nil];
 }
 
-- (void)attemptToLoadNextPageOfComments
+- (void)loadComments:(VPageType)pageType
 {
     [[VObjectManager sharedManager] loadCommentsOnSequence:self.sequence
-                                                 isRefresh:NO
+                                                  pageType:pageType
                                               successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
          self.comments = [self.sequence.comments array];
+         [self.delegate didUpdateCommentsWithPageType:pageType];
      }
                                                  failBlock:nil];
 }

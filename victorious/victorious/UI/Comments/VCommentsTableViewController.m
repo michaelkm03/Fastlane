@@ -164,7 +164,7 @@
 - (IBAction)refresh:(UIRefreshControl *)sender
 {
     RKManagedObjectRequestOperation *operation = [[VObjectManager sharedManager] loadCommentsOnSequence:self.sequence
-                                                                                              isRefresh:YES
+                                                                                               pageType:VPageTypeFirst
                                                                                            successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
                                                   {
                                                       self.comments = [self.sequence.comments array];
@@ -187,7 +187,7 @@
 - (void)loadNextPageAction
 {
     [[VObjectManager sharedManager] loadCommentsOnSequence:self.sequence
-                                                 isRefresh:NO
+                                                  pageType:VPageTypeNext
                                               successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
      {
          self.comments = [self.sequence.comments array];

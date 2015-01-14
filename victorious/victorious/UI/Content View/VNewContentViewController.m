@@ -157,7 +157,7 @@ static const CGFloat kVPaginationLoadTriggerMargin = 50.0f;
 
 #pragma mark - VContentViewViewModelDelegate
 
-- (void)didUpdateComments
+- (void)didUpdateCommentsWithPageType:(VPageType)pageType
 {
     if (self.viewModel.comments.count > 0)
     {
@@ -1077,7 +1077,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
         
         if ( scrollPositionY >= maxContentOffset - kVPaginationLoadTriggerMargin )
         {
-            [self.viewModel attemptToLoadNextPageOfComments];
+            [self.viewModel loadComments:VPageTypeNext];
         }
         else if ( scrollPositionY < visibleHeight + kVPaginationLoadTriggerMargin )
         {
@@ -1157,11 +1157,11 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
                               realTime:welf.realtimeCommentBeganTime
                             completion:^(BOOL succeeded)
      {
-         [welf.viewModel fetchComments];
+         [welf.viewModel loadComments:VPageTypeFirst];
          [UIView animateWithDuration:0.0f
                           animations:^
          {
-             [welf didUpdateComments];
+             [welf didUpdateCommentsWithPageType:VPageTypeFirst];
          }];
          
      }];

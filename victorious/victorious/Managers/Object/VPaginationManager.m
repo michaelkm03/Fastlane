@@ -35,32 +35,41 @@
     return self;
 }
 
-- (RKManagedObjectRequestOperation *)refreshFilter:(VAbstractFilter *)filter
-                                      successBlock:(VSuccessBlock)success
-                                         failBlock:(VFailBlock)fail
+- (RKManagedObjectRequestOperation *)loadFilter:(VAbstractFilter *)filter
+                                   withPageType:(VPageType)pageType
+                                   successBlock:(VSuccessBlock)success
+                                      failBlock:(VFailBlock)fail
 {
-    NSAssert(filter, @"No filter provided to refreshFilter.");
-    if (!filter)
+    NSUInteger targetPageNumber = 0;
+    switch ( pageType )
     {
-        if (fail)
-        {
-            fail(nil, nil);
-        }
+        case VPageTypeNext:
+            targetPageNumber = filter.currentPageNumber.integerValue + 1;
+            break;
+            
+        case VPageTypePrevious:
+            targetPageNumber = filter.currentPageNumber.integerValue - 1;
+            break;
+            
+        case VPageTypeFirst:
+        default:
+            targetPageNumber = 1;
+            break;
     }
     
     __block BOOL isLoading = NO;
     NSString *path = filter.filterAPIPath;
     dispatch_barrier_sync(self.pathsBeingLoadedQueue, ^(void)
-    {
-        if ([self.pathsBeingLoaded containsObject:path])
-        {
-            isLoading = YES;
-        }
-        else
-        {
-            [self.pathsBeingLoaded addObject:path];
-        }
-    });
+                          {
+                              if ([self.pathsBeingLoaded containsObject:path])
+                              {
+                                  isLoading = YES;
+                              }
+                              else
+                              {
+                                  [self.pathsBeingLoaded addObject:path];
+                              }
+                          });
     
     if (isLoading)
     {
@@ -73,53 +82,7 @@
     }
     else
     {
-        return [self loadPage:1
-                     ofFilter:filter
-                 successBlock:success
-                    failBlock:fail];
-    }
-}
-
-- (RKManagedObjectRequestOperation *)loadNextPageOfFilter:(VAbstractFilter *)filter
-                                             successBlock:(VSuccessBlock)success
-                                                failBlock:(VFailBlock)fail
-{
-    if (filter.currentPageNumber.integerValue >= filter.maxPageNumber.integerValue)
-    {
-        // if the last page has already been loaded, fail the call to update
-        if (fail)
-        {
-            fail(nil, nil);
-        }
-        return nil;
-    }
-    
-    __block BOOL isLoading = NO;
-    NSString *path = filter.filterAPIPath;
-    dispatch_barrier_sync(self.pathsBeingLoadedQueue, ^(void)
-    {
-        if ([self.pathsBeingLoaded containsObject:path])
-        {
-            isLoading = YES;
-        }
-        else
-        {
-            [self.pathsBeingLoaded addObject:path];
-        }
-    });
-    
-    if (isLoading)
-    {
-        // If we're already in the process of loading this filter, fail this repeated loading call
-        if (fail)
-        {
-            fail(nil, nil);
-        }
-        return nil;
-    }
-    else
-    {
-        return [self loadPage:filter.currentPageNumber.integerValue + 1
+        return [self loadPage:targetPageNumber
                      ofFilter:filter
                  successBlock:success
                     failBlock:fail];
@@ -134,14 +97,10 @@
     NSManagedObjectID *filterID = filter.objectID;
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        if (success)
-        {
-            success(operation, fullResponse, resultObjects);
-        }
-        
         VAbstractFilter *filter = (VAbstractFilter *)[self.objectManager.managedObjectStore.mainQueueManagedObjectContext objectWithID:filterID];
         filter.maxPageNumber = @([fullResponse[@"total_pages"] integerValue]);
         filter.currentPageNumber = @([fullResponse[@"page_number"] integerValue]);
+        filter.totalItemsNumber = @([fullResponse[@"total_items"] integerValue]);
         [filter.managedObjectContext saveToPersistentStore:nil];
         
         NSString *apiPath = filter.filterAPIPath;
@@ -149,22 +108,34 @@
         {
             [self.pathsBeingLoaded removeObject:apiPath];
         });
+        
+        if (success)
+        {
+            success(operation, fullResponse, resultObjects);
+        }
     };
     
     VFailBlock fullFail = ^(NSOperation *operation, NSError *error)
     {
-        if (fail)
-        {
-            fail(operation, error);
-        }
-        
         VAbstractFilter *filter = (VAbstractFilter *)[self.objectManager.managedObjectStore.mainQueueManagedObjectContext objectWithID:filterID];
         NSString *apiPath = filter.filterAPIPath;
         dispatch_barrier_async(self.pathsBeingLoadedQueue, ^(void)
         {
             [self.pathsBeingLoaded removeObject:apiPath];
         });
+        
+        if (fail)
+        {
+            fail(operation, error);
+        }
     };
+    
+    if ( pageNumber > filter.maxPageNumber.integerValue || pageNumber <= 0 )
+    {
+        // if the last page has already been loaded, fail the call to update
+        fullFail( nil, nil );
+        return nil;
+    }
     
     NSString *path = [filter.filterAPIPath stringByAppendingFormat:@"/%ld/%ld", (long)pageNumber, (long)filter.perPageNumber.integerValue];
     return [self.objectManager GET:path object:nil parameters:nil successBlock:fullSuccess failBlock:fullFail];
