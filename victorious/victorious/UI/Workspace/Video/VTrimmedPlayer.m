@@ -14,6 +14,8 @@
 
 @property (nonatomic, assign, getter=isSeeking) BOOL seeking;
 
+@property (nonatomic, strong) dispatch_queue_t timeObserverQueue;
+
 @end
 
 @implementation VTrimmedPlayer
@@ -35,7 +37,7 @@
     self = [super initWithURL:URL];
     if (self)
     {
-        
+        [self sharedInit];
     }
     return self;
 }
@@ -45,9 +47,15 @@
     self = [super initWithPlayerItem:item];
     if (self)
     {
-        
+        [self sharedInit];
     }
     return self;
+}
+
+- (void)sharedInit
+{
+#warning Remove me if I don't end up being used
+    _timeObserverQueue = dispatch_queue_create("VTrimmedPlayer time observer queue", DISPATCH_QUEUE_SERIAL);
 }
 
 #pragma mark - Property Accessors
