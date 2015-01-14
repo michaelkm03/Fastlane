@@ -229,7 +229,7 @@ static NSString * const kVMultiStreamStoryboardID = @"kMultiStream";
 {
     if ([sequence isVideo])
     {
-        [self.sequenceActionController videoRemixActionFromViewController:self asset:[sequence firstNode].assets.firstObject node:[sequence firstNode] sequence:sequence];
+//        [self.sequenceActionController videoRemixActionFromViewController:self asset:[sequence firstNode].assets.firstObject node:[sequence firstNode] sequence:sequence withDependencyManager:self.];
     }
     else
     {

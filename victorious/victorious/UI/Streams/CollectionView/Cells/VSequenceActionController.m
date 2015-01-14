@@ -24,6 +24,7 @@
 #import "VAuthorizationViewControllerFactory.h"
 #import "VUserProfileViewController.h"
 #import "VCommentsContainerViewController.h"
+#import "VWorkspaceViewController.h"
 
 #pragma mark-  Views
 #import "VNoContentView.h"
@@ -38,6 +39,9 @@
 #pragma mark - Categories
 #import "NSString+VParseHelp.h"
 #import "UIActionSheet+VBlocks.h"
+
+#pragma mark - Dependency Manager
+#import "VDependencyManager.h"
 
 @implementation VSequenceActionController
 
@@ -73,7 +77,7 @@
 
 #pragma mark - Remix
 
-- (void)videoRemixActionFromViewController:(UIViewController *)viewController asset:(VAsset *)asset node:(VNode *)node sequence:(VSequence *)sequence
+- (void)videoRemixActionFromViewController:(UIViewController *)viewController asset:(VAsset *)asset node:(VNode *)node sequence:(VSequence *)sequence withDependencyManager:(VDependencyManager *)dependencyManager
 {
     NSAssert(![sequence isPoll], @"You cannot remix polls.");
     if (![VObjectManager sharedManager].authorized)
@@ -81,12 +85,35 @@
         [viewController presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
         return;
     }
-
-    UIViewController *remixVC = [VRemixSelectViewController remixViewControllerWithURL:[asset.data mp4UrlFromM3U8]
-                                                                            sequenceID:[sequence.remoteId integerValue]
-                                                                                nodeID:node.remoteId.integerValue];
     
-    [viewController presentViewController:remixVC  animated:YES completion:nil];
+    VWorkspaceViewController *workspaceViewController;
+    
+    CFStringRef fileExtension = (__bridge CFStringRef)[asset.data pathExtension];
+    CFStringRef fileUTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, fileExtension, NULL);
+    
+    Boolean isImage = UTTypeConformsTo(fileUTI, kUTTypeImage);
+    Boolean isVideo = UTTypeConformsTo(fileUTI, kUTTypeAudiovisualContent);
+    isVideo = [[asset.data pathExtension] isEqualToString:@"m3u8"];
+    if (isImage)
+    {
+        // Image
+        workspaceViewController  = (VWorkspaceViewController *)[dependencyManager viewControllerForKey:VDependencyManagerWorkspaceKey];
+    }
+    else if (isVideo)
+    {
+        workspaceViewController  = (VWorkspaceViewController *)[dependencyManager viewControllerForKey:VDependencyManagerVideoWorkspaceKey];
+    }
+    CFRelease(fileUTI);
+    
+
+//    VWorkspaceViewController *workspace = [[VWorkspaceViewController alloc] initWithDependencyManager:dependencyManager];
+    workspaceViewController.mediaURL = [asset.data mp4UrlFromM3U8];
+    
+//    UIViewController *remixVC = [VRemixSelectViewController remixViewControllerWithURL:[asset.data mp4UrlFromM3U8]
+//                                                                            sequenceID:[sequence.remoteId integerValue]
+//                                                                                nodeID:node.remoteId.integerValue];
+    
+    [viewController presentViewController:workspaceViewController  animated:YES completion:nil];
 }
 
 - (void)imageRemixActionFromViewController:(UIViewController *)viewController previewImage:(UIImage *)previewImage sequence:(VSequence *)sequence

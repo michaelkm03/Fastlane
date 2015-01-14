@@ -673,7 +673,8 @@ static CGFloat const kTemplateCLineSpacing = 8;
 {
     if ([sequence isVideo])
     {
-        [self.sequenceActionController videoRemixActionFromViewController:self asset:[sequence firstNode].assets.firstObject node:[sequence firstNode] sequence:sequence];
+#warning FIX ME!!!
+//        [self.sequenceActionController videoRemixActionFromViewController:self asset:[sequence firstNode].assets.firstObject node:[sequence firstNode] sequence:sequence];
     }
     else
     {

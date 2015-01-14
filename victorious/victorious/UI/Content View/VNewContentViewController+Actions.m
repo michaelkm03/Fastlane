@@ -123,9 +123,10 @@ static const char kSequenceActionControllerKey;
                  if ([sequence isVideo])
                  {
                      [self.sequenceActionController videoRemixActionFromViewController:contentViewController
-                                                                            asset:[self.viewModel.sequence firstNode].assets.firstObject
-                                                                             node:[sequence firstNode]
-                                                                         sequence:sequence];
+                                                                                 asset:[self.viewModel.sequence firstNode].assets.firstObject
+                                                                                  node:[sequence firstNode]
+                                                                              sequence:sequence
+                                                                 withDependencyManager:self.dependencyManagerForHistogramExperiment];
                  }
                  else
                  {

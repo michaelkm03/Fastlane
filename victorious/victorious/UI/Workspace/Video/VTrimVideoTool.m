@@ -83,6 +83,8 @@ static NSString * const kVideoMuted = @"videoMuted";
 {
     _mediaURL = [mediaURL copy];
     
+    BOOL isLocal = [mediaURL isFileURL];
+    
     self.frameRateController = [[VVideoFrameRateComposition alloc] initWithVideoURL:mediaURL
                                                                      frameDuration:self.frameDuration
                                                                          muteAudio:self.muteAudio];
