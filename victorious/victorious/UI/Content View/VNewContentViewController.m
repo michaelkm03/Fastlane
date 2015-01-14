@@ -171,6 +171,11 @@ static const CGFloat kVPaginationLoadTriggerMargin = 50.0f;
                                [welf.contentCollectionView flashScrollIndicators];
                            });
         }
+        else
+        {
+            NSIndexSet *commentsIndexSet = [NSIndexSet indexSetWithIndex:VContentViewSectionAllComments];
+            [self.contentCollectionView reloadSections:commentsIndexSet];
+        }
         
         self.handleView.numberOfComments = self.viewModel.sequence.commentCount.integerValue;
     }
