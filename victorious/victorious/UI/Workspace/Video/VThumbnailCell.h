@@ -10,6 +10,7 @@
 
 @interface VThumbnailCell : VBaseCollectionViewCell
 
+@property (nonatomic, strong) NSValue *valueForThumbnail;
 @property (nonatomic, strong) UIImage *thumbnail;
 
 @end

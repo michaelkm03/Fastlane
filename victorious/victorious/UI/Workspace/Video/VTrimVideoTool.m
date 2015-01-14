@@ -13,6 +13,8 @@
 #import "VVideoFrameRateComposition.h"
 #import <KVOController/FBKVOController.h>
 
+#import "VAssetThumbnailDataSource.h"
+
 #import "VTrimmedPlayer.h"
 
 static const int32_t kDefaultTimeScale = 600;
@@ -25,7 +27,7 @@ static NSString * const kVideoMaxDuration = @"videoMaxDuration";
 static NSString * const kVideoMinDuration = @"videoMinDuration";
 static NSString * const kVideoMuted = @"videoMuted";
 
-@interface VTrimVideoTool () <VTrimmerViewControllerDelegate, VTrimmerThumbnailDataSource>
+@interface VTrimVideoTool () <VTrimmerViewControllerDelegate>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VTrimmerViewController *trimViewController;
@@ -40,8 +42,7 @@ static NSString * const kVideoMuted = @"videoMuted";
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, strong) VVideoFrameRateComposition *frameRateController;
 
-//TODO: GET RID OF ME
-@property (nonatomic, strong) AVAssetImageGenerator *assetGenerator;
+@property (nonatomic, strong) VAssetThumbnailDataSource *thumbnailDataSource;
 
 @end
 
@@ -82,8 +83,6 @@ static NSString * const kVideoMuted = @"videoMuted";
 {
     _mediaURL = [mediaURL copy];
     
-    self.trimViewController.thumbnailDataSource = self;
-    
     self.frameRateController = [[VVideoFrameRateComposition alloc] initWithVideoURL:mediaURL
                                                                      frameDuration:self.frameDuration
                                                                          muteAudio:self.muteAudio];
@@ -98,11 +97,13 @@ static NSString * const kVideoMuted = @"videoMuted";
         welf.playerItem = playerItem;
         welf.trimViewController.maximumEndTime = [playerItem duration];
         
-//TODO: Get me outta here!
-        welf.assetGenerator = [[AVAssetImageGenerator alloc] initWithAsset:playerItem.asset];
-        welf.assetGenerator.maximumSize = CGSizeMake(128, 128);
-        welf.assetGenerator.appliesPreferredTrackTransform = YES;
-        welf.assetGenerator.apertureMode = AVAssetImageGeneratorApertureModeEncodedPixels;
+        welf.thumbnailDataSource = [[VAssetThumbnailDataSource alloc] initWithAsset:playerItem.asset];
+        [welf.thumbnailDataSource generateThumbnailsOverRange:CMTimeRangeMake(kCMTimeZero, playerItem.duration)
+                                                   completion:^(BOOL finished)
+         {
+             [welf.trimViewController reloadThumbnails];
+         }];
+        welf.trimViewController.thumbnailDataSource = welf.thumbnailDataSource;
     };
 }
 
@@ -149,22 +150,6 @@ static NSString * const kVideoMuted = @"videoMuted";
                                   trimmerViewController:(VTrimmerViewController *)trimmerViewController
 {
     self.trimmedPlayer.trimRange = selectedTimeRange;
-}
-
-//TODO: Mōve me
-#pragma mark - VTrimmerThumbnailDataSource
-
-- (UIImage *)trimmerViewController:(VTrimmerViewController *)trimmer
-                  thumbnailForTime:(CMTime)time
-{
-    CGImageRef imageForTime = [self.assetGenerator copyCGImageAtTime:time
-                                                          actualTime:NULL
-                                                               error:nil];
-    
-    UIImage *imageWithImageRef = [UIImage imageWithCGImage:imageForTime];
-    CGImageRelease(imageForTime);
-    
-    return imageWithImageRef;
 }
 
 #pragma mark - Private Methods

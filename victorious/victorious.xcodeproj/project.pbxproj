@@ -565,7 +565,7 @@
 		D80A94D61A535E150035D788 /* VVideoPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = D80A94D51A535E150035D788 /* VVideoPlayerView.m */; };
 		D80A94DB1A536C8C0035D788 /* VTrimmerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D80A94DA1A536C8C0035D788 /* VTrimmerViewController.m */; };
 		D80A94DE1A53941D0035D788 /* VTrimControl.m in Sources */ = {isa = PBXBuildFile; fileRef = D80A94DD1A53941D0035D788 /* VTrimControl.m */; };
-		D80A94E61A546DF90035D788 /* VThumbnailDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = D80A94E51A546DF90035D788 /* VThumbnailDataSource.m */; };
+		D80A94E61A546DF90035D788 /* VAssetThumbnailDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = D80A94E51A546DF90035D788 /* VAssetThumbnailDataSource.m */; };
 		D80A94E91A546E5E0035D788 /* VThumbnailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D80A94E81A546E5E0035D788 /* VThumbnailCell.m */; };
 		D80A94EB1A546E680035D788 /* VThumbnailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D80A94EA1A546E680035D788 /* VThumbnailCell.xib */; };
 		D80A94EE1A5472FB0035D788 /* VTrimVideoTool.m in Sources */ = {isa = PBXBuildFile; fileRef = D80A94ED1A5472FB0035D788 /* VTrimVideoTool.m */; };
@@ -1679,8 +1679,8 @@
 		D80A94DA1A536C8C0035D788 /* VTrimmerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTrimmerViewController.m; sourceTree = "<group>"; };
 		D80A94DC1A53941D0035D788 /* VTrimControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTrimControl.h; sourceTree = "<group>"; };
 		D80A94DD1A53941D0035D788 /* VTrimControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTrimControl.m; sourceTree = "<group>"; };
-		D80A94E41A546DF90035D788 /* VThumbnailDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VThumbnailDataSource.h; sourceTree = "<group>"; };
-		D80A94E51A546DF90035D788 /* VThumbnailDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VThumbnailDataSource.m; sourceTree = "<group>"; };
+		D80A94E41A546DF90035D788 /* VAssetThumbnailDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAssetThumbnailDataSource.h; sourceTree = "<group>"; };
+		D80A94E51A546DF90035D788 /* VAssetThumbnailDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAssetThumbnailDataSource.m; sourceTree = "<group>"; };
 		D80A94E71A546E5E0035D788 /* VThumbnailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VThumbnailCell.h; sourceTree = "<group>"; };
 		D80A94E81A546E5E0035D788 /* VThumbnailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VThumbnailCell.m; sourceTree = "<group>"; };
 		D80A94EA1A546E680035D788 /* VThumbnailCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VThumbnailCell.xib; sourceTree = "<group>"; };
@@ -4071,8 +4071,8 @@
 				D80A94DA1A536C8C0035D788 /* VTrimmerViewController.m */,
 				D80A94D41A535E150035D788 /* VVideoPlayerView.h */,
 				D80A94D51A535E150035D788 /* VVideoPlayerView.m */,
-				D80A94E41A546DF90035D788 /* VThumbnailDataSource.h */,
-				D80A94E51A546DF90035D788 /* VThumbnailDataSource.m */,
+				D80A94E41A546DF90035D788 /* VAssetThumbnailDataSource.h */,
+				D80A94E51A546DF90035D788 /* VAssetThumbnailDataSource.m */,
 				D80A94E71A546E5E0035D788 /* VThumbnailCell.h */,
 				D80A94E81A546E5E0035D788 /* VThumbnailCell.m */,
 				D80A94EA1A546E680035D788 /* VThumbnailCell.xib */,
@@ -5145,7 +5145,7 @@
 				D82E76DE19F5BFED00FFB722 /* VContentPollQuestionCell.m in Sources */,
 				0314D45B19B46B5E00FA363C /* VCompositeImageFilter.m in Sources */,
 				0314D49619B46B5E00FA363C /* VResultView.m in Sources */,
-				D80A94E61A546DF90035D788 /* VThumbnailDataSource.m in Sources */,
+				D80A94E61A546DF90035D788 /* VAssetThumbnailDataSource.m in Sources */,
 				A75FAF1F19E8AC1E00EB87C1 /* VDiscoverTableHeaderViewController.m in Sources */,
 				0314D46819B46B5E00FA363C /* VPickerTextField.m in Sources */,
 				BE11447919D49AA4006A6D65 /* VMarqueeStreamItemCell.m in Sources */,

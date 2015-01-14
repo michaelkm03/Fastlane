@@ -12,8 +12,9 @@
 
 @protocol VTrimmerThumbnailDataSource <NSObject>
 
-- (UIImage *)trimmerViewController:(VTrimmerViewController *)trimmer
-                  thumbnailForTime:(CMTime)time;
+- (void)trimmerViewController:(VTrimmerViewController *)trimmer
+             thumbnailForTime:(CMTime)time
+               withCompletion:(void (^)(UIImage *thumbnail, CMTime timeForImage))completion;
 
 @end
 

@@ -139,8 +139,18 @@ static NSString *const emptyCellIdentifier = @"emptyCell";
     CGPoint center = [self.thumbnailCollecitonView.collectionViewLayout layoutAttributesForItemAtIndexPath:indexPath].center;
     CGFloat percentThrough = center.x / [self timelineWidthForFullTrack];
     CMTime timeForCell = CMTimeMake(self.maximumEndTime.value * percentThrough, self.maximumEndTime.timescale);
-    thumnailCell.thumbnail = [self.thumbnailDataSource trimmerViewController:self
-                                                            thumbnailForTime:timeForCell];
+    thumnailCell.valueForThumbnail = [NSValue valueWithCMTime:timeForCell];
+    __weak VThumbnailCell *weakCell = thumnailCell;
+    [self.thumbnailDataSource trimmerViewController:self
+                                   thumbnailForTime:timeForCell
+                                     withCompletion:^(UIImage *thumbnail, CMTime timeForImage)
+     {
+         CMTime timeValue = [weakCell.valueForThumbnail CMTimeValue];
+         if (CMTIME_COMPARE_INLINE(timeValue, ==, timeForImage))
+         {
+             weakCell.thumbnail = thumbnail;
+         }
+     }];
     return thumnailCell;
 }
 
