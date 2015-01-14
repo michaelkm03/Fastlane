@@ -55,7 +55,7 @@
                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </imageView>
                     <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gyn-y5-GEV" customClass="VCommentTextAndMediaView">
-                        <rect key="frame" x="66" y="39" width="229" height="205"/>
+                        <rect key="frame" x="66" y="39" width="199" height="205"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </view>
                 </subviews>
@@ -74,7 +74,7 @@
                     <constraint firstItem="rxs-Gg-jrR" firstAttribute="top" secondItem="eAW-cc-13j" secondAttribute="top" constant="10" id="rQW-bG-E3F"/>
                     <constraint firstItem="LIQ-Uh-Qd1" firstAttribute="leading" secondItem="nnt-e6-nzy" secondAttribute="trailing" constant="3" id="sWn-Mu-r3J"/>
                     <constraint firstItem="Gyn-y5-GEV" firstAttribute="left" secondItem="eAW-cc-13j" secondAttribute="left" constant="66" id="tbW-yA-scL"/>
-                    <constraint firstAttribute="right" secondItem="Gyn-y5-GEV" secondAttribute="right" constant="25" id="waE-ve-40G"/>
+                    <constraint firstAttribute="right" secondItem="Gyn-y5-GEV" secondAttribute="right" constant="55" id="waE-ve-40G"/>
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>

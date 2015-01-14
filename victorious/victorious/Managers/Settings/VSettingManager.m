@@ -22,13 +22,12 @@ NSString * const kVExportVideoQuality =   @"remix";
 NSString * const kVRealtimeCommentsEnabled =   @"realtimeCommentsEnabled";
 NSString * const kVMemeAndQuoteEnabled =   @"memeAndQuoteEnabled";
 
-NSString * const VSettingsTemplateCEnabled = @"template_c_enabled - 2";
+NSString * const VSettingsTemplateCEnabled = @"template_c_enabled";
 NSString * const VSettingsChannelsEnabled = @"channels_enabled";
 NSString * const VSettingsMarqueeEnabled = @"marqueeEnabled";
 
 //Experiments
 NSString * const VExperimentsRequireProfileImage = @"require_profile_image";
-NSString * const VExperimentsHistogramEnabled = @"histogram_enabled";
 NSString * const VExperimentsPauseVideoWhenCommenting = @"pause_video_when_commenting";
 NSString * const VExperimentsClearVideoBackground = @"clear_video_background";
 

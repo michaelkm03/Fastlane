@@ -8,10 +8,20 @@
 
 #import <UIKit/UIKit.h>
 #import "VVoteType+Fetcher.h"
+#import "VModalTransition.h"
 
-@interface VPurchaseViewController : UIViewController
+@protocol VPurchaseViewControllerDelegate <NSObject>
+
+// Called when a product has been successfuly purchased or restored
+- (void)purchaseDidComplete;
+
+@end
+
+@interface VPurchaseViewController : UIViewController <VModalTransitionPresentedViewController>
 
 + (VPurchaseViewController *)purchaseViewControllerWithVoteType:(VVoteType *)voteType;
+
+@property (nonatomic, strong) id<VPurchaseViewControllerDelegate> delegate;
 
 /**
  The vote type that a user is trying to unlock.  This is where the product identifier

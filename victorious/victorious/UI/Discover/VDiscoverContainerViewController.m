@@ -16,7 +16,6 @@
 
 @interface VDiscoverContainerViewController () <VNavigationHeaderDelegate>
 
-@property (nonatomic, weak) IBOutlet UIButton *createButton;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *searchBarHeightConstraint;
 
 @property (nonatomic, weak) IBOutlet UIView *searchBarContainer;
@@ -84,8 +83,16 @@
                                                                            constant:0];
     [self.view addConstraint:searchTopConstraint];
     [self.view layoutIfNeeded];
-    
-    self.headerLabel.text = NSLocalizedString(@"Discover", nil);
+}
+
+- (BOOL)shouldAutorotate
+{
+    return NO;
+}
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskPortrait;
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender

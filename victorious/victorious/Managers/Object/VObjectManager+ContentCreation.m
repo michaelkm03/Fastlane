@@ -10,7 +10,6 @@
 #import "VObjectManager+ContentCreation.h"
 
 #import "VObjectManager+Private.h"
-#import "VObjectManager+Pagination.h"
 #import "VUploadManager.h"
 #import "VUploadTaskCreator.h"
 
@@ -67,7 +66,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     NSString *path = [[[@"/api/remix/fetch" stringByAppendingPathComponent:sequenceID.stringValue]
                        stringByAppendingPathComponent:@(startTime).stringValue]
                       stringByAppendingPathComponent:@(duration).stringValue];
-    
+
     return [self GET:path object:nil parameters:nil successBlock:success failBlock:fail];
 }
 

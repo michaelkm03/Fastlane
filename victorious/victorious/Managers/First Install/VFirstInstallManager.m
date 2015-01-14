@@ -8,53 +8,37 @@
 
 #import "VFirstInstallManager.h"
 #import "VObjectManager+Analytics.h"
+#import "VSettingManager.h"
+#import "VTracking.h"
 
 NSString * const VAppInstalledOldTrackingDefaultsKey = @"com.victorious.VAppDelegate.AppInstalled";
 NSString * const VAppInstalledDefaultsKey = @"com.victorious.VAppDelegate.AppInstallEventTracked";
 
 @implementation VFirstInstallManager
 
-- (void)reportFirstInstall
+- (void)reportFirstInstallWithTracking:(VTracking *)applicationTracking
 {
-    [self trackEventWithOldMethod];
-    [self trackEvent];
-}
-
-- (void)trackEvent
-{
+    // Check for value indicating app has already been installed before
     id userDefaultsValue = [[NSUserDefaults standardUserDefaults] valueForKey:VAppInstalledDefaultsKey];
     if ( userDefaultsValue != nil )
     {
         return;
     }
     
-    // Modern tracking
-    NSDate *installDate = [NSDate date];
-    NSDictionary *params = @{ VTrackingKeyTimeStamp : installDate };
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventApplicationFirstInstall parameters:params];
-    [[NSUserDefaults standardUserDefaults] setValue:@YES forKey:VAppInstalledDefaultsKey];
-}
-
-- (void)trackEventWithOldMethod
-{
-    id userDefaultsValue = [[NSUserDefaults standardUserDefaults] valueForKey:VAppInstalledOldTrackingDefaultsKey];
-    if ( userDefaultsValue != nil )
+    // Check again using the old key from previous versions, otherwise installs will be re-reported
+    // when users update to newer versions
+    id userDefaultsOldValue = [[NSUserDefaults standardUserDefaults] valueForKey:VAppInstalledOldTrackingDefaultsKey];
+    if ( userDefaultsOldValue != nil )
     {
         return;
     }
     
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-    // Deprecated tracking using "/api/events/add" endpoint
-    VObjectManager *objManager = [VObjectManager sharedManager];
-    NSDictionary *installEvent = [objManager dictionaryForInstallEventWithDate:[NSDate date]];
-    [objManager addEvents:@[installEvent]
-             successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-    {
-        [[NSUserDefaults standardUserDefaults] setValue:@YES forKey:VAppInstalledOldTrackingDefaultsKey];
-    }
-                failBlock:nil];
-#pragma clang diagnostic pop
+    // Resport the install event
+    NSDate *installDate = [NSDate date];
+    NSArray *urls = applicationTracking.appInstall ?: @[];
+    NSDictionary *params = @{ VTrackingKeyTimeStamp : installDate , VTrackingKeyUrls : urls };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventApplicationFirstInstall parameters:params];
+    [[NSUserDefaults standardUserDefaults] setValue:@YES forKey:VAppInstalledDefaultsKey];
 }
 
 @end

@@ -13,7 +13,7 @@
 #import "VSequenceActionsDelegate.h"
 #import "VNewContentViewController.h"
 
-@class VStreamCollectionViewDataSource;
+@class VStreamCollectionViewDataSource, VHashtag;
 
 @interface VStreamCollectionViewController : VAbstractStreamCollectionViewController <VNewContentViewControllerDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, VSequenceActionsDelegate, VHasManagedDependancies>
 
@@ -41,5 +41,11 @@
  *  @param stream The stream to display
  */
 + (instancetype)streamViewControllerForStream:(VStream *)stream;
+
+/**
+ *  For tracking purposes, each cell will only count as having been viewed if the ratio of its
+ *  visible area is greater than or equal to this value.
+ */
+@property (nonatomic, assign) float minimumRequiredCellVisibilityRatio;
 
 @end

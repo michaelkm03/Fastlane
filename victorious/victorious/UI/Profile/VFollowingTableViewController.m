@@ -16,7 +16,9 @@
 #import "VUserProfileViewController.h"
 #import "VNoContentView.h"
 #import "VConstants.h"
+#import "VThemeManager.h"
 #import "UIViewController+VNavMenu.h"
+#import "MBProgressHUD.h"
 
 @interface VFollowingTableViewController ()
 
@@ -37,8 +39,6 @@
                                                                             action:@selector(goBack:)];
 
     self.tableView.backgroundColor = [UIColor colorWithWhite:0.97 alpha:1.0];
-//    self.tableView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryBackgroundColor];
-    
     [self.tableView registerNib:[UINib nibWithNibName:@"followerCell" bundle:nil] forCellReuseIdentifier:@"followerCell"];
 }
 
@@ -64,7 +64,22 @@
     
     UIEdgeInsets insets = self.tableView.contentInset;
     insets.top = CGRectGetHeight(self.parentViewController.navHeaderView.frame);
+    
+    BOOL isHeaderVisible = (insets.top == 0);
+    if (isHeaderVisible)
+    {
+        insets = UIEdgeInsetsMake(10.0f, 0.0f, 0.0f, 0.0f);
+        self.tableView.rowHeight = 50.0f;
+    }
     self.tableView.contentInset = insets;
+    
+    // Set insets and layout margin
+    if (UI_IS_IOS8_AND_HIGHER)
+    {
+        [self.tableView setLayoutMargins:UIEdgeInsetsZero];
+    }
+
+    [self.tableView setSeparatorInset:UIEdgeInsetsZero];
 }
 
 - (BOOL)shouldAutorotate
@@ -282,9 +297,19 @@
         }
     };
     
-    [[VObjectManager sharedManager] refreshFollowingsForUser:self.profile
-                                                successBlock:followerSuccess
-                                                   failBlock:followerFail];
+    if (self.profile != nil)
+    {
+        [[VObjectManager sharedManager] refreshFollowingsForUser:self.profile
+                                                    successBlock:followerSuccess
+                                                       failBlock:followerFail];
+    }
+    else
+    {
+        MBProgressHUD *failureHUD = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        failureHUD.mode = MBProgressHUDModeText;
+        failureHUD.detailsLabelText = NSLocalizedString(@"NotLoggedInMessage", @"");
+        [failureHUD hide:YES afterDelay:3.0f];
+    }
 }
 
 - (void)loadMoreFollowings
@@ -299,9 +324,19 @@
         [self.tableView reloadData];
     };
     
-    [[VObjectManager sharedManager] loadNextPageOfFollowingsForUser:self.profile
-                                                       successBlock:followerSuccess
-                                                          failBlock:nil];
+    if (self.profile != nil)
+    {
+        [[VObjectManager sharedManager] loadNextPageOfFollowingsForUser:self.profile
+                                                           successBlock:followerSuccess
+                                                              failBlock:nil];
+    }
+    else
+    {
+        MBProgressHUD *failureHUD = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        failureHUD.mode = MBProgressHUDModeText;
+        failureHUD.detailsLabelText = NSLocalizedString(@"NotLoggedInMessage", @"");
+        [failureHUD hide:YES afterDelay:3.0f];
+    }
 }
 
 - (void)setIsFollowing:(BOOL)isFollowing

@@ -60,4 +60,11 @@
  */
 - (void)v_hideUploads;
 
+/**
+ *  Returns the Y-position of the header as determined by its constraints.
+ *  This is provided so that view controllers can adjust their display or
+ *  interactivity based on whether or not the header is visible.
+ */
+- (CGFloat)headerPositionY;
+
 @end

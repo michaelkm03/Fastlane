@@ -19,7 +19,6 @@ extern NSString * const VSettingsMarqueeEnabled;
 extern NSString * const VSettingsTemplateCEnabled;
 //Experiments
 extern NSString * const VExperimentsRequireProfileImage;
-extern NSString * const VExperimentsHistogramEnabled;
 extern NSString * const VExperimentsPauseVideoWhenCommenting;
 extern NSString * const VExperimentsClearVideoBackground;
 

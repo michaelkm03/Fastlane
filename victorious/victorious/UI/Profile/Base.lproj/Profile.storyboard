@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="phZ-Da-bnR">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="phZ-Da-bnR">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -231,6 +231,7 @@
                         <segue destination="Kuc-kN-9tL" kind="push" identifier="toFollowers" id="OML-If-im7"/>
                         <segue destination="3LS-NU-4gO" kind="push" identifier="toFollowing" id="pmh-7L-8ZI"/>
                         <segue destination="qcg-od-rNV" kind="push" identifier="toEditProfile" id="lWx-SS-W2o"/>
+                        <segue destination="0P3-ku-CO7" kind="push" identifier="toHashtagsAndFollowing" id="6SA-uK-EZy"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bql-Kt-9t5" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -266,6 +267,66 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pAm-Ep-wWc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-601" y="816"/>
+        </scene>
+        <!--Following-->
+        <scene sceneID="jlq-rd-pfy">
+            <objects>
+                <viewController title="Following" id="0P3-ku-CO7" customClass="VContainerViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="iKa-VG-4Ta"/>
+                        <viewControllerLayoutGuide type="bottom" id="iZf-A6-x9w"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="T5s-hV-UAM">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QWc-Fn-yKk">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <connections>
+                                    <segue destination="86q-5Y-HrO" kind="embed" id="TnJ-QW-WEJ"/>
+                                </connections>
+                            </containerView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="PD2-FI-hY4"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="d2V-yy-Pkc" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="119" y="1511"/>
+        </scene>
+        <!--Profile Following Container View Controller-->
+        <scene sceneID="aSZ-yu-jMd">
+            <objects>
+                <viewController id="86q-5Y-HrO" customClass="VProfileFollowingContainerViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="PoE-cr-IZB"/>
+                        <viewControllerLayoutGuide type="bottom" id="nBb-NB-dHn"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="bFt-nf-xe8">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <containerView opaque="NO" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5de-sT-TwA">
+                                <rect key="frame" x="0.0" y="57" width="320" height="511"/>
+                            </containerView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="nBb-NB-dHn" firstAttribute="top" secondItem="5de-sT-TwA" secondAttribute="bottom" id="6fe-GV-VDY"/>
+                            <constraint firstItem="5de-sT-TwA" firstAttribute="leading" secondItem="bFt-nf-xe8" secondAttribute="leadingMargin" constant="-16" id="FJp-Yu-bwn"/>
+                            <constraint firstItem="5de-sT-TwA" firstAttribute="top" secondItem="PoE-cr-IZB" secondAttribute="bottom" constant="37" id="OTG-Vo-Qpj"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="5de-sT-TwA" secondAttribute="trailing" constant="-16" id="yoI-Uk-v4O"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="5Ss-xa-8iX"/>
+                    <connections>
+                        <outlet property="containerView" destination="5de-sT-TwA" id="2F7-6w-7Dc"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="zzv-qW-p4V" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="597" y="1511"/>
         </scene>
         <!--Following-->
         <scene sceneID="fk2-Io-F9a">

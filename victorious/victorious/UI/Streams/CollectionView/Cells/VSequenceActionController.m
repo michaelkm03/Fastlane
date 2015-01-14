@@ -14,6 +14,7 @@
 #import "VSequence+Fetcher.h"
 #import "VStream+Fetcher.h"
 #import "VUser+Fetcher.h"
+#import "VTracking.h"
 
 #pragma mark - Controllers
 #import "VRemixSelectViewController.h"
@@ -228,11 +229,10 @@
     activityViewController.excludedActivityTypes = @[UIActivityTypePostToFacebook];
     activityViewController.completionHandler = ^(NSString *activityType, BOOL completed)
     {
-        if (activityType != nil)
-        {
-            NSDictionary *params = @{ VTrackingKeySequenceCategory : sequence.category, VTrackingKeyActivityType : activityType };
-            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidShare parameters:params];
-        }
+        NSDictionary *params = @{ VTrackingKeySequenceCategory : sequence.category ?: @"",
+                                  VTrackingKeyActivityType : activityType ?: @"",
+                                  VTrackingKeyUrls : sequence.tracking.share ?: @[] };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidShare parameters:params];
         
         [[VThemeManager sharedThemeManager] applyStyling];
         [viewController reloadInputViews];
