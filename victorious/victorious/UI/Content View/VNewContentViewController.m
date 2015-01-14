@@ -1148,8 +1148,13 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
                               realTime:welf.realtimeCommentBeganTime
                             completion:^(BOOL succeeded)
      {
-         // Comment are ordered by most recent first, and we want to include the comment just made
-         [welf.viewModel reloadData];
+         [welf.viewModel fetchComments];
+         [UIView animateWithDuration:0.0f
+                          animations:^
+         {
+             [welf didUpdateComments];
+         }];
+         
      }];
     
     [inputAccessoryView clearTextAndResign];
@@ -1357,8 +1362,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
          [self.viewModel removeCommentAtIndex:row];
          NSArray *indexPaths = @[ [NSIndexPath indexPathForRow:row inSection:VContentViewSectionAllComments] ];
          [self.contentCollectionView deleteItemsAtIndexPaths:indexPaths];
-     }
-                                         completion:nil];
+     } completion:nil];
 }
 
 - (void)editComment:(VComment *)comment

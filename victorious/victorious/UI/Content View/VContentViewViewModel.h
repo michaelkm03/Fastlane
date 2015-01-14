@@ -11,7 +11,6 @@
 #import "VAdViewController.h"
 #import "VExperienceEnhancerController.h"
 #import "VHistogramDataSource.h"
-#import "VAbstractFilter+RestKit.h"
 
 @protocol VContentViewViewModelDelegate <NSObject>
 
@@ -167,8 +166,8 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
 @property (nonatomic, readonly) BOOL shouldShowRealTimeComents;
 
 /**
-  *  Fetches the all comments and realtime comments for this viewModel's sequence.
-  */
+ *  Fetches the all comments and realtime comments for this viewModel's sequence.
+ */
 - (void)fetchComments;
 
 - (void)attemptToLoadNextPageOfComments;
