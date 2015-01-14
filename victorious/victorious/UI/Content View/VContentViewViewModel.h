@@ -166,6 +166,13 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
  */
 @property (nonatomic, readonly) BOOL shouldShowRealTimeComents;
 
+/**
+  *  Fetches the all comments and realtime comments for this viewModel's sequence.
+  */
+- (void)fetchComments;
+
+- (void)attemptToLoadNextPageOfComments;
+
 @property (nonatomic, readonly) NSArray *comments;
 
 - (void)removeCommentAtIndex:(NSUInteger)index;
@@ -210,11 +217,5 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
 /** This will be nil if no histogram data is available.
  */
 @property (nonatomic, strong, readonly) VHistogramDataSource *histogramDataSource;
-
-/**
- Set a comment ID using this property after initializtion to scroll to and highlight
- that comment when the content view loads.
- */
-@property (nonatomic, strong) NSNumber *deepLinkCommentId;
 
 @end
