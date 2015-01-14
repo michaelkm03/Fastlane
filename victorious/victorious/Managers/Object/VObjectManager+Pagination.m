@@ -45,23 +45,17 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
         {
             VSequence *sequenceInContext = (VSequence *)[self.managedObjectStore.mainQueueManagedObjectContext objectWithID:sequence.objectID];
             
-            switch ( pageType )
+            if ( pageType == VPageTypeFirst )
             {
-                case VPageTypeFirst:
-                case VPageTypePrevious:
-                {
-                    NSMutableOrderedSet *comments = [[NSMutableOrderedSet alloc] initWithArray:resultObjects];
-                    [comments addObjectsFromArray:sequence.comments.array];
-                    sequenceInContext.comments = [comments copy];
-                    break;
-                }
-                case VPageTypeNext:
-                {
-                    NSMutableOrderedSet *comments = [sequence.comments mutableCopy];
-                    [comments addObjectsFromArray:resultObjects];
-                    sequenceInContext.comments = [comments copy];
-                    break;
-                }
+                NSMutableOrderedSet *comments = [[NSMutableOrderedSet alloc] initWithArray:resultObjects];
+                [comments addObjectsFromArray:sequence.comments.array];
+                sequenceInContext.comments = [comments copy];
+            }
+            else
+            {
+                NSMutableOrderedSet *comments = [sequence.comments mutableCopy];
+                [comments addObjectsFromArray:resultObjects];
+                sequenceInContext.comments = [comments copy];
             }
             
             [sequenceInContext.managedObjectContext saveToPersistentStore:nil];
@@ -185,7 +179,7 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
     {
         NSArray *resultObjectsInReverseOrder = [[resultObjects reverseObjectEnumerator] allObjects];
         VConversation *conversation = (VConversation *)[[self.managedObjectStore mainQueueManagedObjectContext] objectWithID:conversationID];
-#warning What about next/prev page?  Look for any other cases of this
+        
         if ( pageType == VPageTypeFirst )
         {
             conversation.messages = [NSOrderedSet orderedSetWithArray:resultObjectsInReverseOrder];
