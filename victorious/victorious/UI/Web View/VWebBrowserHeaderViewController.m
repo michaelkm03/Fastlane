@@ -74,9 +74,9 @@ static const CGFloat kLayoutChangeAnimationSpringVelocity    = 0.1f;
     [self.progressBar setProgressColor:progressColor];
     
     UIColor *tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:tintColorKey];
-    self.view.tintColor = tintColor;
     for ( UIButton *button in @[ self.buttonBack, self.buttonExit, self.buttonOpenURL ])
     {
+        [button setImage:[button.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
         [button setTitleColor:tintColor forState:UIControlStateNormal];
         button.tintColor = tintColor;
     }
