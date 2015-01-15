@@ -141,6 +141,22 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
     XCTAssertEqualObjects(expected, actual);
 }
 
+- (void)testAddedDependencies
+{
+    NSDictionary *added = @{ @"new": @"value" };
+    VTestViewControllerWithNewMethod *value = (VTestViewControllerWithNewMethod *)[self.dependencyManager templateValueOfType:[UIViewController class] forKey:@"nvc" withAddedDependencies:added];
+    XCTAssert([value isKindOfClass:[VTestViewControllerWithNewMethod class]]);
+    XCTAssertEqualObjects([value.dependencyManager stringForKey:@"new"], @"value");
+}
+
+- (void)testAddedDependenciesOnChildManager
+{
+    NSDictionary *added = @{ @"new": @"value" };
+    VTestViewControllerWithNewMethod *value = (VTestViewControllerWithNewMethod *)[self.childDependencyManager templateValueOfType:[UIViewController class] forKey:@"nvc" withAddedDependencies:added];
+    XCTAssert([value isKindOfClass:[VTestViewControllerWithNewMethod class]]);
+    XCTAssertEqualObjects([value.dependencyManager stringForKey:@"new"], @"value");
+}
+
 #pragma mark - VHasManagedDependencies conformance
 
 - (void)testViewControllerWithInitMethod

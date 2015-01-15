@@ -125,6 +125,18 @@ extern NSString * const VDependencyManagerInitialViewControllerKey; ///< The vie
 - (id)templateValueOfType:(Class)expectedType forKey:(NSString *)key;
 
 /**
+ Returns the value stored for the specified key in the configuration
+ dictionary of this instance, if present, or the closest ancestor.
+ 
+ @param expectedType if the value found at keyPath is not this kind
+ of class, we return nil.
+ @param dependencies If the returned object conforms to VHasManagedDependencies,
+ a new instance of VDependencyManager will be provided to it, and these
+ extra dependencies will be added to it.
+ */
+- (id)templateValueOfType:(Class)expectedType forKey:(NSString *)key withAddedDependencies:(NSDictionary *)dependencies;
+
+/**
  Returns a singleton object stored for the specified key in the configuration
  dictionary of this instance, if present, or the closest ancestor.
  
