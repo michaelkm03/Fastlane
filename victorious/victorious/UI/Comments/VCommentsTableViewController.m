@@ -141,6 +141,7 @@
 
 - (void)setComments:(NSArray *)comments
 {
+    
     NSArray *sortedComments = [comments sortedArrayUsingComparator:^NSComparisonResult(VComment *comment1, VComment *comment2)
                                {
                                    return [comment2.postedAt compare:comment1.postedAt];

@@ -58,6 +58,17 @@ NSString * const VDeeplinkManagerInboxMessageNotification = @"VDeeplinkManagerIn
 
 #pragma mark - Navigation
 
+- (NSDictionary *)deepLinkPatterns
+{
+    return @{
+             @"//content/(\\d+)"                : @"handleContentURL:",
+             @"//comment/(\\d+)/(\\d+)"         : @"handleCommentURL:",
+             @"//profile/(\\d+)"                : @"handleProfileURL:",
+             @"//inbox/(\\d+)"                  : @"handleConversationURL:",
+             @"//resetpassword/([a-zA-Z0-9]+)/([a-zA-Z0-9]+)"   : @"handleResetPasswordURL:"
+             };
+}
+
 - (void)performNavigation
 {
     NSString *linkString = [self.url resourceSpecifier];
@@ -100,6 +111,8 @@ NSString * const VDeeplinkManagerInboxMessageNotification = @"VDeeplinkManagerIn
     [self showMissingContentAlert];
 }
 
+#pragma mark Error alerts
+
 - (void)showMissingContentAlert
 {
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Missing Content", nil)
@@ -120,62 +133,19 @@ NSString * const VDeeplinkManagerInboxMessageNotification = @"VDeeplinkManagerIn
     [alert show];
 }
 
-- (NSDictionary *)deepLinkPatterns
-{
-    return @{
-             @"//content/(\\d+)"                : @"handleContentURL:",
-             @"//comment/(\\d+)"                : @"handleCommentURL:",
-             @"//profile/(\\d+)"                : @"handleProfileURL:",
-             @"//inbox/(\\d+)"                  : @"handleConversationURL:",
-             @"//resetpassword/([a-zA-Z0-9]+)/([a-zA-Z0-9]+)"   : @"handleResetPasswordURL:"
-             };
-}
+#pragma mark Pattern Handlers
 
 - (void)handleContentURL:(NSArray *)captures
 {
     NSString *sequenceId = ((NSString *)[captures firstObject]);
-    if (!sequenceId)
+    if ( sequenceId != nil )
+    {
+        [self gotoContentViewWithSequenceId:sequenceId commentId:nil];
+    }
+    else
     {
         [self showMissingContentAlert];
-        return;
     }
-    
-    [[VObjectManager sharedManager] fetchSequenceByID:sequenceId
-                                         successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-     {
-         VSequence *sequence = (VSequence *)[resultObjects firstObject];
-         VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithSequence:sequence];
-         VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel];
-         UINavigationController *contentNav = [[UINavigationController alloc] initWithRootViewController:contentViewController];
-         contentNav.navigationBarHidden = YES;
-
-         UIViewController *homeStream;
-         if ([[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
-         {
-             homeStream = [VMultipleStreamViewController homeStream];
-             contentViewController.delegate = (VMultipleStreamViewController *)homeStream;
-         }
-         else
-         {
-             homeStream = [VStreamCollectionViewController homeStreamCollection];
-             contentViewController.delegate = (VStreamCollectionViewController *)homeStream;
-         }
-         
-         VRootViewController *root = [VRootViewController rootViewController];
-         
-         if ([root.currentViewController isKindOfClass:[VSideMenuViewController class]])
-         {
-             [(VSideMenuViewController *)root.currentViewController transitionToNavStack:@[homeStream]];
-             [homeStream presentViewController:contentNav
-                                      animated:YES
-                                    completion:nil];
-         }
-     }
-                                            failBlock:^(NSOperation *operation, NSError *error)
-     {
-         VLog(@"Failed with error: %@", error);
-         [self showMissingContentAlert];
-     }];
 }
 
 - (void)handleProfileURL:(NSArray *)captures
@@ -243,6 +213,49 @@ NSString * const VDeeplinkManagerInboxMessageNotification = @"VDeeplinkManagerIn
     }
 }
 
+- (void)handleCommentURL:(NSArray *)captures
+{
+    NSString *sequenceId = nil;
+    NSString *commentId = nil;
+    if ( captures.count == 2 )
+    {
+        sequenceId = (NSString *)captures[ 0 ];
+        commentId = (NSString *)captures[ 1 ];
+    }
+    
+    if ( sequenceId != nil && commentId != nil )
+    {
+        [self gotoContentViewWithSequenceId:sequenceId commentId:@(commentId.integerValue)];
+    }
+    else
+    {
+        [self showMissingContentAlert];
+    }
+}
+
+- (void)handleResetPasswordURL:(NSArray *)captures
+{
+    NSString *userToken = ((NSString *)[captures firstObject]);
+    NSString *deviceToken = (NSString *)[captures lastObject];
+    if (!userToken || !deviceToken)
+    {
+        [self showMissingContentAlert];
+        return;
+    }
+    
+    VRootViewController *root = [VRootViewController rootViewController];
+    VEnterResetTokenViewController *enterTokenVC = [VEnterResetTokenViewController enterResetTokenViewController];
+    enterTokenVC.deviceToken = deviceToken;
+    enterTokenVC.userToken = userToken;
+    
+    if ([root.currentViewController isKindOfClass:[VSideMenuViewController class]])
+    {
+        [((VSideMenuViewController *)root.currentViewController).contentViewController pushViewController:enterTokenVC animated:YES];
+    }
+}
+
+#pragma mark - Helpers
+
 - (void)goToConversation:(NSNumber *)conversationId
 {
     [[VObjectManager sharedManager] conversationByID:conversationId
@@ -267,21 +280,17 @@ NSString * const VDeeplinkManagerInboxMessageNotification = @"VDeeplinkManagerIn
      }];
 }
 
-
-- (void)handleCommentURL:(NSArray *)captures
+- (void)gotoContentViewWithSequenceId:(NSString *)sequenceId commentId:(NSNumber *)commentId
 {
-    NSString *sequenceId = ((NSString *)[captures firstObject]);
-    if (!sequenceId)
-    {
-        [self showMissingContentAlert];
-        return;
-    }
+    NSAssert( sequenceId != nil, @"Sequence ID should not be nil and should be checked before calling this helper method." );
+    // (It's okay for comment ID to be nil)
     
     [[VObjectManager sharedManager] fetchSequenceByID:sequenceId
                                          successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
      {
          VSequence *sequence = (VSequence *)[resultObjects firstObject];
          VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithSequence:sequence];
+         contentViewModel.deepLinkCommentId = commentId;
          VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel];
          UINavigationController *contentNav = [[UINavigationController alloc] initWithRootViewController:contentViewController];
          contentNav.navigationBarHidden = YES;
@@ -298,20 +307,11 @@ NSString * const VDeeplinkManagerInboxMessageNotification = @"VDeeplinkManagerIn
              contentViewController.delegate = (VStreamCollectionViewController *)homeStream;
          }
          
-         VCommentsContainerViewController *commentsContainer = [VCommentsContainerViewController commentsContainerView];
-         commentsContainer.sequence = sequence;
-         
          VRootViewController *root = [VRootViewController rootViewController];
-         
          if ([root.currentViewController isKindOfClass:[VSideMenuViewController class]])
          {
              [(VSideMenuViewController *)root.currentViewController transitionToNavStack:@[homeStream]];
-             [homeStream presentViewController:contentNav
-                                      animated:YES
-                                    completion:^
-              {
-                  [contentNav pushViewController:commentsContainer animated:YES];
-              }];
+             [homeStream presentViewController:contentNav animated:YES completion:nil];
          }
      }
                                             failBlock:^(NSOperation *operation, NSError *error)
@@ -319,27 +319,6 @@ NSString * const VDeeplinkManagerInboxMessageNotification = @"VDeeplinkManagerIn
          VLog(@"Failed with error: %@", error);
          [self showMissingContentAlert];
      }];
-}
-
-- (void)handleResetPasswordURL:(NSArray *)captures
-{
-    NSString *userToken = ((NSString *)[captures firstObject]);
-    NSString *deviceToken = (NSString *)[captures lastObject];
-    if (!userToken || !deviceToken)
-    {
-        [self showMissingContentAlert];
-        return;
-    }
-    
-    VRootViewController *root = [VRootViewController rootViewController];
-    VEnterResetTokenViewController *enterTokenVC = [VEnterResetTokenViewController enterResetTokenViewController];
-    enterTokenVC.deviceToken = deviceToken;
-    enterTokenVC.userToken = userToken;
-    
-    if ([root.currentViewController isKindOfClass:[VSideMenuViewController class]])
-    {
-        [((VSideMenuViewController *)root.currentViewController).contentViewController pushViewController:enterTokenVC animated:YES];
-    }
 }
 
 @end

@@ -42,6 +42,7 @@ typedef NS_ENUM( NSUInteger, VPageType )
  property.  This is what tracks the current page in context with the total number of pages
  and allows methods to return a single, specific page of results.
  */
+
 @interface VAbstractFilter (RestKit)
 
 + (NSString *)entityName;

@@ -96,13 +96,17 @@ static BOOL isRunningTests(void) __attribute__((const));
         [[[VDeeplinkManager alloc] initWithURL:[NSURL URLWithString:pushNotificationDeeplink]] performNavigation];
     }
     
+#warning this is for testing, make sur eto remove
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(4.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self application:[UIApplication sharedApplication] didReceiveRemoteNotification:@{ @"deeplink" : @"//comment/11137/4642"}];
+    });
+    
     return YES;
 }
 
 - (void)application:(UIApplication *)app didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
     NSString *pushNotificationDeeplink = userInfo[@"deeplink"];
-    
     if ( pushNotificationDeeplink != nil )
     {
         VDeeplinkManager *deeplinkManager = [[VDeeplinkManager alloc] initWithURL:[NSURL URLWithString:pushNotificationDeeplink]];
@@ -113,7 +117,9 @@ static BOOL isRunningTests(void) __attribute__((const));
         }
         else
         {
-            [deeplinkManager postNotification];
+#warning testing only, uncomment thie postNotification line and remove performNavigation
+            [deeplinkManager performNavigation];
+            // [deeplinkManager postNotification];
         }
     }
 }

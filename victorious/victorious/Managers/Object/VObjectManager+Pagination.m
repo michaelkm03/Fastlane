@@ -32,6 +32,27 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
 #pragma mark - Comment
 
 - (RKManagedObjectRequestOperation *)loadCommentsOnSequence:(VSequence *)sequence
+                                              withCommentId:(NSNumber *)commentId
+                                               successBlock:(VSuccessBlock)success
+                                                  failBlock:(VFailBlock)fail
+{
+    NSString *apiPath = [@"/api/comment/all/" stringByAppendingString: sequence.remoteId];
+    VAbstractFilter *filter = [self.paginationManager filterForPath:apiPath entityName:[VAbstractFilter entityName] managedObjectContext:sequence.managedObjectContext];
+    
+    VSuccessBlock fullSuccessBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    {
+        // If this success block is called, the filter was successfully updated with the target page
+        // number for the comment Id that was supplied.  Now we can load the current page:
+        [self.paginationManager loadFilter:filter withPageType:VPageTypeFirst successBlock:success failBlock:fail];
+    };
+    
+    return [self.paginationManager fetchPageWithPath:@"comment"
+                                              filter:filter
+                                            objectId:commentId
+                                        successBlock:fullSuccessBlock failBlock:fail];
+}
+
+- (RKManagedObjectRequestOperation *)loadCommentsOnSequence:(VSequence *)sequence
                                                    pageType:(VPageType)pageType
                                                successBlock:(VSuccessBlock)success
                                                   failBlock:(VFailBlock)fail
@@ -161,6 +182,7 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
     [context performBlockAndWait:^(void)
     {
         VAbstractFilter *listFilter = [self inboxFilterForCurrentUserFromManagedObjectContext:context];
+        
         requestOperation = [self.paginationManager loadFilter:listFilter withPageType:pageType successBlock:fullSuccessBlock failBlock:fail];
     }];
      
