@@ -55,7 +55,6 @@ NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamColl
     [self removeKVOObservers];
     
     _stream = stream;
-    self.filter = [[VObjectManager sharedManager] filterForStream:stream];
     
     if (stream)
     {
@@ -141,7 +140,9 @@ NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamColl
 
 - (BOOL)isFilterLoading
 {
-    return [[[VObjectManager sharedManager] paginationManager] isLoadingFilter:self.filter];
+    NSManagedObjectContext *context = [[[VObjectManager sharedManager] managedObjectStore] mainQueueManagedObjectContext];
+    VAbstractFilter *filter = [[VObjectManager sharedManager] filterForStream:self.stream managedObjectContext:context];
+    return [[[VObjectManager sharedManager] paginationManager] isLoadingFilter:filter];
 }
 
 - (NSInteger)sectionIndexForContent

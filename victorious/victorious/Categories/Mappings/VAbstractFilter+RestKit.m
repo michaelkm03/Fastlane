@@ -15,4 +15,26 @@
     return @"AbstractFilter";
 }
 
+- (BOOL)canLoadPageType:(VPageType)pageType
+{
+    // Validate page number (they are NOT zero-indexed)
+    return self.currentPageNumber > 0 && self.currentPageNumber <= self.maxPageNumber;
+}
+
+- (NSUInteger)pageNumberForPageType:(VPageType)pageType
+{
+    switch ( pageType )
+    {
+        case VPageTypeNext:
+            return self.currentPageNumber.integerValue + 1;
+            
+        case VPageTypePrevious:
+            return self.currentPageNumber.integerValue - 1;
+            
+        case VPageTypeFirst:
+        default:
+            return 1;
+    }
+}
+
 @end

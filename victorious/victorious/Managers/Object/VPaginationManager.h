@@ -40,7 +40,9 @@
  */
 - (VAbstractFilter *)filterForPath:(NSString *)path entityName:(NSString *)entityName managedObjectContext:(NSManagedObjectContext *)context;
 
-
+/**
+ Use a filter and page type to load a paginated request.
+ */
 - (RKManagedObjectRequestOperation *)loadFilter:(VAbstractFilter *)filter
                                    withPageType:(VPageType)pageType
                                    successBlock:(VSuccessBlock)success

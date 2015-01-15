@@ -46,4 +46,14 @@ typedef NS_ENUM( NSUInteger, VPageType )
 
 + (NSString *)entityName;
 
+/**
+ Checks if the page type can be loaded, i.e. a page exists for the type of page supplied.
+ */
+- (BOOL)canLoadPageType:(VPageType)pageType;
+
+/**
+ Uses pageType provided to calculate related page number.
+ */
+- (NSUInteger)pageNumberForPageType:(VPageType)pageType;
+
 @end

@@ -184,11 +184,9 @@ const CGFloat kVLoadNextPagePoint = .75f;
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    CGFloat scrollThreshold = scrollView.contentSize.height * kVLoadNextPagePoint;
-    if (self.streamDataSource.filter.currentPageNumber.intValue < self.streamDataSource.filter.maxPageNumber.intValue &&
-        self.streamDataSource.count &&
-        ![self.streamDataSource isFilterLoading] &&
-        scrollView.contentOffset.y + CGRectGetHeight(scrollView.bounds) > scrollThreshold)
+    const CGFloat scrollThreshold = scrollView.contentSize.height * kVLoadNextPagePoint;
+    const BOOL isAcrossThreshold = scrollView.contentOffset.y + CGRectGetHeight(scrollView.bounds) > scrollThreshold;
+    if ( self.streamDataSource.count && ![self.streamDataSource isFilterLoading] && isAcrossThreshold )
     {
         [self loadNextPageAction];
     }

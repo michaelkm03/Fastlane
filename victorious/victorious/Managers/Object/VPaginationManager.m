@@ -40,47 +40,7 @@
                                    successBlock:(VSuccessBlock)success
                                       failBlock:(VFailBlock)fail
 {
-    const NSUInteger targetPageNumber = ^NSUInteger (VPageType pageType)
-    {
-        switch ( pageType )
-        {
-            case VPageTypeNext:
-                return filter.currentPageNumber.integerValue + 1;
-                
-            case VPageTypePrevious:
-                return filter.currentPageNumber.integerValue - 1;
-                
-            case VPageTypeFirst:
-            default:
-                return 1;
-        }
-    }( pageType );
-    
-    if ( [self isLoadingFilter:filter] )
-    {
-        // If we're already in the process of loading this filter, fail this repeated loading call
-        if ( fail != nil )
-        {
-            fail(nil, nil);
-        }
-        return nil;
-    }
-    else
-    {
-        return [self loadPage:targetPageNumber
-                     ofFilter:filter
-                 successBlock:success
-                    failBlock:fail];
-    }
-}
-
-- (RKManagedObjectRequestOperation *)loadPage:(NSInteger)pageNumber
-                                     ofFilter:(VAbstractFilter *)filter
-                                 successBlock:(VSuccessBlock)success
-                                    failBlock:(VFailBlock)fail
-{
-    // Validate page number (they are NOT zero-indexed)
-    if ( pageNumber > filter.maxPageNumber.integerValue || pageNumber <= 0 )
+    if ( ![filter canLoadPageType:pageType] || [self isLoadingFilter:filter] )
     {
         if ( fail != nil )
         {
@@ -120,6 +80,7 @@
     
     [self startLoadingFilter:filter];
     
+    const NSUInteger pageNumber = [filter pageNumberForPageType:pageType];
     NSString *path = [filter.filterAPIPath stringByAppendingFormat:@"/%ld/%ld", (long)pageNumber, (long)filter.perPageNumber.integerValue];
     return [self.objectManager GET:path object:nil parameters:nil successBlock:fullSuccess failBlock:fullFail];
 }

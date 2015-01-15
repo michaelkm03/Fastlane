@@ -260,11 +260,6 @@ static       char    kKVOContext;
     }];
 }
 
-- (BOOL)isLoading
-{
-    return _isLoading || [self.objectManager.paginationManager isLoadingFilter:self.conversation];
-}
-
 - (BOOL)areMorePagesAvailable
 {
     return self.conversation &&
