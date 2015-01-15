@@ -108,7 +108,11 @@
 
 //    VWorkspaceViewController *workspace = [[VWorkspaceViewController alloc] initWithDependencyManager:dependencyManager];
     workspaceViewController.mediaURL = [asset.data mp4UrlFromM3U8];
-    
+    workspaceViewController.completionBlock = ^void(BOOL finished, UIImage *previewImage)
+    {
+        [viewController dismissViewControllerAnimated:YES
+                                           completion:nil];
+    };
 //    UIViewController *remixVC = [VRemixSelectViewController remixViewControllerWithURL:[asset.data mp4UrlFromM3U8]
 //                                                                            sequenceID:[sequence.remoteId integerValue]
 //                                                                                nodeID:node.remoteId.integerValue];

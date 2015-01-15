@@ -136,6 +136,24 @@ static NSString * const kVideoMuted = @"videoMuted";
     }
 }
 
+#pragma mark - VVideoTool
+
+- (void)exportToURL:(NSURL *)url
+     withCompletion:(void (^)(BOOL finished, UIImage *previewImage))completion
+{
+    AVAssetExportSession *exportSession = [self.frameRateController makeExportable];
+    exportSession.outputURL = url;
+    exportSession.timeRange = self.trimViewController.selectedTimeRange;
+    exportSession.outputFileType = AVFileTypeQuickTimeMovie;
+    [exportSession exportAsynchronouslyWithCompletionHandler:^
+    {
+        if (completion)
+        {
+            completion(YES, nil);
+        }
+    }];
+}
+
 #pragma mark - VWorkspaceTool
 
 - (UIViewController *)inspectorToolViewController

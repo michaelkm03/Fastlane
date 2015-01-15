@@ -63,7 +63,7 @@
 - (AVAssetExportSession *)makeExportable
 {
     AVAssetExportSession *exportSession = [AVAssetExportSession exportSessionWithAsset:[self.mutableComposition copy]
-                                                                            presetName:AVAssetExportPresetHighestQuality];
+                                                                            presetName:AVAssetExportPresetLowQuality];
     exportSession.videoComposition = [self videoComposition];
     
     return exportSession;

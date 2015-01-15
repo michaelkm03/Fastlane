@@ -28,6 +28,9 @@
 #warning Move me out of here to the flow controller
 #import "VPublishBlurOverAnimator.h"
 
+#warning just for testing
+#import "VObjectManager+ContentCreation.h"
+
 #import "VVideoWorkspaceTool.h"
 #import "VVideoPlayerView.h"
 
@@ -206,24 +209,65 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^
     {
-        NSDate *tick = [NSDate date];
-        UIImage *renderedImage = [self renderedImageForCurrentState];
-        NSDate *tock = [NSDate date];
-        VLog(@"Render time: %@", @([tock timeIntervalSinceDate:tick]));
-        
-        NSData *filteredImageData = UIImageJPEGRepresentation(renderedImage, kJPEGCompressionQuality);
-        NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
-        NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:VConstantMediaExtensionJPG];
-        if ([filteredImageData writeToURL:tempFile atomically:NO])
+        UIImage *renderedImagePreview;
+        if (self.playerView)
         {
-            self.renderedMediaURL = tempFile;
+            NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
+            NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:VConstantMediaExtensionMP4];
+            [(id <VVideoWorkspaceTool>)self.selectedTool exportToURL:tempFile
+                                                      withCompletion:^(BOOL finished, UIImage *previewImage)
+             {
+                 self.renderedMediaURL = tempFile;
+                 
+                 [[VObjectManager sharedManager] uploadMediaWithName:[[NSUUID UUID] UUIDString]
+                                                         description:nil
+                                                        previewImage:nil
+                                                         captionType:VCaptionTypeQuote
+                                                           expiresAt:nil
+                                                    parentSequenceId:nil
+                                                        parentNodeId:nil
+                                                               speed:1.0f
+                                                            loopType:VLoopRepeat
+                                                            mediaURL:self.renderedMediaURL
+                                                       facebookShare:NO
+                                                        twitterShare:NO
+                                                          completion:^(NSURLResponse *response, NSData *responseData, NSDictionary *jsonResponse, NSError *error)
+                  {
+                      dispatch_async(dispatch_get_main_queue(), ^
+                                     {
+                                         [MBProgressHUD hideHUDForView:self.view
+                                                              animated:YES];
+                                         if (self.completionBlock)
+                                         {
+                                             self.completionBlock(YES, nil);
+                                         }
+                                     });
+                  }];
+                 
+             }];
         }
-        dispatch_async(dispatch_get_main_queue(), ^
-                       {
-                           [MBProgressHUD hideHUDForView:self.view
-                                                animated:YES];
-                           self.completionBlock(YES, renderedImage);
-                       });
+        else
+        {
+            NSDate *tick = [NSDate date];
+            UIImage *renderedImage = [self renderedImageForCurrentState];
+            renderedImagePreview = renderedImage;
+            NSDate *tock = [NSDate date];
+            VLog(@"Render time: %@", @([tock timeIntervalSinceDate:tick]));
+            
+            NSData *filteredImageData = UIImageJPEGRepresentation(renderedImage, kJPEGCompressionQuality);
+            NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
+            NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:VConstantMediaExtensionJPG];
+            if ([filteredImageData writeToURL:tempFile atomically:NO])
+            {
+                self.renderedMediaURL = tempFile;
+            }
+            dispatch_async(dispatch_get_main_queue(), ^
+                           {
+                               [MBProgressHUD hideHUDForView:self.view
+                                                    animated:YES];
+                               self.completionBlock(YES, renderedImagePreview);
+                           });
+        }
     });
 }
 

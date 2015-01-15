@@ -14,6 +14,9 @@
 
 @optional
 
+- (void)exportToURL:(NSURL *)url
+     withCompletion:(void (^)(BOOL finished, UIImage *previewImage))completion;
+
 @property (nonatomic, copy) NSURL *mediaURL;
 
 @property (nonatomic, weak) VVideoPlayerView *playerView;
