@@ -13,6 +13,7 @@
 #import "VLoadingViewController.h"
 #import "VObjectManager.h"
 #import "VRootViewController.h"
+#import "VScaffoldViewController.h"
 #import "VSessionTimer.h"
 #import "VConstants.h"
 #import "VTemplateGenerator.h"
@@ -148,7 +149,7 @@ static const NSTimeInterval kAnimationDuration = 0.2;
                                                                  configuration:[templateGenerator configurationDict]
                                              dictionaryOfClassesByTemplateName:nil];
     
-    UIViewController *scaffold = [self.dependencyManager viewControllerForKey:VDependencyManagerScaffoldViewControllerKey];
+    UIViewController *scaffold = [self.dependencyManager scaffoldViewController];
     [self showViewController:scaffold animated:YES];
 }
 

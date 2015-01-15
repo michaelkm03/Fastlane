@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "VScaffoldViewController.h"
 #import "VStreamCollectionViewController.h"
-
 #import "VStreamCollectionViewDataSource.h"
 #import "VStreamCollectionCell.h"
 #import "VStreamCollectionCellPoll.h"
@@ -63,7 +63,7 @@ static NSString * const kCanAddContentKey = @"canAddContent";
 static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
 static CGFloat const kTemplateCLineSpacing = 8;
 
-@interface VStreamCollectionViewController () <VNavigationHeaderDelegate, VNewContentViewControllerDelegate, VMarqueeDelegate, VSequenceActionsDelegate, VUploadProgressViewControllerDelegate>
+@interface VStreamCollectionViewController () <VNavigationHeaderDelegate, VMarqueeDelegate, VSequenceActionsDelegate, VUploadProgressViewControllerDelegate>
 
 @property (strong, nonatomic) VStreamCollectionViewDataSource *directoryDataSource;
 @property (strong, nonatomic) NSIndexPath *lastSelectedIndexPath;
@@ -481,34 +481,6 @@ static CGFloat const kTemplateCLineSpacing = 8;
     [self showContentViewForSequence:sequence withPreviewImage:previewImageView.image];
 }
 
-- (void)showContentViewWithSequence:(VSequence *)sequence placeHolderImage:(UIImage *)placeHolderImage
-{
-    VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithSequence:sequence];
-    VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel];
-    contentViewController.dependencyManagerForHistogramExperiment = self.dependencyManager;
-    contentViewController.placeholderImage = placeHolderImage;
-    contentViewController.delegate = self;
-    
-    UINavigationController *contentNav = [[UINavigationController alloc] initWithRootViewController:contentViewController];
-    contentNav.navigationBarHidden = YES;
-    [self presentViewController:contentNav animated:YES completion:nil];
-}
-
-- (void)showWebContentWithSequence:(VSequence *)sequence
-{
-    VWebBrowserViewController *viewController = [VWebBrowserViewController instantiateFromStoryboard];
-    viewController.sequence = sequence;
-    [self presentViewController:viewController
-                       animated:YES
-                     completion:^{
-                         // Track view-start event, similar to how content is tracking in VNewContentViewController when loaded
-                         NSDictionary *params = @{ VTrackingKeyTimeCurrent : [NSDate date],
-                                                   VTrackingKeySequenceId : sequence.remoteId,
-                                                   VTrackingKeyUrls : sequence.tracking.viewStart ?: @[] };
-                         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
-                     }];
-}
-
 - (CGSize)collectionView:(UICollectionView *)collectionView
                   layout:(UICollectionViewLayout *)collectionViewLayout
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -742,25 +714,13 @@ static CGFloat const kTemplateCLineSpacing = 8;
 
 - (void)showContentViewForSequence:(VSequence *)sequence withPreviewImage:(UIImage *)previewImage
 {
-    //Every time we go to the content view, update the sequence
-    [[VObjectManager sharedManager] fetchSequenceByID:sequence.remoteId
-                                         successBlock:nil
-                                            failBlock:nil];
-    
     NSDictionary *params = @{ VTrackingKeySequenceId : sequence.remoteId,
                               VTrackingKeyStreamId : self.currentStream.remoteId,
                               VTrackingKeyTimeStamp : [NSDate date],
                               VTrackingKeyUrls : sequence.tracking.cellClick };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventSequenceSelected parameters:params];
     
-    if ( [sequence isWebContent] )
-    {
-        [self showWebContentWithSequence:sequence];
-    }
-    else
-    {
-        [self showContentViewWithSequence:sequence placeHolderImage:previewImage];
-    }
+    [[self.dependencyManager scaffoldViewController] showContentViewWithSequence:sequence placeHolderImage:previewImage];
 }
 
 #pragma mark - Hashtag Button Actions
@@ -864,26 +824,6 @@ static CGFloat const kTemplateCLineSpacing = 8;
     // Fire NSNotification to signal change in the status of this hashtag
     [[NSNotificationCenter defaultCenter] postNotificationName:kHashtagStatusChangedNotification
                                                         object:nil];
-}
-
-#pragma mark - VNewContentViewControllerDelegate
-
-- (void)newContentViewControllerDidClose:(VNewContentViewController *)contentViewController
-{
-    if ( self.lastSelectedIndexPath != nil )
-    {
-        [self.collectionView reloadItemsAtIndexPaths:@[self.lastSelectedIndexPath]];
-        self.lastSelectedIndexPath = nil;
-    }
-    [self dismissViewControllerAnimated:YES
-                             completion:nil];
-}
-
-- (void)newContentViewControllerDidDeleteContent:(VNewContentViewController *)contentViewController
-{
-    [self refresh:self.refreshControl];
-    [self dismissViewControllerAnimated:YES
-                             completion:nil];
 }
 
 #pragma mark - Notifications
