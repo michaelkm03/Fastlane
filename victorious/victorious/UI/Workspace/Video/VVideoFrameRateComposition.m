@@ -36,6 +36,9 @@
 
         _asset = [AVURLAsset URLAssetWithURL:videoURL
                                          options:@{AVURLAssetPreferPreciseDurationAndTimingKey:@YES}];
+        
+        _mutableComposition = [AVMutableComposition composition];
+        
         [_asset loadValuesAsynchronouslyForKeys:@[NSStringFromSelector(@selector(duration)),
                                                   NSStringFromSelector(@selector(tracks))]
                               completionHandler:^
@@ -48,14 +51,16 @@
              AVPlayerItem *playerItem = [AVPlayerItem playerItemWithAsset:[self.mutableComposition copy]];
              playerItem.seekingWaitsForVideoCompositionRendering = YES;
              playerItem.videoComposition = [self videoComposition];
+             if (self.muteAudio)
+             {
+                 playerItem.audioMix = [self mutedAudioMixWithTrack:[self audioTrack]];
+             }
              
              if (self.playerItemReady)
              {
                  self.playerItemReady(playerItem);
              }
          }];
-        
-        _mutableComposition = [AVMutableComposition composition];
     }
     return self;
 }
@@ -63,8 +68,13 @@
 - (AVAssetExportSession *)makeExportable
 {
     AVAssetExportSession *exportSession = [AVAssetExportSession exportSessionWithAsset:[self.mutableComposition copy]
-                                                                            presetName:AVAssetExportPresetLowQuality];
+                                                                            presetName:AVAssetExportPresetHighestQuality];
     exportSession.videoComposition = [self videoComposition];
+    
+    if (self.muteAudio)
+    {
+        exportSession.audioMix = [self mutedAudioMixWithTrack:[self audioTrack]];
+    }
     
     return exportSession;
 }
@@ -78,6 +88,33 @@
     videoComposition.frameDuration = self.frameDuration;
     
     return [videoComposition copy];
+}
+
+- (AVAssetTrack *)audioTrack
+{
+    for (AVAssetTrack *track in self.mutableComposition.tracks)
+    {
+        if ([track.mediaType isEqualToString:AVMediaTypeAudio])
+        {
+            return track;
+        }
+    }
+    return nil;
+}
+
+- (AVAudioMix *)mutedAudioMixWithTrack:(AVAssetTrack *)track
+{
+    if (track == nil)
+    {
+        return nil;
+    }
+    
+    AVMutableAudioMixInputParameters *mixParameters = [AVMutableAudioMixInputParameters audioMixInputParametersWithTrack:track];
+    [mixParameters setVolume:0.0f
+                      atTime:kCMTimeZero];
+    AVMutableAudioMix *mix = [AVMutableAudioMix audioMix];
+    mix.inputParameters = @[mixParameters];
+    return mix;
 }
 
 @end
