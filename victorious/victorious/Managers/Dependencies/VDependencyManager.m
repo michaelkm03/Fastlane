@@ -372,11 +372,16 @@ NSString * const VDependencyManagerInitialViewControllerKey = @"initialScreen";
 
 - (id)templateValueOfType:(Class)expectedType forKey:(NSString *)keyPath
 {
+    return [self templateValueOfType:expectedType forKey:keyPath withAddedDependencies:nil];
+}
+
+- (id)templateValueOfType:(Class)expectedType forKey:(NSString *)keyPath withAddedDependencies:(NSDictionary *)dependencies
+{
     id value = [self.configuration valueForKeyPath:keyPath];
     
     if (value == nil)
     {
-        return [self.parentManager templateValueOfType:expectedType forKey:keyPath];
+        return [self.parentManager templateValueOfType:expectedType forKey:keyPath withAddedDependencies:dependencies];
     }
     
     if ([value isKindOfClass:[NSDictionary class]] && value[kReferenceIDKey] != nil)
@@ -390,7 +395,14 @@ NSString * const VDependencyManagerInitialViewControllerKey = @"initialScreen";
     }
     else if ([value isKindOfClass:[NSDictionary class]])
     {
-        return [self objectOfType:expectedType fromDictionary:value];
+        NSDictionary *configurationDictionary = value;
+        if ( dependencies != nil )
+        {
+            NSMutableDictionary *configurationDictionaryWithAddedDependencies = [configurationDictionary mutableCopy];
+            [configurationDictionaryWithAddedDependencies addEntriesFromDictionary:dependencies];
+            configurationDictionary = [configurationDictionaryWithAddedDependencies copy];
+        }
+        return [self objectOfType:expectedType fromDictionary:configurationDictionary];
     }
     
     return nil;
