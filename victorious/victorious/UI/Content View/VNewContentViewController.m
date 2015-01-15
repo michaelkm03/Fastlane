@@ -80,9 +80,9 @@
 
 static const CGFloat kMaxInputBarHeight = 200.0f;
 
-// How much space before the reaching maximum or minimum scroll position
+// How much space relative to the view's bounds before the reaching maximum or minimum scroll position
 // before reloading another page of comments should begin,
-static const CGFloat kVPaginationLoadTriggerMargin = 50.0f;
+static const CGFloat kVPaginationLoadTriggerMultiplier = 0.2f;
 
 @interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate,VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate>
 
@@ -188,7 +188,7 @@ static const CGFloat kVPaginationLoadTriggerMargin = 50.0f;
 
 - (void)didUpdateHistogramData
 {
-    if (!self.viewModel.histogramDataSource)
+    if ( self.viewModel.histogramDataSource == nil )
     {
         return;
     }
@@ -1072,14 +1072,16 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     if ( hasComments )
     {
         const CGFloat visibleHeight = CGRectGetHeight(scrollView.frame) - scrollView.contentInset.bottom;
-        const CGFloat maxContentOffset = scrollView.contentSize.height - visibleHeight;
+        const CGFloat maxContentOffset = scrollView.contentSize.height - visibleHeight - visibleHeight;
+        const CGFloat minContentOffset = visibleHeight;
         const CGFloat scrollPositionY = scrollView.contentOffset.y;
+        const CGFloat margin = visibleHeight * kVPaginationLoadTriggerMultiplier;
         
-        if ( scrollPositionY >= maxContentOffset - kVPaginationLoadTriggerMargin )
+        if ( scrollPositionY >= maxContentOffset - margin )
         {
             [self.viewModel attemptToLoadNextPageOfComments];
         }
-        else if ( scrollPositionY < visibleHeight + kVPaginationLoadTriggerMargin )
+        else if ( scrollPositionY < minContentOffset + margin )
         {
             // TODO: Load previous page (when pagination supports this)
         }
