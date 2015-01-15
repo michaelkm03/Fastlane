@@ -42,7 +42,7 @@ extern NSString * const VDependencyManagerScaffoldViewControllerKey; ///< The "s
 extern NSString * const VDependencyManagerInitialViewControllerKey; ///< The view controller to be displayed on launch
 
 // Keys for Workspace
-extern NSString * const VDependencyManagerWorkspaceKey;
+extern NSString * const VDependencyManagerImageWorkspaceKey;
 extern NSString * const VDependencyManagerVideoWorkspaceKey;
 
 /**

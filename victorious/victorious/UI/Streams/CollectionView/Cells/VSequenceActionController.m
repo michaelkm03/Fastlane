@@ -97,7 +97,7 @@
     if (isImage)
     {
         // Image
-        workspaceViewController  = (VWorkspaceViewController *)[dependencyManager viewControllerForKey:VDependencyManagerWorkspaceKey];
+        workspaceViewController  = (VWorkspaceViewController *)[dependencyManager viewControllerForKey:VDependencyManagerImageWorkspaceKey];
     }
     else if (isVideo)
     {

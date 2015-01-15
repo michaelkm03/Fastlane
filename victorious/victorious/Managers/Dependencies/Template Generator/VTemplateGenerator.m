@@ -101,7 +101,7 @@ static NSString * const kVideoMuted = @"videoMuted";
     template[VDependencyManagerScaffoldViewControllerKey] = @{ kClassNameKey: @"sideMenu.scaffold",
                                                                VDependencyManagerInitialViewControllerKey: @{ kReferenceIDKey: self.firstMenuItemID },
                                                                kMenuKey: [self menuComponent],
-                                                               VDependencyManagerWorkspaceKey: [self workspaceComponent],
+                                                               VDependencyManagerImageWorkspaceKey: [self imageWorkspaceComponent],
                                                                VDependencyManagerVideoWorkspaceKey: [self videoWorkspaceComponent]};
     
     return template;
@@ -137,7 +137,7 @@ static NSString * const kVideoMuted = @"videoMuted";
              };
 }
 
-- (NSDictionary *)workspaceComponent
+- (NSDictionary *)imageWorkspaceComponent
 {
     return @{
              kClassNameKey: @"workspace.screen",
