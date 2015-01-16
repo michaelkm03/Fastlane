@@ -287,19 +287,19 @@ static const NSInteger kResetPurchasesButtonIndex = 5;
         // The style is removed then re-applied so the mail compose view controller has the default appearance
         [[VThemeManager sharedThemeManager] removeStyling];
         
-        NSString *appName = [[VThemeManager sharedThemeManager] themedStringForKey:kVChannelName];
+        NSString *appName = [[VThemeManager sharedThemeManager] themedStringForKey:kVCreatorName];
         
         MFMailComposeViewController    *mailComposer = [[MFMailComposeViewController alloc] init];
         mailComposer.mailComposeDelegate = self;
         
-        NSString *msgBody = [NSString stringWithFormat:@"%@\n\n-------------------------\n%@",
+        NSString *msgBody = [NSString stringWithFormat:@"%@\n\n-------------------------\n%@\n%@",
                              NSLocalizedString(@"Type your feedback here...", @""),
-                             [self deviceInfo]];
+                             [self deviceInfo], appName];
         NSString *subjString = NSLocalizedString(@"SupportEmailSubject", @"Feedback / Help");
         NSString *msgSubj = [NSString stringWithFormat:@"%@ %@", subjString,[appName capitalizedString]];
         
         [mailComposer setSubject:msgSubj];
-        [mailComposer setToRecipients:@[[[VThemeManager sharedThemeManager] themedStringForKey:kVChannelURLSupport]]];
+        [mailComposer setToRecipients:@[[[VThemeManager sharedThemeManager] themedStringForKey:kVSupportEmail]]];
         [mailComposer setMessageBody:msgBody isHTML:NO];
         
         //  Dismiss the menu controller first, since we want to be a child of the root controller

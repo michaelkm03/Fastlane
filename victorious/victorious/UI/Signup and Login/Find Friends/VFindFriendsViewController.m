@@ -217,7 +217,7 @@
         // The style is removed then re-applied so the mail compose view controller has the default appearance
         [[VThemeManager sharedThemeManager] removeStyling];
         
-        NSString *appName = [[VThemeManager sharedThemeManager] themedStringForKey:kVChannelName];
+        NSString *appName = [[VThemeManager sharedThemeManager] themedStringForKey:kVCreatorName];
         NSString *msgSubj = [NSLocalizedString(@"InviteFriendsSubject", @"") stringByReplacingOccurrencesOfString:@"%@" withString:appName];
         
         NSString *bodyString = NSLocalizedString(@"InviteFriendsBody", @"");
@@ -241,7 +241,7 @@
         // The style is removed then re-applied so the mail compose view controller has the default appearance
         [[VThemeManager sharedThemeManager] removeStyling];
         
-        NSString *appName = [[VThemeManager sharedThemeManager] themedStringForKey:kVChannelName];
+        NSString *appName = [[VThemeManager sharedThemeManager] themedStringForKey:kVCreatorName];
         NSString *msgSubj = [NSLocalizedString(@"InviteFriendsSubject", @"") stringByReplacingOccurrencesOfString:@"%@" withString:appName];
         
         NSString *bodyString = NSLocalizedString(@"InviteFriendsBody", @"");
