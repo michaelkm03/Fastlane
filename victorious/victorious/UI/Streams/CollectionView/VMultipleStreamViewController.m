@@ -227,13 +227,12 @@ static NSString * const kVMultiStreamStoryboardID = @"kMultiStream";
 
 - (void)willRemixSequence:(VSequence *)sequence fromView:(UIView *)view
 {
+#warning implement me!!!
     if ([sequence isVideo])
     {
-//        [self.sequenceActionController videoRemixActionFromViewController:self asset:[sequence firstNode].assets.firstObject node:[sequence firstNode] sequence:sequence withDependencyManager:self.];
     }
     else
     {
-        [self.sequenceActionController imageRemixActionFromViewController:self previewImage:nil sequence: sequence];
     }
 }
 

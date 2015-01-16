@@ -16,6 +16,9 @@
 #import <MBProgressHUD/MBProgressHUD.h>
 #import "UIImageView+Blurring.h"
 
+// Keyboard
+#import "VKeyboardManager.h"
+
 // Protocols
 #import "VWorkspaceTool.h"
 
@@ -55,6 +58,8 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
 @property (nonatomic, strong) UIViewController *inspectorToolViewController;
 
 @property (nonatomic, strong) VVideoPlayerView *playerView;
+
+@property (nonatomic, strong) VKeyboardManager *keyboardManager;
 
 @end
 
@@ -166,28 +171,79 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
                                                                                 metrics:nil
                                                                                   views:@{@"playerView":self.playerView}]];
     }
+    
+    __weak typeof(self) welf = self;
+    self.keyboardManager = [[VKeyboardManager alloc] initWithKeyboardWillShowBlock:^(CGRect keyboardFrameBegin, CGRect keyboardFrameEnd, NSTimeInterval animationDuration, UIViewAnimationCurve animationCurve)
+    {
+        CGRect keyboardEndFrame = [welf.view convertRect:keyboardFrameEnd
+                                                fromView:nil];
+        CGRect overlap = CGRectIntersection(welf.canvasView.frame, keyboardEndFrame);
+        
+        // We don't want the inspector to move here
+        CGRect inspectorFrame = welf.inspectorToolViewController.view.frame;
+        [welf.inspectorConstraints enumerateObjectsUsingBlock:^(NSLayoutConstraint *constraint, NSUInteger idx, BOOL *stop)
+         {
+             [welf.view removeConstraint:constraint];
+         }];
+        
+        void (^animations)() = ^()
+        {
+            welf.verticalSpaceCanvasToTopOfContainerConstraint.constant = -CGRectGetHeight(overlap) + CGRectGetHeight(welf.topToolbar.frame);
+            welf.inspectorToolViewController.view.translatesAutoresizingMaskIntoConstraints = YES;
+            welf.inspectorToolViewController.view.frame = inspectorFrame;
+            [welf.topToolbar.items enumerateObjectsUsingBlock:^(UIBarButtonItem *item, NSUInteger idx, BOOL *stop)
+            {
+                [item setEnabled:NO];
+            }];
+            [welf.view layoutIfNeeded];
+        };
+        
+        [UIView animateWithDuration:animationDuration
+                              delay:0.0
+                            options:(animationCurve << 16)
+                         animations:animations
+                         completion:nil];
+    }
+                                                                     willHideBlock:^(CGRect keyboardFrameBegin, CGRect keyboardFrameEnd, NSTimeInterval animationDuration, UIViewAnimationCurve animationCurve)
+    {
+        // Undo removing inspector constraints we did in willShowBlock
+        welf.inspectorToolViewController.view.translatesAutoresizingMaskIntoConstraints = NO;
+        [welf.inspectorConstraints enumerateObjectsUsingBlock:^(NSLayoutConstraint *constraint, NSUInteger idx, BOOL *stop)
+         {
+             [welf.view addConstraint:constraint];
+         }];
+        
+        void (^animations)() = ^()
+        {
+            welf.verticalSpaceCanvasToTopOfContainerConstraint.constant = CGRectGetHeight(welf.topToolbar.frame);
+            [welf.view layoutIfNeeded];
+            [welf.topToolbar.items enumerateObjectsUsingBlock:^(UIBarButtonItem *item, NSUInteger idx, BOOL *stop)
+            {
+                [item setEnabled:YES];
+            }];
+        };
+        
+        [UIView animateWithDuration:animationDuration
+                              delay:0.0
+                            options:(animationCurve << 16)
+                         animations:animations
+                         completion:nil];
+    }
+                                                              willChangeFrameBlock:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillShow:)
-                                                 name:UIKeyboardWillShowNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillHide:)
-                                                 name:UIKeyboardWillHideNotification
-                                               object:nil];
+    self.keyboardManager.stopCallingHandlerBlocks = NO;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+    self.keyboardManager.stopCallingHandlerBlocks = YES;
 }
 
 #pragma mark - Target/Action
@@ -347,81 +403,6 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
     }
  
    _selectedTool = selectedTool;
-}
-
-#pragma mark - Notification Handlers
-
-- (void)keyboardWillShow:(NSNotification *)notification
-{
-    NSDictionary *userInfo = notification.userInfo;
-    
-    NSValue *endFrameValue = userInfo[UIKeyboardFrameEndUserInfoKey];
-    CGRect keyboardEndFrame = [self.view convertRect:endFrameValue.CGRectValue fromView:nil];
-    
-    CGRect overlap = CGRectIntersection(self.canvasView.frame, keyboardEndFrame);
-    
-    NSNumber *durationValue = userInfo[UIKeyboardAnimationDurationUserInfoKey];
-    NSTimeInterval animationDuration = durationValue.doubleValue;
-    
-    NSNumber *curveValue = userInfo[UIKeyboardAnimationCurveUserInfoKey];
-    UIViewAnimationCurve animationCurve = curveValue.intValue;
-    
-    // We don't want the inspector to move here
-    CGRect inspectorFrame = self.inspectorToolViewController.view.frame;
-    [self.inspectorConstraints enumerateObjectsUsingBlock:^(NSLayoutConstraint *constraint, NSUInteger idx, BOOL *stop)
-    {
-        [self.view removeConstraint:constraint];
-    }];
-    
-    void (^animations)() = ^()
-    {
-        self.verticalSpaceCanvasToTopOfContainerConstraint.constant = -CGRectGetHeight(overlap) + CGRectGetHeight(self.topToolbar.frame);
-        self.inspectorToolViewController.view.translatesAutoresizingMaskIntoConstraints = YES;
-        self.inspectorToolViewController.view.frame = inspectorFrame;
-        [self.topToolbar.items enumerateObjectsUsingBlock:^(UIBarButtonItem *item, NSUInteger idx, BOOL *stop) {
-            [item setEnabled:NO];
-        }];
-        [self.view layoutIfNeeded];
-    };
-    
-    [UIView animateWithDuration:animationDuration
-                          delay:0.0
-                        options:(animationCurve << 16)
-                     animations:animations
-                     completion:nil];
-}
-
-- (void)keyboardWillHide:(NSNotification *)notification
-{
-    NSDictionary *userInfo = notification.userInfo;
-    
-    NSNumber *durationValue = userInfo[UIKeyboardAnimationDurationUserInfoKey];
-    NSTimeInterval animationDuration = durationValue.doubleValue;
-    
-    NSNumber *curveValue = userInfo[UIKeyboardAnimationCurveUserInfoKey];
-    UIViewAnimationCurve animationCurve = curveValue.intValue;
-    
-    // Undo what we did in keyboardWillShow:
-    self.inspectorToolViewController.view.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.inspectorConstraints enumerateObjectsUsingBlock:^(NSLayoutConstraint *constraint, NSUInteger idx, BOOL *stop)
-     {
-         [self.view addConstraint:constraint];
-     }];
-    
-    void (^animations)() = ^()
-    {
-        self.verticalSpaceCanvasToTopOfContainerConstraint.constant = CGRectGetHeight(self.topToolbar.frame);
-        [self.view layoutIfNeeded];
-        [self.topToolbar.items enumerateObjectsUsingBlock:^(UIBarButtonItem *item, NSUInteger idx, BOOL *stop) {
-            [item setEnabled:YES];
-        }];
-    };
-    
-    [UIView animateWithDuration:animationDuration
-                          delay:0.0
-                        options:(animationCurve << 16)
-                     animations:animations
-                     completion:nil];
 }
 
 #pragma mark - Private Methods
