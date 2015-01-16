@@ -101,10 +101,19 @@ static NSString * const kVideoMuted = @"videoMuted";
     template[VDependencyManagerScaffoldViewControllerKey] = @{ kClassNameKey: @"sideMenu.scaffold",
                                                                VDependencyManagerInitialViewControllerKey: @{ kReferenceIDKey: self.firstMenuItemID },
                                                                kMenuKey: [self menuComponent],
-                                                               VDependencyManagerImageWorkspaceKey: [self imageWorkspaceComponent],
-                                                               VDependencyManagerVideoWorkspaceKey: [self videoWorkspaceComponent]};
+                                                               VDependencyManagerWorkspaceFlowKey: [self workspaceFlowComponent],
+                                                               };
     
     return template;
+}
+
+- (NSDictionary *)workspaceFlowComponent
+{
+    return @{
+             kClassNameKey: @"workspace",
+             VDependencyManagerImageWorkspaceKey: [self imageWorkspaceComponent],
+             VDependencyManagerVideoWorkspaceKey: [self videoWorkspaceComponent]
+             };
 }
 
 - (NSArray *)videoTools

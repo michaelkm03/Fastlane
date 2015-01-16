@@ -280,7 +280,10 @@ static const char kWorkspaceFlowControllerKey;
 
 - (void)presentCameraViewController:(VCameraViewController *)cameraViewController
 {
-    self.workspaceFlowController = [VWorkspaceFlowController workspaceFlowControllerWithImageCamera];
+    VDependencyManager *dependencyManager = [((id <VHasManagedDependancies>)self) dependencyManager];
+    
+    self.workspaceFlowController = [dependencyManager templateValueOfType:[VWorkspaceFlowController class]
+                                                                   forKey:VDependencyManagerWorkspaceFlowKey];
     __weak typeof(self) welf = self;
     self.workspaceFlowController.completion = ^void(BOOL finished)
     {

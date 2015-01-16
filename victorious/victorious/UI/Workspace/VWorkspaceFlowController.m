@@ -8,6 +8,8 @@
 
 #import "VWorkspaceFlowController.h"
 
+#import "VDependencyManager.h"
+
 // ViewControllers
 #import "VCameraViewController.h"
 #import "VWorkspaceViewController.h"
@@ -17,6 +19,9 @@
 #import "VSequence+Fetcher.h"
 #import "VNode+Fetcher.h"
 #import "VAsset+Fetcher.h"
+
+NSString * const VWorkspaceFlowControllerInitialCaptureStateKey = @"initialCaptureStateKey";
+NSString * const VWorkspaceFlowControllerSequenceToRemixKey = @"sequenceToRemixKey";
 
 typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
 {
@@ -34,70 +39,68 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
 
 @property (nonatomic, strong) UINavigationController *flowNavigationController;
 
+@property (nonatomic, strong) VDependencyManager *workspaceDependencyManager;
+
 @end
 
 @implementation VWorkspaceFlowController
 
 @synthesize completion = _completion;
 
-+ (instancetype)workspaceFlowControllerWithImageCamera
-{
-    VWorkspaceFlowController *flowController = [[VWorkspaceFlowController alloc] init];
-    
-    VCameraViewController *cameraViewController = [VCameraViewController cameraViewControllerStartingWithStillCapture];
-    cameraViewController.shouldSkipPreview = YES;
-    cameraViewController.completionBlock = [flowController mediaCaptureCompletion];
-    
-    [flowController.flowNavigationController pushViewController:cameraViewController
-                                                       animated:NO];
-    
-    return flowController;
-}
-
-+ (instancetype)workspaceFlowControllerWithVideoCamera
-{
-    VWorkspaceFlowController *flowController = [[VWorkspaceFlowController alloc] init];
-
-    VCameraViewController *cameraViewController = [VCameraViewController cameraViewControllerStartingWithVideoCapture];
-    cameraViewController.shouldSkipPreview = YES;
-    cameraViewController.completionBlock = [flowController mediaCaptureCompletion];
-    
-    [flowController.flowNavigationController pushViewController:cameraViewController
-                                                       animated:NO];
-    
-    return flowController;
-}
-
-+ (instancetype)workspaceFlowControllerWithSequenceRemix:(VSequence *)sequence
-{
-    VWorkspaceFlowController *flowController = [[self alloc] init];
-    
-    if (sequence.isImage)
-    {
-        flowController.capturedMediaURL = [[[sequence firstNode] imageAsset] dataURL];
-        [flowController transitionFromState:flowController.state
-                                    toState:VWorkspaceFlowControllerStateEdit];
-    }
-    else if (sequence.isVideo)
-    {
-        flowController.capturedMediaURL = [[[sequence firstNode] mp4Asset] dataURL];
-        [flowController transitionFromState:flowController.state
-                                    toState:VWorkspaceFlowControllerStateEdit];
-    }
-    
-    return flowController;
-}
-
-- (instancetype)init
+- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     self = [super init];
     if (self)
     {
+        _workspaceDependencyManager = dependencyManager;
         _state = VWorkspaceFlowControllerStateCapture;
         _flowNavigationController = [[UINavigationController alloc] init];
+        
+#warning Check if sequence to remix is here
+        
+        VWorkspaceFlowControllerInitialCaptureState initialCaptureState = VWorkspaceFlowControllerInitialCaptureStateImage;
+        NSNumber *initialCaptureStateValue = [dependencyManager numberForKey:VWorkspaceFlowControllerInitialCaptureStateKey];
+        initialCaptureState = (initialCaptureStateValue != nil) ? [initialCaptureStateValue integerValue] : initialCaptureState;
+        
+        VCameraViewController *cameraViewController;
+        switch (initialCaptureState)
+        {
+            case VWorkspaceFlowControllerInitialCaptureStateImage:
+                cameraViewController = [VCameraViewController cameraViewControllerStartingWithStillCapture];
+                break;
+            case VWorkspaceFlowControllerInitialCaptureStateVideo:
+                cameraViewController = [VCameraViewController cameraViewControllerStartingWithVideoCapture];
+                break;
+        }
+        cameraViewController.shouldSkipPreview = YES;
+        cameraViewController.completionBlock = [self mediaCaptureCompletion];
+        [_flowNavigationController pushViewController:cameraViewController
+                                             animated:NO];
+    
     }
     return self;
 }
+
+//
+//+ (instancetype)workspaceFlowControllerWithSequenceRemix:(VSequence *)sequence
+//{
+//    VWorkspaceFlowController *flowController = [[self alloc] init];
+//    
+//    if (sequence.isImage)
+//    {
+//        flowController.capturedMediaURL = [[[sequence firstNode] imageAsset] dataURL];
+//        [flowController transitionFromState:flowController.state
+//                                    toState:VWorkspaceFlowControllerStateEdit];
+//    }
+//    else if (sequence.isVideo)
+//    {
+//        flowController.capturedMediaURL = [[[sequence firstNode] mp4Asset] dataURL];
+//        [flowController transitionFromState:flowController.state
+//                                    toState:VWorkspaceFlowControllerStateEdit];
+//    }
+//    
+//    return flowController;
+//}
 
 - (void)transitionFromState:(VWorkspaceFlowControllerState)oldState
                     toState:(VWorkspaceFlowControllerState)newState
@@ -108,8 +111,7 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
     {
         NSAssert((self.capturedMediaURL != nil), @"We need a captured media url to begin editing!");
         
-        VWorkspaceViewController *workspaceViewController = [[VWorkspaceViewController alloc] initWithNibName:nil
-                                                                                                       bundle:nil];
+        VWorkspaceViewController *workspaceViewController = (VWorkspaceViewController *)[self.workspaceDependencyManager viewControllerForKey:VDependencyManagerImageWorkspaceKey];
         workspaceViewController.mediaURL = self.capturedMediaURL;
         workspaceViewController.completionBlock = ^void(BOOL finished, UIImage *previewImage, NSURL *renderedMediaURL)
         {
@@ -167,6 +169,7 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
     {
         NSAssert(false, @"Not a valid transition");
     }
+    self.state = newState;
 }
 
 #pragma mark - VFlowController

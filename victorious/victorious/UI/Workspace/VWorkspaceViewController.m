@@ -154,7 +154,8 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
     [toolBarItems addObject:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil]];
     self.bottomToolbar.items = toolBarItems;
     
-    self.canvasView.sourceImage = self.previewImage;
+    NSData *imageFile = [NSData dataWithContentsOfURL:self.mediaURL];
+    self.canvasView.sourceImage = [UIImage imageWithData:imageFile];
     
     AVAsset *asset = [AVAsset assetWithURL:self.mediaURL];
     if ([asset tracksWithMediaType:AVMediaTypeVideo].count > 0)

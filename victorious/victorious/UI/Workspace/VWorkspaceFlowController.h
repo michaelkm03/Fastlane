@@ -11,12 +11,24 @@
 
 @class VSequence;
 
+typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerInitialCaptureState)
+{
+    VWorkspaceFlowControllerInitialCaptureStateImage,
+    VWorkspaceFlowControllerInitialCaptureStateVideo
+};
+extern NSString * const VWorkspaceFlowControllerInitialCaptureStateKey;
+
+//typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerInitialVideoEditState)
+//{
+//    VWorkspaceFlowControllerInitialVideoEditStateGIF,
+//};
+//extern NSString * const VWorkspaceFlowControllerInitalEditStateKey;
+
+extern NSString * const VWorkspaceFlowControllerSequenceToRemixKey;
+
+/**
+ *  Supports injection of the initial capture via "VWorkspaceFlowControllerInitialCaptureStateKey" and the sequence to remix via "VWorkspaceFlowControllerSequenceToRemixKey".
+ */
 @interface VWorkspaceFlowController : NSObject <VFlowController, VHasManagedDependancies>
-
-+ (instancetype)workspaceFlowControllerWithImageCamera;
-
-+ (instancetype)workspaceFlowControllerWithVideoCamera;
-
-+ (instancetype)workspaceFlowControllerWithSequenceRemix:(VSequence *)sequence;
 
 @end
