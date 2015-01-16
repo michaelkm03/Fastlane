@@ -209,6 +209,12 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 
 #pragma mark - Properties
 
+- (void)setIsAudioEnabled:(BOOL)isAudioEnabled
+{
+    _isAudioEnabled = isAudioEnabled;
+    self.player.muted = !isAudioEnabled;
+}
+
 - (void)setShouldChangeVideoGravityOnDoubleTap:(BOOL)shouldChangeVideoGravityOnDoubleTap
 {
     _shouldChangeVideoGravityOnDoubleTap = shouldChangeVideoGravityOnDoubleTap;
@@ -216,6 +222,10 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     if (shouldChangeVideoGravityOnDoubleTap)
     {
         [self addDoubleTapGestureRecognizer];
+    }
+    else
+    {
+        [self.view removeGestureRecognizer:self.videoFrameDoubleTapGesture];
     }
 }
 
@@ -320,6 +330,10 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 {
     self.toolbarView.hidden = !self.shouldShowToolbar;
     self.videoFrameTapGesture.enabled = self.shouldShowToolbar;
+    if ( !self.shouldShowToolbar )
+    {
+        self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspect;
+    }
 }
 
 - (void)setOverlayView:(UIView *)overlayView
@@ -353,60 +367,71 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 
 #pragma mark - Toolbar
 
+- (void)hideToolbar
+{
+    self.toolbarView.hidden = NO;
+    self.overlayView.hidden = NO;
+    self.toolbarView.alpha  =  0;
+    self.overlayView.alpha  =  0;
+    self.toolbarAnimating = YES;
+    [UIView animateWithDuration:kToolbarAnimationDuration
+                          delay:0
+                        options:UIViewAnimationOptionCurveLinear
+                     animations:^(void)
+     {
+         if (self.animateWithPlayControls)
+         {
+             self.animateWithPlayControls(NO);
+         }
+         self.toolbarView.alpha = 1.0f;
+         self.overlayView.alpha = 1.0f;
+     }
+                     completion:^(BOOL finished)
+     {
+         self.toolbarAnimating = NO;
+     }];
+}
+
+- (void)showToolbar
+{
+    [self stopToolbarTimer];
+    self.toolbarAnimating = YES;
+    [UIView animateWithDuration:kToolbarAnimationDuration
+                          delay:0
+                        options:UIViewAnimationOptionCurveLinear
+                     animations:^(void)
+     {
+         if (self.animateWithPlayControls)
+         {
+             self.animateWithPlayControls(YES);
+         }
+         self.toolbarView.alpha = 0;
+         self.overlayView.alpha = 0;
+     }
+                     completion:^(BOOL finished)
+     {
+         self.toolbarView.alpha  = 1.0f;
+         self.overlayView.alpha  = 1.0f;
+         self.toolbarView.hidden =  YES;
+         self.overlayView.hidden =  YES;
+         self.toolbarAnimating = NO;
+     }];
+}
+
 - (void)toggleToolbarHidden
 {
-    if (self.toolbarAnimating || !self.shouldShowToolbar)
+    if ( self.toolbarAnimating || !self.shouldShowToolbar)
     {
         return;
     }
+    
     if (self.toolbarView.hidden)
     {
-        self.toolbarView.hidden = NO;
-        self.overlayView.hidden = NO;
-        self.toolbarView.alpha  =  0;
-        self.overlayView.alpha  =  0;
-        self.toolbarAnimating = YES;
-        [UIView animateWithDuration:kToolbarAnimationDuration
-                              delay:0
-                            options:UIViewAnimationOptionCurveLinear
-                         animations:^(void)
-        {
-            if (self.animateWithPlayControls)
-            {
-                self.animateWithPlayControls(NO);
-            }
-            self.toolbarView.alpha = 1.0f;
-            self.overlayView.alpha = 1.0f;
-        }
-                         completion:^(BOOL finished)
-        {
-            self.toolbarAnimating = NO;
-        }];
+        [self showToolbar];
     }
     else
     {
-        [self stopToolbarTimer];
-        self.toolbarAnimating = YES;
-        [UIView animateWithDuration:kToolbarAnimationDuration
-                              delay:0
-                            options:UIViewAnimationOptionCurveLinear
-                         animations:^(void)
-         {
-             if (self.animateWithPlayControls)
-             {
-                 self.animateWithPlayControls(YES);
-             }
-             self.toolbarView.alpha = 0;
-             self.overlayView.alpha = 0;
-         }
-                         completion:^(BOOL finished)
-         {
-             self.toolbarView.alpha  = 1.0f;
-             self.overlayView.alpha  = 1.0f;
-             self.toolbarView.hidden =  YES;
-             self.overlayView.hidden =  YES;
-             self.toolbarAnimating = NO;
-         }];
+        [self hideToolbar];
     }
 }
 

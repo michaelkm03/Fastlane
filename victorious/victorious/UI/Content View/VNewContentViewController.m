@@ -737,6 +737,14 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
                 videoCell.delegate = self;
                 videoCell.speed = self.viewModel.speed;
                 videoCell.loop = self.viewModel.loop;
+                videoCell.controlsDisabled = self.viewModel.controlsDisabled;
+                videoCell.audioDisabled = self.viewModel.audioDisabled;
+                
+#warning This is for testing GIF properties only
+                videoCell.controlsDisabled = YES;
+                videoCell.loop = YES;
+                videoCell.audioDisabled = YES;
+                
                 self.videoCell = videoCell;
                 self.contentCell = videoCell;
                 __weak typeof(self) welf = self;

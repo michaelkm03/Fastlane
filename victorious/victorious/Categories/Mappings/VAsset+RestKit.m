@@ -23,7 +23,10 @@
                                   @"data" : VSelectorName(data),
                                   @"speed" : VSelectorName(speed),
                                   @"loop" : VSelectorName(loop),
-                                  @"asset_id" : VSelectorName(remoteId)
+                                  @"asset_id" : VSelectorName(remoteId),
+                                  @"autoplay" : VSelectorName(autoPlay),
+                                  @"controls_disabled" : VSelectorName(controlsDisabled),
+                                  @"audio_disabled" : VSelectorName(audioDisabled),
                                   };
     
     RKEntityMapping *mapping = [RKEntityMapping

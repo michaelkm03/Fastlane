@@ -13,6 +13,9 @@
 
 @implementation VAsset
 
+@dynamic audioDisabled;
+@dynamic autoPlay;
+@dynamic controlsDisabled;
 @dynamic data;
 @dynamic loop;
 @dynamic nodeId;

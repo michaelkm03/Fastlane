@@ -119,6 +119,22 @@
     return self.videoPlayerViewController.player.currentTime;
 }
 
+- (void)setControlsDisabled:(BOOL)controlsDisabled
+{
+    _controlsDisabled = controlsDisabled;
+    if ( _controlsDisabled )
+    {
+        self.videoPlayerViewController.shouldChangeVideoGravityOnDoubleTap = NO;
+        self.videoPlayerViewController.shouldShowToolbar = NO;
+    }
+}
+
+- (void)setAudioDisabled:(BOOL)audioDisabled
+{
+    _audioDisabled = audioDisabled;
+    self.videoPlayerViewController.isAudioEnabled = !_audioDisabled;
+}
+
 #pragma mark - Public Methods
 
 - (void)play
@@ -134,6 +150,7 @@
 
 - (void)togglePlayControls
 {
+    // This may not do any if `videoPlayerViewController`'s `shouldShowToolbar` is set to NO
     [self.videoPlayerViewController toggleToolbarHidden];
 }
 

@@ -338,6 +338,16 @@ static NSString * const kPreferedMimeType = @"application/x-mpegURL";
     return [self.currentAsset.loop boolValue];
 }
 
+- (BOOL)controlsDisabled
+{
+    return [self.currentAsset.controlsDisabled boolValue];
+}
+
+- (BOOL)audioDisabled
+{
+    return [self.currentAsset.audioDisabled boolValue];
+}
+
 - (BOOL)shouldShowRealTimeComents
 {
     VAsset *currentAsset = [_currentNode.assets firstObject];

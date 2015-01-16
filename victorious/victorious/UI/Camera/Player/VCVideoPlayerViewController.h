@@ -49,6 +49,7 @@
 @property (nonatomic, assign) BOOL shouldContinuePlayingAfterDismissal;
 @property (nonatomic, copy) NSString *videoPlayerLayerVideoGravity;   ///< Forwards to the player layer
 @property (nonatomic, assign) BOOL shouldChangeVideoGravityOnDoubleTap;
+@property (nonatomic, assign) BOOL isAudioEnabled;
 
 - (void)toggleToolbarHidden;
 

@@ -13,6 +13,9 @@
 
 @interface VAsset : NSManagedObject
 
+@property (nonatomic, retain) NSNumber * audioDisabled;
+@property (nonatomic, retain) NSNumber * autoPlay;
+@property (nonatomic, retain) NSNumber * controlsDisabled;
 @property (nonatomic, retain) NSString * data;
 @property (nonatomic, retain) NSNumber * loop;
 @property (nonatomic, retain) NSNumber * nodeId;

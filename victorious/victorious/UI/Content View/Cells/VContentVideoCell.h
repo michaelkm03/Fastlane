@@ -68,6 +68,13 @@
  */
 @property (nonatomic, assign) BOOL loop;
 
+/**
+ *  Whether or not to prevent player controls from appearing.
+ */
+@property (nonatomic, assign) BOOL controlsDisabled;
+
+@property (nonatomic, assign) BOOL audioDisabled;
+
 @property (nonatomic, readonly) AVPlayerStatus status;
 
 @property (nonatomic, readonly) UIView *videoPlayerContainer;
