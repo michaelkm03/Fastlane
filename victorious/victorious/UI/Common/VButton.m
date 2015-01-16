@@ -12,23 +12,104 @@
 static const CGFloat kCornderRadius             = 3.0f;
 static const CGFloat kBorderWidth               = 1.5f;
 static const CGFloat kPrimaryHighlightModAmount = 0.1f;
-static const CGFloat kSecondaryHighlightAlpha   = 0.1f;
-static const CGFloat kSecondaryGray             = 0.2f;
+static const CGFloat kDefaultSecondaryGray      = 0.2f;
 static const CGFloat kStartScale                = 0.97f;
 
 @interface VButton ()
 
-@property (nonatomic, readonly) UIColor *secondaryColor;
+@property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
 
 @end
 
 @implementation VButton
 
+- (instancetype)initWithCoder:(NSCoder *)coder
+{
+    self = [super initWithCoder:coder];
+    if (self)
+    {
+        [self commonInit];
+    }
+    return self;
+}
+
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self)
+    {
+        [self commonInit];
+    }
+    return self;
+}
+
+- (void)createActivityIndicator
+{
+    static UIActivityIndicatorView *activityIndicator;
+    static dispatch_once_t onceToken;
+    dispatch_once( &onceToken, ^{
+        activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+        activityIndicator.center = CGPointMake(CGRectGetWidth(self.frame) / 2.0, CGRectGetHeight(self.frame) / 2.0);
+        [self addSubview:activityIndicator];
+        self.activityIndicator.hidden = YES;
+        self.activityIndicator.alpha = 0.0f;
+    });
+    self.activityIndicator = activityIndicator;
+}
+
+- (void)showActivityIndicator
+{
+    [self createActivityIndicator];
+    [self.activityIndicator startAnimating];
+    self.activityIndicator.hidden = NO;
+    self.activityIndicator.alpha = 0.0f;
+    [UIView animateWithDuration:0.2f animations:^
+     {
+         self.titleLabel.alpha = 0.0f;
+         self.activityIndicator.alpha = 1.0f;
+     }];
+}
+
+- (void)hideActivityIndicator
+{
+    [self createActivityIndicator];
+    
+    [UIView animateWithDuration:0.2f animations:^
+     {
+         self.activityIndicator.alpha = 0.0f;
+     }
+                     completion:^(BOOL finished)
+     {
+         self.activityIndicator.hidden = YES;
+     }];
+}
+
+- (void)commonInit
+{
+    self.primaryColor = [UIColor grayColor];
+    self.secondaryColor = [[self class] defaultSecondaryColor];
+    [self updateAppearance];
+}
+
+- (void)awakeFromNib
+{
+    [self updateAppearance];
+}
+
++ (UIColor *)defaultSecondaryColor
+{
+    return [UIColor colorWithWhite:kDefaultSecondaryGray alpha:1.0];
+}
+
 - (void)setStyle:(VButtonStyle)style
 {
     _style = style;
-    
-    switch ( style )
+    [self updateAppearance];
+}
+
+- (void)updateAppearance
+{
+    switch ( self.style )
     {
         case VButtonStylePrimary:
             self.layer.borderWidth = 0.0;
@@ -52,18 +133,16 @@ static const CGFloat kStartScale                = 0.97f;
     [self setNeedsDisplay];
 }
 
-- (UIColor *)secondaryColor
+- (void)setPrimaryColor:(UIColor *)primaryColor
 {
-    return [UIColor colorWithWhite:kSecondaryGray alpha:1.0];
+    _primaryColor = primaryColor;
+    [self updateAppearance];
 }
 
-- (void)setBackgroundColor:(UIColor *)backgroundColor
+- (void)setSecondaryColor:(UIColor *)secondaryColor
 {
-    [super setBackgroundColor:backgroundColor];
-    if ( self.style == VButtonStylePrimary )
-    {
-        self.primaryColor = backgroundColor;
-    }
+    _secondaryColor = secondaryColor;
+    [self updateAppearance];
 }
 
 - (void)privateSetBackgroundColor:(UIColor *)color
@@ -81,7 +160,33 @@ static const CGFloat kStartScale                = 0.97f;
      {
          [self applyAnimatedHighlight:highlighted];
      } completion:nil];
-    
+}
+
+- (void)setTitle:(NSString *)title forState:(UIControlState)state
+{
+    if ( self.titleLabel.text == nil || self.titleLabel.text.length == 0 || [self.titleLabel.text isEqualToString:title] )
+    {
+        [super setTitle:title forState:UIControlStateNormal];
+    }
+    else
+    {
+        if ( self.activityIndicator != nil )
+        {
+            [self hideActivityIndicator];
+        }
+        [UIView animateWithDuration:0.2f animations:^
+         {
+             self.titleLabel.alpha = 0.0f;
+         }
+                         completion:^(BOOL finished)
+         {
+             [super setTitle:title forState:UIControlStateNormal];
+             [UIView animateWithDuration:0.2f animations:^
+              {
+                  self.titleLabel.alpha = 1.0f;
+              }];
+         }];
+    }
 }
 
 - (void)applyAnimatedHighlight:(BOOL)highlighted

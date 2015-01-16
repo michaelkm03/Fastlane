@@ -165,7 +165,8 @@ static const NSInteger kResetPurchasesButtonIndex = 5;
 
 - (void)updateLogoutButtonState
 {
-    self.logoutButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    self.logoutButton.primaryColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    self.logoutButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
     
     if ([VObjectManager sharedManager].mainUserLoggedIn)
     {

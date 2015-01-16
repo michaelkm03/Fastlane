@@ -15,11 +15,12 @@
 typedef NS_ENUM( NSUInteger, VButtonStyle )
 {
     /**
-     A solid background color (which you set using `backgroundColor`
-     like normal, with white text and rounded corners.  This style indicates
+     A solid background color, colored by `primaryColor`,
+     with white text and rounded corners.  This style indicates
      a primary action, such as `submit` on a form.
      */
     VButtonStylePrimary,
+    
     /** 
      A clear background color and gray stroke and text.  This style indicates
      a secondary action, such as `cancel` on a form.
@@ -38,5 +39,13 @@ typedef NS_ENUM( NSUInteger, VButtonStyle )
 @property (nonatomic, assign) VButtonStyle style;
 
 @property (nonatomic, strong) UIColor *primaryColor;
+
+@property (nonatomic, strong) UIColor *secondaryColor;
+
++ (UIColor *)defaultSecondaryColor;
+
+- (void)showActivityIndicator;
+
+- (void)hideActivityIndicator;
 
 @end

@@ -329,12 +329,11 @@ static void * VUserProfileAttributesContext =  &VUserProfileAttributesContext;
     else
     {
         VUserProfileHeaderView *header = self.profileHeaderView;
-        [header.followButtonActivityIndicator startAnimating];
+        [self.profileHeaderView.editProfileButton showActivityIndicator];
         
         VFailBlock fail = ^(NSOperation *operation, NSError *error)
         {
             header.editProfileButton.enabled = YES;
-            [header.followButtonActivityIndicator stopAnimating];
             
             UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:nil
                                                                    message:NSLocalizedString(@"UnfollowError", @"")
@@ -357,9 +356,6 @@ static void * VUserProfileAttributesContext =  &VUserProfileAttributesContext;
                 header.editProfileButton.selected = YES;
                 header.numberOfFollowers++;
             }
-            
-            
-            [header.followButtonActivityIndicator stopAnimating];
         };
         
         if (header.editProfileButton.selected)

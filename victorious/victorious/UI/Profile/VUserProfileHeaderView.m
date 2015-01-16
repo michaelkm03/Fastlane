@@ -58,52 +58,61 @@
     self.followingHeader.text = NSLocalizedString(@"FOLLOWING", @"");
     self.followingHeader.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel4Font];
     
-    self.editProfileButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVButton2Font];
-    self.editProfileButton.titleLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-    self.editProfileButton.layer.cornerRadius = 3.0;
-    self.editProfileButton.layer.borderWidth = 2.0;
-    
-    self.followButtonActivityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    self.followButtonActivityIndicator.center = CGPointMake(CGRectGetWidth(self.editProfileButton.frame) / 2.0, CGRectGetHeight(self.editProfileButton.frame) / 2.0);
-    [self.editProfileButton addSubview:self.followButtonActivityIndicator];
-    
     self.userStatsBar.backgroundColor = [[VThemeManager sharedThemeManager] preferredBackgroundColor];
     [self applyEditProfileButtonStyle];
 }
 
 - (void)applyEditProfileButtonStyle
 {
+    if ( self.user == nil )
+    {
+        return;
+    }
+    
+    const BOOL isCurrentUser = [self.user.remoteId isEqualToNumber:[VObjectManager sharedManager].mainUser.remoteId];
+    UIColor *linkColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
+    
+    self.editProfileButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
+
+    // Set the text
+    if ( isCurrentUser )
+    {
+        [self.editProfileButton setTitle:NSLocalizedString(@"editProfileButton", @"") forState:UIControlStateNormal];
+    }
+    else if (self.editProfileButton.selected)
+    {
+        [self.editProfileButton setTitle:NSLocalizedString(@"following", @"") forState:UIControlStateNormal];
+    }
+    else
+    {
+        [self.editProfileButton setTitle:NSLocalizedString(@"follow", @"") forState:UIControlStateNormal];
+    }
+    
     if ( isTemplateC )
     {
         if (self.editProfileButton.selected)
         {
-            [self.editProfileButton setTitle:NSLocalizedString(@"following", @"") forState:UIControlStateNormal];
-            [self.editProfileButton setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
-            self.editProfileButton.layer.borderColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor].CGColor;
-            self.editProfileButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+            [self.editProfileButton setStyle:VButtonStyleSecondary];
+            self.editProfileButton.primaryColor = linkColor;
         }
         else
         {
-            [self.editProfileButton setTitle:NSLocalizedString(@"follow", @"") forState:UIControlStateNormal];
-            [self.editProfileButton setTitleColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor] forState:UIControlStateNormal];
-            self.editProfileButton.layer.borderColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor].CGColor;
-            self.editProfileButton.backgroundColor = [UIColor clearColor];
+            [self.editProfileButton setStyle:VButtonStyleSecondary];
+            self.editProfileButton.secondaryColor = linkColor;
         }
     }
     else
     {
         if (self.editProfileButton.selected)
         {
-            [self.editProfileButton setTitle:NSLocalizedString(@"following", @"") forState:UIControlStateNormal];
-            self.editProfileButton.layer.borderColor = [UIColor whiteColor].CGColor;
-            self.editProfileButton.backgroundColor = [UIColor clearColor];
+            [self.editProfileButton setStyle:VButtonStyleSecondary];
+            self.editProfileButton.secondaryColor = [UIColor whiteColor];
         }
         else
         {
-            [self.editProfileButton setTitle:NSLocalizedString(@"follow", @"") forState:UIControlStateNormal];
-            self.editProfileButton.layer.borderColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor].CGColor;
-            self.editProfileButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+            [self.editProfileButton setStyle:VButtonStylePrimary];
+            self.editProfileButton.primaryColor = linkColor;
         }
     }
 }
@@ -112,6 +121,7 @@
 {
     if (_user == user)
     {
+        [self applyEditProfileButtonStyle];
         return;
     }
     
@@ -121,8 +131,11 @@
     
     if (_user == nil)
     {
+        [self applyEditProfileButtonStyle];
         return;
     }
+    
+    [self applyEditProfileButtonStyle];
     
     [self.KVOController observe:self.editProfileButton
                         keyPath:@"selected"
@@ -136,6 +149,8 @@
     
     void (^userUpdateBlock)(id observer, VUser *user, NSDictionary *change) = ^void(id observer, VUser *user, NSDictionary *change)
     {
+        [welf applyEditProfileButtonStyle];
+        
         [welf.profileImageView setProfileImageURL:[NSURL URLWithString:user.pictureUrl]];
         welf.nameLabel.text = user.name;
         welf.locationLabel.text = user.location;
@@ -161,11 +176,7 @@
              welf.numberOfFollowing = 0;
          }];
         
-        if (user.remoteId.integerValue == [VObjectManager sharedManager].mainUser.remoteId.integerValue)
-        {
-            [welf.editProfileButton setTitle:NSLocalizedString(@"editProfileButton", @"") forState:UIControlStateNormal];
-        }
-        else
+        if ( ![user.remoteId isEqualToNumber:[VObjectManager sharedManager].mainUser.remoteId] )
         {
             if ([VObjectManager sharedManager].mainUser)
             {
@@ -182,10 +193,6 @@
                       }];
                  }
                                              failBlock:nil];
-            }
-            else
-            {
-                welf.editProfileButton.selected = NO;
             }
         }
     };
