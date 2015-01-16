@@ -296,7 +296,7 @@ static const NSInteger kResetPurchasesButtonIndex = 5;
                              NSLocalizedString(@"Type your feedback here...", @""),
                              [self deviceInfo], appName];
         NSString *subjString = NSLocalizedString(@"SupportEmailSubject", @"Feedback / Help");
-        NSString *msgSubj = [NSString stringWithFormat:@"%@ %@", subjString,[appName capitalizedString]];
+        NSString *msgSubj = [NSString stringWithFormat:@"%@ %@", subjString, appName];
         
         [mailComposer setSubject:msgSubj];
         [mailComposer setToRecipients:@[[[VThemeManager sharedThemeManager] themedStringForKey:kVSupportEmail]]];
@@ -335,7 +335,7 @@ static const NSInteger kResetPurchasesButtonIndex = 5;
     NSMutableString *deviceInfo = [[NSMutableString alloc] init];
     [deviceInfo appendFormat:@"%@ %@\n", NSLocalizedString(@"Device:", @""), device];
     [deviceInfo appendFormat:@"%@ %@ %@\n", NSLocalizedString(@"OS Version:", @""), iosName, iosVersion];
-    [deviceInfo appendFormat:@"%@ %@ (%@)\n", NSLocalizedString(@"App Version:", @""), appVersion, appBuildNumber];
+    [deviceInfo appendFormat:@"%@ %@ (%@)", NSLocalizedString(@"App Version:", @""), appVersion, appBuildNumber];
     
     return deviceInfo;
 }
