@@ -57,10 +57,14 @@ static NSUInteger const kVPasswordResetCodeExpired = 6700;
 static NSUInteger const kVFollowsRelationshipDoesNotExistError = 5001;
 static NSUInteger const kVFollowsRelationshipAlreadyExistsError = 6001;
 
+static NSUInteger const kVHashTagSubscriptionDoesNotExistError = 5000;
+static NSUInteger const kVHashTagSubscriptionAlreadyExistsError = 1001;
+
 static NSUInteger const kVAccountAlreadyExistsError     = 1003;
 static NSUInteger const kVUserBannedError               = 1007;
 
 static NSUInteger const kVMediaAlreadyCreatedError      = 1005;
+static NSUInteger const kVCommentAlreadyFlaggedError    = 1005;
 
 static NSUInteger const kVUpgradeRequiredError          = 426;
 static NSUInteger const kVUnauthoizedError              = 401;
@@ -83,6 +87,7 @@ static NSString * const   kGAID                    = @"GAID";
 
 static NSString * const   kVUserAgentHeader    = @"User-Agent";
 static NSString * const   kVPayloadKey         = @"payload";
+static NSString * const   kVObjectsKey         = @"objects";
 static NSString * const   kVErrorKey           = @"error";
 static NSString * const   kRemoteIdKey         = @"remoteId";
 

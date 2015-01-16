@@ -277,6 +277,8 @@ static const CGFloat kButtonMargin           =  0.5f;
     newViewController.view.alpha = 0;
     [self.childContainer addSubview:newViewController.view];
     
+    [self.view layoutIfNeeded];
+    
     void (^animations)() = ^(void)
     {
         newViewController.view.alpha = 1.0f;

@@ -14,6 +14,8 @@
 #import "VImageSearchViewController.h"
 #import "VThemeManager.h"
 #import "VObjectManager+ContentCreation.h"
+#import "UIStoryboard+VMainStoryboard.h"
+#import "victorious-Swift.h"  // for NSString+Unicode (imports all Swift files)
 
 static const CGFloat kPreviewImageWidth = 160.0f;
 
@@ -64,8 +66,7 @@ static char KVOContext;
 
 + (instancetype)newCreatePollViewController
 {
-    UIViewController *currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-    VCreatePollViewController *createView = (VCreatePollViewController *)[currentViewController.storyboard instantiateViewControllerWithIdentifier: NSStringFromClass([VCreatePollViewController class])];
+    VCreatePollViewController *createView = (VCreatePollViewController *)[[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier: NSStringFromClass([VCreatePollViewController class])];
     return createView;
 }
 
@@ -204,12 +205,12 @@ static char KVOContext;
         errorMessage = [errorMessage stringByAppendingString:NSLocalizedString(@"MissingMedia", nil)];
         errorMessage = [errorMessage stringByAppendingString:@"\n"];
     }
-    if ([self.questionTextView.text length] < kMinLength)
+    if ([self.questionTextView.text lengthWithUnicode] < kMinLength)
     {
         errorMessage = [errorMessage stringByAppendingString:NSLocalizedString(@"QuestionTextToShort", nil)];
         errorMessage = [errorMessage stringByAppendingString:@"\n"];
     }
-    if ([self.leftAnswerTextView.text length] < kMinLength || [self.rightAnswerTextView.text length] < kMinLength)
+    if ([self.leftAnswerTextView.text lengthWithUnicode] < kMinLength || [self.rightAnswerTextView.text lengthWithUnicode] < kMinLength)
     {
         errorMessage = [errorMessage stringByAppendingString:NSLocalizedString(@"AnswerTextToShort", nil)];
     }

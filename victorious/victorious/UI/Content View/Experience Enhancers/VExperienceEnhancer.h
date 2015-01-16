@@ -43,6 +43,8 @@
  */
 - (void)resetStartingVoteCount:(NSUInteger)voteCount;
 
+@property (nonatomic, strong, readonly) NSArray *trackingUrls;
+
 @property (nonatomic, assign) BOOL isLocked;
 
 @property (nonatomic, readonly) NSUInteger sessionVoteCount;

@@ -50,6 +50,7 @@
 #import "VUserProfileViewController.h"
 #import "VAuthorizationViewControllerFactory.h"
 #import "VPurchaseViewController.h"
+#import "VCameraPublishViewController.h"
 
 // Transitioning
 #import "VLightboxTransitioningDelegate.h"
@@ -67,16 +68,19 @@
 
 // Experiments
 #import "VSettingManager.h"
-
-#import "VCameraPublishViewController.h"
+#import "VDependencyManager.h"
 
 #import "VSequence+Fetcher.h"
 
-#import "VViewControllerTransition.h"
+#import "VTransitionDelegate.h"
+#import "VEditCommentViewController.h"
+#import "VModalTransition.h"
+
+#import "VTracking.h"
 
 static const CGFloat kMaxInputBarHeight = 200.0f;
 
-@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate,VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelgetate, VExperienceEnhancerControllerDelegate>
+@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate,VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate>
 
 @property (nonatomic, strong, readwrite) VContentViewViewModel *viewModel;
 @property (nonatomic, strong) NSURL *mediaURL;
@@ -115,7 +119,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 @property (nonatomic, assign) BOOL enteringRealTimeComment;
 @property (nonatomic, assign) CMTime realtimeCommentBeganTime;
 
-@property (nonatomic, strong) VViewControllerTransition *transitionDelegate;
+@property (nonatomic, strong) VTransitionDelegate *transitionDelegate;
 
 @end
 
@@ -128,8 +132,12 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     VNewContentViewController *contentViewController = [[UIStoryboard storyboardWithName:@"ContentView" bundle:nil] instantiateInitialViewController];
     contentViewController.viewModel = viewModel;
     contentViewController.hasAutoPlayed = NO;
-    contentViewController.transitionDelegate = [[VViewControllerTransition alloc] init];
+    
+    VModalTransition *modalTransition = [[VModalTransition alloc] init];
+    contentViewController.transitionDelegate = [[VTransitionDelegate alloc] initWithTransition:modalTransition];
     contentViewController.elapsedTimeFormatter = [[VElapsedTimeFormatter alloc] init];
+    
+    viewModel.delegate = contentViewController;
     
     return contentViewController;
 }
@@ -141,6 +149,64 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     [VContentCommentsCell clearSharedImageCache];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+#pragma mark - VContentViewViewModelDelegate
+
+- (void)didUpdateComments
+{
+    if (self.viewModel.comments.count > 0)
+    {
+        if ([self.contentCollectionView numberOfItemsInSection:VContentViewSectionAllComments] > 0)
+        {
+            [self.contentCollectionView reloadData];
+            
+            __weak typeof(self) welf = self;
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+                           {
+                               [welf.contentCollectionView flashScrollIndicators];
+                           });
+        }
+        else
+        {
+            NSIndexSet *commentsIndexSet = [NSIndexSet indexSetWithIndex:VContentViewSectionAllComments];
+            [self.contentCollectionView reloadSections:commentsIndexSet];
+        }
+        
+        self.handleView.numberOfComments = self.viewModel.sequence.commentCount.integerValue;
+    }
+}
+
+- (void)didUpdateContent
+{
+    self.videoCell.viewModel = self.viewModel.videoViewModel;
+}
+
+- (void)didUpdateHistogramData
+{
+    if ( self.viewModel.histogramDataSource == nil )
+    {
+        return;
+    }
+    self.histogramCell.histogramView.dataSource = self.viewModel.histogramDataSource;
+    [self.contentCollectionView.collectionViewLayout invalidateLayout];
+}
+
+- (void)didUpdatePollsData
+{
+    if (!self.viewModel.votingEnabled)
+    {
+        [self.pollCell setAnswerAPercentage:self.viewModel.answerAPercentage
+                                   animated:YES];
+        [self.pollCell setAnswerBPercentage:self.viewModel.answerBPercentage
+                                   animated:YES];
+        
+        [self.ballotCell setVotingDisabledWithFavoredBallot:(self.viewModel.favoredAnswer == VPollAnswerA) ? VBallotA : VBallotB
+                                                   animated:YES];
+        self.pollCell.answerAIsFavored = (self.viewModel.favoredAnswer == VPollAnswerA);
+        self.pollCell.answerBIsFavored = (self.viewModel.favoredAnswer == VPollAnswerB);
+        self.pollCell.numberOfVotersText = self.viewModel.numberOfVotersText;
+    }
 }
 
 #pragma mark - UIResponder
@@ -326,28 +392,18 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
                                          forDecorationViewOfKind:VShrinkingContentLayoutContentBackgroundView];
     
     self.viewModel.experienceEnhancerController.delegate = self;
+    
+    NSDictionary *params = @{ VTrackingKeyTimeCurrent : [NSDate date],
+                              VTrackingKeySequenceId : self.viewModel.sequence.remoteId,
+                              VTrackingKeyUrls : self.viewModel.sequence.tracking.viewStart ?: @[] };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
+    
+    [self.viewModel reloadData];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(commentsDidUpdate:)
-                                                 name:VContentViewViewModelDidUpdateCommentsNotification
-                                               object:self.viewModel];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(hitogramDataDidUpdate:)
-                                                 name:VContentViewViewModelDidUpdateHistogramDataNotification
-                                               object:self.viewModel];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(pollDataDidUpdate:)
-                                                 name:VContentViewViewModelDidUpdatePollDataNotification
-                                               object:self.viewModel];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(contentDataDidUpdate:)
-                                                 name:VContentViewViewModelDidUpdateContentNotification
-                                               object:self.viewModel];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardDidChangeFrame:)
@@ -395,8 +451,6 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     {
         self.textEntryView.placeholderText = NSLocalizedString(@"LeaveAComment", @"");
     }
-    
-    [self.viewModel reloadData];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -412,15 +466,6 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     
     // We don't care about these notifications anymore but we still care about new user loggedin
     [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:VContentViewViewModelDidUpdateCommentsNotification
-                                                  object:self.viewModel];
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:VContentViewViewModelDidUpdateHistogramDataNotification
-                                                  object:self.viewModel];
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:VContentViewViewModelDidUpdatePollDataNotification
-                                                  object:self.viewModel];
-    [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:UIKeyboardDidChangeFrameNotification
                                                   object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self
@@ -430,8 +475,6 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
                                                     name:VExperienceEnhancerBarDidRequirePurchasePrompt
                                                   object:nil];
     
-    [self.viewModel.experienceEnhancerController sendTrackingEvents];
-    
     self.contentCollectionView.delegate = nil;
     self.videoCell.delegate = nil;
 }
@@ -440,9 +483,15 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
                      animated:(BOOL)flag
                    completion:(void (^)(void))completion
 {
-    [super presentViewController:viewControllerToPresent
-                        animated:flag
-                      completion:completion];
+    @try {
+        
+        [super presentViewController:viewControllerToPresent
+                            animated:flag
+                          completion:completion];
+    }
+    @catch (NSException *exception) {
+        NSLog( @"%@", exception.description );
+    }
     
     // Pause playback on presentation
     [self.videoCell pause];
@@ -468,9 +517,9 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
         return;
     }
     
-    VPurchaseViewController *viewController = [VPurchaseViewController instantiateFromStoryboard:@"ContentView"
-                                                                                            withVoteType:experienceEnhander.voteType];
+    VPurchaseViewController *viewController = [VPurchaseViewController purchaseViewControllerWithVoteType:experienceEnhander.voteType];
     viewController.transitioningDelegate = self.transitionDelegate;
+    viewController.delegate = self;
     [self presentViewController:viewController animated:YES completion:nil];
 }
 
@@ -502,63 +551,6 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     }
 }
 
-- (void)contentDataDidUpdate:(NSNotification *)notification
-{
-    self.videoCell.viewModel = self.viewModel.videoViewModel;
-}
-
-- (void)commentsDidUpdate:(NSNotification *)notification
-{
-    if (self.viewModel.comments.count > 0)
-    {
-        if ([self.contentCollectionView numberOfItemsInSection:VContentViewSectionAllComments] > 0)
-        {
-            [self.contentCollectionView reloadData];
-            
-            __weak typeof(self) welf = self;
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
-            {
-                [welf.contentCollectionView flashScrollIndicators];
-            });
-        }
-        else
-        {
-            NSIndexSet *commentsIndexSet = [NSIndexSet indexSetWithIndex:VContentViewSectionAllComments];
-            [self.contentCollectionView reloadSections:commentsIndexSet];
-        }
-        
-        self.handleView.numberOfComments = self.viewModel.sequence.commentCount.integerValue;
-    }
-}
-
-- (void)hitogramDataDidUpdate:(NSNotification *)notification
-{
-    if (!self.viewModel.histogramDataSource)
-    {
-        return;
-    }
-    self.histogramCell.histogramView.dataSource = self.viewModel.histogramDataSource;
-    [self.contentCollectionView.collectionViewLayout invalidateLayout];
-}
-
-- (void)pollDataDidUpdate:(NSNotification *)notification
-{
-
-    if (!self.viewModel.votingEnabled)
-    {
-        [self.pollCell setAnswerAPercentage:self.viewModel.answerAPercentage
-                                   animated:YES];
-        [self.pollCell setAnswerBPercentage:self.viewModel.answerBPercentage
-                                   animated:YES];
-        
-        [self.ballotCell setVotingDisabledWithFavoredBallot:(self.viewModel.favoredAnswer == VPollAnswerA) ? VBallotA : VBallotB
-                                                   animated:YES];
-        self.pollCell.answerAIsFavored = (self.viewModel.favoredAnswer == VPollAnswerA);
-        self.pollCell.answerBIsFavored = (self.viewModel.favoredAnswer == VPollAnswerB);
-        self.pollCell.numberOfVotersText = self.viewModel.numberOfVotersText;
-    }
-}
-
 - (void)loginStatusDidChange:(NSNotification *)notification
 {
     [self.viewModel reloadData];
@@ -584,6 +576,20 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 
 #pragma mark - Private Mehods
 
+- (void)updateInitialExperienceEnhancerState
+{
+   /**
+    When the enhancer bar is initialized and if a video cell is initialized (meaning the asset is a video),
+    set the initial enhancer bar state as disabled.  It will become enabled when the video asset starts playing.
+    This may happen right away if there is no ad, or after any ad is finished playing.
+    */
+    VExperienceEnhancerBar *enhancerBar = self.viewModel.experienceEnhancerController.enhancerBar;
+    if ( enhancerBar != nil && self.videoCell != nil )
+    {
+        self.viewModel.experienceEnhancerController.enhancerBar.enabled = NO;
+    }
+}
+
 - (NSIndexPath *)indexPathForContentView
 {
     return [NSIndexPath indexPathForRow:0
@@ -594,6 +600,8 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
                    withIndex:(NSInteger)index
 {
     commentCell.comment = self.viewModel.comments[index];
+    commentCell.swipeViewController.controllerDelegate = self;
+    commentCell.commentsUtilitiesDelegate = self;
     
     __weak typeof(commentCell) wCommentCell = commentCell;
     __weak typeof(self) welf = self;
@@ -665,8 +673,19 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
             return 1;
         case VContentViewSectionHistogramOrQuestion:
         {
-            NSInteger ret = (self.viewModel.type == VContentViewTypePoll) ? 1 : 0;
-            return ret;
+            if (self.viewModel.type == VContentViewTypePoll)
+            {
+                return 1;
+            }
+            
+            BOOL histogramEnabled = [[self.dependencyManagerForHistogramExperiment numberForKey:VDependencyManagerHistogramEnabledKey] boolValue];
+            BOOL isVideo = (self.viewModel.type == VContentViewTypeVideo);
+            if (histogramEnabled && isVideo)
+            {
+                return 1;
+            }
+            
+            return 0;
         }
             
         case VContentViewSectionExperienceEnhancers:
@@ -848,6 +867,8 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
                                                                                     forIndexPath:indexPath];
             self.viewModel.experienceEnhancerController.enhancerBar = self.experienceEnhancerCell.experienceEnhancerBar;
             
+            [self updateInitialExperienceEnhancerState];
+            
             __weak typeof(self) welf = self;
             self.experienceEnhancerCell.experienceEnhancerBar.selectionBlock = ^(VExperienceEnhancer *selectedEnhancer, CGPoint selectionCenter)
             {
@@ -912,10 +933,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
         {
             VContentCommentsCell *commentCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentCommentsCell suggestedReuseIdentifier]
                                                                                           forIndexPath:indexPath];
-            
-            [self configureCommentCell:commentCell
-                             withIndex:indexPath.row];
-            
+            [self configureCommentCell:commentCell withIndex:indexPath.row];
             return commentCell;
         }
         case VContentViewSectionCount:
@@ -1000,9 +1018,10 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
         case VContentViewSectionAllComments:
         {
             VComment *comment = self.viewModel.comments[indexPath.row];
-            return [VContentCommentsCell sizeWithFullWidth:CGRectGetWidth(self.contentCollectionView.bounds)
-                                               commentBody:comment.text
-                                               andHasMedia:comment.hasMedia];
+            CGSize size = [VContentCommentsCell sizeWithFullWidth:CGRectGetWidth(self.contentCollectionView.bounds)
+                                                      commentBody:comment.text
+                                                      andHasMedia:comment.hasMedia];
+            return CGSizeMake( CGRectGetWidth(self.view.bounds), size.height );
         }
         case VContentViewSectionCount:
             return CGSizeMake(CGRectGetWidth(self.view.bounds), CGRectGetWidth(self.view.bounds));
@@ -1045,13 +1064,26 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    if (CGRectGetMidY(scrollView.bounds) > (scrollView.contentSize.height * 0.8f))
+    const BOOL hasComments = self.viewModel.comments.count > 0;
+    if ( hasComments )
     {
-        [self.viewModel attemptToLoadNextPageOfComments];
+        const CGFloat visibleHeight = CGRectGetHeight(scrollView.frame) - scrollView.contentInset.bottom;
+        const CGFloat maxContentOffset = scrollView.contentSize.height - visibleHeight - visibleHeight;
+        const CGFloat minContentOffset = visibleHeight;
+        const CGFloat scrollPositionY = scrollView.contentOffset.y;
+        
+        if ( scrollPositionY >= maxContentOffset )
+        {
+            [self.viewModel attemptToLoadNextPageOfComments];
+        }
+        else if ( scrollPositionY < minContentOffset )
+        {
+            // TODO: Load previous page (when pagination supports this)
+        }
     }
 }
 
-#pragma mark - VContentVideoCellDelgetate
+#pragma mark - VContentVideoCellDelegate
 
 - (void)videoCell:(VContentVideoCell *)videoCell
     didPlayToTime:(CMTime)time
@@ -1073,12 +1105,18 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     {
         [self.videoCell play];
         self.hasAutoPlayed = YES;
+        
+        // The enhacer bar starts out disabled by default when a video asset is displayed.
+        // If the video asset is playing, any ad (if there was one) is now over, and the
+        // bar should be enabled.
+        self.experienceEnhancerCell.experienceEnhancerBar.enabled = YES;
     }
 }
 
 - (void)videoCellPlayedToEnd:(VContentVideoCell *)videoCell
                withTotalTime:(CMTime)totalTime
 {
+    self.histogramCell.histogramView.progress = CMTimeGetSeconds(totalTime) / CMTimeGetSeconds(totalTime);
     if (!self.enteringRealTimeComment)
     {
         self.textEntryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), [self.elapsedTimeFormatter stringForCMTime:totalTime]];
@@ -1119,9 +1157,10 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
          [welf.viewModel fetchComments];
          [UIView animateWithDuration:0.0f
                           animations:^
-          {
-              [welf commentsDidUpdate:nil];
-          }];
+         {
+             [welf didUpdateComments];
+         }];
+         
      }];
     
     [inputAccessoryView clearTextAndResign];
@@ -1280,6 +1319,105 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 - (void)experienceEnhancersDidUpdate
 {
     // Do nothing, eventually a nice animation to reveal experience enhancers
+}
+
+- (BOOL)isVideoContent
+{
+    return self.videoCell != nil;
+}
+
+- (Float64)currentVideoTime
+{
+    if ( self.videoCell != nil )
+    {
+        Float64 seconds = CMTimeGetSeconds( self.videoCell.currentTime );
+        if ( !isnan( seconds ) )
+        {
+            return CMTimeGetSeconds( self.videoCell.currentTime );
+        }
+    }
+    return 0.0f;
+}
+
+#pragma mark - VSwipeViewControllerDelegate
+
+- (UIColor *)backgroundColorForGutter
+{
+    return [UIColor colorWithWhite:0.96f alpha:1.0f];
+}
+
+- (void)cellWillShowUtilityButtons:(UIView *)cellView
+{
+    // Close any other cells showing utility buttons
+    [self.contentCollectionView.visibleCells enumerateObjectsUsingBlock:^(VContentCommentsCell *cell, NSUInteger idx, BOOL *stop)
+     {
+         if ( [cell isKindOfClass:[VContentCommentsCell class]] && cellView != cell )
+         {
+             [cell.swipeViewController hideUtilityButtons];
+         }
+     }];
+}
+
+#pragma mark - VCommentCellUtilitiesDelegate
+
+- (void)commentRemoved:(VComment *)comment
+{
+    [self.contentCollectionView performBatchUpdates:^void
+     {
+         NSUInteger row = [self.viewModel.comments indexOfObject:comment];
+         [self.viewModel removeCommentAtIndex:row];
+         NSArray *indexPaths = @[ [NSIndexPath indexPathForRow:row inSection:VContentViewSectionAllComments] ];
+         [self.contentCollectionView deleteItemsAtIndexPaths:indexPaths];
+     } completion:nil];
+}
+
+- (void)editComment:(VComment *)comment
+{
+    VEditCommentViewController *editViewController = [VEditCommentViewController instantiateFromStoryboardWithComment:comment];
+    editViewController.transitioningDelegate = self.transitionDelegate;
+    editViewController.delegate = self;
+    [self presentViewController:editViewController animated:YES completion:nil];
+}
+
+- (void)didSelectActionRequiringLogin
+{
+    [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+}
+
+#pragma mark - VEditCommentViewControllerDelegate
+
+- (void)didFinishEditingComment:(VComment *)comment
+{
+    for ( VContentCommentsCell *cell in self.contentCollectionView.subviews )
+     {
+         if ( [cell isKindOfClass:[VContentCommentsCell class]] && [cell.comment.remoteId isEqualToNumber:comment.remoteId] )
+         {
+             // Update the cell's comment to show the new text
+             cell.comment = comment;
+             
+             [self dismissViewControllerAnimated:YES completion:^void
+              {
+                  [self.contentCollectionView performBatchUpdates:^void
+                   {
+                       NSIndexPath *indexPathToInvalidate = [self.contentCollectionView indexPathForCell:cell];
+                       [self.contentCollectionView reloadItemsAtIndexPaths:@[ indexPathToInvalidate ]];
+                   }
+                                                       completion:nil];
+              }];
+             
+             break;
+         }
+     }
+}
+
+#pragma mark VPurchaseViewControllerDelegate
+
+- (void)purchaseDidComplete
+{
+    [self.presentedViewController dismissViewControllerAnimated:YES completion:^void
+     {
+         [self.viewModel.experienceEnhancerController updateData];
+     }];
 }
 
 @end

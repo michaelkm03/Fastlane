@@ -7,22 +7,24 @@
 //
 
 #import <Foundation/Foundation.h>
-
 #import "VExperienceEnhancerBar.h"
+#import "VVideoCellViewModel.h"
 
 @protocol VExperienceEnhancerControllerDelegate <NSObject>
 
 - (void)experienceEnhancersDidUpdate;
 
+@property (nonatomic, assign, readonly) Float64 currentVideoTime;
+
+@property (nonatomic, assign, readonly) BOOL isVideoContent;
+
 @end
 
 @class VSequence;
 
-@interface VExperienceEnhancerController : NSObject <VExperienceEnhancerBarDataSource>
+@interface VExperienceEnhancerController : NSObject <VExperienceEnhancerBarDataSource, VExperienceEnhancerBarDelegate>
 
 - (instancetype)initWithSequence:(VSequence *)sequence;
-
-- (void)sendTrackingEvents;
 
 - (void)updateData;
 

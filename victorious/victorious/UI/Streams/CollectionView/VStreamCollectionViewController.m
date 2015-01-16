@@ -32,11 +32,14 @@
 #import "VStream+Fetcher.h"
 #import "VSequence+Fetcher.h"
 #import "VNode+Fetcher.h"
+#import "VUser.h"
+#import "VHashtag.h"
 
 //Managers
 #import "VDependencyManager+VObjectManager.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Login.h"
+#import "VObjectManager+Discover.h"
 #import "VThemeManager.h"
 #import "VSettingManager.h"
 
@@ -70,6 +73,11 @@ static CGFloat const kTemplateCLineSpacing = 8;
 @property (strong, nonatomic) VSequenceActionController *sequenceActionController;
 
 @property (nonatomic, assign) BOOL hasRefreshed;
+@property (nonatomic, assign) BOOL isSubscribedToHashtag;
+@property (nonatomic, strong) NSString *selectedHashtag;
+@property (nonatomic, weak) MBProgressHUD *failureHUD;
+
+@property (strong, nonatomic) VDependencyManager *dependencyManager;
 
 @end
 
@@ -117,11 +125,17 @@ static CGFloat const kTemplateCLineSpacing = 8;
 
 + (instancetype)hashtagStreamWithHashtag:(NSString *)hashtag
 {
-    NSString *title = [@"#" stringByAppendingString:hashtag];
-    VStream *defaultStream = [VStream streamForHashTag:hashtag];
+    // Check if hashtag is being followed or not
+    NSString *tagTitle = [@"#" stringByAppendingString:hashtag];
+    NSString *tagString = [hashtag lowercaseString];
+
+    VStream *defaultStream = [VStream streamForHashTag:tagString];
     VStreamCollectionViewController *streamVC = [self streamViewControllerForDefaultStream:defaultStream
                                                                              andAllStreams:@[ defaultStream ]
-                                                                                     title:title];
+                                                                                     title:tagTitle];
+    
+    streamVC.selectedHashtag = hashtag;
+    
     return streamVC;
 }
 
@@ -142,6 +156,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
     streamColllection.navHeaderView.delegate = streamColllection;
     NSInteger selectedStream = [allStreams indexOfObject:stream];
     streamColllection.navHeaderView.navSelector.currentIndex = selectedStream;
+    
     
     return streamColllection;
 }
@@ -198,6 +213,15 @@ static CGFloat const kTemplateCLineSpacing = 8;
     {
         [streamCollectionVC v_addCreateSequenceButton];
     }
+    
+    NSNumber *cellVisibilityRatio = [dependencyManager numberForKey:@"experiments.stream_atf_view_threshold"];
+    if ( cellVisibilityRatio != nil )
+    {
+        streamCollectionVC.minimumRequiredCellVisibilityRatio = cellVisibilityRatio.floatValue;
+    }
+    
+    streamCollectionVC.dependencyManager = dependencyManager;
+
     return streamCollectionVC;
 }
 
@@ -233,12 +257,16 @@ static CGFloat const kTemplateCLineSpacing = 8;
     self.streamDataSource.collectionView = self.collectionView;
     self.collectionView.dataSource = self.streamDataSource;
     
+    // Fetch Users Hashtags
+   [self fetchHashtagsForLoggedInUser];
+    
+    // Notifications
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(dataSourceDidChange:)
                                                  name:VStreamCollectionDataSourceDidChangeNotification
                                                object:self.streamDataSource];
     
-    
+
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(didEnterBackground:)
                                                  name:UIApplicationDidEnterBackgroundNotification
@@ -266,6 +294,8 @@ static CGFloat const kTemplateCLineSpacing = 8;
     
     [self.collectionView flashScrollIndicators];
     [self.navigationController setNavigationBarHidden:YES animated:YES];
+    
+    [self updateSequenceTracking];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -274,7 +304,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
     
     [[VTrackingManager sharedInstance] endEvent:VTrackingEventStreamDidAppear];
     
-    [[VTrackingManager sharedInstance] trackQueuedEventsWithName:VTrackingEventSequenceDidAppearInStream];
+    [[VTrackingManager sharedInstance] clearQueuedEventsWithName:VTrackingEventSequenceDidAppearInStream];
     
     [self.preloadImageCache removeAllObjects];
 }
@@ -339,6 +369,54 @@ static CGFloat const kTemplateCLineSpacing = 8;
     if (self.currentStream == self.defaultStream)
     {
         self.streamDataSource.hasHeaderCell = shouldDisplayMarquee;
+    }
+}
+
+#pragma mark - Fetch Users Tags
+
+- (void)fetchHashtagsForLoggedInUser
+{
+    VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    {
+        [self updateHashtagNavButton:resultObjects];
+    };
+    
+    VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
+    {
+        VLog(@"%@\n%@", operation, error);
+    };
+    
+    [[VObjectManager sharedManager] getHashtagsSubscribedToWithRefresh:YES
+                                                          successBlock:successBlock
+                                                             failBlock:failureBlock];
+}
+
+- (void)updateHashtagNavButton:(NSArray *)hashtags
+{
+    __block NSString *buttonImageName = @"streamFollowHashtag";
+    __block BOOL subscribed = NO;
+    
+    VUser *mainUser = [[VObjectManager sharedManager] mainUser];
+    NSMutableOrderedSet *tagSet = [mainUser.hashtags mutableCopy];
+    
+    [hashtags enumerateObjectsUsingBlock:^(VHashtag *hashtag, NSUInteger idx, BOOL *stop) {
+        [tagSet addObject:hashtag];
+        if ([hashtag.tag isEqualToString:self.selectedHashtag])
+        {
+            buttonImageName = @"followedHashtag";
+            subscribed = YES;
+        }
+    }];
+    
+    mainUser.hashtags = tagSet;
+    [mainUser.managedObjectContext save:nil];
+    
+    if (self.selectedHashtag)
+    {
+        UIImage *hashtagButtonImage = [[UIImage imageNamed:buttonImageName]  imageWithRenderingMode:UIImageRenderingModeAutomatic];
+        
+        [self.navHeaderView setRightButtonImage:hashtagButtonImage withAction:@selector(followUnfollowHashtagButtonAction:) onTarget:nil];
+        self.isSubscribedToHashtag = subscribed;
     }
 }
 
@@ -407,6 +485,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
 {
     VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithSequence:sequence];
     VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel];
+    contentViewController.dependencyManagerForHistogramExperiment = self.dependencyManager;
     contentViewController.placeholderImage = placeHolderImage;
     contentViewController.delegate = self;
     
@@ -421,7 +500,13 @@ static CGFloat const kTemplateCLineSpacing = 8;
     viewController.sequence = sequence;
     [self presentViewController:viewController
                        animated:YES
-                     completion:nil];
+                     completion:^{
+                         // Track view-start event, similar to how content is tracking in VNewContentViewController when loaded
+                         NSDictionary *params = @{ VTrackingKeyTimeCurrent : [NSDate date],
+                                                   VTrackingKeySequenceId : sequence.remoteId,
+                                                   VTrackingKeyUrls : sequence.tracking.viewStart ?: @[] };
+                         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
+                     }];
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView
@@ -507,15 +592,6 @@ static CGFloat const kTemplateCLineSpacing = 8;
     
     [self preloadSequencesAfterIndexPath:indexPath forDataSource:dataSource];
     
-    if ( sequence != nil )
-    {
-        NSDictionary *params = @{ VTrackingKeySequenceId : sequence.remoteId,
-                                  VTrackingKeyStreamId : self.currentStream.remoteId,
-                                  VTrackingKeyTimeStamp : [NSDate date],
-                                  VTrackingKeyUrls : sequence.tracking.cellView };
-        [[VTrackingManager sharedInstance] queueEvent:VTrackingEventSequenceDidAppearInStream parameters:params eventId:sequence.remoteId];
-    }
-    
     return cell;
 }
 
@@ -554,7 +630,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
         return NO;
     }
     
-    [[VTrackingManager sharedInstance] trackQueuedEventsWithName:VTrackingEventSequenceDidAppearInStream];
+    [[VTrackingManager sharedInstance] clearQueuedEventsWithName:VTrackingEventSequenceDidAppearInStream];
     
     self.currentStream = self.allStreams[index];
     
@@ -625,7 +701,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
 - (void)hashTag:(NSString *)hashtag tappedFromSequence:(VSequence *)sequence fromView:(UIView *)view
 {
     // Error checking
-    if ( !hashtag || !hashtag.length )
+    if ( hashtag == nil || !hashtag.length )
     {
         return;
     }
@@ -687,6 +763,109 @@ static CGFloat const kTemplateCLineSpacing = 8;
     }
 }
 
+#pragma mark - Hashtag Button Actions
+
+- (void)followUnfollowHashtagButtonAction:(UIButton *)sender
+{
+    // Check if logged in before attempting to subscribe / unsubscribe
+    if (![VObjectManager sharedManager].authorized)
+    {
+        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
+        return;
+    }
+    
+    // Disable the sub/unsub button
+    sender.userInteractionEnabled = NO;
+    sender.alpha = 0.3f;
+
+    if (self.isSubscribedToHashtag)
+    {
+        [self unfollowHashtagAction:sender];
+    }
+    else
+    {
+        [self followHashtagAction:sender];
+    }
+}
+
+- (void)followHashtagAction:(UIButton *)sender
+{
+    VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    {
+        // Animate follow button
+        self.isSubscribedToHashtag = YES;
+        [self updateSubscribeStatusAnimated:YES button:sender];
+    };
+    
+    VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
+    {
+        self.failureHUD = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        self.failureHUD.mode = MBProgressHUDModeText;
+        self.failureHUD.detailsLabelText = NSLocalizedString(@"HashtagSubscribeError", @"");
+        [self.failureHUD hide:YES afterDelay:3.0f];
+        
+        // Set button back to normal state
+        sender.userInteractionEnabled = YES;
+        sender.alpha = 1.0f;
+    };
+    
+    // Backend Subscribe to Hashtag call
+    [[VObjectManager sharedManager] subscribeToHashtag:self.selectedHashtag
+                                          successBlock:successBlock
+                                             failBlock:failureBlock];
+}
+
+- (void)unfollowHashtagAction:(UIButton *)sender
+{
+    VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    {
+        self.isSubscribedToHashtag = NO;
+        [self updateSubscribeStatusAnimated:YES button:sender];
+    };
+    
+    VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
+    {
+        self.failureHUD = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        self.failureHUD.mode = MBProgressHUDModeText;
+        self.failureHUD.detailsLabelText = NSLocalizedString(@"HashtagUnsubscribeError", @"");
+        [self.failureHUD hide:YES afterDelay:3.0f];
+        
+        // Set button back to normal state
+        sender.userInteractionEnabled = YES;
+        sender.alpha = 1.0f;
+    };
+    
+    // Backend Unsubscribe to Hashtag call
+    [[VObjectManager sharedManager] unsubscribeToHashtag:self.selectedHashtag
+                                            successBlock:successBlock
+                                               failBlock:failureBlock];
+}
+
+#pragma mark - Follow / Unfollow Hashtag Completion Method
+
+- (void)updateSubscribeStatusAnimated:(BOOL)animated button:(UIButton *)sender
+{
+    NSString *buttonImageName = @"streamFollowHashtag";
+    
+    if (self.isSubscribedToHashtag)
+    {
+        buttonImageName = @"followedHashtag";
+    }
+
+    // Reset the hashtag button image
+    UIImage *hashtagButtonImage = [[UIImage imageNamed:buttonImageName] imageWithRenderingMode:UIImageRenderingModeAutomatic];
+    [self.navHeaderView setRightButtonImage:hashtagButtonImage withAction:nil onTarget:nil];
+    
+    
+    // Set button back to normal state
+    sender.userInteractionEnabled = YES;
+    sender.alpha = 1.0f;
+
+    // Fire NSNotification to signal change in the status of this hashtag
+    [[NSNotificationCenter defaultCenter] postNotificationName:kHashtagStatusChangedNotification
+                                                        object:nil];
+}
+
 #pragma mark - VNewContentViewControllerDelegate
 
 - (void)newContentViewControllerDidClose:(VNewContentViewController *)contentViewController
@@ -694,6 +873,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
     if ( self.lastSelectedIndexPath != nil )
     {
         [self.collectionView reloadItemsAtIndexPaths:@[self.lastSelectedIndexPath]];
+        self.lastSelectedIndexPath = nil;
     }
     [self dismissViewControllerAnimated:YES
                              completion:nil];
@@ -762,7 +942,61 @@ static CGFloat const kTemplateCLineSpacing = 8;
 
 - (void)didEnterBackground:(NSNotification *)notification
 {
-    [[VTrackingManager sharedInstance] trackQueuedEventsWithName:VTrackingEventSequenceDidAppearInStream];
+    [[VTrackingManager sharedInstance] clearQueuedEventsWithName:VTrackingEventSequenceDidAppearInStream];
+}
+
+#pragma mark - UIScrollViewDelegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    [super scrollViewDidScroll:scrollView];
+    
+    [self updateSequenceTracking];
+}
+
+#pragma mark - Tracking
+
+- (void)updateSequenceTracking
+{
+    // Cells need to have this much visible area to be tracked
+    const float minimumRequiredVisibilityRatio = self.minimumRequiredCellVisibilityRatio;
+    
+    // The visible rect must be offset by the visible height of the header, which may or may not be visible
+    // In the future, when contentView's use a contentInset.top value to position content under the header,
+    // a combiantion of the contentInset and contentOffset values can be used instead
+    const CGFloat headerOffset = CGRectGetHeight(self.navHeaderView.frame) + [self headerPositionY];
+    const CGRect streamVisibleRect = CGRectMake( CGRectGetMinX( self.collectionView.bounds ),
+                                                 CGRectGetMinY( self.collectionView.bounds ) + headerOffset,
+                                                 CGRectGetWidth( self.collectionView.bounds ),
+                                                 CGRectGetHeight (self.collectionView.bounds ) - headerOffset);
+    
+    NSArray *visibleCells = self.collectionView.visibleCells;
+    [visibleCells enumerateObjectsUsingBlock:^(VStreamCollectionCell *cell, NSUInteger idx, BOOL *stop)
+     {
+         if ( ![cell isKindOfClass:[VStreamCollectionCell class]] )
+         {
+             return;
+         }
+         
+         VSequence *sequence = cell.sequence;
+         if ( sequence == nil )
+         {
+             return;
+         }
+         
+         // Calculate visible ratio (consts are for performance since this is called very often)
+         const CGRect intersection = CGRectIntersection( streamVisibleRect, cell.frame );
+         const float visibleRatio = CGRectGetHeight( intersection ) / CGRectGetHeight( cell.frame );
+         
+         if ( visibleRatio >= minimumRequiredVisibilityRatio )
+         {
+             NSDictionary *params = @{ VTrackingKeySequenceId : sequence.remoteId,
+                                       VTrackingKeyStreamId : self.currentStream.remoteId,
+                                       VTrackingKeyTimeStamp : [NSDate date],
+                                       VTrackingKeyUrls : sequence.tracking.cellView };
+             [[VTrackingManager sharedInstance] queueEvent:VTrackingEventSequenceDidAppearInStream parameters:params eventId:sequence.remoteId];
+         }
+     }];
 }
 
 @end

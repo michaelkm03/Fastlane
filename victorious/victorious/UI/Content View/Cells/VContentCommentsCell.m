@@ -24,6 +24,7 @@
 #import "VRTCUserPostedAtFormatter.h"
 #import "VComment+Fetcher.h"
 #import "NSURL+MediaType.h"
+#import "UIView+AutoLayout.h"
 
 static const UIEdgeInsets kTextInsets        = { 36.0f, 56.0f, 11.0f, 25.0f };
 
@@ -113,6 +114,9 @@ static NSCache *_sharedImageCache = nil;
     self.realtimeCommentLocationLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font];
     self.commentAndMediaView.textFont = [[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont];
     self.commentersAvatarImageView.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    [self setupSwipeView];
+    [self.contentView addFitToParentConstraintsToSubview:self.swipeViewController.view];
 }
 
 - (void)prepareContentAndMediaView
@@ -186,6 +190,11 @@ static NSCache *_sharedImageCache = nil;
         self.mediaPreviewURL = comment.previewImageURL;
         self.mediaIsVideo = [comment.mediaUrl v_hasVideoExtension];
     }
+    
+    self.commentCellUtilitiesController = [[VCommentCellUtilitesController alloc] initWithComment:self.comment
+                                                                                         cellView:self
+                                                                                         delegate:self];
+    self.swipeViewController.cellDelegate = self.commentCellUtilitiesController;
 }
 
 - (void)setHasMedia:(BOOL)hasMedia

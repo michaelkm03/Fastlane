@@ -10,8 +10,11 @@
 #import <XCTest/XCTest.h>
 
 #import "VPurchaseRecord.h"
+#import "NSObject+VMethodSwizzling.h"
+#import "NSData+AES.h"
 
 static NSString * const kTestFilePath = @"unit.test.filepath";
+static NSString * const kTestProductIdentifier = @"test_productIdentifier";
 
 @interface VPurchaseRecord (UnitTests)
 
@@ -66,14 +69,14 @@ static NSString * const kTestFilePath = @"unit.test.filepath";
 
 - (void)testReadAndWrite
 {
-    [self.purchaseRecord addProductIdentifier:@"product1"];
-    XCTAssert( [self.purchaseRecord.purchasedProductIdentifiers containsObject:@"product1"] );
+    [self.purchaseRecord addProductIdentifier:kTestProductIdentifier];
+    XCTAssert( [self.purchaseRecord.purchasedProductIdentifiers containsObject:kTestProductIdentifier] );
     XCTAssertEqual( self.purchaseRecord.purchasedProductIdentifiers.count, (NSUInteger)1 );
     
     self.purchaseRecord = nil;
     self.purchaseRecord = [[VPurchaseRecord alloc] initWithRelativeFilePath:kTestFilePath];
     [self.purchaseRecord loadPurchasedProductIdentifiers];
-    XCTAssert( [self.purchaseRecord.purchasedProductIdentifiers containsObject:@"product1"] );
+    XCTAssert( [self.purchaseRecord.purchasedProductIdentifiers containsObject:kTestProductIdentifier] );
     XCTAssertEqual( self.purchaseRecord.purchasedProductIdentifiers.count, (NSUInteger)1 );
     
     [self.purchaseRecord clear];
@@ -83,7 +86,55 @@ static NSString * const kTestFilePath = @"unit.test.filepath";
     self.purchaseRecord = [[VPurchaseRecord alloc] initWithRelativeFilePath:kTestFilePath];
     [self.purchaseRecord loadPurchasedProductIdentifiers];
     XCTAssertEqual( self.purchaseRecord.purchasedProductIdentifiers.count, (NSUInteger)0 );
-    XCTAssertFalse( [self.purchaseRecord.purchasedProductIdentifiers containsObject:@"product1"] );
+    XCTAssertFalse( [self.purchaseRecord.purchasedProductIdentifiers containsObject:kTestProductIdentifier] );
+}
+
+- (void)testDecryptionFailureNonArray
+{
+    [self.purchaseRecord addProductIdentifier:kTestProductIdentifier];
+    self.purchaseRecord = nil;
+    
+    [NSJSONSerialization v_swizzleClassMethod:@selector(JSONObjectWithData:options:error:) withBlock:^id
+     {
+         return [NSNull null];
+     }
+                                 executeBlock:^void
+     {
+         self.purchaseRecord = [[VPurchaseRecord alloc] initWithRelativeFilePath:kTestFilePath];
+         XCTAssertEqual( self.purchaseRecord.purchasedProductIdentifiers.count, (NSUInteger)0 );
+     }];
+}
+
+- (void)testDecryptionFailureNil
+{
+    [self.purchaseRecord addProductIdentifier:kTestProductIdentifier];
+    self.purchaseRecord = nil;
+    
+    [NSJSONSerialization v_swizzleClassMethod:@selector(JSONObjectWithData:options:error:) withBlock:^id
+     {
+         return nil;
+     }
+                                 executeBlock:^void
+     {
+         self.purchaseRecord = [[VPurchaseRecord alloc] initWithRelativeFilePath:kTestFilePath];
+         XCTAssertEqual( self.purchaseRecord.purchasedProductIdentifiers.count, (NSUInteger)0 );
+     }];
+}
+
+- (void)testDecryptionFailureAES
+{
+    [self.purchaseRecord addProductIdentifier:kTestProductIdentifier];
+    self.purchaseRecord = nil;
+    
+    [NSData v_swizzleClassMethod:@selector(decryptedDataWithAESKey:) withBlock:^id     
+     {
+         return nil;
+     }
+                                 executeBlock:^void
+     {
+         self.purchaseRecord = [[VPurchaseRecord alloc] initWithRelativeFilePath:kTestFilePath];
+         XCTAssertEqual( self.purchaseRecord.purchasedProductIdentifiers.count, (NSUInteger)0 );
+     }];
 }
 
 @end

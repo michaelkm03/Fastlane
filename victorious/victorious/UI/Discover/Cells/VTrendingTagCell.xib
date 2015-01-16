@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
@@ -16,7 +16,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="#Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R24-gj-ok1" customClass="VHashtagLabel">
-                        <rect key="frame" x="17" y="0.0" width="52" height="28"/>
+                        <rect key="frame" x="17" y="0.0" width="65" height="28"/>
                         <color key="backgroundColor" red="1" green="0.035351606610000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="28" id="3mp-Zu-WRf"/>
@@ -25,16 +25,31 @@
                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <view contentMode="center" translatesAutoresizingMaskIntoConstraints="NO" id="rD5-fh-Jty" customClass="VFollowHashtagControl">
+                        <rect key="frame" x="265" y="-6" width="40" height="40"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="40" id="LHV-fs-AvC"/>
+                            <constraint firstAttribute="width" constant="40" id="buP-fU-qqo"/>
+                        </constraints>
+                        <connections>
+                            <action selector="followUnfollowHashtag:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="b7Y-93-wO5"/>
+                        </connections>
+                    </view>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 <constraints>
                     <constraint firstItem="R24-gj-ok1" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="-8" id="Do7-Oa-7Ja"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="rD5-fh-Jty" secondAttribute="trailing" constant="7.5" id="QXe-Br-b06"/>
+                    <constraint firstItem="rD5-fh-Jty" firstAttribute="centerY" secondItem="R24-gj-ok1" secondAttribute="centerY" id="Rmu-H9-RCd"/>
+                    <constraint firstItem="rD5-fh-Jty" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="R24-gj-ok1" secondAttribute="trailing" constant="10" id="bPt-x4-dis"/>
                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="R24-gj-ok1" secondAttribute="trailing" constant="12" id="dRI-SY-jdS"/>
                     <constraint firstItem="R24-gj-ok1" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="17" id="mMK-5B-Xya"/>
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <connections>
+                <outlet property="followHashtagControl" destination="rD5-fh-Jty" id="oHW-IS-oNo"/>
                 <outlet property="hashTagLabel" destination="R24-gj-ok1" id="aJJ-Lh-drP"/>
             </connections>
             <point key="canvasLocation" x="351" y="391"/>

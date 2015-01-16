@@ -75,6 +75,7 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
 
 @interface VDependencyManagerTests : XCTestCase
 
+@property (nonatomic, strong) NSDictionary *dictionaryOfClassesByTemplateName;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VDependencyManager *childDependencyManager;
 
@@ -86,32 +87,32 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
 {
     [super setUp];
     
-    NSDictionary *dictionaryOfClassesByTemplateName = @{ kTestViewControllerInitMethodTemplateName: @"VTestViewControllerWithInitMethod",
-                                                         kTestViewControllerNewMethodTemplateName: @"VTestViewControllerWithNewMethod",
-                                                         kTestObjectWithPropertyTemplateName: @"VTestObjectWithProperty"
-                                                      };
+    self.dictionaryOfClassesByTemplateName = @{ kTestViewControllerInitMethodTemplateName: @"VTestViewControllerWithInitMethod",
+                                                kTestViewControllerNewMethodTemplateName: @"VTestViewControllerWithNewMethod",
+                                                kTestObjectWithPropertyTemplateName: @"VTestObjectWithProperty"
+                                            };
     
     // The presence of this "base" dependency manager (with an empty configuration dictionary) exposed a bug in a previous iteration of VDependencyManager.
-    VDependencyManager *baseDependencyManager = [[VDependencyManager alloc] initWithParentManager:nil configuration:@{} dictionaryOfClassesByTemplateName:dictionaryOfClassesByTemplateName];
+    VDependencyManager *baseDependencyManager = [[VDependencyManager alloc] initWithParentManager:nil configuration:@{} dictionaryOfClassesByTemplateName:self.dictionaryOfClassesByTemplateName];
     
     NSData *testData = [NSData dataWithContentsOfURL:[[NSBundle bundleForClass:[self class]] URLForResource:@"template" withExtension:@"json"]];
     NSDictionary *configuration = [NSJSONSerialization JSONObjectWithData:testData options:0 error:nil];
-    self.dependencyManager = [[VDependencyManager alloc] initWithParentManager:baseDependencyManager configuration:configuration dictionaryOfClassesByTemplateName:dictionaryOfClassesByTemplateName];
-    self.childDependencyManager = [[VDependencyManager alloc] initWithParentManager:self.dependencyManager configuration:@{} dictionaryOfClassesByTemplateName:dictionaryOfClassesByTemplateName];
+    self.dependencyManager = [[VDependencyManager alloc] initWithParentManager:baseDependencyManager configuration:configuration dictionaryOfClassesByTemplateName:self.dictionaryOfClassesByTemplateName];
+    self.childDependencyManager = [[VDependencyManager alloc] initWithParentManager:self.dependencyManager configuration:@{} dictionaryOfClassesByTemplateName:self.dictionaryOfClassesByTemplateName];
 }
 
 #pragma mark - Colors, fonts
 
 - (void)testColor
 {
-    UIColor *expected = [UIColor colorWithRed:0 green:0 blue:0 alpha:1];
+    UIColor *expected = [UIColor colorWithRed:0.2 green:0.6 blue:0.4 alpha:1];
     UIColor *actual = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     XCTAssertEqualObjects(expected, actual);
 }
 
 - (void)testParentColor
 {
-    UIColor *expected = [UIColor colorWithRed:0 green:0 blue:0 alpha:1];
+    UIColor *expected = [UIColor colorWithRed:0.2 green:0.6 blue:0.4 alpha:1];
     UIColor *actual = [self.childDependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     XCTAssertEqualObjects(expected, actual);
 }
@@ -138,6 +139,22 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
     UIFont *expected = [UIFont fontWithName:@"Helvetica" size:12];
     UIFont *actual = [self.childDependencyManager fontForKey:VDependencyManagerHeading1FontKey];
     XCTAssertEqualObjects(expected, actual);
+}
+
+- (void)testAddedDependencies
+{
+    NSDictionary *added = @{ @"new": @"value" };
+    VTestViewControllerWithNewMethod *value = (VTestViewControllerWithNewMethod *)[self.dependencyManager templateValueOfType:[UIViewController class] forKey:@"nvc" withAddedDependencies:added];
+    XCTAssert([value isKindOfClass:[VTestViewControllerWithNewMethod class]]);
+    XCTAssertEqualObjects([value.dependencyManager stringForKey:@"new"], @"value");
+}
+
+- (void)testAddedDependenciesOnChildManager
+{
+    NSDictionary *added = @{ @"new": @"value" };
+    VTestViewControllerWithNewMethod *value = (VTestViewControllerWithNewMethod *)[self.childDependencyManager templateValueOfType:[UIViewController class] forKey:@"nvc" withAddedDependencies:added];
+    XCTAssert([value isKindOfClass:[VTestViewControllerWithNewMethod class]]);
+    XCTAssertEqualObjects([value.dependencyManager stringForKey:@"new"], @"value");
 }
 
 #pragma mark - VHasManagedDependencies conformance
@@ -220,6 +237,61 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
 {
     NSArray *expected = @[ @"red", @"fish", @"blue", @"fish" ];
     NSArray *actual = [self.childDependencyManager arrayForKey:@"arrayOfStrings"];
+    XCTAssertEqualObjects(expected, actual);
+}
+
+- (void)testArrayOfSpecificType
+{
+    NSArray *array = [self.dependencyManager arrayOfValuesOfType:[VTestViewControllerWithNewMethod class] forKey:@"arrayOfObjects"];
+    XCTAssertEqual(array.count, 2u);
+    XCTAssert([array[0] isKindOfClass:[VTestViewControllerWithNewMethod class]]);
+    XCTAssert([array[0] calledNewMethod]);
+    XCTAssert([array[1] isKindOfClass:[VTestViewControllerWithNewMethod class]]);
+    XCTAssert([array[1] calledNewMethod]);
+}
+
+- (void)testSingletonArrayOfSpecificType
+{
+    NSArray *array = [self.dependencyManager arrayOfSingletonValuesOfType:[VTestViewControllerWithNewMethod class] forKey:@"arrayOfObjects"];
+    XCTAssertEqual(array.count, 2u);
+    XCTAssert([array[0] isKindOfClass:[VTestViewControllerWithNewMethod class]]);
+    XCTAssert([array[0] calledNewMethod]);
+    XCTAssert([array[1] isKindOfClass:[VTestViewControllerWithNewMethod class]]);
+    XCTAssert([array[1] calledNewMethod]);
+    
+    NSArray *otherArray = [self.dependencyManager arrayOfSingletonValuesOfType:[VTestViewControllerWithNewMethod class] forKey:@"arrayOfObjects"];
+    XCTAssertEqual(otherArray.count, 2u);
+    XCTAssertEqual(array[0], otherArray[0]);
+    XCTAssertEqual(array[1], otherArray[1]);
+}
+
+#pragma mark - Dictionaries
+
+- (void)testDictionary
+{
+    NSDictionary *expected = @{
+        @"channels_enabled": @YES,
+        @"histogram_enabled": @NO,
+        @"require_profile_image": @YES,
+        @"template_c_enabled": @NO
+    };
+    NSDictionary *actual = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:@"experiments"];
+    XCTAssertEqualObjects(expected, actual);
+}
+
+/**
+ Dictionaries should always be immutable, so a singleton dictionary doesn't make a lot of sense. However,
+ if you insist on asking VDependencyManager for a singleton dictionary, it should still work.
+ */
+- (void)testSingletonDictionary
+{
+    NSDictionary *expected = @{
+        @"channels_enabled": @YES,
+        @"histogram_enabled": @NO,
+        @"require_profile_image": @YES,
+        @"template_c_enabled": @NO
+    };
+    NSDictionary *actual = [self.dependencyManager singletonObjectOfType:[NSDictionary class] forKey:@"experiments"];
     XCTAssertEqualObjects(expected, actual);
 }
 
@@ -338,6 +410,83 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
     
     VTestViewControllerWithNewMethod *result = (VTestViewControllerWithNewMethod *)[self.dependencyManager singletonObjectOfType:[UIViewController class] fromDictionary:configuration];
     XCTAssert([result isKindOfClass:[VTestViewControllerWithNewMethod class]]);
+}
+
+/**
+ A "prefab" object is one that doesn't need to be instantiated--it was "prefabricated" and placed directly into
+ the configuration dictionary (rather than the usual case of the configuration dictionary containing strings
+ describing the object and how to initialize it). These prefab objects are ALWAYS singletons
+ */
+- (void)testPrefabSingletonObject
+{
+    static NSString * const kPFkey = @"pf";
+    char bytes[] = {0x1, 0x2, 0x3, 0x4};
+    size_t bytesLength = sizeof(char) * 4;
+    
+    NSData *prefab = [NSData dataWithBytes:&bytes length:bytesLength];
+    
+    NSDictionary *configuration = @{ kPFkey: prefab };
+    VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:nil
+                                                                                configuration:configuration
+                                                            dictionaryOfClassesByTemplateName:self.dictionaryOfClassesByTemplateName];
+    
+    id result = [dependencyManager singletonObjectOfType:[NSData class] forKey:kPFkey];
+    XCTAssertEqual(result, prefab);
+    
+    id result2 = [dependencyManager templateValueOfType:[NSData class] forKey:kPFkey];
+    XCTAssertEqual(result2, prefab);
+}
+
+- (void)testPrefabObjectInParentManager
+{
+    static NSString * const kPFkey = @"pf";
+    char bytes[] = {0x1, 0x2, 0x3, 0x4};
+    size_t bytesLength = sizeof(char) * 4;
+    
+    NSData *prefab = [NSData dataWithBytes:&bytes length:bytesLength];
+    
+    NSDictionary *configuration = @{ kPFkey: prefab };
+    VDependencyManager *parentDependencyManager = [[VDependencyManager alloc] initWithParentManager:nil
+                                                                                configuration:configuration
+                                                            dictionaryOfClassesByTemplateName:self.dictionaryOfClassesByTemplateName];
+    VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:parentDependencyManager
+                                                                                configuration:@{ }
+                                                            dictionaryOfClassesByTemplateName:self.dictionaryOfClassesByTemplateName];
+    
+    id result = [dependencyManager singletonObjectOfType:[NSData class] forKey:kPFkey];
+    XCTAssertEqual(result, prefab);
+    
+    id result2 = [dependencyManager templateValueOfType:[NSData class] forKey:kPFkey];
+    XCTAssertEqual(result2, prefab);
+}
+
+#pragma mark - Children
+
+- (void)testChildManagerReturnsValuesFromParent
+{
+    VDependencyManager *childManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:@{ }];
+    
+    NSString *expected = @"medium";
+    NSString *actual = [childManager stringForKey:@"video_quality.capture"];
+    XCTAssertEqualObjects(expected, actual);
+}
+
+- (void)testChildManagerReturnsNewValues
+{
+    VDependencyManager *childManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:@{ @"new": @"hotness" }];
+    
+    NSString *expected = @"hotness";
+    NSString *actual = [childManager stringForKey:@"new"];
+    XCTAssertEqualObjects(expected, actual);
+}
+
+- (void)testChildManagerOverridesParent
+{
+    VDependencyManager *childManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:@{ @"video_quality.capture": @"low" }];
+    
+    NSString *expected = @"low";
+    NSString *actual = [childManager stringForKey:@"video_quality.capture"];
+    XCTAssertEqualObjects(expected, actual);
 }
 
 @end

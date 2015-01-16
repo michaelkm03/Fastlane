@@ -6,8 +6,9 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "VBadgeBackgroundView.h"
 #import "VNavigationHeaderView.h"
-#import "VBadgeLabel.h"
+#import "VNumericalBadgeView.h"
 #import "VThemeManager.h"
 #import "VSettingManager.h"
 #import "VAutomation.h"
@@ -18,13 +19,14 @@
 @property (nonatomic, weak) IBOutlet UILabel *headerLabel;
 @property (nonatomic, weak) IBOutlet UIButton *backButton;
 @property (nonatomic, weak) IBOutlet UIButton *menuButton;
-@property (nonatomic, weak) IBOutlet VBadgeLabel *badgeLabel;
-@property (nonatomic, weak) IBOutlet UIView *badgeBorder;
+@property (nonatomic, weak) IBOutlet VNumericalBadgeView *badgeView;
+@property (nonatomic, weak) IBOutlet VBadgeBackgroundView *badgeBorder;
 @property (nonatomic, weak) IBOutlet UIButton *addButton;
 @property (nonatomic, weak, readwrite) IBOutlet UIView<VNavigationSelectorProtocol> *navSelector;
 @property (nonatomic) NSInteger lastSelectedControl;
 
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *ratioConstraint;
+@property (nonatomic, assign) CGFloat maximumHeaderHeight;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *heightconstraint;
 
 @end
 
@@ -47,7 +49,7 @@
     VNavigationHeaderView *header = [[[NSBundle mainBundle] loadNibNamed:nibName owner:nil options:nil] firstObject];
     header.backButton.hidden = NO;
     header.menuButton.hidden = YES;
-    header.badgeLabel.hidden = YES;
+    header.badgeView.hidden = YES;
     header.badgeBorder.hidden = YES;
     
     [header setupSegmentedControlWithTitles:titles];
@@ -59,12 +61,18 @@
     [super awakeFromNib];
     self.backButton.accessibilityIdentifier = VAutomationIdentifierGenericBack;
     self.menuButton.accessibilityIdentifier = VAutomationIdentifierMainMenu;
+    
+    self.badgeView.userInteractionEnabled = NO;
+    self.badgeBorder.userInteractionEnabled = NO;
+    
+    // This sets the maximum header height as it is configured in interface builder
+    self.maximumHeaderHeight = self.heightconstraint.constant;
 }
 
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    if ( CGRectGetHeight(self.badgeLabel.frame) == 0 || CGRectGetWidth(self.badgeLabel.frame) == 0 )
+    if ( CGRectGetHeight(self.badgeView.frame) == 0 || CGRectGetWidth(self.badgeView.frame) == 0 )
     {
         self.badgeBorder.bounds = CGRectZero;
     }
@@ -85,7 +93,7 @@
     [self.addButton setTitleColor:tintColor forState:UIControlStateNormal];
     
     self.backgroundColor = isTemplateC ? [UIColor whiteColor] : [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
-    self.badgeBorder.backgroundColor = self.backgroundColor;
+    self.badgeBorder.color = self.backgroundColor;
     
     UIImage *image = [self.menuButton.currentImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     [self.menuButton setImage:image forState:UIControlStateNormal];
@@ -99,31 +107,20 @@
     self.headerLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:headerFontKey];
     self.headerLabel.text = self.headerText;
     
-    self.badgeLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont];
+    self.badgeView.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont];
 }
 
 - (void)setupSegmentedControlWithTitles:(NSArray *)titles
 {
-    if (titles.count <= 1)
-    {
-        [self removeConstraint:self.ratioConstraint];
-        self.ratioConstraint = [NSLayoutConstraint constraintWithItem:self
-                                                            attribute:NSLayoutAttributeWidth
-                                                            relatedBy:NSLayoutRelationEqual
-                                                               toItem:self
-                                                            attribute:NSLayoutAttributeHeight
-                                                           multiplier:CGRectGetWidth(self.frame) / CGRectGetMinY(self.navSelector.frame)
-                                                             constant:0];
-        [self addConstraint:self.ratioConstraint];
-        
-        CGRect frame = self.frame;
-        frame.size.height = CGRectGetMinY(self.navSelector.frame);
-        self.frame = frame;
-    }
-    else
+    CGFloat headerHeight = CGRectGetMinY(self.navSelector.frame);
+    
+    if (titles.count > 1)
     {
         self.navSelector.titles = titles;
+        headerHeight = self.maximumHeaderHeight;
     }
+    
+    self.heightconstraint.constant = headerHeight;
 }
 
 - (void)setDelegate:(id<VNavigationHeaderDelegate>)delegate
@@ -213,7 +210,7 @@
 
 - (void)setBadgeNumber:(NSInteger)badgeNumber
 {
-    [self.badgeLabel setBadgeNumber:badgeNumber];
+    [self.badgeView setBadgeNumber:badgeNumber];
 }
 
 @end

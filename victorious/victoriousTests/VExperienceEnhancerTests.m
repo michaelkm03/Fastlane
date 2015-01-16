@@ -197,29 +197,4 @@ static const NSUInteger kExperienceEnhancerCount = 20;
      }];
 }
 
-- (void)testTracking
-{
-    NSArray *experienceEnhancers = [self createExperienceEnhancers];
-    [experienceEnhancers enumerateObjectsUsingBlock:^(VExperienceEnhancer *exp, NSUInteger idx, BOOL *stop)
-     {
-         NSUInteger start = arc4random() % 200;
-         [exp resetStartingVoteCount:start];
-         
-         NSUInteger count = arc4random() % 200;
-         for ( NSUInteger i = 0; i < count; i++ )
-         {
-             [exp vote];
-         }
-     }];
-    
-    self.viewController.experienceEnhancers = experienceEnhancers;
-    [self.viewController sendTrackingEvents];
-    
-    [self.viewController.experienceEnhancers enumerateObjectsUsingBlock:^(VExperienceEnhancer *exp, NSUInteger idx, BOOL *stop)
-     {
-         XCTAssertEqual( exp.sessionVoteCount, (NSUInteger)0 );
-         
-     }];
-}
-
 @end

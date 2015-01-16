@@ -15,25 +15,29 @@
 
 #import "VHistogramDataSource.h"
 
-/**
- *  Posted whenever the server returns an updated state of this content.
- */
-extern NSString * const VContentViewViewModelDidUpdateContentNotification;
+@protocol VContentViewViewModelDelegate <NSObject>
 
 /**
- *  Posted whenever new comments are made available for a given sequence.
+ * Called whenever new comments are made available for a given sequence.
  */
-extern NSString * const VContentViewViewModelDidUpdateCommentsNotification;
+- (void)didUpdateComments;
 
 /**
- *  Posted whenever new histogram data is made available.
+ * Called whenever the server returns an updated state of this content.
  */
-extern NSString * const VContentViewViewModelDidUpdateHistogramDataNotification;
+- (void)didUpdateContent;
 
 /**
- * Posted whenever new poll data is made available.
+ * Called whenever new histogram data is made available.
  */
-extern NSString * const VContentViewViewModelDidUpdatePollDataNotification;
+- (void)didUpdateHistogramData;
+
+/**
+ * Called whenever new poll data is made available.
+ */
+- (void)didUpdatePollsData;
+
+@end
 
 /**
  *  An enumeration of the various content types supported by VContentViewModel.
@@ -98,6 +102,8 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
 @property (nonatomic, readonly) NSInteger nodeID;
 
 @property (nonatomic, readonly) VUser *user;
+
+@property (nonatomic, weak) id<VContentViewViewModelDelegate> delegate;
 
 /**
  *  The corresponding sequence for this view model.
@@ -182,6 +188,8 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
 - (void)attemptToLoadNextPageOfComments;
 
 @property (nonatomic, readonly) NSArray *comments;
+
+- (void)removeCommentAtIndex:(NSUInteger)index;
 
 #pragma mark - Actions
 

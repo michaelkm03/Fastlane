@@ -8,6 +8,8 @@
 
 #import "VObjectManager.h"
 
+@class VHashtag;
+
 @interface VObjectManager (Discover)
 
 - (RKManagedObjectRequestOperation *)getSuggestedUsers:(VSuccessBlock)success
@@ -15,5 +17,25 @@
 
 - (RKManagedObjectRequestOperation *)getSuggestedHashtags:(VSuccessBlock)success
                                                 failBlock:(VFailBlock)fail;
+
+- (RKManagedObjectRequestOperation *)getHashtagsSubscribedToWithRefresh:(BOOL)refresh
+                                                           successBlock:(VSuccessBlock)success
+                                                              failBlock:(VFailBlock)fail;
+
+- (RKManagedObjectRequestOperation *)unsubscribeToHashtagUsingVHashtagObject:(VHashtag *)hashtag
+                                                                successBlock:(VSuccessBlock)success
+                                                                   failBlock:(VFailBlock)fail;
+
+- (RKManagedObjectRequestOperation *)unsubscribeToHashtag:(NSString *)hashtag
+                                             successBlock:(VSuccessBlock)success
+                                                failBlock:(VFailBlock)fail;
+
+- (RKManagedObjectRequestOperation *)subscribeToHashtagUsingVHashtagObject:(VHashtag *)hashtag
+                                                              successBlock:(VSuccessBlock)success
+                                                                 failBlock:(VFailBlock)fail;
+
+- (RKManagedObjectRequestOperation *)subscribeToHashtag:(NSString *)hashtag
+                                           successBlock:(VSuccessBlock)success
+                                              failBlock:(VFailBlock)fail;
 
 @end

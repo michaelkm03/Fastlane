@@ -41,6 +41,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 @property (nonatomic) BOOL finishedFirstQuartile;
 @property (nonatomic) BOOL finishedMidpoint;
 @property (nonatomic) BOOL finishedThirdQuartile;
+@property (nonatomic) BOOL finishedFourthQuartile;
 @property (nonatomic) BOOL hasCaculatedItemTime;
 @property (nonatomic) BOOL wasPlayingBeforeDissappeared;
 @property (nonatomic) BOOL hasCalculatedItemSize;
@@ -724,16 +725,23 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
             {
                 [self.delegate videoPlayerDidReachEndOfVideo:self];
             }
-            if ( self.isTrackingEnabled )
-            {
-                NSDictionary *params = @{ VTrackingKeyUrls : self.trackingItem.videoComplete100 };
-                [[VTrackingManager sharedInstance] trackEvent:VTrackingEventVideoDidComplete100 parameters:params];
-            }
-            self.startedVideo          = NO;
-            self.finishedFirstQuartile = NO;
-            self.finishedMidpoint      = NO;
-            self.finishedThirdQuartile = NO;
+            self.startedVideo           = NO;
+            self.finishedFirstQuartile  = NO;
+            self.finishedMidpoint       = NO;
+            self.finishedThirdQuartile  = NO;
+            self.finishedFourthQuartile = NO;
         }
+    }
+    
+    if (!self.finishedFourthQuartile )
+    {
+        if ( self.isTrackingEnabled )
+        {
+            NSDictionary *params = @{ VTrackingKeyUrls : self.trackingItem.videoComplete100 };
+            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventVideoDidComplete100 parameters:params];
+        }
+        
+        self.finishedFourthQuartile = YES;
     }
 }
 
@@ -756,10 +764,11 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
         self.delegateNotifiedOfReadinessToPlay = NO;
         AVPlayerItem *newItem = change[NSKeyValueChangeNewKey];
         [self removeObserverFromOldPlayerItemAndAddObserverToPlayerItem:newItem];
-        self.startedVideo          = NO;
-        self.finishedFirstQuartile = NO;
-        self.finishedMidpoint      = NO;
-        self.finishedThirdQuartile = NO;
+        self.startedVideo           = NO;
+        self.finishedFirstQuartile  = NO;
+        self.finishedMidpoint       = NO;
+        self.finishedThirdQuartile  = NO;
+        self.finishedFourthQuartile = NO;
     }
     else if (object == self.player && [keyPath isEqualToString:NSStringFromSelector(@selector(rate))])
     {
@@ -799,12 +808,6 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
                 if (!self.startedVideo)
                 {
                     self.startedVideo = YES;
-                    if ( self.isTrackingEnabled )
-                    {
-                        NSDictionary *params = @{ VTrackingKeyTimeCurrent : @( CMTimeGetSeconds( self.currentTime ) ),
-                                                  VTrackingKeyUrls : self.trackingItem.videoStart };
-                        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventVideoDidStart parameters:params];
-                    }
                 }
             }
             else if ([oldRate floatValue] != 0 && [newRate floatValue] == 0)
@@ -843,12 +846,6 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
                     if ([self.delegate respondsToSelector:@selector(videoPlayerFailed:)])
                     {
                         [self.delegate videoPlayerFailed:self];
-                    }
-                    if ( self.isTrackingEnabled )
-                    {
-                        NSDictionary *params = @{ VTrackingKeyTimeCurrent : @( CMTimeGetSeconds( self.currentTime ) ),
-                                                  VTrackingKeyUrls : self.trackingItem.videoError };
-                        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventVideoDidError parameters:params];
                     }
                     break;
                 }

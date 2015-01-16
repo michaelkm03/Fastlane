@@ -75,7 +75,7 @@
                                                  selector:@selector(updateData)
                                                      name:VPurchaseManagerProductsDidUpdateNotification
                                                    object:nil];
-        NSArray *productIdentifiers = [VVoteType productIdentifiersFromVoteTypes:voteTypes];
+        NSSet *productIdentifiers = [VVoteType productIdentifiersFromVoteTypes:voteTypes];
         
         if ( !self.purchaseManager.isPurchaseRequestActive )
         {
@@ -214,22 +214,6 @@
     return [experienceEnhancers filteredArrayUsingPredicate:predicate];
 }
 
-- (void)sendTrackingEvents
-{
-    [self.experienceEnhancers enumerateObjectsUsingBlock:^(VExperienceEnhancer *enhancer, NSUInteger idx, BOOL *stop)
-    {
-        NSUInteger voteCount = enhancer.sessionVoteCount;
-        if ( voteCount > 0 )
-        {
-            NSDictionary *params = @{ VTrackingKeyVoteCount : @( voteCount ),
-                                      VTrackingKeySequenceId : self.sequence.remoteId,
-                                      VTrackingKeyUrls : enhancer.voteType.tracking.ballisticCount };
-            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidVoteSequence parameters:params];
-            [enhancer resetSessionVoteCount];
-        }
-    }];
-}
-
 #pragma mark - Property Accessors
 
 - (void)setEnhancerBar:(VExperienceEnhancerBar *)enhancerBar
@@ -237,6 +221,7 @@
     _enhancerBar = enhancerBar;
     
     enhancerBar.dataSource = self;
+    enhancerBar.delegate = self;
 }
 
 #pragma mark - VExperienceEnhancerBarDataSource
@@ -249,6 +234,25 @@
 - (VExperienceEnhancer *)experienceEnhancerForIndex:(NSInteger)index
 {
     return [self.validExperienceEnhancers objectAtIndex:(NSUInteger)index];
+}
+
+#pragma mark - VExperienceEnhancerBarDelegate
+
+- (void)experienceEnhancerSelected:(VExperienceEnhancer *)enhancer
+{
+    NSDictionary *sharedParams = @{ VTrackingKeyVoteCount : @( 1 ),
+                                    VTrackingKeySequenceId : self.sequence.remoteId,
+                                    VTrackingKeyUrls : enhancer.trackingUrls };
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] initWithDictionary:sharedParams];
+    
+    if ( self.delegate.isVideoContent )
+    {
+        Float64 currentVideoTime = self.delegate.currentVideoTime;
+        [params addEntriesFromDictionary:@{ VTrackingKeyTimeCurrent : @( currentVideoTime ) }];
+    }
+    
+    NSDictionary *finalParams = [NSDictionary dictionaryWithDictionary:params];
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidVoteSequence parameters:finalParams];
 }
 
 @end

@@ -15,15 +15,10 @@
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Pagination.h"
 #import "VRootViewController.h"
+#import "VSettingManager.h"
 #import "VUnreadMessageCountCoordinator.h"
 #import "VConstants.h"
 #import "UIViewController+VNavMenu.h"
-
-typedef enum {
-    vFilterBy_Messages = 0,
-    vFilterBy_Notifications = 1
-
-} vFilterBy;
 
 @interface VInboxContainerViewController () <VNavigationHeaderDelegate>
 
@@ -66,6 +61,7 @@ static char kKVOContext;
     [super awakeFromNib];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loggedInChanged:) name:kLoggedInChangedNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(inboxMessageNotification:) name:VDeeplinkManagerInboxMessageNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
 - (void)dealloc
@@ -78,8 +74,6 @@ static char kKVOContext;
 {
     [super viewWillAppear:animated];
     self.title = NSLocalizedString(@"Inbox", nil);
-    [self.filterControls setSelectedSegmentIndex:vFilterBy_Messages];
-    self.headerView.hidden = YES;
     
     self.inboxViewController = self.childViewControllers.firstObject;
     
@@ -90,9 +84,20 @@ static char kKVOContext;
                                    onTarget:self.inboxViewController];
 }
 
-- (IBAction)changedFilterControls:(id)sender
+- (BOOL)shouldAutorotate
 {
-    [[VInboxViewController inboxViewController] toggleFilterControl:self.filterControls.selectedSegmentIndex];
+    return NO;
+}
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
+    return isTemplateC ? UIStatusBarStyleDefault : UIStatusBarStyleLightContent;
 }
 
 - (void)setMessageCountCoordinator:(VUnreadMessageCountCoordinator *)messageCountCoordinator
@@ -173,6 +178,14 @@ static char kKVOContext;
         {
             [self.messageCountCoordinator updateUnreadMessageCount];
         } failBlock:nil];
+    }
+}
+
+- (void)applicationDidBecomeActive:(NSNotification *)notification
+{
+    if ( self.dependencyManager.objectManager.mainUserLoggedIn )
+    {
+        [self.messageCountCoordinator updateUnreadMessageCount];
     }
 }
 

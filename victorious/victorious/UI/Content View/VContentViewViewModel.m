@@ -44,11 +44,6 @@
 #import "VAdBreak.h"
 #import "VAdBreakFallback.h"
 
-NSString * const VContentViewViewModelDidUpdateCommentsNotification = @"VContentViewViewModelDidUpdateCommentsNotification";
-NSString * const VContentViewViewModelDidUpdateHistogramDataNotification = @"VContentViewViewModelDidUpdateHistogramDataNotification";
-NSString * const VContentViewViewModelDidUpdatePollDataNotification = @"VContentViewViewModelDidUpdatePollDataNotification";
-NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentViewViewModelDidUpdateContentNotification";
-
 static NSString * const kPreferedMimeType = @"application/x-mpegURL";
 
 @interface VContentViewViewModel ()
@@ -199,8 +194,7 @@ static NSString * const kPreferedMimeType = @"application/x-mpegURL";
                   self.videoViewModel = [VVideoCellViewModel videoCellViewModelWithItemURL:[self videoURL]
                                                                               withAdSystem:self.monetizationPartner
                                                                                withDetails:self.monetizationDetails];
-                  [[NSNotificationCenter defaultCenter] postNotificationName:VContentViewViewModelDidUpdateContentNotification
-                                                                      object:self];
+                  [self.delegate didUpdateContent];
               }];
          }
          else
@@ -208,8 +202,7 @@ static NSString * const kPreferedMimeType = @"application/x-mpegURL";
              self.videoViewModel = [VVideoCellViewModel videoCellViewModelWithItemURL:[self videoURL]
                                                                          withAdSystem:VMonetizationPartnerNone
                                                                           withDetails:nil];
-             [[NSNotificationCenter defaultCenter] postNotificationName:VContentViewViewModelDidUpdateContentNotification
-                                                                 object:self];
+             [self.delegate didUpdateContent];
 
          }
     }
@@ -251,7 +244,7 @@ static NSString * const kPreferedMimeType = @"application/x-mpegURL";
 
 - (void)fetchHistogramData
 {
-    if (![self.sequence isVideo] || ![[VSettingManager sharedManager] settingEnabledForKey:VExperimentsHistogramEnabled])
+    if (![self.sequence isVideo])
     {
         return;
     }
@@ -263,8 +256,7 @@ static NSString * const kPreferedMimeType = @"application/x-mpegURL";
          if (histogramData)
          {
              self.histogramDataSource = [VHistogramDataSource histogramDataSourceWithDataPoints:histogramData];
-             [[NSNotificationCenter defaultCenter] postNotificationName:VContentViewViewModelDidUpdateHistogramDataNotification
-                                                                 object:self];
+             [self.delegate didUpdateHistogramData];
          }
      }];
 }
@@ -279,8 +271,7 @@ static NSString * const kPreferedMimeType = @"application/x-mpegURL";
     [[VObjectManager sharedManager] pollResultsForSequence:self.sequence
                                               successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
      {
-         [[NSNotificationCenter defaultCenter] postNotificationName:VContentViewViewModelDidUpdatePollDataNotification
-                                                             object:self];
+         [self.delegate didUpdatePollsData];
      }
                                                  failBlock:nil];
 }
@@ -362,11 +353,17 @@ static NSString * const kPreferedMimeType = @"application/x-mpegURL";
      }];
     _comments = sortedComments;
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:VContentViewViewModelDidUpdateCommentsNotification
-                                                        object:self];
+    [self.delegate didUpdateComments];
 }
 
 #pragma mark - Public Methods
+
+- (void)removeCommentAtIndex:(NSUInteger)index
+{
+    NSMutableArray *updatedComments = [self.comments mutableCopy];
+    [updatedComments removeObjectAtIndex:index];
+    self.comments = [NSArray arrayWithArray:updatedComments];
+}
 
 - (void)addCommentWithText:(NSString *)text
                   mediaURL:(NSURL *)mediaURL
@@ -711,9 +708,8 @@ static NSString * const kPreferedMimeType = @"application/x-mpegURL";
                                     withAnswer:(selectedAnswer == VPollAnswerA) ? [self answerA] : [self answerB]
                                   successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
-         //
-         [[NSNotificationCenter defaultCenter] postNotificationName:VContentViewViewModelDidUpdatePollDataNotification
-                                                             object:self];
+         [self.delegate didUpdatePollsData];
+         
          completion(YES, nil);
      }
                                      failBlock:^(NSOperation *operation, NSError *error)

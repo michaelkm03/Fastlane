@@ -17,5 +17,6 @@
 @property (nonatomic, retain) NSNumber * isNewPrivateMessageEnabled;
 @property (nonatomic, retain) NSNumber * isNewCommentOnMyPostEnabled;
 @property (nonatomic, retain) NSNumber * isPostFromFollowedEnabled;
+@property (nonatomic, retain) NSNumber * isPostOnFollowedHashTagEnabled;
 
 @end

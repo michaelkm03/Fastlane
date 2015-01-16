@@ -31,7 +31,7 @@ static NSString * const kUnreadCountKey = @"unread_count";
     {
         for (VConversation *conversation in resultObjects)
         {
-            if (conversation.remoteId)
+            if (conversation.remoteId != nil)
             {
                 conversation.filterAPIPath = [self apiPathForConversationWithRemoteID:conversation.remoteId];
             }

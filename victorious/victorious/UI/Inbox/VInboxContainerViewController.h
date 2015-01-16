@@ -8,10 +8,9 @@
 
 #import "VHasManagedDependencies.h"
 #import "VNavigationDestination.h"
-#import "VTableContainerViewController.h"
 #import "VProvidesNavigationMenuItemBadge.h"
 
-@interface VInboxContainerViewController : VTableContainerViewController <VHasManagedDependancies, VNavigationDestination, VProvidesNavigationMenuItemBadge>
+@interface VInboxContainerViewController : UIViewController <VHasManagedDependancies, VNavigationDestination, VProvidesNavigationMenuItemBadge>
 
 + (instancetype)inboxContainer;
 

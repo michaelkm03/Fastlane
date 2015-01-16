@@ -10,6 +10,7 @@
 
 #import "VContentViewViewModel.h"
 
+@class VDependencyManager;
 @class VNewContentViewController;
 
 @protocol VNewContentViewControllerDelegate  <NSObject>
@@ -51,5 +52,10 @@
 @property (nonatomic, strong, readonly) VContentViewViewModel *viewModel;
 
 @property (nonatomic, strong) UIImage *placeholderImage;
+
+/**
+ *  Need a reference to this for determining whether or not to show the histogram.
+ */
+@property (nonatomic, weak) VDependencyManager *dependencyManagerForHistogramExperiment;
 
 @end

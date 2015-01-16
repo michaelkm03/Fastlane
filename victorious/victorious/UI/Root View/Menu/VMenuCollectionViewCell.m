@@ -7,7 +7,7 @@
 //
 
 #import "VAutomation.h"
-#import "VBadgeLabel.h"
+#import "VNumericalBadgeView.h"
 #import "VDependencyManager.h"
 #import "VMenuCollectionViewCell.h"
 #import "VNavigationMenuItem.h"
@@ -18,7 +18,7 @@ static const CGFloat kCellHeight = 50.0f;
 @interface VMenuCollectionViewCell ()
 
 @property (nonatomic, weak) IBOutlet UILabel *menuLabel; ///< A label to hold the menu item (e.g. "Home", "Channel", etc.)
-@property (nonatomic, weak) IBOutlet VBadgeLabel *badgeLabel; ///< A label to hold a badge number (typically for the inbox menu item)
+@property (nonatomic, weak) IBOutlet VNumericalBadgeView *badgeView; ///< A label to hold a badge number (typically for the inbox menu item)
 
 @end
 
@@ -40,7 +40,7 @@ static const CGFloat kCellHeight = 50.0f;
     _dependencyManager = dependencyManager;
     self.menuLabel.font = [self.dependencyManager fontForKey:VDependencyManagerHeading1FontKey];
     self.menuLabel.textColor = [UIColor colorWithWhite:1.0 alpha:0.7];
-    self.badgeLabel.font = [self.dependencyManager fontForKey:VDependencyManagerHeading2FontKey];
+    self.badgeView.font = [self.dependencyManager fontForKey:VDependencyManagerHeading2FontKey];
 }
 
 - (void)prepareForReuse
@@ -60,7 +60,7 @@ static const CGFloat kCellHeight = 50.0f;
 
 - (void)setBadgeNumber:(NSInteger)badgeNumber
 {
-    [self.badgeLabel setBadgeNumber:badgeNumber];
+    [self.badgeView setBadgeNumber:badgeNumber];
 }
 
 @end

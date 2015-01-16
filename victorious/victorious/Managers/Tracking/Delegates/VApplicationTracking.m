@@ -22,8 +22,7 @@ NSString * const kMacroNavigiationTo          = @"%%NAV_TO%%";
 NSString * const kMacroStreamId               = @"%%STREAM_ID%%";
 NSString * const kMacroSequenceId             = @"%%SEQUENCE_ID%%";
 NSString * const kMacroBallisticsCount        = @"%%COUNT%%";
-
-static const NSUInteger kMaximumURLRequestRetryCount = 5;
+NSString * const kMacroShareDestination       = @"%%SHARE_DEST%%";
 
 #define APPLICATION_TRACKING_LOGGING_ENABLED 0
 
@@ -58,7 +57,8 @@ static const NSUInteger kMaximumURLRequestRetryCount = 5;
                                     VTrackingKeyPositionX          : kMacroPositionX,
                                     VTrackingKeyPositionY          : kMacroPositionY,
                                     VTrackingKeyNavigiationFrom    : kMacroNavigiationFrom,
-                                    VTrackingKeyNavigiationTo      : kMacroNavigiationTo };
+                                    VTrackingKeyNavigiationTo      : kMacroNavigiationTo,
+                                    VTrackingKeyActivityType       : kMacroShareDestination };
     }
     return self;
 }
@@ -139,7 +139,10 @@ static const NSUInteger kMaximumURLRequestRetryCount = 5;
         return NO;
     }
     
-    [self sendRequest:request];
+    dispatch_queue_t queue = dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0 );
+    dispatch_async( queue, ^{
+        [self sendRequest:request];
+    });
     
     return YES;
 }
@@ -159,17 +162,14 @@ static const NSUInteger kMaximumURLRequestRetryCount = 5;
     
     __block NSString *output = originalString;
     
-    [macros enumerateKeysAndObjectsUsingBlock:^(NSString *macroKey, NSString *macroValue, BOOL *stop) {
-        
+    [macros enumerateKeysAndObjectsUsingBlock:^(NSString *macroKey, NSString *macroValue, BOOL *stop)
+    {
         // For each macro, find a value in the parameters dictionary
         id value = parameters[ macroKey ];
-        if ( value != nil )
+        NSString *stringWithNextMacro = [self stringFromString:output byReplacingString:macroValue withValue:value ?: @""];
+        if ( stringWithNextMacro != nil )
         {
-            NSString *stringWithNextMacro = [self stringFromString:output byReplacingString:macroValue withValue:value];
-            if ( stringWithNextMacro != nil )
-            {
-                output = stringWithNextMacro;
-            }
+            output = stringWithNextMacro;
         }
     }];
     
@@ -199,7 +199,7 @@ static const NSUInteger kMaximumURLRequestRetryCount = 5;
             replacementValue = [NSString stringWithFormat:@"%i", ((NSNumber *)value).intValue];
         }
     }
-    else if ( [value isKindOfClass:[NSString class]] && ((NSString *)value).length > 0 )
+    else if ( [value isKindOfClass:[NSString class]] )
     {
         replacementValue = value;
     }
@@ -219,33 +219,20 @@ static const NSUInteger kMaximumURLRequestRetryCount = 5;
         return;
     }
     
-    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
-                           completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError)
-     {
-         if ( [request isMemberOfClass:[VTrackingURLRequest class]] )
-         {
-             VTrackingURLRequest *trackingRequest = (VTrackingURLRequest *)request;
-             if ( connectionError && ++trackingRequest.retriesCount <= kMaximumURLRequestRetryCount )
-             {
+    NSURLResponse *response = nil;
+    NSError *connectionError = nil;
+    [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&connectionError];
+    
 #if DEBUG && APPLICATION_TRACKING_LOGGING_ENABLED
-                 VLog( @"Applicaiton Tracking :: Retrying... (%lu) :: URL %@.", (unsigned long)((VTrackingURLRequest *)request).retriesCount, request.URL.absoluteString );
+    if ( connectionError )
+    {
+        VLog( @"Applicaiton Tracking :: ERROR with URL %@ :: %@", request.URL.absoluteString, [connectionError localizedDescription] );
+    }
+    else
+    {
+        VLog( @"Applicaiton Tracking :: SUCCESS with URL %@", request.URL.absoluteString );
+    }
 #endif
-                 [self sendRequest:request];
-             }
-         }
-         
-         
-#if DEBUG && APPLICATION_TRACKING_LOGGING_ENABLED
-         if ( connectionError )
-         {
-             VLog( @"Applicaiton Tracking :: ERROR with URL %@ :: %@", request.URL.absoluteString, [connectionError localizedDescription] );
-         }
-         else
-         {
-             VLog( @"Applicaiton Tracking :: SUCCESS with URL %@", request.URL.absoluteString );
-         }
-#endif
-     }];
 }
 
 - (VTrackingURLRequest *)requestWithUrl:(NSString *)urlString objectManager:(VObjectManager *)objectManager
@@ -253,7 +240,7 @@ static const NSUInteger kMaximumURLRequestRetryCount = 5;
     NSParameterAssert( objectManager != nil );
     
     NSURL *url = [NSURL URLWithString:urlString];
-    if ( !url )
+    if ( url == nil )
     {
 #if DEBUG && APPLICATION_TRACKING_LOGGING_ENABLED
         VLog( @"Applicaiton Tracking :: ERROR :: Invalid URL %@.", urlString );
@@ -272,8 +259,10 @@ static const NSUInteger kMaximumURLRequestRetryCount = 5;
 
 - (void)trackEventWithName:(NSString *)eventName parameters:(NSDictionary *)parameters
 {
+    // Application tracking works by replacing macros in supplied URLs
+    // If calling code doesn't supply any URLs, we can't proceed any further
     NSArray *urls = parameters[ VTrackingKeyUrls ];
-    if ( urls )
+    if ( urls != nil && urls.count > 0 )
     {
         [self trackEventWithUrls:urls andParameters:parameters];
     }
