@@ -142,7 +142,7 @@ static const CGFloat kTopSpacePublishPrompt = 50.0f;
     [[VObjectManager sharedManager] uploadMediaWithName:self.captionTextView.text
                                             description:nil
                                            previewImage:self.previewImage
-                                            captionType:VCaptionTypeQuote
+                                            captionType:VCaptionTypeNormal
                                               expiresAt:nil
                                        parentSequenceId:nil
                                            parentNodeId:nil

@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import <objc/runtime.h>
+
 #import "VSequenceActionController.h"
 
 #pragma mark - Models
@@ -43,7 +45,30 @@
 #pragma mark - Dependency Manager
 #import "VDependencyManager.h"
 
+#pragma mark - Workflow
+#import "VWorkspaceFlowController.h"
+
+static const char kAssociatedWorkspaceFlowKey;
+
+@interface VSequenceActionController ()
+
+@property (nonatomic, strong) VWorkspaceFlowController *workspaceFlowController;
+
+@end
+
 @implementation VSequenceActionController
+
+#pragma mark - Properties
+
+- (void)setWorkspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
+{
+    objc_setAssociatedObject(self, &kAssociatedWorkspaceFlowKey, workspaceFlowController, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (VWorkspaceFlowController *)workspaceFlowController
+{
+    return objc_getAssociatedObject(self, &kAssociatedWorkspaceFlowKey);
+}
 
 #pragma mark - Comments
 
@@ -86,33 +111,18 @@
         return;
     }
     
-    VLog(@"Mp4Asset: %@, HLS Asset: %@", [node mp4Asset], [node httpLiveStreamingAsset]);
-    
-    VWorkspaceViewController *workspaceViewController;
-
-    if (sequence.isImage)
+    __weak UIViewController *weakViewController = viewController;
+    self.workspaceFlowController = [dependencyManager templateValueOfType:[VWorkspaceFlowController class]
+                                                                   forKey:VDependencyManagerWorkspaceFlowKey
+                                                    withAddedDependencies:@{VWorkspaceFlowControllerSequenceToRemixKey:sequence}];
+    self.workspaceFlowController.completion = ^void(BOOL finished)
     {
-        workspaceViewController  = (VWorkspaceViewController *)[dependencyManager viewControllerForKey:VDependencyManagerImageWorkspaceKey];
-        workspaceViewController.mediaURL = [[node imageAsset] dataURL];
-    }
-    else if (sequence.isVideo)
-    {
-        workspaceViewController  = (VWorkspaceViewController *)[dependencyManager viewControllerForKey:VDependencyManagerVideoWorkspaceKey];
-        workspaceViewController.mediaURL = [[node mp4Asset] dataURL] ;
-    }
-    else
-    {
-        return;
-    }
-
-
-    workspaceViewController.completionBlock = ^void(BOOL finished, UIImage *previewImage, NSURL *renderedMediaURL)
-    {
-        [viewController dismissViewControllerAnimated:YES
-                                           completion:nil];
+        [weakViewController dismissViewControllerAnimated:YES
+                                               completion:nil];
     };
-    
-    [viewController presentViewController:workspaceViewController  animated:YES completion:nil];
+    [viewController presentViewController:self.workspaceFlowController.flowRootViewController
+                                 animated:YES
+                               completion:nil];
 }
 
 - (void)imageRemixActionFromViewController:(UIViewController *)viewController previewImage:(UIImage *)previewImage sequence:(VSequence *)sequence

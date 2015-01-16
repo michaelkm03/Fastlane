@@ -25,9 +25,6 @@
 // Constants
 #import "VConstants.h"
 
-#warning Move me out of here to the flow controller
-#import "VPublishBlurOverAnimator.h"
-
 #warning just for testing
 #import "VObjectManager+ContentCreation.h"
 
@@ -38,7 +35,7 @@
 
 static const CGFloat kJPEGCompressionQuality    = 0.8f;
 
-@interface VWorkspaceViewController () <UINavigationControllerDelegate>
+@interface VWorkspaceViewController ()
 
 @property (nonatomic, strong, readwrite) NSURL *renderedMediaURL;
 
@@ -56,8 +53,6 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
 @property (nonatomic, strong) UIViewController *canvasToolViewController;
 @property (nonatomic, strong) UIViewController *inspectorToolViewController;
 
-@property (nonatomic, strong) VPublishBlurOverAnimator *transitionAnimator;
-
 @property (nonatomic, strong) VVideoPlayerView *playerView;
 
 @end
@@ -72,7 +67,6 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
     VWorkspaceViewController *workspaceViewController = [workspaceStoryboard instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
     workspaceViewController.dependencyManager = dependencyManager;
     workspaceViewController.tools = [dependencyManager workspaceTools];
-    workspaceViewController.transitionAnimator = [[VPublishBlurOverAnimator alloc] init];
     
     return workspaceViewController;
 }
@@ -281,11 +275,6 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
 
 #pragma mark - Property Accessors
 
-- (void)setMediaURL:(NSURL *)mediaURL
-{
-    _mediaURL = mediaURL;
-}
-
 - (void)setSelectedTool:(id<VWorkspaceTool>)selectedTool
 {
     // Re-selected current tool should we dismiss?
@@ -432,17 +421,6 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
                         options:(animationCurve << 16)
                      animations:animations
                      completion:nil];
-}
-
-#pragma mark - UINavigationControllerDelegate
-
-- (id <UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
-                                   animationControllerForOperation:(UINavigationControllerOperation)operation
-                                                fromViewController:(UIViewController *)fromVC
-                                                  toViewController:(UIViewController *)toVC
-{
-    self.transitionAnimator.presenting = (operation == UINavigationControllerOperationPush) ? YES : NO;
-    return self.transitionAnimator;
 }
 
 #pragma mark - Private Methods

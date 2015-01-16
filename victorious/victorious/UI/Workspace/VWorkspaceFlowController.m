@@ -20,46 +20,76 @@
 #import "VNode+Fetcher.h"
 #import "VAsset+Fetcher.h"
 
+// Animators
+#import "VPublishBlurOverAnimator.h"
+
 NSString * const VWorkspaceFlowControllerInitialCaptureStateKey = @"initialCaptureStateKey";
 NSString * const VWorkspaceFlowControllerSequenceToRemixKey = @"sequenceToRemixKey";
 
 typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
 {
+    VWorkspaceFlowControllerStateUninitialized,
     VWorkspaceFlowControllerStateCapture,
     VWorkspaceFlowControllerStateEdit,
     VWorkspaceFlowControllerStatePublish
 };
 
-@interface VWorkspaceFlowController ()
+@interface VWorkspaceFlowController () <UINavigationControllerDelegate>
 
 @property (nonatomic, assign) VWorkspaceFlowControllerState state;
 
 @property (nonatomic, strong) NSURL *capturedMediaURL;
 @property (nonatomic, strong) NSURL *renderedMeidaURL;
 
+@property (nonatomic, strong) UIImage *previewImage;
+
 @property (nonatomic, strong) UINavigationController *flowNavigationController;
 
-@property (nonatomic, strong) VDependencyManager *workspaceDependencyManager;
+@property (nonatomic, strong) VPublishBlurOverAnimator *transitionAnimator;
 
 @end
 
 @implementation VWorkspaceFlowController
 
 @synthesize completion = _completion;
+@synthesize dependencyManager = _dependencyManager;
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     self = [super init];
     if (self)
     {
-        _workspaceDependencyManager = dependencyManager;
-        _state = VWorkspaceFlowControllerStateCapture;
+        _dependencyManager = dependencyManager;
+        _state = VWorkspaceFlowControllerStateUninitialized;
         _flowNavigationController = [[UINavigationController alloc] init];
+        _flowNavigationController.delegate = self;
+        _transitionAnimator = [[VPublishBlurOverAnimator alloc] init];
         
-#warning Check if sequence to remix is here
-        
+        VSequence *sequenceToRemix = [dependencyManager templateValueOfType:[VSequence class] forKey:VWorkspaceFlowControllerSequenceToRemixKey];
+        if (sequenceToRemix != nil)
+        {
+            [self extractCapturedMediaURLwithSequenceToRemix:sequenceToRemix];
+            [self transitionFromState:_state
+                              toState:VWorkspaceFlowControllerStateEdit];
+        }
+        else
+        {
+            [self transitionFromState:_state
+                              toState:VWorkspaceFlowControllerStateCapture];
+        }
+    }
+    return self;
+}
+
+- (void)transitionFromState:(VWorkspaceFlowControllerState)oldState
+                    toState:(VWorkspaceFlowControllerState)newState
+{
+    __weak typeof(self) welf = self;
+    
+    if ((oldState == VWorkspaceFlowControllerStateUninitialized) && (newState == VWorkspaceFlowControllerStateCapture))
+    {
         VWorkspaceFlowControllerInitialCaptureState initialCaptureState = VWorkspaceFlowControllerInitialCaptureStateImage;
-        NSNumber *initialCaptureStateValue = [dependencyManager numberForKey:VWorkspaceFlowControllerInitialCaptureStateKey];
+        NSNumber *initialCaptureStateValue = [self.dependencyManager numberForKey:VWorkspaceFlowControllerInitialCaptureStateKey];
         initialCaptureState = (initialCaptureStateValue != nil) ? [initialCaptureStateValue integerValue] : initialCaptureState;
         
         VCameraViewController *cameraViewController;
@@ -76,48 +106,19 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
         cameraViewController.completionBlock = [self mediaCaptureCompletion];
         [_flowNavigationController pushViewController:cameraViewController
                                              animated:NO];
-    
     }
-    return self;
-}
-
-//
-//+ (instancetype)workspaceFlowControllerWithSequenceRemix:(VSequence *)sequence
-//{
-//    VWorkspaceFlowController *flowController = [[self alloc] init];
-//    
-//    if (sequence.isImage)
-//    {
-//        flowController.capturedMediaURL = [[[sequence firstNode] imageAsset] dataURL];
-//        [flowController transitionFromState:flowController.state
-//                                    toState:VWorkspaceFlowControllerStateEdit];
-//    }
-//    else if (sequence.isVideo)
-//    {
-//        flowController.capturedMediaURL = [[[sequence firstNode] mp4Asset] dataURL];
-//        [flowController transitionFromState:flowController.state
-//                                    toState:VWorkspaceFlowControllerStateEdit];
-//    }
-//    
-//    return flowController;
-//}
-
-- (void)transitionFromState:(VWorkspaceFlowControllerState)oldState
-                    toState:(VWorkspaceFlowControllerState)newState
-{
-    __weak typeof(self) welf = self;
-    
-    if ((oldState == VWorkspaceFlowControllerStateCapture) && (newState == VWorkspaceFlowControllerStateEdit))
+    else if ((oldState == VWorkspaceFlowControllerStateCapture) && (newState == VWorkspaceFlowControllerStateEdit))
     {
         NSAssert((self.capturedMediaURL != nil), @"We need a captured media url to begin editing!");
         
-        VWorkspaceViewController *workspaceViewController = (VWorkspaceViewController *)[self.workspaceDependencyManager viewControllerForKey:VDependencyManagerImageWorkspaceKey];
+        VWorkspaceViewController *workspaceViewController = (VWorkspaceViewController *)[self.dependencyManager viewControllerForKey:VDependencyManagerImageWorkspaceKey];
         workspaceViewController.mediaURL = self.capturedMediaURL;
         workspaceViewController.completionBlock = ^void(BOOL finished, UIImage *previewImage, NSURL *renderedMediaURL)
         {
             if (finished)
             {
                 welf.renderedMeidaURL = renderedMediaURL;
+                welf.previewImage = previewImage;
                 [welf transitionFromState:welf.state
                                   toState:VWorkspaceFlowControllerStatePublish];
             }
@@ -139,9 +140,9 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
     {
         NSAssert((self.renderedMeidaURL != nil), @"We need a rendered media url to begin publishing!");
         
-        VPublishViewController *publishViewController = [[VPublishViewController alloc] initWithNibName:nil
-                                                                                                 bundle:nil];
+        VPublishViewController *publishViewController = [VPublishViewController newWithDependencyManager:self.dependencyManager];
         publishViewController.mediaToUploadURL = self.renderedMeidaURL;
+        publishViewController.previewImage = self.previewImage;
         publishViewController.completion = ^void(BOOL published)
         {
             if (published)
@@ -164,6 +165,7 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
     else if ((oldState == VWorkspaceFlowControllerStatePublish) && (newState == VWorkspaceFlowControllerStateEdit))
     {
         [self.flowNavigationController popViewControllerAnimated:YES];
+        welf.previewImage = nil;
     }
     else
     {
@@ -174,7 +176,7 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
 
 #pragma mark - VFlowController
 
-- (UIViewController *)rootViewControllerOfFlow
+- (UIViewController *)flowRootViewController
 {
     return self.flowNavigationController;
 }
@@ -190,6 +192,34 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
         [welf transitionFromState:welf.state
                           toState:VWorkspaceFlowControllerStateEdit];
     };
+}
+
+- (void)extractCapturedMediaURLwithSequenceToRemix:(VSequence *)sequence
+{
+    if (sequence.isImage)
+    {
+        self.capturedMediaURL = [[[sequence firstNode] imageAsset] dataURL];
+    }
+    else if (sequence.isVideo)
+    {
+        self.capturedMediaURL = [[[sequence firstNode] mp4Asset] dataURL] ;
+    }
+}
+
+#pragma mark - UINavigationControllerDelegate
+
+- (id <UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
+                                   animationControllerForOperation:(UINavigationControllerOperation)operation
+                                                fromViewController:(UIViewController *)fromVC
+                                                  toViewController:(UIViewController *)toVC
+{
+    if (![fromVC isKindOfClass:[VPublishViewController class]] && ![toVC isKindOfClass:[VPublishViewController class]])
+    {
+        return nil;
+    }
+    
+    self.transitionAnimator.presenting = (operation == UINavigationControllerOperationPush) ? YES : NO;
+    return self.transitionAnimator;
 }
 
 @end

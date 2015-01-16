@@ -14,7 +14,7 @@ typedef void (^VFlowControllerCompletion)(BOOL finished);
 
 @required
 
-@property (nonatomic, readonly) UIViewController *rootViewControllerOfFlow;
+@property (nonatomic, readonly) UIViewController *flowRootViewController;
 
 @property (nonatomic, copy) VFlowControllerCompletion completion;
 
