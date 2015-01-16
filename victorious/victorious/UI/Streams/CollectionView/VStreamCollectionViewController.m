@@ -671,17 +671,9 @@ static CGFloat const kTemplateCLineSpacing = 8;
 
 - (void)willRemixSequence:(VSequence *)sequence fromView:(UIView *)view
 {
-    if ([sequence isVideo])
-    {
-#warning FIX ME!!!
-//        [self.sequenceActionController videoRemixActionFromViewController:self asset:[sequence firstNode].assets.firstObject node:[sequence firstNode] sequence:sequence];
-    }
-    else
-    {
-        NSIndexPath *path = [self.streamDataSource indexPathForItem:sequence];
-        VStreamCollectionCell *cell = (VStreamCollectionCell *)[self.streamDataSource.delegate dataSource:self.streamDataSource cellForIndexPath:path];
-        [self.sequenceActionController imageRemixActionFromViewController:self previewImage:cell.previewImageView.image sequence: sequence];
-    }
+    [self.sequenceActionController showRemixOnViewController:self
+                                                withSequence:sequence
+                                        andDependencyManager:self.dependencyManager];
 }
 
 - (void)willShareSequence:(VSequence *)sequence fromView:(UIView *)view

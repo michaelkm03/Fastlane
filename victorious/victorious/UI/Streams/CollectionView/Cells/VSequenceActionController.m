@@ -102,7 +102,10 @@ static const char kAssociatedWorkspaceFlowKey;
 
 #pragma mark - Remix
 
-- (void)videoRemixActionFromViewController:(UIViewController *)viewController asset:(VAsset *)asset node:(VNode *)node sequence:(VSequence *)sequence withDependencyManager:(VDependencyManager *)dependencyManager
+- (void)showRemixOnViewController:(UIViewController *)viewController
+                     withSequence:(VSequence *)sequence
+             andDependencyManager:(VDependencyManager *)dependencyManager
+                       completion:(void(^)(BOOL))completion
 {
     NSAssert(![sequence isPoll], @"You cannot remix polls.");
     if (![VObjectManager sharedManager].authorized)
@@ -118,77 +121,107 @@ static const char kAssociatedWorkspaceFlowKey;
     self.workspaceFlowController.completion = ^void(BOOL finished)
     {
         [weakViewController dismissViewControllerAnimated:YES
-                                               completion:nil];
+                                               completion:^{
+                                                   if (completion)
+                                                   {
+                                                       completion(finished);
+                                                   }
+                                               }];
     };
     [viewController presentViewController:self.workspaceFlowController.flowRootViewController
                                  animated:YES
                                completion:nil];
 }
 
-- (void)imageRemixActionFromViewController:(UIViewController *)viewController previewImage:(UIImage *)previewImage sequence:(VSequence *)sequence
+- (void)showRemixOnViewController:(UIViewController *)viewController
+                     withSequence:(VSequence *)sequence
+             andDependencyManager:(VDependencyManager *)dependencyManager
 {
-    [self imageRemixActionFromViewController:viewController previewImage:previewImage sequence:sequence completion:nil];
+    [self showRemixOnViewController:viewController withSequence:sequence andDependencyManager:dependencyManager completion:nil];
 }
 
-- (void)imageRemixActionFromViewController:(UIViewController *)viewController previewImage:(UIImage *)previewImage sequence:(VSequence *)sequence completion:(void(^)(BOOL))completion
-{
-    NSAssert(![sequence isPoll], @"You cannot remix polls.");
-    if (![VObjectManager sharedManager].authorized)
-    {
-        [viewController presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
-        return;
-    }
-    
-    VCameraPublishViewController *publishViewController = [VCameraPublishViewController cameraPublishViewController];
-    publishViewController.parentSequenceID = [sequence.remoteId integerValue];
-    publishViewController.parentNodeID = [sequence.firstNode.remoteId integerValue];
-    publishViewController.previewImage = previewImage;
-    if ( completion == nil )
-    {
-        publishViewController.completion = ^(BOOL complete)
-        {
-            [viewController dismissViewControllerAnimated:YES completion:nil];
-        };
-    }
-    else
-    {
-        publishViewController.completion = completion;
-    }
-    
-    UINavigationController *remixNav = [[UINavigationController alloc] initWithRootViewController:publishViewController];
-    
-    void(^writeBlock)(void) = ^void(void)
-    {
-        NSData *filteredImageData = UIImageJPEGRepresentation(previewImage, VConstantJPEGCompressionQuality);
-        NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
-        NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:VConstantMediaExtensionJPG];
-        if ([filteredImageData writeToURL:tempFile atomically:NO])
-        {
-            publishViewController.mediaURL = tempFile;
-            [viewController presentViewController:remixNav
-                                         animated:YES
-                                       completion:nil];
-        }
-    };
-    
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                    cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel button")
-                                                       onCancelButton:nil
-                                               destructiveButtonTitle:nil
-                                                  onDestructiveButton:nil
-                                           otherButtonTitlesAndBlocks:NSLocalizedString(@"Meme", nil),  ^(void)
-                                  {
-                                      publishViewController.captionType = VCaptionTypeMeme;
-                                      writeBlock();
-                                  },
-                                  NSLocalizedString(@"Quote", nil),  ^(void)
-                                  {
-                                      publishViewController.captionType = VCaptionTypeQuote;
-                                      writeBlock();
-                                  }, nil];
-    
-    [actionSheet showInView:viewController.view];
-}
+//- (void)videoRemixActionFromViewController:(UIViewController *)viewController asset:(VAsset *)asset node:(VNode *)node sequence:(VSequence *)sequence withDependencyManager:(VDependencyManager *)dependencyManager
+//{
+//    NSAssert(![sequence isPoll], @"You cannot remix polls.");
+//    if (![VObjectManager sharedManager].authorized)
+//    {
+//        [viewController presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
+//        return;
+//    }
+//    
+//    [self showRemixOnViewController:viewController
+//                       withSequence:sequence
+//               andDependencyManager:dependencyManager];
+//}
+//
+//- (void)imageRemixActionFromViewController:(UIViewController *)viewController previewImage:(UIImage *)previewImage sequence:(VSequence *)sequence
+//{
+//    [self imageRemixActionFromViewController:viewController previewImage:previewImage sequence:sequence completion:nil];
+//}
+//
+//- (void)imageRemixActionFromViewController:(UIViewController *)viewController previewImage:(UIImage *)previewImage sequence:(VSequence *)sequence completion:(void(^)(BOOL))completion
+//{
+//    NSAssert(![sequence isPoll], @"You cannot remix polls.");
+//    if (![VObjectManager sharedManager].authorized)
+//    {
+//        [viewController presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
+//        return;
+//    }
+//    
+//    [self showRemixOnViewController:viewController
+//                       withSequence:sequence
+//               andDependencyManager:]
+//    
+//    VCameraPublishViewController *publishViewController = [VCameraPublishViewController cameraPublishViewController];
+//    publishViewController.parentSequenceID = [sequence.remoteId integerValue];
+//    publishViewController.parentNodeID = [sequence.firstNode.remoteId integerValue];
+//    publishViewController.previewImage = previewImage;
+//    if ( completion == nil )
+//    {
+//        publishViewController.completion = ^(BOOL complete)
+//        {
+//            [viewController dismissViewControllerAnimated:YES completion:nil];
+//        };
+//    }
+//    else
+//    {
+//        publishViewController.completion = completion;
+//    }
+//    
+//    UINavigationController *remixNav = [[UINavigationController alloc] initWithRootViewController:publishViewController];
+//    
+//    void(^writeBlock)(void) = ^void(void)
+//    {
+//        NSData *filteredImageData = UIImageJPEGRepresentation(previewImage, VConstantJPEGCompressionQuality);
+//        NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
+//        NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:VConstantMediaExtensionJPG];
+//        if ([filteredImageData writeToURL:tempFile atomically:NO])
+//        {
+//            publishViewController.mediaURL = tempFile;
+//            [viewController presentViewController:remixNav
+//                                         animated:YES
+//                                       completion:nil];
+//        }
+//    };
+//    
+//    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+//                                                    cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel button")
+//                                                       onCancelButton:nil
+//                                               destructiveButtonTitle:nil
+//                                                  onDestructiveButton:nil
+//                                           otherButtonTitlesAndBlocks:NSLocalizedString(@"Meme", nil),  ^(void)
+//                                  {
+//                                      publishViewController.captionType = VCaptionTypeMeme;
+//                                      writeBlock();
+//                                  },
+//                                  NSLocalizedString(@"Quote", nil),  ^(void)
+//                                  {
+//                                      publishViewController.captionType = VCaptionTypeQuote;
+//                                      writeBlock();
+//                                  }, nil];
+//    
+//    [actionSheet showInView:viewController.view];
+//}
 
 - (void)showRemixStreamFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence
 {
