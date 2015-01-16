@@ -13,6 +13,12 @@
 #import "VUserProfileNavigationDestination.h"
 #import "VUserProfileViewController.h"
 
+@interface VUserProfileNavigationDestination ()
+
+@property (nonatomic, readonly) VDependencyManager *dependencyManager;
+
+@end
+
 @implementation VUserProfileNavigationDestination
 
 #pragma mark - Initializers
@@ -31,7 +37,12 @@
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    return [self initWithObjectManager:dependencyManager.objectManager];
+    self = [self initWithObjectManager:dependencyManager.objectManager];
+    if ( self != nil )
+    {
+        _dependencyManager = dependencyManager;
+    }
+    return self;
 }
 
 #pragma mark - VNavigationDestination conformance
@@ -46,7 +57,12 @@
     }
     else if (alternateViewController != nil)
     {
-        *alternateViewController = [VUserProfileViewController userProfileWithUser:self.objectManager.mainUser];
+        VUserProfileViewController *userProfileViewController = [VUserProfileViewController userProfileWithUser:self.objectManager.mainUser];
+        if ( [userProfileViewController respondsToSelector:@selector(setDependencyManager:)] )
+        {
+            [userProfileViewController setDependencyManager:self.dependencyManager];
+        }
+        *alternateViewController = userProfileViewController;
         return YES;
     }
     return NO;

@@ -80,8 +80,6 @@ NSString * const VScaffoldViewControllerContentViewComponentKey = @"contentView"
 
 - (void)newContentViewControllerDidDeleteContent:(VNewContentViewController *)contentViewController
 {
-    // TODO
-//    [self refresh:self.refreshControl];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
