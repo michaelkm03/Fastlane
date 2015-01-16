@@ -198,7 +198,7 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
 
 - (IBAction)close:(id)sender
 {
-    self.completionBlock(NO, nil);
+    self.completionBlock(NO, nil, nil);
 }
 
 - (IBAction)publish:(id)sender
@@ -239,7 +239,7 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
                                                               animated:YES];
                                          if (self.completionBlock)
                                          {
-                                             self.completionBlock(YES, nil);
+                                             self.completionBlock(YES, nil, self.renderedMediaURL);
                                          }
                                      });
                   }];
@@ -265,7 +265,7 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
                            {
                                [MBProgressHUD hideHUDForView:self.view
                                                     animated:YES];
-                               self.completionBlock(YES, renderedImagePreview);
+                               self.completionBlock(YES, renderedImagePreview, self.renderedMediaURL);
                            });
         }
     });

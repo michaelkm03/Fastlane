@@ -9,8 +9,8 @@
 #import "VSequenceActionController.h"
 
 #pragma mark - Models
-#import "VAsset.h"
-#import "VNode.h"
+#import "VAsset+Fetcher.h"
+#import "VNode+Fetcher.h"
 #import "VSequence+Fetcher.h"
 #import "VStream+Fetcher.h"
 #import "VUser+Fetcher.h"
@@ -86,36 +86,31 @@
         return;
     }
     
+    VLog(@"Mp4Asset: %@, HLS Asset: %@", [node mp4Asset], [node httpLiveStreamingAsset]);
+    
     VWorkspaceViewController *workspaceViewController;
-    
-    CFStringRef fileExtension = (__bridge CFStringRef)[asset.data pathExtension];
-    CFStringRef fileUTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, fileExtension, NULL);
-    
-    Boolean isImage = UTTypeConformsTo(fileUTI, kUTTypeImage);
-    Boolean isVideo = UTTypeConformsTo(fileUTI, kUTTypeAudiovisualContent);
-    isVideo = [[asset.data pathExtension] isEqualToString:@"m3u8"];
-    if (isImage)
+
+    if (sequence.isImage)
     {
-        // Image
         workspaceViewController  = (VWorkspaceViewController *)[dependencyManager viewControllerForKey:VDependencyManagerImageWorkspaceKey];
+        workspaceViewController.mediaURL = [[node imageAsset] dataURL];
     }
-    else if (isVideo)
+    else if (sequence.isVideo)
     {
         workspaceViewController  = (VWorkspaceViewController *)[dependencyManager viewControllerForKey:VDependencyManagerVideoWorkspaceKey];
+        workspaceViewController.mediaURL = [[node mp4Asset] dataURL] ;
     }
-    CFRelease(fileUTI);
-    
+    else
+    {
+        return;
+    }
 
-//    VWorkspaceViewController *workspace = [[VWorkspaceViewController alloc] initWithDependencyManager:dependencyManager];
-    workspaceViewController.mediaURL = [asset.data mp4UrlFromM3U8];
-    workspaceViewController.completionBlock = ^void(BOOL finished, UIImage *previewImage)
+
+    workspaceViewController.completionBlock = ^void(BOOL finished, UIImage *previewImage, NSURL *renderedMediaURL)
     {
         [viewController dismissViewControllerAnimated:YES
                                            completion:nil];
     };
-//    UIViewController *remixVC = [VRemixSelectViewController remixViewControllerWithURL:[asset.data mp4UrlFromM3U8]
-//                                                                            sequenceID:[sequence.remoteId integerValue]
-//                                                                                nodeID:node.remoteId.integerValue];
     
     [viewController presentViewController:workspaceViewController  animated:YES completion:nil];
 }

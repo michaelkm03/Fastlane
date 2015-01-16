@@ -32,15 +32,19 @@
 #import "VWorkspaceViewController.h"
 #import "VPublishViewController.h"
 
+#import "VWorkspaceFlowController.h"
+
 static const char kNavHeaderViewKey;
 static const char kNavHeaderYConstraintKey;
 static const char kUploadProgressVCKey;
 static const char kUploadProgressYConstraintKey;
+static const char kWorkspaceFlowControllerKey;
 
 @interface UIViewController (VNavMenuPrivate)
 
 @property (nonatomic, strong) NSLayoutConstraint *navHeaderYConstraint;
 @property (nonatomic, strong) NSLayoutConstraint *uploadProgressViewYconstraint;
+@property (nonatomic, strong) VWorkspaceFlowController *workspaceFlowController;
 
 @end
 
@@ -276,86 +280,106 @@ static const char kUploadProgressYConstraintKey;
 
 - (void)presentCameraViewController:(VCameraViewController *)cameraViewController
 {
+    self.workspaceFlowController = [VWorkspaceFlowController workspaceFlowControllerWithImageCamera];
     __weak typeof(self) welf = self;
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:cameraViewController];
-    __weak UINavigationController *weakNavController = navigationController;
-    cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
+    self.workspaceFlowController.completion = ^void(BOOL finished)
     {
-        if (!finished || !capturedMediaURL)
-        {
-            [welf dismissViewControllerAnimated:YES completion:nil];
-        }
-        else
-        {
-            VDependencyManager *dependencyManager = [((id <VHasManagedDependancies>)welf) dependencyManager];
-            
-            VWorkspaceViewController *workspaceViewController;
-            
-            CFStringRef fileExtension = (__bridge CFStringRef)[[capturedMediaURL absoluteString] pathExtension];
-            CFStringRef fileUTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, fileExtension, NULL);
-            
-            Boolean isImage = UTTypeConformsTo(fileUTI, kUTTypeImage);
-            Boolean isVideo = UTTypeConformsTo(fileUTI, kUTTypeMovie);
-            if (isImage)
-            {
-                // Image
-                workspaceViewController  = (VWorkspaceViewController *)[dependencyManager viewControllerForKey:VDependencyManagerImageWorkspaceKey];
-            }
-            else if (isVideo)
-            {
-                workspaceViewController  = (VWorkspaceViewController *)[dependencyManager viewControllerForKey:VDependencyManagerVideoWorkspaceKey];
-            }
-            CFRelease(fileUTI);
-            
-            if (workspaceViewController == nil)
-            {
-                return;
-            }
-
-            __weak VWorkspaceViewController *weakWorkspace = workspaceViewController;
-            workspaceViewController.previewImage = previewImage;
-            workspaceViewController.mediaURL = capturedMediaURL;
-            weakNavController.delegate = workspaceViewController;
-            workspaceViewController.completionBlock = ^void(BOOL finished, UIImage *previewImage)
-            {
-                VPublishViewController *publishViewController = [VPublishViewController newWithDependencyManager:dependencyManager];
-                publishViewController.mediaToUploadURL = weakWorkspace.renderedMediaURL;
-                __weak VPublishViewController *weakPublishViewController = publishViewController;
-                publishViewController.completion = ^void(BOOL published)
-                {
-                    if (published)
-                    {
-                        [welf dismissViewControllerAnimated:YES
-                                                 completion:nil];
-                    }
-                    else
-                    {
-                        [weakNavController popViewControllerAnimated:YES];
-                        weakPublishViewController.completion = nil;
-                    }
-                };
-                if (finished)
-                {
-                    publishViewController.previewImage = previewImage;
-                    [weakNavController pushViewController:publishViewController
-                                                 animated:YES];
-
-                }
-                else
-                {
-                    weakNavController.delegate = nil;
-                    [weakNavController popViewControllerAnimated:YES];
-                }
-            };
-            [weakNavController pushViewController:workspaceViewController animated:YES];
-        }
+        [welf dismissViewControllerAnimated:YES
+                                 completion:nil];
     };
-    [self presentViewController:navigationController animated:YES completion:nil];
+    [self presentViewController:self.workspaceFlowController.rootViewControllerOfFlow
+                       animated:YES
+                     completion:nil];
+//    __weak typeof(self) welf = self;
+//    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:cameraViewController];
+//    __weak UINavigationController *weakNavController = navigationController;
+//    cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
+//    {
+//        if (!finished || !capturedMediaURL)
+//        {
+//            [welf dismissViewControllerAnimated:YES completion:nil];
+//        }
+//        else
+//        {
+//            VDependencyManager *dependencyManager = [((id <VHasManagedDependancies>)welf) dependencyManager];
+//            
+//            VWorkspaceViewController *workspaceViewController;
+//            
+//            CFStringRef fileExtension = (__bridge CFStringRef)[[capturedMediaURL absoluteString] pathExtension];
+//            CFStringRef fileUTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, fileExtension, NULL);
+//            
+//            Boolean isImage = UTTypeConformsTo(fileUTI, kUTTypeImage);
+//            Boolean isVideo = UTTypeConformsTo(fileUTI, kUTTypeMovie);
+//            if (isImage)
+//            {
+//                // Image
+//                workspaceViewController  = (VWorkspaceViewController *)[dependencyManager viewControllerForKey:VDependencyManagerImageWorkspaceKey];
+//            }
+//            else if (isVideo)
+//            {
+//                workspaceViewController  = (VWorkspaceViewController *)[dependencyManager viewControllerForKey:VDependencyManagerVideoWorkspaceKey];
+//            }
+//            CFRelease(fileUTI);
+//            
+//            if (workspaceViewController == nil)
+//            {
+//                return;
+//            }
+//
+//            __weak VWorkspaceViewController *weakWorkspace = workspaceViewController;
+//            workspaceViewController.previewImage = previewImage;
+//            workspaceViewController.mediaURL = capturedMediaURL;
+//            weakNavController.delegate = workspaceViewController;
+//            workspaceViewController.completionBlock = ^void(BOOL finished, UIImage *previewImage, NSURL *renderedMediaURL)
+//            {
+//                VPublishViewController *publishViewController = [VPublishViewController newWithDependencyManager:dependencyManager];
+//                publishViewController.mediaToUploadURL = weakWorkspace.renderedMediaURL;
+//                __weak VPublishViewController *weakPublishViewController = publishViewController;
+//                publishViewController.completion = ^void(BOOL published)
+//                {
+//                    if (published)
+//                    {
+//                        [welf dismissViewControllerAnimated:YES
+//                                                 completion:nil];
+//                    }
+//                    else
+//                    {
+//                        [weakNavController popViewControllerAnimated:YES];
+//                        weakPublishViewController.completion = nil;
+//                    }
+//                };
+//                if (finished)
+//                {
+//                    publishViewController.previewImage = previewImage;
+//                    [weakNavController pushViewController:publishViewController
+//                                                 animated:YES];
+//
+//                }
+//                else
+//                {
+//                    weakNavController.delegate = nil;
+//                    [weakNavController popViewControllerAnimated:YES];
+//                }
+//            };
+//            [weakNavController pushViewController:workspaceViewController animated:YES];
+//        }
+//    };
+//    [self presentViewController:navigationController animated:YES completion:nil];
 }
 
 - (CGFloat)headerPositionY
 {
     return self.navHeaderYConstraint.constant;
+}
+
+- (void)setWorkspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
+{
+    objc_setAssociatedObject(self, &kWorkspaceFlowControllerKey, workspaceFlowController, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (VWorkspaceFlowController *)workspaceFlowController
+{
+    return objc_getAssociatedObject(self, &kWorkspaceFlowControllerKey);
 }
 
 @end
