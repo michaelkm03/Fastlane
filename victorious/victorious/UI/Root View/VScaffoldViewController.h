@@ -48,7 +48,7 @@ extern NSString * const VScaffoldViewControllerContentViewComponentKey;
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager NS_DESIGNATED_INITIALIZER;
 
 /**
- Displays a content view for the specified VSequence object.
+ Presents a content view for the specified VSequence object.
  
  @param placeHolderImage An image, typically the sequence's thumbnail, that can be displayed 
                          in the place of content while the real thing is being loaded
