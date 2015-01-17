@@ -52,6 +52,7 @@ extern NSString * const VObjectManagerContentIndexKey;
                  media2Url:(NSURL *)media2Url
                 completion:(VUploadManagerTaskCompleteBlock)completionBlock;
 
+#warning TODO: Add filter name and some other meta data about the image
 - (void)uploadMediaWithName:(NSString *)name
                 description:(NSString *)description
                previewImage:(UIImage *)previewImage
