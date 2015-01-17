@@ -64,6 +64,7 @@ extern NSString * const VObjectManagerContentIndexKey;
                    mediaURL:(NSURL *)mediaUrl
               facebookShare:(BOOL)facebookShare
                twitterShare:(BOOL)twitterShare
+                      isGIF:(BOOL)isGIF
                  completion:(VUploadManagerTaskCompleteBlock)completionBlock;
 
 /**

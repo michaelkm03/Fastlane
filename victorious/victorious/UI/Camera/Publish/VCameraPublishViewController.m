@@ -739,6 +739,7 @@ static const CGFloat kShareMargin = 34.0f;
                                                mediaURL:self.mediaURL
                                           facebookShare:facebookSelected
                                            twitterShare:twitterSelected
+                                                  isGIF:NO
                                              completion:^(NSURLResponse *response, NSData *responseData, NSDictionary *jsonResponse, NSError *error)
     {
         NSDictionary *payload = jsonResponse[kVPayloadKey];

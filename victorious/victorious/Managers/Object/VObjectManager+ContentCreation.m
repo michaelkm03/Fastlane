@@ -139,6 +139,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
                    mediaURL:(NSURL *)mediaUrl
               facebookShare:(BOOL)facebookShare
                twitterShare:(BOOL)twitterShare
+                      isGIF:(BOOL)isGIF
                  completion:(VUploadManagerTaskCompleteBlock)completionBlock
 {
     NSParameterAssert(mediaUrl != nil);
@@ -154,6 +155,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     NSMutableDictionary *parameters = [@{@"name": name ?: [NSNull null],
                                          @"description": description ?: [NSNull null],
                                          @"media_data": mediaUrl,
+                                         @"is_gif": isGIF ? @"true" : @"false",
                                        } mutableCopy];
     if (expiresAt)
     {

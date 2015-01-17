@@ -147,10 +147,11 @@ static const CGFloat kTopSpacePublishPrompt = 50.0f;
                                        parentSequenceId:nil
                                            parentNodeId:nil
                                                   speed:1.0f
-                                               loopType:VLoopOnce
+                                               loopType:VLoopRepeat
                                                mediaURL:self.mediaToUploadURL
                                           facebookShare:NO
                                            twitterShare:NO
+                                                  isGIF:YES
                                              completion:^(NSURLResponse *response, NSData *responseData, NSDictionary *jsonResponse, NSError *error)
      {
          self.publishing = NO;
