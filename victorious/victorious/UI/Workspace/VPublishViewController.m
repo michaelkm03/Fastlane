@@ -91,11 +91,8 @@ static const CGFloat kTopSpacePublishPrompt = 50.0f;
     
     self.previewImageView.image = self.previewImage;
 
-    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    paragraphStyle.alignment = NSTextAlignmentCenter;
     self.captionTextView.placeholderText = NSLocalizedString(@"TYPE A CAPTION & ADD AN #HASHTAG", @"Caption entry placeholder text");
-    self.captionTextView.typingAttributes = @{NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerParagraphFontKey],
-                                              NSParagraphStyleAttributeName: paragraphStyle};
+    self.captionTextView.typingAttributes = @{NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerParagraphFontKey]};
     VContentInputAccessoryView *inputAccessoryView = [[VContentInputAccessoryView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 44.0f)];
     inputAccessoryView.textInputView = self.captionTextView;
     inputAccessoryView.maxCharacterLength = 120;

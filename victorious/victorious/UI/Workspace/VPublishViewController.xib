@@ -35,7 +35,7 @@
                                 <action selector="publish:" destination="-1" eventType="touchUpInside" id="lIW-a8-qUn"/>
                             </connections>
                         </button>
-                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" bouncesZoom="NO" textAlignment="center" id="k7t-Et-LrO" customClass="VPlaceholderTextView">
+                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" bouncesZoom="NO" id="k7t-Et-LrO" customClass="VPlaceholderTextView">
                             <rect key="frame" x="137" y="16" width="145" height="117"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" heightSizable="YES"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
