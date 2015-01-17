@@ -30,7 +30,7 @@
             return self.currentPageNumber.integerValue + 1;
             
         case VPageTypePrevious:
-            return self.currentPageNumber.integerValue - 1;
+            return MAX( self.currentPageNumber.integerValue, 1 ) - 1;
             
         case VPageTypeFirst:
         default:
