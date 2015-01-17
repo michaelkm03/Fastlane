@@ -7,6 +7,7 @@
 //
 
 #import "VObjectManager.h"
+#import "VAbstractFilter+RestKit.h"
 
 @class VHashtag;
 
@@ -18,9 +19,9 @@
 - (RKManagedObjectRequestOperation *)getSuggestedHashtags:(VSuccessBlock)success
                                                 failBlock:(VFailBlock)fail;
 
-- (RKManagedObjectRequestOperation *)getHashtagsSubscribedToWithRefresh:(BOOL)refresh
-                                                           successBlock:(VSuccessBlock)success
-                                                              failBlock:(VFailBlock)fail;
+- (RKManagedObjectRequestOperation *)getHashtagsSubscribedToWithPageType:(VPageType)pageType
+                                                            successBlock:(VSuccessBlock)success
+                                                               failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)unsubscribeToHashtagUsingVHashtagObject:(VHashtag *)hashtag
                                                                 successBlock:(VSuccessBlock)success

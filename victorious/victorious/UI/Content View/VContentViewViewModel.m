@@ -30,6 +30,7 @@
 #import "VObjectManager+Login.h"
 #import "VComment+Fetcher.h"
 #import "VUser+Fetcher.h"
+#import "VPaginationManager.h"
 
 // Formatters
 #import "NSDate+timeSince.h"
@@ -352,8 +353,6 @@ static NSString * const kPreferedMimeType = @"application/x-mpegURL";
          return [comment2.postedAt compare:comment1.postedAt];
      }];
     _comments = sortedComments;
-    
-    [self.delegate didUpdateComments];
 }
 
 #pragma mark - Public Methods
@@ -363,6 +362,7 @@ static NSString * const kPreferedMimeType = @"application/x-mpegURL";
     NSMutableArray *updatedComments = [self.comments mutableCopy];
     [updatedComments removeObjectAtIndex:index];
     self.comments = [NSArray arrayWithArray:updatedComments];
+    [self.delegate didUpdateCommentsWithPageType:VPageTypeFirst];
 }
 
 - (void)addCommentWithText:(NSString *)text
@@ -414,28 +414,29 @@ static NSString * const kPreferedMimeType = @"application/x-mpegURL";
          }];
     }
 }
-
 - (void)fetchComments
 {
     // give it what we have for now.
     self.comments = [self.sequence.comments array];
+    [self loadComments:VPageTypeFirst];
     
-    [[VObjectManager sharedManager] loadCommentsOnSequence:self.sequence
-                                                 isRefresh:NO
-                                              successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-     {
-         self.comments = [self.sequence.comments array];
-     }
-                                                 failBlock:nil];
 }
 
-- (void)attemptToLoadNextPageOfComments
+- (void)loadComments:(VPageType)pageType
 {
+    VAbstractFilter *filter = [[VObjectManager sharedManager] commentsFilterForSequence:self.sequence];
+    const BOOL isFilterAlreadyLoading = [[[VObjectManager sharedManager] paginationManager] isLoadingFilter:filter];
+    if ( isFilterAlreadyLoading || ![filter canLoadPageType:pageType] )
+    {
+        return;
+    }
+    
     [[VObjectManager sharedManager] loadCommentsOnSequence:self.sequence
-                                                 isRefresh:NO
+                                                  pageType:pageType
                                               successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
          self.comments = [self.sequence.comments array];
+         [self.delegate didUpdateCommentsWithPageType:pageType];
      }
                                                  failBlock:nil];
 }

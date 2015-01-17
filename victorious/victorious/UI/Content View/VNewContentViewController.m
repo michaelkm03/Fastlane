@@ -77,10 +77,11 @@
 #import "VModalTransition.h"
 
 #import "VTracking.h"
+#import "VScrollPaginator.h"
 
 static const CGFloat kMaxInputBarHeight = 200.0f;
 
-@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate,VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate>
+@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate,VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate>
 
 @property (nonatomic, strong, readwrite) VContentViewViewModel *viewModel;
 @property (nonatomic, strong) NSURL *mediaURL;
@@ -120,6 +121,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 @property (nonatomic, assign) CMTime realtimeCommentBeganTime;
 
 @property (nonatomic, strong) VTransitionDelegate *transitionDelegate;
+@property (nonatomic, strong) VScrollPaginator *scrollPaginator;
 
 @end
 
@@ -153,7 +155,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 
 #pragma mark - VContentViewViewModelDelegate
 
-- (void)didUpdateComments
+- (void)didUpdateCommentsWithPageType:(VPageType)pageType
 {
     if (self.viewModel.comments.count > 0)
     {
@@ -307,6 +309,8 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.scrollPaginator = [[VScrollPaginator alloc] initWithDelegate:self];
     
     // Hack to remove margins stuff should probably refactor :(
     if ([self.view respondsToSelector:@selector(setLayoutMargins:)])
@@ -1067,19 +1071,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     const BOOL hasComments = self.viewModel.comments.count > 0;
     if ( hasComments )
     {
-        const CGFloat visibleHeight = CGRectGetHeight(scrollView.frame) - scrollView.contentInset.bottom;
-        const CGFloat maxContentOffset = scrollView.contentSize.height - visibleHeight - visibleHeight;
-        const CGFloat minContentOffset = visibleHeight;
-        const CGFloat scrollPositionY = scrollView.contentOffset.y;
-        
-        if ( scrollPositionY >= maxContentOffset )
-        {
-            [self.viewModel attemptToLoadNextPageOfComments];
-        }
-        else if ( scrollPositionY < minContentOffset )
-        {
-            // TODO: Load previous page (when pagination supports this)
-        }
+        [self.scrollPaginator scrollViewDidScroll:scrollView];
     }
 }
 
@@ -1154,11 +1146,11 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
                               realTime:welf.realtimeCommentBeganTime
                             completion:^(BOOL succeeded)
      {
-         [welf.viewModel fetchComments];
+         [welf.viewModel loadComments:VPageTypeFirst];
          [UIView animateWithDuration:0.0f
                           animations:^
          {
-             [welf didUpdateComments];
+             [welf didUpdateCommentsWithPageType:VPageTypeFirst];
          }];
          
      }];
@@ -1418,6 +1410,18 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
      {
          [self.viewModel.experienceEnhancerController updateData];
      }];
+}
+
+#pragma mark - VScrollPaginatorDelegate
+
+- (void)shouldLoadNextPage
+{
+    [self.viewModel loadComments:VPageTypeNext];
+}
+
+- (void)shouldLoadPreviousPage
+{
+    [self.viewModel loadComments:VPageTypePrevious];
 }
 
 @end

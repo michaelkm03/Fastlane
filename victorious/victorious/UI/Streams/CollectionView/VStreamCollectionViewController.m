@@ -386,7 +386,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
         VLog(@"%@\n%@", operation, error);
     };
     
-    [[VObjectManager sharedManager] getHashtagsSubscribedToWithRefresh:YES
+    [[VObjectManager sharedManager] getHashtagsSubscribedToWithPageType:VPageTypeFirst
                                                           successBlock:successBlock
                                                              failBlock:failureBlock];
 }
