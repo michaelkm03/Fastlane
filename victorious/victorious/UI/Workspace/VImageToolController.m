@@ -9,15 +9,18 @@
 #import "VImageToolController.h"
 
 #import "CIImage+VImage.h"
+#import "VConstants.h"
 
 static const CGFloat kJPEGCompressionQuality    = 0.8f;
 
 @implementation VImageToolController
 
-- (void)exportToURL:(NSURL *)url
-        sourceAsset:(NSURL *)source
-     withCompletion:(void (^)(BOOL, UIImage *))completion
+- (void)exportWithSourceAsset:(NSURL *)source
+               withCompletion:(void (^)(BOOL finished, NSURL *renderedMediaURL, UIImage *previewImage))completion
 {
+    NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
+    NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:VConstantMediaExtensionJPG];
+    
     __weak typeof(self) welf = self;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^
                    {
@@ -27,11 +30,11 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
                        UIImage *renderedImage = [welf renderedImageForCurrentStateWithSourceImage:sourceImage];
                        
                        NSData *renderedImageData = UIImageJPEGRepresentation(renderedImage, kJPEGCompressionQuality);
-                       BOOL successfullyWroteToURL = [renderedImageData writeToURL:url atomically:NO];
+                       BOOL successfullyWroteToURL = [renderedImageData writeToURL:tempFile atomically:NO];
                        
                        dispatch_async(dispatch_get_main_queue(), ^
                                       {
-                                          completion(successfullyWroteToURL, renderedImage);
+                                          completion(successfullyWroteToURL, tempFile, renderedImage);
                                       });
                    });
 

@@ -21,9 +21,8 @@
 
 - (instancetype)initWithTools:(NSArray /* NSArray of tools that conform to <VWorkspaceTool> */ *)tools;
 
-- (void)exportToURL:(NSURL *)url
-        sourceAsset:(NSURL *)source
-     withCompletion:(void (^)(BOOL finished, UIImage *previewImage))completion;
+- (void)exportWithSourceAsset:(NSURL *)source
+               withCompletion:(void (^)(BOOL finished, NSURL *renderedMediaURL, UIImage *previewImage))completion;
 
 @property (nonatomic, readonly) NSArray *tools;
 

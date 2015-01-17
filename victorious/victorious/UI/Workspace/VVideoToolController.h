@@ -8,6 +8,12 @@
 
 #import "VToolController.h"
 
+@class VVideoPlayerView;
+
 @interface VVideoToolController : VToolController
+
+@property (nonatomic, strong) NSURL *mediaURL;
+
+@property (nonatomic, strong) VVideoPlayerView *playerView;
 
 @end

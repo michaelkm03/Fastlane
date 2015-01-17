@@ -87,9 +87,8 @@
 
 #pragma mark - Public Methods
 
-- (void)exportToURL:(NSURL *)url
-        sourceAsset:(NSURL *)source
-     withCompletion:(void (^)(BOOL finished, UIImage *previewImage))completion
+- (void)exportWithSourceAsset:(NSURL *)source
+               withCompletion:(void (^)(BOOL finished, NSURL *renderedMediaURL, UIImage *previewImage))completion
 {
     NSAssert(false, @"Subclasses must implement me!");
 }

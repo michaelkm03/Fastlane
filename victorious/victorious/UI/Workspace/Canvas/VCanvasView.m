@@ -9,8 +9,6 @@
 #import "VCanvasView.h"
 #import "CIImage+VImage.h"
 
-#define canvasRenderLoggingEnabled 0
-
 static const CGFloat kRelatvieScaleFactor = 0.55f;
 
 @interface VCanvasView () <UIScrollViewDelegate, NSCacheDelegate>
@@ -142,18 +140,10 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
     }
     
     __block UIImage *filteredImage = nil;
-#if canvasRenderLoggingEnabled
-    __block NSDate *tick;
-    __block NSDate *tock;
-#endif
     
     dispatch_async(self.renderingQueue, ^
     {
         // Render
-#if canvasRenderLoggingEnabled
-            tick = [NSDate date];
-#endif
-        
         filteredImage = [filter imageByFilteringImage:self.scaledImage
                                         withCIContext:self.context];
 
@@ -161,23 +151,9 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
         // Cache
         [self.renderedImageCache setObject:filteredImage
                                     forKey:filter.description];
-#if canvasRenderLoggingEnabled
-            tock = [NSDate date];
-#endif
         
         dispatch_async(dispatch_get_main_queue(), ^
                        {
-#if canvasRenderLoggingEnabled
-                               NSNumber *renderTime = @([tock timeIntervalSinceDate:tick]);
-                               [self.rendertimes addObject:renderTime];
-                               __block NSTimeInterval totalTime = 0.0f;
-                               [self.rendertimes enumerateObjectsUsingBlock:^(NSNumber *renderTime, NSUInteger idx, BOOL *stop)
-                                {
-                                    totalTime = totalTime + [renderTime floatValue];
-                                }];
-                               VLog(@"Render time: %@ Average render time: %@", renderTime, @(totalTime/self.rendertimes.count));
-#endif
-                           
                            if (_filter.name == filter.name)
                            {
                                self.imageView.image = filteredImage;
@@ -217,14 +193,5 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
 {
     return self.imageView;
 }
-
-#pragma mark - NSCacheDelegate
-
-#if canvasRenderLoggingEnabled
-- (void)cache:(NSCache *)cache willEvictObject:(id)obj
-{
-    VLog(@"evicting: %@", obj);
-}
-#endif
 
 @end

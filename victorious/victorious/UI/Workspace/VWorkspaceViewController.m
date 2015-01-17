@@ -29,10 +29,8 @@
 #import "VConstants.h"
 
 // ToolControllers
-#import "VToolController.h"
-
-#warning just for testing
-#import "VObjectManager+ContentCreation.h"
+#import "VImageToolController.h"
+#import "VVideoToolController.h"
 
 // Video
 #import "VVideoWorkspaceTool.h"
@@ -75,8 +73,6 @@
     UIStoryboard *workspaceStoryboard = [UIStoryboard storyboardWithName:@"Workspace" bundle:nil];
     VWorkspaceViewController *workspaceViewController = [workspaceStoryboard instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
     workspaceViewController.dependencyManager = dependencyManager;
-    workspaceViewController.toolController = [[VToolController alloc] initWithTools:[dependencyManager workspaceTools]];
-    workspaceViewController.toolController.delegate = workspaceViewController;
     
     return workspaceViewController;
 }
@@ -110,6 +106,11 @@
     [super viewDidLoad];
     
     self.toolController.canvasView = self.canvasView;
+    
+    if ([self.toolController isKindOfClass:[VVideoToolController class]])
+    {
+        [(VVideoToolController *)self.toolController setPlayerView:self.playerView];
+    }
     
     [self.blurredBackgroundImageVIew setBlurredImageWithClearImage:self.previewImage
                                                   placeholderImage:nil
@@ -252,6 +253,23 @@
     self.keyboardManager.stopCallingHandlerBlocks = YES;
 }
 
+- (void)setMediaURL:(NSURL *)mediaURL
+{
+    _mediaURL = mediaURL;
+    
+    if ([[mediaURL pathExtension] isEqualToString:VConstantMediaExtensionJPG])
+    {
+        self.toolController = [[VImageToolController alloc] initWithTools:[self.dependencyManager workspaceTools]];
+    }
+    else if ([[mediaURL pathExtension] isEqualToString:VConstantMediaExtensionMP4])
+    {
+        self.toolController = [[VVideoToolController alloc] initWithTools:[self.dependencyManager workspaceTools]];
+        [(VVideoToolController *)self.toolController setMediaURL:mediaURL];
+    }
+
+    self.toolController.delegate = self;
+}
+
 #pragma mark - Target/Action
 
 - (IBAction)close:(id)sender
@@ -265,60 +283,16 @@
                                                      animated:YES];
     hudForView.labelText = @"Rendering...";
     
-    NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
-    NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:VConstantMediaExtensionJPG];
-    
-    [self.toolController exportToURL:tempFile
-                         sourceAsset:self.mediaURL
-                      withCompletion:^(BOOL finished, UIImage *previewImage)
+    [self.toolController exportWithSourceAsset:self.mediaURL
+                                withCompletion:^(BOOL finished, NSURL *renderedMediaURL, UIImage *previewImage)
      {
-         self.renderedMediaURL = tempFile;
+         self.renderedMediaURL = renderedMediaURL;
          [hudForView hide:YES];
          if (self.completionBlock)
          {
-             self.completionBlock(YES, previewImage, tempFile);
+             self.completionBlock(YES, previewImage, self.renderedMediaURL);
          }
      }];
-    
-//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^
-//    {
-//        UIImage *renderedImagePreview;
-//        if (self.playerView)
-//        {
-//            NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
-//            NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:VConstantMediaExtensionMP4];
-//            [(id <VVideoWorkspaceTool>)self.selectedTool exportToURL:tempFile
-//                                                      withCompletion:^(BOOL finished, UIImage *previewImage)
-//             {
-//                 self.renderedMediaURL = tempFile;
-//                 
-//                 [[VObjectManager sharedManager] uploadMediaWithName:[[NSUUID UUID] UUIDString]
-//                                                         description:nil
-//                                                        previewImage:nil
-//                                                         captionType:VCaptionTypeQuote
-//                                                           expiresAt:nil
-//                                                    parentSequenceId:nil
-//                                                        parentNodeId:nil
-//                                                               speed:1.0f
-//                                                            loopType:VLoopRepeat
-//                                                            mediaURL:self.renderedMediaURL
-//                                                       facebookShare:NO
-//                                                        twitterShare:NO
-//                                                          completion:^(NSURLResponse *response, NSData *responseData, NSDictionary *jsonResponse, NSError *error)
-//                  {
-//                      dispatch_async(dispatch_get_main_queue(), ^
-//                                     {
-//                                         [MBProgressHUD hideHUDForView:self.view
-//                                                              animated:YES];
-//                                         if (self.completionBlock)
-//                                         {
-//                                             self.completionBlock(YES, nil, self.renderedMediaURL);
-//                                         }
-//                                     });
-//                  }];
-//                 
-//             }];
-//        }
 }
 
 - (void)selectedBarButtonItem:(UIBarButtonItem *)sender
@@ -327,23 +301,6 @@
     
     self.toolController.selectedTool = (id <VWorkspaceTool>)[self toolForTag:sender.tag];
 }
-
-#pragma mark - Property Accessors
-
-#warning Implement me in the video tool controller
-//    if ([selectedTool conformsToProtocol:@protocol(VVideoWorkspaceTool)])
-//    {
-//        id <VVideoWorkspaceTool> videoTool = (id <VVideoWorkspaceTool>)selectedTool;
-//        if ([videoTool respondsToSelector:@selector(setMediaURL:)])
-//        {
-//            [videoTool setMediaURL:self.mediaURL];
-//        }
-//        
-//        if ([videoTool respondsToSelector:@selector(setPlayerView:)])
-//        {
-//            [videoTool setPlayerView:self.playerView];
-//        }
-//    }
 
 #pragma mark - VWorkspaceToolControllerDelegate
 
