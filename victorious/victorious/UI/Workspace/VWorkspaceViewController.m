@@ -24,9 +24,7 @@
 
 // Rendering Utilities
 #import "CIImage+VImage.h"
-
-// Constants
-#import "VConstants.h"
+#import "NSURL+MediaType.h"
 
 // ToolControllers
 #import "VImageToolController.h"
@@ -159,7 +157,7 @@
     NSData *imageFile = [NSData dataWithContentsOfURL:self.mediaURL];
     self.canvasView.sourceImage = [UIImage imageWithData:imageFile];
     
-    if ([[self.mediaURL pathExtension] isEqualToString:VConstantMediaExtensionMP4])
+    if ([self.mediaURL v_hasVideoExtension])
     {
         self.playerView = [[VVideoPlayerView alloc] initWithFrame:self.canvasView.bounds];
         [self.canvasView addSubview:self.playerView];
@@ -255,11 +253,11 @@
 {
     _mediaURL = mediaURL;
     
-    if ([[mediaURL pathExtension] isEqualToString:VConstantMediaExtensionJPG])
+    if ([mediaURL v_hasImageExtension])
     {
         self.toolController = [[VImageToolController alloc] initWithTools:[self.dependencyManager workspaceTools]];
     }
-    else if ([[mediaURL pathExtension] isEqualToString:VConstantMediaExtensionMP4])
+    else if ([mediaURL v_hasVideoExtension])
     {
         self.toolController = [[VVideoToolController alloc] initWithTools:[self.dependencyManager workspaceTools]];
         [(VVideoToolController *)self.toolController setMediaURL:mediaURL];

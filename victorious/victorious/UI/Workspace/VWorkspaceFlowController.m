@@ -12,6 +12,9 @@
 
 #import "VConstants.h"
 
+// Category
+#import "NSURL+MediaType.h"
+
 // ViewControllers
 #import "VCameraViewController.h"
 #import "VWorkspaceViewController.h"
@@ -223,11 +226,11 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
     
     __weak typeof(self) welf = self;
     VWorkspaceViewController *workspaceViewController;
-    if ([[self.capturedMediaURL pathExtension] isEqualToString:VConstantMediaExtensionJPG])
+    if ([self.capturedMediaURL v_hasImageExtension])
     {
          workspaceViewController = (VWorkspaceViewController *)[self.dependencyManager viewControllerForKey:VDependencyManagerImageWorkspaceKey];
     }
-    else if ([[self.capturedMediaURL pathExtension] isEqualToString:VConstantMediaExtensionMP4])
+    else if ([self.capturedMediaURL v_hasVideoExtension])
     {
         workspaceViewController = (VWorkspaceViewController *)[self.dependencyManager viewControllerForKey:VDependencyManagerVideoWorkspaceKey];
     }
