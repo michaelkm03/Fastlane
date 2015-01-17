@@ -1,0 +1,97 @@
+//
+//  VWorkspaceToolController.m
+//  victorious
+//
+//  Created by Michael Sena on 1/16/15.
+//  Copyright (c) 2015 Victorious. All rights reserved.
+//
+
+#import "VToolController.h"
+
+@interface VToolController ()
+
+@property (nonatomic, strong, readwrite) NSArray *tools;
+
+@property (nonatomic, strong) UIViewController *canvasToolViewController;
+@property (nonatomic, strong) UIViewController *inspectorToolViewController;
+
+@end
+
+@implementation VToolController
+
+- (instancetype)initWithTools:(NSArray *)tools
+{
+    self = [super init];
+    if (self)
+    {
+        _tools = tools;
+    }
+    return self;
+}
+
+#pragma mark - Property Accessors
+
+- (void)setSelectedTool:(id<VWorkspaceTool>)selectedTool
+{
+    // Re-selected current tool should we dismiss?
+    if (selectedTool == _selectedTool)
+    {
+        return;
+    }
+    
+    if ([selectedTool respondsToSelector:@selector(setCanvasView:)] && self.canvasView)
+    {
+        [selectedTool setCanvasView:self.canvasView];
+    }
+    
+    if (([_selectedTool respondsToSelector:@selector(shouldLeaveToolOnCanvas)]))
+    {
+        if ([_selectedTool shouldLeaveToolOnCanvas])
+        {
+            self.canvasToolViewController.view.userInteractionEnabled = NO;
+            self.canvasToolViewController = nil;
+        }
+    }
+    
+    if ([selectedTool respondsToSelector:@selector(canvasToolViewController)])
+    {
+        // In case this viewController's view was disabled but left on the canvas
+        [selectedTool canvasToolViewController].view.userInteractionEnabled = YES;
+        [self.delegate setCanvasViewController:[selectedTool canvasToolViewController]];
+    }
+    else
+    {
+        [self.delegate setCanvasViewController:nil];
+    }
+    
+    if ([selectedTool respondsToSelector:@selector(inspectorToolViewController)])
+    {
+        [self.delegate setInspectorViewController:[selectedTool inspectorToolViewController]];
+    }
+    else
+    {
+        [self setInspectorToolViewController:nil];
+    }
+    if ([_selectedTool respondsToSelector:@selector(setSelected:)])
+    {
+        [_selectedTool setSelected:NO];
+    }
+    
+    if ([selectedTool respondsToSelector:@selector(setSelected:)])
+    {
+        [selectedTool setSelected:YES];
+    }
+    
+    _selectedTool = selectedTool;
+}
+
+#pragma mark - Public Methods
+
+- (void)exportToURL:(NSURL *)url
+        sourceAsset:(NSURL *)source
+     withCompletion:(void (^)(BOOL finished, UIImage *previewImage))completion
+{
+    NSAssert(false, @"Subclasses must implement me!");
+}
+
+@end

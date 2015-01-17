@@ -28,6 +28,9 @@
 // Constants
 #import "VConstants.h"
 
+// ToolControllers
+#import "VToolController.h"
+
 #warning just for testing
 #import "VObjectManager+ContentCreation.h"
 
@@ -37,14 +40,12 @@
 
 @import AVFoundation;
 
-static const CGFloat kJPEGCompressionQuality    = 0.8f;
-
-@interface VWorkspaceViewController ()
+@interface VWorkspaceViewController () <VToolControllerDelegate>
 
 @property (nonatomic, strong, readwrite) NSURL *renderedMediaURL;
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
-@property (nonatomic, strong) NSArray *tools;
+//@property (nonatomic, strong) NSArray *tools;
 
 @property (nonatomic, weak) IBOutlet UIToolbar *topToolbar;
 @property (nonatomic, weak) IBOutlet UIToolbar *bottomToolbar;
@@ -53,13 +54,15 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *verticalSpaceCanvasToTopOfContainerConstraint;
 @property (nonatomic, strong) NSMutableArray *inspectorConstraints;
 
-@property (nonatomic, strong) id <VWorkspaceTool> selectedTool;
+//@property (nonatomic, strong) id <VWorkspaceTool> selectedTool;
 @property (nonatomic, strong) UIViewController *canvasToolViewController;
 @property (nonatomic, strong) UIViewController *inspectorToolViewController;
 
 @property (nonatomic, strong) VVideoPlayerView *playerView;
 
 @property (nonatomic, strong) VKeyboardManager *keyboardManager;
+
+@property (nonatomic, strong) VToolController *toolController;
 
 @end
 
@@ -72,7 +75,8 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
     UIStoryboard *workspaceStoryboard = [UIStoryboard storyboardWithName:@"Workspace" bundle:nil];
     VWorkspaceViewController *workspaceViewController = [workspaceStoryboard instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
     workspaceViewController.dependencyManager = dependencyManager;
-    workspaceViewController.tools = [dependencyManager workspaceTools];
+    workspaceViewController.toolController = [[VToolController alloc] initWithTools:[dependencyManager workspaceTools]];
+    workspaceViewController.toolController.delegate = workspaceViewController;
     
     return workspaceViewController;
 }
@@ -105,6 +109,8 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
 {
     [super viewDidLoad];
     
+    self.toolController.canvasView = self.canvasView;
+    
     [self.blurredBackgroundImageVIew setBlurredImageWithClearImage:self.previewImage
                                                   placeholderImage:nil
                                                          tintColor:[[UIColor blackColor] colorWithAlphaComponent:0.5f]];
@@ -112,7 +118,7 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
     NSMutableArray *toolBarItems = [[NSMutableArray alloc] init];
     [toolBarItems addObject:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil]];
     
-    [self.tools enumerateObjectsUsingBlock:^(id <VWorkspaceTool> tool, NSUInteger idx, BOOL *stop)
+    [self.toolController.tools enumerateObjectsUsingBlock:^(id <VWorkspaceTool> tool, NSUInteger idx, BOOL *stop)
     {
         UIBarButtonItem *itemForTool;
         if (![tool respondsToSelector:@selector(icon)])
@@ -141,7 +147,7 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
         [toolBarItems addObject:itemForTool];
         itemForTool.tag = idx;
         
-        if (tool != self.tools.lastObject)
+        if (tool != self.toolController.tools.lastObject)
         {
             UIBarButtonItem *fixedSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
                                                                                         target:nil
@@ -259,184 +265,115 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
                                                      animated:YES];
     hudForView.labelText = @"Rendering...";
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^
-    {
-        UIImage *renderedImagePreview;
-        if (self.playerView)
-        {
-            NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
-            NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:VConstantMediaExtensionMP4];
-            [(id <VVideoWorkspaceTool>)self.selectedTool exportToURL:tempFile
-                                                      withCompletion:^(BOOL finished, UIImage *previewImage)
-             {
-                 self.renderedMediaURL = tempFile;
-                 
-                 [[VObjectManager sharedManager] uploadMediaWithName:[[NSUUID UUID] UUIDString]
-                                                         description:nil
-                                                        previewImage:nil
-                                                         captionType:VCaptionTypeQuote
-                                                           expiresAt:nil
-                                                    parentSequenceId:nil
-                                                        parentNodeId:nil
-                                                               speed:1.0f
-                                                            loopType:VLoopRepeat
-                                                            mediaURL:self.renderedMediaURL
-                                                       facebookShare:NO
-                                                        twitterShare:NO
-                                                          completion:^(NSURLResponse *response, NSData *responseData, NSDictionary *jsonResponse, NSError *error)
-                  {
-                      dispatch_async(dispatch_get_main_queue(), ^
-                                     {
-                                         [MBProgressHUD hideHUDForView:self.view
-                                                              animated:YES];
-                                         if (self.completionBlock)
-                                         {
-                                             self.completionBlock(YES, nil, self.renderedMediaURL);
-                                         }
-                                     });
-                  }];
-                 
-             }];
-        }
-        else
-        {
-            NSDate *tick = [NSDate date];
-            UIImage *renderedImage = [self renderedImageForCurrentState];
-            renderedImagePreview = renderedImage;
-            NSDate *tock = [NSDate date];
-            VLog(@"Render time: %@", @([tock timeIntervalSinceDate:tick]));
-            
-            NSData *filteredImageData = UIImageJPEGRepresentation(renderedImage, kJPEGCompressionQuality);
-            NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
-            NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:VConstantMediaExtensionJPG];
-            if ([filteredImageData writeToURL:tempFile atomically:NO])
-            {
-                self.renderedMediaURL = tempFile;
-            }
-            dispatch_async(dispatch_get_main_queue(), ^
-                           {
-                               [MBProgressHUD hideHUDForView:self.view
-                                                    animated:YES];
-                               self.completionBlock(YES, renderedImagePreview, self.renderedMediaURL);
-                           });
-        }
-    });
+    NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
+    NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:VConstantMediaExtensionJPG];
+    
+    [self.toolController exportToURL:tempFile
+                         sourceAsset:self.mediaURL
+                      withCompletion:^(BOOL finished, UIImage *previewImage)
+     {
+         self.renderedMediaURL = tempFile;
+         [hudForView hide:YES];
+         if (self.completionBlock)
+         {
+             self.completionBlock(YES, previewImage, tempFile);
+         }
+     }];
+    
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^
+//    {
+//        UIImage *renderedImagePreview;
+//        if (self.playerView)
+//        {
+//            NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
+//            NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:VConstantMediaExtensionMP4];
+//            [(id <VVideoWorkspaceTool>)self.selectedTool exportToURL:tempFile
+//                                                      withCompletion:^(BOOL finished, UIImage *previewImage)
+//             {
+//                 self.renderedMediaURL = tempFile;
+//                 
+//                 [[VObjectManager sharedManager] uploadMediaWithName:[[NSUUID UUID] UUIDString]
+//                                                         description:nil
+//                                                        previewImage:nil
+//                                                         captionType:VCaptionTypeQuote
+//                                                           expiresAt:nil
+//                                                    parentSequenceId:nil
+//                                                        parentNodeId:nil
+//                                                               speed:1.0f
+//                                                            loopType:VLoopRepeat
+//                                                            mediaURL:self.renderedMediaURL
+//                                                       facebookShare:NO
+//                                                        twitterShare:NO
+//                                                          completion:^(NSURLResponse *response, NSData *responseData, NSDictionary *jsonResponse, NSError *error)
+//                  {
+//                      dispatch_async(dispatch_get_main_queue(), ^
+//                                     {
+//                                         [MBProgressHUD hideHUDForView:self.view
+//                                                              animated:YES];
+//                                         if (self.completionBlock)
+//                                         {
+//                                             self.completionBlock(YES, nil, self.renderedMediaURL);
+//                                         }
+//                                     });
+//                  }];
+//                 
+//             }];
+//        }
 }
 
 - (void)selectedBarButtonItem:(UIBarButtonItem *)sender
 {
     [self setSelectedBarButtonItem:sender];
     
-    self.selectedTool = (id <VWorkspaceTool>)[self toolForTag:sender.tag];
+    self.toolController.selectedTool = (id <VWorkspaceTool>)[self toolForTag:sender.tag];
 }
 
 #pragma mark - Property Accessors
 
-- (void)setSelectedTool:(id<VWorkspaceTool>)selectedTool
+#warning Implement me in the video tool controller
+//    if ([selectedTool conformsToProtocol:@protocol(VVideoWorkspaceTool)])
+//    {
+//        id <VVideoWorkspaceTool> videoTool = (id <VVideoWorkspaceTool>)selectedTool;
+//        if ([videoTool respondsToSelector:@selector(setMediaURL:)])
+//        {
+//            [videoTool setMediaURL:self.mediaURL];
+//        }
+//        
+//        if ([videoTool respondsToSelector:@selector(setPlayerView:)])
+//        {
+//            [videoTool setPlayerView:self.playerView];
+//        }
+//    }
+
+#pragma mark - VWorkspaceToolControllerDelegate
+
+- (void)setCanvasViewController:(UIViewController *)canvasViewController
 {
-    // Re-selected current tool should we dismiss?
-    if (selectedTool == _selectedTool)
+    [self removeToolViewController:self.canvasToolViewController];
+    self.canvasToolViewController = canvasViewController;
+    
+    if (canvasViewController == nil)
     {
         return;
     }
- 
-    if ([selectedTool respondsToSelector:@selector(setCanvasView:)])
-    {
-        [selectedTool setCanvasView:self.canvasView];
-    }
+    [self addToolViewController:canvasViewController];
+    [self positionToolViewControllerOnCanvas:self.canvasToolViewController];
+}
+
+- (void)setInspectorViewController:(UIViewController *)inspectorViewController
+{
+    [self removeToolViewController:self.inspectorToolViewController];
+    self.inspectorToolViewController = inspectorViewController;
     
-    if ([_selectedTool respondsToSelector:@selector(shouldLeaveToolOnCanvas)])
+    if (inspectorViewController == nil)
     {
-        if (_selectedTool.shouldLeaveToolOnCanvas)
-        {
-            _canvasToolViewController.view.userInteractionEnabled = NO;
-            _canvasToolViewController = nil;
-        }
+        return;
     }
-    
-    if ([selectedTool respondsToSelector:@selector(canvasToolViewController)])
-    {
-        // In case this viewController's view was disabled but left on the canvas
-        [selectedTool canvasToolViewController].view.userInteractionEnabled = YES;
-        [self setCanvasToolViewController:[selectedTool canvasToolViewController]
-                                  forTool:selectedTool];
-    }
-    else
-    {
-        [self setCanvasToolViewController:nil
-                                  forTool:selectedTool];
-    }
-    
-    if ([selectedTool respondsToSelector:@selector(inspectorToolViewController)])
-    {
-        [self setInspectorToolViewController:[selectedTool inspectorToolViewController]
-                                     forTool:selectedTool];
-    }
-    else
-    {
-        [self setInspectorToolViewController:nil
-                                     forTool:selectedTool];
-    }
-    
-    if ([selectedTool conformsToProtocol:@protocol(VVideoWorkspaceTool)])
-    {
-        id <VVideoWorkspaceTool> videoTool = (id <VVideoWorkspaceTool>)selectedTool;
-        if ([videoTool respondsToSelector:@selector(setMediaURL:)])
-        {
-            [videoTool setMediaURL:self.mediaURL];
-        }
-        
-        if ([videoTool respondsToSelector:@selector(setPlayerView:)])
-        {
-            [videoTool setPlayerView:self.playerView];
-        }
-    }
-    
-    if ([_selectedTool respondsToSelector:@selector(setSelected:)])
-    {
-        [_selectedTool setSelected:NO];
-    }
-    
-    if ([selectedTool respondsToSelector:@selector(setSelected:)])
-    {
-        [selectedTool setSelected:YES];
-    }
- 
-   _selectedTool = selectedTool;
+    [self addToolViewController:inspectorViewController];
+    [self positionToolViewControllerOnInspector:inspectorViewController];
 }
 
 #pragma mark - Private Methods
-
-- (UIImage *)renderedImageForCurrentState
-{
-    CIContext *renderingContext = [CIContext contextWithOptions:@{}];
-    
-    __block CIImage *filteredImage = [CIImage v_imageWithUImage:self.canvasView.sourceImage];
-    
-    NSArray *filterOrderTools = [self.tools sortedArrayUsingComparator:^NSComparisonResult(id <VWorkspaceTool> tool1, id <VWorkspaceTool> tool2)
-    {
-        if (tool1.renderIndex < tool2.renderIndex)
-        {
-            return NSOrderedAscending;
-        }
-        if (tool1.renderIndex > tool2.renderIndex)
-        {
-            return NSOrderedDescending;
-        }
-        return NSOrderedSame;
-    }];
-
-    [filterOrderTools enumerateObjectsUsingBlock:^(id <VWorkspaceTool> tool, NSUInteger idx, BOOL *stop)
-    {
-        filteredImage = [tool imageByApplyingToolToInputImage:filteredImage];
-    }];
-    
-    CGImageRef renderedImage = [renderingContext createCGImage:filteredImage
-                                                      fromRect:[filteredImage extent]];
-    UIImage *image = [UIImage imageWithCGImage:renderedImage];
-    CGImageRelease(renderedImage);
-    return image;
-}
 
 - (void)setSelectedBarButtonItem:(UIBarButtonItem *)itemToSelect
 {
@@ -448,11 +385,11 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
 
 - (id <VWorkspaceTool>)toolForTag:(NSInteger)tag
 {
-    if ((self.tools.count == 0) && ((NSInteger)self.tools.count < tag))
+    if ((self.toolController.tools.count == 0) && ((NSInteger)self.toolController.tools.count < tag))
     {
         return nil;
     }
-    return self.tools[tag];
+    return self.toolController.tools[tag];
 }
 
 - (void)removeToolViewController:(UIViewController *)toolViewController
@@ -467,34 +404,6 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
     [self addChildViewController:viewController];
     [self.view addSubview:viewController.view];
     [viewController didMoveToParentViewController:self];
-}
-
-- (void)setCanvasToolViewController:(UIViewController *)canvasToolViewController
-                            forTool:(id<VWorkspaceTool>)tool
-{
-    [self removeToolViewController:self.canvasToolViewController];
-    self.canvasToolViewController = canvasToolViewController;
-    
-    if (canvasToolViewController == nil)
-    {
-        return;
-    }
-    [self addToolViewController:canvasToolViewController];
-    [self positionToolViewControllerOnCanvas:self.canvasToolViewController];
-}
-
-- (void)setInspectorToolViewController:(UIViewController *)inspectorToolViewController
-                               forTool:(id<VWorkspaceTool>)tool
-{
-    [self removeToolViewController:self.inspectorToolViewController];
-    self.inspectorToolViewController = inspectorToolViewController;
-    
-    if (inspectorToolViewController == nil)
-    {
-        return;
-    }
-    [self addToolViewController:inspectorToolViewController];
-    [self positionToolViewControllerOnInspector:inspectorToolViewController];
 }
 
 - (void)positionToolViewControllerOnCanvas:(UIViewController *)toolViewController
