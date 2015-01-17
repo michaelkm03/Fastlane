@@ -9,13 +9,13 @@
 #import "VScrollPaginator.h"
 
 #define LOG_PAGINATION_EVENTS 0
-#if DEBUG && LOG_PAGINATION_EVENTS
+#if LOG_PAGINATION_EVENTS
 #warning VScrollPaginator is logging pagination events.  Please turn this off before merging.
 #endif
 
-@interface VScrollPaginator ()
+@interface VScrollPaginator()
 
-@property (nonatomic, weak) UIScrollView *scrollViewThatTriggerPageLoad;
+@property (nonatomic, weak) id<VScrollPaginatorDelegate> delegate;
 
 @end
 

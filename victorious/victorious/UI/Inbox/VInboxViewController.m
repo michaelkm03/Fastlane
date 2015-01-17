@@ -358,7 +358,7 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    VAbstractFilter *filter = [[VObjectManager sharedManager] inboxFilterForCurrentUserFromManagedObjectContext:[[[VObjectManager sharedManager] managedObjectStore] mainQueueManagedObjectContext]];
+    VAbstractFilter *filter = [[VObjectManager sharedManager] inboxFilterForCurrentUser:[VObjectManager sharedManager].mainUser];
     CGFloat scrollThreshold = scrollView.contentSize.height * 0.75f;
     
     if (filter.currentPageNumber.intValue < filter.maxPageNumber.intValue &&

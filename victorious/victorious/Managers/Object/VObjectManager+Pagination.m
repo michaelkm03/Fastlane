@@ -160,7 +160,7 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
     __block RKManagedObjectRequestOperation *requestOperation = nil;
     [context performBlockAndWait:^(void)
     {
-        VAbstractFilter *listFilter = [self inboxFilterForCurrentUserFromManagedObjectContext:context];
+        VAbstractFilter *listFilter = [self inboxFilterForCurrentUser:[VObjectManager sharedManager].mainUser];
         requestOperation = [self.paginationManager loadFilter:listFilter withPageType:pageType successBlock:fullSuccessBlock failBlock:fail];
     }];
      
@@ -244,8 +244,7 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
                                              successBlock:(VSuccessBlock)success
                                                 failBlock:(VFailBlock)fail
 {
-    NSManagedObjectContext *context = self.managedObjectStore.mainQueueManagedObjectContext;
-    VAbstractFilter *filter = [self followerFilterForUser:user managedObjectContext:context];
+    VAbstractFilter *filter = [self followerFilterForUser:user];
     
     NSManagedObjectID *userObjectID = user.objectID;
     VSuccessBlock fullSuccessBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
@@ -278,8 +277,7 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
                                               successBlock:(VSuccessBlock)success
                                                  failBlock:(VFailBlock)fail
 {
-    NSManagedObjectContext *context = self.managedObjectStore.mainQueueManagedObjectContext;
-    VAbstractFilter *filter = [self followingFilterForUser:user managedObjectContext:context];
+    VAbstractFilter *filter = [self followingFilterForUser:user];
     
     NSManagedObjectID *userObjectID = user.objectID;
     VSuccessBlock fullSuccessBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
@@ -314,8 +312,7 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
                                                  successBlock:(VSuccessBlock)success
                                                     failBlock:(VFailBlock)fail
 {
-    NSManagedObjectContext *context = self.managedObjectStore.mainQueueManagedObjectContext;
-    VAbstractFilter *filter = [self repostFilterForSequence:sequence managedObjectContext:context];
+    VAbstractFilter *filter = [self repostFilterForSequence:sequence];
     
     VSuccessBlock fullSuccessBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
@@ -347,8 +344,7 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
                                    successBlock:(VSuccessBlock)success
                                       failBlock:(VFailBlock)fail
 {
-    NSManagedObjectContext *context = self.managedObjectStore.mainQueueManagedObjectContext;
-    VAbstractFilter *filter = (VAbstractFilter *)[self filterForStream:stream managedObjectContext:context];
+    VAbstractFilter *filter = (VAbstractFilter *)[self filterForStream:stream];
     VSuccessBlock fullSuccessBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         //If this is the first page, break the relationship to all the old objects.
@@ -377,7 +373,6 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
 #pragma mark - Filter Fetchers
 
 - (VAbstractFilter *)followerFilterForUser:(VUser *)user
-                      managedObjectContext:(NSManagedObjectContext *)managedObjectContext
 {
     NSString *apiPath = [@"/api/follow/followers_list/" stringByAppendingString: user.remoteId.stringValue];
     return (VAbstractFilter *)[self.paginationManager filterForPath:apiPath
@@ -386,7 +381,6 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
 }
 
 - (VAbstractFilter *)followingFilterForUser:(VUser *)user
-                       managedObjectContext:(NSManagedObjectContext *)managedObjectContext
 {
     NSString *apiPath = [@"/api/follow/subscribed_to_list/" stringByAppendingString: user.remoteId.stringValue];
     VAbstractFilter *filter = (VAbstractFilter *)[self.paginationManager filterForPath:apiPath
@@ -397,7 +391,6 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
 }
 
 - (VAbstractFilter *)repostFilterForSequence:(VSequence *)sequence
-                        managedObjectContext:(NSManagedObjectContext *)managedObjectContext
 {
     NSString *apiPath = [@"/api/repost/all/" stringByAppendingString: sequence.remoteId];
     return (VAbstractFilter *)[self.paginationManager filterForPath:apiPath
@@ -405,24 +398,22 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
                                                managedObjectContext:sequence.managedObjectContext];
 }
 
-- (VAbstractFilter *)inboxFilterForCurrentUserFromManagedObjectContext:(NSManagedObjectContext *)managedObjectContext
+- (VAbstractFilter *)inboxFilterForCurrentUser:(VUser *)currentUser
 {
     return [self.paginationManager filterForPath:@"/api/message/conversation_list"
                                       entityName:[VAbstractFilter entityName]
-                            managedObjectContext:managedObjectContext];
+                            managedObjectContext:currentUser.managedObjectContext];
 }
 
 - (VAbstractFilter *)commentsFilterForSequence:(VSequence *)sequence
-                           managedObjectContext:(NSManagedObjectContext *)managedObjectContext
 {
     NSString *apiPath = [@"/api/comment/all/" stringByAppendingString: sequence.remoteId];
     return [self.paginationManager filterForPath:apiPath
                                       entityName:[VAbstractFilter entityName]
-                            managedObjectContext:managedObjectContext];
+                            managedObjectContext:sequence.managedObjectContext];
 }
 
 - (VAbstractFilter *)filterForStream:(VStream *)stream
-                managedObjectContext:(NSManagedObjectContext *)managedObjectContext
 {
     NSString *apiPath;
     if (stream.apiPath.length)
@@ -441,7 +432,7 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
     
     return [self.paginationManager filterForPath:apiPath
                                       entityName:[VAbstractFilter entityName]
-                            managedObjectContext:managedObjectContext];
+                            managedObjectContext:stream.managedObjectContext];
 }
 
 - (NSString *)apiPathForConversationWithRemoteID:(NSNumber *)remoteID
