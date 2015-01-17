@@ -79,7 +79,7 @@ extern const NSInteger kTooManyNewMessagesErrorCode;
 
 - (VAbstractFilter *)repostFilterForSequence:(VSequence *)sequence;;
 
-- (VAbstractFilter *)inboxFilterForCurrentUser:(VUser *)currentUser;
+- (VAbstractFilter *)inboxFilterForCurrentUserFromManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
 
 - (VAbstractFilter *)filterForStream:(VStream *)stream;
 

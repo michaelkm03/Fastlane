@@ -160,7 +160,7 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
     __block RKManagedObjectRequestOperation *requestOperation = nil;
     [context performBlockAndWait:^(void)
     {
-        VAbstractFilter *listFilter = [self inboxFilterForCurrentUser:[VObjectManager sharedManager].mainUser];
+        VAbstractFilter *listFilter = [self inboxFilterForCurrentUserFromManagedObjectContext:context];
         requestOperation = [self.paginationManager loadFilter:listFilter withPageType:pageType successBlock:fullSuccessBlock failBlock:fail];
     }];
      
@@ -398,11 +398,11 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
                                                managedObjectContext:sequence.managedObjectContext];
 }
 
-- (VAbstractFilter *)inboxFilterForCurrentUser:(VUser *)currentUser
+- (VAbstractFilter *)inboxFilterForCurrentUserFromManagedObjectContext:(NSManagedObjectContext *)managedObjectContext
 {
     return [self.paginationManager filterForPath:@"/api/message/conversation_list"
                                       entityName:[VAbstractFilter entityName]
-                            managedObjectContext:currentUser.managedObjectContext];
+                            managedObjectContext:managedObjectContext];
 }
 
 - (VAbstractFilter *)commentsFilterForSequence:(VSequence *)sequence
