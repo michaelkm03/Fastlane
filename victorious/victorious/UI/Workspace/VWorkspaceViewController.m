@@ -178,59 +178,18 @@
     __weak typeof(self) welf = self;
     self.keyboardManager = [[VKeyboardManager alloc] initWithKeyboardWillShowBlock:^(CGRect keyboardFrameBegin, CGRect keyboardFrameEnd, NSTimeInterval animationDuration, UIViewAnimationCurve animationCurve)
     {
-        CGRect keyboardEndFrame = [welf.view convertRect:keyboardFrameEnd
-                                                fromView:nil];
-        CGRect overlap = CGRectIntersection(welf.canvasView.frame, keyboardEndFrame);
-        
-        // We don't want the inspector to move here
-        CGRect inspectorFrame = welf.inspectorToolViewController.view.frame;
-        [welf.inspectorConstraints enumerateObjectsUsingBlock:^(NSLayoutConstraint *constraint, NSUInteger idx, BOOL *stop)
-         {
-             [welf.view removeConstraint:constraint];
-         }];
-        
-        void (^animations)() = ^()
-        {
-            welf.verticalSpaceCanvasToTopOfContainerConstraint.constant = -CGRectGetHeight(overlap) + CGRectGetHeight(welf.topToolbar.frame);
-            welf.inspectorToolViewController.view.translatesAutoresizingMaskIntoConstraints = YES;
-            welf.inspectorToolViewController.view.frame = inspectorFrame;
-            [welf.topToolbar.items enumerateObjectsUsingBlock:^(UIBarButtonItem *item, NSUInteger idx, BOOL *stop)
-            {
-                [item setEnabled:NO];
-            }];
-            [welf.view layoutIfNeeded];
-        };
-        
-        [UIView animateWithDuration:animationDuration
-                              delay:0.0
-                            options:(animationCurve << 16)
-                         animations:animations
-                         completion:nil];
+
+        [welf keyboardWillShowWithFrameBegin:keyboardFrameBegin
+                                    frameEnd:keyboardFrameEnd
+                           animationDuration:animationDuration
+                              animationCurve:animationCurve];
     }
                                                                      willHideBlock:^(CGRect keyboardFrameBegin, CGRect keyboardFrameEnd, NSTimeInterval animationDuration, UIViewAnimationCurve animationCurve)
     {
-        // Undo removing inspector constraints we did in willShowBlock
-        welf.inspectorToolViewController.view.translatesAutoresizingMaskIntoConstraints = NO;
-        [welf.inspectorConstraints enumerateObjectsUsingBlock:^(NSLayoutConstraint *constraint, NSUInteger idx, BOOL *stop)
-         {
-             [welf.view addConstraint:constraint];
-         }];
-        
-        void (^animations)() = ^()
-        {
-            welf.verticalSpaceCanvasToTopOfContainerConstraint.constant = CGRectGetHeight(welf.topToolbar.frame);
-            [welf.view layoutIfNeeded];
-            [welf.topToolbar.items enumerateObjectsUsingBlock:^(UIBarButtonItem *item, NSUInteger idx, BOOL *stop)
-            {
-                [item setEnabled:YES];
-            }];
-        };
-        
-        [UIView animateWithDuration:animationDuration
-                              delay:0.0
-                            options:(animationCurve << 16)
-                         animations:animations
-                         completion:nil];
+        [welf keyboardWillHideWithFrameBegin:keyboardFrameBegin
+                                    frameEnd:keyboardFrameEnd
+                           animationDuration:animationDuration
+                              animationCurve:animationCurve];
     }
                                                               willChangeFrameBlock:nil];
 }
@@ -329,6 +288,70 @@
 }
 
 #pragma mark - Private Methods
+
+- (void)keyboardWillShowWithFrameBegin:(CGRect)beginFrame
+                              frameEnd:(CGRect)endFrame
+                     animationDuration:(NSTimeInterval)animationDuration
+                        animationCurve:(UIViewAnimationCurve)animationCurve
+{
+    CGRect keyboardEndFrame = [self.view convertRect:endFrame
+                                            fromView:nil];
+    CGRect overlap = CGRectIntersection(self.canvasView.frame, keyboardEndFrame);
+    
+    // We don't want the inspector to move here
+    CGRect inspectorFrame = self.inspectorToolViewController.view.frame;
+    [self.inspectorConstraints enumerateObjectsUsingBlock:^(NSLayoutConstraint *constraint, NSUInteger idx, BOOL *stop)
+     {
+         [self.view removeConstraint:constraint];
+     }];
+    
+    void (^animations)() = ^()
+    {
+        self.verticalSpaceCanvasToTopOfContainerConstraint.constant = -CGRectGetHeight(overlap) + CGRectGetHeight(self.topToolbar.frame);
+        self.inspectorToolViewController.view.translatesAutoresizingMaskIntoConstraints = YES;
+        self.inspectorToolViewController.view.frame = inspectorFrame;
+        [self.topToolbar.items enumerateObjectsUsingBlock:^(UIBarButtonItem *item, NSUInteger idx, BOOL *stop)
+         {
+             [item setEnabled:NO];
+         }];
+        [self.view layoutIfNeeded];
+    };
+    
+    [UIView animateWithDuration:animationDuration
+                          delay:0.0
+                        options:(animationCurve << 16)
+                     animations:animations
+                     completion:nil];
+}
+
+- (void)keyboardWillHideWithFrameBegin:(CGRect)beginFrame
+                              frameEnd:(CGRect)endFrame
+                     animationDuration:(NSTimeInterval)animationDuration
+                        animationCurve:(UIViewAnimationCurve)animationCurve
+{
+    // Undo removing inspector constraints we did in willShowBlock
+    self.inspectorToolViewController.view.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.inspectorConstraints enumerateObjectsUsingBlock:^(NSLayoutConstraint *constraint, NSUInteger idx, BOOL *stop)
+     {
+         [self.view addConstraint:constraint];
+     }];
+    
+    void (^animations)() = ^()
+    {
+        self.verticalSpaceCanvasToTopOfContainerConstraint.constant = CGRectGetHeight(self.topToolbar.frame);
+        [self.view layoutIfNeeded];
+        [self.topToolbar.items enumerateObjectsUsingBlock:^(UIBarButtonItem *item, NSUInteger idx, BOOL *stop)
+         {
+             [item setEnabled:YES];
+         }];
+    };
+    
+    [UIView animateWithDuration:animationDuration
+                          delay:0.0
+                        options:(animationCurve << 16)
+                     animations:animations
+                     completion:nil];
+}
 
 - (void)setSelectedBarButtonItem:(UIBarButtonItem *)itemToSelect
 {
