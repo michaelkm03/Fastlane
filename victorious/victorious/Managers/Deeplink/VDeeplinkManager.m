@@ -165,7 +165,7 @@ NSString * const VDeeplinkManagerInboxMessageNotification = @"VDeeplinkManagerIn
          
          if ([root.currentViewController isKindOfClass:[VSideMenuViewController class]])
          {
-             [(VSideMenuViewController *)root.currentViewController transitionToNavStack:@[homeStream]];
+             [(VSideMenuViewController *)root.currentViewController navigateToDestination:homeStream];
              [homeStream presentViewController:contentNav
                                       animated:YES
                                     completion:nil];
@@ -206,7 +206,7 @@ NSString * const VDeeplinkManagerInboxMessageNotification = @"VDeeplinkManagerIn
          
          if ([root.currentViewController isKindOfClass:[VSideMenuViewController class]])
          {
-             [(VSideMenuViewController *)root.currentViewController transitionToNavStack:@[homeStream]];
+             [(VSideMenuViewController *)root.currentViewController navigateToDestination:homeStream];
              [homeStream.navigationController pushViewController:profileVC animated:YES];
          }
      }
@@ -256,7 +256,7 @@ NSString * const VDeeplinkManagerInboxMessageNotification = @"VDeeplinkManagerIn
          
          if ([root.currentViewController isKindOfClass:[VSideMenuViewController class]])
          {
-             [(VSideMenuViewController *)root.currentViewController transitionToNavStack:@[inbox]];
+             [(VSideMenuViewController *)root.currentViewController navigateToDestination:inbox];
              [inbox.navigationController pushViewController:messageVC animated:YES];
          }
      }
@@ -305,7 +305,7 @@ NSString * const VDeeplinkManagerInboxMessageNotification = @"VDeeplinkManagerIn
          
          if ([root.currentViewController isKindOfClass:[VSideMenuViewController class]])
          {
-             [(VSideMenuViewController *)root.currentViewController transitionToNavStack:@[homeStream]];
+             [(VSideMenuViewController *)root.currentViewController navigateToDestination:homeStream];
              [homeStream presentViewController:contentNav
                                       animated:YES
                                     completion:^

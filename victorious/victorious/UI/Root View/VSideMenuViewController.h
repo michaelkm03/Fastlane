@@ -30,6 +30,5 @@
 
 - (void)presentMenuViewController;
 - (void)hideMenuViewController;
-- (void)transitionToNavStack:(NSArray *)navStack;
 
 @end

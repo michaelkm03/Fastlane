@@ -55,6 +55,26 @@ extern NSString * const VScaffoldViewControllerContentViewComponentKey;
  */
 - (void)showContentViewWithSequence:(VSequence *)sequence placeHolderImage:(UIImage *)placeHolderImage;
 
+/**
+ Attempt to navigate to a destination (the destination will
+ be given a chance to cancel the navigation before it 
+ actually happens)
+ 
+ @param navigationDestination Either an instance of UIViewController or an object conforming to VNavigationDestination
+ */
+- (void)navigateToDestination:(id)navigationDestination;
+
+/**
+ Displays the view controller that the user has navigated to through
+ whatever primary means of navigation this scaffold provides. You
+ normally should never call this class. It exists only as an override
+ point for subclasses. (To programmatically effect navigation, se
+ -navigateToDestination:)
+ 
+ Subclasses MUST override. The base implementation does nothing.
+ */
+- (void)displayResultOfNavigation:(UIViewController *)viewController;
+
 @end
 
 #pragma mark -

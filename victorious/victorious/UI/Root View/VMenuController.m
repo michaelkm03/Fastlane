@@ -15,6 +15,7 @@
 
 #import "VThemeManager.h"
 #import "VObjectManager.h"
+#import "VScaffoldViewController.h"
 #import "VSettingManager.h"
 
 #import "VStream+Fetcher.h"
@@ -30,9 +31,6 @@
 
 #import "VStreamCollectionViewController.h"
 #import "VMultipleStreamViewController.h"
-
-NSString * const VMenuControllerDidSelectRowNotification = @"VMenuTableViewControllerDidSelectRowNotification";
-NSString * const VMenuControllerDestinationViewControllerKey = @"VMenuControllerDestinationViewControllerKey";
 
 static NSString * const kSectionHeaderReuseID = @"SectionHeaderView";
 static const CGFloat kSectionHeaderHeight = 36.0f;
@@ -138,10 +136,10 @@ static char kKVOContext;
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    [collectionView deselectItemAtIndexPath:indexPath animated:YES];
-
     VNavigationMenuItem *menuItem = [self.collectionViewDataSource menuItemAtIndexPath:indexPath];
-    [[NSNotificationCenter defaultCenter] postNotificationName:VMenuControllerDidSelectRowNotification object:self userInfo:@{ VMenuControllerDestinationViewControllerKey: menuItem.destination }];
+    
+    [collectionView deselectItemAtIndexPath:indexPath animated:YES];
+    [[self.dependencyManager scaffoldViewController] navigateToDestination:menuItem.destination];
 }
 
 #pragma mark - Key-Value Observation

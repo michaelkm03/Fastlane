@@ -8,6 +8,7 @@
 
 #import "VContentViewViewModel.h"
 #import "VDependencyManager.h"
+#import "VNavigationDestination.h"
 #import "VNewContentViewController.h"
 #import "VScaffoldViewController.h"
 #import "VSequence+Fetcher.h"
@@ -69,6 +70,42 @@ NSString * const VScaffoldViewControllerContentViewComponentKey = @"contentView"
                                   VTrackingKeyUrls : sequence.tracking.viewStart ?: @[] };
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
     }];
+}
+
+#pragma mark - Navigation
+
+- (void)navigateToDestination:(id)navigationDestination
+{
+    void (^goTo)(UIViewController *) = ^(UIViewController *vc)
+    {
+        NSAssert([vc isKindOfClass:[UIViewController class]], @"non-UIViewController specified as destination for navigation");
+        [self displayResultOfNavigation:vc];
+    };
+    
+    if ([navigationDestination respondsToSelector:@selector(shouldNavigateWithAlternateDestination:)])
+    {
+        UIViewController *alternateDestination = nil;
+        if ( [navigationDestination shouldNavigateWithAlternateDestination:&alternateDestination] )
+        {
+            if ( alternateDestination == nil )
+            {
+                goTo(navigationDestination);
+            }
+            else
+            {
+                [self navigateToDestination:alternateDestination];
+            }
+        }
+    }
+    else
+    {
+        goTo(navigationDestination);
+    }
+}
+
+- (void)displayResultOfNavigation:(UIViewController *)viewController
+{
+    VLog(@"WARNING: %@ does not override -displayResultOfNavigation:", NSStringFromClass([self class]));
 }
 
 #pragma mark - VNewContentViewControllerDelegate methods

@@ -54,7 +54,6 @@
         
         _bouncesHorizontally = YES;
         
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(menuControllerDidSelectRow:) name:VMenuControllerDidSelectRowNotification object:nil];
         [self registerBadgeUpdateBlock];
     }
     return self;
@@ -146,7 +145,7 @@
     UIViewController *initialVC = [self.dependencyManager singletonViewControllerForKey:VDependencyManagerInitialViewControllerKey];
     if (initialVC != nil)
     {
-        [self transitionToNavStack:@[initialVC]];
+        [self displayResultOfNavigation:initialVC];
     }
 }
 
@@ -289,44 +288,26 @@
     [self.contentViewController.view addSubview:self.contentButton];
 }
 
-- (void)navigateToViewController:(id)destination
+- (void)navigateToDestination:(id)navigationDestination
 {
-    void (^goTo)(UIViewController *) = ^(UIViewController *vc)
+    if ( self.visible )
     {
-        NSAssert([vc isKindOfClass:[UIViewController class]], @"non-UIViewController specified as destination for navigation");
-        [self transitionToNavStack:@[vc]];
-    };
-    
-    if ([destination respondsToSelector:@selector(shouldNavigateWithAlternateDestination:)])
-    {
-        UIViewController *alternateDestination = nil;
-        if ([destination shouldNavigateWithAlternateDestination:&alternateDestination])
-        {
-            if (alternateDestination == nil)
-            {
-                goTo(destination);
-            }
-            else
-            {
-                [self navigateToViewController:alternateDestination];
-            }
-        }
+        [self hideMenuViewController];
     }
-    else
-    {
-        goTo(destination);
-    }
+    [super navigateToDestination:navigationDestination];
 }
 
-- (void)transitionToNavStack:(NSArray *)navStack
+- (void)displayResultOfNavigation:(UIViewController *)viewController
 {
-    //Dismiss any modals in the stack or they will cover the new VC
-    for (UIViewController *vc in self.contentViewController.viewControllers)
+    NSAssert(viewController != nil, @"Can't display a nil view controller");
+    
+    // Dismiss any modals
+    while ( self.presentedViewController != nil )
     {
-        [vc dismissViewControllerAnimated:NO completion:nil];
+        [self dismissViewControllerAnimated:NO completion:nil];
     }
     
-    self.contentViewController.viewControllers = navStack;
+    self.contentViewController.viewControllers = @[viewController];
 }
 
 #pragma mark - Motion effects
@@ -445,19 +426,6 @@
     {
         NSInteger badgeNumber = [(id<VProvidesNavigationMenuItemBadge>)self.menuViewController badgeNumber];
         [viewController.navHeaderView setBadgeNumber:badgeNumber];
-    }
-}
-
-#pragma mark - NSNotification handlers
-
-- (void)menuControllerDidSelectRow:(NSNotification *)notification
-{
-    [self hideMenuViewController];
-
-    id viewController = notification.userInfo[VMenuControllerDestinationViewControllerKey];
-    if (viewController)
-    {
-        [self navigateToViewController:viewController];
     }
 }
 
