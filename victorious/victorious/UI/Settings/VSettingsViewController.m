@@ -35,6 +35,8 @@ static const NSInteger kPushNotificationsButtonIndex = 3;
 static const NSInteger kServerEnvironmentButtonIndex = 4;
 static const NSInteger kResetPurchasesButtonIndex = 5;
 
+static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
+
 @interface VSettingsViewController ()   <MFMailComposeViewControllerDelegate, UIAlertViewDelegate>
 
 @property (weak, nonatomic) IBOutlet VButton *logoutButton;
@@ -297,9 +299,10 @@ static const NSInteger kResetPurchasesButtonIndex = 5;
                              [self deviceInfo], appName];
         NSString *subjString = NSLocalizedString(@"SupportEmailSubject", @"Feedback / Help");
         NSString *msgSubj = [NSString stringWithFormat:@"%@ %@", subjString, appName];
+        NSString *recipientEmail = [[VThemeManager sharedThemeManager] themedStringForKey:kVSupportEmail];
         
         [mailComposer setSubject:msgSubj];
-        [mailComposer setToRecipients:@[[[VThemeManager sharedThemeManager] themedStringForKey:kVSupportEmail]]];
+        [mailComposer setToRecipients:@[ recipientEmail ?: kDefaultHelpEmail ]];
         [mailComposer setMessageBody:msgBody isHTML:NO];
         
         //  Dismiss the menu controller first, since we want to be a child of the root controller
