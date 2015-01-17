@@ -100,7 +100,7 @@
 
         _currentNode = [sequence firstNode];
         
-        _currentAsset = [sequence primaryAssetWithPreferredMimeType:kVPreferedMimeType];
+        _currentAsset = [sequence primaryAssetWithPreferredMimeType:@"video/mp4"];
         
         // Set the default ad chain index
         self.currentAdChainIndex = 0;

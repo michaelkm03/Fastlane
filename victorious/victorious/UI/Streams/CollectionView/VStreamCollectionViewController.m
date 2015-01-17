@@ -999,7 +999,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
         }
     }
     
-    if ( visibiltyRatio >= 1.0 )
+    if ( visibiltyRatio > 0.5 )
     {
         [cell playVideo];
     }

@@ -157,7 +157,7 @@ typedef NS_OPTIONS(NSInteger, VSequencePermissionOptions)
     
     [node.assets enumerateObjectsUsingBlock:^(VAsset *asset, NSUInteger idx, BOOL *stop)
      {
-         if ([asset.type isEqualToString:mimeType])
+         if ([asset.mimeType isEqualToString:mimeType])
          {
              primaryAsset = asset;
              *stop = YES;

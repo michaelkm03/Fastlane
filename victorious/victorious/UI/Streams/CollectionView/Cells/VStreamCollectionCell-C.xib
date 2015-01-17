@@ -44,7 +44,7 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Yqk-3U-Cvu" userLabel="Content Container">
                         <rect key="frame" x="0.0" y="50" width="302" height="302"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N8i-0p-V1f" userLabel="Video Player Container">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N8i-0p-V1f" customClass="VStreamCellVideoView">
                                 <rect key="frame" x="0.0" y="0.0" width="302" height="302"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
@@ -53,7 +53,7 @@
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </imageView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="De6-Pn-uJH" secondAttribute="bottom" id="3yh-Ju-onl"/>
                             <constraint firstAttribute="bottom" secondItem="N8i-0p-V1f" secondAttribute="bottom" id="GpP-hf-2y7"/>
@@ -96,7 +96,7 @@
                 <outlet property="playImageView" destination="EYB-Sg-RQg" id="eFi-Uc-FSE"/>
                 <outlet property="previewImageView" destination="De6-Pn-uJH" id="Ypz-2a-uiA"/>
                 <outlet property="streamCellHeaderView" destination="W6W-Ju-9kU" id="8fB-eK-iAA"/>
-                <outlet property="videoPlayerContainerView" destination="N8i-0p-V1f" id="XXu-0B-pu9"/>
+                <outlet property="videoPlayerView" destination="N8i-0p-V1f" id="Gys-9u-d7Z"/>
             </connections>
         </collectionViewCell>
     </objects>
