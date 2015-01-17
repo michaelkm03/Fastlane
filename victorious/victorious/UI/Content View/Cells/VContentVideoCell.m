@@ -126,6 +126,7 @@
     {
         self.videoPlayerViewController.shouldChangeVideoGravityOnDoubleTap = NO;
         self.videoPlayerViewController.shouldShowToolbar = NO;
+        self.videoPlayerViewController.videoPlayerLayerVideoGravity = AVLayerVideoGravityResizeAspect;
     }
 }
 

@@ -217,7 +217,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
     NSNumber *cellVisibilityRatio = [dependencyManager numberForKey:@"experiments.stream_atf_view_threshold"];
     if ( cellVisibilityRatio != nil )
     {
-        streamCollectionVC.minimumRequiredCellVisibilityRatio = cellVisibilityRatio.floatValue;
+        streamCollectionVC.trackingMinRequiredCellVisibilityRatio = cellVisibilityRatio.floatValue;
     }
     
     streamCollectionVC.dependencyManager = dependencyManager;
@@ -295,7 +295,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
     [self.collectionView flashScrollIndicators];
     [self.navigationController setNavigationBarHidden:YES animated:YES];
     
-    [self updateSequenceTracking];
+    [self updateCellVisibility];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -951,16 +951,13 @@ static CGFloat const kTemplateCLineSpacing = 8;
 {
     [super scrollViewDidScroll:scrollView];
     
-    [self updateSequenceTracking];
+    [self updateCellVisibility];
 }
 
-#pragma mark - Tracking
+#pragma mark - Cell visibility
 
-- (void)updateSequenceTracking
+- (void)updateCellVisibility
 {
-    // Cells need to have this much visible area to be tracked
-    const float minimumRequiredVisibilityRatio = self.minimumRequiredCellVisibilityRatio;
-    
     // The visible rect must be offset by the visible height of the header, which may or may not be visible
     // In the future, when contentView's use a contentInset.top value to position content under the header,
     // a combiantion of the contentInset and contentOffset values can be used instead
@@ -978,25 +975,38 @@ static CGFloat const kTemplateCLineSpacing = 8;
              return;
          }
          
-         VSequence *sequence = cell.sequence;
-         if ( sequence == nil )
-         {
-             return;
-         }
-         
          // Calculate visible ratio (consts are for performance since this is called very often)
          const CGRect intersection = CGRectIntersection( streamVisibleRect, cell.frame );
          const float visibleRatio = CGRectGetHeight( intersection ) / CGRectGetHeight( cell.frame );
-         
-         if ( visibleRatio >= minimumRequiredVisibilityRatio )
-         {
-             NSDictionary *params = @{ VTrackingKeySequenceId : sequence.remoteId,
-                                       VTrackingKeyStreamId : self.currentStream.remoteId,
-                                       VTrackingKeyTimeStamp : [NSDate date],
-                                       VTrackingKeyUrls : sequence.tracking.cellView };
-             [[VTrackingManager sharedInstance] queueEvent:VTrackingEventSequenceDidAppearInStream parameters:params eventId:sequence.remoteId];
-         }
+         [self collectionViewCell:cell didUpdateVisibilityRatio:visibleRatio];
      }];
+}
+
+- (void)collectionViewCell:(VStreamCollectionCell *)cell didUpdateVisibilityRatio:(CGFloat)visibiltyRatio
+{
+    if ( visibiltyRatio >= self.trackingMinRequiredCellVisibilityRatio )
+    {
+        const VSequence *sequence = cell.sequence;
+        if ( sequence != nil )
+        {
+            NSDictionary *params = @{ VTrackingKeySequenceId : sequence.remoteId,
+                                      VTrackingKeyStreamId : self.currentStream.remoteId,
+                                      VTrackingKeyTimeStamp : [NSDate date],
+                                      VTrackingKeyUrls : sequence.tracking.cellView };
+            [[VTrackingManager sharedInstance] queueEvent:VTrackingEventSequenceDidAppearInStream
+                                               parameters:params
+                                                  eventId:sequence.remoteId];
+        }
+    }
+    
+    if ( visibiltyRatio >= 1.0 )
+    {
+        [cell playVideo];
+    }
+    else
+    {
+        [cell pauseVideo];
+    }
 }
 
 @end

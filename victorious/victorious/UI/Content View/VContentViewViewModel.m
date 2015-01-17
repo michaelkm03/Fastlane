@@ -44,8 +44,6 @@
 #import "VAdBreak.h"
 #import "VAdBreakFallback.h"
 
-static NSString * const kPreferedMimeType = @"application/x-mpegURL";
-
 @interface VContentViewViewModel ()
 
 @property (nonatomic, strong, readwrite) VSequence *sequence;
@@ -102,16 +100,7 @@ static NSString * const kPreferedMimeType = @"application/x-mpegURL";
 
         _currentNode = [sequence firstNode];
         
-        _currentAsset = [_currentNode.assets firstObject];
-        
-        [_currentNode.assets enumerateObjectsUsingBlock:^(VAsset *asset, NSUInteger idx, BOOL *stop)
-        {
-            if ([asset.type isEqualToString:kPreferedMimeType])
-            {
-                _currentAsset = asset;
-                *stop = YES;
-            }
-        }];
+        _currentAsset = [sequence primaryAssetWithPreferredMimeType:kVPreferedMimeType];
         
         // Set the default ad chain index
         self.currentAdChainIndex = 0;
@@ -283,8 +272,7 @@ static NSString * const kPreferedMimeType = @"application/x-mpegURL";
     NSURL *imageUrl;
     if (self.type == VContentViewTypeImage)
     {
-        VAsset *currentAsset = [_currentNode.assets firstObject];
-        imageUrl = [NSURL URLWithString:currentAsset.data];
+        imageUrl = [NSURL URLWithString:self.currentAsset.data];
     }
     else
     {
@@ -324,8 +312,7 @@ static NSString * const kPreferedMimeType = @"application/x-mpegURL";
 
 - (NSURL *)videoURL
 {
-    VAsset *currentAsset = [_currentNode.assets firstObject];
-    return [NSURL URLWithString:currentAsset.data];
+    return [NSURL URLWithString:self.currentAsset.data];
 }
 
 - (float)speed
@@ -350,8 +337,7 @@ static NSString * const kPreferedMimeType = @"application/x-mpegURL";
 
 - (BOOL)shouldShowRealTimeComents
 {
-    VAsset *currentAsset = [_currentNode.assets firstObject];
-    NSArray *realTimeComments = [currentAsset.comments array];
+    NSArray *realTimeComments = [self.currentAsset.comments array];
     return (realTimeComments.count > 0) ? YES : NO;
 }
 

@@ -36,6 +36,8 @@
 
 #import "CCHLinkTextView.h"
 #import "CCHLinkTextViewDelegate.h"
+#import "VCVideoPlayerViewController.h"
+#import "UIVIew+AutoLayout.h"
 
 @interface VStreamCollectionCell() <VSequenceActionsDelegate, CCHLinkTextViewDelegate>
 
@@ -46,6 +48,15 @@
 
 @property (nonatomic, weak) IBOutlet VStreamCellActionView *actionView;
 @property (nonatomic, weak) IBOutlet UIImageView *bottomGradient;
+
+@property (nonatomic, weak) IBOutlet UIView *videoPlayerContainerView;
+
+@property (nonatomic, strong, readwrite) VCVideoPlayerViewController *videoPlayerViewController;
+@property (nonatomic, strong) VAsset *videoAsset;
+@property (nonatomic, assign) BOOL isPlayButtonVisible;
+
+@property (nonatomic, readonly) BOOL canPlayVideo;
+@property (nonatomic, assign) BOOL isPlayingVideo;
 
 @end
 
@@ -67,6 +78,11 @@ static const CGFloat kDescriptionBuffer = 37.0;
     self.streamCellHeaderView = [[[NSBundle mainBundle] loadNibNamed:headerNibName owner:self options:nil] objectAtIndex:0];
     [self addSubview:self.streamCellHeaderView];
     self.streamCellHeaderView.delegate = self;
+    
+    self.videoPlayerViewController = [self createVideoPlayer];
+    self.videoPlayerViewController.view.frame = self.videoPlayerContainerView.bounds;
+    [self.videoPlayerContainerView addSubview:self.videoPlayerViewController.view];
+    [self.videoPlayerContainerView addFitToParentConstraintsToSubview:self.videoPlayerViewController.view];
 }
 
 - (void)text:(NSString *)text tappedInTextView:(UITextView *)textView
@@ -104,6 +120,17 @@ static const CGFloat kDescriptionBuffer = 37.0;
     }
 }
 
+- (void)prepareForReuse
+{
+    [super prepareForReuse];
+    
+    [self pauseVideo];
+    
+    self.videoAsset = nil;
+    self.previewImageView.hidden = NO;
+    self.isPlayingVideo = NO;
+}
+
 - (void)setSequence:(VSequence *)sequence
 {
     _sequence = sequence;
@@ -121,11 +148,80 @@ static const CGFloat kDescriptionBuffer = 37.0;
     
     self.captionTextView.hidden = self.sequence.nameEmbeddedInContent.boolValue;
     
-    self.playImageView.hidden = self.playBackgroundImageView.hidden = ![sequence isVideo];
-    
     [self setupActionBar];
     
     self.bottomGradient.hidden = (sequence.nameEmbeddedInContent != nil) ? [sequence.nameEmbeddedInContent boolValue] : NO;
+    
+    if ( [sequence isVideo] )
+    {
+        self.videoAsset = [self.sequence primaryAssetWithPreferredMimeType:kVPreferedMimeType];
+        if ( self.videoAsset.autoPlay.boolValue )
+        {
+            self.isPlayButtonVisible = NO;
+            self.videoPlayerViewController.shouldShowToolbar = !self.videoAsset.controlsDisabled.boolValue;
+            self.videoPlayerViewController.isAudioEnabled = !self.videoAsset.audioDisabled.boolValue;
+            self.videoPlayerViewController.shouldLoop = self.videoAsset.loop.boolValue;
+            
+#warning TODO: Experiment with how this affects performance.  Maybe assets are set just before play is called?
+            self.videoPlayerViewController.itemURL = [NSURL URLWithString:self.videoAsset.data];
+            self.videoPlayerViewController.view.hidden = NO;
+        }
+        else
+        {
+            self.videoPlayerViewController.itemURL = nil;
+            self.videoPlayerViewController.view.hidden = YES;
+        }
+    }
+    else
+    {
+        self.isPlayButtonVisible = NO;
+    }
+}
+
+- (VCVideoPlayerViewController *)createVideoPlayer
+{
+    VCVideoPlayerViewController *videoPlayerViewController = [[VCVideoPlayerViewController alloc] initWithNibName:nil bundle:nil];
+    videoPlayerViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    videoPlayerViewController.shouldContinuePlayingAfterDismissal = NO;
+    videoPlayerViewController.shouldChangeVideoGravityOnDoubleTap = NO;
+    videoPlayerViewController.videoPlayerLayerVideoGravity = AVLayerVideoGravityResizeAspectFill;
+    return videoPlayerViewController;
+}
+
+- (BOOL)canPlayVideo
+{
+    return self.videoAsset != nil;
+}
+
+- (void)playVideo
+{
+    if ( self.canPlayVideo && !self.isPlayingVideo )
+    {
+        NSLog( @"playVideo ::: %@", self.sequence.name );
+        
+        self.previewImageView.alpha = 0.0;
+        [self.videoPlayerViewController.player seekToTime:CMTimeMakeWithSeconds(0, 1)];
+        [self.videoPlayerViewController.player play];
+        self.isPlayingVideo = YES;
+    }
+}
+
+- (void)pauseVideo
+{
+    if ( self.canPlayVideo && self.isPlayingVideo )
+    {
+        NSLog( @"pauseVideo :::  %@", self.sequence.name );
+        
+        [self.videoPlayerViewController.player pause];
+        self.previewImageView.alpha = 1.0;
+        self.isPlayingVideo = NO;
+    }
+}
+
+- (void)setIsPlayButtonVisible:(BOOL)isPlayButtonVisible
+{
+    _isPlayButtonVisible = isPlayButtonVisible;
+    self.playImageView.hidden = self.playBackgroundImageView.hidden = !isPlayButtonVisible;
 }
 
 - (void)setupActionBar

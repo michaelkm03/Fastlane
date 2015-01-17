@@ -20,6 +20,7 @@
     NSDictionary *propertyMap = @{
                                   @"node_id" : VSelectorName(nodeId),
                                   @"type" : VSelectorName(type),
+                                  @"mime_type" : VSelectorName(mimeType),
                                   @"data" : VSelectorName(data),
                                   @"speed" : VSelectorName(speed),
                                   @"loop" : VSelectorName(loop),

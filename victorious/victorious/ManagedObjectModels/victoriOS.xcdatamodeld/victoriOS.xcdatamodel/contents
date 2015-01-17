@@ -40,6 +40,7 @@
         <attribute name="controlsDisabled" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="data" attributeType="String" syncable="YES"/>
         <attribute name="loop" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="mimeType" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="nodeId" optional="YES" attributeType="Integer 64" minValueString="0" syncable="YES"/>
         <attribute name="remoteId" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="speed" optional="YES" attributeType="Float" defaultValueString="1" syncable="YES"/>
@@ -271,7 +272,7 @@
         <element name="AdBreakFallback" positionX="891" positionY="-324" width="128" height="135"/>
         <element name="Answer" positionX="727" positionY="99" width="128" height="178"/>
         <element name="AnswerAction" positionX="718" positionY="330" width="128" height="75"/>
-        <element name="Asset" positionX="646" positionY="-441" width="128" height="210"/>
+        <element name="Asset" positionX="646" positionY="-441" width="128" height="225"/>
         <element name="Comment" positionX="1078" positionY="38" width="128" height="330"/>
         <element name="Conversation" positionX="1528" positionY="-468" width="128" height="148"/>
         <element name="Hashtag" positionX="1087" positionY="-630" width="128" height="88"/>

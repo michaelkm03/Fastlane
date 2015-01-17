@@ -18,6 +18,7 @@
 @property (nonatomic, retain) NSNumber * controlsDisabled;
 @property (nonatomic, retain) NSString * data;
 @property (nonatomic, retain) NSNumber * loop;
+@property (nonatomic, retain) NSString * mimeType;
 @property (nonatomic, retain) NSNumber * nodeId;
 @property (nonatomic, retain) NSNumber * remoteId;
 @property (nonatomic, retain) NSNumber * speed;

@@ -145,6 +145,34 @@ typedef NS_OPTIONS(NSInteger, VSequencePermissionOptions)
     return [self.nodes.array firstObject];
 }
 
+- (VAsset *)primaryAssetWithPreferredMimeType:(NSString *)mimeType
+{
+    VNode *node = self.firstNode;
+    if ( node == nil )
+    {
+        return nil;
+    }
+    
+    __block VAsset *primaryAsset = [node.assets firstObject];
+    
+    [node.assets enumerateObjectsUsingBlock:^(VAsset *asset, NSUInteger idx, BOOL *stop)
+     {
+         if ([asset.type isEqualToString:mimeType])
+         {
+             primaryAsset = asset;
+             *stop = YES;
+         }
+     }];
+    
+#warning This is hardcoded tests to simulate a GIF video configuration
+    primaryAsset.controlsDisabled = @(YES);
+    primaryAsset.loop = @(YES);
+    primaryAsset.audioDisabled = @(YES);
+    primaryAsset.autoPlay = @(YES);
+    
+    return primaryAsset;
+}
+
 - (NSArray *)initialImageURLs
 {
     NSMutableArray *urls = [[NSMutableArray alloc] initWithCapacity:10];

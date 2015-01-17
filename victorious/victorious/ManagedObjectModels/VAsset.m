@@ -18,6 +18,7 @@
 @dynamic controlsDisabled;
 @dynamic data;
 @dynamic loop;
+@dynamic mimeType;
 @dynamic nodeId;
 @dynamic remoteId;
 @dynamic speed;

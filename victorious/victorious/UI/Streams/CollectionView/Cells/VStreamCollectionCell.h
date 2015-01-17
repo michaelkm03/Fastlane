@@ -32,4 +32,7 @@
 - (void)showOverlays;
 + (CGSize)actualSizeWithCollectionViewBounds:(CGRect)bounds sequence:(VSequence *)sequence;
 
+- (void)playVideo;
+- (void)pauseVideo;
+
 @end

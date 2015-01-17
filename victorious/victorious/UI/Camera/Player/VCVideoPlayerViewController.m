@@ -30,7 +30,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 @property (nonatomic, strong) id timeObserver;
 @property (nonatomic, strong) AVPlayerItem *playerItemBeingObserved;
 @property (nonatomic) BOOL delegateNotifiedOfReadinessToPlay;
-@property (nonatomic) CMTime startTime;
+@property (nonatomic, readwrite) CMTime startTime;
 @property (nonatomic) CMTime endTime;
 @property (nonatomic) BOOL didPlayToEnd;
 @property (nonatomic, strong) NSTimer *toolbarHideTimer;
@@ -55,6 +55,8 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 @property (nonatomic, strong) VTrackingManager *trackingManager;
 @property (nonatomic, strong) VTracking *trackingItem;
 
+@property (nonatomic, assign) char context;
+
 @end
 
 @implementation VCVideoPlayerViewController
@@ -62,6 +64,12 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 + (VCVideoPlayerViewController *)currentPlayer
 {
     return _currentPlayer;
+}
+
+- (void *)KVOContext
+{
+    void *context = (void *)&self;
+    return (void*)self.context;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -93,29 +101,34 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     self.shouldLoop = NO;
     self.startTime = CMTimeMakeWithSeconds(0, 1);
     self.player = [[AVPlayer alloc] init];
+    [self addObservers];
+}
+
+- (void)addObservers
+{
     [self.player addObserver:self
                   forKeyPath:NSStringFromSelector(@selector(currentItem))
                      options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew)
-                     context:nil];
+                     context:[self KVOContext]];
     [self.player addObserver:self
                   forKeyPath:NSStringFromSelector(@selector(rate))
                      options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew)
-                     context:nil];
+                     context:[self KVOContext]];
     
     VCVideoPlayerViewController *__weak weakSelf = self;
     self.timeObserver = [self.player addPeriodicTimeObserverForInterval:CMTimeMake(1, 24)
                                                                   queue:dispatch_get_main_queue()
                                                              usingBlock:^(CMTime time)
-    {
-        [weakSelf didPlayToTime:time];
-    }];
+                         {
+                             [weakSelf didPlayToTime:time];
+                         }];
 }
 
 - (void)dealloc
 {
     [self removeObserverFromOldPlayerItemAndAddObserverToPlayerItem:nil];
-    [_player removeObserver:self forKeyPath:NSStringFromSelector(@selector(currentItem))];
-    [_player removeObserver:self forKeyPath:NSStringFromSelector(@selector(rate))];
+    [_player removeObserver:self forKeyPath:NSStringFromSelector(@selector(currentItem)) context:[self KVOContext]];
+    [_player removeObserver:self forKeyPath:NSStringFromSelector(@selector(rate)) context:[self KVOContext]];
     [_player removeTimeObserver:_timeObserver]; _timeObserver = nil;
 }
 
@@ -236,6 +249,12 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 
 - (void)setItemURL:(NSURL *)itemURL withLoopCount:(NSUInteger)loopCount
 {
+    if ( itemURL == nil )
+    {
+        [self removeObserverFromOldPlayerItemAndAddObserverToPlayerItem:nil];
+        [self.player replaceCurrentItemWithPlayerItem:nil];
+    }
+    
     _itemURL = itemURL;
     _loopCount = loopCount;
     
@@ -266,6 +285,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
         playerItem = [AVPlayerItem playerItemWithAsset:asset];
     }
     
+    [self removeObserverFromOldPlayerItemAndAddObserverToPlayerItem:playerItem];
     [self.player replaceCurrentItemWithPlayerItem:playerItem];
 }
 
@@ -330,10 +350,6 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 {
     self.toolbarView.hidden = !self.shouldShowToolbar;
     self.videoFrameTapGesture.enabled = self.shouldShowToolbar;
-    if ( !self.shouldShowToolbar )
-    {
-        self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspect;
-    }
 }
 
 - (void)setOverlayView:(UIView *)overlayView
@@ -590,12 +606,12 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 {
     if ([self.playerItemBeingObserved isKindOfClass:[AVPlayerItem class]])
     {
-        [self.playerItemBeingObserved removeObserver:self forKeyPath:kPlaybackBufferEmpty];
-        [self.playerItemBeingObserved removeObserver:self forKeyPath:kPlaybackLikelyToKeepUp];
-        [self.playerItemBeingObserved removeObserver:self forKeyPath:NSStringFromSelector(@selector(status))];
-        [self.playerItemBeingObserved removeObserver:self forKeyPath:NSStringFromSelector(@selector(tracks))];
-        [self.playerItemBeingObserved removeObserver:self forKeyPath:NSStringFromSelector(@selector(loadedTimeRanges))];
-        [self.playerItemBeingObserved removeObserver:self forKeyPath:NSStringFromSelector(@selector(duration))];
+        [self.playerItemBeingObserved removeObserver:self forKeyPath:kPlaybackBufferEmpty context:[self KVOContext]];
+        [self.playerItemBeingObserved removeObserver:self forKeyPath:kPlaybackLikelyToKeepUp context:[self KVOContext]];
+        [self.playerItemBeingObserved removeObserver:self forKeyPath:NSStringFromSelector(@selector(status)) context:[self KVOContext]];
+        [self.playerItemBeingObserved removeObserver:self forKeyPath:NSStringFromSelector(@selector(tracks)) context:[self KVOContext]];
+        [self.playerItemBeingObserved removeObserver:self forKeyPath:NSStringFromSelector(@selector(loadedTimeRanges)) context:[self KVOContext]];
+        [self.playerItemBeingObserved removeObserver:self forKeyPath:NSStringFromSelector(@selector(duration)) context:[self KVOContext]];
         [[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:self.playerItemBeingObserved];
         self.playerItemBeingObserved = nil;
     }
@@ -606,27 +622,27 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
         [currentItem addObserver:self
                       forKeyPath:kPlaybackBufferEmpty
                          options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew)
-                         context:nil];
+                         context:[self KVOContext]];
         [currentItem addObserver:self
                       forKeyPath:kPlaybackLikelyToKeepUp
                          options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew)
-                         context:nil];
+                         context:[self KVOContext]];
         [currentItem addObserver:self
                       forKeyPath:NSStringFromSelector(@selector(status))
                          options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew)
-                         context:nil];
+                         context:[self KVOContext]];
         [currentItem addObserver:self
                       forKeyPath:NSStringFromSelector(@selector(tracks))
                          options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew)
-                         context:nil];
+                         context:[self KVOContext]];
         [currentItem addObserver:self
                       forKeyPath:NSStringFromSelector(@selector(loadedTimeRanges))
                          options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew)
-                         context:nil];
+                         context:[self KVOContext]];
         [currentItem addObserver:self
                       forKeyPath:NSStringFromSelector(@selector(duration))
                          options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew)
-                         context:nil];
+                         context:[self KVOContext]];
         
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(playerItemDidPlayToEndTime:)
@@ -681,6 +697,12 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     {
         [self.player play];
     }
+}
+
+- (void)playFromStart
+{
+    [self.player seekToTime:self.startTime];
+    [self.player play];
 }
 
 - (void)videoFrameTapped:(UITapGestureRecognizer *)sender

@@ -73,7 +73,6 @@
 - (void)disableTracking;
 
 + (VCVideoPlayerViewController *)currentPlayer; ///< Returns a reference to a VCVideoPlayerViewController instance that is currently playing
-
 /**
  Add the same item "loopCount" times in order to have a smooth loop. 
  The loop system provided by Apple has an unvoidable hiccup. Using 
