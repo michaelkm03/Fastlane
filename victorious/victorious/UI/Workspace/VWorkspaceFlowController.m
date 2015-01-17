@@ -10,6 +10,8 @@
 
 #import "VDependencyManager.h"
 
+#import "VConstants.h"
+
 // ViewControllers
 #import "VCameraViewController.h"
 #import "VWorkspaceViewController.h"
@@ -131,7 +133,8 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
         NSAssert((self.renderedMeidaURL != nil), @"We need a rendered media url to begin publishing!");
         
         VPublishViewController *publishViewController = [VPublishViewController newWithDependencyManager:self.dependencyManager];
-        publishViewController.mediaToUploadURL = self.renderedMeidaURL;
+        publishViewController.mediaToUploadURL =
+        self.renderedMeidaURL;
         publishViewController.previewImage = self.previewImage;
         publishViewController.completion = ^void(BOOL published)
         {
@@ -219,7 +222,20 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
     NSAssert((self.capturedMediaURL != nil), @"We need a captured media url to begin editing!");
     
     __weak typeof(self) welf = self;
-    VWorkspaceViewController *workspaceViewController = (VWorkspaceViewController *)[self.dependencyManager viewControllerForKey:VDependencyManagerImageWorkspaceKey];
+    VWorkspaceViewController *workspaceViewController;
+    if ([[self.capturedMediaURL pathExtension] isEqualToString:VConstantMediaExtensionJPG])
+    {
+         workspaceViewController = (VWorkspaceViewController *)[self.dependencyManager viewControllerForKey:VDependencyManagerImageWorkspaceKey];
+    }
+    else if ([[self.capturedMediaURL pathExtension] isEqualToString:VConstantMediaExtensionMP4])
+    {
+        workspaceViewController = (VWorkspaceViewController *)[self.dependencyManager viewControllerForKey:VDependencyManagerVideoWorkspaceKey];
+    }
+    else
+    {
+        NSAssert(false, @"Media type not supported!");
+    }
+    
     workspaceViewController.mediaURL = self.capturedMediaURL;
     workspaceViewController.completionBlock = ^void(BOOL finished, UIImage *previewImage, NSURL *renderedMediaURL)
     {

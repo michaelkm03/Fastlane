@@ -42,7 +42,10 @@
     [(id <VVideoWorkspaceTool>)self.selectedTool exportToURL:tempFile
                                               withCompletion:^(BOOL finished, UIImage *previewImage)
      {
-         completion(finished, tempFile, previewImage);
+         dispatch_async(dispatch_get_main_queue(), ^
+         {
+             completion(finished, tempFile, previewImage);
+         });
      }];
 }
 

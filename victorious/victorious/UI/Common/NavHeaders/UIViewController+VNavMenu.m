@@ -256,19 +256,16 @@ static const char kWorkspaceFlowControllerKey;
     [alertControler addAction:[VAlertAction cancelButtonWithTitle:NSLocalizedString(@"CancelButton", @"Cancel button") handler:nil]];
     [alertControler addAction:[VAlertAction buttonWithTitle:NSLocalizedString(@"Create a Video Post", @"") handler:^(VAlertAction *action)
                                {
-                                   [self presentCameraViewController:[VCameraViewController cameraViewController]];
+                                   [self presentCreateFlowWithInitialCaptureState:VWorkspaceFlowControllerInitialCaptureStateVideo];
                                }]];
     [alertControler addAction:[VAlertAction buttonWithTitle:NSLocalizedString(@"Create an Image Post", @"") handler:^(VAlertAction *action)
                                {
-                                   VCameraViewController *cameraViewController = [VCameraViewController cameraViewControllerStartingWithStillCapture];
-                                   cameraViewController.shouldSkipPreview = YES;
-                                   [self presentCameraViewController:cameraViewController];
+                                   [self presentCreateFlowWithInitialCaptureState:VWorkspaceFlowControllerInitialCaptureStateImage];
                                }]];
     [alertControler addAction:[VAlertAction buttonWithTitle:NSLocalizedString(@"Create a GIF", @"Create a gif action button.")
                                                     handler:^(VAlertAction *action)
                                {
-                                   VCameraViewController *cameraViewController = [VCameraViewController cameraViewControllerLimitedToVideo];
-                                   [self presentCameraViewController:cameraViewController];
+                                   [self presentCreateFlowWithInitialCaptureState:VWorkspaceFlowControllerInitialCaptureStateVideo];
                                }]];
     [alertControler addAction:[VAlertAction buttonWithTitle:NSLocalizedString(@"Create a Poll", @"") handler:^(VAlertAction *action)
                                {
@@ -278,12 +275,13 @@ static const char kWorkspaceFlowControllerKey;
     [alertControler presentInViewController:self animated:YES completion:nil];
 }
 
-- (void)presentCameraViewController:(VCameraViewController *)cameraViewController
+- (void)presentCreateFlowWithInitialCaptureState:(VWorkspaceFlowControllerInitialCaptureState)initialCaptureState
 {
     VDependencyManager *dependencyManager = [((id <VHasManagedDependancies>)self) dependencyManager];
     
     self.workspaceFlowController = [dependencyManager templateValueOfType:[VWorkspaceFlowController class]
-                                                                   forKey:VDependencyManagerWorkspaceFlowKey];
+                                                                   forKey:VDependencyManagerWorkspaceFlowKey
+                                                    withAddedDependencies:@{VWorkspaceFlowControllerInitialCaptureStateKey:@(initialCaptureState)}];
     __weak typeof(self) welf = self;
     self.workspaceFlowController.completion = ^void(BOOL finished)
     {

@@ -107,11 +107,6 @@
     
     self.toolController.canvasView = self.canvasView;
     
-    if ([self.toolController isKindOfClass:[VVideoToolController class]])
-    {
-        [(VVideoToolController *)self.toolController setPlayerView:self.playerView];
-    }
-    
     [self.blurredBackgroundImageVIew setBlurredImageWithClearImage:self.previewImage
                                                   placeholderImage:nil
                                                          tintColor:[[UIColor blackColor] colorWithAlphaComponent:0.5f]];
@@ -164,8 +159,7 @@
     NSData *imageFile = [NSData dataWithContentsOfURL:self.mediaURL];
     self.canvasView.sourceImage = [UIImage imageWithData:imageFile];
     
-    AVAsset *asset = [AVAsset assetWithURL:self.mediaURL];
-    if ([asset tracksWithMediaType:AVMediaTypeVideo].count > 0)
+    if ([[self.mediaURL pathExtension] isEqualToString:VConstantMediaExtensionMP4])
     {
         self.playerView = [[VVideoPlayerView alloc] initWithFrame:self.canvasView.bounds];
         [self.canvasView addSubview:self.playerView];
@@ -177,6 +171,10 @@
                                                                                 options:kNilOptions
                                                                                 metrics:nil
                                                                                   views:@{@"playerView":self.playerView}]];
+        if ([self.toolController isKindOfClass:[VVideoToolController class]])
+        {
+            [(VVideoToolController *)self.toolController setPlayerView:self.playerView];
+        }
     }
     
     __weak typeof(self) welf = self;
@@ -282,6 +280,8 @@
     MBProgressHUD *hudForView = [MBProgressHUD showHUDAddedTo:self.view
                                                      animated:YES];
     hudForView.labelText = @"Rendering...";
+    
+    [self.playerView.player pause];
     
     [self.toolController exportWithSourceAsset:self.mediaURL
                                 withCompletion:^(BOOL finished, NSURL *renderedMediaURL, UIImage *previewImage)
