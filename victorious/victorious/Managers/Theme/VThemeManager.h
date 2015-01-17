@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 #pragma mark - New Theme Constants
-extern NSString * const kVChannelName;
+extern NSString * const kVCreatorName;
 
 // Images
 
