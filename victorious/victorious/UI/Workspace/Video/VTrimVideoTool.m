@@ -26,7 +26,7 @@ static NSString * const kVideoMaxDuration = @"videoMaxDuration";
 static NSString * const kVideoMinDuration = @"videoMinDuration";
 static NSString * const kVideoMuted = @"videoMuted";
 
-@interface VTrimVideoTool () <VTrimmerViewControllerDelegate, VTrimmedPlayerDelegate, VCVideoPlayerDelegate>
+@interface VTrimVideoTool () <VTrimmerViewControllerDelegate, VCVideoPlayerDelegate>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VTrimmerViewController *trimViewController;
@@ -76,10 +76,34 @@ static NSString * const kVideoMuted = @"videoMuted";
         _videoPlayerController = [[VCVideoPlayerViewController alloc] initWithNibName:nil
                                                                                bundle:nil];
         _videoPlayerController.shouldFireAnalytics = NO;
-//        _videoPlayerController.shouldShowToolbar = NO;
+        _videoPlayerController.shouldShowToolbar = NO;
         _videoPlayerController.shouldLoop = YES;
         _videoPlayerController.delegate = self;
         _videoPlayerController.shouldChangeVideoGravityOnDoubleTap = YES;
+        [self.KVOController observe:_videoPlayerController.player
+                            keyPath:NSStringFromSelector(@selector(status))
+                            options:NSKeyValueObservingOptionNew
+                              block:^(id observer, id object, NSDictionary *change)
+        {
+            AVPlayer *player = (AVPlayer *)object;
+            switch (player.status)
+            {
+                case AVPlayerStatusReadyToPlay:
+                {
+                    [player prerollAtRate:1.0f
+                        completionHandler:^(BOOL finished)
+                     {
+                         [player play];
+                     }];
+                    break;
+                }
+                case AVPlayerStatusUnknown:
+                case AVPlayerStatusFailed:
+                    break;
+            }
+        }];
+         
+
     }
     return self;
 }
@@ -169,14 +193,6 @@ static NSString * const kVideoMuted = @"videoMuted";
 {
     [self.videoPlayerController setStartSeconds:CMTimeGetSeconds(selectedTimeRange.start)];
     [self.videoPlayerController setEndSeconds:CMTimeGetSeconds(CMTimeAdd(selectedTimeRange.start, selectedTimeRange.duration))];
-}
-
-#pragma mark - VTrimmedPlayerDelegate
-
-- (void)trimmedPlayerPlayedToTime:(CMTime)currentPlayTime
-                    trimmedPlayer:(VTrimmedPlayer *)trimmedPlayer
-{
-    self.trimViewController.currentPlayTime = currentPlayTime;
 }
 
 #pragma mark - VCVideoPlayerDelegate
