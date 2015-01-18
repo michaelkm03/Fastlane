@@ -23,10 +23,8 @@
     if (self)
     {
         _imageGenerator = [[AVAssetImageGenerator alloc] initWithAsset:asset];
-//        _imageGenerator.appliesPreferredTrackTransform = YES;
         _imageGenerator.apertureMode = AVAssetImageGeneratorApertureModeCleanAperture;
         _imageGenerator.maximumSize = CGSizeMake(128, 128);
-        _thumbnailInterval = CMTimeMake(1, 1);
     }
     return self;
 }
@@ -37,7 +35,8 @@
              thumbnailForTime:(CMTime)time
                withCompletion:(void (^)(UIImage *thumbnail, CMTime timeForImage))completion
 {
-    UIImage *cachedImage = [self.thumbnailCache objectForKey:[NSValue valueWithCMTime:time].description];
+    NSString *keyForThumbnail = [NSString stringWithFormat:@"%@", [NSValue valueWithCMTime:time]];
+    UIImage *cachedImage = [self.thumbnailCache objectForKey:keyForThumbnail];
     if (cachedImage != nil)
     {
         completion(cachedImage, time);

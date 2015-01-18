@@ -14,6 +14,4 @@
 
 - (instancetype)initWithAsset:(AVAsset *)asset;
 
-@property (nonatomic, assign) CMTime thumbnailInterval; // Defaults to 1 second
-
 @end

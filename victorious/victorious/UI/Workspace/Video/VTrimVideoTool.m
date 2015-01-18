@@ -40,7 +40,7 @@ static NSString * const kVideoMuted = @"videoMuted";
 @property (nonatomic, assign) BOOL muteAudio;
 @property (nonatomic, assign, readwrite) CMTime frameDuration;
 @property (nonatomic, copy) NSString *title;
-@property (nonatomic, strong) VVideoFrameRateComposition *frameRateController;
+@property (nonatomic, strong) VVideoFrameRateComposition *frameRateComposition;
 
 @property (nonatomic, strong) VAssetThumbnailDataSource *thumbnailDataSource;
 
@@ -83,7 +83,7 @@ static NSString * const kVideoMuted = @"videoMuted";
 {
     _mediaURL = [mediaURL copy];
     
-    self.frameRateController = [[VVideoFrameRateComposition alloc] initWithVideoURL:mediaURL
+    self.frameRateComposition = [[VVideoFrameRateComposition alloc] initWithVideoURL:mediaURL
                                                                      frameDuration:self.frameDuration
                                                                          muteAudio:self.muteAudio];
     self.trimViewController.minimumStartTime = kCMTimeZero;
@@ -92,13 +92,16 @@ static NSString * const kVideoMuted = @"videoMuted";
     self.trimViewController.maximumTrimDuration = CMTimeMake(maxTime * timeScale, timeScale);
 
     __weak typeof(self) welf = self;
-    self.frameRateController.playerItemReady = ^(AVPlayerItem *playerItem)
+    self.frameRateComposition.playerItemReady = ^(AVPlayerItem *playerItem)
     {
-        welf.playerItem = playerItem;
-        welf.trimViewController.maximumEndTime = [playerItem duration];
-        
-        welf.thumbnailDataSource = [[VAssetThumbnailDataSource alloc] initWithAsset:playerItem.asset];
-        welf.trimViewController.thumbnailDataSource = welf.thumbnailDataSource;
+        dispatch_async(dispatch_get_main_queue(), ^
+        {
+            welf.playerItem = playerItem;
+            welf.trimViewController.maximumEndTime = [playerItem duration];
+            
+            welf.thumbnailDataSource = [[VAssetThumbnailDataSource alloc] initWithAsset:playerItem.asset];
+            welf.trimViewController.thumbnailDataSource = welf.thumbnailDataSource;
+        });
     };
 }
 
@@ -139,7 +142,7 @@ static NSString * const kVideoMuted = @"videoMuted";
 - (void)exportToURL:(NSURL *)url
      withCompletion:(void (^)(BOOL finished, UIImage *previewImage))completion
 {
-    AVAssetExportSession *exportSession = [self.frameRateController makeExportable];
+    AVAssetExportSession *exportSession = [self.frameRateComposition makeExportable];
     exportSession.outputURL = url;
     exportSession.timeRange = self.trimViewController.selectedTimeRange;
     exportSession.outputFileType = AVFileTypeQuickTimeMovie;
