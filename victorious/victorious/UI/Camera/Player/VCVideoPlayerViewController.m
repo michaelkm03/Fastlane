@@ -224,6 +224,13 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     _player = player;
 }
 
+- (void)setPlayerItem:(AVPlayerItem *)playerItem
+{
+    _playerItem = playerItem;
+    
+    [self.player replaceCurrentItemWithPlayerItem:playerItem];
+}
+
 - (void)setItemURL:(NSURL *)itemURL withLoopCount:(NSUInteger)loopCount
 {
     _itemURL = itemURL;

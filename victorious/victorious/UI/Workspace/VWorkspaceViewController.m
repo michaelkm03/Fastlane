@@ -32,7 +32,6 @@
 
 // Video
 #import "VVideoWorkspaceTool.h"
-#import "VVideoPlayerView.h"
 
 @import AVFoundation;
 
@@ -53,8 +52,6 @@
 //@property (nonatomic, strong) id <VWorkspaceTool> selectedTool;
 @property (nonatomic, strong) UIViewController *canvasToolViewController;
 @property (nonatomic, strong) UIViewController *inspectorToolViewController;
-
-@property (nonatomic, strong) VVideoPlayerView *playerView;
 
 @property (nonatomic, strong) VKeyboardManager *keyboardManager;
 
@@ -157,23 +154,6 @@
     NSData *imageFile = [NSData dataWithContentsOfURL:self.mediaURL];
     self.canvasView.sourceImage = [UIImage imageWithData:imageFile];
     
-    if ([self.mediaURL v_hasVideoExtension])
-    {
-        self.playerView = [[VVideoPlayerView alloc] initWithFrame:self.canvasView.bounds];
-        [self.canvasView addSubview:self.playerView];
-        [self.canvasView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[playerView]|"
-                                                                                options:kNilOptions
-                                                                                metrics:nil
-                                                                                  views:@{@"playerView":self.playerView}]];
-        [self.canvasView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[playerView]|"
-                                                                                options:kNilOptions
-                                                                                metrics:nil
-                                                                                  views:@{@"playerView":self.playerView}]];
-        if ([self.toolController isKindOfClass:[VVideoToolController class]])
-        {
-            [(VVideoToolController *)self.toolController setPlayerView:self.playerView];
-        }
-    }
     
     __weak typeof(self) welf = self;
     self.keyboardManager = [[VKeyboardManager alloc] initWithKeyboardWillShowBlock:^(CGRect keyboardFrameBegin, CGRect keyboardFrameEnd, NSTimeInterval animationDuration, UIViewAnimationCurve animationCurve)
@@ -237,8 +217,6 @@
     MBProgressHUD *hudForView = [MBProgressHUD showHUDAddedTo:self.view
                                                      animated:YES];
     hudForView.labelText = @"Rendering...";
-    
-    [self.playerView.player pause];
     
     [self.toolController exportWithSourceAsset:self.mediaURL
                                 withCompletion:^(BOOL finished, NSURL *renderedMediaURL, UIImage *previewImage)

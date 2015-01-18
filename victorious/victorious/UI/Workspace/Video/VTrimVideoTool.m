@@ -14,8 +14,7 @@
 #import <KVOController/FBKVOController.h>
 
 #import "VAssetThumbnailDataSource.h"
-
-#import "VTrimmedPlayer.h"
+#import "VCVideoPlayerViewController.h"
 
 static const int32_t kDefaultTimeScale = 600;
 
@@ -27,13 +26,13 @@ static NSString * const kVideoMaxDuration = @"videoMaxDuration";
 static NSString * const kVideoMinDuration = @"videoMinDuration";
 static NSString * const kVideoMuted = @"videoMuted";
 
-@interface VTrimVideoTool () <VTrimmerViewControllerDelegate, VTrimmedPlayerDelegate>
+@interface VTrimVideoTool () <VTrimmerViewControllerDelegate, VTrimmedPlayerDelegate, VCVideoPlayerDelegate>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VTrimmerViewController *trimViewController;
+@property (nonatomic, strong) VCVideoPlayerViewController *videoPlayerController;
 
 @property (nonatomic, strong, readwrite) AVPlayerItem *playerItem;
-@property (nonatomic, strong) VTrimmedPlayer *trimmedPlayer;
 
 @property (nonatomic, strong) NSNumber *minDuration;
 @property (nonatomic, strong) NSNumber *maxDuration;
@@ -73,6 +72,14 @@ static NSString * const kVideoMuted = @"videoMuted";
         _trimViewController = [[VTrimmerViewController alloc] initWithNibName:nil
                                                                        bundle:nil];
         _trimViewController.delegate = self;
+        
+        _videoPlayerController = [[VCVideoPlayerViewController alloc] initWithNibName:nil
+                                                                               bundle:nil];
+        _videoPlayerController.shouldFireAnalytics = NO;
+//        _videoPlayerController.shouldShowToolbar = NO;
+        _videoPlayerController.shouldLoop = YES;
+        _videoPlayerController.delegate = self;
+        _videoPlayerController.shouldChangeVideoGravityOnDoubleTap = YES;
     }
     return self;
 }
@@ -108,18 +115,8 @@ static NSString * const kVideoMuted = @"videoMuted";
 - (void)setPlayerItem:(AVPlayerItem *)playerItem
 {
     _playerItem = playerItem;
-    _playerItem.seekingWaitsForVideoCompositionRendering = YES;
     
-    self.trimmedPlayer = [VTrimmedPlayer playerWithPlayerItem:_playerItem];
-}
-
-- (void)setTrimmedPlayer:(VTrimmedPlayer *)trimmedPlayer
-{
-    _trimmedPlayer = trimmedPlayer;
-
-    self.playerView.player = trimmedPlayer;
-    [self observeStatusOnTrimmedPlayer:trimmedPlayer];
-    trimmedPlayer.delegate = self;
+    self.videoPlayerController.playerItem = playerItem;
 }
 
 - (void)setSelected:(BOOL)selected
@@ -127,13 +124,10 @@ static NSString * const kVideoMuted = @"videoMuted";
     _selected = selected;
     if (!selected)
     {
-        [self.KVOController unobserve:self.trimmedPlayer
-                              keyPath:NSStringFromSelector(@selector(status))];
-        [self.trimmedPlayer pause];
+        [self.videoPlayerController.player pause];
     }
     else
     {
-        [self observeStatusOnTrimmedPlayer:self.trimmedPlayer];
     }
 }
 
@@ -163,12 +157,18 @@ static NSString * const kVideoMuted = @"videoMuted";
     return self.trimViewController;
 }
 
+- (UIViewController *)canvasToolViewController
+{
+    return self.videoPlayerController;
+}
+
 #pragma mark - VTrimmerViewControllerDelegate
 
 - (void)trimmerViewControllerDidUpdateSelectedTimeRange:(CMTimeRange)selectedTimeRange
                                   trimmerViewController:(VTrimmerViewController *)trimmerViewController
 {
-    self.trimmedPlayer.trimRange = selectedTimeRange;
+    [self.videoPlayerController setStartSeconds:CMTimeGetSeconds(selectedTimeRange.start)];
+    [self.videoPlayerController setEndSeconds:CMTimeGetSeconds(CMTimeAdd(selectedTimeRange.start, selectedTimeRange.duration))];
 }
 
 #pragma mark - VTrimmedPlayerDelegate
@@ -179,34 +179,38 @@ static NSString * const kVideoMuted = @"videoMuted";
     self.trimViewController.currentPlayTime = currentPlayTime;
 }
 
-#pragma mark - Private Methods
+#pragma mark - VCVideoPlayerDelegate
 
-- (void)observeStatusOnTrimmedPlayer:(VTrimmedPlayer *)trimmedPlayer
+- (void)videoPlayer:(VCVideoPlayerViewController *)videoPlayer didPlayToTime:(CMTime)time
 {
-    __weak typeof(self) welf = self;
-    [self.KVOController observe:trimmedPlayer
-                        keyPath:NSStringFromSelector(@selector(status))
-                        options:NSKeyValueObservingOptionNew
-                          block:^(id observer, id object, NSDictionary *change)
-     {
-         VTrimmedPlayer *trimmedPlayer = object;
-         switch (trimmedPlayer.status)
-         {
-             case AVPlayerStatusUnknown:
-                 VLog(@"Player status unkown");
-                 [trimmedPlayer pause];
-                 break;
-             case AVPlayerStatusReadyToPlay:
-                 VLog(@"Player status ready to play");
-                 trimmedPlayer.trimRange = welf.trimViewController.selectedTimeRange;
-                 [trimmedPlayer play];
-                 break;
-             case AVPlayerStatusFailed:
-                 VLog(@"Player status failed");
-                 [trimmedPlayer pause];
-                 break;
-         }
-     }];
+
+}
+
+- (void)videoPlayerReadyToPlay:(VCVideoPlayerViewController *)videoPlayer
+{
+    VLog(@"ready to play");
+    [videoPlayer.player play];
+}
+
+- (void)videoPlayerFailed:(VCVideoPlayerViewController *)videoPlayer
+{
+    VLog(@"failed");
+}
+
+- (void)videoPlayerWasTapped
+{
+    VLog(@"play/pause");
+    self.videoPlayerController.isPlaying ? [self.videoPlayerController.player pause] : [self.videoPlayerController.player play];
+}
+
+- (void)videoPlayerWillStopPlaying:(VCVideoPlayerViewController *)videoPlayer
+{
+    
+}
+
+- (void)videoPlayerWillStartPlaying:(VCVideoPlayerViewController *)videoPlayer
+{
+    
 }
 
 @end
