@@ -107,7 +107,9 @@
                                                          tintColor:[[UIColor blackColor] colorWithAlphaComponent:0.5f]];
     
     NSMutableArray *toolBarItems = [[NSMutableArray alloc] init];
-    [toolBarItems addObject:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil]];
+    [toolBarItems addObject:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+                                                                          target:nil
+                                                                          action:nil]];
     
     [self.toolController.tools enumerateObjectsUsingBlock:^(id <VWorkspaceTool> tool, NSUInteger idx, BOOL *stop)
     {
@@ -218,14 +220,15 @@
                                                      animated:YES];
     hudForView.labelText = @"Rendering...";
     
+    __weak typeof(self) welf = self;
     [self.toolController exportWithSourceAsset:self.mediaURL
                                 withCompletion:^(BOOL finished, NSURL *renderedMediaURL, UIImage *previewImage)
      {
-         self.renderedMediaURL = renderedMediaURL;
+         welf.renderedMediaURL = renderedMediaURL;
          [hudForView hide:YES];
-         if (self.completionBlock)
+         if (welf.completionBlock)
          {
-             self.completionBlock(YES, previewImage, self.renderedMediaURL);
+             welf.completionBlock(YES, previewImage, welf.renderedMediaURL);
          }
      }];
 }

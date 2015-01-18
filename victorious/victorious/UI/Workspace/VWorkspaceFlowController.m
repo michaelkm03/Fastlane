@@ -196,9 +196,9 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
         }
         else
         {
-            if (self.completion)
+            if (welf.completion)
             {
-                self.completion(NO);
+                welf.completion(NO);
             }
             else
             {

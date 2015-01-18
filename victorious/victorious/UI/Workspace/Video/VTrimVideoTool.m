@@ -51,6 +51,12 @@ static NSString * const kVideoMuted = @"videoMuted";
 @synthesize mediaURL = _mediaURL;
 @synthesize playerView = _playerView;
 
+- (void)dealloc
+{
+    [self.KVOController unobserve:self.videoPlayerController.player
+                          keyPath:NSStringFromSelector(@selector(status))];
+}
+
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     self = [super init];
@@ -102,8 +108,6 @@ static NSString * const kVideoMuted = @"videoMuted";
                     break;
             }
         }];
-         
-
     }
     return self;
 }
@@ -150,9 +154,6 @@ static NSString * const kVideoMuted = @"videoMuted";
     {
         [self.videoPlayerController.player pause];
     }
-    else
-    {
-    }
 }
 
 #pragma mark - VVideoTool
@@ -197,36 +198,14 @@ static NSString * const kVideoMuted = @"videoMuted";
 
 #pragma mark - VCVideoPlayerDelegate
 
-- (void)videoPlayer:(VCVideoPlayerViewController *)videoPlayer didPlayToTime:(CMTime)time
-{
-
-}
-
 - (void)videoPlayerReadyToPlay:(VCVideoPlayerViewController *)videoPlayer
 {
-    VLog(@"ready to play");
     [videoPlayer.player play];
-}
-
-- (void)videoPlayerFailed:(VCVideoPlayerViewController *)videoPlayer
-{
-    VLog(@"failed");
 }
 
 - (void)videoPlayerWasTapped
 {
-    VLog(@"play/pause");
     self.videoPlayerController.isPlaying ? [self.videoPlayerController.player pause] : [self.videoPlayerController.player play];
-}
-
-- (void)videoPlayerWillStopPlaying:(VCVideoPlayerViewController *)videoPlayer
-{
-    
-}
-
-- (void)videoPlayerWillStartPlaying:(VCVideoPlayerViewController *)videoPlayer
-{
-    
 }
 
 @end
