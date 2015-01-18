@@ -75,39 +75,15 @@ static NSString * const kVideoMuted = @"videoMuted";
         NSNumber *frameDurationTimescale = [dependencyManager numberForKey:kVideoFrameDurationTimescale];
         _frameDuration = CMTimeMake((int)[frameDurationValue unsignedIntegerValue], (int)[frameDurationTimescale unsignedIntegerValue]);
         
-        _trimViewController = [[VTrimmerViewController alloc] initWithNibName:nil
-                                                                       bundle:nil];
+        _trimViewController = [[VTrimmerViewController alloc] initWithNibName:nil bundle:nil];
         _trimViewController.delegate = self;
         
-        _videoPlayerController = [[VCVideoPlayerViewController alloc] initWithNibName:nil
-                                                                               bundle:nil];
+        _videoPlayerController = [[VCVideoPlayerViewController alloc] initWithNibName:nil bundle:nil];
         _videoPlayerController.shouldFireAnalytics = NO;
         _videoPlayerController.shouldShowToolbar = NO;
         _videoPlayerController.shouldLoop = YES;
         _videoPlayerController.delegate = self;
         _videoPlayerController.shouldChangeVideoGravityOnDoubleTap = YES;
-        [self.KVOController observe:_videoPlayerController.player
-                            keyPath:NSStringFromSelector(@selector(status))
-                            options:NSKeyValueObservingOptionNew
-                              block:^(id observer, id object, NSDictionary *change)
-        {
-            AVPlayer *player = (AVPlayer *)object;
-            switch (player.status)
-            {
-                case AVPlayerStatusReadyToPlay:
-                {
-                    [player prerollAtRate:1.0f
-                        completionHandler:^(BOOL finished)
-                     {
-                         [player play];
-                     }];
-                    break;
-                }
-                case AVPlayerStatusUnknown:
-                case AVPlayerStatusFailed:
-                    break;
-            }
-        }];
     }
     return self;
 }
@@ -150,9 +126,37 @@ static NSString * const kVideoMuted = @"videoMuted";
 - (void)setSelected:(BOOL)selected
 {
     _selected = selected;
-    if (!selected)
+    if (selected)
     {
         [self.videoPlayerController.player pause];
+        [self.KVOController observe:self.videoPlayerController.player
+                            keyPath:NSStringFromSelector(@selector(status))
+                            options:NSKeyValueObservingOptionNew
+                              block:^(id observer, id object, NSDictionary *change)
+         {
+             AVPlayer *player = (AVPlayer *)object;
+             switch (player.status)
+             {
+                 case AVPlayerStatusReadyToPlay:
+                 {
+                     [player prerollAtRate:1.0f
+                         completionHandler:^(BOOL finished)
+                      {
+                          [player play];
+                      }];
+                     break;
+                 }
+                 case AVPlayerStatusUnknown:
+                 case AVPlayerStatusFailed:
+                     break;
+             }
+         }];
+    }
+    else
+    {
+        [self.videoPlayerController.player pause];
+        [self.KVOController unobserve:self.videoPlayerController.player
+                              keyPath:NSStringFromSelector(@selector(status))];
     }
 }
 
@@ -197,6 +201,12 @@ static NSString * const kVideoMuted = @"videoMuted";
 }
 
 #pragma mark - VCVideoPlayerDelegate
+
+- (void)videoPlayer:(VCVideoPlayerViewController *)videoPlayer
+      didPlayToTime:(CMTime)time
+{
+    self.trimViewController.currentPlayTime = time;
+}
 
 - (void)videoPlayerReadyToPlay:(VCVideoPlayerViewController *)videoPlayer
 {
