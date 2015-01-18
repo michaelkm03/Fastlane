@@ -51,12 +51,6 @@ static NSString * const kVideoMuted = @"videoMuted";
 @synthesize mediaURL = _mediaURL;
 @synthesize playerView = _playerView;
 
-- (void)dealloc
-{
-    [self.KVOController unobserve:self.videoPlayerController.player
-                          keyPath:NSStringFromSelector(@selector(status))];
-}
-
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     self = [super init];
