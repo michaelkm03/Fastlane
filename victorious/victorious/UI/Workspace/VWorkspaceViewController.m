@@ -49,13 +49,12 @@
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *verticalSpaceCanvasToTopOfContainerConstraint;
 @property (nonatomic, strong) NSMutableArray *inspectorConstraints;
 
-//@property (nonatomic, strong) id <VWorkspaceTool> selectedTool;
 @property (nonatomic, strong) UIViewController *canvasToolViewController;
 @property (nonatomic, strong) UIViewController *inspectorToolViewController;
 
 @property (nonatomic, strong) VKeyboardManager *keyboardManager;
 
-@property (nonatomic, strong) VToolController *toolController;
+@property (nonatomic, strong, readwrite) VToolController *toolController;
 
 @end
 
@@ -180,6 +179,9 @@
 {
     [super viewWillAppear:animated];
     
+    [self.toolController setupDefaultTool];
+    [self setSelectedBarButtonItemForTool:self.toolController.selectedTool];
+    
     self.keyboardManager.stopCallingHandlerBlocks = NO;
 }
 
@@ -235,9 +237,8 @@
 
 - (void)selectedBarButtonItem:(UIBarButtonItem *)sender
 {
-    [self setSelectedBarButtonItem:sender];
-    
     self.toolController.selectedTool = (id <VWorkspaceTool>)[self toolForTag:sender.tag];
+    [self setSelectedBarButtonItemForTool:[self toolForTag:sender.tag]];
 }
 
 #pragma mark - VWorkspaceToolControllerDelegate
@@ -334,10 +335,16 @@
                      completion:nil];
 }
 
-- (void)setSelectedBarButtonItem:(UIBarButtonItem *)itemToSelect
+- (void)setSelectedBarButtonItemForTool:(id <VWorkspaceTool>)tool
 {
-    [self.bottomToolbar.items enumerateObjectsUsingBlock:^(UIBarButtonItem *item, NSUInteger idx, BOOL *stop) {
+    __block UIBarButtonItem *itemToSelect;
+    [self.bottomToolbar.items enumerateObjectsUsingBlock:^(UIBarButtonItem *item, NSUInteger idx, BOOL *stop)
+    {
         item.tintColor = [UIColor whiteColor];
+        if (tool == [self toolForTag:item.tag])
+        {
+            itemToSelect = item;
+        }
     }];
     itemToSelect.tintColor = [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
 }

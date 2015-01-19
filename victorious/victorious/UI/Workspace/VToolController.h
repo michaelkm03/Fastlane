@@ -23,6 +23,10 @@
 
 - (void)exportWithSourceAsset:(NSURL *)source
                withCompletion:(void (^)(BOOL finished, NSURL *renderedMediaURL, UIImage *previewImage))completion;
+/**
+ *  Must be implemented by subclasses!
+ */
+- (void)setupDefaultTool;
 
 @property (nonatomic, readonly) NSArray *tools;
 

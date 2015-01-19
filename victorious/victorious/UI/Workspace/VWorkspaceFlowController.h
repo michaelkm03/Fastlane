@@ -9,25 +9,31 @@
 #import "VFlowController.h"
 #import "VHasManagedDependencies.h"
 
+#import "VImageToolController.h"
+#import "VVideoToolController.h"
+
 @class VSequence;
 
+// Defaults
+extern NSString * const VWorkspaceFlowControllerInitialCaptureStateKey;
 typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerInitialCaptureState)
 {
-    VWorkspaceFlowControllerInitialCaptureStateImage,
+    VWorkspaceFlowControllerInitialCaptureStateImage, // Default
     VWorkspaceFlowControllerInitialCaptureStateVideo
 };
-extern NSString * const VWorkspaceFlowControllerInitialCaptureStateKey;
 
-//typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerInitialVideoEditState)
-//{
-//    VWorkspaceFlowControllerInitialVideoEditStateGIF,
-//};
-//extern NSString * const VWorkspaceFlowControllerInitalEditStateKey;
-
+// Remix
 extern NSString * const VWorkspaceFlowControllerSequenceToRemixKey;
 
 /**
- *  Supports injection of the initial capture via "VWorkspaceFlowControllerInitialCaptureStateKey" and the sequence to remix via "VWorkspaceFlowControllerSequenceToRemixKey".
+ *  Supports injection of:
+ *  Initial capture via "VWorkspaceFlowControllerInitialCaptureStateKey",
+ *  initial image edit via "VImageToolControllerInitialImageEditStateKey",
+ *  initial video edit via "VVideoToolControllerInitalVideoEditStateKey",
+ *  Wrap the appropriate enum value in an [NSNumber numberWithInteger:].
+ *  
+ *  For remix the sequence to remix can be injected via "VWorkspaceFlowControllerSequenceToRemixKey".
+ *
  */
 @interface VWorkspaceFlowController : NSObject <VFlowController, VHasManagedDependancies>
 

@@ -10,10 +10,19 @@
 
 @class VVideoPlayerView;
 
+extern NSString * const VVideoToolControllerInitalVideoEditStateKey;
+typedef NS_ENUM(NSInteger, VVideoToolControllerInitialVideoEditState)
+{
+    VVideoToolControllerInitialVideoEditStateVideo, // Default
+    VVideoToolControllerInitialVideoEditStateGIF,
+};
+
 @interface VVideoToolController : VToolController
 
 @property (nonatomic, strong) NSURL *mediaURL;
 
 @property (nonatomic, strong) VVideoPlayerView *playerView;
+
+@property (nonatomic, assign) VVideoToolControllerInitialVideoEditState defaultVideoTool;
 
 @end

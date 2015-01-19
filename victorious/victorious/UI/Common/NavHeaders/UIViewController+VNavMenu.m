@@ -265,7 +265,9 @@ static const char kWorkspaceFlowControllerKey;
     [alertControler addAction:[VAlertAction buttonWithTitle:NSLocalizedString(@"Create a GIF", @"Create a gif action button.")
                                                     handler:^(VAlertAction *action)
                                {
-                                   [self presentCreateFlowWithInitialCaptureState:VWorkspaceFlowControllerInitialCaptureStateVideo];
+                                   [self presentCreateFlowWithInitialCaptureState:VWorkspaceFlowControllerInitialCaptureStateVideo
+                                                            initialImageEditState:VImageToolControllerInitialImageEditStateCrop
+                                                         andInitialVideoEditState:VVideoToolControllerInitialVideoEditStateGIF];
                                }]];
     [alertControler addAction:[VAlertAction buttonWithTitle:NSLocalizedString(@"Create a Poll", @"") handler:^(VAlertAction *action)
                                {
@@ -276,12 +278,16 @@ static const char kWorkspaceFlowControllerKey;
 }
 
 - (void)presentCreateFlowWithInitialCaptureState:(VWorkspaceFlowControllerInitialCaptureState)initialCaptureState
+                           initialImageEditState:(VImageToolControllerInitialImageEditState)initialImageEdit
+                        andInitialVideoEditState:(VVideoToolControllerInitialVideoEditState)initialVideoEdit
 {
     VDependencyManager *dependencyManager = [((id <VHasManagedDependancies>)self) dependencyManager];
     
     self.workspaceFlowController = [dependencyManager templateValueOfType:[VWorkspaceFlowController class]
                                                                    forKey:VDependencyManagerWorkspaceFlowKey
-                                                    withAddedDependencies:@{VWorkspaceFlowControllerInitialCaptureStateKey:@(initialCaptureState)}];
+                                                    withAddedDependencies:@{VWorkspaceFlowControllerInitialCaptureStateKey:@(initialCaptureState),
+                                                                            VImageToolControllerInitialImageEditStateKey:@(initialImageEdit),
+                                                                            VVideoToolControllerInitalVideoEditStateKey:@(initialVideoEdit)}];
     __weak typeof(self) welf = self;
     self.workspaceFlowController.completion = ^void(BOOL finished)
     {
@@ -291,6 +297,13 @@ static const char kWorkspaceFlowControllerKey;
     [self presentViewController:self.workspaceFlowController.flowRootViewController
                        animated:YES
                      completion:nil];
+}
+
+- (void)presentCreateFlowWithInitialCaptureState:(VWorkspaceFlowControllerInitialCaptureState)initialCaptureState
+{
+    [self presentCreateFlowWithInitialCaptureState:initialCaptureState
+                             initialImageEditState:VImageToolControllerInitialImageEditStateCrop
+                          andInitialVideoEditState:VVideoToolControllerInitialVideoEditStateVideo];
 }
 
 - (CGFloat)headerPositionY

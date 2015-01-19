@@ -87,6 +87,11 @@
 
 #pragma mark - Public Methods
 
+- (void)setupDefaultTool
+{
+    NSAssert(false, @"Implement me in subclasses!");
+}
+
 - (void)exportWithSourceAsset:(NSURL *)source
                withCompletion:(void (^)(BOOL finished, NSURL *renderedMediaURL, UIImage *previewImage))completion
 {

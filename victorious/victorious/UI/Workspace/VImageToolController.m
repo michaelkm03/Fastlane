@@ -11,7 +11,14 @@
 #import "CIImage+VImage.h"
 #import "VConstants.h"
 
+//TODO: Should factor these out of here
+#import "VCropTool.h"
+#import "VFilterTool.h"
+#import "VTextTool.h"
+
 static const CGFloat kJPEGCompressionQuality    = 0.8f;
+
+NSString * const VImageToolControllerInitialImageEditStateKey = @"VImageToolControllerInitialImageEditStateKey";
 
 @implementation VImageToolController
 
@@ -69,6 +76,46 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
     UIImage *image = [UIImage imageWithCGImage:renderedImage];
     CGImageRelease(renderedImage);
     return image;
+}
+
+#pragma mark - Iherited Methods
+
+- (void)setupDefaultTool
+{
+    if (self.tools == nil)
+    {
+        NSAssert(false, @"Tools not set yet!");
+    }
+    
+    [self.tools enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop)
+     {
+         switch (self.defaultImageTool)
+         {
+             case VImageToolControllerInitialImageEditStateFilter:
+                 if ([obj isKindOfClass:[VFilterTool class]])
+                 {
+                     [self setSelectedTool:obj];
+                     *stop = YES;
+                 }
+                 break;
+             case VImageToolControllerInitialImageEditStateText:
+                 if ([obj isKindOfClass:[VTextTool class]])
+                 {
+                     [self setSelectedTool:obj];
+                     *stop = YES;
+                 }
+                 break;
+             case VImageToolControllerInitialImageEditStateCrop:
+             default:
+                 if ([obj isKindOfClass:[VCropTool class]])
+                 {
+                     [self setSelectedTool:obj];
+                     
+                     *stop = YES;
+                 }
+                 break;
+         }
+    }];
 }
 
 @end

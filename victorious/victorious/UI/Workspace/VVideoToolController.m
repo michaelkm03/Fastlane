@@ -12,6 +12,8 @@
 
 #import "VConstants.h"
 
+NSString * const VVideoToolControllerInitalVideoEditStateKey = @"VVideoToolControllerInitalVideoEditStateKey";
+
 @implementation VVideoToolController
 
 - (void)setSelectedTool:(id<VVideoWorkspaceTool>)selectedTool
@@ -46,6 +48,43 @@
          {
              completion(finished, tempFile, previewImage);
          });
+     }];
+}
+
+- (void)setupDefaultTool
+{
+    if (self.tools == nil)
+    {
+        NSAssert(false, @"Tools not set yet!");
+    }
+    
+//TODO: Should refactor this to not rely on the title string
+    [self.tools enumerateObjectsUsingBlock:^(id <VWorkspaceTool> obj, NSUInteger idx, BOOL *stop)
+     {
+         switch (self.defaultVideoTool)
+         {
+             case VVideoToolControllerInitialVideoEditStateGIF:
+                 if ([obj respondsToSelector:@selector(title)])
+                 {
+                     if ([[obj title] isEqualToString:@"gif"])
+                     {
+                         [self setSelectedTool:obj];
+                         *stop = YES;
+                     }
+                 }
+                 break;
+             case VVideoToolControllerInitialVideoEditStateVideo:
+             default:
+                 if ([obj respondsToSelector:@selector(title)])
+                 {
+                     if ([[obj title] isEqualToString:@"video"])
+                     {
+                         [self setSelectedTool:obj];
+                         *stop = YES;
+                     }
+                 }
+                 break;
+         }
      }];
 }
 

@@ -8,9 +8,14 @@
 
 #import "VWorkspaceFlowController.h"
 
+// Dependency
 #import "VDependencyManager.h"
 
+// Constants
 #import "VConstants.h"
+
+// Tools
+#import "VToolController.h"
 
 // Category
 #import "NSURL+MediaType.h"
@@ -51,6 +56,9 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
 
 @property (nonatomic, strong) VPublishBlurOverAnimator *transitionAnimator;
 
+@property (nonatomic, assign) VImageToolControllerInitialImageEditState initialImageEditState;
+@property (nonatomic, assign) VVideoToolControllerInitialVideoEditState initialVideoEditState;
+
 @end
 
 @implementation VWorkspaceFlowController
@@ -79,25 +87,21 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
         }
         else
         {
-            VWorkspaceFlowControllerInitialCaptureState initialCaptureState = VWorkspaceFlowControllerInitialCaptureStateImage;
-            NSNumber *initialCaptureStateValue = [self.dependencyManager numberForKey:VWorkspaceFlowControllerInitialCaptureStateKey];
-            initialCaptureState = (initialCaptureStateValue != nil) ? [initialCaptureStateValue integerValue] : initialCaptureState;
-            
-            VCameraViewController *cameraViewController;
-            switch (initialCaptureState)
-            {
-                case VWorkspaceFlowControllerInitialCaptureStateImage:
-                    cameraViewController = [VCameraViewController cameraViewControllerStartingWithStillCapture];
-                    break;
-                case VWorkspaceFlowControllerInitialCaptureStateVideo:
-                    cameraViewController = [VCameraViewController cameraViewControllerStartingWithVideoCapture];
-                    break;
-            }
-            cameraViewController.shouldSkipPreview = YES;
-            cameraViewController.completionBlock = [self mediaCaptureCompletion];
-            [_flowNavigationController pushViewController:cameraViewController
-                                                 animated:NO];
-
+            [self setupCapture];
+        }
+        
+        _initialImageEditState = VImageToolControllerInitialImageEditStateCrop;
+        NSNumber *initalImageEditStateValue = [dependencyManager numberForKey:VImageToolControllerInitialImageEditStateKey];
+        if (initalImageEditStateValue != nil)
+        {
+            _initialImageEditState = [initalImageEditStateValue integerValue];
+        }
+        
+        _initialVideoEditState = VVideoToolControllerInitialVideoEditStateVideo;
+        NSNumber *initialVideoEditStateValue = [dependencyManager numberForKey:VVideoToolControllerInitalVideoEditStateKey];
+        if (initialVideoEditStateValue != nil)
+        {
+            _initialVideoEditState = [initialVideoEditStateValue integerValue];
         }
     }
     return self;
@@ -183,6 +187,28 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
 
 #pragma mark - Private Methods
 
+- (void)setupCapture
+{
+    VWorkspaceFlowControllerInitialCaptureState initialCaptureState = VWorkspaceFlowControllerInitialCaptureStateImage;
+    NSNumber *initialCaptureStateValue = [self.dependencyManager numberForKey:VWorkspaceFlowControllerInitialCaptureStateKey];
+    initialCaptureState = (initialCaptureStateValue != nil) ? [initialCaptureStateValue integerValue] : initialCaptureState;
+    
+    VCameraViewController *cameraViewController;
+    switch (initialCaptureState)
+    {
+        case VWorkspaceFlowControllerInitialCaptureStateImage:
+            cameraViewController = [VCameraViewController cameraViewControllerStartingWithStillCapture];
+            break;
+        case VWorkspaceFlowControllerInitialCaptureStateVideo:
+            cameraViewController = [VCameraViewController cameraViewControllerStartingWithVideoCapture];
+            break;
+    }
+    cameraViewController.shouldSkipPreview = YES;
+    cameraViewController.completionBlock = [self mediaCaptureCompletion];
+    [_flowNavigationController pushViewController:cameraViewController
+                                         animated:NO];
+}
+
 - (VMediaCaptureCompletion)mediaCaptureCompletion
 {
     __weak typeof(self) welf = self;
@@ -228,18 +254,21 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
     VWorkspaceViewController *workspaceViewController;
     if ([self.capturedMediaURL v_hasImageExtension])
     {
-         workspaceViewController = (VWorkspaceViewController *)[self.dependencyManager viewControllerForKey:VDependencyManagerImageWorkspaceKey];
+        workspaceViewController = (VWorkspaceViewController *)[self.dependencyManager viewControllerForKey:VDependencyManagerImageWorkspaceKey];
+        workspaceViewController.mediaURL = self.capturedMediaURL;
+        ((VImageToolController *)workspaceViewController.toolController).defaultImageTool = self.initialImageEditState;
     }
     else if ([self.capturedMediaURL v_hasVideoExtension])
     {
         workspaceViewController = (VWorkspaceViewController *)[self.dependencyManager viewControllerForKey:VDependencyManagerVideoWorkspaceKey];
+        workspaceViewController.mediaURL = self.capturedMediaURL;
+        ((VVideoToolController *)workspaceViewController.toolController).defaultVideoTool = self.initialVideoEditState;
     }
     else
     {
         NSAssert(false, @"Media type not supported!");
     }
     
-    workspaceViewController.mediaURL = self.capturedMediaURL;
     workspaceViewController.completionBlock = ^void(BOOL finished, UIImage *previewImage, NSURL *renderedMediaURL)
     {
         if (finished)

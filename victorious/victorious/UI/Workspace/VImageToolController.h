@@ -8,6 +8,16 @@
 
 #import "VToolController.h"
 
+extern NSString * const VImageToolControllerInitialImageEditStateKey;
+typedef NS_ENUM(NSInteger, VImageToolControllerInitialImageEditState)
+{
+    VImageToolControllerInitialImageEditStateCrop, // Default
+    VImageToolControllerInitialImageEditStateFilter,
+    VImageToolControllerInitialImageEditStateText,
+};
+
 @interface VImageToolController : VToolController
+
+@property (nonatomic, assign) VImageToolControllerInitialImageEditState defaultImageTool;
 
 @end

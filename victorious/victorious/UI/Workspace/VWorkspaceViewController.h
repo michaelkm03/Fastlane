@@ -10,6 +10,8 @@
 
 #import "VHasManagedDependencies.h"
 
+@class VToolController;
+
 typedef void (^VWorkspaceCompletion)(BOOL finished, UIImage *previewImage, NSURL *renderedMediaURL);
 
 /**
@@ -28,6 +30,8 @@ typedef void (^VWorkspaceCompletion)(BOOL finished, UIImage *previewImage, NSURL
 @property (nonatomic, strong) UIImage *previewImage; ///< An image to use while the image while the asset at mediaURL is loading.
 @property (nonatomic, strong) NSURL *mediaURL; ///< The image or video to use in this workspace.
 
-@property (nonatomic, readonly) NSURL *renderedMediaURL; ///< The URL of the rendered media 
+@property (nonatomic, readonly) NSURL *renderedMediaURL; ///< The URL of the rendered media
+
+@property (nonatomic, readonly) VToolController *toolController;
 
 @end
