@@ -14,6 +14,12 @@
 
 NSString * const VVideoToolControllerInitalVideoEditStateKey = @"VVideoToolControllerInitalVideoEditStateKey";
 
+@interface VVideoToolController ()
+
+@property (nonatomic, assign) BOOL hasSetupDefaultTool;
+
+@end
+
 @implementation VVideoToolController
 
 - (void)setSelectedTool:(id<VVideoWorkspaceTool>)selectedTool
@@ -53,6 +59,12 @@ NSString * const VVideoToolControllerInitalVideoEditStateKey = @"VVideoToolContr
 
 - (void)setupDefaultTool
 {
+    if (self.hasSetupDefaultTool)
+    {
+        return;
+    }
+    self.hasSetupDefaultTool = YES;
+    
     if (self.tools == nil)
     {
         NSAssert(false, @"Tools not set yet!");

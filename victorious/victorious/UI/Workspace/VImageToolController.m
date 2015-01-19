@@ -20,6 +20,12 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
 
 NSString * const VImageToolControllerInitialImageEditStateKey = @"VImageToolControllerInitialImageEditStateKey";
 
+@interface VImageToolController ()
+
+@property (nonatomic, assign) BOOL hasSetupDefaultTool;
+
+@end
+
 @implementation VImageToolController
 
 - (void)exportWithSourceAsset:(NSURL *)source
@@ -82,6 +88,12 @@ NSString * const VImageToolControllerInitialImageEditStateKey = @"VImageToolCont
 
 - (void)setupDefaultTool
 {
+    if (self.hasSetupDefaultTool)
+    {
+        return;
+    }
+    self.hasSetupDefaultTool = YES;
+    
     if (self.tools == nil)
     {
         NSAssert(false, @"Tools not set yet!");

@@ -24,7 +24,7 @@
 - (void)exportWithSourceAsset:(NSURL *)source
                withCompletion:(void (^)(BOOL finished, NSURL *renderedMediaURL, UIImage *previewImage))completion;
 /**
- *  Must be implemented by subclasses!
+ *  Must be implemented by subclasses! Only works on the first call.
  */
 - (void)setupDefaultTool;
 
