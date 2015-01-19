@@ -99,6 +99,7 @@ static inline CGPoint ClampX(CGPoint point, CGFloat xMin, CGFloat xMax)
     self.pushBehavior = [[UIPushBehavior alloc] initWithItems:@[self.trimThumbHead] mode:UIPushBehaviorModeInstantaneous];
     self.collisionBehavior = [[UICollisionBehavior alloc] initWithItems:@[self.trimThumbHead]];
     self.collisionBehavior.translatesReferenceBoundsIntoBoundary = YES;
+    [self.collisionBehavior setTranslatesReferenceBoundsIntoBoundaryWithInsets:UIEdgeInsetsMake(0, -CGRectGetWidth(self.trimThumbHead.bounds)/2, 0.0f, -CGRectGetWidth(self.trimThumbHead.bounds)/2)];
     self.collisionBehavior.collisionDelegate = self;
     self.itemBehavior = [[UIDynamicItemBehavior alloc] initWithItems:@[self.trimThumbHead]];
     self.itemBehavior.resistance = 10.5f;
@@ -124,7 +125,8 @@ static inline CGPoint ClampX(CGPoint point, CGFloat xMin, CGFloat xMax)
           withEvent:(UIEvent *)event
 {
     // Pass through any touches which
-    UIView *hitView = [super hitTest:point withEvent:event];
+    UIView *hitView = [super hitTest:point
+                           withEvent:event];
     
     if ((hitView == self.trimThumbBody) || (hitView == self.trimThumbHead))
     {
@@ -132,6 +134,12 @@ static inline CGPoint ClampX(CGPoint point, CGFloat xMin, CGFloat xMax)
     }
     else
     {
+        CGFloat padding = 22.0f;
+        CGFloat midXThumbBody = CGRectGetMidX(self.trimThumbBody.frame);
+        if (ABS(midXThumbBody - point.x) < padding)
+        {
+            return self.trimThumbBody;
+        }
         return nil;
     }
 }
@@ -228,11 +236,11 @@ static inline CGPoint ClampX(CGPoint point, CGFloat xMin, CGFloat xMax)
     CGPoint anchor;
     if (p.x > CGRectGetMidX(self.bounds))
     {
-        anchor = CGPointMake(CGRectGetMaxX(self.bounds) - CGRectGetWidth(self.trimThumbHead.bounds) * 0.5f, CGRectGetMidY(self.trimThumbHead.frame));
+        anchor = CGPointMake(CGRectGetMaxX(self.bounds), CGRectGetMidY(self.trimThumbHead.frame));
     }
     else
     {
-        anchor = CGPointMake(CGRectGetWidth(self.trimThumbHead.bounds) * 0.5f, CGRectGetMidY(self.trimThumbHead.frame));
+        anchor = CGPointMake(0.0f, CGRectGetMidY(self.trimThumbHead.frame));
     }
     [self.animator removeBehavior:self.clampingBehavior];
     self.clampingBehavior = [[UIAttachmentBehavior alloc] initWithItem:self.trimThumbHead
@@ -260,8 +268,8 @@ static inline CGPoint ClampX(CGPoint point, CGFloat xMin, CGFloat xMax)
 - (void)updateThumAndDimmingViewWithNewThumbCenter:(CGPoint)thumbCenter
 {
     CGPoint newCenter = CGPointMake(thumbCenter.x, TrimHeadYCenter());
-    CGFloat minHeadX = kTrimHeadWidth * 0.5f;
-    CGFloat maxHeadX = CGRectGetWidth(self.bounds) - minHeadX;
+    CGFloat minHeadX = 0.0f;
+    CGFloat maxHeadX = CGRectGetWidth(self.bounds);
     self.trimThumbHead.center = ClampX(newCenter, minHeadX, maxHeadX);
     self.trimThumbBody.center = CGPointMake(thumbCenter.x, self.trimThumbBody.center.y);
     
