@@ -164,9 +164,20 @@ static NSString * const kVideoMuted = @"videoMuted";
     exportSession.outputFileType = AVFileTypeQuickTimeMovie;
     [exportSession exportAsynchronouslyWithCompletionHandler:^
     {
+        AVAssetImageGenerator *thumbnailGenerator = [[AVAssetImageGenerator alloc] initWithAsset:exportSession.asset];
+        
+        NSError *error;
+        CGImageRef thumbnailRef = [thumbnailGenerator copyCGImageAtTime:kCMTimeZero
+                                                             actualTime:NULL
+                                                                  error:&error];
+        UIImage *thumbnailImage = [UIImage imageWithCGImage:thumbnailRef
+                                                      scale:1.0f
+                                                orientation:UIImageOrientationUp];
+        CGImageRelease(thumbnailRef);
+        
         if (completion)
         {
-            completion(YES, nil);
+            completion(YES, thumbnailImage);
         }
     }];
 }
