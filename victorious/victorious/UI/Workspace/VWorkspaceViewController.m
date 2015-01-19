@@ -40,7 +40,6 @@
 @property (nonatomic, strong, readwrite) NSURL *renderedMediaURL;
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
-//@property (nonatomic, strong) NSArray *tools;
 
 @property (nonatomic, weak) IBOutlet UIToolbar *topToolbar;
 @property (nonatomic, weak) IBOutlet UIToolbar *bottomToolbar;
@@ -55,6 +54,9 @@
 @property (nonatomic, strong) VKeyboardManager *keyboardManager;
 
 @property (nonatomic, strong, readwrite) VToolController *toolController;
+
+@property (nonatomic, strong) NSDictionary *toolForBarButtonItemMap;
+@property (nonatomic, strong) NSDictionary *barButtonItemForToolMap;
 
 @end
 
@@ -110,6 +112,8 @@
                                                                           target:nil
                                                                           action:nil]];
     
+    NSMutableDictionary *barButtonItemForToolMap = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary *toolForBarButtonItemMap = [[NSMutableDictionary alloc] init];
     [self.toolController.tools enumerateObjectsUsingBlock:^(id <VWorkspaceTool> tool, NSUInteger idx, BOOL *stop)
     {
         UIBarButtonItem *itemForTool;
@@ -139,6 +143,11 @@
         [toolBarItems addObject:itemForTool];
         itemForTool.tag = idx;
         
+        [barButtonItemForToolMap setObject:itemForTool
+                                    forKey:[tool description]];
+        [toolForBarButtonItemMap setObject:tool
+                                    forKey:[itemForTool description]];
+        
         if (tool != self.toolController.tools.lastObject)
         {
             UIBarButtonItem *fixedSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
@@ -148,6 +157,8 @@
             [toolBarItems addObject:fixedSpace];
         }
     }];
+    self.toolForBarButtonItemMap = toolForBarButtonItemMap;
+    self.barButtonItemForToolMap = barButtonItemForToolMap;
     
     [toolBarItems addObject:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil]];
     self.bottomToolbar.items = toolBarItems;
@@ -180,7 +191,7 @@
     [super viewWillAppear:animated];
     
     [self.toolController setupDefaultTool];
-    [self setSelectedBarButtonItemForTool:self.toolController.selectedTool];
+    [self setSelectedBarButtonItem:[self.barButtonItemForToolMap objectForKey:[self.toolController.selectedTool description]]];
     
     self.keyboardManager.stopCallingHandlerBlocks = NO;
 }
@@ -237,8 +248,8 @@
 
 - (void)selectedBarButtonItem:(UIBarButtonItem *)sender
 {
-    self.toolController.selectedTool = (id <VWorkspaceTool>)[self toolForTag:sender.tag];
-    [self setSelectedBarButtonItemForTool:[self toolForTag:sender.tag]];
+    self.toolController.selectedTool = [self.toolForBarButtonItemMap objectForKey:sender.description];
+    [self setSelectedBarButtonItem:sender];
 }
 
 #pragma mark - VWorkspaceToolControllerDelegate
@@ -335,27 +346,13 @@
                      completion:nil];
 }
 
-- (void)setSelectedBarButtonItemForTool:(id <VWorkspaceTool>)tool
+- (void)setSelectedBarButtonItem:(UIBarButtonItem *)item
 {
-    __block UIBarButtonItem *itemToSelect;
     [self.bottomToolbar.items enumerateObjectsUsingBlock:^(UIBarButtonItem *item, NSUInteger idx, BOOL *stop)
     {
         item.tintColor = [UIColor whiteColor];
-        if (tool == [self toolForTag:item.tag])
-        {
-            itemToSelect = item;
-        }
     }];
-    itemToSelect.tintColor = [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
-}
-
-- (id <VWorkspaceTool>)toolForTag:(NSInteger)tag
-{
-    if ((self.toolController.tools.count == 0) && ((NSInteger)self.toolController.tools.count < tag))
-    {
-        return nil;
-    }
-    return self.toolController.tools[tag];
+    item.tintColor = [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
 }
 
 - (void)removeToolViewController:(UIViewController *)toolViewController
