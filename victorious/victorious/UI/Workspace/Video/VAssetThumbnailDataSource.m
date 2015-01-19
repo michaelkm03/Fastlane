@@ -45,7 +45,9 @@
     [self.imageGenerator generateCGImagesAsynchronouslyForTimes:@[[NSValue valueWithCMTime:time]]
                                               completionHandler:^(CMTime requestedTime, CGImageRef image, CMTime actualTime, AVAssetImageGeneratorResult result, NSError *error)
      {
-         UIImage *generatedImage = [UIImage imageWithCGImage:image];
+         UIImage *generatedImage = [UIImage imageWithCGImage:image
+                                                       scale:1.0f
+                                                 orientation:UIImageOrientationUp];
          completion(generatedImage, time);
      }];
 }
