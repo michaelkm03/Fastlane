@@ -15,6 +15,7 @@
 
 @property (nonatomic, strong) AVPlayer *player;
 @property (nonatomic, readonly) BOOL isPlayingVideo;
+@property (nonatomic, strong) VVideoUtils *videoUtils;
 
 @end
 
@@ -37,6 +38,8 @@
     [playerLayer setPlayer:_player];
     playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
     self.backgroundColor = [UIColor blackColor];
+    
+    self.videoUtils = [[VVideoUtils alloc] init];
 }
 
 - (void)setItemURL:(NSURL *)itemURL
@@ -56,7 +59,7 @@
     
     _itemURL = itemURL;
     
-    [VVideoUtils createPlayerItemWithURL:itemURL loop:loop readyCallback:^(AVPlayerItem *playerItem)
+    [self.videoUtils createPlayerItemWithURL:itemURL loop:loop readyCallback:^(AVPlayerItem *playerItem)
      {
          [self didFinishAssetCreation:playerItem];
      }];

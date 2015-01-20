@@ -51,6 +51,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 @property (nonatomic, readwrite) CMTime previousTime;
 @property (nonatomic, readwrite) CMTime currentTime;
 @property (nonatomic, readonly) BOOL isAtEnd;
+@property (nonatomic, strong) VVideoUtils *videoUtils;
 
 @property (nonatomic, readonly) NSDictionary *trackingParameters;
 @property (nonatomic, readonly) NSDictionary *trackingParametersForSkipEvent;
@@ -110,6 +111,8 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
                          {
                              [weakSelf didPlayToTime:time];
                          }];
+    
+    self.videoUtils = [[VVideoUtils alloc] init];
 }
 
 - (void)dealloc
@@ -237,7 +240,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     
     self.player.actionAtItemEnd = loop ? AVPlayerActionAtItemEndNone : AVPlayerActionAtItemEndPause;
     
-    [VVideoUtils createPlayerItemWithURL:itemURL loop:loop readyCallback:^(AVPlayerItem *playerItem)
+    [self.videoUtils createPlayerItemWithURL:itemURL loop:loop readyCallback:^(AVPlayerItem *playerItem)
      {
          [self.player replaceCurrentItemWithPlayerItem:playerItem];
      }];

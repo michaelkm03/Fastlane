@@ -26,7 +26,7 @@ static const Float64 kAssetLoopClipping = 0.08;
 
 @implementation VVideoUtils
 
-+ (AVComposition *)loopingCompositionWithAsset:(AVAsset *)asset
+- (AVComposition *)loopingCompositionWithAsset:(AVAsset *)asset
 {
     AVMutableComposition *composition = [[AVMutableComposition alloc] init];
     Float64 clippedDuration = CMTimeGetSeconds(asset.duration) - kAssetLoopClipping;
@@ -40,7 +40,7 @@ static const Float64 kAssetLoopClipping = 0.08;
     return composition;
 }
 
-+ (void)createPlayerItemWithURL:(NSURL *)itemURL loop:(BOOL)loop readyCallback:(void(^)(AVPlayerItem *))onReady
+- (void)createPlayerItemWithURL:(NSURL *)itemURL loop:(BOOL)loop readyCallback:(void(^)(AVPlayerItem *))onReady
 {
     dispatch_async( dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0 ), ^void
                    {
@@ -49,7 +49,7 @@ static const Float64 kAssetLoopClipping = 0.08;
                        if ( loop && UI_IS_IOS8_AND_HIGHER )
                        {
                            // This ain't working on iOS 7
-                           AVComposition *composition = [VVideoUtils loopingCompositionWithAsset:asset];
+                           AVComposition *composition = [self loopingCompositionWithAsset:asset];
                            playerItem = [AVPlayerItem playerItemWithAsset:composition];
                        }
                        else
