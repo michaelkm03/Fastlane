@@ -22,7 +22,6 @@
 #import "VSettingManager.h"
 #import "VObjectManager+Login.h"
 #import "VCameraViewController.h"
-#import "VCameraPublishViewController.h"
 #import "VCreatePollViewController.h"
 #import "VAuthorizationViewControllerFactory.h"
 #import "VAlertController.h"

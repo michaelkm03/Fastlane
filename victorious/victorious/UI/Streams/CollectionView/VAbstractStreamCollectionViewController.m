@@ -18,7 +18,6 @@
 #import "VObjectManager+Login.h"
 
 //View Controllers
-#import "VCameraPublishViewController.h"
 #import "UIViewController+VSideMenuViewController.h"
 #import "VCameraViewController.h"
 #import "VCreatePollViewController.h"

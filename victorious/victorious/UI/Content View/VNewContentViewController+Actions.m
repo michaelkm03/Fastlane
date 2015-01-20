@@ -33,8 +33,6 @@
 // ViewControllers
 #import "VActionSheetViewController.h"
 #import "VActionSheetTransitioningDelegate.h"
-#import "VCameraPublishViewController.h"
-#import "VRemixSelectViewController.h"
 #import "VUserProfileViewController.h"
 #import "VReposterTableViewController.h"
 #import "VLoginViewController.h"
