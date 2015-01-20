@@ -209,6 +209,12 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 
 #pragma mark - Properties
 
+- (void)setIsAudioEnabled:(BOOL)isAudioEnabled
+{
+    _isAudioEnabled = isAudioEnabled;
+    self.player.muted = !_isAudioEnabled;
+}
+
 - (void)setShouldChangeVideoGravityOnDoubleTap:(BOOL)shouldChangeVideoGravityOnDoubleTap
 {
     _shouldChangeVideoGravityOnDoubleTap = shouldChangeVideoGravityOnDoubleTap;

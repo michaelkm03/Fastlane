@@ -39,7 +39,7 @@
 #import "UIVIew+AutoLayout.h"
 #import "VStreamCellVideoView.h"
 
-@interface VStreamCollectionCell() <VSequenceActionsDelegate, CCHLinkTextViewDelegate>
+@interface VStreamCollectionCell() <VSequenceActionsDelegate, CCHLinkTextViewDelegate, VStreamCellVideoViewDelegtae>
 
 @property (nonatomic, weak) IBOutlet UIImageView *playImageView;
 @property (nonatomic, weak) IBOutlet UIImageView *playBackgroundImageView;
@@ -50,6 +50,7 @@
 @property (nonatomic, weak) IBOutlet UIImageView *bottomGradient;
 
 @property (nonatomic, weak) IBOutlet VStreamCellVideoView *videoPlayerView;
+@property (nonatomic, weak) IBOutlet UIView *contentContainer;
 
 @property (nonatomic, strong) VAsset *videoAsset;
 @property (nonatomic, assign) BOOL isPlayButtonVisible;
@@ -119,7 +120,14 @@ static const CGFloat kDescriptionBuffer = 37.0;
     
     [self pauseVideo];
     
+    self.videoPlayerView.alpha = 0.0f;
+    
     self.videoAsset = nil;
+}
+
+- (CGRect)mediaContentFrame
+{
+    return self.contentContainer.frame;
 }
 
 - (void)setSequence:(VSequence *)sequence
@@ -149,7 +157,9 @@ static const CGFloat kDescriptionBuffer = 37.0;
         if ( self.videoAsset.autoPlay.boolValue )
         {
             self.isPlayButtonVisible = NO;
-            [self.videoPlayerView setAssetURL:[NSURL URLWithString:self.videoAsset.data]];
+            [self.videoPlayerView setItemURL:[NSURL URLWithString:self.videoAsset.data]
+                                          loop:self.videoAsset.loop
+                               audioDisabled:self.videoAsset.audioDisabled];
         }
     }
     else
@@ -168,9 +178,9 @@ static const CGFloat kDescriptionBuffer = 37.0;
     if ( self.canPlayVideo )
     {
         [self.videoPlayerView play];
-        [UIView animateWithDuration:0.3f delay:0.1f options:kNilOptions animations:^
+        [UIView animateWithDuration:0.2f delay:0.0f options:kNilOptions animations:^
          {
-             self.previewImageView.alpha = 0.0f;
+             self.videoPlayerView.alpha = 1.0f;
          }
                          completion:nil];
     }
@@ -180,12 +190,14 @@ static const CGFloat kDescriptionBuffer = 37.0;
 {
     if ( self.canPlayVideo  )
     {
-        [self.videoPlayerView pause];
         [UIView animateWithDuration:0.2f delay:0.0f options:kNilOptions animations:^
          {
-             self.previewImageView.alpha = 1.0f;
+             self.videoPlayerView.alpha = 0.0f;
          }
-                         completion:nil];
+                         completion:^(BOOL finished)
+         {
+             [self.videoPlayerView pause];
+         }];
     }
 }
 
@@ -338,6 +350,13 @@ static const CGFloat kDescriptionBuffer = 37.0;
             tappedFromSequence:self.sequence
                       fromView:self];
     }
+}
+
+#pragma mark - VStreamCellVideoViewDelegate
+
+- (void)videoViewPlayerDidBecomeReady:(VStreamCellVideoView *)videoView
+{
+    [self playVideo];
 }
 
 @end

@@ -295,7 +295,9 @@ static CGFloat const kTemplateCLineSpacing = 8;
     [self.collectionView flashScrollIndicators];
     [self.navigationController setNavigationBarHidden:YES animated:YES];
     
-    [self updateCellVisibility];
+    [self updateCellVisibilityTracking];
+    
+    [self updateCurrentlyPlayingMediaAsset];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -549,6 +551,14 @@ static CGFloat const kTemplateCLineSpacing = 8;
         return self.contentInset;
     }
     return UIEdgeInsetsZero;
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ( [cell isKindOfClass:[VStreamCollectionCell class]] )
+    {
+        [((VStreamCollectionCell *)cell) pauseVideo];
+    }
 }
 
 #pragma mark - VStreamCollectionDataDelegate
@@ -951,21 +961,16 @@ static CGFloat const kTemplateCLineSpacing = 8;
 {
     [super scrollViewDidScroll:scrollView];
     
-    [self updateCellVisibility];
+    [self updateCellVisibilityTracking];
+    
+    [self updateCurrentlyPlayingMediaAsset];
 }
 
 #pragma mark - Cell visibility
 
-- (void)updateCellVisibility
+- (void)updateCellVisibilityTracking
 {
-    // The visible rect must be offset by the visible height of the header, which may or may not be visible
-    // In the future, when contentView's use a contentInset.top value to position content under the header,
-    // a combiantion of the contentInset and contentOffset values can be used instead
-    const CGFloat headerOffset = CGRectGetHeight(self.navHeaderView.frame) + [self headerPositionY];
-    const CGRect streamVisibleRect = CGRectMake( CGRectGetMinX( self.collectionView.bounds ),
-                                                 CGRectGetMinY( self.collectionView.bounds ) + headerOffset,
-                                                 CGRectGetWidth( self.collectionView.bounds ),
-                                                 CGRectGetHeight (self.collectionView.bounds ) - headerOffset);
+    const CGRect streamVisibleRect = self.collectionView.bounds;
     
     NSArray *visibleCells = self.collectionView.visibleCells;
     [visibleCells enumerateObjectsUsingBlock:^(VStreamCollectionCell *cell, NSUInteger idx, BOOL *stop)
@@ -975,14 +980,59 @@ static CGFloat const kTemplateCLineSpacing = 8;
              return;
          }
          
-         // Calculate visible ratio (consts are for performance since this is called very often)
+         // Calculate visible ratio for the whole cell
          const CGRect intersection = CGRectIntersection( streamVisibleRect, cell.frame );
          const float visibleRatio = CGRectGetHeight( intersection ) / CGRectGetHeight( cell.frame );
-         [self collectionViewCell:cell didUpdateVisibilityRatio:visibleRatio];
+         [self collectionViewCell:cell didUpdateCellVisibility:visibleRatio];
      }];
 }
 
-- (void)collectionViewCell:(VStreamCollectionCell *)cell didUpdateVisibilityRatio:(CGFloat)visibiltyRatio
+- (void)updateCurrentlyPlayingMediaAsset
+{
+    const CGRect streamVisibleRect = self.collectionView.bounds;
+    
+    // Was a video begins playing, all other visible cells will be paused
+    __block BOOL didPlayVideo = NO;
+    
+    NSArray *visibleCells = self.collectionView.visibleCells;
+    [visibleCells enumerateObjectsUsingBlock:^(VStreamCollectionCell *cell, NSUInteger idx, BOOL *stop)
+     {
+         if ( ![cell isKindOfClass:[VStreamCollectionCell class]] )
+         {
+             return;
+         }
+         
+         if ( didPlayVideo )
+         {
+             [cell pauseVideo];
+         }
+         else
+         {
+             // Calculate visible ratio for just the media content of the cell
+             const CGRect contentFrameInCell = CGRectMake( CGRectGetMinX(cell.mediaContentFrame) + CGRectGetMinX(cell.frame),
+                                                          CGRectGetMinY(cell.mediaContentFrame) + CGRectGetMinY(cell.frame),
+                                                          CGRectGetWidth(cell.mediaContentFrame),
+                                                          CGRectGetHeight(cell.mediaContentFrame) );
+             
+             if ( CGRectGetHeight( contentFrameInCell ) > 0.0 )
+             {
+                 const CGRect contentIntersection = CGRectIntersection( streamVisibleRect, contentFrameInCell );
+                 const float mediaContentVisibleRatio = CGRectGetHeight( contentIntersection ) / CGRectGetHeight( contentFrameInCell );
+                 if ( mediaContentVisibleRatio >= 0.8f )
+                 {
+                     [cell playVideo];
+                     didPlayVideo = YES;
+                 }
+                 else
+                 {
+                     [cell pauseVideo];
+                 }
+             }
+         }
+     }];
+}
+
+- (void)collectionViewCell:(VStreamCollectionCell *)cell didUpdateCellVisibility:(CGFloat)visibiltyRatio
 {
     if ( visibiltyRatio >= self.trackingMinRequiredCellVisibilityRatio )
     {
@@ -997,15 +1047,6 @@ static CGFloat const kTemplateCLineSpacing = 8;
                                                parameters:params
                                                   eventId:sequence.remoteId];
         }
-    }
-    
-    if ( visibiltyRatio > 0.5 )
-    {
-        [cell playVideo];
-    }
-    else
-    {
-        [cell pauseVideo];
     }
 }
 

@@ -8,11 +8,22 @@
 
 @import UIKit;
 
+@class VStreamCellVideoView;
 @class AVPlayer;
+
+@protocol VStreamCellVideoViewDelegtae <NSObject>
+
+- (void)videoViewPlayerDidBecomeReady:(VStreamCellVideoView *)videoView;
+
+@end
 
 @interface VStreamCellVideoView : UIView
 
-- (void)setAssetURL:(NSURL *)assetURL;
+@property (nonatomic, strong) NSURL *itemURL;
+
+@property (nonatomic, weak) id<VStreamCellVideoViewDelegtae> delegate;
+
+- (void)setItemURL:(NSURL *)itemURL loop:(BOOL)loop audioDisabled:(BOOL)audioDisabled;
 
 - (void)play;
 

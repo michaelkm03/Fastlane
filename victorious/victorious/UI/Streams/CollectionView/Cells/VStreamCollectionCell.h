@@ -28,6 +28,8 @@
 
 @property (nonatomic, weak) UIViewController *parentViewController;
 
+@property (nonatomic, assign, readonly) CGRect mediaContentFrame;
+
 - (void)hideOverlays;
 - (void)showOverlays;
 + (CGSize)actualSizeWithCollectionViewBounds:(CGRect)bounds sequence:(VSequence *)sequence;
