@@ -736,6 +736,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
                 [videoCell setTracking:self.viewModel.sequence.tracking];
                 videoCell.delegate = self;
                 videoCell.speed = self.viewModel.speed;
+                videoCell.loop = self.viewModel.loop;
                 videoCell.controlsDisabled = self.viewModel.controlsDisabled;
                 videoCell.audioDisabled = self.viewModel.audioDisabled;
                 self.videoCell = videoCell;

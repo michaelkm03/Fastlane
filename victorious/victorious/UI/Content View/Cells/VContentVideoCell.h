@@ -70,6 +70,8 @@
 
 @property (nonatomic, assign) BOOL audioDisabled;
 
+@property (nonatomic, assign) BOOL loop;
+
 @property (nonatomic, readonly) AVPlayerStatus status;
 
 @property (nonatomic, readonly) UIView *videoPlayerContainer;

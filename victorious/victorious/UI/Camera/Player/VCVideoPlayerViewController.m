@@ -227,6 +227,10 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     {
         [self addDoubleTapGestureRecognizer];
     }
+    else
+    {
+        [self.view removeGestureRecognizer:self.videoFrameDoubleTapGesture];
+    }
 }
 
 - (void)setPlayer:(AVPlayer *)player
@@ -237,6 +241,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 - (void)setItemURL:(NSURL *)itemURL loop:(BOOL)loop
 {
     _itemURL = itemURL;
+    _isLooping = loop;
     
     self.player.actionAtItemEnd = loop ? AVPlayerActionAtItemEndNone : AVPlayerActionAtItemEndPause;
     

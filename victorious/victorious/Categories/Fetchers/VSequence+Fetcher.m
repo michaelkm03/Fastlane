@@ -17,7 +17,7 @@
 #import "VUser.h"
 #import "VAsset.h"
 
-#define SIMULATE_GIF_FOR_ALL_VIDEOS 0
+#define SIMULATE_GIF_FOR_ALL_VIDEOS 1
 
 typedef NS_OPTIONS(NSInteger, VSequencePermissionOptions)
 {
@@ -155,6 +155,17 @@ typedef NS_OPTIONS(NSInteger, VSequencePermissionOptions)
         return nil;
     }
     
+#if SIMULATE_GIF_FOR_ALL_VIDEOS
+#warning This is hardcoded tests to simulate a GIF video configuration.  Turn it off!
+    [node.assets enumerateObjectsUsingBlock:^(VAsset *asset, NSUInteger idx, BOOL *stop)
+     {
+         asset.controlsDisabled = @(YES);
+         asset.loop = @(YES);
+         asset.audioDisabled = @(YES);
+         asset.autoPlay = @(YES);
+     }];
+#endif
+    
     __block VAsset *primaryAsset = [node.assets firstObject];
     
     [node.assets enumerateObjectsUsingBlock:^(VAsset *asset, NSUInteger idx, BOOL *stop)
@@ -165,14 +176,6 @@ typedef NS_OPTIONS(NSInteger, VSequencePermissionOptions)
              *stop = YES;
          }
      }];
-    
-#if SIMULATE_GIF_FOR_ALL_VIDEOS
-#warning This is hardcoded tests to simulate a GIF video configuration.  Turn it off!
-    primaryAsset.controlsDisabled = @(YES);
-    primaryAsset.loop = @(YES);
-    primaryAsset.audioDisabled = @(YES);
-    primaryAsset.autoPlay = @(YES);
-#endif
     
     return primaryAsset;
 }
