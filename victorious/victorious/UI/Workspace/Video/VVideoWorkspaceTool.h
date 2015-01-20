@@ -12,9 +12,15 @@
 
 @optional
 
+/**
+ *  All VideoWorkspaceTools must implement this for exporting.
+ */
 - (void)exportToURL:(NSURL *)url
      withCompletion:(void (^)(BOOL finished, UIImage *previewImage))completion;
 
+/**
+ *  A media item for use while editing.
+ */
 @property (nonatomic, copy) NSURL *mediaURL;
 
 @end

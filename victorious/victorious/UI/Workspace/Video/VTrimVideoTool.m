@@ -7,7 +7,6 @@
 //
 
 #import "VTrimVideoTool.h"
-#import "VVideoPlayerView.h"
 #import "VTrimmerViewController.h"
 #import "VDependencyManager.h"
 #import "VVideoFrameRateComposition.h"

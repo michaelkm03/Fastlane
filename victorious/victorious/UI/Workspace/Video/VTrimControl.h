@@ -23,8 +23,14 @@
  */
 @property (nonatomic, assign) CMTime maxDuration;
 
+/**
+ *  The text to display in the thumb head.
+ */
 @property (nonatomic, copy) NSAttributedString *attributedTitle;
 
+/**
+ *  The current time duration selected by the trim control.
+ */
 @property (nonatomic, readonly) CMTime selectedDuration;
 
 @end

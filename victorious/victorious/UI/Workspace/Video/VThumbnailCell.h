@@ -10,7 +10,14 @@
 
 @interface VThumbnailCell : VBaseCollectionViewCell
 
+/**
+ *  A CMTime wrapped in an NSValue for this cell.
+ */
 @property (nonatomic, strong) NSValue *valueForThumbnail;
+
+/**
+ *  The thumbnail for this cell.
+ */
 @property (nonatomic, strong) UIImage *thumbnail;
 
 @end

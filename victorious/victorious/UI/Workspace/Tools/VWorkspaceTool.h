@@ -25,6 +25,9 @@
 
 #pragma mark - Editing
 
+/**
+ *  Called when tool is selected / deselected.
+ */
 @property (nonatomic, assign) BOOL selected;
 
 /**

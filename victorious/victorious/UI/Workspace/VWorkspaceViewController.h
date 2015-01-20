@@ -32,6 +32,6 @@ typedef void (^VWorkspaceCompletion)(BOOL finished, UIImage *previewImage, NSURL
 
 @property (nonatomic, readonly) NSURL *renderedMediaURL; ///< The URL of the rendered media
 
-@property (nonatomic, readonly) VToolController *toolController;
+@property (nonatomic, readonly) VToolController *toolController; ///< The toolController
 
 @end
