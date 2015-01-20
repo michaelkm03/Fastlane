@@ -91,6 +91,20 @@ static NSString * const kFilterIndexKey = @"filterIndex";
     }
 }
 
+- (NSString *)embeddedText
+{
+    return self.canvasToolViewController.embeddedText;
+}
+
+- (NSString *)textStyleTitle
+{
+    if ([self.toolPicker.selectedTool respondsToSelector:@selector(title)])
+    {
+        return [self.toolPicker.selectedTool title];
+    }
+    return nil;
+}
+
 #pragma mark - VWorkspaceTool
 
 - (CIImage *)imageByApplyingToolToInputImage:(CIImage *)inputImage

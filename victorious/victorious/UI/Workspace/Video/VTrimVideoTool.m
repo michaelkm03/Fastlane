@@ -43,13 +43,14 @@ static NSString * const kVideoMuted = @"videoMuted";
 
 @property (nonatomic, strong) VAssetThumbnailDataSource *thumbnailDataSource;
 
+@property (nonatomic, assign) BOOL didTrim;
+
 @end
 
 @implementation VTrimVideoTool
 
 @synthesize selected = _selected;
 @synthesize mediaURL = _mediaURL;
-@synthesize playerView = _playerView;
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
@@ -59,6 +60,8 @@ static NSString * const kVideoMuted = @"videoMuted";
         _dependencyManager = dependencyManager;
         
         _title = [dependencyManager stringForKey:kTitleKey];
+        
+        _isGIF = [_title isEqualToString:@"gif"];
         
         _minDuration = [dependencyManager numberForKey:kVideoMinDuration];
         _maxDuration = [dependencyManager numberForKey:kVideoMaxDuration];
@@ -200,6 +203,7 @@ static NSString * const kVideoMuted = @"videoMuted";
 - (void)trimmerViewControllerDidUpdateSelectedTimeRange:(CMTimeRange)selectedTimeRange
                                   trimmerViewController:(VTrimmerViewController *)trimmerViewController
 {
+    self.didTrim = YES;
     [self.videoPlayerController setStartSeconds:CMTimeGetSeconds(selectedTimeRange.start)];
     [self.videoPlayerController setEndSeconds:CMTimeGetSeconds(CMTimeAdd(selectedTimeRange.start, selectedTimeRange.duration))];
 }

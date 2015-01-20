@@ -143,6 +143,32 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
         publishViewController.mediaToUploadURL =
         self.renderedMeidaURL;
         publishViewController.previewImage = self.previewImage;
+        if ([[self.flowNavigationController topViewController] isKindOfClass:[VWorkspaceViewController class]])
+        {
+            VWorkspaceViewController *workspace = (VWorkspaceViewController *)[self.flowNavigationController topViewController];
+            if ([workspace.toolController isKindOfClass:[VVideoToolController class]])
+            {
+                VVideoToolController *videoToolController = (VVideoToolController *)workspace.toolController;
+                publishViewController.isGIF = videoToolController.isGIF;
+                publishViewController.didTrim = videoToolController.didTrim;
+            }
+            else if ([workspace.toolController isKindOfClass:[VImageToolController class]])
+            {
+                VImageToolController *imageToolController = (VImageToolController *)workspace.toolController;
+                publishViewController.embeddedText = imageToolController.embeddedText;
+                publishViewController.textToolType = imageToolController.textToolType;
+                publishViewController.filterName = imageToolController.filterName;
+            }
+        }
+        VSequence *sequenceToRemix = [self.dependencyManager templateValueOfType:[VSequence class]
+                                                                          forKey:VWorkspaceFlowControllerSequenceToRemixKey];
+        if (sequenceToRemix)
+        {
+            NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+            formatter.numberStyle = NSNumberFormatterDecimalStyle;
+            publishViewController.parentSequenceID = [formatter numberFromString:sequenceToRemix.remoteId];
+            publishViewController.parentNodeID = [sequenceToRemix firstNode].remoteId;
+        }
         publishViewController.completion = ^void(BOOL published)
         {
             if (published)

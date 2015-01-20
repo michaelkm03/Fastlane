@@ -20,4 +20,9 @@ typedef NS_ENUM(NSInteger, VImageToolControllerInitialImageEditState)
 
 @property (nonatomic, assign) VImageToolControllerInitialImageEditState defaultImageTool;
 
+@property (nonatomic, readonly) NSString *filterName; ///< The currently selected filter name.
+@property (nonatomic, readonly) NSString *embeddedText; ///< The embedded text, if any.
+@property (nonatomic, readonly) NSString *textToolType; ///< The text tool type, if any.
+@property (nonatomic, readonly) BOOL didCrop; ///< Whether or not the user did crop.
+
 @end

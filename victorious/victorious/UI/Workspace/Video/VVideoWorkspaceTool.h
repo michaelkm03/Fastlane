@@ -8,8 +8,6 @@
 
 #import "VWorkspaceTool.h"
 
-@class VVideoPlayerView;
-
 @protocol VVideoWorkspaceTool <VWorkspaceTool>
 
 @optional
@@ -18,7 +16,5 @@
      withCompletion:(void (^)(BOOL finished, UIImage *previewImage))completion;
 
 @property (nonatomic, copy) NSURL *mediaURL;
-
-@property (nonatomic, weak) VVideoPlayerView *playerView;
 
 @end

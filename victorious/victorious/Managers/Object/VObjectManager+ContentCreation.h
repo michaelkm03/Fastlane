@@ -52,20 +52,37 @@ extern NSString * const VObjectManagerContentIndexKey;
                  media2Url:(NSURL *)media2Url
                 completion:(VUploadManagerTaskCompleteBlock)completionBlock;
 
-#warning TODO: Add filter name and some other meta data about the image
+/**
+ *  Upload a new media item and create a sequence for that item.
+ *
+ *  @param name             The name or caption of the sequence.
+ *  @param previewImage     A preview image of the sequence.
+ *  @param type             The VCaptionType used on the sequence.
+ *  @param parentSequenceId The parent sequence id if this is a remix.
+ *  @param parentNodeId     The parent node id of this is a remix.
+ *  @param loopType         The loop type if this is a video.
+ *  @param mediaUrl         The media url to use for uploading.
+ *  @param isGIF            Whether or not this is a gif asset.
+ *  @param didCrop          Whether or not the user did use the crop feature.
+ *  @param didTrim          Whether or not the user trimmed.
+ *  @param filterName       The name of the filter used.
+ *  @param embeddedText     The embedded text in the image if the user embedded text.
+ *  @param textToolType     The text tool type (ex: MEME).
+ *  @param completionBlock  A completion block to be called.
+ */
 - (void)uploadMediaWithName:(NSString *)name
-                description:(NSString *)description
                previewImage:(UIImage *)previewImage
                 captionType:(VCaptionType)type
-                  expiresAt:(NSString *)expiresAt
            parentSequenceId:(NSNumber *)parentSequenceId
                parentNodeId:(NSNumber *)parentNodeId
-                      speed:(CGFloat)speed
                    loopType:(VLoopType)loopType
                    mediaURL:(NSURL *)mediaUrl
-              facebookShare:(BOOL)facebookShare
-               twitterShare:(BOOL)twitterShare
                       isGIF:(BOOL)isGIF
+                    didCrop:(BOOL)didCrop
+                    didTrim:(BOOL)didTrim
+                 filterName:(NSString *)filterName
+               embeddedText:(NSString *)embeddedText
+               textToolType:(NSString *)textToolType
                  completion:(VUploadManagerTaskCompleteBlock)completionBlock;
 
 /**

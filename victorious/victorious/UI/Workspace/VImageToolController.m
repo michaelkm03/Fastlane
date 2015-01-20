@@ -84,6 +84,69 @@ NSString * const VImageToolControllerInitialImageEditStateKey = @"VImageToolCont
     return image;
 }
 
+#pragma mark - Property Accessors
+
+- (NSString *)filterName
+{
+    __block NSString *filterName;
+    [self.tools enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop)
+    {
+        if ([obj isKindOfClass:[VFilterTool class]])
+        {
+            if ([obj respondsToSelector:@selector(filterTitle)])
+            {
+                filterName = [obj filterTitle];
+            }
+        }
+    }];
+    return filterName;
+}
+
+- (NSString *)embeddedText
+{
+    __block NSString *embeddedText;
+    [self.tools enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop)
+     {
+         if ([obj isKindOfClass:[VTextTool class]])
+         {
+             if ([obj respondsToSelector:@selector(embeddedText)])
+             {
+                 embeddedText = [obj embeddedText];
+             }
+         }
+     }];
+    return embeddedText;
+}
+
+- (NSString *)textToolType
+{
+    __block NSString *textToolType;
+    [self.tools enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop)
+     {
+         if ([obj isKindOfClass:[VTextTool class]])
+         {
+             if ([obj respondsToSelector:@selector(textStyleTitle)])
+             {
+                 textToolType = [obj textStyleTitle];
+             }
+         }
+     }];
+    return textToolType;
+}
+
+- (BOOL)didCrop
+{
+    __block BOOL didCrop = NO;
+    [self.tools enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop)
+    {
+        if ([obj respondsToSelector:@selector(didCrop)])
+        {
+            didCrop = [obj didCrop];
+        }
+    }];
+    return didCrop;
+}
+
 #pragma mark - Iherited Methods
 
 - (void)setupDefaultTool

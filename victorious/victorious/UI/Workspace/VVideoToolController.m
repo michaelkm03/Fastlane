@@ -12,6 +12,9 @@
 
 #import "VConstants.h"
 
+// Should move this out of here.
+#import "VTrimVideoTool.h"
+
 NSString * const VVideoToolControllerInitalVideoEditStateKey = @"VVideoToolControllerInitalVideoEditStateKey";
 
 @interface VVideoToolController ()
@@ -33,11 +36,6 @@ NSString * const VVideoToolControllerInitalVideoEditStateKey = @"VVideoToolContr
         {
             [videoTool setMediaURL:self.mediaURL];
         }
-
-        if ([videoTool respondsToSelector:@selector(setPlayerView:)])
-        {
-            [videoTool setPlayerView:self.playerView];
-        }
     }
 }
 
@@ -55,6 +53,18 @@ NSString * const VVideoToolControllerInitalVideoEditStateKey = @"VVideoToolContr
              completion(finished, tempFile, previewImage);
          });
      }];
+}
+
+- (BOOL)isGIF
+{
+//TODO: Can't always assume this
+    return ((VTrimVideoTool *)self.selectedTool).isGIF;
+}
+
+- (BOOL)didTrim
+{
+//TODO: Can't always assume this
+    return ((VTrimVideoTool *)self.selectedTool).didTrim;
 }
 
 - (void)setupDefaultTool

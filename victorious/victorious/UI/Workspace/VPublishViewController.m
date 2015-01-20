@@ -136,19 +136,20 @@ static const CGFloat kTopSpacePublishPrompt = 50.0f;
     hud.dimBackground = YES;
     hud.labelText = NSLocalizedString(@"Publishing...", @"Publishing progress text.");
     self.publishing = YES;
+    
     [[VObjectManager sharedManager] uploadMediaWithName:self.captionTextView.text
-                                            description:nil
                                            previewImage:self.previewImage
                                             captionType:VCaptionTypeNormal
-                                              expiresAt:nil
-                                       parentSequenceId:nil
-                                           parentNodeId:nil
-                                                  speed:1.0f
+                                       parentSequenceId:self.parentSequenceID
+                                           parentNodeId:self.parentNodeID
                                                loopType:VLoopRepeat
                                                mediaURL:self.mediaToUploadURL
-                                          facebookShare:NO
-                                           twitterShare:NO
-                                                  isGIF:YES
+                                                  isGIF:self.isGIF
+                                                didCrop:self.didCrop
+                                                didTrim:self.didTrim
+                                             filterName:self.filterName
+                                           embeddedText:self.embeddedText
+                                           textToolType:self.textToolType
                                              completion:^(NSURLResponse *response, NSData *responseData, NSDictionary *jsonResponse, NSError *error)
      {
          self.publishing = NO;

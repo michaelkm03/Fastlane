@@ -16,4 +16,9 @@
  */
 @interface VFilterTool : NSObject <VHasManagedDependancies, VWorkspaceTool>
 
+/**
+ *  The title of the selected filter.
+ */
+@property (nonatomic, readonly) NSString *filterTitle;
+
 @end

@@ -27,6 +27,7 @@ static NSString * const kFilterIndexKey = @"filterIndex";
 @property (nonatomic, strong) NSNumber *filterIndexNumber;
 @property (nonatomic, strong, readwrite) VCropToolViewController *cropViewController;
 @property (nonatomic, weak) VCanvasView *canvasView;
+@property (nonatomic, assign) BOOL didCrop;
 
 @end
 
@@ -54,6 +55,7 @@ static NSString * const kFilterIndexKey = @"filterIndex";
     __weak typeof(self) welf = self;
     _cropViewController.onCropBoundsChange = ^void(UIScrollView *croppingScrollView)
     {
+        welf.didCrop = YES;
         [welf.canvasView.canvasScrollView setZoomScale:croppingScrollView.zoomScale];
         [welf.canvasView.canvasScrollView setContentOffset:croppingScrollView.contentOffset];
     };

@@ -36,6 +36,7 @@ static NSString * const kFilterIndexKey = @"filterIndex";
 @implementation VFilterTool
 
 @synthesize renderIndex = _renderIndex;
+@synthesize selected = _selected;
 
 #pragma mark - VHasManagedDependencies
 
@@ -82,6 +83,18 @@ static NSString * const kFilterIndexKey = @"filterIndex";
 - (NSString *)description
 {
     return [NSString stringWithFormat:@"%@, title: %@, icon: %@", [super description], self.title, self.icon];
+}
+
+#pragma mark - Public Methods
+
+- (NSString *)filterTitle
+{
+    NSString *filterTitle = nil;
+    if ([self.toolPicker.selectedTool respondsToSelector:@selector(title)])
+    {
+        filterTitle = [self.toolPicker.selectedTool title];
+    }
+    return filterTitle;
 }
 
 #pragma mark - VWorkspaceTool

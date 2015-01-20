@@ -8,8 +8,6 @@
 
 #import "VToolController.h"
 
-@class VVideoPlayerView;
-
 extern NSString * const VVideoToolControllerInitalVideoEditStateKey;
 typedef NS_ENUM(NSInteger, VVideoToolControllerInitialVideoEditState)
 {
@@ -17,12 +15,29 @@ typedef NS_ENUM(NSInteger, VVideoToolControllerInitialVideoEditState)
     VVideoToolControllerInitialVideoEditStateGIF,
 };
 
+/**
+ *  A VToolController subclass for managing video tools.
+ */
 @interface VVideoToolController : VToolController
 
+/**
+ *  The media URL to use for editing.
+ */
 @property (nonatomic, strong) NSURL *mediaURL;
 
-@property (nonatomic, strong) VVideoPlayerView *playerView;
-
+/**
+ *  The default video tool.
+ */
 @property (nonatomic, assign) VVideoToolControllerInitialVideoEditState defaultVideoTool;
+
+/**
+ *  Whether or not the selected tool is a gif.
+ */
+@property (nonatomic, readonly) BOOL isGIF;
+
+/**
+ *  Whether or not the user did use the trim tool.
+ */
+@property (nonatomic, readonly) BOOL didTrim;
 
 @end

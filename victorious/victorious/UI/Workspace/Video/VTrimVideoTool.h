@@ -14,4 +14,14 @@
 
 @interface VTrimVideoTool : NSObject <VVideoWorkspaceTool, VHasManagedDependancies>
 
+/**
+ *  Whether or not the user did trim.
+ */
+@property (nonatomic, readonly) BOOL didTrim;
+
+/**
+ *  Whether or not the selected tool is a gif.
+ */
+@property (nonatomic, readonly) BOOL isGIF;
+
 @end
