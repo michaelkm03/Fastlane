@@ -101,6 +101,8 @@
 {
     [super viewDidLoad];
     
+    self.view.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+    
     self.toolController.canvasView = self.canvasView;
     
     [self.blurredBackgroundImageVIew setBlurredImageWithClearImage:self.previewImage
@@ -165,7 +167,6 @@
     
     NSData *imageFile = [NSData dataWithContentsOfURL:self.mediaURL];
     self.canvasView.sourceImage = [UIImage imageWithData:imageFile];
-    
     
     __weak typeof(self) welf = self;
     self.keyboardManager = [[VKeyboardManager alloc] initWithKeyboardWillShowBlock:^(CGRect keyboardFrameBegin, CGRect keyboardFrameEnd, NSTimeInterval animationDuration, UIViewAnimationCurve animationCurve)
@@ -276,6 +277,7 @@
     {
         return;
     }
+    inspectorViewController.view.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     [self addToolViewController:inspectorViewController];
     [self positionToolViewControllerOnInspector:inspectorViewController];
 }
@@ -352,7 +354,7 @@
     {
         item.tintColor = [UIColor whiteColor];
     }];
-    item.tintColor = [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
+    item.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
 }
 
 - (void)removeToolViewController:(UIViewController *)toolViewController
