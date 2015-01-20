@@ -112,6 +112,7 @@ NSString * const VImageToolControllerInitialImageEditStateKey = @"VImageToolCont
              if ([obj respondsToSelector:@selector(embeddedText)])
              {
                  embeddedText = [obj embeddedText];
+                 *stop = YES;
              }
          }
      }];
