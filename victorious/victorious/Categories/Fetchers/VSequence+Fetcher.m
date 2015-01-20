@@ -17,6 +17,8 @@
 #import "VUser.h"
 #import "VAsset.h"
 
+#define SIMULATE_GIF_FOR_ALL_VIDEOS 0
+
 typedef NS_OPTIONS(NSInteger, VSequencePermissionOptions)
 {
     VSequencePermissionOptionsNone        = 0,
@@ -164,11 +166,13 @@ typedef NS_OPTIONS(NSInteger, VSequencePermissionOptions)
          }
      }];
     
-#warning This is hardcoded tests to simulate a GIF video configuration
+#if SIMULATE_GIF_FOR_ALL_VIDEOS
+#warning This is hardcoded tests to simulate a GIF video configuration.  Turn it off!
     primaryAsset.controlsDisabled = @(YES);
     primaryAsset.loop = @(YES);
     primaryAsset.audioDisabled = @(YES);
     primaryAsset.autoPlay = @(YES);
+#endif
     
     return primaryAsset;
 }

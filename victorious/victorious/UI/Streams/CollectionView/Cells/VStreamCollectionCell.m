@@ -153,9 +153,10 @@ static const CGFloat kDescriptionBuffer = 37.0;
     
     if ( [sequence isVideo] )
     {
-        self.videoAsset = [self.sequence primaryAssetWithPreferredMimeType:@"video/mp4"];
-        if ( self.videoAsset.autoPlay.boolValue )
+        VAsset *asset = [self.sequence primaryAssetWithPreferredMimeType:@"video/mp4"];
+        if ( asset.autoPlay.boolValue )
         {
+            self.videoAsset = asset;
             self.isPlayButtonVisible = NO;
             [self.videoPlayerView setItemURL:[NSURL URLWithString:self.videoAsset.data]
                                         loop:self.videoAsset.loop.boolValue
