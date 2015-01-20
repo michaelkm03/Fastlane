@@ -10,6 +10,9 @@
 
 @interface VAsset (Fetcher)
 
+/**
+ *  Convenience accessor for the data url.
+ */
 - (NSURL *)dataURL;
 
 @end

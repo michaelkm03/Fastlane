@@ -1,14 +1,14 @@
 //
-//  VKeyboardManager.m
+//  VKeyboardNotificationManager.m
 //  victorious
 //
 //  Created by Michael Sena on 1/16/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VKeyboardManager.h"
+#import "VKeyboardNotificationManager.h"
 
-@interface VKeyboardManager ()
+@interface VKeyboardNotificationManager ()
 
 @property (nonatomic, copy) VKeyboardManagerKeyboardChangeBlock willShowBlock;
 @property (nonatomic, copy) VKeyboardManagerKeyboardChangeBlock willHideBlock;
@@ -16,7 +16,7 @@
 
 @end
 
-@implementation VKeyboardManager
+@implementation VKeyboardNotificationManager
 
 - (void)dealloc
 {

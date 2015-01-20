@@ -17,7 +17,7 @@
 #import "UIImageView+Blurring.h"
 
 // Keyboard
-#import "VKeyboardManager.h"
+#import "VKeyboardNotificationManager.h"
 
 // Protocols
 #import "VWorkspaceTool.h"
@@ -51,7 +51,7 @@
 @property (nonatomic, strong) UIViewController *canvasToolViewController;
 @property (nonatomic, strong) UIViewController *inspectorToolViewController;
 
-@property (nonatomic, strong) VKeyboardManager *keyboardManager;
+@property (nonatomic, strong) VKeyboardNotificationManager *keyboardManager;
 
 @property (nonatomic, strong, readwrite) VToolController *toolController;
 
@@ -169,7 +169,7 @@
     self.canvasView.sourceImage = [UIImage imageWithData:imageFile];
     
     __weak typeof(self) welf = self;
-    self.keyboardManager = [[VKeyboardManager alloc] initWithKeyboardWillShowBlock:^(CGRect keyboardFrameBegin, CGRect keyboardFrameEnd, NSTimeInterval animationDuration, UIViewAnimationCurve animationCurve)
+    self.keyboardManager = [[VKeyboardNotificationManager alloc] initWithKeyboardWillShowBlock:^(CGRect keyboardFrameBegin, CGRect keyboardFrameEnd, NSTimeInterval animationDuration, UIViewAnimationCurve animationCurve)
     {
 
         [welf keyboardWillShowWithFrameBegin:keyboardFrameBegin

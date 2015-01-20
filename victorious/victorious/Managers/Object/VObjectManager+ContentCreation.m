@@ -204,7 +204,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     uploadTaskCreator.request = request;
     uploadTaskCreator.formFields = parameters;
     uploadTaskCreator.previewImage = previewImage;
-    
+
     NSError *uploadCreationError = nil;
     VUploadTaskInformation *uploadTask = [uploadTaskCreator createUploadTaskWithError:&uploadCreationError];
     if (!uploadTask)

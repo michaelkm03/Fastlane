@@ -1,5 +1,5 @@
 //
-//  VKeyboardManager.h
+//  VKeyboardNotificationManager.h
 //  victorious
 //
 //  Created by Michael Sena on 1/16/15.
@@ -21,7 +21,7 @@ typedef void (^VKeyboardManagerKeyboardChangeBlock) (CGRect keyboardFrameBegin,
                                                      NSTimeInterval animationDuration,
                                                      UIViewAnimationCurve animationCurve);
 
-@interface VKeyboardManager : NSObject
+@interface VKeyboardNotificationManager : NSObject
 
 /**
  *  Initializer for VKeyboardManager. Blocks will be called when appropriate.

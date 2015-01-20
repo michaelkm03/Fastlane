@@ -618,7 +618,7 @@
 		D8B827DA19D5FD8900CCD6D9 /* VActionItemTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B827D919D5FD8900CCD6D9 /* VActionItemTableViewCell.m */; };
 		D8B827DD19D5FDFE00CCD6D9 /* VDescriptionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B827DC19D5FDFE00CCD6D9 /* VDescriptionTableViewCell.m */; };
 		D8C1FD051A69C0F60072892B /* VToolController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8C1FD041A69C0F60072892B /* VToolController.m */; };
-		D8C1FD081A69C2E40072892B /* VKeyboardManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D8C1FD071A69C2E40072892B /* VKeyboardManager.m */; };
+		D8C1FD081A69C2E40072892B /* VKeyboardNotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D8C1FD071A69C2E40072892B /* VKeyboardNotificationManager.m */; };
 		D8C1FD0B1A69DF0B0072892B /* VImageToolController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8C1FD0A1A69DF0B0072892B /* VImageToolController.m */; };
 		D8C1FD0E1A69DF1D0072892B /* VVideoToolController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8C1FD0D1A69DF1D0072892B /* VVideoToolController.m */; };
 		D8C5CFE51A68497200EC819F /* VAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = D8C5CFE41A68497200EC819F /* VAsset.m */; };
@@ -1798,8 +1798,8 @@
 		D8B827DC19D5FDFE00CCD6D9 /* VDescriptionTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDescriptionTableViewCell.m; sourceTree = "<group>"; };
 		D8C1FD031A69C0F60072892B /* VToolController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VToolController.h; sourceTree = "<group>"; };
 		D8C1FD041A69C0F60072892B /* VToolController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VToolController.m; sourceTree = "<group>"; };
-		D8C1FD061A69C2E40072892B /* VKeyboardManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VKeyboardManager.h; sourceTree = "<group>"; };
-		D8C1FD071A69C2E40072892B /* VKeyboardManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VKeyboardManager.m; sourceTree = "<group>"; };
+		D8C1FD061A69C2E40072892B /* VKeyboardNotificationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VKeyboardNotificationManager.h; sourceTree = "<group>"; };
+		D8C1FD071A69C2E40072892B /* VKeyboardNotificationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VKeyboardNotificationManager.m; sourceTree = "<group>"; };
 		D8C1FD091A69DF0B0072892B /* VImageToolController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VImageToolController.h; sourceTree = "<group>"; };
 		D8C1FD0A1A69DF0B0072892B /* VImageToolController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VImageToolController.m; sourceTree = "<group>"; };
 		D8C1FD0C1A69DF1D0072892B /* VVideoToolController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VVideoToolController.h; sourceTree = "<group>"; };
@@ -2283,8 +2283,8 @@
 				0314D35819B46B5E00FA363C /* VSelectorViewController.m */,
 				0314D44319B46B5E00FA363C /* VTableViewCell.h */,
 				0314D44419B46B5E00FA363C /* VTableViewCell.m */,
-				D8C1FD061A69C2E40072892B /* VKeyboardManager.h */,
-				D8C1FD071A69C2E40072892B /* VKeyboardManager.m */,
+				D8C1FD061A69C2E40072892B /* VKeyboardNotificationManager.h */,
+				D8C1FD071A69C2E40072892B /* VKeyboardNotificationManager.m */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -4938,7 +4938,7 @@
 				0314D48219B46B5E00FA363C /* VCommentsContainerViewController.m in Sources */,
 				D80A94E91A546E5E0035D788 /* VThumbnailCell.m in Sources */,
 				033F77101A2D6B8A00E6A13A /* VUnreadMessageCountCoordinator.m in Sources */,
-				D8C1FD081A69C2E40072892B /* VKeyboardManager.m in Sources */,
+				D8C1FD081A69C2E40072892B /* VKeyboardNotificationManager.m in Sources */,
 				BE88FF911A00060E0064AB28 /* VSegmentedNavSelector.m in Sources */,
 				A77AD5021A2011E000142F24 /* UIAlertView+VBlocks.m in Sources */,
 				D8C9CF2F19E4F417007B461E /* VHistogramCell.m in Sources */,
