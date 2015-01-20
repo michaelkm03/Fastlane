@@ -225,17 +225,6 @@ static NSString * const kVMultiStreamStoryboardID = @"kMultiStream";
     [self.sequenceActionController showPosterProfileFromViewController:self sequence:sequence];
 }
 
-- (void)willRemixSequence:(VSequence *)sequence fromView:(UIView *)view
-{
-#warning implement me!!!
-    if ([sequence isVideo])
-    {
-    }
-    else
-    {
-    }
-}
-
 - (void)willShareSequence:(VSequence *)sequence fromView:(UIView *)view
 {
     [self.sequenceActionController shareFromViewController:self sequence:sequence node:[sequence firstNode]];

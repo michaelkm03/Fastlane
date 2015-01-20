@@ -38,7 +38,7 @@
     <entity name="Asset" representedClassName="VAsset" syncable="YES">
         <attribute name="data" attributeType="String" syncable="YES"/>
         <attribute name="loop" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
-        <attribute name="mime_type" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="mimeType" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="nodeId" optional="YES" attributeType="Integer 64" minValueString="0" syncable="YES"/>
         <attribute name="remoteId" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="speed" optional="YES" attributeType="Float" defaultValueString="1" syncable="YES"/>

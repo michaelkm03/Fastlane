@@ -68,7 +68,7 @@ static NSString * const kmp4MimeType = @"video/mp4";
     __block VAsset *assetForMimeType = nil;
     [self.assets enumerateObjectsUsingBlock:^(VAsset *asset, NSUInteger idx, BOOL *stop)
      {
-         if ([asset.mime_type isEqualToString:mimeType])
+         if ([asset.mimeType isEqualToString:mimeType])
          {
              assetForMimeType = asset;
              *stop = YES;

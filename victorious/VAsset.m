@@ -19,7 +19,7 @@
 @dynamic remoteId;
 @dynamic speed;
 @dynamic type;
-@dynamic mime_type;
+@dynamic mimeType;
 @dynamic comments;
 @dynamic node;
 

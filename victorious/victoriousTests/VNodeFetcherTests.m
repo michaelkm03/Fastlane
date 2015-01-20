@@ -28,11 +28,11 @@
                                                subclass:[VNode class]];
     VAsset *liveStreamAsset = [VDummyModels objectWithEntityName:@"Asset"
                                                         subclass:[VAsset class]];
-    liveStreamAsset.mime_type = @"application/x-mpegURL";
+    liveStreamAsset.mimeType = @"application/x-mpegURL";
     
     VAsset *mp4Asset = [VDummyModels objectWithEntityName:@"Asset"
                                                  subclass:[VAsset class]];
-    mp4Asset.mime_type = @"video/mp4";
+    mp4Asset.mimeType = @"video/mp4";
     
     self.videoNode.assets = [NSOrderedSet orderedSetWithArray:@[liveStreamAsset, mp4Asset]];
     [[self.videoNode managedObjectContext] save:nil];
@@ -57,7 +57,7 @@
 {
     VAsset *badMimeTypeAsset = [VDummyModels objectWithEntityName:@"Asset"
                                                         subclass:[VAsset class]];
-    badMimeTypeAsset.mime_type = nil;
+    badMimeTypeAsset.mimeType = nil;
 
     self.videoNode.assets = [NSOrderedSet orderedSetWithArray:@[badMimeTypeAsset]];
     [[self.videoNode managedObjectContext] save:nil];
@@ -65,7 +65,7 @@
     XCTAssertNil([self.videoNode mp4Asset]);
     XCTAssertNil([self.videoNode httpLiveStreamingAsset]);
     
-    badMimeTypeAsset.mime_type = @"blah blah blah";
+    badMimeTypeAsset.mimeType = @"blah blah blah";
     [[self.videoNode managedObjectContext] save:nil];
     
     XCTAssertNil([self.videoNode mp4Asset]);
