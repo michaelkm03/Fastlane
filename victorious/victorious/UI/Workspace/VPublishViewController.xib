@@ -45,7 +45,7 @@
                                 <outlet property="delegate" destination="-1" id="QKV-lM-Up6"/>
                             </connections>
                         </textView>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" id="izj-dr-ITJ" userLabel="Preview Image View">
+                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" id="izj-dr-ITJ" userLabel="Preview Image View">
                             <rect key="frame" x="12" y="16" width="117" height="117"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" heightSizable="YES"/>
                         </imageView>
