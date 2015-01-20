@@ -50,6 +50,7 @@ static NSString * const kVideoMuted = @"videoMuted";
 
 @synthesize selected = _selected;
 @synthesize mediaURL = _mediaURL;
+@synthesize icon = _icon;
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
@@ -61,6 +62,8 @@ static NSString * const kVideoMuted = @"videoMuted";
         _title = [dependencyManager stringForKey:kTitleKey];
         
         _isGIF = [_title isEqualToString:@"gif"];
+        
+        _icon = _isGIF ? [UIImage imageNamed:@"gif_btn"] : [UIImage imageNamed:@"video_btn"];
         
         _minDuration = [dependencyManager numberForKey:kVideoMinDuration];
         _maxDuration = [dependencyManager numberForKey:kVideoMaxDuration];
