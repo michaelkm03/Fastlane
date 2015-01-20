@@ -26,7 +26,7 @@
 - (void)removeCanvasViewController:(UIViewController *)canvasViewControllerToRemove;
 
 /**
- *  Notifies the delegate when a new inspector viewController should be added. The SHOULD automatically remove old inspector view controllers.
+ *  Notifies the delegate when a new inspector viewController should be added. This SHOULD automatically remove old inspector viewControllers.
  */
 - (void)setInspectorViewController:(UIViewController *)inspectorViewController;
 

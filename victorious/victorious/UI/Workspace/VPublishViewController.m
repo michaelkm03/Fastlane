@@ -146,16 +146,16 @@ static const CGFloat kTopSpacePublishPrompt = 50.0f;
     {
          self.publishing = NO;
          [hud hide:YES];
-         if (error)
+         if (error != nil)
          {
-             if (self.completion)
+             if (self.completion != nil)
              {
                  self.completion(NO);
              }
          }
          else
          {
-             if (self.completion)
+             if (self.completion != nil)
              {
                  self.completion(YES);
              }
@@ -256,7 +256,7 @@ static const CGFloat kTopSpacePublishPrompt = 50.0f;
     }
     
     [self.animator removeAllBehaviors];
-    if (self.completion)
+    if (self.completion != nil)
     {
         self.completion(NO);
     }
