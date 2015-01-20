@@ -88,11 +88,11 @@
     
     if (refresh)
     {
-        return [self.paginationManager refreshFilter:paginationFilter successBlock:fullSuccessBlock failBlock:fail];
+        return [self.paginationManager loadFilter:paginationFilter withPageType:VPageTypeFirst successBlock:fullSuccessBlock failBlock:fail];
     }
     else
     {
-        return [self.paginationManager loadNextPageOfFilter:paginationFilter successBlock:fullSuccessBlock failBlock:fail];
+        return [self.paginationManager loadFilter:paginationFilter withPageType:VPageTypeNext successBlock:fullSuccessBlock failBlock:fail];
     }
 }
 

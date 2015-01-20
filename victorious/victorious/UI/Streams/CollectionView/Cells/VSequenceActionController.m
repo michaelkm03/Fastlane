@@ -293,7 +293,7 @@ static const char kAssociatedWorkspaceFlowKey;
                                                                                                                  [NSURL URLWithString:node.shareUrlPath] ?: [NSNull null]]
                                                                                          applicationActivities:@[fbActivity]];
     
-    NSString *emailSubject = [NSString stringWithFormat:NSLocalizedString(@"EmailShareSubjectFormat", nil), [[VThemeManager sharedThemeManager] themedStringForKey:kVChannelName]];
+    NSString *emailSubject = [NSString stringWithFormat:NSLocalizedString(@"EmailShareSubjectFormat", nil), [[VThemeManager sharedThemeManager] themedStringForKey:kVCreatorName]];
     [activityViewController setValue:emailSubject forKey:@"subject"];
     activityViewController.excludedActivityTypes = @[UIActivityTypePostToFacebook];
     activityViewController.completionHandler = ^(NSString *activityType, BOOL completed)

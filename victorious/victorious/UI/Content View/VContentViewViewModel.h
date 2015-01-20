@@ -15,12 +15,15 @@
 
 #import "VHistogramDataSource.h"
 
+#import "VAbstractFilter+RestKit.h"
+
 @protocol VContentViewViewModelDelegate <NSObject>
 
 /**
- * Called whenever new comments are made available for a given sequence.
+ * Called whenever new comments are updated.
+ * @param pageType The pagination context for which the comments fetch occurred.
  */
-- (void)didUpdateComments;
+- (void)didUpdateCommentsWithPageType:(VPageType)pageType;
 
 /**
  * Called whenever the server returns an updated state of this content.
@@ -181,11 +184,11 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
 @property (nonatomic, readonly) BOOL shouldShowRealTimeComents;
 
 /**
- *  Fetches the all comments and realtime comments for this viewModel's sequence.
+ *  Fetches comments and realtime comments for this viewModel's sequence.
+ *  @param pageType An indicator to the internal VAbstractFilter instances that
+ *  determines which page of comments to load, if that page exists.
  */
-- (void)fetchComments;
-
-- (void)attemptToLoadNextPageOfComments;
+- (void)loadComments:(VPageType)pageType;
 
 @property (nonatomic, readonly) NSArray *comments;
 

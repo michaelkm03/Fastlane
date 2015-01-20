@@ -5,6 +5,7 @@
         <attribute name="filterAPIPath" optional="YES" attributeType="String" minValueString="0" syncable="YES"/>
         <attribute name="maxPageNumber" attributeType="Integer 16" minValueString="0" defaultValueString="1" syncable="YES"/>
         <attribute name="perPageNumber" attributeType="Integer 16" minValueString="0" defaultValueString="15" syncable="YES"/>
+        <attribute name="totalItemsNumber" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
     </entity>
     <entity name="AdBreak" representedClassName="VAdBreak" syncable="YES">
         <attribute name="startPosition" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
@@ -264,7 +265,7 @@
         <relationship name="streams" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="VStream" inverseName="streamItems" inverseEntity="VStream" syncable="YES"/>
     </entity>
     <elements>
-        <element name="AbstractFilter" positionX="1366" positionY="-600" width="128" height="105"/>
+        <element name="AbstractFilter" positionX="1366" positionY="-600" width="128" height="120"/>
         <element name="AdBreak" positionX="504" positionY="-322" width="128" height="90"/>
         <element name="AdBreakFallback" positionX="891" positionY="-324" width="128" height="135"/>
         <element name="Answer" positionX="727" positionY="99" width="128" height="178"/>
