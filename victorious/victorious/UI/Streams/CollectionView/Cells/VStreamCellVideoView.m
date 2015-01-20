@@ -36,6 +36,7 @@
     _player = [[AVPlayer alloc] init];
     [playerLayer setPlayer:_player];
     playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+    self.backgroundColor = [UIColor blackColor];
 }
 
 - (void)setItemURL:(NSURL *)itemURL
@@ -93,8 +94,6 @@
     {
         [self.player.currentItem seekToTime:kCMTimeZero];
         [self.player play];
-        
-        self.backgroundColor = [UIColor redColor];
     }
 }
 

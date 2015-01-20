@@ -8,6 +8,8 @@
 #import "VVideoDownloadProgressIndicatorView.h"
 #import "VTracking.h"
 #import "VSettingManager.h"
+#import "VVideoUtils.h"
+
 static const CGFloat kToolbarHeight = 41.0f;
 static const NSTimeInterval kToolbarHideDelay =  2.0;
 static const NSTimeInterval kToolbarAnimationDuration =  0.2;
@@ -90,7 +92,6 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     self.shouldContinuePlayingAfterDismissal = YES;
     self.shouldShowToolbar = YES;
     self.shouldFireAnalytics = YES;
-    self.shouldLoop = NO;
     self.startTime = CMTimeMakeWithSeconds(0, 1);
     self.player = [[AVPlayer alloc] init];
     [self.player addObserver:self
@@ -212,7 +213,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 - (void)setIsAudioEnabled:(BOOL)isAudioEnabled
 {
     _isAudioEnabled = isAudioEnabled;
-    self.player.muted = NO; //!_isAudioEnabled;
+    self.player.muted = !_isAudioEnabled;
 }
 
 - (void)setShouldChangeVideoGravityOnDoubleTap:(BOOL)shouldChangeVideoGravityOnDoubleTap
@@ -230,50 +231,21 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     _player = player;
 }
 
-- (void)setItemURL:(NSURL *)itemURL withLoopCount:(NSUInteger)loopCount
+- (void)setItemURL:(NSURL *)itemURL loop:(BOOL)loop
 {
     _itemURL = itemURL;
-    _loopCount = loopCount;
     
-    AVAsset *asset = [AVURLAsset assetWithURL:itemURL];
-    AVPlayerItem *playerItem;
+    self.player.actionAtItemEnd = loop ? AVPlayerActionAtItemEndNone : AVPlayerActionAtItemEndPause;
     
-    if (loopCount > 1)
-    {
-        AVMutableComposition *composition = [AVMutableComposition composition];
-        CMTimeRange timeRange = CMTimeRangeMake(kCMTimeZero, asset.duration);
-        
-        for (NSUInteger i = 0; i < loopCount; i++)
-        {
-            [composition insertTimeRange:timeRange ofAsset:asset atTime:composition.duration error:nil];
-        }
-        
-        NSArray *tracks = [asset tracksWithMediaType:AVMediaTypeVideo];
-        if ([tracks count])
-        {
-            AVAssetTrack *assetTrack = tracks[0];
-            AVMutableCompositionTrack *compositionTrack = [composition mutableTrackCompatibleWithTrack:assetTrack];
-            compositionTrack.preferredTransform = assetTrack.preferredTransform;
-        }
-        playerItem = [AVPlayerItem playerItemWithAsset:composition];
-    }
-    else
-    {
-        playerItem = [AVPlayerItem playerItemWithAsset:asset];
-    }
-    
-    [self.player replaceCurrentItemWithPlayerItem:playerItem];
+    [VVideoUtils createPlayerItemWithURL:itemURL loop:loop readyCallback:^(AVPlayerItem *playerItem)
+     {
+         [self.player replaceCurrentItemWithPlayerItem:playerItem];
+     }];
 }
 
 - (void)setItemURL:(NSURL *)itemURL
 {
-    [self setItemURL:itemURL withLoopCount:1];
-}
-
-- (void)setShouldLoop:(BOOL)shouldLoop
-{
-    _shouldLoop = shouldLoop;
-    self.player.actionAtItemEnd = shouldLoop ? AVPlayerActionAtItemEndNone : AVPlayerActionAtItemEndPause;
+    [self setItemURL:itemURL loop:NO];
 }
 
 - (void)setStartSeconds:(Float64)startSeconds
@@ -533,7 +505,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     
     if (CMTIME_IS_VALID(self.endTime) && CMTIME_COMPARE_INLINE(time, >=, self.endTime))
     {
-        if (self.shouldLoop)
+        if (self.isLooping)
         {
             if (CMTIME_IS_VALID(self.startTime))
             {
@@ -711,7 +683,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 {
     if (notification.object == self.player.currentItem)
     {
-        if (self.shouldLoop)
+        if (self.isLooping)
         {
             if (CMTIME_IS_VALID(self.startTime))
             {

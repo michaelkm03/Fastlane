@@ -33,9 +33,8 @@
 @interface VCVideoPlayerViewController : UIViewController
 
 @property (nonatomic, strong) NSURL *itemURL;                           ///< The URL of the video to play
-@property (nonatomic, readonly) NSUInteger loopCount;                   ///< The number of loops requested via a call to setItemURL:withLoopCount:
 @property (nonatomic, weak) id<VCVideoPlayerDelegate> delegate;
-@property (nonatomic) BOOL shouldLoop;                                  ///< If YES, video will loop around at the end
+@property (nonatomic, readonly) BOOL isLooping;                         ///< If YES, video will loop around at the end
 @property (nonatomic, readonly) AVPlayer *player;                       ///< The AVPlayer instance being managed.
 @property (nonatomic, assign) Float64 startSeconds;                     ///< Playback will begin at this point
 @property (nonatomic, assign) Float64 endSeconds;                       ///< Playback will end (or loop) at this point. Set to 0 to play to end.
@@ -73,12 +72,11 @@
 - (void)disableTracking;
 
 + (VCVideoPlayerViewController *)currentPlayer; ///< Returns a reference to a VCVideoPlayerViewController instance that is currently playing
+
 /**
- Add the same item "loopCount" times in order to have a smooth loop. 
- The loop system provided by Apple has an unvoidable hiccup. Using 
- this method will avoid the hiccup.
+ Set the asset to play and indicate it it should loop or not.
  */
-- (void)setItemURL:(NSURL *)itemURL withLoopCount:(NSUInteger)loopCount;
+- (void)setItemURL:(NSURL *)itemURL loop:(BOOL)loop;
 
 - (CMTime)playerItemDuration;
 

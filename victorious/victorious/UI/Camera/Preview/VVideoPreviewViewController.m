@@ -41,8 +41,7 @@
                                                                                          views:NSDictionaryOfVariableBindings(videoPlayerView)]];
     [self.videoPlayerViewController didMoveToParentViewController:self];
     
-    [self.videoPlayerViewController setItemURL:self.mediaURL withLoopCount:10];
-    self.videoPlayerViewController.shouldLoop = YES;
+    [self.videoPlayerViewController setItemURL:self.mediaURL loop:YES];
     self.videoPlayerViewController.shouldShowToolbar = NO;
     self.videoPlayerViewController.shouldFireAnalytics = NO;
 	[self.videoPlayerViewController.player play];

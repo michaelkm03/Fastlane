@@ -64,11 +64,6 @@
 @property (nonatomic, assign) float speed;
 
 /**
- *  Whether or not to loop the video.
- */
-@property (nonatomic, assign) BOOL loop;
-
-/**
  *  Whether or not to prevent player controls from appearing.
  */
 @property (nonatomic, assign) BOOL controlsDisabled;

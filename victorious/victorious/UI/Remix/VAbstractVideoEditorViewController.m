@@ -30,7 +30,7 @@
     self.videoPlayerViewController = [[VCVideoPlayerViewController alloc] init];
     self.videoPlayerViewController.shouldShowToolbar = NO;
     self.videoPlayerViewController.shouldFireAnalytics = NO;
-    self.videoPlayerViewController.itemURL = self.sourceURL;
+    [self.videoPlayerViewController setItemURL:self.sourceURL loop:YES];
     self.videoPlayerViewController.delegate = self;
     
     [self addChildViewController:self.videoPlayerViewController];
@@ -159,13 +159,13 @@
     if (self.playbackLooping == VLoopOnce)
     {
         self.playbackLooping = VLoopRepeat;
-        self.videoPlayerViewController.shouldLoop = YES;
+        //self.videoPlayerViewController.shouldLoop = YES;
         [self.loopButton setImage:[UIImage imageNamed:@"cameraButtonLoop"] forState:UIControlStateNormal];
     }
     else if (self.playbackLooping == VLoopRepeat)
     {
         self.playbackLooping = VLoopOnce;
-        self.videoPlayerViewController.shouldLoop = NO;
+        //self.videoPlayerViewController.shouldLoop = NO;
         [self.loopButton setImage:[UIImage imageNamed:@"cameraButtonNoLoop"] forState:UIControlStateNormal];
     }
 }
@@ -176,12 +176,12 @@
 
     if (self.playbackLooping == VLoopOnce)
     {
-        self.videoPlayerViewController.shouldLoop = NO;
+        //self.videoPlayerViewController.shouldLoop = NO;
         [self.loopButton setImage:[UIImage imageNamed:@"cameraButtonNoLoop"] forState:UIControlStateNormal];
     }
     else if (self.playbackLooping == VLoopRepeat)
     {
-        self.videoPlayerViewController.shouldLoop = YES;
+        //self.videoPlayerViewController.shouldLoop = YES;
         [self.loopButton setImage:[UIImage imageNamed:@"cameraButtonLoop"] forState:UIControlStateNormal];
     }
 }

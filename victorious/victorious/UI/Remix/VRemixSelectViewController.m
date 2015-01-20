@@ -45,7 +45,6 @@
 {
     [super viewDidLoad];
 	
-    self.videoPlayerViewController.shouldLoop = YES;
     self.videoPlayerViewController.startSeconds = 0;
 
     UIImage    *closeButtonImage = [[UIImage imageNamed:@"cameraButtonClose"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];

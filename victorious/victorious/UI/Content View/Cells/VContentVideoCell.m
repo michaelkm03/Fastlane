@@ -59,7 +59,7 @@
     if ( viewModel.monetizationPartner == VMonetizationPartnerNone )
     {
         self.isPlayingAd = NO;
-        self.videoPlayerViewController.itemURL = self.contentURL;
+        [self.videoPlayerViewController setItemURL:self.contentURL loop:viewModel.loop];
         return;
     }
     
@@ -140,7 +140,6 @@
 
 - (void)play
 {
-    self.videoPlayerViewController.shouldLoop = self.loop;
     self.videoPlayerViewController.player.rate = self.speed;
 }
 

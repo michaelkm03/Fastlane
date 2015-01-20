@@ -182,7 +182,8 @@
               {
                   self.videoViewModel = [VVideoCellViewModel videoCellViewModelWithItemURL:[self videoURL]
                                                                               withAdSystem:self.monetizationPartner
-                                                                               withDetails:self.monetizationDetails];
+                                                                               withDetails:self.monetizationDetails
+                                                                                  withLoop:NO];
                   [self.delegate didUpdateContent];
               }];
          }
@@ -190,7 +191,8 @@
          {
              self.videoViewModel = [VVideoCellViewModel videoCellViewModelWithItemURL:[self videoURL]
                                                                          withAdSystem:VMonetizationPartnerNone
-                                                                          withDetails:nil];
+                                                                          withDetails:nil
+                                                                             withLoop:self.videoViewModel.loop];
              [self.delegate didUpdateContent];
 
          }
