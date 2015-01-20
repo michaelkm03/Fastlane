@@ -57,7 +57,7 @@
     }
     else if (alternateViewController != nil)
     {
-        VUserProfileViewController *userProfileViewController = [VUserProfileViewController userProfileWithUser:self.objectManager.mainUser];
+        VUserProfileViewController *userProfileViewController = [self.dependencyManager userProfileViewControllerWithUser:self.objectManager.mainUser forKey:VScaffoldViewControllerUserProfileViewComponentKey];
         if ( [userProfileViewController respondsToSelector:@selector(setDependencyManager:)] )
         {
             [userProfileViewController setDependencyManager:self.dependencyManager];

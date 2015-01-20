@@ -24,6 +24,11 @@ extern NSString * const VScaffoldViewControllerMenuComponentKey;
 extern NSString * const VScaffoldViewControllerContentViewComponentKey;
 
 /**
+ The key that identifies the profile view component in VDependencyManager
+ */
+extern NSString * const VScaffoldViewControllerUserProfileViewComponentKey;
+
+/**
  Abstract base class for view controllers that act as "scaffolding",
  meaning a root-level view controller that contains the other
  important component parts of the app: at minimum, a menu and a

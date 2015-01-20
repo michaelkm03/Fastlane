@@ -71,7 +71,9 @@ static NSString * const kUserSpecificKey = @"isUserSpecific";
     
     template[VDependencyManagerScaffoldViewControllerKey] = @{ kClassNameKey: @"sideMenu.scaffold",
                                                                VDependencyManagerInitialViewControllerKey: @{ kReferenceIDKey: self.firstMenuItemID },
-                                                               VScaffoldViewControllerMenuComponentKey: [self menuComponent] };
+                                                               VScaffoldViewControllerMenuComponentKey: [self menuComponent],
+                                                               VScaffoldViewControllerUserProfileViewComponentKey: @{ kClassNameKey: @"userProfile.screen" }
+                                                            };
     return template;
 }
 

@@ -22,6 +22,7 @@
 
 NSString * const VScaffoldViewControllerMenuComponentKey = @"menu";
 NSString * const VScaffoldViewControllerContentViewComponentKey = @"contentView";
+NSString * const VScaffoldViewControllerUserProfileViewComponentKey = @"userProfileView";
 
 static NSString * const kContentDeeplinkURLHostComponent = @"content";
 
