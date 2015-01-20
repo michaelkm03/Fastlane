@@ -80,6 +80,7 @@ static NSString * const kVideoMuted = @"videoMuted";
         _videoPlayerController.shouldShowToolbar = NO;
         _videoPlayerController.delegate = self;
         _videoPlayerController.shouldChangeVideoGravityOnDoubleTap = YES;
+        _videoPlayerController.videoPlayerLayerVideoGravity = AVLayerVideoGravityResizeAspectFill;
     }
     return self;
 }

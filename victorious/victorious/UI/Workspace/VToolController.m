@@ -57,11 +57,15 @@
     {
         // In case this viewController's view was disabled but left on the canvas
         [selectedTool canvasToolViewController].view.userInteractionEnabled = YES;
-        [self.delegate setCanvasViewController:[selectedTool canvasToolViewController]];
+        [self.delegate addCanvasViewController:[selectedTool canvasToolViewController]];
+        self.canvasToolViewController = [selectedTool canvasToolViewController];
     }
     else
     {
-        [self.delegate setCanvasViewController:nil];
+        if (self.canvasToolViewController)
+        {
+            [self.delegate removeCanvasViewController:self.canvasToolViewController];
+        }
     }
     
     if ([selectedTool respondsToSelector:@selector(inspectorToolViewController)])

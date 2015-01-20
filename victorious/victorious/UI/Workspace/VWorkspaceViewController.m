@@ -48,7 +48,6 @@
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *verticalSpaceCanvasToTopOfContainerConstraint;
 @property (nonatomic, strong) NSMutableArray *inspectorConstraints;
 
-@property (nonatomic, strong) UIViewController *canvasToolViewController;
 @property (nonatomic, strong) UIViewController *inspectorToolViewController;
 
 @property (nonatomic, strong) VKeyboardNotificationManager *keyboardManager;
@@ -255,17 +254,19 @@
 
 #pragma mark - VWorkspaceToolControllerDelegate
 
-- (void)setCanvasViewController:(UIViewController *)canvasViewController
+- (void)addCanvasViewController:(UIViewController *)canvasViewController
 {
-    [self removeToolViewController:self.canvasToolViewController];
-    self.canvasToolViewController = canvasViewController;
-    
     if (canvasViewController == nil)
     {
         return;
     }
     [self addToolViewController:canvasViewController];
-    [self positionToolViewControllerOnCanvas:self.canvasToolViewController];
+    [self positionToolViewControllerOnCanvas:canvasViewController];
+}
+
+- (void)removeCanvasViewController:(UIViewController *)canvasViewControllerToRemove
+{
+    [self removeToolViewController:canvasViewControllerToRemove];
 }
 
 - (void)setInspectorViewController:(UIViewController *)inspectorViewController

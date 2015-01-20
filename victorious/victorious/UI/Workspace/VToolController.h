@@ -16,11 +16,17 @@
 @protocol VToolControllerDelegate <NSObject>
 
 /**
- *  Notifies the delegate when a new canvas view controller should be added. The old canvasViewController should be removed here.
+ *  Notifies the delegate when a new canvas view controller should be added. This should NOT automatically remove old canvas view controllers.
  */
-- (void)setCanvasViewController:(UIViewController *)canvasViewController;
+- (void)addCanvasViewController:(UIViewController *)canvasViewController;
+
 /**
- *  Notifies the delegate when a new inspector viewController should be added. The old inspectorViewController should be removed here.
+ *  Notifies the delegate when a canvas view controller should be removed.
+ */
+- (void)removeCanvasViewController:(UIViewController *)canvasViewControllerToRemove;
+
+/**
+ *  Notifies the delegate when a new inspector viewController should be added. The SHOULD automatically remove old inspector view controllers.
  */
 - (void)setInspectorViewController:(UIViewController *)inspectorViewController;
 
