@@ -60,7 +60,8 @@ static NSString * const VStoryboardViewControllerIndentifier    = @"suggestedPeo
     
     if ( objectManager.mainUserLoggedIn )
     {
-        [objectManager refreshFollowingsForUser:objectManager.mainUser
+        [objectManager loadFollowingsForUser:objectManager.mainUser
+                                    pageType:VPageTypeFirst
                                         successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
          {
              [self followingDidLoad];
@@ -179,8 +180,9 @@ static NSString * const VStoryboardViewControllerIndentifier    = @"suggestedPeo
     [self updateFollowingInUsers:self.suggestedUsers];
     
     VObjectManager *objectManager = [VObjectManager sharedManager];
-    [objectManager loadNextPageOfFollowingsForUser:objectManager.mainUser
-                                      successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+    [objectManager loadFollowingsForUser:objectManager.mainUser
+                                pageType:VPageTypeNext
+                            successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
          [self followingDidLoad];
      } failBlock:^(NSOperation *operation, NSError *error)

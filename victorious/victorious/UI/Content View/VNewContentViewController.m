@@ -77,10 +77,11 @@
 #import "VModalTransition.h"
 
 #import "VTracking.h"
+#import "VScrollPaginator.h"
 
 static const CGFloat kMaxInputBarHeight = 200.0f;
 
-@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate,VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate>
+@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate,VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate>
 
 @property (nonatomic, strong, readwrite) VContentViewViewModel *viewModel;
 @property (nonatomic, strong) NSURL *mediaURL;
@@ -120,6 +121,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 @property (nonatomic, assign) CMTime realtimeCommentBeganTime;
 
 @property (nonatomic, strong) VTransitionDelegate *transitionDelegate;
+@property (nonatomic, strong) VScrollPaginator *scrollPaginator;
 
 @end
 
@@ -137,6 +139,8 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     contentViewController.transitionDelegate = [[VTransitionDelegate alloc] initWithTransition:modalTransition];
     contentViewController.elapsedTimeFormatter = [[VElapsedTimeFormatter alloc] init];
     
+    viewModel.delegate = contentViewController;
+    
     return contentViewController;
 }
 
@@ -147,6 +151,64 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     [VContentCommentsCell clearSharedImageCache];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+#pragma mark - VContentViewViewModelDelegate
+
+- (void)didUpdateCommentsWithPageType:(VPageType)pageType
+{
+    if (self.viewModel.comments.count > 0)
+    {
+        if ([self.contentCollectionView numberOfItemsInSection:VContentViewSectionAllComments] > 0)
+        {
+            [self.contentCollectionView reloadData];
+            
+            __weak typeof(self) welf = self;
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+                           {
+                               [welf.contentCollectionView flashScrollIndicators];
+                           });
+        }
+        else
+        {
+            NSIndexSet *commentsIndexSet = [NSIndexSet indexSetWithIndex:VContentViewSectionAllComments];
+            [self.contentCollectionView reloadSections:commentsIndexSet];
+        }
+        
+        self.handleView.numberOfComments = self.viewModel.sequence.commentCount.integerValue;
+    }
+}
+
+- (void)didUpdateContent
+{
+    self.videoCell.viewModel = self.viewModel.videoViewModel;
+}
+
+- (void)didUpdateHistogramData
+{
+    if ( self.viewModel.histogramDataSource == nil )
+    {
+        return;
+    }
+    self.histogramCell.histogramView.dataSource = self.viewModel.histogramDataSource;
+    [self.contentCollectionView.collectionViewLayout invalidateLayout];
+}
+
+- (void)didUpdatePollsData
+{
+    if (!self.viewModel.votingEnabled)
+    {
+        [self.pollCell setAnswerAPercentage:self.viewModel.answerAPercentage
+                                   animated:YES];
+        [self.pollCell setAnswerBPercentage:self.viewModel.answerBPercentage
+                                   animated:YES];
+        
+        [self.ballotCell setVotingDisabledWithFavoredBallot:(self.viewModel.favoredAnswer == VPollAnswerA) ? VBallotA : VBallotB
+                                                   animated:YES];
+        self.pollCell.answerAIsFavored = (self.viewModel.favoredAnswer == VPollAnswerA);
+        self.pollCell.answerBIsFavored = (self.viewModel.favoredAnswer == VPollAnswerB);
+        self.pollCell.numberOfVotersText = self.viewModel.numberOfVotersText;
+    }
 }
 
 #pragma mark - UIResponder
@@ -248,6 +310,8 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 {
     [super viewDidLoad];
     
+    self.scrollPaginator = [[VScrollPaginator alloc] initWithDelegate:self];
+    
     // Hack to remove margins stuff should probably refactor :(
     if ([self.view respondsToSelector:@selector(setLayoutMargins:)])
     {
@@ -346,23 +410,6 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     [super viewWillAppear:animated];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(commentsDidUpdate:)
-                                                 name:VContentViewViewModelDidUpdateCommentsNotification
-                                               object:self.viewModel];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(hitogramDataDidUpdate:)
-                                                 name:VContentViewViewModelDidUpdateHistogramDataNotification
-                                               object:self.viewModel];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(pollDataDidUpdate:)
-                                                 name:VContentViewViewModelDidUpdatePollDataNotification
-                                               object:self.viewModel];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(contentDataDidUpdate:)
-                                                 name:VContentViewViewModelDidUpdateContentNotification
-                                               object:self.viewModel];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardDidChangeFrame:)
                                                  name:UIKeyboardDidChangeFrameNotification
                                                object:nil];
@@ -422,15 +469,6 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     [super viewWillDisappear:animated];
     
     // We don't care about these notifications anymore but we still care about new user loggedin
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:VContentViewViewModelDidUpdateCommentsNotification
-                                                  object:self.viewModel];
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:VContentViewViewModelDidUpdateHistogramDataNotification
-                                                  object:self.viewModel];
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:VContentViewViewModelDidUpdatePollDataNotification
-                                                  object:self.viewModel];
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:UIKeyboardDidChangeFrameNotification
                                                   object:nil];
@@ -514,63 +552,6 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
         
         self.bottomKeyboardToContainerBottomConstraint.constant = newBottomKeyboardBarToContainerConstraintHeight;
         [self.view layoutIfNeeded];
-    }
-}
-
-- (void)contentDataDidUpdate:(NSNotification *)notification
-{
-    self.videoCell.viewModel = self.viewModel.videoViewModel;
-}
-
-- (void)commentsDidUpdate:(NSNotification *)notification
-{
-    if (self.viewModel.comments.count > 0)
-    {
-        if ([self.contentCollectionView numberOfItemsInSection:VContentViewSectionAllComments] > 0)
-        {
-            [self.contentCollectionView reloadData];
-            
-            __weak typeof(self) welf = self;
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
-            {
-                [welf.contentCollectionView flashScrollIndicators];
-            });
-        }
-        else
-        {
-            NSIndexSet *commentsIndexSet = [NSIndexSet indexSetWithIndex:VContentViewSectionAllComments];
-            [self.contentCollectionView reloadSections:commentsIndexSet];
-        }
-        
-        self.handleView.numberOfComments = self.viewModel.sequence.commentCount.integerValue;
-    }
-}
-
-- (void)hitogramDataDidUpdate:(NSNotification *)notification
-{
-    if (!self.viewModel.histogramDataSource)
-    {
-        return;
-    }
-    self.histogramCell.histogramView.dataSource = self.viewModel.histogramDataSource;
-    [self.contentCollectionView.collectionViewLayout invalidateLayout];
-}
-
-- (void)pollDataDidUpdate:(NSNotification *)notification
-{
-
-    if (!self.viewModel.votingEnabled)
-    {
-        [self.pollCell setAnswerAPercentage:self.viewModel.answerAPercentage
-                                   animated:YES];
-        [self.pollCell setAnswerBPercentage:self.viewModel.answerBPercentage
-                                   animated:YES];
-        
-        [self.ballotCell setVotingDisabledWithFavoredBallot:(self.viewModel.favoredAnswer == VPollAnswerA) ? VBallotA : VBallotB
-                                                   animated:YES];
-        self.pollCell.answerAIsFavored = (self.viewModel.favoredAnswer == VPollAnswerA);
-        self.pollCell.answerBIsFavored = (self.viewModel.favoredAnswer == VPollAnswerB);
-        self.pollCell.numberOfVotersText = self.viewModel.numberOfVotersText;
     }
 }
 
@@ -1087,9 +1068,10 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    if (CGRectGetMidY(scrollView.bounds) > (scrollView.contentSize.height * 0.8f))
+    const BOOL hasComments = self.viewModel.comments.count > 0;
+    if ( hasComments )
     {
-        [self.viewModel attemptToLoadNextPageOfComments];
+        [self.scrollPaginator scrollViewDidScroll:scrollView];
     }
 }
 
@@ -1164,12 +1146,13 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
                               realTime:welf.realtimeCommentBeganTime
                             completion:^(BOOL succeeded)
      {
-         [welf.viewModel fetchComments];
+         [welf.viewModel loadComments:VPageTypeFirst];
          [UIView animateWithDuration:0.0f
                           animations:^
-          {
-              [welf commentsDidUpdate:nil];
-          }];
+         {
+             [welf didUpdateCommentsWithPageType:VPageTypeFirst];
+         }];
+         
      }];
     
     [inputAccessoryView clearTextAndResign];
@@ -1427,6 +1410,18 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
      {
          [self.viewModel.experienceEnhancerController updateData];
      }];
+}
+
+#pragma mark - VScrollPaginatorDelegate
+
+- (void)shouldLoadNextPage
+{
+    [self.viewModel loadComments:VPageTypeNext];
+}
+
+- (void)shouldLoadPreviousPage
+{
+    [self.viewModel loadComments:VPageTypePrevious];
 }
 
 @end

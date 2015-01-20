@@ -15,25 +15,32 @@
 
 #import "VHistogramDataSource.h"
 
-/**
- *  Posted whenever the server returns an updated state of this content.
- */
-extern NSString * const VContentViewViewModelDidUpdateContentNotification;
+#import "VAbstractFilter+RestKit.h"
+
+@protocol VContentViewViewModelDelegate <NSObject>
 
 /**
- *  Posted whenever new comments are made available for a given sequence.
+ * Called whenever new comments are updated.
+ * @param pageType The pagination context for which the comments fetch occurred.
  */
-extern NSString * const VContentViewViewModelDidUpdateCommentsNotification;
+- (void)didUpdateCommentsWithPageType:(VPageType)pageType;
 
 /**
- *  Posted whenever new histogram data is made available.
+ * Called whenever the server returns an updated state of this content.
  */
-extern NSString * const VContentViewViewModelDidUpdateHistogramDataNotification;
+- (void)didUpdateContent;
 
 /**
- * Posted whenever new poll data is made available.
+ * Called whenever new histogram data is made available.
  */
-extern NSString * const VContentViewViewModelDidUpdatePollDataNotification;
+- (void)didUpdateHistogramData;
+
+/**
+ * Called whenever new poll data is made available.
+ */
+- (void)didUpdatePollsData;
+
+@end
 
 /**
  *  An enumeration of the various content types supported by VContentViewModel.
@@ -98,6 +105,8 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
 @property (nonatomic, readonly) NSInteger nodeID;
 
 @property (nonatomic, readonly) VUser *user;
+
+@property (nonatomic, weak) id<VContentViewViewModelDelegate> delegate;
 
 /**
  *  The corresponding sequence for this view model.
@@ -175,11 +184,11 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
 @property (nonatomic, readonly) BOOL shouldShowRealTimeComents;
 
 /**
- *  Fetches the all comments and realtime comments for this viewModel's sequence.
+ *  Fetches comments and realtime comments for this viewModel's sequence.
+ *  @param pageType An indicator to the internal VAbstractFilter instances that
+ *  determines which page of comments to load, if that page exists.
  */
-- (void)fetchComments;
-
-- (void)attemptToLoadNextPageOfComments;
+- (void)loadComments:(VPageType)pageType;
 
 @property (nonatomic, readonly) NSArray *comments;
 

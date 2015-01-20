@@ -6,9 +6,10 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VObjectManager.h"
-
 #import <Foundation/Foundation.h>
+
+#import "VObjectManager.h"
+#import "VAbstractFilter+RestKit.h"
 
 @class VAbstractFilter;
 
@@ -28,20 +29,6 @@
 - (instancetype)initWithObjectManager:(VObjectManager *)objectManager;
 
 /**
- Load the first page of a filter, erasing any existing data.
- */
-- (RKManagedObjectRequestOperation *)refreshFilter:(VAbstractFilter *)filter
-                                      successBlock:(VSuccessBlock)success
-                                         failBlock:(VFailBlock)fail;
-
-/**
- Load the next page of data for a filter
- */
-- (RKManagedObjectRequestOperation *)loadNextPageOfFilter:(VAbstractFilter *)filter
-                                             successBlock:(VSuccessBlock)success
-                                                failBlock:(VFailBlock)fail;
-
-/**
  Returns YES if the set of data in the given filter is
  currently being loaded.
  */
@@ -52,5 +39,13 @@
  If no filter exists, it will be created and stored in the object manager.
  */
 - (VAbstractFilter *)filterForPath:(NSString *)path entityName:(NSString *)entityName managedObjectContext:(NSManagedObjectContext *)context;
+
+/**
+ Use a filter and page type to load a paginated request.
+ */
+- (RKManagedObjectRequestOperation *)loadFilter:(VAbstractFilter *)filter
+                                   withPageType:(VPageType)pageType
+                                   successBlock:(VSuccessBlock)success
+                                      failBlock:(VFailBlock)fail;
 
 @end

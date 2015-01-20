@@ -330,17 +330,20 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
 
     if (VModeSelect == kMessageModeSelect)
     {
-        [[VObjectManager sharedManager] refreshConversationListWithSuccessBlock:success failBlock:fail];
+        [[VObjectManager sharedManager] loadConversationListWithPageType:VPageTypeFirst
+                                                            successBlock:success failBlock:fail];
     }
     else if (VModeSelect == kNotificationModeSelect)
     {
-        [[VObjectManager sharedManager] refreshListOfNotificationsWithSuccessBlock:success failBlock:fail];
+        [[VObjectManager sharedManager] loadNotificationsListWithPageType:VPageTypeFirst
+                                                             successBlock:success failBlock:fail];
     }
 }
 
 - (void)loadNextPageAction
 {
-    [[VObjectManager sharedManager] loadNextPageOfConversationListWithSuccessBlock:nil failBlock:nil];
+    [[VObjectManager sharedManager] loadConversationListWithPageType:VPageTypeNext
+                                                        successBlock:nil failBlock:nil];
 }
 
 #pragma mark - Content Creation
@@ -355,8 +358,9 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    VAbstractFilter *filter = [[VObjectManager sharedManager] inboxFilterForCurrentUserFromManagedObjectContext:[[[VObjectManager sharedManager] managedObjectStore] mainQueueManagedObjectContext]];
-    CGFloat scrollThreshold = scrollView.contentSize.height * 0.75f;
+    NSManagedObjectContext *context = [VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext;
+    VAbstractFilter *filter = [[VObjectManager sharedManager] inboxFilterForCurrentUserFromManagedObjectContext:context];
+                               CGFloat scrollThreshold = scrollView.contentSize.height * 0.75f;
     
     if (filter.currentPageNumber.intValue < filter.maxPageNumber.intValue &&
         [[self.fetchedResultsController sections][0] numberOfObjects] &&

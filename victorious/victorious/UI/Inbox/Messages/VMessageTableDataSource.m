@@ -108,7 +108,8 @@ static       char    kKVOContext;
     if (self.conversation != nil)
     {
         self.isLoading = YES;
-        [self.objectManager refreshMessagesForConversation:self.conversation
+        [self.objectManager loadMessagesForConversation:self.conversation
+                                                pageType:VPageTypeFirst
                                               successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
         {
             self.isLoading = NO;
@@ -172,7 +173,8 @@ static       char    kKVOContext;
     if (self.conversation != nil || self.newConversation)
     {
         self.isLoading = YES;
-        [self.objectManager loadNextPageOfConversation:self.conversation
+        [self.objectManager loadMessagesForConversation:self.conversation
+                                               pageType:VPageTypeNext
                                           successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
         {
             self.isLoading = NO;
@@ -256,11 +258,6 @@ static       char    kKVOContext;
             completion(error ?: [NSError errorWithDomain:kGenericErrorDomain code:kGenericErrorCode userInfo:@{ NSLocalizedDescriptionKey: @"Could not retrieve conversation from server" }]);
         }
     }];
-}
-
-- (BOOL)isLoading
-{
-    return _isLoading || [self.objectManager.paginationManager isLoadingFilter:self.conversation];
 }
 
 - (BOOL)areMorePagesAvailable

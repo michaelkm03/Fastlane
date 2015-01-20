@@ -174,7 +174,8 @@ static char kKVOContext;
 {
     if ( self.dependencyManager.objectManager.mainUserLoggedIn )
     {
-        [self.dependencyManager.objectManager refreshConversationListWithSuccessBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+        [self.dependencyManager.objectManager loadConversationListWithPageType:VPageTypeFirst
+                                                                  successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
         {
             [self.messageCountCoordinator updateUnreadMessageCount];
         } failBlock:nil];

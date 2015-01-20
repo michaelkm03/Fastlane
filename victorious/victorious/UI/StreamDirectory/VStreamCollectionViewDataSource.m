@@ -55,7 +55,6 @@ NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamColl
     [self removeKVOObservers];
     
     _stream = stream;
-    self.filter = [[VObjectManager sharedManager] filterForStream:stream];
     
     if (stream)
     {
@@ -96,7 +95,8 @@ NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamColl
 - (void)refreshWithSuccess:(void (^)(void))successBlock failure:(void (^)(NSError *))failureBlock
 {
     self.isLoading = YES;
-    [[VObjectManager sharedManager] refreshStream:self.stream
+    [[VObjectManager sharedManager] loadStream:self.stream
+                                      pageType:VPageTypeFirst
                                      successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
      {
          if (successBlock)
@@ -118,8 +118,9 @@ NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamColl
 - (void)loadNextPageWithSuccess:(void (^)(void))successBlock failure:(void (^)(NSError *))failureBlock
 {
     self.isLoading = YES;
-    [[VObjectManager sharedManager] loadNextPageOfStream:self.stream
-                                            successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    [[VObjectManager sharedManager] loadStream:self.stream
+                                      pageType:VPageTypeNext
+                                  successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
      {
          if (successBlock)
          {
@@ -139,7 +140,8 @@ NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamColl
 
 - (BOOL)isFilterLoading
 {
-    return [[[VObjectManager sharedManager] paginationManager] isLoadingFilter:self.filter];
+    VAbstractFilter *filter = [[VObjectManager sharedManager] filterForStream:self.stream];
+    return [[[VObjectManager sharedManager] paginationManager] isLoadingFilter:filter];
 }
 
 - (NSInteger)sectionIndexForContent
