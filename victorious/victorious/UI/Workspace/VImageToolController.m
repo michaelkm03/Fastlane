@@ -129,6 +129,7 @@ NSString * const VImageToolControllerInitialImageEditStateKey = @"VImageToolCont
              if ([obj respondsToSelector:@selector(textStyleTitle)])
              {
                  textToolType = [obj textStyleTitle];
+                 *stop = YES;
              }
          }
      }];
@@ -143,6 +144,7 @@ NSString * const VImageToolControllerInitialImageEditStateKey = @"VImageToolCont
         if ([obj respondsToSelector:@selector(didCrop)])
         {
             didCrop = [obj didCrop];
+            *stop = YES;
         }
     }];
     return didCrop;
