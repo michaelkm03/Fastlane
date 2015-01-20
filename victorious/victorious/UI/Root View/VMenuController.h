@@ -7,8 +7,9 @@
 //
 
 #import "VHasManagedDependencies.h"
+#import "VNavigationDestinationsProvider.h"
 #import "VProvidesNavigationMenuItemBadge.h"
 
-@interface VMenuController : UIViewController <VHasManagedDependancies, VProvidesNavigationMenuItemBadge>
+@interface VMenuController : UIViewController <VHasManagedDependancies, VNavigationDestinationsProvider, VProvidesNavigationMenuItemBadge>
 
 @end

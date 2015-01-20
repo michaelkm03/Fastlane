@@ -115,6 +115,18 @@ static char kKVOContext;
     return YES;
 }
 
+#pragma mark - VNavigationDestinationsProvider methods
+
+- (NSArray *)navigationDestinations
+{
+    NSMutableArray *returnValue = [[NSMutableArray alloc] init];
+    [self.dependencyManager.menuItemSections enumerateObjectsUsingBlock:^(NSArray *obj, NSUInteger idx, BOOL *stop)
+    {
+        [returnValue addObjectsFromArray:obj];
+    }];
+    return returnValue;
+}
+
 #pragma mark - UICollectionViewDelegate
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath

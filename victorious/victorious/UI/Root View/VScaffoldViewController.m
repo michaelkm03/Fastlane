@@ -7,16 +7,23 @@
 //
 
 #import "VContentViewViewModel.h"
-#import "VDependencyManager.h"
+#import "VDeeplinkHandler.h"
+#import "VDependencyManager+VObjectManager.h"
 #import "VNavigationDestination.h"
+#import "VNavigationDestinationsProvider.h"
 #import "VNewContentViewController.h"
+#import "VObjectManager+Sequence.h"
 #import "VScaffoldViewController.h"
 #import "VSequence+Fetcher.h"
 #import "VTracking.h"
 #import "VWebBrowserViewController.h"
 
+#import <MBProgressHUD.h>
+
 NSString * const VScaffoldViewControllerMenuComponentKey = @"menu";
 NSString * const VScaffoldViewControllerContentViewComponentKey = @"contentView";
+
+static NSString * const kContentDeeplinkURLHostComponent = @"content";
 
 @interface VScaffoldViewController () <VNewContentViewControllerDelegate>
 
@@ -70,6 +77,81 @@ NSString * const VScaffoldViewControllerContentViewComponentKey = @"contentView"
                                   VTrackingKeyUrls : sequence.tracking.viewStart ?: @[] };
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
     }];
+}
+
+#pragma mark - Deeplinks
+
+- (void)navigateToDeeplinkURL:(NSURL *)url
+{
+    if ( [self displayContentViewForDeeplinkURL:url] )
+    {
+        return;
+    }
+    else if ( [self.menuViewController respondsToSelector:@selector(navigationDestinations)] )
+    {
+        NSArray *viewControllers = [(id<VNavigationDestinationsProvider>)self.menuViewController navigationDestinations];
+        for (id<VDeeplinkHandler> viewController in viewControllers)
+        {
+            if ( [viewController conformsToProtocol:@protocol(VDeeplinkHandler)] )
+            {
+                if ( [viewController canHandleDeeplinkURL:url] )
+                {
+                    [viewController displayContentForDeeplinkURL:url];
+                    [self navigateToDestination:viewController];
+                    break;
+                }
+            }
+        }
+    }
+}
+
+/**
+ Displays a content view for deeplink URLs that point to content views.
+ 
+ @return YES if the given URL was a content URL, or NO if it was
+         some other kind of deep link.
+ */
+- (BOOL)displayContentViewForDeeplinkURL:(NSURL *)url
+{
+    if ( ![url.host isEqualToString:kContentDeeplinkURLHostComponent] )
+    {
+        return NO;
+    }
+    
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    
+    NSString *sequenceID = [self sequenceIDFromContentURL:url];
+    [[self.dependencyManager objectManager] fetchSequenceByID:sequenceID
+                                                 successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    {
+        [hud hide:YES];
+        VSequence *sequence = (VSequence *)[resultObjects firstObject];
+        [self showContentViewWithSequence:sequence placeHolderImage:nil];
+    }
+                                                    failBlock:^(NSOperation *operation, NSError *error)
+    {
+        [hud hide:YES];
+        VLog(@"Failed with error: %@", error);
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Missing Content", nil)
+                                                        message:NSLocalizedString(@"Missing Content Message", nil)
+                                                       delegate:nil
+                                              cancelButtonTitle:NSLocalizedString(@"OK", nil)
+                                              otherButtonTitles:nil];
+        [alert show];
+    }];
+    
+    return YES;
+}
+
+- (NSString *)sequenceIDFromContentURL:(NSURL *)url
+{
+    NSArray *pathComponents = url.pathComponents;
+    
+    if ( pathComponents.count < 2 )
+    {
+        return nil;
+    }
+    return pathComponents[1];
 }
 
 #pragma mark - Navigation

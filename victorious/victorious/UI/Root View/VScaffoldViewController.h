@@ -56,6 +56,11 @@ extern NSString * const VScaffoldViewControllerContentViewComponentKey;
 - (void)showContentViewWithSequence:(VSequence *)sequence placeHolderImage:(UIImage *)placeHolderImage;
 
 /**
+ Navigates to the view controller pointed to by the given URL
+ */
+- (void)navigateToDeeplinkURL:(NSURL *)url;
+
+/**
  Attempt to navigate to a destination (the destination will
  be given a chance to cancel the navigation before it 
  actually happens)
