@@ -14,6 +14,7 @@
 #import "VContentInputAccessoryView.h"
 
 #import "VObjectManager+ContentCreation.h"
+#import "VPublishParameters.h"
 
 #import <MBProgressHUD/MBProgressHUD.h>
 
@@ -88,8 +89,6 @@ static const CGFloat kTopSpacePublishPrompt = 50.0f;
     {
         welf.publishPrompt.transform = CGAffineTransformIdentity;
     };
-    
-    self.previewImageView.image = self.previewImage;
 
     self.captionTextView.placeholderText = NSLocalizedString(@"TYPE A CAPTION & ADD AN #HASHTAG", @"Caption entry placeholder text");
     self.captionTextView.typingAttributes = @{NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerParagraphFontKey]};
@@ -99,6 +98,8 @@ static const CGFloat kTopSpacePublishPrompt = 50.0f;
     inputAccessoryView.delegate = self;
     inputAccessoryView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
     self.captionTextView.inputAccessoryView = inputAccessoryView;
+    
+    self.previewImageView.image = self.publishParameters.previewImage;
 }
 
 - (void)viewDidLayoutSubviews
@@ -113,11 +114,11 @@ static const CGFloat kTopSpacePublishPrompt = 50.0f;
 
 #pragma mark - Property Accessors
 
-- (void)setPreviewImage:(UIImage *)previewImage
+- (void)setPublishParameters:(VPublishParameters *)publishParameters
 {
-    _previewImage = previewImage;
+    _publishParameters = publishParameters;
     
-    self.previewImageView.image = previewImage;
+    self.previewImageView.image = publishParameters.previewImage;
 }
 
 #pragma mark - Target/Action
@@ -137,21 +138,12 @@ static const CGFloat kTopSpacePublishPrompt = 50.0f;
     hud.labelText = NSLocalizedString(@"Publishing...", @"Publishing progress text.");
     self.publishing = YES;
     
-    [[VObjectManager sharedManager] uploadMediaWithName:self.captionTextView.text
-                                           previewImage:self.previewImage
-                                            captionType:VCaptionTypeNormal
-                                       parentSequenceId:self.parentSequenceID
-                                           parentNodeId:self.parentNodeID
-                                               loopType:VLoopRepeat
-                                               mediaURL:self.mediaToUploadURL
-                                                  isGIF:self.isGIF
-                                                didCrop:self.didCrop
-                                                didTrim:self.didTrim
-                                             filterName:self.filterName
-                                           embeddedText:self.embeddedText
-                                           textToolType:self.textToolType
-                                             completion:^(NSURLResponse *response, NSData *responseData, NSDictionary *jsonResponse, NSError *error)
-     {
+    self.publishParameters.caption = self.captionTextView.text;
+    self.publishParameters.captionType = VCaptionTypeNormal;
+    
+    [[VObjectManager sharedManager] uploadMediaWithPublishParameters:self.publishParameters
+                                                          completion:^(NSURLResponse *response, NSData *responseData, NSDictionary *jsonResponse, NSError *error)
+    {
          self.publishing = NO;
          [hud hide:YES];
          if (error)

@@ -12,6 +12,7 @@
 #import "VObjectManager+Private.h"
 #import "VUploadManager.h"
 #import "VUploadTaskCreator.h"
+#import "VPublishParameters.h"
 
 #import "VFacebookManager.h"
 #import "VTwitterManager.h"
@@ -127,23 +128,11 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     [self.uploadManager enqueueUploadTask:uploadTask onComplete:completionBlock];
 }
 
-- (void)uploadMediaWithName:(NSString *)name
-               previewImage:(UIImage *)previewImage
-                captionType:(VCaptionType)type
-           parentSequenceId:(NSNumber *)parentSequenceId
-               parentNodeId:(NSNumber *)parentNodeId
-                   loopType:(VLoopType)loopType
-                   mediaURL:(NSURL *)mediaUrl
-                      isGIF:(BOOL)isGIF
-                    didCrop:(BOOL)didCrop
-                    didTrim:(BOOL)didTrim
-                 filterName:(NSString *)filterName
-               embeddedText:(NSString *)embeddedText
-               textToolType:(NSString *)textToolType
-                 completion:(VUploadManagerTaskCompleteBlock)completionBlock
+- (void)uploadMediaWithPublishParameters:(VPublishParameters *)publishParameters
+                              completion:(VUploadManagerTaskCompleteBlock)completionBlock
 {
-    NSParameterAssert(mediaUrl != nil);
-    if (!mediaUrl)
+    NSAssert(publishParameters.mediaToUploadURL, @"Must have a media to upload at this point");
+    if (!publishParameters.mediaToUploadURL)
     {
         if (completionBlock)
         {
@@ -152,44 +141,44 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
         return;
     }
     
-    NSMutableDictionary *parameters = [@{@"name": name ?: [NSNull null],
-                                         @"media_data": mediaUrl,
-                                         @"is_gif": isGIF ? @"true" : @"false",
-                                         @"did_crop": didCrop ? @"true" : @"false",
-                                         @"did_trim": didTrim ? @"true" : @"false",
+    NSMutableDictionary *parameters = [@{@"name": publishParameters.caption ?: [NSNull null],
+                                         @"media_data": publishParameters.mediaToUploadURL,
+                                         @"is_gif": publishParameters.isGIF ? @"true" : @"false",
+                                         @"did_crop": publishParameters.didCrop ? @"true" : @"false",
+                                         @"did_trim": publishParameters.didTrim ? @"true" : @"false",
                                          } mutableCopy];
-    if (filterName)
+    if (publishParameters.filterName)
     {
-        parameters[@"filter_name"] = filterName;
+        parameters[@"filter_name"] = publishParameters.filterName;
     }
-    if (embeddedText)
+    if (publishParameters.embeddedText)
     {
-        parameters[@"embedded_text"] = embeddedText;
+        parameters[@"embedded_text"] = publishParameters.embeddedText;
     }
-    if (textToolType)
+    if (publishParameters.textToolType)
     {
-        parameters[@"text_tool_type"] = textToolType;
+        parameters[@"text_tool_type"] = publishParameters.textToolType;
     }
-    if (parentNodeId && ![parentNodeId isEqualToNumber:@(0)])
+    if (publishParameters.parentNodeID && ![publishParameters.parentNodeID isEqualToNumber:@(0)])
     {
-        parameters[@"parent_node_id"] = [parentNodeId stringValue];
+        parameters[@"parent_node_id"] = [publishParameters.parentNodeID stringValue];
     }
-    if (parentSequenceId && ![parentSequenceId isEqualToNumber:@(0)])
+    if (publishParameters.parentSequenceID && ![publishParameters.parentSequenceID isEqualToNumber:@(0)])
     {
-        parameters[@"parent_sequence_id"] = [parentSequenceId stringValue];
+        parameters[@"parent_sequence_id"] = [publishParameters.parentSequenceID stringValue];
     }
-    if (type == VCaptionTypeMeme)
+    if (publishParameters.captionType == VCaptionTypeMeme)
     {
         parameters[@"subcategory"] = @"meme";
     }
-    else if (type == VCaptionTypeQuote)
+    else if (publishParameters.captionType == VCaptionTypeQuote)
     {
         parameters[@"subcategory"] = @"secret";
     }
     
-    if (parentNodeId && ![parentNodeId isEqualToNumber:@(0)])
+    if (publishParameters.parentNodeID && ![publishParameters.parentNodeID isEqualToNumber:@(0)])
     {
-        NSString *loopParam = [self stringForLoopType:loopType];
+        NSString *loopParam = [self stringForLoopType:publishParameters.loopType];
         CGFloat speed = 1;
         
         parameters[@"speed"] = [NSString stringWithFormat:@"%.1f", speed];
@@ -203,7 +192,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     VUploadTaskCreator *uploadTaskCreator = [[VUploadTaskCreator alloc] initWithUploadManager:self.uploadManager];
     uploadTaskCreator.request = request;
     uploadTaskCreator.formFields = parameters;
-    uploadTaskCreator.previewImage = previewImage;
+    uploadTaskCreator.previewImage = publishParameters.previewImage;
 
     NSError *uploadCreationError = nil;
     VUploadTaskInformation *uploadTask = [uploadTaskCreator createUploadTaskWithError:&uploadCreationError];

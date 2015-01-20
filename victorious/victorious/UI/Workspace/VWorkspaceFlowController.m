@@ -29,6 +29,7 @@
 #import "VSequence+Fetcher.h"
 #import "VNode+Fetcher.h"
 #import "VAsset+Fetcher.h"
+#import "VPublishParameters.h"
 
 // Animators
 #import "VPublishBlurOverAnimator.h"
@@ -139,25 +140,27 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
     {
         NSAssert((self.renderedMeidaURL != nil), @"We need a rendered media url to begin publishing!");
         
+        VPublishParameters *publishParameters = [[VPublishParameters alloc] init];
+        publishParameters.mediaToUploadURL = self.renderedMeidaURL;
+        
         VPublishViewController *publishViewController = [VPublishViewController newWithDependencyManager:self.dependencyManager];
-        publishViewController.mediaToUploadURL =
-        self.renderedMeidaURL;
-        publishViewController.previewImage = self.previewImage;
+        publishViewController.publishParameters = publishParameters;
+        publishParameters.previewImage = self.previewImage;
         if ([[self.flowNavigationController topViewController] isKindOfClass:[VWorkspaceViewController class]])
         {
             VWorkspaceViewController *workspace = (VWorkspaceViewController *)[self.flowNavigationController topViewController];
             if ([workspace.toolController isKindOfClass:[VVideoToolController class]])
             {
                 VVideoToolController *videoToolController = (VVideoToolController *)workspace.toolController;
-                publishViewController.isGIF = videoToolController.isGIF;
-                publishViewController.didTrim = videoToolController.didTrim;
+                publishParameters.isGIF = videoToolController.isGIF;
+                publishParameters.didTrim = videoToolController.didTrim;
             }
             else if ([workspace.toolController isKindOfClass:[VImageToolController class]])
             {
                 VImageToolController *imageToolController = (VImageToolController *)workspace.toolController;
-                publishViewController.embeddedText = imageToolController.embeddedText;
-                publishViewController.textToolType = imageToolController.textToolType;
-                publishViewController.filterName = imageToolController.filterName;
+                publishParameters.embeddedText = imageToolController.embeddedText;
+                publishParameters.textToolType = imageToolController.textToolType;
+                publishParameters.filterName = imageToolController.filterName;
             }
         }
         VSequence *sequenceToRemix = [self.dependencyManager templateValueOfType:[VSequence class]
@@ -166,8 +169,8 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
         {
             NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
             formatter.numberStyle = NSNumberFormatterDecimalStyle;
-            publishViewController.parentSequenceID = [formatter numberFromString:sequenceToRemix.remoteId];
-            publishViewController.parentNodeID = [sequenceToRemix firstNode].remoteId;
+            publishParameters.parentSequenceID = [formatter numberFromString:sequenceToRemix.remoteId];
+            publishParameters.parentNodeID = [sequenceToRemix firstNode].remoteId;
         }
         publishViewController.completion = ^void(BOOL published)
         {
