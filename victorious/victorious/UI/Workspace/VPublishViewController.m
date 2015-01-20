@@ -126,7 +126,7 @@ static const CGFloat kTopSpacePublishPrompt = 50.0f;
 {
     if (self.captionTextView.text.length < 1)
     {
-        [self.captionTextView shakeShakeShakeShake];
+        [self.captionTextView shakeAnimation];
         return;
     }
     [self.captionTextView resignFirstResponder];

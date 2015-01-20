@@ -19,8 +19,6 @@
 #import "VTracking.h"
 
 #pragma mark - Controllers
-#import "VRemixSelectViewController.h"
-#import "VCameraPublishViewController.h"
 #import "VStreamCollectionViewController.h"
 #import "VReposterTableViewController.h"
 #import "VAuthorizationViewControllerFactory.h"

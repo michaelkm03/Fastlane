@@ -68,15 +68,6 @@ static const CGFloat kPlaceholderAlphaEnteringText = 0.2f;
     _placeholderTextView.textColor = self.textColor;
     
     [self addSubview:_placeholderTextView];
-    _placeholderTextView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[placeholderTextView]|"
-                                                                 options:kNilOptions
-                                                                 metrics:nil
-                                                                   views:@{@"placeholderTextView":_placeholderTextView}]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[placeholderTextView]|"
-                                                                 options:kNilOptions
-                                                                 metrics:nil
-                                                                   views:@{@"placeholderTextView":_placeholderTextView}]];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(beganEditing:)
@@ -91,6 +82,8 @@ static const CGFloat kPlaceholderAlphaEnteringText = 0.2f;
                                                  name:UITextViewTextDidEndEditingNotification
                                                object:self];
     [self updatePlaceholderAttributedText];
+    
+    [self layoutIfNeeded];
 }
 
 #pragma mark - Property Accessors
@@ -188,7 +181,7 @@ static const CGFloat kPlaceholderAlphaEnteringText = 0.2f;
 
 #pragma mark - Public Methods
 
-- (void)shakeShakeShakeShake
+- (void)shakeAnimation
 {
     AudioServicesPlayAlertSound(kSystemSoundID_Vibrate);
     CGPoint originalCenter = self.placeholderTextView.center;
