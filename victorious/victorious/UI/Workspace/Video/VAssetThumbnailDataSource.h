@@ -10,8 +10,11 @@
 
 @import AVFoundation;
 
+/**
+ A Thumbnail data source.
+ */
 @interface VAssetThumbnailDataSource : NSObject <VTrimmerThumbnailDataSource>
 
-- (instancetype)initWithAsset:(AVAsset *)asset;
+- (instancetype)initWithAsset:(AVAsset *)asset NS_DESIGNATED_INITIALIZER;
 
 @end

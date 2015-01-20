@@ -208,6 +208,26 @@ static NSString * const kVideoMuted = @"videoMuted";
     [self.videoPlayerController setEndSeconds:CMTimeGetSeconds(CMTimeAdd(selectedTimeRange.start, selectedTimeRange.duration))];
 }
 
+- (void)trimmerViewControllerBeganSeeking:(VTrimmerViewController *)trimmerViewController
+                                   toTime:(CMTime)time
+{
+    [self.videoPlayerController.player pause];
+    [self.videoPlayerController.player seekToTime:time];
+}
+
+- (void)trimmerViewControllerEndedSeeking:(VTrimmerViewController *)trimmerViewController
+{
+    __weak typeof(self) welf = self;
+    [self.videoPlayerController.player prerollAtRate:1.0f
+                                   completionHandler:^(BOOL finished)
+    {
+        if (finished)
+        {
+            [welf.videoPlayerController.player play];
+        }
+    }];
+}
+
 #pragma mark - VCVideoPlayerDelegate
 
 - (void)videoPlayer:(VCVideoPlayerViewController *)videoPlayer

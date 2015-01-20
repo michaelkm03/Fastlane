@@ -224,6 +224,17 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     [self updateAndNotify];
+    
+    if (!CMTimeRangeContainsTime(self.selectedTimeRange, self.currentPlayTime))
+    {
+        [self.delegate trimmerViewControllerBeganSeeking:self
+                                                  toTime:self.selectedTimeRange.start];
+    }
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    [self.delegate trimmerViewControllerEndedSeeking:self];
 }
 
 #pragma mark - Private Methods
