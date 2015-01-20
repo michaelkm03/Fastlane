@@ -158,8 +158,8 @@ static const CGFloat kDescriptionBuffer = 37.0;
         {
             self.isPlayButtonVisible = NO;
             [self.videoPlayerView setItemURL:[NSURL URLWithString:self.videoAsset.data]
-                                          loop:self.videoAsset.loop
-                               audioDisabled:self.videoAsset.audioDisabled];
+                                        loop:self.videoAsset.loop.boolValue
+                               audioDisabled:self.videoAsset.audioDisabled.boolValue];
         }
     }
     else

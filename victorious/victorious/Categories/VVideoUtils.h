@@ -1,5 +1,5 @@
 //
-//  AVComposition+Loop.h
+//  VVideoUtils.h
 //  victorious
 //
 //  Created by Patrick Lynch on 1/19/15.
@@ -8,12 +8,14 @@
 
 @import AVFoundation;
 
-@interface AVComposition (Loop)
+@interface VVideoUtils : NSObject
 
 /**
  Creates an AVComposition that consists of the supplied asset on a loop
  that repeats cleanly, without pauses or other unexpected behavior.
  */
-+ (AVComposition *)v_loopingCompositionWithAsset:(AVAsset *)asset;
++ (AVComposition *)loopingCompositionWithAsset:(AVAsset *)asset;
+
++ (void)createPlayerItemWithURL:(NSURL *)itemURL loop:(BOOL)loop readyCallback:(void(^)(AVPlayerItem *))onReady;
 
 @end

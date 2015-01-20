@@ -7,14 +7,14 @@
 //
 
 #import "VStreamCellVideoView.h"
-#import "AVComposition+Loop.h"
+#import "VVideoUtils.h"
 
 @import AVFoundation;
 
 @interface VStreamCellVideoView()
 
 @property (nonatomic, strong) AVPlayer *player;
-@property (nonatomic, assign) BOOL isPlayingVideo;
+@property (nonatomic, readonly) BOOL isPlayingVideo;
 
 @end
 
@@ -30,18 +30,12 @@
     return [AVPlayerLayer class];
 }
 
-- (instancetype)initWithCoder:(NSCoder *)coder
+- (void)awakeFromNib
 {
-    self = [super initWithCoder:coder];
-    if (self)
-    {
-        AVPlayerLayer *playerLayer = (AVPlayerLayer *)self.layer;
-        _player = [[AVPlayer alloc] init];
-        [playerLayer setPlayer:_player];
-        playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
-        _player.actionAtItemEnd = AVPlayerActionAtItemEndNone;
-    }
-    return self;
+    AVPlayerLayer *playerLayer = (AVPlayerLayer *)self.layer;
+    _player = [[AVPlayer alloc] init];
+    [playerLayer setPlayer:_player];
+    playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
 }
 
 - (void)setItemURL:(NSURL *)itemURL
@@ -60,25 +54,11 @@
     self.player.muted = audioDisabled;
     
     _itemURL = itemURL;
-    dispatch_async( dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0 ), ^void
-                   {
-                       AVURLAsset *asset = [AVURLAsset URLAssetWithURL:itemURL options:nil];
-                       __block AVPlayerItem *playerItem = nil;
-                       if ( loop )
-                       {
-                           AVComposition *composition = [AVComposition v_loopingCompositionWithAsset:asset];
-                           playerItem = [AVPlayerItem playerItemWithAsset:composition];
-                       }
-                       else
-                       {
-                           playerItem = [AVPlayerItem playerItemWithAsset:asset];
-                       }
-                       
-                       dispatch_async( dispatch_get_main_queue(), ^
-                                      {
-                                          [self didFinishAssetCreation:playerItem];
-                                      });
-                   });
+    
+    [VVideoUtils createPlayerItemWithURL:itemURL loop:loop readyCallback:^(AVPlayerItem *playerItem)
+     {
+         [self didFinishAssetCreation:playerItem];
+     }];
 }
 
 - (void)didFinishAssetCreation:(AVPlayerItem *)playerItem
@@ -99,7 +79,12 @@
 
 - (void)playerItemDidReachEnd:(NSNotification *)notification
 {
-    [[self.player currentItem] seekToTime:kCMTimeZero];
+    [self.player.currentItem seekToTime:kCMTimeZero];
+}
+
+- (BOOL)isPlayingVideo
+{
+    return self.player.rate > 0;
 }
 
 - (void)play
@@ -108,17 +93,17 @@
     {
         [self.player.currentItem seekToTime:kCMTimeZero];
         [self.player play];
-        self.isPlayingVideo = YES;
+        
+        self.backgroundColor = [UIColor redColor];
     }
 }
 
 - (void)pause
 {
-    if ( !self.isPlayingVideo )
+    if ( self.isPlayingVideo )
     {
         [self.player.currentItem seekToTime:kCMTimeZero];
         [self.player pause];
-        self.isPlayingVideo = NO;
     }
 }
 
