@@ -162,7 +162,7 @@ NSString * const VImageToolControllerInitialImageEditStateKey = @"VImageToolCont
     
     if (self.tools == nil)
     {
-        NSAssert(false, @"Tools not set yet!");
+        NSAssert(self.tools != nil, @"Tools not set yet!");
     }
     
     [self.tools enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop)
