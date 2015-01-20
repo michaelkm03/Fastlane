@@ -10,8 +10,6 @@
 
 @protocol VVideoWorkspaceTool <VWorkspaceTool>
 
-@optional
-
 /**
  *  All VideoWorkspaceTools must implement this for exporting.
  */

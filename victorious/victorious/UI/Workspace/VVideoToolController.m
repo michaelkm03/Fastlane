@@ -29,14 +29,7 @@ NSString * const VVideoToolControllerInitalVideoEditStateKey = @"VVideoToolContr
 {
     [super setSelectedTool:selectedTool];
     
-    if ([selectedTool conformsToProtocol:@protocol(VVideoWorkspaceTool)])
-    {
-        id <VVideoWorkspaceTool> videoTool = (id <VVideoWorkspaceTool>)selectedTool;
-        if ([videoTool respondsToSelector:@selector(setMediaURL:)])
-        {
-            [videoTool setMediaURL:self.mediaURL];
-        }
-    }
+    [selectedTool setMediaURL:self.mediaURL];
 }
 
 - (void)exportWithSourceAsset:(NSURL *)source
