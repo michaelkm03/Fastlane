@@ -70,7 +70,7 @@
     AVAssetExportSession *exportSession = [AVAssetExportSession exportSessionWithAsset:[self.mutableComposition copy]
                                                                             presetName:AVAssetExportPresetHighestQuality];
     exportSession.videoComposition = [self videoComposition];
-    
+
     if (self.muteAudio)
     {
         exportSession.audioMix = [self mutedAudioMixWithTrack:[self audioTrack]];
@@ -84,7 +84,7 @@
 - (AVVideoComposition *)videoComposition
 {
     AVMutableVideoComposition *videoComposition = [[AVVideoComposition videoCompositionWithPropertiesOfAsset:_asset] mutableCopy];
-    
+
     videoComposition.frameDuration = self.frameDuration;
     
     return [videoComposition copy];

@@ -149,7 +149,6 @@ static NSString *const emptyCellIdentifier = @"emptyCell";
     
     VThumbnailCell *thumnailCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VThumbnailCell suggestedReuseIdentifier]
                                                                              forIndexPath:indexPath];
-#warning TODO: FIX ME
     CGPoint center = [self.thumbnailCollecitonView.collectionViewLayout layoutAttributesForItemAtIndexPath:indexPath].center;
     CGFloat percentThrough = center.x / [self timelineWidthForFullTrack];
     CMTime timeForCell = CMTimeMake(self.maximumEndTime.value * percentThrough, self.maximumEndTime.timescale);

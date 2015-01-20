@@ -15,6 +15,7 @@
  */
 @interface VAssetThumbnailDataSource : NSObject <VTrimmerThumbnailDataSource>
 
-- (instancetype)initWithAsset:(AVAsset *)asset NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithAsset:(AVAsset *)asset
+          andVideoComposition:(AVVideoComposition *)videoComposition NS_DESIGNATED_INITIALIZER;
 
 @end

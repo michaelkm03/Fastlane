@@ -18,6 +18,7 @@
 @implementation VAssetThumbnailDataSource
 
 - (instancetype)initWithAsset:(AVAsset *)asset
+          andVideoComposition:(AVVideoComposition *)videoComposition
 {
     self = [super init];
     if (self)
@@ -25,6 +26,7 @@
         _imageGenerator = [[AVAssetImageGenerator alloc] initWithAsset:asset];
         _imageGenerator.apertureMode = AVAssetImageGeneratorApertureModeCleanAperture;
         _imageGenerator.maximumSize = CGSizeMake(128, 128);
+        _imageGenerator.videoComposition = videoComposition;
     }
     return self;
 }

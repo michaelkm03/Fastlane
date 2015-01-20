@@ -29,5 +29,6 @@
 @property (nonatomic, copy) void (^playerItemReady)(AVPlayerItem *playerItem); // A completion block for when the video is ready to be played.
 
 - (AVAssetExportSession *)makeExportable; // An export session for rendering.
+- (AVVideoComposition *)videoComposition; // A Composition for rendering + thumbnailing.
 
 @end

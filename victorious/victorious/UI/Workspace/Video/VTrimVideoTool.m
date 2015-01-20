@@ -106,7 +106,9 @@ static NSString * const kVideoMuted = @"videoMuted";
             welf.playerItem = playerItem;
             welf.trimViewController.maximumEndTime = [playerItem duration];
             
-            welf.thumbnailDataSource = [[VAssetThumbnailDataSource alloc] initWithAsset:playerItem.asset];
+            welf.thumbnailDataSource = [[VAssetThumbnailDataSource alloc] initWithAsset:playerItem.asset
+                                                                    andVideoComposition:welf.frameRateComposition.videoComposition];
+            
             welf.trimViewController.thumbnailDataSource = welf.thumbnailDataSource;
         });
     };
@@ -168,9 +170,10 @@ static NSString * const kVideoMuted = @"videoMuted";
     [exportSession exportAsynchronouslyWithCompletionHandler:^
     {
         AVAssetImageGenerator *thumbnailGenerator = [[AVAssetImageGenerator alloc] initWithAsset:exportSession.asset];
-        
+        thumbnailGenerator.videoComposition = [self.frameRateComposition videoComposition];
+        thumbnailGenerator.appliesPreferredTrackTransform = YES;
         NSError *error;
-        CGImageRef thumbnailRef = [thumbnailGenerator copyCGImageAtTime:kCMTimeZero
+        CGImageRef thumbnailRef = [thumbnailGenerator copyCGImageAtTime:self.trimViewController.selectedTimeRange.start
                                                              actualTime:NULL
                                                                   error:&error];
         UIImage *thumbnailImage = [UIImage imageWithCGImage:thumbnailRef
