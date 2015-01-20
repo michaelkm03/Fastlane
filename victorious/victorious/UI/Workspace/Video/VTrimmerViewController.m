@@ -231,6 +231,14 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
     }
 }
 
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    if (!decelerate)
+    {
+        [self.delegate trimmerViewControllerEndedSeeking:self];
+    }
+}
+
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
     [self.delegate trimmerViewControllerEndedSeeking:self];

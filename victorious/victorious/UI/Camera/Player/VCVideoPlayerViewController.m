@@ -326,7 +326,6 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 - (void)updateViewForShowToolbarValue
 {
     self.toolbarView.hidden = !self.shouldShowToolbar;
-    self.videoFrameTapGesture.enabled = self.shouldShowToolbar;
 }
 
 - (void)setOverlayView:(UIView *)overlayView

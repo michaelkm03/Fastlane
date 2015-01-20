@@ -77,6 +77,7 @@ static NSString * const kVideoMuted = @"videoMuted";
         _videoPlayerController = [[VCVideoPlayerViewController alloc] initWithNibName:nil bundle:nil];
         _videoPlayerController.shouldFireAnalytics = NO;
         _videoPlayerController.shouldLoop = YES;
+        _videoPlayerController.shouldShowToolbar = NO;
         _videoPlayerController.delegate = self;
         _videoPlayerController.shouldChangeVideoGravityOnDoubleTap = YES;
     }
