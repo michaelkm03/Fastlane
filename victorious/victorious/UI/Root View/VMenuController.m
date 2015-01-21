@@ -121,7 +121,7 @@ static char kKVOContext;
 - (NSArray *)navigationDestinations
 {
     NSMutableArray *returnValue = [[NSMutableArray alloc] init];
-    [self.dependencyManager.menuItemSections enumerateObjectsUsingBlock:^(NSArray *obj, NSUInteger idx, BOOL *stop)
+    [self.collectionViewDataSource.menuSections enumerateObjectsUsingBlock:^(NSArray *obj, NSUInteger idx, BOOL *stop)
     {
         [returnValue addObjectsFromArray:[obj v_map:^id(VNavigationMenuItem *item) { return item.destination; }]];
     }];

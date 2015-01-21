@@ -95,7 +95,7 @@ static NSString * const kInboxDeeplinkHostComponent = @"inbox";
     [super viewDidAppear:animated];
     if ( self.userConversationToDisplayOnNextAppearance != nil )
     {
-        [self.navigationController popToViewController:self animated:YES];
+        [self.navigationController popToViewController:self animated:NO];
         [self.inboxViewController displayConversationForUser:self.userConversationToDisplayOnNextAppearance];
         self.userConversationToDisplayOnNextAppearance = nil;
     }
