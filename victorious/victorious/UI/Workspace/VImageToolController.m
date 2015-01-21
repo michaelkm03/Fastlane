@@ -29,7 +29,7 @@ NSString * const VImageToolControllerInitialImageEditStateKey = @"VImageToolCont
 @implementation VImageToolController
 
 - (void)exportWithSourceAsset:(NSURL *)source
-               withCompletion:(void (^)(BOOL finished, NSURL *renderedMediaURL, UIImage *previewImage))completion
+               withCompletion:(void (^)(BOOL finished, NSURL *renderedMediaURL, UIImage *previewImage, NSError *error))completion
 {
     NSParameterAssert(completion != nil);
     
@@ -49,7 +49,7 @@ NSString * const VImageToolControllerInitialImageEditStateKey = @"VImageToolCont
                        
                        dispatch_async(dispatch_get_main_queue(), ^
                                       {
-                                          completion(successfullyWroteToURL, tempFile, renderedImage);
+                                          completion(successfullyWroteToURL, tempFile, renderedImage, nil);
                                       });
                    });
 
