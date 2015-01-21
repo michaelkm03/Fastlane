@@ -89,8 +89,17 @@ static NSString * const kProfileDeeplinkHostComponent = @"profile";
             [[VObjectManager sharedManager] fetchUser:@(userID)
                                      withSuccessBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
             {
-                VUserProfileViewController *profileVC = [self.dependencyManager userProfileViewControllerWithUser:[resultObjects firstObject] forKey:VScaffoldViewControllerUserProfileViewComponentKey];
-                completion(profileVC);
+                VUser *user = [resultObjects firstObject];
+                
+                if ( user == nil )
+                {
+                    completion(nil);
+                }
+                else
+                {
+                    VUserProfileViewController *profileVC = [self.dependencyManager userProfileViewControllerWithUser:user forKey:VScaffoldViewControllerUserProfileViewComponentKey];
+                    completion(profileVC);
+                }
             }
                                             failBlock:^(NSOperation *operation, NSError *error)
             {
