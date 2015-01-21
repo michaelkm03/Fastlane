@@ -246,6 +246,11 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
 
 - (void)updateAndNotify
 {
+    if (isnan(CMTimeGetSeconds(self.trimControl.maxDuration)))
+    {
+        return;
+    }
+    
     [self updateTrimControlTitleWithTime:self.trimControl.selectedDuration];
     
     if ([self.delegate respondsToSelector:@selector(trimmerViewController:didUpdateSelectedTimeRange:)])
