@@ -67,6 +67,7 @@ static const CGFloat kTextRenderingSize = 1024;
     
     self.textView = [[UITextView alloc] initWithFrame:self.view.bounds
                                         textContainer:textContainer];
+    self.textView.returnKeyType = UIReturnKeyDone;
     self.textView.delegate = self;
     [self.view addSubview:self.textView];
 
