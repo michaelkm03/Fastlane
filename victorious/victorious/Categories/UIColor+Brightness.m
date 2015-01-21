@@ -28,9 +28,9 @@
     CGFloat r, g, b, a;
     if ( [self getRed:&r green:&g blue:&b alpha:&a] )
     {
-        return [UIColor colorWithRed:r + r * amount
-                               green:g + g * amount
-                                blue:b + b * amount
+        return [UIColor colorWithRed:r - r * amount
+                               green:g - g * amount
+                                blue:b - b * amount
                                alpha:a];
     }
     return nil;
