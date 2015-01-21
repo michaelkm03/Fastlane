@@ -302,7 +302,7 @@
     NSAssert(viewController != nil, @"Can't display a nil view controller");
     
     // Dismiss any modals
-    while ( self.presentedViewController != nil )
+    if ( self.presentedViewController )
     {
         [self dismissViewControllerAnimated:NO completion:nil];
     }

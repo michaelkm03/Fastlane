@@ -53,6 +53,11 @@ static NSString * const kContentDeeplinkURLHostComponent = @"content";
         return;
     }
     
+    if ( self.presentedViewController )
+    {
+        [self dismissViewControllerAnimated:NO completion:nil];
+    }
+    
     VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithSequence:sequence];
     VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel];
     contentViewController.dependencyManagerForHistogramExperiment = self.dependencyManager;
