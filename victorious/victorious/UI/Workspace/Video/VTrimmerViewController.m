@@ -141,7 +141,6 @@ static const CGFloat kTimelineDarkeningAlpha = 0.5f;
     CMTime timeForCell = CMTimeMake(self.maximumEndTime.value * percentThrough, self.maximumEndTime.timescale);
     thumnailCell.valueForThumbnail = [NSValue valueWithCMTime:timeForCell];
     __weak VThumbnailCell *weakCell = thumnailCell;
-    __weak id weakDataSource = self.thumbnailDataSource;
     [self.thumbnailDataSource trimmerViewController:self
                                    thumbnailForTime:timeForCell
                                      withCompletion:^(UIImage *thumbnail, CMTime timeForImage, id generatingDataSource)
