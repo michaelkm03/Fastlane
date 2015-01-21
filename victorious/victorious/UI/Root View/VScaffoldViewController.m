@@ -191,10 +191,10 @@ static NSString * const kContentDeeplinkURLHostComponent = @"content";
 
 - (void)navigateToDestination:(id)navigationDestination
 {
-    void (^goTo)(UIViewController *) = ^(UIViewController *vc)
+    void (^goTo)(UIViewController *) = ^(UIViewController *viewController)
     {
-        NSAssert([vc isKindOfClass:[UIViewController class]], @"non-UIViewController specified as destination for navigation");
-        [self displayResultOfNavigation:vc];
+        NSAssert([viewController isKindOfClass:[UIViewController class]], @"non-UIViewController specified as destination for navigation");
+        [self displayResultOfNavigation:viewController];
     };
     
     if ([navigationDestination respondsToSelector:@selector(shouldNavigateWithAlternateDestination:)])
