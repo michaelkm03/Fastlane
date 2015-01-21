@@ -182,7 +182,7 @@ static NSString *const emptyCellIdentifier = @"emptyCell";
     {
         return CGSizeMake(CGRectGetWidth(collectionView.bounds) - [self timelineWidthPerSecond], CGRectGetHeight(collectionView.bounds));
     }
-    // Frames
+    // End Frame
     if (indexPath.row == numberOfItems - 2)
     {
         CGFloat width = [self timelineWidthForFullTrack];
