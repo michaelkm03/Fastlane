@@ -49,13 +49,6 @@ static const CGFloat kTimelineDarkeningAlpha = 0.5f;
     [self prepareTrimControl];
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-    [self reloadThumbnails];
-}
-
 #pragma mark - Property Accessors
 
 - (void)setMaximumTrimDuration:(CMTime)maximumTrimDuration
@@ -69,7 +62,6 @@ static const CGFloat kTimelineDarkeningAlpha = 0.5f;
 - (void)setMaximumEndTime:(CMTime)maximumEndTime
 {
     _maximumEndTime = maximumEndTime;
-    [self.thumbnailCollecitonView reloadData];
     [self.thumbnailCollecitonView.collectionViewLayout invalidateLayout];
 }
 
@@ -94,13 +86,6 @@ static const CGFloat kTimelineDarkeningAlpha = 0.5f;
 {
     _thumbnailDataSource = thumbnailDataSource;
     
-    [self reloadThumbnails];
-}
-
-#pragma mark - Public Methods
-
-- (void)reloadThumbnails
-{
     [self.thumbnailCollecitonView reloadData];
 }
 
@@ -156,9 +141,10 @@ static const CGFloat kTimelineDarkeningAlpha = 0.5f;
     CMTime timeForCell = CMTimeMake(self.maximumEndTime.value * percentThrough, self.maximumEndTime.timescale);
     thumnailCell.valueForThumbnail = [NSValue valueWithCMTime:timeForCell];
     __weak VThumbnailCell *weakCell = thumnailCell;
+    __weak id weakDataSource = self.thumbnailDataSource;
     [self.thumbnailDataSource trimmerViewController:self
                                    thumbnailForTime:timeForCell
-                                     withCompletion:^(UIImage *thumbnail, CMTime timeForImage)
+                                     withCompletion:^(UIImage *thumbnail, CMTime timeForImage, id generatingDataSource)
      {
          CMTime timeValue = [weakCell.valueForThumbnail CMTimeValue];
          if (CMTIME_COMPARE_INLINE(timeValue, ==, timeForImage))
@@ -180,19 +166,17 @@ static const CGFloat kTimelineDarkeningAlpha = 0.5f;
 {
     NSInteger numberOfItems = [self collectionView:collectionView
                             numberOfItemsInSection:indexPath.section];
-    
     // Empty Cell
     if (indexPath.row == numberOfItems - 1)
     {
-        return CGSizeMake(CGRectGetWidth(collectionView.bounds) - [self timelineWidthPerSecond], CGRectGetHeight(collectionView.bounds));
+        return CGSizeMake(CGRectGetWidth(collectionView.frame) - [self timelineWidthPerSecond], CGRectGetHeight(collectionView.bounds));
     }
-    // End Frame
-    if (indexPath.row == numberOfItems - 2)
+    else if (indexPath.row == numberOfItems - 2)
     {
-        CGFloat width = [self timelineWidthPerSecond];
+        CGFloat width = [self timelineWidthForFullTrack];
         if (!isnan(width))
         {
-            width = width - (numberOfItems * CGRectGetHeight(collectionView.frame));
+            width = width - ((numberOfItems - 2) * CGRectGetHeight(collectionView.bounds));
             return CGSizeMake(width, CGRectGetHeight(collectionView.frame));
         }
     }

@@ -19,7 +19,7 @@
  */
 - (void)trimmerViewController:(VTrimmerViewController *)trimmer
              thumbnailForTime:(CMTime)time
-               withCompletion:(void (^)(UIImage *thumbnail, CMTime timeForImage))completion;
+               withCompletion:(void (^)(UIImage *thumbnail, CMTime timeForImage, id generatingDataSource))completion;
 
 @end
 
@@ -88,10 +88,5 @@
  *  A thumbnail data source.
  */
 @property (nonatomic, weak) id <VTrimmerThumbnailDataSource> thumbnailDataSource;
-
-/**
- *  Discard all thumbnails and requery the data source.
- */
-- (void)reloadThumbnails;
 
 @end

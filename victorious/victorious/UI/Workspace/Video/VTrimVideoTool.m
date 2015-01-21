@@ -110,8 +110,11 @@ static NSString * const kVideoMuted = @"videoMuted";
             welf.playerItem = playerItem;
             welf.trimViewController.maximumEndTime = [playerItem duration];
             
-            welf.thumbnailDataSource = [[VAssetThumbnailDataSource alloc] initWithAsset:playerItem.asset
-                                                                    andVideoComposition:welf.frameRateComposition.videoComposition];
+            if (welf.thumbnailDataSource == nil)
+            {
+                welf.thumbnailDataSource = [[VAssetThumbnailDataSource alloc] initWithAsset:playerItem.asset
+                                                                        andVideoComposition:welf.frameRateComposition.videoComposition];
+            }
             
             welf.trimViewController.thumbnailDataSource = welf.thumbnailDataSource;
         });
@@ -130,6 +133,7 @@ static NSString * const kVideoMuted = @"videoMuted";
     _selected = selected;
     if (selected)
     {
+        self.trimViewController.thumbnailDataSource = self.thumbnailDataSource;
         [self.videoPlayerController.player pause];
         [self.KVOController observe:self.videoPlayerController.player
                             keyPath:NSStringFromSelector(@selector(status))
@@ -156,6 +160,7 @@ static NSString * const kVideoMuted = @"videoMuted";
     }
     else
     {
+        self.trimViewController.thumbnailDataSource = nil;
         [self.videoPlayerController.player pause];
         [self.KVOController unobserve:self.videoPlayerController.player
                               keyPath:NSStringFromSelector(@selector(status))];
@@ -196,7 +201,6 @@ static NSString * const kVideoMuted = @"videoMuted";
 
 - (UIViewController *)inspectorToolViewController
 {
-    [self.trimViewController reloadThumbnails];
     return self.trimViewController;
 }
 

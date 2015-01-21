@@ -27,6 +27,8 @@
         _imageGenerator.apertureMode = AVAssetImageGeneratorApertureModeCleanAperture;
         _imageGenerator.maximumSize = CGSizeMake(128, 128);
         _imageGenerator.videoComposition = videoComposition;
+        
+        _thumbnailCache = [[NSCache alloc] init];
     }
     return self;
 }
@@ -34,25 +36,29 @@
 #pragma mark - VTrimmerThumbnailDataSource
 
 - (void)trimmerViewController:(VTrimmerViewController *)trimmer
-             thumbnailForTime:(CMTime)time
-               withCompletion:(void (^)(UIImage *thumbnail, CMTime timeForImage))completion
+             thumbnailForTime:(CMTime)requestedTime
+               withCompletion:(void (^)(UIImage *thumbnail, CMTime timeForImage, id generatingDataSource))completion
 {
     NSParameterAssert(completion != nil);
     
-    NSString *keyForThumbnail = [NSString stringWithFormat:@"%@", [NSValue valueWithCMTime:time]];
+    NSString *keyForThumbnail = [NSString stringWithFormat:@"%@", [NSValue valueWithCMTime:requestedTime]];
     UIImage *cachedImage = [self.thumbnailCache objectForKey:keyForThumbnail];
     if (cachedImage != nil)
     {
-        completion(cachedImage, time);
+        completion(cachedImage, requestedTime, self);
+        return;
     }
     
-    [self.imageGenerator generateCGImagesAsynchronouslyForTimes:@[[NSValue valueWithCMTime:time]]
+    __weak typeof(self) welf = self;
+    [self.imageGenerator generateCGImagesAsynchronouslyForTimes:@[[NSValue valueWithCMTime:requestedTime]]
                                               completionHandler:^(CMTime requestedTime, CGImageRef image, CMTime actualTime, AVAssetImageGeneratorResult result, NSError *error)
      {
          UIImage *generatedImage = [UIImage imageWithCGImage:image
                                                        scale:1.0f
                                                  orientation:UIImageOrientationUp];
-         completion(generatedImage, time);
+         [welf.thumbnailCache setObject:generatedImage
+                                 forKey:keyForThumbnail];
+         completion(generatedImage, requestedTime, welf);
      }];
 }
 
