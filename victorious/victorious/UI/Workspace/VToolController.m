@@ -72,7 +72,7 @@
     }
     else
     {
-        [self setInspectorToolViewController:nil];
+        [self.delegate setInspectorViewController:nil];
     }
     if ([_selectedTool respondsToSelector:@selector(setSelected:)])
     {
