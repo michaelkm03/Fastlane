@@ -18,7 +18,6 @@
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Pagination.h"
 #import "VPushNotificationManager.h"
-#import "VSessionTimer.h"
 #import "VUploadManager.h"
 #import "VUserManager.h"
 #import "VConstants.h"

@@ -272,7 +272,14 @@ static const NSTimeInterval kAnimationDuration = 0.2;
     {
         if ( [[UIApplication sharedApplication] applicationState] != UIApplicationStateActive )
         {
-            [self handleDeeplinkURL:deeplink];
+            if ( [self.sessionTimer shouldNewSessionStartNow] )
+            {
+                self.queuedURL = deeplink;
+            }
+            else
+            {
+                [self handleDeeplinkURL:deeplink];
+            }
         }
         else if ( [deeplink.host isEqualToString:VInboxContainerViewControllerDeeplinkHostComponent] )
         {
