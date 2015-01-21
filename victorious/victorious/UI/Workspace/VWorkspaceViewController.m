@@ -231,7 +231,7 @@
 {
     MBProgressHUD *hudForView = [MBProgressHUD showHUDAddedTo:self.view
                                                      animated:YES];
-    hudForView.labelText = @"Rendering...";
+    hudForView.labelText = NSLocalizedString(@"Rendering...", @"");
     
     __weak typeof(self) welf = self;
     [self.toolController exportWithSourceAsset:self.mediaURL
@@ -239,7 +239,7 @@
      {
          welf.renderedMediaURL = renderedMediaURL;
          [hudForView hide:YES];
-         if (welf.completionBlock)
+         if (welf.completionBlock != nil)
          {
              welf.completionBlock(YES, previewImage, welf.renderedMediaURL);
          }

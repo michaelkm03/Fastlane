@@ -37,6 +37,8 @@
              thumbnailForTime:(CMTime)time
                withCompletion:(void (^)(UIImage *thumbnail, CMTime timeForImage))completion
 {
+    NSParameterAssert(completion != nil);
+    
     NSString *keyForThumbnail = [NSString stringWithFormat:@"%@", [NSValue valueWithCMTime:time]];
     UIImage *cachedImage = [self.thumbnailCache objectForKey:keyForThumbnail];
     if (cachedImage != nil)
