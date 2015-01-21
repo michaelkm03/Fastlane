@@ -39,17 +39,25 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
     NSString *apiPath = [@"/api/comment/all/" stringByAppendingString: sequence.remoteId];
     VAbstractFilter *filter = [self.paginationManager filterForPath:apiPath entityName:[VAbstractFilter entityName] managedObjectContext:sequence.managedObjectContext];
     
-    VSuccessBlock fullSuccessBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    NSManagedObjectID *filterID = filter.objectID;
+    VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        // If this success block is called, the filter was successfully updated with the target page
-        // number for the comment Id that was supplied.  Now we can load the current page:
-        [self.paginationManager loadFilter:filter withPageType:VPageTypeFirst successBlock:success failBlock:fail];
+        VAbstractFilter *filter = (VAbstractFilter *)[self.managedObjectStore.mainQueueManagedObjectContext objectWithID:filterID];
+        filter.maxPageNumber = @([fullResponse[@"total_pages"] integerValue]);
+        filter.currentPageNumber = @([fullResponse[@"page"] integerValue]);
+        filter.totalItemsNumber = @([fullResponse[@"total_items"] integerValue]);
+        [filter.managedObjectContext saveToPersistentStore:nil];
+        
+        [self.managedObjectStore.mainQueueManagedObjectContext objectWithID:filterID];
+        
+        if (success)
+        {
+            success(operation, fullResponse, resultObjects);
+        }
     };
     
-    return [self.paginationManager findPageWithPath:@"comment"
-                                              filter:filter
-                                            objectId:commentId
-                                        successBlock:fullSuccessBlock failBlock:fail];
+    NSString *path = [NSString stringWithFormat:@"/api/comment/find/%@/%@/%@", sequence.remoteId, commentId, filter.perPageNumber];
+    return [self GET:path object:nil parameters:nil successBlock:fullSuccess failBlock:fail];
 }
 
 - (RKManagedObjectRequestOperation *)loadCommentsOnSequence:(VSequence *)sequence

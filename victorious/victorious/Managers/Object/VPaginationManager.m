@@ -41,7 +41,7 @@
                                          successBlock:(VSuccessBlock)success
                                             failBlock:(VFailBlock)fail
 {
-    NSManagedObjectID *filterID = filter.objectID;
+    /*NSManagedObjectID *filterID = filter.objectID;
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         VAbstractFilter *filter = (VAbstractFilter *)[self.objectManager.managedObjectStore.mainQueueManagedObjectContext objectWithID:filterID];
@@ -67,12 +67,14 @@
     };
     
 #warning testing only
-    fullSuccess( nil, @{ @"total_pages" : @5, @"page" : @3, @"total_items" : @69 }, nil );
-    return nil;
+    //fullSuccess( nil, @{ @"total_pages" : @5, @"page" : @3, @"total_items" : @69 }, nil );
+    //return nil;
     
-#warning Get this API method working
     NSString *path = [NSString stringWithFormat:@"/api/%@/find/%ld/", apiPath, (long)filter.perPageNumber.integerValue];
-    return [self.objectManager GET:path object:nil parameters:nil successBlock:fullSuccess failBlock:fullFail];
+    return [self.objectManager GET:path object:nil parameters:nil successBlock:fullSuccess failBlock:fullFail];*/
+    
+#warning Erase this method?
+    return nil;
 }
 
 - (RKManagedObjectRequestOperation *)loadFilter:(VAbstractFilter *)filter
