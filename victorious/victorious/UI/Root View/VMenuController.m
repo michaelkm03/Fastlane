@@ -84,15 +84,6 @@ static char kKVOContext;
                                     forKeyPath:NSStringFromSelector(@selector(badgeTotal))
                                        options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew)
                                        context:&kKVOContext];
-    
-    if ([[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
-    {
-        self.view.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-    }
-    else
-    {
-        self.view.backgroundColor = [UIColor clearColor];
-    }
 }
 
 - (void)viewDidLayoutSubviews
