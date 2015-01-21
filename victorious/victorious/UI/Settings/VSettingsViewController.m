@@ -35,6 +35,8 @@ static const NSInteger kPushNotificationsButtonIndex = 3;
 static const NSInteger kServerEnvironmentButtonIndex = 4;
 static const NSInteger kResetPurchasesButtonIndex = 5;
 
+static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
+
 @interface VSettingsViewController ()   <MFMailComposeViewControllerDelegate, UIAlertViewDelegate>
 
 @property (weak, nonatomic) IBOutlet VButton *logoutButton;
@@ -287,19 +289,20 @@ static const NSInteger kResetPurchasesButtonIndex = 5;
         // The style is removed then re-applied so the mail compose view controller has the default appearance
         [[VThemeManager sharedThemeManager] removeStyling];
         
-        NSString *appName = [[VThemeManager sharedThemeManager] themedStringForKey:kVChannelName];
+        NSString *appName = [[VThemeManager sharedThemeManager] themedStringForKey:kVCreatorName];
         
         MFMailComposeViewController    *mailComposer = [[MFMailComposeViewController alloc] init];
         mailComposer.mailComposeDelegate = self;
         
-        NSString *msgBody = [NSString stringWithFormat:@"%@\n\n-------------------------\n%@",
+        NSString *msgBody = [NSString stringWithFormat:@"%@\n\n-------------------------\n%@\n%@",
                              NSLocalizedString(@"Type your feedback here...", @""),
-                             [self deviceInfo]];
+                             [self deviceInfo], appName];
         NSString *subjString = NSLocalizedString(@"SupportEmailSubject", @"Feedback / Help");
-        NSString *msgSubj = [NSString stringWithFormat:@"%@ %@", subjString,[appName capitalizedString]];
+        NSString *msgSubj = [NSString stringWithFormat:@"%@ %@", subjString, appName];
+        NSString *recipientEmail = [[VThemeManager sharedThemeManager] themedStringForKey:kVSupportEmail];
         
         [mailComposer setSubject:msgSubj];
-        [mailComposer setToRecipients:@[[[VThemeManager sharedThemeManager] themedStringForKey:kVChannelURLSupport]]];
+        [mailComposer setToRecipients:@[ recipientEmail ?: kDefaultHelpEmail ]];
         [mailComposer setMessageBody:msgBody isHTML:NO];
         
         //  Dismiss the menu controller first, since we want to be a child of the root controller
@@ -335,7 +338,7 @@ static const NSInteger kResetPurchasesButtonIndex = 5;
     NSMutableString *deviceInfo = [[NSMutableString alloc] init];
     [deviceInfo appendFormat:@"%@ %@\n", NSLocalizedString(@"Device:", @""), device];
     [deviceInfo appendFormat:@"%@ %@ %@\n", NSLocalizedString(@"OS Version:", @""), iosName, iosVersion];
-    [deviceInfo appendFormat:@"%@ %@ (%@)\n", NSLocalizedString(@"App Version:", @""), appVersion, appBuildNumber];
+    [deviceInfo appendFormat:@"%@ %@ (%@)", NSLocalizedString(@"App Version:", @""), appVersion, appBuildNumber];
     
     return deviceInfo;
 }

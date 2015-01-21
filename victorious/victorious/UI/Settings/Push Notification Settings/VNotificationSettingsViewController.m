@@ -17,6 +17,7 @@
 #import "VNotificationSettingsTableSection.h"
 #import "VNotificationSettingsStateManager.h"
 #import "VConstants.h"
+#import "VThemeManager.h"
 
 @interface VNotificationSettingsViewController() <VNavigationHeaderDelegate, VNotificationSettingCellDelegate, VNotificiationSettingsStateManagerDelegate>
 
@@ -126,7 +127,7 @@
     
     // Feed section
     NSString *format = NSLocalizedString( @"PostFromCreator", nil);
-    NSString *creatorName = [[NSBundle bundleForClass:[self class]] objectForInfoDictionaryKey:@"CFBundleDisplayName"];
+    NSString *creatorName = [[VThemeManager sharedThemeManager] themedStringForKey:kVCreatorName];
     NSArray *sectionFeedRows = @[ [[VNotificationSettingsTableRow alloc] initWithTitle:[NSString stringWithFormat:format, creatorName]
                                                                                enabled:_settings.isPostFromCreatorEnabled.boolValue],
                                   [[VNotificationSettingsTableRow alloc] initWithTitle:NSLocalizedString( @"PostFromFollowed", nil)

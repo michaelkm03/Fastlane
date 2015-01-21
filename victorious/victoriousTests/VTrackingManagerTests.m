@@ -209,12 +209,12 @@
     XCTAssertEqual( eventsCount2, numEvents2 );
     
     [delegate resetTrackedEventCount];
-    [self.trackingMgr trackQueuedEventsWithName:eventName1];
+    [self.trackingMgr clearQueuedEventsWithName:eventName1];
     XCTAssertEqual( self.trackingMgr.queuedEvents.count, totalEvents - numEvents1 );
     XCTAssertEqual( delegate.trackedEventCount, (NSUInteger)0, @"No events should be tracked whened queue is cleared." );
     
     delegate.trackedEventCount = 0;
-    [self.trackingMgr trackQueuedEventsWithName:eventName2];
+    [self.trackingMgr clearQueuedEventsWithName:eventName2];
     XCTAssertEqual( self.trackingMgr.queuedEvents.count, (NSUInteger)0 );
     XCTAssertEqual( delegate.trackedEventCount, (NSUInteger)0, @"No events should be tracked whened queue is cleared." );
     

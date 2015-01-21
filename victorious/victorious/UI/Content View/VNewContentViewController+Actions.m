@@ -225,12 +225,12 @@ static const char kSequenceActionControllerKey;
                                                                          destructiveButtonTitle:NSLocalizedString(@"DeleteButton", @"")
                                                                             onDestructiveButton:^
                                                             {
-                                                                [[VObjectManager sharedManager] removeSequenceWithSequenceID:[self.viewModel.sequence.remoteId integerValue]
-                                                                                                                successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+                                                                [[VObjectManager sharedManager] removeSequence:self.viewModel.sequence
+                                                                                                  successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
                                                                  {
                                                                      [self.delegate newContentViewControllerDidDeleteContent:self];
                                                                  }
-                                                                                                                   failBlock:^(NSOperation *operation, NSError *error)
+                                                                                                     failBlock:^(NSOperation *operation, NSError *error)
                                                                  {
                                                                      [self.delegate newContentViewControllerDidDeleteContent:self];
                                                                  }];

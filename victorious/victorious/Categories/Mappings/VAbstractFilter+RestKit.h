@@ -16,7 +16,7 @@
 typedef NS_ENUM( NSUInteger, VPageType )
 {
     /**
-     Prefiously called `isRefresh` or `shouldRefresh`, this indicates a method
+     Previously called `isRefresh` or `shouldRefresh`, this indicates a method
       should clear any previously loaded results and begin loading from page 1.
      */
     VPageTypeFirst,

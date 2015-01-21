@@ -18,7 +18,8 @@
 - (BOOL)canLoadPageType:(VPageType)pageType
 {
     // Validate page number (they are NOT zero-indexed)
-    return self.currentPageNumber > 0 && self.currentPageNumber <= self.maxPageNumber;
+    NSUInteger pageNumber = [self pageNumberForPageType:pageType];
+    return pageNumber > 0 && pageNumber <= self.maxPageNumber.unsignedIntegerValue;
 }
 
 - (NSUInteger)pageNumberForPageType:(VPageType)pageType
@@ -29,7 +30,7 @@
             return self.currentPageNumber.integerValue + 1;
             
         case VPageTypePrevious:
-            return self.currentPageNumber.integerValue - 1;
+            return MAX( self.currentPageNumber.integerValue, 1 ) - 1;
             
         case VPageTypeFirst:
         default:

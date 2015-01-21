@@ -251,10 +251,10 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     paragraphStyle.alignment = NSTextAlignmentCenter;
     
-    NSMutableAttributedString *mutableAttributedString = [[NSMutableAttributedString alloc]initWithString:self.descriptionItem.title
-                                                                                               attributes:@{NSFontAttributeName:[[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font],
-                                                                                                            NSParagraphStyleAttributeName:paragraphStyle,
-                                                                                                            NSForegroundColorAttributeName:[[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor]}];
+    NSMutableAttributedString *mutableAttributedString = [[NSMutableAttributedString alloc] initWithString:(self.descriptionItem.title ?: @"")
+                                                                                                attributes:@{NSFontAttributeName:[[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font],
+                                                                                                             NSParagraphStyleAttributeName:paragraphStyle,
+                                                                                                             NSForegroundColorAttributeName:[[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor]}];
     [self.tapAwayGestureRecognizer requireGestureRecognizerToFail:self.titleTextView.linkGestureRecognizer];
     self.titleTextView.attributedText = mutableAttributedString;
     self.titleTextView.linkDelegate = self;

@@ -51,6 +51,9 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
     self.suggestedPeopleViewController = [VSuggestedPeopleCollectionViewController instantiateFromStoryboard:@"Discover"];
     self.suggestedPeopleViewController.delegate = self;
     
+    [self addChildViewController:self.suggestedPeopleViewController];
+    [self.suggestedPeopleViewController didMoveToParentViewController:self];
+    
     // Call this here to ensure that header views are ready by the time the tableview asks for them
     [self createSectionHeaderViews];
 }
@@ -72,18 +75,6 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
                                              selector:@selector(viewStatusChanged:)
                                                  name:kHashtagStatusChangedNotification
                                                object:nil];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    [self.suggestedPeopleViewController viewWillAppear:animated];
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    [self.suggestedPeopleViewController viewWillDisappear:animated];
 }
 
 - (void)dealloc
@@ -193,7 +184,7 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
 - (void)registerCells
 {
     [self.tableView registerNib:[UINib nibWithNibName:kVTrendingTagIdentifier bundle:nil] forCellReuseIdentifier:kVTrendingTagIdentifier];
-    [self.tableView registerNib:[UINib nibWithNibName:kVSuggestedPeopleIdentifier bundle:nil] forCellReuseIdentifier:kVSuggestedPeopleIdentifier];
+    [self.tableView registerClass:[VSuggestedPeopleCell class] forCellReuseIdentifier:kVSuggestedPeopleIdentifier];
     
     [VNoContentTableViewCell registerNibWithTableView:self.tableView];
 }
@@ -247,29 +238,6 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
     return 0;
 }
 
-#pragma mark - UITableViewDelegate
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    if ( section >= 0 && section < VDiscoverViewControllerSectionsCount )
-    {
-        UIView *headerView = self.sectionHeaders[ section ];
-        return CGRectGetHeight( headerView.frame );
-    }
-    return 0;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    UIView *headerView = self.sectionHeaders[ section ];
-    return headerView;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return indexPath.section == VDiscoverViewControllerSectionSuggestedPeople ? [VSuggestedPeopleCell cellHeight] : [VTrendingTagCell cellHeight];
-}
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = nil;
@@ -293,7 +261,13 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
         else
         {
             VSuggestedPeopleCell *customCell = (VSuggestedPeopleCell *) [tableView dequeueReusableCellWithIdentifier:kVSuggestedPeopleIdentifier forIndexPath:indexPath];
-            customCell.collectionView = self.suggestedPeopleViewController.collectionView;
+            
+            if ( ![customCell.subviews containsObject:self.suggestedPeopleViewController.collectionView] )
+            {
+                [customCell addSubview:self.suggestedPeopleViewController.collectionView];
+                self.suggestedPeopleViewController.collectionView.frame = customCell.bounds;
+            }
+            
             cell = customCell;
             self.suggestedPeopleViewController.hasLoadedOnce = YES;
         }
@@ -317,7 +291,7 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
         else
         {
             VTrendingTagCell *customCell = (VTrendingTagCell *)[tableView dequeueReusableCellWithIdentifier:kVTrendingTagIdentifier forIndexPath:indexPath];
-
+            
             VHashtag *hashtag = self.trendingTags[ indexPath.row ];
             [customCell setHashtag:hashtag];
             customCell.shouldCellRespond = YES;
@@ -354,6 +328,29 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
     }
     
     return cell;
+}
+
+#pragma mark - UITableViewDelegate
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if ( section >= 0 && section < VDiscoverViewControllerSectionsCount )
+    {
+        UIView *headerView = self.sectionHeaders[ section ];
+        return CGRectGetHeight( headerView.frame );
+    }
+    return 0;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UIView *headerView = self.sectionHeaders[ section ];
+    return headerView;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return indexPath.section == VDiscoverViewControllerSectionSuggestedPeople ? [VSuggestedPeopleCell cellHeight] : [VTrendingTagCell cellHeight];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

@@ -79,19 +79,15 @@ extern const NSInteger kTooManyNewMessagesErrorCode;
 
 #pragma mark Filters
 
-- (VAbstractFilter *)commentsFilterForSequence:(VSequence *)sequence
-                          managedObjectContext:(NSManagedObjectContext *)managedObjectContext;
+- (VAbstractFilter *)commentsFilterForSequence:(VSequence *)sequence;
 
-- (VAbstractFilter *)followerFilterForUser:(VUser *)user
-                      managedObjectContext:(NSManagedObjectContext *)managedObjectContext;
+- (VAbstractFilter *)followerFilterForUser:(VUser *)user;;
 
-- (VAbstractFilter *)repostFilterForSequence:(VSequence *)sequence
-                        managedObjectContext:(NSManagedObjectContext *)managedObjectContext;
+- (VAbstractFilter *)repostFilterForSequence:(VSequence *)sequence;;
 
 - (VAbstractFilter *)inboxFilterForCurrentUserFromManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
 
-- (VAbstractFilter *)filterForStream:(VStream *)stream
-                managedObjectContext:(NSManagedObjectContext *)managedObjectContext;
+- (VAbstractFilter *)filterForStream:(VStream *)stream;
 
 - (NSString *)apiPathForConversationWithRemoteID:(NSNumber *)remoteID;
 

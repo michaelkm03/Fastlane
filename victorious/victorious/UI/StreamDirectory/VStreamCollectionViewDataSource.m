@@ -140,8 +140,7 @@ NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamColl
 
 - (BOOL)isFilterLoading
 {
-    NSManagedObjectContext *context = [[[VObjectManager sharedManager] managedObjectStore] mainQueueManagedObjectContext];
-    VAbstractFilter *filter = [[VObjectManager sharedManager] filterForStream:self.stream managedObjectContext:context];
+    VAbstractFilter *filter = [[VObjectManager sharedManager] filterForStream:self.stream];
     return [[[VObjectManager sharedManager] paginationManager] isLoadingFilter:filter];
 }
 

@@ -67,6 +67,11 @@ static NSTimeInterval const kMinimumTimeBetweenSessions = 1800.0; // 30 minutes
 
 #pragma mark - Session Lifecycle
 
+- (BOOL)shouldNewSessionStartNow
+{
+    return !self.firstLaunch && self.previousBackgroundTime >= kMinimumTimeBetweenSessions;
+}
+
 - (void)sessionDidStart
 {
     self.sessionStartTime = [NSDate date];
@@ -77,7 +82,7 @@ static NSTimeInterval const kMinimumTimeBetweenSessions = 1800.0; // 30 minutes
         self.previousBackgroundTime = -[lastSessionEnd timeIntervalSinceNow];
     }
     
-    if (!self.firstLaunch && self.previousBackgroundTime >= kMinimumTimeBetweenSessions)
+    if ( [self shouldNewSessionStartNow] )
     {
         [[NSNotificationCenter defaultCenter] postNotificationName:VSessionTimerNewSessionShouldStart object:self];
     }

@@ -441,9 +441,7 @@ static NSString * const kPreferedMimeType = @"application/x-mpegURL";
 
 - (void)loadComments:(VPageType)pageType
 {
-    NSManagedObjectContext *context = [[[VObjectManager sharedManager] managedObjectStore] mainQueueManagedObjectContext];
-    VAbstractFilter *filter = [[VObjectManager sharedManager] commentsFilterForSequence:self.sequence
-                                                                   managedObjectContext:context];
+    VAbstractFilter *filter = [[VObjectManager sharedManager] commentsFilterForSequence:self.sequence];
     const BOOL isFilterAlreadyLoading = [[[VObjectManager sharedManager] paginationManager] isLoadingFilter:filter];
     if ( isFilterAlreadyLoading || ![filter canLoadPageType:pageType] )
     {
