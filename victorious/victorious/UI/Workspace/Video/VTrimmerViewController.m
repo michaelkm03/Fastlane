@@ -19,6 +19,7 @@ static NSString *const emptyCellIdentifier = @"emptyCell";
 
 static const CGFloat kTimelineTopPadding = 48.0f;
 static const CGFloat kTimelineBottomPadding = 30.0f;
+static const CGFloat kTimelineDarkeningAlpha = 0.5f;
 
 @interface VTrimmerViewController () <UICollectionViewDelegateFlowLayout, UICollectionViewDataSource>
 
@@ -357,7 +358,7 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
 
 - (void)prepareTrimControl
 {
-    self.trimControl = [[VTrimControl alloc] initWithFrame:CGRectMake(0, 0, 100, CGRectGetHeight(self.view.frame))];
+    self.trimControl = [[VTrimControl alloc] initWithFrame:CGRectZero];
     self.trimControl.translatesAutoresizingMaskIntoConstraints = NO;
     [self.trimControl addTarget:self
                          action:@selector(trimSelectionChanged:)
@@ -378,7 +379,7 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
 {
     self.currentPlayBackOverlayView = [[UIView alloc] initWithFrame:self.view.bounds];
     self.currentPlayBackOverlayView.userInteractionEnabled = NO;
-    self.currentPlayBackOverlayView.backgroundColor = [[UIColor redColor] colorWithAlphaComponent:0.2f];
+    self.currentPlayBackOverlayView.backgroundColor = [[UIColor redColor] colorWithAlphaComponent:kTimelineDarkeningAlpha];
     [self.view addSubview:self.currentPlayBackOverlayView];
     self.currentPlayBackOverlayView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[overlayView]"
