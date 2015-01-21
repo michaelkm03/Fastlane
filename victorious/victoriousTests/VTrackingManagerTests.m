@@ -151,6 +151,18 @@
     XCTAssertEqualObjects( params[ @"param_key" ], delegate1.paramsReceived[ @"param_key" ] );
 }
 
+- (void)testNotificationID
+{
+    NSString * const notificationID = @"abc";
+
+    VTestDelegate *delegate = [[VTestDelegate alloc] init];
+    [self.trackingMgr addDelegate:delegate];
+
+    self.trackingMgr.notificationID = notificationID;
+    [self.trackingMgr trackEvent:@"some_event"];
+    XCTAssertEqualObjects(notificationID, delegate.paramsReceived[VTrackingKeyNotificationID]);
+}
+
 - (void)testDurationEvents
 {
     VTestDelegate *delegate = [[VTestDelegate alloc] init];

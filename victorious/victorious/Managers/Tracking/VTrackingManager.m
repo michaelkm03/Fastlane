@@ -58,19 +58,21 @@
         return;
     }
     
+    NSDictionary *completeParams = [self addNotificationIDToParametersDictionary:parameters];
+    
 #if TRACKING_LOGGING_ENABLED
     VLog( @"Tracking: %@ to %lu delegates", eventName, (unsigned long)self.delegates.count);
 #endif
     
     [self.delegates enumerateObjectsUsingBlock:^(id<VTrackingDelegate> delegate, NSUInteger idx, BOOL *stop)
      {
-         [delegate trackEventWithName:eventName parameters:parameters];
+         [delegate trackEventWithName:eventName parameters:completeParams];
      }];
 }
 
 - (void)trackEvent:(NSString *)eventName
 {
-    [self trackEvent:eventName parameters:nil];
+    [self trackEvent:eventName parameters:@{}];
 }
 
 - (void)queueEvent:(NSString *)eventName parameters:(NSDictionary *)parameters eventId:(id)eventId
@@ -131,7 +133,7 @@
 
 - (void)startEvent:(NSString *)eventName
 {
-    [self startEvent:eventName parameters:nil];
+    [self startEvent:eventName parameters:@{}];
 }
 
 - (void)startEvent:(NSString *)eventName parameters:(NSDictionary *)parameters
@@ -181,7 +183,7 @@
 {
     if ( dictionary == nil )
     {
-        return nil;
+        dictionary = @{};
     }
     
     if ( dictionary[ VTrackingKeyTimeStamp ] )
@@ -191,6 +193,22 @@
     
     NSMutableDictionary *mutable = [NSMutableDictionary dictionaryWithDictionary:dictionary];
     [mutable setObject:[NSDate date] forKey:VTrackingKeyTimeStamp];
+    return [NSDictionary dictionaryWithDictionary:mutable];
+}
+
+- (NSDictionary *)addNotificationIDToParametersDictionary:(NSDictionary *)dictionary
+{
+    if ( self.notificationID == nil )
+    {
+        return dictionary;
+    }
+    if ( dictionary == nil )
+    {
+        dictionary = @{};
+    }
+    
+    NSMutableDictionary *mutable = [dictionary mutableCopy];
+    mutable[VTrackingKeyNotificationID] = self.notificationID;
     return [NSDictionary dictionaryWithDictionary:mutable];
 }
 
