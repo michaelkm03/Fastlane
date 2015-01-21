@@ -95,7 +95,7 @@
 }
 
 - (void)exportWithSourceAsset:(NSURL *)source
-               withCompletion:(void (^)(BOOL finished, NSURL *renderedMediaURL, UIImage *previewImage))completion
+               withCompletion:(void (^)(BOOL finished, NSURL *renderedMediaURL, UIImage *previewImage, NSError *error))completion
 {
     NSAssert(false, @"Subclasses must implement me!");
 }

@@ -44,7 +44,7 @@
  *  Call this method to export an asset.
  */
 - (void)exportWithSourceAsset:(NSURL *)source
-               withCompletion:(void (^)(BOOL finished, NSURL *renderedMediaURL, UIImage *previewImage))completion;
+               withCompletion:(void (^)(BOOL finished, NSURL *renderedMediaURL, UIImage *previewImage, NSError *error))completion;
 /**
  *  Must be implemented by subclasses! Only works on the first call.
  */

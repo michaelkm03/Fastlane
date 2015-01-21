@@ -15,6 +15,7 @@
 #import "VCanvasView.h"
 #import <MBProgressHUD/MBProgressHUD.h>
 #import "UIImageView+Blurring.h"
+#import "UIAlertView+VBlocks.h"
 
 // Keyboard
 #import "VKeyboardNotificationManager.h"
@@ -235,13 +236,26 @@
     
     __weak typeof(self) welf = self;
     [self.toolController exportWithSourceAsset:self.mediaURL
-                                withCompletion:^(BOOL finished, NSURL *renderedMediaURL, UIImage *previewImage)
+                                withCompletion:^(BOOL finished, NSURL *renderedMediaURL, UIImage *previewImage, NSError *error)
      {
-         welf.renderedMediaURL = renderedMediaURL;
          [hudForView hide:YES];
-         if (welf.completionBlock != nil)
+         if (error != nil)
          {
-             welf.completionBlock(YES, previewImage, welf.renderedMediaURL);
+             UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Render failure", @"")
+                                                                  message:error.localizedDescription
+                                                        cancelButtonTitle:NSLocalizedString(@"ok", @"")
+                                                           onCancelButton:nil
+                                               otherButtonTitlesAndBlocks:nil, nil];
+             [errorAlert show];
+         }
+         else
+         {
+             welf.renderedMediaURL = renderedMediaURL;
+             
+             if (welf.completionBlock != nil)
+             {
+                 welf.completionBlock(YES, previewImage, welf.renderedMediaURL);
+             }
          }
      }];
 }

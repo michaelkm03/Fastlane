@@ -33,7 +33,7 @@ NSString * const VVideoToolControllerInitalVideoEditStateKey = @"VVideoToolContr
 }
 
 - (void)exportWithSourceAsset:(NSURL *)source
-               withCompletion:(void (^)(BOOL finished, NSURL *renderedMediaURL, UIImage *previewImage))completion
+               withCompletion:(void (^)(BOOL finished, NSURL *renderedMediaURL, UIImage *previewImage, NSError *error))completion
 {
     NSParameterAssert(completion != nil);
     
@@ -41,11 +41,11 @@ NSString * const VVideoToolControllerInitalVideoEditStateKey = @"VVideoToolContr
     NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:VConstantMediaExtensionMP4];
 
     [(id <VVideoWorkspaceTool>)self.selectedTool exportToURL:tempFile
-                                              withCompletion:^(BOOL finished, UIImage *previewImage)
+                                              withCompletion:^(BOOL finished, UIImage *previewImage, NSError *error)
      {
          dispatch_async(dispatch_get_main_queue(), ^
          {
-             completion(finished, tempFile, previewImage);
+             completion(finished, tempFile, previewImage, error);
          });
      }];
 }

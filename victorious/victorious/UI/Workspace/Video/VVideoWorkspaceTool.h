@@ -14,7 +14,7 @@
  *  All VideoWorkspaceTools must implement this for exporting.
  */
 - (void)exportToURL:(NSURL *)url
-     withCompletion:(void (^)(BOOL finished, UIImage *previewImage))completion;
+     withCompletion:(void (^)(BOOL finished, UIImage *previewImage, NSError *error))completion;
 
 /**
  *  A media item for use while editing.

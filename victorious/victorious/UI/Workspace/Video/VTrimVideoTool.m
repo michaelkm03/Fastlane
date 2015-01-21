@@ -165,7 +165,7 @@ static NSString * const kVideoMuted = @"videoMuted";
 #pragma mark - VVideoTool
 
 - (void)exportToURL:(NSURL *)url
-     withCompletion:(void (^)(BOOL finished, UIImage *previewImage))completion
+     withCompletion:(void (^)(BOOL finished, UIImage *previewImage, NSError *error))completion
 {
     AVAssetExportSession *exportSession = [self.frameRateComposition makeExportable];
     exportSession.outputURL = url;
@@ -187,7 +187,7 @@ static NSString * const kVideoMuted = @"videoMuted";
         
         if (completion)
         {
-            completion(YES, thumbnailImage);
+            completion(YES, thumbnailImage, exportSession.error);
         }
     }];
 }
