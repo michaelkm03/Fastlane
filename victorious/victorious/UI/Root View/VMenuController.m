@@ -85,7 +85,6 @@ static char kKVOContext;
                                     forKeyPath:NSStringFromSelector(@selector(badgeTotal))
                                        options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew)
                                        context:&kKVOContext];
-    self.view.backgroundColor = [UIColor clearColor];
 }
 
 - (void)viewDidLayoutSubviews
