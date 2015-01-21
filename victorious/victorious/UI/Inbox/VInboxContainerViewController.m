@@ -6,12 +6,16 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "NSURL+VPathHelper.h"
 #import "UIStoryboard+VMainStoryboard.h"
 #import "VAuthorizationViewControllerFactory.h"
+#import "VConversation.h"
 #import "VDeeplinkManager.h"
 #import "VDependencyManager+VObjectManager.h"
 #import "VInboxContainerViewController.h"
 #import "VInboxViewController.h"
+#import "VMessageContainerViewController.h"
+#import "VObjectManager+DirectMessaging.h"
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Pagination.h"
 #import "VRootViewController.h"
@@ -30,10 +34,12 @@
 @property (strong, nonatomic) VDependencyManager *dependencyManager;
 @property (nonatomic) NSInteger badgeNumber;
 @property (copy, nonatomic) VNavigationMenuItemBadgeNumberUpdateBlock badgeNumberUpdateBlock;
+@property (strong, nonatomic) VUser *userConversationToDisplayOnNextAppearance;
 
 @end
 
 static char kKVOContext;
+static NSString * const kInboxDeeplinkHostComponent = @"inbox";
 
 @implementation VInboxContainerViewController
 
@@ -82,6 +88,17 @@ static char kKVOContext;
     [self.navHeaderView setRightButtonImage:[UIImage imageNamed:@"profileCompose"]
                                  withAction:@selector(userSearchAction:)
                                    onTarget:self.inboxViewController];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    if ( self.userConversationToDisplayOnNextAppearance != nil )
+    {
+        [self.navigationController popToViewController:self animated:YES];
+        [self.inboxViewController displayConversationForUser:self.userConversationToDisplayOnNextAppearance];
+        self.userConversationToDisplayOnNextAppearance = nil;
+    }
 }
 
 - (BOOL)shouldAutorotate
@@ -154,6 +171,45 @@ static char kKVOContext;
         return NO;
     }
     return YES;
+}
+
+#pragma mark - VDeeplinkHandler methods
+
+- (BOOL)displayContentForDeeplinkURL:(NSURL *)url completion:(VDeeplinkHandlerCompletionBlock)completion
+{
+    if ( ![self.dependencyManager.objectManager authorized] )
+    {
+        return NO;
+    }
+    
+    if ( [url.host isEqualToString:kInboxDeeplinkHostComponent] )
+    {
+        NSInteger conversationID = [[url firstNonSlashPathComponent] integerValue];
+        if ( conversationID != 0 )
+        {
+            [[VObjectManager sharedManager] conversationByID:@(conversationID)
+                                                successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+            {
+                VConversation *conversation = (VConversation *)[resultObjects firstObject];
+                if ( conversation == nil )
+                {
+                    completion(nil);
+                }
+                else
+                {
+                    self.userConversationToDisplayOnNextAppearance = conversation.user;
+                    completion(self);
+                }
+            }
+                                                   failBlock:^(NSOperation *operation, NSError *error)
+            {
+                VLog(@"Failed to load conversation with error: %@", [error localizedDescription]);
+                completion(nil);
+            }];
+            return YES;
+        }
+    }
+    return NO;
 }
 
 #pragma mark - NSNotification handlers

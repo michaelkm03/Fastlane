@@ -283,13 +283,18 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
     VConversation *conversation = [self.fetchedResultsController objectAtIndexPath:indexPath];
     if (conversation.user)
     {
-        VMessageContainerViewController *detailVC = [self messageViewControllerForUser:conversation.user];
-        detailVC.messageCountCoordinator = self.messageCountCoordinator;
-        [self.navigationController pushViewController:detailVC animated:YES];
+        [self displayConversationForUser:conversation.user];
     }
 }
 
 #pragma mark - Actions
+
+- (void)displayConversationForUser:(VUser *)user
+{
+    VMessageContainerViewController *detailVC = [self messageViewControllerForUser:user];
+    detailVC.messageCountCoordinator = self.messageCountCoordinator;
+    [self.navigationController pushViewController:detailVC animated:YES];
+}
 
 - (IBAction)modeSelected:(id)sender
 {
