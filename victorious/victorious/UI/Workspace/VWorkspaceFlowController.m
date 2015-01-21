@@ -19,6 +19,7 @@
 
 // Category
 #import "NSURL+MediaType.h"
+#import "UIActionSheet+VBlocks.h"
 
 // ViewControllers
 #import "VCameraViewController.h"
@@ -133,7 +134,16 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
         }
         else
         {
-            [self.flowNavigationController popViewControllerAnimated:YES];
+            UIActionSheet *discardActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"This will discard any content from the camera", @"")
+                                                                   cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
+                                                                      onCancelButton:nil
+                                                              destructiveButtonTitle:NSLocalizedString(@"Discard", nil)
+                                                                 onDestructiveButton:^
+                                                 {
+                                                     [welf.flowNavigationController popViewControllerAnimated:YES];
+                                                 }
+                                                          otherButtonTitlesAndBlocks:nil, nil];
+            [discardActionSheet showInView:self.flowRootViewController.view];
         }
     }
     else if ((oldState == VWorkspaceFlowControllerStateEdit) && (newState == VWorkspaceFlowControllerStatePublish))
