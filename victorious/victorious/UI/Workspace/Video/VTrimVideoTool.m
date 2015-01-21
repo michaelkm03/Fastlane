@@ -207,8 +207,8 @@ static NSString * const kVideoMuted = @"videoMuted";
 
 #pragma mark - VTrimmerViewControllerDelegate
 
-- (void)trimmerViewControllerDidUpdateSelectedTimeRange:(CMTimeRange)selectedTimeRange
-                                  trimmerViewController:(VTrimmerViewController *)trimmerViewController
+- (void)trimmerViewController:(VTrimmerViewController *)trimmerViewController
+   didUpdateSelectedTimeRange:(CMTimeRange)selectedTimeRange
 {
     self.didTrim = YES;
     [self.videoPlayerController setStartSeconds:CMTimeGetSeconds(selectedTimeRange.start)];

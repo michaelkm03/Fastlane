@@ -250,10 +250,10 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
 {
     [self updateTrimControlTitleWithTime:self.trimControl.selectedDuration];
     
-    if ([self.delegate respondsToSelector:@selector(trimmerViewControllerDidUpdateSelectedTimeRange:trimmerViewController:)])
+    if ([self.delegate respondsToSelector:@selector(trimmerViewController:didUpdateSelectedTimeRange:)])
     {
-        [self.delegate trimmerViewControllerDidUpdateSelectedTimeRange:[self selectedTimeRange]
-                                                 trimmerViewController:self];
+        [self.delegate trimmerViewController:self
+                  didUpdateSelectedTimeRange:[self selectedTimeRange]];
     }
     Float64 progress = CMTimeGetSeconds(self.trimControl.selectedDuration) / CMTimeGetSeconds(self.trimControl.maxDuration);
     self.dimmingViewWidthConstraint.constant = CGRectGetWidth(self.view.bounds) - (CGRectGetWidth(self.view.bounds) * progress);

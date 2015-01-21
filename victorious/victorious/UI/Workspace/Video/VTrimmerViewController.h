@@ -32,8 +32,9 @@
 /**
  *  Called whenever a new time range is selected.
  */
-- (void)trimmerViewControllerDidUpdateSelectedTimeRange:(CMTimeRange)selectedTimeRange
-                                  trimmerViewController:(VTrimmerViewController *)trimmerViewController;
+- (void)trimmerViewController:(VTrimmerViewController *)trimmerViewController
+   didUpdateSelectedTimeRange:(CMTimeRange)selectedTimeRange;
+
 /**
  *  Called whenever the user begins scrolling and current play time is out of the selected time range.
  *  It would be a good idea to pause any players and immediately attempt to seek to the specified time to give the user a good seek experience.
