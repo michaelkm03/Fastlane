@@ -39,4 +39,5 @@
 - (void)removeCommentsObject:(VComment *)value;
 - (void)addComments:(NSOrderedSet *)values;
 - (void)removeComments:(NSOrderedSet *)values;
+
 @end

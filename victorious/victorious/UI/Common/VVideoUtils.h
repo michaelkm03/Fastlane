@@ -16,6 +16,11 @@
  */
 - (AVComposition *)loopingCompositionWithAsset:(AVAsset *)asset;
 
+/**
+ Creates an AVPlayerItem on a background thread, using the method `loopingCompoistionWithAsset:`
+ if required.  This improves performance when creating compositions with looping videos.
+ @param onReady A callback that will be called when complete and supplied with an AVPlayerItem.
+ */
 - (void)createPlayerItemWithURL:(NSURL *)itemURL loop:(BOOL)loop readyCallback:(void(^)(AVPlayerItem *))onReady;
 
 @end
