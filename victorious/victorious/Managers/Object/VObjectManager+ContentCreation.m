@@ -143,7 +143,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     
     NSMutableDictionary *parameters = [@{@"name": publishParameters.caption ?: [NSNull null],
                                          @"media_data": publishParameters.mediaToUploadURL,
-                                         @"is_gif": publishParameters.isGIF ? @"true" : @"false",
+                                         @"is_gif_style": publishParameters.isGIF ? @"true" : @"false",
                                          @"did_crop": publishParameters.didCrop ? @"true" : @"false",
                                          @"did_trim": publishParameters.didTrim ? @"true" : @"false",
                                          } mutableCopy];
