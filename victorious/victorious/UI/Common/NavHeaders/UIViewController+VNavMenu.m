@@ -292,6 +292,7 @@ static const char kWorkspaceFlowControllerKey;
     {
         [welf dismissViewControllerAnimated:YES
                                  completion:nil];
+        welf.workspaceFlowController = nil;
     };
     [self presentViewController:self.workspaceFlowController.flowRootViewController
                        animated:YES
