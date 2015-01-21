@@ -24,7 +24,7 @@
                                   @"notification_comment_post"      : VSelectorName(isNewCommentOnMyPostEnabled),
                                   @"notification_follow_post"       : VSelectorName(isPostFromFollowedEnabled),
                                   @"notification_tag_post"          : VSelectorName(isPostOnFollowedHashTagEnabled),
-                                  @"notification_mentions"          : VSelectorName(isUserTagInCommentEnabled)
+                                  @"notification_mention"          : VSelectorName(isUserTagInCommentEnabled)
                                   };
     
     RKEntityMapping *mapping = [RKEntityMapping
@@ -54,7 +54,7 @@
              @"notification_comment_post"       : self.isNewCommentOnMyPostEnabled ?: @NO,
              @"notification_follow_post"        : self.isPostFromFollowedEnabled ?: @NO,
              @"notification_tag_post"           : self.isPostOnFollowedHashTagEnabled ?: @NO,
-             @"notification_mentions"           : self.isUserTagInCommentEnabled ?: @NO
+             @"notification_mention"           : self.isUserTagInCommentEnabled ?: @NO
              };
 }
 
