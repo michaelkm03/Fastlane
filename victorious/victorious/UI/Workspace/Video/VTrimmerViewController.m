@@ -135,10 +135,8 @@ static NSString *const emptyCellIdentifier = @"emptyCell";
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
                   cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSInteger numberOfItems = [self collectionView:collectionView
-                            numberOfItemsInSection:indexPath.section];
-    
-    if (indexPath.row == --numberOfItems)
+    if (indexPath.row == [self collectionView:collectionView
+                       numberOfItemsInSection:indexPath.section] - 1)
     {
         UICollectionViewCell *emptyCell = [collectionView dequeueReusableCellWithReuseIdentifier:emptyCellIdentifier
                                                                                     forIndexPath:indexPath];
@@ -180,12 +178,12 @@ static NSString *const emptyCellIdentifier = @"emptyCell";
                             numberOfItemsInSection:indexPath.section];
     
     // Empty Cell
-    if (indexPath.row == --numberOfItems)
+    if (indexPath.row == numberOfItems - 1)
     {
         return CGSizeMake(CGRectGetWidth(collectionView.bounds) - [self timelineWidthPerSecond], CGRectGetHeight(collectionView.bounds));
     }
     // Frames
-    if (indexPath.row == --numberOfItems)
+    if (indexPath.row == numberOfItems - 2)
     {
         CGFloat width = [self timelineWidthForFullTrack];
         if (!isnan(width))
