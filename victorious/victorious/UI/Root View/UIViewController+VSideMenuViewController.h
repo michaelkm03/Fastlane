@@ -12,7 +12,4 @@
 
 @property (strong, readonly, nonatomic) VSideMenuViewController    *sideMenuViewController;
 
-- (void)displayController:(UIViewController *)controller frame:(CGRect)frame;
-- (void)hideController:(UIViewController *)controller;
-
 @end

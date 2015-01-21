@@ -22,14 +22,28 @@ NSString * const kHashtagStatusChangedNotification = @"com.getvictorious.Hashtag
 
 #pragma mark - Sequences
 
-- (RKManagedObjectRequestOperation *)removeSequenceWithSequenceID:(NSInteger)sequenceId
-                                                     successBlock:(VSuccessBlock)success
-                                                        failBlock:(VFailBlock)fail
+- (RKManagedObjectRequestOperation *)removeSequence:(VSequence *)sequence
+                                       successBlock:(VSuccessBlock)success
+                                          failBlock:(VFailBlock)fail
 {
+    NSManagedObjectID *sequenceObjectID = sequence.objectID;
+    
+    VSuccessBlock fullSuccess = ^(NSOperation *operation, id result, NSArray *resultObjects)
+    {
+        NSAssert([NSThread isMainThread], @"Callbacks are supposed to happen on the main thread");
+        VSequence *sequence = (VSequence *)[self.managedObjectStore.mainQueueManagedObjectContext objectWithID:sequenceObjectID];
+        sequence.streams = [NSSet set];
+        [self.managedObjectStore.mainQueueManagedObjectContext saveToPersistentStore:nil];
+        
+        if (success != nil)
+        {
+            success(operation, result, resultObjects);
+        }
+    };
     return [self POST:@"/api/sequence/remove"
                object:nil
-           parameters:@{@"sequence_id":@(sequenceId)}
-         successBlock:success
+           parameters:@{@"sequence_id":sequence.remoteId}
+         successBlock:fullSuccess
             failBlock:fail];
 }
 

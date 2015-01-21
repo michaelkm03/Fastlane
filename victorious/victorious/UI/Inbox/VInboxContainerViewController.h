@@ -6,11 +6,15 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "VDeeplinkHandler.h"
 #import "VHasManagedDependencies.h"
 #import "VNavigationDestination.h"
 #import "VProvidesNavigationMenuItemBadge.h"
 
-@interface VInboxContainerViewController : UIViewController <VHasManagedDependancies, VNavigationDestination, VProvidesNavigationMenuItemBadge>
+extern NSString * const VInboxContainerViewControllerDeeplinkHostComponent; ///< The host component for deeplink URLs that point to inbox messages
+extern NSString * const VInboxContainerViewControllerInboxPushReceivedNotification; ///< Posted when an inbox push notification is received while the app is active
+
+@interface VInboxContainerViewController : UIViewController <VDeeplinkHandler, VHasManagedDependancies, VNavigationDestination, VProvidesNavigationMenuItemBadge>
 
 + (instancetype)inboxContainer;
 

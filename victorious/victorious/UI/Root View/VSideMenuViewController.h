@@ -6,11 +6,11 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VHasManagedDependencies.h"
+#import "VScaffoldViewController.h"
 
 #import <UIKit/UIKit.h>
 
-@interface VSideMenuViewController : UIViewController <UIGestureRecognizerDelegate, VHasManagedDependancies>
+@interface VSideMenuViewController : VScaffoldViewController
 
 @property (assign, readwrite, nonatomic) NSTimeInterval animationDuration;
 @property (strong, readwrite, nonatomic) UIImage *backgroundImage;
@@ -27,10 +27,8 @@
 @property (assign, readwrite, nonatomic) BOOL bouncesHorizontally;
 
 @property (strong, readonly, nonatomic)  UINavigationController *contentViewController;
-@property (strong, readwrite, nonatomic) UIViewController       *menuViewController;
 
 - (void)presentMenuViewController;
 - (void)hideMenuViewController;
-- (void)transitionToNavStack:(NSArray *)navStack;
 
 @end
