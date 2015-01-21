@@ -57,8 +57,11 @@ extern NSString * const VScaffoldViewControllerUserProfileViewComponentKey;
  
  @param placeHolderImage An image, typically the sequence's thumbnail, that can be displayed 
                          in the place of content while the real thing is being loaded
+ @param comment A comment ID to scroll to and highlight, typically used when content view
+                is being presented when the app is launched with a deep link URL.  If there
+                is no comment, simply pass `nil`.
  */
-- (void)showContentViewWithSequence:(VSequence *)sequence placeHolderImage:(UIImage *)placeHolderImage;
+- (void)showContentViewWithSequence:(id)sequence commentId:(NSNumber *)commentId placeHolderImage:(UIImage *)placeHolderImage;
 
 /**
  Navigates to the view controller pointed to by the given URL

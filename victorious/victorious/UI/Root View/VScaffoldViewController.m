@@ -14,8 +14,10 @@
 #import "VNavigationDestinationsProvider.h"
 #import "VNewContentViewController.h"
 #import "VObjectManager+Sequence.h"
+#import "VObjectManager+Pagination.h"
 #import "VScaffoldViewController.h"
 #import "VSequence+Fetcher.h"
+#import "VComment.h"
 #import "VTracking.h"
 #import "VWebBrowserViewController.h"
 
@@ -26,6 +28,7 @@ NSString * const VScaffoldViewControllerContentViewComponentKey = @"contentView"
 NSString * const VScaffoldViewControllerUserProfileViewComponentKey = @"userProfileView";
 
 static NSString * const kContentDeeplinkURLHostComponent = @"content";
+static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
 
 @interface VScaffoldViewController () <VNewContentViewControllerDelegate>
 
@@ -46,7 +49,7 @@ static NSString * const kContentDeeplinkURLHostComponent = @"content";
 
 #pragma mark - Content View
 
-- (void)showContentViewWithSequence:(id)sequence placeHolderImage:(UIImage *)placeHolderImage
+- (void)showContentViewWithSequence:(id)sequence commentId:(NSNumber *)commentId placeHolderImage:(UIImage *)placeHolderImage
 {
     if ( [sequence isWebContent] )
     {
@@ -60,6 +63,7 @@ static NSString * const kContentDeeplinkURLHostComponent = @"content";
     }
     
     VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithSequence:sequence];
+    contentViewModel.deepLinkCommentId = commentId;
     VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel];
     contentViewController.dependencyManagerForHistogramExperiment = self.dependencyManager;
     contentViewController.placeholderImage = placeHolderImage;
@@ -143,7 +147,7 @@ static NSString * const kContentDeeplinkURLHostComponent = @"content";
  */
 - (BOOL)displayContentViewForDeeplinkURL:(NSURL *)url
 {
-    if ( ![url.host isEqualToString:kContentDeeplinkURLHostComponent] )
+    if ( ![url.host isEqualToString:kContentDeeplinkURLHostComponent] && ![url.host isEqualToString:kCommentDeeplinkURLHostComponent] )
     {
         return NO;
     }
@@ -155,12 +159,15 @@ static NSString * const kContentDeeplinkURLHostComponent = @"content";
     {
         return NO;
     }
+    
+    NSNumber *commentId = @([url nonSlashPathComponentAtIndex:1].integerValue);
+    
     [[self.dependencyManager objectManager] fetchSequenceByID:sequenceID
                                                  successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         [hud hide:YES];
         VSequence *sequence = (VSequence *)[resultObjects firstObject];
-        [self showContentViewWithSequence:sequence placeHolderImage:nil];
+        [self showContentViewWithSequence:sequence commentId:commentId placeHolderImage:nil];
     }
                                                     failBlock:^(NSOperation *operation, NSError *error)
     {

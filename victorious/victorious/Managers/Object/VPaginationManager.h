@@ -55,11 +55,15 @@
  that contains an object with and ID that matches object ID.  This is typically used
  for displaying a view at a page somewhere in the middle of the total page count,
  as in displaying a deeplinked item.
+ 
+ @apiPath A path component for the endpoint, builds the URL as: /api/<appiPath>/find/<objectId>
+ @objectId An ID for the object being searched for, builds the URL as: /api/<appiPath>/find/<objectId>
+ 
  */
-- (RKManagedObjectRequestOperation *)fetchPageWithPath:(NSString *)apiPath
-                                                filter:(VAbstractFilter *)filter
-                                              objectId:(NSNumber *)objectId
-                                          successBlock:(VSuccessBlock)success
-                                             failBlock:(VFailBlock)fail;
+- (RKManagedObjectRequestOperation *)findPageWithPath:(NSString *)apiPath
+                                               filter:(VAbstractFilter *)filter
+                                             objectId:(NSNumber *)objectId
+                                         successBlock:(VSuccessBlock)success
+                                            failBlock:(VFailBlock)fail;
 
 @end

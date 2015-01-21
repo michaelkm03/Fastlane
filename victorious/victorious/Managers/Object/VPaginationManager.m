@@ -35,18 +35,18 @@
     return self;
 }
 
-- (RKManagedObjectRequestOperation *)fetchPageWithPath:(NSString *)apiPath
-                                                filter:(VAbstractFilter *)filter
-                                              objectId:(NSNumber *)objectId
-                                          successBlock:(VSuccessBlock)success
-                                             failBlock:(VFailBlock)fail
+- (RKManagedObjectRequestOperation *)findPageWithPath:(NSString *)apiPath
+                                               filter:(VAbstractFilter *)filter
+                                             objectId:(NSNumber *)objectId
+                                         successBlock:(VSuccessBlock)success
+                                            failBlock:(VFailBlock)fail
 {
     NSManagedObjectID *filterID = filter.objectID;
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         VAbstractFilter *filter = (VAbstractFilter *)[self.objectManager.managedObjectStore.mainQueueManagedObjectContext objectWithID:filterID];
         filter.maxPageNumber = @([fullResponse[@"total_pages"] integerValue]);
-        filter.currentPageNumber = @([fullResponse[@"page_number"] integerValue]);
+        filter.currentPageNumber = @([fullResponse[@"page"] integerValue]);
         filter.totalItemsNumber = @([fullResponse[@"total_items"] integerValue]);
         [filter.managedObjectContext saveToPersistentStore:nil];
         
@@ -67,11 +67,11 @@
     };
     
 #warning testing only
-    fullSuccess( nil, @{ @"total_pages" : @5, @"page_number" : @3, @"total_items" : @69 }, nil );
+    fullSuccess( nil, @{ @"total_pages" : @5, @"page" : @3, @"total_items" : @69 }, nil );
     return nil;
     
 #warning Get this API method working
-    NSString *path = [NSString stringWithFormat:@"/%@/fetch_page/%ld/", apiPath, (long)filter.perPageNumber.integerValue];
+    NSString *path = [NSString stringWithFormat:@"/api/%@/find/%ld/", apiPath, (long)filter.perPageNumber.integerValue];
     return [self.objectManager GET:path object:nil parameters:nil successBlock:fullSuccess failBlock:fullFail];
 }
 

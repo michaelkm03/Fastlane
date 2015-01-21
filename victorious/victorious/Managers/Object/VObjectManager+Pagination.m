@@ -31,10 +31,10 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
 
 #pragma mark - Comment
 
-- (RKManagedObjectRequestOperation *)loadCommentsOnSequence:(VSequence *)sequence
-                                              withCommentId:(NSNumber *)commentId
-                                               successBlock:(VSuccessBlock)success
-                                                  failBlock:(VFailBlock)fail
+- (RKManagedObjectRequestOperation *)findCommentPageOnSequence:(VSequence *)sequence
+                                                 withCommentId:(NSNumber *)commentId
+                                                  successBlock:(VSuccessBlock)success
+                                                     failBlock:(VFailBlock)fail
 {
     NSString *apiPath = [@"/api/comment/all/" stringByAppendingString: sequence.remoteId];
     VAbstractFilter *filter = [self.paginationManager filterForPath:apiPath entityName:[VAbstractFilter entityName] managedObjectContext:sequence.managedObjectContext];
@@ -46,7 +46,7 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
         [self.paginationManager loadFilter:filter withPageType:VPageTypeFirst successBlock:success failBlock:fail];
     };
     
-    return [self.paginationManager fetchPageWithPath:@"comment"
+    return [self.paginationManager findPageWithPath:@"comment"
                                               filter:filter
                                             objectId:commentId
                                         successBlock:fullSuccessBlock failBlock:fail];

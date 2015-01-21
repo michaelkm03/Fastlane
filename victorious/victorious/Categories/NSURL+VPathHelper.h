@@ -16,4 +16,10 @@
  */
 - (NSString *)firstNonSlashPathComponent;
 
+/**
+ Returns a pathComponent at the specified index that is not equal
+ to "/", or nil if no such pathComponent exists.
+ */
+- (NSString *)nonSlashPathComponentAtIndex:(NSUInteger)index;
+
 @end

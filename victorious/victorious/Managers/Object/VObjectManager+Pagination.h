@@ -18,10 +18,10 @@ extern const NSInteger kTooManyNewMessagesErrorCode;
 #pragma mark Comments
 
 
-- (RKManagedObjectRequestOperation *)loadCommentsOnSequence:(VSequence *)sequence
-                                              withCommentId:(NSNumber *)commentId
-                                               successBlock:(VSuccessBlock)success
-                                                  failBlock:(VFailBlock)fail;
+- (RKManagedObjectRequestOperation *)findCommentPageOnSequence:(VSequence *)sequence
+                                                 withCommentId:(NSNumber *)commentId
+                                                  successBlock:(VSuccessBlock)success
+                                                     failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)loadCommentsOnSequence:(VSequence *)sequence
                                                    pageType:(VPageType)pageType
