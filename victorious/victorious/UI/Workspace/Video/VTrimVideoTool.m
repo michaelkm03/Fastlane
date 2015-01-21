@@ -250,7 +250,14 @@ static NSString * const kVideoMuted = @"videoMuted";
 
 - (void)videoPlayerWasTapped
 {
-    self.videoPlayerController.isPlaying ? [self.videoPlayerController.player pause] : [self.videoPlayerController.player play];
+    if (self.videoPlayerController.isPlaying)
+    {
+        [self.videoPlayerController.player pause];
+    }
+    else
+    {
+        [self.videoPlayerController.player play];
+    }
 }
 
 @end
