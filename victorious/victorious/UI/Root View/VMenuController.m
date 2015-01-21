@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "NSArray+VMap.h"
 #import "UIStoryboard+VMainStoryboard.h"
 #import "VDependencyManager+VNavigationMenuItem.h"
 #import "VMenuCollectionViewCell.h"
@@ -122,7 +123,7 @@ static char kKVOContext;
     NSMutableArray *returnValue = [[NSMutableArray alloc] init];
     [self.dependencyManager.menuItemSections enumerateObjectsUsingBlock:^(NSArray *obj, NSUInteger idx, BOOL *stop)
     {
-        [returnValue addObjectsFromArray:obj];
+        [returnValue addObjectsFromArray:[obj v_map:^id(VNavigationMenuItem *item) { return item.destination; }]];
     }];
     return returnValue;
 }

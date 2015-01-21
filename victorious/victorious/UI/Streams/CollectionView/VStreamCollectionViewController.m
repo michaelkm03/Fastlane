@@ -277,8 +277,12 @@ static CGFloat const kTemplateCLineSpacing = 8;
 {
     [super viewWillAppear:animated];
     
-    NSDictionary *params = @{ VTrackingKeyStreamName : self.currentStream.name };
-    [[VTrackingManager sharedInstance] startEvent:VTrackingEventStreamDidAppear parameters:params];
+    NSString *streamName = self.currentStream.name;
+    if ( streamName != nil )
+    {
+        NSDictionary *params = @{ VTrackingKeyStreamName : self.currentStream.name };
+        [[VTrackingManager sharedInstance] startEvent:VTrackingEventStreamDidAppear parameters:params];
+    }
 
     [self.navHeaderView updateUIForVC:self];//Update the header view in case the nav stack has changed.
     

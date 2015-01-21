@@ -8,10 +8,13 @@
 
 #import "VAuthorizationViewControllerFactory.h"
 #import "VDependencyManager+VObjectManager.h"
-#import "VObjectManager.h"
+#import "VObjectManager+Users.h"
 #import "VRootViewController.h"
+#import "VScaffoldViewController.h"
 #import "VUserProfileNavigationDestination.h"
 #import "VUserProfileViewController.h"
+
+static NSString * const kProfileDeeplinkHostComponent = @"profile";
 
 @interface VUserProfileNavigationDestination ()
 
@@ -64,6 +67,41 @@
         }
         *alternateViewController = userProfileViewController;
         return YES;
+    }
+    return NO;
+}
+
+#pragma mark - VDeeplinkHandler methods
+
+- (BOOL)displayContentForDeeplinkURL:(NSURL *)url completion:(VDeeplinkHandlerCompletionBlock)completion
+{
+    if ( completion == nil )
+    {
+        return NO;
+    }
+    
+    if ( [url.host isEqualToString:kProfileDeeplinkHostComponent] )
+    {
+        NSArray *pathComponents = url.pathComponents;
+        if ( pathComponents.count >= 2 )
+        {
+            NSInteger userID = [url.pathComponents[1] integerValue];
+            if ( userID != 0 )
+            {
+                [[VObjectManager sharedManager] fetchUser:@(userID)
+                                         withSuccessBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+                {
+                    VUserProfileViewController *profileVC = [self.dependencyManager userProfileViewControllerWithUser:[resultObjects firstObject] forKey:VScaffoldViewControllerUserProfileViewComponentKey];
+                    completion(profileVC);
+                }
+                                                failBlock:^(NSOperation *operation, NSError *error)
+                {
+                    VLog(@"Failed to load user with error: %@", [error localizedDescription]);
+                    completion(nil);
+                }];
+                return YES;
+            }
+        }
     }
     return NO;
 }

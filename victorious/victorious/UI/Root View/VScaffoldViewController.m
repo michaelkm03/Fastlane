@@ -89,26 +89,49 @@ static NSString * const kContentDeeplinkURLHostComponent = @"content";
 
 - (void)navigateToDeeplinkURL:(NSURL *)url
 {
+    if ( self.presentedViewController != nil )
+    {
+        [self dismissViewControllerAnimated:YES completion:^(void)
+        {
+            [self navigateToDeeplinkURL:url];
+        }];
+        return;
+    }
+    
     if ( [self displayContentViewForDeeplinkURL:url] )
     {
         return;
     }
     else if ( [self.menuViewController respondsToSelector:@selector(navigationDestinations)] )
     {
-        NSArray *viewControllers = [(id<VNavigationDestinationsProvider>)self.menuViewController navigationDestinations];
-        for (id<VDeeplinkHandler> viewController in viewControllers)
+        MBProgressHUD *__block hud;
+        VDeeplinkHandlerCompletionBlock completion = ^(UIViewController *viewController)
         {
-            if ( [viewController conformsToProtocol:@protocol(VDeeplinkHandler)] )
+            [hud hide:YES];
+            if ( viewController == nil )
             {
-                if ( [viewController canHandleDeeplinkURL:url] )
+                [self showBadDeeplinkError];
+            }
+            else
+            {
+                [self navigateToDestination:viewController];
+            }
+        };
+        
+        NSArray *possibleHandlers = [(id<VNavigationDestinationsProvider>)self.menuViewController navigationDestinations];
+        for (id<VDeeplinkHandler> handler in possibleHandlers)
+        {
+            if ( [handler conformsToProtocol:@protocol(VDeeplinkHandler)] )
+            {
+                if ( [handler displayContentForDeeplinkURL:url completion:completion] )
                 {
-                    [viewController displayContentForDeeplinkURL:url];
-                    [self navigateToDestination:viewController];
-                    break;
+                    hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+                    return;
                 }
             }
         }
     }
+    [self showBadDeeplinkError];
 }
 
 /**
@@ -158,6 +181,16 @@ static NSString * const kContentDeeplinkURLHostComponent = @"content";
         return nil;
     }
     return pathComponents[1];
+}
+
+- (void)showBadDeeplinkError
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Missing Content", nil)
+                                                    message:NSLocalizedString(@"Missing Content Message", nil)
+                                                   delegate:nil
+                                          cancelButtonTitle:NSLocalizedString(@"OK", nil)
+                                          otherButtonTitles:nil];
+    [alert show];
 }
 
 #pragma mark - Navigation
