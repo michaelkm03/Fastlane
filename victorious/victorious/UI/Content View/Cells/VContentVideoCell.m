@@ -55,11 +55,12 @@
     _viewModel = viewModel;
     
     self.contentURL = viewModel.itemURL;
+    self.loop = viewModel.loop;
    
     if ( viewModel.monetizationPartner == VMonetizationPartnerNone )
     {
         self.isPlayingAd = NO;
-        [self.videoPlayerViewController setItemURL:self.contentURL loop:viewModel.loop];
+        [self.videoPlayerViewController setItemURL:self.contentURL loop:self.loop];
         return;
     }
     
@@ -98,7 +99,7 @@
     self.adPlayerViewController.view.alpha = 0.0f;
     self.videoPlayerViewController.view.hidden = NO;
     self.videoPlayerViewController.view.alpha = 1.0f;
-    self.videoPlayerViewController.itemURL = self.contentURL;
+    [self.videoPlayerViewController setItemURL:self.contentURL loop:self.loop];
     
     // Play content Video
     [self play];

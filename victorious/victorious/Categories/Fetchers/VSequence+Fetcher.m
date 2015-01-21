@@ -17,7 +17,7 @@
 #import "VUser.h"
 #import "VAsset.h"
 
-#define SIMULATE_GIF_FOR_ALL_VIDEOS 1
+#define SIMULATE_GIF_FOR_ALL_VIDEOS 0
 
 typedef NS_OPTIONS(NSInteger, VSequencePermissionOptions)
 {
