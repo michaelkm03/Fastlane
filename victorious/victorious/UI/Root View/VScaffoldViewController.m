@@ -109,7 +109,7 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
     }
     else if ( [self.menuViewController respondsToSelector:@selector(navigationDestinations)] )
     {
-        MBProgressHUD *__block hud;
+        __block MBProgressHUD *hud;
         VDeeplinkHandlerCompletionBlock completion = ^(UIViewController *viewController)
         {
             [hud hide:YES];
@@ -198,10 +198,10 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
 
 - (void)navigateToDestination:(id)navigationDestination
 {
-    void (^goTo)(UIViewController *) = ^(UIViewController *vc)
+    void (^goTo)(UIViewController *) = ^(UIViewController *viewController)
     {
-        NSAssert([vc isKindOfClass:[UIViewController class]], @"non-UIViewController specified as destination for navigation");
-        [self displayResultOfNavigation:vc];
+        NSAssert([viewController isKindOfClass:[UIViewController class]], @"non-UIViewController specified as destination for navigation");
+        [self displayResultOfNavigation:viewController];
     };
     
     if ([navigationDestination respondsToSelector:@selector(shouldNavigateWithAlternateDestination:)])

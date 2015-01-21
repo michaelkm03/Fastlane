@@ -17,6 +17,10 @@
 
 @required
 
-- (NSArray /* UIViewController OR id<VNavigationDestination> */ *)navigationDestinations;
+/**
+ Returns an array of navigation destinations (either UIViewController objects,
+ or objects that conform to VNavigationDestination).
+ */
+- (NSArray *)navigationDestinations;
 
 @end

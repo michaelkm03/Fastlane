@@ -80,9 +80,9 @@ extern NSString * const VScaffoldViewControllerUserProfileViewComponentKey;
 /**
  Displays the view controller that the user has navigated to through
  whatever primary means of navigation this scaffold provides. You
- normally should never call this class. It exists only as an override
- point for subclasses. (To programmatically effect navigation, se
- -navigateToDestination:)
+ normally don't need to call this method. It exists only as an
+ override point for subclasses. (To programmatically effect 
+ navigation, see -navigateToDestination:)
  
  Subclasses MUST override. The base implementation does nothing.
  */
