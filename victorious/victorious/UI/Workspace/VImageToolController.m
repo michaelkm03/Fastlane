@@ -31,6 +31,8 @@ NSString * const VImageToolControllerInitialImageEditStateKey = @"VImageToolCont
 - (void)exportWithSourceAsset:(NSURL *)source
                withCompletion:(void (^)(BOOL finished, NSURL *renderedMediaURL, UIImage *previewImage))completion
 {
+    NSParameterAssert(completion != nil);
+    
     NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
     NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:VConstantMediaExtensionJPG];
     
