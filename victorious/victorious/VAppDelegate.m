@@ -21,7 +21,6 @@
 #import "VSessionTimer.h"
 #import "VUploadManager.h"
 #import "VUserManager.h"
-#import "VDeeplinkManager.h"
 #import "VConstants.h"
 #import "VSettingManager.h"
 #import "VObjectManager.h"

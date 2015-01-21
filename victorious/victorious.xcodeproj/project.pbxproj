@@ -28,7 +28,6 @@
 		0314D08619B4688E00FA363C /* Icon-29@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0314D07E19B4688E00FA363C /* Icon-29@2x.png */; };
 		0314D08719B4688E00FA363C /* Icon-40@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0314D07F19B4688E00FA363C /* Icon-40@2x.png */; };
 		0314D08819B4688E00FA363C /* Icon-60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0314D08019B4688E00FA363C /* Icon-60@2x.png */; };
-		0314D08C19B4690A00FA363C /* VDeeplinkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D08B19B4690A00FA363C /* VDeeplinkManager.m */; };
 		0314D09019B4694600FA363C /* VInteractionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D08F19B4694600FA363C /* VInteractionManager.m */; };
 		0314D0AD19B4698800FA363C /* VObjectManager+Analytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D09319B4698800FA363C /* VObjectManager+Analytics.m */; };
 		0314D0AE19B4698800FA363C /* VObjectManager+Comment.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D09519B4698800FA363C /* VObjectManager+Comment.m */; };
@@ -723,8 +722,6 @@
 		0314D07F19B4688E00FA363C /* Icon-40@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-40@2x.png"; sourceTree = "<group>"; };
 		0314D08019B4688E00FA363C /* Icon-60@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-60@2x.png"; sourceTree = "<group>"; };
 		0314D08119B4688E00FA363C /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		0314D08A19B4690A00FA363C /* VDeeplinkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDeeplinkManager.h; sourceTree = "<group>"; };
-		0314D08B19B4690A00FA363C /* VDeeplinkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDeeplinkManager.m; sourceTree = "<group>"; };
 		0314D08E19B4694600FA363C /* VInteractionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInteractionManager.h; sourceTree = "<group>"; };
 		0314D08F19B4694600FA363C /* VInteractionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInteractionManager.m; sourceTree = "<group>"; };
 		0314D09219B4698800FA363C /* VObjectManager+Analytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VObjectManager+Analytics.h"; sourceTree = "<group>"; };
@@ -3883,8 +3880,6 @@
 			isa = PBXGroup;
 			children = (
 				03D119281A6A0600000987E0 /* VDeeplinkHandler.h */,
-				0314D08A19B4690A00FA363C /* VDeeplinkManager.h */,
-				0314D08B19B4690A00FA363C /* VDeeplinkManager.m */,
 			);
 			path = Deeplink;
 			sourceTree = "<group>";
@@ -4875,7 +4870,6 @@
 				0350426A194F711A008D78A3 /* NSIndexSet+Map.m in Sources */,
 				BE11447E19D4ADCC006A6D65 /* UIImageView+VLoadingAnimations.m in Sources */,
 				0314D4C119B46B5E00FA363C /* VProfileEditViewController.m in Sources */,
-				0314D08C19B4690A00FA363C /* VDeeplinkManager.m in Sources */,
 				BE799BB419C8DF5B0023CE88 /* VAsset+OrderedSet.m in Sources */,
 				BE171D8C1868BE64004E5202 /* VAppDelegate.m in Sources */,
 				039ED29919C908F400305987 /* VCVideoPlayerToolbarSlider.m in Sources */,

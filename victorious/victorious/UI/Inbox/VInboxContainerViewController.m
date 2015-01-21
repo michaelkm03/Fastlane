@@ -10,7 +10,6 @@
 #import "UIStoryboard+VMainStoryboard.h"
 #import "VAuthorizationViewControllerFactory.h"
 #import "VConversation.h"
-#import "VDeeplinkManager.h"
 #import "VDependencyManager+VObjectManager.h"
 #import "VInboxContainerViewController.h"
 #import "VInboxViewController.h"
@@ -39,7 +38,9 @@
 @end
 
 static char kKVOContext;
-static NSString * const kInboxDeeplinkHostComponent = @"inbox";
+
+NSString * const VInboxContainerViewControllerDeeplinkHostComponent = @"inbox";
+NSString * const VInboxContainerViewControllerInboxPushReceivedNotification = @"VInboxContainerViewControllerInboxPushReceivedNotification";
 
 @implementation VInboxContainerViewController
 
@@ -66,7 +67,7 @@ static NSString * const kInboxDeeplinkHostComponent = @"inbox";
 {
     [super awakeFromNib];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loggedInChanged:) name:kLoggedInChangedNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(inboxMessageNotification:) name:VDeeplinkManagerInboxMessageNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(inboxMessageNotification:) name:VInboxContainerViewControllerInboxPushReceivedNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
@@ -182,7 +183,7 @@ static NSString * const kInboxDeeplinkHostComponent = @"inbox";
         return NO;
     }
     
-    if ( [url.host isEqualToString:kInboxDeeplinkHostComponent] )
+    if ( [url.host isEqualToString:VInboxContainerViewControllerDeeplinkHostComponent] )
     {
         NSInteger conversationID = [[url firstNonSlashPathComponent] integerValue];
         if ( conversationID != 0 )

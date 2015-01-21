@@ -10,6 +10,7 @@
 #import "VForceUpgradeViewController.h"
 #import "VDependencyManager.h"
 #import "VDependencyManager+VObjectManager.h"
+#import "VInboxContainerViewController.h"
 #import "VLoadingViewController.h"
 #import "VObjectManager.h"
 #import "VRootViewController.h"
@@ -261,10 +262,7 @@ static const NSTimeInterval kAnimationDuration = 0.2;
 
 - (void)applicationDidReceiveRemoteNotification:(NSDictionary *)userInfo
 {
-    if ( [[UIApplication sharedApplication] applicationState] != UIApplicationStateActive )
-    {
-        [self handlePushNotification:userInfo];
-    }
+    [self handlePushNotification:userInfo];
 }
 
 - (void)handlePushNotification:(NSDictionary *)pushNotification
@@ -272,7 +270,14 @@ static const NSTimeInterval kAnimationDuration = 0.2;
     NSURL *deeplink = [NSURL URLWithString:pushNotification[@"deeplink"]];
     if ( deeplink != nil )
     {
-        [self handleDeeplinkURL:deeplink];
+        if ( [[UIApplication sharedApplication] applicationState] != UIApplicationStateActive )
+        {
+            [self handleDeeplinkURL:deeplink];
+        }
+        else if ( [deeplink.host isEqualToString:VInboxContainerViewControllerDeeplinkHostComponent] )
+        {
+            [[NSNotificationCenter defaultCenter] postNotificationName:VInboxContainerViewControllerInboxPushReceivedNotification object:self];
+        }
     }
 }
 
