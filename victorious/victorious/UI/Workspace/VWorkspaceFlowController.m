@@ -152,9 +152,6 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
         
         VPublishParameters *publishParameters = [[VPublishParameters alloc] init];
         publishParameters.mediaToUploadURL = self.renderedMeidaURL;
-        
-        VPublishViewController *publishViewController = [VPublishViewController newWithDependencyManager:self.dependencyManager];
-        publishViewController.publishParameters = publishParameters;
         publishParameters.previewImage = self.previewImage;
         if ([[self.flowNavigationController topViewController] isKindOfClass:[VWorkspaceViewController class]])
         {
@@ -182,6 +179,8 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
             publishParameters.parentSequenceID = [formatter numberFromString:sequenceToRemix.remoteId];
             publishParameters.parentNodeID = [sequenceToRemix firstNode].remoteId;
         }
+        VPublishViewController *publishViewController = [VPublishViewController newWithDependencyManager:self.dependencyManager];
+        publishViewController.publishParameters = publishParameters;
         publishViewController.completion = ^void(BOOL published)
         {
             if (published)
@@ -189,10 +188,6 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
                 if (welf.completion)
                 {
                     welf.completion(YES);
-                }
-                else
-                {
-                    NSAssert(false, @"VWorkspaceFlowController requires a completion block!");
                 }
             }
             else

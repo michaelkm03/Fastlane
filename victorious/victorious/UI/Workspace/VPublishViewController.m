@@ -143,10 +143,11 @@ static const CGFloat kTopSpacePublishPrompt = 50.0f;
     self.publishParameters.caption = self.captionTextView.text;
     self.publishParameters.captionType = VCaptionTypeNormal;
     
+    __weak typeof(self) welf = self;
     [[VObjectManager sharedManager] uploadMediaWithPublishParameters:self.publishParameters
                                                           completion:^(NSURLResponse *response, NSData *responseData, NSDictionary *jsonResponse, NSError *error)
     {
-         self.publishing = NO;
+         welf.publishing = NO;
          [hud hide:YES];
          if (error != nil)
          {
@@ -154,18 +155,18 @@ static const CGFloat kTopSpacePublishPrompt = 50.0f;
                                                                       message:error.localizedDescription
                                                             cancelButtonTitle:NSLocalizedString(@"ok", @"")
                                                                onCancelButton:^{
-                                                                   if (self.completion != nil)
+                                                                   if (welf.completion != nil)
                                                                    {
-                                                                       self.completion(NO);
+                                                                       welf.completion(NO);
                                                                    }
                                                                } otherButtonTitlesAndBlocks:nil, nil];
              [publishFailure show];
          }
          else
          {
-             if (self.completion != nil)
+             if (welf.completion != nil)
              {
-                 self.completion(YES);
+                 welf.completion(YES);
              }
          }
      }];

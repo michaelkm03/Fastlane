@@ -250,11 +250,9 @@
          }
          else
          {
-             welf.renderedMediaURL = renderedMediaURL;
-             
              if (welf.completionBlock != nil)
              {
-                 welf.completionBlock(YES, previewImage, welf.renderedMediaURL);
+                 welf.completionBlock(YES, previewImage, renderedMediaURL);
              }
          }
      }];
