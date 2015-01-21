@@ -33,7 +33,6 @@
 @property (strong, nonatomic) VDependencyManager *dependencyManager;
 @property (nonatomic) NSInteger badgeNumber;
 @property (copy, nonatomic) VNavigationMenuItemBadgeNumberUpdateBlock badgeNumberUpdateBlock;
-@property (strong, nonatomic) VUser *userConversationToDisplayOnNextAppearance;
 
 @end
 
@@ -89,17 +88,6 @@ NSString * const VInboxContainerViewControllerInboxPushReceivedNotification = @"
     [self.navHeaderView setRightButtonImage:[UIImage imageNamed:@"profileCompose"]
                                  withAction:@selector(userSearchAction:)
                                    onTarget:self.inboxViewController];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    if ( self.userConversationToDisplayOnNextAppearance != nil )
-    {
-        [self.navigationController popToViewController:self animated:NO];
-        [self.inboxViewController displayConversationForUser:self.userConversationToDisplayOnNextAppearance];
-        self.userConversationToDisplayOnNextAppearance = nil;
-    }
 }
 
 - (BOOL)shouldAutorotate
@@ -198,8 +186,11 @@ NSString * const VInboxContainerViewControllerInboxPushReceivedNotification = @"
                 }
                 else
                 {
-                    self.userConversationToDisplayOnNextAppearance = conversation.user;
                     completion(self);
+                    dispatch_async(dispatch_get_main_queue(), ^(void)
+                    {
+                        [self.inboxViewController displayConversationForUser:conversation.user];
+                    });
                 }
             }
                                                    failBlock:^(NSOperation *operation, NSError *error)
