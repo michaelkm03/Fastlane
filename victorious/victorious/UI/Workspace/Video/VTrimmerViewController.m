@@ -189,7 +189,7 @@ static const CGFloat kTimelineDarkeningAlpha = 0.5f;
     // End Frame
     if (indexPath.row == numberOfItems - 2)
     {
-        CGFloat width = [self timelineWidthForFullTrack];
+        CGFloat width = [self timelineWidthPerSecond];
         if (!isnan(width))
         {
             width = width - (numberOfItems * CGRectGetHeight(collectionView.frame));
