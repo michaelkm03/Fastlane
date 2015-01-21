@@ -16,6 +16,8 @@
 #import "VObjectManager+ContentCreation.h"
 #import "VPublishParameters.h"
 
+#import "UIAlertView+VBlocks.h"
+
 #import <MBProgressHUD/MBProgressHUD.h>
 
 static const CGFloat kTriggerVelocity = 500.0f;
@@ -148,10 +150,16 @@ static const CGFloat kTopSpacePublishPrompt = 50.0f;
          [hud hide:YES];
          if (error != nil)
          {
-             if (self.completion != nil)
-             {
-                 self.completion(NO);
-             }
+             UIAlertView *publishFailure = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Upload failure", @"")
+                                                                      message:error.localizedDescription
+                                                            cancelButtonTitle:NSLocalizedString(@"ok", @"")
+                                                               onCancelButton:^{
+                                                                   if (self.completion != nil)
+                                                                   {
+                                                                       self.completion(NO);
+                                                                   }
+                                                               } otherButtonTitlesAndBlocks:nil, nil];
+             [publishFailure show];
          }
          else
          {
