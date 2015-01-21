@@ -17,6 +17,9 @@
 
 static NSString *const emptyCellIdentifier = @"emptyCell";
 
+static const CGFloat kTimelineTopPadding = 48.0f;
+static const CGFloat kTimelineBottomPadding = 30.0f;
+
 @interface VTrimmerViewController () <UICollectionViewDelegateFlowLayout, UICollectionViewDataSource>
 
 @property (nonatomic, strong) UICollectionView *thumbnailCollecitonView;
@@ -305,13 +308,15 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
     [self.view addSubview:self.thumbnailCollecitonView];
     self.thumbnailCollecitonView.translatesAutoresizingMaskIntoConstraints = NO;
     NSDictionary *viewMap = @{@"collectionView": self.thumbnailCollecitonView};
+
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[collectionView]|"
                                                                       options:kNilOptions
                                                                       metrics:nil
                                                                         views:viewMap]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-48-[collectionView]-30-|"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-kTimelineTopPadding-[collectionView]-trimSpacingToBottom-|"
                                                                       options:kNilOptions
-                                                                      metrics:nil
+                                                                      metrics:@{@"kTimelineTopPadding":@(kTimelineTopPadding),
+                                                                                @"trimSpacingToBottom":@(kTimelineBottomPadding)}
                                                                         views:viewMap]];
 }
 
@@ -363,9 +368,9 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
                                                                       options:kNilOptions
                                                                       metrics:nil
                                                                         views:viewMap]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[trimControl]-30-|"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[trimControl]-kTimelineBottomPadding-|"
                                                                       options:kNilOptions
-                                                                      metrics:nil
+                                                                      metrics:@{@"kTimelineBottomPadding":@(kTimelineBottomPadding)}
                                                                         views:viewMap]];
 }
 
