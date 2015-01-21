@@ -17,7 +17,6 @@ extern const NSInteger kTooManyNewMessagesErrorCode;
 
 #pragma mark Comments
 
-
 - (RKManagedObjectRequestOperation *)findCommentPageOnSequence:(VSequence *)sequence
                                                  withCommentId:(NSNumber *)commentId
                                                   successBlock:(VSuccessBlock)success

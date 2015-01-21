@@ -81,10 +81,10 @@ static BOOL isRunningTests(void) __attribute__((const));
     [[VTrackingManager sharedInstance] addDelegate:[[VFlurryTracking alloc] init]];
     [[VTrackingManager sharedInstance] addDelegate:[[VGoogleAnalyticsTracking alloc] init]];
     
-#warning this is for testing, make sure to remove
+#warning This is for testing deep links, make sure to remove before mergin
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(4.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
     {
-        [[VRootViewController rootViewController] handleDeeplinkURL:[NSURL URLWithString:@"//comment/11137/4642"]];
+        [[VRootViewController rootViewController] handleDeeplinkURL:[NSURL URLWithString:@"//comment/11137/4608"]];
     });
 
     return YES;

@@ -36,19 +36,26 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
                                                   successBlock:(VSuccessBlock)success
                                                      failBlock:(VFailBlock)fail
 {
-    NSString *apiPath = [@"/api/comment/all/" stringByAppendingString: sequence.remoteId];
-    VAbstractFilter *filter = [self.paginationManager filterForPath:apiPath entityName:[VAbstractFilter entityName] managedObjectContext:sequence.managedObjectContext];
-    
+    NSString *filterApiPath = [@"/api/comment/all/" stringByAppendingString: sequence.remoteId];
+    VAbstractFilter *filter = [self.paginationManager filterForPath:filterApiPath
+                                                         entityName:[VAbstractFilter entityName]
+                                               managedObjectContext:sequence.managedObjectContext];
     NSManagedObjectID *filterID = filter.objectID;
+    
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         VAbstractFilter *filter = (VAbstractFilter *)[self.managedObjectStore.mainQueueManagedObjectContext objectWithID:filterID];
         filter.maxPageNumber = @([fullResponse[@"total_pages"] integerValue]);
-        filter.currentPageNumber = @([fullResponse[@"page"] integerValue]);
-        filter.totalItemsNumber = @([fullResponse[@"total_items"] integerValue]);
+        filter.currentPageNumber = @([fullResponse[@"page_number"] integerValue]);
         [filter.managedObjectContext saveToPersistentStore:nil];
         
-        [self.managedObjectStore.mainQueueManagedObjectContext objectWithID:filterID];
+        VSequence *sequenceInContext = (VSequence *)[self.managedObjectStore.mainQueueManagedObjectContext objectWithID:sequence.objectID];
+        
+        NSMutableOrderedSet *comments = [[NSMutableOrderedSet alloc] initWithArray:resultObjects];
+        [comments addObjectsFromArray:sequence.comments.array];
+        sequenceInContext.comments = [comments copy];
+        
+        [sequenceInContext.managedObjectContext saveToPersistentStore:nil];
         
         if (success)
         {
@@ -57,7 +64,11 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
     };
     
     NSString *path = [NSString stringWithFormat:@"/api/comment/find/%@/%@/%@", sequence.remoteId, commentId, filter.perPageNumber];
-    return [self GET:path object:nil parameters:nil successBlock:fullSuccess failBlock:fail];
+    return [self GET:path
+              object:nil
+          parameters:nil
+        successBlock:fullSuccess
+           failBlock:fail];
 }
 
 - (RKManagedObjectRequestOperation *)loadCommentsOnSequence:(VSequence *)sequence
@@ -65,14 +76,12 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
                                                successBlock:(VSuccessBlock)success
                                                   failBlock:(VFailBlock)fail
 {
-    NSString *apiPath = [@"/api/comment/all/" stringByAppendingString: sequence.remoteId];
-    VAbstractFilter *filter = [self.paginationManager filterForPath:apiPath entityName:[VAbstractFilter entityName] managedObjectContext:sequence.managedObjectContext];
-    
     VSuccessBlock fullSuccessBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         void(^paginationBlock)(void) = ^(void)
         {
-            VSequence *sequenceInContext = (VSequence *)[self.managedObjectStore.mainQueueManagedObjectContext objectWithID:sequence.objectID];
+            VSequence *sequenceInContext = (VSequence *)[self.managedObjectStore.mainQueueManagedObjectContext
+                                                         objectWithID:sequence.objectID];
             
             if ( pageType == VPageTypeFirst )
             {
@@ -122,6 +131,10 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
         }
     };
     
+    NSString *apiPath = [@"/api/comment/all/" stringByAppendingString: sequence.remoteId];
+    VAbstractFilter *filter = [self.paginationManager filterForPath:apiPath
+                                                         entityName:[VAbstractFilter entityName]
+                                               managedObjectContext:sequence.managedObjectContext];
     return [self.paginationManager loadFilter:filter
                                  withPageType:pageType
                                  successBlock:fullSuccessBlock

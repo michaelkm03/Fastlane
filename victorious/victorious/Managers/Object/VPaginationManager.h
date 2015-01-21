@@ -50,20 +50,4 @@
                                    successBlock:(VSuccessBlock)success
                                       failBlock:(VFailBlock)fail;
 
-/**
- Returns a page of results based on parameters of the filter plus page type
- that contains an object with and ID that matches object ID.  This is typically used
- for displaying a view at a page somewhere in the middle of the total page count,
- as in displaying a deeplinked item.
- 
- @apiPath A path component for the endpoint, builds the URL as: /api/<appiPath>/find/<objectId>
- @objectId An ID for the object being searched for, builds the URL as: /api/<appiPath>/find/<objectId>
- 
- */
-- (RKManagedObjectRequestOperation *)findPageWithPath:(NSString *)apiPath
-                                               filter:(VAbstractFilter *)filter
-                                             objectId:(NSNumber *)objectId
-                                         successBlock:(VSuccessBlock)success
-                                            failBlock:(VFailBlock)fail;
-
 @end

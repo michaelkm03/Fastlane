@@ -35,48 +35,6 @@
     return self;
 }
 
-- (RKManagedObjectRequestOperation *)findPageWithPath:(NSString *)apiPath
-                                               filter:(VAbstractFilter *)filter
-                                             objectId:(NSNumber *)objectId
-                                         successBlock:(VSuccessBlock)success
-                                            failBlock:(VFailBlock)fail
-{
-    /*NSManagedObjectID *filterID = filter.objectID;
-    VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-    {
-        VAbstractFilter *filter = (VAbstractFilter *)[self.objectManager.managedObjectStore.mainQueueManagedObjectContext objectWithID:filterID];
-        filter.maxPageNumber = @([fullResponse[@"total_pages"] integerValue]);
-        filter.currentPageNumber = @([fullResponse[@"page"] integerValue]);
-        filter.totalItemsNumber = @([fullResponse[@"total_items"] integerValue]);
-        [filter.managedObjectContext saveToPersistentStore:nil];
-        
-        if (success)
-        {
-            success(operation, fullResponse, resultObjects);
-        }
-    };
-    
-    VFailBlock fullFail = ^(NSOperation *operation, NSError *error)
-    {
-        if (fail)
-        {
-            fail(operation, error);
-        }
-        
-        [self.objectManager.managedObjectStore.mainQueueManagedObjectContext objectWithID:filterID];
-    };
-    
-#warning testing only
-    //fullSuccess( nil, @{ @"total_pages" : @5, @"page" : @3, @"total_items" : @69 }, nil );
-    //return nil;
-    
-    NSString *path = [NSString stringWithFormat:@"/api/%@/find/%ld/", apiPath, (long)filter.perPageNumber.integerValue];
-    return [self.objectManager GET:path object:nil parameters:nil successBlock:fullSuccess failBlock:fullFail];*/
-    
-#warning Erase this method?
-    return nil;
-}
-
 - (RKManagedObjectRequestOperation *)loadFilter:(VAbstractFilter *)filter
                                    withPageType:(VPageType)pageType
                                    successBlock:(VSuccessBlock)success
@@ -98,7 +56,6 @@
         
         filter.maxPageNumber = @([fullResponse[@"total_pages"] integerValue]);
         filter.currentPageNumber = @([fullResponse[@"page_number"] integerValue]);
-        filter.totalItemsNumber = @([fullResponse[@"total_items"] integerValue]);
         [filter.managedObjectContext saveToPersistentStore:nil];
         
         [self stopLoadingFilter:filter];

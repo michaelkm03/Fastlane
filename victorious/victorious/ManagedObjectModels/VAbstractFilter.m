@@ -15,6 +15,5 @@
 @dynamic filterAPIPath;
 @dynamic maxPageNumber;
 @dynamic perPageNumber;
-@dynamic totalItemsNumber;
 
 @end

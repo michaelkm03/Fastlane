@@ -209,13 +209,20 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
         VComment *comment = self.viewModel.comments[ i ];
         if ( [comment.remoteId isEqualToNumber:commentId] )
         {
+            [self didUpdateCommentsWithPageType:VPageTypePrevious];
+            
             NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:VContentViewSectionAllComments];
             [self.commentHighlighter scrollToAndHighlightIndexPath:indexPath delay:0.3f completion:^
             {
-                // Setting `isAnimationgCellHighlight` to YES prevents the collectionView from reloading (as intented).
-                // So we call `updateCommentsWithPageType:` to update if it any new comments were loading while
+                // Setting `isAnimatingCellHighlight` to YES prevents the collectionView
+                // from reloading (as intented).  So we call `updateCommentsWithPageType:`
+                // to update if it any new comments were loading while
                 // the animation was playing.
                 [self didUpdateCommentsWithPageType:VPageTypePrevious];
+                
+                // Trigger the paginator to load any more pages based on the scroll
+                // position to which VCommentHighlighter animated to
+                [self.scrollPaginator scrollViewDidScroll:self.contentCollectionView];
             }];
         }
     }
