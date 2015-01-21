@@ -137,7 +137,7 @@ static NSString * const kVideoMuted = @"videoMuted";
         [self.videoPlayerController.player pause];
         [self.KVOController observe:self.videoPlayerController.player
                             keyPath:NSStringFromSelector(@selector(status))
-                            options:NSKeyValueObservingOptionNew
+                            options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionInitial
                               block:^(id observer, id object, NSDictionary *change)
          {
              AVPlayer *player = (AVPlayer *)object;
