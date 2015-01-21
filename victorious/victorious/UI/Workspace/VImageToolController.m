@@ -10,6 +10,7 @@
 
 #import "CIImage+VImage.h"
 #import "VConstants.h"
+#import "UIImage+Resize.h"
 
 //TODO: Should factor these out of here
 #import "VCropTool.h"
@@ -41,6 +42,7 @@ NSString * const VImageToolControllerInitialImageEditStateKey = @"VImageToolCont
                    {
                        NSData *imageData = [NSData dataWithContentsOfURL:source];
                        UIImage *sourceImage = [UIImage imageWithData:imageData];
+                       sourceImage = [sourceImage fixOrientation];
                        
                        UIImage *renderedImage = [welf renderedImageForCurrentStateWithSourceImage:sourceImage];
                        
