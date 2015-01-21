@@ -10,19 +10,19 @@
 #import "VObjectManager+Private.h"
 #import "VTrackingURLRequest.h"
 
-NSString * const kMacroTimeFrom               = @"%%FROM_TIME%%";
-NSString * const kMacroTimeTo                 = @"%%TO_TIME%%";
-NSString * const kMacroTimeCurrent            = @"%%TIME_CURRENT%%";
-NSString * const kMacroTimeStamp              = @"%%TIME_STAMP%%";
-NSString * const kMacroPageLabel              = @"%%PAGE%%";
-NSString * const kMacroPositionX              = @"%%XPOS%%";
-NSString * const kMacroPositionY              = @"%%YPOS%%";
-NSString * const kMacroNavigiationFrom        = @"%%NAV_FROM%%";
-NSString * const kMacroNavigiationTo          = @"%%NAV_TO%%";
-NSString * const kMacroStreamId               = @"%%STREAM_ID%%";
-NSString * const kMacroSequenceId             = @"%%SEQUENCE_ID%%";
-NSString * const kMacroBallisticsCount        = @"%%COUNT%%";
-NSString * const kMacroShareDestination       = @"%%SHARE_DEST%%";
+static NSString * const kMacroTimeFrom               = @"%%FROM_TIME%%";
+static NSString * const kMacroTimeTo                 = @"%%TO_TIME%%";
+static NSString * const kMacroTimeCurrent            = @"%%TIME_CURRENT%%";
+static NSString * const kMacroTimeStamp              = @"%%TIME_STAMP%%";
+static NSString * const kMacroPageLabel              = @"%%PAGE%%";
+static NSString * const kMacroPositionX              = @"%%XPOS%%";
+static NSString * const kMacroPositionY              = @"%%YPOS%%";
+static NSString * const kMacroNavigiationFrom        = @"%%NAV_FROM%%";
+static NSString * const kMacroNavigiationTo          = @"%%NAV_TO%%";
+static NSString * const kMacroStreamId               = @"%%STREAM_ID%%";
+static NSString * const kMacroSequenceId             = @"%%SEQUENCE_ID%%";
+static NSString * const kMacroBallisticsCount        = @"%%COUNT%%";
+static NSString * const kMacroShareDestination       = @"%%SHARE_DEST%%";
 
 #define APPLICATION_TRACKING_LOGGING_ENABLED 0
 
