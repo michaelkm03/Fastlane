@@ -20,15 +20,15 @@
                    frameDuration:(CMTime)frameDuration
                        muteAudio:(BOOL)muteAudio NS_DESIGNATED_INITIALIZER;
 
-@property (nonatomic, readonly) NSURL *videoURL; // The url to create an AVAsset from.
+@property (nonatomic, readonly) NSURL *videoURL; //< The url to create an AVAsset from.
 
-@property (nonatomic, readonly) CMTime frameDuration; // Reciprocal of frame rate i.e. 1/30 = 30fps.
+@property (nonatomic, readonly) CMTime frameDuration; //< Reciprocal of frame rate i.e. 1/30 = 30fps.
 
-@property (nonatomic, readonly) BOOL muteAudio; // YES if audio is muted
+@property (nonatomic, readonly) BOOL muteAudio; //< YES if audio is muted
 
-@property (nonatomic, copy) void (^playerItemReady)(AVPlayerItem *playerItem); // A completion block for when the video is ready to be played.
+@property (nonatomic, copy) void (^playerItemReady)(AVPlayerItem *playerItem); //< A completion block for when the video is ready to be played.
 
-- (AVAssetExportSession *)makeExportable; // An export session for rendering.
-- (AVVideoComposition *)videoComposition; // A Composition for rendering + thumbnailing.
+- (AVAssetExportSession *)makeExportable; //< An export session for rendering.
+- (AVVideoComposition *)videoComposition; //< A Composition for rendering + thumbnailing.
 
 @end
