@@ -1124,7 +1124,10 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     const BOOL hasComments = self.viewModel.comments.count > 0;
     if ( hasComments )
     {
-        [self.scrollPaginator scrollViewDidScroll:scrollView];
+        if ( !self.commentHighlighter.isAnimatingCellHighlight )
+        {
+            [self.scrollPaginator scrollViewDidScroll:scrollView];
+        }
     }
 }
 
