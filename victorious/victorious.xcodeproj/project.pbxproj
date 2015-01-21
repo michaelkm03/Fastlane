@@ -160,6 +160,7 @@
 		0314D50A19B46BCB00FA363C /* UIView+Masking.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D50919B46BCB00FA363C /* UIView+Masking.m */; };
 		0326BBBA19A8183800D995DA /* VPushNotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0326BBB919A8183800D995DA /* VPushNotificationManager.m */; };
 		0326C36019F8226200DBC341 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0326C35F19F8226200DBC341 /* Images.xcassets */; };
+		0330D42B1A6F5BAE007EEEE4 /* NSURL+VPathHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 0330D42A1A6F5BAE007EEEE4 /* NSURL+VPathHelper.m */; };
 		033F77101A2D6B8A00E6A13A /* VUnreadMessageCountCoordinator.m in Sources */ = {isa = PBXBuildFile; fileRef = 033F770F1A2D6B8A00E6A13A /* VUnreadMessageCountCoordinator.m */; };
 		0343AF801A143E6D0025B9F8 /* VObjectManager+LoginTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0343AF7F1A143E6D0025B9F8 /* VObjectManager+LoginTests.m */; };
 		0343AF831A143F550025B9F8 /* AVAsset+OrientationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7976D0819FAE94300B5A145 /* AVAsset+OrientationTests.m */; };
@@ -988,6 +989,8 @@
 		0326BBB919A8183800D995DA /* VPushNotificationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPushNotificationManager.m; sourceTree = "<group>"; };
 		0326C35F19F8226200DBC341 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		0330D4281A6ED98D007EEEE4 /* VNavigationDestinationsProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNavigationDestinationsProvider.h; sourceTree = "<group>"; };
+		0330D4291A6F5BAE007EEEE4 /* NSURL+VPathHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+VPathHelper.h"; sourceTree = "<group>"; };
+		0330D42A1A6F5BAE007EEEE4 /* NSURL+VPathHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+VPathHelper.m"; sourceTree = "<group>"; };
 		033F770E1A2D6B8A00E6A13A /* VUnreadMessageCountCoordinator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUnreadMessageCountCoordinator.h; sourceTree = "<group>"; };
 		033F770F1A2D6B8A00E6A13A /* VUnreadMessageCountCoordinator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUnreadMessageCountCoordinator.m; sourceTree = "<group>"; };
 		0343AF7F1A143E6D0025B9F8 /* VObjectManager+LoginTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VObjectManager+LoginTests.m"; sourceTree = "<group>"; };
@@ -3657,6 +3660,8 @@
 				0310DC4A1989A6AB0092DF50 /* NSString+VStringWithData.m */,
 				03484C051930294D00403FB1 /* NSURL+MediaType.h */,
 				03484C061930294D00403FB1 /* NSURL+MediaType.m */,
+				0330D4291A6F5BAE007EEEE4 /* NSURL+VPathHelper.h */,
+				0330D42A1A6F5BAE007EEEE4 /* NSURL+VPathHelper.m */,
 				BE799BAF19C8DF4B0023CE88 /* OrderedSets */,
 				0314D06219B466C100FA363C /* UIActivityViewController+VStatusBarHandling.h */,
 				0314D06319B466C100FA363C /* UIActivityViewController+VStatusBarHandling.m */,
@@ -3680,14 +3685,14 @@
 				0314D05D19B4663C00FA363C /* UINavigationController+RotationMethodForwarding.m */,
 				039D02B21A104C4500DB9236 /* UIStoryboard+VMainStoryboard.h */,
 				039D02B31A104C4500DB9236 /* UIStoryboard+VMainStoryboard.m */,
+				A761C9D21A48B1E500F0D0F9 /* UIVIew+AutoLayout.h */,
+				A761C9D31A48B1E500F0D0F9 /* UIVIew+AutoLayout.m */,
 				0314D50819B46BCB00FA363C /* UIView+Masking.h */,
 				0314D50919B46BCB00FA363C /* UIView+Masking.m */,
 				D8CA63BF19D5DEE2002046E5 /* UIView+MotionEffects.h */,
 				D8CA63C019D5DEE2002046E5 /* UIView+MotionEffects.m */,
 				D8E39BEF19CB9D58007FD86A /* UIView+VShadows.h */,
 				D8E39BF019CB9D58007FD86A /* UIView+VShadows.m */,
-				A761C9D21A48B1E500F0D0F9 /* UIVIew+AutoLayout.h */,
-				A761C9D31A48B1E500F0D0F9 /* UIVIew+AutoLayout.m */,
 				03A2AD951926B9460034EB80 /* UIViewController+ForceOrientationChange.h */,
 				03A2AD961926B9460034EB80 /* UIViewController+ForceOrientationChange.m */,
 				03811D3219353486005687FF /* VAlertViewBlockDelegate.h */,
@@ -4764,6 +4769,7 @@
 				0314D45E19B46B5E00FA363C /* VPhotoFilterCollectionViewDataSource.m in Sources */,
 				A77AD4EF1A1FD8B600142F24 /* VAlertAction.m in Sources */,
 				A77AD4F11A1FD8B600142F24 /* VAlertControllerAdvanced.m in Sources */,
+				0330D42B1A6F5BAE007EEEE4 /* NSURL+VPathHelper.m in Sources */,
 				DB51C54219F86971005AA7B6 /* VAdBreakFallback+RestKit.m in Sources */,
 				A7738B041A4A35DF008EA973 /* VModalTransition.m in Sources */,
 				D8AF00EF1A128A7200B147C4 /* VHashTagTextView.m in Sources */,

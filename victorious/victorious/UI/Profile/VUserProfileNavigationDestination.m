@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "NSURL+VPathHelper.h"
 #import "VAuthorizationViewControllerFactory.h"
 #import "VDependencyManager+VObjectManager.h"
 #import "VObjectManager+Users.h"
@@ -82,25 +83,21 @@ static NSString * const kProfileDeeplinkHostComponent = @"profile";
     
     if ( [url.host isEqualToString:kProfileDeeplinkHostComponent] )
     {
-        NSArray *pathComponents = url.pathComponents;
-        if ( pathComponents.count >= 2 )
+        NSInteger userID = [[url firstNonSlashPathComponent] integerValue];
+        if ( userID != 0 )
         {
-            NSInteger userID = [url.pathComponents[1] integerValue];
-            if ( userID != 0 )
+            [[VObjectManager sharedManager] fetchUser:@(userID)
+                                     withSuccessBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
             {
-                [[VObjectManager sharedManager] fetchUser:@(userID)
-                                         withSuccessBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-                {
-                    VUserProfileViewController *profileVC = [self.dependencyManager userProfileViewControllerWithUser:[resultObjects firstObject] forKey:VScaffoldViewControllerUserProfileViewComponentKey];
-                    completion(profileVC);
-                }
-                                                failBlock:^(NSOperation *operation, NSError *error)
-                {
-                    VLog(@"Failed to load user with error: %@", [error localizedDescription]);
-                    completion(nil);
-                }];
-                return YES;
+                VUserProfileViewController *profileVC = [self.dependencyManager userProfileViewControllerWithUser:[resultObjects firstObject] forKey:VScaffoldViewControllerUserProfileViewComponentKey];
+                completion(profileVC);
             }
+                                            failBlock:^(NSOperation *operation, NSError *error)
+            {
+                VLog(@"Failed to load user with error: %@", [error localizedDescription]);
+                completion(nil);
+            }];
+            return YES;
         }
     }
     return NO;

@@ -6,6 +6,7 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
+#import "NSURL+VPathHelper.h"
 #import "VContentViewViewModel.h"
 #import "VDeeplinkHandler.h"
 #import "VDependencyManager+VObjectManager.h"
@@ -149,7 +150,11 @@ static NSString * const kContentDeeplinkURLHostComponent = @"content";
     
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     
-    NSString *sequenceID = [self sequenceIDFromContentURL:url];
+    NSString *sequenceID = [url firstNonSlashPathComponent];
+    if ( sequenceID == nil )
+    {
+        return NO;
+    }
     [[self.dependencyManager objectManager] fetchSequenceByID:sequenceID
                                                  successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
@@ -170,17 +175,6 @@ static NSString * const kContentDeeplinkURLHostComponent = @"content";
     }];
     
     return YES;
-}
-
-- (NSString *)sequenceIDFromContentURL:(NSURL *)url
-{
-    NSArray *pathComponents = url.pathComponents;
-    
-    if ( pathComponents.count < 2 )
-    {
-        return nil;
-    }
-    return pathComponents[1];
 }
 
 - (void)showBadDeeplinkError
