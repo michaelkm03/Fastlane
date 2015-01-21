@@ -105,7 +105,7 @@ static NSString * const kContentDeeplinkURLHostComponent = @"content";
     }
     else if ( [self.menuViewController respondsToSelector:@selector(navigationDestinations)] )
     {
-        MBProgressHUD *__block hud;
+        __block MBProgressHUD *hud;
         VDeeplinkHandlerCompletionBlock completion = ^(UIViewController *viewController)
         {
             [hud hide:YES];
