@@ -124,7 +124,7 @@ static inline CGPoint ClampX(CGPoint point, CGFloat xMin, CGFloat xMax)
 - (UIView *)hitTest:(CGPoint)point
           withEvent:(UIEvent *)event
 {
-    // Pass through any touches which
+    // Pass through any touches that we aren't interested in.
     UIView *hitView = [super hitTest:point
                            withEvent:event];
     
@@ -168,62 +168,76 @@ static inline CGPoint ClampX(CGPoint point, CGFloat xMin, CGFloat xMax)
 
 - (void)pannedThumb:(UIPanGestureRecognizer *)gestureRecognizer
 {
-
     switch (gestureRecognizer.state)
     {
         case UIGestureRecognizerStateBegan:
         {
-            self.bodyGestureRecognizer.enabled = (gestureRecognizer == self.bodyGestureRecognizer);
-            self.headGestureRecognizer.enabled = (gestureRecognizer == self.headGestureRecognizer);
-            
-            [self.animator removeBehavior:self.clampingBehavior];
-            self.attachmentBehavior = [[UIAttachmentBehavior alloc] initWithItem:self.trimThumbHead attachedToAnchor:CGPointMake([gestureRecognizer locationInView:self].x, CGRectGetMidY(self.trimThumbHead.frame))];
-            [self.animator addBehavior:self.attachmentBehavior];
-            self.pushBehavior.active = NO;
-            [self.animator removeBehavior:self.itemBehavior];
+            [self panGestureBegan:gestureRecognizer];
         }
             break;
         case UIGestureRecognizerStateChanged:
         {
-            CGPoint anchorPoint = [gestureRecognizer locationInView:self];
-            anchorPoint.y = CGRectGetMidY(self.trimThumbHead.frame);
-
-            self.attachmentBehavior.anchorPoint = anchorPoint;
-            __weak typeof(self) welf = self;
-            self.attachmentBehavior.action = ^()
-            {
-                [welf updateThumAndDimmingViewWithNewThumbCenter:welf.trimThumbHead.center];
-            };
+            [self pangGestureChanged:gestureRecognizer];
         }
             break;
         case UIGestureRecognizerStateCancelled:
         case UIGestureRecognizerStateEnded:
         case UIGestureRecognizerStateFailed:
         {
-            [self.animator removeBehavior:self.attachmentBehavior];
-            [self.animator addBehavior:self.itemBehavior];
-            self.bodyGestureRecognizer.enabled = YES;
-            self.headGestureRecognizer.enabled = YES;
-            
-            if (ABS([gestureRecognizer velocityInView:self].x) < 30)
-            {
-                return;
-            }
-            CGVector forceVector = [self v_forceFromVelocity:[gestureRecognizer velocityInView:self] withDensity:0.1];
-            forceVector.dy = 0;
-            self.pushBehavior.pushDirection = forceVector;
-            self.pushBehavior.active = YES;
-            [self.animator addBehavior:self.pushBehavior];
-            __weak typeof(self) welf = self;
-            self.pushBehavior.action = ^()
-            {
-                [welf updateThumAndDimmingViewWithNewThumbCenter:welf.trimThumbHead.center];
-            };
+            [self panGestureFailed:gestureRecognizer];
         }
             break;
         default:
             break;
     }
+}
+
+- (void)panGestureBegan:(UIPanGestureRecognizer *)gestureRecognizer
+{
+    self.bodyGestureRecognizer.enabled = (gestureRecognizer == self.bodyGestureRecognizer);
+    self.headGestureRecognizer.enabled = (gestureRecognizer == self.headGestureRecognizer);
+    
+    [self.animator removeBehavior:self.clampingBehavior];
+    self.attachmentBehavior = [[UIAttachmentBehavior alloc] initWithItem:self.trimThumbHead attachedToAnchor:CGPointMake([gestureRecognizer locationInView:self].x, CGRectGetMidY(self.trimThumbHead.frame))];
+    [self.animator addBehavior:self.attachmentBehavior];
+    self.pushBehavior.active = NO;
+    [self.animator removeBehavior:self.itemBehavior];
+}
+
+- (void)pangGestureChanged:(UIPanGestureRecognizer *)gestureRecognizer
+{
+    CGPoint anchorPoint = [gestureRecognizer locationInView:self];
+    anchorPoint.y = CGRectGetMidY(self.trimThumbHead.frame);
+    
+    self.attachmentBehavior.anchorPoint = anchorPoint;
+    __weak typeof(self) welf = self;
+    self.attachmentBehavior.action = ^()
+    {
+        [welf updateThumAndDimmingViewWithNewThumbCenter:welf.trimThumbHead.center];
+    };
+}
+
+- (void)panGestureFailed:(UIPanGestureRecognizer *)gestureRecognizer
+{
+    [self.animator removeBehavior:self.attachmentBehavior];
+    [self.animator addBehavior:self.itemBehavior];
+    self.bodyGestureRecognizer.enabled = YES;
+    self.headGestureRecognizer.enabled = YES;
+    
+    if (ABS([gestureRecognizer velocityInView:self].x) < 30)
+    {
+        return;
+    }
+    CGVector forceVector = [self v_forceFromVelocity:[gestureRecognizer velocityInView:self] withDensity:0.1];
+    forceVector.dy = 0;
+    self.pushBehavior.pushDirection = forceVector;
+    self.pushBehavior.active = YES;
+    [self.animator addBehavior:self.pushBehavior];
+    __weak typeof(self) welf = self;
+    self.pushBehavior.action = ^()
+    {
+        [welf updateThumAndDimmingViewWithNewThumbCenter:welf.trimThumbHead.center];
+    };
 }
 
 #pragma mark - UICollisionBehaviorDelegate
