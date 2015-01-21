@@ -251,13 +251,9 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
         }
         else
         {
-            if (welf.completion)
+            if (welf.completion != nil)
             {
                 welf.completion(NO);
-            }
-            else
-            {
-                NSAssert(false, @"VWorkspaceFlowController requires a completion block!");
             }
         }
     };
@@ -277,7 +273,7 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
 
 - (void)toEditState
 {
-    NSAssert((self.capturedMediaURL != nil), @"We need a captured media url to begin editing!");
+    NSAssert(self.capturedMediaURL != nil, @"We need a captured media url to begin editing!");
     
     __weak typeof(self) welf = self;
     VWorkspaceViewController *workspaceViewController;
