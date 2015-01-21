@@ -127,11 +127,6 @@ static const CGFloat kTopSpacePublishPrompt = 50.0f;
 
 - (IBAction)publish:(id)sender
 {
-    if (self.captionTextView.text.length < 1)
-    {
-        [self.captionTextView shakeAnimation];
-        return;
-    }
     [self.captionTextView resignFirstResponder];
     
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view

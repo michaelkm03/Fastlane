@@ -179,37 +179,6 @@ static const CGFloat kPlaceholderAlphaEnteringText = 0.2f;
     [self hidePlaceholderIfUserEnteredText];
 }
 
-#pragma mark - Public Methods
-
-- (void)shakeAnimation
-{
-    AudioServicesPlayAlertSound(kSystemSoundID_Vibrate);
-    CGPoint originalCenter = self.placeholderTextView.center;
-
-    [UIView animateWithDuration:0.1f
-                          delay:0.0f
-         usingSpringWithDamping:1.0f
-          initialSpringVelocity:0.0f
-                        options:kNilOptions
-                     animations:^
-     {
-         self.placeholderTextView.center = CGPointMake(originalCenter.x - 10, originalCenter.y);
-     }
-                     completion:^(BOOL finished)
-     {
-         [UIView animateWithDuration:0.75f
-                               delay:0.0f
-              usingSpringWithDamping:0.3f
-               initialSpringVelocity:0.0f
-                             options:UIViewAnimationOptionBeginFromCurrentState
-                          animations:^
-          {
-              self.placeholderTextView.center = originalCenter;
-          }
-                          completion:nil];
-     }];
-}
-
 #pragma mark - Private Mehtods
 
 - (void)updatePlaceholderAttributedText
