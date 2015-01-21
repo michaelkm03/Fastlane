@@ -208,6 +208,10 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
         }
         return;
     }
+    if (completionBlock)
+    {
+        completionBlock(nil, nil, nil, nil);
+    }
     [self.uploadManager enqueueUploadTask:uploadTask onComplete:completionBlock];
 }
 
