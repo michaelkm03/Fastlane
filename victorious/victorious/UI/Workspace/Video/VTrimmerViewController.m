@@ -287,7 +287,8 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
                      forCellWithReuseIdentifier:emptyCellIdentifier];
     self.thumbnailCollecitonView.dataSource = self;
     self.thumbnailCollecitonView.delegate = self;
-    self.thumbnailCollecitonView.alwaysBounceHorizontal = YES;
+    self.thumbnailCollecitonView.alwaysBounceHorizontal = NO;
+    self.thumbnailCollecitonView.bounces = NO;
     self.thumbnailCollecitonView.backgroundColor = [UIColor clearColor];
     [self.view addSubview:self.thumbnailCollecitonView];
     self.thumbnailCollecitonView.translatesAutoresizingMaskIntoConstraints = NO;
