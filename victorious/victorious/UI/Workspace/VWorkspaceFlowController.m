@@ -135,16 +135,7 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
         }
         else
         {
-            UIActionSheet *discardActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"This will discard any content from the camera", @"")
-                                                                   cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
-                                                                      onCancelButton:nil
-                                                              destructiveButtonTitle:NSLocalizedString(@"Discard", nil)
-                                                                 onDestructiveButton:^
-                                                 {
-                                                     [welf.flowNavigationController popViewControllerAnimated:YES];
-                                                 }
-                                                          otherButtonTitlesAndBlocks:nil, nil];
-            [discardActionSheet showInView:self.flowRootViewController.view];
+            [self.flowNavigationController popViewControllerAnimated:YES];
         }
     }
     else if ((oldState == VWorkspaceFlowControllerStateEdit) && (newState == VWorkspaceFlowControllerStatePublish))
@@ -299,6 +290,10 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
     {
         NSAssert(false, @"Media type not supported!");
     }
+    
+    id remixItem = [self.dependencyManager templateValueOfType:[VSequence class] forKey:VWorkspaceFlowControllerSequenceToRemixKey];
+    BOOL isRemix = (remixItem != nil);
+    workspaceViewController.shouldConfirmCancels = !isRemix;
     
     workspaceViewController.completionBlock = ^void(BOOL finished, UIImage *previewImage, NSURL *renderedMediaURL)
     {

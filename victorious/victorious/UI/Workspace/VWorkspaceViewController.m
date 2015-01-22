@@ -16,6 +16,7 @@
 #import <MBProgressHUD/MBProgressHUD.h>
 #import "UIImageView+Blurring.h"
 #import "UIAlertView+VBlocks.h"
+#import "UIActionSheet+VBlocks.h"
 
 // Keyboard
 #import "VKeyboardNotificationManager.h"
@@ -225,6 +226,21 @@
 
 - (IBAction)close:(id)sender
 {
+    if (self.shouldConfirmCancels)
+    {
+        __weak typeof(self) welf = self;
+        UIActionSheet *confirmExitActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"This will discard any content from the camera", @"")
+                                                                   cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
+                                                                      onCancelButton:nil
+                                                              destructiveButtonTitle:NSLocalizedString(@"Discard", nil)
+                                                                 onDestructiveButton:^
+                                                 {
+                                                     welf.completionBlock(NO, nil, nil);
+                                                 }
+                                                          otherButtonTitlesAndBlocks:nil, nil];
+        [confirmExitActionSheet showInView:self.view];
+        return;
+    }
     self.completionBlock(NO, nil, nil);
 }
 
