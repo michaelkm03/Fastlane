@@ -14,6 +14,7 @@
 @interface VStreamCellVideoView()
 
 @property (nonatomic, strong) AVPlayer *player;
+@property (nonatomic, strong) AVPlayerLayer *playerLayer;
 @property (nonatomic, readonly) BOOL isPlayingVideo;
 @property (nonatomic, strong) VVideoUtils *videoUtils;
 
@@ -24,22 +25,6 @@
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-+ (Class)layerClass
-{
-    return [AVPlayerLayer class];
-}
-
-- (void)awakeFromNib
-{
-    AVPlayerLayer *playerLayer = (AVPlayerLayer *)self.layer;
-    _player = [[AVPlayer alloc] init];
-    [playerLayer setPlayer:_player];
-    playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
-    self.backgroundColor = [UIColor blackColor];
-    
-    self.videoUtils = [[VVideoUtils alloc] init];
 }
 
 - (void)setItemURL:(NSURL *)itemURL
@@ -54,6 +39,19 @@
         return;
     }
     
+    if ( self.player == nil )
+    {
+        self.player = [[AVPlayer alloc] init];
+        self.playerLayer = [AVPlayerLayer playerLayerWithPlayer:self.player];
+        self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+        [self.layer addSublayer:self.playerLayer];
+        self.playerLayer.frame = self.bounds;
+        
+        self.backgroundColor = [UIColor blackColor];
+        
+        self.videoUtils = [[VVideoUtils alloc] init];
+    }
+    
     self.player.actionAtItemEnd = loop ? AVPlayerActionAtItemEndNone : AVPlayerActionAtItemEndPause;
     self.player.muted = audioDisabled;
     
@@ -63,6 +61,27 @@
      {
          [self didFinishAssetCreation:playerItem];
      }];
+    
+    [self.player addObserver:self forKeyPath:@"status" options:NSKeyValueObservingOptionNew context:NULL];
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if ( object == self.player)
+    {
+        if ( self.player.status == AVPlayerStatusFailed )
+        {
+            NSLog( @"manage failure" );
+        }
+        else if ( self.player.status == AVPlayerStatusReadyToPlay )
+        {
+            NSLog( @"player ready: manage success state (e.g. by playing the movie)" );
+        }
+        else if ( self.player.status == AVPlayerStatusUnknown )
+        {
+            NSLog( @"the player is still not ready: manage this waiting status" );
+        }
+    }
 }
 
 - (void)didFinishAssetCreation:(AVPlayerItem *)playerItem
