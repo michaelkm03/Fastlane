@@ -61,8 +61,14 @@
 
 @property (nonatomic, weak, readonly) UIView<VNavigationSelectorProtocol> *navSelector;
 
-+ (instancetype)menuButtonNavHeaderWithControlTitles:(NSArray *)titles;
-+ (instancetype)backButtonNavHeaderWithControlTitles:(NSArray *)titles;
++ (instancetype)menuButtonNavHeader;
+
++ (instancetype)backButtonNavHeader;
+
+/**
+ *  Adds a segmented control using strings provided in titles param.
+ */
+- (void)setupSegmentedControlWithTitles:(NSArray *)titles;
 
 /**
  *  Updates the UI of the header view.  Call after the VC's viewDidLoad.  This will swap the back / menu buttons to the appropriate state based on the VC's nav stack.

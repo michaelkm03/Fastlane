@@ -36,7 +36,7 @@
                         <rect key="frame" x="125" y="175" width="52" height="52"/>
                     </imageView>
                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Lorem ipsum dolor sit amet" translatesAutoresizingMaskIntoConstraints="NO" id="QyC-HK-x2o" customClass="VHashTagTextView">
-                        <rect key="frame" x="25" y="366" width="252" height="71"/>
+                        <rect key="frame" x="10" y="354" width="282" height="83"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -53,10 +53,10 @@
             </view>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="W6W-Ju-9kU" secondAttribute="trailing" id="3VU-4t-DFQ"/>
-                <constraint firstItem="QyC-HK-x2o" firstAttribute="leading" secondItem="4JO-Ba-PyN" secondAttribute="leading" constant="25" id="3sg-hz-drp"/>
+                <constraint firstItem="QyC-HK-x2o" firstAttribute="leading" secondItem="4JO-Ba-PyN" secondAttribute="leading" constant="10" id="3sg-hz-drp"/>
                 <constraint firstItem="W6W-Ju-9kU" firstAttribute="top" secondItem="4JO-Ba-PyN" secondAttribute="top" id="44L-21-rKG"/>
                 <constraint firstAttribute="trailing" secondItem="LDv-jo-7gZ" secondAttribute="trailing" constant="-1" id="5Mm-nB-GND"/>
-                <constraint firstAttribute="trailing" secondItem="QyC-HK-x2o" secondAttribute="trailing" constant="25" id="CsX-Aq-3xz"/>
+                <constraint firstAttribute="trailing" secondItem="QyC-HK-x2o" secondAttribute="trailing" constant="10" id="CsX-Aq-3xz"/>
                 <constraint firstItem="LDv-jo-7gZ" firstAttribute="leading" secondItem="4JO-Ba-PyN" secondAttribute="leading" constant="-1" id="GHg-5D-n1d"/>
                 <constraint firstItem="LDv-jo-7gZ" firstAttribute="top" secondItem="QyC-HK-x2o" secondAttribute="bottom" id="HJq-4C-jDM"/>
                 <constraint firstAttribute="bottom" secondItem="LDv-jo-7gZ" secondAttribute="bottom" id="NgO-Wi-bMH"/>
@@ -68,7 +68,7 @@
                 <constraint firstItem="De6-Pn-uJH" firstAttribute="leading" secondItem="4JO-Ba-PyN" secondAttribute="leading" id="i1L-gX-6Md"/>
                 <constraint firstItem="W6W-Ju-9kU" firstAttribute="leading" secondItem="4JO-Ba-PyN" secondAttribute="leading" id="io7-oH-DPa"/>
                 <constraint firstItem="IRG-lN-Zwl" firstAttribute="centerX" secondItem="De6-Pn-uJH" secondAttribute="centerX" id="qdd-bK-q4S"/>
-                <constraint firstItem="QyC-HK-x2o" firstAttribute="top" secondItem="De6-Pn-uJH" secondAttribute="bottom" constant="14" id="rw4-c9-IKM"/>
+                <constraint firstItem="QyC-HK-x2o" firstAttribute="top" secondItem="De6-Pn-uJH" secondAttribute="bottom" constant="2" id="rw4-c9-IKM"/>
             </constraints>
             <size key="customSize" width="543" height="313"/>
             <connections>

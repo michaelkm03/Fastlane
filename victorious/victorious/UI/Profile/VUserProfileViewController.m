@@ -41,6 +41,7 @@ static const CGFloat kVSmallUserHeaderHeight = 319.0f;
 
 static void * VUserProfileViewContext = &VUserProfileViewContext;
 static void * VUserProfileAttributesContext =  &VUserProfileAttributesContext;
+static NSString * const kUserKey = @"user";
 
 @interface VUserProfileViewController () <VUserProfileHeaderDelegate, VNavigationHeaderDelegate>
 
@@ -76,6 +77,16 @@ static void * VUserProfileAttributesContext =  &VUserProfileAttributesContext;
     }
 
     return viewController;
+}
+
++ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    VUser *user = [dependencyManager templateValueOfType:[VUser class] forKey:kUserKey];
+    if (user != nil)
+    {
+        return [self userProfileWithUser:user];
+    }
+    return nil;
 }
 
 #pragma mark - LifeCycle
@@ -482,6 +493,18 @@ static void * VUserProfileAttributesContext =  &VUserProfileAttributesContext;
     
     [self.currentStream removeObserver:self
                             forKeyPath:NSStringFromSelector(@selector(streamItems))];
+}
+
+@end
+
+#pragma mark -
+
+@implementation VDependencyManager (VUserProfileViewControllerAdditions)
+
+- (VUserProfileViewController *)userProfileViewControllerWithUser:(VUser *)user forKey:(NSString *)key
+{
+    NSAssert(user != nil, @"user can't be nil");
+    return [self templateValueOfType:[VUserProfileViewController class] forKey:key withAddedDependencies:@{ kUserKey: user }];
 }
 
 @end

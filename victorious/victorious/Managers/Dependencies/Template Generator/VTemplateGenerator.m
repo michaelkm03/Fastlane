@@ -8,15 +8,13 @@
 
 #import "VConstants.h"
 #import "VDependencyManager.h"
+#import "VScaffoldViewController.h"
 #import "VTemplateGenerator.h"
 
 static NSString * const kIDKey = @"id";
 static NSString * const kReferenceIDKey = @"referenceID";
 static NSString * const kAppearanceKey = @"appearance";
 static NSString * const kClassNameKey = @"name";
-
-// Scaffold properties
-static NSString * const kMenuKey = @"menu";
 
 // Menu properties
 static NSString * const kItemsKey = @"items";
@@ -93,9 +91,10 @@ static NSString * const kshouldForceUppercaseKey = @"shouldForceUppercase";
     
     template[VDependencyManagerScaffoldViewControllerKey] = @{ kClassNameKey: @"sideMenu.scaffold",
                                                                VDependencyManagerInitialViewControllerKey: @{ kReferenceIDKey: self.firstMenuItemID },
-                                                               kMenuKey: [self menuComponent],
-                                                               VDependencyManagerWorkspaceKey: [self workspaceComponent] };
-    
+                                                               VDependencyManagerWorkspaceKey: [self workspaceComponent],
+                                                               VScaffoldViewControllerMenuComponentKey: [self menuComponent],
+                                                               VScaffoldViewControllerUserProfileViewComponentKey: @{ kClassNameKey: @"userProfile.screen" }
+                                                            };
     return template;
 }
 
