@@ -212,7 +212,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     {
         completionBlock(nil, nil, nil, nil);
     }
-    [self.uploadManager enqueueUploadTask:uploadTask onComplete:completionBlock];
+    [self.uploadManager enqueueUploadTask:uploadTask onComplete:nil];
 }
 
 - (RKManagedObjectRequestOperation *)repostNode:(VNode *)node
