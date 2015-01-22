@@ -32,15 +32,19 @@
  */
 @interface VTrackingManager : NSObject
 
-/**
- If the current session was started in response to a
- notification, the notification ID should be set in
- this property. It will be added to tracking calls
- that include the notification ID macro.
- */
-@property (nonatomic, strong) NSString *notificationID;
-
 + (VTrackingManager *)sharedInstance;
+
+/**
+ Adds a new parameter that will be passed to all
+ tracking calls until cleared. To clear a
+ previously set parameter, pass nil for value.
+ */
+- (void)setValue:(NSString *)value forSessionParameterWithKey:(NSString *)key;
+
+/**
+ Clears all session properties
+ */
+- (void)clearSessionParameters;
 
 /**
  Forwards a tracking event to any added VTrackingDelegate instanced.

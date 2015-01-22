@@ -185,12 +185,6 @@ static NSString * const kNotificationIDKey = @"notification_id";
                                                                  configuration:[templateGenerator configurationDict]
                                              dictionaryOfClassesByTemplateName:nil];
     
-    if ( self.queuedNotificationID != nil )
-    {
-        [[VTrackingManager sharedInstance] setNotificationID:self.queuedNotificationID];
-        self.queuedNotificationID = nil;
-    }
-    
     if ( self.coldLaunch )
     {
         [self trackAppLaunch];
@@ -293,7 +287,7 @@ static NSString * const kNotificationIDKey = @"notification_id";
 
     if ( [[UIApplication sharedApplication] applicationState] != UIApplicationStateActive )
     {
-        [[VTrackingManager sharedInstance] setNotificationID:notificationID];
+        [[VTrackingManager sharedInstance] setValue:notificationID forSessionParameterWithKey:VTrackingKeyNotificationID];
         if ( [self.sessionTimer shouldNewSessionStartNow] )
         {
             self.queuedURL = deeplink;
@@ -329,7 +323,14 @@ static NSString * const kNotificationIDKey = @"notification_id";
 
 - (void)newSessionShouldStart:(NSNotification *)notification
 {
-    [[VTrackingManager sharedInstance] setNotificationID:nil];
+    [[VTrackingManager sharedInstance] clearSessionParameters];
+    
+    if ( self.queuedNotificationID != nil )
+    {
+        [[VTrackingManager sharedInstance] setValue:self.queuedNotificationID forSessionParameterWithKey:VTrackingKeyNotificationID];
+        self.queuedNotificationID = nil;
+    }
+    
     [self showViewController:nil animated:NO];
     [RKObjectManager setSharedManager:nil];
     [VObjectManager setupObjectManager];

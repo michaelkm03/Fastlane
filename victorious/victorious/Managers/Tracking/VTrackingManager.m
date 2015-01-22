@@ -21,6 +21,7 @@
 @property (nonatomic, readonly) NSUInteger numberOfQueuedEvents;
 @property (nonatomic, strong) NSMutableArray *delegates;
 @property (nonatomic, strong) NSMutableDictionary *durationEvents;
+@property (nonatomic, strong) NSMutableDictionary *sessionParameters;
 
 @end
 
@@ -45,8 +46,28 @@
         _delegates = [[NSMutableArray alloc] init];
         _queuedEvents = [[NSMutableArray alloc] init];
         _durationEvents = [[NSMutableDictionary alloc] init];
+        _sessionParameters = [[NSMutableDictionary alloc] init];
     }
     return self;
+}
+
+#pragma mark - Session Parameters
+
+- (void)setValue:(NSString *)value forSessionParameterWithKey:(NSString *)key
+{
+    if ( value == nil )
+    {
+        [self.sessionParameters removeObjectForKey:key];
+    }
+    else
+    {
+        self.sessionParameters[key] = value;
+    }
+}
+
+- (void)clearSessionParameters
+{
+    [self.sessionParameters removeAllObjects];
 }
 
 #pragma mark - Public tracking methods
@@ -58,7 +79,7 @@
         return;
     }
     
-    NSDictionary *completeParams = [self addNotificationIDToParametersDictionary:parameters];
+    NSDictionary *completeParams = [self addSessionParametersToDictionary:parameters];
     
 #if TRACKING_LOGGING_ENABLED
     VLog( @"Tracking: %@ to %lu delegates", eventName, (unsigned long)self.delegates.count);
@@ -196,9 +217,9 @@
     return [NSDictionary dictionaryWithDictionary:mutable];
 }
 
-- (NSDictionary *)addNotificationIDToParametersDictionary:(NSDictionary *)dictionary
+- (NSDictionary *)addSessionParametersToDictionary:(NSDictionary *)dictionary
 {
-    if ( self.notificationID == nil )
+    if ( self.sessionParameters.count == 0 )
     {
         return dictionary;
     }
@@ -208,7 +229,7 @@
     }
     
     NSMutableDictionary *mutable = [dictionary mutableCopy];
-    mutable[VTrackingKeyNotificationID] = self.notificationID;
+    [mutable addEntriesFromDictionary:self.sessionParameters];
     return [NSDictionary dictionaryWithDictionary:mutable];
 }
 
