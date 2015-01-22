@@ -16,5 +16,6 @@ extern NSString * const VSessionTimerNewSessionShouldStart; ///< Notification th
 @interface VSessionTimer : NSObject
 
 - (void)start; ///< Start monitoring application state
+- (BOOL)shouldNewSessionStartNow; ///< Returns YES if enough time has passed for a new session to start
 
 @end

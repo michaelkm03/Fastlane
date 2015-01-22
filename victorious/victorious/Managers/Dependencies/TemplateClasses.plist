@@ -36,6 +36,8 @@
 	<string>VInboxContainerViewController</string>
 	<key>currentUserProfile.screen</key>
 	<string>VUserProfileNavigationDestination</string>
+	<key>userProfile.screen</key>
+	<string>VUserProfileViewController</string>
 	<key>settings.screen</key>
 	<string>VSettingsContainerViewController</string>
 	<key>discover.screen</key>

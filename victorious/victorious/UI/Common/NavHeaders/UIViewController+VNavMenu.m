@@ -106,32 +106,32 @@ static const char kWorkspaceFlowControllerKey;
 {
     if (self.navigationController.viewControllers.count <= 1)
     {
-        self.navHeaderView = [VNavigationHeaderView menuButtonNavHeaderWithControlTitles:titles];
+        self.navHeaderView = [VNavigationHeaderView menuButtonNavHeader];
     }
     else
     {
-        self.navHeaderView = [VNavigationHeaderView backButtonNavHeaderWithControlTitles:titles];
+        self.navHeaderView = [VNavigationHeaderView backButtonNavHeader];
     }
     
-    self.navHeaderView.translatesAutoresizingMaskIntoConstraints = NO;
-    self.navHeaderView.headerText = self.title;//Set the title in case there is no logo
+    self.navHeaderView.headerText = self.title; //Set the title in case there is no logo
     [self.navHeaderView updateUIForVC:self];
+    
+    self.navHeaderView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:self.navHeaderView];
     
-    self.navHeaderYConstraint = [NSLayoutConstraint constraintWithItem:self.navHeaderView
-                                                          attribute:NSLayoutAttributeTop
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.view
-                                                          attribute:NSLayoutAttributeTop
-                                                         multiplier:1.0f
-                                                           constant:0.0f];
-    [self.view addConstraint:self.navHeaderYConstraint];
-    
     VNavigationHeaderView *header = self.navHeaderView;
+    NSArray *constraintsV = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[header]"
+                                                                   options:0
+                                                                   metrics:nil
+                                                                     views:NSDictionaryOfVariableBindings(header)];
+    self.navHeaderYConstraint = constraintsV.firstObject;
+    [self.view addConstraints:constraintsV];
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[header]-0-|"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(header)]];
+    
+    [self.navHeaderView setupSegmentedControlWithTitles:titles];
 }
 
 - (void)v_hideHeader
@@ -280,7 +280,7 @@ static const char kWorkspaceFlowControllerKey;
                            initialImageEditState:(VImageToolControllerInitialImageEditState)initialImageEdit
                         andInitialVideoEditState:(VVideoToolControllerInitialVideoEditState)initialVideoEdit
 {
-    VDependencyManager *dependencyManager = [((id <VHasManagedDependancies>)self) dependencyManager];
+    VDependencyManager *dependencyManager = [(id)self dependencyManager];
     
     self.workspaceFlowController = [dependencyManager templateValueOfType:[VWorkspaceFlowController class]
                                                                    forKey:VDependencyManagerWorkspaceFlowKey
@@ -292,7 +292,6 @@ static const char kWorkspaceFlowControllerKey;
     {
         [welf dismissViewControllerAnimated:YES
                                  completion:nil];
-        welf.workspaceFlowController = nil;
     };
     [self presentViewController:self.workspaceFlowController.flowRootViewController
                        animated:YES

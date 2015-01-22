@@ -17,5 +17,6 @@
 @dynamic isNewCommentOnMyPostEnabled;
 @dynamic isPostFromFollowedEnabled;
 @dynamic isPostOnFollowedHashTagEnabled;
+@dynamic isUserTagInCommentEnabled;
 
 @end

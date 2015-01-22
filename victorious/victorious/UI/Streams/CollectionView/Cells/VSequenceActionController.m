@@ -115,7 +115,9 @@ static const char kAssociatedWorkspaceFlowKey;
     __weak UIViewController *weakViewController = viewController;
     self.workspaceFlowController = [dependencyManager templateValueOfType:[VWorkspaceFlowController class]
                                                                    forKey:VDependencyManagerWorkspaceFlowKey
-                                                    withAddedDependencies:@{VWorkspaceFlowControllerSequenceToRemixKey:sequence}];
+                                                    withAddedDependencies:@{VWorkspaceFlowControllerSequenceToRemixKey:sequence,
+                                                                            VImageToolControllerInitialImageEditStateKey:@(VImageToolControllerInitialImageEditStateText),
+                                                                            VVideoToolControllerInitalVideoEditStateKey:@(VVideoToolControllerInitialVideoEditStateGIF)}];
     self.workspaceFlowController.completion = ^void(BOOL finished)
     {
         [weakViewController dismissViewControllerAnimated:YES

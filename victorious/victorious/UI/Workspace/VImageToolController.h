@@ -11,9 +11,9 @@
 extern NSString * const VImageToolControllerInitialImageEditStateKey;
 typedef NS_ENUM(NSInteger, VImageToolControllerInitialImageEditState)
 {
-    VImageToolControllerInitialImageEditStateCrop, // Default
+    VImageToolControllerInitialImageEditStateCrop,
     VImageToolControllerInitialImageEditStateFilter,
-    VImageToolControllerInitialImageEditStateText,
+    VImageToolControllerInitialImageEditStateText, // Default
 };
 
 @interface VImageToolController : VToolController

@@ -61,12 +61,13 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
 @property (nonatomic, assign) VImageToolControllerInitialImageEditState initialImageEditState;
 @property (nonatomic, assign) VVideoToolControllerInitialVideoEditState initialVideoEditState;
 
+@property (nonatomic, readonly) VDependencyManager *dependencyManager;
+
 @end
 
 @implementation VWorkspaceFlowController
 
 @synthesize completion = _completion;
-@synthesize dependencyManager = _dependencyManager;
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
@@ -80,6 +81,20 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
         _flowNavigationController.delegate = self;
         _transitionAnimator = [[VPublishBlurOverAnimator alloc] init];
         
+        _initialImageEditState = VImageToolControllerInitialImageEditStateText;
+        NSNumber *initalImageEditStateValue = [dependencyManager numberForKey:VImageToolControllerInitialImageEditStateKey];
+        if (initalImageEditStateValue != nil)
+        {
+            _initialImageEditState = [initalImageEditStateValue integerValue];
+        }
+        
+        _initialVideoEditState = VVideoToolControllerInitialVideoEditStateGIF;
+        NSNumber *initialVideoEditStateValue = [dependencyManager numberForKey:VVideoToolControllerInitalVideoEditStateKey];
+        if (initialVideoEditStateValue != nil)
+        {
+            _initialVideoEditState = [initialVideoEditStateValue integerValue];
+        }
+        
         VSequence *sequenceToRemix = [dependencyManager templateValueOfType:[VSequence class] forKey:VWorkspaceFlowControllerSequenceToRemixKey];
         if (sequenceToRemix != nil)
         {
@@ -90,20 +105,6 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
         else
         {
             [self setupCapture];
-        }
-        
-        _initialImageEditState = VImageToolControllerInitialImageEditStateCrop;
-        NSNumber *initalImageEditStateValue = [dependencyManager numberForKey:VImageToolControllerInitialImageEditStateKey];
-        if (initalImageEditStateValue != nil)
-        {
-            _initialImageEditState = [initalImageEditStateValue integerValue];
-        }
-        
-        _initialVideoEditState = VVideoToolControllerInitialVideoEditStateVideo;
-        NSNumber *initialVideoEditStateValue = [dependencyManager numberForKey:VVideoToolControllerInitalVideoEditStateKey];
-        if (initialVideoEditStateValue != nil)
-        {
-            _initialVideoEditState = [initialVideoEditStateValue integerValue];
         }
     }
     return self;

@@ -11,8 +11,8 @@
 extern NSString * const VVideoToolControllerInitalVideoEditStateKey;
 typedef NS_ENUM(NSInteger, VVideoToolControllerInitialVideoEditState)
 {
-    VVideoToolControllerInitialVideoEditStateVideo, // Default
-    VVideoToolControllerInitialVideoEditStateGIF,
+    VVideoToolControllerInitialVideoEditStateVideo,
+    VVideoToolControllerInitialVideoEditStateGIF, // Default
 };
 
 /**
