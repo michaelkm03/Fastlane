@@ -430,13 +430,13 @@ static NSString * const kPreferedMimeType = @"application/x-mpegURL";
 - (void)loadCommentsWithCommentId:(NSNumber *)commentId
 {
     [[VObjectManager sharedManager] findCommentPageOnSequence:self.sequence
-                                             withCommentId:self.deepLinkCommentId
-                                              successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+                                                withCommentId:self.deepLinkCommentId
+                                                 successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
          self.comments = [self.sequence.comments array];
          [self.delegate didUpdateCommentsWithDeepLink:commentId];
      }
-                                                      failBlock:nil];
+                                                    failBlock:nil];
 }
 
 - (void)loadComments:(VPageType)pageType
