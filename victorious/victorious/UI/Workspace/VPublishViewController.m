@@ -81,9 +81,9 @@ static const CGFloat kTopSpacePublishPrompt = 50.0f;
     
     [self setupBehaviors];
     
-    self.publishButton.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
-    self.publishButton.titleLabel.textColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
-    self.captionTextView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
+    self.publishButton.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+    self.publishButton.titleLabel.textColor = [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
+    self.captionTextView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     
     __weak typeof(self) welf = self;
     self.publishPrompt.transform = CGAffineTransformMakeScale(2.5f, 2.5f);
@@ -93,12 +93,14 @@ static const CGFloat kTopSpacePublishPrompt = 50.0f;
     };
 
     self.captionTextView.placeholderText = NSLocalizedString(@"TYPE A CAPTION & ADD AN #HASHTAG", @"Caption entry placeholder text");
-    self.captionTextView.typingAttributes = @{NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerParagraphFontKey]};
+    self.captionTextView.typingAttributes = @{NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerLabel3FontKey]};
     VContentInputAccessoryView *inputAccessoryView = [[VContentInputAccessoryView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 44.0f)];
+    self.captionTextView.textContainerInset = UIEdgeInsetsMake(10, 6, 0, 6);
+    self.captionTextView.backgroundColor = [UIColor clearColor];
     inputAccessoryView.textInputView = self.captionTextView;
     inputAccessoryView.maxCharacterLength = 120;
     inputAccessoryView.delegate = self;
-    inputAccessoryView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
+    inputAccessoryView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     self.captionTextView.inputAccessoryView = inputAccessoryView;
     
     self.previewImageView.image = self.publishParameters.previewImage;
@@ -291,7 +293,7 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
 {
-    if (CGRectContainsPoint(self.publishPrompt.frame, [touch locationInView:self.view]))
+    if (CGRectContainsPoint(self.captionTextView.bounds, [touch locationInView:self.captionTextView]))
     {
         return NO;
     }

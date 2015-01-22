@@ -38,7 +38,7 @@
                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" bouncesZoom="NO" id="k7t-Et-LrO" customClass="VPlaceholderTextView">
                             <rect key="frame" x="137" y="16" width="145" height="117"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" heightSizable="YES"/>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <color key="backgroundColor" red="0.94509803921568625" green="0.94509803921568625" blue="0.94509803921568625" alpha="1" colorSpace="calibratedRGB"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done"/>
                             <connections>
@@ -60,7 +60,7 @@
                 <outletCollection property="gestureRecognizers" destination="n8g-k8-NP3" appends="YES" id="STr-Cg-G3W"/>
                 <outletCollection property="gestureRecognizers" destination="4Sh-u7-tu5" appends="YES" id="uTq-SS-SMx"/>
             </connections>
-            <point key="canvasLocation" x="112" y="321"/>
+            <point key="canvasLocation" x="-109" y="299"/>
         </view>
         <panGestureRecognizer minimumNumberOfTouches="1" id="n8g-k8-NP3">
             <connections>
