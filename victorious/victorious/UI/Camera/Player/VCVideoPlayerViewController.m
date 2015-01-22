@@ -245,14 +245,21 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     [self.player replaceCurrentItemWithPlayerItem:playerItem];
 }
 
+- (void)setLoopWithoutComposition:(BOOL)loopWithoutComposition
+{
+    _loopWithoutComposition = loopWithoutComposition;
+    _isLooping = YES;
+}
+
 - (void)setItemURL:(NSURL *)itemURL loop:(BOOL)loop
 {
     _itemURL = itemURL;
-    _isLooping = loop;
+    _isLooping = self.loopWithoutComposition ? YES : loop;
     
     self.player.actionAtItemEnd = loop ? AVPlayerActionAtItemEndNone : AVPlayerActionAtItemEndPause;
     
-    [self.videoUtils createPlayerItemWithURL:itemURL loop:loop readyCallback:^(AVPlayerItem *playerItem)
+    const BOOL shouldLoopWithComposition = loop && !self.loopWithoutComposition;
+    [self.videoUtils createPlayerItemWithURL:itemURL loop:shouldLoopWithComposition readyCallback:^(AVPlayerItem *playerItem)
      {
          [self.player replaceCurrentItemWithPlayerItem:playerItem];
      }];
