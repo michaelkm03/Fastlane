@@ -42,7 +42,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="302" height="302"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </imageView>
-                            <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N8i-0p-V1f" customClass="VStreamCellVideoView">
+                            <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N8i-0p-V1f" customClass="VVideoView">
                                 <rect key="frame" x="0.0" y="0.0" width="302" height="302"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>

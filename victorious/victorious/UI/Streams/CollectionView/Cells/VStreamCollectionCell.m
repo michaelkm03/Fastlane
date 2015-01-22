@@ -37,9 +37,9 @@
 #import "CCHLinkTextView.h"
 #import "CCHLinkTextViewDelegate.h"
 #import "UIVIew+AutoLayout.h"
-#import "VStreamCellVideoView.h"
+#import "VVideoView.h"
 
-@interface VStreamCollectionCell() <VSequenceActionsDelegate, CCHLinkTextViewDelegate, VStreamCellVideoViewDelegtae>
+@interface VStreamCollectionCell() <VSequenceActionsDelegate, CCHLinkTextViewDelegate, VVideoViewDelegtae>
 
 @property (nonatomic, weak) IBOutlet UIImageView *playImageView;
 @property (nonatomic, weak) IBOutlet UIImageView *playBackgroundImageView;
@@ -49,7 +49,7 @@
 @property (nonatomic, weak) IBOutlet VStreamCellActionView *actionView;
 @property (nonatomic, weak) IBOutlet UIImageView *bottomGradient;
 
-@property (nonatomic, weak) IBOutlet VStreamCellVideoView *videoPlayerView;
+@property (nonatomic, weak) IBOutlet VVideoView *videoPlayerView;
 @property (nonatomic, weak) IBOutlet UIView *contentContainer;
 
 @property (nonatomic, strong) VAsset *videoAsset;
@@ -363,9 +363,9 @@ static const CGFloat kDescriptionBuffer = 18.0;
     }
 }
 
-#pragma mark - VStreamCellVideoViewDelegate
+#pragma mark - VVideoViewDelegate
 
-- (void)videoViewPlayerDidBecomeReady:(VStreamCellVideoView *)videoView
+- (void)videoViewPlayerDidBecomeReady:(VVideoView *)videoView
 {
     [self playVideo];
 }

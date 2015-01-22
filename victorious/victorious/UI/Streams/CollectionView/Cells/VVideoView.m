@@ -1,17 +1,17 @@
 //
-//  VStreamCellVideoView.m
+//  VVideoView.m
 //  victorious
 //
 //  Created by Patrick Lynch on 1/16/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VStreamCellVideoView.h"
+#import "VVideoView.h"
 #import "VVideoUtils.h"
 
 @import AVFoundation;
 
-@interface VStreamCellVideoView()
+@interface VVideoView()
 
 @property (nonatomic, strong) AVPlayer *player;
 @property (nonatomic, strong) AVPlayerLayer *playerLayer;
@@ -20,7 +20,7 @@
 
 @end
 
-@implementation VStreamCellVideoView
+@implementation VVideoView
 
 - (void)dealloc
 {

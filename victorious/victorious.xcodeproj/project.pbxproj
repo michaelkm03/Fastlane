@@ -378,8 +378,8 @@
 		A724EBDE1A099DF900A8865F /* VStreamCollectionCellWebContent.xib in Resources */ = {isa = PBXBuildFile; fileRef = A724EBDD1A099DF900A8865F /* VStreamCollectionCellWebContent.xib */; };
 		A733D8FC1A23D0980053E9F1 /* VNotificationSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = A733D8FB1A23D0980053E9F1 /* VNotificationSettings.m */; };
 		A733D8FF1A23D0C70053E9F1 /* VNotificationSettings+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A733D8FE1A23D0C70053E9F1 /* VNotificationSettings+RestKit.m */; };
-		A73A86BA1A69FA95008C6355 /* VStreamCellVideoView.m in Sources */ = {isa = PBXBuildFile; fileRef = A73A86B91A69FA95008C6355 /* VStreamCellVideoView.m */; };
 		A73A86C91A6EE39C008C6355 /* VVideoUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = A73A86C81A6EE39C008C6355 /* VVideoUtils.m */; };
+		A73A87021A71ADF9008C6355 /* VVideoView.m in Sources */ = {isa = PBXBuildFile; fileRef = A73A87011A71ADF9008C6355 /* VVideoView.m */; };
 		A73EAEC01A4134C10021BB31 /* NSString+Unicode_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = A73EAEBF1A4134C10021BB31 /* NSString+Unicode_Tests.m */; };
 		A73EAEC31A41453C0021BB31 /* NSString+Unicode.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73EAEC21A41453C0021BB31 /* NSString+Unicode.swift */; };
 		A73EAEC51A41F7BD0021BB31 /* NSString+Unicode.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73EAEC21A41453C0021BB31 /* NSString+Unicode.swift */; };
@@ -1331,10 +1331,10 @@
 		A733D8FE1A23D0C70053E9F1 /* VNotificationSettings+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VNotificationSettings+RestKit.m"; sourceTree = "<group>"; };
 		A735323119DB60600040DB30 /* VAuthorizationViewControllerFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAuthorizationViewControllerFactory.h; sourceTree = "<group>"; };
 		A735323219DB60600040DB30 /* VAuthorizationViewControllerFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAuthorizationViewControllerFactory.m; sourceTree = "<group>"; };
-		A73A86B81A69FA95008C6355 /* VStreamCellVideoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamCellVideoView.h; sourceTree = "<group>"; };
-		A73A86B91A69FA95008C6355 /* VStreamCellVideoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamCellVideoView.m; sourceTree = "<group>"; };
 		A73A86C71A6EE39C008C6355 /* VVideoUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VVideoUtils.h; sourceTree = "<group>"; };
 		A73A86C81A6EE39C008C6355 /* VVideoUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVideoUtils.m; sourceTree = "<group>"; };
+		A73A87001A71ADF9008C6355 /* VVideoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VVideoView.h; path = victorious/UI/Streams/CollectionView/Cells/VVideoView.h; sourceTree = SOURCE_ROOT; };
+		A73A87011A71ADF9008C6355 /* VVideoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VVideoView.m; path = victorious/UI/Streams/CollectionView/Cells/VVideoView.m; sourceTree = SOURCE_ROOT; };
 		A73AFB7B19F573AB0005A9EA /* VVideoTrackingTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVideoTrackingTests.m; sourceTree = "<group>"; };
 		A73EAEBF1A4134C10021BB31 /* NSString+Unicode_Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Unicode_Tests.m"; sourceTree = "<group>"; };
 		A73EAEC21A41453C0021BB31 /* NSString+Unicode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSString+Unicode.swift"; sourceTree = "<group>"; };
@@ -2247,6 +2247,8 @@
 				D8AF00EE1A128A7200B147C4 /* VHashTagTextView.m */,
 				A7F8DD4B1A0B065800F82256 /* VHeaderView.h */,
 				A7F8DD4C1A0B065800F82256 /* VHeaderView.m */,
+				D8C1FD061A69C2E40072892B /* VKeyboardNotificationManager.h */,
+				D8C1FD071A69C2E40072892B /* VKeyboardNotificationManager.m */,
 				A70564C019E781EE004A8387 /* VNoContentTableViewCell.h */,
 				A70564C119E781EE004A8387 /* VNoContentTableViewCell.m */,
 				03FD87D419F96F6900D93BAA /* VNoContentTableViewCell.xib */,
@@ -2265,8 +2267,8 @@
 				0314D44419B46B5E00FA363C /* VTableViewCell.m */,
 				A73A86C71A6EE39C008C6355 /* VVideoUtils.h */,
 				A73A86C81A6EE39C008C6355 /* VVideoUtils.m */,
-				D8C1FD061A69C2E40072892B /* VKeyboardNotificationManager.h */,
-				D8C1FD071A69C2E40072892B /* VKeyboardNotificationManager.m */,
+				A73A87001A71ADF9008C6355 /* VVideoView.h */,
+				A73A87011A71ADF9008C6355 /* VVideoView.m */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -4070,8 +4072,6 @@
 				DB6FDC3819C10CC600CEF5BF /* VStreamCellHeaderView.h */,
 				DB6FDC3919C10CC600CEF5BF /* VStreamCellHeaderView.m */,
 				0390088719F3A7CC00FD7EDF /* VStreamCellHeaderView.xib */,
-				A73A86B81A69FA95008C6355 /* VStreamCellVideoView.h */,
-				A73A86B91A69FA95008C6355 /* VStreamCellVideoView.m */,
 				BE88FF621A0005E70064AB28 /* VStreamCollectionCell-C.xib */,
 				BE88FF631A0005E70064AB28 /* VStreamCollectionCell.h */,
 				BE88FF641A0005E70064AB28 /* VStreamCollectionCell.m */,
@@ -5194,6 +5194,7 @@
 				036AA36319F32B3800FE6B9D /* VPhotoLibraryManager.m in Sources */,
 				D8E39BD619CB7C80007FD86A /* VContentCell.m in Sources */,
 				A769C3F01A13176700698D0C /* VWebViewFactory.m in Sources */,
+				A73A87021A71ADF9008C6355 /* VVideoView.m in Sources */,
 				0314D4D419B46B5E00FA363C /* VUserSearchViewController.m in Sources */,
 				A733D8FC1A23D0980053E9F1 /* VNotificationSettings.m in Sources */,
 				0314D48819B46B5E00FA363C /* VCommentTextAndMediaView.m in Sources */,
@@ -5262,7 +5263,6 @@
 				A75C10341A65DE6F00439809 /* VCommentHighlighter.m in Sources */,
 				0314D4B219B46B5E00FA363C /* VInboxViewController.m in Sources */,
 				A7A2E0121A391A7D00F8C705 /* VPurchaseRecord.m in Sources */,
-				A73A86BA1A69FA95008C6355 /* VStreamCellVideoView.m in Sources */,
 				BEDF0FC618DBC93B00750EF6 /* VVoteType.m in Sources */,
 				0314D2E319B46AF300FA363C /* VUserManager.m in Sources */,
 				D8360CF319E379C200D7E260 /* VExperienceEnhancer.m in Sources */,

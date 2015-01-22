@@ -1,5 +1,5 @@
 //
-//  VStreamCellVideoView.h
+//  VVideoView.h
 //  victorious
 //
 //  Created by Patrick Lynch on 1/16/15.
@@ -8,20 +8,20 @@
 
 @import UIKit;
 
-@class VStreamCellVideoView;
+@class VVideoView;
 @class AVPlayer;
 
-@protocol VStreamCellVideoViewDelegtae <NSObject>
+@protocol VVideoViewDelegtae <NSObject>
 
-- (void)videoViewPlayerDidBecomeReady:(VStreamCellVideoView *)videoView;
+- (void)videoViewPlayerDidBecomeReady:(VVideoView *)videoView;
 
 @end
 
-@interface VStreamCellVideoView : UIView
+@interface VVideoView : UIView
 
 @property (nonatomic, strong) NSURL *itemURL;
 
-@property (nonatomic, weak) id<VStreamCellVideoViewDelegtae> delegate;
+@property (nonatomic, weak) id<VVideoViewDelegtae> delegate;
 
 - (void)setItemURL:(NSURL *)itemURL loop:(BOOL)loop audioMuted:(BOOL)audioMuted;
 
