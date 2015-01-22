@@ -424,6 +424,7 @@
 "PostOnFollowedHashTag" = "Post on followed hashtag";
 "NewPrivateMessage"     = "New Private Message";
 "NewFollower"           = "Someone follows me";
+"TagInComment"          = "Someone mentions me";
 
 "NotificationSettingSectionFeeds" = "Feeds";
 "NotificationSettingSectionPeople" = "People";

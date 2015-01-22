@@ -80,7 +80,7 @@ static BOOL isRunningTests(void) __attribute__((const));
     [[VTrackingManager sharedInstance] addDelegate:[[VApplicationTracking alloc] init]];
     [[VTrackingManager sharedInstance] addDelegate:[[VFlurryTracking alloc] init]];
     [[VTrackingManager sharedInstance] addDelegate:[[VGoogleAnalyticsTracking alloc] init]];
-    
+
     return YES;
 }
 

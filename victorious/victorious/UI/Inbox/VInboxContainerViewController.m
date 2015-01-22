@@ -173,7 +173,7 @@ NSString * const VInboxContainerViewControllerInboxPushReceivedNotification = @"
     
     if ( [url.host isEqualToString:VInboxContainerViewControllerDeeplinkHostComponent] )
     {
-        NSInteger conversationID = [[url firstNonSlashPathComponent] integerValue];
+        NSInteger conversationID = [[url v_firstNonSlashPathComponent] integerValue];
         if ( conversationID != 0 )
         {
             [[VObjectManager sharedManager] conversationByID:@(conversationID)

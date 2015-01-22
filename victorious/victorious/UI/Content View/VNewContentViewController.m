@@ -77,11 +77,14 @@
 #import "VModalTransition.h"
 
 #import "VTracking.h"
+#import "VCommentHighlighter.h"
 #import "VScrollPaginator.h"
 
 static const CGFloat kMaxInputBarHeight = 200.0f;
 
 @interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate,VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate>
+
+#import "VCommentHighlighter.h"
 
 @property (nonatomic, strong, readwrite) VContentViewViewModel *viewModel;
 @property (nonatomic, strong) NSURL *mediaURL;
@@ -123,6 +126,8 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 @property (nonatomic, strong) VTransitionDelegate *transitionDelegate;
 @property (nonatomic, strong) VScrollPaginator *scrollPaginator;
 
+@property (nonatomic, strong) VCommentHighlighter *commentHighlighter;
+
 @end
 
 @implementation VNewContentViewController
@@ -161,13 +166,29 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     {
         if ([self.contentCollectionView numberOfItemsInSection:VContentViewSectionAllComments] > 0)
         {
-            [self.contentCollectionView reloadData];
+            CGSize startSize = self.contentCollectionView.collectionViewLayout.collectionViewContentSize;
             
-            __weak typeof(self) welf = self;
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
-                           {
-                               [welf.contentCollectionView flashScrollIndicators];
-                           });
+            if ( !self.commentHighlighter.isAnimatingCellHighlight ) //< Otherwise the animation is interrupted
+            {
+                [self.contentCollectionView reloadData];
+                
+                __weak typeof(self) welf = self;
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+                               {
+                                   [welf.contentCollectionView flashScrollIndicators];
+                               });
+                
+                // If we're prepending new comments, we must adjust the scroll view's offset
+                if ( pageType == VPageTypePrevious )
+                {
+                    CGSize endSize = self.contentCollectionView.collectionViewLayout.collectionViewContentSize;
+                    CGPoint diff = CGPointMake( endSize.width - startSize.width, endSize.height - startSize.height );
+                    CGPoint contentOffset = self.contentCollectionView.contentOffset;
+                    contentOffset.x += diff.x;
+                    contentOffset.y += diff.y;
+                    self.contentCollectionView.contentOffset = contentOffset;
+                }
+            }
         }
         else
         {
@@ -176,6 +197,34 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
         }
         
         self.handleView.numberOfComments = self.viewModel.sequence.commentCount.integerValue;
+    }
+}
+
+- (void)didUpdateCommentsWithDeepLink:(NSNumber *)commentId
+{
+    [self didUpdateCommentsWithPageType:VPageTypeFirst];
+    
+    for ( NSUInteger i = 0; i < self.viewModel.comments.count; i++ )
+    {
+        VComment *comment = self.viewModel.comments[ i ];
+        if ( [comment.remoteId isEqualToNumber:commentId] )
+        {
+            [self didUpdateCommentsWithPageType:VPageTypePrevious];
+            
+            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:VContentViewSectionAllComments];
+            [self.commentHighlighter scrollToAndHighlightIndexPath:indexPath delay:0.3f completion:^
+            {
+                // Setting `isAnimatingCellHighlight` to YES prevents the collectionView
+                // from reloading (as intented).  So we call `updateCommentsWithPageType:`
+                // to update if it any new comments were loading while
+                // the animation was playing.
+                [self didUpdateCommentsWithPageType:VPageTypePrevious];
+                
+                // Trigger the paginator to load any more pages based on the scroll
+                // position to which VCommentHighlighter animated to
+                [self.scrollPaginator scrollViewDidScroll:self.contentCollectionView];
+            }];
+        }
     }
 }
 
@@ -311,6 +360,8 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     [super viewDidLoad];
     
     self.scrollPaginator = [[VScrollPaginator alloc] initWithDelegate:self];
+
+    self.commentHighlighter = [[VCommentHighlighter alloc] initWithCollectionView:self.contentCollectionView];
     
     // Hack to remove margins stuff should probably refactor :(
     if ([self.view respondsToSelector:@selector(setLayoutMargins:)])
@@ -481,6 +532,8 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     
     self.contentCollectionView.delegate = nil;
     self.videoCell.delegate = nil;
+    
+    [self.commentHighlighter stopAnimations];
 }
 
 - (void)presentViewController:(UIViewController *)viewControllerToPresent
@@ -1071,7 +1124,10 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     const BOOL hasComments = self.viewModel.comments.count > 0;
     if ( hasComments )
     {
-        [self.scrollPaginator scrollViewDidScroll:scrollView];
+        if ( !self.commentHighlighter.isAnimatingCellHighlight )
+        {
+            [self.scrollPaginator scrollViewDidScroll:scrollView];
+        }
     }
 }
 
@@ -1152,7 +1208,6 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
          {
              [welf didUpdateCommentsWithPageType:VPageTypeFirst];
          }];
-         
      }];
     
     [inputAccessoryView clearTextAndResign];
@@ -1360,7 +1415,8 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
          [self.viewModel removeCommentAtIndex:row];
          NSArray *indexPaths = @[ [NSIndexPath indexPathForRow:row inSection:VContentViewSectionAllComments] ];
          [self.contentCollectionView deleteItemsAtIndexPaths:indexPaths];
-     } completion:nil];
+     }
+                                         completion:nil];
 }
 
 - (void)editComment:(VComment *)comment

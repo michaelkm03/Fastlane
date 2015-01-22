@@ -724,7 +724,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
                               VTrackingKeyUrls : sequence.tracking.cellClick };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventSequenceSelected parameters:params];
     
-    [[self.dependencyManager scaffoldViewController] showContentViewWithSequence:sequence placeHolderImage:previewImage];
+    [[self.dependencyManager scaffoldViewController] showContentViewWithSequence:sequence commentId:nil placeHolderImage:previewImage];
 }
 
 #pragma mark - Hashtag Button Actions

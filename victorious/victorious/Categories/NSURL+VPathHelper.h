@@ -14,6 +14,12 @@
  Returns the first pathComponent that is not equal
  to "/", or nil if no such pathComponent exists.
  */
-- (NSString *)firstNonSlashPathComponent;
+- (NSString *)v_firstNonSlashPathComponent;
+
+/**
+ Returns a pathComponent at the specified index or nil if no such pathComponent exists.
+ This does not ignore slashes like the method `v_firstNonSlashPathComponent`.
+ */
+- (NSString *)v_pathComponentAtIndex:(NSUInteger)index;
 
 @end

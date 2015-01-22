@@ -83,7 +83,7 @@ static NSString * const kProfileDeeplinkHostComponent = @"profile";
     
     if ( [url.host isEqualToString:kProfileDeeplinkHostComponent] )
     {
-        NSInteger userID = [[url firstNonSlashPathComponent] integerValue];
+        NSInteger userID = [[url v_firstNonSlashPathComponent] integerValue];
         if ( userID != 0 )
         {
             [[VObjectManager sharedManager] fetchUser:@(userID)
