@@ -61,27 +61,6 @@
      {
          [self didFinishAssetCreation:playerItem];
      }];
-    
-    [self.player addObserver:self forKeyPath:@"status" options:NSKeyValueObservingOptionNew context:NULL];
-}
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-    if ( object == self.player)
-    {
-        if ( self.player.status == AVPlayerStatusFailed )
-        {
-            NSLog( @"manage failure" );
-        }
-        else if ( self.player.status == AVPlayerStatusReadyToPlay )
-        {
-            NSLog( @"player ready: manage success state (e.g. by playing the movie)" );
-        }
-        else if ( self.player.status == AVPlayerStatusUnknown )
-        {
-            NSLog( @"the player is still not ready: manage this waiting status" );
-        }
-    }
 }
 
 - (void)didFinishAssetCreation:(AVPlayerItem *)playerItem
