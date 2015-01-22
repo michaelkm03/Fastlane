@@ -160,7 +160,7 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
         return NO;
     }
     
-    NSNumber *commentId = @([url v_nonSlashPathComponentAtIndex:1].integerValue);
+    NSNumber *commentId = @([url v_pathComponentAtIndex:2].integerValue);
     
     [[self.dependencyManager objectManager] fetchSequenceByID:sequenceID
                                                  successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)

@@ -24,7 +24,7 @@ static NSString * const kPathSeparator = @"/";
     return nil;
 }
 
-- (NSString *)v_nonSlashPathComponentAtIndex:(NSUInteger)index
+- (NSString *)v_pathComponentAtIndex:(NSUInteger)index
 {
     NSUInteger componentIndex = 0;
     for (NSString *pathComponent in self.pathComponents)
