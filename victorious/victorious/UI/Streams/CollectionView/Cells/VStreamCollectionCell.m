@@ -183,7 +183,10 @@ static const CGFloat kDescriptionBuffer = 18.0;
     if ( self.canPlayVideo )
     {
         [self.videoPlayerView play];
-        [UIView animateWithDuration:0.2f delay:0.0f options:kNilOptions animations:^
+        [UIView animateWithDuration:0.2f
+                              delay:0.0f
+                            options:UIViewAnimationOptionCurveEaseOut
+                         animations:^void
          {
              self.videoPlayerView.alpha = 1.0f;
          }
@@ -195,7 +198,10 @@ static const CGFloat kDescriptionBuffer = 18.0;
 {
     if ( self.canPlayVideo  )
     {
-        [UIView animateWithDuration:0.2f delay:0.0f options:kNilOptions animations:^
+        [UIView animateWithDuration:0.2f
+                              delay:0.0f
+                            options:UIViewAnimationOptionCurveEaseOut
+                         animations:^void
          {
              self.videoPlayerView.alpha = 0.0f;
          }

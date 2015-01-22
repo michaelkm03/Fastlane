@@ -28,6 +28,10 @@
 
 @property (nonatomic, weak) UIViewController *parentViewController;
 
+/**
+ A rectangle that corresponds to any media asset within this view,
+ useful for indicating its visibility when scrolling the collection view.
+ */
 @property (nonatomic, assign, readonly) CGRect mediaContentFrame;
 
 - (void)hideOverlays;

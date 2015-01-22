@@ -67,7 +67,10 @@
 {
     [self.player replaceCurrentItemWithPlayerItem:playerItem];
     
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                 name:AVPlayerItemDidPlayToEndTimeNotification
+                                               object:playerItem];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(playerItemDidReachEnd:)
                                                  name:AVPlayerItemDidPlayToEndTimeNotification
