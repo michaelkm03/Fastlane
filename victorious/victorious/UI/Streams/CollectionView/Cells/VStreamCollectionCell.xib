@@ -86,15 +86,19 @@
                                 <rect key="frame" x="0.0" y="7" width="320" height="76"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </view>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="PlayTriangle" translatesAutoresizingMaskIntoConstraints="NO" id="mEM-F3-EZt">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="PlayTriangle" translatesAutoresizingMaskIntoConstraints="NO" id="mEM-F3-EZt">
                                 <rect key="frame" x="134" y="134" width="52" height="52"/>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="PlayCircle" translatesAutoresizingMaskIntoConstraints="NO" id="NuW-UN-tpX">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="PlayCircle" translatesAutoresizingMaskIntoConstraints="NO" id="NuW-UN-tpX">
                                 <rect key="frame" x="134" y="134" width="52" height="52"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="mEM-F3-EZt" firstAttribute="centerX" secondItem="NuW-UN-tpX" secondAttribute="centerX" id="7SX-I8-6Bl"/>
+                            <constraint firstAttribute="centerY" secondItem="NuW-UN-tpX" secondAttribute="centerY" id="DXK-y2-TSg"/>
+                            <constraint firstAttribute="centerX" secondItem="NuW-UN-tpX" secondAttribute="centerX" id="GWo-yl-q7l"/>
+                            <constraint firstItem="mEM-F3-EZt" firstAttribute="centerY" secondItem="NuW-UN-tpX" secondAttribute="centerY" id="GXj-bY-ZRw"/>
                             <constraint firstAttribute="bottom" secondItem="XNn-If-c8r" secondAttribute="bottom" constant="237" id="Koq-Qu-TnD"/>
                             <constraint firstAttribute="trailing" secondItem="Ijd-Vg-9fv" secondAttribute="trailing" constant="20" id="Pyn-tg-Pw3"/>
                             <constraint firstItem="XNn-If-c8r" firstAttribute="leading" secondItem="3gM-g0-IBc" secondAttribute="leading" id="a2k-Na-FWQ"/>

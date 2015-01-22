@@ -17,7 +17,7 @@
 #import "VAsset.h"
 #import "VAnswer.h"
 #import "VPollResult.h"
-#import "VAdBreak.h"
+#import "VNode+Fetcher.h"
 
 // Model Categories
 #import "VSequence+Fetcher.h"
@@ -101,7 +101,7 @@
 
         _currentNode = [sequence firstNode];
         
-        _currentAsset = [sequence primaryAssetWithPreferredMimeType:@"video/mp4"];
+        _currentAsset = [_currentNode mp4Asset];
         
         // Set the default ad chain index
         self.currentAdChainIndex = 0;

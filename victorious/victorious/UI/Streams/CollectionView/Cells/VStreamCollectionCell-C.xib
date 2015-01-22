@@ -22,12 +22,6 @@
                             <constraint firstAttribute="width" secondItem="W6W-Ju-9kU" secondAttribute="height" multiplier="151:25" id="BD6-vG-1Z5"/>
                         </constraints>
                     </view>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="PlayTriangle" translatesAutoresizingMaskIntoConstraints="NO" id="EYB-Sg-RQg">
-                        <rect key="frame" x="125" y="175" width="52" height="52"/>
-                    </imageView>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="PlayCircle" translatesAutoresizingMaskIntoConstraints="NO" id="IRG-lN-Zwl">
-                        <rect key="frame" x="125" y="175" width="52" height="52"/>
-                    </imageView>
                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Lorem ipsum dolor sit amet" translatesAutoresizingMaskIntoConstraints="NO" id="QyC-HK-x2o" customClass="VHashTagTextView">
                         <rect key="frame" x="10" y="354" width="282" height="83"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -66,6 +60,12 @@
                             <constraint firstAttribute="trailing" secondItem="De6-Pn-uJH" secondAttribute="trailing" id="qKL-Tb-Kbe"/>
                         </constraints>
                     </view>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="PlayTriangle" translatesAutoresizingMaskIntoConstraints="NO" id="EYB-Sg-RQg">
+                        <rect key="frame" x="125" y="175" width="52" height="52"/>
+                    </imageView>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="PlayCircle" translatesAutoresizingMaskIntoConstraints="NO" id="IRG-lN-Zwl">
+                        <rect key="frame" x="125" y="175" width="52" height="52"/>
+                    </imageView>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
@@ -76,17 +76,17 @@
                 <constraint firstAttribute="trailing" secondItem="LDv-jo-7gZ" secondAttribute="trailing" constant="-1" id="5Mm-nB-GND"/>
                 <constraint firstItem="QyC-HK-x2o" firstAttribute="top" secondItem="N8i-0p-V1f" secondAttribute="bottom" constant="2" id="A3e-xE-iUM"/>
                 <constraint firstAttribute="trailing" secondItem="Yqk-3U-Cvu" secondAttribute="trailing" priority="999" id="Cl1-zq-K2h"/>
-                <constraint firstItem="IRG-lN-Zwl" firstAttribute="centerY" secondItem="LDv-jo-7gZ" secondAttribute="centerY" constant="-256.5" id="DTJ-S9-fmO"/>
                 <constraint firstItem="Yqk-3U-Cvu" firstAttribute="top" secondItem="W6W-Ju-9kU" secondAttribute="top" priority="999" constant="50" id="Fec-M2-Pi0"/>
                 <constraint firstItem="LDv-jo-7gZ" firstAttribute="leading" secondItem="4JO-Ba-PyN" secondAttribute="leading" constant="-1" id="GHg-5D-n1d"/>
                 <constraint firstItem="LDv-jo-7gZ" firstAttribute="top" secondItem="QyC-HK-x2o" secondAttribute="bottom" id="Gnd-a2-pdZ"/>
+                <constraint firstItem="IRG-lN-Zwl" firstAttribute="centerX" secondItem="Yqk-3U-Cvu" secondAttribute="centerX" id="NF1-1Q-vSi"/>
                 <constraint firstAttribute="bottom" secondItem="LDv-jo-7gZ" secondAttribute="bottom" id="NgO-Wi-bMH"/>
-                <constraint firstItem="IRG-lN-Zwl" firstAttribute="centerY" secondItem="EYB-Sg-RQg" secondAttribute="centerY" id="XRg-Wl-KJB"/>
                 <constraint firstItem="Yqk-3U-Cvu" firstAttribute="leading" secondItem="4JO-Ba-PyN" secondAttribute="leading" priority="999" id="Z4A-2v-80a"/>
-                <constraint firstItem="IRG-lN-Zwl" firstAttribute="centerX" secondItem="EYB-Sg-RQg" secondAttribute="centerX" id="dSC-bY-AJd"/>
                 <constraint firstItem="QyC-HK-x2o" firstAttribute="leading" secondItem="4JO-Ba-PyN" secondAttribute="leading" constant="10" id="hYd-zJ-fRr"/>
                 <constraint firstItem="W6W-Ju-9kU" firstAttribute="leading" secondItem="4JO-Ba-PyN" secondAttribute="leading" id="io7-oH-DPa"/>
-                <constraint firstItem="IRG-lN-Zwl" firstAttribute="centerX" secondItem="LDv-jo-7gZ" secondAttribute="centerX" id="saG-Os-yv6"/>
+                <constraint firstItem="IRG-lN-Zwl" firstAttribute="centerY" secondItem="Yqk-3U-Cvu" secondAttribute="centerY" id="lEo-WB-qDH"/>
+                <constraint firstItem="IRG-lN-Zwl" firstAttribute="centerY" secondItem="EYB-Sg-RQg" secondAttribute="centerY" id="m64-Ju-PRd"/>
+                <constraint firstItem="IRG-lN-Zwl" firstAttribute="centerX" secondItem="EYB-Sg-RQg" secondAttribute="centerX" id="w86-8c-rym"/>
             </constraints>
             <size key="customSize" width="543" height="313"/>
             <connections>

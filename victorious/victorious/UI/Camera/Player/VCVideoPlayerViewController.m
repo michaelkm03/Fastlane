@@ -915,7 +915,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 
 - (void)notifyDelegateReadyToPlayIfReallyReady
 {
-    if ((!self.delegateNotifiedOfReadinessToPlay) && (self.player.status == AVPlayerStatusReadyToPlay) && (self.hasCaculatedItemTime) && (self.hasCalculatedItemSize))
+    if ((!self.delegateNotifiedOfReadinessToPlay) && (self.player.status == AVPlayerStatusReadyToPlay) )
     {
         if ([self.delegate respondsToSelector:@selector(videoPlayerReadyToPlay:)])
         {
