@@ -9,7 +9,7 @@
 #import "VCommentHighlighter.h"
 #import "VContentCommentsCell.h"
 #import "VThemeManager.h"
-#import "UIColor+Brightness.h"
+#import "UIColor+VBrightness.h"
 
 static NSString * const kTargetIndexPath = @"com.getvictorious.targetIndexPathKey";
 static NSString * const kCompletionCallback = @"com.getvictorious.completionCallbackKey";

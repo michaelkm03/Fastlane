@@ -437,7 +437,7 @@
 		A790C8291A01980F00C4F208 /* VTrackingEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = A790C8231A01980F00C4F208 /* VTrackingEvent.m */; };
 		A790C82A1A01980F00C4F208 /* VTrackingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A790C8251A01980F00C4F208 /* VTrackingManager.m */; };
 		A7976D0719FAE8EA00B5A145 /* AVAsset+Orientation.m in Sources */ = {isa = PBXBuildFile; fileRef = A7976D0619FAE8EA00B5A145 /* AVAsset+Orientation.m */; };
-		A79873CA1A6496A50014D099 /* UIColor+Brightness.m in Sources */ = {isa = PBXBuildFile; fileRef = A79873C91A6496A50014D099 /* UIColor+Brightness.m */; };
+		A79873CA1A6496A50014D099 /* UIColor+VBrightness.m in Sources */ = {isa = PBXBuildFile; fileRef = A79873C91A6496A50014D099 /* UIColor+VBrightness.m */; };
 		A7A2DFFF1A37813D00F8C705 /* VPurchaseActionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A2DFFE1A37813D00F8C705 /* VPurchaseActionCell.m */; };
 		A7A2E0011A38C7B700F8C705 /* NSData+AESTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A2E0001A38C7B700F8C705 /* NSData+AESTests.m */; };
 		A7A2E0071A38E44B00F8C705 /* VPurchaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A2E0041A38E44B00F8C705 /* VPurchaseViewController.m */; };
@@ -1418,8 +1418,8 @@
 		A7976D0519FAE8EA00B5A145 /* AVAsset+Orientation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AVAsset+Orientation.h"; sourceTree = "<group>"; };
 		A7976D0619FAE8EA00B5A145 /* AVAsset+Orientation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AVAsset+Orientation.m"; sourceTree = "<group>"; };
 		A7976D0819FAE94300B5A145 /* AVAsset+OrientationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AVAsset+OrientationTests.m"; sourceTree = "<group>"; };
-		A79873C81A6496A50014D099 /* UIColor+Brightness.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Brightness.h"; sourceTree = "<group>"; };
-		A79873C91A6496A50014D099 /* UIColor+Brightness.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Brightness.m"; sourceTree = "<group>"; };
+		A79873C81A6496A50014D099 /* UIColor+VBrightness.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+VBrightness.h"; sourceTree = "<group>"; };
+		A79873C91A6496A50014D099 /* UIColor+VBrightness.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+VBrightness.m"; sourceTree = "<group>"; };
 		A7A2DFFD1A37813D00F8C705 /* VPurchaseActionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPurchaseActionCell.h; sourceTree = "<group>"; };
 		A7A2DFFE1A37813D00F8C705 /* VPurchaseActionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPurchaseActionCell.m; sourceTree = "<group>"; };
 		A7A2E0001A38C7B700F8C705 /* NSData+AESTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+AESTests.m"; sourceTree = "<group>"; };
@@ -3672,8 +3672,8 @@
 				0314D06319B466C100FA363C /* UIActivityViewController+VStatusBarHandling.m */,
 				BE40559218A1828D00092AE1 /* UIButton+VImageLoading.h */,
 				BE40559318A1828D00092AE1 /* UIButton+VImageLoading.m */,
-				A79873C81A6496A50014D099 /* UIColor+Brightness.h */,
-				A79873C91A6496A50014D099 /* UIColor+Brightness.m */,
+				A79873C81A6496A50014D099 /* UIColor+VBrightness.h */,
+				A79873C91A6496A50014D099 /* UIColor+VBrightness.m */,
 				0314D06519B4670A00FA363C /* UIImage+Cropping.h */,
 				0314D06619B4670A00FA363C /* UIImage+Cropping.m */,
 				0314D06719B4670A00FA363C /* UIImage+ImageCreation.h */,
@@ -5009,7 +5009,7 @@
 				0314D48C19B46B5E00FA363C /* VSelectorViewController.m in Sources */,
 				D8CA63C119D5DEE2002046E5 /* UIView+MotionEffects.m in Sources */,
 				A743E7E71A08173B00339CB3 /* VEmailValidator.m in Sources */,
-				A79873CA1A6496A50014D099 /* UIColor+Brightness.m in Sources */,
+				A79873CA1A6496A50014D099 /* UIColor+VBrightness.m in Sources */,
 				DB531B561A425A7200B4ADC8 /* VHashtag.m in Sources */,
 				0314D4B519B46B5E00FA363C /* VLightboxDisplayAnimator.m in Sources */,
 				0314D4C019B46B5E00FA363C /* VProfileCreateViewController.m in Sources */,

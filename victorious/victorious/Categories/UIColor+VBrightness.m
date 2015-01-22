@@ -1,14 +1,14 @@
 //
-//  UIColor+Brightness.m
+//  UIColor+VBrightness.m
 //  victorious
 //
 //  Created by Patrick Lynch on 12/8/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "UIColor+Brightness.h"
+#import "UIColor+VBrightness.h"
 
-@implementation UIColor (Brightness)
+@implementation UIColor (VBrightness)
 
 - (UIColor *)v_colorLightenedBy:(CGFloat)amount
 {
