@@ -487,7 +487,6 @@
 		BE11447E19D4ADCC006A6D65 /* UIImageView+VLoadingAnimations.m in Sources */ = {isa = PBXBuildFile; fileRef = BE11447D19D4ADCC006A6D65 /* UIImageView+VLoadingAnimations.m */; };
 		BE11F23B19CB44B900DEC776 /* VStream+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE11F23A19CB44B900DEC776 /* VStream+RestKit.m */; };
 		BE11F26519CCADD200DEC776 /* VStreamItem+Fetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = BE11F26419CCADD200DEC776 /* VStreamItem+Fetcher.m */; };
-		BE11F27119CCF5B300DEC776 /* VObjectManager+Streams.m in Sources */ = {isa = PBXBuildFile; fileRef = BE11F27019CCF5B300DEC776 /* VObjectManager+Streams.m */; };
 		BE171D7A1868BE64004E5202 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE171D791868BE64004E5202 /* Foundation.framework */; };
 		BE171D7C1868BE64004E5202 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE171D7B1868BE64004E5202 /* CoreGraphics.framework */; };
 		BE171D7E1868BE64004E5202 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE171D7D1868BE64004E5202 /* UIKit.framework */; };
@@ -1503,8 +1502,6 @@
 		BE11F23A19CB44B900DEC776 /* VStream+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VStream+RestKit.m"; sourceTree = "<group>"; };
 		BE11F26319CCADD200DEC776 /* VStreamItem+Fetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VStreamItem+Fetcher.h"; sourceTree = "<group>"; };
 		BE11F26419CCADD200DEC776 /* VStreamItem+Fetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VStreamItem+Fetcher.m"; sourceTree = "<group>"; };
-		BE11F26F19CCF5B300DEC776 /* VObjectManager+Streams.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VObjectManager+Streams.h"; sourceTree = "<group>"; };
-		BE11F27019CCF5B300DEC776 /* VObjectManager+Streams.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VObjectManager+Streams.m"; sourceTree = "<group>"; };
 		BE171D761868BE64004E5202 /* victorious.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = victorious.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE171D791868BE64004E5202 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		BE171D7B1868BE64004E5202 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -1971,8 +1968,6 @@
 				0314D0AC19B4698800FA363C /* VObjectManager.m */,
 				0314D2E419B46B0E00FA363C /* VPaginationManager.h */,
 				0314D2E519B46B0E00FA363C /* VPaginationManager.m */,
-				BE11F26F19CCF5B300DEC776 /* VObjectManager+Streams.h */,
-				BE11F27019CCF5B300DEC776 /* VObjectManager+Streams.m */,
 			);
 			path = Object;
 			sourceTree = "<group>";
@@ -4730,7 +4725,6 @@
 				DBAD6C9F1A2FD7B700AB5A4B /* VTremorAdViewController.m in Sources */,
 				0314D05E19B4663C00FA363C /* UINavigationController+RotationMethodForwarding.m in Sources */,
 				BE88FF8D1A00060E0064AB28 /* UIViewController+VNavMenu.m in Sources */,
-				BE11F27119CCF5B300DEC776 /* VObjectManager+Streams.m in Sources */,
 				D836884419C3718A00070F22 /* VBaseSupplementaryView.m in Sources */,
 				0314D4A319B46B5E00FA363C /* VCreatePollViewController.m in Sources */,
 				A7EECAD51A377FA000A8BAE1 /* VPurchaseSettingsViewController.m in Sources */,
