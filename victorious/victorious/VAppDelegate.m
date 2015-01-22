@@ -71,8 +71,6 @@ static BOOL isRunningTests(void) __attribute__((const));
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     [[VReachability reachabilityForInternetConnection] startNotifier];
     
-    // Start listening for response to init method from server:
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onInitResponse:) name:kInitResponseNotification object:nil];
     [VObjectManager setupObjectManager];
 
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
@@ -132,21 +130,10 @@ static BOOL isRunningTests(void) __attribute__((const));
 {
     [[VThemeManager sharedThemeManager] updateToNewTheme];
     [[VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext saveToPersistentStore:nil];
-    
-    VTracking *applicationTracking = [VSettingManager sharedManager].applicationTracking;
-    
-    NSArray* trackingURLs = applicationTracking != nil ? applicationTracking.appEnterBackground : @[];
-    NSDictionary *params = @{ VTrackingKeyUrls : trackingURLs };
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventApplicationDidEnterBackground parameters:params];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
-    VTracking *applicationTracking = [VSettingManager sharedManager].applicationTracking;
-    
-    NSArray* trackingURLs = applicationTracking != nil ? applicationTracking.appEnterForeground : @[];
-    NSDictionary *params = @{ VTrackingKeyUrls : trackingURLs };
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventApplicationDidEnterForeground parameters:params];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
@@ -158,24 +145,6 @@ static BOOL isRunningTests(void) __attribute__((const));
 {
     [[VThemeManager sharedThemeManager] updateToNewTheme];
     [[VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext saveToPersistentStore:nil];
-}
-
-#pragma mark - NSNotification handlers
-
-- (void)onInitResponse:(NSNotification *)notification
-{
-    VTracking *applicationTracking = [VSettingManager sharedManager].applicationTracking;
-    
-    // Track first install
-    [[[VFirstInstallManager alloc] init] reportFirstInstallWithTracking:applicationTracking];
-    
-    // Tracking init (cold start)
-    NSArray* trackingURLs = applicationTracking != nil ? applicationTracking.appLaunch : @[];
-    NSDictionary *params = @{ VTrackingKeyUrls : trackingURLs };
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventApplicationDidLaunch parameters:params];
-
-    // Only receive this once
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:kInitResponseNotification object:nil];
 }
 
 @end
