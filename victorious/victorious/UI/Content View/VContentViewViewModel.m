@@ -30,6 +30,7 @@
 #import "VObjectManager+Login.h"
 #import "VComment+Fetcher.h"
 #import "VUser+Fetcher.h"
+#import "VPaginationManager.h"
 
 // Formatters
 #import "NSDate+timeSince.h"
@@ -350,8 +351,6 @@
          return [comment2.postedAt compare:comment1.postedAt];
      }];
     _comments = sortedComments;
-    
-    [self.delegate didUpdateComments];
 }
 
 #pragma mark - Public Methods
@@ -361,6 +360,7 @@
     NSMutableArray *updatedComments = [self.comments mutableCopy];
     [updatedComments removeObjectAtIndex:index];
     self.comments = [NSArray arrayWithArray:updatedComments];
+    [self.delegate didUpdateCommentsWithPageType:VPageTypeFirst];
 }
 
 - (void)addCommentWithText:(NSString *)text
@@ -415,25 +415,43 @@
 
 - (void)fetchComments
 {
-    // give it what we have for now.
-    self.comments = [self.sequence.comments array];
-    
-    [[VObjectManager sharedManager] loadCommentsOnSequence:self.sequence
-                                                 isRefresh:NO
-                                              successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-     {
-         self.comments = [self.sequence.comments array];
-     }
-                                                 failBlock:nil];
+    if ( self.deepLinkCommentId != nil )
+    {
+        [self loadCommentsWithCommentId:self.deepLinkCommentId];
+    }
+    else
+    {
+        [self loadComments:VPageTypeFirst];
+    }
 }
 
-- (void)attemptToLoadNextPageOfComments
+- (void)loadCommentsWithCommentId:(NSNumber *)commentId
 {
+    [[VObjectManager sharedManager] findCommentPageOnSequence:self.sequence
+                                                withCommentId:self.deepLinkCommentId
+                                                 successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+     {
+         self.comments = [self.sequence.comments array];
+         [self.delegate didUpdateCommentsWithDeepLink:commentId];
+     }
+                                                    failBlock:nil];
+}
+
+- (void)loadComments:(VPageType)pageType
+{
+    VAbstractFilter *filter = [[VObjectManager sharedManager] commentsFilterForSequence:self.sequence];
+    const BOOL isFilterAlreadyLoading = [[[VObjectManager sharedManager] paginationManager] isLoadingFilter:filter];
+    if ( isFilterAlreadyLoading || ![filter canLoadPageType:pageType] )
+    {
+        return;
+    }
+    
     [[VObjectManager sharedManager] loadCommentsOnSequence:self.sequence
-                                                 isRefresh:NO
+                                                  pageType:pageType
                                               successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
          self.comments = [self.sequence.comments array];
+         [self.delegate didUpdateCommentsWithPageType:pageType];
      }
                                                  failBlock:nil];
 }

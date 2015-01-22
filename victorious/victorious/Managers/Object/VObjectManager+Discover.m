@@ -51,7 +51,7 @@
            failBlock:fail];
 }
 
-- (RKManagedObjectRequestOperation *)getHashtagsSubscribedToWithRefresh:(BOOL)refresh
+- (RKManagedObjectRequestOperation *)getHashtagsSubscribedToWithPageType:(VPageType)pageType
                                                            successBlock:(VSuccessBlock)success
                                                               failBlock:(VFailBlock)fail
 {
@@ -60,7 +60,7 @@
         VUser *mainUser = [[VObjectManager sharedManager] mainUser];
         
         // Zap the existing hashtags if this is a refresh
-        if (refresh)
+        if ( pageType == VPageTypeFirst )
         {
             mainUser.hashtags = nil;
         }
@@ -94,14 +94,7 @@
                                                                 entityName:[VAbstractFilter entityName]
                                                       managedObjectContext:self.managedObjectStore.mainQueueManagedObjectContext];
     
-    if (refresh)
-    {
-        return [self.paginationManager refreshFilter:hashtagFilter successBlock:fullSuccess failBlock:fullFailure];
-    }
-    else
-    {
-        return [self.paginationManager loadNextPageOfFilter:hashtagFilter successBlock:fullSuccess failBlock:fullFailure];
-    }
+    return [self.paginationManager loadFilter:hashtagFilter withPageType:VPageTypeFirst successBlock:fullSuccess failBlock:fullFailure];
 }
 
 - (RKManagedObjectRequestOperation *)subscribeToHashtagUsingVHashtagObject:(VHashtag *)hashtag

@@ -12,7 +12,7 @@
 
 #pragma mark - new theme constants
 
-NSString * const   kVChannelName                       =   @"channel.name";
+NSString * const   kVCreatorName                       =   @"creator.name";
 
 NSString * const   kVMenuBackgroundImage               =   @"Default";
 NSString * const   kVMenuBackgroundImage5              =   @"Default-568h";
@@ -54,7 +54,7 @@ NSString * const   kVNewThemeKey                       =   @"kVNewTheme";
 
 #pragma mark - Feedback Support
 
-NSString * const   kVChannelURLSupport                 =   @"email.support";
+NSString * const   kVSupportEmail                      =   @"email.support";
 
 static CGFloat const kGreyBackgroundColor = 0.94509803921;
 

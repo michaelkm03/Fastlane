@@ -18,13 +18,12 @@
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Pagination.h"
 #import "VPushNotificationManager.h"
-#import "VSessionTimer.h"
 #import "VUploadManager.h"
 #import "VUserManager.h"
-#import "VDeeplinkManager.h"
 #import "VConstants.h"
 #import "VSettingManager.h"
 #import "VObjectManager.h"
+#import "VRootViewController.h"
 
 #import <ADEUMInstrumentation/ADEUMInstrumentation.h>
 #import <Crashlytics/Crashlytics.h>
@@ -81,41 +80,13 @@ static BOOL isRunningTests(void) __attribute__((const));
     [[VTrackingManager sharedInstance] addDelegate:[[VApplicationTracking alloc] init]];
     [[VTrackingManager sharedInstance] addDelegate:[[VFlurryTracking alloc] init]];
     [[VTrackingManager sharedInstance] addDelegate:[[VGoogleAnalyticsTracking alloc] init]];
-    
-    NSURL *openURL = launchOptions[UIApplicationLaunchOptionsURLKey];
-    
-    if ( openURL != nil )
-    {
-        [[[VDeeplinkManager alloc] initWithURL:openURL] performNavigation];
-    }
-    
-    NSString *pushNotificationDeeplink = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey][@"deeplink"];
-    
-    if ( pushNotificationDeeplink != nil )
-    {
-        [[[VDeeplinkManager alloc] initWithURL:[NSURL URLWithString:pushNotificationDeeplink]] performNavigation];
-    }
-    
+
     return YES;
 }
 
 - (void)application:(UIApplication *)app didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
-    NSString *pushNotificationDeeplink = userInfo[@"deeplink"];
-    
-    if ( pushNotificationDeeplink != nil )
-    {
-        VDeeplinkManager *deeplinkManager = [[VDeeplinkManager alloc] initWithURL:[NSURL URLWithString:pushNotificationDeeplink]];
-        
-        if ( [UIApplication sharedApplication].applicationState != UIApplicationStateActive )
-        {
-            [deeplinkManager performNavigation];
-        }
-        else
-        {
-            [deeplinkManager postNotification];
-        }
-    }
+    [[VRootViewController rootViewController] applicationDidReceiveRemoteNotification:userInfo];
 }
 
 - (void)application:(UIApplication *)application handleEventsForBackgroundURLSession:(NSString *)identifier completionHandler:(void (^)())completionHandler
@@ -137,7 +108,7 @@ static BOOL isRunningTests(void) __attribute__((const));
         return YES;
     }
     
-    [[[VDeeplinkManager alloc] initWithURL:url] performNavigation];
+    [[VRootViewController rootViewController] handleDeeplinkURL:url];
     return YES;
 }
 

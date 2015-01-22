@@ -9,17 +9,9 @@
 	<key>agreement.text</key>
 	<string>I&apos;m at least 13 years old and agree to Terms of Service</string>
 	<key>email.support</key>
-	<string>support@victorious.com</string>
-	<key>channel.name</key>
+	<string>services@victorious.com</string>
+	<key>creator.name</key>
 	<string>Jimmy Kimmel</string>
-	<key>channel.url.about</key>
-	<string>http://dev.getvictorious.com/api/static/about</string>
-	<key>channel.url.acknowledgements</key>
-	<string>http://dev.getvictorious.com/api/static/acknowledgments</string>
-	<key>channel.url.privacy</key>
-	<string>http://dev.getvictorious.com/api/static/privacy</string>
-	<key>channel.url.support</key>
-	<string>support@getvictorious.com</string>
 	<key>color</key>
 	<dict>
 		<key>red</key>

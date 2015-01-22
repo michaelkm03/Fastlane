@@ -76,7 +76,7 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
         VLog(@"%@\n%@", operation, error);
     };
     
-    [[VObjectManager sharedManager] getHashtagsSubscribedToWithRefresh:YES
+    [[VObjectManager sharedManager] getHashtagsSubscribedToWithPageType:VPageTypeFirst
                                                           successBlock:successBlock
                                                              failBlock:failureBlock];
 }
@@ -93,7 +93,7 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
         VLog(@"%@\n%@", operation, error);
     };
     
-    [[VObjectManager sharedManager] getHashtagsSubscribedToWithRefresh:NO
+    [[VObjectManager sharedManager] getHashtagsSubscribedToWithPageType:VPageTypeNext
                                                           successBlock:successBlock
                                                              failBlock:failureBlock];
 }

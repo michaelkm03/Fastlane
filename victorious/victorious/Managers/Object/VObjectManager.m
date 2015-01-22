@@ -434,6 +434,7 @@
     NSString *currentDate = [self rFC2822DateTimeString];
     NSString *userAgent = (self.HTTPClient.defaultHeaders)[kVUserAgentHeader];
     NSString *buildNumber = [[NSBundle bundleForClass:[self class]] objectForInfoDictionaryKey:@"CFBundleVersion"];
+    NSString *appVersion = [[NSBundle bundleForClass:[self class]] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
     NSNumber *appID = [VObjectManager currentEnvironment].appID;
     userAgent = [NSString stringWithFormat:@"%@ aid:%@ uuid:%@ build:%@", userAgent, appID.stringValue, [[UIDevice currentDevice].identifierForVendor UUIDString], buildNumber];
     [request setValue:userAgent forHTTPHeaderField:kVUserAgentHeader];
@@ -463,6 +464,7 @@
     [request addValue:currentDate forHTTPHeaderField:@"Date"];
     [request addValue:@"iOS" forHTTPHeaderField:@"X-Client-Platform"];
     [request addValue:[[UIDevice currentDevice] systemVersion] forHTTPHeaderField:@"X-Client-OS-Version"];
+    [request addValue:appVersion forHTTPHeaderField:@"X-Client-App-Version"];
 }
 
 - (NSString *)rFC2822DateTimeString

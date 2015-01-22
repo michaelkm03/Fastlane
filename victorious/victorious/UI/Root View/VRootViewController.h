@@ -22,6 +22,18 @@
  */
 + (instancetype)rootViewController;
 
+/**
+ Please call this method from UIApplicationDelegate's method of the same name.
+ */
+- (void)applicationDidReceiveRemoteNotification:(NSDictionary *)userInfo;
+
+/**
+ Asks the app's scaffold component to handle a deeplink URL. If the scaffold
+ has not been initialized yet, the URL is queued and given to the scaffold
+ as soon as it is available.
+ */
+- (void)handleDeeplinkURL:(NSURL *)url;
+
 - (void)presentForceUpgradeScreen;
 
 @end
