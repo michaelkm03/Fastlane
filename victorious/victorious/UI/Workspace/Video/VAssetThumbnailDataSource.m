@@ -53,12 +53,15 @@
     [self.imageGenerator generateCGImagesAsynchronouslyForTimes:@[[NSValue valueWithCMTime:requestedTime]]
                                               completionHandler:^(CMTime requestedTime, CGImageRef image, CMTime actualTime, AVAssetImageGeneratorResult result, NSError *error)
      {
-         UIImage *generatedImage = [UIImage imageWithCGImage:image
-                                                       scale:1.0f
-                                                 orientation:UIImageOrientationUp];
-         [welf.thumbnailCache setObject:generatedImage
-                                 forKey:keyForThumbnail];
-         completion(generatedImage, requestedTime, welf);
+         if (!error)
+         {
+             UIImage *generatedImage = [UIImage imageWithCGImage:image
+                                                           scale:1.0f
+                                                     orientation:UIImageOrientationUp];
+             [welf.thumbnailCache setObject:generatedImage
+                                     forKey:keyForThumbnail];
+             completion(generatedImage, requestedTime, welf);
+         }
      }];
 }
 
