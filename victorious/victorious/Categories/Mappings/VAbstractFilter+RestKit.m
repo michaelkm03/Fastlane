@@ -17,6 +17,11 @@
 
 - (BOOL)canLoadPageType:(VPageType)pageType
 {
+    if ( pageType == VPageTypeFirst )
+    {
+        return YES; // it should always be possible to load the first page!
+    }
+    
     // Validate page number (they are NOT zero-indexed)
     NSUInteger pageNumber = [self pageNumberForPageType:pageType];
     return pageNumber > 0 && pageNumber <= self.maxPageNumber.unsignedIntegerValue;
