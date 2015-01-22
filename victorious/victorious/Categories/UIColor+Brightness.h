@@ -10,7 +10,7 @@
 
 @interface UIColor (Brightness)
 
-- (UIColor *)colorDarkenedBy:(CGFloat)amount;
-- (UIColor *)colorLightenedBy:(CGFloat)amount;
+- (UIColor *)v_colorDarkenedBy:(CGFloat)amount;
+- (UIColor *)v_colorLightenedBy:(CGFloat)amount;
 
 @end

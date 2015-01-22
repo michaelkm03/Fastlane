@@ -84,7 +84,7 @@ static NSString * const kCompletionCallback = @"com.getvictorious.completionCall
     [self.cellHighlightAnimationTimer invalidate];
     
     // Set the cell's background color to a lightened version of the themed color
-    UIColor *color = [[[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor] colorLightenedBy:0.9f];
+    UIColor *color = [[[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor] v_colorLightenedBy:0.9f];
     cell.backgroundColor = color;
     
     // Animate it back to white

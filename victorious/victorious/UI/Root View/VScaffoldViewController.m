@@ -154,13 +154,13 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
     
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     
-    NSString *sequenceID = [url firstNonSlashPathComponent];
+    NSString *sequenceID = [url v_firstNonSlashPathComponent];
     if ( sequenceID == nil )
     {
         return NO;
     }
     
-    NSNumber *commentId = @([url nonSlashPathComponentAtIndex:1].integerValue);
+    NSNumber *commentId = @([url v_nonSlashPathComponentAtIndex:1].integerValue);
     
     [[self.dependencyManager objectManager] fetchSequenceByID:sequenceID
                                                  successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)

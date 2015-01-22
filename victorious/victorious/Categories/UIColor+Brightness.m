@@ -10,7 +10,7 @@
 
 @implementation UIColor (Brightness)
 
-- (UIColor *)colorLightenedBy:(CGFloat)amount
+- (UIColor *)v_colorLightenedBy:(CGFloat)amount
 {
     CGFloat r, g, b, a;
     if ( [self getRed:&r green:&g blue:&b alpha:&a] )
@@ -23,7 +23,7 @@
     return nil;
 }
 
-- (UIColor *)colorDarkenedBy:(CGFloat)amount
+- (UIColor *)v_colorDarkenedBy:(CGFloat)amount
 {
     CGFloat r, g, b, a;
     if ( [self getRed:&r green:&g blue:&b alpha:&a] )
