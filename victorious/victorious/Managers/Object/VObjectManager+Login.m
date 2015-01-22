@@ -28,7 +28,6 @@
 @implementation VObjectManager (Login)
 
 NSString * const kLoggedInChangedNotification          = @"com.getvictorious.LoggedInChangedNotification";
-NSString * const kInitResponseNotification             = @"com.getvictorious.InitResponseNotification";
 
 static NSString * const kVExperimentsKey        = @"experiments";
 static NSString * const kVAppearanceKey         = @"appearance";
@@ -51,8 +50,6 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
         {
             success(operation, fullResponse, resultObjects);
         }
-        
-        [[NSNotificationCenter defaultCenter] postNotificationName:kInitResponseNotification object:nil];
     };
     
     return [self GET:@"/api/init"
