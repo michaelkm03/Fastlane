@@ -99,7 +99,7 @@ static inline CGPoint ClampX(CGPoint point, CGFloat xMin, CGFloat xMax)
     self.pushBehavior = [[UIPushBehavior alloc] initWithItems:@[self.trimThumbHead] mode:UIPushBehaviorModeInstantaneous];
     self.collisionBehavior = [[UICollisionBehavior alloc] initWithItems:@[self.trimThumbHead]];
     self.collisionBehavior.translatesReferenceBoundsIntoBoundary = YES;
-    [self.collisionBehavior setTranslatesReferenceBoundsIntoBoundaryWithInsets:UIEdgeInsetsMake(0, -CGRectGetWidth(self.trimThumbHead.bounds)/2, 0.0f, -CGRectGetWidth(self.trimThumbHead.bounds)/2)];
+    [self.collisionBehavior setTranslatesReferenceBoundsIntoBoundaryWithInsets:UIEdgeInsetsMake(0, -CGRectGetWidth(self.trimThumbHead.bounds)/4, 0.0f, -CGRectGetWidth(self.trimThumbHead.bounds)/2)]; // Hackey should make full width seekable
     self.collisionBehavior.collisionDelegate = self;
     self.itemBehavior = [[UIDynamicItemBehavior alloc] initWithItems:@[self.trimThumbHead]];
     self.itemBehavior.resistance = 10.5f;
