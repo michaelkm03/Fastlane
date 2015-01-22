@@ -178,8 +178,14 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
 
 @property (nonatomic, readonly) BOOL loop;
 
+/**
+ Determines whether the video player will show its toolbar with play controls.
+ */
 @property (nonatomic, readonly) BOOL playerControlsDisabled;
 
+/**
+ Determines whether the video will play with audio.
+ */
 @property (nonatomic, readonly) BOOL audioMuted;
 
 #pragma mark - Comments
