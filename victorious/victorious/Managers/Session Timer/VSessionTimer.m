@@ -9,6 +9,8 @@
 #import "NSArray+VMap.h"
 #import "VObjectManager+Analytics.h"
 #import "VSessionTimer.h"
+#import "VSettingManager.h"
+#import "VTracking.h"
 
 #define TEST_NEW_SESSION 0 // Set to '1' to start a new session by leaving the app for only 10 seconds.
 
@@ -87,6 +89,7 @@ static NSTimeInterval const kMinimumTimeBetweenSessions = 1800.0; // 30 minutes
         [[NSNotificationCenter defaultCenter] postNotificationName:VSessionTimerNewSessionShouldStart object:self];
     }
     self.firstLaunch = NO;
+    [self trackApplicationForeground];
 }
 
 - (void)sessionDidEnd
@@ -95,10 +98,31 @@ static NSTimeInterval const kMinimumTimeBetweenSessions = 1800.0; // 30 minutes
     [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:kSessionEndTimeDefaultsKey];
 }
 
+#pragma mark - Tracking
+
+- (void)trackApplicationForeground
+{
+    VTracking *applicationTracking = [VSettingManager sharedManager].applicationTracking;
+    
+    NSArray* trackingURLs = applicationTracking != nil ? applicationTracking.appEnterForeground : @[];
+    NSDictionary *params = @{ VTrackingKeyUrls : trackingURLs };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventApplicationDidEnterForeground parameters:params];
+}
+
+- (void)trackApplicationBackground
+{
+    VTracking *applicationTracking = [VSettingManager sharedManager].applicationTracking;
+    
+    NSArray* trackingURLs = applicationTracking != nil ? applicationTracking.appEnterBackground : @[];
+    NSDictionary *params = @{ VTrackingKeyUrls : trackingURLs };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventApplicationDidEnterBackground parameters:params];
+}
+
 #pragma mark - NSNotification handlers
 
 - (void)applicationDidEnterBackground:(NSNotification *)notification
 {
+    [self trackApplicationBackground];
     [self sessionDidEnd];
 }
 

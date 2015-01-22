@@ -7,6 +7,7 @@
 //
 
 #import "VAppDelegate.h"
+#import "VFirstInstallManager.h"
 #import "VForceUpgradeViewController.h"
 #import "VDependencyManager.h"
 #import "VDependencyManager+VObjectManager.h"
@@ -16,10 +17,15 @@
 #import "VRootViewController.h"
 #import "VScaffoldViewController.h"
 #import "VSessionTimer.h"
+#import "VSettingManager.h"
+#import "VTracking.h"
 #import "VConstants.h"
 #import "VTemplateGenerator.h"
 
 static const NSTimeInterval kAnimationDuration = 0.2;
+
+static NSString * const kDeeplinkURLKey = @"deeplink";
+static NSString * const kNotificationIDKey = @"notification_id";
 
 @interface VRootViewController () <VLoadingViewControllerDelegate>
 
@@ -29,6 +35,8 @@ static const NSTimeInterval kAnimationDuration = 0.2;
 @property (nonatomic, strong, readwrite) UIViewController *currentViewController;
 @property (nonatomic, strong) VSessionTimer *sessionTimer;
 @property (nonatomic, strong) NSURL *queuedURL; ///< A deeplink URL that came in before we were ready for it
+@property (nonatomic, strong) NSString *queuedNotificationID; ///< A notificationID that came in before we were ready for it
+@property (nonatomic) BOOL coldLaunch; ///< YES on first launch, NO subsequently
 
 @end
 
@@ -56,6 +64,7 @@ static const NSTimeInterval kAnimationDuration = 0.2;
 
 - (void)commonInit
 {
+    self.coldLaunch = YES;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newSessionShouldStart:) name:VSessionTimerNewSessionShouldStart object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidFinishLaunching:) name:UIApplicationDidFinishLaunchingNotification object:nil];
 }
@@ -176,6 +185,12 @@ static const NSTimeInterval kAnimationDuration = 0.2;
                                                                  configuration:[templateGenerator configurationDict]
                                              dictionaryOfClassesByTemplateName:nil];
     
+    if ( self.coldLaunch )
+    {
+        [self trackAppLaunch];
+        self.coldLaunch = NO;
+    }
+    
     VScaffoldViewController *scaffold = [self.dependencyManager scaffoldViewController];
     [self showViewController:scaffold animated:YES];
     
@@ -267,31 +282,55 @@ static const NSTimeInterval kAnimationDuration = 0.2;
 
 - (void)handlePushNotification:(NSDictionary *)pushNotification
 {
-    NSURL *deeplink = [NSURL URLWithString:pushNotification[@"deeplink"]];
-    if ( deeplink != nil )
+    NSURL *deeplink = [NSURL URLWithString:pushNotification[kDeeplinkURLKey]];
+    NSString *notificationID = pushNotification[kNotificationIDKey];
+
+    if ( [[UIApplication sharedApplication] applicationState] != UIApplicationStateActive )
     {
-        if ( [[UIApplication sharedApplication] applicationState] != UIApplicationStateActive )
+        [[VTrackingManager sharedInstance] setValue:notificationID forSessionParameterWithKey:VTrackingKeyNotificationID];
+        if ( [self.sessionTimer shouldNewSessionStartNow] )
         {
-            if ( [self.sessionTimer shouldNewSessionStartNow] )
-            {
-                self.queuedURL = deeplink;
-            }
-            else
-            {
-                [self handleDeeplinkURL:deeplink];
-            }
+            self.queuedURL = deeplink;
+            self.queuedNotificationID = notificationID;
         }
-        else if ( [deeplink.host isEqualToString:VInboxContainerViewControllerDeeplinkHostComponent] )
+        else
         {
-            [[NSNotificationCenter defaultCenter] postNotificationName:VInboxContainerViewControllerInboxPushReceivedNotification object:self];
+            [self handleDeeplinkURL:deeplink];
         }
     }
+    else if ( [deeplink.host isEqualToString:VInboxContainerViewControllerDeeplinkHostComponent] )
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:VInboxContainerViewControllerInboxPushReceivedNotification object:self];
+    }
+}
+
+#pragma mark - Tracking Support
+
+- (void)trackAppLaunch
+{
+    VTracking *applicationTracking = [VSettingManager sharedManager].applicationTracking;
+    
+    // Track first install
+    [[[VFirstInstallManager alloc] init] reportFirstInstallWithTracking:applicationTracking];
+    
+    // Tracking init (cold start)
+    NSArray* trackingURLs = applicationTracking != nil ? applicationTracking.appLaunch : @[];
+    NSDictionary *params = @{ VTrackingKeyUrls : trackingURLs };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventApplicationDidLaunch parameters:params];
 }
 
 #pragma mark - NSNotifications
 
 - (void)newSessionShouldStart:(NSNotification *)notification
 {
+    [[VTrackingManager sharedInstance] clearSessionParameters];
+    
+    if ( self.queuedNotificationID != nil )
+    {
+        [[VTrackingManager sharedInstance] setValue:self.queuedNotificationID forSessionParameterWithKey:VTrackingKeyNotificationID];
+        self.queuedNotificationID = nil;
+    }
+    
     [self showViewController:nil animated:NO];
     [RKObjectManager setSharedManager:nil];
     [VObjectManager setupObjectManager];
