@@ -120,10 +120,10 @@
     return self.videoPlayerViewController.player.currentTime;
 }
 
-- (void)setControlsDisabled:(BOOL)controlsDisabled
+- (void)setPlayerControlsDisabled:(BOOL)playerControlsDisabled
 {
-    _controlsDisabled = controlsDisabled;
-    if ( _controlsDisabled )
+    _playerControlsDisabled = playerControlsDisabled;
+    if ( _playerControlsDisabled )
     {
         self.videoPlayerViewController.shouldChangeVideoGravityOnDoubleTap = NO;
         self.videoPlayerViewController.shouldShowToolbar = NO;
@@ -131,10 +131,10 @@
     }
 }
 
-- (void)setAudioDisabled:(BOOL)audioDisabled
+- (void)setAudioDisabled:(BOOL)audioMuted
 {
-    _audioDisabled = audioDisabled;
-    self.videoPlayerViewController.isAudioEnabled = !_audioDisabled;
+    _audioMuted = audioMuted;
+    self.videoPlayerViewController.isAudioEnabled = !_audioMuted;
 }
 
 #pragma mark - Public Methods

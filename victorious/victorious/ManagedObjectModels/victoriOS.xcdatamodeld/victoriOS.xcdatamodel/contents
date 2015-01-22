@@ -35,15 +35,15 @@
         <relationship name="answer" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Answer" inverseName="answerAction" inverseEntity="Answer" syncable="YES"/>
     </entity>
     <entity name="Asset" representedClassName="VAsset" syncable="YES">
-        <attribute name="audioDisabled" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
-        <attribute name="autoPlay" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
-        <attribute name="controlsDisabled" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="audioMuted" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="data" attributeType="String" syncable="YES"/>
         <attribute name="loop" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="mimeType" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="nodeId" optional="YES" attributeType="Integer 64" minValueString="0" syncable="YES"/>
+        <attribute name="playerControlsDisabled" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="remoteId" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="speed" optional="YES" attributeType="Float" defaultValueString="1" syncable="YES"/>
+        <attribute name="streamAutoplay" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="comments" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Comment" inverseName="asset" inverseEntity="Comment" syncable="YES"/>
         <relationship name="node" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Node" inverseName="assets" inverseEntity="Node" syncable="YES"/>

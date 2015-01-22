@@ -29,10 +29,10 @@
 
 - (void)setItemURL:(NSURL *)itemURL
 {
-    [self setItemURL:itemURL loop:NO audioDisabled:NO];
+    [self setItemURL:itemURL loop:NO audioMuted:NO];
 }
 
-- (void)setItemURL:(NSURL *)itemURL loop:(BOOL)loop audioDisabled:(BOOL)audioDisabled
+- (void)setItemURL:(NSURL *)itemURL loop:(BOOL)loop audioMuted:(BOOL)audioMuted
 {
     if ( [_itemURL isEqual:itemURL] )
     {
@@ -53,7 +53,7 @@
     }
     
     self.player.actionAtItemEnd = loop ? AVPlayerActionAtItemEndNone : AVPlayerActionAtItemEndPause;
-    self.player.muted = audioDisabled;
+    self.player.muted = audioMuted;
     
     _itemURL = itemURL;
     

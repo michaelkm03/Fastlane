@@ -25,9 +25,9 @@
                                   @"speed" : VSelectorName(speed),
                                   @"loop" : VSelectorName(loop),
                                   @"asset_id" : VSelectorName(remoteId),
-                                  @"autoplay" : VSelectorName(autoPlay),
-                                  @"controls_disabled" : VSelectorName(controlsDisabled),
-                                  @"audio_disabled" : VSelectorName(audioDisabled),
+                                  @"stream_autoplay" : VSelectorName(streamAutoplay),
+                                  @"player_controls_disabled" : VSelectorName(playerControlsDisabled),
+                                  @"audio_muted" : VSelectorName(audioMuted),
                                   };
     
     RKEntityMapping *mapping = [RKEntityMapping

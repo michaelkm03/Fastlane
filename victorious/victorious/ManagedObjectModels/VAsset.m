@@ -13,15 +13,15 @@
 
 @implementation VAsset
 
-@dynamic audioDisabled;
-@dynamic autoPlay;
-@dynamic controlsDisabled;
+@dynamic audioMuted;
 @dynamic data;
 @dynamic loop;
 @dynamic mimeType;
 @dynamic nodeId;
+@dynamic playerControlsDisabled;
 @dynamic remoteId;
 @dynamic speed;
+@dynamic streamAutoplay;
 @dynamic type;
 @dynamic comments;
 @dynamic node;

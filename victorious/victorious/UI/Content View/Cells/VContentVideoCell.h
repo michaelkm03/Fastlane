@@ -62,12 +62,12 @@
  Should the video player hide the toolbar, disable tap to toggle toolbar,
  and disable double tap to change aspect fit.
  */
-@property (nonatomic, assign) BOOL controlsDisabled;
+@property (nonatomic, assign) BOOL playerControlsDisabled;
 
 /**
  Should the video player be muted.
  */
-@property (nonatomic, assign) BOOL audioDisabled;
+@property (nonatomic, assign) BOOL audioMuted;
 
 /**
  Playback speed at which video should play.

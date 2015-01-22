@@ -159,10 +159,10 @@ typedef NS_OPTIONS(NSInteger, VSequencePermissionOptions)
 #warning This is hardcoded tests to simulate a GIF video configuration.  Turn it off!
     [node.assets enumerateObjectsUsingBlock:^(VAsset *asset, NSUInteger idx, BOOL *stop)
      {
-         asset.controlsDisabled = @(YES);
+         asset.playerControlsDisabled = @(YES);
          asset.loop = @(YES);
-         asset.audioDisabled = @(YES);
-         asset.autoPlay = @(YES);
+         asset.audioMuted = @(YES);
+         asset.streamAutoplay = @(YES);
      }];
 #endif
     

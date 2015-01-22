@@ -328,14 +328,14 @@
     return [self.currentAsset.loop boolValue];
 }
 
-- (BOOL)controlsDisabled
+- (BOOL)playerControlsDisabled
 {
-    return [self.currentAsset.controlsDisabled boolValue];
+    return [self.currentAsset.playerControlsDisabled boolValue];
 }
 
-- (BOOL)audioDisabled
+- (BOOL)audioMuted
 {
-    return [self.currentAsset.audioDisabled boolValue];
+    return [self.currentAsset.audioMuted boolValue];
 }
 
 - (BOOL)shouldShowRealTimeComents

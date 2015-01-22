@@ -23,7 +23,7 @@
 
 @property (nonatomic, weak) id<VStreamCellVideoViewDelegtae> delegate;
 
-- (void)setItemURL:(NSURL *)itemURL loop:(BOOL)loop audioDisabled:(BOOL)audioDisabled;
+- (void)setItemURL:(NSURL *)itemURL loop:(BOOL)loop audioMuted:(BOOL)audioMuted;
 
 - (void)play;
 

@@ -154,13 +154,13 @@ static const CGFloat kDescriptionBuffer = 18.0;
     if ( [sequence isVideo] )
     {
         VAsset *asset = [self.sequence primaryAssetWithPreferredMimeType:@"video/mp4"];
-        if ( asset.autoPlay.boolValue )
+        if ( asset.streamAutoplay.boolValue )
         {
             self.videoAsset = asset;
             self.isPlayButtonVisible = NO;
             [self.videoPlayerView setItemURL:[NSURL URLWithString:self.videoAsset.data]
                                         loop:self.videoAsset.loop.boolValue
-                               audioDisabled:self.videoAsset.audioDisabled.boolValue];
+                               audioMuted:self.videoAsset.audioMuted.boolValue];
         }
     }
     else

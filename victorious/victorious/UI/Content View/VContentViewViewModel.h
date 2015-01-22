@@ -178,9 +178,9 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
 
 @property (nonatomic, readonly) BOOL loop;
 
-@property (nonatomic, readonly) BOOL controlsDisabled;
+@property (nonatomic, readonly) BOOL playerControlsDisabled;
 
-@property (nonatomic, readonly) BOOL audioDisabled;
+@property (nonatomic, readonly) BOOL audioMuted;
 
 #pragma mark - Comments
 
