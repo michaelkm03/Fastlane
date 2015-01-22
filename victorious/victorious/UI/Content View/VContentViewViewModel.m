@@ -414,12 +414,29 @@ static NSString * const kPreferedMimeType = @"application/x-mpegURL";
          }];
     }
 }
+
 - (void)fetchComments
 {
-    // give it what we have for now.
-    self.comments = [self.sequence.comments array];
-    [self loadComments:VPageTypeFirst];
-    
+    if ( self.deepLinkCommentId != nil )
+    {
+        [self loadCommentsWithCommentId:self.deepLinkCommentId];
+    }
+    else
+    {
+        [self loadComments:VPageTypeFirst];
+    }
+}
+
+- (void)loadCommentsWithCommentId:(NSNumber *)commentId
+{
+    [[VObjectManager sharedManager] findCommentPageOnSequence:self.sequence
+                                                withCommentId:self.deepLinkCommentId
+                                                 successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+     {
+         self.comments = [self.sequence.comments array];
+         [self.delegate didUpdateCommentsWithDeepLink:commentId];
+     }
+                                                    failBlock:nil];
 }
 
 - (void)loadComments:(VPageType)pageType

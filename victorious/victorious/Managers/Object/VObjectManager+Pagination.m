@@ -31,19 +31,57 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
 
 #pragma mark - Comment
 
+- (RKManagedObjectRequestOperation *)findCommentPageOnSequence:(VSequence *)sequence
+                                                 withCommentId:(NSNumber *)commentId
+                                                  successBlock:(VSuccessBlock)success
+                                                     failBlock:(VFailBlock)fail
+{
+    NSString *filterApiPath = [@"/api/comment/all/" stringByAppendingString: sequence.remoteId];
+    VAbstractFilter *filter = [self.paginationManager filterForPath:filterApiPath
+                                                         entityName:[VAbstractFilter entityName]
+                                               managedObjectContext:sequence.managedObjectContext];
+    NSManagedObjectID *filterID = filter.objectID;
+    
+    VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    {
+        VAbstractFilter *filter = (VAbstractFilter *)[self.managedObjectStore.mainQueueManagedObjectContext objectWithID:filterID];
+        filter.maxPageNumber = @([fullResponse[@"total_pages"] integerValue]);
+        filter.currentPageNumber = @([fullResponse[@"page_number"] integerValue]);
+        [filter.managedObjectContext saveToPersistentStore:nil];
+        
+        VSequence *sequenceInContext = (VSequence *)[self.managedObjectStore.mainQueueManagedObjectContext objectWithID:sequence.objectID];
+        
+        NSMutableOrderedSet *comments = [[NSMutableOrderedSet alloc] initWithArray:resultObjects];
+        [comments addObjectsFromArray:sequence.comments.array];
+        sequenceInContext.comments = [comments copy];
+        
+        [sequenceInContext.managedObjectContext saveToPersistentStore:nil];
+        
+        if (success)
+        {
+            success(operation, fullResponse, resultObjects);
+        }
+    };
+    
+    NSString *path = [NSString stringWithFormat:@"/api/comment/find/%@/%@/%@", sequence.remoteId, commentId, filter.perPageNumber];
+    return [self GET:path
+              object:nil
+          parameters:nil
+        successBlock:fullSuccess
+           failBlock:fail];
+}
+
 - (RKManagedObjectRequestOperation *)loadCommentsOnSequence:(VSequence *)sequence
                                                    pageType:(VPageType)pageType
                                                successBlock:(VSuccessBlock)success
                                                   failBlock:(VFailBlock)fail
 {
-    NSString *apiPath = [@"/api/comment/all/" stringByAppendingString: sequence.remoteId];
-    VAbstractFilter *filter = [self.paginationManager filterForPath:apiPath entityName:[VAbstractFilter entityName] managedObjectContext:sequence.managedObjectContext];
-    
     VSuccessBlock fullSuccessBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         void(^paginationBlock)(void) = ^(void)
         {
-            VSequence *sequenceInContext = (VSequence *)[self.managedObjectStore.mainQueueManagedObjectContext objectWithID:sequence.objectID];
+            VSequence *sequenceInContext = (VSequence *)[self.managedObjectStore.mainQueueManagedObjectContext
+                                                         objectWithID:sequence.objectID];
             
             if ( pageType == VPageTypeFirst )
             {
@@ -93,6 +131,10 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
         }
     };
     
+    NSString *apiPath = [@"/api/comment/all/" stringByAppendingString: sequence.remoteId];
+    VAbstractFilter *filter = [self.paginationManager filterForPath:apiPath
+                                                         entityName:[VAbstractFilter entityName]
+                                               managedObjectContext:sequence.managedObjectContext];
     return [self.paginationManager loadFilter:filter
                                  withPageType:pageType
                                  successBlock:fullSuccessBlock
@@ -161,6 +203,7 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
     [context performBlockAndWait:^(void)
     {
         VAbstractFilter *listFilter = [self inboxFilterForCurrentUserFromManagedObjectContext:context];
+        
         requestOperation = [self.paginationManager loadFilter:listFilter withPageType:pageType successBlock:fullSuccessBlock failBlock:fail];
     }];
      

@@ -7,14 +7,10 @@
 //
 
 #import "VSequence.h"
-
 #import "VRealtimeCommentsViewModel.h"
 #import "VAdViewController.h"
-
 #import "VExperienceEnhancerController.h"
-
 #import "VHistogramDataSource.h"
-
 #import "VAbstractFilter+RestKit.h"
 
 @protocol VContentViewViewModelDelegate <NSObject>
@@ -24,6 +20,12 @@
  * @param pageType The pagination context for which the comments fetch occurred.
  */
 - (void)didUpdateCommentsWithPageType:(VPageType)pageType;
+
+/**
+ * Called when a page of comments is loaded that contains the comment Id,
+ * currently designed to work with deep linking.
+ */
+- (void)didUpdateCommentsWithDeepLink:(NSNumber *)commentId;
 
 /**
  * Called whenever the server returns an updated state of this content.
@@ -234,5 +236,11 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
 /** This will be nil if no histogram data is available.
  */
 @property (nonatomic, strong, readonly) VHistogramDataSource *histogramDataSource;
+
+/**
+ Set a comment ID using this property after initializtion to scroll to and highlight
+ that comment when the content view loads.
+ */
+@property (nonatomic, strong) NSNumber *deepLinkCommentId;
 
 @end

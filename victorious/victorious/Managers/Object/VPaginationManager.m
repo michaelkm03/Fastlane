@@ -56,7 +56,6 @@
         
         filter.maxPageNumber = @([fullResponse[@"total_pages"] integerValue]);
         filter.currentPageNumber = @([fullResponse[@"page_number"] integerValue]);
-        filter.totalItemsNumber = @([fullResponse[@"total_items"] integerValue]);
         [filter.managedObjectContext saveToPersistentStore:nil];
         
         [self stopLoadingFilter:filter];
@@ -70,6 +69,7 @@
     VFailBlock fullFail = ^(NSOperation *operation, NSError *error)
     {
         VAbstractFilter *filter = (VAbstractFilter *)[self.objectManager.managedObjectStore.mainQueueManagedObjectContext objectWithID:filterID];
+
         [self stopLoadingFilter:filter];
         
         if ( fail != nil )

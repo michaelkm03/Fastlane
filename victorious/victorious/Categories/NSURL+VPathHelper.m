@@ -12,7 +12,7 @@ static NSString * const kPathSeparator = @"/";
 
 @implementation NSURL (VPathHelper)
 
-- (NSString *)firstNonSlashPathComponent
+- (NSString *)v_firstNonSlashPathComponent
 {
     for (NSString *pathComponent in self.pathComponents)
     {
@@ -21,6 +21,16 @@ static NSString * const kPathSeparator = @"/";
             return pathComponent;
         }
     }
+    return nil;
+}
+
+- (NSString *)v_pathComponentAtIndex:(NSUInteger)index
+{
+    if ( index < self.pathComponents.count )
+    {
+        return self.pathComponents[ index ];
+    }
+    
     return nil;
 }
 
