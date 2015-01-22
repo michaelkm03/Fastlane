@@ -130,21 +130,10 @@ static BOOL isRunningTests(void) __attribute__((const));
 {
     [[VThemeManager sharedThemeManager] updateToNewTheme];
     [[VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext saveToPersistentStore:nil];
-    
-    VTracking *applicationTracking = [VSettingManager sharedManager].applicationTracking;
-    
-    NSArray* trackingURLs = applicationTracking != nil ? applicationTracking.appEnterBackground : @[];
-    NSDictionary *params = @{ VTrackingKeyUrls : trackingURLs };
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventApplicationDidEnterBackground parameters:params];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
-    VTracking *applicationTracking = [VSettingManager sharedManager].applicationTracking;
-    
-    NSArray* trackingURLs = applicationTracking != nil ? applicationTracking.appEnterForeground : @[];
-    NSDictionary *params = @{ VTrackingKeyUrls : trackingURLs };
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventApplicationDidEnterForeground parameters:params];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application

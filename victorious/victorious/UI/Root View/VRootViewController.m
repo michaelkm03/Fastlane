@@ -24,6 +24,9 @@
 
 static const NSTimeInterval kAnimationDuration = 0.2;
 
+static NSString * const kDeeplinkURLKey = @"deeplink";
+static NSString * const kNotificationIDKey = @"notification_id";
+
 @interface VRootViewController () <VLoadingViewControllerDelegate>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
@@ -32,6 +35,7 @@ static const NSTimeInterval kAnimationDuration = 0.2;
 @property (nonatomic, strong, readwrite) UIViewController *currentViewController;
 @property (nonatomic, strong) VSessionTimer *sessionTimer;
 @property (nonatomic, strong) NSURL *queuedURL; ///< A deeplink URL that came in before we were ready for it
+@property (nonatomic, strong) NSString *queuedNotificationID; ///< A notificationID that came in before we were ready for it
 @property (nonatomic) BOOL coldLaunch; ///< YES on first launch, NO subsequently
 
 @end
@@ -181,6 +185,12 @@ static const NSTimeInterval kAnimationDuration = 0.2;
                                                                  configuration:[templateGenerator configurationDict]
                                              dictionaryOfClassesByTemplateName:nil];
     
+    if ( self.queuedNotificationID != nil )
+    {
+        [[VTrackingManager sharedInstance] setNotificationID:self.queuedNotificationID];
+        self.queuedNotificationID = nil;
+    }
+    
     if ( self.coldLaunch )
     {
         [self trackAppLaunch];
@@ -278,24 +288,25 @@ static const NSTimeInterval kAnimationDuration = 0.2;
 
 - (void)handlePushNotification:(NSDictionary *)pushNotification
 {
-    NSURL *deeplink = [NSURL URLWithString:pushNotification[@"deeplink"]];
-    if ( deeplink != nil )
+    NSURL *deeplink = [NSURL URLWithString:pushNotification[kDeeplinkURLKey]];
+    NSString *notificationID = pushNotification[kNotificationIDKey];
+
+    if ( [[UIApplication sharedApplication] applicationState] != UIApplicationStateActive )
     {
-        if ( [[UIApplication sharedApplication] applicationState] != UIApplicationStateActive )
+        [[VTrackingManager sharedInstance] setNotificationID:notificationID];
+        if ( [self.sessionTimer shouldNewSessionStartNow] )
         {
-            if ( [self.sessionTimer shouldNewSessionStartNow] )
-            {
-                self.queuedURL = deeplink;
-            }
-            else
-            {
-                [self handleDeeplinkURL:deeplink];
-            }
+            self.queuedURL = deeplink;
+            self.queuedNotificationID = notificationID;
         }
-        else if ( [deeplink.host isEqualToString:VInboxContainerViewControllerDeeplinkHostComponent] )
+        else
         {
-            [[NSNotificationCenter defaultCenter] postNotificationName:VInboxContainerViewControllerInboxPushReceivedNotification object:self];
+            [self handleDeeplinkURL:deeplink];
         }
+    }
+    else if ( [deeplink.host isEqualToString:VInboxContainerViewControllerDeeplinkHostComponent] )
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:VInboxContainerViewControllerInboxPushReceivedNotification object:self];
     }
 }
 
@@ -318,6 +329,7 @@ static const NSTimeInterval kAnimationDuration = 0.2;
 
 - (void)newSessionShouldStart:(NSNotification *)notification
 {
+    [[VTrackingManager sharedInstance] setNotificationID:nil];
     [self showViewController:nil animated:NO];
     [RKObjectManager setSharedManager:nil];
     [VObjectManager setupObjectManager];
