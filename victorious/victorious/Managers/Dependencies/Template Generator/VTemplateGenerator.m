@@ -98,10 +98,12 @@ static NSString * const kVideoMuted = @"videoMuted";
     
     template[VDependencyManagerScaffoldViewControllerKey] = @{ kClassNameKey: @"sideMenu.scaffold",
                                                                VDependencyManagerInitialViewControllerKey: @{ kReferenceIDKey: self.firstMenuItemID },
-                                                               VDependencyManagerWorkspaceFlowKey: [self workspaceFlowComponent],
                                                                VScaffoldViewControllerMenuComponentKey: [self menuComponent],
                                                                VScaffoldViewControllerUserProfileViewComponentKey: @{ kClassNameKey: @"userProfile.screen" }
                                                             };
+#warning Hackey
+    template[VDependencyManagerWorkspaceFlowKey] = [self workspaceFlowComponent];
+    
     return template;
 }
 

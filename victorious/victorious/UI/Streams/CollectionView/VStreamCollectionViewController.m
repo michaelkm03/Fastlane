@@ -14,6 +14,9 @@
 #import "VMarqueeCollectionCell.h"
 #import "VStreamCollectionCellWebContent.h"
 
+#warning Temporary
+#import "VRootViewController.h"
+
 //Controllers
 #import "VCommentsContainerViewController.h"
 #import "VUserProfileViewController.h"
@@ -647,9 +650,10 @@ static CGFloat const kTemplateCLineSpacing = 8;
 
 - (void)willRemixSequence:(VSequence *)sequence fromView:(UIView *)view
 {
+#warning Hacktastic
     [self.sequenceActionController showRemixOnViewController:self
                                                 withSequence:sequence
-                                        andDependencyManager:self.dependencyManager];
+                                        andDependencyManager:[VRootViewController rootViewController].dependencyManager];
 }
 
 - (void)willShareSequence:(VSequence *)sequence fromView:(UIView *)view
