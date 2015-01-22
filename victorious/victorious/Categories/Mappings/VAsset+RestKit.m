@@ -27,7 +27,7 @@
                                   @"asset_id" : VSelectorName(remoteId),
                                   @"stream_autoplay" : VSelectorName(streamAutoplay),
                                   @"player_controls_disabled" : VSelectorName(playerControlsDisabled),
-                                  @"audio_muted" : VSelectorName(audioMuted),
+                                  @"audio_muted" : VSelectorName(audioMuted)
                                   };
     
     RKEntityMapping *mapping = [RKEntityMapping

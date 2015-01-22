@@ -6,24 +6,25 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import <objc/runtime.h>
+
 #import "VSequenceActionController.h"
 
 #pragma mark - Models
-#import "VAsset.h"
-#import "VNode.h"
+#import "VAsset+Fetcher.h"
+#import "VNode+Fetcher.h"
 #import "VSequence+Fetcher.h"
 #import "VStream+Fetcher.h"
 #import "VUser+Fetcher.h"
 #import "VTracking.h"
 
 #pragma mark - Controllers
-#import "VRemixSelectViewController.h"
-#import "VCameraPublishViewController.h"
 #import "VStreamCollectionViewController.h"
 #import "VReposterTableViewController.h"
 #import "VAuthorizationViewControllerFactory.h"
 #import "VUserProfileViewController.h"
 #import "VCommentsContainerViewController.h"
+#import "VWorkspaceViewController.h"
 
 #pragma mark-  Views
 #import "VNoContentView.h"
@@ -39,7 +40,33 @@
 #import "NSString+VParseHelp.h"
 #import "UIActionSheet+VBlocks.h"
 
+#pragma mark - Dependency Manager
+#import "VDependencyManager.h"
+
+#pragma mark - Workflow
+#import "VWorkspaceFlowController.h"
+
+static const char kAssociatedWorkspaceFlowKey;
+
+@interface VSequenceActionController ()
+
+@property (nonatomic, strong) VWorkspaceFlowController *workspaceFlowController;
+
+@end
+
 @implementation VSequenceActionController
+
+#pragma mark - Properties
+
+- (void)setWorkspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
+{
+    objc_setAssociatedObject(self, &kAssociatedWorkspaceFlowKey, workspaceFlowController, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (VWorkspaceFlowController *)workspaceFlowController
+{
+    return objc_getAssociatedObject(self, &kAssociatedWorkspaceFlowKey);
+}
 
 #pragma mark - Comments
 
@@ -73,28 +100,10 @@
 
 #pragma mark - Remix
 
-- (void)videoRemixActionFromViewController:(UIViewController *)viewController asset:(VAsset *)asset node:(VNode *)node sequence:(VSequence *)sequence
-{
-    NSAssert(![sequence isPoll], @"You cannot remix polls.");
-    if (![VObjectManager sharedManager].authorized)
-    {
-        [viewController presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
-        return;
-    }
-
-    UIViewController *remixVC = [VRemixSelectViewController remixViewControllerWithURL:[asset.data mp4UrlFromM3U8]
-                                                                            sequenceID:[sequence.remoteId integerValue]
-                                                                                nodeID:node.remoteId.integerValue];
-    
-    [viewController presentViewController:remixVC  animated:YES completion:nil];
-}
-
-- (void)imageRemixActionFromViewController:(UIViewController *)viewController previewImage:(UIImage *)previewImage sequence:(VSequence *)sequence
-{
-    [self imageRemixActionFromViewController:viewController previewImage:previewImage sequence:sequence completion:nil];
-}
-
-- (void)imageRemixActionFromViewController:(UIViewController *)viewController previewImage:(UIImage *)previewImage sequence:(VSequence *)sequence completion:(void(^)(BOOL))completion
+- (void)showRemixOnViewController:(UIViewController *)viewController
+                     withSequence:(VSequence *)sequence
+             andDependencyManager:(VDependencyManager *)dependencyManager
+                       completion:(void(^)(BOOL))completion
 {
     NSAssert(![sequence isPoll], @"You cannot remix polls.");
     if (![VObjectManager sharedManager].authorized)
@@ -103,55 +112,32 @@
         return;
     }
     
-    VCameraPublishViewController *publishViewController = [VCameraPublishViewController cameraPublishViewController];
-    publishViewController.parentSequenceID = [sequence.remoteId integerValue];
-    publishViewController.parentNodeID = [sequence.firstNode.remoteId integerValue];
-    publishViewController.previewImage = previewImage;
-    if ( completion == nil )
+    __weak UIViewController *weakViewController = viewController;
+    self.workspaceFlowController = [dependencyManager templateValueOfType:[VWorkspaceFlowController class]
+                                                                   forKey:VDependencyManagerWorkspaceFlowKey
+                                                    withAddedDependencies:@{VWorkspaceFlowControllerSequenceToRemixKey:sequence,
+                                                                            VImageToolControllerInitialImageEditStateKey:@(VImageToolControllerInitialImageEditStateText),
+                                                                            VVideoToolControllerInitalVideoEditStateKey:@(VVideoToolControllerInitialVideoEditStateGIF)}];
+    self.workspaceFlowController.completion = ^void(BOOL finished)
     {
-        publishViewController.completion = ^(BOOL complete)
-        {
-            [viewController dismissViewControllerAnimated:YES completion:nil];
-        };
-    }
-    else
-    {
-        publishViewController.completion = completion;
-    }
-    
-    UINavigationController *remixNav = [[UINavigationController alloc] initWithRootViewController:publishViewController];
-    
-    void(^writeBlock)(void) = ^void(void)
-    {
-        NSData *filteredImageData = UIImageJPEGRepresentation(previewImage, VConstantJPEGCompressionQuality);
-        NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
-        NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:VConstantMediaExtensionJPG];
-        if ([filteredImageData writeToURL:tempFile atomically:NO])
-        {
-            publishViewController.mediaURL = tempFile;
-            [viewController presentViewController:remixNav
-                                         animated:YES
-                                       completion:nil];
-        }
+        [weakViewController dismissViewControllerAnimated:YES
+                                               completion:^{
+                                                   if (completion)
+                                                   {
+                                                       completion(finished);
+                                                   }
+                                               }];
     };
-    
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                    cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel button")
-                                                       onCancelButton:nil
-                                               destructiveButtonTitle:nil
-                                                  onDestructiveButton:nil
-                                           otherButtonTitlesAndBlocks:NSLocalizedString(@"Meme", nil),  ^(void)
-                                  {
-                                      publishViewController.captionType = VCaptionTypeMeme;
-                                      writeBlock();
-                                  },
-                                  NSLocalizedString(@"Quote", nil),  ^(void)
-                                  {
-                                      publishViewController.captionType = VCaptionTypeQuote;
-                                      writeBlock();
-                                  }, nil];
-    
-    [actionSheet showInView:viewController.view];
+    [viewController presentViewController:self.workspaceFlowController.flowRootViewController
+                                 animated:YES
+                               completion:nil];
+}
+
+- (void)showRemixOnViewController:(UIViewController *)viewController
+                     withSequence:(VSequence *)sequence
+             andDependencyManager:(VDependencyManager *)dependencyManager
+{
+    [self showRemixOnViewController:viewController withSequence:sequence andDependencyManager:dependencyManager completion:nil];
 }
 
 - (void)showRemixStreamFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence

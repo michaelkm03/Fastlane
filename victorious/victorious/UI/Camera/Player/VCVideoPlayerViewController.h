@@ -28,10 +28,11 @@
 @end
 
 /**
- A UIView subclass for displaying video content
+ A UIViewController for displaying video content
  */
 @interface VCVideoPlayerViewController : UIViewController
 
+@property (nonatomic, strong) AVPlayerItem *playerItem;
 @property (nonatomic, strong) NSURL *itemURL;                           ///< The URL of the video to play
 @property (nonatomic, weak) id<VCVideoPlayerDelegate> delegate;
 @property (nonatomic, readonly) BOOL isLooping;                         ///< If YES, video will loop around at the end

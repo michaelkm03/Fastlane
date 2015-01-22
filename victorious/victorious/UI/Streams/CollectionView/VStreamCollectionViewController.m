@@ -14,6 +14,9 @@
 #import "VMarqueeCollectionCell.h"
 #import "VStreamCollectionCellWebContent.h"
 
+#warning Temporary
+#import "VRootViewController.h"
+
 //Controllers
 #import "VCommentsContainerViewController.h"
 #import "VUserProfileViewController.h"
@@ -657,16 +660,10 @@ static CGFloat const kTemplateCLineSpacing = 8;
 
 - (void)willRemixSequence:(VSequence *)sequence fromView:(UIView *)view
 {
-    if ([sequence isVideo])
-    {
-        [self.sequenceActionController videoRemixActionFromViewController:self asset:[sequence firstNode].assets.firstObject node:[sequence firstNode] sequence:sequence];
-    }
-    else
-    {
-        NSIndexPath *path = [self.streamDataSource indexPathForItem:sequence];
-        VStreamCollectionCell *cell = (VStreamCollectionCell *)[self.streamDataSource.delegate dataSource:self.streamDataSource cellForIndexPath:path];
-        [self.sequenceActionController imageRemixActionFromViewController:self previewImage:cell.previewImageView.image sequence: sequence];
-    }
+#warning Hacktastic
+    [self.sequenceActionController showRemixOnViewController:self
+                                                withSequence:sequence
+                                        andDependencyManager:[VRootViewController rootViewController].dependencyManager];
 }
 
 - (void)willShareSequence:(VSequence *)sequence fromView:(UIView *)view

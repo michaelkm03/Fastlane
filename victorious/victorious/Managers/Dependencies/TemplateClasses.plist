@@ -2,6 +2,28 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>trim.video.tool</key>
+	<string>VTrimVideoTool</string>
+	<key>basic.crop</key>
+	<string>VCropToolViewController</string>
+	<key>vertical.picker</key>
+	<string>VTickerPickerViewController</string>
+	<key>filter.tool</key>
+	<string>VFilterTool</string>
+	<key>quote.tool</key>
+	<string>VQuoteTool</string>
+	<key>meme.tool</key>
+	<string>VMemeTool</string>
+	<key>crop.tool</key>
+	<string>VCropTool</string>
+	<key>text.tool</key>
+	<string>VTextTool</string>
+	<key>textType.tool</key>
+	<string>VTextTypeTool</string>
+	<key>workspace.screen</key>
+	<string>VWorkspaceViewController</string>
+	<key>workspace</key>
+	<string>VWorkspaceFlowController</string>
 	<key>sideMenu.scaffold</key>
 	<string>VSideMenuViewController</string>
 	<key>simple.menu</key>

@@ -10,7 +10,7 @@
 #import "VConstants.h"
 #import "VUploadManager.h"
 
-@class VSequence, VComment, VConversation, VAsset, VMessage, VNode;
+@class VSequence, VComment, VConversation, VAsset, VMessage, VNode, VPublishParameters;
 
 typedef void (^VRemixCompletionBlock) (BOOL completion, NSURL *remixMp4Url, NSError *error);
 
@@ -52,19 +52,14 @@ extern NSString * const VObjectManagerContentIndexKey;
                  media2Url:(NSURL *)media2Url
                 completion:(VUploadManagerTaskCompleteBlock)completionBlock;
 
-- (void)uploadMediaWithName:(NSString *)name
-                description:(NSString *)description
-               previewImage:(UIImage *)previewImage
-                captionType:(VCaptionType)type
-                  expiresAt:(NSString *)expiresAt
-           parentSequenceId:(NSNumber *)parentSequenceId
-               parentNodeId:(NSNumber *)parentNodeId
-                      speed:(CGFloat)speed
-                   loopType:(VLoopType)loopType
-                   mediaURL:(NSURL *)mediaUrl
-              facebookShare:(BOOL)facebookShare
-               twitterShare:(BOOL)twitterShare
-                 completion:(VUploadManagerTaskCompleteBlock)completionBlock;
+/**
+ *  Upload a media with the given parameters object.
+ *
+ *  @param publishParameters The publish parameters.
+ *  @param completionBlock   A completion block.
+ */
+- (void)uploadMediaWithPublishParameters:(VPublishParameters *)publishParameters
+                              completion:(VUploadManagerTaskCompleteBlock)completionBlock;
 
 /**
  Creates a new comment and posts it to the server

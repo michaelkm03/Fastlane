@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class VSequence, VAsset, VNode;
+@class VSequence, VAsset, VNode, VDependencyManager;
 
 @interface VSequenceActionController : NSObject
 
@@ -16,9 +16,26 @@
 
 - (BOOL)showPosterProfileFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence;
 
-- (void)videoRemixActionFromViewController:(UIViewController *)viewController asset:(VAsset *)asset node:(VNode *)node sequence:(VSequence *)sequence;
-- (void)imageRemixActionFromViewController:(UIViewController *)viewController previewImage:(UIImage *)previewImage sequence:(VSequence *)sequence;
-- (void)imageRemixActionFromViewController:(UIViewController *)viewController previewImage:(UIImage *)previewImage sequence:(VSequence *)sequence completion:(void(^)(BOOL))completion;
+/**
+ *  Internally calls -showRemixOnViewController:withSequence:andDependencyManager:completion: with nil for completion.
+ */
+- (void)showRemixOnViewController:(UIViewController *)viewController
+                     withSequence:(VSequence *)sequence
+             andDependencyManager:(VDependencyManager *)dependencyManager;
+
+/**
+ *  Presents remix UI on a viewcontroller with a given sequence to remix. Will present a UIViewController for the remix UI on the pased in viewController.
+ *
+ *  @param viewController    The viewController to present the remix UI on.
+ *  @param sequence          The sequence to remix.
+ *  @param dependencyManager A dependency manager to use for creating the remix UI.
+ *  @param completion        A completion block. BOOL is YES if successful publish, NO if cancelled out.
+ */
+- (void)showRemixOnViewController:(UIViewController *)viewController
+                     withSequence:(VSequence *)sequence
+             andDependencyManager:(VDependencyManager *)dependencyManager
+                       completion:(void(^)(BOOL))completion;
+
 - (void)showRemixStreamFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence;
 
 

@@ -33,8 +33,6 @@
 // ViewControllers
 #import "VActionSheetViewController.h"
 #import "VActionSheetTransitioningDelegate.h"
-#import "VCameraPublishViewController.h"
-#import "VRemixSelectViewController.h"
 #import "VUserProfileViewController.h"
 #import "VReposterTableViewController.h"
 #import "VLoginViewController.h"
@@ -122,14 +120,17 @@ static const char kSequenceActionControllerKey;
                  VSequence *sequence = self.viewModel.sequence;
                  if ([sequence isVideo])
                  {
-                     [self.sequenceActionController videoRemixActionFromViewController:contentViewController
-                                                                            asset:[self.viewModel.sequence firstNode].assets.firstObject
-                                                                             node:[sequence firstNode]
-                                                                         sequence:sequence];
+                     [self.sequenceActionController showRemixOnViewController:contentViewController
+                                                                 withSequence:self.viewModel.sequence
+                                                         andDependencyManager:self.dependencyManagerForHistogramExperiment];
                  }
                  else
                  {
-                     [self.sequenceActionController imageRemixActionFromViewController:self previewImage:self.placeholderImage sequence: sequence completion:^(BOOL didPublish) {
+                     [self.sequenceActionController showRemixOnViewController:self
+                                                                 withSequence:sequence
+                                                         andDependencyManager:self.dependencyManagerForHistogramExperiment
+                                                                   completion:^(BOOL didPublish)
+                     {
                          if ( !didPublish )
                          {
                              [self dismissViewControllerAnimated:YES completion:nil];

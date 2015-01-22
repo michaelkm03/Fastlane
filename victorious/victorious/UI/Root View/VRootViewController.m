@@ -23,7 +23,8 @@ static const NSTimeInterval kAnimationDuration = 0.2;
 
 @interface VRootViewController () <VLoadingViewControllerDelegate>
 
-@property (nonatomic, strong) VDependencyManager *dependencyManager;
+#warning Temporary
+@property (nonatomic, strong, readwrite) VDependencyManager *dependencyManager;
 @property (nonatomic) BOOL appearing;
 @property (nonatomic) BOOL shouldPresentForceUpgradeScreenOnNextAppearance;
 @property (nonatomic, strong, readwrite) UIViewController *currentViewController;
