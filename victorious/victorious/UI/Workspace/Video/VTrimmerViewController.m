@@ -15,6 +15,8 @@
 #import "VThumbnailCell.h"
 #import "VTrimControl.h"
 
+#import "VThemeManager.h"
+
 static NSString *const emptyCellIdentifier = @"emptyCell";
 
 static const CGFloat kTimelineTopPadding = 48.0f;
@@ -252,9 +254,9 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
 
 - (void)updateTrimControlTitleWithTime:(CMTime)time
 {
-    NSString *title = [NSString stringWithFormat:@"%@ secs", [NSString stringWithFormat:@"%.0f", CMTimeGetSeconds(time)]];
+    NSString *title = [NSString stringWithFormat:@"%@ %@", [NSString stringWithFormat:@"%.0f", CMTimeGetSeconds(time)], NSLocalizedString(@"s", @"Second time interval abbreviation.")];
     self.trimControl.attributedTitle = [[NSAttributedString alloc] initWithString:title
-                                                                  attributes:nil];
+                                                                       attributes:@{NSFontAttributeName: [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font]}];
 }
 
 - (CGFloat)timelineWidthPerSecond
