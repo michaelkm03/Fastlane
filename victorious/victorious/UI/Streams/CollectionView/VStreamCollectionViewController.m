@@ -80,51 +80,11 @@ static CGFloat const kTemplateCLineSpacing = 8;
 @property (nonatomic, strong) NSString *selectedHashtag;
 @property (nonatomic, weak) MBProgressHUD *failureHUD;
 
-@property (strong, nonatomic) VDependencyManager *dependencyManager;
-
 @end
 
 @implementation VStreamCollectionViewController
 
 #pragma mark - Factory methods
-
-+ (instancetype)homeStreamCollection
-{
-    VStream *recentStream = [VStream streamForCategories: [VUGCCategories() arrayByAddingObjectsFromArray:VOwnerCategories()]];
-    VStream *hotStream = [VStream hotSteamForSteamName:@"home"];
-    VStream *followingStream = [VStream followerStreamForStreamName:@"home" user:nil];
-    
-    VStreamCollectionViewController *homeStream = [self streamViewControllerForDefaultStream:recentStream andAllStreams:@[hotStream, recentStream, followingStream] title:NSLocalizedString(@"Home", nil)];
-    
-    homeStream.shouldDisplayMarquee = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsMarqueeEnabled];
-    homeStream.navHeaderView.showHeaderLogoImage = YES;
-    [homeStream v_addCreateSequenceButton];
-    [homeStream v_addUploadProgressView];
-    homeStream.uploadProgressViewController.delegate = homeStream;
-    
-    return homeStream;
-}
-
-+ (instancetype)communityStreamCollection
-{
-    VStream *recentStream = [VStream streamForCategories: VUGCCategories()];
-    VStream *hotStream = [VStream hotSteamForSteamName:@"ugc"];
-    
-    VStreamCollectionViewController *communityStream = [self streamViewControllerForDefaultStream:recentStream andAllStreams:@[hotStream, recentStream] title:NSLocalizedString(@"Community", nil)];
-    [communityStream v_addCreateSequenceButton];
-    
-    return communityStream;
-}
-
-+ (instancetype)ownerStreamCollection
-{
-    VStream *recentStream = [VStream streamForCategories: VOwnerCategories()];
-    VStream *hotStream = [VStream hotSteamForSteamName:@"owner"];
-    
-    VStreamCollectionViewController *ownerStream = [self streamViewControllerForDefaultStream:recentStream andAllStreams:@[hotStream, recentStream] title:NSLocalizedString(@"Owner", nil)];
-    
-    return ownerStream;
-}
 
 + (instancetype)hashtagStreamWithHashtag:(NSString *)hashtag
 {
@@ -138,15 +98,16 @@ static CGFloat const kTemplateCLineSpacing = 8;
                                                                                      title:tagTitle];
     
     streamVC.selectedHashtag = hashtag;
+    streamVC.dependencyManager = [[VRootViewController rootViewController] dependencyManager];
     
     return streamVC;
 }
 
 + (instancetype)streamViewControllerForDefaultStream:(VStream *)stream andAllStreams:(NSArray *)allStreams title:(NSString *)title
 {
-    VStreamCollectionViewController *streamColllection = [self streamViewControllerForStream:stream];
+    VStreamCollectionViewController *streamCollection = [self streamViewControllerForStream:stream];
     
-    streamColllection.allStreams = allStreams;
+    streamCollection.allStreams = allStreams;
     
     NSMutableArray *titles = [[NSMutableArray alloc] initWithCapacity:allStreams.count];
     for (VStream *stream in allStreams)
@@ -154,14 +115,14 @@ static CGFloat const kTemplateCLineSpacing = 8;
         [titles addObject:stream.name];
     }
     
-    streamColllection.title = title;
-    [streamColllection v_addNewNavHeaderWithTitles:titles];
-    streamColllection.navHeaderView.delegate = streamColllection;
+    streamCollection.title = title;
+    [streamCollection v_addNewNavHeaderWithTitles:titles];
+    streamCollection.navHeaderView.delegate = streamCollection;
     NSInteger selectedStream = [allStreams indexOfObject:stream];
-    streamColllection.navHeaderView.navSelector.currentIndex = selectedStream;
+    streamCollection.navHeaderView.navSelector.currentIndex = selectedStream;
+    streamCollection.dependencyManager = [[VRootViewController rootViewController] dependencyManager];
     
-    
-    return streamColllection;
+    return streamCollection;
 }
 
 + (instancetype)streamViewControllerForStream:(VStream *)stream

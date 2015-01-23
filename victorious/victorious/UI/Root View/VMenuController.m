@@ -31,7 +31,6 @@
 #import "VDiscoverContainerViewController.h"
 
 #import "VStreamCollectionViewController.h"
-#import "VMultipleStreamViewController.h"
 
 static NSString * const kSectionHeaderReuseID = @"SectionHeaderView";
 static const CGFloat kSectionHeaderHeight = 36.0f;

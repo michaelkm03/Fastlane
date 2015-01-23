@@ -542,7 +542,6 @@
 		BE88FF771A0005E70064AB28 /* VStreamCollectionCellPoll.m in Sources */ = {isa = PBXBuildFile; fileRef = BE88FF681A0005E70064AB28 /* VStreamCollectionCellPoll.m */; };
 		BE88FF781A0005E70064AB28 /* VStreamCollectionCellPoll.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE88FF691A0005E70064AB28 /* VStreamCollectionCellPoll.xib */; };
 		BE88FF791A0005E70064AB28 /* VAbstractStreamCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE88FF6B1A0005E70064AB28 /* VAbstractStreamCollectionViewController.m */; };
-		BE88FF7A1A0005E70064AB28 /* VMultipleStreamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE88FF6D1A0005E70064AB28 /* VMultipleStreamViewController.m */; };
 		BE88FF7B1A0005E70064AB28 /* VStreamCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE88FF701A0005E70064AB28 /* VStreamCollectionViewController.m */; };
 		BE88FF7F1A0005FF0064AB28 /* VMarqueeCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE88FF7D1A0005FF0064AB28 /* VMarqueeCollectionCell.m */; };
 		BE88FF801A0005FF0064AB28 /* VMarqueeCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE88FF7E1A0005FF0064AB28 /* VMarqueeCollectionCell.xib */; };
@@ -1626,8 +1625,6 @@
 		BE88FF691A0005E70064AB28 /* VStreamCollectionCellPoll.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VStreamCollectionCellPoll.xib; sourceTree = "<group>"; };
 		BE88FF6A1A0005E70064AB28 /* VAbstractStreamCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAbstractStreamCollectionViewController.h; sourceTree = "<group>"; };
 		BE88FF6B1A0005E70064AB28 /* VAbstractStreamCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAbstractStreamCollectionViewController.m; sourceTree = "<group>"; };
-		BE88FF6C1A0005E70064AB28 /* VMultipleStreamViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMultipleStreamViewController.h; sourceTree = "<group>"; };
-		BE88FF6D1A0005E70064AB28 /* VMultipleStreamViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMultipleStreamViewController.m; sourceTree = "<group>"; };
 		BE88FF6E1A0005E70064AB28 /* VSequenceActionsDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSequenceActionsDelegate.h; sourceTree = "<group>"; };
 		BE88FF6F1A0005E70064AB28 /* VStreamCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamCollectionViewController.h; sourceTree = "<group>"; };
 		BE88FF701A0005E70064AB28 /* VStreamCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamCollectionViewController.m; sourceTree = "<group>"; };
@@ -4048,8 +4045,6 @@
 				BE88FF5D1A0005E70064AB28 /* Cells */,
 				BE88FF6A1A0005E70064AB28 /* VAbstractStreamCollectionViewController.h */,
 				BE88FF6B1A0005E70064AB28 /* VAbstractStreamCollectionViewController.m */,
-				BE88FF6C1A0005E70064AB28 /* VMultipleStreamViewController.h */,
-				BE88FF6D1A0005E70064AB28 /* VMultipleStreamViewController.m */,
 				BE88FF6E1A0005E70064AB28 /* VSequenceActionsDelegate.h */,
 				BE88FF6F1A0005E70064AB28 /* VStreamCollectionViewController.h */,
 				BE88FF701A0005E70064AB28 /* VStreamCollectionViewController.m */,
@@ -4995,7 +4990,6 @@
 				0314D49F19B46B5E00FA363C /* VImageSearchDataSource.m in Sources */,
 				0314D4D619B46B5E00FA363C /* VChangePasswordViewController.m in Sources */,
 				BE88FF921A00060E0064AB28 /* VSwipeNavSelector.m in Sources */,
-				BE88FF7A1A0005E70064AB28 /* VMultipleStreamViewController.m in Sources */,
 				0314D4E819B46B5E00FA363C /* VTabBarViewController.m in Sources */,
 				A7A2DFFF1A37813D00F8C705 /* VPurchaseActionCell.m in Sources */,
 				D89AC2BC19F1FD6B00921131 /* VHistogramDataSource.m in Sources */,
