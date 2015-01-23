@@ -105,10 +105,10 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
     
     if (self.sequence.isRemix.boolValue && self.sequence.parentUser != nil)
     {
-        NSString *formatString = NSLocalizedString(@"giffedFromFormat", nil);
+        NSString *formatString = NSLocalizedString(@"remixedFromFormat", nil);
         if ([[[self.sequence firstNode] mp4Asset] playerControlsDisabled])
         {
-            formatString = NSLocalizedString(@"remixedFromFormat", nil);
+            formatString = NSLocalizedString(@"giffedFromFormat", nil);
         }
         parentUserString = [NSString stringWithFormat:formatString, text];
     }
