@@ -45,10 +45,9 @@
 
 static const char kSequenceActionControllerKey;
 
-@interface VNewContentViewController (ActionsPrivate)
+@interface VNewContentViewController ()
 
 @property VSequenceActionController *sequenceActionController;
-- (void)onRemixPublished:(NSNotification *)notification;
 
 @end
 
@@ -135,15 +134,8 @@ static const char kSequenceActionControllerKey;
                                                                  withSequence:sequence
                                                          andDependencyManager:self.dependencyManagerForHistogramExperiment
                                                                    completion:^(BOOL didPublish)
-                     {
-                         if ( !didPublish )
-                         {
-                             [self dismissViewControllerAnimated:YES completion:nil];
-                         }
-                         else
-                         {
-                             [self onRemixPublished:nil];
-                         }
+                      {
+                          [self dismissViewControllerAnimated:YES completion:nil];
                      }];
                  }
              }];
