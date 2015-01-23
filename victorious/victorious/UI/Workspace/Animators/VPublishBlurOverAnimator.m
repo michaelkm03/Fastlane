@@ -56,7 +56,7 @@ static const NSTimeInterval kBlurOverDismissTransitionDuration = 0.5f;
     
     [UIView animateWithDuration:[self transitionDuration:transitionContext]
                           delay:0.0f
-         usingSpringWithDamping:0.9f
+         usingSpringWithDamping:0.7f
           initialSpringVelocity:0.0f
                         options:kNilOptions
                      animations:^

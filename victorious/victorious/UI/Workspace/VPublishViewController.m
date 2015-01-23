@@ -190,6 +190,11 @@ static const CGFloat kTopSpacePublishPrompt = 50.0f;
 {
     if ((tapGesture.state == UIGestureRecognizerStateEnded) && (self.panGestureRecognizer.state == UIGestureRecognizerStateFailed))
     {
+        if ([self.captionTextView isFirstResponder])
+        {
+            [self.captionTextView resignFirstResponder];
+            return;
+        }
         if (self.completion != nil)
         {
             self.completion(NO);
