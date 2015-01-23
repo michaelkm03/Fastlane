@@ -13,6 +13,7 @@
 #import "VObjectManager+Users.h"
 #import "VObjectManager+DirectMessaging.h"
 #import "VProfileEditViewController.h"
+#import "VRootViewController.h"
 #import "VFollowerTableViewController.h"
 #import "VFollowingTableViewController.h"
 #import "VProfileFollowingContainerViewController.h"
@@ -75,7 +76,8 @@ static NSString * const kUserKey = @"user";
     {
         viewController.title = aUser.name ?: @"Profile";
     }
-
+    
+    viewController.dependencyManager = [[VRootViewController rootViewController] dependencyManager];
     return viewController;
 }
 
