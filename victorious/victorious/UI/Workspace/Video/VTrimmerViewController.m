@@ -207,6 +207,14 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
 
 #pragma mark - UIScrollViewDelegate
 
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    if (scrollView.isDecelerating)
+    {
+        [self.delegate trimmerViewControllerEndedSeeking:self];
+    }
+}
+
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     [self updateAndNotify];
