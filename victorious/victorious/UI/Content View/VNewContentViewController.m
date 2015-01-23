@@ -50,7 +50,6 @@
 #import "VUserProfileViewController.h"
 #import "VAuthorizationViewControllerFactory.h"
 #import "VPurchaseViewController.h"
-#import "VCameraPublishViewController.h"
 
 // Transitioning
 #import "VLightboxTransitioningDelegate.h"
@@ -480,10 +479,6 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
                                              selector:@selector(showPurchaseViewController:)
                                                  name:VExperienceEnhancerBarDidRequirePurchasePrompt
                                                object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(onRemixPublished:)
-                                                 name:VCameraPublishViewControllerDidPublishNotification
-                                               object:nil];
     
     [self.navigationController setNavigationBarHidden:YES
                                              animated:YES];
@@ -611,12 +606,6 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 - (void)loginStatusDidChange:(NSNotification *)notification
 {
     [self.viewModel reloadData];
-}
-
-- (void)onRemixPublished:(NSNotification *)notification
-{
-    // Dismiss the content view and return to stream
-    [self.delegate newContentViewControllerDidClose:self];
 }
 
 #pragma mark - IBActions
@@ -794,6 +783,8 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
                 videoCell.delegate = self;
                 videoCell.speed = self.viewModel.speed;
                 videoCell.loop = self.viewModel.loop;
+                videoCell.playerControlsDisabled = self.viewModel.playerControlsDisabled;
+                videoCell.audioMuted = self.viewModel.audioMuted;
                 self.videoCell = videoCell;
                 self.contentCell = videoCell;
                 __weak typeof(self) welf = self;

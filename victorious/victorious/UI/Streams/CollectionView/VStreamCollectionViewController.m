@@ -14,6 +14,9 @@
 #import "VMarqueeCollectionCell.h"
 #import "VStreamCollectionCellWebContent.h"
 
+#warning Temporary
+#import "VRootViewController.h"
+
 //Controllers
 #import "VCommentsContainerViewController.h"
 #import "VUserProfileViewController.h"
@@ -217,7 +220,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
     NSNumber *cellVisibilityRatio = [dependencyManager numberForKey:@"experiments.stream_atf_view_threshold"];
     if ( cellVisibilityRatio != nil )
     {
-        streamCollectionVC.minimumRequiredCellVisibilityRatio = cellVisibilityRatio.floatValue;
+        streamCollectionVC.trackingMinRequiredCellVisibilityRatio = cellVisibilityRatio.floatValue;
     }
     
     streamCollectionVC.dependencyManager = dependencyManager;
@@ -299,7 +302,9 @@ static CGFloat const kTemplateCLineSpacing = 8;
     [self.collectionView flashScrollIndicators];
     [self.navigationController setNavigationBarHidden:YES animated:YES];
     
-    [self updateSequenceTracking];
+    [self updateCellVisibilityTracking];
+    
+    [self updateCurrentlyPlayingMediaAsset];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -527,6 +532,14 @@ static CGFloat const kTemplateCLineSpacing = 8;
     return UIEdgeInsetsZero;
 }
 
+- (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ( [cell isKindOfClass:[VStreamCollectionCell class]] )
+    {
+        [((VStreamCollectionCell *)cell) pauseVideo];
+    }
+}
+
 #pragma mark - VStreamCollectionDataDelegate
 
 - (UICollectionViewCell *)dataSource:(VStreamCollectionViewDataSource *)dataSource cellForIndexPath:(NSIndexPath *)indexPath
@@ -647,16 +660,10 @@ static CGFloat const kTemplateCLineSpacing = 8;
 
 - (void)willRemixSequence:(VSequence *)sequence fromView:(UIView *)view
 {
-    if ([sequence isVideo])
-    {
-        [self.sequenceActionController videoRemixActionFromViewController:self asset:[sequence firstNode].assets.firstObject node:[sequence firstNode] sequence:sequence];
-    }
-    else
-    {
-        NSIndexPath *path = [self.streamDataSource indexPathForItem:sequence];
-        VStreamCollectionCell *cell = (VStreamCollectionCell *)[self.streamDataSource.delegate dataSource:self.streamDataSource cellForIndexPath:path];
-        [self.sequenceActionController imageRemixActionFromViewController:self previewImage:cell.previewImageView.image sequence: sequence];
-    }
+#warning Hacktastic
+    [self.sequenceActionController showRemixOnViewController:self
+                                                withSequence:sequence
+                                        andDependencyManager:[VRootViewController rootViewController].dependencyManager];
 }
 
 - (void)willShareSequence:(VSequence *)sequence fromView:(UIView *)view
@@ -895,24 +902,16 @@ static CGFloat const kTemplateCLineSpacing = 8;
 {
     [super scrollViewDidScroll:scrollView];
     
-    [self updateSequenceTracking];
+    [self updateCellVisibilityTracking];
+    
+    [self updateCurrentlyPlayingMediaAsset];
 }
 
-#pragma mark - Tracking
+#pragma mark - Cell visibility
 
-- (void)updateSequenceTracking
+- (void)updateCellVisibilityTracking
 {
-    // Cells need to have this much visible area to be tracked
-    const float minimumRequiredVisibilityRatio = self.minimumRequiredCellVisibilityRatio;
-    
-    // The visible rect must be offset by the visible height of the header, which may or may not be visible
-    // In the future, when contentView's use a contentInset.top value to position content under the header,
-    // a combiantion of the contentInset and contentOffset values can be used instead
-    const CGFloat headerOffset = CGRectGetHeight(self.navHeaderView.frame) + [self headerPositionY];
-    const CGRect streamVisibleRect = CGRectMake( CGRectGetMinX( self.collectionView.bounds ),
-                                                 CGRectGetMinY( self.collectionView.bounds ) + headerOffset,
-                                                 CGRectGetWidth( self.collectionView.bounds ),
-                                                 CGRectGetHeight (self.collectionView.bounds ) - headerOffset);
+    const CGRect streamVisibleRect = self.collectionView.bounds;
     
     NSArray *visibleCells = self.collectionView.visibleCells;
     [visibleCells enumerateObjectsUsingBlock:^(VStreamCollectionCell *cell, NSUInteger idx, BOOL *stop)
@@ -922,25 +921,74 @@ static CGFloat const kTemplateCLineSpacing = 8;
              return;
          }
          
-         VSequence *sequence = cell.sequence;
-         if ( sequence == nil )
+         // Calculate visible ratio for the whole cell
+         const CGRect intersection = CGRectIntersection( streamVisibleRect, cell.frame );
+         const float visibleRatio = CGRectGetHeight( intersection ) / CGRectGetHeight( cell.frame );
+         [self collectionViewCell:cell didUpdateCellVisibility:visibleRatio];
+     }];
+}
+
+- (void)updateCurrentlyPlayingMediaAsset
+{
+    const CGRect streamVisibleRect = self.collectionView.bounds;
+    
+    // Was a video begins playing, all other visible cells will be paused
+    __block BOOL didPlayVideo = NO;
+    
+    NSArray *visibleCells = self.collectionView.visibleCells;
+    [visibleCells enumerateObjectsUsingBlock:^(VStreamCollectionCell *cell, NSUInteger idx, BOOL *stop)
+     {
+         if ( ![cell isKindOfClass:[VStreamCollectionCell class]] )
          {
              return;
          }
          
-         // Calculate visible ratio (consts are for performance since this is called very often)
-         const CGRect intersection = CGRectIntersection( streamVisibleRect, cell.frame );
-         const float visibleRatio = CGRectGetHeight( intersection ) / CGRectGetHeight( cell.frame );
-         
-         if ( visibleRatio >= minimumRequiredVisibilityRatio )
+         if ( didPlayVideo )
          {
-             NSDictionary *params = @{ VTrackingKeySequenceId : sequence.remoteId,
-                                       VTrackingKeyStreamId : self.currentStream.remoteId,
-                                       VTrackingKeyTimeStamp : [NSDate date],
-                                       VTrackingKeyUrls : sequence.tracking.cellView };
-             [[VTrackingManager sharedInstance] queueEvent:VTrackingEventSequenceDidAppearInStream parameters:params eventId:sequence.remoteId];
+             [cell pauseVideo];
+         }
+         else
+         {
+             // Calculate visible ratio for just the media content of the cell
+             const CGRect contentFrameInCell = CGRectMake( CGRectGetMinX(cell.mediaContentFrame) + CGRectGetMinX(cell.frame),
+                                                          CGRectGetMinY(cell.mediaContentFrame) + CGRectGetMinY(cell.frame),
+                                                          CGRectGetWidth(cell.mediaContentFrame),
+                                                          CGRectGetHeight(cell.mediaContentFrame) );
+             
+             if ( CGRectGetHeight( contentFrameInCell ) > 0.0 )
+             {
+                 const CGRect contentIntersection = CGRectIntersection( streamVisibleRect, contentFrameInCell );
+                 const float mediaContentVisibleRatio = CGRectGetHeight( contentIntersection ) / CGRectGetHeight( contentFrameInCell );
+                 if ( mediaContentVisibleRatio >= 0.8f )
+                 {
+                     [cell playVideo];
+                     didPlayVideo = YES;
+                 }
+                 else
+                 {
+                     [cell pauseVideo];
+                 }
+             }
          }
      }];
+}
+
+- (void)collectionViewCell:(VStreamCollectionCell *)cell didUpdateCellVisibility:(CGFloat)visibiltyRatio
+{
+    if ( visibiltyRatio >= self.trackingMinRequiredCellVisibilityRatio )
+    {
+        const VSequence *sequence = cell.sequence;
+        if ( sequence != nil )
+        {
+            NSDictionary *params = @{ VTrackingKeySequenceId : sequence.remoteId,
+                                      VTrackingKeyStreamId : self.currentStream.remoteId,
+                                      VTrackingKeyTimeStamp : [NSDate date],
+                                      VTrackingKeyUrls : sequence.tracking.cellView };
+            [[VTrackingManager sharedInstance] queueEvent:VTrackingEventSequenceDidAppearInStream
+                                               parameters:params
+                                                  eventId:sequence.remoteId];
+        }
+    }
 }
 
 @end

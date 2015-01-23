@@ -19,7 +19,7 @@ static NSString * const kProfileDeeplinkHostComponent = @"profile";
 
 @interface VUserProfileNavigationDestination ()
 
-@property (nonatomic, readonly) VDependencyManager *dependencyManager;
+@property (nonatomic, strong, readonly) VDependencyManager *dependencyManager;
 
 @end
 

@@ -33,6 +33,8 @@
 
 - (NSNumber *)voteCountForVoteID:(NSNumber *)voteID;
 
+- (VAsset *)primaryAssetWithPreferredMimeType:(NSString *)mimeType;
+
 @property (nonatomic, readonly) NSString *webContentUrl;
 @property (nonatomic, readonly) NSString *webContentPreviewUrl;
 

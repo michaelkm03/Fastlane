@@ -36,8 +36,10 @@
 
 #import "CCHLinkTextView.h"
 #import "CCHLinkTextViewDelegate.h"
+#import "UIVIew+AutoLayout.h"
+#import "VVideoView.h"
 
-@interface VStreamCollectionCell() <VSequenceActionsDelegate, CCHLinkTextViewDelegate>
+@interface VStreamCollectionCell() <VSequenceActionsDelegate, CCHLinkTextViewDelegate, VVideoViewDelegtae>
 
 @property (nonatomic, weak) IBOutlet UIImageView *playImageView;
 @property (nonatomic, weak) IBOutlet UIImageView *playBackgroundImageView;
@@ -46,6 +48,14 @@
 
 @property (nonatomic, weak) IBOutlet VStreamCellActionView *actionView;
 @property (nonatomic, weak) IBOutlet UIImageView *bottomGradient;
+
+@property (nonatomic, weak) IBOutlet VVideoView *videoPlayerView;
+@property (nonatomic, weak) IBOutlet UIView *contentContainer;
+
+@property (nonatomic, strong) VAsset *videoAsset;
+@property (nonatomic, assign) BOOL isPlayButtonVisible;
+
+@property (nonatomic, readonly) BOOL canPlayVideo;
 
 @end
 
@@ -104,6 +114,22 @@ static const CGFloat kDescriptionBuffer = 18.0;
     }
 }
 
+- (void)prepareForReuse
+{
+    [super prepareForReuse];
+    
+    [self pauseVideo];
+    
+    self.videoPlayerView.alpha = 0.0f;
+    
+    self.videoAsset = nil;
+}
+
+- (CGRect)mediaContentFrame
+{
+    return self.contentContainer.frame;
+}
+
 - (void)setSequence:(VSequence *)sequence
 {
     _sequence = sequence;
@@ -121,11 +147,75 @@ static const CGFloat kDescriptionBuffer = 18.0;
     
     self.captionTextView.hidden = self.sequence.nameEmbeddedInContent.boolValue || self.sequence.name.length == 0;
     
-    self.playImageView.hidden = self.playBackgroundImageView.hidden = ![sequence isVideo];
-    
     [self setupActionBar];
     
     self.bottomGradient.hidden = (sequence.nameEmbeddedInContent != nil) ? [sequence.nameEmbeddedInContent boolValue] : NO;
+    
+    if ( [sequence isVideo] )
+    {
+        VAsset *asset = [self.sequence.firstNode mp4Asset];
+        if ( asset.streamAutoplay.boolValue )
+        {
+            self.videoAsset = asset;
+            self.isPlayButtonVisible = NO;
+            [self.videoPlayerView setItemURL:[NSURL URLWithString:self.videoAsset.data]
+                                        loop:self.videoAsset.loop.boolValue
+                               audioMuted:self.videoAsset.audioMuted.boolValue];
+        }
+        else
+        {
+            self.isPlayButtonVisible = YES;
+        }
+    }
+    else
+    {
+        self.isPlayButtonVisible = NO;
+    }
+}
+
+- (BOOL)canPlayVideo
+{
+    return self.videoAsset != nil;
+}
+
+- (void)playVideo
+{
+    if ( self.canPlayVideo )
+    {
+        [self.videoPlayerView play];
+        [UIView animateWithDuration:0.2f
+                              delay:0.0f
+                            options:UIViewAnimationOptionCurveEaseOut
+                         animations:^void
+         {
+             self.videoPlayerView.alpha = 1.0f;
+         }
+                         completion:nil];
+    }
+}
+
+- (void)pauseVideo
+{
+    if ( self.canPlayVideo  )
+    {
+        [UIView animateWithDuration:0.2f
+                              delay:0.0f
+                            options:UIViewAnimationOptionCurveEaseOut
+                         animations:^void
+         {
+             self.videoPlayerView.alpha = 0.0f;
+         }
+                         completion:^(BOOL finished)
+         {
+             [self.videoPlayerView pause];
+         }];
+    }
+}
+
+- (void)setIsPlayButtonVisible:(BOOL)isPlayButtonVisible
+{
+    _isPlayButtonVisible = isPlayButtonVisible;
+    self.playImageView.hidden = self.playBackgroundImageView.hidden = !isPlayButtonVisible;
 }
 
 - (void)setupActionBar
@@ -277,6 +367,13 @@ static const CGFloat kDescriptionBuffer = 18.0;
             tappedFromSequence:self.sequence
                       fromView:self];
     }
+}
+
+#pragma mark - VVideoViewDelegate
+
+- (void)videoViewPlayerDidBecomeReady:(VVideoView *)videoView
+{
+    [self playVideo];
 }
 
 @end

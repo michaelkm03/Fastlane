@@ -41,12 +41,20 @@ typedef NS_ENUM(NSInteger, VMonetizationPartner){
  
  @return An instance of the video cell view model
  */
-+ (instancetype)videoCellViewModelWithItemURL:(NSURL *)itemURL withAdSystem:(VMonetizationPartner)monetizationPartner withDetails:(NSArray *)details;
++ (instancetype)videoCellViewModelWithItemURL:(NSURL *)itemURL
+                                 withAdSystem:(VMonetizationPartner)monetizationPartner
+                                  withDetails:(NSArray *)details
+                                     withLoop:(BOOL)loop;
 
 /**
  Content URL
  */
 @property (nonatomic, readonly) NSURL *itemURL;
+
+/**
+ Content URL
+ */
+@property (nonatomic, assign, readonly) BOOL loop;
 
 /**
  Enum value of the selected ad network

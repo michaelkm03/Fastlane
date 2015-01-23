@@ -72,6 +72,11 @@ static const NSTimeInterval kWebViewFirstLoadAnimationDuration   = 0.35f;
     }
 }
 
+- (CGRect)mediaContentFrame
+{
+    return self.frame;
+}
+
 #pragma mark - VWebViewDelegate
 
 - (void)webViewDidStartLoad:(id<VWebViewProtocol>)webView

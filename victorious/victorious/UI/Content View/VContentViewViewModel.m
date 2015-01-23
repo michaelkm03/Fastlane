@@ -17,7 +17,7 @@
 #import "VAsset.h"
 #import "VAnswer.h"
 #import "VPollResult.h"
-#import "VAdBreak.h"
+#import "VNode+Fetcher.h"
 
 // Model Categories
 #import "VSequence+Fetcher.h"
@@ -44,8 +44,6 @@
 // Monetization
 #import "VAdBreak.h"
 #import "VAdBreakFallback.h"
-
-static NSString * const kPreferedMimeType = @"application/x-mpegURL";
 
 @interface VContentViewViewModel ()
 
@@ -103,16 +101,7 @@ static NSString * const kPreferedMimeType = @"application/x-mpegURL";
 
         _currentNode = [sequence firstNode];
         
-        _currentAsset = [_currentNode.assets firstObject];
-        
-        [_currentNode.assets enumerateObjectsUsingBlock:^(VAsset *asset, NSUInteger idx, BOOL *stop)
-        {
-            if ([asset.type isEqualToString:kPreferedMimeType])
-            {
-                _currentAsset = asset;
-                *stop = YES;
-            }
-        }];
+        _currentAsset = [_currentNode mp4Asset];
         
         // Set the default ad chain index
         self.currentAdChainIndex = 0;
@@ -194,7 +183,8 @@ static NSString * const kPreferedMimeType = @"application/x-mpegURL";
               {
                   self.videoViewModel = [VVideoCellViewModel videoCellViewModelWithItemURL:[self videoURL]
                                                                               withAdSystem:self.monetizationPartner
-                                                                               withDetails:self.monetizationDetails];
+                                                                               withDetails:self.monetizationDetails
+                                                                                  withLoop:[self loop]];
                   [self.delegate didUpdateContent];
               }];
          }
@@ -202,7 +192,8 @@ static NSString * const kPreferedMimeType = @"application/x-mpegURL";
          {
              self.videoViewModel = [VVideoCellViewModel videoCellViewModelWithItemURL:[self videoURL]
                                                                          withAdSystem:VMonetizationPartnerNone
-                                                                          withDetails:nil];
+                                                                          withDetails:nil
+                                                                             withLoop:[self loop]];
              [self.delegate didUpdateContent];
 
          }
@@ -284,8 +275,7 @@ static NSString * const kPreferedMimeType = @"application/x-mpegURL";
     NSURL *imageUrl;
     if (self.type == VContentViewTypeImage)
     {
-        VAsset *currentAsset = [_currentNode.assets firstObject];
-        imageUrl = [NSURL URLWithString:currentAsset.data];
+        imageUrl = [NSURL URLWithString:self.currentAsset.data];
     }
     else
     {
@@ -325,8 +315,7 @@ static NSString * const kPreferedMimeType = @"application/x-mpegURL";
 
 - (NSURL *)videoURL
 {
-    VAsset *currentAsset = [_currentNode.assets firstObject];
-    return [NSURL URLWithString:currentAsset.data];
+    return [NSURL URLWithString:self.currentAsset.data];
 }
 
 - (float)speed
@@ -339,10 +328,19 @@ static NSString * const kPreferedMimeType = @"application/x-mpegURL";
     return [self.currentAsset.loop boolValue];
 }
 
+- (BOOL)playerControlsDisabled
+{
+    return [self.currentAsset.playerControlsDisabled boolValue];
+}
+
+- (BOOL)audioMuted
+{
+    return [self.currentAsset.audioMuted boolValue];
+}
+
 - (BOOL)shouldShowRealTimeComents
 {
-    VAsset *currentAsset = [_currentNode.assets firstObject];
-    NSArray *realTimeComments = [currentAsset.comments array];
+    NSArray *realTimeComments = [self.currentAsset.comments array];
     return (realTimeComments.count > 0) ? YES : NO;
 }
 
