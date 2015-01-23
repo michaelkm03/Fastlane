@@ -109,7 +109,12 @@ static const char kSequenceActionControllerKey;
     
     if ([self.viewModel.sequence canRemix])
     {
-        VActionItem *remixItem = [VActionItem defaultActionItemWithTitle:NSLocalizedString(@"Remix", @"")
+        NSString *remixActionTitle = NSLocalizedString(@"Remix", @"");
+        if ([self.viewModel.sequence isVideo])
+        {
+            remixActionTitle = NSLocalizedString(@"GIF", @"");
+        }
+        VActionItem *remixItem = [VActionItem defaultActionItemWithTitle:remixActionTitle
                                                               actionIcon:[UIImage imageNamed:@"icon_remix"]
                                                               detailText:self.viewModel.remixCountText];
         remixItem.selectionHandler = ^(void)

@@ -32,6 +32,7 @@ static const CGFloat kTopSpacePublishPrompt = 50.0f;
 @property (weak, nonatomic) IBOutlet UIImageView *previewImageView;
 @property (weak, nonatomic) IBOutlet VPlaceholderTextView *captionTextView;
 @property (weak, nonatomic) IBOutlet UIButton *publishButton;
+@property (weak, nonatomic) IBOutlet UIButton *cancelButton;
 @property (strong, nonatomic) IBOutlet UIPanGestureRecognizer *panGestureRecognizer;
 @property (strong, nonatomic) IBOutlet UITapGestureRecognizer *tapGestureRecognizer;
 
@@ -86,13 +87,18 @@ static const CGFloat kTopSpacePublishPrompt = 50.0f;
     self.captionTextView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     
     __weak typeof(self) welf = self;
-    self.publishPrompt.transform = CGAffineTransformMakeScale(2.5f, 2.5f);
+    
+    NSUInteger random = arc4random_uniform(100);
+    CGFloat randomFloat = random / 100.0f;
+    CGAffineTransform initialTransformTranslation = CGAffineTransformMakeTranslation(0, -CGRectGetMidY(self.view.frame));
+    CGAffineTransform initialTransformRotation = CGAffineTransformMakeRotation(M_PI * (1-randomFloat));
+    self.publishPrompt.transform = CGAffineTransformConcat(initialTransformTranslation, initialTransformRotation);
     self.animateInBlock = ^void(void)
     {
         welf.publishPrompt.transform = CGAffineTransformIdentity;
     };
 
-    self.captionTextView.placeholderText = NSLocalizedString(@"TYPE A CAPTION & ADD AN #HASHTAG", @"Caption entry placeholder text");
+    self.captionTextView.placeholderText = NSLocalizedString(@"Write a caption (optional)", @"Caption entry placeholder text");
     self.captionTextView.typingAttributes = @{NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerLabel3FontKey]};
     VContentInputAccessoryView *inputAccessoryView = [[VContentInputAccessoryView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 44.0f)];
     self.captionTextView.textContainerInset = UIEdgeInsetsMake(10, 6, 0, 6);
@@ -102,6 +108,9 @@ static const CGFloat kTopSpacePublishPrompt = 50.0f;
     inputAccessoryView.delegate = self;
     inputAccessoryView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     self.captionTextView.inputAccessoryView = inputAccessoryView;
+    
+    self.cancelButton.titleLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Cancel", @"")
+                                                                                  attributes:@{NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey]}];
     
     self.previewImageView.image = self.publishParameters.previewImage;
 }
@@ -167,6 +176,14 @@ static const CGFloat kTopSpacePublishPrompt = 50.0f;
              }
          }
      }];
+}
+
+- (IBAction)tappedCancel:(id)sender
+{
+    if (self.completion != nil)
+    {
+        self.completion(NO);
+    }
 }
 
 - (IBAction)dismiss:(UITapGestureRecognizer *)tapGesture

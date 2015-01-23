@@ -7,6 +7,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="VPublishViewController">
             <connections>
+                <outlet property="cancelButton" destination="92r-ti-u3W" id="foA-Pb-kG4"/>
                 <outlet property="captionTextView" destination="k7t-Et-LrO" id="oyc-Xm-Phf"/>
                 <outlet property="panGestureRecognizer" destination="n8g-k8-NP3" id="HOh-RU-ymC"/>
                 <outlet property="previewImageView" destination="izj-dr-ITJ" id="P3r-gC-KuE"/>
@@ -52,6 +53,16 @@
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                 </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="92r-ti-u3W">
+                    <rect key="frame" x="79" y="506" width="162" height="54"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <state key="normal" title="Cancel">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="tappedCancel:" destination="-1" eventType="touchUpInside" id="w1H-2L-rC7"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <gestureRecognizers/>

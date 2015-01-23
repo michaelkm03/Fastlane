@@ -59,7 +59,7 @@ static NSString * const kFilterIndexKey = @"filterIndex";
         }];
         
         VPhotoFilter *noFilterFilter = [[VPhotoFilter alloc] init];
-        noFilterFilter.name = NSLocalizedString(@"No Filter", @"No Filter filter name.");
+        noFilterFilter.name = NSLocalizedString(@"#nofilter", @"No Filter filter name.");
         NSMutableArray *mutablePhotoFilters = [[NSMutableArray alloc] initWithArray:photoFilters];
         [mutablePhotoFilters insertObject:noFilterFilter atIndex:0];
         
