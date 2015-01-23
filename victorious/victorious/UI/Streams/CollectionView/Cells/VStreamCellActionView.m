@@ -11,6 +11,8 @@
 #import "VSequence+Fetcher.h"
 #import "VThemeManager.h"
 
+#import "VConstants.h"
+
 static CGFloat const kGreyBackgroundColor = 0.94509803921;
 static CGFloat const kVActionButtonBuffer = 15;
 
@@ -85,6 +87,11 @@ static CGFloat const kVActionButtonBuffer = 15;
 
 - (void)addRemixButton
 {
+    // Video remixes are not supported pre iOS8
+    if (self.sequence.isVideo && !UI_IS_IOS8_AND_HIGHER)
+    {
+        return;
+    }
     UIButton *button = [self addButtonWithImage:[UIImage imageNamed:@"remixIcon-C"]];
     [button addTarget:self action:@selector(remixAction:) forControlEvents:UIControlEventTouchUpInside];
 }
