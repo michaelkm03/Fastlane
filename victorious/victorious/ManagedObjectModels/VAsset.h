@@ -2,8 +2,8 @@
 //  VAsset.h
 //  victorious
 //
-//  Created by Will Long on 9/16/14.
-//  Copyright (c) 2014 Victorious. All rights reserved.
+//  Created by Michael Sena on 1/15/15.
+//  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -19,6 +19,7 @@
 @property (nonatomic, retain) NSNumber * remoteId;
 @property (nonatomic, retain) NSNumber * speed;
 @property (nonatomic, retain) NSString * type;
+@property (nonatomic, retain) NSString * mimeType;
 @property (nonatomic, retain) NSOrderedSet *comments;
 @property (nonatomic, retain) VNode *node;
 @end

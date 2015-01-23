@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+@import MobileCoreServices;
+
 #import "UIViewController+VNavMenu.h"
 #import "UIViewController+VSideMenuViewController.h"
 
@@ -20,7 +22,6 @@
 #import "VSettingManager.h"
 #import "VObjectManager+Login.h"
 #import "VCameraViewController.h"
-#import "VCameraPublishViewController.h"
 #import "VCreatePollViewController.h"
 #import "VAuthorizationViewControllerFactory.h"
 #import "VAlertController.h"
@@ -28,16 +29,21 @@
 #import "UIActionSheet+VBlocks.h"
 #import "VAutomation.h"
 #import "VWorkspaceViewController.h"
+#import "VPublishViewController.h"
+
+#import "VWorkspaceFlowController.h"
 
 static const char kNavHeaderViewKey;
 static const char kNavHeaderYConstraintKey;
 static const char kUploadProgressVCKey;
 static const char kUploadProgressYConstraintKey;
+static const char kWorkspaceFlowControllerKey;
 
 @interface UIViewController (VNavMenuPrivate)
 
 @property (nonatomic, strong) NSLayoutConstraint *navHeaderYConstraint;
 @property (nonatomic, strong) NSLayoutConstraint *uploadProgressViewYconstraint;
+@property (nonatomic, strong) VWorkspaceFlowController *workspaceFlowController;
 
 @end
 
@@ -249,13 +255,18 @@ static const char kUploadProgressYConstraintKey;
     [alertControler addAction:[VAlertAction cancelButtonWithTitle:NSLocalizedString(@"CancelButton", @"Cancel button") handler:nil]];
     [alertControler addAction:[VAlertAction buttonWithTitle:NSLocalizedString(@"Create a Video Post", @"") handler:^(VAlertAction *action)
                                {
-                                   [self presentCameraViewController:[VCameraViewController cameraViewController]];
+                                   [self presentCreateFlowWithInitialCaptureState:VWorkspaceFlowControllerInitialCaptureStateVideo];
                                }]];
     [alertControler addAction:[VAlertAction buttonWithTitle:NSLocalizedString(@"Create an Image Post", @"") handler:^(VAlertAction *action)
                                {
-                                   VCameraViewController *cameraViewController = [VCameraViewController cameraViewControllerStartingWithStillCapture];
-                                   cameraViewController.shouldSkipPreview = YES;
-                                   [self presentCameraViewController:cameraViewController];
+                                   [self presentCreateFlowWithInitialCaptureState:VWorkspaceFlowControllerInitialCaptureStateImage];
+                               }]];
+    [alertControler addAction:[VAlertAction buttonWithTitle:NSLocalizedString(@"Create a GIF", @"Create a gif action button.")
+                                                    handler:^(VAlertAction *action)
+                               {
+                                   [self presentCreateFlowWithInitialCaptureState:VWorkspaceFlowControllerInitialCaptureStateVideo
+                                                            initialImageEditState:VImageToolControllerInitialImageEditStateCrop
+                                                         andInitialVideoEditState:VVideoToolControllerInitialVideoEditStateGIF];
                                }]];
     [alertControler addAction:[VAlertAction buttonWithTitle:NSLocalizedString(@"Create a Poll", @"") handler:^(VAlertAction *action)
                                {
@@ -265,51 +276,48 @@ static const char kUploadProgressYConstraintKey;
     [alertControler presentInViewController:self animated:YES completion:nil];
 }
 
-- (void)presentCameraViewController:(VCameraViewController *)cameraViewController
+- (void)presentCreateFlowWithInitialCaptureState:(VWorkspaceFlowControllerInitialCaptureState)initialCaptureState
+                           initialImageEditState:(VImageToolControllerInitialImageEditState)initialImageEdit
+                        andInitialVideoEditState:(VVideoToolControllerInitialVideoEditState)initialVideoEdit
 {
+    VDependencyManager *dependencyManager = [(id)self dependencyManager];
+    
+    self.workspaceFlowController = [dependencyManager templateValueOfType:[VWorkspaceFlowController class]
+                                                                   forKey:VDependencyManagerWorkspaceFlowKey
+                                                    withAddedDependencies:@{VWorkspaceFlowControllerInitialCaptureStateKey:@(initialCaptureState),
+                                                                            VImageToolControllerInitialImageEditStateKey:@(initialImageEdit),
+                                                                            VVideoToolControllerInitalVideoEditStateKey:@(initialVideoEdit)}];
     __weak typeof(self) welf = self;
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:cameraViewController];
-    __weak UINavigationController *weakNavController = navigationController;
-    cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
+    self.workspaceFlowController.completion = ^void(BOOL finished)
     {
-        if (!finished || !capturedMediaURL)
-        {
-            [welf dismissViewControllerAnimated:YES completion:nil];
-        }
-        else
-        {
-            if ([welf respondsToSelector:@selector(dependencyManager)])
-            {
-                VDependencyManager *dependencyManager = [(id)welf dependencyManager]; // super duper hacky
-                VWorkspaceViewController *workspaceViewController = (VWorkspaceViewController *)[dependencyManager viewControllerForKey:VDependencyManagerWorkspaceKey];
-                workspaceViewController.previewImage = previewImage;
-                workspaceViewController.mediaURL = capturedMediaURL;
-                workspaceViewController.completionBlock = ^void(BOOL finished, UIImage *previewImage)
-                {
-                    if (finished)
-                    {
-                        [welf dismissViewControllerAnimated:YES
-                                                 completion:nil];
-                    }
-                    else
-                    {
-                        [weakNavController popViewControllerAnimated:YES];
-                    }
-                };
-                [weakNavController pushViewController:workspaceViewController animated:YES];
-            }
-            else
-            {
-                NSAssert(false, @"Need a dependency manager!");
-            }
-        }
+        [welf dismissViewControllerAnimated:YES
+                                 completion:nil];
     };
-    [self presentViewController:navigationController animated:YES completion:nil];
+    [self presentViewController:self.workspaceFlowController.flowRootViewController
+                       animated:YES
+                     completion:nil];
+}
+
+- (void)presentCreateFlowWithInitialCaptureState:(VWorkspaceFlowControllerInitialCaptureState)initialCaptureState
+{
+    [self presentCreateFlowWithInitialCaptureState:initialCaptureState
+                             initialImageEditState:VImageToolControllerInitialImageEditStateCrop
+                          andInitialVideoEditState:VVideoToolControllerInitialVideoEditStateVideo];
 }
 
 - (CGFloat)headerPositionY
 {
     return self.navHeaderYConstraint.constant;
+}
+
+- (void)setWorkspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
+{
+    objc_setAssociatedObject(self, &kWorkspaceFlowControllerKey, workspaceFlowController, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (VWorkspaceFlowController *)workspaceFlowController
+{
+    return objc_getAssociatedObject(self, &kWorkspaceFlowControllerKey);
 }
 
 @end

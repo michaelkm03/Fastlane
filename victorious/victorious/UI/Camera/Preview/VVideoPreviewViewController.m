@@ -8,7 +8,6 @@
 
 #import "VVideoPreviewViewController.h"
 #import "VCVideoPlayerViewController.h"
-#import "VCameraPublishViewController.h"
 #import "UIImage+ImageCreation.h"
 #import "AVAsset+Orientation.h"
 

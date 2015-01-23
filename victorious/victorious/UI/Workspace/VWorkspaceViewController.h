@@ -10,7 +10,9 @@
 
 #import "VHasManagedDependencies.h"
 
-typedef void (^VWorkspaceCompletion)(BOOL finished, UIImage *previewImage);
+@class VToolController;
+
+typedef void (^VWorkspaceCompletion)(BOOL finished, UIImage *previewImage, NSURL *renderedMediaURL);
 
 /**
  
@@ -23,9 +25,13 @@ typedef void (^VWorkspaceCompletion)(BOOL finished, UIImage *previewImage);
  */
 @interface VWorkspaceViewController : UIViewController <VHasManagedDependancies>
 
-@property (nonatomic, copy) VWorkspaceCompletion completionBlock; ///< Called upon completion.
+@property (nonatomic, copy) VWorkspaceCompletion completionBlock; ///< Called upon completion. PreviewImage and RenderedMediaURL will be nil if unsuccessful.
 
 @property (nonatomic, strong) UIImage *previewImage; ///< An image to use while the image while the asset at mediaURL is loading.
 @property (nonatomic, strong) NSURL *mediaURL; ///< The image or video to use in this workspace.
+
+@property (nonatomic, readonly) VToolController *toolController; ///< The toolController
+
+@property (nonatomic, assign) BOOL shouldConfirmCancels; ///< The workspace will show a "discard" action sheet before calling it's completion block 
 
 @end

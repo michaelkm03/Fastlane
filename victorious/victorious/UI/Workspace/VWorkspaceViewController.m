@@ -15,23 +15,33 @@
 #import "VCanvasView.h"
 #import <MBProgressHUD/MBProgressHUD.h>
 #import "UIImageView+Blurring.h"
+#import "UIAlertView+VBlocks.h"
+#import "UIActionSheet+VBlocks.h"
+
+// Keyboard
+#import "VKeyboardNotificationManager.h"
 
 // Protocols
 #import "VWorkspaceTool.h"
 
 // Rendering Utilities
 #import "CIImage+VImage.h"
+#import "NSURL+MediaType.h"
 
-#warning Move this to publishVC when that is created
-// Publishing
-#import "VObjectManager+ContentCreation.h"
+// ToolControllers
+#import "VImageToolController.h"
+#import "VVideoToolController.h"
 
-static const CGFloat kJPEGCompressionQuality    = 0.8f;
+// Video
+#import "VVideoWorkspaceTool.h"
 
-@interface VWorkspaceViewController ()
+@import AVFoundation;
+
+@interface VWorkspaceViewController () <VToolControllerDelegate>
+
+@property (nonatomic, strong, readwrite) NSURL *renderedMediaURL;
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
-@property (nonatomic, strong) NSArray *tools;
 
 @property (nonatomic, weak) IBOutlet UIToolbar *topToolbar;
 @property (nonatomic, weak) IBOutlet UIToolbar *bottomToolbar;
@@ -40,9 +50,14 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *verticalSpaceCanvasToTopOfContainerConstraint;
 @property (nonatomic, strong) NSMutableArray *inspectorConstraints;
 
-@property (nonatomic, strong) id <VWorkspaceTool> selectedTool;
-@property (nonatomic, strong) UIViewController *canvasToolViewController;
 @property (nonatomic, strong) UIViewController *inspectorToolViewController;
+
+@property (nonatomic, strong) VKeyboardNotificationManager *keyboardManager;
+
+@property (nonatomic, strong, readwrite) VToolController *toolController;
+
+@property (nonatomic, strong) NSDictionary *toolForBarButtonItemMap;
+@property (nonatomic, strong) NSDictionary *barButtonItemForToolMap;
 
 @end
 
@@ -55,7 +70,7 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
     UIStoryboard *workspaceStoryboard = [UIStoryboard storyboardWithName:@"Workspace" bundle:nil];
     VWorkspaceViewController *workspaceViewController = [workspaceStoryboard instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
     workspaceViewController.dependencyManager = dependencyManager;
-    workspaceViewController.tools = [dependencyManager workspaceTools];
+    
     return workspaceViewController;
 }
 
@@ -87,14 +102,22 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
 {
     [super viewDidLoad];
     
+    self.view.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+    
+    self.toolController.canvasView = self.canvasView;
+    
     [self.blurredBackgroundImageVIew setBlurredImageWithClearImage:self.previewImage
                                                   placeholderImage:nil
                                                          tintColor:[[UIColor blackColor] colorWithAlphaComponent:0.5f]];
     
     NSMutableArray *toolBarItems = [[NSMutableArray alloc] init];
-    [toolBarItems addObject:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil]];
+    [toolBarItems addObject:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+                                                                          target:nil
+                                                                          action:nil]];
     
-    [self.tools enumerateObjectsUsingBlock:^(id <VWorkspaceTool> tool, NSUInteger idx, BOOL *stop)
+    NSMutableDictionary *barButtonItemForToolMap = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary *toolForBarButtonItemMap = [[NSMutableDictionary alloc] init];
+    [self.toolController.tools enumerateObjectsUsingBlock:^(id <VWorkspaceTool> tool, NSUInteger idx, BOOL *stop)
     {
         UIBarButtonItem *itemForTool;
         if (![tool respondsToSelector:@selector(icon)])
@@ -123,7 +146,12 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
         [toolBarItems addObject:itemForTool];
         itemForTool.tag = idx;
         
-        if (tool != self.tools.lastObject)
+        [barButtonItemForToolMap setObject:itemForTool
+                                    forKey:[tool description]];
+        [toolForBarButtonItemMap setObject:tool
+                                    forKey:[itemForTool description]];
+        
+        if (tool != self.toolController.tools.lastObject)
         {
             UIBarButtonItem *fixedSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
                                                                                         target:nil
@@ -132,166 +160,184 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
             [toolBarItems addObject:fixedSpace];
         }
     }];
+    self.toolForBarButtonItemMap = toolForBarButtonItemMap;
+    self.barButtonItemForToolMap = barButtonItemForToolMap;
     
     [toolBarItems addObject:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil]];
     self.bottomToolbar.items = toolBarItems;
     
-    self.canvasView.sourceImage = self.previewImage;
+    NSData *imageFile = [NSData dataWithContentsOfURL:self.mediaURL];
+    self.canvasView.sourceImage = [UIImage imageWithData:imageFile];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillShow:)
-                                                 name:UIKeyboardWillShowNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillHide:)
-                                                 name:UIKeyboardWillHideNotification
-                                               object:nil];
+    __weak typeof(self) welf = self;
+    self.keyboardManager = [[VKeyboardNotificationManager alloc] initWithKeyboardWillShowBlock:^(CGRect keyboardFrameBegin, CGRect keyboardFrameEnd, NSTimeInterval animationDuration, UIViewAnimationCurve animationCurve)
+    {
+
+        [welf keyboardWillShowWithFrameBegin:keyboardFrameBegin
+                                    frameEnd:keyboardFrameEnd
+                           animationDuration:animationDuration
+                              animationCurve:animationCurve];
+    }
+                                                                     willHideBlock:^(CGRect keyboardFrameBegin, CGRect keyboardFrameEnd, NSTimeInterval animationDuration, UIViewAnimationCurve animationCurve)
+    {
+        [welf keyboardWillHideWithFrameBegin:keyboardFrameBegin
+                                    frameEnd:keyboardFrameEnd
+                           animationDuration:animationDuration
+                              animationCurve:animationCurve];
+    }
+                                                              willChangeFrameBlock:nil];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self.toolController setupDefaultTool];
+    [self setSelectedBarButtonItem:[self.barButtonItemForToolMap objectForKey:[self.toolController.selectedTool description]]];
+    
+    self.keyboardManager.stopCallingHandlerBlocks = NO;
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    self.keyboardManager.stopCallingHandlerBlocks = YES;
+}
+
+- (void)setMediaURL:(NSURL *)mediaURL
+{
+    _mediaURL = mediaURL;
+    
+    if ([mediaURL v_hasImageExtension])
+    {
+        self.toolController = [[VImageToolController alloc] initWithTools:[self.dependencyManager workspaceTools]];
+    }
+    else if ([mediaURL v_hasVideoExtension])
+    {
+        self.toolController = [[VVideoToolController alloc] initWithTools:[self.dependencyManager workspaceTools]];
+        [(VVideoToolController *)self.toolController setMediaURL:mediaURL];
+    }
+
+    self.toolController.delegate = self;
 }
 
 #pragma mark - Target/Action
 
 - (IBAction)close:(id)sender
 {
-    self.completionBlock(NO, nil);
+    if (self.shouldConfirmCancels)
+    {
+        __weak typeof(self) welf = self;
+        UIActionSheet *confirmExitActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"This will discard any content from the camera", @"")
+                                                                   cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
+                                                                      onCancelButton:nil
+                                                              destructiveButtonTitle:NSLocalizedString(@"Discard", nil)
+                                                                 onDestructiveButton:^
+                                                 {
+                                                     welf.completionBlock(NO, nil, nil);
+                                                 }
+                                                          otherButtonTitlesAndBlocks:nil, nil];
+        [confirmExitActionSheet showInView:self.view];
+        return;
+    }
+    self.completionBlock(NO, nil, nil);
 }
 
 - (IBAction)publish:(id)sender
 {
     MBProgressHUD *hudForView = [MBProgressHUD showHUDAddedTo:self.view
                                                      animated:YES];
-    hudForView.labelText = @"Publishing...";
+    hudForView.labelText = NSLocalizedString(@"Rendering...", @"");
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^
-    {
-        NSDate *tick = [NSDate date];
-        UIImage *renderedImage = [self renderedImageForCurrentState];
-        NSDate *tock = [NSDate date];
-        VLog(@"Render time: %@", @([tock timeIntervalSinceDate:tick]));
-        
-        NSURL *originalMediaURL = self.mediaURL;
-        NSData *filteredImageData = UIImageJPEGRepresentation(renderedImage, kJPEGCompressionQuality);
-        NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
-        NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:VConstantMediaExtensionJPG];
-        if ([filteredImageData writeToURL:tempFile atomically:NO])
-        {
-            self.mediaURL = tempFile;
-            [[NSFileManager defaultManager] removeItemAtURL:originalMediaURL error:nil];
-        }
-        
-        [[VObjectManager sharedManager] uploadMediaWithName:[[NSUUID UUID] UUIDString]
-                                                description:nil
-                                               previewImage:renderedImage
-                                                captionType:VCaptionTypeQuote
-                                                  expiresAt:nil
-                                           parentSequenceId:nil
-                                               parentNodeId:nil
-                                                      speed:1.0f 
-                                                   loopType:VLoopOnce
-                                                   mediaURL:self.mediaURL
-                                              facebookShare:NO
-                                               twitterShare:NO
-                                                 completion:^(NSURLResponse *response, NSData *responseData, NSDictionary *jsonResponse, NSError *error)
-        {
-            dispatch_async(dispatch_get_main_queue(), ^
-                           {
-                               [MBProgressHUD hideHUDForView:self.view
-                                                    animated:YES];
-                               self.completionBlock(YES, renderedImage);
-                           });
-        }];
-    });
+    __weak typeof(self) welf = self;
+    [self.toolController exportWithSourceAsset:self.mediaURL
+                                withCompletion:^(BOOL finished, NSURL *renderedMediaURL, UIImage *previewImage, NSError *error)
+     {
+         [hudForView hide:YES];
+         if (error != nil)
+         {
+             UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Render failure", @"")
+                                                                  message:error.localizedDescription
+                                                        cancelButtonTitle:NSLocalizedString(@"ok", @"")
+                                                           onCancelButton:nil
+                                               otherButtonTitlesAndBlocks:nil, nil];
+             [errorAlert show];
+         }
+         else
+         {
+             if (welf.completionBlock != nil)
+             {
+                 welf.completionBlock(YES, previewImage, renderedMediaURL);
+             }
+         }
+     }];
 }
 
 - (void)selectedBarButtonItem:(UIBarButtonItem *)sender
 {
+    self.toolController.selectedTool = [self.toolForBarButtonItemMap objectForKey:sender.description];
     [self setSelectedBarButtonItem:sender];
-    
-    self.selectedTool = (id <VWorkspaceTool>)[self toolForTag:sender.tag];
 }
 
-#pragma mark - Property Accessors
+#pragma mark - VWorkspaceToolControllerDelegate
 
-- (void)setSelectedTool:(id<VWorkspaceTool>)selectedTool
+- (void)addCanvasViewController:(UIViewController *)canvasViewController
 {
-    // Re-selected current tool should we dismiss?
-    if (selectedTool == _selectedTool)
+    if (canvasViewController == nil)
     {
         return;
     }
- 
-    if ([selectedTool respondsToSelector:@selector(setCanvasView:)])
-    {
-        [selectedTool setCanvasView:self.canvasView];
-    }
-    
-    if ([_selectedTool respondsToSelector:@selector(shouldLeaveToolOnCanvas)])
-    {
-        if (_selectedTool.shouldLeaveToolOnCanvas)
-        {
-            _canvasToolViewController.view.userInteractionEnabled = NO;
-            _canvasToolViewController = nil;
-        }
-    }
-    
-    if ([selectedTool respondsToSelector:@selector(canvasToolViewController)])
-    {
-        // In case this viewController's view was disabled but left on the canvas
-        [selectedTool canvasToolViewController].view.userInteractionEnabled = YES;
-        [self setCanvasToolViewController:[selectedTool canvasToolViewController]
-                                  forTool:selectedTool];
-    }
-    else
-    {
-        [self setCanvasToolViewController:nil
-                                  forTool:selectedTool];
-    }
-    
-    if ([selectedTool respondsToSelector:@selector(inspectorToolViewController)])
-    {
-        [self setInspectorToolViewController:[selectedTool inspectorToolViewController]
-                                     forTool:selectedTool];
-    }
-    else
-    {
-        [self setInspectorToolViewController:nil
-                                     forTool:selectedTool];
-    }
-    
-   _selectedTool = selectedTool;
+    [self addToolViewController:canvasViewController];
+    [self positionToolViewControllerOnCanvas:canvasViewController];
 }
 
-#pragma mark - Notification Handlers
-
-- (void)keyboardWillShow:(NSNotification *)notification
+- (void)removeCanvasViewController:(UIViewController *)canvasViewControllerToRemove
 {
-    NSDictionary *userInfo = notification.userInfo;
+    [self removeToolViewController:canvasViewControllerToRemove];
+}
+
+- (void)setInspectorViewController:(UIViewController *)inspectorViewController
+{
+    [self removeToolViewController:self.inspectorToolViewController];
+    self.inspectorToolViewController = inspectorViewController;
     
-    NSValue *endFrameValue = userInfo[UIKeyboardFrameEndUserInfoKey];
-    CGRect keyboardEndFrame = [self.view convertRect:endFrameValue.CGRectValue fromView:nil];
-    
+    if (inspectorViewController == nil)
+    {
+        return;
+    }
+    inspectorViewController.view.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+    [self addToolViewController:inspectorViewController];
+    [self positionToolViewControllerOnInspector:inspectorViewController];
+}
+
+#pragma mark - Private Methods
+
+- (void)keyboardWillShowWithFrameBegin:(CGRect)beginFrame
+                              frameEnd:(CGRect)endFrame
+                     animationDuration:(NSTimeInterval)animationDuration
+                        animationCurve:(UIViewAnimationCurve)animationCurve
+{
+    CGRect keyboardEndFrame = [self.view convertRect:endFrame
+                                            fromView:nil];
     CGRect overlap = CGRectIntersection(self.canvasView.frame, keyboardEndFrame);
-    
-    NSNumber *durationValue = userInfo[UIKeyboardAnimationDurationUserInfoKey];
-    NSTimeInterval animationDuration = durationValue.doubleValue;
-    
-    NSNumber *curveValue = userInfo[UIKeyboardAnimationCurveUserInfoKey];
-    UIViewAnimationCurve animationCurve = curveValue.intValue;
     
     // We don't want the inspector to move here
     CGRect inspectorFrame = self.inspectorToolViewController.view.frame;
     [self.inspectorConstraints enumerateObjectsUsingBlock:^(NSLayoutConstraint *constraint, NSUInteger idx, BOOL *stop)
-    {
-        [self.view removeConstraint:constraint];
-    }];
+     {
+         [self.view removeConstraint:constraint];
+     }];
     
     void (^animations)() = ^()
     {
         self.verticalSpaceCanvasToTopOfContainerConstraint.constant = -CGRectGetHeight(overlap) + CGRectGetHeight(self.topToolbar.frame);
         self.inspectorToolViewController.view.translatesAutoresizingMaskIntoConstraints = YES;
         self.inspectorToolViewController.view.frame = inspectorFrame;
-        [self.topToolbar.items enumerateObjectsUsingBlock:^(UIBarButtonItem *item, NSUInteger idx, BOOL *stop) {
-            [item setEnabled:NO];
-        }];
+        [self.topToolbar.items enumerateObjectsUsingBlock:^(UIBarButtonItem *item, NSUInteger idx, BOOL *stop)
+         {
+             [item setEnabled:NO];
+         }];
         [self.view layoutIfNeeded];
     };
     
@@ -302,17 +348,12 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
                      completion:nil];
 }
 
-- (void)keyboardWillHide:(NSNotification *)notification
+- (void)keyboardWillHideWithFrameBegin:(CGRect)beginFrame
+                              frameEnd:(CGRect)endFrame
+                     animationDuration:(NSTimeInterval)animationDuration
+                        animationCurve:(UIViewAnimationCurve)animationCurve
 {
-    NSDictionary *userInfo = notification.userInfo;
-    
-    NSNumber *durationValue = userInfo[UIKeyboardAnimationDurationUserInfoKey];
-    NSTimeInterval animationDuration = durationValue.doubleValue;
-    
-    NSNumber *curveValue = userInfo[UIKeyboardAnimationCurveUserInfoKey];
-    UIViewAnimationCurve animationCurve = curveValue.intValue;
-    
-    // Undo what we did in keyboardWillShow:
+    // Undo removing inspector constraints we did in willShowBlock
     self.inspectorToolViewController.view.translatesAutoresizingMaskIntoConstraints = NO;
     [self.inspectorConstraints enumerateObjectsUsingBlock:^(NSLayoutConstraint *constraint, NSUInteger idx, BOOL *stop)
      {
@@ -323,9 +364,10 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
     {
         self.verticalSpaceCanvasToTopOfContainerConstraint.constant = CGRectGetHeight(self.topToolbar.frame);
         [self.view layoutIfNeeded];
-        [self.topToolbar.items enumerateObjectsUsingBlock:^(UIBarButtonItem *item, NSUInteger idx, BOOL *stop) {
-            [item setEnabled:YES];
-        }];
+        [self.topToolbar.items enumerateObjectsUsingBlock:^(UIBarButtonItem *item, NSUInteger idx, BOOL *stop)
+         {
+             [item setEnabled:YES];
+         }];
     };
     
     [UIView animateWithDuration:animationDuration
@@ -335,54 +377,13 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
                      completion:nil];
 }
 
-#pragma mark - Private Methods
-
-- (UIImage *)renderedImageForCurrentState
+- (void)setSelectedBarButtonItem:(UIBarButtonItem *)item
 {
-    CIContext *renderingContext = [CIContext contextWithOptions:@{}];
-    
-    __block CIImage *filteredImage = [CIImage v_imageWithUImage:self.canvasView.sourceImage];
-    
-    NSArray *filterOrderTools = [self.tools sortedArrayUsingComparator:^NSComparisonResult(id <VWorkspaceTool> tool1, id <VWorkspaceTool> tool2)
+    [self.bottomToolbar.items enumerateObjectsUsingBlock:^(UIBarButtonItem *item, NSUInteger idx, BOOL *stop)
     {
-        if (tool1.renderIndex < tool2.renderIndex)
-        {
-            return NSOrderedAscending;
-        }
-        if (tool1.renderIndex > tool2.renderIndex)
-        {
-            return NSOrderedDescending;
-        }
-        return NSOrderedSame;
-    }];
-
-    [filterOrderTools enumerateObjectsUsingBlock:^(id <VWorkspaceTool> tool, NSUInteger idx, BOOL *stop)
-    {
-        filteredImage = [tool imageByApplyingToolToInputImage:filteredImage];
-    }];
-    
-    CGImageRef renderedImage = [renderingContext createCGImage:filteredImage
-                                                      fromRect:[filteredImage extent]];
-    UIImage *image = [UIImage imageWithCGImage:renderedImage];
-    CGImageRelease(renderedImage);
-    return image;
-}
-
-- (void)setSelectedBarButtonItem:(UIBarButtonItem *)itemToSelect
-{
-    [self.bottomToolbar.items enumerateObjectsUsingBlock:^(UIBarButtonItem *item, NSUInteger idx, BOOL *stop) {
         item.tintColor = [UIColor whiteColor];
     }];
-    itemToSelect.tintColor = [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
-}
-
-- (id <VWorkspaceTool>)toolForTag:(NSInteger)tag
-{
-    if ((self.tools.count == 0) && ((NSInteger)self.tools.count < tag))
-    {
-        return nil;
-    }
-    return self.tools[tag];
+    item.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
 }
 
 - (void)removeToolViewController:(UIViewController *)toolViewController
@@ -397,34 +398,6 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
     [self addChildViewController:viewController];
     [self.view addSubview:viewController.view];
     [viewController didMoveToParentViewController:self];
-}
-
-- (void)setCanvasToolViewController:(UIViewController *)canvasToolViewController
-                            forTool:(id<VWorkspaceTool>)tool
-{
-    [self removeToolViewController:self.canvasToolViewController];
-    self.canvasToolViewController = canvasToolViewController;
-    
-    if (canvasToolViewController == nil)
-    {
-        return;
-    }
-    [self addToolViewController:canvasToolViewController];
-    [self positionToolViewControllerOnCanvas:self.canvasToolViewController];
-}
-
-- (void)setInspectorToolViewController:(UIViewController *)inspectorToolViewController
-                               forTool:(id<VWorkspaceTool>)tool
-{
-    [self removeToolViewController:self.inspectorToolViewController];
-    self.inspectorToolViewController = inspectorToolViewController;
-    
-    if (inspectorToolViewController == nil)
-    {
-        return;
-    }
-    [self addToolViewController:inspectorToolViewController];
-    [self positionToolViewControllerOnInspector:inspectorToolViewController];
 }
 
 - (void)positionToolViewControllerOnCanvas:(UIViewController *)toolViewController

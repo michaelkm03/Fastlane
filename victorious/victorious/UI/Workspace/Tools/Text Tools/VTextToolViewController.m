@@ -29,6 +29,8 @@ static const CGFloat kTextRenderingSize = 1024;
 
 @property (nonatomic, strong) VCapitalizingTextStorage *textStorage;
 
+@property (nonatomic, strong, readwrite) NSString *embeddedText;
+
 @end
 
 @implementation VTextToolViewController
@@ -65,6 +67,7 @@ static const CGFloat kTextRenderingSize = 1024;
     
     self.textView = [[UITextView alloc] initWithFrame:self.view.bounds
                                         textContainer:textContainer];
+    self.textView.returnKeyType = UIReturnKeyDone;
     self.textView.delegate = self;
     [self.view addSubview:self.textView];
 
@@ -176,6 +179,8 @@ shouldChangeTextInRange:(NSRange)range
     {
         self.renderedImage = nil;
     });
+    
+    self.embeddedText = textView.text;
 }
 
 - (void)textViewDidBeginEditing:(UITextView *)textView

@@ -39,6 +39,11 @@
 + (VCameraViewController *)cameraViewControllerStartingWithStillCapture;
 
 /**
+ Returns an instance of this class that will initially show a still video capture screen.
+ */
++ (VCameraViewController *)cameraViewControllerStartingWithVideoCapture;
+
+/**
  Returns an instance of this class that will only take photos, no video.
  */
 + (VCameraViewController *)cameraViewControllerLimitedToPhotos;

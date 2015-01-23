@@ -16,4 +16,9 @@
  */
 @interface VCropTool : NSObject <VWorkspaceTool, VHasManagedDependancies>
 
+/**
+ *  Whether or not the user did crop.
+ */
+@property (nonatomic, readonly) BOOL didCrop;
+
 @end

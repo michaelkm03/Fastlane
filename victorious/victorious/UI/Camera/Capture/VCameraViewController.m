@@ -73,6 +73,13 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
     return cameraViewController;
 }
 
++ (VCameraViewController *)cameraViewControllerStartingWithVideoCapture
+{
+    VCameraViewController *cameraViewController = [self cameraViewController];
+    cameraViewController.initialCaptureMode = cameraViewController.videoQuality;
+    return cameraViewController;
+}
+
 + (VCameraViewController *)cameraViewControllerLimitedToPhotos
 {
     VCameraViewController *cameraViewController = [self cameraViewController];

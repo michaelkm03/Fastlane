@@ -63,7 +63,9 @@ NSString * const VDependencyManagerScaffoldViewControllerKey = @"scaffold";
 NSString * const VDependencyManagerInitialViewControllerKey = @"initialScreen";
 
 // Keys for Workspace
-NSString * const VDependencyManagerWorkspaceKey = @"workspace";
+NSString * const VDependencyManagerWorkspaceFlowKey = @"workspaceFlow";
+NSString * const VDependencyManagerImageWorkspaceKey = @"imageWorkspace";
+NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
 
 @interface VDependencyManager ()
 

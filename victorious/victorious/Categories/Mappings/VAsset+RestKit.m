@@ -23,7 +23,8 @@
                                   @"data" : VSelectorName(data),
                                   @"speed" : VSelectorName(speed),
                                   @"loop" : VSelectorName(loop),
-                                  @"asset_id" : VSelectorName(remoteId)
+                                  @"asset_id" : VSelectorName(remoteId),
+                                  @"mime_type" : VSelectorName(mimeType),
                                   };
     
     RKEntityMapping *mapping = [RKEntityMapping

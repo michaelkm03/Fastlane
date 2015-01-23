@@ -224,6 +224,13 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     _player = player;
 }
 
+- (void)setPlayerItem:(AVPlayerItem *)playerItem
+{
+    _playerItem = playerItem;
+    
+    [self.player replaceCurrentItemWithPlayerItem:playerItem];
+}
+
 - (void)setItemURL:(NSURL *)itemURL withLoopCount:(NSUInteger)loopCount
 {
     _itemURL = itemURL;
@@ -319,7 +326,6 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 - (void)updateViewForShowToolbarValue
 {
     self.toolbarView.hidden = !self.shouldShowToolbar;
-    self.videoFrameTapGesture.enabled = self.shouldShowToolbar;
 }
 
 - (void)setOverlayView:(UIView *)overlayView

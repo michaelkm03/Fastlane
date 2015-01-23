@@ -19,4 +19,7 @@
  */
 @interface VTextTool : NSObject <VHasManagedDependancies, VWorkspaceTool>
 
+@property (nonatomic, readonly) NSString *embeddedText; ///< The embedded text if any.
+@property (nonatomic, readonly) NSString *textStyleTitle; ///< The selected text style if any.
+
 @end

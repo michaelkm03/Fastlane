@@ -36,4 +36,7 @@
 
 - (void)presentForceUpgradeScreen;
 
+#warning Temporary
+@property (nonatomic, strong, readonly) VDependencyManager *dependencyManager;
+
 @end

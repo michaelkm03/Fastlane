@@ -29,7 +29,8 @@ static NSString * const kNotificationIDKey = @"notification_id";
 
 @interface VRootViewController () <VLoadingViewControllerDelegate>
 
-@property (nonatomic, strong) VDependencyManager *dependencyManager;
+#warning Temporary
+@property (nonatomic, strong, readwrite) VDependencyManager *dependencyManager;
 @property (nonatomic) BOOL appearing;
 @property (nonatomic) BOOL shouldPresentForceUpgradeScreenOnNextAppearance;
 @property (nonatomic, strong, readwrite) UIViewController *currentViewController;

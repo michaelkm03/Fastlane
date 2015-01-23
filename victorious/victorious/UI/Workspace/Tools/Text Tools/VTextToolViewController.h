@@ -30,4 +30,9 @@
  */
 @property (nonatomic, readonly) BOOL userEnteredText;
 
+/**
+ *  The embedded text if any.
+ */
+@property (nonatomic, readonly) NSString *embeddedText;
+
 @end
