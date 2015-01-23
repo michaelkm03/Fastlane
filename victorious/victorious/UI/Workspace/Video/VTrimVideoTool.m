@@ -174,7 +174,9 @@ static NSString * const kVideoMuted = @"videoMuted";
 {
     AVAssetExportSession *exportSession = [self.frameRateComposition makeExportable];
     exportSession.outputURL = url;
-    exportSession.timeRange = self.trimViewController.selectedTimeRange;
+    CMTimeRange assetRange = CMTimeRangeMake(kCMTimeZero, exportSession.asset.duration);
+    CMTimeRange renderRange = CMTimeRangeGetIntersection(assetRange, self.trimViewController.selectedTimeRange);
+    exportSession.timeRange = renderRange;
     exportSession.outputFileType = AVFileTypeQuickTimeMovie;
     [exportSession exportAsynchronouslyWithCompletionHandler:^
     {
