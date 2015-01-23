@@ -374,7 +374,8 @@
 "Comment"               =   "Comment";
 
 "repostedFromFormat"      =   "Repost from %@";
-"remixedFromFormat"       =   "Remix from %@";
+"remixedFromFormat"     =   "Remix from %@";
+"giffedFromFormat"       =   "GIF from %@";
 
 "leaveACommentFormat"   =   "Leave a comment at %@";
 

@@ -372,6 +372,7 @@
 
 "repostedFromFormat" = "Republicado de %@";
 "remixedFromFormat" = "Remix de %@";
+"giffedFromFormat" = "GIF de %@";
 
 "leaveACommentFormat" = "Deja un comentario en %@";
 
