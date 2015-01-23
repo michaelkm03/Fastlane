@@ -13,13 +13,16 @@
 
 @interface VAsset : NSManagedObject
 
+@property (nonatomic, retain) NSNumber * audioMuted;
 @property (nonatomic, retain) NSString * data;
 @property (nonatomic, retain) NSNumber * loop;
+@property (nonatomic, retain) NSString * mimeType;
 @property (nonatomic, retain) NSNumber * nodeId;
+@property (nonatomic, retain) NSNumber * playerControlsDisabled;
 @property (nonatomic, retain) NSNumber * remoteId;
 @property (nonatomic, retain) NSNumber * speed;
 @property (nonatomic, retain) NSString * type;
-@property (nonatomic, retain) NSString * mimeType;
+@property (nonatomic, retain) NSNumber * streamAutoplay;
 @property (nonatomic, retain) NSOrderedSet *comments;
 @property (nonatomic, retain) VNode *node;
 @end
@@ -36,4 +39,5 @@
 - (void)removeCommentsObject:(VComment *)value;
 - (void)addComments:(NSOrderedSet *)values;
 - (void)removeComments:(NSOrderedSet *)values;
+
 @end

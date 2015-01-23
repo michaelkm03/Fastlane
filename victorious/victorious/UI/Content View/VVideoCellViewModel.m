@@ -13,6 +13,7 @@
 @property (nonatomic, strong, readwrite) NSURL *itemURL;
 @property (nonatomic, assign, readwrite) VMonetizationPartner monetizationPartner;
 @property (nonatomic, strong, readwrite) NSArray *monetizationDetails;
+@property (nonatomic, assign, readwrite) BOOL loop;
 
 @end
 
@@ -20,7 +21,8 @@
 
 + (instancetype)videoCellViewModelWithItemURL:(NSURL *)itemURL
                                  withAdSystem:(VMonetizationPartner)monetizationPartner
-                                 withDetails:(NSArray *)details
+                                  withDetails:(NSArray *)details
+                                     withLoop:(BOOL)loop
 {
     if (![itemURL isKindOfClass:[NSURL class]])
     {
@@ -31,7 +33,7 @@
     videoCellViewModel.itemURL = itemURL;
     videoCellViewModel.monetizationPartner = monetizationPartner;
     videoCellViewModel.monetizationDetails = details;
-    
+    videoCellViewModel.loop = loop;
     return videoCellViewModel;
 }
 
