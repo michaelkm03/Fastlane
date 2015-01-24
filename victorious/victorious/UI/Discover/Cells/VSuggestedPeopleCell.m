@@ -15,12 +15,4 @@
     return 190.0f;
 }
 
-- (void)prepareForReuse
-{
-    for ( UIView *subview in self.subviews )
-    {
-        [subview removeFromSuperview];
-    }
-}
-
 @end
