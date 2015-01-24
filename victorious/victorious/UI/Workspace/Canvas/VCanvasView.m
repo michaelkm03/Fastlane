@@ -126,6 +126,7 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
      {
          __strong typeof(self) strongSelf = welf;
          strongSelf.sourceImage = image;
+         [strongSelf layoutIfNeeded];
      }
                                    failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error)
      {
@@ -145,6 +146,7 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
     CGImageRelease(scaledImageRef);
     
     self.imageView.image = _scaledImage;
+    self.imageView.frame = self.canvasScrollView.bounds;
     [self layoutIfNeeded];
 }
 
