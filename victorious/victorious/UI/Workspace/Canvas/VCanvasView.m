@@ -8,6 +8,7 @@
 
 #import "VCanvasView.h"
 #import "CIImage+VImage.h"
+#import <UIImageView+AFNetworking.h>
 
 static const CGFloat kRelatvieScaleFactor = 0.55f;
 
@@ -15,6 +16,7 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
 
 @property (nonatomic, strong) CIContext *context;
 @property (nonatomic, strong) UIImage *scaledImage;
+@property (nonatomic, strong, readwrite) UIImage *sourceImage;
 @property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, strong) UIScrollView *canvasScrollView;
 @property (nonatomic, strong) NSCache *renderedImageCache;
@@ -113,6 +115,23 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
 }
 
 #pragma mark - Property Accessors
+
+- (void)setSourceURL:(NSURL *)URL
+{
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
+    __weak typeof(self) welf = self;
+    [self.imageView setImageWithURLRequest:request
+                          placeholderImage:nil
+                                   success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image)
+     {
+         __strong typeof(self) strongSelf = welf;
+         strongSelf.sourceImage = image;
+     }
+                                   failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error)
+     {
+         
+     }];
+}
 
 - (void)setSourceImage:(UIImage *)sourceImage
 {
