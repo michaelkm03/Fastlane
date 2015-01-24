@@ -8,17 +8,35 @@
 
 #import "VThumbnailCell.h"
 
+typedef NS_ENUM(NSInteger, VThumbnailCellState)
+{
+    VThumbnailCellStateLoading,
+    VThumbnailCellStateHasImage
+};
+
 @interface VThumbnailCell ()
 
 @property (weak, nonatomic) IBOutlet UIImageView *thumbnailImageView;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
 @end
 
 @implementation VThumbnailCell
 
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    
+    [self.activityIndicator startAnimating];
+}
+
 - (void)setThumbnail:(UIImage *)thumbnail
 {
     self.thumbnailImageView.image = thumbnail;
+    if (thumbnail)
+    {
+        [self.activityIndicator stopAnimating];
+    }
 }
 
 - (UIImage *)thumbnail
@@ -31,6 +49,7 @@
     [super prepareForReuse];
     
     self.thumbnailImageView.image = nil;
+    [self.activityIndicator startAnimating];
 }
 
 @end
