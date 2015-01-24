@@ -26,4 +26,11 @@
     return self.thumbnailImageView.image;
 }
 
+- (void)prepareForReuse
+{
+    [super prepareForReuse];
+    
+    self.thumbnailImageView.image = nil;
+}
+
 @end
