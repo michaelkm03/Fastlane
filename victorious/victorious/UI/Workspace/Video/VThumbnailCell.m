@@ -8,12 +8,6 @@
 
 #import "VThumbnailCell.h"
 
-typedef NS_ENUM(NSInteger, VThumbnailCellState)
-{
-    VThumbnailCellStateLoading,
-    VThumbnailCellStateHasImage
-};
-
 @interface VThumbnailCell ()
 
 @property (weak, nonatomic) IBOutlet UIImageView *thumbnailImageView;
