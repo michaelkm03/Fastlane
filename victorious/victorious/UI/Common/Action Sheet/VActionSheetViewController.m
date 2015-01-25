@@ -256,23 +256,25 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
     {
         return;
     }
+    
     NSMutableDictionary *attributes = [[NSMutableDictionary alloc] init];
-    
-    UIFont *themedFont = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
-    if (themedFont != nil)
     {
-        [attributes setObject:themedFont forKey:NSFontAttributeName];
+        UIFont *themedFont = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
+        if (themedFont != nil)
+        {
+            [attributes setObject:themedFont forKey:NSFontAttributeName];
+        }
+        
+        UIColor *textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
+        if (textColor != nil)
+        {
+            [attributes setObject:textColor forKey:NSForegroundColorAttributeName];
+        }
+        
+        NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+        paragraphStyle.alignment = NSTextAlignmentCenter;
+        [attributes setObject:paragraphStyle forKey:NSParagraphStyleAttributeName];
     }
-    
-    UIColor *textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
-    if (textColor != nil)
-    {
-        [attributes setObject:textColor forKey:NSForegroundColorAttributeName];
-    }
-    
-    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    paragraphStyle.alignment = NSTextAlignmentCenter;
-    [attributes setObject:paragraphStyle forKey:NSParagraphStyleAttributeName];
     
     NSMutableAttributedString *mutableAttributedString = [[NSMutableAttributedString alloc] initWithString:self.descriptionItem.title
                                                                                                 attributes:attributes];
