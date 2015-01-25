@@ -15,7 +15,16 @@
  */
 @interface VCanvasView : UIView
 
-- (void)setSourceURL:(NSURL *)URL; // The URL of the image to use for the canvas
+/**
+ *  Same as calling "setSourceURL:someURL withPreloadedImage:nil".
+ */
+- (void)setSourceURL:(NSURL *)URL;
+
+/**
+ *  Will use preloadedImage if it exists. If not will pull from URL.
+ */
+- (void)setSourceURL:(NSURL *)URL
+  withPreloadedImage:(UIImage *)preloadedImage;
 
 @property (nonatomic, readonly) UIImage *sourceImage; ///< The image to use as the base of the canvas.
 

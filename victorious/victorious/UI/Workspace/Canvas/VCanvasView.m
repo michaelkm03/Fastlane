@@ -117,21 +117,58 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
 #pragma mark - Property Accessors
 
 - (void)setSourceURL:(NSURL *)URL
+  withPreloadedImage:(UIImage *)preloadedImage
 {
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
     __weak typeof(self) welf = self;
+    void (^imageFinishedLoadingBlock)(UIImage *sourceImage, BOOL animate) = ^void(UIImage *sourceImage, BOOL animate)
+    {
+        __strong typeof(self) strongSelf = welf;
+        strongSelf.sourceImage = sourceImage;
+        [strongSelf layoutIfNeeded];
+        
+        if (!animate)
+        {
+            return;
+        }
+        
+        strongSelf.imageView.alpha = 0.0f;
+        [UIView animateWithDuration:1.75f
+                              delay:0.0f
+             usingSpringWithDamping:1.0f
+              initialSpringVelocity:0.0f
+                            options:kNilOptions
+                         animations:^
+         {
+             strongSelf.imageView.alpha = 1.0f;
+         }
+                         completion:nil];
+    };
+    
+    if (preloadedImage!= nil)
+    {
+        imageFinishedLoadingBlock(preloadedImage, NO);
+        return;
+    }
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
+    
     [self.imageView setImageWithURLRequest:request
                           placeholderImage:nil
                                    success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image)
      {
-         __strong typeof(self) strongSelf = welf;
-         strongSelf.sourceImage = image;
-         [strongSelf layoutIfNeeded];
-     }
-                                   failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error)
-     {
+         if (image)
+         {
+             imageFinishedLoadingBlock(image, YES);
+         }
          
-     }];
+     }
+                                   failure:nil];
+}
+
+- (void)setSourceURL:(NSURL *)URL
+{
+    [self setSourceURL:URL
+    withPreloadedImage:nil];
 }
 
 - (void)setSourceImage:(UIImage *)sourceImage
@@ -167,7 +204,6 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
         // Render
         filteredImage = [filter imageByFilteringImage:self.scaledImage
                                         withCIContext:self.context];
-
         
         // Cache
         [self.renderedImageCache setObject:filteredImage

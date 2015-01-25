@@ -103,6 +103,7 @@ static const char kAssociatedWorkspaceFlowKey;
 - (void)showRemixOnViewController:(UIViewController *)viewController
                      withSequence:(VSequence *)sequence
              andDependencyManager:(VDependencyManager *)dependencyManager
+                   preloadedImage:(UIImage *)preloadedImage
                        completion:(void(^)(BOOL))completion
 {
     NSAssert(![sequence isPoll], @"You cannot remix polls.");
@@ -113,11 +114,23 @@ static const char kAssociatedWorkspaceFlowKey;
     }
     
     __weak UIViewController *weakViewController = viewController;
+    
+    NSMutableDictionary *addedDependencies = [[NSMutableDictionary alloc] init];
+    if (sequence)
+    {
+        [addedDependencies setObject:sequence forKey:VWorkspaceFlowControllerSequenceToRemixKey];
+    }
+    if (preloadedImage)
+    {
+        [addedDependencies setObject:preloadedImage forKey:VWorkspaceFlowControllerPreloadedImageKey];
+    }
+    [addedDependencies setObject:@(VImageToolControllerInitialImageEditStateText) forKey:VImageToolControllerInitialImageEditStateKey];
+    [addedDependencies setObject:@(VVideoToolControllerInitialVideoEditStateGIF) forKey:VVideoToolControllerInitalVideoEditStateKey];
+    
     self.workspaceFlowController = [dependencyManager templateValueOfType:[VWorkspaceFlowController class]
                                                                    forKey:VDependencyManagerWorkspaceFlowKey
-                                                    withAddedDependencies:@{VWorkspaceFlowControllerSequenceToRemixKey:sequence,
-                                                                            VImageToolControllerInitialImageEditStateKey:@(VImageToolControllerInitialImageEditStateText),
-                                                                            VVideoToolControllerInitalVideoEditStateKey:@(VVideoToolControllerInitialVideoEditStateGIF)}];
+                                                    withAddedDependencies:addedDependencies];
+    
     self.workspaceFlowController.completion = ^void(BOOL finished)
     {
         [weakViewController dismissViewControllerAnimated:YES
@@ -131,6 +144,14 @@ static const char kAssociatedWorkspaceFlowKey;
     [viewController presentViewController:self.workspaceFlowController.flowRootViewController
                                  animated:YES
                                completion:nil];
+}
+
+- (void)showRemixOnViewController:(UIViewController *)viewController
+                     withSequence:(VSequence *)sequence
+             andDependencyManager:(VDependencyManager *)dependencyManager
+                       completion:(void(^)(BOOL))completion
+{
+    [self showRemixOnViewController:viewController withSequence:sequence andDependencyManager:dependencyManager preloadedImage:nil completion:nil];
 }
 
 - (void)showRemixOnViewController:(UIViewController *)viewController

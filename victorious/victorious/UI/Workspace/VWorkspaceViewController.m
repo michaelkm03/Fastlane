@@ -168,7 +168,8 @@
     
     if ([self.toolController isKindOfClass:[VImageToolController class]])
     {
-        [self.canvasView setSourceURL:self.mediaURL];
+        [self.canvasView setSourceURL:self.mediaURL
+                   withPreloadedImage:self.previewImage];
     }
     
     __weak typeof(self) welf = self;

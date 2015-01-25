@@ -27,7 +27,7 @@ typedef void (^VWorkspaceCompletion)(BOOL finished, UIImage *previewImage, NSURL
 
 @property (nonatomic, copy) VWorkspaceCompletion completionBlock; ///< Called upon completion. PreviewImage and RenderedMediaURL will be nil if unsuccessful.
 
-@property (nonatomic, strong) UIImage *previewImage; ///< An image to use while the image while the asset at mediaURL is loading.
+@property (nonatomic, strong) UIImage *previewImage; ///< An image to use in the canvas.
 @property (nonatomic, strong) NSURL *mediaURL; ///< The image or video to use in this workspace.
 
 @property (nonatomic, readonly) VToolController *toolController; ///< The toolController

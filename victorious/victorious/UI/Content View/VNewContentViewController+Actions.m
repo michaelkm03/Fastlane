@@ -256,6 +256,7 @@ static const char kSequenceActionControllerKey;
                      [self.sequenceActionController showRemixOnViewController:self
                                                                  withSequence:sequence
                                                          andDependencyManager:self.dependencyManagerForHistogramExperiment
+                                                               preloadedImage:self.placeholderImage
                                                                    completion:nil];
                  }
              }];
