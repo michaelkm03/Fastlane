@@ -166,8 +166,11 @@
     [toolBarItems addObject:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil]];
     self.bottomToolbar.items = toolBarItems;
     
-    NSData *imageFile = [NSData dataWithContentsOfURL:self.mediaURL];
-    self.canvasView.sourceImage = [UIImage imageWithData:imageFile];
+    if ([self.toolController isKindOfClass:[VImageToolController class]])
+    {
+        [self.canvasView setSourceURL:self.mediaURL
+                   withPreloadedImage:self.previewImage];
+    }
     
     __weak typeof(self) welf = self;
     self.keyboardManager = [[VKeyboardNotificationManager alloc] initWithKeyboardWillShowBlock:^(CGRect keyboardFrameBegin, CGRect keyboardFrameEnd, NSTimeInterval animationDuration, UIViewAnimationCurve animationCurve)

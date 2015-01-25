@@ -21,15 +21,21 @@
                             <constraint firstAttribute="width" secondItem="FqD-Zu-TxQ" secondAttribute="height" multiplier="1:1" id="MPE-Dn-ONP"/>
                         </constraints>
                     </imageView>
+                    <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="GZL-Ms-umd">
+                        <rect key="frame" x="15" y="15" width="20" height="20"/>
+                    </activityIndicatorView>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
             <constraints>
+                <constraint firstAttribute="centerY" secondItem="GZL-Ms-umd" secondAttribute="centerY" id="3iu-TX-e7i"/>
                 <constraint firstItem="FqD-Zu-TxQ" firstAttribute="leading" secondItem="4Cr-Ud-Cm3" secondAttribute="leading" id="DHh-lM-PEy"/>
+                <constraint firstAttribute="centerX" secondItem="GZL-Ms-umd" secondAttribute="centerX" id="Ifm-td-f3n"/>
                 <constraint firstItem="FqD-Zu-TxQ" firstAttribute="top" secondItem="4Cr-Ud-Cm3" secondAttribute="top" id="ggL-7F-VhB"/>
                 <constraint firstAttribute="bottom" secondItem="FqD-Zu-TxQ" secondAttribute="bottom" id="x8e-AU-Ftj"/>
             </constraints>
             <connections>
+                <outlet property="activityIndicator" destination="GZL-Ms-umd" id="cND-mW-AbC"/>
                 <outlet property="thumbnailImageView" destination="FqD-Zu-TxQ" id="FgD-6g-LZu"/>
             </connections>
             <point key="canvasLocation" x="398" y="487"/>

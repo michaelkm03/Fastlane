@@ -25,12 +25,19 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerInitialCaptureState)
 // Remix
 extern NSString * const VWorkspaceFlowControllerSequenceToRemixKey;
 
+// Preloaded Image
+extern NSString * const VWorkspaceFlowControllerPreloadedImageKey;
+
 /**
  *  Supports injection of:
- *  Initial capture via "VWorkspaceFlowControllerInitialCaptureStateKey",
+ *
+ *  - Initial capture via "VWorkspaceFlowControllerInitialCaptureStateKey",
  *  initial image edit via "VImageToolControllerInitialImageEditStateKey",
  *  initial video edit via "VVideoToolControllerInitalVideoEditStateKey",
  *  Wrap the appropriate enum value in an [NSNumber numberWithInteger:].
+ *
+ *  - The preview image for the workspace. This will be the image that is used during editing.
+ *  Use VWorkspaceFlowControllerPreloadedImageKey with a UIImage.
  *  
  *  For remix the sequence to remix can be injected via "VWorkspaceFlowControllerSequenceToRemixKey".
  *

@@ -28,6 +28,7 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" priority="750" constant="320" id="AwY-Ez-oaG"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="320" id="BXU-Gm-aEa"/>
                                     <constraint firstAttribute="width" secondItem="8c5-o3-ehb" secondAttribute="height" multiplier="1:1" id="O18-Ux-5Zy"/>
                                 </constraints>
                             </view>

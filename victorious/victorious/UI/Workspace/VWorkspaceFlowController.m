@@ -37,6 +37,7 @@
 
 NSString * const VWorkspaceFlowControllerInitialCaptureStateKey = @"initialCaptureStateKey";
 NSString * const VWorkspaceFlowControllerSequenceToRemixKey = @"sequenceToRemixKey";
+NSString * const VWorkspaceFlowControllerPreloadedImageKey = @"preloadedImageKey";
 
 typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
 {
@@ -289,6 +290,12 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
     else
     {
         NSAssert(false, @"Media type not supported!");
+    }
+    
+    UIImage *preloadedImage = [self.dependencyManager templateValueOfType:[UIImage class] forKey:VWorkspaceFlowControllerPreloadedImageKey];
+    if (preloadedImage != nil)
+    {
+        workspaceViewController.previewImage = preloadedImage;
     }
     
     id remixItem = [self.dependencyManager templateValueOfType:[VSequence class] forKey:VWorkspaceFlowControllerSequenceToRemixKey];

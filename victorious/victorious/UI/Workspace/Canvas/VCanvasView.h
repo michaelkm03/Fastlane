@@ -15,7 +15,18 @@
  */
 @interface VCanvasView : UIView
 
-@property (nonatomic, strong) UIImage *sourceImage; ///< The image to use as the base of the canvas.
+/**
+ *  Same as calling "setSourceURL:someURL withPreloadedImage:nil".
+ */
+- (void)setSourceURL:(NSURL *)URL;
+
+/**
+ *  Will use preloadedImage if it exists. If not will pull from URL.
+ */
+- (void)setSourceURL:(NSURL *)URL
+  withPreloadedImage:(UIImage *)preloadedImage;
+
+@property (nonatomic, readonly) UIImage *sourceImage; ///< The image to use as the base of the canvas.
 
 @property (nonatomic, strong) VPhotoFilter *filter; ///< The Filter to use on the image.
 

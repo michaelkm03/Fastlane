@@ -256,10 +256,8 @@ static const char kSequenceActionControllerKey;
                      [self.sequenceActionController showRemixOnViewController:self
                                                                  withSequence:sequence
                                                          andDependencyManager:self.dependencyManagerForHistogramExperiment
-                                                                   completion:^(BOOL didPublish)
-                      {
-                          [self dismissViewControllerAnimated:YES completion:nil];
-                      }];
+                                                               preloadedImage:self.placeholderImage
+                                                                   completion:nil];
                  }
              }];
         };

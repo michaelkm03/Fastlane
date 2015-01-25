@@ -17,11 +17,19 @@
 - (BOOL)showPosterProfileFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence;
 
 /**
- *  Internally calls -showRemixOnViewController:withSequence:andDependencyManager:completion: with nil for completion.
+ *  Internally calls -showRemixOnViewController:withSequence:andDependencyManager:preloadedImage:completion: with nil for completion.
  */
 - (void)showRemixOnViewController:(UIViewController *)viewController
                      withSequence:(VSequence *)sequence
              andDependencyManager:(VDependencyManager *)dependencyManager;
+
+/**
+ *  Internally calls -showRemixOnViewController:withSequence:andDependencyManager:preloadedImage:completion: with nil for completion and preloadedImage.
+ */
+- (void)showRemixOnViewController:(UIViewController *)viewController
+                     withSequence:(VSequence *)sequence
+             andDependencyManager:(VDependencyManager *)dependencyManager
+                       completion:(void(^)(BOOL))completion;
 
 /**
  *  Presents remix UI on a viewcontroller with a given sequence to remix. Will present a UIViewController for the remix UI on the pased in viewController.
@@ -34,6 +42,7 @@
 - (void)showRemixOnViewController:(UIViewController *)viewController
                      withSequence:(VSequence *)sequence
              andDependencyManager:(VDependencyManager *)dependencyManager
+                   preloadedImage:(UIImage *)preloadedImage
                        completion:(void(^)(BOOL))completion;
 
 - (void)showRemixStreamFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence;

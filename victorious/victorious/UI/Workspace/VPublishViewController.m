@@ -99,7 +99,12 @@ static const CGFloat kTopSpacePublishPrompt = 50.0f;
     };
 
     self.captionTextView.placeholderText = NSLocalizedString(@"Write a caption (optional)", @"Caption entry placeholder text");
-    self.captionTextView.typingAttributes = @{NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerLabel3FontKey]};
+    UIFont *label3Font = [self.dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
+    if (label3Font != nil)
+    {
+        self.captionTextView.typingAttributes = @{NSFontAttributeName: label3Font};
+    }
+    
     VContentInputAccessoryView *inputAccessoryView = [[VContentInputAccessoryView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 44.0f)];
     self.captionTextView.textContainerInset = UIEdgeInsetsMake(10, 6, 0, 6);
     self.captionTextView.backgroundColor = [UIColor clearColor];
@@ -109,9 +114,14 @@ static const CGFloat kTopSpacePublishPrompt = 50.0f;
     inputAccessoryView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     self.captionTextView.inputAccessoryView = inputAccessoryView;
     
-    self.cancelButton.titleLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Cancel", @"")
-                                                                                  attributes:@{NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey]}];
-    
+    UIFont *headerFont = [self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
+    if (headerFont != nil)
+    {
+        self.cancelButton.titleLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Cancel", @"")
+                                                                                      attributes:@{NSFontAttributeName: headerFont}];
+    }
+    self.cancelButton.titleLabel.text = NSLocalizedString(@"Cancel", @"");
+
     self.previewImageView.image = self.publishParameters.previewImage;
 }
 

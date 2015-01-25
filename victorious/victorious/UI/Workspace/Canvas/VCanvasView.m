@@ -8,6 +8,7 @@
 
 #import "VCanvasView.h"
 #import "CIImage+VImage.h"
+#import <UIImageView+AFNetworking.h>
 
 static const CGFloat kRelatvieScaleFactor = 0.55f;
 
@@ -15,11 +16,13 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
 
 @property (nonatomic, strong) CIContext *context;
 @property (nonatomic, strong) UIImage *scaledImage;
+@property (nonatomic, strong, readwrite) UIImage *sourceImage;
 @property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, strong) UIScrollView *canvasScrollView;
 @property (nonatomic, strong) NSCache *renderedImageCache;
 @property (nonatomic, strong) dispatch_queue_t renderingQueue;
 @property (nonatomic, strong) NSMutableArray *rendertimes;
+@property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
 
 @end
 
@@ -78,6 +81,12 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
     _context = [CIContext contextWithOptions:@{}];
     
     _rendertimes = [[NSMutableArray alloc] init];
+    
+    _activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    _activityIndicator.hidesWhenStopped = YES;
+    _activityIndicator.center = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
+    [self addSubview:_activityIndicator];
+    [_activityIndicator startAnimating];
 }
 
 - (void)layoutSubviews
@@ -109,10 +118,66 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
     }
     
     _imageView.frame = imageViewFrame;
+    
     self.canvasScrollView.contentSize = imageViewFrame.size;
+    self.activityIndicator.center = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
 }
 
 #pragma mark - Property Accessors
+
+- (void)setSourceURL:(NSURL *)URL
+  withPreloadedImage:(UIImage *)preloadedImage
+{
+    __weak typeof(self) welf = self;
+    void (^imageFinishedLoadingBlock)(UIImage *sourceImage, BOOL animate) = ^void(UIImage *sourceImage, BOOL animate)
+    {
+        __strong typeof(self) strongSelf = welf;
+        strongSelf.sourceImage = sourceImage;
+        [strongSelf layoutIfNeeded];
+        [strongSelf.activityIndicator stopAnimating];
+        if (!animate)
+        {
+            return;
+        }
+        
+        strongSelf.imageView.alpha = 0.0f;
+        [UIView animateWithDuration:1.75f
+                              delay:0.0f
+             usingSpringWithDamping:1.0f
+              initialSpringVelocity:0.0f
+                            options:kNilOptions
+                         animations:^
+         {
+             strongSelf.imageView.alpha = 1.0f;
+         }
+                         completion:nil];
+    };
+    
+    if (preloadedImage!= nil)
+    {
+        imageFinishedLoadingBlock(preloadedImage, NO);
+        return;
+    }
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
+    
+    [self.imageView setImageWithURLRequest:request
+                          placeholderImage:nil
+                                   success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image)
+     {
+         if (image)
+         {
+             imageFinishedLoadingBlock(image, YES);
+         }
+     }
+                                   failure:nil];
+}
+
+- (void)setSourceURL:(NSURL *)URL
+{
+    [self setSourceURL:URL
+    withPreloadedImage:nil];
+}
 
 - (void)setSourceImage:(UIImage *)sourceImage
 {
@@ -126,6 +191,7 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
     CGImageRelease(scaledImageRef);
     
     self.imageView.image = _scaledImage;
+    self.imageView.frame = self.canvasScrollView.bounds;
     [self layoutIfNeeded];
 }
 
@@ -146,7 +212,6 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
         // Render
         filteredImage = [filter imageByFilteringImage:self.scaledImage
                                         withCIContext:self.context];
-
         
         // Cache
         [self.renderedImageCache setObject:filteredImage
