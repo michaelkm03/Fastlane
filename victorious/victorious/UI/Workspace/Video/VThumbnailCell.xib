@@ -21,7 +21,7 @@
                             <constraint firstAttribute="width" secondItem="FqD-Zu-TxQ" secondAttribute="height" multiplier="1:1" id="MPE-Dn-ONP"/>
                         </constraints>
                     </imageView>
-                    <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="GZL-Ms-umd">
+                    <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="GZL-Ms-umd">
                         <rect key="frame" x="15" y="15" width="20" height="20"/>
                     </activityIndicatorView>
                 </subviews>
