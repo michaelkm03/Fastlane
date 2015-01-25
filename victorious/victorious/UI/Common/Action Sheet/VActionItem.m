@@ -75,7 +75,7 @@
     return actionItem;
 }
 
-#pragma mark - Initializer
+#pragma mark - NSObject
 
 - (id)init
 {
@@ -85,6 +85,27 @@
         _enabled = YES;
     }
     return self;
+}
+
+- (NSString *)description
+{
+    NSMutableString *descriptionString = [[super description] mutableCopy];
+    if (self.title != nil)
+    {
+        [descriptionString appendString:[NSString stringWithFormat:@"title: %@", self.title]];
+    }
+    
+    if (self.detailText != nil)
+    {
+        [descriptionString appendString:[NSString stringWithFormat:@"detailText: %@", self.detailText]];
+    }
+    
+    if (self.avatarURL != nil)
+    {
+        [descriptionString appendString:[NSString stringWithFormat:@"avatarURL: %@", self.avatarURL.absoluteString]];
+    }
+    
+    return descriptionString;
 }
 
 @end

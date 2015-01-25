@@ -68,6 +68,10 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.titleTextView.text = nil;
+    self.usernameLabel.text = nil;
+    self.userCaptionLabel.text = nil;
 
     UIToolbar *blurredView = [[UIToolbar alloc] initWithFrame:CGRectMake(0,
                                                                          0,
@@ -248,13 +252,30 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
 
 - (void)setupTitleTextView
 {
+    if (self.descriptionItem.title == nil)
+    {
+        return;
+    }
+    NSMutableDictionary *attributes = [[NSMutableDictionary alloc] init];
+    
+    UIFont *themedFont = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
+    if (themedFont != nil)
+    {
+        [attributes setObject:themedFont forKey:NSFontAttributeName];
+    }
+    
+    UIColor *textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
+    if (textColor != nil)
+    {
+        [attributes setObject:textColor forKey:NSForegroundColorAttributeName];
+    }
+    
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     paragraphStyle.alignment = NSTextAlignmentCenter;
+    [attributes setObject:paragraphStyle forKey:NSParagraphStyleAttributeName];
     
-    NSMutableAttributedString *mutableAttributedString = [[NSMutableAttributedString alloc] initWithString:(self.descriptionItem.title ?: @"")
-                                                                                                attributes:@{NSFontAttributeName:[[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font],
-                                                                                                             NSParagraphStyleAttributeName:paragraphStyle,
-                                                                                                             NSForegroundColorAttributeName:[[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor]}];
+    NSMutableAttributedString *mutableAttributedString = [[NSMutableAttributedString alloc] initWithString:self.descriptionItem.title
+                                                                                                attributes:attributes];
     [self.tapAwayGestureRecognizer requireGestureRecognizerToFail:self.titleTextView.linkGestureRecognizer];
     self.titleTextView.attributedText = mutableAttributedString;
     self.titleTextView.linkDelegate = self;
