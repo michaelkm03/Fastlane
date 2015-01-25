@@ -173,6 +173,7 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
         }
         VPublishViewController *publishViewController = [VPublishViewController newWithDependencyManager:self.dependencyManager];
         publishViewController.publishParameters = publishParameters;
+        __weak typeof(VPublishViewController) *weakPublishViewController = publishViewController;
         publishViewController.completion = ^void(BOOL published)
         {
             if (published)
@@ -188,6 +189,7 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
                 [welf transitionFromState:welf.state
                                   toState:VWorkspaceFlowControllerStateEdit];
             }
+            weakPublishViewController.completion = nil;
         };
         [self.flowNavigationController pushViewController:publishViewController
                                                  animated:YES];
