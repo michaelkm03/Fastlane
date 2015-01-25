@@ -22,6 +22,7 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
 @property (nonatomic, strong) NSCache *renderedImageCache;
 @property (nonatomic, strong) dispatch_queue_t renderingQueue;
 @property (nonatomic, strong) NSMutableArray *rendertimes;
+@property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
 
 @end
 
@@ -80,6 +81,12 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
     _context = [CIContext contextWithOptions:@{}];
     
     _rendertimes = [[NSMutableArray alloc] init];
+    
+    _activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    _activityIndicator.hidesWhenStopped = YES;
+    _activityIndicator.center = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
+    [self addSubview:_activityIndicator];
+    [_activityIndicator startAnimating];
 }
 
 - (void)layoutSubviews
@@ -111,7 +118,9 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
     }
     
     _imageView.frame = imageViewFrame;
+    
     self.canvasScrollView.contentSize = imageViewFrame.size;
+    self.activityIndicator.center = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
 }
 
 #pragma mark - Property Accessors
@@ -125,7 +134,7 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
         __strong typeof(self) strongSelf = welf;
         strongSelf.sourceImage = sourceImage;
         [strongSelf layoutIfNeeded];
-        
+        [strongSelf.activityIndicator stopAnimating];
         if (!animate)
         {
             return;
@@ -160,7 +169,6 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
          {
              imageFinishedLoadingBlock(image, YES);
          }
-         
      }
                                    failure:nil];
 }
