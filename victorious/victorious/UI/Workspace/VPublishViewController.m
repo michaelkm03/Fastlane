@@ -20,6 +20,8 @@
 
 #import <MBProgressHUD/MBProgressHUD.h>
 
+#import "NSURL+MediaType.h"
+
 static const CGFloat kTriggerVelocity = 500.0f;
 static const CGFloat kSnapDampingConstant = 0.9f;
 static const CGFloat kTopSpacePublishPrompt = 50.0f;

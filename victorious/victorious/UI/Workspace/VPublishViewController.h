@@ -23,4 +23,6 @@
 
 @property (nonatomic, strong) VPublishParameters *publishParameters;
 
+@property (nonatomic, assign) BOOL saveToCameraRollPossible;
+
 @end
