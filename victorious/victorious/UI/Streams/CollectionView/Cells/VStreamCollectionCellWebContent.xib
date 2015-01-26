@@ -38,7 +38,7 @@
                 <outlet property="activityIndicator" destination="Owh-Ls-xfB" id="7bx-IE-YRH"/>
                 <outlet property="webViewContainer" destination="7gx-qd-AkN" id="9Iw-fN-9j9"/>
             </connections>
-            <point key="canvasLocation" x="-122" y="658"/>
+            <point key="canvasLocation" x="-127" y="658"/>
         </collectionViewCell>
     </objects>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
