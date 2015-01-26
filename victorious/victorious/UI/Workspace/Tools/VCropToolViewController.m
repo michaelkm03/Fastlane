@@ -55,34 +55,7 @@
 {
     [super viewDidLayoutSubviews];
     
-    if (self.hasLayedOutScrollView)
-    {
-        return;
-    }
-    
-    CGRect proxyViewFrame;
-    
-    if (self.assetSize.height > self.assetSize.width)
-    {
-        CGFloat scaleFactor = self.assetSize.width / CGRectGetWidth(self.croppingScrollView.bounds);
-        proxyViewFrame = CGRectMake(CGRectGetMinX(self.croppingScrollView.bounds),
-                                    CGRectGetMinY(self.croppingScrollView.bounds),
-                                    CGRectGetWidth(self.croppingScrollView.bounds),
-                                    self.assetSize.height * (1/scaleFactor));
-    }
-    else
-    {
-        CGFloat scaleFactor = self.assetSize.height / CGRectGetHeight(self.croppingScrollView.bounds);
-        proxyViewFrame = CGRectMake(CGRectGetMinX(self.croppingScrollView.bounds),
-                                    CGRectGetMinY(self.croppingScrollView.bounds),
-                                    self.assetSize.width * (1/scaleFactor),
-                                    CGRectGetHeight(self.croppingScrollView.bounds));
-    }
-    
-    self.proxyView = [[UIView alloc] initWithFrame:proxyViewFrame];
-    [self.croppingScrollView addSubview:self.proxyView];
-    self.croppingScrollView.contentSize = proxyViewFrame.size;
-    self.hasLayedOutScrollView = YES;
+    [self updateScrollView];
 }
 
 - (IBAction)doubleTapCrop:(UITapGestureRecognizer *)sender
@@ -114,6 +87,58 @@
     }
     
     _assetSize = assetSize;
+    
+    [self updateScrollView];
+}
+
+- (void)updateScrollView
+{
+    if (self.hasLayedOutScrollView)
+    {
+        return;
+    }
+    
+    if (self.croppingScrollView == nil)
+    {
+        return;
+    }
+    
+    if (CGSizeEqualToSize(self.assetSize, CGSizeZero))
+    {
+        return;
+    }
+    
+    CGRect proxyViewFrame;
+    
+    if (self.assetSize.height > self.assetSize.width)
+    {
+        CGFloat scaleFactor = self.assetSize.width / CGRectGetWidth(self.croppingScrollView.frame);
+        if (isnan(scaleFactor) || (scaleFactor == 0.0f))
+        {
+            scaleFactor = 1.0f;
+        }
+        proxyViewFrame = CGRectMake(CGRectGetMinX(self.croppingScrollView.bounds),
+                                    CGRectGetMinY(self.croppingScrollView.bounds),
+                                    CGRectGetWidth(self.croppingScrollView.bounds),
+                                    _assetSize.height * (1/scaleFactor));
+    }
+    else
+    {
+        CGFloat scaleFactor = self.assetSize.height / CGRectGetHeight(self.croppingScrollView.frame);
+        if (isnan(scaleFactor) || (scaleFactor == 0.0f))
+        {
+            scaleFactor = 1.0f;
+        }
+        proxyViewFrame = CGRectMake(CGRectGetMinX(self.croppingScrollView.bounds),
+                                    CGRectGetMinY(self.croppingScrollView.bounds),
+                                    self.assetSize.width * (1/scaleFactor),
+                                    CGRectGetHeight(self.croppingScrollView.bounds));
+    }
+    
+    self.proxyView = [[UIView alloc] initWithFrame:proxyViewFrame];
+    [self.croppingScrollView addSubview:self.proxyView];
+    self.croppingScrollView.contentSize = proxyViewFrame.size;
+    self.hasLayedOutScrollView = YES;
 }
 
 #pragma mark - UIScrollViewDelegate
