@@ -262,18 +262,19 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
         UIFont *themedFont = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
         if (themedFont != nil)
         {
-            [attributes setObject:themedFont forKey:NSFontAttributeName];
+            attributes[NSFontAttributeName] = themedFont;
         }
         
         UIColor *textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
         if (textColor != nil)
         {
-            [attributes setObject:textColor forKey:NSForegroundColorAttributeName];
+            attributes[NSForegroundColorAttributeName] = textColor;
         }
         
         NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
         paragraphStyle.alignment = NSTextAlignmentCenter;
         [attributes setObject:paragraphStyle forKey:NSParagraphStyleAttributeName];
+        attributes[NSParagraphStyleAttributeName] = paragraphStyle;
     }
     
     NSMutableAttributedString *mutableAttributedString = [[NSMutableAttributedString alloc] initWithString:self.descriptionItem.title
