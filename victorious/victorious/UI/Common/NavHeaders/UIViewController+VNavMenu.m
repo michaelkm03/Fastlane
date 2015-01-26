@@ -6,32 +6,44 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+@import MobileCoreServices;
+
 #import "UIViewController+VNavMenu.h"
 #import "UIViewController+VSideMenuViewController.h"
 
+// Dependency Management
+#import "VHasManagedDependencies.h"
+#import "VDependencyManager.h"
+
+// Runtime
 #import <objc/runtime.h>
 
 //Create Sequence import
 #import "VSettingManager.h"
 #import "VObjectManager+Login.h"
 #import "VCameraViewController.h"
-#import "VCameraPublishViewController.h"
 #import "VCreatePollViewController.h"
 #import "VAuthorizationViewControllerFactory.h"
 #import "VAlertController.h"
 #import "VThemeManager.h"
 #import "UIActionSheet+VBlocks.h"
 #import "VAutomation.h"
+#import "VWorkspaceViewController.h"
+#import "VPublishViewController.h"
+
+#import "VWorkspaceFlowController.h"
 
 static const char kNavHeaderViewKey;
 static const char kNavHeaderYConstraintKey;
 static const char kUploadProgressVCKey;
 static const char kUploadProgressYConstraintKey;
+static const char kWorkspaceFlowControllerKey;
 
 @interface UIViewController (VNavMenuPrivate)
 
 @property (nonatomic, strong) NSLayoutConstraint *navHeaderYConstraint;
 @property (nonatomic, strong) NSLayoutConstraint *uploadProgressViewYconstraint;
+@property (nonatomic, strong) VWorkspaceFlowController *workspaceFlowController;
 
 @end
 
@@ -94,31 +106,32 @@ static const char kUploadProgressYConstraintKey;
 {
     if (self.navigationController.viewControllers.count <= 1)
     {
-        self.navHeaderView = [VNavigationHeaderView menuButtonNavHeaderWithControlTitles:titles];
+        self.navHeaderView = [VNavigationHeaderView menuButtonNavHeader];
     }
     else
     {
-        self.navHeaderView = [VNavigationHeaderView backButtonNavHeaderWithControlTitles:titles];
+        self.navHeaderView = [VNavigationHeaderView backButtonNavHeader];
     }
     
-    self.navHeaderView.headerText = self.title;//Set the title in case there is no logo
+    self.navHeaderView.headerText = self.title; //Set the title in case there is no logo
     [self.navHeaderView updateUIForVC:self];
+    
+    self.navHeaderView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:self.navHeaderView];
     
-    self.navHeaderYConstraint = [NSLayoutConstraint constraintWithItem:self.navHeaderView
-                                                          attribute:NSLayoutAttributeTop
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.view
-                                                          attribute:NSLayoutAttributeTop
-                                                         multiplier:1.0f
-                                                           constant:0.0f];
-    [self.view addConstraint:self.navHeaderYConstraint];
-    
     VNavigationHeaderView *header = self.navHeaderView;
+    NSArray *constraintsV = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[header]"
+                                                                   options:0
+                                                                   metrics:nil
+                                                                     views:NSDictionaryOfVariableBindings(header)];
+    self.navHeaderYConstraint = constraintsV.firstObject;
+    [self.view addConstraints:constraintsV];
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[header]-0-|"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(header)]];
+    
+    [self.navHeaderView setupSegmentedControlWithTitles:titles];
 }
 
 - (void)v_hideHeader
@@ -242,11 +255,18 @@ static const char kUploadProgressYConstraintKey;
     [alertControler addAction:[VAlertAction cancelButtonWithTitle:NSLocalizedString(@"CancelButton", @"Cancel button") handler:nil]];
     [alertControler addAction:[VAlertAction buttonWithTitle:NSLocalizedString(@"Create a Video Post", @"") handler:^(VAlertAction *action)
                                {
-                                   [self presentCameraViewController:[VCameraViewController cameraViewController]];
+                                   [self presentCreateFlowWithInitialCaptureState:VWorkspaceFlowControllerInitialCaptureStateVideo];
                                }]];
     [alertControler addAction:[VAlertAction buttonWithTitle:NSLocalizedString(@"Create an Image Post", @"") handler:^(VAlertAction *action)
                                {
-                                   [self presentCameraViewController:[VCameraViewController cameraViewControllerStartingWithStillCapture]];
+                                   [self presentCreateFlowWithInitialCaptureState:VWorkspaceFlowControllerInitialCaptureStateImage];
+                               }]];
+    [alertControler addAction:[VAlertAction buttonWithTitle:NSLocalizedString(@"Create a GIF", @"Create a gif action button.")
+                                                    handler:^(VAlertAction *action)
+                               {
+                                   [self presentCreateFlowWithInitialCaptureState:VWorkspaceFlowControllerInitialCaptureStateVideo
+                                                            initialImageEditState:VImageToolControllerInitialImageEditStateCrop
+                                                         andInitialVideoEditState:VVideoToolControllerInitialVideoEditStateGIF];
                                }]];
     [alertControler addAction:[VAlertAction buttonWithTitle:NSLocalizedString(@"Create a Poll", @"") handler:^(VAlertAction *action)
                                {
@@ -256,42 +276,48 @@ static const char kUploadProgressYConstraintKey;
     [alertControler presentInViewController:self animated:YES completion:nil];
 }
 
-- (void)presentCameraViewController:(VCameraViewController *)cameraViewController
+- (void)presentCreateFlowWithInitialCaptureState:(VWorkspaceFlowControllerInitialCaptureState)initialCaptureState
+                           initialImageEditState:(VImageToolControllerInitialImageEditState)initialImageEdit
+                        andInitialVideoEditState:(VVideoToolControllerInitialVideoEditState)initialVideoEdit
 {
-    UINavigationController *navigationController = [[UINavigationController alloc] init];
-    UINavigationController *__weak weakNav = navigationController;
-    cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
+    VDependencyManager *dependencyManager = [(id)self dependencyManager];
+    
+    self.workspaceFlowController = [dependencyManager templateValueOfType:[VWorkspaceFlowController class]
+                                                                   forKey:VDependencyManagerWorkspaceFlowKey
+                                                    withAddedDependencies:@{VWorkspaceFlowControllerInitialCaptureStateKey:@(initialCaptureState),
+                                                                            VImageToolControllerInitialImageEditStateKey:@(initialImageEdit),
+                                                                            VVideoToolControllerInitalVideoEditStateKey:@(initialVideoEdit)}];
+    __weak typeof(self) welf = self;
+    self.workspaceFlowController.completion = ^void(BOOL finished)
     {
-        if (!finished || !capturedMediaURL)
-        {
-            [self dismissViewControllerAnimated:YES completion:nil];
-        }
-        else
-        {
-            VCameraPublishViewController *publishViewController = [VCameraPublishViewController cameraPublishViewController];
-            publishViewController.previewImage = previewImage;
-            publishViewController.mediaURL = capturedMediaURL;
-            publishViewController.completion = ^(BOOL complete)
-            {
-                if (complete)
-                {
-                    [self dismissViewControllerAnimated:YES completion:nil];
-                }
-                else
-                {
-                    [weakNav popViewControllerAnimated:YES];
-                }
-            };
-            [weakNav pushViewController:publishViewController animated:YES];
-        }
+        [welf dismissViewControllerAnimated:YES
+                                 completion:nil];
     };
-    [navigationController pushViewController:cameraViewController animated:NO];
-    [self presentViewController:navigationController animated:YES completion:nil];
+    [self presentViewController:self.workspaceFlowController.flowRootViewController
+                       animated:YES
+                     completion:nil];
+}
+
+- (void)presentCreateFlowWithInitialCaptureState:(VWorkspaceFlowControllerInitialCaptureState)initialCaptureState
+{
+    [self presentCreateFlowWithInitialCaptureState:initialCaptureState
+                             initialImageEditState:VImageToolControllerInitialImageEditStateCrop
+                          andInitialVideoEditState:VVideoToolControllerInitialVideoEditStateVideo];
 }
 
 - (CGFloat)headerPositionY
 {
     return self.navHeaderYConstraint.constant;
+}
+
+- (void)setWorkspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
+{
+    objc_setAssociatedObject(self, &kWorkspaceFlowControllerKey, workspaceFlowController, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (VWorkspaceFlowController *)workspaceFlowController
+{
+    return objc_getAssociatedObject(self, &kWorkspaceFlowControllerKey);
 }
 
 @end

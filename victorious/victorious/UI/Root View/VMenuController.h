@@ -7,11 +7,9 @@
 //
 
 #import "VHasManagedDependencies.h"
+#import "VNavigationDestinationsProvider.h"
 #import "VProvidesNavigationMenuItemBadge.h"
 
-extern NSString * const VMenuControllerDidSelectRowNotification; ///< Posted when a menu item is selected
-extern NSString * const VMenuControllerDestinationViewControllerKey; ///< User info dictionary key for the view controller corresponding to a selected menu item
-
-@interface VMenuController : UIViewController <VHasManagedDependancies, VProvidesNavigationMenuItemBadge>
+@interface VMenuController : UIViewController <VHasManagedDependancies, VNavigationDestinationsProvider, VProvidesNavigationMenuItemBadge>
 
 @end

@@ -25,6 +25,10 @@
                                       successBlock:(VSuccessBlock)success
                                          failBlock:(VFailBlock)fail;
 
+- (RKManagedObjectRequestOperation *)editComment:(VComment *)comment
+                                    successBlock:(VSuccessBlock)success
+                                       failBlock:(VFailBlock)fail;
+
 - (RKManagedObjectRequestOperation *)flagComment:(VComment *)comment
                                     successBlock:(VSuccessBlock)success
                                        failBlock:(VFailBlock)fail;

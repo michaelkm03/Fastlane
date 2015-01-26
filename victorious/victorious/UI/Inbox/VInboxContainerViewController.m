@@ -6,15 +6,19 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "NSURL+VPathHelper.h"
 #import "UIStoryboard+VMainStoryboard.h"
 #import "VAuthorizationViewControllerFactory.h"
-#import "VDeeplinkManager.h"
+#import "VConversation.h"
 #import "VDependencyManager+VObjectManager.h"
 #import "VInboxContainerViewController.h"
 #import "VInboxViewController.h"
+#import "VMessageContainerViewController.h"
+#import "VObjectManager+DirectMessaging.h"
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Pagination.h"
 #import "VRootViewController.h"
+#import "VSettingManager.h"
 #import "VUnreadMessageCountCoordinator.h"
 #import "VConstants.h"
 #import "UIViewController+VNavMenu.h"
@@ -33,6 +37,9 @@
 @end
 
 static char kKVOContext;
+
+NSString * const VInboxContainerViewControllerDeeplinkHostComponent = @"inbox";
+NSString * const VInboxContainerViewControllerInboxPushReceivedNotification = @"VInboxContainerViewControllerInboxPushReceivedNotification";
 
 @implementation VInboxContainerViewController
 
@@ -59,7 +66,7 @@ static char kKVOContext;
 {
     [super awakeFromNib];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loggedInChanged:) name:kLoggedInChangedNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(inboxMessageNotification:) name:VDeeplinkManagerInboxMessageNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(inboxMessageNotification:) name:VInboxContainerViewControllerInboxPushReceivedNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
@@ -95,7 +102,8 @@ static char kKVOContext;
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return UIStatusBarStyleLightContent;
+    BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
+    return isTemplateC ? UIStatusBarStyleDefault : UIStatusBarStyleLightContent;
 }
 
 - (void)setMessageCountCoordinator:(VUnreadMessageCountCoordinator *)messageCountCoordinator
@@ -154,6 +162,48 @@ static char kKVOContext;
     return YES;
 }
 
+#pragma mark - VDeeplinkHandler methods
+
+- (BOOL)displayContentForDeeplinkURL:(NSURL *)url completion:(VDeeplinkHandlerCompletionBlock)completion
+{
+    if ( ![self.dependencyManager.objectManager authorized] )
+    {
+        return NO;
+    }
+    
+    if ( [url.host isEqualToString:VInboxContainerViewControllerDeeplinkHostComponent] )
+    {
+        NSInteger conversationID = [[url v_firstNonSlashPathComponent] integerValue];
+        if ( conversationID != 0 )
+        {
+            [[VObjectManager sharedManager] conversationByID:@(conversationID)
+                                                successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+            {
+                VConversation *conversation = (VConversation *)[resultObjects firstObject];
+                if ( conversation == nil )
+                {
+                    completion(nil);
+                }
+                else
+                {
+                    completion(self);
+                    dispatch_async(dispatch_get_main_queue(), ^(void)
+                    {
+                        [self.inboxViewController displayConversationForUser:conversation.user];
+                    });
+                }
+            }
+                                                   failBlock:^(NSOperation *operation, NSError *error)
+            {
+                VLog(@"Failed to load conversation with error: %@", [error localizedDescription]);
+                completion(nil);
+            }];
+            return YES;
+        }
+    }
+    return NO;
+}
+
 #pragma mark - NSNotification handlers
 
 - (void)loggedInChanged:(NSNotification *)notification
@@ -172,7 +222,8 @@ static char kKVOContext;
 {
     if ( self.dependencyManager.objectManager.mainUserLoggedIn )
     {
-        [self.dependencyManager.objectManager refreshConversationListWithSuccessBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+        [self.dependencyManager.objectManager loadConversationListWithPageType:VPageTypeFirst
+                                                                  successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
         {
             [self.messageCountCoordinator updateUnreadMessageCount];
         } failBlock:nil];

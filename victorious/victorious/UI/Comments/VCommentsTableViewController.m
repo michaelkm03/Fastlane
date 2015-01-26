@@ -36,13 +36,18 @@
 #import "VNoContentView.h"
 #import "VDefaultProfileImageView.h"
 
+#import "VEditCommentViewController.h"
+#import "VTransitionDelegate.h"
+
 @import Social;
 
-@interface VCommentsTableViewController ()
+@interface VCommentsTableViewController () <VEditCommentViewControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate>
 
 @property (nonatomic, strong) UIImageView *backgroundImageView;
 @property (nonatomic, assign) BOOL hasComments;
 @property (nonatomic, assign) BOOL needsRefresh;
+
+@property (nonatomic, strong) VTransitionDelegate *transitionDelegate;
 
 @property (nonatomic, strong) NSArray *comments;
 
@@ -55,6 +60,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    VModalTransition *modalTransition = [[VModalTransition alloc] init];
+    self.transitionDelegate = [[VTransitionDelegate alloc] initWithTransition:modalTransition];
     
     [self.tableView registerNib:[UINib nibWithNibName:kVCommentCellNibName bundle:nil]
          forCellReuseIdentifier:kVCommentCellNibName];
@@ -156,7 +164,7 @@
 - (IBAction)refresh:(UIRefreshControl *)sender
 {
     RKManagedObjectRequestOperation *operation = [[VObjectManager sharedManager] loadCommentsOnSequence:self.sequence
-                                                                                              isRefresh:YES
+                                                                                               pageType:VPageTypeFirst
                                                                                            successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
                                                   {
                                                       self.comments = [self.sequence.comments array];
@@ -179,7 +187,7 @@
 - (void)loadNextPageAction
 {
     [[VObjectManager sharedManager] loadCommentsOnSequence:self.sequence
-                                                 isRefresh:NO
+                                                  pageType:VPageTypeNext
                                               successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
      {
          self.comments = [self.sequence.comments array];
@@ -212,6 +220,7 @@
 {
     VCommentCell *cell = [tableView dequeueReusableCellWithIdentifier:kVCommentCellNibName forIndexPath:indexPath];
     VComment *comment = self.comments[indexPath.row];
+    
     
     cell.timeLabel.text = [comment.postedAt timeSince];
     if (comment.realtime.integerValue < 0)
@@ -250,6 +259,12 @@
     };
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
+    // Setup required for swipe-to-reveal utility buttons
+    cell.commentCellUtilitiesController = [[VCommentCellUtilitesController alloc] initWithComment:comment cellView:cell delegate:cell];
+    cell.swipeViewController.cellDelegate = cell.commentCellUtilitiesController;
+    cell.swipeViewController.controllerDelegate = self;
+    cell.commentsUtilitiesDelegate = self;
+    
     return cell;
 }
 
@@ -263,59 +278,79 @@
     }
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    VComment *comment = self.comments[indexPath.row];
-    NSString *reportTitle = NSLocalizedString(@"ReportInappropriate", @"Comment report inappropriate button");
-    NSString *reply = NSLocalizedString(@"Reply", @"Comment reply button");
-    
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                    cancelButtonTitle:NSLocalizedString(@"CancelButton", @"Cancel button")
-                                                       onCancelButton:nil
-                                               destructiveButtonTitle:reportTitle
-                                                  onDestructiveButton:^(void)
-    {
-        [[VObjectManager sharedManager] flagComment:comment
-                                       successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-         {
-             VLog(@"resultObjects: %@", resultObjects);
-             
-             UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ReportedTitle", @"")
-                                                                    message:NSLocalizedString(@"ReportCommentMessage", @"")
-                                                                   delegate:nil
-                                                          cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
-                                                          otherButtonTitles:nil];
-             [alert show];
-
-         }
-                                          failBlock:^(NSOperation *operation, NSError *error)
-         {
-             VLog(@"Failed to flag comment %@", comment);
-            
-             UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"WereSorry", @"")
-                                                                    message:NSLocalizedString(@"ErrorOccured", @"")
-                                                                   delegate:nil
-                                                          cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
-                                                          otherButtonTitles:nil];
-             [alert show];
-         }];
-    }
-                                           otherButtonTitlesAndBlocks:
-                                  reply, ^(void)
-    {
-        [self.delegate streamsCommentsController:self shouldReplyToUser:comment.user];
-    },
-                                  nil];
-
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    UIWindow *window = [[[UIApplication sharedApplication] delegate] window];
-    [actionSheet showInView:window];
-}
-
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     [[VTrackingManager sharedInstance] endEvent:VTrackingEventCommentsDidAppear];
+}
+
+#pragma mark - VSwipeViewControllerDelegate
+
+- (UIColor *)backgroundColorForGutter
+{
+    return [UIColor colorWithWhite:0.96f alpha:1.0f];
+}
+
+- (void)cellWillShowUtilityButtons:(UIView *)cellView
+{
+    // Close any other cells showing utility buttons
+    
+    for ( VCommentCell *cell in self.tableView.visibleCells )
+    {
+        if ( [cell isKindOfClass:[VCommentCell class]] && cellView != cell )
+        {
+            [cell.swipeViewController hideUtilityButtons];
+        }
+    }
+}
+
+#pragma mark - VCommentCellUtilitiesDelegate
+
+- (void)commentRemoved:(VComment *)comment
+{
+    NSUInteger index = [self.comments indexOfObject:comment];
+    NSMutableArray *updatedComments = [self.comments mutableCopy];
+    [updatedComments removeObjectAtIndex:index];
+    self.comments = [NSArray arrayWithArray:updatedComments];
+    
+    [self.tableView beginUpdates];
+    NSArray *indexPaths = @[ [NSIndexPath indexPathForRow:index inSection:0] ];
+    [self.tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
+    [self.tableView endUpdates];
+}
+
+- (void)editComment:(VComment *)comment
+{
+    VEditCommentViewController *editViewController = [VEditCommentViewController instantiateFromStoryboardWithComment:comment];
+    editViewController.transitioningDelegate = self.transitionDelegate;
+    editViewController.delegate = self;
+    [self presentViewController:editViewController animated:YES completion:nil];
+}
+
+- (void)didSelectActionRequiringLogin
+{
+    [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+}
+
+#pragma mark - VEditCommentViewControllerDelegate
+
+- (void)didFinishEditingComment:(VComment *)comment
+{
+    [self.comments enumerateObjectsUsingBlock:^(VComment *existingComment, NSUInteger idx, BOOL *stop)
+     {
+         if ( [existingComment.remoteId isEqualToNumber:comment.remoteId] )
+         {
+             [self dismissViewControllerAnimated:YES completion:^void
+              {
+                  [self.tableView beginUpdates];
+                  NSIndexPath *indexPathToReload = [NSIndexPath indexPathForRow:idx inSection:0];
+                  [self.tableView reloadRowsAtIndexPaths:@[ indexPathToReload ] withRowAnimation:UITableViewRowAnimationAutomatic];
+                  [self.tableView endUpdates];
+              }];
+             
+             *stop = YES;
+         }
+     }];
 }
 
 @end

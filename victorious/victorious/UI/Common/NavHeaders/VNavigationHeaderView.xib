@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -101,16 +100,15 @@
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="tkm-2G-q8x" secondAttribute="trailing" constant="14" id="588-PD-2ge"/>
                 <constraint firstItem="Q1S-Ju-Pei" firstAttribute="width" secondItem="AkI-hg-b9F" secondAttribute="width" constant="4" id="5gY-fj-mzZ"/>
-                <constraint firstAttribute="width" secondItem="Ay5-2H-sPn" secondAttribute="height" multiplier="16:5" id="ECt-Xu-bck"/>
                 <constraint firstItem="AkI-hg-b9F" firstAttribute="centerY" secondItem="Q1S-Ju-Pei" secondAttribute="centerY" id="NmF-TK-GxQ"/>
                 <constraint firstItem="ba7-Bo-OPS" firstAttribute="leading" secondItem="Ay5-2H-sPn" secondAttribute="leading" constant="55" id="PAa-Hr-gey"/>
                 <constraint firstItem="AkI-hg-b9F" firstAttribute="centerX" secondItem="DUT-ma-Cbr" secondAttribute="centerX" constant="17" id="Tgh-fY-QOQ"/>
                 <constraint firstItem="ESN-J9-ft1" firstAttribute="leading" secondItem="Ay5-2H-sPn" secondAttribute="leading" constant="55" id="WKP-Hw-E3j"/>
-                <constraint firstItem="DUT-ma-Cbr" firstAttribute="top" secondItem="Ay5-2H-sPn" secondAttribute="top" constant="16" id="YmN-Y0-2qK"/>
                 <constraint firstItem="sMx-qo-hHL" firstAttribute="top" secondItem="Ay5-2H-sPn" secondAttribute="top" constant="16" id="a3L-cG-gAe"/>
                 <constraint firstItem="PAi-gS-Qn7" firstAttribute="top" secondItem="Ay5-2H-sPn" secondAttribute="top" constant="60" id="a3r-vZ-7DX"/>
                 <constraint firstItem="ba7-Bo-OPS" firstAttribute="top" secondItem="Ay5-2H-sPn" secondAttribute="top" constant="18" id="b9J-yD-MN0"/>
                 <constraint firstItem="Q1S-Ju-Pei" firstAttribute="height" secondItem="AkI-hg-b9F" secondAttribute="height" constant="4" id="deu-2t-wfJ"/>
+                <constraint firstItem="DUT-ma-Cbr" firstAttribute="leading" secondItem="Ay5-2H-sPn" secondAttribute="leading" constant="14" id="hES-U2-87K"/>
                 <constraint firstItem="PAi-gS-Qn7" firstAttribute="leading" secondItem="Ay5-2H-sPn" secondAttribute="leading" constant="20" id="hPZ-iJ-Q9b"/>
                 <constraint firstItem="ESN-J9-ft1" firstAttribute="top" secondItem="Ay5-2H-sPn" secondAttribute="top" constant="10" id="k7Y-No-Dfd"/>
                 <constraint firstItem="AkI-hg-b9F" firstAttribute="centerY" secondItem="DUT-ma-Cbr" secondAttribute="centerY" id="now-3i-vuR"/>
@@ -118,9 +116,10 @@
                 <constraint firstItem="tkm-2G-q8x" firstAttribute="top" secondItem="Ay5-2H-sPn" secondAttribute="top" constant="16" id="s5H-5F-TWq"/>
                 <constraint firstItem="tkm-2G-q8x" firstAttribute="leading" secondItem="ESN-J9-ft1" secondAttribute="trailing" constant="-3" id="sBP-VS-zWL"/>
                 <constraint firstItem="PAi-gS-Qn7" firstAttribute="top" secondItem="ESN-J9-ft1" secondAttribute="bottom" id="sr0-zP-pNv"/>
+                <constraint firstItem="DUT-ma-Cbr" firstAttribute="top" secondItem="Ay5-2H-sPn" secondAttribute="top" constant="16" id="uRb-rF-zPQ"/>
                 <constraint firstItem="tkm-2G-q8x" firstAttribute="leading" secondItem="ba7-Bo-OPS" secondAttribute="trailing" constant="-3" id="vBQ-2n-jYt"/>
+                <constraint firstAttribute="height" constant="100" id="x6V-eS-N0w"/>
                 <constraint firstItem="AkI-hg-b9F" firstAttribute="centerX" secondItem="Q1S-Ju-Pei" secondAttribute="centerX" id="yiP-y2-x1Z"/>
-                <constraint firstItem="DUT-ma-Cbr" firstAttribute="leading" secondItem="Ay5-2H-sPn" secondAttribute="leading" constant="14" id="zLI-kf-7se"/>
                 <constraint firstItem="sMx-qo-hHL" firstAttribute="leading" secondItem="Ay5-2H-sPn" secondAttribute="leading" constant="14" id="zjG-CK-3JC"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
@@ -132,11 +131,11 @@
                 <outlet property="badgeView" destination="AkI-hg-b9F" id="X28-Gi-MM0"/>
                 <outlet property="headerImageView" destination="ba7-Bo-OPS" id="hE7-58-zrY"/>
                 <outlet property="headerLabel" destination="ESN-J9-ft1" id="agR-0G-lDG"/>
+                <outlet property="heightconstraint" destination="x6V-eS-N0w" id="DoS-eF-4x3"/>
                 <outlet property="menuButton" destination="DUT-ma-Cbr" id="Qut-bS-chd"/>
                 <outlet property="navSelector" destination="PAi-gS-Qn7" id="I5B-Lg-I8G"/>
-                <outlet property="ratioConstraint" destination="ECt-Xu-bck" id="d2h-Ic-DeF"/>
             </connections>
-            <point key="canvasLocation" x="340" y="336"/>
+            <point key="canvasLocation" x="-11" y="741"/>
         </view>
     </objects>
     <resources>

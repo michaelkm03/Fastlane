@@ -18,6 +18,7 @@
 #import "VConstants.h"
 #import "VThemeManager.h"
 #import "UIViewController+VNavMenu.h"
+#import "MBProgressHUD.h"
 
 @interface VFollowingTableViewController ()
 
@@ -296,14 +297,25 @@
         }
     };
     
-    [[VObjectManager sharedManager] refreshFollowingsForUser:self.profile
-                                                successBlock:followerSuccess
-                                                   failBlock:followerFail];
+    if (self.profile != nil)
+    {
+        [[VObjectManager sharedManager] loadFollowingsForUser:self.profile
+                                                     pageType:VPageTypeFirst
+                                                 successBlock:followerSuccess
+                                                    failBlock:followerFail];
+    }
+    else
+    {
+        MBProgressHUD *failureHUD = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        failureHUD.mode = MBProgressHUDModeText;
+        failureHUD.detailsLabelText = NSLocalizedString(@"NotLoggedInMessage", @"");
+        [failureHUD hide:YES afterDelay:3.0f];
+    }
 }
 
 - (void)loadMoreFollowings
 {
-    VSuccessBlock followerSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    VSuccessBlock followingSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         NSSortDescriptor   *sort = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
         NSSet *uniqueFollowings = [NSSet setWithArray:[self.following arrayByAddingObjectsFromArray:resultObjects]];
@@ -313,9 +325,20 @@
         [self.tableView reloadData];
     };
     
-    [[VObjectManager sharedManager] loadNextPageOfFollowingsForUser:self.profile
-                                                       successBlock:followerSuccess
-                                                          failBlock:nil];
+    if (self.profile != nil)
+    {
+        [[VObjectManager sharedManager] loadFollowingsForUser:self.profile
+                                                     pageType:VPageTypeNext
+                                                 successBlock:followingSuccess
+                                                    failBlock:nil];
+    }
+    else
+    {
+        MBProgressHUD *failureHUD = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        failureHUD.mode = MBProgressHUDModeText;
+        failureHUD.detailsLabelText = NSLocalizedString(@"NotLoggedInMessage", @"");
+        [failureHUD hide:YES afterDelay:3.0f];
+    }
 }
 
 - (void)setIsFollowing:(BOOL)isFollowing

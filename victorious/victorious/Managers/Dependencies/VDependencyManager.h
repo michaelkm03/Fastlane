@@ -41,6 +41,11 @@ extern NSString * const VDependencyManagerProfileImageRequiredKey;
 extern NSString * const VDependencyManagerScaffoldViewControllerKey; ///< The "scaffold" is the view controller that sits at the root of the view controller heirarchy
 extern NSString * const VDependencyManagerInitialViewControllerKey; ///< The view controller to be displayed on launch
 
+// Keys for Workspace
+extern NSString * const VDependencyManagerWorkspaceFlowKey;
+extern NSString * const VDependencyManagerImageWorkspaceKey;
+extern NSString * const VDependencyManagerVideoWorkspaceKey;
+
 /**
  Provides loose coupling between components.
  Acts as both repository of shared objects
@@ -123,6 +128,18 @@ extern NSString * const VDependencyManagerInitialViewControllerKey; ///< The vie
  of class, we return nil.
  */
 - (id)templateValueOfType:(Class)expectedType forKey:(NSString *)key;
+
+/**
+ Returns the value stored for the specified key in the configuration
+ dictionary of this instance, if present, or the closest ancestor.
+ 
+ @param expectedType if the value found at keyPath is not this kind
+ of class, we return nil.
+ @param dependencies If the returned object conforms to VHasManagedDependencies,
+ a new instance of VDependencyManager will be provided to it, and these
+ extra dependencies will be added to it.
+ */
+- (id)templateValueOfType:(Class)expectedType forKey:(NSString *)key withAddedDependencies:(NSDictionary *)dependencies;
 
 /**
  Returns a singleton object stored for the specified key in the configuration

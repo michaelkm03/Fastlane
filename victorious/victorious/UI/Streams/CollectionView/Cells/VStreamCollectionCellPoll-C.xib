@@ -54,12 +54,18 @@
                         <rect key="frame" x="118" y="115" width="65" height="72"/>
                     </imageView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5hj-dg-nbn" customClass="VStreamCellActionView">
-                        <rect key="frame" x="-1" y="303" width="304" height="41"/>
+                        <rect key="frame" x="-1" y="329" width="304" height="41"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="41" id="dzW-QM-hwj"/>
                         </constraints>
                     </view>
+                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Lorem ipsum dolor sit amet " translatesAutoresizingMaskIntoConstraints="NO" id="2qV-rt-BGZ" customClass="VHashTagTextView">
+                        <rect key="frame" x="25" y="266" width="253" height="63"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                    </textView>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
@@ -70,21 +76,26 @@
                 <constraint firstItem="cHq-pN-LVg" firstAttribute="top" secondItem="VUD-I2-add" secondAttribute="bottom" id="5lP-9N-Bkv"/>
                 <constraint firstAttribute="trailing" secondItem="VUD-I2-add" secondAttribute="trailing" id="BOK-ih-62S"/>
                 <constraint firstItem="5hj-dg-nbn" firstAttribute="leading" secondItem="Wcp-yr-gTs" secondAttribute="leading" constant="-1" id="DqD-DM-DLX"/>
+                <constraint firstItem="5hj-dg-nbn" firstAttribute="top" secondItem="2qV-rt-BGZ" secondAttribute="bottom" id="KuB-Fv-1qQ"/>
+                <constraint firstItem="2qV-rt-BGZ" firstAttribute="leading" secondItem="Wcp-yr-gTs" secondAttribute="leading" constant="25" id="OvD-Qn-KYR"/>
                 <constraint firstItem="cHq-pN-LVg" firstAttribute="leading" secondItem="Wcp-yr-gTs" secondAttribute="leading" id="T1v-SY-KUV"/>
                 <constraint firstItem="WFR-h6-Ez8" firstAttribute="bottom" secondItem="cHq-pN-LVg" secondAttribute="bottom" id="aF8-bM-Bqy"/>
                 <constraint firstItem="WFR-h6-Ez8" firstAttribute="leading" secondItem="cHq-pN-LVg" secondAttribute="leading" id="c73-7I-oGm"/>
                 <constraint firstItem="WFR-h6-Ez8" firstAttribute="trailing" secondItem="JTX-77-BzI" secondAttribute="trailing" id="eJI-ME-VVG"/>
-                <constraint firstItem="5hj-dg-nbn" firstAttribute="top" secondItem="WFR-h6-Ez8" secondAttribute="bottom" constant="51" id="flD-cI-d3w"/>
+                <constraint firstItem="2qV-rt-BGZ" firstAttribute="top" secondItem="cHq-pN-LVg" secondAttribute="bottom" constant="14" id="elj-NY-P1E"/>
+                <constraint firstAttribute="bottom" secondItem="5hj-dg-nbn" secondAttribute="bottom" id="okD-ym-1bh"/>
                 <constraint firstAttribute="trailing" secondItem="5hj-dg-nbn" secondAttribute="trailing" constant="-1" id="pMv-1W-OI1"/>
                 <constraint firstItem="cHq-pN-LVg" firstAttribute="trailing" secondItem="Wcp-yr-gTs" secondAttribute="centerX" id="q9c-4Z-9cc"/>
                 <constraint firstItem="JTX-77-BzI" firstAttribute="top" secondItem="cHq-pN-LVg" secondAttribute="top" id="uHJ-sR-Uvs"/>
                 <constraint firstItem="VUD-I2-add" firstAttribute="top" secondItem="Wcp-yr-gTs" secondAttribute="top" id="wOc-hf-Z4A"/>
                 <constraint firstItem="WFR-h6-Ez8" firstAttribute="top" secondItem="cHq-pN-LVg" secondAttribute="top" id="wwr-er-K7q"/>
+                <constraint firstAttribute="trailing" secondItem="2qV-rt-BGZ" secondAttribute="trailing" constant="24" id="xpF-lk-QOm"/>
                 <constraint firstItem="VUD-I2-add" firstAttribute="leading" secondItem="Wcp-yr-gTs" secondAttribute="leading" id="yf6-2X-y8F"/>
             </constraints>
             <size key="customSize" width="267" height="161"/>
             <connections>
                 <outlet property="actionView" destination="5hj-dg-nbn" id="0dp-IR-bke"/>
+                <outlet property="captionTextView" destination="2qV-rt-BGZ" id="df9-Wt-hPG"/>
                 <outlet property="lowerGradientView" destination="gza-QN-Veo" id="hsn-cS-K5e"/>
                 <outlet property="previewImageTwo" destination="JTX-77-BzI" id="cfM-uu-BJ7"/>
                 <outlet property="previewImageView" destination="cHq-pN-LVg" id="dTw-88-PxD"/>

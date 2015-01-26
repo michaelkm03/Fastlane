@@ -105,3 +105,4 @@ NSString * const VTrackingKeyActivityType          = @"ActivityType";
 NSString * const VTrackingKeySequenceCategory      = @"SequenceCategory";
 NSString * const VTrackingKeyStreamName            = @"StreamName";
 NSString * const VTrackingKeyAppViewName           = @"AppViewName";
+NSString * const VTrackingKeyNotificationID        = @"NotificationID";

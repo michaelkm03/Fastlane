@@ -55,11 +55,12 @@
     _viewModel = viewModel;
     
     self.contentURL = viewModel.itemURL;
+    self.loop = viewModel.loop;
    
     if ( viewModel.monetizationPartner == VMonetizationPartnerNone )
     {
         self.isPlayingAd = NO;
-        self.videoPlayerViewController.itemURL = self.contentURL;
+        [self.videoPlayerViewController setItemURL:self.contentURL loop:self.loop];
         return;
     }
     
@@ -98,7 +99,7 @@
     self.adPlayerViewController.view.alpha = 0.0f;
     self.videoPlayerViewController.view.hidden = NO;
     self.videoPlayerViewController.view.alpha = 1.0f;
-    self.videoPlayerViewController.itemURL = self.contentURL;
+    [self.videoPlayerViewController setItemURL:self.contentURL loop:self.loop];
     
     // Play content Video
     [self play];
@@ -119,11 +120,27 @@
     return self.videoPlayerViewController.player.currentTime;
 }
 
+- (void)setPlayerControlsDisabled:(BOOL)playerControlsDisabled
+{
+    _playerControlsDisabled = playerControlsDisabled;
+    if ( _playerControlsDisabled )
+    {
+        self.videoPlayerViewController.shouldChangeVideoGravityOnDoubleTap = NO;
+        self.videoPlayerViewController.shouldShowToolbar = NO;
+        self.videoPlayerViewController.videoPlayerLayerVideoGravity = AVLayerVideoGravityResizeAspectFill;
+    }
+}
+
+- (void)setAudioDisabled:(BOOL)audioMuted
+{
+    _audioMuted = audioMuted;
+    self.videoPlayerViewController.isAudioEnabled = !_audioMuted;
+}
+
 #pragma mark - Public Methods
 
 - (void)play
 {
-    self.videoPlayerViewController.shouldLoop = self.loop;
     self.videoPlayerViewController.player.rate = self.speed;
 }
 
@@ -134,6 +151,7 @@
 
 - (void)togglePlayControls
 {
+    // This may not do any if `videoPlayerViewController`'s `shouldShowToolbar` is set to NO
     [self.videoPlayerViewController toggleToolbarHidden];
 }
 

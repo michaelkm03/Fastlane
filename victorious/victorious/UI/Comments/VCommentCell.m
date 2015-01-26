@@ -11,6 +11,7 @@
 #import "VThemeManager.h"
 #import "UIImage+ImageCreation.h"
 #import "VDefaultProfileImageView.h"
+#import "UIVIew+AutoLayout.h"
 
 NSString * const kVCommentCellNibName = @"VCommentCell";
 
@@ -33,6 +34,9 @@ static const UIEdgeInsets kTextInsets        = { 39.0f, 66.0f, 11.0f, 25.0f };
     [super awakeFromNib];
     self.timeLabel.font = [UIFont fontWithName:@"MuseoSans-100" size:11.0f];
     self.usernameLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    
+    [self setupSwipeView];
+    [self.contentView addFitToParentConstraintsToSubview:self.swipeViewController.view];
 }
 
 + (CGFloat)estimatedHeightWithWidth:(CGFloat)width text:(NSString *)text withMedia:(BOOL)hasMedia

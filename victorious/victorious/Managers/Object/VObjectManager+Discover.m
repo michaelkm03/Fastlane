@@ -51,7 +51,7 @@
            failBlock:fail];
 }
 
-- (RKManagedObjectRequestOperation *)getHashtagsSubscribedToWithRefresh:(BOOL)refresh
+- (RKManagedObjectRequestOperation *)getHashtagsSubscribedToWithPageType:(VPageType)pageType
                                                            successBlock:(VSuccessBlock)success
                                                               failBlock:(VFailBlock)fail
 {
@@ -60,7 +60,7 @@
         VUser *mainUser = [[VObjectManager sharedManager] mainUser];
         
         // Zap the existing hashtags if this is a refresh
-        if (refresh)
+        if ( pageType == VPageTypeFirst )
         {
             mainUser.hashtags = nil;
         }
@@ -94,17 +94,19 @@
                                                                 entityName:[VAbstractFilter entityName]
                                                       managedObjectContext:self.managedObjectStore.mainQueueManagedObjectContext];
     
-    if (refresh)
-    {
-        return [self.paginationManager refreshFilter:hashtagFilter successBlock:fullSuccess failBlock:fullFailure];
-    }
-    else
-    {
-        return [self.paginationManager loadNextPageOfFilter:hashtagFilter successBlock:fullSuccess failBlock:fullFailure];
-    }
+    return [self.paginationManager loadFilter:hashtagFilter withPageType:VPageTypeFirst successBlock:fullSuccess failBlock:fullFailure];
 }
 
-- (RKManagedObjectRequestOperation *)subscribeToHashtag:(VHashtag *)hashtag
+- (RKManagedObjectRequestOperation *)subscribeToHashtagUsingVHashtagObject:(VHashtag *)hashtag
+                                                              successBlock:(VSuccessBlock)success
+                                                                 failBlock:(VFailBlock)fail
+{
+    return [self subscribeToHashtag:hashtag.tag
+                       successBlock:success
+                          failBlock:fail];
+}
+
+- (RKManagedObjectRequestOperation *)subscribeToHashtag:(NSString *)hashtag
                                            successBlock:(VSuccessBlock)success
                                               failBlock:(VFailBlock)fail
 {
@@ -112,9 +114,16 @@
     {
         VUser *mainUser = [[VObjectManager sharedManager] mainUser];
         NSMutableOrderedSet *hashtagSet = [mainUser.hashtags mutableCopy];
-        [hashtagSet addObject:hashtag];
+        
+        // Create a new VHashtag object and assign it to the currently logged in user.
+        // Then save it to Core Data.
+        VHashtag *newTag = [[VObjectManager sharedManager] objectWithEntityName:[VHashtag entityName]
+                                                                       subclass:[VHashtag class]];
+        newTag.tag = hashtag;
+        
+        [hashtagSet addObject:newTag];
         mainUser.hashtags = hashtagSet;
-        [mainUser.managedObjectContext saveToPersistentStore:nil];
+        [mainUser.managedObjectContext save:nil];
         
         if (success)
         {
@@ -132,12 +141,21 @@
     
     return [self POST:@"/api/hashtag/follow"
                object:nil
-           parameters:@{@"hashtag":hashtag.tag}
+           parameters:@{@"hashtag":hashtag}
          successBlock:fullSuccess
             failBlock:fullFailure];
 }
 
-- (RKManagedObjectRequestOperation *)unsubscribeToHashtag:(VHashtag *)hashtag
+- (RKManagedObjectRequestOperation *)unsubscribeToHashtagUsingVHashtagObject:(VHashtag *)hashtag
+                                             successBlock:(VSuccessBlock)success
+                                                failBlock:(VFailBlock)fail
+{
+    return [self unsubscribeToHashtag:hashtag.tag
+                         successBlock:success
+                            failBlock:fail];
+}
+
+- (RKManagedObjectRequestOperation *)unsubscribeToHashtag:(NSString *)hashtag
                                              successBlock:(VSuccessBlock)success
                                                 failBlock:(VFailBlock)fail
 {
@@ -145,11 +163,15 @@
     {
         VUser *mainUser = [[VObjectManager sharedManager] mainUser];
         NSMutableOrderedSet *hashtagSet = [mainUser.hashtags mutableCopy];
-        if ([hashtagSet containsObject:hashtag])
+        for (VHashtag *aTag in hashtagSet)
         {
-            [hashtagSet removeObject:hashtag];
-            mainUser.hashtags = hashtagSet;
-            [mainUser.managedObjectContext saveToPersistentStore:nil];
+            if ([aTag.tag isEqualToString:hashtag])
+            {
+                [hashtagSet removeObject:aTag];
+                mainUser.hashtags = hashtagSet;
+                [mainUser.managedObjectContext saveToPersistentStore:nil];
+                break;
+            }
         }
 
         if (success)
@@ -168,7 +190,7 @@
     
     return [self POST:@"/api/hashtag/unfollow"
               object:nil
-          parameters:@{@"hashtag":hashtag.tag}
+          parameters:@{@"hashtag":hashtag}
         successBlock:fullSuccess
            failBlock:fullFailure];
 }

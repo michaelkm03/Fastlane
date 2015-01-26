@@ -7,12 +7,12 @@
 //
 
 #import "UIImage+Cropping.h"
-#import "VCameraPublishViewController.h"
 #import "VImagePreviewViewController.h"
 #import "VPhotoFilter.h"
 #import "VPhotoFilterCollectionViewCell.h"
 #import "VPhotoFilterCollectionViewDataSource.h"
 #import "VThemeManager.h"
+#import "VConstants.h"
 
 @interface VImagePreviewViewController () <UICollectionViewDelegate>
 

@@ -34,7 +34,6 @@ extern NSString *const VStreamCollectionDataSourceDidChangeNotification;
 
 @property (nonatomic, weak) id<VStreamCollectionDataDelegate> delegate;
 @property (nonatomic, weak) UICollectionView *collectionView; ///< The UICollectionView object to which the receiver is providing data
-@property (nonatomic, strong) VAbstractFilter *filter;///< The filter object used to keep track of pagination
 @property (nonatomic, strong) VStream *stream;///< The stream object used to populate the collectionView
 @property (nonatomic) BOOL hasHeaderCell;///<If set to YES it will insert a section at index 0 with 1 row for the Marquee stream.
 

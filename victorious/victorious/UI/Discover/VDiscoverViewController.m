@@ -12,8 +12,8 @@
 #import "VTrendingTagCell.h"
 #import "VDiscoverTableHeaderViewController.h"
 #import "VSuggestedPeopleCollectionViewController.h"
+#import "VObjectManager+Sequence.h"
 #import "VObjectManager+Discover.h"
-#import "VObjectManager+Pagination.h"
 #import "VHashtag.h"
 #import "VStreamCollectionViewController.h"
 #import "VNoContentTableViewCell.h"
@@ -51,6 +51,9 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
     self.suggestedPeopleViewController = [VSuggestedPeopleCollectionViewController instantiateFromStoryboard:@"Discover"];
     self.suggestedPeopleViewController.delegate = self;
     
+    [self addChildViewController:self.suggestedPeopleViewController];
+    [self.suggestedPeopleViewController didMoveToParentViewController:self];
+    
     // Call this here to ensure that header views are ready by the time the tableview asks for them
     [self createSectionHeaderViews];
 }
@@ -64,21 +67,14 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
     
     // Watch for a change in the login status
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(loginStatusChanged:)
+                                             selector:@selector(viewStatusChanged:)
                                                  name:kLoggedInChangedNotification
                                                object:nil];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    [self.suggestedPeopleViewController viewWillAppear:animated];
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    [self.suggestedPeopleViewController viewWillDisappear:animated];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(viewStatusChanged:)
+                                                 name:kHashtagStatusChangedNotification
+                                               object:nil];
 }
 
 - (void)dealloc
@@ -89,7 +85,7 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
 
 #pragma mark - Loading data
 
-- (void)loginStatusChanged:(NSNotification *)notification
+- (void)viewStatusChanged:(NSNotification *)notification
 {
     [self refresh:YES];
 }
@@ -159,7 +155,7 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
         VLog(@"%@\n%@", operation, error);
     };
     
-    [[VObjectManager sharedManager] getHashtagsSubscribedToWithRefresh:YES
+    [[VObjectManager sharedManager] getHashtagsSubscribedToWithPageType:VPageTypeFirst
                                                           successBlock:successBlock
                                                              failBlock:failureBlock];
 }
@@ -188,7 +184,7 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
 - (void)registerCells
 {
     [self.tableView registerNib:[UINib nibWithNibName:kVTrendingTagIdentifier bundle:nil] forCellReuseIdentifier:kVTrendingTagIdentifier];
-    [self.tableView registerNib:[UINib nibWithNibName:kVSuggestedPeopleIdentifier bundle:nil] forCellReuseIdentifier:kVSuggestedPeopleIdentifier];
+    [self.tableView registerClass:[VSuggestedPeopleCell class] forCellReuseIdentifier:kVSuggestedPeopleIdentifier];
     
     [VNoContentTableViewCell registerNibWithTableView:self.tableView];
 }
@@ -242,29 +238,6 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
     return 0;
 }
 
-#pragma mark - UITableViewDelegate
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    if ( section >= 0 && section < VDiscoverViewControllerSectionsCount )
-    {
-        UIView *headerView = self.sectionHeaders[ section ];
-        return CGRectGetHeight( headerView.frame );
-    }
-    return 0;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    UIView *headerView = self.sectionHeaders[ section ];
-    return headerView;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return indexPath.section == VDiscoverViewControllerSectionSuggestedPeople ? [VSuggestedPeopleCell cellHeight] : [VTrendingTagCell cellHeight];
-}
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = nil;
@@ -288,7 +261,13 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
         else
         {
             VSuggestedPeopleCell *customCell = (VSuggestedPeopleCell *) [tableView dequeueReusableCellWithIdentifier:kVSuggestedPeopleIdentifier forIndexPath:indexPath];
-            customCell.collectionView = self.suggestedPeopleViewController.collectionView;
+            
+            if ( ![customCell.subviews containsObject:self.suggestedPeopleViewController.collectionView] )
+            {
+                [customCell addSubview:self.suggestedPeopleViewController.collectionView];
+                self.suggestedPeopleViewController.collectionView.frame = customCell.bounds;
+            }
+            
             cell = customCell;
             self.suggestedPeopleViewController.hasLoadedOnce = YES;
         }
@@ -312,7 +291,7 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
         else
         {
             VTrendingTagCell *customCell = (VTrendingTagCell *)[tableView dequeueReusableCellWithIdentifier:kVTrendingTagIdentifier forIndexPath:indexPath];
-
+            
             VHashtag *hashtag = self.trendingTags[ indexPath.row ];
             [customCell setHashtag:hashtag];
             customCell.shouldCellRespond = YES;
@@ -349,6 +328,29 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
     }
     
     return cell;
+}
+
+#pragma mark - UITableViewDelegate
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if ( section >= 0 && section < VDiscoverViewControllerSectionsCount )
+    {
+        UIView *headerView = self.sectionHeaders[ section ];
+        return CGRectGetHeight( headerView.frame );
+    }
+    return 0;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UIView *headerView = self.sectionHeaders[ section ];
+    return headerView;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return indexPath.section == VDiscoverViewControllerSectionSuggestedPeople ? [VSuggestedPeopleCell cellHeight] : [VTrendingTagCell cellHeight];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -393,9 +395,9 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
     };
     
     // Backend Call to Subscribe to Hashtag
-    [[VObjectManager sharedManager] subscribeToHashtag:hashtag
-                                          successBlock:successBlock
-                                             failBlock:failureBlock];
+    [[VObjectManager sharedManager] subscribeToHashtagUsingVHashtagObject:hashtag
+                                                             successBlock:successBlock
+                                                                failBlock:failureBlock];
 }
 
 - (void)unsubscribeToTagAction:(VHashtag *)hashtag
@@ -414,9 +416,9 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
     };
     
     // Backend Call to Unsubscribe to Hashtag
-    [[VObjectManager sharedManager] unsubscribeToHashtag:hashtag
-                                            successBlock:successBlock
-                                               failBlock:failureBlock];
+    [[VObjectManager sharedManager] unsubscribeToHashtagUsingVHashtagObject:hashtag
+                                                               successBlock:successBlock
+                                                                  failBlock:failureBlock];
 }
 
 - (void)resetCellStateForHashtag:(VHashtag *)hashtag cellShouldRespond:(BOOL)respond failure:(BOOL)failed

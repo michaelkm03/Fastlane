@@ -17,6 +17,7 @@
 #import "VNotificationSettingsTableSection.h"
 #import "VNotificationSettingsStateManager.h"
 #import "VConstants.h"
+#import "VThemeManager.h"
 
 @interface VNotificationSettingsViewController() <VNavigationHeaderDelegate, VNotificationSettingCellDelegate, VNotificiationSettingsStateManagerDelegate>
 
@@ -126,7 +127,7 @@
     
     // Feed section
     NSString *format = NSLocalizedString( @"PostFromCreator", nil);
-    NSString *creatorName = [[NSBundle bundleForClass:[self class]] objectForInfoDictionaryKey:@"CFBundleDisplayName"];
+    NSString *creatorName = [[VThemeManager sharedThemeManager] themedStringForKey:kVCreatorName];
     NSArray *sectionFeedRows = @[ [[VNotificationSettingsTableRow alloc] initWithTitle:[NSString stringWithFormat:format, creatorName]
                                                                                enabled:_settings.isPostFromCreatorEnabled.boolValue],
                                   [[VNotificationSettingsTableRow alloc] initWithTitle:NSLocalizedString( @"PostFromFollowed", nil)
@@ -143,7 +144,9 @@
     NSArray *sectionPeopleRows = @[ [[VNotificationSettingsTableRow alloc] initWithTitle:NSLocalizedString( @"NewPrivateMessage", nil)
                                                                                  enabled:_settings.isNewPrivateMessageEnabled.boolValue],
                                     [[VNotificationSettingsTableRow alloc] initWithTitle:NSLocalizedString( @"NewFollower", nil)
-                                                                                 enabled:_settings.isNewFollowerEnabled.boolValue]];
+                                                                                 enabled:_settings.isNewFollowerEnabled.boolValue],
+                                    [[VNotificationSettingsTableRow alloc] initWithTitle:NSLocalizedString( @"TagInComment", nil)
+                                                                                 enabled:_settings.isUserTagInCommentEnabled.boolValue]];
     NSString *sectionPeopleTitle = NSLocalizedString( @"NotificationSettingSectionPeople", nil);
     VNotificationSettingsTableSection *sectionPeople = [[VNotificationSettingsTableSection alloc] initWithTitle:sectionPeopleTitle
                                                                                                            rows:sectionPeopleRows ];
@@ -163,6 +166,7 @@
     section = self.sections[ 1 ];
     self.settings.isNewPrivateMessageEnabled = @( [section rowAtIndex:0].isEnabled );
     self.settings.isNewFollowerEnabled = @( [section rowAtIndex:1].isEnabled );
+    self.settings.isUserTagInCommentEnabled = @( [section rowAtIndex:1].isEnabled );
 }
 
 - (void)saveSettings

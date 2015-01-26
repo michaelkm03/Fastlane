@@ -161,7 +161,8 @@
         [self setHasReposters:NO];
     };
     
-    [[VObjectManager sharedManager] refreshRepostersForSequence:self.sequence
+    [[VObjectManager sharedManager] loadRepostersForSequence:self.sequence
+                                                    pageType:VPageTypeFirst
                                                    successBlock:success
                                                       failBlock:fail];
 }
@@ -178,9 +179,10 @@
         [self.tableView reloadData];
     };
     
-    [[VObjectManager sharedManager] loadNextPageOfRepostersForSequence:self.sequence
-                                                          successBlock:success
-                                                             failBlock:nil];
+    [[VObjectManager sharedManager] loadRepostersForSequence:self.sequence
+                                                    pageType:VPageTypeNext
+                                                successBlock:success
+                                                   failBlock:nil];
 }
 
 - (void)setHasReposters:(BOOL)hasReposters

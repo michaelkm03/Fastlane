@@ -25,24 +25,23 @@
 @property (nonatomic, weak, readwrite) IBOutlet UIView<VNavigationSelectorProtocol> *navSelector;
 @property (nonatomic) NSInteger lastSelectedControl;
 
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *ratioConstraint;
+@property (nonatomic, assign) CGFloat maximumHeaderHeight;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *heightconstraint;
 
 @end
 
 @implementation VNavigationHeaderView
 
-+ (instancetype)menuButtonNavHeaderWithControlTitles:(NSArray *)titles
++ (instancetype)menuButtonNavHeader
 {
     NSString *nibName = [VHeaderView preferredNibForThemeForClass:[self class]];
     VNavigationHeaderView *header = [[[NSBundle mainBundle] loadNibNamed:nibName owner:nil options:nil] firstObject];
     header.backButton.hidden = YES;
     header.menuButton.hidden = NO;
-    
-    [header setupSegmentedControlWithTitles:titles];
     return header;
 }
 
-+ (instancetype)backButtonNavHeaderWithControlTitles:(NSArray *)titles
++ (instancetype)backButtonNavHeader
 {
     NSString *nibName = [VHeaderView preferredNibForThemeForClass:[self class]];
     VNavigationHeaderView *header = [[[NSBundle mainBundle] loadNibNamed:nibName owner:nil options:nil] firstObject];
@@ -50,8 +49,6 @@
     header.menuButton.hidden = YES;
     header.badgeView.hidden = YES;
     header.badgeBorder.hidden = YES;
-    
-    [header setupSegmentedControlWithTitles:titles];
     return header;
 }
 
@@ -60,6 +57,12 @@
     [super awakeFromNib];
     self.backButton.accessibilityIdentifier = VAutomationIdentifierGenericBack;
     self.menuButton.accessibilityIdentifier = VAutomationIdentifierMainMenu;
+    
+    self.badgeView.userInteractionEnabled = NO;
+    self.badgeBorder.userInteractionEnabled = NO;
+    
+    // This sets the maximum header height as it is configured in interface builder
+    self.maximumHeaderHeight = self.heightconstraint.constant;
 }
 
 - (void)layoutSubviews
@@ -105,26 +108,16 @@
 
 - (void)setupSegmentedControlWithTitles:(NSArray *)titles
 {
-    if (titles.count <= 1)
-    {
-        [self removeConstraint:self.ratioConstraint];
-        self.ratioConstraint = [NSLayoutConstraint constraintWithItem:self
-                                                            attribute:NSLayoutAttributeWidth
-                                                            relatedBy:NSLayoutRelationEqual
-                                                               toItem:self
-                                                            attribute:NSLayoutAttributeHeight
-                                                           multiplier:CGRectGetWidth(self.frame) / CGRectGetMinY(self.navSelector.frame)
-                                                             constant:0];
-        [self addConstraint:self.ratioConstraint];
-        
-        CGRect frame = self.frame;
-        frame.size.height = CGRectGetMinY(self.navSelector.frame);
-        self.frame = frame;
-    }
-    else
+    CGFloat headerHeight = CGRectGetMinY(self.navSelector.frame);
+    
+    if (titles.count > 1)
     {
         self.navSelector.titles = titles;
+        headerHeight = self.maximumHeaderHeight;
     }
+    
+    self.heightconstraint.constant = headerHeight;
+    [self layoutIfNeeded];
 }
 
 - (void)setDelegate:(id<VNavigationHeaderDelegate>)delegate

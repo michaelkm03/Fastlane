@@ -17,7 +17,7 @@
 #import "VAsset.h"
 #import "VAnswer.h"
 #import "VPollResult.h"
-#import "VAdBreak.h"
+#import "VNode+Fetcher.h"
 
 // Model Categories
 #import "VSequence+Fetcher.h"
@@ -30,6 +30,7 @@
 #import "VObjectManager+Login.h"
 #import "VComment+Fetcher.h"
 #import "VUser+Fetcher.h"
+#import "VPaginationManager.h"
 
 // Formatters
 #import "NSDate+timeSince.h"
@@ -43,13 +44,6 @@
 // Monetization
 #import "VAdBreak.h"
 #import "VAdBreakFallback.h"
-
-NSString * const VContentViewViewModelDidUpdateCommentsNotification = @"VContentViewViewModelDidUpdateCommentsNotification";
-NSString * const VContentViewViewModelDidUpdateHistogramDataNotification = @"VContentViewViewModelDidUpdateHistogramDataNotification";
-NSString * const VContentViewViewModelDidUpdatePollDataNotification = @"VContentViewViewModelDidUpdatePollDataNotification";
-NSString * const VContentViewViewModelDidUpdateContentNotification = @"VContentViewViewModelDidUpdateContentNotification";
-
-static NSString * const kPreferedMimeType = @"application/x-mpegURL";
 
 @interface VContentViewViewModel ()
 
@@ -107,16 +101,7 @@ static NSString * const kPreferedMimeType = @"application/x-mpegURL";
 
         _currentNode = [sequence firstNode];
         
-        _currentAsset = [_currentNode.assets firstObject];
-        
-        [_currentNode.assets enumerateObjectsUsingBlock:^(VAsset *asset, NSUInteger idx, BOOL *stop)
-        {
-            if ([asset.type isEqualToString:kPreferedMimeType])
-            {
-                _currentAsset = asset;
-                *stop = YES;
-            }
-        }];
+        _currentAsset = [_currentNode mp4Asset];
         
         // Set the default ad chain index
         self.currentAdChainIndex = 0;
@@ -198,18 +183,18 @@ static NSString * const kPreferedMimeType = @"application/x-mpegURL";
               {
                   self.videoViewModel = [VVideoCellViewModel videoCellViewModelWithItemURL:[self videoURL]
                                                                               withAdSystem:self.monetizationPartner
-                                                                               withDetails:self.monetizationDetails];
-                  [[NSNotificationCenter defaultCenter] postNotificationName:VContentViewViewModelDidUpdateContentNotification
-                                                                      object:self];
+                                                                               withDetails:self.monetizationDetails
+                                                                                  withLoop:[self loop]];
+                  [self.delegate didUpdateContent];
               }];
          }
          else
          {
              self.videoViewModel = [VVideoCellViewModel videoCellViewModelWithItemURL:[self videoURL]
                                                                          withAdSystem:VMonetizationPartnerNone
-                                                                          withDetails:nil];
-             [[NSNotificationCenter defaultCenter] postNotificationName:VContentViewViewModelDidUpdateContentNotification
-                                                                 object:self];
+                                                                          withDetails:nil
+                                                                             withLoop:[self loop]];
+             [self.delegate didUpdateContent];
 
          }
     }
@@ -263,8 +248,7 @@ static NSString * const kPreferedMimeType = @"application/x-mpegURL";
          if (histogramData)
          {
              self.histogramDataSource = [VHistogramDataSource histogramDataSourceWithDataPoints:histogramData];
-             [[NSNotificationCenter defaultCenter] postNotificationName:VContentViewViewModelDidUpdateHistogramDataNotification
-                                                                 object:self];
+             [self.delegate didUpdateHistogramData];
          }
      }];
 }
@@ -279,8 +263,7 @@ static NSString * const kPreferedMimeType = @"application/x-mpegURL";
     [[VObjectManager sharedManager] pollResultsForSequence:self.sequence
                                               successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
      {
-         [[NSNotificationCenter defaultCenter] postNotificationName:VContentViewViewModelDidUpdatePollDataNotification
-                                                             object:self];
+         [self.delegate didUpdatePollsData];
      }
                                                  failBlock:nil];
 }
@@ -292,8 +275,7 @@ static NSString * const kPreferedMimeType = @"application/x-mpegURL";
     NSURL *imageUrl;
     if (self.type == VContentViewTypeImage)
     {
-        VAsset *currentAsset = [_currentNode.assets firstObject];
-        imageUrl = [NSURL URLWithString:currentAsset.data];
+        imageUrl = [NSURL URLWithString:self.currentAsset.data];
     }
     else
     {
@@ -333,8 +315,7 @@ static NSString * const kPreferedMimeType = @"application/x-mpegURL";
 
 - (NSURL *)videoURL
 {
-    VAsset *currentAsset = [_currentNode.assets firstObject];
-    return [NSURL URLWithString:currentAsset.data];
+    return [NSURL URLWithString:self.currentAsset.data];
 }
 
 - (float)speed
@@ -347,10 +328,19 @@ static NSString * const kPreferedMimeType = @"application/x-mpegURL";
     return [self.currentAsset.loop boolValue];
 }
 
+- (BOOL)playerControlsDisabled
+{
+    return [self.currentAsset.playerControlsDisabled boolValue];
+}
+
+- (BOOL)audioMuted
+{
+    return [self.currentAsset.audioMuted boolValue];
+}
+
 - (BOOL)shouldShowRealTimeComents
 {
-    VAsset *currentAsset = [_currentNode.assets firstObject];
-    NSArray *realTimeComments = [currentAsset.comments array];
+    NSArray *realTimeComments = [self.currentAsset.comments array];
     return (realTimeComments.count > 0) ? YES : NO;
 }
 
@@ -361,12 +351,17 @@ static NSString * const kPreferedMimeType = @"application/x-mpegURL";
          return [comment2.postedAt compare:comment1.postedAt];
      }];
     _comments = sortedComments;
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:VContentViewViewModelDidUpdateCommentsNotification
-                                                        object:self];
 }
 
 #pragma mark - Public Methods
+
+- (void)removeCommentAtIndex:(NSUInteger)index
+{
+    NSMutableArray *updatedComments = [self.comments mutableCopy];
+    [updatedComments removeObjectAtIndex:index];
+    self.comments = [NSArray arrayWithArray:updatedComments];
+    [self.delegate didUpdateCommentsWithPageType:VPageTypeFirst];
+}
 
 - (void)addCommentWithText:(NSString *)text
                   mediaURL:(NSURL *)mediaURL
@@ -420,25 +415,43 @@ static NSString * const kPreferedMimeType = @"application/x-mpegURL";
 
 - (void)fetchComments
 {
-    // give it what we have for now.
-    self.comments = [self.sequence.comments array];
-    
-    [[VObjectManager sharedManager] loadCommentsOnSequence:self.sequence
-                                                 isRefresh:NO
-                                              successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-     {
-         self.comments = [self.sequence.comments array];
-     }
-                                                 failBlock:nil];
+    if ( self.deepLinkCommentId != nil )
+    {
+        [self loadCommentsWithCommentId:self.deepLinkCommentId];
+    }
+    else
+    {
+        [self loadComments:VPageTypeFirst];
+    }
 }
 
-- (void)attemptToLoadNextPageOfComments
+- (void)loadCommentsWithCommentId:(NSNumber *)commentId
 {
+    [[VObjectManager sharedManager] findCommentPageOnSequence:self.sequence
+                                                withCommentId:self.deepLinkCommentId
+                                                 successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+     {
+         self.comments = [self.sequence.comments array];
+         [self.delegate didUpdateCommentsWithDeepLink:commentId];
+     }
+                                                    failBlock:nil];
+}
+
+- (void)loadComments:(VPageType)pageType
+{
+    VAbstractFilter *filter = [[VObjectManager sharedManager] commentsFilterForSequence:self.sequence];
+    const BOOL isFilterAlreadyLoading = [[[VObjectManager sharedManager] paginationManager] isLoadingFilter:filter];
+    if ( isFilterAlreadyLoading || ![filter canLoadPageType:pageType] )
+    {
+        return;
+    }
+    
     [[VObjectManager sharedManager] loadCommentsOnSequence:self.sequence
-                                                 isRefresh:NO
+                                                  pageType:pageType
                                               successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
          self.comments = [self.sequence.comments array];
+         [self.delegate didUpdateCommentsWithPageType:pageType];
      }
                                                  failBlock:nil];
 }
@@ -711,9 +724,8 @@ static NSString * const kPreferedMimeType = @"application/x-mpegURL";
                                     withAnswer:(selectedAnswer == VPollAnswerA) ? [self answerA] : [self answerB]
                                   successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
-         //
-         [[NSNotificationCenter defaultCenter] postNotificationName:VContentViewViewModelDidUpdatePollDataNotification
-                                                             object:self];
+         [self.delegate didUpdatePollsData];
+         
          completion(YES, nil);
      }
                                      failBlock:^(NSOperation *operation, NSError *error)

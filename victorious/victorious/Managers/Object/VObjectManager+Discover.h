@@ -7,6 +7,7 @@
 //
 
 #import "VObjectManager.h"
+#import "VAbstractFilter+RestKit.h"
 
 @class VHashtag;
 
@@ -18,15 +19,23 @@
 - (RKManagedObjectRequestOperation *)getSuggestedHashtags:(VSuccessBlock)success
                                                 failBlock:(VFailBlock)fail;
 
-- (RKManagedObjectRequestOperation *)getHashtagsSubscribedToWithRefresh:(BOOL)refresh
-                                                           successBlock:(VSuccessBlock)success
-                                                              failBlock:(VFailBlock)fail;
+- (RKManagedObjectRequestOperation *)getHashtagsSubscribedToWithPageType:(VPageType)pageType
+                                                            successBlock:(VSuccessBlock)success
+                                                               failBlock:(VFailBlock)fail;
 
-- (RKManagedObjectRequestOperation *)unsubscribeToHashtag:(VHashtag *)hashtag
+- (RKManagedObjectRequestOperation *)unsubscribeToHashtagUsingVHashtagObject:(VHashtag *)hashtag
+                                                                successBlock:(VSuccessBlock)success
+                                                                   failBlock:(VFailBlock)fail;
+
+- (RKManagedObjectRequestOperation *)unsubscribeToHashtag:(NSString *)hashtag
                                              successBlock:(VSuccessBlock)success
                                                 failBlock:(VFailBlock)fail;
 
-- (RKManagedObjectRequestOperation *)subscribeToHashtag:(VHashtag *)hashtag
+- (RKManagedObjectRequestOperation *)subscribeToHashtagUsingVHashtagObject:(VHashtag *)hashtag
+                                                              successBlock:(VSuccessBlock)success
+                                                                 failBlock:(VFailBlock)fail;
+
+- (RKManagedObjectRequestOperation *)subscribeToHashtag:(NSString *)hashtag
                                            successBlock:(VSuccessBlock)success
                                               failBlock:(VFailBlock)fail;
 

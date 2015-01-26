@@ -11,14 +11,15 @@
 #import "VSequenceUserInteractions.h"
 
 extern NSString * const kPollResultsLoaded;
+extern NSString * const kHashtagStatusChangedNotification;
 
 @class VAnswer, VSequence, VVoteType, VAsset;
 
 @interface VObjectManager (Sequence)
 
-- (RKManagedObjectRequestOperation *)removeSequenceWithSequenceID:(NSInteger)sequenceId
-                                                     successBlock:(VSuccessBlock)success
-                                                        failBlock:(VFailBlock)fail;
+- (RKManagedObjectRequestOperation *)removeSequence:(VSequence *)sequence
+                                       successBlock:(VSuccessBlock)success
+                                          failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)fetchSequenceByID:(NSString *)sequenceId
                                           successBlock:(VSuccessBlock)success

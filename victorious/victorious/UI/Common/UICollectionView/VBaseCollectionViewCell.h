@@ -9,10 +9,11 @@
 #import <UIKit/UIKit.h>
 
 #import "VSharedCollectionReusableViewMethods.h"
+#import "VSwipeCollectionViewCell.h"
 
 /**
  *  Implements sensible defaults of VSharedCollectionReusableViewMethods. All CollectionViewCell subclasses should subclass VBaseCollectionViewCell.
  */
-@interface VBaseCollectionViewCell : UICollectionViewCell <VSharedCollectionReusableViewMethods>
+@interface VBaseCollectionViewCell : VSwipeCollectionViewCell <VSharedCollectionReusableViewMethods>
 
 @end

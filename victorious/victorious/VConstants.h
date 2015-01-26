@@ -64,6 +64,7 @@ static NSUInteger const kVAccountAlreadyExistsError     = 1003;
 static NSUInteger const kVUserBannedError               = 1007;
 
 static NSUInteger const kVMediaAlreadyCreatedError      = 1005;
+static NSUInteger const kVCommentAlreadyFlaggedError    = 1005;
 
 static NSUInteger const kVUpgradeRequiredError          = 426;
 static NSUInteger const kVUnauthoizedError              = 401;
@@ -86,6 +87,7 @@ static NSString * const   kGAID                    = @"GAID";
 
 static NSString * const   kVUserAgentHeader    = @"User-Agent";
 static NSString * const   kVPayloadKey         = @"payload";
+static NSString * const   kVObjectsKey         = @"objects";
 static NSString * const   kVErrorKey           = @"error";
 static NSString * const   kRemoteIdKey         = @"remoteId";
 
@@ -131,6 +133,8 @@ static NSString * const   kVUGCVideoRemixCategory      = @"ugc_video_remix";
 static NSString * const   kVUGCVideoRepostCategory     = @"ugc_video_repost";
 static NSString * const   kVUGCMemeRepostCategory      = @"ugc_meme_repost";
 static NSString * const   kVUGCQuoteRepostCategory     = @"ugc_secret_repost";
+
+static NSString * const   kVPreferedMimeType            = @"application/x-mpegURL";
 
 NSArray *VOwnerCategories();
 NSArray *VUGCCategories();

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6249" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6243"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
@@ -11,8 +11,8 @@
         <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hXT-Yp-qZC" userLabel="Header View" customClass="VNavigationHeaderView">
             <rect key="frame" x="0.0" y="0.0" width="320" height="105"/>
             <subviews>
-                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tpY-SB-B55" userLabel="Menu Button">
-                    <rect key="frame" x="20" y="22" width="27" height="27"/>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tpY-SB-B55" userLabel="Menu Button">
+                    <rect key="frame" x="12" y="14" width="45" height="42"/>
                     <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     <state key="normal" image="menuC">
                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -22,8 +22,8 @@
                         <action selector="pressedMenu:" destination="hXT-Yp-qZC" eventType="touchUpInside" id="nIK-4x-le9"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hxx-w6-OxK" userLabel="Back Button">
-                    <rect key="frame" x="20" y="22" width="22" height="27"/>
+                <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hxx-w6-OxK" userLabel="Back Button">
+                    <rect key="frame" x="20" y="22" width="22" height="26"/>
                     <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     <state key="normal" image="cameraButtonBack">
                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -33,40 +33,50 @@
                         <action selector="pressedBack:" destination="hXT-Yp-qZC" eventType="touchUpInside" id="zag-gU-L2K"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lVo-IA-w0m" userLabel="Right Button">
-                    <rect key="frame" x="273" y="22" width="27" height="28"/>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lVo-IA-w0m" userLabel="Right Button">
+                    <rect key="frame" x="270" y="22" width="30" height="27"/>
                     <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     <state key="normal">
                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                 </button>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OdC-v0-4wZ" userLabel="Header Label">
-                    <rect key="frame" x="55" y="17" width="211" height="40"/>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OdC-v0-4wZ" userLabel="Header Label">
+                    <rect key="frame" x="58" y="17" width="205" height="39"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8mA-Sb-CbD" userLabel="Header Image">
-                    <rect key="frame" x="49" y="17" width="217" height="40"/>
+                <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="8mA-Sb-CbD" userLabel="Header Image">
+                    <rect key="frame" x="49" y="17" width="214" height="39"/>
                     <constraints>
                         <constraint firstAttribute="width" secondItem="8mA-Sb-CbD" secondAttribute="height" multiplier="217:40" id="90y-Oa-p1m"/>
                     </constraints>
                 </imageView>
-                <view clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="s8h-1I-uAz" customClass="VSwipeNavSelector">
-                    <rect key="frame" x="-1" y="57" width="322" height="48"/>
+                <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="s8h-1I-uAz" customClass="VSwipeNavSelector">
+                    <rect key="frame" x="-1" y="56" width="322" height="49"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <connections>
                         <outlet property="delegate" destination="hXT-Yp-qZC" id="nmo-07-zwT"/>
                     </connections>
                 </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wto-1l-s6z" userLabel="Badge Border" customClass="VBadgeBackgroundView">
+                    <rect key="frame" x="45" y="22" width="14" height="25"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </view>
+                <view contentMode="scaleToFill" placeholderIntrinsicWidth="10" placeholderIntrinsicHeight="21" translatesAutoresizingMaskIntoConstraints="NO" id="xN5-Gv-TXN" userLabel="Badge View" customClass="VNumericalBadgeView">
+                    <rect key="frame" x="47" y="24" width="10" height="21"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </view>
             </subviews>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="lVo-IA-w0m" secondAttribute="trailing" constant="20" id="2UT-5B-nKT"/>
-                <constraint firstAttribute="width" secondItem="hXT-Yp-qZC" secondAttribute="height" multiplier="64:21" id="2xq-vs-IaQ"/>
                 <constraint firstItem="8mA-Sb-CbD" firstAttribute="top" secondItem="hXT-Yp-qZC" secondAttribute="top" constant="17" id="5OJ-ra-SHH"/>
+                <constraint firstItem="wto-1l-s6z" firstAttribute="centerY" secondItem="xN5-Gv-TXN" secondAttribute="centerY" id="8k0-Qy-rUa"/>
+                <constraint firstItem="wto-1l-s6z" firstAttribute="centerX" secondItem="xN5-Gv-TXN" secondAttribute="centerX" id="DYW-tD-mzn"/>
                 <constraint firstItem="lVo-IA-w0m" firstAttribute="leading" secondItem="8mA-Sb-CbD" secondAttribute="trailing" constant="7" id="FIv-OF-J4e"/>
-                <constraint firstItem="tpY-SB-B55" firstAttribute="leading" secondItem="hXT-Yp-qZC" secondAttribute="leading" constant="20" id="FTy-hY-fXH"/>
+                <constraint firstItem="tpY-SB-B55" firstAttribute="leading" secondItem="hXT-Yp-qZC" secondAttribute="leading" constant="12" id="FTy-hY-fXH"/>
+                <constraint firstItem="wto-1l-s6z" firstAttribute="width" secondItem="xN5-Gv-TXN" secondAttribute="width" constant="4" id="H44-BM-Kc1"/>
                 <constraint firstAttribute="trailing" secondItem="s8h-1I-uAz" secondAttribute="trailing" constant="-1" id="HtK-vE-dcK"/>
                 <constraint firstItem="Hxx-w6-OxK" firstAttribute="leading" secondItem="hXT-Yp-qZC" secondAttribute="leading" constant="20" id="JLE-Ek-li3"/>
                 <constraint firstItem="OdC-v0-4wZ" firstAttribute="trailing" secondItem="lVo-IA-w0m" secondAttribute="leading" constant="-7" id="KWd-sD-nA8"/>
@@ -77,13 +87,17 @@
                 <constraint firstItem="s8h-1I-uAz" firstAttribute="leading" secondItem="hXT-Yp-qZC" secondAttribute="leading" constant="-1" id="QcT-MC-sqt"/>
                 <constraint firstItem="OdC-v0-4wZ" firstAttribute="top" secondItem="hXT-Yp-qZC" secondAttribute="top" constant="17" id="R5y-CD-Cwx"/>
                 <constraint firstAttribute="centerX" secondItem="OdC-v0-4wZ" secondAttribute="centerX" id="Rh6-t5-lFh"/>
-                <constraint firstItem="s8h-1I-uAz" firstAttribute="top" secondItem="tpY-SB-B55" secondAttribute="bottom" constant="8" id="RhV-v0-oj9"/>
-                <constraint firstItem="OdC-v0-4wZ" firstAttribute="leading" secondItem="tpY-SB-B55" secondAttribute="trailing" constant="8" id="bqo-0q-g11"/>
+                <constraint firstItem="s8h-1I-uAz" firstAttribute="top" secondItem="tpY-SB-B55" secondAttribute="bottom" id="RhV-v0-oj9"/>
+                <constraint firstItem="OdC-v0-4wZ" firstAttribute="leading" secondItem="tpY-SB-B55" secondAttribute="trailing" constant="1" id="bqo-0q-g11"/>
                 <constraint firstItem="s8h-1I-uAz" firstAttribute="top" secondItem="OdC-v0-4wZ" secondAttribute="bottom" id="feJ-ry-uaG"/>
                 <constraint firstItem="8mA-Sb-CbD" firstAttribute="leading" secondItem="Hxx-w6-OxK" secondAttribute="trailing" constant="7" id="g4L-Zi-xuz"/>
+                <constraint firstItem="tpY-SB-B55" firstAttribute="centerY" secondItem="xN5-Gv-TXN" secondAttribute="centerY" id="ie8-dI-bxc"/>
                 <constraint firstItem="s8h-1I-uAz" firstAttribute="top" secondItem="8mA-Sb-CbD" secondAttribute="bottom" id="mfX-fe-3UN"/>
                 <constraint firstAttribute="bottom" secondItem="s8h-1I-uAz" secondAttribute="bottom" id="nXi-g3-4Lz"/>
-                <constraint firstItem="tpY-SB-B55" firstAttribute="top" secondItem="hXT-Yp-qZC" secondAttribute="top" constant="22" id="oOc-rh-cGo"/>
+                <constraint firstItem="tpY-SB-B55" firstAttribute="top" secondItem="hXT-Yp-qZC" secondAttribute="top" constant="14" id="oOc-rh-cGo"/>
+                <constraint firstAttribute="height" constant="105" id="pl7-kW-E6J"/>
+                <constraint firstItem="wto-1l-s6z" firstAttribute="height" secondItem="xN5-Gv-TXN" secondAttribute="height" constant="4" id="pmw-UX-V7I"/>
+                <constraint firstItem="xN5-Gv-TXN" firstAttribute="centerX" secondItem="tpY-SB-B55" secondAttribute="centerX" constant="17" id="rcW-hp-qDP"/>
                 <constraint firstItem="s8h-1I-uAz" firstAttribute="top" secondItem="Hxx-w6-OxK" secondAttribute="bottom" constant="8" id="y5U-bk-7vq"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
@@ -91,12 +105,15 @@
             <connections>
                 <outlet property="addButton" destination="lVo-IA-w0m" id="2AS-aN-YAd"/>
                 <outlet property="backButton" destination="Hxx-w6-OxK" id="8ir-K4-H9Y"/>
+                <outlet property="badgeBorder" destination="wto-1l-s6z" id="gph-7i-Pl8"/>
+                <outlet property="badgeView" destination="xN5-Gv-TXN" id="Z22-vt-CoE"/>
                 <outlet property="headerImageView" destination="8mA-Sb-CbD" id="gCF-gW-MUp"/>
                 <outlet property="headerLabel" destination="OdC-v0-4wZ" id="CtM-xP-FZM"/>
+                <outlet property="heightconstraint" destination="pl7-kW-E6J" id="IBM-cF-ujw"/>
                 <outlet property="menuButton" destination="tpY-SB-B55" id="NIJ-1e-ZfI"/>
                 <outlet property="navSelector" destination="s8h-1I-uAz" id="8dz-yR-zun"/>
-                <outlet property="ratioConstraint" destination="2xq-vs-IaQ" id="eAj-Ef-4zU"/>
             </connections>
+            <point key="canvasLocation" x="515" y="797.5"/>
         </view>
     </objects>
     <resources>

@@ -11,7 +11,7 @@
 
 #define TRACKING_LOGGING_ENABLED 0
 
-#if DEBUG && TRACKING_LOGGING_ENABLED
+#if TRACKING_LOGGING_ENABLED
 #warning Tracking logging is enabled. Please remember to disable it when you're done debugging.
 #endif
 
@@ -21,6 +21,7 @@
 @property (nonatomic, readonly) NSUInteger numberOfQueuedEvents;
 @property (nonatomic, strong) NSMutableArray *delegates;
 @property (nonatomic, strong) NSMutableDictionary *durationEvents;
+@property (nonatomic, strong) NSMutableDictionary *sessionParameters;
 
 @end
 
@@ -45,8 +46,28 @@
         _delegates = [[NSMutableArray alloc] init];
         _queuedEvents = [[NSMutableArray alloc] init];
         _durationEvents = [[NSMutableDictionary alloc] init];
+        _sessionParameters = [[NSMutableDictionary alloc] init];
     }
     return self;
+}
+
+#pragma mark - Session Parameters
+
+- (void)setValue:(NSString *)value forSessionParameterWithKey:(NSString *)key
+{
+    if ( value == nil )
+    {
+        [self.sessionParameters removeObjectForKey:key];
+    }
+    else
+    {
+        self.sessionParameters[key] = value;
+    }
+}
+
+- (void)clearSessionParameters
+{
+    [self.sessionParameters removeAllObjects];
 }
 
 #pragma mark - Public tracking methods
@@ -58,19 +79,21 @@
         return;
     }
     
-#if DEBUG && TRACKING_LOGGING_ENABLED
+    NSDictionary *completeParams = [self addSessionParametersToDictionary:parameters];
+    
+#if TRACKING_LOGGING_ENABLED
     VLog( @"Tracking: %@ to %lu delegates", eventName, (unsigned long)self.delegates.count);
 #endif
     
     [self.delegates enumerateObjectsUsingBlock:^(id<VTrackingDelegate> delegate, NSUInteger idx, BOOL *stop)
      {
-         [delegate trackEventWithName:eventName parameters:parameters];
+         [delegate trackEventWithName:eventName parameters:completeParams];
      }];
 }
 
 - (void)trackEvent:(NSString *)eventName
 {
-    [self trackEvent:eventName parameters:nil];
+    [self trackEvent:eventName parameters:@{}];
 }
 
 - (void)queueEvent:(NSString *)eventName parameters:(NSDictionary *)parameters eventId:(id)eventId
@@ -85,7 +108,7 @@
          if ( matchesEventId && matchesEventName )
          {
              
-#if DEBUG && TRACKING_LOGGING_ENABLED
+#if TRACKING_LOGGING_ENABLED
              VLog( @"Event with duplicate key rejected.  Queued: %lu", (unsigned long)self.queuedEvents.count);
 #endif
              doesEventExistForKey = YES;
@@ -104,7 +127,7 @@
         [self.queuedEvents addObject:event];
         [self trackEvent:event.name parameters:event.parameters];
         
-#if DEBUG && TRACKING_LOGGING_ENABLED
+#if TRACKING_LOGGING_ENABLED
         VLog( @"Event queued.  Queued: %lu", (unsigned long)self.queuedEvents.count);
 #endif
     }
@@ -116,7 +139,7 @@
     self.queuedEvents = [[NSMutableArray alloc] init];
 }
 
-- (void)trackQueuedEventsWithName:(NSString *)eventName
+- (void)clearQueuedEventsWithName:(NSString *)eventName
 {
     NSArray *eventsForName = [self eventsForName:eventName fromQueue:self.queuedEvents];
     [eventsForName enumerateObjectsUsingBlock:^(VTrackingEvent *event, NSUInteger idx, BOOL *stop)
@@ -124,21 +147,21 @@
          [self.queuedEvents removeObject:event];
      }];
     
-#if DEBUG && TRACKING_LOGGING_ENABLED
+#if TRACKING_LOGGING_ENABLED
     VLog( @"Dequeued events:  %lu remain", (unsigned long)self.queuedEvents.count);
 #endif
 }
 
 - (void)startEvent:(NSString *)eventName
 {
-    [self startEvent:eventName parameters:nil];
+    [self startEvent:eventName parameters:@{}];
 }
 
 - (void)startEvent:(NSString *)eventName parameters:(NSDictionary *)parameters
 {
     [self endEvent:eventName];
     
-#if DEBUG && TRACKING_LOGGING_ENABLED
+#if TRACKING_LOGGING_ENABLED
     VLog( @"Event Started: %@ to %lu delegates", eventName, (unsigned long)self.delegates.count);
 #endif
     
@@ -159,7 +182,7 @@
     __block VTrackingEvent *event = self.durationEvents[ eventName ];
     if ( event )
     {
-#if DEBUG && TRACKING_LOGGING_ENABLED
+#if TRACKING_LOGGING_ENABLED
         VLog( @"Event Ended: %@ to %lu delegates", eventName, (unsigned long)self.delegates.count);
 #endif
         __block NSTimeInterval duration = abs( [event.dateCreated timeIntervalSinceNow] );
@@ -181,7 +204,7 @@
 {
     if ( dictionary == nil )
     {
-        return nil;
+        dictionary = @{};
     }
     
     if ( dictionary[ VTrackingKeyTimeStamp ] )
@@ -191,6 +214,22 @@
     
     NSMutableDictionary *mutable = [NSMutableDictionary dictionaryWithDictionary:dictionary];
     [mutable setObject:[NSDate date] forKey:VTrackingKeyTimeStamp];
+    return [NSDictionary dictionaryWithDictionary:mutable];
+}
+
+- (NSDictionary *)addSessionParametersToDictionary:(NSDictionary *)dictionary
+{
+    if ( self.sessionParameters.count == 0 )
+    {
+        return dictionary;
+    }
+    if ( dictionary == nil )
+    {
+        dictionary = @{};
+    }
+    
+    NSMutableDictionary *mutable = [dictionary mutableCopy];
+    [mutable addEntriesFromDictionary:self.sessionParameters];
     return [NSDictionary dictionaryWithDictionary:mutable];
 }
 

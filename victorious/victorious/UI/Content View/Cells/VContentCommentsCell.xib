@@ -57,7 +57,7 @@
                         </constraints>
                     </imageView>
                     <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rjx-el-glf" userLabel="Comment and Media View" customClass="VCommentTextAndMediaView">
-                        <rect key="frame" x="56" y="36" width="239" height="37"/>
+                        <rect key="frame" x="56" y="36" width="209" height="37"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </view>
                 </subviews>
@@ -83,7 +83,7 @@
                 <constraint firstItem="B70-TN-WQd" firstAttribute="leading" secondItem="PCz-Qy-bMd" secondAttribute="trailing" constant="8" id="psG-gM-2YS"/>
                 <constraint firstItem="9lE-ff-0O9" firstAttribute="baseline" secondItem="bUD-zJ-JyM" secondAttribute="baseline" id="sI1-GG-4sQ"/>
                 <constraint firstItem="daH-W6-ypI" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="9lE-ff-0O9" secondAttribute="trailing" constant="4" id="tJl-27-mCX"/>
-                <constraint firstAttribute="trailing" secondItem="rjx-el-glf" secondAttribute="trailing" constant="25" id="tU8-Zn-C2v"/>
+                <constraint firstAttribute="trailing" secondItem="rjx-el-glf" secondAttribute="trailing" constant="55" id="tU8-Zn-C2v"/>
                 <constraint firstItem="B70-TN-WQd" firstAttribute="leading" secondItem="rjx-el-glf" secondAttribute="leading" id="taJ-He-cGE"/>
                 <constraint firstAttribute="trailing" secondItem="Adc-3N-IK1" secondAttribute="trailing" id="tg1-Rb-Iqh"/>
                 <constraint firstItem="ayU-64-4TS" firstAttribute="trailing" secondItem="B70-TN-WQd" secondAttribute="trailing" id="wN7-mK-PpY"/>
@@ -99,7 +99,7 @@
                 <outlet property="seperatorImageView" destination="Adc-3N-IK1" id="A0Z-jF-lAO"/>
                 <outlet property="timestampLabel" destination="bUD-zJ-JyM" id="ZQk-PY-Bz4"/>
             </connections>
-            <point key="canvasLocation" x="-80" y="-101"/>
+            <point key="canvasLocation" x="97" y="-79"/>
         </collectionViewCell>
     </objects>
     <resources>

@@ -13,17 +13,15 @@
 #import "VSequenceActionsDelegate.h"
 #import "VNewContentViewController.h"
 
-@class VStreamCollectionViewDataSource;
+@class VStreamCollectionViewDataSource, VHashtag;
 
-@interface VStreamCollectionViewController : VAbstractStreamCollectionViewController <VNewContentViewControllerDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, VSequenceActionsDelegate, VHasManagedDependancies>
+@interface VStreamCollectionViewController : VAbstractStreamCollectionViewController <UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, VSequenceActionsDelegate, VHasManagedDependancies>
 
 @property (nonatomic, weak) id<VSequenceActionsDelegate>actionDelegate;///<Optional param.  If this is not set, the collection view will act as the action delegate for the cells.  Use this if you are embedding this view controller somewhere (i.e. the page view controller)
 @property (nonatomic) BOOL shouldDisplayMarquee;
 @property (nonatomic, strong) UIView *noContentView;///<Sets this view as the background if it cannot fetch items for the current steam.
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
-+ (instancetype)homeStreamCollection;
-+ (instancetype)communityStreamCollection;
-+ (instancetype)ownerStreamCollection;
 + (instancetype)hashtagStreamWithHashtag:(NSString *)hashtag;
 
 /**
@@ -46,6 +44,6 @@
  *  For tracking purposes, each cell will only count as having been viewed if the ratio of its
  *  visible area is greater than or equal to this value.
  */
-@property (nonatomic, assign) float minimumRequiredCellVisibilityRatio;
+@property (nonatomic, assign) float trackingMinRequiredCellVisibilityRatio;
 
 @end

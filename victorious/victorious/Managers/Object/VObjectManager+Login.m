@@ -21,13 +21,13 @@
 #import "VSettingManager.h"
 #import "VVoteType.h"
 #import "VTracking.h"
+#import "MBProgressHUD.h"
 
 #import "VUserManager.h"
 
 @implementation VObjectManager (Login)
 
 NSString * const kLoggedInChangedNotification          = @"com.getvictorious.LoggedInChangedNotification";
-NSString * const kInitResponseNotification             = @"com.getvictorious.InitResponseNotification";
 
 static NSString * const kVExperimentsKey        = @"experiments";
 static NSString * const kVAppearanceKey         = @"appearance";
@@ -50,8 +50,6 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
         {
             success(operation, fullResponse, resultObjects);
         }
-        
-        [[NSNotificationCenter defaultCenter] postNotificationName:kInitResponseNotification object:nil];
     };
     
     return [self GET:@"/api/init"
@@ -417,15 +415,24 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
 - (void)loggedInWithUser:(VUser *)user
 {
     self.mainUser = user;
-    
-    [self refreshConversationListWithSuccessBlock:nil failBlock:nil];
-    [self pollResultsForUser:user successBlock:nil failBlock:nil];
 
-    // Add followers and following to main user object
-    [[VObjectManager sharedManager] refreshFollowersForUser:user successBlock:nil failBlock:nil];
-    [[VObjectManager sharedManager] refreshFollowingsForUser:user successBlock:nil failBlock:nil];
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:kLoggedInChangedNotification object:self];
+    if (self.mainUser != nil)
+    {
+        [self loadConversationListWithPageType:VPageTypeFirst successBlock:nil failBlock:nil];
+        [self pollResultsForUser:user successBlock:nil failBlock:nil];
+        
+        // Add followers and following to main user object
+        [[VObjectManager sharedManager] loadFollowersForUser:user
+                                                    pageType:VPageTypeFirst
+                                                successBlock:nil
+                                                   failBlock:nil];
+        [[VObjectManager sharedManager] loadFollowingsForUser:user
+                                                     pageType:VPageTypeFirst
+                                                 successBlock:nil
+                                                    failBlock:nil];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:kLoggedInChangedNotification object:self];
+    }
 }
 
 #pragma mark - Logout

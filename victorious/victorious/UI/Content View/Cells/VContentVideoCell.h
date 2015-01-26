@@ -59,12 +59,23 @@
 - (void)togglePlayControls;
 
 /**
- *  The speed to play the video.
+ Should the video player hide the toolbar, disable tap to toggle toolbar,
+ and disable double tap to change aspect fit.
+ */
+@property (nonatomic, assign) BOOL playerControlsDisabled;
+
+/**
+ Should the video player be muted.
+ */
+@property (nonatomic, assign) BOOL audioMuted;
+
+/**
+ Playback speed at which video should play.
  */
 @property (nonatomic, assign) float speed;
 
 /**
- *  Whether or not to loop the video.
+ Should the video player loop at the end of playback.
  */
 @property (nonatomic, assign) BOOL loop;
 

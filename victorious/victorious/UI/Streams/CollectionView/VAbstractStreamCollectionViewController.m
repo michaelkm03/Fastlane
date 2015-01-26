@@ -18,7 +18,6 @@
 #import "VObjectManager+Login.h"
 
 //View Controllers
-#import "VCameraPublishViewController.h"
 #import "UIViewController+VSideMenuViewController.h"
 #import "VCameraViewController.h"
 #import "VCreatePollViewController.h"
@@ -169,6 +168,11 @@ const CGFloat kVLoadNextPagePoint = .75f;
     
     [self.streamDataSource loadNextPageWithSuccess:^(void)
      {
+         __weak typeof(self) welf = self;
+         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+                        {
+                            [welf.collectionView flashScrollIndicators];
+                        });
      }
                                               failure:^(NSError *error)
      {
@@ -179,11 +183,9 @@ const CGFloat kVLoadNextPagePoint = .75f;
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    CGFloat scrollThreshold = scrollView.contentSize.height * kVLoadNextPagePoint;
-    if (self.streamDataSource.filter.currentPageNumber.intValue < self.streamDataSource.filter.maxPageNumber.intValue &&
-        self.streamDataSource.count &&
-        ![self.streamDataSource isFilterLoading] &&
-        scrollView.contentOffset.y + CGRectGetHeight(scrollView.bounds) > scrollThreshold)
+    const CGFloat scrollThreshold = scrollView.contentSize.height * kVLoadNextPagePoint;
+    const BOOL isAcrossThreshold = scrollView.contentOffset.y + CGRectGetHeight(scrollView.bounds) > scrollThreshold;
+    if ( self.streamDataSource.count && ![self.streamDataSource isFilterLoading] && isAcrossThreshold )
     {
         [self loadNextPageAction];
     }

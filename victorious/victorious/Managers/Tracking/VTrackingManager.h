@@ -35,6 +35,18 @@
 + (VTrackingManager *)sharedInstance;
 
 /**
+ Adds a new parameter that will be passed to all
+ tracking calls until cleared. To clear a
+ previously set parameter, pass nil for value.
+ */
+- (void)setValue:(NSString *)value forSessionParameterWithKey:(NSString *)key;
+
+/**
+ Clears all session properties
+ */
+- (void)clearSessionParameters;
+
+/**
  Forwards a tracking event to any added VTrackingDelegate instanced.
  */
 - (void)trackEvent:(NSString *)eventName parameters:(NSDictionary *)parameters;
@@ -49,7 +61,7 @@
 /**
  Removes events from queue and tracks thems using trackEvent:parameters
  */
-- (void)trackQueuedEventsWithName:(NSString *)eventName;
+- (void)clearQueuedEventsWithName:(NSString *)eventName;
 
 - (void)startEvent:(NSString *)eventName;
 
