@@ -9,8 +9,9 @@
 #import "VCanvasView.h"
 #import "CIImage+VImage.h"
 #import <UIImageView+AFNetworking.h>
+#import "VPhotoFilter.h"
 
-NSString *VCanvasViewAssetSizeBecameAvailableNotification = @"VCanvasViewAssetSizeBecameAvailableNotification";
+NSString * const VCanvasViewAssetSizeBecameAvailableNotification = @"VCanvasViewAssetSizeBecameAvailableNotification";
 
 static const CGFloat kRelatvieScaleFactor = 0.55f;
 

@@ -8,12 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-#import "VPhotoFilter.h"
+@class VPhotoFilter;
 
 /**
  *  Posted whenever a new asset size becomes available.
  */
-extern NSString *VCanvasViewAssetSizeBecameAvailableNotification;
+extern NSString * const VCanvasViewAssetSizeBecameAvailableNotification;
 
 /*
  VCanvasView is a representation of the current state of the workspace while editing an image. VCanvasView is optimized for performance and may scale sourceImage down to provide fast render times.
