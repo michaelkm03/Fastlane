@@ -273,7 +273,6 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
         
         NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
         paragraphStyle.alignment = NSTextAlignmentCenter;
-        [attributes setObject:paragraphStyle forKey:NSParagraphStyleAttributeName];
         attributes[NSParagraphStyleAttributeName] = paragraphStyle;
     }
     
