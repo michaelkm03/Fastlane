@@ -244,6 +244,7 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
         if (finished)
         {
             welf.capturedMediaURL = capturedMediaURL;
+            welf.previewImage = previewImage;
             [welf transitionFromState:welf.state
                               toState:VWorkspaceFlowControllerStateEdit];
         }

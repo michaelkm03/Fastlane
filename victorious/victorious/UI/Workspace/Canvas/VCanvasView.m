@@ -10,6 +10,8 @@
 #import "CIImage+VImage.h"
 #import <UIImageView+AFNetworking.h>
 
+NSString *VCanvasViewAssetSizeBecameAvailableNotification = @"VCanvasViewAssetSizeBecameAvailableNotification";
+
 static const CGFloat kRelatvieScaleFactor = 0.55f;
 
 @interface VCanvasView () <UIScrollViewDelegate, NSCacheDelegate>
@@ -133,6 +135,9 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
     {
         __strong typeof(self) strongSelf = welf;
         strongSelf.sourceImage = sourceImage;
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:VCanvasViewAssetSizeBecameAvailableNotification
+                                                            object:strongSelf];
         [strongSelf layoutIfNeeded];
         [strongSelf.activityIndicator stopAnimating];
         if (!animate)
@@ -225,6 +230,11 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
                            }
                        });
     });
+}
+
+- (CGSize)assetSize
+{
+    return self.imageView.image.size;
 }
 
 #pragma mark - Private Mehtods
