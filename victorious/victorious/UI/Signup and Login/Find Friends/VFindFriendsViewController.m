@@ -192,7 +192,7 @@
 {
     if ([MFMailComposeViewController canSendMail])
     {
-        NSString *appName = [[VThemeManager sharedThemeManager] themedStringForKey:kVChannelName];
+        NSString *appName = [[VThemeManager sharedThemeManager] themedStringForKey:kVCreatorName];
         NSString *msgSubj = [NSLocalizedString(@"InviteFriendsSubject", @"") stringByReplacingOccurrencesOfString:@"%@" withString:appName];
         
         NSString *bodyString = NSLocalizedString(@"InviteFriendsBody", @"");
@@ -213,7 +213,7 @@
 {
     if ([MFMessageComposeViewController canSendText])
     {
-        NSString *appName = [[VThemeManager sharedThemeManager] themedStringForKey:kVChannelName];
+        NSString *appName = [[VThemeManager sharedThemeManager] themedStringForKey:kVCreatorName];
         NSString *msgSubj = [NSLocalizedString(@"InviteFriendsSubject", @"") stringByReplacingOccurrencesOfString:@"%@" withString:appName];
         
         NSString *bodyString = NSLocalizedString(@"InviteFriendsBody", @"");

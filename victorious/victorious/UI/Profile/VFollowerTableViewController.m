@@ -285,9 +285,10 @@
 
     if (self.profile != nil)
     {
-        [[VObjectManager sharedManager] refreshFollowersForUser:self.profile
-                                                   successBlock:followerSuccess
-                                                      failBlock:followerFail];
+        [[VObjectManager sharedManager] loadFollowersForUser:self.profile
+                                                    pageType:VPageTypeFirst
+                                                successBlock:followerSuccess
+                                                   failBlock:followerFail];
     }
 }
 
@@ -305,9 +306,10 @@
     
     if (self.profile != nil)
     {
-        [[VObjectManager sharedManager] loadNextPageOfFollowersForUser:self.profile
-                                                          successBlock:followerSuccess
-                                                             failBlock:nil];
+        [[VObjectManager sharedManager] loadFollowersForUser:self.profile
+                                                    pageType:VPageTypeNext
+                                                successBlock:followerSuccess
+                                                   failBlock:nil];
     }
 }
 

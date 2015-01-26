@@ -12,6 +12,7 @@
 #import "VObjectManager+Users.h"
 #import "VObjectManager+DirectMessaging.h"
 #import "VProfileEditViewController.h"
+#import "VRootViewController.h"
 #import "VFollowerTableViewController.h"
 #import "VFollowingTableViewController.h"
 #import "VProfileFollowingContainerViewController.h"
@@ -38,6 +39,7 @@ static const CGFloat kVSmallUserHeaderHeight = 319.0f;
 
 static void * VUserProfileViewContext = &VUserProfileViewContext;
 static void * VUserProfileAttributesContext =  &VUserProfileAttributesContext;
+static NSString * const kUserKey = @"user";
 
 @interface VUserProfileViewController () <VUserProfileHeaderDelegate>
 
@@ -71,8 +73,19 @@ static void * VUserProfileAttributesContext =  &VUserProfileAttributesContext;
     {
         viewController.title = aUser.name ?: @"Profile";
     }
-
+    
+    viewController.dependencyManager = [[VRootViewController rootViewController] dependencyManager];
     return viewController;
+}
+
++ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    VUser *user = [dependencyManager templateValueOfType:[VUser class] forKey:kUserKey];
+    if (user != nil)
+    {
+        return [self userProfileWithUser:user];
+    }
+    return nil;
 }
 
 #pragma mark - LifeCycle
@@ -478,6 +491,18 @@ static void * VUserProfileAttributesContext =  &VUserProfileAttributesContext;
     
     [self.currentStream removeObserver:self
                             forKeyPath:NSStringFromSelector(@selector(streamItems))];
+}
+
+@end
+
+#pragma mark -
+
+@implementation VDependencyManager (VUserProfileViewControllerAdditions)
+
+- (VUserProfileViewController *)userProfileViewControllerWithUser:(VUser *)user forKey:(NSString *)key
+{
+    NSAssert(user != nil, @"user can't be nil");
+    return [self templateValueOfType:[VUserProfileViewController class] forKey:key withAddedDependencies:@{ kUserKey: user }];
 }
 
 @end

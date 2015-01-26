@@ -151,6 +151,38 @@
     XCTAssertEqualObjects( params[ @"param_key" ], delegate1.paramsReceived[ @"param_key" ] );
 }
 
+- (void)testSessionParameter
+{
+    NSString * const paramKey = @"abc";
+    NSString * const paramValue = @"def";
+    
+    VTestDelegate *delegate = [[VTestDelegate alloc] init];
+    [self.trackingMgr addDelegate:delegate];
+    
+    [self.trackingMgr setValue:paramValue forSessionParameterWithKey:paramKey];
+    [self.trackingMgr trackEvent:@"some_event"];
+    XCTAssertEqualObjects(paramValue, delegate.paramsReceived[paramKey]);
+}
+
+- (void)testClearSessionParameters
+{
+    NSString * const param1Key = @"abc";
+    NSString * const param1Value = @"def";
+    NSString * const param2Key = @"xyz";
+    NSString * const param2Value = @"zyx";
+
+    VTestDelegate *delegate = [[VTestDelegate alloc] init];
+    [self.trackingMgr addDelegate:delegate];
+    
+    [self.trackingMgr setValue:param1Value forSessionParameterWithKey:param1Key];
+    [self.trackingMgr setValue:param2Value forSessionParameterWithKey:param2Key];
+    [self.trackingMgr clearSessionParameters];
+    
+    [self.trackingMgr trackEvent:@"some_event"];
+    XCTAssertNil(delegate.paramsReceived[param1Key]);
+    XCTAssertNil(delegate.paramsReceived[param2Key]);
+}
+
 - (void)testDurationEvents
 {
     VTestDelegate *delegate = [[VTestDelegate alloc] init];

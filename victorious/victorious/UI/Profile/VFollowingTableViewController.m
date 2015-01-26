@@ -281,9 +281,10 @@
     
     if (self.profile != nil)
     {
-        [[VObjectManager sharedManager] refreshFollowingsForUser:self.profile
-                                                    successBlock:followerSuccess
-                                                       failBlock:followerFail];
+        [[VObjectManager sharedManager] loadFollowingsForUser:self.profile
+                                                     pageType:VPageTypeFirst
+                                                 successBlock:followerSuccess
+                                                    failBlock:followerFail];
     }
     else
     {
@@ -296,7 +297,7 @@
 
 - (void)loadMoreFollowings
 {
-    VSuccessBlock followerSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    VSuccessBlock followingSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         NSSortDescriptor   *sort = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
         NSSet *uniqueFollowings = [NSSet setWithArray:[self.following arrayByAddingObjectsFromArray:resultObjects]];
@@ -308,9 +309,10 @@
     
     if (self.profile != nil)
     {
-        [[VObjectManager sharedManager] loadNextPageOfFollowingsForUser:self.profile
-                                                           successBlock:followerSuccess
-                                                              failBlock:nil];
+        [[VObjectManager sharedManager] loadFollowingsForUser:self.profile
+                                                     pageType:VPageTypeNext
+                                                 successBlock:followingSuccess
+                                                    failBlock:nil];
     }
     else
     {

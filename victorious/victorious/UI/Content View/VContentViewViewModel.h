@@ -7,33 +7,42 @@
 //
 
 #import "VSequence.h"
-
 #import "VRealtimeCommentsViewModel.h"
 #import "VAdViewController.h"
-
 #import "VExperienceEnhancerController.h"
-
 #import "VHistogramDataSource.h"
+#import "VAbstractFilter+RestKit.h"
+
+@protocol VContentViewViewModelDelegate <NSObject>
 
 /**
- *  Posted whenever the server returns an updated state of this content.
+ * Called whenever new comments are updated.
+ * @param pageType The pagination context for which the comments fetch occurred.
  */
-extern NSString * const VContentViewViewModelDidUpdateContentNotification;
+- (void)didUpdateCommentsWithPageType:(VPageType)pageType;
 
 /**
- *  Posted whenever new comments are made available for a given sequence.
+ * Called when a page of comments is loaded that contains the comment Id,
+ * currently designed to work with deep linking.
  */
-extern NSString * const VContentViewViewModelDidUpdateCommentsNotification;
+- (void)didUpdateCommentsWithDeepLink:(NSNumber *)commentId;
 
 /**
- *  Posted whenever new histogram data is made available.
+ * Called whenever the server returns an updated state of this content.
  */
-extern NSString * const VContentViewViewModelDidUpdateHistogramDataNotification;
+- (void)didUpdateContent;
 
 /**
- * Posted whenever new poll data is made available.
+ * Called whenever new histogram data is made available.
  */
-extern NSString * const VContentViewViewModelDidUpdatePollDataNotification;
+- (void)didUpdateHistogramData;
+
+/**
+ * Called whenever new poll data is made available.
+ */
+- (void)didUpdatePollsData;
+
+@end
 
 /**
  *  An enumeration of the various content types supported by VContentViewModel.
@@ -98,6 +107,8 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
 @property (nonatomic, readonly) NSInteger nodeID;
 
 @property (nonatomic, readonly) VUser *user;
+
+@property (nonatomic, weak) id<VContentViewViewModelDelegate> delegate;
 
 /**
  *  The corresponding sequence for this view model.
@@ -167,6 +178,16 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
 
 @property (nonatomic, readonly) BOOL loop;
 
+/**
+ Determines whether the video player will show its toolbar with play controls.
+ */
+@property (nonatomic, readonly) BOOL playerControlsDisabled;
+
+/**
+ Determines whether the video will play with audio.
+ */
+@property (nonatomic, readonly) BOOL audioMuted;
+
 #pragma mark - Comments
 
 /**
@@ -175,11 +196,11 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
 @property (nonatomic, readonly) BOOL shouldShowRealTimeComents;
 
 /**
- *  Fetches the all comments and realtime comments for this viewModel's sequence.
+ *  Fetches comments and realtime comments for this viewModel's sequence.
+ *  @param pageType An indicator to the internal VAbstractFilter instances that
+ *  determines which page of comments to load, if that page exists.
  */
-- (void)fetchComments;
-
-- (void)attemptToLoadNextPageOfComments;
+- (void)loadComments:(VPageType)pageType;
 
 @property (nonatomic, readonly) NSArray *comments;
 
@@ -225,5 +246,11 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
 /** This will be nil if no histogram data is available.
  */
 @property (nonatomic, strong, readonly) VHistogramDataSource *histogramDataSource;
+
+/**
+ Set a comment ID using this property after initializtion to scroll to and highlight
+ that comment when the content view loads.
+ */
+@property (nonatomic, strong) NSNumber *deepLinkCommentId;
 
 @end

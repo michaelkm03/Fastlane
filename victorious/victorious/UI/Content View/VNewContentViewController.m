@@ -50,7 +50,6 @@
 #import "VUserProfileViewController.h"
 #import "VAuthorizationViewControllerFactory.h"
 #import "VPurchaseViewController.h"
-#import "VCameraPublishViewController.h"
 
 // Transitioning
 #import "VLightboxTransitioningDelegate.h"
@@ -77,10 +76,14 @@
 #import "VModalTransition.h"
 
 #import "VTracking.h"
+#import "VCommentHighlighter.h"
+#import "VScrollPaginator.h"
 
 static const CGFloat kMaxInputBarHeight = 200.0f;
 
-@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate,VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate>
+@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate,VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate>
+
+#import "VCommentHighlighter.h"
 
 @property (nonatomic, strong, readwrite) VContentViewViewModel *viewModel;
 @property (nonatomic, strong) NSURL *mediaURL;
@@ -120,6 +123,9 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 @property (nonatomic, assign) CMTime realtimeCommentBeganTime;
 
 @property (nonatomic, strong) VTransitionDelegate *transitionDelegate;
+@property (nonatomic, strong) VScrollPaginator *scrollPaginator;
+
+@property (nonatomic, strong) VCommentHighlighter *commentHighlighter;
 
 @end
 
@@ -137,6 +143,8 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     contentViewController.transitionDelegate = [[VTransitionDelegate alloc] initWithTransition:modalTransition];
     contentViewController.elapsedTimeFormatter = [[VElapsedTimeFormatter alloc] init];
     
+    viewModel.delegate = contentViewController;
+    
     return contentViewController;
 }
 
@@ -147,6 +155,108 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     [VContentCommentsCell clearSharedImageCache];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+#pragma mark - VContentViewViewModelDelegate
+
+- (void)didUpdateCommentsWithPageType:(VPageType)pageType
+{
+    if (self.viewModel.comments.count > 0)
+    {
+        if ([self.contentCollectionView numberOfItemsInSection:VContentViewSectionAllComments] > 0)
+        {
+            CGSize startSize = self.contentCollectionView.collectionViewLayout.collectionViewContentSize;
+            
+            if ( !self.commentHighlighter.isAnimatingCellHighlight ) //< Otherwise the animation is interrupted
+            {
+                [self.contentCollectionView reloadData];
+                
+                __weak typeof(self) welf = self;
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+                               {
+                                   [welf.contentCollectionView flashScrollIndicators];
+                               });
+                
+                // If we're prepending new comments, we must adjust the scroll view's offset
+                if ( pageType == VPageTypePrevious )
+                {
+                    CGSize endSize = self.contentCollectionView.collectionViewLayout.collectionViewContentSize;
+                    CGPoint diff = CGPointMake( endSize.width - startSize.width, endSize.height - startSize.height );
+                    CGPoint contentOffset = self.contentCollectionView.contentOffset;
+                    contentOffset.x += diff.x;
+                    contentOffset.y += diff.y;
+                    self.contentCollectionView.contentOffset = contentOffset;
+                }
+            }
+        }
+        else
+        {
+            NSIndexSet *commentsIndexSet = [NSIndexSet indexSetWithIndex:VContentViewSectionAllComments];
+            [self.contentCollectionView reloadSections:commentsIndexSet];
+        }
+        
+        self.handleView.numberOfComments = self.viewModel.sequence.commentCount.integerValue;
+    }
+}
+
+- (void)didUpdateCommentsWithDeepLink:(NSNumber *)commentId
+{
+    [self didUpdateCommentsWithPageType:VPageTypeFirst];
+    
+    for ( NSUInteger i = 0; i < self.viewModel.comments.count; i++ )
+    {
+        VComment *comment = self.viewModel.comments[ i ];
+        if ( [comment.remoteId isEqualToNumber:commentId] )
+        {
+            [self didUpdateCommentsWithPageType:VPageTypePrevious];
+            
+            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:VContentViewSectionAllComments];
+            [self.commentHighlighter scrollToAndHighlightIndexPath:indexPath delay:0.3f completion:^
+            {
+                // Setting `isAnimatingCellHighlight` to YES prevents the collectionView
+                // from reloading (as intented).  So we call `updateCommentsWithPageType:`
+                // to update if it any new comments were loading while
+                // the animation was playing.
+                [self didUpdateCommentsWithPageType:VPageTypePrevious];
+                
+                // Trigger the paginator to load any more pages based on the scroll
+                // position to which VCommentHighlighter animated to
+                [self.scrollPaginator scrollViewDidScroll:self.contentCollectionView];
+            }];
+        }
+    }
+}
+
+- (void)didUpdateContent
+{
+    self.videoCell.viewModel = self.viewModel.videoViewModel;
+}
+
+- (void)didUpdateHistogramData
+{
+    if ( self.viewModel.histogramDataSource == nil )
+    {
+        return;
+    }
+    self.histogramCell.histogramView.dataSource = self.viewModel.histogramDataSource;
+    [self.contentCollectionView.collectionViewLayout invalidateLayout];
+}
+
+- (void)didUpdatePollsData
+{
+    if (!self.viewModel.votingEnabled)
+    {
+        [self.pollCell setAnswerAPercentage:self.viewModel.answerAPercentage
+                                   animated:YES];
+        [self.pollCell setAnswerBPercentage:self.viewModel.answerBPercentage
+                                   animated:YES];
+        
+        [self.ballotCell setVotingDisabledWithFavoredBallot:(self.viewModel.favoredAnswer == VPollAnswerA) ? VBallotA : VBallotB
+                                                   animated:YES];
+        self.pollCell.answerAIsFavored = (self.viewModel.favoredAnswer == VPollAnswerA);
+        self.pollCell.answerBIsFavored = (self.viewModel.favoredAnswer == VPollAnswerB);
+        self.pollCell.numberOfVotersText = self.viewModel.numberOfVotersText;
+    }
 }
 
 #pragma mark - UIResponder
@@ -248,6 +358,10 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 {
     [super viewDidLoad];
     
+    self.scrollPaginator = [[VScrollPaginator alloc] initWithDelegate:self];
+
+    self.commentHighlighter = [[VCommentHighlighter alloc] initWithCollectionView:self.contentCollectionView];
+    
     // Hack to remove margins stuff should probably refactor :(
     if ([self.view respondsToSelector:@selector(setLayoutMargins:)])
     {
@@ -346,23 +460,6 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     [super viewWillAppear:animated];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(commentsDidUpdate:)
-                                                 name:VContentViewViewModelDidUpdateCommentsNotification
-                                               object:self.viewModel];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(hitogramDataDidUpdate:)
-                                                 name:VContentViewViewModelDidUpdateHistogramDataNotification
-                                               object:self.viewModel];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(pollDataDidUpdate:)
-                                                 name:VContentViewViewModelDidUpdatePollDataNotification
-                                               object:self.viewModel];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(contentDataDidUpdate:)
-                                                 name:VContentViewViewModelDidUpdateContentNotification
-                                               object:self.viewModel];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardDidChangeFrame:)
                                                  name:UIKeyboardDidChangeFrameNotification
                                                object:nil];
@@ -381,10 +478,6 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(showPurchaseViewController:)
                                                  name:VExperienceEnhancerBarDidRequirePurchasePrompt
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(onRemixPublished:)
-                                                 name:VCameraPublishViewControllerDidPublishNotification
                                                object:nil];
     
     [self.navigationController setNavigationBarHidden:YES
@@ -423,15 +516,6 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     
     // We don't care about these notifications anymore but we still care about new user loggedin
     [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:VContentViewViewModelDidUpdateCommentsNotification
-                                                  object:self.viewModel];
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:VContentViewViewModelDidUpdateHistogramDataNotification
-                                                  object:self.viewModel];
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:VContentViewViewModelDidUpdatePollDataNotification
-                                                  object:self.viewModel];
-    [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:UIKeyboardDidChangeFrameNotification
                                                   object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self
@@ -443,6 +527,8 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     
     self.contentCollectionView.delegate = nil;
     self.videoCell.delegate = nil;
+    
+    [self.commentHighlighter stopAnimations];
 }
 
 - (void)presentViewController:(UIViewController *)viewControllerToPresent
@@ -517,72 +603,9 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     }
 }
 
-- (void)contentDataDidUpdate:(NSNotification *)notification
-{
-    self.videoCell.viewModel = self.viewModel.videoViewModel;
-}
-
-- (void)commentsDidUpdate:(NSNotification *)notification
-{
-    if (self.viewModel.comments.count > 0)
-    {
-        if ([self.contentCollectionView numberOfItemsInSection:VContentViewSectionAllComments] > 0)
-        {
-            [self.contentCollectionView reloadData];
-            
-            __weak typeof(self) welf = self;
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
-            {
-                [welf.contentCollectionView flashScrollIndicators];
-            });
-        }
-        else
-        {
-            NSIndexSet *commentsIndexSet = [NSIndexSet indexSetWithIndex:VContentViewSectionAllComments];
-            [self.contentCollectionView reloadSections:commentsIndexSet];
-        }
-        
-        self.handleView.numberOfComments = self.viewModel.sequence.commentCount.integerValue;
-    }
-}
-
-- (void)hitogramDataDidUpdate:(NSNotification *)notification
-{
-    if (!self.viewModel.histogramDataSource)
-    {
-        return;
-    }
-    self.histogramCell.histogramView.dataSource = self.viewModel.histogramDataSource;
-    [self.contentCollectionView.collectionViewLayout invalidateLayout];
-}
-
-- (void)pollDataDidUpdate:(NSNotification *)notification
-{
-
-    if (!self.viewModel.votingEnabled)
-    {
-        [self.pollCell setAnswerAPercentage:self.viewModel.answerAPercentage
-                                   animated:YES];
-        [self.pollCell setAnswerBPercentage:self.viewModel.answerBPercentage
-                                   animated:YES];
-        
-        [self.ballotCell setVotingDisabledWithFavoredBallot:(self.viewModel.favoredAnswer == VPollAnswerA) ? VBallotA : VBallotB
-                                                   animated:YES];
-        self.pollCell.answerAIsFavored = (self.viewModel.favoredAnswer == VPollAnswerA);
-        self.pollCell.answerBIsFavored = (self.viewModel.favoredAnswer == VPollAnswerB);
-        self.pollCell.numberOfVotersText = self.viewModel.numberOfVotersText;
-    }
-}
-
 - (void)loginStatusDidChange:(NSNotification *)notification
 {
     [self.viewModel reloadData];
-}
-
-- (void)onRemixPublished:(NSNotification *)notification
-{
-    // Dismiss the content view and return to stream
-    [self.delegate newContentViewControllerDidClose:self];
 }
 
 #pragma mark - IBActions
@@ -760,6 +783,8 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
                 videoCell.delegate = self;
                 videoCell.speed = self.viewModel.speed;
                 videoCell.loop = self.viewModel.loop;
+                videoCell.playerControlsDisabled = self.viewModel.playerControlsDisabled;
+                videoCell.audioMuted = self.viewModel.audioMuted;
                 self.videoCell = videoCell;
                 self.contentCell = videoCell;
                 __weak typeof(self) welf = self;
@@ -1087,9 +1112,13 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    if (CGRectGetMidY(scrollView.bounds) > (scrollView.contentSize.height * 0.8f))
+    const BOOL hasComments = self.viewModel.comments.count > 0;
+    if ( hasComments )
     {
-        [self.viewModel attemptToLoadNextPageOfComments];
+        if ( !self.commentHighlighter.isAnimatingCellHighlight )
+        {
+            [self.scrollPaginator scrollViewDidScroll:scrollView];
+        }
     }
 }
 
@@ -1164,12 +1193,12 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
                               realTime:welf.realtimeCommentBeganTime
                             completion:^(BOOL succeeded)
      {
-         [welf.viewModel fetchComments];
+         [welf.viewModel loadComments:VPageTypeFirst];
          [UIView animateWithDuration:0.0f
                           animations:^
-          {
-              [welf commentsDidUpdate:nil];
-          }];
+         {
+             [welf didUpdateCommentsWithPageType:VPageTypeFirst];
+         }];
      }];
     
     [inputAccessoryView clearTextAndResign];
@@ -1372,7 +1401,8 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
          [self.viewModel removeCommentAtIndex:row];
          NSArray *indexPaths = @[ [NSIndexPath indexPathForRow:row inSection:VContentViewSectionAllComments] ];
          [self.contentCollectionView deleteItemsAtIndexPaths:indexPaths];
-     } completion:nil];
+     }
+                                         completion:nil];
 }
 
 - (void)editComment:(VComment *)comment
@@ -1422,6 +1452,18 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
      {
          [self.viewModel.experienceEnhancerController updateData];
      }];
+}
+
+#pragma mark - VScrollPaginatorDelegate
+
+- (void)shouldLoadNextPage
+{
+    [self.viewModel loadComments:VPageTypeNext];
+}
+
+- (void)shouldLoadPreviousPage
+{
+    [self.viewModel loadComments:VPageTypePrevious];
 }
 
 @end

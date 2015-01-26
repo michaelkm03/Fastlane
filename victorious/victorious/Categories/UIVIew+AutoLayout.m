@@ -16,7 +16,7 @@
                                        top:(CGFloat)top
                                     bottom:(CGFloat)bottom
 {
-    NSParameterAssert( subview.superview == self );
+    NSParameterAssert( [subview isDescendantOfView:self] );
     
     NSDictionary *views = @{ @"subview" : subview };
     NSDictionary *metrics = @{ @"leading" : @(leading),

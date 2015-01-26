@@ -32,18 +32,16 @@
 
 @implementation VNavigationHeaderView
 
-+ (instancetype)menuButtonNavHeaderWithControlTitles:(NSArray *)titles
++ (instancetype)menuButtonNavHeader
 {
     NSString *nibName = [VHeaderView preferredNibForThemeForClass:[self class]];
     VNavigationHeaderView *header = [[[NSBundle mainBundle] loadNibNamed:nibName owner:nil options:nil] firstObject];
     header.backButton.hidden = YES;
     header.menuButton.hidden = NO;
-    
-    [header setupSegmentedControlWithTitles:titles];
     return header;
 }
 
-+ (instancetype)backButtonNavHeaderWithControlTitles:(NSArray *)titles
++ (instancetype)backButtonNavHeader
 {
     NSString *nibName = [VHeaderView preferredNibForThemeForClass:[self class]];
     VNavigationHeaderView *header = [[[NSBundle mainBundle] loadNibNamed:nibName owner:nil options:nil] firstObject];
@@ -51,8 +49,6 @@
     header.menuButton.hidden = YES;
     header.badgeView.hidden = YES;
     header.badgeBorder.hidden = YES;
-    
-    [header setupSegmentedControlWithTitles:titles];
     return header;
 }
 
@@ -121,6 +117,7 @@
     }
     
     self.heightconstraint.constant = headerHeight;
+    [self layoutIfNeeded];
 }
 
 - (void)setDelegate:(id<VNavigationHeaderDelegate>)delegate

@@ -7,29 +7,68 @@
 //
 
 #import "VAppDelegate.h"
+#import "VFirstInstallManager.h"
 #import "VForceUpgradeViewController.h"
 #import "VDependencyManager.h"
 #import "VDependencyManager+VObjectManager.h"
+#import "VInboxContainerViewController.h"
 #import "VLoadingViewController.h"
 #import "VObjectManager.h"
 #import "VRootViewController.h"
+#import "VScaffoldViewController.h"
 #import "VSessionTimer.h"
+#import "VSettingManager.h"
+#import "VTracking.h"
 #import "VConstants.h"
 #import "VTemplateGenerator.h"
 
 static const NSTimeInterval kAnimationDuration = 0.2;
 
+static NSString * const kDeeplinkURLKey = @"deeplink";
+static NSString * const kNotificationIDKey = @"notification_id";
+
 @interface VRootViewController () <VLoadingViewControllerDelegate>
 
-@property (nonatomic, strong) VDependencyManager *dependencyManager;
+#warning Temporary
+@property (nonatomic, strong, readwrite) VDependencyManager *dependencyManager;
 @property (nonatomic) BOOL appearing;
 @property (nonatomic) BOOL shouldPresentForceUpgradeScreenOnNextAppearance;
 @property (nonatomic, strong, readwrite) UIViewController *currentViewController;
 @property (nonatomic, strong) VSessionTimer *sessionTimer;
+@property (nonatomic, strong) NSURL *queuedURL; ///< A deeplink URL that came in before we were ready for it
+@property (nonatomic, strong) NSString *queuedNotificationID; ///< A notificationID that came in before we were ready for it
+@property (nonatomic) BOOL coldLaunch; ///< YES on first launch, NO subsequently
 
 @end
 
 @implementation VRootViewController
+
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if ( self )
+    {
+        [self commonInit];
+    }
+    return self;
+}
+
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if ( self )
+    {
+        [self commonInit];
+    }
+    return self;
+}
+
+- (void)commonInit
+{
+    self.coldLaunch = YES;
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newSessionShouldStart:) name:VSessionTimerNewSessionShouldStart object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidFinishLaunching:) name:UIApplicationDidFinishLaunchingNotification object:nil];
+}
 
 + (instancetype)rootViewController
 {
@@ -58,7 +97,6 @@ static const NSTimeInterval kAnimationDuration = 0.2;
     self.sessionTimer = [[VSessionTimer alloc] init];
     [self.sessionTimer start];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newSessionShouldStart:) name:VSessionTimerNewSessionShouldStart object:nil];
     [self showLoadingViewController];
 }
 
@@ -148,8 +186,20 @@ static const NSTimeInterval kAnimationDuration = 0.2;
                                                                  configuration:[templateGenerator configurationDict]
                                              dictionaryOfClassesByTemplateName:nil];
     
-    UIViewController *scaffold = [self.dependencyManager viewControllerForKey:VDependencyManagerScaffoldViewControllerKey];
+    if ( self.coldLaunch )
+    {
+        [self trackAppLaunch];
+        self.coldLaunch = NO;
+    }
+    
+    VScaffoldViewController *scaffold = [self.dependencyManager scaffoldViewController];
     [self showViewController:scaffold animated:YES];
+    
+    if ( self.queuedURL != nil )
+    {
+        [scaffold navigateToDeeplinkURL:self.queuedURL];
+        self.queuedURL = nil;
+    }
 }
 
 - (void)showViewController:(UIViewController *)viewController animated:(BOOL)animated
@@ -210,14 +260,99 @@ static const NSTimeInterval kAnimationDuration = 0.2;
     [self setNeedsStatusBarAppearanceUpdate];
 }
 
+#pragma mark - Deeplink
+
+- (void)handleDeeplinkURL:(NSURL *)url
+{
+    VScaffoldViewController *scaffold = [self.dependencyManager scaffoldViewController];
+    
+    if ( scaffold == nil )
+    {
+        self.queuedURL = url;
+    }
+    else
+    {
+        [scaffold navigateToDeeplinkURL:url];
+    }
+}
+
+- (void)applicationDidReceiveRemoteNotification:(NSDictionary *)userInfo
+{
+    [self handlePushNotification:userInfo];
+}
+
+- (void)handlePushNotification:(NSDictionary *)pushNotification
+{
+    NSURL *deeplink = [NSURL URLWithString:pushNotification[kDeeplinkURLKey]];
+    NSString *notificationID = pushNotification[kNotificationIDKey];
+
+    if ( [[UIApplication sharedApplication] applicationState] != UIApplicationStateActive )
+    {
+        [[VTrackingManager sharedInstance] setValue:notificationID forSessionParameterWithKey:VTrackingKeyNotificationID];
+        if ( [self.sessionTimer shouldNewSessionStartNow] )
+        {
+            self.queuedURL = deeplink;
+            self.queuedNotificationID = notificationID;
+        }
+        else
+        {
+            [self handleDeeplinkURL:deeplink];
+        }
+    }
+    else if ( [deeplink.host isEqualToString:VInboxContainerViewControllerDeeplinkHostComponent] )
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:VInboxContainerViewControllerInboxPushReceivedNotification object:self];
+    }
+}
+
+#pragma mark - Tracking Support
+
+- (void)trackAppLaunch
+{
+    VTracking *applicationTracking = [VSettingManager sharedManager].applicationTracking;
+    
+    // Track first install
+    [[[VFirstInstallManager alloc] init] reportFirstInstallWithTracking:applicationTracking];
+    
+    // Tracking init (cold start)
+    NSArray* trackingURLs = applicationTracking != nil ? applicationTracking.appLaunch : @[];
+    NSDictionary *params = @{ VTrackingKeyUrls : trackingURLs };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventApplicationDidLaunch parameters:params];
+}
+
 #pragma mark - NSNotifications
 
 - (void)newSessionShouldStart:(NSNotification *)notification
 {
+    [[VTrackingManager sharedInstance] clearSessionParameters];
+    
+    if ( self.queuedNotificationID != nil )
+    {
+        [[VTrackingManager sharedInstance] setValue:self.queuedNotificationID forSessionParameterWithKey:VTrackingKeyNotificationID];
+        self.queuedNotificationID = nil;
+    }
+    
     [self showViewController:nil animated:NO];
     [RKObjectManager setSharedManager:nil];
     [VObjectManager setupObjectManager];
     [self showLoadingViewController];
+}
+
+- (void)applicationDidFinishLaunching:(NSNotification *)notification
+{
+    NSURL *url = notification.userInfo[UIApplicationLaunchOptionsURLKey];
+    if ( url != nil )
+    {
+        [self handleDeeplinkURL:url];
+        return;
+    }
+    
+    NSDictionary *pushNotification = notification.userInfo[UIApplicationLaunchOptionsRemoteNotificationKey];
+    if ( pushNotification != nil )
+    {
+        [self handlePushNotification:pushNotification];
+        return;
+    }
 }
 
 #pragma mark - VLoadingViewControllerDelegate

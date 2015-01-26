@@ -8,15 +8,13 @@
 
 #import "VConstants.h"
 #import "VDependencyManager.h"
+#import "VScaffoldViewController.h"
 #import "VTemplateGenerator.h"
 
 static NSString * const kIDKey = @"id";
 static NSString * const kReferenceIDKey = @"referenceID";
 static NSString * const kAppearanceKey = @"appearance";
 static NSString * const kClassNameKey = @"name";
-
-// Scaffold properties
-static NSString * const kMenuKey = @"menu";
 
 // Menu properties
 static NSString * const kItemsKey = @"items";
@@ -33,7 +31,6 @@ static NSString * const kInitialKey = @"initial";
 static NSString * const kStreamUrlPathKey = @"streamUrlPath";
 static NSString * const kUserSpecificKey = @"isUserSpecific";
 
-// Color properties
 static NSString * const kRedKey = @"red";
 static NSString * const kGreenKey = @"green";
 static NSString * const kBlueKey = @"blue";
@@ -42,6 +39,28 @@ static NSString * const kAlphaKey = @"alpha";
 // Other misc. properties
 static NSString * const kScreensKey = @"screens";
 static NSString * const kSelectorKey =  @"selector";
+
+// Workspace properties
+static NSString * const kToolsKey = @"tools";
+static NSString * const kPickerKey = @"picker";
+static NSString * const kFilterIndexKey = @"filterIndex";
+
+// Text properties
+static NSString * const kFontNameKey = @"fontName";
+static NSString * const kFontSizeKey = @"fontSize";
+static NSString * const kTextHorizontalAlignmentKey = @"horizontalAlignment";
+static NSString * const kTextVerticalAlignmentKey = @"verticalAlignment";
+static NSString * const kTextStrokeColorKey = @"strokeColor";
+static NSString * const kTextStrokeWidthKey = @"strokeWidth";
+static NSString * const kTextPlaceholderTextKey = @"placeholderText";
+static NSString * const kshouldForceUppercaseKey = @"shouldForceUppercase";
+
+// Video properties
+static NSString * const kVideoFrameDurationValue = @"frameDurationValue";
+static NSString * const kVideoFrameDurationTimescale = @"frameDurationTimescale";
+static NSString * const kVideoMaxDuration = @"videoMaxDuration";
+static NSString * const kVideoMinDuration = @"videoMinDuration";
+static NSString * const kVideoMuted = @"videoMuted";
 
 @interface VTemplateGenerator ()
 
@@ -99,8 +118,161 @@ static NSString * const kSelectorKey =  @"selector";
     
     template[VDependencyManagerScaffoldViewControllerKey] = @{ kClassNameKey: @"sideMenu.scaffold",
                                                                VDependencyManagerInitialViewControllerKey: @{ kReferenceIDKey: self.firstMenuItemID },
-                                                               kMenuKey: [self menuComponent] };
+                                                               VScaffoldViewControllerMenuComponentKey: [self menuComponent],
+                                                               VScaffoldViewControllerUserProfileViewComponentKey: @{ kClassNameKey: @"userProfile.screen" }
+                                                            };
+#warning Hackey
+    template[VDependencyManagerWorkspaceFlowKey] = [self workspaceFlowComponent];
+    
     return template;
+}
+
+- (NSDictionary *)workspaceFlowComponent
+{
+    return @{
+             kClassNameKey: @"workspace",
+             VDependencyManagerImageWorkspaceKey: [self imageWorkspaceComponent],
+             VDependencyManagerVideoWorkspaceKey: [self videoWorkspaceComponent]
+             };
+}
+
+- (NSArray *)videoTools
+{
+    return @[
+             @{
+                 kClassNameKey: @"trim.video.tool",
+                 kTitleKey: @"video",
+                 kVideoFrameDurationValue: @1,
+                 kVideoFrameDurationTimescale: @24,
+                 kVideoMuted: @NO
+                 },
+             @{
+                 kClassNameKey: @"trim.video.tool",
+                 kTitleKey: @"gif",
+                 kVideoFrameDurationValue: @1,
+                 kVideoFrameDurationTimescale: @8,
+                 kVideoMuted: @YES
+                 }
+             ];
+}
+
+- (NSDictionary *)videoWorkspaceComponent
+{
+    return @{
+             kClassNameKey: @"workspace.screen",
+             kToolsKey: [self videoTools],
+             kVideoMinDuration: @3,
+             kVideoMaxDuration: @15,
+             };
+}
+
+- (NSDictionary *)imageWorkspaceComponent
+{
+    return @{
+             kClassNameKey: @"workspace.screen",
+             kToolsKey:
+                 @[
+                     [self textTool],
+                     [self filterTool],
+                     [self cropTool],
+                     ]
+             };
+}
+
+- (NSDictionary *)textTool
+{
+    return @{
+             kClassNameKey: @"text.tool",
+             kTitleKey: @"text",
+             kFilterIndexKey: @2,
+             kPickerKey:
+                 @{
+                     kClassNameKey: @"vertical.picker",
+                     },
+             kToolsKey:
+                 @[
+                     @{
+                         kClassNameKey: @"textType.tool",
+                         kTitleKey: @"meme",
+                         kTextHorizontalAlignmentKey: @"center",
+                         kTextVerticalAlignmentKey: @"bottom",
+                         kTextPlaceholderTextKey: @"create a meme",
+                         kshouldForceUppercaseKey: @YES,
+                         VDependencyManagerParagraphFontKey:
+                             @{
+                                 kFontNameKey: @"Impact",
+                                 kFontSizeKey: @50,
+                                 },
+                         VDependencyManagerMainTextColorKey:
+                             @{
+                                 kRedKey: @255,
+                                 kGreenKey: @255,
+                                 kBlueKey: @255,
+                                 kAlphaKey: @1.0f,
+                                 },
+                         kTextStrokeColorKey:
+                             @{
+                                 kRedKey: @0,
+                                 kGreenKey: @0,
+                                 kBlueKey: @0,
+                                 kAlphaKey: @1.0f,
+                                 },
+                         kTextStrokeWidthKey: @-5.0f,
+                         },
+                     @{
+                         kClassNameKey: @"textType.tool",
+                         kTitleKey: @"quote",
+                         kTextHorizontalAlignmentKey: @"center",
+                         kTextVerticalAlignmentKey: @"center",
+                         kTextPlaceholderTextKey: @"create a quote",
+                         VDependencyManagerParagraphFontKey:
+                             @{
+                                 kFontNameKey: @"PTSans-Narrow",
+                                 kFontSizeKey: @23,
+                                 },
+                         VDependencyManagerMainTextColorKey:
+                             @{
+                                 kRedKey: @255,
+                                 kGreenKey: @255,
+                                 kBlueKey: @255,
+                                 kAlphaKey: @1.0f,
+                                 },
+                         kTextStrokeColorKey:
+                             @{
+                                 kRedKey: @255,
+                                 kGreenKey: @255,
+                                 kBlueKey: @255,
+                                 kAlphaKey: @1.0f,
+                                 },
+                         kTextStrokeWidthKey: @0.0f,
+                         },
+                     ]
+             };
+}
+
+- (NSDictionary *)filterTool
+{
+    return @{
+             kClassNameKey: @"filter.tool",
+             kTitleKey: @"filters",
+             kFilterIndexKey: @0,
+             kPickerKey:
+                 @{
+                     kClassNameKey: @"vertical.picker",
+                     },
+             kToolsKey:
+                 @[
+                     ]
+             };
+}
+
+- (NSDictionary *)cropTool
+{
+    return @{
+             kClassNameKey: @"crop.tool",
+             kTitleKey: @"crop",
+             kFilterIndexKey: @1,
+             };
 }
 
 - (NSDictionary *)menuComponent

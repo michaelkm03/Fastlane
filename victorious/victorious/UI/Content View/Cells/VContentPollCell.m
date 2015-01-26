@@ -197,8 +197,7 @@ static const CGFloat kDesiredPollCellHeight = 214.0f;
     videoPlayerViewController.shouldShowToolbar = NO;
     videoPlayerViewController.view.contentMode = UIViewContentModeScaleAspectFill;
     videoPlayerViewController.videoPlayerLayerVideoGravity = AVLayerVideoGravityResizeAspectFill;
-    videoPlayerViewController.shouldLoop = YES;
-    [videoPlayerViewController setItemURL:itemURL];
+    [videoPlayerViewController setItemURL:itemURL loop:YES];
 
     [container addSubview:videoPlayerViewController.view];
     

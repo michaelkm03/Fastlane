@@ -36,8 +36,10 @@
 
 #import "CCHLinkTextView.h"
 #import "CCHLinkTextViewDelegate.h"
+#import "UIVIew+AutoLayout.h"
+#import "VVideoView.h"
 
-@interface VStreamCollectionCell() <VSequenceActionsDelegate, CCHLinkTextViewDelegate>
+@interface VStreamCollectionCell() <VSequenceActionsDelegate, CCHLinkTextViewDelegate, VVideoViewDelegtae>
 
 @property (nonatomic, weak) IBOutlet UIImageView *playImageView;
 @property (nonatomic, weak) IBOutlet UIImageView *playBackgroundImageView;
@@ -47,11 +49,19 @@
 @property (nonatomic, weak) IBOutlet VStreamCellActionView *actionView;
 @property (nonatomic, weak) IBOutlet UIImageView *bottomGradient;
 
+@property (nonatomic, weak) IBOutlet VVideoView *videoPlayerView;
+@property (nonatomic, weak) IBOutlet UIView *contentContainer;
+
+@property (nonatomic, strong) VAsset *videoAsset;
+@property (nonatomic, assign) BOOL isPlayButtonVisible;
+
+@property (nonatomic, readonly) BOOL canPlayVideo;
+
 @end
 
-static const CGFloat kTemplateCYRatio = 1.34768211921; //407/302
-static const CGFloat kTemplateCXRatio = 0.94375;
-static const CGFloat kDescriptionBuffer = 37.0;
+static const CGFloat kTemplateCYRatio = 1.3079470199; // 395/302
+static const CGFloat kTemplateCXRatio = 0.94375; // 320/302
+static const CGFloat kDescriptionBuffer = 18.0;
 
 @implementation VStreamCollectionCell
 
@@ -104,6 +114,22 @@ static const CGFloat kDescriptionBuffer = 37.0;
     }
 }
 
+- (void)prepareForReuse
+{
+    [super prepareForReuse];
+    
+    [self pauseVideo];
+    
+    self.videoPlayerView.alpha = 0.0f;
+    
+    self.videoAsset = nil;
+}
+
+- (CGRect)mediaContentFrame
+{
+    return self.contentContainer.frame;
+}
+
 - (void)setSequence:(VSequence *)sequence
 {
     _sequence = sequence;
@@ -119,13 +145,77 @@ static const CGFloat kDescriptionBuffer = 37.0;
 
     [self setDescriptionText:self.sequence.name];
     
-    self.captionTextView.hidden = self.sequence.nameEmbeddedInContent.boolValue;
-    
-    self.playImageView.hidden = self.playBackgroundImageView.hidden = ![sequence isVideo];
+    self.captionTextView.hidden = self.sequence.nameEmbeddedInContent.boolValue || self.sequence.name.length == 0;
     
     [self setupActionBar];
     
     self.bottomGradient.hidden = (sequence.nameEmbeddedInContent != nil) ? [sequence.nameEmbeddedInContent boolValue] : NO;
+    
+    if ( [sequence isVideo] )
+    {
+        VAsset *asset = [self.sequence.firstNode mp4Asset];
+        if ( asset.streamAutoplay.boolValue )
+        {
+            self.videoAsset = asset;
+            self.isPlayButtonVisible = NO;
+            [self.videoPlayerView setItemURL:[NSURL URLWithString:self.videoAsset.data]
+                                        loop:self.videoAsset.loop.boolValue
+                               audioMuted:self.videoAsset.audioMuted.boolValue];
+        }
+        else
+        {
+            self.isPlayButtonVisible = YES;
+        }
+    }
+    else
+    {
+        self.isPlayButtonVisible = NO;
+    }
+}
+
+- (BOOL)canPlayVideo
+{
+    return self.videoAsset != nil;
+}
+
+- (void)playVideo
+{
+    if ( self.canPlayVideo )
+    {
+        [self.videoPlayerView play];
+        [UIView animateWithDuration:0.2f
+                              delay:0.0f
+                            options:UIViewAnimationOptionCurveEaseOut
+                         animations:^void
+         {
+             self.videoPlayerView.alpha = 1.0f;
+         }
+                         completion:nil];
+    }
+}
+
+- (void)pauseVideo
+{
+    if ( self.canPlayVideo  )
+    {
+        [UIView animateWithDuration:0.2f
+                              delay:0.0f
+                            options:UIViewAnimationOptionCurveEaseOut
+                         animations:^void
+         {
+             self.videoPlayerView.alpha = 0.0f;
+         }
+                         completion:^(BOOL finished)
+         {
+             [self.videoPlayerView pause];
+         }];
+    }
+}
+
+- (void)setIsPlayButtonVisible:(BOOL)isPlayButtonVisible
+{
+    _isPlayButtonVisible = isPlayButtonVisible;
+    self.playImageView.hidden = self.playBackgroundImageView.hidden = !isPlayButtonVisible;
 }
 
 - (void)setupActionBar
@@ -219,16 +309,16 @@ static const CGFloat kDescriptionBuffer = 37.0;
 + (CGSize)actualSizeWithCollectionViewBounds:(CGRect)bounds sequence:(VSequence *)sequence
 {
     CGSize actual = [self desiredSizeWithCollectionViewBounds:bounds];
+    
     if (![[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
     {
         return actual;
     }
     
-    if (!sequence.nameEmbeddedInContent.boolValue)
+    if ( !sequence.nameEmbeddedInContent.boolValue && sequence.name.length > 0 )
     {
-        CGSize textSize = [sequence.name frameSizeForWidth:actual.width - kDescriptionBuffer * 2
-                                             andAttributes:[self sequenceDescriptionAttributes]];
-        actual.height = actual.height + textSize.height + kDescriptionBuffer;
+        CGSize textSize = [sequence.name frameSizeForWidth:actual.width andAttributes:[self sequenceDescriptionAttributes]];
+        actual.height += textSize.height + kDescriptionBuffer;
     }
     
     return actual;
@@ -236,29 +326,35 @@ static const CGFloat kDescriptionBuffer = 37.0;
 
 + (NSDictionary *)sequenceDescriptionAttributes
 {
-    BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
+    const BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
+    
+    NSMutableDictionary *attributes = [[NSMutableDictionary alloc] init];
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    
     NSString *colorKey = isTemplateC ? kVContentTextColor : kVMainTextColor;
+    attributes[ NSForegroundColorAttributeName ] = [[VThemeManager sharedThemeManager] themedColorForKey:colorKey];
     
-    //TODO: Remvoe this hardcoded font size
-    NSMutableDictionary *attributes = [@{
-                                         NSForegroundColorAttributeName:  [[VThemeManager sharedThemeManager] themedColorForKey:colorKey],
-                                         NSFontAttributeName: [[[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font] fontWithSize:19],
-                                         } mutableCopy];
-    
-    NSMutableParagraphStyle *paragraphStyle = [NSMutableParagraphStyle new];
-    paragraphStyle.maximumLineHeight = 25;
-    paragraphStyle.minimumLineHeight = 25;
-    attributes[NSParagraphStyleAttributeName] = paragraphStyle;
-    
-    if (!isTemplateC)
+    if ( isTemplateC )
     {
+        attributes[ NSFontAttributeName ] = [[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont];
+    }
+    else
+    {
+        attributes[ NSFontAttributeName ] = [[[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font] fontWithSize:19];
+        
+        paragraphStyle.maximumLineHeight = 25;
+        paragraphStyle.minimumLineHeight = 25;
+        
         NSShadow *shadow = [NSShadow new];
         [shadow setShadowBlurRadius:4.0f];
         [shadow setShadowColor:[[UIColor blackColor] colorWithAlphaComponent:0.3f]];
         [shadow setShadowOffset:CGSizeMake(0, 0)];
         attributes[NSShadowAttributeName] = shadow;
     }
-    return [attributes copy];
+    
+    attributes[ NSParagraphStyleAttributeName ] = paragraphStyle;
+    
+    return [NSDictionary dictionaryWithDictionary:attributes];
 }
 
 #pragma mark - CCHLinkTextViewDelegate
@@ -271,6 +367,13 @@ static const CGFloat kDescriptionBuffer = 37.0;
             tappedFromSequence:self.sequence
                       fromView:self];
     }
+}
+
+#pragma mark - VVideoViewDelegate
+
+- (void)videoViewPlayerDidBecomeReady:(VVideoView *)videoView
+{
+    [self playVideo];
 }
 
 @end

@@ -20,10 +20,14 @@
     NSDictionary *propertyMap = @{
                                   @"node_id" : VSelectorName(nodeId),
                                   @"type" : VSelectorName(type),
+                                  @"mime_type" : VSelectorName(mimeType),
                                   @"data" : VSelectorName(data),
                                   @"speed" : VSelectorName(speed),
                                   @"loop" : VSelectorName(loop),
-                                  @"asset_id" : VSelectorName(remoteId)
+                                  @"asset_id" : VSelectorName(remoteId),
+                                  @"stream_autoplay" : VSelectorName(streamAutoplay),
+                                  @"player_controls_disabled" : VSelectorName(playerControlsDisabled),
+                                  @"audio_muted" : VSelectorName(audioMuted)
                                   };
     
     RKEntityMapping *mapping = [RKEntityMapping

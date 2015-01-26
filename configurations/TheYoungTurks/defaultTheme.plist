@@ -9,17 +9,9 @@
 	<key>agreement.text</key>
 	<string>I&apos;m at least 13 years old and agree to Terms of Service</string>
 	<key>email.support</key>
-	<string>support@victorious.com</string>
-	<key>channel.name</key>
+	<string>services@victorious.com</string>
+	<key>creator.name</key>
 	<string>The Young Turks</string>
-	<key>channel.url.about</key>
-	<string>http://dev.getvictorious.com/api/static/about</string>
-	<key>channel.url.acknowledgements</key>
-	<string>http://dev.getvictorious.com/api/static/acknowledgments</string>
-	<key>channel.url.privacy</key>
-	<string>http://dev.getvictorious.com/api/static/privacy</string>
-	<key>channel.url.support</key>
-	<string>support@getvictorious.com</string>
 	<key>color</key>
 	<dict>
 		<key>red</key>
@@ -78,11 +70,11 @@
 	<key>color.link</key>
 	<dict>
 		<key>red</key>
-		<integer>203</integer>
+		<integer>10</integer>
 		<key>green</key>
-		<integer>42</integer>
+		<integer>10</integer>
 		<key>blue</key>
-		<integer>45</integer>
+		<integer>255</integer>
 		<key>alpha</key>
 		<integer>1</integer>
 	</dict>
@@ -100,11 +92,11 @@
 	<key>color.accent</key>
 	<dict>
 		<key>red</key>
-		<integer>173</integer>
+		<integer>223</integer>
 		<key>green</key>
-		<integer>36</integer>
+		<integer>1</integer>
 		<key>blue</key>
-		<integer>38</integer>
+		<integer>1</integer>
 		<key>alpha</key>
 		<integer>1</integer>
 	</dict>
@@ -122,84 +114,84 @@
 	<key>font.header</key>
 	<dict>
 		<key>fontName</key>
-		<string>Futura-Medium</string>
+		<string>Signika</string>
 		<key>fontSize</key>
 		<integer>18</integer>
 	</dict>
 	<key>font.heading1</key>
 	<dict>
 		<key>fontName</key>
-		<string>Futura-Medium</string>
+		<string>Signika</string>
 		<key>fontSize</key>
 		<integer>24</integer>
 	</dict>
 	<key>font.heading2</key>
 	<dict>
 		<key>fontName</key>
-		<string>Futura-Medium</string>
+		<string>Signika</string>
 		<key>fontSize</key>
 		<integer>20</integer>
 	</dict>
 	<key>font.heading3</key>
 	<dict>
 		<key>fontName</key>
-		<string>Futura-Medium</string>
+		<string>Signika</string>
 		<key>fontSize</key>
 		<integer>17</integer>
 	</dict>
 	<key>font.heading4</key>
 	<dict>
 		<key>fontName</key>
-		<string>Futura-Medium</string>
+		<string>Signika</string>
 		<key>fontSize</key>
 		<integer>15</integer>
 	</dict>
 	<key>font.paragraph</key>
 	<dict>
 		<key>fontName</key>
-		<string>Futura</string>
+		<string>Signika</string>
 		<key>fontSize</key>
 		<integer>13</integer>
 	</dict>
 	<key>font.label1</key>
 	<dict>
 		<key>fontName</key>
-		<string>Futura-Medium</string>
+		<string>Signika</string>
 		<key>fontSize</key>
 		<integer>13</integer>
 	</dict>
 	<key>font.label2</key>
 	<dict>
 		<key>fontName</key>
-		<string>Futura-Medium</string>
+		<string>Signika</string>
 		<key>fontSize</key>
 		<integer>12</integer>
 	</dict>
 	<key>font.label3</key>
 	<dict>
 		<key>fontName</key>
-		<string>Futura-Medium</string>
+		<string>Signika</string>
 		<key>fontSize</key>
 		<integer>11</integer>
 	</dict>
 	<key>font.label4</key>
 	<dict>
 		<key>fontName</key>
-		<string>Futura-Medium</string>
+		<string>Signika</string>
 		<key>fontSize</key>
 		<integer>10</integer>
 	</dict>
 	<key>font.button1</key>
 	<dict>
 		<key>fontName</key>
-		<string>Futura-Medium</string>
+		<string>Signika</string>
 		<key>fontSize</key>
 		<integer>25</integer>
 	</dict>
 	<key>font.button2</key>
 	<dict>
 		<key>fontName</key>
-		<string>Futura-Medium</string>
+		<string>Signika</string>
 		<key>fontSize</key>
 		<integer>17</integer>
 	</dict>

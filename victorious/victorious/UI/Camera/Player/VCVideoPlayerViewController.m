@@ -8,6 +8,8 @@
 #import "VVideoDownloadProgressIndicatorView.h"
 #import "VTracking.h"
 #import "VSettingManager.h"
+#import "VVideoUtils.h"
+
 static const CGFloat kToolbarHeight = 41.0f;
 static const NSTimeInterval kToolbarHideDelay =  2.0;
 static const NSTimeInterval kToolbarAnimationDuration =  0.2;
@@ -41,6 +43,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 @property (nonatomic) BOOL finishedFirstQuartile;
 @property (nonatomic) BOOL finishedMidpoint;
 @property (nonatomic) BOOL finishedThirdQuartile;
+@property (nonatomic) BOOL finishedFourthQuartile;
 @property (nonatomic) BOOL hasCaculatedItemTime;
 @property (nonatomic) BOOL wasPlayingBeforeDissappeared;
 @property (nonatomic) BOOL hasCalculatedItemSize;
@@ -48,6 +51,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 @property (nonatomic, readwrite) CMTime previousTime;
 @property (nonatomic, readwrite) CMTime currentTime;
 @property (nonatomic, readonly) BOOL isAtEnd;
+@property (nonatomic, strong) VVideoUtils *videoUtils;
 
 @property (nonatomic, readonly) NSDictionary *trackingParameters;
 @property (nonatomic, readonly) NSDictionary *trackingParametersForSkipEvent;
@@ -89,7 +93,6 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     self.shouldContinuePlayingAfterDismissal = YES;
     self.shouldShowToolbar = YES;
     self.shouldFireAnalytics = YES;
-    self.shouldLoop = NO;
     self.startTime = CMTimeMakeWithSeconds(0, 1);
     self.player = [[AVPlayer alloc] init];
     [self.player addObserver:self
@@ -105,9 +108,11 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     self.timeObserver = [self.player addPeriodicTimeObserverForInterval:CMTimeMake(1, 24)
                                                                   queue:dispatch_get_main_queue()
                                                              usingBlock:^(CMTime time)
-    {
-        [weakSelf didPlayToTime:time];
-    }];
+                         {
+                             [weakSelf didPlayToTime:time];
+                         }];
+    
+    self.videoUtils = [[VVideoUtils alloc] init];
 }
 
 - (void)dealloc
@@ -125,7 +130,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     self.view = [[UIView alloc] init];
     self.view.clipsToBounds = YES;
     self.view.backgroundColor = [[VSettingManager sharedManager] settingEnabledForKey:VExperimentsClearVideoBackground] ? [UIColor clearColor] : [UIColor blackColor];
-
+    
     self.playerLayer = [AVPlayerLayer playerLayerWithPlayer:self.player];
     self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspect;
     self.playerLayer.backgroundColor = [UIColor clearColor].CGColor;
@@ -155,7 +160,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     self.toolbarView.remainingTimeLabel.text = [self.timeFormatter stringForCMTime:kCMTimeInvalid];
     
     self.overlayView = [[UIView alloc] init];
-
+    
     [self updateViewForShowToolbarValue];
 }
 
@@ -176,7 +181,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-
+    
     self.wasPlayingBeforeDissappeared = (self.player.rate > 0.0f);
     [self.player pause];
 }
@@ -184,7 +189,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
+    
     if (self.wasPlayingBeforeDissappeared && self.shouldContinuePlayingAfterDismissal)
     {
         self.wasPlayingBeforeDissappeared = NO;
@@ -208,6 +213,12 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 
 #pragma mark - Properties
 
+- (void)setIsAudioEnabled:(BOOL)isAudioEnabled
+{
+    _isAudioEnabled = isAudioEnabled;
+    self.player.muted = !_isAudioEnabled;
+}
+
 - (void)setShouldChangeVideoGravityOnDoubleTap:(BOOL)shouldChangeVideoGravityOnDoubleTap
 {
     _shouldChangeVideoGravityOnDoubleTap = shouldChangeVideoGravityOnDoubleTap;
@@ -216,6 +227,10 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     {
         [self addDoubleTapGestureRecognizer];
     }
+    else
+    {
+        [self.view removeGestureRecognizer:self.videoFrameDoubleTapGesture];
+    }
 }
 
 - (void)setPlayer:(AVPlayer *)player
@@ -223,50 +238,36 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     _player = player;
 }
 
-- (void)setItemURL:(NSURL *)itemURL withLoopCount:(NSUInteger)loopCount
+- (void)setPlayerItem:(AVPlayerItem *)playerItem
 {
-    _itemURL = itemURL;
-    _loopCount = loopCount;
-    
-    AVAsset *asset = [AVURLAsset assetWithURL:itemURL];
-    AVPlayerItem *playerItem;
-
-    if (loopCount > 1)
-    {
-        AVMutableComposition *composition = [AVMutableComposition composition];
-        CMTimeRange timeRange = CMTimeRangeMake(kCMTimeZero, asset.duration);
-        
-        for (NSUInteger i = 0; i < loopCount; i++)
-        {
-            [composition insertTimeRange:timeRange ofAsset:asset atTime:composition.duration error:nil];
-        }
-        
-        NSArray *tracks = [asset tracksWithMediaType:AVMediaTypeVideo];
-        if ([tracks count])
-        {
-            AVAssetTrack *assetTrack = tracks[0];
-            AVMutableCompositionTrack *compositionTrack = [composition mutableTrackCompatibleWithTrack:assetTrack];
-            compositionTrack.preferredTransform = assetTrack.preferredTransform;
-        }
-        playerItem = [AVPlayerItem playerItemWithAsset:composition];
-    }
-    else
-    {
-        playerItem = [AVPlayerItem playerItemWithAsset:asset];
-    }
+    _playerItem = playerItem;
     
     [self.player replaceCurrentItemWithPlayerItem:playerItem];
 }
 
-- (void)setItemURL:(NSURL *)itemURL
+- (void)setLoopWithoutComposition:(BOOL)loopWithoutComposition
 {
-    [self setItemURL:itemURL withLoopCount:1];
+    _loopWithoutComposition = loopWithoutComposition;
+    _isLooping = YES;
 }
 
-- (void)setShouldLoop:(BOOL)shouldLoop
+- (void)setItemURL:(NSURL *)itemURL loop:(BOOL)loop
 {
-    _shouldLoop = shouldLoop;
-    self.player.actionAtItemEnd = shouldLoop ? AVPlayerActionAtItemEndNone : AVPlayerActionAtItemEndPause;
+    _itemURL = itemURL;
+    _isLooping = self.loopWithoutComposition ? YES : loop;
+    
+    self.player.actionAtItemEnd = loop ? AVPlayerActionAtItemEndNone : AVPlayerActionAtItemEndPause;
+    
+    const BOOL shouldLoopWithComposition = loop && !self.loopWithoutComposition;
+    [self.videoUtils createPlayerItemWithURL:itemURL loop:shouldLoopWithComposition readyCallback:^(AVPlayerItem *playerItem)
+     {
+         [self.player replaceCurrentItemWithPlayerItem:playerItem];
+     }];
+}
+
+- (void)setItemURL:(NSURL *)itemURL
+{
+    [self setItemURL:itemURL loop:NO];
 }
 
 - (void)setStartSeconds:(Float64)startSeconds
@@ -318,7 +319,6 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 - (void)updateViewForShowToolbarValue
 {
     self.toolbarView.hidden = !self.shouldShowToolbar;
-    self.videoFrameTapGesture.enabled = self.shouldShowToolbar;
 }
 
 - (void)setOverlayView:(UIView *)overlayView
@@ -369,18 +369,18 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
                               delay:0
                             options:UIViewAnimationOptionCurveLinear
                          animations:^(void)
-        {
-            if (self.animateWithPlayControls)
-            {
-                self.animateWithPlayControls(NO);
-            }
-            self.toolbarView.alpha = 1.0f;
-            self.overlayView.alpha = 1.0f;
-        }
+         {
+             if (self.animateWithPlayControls)
+             {
+                 self.animateWithPlayControls(NO);
+             }
+             self.toolbarView.alpha = 1.0f;
+             self.overlayView.alpha = 1.0f;
+         }
                          completion:^(BOOL finished)
-        {
-            self.toolbarAnimating = NO;
-        }];
+         {
+             self.toolbarAnimating = NO;
+         }];
     }
     else
     {
@@ -467,7 +467,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventVideoDidSkip parameters:params];
         }
     }
-
+    
     if (!self.sliderTouchActive)
     {
         self.toolbarView.slider.value = percentElapsed;
@@ -523,10 +523,10 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
         }
         self.finishedThirdQuartile = YES;
     }
-
+    
     if (CMTIME_IS_VALID(self.endTime) && CMTIME_COMPARE_INLINE(time, >=, self.endTime))
     {
-        if (self.shouldLoop)
+        if (self.isLooping)
         {
             if (CMTIME_IS_VALID(self.startTime))
             {
@@ -618,28 +618,28 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     VCVideoPlayerViewController *__weak weakSelf = self;
     AVAssetTrack *assetTrack = track.assetTrack;
     [assetTrack loadValuesAsynchronouslyForKeys:@[NSStringFromSelector(@selector(naturalSize))] completionHandler:^(void)
-    {
-        dispatch_async(dispatch_get_main_queue(), ^(void)
-        {
-            if (item != weakSelf.player.currentItem)
-            {
-                return;
-            }
-            
-            AVKeyValueStatus status = [assetTrack statusOfValueForKey:NSStringFromSelector(@selector(naturalSize)) error:nil];
-            if (status == AVKeyValueStatusLoaded)
-            {
-                // sometimes the size is incorrect
-                if (CGSizeEqualToSize(assetTrack.naturalSize, CGSizeZero))
-                {
-                    return;
-                }
-                weakSelf.naturalSize = assetTrack.naturalSize;
-                weakSelf.hasCalculatedItemSize = YES;
-                [self notifyDelegateReadyToPlayIfReallyReady];
-            }
-        });
-    }];
+     {
+         dispatch_async(dispatch_get_main_queue(), ^(void)
+                        {
+                            if (item != weakSelf.player.currentItem)
+                            {
+                                return;
+                            }
+                            
+                            AVKeyValueStatus status = [assetTrack statusOfValueForKey:NSStringFromSelector(@selector(naturalSize)) error:nil];
+                            if (status == AVKeyValueStatusLoaded)
+                            {
+                                // sometimes the size is incorrect
+                                if (CGSizeEqualToSize(assetTrack.naturalSize, CGSizeZero))
+                                {
+                                    return;
+                                }
+                                weakSelf.naturalSize = assetTrack.naturalSize;
+                                weakSelf.hasCalculatedItemSize = YES;
+                                [self notifyDelegateReadyToPlayIfReallyReady];
+                            }
+                        });
+     }];
 }
 
 #pragma mark - Actions
@@ -704,7 +704,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 {
     if (notification.object == self.player.currentItem)
     {
-        if (self.shouldLoop)
+        if (self.isLooping)
         {
             if (CMTIME_IS_VALID(self.startTime))
             {
@@ -724,16 +724,23 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
             {
                 [self.delegate videoPlayerDidReachEndOfVideo:self];
             }
-            if ( self.isTrackingEnabled )
-            {
-                NSDictionary *params = @{ VTrackingKeyUrls : self.trackingItem.videoComplete100 };
-                [[VTrackingManager sharedInstance] trackEvent:VTrackingEventVideoDidComplete100 parameters:params];
-            }
-            self.startedVideo          = NO;
-            self.finishedFirstQuartile = NO;
-            self.finishedMidpoint      = NO;
-            self.finishedThirdQuartile = NO;
+            self.startedVideo           = NO;
+            self.finishedFirstQuartile  = NO;
+            self.finishedMidpoint       = NO;
+            self.finishedThirdQuartile  = NO;
+            self.finishedFourthQuartile = NO;
         }
+    }
+    
+    if (!self.finishedFourthQuartile )
+    {
+        if ( self.isTrackingEnabled )
+        {
+            NSDictionary *params = @{ VTrackingKeyUrls : self.trackingItem.videoComplete100 };
+            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventVideoDidComplete100 parameters:params];
+        }
+        
+        self.finishedFourthQuartile = YES;
     }
 }
 
@@ -756,10 +763,11 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
         self.delegateNotifiedOfReadinessToPlay = NO;
         AVPlayerItem *newItem = change[NSKeyValueChangeNewKey];
         [self removeObserverFromOldPlayerItemAndAddObserverToPlayerItem:newItem];
-        self.startedVideo          = NO;
-        self.finishedFirstQuartile = NO;
-        self.finishedMidpoint      = NO;
-        self.finishedThirdQuartile = NO;
+        self.startedVideo           = NO;
+        self.finishedFirstQuartile  = NO;
+        self.finishedMidpoint       = NO;
+        self.finishedThirdQuartile  = NO;
+        self.finishedFourthQuartile = NO;
     }
     else if (object == self.player && [keyPath isEqualToString:NSStringFromSelector(@selector(rate))])
     {
@@ -907,7 +915,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 
 - (void)notifyDelegateReadyToPlayIfReallyReady
 {
-    if ((!self.delegateNotifiedOfReadinessToPlay) && (self.player.status == AVPlayerStatusReadyToPlay) && (self.hasCaculatedItemTime) && (self.hasCalculatedItemSize))
+    if ((!self.delegateNotifiedOfReadinessToPlay) && (self.player.status == AVPlayerStatusReadyToPlay) )
     {
         if ([self.delegate respondsToSelector:@selector(videoPlayerReadyToPlay:)])
         {

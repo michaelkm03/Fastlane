@@ -109,6 +109,12 @@
                                                            method:RKRequestMethodPOST | RKRequestMethodGET
                                                       pathPattern:@"/api/comment/remove"
                                                           keyPath:@"payload"
+                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
+              
+              [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
+                                                           method:RKRequestMethodPOST | RKRequestMethodGET
+                                                      pathPattern:@"/api/comment/find/:sequenceid/:commentid/:perpage"
+                                                          keyPath:@"payload"
                                                       statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)]
                ];
 }
