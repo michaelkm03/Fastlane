@@ -126,11 +126,15 @@
     
     [self addChildViewController:self.menuViewController];
     self.menuViewController.view.frame = self.view.bounds;
+    self.menuViewController.view.translatesAutoresizingMaskIntoConstraints = YES;
+    self.menuViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self.view addSubview:self.menuViewController.view];
     [self.menuViewController didMoveToParentViewController:self];
 
     [self addChildViewController:self.contentViewController];
     self.contentViewController.view.frame = self.view.bounds;
+    self.contentViewController.view.translatesAutoresizingMaskIntoConstraints = YES;
+    self.contentViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self.view addSubview:self.contentViewController.view];
     [self.contentViewController didMoveToParentViewController:self];
     
