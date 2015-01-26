@@ -35,4 +35,7 @@
  */
 - (void)addFitToParentConstraintsToSubview:(UIView *)subview;
 
+#warning Add comments
+- (void)addCenterToParentContraintsToSubview:(UIView *)subview;
+
 @end

@@ -53,4 +53,27 @@
                                       bottom:0.0];
 }
 
+- (void)addCenterToParentContraintsToSubview:(UIView *)subview
+{
+    NSParameterAssert( [subview isDescendantOfView:self] );
+    
+    subview.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:subview
+                                                     attribute:NSLayoutAttributeCenterX
+                                                     relatedBy:NSLayoutRelationEqual
+                                                        toItem:self
+                                                     attribute:NSLayoutAttributeCenterX
+                                                    multiplier:1.0f
+                                                      constant:0.0f]];
+    
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:subview
+                                                     attribute:NSLayoutAttributeCenterY
+                                                     relatedBy:NSLayoutRelationEqual
+                                                        toItem:self
+                                                     attribute:NSLayoutAttributeCenterY
+                                                    multiplier:1.0f
+                                                      constant:0.0f]];
+}
+
 @end

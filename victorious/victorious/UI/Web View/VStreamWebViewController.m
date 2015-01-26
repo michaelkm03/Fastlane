@@ -7,8 +7,7 @@
 //
 
 #import "VStreamWebViewController.h"
-
-#import "VStreamWebViewController.h"
+#import "UIVIew+AutoLayout.h"
 #import "VThemeManager.h"
 #import "VWebViewFactory.h"
 #import "VSequence+Fetcher.h"
@@ -18,9 +17,8 @@ static const NSTimeInterval kWebViewFirstLoadAnimationDuration   = 0.35f;
 
 @interface VStreamWebViewController() <VWebViewDelegate>
 
-@property (nonatomic, weak) IBOutlet UIView *webViewContainer;
 @property (nonatomic, strong) id<VWebViewProtocol> webView;
-@property (nonatomic, weak) IBOutlet UIActivityIndicatorView *activityIndicator;
+@property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
 
 @end
 
@@ -37,29 +35,15 @@ static const NSTimeInterval kWebViewFirstLoadAnimationDuration   = 0.35f;
     self.webView.delegate = self;
     self.webView.asView.userInteractionEnabled = NO;
     self.webView.asView.backgroundColor = [UIColor clearColor];
-    [self.webViewContainer addSubview:self.webView.asView];
-    [self addConstraintsToView:self.webView.asView];
+    [self.view addSubview:self.webView.asView];
+    [self.view addFitToParentConstraintsToSubview:self.webView.asView];
+    
+    self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    [self.view addSubview:self.activityIndicator];
+    [self.view addCenterToParentContraintsToSubview:self.activityIndicator];
     
     // The webview should start off hidden before first load to prevent an ugly white background from showing
     self.webView.asView.alpha = 0.0;
-}
-
-- (void)addConstraintsToView:(UIView *)view
-{
-    NSParameterAssert( view.superview != nil );
-    
-    view.translatesAutoresizingMaskIntoConstraints = NO;
-    NSDictionary *views = @{ @"view" : view };
-    NSArray *constraintsH = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[view]-0-|"
-                                                                    options:kNilOptions
-                                                                    metrics:nil
-                                                                      views:views];
-    NSArray *constraintsV = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[view]-0-|"
-                                                                    options:kNilOptions
-                                                                    metrics:nil
-                                                                      views:views];
-    [view.superview addConstraints:constraintsH];
-    [view.superview addConstraints:constraintsV];
 }
 
 - (void)setUrl:(NSURL *)url
