@@ -16,7 +16,7 @@
  `H:|-leading-[subview]-trailing-|`
  `V:|-top-[subview]-bottom-|`
  */
-- (void)addFitToParentConstraintsToSubview:(UIView *)subview
+- (void)v_addFitToParentConstraintsToSubview:(UIView *)subview
                                    leading:(CGFloat)leading
                                   trailing:(CGFloat)trailing
                                        top:(CGFloat)top
@@ -26,19 +26,19 @@
  Calls method `addFitToParentConstraintsToSubview:leading:trailing:top:bottom:' but
  provides the `space` param to all values, leading, trailing, top and bottom.
  */
-- (void)addFitToParentConstraintsToSubview:(UIView *)subview
+- (void)v_addFitToParentConstraintsToSubview:(UIView *)subview
                                      space:(CGFloat)space;
 
 /**
  Calls method `addFitToParentConstraintsToSubview:leading:trailing:top:bottom:' but
  sets leading, trailing, top and bottom values to zero;
  */
-- (void)addFitToParentConstraintsToSubview:(UIView *)subview;
+- (void)v_addFitToParentConstraintsToSubview:(UIView *)subview;
 
 /**
  Applies centering to subview of both horizontal and verticall
  directions to superview.
  */
-- (void)addCenterToParentContraintsToSubview:(UIView *)subview;
+- (void)v_addCenterToParentContraintsToSubview:(UIView *)subview;
 
 @end

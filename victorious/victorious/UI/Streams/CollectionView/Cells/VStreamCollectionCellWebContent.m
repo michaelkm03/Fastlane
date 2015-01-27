@@ -29,7 +29,7 @@
     
     self.webViewController = [[VStreamWebViewController alloc] init];
     [self.webViewContainer addSubview:self.webViewController.view];
-    [self.webViewContainer addFitToParentConstraintsToSubview:self.webViewController.view];
+    [self.webViewContainer v_addFitToParentConstraintsToSubview:self.webViewController.view];
 }
 
 - (void)setSequence:(VSequence *)sequence

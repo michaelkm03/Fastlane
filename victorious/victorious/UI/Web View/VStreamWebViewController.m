@@ -36,11 +36,11 @@ static const NSTimeInterval kWebViewFirstLoadAnimationDuration   = 0.35f;
     self.webView.asView.userInteractionEnabled = NO;
     self.webView.asView.backgroundColor = [UIColor clearColor];
     [self.view addSubview:self.webView.asView];
-    [self.view addFitToParentConstraintsToSubview:self.webView.asView];
+    [self.view v_addFitToParentConstraintsToSubview:self.webView.asView];
     
     self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
     [self.view addSubview:self.activityIndicator];
-    [self.view addCenterToParentContraintsToSubview:self.activityIndicator];
+    [self.view v_addCenterToParentContraintsToSubview:self.activityIndicator];
     
     // The webview should start off hidden before first load to prevent an ugly white background from showing
     self.webView.asView.alpha = 0.0;

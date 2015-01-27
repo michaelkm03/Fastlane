@@ -10,7 +10,7 @@
 
 @implementation UIView (AutoLayout)
 
-- (void)addFitToParentConstraintsToSubview:(UIView *)subview
+- (void)v_addFitToParentConstraintsToSubview:(UIView *)subview
                                    leading:(CGFloat)leading
                                   trailing:(CGFloat)trailing
                                        top:(CGFloat)top
@@ -37,7 +37,7 @@
 - (void)addFitToParentConstraintsToSubview:(UIView *)subview
                                      space:(CGFloat)space
 {
-    [self addFitToParentConstraintsToSubview:subview
+    [self v_addFitToParentConstraintsToSubview:subview
                                      leading:space
                                     trailing:space
                                          top:space
@@ -46,7 +46,7 @@
 
 - (void)addFitToParentConstraintsToSubview:(UIView *)subview
 {
-    [self addFitToParentConstraintsToSubview:subview
+    [self v_addFitToParentConstraintsToSubview:subview
                                      leading:0.0
                                     trailing:0.0
                                          top:0.0

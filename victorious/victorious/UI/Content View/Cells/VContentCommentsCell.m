@@ -116,7 +116,7 @@ static NSCache *_sharedImageCache = nil;
     self.commentersAvatarImageView.translatesAutoresizingMaskIntoConstraints = NO;
     
     [self setupSwipeView];
-    [self.contentView addFitToParentConstraintsToSubview:self.swipeViewController.view];
+    [self.contentView v_addFitToParentConstraintsToSubview:self.swipeViewController.view];
 }
 
 - (void)prepareContentAndMediaView

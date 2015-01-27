@@ -119,7 +119,7 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
     {
         self.webViewController = [[VStreamWebViewController alloc] init];
         [self.webViewContainer addSubview:self.webViewController.view];
-        [self.webViewContainer addFitToParentConstraintsToSubview:self.webViewController.view];
+        [self.webViewContainer v_addFitToParentConstraintsToSubview:self.webViewController.view];
         self.previewImageView.hidden = YES;
     }
     
