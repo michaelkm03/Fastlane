@@ -92,10 +92,24 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
         {
             [self setupWebViewWithSequence:sequence];
         }
+        else
+        {
+            [self cleanupWebView];
+        }
     }
     else
     {
         self.profileImageButton.hidden = YES;
+    }
+}
+
+- (void)cleanupWebView
+{
+    if ( self.webViewController != nil )
+    {
+        [self.webViewController.view removeFromSuperview];
+        self.webViewController = nil;
+        self.previewImageView.hidden = NO;
     }
 }
 
@@ -116,13 +130,6 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
 - (void)prepareForReuse
 {
     [super prepareForReuse];
-    
-    if ( self.webViewController != nil )
-    {
-        [self.webViewController.view removeFromSuperview];
-        self.webViewController = nil;
-        self.previewImageView.hidden = NO;
-    }
     
     self.streamItem = nil;
     self.nameLabel.frame = self.originalNameLabelFrame;
