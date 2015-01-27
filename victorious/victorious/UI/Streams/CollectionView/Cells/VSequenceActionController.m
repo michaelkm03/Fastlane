@@ -131,6 +131,7 @@ static const char kAssociatedWorkspaceFlowKey;
                                                                    forKey:VDependencyManagerWorkspaceFlowKey
                                                     withAddedDependencies:addedDependencies];
     
+    __weak typeof(self) welf = self;
     self.workspaceFlowController.completion = ^void(BOOL finished)
     {
         [weakViewController dismissViewControllerAnimated:YES
@@ -138,6 +139,7 @@ static const char kAssociatedWorkspaceFlowKey;
                                                    if (completion)
                                                    {
                                                        completion(finished);
+                                                       welf.workspaceFlowController = nil;
                                                    }
                                                }];
     };
