@@ -95,7 +95,7 @@
     {
         renderWidth = renderWidth - remainderWidth;
     }
-        renderSize.width = renderWidth;
+    renderSize.width = renderWidth;
     NSInteger renderHeight = (NSInteger)renderSize.height;
     NSInteger remainderHeight = (renderHeight % 16) ;
     if (remainderHeight != 0)
