@@ -125,7 +125,6 @@
     _playerControlsDisabled = playerControlsDisabled;
     if ( _playerControlsDisabled )
     {
-        self.videoPlayerViewController.shouldChangeVideoGravityOnDoubleTap = NO;
         self.videoPlayerViewController.shouldShowToolbar = NO;
         self.videoPlayerViewController.videoPlayerLayerVideoGravity = AVLayerVideoGravityResizeAspectFill;
     }

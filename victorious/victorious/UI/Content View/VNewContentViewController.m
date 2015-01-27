@@ -546,7 +546,10 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     }
     
     // Pause playback on presentation
-    [self.videoCell pause];
+    if ( ![self.videoCell playerControlsDisabled] )
+    {
+        [self.videoCell pause];
+    }
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -1451,11 +1454,14 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 
 #pragma mark VPurchaseViewControllerDelegate
 
-- (void)purchaseDidComplete
+- (void)purchaseDidFinish:(BOOL)didMakePurchase
 {
     [self.presentedViewController dismissViewControllerAnimated:YES completion:^void
      {
-         [self.viewModel.experienceEnhancerController updateData];
+         if ( didMakePurchase )
+         {
+             [self.viewModel.experienceEnhancerController updateData];
+         }
      }];
 }
 
