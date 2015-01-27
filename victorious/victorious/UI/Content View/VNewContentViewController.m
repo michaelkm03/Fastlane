@@ -1451,11 +1451,18 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 
 #pragma mark VPurchaseViewControllerDelegate
 
-- (void)purchaseDidComplete
+- (void)purchaseDidFinish:(BOOL)didMakePurchase
 {
     [self.presentedViewController dismissViewControllerAnimated:YES completion:^void
      {
-         [self.viewModel.experienceEnhancerController updateData];
+         if ( self.videoCell != nil && self.videoCell.playerControlsDisabled )
+         {
+             [self.videoCell play];
+         }
+         if ( didMakePurchase )
+         {
+             [self.viewModel.experienceEnhancerController updateData];
+         }
      }];
 }
 
