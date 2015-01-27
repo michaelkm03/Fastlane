@@ -117,20 +117,20 @@ static NSString * const kFilterIndexKey = @"filterIndex";
     CIImage *textImage = [CIImage v_imageWithUImage:self.canvasToolViewController.renderedImage];
     
     // Apply scale
-    CGFloat widthScaleFactor = inputImage.extent.size.width / textImage.extent.size.width;
-    CGFloat heightScaleFactor = inputImage.extent.size.height / textImage.extent.size.height;
+    CGFloat widthScaleFactor = textImage.extent.size.width / inputImage.extent.size.width;
+    CGFloat heightScaleFactor = textImage.extent.size.height / inputImage.extent.size.height;
     CGAffineTransform scaleTransform = CGAffineTransformMakeScale(widthScaleFactor, heightScaleFactor);
     
     CIFilter *transformScaleFilter = [CIFilter filterWithName:@"CIAffineTransform"];
     [transformScaleFilter setValue:[NSValue valueWithBytes:&scaleTransform
                                                   objCType:@encode(CGAffineTransform)]
                             forKey:kCIInputTransformKey];
-    [transformScaleFilter setValue:textImage
+    [transformScaleFilter setValue:inputImage
                             forKey:kCIInputImageKey];
     
     // Adjust origin
-    CGFloat originXDelta = inputImage.extent.origin.x - [transformScaleFilter outputImage].extent.origin.x ;
-    CGFloat originYDelta = inputImage.extent.origin.y - [transformScaleFilter outputImage].extent.origin.y;
+    CGFloat originXDelta = textImage.extent.origin.x - [transformScaleFilter outputImage].extent.origin.x;
+    CGFloat originYDelta = textImage.extent.origin.y - [transformScaleFilter outputImage].extent.origin.y;
     CGAffineTransform originTransofrm = CGAffineTransformMakeTranslation(originXDelta, originYDelta);
     CIFilter *transformOriginFilter = [CIFilter filterWithName:@"CIAffineTransform"];
     [transformOriginFilter setValue:[NSValue valueWithBytes:&originTransofrm
@@ -141,9 +141,9 @@ static NSString * const kFilterIndexKey = @"filterIndex";
     
     // Composite
     CIFilter *compositionFilter = [CIFilter filterWithName:@"CISourceOverCompositing"];
-    [compositionFilter setValue:inputImage
-                         forKey:kCIInputBackgroundImageKey];
     [compositionFilter setValue:[transformOriginFilter outputImage]
+                         forKey:kCIInputBackgroundImageKey];
+    [compositionFilter setValue:textImage
                          forKey:kCIInputImageKey];
     
     return [compositionFilter outputImage];
