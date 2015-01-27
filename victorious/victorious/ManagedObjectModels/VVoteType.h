@@ -26,6 +26,7 @@
 @property (nonatomic, retain) NSNumber *isPaid;
 @property (nonatomic, retain) NSString *imageContentMode;
 @property (nonatomic, retain) NSString *productIdentifier;
+@property (nonatomic, retain) NSNumber *scaleFactor;
 @property (nonatomic, retain) VTracking *tracking;
 
 @end

@@ -925,7 +925,8 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
             {
                 if (selectedEnhancer.isBallistic)
                 {
-                    UIImageView *animationImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 100.0f, 100.0f)];
+                    CGRect animationFrameSize = CGRectMake(0, 0, selectedEnhancer.desiredSize.width, selectedEnhancer.desiredSize.height);
+                    UIImageView *animationImageView = [[UIImageView alloc] initWithFrame:animationFrameSize];
                     animationImageView.contentMode = UIViewContentModeScaleAspectFit;
                     
                     CGPoint convertedCenterForAnimation = [welf.experienceEnhancerCell.experienceEnhancerBar convertPoint:selectionCenter toView:welf.view];
