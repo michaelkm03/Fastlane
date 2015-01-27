@@ -546,7 +546,10 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     }
     
     // Pause playback on presentation
-    [self.videoCell pause];
+    if ( ![self.videoCell playerControlsDisabled] )
+    {
+        [self.videoCell pause];
+    }
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -1455,10 +1458,6 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     [self.presentedViewController dismissViewControllerAnimated:YES completion:^void
      {
-         if ( self.videoCell != nil && self.videoCell.playerControlsDisabled )
-         {
-             [self.videoCell play];
-         }
          if ( didMakePurchase )
          {
              [self.viewModel.experienceEnhancerController updateData];
