@@ -291,7 +291,10 @@ static const char kWorkspaceFlowControllerKey;
     self.workspaceFlowController.completion = ^void(BOOL finished)
     {
         [welf dismissViewControllerAnimated:YES
-                                 completion:nil];
+                                 completion:^
+        {
+            welf.workspaceFlowController = nil;
+        }];
     };
     [self presentViewController:self.workspaceFlowController.flowRootViewController
                        animated:YES
