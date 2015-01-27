@@ -34,7 +34,7 @@
                                                                    views:views]];
 }
 
-- (void)addFitToParentConstraintsToSubview:(UIView *)subview
+- (void)v_addFitToParentConstraintsToSubview:(UIView *)subview
                                      space:(CGFloat)space
 {
     [self v_addFitToParentConstraintsToSubview:subview
@@ -44,7 +44,7 @@
                                       bottom:space];
 }
 
-- (void)addFitToParentConstraintsToSubview:(UIView *)subview
+- (void)v_addFitToParentConstraintsToSubview:(UIView *)subview
 {
     [self v_addFitToParentConstraintsToSubview:subview
                                      leading:0.0
@@ -53,7 +53,7 @@
                                       bottom:0.0];
 }
 
-- (void)addCenterToParentContraintsToSubview:(UIView *)subview
+- (void)v_addCenterToParentContraintsToSubview:(UIView *)subview
 {
     NSParameterAssert( [subview isDescendantOfView:self] );
     
