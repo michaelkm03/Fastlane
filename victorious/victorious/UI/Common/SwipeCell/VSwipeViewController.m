@@ -154,7 +154,7 @@
     [self.blockerButtonOverlay addTarget:self action:@selector(blockerButtonOverlayTapped:) forControlEvents:UIControlEventTouchDown];
     [self.cellDelegate.parentCellView addSubview:self.blockerButtonOverlay];
     [self.cellDelegate.parentCellView bringSubviewToFront:self.blockerButtonOverlay];
-    [self.cellDelegate.parentCellView addFitToParentConstraintsToSubview:self.blockerButtonOverlay];
+    [self.cellDelegate.parentCellView v_addFitToParentConstraintsToSubview:self.blockerButtonOverlay];
 }
 
 - (void)createLeftGutterView

@@ -10,7 +10,7 @@
 
 @implementation UIView (AutoLayout)
 
-- (void)addFitToParentConstraintsToSubview:(UIView *)subview
+- (void)v_addFitToParentConstraintsToSubview:(UIView *)subview
                                    leading:(CGFloat)leading
                                   trailing:(CGFloat)trailing
                                        top:(CGFloat)top
@@ -34,23 +34,46 @@
                                                                    views:views]];
 }
 
-- (void)addFitToParentConstraintsToSubview:(UIView *)subview
+- (void)v_addFitToParentConstraintsToSubview:(UIView *)subview
                                      space:(CGFloat)space
 {
-    [self addFitToParentConstraintsToSubview:subview
+    [self v_addFitToParentConstraintsToSubview:subview
                                      leading:space
                                     trailing:space
                                          top:space
                                       bottom:space];
 }
 
-- (void)addFitToParentConstraintsToSubview:(UIView *)subview
+- (void)v_addFitToParentConstraintsToSubview:(UIView *)subview
 {
-    [self addFitToParentConstraintsToSubview:subview
+    [self v_addFitToParentConstraintsToSubview:subview
                                      leading:0.0
                                     trailing:0.0
                                          top:0.0
                                       bottom:0.0];
+}
+
+- (void)v_addCenterToParentContraintsToSubview:(UIView *)subview
+{
+    NSParameterAssert( [subview isDescendantOfView:self] );
+    
+    subview.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:subview
+                                                     attribute:NSLayoutAttributeCenterX
+                                                     relatedBy:NSLayoutRelationEqual
+                                                        toItem:self
+                                                     attribute:NSLayoutAttributeCenterX
+                                                    multiplier:1.0f
+                                                      constant:0.0f]];
+    
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:subview
+                                                     attribute:NSLayoutAttributeCenterY
+                                                     relatedBy:NSLayoutRelationEqual
+                                                        toItem:self
+                                                     attribute:NSLayoutAttributeCenterY
+                                                    multiplier:1.0f
+                                                      constant:0.0f]];
 }
 
 @end

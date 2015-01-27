@@ -20,6 +20,8 @@
 
 #import "VThemeManager.h"
 #import "VSettingManager.h"
+#import "VStreamWebViewController.h"
+#import "UIVIew+AutoLayout.h"
 
 @interface VMarqueeStreamItemCell ()
 
@@ -27,6 +29,8 @@
 
 @property (nonatomic, weak) IBOutlet UIImageView *previewImageView;
 @property (nonatomic, weak) IBOutlet UIImageView *pollOrImageView;
+@property (nonatomic, weak) IBOutlet UIView *webViewContainer;
+@property (nonatomic, strong) VStreamWebViewController *webViewController;
 
 @property (nonatomic, weak) IBOutlet VDefaultProfileButton *profileImageButton;
 
@@ -66,32 +70,61 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
 - (void)setStreamItem:(VStreamItem *)streamItem
 {
     _streamItem = streamItem;
+    
     self.nameLabel.text = streamItem.name;
     [self.nameLabel sizeToFit];
-    
-    if ([streamItem isKindOfClass:[VSequence class]] && [(VSequence *)streamItem isPoll])
-    {
-        self.pollOrImageView.hidden = NO;
-    }
-    else
-    {
-        self.pollOrImageView.hidden = YES;
-    }
     
     NSURL *previewImageUrl = [NSURL URLWithString: [streamItem.previewImagePaths firstObject]];
     [self.previewImageView fadeInImageAtURL:previewImageUrl
                            placeholderImage:[UIImage resizeableImageWithColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]]];
     
-    if ([streamItem isKindOfClass:[VSequence class]])
+    if ( [streamItem isKindOfClass:[VSequence class]] )
     {
-        [self.profileImageButton setProfileImageURL:[NSURL URLWithString:((VSequence *)streamItem).user.pictureUrl]
+        VSequence *sequence = (VSequence *)streamItem;
+        
+        self.pollOrImageView.hidden = ![sequence isPoll];
+        
+        [self.profileImageButton setProfileImageURL:[NSURL URLWithString:sequence.user.pictureUrl]
                                            forState:UIControlStateNormal];
         self.profileImageButton.hidden = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
+        
+        if ( [sequence isWebContent] )
+        {
+            [self setupWebViewWithSequence:sequence];
+        }
+        else
+        {
+            [self cleanupWebView];
+        }
     }
     else
     {
         self.profileImageButton.hidden = YES;
     }
+}
+
+- (void)cleanupWebView
+{
+    if ( self.webViewController != nil )
+    {
+        [self.webViewController.view removeFromSuperview];
+        self.webViewController = nil;
+        self.previewImageView.hidden = NO;
+    }
+}
+
+- (void)setupWebViewWithSequence:(VSequence *)sequence
+{
+    if ( self.webViewController == nil )
+    {
+        self.webViewController = [[VStreamWebViewController alloc] init];
+        [self.webViewContainer addSubview:self.webViewController.view];
+        [self.webViewContainer v_addFitToParentConstraintsToSubview:self.webViewController.view];
+        self.previewImageView.hidden = YES;
+    }
+    
+    NSString *contentUrl = (NSString *)sequence.previewData;
+    [self.webViewController setUrl:[NSURL URLWithString:contentUrl]];
 }
 
 - (void)prepareForReuse

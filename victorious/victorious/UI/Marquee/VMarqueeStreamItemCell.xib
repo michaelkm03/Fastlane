@@ -16,6 +16,10 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="283"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8ks-bN-miQ" userLabel="Web View Container">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="200"/>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    </view>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ODe-uo-H79">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="200"/>
                     </imageView>
@@ -54,13 +58,17 @@
                 <constraint firstItem="ODe-uo-H79" firstAttribute="top" secondItem="tdJ-QP-9ol" secondAttribute="top" id="5uf-3A-yHo"/>
                 <constraint firstAttribute="trailing" secondItem="ODe-uo-H79" secondAttribute="trailing" id="7bJ-QV-5tr"/>
                 <constraint firstAttribute="centerX" secondItem="ODe-uo-H79" secondAttribute="centerX" id="QnN-ct-3wG"/>
+                <constraint firstAttribute="trailing" secondItem="8ks-bN-miQ" secondAttribute="trailing" id="Tu7-8A-cne"/>
                 <constraint firstItem="83k-OL-pLv" firstAttribute="leading" secondItem="tdJ-QP-9ol" secondAttribute="leading" constant="127" id="Vqj-UG-avq"/>
+                <constraint firstItem="8ks-bN-miQ" firstAttribute="leading" secondItem="tdJ-QP-9ol" secondAttribute="leading" id="WzT-oR-jnZ"/>
                 <constraint firstItem="9uF-IU-Ue1" firstAttribute="top" secondItem="fOr-V2-P1Q" secondAttribute="bottom" constant="3" id="Z9t-70-S9q"/>
                 <constraint firstAttribute="trailing" secondItem="ODe-uo-H79" secondAttribute="trailing" id="cy7-gA-i1P"/>
                 <constraint firstItem="ODe-uo-H79" firstAttribute="top" secondItem="tdJ-QP-9ol" secondAttribute="top" id="f30-pZ-MTc"/>
                 <constraint firstItem="83k-OL-pLv" firstAttribute="centerY" secondItem="ODe-uo-H79" secondAttribute="centerY" id="i2s-Tt-pGG"/>
                 <constraint firstAttribute="centerX" secondItem="9uF-IU-Ue1" secondAttribute="centerX" placeholder="YES" id="iee-9L-sWr"/>
                 <constraint firstItem="fOr-V2-P1Q" firstAttribute="centerY" secondItem="ODe-uo-H79" secondAttribute="bottom" id="mGO-EL-5C8"/>
+                <constraint firstAttribute="bottom" secondItem="8ks-bN-miQ" secondAttribute="bottom" constant="83" id="pPM-hV-S1E"/>
+                <constraint firstItem="8ks-bN-miQ" firstAttribute="top" secondItem="tdJ-QP-9ol" secondAttribute="top" id="q2n-2F-3ed"/>
                 <constraint firstItem="ODe-uo-H79" firstAttribute="leading" secondItem="tdJ-QP-9ol" secondAttribute="leading" id="s8c-bt-paC"/>
                 <constraint firstAttribute="bottom" secondItem="ODe-uo-H79" secondAttribute="bottom" constant="83" id="sPE-Yd-12F"/>
                 <constraint firstAttribute="centerX" secondItem="fOr-V2-P1Q" secondAttribute="centerX" id="ygk-0W-Ud2"/>
@@ -71,7 +79,9 @@
                 <outlet property="pollOrImageView" destination="83k-OL-pLv" id="FQG-Gj-orE"/>
                 <outlet property="previewImageView" destination="ODe-uo-H79" id="Piw-D9-iUM"/>
                 <outlet property="profileImageButton" destination="fOr-V2-P1Q" id="2D2-oV-qja"/>
+                <outlet property="webViewContainer" destination="8ks-bN-miQ" id="fg7-XW-DKz"/>
             </connections>
+            <point key="canvasLocation" x="484" y="283.5"/>
         </collectionViewCell>
     </objects>
     <resources>
