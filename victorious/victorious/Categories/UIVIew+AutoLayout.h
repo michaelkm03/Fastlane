@@ -35,7 +35,10 @@
  */
 - (void)addFitToParentConstraintsToSubview:(UIView *)subview;
 
-#warning Add comments
+/**
+ Applies centering to subview of both horizontal and verticall
+ directions to superview.
+ */
 - (void)addCenterToParentContraintsToSubview:(UIView *)subview;
 
 @end
