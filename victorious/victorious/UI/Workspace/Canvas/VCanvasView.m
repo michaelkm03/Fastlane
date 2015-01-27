@@ -92,40 +92,6 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
     [_activityIndicator startAnimating];
 }
 
-- (void)layoutSubviews
-{
-    [super layoutSubviews];
-    
-    if (self.imageView.image == nil)
-    {
-        return;
-    }
-    
-    CGRect imageViewFrame;
-    
-    if (self.sourceImage.size.height > self.sourceImage.size.width)
-    {
-        CGFloat scaleFactor = self.sourceImage.size.width / CGRectGetWidth(self.bounds);
-        imageViewFrame = CGRectMake(CGRectGetMinX(self.bounds),
-                                    CGRectGetMinY(self.bounds),
-                                    CGRectGetWidth(self.bounds),
-                                    self.sourceImage.size.height * (1/scaleFactor));
-    }
-    else
-    {
-        CGFloat scaleFactor = self.sourceImage.size.height / CGRectGetHeight(self.bounds);
-        imageViewFrame = CGRectMake(CGRectGetMinX(self.bounds),
-                                    CGRectGetMinY(self.bounds),
-                                    self.sourceImage.size.width * (1/scaleFactor),
-                                    CGRectGetHeight(self.bounds));
-    }
-    
-    _imageView.frame = imageViewFrame;
-    
-    self.canvasScrollView.contentSize = imageViewFrame.size;
-    self.activityIndicator.center = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
-}
-
 #pragma mark - Property Accessors
 
 - (void)setSourceURL:(NSURL *)URL
@@ -197,7 +163,31 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
     CGImageRelease(scaledImageRef);
     
     self.imageView.image = _scaledImage;
-    self.imageView.frame = self.canvasScrollView.bounds;
+    
+    CGRect imageViewFrame;
+    
+    if (self.sourceImage.size.height > self.sourceImage.size.width)
+    {
+        CGFloat scaleFactor = self.sourceImage.size.width / CGRectGetWidth(self.bounds);
+        imageViewFrame = CGRectMake(CGRectGetMinX(self.bounds),
+                                    CGRectGetMinY(self.bounds),
+                                    CGRectGetWidth(self.bounds),
+                                    self.sourceImage.size.height * (1/scaleFactor));
+    }
+    else
+    {
+        CGFloat scaleFactor = self.sourceImage.size.height / CGRectGetHeight(self.bounds);
+        imageViewFrame = CGRectMake(CGRectGetMinX(self.bounds),
+                                    CGRectGetMinY(self.bounds),
+                                    self.sourceImage.size.width * (1/scaleFactor),
+                                    CGRectGetHeight(self.bounds));
+    }
+    
+    _imageView.frame = imageViewFrame;
+    
+    self.canvasScrollView.contentSize = imageViewFrame.size;
+    self.activityIndicator.center = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
+
     [self layoutIfNeeded];
 }
 

@@ -65,6 +65,7 @@ static NSString * const kFilterIndexKey = @"filterIndex";
         welf.didCrop = YES;
         [welf.canvasView.canvasScrollView setZoomScale:croppingScrollView.zoomScale];
         [welf.canvasView.canvasScrollView setContentOffset:croppingScrollView.contentOffset];
+        VLog(@"zoomscale: %@, contentOffset: %@", @(croppingScrollView.zoomScale), NSStringFromCGPoint(croppingScrollView.contentOffset));
     };
 }
 
