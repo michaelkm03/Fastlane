@@ -130,7 +130,9 @@ static NSString * const kUserKey = @"user";
     }
     else if (!self.isMe && !self.profile.isDirectMessagingDisabled.boolValue)
     {
-        [self.navHeaderView setRightButtonImage:[UIImage imageNamed:@"profileCompose"] withAction:@selector(composeMessage:) onTarget:self];
+        BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
+        UIImage *composeImage = isTemplateC ? [UIImage imageNamed:@"compose_btn"] : [UIImage imageNamed:@"profileCompose"];
+        [self.navHeaderView setRightButtonImage:composeImage withAction:@selector(composeMessage:) onTarget:self];
     }
     
     [super viewWillAppear:animated]; //Call super after the header is set up so the super class will set up the headers properly.
