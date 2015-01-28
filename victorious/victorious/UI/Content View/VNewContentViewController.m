@@ -939,13 +939,9 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
                                         options:UIViewAnimationOptionCurveLinear
                                      animations:^
                      {
-                         CGFloat randomLocationX = fminf(fmaxf(arc4random_uniform(CGRectGetWidth(welf.contentCell.bounds)), (CGRectGetWidth(animationImageView.bounds) * 0.5f)), CGRectGetWidth(welf.contentCell.bounds) - (CGRectGetWidth(animationImageView.bounds) * 0.5f));
-                         CGFloat randomLocationY = fminf(fmaxf(arc4random_uniform(CGRectGetHeight(welf.contentCell.bounds)), (CGRectGetHeight(animationImageView.bounds) * 0.5f)), CGRectGetHeight(welf.contentCell.bounds) - (CGRectGetHeight(animationImageView.bounds) * 0.5f));
-                         
-                         CGPoint contentCenter = [welf.view convertPoint:CGPointMake(randomLocationX, randomLocationY)
-                                                                fromView:welf.contentCell];
-                         animationImageView.center = contentCenter;
-                         
+                         CGFloat randomLocationX = arc4random_uniform(CGRectGetWidth(welf.contentCell.frame));
+                         CGFloat randomLocationY = arc4random_uniform(CGRectGetHeight(welf.contentCell.frame));
+                         animationImageView.center = CGPointMake(randomLocationX, randomLocationY);
                      }
                                      completion:^(BOOL finished)
                      {
