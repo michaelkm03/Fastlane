@@ -43,8 +43,16 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    for (NSUInteger n = 0; n < VAutoplaySettingCount; n++)
+    {
+        UITableViewCell *cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:n inSection:0]];
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    }
+    
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    cell.accessoryType = UITableViewCellAccessoryCheckmark;
     [VVideoSettings setAutoPlaySetting:indexPath.row];
-    [tableView reloadData];
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 @end
