@@ -27,6 +27,7 @@
 #import "VNotificationSettingsViewController.h"
 #import "VButton.h"
 #import "VPurchaseManager.h"
+#import "VVideoSettings.h"
 
 static const NSInteger kSettingsSectionIndex         = 0;
 static const NSInteger kChangePasswordIndex          = 0;
@@ -41,6 +42,7 @@ static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
 
 @property (weak, nonatomic) IBOutlet VButton *logoutButton;
 @property (weak, nonatomic) IBOutlet UITableViewCell *serverEnvironmentCell;
+@property (weak, nonatomic) IBOutlet UITableViewCell *videoAutoplayCell;
 @property (weak, nonatomic) IBOutlet UITableViewCell *resetPurchasesCell;
 
 @property (nonatomic, assign) BOOL    showChromeCastButton;
@@ -70,11 +72,11 @@ static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
     
     [self.labels enumerateObjectsUsingBlock:^(UILabel *label, NSUInteger idx, BOOL *stop)
      {
-         label.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
+         label.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
      }];
     [self.rightLabels enumerateObjectsUsingBlock:^(UILabel *label, NSUInteger idx, BOOL *stop)
      {
-         label.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
+         label.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont];
      }];
     
     NSString *appVersionString = [NSString stringWithFormat:NSLocalizedString(@"Version", @""), [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]];
@@ -98,6 +100,8 @@ static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
     [self updateLogoutButtonState];
     
     self.serverEnvironmentCell.detailTextLabel.text = [[VObjectManager currentEnvironment] name];
+    
+    self.videoAutoplayCell.detailTextLabel.text = [VVideoSettings displayNameForSetting:[VVideoSettings autoplaySetting]];
     
     [self updatePurchasesCount];
     
