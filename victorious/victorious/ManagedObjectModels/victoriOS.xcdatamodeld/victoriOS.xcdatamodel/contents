@@ -250,7 +250,7 @@
         <attribute name="name" attributeType="String" syncable="YES"/>
         <attribute name="productIdentifier" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="remoteId" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
-        <attribute name="scaleFactor" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="scaleFactor" optional="YES" attributeType="Float" defaultValueString="1" syncable="YES"/>
         <attribute name="settingsIndex" optional="YES" transient="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <relationship name="tracking" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Tracking" inverseName="voteType" inverseEntity="Tracking" syncable="YES"/>
     </entity>
