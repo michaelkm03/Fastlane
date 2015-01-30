@@ -40,7 +40,7 @@
 static NSString * const kVTagResultIdentifier = @"VTrendingTagCell";
 static CGFloat kVTableViewBottomInset = 120.f;
 
-@interface VTagsSearchResultsViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface VTagsSearchResultsViewController ()
 
 @property (nonatomic, strong) NSMutableOrderedSet *userTags;
 @property (nonatomic, strong) NSMutableOrderedSet *followingTagSet;
@@ -55,9 +55,6 @@ static CGFloat kVTableViewBottomInset = 120.f;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    self.tableView.delegate = self;
-    self.tableView.dataSource = self;
     
     [self configureTableView];
 }
@@ -76,12 +73,7 @@ static CGFloat kVTableViewBottomInset = 120.f;
 {
     if (!haveResults)
     {
-        VNoContentView *notFoundView = [VNoContentView noContentViewWithFrame:self.tableView.frame];
-        self.tableView.backgroundView = notFoundView;
-        notFoundView.titleLabel.text = NSLocalizedString(@"NoHashtagsFoundInSearchTitle", @"");
-        notFoundView.messageLabel.text = NSLocalizedString(@"NoHashtagsFoundInSearch", @"");
-        notFoundView.iconImageView.image = [[UIImage imageNamed:@"tabIconHashtag"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-        notFoundView.iconImageView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryLinkColor];
+        [self.delegate noResultsReturnedForSearch:self];
         self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     }
     else
@@ -103,6 +95,9 @@ static CGFloat kVTableViewBottomInset = 120.f;
 
 - (void)configureTableView
 {
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+    
     self.tableView.backgroundColor = [UIColor colorWithWhite:0.97 alpha:1.0];
     
     [self.tableView registerNib:[UINib nibWithNibName:kVTagResultIdentifier bundle:nil] forCellReuseIdentifier:kVTagResultIdentifier];

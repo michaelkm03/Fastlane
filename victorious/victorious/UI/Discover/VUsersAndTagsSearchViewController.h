@@ -6,10 +6,14 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VUserSearchViewController.h"
-
 @interface VUsersAndTagsSearchViewController : UIViewController
 
+/**
+ Factory method to load VUsersAndTagsSearchViewController view controller
+ 
+ @return Instance of VUsersAndTagsSearchViewController view controller
+ */
 + (instancetype)usersAndTagsSearchViewController;
+
 
 @end

@@ -15,11 +15,17 @@
 #import "VHashtag+RestKit.h"
 
 // Search Results
+#import "VSearchResultsTableViewController.h"
 #import "VUserSearchResultsViewController.h"
 #import "VTagsSearchResultsViewController.h"
 
 // VThemeManager
 #import "VThemeManager.h"
+
+// No Content View
+#import "VNoContentView.h"
+
+static CGFloat kVTableViewBottomInset = 120.0f;
 
 @interface VUsersAndTagsSearchViewController () <UITextFieldDelegate>
 
@@ -35,8 +41,10 @@
 @property (nonatomic, strong) VTagsSearchResultsViewController *tagsSearchResultsVC;
 
 @property (nonatomic, strong) NSArray *searchResults;
-@property (nonatomic, weak) NSTimer *typeDelay;
-@property (nonatomic, assign) NSInteger charCount;
+@property (nonatomic, assign) BOOL isKeyboardShowing;
+@property (nonatomic, assign) CGFloat keyboardHeight;
+
+@property (nonatomic, strong) UISwipeGestureRecognizer *swipeGestureRecognizer;
 
 @end
 
@@ -55,14 +63,34 @@
     // Remove header
     [self.navigationController setNavigationBarHidden:YES];
     
-    // Setup Search Field
-    self.searchField.placeholder = NSLocalizedString(@"SearchPeopleAndHashtags", @"");
-    [self.searchField setTextColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor]];
-    [self.searchField setTintColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor]];
-    self.searchField.delegate = self;
-    [self.searchField becomeFirstResponder];
+    // Setup Search Results View Controllers
+    self.userSearchResultsVC = [[VUserSearchResultsViewController alloc] init];
+    self.tagsSearchResultsVC = [[VTagsSearchResultsViewController alloc] init];
     
-    // Add UITextField Observer
+    [self.userSearchResultsVC.tableView setContentInset:UIEdgeInsetsMake(0, 0, kVTableViewBottomInset, 0)];
+    [self.tagsSearchResultsVC.tableView setContentInset:UIEdgeInsetsMake(0, 0, kVTableViewBottomInset, 0)];
+    
+    // Add view controllers to container view
+    [self addChildViewController:self.tagsSearchResultsVC];
+    [self.containerView addSubview:self.tagsSearchResultsVC.view];
+    [self.tagsSearchResultsVC didMoveToParentViewController:self];
+    
+    [self addChildViewController:self.userSearchResultsVC];
+    [self.containerView addSubview:self.userSearchResultsVC.view];
+    [self.userSearchResultsVC didMoveToParentViewController:self];
+    
+    // Add gesture to container view
+    //[self.containerView addGestureRecognizer:self.swipeGestureRecognizer];
+    
+    // Constraints
+    self.searchBarViewHeightConstraint.constant = 55.0f;
+    self.headerViewHeightConstraint.constant = 64.0f;
+
+    // Format the segmented control
+    self.segmentControl.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    self.segmentControl.selectedSegmentIndex = 0;
+    
+    // Add NSNotification Observers
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(segmentControlAction:)
                                                  name:UITextFieldTextDidChangeNotification
@@ -73,53 +101,38 @@
                                                  name:UITextFieldTextDidChangeNotification
                                                object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self.searchField
-                                             selector:@selector(keyboardWillShow:)
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardToShow:)
                                                  name:UIKeyboardWillShowNotification
                                                object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self.searchField
-                                             selector:@selector(keyboardWillHide:)
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardToHide:)
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
+    
+    // Setup Search Field
+    self.searchField.placeholder = NSLocalizedString(@"SearchPeopleAndHashtags", @"");
+    [self.searchField setTextColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor]];
+    [self.searchField setTintColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor]];
+    self.searchField.delegate = self;
+}
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
     
-    // Setup Search Results View Controllers
-    self.userSearchResultsVC = [[VUserSearchResultsViewController alloc] initWithNibName:nil bundle:nil];
-    self.tagsSearchResultsVC = [[VTagsSearchResultsViewController alloc] initWithNibName:nil bundle:nil];
-    
-    // Add view controllers to container vie
-    [self.containerView addSubview:self.tagsSearchResultsVC.view];
-    [self.containerView addSubview:self.userSearchResultsVC.view];
-    
-    // Constraints
-    self.searchBarViewHeightConstraint.constant = 55.0f;
-    self.headerViewHeightConstraint.constant = 64.0f;
-    
-    // Set the header view Background color
-    //self.headerView.backgroundColor = [UIColor colorWithWhite:0.97 alpha:1.0];
-
-    // Format the segmented control
-    self.segmentControl.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-    self.segmentControl.selectedSegmentIndex = 0;
+    [self.searchField becomeFirstResponder];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     
-    // Remove observers
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:UITextFieldTextDidChangeNotification
-                                                  object:nil];
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:UIKeyboardWillShowNotification
-                                                  object:nil];
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:UIKeyboardWillHideNotification
-                                                  object:nil];
+    // Remove NSNotification Observers
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -138,18 +151,38 @@
 
 - (IBAction)segmentControlAction:(id)sender
 {
+    CGFloat bottomInsetHeight = kVTableViewBottomInset + self.keyboardHeight;
+    
     // Perform search
     if ( self.segmentControl.selectedSegmentIndex == 0 )
     {
         self.userSearchResultsVC.view.alpha = 1.0f;
         self.tagsSearchResultsVC.view.alpha = 0;
-        [self userSearch:sender];
+        
+        if ( self.searchField.text.length > 0 )
+        {
+            [self userSearch:sender];
+        }
+        
+        if (self.isKeyboardShowing)
+        {
+            [self.userSearchResultsVC.tableView setContentInset:UIEdgeInsetsMake(0, 0, bottomInsetHeight, 0)];
+        }
     }
     else if ( self.segmentControl.selectedSegmentIndex == 1 )
     {
         self.userSearchResultsVC.view.alpha = 0;
         self.tagsSearchResultsVC.view.alpha = 1.0f;
-        [self hashtagSearch:sender];
+
+        if ( self.searchField.text.length > 0 )
+        {
+            [self hashtagSearch:sender];
+        }
+
+        if (self.isKeyboardShowing)
+        {
+            [self.tagsSearchResultsVC.tableView setContentInset:UIEdgeInsetsMake(0, 0, bottomInsetHeight, 0)];
+        }
     }
 }
 
@@ -170,8 +203,14 @@
             [searchResults addObject:newTag];
 
         }];
-        
-        [self.tagsSearchResultsVC setSearchResults:searchResults];
+        if ( searchResults.count > 0 )
+        {
+            [self.tagsSearchResultsVC setSearchResults:searchResults];
+        }
+        else
+        {
+            [self showNoResultsReturnedForSearch];
+        }
     };
     
     VFailBlock searchFail = ^(NSOperation *operation, NSError *error)
@@ -179,7 +218,6 @@
         VLog(@"\n\nHashtag Search Failed with the following error:\n%@", error);
     };
 
-    
     if ([self.searchField.text length] > 0)
     {
         [[VObjectManager sharedManager] findHashtagsBySearchString:self.searchField.text
@@ -202,7 +240,7 @@
         [self.userSearchResultsVC setSearchResults:(NSMutableArray *)results];
     };
     
-    if ([self.searchField.text length] > 0)
+    if ( [self.searchField.text length] > 0 )
     {
         [[VObjectManager sharedManager] findMessagableUsersBySearchString:self.searchField.text
                                                          withSuccessBlock:searchSuccess
@@ -219,7 +257,7 @@
 
 - (void)searchFieldTextChanged:(NSNotification *)notification
 {
-    if (self.searchField.text.length == 0)
+    if ( self.searchField.text.length == 0 )
     {
         self.userSearchResultsVC.view.alpha = 0;
         self.tagsSearchResultsVC.view.alpha = 0;
@@ -230,7 +268,7 @@
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
-    if ([string isEqualToString:@""] && textField.text.length == 0)
+    if ( [string isEqualToString:@""] && textField.text.length == 0 )
     {
         self.userSearchResultsVC.view.alpha = 0;
         self.tagsSearchResultsVC.view.alpha = 0;
@@ -241,20 +279,84 @@
 
 - (BOOL)textFieldShouldClear:(UITextField *)textField
 {
+    self.userSearchResultsVC.tableView.backgroundView = nil;
+    self.tagsSearchResultsVC.tableView.backgroundView = nil;
+    
+    return YES;
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [self segmentControlAction:nil];
+    [self.searchField resignFirstResponder];
+    
     return YES;
 }
 
 #pragma mark - Keyboard Notification Handlers
 
-- (void)keyboardWillShow:(NSNotification *)notification
+- (void)keyboardToShow:(NSNotification *)notification
 {
-    CGFloat height = CGRectGetHeight( [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue] );
-    VLog(@"Search Keyboard is showing with a height of %f", height);
+    self.isKeyboardShowing = YES;
+    
+    self.keyboardHeight = CGRectGetHeight( [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue] );
+    
+    CGFloat newHeight = kVTableViewBottomInset + self.keyboardHeight;
+    
+    if ( self.segmentControl.selectedSegmentIndex == 0 )
+    {
+        [self.userSearchResultsVC.tableView setContentInset:UIEdgeInsetsMake(0, 0, newHeight, 0)];
+    }
+    else if ( self.segmentControl.selectedSegmentIndex == 1 )
+    {
+        [self.tagsSearchResultsVC.tableView setContentInset:UIEdgeInsetsMake(0, 0, newHeight, 0)];
+    }
 }
 
-- (void)keyboardWillHide:(NSNotification *)notification
+- (void)keyboardToHide:(NSNotification *)notification
 {
-    VLog(@"Search Keyboard is hiding");
+    self.isKeyboardShowing = NO;
+    self.keyboardHeight = 0;
+    
+    if ( self.segmentControl.selectedSegmentIndex == 0 )
+    {
+        [self.userSearchResultsVC.tableView setContentInset:UIEdgeInsetsMake(0, 0, kVTableViewBottomInset, 0)];
+    }
+    else if ( self.segmentControl.selectedSegmentIndex == 1 )
+    {
+        [self.tagsSearchResultsVC.tableView setContentInset:UIEdgeInsetsMake(0, 0, kVTableViewBottomInset, 0)];
+    }
+}
+
+#pragma mark - VSearchResultsTableViewControllerDelegate
+
+- (void)showNoResultsReturnedForSearch
+{
+    NSString *messageTitle, *messageText;
+    UIImage *messageIcon;
+    
+    VNoContentView *noResultsFoundView = [VNoContentView noContentViewWithFrame:self.containerView.frame];
+    if ( self.segmentControl.selectedSegmentIndex == 0 )
+    {
+        messageTitle = NSLocalizedString(@"NoPeopleFoundInSearchTitle", @"");
+        messageText = NSLocalizedString(@"NoPeopleFoundInSearch", @"");
+        messageIcon = [[UIImage imageNamed:@"user-icon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        self.userSearchResultsVC.tableView.backgroundView = noResultsFoundView;
+        self.userSearchResultsVC.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    }
+    else if ( self.segmentControl.selectedSegmentIndex == 1 )
+    {
+        messageTitle = NSLocalizedString(@"NoHashtagsFoundInSearchTitle", @"");
+        messageText = NSLocalizedString(@"NoHashtagsFoundInSearch", @"");
+        messageIcon = [[UIImage imageNamed:@"tabIconHashtag"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        self.tagsSearchResultsVC.tableView.backgroundView = noResultsFoundView;
+        self.tagsSearchResultsVC.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    }
+
+    noResultsFoundView.titleLabel.text = messageTitle;
+    noResultsFoundView.messageLabel.text = messageText;
+    noResultsFoundView.iconImageView.image = messageIcon;
+    noResultsFoundView.iconImageView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryLinkColor];
 }
 
 @end

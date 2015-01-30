@@ -7,9 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "VSearchResultsTableViewController.h"
 
-@interface VTagsSearchResultsViewController : UITableViewController
+@interface VTagsSearchResultsViewController : VSearchResultsTableViewController
 
+/**
+ Array to hold search results returned from backend
+ */
 @property (nonatomic, strong) NSMutableArray *searchResults;
 
 @end

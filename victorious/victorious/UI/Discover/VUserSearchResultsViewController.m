@@ -30,7 +30,7 @@
 static NSString * const kVUserResultIdentifier = @"followerCell";
 static CGFloat kVTableViewBottomInset = 120.0f;
 
-@interface VUserSearchResultsViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface VUserSearchResultsViewController ()
 
 @end
 
@@ -54,7 +54,6 @@ static CGFloat kVTableViewBottomInset = 120.0f;
     
     [self.tableView registerNib:[UINib nibWithNibName:kVUserResultIdentifier bundle:nil] forCellReuseIdentifier:kVUserResultIdentifier];
     [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
-
     [self.tableView setContentInset:UIEdgeInsetsMake(0, 0, kVTableViewBottomInset, 0)];
 }
 
@@ -85,6 +84,11 @@ static CGFloat kVTableViewBottomInset = 120.0f;
         self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
         self.tableView.backgroundView = nil;
     }
+}
+
+- (void)willMoveToParentViewController:(UIViewController *)parent
+{
+    VLog(@"Moving back to parent");
 }
 
 #pragma mark - TableView Delegate Methods

@@ -13,6 +13,11 @@
 #import "VSettingManager.h"
 #import "UIViewController+VNavMenu.h"
 #import "VDiscoverViewControllerProtocol.h"
+#import "VObjectManager+Login.h"
+#import "VObjectManager+Users.h"
+#import "VUser.h"
+#import "VAuthorizationViewControllerFactory.h"
+
 
 // Users and Tags Search
 #import "VUsersAndTagsSearchViewController.h"
@@ -151,6 +156,15 @@
 
  - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
+    // Check if we are logged in
+    if (![VObjectManager sharedManager].authorized)
+    {
+        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
+        return;
+    }
+    
+    [self.searchField resignFirstResponder];
+    
     VUsersAndTagsSearchViewController *searchViewController = [VUsersAndTagsSearchViewController usersAndTagsSearchViewController];
     if ( self.navigationController != nil )
     {
