@@ -93,6 +93,7 @@
     VAbstractFilter *hashtagFilter = [self.paginationManager filterForPath:@"/api/hashtag/subscribed_to_list"
                                                                 entityName:[VAbstractFilter entityName]
                                                       managedObjectContext:self.managedObjectStore.mainQueueManagedObjectContext];
+    hashtagFilter.perPageNumber = [NSNumber numberWithInteger:1000];
     
     return [self.paginationManager loadFilter:hashtagFilter withPageType:VPageTypeFirst successBlock:fullSuccess failBlock:fullFailure];
 }
@@ -193,6 +194,33 @@
           parameters:@{@"hashtag":hashtag}
         successBlock:fullSuccess
            failBlock:fullFailure];
+}
+
+- (RKManagedObjectRequestOperation *)findHashtagsBySearchString:(NSString *)hashtag
+                                                   successBlock:(VSuccessBlock)success
+                                                      failBlock:(VFailBlock)fail
+{
+    VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    {
+        if (success)
+        {
+            success(operation, fullResponse, resultObjects);
+        }
+    };
+    
+    VFailBlock fullFailure = ^(NSOperation *operation, NSError *error)
+    {
+        if (fail)
+        {
+            fail(operation, error);
+        }
+    };
+    
+    return [self GET:[NSString stringWithFormat:@"/api/hashtag/search/%@/1/1000", hashtag]
+               object:nil
+           parameters:nil
+         successBlock:fullSuccess
+            failBlock:fullFailure];
 }
 
 @end

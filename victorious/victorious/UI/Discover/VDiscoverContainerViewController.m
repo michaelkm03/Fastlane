@@ -14,12 +14,18 @@
 #import "UIViewController+VNavMenu.h"
 #import "VDiscoverViewControllerProtocol.h"
 
-@interface VDiscoverContainerViewController () <VNavigationHeaderDelegate>
+// Users and Tags Search
+#import "VUsersAndTagsSearchViewController.h"
 
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *searchBarHeightConstraint;
+@interface VDiscoverContainerViewController () <VNavigationHeaderDelegate, UITextFieldDelegate>
+
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *searchBarHeightConstraint;
 
 @property (nonatomic, weak) IBOutlet UIView *searchBarContainer;
+@property (nonatomic, weak) IBOutlet UITextField *searchField;
 @property (nonatomic, weak) id<VDiscoverViewControllerProtocol> childViewController;
+
+@property (nonatomic, strong) VUsersAndTagsSearchViewController *usersAndTagsSearchViewController;
 
 @end
 
@@ -47,9 +53,15 @@
     [super viewDidLoad];
     
     // For now, search is hidden.  Uncomment this when the time comes to implement it.
-    self.searchBarHeightConstraint.constant = 0;
+    //self.searchBarHeightConstraint.constant = 0;
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showSuggestedPersonProfile:) name:kVDiscoverUserProfileSelectedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(showSuggestedPersonProfile:)
+                                                 name:kVDiscoverUserProfileSelectedNotification
+                                               object:nil];
+    
+    self.searchField.placeholder = NSLocalizedString(@"SearchPeopleAndHashtags", @"");
+    self.searchField.delegate = self;
 }
 
 - (void)dealloc
@@ -95,14 +107,6 @@
     return UIInterfaceOrientationMaskPortrait;
 }
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    if ( [segue.destinationViewController conformsToProtocol:@protocol(VDiscoverViewControllerProtocol)] )
-    {
-        self.childViewController = (id<VDiscoverViewControllerProtocol>)segue.destinationViewController;
-    }
-}
-
 - (void)showSuggestedPersonProfile:(NSNotification *)note
 {
     if ( note.userInfo == nil )
@@ -127,6 +131,13 @@
     }
 }
 
+#pragma mark - Button Actions
+
+- (IBAction)closeButtonAction:(id)sender
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
 #pragma mark - VNavigationDestination
 
 - (BOOL)shouldNavigateWithAlternateDestination:(UIViewController *__autoreleasing *)alternateViewController
@@ -134,6 +145,37 @@
     [self.childViewController refresh:YES];
     
     return YES;
+}
+
+#pragma mark - UITextFieldDelegate
+
+ - (void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    VUsersAndTagsSearchViewController *searchViewController = [VUsersAndTagsSearchViewController usersAndTagsSearchViewController];
+    if ( self.navigationController != nil )
+    {
+        [self.navigationController pushViewController:searchViewController animated:YES];
+    }
+    else
+    {
+        [self presentViewController:searchViewController animated:YES completion:nil];
+    }
+
+}
+
+#pragma mark - Navigation
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ( [segue.destinationViewController conformsToProtocol:@protocol(VDiscoverViewControllerProtocol)] )
+    {
+        self.childViewController = (id<VDiscoverViewControllerProtocol>)segue.destinationViewController;
+    }
+    
+    if ( [[segue identifier] isEqualToString:@"usersTagsSearchSegue"] )
+    {
+        self.usersAndTagsSearchViewController = segue.destinationViewController;
+    }
 }
 
 @end

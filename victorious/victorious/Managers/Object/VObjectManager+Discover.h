@@ -39,4 +39,8 @@
                                            successBlock:(VSuccessBlock)success
                                               failBlock:(VFailBlock)fail;
 
+- (RKManagedObjectRequestOperation *)findHashtagsBySearchString:(NSString *)hashtag
+                                                   successBlock:(VSuccessBlock)success
+                                                      failBlock:(VFailBlock)fail;
+
 @end
