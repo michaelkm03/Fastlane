@@ -10,6 +10,8 @@
 #import "VConstants.h"
 #import "VCVideoPlayerViewController.h"
 #import "VAdVideoPlayerViewController.h"
+#import "VEndCard.h"
+#import "UIVIew+AutoLayout.h"
 
 @interface VContentVideoCell () <VCVideoPlayerDelegate, VAdVideoPlayerViewControllerDelegate>
 
@@ -184,6 +186,11 @@
     // This should only be forwarded from the content video player
     [self.delegate videoCellPlayedToEnd:self
                           withTotalTime:[videoPlayer playerItemDuration]];
+    
+    if ( self.viewModel.endCardViewModel != nil )
+    {
+        [self showEndCardWithViewModel:self.viewModel.endCardViewModel];
+    }
 }
 
 - (void)videoPlayerWillStartPlaying:(VCVideoPlayerViewController *)videoPlayer
@@ -214,6 +221,26 @@
 - (void)adDidFinishForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController
 {
     [self resumeContentPlayback];
+}
+
+#pragma mark - End Card
+
+- (void)showEndCardWithViewModel:(VEndCardModel *)model
+{
+#warning temporary test
+    UIView *temp = [[UIView alloc] initWithFrame:self.bounds];
+    temp.backgroundColor = [model.bannerBackgroundColor colorWithAlphaComponent:0.8f];
+    temp.alpha = 0.0f;
+    [self.contentView addSubview:temp];
+    
+    [UIView animateWithDuration:0.5f delay:0.0f options:UIViewAnimationOptionCurveEaseOut animations:^{
+        temp.alpha = 1.0f;
+    } completion:nil];
+}
+
+- (void)hideEndCard
+{
+    
 }
 
 @end

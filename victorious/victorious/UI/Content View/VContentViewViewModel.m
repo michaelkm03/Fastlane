@@ -45,6 +45,12 @@
 #import "VAdBreak.h"
 #import "VAdBreakFallback.h"
 
+// End Card
+#import "VEndCard.h"
+#import "VStream.h"
+#import "VThemeManager.h"
+#import "VEndCardModel.h"
+
 @interface VContentViewViewModel ()
 
 @property (nonatomic, strong, readwrite) VSequence *sequence;
@@ -134,7 +140,7 @@
 
 #pragma mark - Create the ad chain
 
-- (void)createAdChainWithCompletion:(void(^)(void))completionBlock
+- (void)createAdChainWithCompletion
 {
     if (self.hasCreatedAdChain)
     {
@@ -159,11 +165,6 @@
     self.monetizationPartner = adSystemPartner;
     self.monetizationDetails = self.adChain;
     self.hasCreatedAdChain = YES;
-    
-    if (completionBlock)
-    {
-        completionBlock();
-    }
 }
 
 #pragma mark - Sequence data fetching methods
@@ -176,29 +177,62 @@
         // This is here to update the vote counts
         [self.experienceEnhancerController updateData];
          
-        // Sets up the monetization chain
-         if (self.sequence.adBreaks.count > 0)
-         {
-             [self createAdChainWithCompletion:^(void)
-              {
-                  self.videoViewModel = [VVideoCellViewModel videoCellViewModelWithItemURL:[self videoURL]
-                                                                              withAdSystem:self.monetizationPartner
-                                                                               withDetails:self.monetizationDetails
-                                                                                  withLoop:[self loop]];
-                  [self.delegate didUpdateContent];
-              }];
-         }
-         else
-         {
-             self.videoViewModel = [VVideoCellViewModel videoCellViewModelWithItemURL:[self videoURL]
-                                                                         withAdSystem:VMonetizationPartnerNone
-                                                                          withDetails:nil
-                                                                             withLoop:[self loop]];
-             [self.delegate didUpdateContent];
-
-         }
+         [self createVideoModel];
+         
+         [self.delegate didUpdateContent];
     }
                                             failBlock:nil];
+}
+
+- (void)createVideoModel
+{
+    // Sets up the monetization chain
+    if (self.sequence.adBreaks.count > 0)
+    {
+        [self createAdChainWithCompletion];
+        self.videoViewModel = [VVideoCellViewModel videoCellViewModelWithItemURL:[self videoURL]
+                                                                    withAdSystem:self.monetizationPartner
+                                                                     withDetails:self.monetizationDetails
+                                                                        withLoop:[self loop]];
+    }
+    else
+    {
+        self.videoViewModel = [VVideoCellViewModel videoCellViewModelWithItemURL:[self videoURL]
+                                                                    withAdSystem:VMonetizationPartnerNone
+                                                                     withDetails:nil
+                                                                        withLoop:[self loop]];
+    }
+    
+    VSequence *nextSequence = self.sequence.endCard.nextSequence;
+    VStream *stream = nextSequence.streams.allObjects.firstObject;
+    if ( nextSequence )
+    {
+        VEndCardModel *endCardModel = [[VEndCardModel alloc] init];
+        endCardModel.videoTitle = self.sequence.name;
+        endCardModel.nextVideoTitle = nextSequence.name;
+        endCardModel.nextVideoThumbailImageURL = [NSURL URLWithString:(NSString *)nextSequence.previewData];
+        endCardModel.streamName = stream.name;
+        endCardModel.videoAuthorName = nextSequence.user.name;
+        endCardModel.videoAuthorProfileImageURL = [NSURL URLWithString:nextSequence.user.pictureUrl];
+        endCardModel.bannerBackgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+        endCardModel.countdownDuration = self.sequence.endCard.countdownDuration.unsignedIntegerValue;
+        self.videoViewModel.endCardViewModel = endCardModel;
+    }
+    else
+    {
+#warning This is hardcoded data for testing only. Delete this whole `else` block
+        // In the real app, the dependency manager will be injected:
+        VEndCardModel *endCardModel = [[VEndCardModel alloc] init];
+        endCardModel.videoTitle = @"January Vacation Blog";
+        endCardModel.nextVideoTitle = @"Alejandro Manzano Grumpy Cat Boyce Avenue";
+        endCardModel.nextVideoThumbailImageURL = [NSURL URLWithString:@"http://media-dev-public.s3-website-us-west-1.amazonaws.com/75e022927c063573c9a79d5447f6d5aa/thumbnail-00003.jpg"];
+        endCardModel.streamName = @"Recent";
+        endCardModel.videoAuthorName = @"Jonathan Moore";
+        endCardModel.videoAuthorProfileImageURL = [NSURL URLWithString:@"http://media-dev-public.s3-website-us-west-1.amazonaws.com/39ce6fa60e5f369a3f6359298b0959c9/80x80.jpg"];
+        endCardModel.bannerBackgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+        endCardModel.countdownDuration = 6.0f;
+        self.videoViewModel.endCardViewModel = endCardModel;
+    }
 }
 
 - (void)reloadData

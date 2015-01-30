@@ -10,7 +10,7 @@
 #import <CoreData/CoreData.h>
 #import "VStreamItem.h"
 
-@class VAdBreak, VComment, VNode, VPollResult, VTracking, VUser, VVoteResult;
+@class VAdBreak, VComment, VNode, VPollResult, VTracking, VUser, VVoteResult, VEndCard;
 
 @interface VSequence : VStreamItem
 
@@ -41,6 +41,7 @@
 @property (nonatomic, retain) NSSet *reposters;
 @property (nonatomic, retain) VTracking *tracking;
 @property (nonatomic, retain) VUser *user;
+@property (nonatomic, retain) VEndCard *endCard;
 @property (nonatomic, retain) NSSet *voteResults;
 @end
 

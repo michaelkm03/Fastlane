@@ -14,7 +14,7 @@
 #import "VTracking.h"
 #import "VUser.h"
 #import "VVoteResult.h"
-
+#import "VEndCard.h"
 
 @implementation VSequence
 
@@ -46,5 +46,6 @@
 @dynamic tracking;
 @dynamic user;
 @dynamic voteResults;
+@dynamic endCard;
 
 @end

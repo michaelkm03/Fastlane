@@ -469,6 +469,9 @@
 		A7D288201A2507A0006CF0EC /* VNotificationSettingsViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D2881F1A2507A0006CF0EC /* VNotificationSettingsViewControllerTests.m */; };
 		A7D707701A79671C00D9993F /* VAutoplaySettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D7076F1A79671C00D9993F /* VAutoplaySettingsViewController.m */; };
 		A7D707731A797B8A00D9993F /* VVideoSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D707721A797B8A00D9993F /* VVideoSettings.m */; };
+		A7D7077F1A7AFD8200D9993F /* VEndCard.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D7077E1A7AFD8200D9993F /* VEndCard.m */; };
+		A7D707821A7AFDA900D9993F /* VEndCard+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D707811A7AFDA900D9993F /* VEndCard+RestKit.m */; };
+		A7D707861A7B105900D9993F /* VEndCardModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D707851A7B105900D9993F /* VEndCardModel.m */; };
 		A7D8532419F6F3B100EDBFF8 /* VTracking.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D8532319F6F3B100EDBFF8 /* VTracking.m */; };
 		A7E2EFCB1A49001000372547 /* VEditCommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7E2EFCA1A49001000372547 /* VEditCommentViewController.m */; };
 		A7E2EFD21A49066F00372547 /* EditComment.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7E2EFD11A49066F00372547 /* EditComment.storyboard */; };
@@ -1494,6 +1497,12 @@
 		A7D7076F1A79671C00D9993F /* VAutoplaySettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAutoplaySettingsViewController.m; sourceTree = "<group>"; };
 		A7D707711A797B8A00D9993F /* VVideoSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VVideoSettings.h; sourceTree = "<group>"; };
 		A7D707721A797B8A00D9993F /* VVideoSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVideoSettings.m; sourceTree = "<group>"; };
+		A7D7077D1A7AFD8200D9993F /* VEndCard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEndCard.h; sourceTree = "<group>"; };
+		A7D7077E1A7AFD8200D9993F /* VEndCard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEndCard.m; sourceTree = "<group>"; };
+		A7D707801A7AFDA900D9993F /* VEndCard+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VEndCard+RestKit.h"; sourceTree = "<group>"; };
+		A7D707811A7AFDA900D9993F /* VEndCard+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VEndCard+RestKit.m"; sourceTree = "<group>"; };
+		A7D707841A7B105900D9993F /* VEndCardModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VEndCardModel.h; path = EndCard/VEndCardModel.h; sourceTree = "<group>"; };
+		A7D707851A7B105900D9993F /* VEndCardModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VEndCardModel.m; path = EndCard/VEndCardModel.m; sourceTree = "<group>"; };
 		A7D8532219F6F3B100EDBFF8 /* VTracking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTracking.h; sourceTree = "<group>"; };
 		A7D8532319F6F3B100EDBFF8 /* VTracking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTracking.m; sourceTree = "<group>"; };
 		A7E2EFC91A49001000372547 /* VEditCommentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEditCommentViewController.h; sourceTree = "<group>"; };
@@ -2088,6 +2097,7 @@
 		0314D2EA19B46B5D00FA363C /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				A7D707831A7B103C00D9993F /* EndCard */,
 				A77AD4C91A1FC66300142F24 /* Alert Controller */,
 				A77AD4C41A1EFA3D00142F24 /* Automation */,
 				0314D2EB19B46B5D00FA363C /* Camera */,
@@ -3557,6 +3567,15 @@
 			path = Cells;
 			sourceTree = "<group>";
 		};
+		A7D707831A7B103C00D9993F /* EndCard */ = {
+			isa = PBXGroup;
+			children = (
+				A7D707841A7B105900D9993F /* VEndCardModel.h */,
+				A7D707851A7B105900D9993F /* VEndCardModel.m */,
+			);
+			name = EndCard;
+			sourceTree = "<group>";
+		};
 		A7EECAD21A377FA000A8BAE1 /* Purchase Settings */ = {
 			isa = PBXGroup;
 			children = (
@@ -3854,6 +3873,8 @@
 				BE171DC01868C211004E5202 /* VComment+RestKit.m */,
 				BE5C7386187E37E500A3340D /* VConversation+RestKit.h */,
 				BE5C7387187E37E500A3340D /* VConversation+RestKit.m */,
+				A7D707801A7AFDA900D9993F /* VEndCard+RestKit.h */,
+				A7D707811A7AFDA900D9993F /* VEndCard+RestKit.m */,
 				A70564C519E7820A004A8387 /* VHashtag+RestKit.h */,
 				A70564C619E7820A004A8387 /* VHashtag+RestKit.m */,
 				BE171DC11868C211004E5202 /* VInteraction+RestKit.h */,
@@ -3936,6 +3957,8 @@
 				BEC833BA19D3646E00341EA9 /* VComment.m */,
 				BEBF512819BA15B6007AB3BA /* VConversation.h */,
 				BEBF512919BA15B6007AB3BA /* VConversation.m */,
+				A7D7077D1A7AFD8200D9993F /* VEndCard.h */,
+				A7D7077E1A7AFD8200D9993F /* VEndCard.m */,
 				DB531B541A425A7200B4ADC8 /* VHashtag.h */,
 				DB531B551A425A7200B4ADC8 /* VHashtag.m */,
 				A7AA647B19E78EAA0068D2B1 /* victoriOS.xcdatamodeld */,
@@ -4936,6 +4959,7 @@
 				D8C7CF5D19DCCD0200BA33E5 /* VExperienceEnhancerCell.m in Sources */,
 				A7F8DD4D1A0B065800F82256 /* VHeaderView.m in Sources */,
 				BE5C7388187E37E500A3340D /* VConversation+RestKit.m in Sources */,
+				A7D7077F1A7AFD8200D9993F /* VEndCard.m in Sources */,
 				0314D4A019B46B5E00FA363C /* VImageSearchResultCell.m in Sources */,
 				BE89D981192141D600D97E7F /* VUser+Fetcher.m in Sources */,
 				A7976D0719FAE8EA00B5A145 /* AVAsset+Orientation.m in Sources */,
@@ -4976,6 +5000,7 @@
 				0314D4D019B46B5E00FA363C /* VLoadingViewController.m in Sources */,
 				BE5DE3F618DA72140047B67E /* VInteractionAction.m in Sources */,
 				BE40559418A1828D00092AE1 /* UIButton+VImageLoading.m in Sources */,
+				A7D707821A7AFDA900D9993F /* VEndCard+RestKit.m in Sources */,
 				0314D46519B46B5E00FA363C /* VCompositeSnapshotController.m in Sources */,
 				03484BFE192E9D2100403FB1 /* NSLayoutConstraint+CenterConstraints.m in Sources */,
 				0385FEE918EF41B4009FBD68 /* VImageSearchResult.m in Sources */,
@@ -4996,6 +5021,7 @@
 				BE88FF7B1A0005E70064AB28 /* VStreamCollectionViewController.m in Sources */,
 				DB531B501A41F85500B4ADC8 /* VHashtagFollowingTableViewController.m in Sources */,
 				0314D49F19B46B5E00FA363C /* VImageSearchDataSource.m in Sources */,
+				A7D707861A7B105900D9993F /* VEndCardModel.m in Sources */,
 				0314D4D619B46B5E00FA363C /* VChangePasswordViewController.m in Sources */,
 				BE88FF921A00060E0064AB28 /* VSwipeNavSelector.m in Sources */,
 				0314D4E819B46B5E00FA363C /* VTabBarViewController.m in Sources */,

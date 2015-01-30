@@ -13,6 +13,7 @@
 #import "VUser+RestKit.h"
 #import "VTracking+RestKit.h"
 #import "VAdBreak+RestKit.h"
+#import "VEndCard+RestKit.h"
 
 @implementation VSequence (RestKit)
 
@@ -64,17 +65,20 @@
     RKRelationshipMapping *voteResultMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"sequence_counts.votetypes"
                                                                                            toKeyPath:VSelectorName(voteResults)
                                                                                          withMapping:[VVoteResult entityMapping]];
-    
     RKRelationshipMapping *adBreaksMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"ad_breaks"
                                                                                            toKeyPath:VSelectorName(adBreaks)
-                                                                                         withMapping:[VAdBreak entityMapping]];
+                                                                                       withMapping:[VAdBreak entityMapping]];
+    RKRelationshipMapping *trackingMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"tracking"
+                                                                                         toKeyPath:VSelectorName(tracking)
+                                                                                       withMapping:[VTracking entityMapping]];
+    RKRelationshipMapping *endCardMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"autoplay.endcard"
+                                                                                         toKeyPath:VSelectorName(endCard)
+                                                                                       withMapping:[VEndCard entityMapping]];
     [mapping addPropertyMapping:voteResultMapping];
     [mapping addPropertyMapping:adBreaksMapping];
-    
-    RKRelationshipMapping *trackingMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"tracking"
-                                                                                          toKeyPath:VSelectorName(tracking)
-                                                                                        withMapping:[VTracking entityMapping]];
     [mapping addPropertyMapping:trackingMapping];
+    [mapping addPropertyMapping:endCardMapping];
+    
     
     [mapping addConnectionForRelationship:@"comments" connectedBy:@{@"remoteId" : @"sequenceId"}];
     
