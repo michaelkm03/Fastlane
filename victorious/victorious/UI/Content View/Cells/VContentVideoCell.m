@@ -223,24 +223,4 @@
     [self resumeContentPlayback];
 }
 
-#pragma mark - End Card
-
-- (void)showEndCardWithViewModel:(VEndCardModel *)model
-{
-#warning temporary test
-    UIView *temp = [[UIView alloc] initWithFrame:self.bounds];
-    temp.backgroundColor = [model.bannerBackgroundColor colorWithAlphaComponent:0.8f];
-    temp.alpha = 0.0f;
-    [self.contentView addSubview:temp];
-    
-    [UIView animateWithDuration:0.5f delay:0.0f options:UIViewAnimationOptionCurveEaseOut animations:^{
-        temp.alpha = 1.0f;
-    } completion:nil];
-}
-
-- (void)hideEndCard
-{
-    
-}
-
 @end

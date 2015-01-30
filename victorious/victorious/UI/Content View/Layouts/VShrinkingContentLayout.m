@@ -96,14 +96,16 @@ static const NSInteger kAllCommentsZIndex = 6666;
                 CGFloat sizeDelta = self.mediaContentSize.height - VShrinkingContentLayoutMinimumContentHeight;
                 CGFloat transformScaleCoefficient = ((self.mediaContentSize.height - (sizeDelta * percentToLockPoint)) / self.mediaContentSize.height);
                 
-                CGAffineTransform scaleTransform = CGAffineTransformMakeScale(transformScaleCoefficient, transformScaleCoefficient);
+                //CGFloat translationDelta = ((self.mediaContentSize.height * 0.5f) - (VShrinkingContentLayoutMinimumContentHeight * 0.5f));
+                //CGFloat translationCoefficient = -translationDelta * percentToLockPoint;
                 
-                CGFloat translationDelta = ((self.mediaContentSize.height * 0.5f) - (VShrinkingContentLayoutMinimumContentHeight * 0.5f));
-                CGFloat translationCoefficient = -translationDelta * percentToLockPoint;
+                CGRect rect = self.collectionView.bounds;
+                rect.size.height = self.mediaContentSize.height * transformScaleCoefficient;
+                layoutAttributesForIndexPath.frame = rect;
                 
-                CGAffineTransform translationTransform = CGAffineTransformMakeTranslation(0, translationCoefficient);
-                
-                layoutAttributesForIndexPath.transform = CGAffineTransformConcat(scaleTransform, translationTransform);
+                /*CGAffineTransform transform = CGAffineTransformIdentity;
+                transform = CGAffineTransformTranslate( transform, 0, translationCoefficient );
+                transform = CGAffineTransformScale( transform, transformScaleCoefficient, transformScaleCoefficient );*/
             }
             break;
         case VContentViewSectionHistogramOrQuestion:

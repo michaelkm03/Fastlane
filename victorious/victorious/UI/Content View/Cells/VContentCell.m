@@ -7,10 +7,15 @@
 //
 
 #import "VContentCell.h"
+#import "VEndCardViewController.h"
+#import "UIVIew+AutoLayout.h"
 
 @interface VContentCell ()
 
 @property (nonatomic, weak) UIImageView *animationImageView;
+
+@property (nonatomic, assign) CGSize maxSize;
+@property (nonatomic, strong, readwrite) VEndCardViewController *endCardViewController;
 
 @end
 
@@ -63,6 +68,8 @@
         [self.contentView addSubview:animationImageView];
     }
     
+    self.maxSize = self.frame.size;
+    
     self.repeatCount = 1;
 }
 
@@ -82,6 +89,31 @@
     self.animationImageView.animationDuration = self.animationDuration;
     self.animationImageView.animationRepeatCount = self.repeatCount;
     [self.animationImageView startAnimating];
+}
+
+#pragma mark - End Card
+
+- (void)showEndCardWithViewModel:(VEndCardModel *)model
+{
+    if ( self.endCardViewController != nil )
+    {
+        [self.endCardViewController.view removeFromSuperview];
+        self.endCardViewController = nil;
+    }
+    
+    self.endCardViewController = [VEndCardViewController newWithDependencyManager:nil
+                                                                            model:model
+                                                                    minViewHeight:125.0f
+                                                                    maxViewHeight:self.maxSize.height];
+    [self.contentView addSubview:self.endCardViewController.view];
+    self.endCardViewController.view.frame = self.contentView.bounds;
+    [self.contentView v_addFitToParentConstraintsToSubview:self.endCardViewController.view];
+    [self.endCardViewController transitionIn];
+}
+
+- (void)hideEndCard
+{
+    [self.endCardViewController transitionOut];
 }
 
 @end

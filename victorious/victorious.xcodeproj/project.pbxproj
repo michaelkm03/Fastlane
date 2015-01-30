@@ -471,7 +471,16 @@
 		A7D707731A797B8A00D9993F /* VVideoSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D707721A797B8A00D9993F /* VVideoSettings.m */; };
 		A7D7077F1A7AFD8200D9993F /* VEndCard.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D7077E1A7AFD8200D9993F /* VEndCard.m */; };
 		A7D707821A7AFDA900D9993F /* VEndCard+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D707811A7AFDA900D9993F /* VEndCard+RestKit.m */; };
-		A7D707861A7B105900D9993F /* VEndCardModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D707851A7B105900D9993F /* VEndCardModel.m */; };
+		A7D707981A7C144C00D9993F /* VCountdownView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D707881A7C144C00D9993F /* VCountdownView.m */; };
+		A7D707991A7C144C00D9993F /* VCountdownViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D7078A1A7C144C00D9993F /* VCountdownViewController.m */; };
+		A7D7079A1A7C144C00D9993F /* VEndCardActionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D7078C1A7C144C00D9993F /* VEndCardActionCell.m */; };
+		A7D7079B1A7C144C00D9993F /* VEndCardActionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7D7078D1A7C144C00D9993F /* VEndCardActionCell.xib */; };
+		A7D7079C1A7C144C00D9993F /* VEndCardAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D7078F1A7C144C00D9993F /* VEndCardAnimator.m */; };
+		A7D7079D1A7C144C00D9993F /* VEndCardBannerButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D707911A7C144C00D9993F /* VEndCardBannerButton.m */; };
+		A7D7079E1A7C144C00D9993F /* VEndCardBannerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D707931A7C144C00D9993F /* VEndCardBannerViewController.m */; };
+		A7D7079F1A7C144C00D9993F /* VEndCardModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D707951A7C144C00D9993F /* VEndCardModel.m */; };
+		A7D707A01A7C144C00D9993F /* VEndCardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D707971A7C144C00D9993F /* VEndCardViewController.m */; };
+		A7D707A21A7C145E00D9993F /* EndCard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7D707A11A7C145E00D9993F /* EndCard.storyboard */; };
 		A7D8532419F6F3B100EDBFF8 /* VTracking.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D8532319F6F3B100EDBFF8 /* VTracking.m */; };
 		A7E2EFCB1A49001000372547 /* VEditCommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7E2EFCA1A49001000372547 /* VEditCommentViewController.m */; };
 		A7E2EFD21A49066F00372547 /* EditComment.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7E2EFD11A49066F00372547 /* EditComment.storyboard */; };
@@ -1501,8 +1510,24 @@
 		A7D7077E1A7AFD8200D9993F /* VEndCard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEndCard.m; sourceTree = "<group>"; };
 		A7D707801A7AFDA900D9993F /* VEndCard+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VEndCard+RestKit.h"; sourceTree = "<group>"; };
 		A7D707811A7AFDA900D9993F /* VEndCard+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VEndCard+RestKit.m"; sourceTree = "<group>"; };
-		A7D707841A7B105900D9993F /* VEndCardModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VEndCardModel.h; path = EndCard/VEndCardModel.h; sourceTree = "<group>"; };
-		A7D707851A7B105900D9993F /* VEndCardModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VEndCardModel.m; path = EndCard/VEndCardModel.m; sourceTree = "<group>"; };
+		A7D707871A7C144C00D9993F /* VCountdownView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VCountdownView.h; path = EndCard/VCountdownView.h; sourceTree = "<group>"; };
+		A7D707881A7C144C00D9993F /* VCountdownView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCountdownView.m; path = EndCard/VCountdownView.m; sourceTree = "<group>"; };
+		A7D707891A7C144C00D9993F /* VCountdownViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VCountdownViewController.h; path = EndCard/VCountdownViewController.h; sourceTree = "<group>"; };
+		A7D7078A1A7C144C00D9993F /* VCountdownViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCountdownViewController.m; path = EndCard/VCountdownViewController.m; sourceTree = "<group>"; };
+		A7D7078B1A7C144C00D9993F /* VEndCardActionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VEndCardActionCell.h; path = EndCard/VEndCardActionCell.h; sourceTree = "<group>"; };
+		A7D7078C1A7C144C00D9993F /* VEndCardActionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VEndCardActionCell.m; path = EndCard/VEndCardActionCell.m; sourceTree = "<group>"; };
+		A7D7078D1A7C144C00D9993F /* VEndCardActionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = VEndCardActionCell.xib; path = EndCard/VEndCardActionCell.xib; sourceTree = "<group>"; };
+		A7D7078E1A7C144C00D9993F /* VEndCardAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VEndCardAnimator.h; path = EndCard/VEndCardAnimator.h; sourceTree = "<group>"; };
+		A7D7078F1A7C144C00D9993F /* VEndCardAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VEndCardAnimator.m; path = EndCard/VEndCardAnimator.m; sourceTree = "<group>"; };
+		A7D707901A7C144C00D9993F /* VEndCardBannerButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VEndCardBannerButton.h; path = EndCard/VEndCardBannerButton.h; sourceTree = "<group>"; };
+		A7D707911A7C144C00D9993F /* VEndCardBannerButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VEndCardBannerButton.m; path = EndCard/VEndCardBannerButton.m; sourceTree = "<group>"; };
+		A7D707921A7C144C00D9993F /* VEndCardBannerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VEndCardBannerViewController.h; path = EndCard/VEndCardBannerViewController.h; sourceTree = "<group>"; };
+		A7D707931A7C144C00D9993F /* VEndCardBannerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VEndCardBannerViewController.m; path = EndCard/VEndCardBannerViewController.m; sourceTree = "<group>"; };
+		A7D707941A7C144C00D9993F /* VEndCardModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VEndCardModel.h; path = EndCard/VEndCardModel.h; sourceTree = "<group>"; };
+		A7D707951A7C144C00D9993F /* VEndCardModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VEndCardModel.m; path = EndCard/VEndCardModel.m; sourceTree = "<group>"; };
+		A7D707961A7C144C00D9993F /* VEndCardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VEndCardViewController.h; path = EndCard/VEndCardViewController.h; sourceTree = "<group>"; };
+		A7D707971A7C144C00D9993F /* VEndCardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VEndCardViewController.m; path = EndCard/VEndCardViewController.m; sourceTree = "<group>"; };
+		A7D707A11A7C145E00D9993F /* EndCard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = EndCard.storyboard; path = EndCard/EndCard.storyboard; sourceTree = "<group>"; };
 		A7D8532219F6F3B100EDBFF8 /* VTracking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTracking.h; sourceTree = "<group>"; };
 		A7D8532319F6F3B100EDBFF8 /* VTracking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTracking.m; sourceTree = "<group>"; };
 		A7E2EFC91A49001000372547 /* VEditCommentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEditCommentViewController.h; sourceTree = "<group>"; };
@@ -2097,7 +2122,6 @@
 		0314D2EA19B46B5D00FA363C /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				A7D707831A7B103C00D9993F /* EndCard */,
 				A77AD4C91A1FC66300142F24 /* Alert Controller */,
 				A77AD4C41A1EFA3D00142F24 /* Automation */,
 				0314D2EB19B46B5D00FA363C /* Camera */,
@@ -2106,6 +2130,7 @@
 				0314D35B19B46B5E00FA363C /* Content View */,
 				0314D38319B46B5E00FA363C /* Create Poll */,
 				A75FAF0019E8AC1E00EB87C1 /* Discover */,
+				A7D707831A7B103C00D9993F /* EndCard */,
 				0314D39019B46B5E00FA363C /* Force Upgrade */,
 				0314D39619B46B5E00FA363C /* Inbox */,
 				0314D3AE19B46B5E00FA363C /* Lightbox */,
@@ -3570,8 +3595,24 @@
 		A7D707831A7B103C00D9993F /* EndCard */ = {
 			isa = PBXGroup;
 			children = (
-				A7D707841A7B105900D9993F /* VEndCardModel.h */,
-				A7D707851A7B105900D9993F /* VEndCardModel.m */,
+				A7D707A11A7C145E00D9993F /* EndCard.storyboard */,
+				A7D707871A7C144C00D9993F /* VCountdownView.h */,
+				A7D707881A7C144C00D9993F /* VCountdownView.m */,
+				A7D707891A7C144C00D9993F /* VCountdownViewController.h */,
+				A7D7078A1A7C144C00D9993F /* VCountdownViewController.m */,
+				A7D7078B1A7C144C00D9993F /* VEndCardActionCell.h */,
+				A7D7078C1A7C144C00D9993F /* VEndCardActionCell.m */,
+				A7D7078D1A7C144C00D9993F /* VEndCardActionCell.xib */,
+				A7D7078E1A7C144C00D9993F /* VEndCardAnimator.h */,
+				A7D7078F1A7C144C00D9993F /* VEndCardAnimator.m */,
+				A7D707901A7C144C00D9993F /* VEndCardBannerButton.h */,
+				A7D707911A7C144C00D9993F /* VEndCardBannerButton.m */,
+				A7D707921A7C144C00D9993F /* VEndCardBannerViewController.h */,
+				A7D707931A7C144C00D9993F /* VEndCardBannerViewController.m */,
+				A7D707941A7C144C00D9993F /* VEndCardModel.h */,
+				A7D707951A7C144C00D9993F /* VEndCardModel.m */,
+				A7D707961A7C144C00D9993F /* VEndCardViewController.h */,
+				A7D707971A7C144C00D9993F /* VEndCardViewController.m */,
 			);
 			name = EndCard;
 			sourceTree = "<group>";
@@ -4688,6 +4729,7 @@
 				036F386B1A0C4DEA0014DF66 /* DroidSans-Bold.ttf in Resources */,
 				D8C7CF5F19DCCD0D00BA33E5 /* VExperienceEnhancerCell.xib in Resources */,
 				036F387B1A0C4DEA0014DF66 /* MavenPro-Regular.ttf in Resources */,
+				A7D7079B1A7C144C00D9993F /* VEndCardActionCell.xib in Resources */,
 				0326C36019F8226200DBC341 /* Images.xcassets in Resources */,
 				037A643019F727AB0001C90B /* VCVideoPlayerToolbarView.xib in Resources */,
 				036F38961A0C4DEA0014DF66 /* Ubuntu-Regular.ttf in Resources */,
@@ -4720,6 +4762,7 @@
 				0390086E19F39F9900FD7EDF /* VMessageCell.xib in Resources */,
 				D8D945F31A2E88510089D271 /* Workspace.storyboard in Resources */,
 				A7A390CA1A3257A300709812 /* ContentView.storyboard in Resources */,
+				A7D707A21A7C145E00D9993F /* EndCard.storyboard in Resources */,
 				036F386F1A0C4DEA0014DF66 /* JosefinSlab-Bold.ttf in Resources */,
 				036F38711A0C4DEA0014DF66 /* Junction-bold.otf in Resources */,
 				A769C3F71A13D69500698D0C /* WebBrowser.storyboard in Resources */,
@@ -4979,6 +5022,7 @@
 				BE799BC119C93C210023CE88 /* VStreamCollectionViewDataSource.m in Sources */,
 				0314D4A119B46B5E00FA363C /* VImageSearchResultsFooterView.m in Sources */,
 				D8CA63BE19D5DB06002046E5 /* VActionSheetTransitioningDelegate.m in Sources */,
+				A7D707A01A7C144C00D9993F /* VEndCardViewController.m in Sources */,
 				BE88FF741A0005E70064AB28 /* VStreamCollectionCell.m in Sources */,
 				0314D07219B4670A00FA363C /* UIImage+Resize.m in Sources */,
 				D87351831A3112A3006D97B2 /* VCropOverlayView.m in Sources */,
@@ -5007,6 +5051,7 @@
 				A70564C319E781EE004A8387 /* VNoContentTableViewCell.m in Sources */,
 				0314D0AE19B4698800FA363C /* VObjectManager+Comment.m in Sources */,
 				039ED27E19C563B700305987 /* VCameraVideoEncoder.m in Sources */,
+				A7D7079A1A7C144C00D9993F /* VEndCardActionCell.m in Sources */,
 				0314D48719B46B5E00FA363C /* VActivityIndicatorView.m in Sources */,
 				037D2D591A196B9800947A22 /* VUserProfileNavigationDestination.m in Sources */,
 				030931931A184285004E9781 /* VNavigationMenuItem.m in Sources */,
@@ -5021,7 +5066,6 @@
 				BE88FF7B1A0005E70064AB28 /* VStreamCollectionViewController.m in Sources */,
 				DB531B501A41F85500B4ADC8 /* VHashtagFollowingTableViewController.m in Sources */,
 				0314D49F19B46B5E00FA363C /* VImageSearchDataSource.m in Sources */,
-				A7D707861A7B105900D9993F /* VEndCardModel.m in Sources */,
 				0314D4D619B46B5E00FA363C /* VChangePasswordViewController.m in Sources */,
 				BE88FF921A00060E0064AB28 /* VSwipeNavSelector.m in Sources */,
 				0314D4E819B46B5E00FA363C /* VTabBarViewController.m in Sources */,
@@ -5046,6 +5090,8 @@
 				0314D4CE19B46B5E00FA363C /* UIViewController+VSideMenuViewController.m in Sources */,
 				0314D47919B46B5E00FA363C /* VCameraRollPublishShareController.m in Sources */,
 				0314D4DC19B46B5E00FA363C /* VFacebookActivity.m in Sources */,
+				A7D707991A7C144C00D9993F /* VCountdownViewController.m in Sources */,
+				A7D7079F1A7C144C00D9993F /* VEndCardModel.m in Sources */,
 				0314D4BF19B46B5E00FA363C /* VFollowingTableViewController.m in Sources */,
 				D8B14E0819DA3B0B004D72D2 /* VShrinkingContentLayout.m in Sources */,
 				0314D07319B4670A00FA363C /* UIImageView+Blurring.m in Sources */,
@@ -5103,6 +5149,7 @@
 				BE799BB419C8DF5B0023CE88 /* VAsset+OrderedSet.m in Sources */,
 				BE171D8C1868BE64004E5202 /* VAppDelegate.m in Sources */,
 				039ED29919C908F400305987 /* VCVideoPlayerToolbarSlider.m in Sources */,
+				A7D7079C1A7C144C00D9993F /* VEndCardAnimator.m in Sources */,
 				BE171E151868C211004E5202 /* VNodeAction+RestKit.m in Sources */,
 				A7D2881B1A240F74006CF0EC /* VFollowersTextFormatter.m in Sources */,
 				03CE670019B640CD0011BB9E /* VDeviceInfo.m in Sources */,
@@ -5179,6 +5226,7 @@
 				D8F12A6D1A6F093900E99B3D /* VPublishParameters.m in Sources */,
 				0314D2E219B46AF300FA363C /* VThemeManager.m in Sources */,
 				D80BAB5A1A688D83003A3068 /* VWorkspaceFlowController.m in Sources */,
+				A7D7079D1A7C144C00D9993F /* VEndCardBannerButton.m in Sources */,
 				BE171E141868C211004E5202 /* VNode+RestKit.m in Sources */,
 				D86BF34A1A42234500C9F420 /* VPublishViewController.m in Sources */,
 				BE7D2E8E18EB65ED009E488E /* VVoteResult+RestKit.m in Sources */,
@@ -5205,6 +5253,7 @@
 				0314D46719B46B5E00FA363C /* VExpirationPickerTextField.m in Sources */,
 				BE88FF981A0006710064AB28 /* VProfileHeaderCell.m in Sources */,
 				DB58EF41199401E500D2A07F /* VNotification+RestKit.m in Sources */,
+				A7D7079E1A7C144C00D9993F /* VEndCardBannerViewController.m in Sources */,
 				D87351991A3260AC006D97B2 /* VFilterTypeTool.m in Sources */,
 				A720055E1A030E4700285A9C /* VApplicationTracking.m in Sources */,
 				A77AD4F21A1FD8B600142F24 /* VAlertControllerBasic.m in Sources */,
@@ -5277,6 +5326,7 @@
 				A769C3EB1A13176700698D0C /* VWebBrowserViewController.m in Sources */,
 				A769C3EF1A13176700698D0C /* VWebViewBasic.m in Sources */,
 				D80C615B19D0F692006AE41A /* VProgressBarView.m in Sources */,
+				A7D707981A7C144C00D9993F /* VCountdownView.m in Sources */,
 				0314D4BC19B46B5E00FA363C /* VAbstractProfileEditViewController.m in Sources */,
 				D84FD73D19D5E5F200E7F9F2 /* VActionItem.m in Sources */,
 				BE171E0E1868C211004E5202 /* VAnswerAction+RestKit.m in Sources */,

@@ -230,7 +230,7 @@
         endCardModel.videoAuthorName = @"Jonathan Moore";
         endCardModel.videoAuthorProfileImageURL = [NSURL URLWithString:@"http://media-dev-public.s3-website-us-west-1.amazonaws.com/39ce6fa60e5f369a3f6359298b0959c9/80x80.jpg"];
         endCardModel.bannerBackgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-        endCardModel.countdownDuration = 6.0f;
+        endCardModel.countdownDuration = 6000;
         self.videoViewModel.endCardViewModel = endCardModel;
     }
 }

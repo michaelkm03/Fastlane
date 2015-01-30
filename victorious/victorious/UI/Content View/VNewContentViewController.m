@@ -114,10 +114,6 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *leadingCollectionViewToContainer;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *trailingCollectionViewToContainer;
 
-@property (nonatomic, assign) CGAffineTransform targetTransform;
-@property (nonatomic, assign) CGRect oldRect;
-@property (nonatomic, assign) CGAffineTransform videoTransform;
-
 // RTC
 @property (nonatomic, assign) BOOL enteringRealTimeComment;
 @property (nonatomic, assign) CMTime realtimeCommentBeganTime;
