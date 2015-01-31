@@ -99,7 +99,7 @@ static const CGFloat kTopSpacePublishPrompt = 50.0f;
     };
 
     self.captionTextView.placeholderText = NSLocalizedString(@"Write a caption (optional)", @"Caption entry placeholder text");
-    UIFont *label3Font = [self.dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
+    UIFont *label3Font = [self.dependencyManager fontForKey:VDependencyManagerParagraphFontKey];
     if (label3Font != nil)
     {
         self.captionTextView.typingAttributes = @{NSFontAttributeName: label3Font};

@@ -34,6 +34,7 @@
 
 // Animators
 #import "VPublishBlurOverAnimator.h"
+#import "VVCameraShutterOverAnimator.h"
 
 NSString * const VWorkspaceFlowControllerInitialCaptureStateKey = @"initialCaptureStateKey";
 NSString * const VWorkspaceFlowControllerSequenceToRemixKey = @"sequenceToRemixKey";
@@ -331,6 +332,11 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
                                                 fromViewController:(UIViewController *)fromVC
                                                   toViewController:(UIViewController *)toVC
 {
+//    if ([fromVC isKindOfClass:[VCameraViewController class]] && [toVC isKindOfClass:[VWorkspaceViewController class]])
+//    {
+//        return [[VVCameraShutterOverAnimator alloc] init];
+//    }
+    
     if (![fromVC isKindOfClass:[VPublishViewController class]] && ![toVC isKindOfClass:[VPublishViewController class]])
     {
         return nil;

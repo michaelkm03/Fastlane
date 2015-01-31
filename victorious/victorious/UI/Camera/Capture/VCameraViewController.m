@@ -20,6 +20,7 @@
 #import "UIImage+Cropping.h"
 #import "UIImage+Resize.h"
 #import "VSettingManager.h"
+#import "VCameraControl.h"
 
 static const NSTimeInterval kAnimationDuration = 0.4;
 static const NSTimeInterval kErrorMessageDisplayDuration = 3.0;
@@ -42,6 +43,7 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
 @property (nonatomic, weak) IBOutlet UIView *recordButton;
 @property (nonatomic, weak) IBOutlet UIView *toolTipView;
 @property (nonatomic, weak) IBOutlet UIButton *capturePhotoButton;
+@property (weak, nonatomic) IBOutlet VCameraControl *cameraControl;
 @property (nonatomic, weak) IBOutlet UIButton *switchCameraModeButton;
 
 @property (nonatomic, strong) AVCaptureVideoPreviewLayer *previewLayer;
@@ -49,9 +51,9 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
 
 @property (nonatomic, strong) VCameraCaptureController *captureController;
 
-@property (nonatomic) BOOL allowVideo; ///< THIS property specifies whether we SHOULD allow video (according to the wishes of the calling class)
+@property (nonatomic) BOOL disallowVideo; ///< THIS property specifies whether we SHOULD allow video (according to the wishes of the calling class)
 @property (nonatomic) BOOL videoEnabled; ///< THIS property specifies whether we CAN allow video (according to device restrictions)
-@property (nonatomic) BOOL allowPhotos;
+@property (nonatomic) BOOL disallowPhotos;
 @property (nonatomic) BOOL inTrashState;
 @property (nonatomic) BOOL inRecordVideoState;
 @property (nonatomic, copy) NSString *initialCaptureMode;
@@ -69,29 +71,26 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
 + (VCameraViewController *)cameraViewControllerStartingWithStillCapture
 {
     VCameraViewController *cameraViewController = [self cameraViewController];
-    cameraViewController.initialCaptureMode = AVCaptureSessionPresetPhoto;
     return cameraViewController;
 }
 
 + (VCameraViewController *)cameraViewControllerStartingWithVideoCapture
 {
     VCameraViewController *cameraViewController = [self cameraViewController];
-    cameraViewController.initialCaptureMode = cameraViewController.videoQuality;
     return cameraViewController;
 }
 
 + (VCameraViewController *)cameraViewControllerLimitedToPhotos
 {
     VCameraViewController *cameraViewController = [self cameraViewController];
-    cameraViewController.allowVideo = NO;
-    cameraViewController.initialCaptureMode = AVCaptureSessionPresetPhoto;
+    cameraViewController.disallowVideo = YES;
     return cameraViewController;
 }
 
 + (VCameraViewController *)cameraViewControllerLimitedToVideo
 {
     VCameraViewController *cameraViewController = [self cameraViewController];
-    cameraViewController.allowPhotos = NO;
+    cameraViewController.disallowPhotos = YES;
     return cameraViewController;
 }
 
@@ -117,8 +116,6 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
 
 - (void)commonInit
 {
-    self.allowVideo = YES;
-    self.allowPhotos = YES;
     self.videoEnabled = YES;
     self.videoQuality = [[VSettingManager sharedManager] captureVideoQuality];
     self.initialCaptureMode = self.videoQuality;
@@ -132,6 +129,18 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    VCameraControlCaptureMode captureMode = 0;
+    if (!self.disallowVideo)
+    {
+        captureMode = captureMode | VCameraControlCaptureModeVideo;
+    }
+    if (!self.disallowPhotos)
+    {
+        captureMode = captureMode | VCameraControlCaptureModeImage;
+    }
+    
+    self.cameraControl.captureMode = captureMode;
     
     self.captureController = [[VCameraCaptureController alloc] init];
     [self.captureController setSessionPreset:self.initialCaptureMode completion:nil];
@@ -149,14 +158,16 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
     [self.flashButton setImage:flashOnImage forState:(UIControlStateSelected | UIControlStateHighlighted)];
     [self.flashButton setImage:flashOnImage forState:(UIControlStateSelected | UIControlStateDisabled)];
     
-    [self.recordButton addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleRecordTapGesture:)]];
-    [self.recordButton addGestureRecognizer:[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleRecordLongTapGesture:)]];
     [self setRecordButtonEnabled:YES];
     
-    if (!self.allowVideo || !self.allowPhotos)
-    {
-        self.switchCameraModeButton.hidden = YES;
-    }
+    [self.cameraControl addTarget:self
+                           action:@selector(capturePhoto:)
+                 forControlEvents:VCameraControlEventWantsStillImage];
+    [self.cameraControl addTarget:self
+                           action:@selector(startRecording)
+                 forControlEvents:VCameraControlEventStartRecordingVideo];
+    [self.cameraControl addTarget:self action:@selector(stopRecording)
+                 forControlEvents:VCameraControlEventEndRecordingVideo];
 }
 
 - (void)viewDidLayoutSubviews
@@ -168,6 +179,9 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [self.cameraControl restoreCameraControlToDefault];
+    
     self.navigationController.navigationBarHidden = YES;
     [self setOpenAlbumButtonImageWithLatestPhoto:[self isInPhotoCaptureMode] animated:NO];
     
@@ -488,11 +502,11 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
     controller.delegate = self;
 
     NSMutableArray *mediaTypes  = [[NSMutableArray alloc] init];
-    if (self.allowPhotos)
+    if (!self.disallowPhotos)
     {
         [mediaTypes addObject:(NSString *)kUTTypeImage];
     }
-    if (self.allowVideo)
+    if (!self.disallowVideo)
     {
         [mediaTypes addObject:(NSString *)kUTTypeMovie];
     }
@@ -501,32 +515,7 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
     [self presentViewController:controller animated:YES completion:nil];
 }
 
-- (void)handleRecordTapGesture:(UIGestureRecognizer *)gesture
-{
-    [UIView animateWithDuration:kAnimationDuration animations:^(void)
-    {
-        self.toolTipView.alpha = 1.0;
-    }];
-}
-
-- (void)handleRecordLongTapGesture:(UIGestureRecognizer *)gesture
-{
-    [UIView animateWithDuration:kAnimationDuration animations:^(void)
-    {
-        self.toolTipView.alpha = 0.0;
-    }];
-
-    if (gesture.state == UIGestureRecognizerStateBegan)
-    {
-        [self startRecording];
-    }
-    else if (gesture.state == UIGestureRecognizerStateEnded)
-    {
-        [self stopRecording];
-    }
-}
-
-- (IBAction)capturePhoto:(id)sender
+- (void)capturePhoto:(id)sender
 {
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraDidCapturePhoto];
     
@@ -933,6 +922,8 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
 - (void)updateProgressForSecond:(Float64)totalRecorded
 {
     CGFloat progress = ABS( totalRecorded / VConstantsMaximumVideoDuration);
+    [self.cameraControl setRecordingProgress:progress
+                                    animated:YES];
     NSLayoutConstraint *newProgressConstraint = [NSLayoutConstraint constraintWithItem:self.progressView
                                                                              attribute:NSLayoutAttributeWidth
                                                                              relatedBy:NSLayoutRelationEqual
@@ -1008,8 +999,8 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
 - (void)replacePreviewViewWithSnapshot
 {
     UIView *snapshot = [self.previewView snapshotViewAfterScreenUpdates:NO];
-    snapshot.frame = self.previewView.frame;
-    [self.previewView.superview addSubview:snapshot];
+    snapshot.frame = self.previewView.bounds;
+    [self.previewView addSubview:snapshot];
     self.previewView.alpha = 0.0f;
     self.previewSnapshot = snapshot;
 }
