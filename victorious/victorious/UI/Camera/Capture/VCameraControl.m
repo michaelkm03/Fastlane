@@ -187,20 +187,20 @@ static const NSTimeInterval kNotRecordingTrackingTime = 0.0f;
                  self.backgroundColor = [UIColor darkGrayColor];
              }
                              completion:^(BOOL finished)
-            {
-                [UIView animateWithDuration:kCameraShutterGrowAnimationDuration
-                                      delay:0.0f
-                                    options:UIViewAnimationOptionCurveEaseInOut
-                                 animations:^
-                 {
-                     self.backgroundColor = [UIColor blackColor];
-                     self.transform = CGAffineTransformMakeScale(kCameraShutterGrowScaleFacotr, kCameraShutterGrowScaleFacotr);
-                 }
-                                 completion:^(BOOL finished)
-                 {
-                     [self sendActionsForControlEvents:VCameraControlEventWantsStillImage];
-                 }];
-            }];
+             {
+                 [UIView animateWithDuration:kCameraShutterGrowAnimationDuration
+                                       delay:0.0f
+                                     options:UIViewAnimationOptionCurveEaseInOut
+                                  animations:^
+                  {
+                      self.backgroundColor = [UIColor blackColor];
+                      self.transform = CGAffineTransformMakeScale(kCameraShutterGrowScaleFacotr, kCameraShutterGrowScaleFacotr);
+                  }
+                                  completion:^(BOOL finished)
+                  {
+                      [self sendActionsForControlEvents:VCameraControlEventWantsStillImage];
+                  }];
+             }];
             break;
         }
     }
