@@ -62,7 +62,7 @@ static const NSTimeInterval kNotRecordingTrackingTime = 0.0f;
     self.captureMode = VCameraControlCaptureModeVideo | VCameraControlCaptureModeImage;
     
     self.progressView = [[UIView alloc] initWithFrame:CGRectZero];
-    self.progressView.backgroundColor = [UIColor redColor];
+    self.progressView.backgroundColor = self.tintColor;
     self.progressView.translatesAutoresizingMaskIntoConstraints = NO;
     self.progressView.userInteractionEnabled = NO;
     [self addSubview:self.progressView];
@@ -79,6 +79,12 @@ static const NSTimeInterval kNotRecordingTrackingTime = 0.0f;
 }
 
 #pragma mark - Setters
+
+- (void)setTintColor:(UIColor *)tintColor
+{
+    [super setTintColor:tintColor];
+    self.progressView.backgroundColor = tintColor;
+}
 
 - (void)setRecordingProgress:(CGFloat)recordingProgress
 {
@@ -173,7 +179,7 @@ static const NSTimeInterval kNotRecordingTrackingTime = 0.0f;
         {
             [UIView animateWithDuration:0.25f
                                   delay:0.0f
-                                options:UIViewAnimationOptionCurveEaseIn
+                                options:UIViewAnimationOptionCurveEaseInOut
                              animations:^
              {
                  self.frame = CGRectMake(0, 0, kMinHeightSize, kMinHeightSize);
@@ -182,10 +188,9 @@ static const NSTimeInterval kNotRecordingTrackingTime = 0.0f;
              }
                              completion:^(BOOL finished)
             {
-                
                 [UIView animateWithDuration:kCameraShutterGrowAnimationDuration
                                       delay:0.0f
-                                    options:UIViewAnimationOptionCurveEaseOut
+                                    options:UIViewAnimationOptionCurveEaseInOut
                                  animations:^
                  {
                      self.backgroundColor = [UIColor blackColor];
@@ -196,7 +201,6 @@ static const NSTimeInterval kNotRecordingTrackingTime = 0.0f;
                      [self sendActionsForControlEvents:VCameraControlEventWantsStillImage];
                  }];
             }];
-            
             break;
         }
     }

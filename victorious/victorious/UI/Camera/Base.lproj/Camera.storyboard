@@ -118,6 +118,19 @@
                                             <action selector="trashAction:" destination="N4E-ak-ozN" eventType="touchUpInside" id="HOO-SS-wMO"/>
                                         </connections>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Psc-Kh-PXS" userLabel="Search Button">
+                                        <rect key="frame" x="240" y="41" width="60" height="60"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="60" id="9oQ-SU-gpE"/>
+                                            <constraint firstAttribute="height" constant="60" id="s1m-N7-JnY"/>
+                                        </constraints>
+                                        <state key="normal" image="SearchIcon">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="searchAction:" destination="N4E-ak-ozN" eventType="touchUpInside" id="TTf-j6-2IX"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
@@ -125,7 +138,9 @@
                                     <constraint firstItem="W9w-XF-uIU" firstAttribute="left" secondItem="abs-NM-eiT" secondAttribute="left" constant="20" id="A5R-gK-mQR"/>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="110" id="RNJ-fi-meW"/>
                                     <constraint firstAttribute="height" priority="250" constant="141" id="Ssz-30-ICj"/>
+                                    <constraint firstAttribute="trailing" secondItem="Psc-Kh-PXS" secondAttribute="trailing" constant="20" id="aKo-14-OdV"/>
                                     <constraint firstAttribute="bottom" secondItem="oAC-V4-Jg0" secondAttribute="bottom" constant="40" id="fcC-37-85H"/>
+                                    <constraint firstAttribute="bottom" secondItem="Psc-Kh-PXS" secondAttribute="bottom" constant="40" id="ucW-e8-sPL"/>
                                     <constraint firstItem="oAC-V4-Jg0" firstAttribute="leading" secondItem="abs-NM-eiT" secondAttribute="leading" constant="20" id="w3t-cX-a5S"/>
                                 </constraints>
                             </view>
@@ -138,7 +153,7 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="r8c-9h-K1E" userLabel="Camera Control Container">
-                                <rect key="frame" x="120" y="444" width="80" height="80"/>
+                                <rect key="frame" x="120" y="384" width="80" height="80"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="80" id="8U8-te-6af"/>
@@ -150,7 +165,7 @@
                         <constraints>
                             <constraint firstItem="umg-5s-weJ" firstAttribute="top" secondItem="VHc-U1-zGw" secondAttribute="bottom" id="4nb-z1-EII"/>
                             <constraint firstItem="Cdq-4w-Bu5" firstAttribute="top" secondItem="umg-5s-weJ" secondAttribute="bottom" priority="750" id="HnB-xQ-SxQ"/>
-                            <constraint firstAttribute="centerY" secondItem="r8c-9h-K1E" secondAttribute="centerY" constant="-200" id="P4C-t4-sC3"/>
+                            <constraint firstAttribute="centerY" secondItem="r8c-9h-K1E" secondAttribute="centerY" constant="-140" id="P4C-t4-sC3"/>
                             <constraint firstItem="umg-5s-weJ" firstAttribute="left" secondItem="AMw-cC-uUG" secondAttribute="left" id="PSn-o0-D9f"/>
                             <constraint firstItem="abs-NM-eiT" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Cdq-4w-Bu5" secondAttribute="bottom" id="Ujb-rf-uOh"/>
                             <constraint firstItem="umg-5s-weJ" firstAttribute="top" secondItem="VHc-U1-zGw" secondAttribute="bottom" id="W8s-ce-FH8"/>
@@ -616,6 +631,7 @@ and don't forget #hashtags</string>
         </scene>
     </scenes>
     <resources>
+        <image name="SearchIcon" width="30" height="31"/>
         <image name="btnPrevArrowWhiteDs" width="40" height="40"/>
         <image name="cameraButtonClose" width="24" height="24"/>
         <image name="cameraButtonDelete" width="60" height="60"/>

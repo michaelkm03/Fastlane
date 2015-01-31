@@ -115,6 +115,7 @@ static const CGFloat    kHeightRatioForRefresh                    =  0.1f;
 
 - (IBAction)closeButtonTapped:(id)sender
 {
+    [self.searchField resignFirstResponder];
     if (self.completionBlock)
     {
         self.completionBlock(NO, nil, nil);

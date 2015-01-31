@@ -17,10 +17,12 @@
 #import "VConstants.h"
 #import "VImagePreviewViewController.h"
 #import "VVideoPreviewViewController.h"
+#import "VImageSearchViewController.h"
 #import "UIImage+Cropping.h"
 #import "UIImage+Resize.h"
 #import "VSettingManager.h"
 #import "VCameraControl.h"
+#import "VThemeManager.h"
 
 static const NSTimeInterval kAnimationDuration = 0.4;
 static const NSTimeInterval kErrorMessageDisplayDuration = 3.0;
@@ -129,6 +131,7 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
     self.cameraControl = [[VCameraControl alloc] initWithFrame:self.cameraControlContainer.bounds];
     self.cameraControl.translatesAutoresizingMaskIntoConstraints = NO;
     self.cameraControl.autoresizingMask = UIViewAutoresizingNone;
+    self.cameraControl.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     [self.cameraControlContainer addSubview:self.cameraControl];
     
     VCameraControlCaptureMode captureMode = 0;
@@ -424,6 +427,26 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
     {
         self.completionBlock(NO, nil, nil);
     }
+}
+
+- (IBAction)searchAction:(id)sender
+{
+    VImageSearchViewController *imageSearchViewController = [VImageSearchViewController newImageSearchViewController];
+    __weak typeof(self) welf = self;
+    imageSearchViewController.completionBlock = ^void(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
+    {
+        [welf dismissViewControllerAnimated:YES
+                                 completion:^
+        {
+            if (finished && welf.completionBlock)
+            {
+                welf.completionBlock(finished, previewImage, capturedMediaURL);
+            }
+        }];
+    };
+    [self presentViewController:imageSearchViewController
+                       animated:YES
+                     completion:nil];
 }
 
 - (IBAction)reverseCameraAction:(id)sender
