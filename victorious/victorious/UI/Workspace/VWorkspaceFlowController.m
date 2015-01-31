@@ -332,10 +332,18 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
                                                 fromViewController:(UIViewController *)fromVC
                                                   toViewController:(UIViewController *)toVC
 {
-//    if ([fromVC isKindOfClass:[VCameraViewController class]] && [toVC isKindOfClass:[VWorkspaceViewController class]])
-//    {
-//        return [[VVCameraShutterOverAnimator alloc] init];
-//    }
+    if ([fromVC isKindOfClass:[VCameraViewController class]] && [toVC isKindOfClass:[VWorkspaceViewController class]])
+    {
+        VCameraViewController *cameraViewController = (VCameraViewController *)fromVC;
+        if (cameraViewController.showedFullscreenShutterAnimation)
+        {
+            return [[VVCameraShutterOverAnimator alloc] init];
+        }
+        else
+        {
+            return nil;
+        }
+    }
     
     if (![fromVC isKindOfClass:[VPublishViewController class]] && ![toVC isKindOfClass:[VPublishViewController class]])
     {

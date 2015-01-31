@@ -15,7 +15,7 @@ static const CGFloat kCameraShutterGrowScaleFacotr = 15.0f;
 static const NSTimeInterval kMaxElapsedTimeImageTriggerWithVideo = 0.2f;
 static const NSTimeInterval kRecordingTriggerDuration = 0.45f;
 static const NSTimeInterval kTransitionToRecordingAnimationDuration = 0.2f;
-static const NSTimeInterval kCameraShutterGrowAnimationDuration = 0.55f;
+static const NSTimeInterval kCameraShutterGrowAnimationDuration = 0.25f;
 static const NSTimeInterval kRecordingShrinkAnimationDuration = 0.2f;
 
 static const NSTimeInterval kNotRecordingTrackingTime = 0.0f;
@@ -192,16 +192,33 @@ static const NSTimeInterval kNotRecordingTrackingTime = 0.0f;
         }
         case VCameraControlStateCapturingImage:
         {
+
+//            animationDuration = kCameraShutterGrowAnimationDuration;
+//            animations = ^
+//            {
+//                self.backgroundColor = [UIColor blackColor];
+//                self.widthconstraint.constant = kMinHeightSize * kCameraShutterGrowScaleFacotr;
+//                self.heightConstraint.constant = kMinHeightSize * kCameraShutterGrowScaleFacotr;
+//                [self invalidateIntrinsicContentSize];
+//                [self.superview layoutIfNeeded];
+//            };
             [self sendActionsForControlEvents:VCameraControlEventWantsStillImage];
-            animationDuration = kCameraShutterGrowAnimationDuration;
-            animations = ^
+            [UIView animateWithDuration:kCameraShutterGrowAnimationDuration
+                                  delay:0.0f
+                                options:UIViewAnimationOptionCurveEaseIn
+                             animations:^
             {
                 self.backgroundColor = [UIColor blackColor];
                 self.widthconstraint.constant = kMinHeightSize * kCameraShutterGrowScaleFacotr;
                 self.heightConstraint.constant = kMinHeightSize * kCameraShutterGrowScaleFacotr;
                 [self invalidateIntrinsicContentSize];
                 [self.superview layoutIfNeeded];
-            };
+                
+            }
+                             completion:^(BOOL finished)
+            {
+
+            }];
             break;
         }
     }

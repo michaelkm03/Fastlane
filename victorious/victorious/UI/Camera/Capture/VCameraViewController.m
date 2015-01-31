@@ -34,17 +34,11 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
 @property (nonatomic, weak) IBOutlet UIButton *switchCameraButton;
 @property (nonatomic, weak) IBOutlet UIButton *nextButton;
 @property (nonatomic, weak) IBOutlet UIButton *flashButton;
-@property (nonatomic, weak) IBOutlet UIView *progressView;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *progressViewWidthConstraint;
 @property (nonatomic, weak) IBOutlet UIView *previewView;
 
 @property (nonatomic, weak) IBOutlet UIButton *openAlbumButton;
 @property (nonatomic, weak) IBOutlet UIButton *deleteButton;
-@property (nonatomic, weak) IBOutlet UIView *recordButton;
-@property (nonatomic, weak) IBOutlet UIView *toolTipView;
-@property (nonatomic, weak) IBOutlet UIButton *capturePhotoButton;
 @property (weak, nonatomic) IBOutlet VCameraControl *cameraControl;
-@property (nonatomic, weak) IBOutlet UIButton *switchCameraModeButton;
 
 @property (nonatomic, strong) AVCaptureVideoPreviewLayer *previewLayer;
 @property (nonatomic, strong) UIView *previewSnapshot;
@@ -56,6 +50,7 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
 @property (nonatomic) BOOL disallowPhotos;
 @property (nonatomic) BOOL inTrashState;
 @property (nonatomic) BOOL inRecordVideoState;
+@property (nonatomic, readwrite) BOOL showedFullscreenShutterAnimation;
 @property (nonatomic, copy) NSString *initialCaptureMode;
 @property (nonatomic, copy) NSString *videoQuality;
 
@@ -313,6 +308,11 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
     }
 }
 
+- (CGPoint)shutterCenter
+{
+    return self.cameraControl.center;
+}
+
 #pragma mark - Permissions
 
 - (void)notifyUserOfFailedCameraPermission
@@ -357,16 +357,16 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
 
 - (void)setRecordButtonEnabled:(BOOL)enabled
 {
-    if (enabled)
-    {
-        [self.recordButton setAlpha:kEnabledRecordButtonAlpha];
-        self.recordButton.userInteractionEnabled = YES;
-    }
-    else
-    {
-        [self.recordButton setAlpha:kDisabledRecordButtonAlpha];
-        self.recordButton.userInteractionEnabled = NO;
-    }
+//    if (enabled)
+//    {
+//        [self.recordButton setAlpha:kEnabledRecordButtonAlpha];
+//        self.recordButton.userInteractionEnabled = YES;
+//    }
+//    else
+//    {
+//        [self.recordButton setAlpha:kDisabledRecordButtonAlpha];
+//        self.recordButton.userInteractionEnabled = NO;
+//    }
 }
 
 - (void)setAllControlsEnabled:(BOOL)enabled
@@ -375,17 +375,17 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
     {
         if ([self isInPhotoCaptureMode])
         {
-            self.capturePhotoButton.alpha = kEnabledRecordButtonAlpha;
+//            self.capturePhotoButton.alpha = kEnabledRecordButtonAlpha;
         }
         else if (self.videoEnabled)
         {
-            self.recordButton.alpha = kEnabledRecordButtonAlpha;
-            self.recordButton.userInteractionEnabled = YES;
+//            self.recordButton.alpha = kEnabledRecordButtonAlpha;
+//            self.recordButton.userInteractionEnabled = YES;
         }
-        self.capturePhotoButton.userInteractionEnabled = YES;
+//        self.capturePhotoButton.userInteractionEnabled = YES;
         self.flashButton.enabled = self.captureController.currentDevice.flashAvailable;
         self.switchCameraButton.enabled = YES;
-        self.switchCameraModeButton.enabled = YES;
+//        self.switchCameraModeButton.enabled = YES;
         self.openAlbumButton.enabled = YES;
         self.nextButton.enabled = YES;
     }
@@ -393,17 +393,17 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
     {
         if ([self isInPhotoCaptureMode])
         {
-            self.capturePhotoButton.alpha = kDisabledRecordButtonAlpha;
+//            self.capturePhotoButton.alpha = kDisabledRecordButtonAlpha;
         }
         else
         {
-            self.recordButton.alpha = kDisabledRecordButtonAlpha;
-            self.recordButton.userInteractionEnabled = NO;
+//            self.recordButton.alpha = kDisabledRecordButtonAlpha;
+//            self.recordButton.userInteractionEnabled = NO;
         }
-        self.capturePhotoButton.userInteractionEnabled = NO;
+//        self.capturePhotoButton.userInteractionEnabled = NO;
         self.flashButton.enabled = NO;
         self.switchCameraButton.enabled = NO;
-        self.switchCameraModeButton.enabled = NO;
+//        self.switchCameraModeButton.enabled = NO;
         self.openAlbumButton.enabled = NO;
         self.nextButton.enabled = NO;
     }
@@ -518,6 +518,7 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
 - (void)capturePhoto:(id)sender
 {
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraDidCapturePhoto];
+    self.showedFullscreenShutterAnimation = YES;
     
     [self replacePreviewViewWithSnapshot];
     [MBProgressHUD showHUDAddedTo:self.previewSnapshot animated:YES];
@@ -664,14 +665,14 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
         self.captureController.videoEncoder.recording = YES;
     }
     self.switchCameraButton.enabled = NO;
-    self.switchCameraModeButton.enabled = NO;
+//    self.switchCameraModeButton.enabled = NO;
 }
 
 - (void)stopRecording
 {
     self.captureController.videoEncoder.recording = NO;
     self.switchCameraButton.enabled = YES;
-    self.switchCameraModeButton.enabled = YES;
+//    self.switchCameraModeButton.enabled = YES;
     
     [self updateOrientation];
 }
@@ -680,11 +681,11 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
 {
     void (^animations)(void) = ^(void)
     {
-        self.capturePhotoButton.alpha = 0.0;
-        self.recordButton.alpha = 1.0;
-        self.toolTipView.alpha = 0.0;
+//        self.capturePhotoButton.alpha = 0.0;
+//        self.recordButton.alpha = 1.0;
+//        self.toolTipView.alpha = 0.0;
         self.flashButton.alpha = 0.0f;
-        self.progressView.alpha = 1.0f;
+//        self.progressView.alpha = 1.0f;
 
         if (self.inRecordVideoState)
         {
@@ -697,7 +698,7 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
     };
     void (^fullCompletion)(BOOL) = ^(BOOL finished)
     {
-        [self.switchCameraModeButton setImage:[UIImage imageNamed:@"cameraButtonSwitchToPhoto"] forState:UIControlStateNormal];
+//        [self.switchCameraModeButton setImage:[UIImage imageNamed:@"cameraButtonSwitchToPhoto"] forState:UIControlStateNormal];
         [self setOpenAlbumButtonImageWithLatestPhoto:NO animated:animated];
         
         if (!self.videoEnabled)
@@ -731,16 +732,16 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
 {
     void (^animations)(void) = ^(void)
     {
-        self.capturePhotoButton.alpha = 1.0f;
-        self.recordButton.alpha = 0.0f;
-        self.toolTipView.alpha = 0.0f;
+//        self.capturePhotoButton.alpha = 1.0f;
+//        self.recordButton.alpha = 0.0f;
+//        self.toolTipView.alpha = 0.0f;
         self.nextButton.alpha = 0.0f;
-        self.progressView.alpha = 0.0f;
+//        self.progressView.alpha = 0.0f;
         [self configureFlashButton];
     };
     void (^fullCompletion)(BOOL) = ^(BOOL finished)
     {
-        [self.switchCameraModeButton setImage:[UIImage imageNamed:@"cameraButtonSwitchToVideo"] forState:UIControlStateNormal];
+//        [self.switchCameraModeButton setImage:[UIImage imageNamed:@"cameraButtonSwitchToVideo"] forState:UIControlStateNormal];
         [self setOpenAlbumButtonImageWithLatestPhoto:YES animated:animated];
         if (completion)
         {
@@ -924,17 +925,17 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
     CGFloat progress = ABS( totalRecorded / VConstantsMaximumVideoDuration);
     [self.cameraControl setRecordingProgress:progress
                                     animated:YES];
-    NSLayoutConstraint *newProgressConstraint = [NSLayoutConstraint constraintWithItem:self.progressView
-                                                                             attribute:NSLayoutAttributeWidth
-                                                                             relatedBy:NSLayoutRelationEqual
-                                                                                toItem:self.view
-                                                                             attribute:NSLayoutAttributeWidth
-                                                                            multiplier:progress
-                                                                              constant:0.0f];
-    [self.view removeConstraint:self.progressViewWidthConstraint];
-    [self.view addConstraint:newProgressConstraint];
-    self.progressViewWidthConstraint = newProgressConstraint;
-    self.progressView.hidden = NO;
+//    NSLayoutConstraint *newProgressConstraint = [NSLayoutConstraint constraintWithItem:self.progressView
+//                                                                             attribute:NSLayoutAttributeWidth
+//                                                                             relatedBy:NSLayoutRelationEqual
+//                                                                                toItem:self.view
+//                                                                             attribute:NSLayoutAttributeWidth
+//                                                                            multiplier:progress
+//                                                                              constant:0.0f];
+//    [self.view removeConstraint:self.progressViewWidthConstraint];
+//    [self.view addConstraint:newProgressConstraint];
+//    self.progressViewWidthConstraint = newProgressConstraint;
+//    self.progressView.hidden = NO;
 }
 
 - (void)clearRecordedVideoAnimated:(BOOL)animated

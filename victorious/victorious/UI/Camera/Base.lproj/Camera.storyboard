@@ -19,10 +19,10 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="umg-5s-weJ" userLabel="Top Button Superview">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rt0-I5-ldA" userLabel="Close Button">
-                                        <rect key="frame" x="0.0" y="0.0" width="64" height="64"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="64" height="44"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="64" id="qeP-4H-dOh"/>
                                         </constraints>
@@ -34,7 +34,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fQI-xE-BeV" userLabel="Switch Camera Button">
-                                        <rect key="frame" x="128" y="0.0" width="64" height="64"/>
+                                        <rect key="frame" x="128" y="0.0" width="64" height="44"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="64" id="BsA-Rn-bcd"/>
                                         </constraints>
@@ -47,7 +47,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" alpha="0.0" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P0d-F9-FuH" userLabel="Next Button">
-                                        <rect key="frame" x="256" y="0.0" width="64" height="64"/>
+                                        <rect key="frame" x="256" y="0.0" width="64" height="44"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="64" id="K5l-3C-dZ2"/>
                                         </constraints>
@@ -59,7 +59,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" alpha="0.0" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="foI-4D-IyS" userLabel="Flash Button">
-                                        <rect key="frame" x="256" y="0.0" width="64" height="64"/>
+                                        <rect key="frame" x="256" y="0.0" width="64" height="44"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="64" id="W07-Jg-KII"/>
                                         </constraints>
@@ -75,12 +75,11 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="centerX" secondItem="fQI-xE-BeV" secondAttribute="centerX" constant="0.5" id="0vF-3I-Ajg"/>
-                                    <constraint firstAttribute="height" priority="800" constant="64" id="7MQ-Lg-NrQ"/>
+                                    <constraint firstAttribute="height" constant="44" id="7MQ-Lg-NrQ"/>
                                     <constraint firstItem="rt0-I5-ldA" firstAttribute="left" secondItem="umg-5s-weJ" secondAttribute="left" id="7Zc-LL-MbP"/>
                                     <constraint firstAttribute="bottom" secondItem="foI-4D-IyS" secondAttribute="bottom" id="PQ2-pi-cWN"/>
                                     <constraint firstItem="fQI-xE-BeV" firstAttribute="top" secondItem="umg-5s-weJ" secondAttribute="top" id="Rqg-UT-vJH"/>
                                     <constraint firstAttribute="bottom" secondItem="fQI-xE-BeV" secondAttribute="bottom" id="SSW-Y5-Nps"/>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="UDp-kn-PmS"/>
                                     <constraint firstItem="foI-4D-IyS" firstAttribute="top" secondItem="umg-5s-weJ" secondAttribute="top" id="dg2-vu-t3B"/>
                                     <constraint firstItem="P0d-F9-FuH" firstAttribute="top" secondItem="umg-5s-weJ" secondAttribute="top" id="mDO-pC-y13"/>
                                     <constraint firstAttribute="bottom" secondItem="rt0-I5-ldA" secondAttribute="bottom" id="ntA-EW-dFf"/>
@@ -88,18 +87,6 @@
                                     <constraint firstItem="rt0-I5-ldA" firstAttribute="top" secondItem="umg-5s-weJ" secondAttribute="top" id="tdv-k1-8Cq"/>
                                     <constraint firstAttribute="right" secondItem="P0d-F9-FuH" secondAttribute="right" id="uOz-ue-5tr"/>
                                     <constraint firstAttribute="bottom" secondItem="P0d-F9-FuH" secondAttribute="bottom" id="xea-u1-peE"/>
-                                </constraints>
-                            </view>
-                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="W3v-Ee-Cqf" userLabel="Progress View">
-                                <rect key="frame" x="0.0" y="64" width="320" height="8"/>
-                                <color key="backgroundColor" red="0.96862745098039216" green="0.27058823529411763" blue="0.23137254901960785" alpha="1" colorSpace="calibratedRGB"/>
-                            </view>
-                            <view contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="Cdq-4w-Bu5" userLabel="Preview View">
-                                <rect key="frame" x="0.0" y="72" width="320" height="320"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="320" id="3Nf-Mq-dkk"/>
-                                    <constraint firstAttribute="width" constant="320" id="qvr-1H-Yfa"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="abs-NM-eiT" userLabel="Bottom Button Superview">
@@ -142,6 +129,14 @@
                                     <constraint firstItem="oAC-V4-Jg0" firstAttribute="leading" secondItem="abs-NM-eiT" secondAttribute="leading" constant="20" id="w3t-cX-a5S"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="Cdq-4w-Bu5" userLabel="Preview View">
+                                <rect key="frame" x="0.0" y="44" width="320" height="320"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="320" id="3Nf-Mq-dkk"/>
+                                    <constraint firstAttribute="width" constant="320" id="qvr-1H-Yfa"/>
+                                </constraints>
+                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Tj5-Br-iYz" customClass="VCameraControl">
                                 <rect key="frame" x="120" y="444" width="80" height="80"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
@@ -158,19 +153,14 @@
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="centerX" secondItem="Tj5-Br-iYz" secondAttribute="centerX" id="0a5-Rw-0Mp"/>
-                            <constraint firstItem="Cdq-4w-Bu5" firstAttribute="top" secondItem="W3v-Ee-Cqf" secondAttribute="bottom" id="1hk-cu-nVf"/>
                             <constraint firstItem="umg-5s-weJ" firstAttribute="top" secondItem="VHc-U1-zGw" secondAttribute="bottom" id="4nb-z1-EII"/>
-                            <constraint firstItem="W3v-Ee-Cqf" firstAttribute="width" secondItem="AMw-cC-uUG" secondAttribute="width" id="GMK-v4-ZNi"/>
-                            <constraint firstItem="Cdq-4w-Bu5" firstAttribute="top" secondItem="umg-5s-weJ" secondAttribute="bottom" priority="750" constant="8" id="HnB-xQ-SxQ"/>
+                            <constraint firstItem="Cdq-4w-Bu5" firstAttribute="top" secondItem="umg-5s-weJ" secondAttribute="bottom" priority="750" id="HnB-xQ-SxQ"/>
                             <constraint firstItem="umg-5s-weJ" firstAttribute="left" secondItem="AMw-cC-uUG" secondAttribute="left" id="PSn-o0-D9f"/>
-                            <constraint firstItem="umg-5s-weJ" firstAttribute="bottom" secondItem="W3v-Ee-Cqf" secondAttribute="top" id="UXy-jA-Pfi"/>
                             <constraint firstItem="abs-NM-eiT" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Cdq-4w-Bu5" secondAttribute="bottom" id="Ujb-rf-uOh"/>
                             <constraint firstItem="umg-5s-weJ" firstAttribute="top" secondItem="VHc-U1-zGw" secondAttribute="bottom" id="W8s-ce-FH8"/>
                             <constraint firstAttribute="centerX" secondItem="Cdq-4w-Bu5" secondAttribute="centerX" id="YNh-E5-lCq"/>
                             <constraint firstAttribute="right" secondItem="abs-NM-eiT" secondAttribute="right" id="de4-Ce-ltb"/>
                             <constraint firstAttribute="centerY" secondItem="Tj5-Br-iYz" secondAttribute="centerY" constant="-200" id="iHI-dT-p2I"/>
-                            <constraint firstItem="Cdq-4w-Bu5" firstAttribute="top" relation="greaterThanOrEqual" secondItem="umg-5s-weJ" secondAttribute="bottom" constant="4" id="pWL-XT-TGW"/>
-                            <constraint firstItem="W3v-Ee-Cqf" firstAttribute="leading" secondItem="AMw-cC-uUG" secondAttribute="leading" id="qSp-kC-xNP"/>
                             <constraint firstAttribute="right" secondItem="umg-5s-weJ" secondAttribute="right" id="rOd-2e-gP1"/>
                             <constraint firstItem="e2F-3b-vgF" firstAttribute="top" secondItem="abs-NM-eiT" secondAttribute="bottom" id="ua3-eR-hij"/>
                             <constraint firstItem="abs-NM-eiT" firstAttribute="left" secondItem="AMw-cC-uUG" secondAttribute="left" id="wvD-uc-4A8"/>
@@ -185,8 +175,6 @@
                         <outlet property="nextButton" destination="P0d-F9-FuH" id="Wir-PA-wnL"/>
                         <outlet property="openAlbumButton" destination="W9w-XF-uIU" id="0Cs-b0-bYq"/>
                         <outlet property="previewView" destination="Cdq-4w-Bu5" id="uB4-J9-nz8"/>
-                        <outlet property="progressView" destination="W3v-Ee-Cqf" id="dT9-nq-gTj"/>
-                        <outlet property="progressViewWidthConstraint" destination="GMK-v4-ZNi" id="xIU-u4-shR"/>
                         <outlet property="switchCameraButton" destination="fQI-xE-BeV" id="Vk3-qf-zWV"/>
                     </connections>
                 </viewController>

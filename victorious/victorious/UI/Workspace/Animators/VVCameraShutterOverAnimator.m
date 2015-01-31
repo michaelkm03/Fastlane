@@ -7,9 +7,9 @@
 //
 
 #import "VVCameraShutterOverAnimator.h"
+#import "VCameraViewController.h"
 
-
-static const NSTimeInterval kBlurOverPresentTransitionDuration = 0.75f;
+static const NSTimeInterval kBlurOverPresentTransitionDuration = 0.25f;
 
 @implementation VVCameraShutterOverAnimator
 
@@ -22,27 +22,33 @@ static const NSTimeInterval kBlurOverPresentTransitionDuration = 0.75f;
 {
     UIViewController *fromViewController = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
     UIViewController *toViewController = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
-    
-    [[transitionContext containerView] addSubview:fromViewController.view];
+
     [[transitionContext containerView] addSubview:toViewController.view];
-//    [[transitionContext containerView] sendSubviewToBack:toViewController.view];
     
-    UIView *circleView = [[UIView alloc] initWithFrame:CGRectInset([transitionContext containerView].bounds, -CGRectGetWidth([transitionContext containerView].bounds), -CGRectGetWidth([transitionContext containerView].bounds))];
+    CGRect finalFrameForToViewController = [transitionContext finalFrameForViewController:toViewController];
+    CGFloat largerDimension = MAX(CGRectGetWidth(finalFrameForToViewController), CGRectGetHeight(finalFrameForToViewController));
+    UIView *circleView = [[UIView alloc] initWithFrame:CGRectMake(finalFrameForToViewController.origin.x, finalFrameForToViewController.origin.y, largerDimension, largerDimension)];
+    circleView.center = toViewController.view.center;
+    if ([fromViewController isKindOfClass:[VCameraViewController class]])
+    {
+        VCameraViewController *cameraViewController = (VCameraViewController *)fromViewController;
+        circleView.center = [[transitionContext containerView] convertPoint:cameraViewController.shutterCenter fromView:cameraViewController.view];
+    }
     circleView.layer.cornerRadius = CGRectGetWidth(circleView.bounds)/2;
     circleView.backgroundColor = [UIColor blackColor];
+    circleView.userInteractionEnabled = NO;
     [[transitionContext containerView] addSubview:circleView];
+    
     [UIView animateWithDuration:[self transitionDuration:transitionContext]
                           delay:0.0f
-         usingSpringWithDamping:0.7f
-          initialSpringVelocity:0.0f
-                        options:kNilOptions
+                        options:UIViewAnimationOptionCurveEaseOut
                      animations:^
      {
-         circleView.backgroundColor = [UIColor blueColor];
-         circleView.transform = CGAffineTransformMakeScale(0.0f, 0.0f);
+         circleView.transform = CGAffineTransformMakeScale(0.00001f, 0.00001f);
      }
                      completion:^(BOOL finished)
      {
+         [circleView removeFromSuperview];
          [transitionContext completeTransition:finished];
      }];
 }
