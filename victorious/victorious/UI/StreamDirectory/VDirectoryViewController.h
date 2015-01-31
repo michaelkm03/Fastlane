@@ -25,6 +25,6 @@
  *
  *  @return A VDirectoryViewController
  */
-+ (instancetype)streamDirectoryForStream:(VStream *)stream;
++ (instancetype)streamDirectoryForStream:(VStream *)stream dependencyManager:(VDependencyManager *)dependencyManager;
 
 @end

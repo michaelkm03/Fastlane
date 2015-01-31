@@ -189,7 +189,7 @@
     
     if ( self.viewModel.endCardViewModel != nil )
     {
-        [self showEndCardWithViewModel:self.viewModel.endCardViewModel];
+        [super showEndCardWithViewModel:self.viewModel.endCardViewModel];
     }
 }
 

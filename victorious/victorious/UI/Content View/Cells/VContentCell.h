@@ -7,8 +7,7 @@
 //
 
 #import "VBaseCollectionViewCell.h"
-
-@class VEndCardModel;
+#import "VEndCardViewController.h"
 
 @interface VContentCell : VBaseCollectionViewCell
 
@@ -24,8 +23,14 @@
  */
 @property (nonatomic, assign) NSInteger repeatCount;
 
+@property (nonatomic, weak) id<VEndCardViewControllerDelegate> endCardDelegate;
+
+@property (nonatomic, strong, readonly) VEndCardViewController *endCardViewController;
+
 - (void)playAnimation;
 
 - (void)showEndCardWithViewModel:(VEndCardModel *)model;
+
+- (void)resetEndCardActions:(BOOL)animated;
 
 @end

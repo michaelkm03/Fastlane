@@ -211,6 +211,11 @@ static NSString * const kStoryboardName = @"EndCard";
      }];
 }
 
+- (void)deselectActionsAnimated:(BOOL)animated
+{
+    [self.animator deselectAllCellsAnimated:animated];
+}
+
 #pragma mark - IBActions
 
 - (IBAction)onReplay:(id)sender
@@ -259,12 +264,9 @@ static NSString * const kStoryboardName = @"EndCard";
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self.animator selectCellAtIndexPath:indexPath];
-    
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.35f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
-                   {
-                       [self.delegate actionSelectedFromEndCard:self atIndex:indexPath.row userInfo:self.actions[ indexPath.row ]];
-                   });
+    [self.animator setCellAtIndexPath:indexPath selected:YES];
+    [self.nextVideoBannerViewController stopCountdown];
+    [self.delegate actionSelectedFromEndCard:self atIndex:indexPath.row userInfo:self.actions[ indexPath.row ]];
 }
 
 #pragma mark - Content size animation

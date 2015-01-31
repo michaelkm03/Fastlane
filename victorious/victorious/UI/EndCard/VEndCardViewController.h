@@ -13,11 +13,11 @@
 @protocol VEndCardViewControllerDelegate <NSObject>
 @required
 
-- (void)replaySelectedFromEndCard:(VEndCardViewController *)endCarViewController;
+- (void)replaySelectedFromEndCard:(VEndCardViewController *)endCardViewController;
 
-- (void)nextSelectedFromEndCard:(VEndCardViewController *)endCarViewController;
+- (void)nextSelectedFromEndCard:(VEndCardViewController *)endCardViewController;
 
-- (void)actionSelectedFromEndCard:(VEndCardViewController *)endCarViewController
+- (void)actionSelectedFromEndCard:(VEndCardViewController *)endCardViewController
                           atIndex:(NSUInteger)index
                          userInfo:(NSDictionary *)userInfo;
 
@@ -50,5 +50,7 @@
  Animates all elements out of the view.
 */
 - (void)transitionOut;
+
+- (void)deselectActionsAnimated:(BOOL)animated;
 
 @end

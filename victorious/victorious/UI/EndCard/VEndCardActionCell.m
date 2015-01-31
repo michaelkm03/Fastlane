@@ -35,7 +35,7 @@ static const CGFloat kScaleActive       = 1.0f;
 {
     [super prepareForReuse];
     
-    [self resetAnimationState];
+    [self resetSelectionStateAnimated:NO];
 }
 
 - (void)setTitle:(NSString *)title
@@ -104,10 +104,28 @@ static const CGFloat kScaleActive       = 1.0f;
                      completion:nil];
 }
 
-- (void)resetAnimationState
+- (void)resetSelectionStateAnimated:(BOOL)animated
 {
-    self.alpha = 1.0f;
-    self.transform = CGAffineTransformMakeScale( kScaleActive, kScaleActive );
+    void (^animations)() = ^void
+    {
+        self.alpha = 1.0f;
+        self.transform = CGAffineTransformMakeScale( kScaleActive, kScaleActive );
+    };
+    
+    if ( !animated )
+    {
+        animations();
+    }
+    else
+    {
+        [UIView animateWithDuration:0.5f
+                              delay:0.0f
+             usingSpringWithDamping:0.5
+              initialSpringVelocity:0.5
+                            options:kNilOptions
+                         animations:animations
+                         completion:nil];
+    }
 }
 
 - (void)transitionInWithDuration:(NSTimeInterval)duration delay:(NSTimeInterval)delay

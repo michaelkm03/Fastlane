@@ -40,19 +40,22 @@ static CGFloat const kDirectoryInset = 10.0f;
 
 @interface VDirectoryViewController () <UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, VNavigationHeaderDelegate, VStreamCollectionDataDelegate, VNewContentViewControllerDelegate, VNavigationHeaderDelegate>
 
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
+
 @end
 
 @implementation VDirectoryViewController
 
 #pragma mark - Initializers
 
-+ (instancetype)streamDirectoryForStream:(VStream *)stream
++ (instancetype)streamDirectoryForStream:(VStream *)stream dependencyManager:(VDependencyManager *)dependencyManager
 {
     VDirectoryViewController *streamDirectory = [[VDirectoryViewController alloc] initWithNibName:nil
                                                                                            bundle:nil];
     streamDirectory.defaultStream = stream;
     streamDirectory.currentStream = stream;
     streamDirectory.title = stream.name;
+    streamDirectory.dependencyManager = dependencyManager;
     
     [streamDirectory v_addNewNavHeaderWithTitles:nil];
     streamDirectory.navHeaderView.delegate = streamDirectory;
@@ -67,7 +70,7 @@ static CGFloat const kDirectoryInset = 10.0f;
     NSAssert([NSThread isMainThread], @"This method must be called on the main thread");
     VStream *stream = [VStream streamForPath:[dependencyManager stringForKey:kStreamURLPathKey] inContext:dependencyManager.objectManager.managedObjectStore.mainQueueManagedObjectContext];
     stream.name = [dependencyManager stringForKey:kTitleKey];
-    return [self streamDirectoryForStream:stream];
+    return [self streamDirectoryForStream:stream dependencyManager:dependencyManager];
 }
 
 #pragma mark - UIView overrides
@@ -165,7 +168,8 @@ static CGFloat const kDirectoryInset = 10.0f;
     else if ([item isKindOfClass:[VSequence class]])
     {
         VContentViewViewModel *contentViewViewModel = [[VContentViewViewModel alloc] initWithSequence:(VSequence *)item];
-        VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewViewModel];
+        VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewViewModel
+                                                            dependencyManager:self.dependencyManager];
         contentViewController.delegate = self;
         [self.navigationController pushViewController:contentViewController animated:YES];
     }

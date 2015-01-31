@@ -37,7 +37,7 @@ typedef NS_ENUM( NSUInteger, VEndCardAnimationState )
 /**
  Set all elements back to their default, initial states without animation.
  */
-- (void)selectCellAtIndexPath:(NSIndexPath *)indexPath;
+- (void)setCellAtIndexPath:(NSIndexPath *)indexPath selected:(BOOL)selected;
 
 /**
  Play transition in animations for all elements.  This should be called when the
@@ -50,5 +50,7 @@ typedef NS_ENUM( NSUInteger, VEndCardAnimationState )
  view is preparing to be removed from the view hierarchy.
  */
 - (void)transitionInAllWithCompletion:(void(^)())completion;
+
+- (void)deselectAllCellsAnimated:(BOOL)animated;
 
 @end

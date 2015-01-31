@@ -108,7 +108,7 @@ static CGFloat easeInQuint( CGFloat t, CGFloat b, CGFloat c, CGFloat d )
      }];
 }
 
-- (void)selectCellAtIndexPath:(NSIndexPath *)indexPath
+- (void)setCellAtIndexPath:(NSIndexPath *)indexPath selected:(BOOL)selected
 {
     [self.collectionView.visibleCells enumerateObjectsUsingBlock:^(VEndCardActionCell *cell, NSUInteger idx, BOOL *stop)
      {
@@ -116,6 +116,14 @@ static CGFloat easeInQuint( CGFloat t, CGFloat b, CGFloat c, CGFloat d )
          {
              [cell playDisableAnimation];
          }
+     }];
+}
+
+- (void)deselectAllCellsAnimated:(BOOL)animated
+{
+    [self.collectionView.visibleCells enumerateObjectsUsingBlock:^(VEndCardActionCell *cell, NSUInteger idx, BOOL *stop)
+     {
+         [cell resetSelectionStateAnimated:animated];
      }];
 }
 

@@ -10,8 +10,7 @@
 
 #import "VContentViewViewModel.h"
 
-@class VDependencyManager;
-@class VNewContentViewController;
+@class VDependencyManager, VSequenceActionController, VNewContentViewController;
 
 @protocol VNewContentViewControllerDelegate  <NSObject>
 
@@ -44,7 +43,8 @@
  *
  *  @return An initialized content view controller.
  */
-+ (VNewContentViewController *)contentViewControllerWithViewModel:(VContentViewViewModel *)viewModel;
++ (VNewContentViewController *)contentViewControllerWithViewModel:(VContentViewViewModel *)viewModel
+                                                dependencyManager:(VDependencyManager *)dependencyManager;
 
 /**
  *  The viewModel that was passed in to the content viewController's factory method.
@@ -57,5 +57,7 @@
  *  Need a reference to this for determining whether or not to show the histogram.
  */
 @property (nonatomic, weak) VDependencyManager *dependencyManagerForHistogramExperiment;
+
+@property (nonatomic, strong, readonly) VSequenceActionController *sequenceActionController;
 
 @end

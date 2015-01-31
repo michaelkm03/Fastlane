@@ -7,10 +7,9 @@
 //
 
 #import "VContentCell.h"
-#import "VEndCardViewController.h"
 #import "UIVIew+AutoLayout.h"
 
-@interface VContentCell ()
+@interface VContentCell () <VEndCardViewControllerDelegate>
 
 @property (nonatomic, weak) UIImageView *animationImageView;
 
@@ -81,7 +80,7 @@
     [self.contentView bringSubviewToFront:self.animationImageView];
 }
 
-#pragma mark - Public Methods
+#pragma mark - Public Methodsx
 
 - (void)playAnimation
 {
@@ -93,6 +92,14 @@
 
 #pragma mark - End Card
 
+- (void)resetEndCardActions:(BOOL)animated
+{
+    if ( self.endCardViewController != nil )
+    {
+        [self.endCardViewController deselectActionsAnimated:animated];
+    }
+}
+
 - (void)showEndCardWithViewModel:(VEndCardModel *)model
 {
     if ( self.endCardViewController != nil )
@@ -103,17 +110,31 @@
     
     self.endCardViewController = [VEndCardViewController newWithDependencyManager:nil
                                                                             model:model
+#warning This should be the same as VShrinkingContentLayoutMinimumContentHeight
                                                                     minViewHeight:125.0f
                                                                     maxViewHeight:self.maxSize.height];
+    self.endCardViewController.delegate = self;
     [self.contentView addSubview:self.endCardViewController.view];
     self.endCardViewController.view.frame = self.contentView.bounds;
     [self.contentView v_addFitToParentConstraintsToSubview:self.endCardViewController.view];
     [self.endCardViewController transitionIn];
 }
 
-- (void)hideEndCard
+#pragma mark - VEndCardViewControllerDelegate
+
+- (void)replaySelectedFromEndCard:(VEndCardViewController *)endCardViewController
 {
-    [self.endCardViewController transitionOut];
+    [self.endCardDelegate replaySelectedFromEndCard:endCardViewController];
+}
+
+- (void)nextSelectedFromEndCard:(VEndCardViewController *)endCardViewController
+{
+    [self.endCardDelegate nextSelectedFromEndCard:endCardViewController];
+}
+
+- (void)actionSelectedFromEndCard:(VEndCardViewController *)endCardViewController atIndex:(NSUInteger)index userInfo:(NSDictionary *)userInfo
+{
+    [self.endCardDelegate actionSelectedFromEndCard:endCardViewController atIndex:index userInfo:userInfo];
 }
 
 @end

@@ -78,10 +78,11 @@
 #import "VTracking.h"
 #import "VCommentHighlighter.h"
 #import "VScrollPaginator.h"
+#import "VSequenceActionController.h"
 
 static const CGFloat kMaxInputBarHeight = 200.0f;
 
-@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate,VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate>
+@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate,VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, VEndCardViewControllerDelegate>
 
 #import "VCommentHighlighter.h"
 
@@ -123,6 +124,9 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 
 @property (nonatomic, strong) VCommentHighlighter *commentHighlighter;
 
+@property (nonatomic, strong, readwrite) VSequenceActionController *sequenceActionController;
+@property (nonatomic, weak) VDependencyManager *dependencyManager;
+
 @end
 
 @implementation VNewContentViewController
@@ -130,10 +134,12 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 #pragma mark - Factory Methods
 
 + (VNewContentViewController *)contentViewControllerWithViewModel:(VContentViewViewModel *)viewModel
+                                                dependencyManager:(VDependencyManager *)dependencyManager
 {
     VNewContentViewController *contentViewController = [[UIStoryboard storyboardWithName:@"ContentView" bundle:nil] instantiateInitialViewController];
     contentViewController.viewModel = viewModel;
     contentViewController.hasAutoPlayed = NO;
+    contentViewController.dependencyManager = dependencyManager;
     
     VModalTransition *modalTransition = [[VModalTransition alloc] init];
     contentViewController.transitionDelegate = [[VTransitionDelegate alloc] initWithTransition:modalTransition];
@@ -287,65 +293,48 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 
 #pragma mark iOS8.0+
 
-- (void)viewWillTransitionToSize:(CGSize)size
-       withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
     [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context)
      {
-         [self alongsideRotationupdates];
+         [self handleRotationToInterfaceOrientation:[UIApplication sharedApplication].statusBarOrientation duration:context.transitionDuration];
      }
-                                 completion:^(id<UIViewControllerTransitionCoordinatorContext> context)
-     {
-         [self finishedRotationUpdates];
-     }];
+                                 completion:nil];
 }
 
 #pragma mark iOS7.1+
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
-    [self alongsideRotationupdates];
-}
-
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
-{
-    [self finishedRotationUpdates];
+    [self handleRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
 }
 
 #pragma mark Shared
 
-- (void)alongsideRotationupdates
+- (void)handleRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
-    [self.inputAccessoryView endEditing:YES];
+    BOOL isLandscape = UIInterfaceOrientationIsLandscape(toInterfaceOrientation);
+    CGFloat targetAlpha = isLandscape ? 0.0f : 1.0f;
+    self.contentCollectionView.scrollEnabled = !isLandscape;
     
-    if (self.presentedViewController)
+    [self.contentCollectionView setContentOffset:CGPointMake( 0.0, 93.0f) animated:YES];
+    
+    if ( !isLandscape )
     {
-        return;
+        self.textEntryView.hidden = NO;
     }
     
-    self.landscapeMaskOverlay.alpha = (UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation)) ? 1.0f : 0.0f;
-    if (UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation))
-    {
-        [self.view addSubview:self.videoCell.videoPlayerContainer];
-        [self.view bringSubviewToFront:self.closeButton];
-        self.videoCell.videoPlayerContainer.frame = self.view.bounds;
-    }
-    else
-    {
-        [self.videoCell togglePlayControls];
-        self.videoCell.videoPlayerContainer.frame = self.videoCell.bounds;
-        self.videoCell.videoPlayerContainer.transform = self.videoCell.transform;
-    }
-}
-
-- (void)finishedRotationUpdates
-{
-    if (UIInterfaceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation))
-    {
-        self.videoCell.videoPlayerContainer.transform = CGAffineTransformIdentity;
-        [self.videoCell.contentView addSubview:self.videoCell.videoPlayerContainer];
-        [self.contentCollectionView.collectionViewLayout invalidateLayout];
-    }
+    [UIView animateWithDuration:duration animations:^
+     {
+         self.textEntryView.alpha = targetAlpha;
+     }
+                     completion:^(BOOL finished)
+     {
+         if ( isLandscape )
+         {
+             self.textEntryView.hidden = YES;
+         }
+     }];
 }
 
 #pragma mark View Lifecycle
@@ -353,6 +342,8 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.sequenceActionController = [[VSequenceActionController alloc] init];
     
     self.scrollPaginator = [[VScrollPaginator alloc] initWithDelegate:self];
 
@@ -504,6 +495,11 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     [super viewDidAppear:animated];
 
     [self.contentCollectionView flashScrollIndicators];
+    
+    if ( self.contentCell != nil )
+    {
+        [self.contentCell resetEndCardActions:animated];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -767,6 +763,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
                                                            success:nil
                                                            failure:nil];
                 self.contentCell = imageCell;
+                self.contentCell.endCardDelegate = self;
                 return imageCell;
             }
             case VContentViewTypeVideo:
@@ -792,6 +789,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
                     welf.moreButton.alpha = playControlsHidden ? 0.0f : 1.0f;
                     welf.closeButton.alpha = playControlsHidden ? 0.0f : 1.0f;
                 }];
+                videoCell.endCardDelegate = self;
                 return videoCell;
             }
             case VContentViewTypePoll:
@@ -1094,13 +1092,11 @@ referenceSizeForHeaderInSection:(NSInteger)section
     }
 }
 
-- (void)collectionView:(UICollectionView *)collectionView
-didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([indexPath compare:[self indexPathForContentView]] == NSOrderedSame)
     {
-        [self.contentCollectionView setContentOffset:CGPointMake(0, 0)
-                                            animated:YES];
+        [self.contentCollectionView setContentOffset:CGPointMake(0, 0) animated:YES];
     }
 }
 
@@ -1120,9 +1116,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 
 #pragma mark - VContentVideoCellDelegate
 
-- (void)videoCell:(VContentVideoCell *)videoCell
-    didPlayToTime:(CMTime)time
-        totalTime:(CMTime)totalTime
+- (void)videoCell:(VContentVideoCell *)videoCell didPlayToTime:(CMTime)time totalTime:(CMTime)totalTime
 {
     if (!self.enteringRealTimeComment)
     {
@@ -1148,8 +1142,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     }
 }
 
-- (void)videoCellPlayedToEnd:(VContentVideoCell *)videoCell
-               withTotalTime:(CMTime)totalTime
+- (void)videoCellPlayedToEnd:(VContentVideoCell *)videoCell withTotalTime:(CMTime)totalTime
 {
     self.histogramCell.histogramView.progress = CMTimeGetSeconds(totalTime) / CMTimeGetSeconds(totalTime);
     if (!self.enteringRealTimeComment)
@@ -1468,6 +1461,46 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 - (void)shouldLoadPreviousPage
 {
     [self.viewModel loadComments:VPageTypePrevious];
+}
+
+#pragma mark - VEndCardViewControllerDelegate
+
+- (void)replaySelectedFromEndCard:(VEndCardViewController *)endCardViewController
+{
+    NSLog( @"replaySelected" );
+    [endCardViewController transitionOut];
+}
+
+- (void)nextSelectedFromEndCard:(VEndCardViewController *)endCardViewController
+{
+    NSLog( @"nextSelectedFromEndCard" );
+    [endCardViewController transitionOut];
+}
+
+- (void)actionSelectedFromEndCard:(VEndCardViewController *)endCardViewController atIndex:(NSUInteger)index userInfo:(NSDictionary *)userInfo
+{
+    NSLog( @"Action selected: %@ (%@)", userInfo[ @"name" ], @(index) );
+    
+    void (^completion)() = ^void
+    {
+        [endCardViewController deselectActionsAnimated:YES];
+    };
+    
+    if ( index == 0 )
+    {
+        [self.sequenceActionController showRemixOnViewController:self withSequence:self.viewModel.sequence andDependencyManager:self.dependencyManager preloadedImage:nil completion:nil];
+    }
+    else if ( index == 1 )
+    {
+        [self.sequenceActionController repostActionFromViewController:self node:self.viewModel.currentNode completion:^(BOOL finished)
+        {
+            completion();
+        }];
+    }
+    else if ( index == 2 )
+    {
+        [self.sequenceActionController shareFromViewController:self sequence:self.viewModel.sequence node:self.viewModel.currentNode completion:completion];
+    }
 }
 
 @end

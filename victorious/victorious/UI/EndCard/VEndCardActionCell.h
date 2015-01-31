@@ -28,7 +28,7 @@
 /**
  Return to the initial starting state without animation
  */
-- (void)resetAnimationState;
+- (void)resetSelectionStateAnimated:(BOOL)animated;
 
 - (void)transitionInWithDuration:(NSTimeInterval)duration delay:(NSTimeInterval)delay;
 

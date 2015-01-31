@@ -64,7 +64,8 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
     
     VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithSequence:sequence];
     contentViewModel.deepLinkCommentId = commentId;
-    VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel];
+    VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel
+                                                                                                   dependencyManager:self.dependencyManager];
     contentViewController.dependencyManagerForHistogramExperiment = self.dependencyManager;
     contentViewController.placeholderImage = placeHolderImage;
     contentViewController.delegate = self;
