@@ -11,7 +11,7 @@
 static const CGFloat kMinHeightSize = 80.0f;
 static const CGFloat kWidthScaleFactorImageOnly = 1.2f;
 static const CGFloat kWidthScaleFactorDefault = 2.0f;
-static const CGFloat kCameraShutterGrowScaleFacotr = 15.0f;
+static const CGFloat kCameraShutterGrowScaleFacotr = 13.0f;
 static const NSTimeInterval kMaxElapsedTimeImageTriggerWithVideo = 0.2f;
 static const NSTimeInterval kRecordingTriggerDuration = 0.45f;
 static const NSTimeInterval kTransitionToRecordingAnimationDuration = 0.2f;
@@ -23,20 +23,10 @@ static const NSTimeInterval kNotRecordingTrackingTime = 0.0f;
 @interface VCameraControl ()
 
 @property (nonatomic, readwrite) VCameraControlState cameraControlState;
-
 @property (nonatomic, assign) VCameraControlState stateBeforeDragOut;
-
 @property (nonatomic, strong) UIView *progressView;
-
 @property (nonatomic, assign) NSTimeInterval currentStartTrackingTime;
-
-@property (nonatomic, strong) NSLayoutConstraint *progressWidthConstraint;
-
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *widthconstraint;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *heightConstraint;
-
 @property (nonatomic, assign) BOOL growing;
-
 @property (nonatomic, assign) BOOL recording;
 
 @end
@@ -68,7 +58,7 @@ static const NSTimeInterval kNotRecordingTrackingTime = 0.0f;
     self.multipleTouchEnabled = NO;
     self.layer.cornerRadius = kMinHeightSize * 0.5f;
     self.clipsToBounds = YES;
-    self.backgroundColor = [UIColor grayColor];
+    self.backgroundColor = [UIColor whiteColor];
     self.captureMode = VCameraControlCaptureModeVideo | VCameraControlCaptureModeImage;
     
     self.progressView = [[UIView alloc] initWithFrame:CGRectZero];
@@ -76,26 +66,6 @@ static const NSTimeInterval kNotRecordingTrackingTime = 0.0f;
     self.progressView.translatesAutoresizingMaskIntoConstraints = NO;
     self.progressView.userInteractionEnabled = NO;
     [self addSubview:self.progressView];
-    
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[progressView]|"
-                                                                 options:kNilOptions
-                                                                 metrics:nil
-                                                                   views:@{@"progressView":self.progressView}]];
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:self
-                                                     attribute:NSLayoutAttributeLeft
-                                                     relatedBy:NSLayoutRelationEqual
-                                                        toItem:self.progressView
-                                                     attribute:NSLayoutAttributeLeft
-                                                    multiplier:1.0f
-                                                      constant:0.0f]];
-    self.progressWidthConstraint = [NSLayoutConstraint constraintWithItem:self.progressView
-                                                                attribute:NSLayoutAttributeWidth
-                                                                relatedBy:NSLayoutRelationEqual
-                                                                   toItem:nil
-                                                                attribute:NSLayoutAttributeNotAnAttribute
-                                                               multiplier:1.0f
-                                                                 constant:0.0f];
-    [self.progressView addConstraint:self.progressWidthConstraint];
     
     [self addTarget:self action:@selector(dragInside) forControlEvents:UIControlEventTouchDragEnter];
     [self addTarget:self action:@selector(dragOutside) forControlEvents:UIControlEventTouchDragExit];
@@ -120,8 +90,10 @@ static const NSTimeInterval kNotRecordingTrackingTime = 0.0f;
                     animated:(BOOL)animated
 {
     _recordingProgress = recordingProgress;
-    self.progressWidthConstraint.constant = CGRectGetWidth(self.bounds) * recordingProgress;
-    [self layoutIfNeeded];
+    self.progressView.frame = CGRectMake(CGRectGetMinX(self.bounds),
+                                         CGRectGetMinY(self.bounds),
+                                         CGRectGetWidth(self.bounds) * self.recordingProgress,
+                                         CGRectGetHeight(self.bounds));
 }
 
 - (void)setCameraControlState:(VCameraControlState)cameraControlState
@@ -149,12 +121,13 @@ static const NSTimeInterval kNotRecordingTrackingTime = 0.0f;
             animations = ^
             {
                 self.backgroundColor = [UIColor whiteColor];
-                self.widthconstraint.constant = kMinHeightSize * 1.0f;
-                self.heightConstraint.constant = kMinHeightSize * 1.0f;
+                self.transform = CGAffineTransformMakeScale(1.0f, 1.0f);
                 self.layer.cornerRadius = kMinHeightSize * 0.5f;
-                self.progressWidthConstraint.constant = self.widthconstraint.constant * self.recordingProgress;
-                [self invalidateIntrinsicContentSize];
-                [self.superview layoutIfNeeded];
+                self.frame = CGRectMake(0, 0, kMinHeightSize, kMinHeightSize);
+                self.progressView.frame = CGRectMake(CGRectGetMinX(self.bounds),
+                                                     CGRectGetMinY(self.bounds),
+                                                     CGRectGetWidth(self.bounds) * self.recordingProgress,
+                                                     CGRectGetHeight(self.bounds));
             };
             break;
         }
@@ -163,10 +136,14 @@ static const NSTimeInterval kNotRecordingTrackingTime = 0.0f;
             animationDuration = kRecordingTriggerDuration;
             animations = ^
             {
-                self.widthconstraint.constant = kMinHeightSize * [self growingFactorForCaptureMode:self.captureMode];
-                self.progressWidthConstraint.constant = self.widthconstraint.constant * self.recordingProgress;
-                [self invalidateIntrinsicContentSize];
-                [self.superview layoutIfNeeded];
+                CGFloat scaledWidth = [self growingFactorForCaptureMode:self.captureMode] * CGRectGetWidth(self.frame);
+                CGFloat deltaWitdh = scaledWidth - CGRectGetWidth(self.frame);
+                self.frame = CGRectMake(- deltaWitdh/2, 0.0f, scaledWidth, CGRectGetHeight(self.frame));\
+                self.layer.cornerRadius = CGRectGetHeight(self.frame) / 2;
+                self.progressView.frame = CGRectMake(CGRectGetMinX(self.bounds),
+                                                     CGRectGetMinY(self.bounds),
+                                                     CGRectGetWidth(self.bounds) * self.recordingProgress,
+                                                     CGRectGetHeight(self.bounds));
             };
             completion = ^(BOOL finished)
             {
@@ -185,40 +162,41 @@ static const NSTimeInterval kNotRecordingTrackingTime = 0.0f;
             
             animations = ^
             {
-                 self.progressWidthConstraint.constant = self.widthconstraint.constant * self.recordingProgress;
-                 self.widthconstraint.constant = kMinHeightSize * 2.0f;
+                self.progressView.frame = CGRectMake(CGRectGetMinX(self.bounds),
+                                                     CGRectGetMinY(self.bounds),
+                                                     CGRectGetWidth(self.bounds) * self.recordingProgress,
+                                                     CGRectGetHeight(self.bounds));
             };
             break;
         }
         case VCameraControlStateCapturingImage:
         {
-
-//            animationDuration = kCameraShutterGrowAnimationDuration;
-//            animations = ^
-//            {
-//                self.backgroundColor = [UIColor blackColor];
-//                self.widthconstraint.constant = kMinHeightSize * kCameraShutterGrowScaleFacotr;
-//                self.heightConstraint.constant = kMinHeightSize * kCameraShutterGrowScaleFacotr;
-//                [self invalidateIntrinsicContentSize];
-//                [self.superview layoutIfNeeded];
-//            };
-            [self sendActionsForControlEvents:VCameraControlEventWantsStillImage];
-            [UIView animateWithDuration:kCameraShutterGrowAnimationDuration
+            [UIView animateWithDuration:0.25f
                                   delay:0.0f
                                 options:UIViewAnimationOptionCurveEaseIn
                              animations:^
-            {
-                self.backgroundColor = [UIColor blackColor];
-                self.widthconstraint.constant = kMinHeightSize * kCameraShutterGrowScaleFacotr;
-                self.heightConstraint.constant = kMinHeightSize * kCameraShutterGrowScaleFacotr;
-                [self invalidateIntrinsicContentSize];
-                [self.superview layoutIfNeeded];
-                
-            }
+             {
+                 self.frame = CGRectMake(0, 0, kMinHeightSize, kMinHeightSize);
+                 
+                 self.backgroundColor = [UIColor darkGrayColor];
+             }
                              completion:^(BOOL finished)
             {
-
+                
+                [UIView animateWithDuration:kCameraShutterGrowAnimationDuration
+                                      delay:0.0f
+                                    options:UIViewAnimationOptionCurveEaseOut
+                                 animations:^
+                 {
+                     self.backgroundColor = [UIColor blackColor];
+                     self.transform = CGAffineTransformMakeScale(kCameraShutterGrowScaleFacotr, kCameraShutterGrowScaleFacotr);
+                 }
+                                 completion:^(BOOL finished)
+                 {
+                     [self sendActionsForControlEvents:VCameraControlEventWantsStillImage];
+                 }];
             }];
+            
             break;
         }
     }

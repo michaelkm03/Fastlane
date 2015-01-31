@@ -41,7 +41,7 @@ static const NSTimeInterval kBlurOverPresentTransitionDuration = 0.25f;
     
     [UIView animateWithDuration:[self transitionDuration:transitionContext]
                           delay:0.0f
-                        options:UIViewAnimationOptionCurveEaseOut
+                        options:UIViewAnimationOptionCurveEaseInOut
                      animations:^
      {
          circleView.transform = CGAffineTransformMakeScale(0.00001f, 0.00001f);

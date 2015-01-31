@@ -137,30 +137,26 @@
                                     <constraint firstAttribute="width" constant="320" id="qvr-1H-Yfa"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Tj5-Br-iYz" customClass="VCameraControl">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="r8c-9h-K1E" userLabel="Camera Control Container">
                                 <rect key="frame" x="120" y="444" width="80" height="80"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="80" id="5Ws-fP-VlM"/>
-                                    <constraint firstAttribute="height" constant="80" id="vaB-OF-7eg"/>
+                                    <constraint firstAttribute="height" constant="80" id="8U8-te-6af"/>
+                                    <constraint firstAttribute="width" constant="80" id="q5K-kh-csd"/>
                                 </constraints>
-                                <connections>
-                                    <outlet property="heightConstraint" destination="vaB-OF-7eg" id="dbL-cd-cUG"/>
-                                    <outlet property="widthconstraint" destination="5Ws-fP-VlM" id="bE0-MZ-GDc"/>
-                                </connections>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="centerX" secondItem="Tj5-Br-iYz" secondAttribute="centerX" id="0a5-Rw-0Mp"/>
                             <constraint firstItem="umg-5s-weJ" firstAttribute="top" secondItem="VHc-U1-zGw" secondAttribute="bottom" id="4nb-z1-EII"/>
                             <constraint firstItem="Cdq-4w-Bu5" firstAttribute="top" secondItem="umg-5s-weJ" secondAttribute="bottom" priority="750" id="HnB-xQ-SxQ"/>
+                            <constraint firstAttribute="centerY" secondItem="r8c-9h-K1E" secondAttribute="centerY" constant="-200" id="P4C-t4-sC3"/>
                             <constraint firstItem="umg-5s-weJ" firstAttribute="left" secondItem="AMw-cC-uUG" secondAttribute="left" id="PSn-o0-D9f"/>
                             <constraint firstItem="abs-NM-eiT" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Cdq-4w-Bu5" secondAttribute="bottom" id="Ujb-rf-uOh"/>
                             <constraint firstItem="umg-5s-weJ" firstAttribute="top" secondItem="VHc-U1-zGw" secondAttribute="bottom" id="W8s-ce-FH8"/>
                             <constraint firstAttribute="centerX" secondItem="Cdq-4w-Bu5" secondAttribute="centerX" id="YNh-E5-lCq"/>
+                            <constraint firstAttribute="centerX" secondItem="r8c-9h-K1E" secondAttribute="centerX" id="auc-1b-h6Z"/>
                             <constraint firstAttribute="right" secondItem="abs-NM-eiT" secondAttribute="right" id="de4-Ce-ltb"/>
-                            <constraint firstAttribute="centerY" secondItem="Tj5-Br-iYz" secondAttribute="centerY" constant="-200" id="iHI-dT-p2I"/>
                             <constraint firstAttribute="right" secondItem="umg-5s-weJ" secondAttribute="right" id="rOd-2e-gP1"/>
                             <constraint firstItem="e2F-3b-vgF" firstAttribute="top" secondItem="abs-NM-eiT" secondAttribute="bottom" id="ua3-eR-hij"/>
                             <constraint firstItem="abs-NM-eiT" firstAttribute="left" secondItem="AMw-cC-uUG" secondAttribute="left" id="wvD-uc-4A8"/>
@@ -169,7 +165,7 @@
                     <nil key="simulatedStatusBarMetrics"/>
                     <nil key="simulatedTopBarMetrics"/>
                     <connections>
-                        <outlet property="cameraControl" destination="Tj5-Br-iYz" id="jZP-sw-POG"/>
+                        <outlet property="cameraControlContainer" destination="r8c-9h-K1E" id="gWM-fw-qDQ"/>
                         <outlet property="deleteButton" destination="oAC-V4-Jg0" id="62s-tg-lPW"/>
                         <outlet property="flashButton" destination="foI-4D-IyS" id="Yuh-uU-u2a"/>
                         <outlet property="nextButton" destination="P0d-F9-FuH" id="Wir-PA-wnL"/>

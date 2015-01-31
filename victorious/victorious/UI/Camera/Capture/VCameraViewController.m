@@ -38,7 +38,8 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
 
 @property (nonatomic, weak) IBOutlet UIButton *openAlbumButton;
 @property (nonatomic, weak) IBOutlet UIButton *deleteButton;
-@property (weak, nonatomic) IBOutlet VCameraControl *cameraControl;
+@property (nonatomic, strong) VCameraControl *cameraControl;
+@property (nonatomic, weak) IBOutlet UIView *cameraControlContainer;
 
 @property (nonatomic, strong) AVCaptureVideoPreviewLayer *previewLayer;
 @property (nonatomic, strong) UIView *previewSnapshot;
@@ -124,6 +125,11 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.cameraControl = [[VCameraControl alloc] initWithFrame:self.cameraControlContainer.bounds];
+    self.cameraControl.translatesAutoresizingMaskIntoConstraints = NO;
+    self.cameraControl.autoresizingMask = UIViewAutoresizingNone;
+    [self.cameraControlContainer addSubview:self.cameraControl];
     
     VCameraControlCaptureMode captureMode = 0;
     if (!self.disallowVideo)
@@ -310,7 +316,8 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
 
 - (CGPoint)shutterCenter
 {
-    return self.cameraControl.center;
+    return [self.cameraControlContainer convertPoint:self.cameraControl.center
+                                              toView:self.view];
 }
 
 #pragma mark - Permissions
@@ -673,7 +680,7 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
     self.captureController.videoEncoder.recording = NO;
     self.switchCameraButton.enabled = YES;
 //    self.switchCameraModeButton.enabled = YES;
-    
+    self.showedFullscreenShutterAnimation = NO;
     [self updateOrientation];
 }
 
