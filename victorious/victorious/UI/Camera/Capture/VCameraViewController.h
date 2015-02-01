@@ -21,7 +21,7 @@
  If YES, the most recently captured media was
  selected from the user's asset library.
  */
-@property (nonatomic) BOOL didSelectAssetFromLibrary;
+@property (nonatomic, readonly) BOOL didSelectAssetFromLibrary;
 
 /**
  *  If YES, the camera will call it's completion block immediately after taking the picture/video.
@@ -59,8 +59,10 @@
 @property (nonatomic, readonly) BOOL showedFullscreenShutterAnimation;
 
 /**
- *  The origin of the growth of the shutter animation.
+ The origin of the growth of the shutter animation.
  */
 @property (nonatomic, readonly) CGPoint shutterCenter;
+
+@property (nonatomic, readonly) NSURL *capturedMediaURL;
 
 @end

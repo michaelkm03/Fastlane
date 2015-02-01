@@ -144,6 +144,12 @@ static inline AVCaptureDevice *defaultCaptureDevice()
 {
     dispatch_async(self.sessionQueue, ^(void)
     {
+        if (self.captureSession.isRunning)
+        {
+            completion(nil);
+            return;
+        }
+        
         AVAuthorizationStatus videoAuthorizationStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
         if (!self.videoInput &&
             videoAuthorizationStatus != AVAuthorizationStatusDenied &&

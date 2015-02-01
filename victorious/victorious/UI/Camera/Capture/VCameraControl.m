@@ -102,6 +102,17 @@ static const NSTimeInterval kNotRecordingTrackingTime = 0.0f;
                                          CGRectGetHeight(self.bounds));
 }
 
+- (void)setEnabled:(BOOL)enabled
+{
+    [UIView animateWithDuration:0.2f
+                     animations:^
+    {
+        self.backgroundColor = enabled ? [UIColor whiteColor] : [UIColor lightGrayColor];
+    }];
+    
+    [super setEnabled:enabled];
+}
+
 - (void)setCameraControlState:(VCameraControlState)cameraControlState
 {
     if (_cameraControlState == cameraControlState)

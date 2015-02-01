@@ -15,8 +15,6 @@
 #import "VCameraVideoEncoder.h"
 #import "VCameraViewController.h"
 #import "VConstants.h"
-#import "VImagePreviewViewController.h"
-#import "VVideoPreviewViewController.h"
 #import "VImageSearchViewController.h"
 #import "UIImage+Cropping.h"
 #import "UIImage+Resize.h"
@@ -27,11 +25,24 @@
 static const NSTimeInterval kAnimationDuration = 0.4;
 static const NSTimeInterval kErrorMessageDisplayDuration = 3.0;
 static const NSTimeInterval kErrorMessageDisplayDurationLong = 10.0; ///< For extra serious errors
-static const CGFloat kDisabledRecordButtonAlpha = 0.2f;
-static const CGFloat kEnabledRecordButtonAlpha = 1.0f;
-static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
+static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
+
+typedef NS_ENUM(NSInteger, VcameraViewControllerState)
+{
+    VcameraViewControllerStateDefault,
+    VcameraViewControllerStateInitializingHardware,
+    VcameraViewControllerStateWaitingOnhardwareImageCapture,
+    VcameraViewControllerStateRecroding,
+    VcameraViewControllerStateRenderingVideo,
+    VcameraViewControllerStateCapturedMedia,
+};
 
 @interface VCameraViewController () <UIImagePickerControllerDelegate, UINavigationControllerDelegate, VCameraVideoEncoderDelegate>
+
+@property (nonatomic, assign) VcameraViewControllerState state;
+@property (nonatomic, readwrite) NSURL *capturedMediaURL;
+@property (nonatomic, strong) UIImage *previewImage;
+@property (nonatomic, assign, getter=isTrashOpen) BOOL trashOpen;
 
 @property (nonatomic, weak) IBOutlet UIButton *switchCameraButton;
 @property (nonatomic, weak) IBOutlet UIButton *nextButton;
@@ -40,9 +51,9 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
 
 @property (nonatomic, weak) IBOutlet UIButton *openAlbumButton;
 @property (nonatomic, weak) IBOutlet UIButton *deleteButton;
-@property (nonatomic, strong) VCameraControl *cameraControl;
 @property (nonatomic, weak) IBOutlet UIView *cameraControlContainer;
 
+@property (nonatomic, strong) VCameraControl *cameraControl;
 @property (nonatomic, strong) AVCaptureVideoPreviewLayer *previewLayer;
 @property (nonatomic, strong) UIView *previewSnapshot;
 
@@ -51,9 +62,8 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
 @property (nonatomic) BOOL disallowVideo; ///< THIS property specifies whether we SHOULD allow video (according to the wishes of the calling class)
 @property (nonatomic) BOOL videoEnabled; ///< THIS property specifies whether we CAN allow video (according to device restrictions)
 @property (nonatomic) BOOL disallowPhotos;
-@property (nonatomic) BOOL inTrashState;
-@property (nonatomic) BOOL inRecordVideoState;
 @property (nonatomic, readwrite) BOOL showedFullscreenShutterAnimation;
+@property (nonatomic, readwrite) BOOL didSelectAssetFromLibrary;
 @property (nonatomic, copy) NSString *initialCaptureMode;
 @property (nonatomic, copy) NSString *videoQuality;
 
@@ -117,6 +127,7 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
     self.videoEnabled = YES;
     self.videoQuality = [[VSettingManager sharedManager] captureVideoQuality];
     self.initialCaptureMode = self.videoQuality;
+    self.state = VcameraViewControllerStateDefault;
 }
 
 - (void)dealloc
@@ -156,13 +167,9 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
     UITapGestureRecognizer *focusTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(focus:)];
     [self.previewView addGestureRecognizer:focusTap];
     
-    self.switchCameraButton.hidden = self.captureController.devices.count <= 1;
-    
     UIImage *flashOnImage = [self.flashButton imageForState:UIControlStateSelected];
     [self.flashButton setImage:flashOnImage forState:(UIControlStateSelected | UIControlStateHighlighted)];
     [self.flashButton setImage:flashOnImage forState:(UIControlStateSelected | UIControlStateDisabled)];
-    
-    [self setRecordButtonEnabled:YES];
     
     [self.cameraControl addTarget:self
                            action:@selector(capturePhoto:)
@@ -187,23 +194,14 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
     [self.cameraControl restoreCameraControlToDefault];
     
     self.navigationController.navigationBarHidden = YES;
-    [self setOpenAlbumButtonImageWithLatestPhoto:[self isInPhotoCaptureMode] animated:NO];
     
     if (self.previewSnapshot)
     {
         [self restoreLivePreview];
     }
-    
-    if ([self.initialCaptureMode isEqualToString:AVCaptureSessionPresetPhoto])
-    {
-        [self configureUIforPhotoCaptureAnimated:NO completion:nil];
-    }
-    else
-    {
-        [self configureUIforVideoCaptureAnimated:NO completion:nil];
-    }
-    
-    [self setAllControlsEnabled:NO];
+
+    self.state = VcameraViewControllerStateInitializingHardware;
+
     [MBProgressHUD showHUDAddedTo:self.previewView animated:NO];
     [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted)
     {
@@ -230,7 +228,7 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
                             }
                             else
                             {
-                                [self setAllControlsEnabled:YES];
+                                self.state = VcameraViewControllerStateDefault;
                                 if (!self.videoEnabled && ![self.captureController.captureSession.sessionPreset isEqualToString:AVCaptureSessionPresetPhoto])
                                 {
                                     [self notifyUserOfFailedMicPermission];
@@ -262,22 +260,12 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
 {
     [super viewDidAppear:animated];
     [[VTrackingManager sharedInstance] startEvent:VTrackingEventCameraDidAppear];
-    
-    if (self.inRecordVideoState)
-    {
-        [self clearRecordedVideoAnimated:NO];
-    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     [[VTrackingManager sharedInstance] endEvent:VTrackingEventCameraDidAppear];
-
-    if (self.captureController.captureSession.running)
-    {
-        [self.captureController stopRunningWithCompletion:nil];
-    }
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -317,10 +305,101 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
     }
 }
 
+#pragma mark - Public Methods
+
 - (CGPoint)shutterCenter
 {
     return [self.cameraControlContainer convertPoint:self.cameraControl.center
                                               toView:self.view];
+}
+
+#pragma mark - Property Accessors
+
+- (void)setState:(VcameraViewControllerState)state
+{
+    if (_state == state)
+    {
+        return;
+    }
+    
+    switch (state)
+    {
+        case VcameraViewControllerStateDefault:
+        {
+            VLog(@"Default state...");
+            [self setOpenAlbumButtonImageWithLatestPhoto:!self.disallowPhotos
+                                                animated:NO];
+            self.flashButton.enabled = self.captureController.currentDevice.flashAvailable;
+            self.flashButton.hidden = NO;
+            self.switchCameraButton.enabled = YES;
+            self.openAlbumButton.enabled = YES;
+            self.nextButton.hidden = YES;
+            self.cameraControl.enabled = YES;
+            [self updateProgressForSecond:0.0f];
+            self.switchCameraButton.hidden = self.captureController.devices.count <= 1;
+        }
+            break;
+        case VcameraViewControllerStateInitializingHardware:
+        {
+            VLog(@"Initializing hardware...");
+            self.flashButton.enabled = NO;
+            self.cameraControl.enabled = NO;
+            self.switchCameraButton.enabled = NO;
+        }
+            break;
+        case VcameraViewControllerStateWaitingOnhardwareImageCapture:
+        {
+            VLog(@"Waiting on hardware image capture...");
+            self.flashButton.enabled = NO;
+            self.switchCameraButton.enabled = NO;
+            self.openAlbumButton.enabled = NO;
+            self.nextButton.enabled = NO;
+            
+            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraDidCapturePhoto];
+            self.showedFullscreenShutterAnimation = YES;
+            
+            [self replacePreviewViewWithSnapshot];
+            [MBProgressHUD showHUDAddedTo:self.previewSnapshot animated:YES];
+        }
+            break;
+        case VcameraViewControllerStateRecroding:
+        {
+            VLog(@"Recording...");
+            self.deleteButton.hidden = NO;
+            self.nextButton.hidden = NO;
+            self.flashButton.hidden = YES;
+        }
+            break;
+        case VcameraViewControllerStateRenderingVideo:
+        {
+            VLog(@"Encoding video...");
+        }
+            break;
+        case VcameraViewControllerStateCapturedMedia:
+        {
+            VLog(@"Captured media...");
+            NSAssert(self.capturedMediaURL, @"We need a captured media url here!!!!");
+            if (self.completionBlock != nil)
+            {
+                if (self.captureController.captureSession.running)
+                {
+                    [self.captureController stopRunningWithCompletion:nil];
+                }
+                if (!self.previewImage)
+                {
+                    self.previewImage = [UIImage imageWithContentsOfFile:[self.capturedMediaURL path]];
+                }
+                
+                self.completionBlock(YES, self.previewImage, self.capturedMediaURL);
+            }
+        }
+            break;
+        default:
+            NSAssert(false, @"invalid state");
+            break;
+    }
+    
+    _state = state;
 }
 
 #pragma mark - Permissions
@@ -363,66 +442,15 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
     [alert show];
 }
 
-#pragma mark - Enable/Disable Controls
-
-- (void)setRecordButtonEnabled:(BOOL)enabled
-{
-//    if (enabled)
-//    {
-//        [self.recordButton setAlpha:kEnabledRecordButtonAlpha];
-//        self.recordButton.userInteractionEnabled = YES;
-//    }
-//    else
-//    {
-//        [self.recordButton setAlpha:kDisabledRecordButtonAlpha];
-//        self.recordButton.userInteractionEnabled = NO;
-//    }
-}
-
-- (void)setAllControlsEnabled:(BOOL)enabled
-{
-    if (enabled)
-    {
-        if ([self isInPhotoCaptureMode])
-        {
-//            self.capturePhotoButton.alpha = kEnabledRecordButtonAlpha;
-        }
-        else if (self.videoEnabled)
-        {
-//            self.recordButton.alpha = kEnabledRecordButtonAlpha;
-//            self.recordButton.userInteractionEnabled = YES;
-        }
-//        self.capturePhotoButton.userInteractionEnabled = YES;
-        self.flashButton.enabled = self.captureController.currentDevice.flashAvailable;
-        self.switchCameraButton.enabled = YES;
-//        self.switchCameraModeButton.enabled = YES;
-        self.openAlbumButton.enabled = YES;
-        self.nextButton.enabled = YES;
-    }
-    else
-    {
-        if ([self isInPhotoCaptureMode])
-        {
-//            self.capturePhotoButton.alpha = kDisabledRecordButtonAlpha;
-        }
-        else
-        {
-//            self.recordButton.alpha = kDisabledRecordButtonAlpha;
-//            self.recordButton.userInteractionEnabled = NO;
-        }
-//        self.capturePhotoButton.userInteractionEnabled = NO;
-        self.flashButton.enabled = NO;
-        self.switchCameraButton.enabled = NO;
-//        self.switchCameraModeButton.enabled = NO;
-        self.openAlbumButton.enabled = NO;
-        self.nextButton.enabled = NO;
-    }
-}
-
 #pragma mark - Actions
 
 - (IBAction)closeAction:(id)sender
 {
+    if (self.captureController.captureSession.running)
+    {
+        [self.captureController stopRunningWithCompletion:nil];
+    }
+    
     if (self.completionBlock)
     {
         self.completionBlock(NO, nil, nil);
@@ -438,9 +466,12 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
         [welf dismissViewControllerAnimated:YES
                                  completion:^
         {
-            if (finished && welf.completionBlock)
+            if (finished)
             {
-                welf.completionBlock(finished, previewImage, capturedMediaURL);
+                welf.capturedMediaURL = capturedMediaURL;
+                welf.previewImage = previewImage;
+                welf.showedFullscreenShutterAnimation = NO;
+                welf.state = VcameraViewControllerStateCapturedMedia;
             }
         }];
     };
@@ -462,12 +493,11 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
         {
             newDevice = self.captureController.devices[1];
         }
-
-        [self setAllControlsEnabled:NO];
         
         [self replacePreviewViewWithSnapshot];
         [MBProgressHUD showHUDAddedTo:self.previewSnapshot animated:YES];
         __typeof(self) __weak weakSelf = self;
+        self.state = VcameraViewControllerStateInitializingHardware;
         [self.captureController setCurrentDevice:newDevice withCompletion:^(NSError *error)
          {
              __typeof(weakSelf) strongSelf = weakSelf;
@@ -476,7 +506,6 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
                  dispatch_async(dispatch_get_main_queue(), ^(void)
                                 {
                                     [MBProgressHUD hideAllHUDsForView:strongSelf.previewSnapshot animated:NO];
-                                    [strongSelf setAllControlsEnabled:YES];
                                     
                                     [UIView animateWithDuration:kAnimationDuration
                                                      animations:^(void)
@@ -488,6 +517,7 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
                                                      completion:^(BOOL finished)
                                      {
                                          [strongSelf restoreLivePreview];
+                                         strongSelf.state = VcameraViewControllerStateDefault;
                                      }];
                                     [strongSelf updateOrientation];
                                 });
@@ -499,7 +529,6 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
 - (IBAction)nextAction:(id)sender
 {
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraDidCaptureVideo];
-    [self setAllControlsEnabled:NO];
     [self replacePreviewViewWithSnapshot];
     [MBProgressHUD showHUDAddedTo:self.previewSnapshot animated:YES];
     [self.captureController.videoEncoder finishRecording];
@@ -547,19 +576,15 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
 
 - (void)capturePhoto:(id)sender
 {
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraDidCapturePhoto];
-    self.showedFullscreenShutterAnimation = YES;
-    
-    [self replacePreviewViewWithSnapshot];
-    [MBProgressHUD showHUDAddedTo:self.previewSnapshot animated:YES];
-    [self setAllControlsEnabled:NO];
+    self.state = VcameraViewControllerStateWaitingOnhardwareImageCapture;
     [self.captureController captureStillWithCompletion:^(UIImage *image, NSError *error)
     {
         dispatch_async(dispatch_get_main_queue(), ^(void)
         {
             if (error)
             {
-                [self setAllControlsEnabled:YES];
+                self.state = VcameraViewControllerStateDefault;
+                
                 [MBProgressHUD hideAllHUDsForView:self.previewSnapshot animated:YES];
                 MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.previewView animated:YES];
                 hud.mode = MBProgressHUDModeText;
@@ -568,84 +593,20 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
             }
             else
             {
-                [self moveToPreviewControllerWithImage:image];
-                [self setAllControlsEnabled:YES];
+                [self persistToCapturedMediaURLWithImage:image];
             }
         });
     }];
 }
 
-- (void)moveToPreviewControllerWithImage:(UIImage *)image
-{
-    NSURL *fileURL = [self temporaryFileURLWithExtension:VConstantMediaExtensionJPG];
-    NSData *jpegData = UIImageJPEGRepresentation(self.didSelectAssetFromLibrary ? image : [self squareImageByCroppingImage:image], VConstantJPEGCompressionQuality);
-    [jpegData writeToURL:fileURL atomically:YES]; // TODO: the preview view should take a UIImage
-    [self moveToPreviewViewControllerWithContentURL:fileURL];
-}
-
-- (IBAction)switchMediaTypeAction:(id)sender
-{
-    void (^showSwitchingError)() = ^(void)
-    {
-        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.previewView animated:YES];
-        hud.mode = MBProgressHUDModeText;
-        hud.labelText = NSLocalizedString(@"CameraSwitchFailed", @"");
-        [hud hide:YES afterDelay:kErrorMessageDisplayDuration];
-    };
-    
-    NSString *newSessionPreset;
-    void (^completion)();
-    
-    if ([self isInPhotoCaptureMode])
-    {
-        newSessionPreset = self.videoQuality;
-        completion = ^(void)
-        {
-            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraDidSwitchToVideoCapture];
-            
-            [self configureUIforVideoCaptureAnimated:YES completion:nil];
-        };
-    }
-    else
-    {
-        newSessionPreset = AVCaptureSessionPresetPhoto;
-        completion = ^(void)
-        {
-            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraDidSwitchToPhotoCapture];
-            
-            [self configureUIforPhotoCaptureAnimated:YES completion:nil];
-        };
-    }
-    
-    [self setAllControlsEnabled:NO];
-    [MBProgressHUD showHUDAddedTo:self.previewView animated:YES];
-    typeof(self) __weak weakSelf = self;
-    [self.captureController setSessionPreset:newSessionPreset completion:^(BOOL wasSet)
-     {
-         dispatch_async(dispatch_get_main_queue(), ^(void)
-                        {
-                            [weakSelf setAllControlsEnabled:YES];
-                            [MBProgressHUD hideAllHUDsForView:weakSelf.previewView animated:YES];
-                            if (wasSet)
-                            {
-                                completion();
-                            }
-                            else
-                            {
-                                showSwitchingError();
-                            }
-                        });
-    }];
-}
-
 - (IBAction)trashAction:(id)sender
 {
-    if (!self.inTrashState)
+    if (!self.isTrashOpen)
     {
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraUserDidSelectDelete];
         
         [self.deleteButton setImage:[UIImage imageNamed:@"cameraButtonDeleteConfirm"] forState:UIControlStateNormal];
-        self.inTrashState = YES;
+        self.trashOpen = YES;
     }
     else
     {
@@ -653,6 +614,7 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
         
         self.captureController.videoEncoder = nil;
         [self clearRecordedVideoAnimated:YES];
+        self.trashOpen = NO;
     }
 }
 
@@ -694,119 +656,26 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
     {
         self.captureController.videoEncoder.recording = YES;
     }
+    self.state = VcameraViewControllerStateRecroding;
     self.switchCameraButton.enabled = NO;
-//    self.switchCameraModeButton.enabled = NO;
 }
 
 - (void)stopRecording
 {
     self.captureController.videoEncoder.recording = NO;
     self.switchCameraButton.enabled = YES;
-//    self.switchCameraModeButton.enabled = YES;
     self.showedFullscreenShutterAnimation = NO;
     [self updateOrientation];
 }
 
-- (void)configureUIforVideoCaptureAnimated:(BOOL)animated completion:(void(^)(void))completion
-{
-    void (^animations)(void) = ^(void)
-    {
-//        self.capturePhotoButton.alpha = 0.0;
-//        self.recordButton.alpha = 1.0;
-//        self.toolTipView.alpha = 0.0;
-        self.flashButton.alpha = 0.0f;
-//        self.progressView.alpha = 1.0f;
-
-        if (self.inRecordVideoState)
-        {
-            self.nextButton.alpha = 1.0f;
-        }
-        else
-        {
-            self.nextButton.alpha = 0.0f;
-        }
-    };
-    void (^fullCompletion)(BOOL) = ^(BOOL finished)
-    {
-//        [self.switchCameraModeButton setImage:[UIImage imageNamed:@"cameraButtonSwitchToPhoto"] forState:UIControlStateNormal];
-        [self setOpenAlbumButtonImageWithLatestPhoto:NO animated:animated];
-        
-        if (!self.videoEnabled)
-        {
-            [self setRecordButtonEnabled:NO];
-            [self notifyUserOfFailedMicPermission];
-        }
-        
-        if (completion)
-        {
-            completion();
-        }
-    };
-    
-    if (animated)
-    {
-        [UIView animateWithDuration:kAnimationDuration
-                              delay:0
-                            options:UIViewAnimationOptionCurveEaseInOut
-                         animations:animations
-                         completion:fullCompletion];
-    }
-    else
-    {
-        animations();
-        fullCompletion(YES);
-    }
-}
-
-- (void)configureUIforPhotoCaptureAnimated:(BOOL)animated completion:(void(^)(void))completion
-{
-    void (^animations)(void) = ^(void)
-    {
-//        self.capturePhotoButton.alpha = 1.0f;
-//        self.recordButton.alpha = 0.0f;
-//        self.toolTipView.alpha = 0.0f;
-        self.nextButton.alpha = 0.0f;
-//        self.progressView.alpha = 0.0f;
-        [self configureFlashButton];
-    };
-    void (^fullCompletion)(BOOL) = ^(BOOL finished)
-    {
-//        [self.switchCameraModeButton setImage:[UIImage imageNamed:@"cameraButtonSwitchToVideo"] forState:UIControlStateNormal];
-        [self setOpenAlbumButtonImageWithLatestPhoto:YES animated:animated];
-        if (completion)
-        {
-            completion();
-        }
-    };
-    
-    if (animated)
-    {
-        [UIView animateWithDuration:kAnimationDuration
-                              delay:0
-                            options:UIViewAnimationOptionCurveEaseInOut
-                         animations:animations
-                         completion:fullCompletion];
-    }
-    else
-    {
-        animations();
-        fullCompletion(YES);
-    }
-}
-
-- (BOOL)isInPhotoCaptureMode
-{
-    return [self.captureController.captureSession.sessionPreset isEqualToString:AVCaptureSessionPresetPhoto];
-}
-
 - (void)configureFlashButton
 {
-    if (![self isInPhotoCaptureMode])
-    {
-        self.flashButton.alpha = 0.0f;
-        return;
-    }
-    
+//    if (![self isInPhotoCaptureMode])
+//    {
+//        self.flashButton.alpha = 0.0f;
+//        return;
+//    }
+//    
     if (self.captureController.currentDevice.hasFlash)
     {
         self.flashButton.alpha = 1.0f;
@@ -940,13 +809,10 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
         }
         else
         {
-            // Typically you should handle an error more gracefully than this.
-            NSLog(@"No groups");
         }
     } failureBlock: ^(NSError *error)
     {
-        // Typically you should handle an error more gracefully than this.
-        NSLog(@"No groups");
+
     }];
 }
 
@@ -955,25 +821,13 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
     CGFloat progress = ABS( totalRecorded / VConstantsMaximumVideoDuration);
     [self.cameraControl setRecordingProgress:progress
                                     animated:YES];
-//    NSLayoutConstraint *newProgressConstraint = [NSLayoutConstraint constraintWithItem:self.progressView
-//                                                                             attribute:NSLayoutAttributeWidth
-//                                                                             relatedBy:NSLayoutRelationEqual
-//                                                                                toItem:self.view
-//                                                                             attribute:NSLayoutAttributeWidth
-//                                                                            multiplier:progress
-//                                                                              constant:0.0f];
-//    [self.view removeConstraint:self.progressViewWidthConstraint];
-//    [self.view addConstraint:newProgressConstraint];
-//    self.progressViewWidthConstraint = newProgressConstraint;
-//    self.progressView.hidden = NO;
 }
 
 - (void)clearRecordedVideoAnimated:(BOOL)animated
 {
     [self updateProgressForSecond:0];
     
-    self.inTrashState = NO;
-    self.inRecordVideoState = NO;
+    self.state = VcameraViewControllerStateDefault;
     self.didSelectAssetFromLibrary = NO;
 
     void (^animations)() = ^(void)
@@ -997,6 +851,7 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
         animations();
         completion(YES);
     }
+    self.state = VcameraViewControllerStateDefault;
 }
 
 - (NSURL *)temporaryFileURLWithExtension:(NSString *)extension
@@ -1043,49 +898,13 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
     self.previewSnapshot = nil;
 }
 
-#pragma mark - Navigation
-
-- (void)moveToPreviewViewControllerWithContentURL:(NSURL *)contentURL
-{
-    if (self.shouldSkipPreview)
-    {
-        if (self.completionBlock != nil)
-        {
-            UIImage *imageFromURL = [[UIImage alloc] initWithContentsOfFile:[contentURL path]];
-            self.completionBlock(YES, imageFromURL, contentURL);
-            return;
-        }
-    }
-    
-    VMediaPreviewViewController *previewViewController = [VMediaPreviewViewController previewViewControllerForMediaAtURL:contentURL];
-    previewViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
-    {
-        if (!finished)
-        {
-            [[NSFileManager defaultManager] removeItemAtURL:contentURL error:nil];
-        
-            if (self.completionBlock)
-            {
-                self.completionBlock(NO, nil, nil);
-            }
-        }
-        else if (self.completionBlock)
-        {
-            self.completionBlock(finished, previewImage, capturedMediaURL);
-        }
-    };
-
-    previewViewController.didSelectAssetFromLibrary = self.didSelectAssetFromLibrary;
-    [self.navigationController pushViewController:previewViewController animated:YES];
-}
-
 #pragma mark - VCameraVideoEncoderDelegate methods
 
 - (void)videoEncoder:(VCameraVideoEncoder *)videoEncoder hasEncodedTotalTime:(CMTime)time
 {
     dispatch_async(dispatch_get_main_queue(), ^(void)
     {
-        if (!self.inRecordVideoState)
+        if (self.state == VcameraViewControllerStateRecroding)
         {
             [UIView animateWithDuration:kAnimationDuration
                              animations:^(void)
@@ -1094,7 +913,6 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
                 self.openAlbumButton.alpha = 0.0;
                 self.deleteButton.alpha = 1.0;
             }];
-            self.inRecordVideoState = YES;
         }
         
         [self updateProgressForSecond:CMTimeGetSeconds(time)];
@@ -1123,7 +941,6 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
 {
     dispatch_async(dispatch_get_main_queue(), ^(void)
     {
-        [self setAllControlsEnabled:YES];
         [MBProgressHUD hideAllHUDsForView:self.previewSnapshot animated:YES];
         if (error)
         {
@@ -1135,7 +952,8 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
         }
         else
         {
-            [self moveToPreviewViewControllerWithContentURL:videoEncoder.fileURL];
+            self.capturedMediaURL = videoEncoder.fileURL;
+            self.state = VcameraViewControllerStateCapturedMedia;
             self.captureController.videoEncoder = nil;
         }
     });
@@ -1157,7 +975,7 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
              [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraUserDidPickImageFromLibrary];
              
              UIImage *originalImage = (UIImage *)info[UIImagePickerControllerOriginalImage];
-             [self moveToPreviewControllerWithImage:originalImage];
+             [self persistToCapturedMediaURLWithImage:originalImage];
          }
          else if ([mediaType isEqualToString:(__bridge NSString *)kUTTypeMovie])
          {
@@ -1167,7 +985,8 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
              
              if (movieURL)
              {
-                 [welf moveToPreviewViewControllerWithContentURL:movieURL];
+                 welf.capturedMediaURL = movieURL;
+                 welf.state = VcameraViewControllerStateCapturedMedia;
              }
              else
              {
@@ -1184,6 +1003,17 @@ static const VCameraCaptureVideoSize kVideoSize = { 640, 640 };
 {
     self.didSelectAssetFromLibrary = NO;
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - Private Methods
+
+- (void)persistToCapturedMediaURLWithImage:(UIImage *)image
+{
+    NSURL *fileURL = [self temporaryFileURLWithExtension:VConstantMediaExtensionJPG];
+    NSData *jpegData = UIImageJPEGRepresentation(self.didSelectAssetFromLibrary ? image : [self squareImageByCroppingImage:image], VConstantJPEGCompressionQuality);
+    [jpegData writeToURL:fileURL atomically:YES]; // TODO: the preview view should take a UIImage
+    self.capturedMediaURL = fileURL;
+    self.state = VcameraViewControllerStateCapturedMedia;
 }
 
 @end

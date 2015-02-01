@@ -58,7 +58,7 @@
                                             <action selector="nextAction:" destination="N4E-ak-ozN" eventType="touchUpInside" id="Frq-yF-r61"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" alpha="0.0" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="foI-4D-IyS" userLabel="Flash Button">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="foI-4D-IyS" userLabel="Flash Button">
                                         <rect key="frame" x="256" y="0.0" width="64" height="44"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="64" id="W07-Jg-KII"/>
@@ -105,7 +105,7 @@
                                             <action selector="openAlbumAction:" destination="N4E-ak-ozN" eventType="touchUpInside" id="fh7-Dn-eyU"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oAC-V4-Jg0" userLabel="Delete Button">
+                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oAC-V4-Jg0" userLabel="Delete Button">
                                         <rect key="frame" x="20" y="41" width="60" height="60"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="60" id="CZl-Ov-zlR"/>
