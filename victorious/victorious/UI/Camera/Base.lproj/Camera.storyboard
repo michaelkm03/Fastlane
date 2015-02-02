@@ -46,7 +46,7 @@
                                             <action selector="reverseCameraAction:" destination="N4E-ak-ozN" eventType="touchUpInside" id="l1E-gY-rYr"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" alpha="0.0" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P0d-F9-FuH" userLabel="Next Button">
+                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P0d-F9-FuH" userLabel="Next Button">
                                         <rect key="frame" x="256" y="0.0" width="64" height="44"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="64" id="K5l-3C-dZ2"/>
@@ -181,11 +181,13 @@
                     <nil key="simulatedTopBarMetrics"/>
                     <connections>
                         <outlet property="cameraControlContainer" destination="r8c-9h-K1E" id="gWM-fw-qDQ"/>
+                        <outlet property="closeButton" destination="rt0-I5-ldA" id="kD2-bL-9BD"/>
                         <outlet property="deleteButton" destination="oAC-V4-Jg0" id="62s-tg-lPW"/>
                         <outlet property="flashButton" destination="foI-4D-IyS" id="Yuh-uU-u2a"/>
                         <outlet property="nextButton" destination="P0d-F9-FuH" id="Wir-PA-wnL"/>
                         <outlet property="openAlbumButton" destination="W9w-XF-uIU" id="0Cs-b0-bYq"/>
                         <outlet property="previewView" destination="Cdq-4w-Bu5" id="uB4-J9-nz8"/>
+                        <outlet property="searchButton" destination="Psc-Kh-PXS" id="waU-Sd-g7j"/>
                         <outlet property="switchCameraButton" destination="fQI-xE-BeV" id="Vk3-qf-zWV"/>
                     </connections>
                 </viewController>

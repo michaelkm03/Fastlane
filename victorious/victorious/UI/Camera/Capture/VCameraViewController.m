@@ -44,9 +44,11 @@ typedef NS_ENUM(NSInteger, VcameraViewControllerState)
 @property (nonatomic, strong) UIImage *previewImage;
 @property (nonatomic, assign, getter=isTrashOpen) BOOL trashOpen;
 
+@property (weak, nonatomic) IBOutlet UIButton *closeButton;
 @property (nonatomic, weak) IBOutlet UIButton *switchCameraButton;
 @property (nonatomic, weak) IBOutlet UIButton *nextButton;
 @property (nonatomic, weak) IBOutlet UIButton *flashButton;
+@property (weak, nonatomic) IBOutlet UIButton *searchButton;
 @property (nonatomic, weak) IBOutlet UIView *previewView;
 
 @property (nonatomic, weak) IBOutlet UIButton *openAlbumButton;
@@ -201,7 +203,8 @@ typedef NS_ENUM(NSInteger, VcameraViewControllerState)
     }
 
     self.state = VcameraViewControllerStateInitializingHardware;
-
+    self.captureController.videoEncoder = nil;
+    
     [MBProgressHUD showHUDAddedTo:self.previewView animated:NO];
     [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted)
     {
@@ -327,15 +330,29 @@ typedef NS_ENUM(NSInteger, VcameraViewControllerState)
         case VcameraViewControllerStateDefault:
         {
             VLog(@"Default state...");
+            self.closeButton.enabled = YES;
+            
+            self.searchButton.enabled = YES;
+            
             [self setOpenAlbumButtonImageWithLatestPhoto:!self.disallowPhotos
                                                 animated:NO];
+            
             self.flashButton.enabled = self.captureController.currentDevice.flashAvailable;
             self.flashButton.hidden = NO;
-            self.switchCameraButton.enabled = YES;
-            self.openAlbumButton.enabled = YES;
+            
             self.nextButton.hidden = YES;
+            self.nextButton.hidden = YES;
+            self.nextButton.enabled = NO;
+            
+            self.openAlbumButton.hidden = NO;
+            self.openAlbumButton.enabled = YES;
+            
+            self.deleteButton.hidden = YES;
+
             self.cameraControl.enabled = YES;
             [self updateProgressForSecond:0.0f];
+            
+            self.switchCameraButton.enabled = YES;
             self.switchCameraButton.hidden = self.captureController.devices.count <= 1;
         }
             break;
@@ -359,20 +376,32 @@ typedef NS_ENUM(NSInteger, VcameraViewControllerState)
             self.showedFullscreenShutterAnimation = YES;
             
             [self replacePreviewViewWithSnapshot];
-            [MBProgressHUD showHUDAddedTo:self.previewSnapshot animated:YES];
         }
             break;
         case VcameraViewControllerStateRecroding:
         {
             VLog(@"Recording...");
             self.deleteButton.hidden = NO;
+            self.deleteButton.enabled = YES;
+
             self.nextButton.hidden = NO;
+            self.nextButton.enabled = YES;
+            
             self.flashButton.hidden = YES;
+            
+            self.openAlbumButton.hidden = YES;
+            
+            self.switchCameraButton.enabled = NO;
         }
             break;
         case VcameraViewControllerStateRenderingVideo:
         {
             VLog(@"Encoding video...");
+            self.cameraControl.enabled = NO;
+            self.searchButton.enabled = NO;
+            self.deleteButton.enabled = NO;
+            self.switchCameraButton.enabled = NO;
+            self.closeButton.enabled = NO;
         }
             break;
         case VcameraViewControllerStateCapturedMedia:
@@ -528,9 +557,10 @@ typedef NS_ENUM(NSInteger, VcameraViewControllerState)
 
 - (IBAction)nextAction:(id)sender
 {
+    self.state = VcameraViewControllerStateRenderingVideo;
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraDidCaptureVideo];
     [self replacePreviewViewWithSnapshot];
-    [MBProgressHUD showHUDAddedTo:self.previewSnapshot animated:YES];
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     [self.captureController.videoEncoder finishRecording];
 }
 
@@ -657,7 +687,7 @@ typedef NS_ENUM(NSInteger, VcameraViewControllerState)
         self.captureController.videoEncoder.recording = YES;
     }
     self.state = VcameraViewControllerStateRecroding;
-    self.switchCameraButton.enabled = NO;
+
 }
 
 - (void)stopRecording
@@ -670,12 +700,6 @@ typedef NS_ENUM(NSInteger, VcameraViewControllerState)
 
 - (void)configureFlashButton
 {
-//    if (![self isInPhotoCaptureMode])
-//    {
-//        self.flashButton.alpha = 0.0f;
-//        return;
-//    }
-//    
     if (self.captureController.currentDevice.hasFlash)
     {
         self.flashButton.alpha = 1.0f;
@@ -738,8 +762,8 @@ typedef NS_ENUM(NSInteger, VcameraViewControllerState)
 {
     void (^animations)(void) = ^(void)
     {
-        self.deleteButton.alpha = 0.0;
-        self.openAlbumButton.alpha = 0.0;
+        self.deleteButton.hidden = YES;
+        self.openAlbumButton.hidden = YES;
     };
     if (animated)
     {
@@ -794,7 +818,7 @@ typedef NS_ENUM(NSInteger, VcameraViewControllerState)
                      [self.openAlbumButton setImage:latestPhoto forState:UIControlStateNormal];
                      void (^animations)(void) = ^(void)
                      {
-                         self.openAlbumButton.alpha = 1.0;
+                         self.openAlbumButton.hidden = NO;
                      };
                      if (animated)
                      {
@@ -833,9 +857,7 @@ typedef NS_ENUM(NSInteger, VcameraViewControllerState)
     void (^animations)() = ^(void)
     {
         [self.view layoutIfNeeded];
-        self.nextButton.alpha = 0.0f;
-        self.openAlbumButton.alpha = 1.0f;
-        self.deleteButton.alpha = 0.0f;
+        self.state = VcameraViewControllerStateDefault;
     };
     void (^completion)(BOOL) = ^(BOOL finished)
     {
@@ -885,15 +907,17 @@ typedef NS_ENUM(NSInteger, VcameraViewControllerState)
 - (void)replacePreviewViewWithSnapshot
 {
     UIView *snapshot = [self.previewView snapshotViewAfterScreenUpdates:NO];
-    snapshot.frame = self.previewView.bounds;
-    [self.previewView addSubview:snapshot];
-    self.previewView.alpha = 0.0f;
+    snapshot.frame = self.previewView.frame;
+    [self.view addSubview:snapshot];
+    [self.view bringSubviewToFront:self.cameraControlContainer];
+    
     self.previewSnapshot = snapshot;
+    self.previewView.hidden = YES;
 }
 
 - (void)restoreLivePreview ///< The opposite of -replacePreviewViewWithSnapshot
 {
-    self.previewView.alpha = 1.0f;
+    self.previewView.hidden = NO;
     [self.previewSnapshot removeFromSuperview];
     self.previewSnapshot = nil;
 }
@@ -904,17 +928,6 @@ typedef NS_ENUM(NSInteger, VcameraViewControllerState)
 {
     dispatch_async(dispatch_get_main_queue(), ^(void)
     {
-        if (self.state == VcameraViewControllerStateRecroding)
-        {
-            [UIView animateWithDuration:kAnimationDuration
-                             animations:^(void)
-            {
-                self.nextButton.alpha = 1.0f;
-                self.openAlbumButton.alpha = 0.0;
-                self.deleteButton.alpha = 1.0;
-            }];
-        }
-        
         [self updateProgressForSecond:CMTimeGetSeconds(time)];
         
         if (CMTimeGetSeconds(time) >= VConstantsMaximumVideoDuration)
@@ -941,7 +954,7 @@ typedef NS_ENUM(NSInteger, VcameraViewControllerState)
 {
     dispatch_async(dispatch_get_main_queue(), ^(void)
     {
-        [MBProgressHUD hideAllHUDsForView:self.previewSnapshot animated:YES];
+        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
         if (error)
         {
             [self restoreLivePreview];
@@ -954,7 +967,6 @@ typedef NS_ENUM(NSInteger, VcameraViewControllerState)
         {
             self.capturedMediaURL = videoEncoder.fileURL;
             self.state = VcameraViewControllerStateCapturedMedia;
-            self.captureController.videoEncoder = nil;
         }
     });
 }
