@@ -329,7 +329,6 @@ typedef NS_ENUM(NSInteger, VcameraViewControllerState)
     {
         case VcameraViewControllerStateDefault:
         {
-            VLog(@"Default state...");
             self.closeButton.enabled = YES;
             
             self.searchButton.enabled = YES;
@@ -358,7 +357,6 @@ typedef NS_ENUM(NSInteger, VcameraViewControllerState)
             break;
         case VcameraViewControllerStateInitializingHardware:
         {
-            VLog(@"Initializing hardware...");
             self.flashButton.enabled = NO;
             self.cameraControl.enabled = NO;
             self.switchCameraButton.enabled = NO;
@@ -366,7 +364,6 @@ typedef NS_ENUM(NSInteger, VcameraViewControllerState)
             break;
         case VcameraViewControllerStateWaitingOnhardwareImageCapture:
         {
-            VLog(@"Waiting on hardware image capture...");
             self.flashButton.enabled = NO;
             self.switchCameraButton.enabled = NO;
             self.openAlbumButton.enabled = NO;
@@ -380,7 +377,6 @@ typedef NS_ENUM(NSInteger, VcameraViewControllerState)
             break;
         case VcameraViewControllerStateRecroding:
         {
-            VLog(@"Recording...");
             self.deleteButton.hidden = NO;
             self.deleteButton.enabled = YES;
 
@@ -396,7 +392,6 @@ typedef NS_ENUM(NSInteger, VcameraViewControllerState)
             break;
         case VcameraViewControllerStateRenderingVideo:
         {
-            VLog(@"Encoding video...");
             self.cameraControl.enabled = NO;
             self.searchButton.enabled = NO;
             self.deleteButton.enabled = NO;
@@ -406,7 +401,6 @@ typedef NS_ENUM(NSInteger, VcameraViewControllerState)
             break;
         case VcameraViewControllerStateCapturedMedia:
         {
-            VLog(@"Captured media...");
             NSAssert(self.capturedMediaURL, @"We need a captured media url here!!!!");
             if (self.completionBlock != nil)
             {
