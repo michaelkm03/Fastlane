@@ -86,8 +86,10 @@ NSString * const kHashtagStatusChangedNotification = @"com.getvictorious.Hashtag
                              loadAttempt:(attemptCount+1)];
             });
         }
-        else if (fail)
-            fail(operation, error);
+        else if ( fail != nil )
+        {
+            fail( operation, error );
+        }
     };
     
     return [self GET:path

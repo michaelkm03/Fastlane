@@ -934,7 +934,12 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 
 - (void)enableTrackingWithTrackingItem:(VTracking *)trackingItem
 {
-    NSParameterAssert( [trackingItem isKindOfClass:[VTracking class]] && trackingItem != nil );
+    if ( trackingItem == nil )
+    {
+        return;
+    }
+    
+    NSParameterAssert( [trackingItem isKindOfClass:[VTracking class]] );
     
     self.trackingItem = trackingItem;
 }

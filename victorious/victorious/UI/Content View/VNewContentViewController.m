@@ -80,6 +80,7 @@
 #import "VScrollPaginator.h"
 #import "VSequenceActionController.h"
 #import "VRotationHelper.h"
+#import "VEndCard.h"
 
 static const CGFloat kMaxInputBarHeight = 200.0f;
 
@@ -1462,7 +1463,43 @@ referenceSizeForHeaderInSection:(NSInteger)section
 - (void)nextSelectedFromEndCard:(VEndCardViewController *)endCardViewController
 {
     NSLog( @"nextSelectedFromEndCard" );
-    //[endCardViewController transitionOut];
+    
+    [endCardViewController transitionOut];
+    
+    VSequence *nextSequence = [[VObjectManager sharedManager] objectWithEntityName:@"Sequence" subclass:[VSequence class]];
+    nextSequence.remoteId = @"11449";
+    nextSequence.category = self.viewModel.sequence.category;
+    nextSequence.status = self.viewModel.sequence.status;
+    VContentViewViewModel *contentViewViewModel = [[VContentViewViewModel alloc] initWithSequence:nextSequence];
+    VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewViewModel
+                                                                                                   dependencyManager:self.dependencyManager];
+    
+    self.navigationController.viewControllers = @[ contentViewController ];
+    
+    // Get next sequence
+    /*VSequence *nextSequence = [[VObjectManager sharedManager] objectWithEntityName:@"Sequence" subclass:[VSequence class]];
+    nextSequence.remoteId = @"11449";
+    nextSequence.category = self.viewModel.sequence.category;
+    nextSequence.status = self.viewModel.sequence.status;
+    
+    // Set new view model
+    VContentViewViewModel *nextContentVieWodel = [[VContentViewViewModel alloc] initWithSequence:nextSequence];
+    self.viewModel = nextContentVieWodel;
+    self.viewModel.delegate = self;
+    
+    [self.contentCollectionView performBatchUpdates:^void
+     {
+         NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
+         for ( NSInteger i = 0; i < [self.contentCollectionView numberOfItemsInSection:VContentViewSectionAllComments]; i++ )
+         {
+             [indexPaths addObject:[NSIndexPath indexPathForRow:i inSection:VContentViewSectionAllComments]];
+         }
+         [self.contentCollectionView deleteItemsAtIndexPaths:[NSArray arrayWithArray:indexPaths]];
+     }
+                                         completion:^(BOOL finished)
+     {
+         [self.viewModel reloadData];
+     }];*/
 }
 
 - (void)actionSelectedFromEndCard:(VEndCardViewController *)endCardViewController atIndex:(NSUInteger)index userInfo:(NSDictionary *)userInfo
