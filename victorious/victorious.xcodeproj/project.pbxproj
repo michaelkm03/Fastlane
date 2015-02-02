@@ -664,6 +664,7 @@
 		DB2A494F19DF451600CB687B /* FindFriendsTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A495119DF451600CB687B /* FindFriendsTableView.xib */; };
 		DB2A495719DF455D00CB687B /* VEphemeralTimerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A495919DF455D00CB687B /* VEphemeralTimerView.xib */; };
 		DB2D6F651A7C12820050F963 /* VSearchResultsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB2D6F641A7C12820050F963 /* VSearchResultsTableViewController.m */; };
+		DB2D6F9C1A7F48F20050F963 /* VDiscoverSearchTransitionAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = DB2D6F9B1A7F48F20050F963 /* VDiscoverSearchTransitionAnimator.m */; };
 		DB34DC5C1A09B5AF001EC711 /* VLiveRailAdViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB34DC5B1A09B5AF001EC711 /* VLiveRailAdViewController.m */; };
 		DB51C54219F86971005AA7B6 /* VAdBreakFallback+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = DB51C54119F86971005AA7B6 /* VAdBreakFallback+RestKit.m */; };
 		DB531B501A41F85500B4ADC8 /* VHashtagFollowingTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB531B4F1A41F85500B4ADC8 /* VHashtagFollowingTableViewController.m */; };
@@ -1860,6 +1861,8 @@
 		DB2A48FA19DF2D9D00CB687B /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		DB2D6F631A7C12820050F963 /* VSearchResultsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSearchResultsTableViewController.h; sourceTree = "<group>"; };
 		DB2D6F641A7C12820050F963 /* VSearchResultsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSearchResultsTableViewController.m; sourceTree = "<group>"; };
+		DB2D6F9A1A7F48F20050F963 /* VDiscoverSearchTransitionAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDiscoverSearchTransitionAnimator.h; sourceTree = "<group>"; };
+		DB2D6F9B1A7F48F20050F963 /* VDiscoverSearchTransitionAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDiscoverSearchTransitionAnimator.m; sourceTree = "<group>"; };
 		DB34DC5A1A09B5AF001EC711 /* VLiveRailAdViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLiveRailAdViewController.h; sourceTree = "<group>"; };
 		DB34DC5B1A09B5AF001EC711 /* VLiveRailAdViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VLiveRailAdViewController.m; sourceTree = "<group>"; };
 		DB51C54019F86971005AA7B6 /* VAdBreakFallback+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VAdBreakFallback+RestKit.h"; sourceTree = "<group>"; };
@@ -3346,6 +3349,7 @@
 		A75FAF0019E8AC1E00EB87C1 /* Discover */ = {
 			isa = PBXGroup;
 			children = (
+				DB2D6F991A7F48470050F963 /* Transitions */,
 				A75FAF0119E8AC1E00EB87C1 /* Cells */,
 				0390086419F38FD700FD7EDF /* Discover.storyboard */,
 				A75FAF0C19E8AC1E00EB87C1 /* VDiscoverConstants.h */,
@@ -4388,6 +4392,15 @@
 			path = Cells;
 			sourceTree = "<group>";
 		};
+		DB2D6F991A7F48470050F963 /* Transitions */ = {
+			isa = PBXGroup;
+			children = (
+				DB2D6F9A1A7F48F20050F963 /* VDiscoverSearchTransitionAnimator.h */,
+				DB2D6F9B1A7F48F20050F963 /* VDiscoverSearchTransitionAnimator.m */,
+			);
+			path = Transitions;
+			sourceTree = "<group>";
+		};
 		DB8D3A10198039BD005DD36D /* HashTags */ = {
 			isa = PBXGroup;
 			children = (
@@ -5269,6 +5282,7 @@
 				D82E76DE19F5BFED00FFB722 /* VContentPollQuestionCell.m in Sources */,
 				0314D45B19B46B5E00FA363C /* VCompositeImageFilter.m in Sources */,
 				0314D49619B46B5E00FA363C /* VResultView.m in Sources */,
+				DB2D6F9C1A7F48F20050F963 /* VDiscoverSearchTransitionAnimator.m in Sources */,
 				D80A94E61A546DF90035D788 /* VAssetThumbnailDataSource.m in Sources */,
 				A75FAF1F19E8AC1E00EB87C1 /* VDiscoverTableHeaderViewController.m in Sources */,
 				0314D46819B46B5E00FA363C /* VPickerTextField.m in Sources */,

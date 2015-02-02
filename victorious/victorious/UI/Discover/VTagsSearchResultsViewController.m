@@ -42,10 +42,6 @@ static CGFloat kVTableViewBottomInset = 120.f;
 
 @interface VTagsSearchResultsViewController ()
 
-@property (nonatomic, strong) NSMutableOrderedSet *userTags;
-@property (nonatomic, strong) NSMutableOrderedSet *followingTagSet;
-@property (nonatomic, strong) NSError *error;
-
 @property (nonatomic, weak) MBProgressHUD *failureHud;
 
 @end
@@ -56,7 +52,23 @@ static CGFloat kVTableViewBottomInset = 120.f;
 {
     [super viewDidLoad];
     
+    // Setup the Table View
     [self configureTableView];
+}
+
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    
+    if ([self.tableView respondsToSelector:@selector(setLayoutMargins:)])
+    {
+        [self.tableView setLayoutMargins:UIEdgeInsetsZero];
+    }
+    
+    if ([self.tableView respondsToSelector:@selector(setSeparatorInset:)])
+    {
+        [self.tableView setSeparatorInset:UIEdgeInsetsZero];
+    }
 }
 
 #pragma mark - Table view datasource
@@ -147,7 +159,7 @@ static CGFloat kVTableViewBottomInset = 120.f;
         weakCell.shouldCellRespond = NO;
         
         // Check if already subscribed to hashtag then subscribe or unsubscribe accordingly
-        if ([self isUserSubscribedToHashtag:hashtag])
+        if (weakCell.isSubscribedToTag)
         {
             [self unsubscribeToTagAction:hashtag];
         }
@@ -169,18 +181,10 @@ static CGFloat kVTableViewBottomInset = 120.f;
 
 #pragma mark - Subscribe / Unsubscribe Actions
 
-- (BOOL)isUserSubscribedToHashtag:(VHashtag *)tag
-{
-    return [self.followingTagSet containsObject:tag];
-}
-
 - (void)subscribeToTagAction:(VHashtag *)hashtag
 {
     VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        // Add tag to user tags object
-        [self.followingTagSet addObject:hashtag];
-        
         [self resetCellStateForHashtag:hashtag cellShouldRespond:YES failure:NO];
     };
     
@@ -199,9 +203,6 @@ static CGFloat kVTableViewBottomInset = 120.f;
 {
     VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        // Remove tag to user tags object
-        [self.followingTagSet removeObject:hashtag];
-        
         [self resetCellStateForHashtag:hashtag cellShouldRespond:YES failure:NO];
     };
     

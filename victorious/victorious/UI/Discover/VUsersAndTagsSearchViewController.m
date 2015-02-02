@@ -8,6 +8,11 @@
 
 #import "VUsersAndTagsSearchViewController.h"
 
+// Transition Animator
+#import "VDiscoverSearchTransitionAnimator.h"
+
+#import "VDiscoverContainerViewController.h"
+
 // VObjectManager
 #import "VObjectManager.h"
 #import "VObjectManager+Users.h"
@@ -209,6 +214,8 @@ static CGFloat kVTableViewBottomInset = 120.0f;
         }
         else
         {
+            self.tagsSearchResultsVC.searchResults = nil;
+            [self.tagsSearchResultsVC.tableView reloadData];
             [self showNoResultsReturnedForSearch];
         }
     };
@@ -279,7 +286,12 @@ static CGFloat kVTableViewBottomInset = 120.0f;
 
 - (BOOL)textFieldShouldClear:(UITextField *)textField
 {
+    self.userSearchResultsVC.searchResults = nil;
+    [self.userSearchResultsVC.tableView reloadData];
     self.userSearchResultsVC.tableView.backgroundView = nil;
+        
+    self.tagsSearchResultsVC.searchResults = nil;
+    [self.tagsSearchResultsVC.tableView reloadData];
     self.tagsSearchResultsVC.tableView.backgroundView = nil;
     
     return YES;
@@ -357,6 +369,23 @@ static CGFloat kVTableViewBottomInset = 120.0f;
     noResultsFoundView.messageLabel.text = messageText;
     noResultsFoundView.iconImageView.image = messageIcon;
     noResultsFoundView.iconImageView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryLinkColor];
+}
+
+#pragma mark - Animate Transition
+
+- (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
+                                  animationControllerForOperation:(UINavigationControllerOperation)operation
+                                               fromViewController:(UIViewController *)fromVC
+                                                 toViewController:(UIViewController *)toVC
+{
+    if ([toVC isKindOfClass:[VDiscoverContainerViewController class]])
+    {
+        VDiscoverSearchTransitionAnimator *animator = [[VDiscoverSearchTransitionAnimator alloc] init];
+        animator.isPresenting = (operation == UINavigationControllerOperationPush);
+        return animator;
+    }
+    
+    return nil;
 }
 
 @end

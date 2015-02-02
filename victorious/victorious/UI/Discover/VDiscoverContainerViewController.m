@@ -17,7 +17,7 @@
 #import "VObjectManager+Users.h"
 #import "VUser.h"
 #import "VAuthorizationViewControllerFactory.h"
-
+#import "VDiscoverSearchTransitionAnimator.h"
 
 // Users and Tags Search
 #import "VUsersAndTagsSearchViewController.h"
@@ -112,6 +112,8 @@
     return UIInterfaceOrientationMaskPortrait;
 }
 
+#pragma mark - Show Profile
+
 - (void)showSuggestedPersonProfile:(NSNotification *)note
 {
     if ( note.userInfo == nil )
@@ -163,6 +165,8 @@
         return;
     }
     
+//    [self animateSearchBarWithDuration:0.0];
+
     [self.searchField resignFirstResponder];
     
     VUsersAndTagsSearchViewController *searchViewController = [VUsersAndTagsSearchViewController usersAndTagsSearchViewController];
@@ -174,7 +178,40 @@
     {
         [self presentViewController:searchViewController animated:YES completion:nil];
     }
+}
 
+#pragma mark - Transition Animations
+
+- (void)animateSearchBarWithDuration:(CGFloat)duration
+{
+    [UIView animateWithDuration:duration
+                          delay:0.0f
+         usingSpringWithDamping:0.95f
+          initialSpringVelocity:0.0f
+                        options:UIViewAnimationOptionCurveLinear
+                     animations:^
+     {
+         self.searchBarContainer.bounds = CGRectMake(0, 0,
+                                                     self.searchBarContainer.frame.size.width,
+                                                     self.searchBarContainer.frame.size.height);
+         [self.searchBarContainer layoutIfNeeded];
+     }
+                     completion:nil];
+}
+
+- (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
+                                  animationControllerForOperation:(UINavigationControllerOperation)operation
+                                               fromViewController:(UIViewController *)fromVC
+                                                 toViewController:(UIViewController *)toVC
+{
+    if ([toVC isKindOfClass:[VUsersAndTagsSearchViewController class]])
+    {
+        VDiscoverSearchTransitionAnimator *animator = [[VDiscoverSearchTransitionAnimator alloc] init];
+        animator.isPresenting = (operation == UINavigationControllerOperationPush);
+        return animator;
+    }
+    
+    return nil;
 }
 
 #pragma mark - Navigation
