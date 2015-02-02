@@ -79,6 +79,7 @@
 #import "VCommentHighlighter.h"
 #import "VScrollPaginator.h"
 #import "VSequenceActionController.h"
+#import "VRotationHelper.h"
 
 static const CGFloat kMaxInputBarHeight = 200.0f;
 
@@ -126,6 +127,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 
 @property (nonatomic, strong, readwrite) VSequenceActionController *sequenceActionController;
 @property (nonatomic, weak) VDependencyManager *dependencyManager;
+@property (nonatomic, strong) VRotationHelper *rotationHelper;
 
 @end
 
@@ -313,28 +315,10 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 
 - (void)handleRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
-    BOOL isLandscape = UIInterfaceOrientationIsLandscape(toInterfaceOrientation);
-    CGFloat targetAlpha = isLandscape ? 0.0f : 1.0f;
-    self.contentCollectionView.scrollEnabled = !isLandscape;
-    
-    [self.contentCollectionView setContentOffset:CGPointMake( 0.0, 93.0f) animated:YES];
-    
-    if ( !isLandscape )
-    {
-        self.textEntryView.hidden = NO;
-    }
-    
-    [UIView animateWithDuration:duration animations:^
-     {
-         self.textEntryView.alpha = targetAlpha;
-     }
-                     completion:^(BOOL finished)
-     {
-         if ( isLandscape )
-         {
-             self.textEntryView.hidden = YES;
-         }
-     }];
+    [self.rotationHelper handleRotationToInterfaceOrientation:toInterfaceOrientation  duration:duration
+                                          targetContentOffset:CGPointMake( 0, CGRectGetHeight(self.experienceEnhancerCell.frame))
+                                               collectionView:self.contentCollectionView
+                                                landscapeHiddenViews:@[ self.textEntryView, self.moreButton ]];
 }
 
 #pragma mark View Lifecycle
@@ -342,6 +326,8 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.rotationHelper = [[VRotationHelper alloc] init];
     
     self.sequenceActionController = [[VSequenceActionController alloc] init];
     
@@ -1094,7 +1080,9 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([indexPath compare:[self indexPathForContentView]] == NSOrderedSame)
+    const BOOL isContentSection = [indexPath compare:[self indexPathForContentView]] == NSOrderedSame;
+    
+    if ( !self.rotationHelper.isLandscape && isContentSection )
     {
         [self.contentCollectionView setContentOffset:CGPointMake(0, 0) animated:YES];
     }
@@ -1468,13 +1456,13 @@ referenceSizeForHeaderInSection:(NSInteger)section
 - (void)replaySelectedFromEndCard:(VEndCardViewController *)endCardViewController
 {
     NSLog( @"replaySelected" );
-    [endCardViewController transitionOut];
+    //[endCardViewController transitionOut];
 }
 
 - (void)nextSelectedFromEndCard:(VEndCardViewController *)endCardViewController
 {
     NSLog( @"nextSelectedFromEndCard" );
-    [endCardViewController transitionOut];
+    //[endCardViewController transitionOut];
 }
 
 - (void)actionSelectedFromEndCard:(VEndCardViewController *)endCardViewController atIndex:(NSUInteger)index userInfo:(NSDictionary *)userInfo

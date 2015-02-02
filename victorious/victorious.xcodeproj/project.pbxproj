@@ -326,6 +326,7 @@
 		A70564BC19E7817C004A8387 /* VObjectManager+Discover.m in Sources */ = {isa = PBXBuildFile; fileRef = A70564BB19E7817C004A8387 /* VObjectManager+Discover.m */; };
 		A70564C319E781EE004A8387 /* VNoContentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A70564C119E781EE004A8387 /* VNoContentTableViewCell.m */; };
 		A70564C719E7820A004A8387 /* VHashtag+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A70564C619E7820A004A8387 /* VHashtag+RestKit.m */; };
+		A708C9581A7FFF67000EE1EE /* VRotationHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A708C9571A7FFF67000EE1EE /* VRotationHelper.m */; };
 		A709642419F0A13800CE6633 /* VTracking+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A709642319F0A13800CE6633 /* VTracking+RestKit.m */; };
 		A70AFE641A1684880027549F /* VFlurryTrackingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A70AFE631A1684880027549F /* VFlurryTrackingTests.m */; };
 		A70FC0F41A268FF100F5BBDE /* VNotificationSettingsTestDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A70FC0F31A268FF100F5BBDE /* VNotificationSettingsTestDelegate.m */; };
@@ -1300,6 +1301,8 @@
 		A70564C519E7820A004A8387 /* VHashtag+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VHashtag+RestKit.h"; sourceTree = "<group>"; };
 		A70564C619E7820A004A8387 /* VHashtag+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VHashtag+RestKit.m"; sourceTree = "<group>"; };
 		A70564CB19E78250004A8387 /* VDiscoverViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDiscoverViewControllerTests.m; sourceTree = "<group>"; };
+		A708C9561A7FFF67000EE1EE /* VRotationHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VRotationHelper.h; sourceTree = "<group>"; };
+		A708C9571A7FFF67000EE1EE /* VRotationHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VRotationHelper.m; sourceTree = "<group>"; };
 		A709635719EEE87300CE6633 /* VFileCache+VoteTypeTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VFileCache+VoteTypeTests.m"; sourceTree = "<group>"; };
 		A709640419F0738200CE6633 /* VApplicationTrackingTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VApplicationTrackingTests.m; sourceTree = "<group>"; };
 		A709642219F0A13800CE6633 /* VTracking+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VTracking+RestKit.h"; sourceTree = "<group>"; };
@@ -2346,6 +2349,8 @@
 				D8360CE919E3640000D7E260 /* VNewContentViewController+Actions.m */,
 				D8917EA019F8498F0070BDBB /* VVideoCellViewModel.h */,
 				D8917EA119F8498F0070BDBB /* VVideoCellViewModel.m */,
+				A708C9561A7FFF67000EE1EE /* VRotationHelper.h */,
+				A708C9571A7FFF67000EE1EE /* VRotationHelper.m */,
 			);
 			path = "Content View";
 			sourceTree = "<group>";
@@ -5104,6 +5109,7 @@
 				D89A500B1A000E790010D050 /* VFollowUserControl.m in Sources */,
 				0314D48519B46B5E00FA363C /* VKeyboardBarContainerViewController.m in Sources */,
 				0314D49919B46B5E00FA363C /* VActionBarViewController.m in Sources */,
+				A708C9581A7FFF67000EE1EE /* VRotationHelper.m in Sources */,
 				0314D4BE19B46B5E00FA363C /* VFollowerTableViewController.m in Sources */,
 				0314D49819B46B5E00FA363C /* VRTCUserPostedAtFormatter.m in Sources */,
 				BE88FF711A0005E70064AB28 /* VSequenceActionController.m in Sources */,

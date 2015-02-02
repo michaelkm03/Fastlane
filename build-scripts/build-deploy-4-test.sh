@@ -10,6 +10,9 @@
 SCHEME=$1
 CONFIGURATION=$2
 Deploy=$3
+DEFAULT_PROVISIONING_PROFILE_NAME="iOSTeam Provisioning Profile: com.getvictorious.*"
+DEFAULT_CODESIGN_ID="iOS Developer"
+#DEFAULT_CODESIGN_ID="iPhone Developer: jing zhao (54XLD839VY)"
 
 shift 3
 
@@ -33,19 +36,21 @@ pushd victorious > /dev/null
 
 
 
-if [ "device" == $Deploy ]; then
-    ### work order of attached devices: iPhone > iPod > iPad 
-    UDID=`system_profiler SPUSBDataType | sed -n -e '/iPhone/,/Serial/p' | grep "Serial Number:" | awk -F ": " '{print $2}'`
-    if [ -z "$UDID" ]; then 
-        UDID=`system_profiler SPUSBDataType | sed -n -e '/iPod/,/Serial/p' | grep "Serial Number:" | awk -F ": " '{print $2}'`
-    fi
-    if [ -z "$UDID" ]; then 
-        UDID=`system_profiler SPUSBDataType | sed -n -e '/iPad/,/Serial/p' | grep "Serial Number:" | awk -F ": " '{print $2}'`
-    fi
-    dest="platform=iOS,id=$UDID"
-else
-    dest='platform=iOS Simulator,name=iPhone 6,OS=8.1'
+
+### Find and update provisioning profile
+# If this step fails or hangs, you may need to store or update the dev center credentials
+# in the keychain. Use the "ios login" command.
+
+ios profiles:download "$DEFAULT_PROVISIONING_PROFILE_NAME" --type development -u "$DEFAULT_DEV_ACCOUNT"
+
+if [ $? != 0 ]; then
+    echo "Unable to download provisioning profile \"$DEFAULT_PROVISIONING_PROFILE_NAME\""
+    exit 1
 fi
+
+PROVISIONING_PROFILE_PATH=$(find . -iname *.mobileprovision -depth 1 -print -quit)
+DEFAULT_PROVISIONING_PROFILE_UUID=`/usr/libexec/PlistBuddy -c 'Print :UUID' /dev/stdin <<< $(security cms -D -i "$PROVISIONING_PROFILE_PATH")`
+mv "$PROVISIONING_PROFILE_PATH" "$HOME/Library/MobileDevice/Provisioning Profiles/$DEFAULT_PROVISIONING_PROFILE_UUID.mobileprovision"
 
 
 
