@@ -6,6 +6,8 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
+@class VDependencyManager;
+
 @interface VUsersAndTagsSearchViewController : UIViewController
 
 /**
@@ -14,5 +16,14 @@
  @return Instance of VUsersAndTagsSearchViewController view controller
  */
 + (instancetype)usersAndTagsSearchViewController;
+
+/**
+ Initializer with VDependencyManager
+ 
+ @param dependencyManager Instance of VDependencyManager
+ 
+ @return Instance of VUsersAndTagsSearchViewController view controller
+ */
++ (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager;
 
 @end

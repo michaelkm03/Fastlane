@@ -15,14 +15,14 @@
 #import "VUser.h"
 #import "VHashtag.h"
 
-// Theme Manager
-#import "VThemeManager.h"
-
 // Stream
 #import "VStreamCollectionViewController.h"
 
 // Constants
 #import "VConstants.h"
+
+// Dependency Manager
+#import "VDependencyManager.h"
 
 // Auth Factory
 #import "VAuthorizationViewControllerFactory.h"
@@ -43,10 +43,18 @@ static CGFloat kVTableViewBottomInset = 120.f;
 @interface VTagsSearchResultsViewController ()
 
 @property (nonatomic, weak) MBProgressHUD *failureHud;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end
 
 @implementation VTagsSearchResultsViewController
+
++ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    VTagsSearchResultsViewController *searchResultsVC = [[VTagsSearchResultsViewController alloc] init];
+    searchResultsVC.dependencyManager = dependencyManager;
+    return searchResultsVC;
+}
 
 - (void)viewDidLoad
 {

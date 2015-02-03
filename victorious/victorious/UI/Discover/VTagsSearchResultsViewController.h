@@ -9,7 +9,18 @@
 #import <UIKit/UIKit.h>
 #import "VSearchResultsTableViewController.h"
 
+@class VDependencyManager;
+
 @interface VTagsSearchResultsViewController : VSearchResultsTableViewController
+
+/**
+ Factory method to instantiate the View Controller with the dependency manager
+ 
+ @param dependencyManager VDependencyManager instance
+ 
+ @return An instance of VTagsSearchResultsViewController
+ */
++ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager;
 
 /**
  Array to hold search results returned from backend

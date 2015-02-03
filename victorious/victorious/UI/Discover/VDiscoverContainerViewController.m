@@ -19,6 +19,9 @@
 #import "VAuthorizationViewControllerFactory.h"
 #import "VDiscoverSearchTransitionAnimator.h"
 
+// Dependency Manager
+#import "VDependencyManager.h"
+
 // Users and Tags Search
 #import "VUsersAndTagsSearchViewController.h"
 
@@ -34,6 +37,8 @@
 @property (nonatomic, strong) UINavigationController *searchNavigationController;
 @property (nonatomic, strong) VUsersAndTagsSearchViewController *usersAndTagsSearchViewController;
 @property (nonatomic, strong) VTransitionDelegate *transitionDelegate;
+
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end
 
@@ -51,7 +56,9 @@
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    return [self instantiateFromStoryboard:@"Discover"];
+    VDiscoverContainerViewController *discoverContainer = [self instantiateFromStoryboard:@"Discover"];
+    discoverContainer.dependencyManager = dependencyManager;
+    return discoverContainer;
 }
 
 #pragma mark -
@@ -178,18 +185,15 @@
 
     [self.searchField resignFirstResponder];
     
-    VUsersAndTagsSearchViewController *searchViewController = [VUsersAndTagsSearchViewController usersAndTagsSearchViewController];
-    //searchViewController.transitioningDelegate = self.transitionDelegate;
-    [self presentViewController:searchViewController animated:YES completion:nil];
-    
-//    if ( self.navigationController != nil )
-//    {
-//        [self.navigationController pushViewController:searchViewController animated:YES];
-//    }
-//    else
-//    {
-//        [self presentViewController:searchViewController animated:YES completion:nil];
-//    }
+    VUsersAndTagsSearchViewController *searchViewController = [VUsersAndTagsSearchViewController initWithDependencyManager:self.dependencyManager];
+    if ( self.navigationController != nil )
+    {
+        [self.navigationController pushViewController:searchViewController animated:YES];
+    }
+    else
+    {
+        [self presentViewController:searchViewController animated:YES completion:nil];
+    }
 }
 
 #pragma mark - Transition Animations

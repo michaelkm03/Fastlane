@@ -19,13 +19,13 @@
 #import "VObjectManager+Discover.h"
 #import "VHashtag+RestKit.h"
 
+// Dependency Manager
+#import "VDependencyManager.h"
+
 // Search Results
 #import "VSearchResultsTableViewController.h"
 #import "VUserSearchResultsViewController.h"
 #import "VTagsSearchResultsViewController.h"
-
-// VThemeManager
-#import "VThemeManager.h"
 
 // No Content View
 #import "VNoContentView.h"
@@ -54,6 +54,8 @@ static CGFloat kVTableViewBottomInset = 120.0f;
 
 @property (nonatomic, strong) UISwipeGestureRecognizer *swipeGestureRecognizer;
 
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
+
 @end
 
 @implementation VUsersAndTagsSearchViewController
@@ -64,6 +66,13 @@ static CGFloat kVTableViewBottomInset = 120.0f;
     return [storyboard instantiateViewControllerWithIdentifier:@"search"];
 }
 
++ (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    VUsersAndTagsSearchViewController *usersAndTagsVC = [self usersAndTagsSearchViewController];
+    usersAndTagsVC.dependencyManager = dependencyManager;
+    return usersAndTagsVC;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -72,8 +81,8 @@ static CGFloat kVTableViewBottomInset = 120.0f;
     [self.navigationController setNavigationBarHidden:YES];
     
     // Setup Search Results View Controllers
-    self.userSearchResultsVC = [[VUserSearchResultsViewController alloc] init];
-    self.tagsSearchResultsVC = [[VTagsSearchResultsViewController alloc] init];
+    self.userSearchResultsVC = [VUserSearchResultsViewController newWithDependencyManager:self.dependencyManager];
+    self.tagsSearchResultsVC = [VTagsSearchResultsViewController newWithDependencyManager:self.dependencyManager];
     
     [self.userSearchResultsVC.tableView setContentInset:UIEdgeInsetsMake(0, 0, kVTableViewBottomInset, 0)];
     [self.tagsSearchResultsVC.tableView setContentInset:UIEdgeInsetsMake(0, 0, kVTableViewBottomInset, 0)];
@@ -92,7 +101,7 @@ static CGFloat kVTableViewBottomInset = 120.0f;
     self.headerViewHeightConstraint.constant = 64.0f;
 
     // Format the segmented control
-    self.segmentControl.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    self.segmentControl.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     self.segmentControl.selectedSegmentIndex = 0;
     
     // Add NSNotification Observers
@@ -118,8 +127,8 @@ static CGFloat kVTableViewBottomInset = 120.0f;
     
     // Setup Search Field
     self.searchField.placeholder = NSLocalizedString(@"SearchPeopleAndHashtags", @"");
-    [self.searchField setTextColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor]];
-    [self.searchField setTintColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor]];
+    [self.searchField setTextColor:[self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey]];
+    [self.searchField setTintColor:[self.dependencyManager colorForKey:VDependencyManagerLinkColorKey]];
     self.searchField.delegate = self;
 }
 
@@ -369,7 +378,7 @@ static CGFloat kVTableViewBottomInset = 120.0f;
     noResultsFoundView.titleLabel.text = messageTitle;
     noResultsFoundView.messageLabel.text = messageText;
     noResultsFoundView.iconImageView.image = messageIcon;
-    noResultsFoundView.iconImageView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryLinkColor];
+    noResultsFoundView.iconImageView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryLinkColorKey];
 }
 
 #pragma mark - Animate Transition

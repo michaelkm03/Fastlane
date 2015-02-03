@@ -12,8 +12,8 @@
 #import "VObjectManager+Login.h"
 #import "VUser.h"
 
-// Theme Manager
-#import "VThemeManager.h"
+// Dependency Manager
+#import "VDependencyManager.h"
 
 // Constants
 #import "VConstants.h"
@@ -32,9 +32,18 @@ static CGFloat kVTableViewBottomInset = 120.0f;
 
 @interface VUserSearchResultsViewController ()
 
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
+
 @end
 
 @implementation VUserSearchResultsViewController
+
++ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    VUserSearchResultsViewController *searchResultsVC = [[VUserSearchResultsViewController alloc] init];
+    searchResultsVC.dependencyManager = dependencyManager;
+    return searchResultsVC;
+}
 
 - (void)viewDidLoad
 {
@@ -91,7 +100,7 @@ static CGFloat kVTableViewBottomInset = 120.0f;
         notFoundView.titleLabel.text = NSLocalizedString(@"NoPeopleFoundInSearchTitle", @"");
         notFoundView.messageLabel.text = NSLocalizedString(@"NoPeopleFoundInSearch", @"");
         notFoundView.iconImageView.image = [[UIImage imageNamed:@"user-icon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-        notFoundView.iconImageView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryLinkColor];
+        notFoundView.iconImageView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
         self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     }
     else
