@@ -50,6 +50,7 @@
 #import "VStream.h"
 #import "VThemeManager.h"
 #import "VEndCardModel.h"
+#import "VDependencyManager.h"
 
 @interface VContentViewViewModel ()
 
@@ -70,6 +71,7 @@
 @property (nonatomic, assign, readwrite) NSArray *monetizationDetails;
 
 @property (nonatomic, assign) BOOL hasCreatedAdChain;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end
 
@@ -77,12 +79,14 @@
 
 #pragma mark - Initializers
 
-- (instancetype)initWithSequence:(VSequence *)sequence
+- (instancetype)initWithSequence:(VSequence *)sequence depenencyManager:(VDependencyManager *)dependencyManager
 {
     self = [super init];
     if (self)
     {
         _sequence = sequence;
+        
+        _dependencyManager = dependencyManager;
         
         if ([sequence isPoll])
         {
@@ -207,11 +211,30 @@
                                                                         withLoop:[self loop]];
     }
     
+    NSDictionary *endCardConfiguration = @{
+                                           @"actions" :@[
+                                                   @{
+                                                       @"name" : @"GIF",
+                                                       @"image_name" : @"action_gif",
+                                                       @"success_image_name" : @"action_success" },
+                                                   @{
+                                                       @"name" : @"Repost",
+                                                       @"image_name" : @"action_repost",
+                                                       @"success_image_name" : @"action_success" },
+                                                   @{
+                                                       @"name" : @"Share",
+                                                       @"image_name" : @"action_share",
+                                                       @"success_image_name" : @"action_success" },
+                                                   ]
+                                           };
+    
+    VDependencyManager *endCardDependencyManager = [[VDependencyManager alloc] initWithParentManager:self.dependencyManager
+                                                                                       configuration:endCardConfiguration dictionaryOfClassesByTemplateName:nil];
     VSequence *nextSequence = self.sequence.endCard.nextSequence;
     VStream *stream = nextSequence.streams.allObjects.firstObject;
+    VEndCardModel *endCardModel = [[VEndCardModel alloc] init];
     if ( nextSequence )
     {
-        VEndCardModel *endCardModel = [[VEndCardModel alloc] init];
         endCardModel.videoTitle = self.sequence.name;
         endCardModel.nextVideoTitle = nextSequence.name;
         endCardModel.nextVideoThumbailImageURL = [NSURL URLWithString:(NSString *)nextSequence.previewData];
@@ -220,13 +243,11 @@
         endCardModel.videoAuthorProfileImageURL = [NSURL URLWithString:nextSequence.user.pictureUrl];
         endCardModel.bannerBackgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
         endCardModel.countdownDuration = self.sequence.endCard.countdownDuration.unsignedIntegerValue;
-        self.videoViewModel.endCardViewModel = endCardModel;
     }
     else
     {
 #warning This is hardcoded data for testing only. Delete this whole `else` block
         // In the real app, the dependency manager will be injected:
-        VEndCardModel *endCardModel = [[VEndCardModel alloc] init];
         endCardModel.videoTitle = @"January Vacation Blog";
         endCardModel.nextVideoTitle = @"Alejandro Manzano Grumpy Cat Boyce Avenue";
         endCardModel.nextVideoThumbailImageURL = [NSURL URLWithString:@"http://media-dev-public.s3-website-us-west-1.amazonaws.com/75e022927c063573c9a79d5447f6d5aa/thumbnail-00003.jpg"];
@@ -235,8 +256,10 @@
         endCardModel.videoAuthorProfileImageURL = [NSURL URLWithString:@"http://media-dev-public.s3-website-us-west-1.amazonaws.com/39ce6fa60e5f369a3f6359298b0959c9/80x80.jpg"];
         endCardModel.bannerBackgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
         endCardModel.countdownDuration = 6000;
-        self.videoViewModel.endCardViewModel = endCardModel;
     }
+    
+    endCardModel.dependencyManager = endCardDependencyManager;
+    self.videoViewModel.endCardViewModel = endCardModel;
 }
 
 - (void)reloadData

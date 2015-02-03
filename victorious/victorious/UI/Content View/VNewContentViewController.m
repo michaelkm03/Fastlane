@@ -1488,7 +1488,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 {
 #warning Get the next sequence from the end card model
     VSequence *nextSequence = self.viewModel.sequence;
-    VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithSequence:nextSequence];
+    VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithSequence:nextSequence depenencyManager:self.dependencyManager];
     VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel
                                                                                                    dependencyManager:self.dependencyManager];
     contentViewController.dependencyManagerForHistogramExperiment = self.dependencyManager;

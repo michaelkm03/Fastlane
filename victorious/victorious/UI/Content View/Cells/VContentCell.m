@@ -126,7 +126,7 @@
 {
     if ( self.endCardViewController == nil )
     {
-        self.endCardViewController = [VEndCardViewController newWithDependencyManager:nil
+        self.endCardViewController = [VEndCardViewController newWithDependencyManager:model.dependencyManager
                                                                                 model:model
                                                                         minViewHeight:self.minSize.height
                                                                         maxViewHeight:self.maxSize.height];

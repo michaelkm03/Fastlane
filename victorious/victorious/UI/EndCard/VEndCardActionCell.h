@@ -20,6 +20,8 @@
 
 - (void)setImage:(UIImage *)image;
 
+- (void)setSuccessImage:(NSString *)successImage;
+
 - (void)showSuccess;
 
 - (void)setTitleAlpha:(CGFloat)alpha;

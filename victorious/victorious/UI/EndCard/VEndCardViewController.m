@@ -9,6 +9,7 @@
 #import "VEndCardViewController.h"
 #import "VEndCardBannerViewController.h"
 #import "UIVIew+AutoLayout.h"
+#import "VDependencyManager.h"
 
 static const BOOL kForceIOS7 = NO;
 static NSString * const kStoryboardName = @"EndCard";
@@ -27,7 +28,7 @@ static NSString * const kStoryboardName = @"EndCard";
 
 @property (nonatomic, strong) NSArray *actions;
 @property (nonatomic, strong) VEndCardModel *model;
-@property (nonatomic, strong) id dependencyManager;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @property (nonatomic, assign) NSTimeInterval countdownDuration;
 @property (nonatomic, strong) NSTimer *containerSizeChangeTimer;
@@ -41,7 +42,7 @@ static NSString * const kStoryboardName = @"EndCard";
 
 @implementation VEndCardViewController
 
-+ (VEndCardViewController *)newWithDependencyManager:(id)dependencyManager
++ (VEndCardViewController *)newWithDependencyManager:(VDependencyManager *)dependencyManager
                                                model:(VEndCardModel *)model
                                        minViewHeight:(CGFloat)minViewHeight
                                        maxViewHeight:(CGFloat)maxViewHeight
@@ -78,22 +79,7 @@ static NSString * const kStoryboardName = @"EndCard";
     NSString *identifier = [VEndCardActionCell cellIdentifier];
     [self.actionsCollectionView registerNib:[UINib nibWithNibName:identifier bundle:nil] forCellWithReuseIdentifier:identifier];
     
-    NSArray *actionsArrayFromDependencyManager = @[
-                                                   @{
-                                                       @"name" : @"GIF",
-                                                       @"image_name" : @"action_gif" },
-                                                   @{
-                                                       @"name" : @"Repost",
-                                                       @"image_name" : @"action_repost" },
-                                                   @{
-                                                       @"name" : @"Share",
-                                                       @"image_name" : @"action_share" },
-                                                  /* @{
-                                                       @"name" : @"Meme",
-                                                       @"image_name" : @"action_meme" },*/
-                                                   ];
-    
-    self.actions = actionsArrayFromDependencyManager;
+    self.actions = [self.dependencyManager arrayForKey:@"actions"];
     
     self.nextVideoBannerViewController.delegate = self;
     
@@ -240,6 +226,7 @@ static NSString * const kStoryboardName = @"EndCard";
     NSDictionary *action = self.actions[ indexPath.row ];
     [cell setImage:[UIImage imageNamed:action[ @"image_name" ]]];
     [cell setTitle:action[ @"name" ]];
+    [cell setSuccessImage:action[ @"success_image_name" ]];
     return cell;
 }
 

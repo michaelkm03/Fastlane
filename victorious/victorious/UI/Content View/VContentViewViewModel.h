@@ -91,7 +91,7 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
  *
  *  @return An initialized VContentViewModel.
  */
-- (instancetype)initWithSequence:(VSequence *)sequence;
+- (instancetype)initWithSequence:(VSequence *)sequence depenencyManager:(VDependencyManager *)dependencyManager;
 
 - (void)reloadData;
 

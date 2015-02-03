@@ -8,8 +8,11 @@
 
 @import UIKit;
 
+@class VDependencyManager;
+
 @interface VEndCardModel : NSObject
 
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) NSString *videoAuthorName;
 @property (nonatomic, strong) NSURL *videoAuthorProfileImageURL;
 @property (nonatomic, strong) NSString *videoTitle;

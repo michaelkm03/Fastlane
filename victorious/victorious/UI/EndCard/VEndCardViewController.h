@@ -11,6 +11,8 @@
 #import "VEndCardModel.h"
 #import "VEndCardActionCell.h"
 
+@class VDependencyManager;
+
 @protocol VEndCardViewControllerDelegate <NSObject>
 @required
 
@@ -31,7 +33,7 @@
 
 @property (nonatomic, weak) id<VEndCardViewControllerDelegate> delegate;
 
-+ (VEndCardViewController *)newWithDependencyManager:(id)dependencyManager
++ (VEndCardViewController *)newWithDependencyManager:(VDependencyManager *)dependencyManager
                                                model:(VEndCardModel *)model
                                        minViewHeight:(CGFloat)minViewHeight
                                        maxViewHeight:(CGFloat)maxViewHeight;

@@ -62,7 +62,7 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
         [self dismissViewControllerAnimated:NO completion:nil];
     }
     
-    VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithSequence:sequence];
+    VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithSequence:sequence depenencyManager:self.dependencyManager];
     contentViewModel.deepLinkCommentId = commentId;
     VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel
                                                                                                    dependencyManager:self.dependencyManager];

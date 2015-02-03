@@ -18,6 +18,7 @@ static const CGFloat kDisabledAlpha     = 0.5f;
 @property (weak, nonatomic) IBOutlet UILabel *actionLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *iconImageView;
 @property (weak, nonatomic) IBOutlet UIView *containerView;
+@property (strong, nonatomic) NSString *successImageName;
 
 @end
 
@@ -62,6 +63,11 @@ static const CGFloat kDisabledAlpha     = 0.5f;
     self.actionLabel.alpha = alpha;
 }
 
+- (void)setSuccessImage:(NSString *)successImage
+{
+    self.successImageName = successImage;
+}
+
 - (void)setSelected:(BOOL)selected
 {
     if ( self.enabled )
@@ -74,7 +80,7 @@ static const CGFloat kDisabledAlpha     = 0.5f;
 
 - (void)showSuccess
 {
-    self.iconImageView.image = [UIImage imageNamed:@"action_success"];
+    self.iconImageView.image = [UIImage imageNamed:self.successImageName];
     [UIView animateWithDuration:0.15f
                           delay:0.0f
          usingSpringWithDamping:1.0f

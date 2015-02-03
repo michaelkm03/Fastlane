@@ -167,7 +167,7 @@ static CGFloat const kDirectoryInset = 10.0f;
     }
     else if ([item isKindOfClass:[VSequence class]])
     {
-        VContentViewViewModel *contentViewViewModel = [[VContentViewViewModel alloc] initWithSequence:(VSequence *)item];
+        VContentViewViewModel *contentViewViewModel = [[VContentViewViewModel alloc] initWithSequence:(VSequence *)item depenencyManager:self.dependencyManager];
         VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewViewModel
                                                             dependencyManager:self.dependencyManager];
         contentViewController.delegate = self;
