@@ -12,7 +12,7 @@
 @interface VContentCell () <VEndCardViewControllerDelegate>
 
 @property (nonatomic, weak) UIImageView *animationImageView;
-@property (nonatomic, strong, readwrite) VEndCardViewController *endCardViewController;
+@property (nonatomic, strong) VEndCardViewController *endCardViewController;
 
 @end
 
@@ -98,7 +98,7 @@
     [self.contentView bringSubviewToFront:self.animationImageView];
 }
 
-#pragma mark - Public Methodsx
+#pragma mark - Public Methods
 
 - (void)playAnimation
 {
@@ -113,13 +113,6 @@
 - (BOOL)isEndCardShowing
 {
     return self.endCardViewController != nil;
-}
-
-- (void)resetEndCardActions:(BOOL)animated
-{
-    if ( self.endCardViewController != nil )
-    {
-    }
 }
 
 - (void)showEndCardWithViewModel:(VEndCardModel *)model

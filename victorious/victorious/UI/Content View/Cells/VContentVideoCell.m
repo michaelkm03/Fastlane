@@ -196,9 +196,12 @@
 
 #pragma mark - VCVideoPlayerDelegate
 
-- (void)videoPlayer:(VCVideoPlayerViewController *)videoPlayer  didPlayToTime:(CMTime)time
+- (void)videoPlayer:(VCVideoPlayerViewController *)videoPlayer
+      didPlayToTime:(CMTime)time
 {
-    [self.delegate videoCell:self didPlayToTime:time totalTime:[videoPlayer playerItemDuration]];
+    [self.delegate videoCell:self
+               didPlayToTime:time
+                   totalTime:[videoPlayer playerItemDuration]];
 }
 
 - (void)videoPlayerReadyToPlay:(VCVideoPlayerViewController *)videoPlayer
@@ -210,7 +213,8 @@
 - (void)videoPlayerDidReachEndOfVideo:(VCVideoPlayerViewController *)videoPlayer
 {
     // This should only be forwarded from the content video player
-    [self.delegate videoCellPlayedToEnd:self withTotalTime:[videoPlayer playerItemDuration]];
+    [self.delegate videoCellPlayedToEnd:self
+                          withTotalTime:[videoPlayer playerItemDuration]];
     self.videoDidEnd = YES;
     
     [super showEndCardWithViewModel:self.viewModel.endCardViewModel];

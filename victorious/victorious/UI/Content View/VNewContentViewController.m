@@ -489,11 +489,6 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     [super viewDidAppear:animated];
 
     [self.contentCollectionView flashScrollIndicators];
-    
-    if ( self.contentCell != nil )
-    {
-        [self.contentCell resetEndCardActions:animated];
-    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated

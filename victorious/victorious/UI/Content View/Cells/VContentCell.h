@@ -23,21 +23,38 @@
  */
 @property (nonatomic, assign) NSInteger repeatCount;
 
+/**
+ Designed to be implemented by the view controller of the collection view
+ that contains this VContentCell.  The delegate will handle actions and state
+ changes performed in the VEndCardViewController.
+ */
 @property (nonatomic, weak) id<VEndCardViewControllerDelegate> endCardDelegate;
 
-@property (nonatomic, strong, readonly) VEndCardViewController *endCardViewController;
-
+/**
+ Used to determine how to fade in or out with an interactive-style animation
+ as the cell size is changed.
+ */
 @property (nonatomic, assign, readwrite) CGSize maxSize;
 
+/**
+ Used to determine how to fade in or out with an interactive-style animation
+ as the cell size is changed.
+ */
 @property (nonatomic, assign, readwrite) CGSize minSize;
 
+/**
+ Returns @YES if a VEndCardViewController instance has been created and
+ added as a subview.
+ */
 @property (nonatomic, assign, readonly) BOOL isEndCardShowing;
 
 - (void)playAnimation;
 
+/**
+ Creates a new VEndCardViewController instances and adds it as a child
+ above the video content, then plays the transition in animations.
+ */
 - (void)showEndCardWithViewModel:(VEndCardModel *)model;
-
-- (void)resetEndCardActions:(BOOL)animated;
 
 /**
  Properly rotates itself and subcomponents based on the rotation of the collection view.

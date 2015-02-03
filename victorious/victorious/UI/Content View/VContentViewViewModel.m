@@ -211,30 +211,28 @@
                                                                         withLoop:[self loop]];
     }
     
-    NSDictionary *endCardConfiguration = @{
-                                           @"actions" :@[
-                                                   @{
-                                                       @"name" : @"GIF",
-                                                       @"image_name" : @"action_gif",
-                                                       @"success_image_name" : @"action_success" },
-                                                   @{
-                                                       @"name" : @"Repost",
-                                                       @"image_name" : @"action_repost",
-                                                       @"success_image_name" : @"action_success" },
-                                                   @{
-                                                       @"name" : @"Share",
-                                                       @"image_name" : @"action_share",
-                                                       @"success_image_name" : @"action_success" },
-                                                   ]
-                                           };
-    
+    NSArray *actions = @[
+                         @{
+                             @"name" : @"GIF",
+                             @"image_name" : @"action_gif",
+                             @"success_image_name" : @"action_success" },
+                         @{
+                             @"name" : @"Repost",
+                             @"image_name" : @"action_repost",
+                             @"success_image_name" : @"action_success" },
+                         @{
+                             @"name" : @"Share",
+                             @"image_name" : @"action_share",
+                             @"success_image_name" : @"action_success" },
+                         ];
+    NSDictionary *endCardConfiguration = @{ @"actions" : actions };
     VDependencyManager *endCardDependencyManager = [[VDependencyManager alloc] initWithParentManager:self.dependencyManager
                                                                                        configuration:endCardConfiguration dictionaryOfClassesByTemplateName:nil];
     VSequence *nextSequence = self.sequence.endCard.nextSequence;
     VStream *stream = nextSequence.streams.allObjects.firstObject;
-    VEndCardModel *endCardModel = [[VEndCardModel alloc] init];
     if ( nextSequence )
     {
+        VEndCardModel *endCardModel = [[VEndCardModel alloc] init];
         endCardModel.videoTitle = self.sequence.name;
         endCardModel.nextVideoTitle = nextSequence.name;
         endCardModel.nextVideoThumbailImageURL = [NSURL URLWithString:(NSString *)nextSequence.previewData];
@@ -243,9 +241,12 @@
         endCardModel.videoAuthorProfileImageURL = [NSURL URLWithString:nextSequence.user.pictureUrl];
         endCardModel.bannerBackgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
         endCardModel.countdownDuration = self.sequence.endCard.countdownDuration.unsignedIntegerValue;
+        endCardModel.dependencyManager = endCardDependencyManager;
+        self.videoViewModel.endCardViewModel = endCardModel;
     }
     else
     {
+        VEndCardModel *endCardModel = [[VEndCardModel alloc] init];
 #warning This is hardcoded data for testing only. Delete this whole `else` block
         // In the real app, the dependency manager will be injected:
         endCardModel.videoTitle = @"January Vacation Blog";
@@ -256,10 +257,9 @@
         endCardModel.videoAuthorProfileImageURL = [NSURL URLWithString:@"http://media-dev-public.s3-website-us-west-1.amazonaws.com/39ce6fa60e5f369a3f6359298b0959c9/80x80.jpg"];
         endCardModel.bannerBackgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
         endCardModel.countdownDuration = 6000;
+        endCardModel.dependencyManager = endCardDependencyManager;
+        self.videoViewModel.endCardViewModel = endCardModel;
     }
-    
-    endCardModel.dependencyManager = endCardDependencyManager;
-    self.videoViewModel.endCardViewModel = endCardModel;
 }
 
 - (void)reloadData
