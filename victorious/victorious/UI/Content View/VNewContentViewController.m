@@ -304,18 +304,6 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
      }];
 }
 
-#pragma mark iOS7.1+
-
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-    [self alongsideRotationupdates];
-}
-
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
-{
-    [self finishedRotationUpdates];
-}
-
 #pragma mark Shared
 
 - (void)alongsideRotationupdates

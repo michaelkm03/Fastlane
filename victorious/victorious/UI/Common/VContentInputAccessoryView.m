@@ -59,11 +59,11 @@
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[toolbar]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(toolbar)]];
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[toolbar]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(toolbar)]];
     
-    UIBarButtonItem *hashtagButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"cameraButtonHashTagAdd"] style:UIBarButtonItemStyleBordered target:self action:@selector(hashButtonTapped:)];
+    UIBarButtonItem *hashtagButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"cameraButtonHashTagAdd"] style:UIBarButtonItemStylePlain target:self action:@selector(hashButtonTapped:)];
     UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     
     UIBarButtonItem *countDownLabel = [[UIBarButtonItem alloc] initWithTitle:[self charactersRemainingStringForCharacterCount:0]
-                                                                       style:UIBarButtonItemStyleBordered
+                                                                       style:UIBarButtonItemStylePlain
                                                                       target:nil
                                                                       action:nil];
     self.hashtagButton = hashtagButton;
