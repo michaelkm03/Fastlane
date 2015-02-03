@@ -602,7 +602,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
     {
         [mediaTypes addObject:(NSString *)kUTTypeImage];
     }
-    if (self.allowPhotos)
+    if (self.allowVideo)
     {
         [mediaTypes addObject:(NSString *)kUTTypeMovie];
     }
