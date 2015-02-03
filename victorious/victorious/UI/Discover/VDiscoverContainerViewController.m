@@ -180,7 +180,8 @@
     
     VUsersAndTagsSearchViewController *searchViewController = [VUsersAndTagsSearchViewController usersAndTagsSearchViewController];
     searchViewController.transitioningDelegate = self.transitionDelegate;
-    [self presentViewController:searchViewController animated:YES completion:nil];
+    self.navigationController.delegate = self.transitionDelegate;
+    [self.navigationController pushViewController:searchViewController animated:YES];
 }
 
 #pragma mark - Transition Animations

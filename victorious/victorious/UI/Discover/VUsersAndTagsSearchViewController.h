@@ -20,5 +20,7 @@
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *searchBarViewHeightConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *searchResultsTableBottomCosntraint;
 @property (nonatomic, weak) IBOutlet UIView *searchResultsContainerView;
+@property (nonatomic, weak) IBOutlet UIView *opaqueBackgroundView;
+@property (nonatomic, weak) IBOutlet UIView *searchBarTopHorizontalRule;
 
 @end
