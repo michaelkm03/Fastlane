@@ -84,25 +84,18 @@ static const CGFloat kSideInset = 10.0f;
 - (CGRect)placeholderRectForBounds:(CGRect)bounds
 {
     return [self textRectForBounds:bounds];
-    
-    CGRect modifiedRect = [super placeholderRectForBounds:bounds];
-
-    modifiedRect = CGRectInset(modifiedRect, kSideInset, 0.0f);
-    modifiedRect.origin.y = kInlineValidationHeight;
-    modifiedRect.size.height -= kInlineValidationHeight;
-    
-    return modifiedRect;
 }
 
 - (CGRect)editingRectForBounds:(CGRect)bounds
 {
     return [self textRectForBounds:bounds];
+}
+
+- (CGRect)clearButtonRectForBounds:(CGRect)bounds
+{
+    CGRect modifiedRect = [super clearButtonRectForBounds:bounds];
     
-    CGRect modifiedRect = [super editingRectForBounds:bounds];
-    
-    modifiedRect = CGRectInset(modifiedRect, kSideInset, 0.0f);
-    modifiedRect.origin.y = kInlineValidationHeight;
-    modifiedRect.size.height -= kInlineValidationHeight;
+    modifiedRect.origin.y = CGRectGetHeight(self.bounds) - CGRectGetHeight(modifiedRect);
     
     return modifiedRect;
 }
