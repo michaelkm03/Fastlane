@@ -128,6 +128,8 @@
     if (![self.emailValidator validateString:emailAddress
                                     andError:&validationError])
     {
+        self.emailTextField.showInlineValidation = YES;
+        [self.emailTextField becomeFirstResponder];
         [self.emailTextField incorrectTextAnimationAndVibration];
         return NO;
     }
@@ -139,10 +141,12 @@
     {
         if (validationError.code == VErrorCodeInvalidPasswordsDoNotMatch)
         {
+            self.confirmPasswordTextField.showInlineValidation = YES;
             [self.confirmPasswordTextField incorrectTextAnimationAndVibration];
         }
         else
         {
+            self.passwordTextField.showInlineValidation = YES;
             [self.passwordTextField incorrectTextAnimationAndVibration];
         }
         
@@ -223,7 +227,6 @@
     {
         [textField incorrectTextAnimationAndVibration];
         textField.showInlineValidation = YES;
-        return NO;
     }
     
     if ([textField isEqual:self.emailTextField])
@@ -252,6 +255,18 @@
     return YES;
 }
 
+- (BOOL)textField:(UITextField *)textField
+shouldChangeCharactersInRange:(NSRange)range
+replacementString:(NSString *)string
+{
+    if (textField == self.passwordTextField)
+    {
+        self.confirmPasswordTextField.text = nil;
+    }
+    return YES;
+}
+
+
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [[self view] endEditing:YES];
@@ -276,15 +291,5 @@
         profileViewController.registrationModel = self.registrationModel;
     }
 }
-
-//- (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
-//                                  animationControllerForOperation:(UINavigationControllerOperation)operation
-//                                               fromViewController:(UIViewController *)fromVC
-//                                                 toViewController:(UIViewController *)toVC
-//{
-//    VSignupTransitionAnimator   *animator = [[VSignupTransitionAnimator alloc] init];
-//    animator.presenting = (operation == UINavigationControllerOperationPush);
-//    return animator;
-//}
 
 @end

@@ -130,14 +130,19 @@
     
     if (![self.emailValidator validateString:emailAddress andError:&validationError])
     {
-        
+        self.usernameTextField.showInlineValidation = YES;
         [self.usernameTextField validateTextWithValidator:self.emailValidator];
+        [self.usernameTextField incorrectTextAnimationAndVibration];
+        [self.usernameTextField becomeFirstResponder];
         return NO;
     }
     
     if ( ![self.passwordValidator validateString:password andError:&validationError] )
     {
+        self.passwordTextField.showInlineValidation = YES;
         [self.passwordTextField validateTextWithValidator:self.passwordValidator];
+        [self.passwordTextField incorrectTextAnimationAndVibration];
+        [self.passwordTextField becomeFirstResponder];
         return NO;
     }
     
@@ -277,7 +282,6 @@
     {
         [textField incorrectTextAnimationAndVibration];
         textField.showInlineValidation = YES;
-        return NO;
     }
     
     if (textField == self.usernameTextField)
@@ -290,6 +294,19 @@
         [self login:nil];
     }
     
+    return YES;
+}
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+    BOOL validUsername = [self.usernameTextField.validator validateString:self.usernameTextField.text
+                                                                 andError:nil];
+
+    if ([self.usernameTextField isFirstResponder] && !validUsername)
+    {
+        self.usernameTextField.showInlineValidation = YES;
+        [self.usernameTextField incorrectTextAnimationAndVibration];
+    }
     return YES;
 }
 
