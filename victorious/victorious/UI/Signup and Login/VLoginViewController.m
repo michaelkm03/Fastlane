@@ -331,28 +331,6 @@
     }
 }
 
-- (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
-                                  animationControllerForOperation:(UINavigationControllerOperation)operation
-                                               fromViewController:(UIViewController *)fromVC
-                                                 toViewController:(UIViewController *)toVC
-{
-    if ([toVC isKindOfClass:[VLoginWithEmailViewController class]])
-    {
-        VLoginTransitionAnimator   *animator = [[VLoginTransitionAnimator alloc] init];
-        animator.presenting = (operation == UINavigationControllerOperationPush);
-        return animator;
-    }
-    
-    if ([toVC isKindOfClass:[VSignupWithEmailViewController class]])
-    {
-        VSignupTransitionAnimator *animator = [[VSignupTransitionAnimator alloc] init];
-        animator.presenting = (operation == UINavigationControllerOperationPush);
-        return animator;
-    }
-    
-    return nil;
-}
-
 - (void)userDidAbortCreateProfile:(NSNotification *)note
 {
     [self dismissViewControllerAnimated:YES completion:nil];

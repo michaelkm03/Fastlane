@@ -8,8 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
-@interface VLoginTransitionAnimator : NSObject <UIViewControllerAnimatedTransitioning>
-
-@property (nonatomic)   BOOL    presenting;
-
-@end
+//@interface VLoginTransitionAnimator : NSObject <UIViewControllerAnimatedTransitioning>
+//
+//@property (nonatomic)   BOOL    presenting;
+//
+//@end

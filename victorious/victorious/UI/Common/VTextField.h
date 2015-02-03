@@ -8,6 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+typedef NS_ENUM(NSInteger, VTextFieldStyle)
+{
+    VTextFieldStyleLoginRegistration,
+};
+
 @class VStringValidator;
 
 @interface VTextField : UITextField
@@ -19,5 +24,7 @@
 - (void)incorrectTextAnimationAndVibration;
 
 - (void)validateTextWithValidator:(VStringValidator *)validator;
+
+- (void)applyTextFieldStyle:(VTextFieldStyle)textFieldStyle;
 
 @end

@@ -52,11 +52,12 @@
 
     self.view.layer.contents = (id)[[[VThemeManager sharedThemeManager] themedBackgroundImageForDevice] applyBlurWithRadius:25 tintColor:[UIColor colorWithWhite:1.0 alpha:0.7] saturationDeltaFactor:1.8 maskImage:nil].CGImage;
 
-    self.usernameTextField.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
-    self.usernameTextField.textColor = [UIColor colorWithWhite:0.14 alpha:1.0];
+    self.usernameTextField.validator = [[VEmailValidator alloc] init];
+    [self.usernameTextField applyTextFieldStyle:VTextFieldStyleLoginRegistration];
     self.usernameTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.usernameTextField.placeholder attributes:@{NSForegroundColorAttributeName : [UIColor colorWithWhite:0.14 alpha:1.0]}];
-    self.passwordTextField.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
-    self.passwordTextField.textColor = [UIColor colorWithWhite:0.14 alpha:1.0];
+    
+    self.passwordTextField.validator = [[VPasswordValidator alloc] init];
+    [self.passwordTextField applyTextFieldStyle:VTextFieldStyleLoginRegistration];
     self.passwordTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.passwordTextField.placeholder attributes:@{NSForegroundColorAttributeName : [UIColor colorWithWhite:0.14 alpha:1.0]}];
     
     self.cancelButton.layer.borderColor = [UIColor colorWithWhite:0.14 alpha:1.0].CGColor;
@@ -269,8 +270,16 @@
 
 #pragma mark - UITextFieldDelegate
 
-- (BOOL)textFieldShouldReturn:(UITextField *)textField
+- (BOOL)textFieldShouldReturn:(VTextField *)textField
 {
+    if (![textField.validator validateString:textField.text
+                                    andError:nil])
+    {
+        [textField incorrectTextAnimationAndVibration];
+        textField.showInlineValidation = YES;
+        return NO;
+    }
+    
     if (textField == self.usernameTextField)
     {
         [self.passwordTextField becomeFirstResponder];
@@ -300,30 +309,6 @@
         profileViewController.loginType = kVLoginTypeEmail;
         profileViewController.registrationModel = [[VRegistrationModel alloc] init];
     }
-}
-
-- (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
-                                  animationControllerForOperation:(UINavigationControllerOperation)operation
-                                               fromViewController:(UIViewController *)fromVC
-                                                 toViewController:(UIViewController *)toVC
-{
-    if ([toVC isKindOfClass:[VResetPasswordViewController class]])
-    {
-        VLoginTransitionAnimator   *animator = [[VLoginTransitionAnimator alloc] init];
-        animator.presenting = (operation == UINavigationControllerOperationPush);
-        return animator;
-    }
-    else if ([toVC isKindOfClass:[VEnterResetTokenViewController class]])
-    {
-        ((VEnterResetTokenViewController *)toVC).deviceToken = self.deviceToken;
-    }
-    else if ([toVC isKindOfClass:[VLoginViewController class]])
-    {
-        VLoginTransitionAnimator   *animator = [[VLoginTransitionAnimator alloc] init];
-        animator.presenting = (operation == UINavigationControllerOperationPush);
-        return animator;
-    }
-    return nil;
 }
 
 @end

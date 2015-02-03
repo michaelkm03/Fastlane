@@ -8,8 +8,13 @@
 
 #import "VTextField.h"
 
+// Theme
+#import "VThemeManager.h"
+
+// Validators
 #import "VPasswordValidator.h"
 
+// Subviews
 #import "VInlineValidationView.h"
 
 static const CGFloat kInlineValidationHeight = 20.0f;
@@ -156,8 +161,22 @@ static const CGFloat kSideInset = 10.0f;
 
 - (void)setShowInlineValidation:(BOOL)showInlineValidation
 {
-    [self validateTextWithValidator:self.validator];
     _showInlineValidation = showInlineValidation;
+    [self validateTextWithValidator:self.validator];
+}
+
+- (void)applyTextFieldStyle:(VTextFieldStyle)textFieldStyle
+{
+    switch (textFieldStyle)
+    {
+        case VTextFieldStyleLoginRegistration:
+            self.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+            self.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
+            self.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
+            break;
+        default:
+            break;
+    }
 }
 
 #pragma mark - Notification Handlers

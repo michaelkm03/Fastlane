@@ -57,22 +57,16 @@
     self.signupButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
     
     self.emailTextField.validator = [[VEmailValidator alloc] init];
-    self.emailTextField.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-    self.emailTextField.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
-    self.emailTextField.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
+    [self.emailTextField applyTextFieldStyle:VTextFieldStyleLoginRegistration];
     self.emailTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.emailTextField.placeholder attributes:@{NSForegroundColorAttributeName : [UIColor colorWithWhite:0.14 alpha:1.0]}];
 
     self.passwordTextField.validator = [[VPasswordValidator alloc] init];
-    self.passwordTextField.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
-    self.passwordTextField.textColor = [UIColor colorWithWhite:0.14 alpha:1.0];
+    [self.passwordTextField applyTextFieldStyle:VTextFieldStyleLoginRegistration];
     self.passwordTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.passwordTextField.placeholder attributes:@{NSForegroundColorAttributeName : [UIColor colorWithWhite:0.14 alpha:1.0]}];
-    self.passwordTextField.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     
     self.confirmPasswordTextField.validator = [[VPasswordValidator alloc] init];
-    self.confirmPasswordTextField.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
-    self.confirmPasswordTextField.textColor = [UIColor colorWithWhite:0.14 alpha:1.0];
+    [self.confirmPasswordTextField applyTextFieldStyle:VTextFieldStyleLoginRegistration];
     self.confirmPasswordTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.confirmPasswordTextField.placeholder attributes:@{NSForegroundColorAttributeName : [UIColor colorWithWhite:0.14 alpha:1.0]}];
-    self.confirmPasswordTextField.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
 
     self.registrationModel = [[VRegistrationModel alloc] init];
     
@@ -283,14 +277,14 @@
     }
 }
 
-- (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
-                                  animationControllerForOperation:(UINavigationControllerOperation)operation
-                                               fromViewController:(UIViewController *)fromVC
-                                                 toViewController:(UIViewController *)toVC
-{
-    VSignupTransitionAnimator   *animator = [[VSignupTransitionAnimator alloc] init];
-    animator.presenting = (operation == UINavigationControllerOperationPush);
-    return animator;
-}
+//- (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
+//                                  animationControllerForOperation:(UINavigationControllerOperation)operation
+//                                               fromViewController:(UIViewController *)fromVC
+//                                                 toViewController:(UIViewController *)toVC
+//{
+//    VSignupTransitionAnimator   *animator = [[VSignupTransitionAnimator alloc] init];
+//    animator.presenting = (operation == UINavigationControllerOperationPush);
+//    return animator;
+//}
 
 @end
