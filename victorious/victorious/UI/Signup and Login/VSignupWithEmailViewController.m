@@ -20,14 +20,16 @@
 #import "VPasswordValidator.h"
 #import "VEmailValidator.h"
 #import "VAutomation.h"
+#import "VButton.h"
+#import "VTextField.h"
 
 @interface VSignupWithEmailViewController ()    <UITextFieldDelegate, UINavigationControllerDelegate, TTTAttributedLabelDelegate>
 
-@property (weak, nonatomic) IBOutlet UITextField *emailTextField;
-@property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
-@property (weak, nonatomic) IBOutlet UITextField *confirmPasswordTextField;
-@property (nonatomic, weak) IBOutlet    UIButton       *cancelButton;
-@property (nonatomic, weak) IBOutlet    UIButton       *signupButton;
+@property (weak, nonatomic) IBOutlet VTextField *emailTextField;
+@property (weak, nonatomic) IBOutlet VTextField *passwordTextField;
+@property (weak, nonatomic) IBOutlet VTextField *confirmPasswordTextField;
+@property (nonatomic, weak) IBOutlet    VButton       *cancelButton;
+@property (nonatomic, weak) IBOutlet    VButton       *signupButton;
 @property (nonatomic, strong)   VUser  *profile;
 @property (nonatomic, strong)   VRegistrationModel *registrationModel;
 @property (nonatomic, strong)   VPasswordValidator *passwordValidator;
@@ -47,27 +49,26 @@
     self.passwordTextField.delegate = self;
     self.confirmPasswordTextField.delegate = self;
 
-    self.cancelButton.layer.borderColor = [UIColor colorWithWhite:0.14 alpha:1.0].CGColor;
-    self.cancelButton.layer.borderWidth = 2.0;
-    self.cancelButton.layer.cornerRadius = 3.0;
-    self.cancelButton.backgroundColor = [UIColor clearColor];
-    self.cancelButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
-    [self.cancelButton setTitleColor:[UIColor colorWithWhite:0.14 alpha:1.0] forState:UIControlStateNormal];
-    
+    self.cancelButton.style = VButtonStyleSecondary;
+    self.signupButton.style = VButtonStylePrimary;
     self.signupButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-    self.signupButton.layer.cornerRadius = 3.0;
-    self.signupButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
-    [self.signupButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     
+    self.emailTextField.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     self.emailTextField.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
-    self.emailTextField.textColor = [UIColor colorWithWhite:0.14 alpha:1.0];
+    self.emailTextField.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
     self.emailTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.emailTextField.placeholder attributes:@{NSForegroundColorAttributeName : [UIColor colorWithWhite:0.14 alpha:1.0]}];
+
+    self.passwordTextField.validator = [[VPasswordValidator alloc] init];
     self.passwordTextField.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
     self.passwordTextField.textColor = [UIColor colorWithWhite:0.14 alpha:1.0];
     self.passwordTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.passwordTextField.placeholder attributes:@{NSForegroundColorAttributeName : [UIColor colorWithWhite:0.14 alpha:1.0]}];
+    self.passwordTextField.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    
+    self.confirmPasswordTextField.validator = [[VPasswordValidator alloc] init];
     self.confirmPasswordTextField.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
     self.confirmPasswordTextField.textColor = [UIColor colorWithWhite:0.14 alpha:1.0];
     self.confirmPasswordTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.confirmPasswordTextField.placeholder attributes:@{NSForegroundColorAttributeName : [UIColor colorWithWhite:0.14 alpha:1.0]}];
+    self.confirmPasswordTextField.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
 
     self.registrationModel = [[VRegistrationModel alloc] init];
     
@@ -126,15 +127,15 @@
 {
     NSError *validationError;
 
-    if (![self.emailValidator validateEmailAddress:emailAddress error:&validationError])
+    if (![self.emailValidator validateString:emailAddress withConfirmation:nil andError:&validationError])
     {
         [self.emailValidator showAlertInViewController:self withError:validationError];
         return NO;
     }
 
-    if (![self.passwordValidator validatePassword:self.passwordTextField.text
-                                 withConfirmation:self.confirmPasswordTextField.text
-                                            error:&validationError] )
+    if (![self.passwordValidator validateString:self.passwordTextField.text
+                               withConfirmation:self.confirmPasswordTextField.text
+                                       andError:&validationError])
     {
         [self.passwordValidator showAlertInViewController:self withError:validationError];
         return NO;

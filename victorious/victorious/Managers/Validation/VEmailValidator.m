@@ -22,29 +22,25 @@ static NSString * const kVEmailValidateRegEx =
 
 @implementation VEmailValidator
 
-- (BOOL)validateEmailAddress:(NSString *)emailAddress error:(NSError **)outError
+- (BOOL)validateString:(NSString *)string
+      withConfirmation:(NSString *)confirmationString
+              andError:(NSError **)error
 {
-    if ( !emailAddress || emailAddress.length == 0 )
+    if ( !string || string.length == 0 )
     {
-        if (outError != nil)
+        if (error != nil)
         {
-            NSString *errorString = NSLocalizedString(@"EmailValidation", @"Invalid Email Address");
-            *outError = [[NSError alloc] initWithDomain:errorString
-                                                   code:VSignupErrorCodeInvalidEmailAddress
-                                               userInfo:nil];
+            *error = [self errorForErrorCode:VSignupErrorCodeInvalidEmailAddress];
         }
         return NO;
     }
     
     NSPredicate *emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", kVEmailValidateRegEx];
-    if ( ![emailTest evaluateWithObject:emailAddress] )
+    if ( ![emailTest evaluateWithObject:string] )
     {
-        if (outError != nil)
+        if (error != nil)
         {
-            NSString *errorString = NSLocalizedString(@"EmailValidation", @"Invalid Email Address");
-            *outError = [[NSError alloc] initWithDomain:errorString
-                                                   code:VSignupErrorCodeInvalidEmailAddress
-                                               userInfo:nil];
+            *error = [self errorForErrorCode:VSignupErrorCodeInvalidEmailAddress];
         }
         return NO;
     }
@@ -52,21 +48,27 @@ static NSString * const kVEmailValidateRegEx =
     return YES;
 }
 
-- (BOOL)localizedErrorStringsForError:(NSError *)error title:(NSString **)title message:(NSString **)message
+
+- (NSError *)errorForErrorCode:(NSInteger)errorCode
 {
-    NSParameterAssert( title != nil );
-    NSParameterAssert( message != nil );
+    NSString *domain;
+    NSString *localizedDescription;
     
-    switch ( error.code )
+    switch ( errorCode )
     {
         case VSignupErrorCodeInvalidEmailAddress:
         default:
-            *title = NSLocalizedString( @"EmailValidation", @"" );
-            *message = nil;
+            domain = NSLocalizedString( @"EmailValidation", @"" );
+            localizedDescription = NSLocalizedString( @"EmailValidation", @"" );
             break;
     }
     
-    return YES;
+    NSError *errorForCode = [[NSError alloc] initWithDomain:domain
+                                                       code:errorCode
+                                                   userInfo:@{NSLocalizedFailureReasonErrorKey:localizedDescription,
+                                                              NSLocalizedDescriptionKey:localizedDescription}];
+    return errorForCode;
+
 }
 
 @end

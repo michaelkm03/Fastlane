@@ -17,37 +17,33 @@ NSInteger const VErrorCodeInvalidPasswordsNewEqualsCurrent  = 5053;
 
 @implementation VPasswordValidator
 
-- (BOOL)validatePassword:(NSString *)password error:(NSError **)outError
+- (BOOL)validateString:(NSString *)string
+      withConfirmation:(NSString *)confirmationString
+              andError:(NSError **)error
 {
-    if ( password == nil || password.length < 8 )
+    if ( string == nil || string.length < 8 )
     {
-        if ( outError != nil )
+        if ( error != nil )
         {
-            NSString *errorString = NSLocalizedString( @"PasswordValidation", @"" );
-            *outError = [[NSError alloc] initWithDomain:errorString
-                                                       code:VErrorCodeInvalidPasswordEntered
-                                                   userInfo:nil];
+            *error = [self errorForErrorCode:VErrorCodeInvalidPasswordEntered];
         }
         return NO;
     }
-    return YES;
-}
 
-- (BOOL)validatePassword:(NSString *)password withConfirmation:(NSString *)confirmationPassword error:(NSError **)outError
-{
-    if (![self validatePassword:password error:outError])
+    if (![string isEqualToString:confirmationString] && (confirmationString != nil) && (![confirmationString isEqualToString:@""]))
     {
+        if ( error != nil )
+        {
+            *error = [self errorForErrorCode:VErrorCodeInvalidPasswordsDoNotMatch];
+        }
         return NO;
     }
-    
-    if (![password isEqualToString:confirmationPassword])
+
+    if ( [self.currentPassword isEqualToString:string] || [self.currentPassword isEqualToString:confirmationString] )
     {
-        if ( outError != nil )
+        if ( error != nil )
         {
-            NSString *errorString = NSLocalizedString( @"PasswordNotMatching", @"" );
-            *outError = [[NSError alloc] initWithDomain:errorString
-                                                   code:VErrorCodeInvalidPasswordsDoNotMatch
-                                               userInfo:nil];
+            *error = [self errorForErrorCode:VErrorCodeInvalidPasswordsNewEqualsCurrent];
         }
         return NO;
     }
@@ -55,61 +51,52 @@ NSInteger const VErrorCodeInvalidPasswordsNewEqualsCurrent  = 5053;
     return YES;
 }
 
-- (BOOL)validateCurrentPassword:(NSString *)currentPassword withNewPassword:(NSString *)newPassword withConfirmation:(NSString *)confirmationPassword error:(NSError **)outError
+- (NSError *)errorForErrorCode:(NSInteger)errorCode
 {
-    if ( [currentPassword isEqualToString:newPassword] || [currentPassword isEqualToString:confirmationPassword] )
-    {
-        if ( outError != nil )
-        {
-            NSString *errorString = NSLocalizedString( @"ResetPasswordNewEqualsCurrentTitle", @"" );
-            *outError = [[NSError alloc] initWithDomain:errorString
-                                                   code:VErrorCodeInvalidPasswordsNewEqualsCurrent
-                                               userInfo:nil];
-        }
-        return NO;
-    }
-    else if (![self validatePassword:newPassword withConfirmation:confirmationPassword error:outError] )
-    {
-        return NO;
-    }
+    NSString *domain;
+    NSString *title;
+    NSString *localizedDescription;
     
-    return YES;
-}
-
-- (BOOL)localizedErrorStringsForError:(NSError *)error title:(NSString **)title message:(NSString **)message
-{
-    NSParameterAssert( title != nil );
-    NSParameterAssert( message != nil );
-    
-    switch ( error.code )
+    switch ( errorCode )
     {
         case VErrorCodeCurrentPasswordIsIncorrect:
-            *title = NSLocalizedString( @"ResetPasswordErrorIncorrectTitle", @"");
-            *message = NSLocalizedString( @"ResetPasswordErrorMessage", @"");
+            domain = NSLocalizedString( @"PasswordValidation", @"" );
+            title = NSLocalizedString( @"ResetPasswordErrorIncorrectTitle", @"");
+            localizedDescription = NSLocalizedString( @"ResetPasswordErrorMessage", @"");
             break;
         case VErrorCodeInvalidPasswordEntered:
-            *title = NSLocalizedString( @"PasswordError", @"");
-            *message = NSLocalizedString( @"PasswordValidation", @"" );
+            domain = NSLocalizedString( @"PasswordValidation", @"" );
+            title = NSLocalizedString( @"PasswordError", @"");
+            localizedDescription = NSLocalizedString( @"PasswordValidation", @"" );
             break;
         case VErrorCodeInvalidPasswordsDoNotMatch:
-            *title = NSLocalizedString( @"PasswordError", @"");
-            *message = NSLocalizedString( @"PasswordNotMatching", @"");
+            domain = NSLocalizedString( @"PasswordNotMatching", @"" );
+            title = NSLocalizedString( @"PasswordError", @"");
+            localizedDescription = NSLocalizedString( @"PasswordNotMatching", @"");
             break;
         case VErrorCodeCurrentPasswordIsInvalid:
-            *title = NSLocalizedString( @"ResetPasswordErrorInvalidTitle", @"");
-            *message = NSLocalizedString( @"ResetPasswordErrorMessage", @"");
+            domain = NSLocalizedString( @"PasswordValidation", @"" );
+            title = NSLocalizedString( @"ResetPasswordErrorInvalidTitle", @"");
+            localizedDescription = NSLocalizedString( @"ResetPasswordErrorMessage", @"");
             break;
         case VErrorCodeInvalidPasswordsNewEqualsCurrent:
-            *title = NSLocalizedString( @"ResetPasswordNewEqualsCurrentTitle", @"");
-            *message = NSLocalizedString( @"ResetPasswordNewEqualsCurrentMessage", @"");
+            domain = NSLocalizedString( @"ResetPasswordNewEqualsCurrentTitle", @"" );;
+            title = NSLocalizedString( @"ResetPasswordNewEqualsCurrentTitle", @"");
+            localizedDescription = NSLocalizedString( @"ResetPasswordNewEqualsCurrentMessage", @"");
             break;
         default:
-            *title = NSLocalizedString( @"ResetPasswordErrorFailTitle", @"");
-            *message = NSLocalizedString( @"ResetPasswordErrorFailMessage", @"");
+            domain = NSLocalizedString( @"PasswordValidation", @"" );
+            title = NSLocalizedString( @"ResetPasswordErrorFailTitle", @"");
+            localizedDescription = NSLocalizedString( @"ResetPasswordErrorFailMessage", @"");
             break;
     }
-    
-    return YES;
+    NSError *errorForCode = [[NSError alloc] initWithDomain:domain
+                                                       code:errorCode
+                                                   userInfo:@{
+                                                              NSLocalizedFailureReasonErrorKey : title,
+                                                              NSLocalizedDescriptionKey : localizedDescription
+                                                              }];
+    return errorForCode;
 }
 
 @end

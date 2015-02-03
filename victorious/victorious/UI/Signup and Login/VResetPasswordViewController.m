@@ -75,7 +75,9 @@
     NSString *newPasswordConfirm = self.confirmPasswordTextField.text;
     
     NSError *outError = nil;
-    if ([self.passwordValidator validatePassword:newPassword withConfirmation:newPasswordConfirm error:&outError] )
+    if ([self.passwordValidator validateString:newPassword
+                              withConfirmation:newPasswordConfirm
+                                      andError:&outError])
     {
         [[VObjectManager sharedManager] resetPasswordWithUserToken:self.userToken
                                                        deviceToken:self.deviceToken

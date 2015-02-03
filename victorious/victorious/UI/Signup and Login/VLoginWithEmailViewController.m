@@ -126,13 +126,13 @@
 {
     NSError *validationError;
     
-    if (![self.emailValidator validateEmailAddress:emailAddress error:&validationError])
+    if (![self.emailValidator validateString:emailAddress withConfirmation:nil andError:&validationError])
     {
         [self.emailValidator showAlertInViewController:self withError:validationError];
         return NO;
     }
     
-    if ( ![self.passwordValidator validatePassword:password error:&validationError] )
+    if ( ![self.passwordValidator validateString:password withConfirmation:nil andError:&validationError] )
     {
         [self.passwordValidator showAlertInViewController:self withError:validationError];
         return NO;

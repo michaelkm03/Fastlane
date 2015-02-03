@@ -1,5 +1,5 @@
 //
-//  VEmailValidator.h
+//  VStringValidator.h
 //  victorious
 //
 //  Created by Patrick Lynch on 11/3/14.
@@ -7,12 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "VValidator.h"
+#import "VStringValidator.h"
 
 extern NSInteger const VSignupErrorCodeInvalidEmailAddress;
 
-@interface VEmailValidator : VValidator
-
-- (BOOL)validateEmailAddress:(NSString *)emailAddress error:(NSError **)outError;
+@interface VEmailValidator : VStringValidator
 
 @end

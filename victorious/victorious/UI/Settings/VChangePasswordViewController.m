@@ -81,10 +81,10 @@
     [[self view] endEditing:YES];
     
     NSError *validationError;
-    if ([self.passwordValidator validateCurrentPassword:self.oldPasswordTextField.text
-                                        withNewPassword:self.changedPasswordTextField.text
-                                       withConfirmation:self.confirmPasswordTextField.text
-                                                  error:&validationError] )
+    self.passwordValidator.currentPassword = self.oldPasswordTextField.text;
+    if ([self.passwordValidator validateString:self.changedPasswordTextField.text
+                              withConfirmation:self.confirmPasswordTextField.text
+                                      andError:&validationError])
     {
         VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
         {
