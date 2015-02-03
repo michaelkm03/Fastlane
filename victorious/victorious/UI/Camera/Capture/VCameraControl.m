@@ -18,6 +18,7 @@ static const NSTimeInterval kTransitionToRecordingAnimationDuration = 0.2;
 static const NSTimeInterval kCameraShutterGrowAnimationDuration = 0.25;
 static const NSTimeInterval kRecordingShrinkAnimationDuration = 0.2;
 static const NSTimeInterval kNotRecordingTrackingTime = 0.0;
+static const NSTimeInterval kShrinkingCameraShutterAnimationDuration = 1.5;
 
 @interface VCameraControl ()
 
@@ -87,28 +88,22 @@ static const NSTimeInterval kNotRecordingTrackingTime = 0.0;
     self.cameraControlState = VCameraControlStateDefault;
 }
 
-- (void)showCameraFlashAnimation
+- (void)showCameraFlashAnimationWithCompletion:(void (^)(void))completion
 {
-    [UIView animateWithDuration:0.25f
+    [UIView animateWithDuration:kCameraShutterGrowAnimationDuration
                           delay:0.0f
                         options:UIViewAnimationOptionCurveEaseInOut
                      animations:^
      {
-         self.frame = CGRectMake(0, 0, kMinHeightSize, kMinHeightSize);
-         
-         self.backgroundColor = [UIColor darkGrayColor];
+         self.backgroundColor = [UIColor blackColor];
+         self.transform = CGAffineTransformMakeScale(kCameraShutterGrowScaleFacotr, kCameraShutterGrowScaleFacotr);
      }
                      completion:^(BOOL finished)
      {
-         [UIView animateWithDuration:kCameraShutterGrowAnimationDuration
-                               delay:0.0f
-                             options:UIViewAnimationOptionCurveEaseInOut
-                          animations:^
-          {
-              self.backgroundColor = [UIColor blackColor];
-              self.transform = CGAffineTransformMakeScale(kCameraShutterGrowScaleFacotr, kCameraShutterGrowScaleFacotr);
-          }
-                          completion:nil];
+         if (completion)
+         {
+             completion();
+         }
      }];
 }
 
@@ -224,6 +219,14 @@ static const NSTimeInterval kNotRecordingTrackingTime = 0.0;
         case VCameraControlStateCapturingImage:
         {
             [self sendActionsForControlEvents:VCameraControlEventWantsStillImage];
+            animationDuration = kShrinkingCameraShutterAnimationDuration;
+            initialVelocity = -1.0f;
+            animations = ^
+            {
+                self.frame = CGRectMake(0, 0, kMinHeightSize, kMinHeightSize);
+                self.backgroundColor = [UIColor darkGrayColor];
+            };
+            
             break;
         }
     }

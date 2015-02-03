@@ -30,7 +30,7 @@ static inline AVCaptureDevice *defaultCaptureDevice()
 @property (nonatomic, strong) AVCaptureInput *audioInput; ///< This property should only be accessed from the sessionQueue
 @property (nonatomic, strong) AVCaptureVideoDataOutput *videoOutput; ///< This property should only be accessed from the sessionQueue
 @property (nonatomic, strong) AVCaptureAudioDataOutput *audioOutput; ///< This property should only be accessed from the sessionQueue
-@property (nonatomic, strong) AVCaptureStillImageOutput *imageOutput; ///< This property should only be accessed from the sessionQueue
+@property (nonatomic, strong, readwrite) AVCaptureStillImageOutput *imageOutput; ///< This property should only be accessed from the sessionQueue
 
 @end
 

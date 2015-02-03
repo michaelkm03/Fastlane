@@ -71,6 +71,6 @@ IB_DESIGNABLE
 /**
  *  Applies a scale transform indicating the the shutter of a camera.
  */
-- (void)showCameraFlashAnimation;
+- (void)showCameraFlashAnimationWithCompletion:(void (^)(void))completion;
 
 @end

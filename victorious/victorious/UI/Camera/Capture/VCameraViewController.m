@@ -21,6 +21,7 @@
 #import "VSettingManager.h"
 #import "VCameraControl.h"
 #import "VThemeManager.h"
+#import <FBKVOController.h>
 
 static const NSTimeInterval kAnimationDuration = 0.4;
 static const NSTimeInterval kErrorMessageDisplayDuration = 3.0;
@@ -69,6 +70,9 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
 @property (nonatomic, readwrite) BOOL didSelectFromWebSearch;
 @property (nonatomic, copy) NSString *initialCaptureMode;
 @property (nonatomic, copy) NSString *videoQuality;
+
+@property (nonatomic, strong) dispatch_queue_t captureAnimationQueue;
+@property (nonatomic, assign) BOOL animationCompleted;
 
 @end
 
@@ -133,6 +137,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
     self.videoQuality = [[VSettingManager sharedManager] captureVideoQuality];
     self.initialCaptureMode = self.videoQuality;
     self.state = VCameraViewControllerStateDefault;
+    self.captureAnimationQueue = dispatch_queue_create("capture animation queue, waits for animation to transition to capture state", DISPATCH_QUEUE_SERIAL);
 }
 
 - (void)dealloc
@@ -377,8 +382,6 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
             
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraDidCapturePhoto];
             self.showedFullscreenShutterAnimation = YES;
-            
-            [self replacePreviewViewWithSnapshot];
         }
             break;
         case VCameraViewControllerStateRecording:
@@ -606,10 +609,40 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
 
 - (void)capturePhoto:(id)sender
 {
+    self.animationCompleted = NO;
+    __weak typeof(self) welf = self;
+    [self.KVOController observe:self.captureController.imageOutput
+                        keyPath:@"capturingStillImage"
+                        options:NSKeyValueObservingOptionNew
+                          block:^(id observer, id object, NSDictionary *change)
+    {
+        AVCaptureStillImageOutput *imageOutPut = (AVCaptureStillImageOutput *)object;
+        if (imageOutPut.isCapturingStillImage)
+        {
+            dispatch_async(dispatch_get_main_queue(), ^
+                           {
+                               [welf replacePreviewViewWithSnapshot];
+                               [welf.cameraControl showCameraFlashAnimationWithCompletion:^
+                                {
+                                    dispatch_async(welf.captureAnimationQueue, ^
+                                                   {
+                                                       welf.animationCompleted = YES;
+                                                       dispatch_async(dispatch_get_main_queue(), ^
+                                                                      {
+                                                                          if ((welf.capturedMediaURL != nil) && welf.animationCompleted)
+                                                                          {
+                                                                              welf.state = VCameraViewControllerStateCapturedMedia;
+                                                                          }
+                                                                      });
+                                                   });
+                                }];
+                           });
+        }
+    }];
+    
     self.state = VCameraViewControllerStateWaitingOnHardwareImageCapture;
     [self.captureController captureStillWithCompletion:^(UIImage *image, NSError *error)
     {
-        [self.cameraControl showCameraFlashAnimation];
         dispatch_async(dispatch_get_main_queue(), ^(void)
         {
             if (error)
@@ -1004,7 +1037,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
             [hud hide:YES afterDelay:5.0];
         }
     }
-
+    
     [self dismissViewControllerAnimated:YES
                              completion:nil];
 }
@@ -1023,7 +1056,16 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
     NSData *jpegData = UIImageJPEGRepresentation(self.didSelectAssetFromLibrary ? image : [self squareImageByCroppingImage:image], VConstantJPEGCompressionQuality);
     [jpegData writeToURL:fileURL atomically:YES]; // TODO: the preview view should take a UIImage
     self.capturedMediaURL = fileURL;
-    self.state = VCameraViewControllerStateCapturedMedia;
+    dispatch_async(self.captureAnimationQueue, ^
+                   {
+                       dispatch_async(dispatch_get_main_queue(), ^
+                                      {
+                                          if ((self.capturedMediaURL != nil) && self.animationCompleted)
+                                          {
+                                              self.state = VCameraViewControllerStateCapturedMedia;
+                                          }
+                                      });
+                   });
 }
 
 @end
