@@ -31,8 +31,6 @@ typedef NS_ENUM(NSUInteger, VCaptionType)
 
 #pragma mark - UI constants
 
-#define UI_IS_IOS8_AND_HIGHER   ([[UIDevice currentDevice].systemVersion floatValue] >= 8.0)
-
 static NSUInteger const VConstantsMessageLength         = 140;
 static NSUInteger const VConstantsUsernameMaxLength     = 50;
 static NSUInteger const VConstantsPollAnswerLength      = 25;
