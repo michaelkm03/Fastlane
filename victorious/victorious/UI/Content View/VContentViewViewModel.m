@@ -108,6 +108,10 @@
         _currentNode = [sequence firstNode];
         
         _currentAsset = [_currentNode mp4Asset];
+        if ( _currentAsset == nil )
+        {
+            _currentAsset = [_currentNode imageAsset];
+        }
         
         // Set the default ad chain index
         self.currentAdChainIndex = 0;

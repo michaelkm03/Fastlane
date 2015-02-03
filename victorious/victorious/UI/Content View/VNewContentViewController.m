@@ -81,10 +81,11 @@
 #import "VSequenceActionController.h"
 #import "VRotationHelper.h"
 #import "VEndCard.h"
+#import "VObjectManager+Sequence.h"
 
 static const CGFloat kMaxInputBarHeight = 200.0f;
 
-@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate,VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, VEndCardViewControllerDelegate>
+@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, VEndCardViewControllerDelegate>
 
 #import "VCommentHighlighter.h"
 
@@ -1466,40 +1467,23 @@ referenceSizeForHeaderInSection:(NSInteger)section
     
     [endCardViewController transitionOut];
     
-    VSequence *nextSequence = [[VObjectManager sharedManager] objectWithEntityName:@"Sequence" subclass:[VSequence class]];
-    nextSequence.remoteId = @"11449";
-    nextSequence.category = self.viewModel.sequence.category;
-    nextSequence.status = self.viewModel.sequence.status;
-    VContentViewViewModel *contentViewViewModel = [[VContentViewViewModel alloc] initWithSequence:nextSequence];
-    VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewViewModel
-                                                                                                   dependencyManager:self.dependencyManager];
-    
-    self.navigationController.viewControllers = @[ contentViewController ];
-    
-    // Get next sequence
-    /*VSequence *nextSequence = [[VObjectManager sharedManager] objectWithEntityName:@"Sequence" subclass:[VSequence class]];
-    nextSequence.remoteId = @"11449";
-    nextSequence.category = self.viewModel.sequence.category;
-    nextSequence.status = self.viewModel.sequence.status;
-    
-    // Set new view model
-    VContentViewViewModel *nextContentVieWodel = [[VContentViewViewModel alloc] initWithSequence:nextSequence];
-    self.viewModel = nextContentVieWodel;
-    self.viewModel.delegate = self;
-    
-    [self.contentCollectionView performBatchUpdates:^void
+    [[VObjectManager sharedManager] fetchSequenceByID:@"11449" successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
-         NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
-         for ( NSInteger i = 0; i < [self.contentCollectionView numberOfItemsInSection:VContentViewSectionAllComments]; i++ )
-         {
-             [indexPaths addObject:[NSIndexPath indexPathForRow:i inSection:VContentViewSectionAllComments]];
-         }
-         [self.contentCollectionView deleteItemsAtIndexPaths:[NSArray arrayWithArray:indexPaths]];
+         VSequence *nextSequence = resultObjects.firstObject;
+         VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithSequence:nextSequence];
+         VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel
+                                                                                                        dependencyManager:self.dependencyManager];
+         contentViewController.dependencyManagerForHistogramExperiment = self.dependencyManager;
+         contentViewController.delegate = self.delegate;
+         
+         self.navigationController.delegate = self;
+         [self.navigationController pushViewController:contentViewController animated:YES];
      }
-                                         completion:^(BOOL finished)
+                                            failBlock:^(NSOperation *operation, NSError *error)
      {
-         [self.viewModel reloadData];
-     }];*/
+         
+     }];
+    
 }
 
 - (void)actionSelectedFromEndCard:(VEndCardViewController *)endCardViewController atIndex:(NSUInteger)index userInfo:(NSDictionary *)userInfo
@@ -1525,6 +1509,16 @@ referenceSizeForHeaderInSection:(NSInteger)section
     else if ( index == 2 )
     {
         [self.sequenceActionController shareFromViewController:self sequence:self.viewModel.sequence node:self.viewModel.currentNode completion:completion];
+    }
+}
+
+#pragma mark - UINavigationControllerDelegate
+
+- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    if ( [viewController isKindOfClass:[VNewContentViewController class]] )
+    {
+        navigationController.viewControllers = @[ navigationController.viewControllers.lastObject ];
     }
 }
 
