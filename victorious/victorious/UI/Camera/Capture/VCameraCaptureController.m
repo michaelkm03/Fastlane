@@ -146,7 +146,10 @@ static inline AVCaptureDevice *defaultCaptureDevice()
     {
         if (self.captureSession.isRunning)
         {
-            completion(nil);
+            if (completion != nil)
+            {
+                completion(nil);
+            }
             return;
         }
         

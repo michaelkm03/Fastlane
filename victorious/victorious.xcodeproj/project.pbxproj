@@ -2922,8 +2922,6 @@
 		0395575719C142C2005E32FB /* Capture */ = {
 			isa = PBXGroup;
 			children = (
-				D8332DBB1A7C275800C3FEE0 /* VCameraControl.h */,
-				D8332DBC1A7C275800C3FEE0 /* VCameraControl.m */,
 				039ED28019C6AB0900305987 /* AVCaptureConnection+VOrientation.h */,
 				039ED28119C6AB0900305987 /* AVCaptureConnection+VOrientation.m */,
 				039ED28A19C808BA00305987 /* AVCaptureVideoPreviewLayer+VConvertPoint.h */,
@@ -2931,6 +2929,8 @@
 				0395575819C14439005E32FB /* VCameraCaptureController.h */,
 				0395575919C14439005E32FB /* VCameraCaptureController.m */,
 				039ED27F19C6557700305987 /* VCameraCaptureVideoSize.h */,
+				D8332DBB1A7C275800C3FEE0 /* VCameraControl.h */,
+				D8332DBC1A7C275800C3FEE0 /* VCameraControl.m */,
 				039ED27C19C563B700305987 /* VCameraVideoEncoder.h */,
 				039ED27D19C563B700305987 /* VCameraVideoEncoder.m */,
 				0314D33C19B46B5E00FA363C /* VCameraViewController.h */,
