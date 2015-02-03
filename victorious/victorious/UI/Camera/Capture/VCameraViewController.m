@@ -343,6 +343,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
             self.closeButton.enabled = YES;
             
             self.searchButton.enabled = YES;
+            self.searchButton.hidden = NO;
             
             [self setOpenAlbumButtonImageWithLatestPhoto:self.allowPhotos
                                                 animated:NO];
@@ -386,7 +387,9 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
             break;
         case VCameraViewControllerStateRecording:
         {
+            [self.deleteButton setImage:[UIImage imageNamed:@"trash_icon"] forState:UIControlStateNormal];
             self.deleteButton.hidden = NO;
+            self.searchButton.hidden = YES;
             self.deleteButton.enabled = YES;
 
             self.nextButton.hidden = NO;
@@ -895,7 +898,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
     };
     void (^completion)(BOOL) = ^(BOOL finished)
     {
-        [self.deleteButton setImage:[UIImage imageNamed:@"cameraButtonDelete"] forState:UIControlStateNormal];
+        [self.deleteButton setImage:[UIImage imageNamed:@"close-btn"] forState:UIControlStateNormal];
     };
     
     if (animated)

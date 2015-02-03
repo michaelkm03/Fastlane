@@ -10,7 +10,7 @@
 
 static const CGFloat kMinHeightSize = 80.0f;
 static const CGFloat kWidthScaleFactorImageOnly = 1.2f;
-static const CGFloat kWidthScaleFactorDefault = 2.0f;
+static const CGFloat kWidthScaleFactorDefault = 1.7f;
 static const CGFloat kCameraShutterGrowScaleFacotr = 13.0f;
 static const NSTimeInterval kMaxElapsedTimeImageTriggerWithVideo = 0.2;
 static const NSTimeInterval kRecordingTriggerDuration = 0.45;

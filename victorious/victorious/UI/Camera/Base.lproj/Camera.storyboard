@@ -153,7 +153,7 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="r8c-9h-K1E" userLabel="Camera Control Container">
-                                <rect key="frame" x="120" y="384" width="80" height="80"/>
+                                <rect key="frame" x="120" y="444" width="80" height="80"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="80" id="8U8-te-6af"/>
@@ -165,7 +165,7 @@
                         <constraints>
                             <constraint firstItem="umg-5s-weJ" firstAttribute="top" secondItem="VHc-U1-zGw" secondAttribute="bottom" id="4nb-z1-EII"/>
                             <constraint firstItem="Cdq-4w-Bu5" firstAttribute="top" secondItem="umg-5s-weJ" secondAttribute="bottom" priority="750" id="HnB-xQ-SxQ"/>
-                            <constraint firstAttribute="centerY" secondItem="r8c-9h-K1E" secondAttribute="centerY" constant="-140" id="P4C-t4-sC3"/>
+                            <constraint firstAttribute="centerY" secondItem="r8c-9h-K1E" secondAttribute="centerY" constant="-200" id="P4C-t4-sC3"/>
                             <constraint firstItem="umg-5s-weJ" firstAttribute="left" secondItem="AMw-cC-uUG" secondAttribute="left" id="PSn-o0-D9f"/>
                             <constraint firstItem="abs-NM-eiT" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Cdq-4w-Bu5" secondAttribute="bottom" id="Ujb-rf-uOh"/>
                             <constraint firstItem="umg-5s-weJ" firstAttribute="top" secondItem="VHc-U1-zGw" secondAttribute="bottom" id="W8s-ce-FH8"/>
