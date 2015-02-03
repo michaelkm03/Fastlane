@@ -1262,45 +1262,29 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     NSString *discardActionTitle = NSLocalizedString(@"Delete", @"Delete the previously selected item. This is a destructive operation.");
     NSString *cancelActionTitle = NSLocalizedString(@"Cancel", @"Cancel button.");
     
-    if (UI_IS_IOS8_AND_HIGHER)
-    {
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:actionSheetTitle
-                                                                                 message:nil
-                                                                          preferredStyle:UIAlertControllerStyleActionSheet];
-        
-        UIAlertAction *deleteAction = [UIAlertAction actionWithTitle:discardActionTitle
-                                                                style:UIAlertActionStyleDestructive
-                                                              handler:^(UIAlertAction *action)
-                                        {
-                                            clearMediaSelection();
-                                            showCamera();
-                                        }];
-        [alertController addAction:deleteAction];
-        
-        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:cancelActionTitle
-                                                               style:UIAlertActionStyleCancel
-                                                             handler:^(UIAlertAction *action)
-                                       {
-                                           [[VThemeManager sharedThemeManager] applyStyling];
-                                       }];
-        [alertController addAction:cancelAction];
-        
-        [[VThemeManager sharedThemeManager] removeStyling];
-        [self presentViewController:alertController animated:YES completion:nil];
-    }
-    else
-    {
-        [[[UIActionSheet alloc] initWithTitle:actionSheetTitle
-                            cancelButtonTitle:cancelActionTitle
-                               onCancelButton:nil
-                       destructiveButtonTitle:discardActionTitle
-                          onDestructiveButton:^
-          {
-              clearMediaSelection();
-              showCamera();
-          }
-                   otherButtonTitlesAndBlocks:nil, nil] showInView:self.view];
-    }
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:actionSheetTitle
+                                                                             message:nil
+                                                                      preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    UIAlertAction *deleteAction = [UIAlertAction actionWithTitle:discardActionTitle
+                                                            style:UIAlertActionStyleDestructive
+                                                          handler:^(UIAlertAction *action)
+                                    {
+                                        clearMediaSelection();
+                                        showCamera();
+                                    }];
+    [alertController addAction:deleteAction];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:cancelActionTitle
+                                                           style:UIAlertActionStyleCancel
+                                                         handler:^(UIAlertAction *action)
+                                   {
+                                       [[VThemeManager sharedThemeManager] applyStyling];
+                                   }];
+    [alertController addAction:cancelAction];
+    
+    [[VThemeManager sharedThemeManager] removeStyling];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 - (void)keyboardInputAccessoryViewDidClearInput:(VKeyboardInputAccessoryView *)inpoutAccessoryView
