@@ -66,10 +66,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
     self.searchField.placeholder = NSLocalizedString(@"SearchPeopleAndHashtags", @"");
     self.searchField.delegate = self;
-    
+
     VSearchResultsTransition *viewTransition = [[VSearchResultsTransition alloc] init];
     self.transitionDelegate = [[VTransitionDelegate alloc] initWithTransition:viewTransition];
 
@@ -78,13 +78,13 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    
+
+
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(showSuggestedPersonProfile:)
                                                  name:kVDiscoverUserProfileSelectedNotification
                                                object:nil];
-    
+
     [self v_addNewNavHeaderWithTitles:nil];
     self.navHeaderView.delegate = self;
     NSLayoutConstraint *searchTopConstraint = [NSLayoutConstraint constraintWithItem:self.searchBarContainer
@@ -138,13 +138,13 @@
     {
         return;
     }
-    
+
     VUser *user = note.userInfo[ kVDiscoverUserProfileSelectedKeyUser ];
     if ( user == nil )
     {
         return;
     }
-    
+
     VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithUser:user];
     if ( self.navigationController != nil )
     {
@@ -168,7 +168,7 @@
 - (BOOL)shouldNavigateWithAlternateDestination:(UIViewController *__autoreleasing *)alternateViewController
 {
     [self.childViewController refresh:YES];
-    
+
     return YES;
 }
 
@@ -184,16 +184,20 @@
     }
 
     [self.searchField resignFirstResponder];
-    
-    VUsersAndTagsSearchViewController *searchViewController = [VUsersAndTagsSearchViewController initWithDependencyManager:self.dependencyManager];
-    if ( self.navigationController != nil )
-    {
-        [self.navigationController pushViewController:searchViewController animated:YES];
-    }
-    else
-    {
-        [self presentViewController:searchViewController animated:YES completion:nil];
-    }
+
+//    VUsersAndTagsSearchViewController *searchViewController = [VUsersAndTagsSearchViewController initWithDependencyManager:self.dependencyManager];
+//    if ( self.navigationController != nil )
+//    {
+//        [self.navigationController pushViewController:searchViewController animated:YES];
+//    }
+//    else
+//    {
+//        [self presentViewController:searchViewController animated:YES completion:nil];
+//    }
+
+    VUsersAndTagsSearchViewController *searchViewController = [VUsersAndTagsSearchViewController usersAndTagsSearchViewController];
+    searchViewController.transitioningDelegate = self.transitionDelegate;
+    [self presentViewController:searchViewController animated:YES completion:nil];
 }
 
 #pragma mark - Transition Animations
@@ -209,7 +213,7 @@
         animator.isPresenting = (operation == UINavigationControllerOperationPush);
         return animator;
     }
-    
+
     return nil;
 }
 
@@ -221,7 +225,7 @@
     {
         self.childViewController = (id<VDiscoverViewControllerProtocol>)segue.destinationViewController;
     }
-    
+
     if ( [[segue identifier] isEqualToString:@"usersTagsSearchSegue"] )
     {
         self.usersAndTagsSearchViewController = segue.destinationViewController;

@@ -38,7 +38,6 @@
 
 
 static NSString * const kVTagResultIdentifier = @"VTrendingTagCell";
-static CGFloat kVTableViewBottomInset = 120.f;
 
 @interface VTagsSearchResultsViewController ()
 
@@ -122,8 +121,6 @@ static CGFloat kVTableViewBottomInset = 120.f;
     
     [self.tableView registerNib:[UINib nibWithNibName:kVTagResultIdentifier bundle:nil] forCellReuseIdentifier:kVTagResultIdentifier];
     [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
-    
-    [self.tableView setContentInset:UIEdgeInsetsMake(0, 0, kVTableViewBottomInset, 0)];
 }
 
 #pragma mark - UITableViewDataSource Methods

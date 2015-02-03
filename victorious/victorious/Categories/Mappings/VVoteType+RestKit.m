@@ -31,7 +31,8 @@
                                   @"flight_duration"    : VSelectorName(flightDuration),
                                   @"view_content_mode"  : VSelectorName(imageContentMode),
                                   @"is_paid"            : VSelectorName(isPaid),
-                                  @"apple_product_id"   : VSelectorName(productIdentifier)
+                                  @"apple_product_id"   : VSelectorName(productIdentifier),
+                                  @"scale_factor"       : VSelectorName(scaleFactor),
                                   };
     
     RKEntityMapping *mapping = [RKEntityMapping
