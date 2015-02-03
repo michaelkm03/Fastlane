@@ -14,18 +14,6 @@
 /**
  @see http://gizma.com/easing/
  */
-static CGFloat easeInCubic( CGFloat t, CGFloat b, CGFloat c, CGFloat d )
-{
-    t /= d;
-    return c * t * t * t + b;
-}
-
-static CGFloat easeInCirc( CGFloat t, CGFloat b, CGFloat c, CGFloat d )
-{
-    t /= d;
-    return -c * ( sqrt(1 - t*t) - 1) + b;
-}
-
 static CGFloat easeInQuint( CGFloat t, CGFloat b, CGFloat c, CGFloat d )
 {
     t /= d;
@@ -71,7 +59,6 @@ static CGFloat easeInQuint( CGFloat t, CGFloat b, CGFloat c, CGFloat d )
     
     [self transitionOutActions];
     [self setReplayButtonVisible:NO animated:YES];
-    [self setBackgroundVisible:NO animated:YES];
     
     __typeof(self) __weak welf = self;
     [self setNextVideoBannerVisible:NO animated:YES completion:^
@@ -246,9 +233,9 @@ static CGFloat easeInQuint( CGFloat t, CGFloat b, CGFloat c, CGFloat d )
     }
     else
     {
-        [UIView animateWithDuration:0.75f
+        [UIView animateWithDuration:visible ? 0.75f : 0.4f
                               delay:visible ? 1.0f : 0.0f
-             usingSpringWithDamping:0.7
+             usingSpringWithDamping:visible ? 0.7 : 1.0f
               initialSpringVelocity:0.6
                             options:kNilOptions animations:^
          {

@@ -190,6 +190,7 @@
     
     if ( self.viewModel.endCardViewModel != nil )
     {
+        self.videoPlayerViewController.toolbarHidden = YES;
         [super showEndCardWithViewModel:self.viewModel.endCardViewModel];
     }
 }
