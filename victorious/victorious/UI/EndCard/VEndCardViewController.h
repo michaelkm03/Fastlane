@@ -49,8 +49,10 @@
 /**
  Animates all elements out of the view.
 */
-- (void)transitionOut;
+- (void)transitionOutWithCompletion:(void(^)())completion;
 
 - (void)deselectActionsAnimated:(BOOL)animated;
+
+- (void)handleRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation;
 
 @end

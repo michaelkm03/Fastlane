@@ -26,7 +26,8 @@
 
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {
-    return CGSizeMake(CGRectGetWidth(bounds), CGRectGetWidth(bounds));
+    const CGFloat minSide = MIN( CGRectGetWidth(bounds), CGRectGetHeight(bounds) );
+    return CGSizeMake( CGRectGetWidth(bounds), minSide );
 }
 
 #pragma mark - NSObject

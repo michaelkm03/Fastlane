@@ -13,9 +13,8 @@
 @property (nonatomic, assign, readonly) BOOL isLandscape;
 
 - (void)handleRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
-                                    duration:(NSTimeInterval)duration
                          targetContentOffset:(CGPoint)targetContentOffset
                               collectionView:(UICollectionView *)collectionView
-                        landscapeHiddenViews:(NSArray *)landscapeHiddenViews;
+                        affectedViews:(NSArray *)affectedViews;
 
 @end

@@ -27,6 +27,10 @@
 
 @property (nonatomic, strong, readonly) VEndCardViewController *endCardViewController;
 
+@property (nonatomic, assign, readwrite) CGSize maxSize;
+
+@property (nonatomic, assign, readwrite) CGSize minSize;
+
 - (void)playAnimation;
 
 - (void)showEndCardWithViewModel:(VEndCardModel *)model;

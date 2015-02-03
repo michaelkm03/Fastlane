@@ -26,8 +26,11 @@ static const CGFloat kIphone5AndGreaterHeight = 93.0f;
 
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {
-    BOOL isUltraCompact = ([UIScreen mainScreen].bounds.size.height <= kThreePointFiveInchIphoneHeight) ? YES : NO;
-    return CGSizeMake(CGRectGetWidth(bounds), isUltraCompact ? kIphone4AndLessHeight : kIphone5AndGreaterHeight);
+    const CGFloat minBound = MIN( CGRectGetWidth(bounds), CGRectGetHeight(bounds) );
+    const CGRect screenBounds = [UIScreen mainScreen].bounds;
+    const CGFloat maxScreenBound = MAX( CGRectGetWidth(screenBounds), CGRectGetHeight(screenBounds) );
+    BOOL isUltraCompact = maxScreenBound <= kThreePointFiveInchIphoneHeight;
+    return CGSizeMake( minBound, isUltraCompact ? kIphone4AndLessHeight : kIphone5AndGreaterHeight);
 }
 
 - (void)awakeFromNib

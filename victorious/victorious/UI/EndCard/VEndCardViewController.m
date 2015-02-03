@@ -112,19 +112,11 @@ static NSString * const kStoryboardName = @"EndCard";
     }
 }
 
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+- (void)handleRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
 {
     CGFloat targetBottomSpaceConstant = UIInterfaceOrientationIsLandscape(toInterfaceOrientation) ? 20.0f : self.nextVideoBannerViewBottomMax;
-    
-    [UIView animateWithDuration:duration
-                          delay:0.0f
-                        options:UIViewAnimationOptionCurveEaseInOut
-                     animations:^
-     {
-         self.nextVideoBannerViewBottomConstraint.constant = targetBottomSpaceConstant;
-         [self.view layoutIfNeeded];
-     }
-                     completion:nil];
+    self.nextVideoBannerViewBottomConstraint.constant = targetBottomSpaceConstant;
+    [self.view layoutIfNeeded];
 }
 
 #pragma mark - Visual Effects
@@ -199,7 +191,7 @@ static NSString * const kStoryboardName = @"EndCard";
      }];
 }
 
-- (void)transitionOut
+- (void)transitionOutWithCompletion:(void(^)())completion
 {
     [self updateContainerSize:nil];
     [self.containerSizeChangeTimer invalidate];
@@ -208,6 +200,11 @@ static NSString * const kStoryboardName = @"EndCard";
     [self.animator transitionOutAllWithCompletion:^void
      {
          [self.nextVideoBannerViewController resetNextVideoDetails];
+         
+         if ( completion != nil )
+         {
+             completion();
+         }
      }];
 }
 

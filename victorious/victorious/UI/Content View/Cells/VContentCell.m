@@ -12,8 +12,6 @@
 @interface VContentCell () <VEndCardViewControllerDelegate>
 
 @property (nonatomic, weak) UIImageView *animationImageView;
-
-@property (nonatomic, assign) CGSize maxSize;
 @property (nonatomic, strong, readwrite) VEndCardViewController *endCardViewController;
 
 @end
@@ -67,9 +65,18 @@
         [self.contentView addSubview:animationImageView];
     }
     
+    // Set some initial/default values
     self.maxSize = self.frame.size;
+    self.minSize = CGSizeMake( self.frame.size.width, 0.0f );
     
     self.repeatCount = 1;
+}
+
+#pragma mark - Rotation
+
+- (void)handleRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+{
+    [self.endCardViewController handleRotationToInterfaceOrientation:toInterfaceOrientation];
 }
 
 #pragma mark - UIView
@@ -110,14 +117,15 @@
     
     self.endCardViewController = [VEndCardViewController newWithDependencyManager:nil
                                                                             model:model
-#warning This should be the same as VShrinkingContentLayoutMinimumContentHeight
-                                                                    minViewHeight:125.0f
+                                                                    minViewHeight:self.minSize.height
                                                                     maxViewHeight:self.maxSize.height];
     self.endCardViewController.delegate = self;
     [self.contentView addSubview:self.endCardViewController.view];
     self.endCardViewController.view.frame = self.contentView.bounds;
     [self.contentView v_addFitToParentConstraintsToSubview:self.endCardViewController.view];
     [self.endCardViewController transitionIn];
+    UIInterfaceOrientation currentOrientation = [UIApplication sharedApplication].statusBarOrientation;
+    [self.endCardViewController handleRotationToInterfaceOrientation:currentOrientation];
 }
 
 #pragma mark - VEndCardViewControllerDelegate

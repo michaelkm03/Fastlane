@@ -18,14 +18,13 @@
 @implementation VRotationHelper
 
 - (void)handleRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
-                                    duration:(NSTimeInterval)duration
                          targetContentOffset:(CGPoint)targetContentOffset
                               collectionView:(UICollectionView *)collectionView
-                        landscapeHiddenViews:(NSArray *)landscapeHiddenViews
+                        affectedViews:(NSArray *)affectedViews
 {
     self.isLandscape = UIInterfaceOrientationIsLandscape(toInterfaceOrientation);
     
-    [landscapeHiddenViews enumerateObjectsUsingBlock:^(UIView *view, NSUInteger idx, BOOL *stop)
+    [affectedViews enumerateObjectsUsingBlock:^(UIView *view, NSUInteger idx, BOOL *stop)
      {
          view.hidden = self.isLandscape;
      }];

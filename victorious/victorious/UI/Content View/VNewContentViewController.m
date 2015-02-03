@@ -81,7 +81,9 @@
 #import "VSequenceActionController.h"
 #import "VRotationHelper.h"
 #import "VEndCard.h"
+#warning remove this once sequence end card is supported
 #import "VObjectManager+Sequence.h"
+#import "VContentRepopulateTransition.h"
 
 static const CGFloat kMaxInputBarHeight = 200.0f;
 
@@ -122,7 +124,8 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 @property (nonatomic, assign) BOOL enteringRealTimeComment;
 @property (nonatomic, assign) CMTime realtimeCommentBeganTime;
 
-@property (nonatomic, strong) VTransitionDelegate *transitionDelegate;
+@property (nonatomic, strong) VTransitionDelegate *modalTransitionDelegate;
+@property (nonatomic, strong) VTransitionDelegate *repopulateTransitionDelegate;
 @property (nonatomic, strong) VScrollPaginator *scrollPaginator;
 
 @property (nonatomic, strong) VCommentHighlighter *commentHighlighter;
@@ -146,7 +149,10 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     contentViewController.dependencyManager = dependencyManager;
     
     VSimpleModalTransition *modalTransition = [[VSimpleModalTransition alloc] init];
-    contentViewController.transitionDelegate = [[VTransitionDelegate alloc] initWithTransition:modalTransition];
+    contentViewController.modalTransitionDelegate = [[VTransitionDelegate alloc] initWithTransition:modalTransition];
+    VContentRepopulateTransition *repopulateTransition = [[VContentRepopulateTransition alloc] init];
+    contentViewController.repopulateTransitionDelegate = [[VTransitionDelegate alloc] initWithTransition:repopulateTransition];
+    
     contentViewController.elapsedTimeFormatter = [[VElapsedTimeFormatter alloc] init];
     
     viewModel.delegate = contentViewController;
@@ -280,7 +286,6 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     return _inputAccessoryView;
 }
 
-#pragma mark - UIViewController
 #pragma mark Rotation
 
 - (BOOL)shouldAutorotate
@@ -295,32 +300,33 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     return (isVideoAndReadyToPlay) ? UIInterfaceOrientationMaskAllButUpsideDown : UIInterfaceOrientationMaskPortrait;
 }
 
-#pragma mark iOS8.0+
-
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
     [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context)
      {
-         [self handleRotationToInterfaceOrientation:[UIApplication sharedApplication].statusBarOrientation duration:context.transitionDuration];
+         [self handleRotationToInterfaceOrientation:[UIApplication sharedApplication].statusBarOrientation];
      }
                                  completion:nil];
 }
 
-#pragma mark iOS7.1+
-
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+- (void)handleRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
 {
-    [self handleRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    const CGSize experienceEnhancerCellSize = [VExperienceEnhancerBarCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
+    const CGPoint fixedLandscapeOffset = CGPointMake( 0.0f, experienceEnhancerCellSize.height );
+    [self.rotationHelper handleRotationToInterfaceOrientation:toInterfaceOrientation
+                                          targetContentOffset:fixedLandscapeOffset
+                                               collectionView:self.contentCollectionView
+                                         affectedViews:@[ self.textEntryView, self.moreButton ]];
+    if ( self.videoCell != nil )
+    {
+        [self.videoCell handleRotationToInterfaceOrientation:toInterfaceOrientation];
+    }
 }
 
-#pragma mark Shared
-
-- (void)handleRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+- (void)updateOrientation
 {
-    [self.rotationHelper handleRotationToInterfaceOrientation:toInterfaceOrientation  duration:duration
-                                          targetContentOffset:CGPointMake( 0, CGRectGetHeight(self.experienceEnhancerCell.frame))
-                                               collectionView:self.contentCollectionView
-                                                landscapeHiddenViews:@[ self.textEntryView, self.moreButton ]];
+    UIInterfaceOrientation currentOrientation = [UIApplication sharedApplication].statusBarOrientation;
+    [self handleRotationToInterfaceOrientation:currentOrientation];
 }
 
 #pragma mark View Lifecycle
@@ -328,8 +334,6 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    self.rotationHelper = [[VRotationHelper alloc] init];
     
     self.sequenceActionController = [[VSequenceActionController alloc] init];
     
@@ -428,6 +432,8 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
     
     [self.viewModel reloadData];
+    
+    self.rotationHelper = [[VRotationHelper alloc] init];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -476,6 +482,8 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     {
         self.textEntryView.placeholderText = NSLocalizedString(@"LeaveAComment", @"");
     }
+    
+    [self updateOrientation];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -553,9 +561,9 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     }
     
     VPurchaseViewController *viewController = [VPurchaseViewController purchaseViewControllerWithVoteType:experienceEnhander.voteType];
-    viewController.transitioningDelegate = self.transitionDelegate;
+    viewController.transitioningDelegate = self.modalTransitionDelegate;
     viewController.delegate = self;
-    [self presentViewController:viewController animated:YES completion:nil];
+    [self.navigationController pushViewController:viewController animated:YES];
 }
 
 - (void)showLoginViewController:(NSNotification *)notification
@@ -778,6 +786,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
                     welf.closeButton.alpha = playControlsHidden ? 0.0f : 1.0f;
                 }];
                 videoCell.endCardDelegate = self;
+                videoCell.minSize = CGSizeMake( self.contentCell.minSize.width, VShrinkingContentLayoutMinimumContentHeight );
                 return videoCell;
             }
             case VContentViewTypePoll:
@@ -1047,14 +1056,18 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
         }
         case VContentViewSectionAllComments:
         {
+            const CGFloat minBound = MIN( CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds) );
             VComment *comment = self.viewModel.comments[indexPath.row];
-            CGSize size = [VContentCommentsCell sizeWithFullWidth:CGRectGetWidth(self.contentCollectionView.bounds)
+            CGSize size = [VContentCommentsCell sizeWithFullWidth:minBound
                                                       commentBody:comment.text
                                                       andHasMedia:comment.hasMedia];
-            return CGSizeMake( CGRectGetWidth(self.view.bounds), size.height );
+            return CGSizeMake( minBound, size.height );
         }
         case VContentViewSectionCount:
-            return CGSizeMake(CGRectGetWidth(self.view.bounds), CGRectGetWidth(self.view.bounds));
+        {
+            const CGFloat minBound = MIN( CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds) );
+            return CGSizeMake( minBound, minBound );
+        }
     }
 }
 
@@ -1392,7 +1405,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 - (void)editComment:(VComment *)comment
 {
     VEditCommentViewController *editViewController = [VEditCommentViewController instantiateFromStoryboardWithComment:comment];
-    editViewController.transitioningDelegate = self.transitionDelegate;
+    editViewController.transitioningDelegate = self.modalTransitionDelegate;
     editViewController.delegate = self;
     [self presentViewController:editViewController animated:YES completion:nil];
 }
@@ -1465,31 +1478,29 @@ referenceSizeForHeaderInSection:(NSInteger)section
 {
     NSLog( @"nextSelectedFromEndCard" );
     
-    [endCardViewController transitionOut];
+    [endCardViewController transitionOutWithCompletion:^
+    {
+        [self showNextSequence];
+    }];
+}
+
+- (void)showNextSequence
+{
+#warning Get the next sequence from the end card model
+    VSequence *nextSequence = self.viewModel.sequence;
+    VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithSequence:nextSequence];
+    VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel
+                                                                                                   dependencyManager:self.dependencyManager];
+    contentViewController.dependencyManagerForHistogramExperiment = self.dependencyManager;
+    contentViewController.delegate = self.delegate;
     
-    [[VObjectManager sharedManager] fetchSequenceByID:@"11449" successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-     {
-         VSequence *nextSequence = resultObjects.firstObject;
-         VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithSequence:nextSequence];
-         VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel
-                                                                                                        dependencyManager:self.dependencyManager];
-         contentViewController.dependencyManagerForHistogramExperiment = self.dependencyManager;
-         contentViewController.delegate = self.delegate;
-         
-         self.navigationController.delegate = self;
-         [self.navigationController pushViewController:contentViewController animated:YES];
-     }
-                                            failBlock:^(NSOperation *operation, NSError *error)
-     {
-         
-     }];
-    
+    self.navigationController.delegate = self;
+    contentViewController.transitioningDelegate = self.repopulateTransitionDelegate;
+    [self.navigationController pushViewController:contentViewController animated:YES];
 }
 
 - (void)actionSelectedFromEndCard:(VEndCardViewController *)endCardViewController atIndex:(NSUInteger)index userInfo:(NSDictionary *)userInfo
 {
-    NSLog( @"Action selected: %@ (%@)", userInfo[ @"name" ], @(index) );
-    
     void (^completion)() = ^void
     {
         [endCardViewController deselectActionsAnimated:YES];
@@ -1520,6 +1531,17 @@ referenceSizeForHeaderInSection:(NSInteger)section
     {
         navigationController.viewControllers = @[ navigationController.viewControllers.lastObject ];
     }
+}
+
+- (id <UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
+                                   animationControllerForOperation:(UINavigationControllerOperation)operation
+                                                fromViewController:(UIViewController *)fromVC
+                                                  toViewController:(UIViewController *)toVC
+{
+    return [self.repopulateTransitionDelegate navigationController:navigationController
+                                   animationControllerForOperation:operation
+                                                fromViewController:fromVC
+                                                  toViewController:toVC];
 }
 
 @end
