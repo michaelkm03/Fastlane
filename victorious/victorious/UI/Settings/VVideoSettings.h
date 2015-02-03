@@ -25,4 +25,6 @@ typedef NS_ENUM( NSUInteger, VAutoplaySetting )
 
 + (VAutoplaySetting)autoplaySetting;
 
++ (BOOL)isAutoplayEnabled;
+
 @end

@@ -10,6 +10,7 @@
 #import "VEndCardBannerViewController.h"
 #import "UIVIew+AutoLayout.h"
 #import "VDependencyManager.h"
+#import "VVideoSettings.h"
 
 static const BOOL kForceIOS7 = NO;
 static NSString * const kStoryboardName = @"EndCard";
@@ -164,7 +165,11 @@ static NSString * const kStoryboardName = @"EndCard";
     
     [self.animator transitionInAllWithCompletion:^
      {
-         [self.nextVideoBannerViewController startCountdownWithDuration:self.countdownDuration];
+         if ( [VVideoSettings isAutoplayEnabled] )
+         {
+             [self.nextVideoBannerViewController startCountdownWithDuration:self.countdownDuration];
+         }
+         
          [self.nextVideoBannerViewController performSelector:@selector(showNextVideoDetails) withObject:nil afterDelay:2.0f];
          [self.containerSizeChangeTimer invalidate];
          self.containerSizeChangeTimer = [NSTimer timerWithTimeInterval:1.0f/60.0f

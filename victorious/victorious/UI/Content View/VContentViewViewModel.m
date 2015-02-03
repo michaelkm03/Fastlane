@@ -8,9 +8,6 @@
 
 #import "VContentViewViewModel.h"
 
-// Experiments
-#import "VSettingManager.h"
-
 // Models
 #import "VComment.h"
 #import "VUser.h"
@@ -51,6 +48,7 @@
 #import "VThemeManager.h"
 #import "VEndCardModel.h"
 #import "VDependencyManager.h"
+#import "VVideoSettings.h"
 
 @interface VContentViewViewModel ()
 
@@ -211,6 +209,12 @@
                                                                         withLoop:[self loop]];
     }
     
+    self.videoViewModel.endCardViewModel = [self createEndCardModel];
+}
+
+- (VEndCardModel *)createEndCardModel
+{
+    VEndCardModel *endCardModel = [[VEndCardModel alloc] init];
     NSArray *actions = @[
                          @{
                              @"name" : @"GIF",
@@ -232,7 +236,6 @@
     VStream *stream = nextSequence.streams.allObjects.firstObject;
     if ( nextSequence )
     {
-        VEndCardModel *endCardModel = [[VEndCardModel alloc] init];
         endCardModel.videoTitle = self.sequence.name;
         endCardModel.nextVideoTitle = nextSequence.name;
         endCardModel.nextVideoThumbailImageURL = [NSURL URLWithString:(NSString *)nextSequence.previewData];
@@ -246,7 +249,6 @@
     }
     else
     {
-        VEndCardModel *endCardModel = [[VEndCardModel alloc] init];
 #warning This is hardcoded data for testing only. Delete this whole `else` block
         // In the real app, the dependency manager will be injected:
         endCardModel.videoTitle = @"January Vacation Blog";
@@ -260,6 +262,8 @@
         endCardModel.dependencyManager = endCardDependencyManager;
         self.videoViewModel.endCardViewModel = endCardModel;
     }
+    
+    return endCardModel;
 }
 
 - (void)reloadData

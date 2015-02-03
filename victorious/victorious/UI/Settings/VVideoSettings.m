@@ -7,6 +7,7 @@
 //
 
 #import "VVideoSettings.h"
+#import "VReachability.h"
 
 static NSString * const kVideoAutoplaySettingKey = @"com.getvictorious.settings.videoAutoplay";
 
@@ -47,6 +48,29 @@ static NSString * const kVideoAutoplaySettingKey = @"com.getvictorious.settings.
     }
     
     return VAutoplaySettingAlways;
+}
+
++ (BOOL)isAutoplayEnabled
+{
+    VAutoplaySetting currentSetting = [self autoplaySetting];
+    switch ( currentSetting )
+    {
+        case VAutoplaySettingOnlyOnWifi:
+        {
+            VReachability *reachability = [VReachability reachabilityForInternetConnection];
+            [reachability startNotifier];
+            
+            VNetworkStatus status = [reachability currentReachabilityStatus];
+            return status == VNetworkStatusReachableViaWiFi;
+        }
+            
+        case VAutoplaySettingNever:
+            return NO;
+            
+        default:
+        case VAutoplaySettingAlways:
+            return YES;
+    }
 }
 
 @end
