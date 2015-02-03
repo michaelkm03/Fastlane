@@ -18,7 +18,6 @@ NSInteger const VErrorCodeInvalidPasswordsNewEqualsCurrent  = 5053;
 @implementation VPasswordValidator
 
 - (BOOL)validateString:(NSString *)string
-      withConfirmation:(NSString *)confirmationString
               andError:(NSError **)error
 {
     if ( string == nil || string.length < 8 )
@@ -30,7 +29,7 @@ NSInteger const VErrorCodeInvalidPasswordsNewEqualsCurrent  = 5053;
         return NO;
     }
 
-    if (![string isEqualToString:confirmationString] && (confirmationString != nil) && (![confirmationString isEqualToString:@""]))
+    if (![string isEqualToString:[self confirmationString]] && ([self confirmationString] != nil))
     {
         if ( error != nil )
         {
@@ -39,7 +38,7 @@ NSInteger const VErrorCodeInvalidPasswordsNewEqualsCurrent  = 5053;
         return NO;
     }
 
-    if ( [self.currentPassword isEqualToString:string] || [self.currentPassword isEqualToString:confirmationString] )
+    if ( [self.currentPassword isEqualToString:string] || [self.currentPassword isEqualToString:[self confirmationString]] )
     {
         if ( error != nil )
         {
@@ -97,6 +96,11 @@ NSInteger const VErrorCodeInvalidPasswordsNewEqualsCurrent  = 5053;
                                                               NSLocalizedDescriptionKey : localizedDescription
                                                               }];
     return errorForCode;
+}
+
+- (NSString *)confirmationString
+{
+    return [self.confirmationObject valueForKeyPath:self.keyPath];
 }
 
 @end

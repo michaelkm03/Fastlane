@@ -10,14 +10,6 @@
 
 extern NSString *const VValdationErrorTitleKey;
 
-@class VStringValidator;
-
-@protocol VStringValidatorConfirmationDelegate <NSObject>
-
-- (NSString *)confirmationStringForStringValidator:(VStringValidator *)stringValidator;
-
-@end
-
 @interface VStringValidator : NSObject
 
 /**
@@ -36,9 +28,12 @@ extern NSString *const VValdationErrorTitleKey;
  *  @return Whether or not this string is valid.
  */
 - (BOOL)validateString:(NSString *)string
-      withConfirmation:(NSString *)confirmationString
               andError:(NSError **)error;
 
-@property (nonatomic, weak) id <VStringValidatorConfirmationDelegate> confirmationDelegate;
+- (void)setConfirmationObject:(id)confirmationObject
+                  withKeyPath:(NSString *)keyPath;
+
+@property (nonatomic, readonly) id confirmationObject;
+@property (nonatomic, readonly) NSString *keyPath;
 
 @end

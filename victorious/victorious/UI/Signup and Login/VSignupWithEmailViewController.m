@@ -50,22 +50,26 @@
     self.confirmPasswordTextField.delegate = self;
 
     self.cancelButton.style = VButtonStyleSecondary;
+    self.cancelButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
+    
     self.signupButton.style = VButtonStylePrimary;
     self.signupButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    self.signupButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
     
+    self.emailTextField.validator = [[VEmailValidator alloc] init];
     self.emailTextField.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-    self.emailTextField.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
-    self.emailTextField.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
+    self.emailTextField.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
+    self.emailTextField.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
     self.emailTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.emailTextField.placeholder attributes:@{NSForegroundColorAttributeName : [UIColor colorWithWhite:0.14 alpha:1.0]}];
 
     self.passwordTextField.validator = [[VPasswordValidator alloc] init];
-    self.passwordTextField.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
+    self.passwordTextField.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
     self.passwordTextField.textColor = [UIColor colorWithWhite:0.14 alpha:1.0];
     self.passwordTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.passwordTextField.placeholder attributes:@{NSForegroundColorAttributeName : [UIColor colorWithWhite:0.14 alpha:1.0]}];
     self.passwordTextField.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     
     self.confirmPasswordTextField.validator = [[VPasswordValidator alloc] init];
-    self.confirmPasswordTextField.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
+    self.confirmPasswordTextField.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
     self.confirmPasswordTextField.textColor = [UIColor colorWithWhite:0.14 alpha:1.0];
     self.confirmPasswordTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.confirmPasswordTextField.placeholder attributes:@{NSForegroundColorAttributeName : [UIColor colorWithWhite:0.14 alpha:1.0]}];
     self.confirmPasswordTextField.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
@@ -127,17 +131,27 @@
 {
     NSError *validationError;
 
-    if (![self.emailValidator validateString:emailAddress withConfirmation:nil andError:&validationError])
+    if (![self.emailValidator validateString:emailAddress
+                                    andError:&validationError])
     {
-        [self.emailValidator showAlertInViewController:self withError:validationError];
+        [self.emailTextField incorrectTextAnimationAndVibration];
         return NO;
     }
 
+    [self.passwordValidator setConfirmationObject:self.confirmPasswordTextField
+                                      withKeyPath:NSStringFromSelector(@selector(text))];
     if (![self.passwordValidator validateString:self.passwordTextField.text
-                               withConfirmation:self.confirmPasswordTextField.text
                                        andError:&validationError])
     {
-        [self.passwordValidator showAlertInViewController:self withError:validationError];
+        if (validationError.code == VErrorCodeInvalidPasswordsDoNotMatch)
+        {
+            [self.confirmPasswordTextField incorrectTextAnimationAndVibration];
+        }
+        else
+        {
+            [self.passwordTextField incorrectTextAnimationAndVibration];
+        }
+        
         return NO;
     }
     
@@ -208,8 +222,16 @@
 
 #pragma mark - UITextFieldDelegate
 
-- (BOOL)textFieldShouldReturn:(UITextField *)textField
+- (BOOL)textFieldShouldReturn:(VTextField *)textField
 {
+    if (![textField.validator validateString:textField.text
+                                    andError:nil])
+    {
+        [textField incorrectTextAnimationAndVibration];
+        textField.showInlineValidation = YES;
+        return NO;
+    }
+    
     if ([textField isEqual:self.emailTextField])
     {
         [self.passwordTextField becomeFirstResponder];
@@ -220,6 +242,15 @@
     }
     else
     {
+        [textField.validator setConfirmationObject:self.passwordTextField
+                                       withKeyPath:NSStringFromSelector(@selector(text))];
+        if (![textField.validator validateString:textField.text
+                                        andError:nil])
+        {
+            [textField incorrectTextAnimationAndVibration];
+            textField.showInlineValidation = YES;
+            return NO;
+        }
         [self signup:textField];
         [self.confirmPasswordTextField resignFirstResponder];
     }

@@ -83,7 +83,6 @@
     NSError *validationError;
     self.passwordValidator.currentPassword = self.oldPasswordTextField.text;
     if ([self.passwordValidator validateString:self.changedPasswordTextField.text
-                              withConfirmation:self.confirmPasswordTextField.text
                                       andError:&validationError])
     {
         VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)

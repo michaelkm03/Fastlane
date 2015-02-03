@@ -23,7 +23,6 @@ static NSString * const kVEmailValidateRegEx =
 @implementation VEmailValidator
 
 - (BOOL)validateString:(NSString *)string
-      withConfirmation:(NSString *)confirmationString
               andError:(NSError **)error
 {
     if ( !string || string.length == 0 )
@@ -68,7 +67,6 @@ static NSString * const kVEmailValidateRegEx =
                                                    userInfo:@{NSLocalizedFailureReasonErrorKey:localizedDescription,
                                                               NSLocalizedDescriptionKey:localizedDescription}];
     return errorForCode;
-
 }
 
 @end

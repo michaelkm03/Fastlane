@@ -14,4 +14,10 @@
 
 @property (nonatomic, strong) VStringValidator *validator;
 
+@property (nonatomic) BOOL showInlineValidation;
+
+- (void)incorrectTextAnimationAndVibration;
+
+- (void)validateTextWithValidator:(VStringValidator *)validator;
+
 @end

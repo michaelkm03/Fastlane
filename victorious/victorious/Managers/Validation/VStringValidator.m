@@ -10,6 +10,13 @@
 
 NSString *const VValdationErrorTitleKey = @"VValdationErrorTitle";
 
+@interface VStringValidator ()
+
+@property (nonatomic, readwrite) id confirmationObject;
+@property (nonatomic, readwrite) NSString *keyPath;
+
+@end
+
 @implementation VStringValidator
 
 - (void)showAlertInViewController:(UIViewController *)viewController withError:(NSError *)error
@@ -30,6 +37,15 @@ NSString *const VValdationErrorTitleKey = @"VValdationErrorTitle";
 {
     NSAssert(false, @"Implement in subclasses!");
     return NO;
+}
+
+- (void)setConfirmationObject:(id)confirmationObject
+                  withKeyPath:(NSString *)keyPath
+{
+    _confirmationObject = confirmationObject;
+    _keyPath = keyPath;
+    id objectAtKeyPath = [confirmationObject valueForKeyPath:keyPath];
+    NSAssert([objectAtKeyPath isKindOfClass:[NSString class]], @"Needs to resolve to an NSString");
 }
 
 @end

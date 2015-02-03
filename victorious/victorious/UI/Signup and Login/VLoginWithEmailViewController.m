@@ -23,10 +23,11 @@
 #import "VPasswordValidator.h"
 #import "VEmailValidator.h"
 #import "VAutomation.h"
+#import "VTextField.h"
 
 @interface VLoginWithEmailViewController () <UITextFieldDelegate, UINavigationControllerDelegate, UIAlertViewDelegate>
-@property (nonatomic, weak) IBOutlet    UITextField    *usernameTextField;
-@property (nonatomic, weak) IBOutlet    UITextField    *passwordTextField;
+@property (nonatomic, weak) IBOutlet    VTextField     *usernameTextField;
+@property (nonatomic, weak) IBOutlet    VTextField     *passwordTextField;
 @property (nonatomic, weak) IBOutlet    UIButton       *loginButton;
 @property (nonatomic, weak) IBOutlet    UIButton       *cancelButton;
 @property (nonatomic, weak) IBOutlet    UIButton       *forgotPasswordButton;
@@ -126,15 +127,16 @@
 {
     NSError *validationError;
     
-    if (![self.emailValidator validateString:emailAddress withConfirmation:nil andError:&validationError])
+    if (![self.emailValidator validateString:emailAddress andError:&validationError])
     {
-        [self.emailValidator showAlertInViewController:self withError:validationError];
+        
+        [self.usernameTextField validateTextWithValidator:self.emailValidator];
         return NO;
     }
     
-    if ( ![self.passwordValidator validateString:password withConfirmation:nil andError:&validationError] )
+    if ( ![self.passwordValidator validateString:password andError:&validationError] )
     {
-        [self.passwordValidator showAlertInViewController:self withError:validationError];
+        [self.passwordTextField validateTextWithValidator:self.passwordValidator];
         return NO;
     }
     
