@@ -12,13 +12,12 @@ static const CGFloat kMinHeightSize = 80.0f;
 static const CGFloat kWidthScaleFactorImageOnly = 1.2f;
 static const CGFloat kWidthScaleFactorDefault = 2.0f;
 static const CGFloat kCameraShutterGrowScaleFacotr = 13.0f;
-static const NSTimeInterval kMaxElapsedTimeImageTriggerWithVideo = 0.2f;
-static const NSTimeInterval kRecordingTriggerDuration = 0.45f;
-static const NSTimeInterval kTransitionToRecordingAnimationDuration = 0.2f;
-static const NSTimeInterval kCameraShutterGrowAnimationDuration = 0.25f;
-static const NSTimeInterval kRecordingShrinkAnimationDuration = 0.2f;
-
-static const NSTimeInterval kNotRecordingTrackingTime = 0.0f;
+static const NSTimeInterval kMaxElapsedTimeImageTriggerWithVideo = 0.2;
+static const NSTimeInterval kRecordingTriggerDuration = 0.45;
+static const NSTimeInterval kTransitionToRecordingAnimationDuration = 0.2;
+static const NSTimeInterval kCameraShutterGrowAnimationDuration = 0.25;
+static const NSTimeInterval kRecordingShrinkAnimationDuration = 0.2;
+static const NSTimeInterval kNotRecordingTrackingTime = 0.0;
 
 @interface VCameraControl ()
 
