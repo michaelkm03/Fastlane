@@ -17,13 +17,15 @@
 #import "VObjectManager+Users.h"
 #import "VUser.h"
 #import "VAuthorizationViewControllerFactory.h"
-#import "VDiscoverSearchTransitionAnimator.h"
 
 // Dependency Manager
 #import "VDependencyManager.h"
 
 // Users and Tags Search
 #import "VUsersAndTagsSearchViewController.h"
+
+// Search Results Navigation Controller
+#import "VSearchResultsNavigationController.h"
 
 // Transition
 #import "VSearchResultsTransition.h"
@@ -186,26 +188,10 @@
     [self.searchField resignFirstResponder];
 
     VUsersAndTagsSearchViewController *searchViewController = [VUsersAndTagsSearchViewController initWithDependencyManager:self.dependencyManager];
-    searchViewController.transitioningDelegate = self.transitionDelegate;
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:searchViewController];
+    //searchViewController.transitioningDelegate = self.transitionDelegate;
+    VSearchResultsNavigationController *navController = [[VSearchResultsNavigationController alloc] initWithRootViewController:searchViewController];
+    navController.transitioningDelegate = self.transitionDelegate;
     [self presentViewController:navController animated:YES completion:nil];
-}
-
-#pragma mark - Transition Animations
-
-- (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
-                                  animationControllerForOperation:(UINavigationControllerOperation)operation
-                                               fromViewController:(UIViewController *)fromVC
-                                                 toViewController:(UIViewController *)toVC
-{
-    if ([toVC isKindOfClass:[VUsersAndTagsSearchViewController class]])
-    {
-        VDiscoverSearchTransitionAnimator *animator = [[VDiscoverSearchTransitionAnimator alloc] init];
-        animator.isPresenting = (operation == UINavigationControllerOperationPush);
-        return animator;
-    }
-
-    return nil;
 }
 
 #pragma mark - Navigation

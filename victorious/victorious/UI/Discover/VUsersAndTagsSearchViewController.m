@@ -8,9 +8,6 @@
 
 #import "VUsersAndTagsSearchViewController.h"
 
-// Transition Animator
-#import "VDiscoverSearchTransitionAnimator.h"
-
 #import "VDiscoverContainerViewController.h"
 
 // VObjectManager
@@ -362,23 +359,6 @@
     noResultsFoundView.messageLabel.text = messageText;
     noResultsFoundView.iconImageView.image = messageIcon;
     noResultsFoundView.iconImageView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryLinkColorKey];
-}
-
-#pragma mark - Animate Transition
-
-- (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
-                                  animationControllerForOperation:(UINavigationControllerOperation)operation
-                                               fromViewController:(UIViewController *)fromVC
-                                                 toViewController:(UIViewController *)toVC
-{
-    if ([toVC isKindOfClass:[VDiscoverContainerViewController class]])
-    {
-        VDiscoverSearchTransitionAnimator *animator = [[VDiscoverSearchTransitionAnimator alloc] init];
-        animator.isPresenting = (operation == UINavigationControllerOperationPush);
-        return animator;
-    }
-    
-    return nil;
 }
 
 @end
