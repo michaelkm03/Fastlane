@@ -626,6 +626,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
                                 {
                                     dispatch_async(welf.captureAnimationQueue, ^
                                                    {
+                                                       welf.showedFullscreenShutterAnimation = YES;
                                                        welf.animationCompleted = YES;
                                                        dispatch_async(dispatch_get_main_queue(), ^
                                                                       {

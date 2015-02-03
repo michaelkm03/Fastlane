@@ -9,7 +9,7 @@
 #import "VVCameraShutterOverAnimator.h"
 #import "VCameraViewController.h"
 
-static const NSTimeInterval kBlurOverPresentTransitionDuration = 0.25f;
+static const NSTimeInterval kBlurOverPresentTransitionDuration = 0.35f;
 
 @implementation VVCameraShutterOverAnimator
 
@@ -41,16 +41,19 @@ static const NSTimeInterval kBlurOverPresentTransitionDuration = 0.25f;
     
     [UIView animateWithDuration:[self transitionDuration:transitionContext]
                           delay:0.0f
-                        options:UIViewAnimationOptionCurveEaseInOut
+         usingSpringWithDamping:0.9f
+          initialSpringVelocity:-1.0f
+                        options:UIViewAnimationOptionAllowUserInteraction
                      animations:^
      {
          circleView.transform = CGAffineTransformMakeScale(0.00001f, 0.00001f);
+         circleView.alpha = 0.0f;
      }
                      completion:^(BOOL finished)
-     {
-         [circleView removeFromSuperview];
-         [transitionContext completeTransition:finished];
-     }];
+    {
+        [circleView removeFromSuperview];
+        [transitionContext completeTransition:finished];
+    }];
 }
 
 @end
