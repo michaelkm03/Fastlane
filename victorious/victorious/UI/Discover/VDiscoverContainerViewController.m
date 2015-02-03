@@ -185,19 +185,10 @@
 
     [self.searchField resignFirstResponder];
 
-//    VUsersAndTagsSearchViewController *searchViewController = [VUsersAndTagsSearchViewController initWithDependencyManager:self.dependencyManager];
-//    if ( self.navigationController != nil )
-//    {
-//        [self.navigationController pushViewController:searchViewController animated:YES];
-//    }
-//    else
-//    {
-//        [self presentViewController:searchViewController animated:YES completion:nil];
-//    }
-
-    VUsersAndTagsSearchViewController *searchViewController = [VUsersAndTagsSearchViewController usersAndTagsSearchViewController];
+    VUsersAndTagsSearchViewController *searchViewController = [VUsersAndTagsSearchViewController initWithDependencyManager:self.dependencyManager];
     searchViewController.transitioningDelegate = self.transitionDelegate;
-    [self presentViewController:searchViewController animated:YES completion:nil];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:searchViewController];
+    [self presentViewController:navController animated:YES completion:nil];
 }
 
 #pragma mark - Transition Animations

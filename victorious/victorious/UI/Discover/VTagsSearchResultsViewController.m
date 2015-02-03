@@ -121,6 +121,7 @@ static NSString * const kVTagResultIdentifier = @"VTrendingTagCell";
     
     [self.tableView registerNib:[UINib nibWithNibName:kVTagResultIdentifier bundle:nil] forCellReuseIdentifier:kVTagResultIdentifier];
     [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+    [self.tableView setContentInset:UIEdgeInsetsMake(15.0f, 0, 0, 0)];
 }
 
 #pragma mark - UITableViewDataSource Methods
