@@ -11,4 +11,5 @@
 @interface VDiscoverSearchTransitionAnimator : NSObject <UIViewControllerAnimatedTransitioning>
 
 @property (nonatomic, assign) BOOL isPresenting;
+
 @end

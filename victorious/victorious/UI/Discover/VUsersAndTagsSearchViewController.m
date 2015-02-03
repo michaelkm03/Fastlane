@@ -30,6 +30,9 @@
 // No Content View
 #import "VNoContentView.h"
 
+// Transtion
+#import "VModalTransition.h"
+
 static CGFloat kVTableViewBottomInset = 120.0f;
 
 @interface VUsersAndTagsSearchViewController () <UITextFieldDelegate>
@@ -83,9 +86,6 @@ static CGFloat kVTableViewBottomInset = 120.0f;
     [self addChildViewController:self.userSearchResultsVC];
     [self.containerView addSubview:self.userSearchResultsVC.view];
     [self.userSearchResultsVC didMoveToParentViewController:self];
-    
-    // Add gesture to container view
-    //[self.containerView addGestureRecognizer:self.swipeGestureRecognizer];
     
     // Constraints
     self.searchBarViewHeightConstraint.constant = 55.0f;
@@ -149,7 +149,7 @@ static CGFloat kVTableViewBottomInset = 120.0f;
 
 - (IBAction)closeButtonAction:(id)sender
 {
-    [self.navigationController popViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - UISegmentControl Action
@@ -228,6 +228,7 @@ static CGFloat kVTableViewBottomInset = 120.0f;
     if ([self.searchField.text length] > 0)
     {
         [[VObjectManager sharedManager] findHashtagsBySearchString:self.searchField.text
+                                                      limitPerPage:1000
                                                       successBlock:searchSuccess
                                                          failBlock:searchFail];
     }

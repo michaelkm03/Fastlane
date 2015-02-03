@@ -10,6 +10,9 @@
 
 @protocol VSearchResultsTableViewControllerDelegate;
 
+/**
+ Base class for displaying search results
+ */
 @interface VSearchResultsTableViewController : UITableViewController
 
 /**

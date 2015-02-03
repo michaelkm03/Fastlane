@@ -22,15 +22,18 @@
 // Users and Tags Search
 #import "VUsersAndTagsSearchViewController.h"
 
+// Transition
+#import "VSearchResultsTransition.h"
+#import "VTransitionDelegate.h"
+
 @interface VDiscoverContainerViewController () <VNavigationHeaderDelegate, UITextFieldDelegate>
 
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *searchBarHeightConstraint;
-
-@property (nonatomic, weak) IBOutlet UIView *searchBarContainer;
 @property (nonatomic, weak) IBOutlet UITextField *searchField;
 @property (nonatomic, weak) id<VDiscoverViewControllerProtocol> childViewController;
 
+@property (nonatomic, strong) UINavigationController *searchNavigationController;
 @property (nonatomic, strong) VUsersAndTagsSearchViewController *usersAndTagsSearchViewController;
+@property (nonatomic, strong) VTransitionDelegate *transitionDelegate;
 
 @end
 
@@ -57,16 +60,41 @@
 {
     [super viewDidLoad];
     
-    // For now, search is hidden.  Uncomment this when the time comes to implement it.
-    //self.searchBarHeightConstraint.constant = 0;
+    self.searchField.placeholder = NSLocalizedString(@"SearchPeopleAndHashtags", @"");
+    self.searchField.delegate = self;
+    
+    VSearchResultsTransition *viewTransition = [[VSearchResultsTransition alloc] init];
+    self.transitionDelegate = [[VTransitionDelegate alloc] initWithTransition:viewTransition];
+
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(showSuggestedPersonProfile:)
                                                  name:kVDiscoverUserProfileSelectedNotification
                                                object:nil];
     
-    self.searchField.placeholder = NSLocalizedString(@"SearchPeopleAndHashtags", @"");
-    self.searchField.delegate = self;
+    [self v_addNewNavHeaderWithTitles:nil];
+    self.navHeaderView.delegate = self;
+    NSLayoutConstraint *searchTopConstraint = [NSLayoutConstraint constraintWithItem:self.searchBarContainer
+                                                                           attribute:NSLayoutAttributeTop
+                                                                           relatedBy:NSLayoutRelationEqual
+                                                                              toItem:self.navHeaderView
+                                                                           attribute:NSLayoutAttributeBottom
+                                                                          multiplier:1.0
+                                                                            constant:0];
+    [self.view addConstraint:searchTopConstraint];
+    [self.view layoutIfNeeded];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)dealloc
@@ -83,23 +111,6 @@
 {
     return ![[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled] ? UIStatusBarStyleLightContent
     : UIStatusBarStyleDefault;
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-    [self v_addNewNavHeaderWithTitles:nil];
-    self.navHeaderView.delegate = self;
-    NSLayoutConstraint *searchTopConstraint = [NSLayoutConstraint constraintWithItem:self.searchBarContainer
-                                                                          attribute:NSLayoutAttributeTop
-                                                                          relatedBy:NSLayoutRelationEqual
-                                                                             toItem:self.navHeaderView
-                                                                          attribute:NSLayoutAttributeBottom
-                                                                         multiplier:1.0
-                                                                           constant:0];
-    [self.view addConstraint:searchTopConstraint];
-    [self.view layoutIfNeeded];
 }
 
 - (BOOL)shouldAutorotate
@@ -164,40 +175,24 @@
         [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
         return;
     }
-    
-//    [self animateSearchBarWithDuration:0.0];
 
     [self.searchField resignFirstResponder];
     
     VUsersAndTagsSearchViewController *searchViewController = [VUsersAndTagsSearchViewController usersAndTagsSearchViewController];
-    if ( self.navigationController != nil )
-    {
-        [self.navigationController pushViewController:searchViewController animated:YES];
-    }
-    else
-    {
-        [self presentViewController:searchViewController animated:YES completion:nil];
-    }
+    //searchViewController.transitioningDelegate = self.transitionDelegate;
+    [self presentViewController:searchViewController animated:YES completion:nil];
+    
+//    if ( self.navigationController != nil )
+//    {
+//        [self.navigationController pushViewController:searchViewController animated:YES];
+//    }
+//    else
+//    {
+//        [self presentViewController:searchViewController animated:YES completion:nil];
+//    }
 }
 
 #pragma mark - Transition Animations
-
-- (void)animateSearchBarWithDuration:(CGFloat)duration
-{
-    [UIView animateWithDuration:duration
-                          delay:0.0f
-         usingSpringWithDamping:0.95f
-          initialSpringVelocity:0.0f
-                        options:UIViewAnimationOptionCurveLinear
-                     animations:^
-     {
-         self.searchBarContainer.bounds = CGRectMake(0, 0,
-                                                     self.searchBarContainer.frame.size.width,
-                                                     self.searchBarContainer.frame.size.height);
-         [self.searchBarContainer layoutIfNeeded];
-     }
-                     completion:nil];
-}
 
 - (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
                                   animationControllerForOperation:(UINavigationControllerOperation)operation

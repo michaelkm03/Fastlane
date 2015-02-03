@@ -20,6 +20,7 @@
                                                 failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)getHashtagsSubscribedToWithPageType:(VPageType)pageType
+                                                            perPageLimit:(NSInteger)pageLimit
                                                             successBlock:(VSuccessBlock)success
                                                                failBlock:(VFailBlock)fail;
 
@@ -40,6 +41,7 @@
                                               failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)findHashtagsBySearchString:(NSString *)hashtag
+                                                   limitPerPage:(NSInteger)pageLimit
                                                    successBlock:(VSuccessBlock)success
                                                       failBlock:(VFailBlock)fail;
 
