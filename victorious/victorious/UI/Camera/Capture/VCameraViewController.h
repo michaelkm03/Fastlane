@@ -68,6 +68,9 @@
  */
 @property (nonatomic, readonly) CGPoint shutterCenter;
 
+/**
+ The URL of the media captured by the camera. (May be remote).
+ */
 @property (nonatomic, readonly) NSURL *capturedMediaURL;
 
 @end

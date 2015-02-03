@@ -34,9 +34,8 @@ typedef NS_OPTIONS(NSInteger, VCameraControlCaptureMode)
 };
 
 /**
- *  Converts from a picture to video control based on duration of presses.
- *
- *
+ *  Converts from a picture to video control based on duration of presses. 
+ *  Use: addTarget:action:forControlEvents: with VCameraControlEvents for the corresponding actions associated with this control.
  */
 IB_DESIGNABLE
 @interface VCameraControl : UIControl
@@ -47,15 +46,31 @@ IB_DESIGNABLE
  */
 @property (nonatomic, assign) VCameraControlCaptureMode captureMode;
 
+/**
+ *  The current state of the camera control.
+ */
 @property (nonatomic, readonly) VCameraControlState cameraControlState;
 
+/**
+ *  The recording progress corresponding to a percentage completeness. 
+ *  Animates the growing of a progress bar.
+ */
 @property (nonatomic, assign) CGFloat recordingProgress;
 
+/**
+ *  Updates a progress bar on the camera control indicating progress through a maximum recording duration.
+ */
 - (void)setRecordingProgress:(CGFloat)recordingProgress
                     animated:(BOOL)animated;
 
+/**
+ *  Clears any recording progress or leftover state from a previous session.
+ */
 - (void)restoreCameraControlToDefault;
 
+/**
+ *  Applies a scale transform indicating the the shutter of a camera.
+ */
 - (void)showCameraFlashAnimation;
 
 @end
