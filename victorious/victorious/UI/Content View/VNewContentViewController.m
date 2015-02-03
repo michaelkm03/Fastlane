@@ -1494,29 +1494,35 @@ referenceSizeForHeaderInSection:(NSInteger)section
     [self.navigationController pushViewController:contentViewController animated:YES];
 }
 
-- (void)actionCell:(VEndCardActionCell *)actionCell selectedWithIndex:(NSUInteger)index
+- (void)actionCellSelected:(VEndCardActionCell *)actionCell atIndex:(NSUInteger)index
 {
-    void (^completion)() = ^void
+    if ( [actionCell.actionIdentifier isEqualToString:VEndCardActionIdentifierGIF] )
     {
-        //[endCardViewController deselectActionsAnimated:YES];
-    };
-    
-    if ( index == 0 )
-    {
-        [self.sequenceActionController showRemixOnViewController:self withSequence:self.viewModel.sequence andDependencyManager:self.dependencyManager preloadedImage:nil completion:nil];
+        [self.sequenceActionController showRemixOnViewController:self
+                                                    withSequence:self.viewModel.sequence
+                                            andDependencyManager:self.dependencyManager
+                                                  preloadedImage:nil
+                                                      completion:nil];
     }
-    else if ( index == 1 )
+    else if ( [actionCell.actionIdentifier isEqualToString:VEndCardActionIdentifierRepost] )
     {
-        actionCell.enabled = NO;
-        [self.sequenceActionController repostActionFromViewController:self node:self.viewModel.currentNode completion:^(BOOL finished)
+        BOOL canRepost = [self.sequenceActionController repostActionFromViewController:self
+                                                                                  node:self.viewModel.currentNode
+                                                                            completion:^(BOOL finished)
+                          {
+                              [actionCell showSuccess];
+                          }];
+        if ( canRepost )
         {
-            completion();
-            [actionCell showSuccess];
-        }];
+            actionCell.enabled = NO;
+        }
     }
-    else if ( index == 2 )
+    else if ( [actionCell.actionIdentifier isEqualToString:VEndCardActionIdentifierShare] )
     {
-        [self.sequenceActionController shareFromViewController:self sequence:self.viewModel.sequence node:self.viewModel.currentNode completion:completion];
+        [self.sequenceActionController shareFromViewController:self
+                                                      sequence:self.viewModel.sequence
+                                                          node:self.viewModel.currentNode
+                                                    completion:nil];
     }
 }
 

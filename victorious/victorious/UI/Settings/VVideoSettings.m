@@ -58,8 +58,6 @@ static NSString * const kVideoAutoplaySettingKey = @"com.getvictorious.settings.
         case VAutoplaySettingOnlyOnWifi:
         {
             VReachability *reachability = [VReachability reachabilityForInternetConnection];
-            [reachability startNotifier];
-            
             VNetworkStatus status = [reachability currentReachabilityStatus];
             return status == VNetworkStatusReachableViaWiFi;
         }

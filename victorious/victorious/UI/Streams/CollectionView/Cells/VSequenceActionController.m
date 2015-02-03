@@ -134,12 +134,13 @@ static const char kAssociatedWorkspaceFlowKey;
     __weak typeof(self) welf = self;
     self.workspaceFlowController.completion = ^void(BOOL finished)
     {
+        __strong typeof(self) strongSelf = welf;
         [weakViewController dismissViewControllerAnimated:YES
                                                completion:^{
                                                    if (completion)
                                                    {
                                                        completion(finished);
-                                                       welf.workspaceFlowController = nil;
+                                                       strongSelf.workspaceFlowController = nil;
                                                    }
                                                }];
     };

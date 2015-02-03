@@ -20,7 +20,7 @@
 
 - (void)nextSelectedFromEndCard:(VEndCardViewController *)endCardViewController;
 
-- (void)actionCell:(VEndCardActionCell *)actionCell selectedWithIndex:(NSUInteger)index;
+- (void)actionCellSelected:(VEndCardActionCell *)actionCell atIndex:(NSUInteger)index;
 
 @end
 

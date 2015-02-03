@@ -8,6 +8,11 @@
 
 #import "VEndCardModel.h"
 
+NSString * const VEndCardActionIdentifierRepost     = @"com.getvictorious.actionCellRepost";
+NSString * const VEndCardActionIdentifierGIF        = @"com.getvictorious.actionCellGIF";
+NSString * const VEndCardActionIdentifierShare      = @"com.getvictorious.actionShareRepost";
+NSString * const VEndCardActionIdentifierMeme       = @"com.getvictorious.actionCellMeme";
+
 @implementation VEndCardModel
 
 @end

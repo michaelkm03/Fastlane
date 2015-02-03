@@ -146,9 +146,9 @@
     [self.endCardDelegate nextSelectedFromEndCard:endCardViewController];
 }
 
-- (void)actionCell:(VEndCardActionCell *)actionCell selectedWithIndex:(NSUInteger)index
+- (void)actionCellSelected:(VEndCardActionCell *)actionCell atIndex:(NSUInteger)index
 {
-    [self.endCardDelegate actionCell:actionCell selectedWithIndex:index];
+    [self.endCardDelegate actionCellSelected:actionCell atIndex:index];
 }
 
 @end

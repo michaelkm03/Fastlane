@@ -217,14 +217,17 @@
     VEndCardModel *endCardModel = [[VEndCardModel alloc] init];
     NSArray *actions = @[
                          @{
+                             @"identifier" : VEndCardActionIdentifierGIF,
                              @"name" : @"GIF",
                              @"image_name" : @"action_gif",
                              @"success_image_name" : @"action_success" },
                          @{
+                             @"identifier" : VEndCardActionIdentifierRepost,
                              @"name" : @"Repost",
                              @"image_name" : @"action_repost",
                              @"success_image_name" : @"action_success" },
                          @{
+                             @"identifier" : VEndCardActionIdentifierShare,
                              @"name" : @"Share",
                              @"image_name" : @"action_share",
                              @"success_image_name" : @"action_success" },

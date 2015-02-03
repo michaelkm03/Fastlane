@@ -232,6 +232,7 @@ static NSString * const kStoryboardName = @"EndCard";
     [cell setImage:[UIImage imageNamed:action[ @"image_name" ]]];
     [cell setTitle:action[ @"name" ]];
     [cell setSuccessImage:action[ @"success_image_name" ]];
+    [cell setActionIdentifier:action[ @"identifier" ]];
     return cell;
 }
 
@@ -251,7 +252,7 @@ static NSString * const kStoryboardName = @"EndCard";
     VEndCardActionCell *actionCell = (VEndCardActionCell *)[collectionView cellForItemAtIndexPath:indexPath];
     if ( actionCell.enabled )
     {
-        [self.delegate actionCell:actionCell selectedWithIndex:indexPath.row];
+        [self.delegate actionCellSelected:actionCell atIndex:indexPath.row];
     }
 }
 

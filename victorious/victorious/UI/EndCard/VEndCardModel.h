@@ -10,6 +10,11 @@
 
 @class VDependencyManager;
 
+extern NSString * const VEndCardActionIdentifierRepost;
+extern NSString * const VEndCardActionIdentifierGIF;
+extern NSString * const VEndCardActionIdentifierShare;
+extern NSString * const VEndCardActionIdentifierMeme;
+
 @interface VEndCardModel : NSObject
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;

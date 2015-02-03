@@ -12,6 +12,8 @@
 
 @property (nonatomic, assign) BOOL enabled;
 
+@property (nonatomic, strong) NSString *actionIdentifier;
+
 + (NSString *)cellIdentifier;
 
 + (CGSize)minimumSize;
@@ -22,9 +24,9 @@
 
 - (void)setSuccessImage:(NSString *)successImage;
 
-- (void)showSuccess;
-
 - (void)setTitleAlpha:(CGFloat)alpha;
+
+- (void)showSuccess;
 
 - (void)transitionInWithDuration:(NSTimeInterval)duration delay:(NSTimeInterval)delay;
 
