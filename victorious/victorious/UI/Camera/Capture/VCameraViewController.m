@@ -61,9 +61,9 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
 
 @property (nonatomic, strong) VCameraCaptureController *captureController;
 
-@property (nonatomic) BOOL disallowVideo; ///< THIS property specifies whether we SHOULD allow video (according to the wishes of the calling class)
+@property (nonatomic) BOOL allowVideo; ///< THIS property specifies whether we SHOULD allow video (according to the wishes of the calling class)
 @property (nonatomic) BOOL videoEnabled; ///< THIS property specifies whether we CAN allow video (according to device restrictions)
-@property (nonatomic) BOOL disallowPhotos;
+@property (nonatomic) BOOL allowPhotos;
 @property (nonatomic, readwrite) BOOL showedFullscreenShutterAnimation;
 @property (nonatomic, readwrite) BOOL didSelectAssetFromLibrary;
 @property (nonatomic, readwrite) BOOL didSelectFromWebSearch;
@@ -94,14 +94,14 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
 + (VCameraViewController *)cameraViewControllerLimitedToPhotos
 {
     VCameraViewController *cameraViewController = [self cameraViewController];
-    cameraViewController.disallowVideo = YES;
+    cameraViewController.allowVideo = NO;
     return cameraViewController;
 }
 
 + (VCameraViewController *)cameraViewControllerLimitedToVideo
 {
     VCameraViewController *cameraViewController = [self cameraViewController];
-    cameraViewController.disallowPhotos = YES;
+    cameraViewController.allowPhotos = NO;
     return cameraViewController;
 }
 
@@ -149,11 +149,11 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
     [self.cameraControlContainer addSubview:self.cameraControl];
     
     VCameraControlCaptureMode captureMode = 0;
-    if (!self.disallowVideo)
+    if (self.allowVideo)
     {
         captureMode = captureMode | VCameraControlCaptureModeVideo;
     }
-    if (!self.disallowPhotos)
+    if (self.allowPhotos)
     {
         captureMode = captureMode | VCameraControlCaptureModeImage;
     }
@@ -337,7 +337,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
             
             self.searchButton.enabled = YES;
             
-            [self setOpenAlbumButtonImageWithLatestPhoto:!self.disallowPhotos
+            [self setOpenAlbumButtonImageWithLatestPhoto:self.allowPhotos
                                                 animated:NO];
             
             self.flashButton.enabled = self.captureController.currentDevice.flashAvailable;
@@ -589,11 +589,11 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
     controller.delegate = self;
 
     NSMutableArray *mediaTypes  = [[NSMutableArray alloc] init];
-    if (!self.disallowPhotos)
+    if (self.allowPhotos)
     {
         [mediaTypes addObject:(NSString *)kUTTypeImage];
     }
-    if (!self.disallowVideo)
+    if (self.allowPhotos)
     {
         [mediaTypes addObject:(NSString *)kUTTypeMovie];
     }
@@ -993,7 +993,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
         if (movieURL)
         {
             self.capturedMediaURL = movieURL;
-            self.state = VcameraViewControllerStateCapturedMedia;
+            self.state = VCameraViewControllerStateCapturedMedia;
         }
         else
         {
