@@ -28,15 +28,15 @@
 #import "VNoContentView.h"
 
 // Transtion
-#import "VModalTransition.h"
+#import "VSimpleModalTransition.h"
 
 #import "UIVIew+AutoLayout.h"
 
 @interface VUsersAndTagsSearchViewController () <UITextFieldDelegate>
 
 @property (nonatomic, weak) IBOutlet UITextField *searchField;
-@property (nonatomic, weak) IBOutlet UIView *headerView;
 @property (nonatomic, weak) IBOutlet UIView *searchBarView;
+@property (nonatomic, weak) IBOutlet UIView *headerView;
 @property (nonatomic, weak) IBOutlet UISegmentedControl *segmentControl;
 
 @property (nonatomic, strong) VUserSearchResultsViewController *userSearchResultsVC;
@@ -104,16 +104,6 @@
                                                  name:UITextFieldTextDidChangeNotification
                                                object:nil];
     
-   /* [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardToShow:)
-                                                 name:UIKeyboardWillShowNotification
-                                               object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardToHide:)
-                                                 name:UIKeyboardWillHideNotification
-                                               object:nil];*/
-    
     // Setup Search Field
     self.searchField.placeholder = NSLocalizedString(@"SearchPeopleAndHashtags", @"");
     [self.searchField setTextColor:[self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey]];
@@ -134,20 +124,25 @@
     
     // Remove NSNotification Observers
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
 
 - (BOOL)prefersStatusBarHidden
 {
-    return YES;
+    return NO;
 }
 
 #pragma mark - Button Actions
 
 - (IBAction)closeButtonAction:(id)sender
 {
-    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    if ( self.presentingViewController != nil )
+    {
+        [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    }
+    else if ( self.navigationController != nil )
+    {
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }
 }
 
 #pragma mark - UISegmentControl Action
@@ -302,32 +297,6 @@
     [self.searchField resignFirstResponder];
     
     return YES;
-}
-
-#pragma mark - Keyboard Notification Handlers
-
-- (void)keyboardToShow:(NSNotification *)notification
-{
-    self.isKeyboardShowing = YES;
-    
-    self.keyboardHeight = CGRectGetHeight( [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue] );
-    
-    CGFloat newHeight = self.keyboardHeight;
-    
-    if ( self.segmentControl.selectedSegmentIndex == 0 )
-    {
-        [self.userSearchResultsVC.tableView setContentInset:UIEdgeInsetsMake(0, 0, newHeight, 0)];
-    }
-    else if ( self.segmentControl.selectedSegmentIndex == 1 )
-    {
-        [self.tagsSearchResultsVC.tableView setContentInset:UIEdgeInsetsMake(0, 0, newHeight, 0)];
-    }
-}
-
-- (void)keyboardToHide:(NSNotification *)notification
-{
-    self.isKeyboardShowing = NO;
-    self.keyboardHeight = 0;
 }
 
 #pragma mark - VSearchResultsTableViewControllerDelegate

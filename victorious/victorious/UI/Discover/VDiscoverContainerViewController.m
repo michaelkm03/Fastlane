@@ -187,6 +187,14 @@
 
     [self.searchField resignFirstResponder];
 
+    VUsersAndTagsSearchViewController *searchViewController = [VUsersAndTagsSearchViewController usersAndTagsSearchViewController];
+    searchViewController.transitioningDelegate = self.transitionDelegate;
+    self.navigationController.delegate = self.transitionDelegate;
+    [self.navigationController pushViewController:searchViewController animated:YES];
+}
+
+#pragma mark - Transition Animations
+
     VUsersAndTagsSearchViewController *searchViewController = [VUsersAndTagsSearchViewController initWithDependencyManager:self.dependencyManager];
     //searchViewController.transitioningDelegate = self.transitionDelegate;
     VSearchResultsNavigationController *navController = [[VSearchResultsNavigationController alloc] initWithRootViewController:searchViewController];
