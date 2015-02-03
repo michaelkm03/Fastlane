@@ -70,6 +70,16 @@ static const NSTimeInterval kNotRecordingTrackingTime = 0.0;
     [self addTarget:self action:@selector(dragOutside) forControlEvents:UIControlEventTouchDragExit];
 }
 
+#pragma mark - UIView
+
+- (void)layoutSubviews
+{
+    self.progressView.frame = CGRectMake(CGRectGetMinX(self.bounds),
+                                         CGRectGetMinY(self.bounds),
+                                         CGRectGetWidth(self.bounds) * self.recordingProgress,
+                                         CGRectGetHeight(self.bounds));
+}
+
 #pragma mark - Public Methods
 
 - (void)restoreCameraControlToDefault
@@ -120,10 +130,11 @@ static const NSTimeInterval kNotRecordingTrackingTime = 0.0;
                     animated:(BOOL)animated
 {
     _recordingProgress = recordingProgress;
-    self.progressView.frame = CGRectMake(CGRectGetMinX(self.bounds),
-                                         CGRectGetMinY(self.bounds),
-                                         CGRectGetWidth(self.bounds) * self.recordingProgress,
-                                         CGRectGetHeight(self.bounds));
+    [UIView animateWithDuration:0.2f
+                     animations:^
+    {
+        [self setNeedsLayout];
+    }];
 }
 
 - (void)setEnabled:(BOOL)enabled

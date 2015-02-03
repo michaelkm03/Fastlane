@@ -27,19 +27,19 @@ static const NSTimeInterval kErrorMessageDisplayDuration = 3.0;
 static const NSTimeInterval kErrorMessageDisplayDurationLong = 10.0; ///< For extra serious errors
 static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
 
-typedef NS_ENUM(NSInteger, VcameraViewControllerState)
+typedef NS_ENUM(NSInteger, VCameraViewControllerState)
 {
-    VcameraViewControllerStateDefault,
-    VcameraViewControllerStateInitializingHardware,
-    VcameraViewControllerStateWaitingOnhardwareImageCapture,
-    VcameraViewControllerStateRecroding,
-    VcameraViewControllerStateRenderingVideo,
-    VcameraViewControllerStateCapturedMedia,
+    VCameraViewControllerStateDefault,
+    VCameraViewControllerStateInitializingHardware,
+    VCameraViewControllerStateWaitingOnhardwareImageCapture,
+    VCameraViewControllerStateRecroding,
+    VCameraViewControllerStateRenderingVideo,
+    VCameraViewControllerStateCapturedMedia,
 };
 
 @interface VCameraViewController () <UIImagePickerControllerDelegate, UINavigationControllerDelegate, VCameraVideoEncoderDelegate>
 
-@property (nonatomic, assign) VcameraViewControllerState state;
+@property (nonatomic, assign) VCameraViewControllerState state;
 @property (nonatomic, readwrite) NSURL *capturedMediaURL;
 @property (nonatomic, strong) UIImage *previewImage;
 @property (nonatomic, assign, getter=isTrashOpen) BOOL trashOpen;
@@ -130,7 +130,7 @@ typedef NS_ENUM(NSInteger, VcameraViewControllerState)
     self.videoEnabled = YES;
     self.videoQuality = [[VSettingManager sharedManager] captureVideoQuality];
     self.initialCaptureMode = self.videoQuality;
-    self.state = VcameraViewControllerStateDefault;
+    self.state = VCameraViewControllerStateDefault;
 }
 
 - (void)dealloc
@@ -203,7 +203,7 @@ typedef NS_ENUM(NSInteger, VcameraViewControllerState)
         [self restoreLivePreview];
     }
 
-    self.state = VcameraViewControllerStateInitializingHardware;
+    self.state = VCameraViewControllerStateInitializingHardware;
     self.captureController.videoEncoder = nil;
     
     [MBProgressHUD showHUDAddedTo:self.previewView animated:NO];
@@ -232,7 +232,7 @@ typedef NS_ENUM(NSInteger, VcameraViewControllerState)
                             }
                             else
                             {
-                                self.state = VcameraViewControllerStateDefault;
+                                self.state = VCameraViewControllerStateDefault;
                                 if (!self.videoEnabled && ![self.captureController.captureSession.sessionPreset isEqualToString:AVCaptureSessionPresetPhoto])
                                 {
                                     [self notifyUserOfFailedMicPermission];
@@ -319,7 +319,7 @@ typedef NS_ENUM(NSInteger, VcameraViewControllerState)
 
 #pragma mark - Property Accessors
 
-- (void)setState:(VcameraViewControllerState)state
+- (void)setState:(VCameraViewControllerState)state
 {
     if (_state == state)
     {
@@ -328,7 +328,7 @@ typedef NS_ENUM(NSInteger, VcameraViewControllerState)
     
     switch (state)
     {
-        case VcameraViewControllerStateDefault:
+        case VCameraViewControllerStateDefault:
         {
             self.didSelectAssetFromLibrary = NO;
             self.didSelectAssetFromLibrary = NO;
@@ -359,14 +359,14 @@ typedef NS_ENUM(NSInteger, VcameraViewControllerState)
             self.switchCameraButton.hidden = self.captureController.devices.count <= 1;
         }
             break;
-        case VcameraViewControllerStateInitializingHardware:
+        case VCameraViewControllerStateInitializingHardware:
         {
             self.flashButton.enabled = NO;
             self.cameraControl.enabled = NO;
             self.switchCameraButton.enabled = NO;
         }
             break;
-        case VcameraViewControllerStateWaitingOnhardwareImageCapture:
+        case VCameraViewControllerStateWaitingOnhardwareImageCapture:
         {
             self.flashButton.enabled = NO;
             self.switchCameraButton.enabled = NO;
@@ -379,7 +379,7 @@ typedef NS_ENUM(NSInteger, VcameraViewControllerState)
             [self replacePreviewViewWithSnapshot];
         }
             break;
-        case VcameraViewControllerStateRecroding:
+        case VCameraViewControllerStateRecroding:
         {
             self.deleteButton.hidden = NO;
             self.deleteButton.enabled = YES;
@@ -394,7 +394,7 @@ typedef NS_ENUM(NSInteger, VcameraViewControllerState)
             self.switchCameraButton.enabled = NO;
         }
             break;
-        case VcameraViewControllerStateRenderingVideo:
+        case VCameraViewControllerStateRenderingVideo:
         {
             self.cameraControl.enabled = NO;
             self.searchButton.enabled = NO;
@@ -403,7 +403,7 @@ typedef NS_ENUM(NSInteger, VcameraViewControllerState)
             self.closeButton.enabled = NO;
         }
             break;
-        case VcameraViewControllerStateCapturedMedia:
+        case VCameraViewControllerStateCapturedMedia:
         {
             NSAssert(self.capturedMediaURL, @"We need a captured media url here!!!!");
             if (self.completionBlock != nil)
@@ -496,7 +496,7 @@ typedef NS_ENUM(NSInteger, VcameraViewControllerState)
             welf.previewImage = previewImage;
             welf.showedFullscreenShutterAnimation = NO;
             welf.didSelectFromWebSearch = YES;
-            welf.state = VcameraViewControllerStateCapturedMedia;    
+            welf.state = VCameraViewControllerStateCapturedMedia;
         }
         
         [welf dismissViewControllerAnimated:YES
@@ -524,7 +524,7 @@ typedef NS_ENUM(NSInteger, VcameraViewControllerState)
         [self replacePreviewViewWithSnapshot];
         [MBProgressHUD showHUDAddedTo:self.previewSnapshot animated:YES];
         __typeof(self) __weak weakSelf = self;
-        self.state = VcameraViewControllerStateInitializingHardware;
+        self.state = VCameraViewControllerStateInitializingHardware;
         [self.captureController setCurrentDevice:newDevice withCompletion:^(NSError *error)
          {
              __typeof(weakSelf) strongSelf = weakSelf;
@@ -544,7 +544,7 @@ typedef NS_ENUM(NSInteger, VcameraViewControllerState)
                                                      completion:^(BOOL finished)
                                      {
                                          [strongSelf restoreLivePreview];
-                                         strongSelf.state = VcameraViewControllerStateDefault;
+                                         strongSelf.state = VCameraViewControllerStateDefault;
                                      }];
                                     [strongSelf updateOrientation];
                                 });
@@ -555,7 +555,7 @@ typedef NS_ENUM(NSInteger, VcameraViewControllerState)
 
 - (IBAction)nextAction:(id)sender
 {
-    self.state = VcameraViewControllerStateRenderingVideo;
+    self.state = VCameraViewControllerStateRenderingVideo;
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraDidCaptureVideo];
     [self replacePreviewViewWithSnapshot];
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
@@ -604,7 +604,7 @@ typedef NS_ENUM(NSInteger, VcameraViewControllerState)
 
 - (void)capturePhoto:(id)sender
 {
-    self.state = VcameraViewControllerStateWaitingOnhardwareImageCapture;
+    self.state = VCameraViewControllerStateWaitingOnhardwareImageCapture;
     [self.captureController captureStillWithCompletion:^(UIImage *image, NSError *error)
     {
         [self.cameraControl showCameraFlashAnimation];
@@ -612,7 +612,7 @@ typedef NS_ENUM(NSInteger, VcameraViewControllerState)
         {
             if (error)
             {
-                self.state = VcameraViewControllerStateDefault;
+                self.state = VCameraViewControllerStateDefault;
                 
                 [MBProgressHUD hideAllHUDsForView:self.previewSnapshot animated:YES];
                 MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.previewView animated:YES];
@@ -685,7 +685,7 @@ typedef NS_ENUM(NSInteger, VcameraViewControllerState)
     {
         self.captureController.videoEncoder.recording = YES;
     }
-    self.state = VcameraViewControllerStateRecroding;
+    self.state = VCameraViewControllerStateRecroding;
 
 }
 
@@ -850,13 +850,13 @@ typedef NS_ENUM(NSInteger, VcameraViewControllerState)
 {
     [self updateProgressForSecond:0];
     
-    self.state = VcameraViewControllerStateDefault;
+    self.state = VCameraViewControllerStateDefault;
     self.didSelectAssetFromLibrary = NO;
 
     void (^animations)() = ^(void)
     {
         [self.view layoutIfNeeded];
-        self.state = VcameraViewControllerStateDefault;
+        self.state = VCameraViewControllerStateDefault;
     };
     void (^completion)(BOOL) = ^(BOOL finished)
     {
@@ -872,7 +872,7 @@ typedef NS_ENUM(NSInteger, VcameraViewControllerState)
         animations();
         completion(YES);
     }
-    self.state = VcameraViewControllerStateDefault;
+    self.state = VCameraViewControllerStateDefault;
 }
 
 - (NSURL *)temporaryFileURLWithExtension:(NSString *)extension
@@ -965,7 +965,7 @@ typedef NS_ENUM(NSInteger, VcameraViewControllerState)
         else
         {
             self.capturedMediaURL = videoEncoder.fileURL;
-            self.state = VcameraViewControllerStateCapturedMedia;
+            self.state = VCameraViewControllerStateCapturedMedia;
         }
     });
 }
@@ -1022,7 +1022,7 @@ typedef NS_ENUM(NSInteger, VcameraViewControllerState)
     NSData *jpegData = UIImageJPEGRepresentation(self.didSelectAssetFromLibrary ? image : [self squareImageByCroppingImage:image], VConstantJPEGCompressionQuality);
     [jpegData writeToURL:fileURL atomically:YES]; // TODO: the preview view should take a UIImage
     self.capturedMediaURL = fileURL;
-    self.state = VcameraViewControllerStateCapturedMedia;
+    self.state = VCameraViewControllerStateCapturedMedia;
 }
 
 @end
