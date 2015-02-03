@@ -72,11 +72,12 @@ static NSString * const kVUserResultIdentifier = @"followerCell";
 {
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
-    
     self.tableView.backgroundColor = [UIColor colorWithWhite:0.97 alpha:1.0];
     
-    [self.tableView registerNib:[UINib nibWithNibName:kVUserResultIdentifier bundle:nil] forCellReuseIdentifier:kVUserResultIdentifier];
+    [self.tableView registerNib:[UINib nibWithNibName:kVUserResultIdentifier bundle:nil]
+         forCellReuseIdentifier:kVUserResultIdentifier];
     [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
+    [self.tableView setKeyboardDismissMode:UIScrollViewKeyboardDismissModeInteractive];
 }
 
 #pragma mark - TableView Datasource
@@ -122,33 +123,37 @@ static NSString * const kVUserResultIdentifier = @"followerCell";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    VUser *profile = self.searchResults[indexPath.row];
-    VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-    BOOL haveRelationship = [mainUser.following containsObject:profile];
-    
     VFollowerTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"followerCell" forIndexPath:indexPath];
-    cell.profile = profile;
-    cell.haveRelationship = haveRelationship;
-    
-    // Tell the button what to do when it's tapped
-    cell.followButtonAction = ^(void)
+
+    if (!self.searchResults.count > 0)
     {
-        // Check if logged in before attempting to follow / unfollow
-        if (![VObjectManager sharedManager].authorized)
-        {
-            [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
-            return;
-        }
+        VUser *profile = self.searchResults[indexPath.row];
+        VUser *mainUser = [[VObjectManager sharedManager] mainUser];
+        BOOL haveRelationship = [mainUser.following containsObject:profile];
         
-        if ([mainUser.following containsObject:profile])
+        cell.profile = profile;
+        cell.haveRelationship = haveRelationship;
+        
+        // Tell the button what to do when it's tapped
+        cell.followButtonAction = ^(void)
         {
-            [self unfollowFriendAction:profile];
-        }
-        else
-        {
-            [self followFriendAction:profile];
-        }
-    };
+            // Check if logged in before attempting to follow / unfollow
+            if (![VObjectManager sharedManager].authorized)
+            {
+                [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
+                return;
+            }
+            
+            if ([mainUser.following containsObject:profile])
+            {
+                [self unfollowFriendAction:profile];
+            }
+            else
+            {
+                [self followFriendAction:profile];
+            }
+        };
+    }
     return cell;
 }
 
