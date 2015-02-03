@@ -127,6 +127,8 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
 
 - (void)commonInit
 {
+    self.allowPhotos = YES;
+    self.allowVideo = YES;
     self.videoEnabled = YES;
     self.videoQuality = [[VSettingManager sharedManager] captureVideoQuality];
     self.initialCaptureMode = self.videoQuality;

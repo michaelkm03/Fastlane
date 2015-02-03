@@ -31,6 +31,8 @@ extern NSString * const VCanvasViewAssetSizeBecameAvailableNotification;
 - (void)setSourceURL:(NSURL *)URL
   withPreloadedImage:(UIImage *)preloadedImage;
 
+@property (nonatomic, readonly) UIImage *asset; ///< The asset loaded in the imageView via setSourceURL: .
+
 @property (nonatomic, readonly) CGSize assetSize; ///< The size of the source asset.
 
 @property (nonatomic, strong) VPhotoFilter *filter; ///< The Filter to use on the image.

@@ -228,6 +228,11 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
     return self.imageView.image.size;
 }
 
+- (UIImage *)asset
+{
+    return self.imageView.image;
+}
+
 #pragma mark - Private Mehtods
 
 - (CIImage *)scaledImageForCurrentFrameAndMaxZoomLevel
