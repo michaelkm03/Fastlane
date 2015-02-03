@@ -29,7 +29,8 @@
 {
     _profile = profile;
 
-    self.followImage   = [UIImage imageNamed:@"buttonFollow"];
+    //UIImage *sImg = [[UIImage imageNamed:@"buttonFollow"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    self.followImage   = [[UIImage imageNamed:@"buttonFollow"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     self.unfollowImage = [UIImage imageNamed:@"buttonFollowed"];
     
     [self.profileImage setImageWithURL:[NSURL URLWithString: profile.pictureUrl] placeholderImage:[UIImage imageNamed:@"profileGenericUser"]];
@@ -52,6 +53,16 @@
     {
         self.followButton.hidden = YES;
     }
+    
+    if ([self respondsToSelector:@selector(setLayoutMargins:)])
+    {
+        [self setLayoutMargins:UIEdgeInsetsZero];
+    }
+    
+    if ([self respondsToSelector:@selector(setSeparatorInset:)])
+    {
+        [self setSeparatorInset:UIEdgeInsetsZero];
+    }
 }
 
 - (void)setHaveRelationship:(BOOL)haveRelationship
@@ -64,6 +75,7 @@
     }
     else
     {
+        self.followButton.imageView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
         self.followButton.imageView.image = self.followImage;
     }
 }
