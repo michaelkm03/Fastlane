@@ -18,6 +18,7 @@
 @property (nonatomic, strong, readwrite) VCVideoPlayerViewController *videoPlayerViewController;
 @property (nonatomic, strong, readwrite) VAdVideoPlayerViewController *adPlayerViewController;
 @property (nonatomic, assign, readwrite) BOOL isPlayingAd;
+@property (nonatomic, assign, readwrite) BOOL videoDidEnd;
 @property (nonatomic, strong) NSURL *contentURL;
 
 @end
@@ -141,9 +142,18 @@
 
 #pragma mark - Public Methods
 
+- (void)replay
+{
+    self.videoDidEnd = NO;
+    [self play];
+}
+
 - (void)play
 {
-    self.videoPlayerViewController.player.rate = self.speed;
+    if ( !self.videoDidEnd )
+    {
+        self.videoPlayerViewController.player.rate = self.speed;
+    }
 }
 
 - (void)pause
@@ -169,12 +179,9 @@
 
 #pragma mark - VCVideoPlayerDelegate
 
-- (void)videoPlayer:(VCVideoPlayerViewController *)videoPlayer
-      didPlayToTime:(CMTime)time
+- (void)videoPlayer:(VCVideoPlayerViewController *)videoPlayer  didPlayToTime:(CMTime)time
 {
-    [self.delegate videoCell:self
-               didPlayToTime:time
-                   totalTime:[videoPlayer playerItemDuration]];
+    [self.delegate videoCell:self didPlayToTime:time totalTime:[videoPlayer playerItemDuration]];
 }
 
 - (void)videoPlayerReadyToPlay:(VCVideoPlayerViewController *)videoPlayer
@@ -185,8 +192,8 @@
 - (void)videoPlayerDidReachEndOfVideo:(VCVideoPlayerViewController *)videoPlayer
 {
     // This should only be forwarded from the content video player
-    [self.delegate videoCellPlayedToEnd:self
-                          withTotalTime:[videoPlayer playerItemDuration]];
+    [self.delegate videoCellPlayedToEnd:self withTotalTime:[videoPlayer playerItemDuration]];
+    self.videoDidEnd = YES;
     
     if ( self.viewModel.endCardViewModel != nil )
     {

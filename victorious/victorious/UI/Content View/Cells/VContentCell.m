@@ -72,6 +72,17 @@
     self.repeatCount = 1;
 }
 
+- (void)prepareForReuse
+{
+    [super prepareForReuse];
+    
+    if ( self.endCardViewController != nil )
+    {
+        [self.endCardViewController.view removeFromSuperview];
+        self.endCardViewController = nil;
+    }
+}
+
 #pragma mark - Rotation
 
 - (void)handleRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
@@ -111,8 +122,7 @@
 {
     if ( self.endCardViewController != nil )
     {
-        [self.endCardViewController.view removeFromSuperview];
-        self.endCardViewController = nil;
+        return;
     }
     
     self.endCardViewController = [VEndCardViewController newWithDependencyManager:nil
