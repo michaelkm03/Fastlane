@@ -179,17 +179,8 @@
     [self.searchField resignFirstResponder];
     
     VUsersAndTagsSearchViewController *searchViewController = [VUsersAndTagsSearchViewController usersAndTagsSearchViewController];
-    //searchViewController.transitioningDelegate = self.transitionDelegate;
+    searchViewController.transitioningDelegate = self.transitionDelegate;
     [self presentViewController:searchViewController animated:YES completion:nil];
-    
-//    if ( self.navigationController != nil )
-//    {
-//        [self.navigationController pushViewController:searchViewController animated:YES];
-//    }
-//    else
-//    {
-//        [self presentViewController:searchViewController animated:YES completion:nil];
-//    }
 }
 
 #pragma mark - Transition Animations

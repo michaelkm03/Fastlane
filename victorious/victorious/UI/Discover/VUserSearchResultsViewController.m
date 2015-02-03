@@ -28,7 +28,6 @@
 #import "VNoContentView.h"
 
 static NSString * const kVUserResultIdentifier = @"followerCell";
-static CGFloat kVTableViewBottomInset = 120.0f;
 
 @interface VUserSearchResultsViewController ()
 
@@ -69,7 +68,6 @@ static CGFloat kVTableViewBottomInset = 120.0f;
     
     [self.tableView registerNib:[UINib nibWithNibName:kVUserResultIdentifier bundle:nil] forCellReuseIdentifier:kVUserResultIdentifier];
     [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
-    [self.tableView setContentInset:UIEdgeInsetsMake(0, 0, kVTableViewBottomInset, 0)];
 }
 
 #pragma mark - TableView Datasource

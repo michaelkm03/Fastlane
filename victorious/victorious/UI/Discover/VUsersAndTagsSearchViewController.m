@@ -33,17 +33,14 @@
 // Transtion
 #import "VModalTransition.h"
 
-static CGFloat kVTableViewBottomInset = 120.0f;
+#import "UIVIew+AutoLayout.h"
 
 @interface VUsersAndTagsSearchViewController () <UITextFieldDelegate>
 
 @property (nonatomic, weak) IBOutlet UITextField *searchField;
-@property (nonatomic, weak) IBOutlet UIView *containerView;
 @property (nonatomic, weak) IBOutlet UIView *headerView;
 @property (nonatomic, weak) IBOutlet UIView *searchBarView;
 @property (nonatomic, weak) IBOutlet UISegmentedControl *segmentControl;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *headerViewHeightConstraint;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *searchBarViewHeightConstraint;
 
 @property (nonatomic, strong) VUserSearchResultsViewController *userSearchResultsVC;
 @property (nonatomic, strong) VTagsSearchResultsViewController *tagsSearchResultsVC;
@@ -75,21 +72,16 @@ static CGFloat kVTableViewBottomInset = 120.0f;
     self.userSearchResultsVC = [[VUserSearchResultsViewController alloc] init];
     self.tagsSearchResultsVC = [[VTagsSearchResultsViewController alloc] init];
     
-    [self.userSearchResultsVC.tableView setContentInset:UIEdgeInsetsMake(0, 0, kVTableViewBottomInset, 0)];
-    [self.tagsSearchResultsVC.tableView setContentInset:UIEdgeInsetsMake(0, 0, kVTableViewBottomInset, 0)];
-    
     // Add view controllers to container view
     [self addChildViewController:self.tagsSearchResultsVC];
-    [self.containerView addSubview:self.tagsSearchResultsVC.view];
+    [self.searchResultsContainerView addSubview:self.tagsSearchResultsVC.view];
     [self.tagsSearchResultsVC didMoveToParentViewController:self];
+    [self.view v_addFitToParentConstraintsToSubview:self.tagsSearchResultsVC.view];
     
     [self addChildViewController:self.userSearchResultsVC];
-    [self.containerView addSubview:self.userSearchResultsVC.view];
+    [self.searchResultsContainerView addSubview:self.userSearchResultsVC.view];
     [self.userSearchResultsVC didMoveToParentViewController:self];
-    
-    // Constraints
-    self.searchBarViewHeightConstraint.constant = 55.0f;
-    self.headerViewHeightConstraint.constant = 64.0f;
+    [self.view v_addFitToParentConstraintsToSubview:self.userSearchResultsVC.view];
 
     // Format the segmented control
     self.segmentControl.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
@@ -106,7 +98,7 @@ static CGFloat kVTableViewBottomInset = 120.0f;
                                                  name:UITextFieldTextDidChangeNotification
                                                object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
+   /* [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardToShow:)
                                                  name:UIKeyboardWillShowNotification
                                                object:nil];
@@ -114,7 +106,7 @@ static CGFloat kVTableViewBottomInset = 120.0f;
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardToHide:)
                                                  name:UIKeyboardWillHideNotification
-                                               object:nil];
+                                               object:nil];*/
     
     // Setup Search Field
     self.searchField.placeholder = NSLocalizedString(@"SearchPeopleAndHashtags", @"");
@@ -149,14 +141,14 @@ static CGFloat kVTableViewBottomInset = 120.0f;
 
 - (IBAction)closeButtonAction:(id)sender
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - UISegmentControl Action
 
 - (IBAction)segmentControlAction:(id)sender
 {
-    CGFloat bottomInsetHeight = kVTableViewBottomInset + self.keyboardHeight;
+    CGFloat bottomInsetHeight = self.keyboardHeight;
     
     // Perform search
     if ( self.segmentControl.selectedSegmentIndex == 0 )
@@ -314,7 +306,7 @@ static CGFloat kVTableViewBottomInset = 120.0f;
     
     self.keyboardHeight = CGRectGetHeight( [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue] );
     
-    CGFloat newHeight = kVTableViewBottomInset + self.keyboardHeight;
+    CGFloat newHeight = self.keyboardHeight;
     
     if ( self.segmentControl.selectedSegmentIndex == 0 )
     {
@@ -330,15 +322,6 @@ static CGFloat kVTableViewBottomInset = 120.0f;
 {
     self.isKeyboardShowing = NO;
     self.keyboardHeight = 0;
-    
-    if ( self.segmentControl.selectedSegmentIndex == 0 )
-    {
-        [self.userSearchResultsVC.tableView setContentInset:UIEdgeInsetsMake(0, 0, kVTableViewBottomInset, 0)];
-    }
-    else if ( self.segmentControl.selectedSegmentIndex == 1 )
-    {
-        [self.tagsSearchResultsVC.tableView setContentInset:UIEdgeInsetsMake(0, 0, kVTableViewBottomInset, 0)];
-    }
 }
 
 #pragma mark - VSearchResultsTableViewControllerDelegate
@@ -348,7 +331,7 @@ static CGFloat kVTableViewBottomInset = 120.0f;
     NSString *messageTitle, *messageText;
     UIImage *messageIcon;
     
-    VNoContentView *noResultsFoundView = [VNoContentView noContentViewWithFrame:self.containerView.frame];
+    VNoContentView *noResultsFoundView = [VNoContentView noContentViewWithFrame:self.searchResultsContainerView.frame];
     if ( self.segmentControl.selectedSegmentIndex == 0 )
     {
         messageTitle = NSLocalizedString(@"NoPeopleFoundInSearchTitle", @"");

@@ -15,4 +15,10 @@
  */
 + (instancetype)usersAndTagsSearchViewController;
 
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *headerTopConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *searchBarTopConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *searchBarViewHeightConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *searchResultsTableBottomCosntraint;
+@property (nonatomic, weak) IBOutlet UIView *searchResultsContainerView;
+
 @end
