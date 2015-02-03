@@ -15,5 +15,4 @@
  */
 + (instancetype)usersAndTagsSearchViewController;
 
-
 @end

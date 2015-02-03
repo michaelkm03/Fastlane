@@ -58,11 +58,6 @@
     {
         [self setLayoutMargins:UIEdgeInsetsZero];
     }
-    
-    if ([self respondsToSelector:@selector(setSeparatorInset:)])
-    {
-        [self setSeparatorInset:UIEdgeInsetsZero];
-    }
 }
 
 - (void)setHaveRelationship:(BOOL)haveRelationship

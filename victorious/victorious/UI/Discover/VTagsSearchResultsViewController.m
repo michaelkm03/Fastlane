@@ -224,7 +224,7 @@ static CGFloat kVTableViewBottomInset = 120.f;
     for (NSIndexPath *idxPath in indexPaths)
     {
         VTrendingTagCell *cell = (VTrendingTagCell *)[self.tableView cellForRowAtIndexPath:idxPath];
-        if (cell.hashtag == hashtag)
+        if ([cell.hashtag isEqual:hashtag])
         {
             cell.shouldCellRespond = respond;
             if (!failed)
