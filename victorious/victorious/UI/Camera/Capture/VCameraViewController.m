@@ -350,6 +350,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
             
             self.flashButton.enabled = self.captureController.currentDevice.flashAvailable;
             self.flashButton.hidden = NO;
+            [self configureFlashButton];
             
             self.nextButton.hidden = YES;
             self.nextButton.hidden = YES;
