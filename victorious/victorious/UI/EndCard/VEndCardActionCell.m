@@ -9,13 +9,15 @@
 #import "VEndCardActionCell.h"
 
 static const CGFloat kScaleInactive     = 0.8f;
-static const CGFloat kScaleMax          = 1.2f;
 static const CGFloat kScaleActive       = 1.0f;
+static const CGFloat kScaleScaledUp     = 1.2f;
+static const CGFloat kDisabledAlpha     = 0.5f;
 
 @interface VEndCardActionCell ()
 
 @property (weak, nonatomic) IBOutlet UILabel *actionLabel;
-@property (weak, nonatomic) IBOutlet UIImageView *actionImageView;
+@property (weak, nonatomic) IBOutlet UIImageView *iconImageView;
+@property (weak, nonatomic) IBOutlet UIView *containerView;
 
 @end
 
@@ -31,11 +33,18 @@ static const CGFloat kScaleActive       = 1.0f;
     return CGSizeMake( 68.0f, 95.0f );
 }
 
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    
+    self.enabled = YES;
+}
+
 - (void)prepareForReuse
 {
     [super prepareForReuse];
     
-    [self resetSelectionStateAnimated:NO];
+    self.enabled = YES;
 }
 
 - (void)setTitle:(NSString *)title
@@ -45,7 +54,7 @@ static const CGFloat kScaleActive       = 1.0f;
 
 - (void)setImage:(UIImage *)image
 {
-    self.actionImageView.image = image;
+    self.iconImageView.image = image;
 }
 
 - (void)setTitleAlpha:(CGFloat)alpha
@@ -55,33 +64,32 @@ static const CGFloat kScaleActive       = 1.0f;
 
 - (void)setSelected:(BOOL)selected
 {
-    BOOL wasSelected = self.selected;
+    if ( self.enabled )
+    {
+        return;
+    }
     
     [super setSelected:selected];
-    
-    if ( !wasSelected && selected )
-    {
-        [self playSelectionAnimation];
-    }
 }
 
-- (void)playSelectionAnimation
+- (void)showSuccess
 {
-    [UIView animateWithDuration:0.25f
+    self.iconImageView.image = [UIImage imageNamed:@"action_success"];
+    [UIView animateWithDuration:0.15f
                           delay:0.0f
-         usingSpringWithDamping:1.0
-          initialSpringVelocity:0.8
+         usingSpringWithDamping:1.0f
+          initialSpringVelocity:0.8f
                         options:kNilOptions animations:^
      {
-         self.alpha = 1.0f;
-         self.transform = CGAffineTransformMakeScale( kScaleMax, kScaleMax );
+         CGFloat scale = kScaleScaledUp;
+         self.transform = CGAffineTransformMakeScale( scale, scale );
      }
                      completion:^(BOOL finished)
      {
          [UIView animateWithDuration:0.5f
                                delay:0.0f
-              usingSpringWithDamping:0.8
-               initialSpringVelocity:0.0
+              usingSpringWithDamping:0.8f
+               initialSpringVelocity:0.9f
                              options:kNilOptions animations:^
           {
               self.transform = CGAffineTransformMakeScale( kScaleActive, kScaleActive );
@@ -90,42 +98,11 @@ static const CGFloat kScaleActive       = 1.0f;
      }];
 }
 
-- (void)playDisableAnimation
+- (void)setEnabled:(BOOL)enabled
 {
-    [UIView animateWithDuration:0.5f
-                          delay:0.0f
-         usingSpringWithDamping:0.5
-          initialSpringVelocity:0.5
-                        options:kNilOptions animations:^
-     {
-         self.alpha = 0.25f;
-         self.transform = CGAffineTransformMakeScale( kScaleInactive, kScaleInactive );
-     }
-                     completion:nil];
-}
-
-- (void)resetSelectionStateAnimated:(BOOL)animated
-{
-    void (^animations)() = ^void
-    {
-        self.alpha = 1.0f;
-        self.transform = CGAffineTransformMakeScale( kScaleActive, kScaleActive );
-    };
+    _enabled = enabled;
     
-    if ( !animated )
-    {
-        animations();
-    }
-    else
-    {
-        [UIView animateWithDuration:0.5f
-                              delay:0.0f
-             usingSpringWithDamping:0.5
-              initialSpringVelocity:0.5
-                            options:kNilOptions
-                         animations:animations
-                         completion:nil];
-    }
+    self.containerView.alpha = enabled ? 1.0f : kDisabledAlpha;
 }
 
 - (void)transitionInWithDuration:(NSTimeInterval)duration delay:(NSTimeInterval)delay
@@ -140,7 +117,7 @@ static const CGFloat kScaleActive       = 1.0f;
           initialSpringVelocity:0.8
                         options:kNilOptions animations:^
      {
-         CGFloat scale = 1.2f;
+         CGFloat scale = kScaleScaledUp;
          self.alpha = 1.0f;
          self.transform = CGAffineTransformMakeScale( scale, scale );
      }

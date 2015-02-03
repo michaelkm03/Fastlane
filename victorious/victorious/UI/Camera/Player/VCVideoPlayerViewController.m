@@ -354,7 +354,9 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 
 - (void)setToolbarHidden:(BOOL)toolbarHidden
 {
-    if (toolbarHidden)
+    _toolbarHidden = toolbarHidden;
+    
+    if ( _toolbarHidden )
     {
         [self stopToolbarTimer];
         self.toolbarAnimating = YES;

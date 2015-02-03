@@ -110,32 +110,35 @@
 
 #pragma mark - End Card
 
+- (BOOL)isEndCardShowing
+{
+    return self.endCardViewController != nil;
+}
+
 - (void)resetEndCardActions:(BOOL)animated
 {
     if ( self.endCardViewController != nil )
     {
-        [self.endCardViewController deselectActionsAnimated:animated];
     }
 }
 
 - (void)showEndCardWithViewModel:(VEndCardModel *)model
 {
-    if ( self.endCardViewController != nil )
+    if ( self.endCardViewController == nil )
     {
-        return;
+        self.endCardViewController = [VEndCardViewController newWithDependencyManager:nil
+                                                                                model:model
+                                                                        minViewHeight:self.minSize.height
+                                                                        maxViewHeight:self.maxSize.height];
+        self.endCardViewController.delegate = self;
+        [self.contentView addSubview:self.endCardViewController.view];
+        self.endCardViewController.view.frame = self.contentView.bounds;
+        [self.contentView v_addFitToParentConstraintsToSubview:self.endCardViewController.view];
     }
     
-    self.endCardViewController = [VEndCardViewController newWithDependencyManager:nil
-                                                                            model:model
-                                                                    minViewHeight:self.minSize.height
-                                                                    maxViewHeight:self.maxSize.height];
-    self.endCardViewController.delegate = self;
-    [self.contentView addSubview:self.endCardViewController.view];
-    self.endCardViewController.view.frame = self.contentView.bounds;
-    [self.contentView v_addFitToParentConstraintsToSubview:self.endCardViewController.view];
-    [self.endCardViewController transitionIn];
     UIInterfaceOrientation currentOrientation = [UIApplication sharedApplication].statusBarOrientation;
     [self.endCardViewController handleRotationToInterfaceOrientation:currentOrientation];
+    [self.endCardViewController transitionIn];
 }
 
 #pragma mark - VEndCardViewControllerDelegate
@@ -150,9 +153,9 @@
     [self.endCardDelegate nextSelectedFromEndCard:endCardViewController];
 }
 
-- (void)actionSelectedFromEndCard:(VEndCardViewController *)endCardViewController atIndex:(NSUInteger)index userInfo:(NSDictionary *)userInfo
+- (void)actionCell:(VEndCardActionCell *)actionCell selectedWithIndex:(NSUInteger)index
 {
-    [self.endCardDelegate actionSelectedFromEndCard:endCardViewController atIndex:index userInfo:userInfo];
+    [self.endCardDelegate actionCell:actionCell selectedWithIndex:index];
 }
 
 @end

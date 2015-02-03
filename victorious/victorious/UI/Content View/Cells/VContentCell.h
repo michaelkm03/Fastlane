@@ -31,6 +31,8 @@
 
 @property (nonatomic, assign, readwrite) CGSize minSize;
 
+@property (nonatomic, assign, readonly) BOOL isEndCardShowing;
+
 - (void)playAnimation;
 
 - (void)showEndCardWithViewModel:(VEndCardModel *)model;

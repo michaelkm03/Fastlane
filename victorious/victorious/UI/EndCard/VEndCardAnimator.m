@@ -99,25 +99,6 @@ static CGFloat easeInQuint( CGFloat t, CGFloat b, CGFloat c, CGFloat d )
      }];
 }
 
-- (void)setCellAtIndexPath:(NSIndexPath *)indexPath selected:(BOOL)selected
-{
-    [self.collectionView.visibleCells enumerateObjectsUsingBlock:^(VEndCardActionCell *cell, NSUInteger idx, BOOL *stop)
-     {
-         if ( indexPath == nil || [self.collectionView indexPathForCell:cell].row != indexPath.row )
-         {
-             [cell playDisableAnimation];
-         }
-     }];
-}
-
-- (void)deselectAllCellsAnimated:(BOOL)animated
-{
-    [self.collectionView.visibleCells enumerateObjectsUsingBlock:^(VEndCardActionCell *cell, NSUInteger idx, BOOL *stop)
-     {
-         [cell resetSelectionStateAnimated:animated];
-     }];
-}
-
 - (void)reset
 {
     self.state = VEndCardAnimationStateDidTransitionOut;

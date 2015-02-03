@@ -54,6 +54,8 @@
  */
 - (void)play;
 
+- (void)seekToStart;
+
 - (void)replay;
 
 - (void)pause;

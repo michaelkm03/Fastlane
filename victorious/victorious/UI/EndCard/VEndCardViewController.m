@@ -7,7 +7,6 @@
 //
 
 #import "VEndCardViewController.h"
-#import "VEndCardActionCell.h"
 #import "VEndCardBannerViewController.h"
 #import "UIVIew+AutoLayout.h"
 
@@ -89,9 +88,9 @@ static NSString * const kStoryboardName = @"EndCard";
                                                    @{
                                                        @"name" : @"Share",
                                                        @"image_name" : @"action_share" },
-                                                   @{
+                                                  /* @{
                                                        @"name" : @"Meme",
-                                                       @"image_name" : @"action_meme" },
+                                                       @"image_name" : @"action_meme" },*/
                                                    ];
     
     self.actions = actionsArrayFromDependencyManager;
@@ -208,11 +207,6 @@ static NSString * const kStoryboardName = @"EndCard";
      }];
 }
 
-- (void)deselectActionsAnimated:(BOOL)animated
-{
-    [self.animator deselectAllCellsAnimated:animated];
-}
-
 #pragma mark - IBActions
 
 - (IBAction)onReplay:(id)sender
@@ -261,9 +255,12 @@ static NSString * const kStoryboardName = @"EndCard";
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self.animator setCellAtIndexPath:indexPath selected:YES];
     [self.nextVideoBannerViewController stopCountdown];
-    [self.delegate actionSelectedFromEndCard:self atIndex:indexPath.row userInfo:self.actions[ indexPath.row ]];
+    VEndCardActionCell *actionCell = (VEndCardActionCell *)[collectionView cellForItemAtIndexPath:indexPath];
+    if ( actionCell.enabled )
+    {
+        [self.delegate actionCell:actionCell selectedWithIndex:indexPath.row];
+    }
 }
 
 #pragma mark - Content size animation

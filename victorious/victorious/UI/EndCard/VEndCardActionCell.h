@@ -10,6 +10,8 @@
 
 @interface VEndCardActionCell : UICollectionViewCell
 
+@property (nonatomic, assign) BOOL enabled;
+
 + (NSString *)cellIdentifier;
 
 + (CGSize)minimumSize;
@@ -18,17 +20,9 @@
 
 - (void)setImage:(UIImage *)image;
 
+- (void)showSuccess;
+
 - (void)setTitleAlpha:(CGFloat)alpha;
-
-/**
- Aniamtes into a disabled state.
- */
-- (void)playDisableAnimation;
-
-/**
- Return to the initial starting state without animation
- */
-- (void)resetSelectionStateAnimated:(BOOL)animated;
 
 - (void)transitionInWithDuration:(NSTimeInterval)duration delay:(NSTimeInterval)delay;
 

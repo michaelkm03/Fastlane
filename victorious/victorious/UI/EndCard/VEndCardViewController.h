@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "VEndCardAnimator.h"
 #import "VEndCardModel.h"
+#import "VEndCardActionCell.h"
 
 @protocol VEndCardViewControllerDelegate <NSObject>
 @required
@@ -17,9 +18,7 @@
 
 - (void)nextSelectedFromEndCard:(VEndCardViewController *)endCardViewController;
 
-- (void)actionSelectedFromEndCard:(VEndCardViewController *)endCardViewController
-                          atIndex:(NSUInteger)index
-                         userInfo:(NSDictionary *)userInfo;
+- (void)actionCell:(VEndCardActionCell *)actionCell selectedWithIndex:(NSUInteger)index;
 
 @end
 
@@ -50,8 +49,6 @@
  Animates all elements out of the view.
 */
 - (void)transitionOutAllWithBackground:(BOOL)withBackground completion:(void(^)())completion;
-
-- (void)deselectActionsAnimated:(BOOL)animated;
 
 - (void)handleRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation;
 

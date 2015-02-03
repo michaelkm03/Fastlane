@@ -153,11 +153,16 @@
 
 #pragma mark - Public Methods
 
+- (void)seekToStart
+{
+    [self.videoPlayerViewController.player seekToTime:kCMTimeZero];
+}
+
 - (void)replay
 {
     self.videoDidEnd = NO;
     [self.videoPlayerViewController.player seekToTime:kCMTimeZero];
-    [self play];
+    [self.videoPlayerViewController.player play];
 }
 
 - (void)play
@@ -175,7 +180,7 @@
 
 - (void)togglePlayControls
 {
-    // This may not do any if `videoPlayerViewController`'s `shouldShowToolbar` is set to NO
+    // This will not do anything if `videoPlayerViewController.shouldShowToolbar` is set to NO
     [self.videoPlayerViewController toggleToolbarHidden];
 }
 
@@ -208,11 +213,7 @@
     [self.delegate videoCellPlayedToEnd:self withTotalTime:[videoPlayer playerItemDuration]];
     self.videoDidEnd = YES;
     
-    if ( self.viewModel.endCardViewModel != nil )
-    {
-        self.videoPlayerViewController.toolbarHidden = YES;
-        [super showEndCardWithViewModel:self.viewModel.endCardViewModel];
-    }
+    [super showEndCardWithViewModel:self.viewModel.endCardViewModel];
 }
 
 - (void)videoPlayerWillStartPlaying:(VCVideoPlayerViewController *)videoPlayer

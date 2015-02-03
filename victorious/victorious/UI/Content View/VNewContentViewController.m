@@ -99,7 +99,6 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 @property (nonatomic, weak) IBOutlet UIImageView *blurredBackgroundImageView;
 @property (weak, nonatomic) IBOutlet UIButton *closeButton;
 @property (weak, nonatomic) IBOutlet UIButton *moreButton;
-@property (weak, nonatomic) IBOutlet UIView *landscapeMaskOverlay;
 
 // Cells
 @property (nonatomic, weak) VContentCell *contentCell;
@@ -392,8 +391,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
                                                                                      multiplier:1.0f
                                                                                        constant:0.0f];
         self.bottomKeyboardToContainerBottomConstraint.priority = UILayoutPriorityDefaultLow;
-        [self.view insertSubview:inputAccessoryView
-                    belowSubview:self.landscapeMaskOverlay];
+        [self.view addSubview:inputAccessoryView];
         [self.view addConstraints:@[self.keyboardInputBarHeightConstraint, inputViewLeadingConstraint, inputViewTrailingconstraint, self.bottomKeyboardToContainerBottomConstraint]];
     }
     
@@ -782,8 +780,9 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
                 __weak typeof(self) welf = self;
                 [self.videoCell setAnimateAlongsizePlayControlsBlock:^(BOOL playControlsHidden)
                 {
-                    welf.moreButton.alpha = playControlsHidden ? 0.0f : 1.0f;
-                    welf.closeButton.alpha = playControlsHidden ? 0.0f : 1.0f;
+                    const BOOL shouldHide = playControlsHidden && !welf.videoCell.isEndCardShowing;
+                    welf.moreButton.alpha = shouldHide ? 0.0f : 1.0f;
+                    welf.closeButton.alpha = shouldHide ? 0.0f : 1.0f;
                 }];
                 videoCell.endCardDelegate = self;
                 videoCell.minSize = CGSizeMake( self.contentCell.minSize.width, VShrinkingContentLayoutMinimumContentHeight );
@@ -1470,8 +1469,11 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)replaySelectedFromEndCard:(VEndCardViewController *)endCardViewController
 {
-    [endCardViewController transitionOutAllWithBackground:YES completion:nil];
-    [self.videoCell replay];
+    [self.videoCell seekToStart];
+    [endCardViewController transitionOutAllWithBackground:YES completion:^
+    {
+        [self.videoCell replay];
+    }];
 }
 
 - (void)nextSelectedFromEndCard:(VEndCardViewController *)endCardViewController
@@ -1497,11 +1499,11 @@ referenceSizeForHeaderInSection:(NSInteger)section
     [self.navigationController pushViewController:contentViewController animated:YES];
 }
 
-- (void)actionSelectedFromEndCard:(VEndCardViewController *)endCardViewController atIndex:(NSUInteger)index userInfo:(NSDictionary *)userInfo
+- (void)actionCell:(VEndCardActionCell *)actionCell selectedWithIndex:(NSUInteger)index
 {
     void (^completion)() = ^void
     {
-        [endCardViewController deselectActionsAnimated:YES];
+        //[endCardViewController deselectActionsAnimated:YES];
     };
     
     if ( index == 0 )
@@ -1510,9 +1512,11 @@ referenceSizeForHeaderInSection:(NSInteger)section
     }
     else if ( index == 1 )
     {
+        actionCell.enabled = NO;
         [self.sequenceActionController repostActionFromViewController:self node:self.viewModel.currentNode completion:^(BOOL finished)
         {
             completion();
+            [actionCell showSuccess];
         }];
     }
     else if ( index == 2 )
