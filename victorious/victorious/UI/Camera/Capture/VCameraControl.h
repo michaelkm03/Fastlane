@@ -56,4 +56,6 @@ IB_DESIGNABLE
 
 - (void)restoreCameraControlToDefault;
 
+- (void)showCameraFlashAnimation;
+
 @end

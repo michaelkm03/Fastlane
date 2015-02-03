@@ -78,6 +78,31 @@ static const NSTimeInterval kNotRecordingTrackingTime = 0.0f;
     self.cameraControlState = VCameraControlStateDefault;
 }
 
+- (void)showCameraFlashAnimation
+{
+    [UIView animateWithDuration:0.25f
+                          delay:0.0f
+                        options:UIViewAnimationOptionCurveEaseInOut
+                     animations:^
+     {
+         self.frame = CGRectMake(0, 0, kMinHeightSize, kMinHeightSize);
+         
+         self.backgroundColor = [UIColor darkGrayColor];
+     }
+                     completion:^(BOOL finished)
+     {
+         [UIView animateWithDuration:kCameraShutterGrowAnimationDuration
+                               delay:0.0f
+                             options:UIViewAnimationOptionCurveEaseInOut
+                          animations:^
+          {
+              self.backgroundColor = [UIColor blackColor];
+              self.transform = CGAffineTransformMakeScale(kCameraShutterGrowScaleFacotr, kCameraShutterGrowScaleFacotr);
+          }
+                          completion:nil];
+     }];
+}
+
 #pragma mark - Setters
 
 - (void)setTintColor:(UIColor *)tintColor
@@ -188,30 +213,7 @@ static const NSTimeInterval kNotRecordingTrackingTime = 0.0f;
         }
         case VCameraControlStateCapturingImage:
         {
-            [UIView animateWithDuration:0.25f
-                                  delay:0.0f
-                                options:UIViewAnimationOptionCurveEaseInOut
-                             animations:^
-             {
-                 self.frame = CGRectMake(0, 0, kMinHeightSize, kMinHeightSize);
-                 
-                 self.backgroundColor = [UIColor darkGrayColor];
-             }
-                             completion:^(BOOL finished)
-             {
-                 [UIView animateWithDuration:kCameraShutterGrowAnimationDuration
-                                       delay:0.0f
-                                     options:UIViewAnimationOptionCurveEaseInOut
-                                  animations:^
-                  {
-                      self.backgroundColor = [UIColor blackColor];
-                      self.transform = CGAffineTransformMakeScale(kCameraShutterGrowScaleFacotr, kCameraShutterGrowScaleFacotr);
-                  }
-                                  completion:^(BOOL finished)
-                  {
-                      [self sendActionsForControlEvents:VCameraControlEventWantsStillImage];
-                  }];
-             }];
+            [self sendActionsForControlEvents:VCameraControlEventWantsStillImage];
             break;
         }
     }

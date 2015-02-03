@@ -490,11 +490,14 @@ typedef NS_ENUM(NSInteger, VcameraViewControllerState)
     __weak typeof(self) welf = self;
     imageSearchViewController.completionBlock = ^void(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
     {
-        welf.capturedMediaURL = capturedMediaURL;
-        welf.previewImage = previewImage;
-        welf.showedFullscreenShutterAnimation = NO;
-        welf.didSelectFromWebSearch = YES;
-        welf.state = VcameraViewControllerStateCapturedMedia;
+        if (finished)
+        {
+            welf.capturedMediaURL = capturedMediaURL;
+            welf.previewImage = previewImage;
+            welf.showedFullscreenShutterAnimation = NO;
+            welf.didSelectFromWebSearch = YES;
+            welf.state = VcameraViewControllerStateCapturedMedia;    
+        }
         
         [welf dismissViewControllerAnimated:YES
                                  completion:nil];
@@ -604,6 +607,7 @@ typedef NS_ENUM(NSInteger, VcameraViewControllerState)
     self.state = VcameraViewControllerStateWaitingOnhardwareImageCapture;
     [self.captureController captureStillWithCompletion:^(UIImage *image, NSError *error)
     {
+        [self.cameraControl showCameraFlashAnimation];
         dispatch_async(dispatch_get_main_queue(), ^(void)
         {
             if (error)
