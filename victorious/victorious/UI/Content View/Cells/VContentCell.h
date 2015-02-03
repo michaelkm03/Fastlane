@@ -37,4 +37,10 @@
 
 - (void)resetEndCardActions:(BOOL)animated;
 
+/**
+ Properly rotates itself and subcomponents based on the rotation of the collection view.
+ Make sure to forward this from your collection view controller.
+ */
+- (void)handleRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation;
+
 @end

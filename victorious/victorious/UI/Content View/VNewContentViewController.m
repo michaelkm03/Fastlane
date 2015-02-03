@@ -1470,15 +1470,13 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)replaySelectedFromEndCard:(VEndCardViewController *)endCardViewController
 {
-    NSLog( @"replaySelected" );
-    //[endCardViewController transitionOut];
+    [endCardViewController transitionOutAllWithBackground:YES completion:nil];
+    [self.videoCell replay];
 }
 
 - (void)nextSelectedFromEndCard:(VEndCardViewController *)endCardViewController
 {
-    NSLog( @"nextSelectedFromEndCard" );
-    
-    [endCardViewController transitionOutWithCompletion:^
+    [endCardViewController transitionOutAllWithBackground:NO completion:^
     {
         [self showNextSequence];
     }];

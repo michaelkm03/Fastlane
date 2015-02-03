@@ -49,7 +49,7 @@
 /**
  Animates all elements out of the view.
 */
-- (void)transitionOutWithCompletion:(void(^)())completion;
+- (void)transitionOutAllWithBackground:(BOOL)withBackground completion:(void(^)())completion;
 
 - (void)deselectActionsAnimated:(BOOL)animated;
 

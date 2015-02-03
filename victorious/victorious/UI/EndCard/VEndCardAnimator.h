@@ -43,7 +43,7 @@ typedef NS_ENUM( NSUInteger, VEndCardAnimationState )
  Play transition in animations for all elements.  This should be called when the
  view added to the view hierarchy and is ready to display.
  */
-- (void)transitionOutAllWithCompletion:(void(^)())completion;
+- (void)transitionOutAllWithBackground:(BOOL)withBackground completion:(void(^)())completion;
 
 /**
  Play transition out animations for all elements.  This should be called when the

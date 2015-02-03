@@ -191,13 +191,13 @@ static NSString * const kStoryboardName = @"EndCard";
      }];
 }
 
-- (void)transitionOutWithCompletion:(void(^)())completion
+- (void)transitionOutAllWithBackground:(BOOL)withBackground completion:(void(^)())completion
 {
     [self updateContainerSize:nil];
     [self.containerSizeChangeTimer invalidate];
     
     [self.nextVideoBannerViewController stopCountdown];
-    [self.animator transitionOutAllWithCompletion:^void
+    [self.animator transitionOutAllWithBackground:withBackground completion:^void
      {
          [self.nextVideoBannerViewController resetNextVideoDetails];
          

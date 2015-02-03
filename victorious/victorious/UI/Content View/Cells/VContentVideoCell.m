@@ -33,6 +33,13 @@
 
 #pragma mark - NSObject
 
+- (void)prepareForReuse
+{
+    [super prepareForReuse];
+    
+    self.videoPlayerViewController.view.hidden = YES;
+}
+
 - (void)awakeFromNib
 {
     [super awakeFromNib];
@@ -45,6 +52,8 @@
     self.videoPlayerViewController.shouldContinuePlayingAfterDismissal = YES;
     self.videoPlayerViewController.shouldChangeVideoGravityOnDoubleTap = YES;
     [self.contentView addSubview:self.videoPlayerViewController.view];
+    
+    self.videoPlayerViewController.view.hidden = YES;
 }
 
 - (void)dealloc
@@ -57,6 +66,8 @@
 - (void)setViewModel:(VVideoCellViewModel *)viewModel
 {
     _viewModel = viewModel;
+    
+    self.videoPlayerViewController.view.hidden = YES;
     
     self.contentURL = viewModel.itemURL;
     self.loop = viewModel.loop;
@@ -145,6 +156,7 @@
 - (void)replay
 {
     self.videoDidEnd = NO;
+    [self.videoPlayerViewController.player seekToTime:kCMTimeZero];
     [self play];
 }
 
@@ -186,6 +198,7 @@
 
 - (void)videoPlayerReadyToPlay:(VCVideoPlayerViewController *)videoPlayer
 {
+    self.videoPlayerViewController.view.hidden = NO;
     [self.delegate videoCellReadyToPlay:self];
 }
 

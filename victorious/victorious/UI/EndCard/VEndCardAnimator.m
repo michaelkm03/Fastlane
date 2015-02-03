@@ -48,7 +48,7 @@ static CGFloat easeInQuint( CGFloat t, CGFloat b, CGFloat c, CGFloat d )
 
 #pragma mark - Public transition controls
 
-- (void)transitionOutAllWithCompletion:(void(^)())completion
+- (void)transitionOutAllWithBackground:(BOOL)withBackground completion:(void(^)())completion
 {
     if ( ![self canTransitionOut] )
     {
@@ -59,6 +59,10 @@ static CGFloat easeInQuint( CGFloat t, CGFloat b, CGFloat c, CGFloat d )
     
     [self transitionOutActions];
     [self setReplayButtonVisible:NO animated:YES];
+    if ( withBackground )
+    {
+        [self setBackgroundVisible:NO animated:YES];
+    }
     
     __typeof(self) __weak welf = self;
     [self setNextVideoBannerVisible:NO animated:YES completion:^
