@@ -24,6 +24,11 @@
 @property (nonatomic, readonly) BOOL didSelectAssetFromLibrary;
 
 /**
+ YES if the user selected media from a web search.
+ */
+@property (nonatomic, readonly) BOOL didSelectFromWebSearch;
+
+/**
  *  If YES, the camera will call it's completion block immediately after taking the picture/video.
  */
 @property (nonatomic, assign) BOOL shouldSkipPreview;

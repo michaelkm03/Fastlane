@@ -66,6 +66,7 @@ typedef NS_ENUM(NSInteger, VcameraViewControllerState)
 @property (nonatomic) BOOL disallowPhotos;
 @property (nonatomic, readwrite) BOOL showedFullscreenShutterAnimation;
 @property (nonatomic, readwrite) BOOL didSelectAssetFromLibrary;
+@property (nonatomic, readwrite) BOOL didSelectFromWebSearch;
 @property (nonatomic, copy) NSString *initialCaptureMode;
 @property (nonatomic, copy) NSString *videoQuality;
 
@@ -329,6 +330,9 @@ typedef NS_ENUM(NSInteger, VcameraViewControllerState)
     {
         case VcameraViewControllerStateDefault:
         {
+            self.didSelectAssetFromLibrary = NO;
+            self.didSelectAssetFromLibrary = NO;
+            
             self.closeButton.enabled = YES;
             
             self.searchButton.enabled = YES;
@@ -486,17 +490,14 @@ typedef NS_ENUM(NSInteger, VcameraViewControllerState)
     __weak typeof(self) welf = self;
     imageSearchViewController.completionBlock = ^void(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
     {
+        welf.capturedMediaURL = capturedMediaURL;
+        welf.previewImage = previewImage;
+        welf.showedFullscreenShutterAnimation = NO;
+        welf.didSelectFromWebSearch = YES;
+        welf.state = VcameraViewControllerStateCapturedMedia;
+        
         [welf dismissViewControllerAnimated:YES
-                                 completion:^
-        {
-            if (finished)
-            {
-                welf.capturedMediaURL = capturedMediaURL;
-                welf.previewImage = previewImage;
-                welf.showedFullscreenShutterAnimation = NO;
-                welf.state = VcameraViewControllerStateCapturedMedia;
-            }
-        }];
+                                 completion:nil];
     };
     [self presentViewController:imageSearchViewController
                        animated:YES
@@ -969,40 +970,38 @@ typedef NS_ENUM(NSInteger, VcameraViewControllerState)
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-    __weak typeof(self) welf = self;
+    self.didSelectAssetFromLibrary = YES;
+    NSString *mediaType = info[UIImagePickerControllerMediaType];
+    
+    if ([mediaType isEqualToString:(__bridge NSString *)kUTTypeImage])
+    {
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraUserDidPickImageFromLibrary];
+        
+        UIImage *originalImage = (UIImage *)info[UIImagePickerControllerOriginalImage];
+        [self persistToCapturedMediaURLWithImage:originalImage];
+    }
+    else if ([mediaType isEqualToString:(__bridge NSString *)kUTTypeMovie])
+    {
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraUserDidPickVideoFromLibrary];
+        
+        NSURL *movieURL = info[UIImagePickerControllerMediaURL];
+        
+        if (movieURL)
+        {
+            self.capturedMediaURL = movieURL;
+            self.state = VcameraViewControllerStateCapturedMedia;
+        }
+        else
+        {
+            MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.previewView animated:YES];
+            hud.mode = MBProgressHUDModeText;
+            hud.labelText = NSLocalizedString(@"UnableSelectVideo", @"");
+            [hud hide:YES afterDelay:5.0];
+        }
+    }
+
     [self dismissViewControllerAnimated:YES
-                             completion:^
-     {
-         welf.didSelectAssetFromLibrary = YES;
-         NSString *mediaType = info[UIImagePickerControllerMediaType];
-         
-         if ([mediaType isEqualToString:(__bridge NSString *)kUTTypeImage])
-         {
-             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraUserDidPickImageFromLibrary];
-             
-             UIImage *originalImage = (UIImage *)info[UIImagePickerControllerOriginalImage];
-             [self persistToCapturedMediaURLWithImage:originalImage];
-         }
-         else if ([mediaType isEqualToString:(__bridge NSString *)kUTTypeMovie])
-         {
-             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraUserDidPickVideoFromLibrary];
-             
-             NSURL *movieURL = info[UIImagePickerControllerMediaURL];
-             
-             if (movieURL)
-             {
-                 welf.capturedMediaURL = movieURL;
-                 welf.state = VcameraViewControllerStateCapturedMedia;
-             }
-             else
-             {
-                 MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:welf.previewView animated:YES];
-                 hud.mode = MBProgressHUDModeText;
-                 hud.labelText = NSLocalizedString(@"UnableSelectVideo", @"");
-                 [hud hide:YES afterDelay:5.0];
-             }
-         }
-     }];
+                             completion:nil];
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
