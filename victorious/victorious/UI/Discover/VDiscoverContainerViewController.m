@@ -186,12 +186,11 @@
     }
 
     [self.searchField resignFirstResponder];
-
+    
     VUsersAndTagsSearchViewController *searchViewController = [VUsersAndTagsSearchViewController initWithDependencyManager:self.dependencyManager];
-    //searchViewController.transitioningDelegate = self.transitionDelegate;
-    VSearchResultsNavigationController *navController = [[VSearchResultsNavigationController alloc] initWithRootViewController:searchViewController];
-    navController.transitioningDelegate = self.transitionDelegate;
-    [self presentViewController:navController animated:YES completion:nil];
+    searchViewController.transitioningDelegate = self.transitionDelegate;
+    self.navigationController.delegate = (id<UINavigationControllerDelegate>) searchViewController.transitioningDelegate;
+    [self.navigationController pushViewController:searchViewController animated:YES];
 }
 
 #pragma mark - Navigation

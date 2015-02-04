@@ -8,31 +8,31 @@
 
 #import "VSearchResultsTransition.h"
 #import "VUsersAndTagsSearchViewController.h"
-#import "VSearchResultsNavigationController.h"
 
-const static CGFloat kStartTopOffset = 55.0f;
-const static CGFloat kStatusBarOffset = 20.0f;
+// The position of the search bar in the from view controller on transition in adjusted for the status bar
+const static CGFloat kStartTopOffset = 36.0f;
 
 @implementation VSearchResultsTransition
 
 - (void)prepareForTransitionIn:(VTransitionModel *)model
 {
-    VSearchResultsNavigationController *toViewController = (VSearchResultsNavigationController *)model.toViewController;
+    VUsersAndTagsSearchViewController *toViewController = (VUsersAndTagsSearchViewController *)model.toViewController;
     
-    toViewController.usersAndTagsSearchViewController.searchResultsContainerView.alpha = 0.0f;
-    toViewController.usersAndTagsSearchViewController.searchBarTopConstraint.constant = kStartTopOffset;
-    toViewController.usersAndTagsSearchViewController.headerTopConstraint.constant = -toViewController.usersAndTagsSearchViewController.searchBarViewHeightConstraint.constant;
+    toViewController.searchResultsContainerView.alpha = 0.0f;
+    toViewController.opaqueBackgroundView.alpha = 0.0f;
+    toViewController.searchBarTopConstraint.constant = kStartTopOffset;
+    toViewController.headerTopConstraint.constant = -toViewController.searchBarViewHeightConstraint.constant;
     
-    
-    [toViewController.usersAndTagsSearchViewController.searchBarTopConstraint.firstItem layoutIfNeeded];
-    [toViewController.usersAndTagsSearchViewController.headerTopConstraint.firstItem layoutIfNeeded];
-    [toViewController.usersAndTagsSearchViewController.searchResultsTableBottomCosntraint.firstItem layoutIfNeeded];
-    [toViewController.usersAndTagsSearchViewController.view layoutIfNeeded];
+    [toViewController.searchBarTopConstraint.firstItem layoutIfNeeded];
+    [toViewController.headerTopConstraint.firstItem layoutIfNeeded];
+    [toViewController.searchResultsTableBottomCosntraint.firstItem layoutIfNeeded];
+    [toViewController.view layoutIfNeeded];
 }
 
 - (void)performTransitionIn:(VTransitionModel *)model completion:(void (^)(BOOL))completion
 {
-    VSearchResultsNavigationController *toViewController = (VSearchResultsNavigationController *)model.toViewController;
+    VUsersAndTagsSearchViewController *toViewController = (VUsersAndTagsSearchViewController *)model.toViewController;
+    
     [UIView animateWithDuration:model.animationDuration
                           delay:0.0f
          usingSpringWithDamping:0.9f
@@ -40,14 +40,17 @@ const static CGFloat kStatusBarOffset = 20.0f;
                         options:kNilOptions
                      animations:^
      {
-         toViewController.usersAndTagsSearchViewController.searchBarTopConstraint.constant = 0.0f;
-         toViewController.usersAndTagsSearchViewController.headerTopConstraint.constant = 0.0f;
-         toViewController.usersAndTagsSearchViewController.searchResultsContainerView.alpha = 1.0f;
          
-         [toViewController.usersAndTagsSearchViewController.searchBarTopConstraint.firstItem layoutIfNeeded];
-         [toViewController.usersAndTagsSearchViewController.headerTopConstraint.firstItem layoutIfNeeded];
-         [toViewController.usersAndTagsSearchViewController.searchResultsTableBottomCosntraint.firstItem layoutIfNeeded];
-         [toViewController.usersAndTagsSearchViewController.view layoutIfNeeded];
+         toViewController.searchBarTopConstraint.constant = 0.0f;
+         toViewController.headerTopConstraint.constant = 0.0f;
+         toViewController.searchResultsContainerView.alpha = 1.0f;
+         toViewController.searchBarTopHorizontalRule.alpha = 0.0f;
+         toViewController.opaqueBackgroundView.alpha = 1.0f;
+         
+         [toViewController.searchBarTopConstraint.firstItem layoutIfNeeded];
+         [toViewController.headerTopConstraint.firstItem layoutIfNeeded];
+         [toViewController.searchResultsTableBottomCosntraint.firstItem layoutIfNeeded];
+         [toViewController.view layoutIfNeeded];
     }
                      completion:^(BOOL finished)
     {
@@ -57,20 +60,20 @@ const static CGFloat kStatusBarOffset = 20.0f;
 
 - (void)prepareForTransitionOut:(VTransitionModel *)model
 {
-    VSearchResultsNavigationController *fromViewController = (VSearchResultsNavigationController *)model.fromViewController;
+    VUsersAndTagsSearchViewController *fromViewController = (VUsersAndTagsSearchViewController *)model.fromViewController;
     
-    fromViewController.usersAndTagsSearchViewController.searchResultsContainerView.alpha = 1.0f;
-    fromViewController.usersAndTagsSearchViewController.searchBarTopConstraint.constant -= kStatusBarOffset;
+    fromViewController.searchResultsContainerView.alpha = 1.0f;
+    fromViewController.opaqueBackgroundView.alpha = 1.0f;
     
-    [fromViewController.usersAndTagsSearchViewController.searchBarTopConstraint.firstItem layoutIfNeeded];
-    [fromViewController.usersAndTagsSearchViewController.headerTopConstraint.firstItem layoutIfNeeded];
-    [fromViewController.usersAndTagsSearchViewController.searchResultsTableBottomCosntraint.firstItem layoutIfNeeded];
-    [fromViewController.usersAndTagsSearchViewController.view layoutIfNeeded];
+    [fromViewController.searchBarTopConstraint.firstItem layoutIfNeeded];
+    [fromViewController.headerTopConstraint.firstItem layoutIfNeeded];
+    [fromViewController.searchResultsTableBottomCosntraint.firstItem layoutIfNeeded];
+    [fromViewController.view layoutIfNeeded];
 }
 
 - (void)performTransitionOut:(VTransitionModel *)model completion:(void (^)(BOOL))completion
 {
-    VSearchResultsNavigationController *fromViewController = (VSearchResultsNavigationController *)model.fromViewController;
+    VUsersAndTagsSearchViewController *fromViewController = (VUsersAndTagsSearchViewController *)model.fromViewController;
     
     [UIView animateWithDuration:model.animationDuration
                           delay:0.0f
@@ -79,14 +82,17 @@ const static CGFloat kStatusBarOffset = 20.0f;
                         options:kNilOptions
                      animations:^
      {
-         fromViewController.usersAndTagsSearchViewController.searchResultsContainerView.alpha = 0.0f;
-         fromViewController.usersAndTagsSearchViewController.searchBarTopConstraint.constant = kStartTopOffset - kStatusBarOffset;
-         fromViewController.usersAndTagsSearchViewController.headerTopConstraint.constant = -fromViewController.usersAndTagsSearchViewController.searchBarViewHeightConstraint.constant;
+         fromViewController.searchResultsContainerView.alpha = 0.0f;
+         fromViewController.searchBarTopHorizontalRule.alpha = 1.0f;
+         fromViewController.opaqueBackgroundView.alpha = 0.0f;
          
-         [fromViewController.usersAndTagsSearchViewController.searchBarTopConstraint.firstItem layoutIfNeeded];
-         [fromViewController.usersAndTagsSearchViewController.headerTopConstraint.firstItem layoutIfNeeded];
-         [fromViewController.usersAndTagsSearchViewController.searchResultsTableBottomCosntraint.firstItem layoutIfNeeded];
-         [fromViewController.usersAndTagsSearchViewController.view layoutIfNeeded];
+         fromViewController.searchBarTopConstraint.constant = kStartTopOffset;
+         fromViewController.headerTopConstraint.constant = -fromViewController.searchBarViewHeightConstraint.constant;
+         
+         [fromViewController.searchBarTopConstraint.firstItem layoutIfNeeded];
+         [fromViewController.headerTopConstraint.firstItem layoutIfNeeded];
+         [fromViewController.searchResultsTableBottomCosntraint.firstItem layoutIfNeeded];
+         [fromViewController.view layoutIfNeeded];
      }
                      completion:^(BOOL finished)
      {

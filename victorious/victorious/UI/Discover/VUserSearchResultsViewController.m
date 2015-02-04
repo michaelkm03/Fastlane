@@ -124,36 +124,32 @@ static NSString * const kVUserResultIdentifier = @"followerCell";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     VFollowerTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"followerCell" forIndexPath:indexPath];
-
-    if (!self.searchResults.count > 0)
+    VUser *profile = self.searchResults[indexPath.row];
+    VUser *mainUser = [[VObjectManager sharedManager] mainUser];
+    BOOL haveRelationship = [mainUser.following containsObject:profile];
+    
+    cell.profile = profile;
+    cell.haveRelationship = haveRelationship;
+    
+    // Tell the button what to do when it's tapped
+    cell.followButtonAction = ^(void)
     {
-        VUser *profile = self.searchResults[indexPath.row];
-        VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-        BOOL haveRelationship = [mainUser.following containsObject:profile];
-        
-        cell.profile = profile;
-        cell.haveRelationship = haveRelationship;
-        
-        // Tell the button what to do when it's tapped
-        cell.followButtonAction = ^(void)
+        // Check if logged in before attempting to follow / unfollow
+        if (![VObjectManager sharedManager].authorized)
         {
-            // Check if logged in before attempting to follow / unfollow
-            if (![VObjectManager sharedManager].authorized)
-            {
-                [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
-                return;
-            }
-            
-            if ([mainUser.following containsObject:profile])
-            {
-                [self unfollowFriendAction:profile];
-            }
-            else
-            {
-                [self followFriendAction:profile];
-            }
-        };
-    }
+            [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
+            return;
+        }
+        
+        if ([mainUser.following containsObject:profile])
+        {
+            [self unfollowFriendAction:profile];
+        }
+        else
+        {
+            [self followFriendAction:profile];
+        }
+    };
     return cell;
 }
 
