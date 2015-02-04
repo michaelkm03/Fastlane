@@ -236,7 +236,7 @@ static const char kAssociatedWorkspaceFlowKey;
     NSString *emailSubject = [NSString stringWithFormat:NSLocalizedString(@"EmailShareSubjectFormat", nil), [[VThemeManager sharedThemeManager] themedStringForKey:kVCreatorName]];
     [activityViewController setValue:emailSubject forKey:@"subject"];
     activityViewController.excludedActivityTypes = @[UIActivityTypePostToFacebook];
-    activityViewController.completionHandler = ^(NSString *activityType, BOOL completed)
+    activityViewController.completionWithItemsHandler = ^(NSString *activityType, BOOL completed, NSArray *returnedItems, NSError *activityError)
     {
         NSDictionary *params = @{ VTrackingKeySequenceCategory : sequence.category ?: @"",
                                   VTrackingKeyActivityType : activityType ?: @"",

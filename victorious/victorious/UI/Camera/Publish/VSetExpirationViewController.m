@@ -48,7 +48,7 @@
     
     UIBarButtonItem    *cancelButton    =   [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel:)];
     UIBarButtonItem    *flex            =   [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-    UIBarButtonItem    *resetButton     =   [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"ResetButton", @"") style:UIBarButtonItemStyleBordered target:self action:@selector(reset:)];
+    UIBarButtonItem    *resetButton     =   [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"ResetButton", @"") style:UIBarButtonItemStylePlain target:self action:@selector(reset:)];
     
     self.toolbarWithReset = @[cancelButton, flex, resetButton];
     self.toolbarWithoutReset = @[cancelButton, flex];

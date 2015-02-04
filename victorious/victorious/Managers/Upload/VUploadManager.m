@@ -151,7 +151,7 @@ static inline BOOL isSessionQueue()
         NSURLSessionConfiguration *sessionConfig;
         if (self.useBackgroundSession)
         {
-            sessionConfig = [NSURLSessionConfiguration backgroundSessionConfiguration:kURLSessionIdentifier];
+            sessionConfig = [NSURLSessionConfiguration backgroundSessionConfigurationWithIdentifier:kURLSessionIdentifier];
         }
         else
         {

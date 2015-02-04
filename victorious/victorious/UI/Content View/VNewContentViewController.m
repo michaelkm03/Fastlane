@@ -304,18 +304,6 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
      }];
 }
 
-#pragma mark iOS7.1+
-
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-    [self alongsideRotationupdates];
-}
-
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
-{
-    [self finishedRotationUpdates];
-}
-
 #pragma mark Shared
 
 - (void)alongsideRotationupdates
@@ -489,9 +477,19 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     self.contentCollectionView.scrollIndicatorInsets = UIEdgeInsetsMake(VShrinkingContentLayoutMinimumContentHeight, 0, CGRectGetHeight(self.textEntryView.bounds), 0);
     self.contentCollectionView.contentInset = UIEdgeInsetsMake(0, 0, CGRectGetHeight(self.textEntryView.bounds) , 0);
     
-    [self.blurredBackgroundImageView setBlurredImageWithClearImage:self.placeholderImage
-                                                  placeholderImage:[UIImage resizeableImageWithColor:[[UIColor whiteColor] colorWithAlphaComponent:0.7f]]
-                                                         tintColor:[[UIColor whiteColor] colorWithAlphaComponent:0.7f]];
+    if (self.viewModel.sequence.isImage)
+    {
+        [self.blurredBackgroundImageView setBlurredImageWithURL:self.viewModel.imageURLRequest.URL
+                                               placeholderImage:self.placeholderImage
+                                                      tintColor:nil];
+    }
+    else
+    {
+        [self.blurredBackgroundImageView setBlurredImageWithClearImage:self.placeholderImage
+                                                      placeholderImage:nil
+                                                             tintColor:nil];
+    }
+    
 
     if (self.viewModel.type == VContentViewTypeVideo)
     {
@@ -1274,45 +1272,29 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     NSString *discardActionTitle = NSLocalizedString(@"Delete", @"Delete the previously selected item. This is a destructive operation.");
     NSString *cancelActionTitle = NSLocalizedString(@"Cancel", @"Cancel button.");
     
-    if (UI_IS_IOS8_AND_HIGHER)
-    {
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:actionSheetTitle
-                                                                                 message:nil
-                                                                          preferredStyle:UIAlertControllerStyleActionSheet];
-        
-        UIAlertAction *deleteAction = [UIAlertAction actionWithTitle:discardActionTitle
-                                                                style:UIAlertActionStyleDestructive
-                                                              handler:^(UIAlertAction *action)
-                                        {
-                                            clearMediaSelection();
-                                            showCamera();
-                                        }];
-        [alertController addAction:deleteAction];
-        
-        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:cancelActionTitle
-                                                               style:UIAlertActionStyleCancel
-                                                             handler:^(UIAlertAction *action)
-                                       {
-                                           [[VThemeManager sharedThemeManager] applyStyling];
-                                       }];
-        [alertController addAction:cancelAction];
-        
-        [[VThemeManager sharedThemeManager] removeStyling];
-        [self presentViewController:alertController animated:YES completion:nil];
-    }
-    else
-    {
-        [[[UIActionSheet alloc] initWithTitle:actionSheetTitle
-                            cancelButtonTitle:cancelActionTitle
-                               onCancelButton:nil
-                       destructiveButtonTitle:discardActionTitle
-                          onDestructiveButton:^
-          {
-              clearMediaSelection();
-              showCamera();
-          }
-                   otherButtonTitlesAndBlocks:nil, nil] showInView:self.view];
-    }
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:actionSheetTitle
+                                                                             message:nil
+                                                                      preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    UIAlertAction *deleteAction = [UIAlertAction actionWithTitle:discardActionTitle
+                                                            style:UIAlertActionStyleDestructive
+                                                          handler:^(UIAlertAction *action)
+                                    {
+                                        clearMediaSelection();
+                                        showCamera();
+                                    }];
+    [alertController addAction:deleteAction];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:cancelActionTitle
+                                                           style:UIAlertActionStyleCancel
+                                                         handler:^(UIAlertAction *action)
+                                   {
+                                       [[VThemeManager sharedThemeManager] applyStyling];
+                                   }];
+    [alertController addAction:cancelAction];
+    
+    [[VThemeManager sharedThemeManager] removeStyling];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 - (void)keyboardInputAccessoryViewDidClearInput:(VKeyboardInputAccessoryView *)inpoutAccessoryView
