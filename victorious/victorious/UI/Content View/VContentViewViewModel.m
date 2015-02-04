@@ -254,7 +254,7 @@
             // In the real app, the dependency manager will be injected:
             endCardModel.videoTitle = @"January Vacation Blog";
             endCardModel.nextVideoTitle = @"Alejandro Manzano Grumpy Cat Boyce Avenue";
-            endCardModel.nextVideoThumbailImageURL = [NSURL URLWithString:@"http://media-dev-public.s3-website-us-west-1.amazonaws.com/75e022927c063573c9a79d5447f6d5aa/thumbnail-00003.jpg"];
+            endCardModel.nextVideoThumbailImageURL = [NSURL URLWithString:@"http://media-dev-public.s3-website-us-west-1.amazonaws.com/5be17bf6f22dd793554be9cf75a3e26e/640x640.jpg"];
             endCardModel.streamName = @"Recent";
             endCardModel.videoAuthorName = @"Jonathan Moore";
             endCardModel.videoAuthorProfileImageURL = [NSURL URLWithString:@"http://media-dev-public.s3-website-us-west-1.amazonaws.com/39ce6fa60e5f369a3f6359298b0959c9/80x80.jpg"];

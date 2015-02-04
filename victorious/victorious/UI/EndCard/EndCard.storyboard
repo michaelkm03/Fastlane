@@ -109,7 +109,7 @@
                         <viewControllerLayoutGuide type="top" id="HEO-eh-wGb"/>
                         <viewControllerLayoutGuide type="bottom" id="Zaa-Kk-tIU"/>
                     </layoutGuides>
-                    <view key="view" opaque="NO" multipleTouchEnabled="YES" contentMode="center" id="v4x-nM-hX5">
+                    <view key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="v4x-nM-hX5">
                         <rect key="frame" x="0.0" y="0.0" width="270" height="78"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -123,7 +123,7 @@
                                     <action selector="onNextTapped:" destination="RxT-1w-CCP" eventType="touchUpInside" id="uxL-lH-tDu"/>
                                 </connections>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ELO-qU-CC6" userLabel="Next Video Thumbnail">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ELO-qU-CC6" userLabel="Next Video Thumbnail">
                                 <rect key="frame" x="0.0" y="0.0" width="106" height="78"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="106" id="0kW-u5-WM2"/>

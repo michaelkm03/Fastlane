@@ -8,11 +8,13 @@
 
 #import "VContentCell.h"
 #import "UIView+Autolayout.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface VContentCell () <VEndCardViewControllerDelegate>
 
 @property (nonatomic, weak) UIImageView *animationImageView;
 @property (nonatomic, strong) VEndCardViewController *endCardViewController;
+@property (nonatomic, strong) CADisplayLink *displayLink;
 
 @end
 
@@ -54,6 +56,14 @@
     return self;
 }
 
+- (void)dealloc
+{
+    if ( self.displayLink != nil )
+    {
+        [self.displayLink removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
+    }
+}
+
 - (void)setup
 {
     if (!self.animationImageView)
@@ -70,6 +80,39 @@
     self.minSize = CGSizeMake( self.frame.size.width, 0.0f );
     
     self.repeatCount = 1;
+}
+
+- (void)setShrinkingContentView:(UIView *)shrinkingContentView
+{
+    _shrinkingContentView = shrinkingContentView;
+    
+    if ( _shrinkingContentView != nil )
+    {
+        self.displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(update:)];
+        [self.displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
+    }
+    else
+    {
+        [self.displayLink removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
+        self.displayLink = nil;
+    }
+}
+
+- (void)update:(CADisplayLink *)displayLink
+{
+    const CGAffineTransform currentTransform = self.shrinkingContentView.transform;
+    self.shrinkingContentView.transform = CGAffineTransformIdentity;
+    const CGRect videoFrame = self.shrinkingContentView.frame;
+    self.shrinkingContentView.transform = currentTransform;
+    const CGRect currentFrame = [[self.contentView.layer presentationLayer] frame];
+    
+    const CGFloat translateY = 0; //(CGRectGetHeight(videoFrame) - CGRectGetHeight(currentFrame)) * 0.5f;
+    const CGFloat scale = MIN( CGRectGetHeight(currentFrame) / CGRectGetHeight(videoFrame), 1.0f );
+    
+    CGAffineTransform transform = CGAffineTransformIdentity;
+    transform = CGAffineTransformTranslate( transform, 0.0f, -translateY );
+    transform = CGAffineTransformScale( transform, scale, scale );
+    self.shrinkingContentView.transform = transform;
 }
 
 - (void)prepareForReuse

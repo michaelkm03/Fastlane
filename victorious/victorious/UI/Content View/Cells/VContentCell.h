@@ -67,4 +67,6 @@
  */
 - (void)handleRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation;
 
+@property (nonatomic, strong) UIView *shrinkingContentView;
+
 @end
