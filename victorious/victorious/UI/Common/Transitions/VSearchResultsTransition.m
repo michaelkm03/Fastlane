@@ -14,6 +14,11 @@ const static CGFloat kStartTopOffset = 36.0f;
 
 @implementation VSearchResultsTransition
 
+- (BOOL)canPerformPushTransitionFrom:(UIViewController *)fromViewController to:(UIViewController *)toViewController
+{
+    return [toViewController isKindOfClass:[VUsersAndTagsSearchViewController class]] || [fromViewController isKindOfClass:[VUsersAndTagsSearchViewController class]];
+}
+
 - (void)prepareForTransitionIn:(VTransitionModel *)model
 {
     VUsersAndTagsSearchViewController *toViewController = (VUsersAndTagsSearchViewController *)model.toViewController;
