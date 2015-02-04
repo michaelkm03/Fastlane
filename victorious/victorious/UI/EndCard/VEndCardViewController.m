@@ -8,7 +8,7 @@
 
 #import "VEndCardViewController.h"
 #import "VEndCardBannerViewController.h"
-#import "UIVIew+AutoLayout.h"
+#import "UIView+Autolayout.h"
 #import "VDependencyManager.h"
 #import "VVideoSettings.h"
 

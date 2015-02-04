@@ -24,7 +24,7 @@
 #import "VRTCUserPostedAtFormatter.h"
 #import "VComment+Fetcher.h"
 #import "NSURL+MediaType.h"
-#import "UIView+AutoLayout.h"
+#import "UIView+Autolayout.h"
 
 static const UIEdgeInsets kTextInsets        = { 36.0f, 56.0f, 11.0f, 25.0f };
 

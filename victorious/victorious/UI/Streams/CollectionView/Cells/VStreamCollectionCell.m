@@ -36,7 +36,7 @@
 
 #import "CCHLinkTextView.h"
 #import "CCHLinkTextViewDelegate.h"
-#import "UIVIew+AutoLayout.h"
+#import "UIView+Autolayout.h"
 #import "VVideoView.h"
 
 @interface VStreamCollectionCell() <VSequenceActionsDelegate, CCHLinkTextViewDelegate, VVideoViewDelegtae>

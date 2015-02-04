@@ -402,7 +402,7 @@
 		A75FAF2119E8AC1E00EB87C1 /* VDiscoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAF1319E8AC1E00EB87C1 /* VDiscoverViewController.m */; };
 		A75FAF2219E8AC1E00EB87C1 /* VSuggestedPeopleCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAF1619E8AC1E00EB87C1 /* VSuggestedPeopleCollectionViewController.m */; };
 		A761C9D11A48A97C00F0D0F9 /* VUtilityButtonsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A761C9D01A48A97C00F0D0F9 /* VUtilityButtonsViewController.m */; };
-		A761C9D41A48B1E500F0D0F9 /* UIVIew+AutoLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = A761C9D31A48B1E500F0D0F9 /* UIVIew+AutoLayout.m */; };
+		A761C9D41A48B1E500F0D0F9 /* UIView+AutoLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = A761C9D31A48B1E500F0D0F9 /* UIView+AutoLayout.m */; };
 		A761C9D71A48CB9800F0D0F9 /* VSwipeView.m in Sources */ = {isa = PBXBuildFile; fileRef = A761C9D61A48CB9800F0D0F9 /* VSwipeView.m */; };
 		A7672B981A1BF6E50063AF46 /* VFirstInstallManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A7672B971A1BF6E50063AF46 /* VFirstInstallManager.m */; };
 		A7672B9A1A1BFF150063AF46 /* VFirstInstallTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7672B991A1BFF150063AF46 /* VFirstInstallTests.m */; };
@@ -1394,8 +1394,8 @@
 		A75FAF1619E8AC1E00EB87C1 /* VSuggestedPeopleCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSuggestedPeopleCollectionViewController.m; sourceTree = "<group>"; };
 		A761C9CF1A48A97C00F0D0F9 /* VUtilityButtonsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUtilityButtonsViewController.h; sourceTree = "<group>"; };
 		A761C9D01A48A97C00F0D0F9 /* VUtilityButtonsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUtilityButtonsViewController.m; sourceTree = "<group>"; };
-		A761C9D21A48B1E500F0D0F9 /* UIVIew+AutoLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIVIew+AutoLayout.h"; sourceTree = "<group>"; };
-		A761C9D31A48B1E500F0D0F9 /* UIVIew+AutoLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIVIew+AutoLayout.m"; sourceTree = "<group>"; };
+		A761C9D21A48B1E500F0D0F9 /* UIView+AutoLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+AutoLayout.h"; sourceTree = "<group>"; };
+		A761C9D31A48B1E500F0D0F9 /* UIView+AutoLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+AutoLayout.m"; sourceTree = "<group>"; };
 		A761C9D51A48CB9800F0D0F9 /* VSwipeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSwipeView.h; sourceTree = "<group>"; };
 		A761C9D61A48CB9800F0D0F9 /* VSwipeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSwipeView.m; sourceTree = "<group>"; };
 		A7672B961A1BF6E50063AF46 /* VFirstInstallManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VFirstInstallManager.h; path = "First Install/VFirstInstallManager.h"; sourceTree = "<group>"; };
@@ -3865,8 +3865,8 @@
 				0314D05D19B4663C00FA363C /* UINavigationController+RotationMethodForwarding.m */,
 				039D02B21A104C4500DB9236 /* UIStoryboard+VMainStoryboard.h */,
 				039D02B31A104C4500DB9236 /* UIStoryboard+VMainStoryboard.m */,
-				A761C9D21A48B1E500F0D0F9 /* UIVIew+AutoLayout.h */,
-				A761C9D31A48B1E500F0D0F9 /* UIVIew+AutoLayout.m */,
+				A761C9D21A48B1E500F0D0F9 /* UIView+AutoLayout.h */,
+				A761C9D31A48B1E500F0D0F9 /* UIView+AutoLayout.m */,
 				0314D50819B46BCB00FA363C /* UIView+Masking.h */,
 				0314D50919B46BCB00FA363C /* UIView+Masking.m */,
 				D8CA63BF19D5DEE2002046E5 /* UIView+MotionEffects.h */,
@@ -5355,7 +5355,7 @@
 				A75FAF1F19E8AC1E00EB87C1 /* VDiscoverTableHeaderViewController.m in Sources */,
 				0314D46819B46B5E00FA363C /* VPickerTextField.m in Sources */,
 				BE11447919D49AA4006A6D65 /* VMarqueeStreamItemCell.m in Sources */,
-				A761C9D41A48B1E500F0D0F9 /* UIVIew+AutoLayout.m in Sources */,
+				A761C9D41A48B1E500F0D0F9 /* UIView+AutoLayout.m in Sources */,
 				A75C10341A65DE6F00439809 /* VCommentHighlighter.m in Sources */,
 				0314D4B219B46B5E00FA363C /* VInboxViewController.m in Sources */,
 				A7A2E0121A391A7D00F8C705 /* VPurchaseRecord.m in Sources */,

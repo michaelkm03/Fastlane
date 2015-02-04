@@ -7,7 +7,7 @@
 //
 
 #import "VContentCell.h"
-#import "UIVIew+AutoLayout.h"
+#import "UIView+Autolayout.h"
 
 @interface VContentCell () <VEndCardViewControllerDelegate>
 

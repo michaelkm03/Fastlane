@@ -11,7 +11,7 @@
 #import "VCVideoPlayerViewController.h"
 #import "VAdVideoPlayerViewController.h"
 #import "VEndCard.h"
-#import "UIVIew+AutoLayout.h"
+#import "UIView+Autolayout.h"
 
 @interface VContentVideoCell () <VCVideoPlayerDelegate, VAdVideoPlayerViewControllerDelegate>
 

@@ -21,7 +21,7 @@
 #import "VThemeManager.h"
 #import "VSettingManager.h"
 #import "VStreamWebViewController.h"
-#import "UIVIew+AutoLayout.h"
+#import "UIView+Autolayout.h"
 
 @interface VMarqueeStreamItemCell ()
 

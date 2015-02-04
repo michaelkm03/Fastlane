@@ -7,7 +7,7 @@
 //
 
 #import "VStreamWebViewController.h"
-#import "UIVIew+AutoLayout.h"
+#import "UIView+Autolayout.h"
 #import "VThemeManager.h"
 #import "VWebViewFactory.h"
 #import "VSequence+Fetcher.h"
