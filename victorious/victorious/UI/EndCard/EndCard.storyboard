@@ -87,6 +87,7 @@
                         <outlet property="animator" destination="ya8-KX-V6i" id="Zqf-Uw-C27"/>
                         <outlet property="nextVideoBannerViewBottomConstraint" destination="7FY-ce-WpG" id="WRB-t0-uKw"/>
                         <outlet property="replayButton" destination="kBa-Ie-pAI" id="fir-9c-9sH"/>
+                        <outlet property="videoSettings" destination="mtO-ei-bO5" id="FyD-Qw-PpG"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PAV-mp-6iF" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -98,6 +99,7 @@
                         <outlet property="replayButton" destination="kBa-Ie-pAI" id="kqd-Wn-ND0"/>
                     </connections>
                 </customObject>
+                <customObject id="mtO-ei-bO5" customClass="VVideoSettings"/>
             </objects>
             <point key="canvasLocation" x="884" y="423.5"/>
         </scene>

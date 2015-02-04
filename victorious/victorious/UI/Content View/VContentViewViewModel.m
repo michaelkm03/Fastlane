@@ -229,22 +229,22 @@
         
         action = [[VEndCardActionModel alloc] init];
         action.identifier = VEndCardActionIdentifierGIF;
-        action.textLabel = NSLocalizedString( @"GIF", @"Created a GIF from this video" );
-        action.iconImageName = @"action_gif";
+        action.textLabelDefault = NSLocalizedString( @"GIF", @"Created a GIF from this video" );
+        action.iconImageNameDefault = @"action_gif";
         [actions addObject:action];
         
         action = [[VEndCardActionModel alloc] init];
         action.identifier = VEndCardActionIdentifierRepost;
-        action.textLabel = NSLocalizedString( @"Repost", @"Post a copy of this video" );
+        action.textLabelDefault = NSLocalizedString( @"Repost", @"Post a copy of this video" );
         action.textLabelSuccess = NSLocalizedString( @"Reposted", @"Indicating the vidoe has already been reposted." );
-        action.iconImageName = @"action_repost";
-        action.successImageName = @"action_success";
+        action.iconImageNameDefault = @"action_repost";
+        action.iconImageNameSuccess = @"action_success";
         [actions addObject:action];
         
         action = [[VEndCardActionModel alloc] init];
         action.identifier = VEndCardActionIdentifierShare;
-        action.textLabel = NSLocalizedString( @"Share", @"Share this video" );
-        action.iconImageName = @"action_share";
+        action.textLabelDefault = NSLocalizedString( @"Share", @"Share this video" );
+        action.iconImageNameDefault = @"action_share";
         [actions addObject:action];
         
         endCardModel.actions = [NSArray arrayWithArray:actions];
@@ -273,7 +273,6 @@
         endCardModel.videoAuthorProfileImageURL = [NSURL URLWithString:nextSequence.user.pictureUrl];
         endCardModel.countdownDuration = self.sequence.endCard.countdownDuration.unsignedIntegerValue;
         endCardModel.dependencyManager = self.dependencyManager;
-        self.videoViewModel.endCardViewModel = endCardModel;
         self.videoViewModel.endCardViewModel = endCardModel;
     }
     

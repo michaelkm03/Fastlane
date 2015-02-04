@@ -44,16 +44,17 @@ static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
 @property (weak, nonatomic) IBOutlet UITableViewCell *serverEnvironmentCell;
 @property (weak, nonatomic) IBOutlet UITableViewCell *videoAutoplayCell;
 @property (weak, nonatomic) IBOutlet UITableViewCell *resetPurchasesCell;
+@property (nonatomic, weak) IBOutlet UILabel *versionString;
 
-@property (nonatomic, assign) BOOL    showChromeCastButton;
-@property (nonatomic, assign) BOOL    showEnvironmentSetting;
-@property (nonatomic, assign) BOOL    showPushNotificationSettings;
-@property (nonatomic, assign) BOOL    showPurchaseSettings;
+@property (nonatomic, assign) BOOL showChromeCastButton;
+@property (nonatomic, assign) BOOL showEnvironmentSetting;
+@property (nonatomic, assign) BOOL showPushNotificationSettings;
+@property (nonatomic, assign) BOOL showPurchaseSettings;
 
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *labels;
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *rightLabels;
 
-@property (nonatomic, weak) IBOutlet    UILabel    *versionString;
+@property (nonatomic, weak) IBOutlet VVideoSettings *videoSettings;
 
 @end
 
@@ -101,7 +102,7 @@ static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
     
     self.serverEnvironmentCell.detailTextLabel.text = [[VObjectManager currentEnvironment] name];
     
-    self.videoAutoplayCell.detailTextLabel.text = [VVideoSettings displayNameForSetting:[VVideoSettings autoplaySetting]];
+    self.videoAutoplayCell.detailTextLabel.text = [self.videoSettings displayNameForCurrentSetting];
     
     [self updatePurchasesCount];
     

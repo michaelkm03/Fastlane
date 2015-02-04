@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="PNZ-XS-GB1">
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -380,6 +379,7 @@
                         <outlet property="serverEnvironmentCell" destination="nwQ-31-lr9" id="9C9-vy-t7z"/>
                         <outlet property="versionString" destination="OZa-mN-lgJ" id="DGz-Dz-6bv"/>
                         <outlet property="videoAutoplayCell" destination="o9H-Lc-cTM" id="mao-A8-Tjv"/>
+                        <outlet property="videoSettings" destination="KZM-ng-iup" id="OZ1-vl-E2G"/>
                         <outletCollection property="labels" destination="xmy-by-M88" id="3hy-7b-8ZA"/>
                         <outletCollection property="labels" destination="Ywp-Nm-FQ2" id="bbs-pw-Jaq"/>
                         <outletCollection property="labels" destination="4KJ-ZF-Avs" id="L0O-TB-Bvq"/>
@@ -396,6 +396,7 @@
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pFQ-S7-584" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <customObject id="KZM-ng-iup" customClass="VVideoSettings"/>
             </objects>
             <point key="canvasLocation" x="-4828" y="-2426"/>
         </scene>

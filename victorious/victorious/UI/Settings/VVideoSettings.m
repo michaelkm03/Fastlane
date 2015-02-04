@@ -13,7 +13,7 @@ static NSString * const kVideoAutoplaySettingKey = @"com.getvictorious.settings.
 
 @implementation VVideoSettings
 
-+ (NSString *)displayNameForSetting:(VAutoplaySetting)setting
+- (NSString *)displayNameForSetting:(VAutoplaySetting)setting
 {
     switch (setting)
     {
@@ -30,12 +30,18 @@ static NSString * const kVideoAutoplaySettingKey = @"com.getvictorious.settings.
     return nil;
 }
 
-+ (void)setAutoPlaySetting:(VAutoplaySetting)setting
+- (NSString *)displayNameForCurrentSetting
+{
+    VAutoplaySetting currentAutoplaySetting = [self autoplaySetting];
+    return [self displayNameForSetting:currentAutoplaySetting];
+}
+
+- (void)setAutoPlaySetting:(VAutoplaySetting)setting
 {
     [[NSUserDefaults standardUserDefaults] setObject:@(setting) forKey:kVideoAutoplaySettingKey];
 }
 
-+ (VAutoplaySetting)autoplaySetting
+- (VAutoplaySetting)autoplaySetting
 {
     id value = [[NSUserDefaults standardUserDefaults] objectForKey:kVideoAutoplaySettingKey];
     if ( [value isKindOfClass:[NSNumber class]] )
@@ -50,7 +56,7 @@ static NSString * const kVideoAutoplaySettingKey = @"com.getvictorious.settings.
     return VAutoplaySettingAlways;
 }
 
-+ (BOOL)isAutoplayEnabled
+- (BOOL)isAutoplayEnabled
 {
     VAutoplaySetting currentSetting = [self autoplaySetting];
     switch ( currentSetting )

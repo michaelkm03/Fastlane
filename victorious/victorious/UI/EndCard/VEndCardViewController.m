@@ -15,16 +15,16 @@
 static const BOOL kForceIOS7 = NO;
 static NSString * const kStoryboardName = @"EndCard";
 
-@interface VEndCardViewController () <UICollectionViewDataSource, UICollectionViewDelegate, VEndCardBannerViewController>
+@interface VEndCardViewController () <UICollectionViewDataSource, UICollectionViewDelegate, VEndCardBannerViewControllerDelegate>
 
 @property (nonatomic, strong) VEndCardBannerViewController *nextVideoBannerViewController;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *nextVideoBannerViewBottomConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *nextVideoBannerViewBottomConstraint;
 @property (nonatomic, assign) CGFloat nextVideoBannerViewBottomMax;
 
-@property (weak, nonatomic, readwrite) IBOutlet UICollectionView *actionsCollectionView;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *actionsCollectionViewWidthConstraint;
-@property (weak, nonatomic) IBOutlet UIButton *replayButton;
-@property (strong, nonatomic) UIView *backgroundView;
+@property (nonatomic, weak, readwrite) IBOutlet UICollectionView *actionsCollectionView;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *actionsCollectionViewWidthConstraint;
+@property (nonatomic, weak) IBOutlet UIButton *replayButton;
+@property (nonatomic, strong) UIView *backgroundView;
 @property (nonatomic, strong) NSURL *nextVideoURL;
 
 @property (nonatomic, strong) NSArray *actions;
@@ -37,7 +37,8 @@ static NSString * const kStoryboardName = @"EndCard";
 @property (nonatomic, assign) CGFloat maxViewHeight;
 @property (nonatomic, assign) CGFloat minViewHeight;
 
-@property (weak, nonatomic) IBOutlet VEndCardAnimator *animator;
+@property (nonatomic, weak) IBOutlet VVideoSettings *videoSettings;
+@property (nonatomic, weak) IBOutlet VEndCardAnimator *animator;
 
 @end
 
@@ -116,18 +117,9 @@ static NSString * const kStoryboardName = @"EndCard";
         return;
     }
     
-    if ( NSClassFromString( @"UIBlurEffect" ) != nil && !kForceIOS7 )
-    {
-        UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
-        UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
-        self.backgroundView = blurEffectView;
-    }
-    else
-    {
-        UIView *overlayView = [[UIView alloc] initWithFrame:self.view.bounds];
-        overlayView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.8f];
-        self.backgroundView = overlayView;
-    }
+    UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+    UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
+    self.backgroundView = blurEffectView;
     [self.view addSubview:self.backgroundView];
     [self.view sendSubviewToBack:self.backgroundView];
     NSDictionary *views = @{ @"view" : self.backgroundView };
@@ -172,7 +164,7 @@ static NSString * const kStoryboardName = @"EndCard";
     
     [self.animator transitionInAllWithCompletion:^
      {
-         if ( [VVideoSettings isAutoplayEnabled] )
+         if ( [self.videoSettings isAutoplayEnabled] )
          {
              [self.nextVideoBannerViewController startCountdownWithDuration:self.countdownDuration];
          }

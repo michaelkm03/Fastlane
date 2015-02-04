@@ -12,26 +12,51 @@
 
 @class VEndCardModel, VDependencyManager;
 
-@protocol VEndCardBannerViewController <NSObject>
+@protocol VEndCardBannerViewControllerDelegate <NSObject>
 
 - (void)nextVideoSelected;
 
 @end
 
+/**
+ A subview of `VEndCardViewController` that displays info about the next video
+ in the stream or playlist.
+ */
 @interface VEndCardBannerViewController : UIViewController
 
-@property (nonatomic, weak) id<VEndCardBannerViewController> delegate;
+@property (nonatomic, weak) id<VEndCardBannerViewControllerDelegate> delegate;
 
+/**
+ Used to configure subviews with values assigned to properties of `VEndCardModel`.
+ */
 - (void)configureWithModel:(VEndCardModel *)model;
 
+/**
+ Used to configure subviews with values provided by a `VDependencyManager` instance.
+ */
+- (void)configureWithDependencyManager:(VDependencyManager *)dependencyManager;
+
+/**
+ Play the countdown animation starting at the specified duration,
+ after which the `nextVideoSelected` method of `VEndCardBannerViewControllerDelegate`
+ will be called.
+*/
 - (void)startCountdownWithDuration:(NSUInteger)duration;
 
-- (void)resetNextVideoDetails;
-
-- (void)showNextVideoDetails;
-
+/**
+ Stop the countdown to the next video and fade out the countdown view.
+ */
 - (void)stopCountdown;
 
-- (void)configureWithDependencyManager:(VDependencyManager *)dependencyManager;
+/**
+ Clear out any values populated to views, essentially returning
+ this view controller to its default, unconfigured state.
+ */
+- (void)resetNextVideoDetails;
+
+/**
+ Transition in with animation.
+ */
+- (void)showNextVideoDetails;
 
 @end

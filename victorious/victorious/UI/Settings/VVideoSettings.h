@@ -8,6 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
+/**
+ Values for the autoplay setting that determine when autoplay of
+ the next video in a stream or playlist should be enabled.
+ */
 typedef NS_ENUM( NSUInteger, VAutoplaySetting )
 {
     VAutoplaySettingAlways,
@@ -16,15 +20,32 @@ typedef NS_ENUM( NSUInteger, VAutoplaySetting )
     VAutoplaySettingCount
 };
 
-
 @interface VVideoSettings : UIViewController
 
-+ (NSString *)displayNameForSetting:(VAutoplaySetting)setting;
+/**
+ Returns a localized string representing the user-facing display name of the provided setting.
+ */
+- (NSString *)displayNameForSetting:(VAutoplaySetting)setting;
 
-+ (void)setAutoPlaySetting:(VAutoplaySetting)setting;
+/**
+ Returns a localized string representing the user-facing display name of the current setting.
+ */
+- (NSString *)displayNameForCurrentSetting;
 
-+ (VAutoplaySetting)autoplaySetting;
+/**
+ Set the current setting, usually in response to a user actions.
+ */
+- (void)setAutoPlaySetting:(VAutoplaySetting)setting;
 
-+ (BOOL)isAutoplayEnabled;
+/**
+ Get the current autoplay setting.
+ */
+- (VAutoplaySetting)autoplaySetting;
+
+/**
+ A simple flag that handles checking the current internet connection and 
+ the autoplay setting to let calling code know if autoplay should be enabled.
+ */
+- (BOOL)isAutoplayEnabled;
 
 @end

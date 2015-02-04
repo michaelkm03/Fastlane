@@ -1493,7 +1493,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
                                                                                   node:self.viewModel.currentNode
                                                                             completion:^(BOOL finished)
                           {
-                              [actionCell showSuccess];
+                              [actionCell showSuccessState];
                           }];
         if ( canRepost )
         {

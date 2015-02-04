@@ -12,6 +12,8 @@
 
 @interface VAutoplaySettingsViewController ()
 
+@property (weak, nonatomic) IBOutlet VVideoSettings *videoSettings;
+
 @end
 
 @implementation VAutoplaySettingsViewController
@@ -33,9 +35,9 @@
     static NSString * const reuseID = @"serverCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseID forIndexPath:indexPath];
     cell.textLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
-    cell.textLabel.text = [VVideoSettings displayNameForSetting:(VAutoplaySetting)indexPath.row];
+    cell.textLabel.text = [self.videoSettings displayNameForSetting:(VAutoplaySetting)indexPath.row];
     
-    VAutoplaySetting currentSetting = [VVideoSettings autoplaySetting];
+    VAutoplaySetting currentSetting = [self.videoSettings autoplaySetting];
     cell.accessoryType = indexPath.row == currentSetting ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
 
     return cell;
@@ -51,7 +53,7 @@
     
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     cell.accessoryType = UITableViewCellAccessoryCheckmark;
-    [VVideoSettings setAutoPlaySetting:indexPath.row];
+    [self.videoSettings setAutoPlaySetting:indexPath.row];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 

@@ -15,12 +15,11 @@ static const CGFloat kDisabledAlpha     = 0.5f;
 
 @interface VEndCardActionCell ()
 
-@property (weak, nonatomic) IBOutlet UILabel *actionLabel;
-@property (weak, nonatomic) IBOutlet UIImageView *iconImageView;
-@property (weak, nonatomic) IBOutlet UIView *containerView;
-@property (strong, nonatomic) NSString *successImageName;
-@property (strong, nonatomic) NSString *textLabelSuccess;
+@property (nonatomic, weak) IBOutlet UILabel *actionLabel;
+@property (nonatomic, weak) IBOutlet UIImageView *iconImageView;
+@property (nonatomic, weak) IBOutlet UIView *containerView;
 @property (nonatomic, readwrite) NSString *actionIdentifier;
+@property (nonatomic, strong) VEndCardActionModel *model;
 
 @end
 
@@ -57,11 +56,11 @@ static const CGFloat kDisabledAlpha     = 0.5f;
 
 - (void)setModel:(VEndCardActionModel *)model
 {
-    self.actionLabel.text = model.textLabel;
-    self.textLabelSuccess = model.textLabelSuccess;
-    self.iconImageView.image = [UIImage imageNamed:model.iconImageName];
-    self.successImageName = model.successImageName;
-    self.actionIdentifier = model.identifier;
+    _model = model;
+    
+    self.actionIdentifier = _model.identifier;
+    
+    [self showDefaultState];
 }
 
 - (void)setFont:(UIFont *)font
@@ -82,16 +81,22 @@ static const CGFloat kDisabledAlpha     = 0.5f;
     [super setSelected:selected];
 }
 
-- (void)showSuccess
+- (void)showDefaultState
 {
-    if ( self.successImageName != nil )
+    self.actionLabel.text = self.model.textLabelDefault;
+    self.iconImageView.image = [UIImage imageNamed:self.model.iconImageNameDefault];
+}
+
+- (void)showSuccessState
+{
+    if ( self.model.iconImageNameSuccess != nil )
     {
-        self.iconImageView.image = [UIImage imageNamed:self.successImageName];
+        self.iconImageView.image = [UIImage imageNamed:self.model.iconImageNameSuccess];
     }
     
-    if ( self.textLabelSuccess != nil )
+    if ( self.model.textLabelSuccess != nil )
     {
-        self.actionLabel.text = self.textLabelSuccess;
+        self.actionLabel.text = self.model.textLabelSuccess;
     }
     
     [self playActionCompleteAnimation];

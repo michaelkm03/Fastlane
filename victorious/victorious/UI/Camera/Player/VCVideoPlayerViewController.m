@@ -386,7 +386,6 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
         self.toolbarView.hidden = NO;
         self.overlayView.hidden = NO;
         self.toolbarView.alpha  =  0;
-        self.overlayView.alpha  =  0;
         self.toolbarAnimating = YES;
         [UIView animateWithDuration:kToolbarAnimationDuration
                               delay:0

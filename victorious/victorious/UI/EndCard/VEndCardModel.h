@@ -10,6 +10,9 @@
 
 @class VDependencyManager;
 
+/**
+ A model object used to hold configuration data for a `VEndCardViewController`.
+ */
 @interface VEndCardModel : NSObject
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
