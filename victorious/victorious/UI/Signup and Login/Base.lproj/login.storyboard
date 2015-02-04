@@ -190,7 +190,7 @@
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="E-mail" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Jbh-n4-soS" customClass="VTextField">
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="E-mail" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Jbh-n4-soS" customClass="VInlineValidationTextField">
                                         <rect key="frame" x="0.0" y="0.0" width="288" height="40"/>
                                         <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <constraints>
@@ -199,7 +199,7 @@
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="emailAddress" returnKeyType="next"/>
                                     </textField>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="3pO-cP-eTE" customClass="VTextField">
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="3pO-cP-eTE" customClass="VInlineValidationTextField">
                                         <rect key="frame" x="0.0" y="40" width="288" height="40"/>
                                         <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <constraints>
@@ -599,7 +599,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="E-mail" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="A3z-ra-4Af" customClass="VTextField">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="E-mail" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="A3z-ra-4Af" customClass="VInlineValidationTextField">
                                 <rect key="frame" x="16" y="46" width="288" height="50"/>
                                 <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <constraints>
@@ -615,7 +615,7 @@
                                     <constraint firstAttribute="height" constant="1" id="7ZB-1g-0iw"/>
                                 </constraints>
                             </view>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" clearsOnBeginEditing="YES" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="UDE-m8-fBQ" customClass="VTextField">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" clearsOnBeginEditing="YES" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="UDE-m8-fBQ" customClass="VInlineValidationTextField">
                                 <rect key="frame" x="16" y="96" width="288" height="50"/>
                                 <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <constraints>
@@ -631,7 +631,7 @@
                                     <constraint firstAttribute="height" constant="1" id="HG7-zR-str"/>
                                 </constraints>
                             </view>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Confirm Password" clearsOnBeginEditing="YES" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="g23-E6-rHp" customClass="VTextField">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Confirm Password" clearsOnBeginEditing="YES" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="g23-E6-rHp" customClass="VInlineValidationTextField">
                                 <rect key="frame" x="16" y="146" width="288" height="50"/>
                                 <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <constraints>

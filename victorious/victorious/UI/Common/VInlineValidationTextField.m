@@ -1,12 +1,12 @@
 //
-//  VTextField.m
+//  VInlineValidationTextField.m
 //  victorious
 //
 //  Created by Michael Sena on 2/2/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VTextField.h"
+#import "VInlineValidationTextField.h"
 
 // Theme
 #import "VThemeManager.h"
@@ -22,7 +22,7 @@ static const CGFloat kSideInset = 10.0f;
 
 @import AudioToolbox;
 
-@interface VTextField ()
+@interface VInlineValidationTextField ()
 
 @property (nonatomic, strong) VInlineValidationView *inlineValidationView;
 
@@ -30,7 +30,7 @@ static const CGFloat kSideInset = 10.0f;
 
 @end
 
-@implementation VTextField
+@implementation VInlineValidationTextField
 
 - (void)dealloc
 {
@@ -143,7 +143,7 @@ static const CGFloat kSideInset = 10.0f;
     _validator = validator;
 }
 
-- (void)incorrectTextAnimationAndVibration
+- (void)showIncorrectTextAnimationAndVibration
 {
     AudioServicesPlayAlertSound(kSystemSoundID_Vibrate);
     

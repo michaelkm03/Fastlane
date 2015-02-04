@@ -608,9 +608,8 @@
 		D8AF00F11A129CD100B147C4 /* VHashTagTextViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D8AF00F01A129CD100B147C4 /* VHashTagTextViewTests.m */; };
 		D8AF00F21A129FB000B147C4 /* VHashTagTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = D8AF00EE1A128A7200B147C4 /* VHashTagTextView.m */; };
 		D8B14E0819DA3B0B004D72D2 /* VShrinkingContentLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B14E0719DA3B0B004D72D2 /* VShrinkingContentLayout.m */; };
-		D8B70FE71A8015E500090C5E /* VTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B70FE61A8015E500090C5E /* VTextField.m */; };
+		D8B70FE71A8015E500090C5E /* VInlineValidationTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B70FE61A8015E500090C5E /* VInlineValidationTextField.m */; };
 		D8B70FEA1A805CC800090C5E /* VInlineValidationView.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B70FE91A805CC800090C5E /* VInlineValidationView.m */; };
-		D8B70FED1A81594600090C5E /* VLoginTransitionAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B70FEC1A81594600090C5E /* VLoginTransitionAnimator.m */; };
 		D8B827DA19D5FD8900CCD6D9 /* VActionItemTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B827D919D5FD8900CCD6D9 /* VActionItemTableViewCell.m */; };
 		D8B827DD19D5FDFE00CCD6D9 /* VDescriptionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B827DC19D5FDFE00CCD6D9 /* VDescriptionTableViewCell.m */; };
 		D8C1FD051A69C0F60072892B /* VToolController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8C1FD041A69C0F60072892B /* VToolController.m */; };
@@ -1775,12 +1774,10 @@
 		D8AF00F01A129CD100B147C4 /* VHashTagTextViewTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHashTagTextViewTests.m; sourceTree = "<group>"; };
 		D8B14E0619DA3B0B004D72D2 /* VShrinkingContentLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VShrinkingContentLayout.h; sourceTree = "<group>"; };
 		D8B14E0719DA3B0B004D72D2 /* VShrinkingContentLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VShrinkingContentLayout.m; sourceTree = "<group>"; };
-		D8B70FE51A8015E500090C5E /* VTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextField.h; sourceTree = "<group>"; };
-		D8B70FE61A8015E500090C5E /* VTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextField.m; sourceTree = "<group>"; };
+		D8B70FE51A8015E500090C5E /* VInlineValidationTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInlineValidationTextField.h; sourceTree = "<group>"; };
+		D8B70FE61A8015E500090C5E /* VInlineValidationTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInlineValidationTextField.m; sourceTree = "<group>"; };
 		D8B70FE81A805CC800090C5E /* VInlineValidationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInlineValidationView.h; sourceTree = "<group>"; };
 		D8B70FE91A805CC800090C5E /* VInlineValidationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInlineValidationView.m; sourceTree = "<group>"; };
-		D8B70FEB1A81594600090C5E /* VLoginTransitionAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLoginTransitionAnimator.h; sourceTree = "<group>"; };
-		D8B70FEC1A81594600090C5E /* VLoginTransitionAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VLoginTransitionAnimator.m; sourceTree = "<group>"; };
 		D8B827D819D5FD8900CCD6D9 /* VActionItemTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VActionItemTableViewCell.h; sourceTree = "<group>"; };
 		D8B827D919D5FD8900CCD6D9 /* VActionItemTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VActionItemTableViewCell.m; sourceTree = "<group>"; };
 		D8B827DB19D5FDFE00CCD6D9 /* VDescriptionTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDescriptionTableViewCell.h; sourceTree = "<group>"; };
@@ -2276,8 +2273,8 @@
 				A73A86C81A6EE39C008C6355 /* VVideoUtils.m */,
 				A73A87001A71ADF9008C6355 /* VVideoView.h */,
 				A73A87011A71ADF9008C6355 /* VVideoView.m */,
-				D8B70FE51A8015E500090C5E /* VTextField.h */,
-				D8B70FE61A8015E500090C5E /* VTextField.m */,
+				D8B70FE51A8015E500090C5E /* VInlineValidationTextField.h */,
+				D8B70FE61A8015E500090C5E /* VInlineValidationTextField.m */,
 				D8B70FE81A805CC800090C5E /* VInlineValidationView.h */,
 				D8B70FE91A805CC800090C5E /* VInlineValidationView.m */,
 			);
@@ -2558,8 +2555,6 @@
 		0314D40319B46B5E00FA363C /* Signup and Login */ = {
 			isa = PBXGroup;
 			children = (
-				D8B70FEB1A81594600090C5E /* VLoginTransitionAnimator.h */,
-				D8B70FEC1A81594600090C5E /* VLoginTransitionAnimator.m */,
 				0314D40419B46B5E00FA363C /* Find Friends */,
 				DB2A494919DF44EE00CB687B /* login.storyboard */,
 				A735323119DB60600040DB30 /* VAuthorizationViewControllerFactory.h */,
@@ -5174,7 +5169,6 @@
 				A70FC1131A2D61A000F5BBDE /* VProductsRequest.m in Sources */,
 				DBDBE6F11A16766400DA1BB2 /* VSequence.m in Sources */,
 				036AE5ED18FF0C0600A74BDA /* VReachability.m in Sources */,
-				D8B70FED1A81594600090C5E /* VLoginTransitionAnimator.m in Sources */,
 				037D2D5C1A1A588D00947A22 /* VDependencyManager+VObjectManager.m in Sources */,
 				0314D45F19B46B5E00FA363C /* VPhotoFilterSerialization.m in Sources */,
 				D8E39BDD19CB7C80007FD86A /* VContentVideoCell.m in Sources */,
@@ -5279,7 +5273,7 @@
 				BEDF0FC618DBC93B00750EF6 /* VVoteType.m in Sources */,
 				0314D2E319B46AF300FA363C /* VUserManager.m in Sources */,
 				D8360CF319E379C200D7E260 /* VExperienceEnhancer.m in Sources */,
-				D8B70FE71A8015E500090C5E /* VTextField.m in Sources */,
+				D8B70FE71A8015E500090C5E /* VInlineValidationTextField.m in Sources */,
 				0314D4DA19B46B5E00FA363C /* VSettingsViewController.m in Sources */,
 				D8C8F5731A0400DF006BE3E8 /* VExtendedView.m in Sources */,
 				0372587519D61B0800836B3F /* VUploadTaskCreator.m in Sources */,

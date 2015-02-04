@@ -13,7 +13,6 @@
 #import "UIImage+ImageEffects.h"
 #import "VProfileCreateViewController.h"
 #import "VUserManager.h"
-#import "VLoginTransitionAnimator.h"
 #import "VSignupTransitionAnimator.h"
 #import "UIImage+ImageCreation.h"
 #import <MBProgressHUD/MBProgressHUD.h>

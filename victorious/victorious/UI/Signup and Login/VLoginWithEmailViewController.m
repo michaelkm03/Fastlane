@@ -18,16 +18,15 @@
 #import "VUserManager.h"
 #import "VThemeManager.h"
 #import "UIImage+ImageEffects.h"
-#import "VLoginTransitionAnimator.h"
 #import "UIAlertView+VBlocks.h"
 #import "VPasswordValidator.h"
 #import "VEmailValidator.h"
 #import "VAutomation.h"
-#import "VTextField.h"
+#import "VInlineValidationTextField.h"
 
 @interface VLoginWithEmailViewController () <UITextFieldDelegate, UINavigationControllerDelegate, UIAlertViewDelegate>
-@property (nonatomic, weak) IBOutlet    VTextField     *usernameTextField;
-@property (nonatomic, weak) IBOutlet    VTextField     *passwordTextField;
+@property (nonatomic, weak) IBOutlet    VInlineValidationTextField     *usernameTextField;
+@property (nonatomic, weak) IBOutlet    VInlineValidationTextField     *passwordTextField;
 @property (nonatomic, weak) IBOutlet    UIButton       *loginButton;
 @property (nonatomic, weak) IBOutlet    UIButton       *cancelButton;
 @property (nonatomic, weak) IBOutlet    UIButton       *forgotPasswordButton;
@@ -136,7 +135,7 @@
     {
         self.usernameTextField.showInlineValidation = YES;
         [self.usernameTextField validateTextWithValidator:self.emailValidator];
-        [self.usernameTextField incorrectTextAnimationAndVibration];
+        [self.usernameTextField showIncorrectTextAnimationAndVibration];
         [self.usernameTextField becomeFirstResponder];
         return NO;
     }
@@ -145,7 +144,7 @@
     {
         self.passwordTextField.showInlineValidation = YES;
         [self.passwordTextField validateTextWithValidator:self.passwordValidator];
-        [self.passwordTextField incorrectTextAnimationAndVibration];
+        [self.passwordTextField showIncorrectTextAnimationAndVibration];
         [self.passwordTextField becomeFirstResponder];
         return NO;
     }
@@ -279,12 +278,12 @@
 
 #pragma mark - UITextFieldDelegate
 
-- (BOOL)textFieldShouldReturn:(VTextField *)textField
+- (BOOL)textFieldShouldReturn:(VInlineValidationTextField *)textField
 {
     if (![textField.validator validateString:textField.text
                                     andError:nil])
     {
-        [textField incorrectTextAnimationAndVibration];
+        [textField showIncorrectTextAnimationAndVibration];
         textField.showInlineValidation = YES;
     }
     
@@ -309,7 +308,7 @@
     if ([self.usernameTextField isFirstResponder] && !validUsername)
     {
         self.usernameTextField.showInlineValidation = YES;
-        [self.usernameTextField incorrectTextAnimationAndVibration];
+        [self.usernameTextField showIncorrectTextAnimationAndVibration];
     }
     
     BOOL validPassword = [self.passwordTextField.validator validateString:self.passwordTextField.text
@@ -317,7 +316,7 @@
     if ([self.passwordTextField isFirstResponder] && !validPassword)
     {
         self.passwordTextField.showInlineValidation = YES;
-        [self.passwordTextField incorrectTextAnimationAndVibration];
+        [self.passwordTextField showIncorrectTextAnimationAndVibration];
     }
     
     

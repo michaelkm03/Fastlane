@@ -21,13 +21,13 @@
 #import "VEmailValidator.h"
 #import "VAutomation.h"
 #import "VButton.h"
-#import "VTextField.h"
+#import "VInlineValidationTextField.h"
 
 @interface VSignupWithEmailViewController ()    <UITextFieldDelegate, UINavigationControllerDelegate, TTTAttributedLabelDelegate>
 
-@property (nonatomic, weak) IBOutlet VTextField *emailTextField;
-@property (nonatomic, weak) IBOutlet VTextField *passwordTextField;
-@property (nonatomic, weak) IBOutlet VTextField *confirmPasswordTextField;
+@property (nonatomic, weak) IBOutlet VInlineValidationTextField *emailTextField;
+@property (nonatomic, weak) IBOutlet VInlineValidationTextField *passwordTextField;
+@property (nonatomic, weak) IBOutlet VInlineValidationTextField *confirmPasswordTextField;
 @property (nonatomic, weak) IBOutlet    VButton       *cancelButton;
 @property (nonatomic, weak) IBOutlet    VButton       *signupButton;
 @property (nonatomic, strong)   VUser  *profile;
@@ -129,7 +129,7 @@
     {
         self.emailTextField.showInlineValidation = YES;
         [self.emailTextField becomeFirstResponder];
-        [self.emailTextField incorrectTextAnimationAndVibration];
+        [self.emailTextField showIncorrectTextAnimationAndVibration];
         return NO;
     }
 
@@ -141,12 +141,12 @@
         if (validationError.code == VErrorCodeInvalidPasswordsDoNotMatch)
         {
             self.confirmPasswordTextField.showInlineValidation = YES;
-            [self.confirmPasswordTextField incorrectTextAnimationAndVibration];
+            [self.confirmPasswordTextField showIncorrectTextAnimationAndVibration];
         }
         else
         {
             self.passwordTextField.showInlineValidation = YES;
-            [self.passwordTextField incorrectTextAnimationAndVibration];
+            [self.passwordTextField showIncorrectTextAnimationAndVibration];
         }
         
         return NO;
@@ -219,12 +219,12 @@
 
 #pragma mark - UITextFieldDelegate
 
-- (BOOL)textFieldShouldReturn:(VTextField *)textField
+- (BOOL)textFieldShouldReturn:(VInlineValidationTextField *)textField
 {
     if (![textField.validator validateString:textField.text
                                     andError:nil])
     {
-        [textField incorrectTextAnimationAndVibration];
+        [textField showIncorrectTextAnimationAndVibration];
         textField.showInlineValidation = YES;
     }
     
@@ -243,7 +243,7 @@
         if (![textField.validator validateString:textField.text
                                         andError:nil])
         {
-            [textField incorrectTextAnimationAndVibration];
+            [textField showIncorrectTextAnimationAndVibration];
             textField.showInlineValidation = YES;
             return NO;
         }
@@ -261,7 +261,7 @@
     if ([self.emailTextField isFirstResponder] && !validEmail)
     {
         self.emailTextField.showInlineValidation = YES;
-        [self.emailTextField incorrectTextAnimationAndVibration];
+        [self.emailTextField showIncorrectTextAnimationAndVibration];
     }
     
     BOOL validPassword = [self.passwordTextField.validator validateString:self.passwordTextField.text
@@ -269,7 +269,7 @@
     if ([self.passwordTextField isFirstResponder] && !validPassword)
     {
         self.passwordTextField.showInlineValidation = YES;
-        [self.passwordTextField incorrectTextAnimationAndVibration];
+        [self.passwordTextField showIncorrectTextAnimationAndVibration];
     }
     
     return YES;
