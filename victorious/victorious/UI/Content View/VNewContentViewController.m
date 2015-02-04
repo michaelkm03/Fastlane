@@ -1526,6 +1526,11 @@ referenceSizeForHeaderInSection:(NSInteger)section
     }
 }
 
+- (void)disableEndcardAutoplay
+{
+    [self.contentCell disableEndcardAutoplay];
+}
+
 #pragma mark - UINavigationControllerDelegate
 
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated

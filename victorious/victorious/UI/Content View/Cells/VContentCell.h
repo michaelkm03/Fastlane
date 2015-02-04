@@ -51,6 +51,11 @@
 - (void)playAnimation;
 
 /**
+ Stops the endcard's countdown timer, if the end card is showing
+ */
+- (void)disableEndcardAutoplay;
+
+/**
  Creates a new VEndCardViewController instances and adds it as a child
  above the video content, then plays the transition in animations.
  */

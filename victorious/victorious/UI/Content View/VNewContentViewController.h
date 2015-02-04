@@ -46,6 +46,8 @@
 + (VNewContentViewController *)contentViewControllerWithViewModel:(VContentViewViewModel *)viewModel
                                                 dependencyManager:(VDependencyManager *)dependencyManager;
 
+- (void)disableEndcardAutoplay;
+
 /**
  *  The viewModel that was passed in to the content viewController's factory method.
  */

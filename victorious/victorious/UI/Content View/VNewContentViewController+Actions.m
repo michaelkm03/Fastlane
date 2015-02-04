@@ -47,6 +47,8 @@
 {   
     NSMutableArray *actionItems = [[NSMutableArray alloc] init];
     
+    [self disableEndcardAutoplay];
+    
     VActionSheetViewController *actionSheetViewController = [VActionSheetViewController actionSheetViewController];
     VNewContentViewController *contentViewController = self;
     

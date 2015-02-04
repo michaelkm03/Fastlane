@@ -154,7 +154,12 @@ static NSString * const kStoryboardName = @"EndCard";
     [self.actionsCollectionView layoutIfNeeded];
 }
 
-#pragma mark - Public Animation Controls
+#pragma mark - Public / Animation Controls
+
+- (void)disableAutoplay
+{
+    [self.nextVideoBannerViewController stopCountdown];
+}
 
 - (void)transitionIn
 {
@@ -186,7 +191,8 @@ static NSString * const kStoryboardName = @"EndCard";
     [self updateContainerSize:nil];
     [self.containerSizeChangeTimer invalidate];
     
-    [self.nextVideoBannerViewController stopCountdown];
+    [self disableAutoplay];
+    
     [self.animator transitionOutAllWithBackground:withBackground completion:^void
      {
          [self.nextVideoBannerViewController resetNextVideoDetails];
@@ -248,7 +254,7 @@ static NSString * const kStoryboardName = @"EndCard";
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self.nextVideoBannerViewController stopCountdown];
+    [self disableAutoplay];
     VEndCardActionCell *actionCell = (VEndCardActionCell *)[collectionView cellForItemAtIndexPath:indexPath];
     if ( actionCell.enabled )
     {
@@ -263,10 +269,11 @@ static NSString * const kStoryboardName = @"EndCard";
     const CGFloat expandedRatio = (CGRectGetHeight(self.view.frame) - self.minViewHeight) / (self.maxViewHeight - self.minViewHeight);
     if ( expandedRatio < 1.0 )
     {
-        [self.nextVideoBannerViewController stopCountdown];
+        [self disableAutoplay];
     }
     
     self.animator.expandedRatio = expandedRatio;
 }
+
 
 @end

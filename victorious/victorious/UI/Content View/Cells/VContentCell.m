@@ -115,6 +115,11 @@
     return self.endCardViewController != nil;
 }
 
+- (void)disableEndcardAutoplay
+{
+    [self.endCardViewController disableAutoplay];
+}
+
 - (void)showEndCardWithViewModel:(VEndCardModel *)model
 {
     if ( self.endCardViewController == nil )

@@ -43,6 +43,11 @@
 @property (nonatomic, readonly) NSArray *actions;
 
 /**
+ Stops the autplay countdown timer and hides the countdown view
+ */
+- (void)disableAutoplay;
+
+/**
  Animates all elements into the view.
  */
 - (void)transitionIn;
