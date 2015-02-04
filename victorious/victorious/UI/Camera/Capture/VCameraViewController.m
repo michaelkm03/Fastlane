@@ -337,6 +337,9 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
     {
         case VCameraViewControllerStateDefault:
         {
+            self.capturedMediaURL = nil;
+            self.previewImage = nil;
+            
             self.didSelectAssetFromLibrary = NO;
             self.didSelectAssetFromLibrary = NO;
             
@@ -615,6 +618,8 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
 {
     self.animationCompleted = NO;
     __weak typeof(self) welf = self;
+    [self.KVOController unobserve:self.captureController.imageOutput
+                          keyPath:@"capturingStillImage"];
     [self.KVOController observe:self.captureController.imageOutput
                         keyPath:@"capturingStillImage"
                         options:NSKeyValueObservingOptionNew
