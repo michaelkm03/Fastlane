@@ -198,12 +198,6 @@
 - (void)addRemixToActionItems:(NSMutableArray *)actionItems
         contentViewController:(UIViewController *)contentViewController
 {
-    // Video remixes are not supported pre iOS8
-    if ([self.viewModel.sequence isVideo] && !UI_IS_IOS8_AND_HIGHER)
-    {
-        return;
-    }
-    
     if ([self.viewModel.sequence canRemix])
     {
         NSString *remixActionTitle = NSLocalizedString(@"Remix", @"");

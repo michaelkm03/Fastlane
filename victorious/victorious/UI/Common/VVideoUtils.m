@@ -46,15 +46,13 @@ static const Float64 kAssetLoopClipping = 0.08;
                    {
                        AVURLAsset *asset = [AVURLAsset URLAssetWithURL:itemURL options:nil];
                        __block AVPlayerItem *playerItem = nil;
-                       if ( loop && UI_IS_IOS8_AND_HIGHER )
+                       if ( loop )
                        {
-                           // This ain't working on iOS 7
                            AVComposition *composition = [self loopingCompositionWithAsset:asset];
                            playerItem = [AVPlayerItem playerItemWithAsset:composition];
                        }
                        else
                        {
-                           // So we'll just use this, which causes a little gap in the looping
                            playerItem = [AVPlayerItem playerItemWithAsset:asset];
                        }
                        

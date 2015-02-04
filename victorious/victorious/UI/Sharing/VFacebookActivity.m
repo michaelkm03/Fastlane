@@ -30,7 +30,7 @@ static NSString * const VFacebookActivityType = @"com.victorious.facebook";
 
 - (UIImage *)activityImage
 {
-    return UI_IS_IOS8_AND_HIGHER ? [UIImage imageNamed:@"uiactivity-facebook-color"] : [UIImage imageNamed:@"uiactivity-facebook"];
+    return [UIImage imageNamed:@"uiactivity-facebook-color"];
 }
 
 - (BOOL)canPerformWithActivityItems:(NSArray *)activityItems

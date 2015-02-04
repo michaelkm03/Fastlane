@@ -87,11 +87,6 @@ static CGFloat const kVActionButtonBuffer = 15;
 
 - (void)addRemixButton
 {
-    // Video remixes are not supported pre iOS8
-    if (self.sequence.isVideo && !UI_IS_IOS8_AND_HIGHER)
-    {
-        return;
-    }
     UIButton *button = [self addButtonWithImage:[UIImage imageNamed:@"remixIcon-C"]];
     [button addTarget:self action:@selector(remixAction:) forControlEvents:UIControlEventTouchUpInside];
 }
