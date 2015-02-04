@@ -189,7 +189,7 @@
     
     VUsersAndTagsSearchViewController *searchViewController = [VUsersAndTagsSearchViewController initWithDependencyManager:self.dependencyManager];
     searchViewController.transitioningDelegate = self.transitionDelegate;
-    self.navigationController.delegate = (id<UINavigationControllerDelegate>) searchViewController.transitioningDelegate;
+    self.navigationController.delegate = self.transitionDelegate;
     [self.navigationController pushViewController:searchViewController animated:YES];
 }
 

@@ -24,7 +24,7 @@
  to which types of view controllers are being transitioned to and from.  Return YES to allow
  the custom transition or NO to use the default transition.
  */
-- (BOOL)canPerformPushTransitionFrom:(UIViewController *)fromViewController to:(UIViewController *)toViewController;
+- (BOOL)canPerformCustomTransitionFrom:(UIViewController *)fromViewController to:(UIViewController *)toViewController;
 
 @required
 

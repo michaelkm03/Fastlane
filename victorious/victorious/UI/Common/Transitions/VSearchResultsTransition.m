@@ -8,15 +8,22 @@
 
 #import "VSearchResultsTransition.h"
 #import "VUsersAndTagsSearchViewController.h"
+#import "VDiscoverContainerViewController.h"
 
 // The position of the search bar in the from view controller on transition in adjusted for the status bar
 const static CGFloat kStartTopOffset = 36.0f;
 
 @implementation VSearchResultsTransition
 
-- (BOOL)canPerformPushTransitionFrom:(UIViewController *)fromViewController to:(UIViewController *)toViewController
+- (BOOL)canPerformCustomTransitionFrom:(UIViewController *)fromViewController to:(UIViewController *)toViewController
 {
-    return [toViewController isKindOfClass:[VUsersAndTagsSearchViewController class]] || [fromViewController isKindOfClass:[VUsersAndTagsSearchViewController class]];
+    BOOL isValidForward = [fromViewController isKindOfClass:[VDiscoverContainerViewController class]] &&
+                          [toViewController isKindOfClass:[VUsersAndTagsSearchViewController class]];
+    
+    BOOL isValidBackward = [toViewController isKindOfClass:[VDiscoverContainerViewController class]] &&
+                           [fromViewController isKindOfClass:[VUsersAndTagsSearchViewController class]];
+    
+    return isValidForward || isValidBackward;
 }
 
 - (void)prepareForTransitionIn:(VTransitionModel *)model
