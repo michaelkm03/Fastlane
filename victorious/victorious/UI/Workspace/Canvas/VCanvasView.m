@@ -8,7 +8,7 @@
 
 #import "VCanvasView.h"
 #import "CIImage+VImage.h"
-#import <UIImageView+AFNetworking.h>
+#import <UIImageView+WebCache.h>
 #import "VPhotoFilter.h"
 
 NSString * const VCanvasViewAssetSizeBecameAvailableNotification = @"VCanvasViewAssetSizeBecameAvailableNotification";
@@ -131,18 +131,16 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
         return;
     }
     
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
+    [self.imageView sd_setImageWithURL:URL placeholderImage:nil completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL)
+    {
+        
+        if (image)
+        {
+            imageFinishedLoadingBlock(image, YES);
+        }
+        
+    }];
     
-    [self.imageView setImageWithURLRequest:request
-                          placeholderImage:nil
-                                   success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image)
-     {
-         if (image)
-         {
-             imageFinishedLoadingBlock(image, YES);
-         }
-     }
-                                   failure:nil];
 }
 
 - (void)setSourceURL:(NSURL *)URL
