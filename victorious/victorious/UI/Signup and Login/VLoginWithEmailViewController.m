@@ -55,10 +55,14 @@
     self.usernameTextField.validator = [[VEmailValidator alloc] init];
     [self.usernameTextField applyTextFieldStyle:VTextFieldStyleLoginRegistration];
     self.usernameTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.usernameTextField.placeholder attributes:@{NSForegroundColorAttributeName : [UIColor colorWithWhite:0.14 alpha:1.0]}];
+    UIColor *activePlaceholderColor = [UIColor colorWithRed:102/255.0f green:102/255.0f blue:102/255.0f alpha:1.0f];
+    self.usernameTextField.activePlaceholder = [[NSAttributedString alloc] initWithString:self.usernameTextField.placeholder attributes:@{NSForegroundColorAttributeName : activePlaceholderColor}];
     
     self.passwordTextField.validator = [[VPasswordValidator alloc] init];
     [self.passwordTextField applyTextFieldStyle:VTextFieldStyleLoginRegistration];
     self.passwordTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.passwordTextField.placeholder attributes:@{NSForegroundColorAttributeName : [UIColor colorWithWhite:0.14 alpha:1.0]}];
+    self.passwordTextField.activePlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Minimum 8 Characters", @"Password character requirement.")
+                                                                               attributes:@{NSForegroundColorAttributeName : activePlaceholderColor}];
     
     self.cancelButton.layer.borderColor = [UIColor colorWithWhite:0.14 alpha:1.0].CGColor;
     self.cancelButton.layer.borderWidth = 2.0;
@@ -307,6 +311,16 @@
         self.usernameTextField.showInlineValidation = YES;
         [self.usernameTextField incorrectTextAnimationAndVibration];
     }
+    
+    BOOL validPassword = [self.passwordTextField.validator validateString:self.passwordTextField.text
+                                                              andError:nil];
+    if ([self.passwordTextField isFirstResponder] && !validPassword)
+    {
+        self.passwordTextField.showInlineValidation = YES;
+        [self.passwordTextField incorrectTextAnimationAndVibration];
+    }
+    
+    
     return YES;
 }
 

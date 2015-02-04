@@ -79,7 +79,7 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
     [super viewDidLoad];
     
     [self updateWithRegistrationModel];
-
+    
     self.view.layer.contents = (id)[[[VThemeManager sharedThemeManager] themedBackgroundImageForDevice] applyBlurWithRadius:25 tintColor:[UIColor colorWithWhite:1.0 alpha:0.7] saturationDeltaFactor:1.8 maskImage:nil].CGImage;
     
     self.profileImageView.layer.masksToBounds = YES;
@@ -102,10 +102,12 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
         self.usernameTextField.text = self.profile.name;
     }
 #pragma clang diagnostic pop
+    self.usernameTextField.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     self.usernameTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.usernameTextField.placeholder attributes:@{NSForegroundColorAttributeName :[UIColor colorWithWhite:0.355 alpha:1.000]}];
 
     
     self.locationTextField.delegate = self;
+    self.locationTextField.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     self.locationTextField.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
     if (self.profile.location)
     {
@@ -131,7 +133,7 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
     self.tagLinePlaceholderLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
     [self.tagLinePlaceholderLabel setTextColor:[UIColor colorWithWhite:0.355 alpha:1.000]];
 
-
+    self.taglineTextView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     self.taglineTextView.delegate = self;
     self.taglineTextView.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
     if (self.profile.tagline)

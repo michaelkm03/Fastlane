@@ -17,6 +17,11 @@ typedef NS_ENUM(NSInteger, VTextFieldStyle)
 
 @interface VTextField : UITextField
 
+/**
+ *  When VTextField is first responder this will replace the current placeholder.
+ */
+@property (nonatomic, strong) NSAttributedString *activePlaceholder;
+
 @property (nonatomic, strong) VStringValidator *validator;
 
 @property (nonatomic) BOOL showInlineValidation;

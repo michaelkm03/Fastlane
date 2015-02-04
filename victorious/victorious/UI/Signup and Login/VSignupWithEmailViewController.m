@@ -25,9 +25,9 @@
 
 @interface VSignupWithEmailViewController ()    <UITextFieldDelegate, UINavigationControllerDelegate, TTTAttributedLabelDelegate>
 
-@property (weak, nonatomic) IBOutlet VTextField *emailTextField;
-@property (weak, nonatomic) IBOutlet VTextField *passwordTextField;
-@property (weak, nonatomic) IBOutlet VTextField *confirmPasswordTextField;
+@property (nonatomic, weak) IBOutlet VTextField *emailTextField;
+@property (nonatomic, weak) IBOutlet VTextField *passwordTextField;
+@property (nonatomic, weak) IBOutlet VTextField *confirmPasswordTextField;
 @property (nonatomic, weak) IBOutlet    VButton       *cancelButton;
 @property (nonatomic, weak) IBOutlet    VButton       *signupButton;
 @property (nonatomic, strong)   VUser  *profile;
@@ -58,16 +58,20 @@
     
     self.emailTextField.validator = [[VEmailValidator alloc] init];
     [self.emailTextField applyTextFieldStyle:VTextFieldStyleLoginRegistration];
+        UIColor *activePlaceholderColor = [UIColor colorWithRed:102/255.0f green:102/255.0f blue:102/255.0f alpha:1.0f];
     self.emailTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.emailTextField.placeholder attributes:@{NSForegroundColorAttributeName : [UIColor colorWithWhite:0.14 alpha:1.0]}];
+    self.emailTextField.activePlaceholder = [[NSAttributedString alloc] initWithString:self.emailTextField.placeholder attributes:@{NSForegroundColorAttributeName: activePlaceholderColor}];
 
     self.passwordTextField.validator = [[VPasswordValidator alloc] init];
     [self.passwordTextField applyTextFieldStyle:VTextFieldStyleLoginRegistration];
     self.passwordTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.passwordTextField.placeholder attributes:@{NSForegroundColorAttributeName : [UIColor colorWithWhite:0.14 alpha:1.0]}];
+    self.passwordTextField.activePlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Minimum 8 characters", @"") attributes:@{NSForegroundColorAttributeName : activePlaceholderColor}];
     
     self.confirmPasswordTextField.validator = [[VPasswordValidator alloc] init];
     [self.confirmPasswordTextField applyTextFieldStyle:VTextFieldStyleLoginRegistration];
     self.confirmPasswordTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.confirmPasswordTextField.placeholder attributes:@{NSForegroundColorAttributeName : [UIColor colorWithWhite:0.14 alpha:1.0]}];
-
+    self.confirmPasswordTextField.activePlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Minimum 8 characters", @"") attributes:@{NSForegroundColorAttributeName : activePlaceholderColor}];
+    
     self.registrationModel = [[VRegistrationModel alloc] init];
     
     // Validators
@@ -87,11 +91,6 @@
     [super viewWillAppear:animated];
     
     [self.navigationController setNavigationBarHidden:YES animated:NO];
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -134,8 +133,8 @@
         return NO;
     }
 
-    [self.passwordValidator setConfirmationObject:self.confirmPasswordTextField
-                                      withKeyPath:NSStringFromSelector(@selector(text))];
+    [self.confirmPasswordTextField.validator setConfirmationObject:self.confirmPasswordTextField
+                                                       withKeyPath:NSStringFromSelector(@selector(text))];
     if (![self.passwordValidator validateString:self.passwordTextField.text
                                        andError:&validationError])
     {
@@ -250,6 +249,27 @@
         }
         [self signup:textField];
         [self.confirmPasswordTextField resignFirstResponder];
+    }
+    
+    return YES;
+}
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+    BOOL validEmail = [self.emailTextField.validator validateString:self.emailTextField.text
+                                                           andError:nil];
+    if ([self.emailTextField isFirstResponder] && !validEmail)
+    {
+        self.emailTextField.showInlineValidation = YES;
+        [self.emailTextField incorrectTextAnimationAndVibration];
+    }
+    
+    BOOL validPassword = [self.passwordTextField.validator validateString:self.passwordTextField.text
+                                                              andError:nil];
+    if ([self.passwordTextField isFirstResponder] && !validPassword)
+    {
+        self.passwordTextField.showInlineValidation = YES;
+        [self.passwordTextField incorrectTextAnimationAndVibration];
     }
     
     return YES;

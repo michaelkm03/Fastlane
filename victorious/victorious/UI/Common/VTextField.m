@@ -26,6 +26,8 @@ static const CGFloat kSideInset = 10.0f;
 
 @property (nonatomic, strong) VInlineValidationView *inlineValidationView;
 
+@property (nonatomic, strong) NSAttributedString *oldPlaceholder;
+
 @end
 
 @implementation VTextField
@@ -66,6 +68,27 @@ static const CGFloat kSideInset = 10.0f;
     self.inlineValidationView.hidden = !self.showInlineValidation;
     self.translatesAutoresizingMaskIntoConstraints = NO;
     [self addSubview:self.inlineValidationView];
+}
+
+#pragma mark - UIResponder
+
+- (BOOL)becomeFirstResponder
+{
+    if (self.activePlaceholder != nil)
+    {
+        self.oldPlaceholder = self.attributedPlaceholder;
+        self.attributedPlaceholder = self.activePlaceholder;
+    }
+    return [super becomeFirstResponder];
+}
+
+- (BOOL)resignFirstResponder
+{
+    if (self.oldPlaceholder)
+    {
+        self.attributedPlaceholder = self.oldPlaceholder;
+    }
+    return [super resignFirstResponder];
 }
 
 #pragma mark - UITextField
