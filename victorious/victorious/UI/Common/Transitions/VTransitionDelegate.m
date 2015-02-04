@@ -104,6 +104,13 @@
                                                 fromViewController:(UIViewController *)fromVC
                                                   toViewController:(UIViewController *)toVC
 {
+    if ( [self.transition respondsToSelector:@selector(canPerformPushTransitionFrom:to:)] )
+    {
+        if ( ![self.transition canPerformPushTransitionFrom:fromVC to:toVC] )
+        {
+            return nil;
+        }
+    }
     return self.animator;
 }
 
