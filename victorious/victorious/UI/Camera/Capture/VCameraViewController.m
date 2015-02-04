@@ -653,6 +653,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
     self.state = VCameraViewControllerStateWaitingOnHardwareImageCapture;
     [self.captureController captureStillWithCompletion:^(UIImage *image, NSError *error)
     {
+        image = [image fixOrientation];
         dispatch_async(dispatch_get_main_queue(), ^(void)
         {
             if (error)
@@ -728,6 +729,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
     }
     else
     {
+        [self.captureController setVideoOrientation:[UIDevice currentDevice].orientation];
         self.captureController.videoEncoder.recording = YES;
     }
     self.state = VCameraViewControllerStateRecording;
