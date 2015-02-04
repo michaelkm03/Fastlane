@@ -85,6 +85,8 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 
 #import "VCommentHighlighter.h"
 
+@property (nonatomic, strong) NSUserActivity *handoffObject;
+
 @property (nonatomic, strong, readwrite) VContentViewViewModel *viewModel;
 @property (nonatomic, strong) NSURL *mediaURL;
 @property (nonatomic, assign) BOOL hasAutoPlayed;
@@ -504,6 +506,10 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
+    self.handoffObject = [[NSUserActivity alloc] initWithActivityType:[NSString stringWithFormat:@"com.victorious.handoff.%@", self.viewModel.sequence.name]];
+    self.handoffObject.webpageURL = self.viewModel.shareURL;
+    [self.handoffObject becomeCurrent];
 
     [self.contentCollectionView flashScrollIndicators];
 }
@@ -511,6 +517,8 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
+    [self.handoffObject invalidate];
     
     // We don't care about these notifications anymore but we still care about new user loggedin
     [[NSNotificationCenter defaultCenter] removeObserver:self
