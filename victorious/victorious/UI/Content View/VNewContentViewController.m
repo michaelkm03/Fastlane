@@ -1473,7 +1473,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
     contentViewController.dependencyManagerForHistogramExperiment = self.dependencyManager;
     contentViewController.delegate = self.delegate;
     
-    self.navigationController.delegate = self;
+    self.navigationController.delegate = contentViewController;
     contentViewController.transitioningDelegate = self.repopulateTransitionDelegate;
     [self.navigationController pushViewController:contentViewController animated:YES];
 }
@@ -1482,7 +1482,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 {
     if ( [actionCell.actionIdentifier isEqualToString:VEndCardActionIdentifierGIF] )
     {
-        [self.sequenceActionController showRemixOnViewController:self
+        [self.sequenceActionController showRemixOnViewController:self.navigationController
                                                     withSequence:self.viewModel.sequence
                                             andDependencyManager:self.dependencyManager
                                                   preloadedImage:nil
@@ -1490,7 +1490,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
     }
     else if ( [actionCell.actionIdentifier isEqualToString:VEndCardActionIdentifierRepost] )
     {
-        BOOL canRepost = [self.sequenceActionController repostActionFromViewController:self
+        BOOL canRepost = [self.sequenceActionController repostActionFromViewController:self.navigationController
                                                                                   node:self.viewModel.currentNode
                                                                             completion:^(BOOL finished)
                           {
@@ -1503,7 +1503,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
     }
     else if ( [actionCell.actionIdentifier isEqualToString:VEndCardActionIdentifierShare] )
     {
-        [self.sequenceActionController shareFromViewController:self
+        [self.sequenceActionController shareFromViewController:self.navigationController
                                                       sequence:self.viewModel.sequence
                                                           node:self.viewModel.currentNode
                                                     completion:nil];
