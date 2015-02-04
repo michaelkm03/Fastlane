@@ -477,9 +477,19 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     self.contentCollectionView.scrollIndicatorInsets = UIEdgeInsetsMake(VShrinkingContentLayoutMinimumContentHeight, 0, CGRectGetHeight(self.textEntryView.bounds), 0);
     self.contentCollectionView.contentInset = UIEdgeInsetsMake(0, 0, CGRectGetHeight(self.textEntryView.bounds) , 0);
     
-    [self.blurredBackgroundImageView setBlurredImageWithClearImage:self.placeholderImage
-                                                  placeholderImage:[UIImage resizeableImageWithColor:[[UIColor whiteColor] colorWithAlphaComponent:0.7f]]
-                                                         tintColor:[[UIColor whiteColor] colorWithAlphaComponent:0.7f]];
+    if (self.viewModel.sequence.isImage)
+    {
+        [self.blurredBackgroundImageView setBlurredImageWithURL:self.viewModel.imageURLRequest.URL
+                                               placeholderImage:self.placeholderImage
+                                                      tintColor:nil];
+    }
+    else
+    {
+        [self.blurredBackgroundImageView setBlurredImageWithClearImage:self.placeholderImage
+                                                      placeholderImage:nil
+                                                             tintColor:nil];
+    }
+    
 
     if (self.viewModel.type == VContentViewTypeVideo)
     {
