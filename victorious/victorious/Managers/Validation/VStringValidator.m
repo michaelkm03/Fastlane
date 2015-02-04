@@ -31,8 +31,7 @@ NSString *const VValdationErrorTitleKey = @"VValdationErrorTitle";
     [alert show];
 }
 
-- (BOOL)validateString:(NSString *)string
-      withConfirmation:(NSString *)confirmationString
+- (BOOL)validateString:(NSString *)string 
               andError:(NSError **)error
 {
     NSAssert(false, @"Implement in subclasses!");
@@ -44,6 +43,10 @@ NSString *const VValdationErrorTitleKey = @"VValdationErrorTitle";
 {
     _confirmationObject = confirmationObject;
     _keyPath = keyPath;
+    if (_confirmationObject == nil)
+    {
+        return;
+    }
     id objectAtKeyPath = [confirmationObject valueForKeyPath:keyPath];
     NSAssert([objectAtKeyPath isKindOfClass:[NSString class]], @"Needs to resolve to an NSString");
 }

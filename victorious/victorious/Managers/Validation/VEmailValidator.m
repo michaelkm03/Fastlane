@@ -25,7 +25,7 @@ static NSString * const kVEmailValidateRegEx =
 - (BOOL)validateString:(NSString *)string
               andError:(NSError **)error
 {
-    if ( !string || string.length == 0 )
+    if ( (string == nil)  || string.length == 0 )
     {
         if (error != nil)
         {
