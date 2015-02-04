@@ -478,7 +478,6 @@
 		A7D7079A1A7C144C00D9993F /* VEndCardActionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D7078C1A7C144C00D9993F /* VEndCardActionCell.m */; };
 		A7D7079B1A7C144C00D9993F /* VEndCardActionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7D7078D1A7C144C00D9993F /* VEndCardActionCell.xib */; };
 		A7D7079C1A7C144C00D9993F /* VEndCardAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D7078F1A7C144C00D9993F /* VEndCardAnimator.m */; };
-		A7D7079D1A7C144C00D9993F /* VEndCardBannerButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D707911A7C144C00D9993F /* VEndCardBannerButton.m */; };
 		A7D7079E1A7C144C00D9993F /* VEndCardBannerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D707931A7C144C00D9993F /* VEndCardBannerViewController.m */; };
 		A7D7079F1A7C144C00D9993F /* VEndCardModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D707951A7C144C00D9993F /* VEndCardModel.m */; };
 		A7D707A01A7C144C00D9993F /* VEndCardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D707971A7C144C00D9993F /* VEndCardViewController.m */; };
@@ -1526,8 +1525,6 @@
 		A7D7078D1A7C144C00D9993F /* VEndCardActionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = VEndCardActionCell.xib; path = EndCard/VEndCardActionCell.xib; sourceTree = "<group>"; };
 		A7D7078E1A7C144C00D9993F /* VEndCardAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VEndCardAnimator.h; path = EndCard/VEndCardAnimator.h; sourceTree = "<group>"; };
 		A7D7078F1A7C144C00D9993F /* VEndCardAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VEndCardAnimator.m; path = EndCard/VEndCardAnimator.m; sourceTree = "<group>"; };
-		A7D707901A7C144C00D9993F /* VEndCardBannerButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VEndCardBannerButton.h; path = EndCard/VEndCardBannerButton.h; sourceTree = "<group>"; };
-		A7D707911A7C144C00D9993F /* VEndCardBannerButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VEndCardBannerButton.m; path = EndCard/VEndCardBannerButton.m; sourceTree = "<group>"; };
 		A7D707921A7C144C00D9993F /* VEndCardBannerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VEndCardBannerViewController.h; path = EndCard/VEndCardBannerViewController.h; sourceTree = "<group>"; };
 		A7D707931A7C144C00D9993F /* VEndCardBannerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VEndCardBannerViewController.m; path = EndCard/VEndCardBannerViewController.m; sourceTree = "<group>"; };
 		A7D707941A7C144C00D9993F /* VEndCardModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VEndCardModel.h; path = EndCard/VEndCardModel.h; sourceTree = "<group>"; };
@@ -3620,8 +3617,6 @@
 				A7E4EDEE1A81A4B30035D6B1 /* VEndCardActionModel.m */,
 				A7D7078E1A7C144C00D9993F /* VEndCardAnimator.h */,
 				A7D7078F1A7C144C00D9993F /* VEndCardAnimator.m */,
-				A7D707901A7C144C00D9993F /* VEndCardBannerButton.h */,
-				A7D707911A7C144C00D9993F /* VEndCardBannerButton.m */,
 				A7D707921A7C144C00D9993F /* VEndCardBannerViewController.h */,
 				A7D707931A7C144C00D9993F /* VEndCardBannerViewController.m */,
 				A7D707941A7C144C00D9993F /* VEndCardModel.h */,
@@ -5244,7 +5239,6 @@
 				D8F12A6D1A6F093900E99B3D /* VPublishParameters.m in Sources */,
 				0314D2E219B46AF300FA363C /* VThemeManager.m in Sources */,
 				D80BAB5A1A688D83003A3068 /* VWorkspaceFlowController.m in Sources */,
-				A7D7079D1A7C144C00D9993F /* VEndCardBannerButton.m in Sources */,
 				BE171E141868C211004E5202 /* VNode+RestKit.m in Sources */,
 				D86BF34A1A42234500C9F420 /* VPublishViewController.m in Sources */,
 				BE7D2E8E18EB65ED009E488E /* VVoteResult+RestKit.m in Sources */,
