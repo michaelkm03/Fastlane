@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
@@ -27,7 +26,7 @@
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="GIF" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dP3-P7-CtQ" userLabel="Label">
-                                <rect key="frame" x="4" y="71" width="64" height="21"/>
+                                <rect key="frame" x="0.0" y="71" width="72" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="tjT-8t-vLW"/>
                                 </constraints>
@@ -46,8 +45,8 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="dP3-P7-CtQ" firstAttribute="leading" secondItem="sXi-LA-A9E" secondAttribute="leading" constant="4" id="03B-Lp-lgz"/>
-                            <constraint firstAttribute="trailing" secondItem="dP3-P7-CtQ" secondAttribute="trailing" constant="4" id="08u-t4-nUH"/>
+                            <constraint firstItem="dP3-P7-CtQ" firstAttribute="leading" secondItem="sXi-LA-A9E" secondAttribute="leading" id="03B-Lp-lgz"/>
+                            <constraint firstAttribute="trailing" secondItem="dP3-P7-CtQ" secondAttribute="trailing" id="08u-t4-nUH"/>
                             <constraint firstItem="byw-ks-Wo1" firstAttribute="centerY" secondItem="4dH-V6-9dB" secondAttribute="centerY" id="93F-Gk-Rww"/>
                             <constraint firstAttribute="centerY" secondItem="4dH-V6-9dB" secondAttribute="centerY" constant="7.5" id="98I-67-Yfg"/>
                             <constraint firstAttribute="centerX" secondItem="4dH-V6-9dB" secondAttribute="centerX" constant="-0.5" id="EMj-nt-KS9"/>

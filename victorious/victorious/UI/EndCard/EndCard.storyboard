@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
     </dependencies>
     <scenes>
@@ -140,7 +139,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="UP NEXT" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GRV-jw-sfc">
-                                        <rect key="frame" x="12" y="17" width="126" height="49"/>
+                                        <rect key="frame" x="12" y="17" width="137" height="49"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
@@ -240,6 +239,7 @@
                         <outlet property="playlistTitleLabel" destination="9i3-gX-eT3" id="GDt-DR-Ijp"/>
                         <outlet property="upNextPromptContainer" destination="Dq8-bj-1hT" id="uBz-E3-ZmD"/>
                         <outlet property="upNextPromptContainerXConstraint" destination="p3I-73-eEC" id="DBA-4Z-j02"/>
+                        <outlet property="upNextTitleLabel" destination="GRV-jw-sfc" id="3ZZ-pi-Oa0"/>
                         <outlet property="videoInfoContainer" destination="EvO-bw-spe" id="s41-tq-HyA"/>
                         <outlet property="videoInfoContainerXConstraint" destination="qcn-m2-CUd" id="ujD-wb-ou8"/>
                         <outlet property="videoThumbnailImageView" destination="ELO-qU-CC6" id="LmW-l8-bSM"/>

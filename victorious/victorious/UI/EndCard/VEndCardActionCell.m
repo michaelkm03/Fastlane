@@ -19,6 +19,8 @@ static const CGFloat kDisabledAlpha     = 0.5f;
 @property (weak, nonatomic) IBOutlet UIImageView *iconImageView;
 @property (weak, nonatomic) IBOutlet UIView *containerView;
 @property (strong, nonatomic) NSString *successImageName;
+@property (strong, nonatomic) NSString *textLabelSuccess;
+@property (nonatomic, readwrite) NSString *actionIdentifier;
 
 @end
 
@@ -48,24 +50,26 @@ static const CGFloat kDisabledAlpha     = 0.5f;
     self.enabled = YES;
 }
 
-- (void)setTitle:(NSString *)title
-{
-    [self.actionLabel setText:title];
-}
-
-- (void)setImage:(UIImage *)image
-{
-    self.iconImageView.image = image;
-}
-
 - (void)setTitleAlpha:(CGFloat)alpha
 {
     self.actionLabel.alpha = alpha;
 }
 
-- (void)setSuccessImage:(NSString *)successImage
+- (void)setModel:(VEndCardActionModel *)model
 {
-    self.successImageName = successImage;
+    self.actionLabel.text = model.textLabel;
+    self.textLabelSuccess = model.textLabelSuccess;
+    self.iconImageView.image = [UIImage imageNamed:model.iconImageName];
+    self.successImageName = model.successImageName;
+    self.actionIdentifier = model.identifier;
+}
+
+- (void)setFont:(UIFont *)font
+{
+    if ( font != nil )
+    {
+        self.actionLabel.font = font;
+    }
 }
 
 - (void)setSelected:(BOOL)selected
@@ -80,7 +84,28 @@ static const CGFloat kDisabledAlpha     = 0.5f;
 
 - (void)showSuccess
 {
-    self.iconImageView.image = [UIImage imageNamed:self.successImageName];
+    if ( self.successImageName != nil )
+    {
+        self.iconImageView.image = [UIImage imageNamed:self.successImageName];
+    }
+    
+    if ( self.textLabelSuccess != nil )
+    {
+        self.actionLabel.text = self.textLabelSuccess;
+    }
+    
+    [self playActionCompleteAnimation];
+}
+
+- (void)setEnabled:(BOOL)enabled
+{
+    _enabled = enabled;
+    
+    self.containerView.alpha = enabled ? 1.0f : kDisabledAlpha;
+}
+
+- (void)playActionCompleteAnimation
+{
     [UIView animateWithDuration:0.15f
                           delay:0.0f
          usingSpringWithDamping:1.0f
@@ -102,13 +127,6 @@ static const CGFloat kDisabledAlpha     = 0.5f;
           }
                           completion:nil];
      }];
-}
-
-- (void)setEnabled:(BOOL)enabled
-{
-    _enabled = enabled;
-    
-    self.containerView.alpha = enabled ? 1.0f : kDisabledAlpha;
 }
 
 - (void)transitionInWithDuration:(NSTimeInterval)duration delay:(NSTimeInterval)delay

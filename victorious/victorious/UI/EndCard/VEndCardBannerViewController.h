@@ -10,7 +10,7 @@
 
 #import "VCountdownViewController.h"
 
-@class VEndCardModel;
+@class VEndCardModel, VDependencyManager;
 
 @protocol VEndCardBannerViewController <NSObject>
 
@@ -31,5 +31,7 @@
 - (void)showNextVideoDetails;
 
 - (void)stopCountdown;
+
+- (void)configureWithDependencyManager:(VDependencyManager *)dependencyManager;
 
 @end

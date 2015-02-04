@@ -7,22 +7,21 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "VEndCardActionModel.h"
 
 @interface VEndCardActionCell : UICollectionViewCell
 
 @property (nonatomic, assign) BOOL enabled;
 
-@property (nonatomic, strong) NSString *actionIdentifier;
+@property (nonatomic, readonly) NSString *actionIdentifier;
 
 + (NSString *)cellIdentifier;
 
 + (CGSize)minimumSize;
 
-- (void)setTitle:(NSString *)title;
+- (void)setModel:(VEndCardActionModel *)model;
 
-- (void)setImage:(UIImage *)image;
-
-- (void)setSuccessImage:(NSString *)successImage;
+- (void)setFont:(UIFont *)font;
 
 - (void)setTitleAlpha:(CGFloat)alpha;
 

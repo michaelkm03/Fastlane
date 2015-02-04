@@ -81,15 +81,14 @@
 #import "VSequenceActionController.h"
 #import "VRotationHelper.h"
 #import "VEndCard.h"
-#warning remove this once sequence end card is supported
-#import "VObjectManager+Sequence.h"
 #import "VContentRepopulateTransition.h"
+#import "VCommentHighlighter.h"
+#import "VEndCardActionModel.h"
 
 static const CGFloat kMaxInputBarHeight = 200.0f;
 
 @interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, VEndCardViewControllerDelegate>
 
-#import "VCommentHighlighter.h"
 
 @property (nonatomic, strong, readwrite) VContentViewViewModel *viewModel;
 @property (nonatomic, strong) NSURL *mediaURL;

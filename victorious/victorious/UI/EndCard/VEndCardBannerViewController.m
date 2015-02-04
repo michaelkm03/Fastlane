@@ -9,6 +9,7 @@
 #import "VEndCardBannerViewController.h"
 #import "VCountdownViewController.h"
 #import "VEndCardModel.h"
+#import "VDependencyManager.h"
 
 @interface VEndCardBannerViewController() <VCountDownViewDelegate>
 
@@ -18,10 +19,12 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *videoInfoContainerXConstraint;
 @property (nonatomic, assign) CGFloat videoInfoContainerXConstraintMax;
 
-@property (weak, nonatomic) IBOutlet UIImageView *videoThumbnailImageView;
 @property (weak, nonatomic) IBOutlet UILabel *playlistTitleLabel;
 @property (weak, nonatomic) IBOutlet UITextView *nextVideoTitleTextView;
 @property (weak, nonatomic) IBOutlet UILabel *nextVideoAuthorNameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *upNextTitleLabel;
+
+@property (weak, nonatomic) IBOutlet UIImageView *videoThumbnailImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *nextVideoAuthorImageView;
 @property (weak, nonatomic) IBOutlet VCountdownViewController *countdownViewController;
 
@@ -43,6 +46,11 @@
     
     self.nextVideoAuthorImageView.layer.cornerRadius = CGRectGetWidth( self.nextVideoAuthorImageView.frame ) * 0.5f;
     self.nextVideoAuthorImageView.clipsToBounds = YES;
+}
+
+- (void)configureWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    self.view.backgroundColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -112,7 +120,6 @@
     self.nextVideoAuthorNameLabel.text = model.videoAuthorName;
     self.videoThumbnailImageView.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:model.nextVideoThumbailImageURL]];
     self.nextVideoAuthorImageView.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:model.videoAuthorProfileImageURL]];
-    self.view.backgroundColor = model.bannerBackgroundColor;
 }
 
 #pragma mark - Actions

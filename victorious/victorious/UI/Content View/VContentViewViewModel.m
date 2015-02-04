@@ -49,6 +49,7 @@
 #import "VEndCardModel.h"
 #import "VDependencyManager.h"
 #import "VVideoSettings.h"
+#import "VEndCardActionModel.h"
 
 @interface VContentViewViewModel ()
 
@@ -214,59 +215,69 @@
 
 - (VEndCardModel *)createEndCardModel
 {
-    VEndCardModel *endCardModel = [[VEndCardModel alloc] init];
-    NSArray *actions = @[
-                         @{
-                             @"identifier" : VEndCardActionIdentifierGIF,
-                             @"name" : @"GIF",
-                             @"image_name" : @"action_gif",
-                             @"success_image_name" : @"action_success" },
-                         @{
-                             @"identifier" : VEndCardActionIdentifierRepost,
-                             @"name" : @"Repost",
-                             @"image_name" : @"action_repost",
-                             @"success_image_name" : @"action_success" },
-                         @{
-                             @"identifier" : VEndCardActionIdentifierShare,
-                             @"name" : @"Share",
-                             @"image_name" : @"action_share",
-                             @"success_image_name" : @"action_success" },
-                         ];
-    NSDictionary *endCardConfiguration = @{ @"actions" : actions };
-    VDependencyManager *endCardDependencyManager = [[VDependencyManager alloc] initWithParentManager:self.dependencyManager
-                                                                                       configuration:endCardConfiguration dictionaryOfClassesByTemplateName:nil];
+#warning This is hardcoded data for testing only. Delete this BOOL
+    BOOL useHardCodedData = YES;
+    
     VSequence *nextSequence = self.sequence.endCard.nextSequence;
     VStream *stream = nextSequence.streams.allObjects.firstObject;
-    if ( nextSequence )
+    if ( nextSequence || useHardCodedData )
     {
+        VEndCardModel *endCardModel = [[VEndCardModel alloc] init];
+        
+        NSMutableArray *actions = [[NSMutableArray alloc] init];
+        VEndCardActionModel *action = nil;
+        
+        action = [[VEndCardActionModel alloc] init];
+        action.identifier = VEndCardActionIdentifierGIF;
+        action.textLabel = NSLocalizedString( @"GIF", @"Created a GIF from this video" );
+        action.iconImageName = @"action_gif";
+        [actions addObject:action];
+        
+        action = [[VEndCardActionModel alloc] init];
+        action.identifier = VEndCardActionIdentifierRepost;
+        action.textLabel = NSLocalizedString( @"Repost", @"Post a copy of this video" );
+        action.textLabelSuccess = NSLocalizedString( @"Reposted", @"Indicating the vidoe has already been reposted." );
+        action.iconImageName = @"action_repost";
+        action.successImageName = @"action_success";
+        [actions addObject:action];
+        
+        action = [[VEndCardActionModel alloc] init];
+        action.identifier = VEndCardActionIdentifierShare;
+        action.textLabel = NSLocalizedString( @"Share", @"Share this video" );
+        action.iconImageName = @"action_share";
+        [actions addObject:action];
+        
+        endCardModel.actions = [NSArray arrayWithArray:actions];
+        
+        if ( useHardCodedData )
+        {
+            // In the real app, the dependency manager will be injected:
+            endCardModel.videoTitle = @"January Vacation Blog";
+            endCardModel.nextVideoTitle = @"Alejandro Manzano Grumpy Cat Boyce Avenue";
+            endCardModel.nextVideoThumbailImageURL = [NSURL URLWithString:@"http://media-dev-public.s3-website-us-west-1.amazonaws.com/75e022927c063573c9a79d5447f6d5aa/thumbnail-00003.jpg"];
+            endCardModel.streamName = @"Recent";
+            endCardModel.videoAuthorName = @"Jonathan Moore";
+            endCardModel.videoAuthorProfileImageURL = [NSURL URLWithString:@"http://media-dev-public.s3-website-us-west-1.amazonaws.com/39ce6fa60e5f369a3f6359298b0959c9/80x80.jpg"];
+            endCardModel.countdownDuration = 6000;
+            endCardModel.dependencyManager = self.dependencyManager;
+            self.videoViewModel.endCardViewModel = endCardModel;
+            
+            return endCardModel;
+        }
+        
         endCardModel.videoTitle = self.sequence.name;
         endCardModel.nextVideoTitle = nextSequence.name;
         endCardModel.nextVideoThumbailImageURL = [NSURL URLWithString:(NSString *)nextSequence.previewData];
         endCardModel.streamName = stream.name;
         endCardModel.videoAuthorName = nextSequence.user.name;
         endCardModel.videoAuthorProfileImageURL = [NSURL URLWithString:nextSequence.user.pictureUrl];
-        endCardModel.bannerBackgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
         endCardModel.countdownDuration = self.sequence.endCard.countdownDuration.unsignedIntegerValue;
-        endCardModel.dependencyManager = endCardDependencyManager;
+        endCardModel.dependencyManager = self.dependencyManager;
         self.videoViewModel.endCardViewModel = endCardModel;
-    }
-    else
-    {
-#warning This is hardcoded data for testing only. Delete this whole `else` block
-        // In the real app, the dependency manager will be injected:
-        endCardModel.videoTitle = @"January Vacation Blog";
-        endCardModel.nextVideoTitle = @"Alejandro Manzano Grumpy Cat Boyce Avenue";
-        endCardModel.nextVideoThumbailImageURL = [NSURL URLWithString:@"http://media-dev-public.s3-website-us-west-1.amazonaws.com/75e022927c063573c9a79d5447f6d5aa/thumbnail-00003.jpg"];
-        endCardModel.streamName = @"Recent";
-        endCardModel.videoAuthorName = @"Jonathan Moore";
-        endCardModel.videoAuthorProfileImageURL = [NSURL URLWithString:@"http://media-dev-public.s3-website-us-west-1.amazonaws.com/39ce6fa60e5f369a3f6359298b0959c9/80x80.jpg"];
-        endCardModel.bannerBackgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-        endCardModel.countdownDuration = 6000;
-        endCardModel.dependencyManager = endCardDependencyManager;
         self.videoViewModel.endCardViewModel = endCardModel;
     }
     
-    return endCardModel;
+    return nil;
 }
 
 - (void)reloadData

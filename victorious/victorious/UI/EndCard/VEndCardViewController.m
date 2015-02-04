@@ -69,18 +69,20 @@ static NSString * const kStoryboardName = @"EndCard";
     [super viewDidLoad];
     
     self.nextVideoBannerViewBottomMax = self.nextVideoBannerViewBottomConstraint.constant;
+    [self.nextVideoBannerViewController configureWithDependencyManager:self.dependencyManager];
     
     [self setupBackgroundView];
     self.animator.backgroundView = self.backgroundView;
     
     [self updateContainerSize:nil];
     
+    [self.replayButton.titleLabel setFont:[self.dependencyManager fontForKey:VDependencyManagerLabel3FontKey]];
     [self.replayButton setTitle:self.model.videoTitle forState:UIControlStateNormal];
     
     NSString *identifier = [VEndCardActionCell cellIdentifier];
     [self.actionsCollectionView registerNib:[UINib nibWithNibName:identifier bundle:nil] forCellWithReuseIdentifier:identifier];
     
-    self.actions = [self.dependencyManager arrayForKey:@"actions"];
+    self.actions = self.model.actions;
     
     self.nextVideoBannerViewController.delegate = self;
     
@@ -234,11 +236,9 @@ static NSString * const kStoryboardName = @"EndCard";
 {
     NSString *identifier = [VEndCardActionCell cellIdentifier];
     VEndCardActionCell *cell = (VEndCardActionCell *)[collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
-    NSDictionary *action = self.actions[ indexPath.row ];
-    [cell setImage:[UIImage imageNamed:action[ @"image_name" ]]];
-    [cell setTitle:action[ @"name" ]];
-    [cell setSuccessImage:action[ @"success_image_name" ]];
-    [cell setActionIdentifier:action[ @"identifier" ]];
+    VEndCardActionModel *actionModel = self.actions[ indexPath.row ];
+    [cell setModel:actionModel];
+    [cell setFont:[self.dependencyManager fontForKey:VDependencyManagerLabel2FontKey]];
     return cell;
 }
 
@@ -274,6 +274,5 @@ static NSString * const kStoryboardName = @"EndCard";
     
     self.animator.expandedRatio = expandedRatio;
 }
-
 
 @end

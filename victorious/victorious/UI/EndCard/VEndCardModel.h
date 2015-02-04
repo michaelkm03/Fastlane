@@ -10,11 +10,6 @@
 
 @class VDependencyManager;
 
-extern NSString * const VEndCardActionIdentifierRepost;
-extern NSString * const VEndCardActionIdentifierGIF;
-extern NSString * const VEndCardActionIdentifierShare;
-extern NSString * const VEndCardActionIdentifierMeme;
-
 @interface VEndCardModel : NSObject
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
@@ -24,7 +19,7 @@ extern NSString * const VEndCardActionIdentifierMeme;
 @property (nonatomic, strong) NSString *streamName;
 @property (nonatomic, strong) NSString *nextVideoTitle;
 @property (nonatomic, strong) NSURL *nextVideoThumbailImageURL;
-@property (nonatomic, strong) UIColor *bannerBackgroundColor;
+@property (nonatomic, strong) NSArray *actions;
 @property (nonatomic, assign) NSUInteger countdownDuration;
 
 @end
