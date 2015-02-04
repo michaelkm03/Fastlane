@@ -31,7 +31,7 @@
 {
     id<VSimpleModalTransitionPresentedViewController> vc = [self viewControllerFromModel:model];
     
-    if ( model != nil )
+    if ( model.snapshotOfOriginView != nil )
     {
         [vc.view addSubview:model.snapshotOfOriginView];
         [vc.view sendSubviewToBack:model.snapshotOfOriginView];

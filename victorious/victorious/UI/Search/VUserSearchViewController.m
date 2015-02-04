@@ -40,6 +40,8 @@
 #import "VObjectManager+Login.h"
 #import "UIStoryboard+VMainStoryboard.h"
 
+#import "VTrackingManager.h"
+
 @interface VUserSearchViewController () <UITextFieldDelegate>
 @property (nonatomic, weak) IBOutlet UIView *noResultsView;
 @property (nonatomic, weak) IBOutlet UIImageView *noResultsIcon;

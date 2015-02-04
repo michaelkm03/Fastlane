@@ -665,6 +665,9 @@
 		DB2A494719DF44EE00CB687B /* login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB2A494919DF44EE00CB687B /* login.storyboard */; };
 		DB2A494F19DF451600CB687B /* FindFriendsTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A495119DF451600CB687B /* FindFriendsTableView.xib */; };
 		DB2A495719DF455D00CB687B /* VEphemeralTimerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A495919DF455D00CB687B /* VEphemeralTimerView.xib */; };
+		DB2D6F651A7C12820050F963 /* VSearchResultsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB2D6F641A7C12820050F963 /* VSearchResultsTableViewController.m */; };
+		DB2D6F9F1A802B080050F963 /* VSearchResultsTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = DB2D6F9E1A802B080050F963 /* VSearchResultsTransition.m */; };
+		DB2D6FA21A8136160050F963 /* VSearchResultsNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB2D6FA11A8136160050F963 /* VSearchResultsNavigationController.m */; };
 		DB34DC5C1A09B5AF001EC711 /* VLiveRailAdViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB34DC5B1A09B5AF001EC711 /* VLiveRailAdViewController.m */; };
 		DB51C54219F86971005AA7B6 /* VAdBreakFallback+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = DB51C54119F86971005AA7B6 /* VAdBreakFallback+RestKit.m */; };
 		DB531B501A41F85500B4ADC8 /* VHashtagFollowingTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB531B4F1A41F85500B4ADC8 /* VHashtagFollowingTableViewController.m */; };
@@ -699,6 +702,9 @@
 		DBDDB8891A3F5A3900696071 /* VFollowHashtagControl.m in Sources */ = {isa = PBXBuildFile; fileRef = DBDDB8881A3F5A3900696071 /* VFollowHashtagControl.m */; };
 		DBE1077F1A2FFDCD005D303E /* VAdBreakFallback.m in Sources */ = {isa = PBXBuildFile; fileRef = DBE1077E1A2FFDCD005D303E /* VAdBreakFallback.m */; };
 		DBF77A291A416A57005BF1BE /* VProfileFollowingContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBF77A281A416A57005BF1BE /* VProfileFollowingContainerViewController.m */; };
+		DBF8B4AB1A78942900CFFD47 /* VUsersAndTagsSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBF8B4AA1A78942900CFFD47 /* VUsersAndTagsSearchViewController.m */; };
+		DBF8B4B11A79F8F300CFFD47 /* VUserSearchResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBF8B4B01A79F8F300CFFD47 /* VUserSearchResultsViewController.m */; };
+		DBF8B4B41A79F91300CFFD47 /* VTagsSearchResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBF8B4B31A79F91300CFFD47 /* VTagsSearchResultsViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1860,6 +1866,12 @@
 		D8FC09061A51DBC100E5FBE4 /* VPlaceholderTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPlaceholderTextView.m; sourceTree = "<group>"; };
 		D9A7055332AB197912A6EC01 /* Pods-test.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-test.debug.xcconfig"; path = "Pods/Target Support Files/Pods-test/Pods-test.debug.xcconfig"; sourceTree = "<group>"; };
 		DB2A48FA19DF2D9D00CB687B /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
+		DB2D6F631A7C12820050F963 /* VSearchResultsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSearchResultsTableViewController.h; sourceTree = "<group>"; };
+		DB2D6F641A7C12820050F963 /* VSearchResultsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSearchResultsTableViewController.m; sourceTree = "<group>"; };
+		DB2D6F9D1A802B080050F963 /* VSearchResultsTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSearchResultsTransition.h; sourceTree = "<group>"; };
+		DB2D6F9E1A802B080050F963 /* VSearchResultsTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSearchResultsTransition.m; sourceTree = "<group>"; };
+		DB2D6FA01A8136160050F963 /* VSearchResultsNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSearchResultsNavigationController.h; sourceTree = "<group>"; };
+		DB2D6FA11A8136160050F963 /* VSearchResultsNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSearchResultsNavigationController.m; sourceTree = "<group>"; };
 		DB34DC5A1A09B5AF001EC711 /* VLiveRailAdViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLiveRailAdViewController.h; sourceTree = "<group>"; };
 		DB34DC5B1A09B5AF001EC711 /* VLiveRailAdViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VLiveRailAdViewController.m; sourceTree = "<group>"; };
 		DB51C54019F86971005AA7B6 /* VAdBreakFallback+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VAdBreakFallback+RestKit.h"; sourceTree = "<group>"; };
@@ -1930,6 +1942,12 @@
 		DBE1077E1A2FFDCD005D303E /* VAdBreakFallback.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAdBreakFallback.m; sourceTree = "<group>"; };
 		DBF77A271A416A57005BF1BE /* VProfileFollowingContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VProfileFollowingContainerViewController.h; sourceTree = "<group>"; };
 		DBF77A281A416A57005BF1BE /* VProfileFollowingContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VProfileFollowingContainerViewController.m; sourceTree = "<group>"; };
+		DBF8B4A91A78942900CFFD47 /* VUsersAndTagsSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUsersAndTagsSearchViewController.h; sourceTree = "<group>"; };
+		DBF8B4AA1A78942900CFFD47 /* VUsersAndTagsSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUsersAndTagsSearchViewController.m; sourceTree = "<group>"; };
+		DBF8B4AF1A79F8F300CFFD47 /* VUserSearchResultsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUserSearchResultsViewController.h; sourceTree = "<group>"; };
+		DBF8B4B01A79F8F300CFFD47 /* VUserSearchResultsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUserSearchResultsViewController.m; sourceTree = "<group>"; };
+		DBF8B4B21A79F91300CFFD47 /* VTagsSearchResultsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTagsSearchResultsViewController.h; sourceTree = "<group>"; };
+		DBF8B4B31A79F91300CFFD47 /* VTagsSearchResultsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTagsSearchResultsViewController.m; sourceTree = "<group>"; };
 		E0F99C8D8C60943CBE645C0D /* Pods-victorious-test.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious-test.release.xcconfig"; path = "Pods/Target Support Files/Pods-victorious-test/Pods-victorious-test.release.xcconfig"; sourceTree = "<group>"; };
 		E8193ED8CA9746EB7E3D7AD2 /* Pods-victorious-test.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious-test.qa.xcconfig"; path = "Pods/Target Support Files/Pods-victorious-test/Pods-victorious-test.qa.xcconfig"; sourceTree = "<group>"; };
 		EDFC6598311E32933A2C83A7 /* Pods-test.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-test.staging.xcconfig"; path = "Pods/Target Support Files/Pods-test/Pods-test.staging.xcconfig"; sourceTree = "<group>"; };
@@ -3353,8 +3371,18 @@
 				A75FAF1219E8AC1E00EB87C1 /* VDiscoverViewController.h */,
 				A75FAF1319E8AC1E00EB87C1 /* VDiscoverViewController.m */,
 				A75FAF1419E8AC1E00EB87C1 /* VDiscoverViewControllerProtocol.h */,
+				DB2D6FA01A8136160050F963 /* VSearchResultsNavigationController.h */,
+				DB2D6FA11A8136160050F963 /* VSearchResultsNavigationController.m */,
+				DB2D6F631A7C12820050F963 /* VSearchResultsTableViewController.h */,
+				DB2D6F641A7C12820050F963 /* VSearchResultsTableViewController.m */,
 				A75FAF1519E8AC1E00EB87C1 /* VSuggestedPeopleCollectionViewController.h */,
 				A75FAF1619E8AC1E00EB87C1 /* VSuggestedPeopleCollectionViewController.m */,
+				DBF8B4B21A79F91300CFFD47 /* VTagsSearchResultsViewController.h */,
+				DBF8B4B31A79F91300CFFD47 /* VTagsSearchResultsViewController.m */,
+				DBF8B4A91A78942900CFFD47 /* VUsersAndTagsSearchViewController.h */,
+				DBF8B4AA1A78942900CFFD47 /* VUsersAndTagsSearchViewController.m */,
+				DBF8B4AF1A79F8F300CFFD47 /* VUserSearchResultsViewController.h */,
+				DBF8B4B01A79F8F300CFFD47 /* VUserSearchResultsViewController.m */,
 			);
 			path = Discover;
 			sourceTree = "<group>";
@@ -3414,6 +3442,10 @@
 				A7738B091A4A3744008EA973 /* VAnimatedTransition.h */,
 				A7738B001A4A35DF008EA973 /* VSimpleModalTransition.h */,
 				A7738B011A4A35DF008EA973 /* VSimpleModalTransition.m */,
+				A7738B001A4A35DF008EA973 /* VModalTransition.h */,
+				A7738B011A4A35DF008EA973 /* VModalTransition.m */,
+				DB2D6F9D1A802B080050F963 /* VSearchResultsTransition.h */,
+				DB2D6F9E1A802B080050F963 /* VSearchResultsTransition.m */,
 				A7738B021A4A35DF008EA973 /* VTransitionDelegate.h */,
 				A7738B031A4A35DF008EA973 /* VTransitionDelegate.m */,
 				A7738B061A4A36C9008EA973 /* VTransitionModel.h */,
@@ -4978,6 +5010,7 @@
 				BE40559418A1828D00092AE1 /* UIButton+VImageLoading.m in Sources */,
 				0314D46519B46B5E00FA363C /* VCompositeSnapshotController.m in Sources */,
 				03484BFE192E9D2100403FB1 /* NSLayoutConstraint+CenterConstraints.m in Sources */,
+				DBF8B4B41A79F91300CFFD47 /* VTagsSearchResultsViewController.m in Sources */,
 				0385FEE918EF41B4009FBD68 /* VImageSearchResult.m in Sources */,
 				A70564C319E781EE004A8387 /* VNoContentTableViewCell.m in Sources */,
 				0314D0AE19B4698800FA363C /* VObjectManager+Comment.m in Sources */,
@@ -5058,6 +5091,7 @@
 				0314D2E619B46B0E00FA363C /* VPaginationManager.m in Sources */,
 				D8C7CF5819DCCC6E00BA33E5 /* VExperienceEnhancerBar.m in Sources */,
 				DBE1077F1A2FFDCD005D303E /* VAdBreakFallback.m in Sources */,
+				DBF8B4AB1A78942900CFFD47 /* VUsersAndTagsSearchViewController.m in Sources */,
 				D86BF35C1A42683E00C9F420 /* VPublishBlurOverAnimator.m in Sources */,
 				0314D06F19B4670A00FA363C /* UIImage+Cropping.m in Sources */,
 				0314D4D819B46B5E00FA363C /* VPrivacyPoliciesViewController.m in Sources */,
@@ -5082,6 +5116,7 @@
 				03CE670019B640CD0011BB9E /* VDeviceInfo.m in Sources */,
 				BE799BC219C93C210023CE88 /* VDirectoryViewController.m in Sources */,
 				A77AD5011A2011E000142F24 /* UIActionSheet+VBlocks.m in Sources */,
+				DBF8B4B11A79F8F300CFFD47 /* VUserSearchResultsViewController.m in Sources */,
 				BE6C15251880A31A00469BA8 /* VAnswerAction.m in Sources */,
 				669EBBE51A30239100DE317D /* VTickerPickerViewController.m in Sources */,
 				D8C1FD051A69C0F60072892B /* VToolController.m in Sources */,
@@ -5139,6 +5174,7 @@
 				0314D4D119B46B5E00FA363C /* VMenuController.m in Sources */,
 				D8E39BB819CB7C3C007FD86A /* VContentViewViewModel.m in Sources */,
 				A7B98A421A264D1D00C58335 /* VNotificationSettingsStateManager.m in Sources */,
+				DB2D6FA21A8136160050F963 /* VSearchResultsNavigationController.m in Sources */,
 				03CE66FC19B59F260011BB9E /* UIImage+ImageEffects.m in Sources */,
 				DBDBE6EE1A16736C00DA1BB2 /* VAdBreak.m in Sources */,
 				A75FAF2219E8AC1E00EB87C1 /* VSuggestedPeopleCollectionViewController.m in Sources */,
@@ -5208,6 +5244,7 @@
 				BE5C736A187E36E800A3340D /* VRule.m in Sources */,
 				A733D8FF1A23D0C70053E9F1 /* VNotificationSettings+RestKit.m in Sources */,
 				0314D0B319B4698800FA363C /* VObjectManager+ImageSearch.m in Sources */,
+				DB2D6F651A7C12820050F963 /* VSearchResultsTableViewController.m in Sources */,
 				0314D47C19B46B5E00FA363C /* VPublishShareView.m in Sources */,
 				A743E7E41A0816D500339CB3 /* VPasswordValidator.m in Sources */,
 				0314D48C19B46B5E00FA363C /* VSelectorViewController.m in Sources */,
@@ -5249,6 +5286,7 @@
 				0314D4E619B46B5E00FA363C /* VInviteFriendTableViewCell.m in Sources */,
 				DB6FDC3A19C10CC600CEF5BF /* VStreamCellHeaderView.m in Sources */,
 				A769C3EB1A13176700698D0C /* VWebBrowserViewController.m in Sources */,
+				DB2D6F9F1A802B080050F963 /* VSearchResultsTransition.m in Sources */,
 				A769C3EF1A13176700698D0C /* VWebViewBasic.m in Sources */,
 				D80C615B19D0F692006AE41A /* VProgressBarView.m in Sources */,
 				0314D4BC19B46B5E00FA363C /* VAbstractProfileEditViewController.m in Sources */,
