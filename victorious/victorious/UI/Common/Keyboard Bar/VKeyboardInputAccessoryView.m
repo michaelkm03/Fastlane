@@ -7,6 +7,7 @@
 //
 
 #import "VKeyboardInputAccessoryView.h"
+#import "VUserTaggingTextStorage.h"
 
 // Constants
 #import "VConstants.h"
@@ -16,15 +17,17 @@
 
 const CGFloat VInputAccessoryViewDesiredMinimumHeight = 47.0f;
 
-@interface VKeyboardInputAccessoryView () <UITextViewDelegate>
+@interface VKeyboardInputAccessoryView () <UITextViewDelegate, VUserTaggingTextStorageDelegate>
 
 @property (nonatomic, assign) BOOL selectedMedia;
+@property (nonatomic, strong) VUserTaggingTextStorage *textStorage;
 
 @property (weak, nonatomic) IBOutlet UIImageView *attachmentThumbnail;
 
 @property (nonatomic, weak) IBOutlet UIButton *attachmentsButton;
 @property (nonatomic, weak) IBOutlet UIButton *sendButton;
-@property (nonatomic, weak) IBOutlet UITextView *editingTextView;
+@property (nonatomic, weak) UITextView *editingTextView;
+@property (nonatomic, weak) IBOutlet UIView *editingTextSuperview;
 @property (nonatomic, weak) IBOutlet UILabel *placeholderLabel;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceTextViewTopToContainerConstraint;
@@ -46,19 +49,49 @@ const CGFloat VInputAccessoryViewDesiredMinimumHeight = 47.0f;
     return [nibContents firstObject];
 }
 
+#pragma mark - Initialization
+
+- (void)awakeFromNib
+{
+    self.textStorage = [[VUserTaggingTextStorage alloc] init];
+    self.textStorage.delegate = self;
+    
+    NSLayoutManager *layoutManager = [[NSLayoutManager alloc] init];
+    [self.textStorage addLayoutManager:layoutManager];
+    
+    NSTextContainer *textContainer = [[NSTextContainer alloc] init];
+    [layoutManager addTextContainer:textContainer];
+    
+    UITextView *editingTextView = [[UITextView alloc] initWithFrame:CGRectZero textContainer:textContainer];
+    editingTextView.translatesAutoresizingMaskIntoConstraints = NO;
+    editingTextView.delegate = self;
+    editingTextView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    editingTextView.font = [UIFont systemFontOfSize:14.0f];
+    editingTextView.autocapitalizationType = UITextAutocapitalizationTypeSentences;
+    
+    [self.editingTextSuperview addSubview:editingTextView];
+    self.editingTextView = editingTextView;
+    
+    [self.editingTextSuperview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[editingTextView]|"
+                                                                                      options:0
+                                                                                      metrics:nil
+                                                                                        views:NSDictionaryOfVariableBindings(editingTextView)]];
+    [self.editingTextSuperview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[editingTextView]|"
+                                                                                      options:0
+                                                                                      metrics:nil
+                                                                                        views:NSDictionaryOfVariableBindings(editingTextView)]];
+}
+
 #pragma mark - UIView
 
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    self.editingTextView.delegate = self;
     
     [self.sendButton setTitleColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor]
                           forState:UIControlStateNormal];
     [self.sendButton setTitleColor:[UIColor lightGrayColor]
                           forState:UIControlStateDisabled];
-    
-    self.editingTextView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
 }
 
 - (CGSize)intrinsicContentSize
