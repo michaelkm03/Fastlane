@@ -16,6 +16,7 @@ typedef NS_ENUM(NSInteger, VUserTaggingTextStorageState)
 };
 
 static NSString * const kTriggerCharacter = @"@";
+static NSString * const kThreeSpaces = @"   ";
 
 @interface VUserTaggingTextStorage ()
 
@@ -47,6 +48,12 @@ static NSString * const kTriggerCharacter = @"@";
     _state = state;
 }
 
+- (void)setSearchTermRange:(NSRange)searchTermRange
+{
+    _searchTermRange = searchTermRange;
+    VLog(@"search term: %@", [self.innerStorage.string substringWithRange:searchTermRange]);
+}
+
 #pragma mark - NSAttributedString primatives
 
 - (NSString *)string
@@ -61,10 +68,60 @@ static NSString * const kTriggerCharacter = @"@";
 
 #pragma mark - NSMutableAttributedString primatives
 
-- (void)replaceCharactersInRange:(NSRange)range withString:(NSString *)str
+- (void)replaceCharactersInRange:(NSRange)range withString:(NSString *)string
 {
-    [self.innerStorage replaceCharactersInRange:range withString:str];
-    [self edited:NSTextStorageEditedCharacters range:range changeInLength:(str.length - range.length)];
+    [self.innerStorage replaceCharactersInRange:range withString:string];
+    [self edited:NSTextStorageEditedCharacters range:range changeInLength:(string.length - range.length)];
+    
+    switch (self.state)
+    {
+        case VUserTaggingTextStorageStateInactive:
+        {
+            if ( [string isEqualToString:kTriggerCharacter] )
+            {
+                self.state = VUserTaggingTextStorageStateTriggerCharacterDetected;
+                self.searchTermRange = NSMakeRange(range.location, kTriggerCharacter.length);
+            }
+            break;
+        }
+        case VUserTaggingTextStorageStateTriggerCharacterDetected:
+        {
+            if ( string.length != 1 || ![[NSCharacterSet letterCharacterSet] characterIsMember:[string characterAtIndex:0]] )
+            {
+                self.state = VUserTaggingTextStorageStateInactive;
+                break;
+            }
+            // fall-through on purpose!
+        }
+        case VUserTaggingTextStorageStateSearchActive:
+        {
+            if ( !NSLocationInRange(range.location, NSMakeRange(self.searchTermRange.location + 1, self.searchTermRange.length + 1)) ) // Check to see if the insertion point changed. We consider that a cancellation of search.
+            {
+                self.state = VUserTaggingTextStorageStateInactive;
+            }
+            else
+            {
+                self.searchTermRange = NSMakeRange(self.searchTermRange.location, self.searchTermRange.length + string.length - range.length);
+
+                if ( self.searchTermRange.length >= 3 )
+                {
+                    NSRange rangeOfLastThreeCharacters = NSMakeRange(self.searchTermRange.location + self.searchTermRange.length - 3, 3);
+                    NSString *lastThreeCharacters = [self.innerStorage.string substringWithRange:rangeOfLastThreeCharacters];
+                    
+                    if ( [lastThreeCharacters isEqualToString:kThreeSpaces] )
+                    {
+                        self.state = VUserTaggingTextStorageStateInactive;
+                        break;
+                    }
+                }
+                self.state = VUserTaggingTextStorageStateSearchActive;
+            }
+            break;
+        }
+            
+        default:
+            break;
+    }
 }
 
 - (void)setAttributes:(NSDictionary *)attrs range:(NSRange)range
