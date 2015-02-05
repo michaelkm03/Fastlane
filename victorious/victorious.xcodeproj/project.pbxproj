@@ -667,7 +667,6 @@
 		DB2A495719DF455D00CB687B /* VEphemeralTimerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A495919DF455D00CB687B /* VEphemeralTimerView.xib */; };
 		DB2D6F651A7C12820050F963 /* VSearchResultsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB2D6F641A7C12820050F963 /* VSearchResultsTableViewController.m */; };
 		DB2D6F9F1A802B080050F963 /* VSearchResultsTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = DB2D6F9E1A802B080050F963 /* VSearchResultsTransition.m */; };
-		DB2D6FA21A8136160050F963 /* VSearchResultsNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB2D6FA11A8136160050F963 /* VSearchResultsNavigationController.m */; };
 		DB34DC5C1A09B5AF001EC711 /* VLiveRailAdViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB34DC5B1A09B5AF001EC711 /* VLiveRailAdViewController.m */; };
 		DB51C54219F86971005AA7B6 /* VAdBreakFallback+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = DB51C54119F86971005AA7B6 /* VAdBreakFallback+RestKit.m */; };
 		DB531B501A41F85500B4ADC8 /* VHashtagFollowingTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB531B4F1A41F85500B4ADC8 /* VHashtagFollowingTableViewController.m */; };
@@ -1870,8 +1869,6 @@
 		DB2D6F641A7C12820050F963 /* VSearchResultsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSearchResultsTableViewController.m; sourceTree = "<group>"; };
 		DB2D6F9D1A802B080050F963 /* VSearchResultsTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSearchResultsTransition.h; sourceTree = "<group>"; };
 		DB2D6F9E1A802B080050F963 /* VSearchResultsTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSearchResultsTransition.m; sourceTree = "<group>"; };
-		DB2D6FA01A8136160050F963 /* VSearchResultsNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSearchResultsNavigationController.h; sourceTree = "<group>"; };
-		DB2D6FA11A8136160050F963 /* VSearchResultsNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSearchResultsNavigationController.m; sourceTree = "<group>"; };
 		DB34DC5A1A09B5AF001EC711 /* VLiveRailAdViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLiveRailAdViewController.h; sourceTree = "<group>"; };
 		DB34DC5B1A09B5AF001EC711 /* VLiveRailAdViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VLiveRailAdViewController.m; sourceTree = "<group>"; };
 		DB51C54019F86971005AA7B6 /* VAdBreakFallback+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VAdBreakFallback+RestKit.h"; sourceTree = "<group>"; };
@@ -3371,8 +3368,6 @@
 				A75FAF1219E8AC1E00EB87C1 /* VDiscoverViewController.h */,
 				A75FAF1319E8AC1E00EB87C1 /* VDiscoverViewController.m */,
 				A75FAF1419E8AC1E00EB87C1 /* VDiscoverViewControllerProtocol.h */,
-				DB2D6FA01A8136160050F963 /* VSearchResultsNavigationController.h */,
-				DB2D6FA11A8136160050F963 /* VSearchResultsNavigationController.m */,
 				DB2D6F631A7C12820050F963 /* VSearchResultsTableViewController.h */,
 				DB2D6F641A7C12820050F963 /* VSearchResultsTableViewController.m */,
 				A75FAF1519E8AC1E00EB87C1 /* VSuggestedPeopleCollectionViewController.h */,
@@ -3442,8 +3437,6 @@
 				A7738B091A4A3744008EA973 /* VAnimatedTransition.h */,
 				A7738B001A4A35DF008EA973 /* VSimpleModalTransition.h */,
 				A7738B011A4A35DF008EA973 /* VSimpleModalTransition.m */,
-				A7738B001A4A35DF008EA973 /* VModalTransition.h */,
-				A7738B011A4A35DF008EA973 /* VModalTransition.m */,
 				DB2D6F9D1A802B080050F963 /* VSearchResultsTransition.h */,
 				DB2D6F9E1A802B080050F963 /* VSearchResultsTransition.m */,
 				A7738B021A4A35DF008EA973 /* VTransitionDelegate.h */,
@@ -5174,7 +5167,6 @@
 				0314D4D119B46B5E00FA363C /* VMenuController.m in Sources */,
 				D8E39BB819CB7C3C007FD86A /* VContentViewViewModel.m in Sources */,
 				A7B98A421A264D1D00C58335 /* VNotificationSettingsStateManager.m in Sources */,
-				DB2D6FA21A8136160050F963 /* VSearchResultsNavigationController.m in Sources */,
 				03CE66FC19B59F260011BB9E /* UIImage+ImageEffects.m in Sources */,
 				DBDBE6EE1A16736C00DA1BB2 /* VAdBreak.m in Sources */,
 				A75FAF2219E8AC1E00EB87C1 /* VSuggestedPeopleCollectionViewController.m in Sources */,

@@ -24,9 +24,6 @@
 // Users and Tags Search
 #import "VUsersAndTagsSearchViewController.h"
 
-// Search Results Navigation Controller
-#import "VSearchResultsNavigationController.h"
-
 // Transition
 #import "VSearchResultsTransition.h"
 #import "VTransitionDelegate.h"
