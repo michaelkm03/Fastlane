@@ -46,9 +46,9 @@
         
         [self.transition prepareForTransitionIn:model];
         [self.transition performTransitionIn:model completion:^(BOOL didComplete)
-         {
-             [transitionContext completeTransition:![transitionContext transitionWasCancelled]];
-         }];
+        {
+            [transitionContext completeTransition:![transitionContext transitionWasCancelled]];
+        }];
     }
     else
     {
