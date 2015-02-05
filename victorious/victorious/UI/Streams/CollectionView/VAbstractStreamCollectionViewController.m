@@ -30,16 +30,23 @@
 #import "VAbstractFilter.h"
 
 #import "VSettingManager.h"
-
+#import "VScrollPaginator.h"
 #import "UIViewController+VNavMenu.h"
+#import "VImageSearchResultsFooterView.h"
 
 const CGFloat kVLoadNextPagePoint = .75f;
 
 @interface VAbstractStreamCollectionViewController () <UICollectionViewDelegate, VNavigationHeaderDelegate>
 
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
+@property (nonatomic, weak) IBOutlet VScrollPaginator *scrollPaginator;
+@property (nonatomic, strong) UIActivityIndicatorView *bottomActivityIndicator;
+
+@property (nonatomic, strong) VImageSearchResultsFooterView *refreshFooter;
 
 @property (nonatomic, strong) NSLayoutConstraint *headerYConstraint;
+
+@property (nonatomic, assign, getter=isBottomActivityIndicatorVisible) BOOL bottomActivityIndicatorVisible;
 
 @end
 
@@ -76,6 +83,7 @@ const CGFloat kVLoadNextPagePoint = .75f;
         [self refresh:nil];
     }
     
+    
     [self.refreshControl removeFromSuperview];
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
@@ -85,8 +93,6 @@ const CGFloat kVLoadNextPagePoint = .75f;
     //Since we're using the collection flow delegate method for the insets, we need to manually position the frame of the refresh control.
     subView.frame = CGRectMake(CGRectGetMinX(subView.frame), CGRectGetMinY(subView.frame) + self.contentInset.top / 2,
                                CGRectGetWidth(subView.frame), CGRectGetHeight(subView.frame));
-    
-    self.collectionView.contentInset = UIEdgeInsetsZero;
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -159,7 +165,9 @@ const CGFloat kVLoadNextPagePoint = .75f;
     self.refreshControl.hidden = NO;
 }
 
-- (void)loadNextPageAction
+#pragma mark - VScrollPaginatorDelegate
+
+- (void)shouldLoadNextPage
 {
     if (self.streamDataSource.isFilterLoading)
     {
@@ -169,7 +177,7 @@ const CGFloat kVLoadNextPagePoint = .75f;
     [self.streamDataSource loadNextPageWithSuccess:^(void)
      {
          __weak typeof(self) welf = self;
-         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(4.05f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
                         {
                             [welf.collectionView flashScrollIndicators];
                         });
@@ -183,12 +191,7 @@ const CGFloat kVLoadNextPagePoint = .75f;
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    const CGFloat scrollThreshold = scrollView.contentSize.height * kVLoadNextPagePoint;
-    const BOOL isAcrossThreshold = scrollView.contentOffset.y + CGRectGetHeight(scrollView.bounds) > scrollThreshold;
-    if ( self.streamDataSource.count && ![self.streamDataSource isFilterLoading] && isAcrossThreshold )
-    {
-        [self loadNextPageAction];
-    }
+    [self.scrollPaginator scrollViewDidScroll:scrollView];
     
     CGPoint translation = [scrollView.panGestureRecognizer translationInView:scrollView.superview];
     if (translation.y < 0 && scrollView.contentOffset.y > CGRectGetHeight(self.navHeaderView.frame))

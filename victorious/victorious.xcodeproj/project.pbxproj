@@ -445,6 +445,8 @@
 		A7A390CA1A3257A300709812 /* ContentView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7A390C91A3257A300709812 /* ContentView.storyboard */; };
 		A7A7D61819DE178F00B18AB7 /* VAuthorizationViewControllerFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = A735323219DB60600040DB30 /* VAuthorizationViewControllerFactory.m */; };
 		A7AA647D19E78EAA0068D2B1 /* victoriOS.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A7AA647B19E78EAA0068D2B1 /* victoriOS.xcdatamodeld */; };
+		A7AEF9681A8313BB00A3D3A0 /* VFooterActivityIndicatorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7AEF9671A8313BB00A3D3A0 /* VFooterActivityIndicatorView.xib */; };
+		A7AEF96B1A83195100A3D3A0 /* VFooterActivityIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7AEF96A1A83195100A3D3A0 /* VFooterActivityIndicatorView.m */; };
 		A7B514531A4517A80074282F /* VSwipeCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B5144C1A4517A80074282F /* VSwipeCollectionViewCell.m */; };
 		A7B514541A4517A80074282F /* VSwipeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B5144E1A4517A80074282F /* VSwipeTableViewCell.m */; };
 		A7B514551A4517A80074282F /* VSwipeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B514501A4517A80074282F /* VSwipeViewController.m */; };
@@ -1456,6 +1458,9 @@
 		A7A7D5C819DCDA5A00B18AB7 /* VHashTagsTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHashTagsTest.m; sourceTree = "<group>"; };
 		A7AA647C19E78EAA0068D2B1 /* victoriOS.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = victoriOS.xcdatamodel; sourceTree = "<group>"; };
 		A7AB4FE819F5A6A300BFFE35 /* VVoteTypeFetcherTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVoteTypeFetcherTests.m; sourceTree = "<group>"; };
+		A7AEF9671A8313BB00A3D3A0 /* VFooterActivityIndicatorView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VFooterActivityIndicatorView.xib; sourceTree = "<group>"; };
+		A7AEF9691A83195100A3D3A0 /* VFooterActivityIndicatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFooterActivityIndicatorView.h; sourceTree = "<group>"; };
+		A7AEF96A1A83195100A3D3A0 /* VFooterActivityIndicatorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFooterActivityIndicatorView.m; sourceTree = "<group>"; };
 		A7B5144B1A4517A80074282F /* VSwipeCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSwipeCollectionViewCell.h; sourceTree = "<group>"; };
 		A7B5144C1A4517A80074282F /* VSwipeCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSwipeCollectionViewCell.m; sourceTree = "<group>"; };
 		A7B5144D1A4517A80074282F /* VSwipeTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSwipeTableViewCell.h; sourceTree = "<group>"; };
@@ -4053,6 +4058,9 @@
 				BE88FF5D1A0005E70064AB28 /* Cells */,
 				BE88FF6A1A0005E70064AB28 /* VAbstractStreamCollectionViewController.h */,
 				BE88FF6B1A0005E70064AB28 /* VAbstractStreamCollectionViewController.m */,
+				A7AEF9671A8313BB00A3D3A0 /* VFooterActivityIndicatorView.xib */,
+				A7AEF9691A83195100A3D3A0 /* VFooterActivityIndicatorView.h */,
+				A7AEF96A1A83195100A3D3A0 /* VFooterActivityIndicatorView.m */,
 				BE88FF6E1A0005E70064AB28 /* VSequenceActionsDelegate.h */,
 				BE88FF6F1A0005E70064AB28 /* VStreamCollectionViewController.h */,
 				BE88FF701A0005E70064AB28 /* VStreamCollectionViewController.m */,
@@ -4650,6 +4658,7 @@
 				036F38891A0C4DEA0014DF66 /* PT_Serif-Web-Bold.ttf in Resources */,
 				D80A94EB1A546E680035D788 /* VThumbnailCell.xib in Resources */,
 				DB2A495719DF455D00CB687B /* VEphemeralTimerView.xib in Resources */,
+				A7AEF9681A8313BB00A3D3A0 /* VFooterActivityIndicatorView.xib in Resources */,
 				DB2A48F719DF2D1000CB687B /* Localizable.strings in Resources */,
 				A7E2EFD21A49066F00372547 /* EditComment.storyboard in Resources */,
 				03F28F4B19F44728008BB3F7 /* VCommentCell.xib in Resources */,
@@ -5271,6 +5280,7 @@
 				0314D4DA19B46B5E00FA363C /* VSettingsViewController.m in Sources */,
 				D8C8F5731A0400DF006BE3E8 /* VExtendedView.m in Sources */,
 				0372587519D61B0800836B3F /* VUploadTaskCreator.m in Sources */,
+				A7AEF96B1A83195100A3D3A0 /* VFooterActivityIndicatorView.m in Sources */,
 				0314D0B019B4698800FA363C /* VObjectManager+DeviceRegistration.m in Sources */,
 				0314D09019B4694600FA363C /* VInteractionManager.m in Sources */,
 				A7B514541A4517A80074282F /* VSwipeTableViewCell.m in Sources */,

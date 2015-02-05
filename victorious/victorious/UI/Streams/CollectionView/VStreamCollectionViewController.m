@@ -55,6 +55,7 @@
 
 #import "VConstants.h"
 #import "VTracking.h"
+#import "VFooterActivityIndicatorView.h"
 
 static NSString * const kStreamsKey = @"streams";
 static NSString * const kInitialKey = @"initial";
@@ -63,10 +64,10 @@ static NSString * const kStreamURLPathKey = @"streamUrlPath";
 static NSString * const kTitleKey = @"title";
 static NSString * const kIsHomeKey = @"isHome";
 static NSString * const kCanAddContentKey = @"canAddContent";
-static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
+static NSString * const kStreamCollectionStoryboardId = @"StreamCollection";
 static CGFloat const kTemplateCLineSpacing = 8;
 
-@interface VStreamCollectionViewController () <VNavigationHeaderDelegate, VMarqueeDelegate, VSequenceActionsDelegate, VUploadProgressViewControllerDelegate>
+@interface VStreamCollectionViewController () <VNavigationHeaderDelegate, VMarqueeDelegate, VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout>
 
 @property (strong, nonatomic) VStreamCollectionViewDataSource *directoryDataSource;
 @property (strong, nonatomic) NSIndexPath *lastSelectedIndexPath;
@@ -213,6 +214,9 @@ static CGFloat const kTemplateCLineSpacing = 8;
           forCellWithReuseIdentifier:[VStreamCollectionCellPoll suggestedReuseIdentifier]];
     [self.collectionView registerNib:[VStreamCollectionCellWebContent nibForCell]
           forCellWithReuseIdentifier:[VStreamCollectionCellWebContent suggestedReuseIdentifier]];
+    [self.collectionView registerNib:[VFooterActivityIndicatorView nibForSupplementaryView]
+          forSupplementaryViewOfKind:UICollectionElementKindSectionFooter
+                 withReuseIdentifier:[VFooterActivityIndicatorView reuseIdentifier]];
     
     self.collectionView.backgroundColor = [[VThemeManager sharedThemeManager] preferredBackgroundColor];
     
@@ -220,6 +224,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
     self.streamDataSource.delegate = self;
     self.streamDataSource.collectionView = self.collectionView;
     self.collectionView.dataSource = self.streamDataSource;
+    
     
     // Fetch Users Hashtags
    [self fetchHashtagsForLoggedInUser];
@@ -498,6 +503,24 @@ static CGFloat const kTemplateCLineSpacing = 8;
     if ( [cell isKindOfClass:[VStreamCollectionCell class]] )
     {
         [((VStreamCollectionCell *)cell) pauseVideo];
+    }
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section
+{
+    if ( section == 1 )
+    {
+        return [VFooterActivityIndicatorView desiredSizeWithCollectionViewBounds:collectionView.bounds];
+    }
+    
+    return CGSizeZero;
+}
+
+- (void)collectionView:(UICollectionView *)collectionView willDisplaySupplementaryView:(UICollectionReusableView *)view forElementKind:(NSString *)elementKind atIndexPath:(NSIndexPath *)indexPath
+{
+    if ( [view isKindOfClass:[VFooterActivityIndicatorView class]] )
+    {
+        [((VFooterActivityIndicatorView *)view) setActivityIndicatorVisible:YES animated:YES];
     }
 }
 
