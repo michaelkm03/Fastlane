@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="63Q-Vo-LWD">
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -28,6 +27,7 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" priority="750" constant="320" id="AwY-Ez-oaG"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="320" id="BXU-Gm-aEa"/>
                                     <constraint firstAttribute="width" secondItem="8c5-o3-ehb" secondAttribute="height" multiplier="1:1" id="O18-Ux-5Zy"/>
                                 </constraints>
                             </view>
@@ -84,7 +84,7 @@
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
                     <connections>
-                        <outlet property="blurredBackgroundImageVIew" destination="rB7-pY-luZ" id="6iI-Qb-xYm"/>
+                        <outlet property="blurredBackgroundImageView" destination="rB7-pY-luZ" id="Gwp-ON-jBt"/>
                         <outlet property="bottomToolbar" destination="tla-hc-Ct5" id="QiO-Fi-Arc"/>
                         <outlet property="canvasView" destination="8c5-o3-ehb" id="DSZ-xC-dlK"/>
                         <outlet property="topToolbar" destination="uLJ-ZJ-TSs" id="VtT-RG-Hlb"/>

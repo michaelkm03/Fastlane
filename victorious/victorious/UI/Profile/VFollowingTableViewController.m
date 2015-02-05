@@ -34,7 +34,7 @@
     [super viewDidLoad];
     self.navigationItem.backBarButtonItem = nil;
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"cameraButtonBack"]
-                                                                             style:UIBarButtonItemStyleBordered
+                                                                             style:UIBarButtonItemStylePlain
                                                                             target:self
                                                                             action:@selector(goBack:)];
 
@@ -74,10 +74,7 @@
     self.tableView.contentInset = insets;
     
     // Set insets and layout margin
-    if (UI_IS_IOS8_AND_HIGHER)
-    {
-        [self.tableView setLayoutMargins:UIEdgeInsetsZero];
-    }
+    [self.tableView setLayoutMargins:UIEdgeInsetsZero];
 
     [self.tableView setSeparatorInset:UIEdgeInsetsZero];
 }

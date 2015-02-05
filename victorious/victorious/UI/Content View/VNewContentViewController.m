@@ -81,9 +81,11 @@
 
 static const CGFloat kMaxInputBarHeight = 200.0f;
 
-@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate,VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate>
+@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate,VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, NSUserActivityDelegate>
 
 #import "VCommentHighlighter.h"
+
+@property (nonatomic, strong) NSUserActivity *handoffObject;
 
 @property (nonatomic, strong, readwrite) VContentViewViewModel *viewModel;
 @property (nonatomic, strong) NSURL *mediaURL;
@@ -304,18 +306,6 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
      }];
 }
 
-#pragma mark iOS7.1+
-
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-    [self alongsideRotationupdates];
-}
-
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
-{
-    [self finishedRotationUpdates];
-}
-
 #pragma mark Shared
 
 - (void)alongsideRotationupdates
@@ -489,9 +479,19 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     self.contentCollectionView.scrollIndicatorInsets = UIEdgeInsetsMake(VShrinkingContentLayoutMinimumContentHeight, 0, CGRectGetHeight(self.textEntryView.bounds), 0);
     self.contentCollectionView.contentInset = UIEdgeInsetsMake(0, 0, CGRectGetHeight(self.textEntryView.bounds) , 0);
     
-    [self.blurredBackgroundImageView setBlurredImageWithClearImage:self.placeholderImage
-                                                  placeholderImage:[UIImage resizeableImageWithColor:[[UIColor whiteColor] colorWithAlphaComponent:0.7f]]
-                                                         tintColor:[[UIColor whiteColor] colorWithAlphaComponent:0.7f]];
+    if (self.viewModel.sequence.isImage)
+    {
+        [self.blurredBackgroundImageView setBlurredImageWithURL:self.viewModel.imageURLRequest.URL
+                                               placeholderImage:self.placeholderImage
+                                                      tintColor:nil];
+    }
+    else
+    {
+        [self.blurredBackgroundImageView setBlurredImageWithClearImage:self.placeholderImage
+                                                      placeholderImage:nil
+                                                             tintColor:nil];
+    }
+    
 
     if (self.viewModel.type == VContentViewTypeVideo)
     {
@@ -506,6 +506,11 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
+    self.handoffObject = [[NSUserActivity alloc] initWithActivityType:[NSString stringWithFormat:@"com.victorious.handoff.%@", self.viewModel.sequence.name]];
+    self.handoffObject.webpageURL = self.viewModel.shareURL;
+    self.handoffObject.delegate = self;
+    [self.handoffObject becomeCurrent];
 
     [self.contentCollectionView flashScrollIndicators];
 }
@@ -513,6 +518,9 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
+    self.handoffObject.delegate = nil;
+    [self.handoffObject invalidate];
     
     // We don't care about these notifications anymore but we still care about new user loggedin
     [[NSNotificationCenter defaultCenter] removeObserver:self
@@ -546,7 +554,10 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     }
     
     // Pause playback on presentation
-    [self.videoCell pause];
+    if ( ![self.videoCell playerControlsDisabled] )
+    {
+        [self.videoCell pause];
+    }
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -922,7 +933,8 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
             {
                 if (selectedEnhancer.isBallistic)
                 {
-                    UIImageView *animationImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 100.0f, 100.0f)];
+                    CGRect animationFrameSize = CGRectMake(0, 0, selectedEnhancer.desiredSize.width, selectedEnhancer.desiredSize.height);
+                    UIImageView *animationImageView = [[UIImageView alloc] initWithFrame:animationFrameSize];
                     animationImageView.contentMode = UIViewContentModeScaleAspectFit;
                     
                     CGPoint convertedCenterForAnimation = [welf.experienceEnhancerCell.experienceEnhancerBar convertPoint:selectionCenter toView:welf.view];
@@ -935,13 +947,9 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
                                         options:UIViewAnimationOptionCurveLinear
                                      animations:^
                      {
-                         CGFloat randomLocationX = fminf(fmaxf(arc4random_uniform(CGRectGetWidth(welf.contentCell.bounds)), (CGRectGetWidth(animationImageView.bounds) * 0.5f)), CGRectGetWidth(welf.contentCell.bounds) - (CGRectGetWidth(animationImageView.bounds) * 0.5f));
-                         CGFloat randomLocationY = fminf(fmaxf(arc4random_uniform(CGRectGetHeight(welf.contentCell.bounds)), (CGRectGetHeight(animationImageView.bounds) * 0.5f)), CGRectGetHeight(welf.contentCell.bounds) - (CGRectGetHeight(animationImageView.bounds) * 0.5f));
-                         
-                         CGPoint contentCenter = [welf.view convertPoint:CGPointMake(randomLocationX, randomLocationY)
-                                                                fromView:welf.contentCell];
-                         animationImageView.center = contentCenter;
-                         
+                         CGFloat randomLocationX = arc4random_uniform(CGRectGetWidth(welf.contentCell.frame));
+                         CGFloat randomLocationY = arc4random_uniform(CGRectGetHeight(welf.contentCell.frame));
+                         animationImageView.center = CGPointMake(randomLocationX, randomLocationY);
                      }
                                      completion:^(BOOL finished)
                      {
@@ -1274,45 +1282,29 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     NSString *discardActionTitle = NSLocalizedString(@"Delete", @"Delete the previously selected item. This is a destructive operation.");
     NSString *cancelActionTitle = NSLocalizedString(@"Cancel", @"Cancel button.");
     
-    if (UI_IS_IOS8_AND_HIGHER)
-    {
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:actionSheetTitle
-                                                                                 message:nil
-                                                                          preferredStyle:UIAlertControllerStyleActionSheet];
-        
-        UIAlertAction *deleteAction = [UIAlertAction actionWithTitle:discardActionTitle
-                                                                style:UIAlertActionStyleDestructive
-                                                              handler:^(UIAlertAction *action)
-                                        {
-                                            clearMediaSelection();
-                                            showCamera();
-                                        }];
-        [alertController addAction:deleteAction];
-        
-        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:cancelActionTitle
-                                                               style:UIAlertActionStyleCancel
-                                                             handler:^(UIAlertAction *action)
-                                       {
-                                           [[VThemeManager sharedThemeManager] applyStyling];
-                                       }];
-        [alertController addAction:cancelAction];
-        
-        [[VThemeManager sharedThemeManager] removeStyling];
-        [self presentViewController:alertController animated:YES completion:nil];
-    }
-    else
-    {
-        [[[UIActionSheet alloc] initWithTitle:actionSheetTitle
-                            cancelButtonTitle:cancelActionTitle
-                               onCancelButton:nil
-                       destructiveButtonTitle:discardActionTitle
-                          onDestructiveButton:^
-          {
-              clearMediaSelection();
-              showCamera();
-          }
-                   otherButtonTitlesAndBlocks:nil, nil] showInView:self.view];
-    }
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:actionSheetTitle
+                                                                             message:nil
+                                                                      preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    UIAlertAction *deleteAction = [UIAlertAction actionWithTitle:discardActionTitle
+                                                            style:UIAlertActionStyleDestructive
+                                                          handler:^(UIAlertAction *action)
+                                    {
+                                        clearMediaSelection();
+                                        showCamera();
+                                    }];
+    [alertController addAction:deleteAction];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:cancelActionTitle
+                                                           style:UIAlertActionStyleCancel
+                                                         handler:^(UIAlertAction *action)
+                                   {
+                                       [[VThemeManager sharedThemeManager] applyStyling];
+                                   }];
+    [alertController addAction:cancelAction];
+    
+    [[VThemeManager sharedThemeManager] removeStyling];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 - (void)keyboardInputAccessoryViewDidClearInput:(VKeyboardInputAccessoryView *)inpoutAccessoryView
@@ -1451,11 +1443,14 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 
 #pragma mark VPurchaseViewControllerDelegate
 
-- (void)purchaseDidComplete
+- (void)purchaseDidFinish:(BOOL)didMakePurchase
 {
     [self.presentedViewController dismissViewControllerAnimated:YES completion:^void
      {
-         [self.viewModel.experienceEnhancerController updateData];
+         if ( didMakePurchase )
+         {
+             [self.viewModel.experienceEnhancerController updateData];
+         }
      }];
 }
 
@@ -1469,6 +1464,13 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 - (void)shouldLoadPreviousPage
 {
     [self.viewModel loadComments:VPageTypePrevious];
+}
+
+#pragma mark - NSUserActivityDelegate
+
+- (void)userActivityWasContinued:(NSUserActivity *)userActivity
+{
+    [self.videoCell pause];
 }
 
 @end

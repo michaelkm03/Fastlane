@@ -33,6 +33,13 @@ static NSString * const kFilterIndexKey = @"filterIndex";
 
 @implementation VCropTool
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:VCanvasViewAssetSizeBecameAvailableNotification
+                                                  object:_canvasView];
+}
+
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     self = [super init];
@@ -63,7 +70,7 @@ static NSString * const kFilterIndexKey = @"filterIndex";
 
 - (CGSize)assetSize
 {
-    return _cropViewController.assetSize;
+    return self.canvasView.assetSize;
 }
 
 #pragma mark - VWorkspaceTool
@@ -111,12 +118,30 @@ static NSString * const kFilterIndexKey = @"filterIndex";
 - (void)setCanvasView:(VCanvasView *)canvasView
 {
     _canvasView = canvasView;
-    self.assetSize = canvasView.sourceImage.size;
+    
+    if (CGSizeEqualToSize(canvasView.assetSize, CGSizeZero))
+    {
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(assetSizeBecameAvailable:)
+                                                     name:VCanvasViewAssetSizeBecameAvailableNotification
+                                                   object:canvasView];
+    }
+    else
+    {
+        self.assetSize = canvasView.assetSize;
+    }
 }
 
 - (UIViewController *)canvasToolViewController
 {
     return _cropViewController;
+}
+
+#pragma mark - Private Methods
+
+- (void)assetSizeBecameAvailable:(NSNotification *)notification
+{
+    self.assetSize = self.canvasView.assetSize;
 }
 
 @end

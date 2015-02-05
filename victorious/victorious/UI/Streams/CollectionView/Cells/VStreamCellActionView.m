@@ -11,6 +11,8 @@
 #import "VSequence+Fetcher.h"
 #import "VThemeManager.h"
 
+#import "VConstants.h"
+
 static CGFloat const kGreyBackgroundColor = 0.94509803921;
 static CGFloat const kVActionButtonBuffer = 15;
 

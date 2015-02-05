@@ -5,7 +5,7 @@
 	<key>CFBundleDisplayName</key>
 	<string>${ProductPrefix}TheYoungTurks</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.getvictorious.${ProductPrefix}TheYoungTurks</string>
+	<string>com.theyoungturks.${ProductPrefix}Young-Turks</string>
 	<key>CFBundleName</key>
 	<string>${ProductPrefix}TheYoungTurks</string>
 	<key>CFBundleURLTypes</key>
@@ -13,7 +13,7 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fb1374328719478033</string>
+				<string>fb365587963613882</string>
 			</array>
 		</dict>
 		<dict>
@@ -26,13 +26,13 @@
 		</dict>
 	</array>
 	<key>FacebookAppID</key>
-	<string>1374328719478033</string>
+	<string>365587963613882</string>
 	<key>FacebookDisplayName</key>
-	<string>VictoriousApp Dev</string>
+	<string>TheYoungTurks</string>
 	<key>TWITTER_CONSUMER_KEY</key>
-	<string>MhDYRpVPTaGQgWBT7ChmxQ</string>
+	<string>wzccdL6LHLeOVLHcHMFLzT9Tz</string>
 	<key>TWITTER_CONSUMER_SECRET</key>
-	<string>damxXK28SCObMZ1CEMTLszm3v8mdRt0L1wuVnzXtH1E</string>
+	<string>eJajBWh1oxOK9XefLqppBt4XHt3i71eGmnaJGPO7IN3eD98XrE</string>
 	<key>TestflightQAAppToken</key>
 	<string>f63a2c99-67a3-4913-bffb-1dbffd3e0944</string>
 	<key>TestflightStagingAppToken</key>
@@ -40,10 +40,10 @@
 	<key>TestflightReleaseAppToken</key>
 	<string>344351eb-9dc9-4b5e-a299-d2201a5d3e3a</string>
 	<key>VictoriousAppID</key>
-	<integer>0</integer>
+	<integer>17</integer>
 	<key>StagingAppID</key>
 	<integer>10</integer>
 	<key>QAAppID</key>
-	<integer>0</integer>
+	<integer>14</integer>
 </dict>
 </plist>

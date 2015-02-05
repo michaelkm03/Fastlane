@@ -8,6 +8,10 @@
 
 #import "VCanvasView.h"
 #import "CIImage+VImage.h"
+#import <UIImageView+WebCache.h>
+#import "VPhotoFilter.h"
+
+NSString * const VCanvasViewAssetSizeBecameAvailableNotification = @"VCanvasViewAssetSizeBecameAvailableNotification";
 
 static const CGFloat kRelatvieScaleFactor = 0.55f;
 
@@ -15,11 +19,13 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
 
 @property (nonatomic, strong) CIContext *context;
 @property (nonatomic, strong) UIImage *scaledImage;
+@property (nonatomic, strong, readwrite) UIImage *sourceImage;
 @property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, strong) UIScrollView *canvasScrollView;
 @property (nonatomic, strong) NSCache *renderedImageCache;
 @property (nonatomic, strong) dispatch_queue_t renderingQueue;
 @property (nonatomic, strong) NSMutableArray *rendertimes;
+@property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
 
 @end
 
@@ -78,16 +84,83 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
     _context = [CIContext contextWithOptions:@{}];
     
     _rendertimes = [[NSMutableArray alloc] init];
+    
+    _activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    _activityIndicator.hidesWhenStopped = YES;
+    _activityIndicator.center = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
+    [self addSubview:_activityIndicator];
+    [_activityIndicator startAnimating];
 }
 
-- (void)layoutSubviews
+#pragma mark - Property Accessors
+
+- (void)setSourceURL:(NSURL *)URL
+  withPreloadedImage:(UIImage *)preloadedImage
 {
-    [super layoutSubviews];
-    
-    if (self.imageView.image == nil)
+    __weak typeof(self) welf = self;
+    void (^imageFinishedLoadingBlock)(UIImage *sourceImage, BOOL animate) = ^void(UIImage *sourceImage, BOOL animate)
     {
+        __strong typeof(self) strongSelf = welf;
+        strongSelf.sourceImage = sourceImage;
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:VCanvasViewAssetSizeBecameAvailableNotification
+                                                            object:strongSelf];
+        [strongSelf layoutIfNeeded];
+        [strongSelf.activityIndicator stopAnimating];
+        if (!animate)
+        {
+            return;
+        }
+        
+        strongSelf.imageView.alpha = 0.0f;
+        [UIView animateWithDuration:1.75f
+                              delay:0.0f
+             usingSpringWithDamping:1.0f
+              initialSpringVelocity:0.0f
+                            options:kNilOptions
+                         animations:^
+         {
+             strongSelf.imageView.alpha = 1.0f;
+         }
+                         completion:nil];
+    };
+    
+    if (preloadedImage!= nil)
+    {
+        imageFinishedLoadingBlock(preloadedImage, NO);
         return;
     }
+    
+    [self.imageView sd_setImageWithURL:URL placeholderImage:nil completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL)
+    {
+        
+        if (image)
+        {
+            imageFinishedLoadingBlock(image, YES);
+        }
+        
+    }];
+    
+}
+
+- (void)setSourceURL:(NSURL *)URL
+{
+    [self setSourceURL:URL
+    withPreloadedImage:nil];
+}
+
+- (void)setSourceImage:(UIImage *)sourceImage
+{
+    _sourceImage = sourceImage;
+
+    CGImageRef scaledImageRef = [self.context createCGImage:[self scaledImageForCurrentFrameAndMaxZoomLevel]
+                                                   fromRect:[[self scaledImageForCurrentFrameAndMaxZoomLevel] extent]];
+    _scaledImage = [UIImage imageWithCGImage:scaledImageRef
+                                       scale:sourceImage.scale
+                                 orientation:sourceImage.imageOrientation];
+    CGImageRelease(scaledImageRef);
+    
+    self.imageView.image = _scaledImage;
     
     CGRect imageViewFrame;
     
@@ -109,23 +182,10 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
     }
     
     _imageView.frame = imageViewFrame;
-    self.canvasScrollView.contentSize = imageViewFrame.size;
-}
-
-#pragma mark - Property Accessors
-
-- (void)setSourceImage:(UIImage *)sourceImage
-{
-    _sourceImage = sourceImage;
-
-    CGImageRef scaledImageRef = [self.context createCGImage:[self scaledImageForCurrentFrameAndMaxZoomLevel]
-                                                   fromRect:[[self scaledImageForCurrentFrameAndMaxZoomLevel] extent]];
-    _scaledImage = [UIImage imageWithCGImage:scaledImageRef
-                                       scale:sourceImage.scale
-                                 orientation:sourceImage.imageOrientation];
-    CGImageRelease(scaledImageRef);
     
-    self.imageView.image = _scaledImage;
+    self.canvasScrollView.contentSize = imageViewFrame.size;
+    self.activityIndicator.center = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
+
     [self layoutIfNeeded];
 }
 
@@ -146,7 +206,6 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
         // Render
         filteredImage = [filter imageByFilteringImage:self.scaledImage
                                         withCIContext:self.context];
-
         
         // Cache
         [self.renderedImageCache setObject:filteredImage
@@ -160,6 +219,16 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
                            }
                        });
     });
+}
+
+- (CGSize)assetSize
+{
+    return self.imageView.image.size;
+}
+
+- (UIImage *)asset
+{
+    return self.imageView.image;
 }
 
 #pragma mark - Private Mehtods

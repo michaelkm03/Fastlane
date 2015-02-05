@@ -45,10 +45,9 @@
 
 static const char kSequenceActionControllerKey;
 
-@interface VNewContentViewController (ActionsPrivate)
+@interface VNewContentViewController ()
 
 @property VSequenceActionController *sequenceActionController;
-- (void)onRemixPublished:(NSNotification *)notification;
 
 @end
 
@@ -107,57 +106,8 @@ static const char kSequenceActionControllerKey;
 
     [actionItems addObject:descripTionItem];
     
-    if ([self.viewModel.sequence canRemix])
-    {
-        NSString *remixActionTitle = NSLocalizedString(@"Remix", @"");
-        if ([self.viewModel.sequence isVideo])
-        {
-            remixActionTitle = NSLocalizedString(@"GIF", @"");
-        }
-        VActionItem *remixItem = [VActionItem defaultActionItemWithTitle:remixActionTitle
-                                                              actionIcon:[UIImage imageNamed:@"icon_remix"]
-                                                              detailText:self.viewModel.remixCountText];
-        remixItem.selectionHandler = ^(void)
-        {
-            [contentViewController dismissViewControllerAnimated:YES
-                                                      completion:^
-             {
-                 VSequence *sequence = self.viewModel.sequence;
-                 if ([sequence isVideo])
-                 {
-                     [self.sequenceActionController showRemixOnViewController:contentViewController
-                                                                 withSequence:self.viewModel.sequence
-                                                         andDependencyManager:self.dependencyManagerForHistogramExperiment];
-                 }
-                 else
-                 {
-                     [self.sequenceActionController showRemixOnViewController:self
-                                                                 withSequence:sequence
-                                                         andDependencyManager:self.dependencyManagerForHistogramExperiment
-                                                                   completion:^(BOOL didPublish)
-                     {
-                         if ( !didPublish )
-                         {
-                             [self dismissViewControllerAnimated:YES completion:nil];
-                         }
-                         else
-                         {
-                             [self onRemixPublished:nil];
-                         }
-                     }];
-                 }
-             }];
-        };
-        remixItem.detailSelectionHandler = ^(void)
-        {
-            [contentViewController dismissViewControllerAnimated:YES
-                                     completion:^
-             {
-                 [self.sequenceActionController showRemixStreamFromViewController:contentViewController sequence:self.viewModel.sequence];
-             }];
-        };
-        [actionItems addObject:remixItem];
-    }
+    [self addRemixToActionItems:actionItems
+          contentViewController:contentViewController];
     
     if (self.viewModel.sequence.canRepost)
     {
@@ -268,6 +218,53 @@ static const char kSequenceActionControllerKey;
     [actionSheetViewController addActionItems:actionItems];
     
     [self presentViewController:actionSheetViewController animated:YES completion:nil];
+}
+
+- (void)addRemixToActionItems:(NSMutableArray *)actionItems
+        contentViewController:(UIViewController *)contentViewController
+{
+    if ([self.viewModel.sequence canRemix])
+    {
+        NSString *remixActionTitle = NSLocalizedString(@"Remix", @"");
+        if ([self.viewModel.sequence isVideo])
+        {
+            remixActionTitle = NSLocalizedString(@"GIF", @"");
+        }
+        VActionItem *remixItem = [VActionItem defaultActionItemWithTitle:remixActionTitle
+                                                              actionIcon:[UIImage imageNamed:@"icon_remix"]
+                                                              detailText:self.viewModel.remixCountText];
+        remixItem.selectionHandler = ^(void)
+        {
+            [contentViewController dismissViewControllerAnimated:YES
+                                                      completion:^
+             {
+                 VSequence *sequence = self.viewModel.sequence;
+                 if ([sequence isVideo])
+                 {
+                     [self.sequenceActionController showRemixOnViewController:contentViewController
+                                                                 withSequence:self.viewModel.sequence
+                                                         andDependencyManager:self.dependencyManagerForHistogramExperiment];
+                 }
+                 else
+                 {
+                     [self.sequenceActionController showRemixOnViewController:self
+                                                                 withSequence:sequence
+                                                         andDependencyManager:self.dependencyManagerForHistogramExperiment
+                                                               preloadedImage:self.placeholderImage
+                                                                   completion:nil];
+                 }
+             }];
+        };
+        remixItem.detailSelectionHandler = ^(void)
+        {
+            [contentViewController dismissViewControllerAnimated:YES
+                                                      completion:^
+             {
+                 [self.sequenceActionController showRemixStreamFromViewController:contentViewController sequence:self.viewModel.sequence];
+             }];
+        };
+        [actionItems addObject:remixItem];
+    }
 }
 
 @end

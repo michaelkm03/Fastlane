@@ -94,4 +94,9 @@ extern const NSInteger VCameraCaptureControllerErrorCode;
  */
 - (void)stopRunningWithCompletion:(void(^)(void))completion;
 
+/**
+ *  Exposed so that consumers can KVO imageOutput's properties for UI fun and profit.
+ */
+@property (nonatomic, strong, readonly) AVCaptureStillImageOutput *imageOutput;
+
 @end

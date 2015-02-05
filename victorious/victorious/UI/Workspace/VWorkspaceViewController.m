@@ -46,7 +46,7 @@
 @property (nonatomic, weak) IBOutlet UIToolbar *topToolbar;
 @property (nonatomic, weak) IBOutlet UIToolbar *bottomToolbar;
 @property (nonatomic, weak) IBOutlet VCanvasView *canvasView;
-@property (nonatomic, weak) IBOutlet UIImageView *blurredBackgroundImageVIew;
+@property (nonatomic, weak) IBOutlet UIImageView *blurredBackgroundImageView;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *verticalSpaceCanvasToTopOfContainerConstraint;
 @property (nonatomic, strong) NSMutableArray *inspectorConstraints;
 
@@ -106,7 +106,7 @@
     
     self.toolController.canvasView = self.canvasView;
     
-    [self.blurredBackgroundImageVIew setBlurredImageWithClearImage:self.previewImage
+    [self.blurredBackgroundImageView setBlurredImageWithClearImage:self.previewImage
                                                   placeholderImage:nil
                                                          tintColor:[[UIColor blackColor] colorWithAlphaComponent:0.5f]];
     
@@ -166,8 +166,15 @@
     [toolBarItems addObject:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil]];
     self.bottomToolbar.items = toolBarItems;
     
-    NSData *imageFile = [NSData dataWithContentsOfURL:self.mediaURL];
-    self.canvasView.sourceImage = [UIImage imageWithData:imageFile];
+    if ([self.toolController isKindOfClass:[VImageToolController class]])
+    {
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(canvasViewDidUpdateAsset:)
+                                                     name:VCanvasViewAssetSizeBecameAvailableNotification
+                                                   object:self.canvasView];
+        [self.canvasView setSourceURL:self.mediaURL
+                   withPreloadedImage:self.previewImage];
+    }
     
     __weak typeof(self) welf = self;
     self.keyboardManager = [[VKeyboardNotificationManager alloc] initWithKeyboardWillShowBlock:^(CGRect keyboardFrameBegin, CGRect keyboardFrameEnd, NSTimeInterval animationDuration, UIViewAnimationCurve animationCurve)
@@ -278,6 +285,15 @@
 {
     self.toolController.selectedTool = [self.toolForBarButtonItemMap objectForKey:sender.description];
     [self setSelectedBarButtonItem:sender];
+}
+
+#pragma mark - Notification Handlers
+
+- (void)canvasViewDidUpdateAsset:(NSNotification *)notification
+{
+    [self.blurredBackgroundImageView setBlurredImageWithClearImage:self.canvasView.asset
+                                                  placeholderImage:nil
+                                                         tintColor:[[UIColor blackColor] colorWithAlphaComponent:0.5f]];
 }
 
 #pragma mark - VWorkspaceToolControllerDelegate
