@@ -19,7 +19,8 @@ static NSString * const kVSaveToCameraRollLastStateKey = @"saveToCameraKey";
 {
     BOOL lastState = [[NSUserDefaults standardUserDefaults] boolForKey:kVSaveToCameraRollLastStateKey];
     self.switchToConfigure.on = lastState;
-    self.switchToConfigure.enabled = ([ALAssetsLibrary authorizationStatus] == ALAuthorizationStatusAuthorized);
+    ALAuthorizationStatus authorizationStatus = [ALAssetsLibrary authorizationStatus];
+    self.switchToConfigure.enabled = ((authorizationStatus != ALAuthorizationStatusDenied) && (authorizationStatus != ALAuthorizationStatusRestricted));
 }
 
 - (void)setSwitchToConfigure:(UISwitch *)switchToConfigure
@@ -48,7 +49,11 @@ static NSString * const kVSaveToCameraRollLastStateKey = @"saveToCameraKey";
      {
          *stop = YES;
      }
-                               failureBlock:nil];
+                               failureBlock:^(NSError *error)
+     {
+         [self.switchToConfigure setOn:NO
+                              animated:YES];
+     }];
     [[NSUserDefaults standardUserDefaults] setBool:self.switchToConfigure.on forKey:kVSaveToCameraRollLastStateKey];
 }
 
