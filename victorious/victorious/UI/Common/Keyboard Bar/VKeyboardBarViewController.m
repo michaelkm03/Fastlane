@@ -190,31 +190,9 @@ static const NSInteger kCharacterLimit = 255;
     [alertController addAction:discardAction];
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:cancelActionTitle
                                                            style:UIAlertActionStyleCancel
-                                                         handler:^(UIAlertAction *action)
-                                   {
-                                       [[VThemeManager sharedThemeManager] applyStyling];
-                                   }];
+                                                         handler:nil];
     [alertController addAction:cancelAction];
     
-    [[VThemeManager sharedThemeManager] removeStyling];
-    {
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:actionSheetTitle
-                                                                                 message:nil
-                                                                          preferredStyle:UIAlertControllerStyleActionSheet];
-        
-        UIAlertAction *discardAction = [UIAlertAction actionWithTitle:discardActionTitle
-                                                                style:UIAlertActionStyleDestructive
-                                                              handler:^(UIAlertAction *action)
-                                        {
-                                            clearMediaSelection();
-                                            showCamera();
-                                        }];
-        [alertController addAction:discardAction];
-        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:cancelActionTitle
-                                                               style:UIAlertActionStyleCancel
-                                                             handler:nil];
-        [alertController addAction:cancelAction];
-        
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
