@@ -261,7 +261,6 @@
     if ([self.emailTextField isFirstResponder] && !validEmail)
     {
         self.emailTextField.showInlineValidation = YES;
-        [self.emailTextField showIncorrectTextAnimationAndVibration];
     }
     
     BOOL validPassword = [self.passwordTextField.validator validateString:self.passwordTextField.text
@@ -269,7 +268,6 @@
     if ([self.passwordTextField isFirstResponder] && !validPassword)
     {
         self.passwordTextField.showInlineValidation = YES;
-        [self.passwordTextField showIncorrectTextAnimationAndVibration];
     }
     
     return YES;
