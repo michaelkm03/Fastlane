@@ -158,6 +158,13 @@ static NSString * const kVTagResultIdentifier = @"VTrendingTagCell";
     __weak typeof(customCell) weakCell = customCell;
     customCell.subscribeToTagAction = ^(void)
     {
+        // Check if logged in before attempting to subscribe / unsubscribe to hashtag
+        if (![VObjectManager sharedManager].authorized)
+        {
+            [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
+            return;
+        }
+        
         // Disable follow / unfollow button
         if (!weakCell.shouldCellRespond)
         {

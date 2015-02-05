@@ -94,12 +94,6 @@ static NSString * const kVUserResultIdentifier = @"followerCell";
 {
     if (!haveResults)
     {
-        VNoContentView *notFoundView = [VNoContentView noContentViewWithFrame:self.tableView.frame];
-        self.tableView.backgroundView = notFoundView;
-        notFoundView.titleLabel.text = NSLocalizedString(@"NoPeopleFoundInSearchTitle", @"");
-        notFoundView.messageLabel.text = NSLocalizedString(@"NoPeopleFoundInSearch", @"");
-        notFoundView.iconImageView.image = [[UIImage imageNamed:@"user-icon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-        notFoundView.iconImageView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
         self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     }
     else

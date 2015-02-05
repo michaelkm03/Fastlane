@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="Uac-Xm-78P">
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
@@ -18,14 +17,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <containerView contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EwB-Hd-HRW">
+                            <containerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EwB-Hd-HRW">
                                 <rect key="frame" x="0.0" y="55" width="320" height="513"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <connections>
                                     <segue destination="VvC-UZ-wr7" kind="embed" id="C5z-Ql-sb3"/>
                                 </connections>
                             </containerView>
-                            <view clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="J1F-4E-CYS" userLabel="Search Bar Container">
+                            <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="J1F-4E-CYS" userLabel="Search Bar Container">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="55"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="20" placeholderIntrinsicHeight="20" image="SearchIconSmall" translatesAutoresizingMaskIntoConstraints="NO" id="GKA-TH-tHo">
@@ -36,7 +35,7 @@
                                             <constraint firstAttribute="width" constant="20" id="sfL-h5-Iki"/>
                                         </constraints>
                                     </imageView>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tcb-RO-Azu" userLabel="Cancel Button">
+                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tcb-RO-Azu" userLabel="Cancel Button">
                                         <rect key="frame" x="270" y="4" width="50" height="50"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="50" id="HUZ-OI-jhn"/>
@@ -47,10 +46,10 @@
                                         </state>
                                     </button>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Search people" minimumFontSize="10" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="RxD-Py-mcF" userLabel="Search Field">
-                                        <rect key="frame" x="43" y="19" width="227" height="19"/>
+                                        <rect key="frame" x="43" y="4" width="227" height="43"/>
                                         <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="19" id="GCH-OE-VL1"/>
+                                            <constraint firstAttribute="height" constant="43" id="GCH-OE-VL1"/>
                                         </constraints>
                                         <color key="textColor" red="0.13725490200000001" green="0.13725490200000001" blue="0.13725490200000001" alpha="1" colorSpace="calibratedRGB"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -88,7 +87,7 @@
                                     <constraint firstItem="YDu-Qa-a39" firstAttribute="top" secondItem="J1F-4E-CYS" secondAttribute="top" id="sNH-gv-IqL"/>
                                     <constraint firstAttribute="bottom" secondItem="Yw3-DS-7gm" secondAttribute="bottom" id="sSm-jt-Gd9"/>
                                     <constraint firstAttribute="trailing" secondItem="tcb-RO-Azu" secondAttribute="trailing" id="vsb-FZ-Pd6"/>
-                                    <constraint firstAttribute="centerY" secondItem="RxD-Py-mcF" secondAttribute="centerY" constant="-1" id="y48-GE-d2H"/>
+                                    <constraint firstAttribute="centerY" secondItem="RxD-Py-mcF" secondAttribute="centerY" constant="2" id="y48-GE-d2H"/>
                                     <constraint firstAttribute="trailing" secondItem="Yw3-DS-7gm" secondAttribute="trailing" constant="-1" id="z0x-cl-qxN"/>
                                 </constraints>
                             </view>
@@ -100,7 +99,7 @@
                             <constraint firstAttribute="trailing" secondItem="J1F-4E-CYS" secondAttribute="trailing" id="N1F-Oh-Bhh"/>
                             <constraint firstAttribute="trailing" secondItem="EwB-Hd-HRW" secondAttribute="trailing" id="Xmc-bp-l9c"/>
                             <constraint firstItem="EwB-Hd-HRW" firstAttribute="top" secondItem="J1F-4E-CYS" secondAttribute="bottom" id="eWC-if-DCv"/>
-                            <constraint firstItem="J1F-4E-CYS" firstAttribute="top" secondItem="2Uc-gO-ISV" secondAttribute="bottom" placeholder="YES" id="f0K-c7-FvG"/>
+                            <constraint firstItem="J1F-4E-CYS" firstAttribute="top" secondItem="2Uc-gO-ISV" secondAttribute="bottom" constant="-20" placeholder="YES" id="f0K-c7-FvG"/>
                             <constraint firstItem="Qyw-ZJ-fmq" firstAttribute="top" secondItem="EwB-Hd-HRW" secondAttribute="bottom" id="k5Z-Zc-79N"/>
                         </constraints>
                     </view>
@@ -238,7 +237,7 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="ZdI-Zr-sBo" secondAttribute="trailing" constant="-1" id="6N7-5B-TzW"/>
-                                    <constraint firstAttribute="centerY" secondItem="VBj-A0-3vt" secondAttribute="centerY" constant="-1" id="BgA-Kg-enI"/>
+                                    <constraint firstAttribute="centerY" secondItem="VBj-A0-3vt" secondAttribute="centerY" constant="2" id="BgA-Kg-enI"/>
                                     <constraint firstAttribute="centerY" secondItem="16y-gm-iuT" secondAttribute="centerY" constant="-0.5" id="Fif-i2-8Ub"/>
                                     <constraint firstAttribute="height" constant="55" id="Hpj-Od-RHl"/>
                                     <constraint firstAttribute="trailing" secondItem="uO5-OM-4av" secondAttribute="trailing" id="Ov5-Yn-Hxi"/>
@@ -277,6 +276,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="ZAL-or-M7x"/>
                     <connections>
+                        <outlet property="closeButton" destination="uO5-OM-4av" id="uNw-cr-J5t"/>
                         <outlet property="headerTopConstraint" destination="TiB-pn-YLD" id="fgF-th-OjH"/>
                         <outlet property="headerView" destination="yZS-li-WMq" id="Xbn-Vl-bkh"/>
                         <outlet property="opaqueBackgroundView" destination="CPm-F4-7pC" id="nco-d1-J9C"/>

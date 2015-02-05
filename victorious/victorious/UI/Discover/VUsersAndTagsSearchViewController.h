@@ -33,5 +33,6 @@
 @property (nonatomic, weak) IBOutlet UIView *searchResultsContainerView;
 @property (nonatomic, weak) IBOutlet UIView *opaqueBackgroundView;
 @property (nonatomic, weak) IBOutlet UIView *searchBarTopHorizontalRule;
+@property (nonatomic, weak) IBOutlet UIButton *closeButton;
 
 @end

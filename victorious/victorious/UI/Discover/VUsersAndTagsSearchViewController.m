@@ -39,6 +39,8 @@
 @property (nonatomic, weak) IBOutlet UIView *headerView;
 @property (nonatomic, weak) IBOutlet UISegmentedControl *segmentControl;
 
+@property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
+
 @property (nonatomic, strong) VUserSearchResultsViewController *userSearchResultsVC;
 @property (nonatomic, strong) VTagsSearchResultsViewController *tagsSearchResultsVC;
 
@@ -54,6 +56,8 @@
 
 @implementation VUsersAndTagsSearchViewController
 
+#pragma mark - Factory Methods
+
 + (instancetype)usersAndTagsSearchViewController
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Discover" bundle:nil];
@@ -66,6 +70,8 @@
     usersAndTagsVC.dependencyManager = dependencyManager;
     return usersAndTagsVC;
 }
+
+#pragma mark - View Lifecycle Methods
 
 - (void)viewDidLoad
 {
@@ -88,7 +94,7 @@
     [self.searchResultsContainerView addSubview:self.userSearchResultsVC.view];
     [self.userSearchResultsVC didMoveToParentViewController:self];
     [self.view v_addFitToParentConstraintsToSubview:self.userSearchResultsVC.view];
-
+    
     // Format the segmented control
     self.segmentControl.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     self.segmentControl.selectedSegmentIndex = 0;
@@ -105,7 +111,7 @@
                                                object:nil];
     
     // Setup Search Field
-    self.searchField.placeholder = NSLocalizedString(@"SearchPeopleAndHashtags", @"");
+    self.searchField.placeholder = NSLocalizedString(@"Search people and hashtags", @"");
     [self.searchField setTextColor:[self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey]];
     [self.searchField setTintColor:[self.dependencyManager colorForKey:VDependencyManagerLinkColorKey]];
     self.searchField.delegate = self;
@@ -127,6 +133,11 @@
 }
 
 - (BOOL)prefersStatusBarHidden
+{
+    return NO;
+}
+
+- (BOOL)shouldAutorotate
 {
     return NO;
 }
@@ -238,7 +249,18 @@
     {
         NSSortDescriptor   *sort = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
         NSArray *results = [resultObjects sortedArrayUsingDescriptors:@[sort]];
-        [self.userSearchResultsVC setSearchResults:(NSMutableArray *)results];
+        
+        if (results.count > 0)
+        {
+            [self.userSearchResultsVC setSearchResults:(NSMutableArray *)results];
+        }
+        else
+        {
+            self.userSearchResultsVC.searchResults = nil;
+            [self.userSearchResultsVC.tableView reloadData];
+            [self showNoResultsReturnedForSearch];
+        }
+        
     };
     
     if ( [self.searchField.text length] > 0 )
@@ -258,10 +280,13 @@
 
 - (void)searchFieldTextChanged:(NSNotification *)notification
 {
-    if ( self.searchField.text.length == 0 )
+    if (self.searchField.text.length == 0)
     {
-        self.userSearchResultsVC.view.alpha = 0;
-        self.tagsSearchResultsVC.view.alpha = 0;
+        self.userSearchResultsVC.searchResults = nil;
+        [self.userSearchResultsVC.tableView reloadData];
+        
+        self.tagsSearchResultsVC.searchResults = nil;
+        [self.tagsSearchResultsVC.tableView reloadData];
     }
 }
 
@@ -282,11 +307,11 @@
 {
     self.userSearchResultsVC.searchResults = nil;
     [self.userSearchResultsVC.tableView reloadData];
-    self.userSearchResultsVC.tableView.backgroundView = nil;
+    self.userSearchResultsVC.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         
     self.tagsSearchResultsVC.searchResults = nil;
     [self.tagsSearchResultsVC.tableView reloadData];
-    self.tagsSearchResultsVC.tableView.backgroundView = nil;
+    self.tagsSearchResultsVC.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
     return YES;
 }
@@ -306,19 +331,21 @@
     NSString *messageTitle, *messageText;
     UIImage *messageIcon;
     
+    [self.searchField resignFirstResponder];
+    
     VNoContentView *noResultsFoundView = [VNoContentView noContentViewWithFrame:self.searchResultsContainerView.frame];
     if ( self.segmentControl.selectedSegmentIndex == 0 )
     {
-        messageTitle = NSLocalizedString(@"NoPeopleFoundInSearchTitle", @"");
-        messageText = NSLocalizedString(@"NoPeopleFoundInSearch", @"");
+        messageTitle = NSLocalizedString(@"No People Found In Search Title", @"");
+        messageText = NSLocalizedString(@"No people found in search", @"");
         messageIcon = [[UIImage imageNamed:@"user-icon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         self.userSearchResultsVC.tableView.backgroundView = noResultsFoundView;
         self.userSearchResultsVC.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     }
     else if ( self.segmentControl.selectedSegmentIndex == 1 )
     {
-        messageTitle = NSLocalizedString(@"NoHashtagsFoundInSearchTitle", @"");
-        messageText = NSLocalizedString(@"NoHashtagsFoundInSearch", @"");
+        messageTitle = NSLocalizedString(@"No Hashtags Found In Search Title", @"");
+        messageText = NSLocalizedString(@"No hashtags found in search", @"");
         messageIcon = [[UIImage imageNamed:@"tabIconHashtag"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         self.tagsSearchResultsVC.tableView.backgroundView = noResultsFoundView;
         self.tagsSearchResultsVC.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -327,7 +354,7 @@
     noResultsFoundView.titleLabel.text = messageTitle;
     noResultsFoundView.messageLabel.text = messageText;
     noResultsFoundView.iconImageView.image = messageIcon;
-    noResultsFoundView.iconImageView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryLinkColorKey];
+    noResultsFoundView.iconImageView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
 }
 
 @end

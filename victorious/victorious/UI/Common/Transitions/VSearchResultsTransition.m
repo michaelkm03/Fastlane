@@ -32,6 +32,7 @@ const static CGFloat kStartTopOffset = 36.0f;
     
     toViewController.searchResultsContainerView.alpha = 0.0f;
     toViewController.opaqueBackgroundView.alpha = 0.0f;
+    toViewController.closeButton.alpha = 0.0f;
     toViewController.searchBarTopConstraint.constant = kStartTopOffset;
     toViewController.headerTopConstraint.constant = -toViewController.searchBarViewHeightConstraint.constant;
     
@@ -58,7 +59,8 @@ const static CGFloat kStartTopOffset = 36.0f;
          toViewController.searchResultsContainerView.alpha = 1.0f;
          toViewController.searchBarTopHorizontalRule.alpha = 0.0f;
          toViewController.opaqueBackgroundView.alpha = 1.0f;
-         
+         toViewController.closeButton.alpha = 1.0f;
+
          [toViewController.searchBarTopConstraint.firstItem layoutIfNeeded];
          [toViewController.headerTopConstraint.firstItem layoutIfNeeded];
          [toViewController.searchResultsTableBottomCosntraint.firstItem layoutIfNeeded];
@@ -76,6 +78,7 @@ const static CGFloat kStartTopOffset = 36.0f;
     
     fromViewController.searchResultsContainerView.alpha = 1.0f;
     fromViewController.opaqueBackgroundView.alpha = 1.0f;
+    fromViewController.closeButton.alpha = 1.0f;
     
     [fromViewController.searchBarTopConstraint.firstItem layoutIfNeeded];
     [fromViewController.headerTopConstraint.firstItem layoutIfNeeded];
@@ -97,6 +100,7 @@ const static CGFloat kStartTopOffset = 36.0f;
          fromViewController.searchResultsContainerView.alpha = 0.0f;
          fromViewController.searchBarTopHorizontalRule.alpha = 1.0f;
          fromViewController.opaqueBackgroundView.alpha = 0.0f;
+         fromViewController.closeButton.alpha = 0.0f;
          
          fromViewController.searchBarTopConstraint.constant = kStartTopOffset;
          fromViewController.headerTopConstraint.constant = -fromViewController.searchBarViewHeightConstraint.constant;

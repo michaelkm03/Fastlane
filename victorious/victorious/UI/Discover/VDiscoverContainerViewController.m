@@ -69,7 +69,7 @@
 {
     [super viewDidLoad];
 
-    self.searchField.placeholder = NSLocalizedString(@"SearchPeopleAndHashtags", @"");
+    self.searchField.placeholder = NSLocalizedString(@"Search people and hashtags", @"");
     self.searchField.delegate = self;
 
     VSearchResultsTransition *viewTransition = [[VSearchResultsTransition alloc] init];
@@ -178,13 +178,7 @@
 
  - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
-    // Check if we are logged in
-    if (![VObjectManager sharedManager].authorized)
-    {
-        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
-        return;
-    }
-
+    // Release the search field
     [self.searchField resignFirstResponder];
     
     VUsersAndTagsSearchViewController *searchViewController = [VUsersAndTagsSearchViewController initWithDependencyManager:self.dependencyManager];
