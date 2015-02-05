@@ -28,7 +28,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="55"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="20" placeholderIntrinsicHeight="20" image="SearchIconSmall" translatesAutoresizingMaskIntoConstraints="NO" id="GKA-TH-tHo">
-                                        <rect key="frame" x="14" y="18" width="20" height="20"/>
+                                        <rect key="frame" x="14" y="16" width="20" height="20"/>
                                         <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="20" id="8dP-J9-hg0"/>
@@ -46,7 +46,7 @@
                                         </state>
                                     </button>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Search people" minimumFontSize="10" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="RxD-Py-mcF" userLabel="Search Field">
-                                        <rect key="frame" x="43" y="4" width="227" height="43"/>
+                                        <rect key="frame" x="43" y="4" width="269" height="43"/>
                                         <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="43" id="GCH-OE-VL1"/>
@@ -72,18 +72,27 @@
                                             <constraint firstAttribute="height" constant="1" id="K7G-f6-QNB"/>
                                         </constraints>
                                     </view>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ATX-2M-yRs" userLabel="Search Icon Button">
+                                        <rect key="frame" x="8" y="7" width="46" height="37"/>
+                                        <state key="normal">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="searchIconButtonAction:" destination="Uac-Xm-78P" eventType="touchUpInside" id="Zp0-Tm-WRC"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="centerY" secondItem="tcb-RO-Azu" secondAttribute="centerY" constant="-1.5" id="0uI-ug-Dcf"/>
                                     <constraint firstItem="YDu-Qa-a39" firstAttribute="leading" secondItem="J1F-4E-CYS" secondAttribute="leading" id="CCj-JC-CI5"/>
                                     <constraint firstAttribute="trailing" secondItem="YDu-Qa-a39" secondAttribute="trailing" id="Gm9-lr-n2F"/>
-                                    <constraint firstAttribute="trailing" secondItem="RxD-Py-mcF" secondAttribute="trailing" constant="50" id="M87-uV-2G9"/>
+                                    <constraint firstAttribute="trailing" secondItem="RxD-Py-mcF" secondAttribute="trailing" constant="8" id="M87-uV-2G9"/>
                                     <constraint firstItem="RxD-Py-mcF" firstAttribute="leading" secondItem="J1F-4E-CYS" secondAttribute="leading" constant="43" id="XKl-Hh-tme"/>
                                     <constraint firstAttribute="height" constant="55" id="kyv-Ne-LMK"/>
                                     <constraint firstItem="GKA-TH-tHo" firstAttribute="leading" secondItem="J1F-4E-CYS" secondAttribute="leading" constant="14" id="lsd-YA-nHI"/>
                                     <constraint firstItem="Yw3-DS-7gm" firstAttribute="leading" secondItem="J1F-4E-CYS" secondAttribute="leading" constant="1" id="mCE-ur-MSf"/>
-                                    <constraint firstAttribute="centerY" secondItem="GKA-TH-tHo" secondAttribute="centerY" constant="-0.5" id="qpA-nu-xWz"/>
+                                    <constraint firstAttribute="centerY" secondItem="GKA-TH-tHo" secondAttribute="centerY" constant="1.5" id="qpA-nu-xWz"/>
                                     <constraint firstItem="YDu-Qa-a39" firstAttribute="top" secondItem="J1F-4E-CYS" secondAttribute="top" id="sNH-gv-IqL"/>
                                     <constraint firstAttribute="bottom" secondItem="Yw3-DS-7gm" secondAttribute="bottom" id="sSm-jt-Gd9"/>
                                     <constraint firstAttribute="trailing" secondItem="tcb-RO-Azu" secondAttribute="trailing" id="vsb-FZ-Pd6"/>
@@ -107,6 +116,7 @@
                         <outlet property="searchBarContainer" destination="J1F-4E-CYS" id="aWz-o5-Syx"/>
                         <outlet property="searchBarHeightConstraint" destination="kyv-Ne-LMK" id="Ogb-9H-fsw"/>
                         <outlet property="searchField" destination="RxD-Py-mcF" id="def-r2-cZo"/>
+                        <outlet property="searchIconButton" destination="ATX-2M-yRs" id="6gS-8b-g3Y"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="40O-oo-gld" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -212,7 +222,7 @@
                                         </connections>
                                     </button>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="20" placeholderIntrinsicHeight="20" image="SearchIconSmall" translatesAutoresizingMaskIntoConstraints="NO" id="16y-gm-iuT">
-                                        <rect key="frame" x="14" y="18" width="20" height="20"/>
+                                        <rect key="frame" x="14" y="15" width="20" height="20"/>
                                         <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="20" id="6V1-pY-2aH"/>
@@ -238,7 +248,7 @@
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="ZdI-Zr-sBo" secondAttribute="trailing" constant="-1" id="6N7-5B-TzW"/>
                                     <constraint firstAttribute="centerY" secondItem="VBj-A0-3vt" secondAttribute="centerY" constant="2" id="BgA-Kg-enI"/>
-                                    <constraint firstAttribute="centerY" secondItem="16y-gm-iuT" secondAttribute="centerY" constant="-0.5" id="Fif-i2-8Ub"/>
+                                    <constraint firstAttribute="centerY" secondItem="16y-gm-iuT" secondAttribute="centerY" constant="2.5" id="Fif-i2-8Ub"/>
                                     <constraint firstAttribute="height" constant="55" id="Hpj-Od-RHl"/>
                                     <constraint firstAttribute="trailing" secondItem="uO5-OM-4av" secondAttribute="trailing" id="Ov5-Yn-Hxi"/>
                                     <constraint firstItem="iaO-Wl-aCo" firstAttribute="leading" secondItem="0Rk-A9-Gp7" secondAttribute="leading" id="PQN-MC-cym"/>

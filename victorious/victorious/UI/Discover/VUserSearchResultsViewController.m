@@ -7,10 +7,14 @@
 //
 
 #import "VUserSearchResultsViewController.h"
+
 // VObjectManager
 #import "VObjectManager+Users.h"
 #import "VObjectManager+Login.h"
 #import "VUser.h"
+
+// User Profile
+#import "VUserProfileViewController.h"
 
 // Dependency Manager
 #import "VDependencyManager.h"
@@ -77,7 +81,7 @@ static NSString * const kVUserResultIdentifier = @"followerCell";
     [self.tableView registerNib:[UINib nibWithNibName:kVUserResultIdentifier bundle:nil]
          forCellReuseIdentifier:kVUserResultIdentifier];
     [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
-    [self.tableView setKeyboardDismissMode:UIScrollViewKeyboardDismissModeInteractive];
+    [self.tableView setKeyboardDismissMode:UIScrollViewKeyboardDismissModeOnDrag];
 }
 
 #pragma mark - TableView Datasource
@@ -150,6 +154,13 @@ static NSString * const kVUserResultIdentifier = @"followerCell";
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return 50.0f;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    VUser  *user = self.searchResults[indexPath.row];
+    VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithUser:user];
+    [self.navigationController pushViewController:profileViewController animated:YES];
 }
 
 #pragma mark - Friend Actions

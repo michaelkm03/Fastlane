@@ -31,6 +31,7 @@
 @interface VDiscoverContainerViewController () <VNavigationHeaderDelegate, UITextFieldDelegate>
 
 @property (nonatomic, weak) IBOutlet UITextField *searchField;
+@property (nonatomic, weak) IBOutlet UIButton *searchIconButton;
 @property (nonatomic, weak) id<VDiscoverViewControllerProtocol> childViewController;
 
 @property (nonatomic, strong) UINavigationController *searchNavigationController;
@@ -160,6 +161,11 @@
 - (IBAction)closeButtonAction:(id)sender
 {
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (IBAction)searchIconButtonAction:(id)sender
+{
+    [self.searchField becomeFirstResponder];
 }
 
 #pragma mark - VNavigationDestination
