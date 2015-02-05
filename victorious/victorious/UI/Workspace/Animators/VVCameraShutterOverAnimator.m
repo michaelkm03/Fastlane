@@ -7,9 +7,9 @@
 //
 
 #import "VVCameraShutterOverAnimator.h"
-#import "VCameraViewController.h"
+#import "VWorkspaceViewController.h"
 
-static const NSTimeInterval kBlurOverPresentTransitionDuration = 0.35f;
+static const NSTimeInterval kBlurOverPresentTransitionDuration = 2.35f;
 
 @implementation VVCameraShutterOverAnimator
 
@@ -23,22 +23,17 @@ static const NSTimeInterval kBlurOverPresentTransitionDuration = 0.35f;
     UIViewController *fromViewController = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
     UIViewController *toViewController = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
 
+    [[transitionContext containerView] addSubview:fromViewController.view];
     [[transitionContext containerView] addSubview:toViewController.view];
     
-    CGRect finalFrameForToViewController = [transitionContext finalFrameForViewController:toViewController];
-    CGFloat largerDimension = MAX(CGRectGetWidth(finalFrameForToViewController), CGRectGetHeight(finalFrameForToViewController));
-    UIView *circleView = [[UIView alloc] initWithFrame:CGRectMake(finalFrameForToViewController.origin.x, finalFrameForToViewController.origin.y, largerDimension, largerDimension)];
-    circleView.center = toViewController.view.center;
-    if ([fromViewController isKindOfClass:[VCameraViewController class]])
+    if ([toViewController isKindOfClass:[VWorkspaceViewController class]])
     {
-        VCameraViewController *cameraViewController = (VCameraViewController *)fromViewController;
-        circleView.center = [[transitionContext containerView] convertPoint:cameraViewController.shutterCenter fromView:cameraViewController.view];
+        VWorkspaceViewController *workvc = (VWorkspaceViewController *)toViewController;
+        workvc.snapShotView = [fromViewController.view snapshotViewAfterScreenUpdates:YES];
+        [workvc bringChromeOutOfView];
     }
-    circleView.layer.cornerRadius = CGRectGetWidth(circleView.bounds)/2;
-    circleView.backgroundColor = [UIColor blackColor];
-    circleView.userInteractionEnabled = NO;
-    [[transitionContext containerView] addSubview:circleView];
-    
+    UIView *snapshotView = [fromViewController.view snapshotViewAfterScreenUpdates:YES];
+    [[transitionContext containerView] addSubview:snapshotView];
     [UIView animateWithDuration:[self transitionDuration:transitionContext]
                           delay:0.0f
          usingSpringWithDamping:0.9f
@@ -46,13 +41,15 @@ static const NSTimeInterval kBlurOverPresentTransitionDuration = 0.35f;
                         options:UIViewAnimationOptionAllowUserInteraction
                      animations:^
      {
-         circleView.transform = CGAffineTransformMakeScale(0.00001f, 0.00001f);
-         circleView.alpha = 0.0f;
+         if ([toViewController isKindOfClass:[VWorkspaceViewController class]])
+         {
+             VWorkspaceViewController *workspaceVC = (VWorkspaceViewController *)toViewController;
+             [workspaceVC bringChromeIntoView];
+         }
      }
                      completion:^(BOOL finished)
     {
-        [circleView removeFromSuperview];
-        [transitionContext completeTransition:finished];
+        [transitionContext completeTransition:YES];
     }];
 }
 

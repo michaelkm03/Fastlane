@@ -65,7 +65,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
 @property (nonatomic) BOOL allowVideo; ///< THIS property specifies whether we SHOULD allow video (according to the wishes of the calling class)
 @property (nonatomic) BOOL videoEnabled; ///< THIS property specifies whether we CAN allow video (according to device restrictions)
 @property (nonatomic) BOOL allowPhotos;
-@property (nonatomic, readwrite) BOOL showedFullscreenShutterAnimation;
+
 @property (nonatomic, readwrite) BOOL didSelectAssetFromLibrary;
 @property (nonatomic, readwrite) BOOL didSelectFromWebSearch;
 @property (nonatomic, copy) NSString *initialCaptureMode;
@@ -316,14 +316,6 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
     }
 }
 
-#pragma mark - Public Methods
-
-- (CGPoint)shutterCenter
-{
-    return [self.cameraControlContainer convertPoint:self.cameraControl.center
-                                              toView:self.view];
-}
-
 #pragma mark - Property Accessors
 
 - (void)setState:(VCameraViewControllerState)state
@@ -386,7 +378,6 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
             self.nextButton.enabled = NO;
             
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraDidCapturePhoto];
-            self.showedFullscreenShutterAnimation = YES;
         }
             break;
         case VCameraViewControllerStateRecording:
@@ -506,7 +497,6 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
         {
             welf.capturedMediaURL = capturedMediaURL;
             welf.previewImage = previewImage;
-            welf.showedFullscreenShutterAnimation = NO;
             welf.didSelectFromWebSearch = YES;
             welf.state = VCameraViewControllerStateCapturedMedia;
         }
@@ -635,7 +625,6 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
                                 {
                                     dispatch_async(welf.captureAnimationQueue, ^
                                                    {
-                                                       welf.showedFullscreenShutterAnimation = YES;
                                                        welf.animationCompleted = YES;
                                                        dispatch_async(dispatch_get_main_queue(), ^
                                                                       {
@@ -739,7 +728,6 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
 {
     self.captureController.videoEncoder.recording = NO;
     self.switchCameraButton.enabled = YES;
-    self.showedFullscreenShutterAnimation = NO;
     [self updateOrientation];
 }
 

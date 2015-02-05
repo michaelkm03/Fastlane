@@ -59,6 +59,11 @@
 @property (nonatomic, strong) NSDictionary *toolForBarButtonItemMap;
 @property (nonatomic, strong) NSDictionary *barButtonItemForToolMap;
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *VerticalSpaceTopBarToContainer;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceBottomBarToContainer;
+
+@property (nonatomic, strong) UIVisualEffectView *blurView;
+
 @end
 
 @implementation VWorkspaceViewController
@@ -291,9 +296,9 @@
 
 - (void)canvasViewDidUpdateAsset:(NSNotification *)notification
 {
-    [self.blurredBackgroundImageView setBlurredImageWithClearImage:self.canvasView.asset
-                                                  placeholderImage:nil
-                                                         tintColor:[[UIColor blackColor] colorWithAlphaComponent:0.5f]];
+//    [self.blurredBackgroundImageView setBlurredImageWithClearImage:self.canvasView.asset
+//                                                  placeholderImage:nil
+//                                                         tintColor:[[UIColor blackColor] colorWithAlphaComponent:0.5f]];
 }
 
 #pragma mark - VWorkspaceToolControllerDelegate
@@ -325,6 +330,58 @@
     inspectorViewController.view.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     [self addToolViewController:inspectorViewController];
     [self positionToolViewControllerOnInspector:inspectorViewController];
+}
+
+#pragma mark - Public Methods
+
+- (void)bringChromeOutOfView
+{
+    self.VerticalSpaceTopBarToContainer.constant = -CGRectGetHeight(self.topToolbar.frame);
+    self.verticalSpaceBottomBarToContainer.constant = -CGRectGetHeight(self.bottomToolbar.frame);
+    self.blurredBackgroundImageView.alpha = 0.0f;
+    self.view.backgroundColor = [UIColor clearColor];
+    
+    self.snapShotView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:self.snapShotView];
+    self.snapShotView.frame = self.view.bounds;
+//    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[snapshot]|"
+//                                                                      options:kNilOptions
+//                                                                      metrics:nil
+//                                                                        views:@{@"snapshot":self.snapShotView}]];
+//    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[snapshot]|"
+//                                                                      options:kNilOptions
+//                                                                      metrics:nil
+//                                                                        views:@{@"snapshot":self.snapShotView}]];
+
+    
+//    UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+//    UIVisualEffectView *blurView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
+//    blurView.translatesAutoresizingMaskIntoConstraints = NO;
+//    [self.snapShotView addSubview:blurView];
+//    blurView.frame = self.snapShotView.bounds;
+//    [self.snapShotView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[blurView]|"
+//                                                                      options:kNilOptions
+//                                                                      metrics:nil
+//                                                                        views:NSDictionaryOfVariableBindings(blurView)]];
+//    [self.snapShotView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[blurView]|"
+//                                                                      options:kNilOptions
+//                                                                      metrics:nil
+//                                                                        views:NSDictionaryOfVariableBindings(blurView)]];
+//    blurView.alpha = 0.0f;
+//    self.blurView = blurView;
+//    [self.view sendSubviewToBack:blurView];
+    
+    [self.view sendSubviewToBack:self.snapShotView];
+    [self.view layoutIfNeeded];
+}
+
+- (void)bringChromeIntoView
+{
+    self.VerticalSpaceTopBarToContainer.constant = 0.0f;
+    self.verticalSpaceBottomBarToContainer.constant = 0.0f;
+    
+
+    [self.view layoutIfNeeded];
 }
 
 #pragma mark - Private Methods
