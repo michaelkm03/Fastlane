@@ -157,6 +157,13 @@ NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamColl
     }
 }
 
+- (BOOL)canDisplayActivityViewFooterOnCollectionView:(UICollectionView *)collectionView inSection:(NSInteger)section
+{
+    const BOOL isLastSection = section == MAX( [self.collectionView numberOfSections] - 1, 0);
+    const BOOL hasOneOrMoreItems = [collectionView numberOfItemsInSection:section] > 1;
+    return isLastSection && hasOneOrMoreItems;
+}
+
 #pragma mark - UICollectionViewDataSource
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
@@ -186,7 +193,7 @@ NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamColl
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView
            viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
 {
-    if ( indexPath.section == MAX( [self.collectionView numberOfSections] - 1, 0) )
+    if ( [self canDisplayActivityViewFooterOnCollectionView:collectionView inSection:indexPath.section] )
     {
         return [self.collectionView dequeueReusableSupplementaryViewOfKind:kind
                                                        withReuseIdentifier:[VFooterActivityIndicatorView reuseIdentifier]

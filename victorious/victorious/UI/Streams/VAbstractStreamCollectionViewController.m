@@ -33,6 +33,7 @@
 #import "VScrollPaginator.h"
 #import "UIViewController+VNavMenu.h"
 #import "VImageSearchResultsFooterView.h"
+#import "VFooterActivityIndicatorView.h"
 
 const CGFloat kVLoadNextPagePoint = .75f;
 
@@ -46,7 +47,7 @@ const CGFloat kVLoadNextPagePoint = .75f;
 
 @property (nonatomic, strong) NSLayoutConstraint *headerYConstraint;
 
-@property (nonatomic, assign, getter=isBottomActivityIndicatorVisible) BOOL bottomActivityIndicatorVisible;
+@property (nonatomic, assign) NSUInteger previousNumberOfRowsInStreamSection;
 
 @end
 
@@ -133,7 +134,11 @@ const CGFloat kVLoadNextPagePoint = .75f;
 
 - (IBAction)refresh:(UIRefreshControl *)sender
 {
-    [self refreshWithCompletion:nil];
+    [self refreshWithCompletion:^
+    {
+        const NSInteger lastSection = MAX( 0, [self.collectionView numberOfSections] - 1 );
+        self.previousNumberOfRowsInStreamSection = [self.collectionView numberOfItemsInSection:lastSection];
+    }];
 }
 
 - (void)refreshWithCompletion:(void(^)(void))completionBlock
@@ -163,6 +168,32 @@ const CGFloat kVLoadNextPagePoint = .75f;
     
     [self.refreshControl beginRefreshing];
     self.refreshControl.hidden = NO;
+}
+
+- (void)animateNewlyPopulatedCell:(UICollectionViewCell *)cell
+                 inCollectionView:(UICollectionView *)collectionView
+                      atIndexPath:(NSIndexPath *)indexPath
+{
+    const NSUInteger currentCount = [self.collectionView numberOfItemsInSection:indexPath.section];
+    const BOOL newPageDidLoad = currentCount != self.previousNumberOfRowsInStreamSection;
+    const BOOL isFirstRowOfNewPage = indexPath.row == (NSInteger) self.previousNumberOfRowsInStreamSection;
+    if ( newPageDidLoad && isFirstRowOfNewPage )
+    {
+        const CGFloat translationY = [VFooterActivityIndicatorView desiredSizeWithCollectionViewBounds:collectionView.bounds].height;
+        cell.transform = CGAffineTransformMakeTranslation( 0.0f, translationY );
+        [UIView animateWithDuration:0.5f
+                              delay:0.0f
+             usingSpringWithDamping:0.9f
+              initialSpringVelocity:0.2f
+                            options:kNilOptions
+                         animations:^
+         {
+             cell.transform = CGAffineTransformIdentity;
+         }
+                         completion:nil];
+        
+        self.previousNumberOfRowsInStreamSection = currentCount;
+    }
 }
 
 #pragma mark - VScrollPaginatorDelegate

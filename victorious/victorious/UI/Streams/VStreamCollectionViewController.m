@@ -508,7 +508,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section
 {
-    if ( section == 1 )
+    if ( [self.streamDataSource canDisplayActivityViewFooterOnCollectionView:collectionView inSection:section] )
     {
         return [VFooterActivityIndicatorView desiredSizeWithCollectionViewBounds:collectionView.bounds];
     }
@@ -521,6 +521,14 @@ static CGFloat const kTemplateCLineSpacing = 8;
     if ( [view isKindOfClass:[VFooterActivityIndicatorView class]] )
     {
         [((VFooterActivityIndicatorView *)view) setActivityIndicatorVisible:YES animated:YES];
+    }
+}
+
+- (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ( [self.streamDataSource canDisplayActivityViewFooterOnCollectionView:collectionView inSection:indexPath.section] )
+    {
+        [self animateNewlyPopulatedCell:cell inCollectionView:collectionView atIndexPath:indexPath];
     }
 }
 
