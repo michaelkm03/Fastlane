@@ -29,6 +29,9 @@ PODS:
   - RestKit/Support (0.22.0):
     - TransitionKit (= 2.0.0)
   - RKValueTransformers (1.0.1)
+  - SDWebImage (3.7.1):
+    - SDWebImage/Core (= 3.7.1)
+  - SDWebImage/Core (3.7.1)
   - SOCKit (1.1)
   - TestFlightSDK (3.0.2)
   - TransitionKit (2.0.0)
@@ -42,6 +45,7 @@ DEPENDENCIES:
   - MBProgressHUD (~> 0.8)
   - Nocilla (from `https://github.com/TouchFrame/Nocilla.git`, branch `block-response`)
   - RestKit (~> 0.22.0)
+  - SDWebImage
   - TestFlightSDK (~> 3.0.0)
   - TTTAttributedLabel (~> 1.8.1)
 
@@ -66,6 +70,7 @@ SPEC CHECKSUMS:
   Nocilla: 8302b85f1e428a719ac76f78669d64a6872586bf
   RestKit: 6b82f862848cbe026ddc297985aa9a766b7e1a38
   RKValueTransformers: 994503e34bffdbe0159ff6b497290dd1f8d5657f
+  SDWebImage: 116e88633b5b416ea0ca4b334a4ac59cf72dd38d
   SOCKit: d8d0dd3688ae1026c12367570da8fa8e1a6980fb
   TestFlightSDK: 0c24c533748d0d84bfe7a3cb6036fa79124d84ee
   TransitionKit: 7877021649a734f3239ed176b7967de29321dcf3
