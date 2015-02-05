@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14A389a" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="VFindFriendsTableViewController"/>
@@ -132,8 +131,11 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wtx-Nu-lyk" userLabel="Bottom Info View">
                             <rect key="frame" x="0.0" y="373" width="320" height="90"/>
                             <subviews>
-                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="bottomShade" translatesAutoresizingMaskIntoConstraints="NO" id="h5x-Gl-qu7">
+                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bottomShade" translatesAutoresizingMaskIntoConstraints="NO" id="h5x-Gl-qu7">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="90"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="90" id="5Bq-0t-ifw"/>
+                                    </constraints>
                                 </imageView>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="259" translatesAutoresizingMaskIntoConstraints="NO" id="hgn-BR-Oom" userLabel="Info Label">
                                     <rect key="frame" x="31" y="12" width="259" height="65"/>
@@ -145,9 +147,13 @@
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             <constraints>
+                                <constraint firstItem="h5x-Gl-qu7" firstAttribute="leading" secondItem="wtx-Nu-lyk" secondAttribute="leading" id="F4f-Q0-NL2"/>
+                                <constraint firstAttribute="bottom" secondItem="h5x-Gl-qu7" secondAttribute="bottom" id="Lxc-Ie-mxm"/>
                                 <constraint firstItem="hgn-BR-Oom" firstAttribute="leading" secondItem="wtx-Nu-lyk" secondAttribute="leading" constant="31" id="Rmh-2c-Q1h"/>
                                 <constraint firstAttribute="bottom" secondItem="hgn-BR-Oom" secondAttribute="bottom" constant="13" id="jaM-oe-e6W"/>
                                 <constraint firstAttribute="trailing" secondItem="hgn-BR-Oom" secondAttribute="trailing" constant="30" id="nFH-or-DoP"/>
+                                <constraint firstAttribute="trailing" secondItem="h5x-Gl-qu7" secondAttribute="trailing" id="qmH-iU-3WO"/>
+                                <constraint firstAttribute="height" constant="90" id="rXu-xc-vxj"/>
                                 <constraint firstItem="hgn-BR-Oom" firstAttribute="top" secondItem="wtx-Nu-lyk" secondAttribute="top" constant="12" id="rjk-bm-UpA"/>
                             </constraints>
                         </view>
@@ -187,7 +193,6 @@
                         <constraint firstItem="tbC-61-nna" firstAttribute="top" secondItem="7dw-z9-qes" secondAttribute="bottom" constant="41" id="Yle-yu-qHG"/>
                         <constraint firstItem="wtx-Nu-lyk" firstAttribute="leading" secondItem="0Kn-17-2W3" secondAttribute="leading" id="crY-dV-Psv"/>
                         <constraint firstItem="7dw-z9-qes" firstAttribute="top" secondItem="0Kn-17-2W3" secondAttribute="top" constant="52" id="dDz-zA-hNe"/>
-                        <constraint firstItem="wtx-Nu-lyk" firstAttribute="top" relation="lessThanOrEqual" secondItem="0Kn-17-2W3" secondAttribute="top" constant="373" id="jEi-wV-Y1p"/>
                         <constraint firstAttribute="centerX" secondItem="tbC-61-nna" secondAttribute="centerX" id="kdQ-qL-WAa"/>
                     </constraints>
                 </view>
