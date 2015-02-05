@@ -81,9 +81,11 @@
 
 static const CGFloat kMaxInputBarHeight = 200.0f;
 
-@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate,VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate>
+@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate,VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, NSUserActivityDelegate>
 
 #import "VCommentHighlighter.h"
+
+@property (nonatomic, strong) NSUserActivity *handoffObject;
 
 @property (nonatomic, strong, readwrite) VContentViewViewModel *viewModel;
 @property (nonatomic, strong) NSURL *mediaURL;
@@ -504,6 +506,11 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
+    self.handoffObject = [[NSUserActivity alloc] initWithActivityType:[NSString stringWithFormat:@"com.victorious.handoff.%@", self.viewModel.sequence.name]];
+    self.handoffObject.webpageURL = self.viewModel.shareURL;
+    self.handoffObject.delegate = self;
+    [self.handoffObject becomeCurrent];
 
     [self.contentCollectionView flashScrollIndicators];
 }
@@ -511,6 +518,9 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
+    self.handoffObject.delegate = nil;
+    [self.handoffObject invalidate];
     
     // We don't care about these notifications anymore but we still care about new user loggedin
     [[NSNotificationCenter defaultCenter] removeObserver:self
@@ -1454,6 +1464,13 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 - (void)shouldLoadPreviousPage
 {
     [self.viewModel loadComments:VPageTypePrevious];
+}
+
+#pragma mark - NSUserActivityDelegate
+
+- (void)userActivityWasContinued:(NSUserActivity *)userActivity
+{
+    [self.videoCell pause];
 }
 
 @end
