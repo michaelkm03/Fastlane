@@ -13,7 +13,6 @@
 #import "UIImage+ImageEffects.h"
 #import "VProfileCreateViewController.h"
 #import "VUserManager.h"
-#import "VLoginTransitionAnimator.h"
 #import "VSignupTransitionAnimator.h"
 #import "UIImage+ImageCreation.h"
 #import <MBProgressHUD/MBProgressHUD.h>
@@ -329,28 +328,6 @@
         profileViewController.loginType = kVLoginTypeEmail;
         profileViewController.profile = self.profile;
     }
-}
-
-- (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
-                                  animationControllerForOperation:(UINavigationControllerOperation)operation
-                                               fromViewController:(UIViewController *)fromVC
-                                                 toViewController:(UIViewController *)toVC
-{
-    if ([toVC isKindOfClass:[VLoginWithEmailViewController class]])
-    {
-        VLoginTransitionAnimator   *animator = [[VLoginTransitionAnimator alloc] init];
-        animator.presenting = (operation == UINavigationControllerOperationPush);
-        return animator;
-    }
-    
-    if ([toVC isKindOfClass:[VSignupWithEmailViewController class]])
-    {
-        VSignupTransitionAnimator *animator = [[VSignupTransitionAnimator alloc] init];
-        animator.presenting = (operation == UINavigationControllerOperationPush);
-        return animator;
-    }
-    
-    return nil;
 }
 
 - (void)userDidAbortCreateProfile:(NSNotification *)note
