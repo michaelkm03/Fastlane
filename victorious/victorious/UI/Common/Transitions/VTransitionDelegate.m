@@ -46,9 +46,9 @@
         
         [self.transition prepareForTransitionIn:model];
         [self.transition performTransitionIn:model completion:^(BOOL didComplete)
-        {
-            [transitionContext completeTransition:![transitionContext transitionWasCancelled]];
-        }];
+         {
+             [transitionContext completeTransition:![transitionContext transitionWasCancelled]];
+         }];
     }
     else
     {
@@ -95,14 +95,6 @@
 }
 
 - (id <UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed
-{
-    return self.animator;
-}
-
-- (id <UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
-                                   animationControllerForOperation:(UINavigationControllerOperation)operation
-                                                fromViewController:(UIViewController *)fromVC
-                                                  toViewController:(UIViewController *)toVC
 {
     return self.animator;
 }

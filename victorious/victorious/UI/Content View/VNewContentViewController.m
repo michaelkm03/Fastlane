@@ -73,7 +73,7 @@
 
 #import "VTransitionDelegate.h"
 #import "VEditCommentViewController.h"
-#import "VSimpleModalTransition.h"
+#import "VModalTransition.h"
 
 #import "VTracking.h"
 #import "VCommentHighlighter.h"
@@ -141,7 +141,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     contentViewController.viewModel = viewModel;
     contentViewController.hasAutoPlayed = NO;
     
-    VSimpleModalTransition *modalTransition = [[VSimpleModalTransition alloc] init];
+    VModalTransition *modalTransition = [[VModalTransition alloc] init];
     contentViewController.transitionDelegate = [[VTransitionDelegate alloc] initWithTransition:modalTransition];
     contentViewController.elapsedTimeFormatter = [[VElapsedTimeFormatter alloc] init];
     

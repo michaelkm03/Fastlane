@@ -61,7 +61,7 @@
 {
     [super viewDidLoad];
     
-    VSimpleModalTransition *modalTransition = [[VSimpleModalTransition alloc] init];
+    VModalTransition *modalTransition = [[VModalTransition alloc] init];
     self.transitionDelegate = [[VTransitionDelegate alloc] initWithTransition:modalTransition];
     
     [self.tableView registerNib:[UINib nibWithNibName:kVCommentCellNibName bundle:nil]

@@ -1,35 +1,35 @@
 //
-//  VSimpleModalTransition.m
+//  VModalTransition.m
 //  victorious
 //
 //  Created by Patrick Lynch on 12/23/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VSimpleModalTransition.h"
+#import "VModalTransition.h"
 #import "VTransitionModel.h"
 
-@implementation VSimpleModalTransition
+@implementation VModalTransition
 
 #pragma mark - VAnimatedTransitionViewController
 
-- (id<VSimpleModalTransitionPresentedViewController>)viewControllerFromModel:(VTransitionModel *)model
+- (id<VModalTransitionPresentedViewController>)viewControllerFromModel:(VTransitionModel *)model
 {
     if ( model.isPresenting )
     {
-        NSParameterAssert( [model.toViewController conformsToProtocol:@protocol( VSimpleModalTransitionPresentedViewController )] );
-        return (id<VSimpleModalTransitionPresentedViewController>) model.toViewController;
+        NSParameterAssert( [model.toViewController conformsToProtocol:@protocol( VModalTransitionPresentedViewController )] );
+        return (id<VModalTransitionPresentedViewController>) model.toViewController;
     }
     else
     {
-        NSParameterAssert( [model.fromViewController conformsToProtocol:@protocol( VSimpleModalTransitionPresentedViewController )] );
-        return (id<VSimpleModalTransitionPresentedViewController>) model.fromViewController;
+        NSParameterAssert( [model.fromViewController conformsToProtocol:@protocol( VModalTransitionPresentedViewController )] );
+        return (id<VModalTransitionPresentedViewController>) model.fromViewController;
     }
 }
 
 - (void)prepareForTransitionIn:(VTransitionModel *)model
 {
-    id<VSimpleModalTransitionPresentedViewController> vc = [self viewControllerFromModel:model];
+    id<VModalTransitionPresentedViewController> vc = [self viewControllerFromModel:model];
     
     if ( model != nil )
     {
@@ -47,7 +47,7 @@
 
 - (void)performTransitionIn:(VTransitionModel *)model completion:(void (^)(BOOL))completion
 {
-    id<VSimpleModalTransitionPresentedViewController> vc = [self viewControllerFromModel:model];
+    id<VModalTransitionPresentedViewController> vc = [self viewControllerFromModel:model];
     
     NSTimeInterval screenDuration = model.animationDuration * 0.3f;
     NSTimeInterval modalDuration = model.animationDuration * 0.7f;
@@ -76,7 +76,7 @@
 
 - (void)performTransitionOut:(VTransitionModel *)model completion:(void (^)(BOOL))completion
 {
-    id<VSimpleModalTransitionPresentedViewController> vc = [self viewControllerFromModel:model];
+    id<VModalTransitionPresentedViewController> vc = [self viewControllerFromModel:model];
     
     NSTimeInterval screenDuration = model.animationDuration * 0.3f;
     NSTimeInterval modalDuration = model.animationDuration * 0.6f;

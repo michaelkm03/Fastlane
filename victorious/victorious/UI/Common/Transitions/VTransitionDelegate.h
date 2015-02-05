@@ -14,7 +14,7 @@
 
 @end
 
-@interface VTransitionDelegate : NSObject <UIViewControllerTransitioningDelegate, UINavigationControllerDelegate>
+@interface VTransitionDelegate : NSObject <UIViewControllerTransitioningDelegate>
 
 - (instancetype)initWithTransition:(id<VAnimatedTransition>)transition;
 

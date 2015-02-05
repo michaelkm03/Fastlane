@@ -23,18 +23,7 @@
         NSParameterAssert( _fromViewController != nil );
         NSParameterAssert( _toViewController != nil );
         
-        const BOOL isModalTransition = _toViewController.presentedViewController != nil ||
-                                       _fromViewController.presentedViewController != nil;
-        if ( isModalTransition )
-        {
-            _isPresenting = [_toViewController presentedViewController] != _fromViewController;
-        }
-        else
-        {
-            UINavigationController *fromNavigationVC = _fromViewController.navigationController;
-            _isPresenting = [fromNavigationVC.viewControllers containsObject:_fromViewController]  &&
-                            [fromNavigationVC.viewControllers containsObject:_fromViewController];
-        }
+        _isPresenting = [_toViewController presentedViewController] != _fromViewController;
         _animationDuration = _isPresenting ? transition.transitionInDuration : transition.transitionOutDuration;
         if ( [transition requiresImageViewFromOriginViewController] )
         {
