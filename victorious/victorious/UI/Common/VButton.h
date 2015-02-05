@@ -12,7 +12,7 @@
  These styles, when assigned to the `style` property of VButton, will
  select different drawing styles and redraw the button accordingly.
  */
-typedef NS_ENUM( NSUInteger, VButtonStyle )
+typedef NS_ENUM( NSInteger, VButtonStyle )
 {
     /**
      A solid background color (which you set using `backgroundColor`

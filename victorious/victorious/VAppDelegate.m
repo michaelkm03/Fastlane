@@ -52,7 +52,9 @@ static BOOL isRunningTests(void) __attribute__((const));
     // We don't need this yet, but it must be initialized now (see comments for sharedInstance method)
     [VPurchaseManager sharedInstance];
     
+#ifndef DEBUG
     [ADEumInstrumentation initWithKey:@"AD-AAB-AAA-JWA"];
+#endif
     
     [TestFlight setOptions:@{ TFOptionReportCrashes: @NO }];
 #ifdef QA
