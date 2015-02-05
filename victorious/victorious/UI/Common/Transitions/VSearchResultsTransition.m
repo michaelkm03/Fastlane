@@ -35,7 +35,7 @@ const static CGFloat kStartTopOffset = 36.0f;
     toViewController.closeButton.alpha = 0.0f;
     toViewController.searchBarTopConstraint.constant = kStartTopOffset;
     toViewController.headerTopConstraint.constant = -toViewController.searchBarViewHeightConstraint.constant;
-    
+
     [toViewController.searchBarTopConstraint.firstItem layoutIfNeeded];
     [toViewController.headerTopConstraint.firstItem layoutIfNeeded];
     [toViewController.searchResultsTableBottomCosntraint.firstItem layoutIfNeeded];
@@ -53,7 +53,6 @@ const static CGFloat kStartTopOffset = 36.0f;
                         options:kNilOptions
                      animations:^
      {
-         
          toViewController.searchBarTopConstraint.constant = 0.0f;
          toViewController.headerTopConstraint.constant = 0.0f;
          toViewController.searchResultsContainerView.alpha = 1.0f;

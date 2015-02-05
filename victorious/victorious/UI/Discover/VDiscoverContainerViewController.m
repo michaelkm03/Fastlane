@@ -180,7 +180,7 @@
 {
     // Release the search field
     [self.searchField resignFirstResponder];
-    
+
     VUsersAndTagsSearchViewController *searchViewController = [VUsersAndTagsSearchViewController initWithDependencyManager:self.dependencyManager];
     searchViewController.transitioningDelegate = self.transitionDelegate;
     self.navigationController.delegate = self.transitionDelegate;
