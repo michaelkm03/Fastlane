@@ -64,6 +64,8 @@ static const CGFloat    kHeightRatioForRefresh                    =  0.1f;
     self.collectionView.contentInset = UIEdgeInsetsMake(13.0f, 5.0f, 5.0f, 5.0f);
     [self.collectionView registerClass:[VImageSearchResultCell class] forCellWithReuseIdentifier:kSearchResultCellReuseIdentifier];
     
+    self.searchField.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    
     UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
     flowLayout.itemSize = CGSizeMake(71.0f, 71.0f);
     flowLayout.minimumInteritemSpacing = 5.0f;
@@ -115,6 +117,7 @@ static const CGFloat    kHeightRatioForRefresh                    =  0.1f;
 
 - (IBAction)closeButtonTapped:(id)sender
 {
+    [self.searchField resignFirstResponder];
     if (self.completionBlock)
     {
         self.completionBlock(NO, nil, nil);

@@ -8,7 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-#import "VPhotoFilter.h"
+@class VPhotoFilter;
+
+/**
+ *  Posted whenever a new asset size becomes available.
+ */
+extern NSString * const VCanvasViewAssetSizeBecameAvailableNotification;
 
 /*
  VCanvasView is a representation of the current state of the workspace while editing an image. VCanvasView is optimized for performance and may scale sourceImage down to provide fast render times.
@@ -26,7 +31,9 @@
 - (void)setSourceURL:(NSURL *)URL
   withPreloadedImage:(UIImage *)preloadedImage;
 
-@property (nonatomic, readonly) UIImage *sourceImage; ///< The image to use as the base of the canvas.
+@property (nonatomic, readonly) UIImage *asset; ///< The asset loaded in the imageView via setSourceURL: .
+
+@property (nonatomic, readonly) CGSize assetSize; ///< The size of the source asset.
 
 @property (nonatomic, strong) VPhotoFilter *filter; ///< The Filter to use on the image.
 

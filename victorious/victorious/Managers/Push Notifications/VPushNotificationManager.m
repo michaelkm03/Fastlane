@@ -39,16 +39,9 @@ NSString * const VPushNotificationManagerDidRegister = @"com.getvictorious.PushN
 
 - (void)startPushNotificationManager
 {
-    if ([[UIApplication sharedApplication] respondsToSelector:@selector(registerForRemoteNotifications)])
-    {
-        [[UIApplication sharedApplication] registerForRemoteNotifications];
-        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeAlert | UIUserNotificationTypeBadge | UIUserNotificationTypeSound) categories:nil];
-        [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
-    }
-    else
-    {
-        [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound)];
-    }
+    [[UIApplication sharedApplication] registerForRemoteNotifications];
+    UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeAlert | UIUserNotificationTypeBadge | UIUserNotificationTypeSound) categories:nil];
+    [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
 }
 
 - (void)didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
@@ -110,17 +103,7 @@ NSString * const VPushNotificationManagerDidRegister = @"com.getvictorious.PushN
 - (BOOL)isRegisteredForPushNotifications
 {
     UIApplication *app = [UIApplication sharedApplication];
-    BOOL isRegistered = NO;
-    if ( UI_IS_IOS8_AND_HIGHER )
-    {
-        isRegistered = app.isRegisteredForRemoteNotifications;
-    }
-    else
-    {
-        isRegistered = app.enabledRemoteNotificationTypes != UIRemoteNotificationTypeNone;
-    }
-    
-    return isRegistered;
+    return app.isRegisteredForRemoteNotifications;
 }
 
 @end

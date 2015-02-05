@@ -56,10 +56,7 @@
     [self refreshFollowingList];
     
     // Set insets and layout margin
-    if (UI_IS_IOS8_AND_HIGHER)
-    {
-        [self.tableView setLayoutMargins:UIEdgeInsetsZero];
-    }
+    [self.tableView setLayoutMargins:UIEdgeInsetsZero];
 
     [self.tableView setSeparatorInset:UIEdgeInsetsZero];
 }

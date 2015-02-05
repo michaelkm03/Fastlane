@@ -131,6 +131,7 @@ static const char kAssociatedWorkspaceFlowKey;
                                                                    forKey:VDependencyManagerWorkspaceFlowKey
                                                     withAddedDependencies:addedDependencies];
     
+    __weak typeof(self) welf = self;
     self.workspaceFlowController.completion = ^void(BOOL finished)
     {
         [weakViewController dismissViewControllerAnimated:YES
@@ -138,6 +139,7 @@ static const char kAssociatedWorkspaceFlowKey;
                                                    if (completion)
                                                    {
                                                        completion(finished);
+                                                       welf.workspaceFlowController = nil;
                                                    }
                                                }];
     };
@@ -232,7 +234,7 @@ static const char kAssociatedWorkspaceFlowKey;
     NSString *emailSubject = [NSString stringWithFormat:NSLocalizedString(@"EmailShareSubjectFormat", nil), [[VThemeManager sharedThemeManager] themedStringForKey:kVCreatorName]];
     [activityViewController setValue:emailSubject forKey:@"subject"];
     activityViewController.excludedActivityTypes = @[UIActivityTypePostToFacebook];
-    activityViewController.completionHandler = ^(NSString *activityType, BOOL completed)
+    activityViewController.completionWithItemsHandler = ^(NSString *activityType, BOOL completed, NSArray *returnedItems, NSError *activityError)
     {
         NSDictionary *params = @{ VTrackingKeySequenceCategory : sequence.category ?: @"",
                                   VTrackingKeyActivityType : activityType ?: @"",

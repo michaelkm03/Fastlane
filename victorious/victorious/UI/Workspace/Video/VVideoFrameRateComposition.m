@@ -87,6 +87,24 @@
 
     videoComposition.frameDuration = self.frameDuration;
     
+    // Force render size to be a multiple of 16
+    CGSize renderSize = videoComposition.renderSize;
+    NSInteger renderWidth = (NSInteger)renderSize.width;
+    NSInteger remainderWidth = (renderWidth % 16) ;
+    if (remainderWidth != 0)
+    {
+        renderWidth = renderWidth - remainderWidth;
+    }
+    renderSize.width = renderWidth;
+    NSInteger renderHeight = (NSInteger)renderSize.height;
+    NSInteger remainderHeight = (renderHeight % 16) ;
+    if (remainderHeight != 0)
+    {
+        renderHeight = renderHeight - remainderHeight;
+    }
+    renderSize.height = renderHeight;
+    videoComposition.renderSize = renderSize;
+
     return [videoComposition copy];
 }
 

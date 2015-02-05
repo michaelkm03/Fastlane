@@ -224,33 +224,21 @@ NSString * const VInputAccessoryViewKeyboardFrameDidChangeNotification = @"com.v
 
 @implementation VInputAccessoryView
 
-- (NSString *)keyPathForKeyboardHandling
-{
-    if (UI_IS_IOS8_AND_HIGHER)
-    {
-        return NSStringFromSelector(@selector(center));
-    }
-    else
-    {
-        return NSStringFromSelector(@selector(frame));
-    }
-}
-
 - (void)willMoveToSuperview:(UIView *)newSuperview
 {
     if (self.superview)
     {
-        [self.superview removeObserver:self forKeyPath:[self keyPathForKeyboardHandling]];
+        [self.superview removeObserver:self forKeyPath:NSStringFromSelector(@selector(center))];
     }
     
-    [newSuperview addObserver:self forKeyPath:[self keyPathForKeyboardHandling] options:0 context:NULL];
+    [newSuperview addObserver:self forKeyPath:NSStringFromSelector(@selector(center)) options:0 context:NULL];
     
     [super willMoveToSuperview:newSuperview];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-    if ([object isEqual:self.superview] && [keyPath isEqualToString:[self keyPathForKeyboardHandling]])
+    if ([object isEqual:self.superview] && [keyPath isEqualToString:NSStringFromSelector(@selector(center))])
     {
         NSDictionary *userInfo = @{UIKeyboardFrameEndUserInfoKey:[NSValue valueWithCGRect:[object frame]]};
         [[NSNotificationCenter defaultCenter] postNotificationName:VInputAccessoryViewKeyboardFrameDidChangeNotification object:nil userInfo:userInfo];
@@ -261,7 +249,7 @@ NSString * const VInputAccessoryViewKeyboardFrameDidChangeNotification = @"com.v
 {
     if (self.superview)
     {
-        [self.superview removeObserver:self forKeyPath:[self keyPathForKeyboardHandling]];
+        [self.superview removeObserver:self forKeyPath:NSStringFromSelector(@selector(center))];
     }
 }
 

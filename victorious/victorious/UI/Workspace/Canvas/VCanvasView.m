@@ -8,7 +8,10 @@
 
 #import "VCanvasView.h"
 #import "CIImage+VImage.h"
-#import <UIImageView+AFNetworking.h>
+#import <UIImageView+WebCache.h>
+#import "VPhotoFilter.h"
+
+NSString * const VCanvasViewAssetSizeBecameAvailableNotification = @"VCanvasViewAssetSizeBecameAvailableNotification";
 
 static const CGFloat kRelatvieScaleFactor = 0.55f;
 
@@ -89,40 +92,6 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
     [_activityIndicator startAnimating];
 }
 
-- (void)layoutSubviews
-{
-    [super layoutSubviews];
-    
-    if (self.imageView.image == nil)
-    {
-        return;
-    }
-    
-    CGRect imageViewFrame;
-    
-    if (self.sourceImage.size.height > self.sourceImage.size.width)
-    {
-        CGFloat scaleFactor = self.sourceImage.size.width / CGRectGetWidth(self.bounds);
-        imageViewFrame = CGRectMake(CGRectGetMinX(self.bounds),
-                                    CGRectGetMinY(self.bounds),
-                                    CGRectGetWidth(self.bounds),
-                                    self.sourceImage.size.height * (1/scaleFactor));
-    }
-    else
-    {
-        CGFloat scaleFactor = self.sourceImage.size.height / CGRectGetHeight(self.bounds);
-        imageViewFrame = CGRectMake(CGRectGetMinX(self.bounds),
-                                    CGRectGetMinY(self.bounds),
-                                    self.sourceImage.size.width * (1/scaleFactor),
-                                    CGRectGetHeight(self.bounds));
-    }
-    
-    _imageView.frame = imageViewFrame;
-    
-    self.canvasScrollView.contentSize = imageViewFrame.size;
-    self.activityIndicator.center = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
-}
-
 #pragma mark - Property Accessors
 
 - (void)setSourceURL:(NSURL *)URL
@@ -133,6 +102,9 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
     {
         __strong typeof(self) strongSelf = welf;
         strongSelf.sourceImage = sourceImage;
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:VCanvasViewAssetSizeBecameAvailableNotification
+                                                            object:strongSelf];
         [strongSelf layoutIfNeeded];
         [strongSelf.activityIndicator stopAnimating];
         if (!animate)
@@ -159,18 +131,16 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
         return;
     }
     
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
+    [self.imageView sd_setImageWithURL:URL placeholderImage:nil completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL)
+    {
+        
+        if (image)
+        {
+            imageFinishedLoadingBlock(image, YES);
+        }
+        
+    }];
     
-    [self.imageView setImageWithURLRequest:request
-                          placeholderImage:nil
-                                   success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image)
-     {
-         if (image)
-         {
-             imageFinishedLoadingBlock(image, YES);
-         }
-     }
-                                   failure:nil];
 }
 
 - (void)setSourceURL:(NSURL *)URL
@@ -191,7 +161,31 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
     CGImageRelease(scaledImageRef);
     
     self.imageView.image = _scaledImage;
-    self.imageView.frame = self.canvasScrollView.bounds;
+    
+    CGRect imageViewFrame;
+    
+    if (self.sourceImage.size.height > self.sourceImage.size.width)
+    {
+        CGFloat scaleFactor = self.sourceImage.size.width / CGRectGetWidth(self.bounds);
+        imageViewFrame = CGRectMake(CGRectGetMinX(self.bounds),
+                                    CGRectGetMinY(self.bounds),
+                                    CGRectGetWidth(self.bounds),
+                                    self.sourceImage.size.height * (1/scaleFactor));
+    }
+    else
+    {
+        CGFloat scaleFactor = self.sourceImage.size.height / CGRectGetHeight(self.bounds);
+        imageViewFrame = CGRectMake(CGRectGetMinX(self.bounds),
+                                    CGRectGetMinY(self.bounds),
+                                    self.sourceImage.size.width * (1/scaleFactor),
+                                    CGRectGetHeight(self.bounds));
+    }
+    
+    _imageView.frame = imageViewFrame;
+    
+    self.canvasScrollView.contentSize = imageViewFrame.size;
+    self.activityIndicator.center = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
+
     [self layoutIfNeeded];
 }
 
@@ -225,6 +219,16 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
                            }
                        });
     });
+}
+
+- (CGSize)assetSize
+{
+    return self.imageView.image.size;
+}
+
+- (UIImage *)asset
+{
+    return self.imageView.image;
 }
 
 #pragma mark - Private Mehtods

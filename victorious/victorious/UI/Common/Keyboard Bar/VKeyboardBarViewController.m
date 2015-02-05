@@ -176,7 +176,27 @@ static const NSInteger kCharacterLimit = 255;
         [self.mediaButton setImage:[UIImage imageNamed:@"MessageCamera"] forState:UIControlStateNormal];
     };
     
-    if (UI_IS_IOS8_AND_HIGHER)
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:actionSheetTitle
+                                                                             message:nil
+                                                                      preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    UIAlertAction *discardAction = [UIAlertAction actionWithTitle:discardActionTitle
+                                                            style:UIAlertActionStyleDestructive
+                                                          handler:^(UIAlertAction *action)
+                                    {
+                                        clearMediaSelection();
+                                        showCamera();
+                                    }];
+    [alertController addAction:discardAction];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:cancelActionTitle
+                                                           style:UIAlertActionStyleCancel
+                                                         handler:^(UIAlertAction *action)
+                                   {
+                                       [[VThemeManager sharedThemeManager] applyStyling];
+                                   }];
+    [alertController addAction:cancelAction];
+    
+    [[VThemeManager sharedThemeManager] removeStyling];
     {
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:actionSheetTitle
                                                                                  message:nil
@@ -195,23 +215,7 @@ static const NSInteger kCharacterLimit = 255;
                                                              handler:nil];
         [alertController addAction:cancelAction];
         
-        [self presentViewController:alertController animated:YES completion:nil];
-    }
-    else
-    {
-        UIWindow *window = ((VAppDelegate *)[UIApplication sharedApplication].delegate).window;
-        [[[UIActionSheet alloc] initWithTitle:actionSheetTitle
-                            cancelButtonTitle:cancelActionTitle
-                               onCancelButton:nil
-                       destructiveButtonTitle:discardActionTitle
-                          onDestructiveButton:^
-        {
-            clearMediaSelection();
-            showCamera();
-        }
-                   otherButtonTitlesAndBlocks:nil, nil] showInView:window];
-    }
-
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 - (NSAttributedString *)textViewText

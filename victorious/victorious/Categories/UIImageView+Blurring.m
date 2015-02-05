@@ -52,7 +52,7 @@ static const CGFloat kVSaturationDeltaFactor = 1.8f;
     
     __weak UIImageView *weakSelf = self;
     [self setImageWithURLRequest:request
-                placeholderImage:placeholderImage
+                placeholderImage:[placeholderImage applyTintEffectWithColor:tintColor]
                          success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image)
                          {
                              __strong UIImageView *strongSelf = weakSelf;

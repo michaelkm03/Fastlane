@@ -13,7 +13,6 @@
 #import "UIImage+ImageEffects.h"
 #import "VProfileCreateViewController.h"
 #import "VUserManager.h"
-#import "VLoginTransitionAnimator.h"
 #import "VSignupTransitionAnimator.h"
 #import "UIImage+ImageCreation.h"
 #import <MBProgressHUD/MBProgressHUD.h>
@@ -100,7 +99,7 @@
     [self.navigationController setNavigationBarHidden:NO animated:NO];
     
     UIImage    *cancelButtonImage = [[UIImage imageNamed:@"cameraButtonClose"]  imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:cancelButtonImage style:UIBarButtonItemStyleBordered target:self action:@selector(closeButtonClicked:)];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:cancelButtonImage style:UIBarButtonItemStylePlain target:self action:@selector(closeButtonClicked:)];
     
     self.navigationController.delegate = self;
 }
@@ -329,28 +328,6 @@
         profileViewController.loginType = kVLoginTypeEmail;
         profileViewController.profile = self.profile;
     }
-}
-
-- (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
-                                  animationControllerForOperation:(UINavigationControllerOperation)operation
-                                               fromViewController:(UIViewController *)fromVC
-                                                 toViewController:(UIViewController *)toVC
-{
-    if ([toVC isKindOfClass:[VLoginWithEmailViewController class]])
-    {
-        VLoginTransitionAnimator   *animator = [[VLoginTransitionAnimator alloc] init];
-        animator.presenting = (operation == UINavigationControllerOperationPush);
-        return animator;
-    }
-    
-    if ([toVC isKindOfClass:[VSignupWithEmailViewController class]])
-    {
-        VSignupTransitionAnimator *animator = [[VSignupTransitionAnimator alloc] init];
-        animator.presenting = (operation == UINavigationControllerOperationPush);
-        return animator;
-    }
-    
-    return nil;
 }
 
 - (void)userDidAbortCreateProfile:(NSNotification *)note

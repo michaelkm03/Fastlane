@@ -143,7 +143,6 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
 - (void)registerCells
 {
     [self.tableView registerNib:[UINib nibWithNibName:kMessageCellViewIdentifier bundle:nil] forCellReuseIdentifier:kMessageCellViewIdentifier];
-    [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:kMessageCellViewIdentifier bundle:nil] forCellReuseIdentifier:kMessageCellViewIdentifier];
 }
 
 #pragma mark - Message View Controller Cache

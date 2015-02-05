@@ -34,6 +34,7 @@
 
 // Animators
 #import "VPublishBlurOverAnimator.h"
+#import "VVCameraShutterOverAnimator.h"
 
 NSString * const VWorkspaceFlowControllerInitialCaptureStateKey = @"initialCaptureStateKey";
 NSString * const VWorkspaceFlowControllerSequenceToRemixKey = @"sequenceToRemixKey";
@@ -56,6 +57,8 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
 @property (nonatomic, strong) UIImage *previewImage;
 
 @property (nonatomic, strong) UINavigationController *flowNavigationController;
+
+@property (nonatomic, weak) VCameraViewController *cameraViewController;
 
 @property (nonatomic, strong) VPublishBlurOverAnimator *transitionAnimator;
 
@@ -220,19 +223,18 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
     NSNumber *initialCaptureStateValue = [self.dependencyManager numberForKey:VWorkspaceFlowControllerInitialCaptureStateKey];
     initialCaptureState = (initialCaptureStateValue != nil) ? [initialCaptureStateValue integerValue] : initialCaptureState;
     
-    VCameraViewController *cameraViewController;
     switch (initialCaptureState)
     {
         case VWorkspaceFlowControllerInitialCaptureStateImage:
-            cameraViewController = [VCameraViewController cameraViewControllerStartingWithStillCapture];
+            self.cameraViewController = [VCameraViewController cameraViewControllerStartingWithStillCapture];
             break;
         case VWorkspaceFlowControllerInitialCaptureStateVideo:
-            cameraViewController = [VCameraViewController cameraViewControllerStartingWithVideoCapture];
+            self.cameraViewController = [VCameraViewController cameraViewControllerStartingWithVideoCapture];
             break;
     }
-    cameraViewController.shouldSkipPreview = YES;
-    cameraViewController.completionBlock = [self mediaCaptureCompletion];
-    [_flowNavigationController pushViewController:cameraViewController
+    self.cameraViewController.shouldSkipPreview = YES;
+    self.cameraViewController.completionBlock = [self mediaCaptureCompletion];
+    [self.flowNavigationController pushViewController:self.cameraViewController
                                          animated:NO];
 }
 
@@ -244,6 +246,7 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
         if (finished)
         {
             welf.capturedMediaURL = capturedMediaURL;
+            welf.previewImage = previewImage;
             [welf transitionFromState:welf.state
                               toState:VWorkspaceFlowControllerStateEdit];
         }
@@ -318,8 +321,9 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
                               toState:VWorkspaceFlowControllerStateCapture];
         }
     };
+    BOOL selectedFromAssetsLibraryOrSearch = self.cameraViewController.didSelectFromWebSearch || self.cameraViewController.didSelectAssetFromLibrary;
     [self.flowNavigationController pushViewController:workspaceViewController
-                                             animated:YES];
+                                             animated:!selectedFromAssetsLibraryOrSearch];
 
 }
 
@@ -330,6 +334,19 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
                                                 fromViewController:(UIViewController *)fromVC
                                                   toViewController:(UIViewController *)toVC
 {
+    if ([fromVC isKindOfClass:[VCameraViewController class]] && [toVC isKindOfClass:[VWorkspaceViewController class]])
+    {
+        VCameraViewController *cameraViewController = (VCameraViewController *)fromVC;
+        if (cameraViewController.showedFullscreenShutterAnimation)
+        {
+            return [[VVCameraShutterOverAnimator alloc] init];
+        }
+        else
+        {
+            return nil;
+        }
+    }
+    
     if (![fromVC isKindOfClass:[VPublishViewController class]] && ![toVC isKindOfClass:[VPublishViewController class]])
     {
         return nil;

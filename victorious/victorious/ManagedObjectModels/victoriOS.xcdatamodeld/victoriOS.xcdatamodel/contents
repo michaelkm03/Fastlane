@@ -250,6 +250,7 @@
         <attribute name="name" attributeType="String" syncable="YES"/>
         <attribute name="productIdentifier" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="remoteId" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
+        <attribute name="scaleFactor" optional="YES" attributeType="Float" defaultValueString="1" syncable="YES"/>
         <attribute name="settingsIndex" optional="YES" transient="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <relationship name="tracking" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Tracking" inverseName="voteType" inverseEntity="Tracking" syncable="YES"/>
     </entity>
@@ -290,7 +291,7 @@
         <element name="Tracking" positionX="828" positionY="-630" width="128" height="315"/>
         <element name="User" positionX="1321" positionY="-324" width="128" height="418"/>
         <element name="VoteResult" positionX="864" positionY="164" width="128" height="90"/>
-        <element name="VoteType" positionX="538" positionY="-738" width="128" height="255"/>
+        <element name="VoteType" positionX="538" positionY="-738" width="128" height="270"/>
         <element name="VStream" positionX="1069" positionY="-792" width="128" height="135"/>
         <element name="VStreamItem" positionX="871" positionY="-765" width="128" height="103"/>
     </elements>

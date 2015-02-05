@@ -5,7 +5,7 @@
 	<key>CFBundleDisplayName</key>
 	<string>${ProductPrefix}TheYoungTurks</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.getvictorious.${ProductPrefix}TheYoungTurks</string>
+	<string>com.theyoungturks.${ProductPrefix}Young-Turks</string>
 	<key>CFBundleName</key>
 	<string>${ProductPrefix}TheYoungTurks</string>
 	<key>CFBundleURLTypes</key>

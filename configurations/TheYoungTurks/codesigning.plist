@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>ProvisioningProfiles</key>
+    <dict>
+        <key>Staging</key>
+        <string>The Young Turks In-House Distribution</string>
+        <key>QA</key>
+        <string>The Young Turks In-House Distribution</string>
+        <key>Release</key>
+        <string>The Young Turks In-House Distribution</string>
+    </dict>
+</dict>
+</plist>

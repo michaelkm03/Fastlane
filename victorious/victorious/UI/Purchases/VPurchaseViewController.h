@@ -12,8 +12,12 @@
 
 @protocol VPurchaseViewControllerDelegate <NSObject>
 
-// Called when a product has been successfuly purchased or restored
-- (void)purchaseDidComplete;
+/**
+ Called when the purchase view controller should be dismissed.
+ @param didMakePurchase Whether a product has been successfuly purchased or restored.
+ If NO, the user exited the purchase view without making a purchase.
+ */
+- (void)purchaseDidFinish:(BOOL)didMakePurchase;
 
 @end
 
