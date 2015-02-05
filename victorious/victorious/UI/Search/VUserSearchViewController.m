@@ -217,6 +217,7 @@
     {
         [self.activityIndicatorView startAnimating];
         [[VObjectManager sharedManager] findMessagableUsersBySearchString:self.searchField.text
+                                                                    limit:100
                                                          withSuccessBlock:searchSuccess
                                                                 failBlock:searchFail];
     }

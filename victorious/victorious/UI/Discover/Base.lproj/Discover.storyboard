@@ -27,8 +27,44 @@
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="J1F-4E-CYS" userLabel="Search Bar Container">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="55"/>
                                 <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ATX-2M-yRs" userLabel="Search Icon Button">
+                                        <rect key="frame" x="8" y="7" width="304" height="37"/>
+                                        <state key="normal">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="searchIconButtonAction:" destination="Uac-Xm-78P" eventType="touchUpInside" id="Zp0-Tm-WRC"/>
+                                        </connections>
+                                    </button>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YDu-Qa-a39" userLabel="Horizontal Rule">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
+                                        <color key="backgroundColor" red="0.81568627449999997" green="0.81960784310000001" blue="0.83921568629999999" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="1" id="K7G-f6-QNB"/>
+                                        </constraints>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Yw3-DS-7gm" userLabel="Horizontal Rule">
+                                        <rect key="frame" x="1" y="54" width="320" height="1"/>
+                                        <color key="backgroundColor" red="0.81568627449999997" green="0.81960784310000001" blue="0.83921568629999999" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="1" id="PGf-hb-5lv"/>
+                                        </constraints>
+                                    </view>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Search people" minimumFontSize="10" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="RxD-Py-mcF" userLabel="Search Field">
+                                        <rect key="frame" x="43" y="4" width="269" height="43"/>
+                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="43" id="GCH-OE-VL1"/>
+                                        </constraints>
+                                        <color key="textColor" red="0.13725490200000001" green="0.13725490200000001" blue="0.13725490200000001" alpha="1" colorSpace="calibratedRGB"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <textInputTraits key="textInputTraits" returnKeyType="search" enablesReturnKeyAutomatically="YES"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="Uac-Xm-78P" id="hLd-o5-V8j"/>
+                                        </connections>
+                                    </textField>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="20" placeholderIntrinsicHeight="20" image="SearchIconSmall" translatesAutoresizingMaskIntoConstraints="NO" id="GKA-TH-tHo">
-                                        <rect key="frame" x="14" y="16" width="20" height="20"/>
+                                        <rect key="frame" x="14" y="15" width="20" height="20"/>
                                         <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="20" id="8dP-J9-hg0"/>
@@ -45,42 +81,6 @@
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                     </button>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Search people" minimumFontSize="10" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="RxD-Py-mcF" userLabel="Search Field">
-                                        <rect key="frame" x="43" y="4" width="269" height="43"/>
-                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="43" id="GCH-OE-VL1"/>
-                                        </constraints>
-                                        <color key="textColor" red="0.13725490200000001" green="0.13725490200000001" blue="0.13725490200000001" alpha="1" colorSpace="calibratedRGB"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <textInputTraits key="textInputTraits" returnKeyType="search" enablesReturnKeyAutomatically="YES"/>
-                                        <connections>
-                                            <outlet property="delegate" destination="Uac-Xm-78P" id="hLd-o5-V8j"/>
-                                        </connections>
-                                    </textField>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Yw3-DS-7gm" userLabel="Horizontal Rule">
-                                        <rect key="frame" x="1" y="54" width="320" height="1"/>
-                                        <color key="backgroundColor" red="0.81568627449999997" green="0.81960784310000001" blue="0.83921568629999999" alpha="1" colorSpace="calibratedRGB"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="1" id="PGf-hb-5lv"/>
-                                        </constraints>
-                                    </view>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YDu-Qa-a39" userLabel="Horizontal Rule">
-                                        <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
-                                        <color key="backgroundColor" red="0.81568627449999997" green="0.81960784310000001" blue="0.83921568629999999" alpha="1" colorSpace="calibratedRGB"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="1" id="K7G-f6-QNB"/>
-                                        </constraints>
-                                    </view>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ATX-2M-yRs" userLabel="Search Icon Button">
-                                        <rect key="frame" x="8" y="7" width="46" height="37"/>
-                                        <state key="normal">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="searchIconButtonAction:" destination="Uac-Xm-78P" eventType="touchUpInside" id="Zp0-Tm-WRC"/>
-                                        </connections>
-                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
@@ -92,7 +92,7 @@
                                     <constraint firstAttribute="height" constant="55" id="kyv-Ne-LMK"/>
                                     <constraint firstItem="GKA-TH-tHo" firstAttribute="leading" secondItem="J1F-4E-CYS" secondAttribute="leading" constant="14" id="lsd-YA-nHI"/>
                                     <constraint firstItem="Yw3-DS-7gm" firstAttribute="leading" secondItem="J1F-4E-CYS" secondAttribute="leading" constant="1" id="mCE-ur-MSf"/>
-                                    <constraint firstAttribute="centerY" secondItem="GKA-TH-tHo" secondAttribute="centerY" constant="1.5" id="qpA-nu-xWz"/>
+                                    <constraint firstAttribute="centerY" secondItem="GKA-TH-tHo" secondAttribute="centerY" constant="2.5" id="qpA-nu-xWz"/>
                                     <constraint firstItem="YDu-Qa-a39" firstAttribute="top" secondItem="J1F-4E-CYS" secondAttribute="top" id="sNH-gv-IqL"/>
                                     <constraint firstAttribute="bottom" secondItem="Yw3-DS-7gm" secondAttribute="bottom" id="sSm-jt-Gd9"/>
                                     <constraint firstAttribute="trailing" secondItem="tcb-RO-Azu" secondAttribute="trailing" id="vsb-FZ-Pd6"/>
@@ -208,7 +208,7 @@
                                             <outlet property="delegate" destination="Uac-Xm-78P" id="cxL-Vm-WN4"/>
                                         </connections>
                                     </textField>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uO5-OM-4av" userLabel="Cancel Button">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" reversesTitleShadowWhenHighlighted="YES" showsTouchWhenHighlighted="YES" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uO5-OM-4av" userLabel="Cancel Button">
                                         <rect key="frame" x="270" y="4" width="50" height="50"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="50" id="3mQ-26-CAj"/>
@@ -217,6 +217,8 @@
                                         <state key="normal" image="Close">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <state key="selected" image="Close"/>
+                                        <state key="highlighted" image="Close"/>
                                         <connections>
                                             <action selector="closeButtonAction:" destination="yFr-Wo-U07" eventType="touchUpInside" id="iwt-h7-rqd"/>
                                         </connections>

@@ -7,6 +7,7 @@
 //
 
 #import "VTagsSearchResultsViewController.h"
+#import "VUsersAndTagsSearchViewController.h"
 
 // VObjectManager
 #import "VObjectManager+Discover.h"
@@ -43,6 +44,7 @@ static NSString * const kVTagResultIdentifier = @"VTrendingTagCell";
 
 @property (nonatomic, weak) MBProgressHUD *failureHud;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
+@property (nonatomic, strong) UIView *dismissTapView;
 
 @end
 
@@ -61,6 +63,13 @@ static NSString * const kVTagResultIdentifier = @"VTrendingTagCell";
     
     // Setup the Table View
     [self configureTableView];
+    
+    // Setup Dismissal UIView
+    self.dismissTapView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320.0f, CGRectGetHeight(self.tableView.frame))];
+    self.dismissTapView.backgroundColor = [UIColor clearColor];
+    [self.view addSubview:self.dismissTapView];
+    [self.view bringSubviewToFront:self.dismissTapView];
+    [self.dismissTapView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(searchCompleted:)]];
 }
 
 - (void)viewDidLayoutSubviews
@@ -92,7 +101,6 @@ static NSString * const kVTagResultIdentifier = @"VTrendingTagCell";
 {
     if (!haveResults)
     {
-        [self.delegate noResultsReturnedForSearch:self];
         self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     }
     else
@@ -125,6 +133,25 @@ static NSString * const kVTagResultIdentifier = @"VTrendingTagCell";
     [self.tableView setKeyboardDismissMode:UIScrollViewKeyboardDismissModeOnDrag];
 }
 
+#pragma mark - Handle Table View Search Results
+
+- (void)searchResultsChanged:(NSNotification *)notification
+{
+    if (self.searchResults.count == 0)
+    {
+        self.dismissTapView.hidden = NO;
+    }
+    else
+    {
+        self.dismissTapView.hidden = YES;
+    }
+}
+
+- (void)searchCompleted:(id)sender
+{
+    [self.delegate tagsSearchComplete:self];
+}
+
 #pragma mark - UITableViewDataSource Methods
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -134,11 +161,15 @@ static NSString * const kVTagResultIdentifier = @"VTrendingTagCell";
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (self.searchResults != nil)
+    if (self.searchResults.count == 0)
     {
-        return [self.searchResults count];
+        self.dismissTapView.hidden = NO;
     }
-    return 0;
+    else
+    {
+        self.dismissTapView.hidden = YES;
+    }
+    return self.searchResults.count;
 }
 
 #pragma mark - UITableViewDelegate Methods

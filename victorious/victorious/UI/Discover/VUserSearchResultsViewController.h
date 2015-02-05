@@ -7,11 +7,24 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "VSearchResultsTableViewController.h"
 
-@class VDependencyManager;
+@class VDependencyManager, VUserSearchResultsViewController;
 
-@interface VUserSearchResultsViewController : VSearchResultsTableViewController
+/**
+ Protocol to report when searching has been completed
+ */
+@protocol VUserSearchResultsViewControllerDelegate <NSObject>
+
+/**
+ Implemented to report when searching should end
+ 
+ @param userSearchResultsViewController Instance of the VUserSearchResultsViewController
+ */
+- (void)userSearchComplete:(VUserSearchResultsViewController *)userSearchResultsViewController;
+
+@end
+
+@interface VUserSearchResultsViewController : UITableViewController
 
 /**
  Factory method to instantiate the View Controller with the dependency manager
@@ -26,5 +39,10 @@
  Array to hold search results returned from backend
  */
 @property (nonatomic, strong) NSMutableArray *searchResults;
+
+/**
+ Delegate object to report on user search
+ */
+@property (nonatomic, weak) id<VUserSearchResultsViewControllerDelegate>delegate;
 
 @end

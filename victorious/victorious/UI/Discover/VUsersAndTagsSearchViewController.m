@@ -20,7 +20,6 @@
 #import "VDependencyManager.h"
 
 // Search Results
-#import "VSearchResultsTableViewController.h"
 #import "VUserSearchResultsViewController.h"
 #import "VTagsSearchResultsViewController.h"
 
@@ -32,7 +31,11 @@
 
 #import "UIVIew+AutoLayout.h"
 
-@interface VUsersAndTagsSearchViewController () <UITextFieldDelegate>
+
+NSString *const kVUserSearchResultsChangedNotification = @"VUserSearchResultsChangedNotification";
+NSString *const kVHashtagsSearchResultsChangedNotification = @"VHashtagsSearchResultsChangedNotification";
+
+@interface VUsersAndTagsSearchViewController () <UITextFieldDelegate, VUserSearchResultsViewControllerDelegate, VTagsSearchResultsViewControllerDelegate>
 
 @property (nonatomic, weak) IBOutlet UITextField *searchField;
 @property (nonatomic, weak) IBOutlet UIView *searchBarView;
@@ -48,7 +51,7 @@
 @property (nonatomic, assign) BOOL isKeyboardShowing;
 @property (nonatomic, assign) CGFloat keyboardHeight;
 
-@property (nonatomic, strong) UISwipeGestureRecognizer *swipeGestureRecognizer;
+@property (nonatomic, strong) UITapGestureRecognizer *tapGestureRecognizer;
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
@@ -82,7 +85,9 @@
     
     // Setup Search Results View Controllers
     self.userSearchResultsVC = [VUserSearchResultsViewController newWithDependencyManager:self.dependencyManager];
+    self.userSearchResultsVC.delegate = self;
     self.tagsSearchResultsVC = [VTagsSearchResultsViewController newWithDependencyManager:self.dependencyManager];
+    self.tagsSearchResultsVC.delegate = self;
     
     // Add view controllers to container view
     [self addChildViewController:self.tagsSearchResultsVC];
@@ -115,6 +120,14 @@
     [self.searchField setTextColor:[self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey]];
     [self.searchField setTintColor:[self.dependencyManager colorForKey:VDependencyManagerLinkColorKey]];
     self.searchField.delegate = self;
+    
+    // Set highlighted state for close button
+    [self.closeButton setImage:[UIImage imageNamed:@"CloseHighlighted"] forState:UIControlStateHighlighted];
+    
+    // Set tap gesture
+    self.tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(closeButtonAction:)];
+    self.tapGestureRecognizer.numberOfTapsRequired = 1;
+    self.tapGestureRecognizer.numberOfTouchesRequired = 1;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -222,6 +235,7 @@
             [self.tagsSearchResultsVC.tableView reloadData];
             [self showNoResultsReturnedForSearch];
         }
+        [[NSNotificationCenter defaultCenter] postNotificationName:kVHashtagsSearchResultsChangedNotification object:nil];
     };
     
     VFailBlock searchFail = ^(NSOperation *operation, NSError *error)
@@ -229,9 +243,10 @@
         VLog(@"\n\nHashtag Search Failed with the following error:\n%@", error);
     };
 
-    if ([self.searchField.text length] > 0)
+    NSString *searchTerm = [self.searchField.text stringByReplacingOccurrencesOfString:@" " withString:@""];
+    if (searchTerm.length > 0)
     {
-        [[VObjectManager sharedManager] findHashtagsBySearchString:self.searchField.text
+        [[VObjectManager sharedManager] findHashtagsBySearchString:searchTerm
                                                       limitPerPage:1000
                                                       successBlock:searchSuccess
                                                          failBlock:searchFail];
@@ -260,12 +275,13 @@
             [self.userSearchResultsVC.tableView reloadData];
             [self showNoResultsReturnedForSearch];
         }
-        
+        [[NSNotificationCenter defaultCenter] postNotificationName:kVUserSearchResultsChangedNotification object:nil];
     };
     
     if ( [self.searchField.text length] > 0 )
     {
         [[VObjectManager sharedManager] findMessagableUsersBySearchString:self.searchField.text
+                                                                    limit:1000.0f
                                                          withSuccessBlock:searchSuccess
                                                                 failBlock:nil];
     }
@@ -274,6 +290,20 @@
         NSArray *results = [[NSArray alloc] init];
         self.userSearchResultsVC.searchResults = (NSMutableArray *)results;
     }
+}
+
+#pragma mark - VUserSearchResultsViewControllerDelegate
+
+- (void)userSearchComplete:(VUserSearchResultsViewController *)userSearchResultsViewController
+{
+    [self closeButtonAction:userSearchResultsViewController];
+}
+
+#pragma mark - VTagsSearchResultsViewControllerDelegate
+
+- (void)tagsSearchComplete:(VTagsSearchResultsViewController *)tagsSearchResultsViewController
+{
+    [self closeButtonAction:tagsSearchResultsViewController];
 }
 
 #pragma mark - Search Field Text Changed
@@ -294,11 +324,11 @@
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
-    if ( [string isEqualToString:@""] && textField.text.length == 0 )
-    {
-        self.userSearchResultsVC.view.alpha = 0;
-        self.tagsSearchResultsVC.view.alpha = 0;
-    }
+//    if ( [string isEqualToString:@""] && textField.text.length == 0 )
+//    {
+//        self.userSearchResultsVC.view.alpha = 0;
+//        self.tagsSearchResultsVC.view.alpha = 0;
+//    }
     
     return YES;
 }
@@ -355,6 +385,8 @@
     noResultsFoundView.messageLabel.text = messageText;
     noResultsFoundView.iconImageView.image = messageIcon;
     noResultsFoundView.iconImageView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
+    [noResultsFoundView addGestureRecognizer:self.tapGestureRecognizer];
+
 }
 
 @end

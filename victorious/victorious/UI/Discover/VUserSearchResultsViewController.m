@@ -7,6 +7,7 @@
 //
 
 #import "VUserSearchResultsViewController.h"
+#import "VUsersAndTagsSearchViewController.h"
 
 // VObjectManager
 #import "VObjectManager+Users.h"
@@ -31,15 +32,21 @@
 // No Content View
 #import "VNoContentView.h"
 
+// AutoLayout Category
+#import "UIVIew+AutoLayout.h"
+
 static NSString * const kVUserResultIdentifier = @"followerCell";
 
 @interface VUserSearchResultsViewController ()
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
+@property (nonatomic, strong) UIView *dismissTapView;
 
 @end
 
 @implementation VUserSearchResultsViewController
+
+#pragma mark - Factory
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
@@ -48,11 +55,20 @@ static NSString * const kVUserResultIdentifier = @"followerCell";
     return searchResultsVC;
 }
 
+#pragma mark - View Lifecycle
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
     [self configureTableView];
+    
+    // Setup Dismissal UIView
+    self.dismissTapView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320.0f, CGRectGetHeight(self.tableView.frame))];
+    self.dismissTapView.backgroundColor = [UIColor clearColor];
+    [self.view addSubview:self.dismissTapView];
+    [self.view bringSubviewToFront:self.dismissTapView];
+    [self.dismissTapView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(searchCompleted:)]];
 }
 
 - (void)viewDidLayoutSubviews
@@ -70,6 +86,23 @@ static NSString * const kVUserResultIdentifier = @"followerCell";
     }
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(searchResultsChanged:)
+                                                 name:kVUserSearchResultsChangedNotification
+                                               object:nil];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 #pragma mark - UI setup
 
 - (void)configureTableView
@@ -82,6 +115,25 @@ static NSString * const kVUserResultIdentifier = @"followerCell";
          forCellReuseIdentifier:kVUserResultIdentifier];
     [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
     [self.tableView setKeyboardDismissMode:UIScrollViewKeyboardDismissModeOnDrag];
+}
+
+#pragma mark - Handle Table View Search Results
+
+- (void)searchResultsChanged:(NSNotification *)notification
+{
+    if (self.searchResults.count == 0)
+    {
+        self.dismissTapView.hidden = NO;
+    }
+    else
+    {
+        self.dismissTapView.hidden = YES;
+    }
+}
+
+- (void)searchCompleted:(id)sender
+{
+    [self.delegate userSearchComplete:self];
 }
 
 #pragma mark - TableView Datasource
@@ -109,14 +161,22 @@ static NSString * const kVUserResultIdentifier = @"followerCell";
 
 - (void)willMoveToParentViewController:(UIViewController *)parent
 {
-    VLog(@"Moving back to parent");
+    
 }
 
 #pragma mark - TableView Delegate Methods
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [self.searchResults count];
+    if (self.searchResults.count == 0)
+    {
+        self.dismissTapView.hidden = NO;
+    }
+    else
+    {
+        self.dismissTapView.hidden = YES;
+    }
+    return self.searchResults.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
