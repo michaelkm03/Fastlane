@@ -21,8 +21,6 @@
 
 @property (nonatomic, copy, readonly) void (^animateInBlock)(void); ///< PublishViewController wants this to be called by animators
 
-@property (nonatomic, strong) VPublishParameters *publishParameters;
-
-@property (nonatomic, assign) BOOL saveToCameraRollPossible;
+@property (nonatomic, strong) VPublishParameters *publishParameters; ///< Publish parameters that are to be configured by this publishViewController
 
 @end
