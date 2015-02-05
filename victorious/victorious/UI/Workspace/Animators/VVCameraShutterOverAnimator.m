@@ -7,6 +7,8 @@
 //
 
 #import "VVCameraShutterOverAnimator.h"
+
+#import "VCameraViewController.h"
 #import "VWorkspaceViewController.h"
 
 static const NSTimeInterval kBlurOverPresentTransitionDuration = 2.35f;
@@ -24,16 +26,14 @@ static const NSTimeInterval kBlurOverPresentTransitionDuration = 2.35f;
     UIViewController *toViewController = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
 
     [[transitionContext containerView] addSubview:fromViewController.view];
-    [[transitionContext containerView] addSubview:toViewController.view];
     
     if ([toViewController isKindOfClass:[VWorkspaceViewController class]])
     {
         VWorkspaceViewController *workvc = (VWorkspaceViewController *)toViewController;
-        workvc.snapShotView = [fromViewController.view snapshotViewAfterScreenUpdates:YES];
         [workvc bringChromeOutOfView];
     }
-    UIView *snapshotView = [fromViewController.view snapshotViewAfterScreenUpdates:YES];
-    [[transitionContext containerView] addSubview:snapshotView];
+    [[transitionContext containerView] addSubview:toViewController.view];
+    
     [UIView animateWithDuration:[self transitionDuration:transitionContext]
                           delay:0.0f
          usingSpringWithDamping:0.9f
@@ -45,6 +45,17 @@ static const NSTimeInterval kBlurOverPresentTransitionDuration = 2.35f;
          {
              VWorkspaceViewController *workspaceVC = (VWorkspaceViewController *)toViewController;
              [workspaceVC bringChromeIntoView];
+         }
+         #pragma mark - should abstract this
+         if ([fromViewController isKindOfClass:[VCameraViewController class]])
+         {
+             VCameraViewController *cameraVC = (VCameraViewController *)fromViewController;
+             [cameraVC setToolsHidden:self.presenting];
+         }
+         if ([toViewController isKindOfClass:[VCameraViewController class]])
+         {
+             VCameraViewController *cameraVC = (VCameraViewController *)toViewController;
+             [cameraVC setToolsHidden:self.presenting];
          }
      }
                      completion:^(BOOL finished)

@@ -90,21 +90,34 @@ static const NSTimeInterval kShrinkingCameraShutterAnimationDuration = 1.5;
 
 - (void)showCameraFlashAnimationWithCompletion:(void (^)(void))completion
 {
-    [UIView animateWithDuration:kCameraShutterGrowAnimationDuration
+    [UIView animateWithDuration:0.2f
                           delay:0.0f
-                        options:UIViewAnimationOptionCurveEaseInOut
-                     animations:^
-     {
-         self.backgroundColor = [UIColor blackColor];
-         self.transform = CGAffineTransformMakeScale(kCameraShutterGrowScaleFacotr, kCameraShutterGrowScaleFacotr);
-     }
-                     completion:^(BOOL finished)
-     {
-         if (completion)
-         {
-             completion();
-         }
-     }];
+         usingSpringWithDamping:1.0f
+          initialSpringVelocity:0.0f
+                        options:kNilOptions
+                     animations:^{
+                         self.transform = CGAffineTransformMakeScale(1.5, 1.5f);
+                         self.backgroundColor = [UIColor darkGrayColor];
+                     } completion:^(BOOL finished) {
+                         [UIView animateWithDuration:0.2f
+                                               delay:0.0f
+                              usingSpringWithDamping:1.0f
+                               initialSpringVelocity:0.0f
+                                             options:kNilOptions
+                                          animations:^
+                          {
+//                              self.backgroundColor = [UIColor blackColor];
+//                              self.alpha = 0.0f;
+                              self.transform = CGAffineTransformMakeScale(0.01f, 0.01f);
+                          }
+                                          completion:^(BOOL finished)
+                          {
+                              if (completion)
+                              {
+                                  completion();
+                              }
+                          }];
+                     }];
 }
 
 #pragma mark - Setters
@@ -183,10 +196,11 @@ static const NSTimeInterval kShrinkingCameraShutterAnimationDuration = 1.5;
             animationDuration = kRecordingTriggerDuration;
             animations = ^
             {
-                CGFloat scaledWidth = [self growingFactorForCaptureMode:self.captureMode] * CGRectGetWidth(self.frame);
-                CGFloat deltaWitdh = scaledWidth - CGRectGetWidth(self.frame);
-                self.frame = CGRectMake(- deltaWitdh/2, 0.0f, scaledWidth, CGRectGetHeight(self.frame));\
-                self.layer.cornerRadius = CGRectGetHeight(self.frame) / 2;
+//                CGFloat scaledWidth = [self growingFactorForCaptureMode:self.captureMode] * CGRectGetWidth(self.frame);
+//                CGFloat deltaWitdh = scaledWidth - CGRectGetWidth(self.frame);
+//                self.frame = CGRectMake(- deltaWitdh/2, - deltaWitdh/2, scaledWidth, scaledWidth);\
+//                self.layer.cornerRadius = CGRectGetHeight(self.frame) / 2;
+                self.transform = CGAffineTransformMakeScale(1.2f, 1.2f);
                 self.progressView.frame = CGRectMake(CGRectGetMinX(self.bounds),
                                                      CGRectGetMinY(self.bounds),
                                                      CGRectGetWidth(self.bounds) * self.recordingProgress,
@@ -223,8 +237,10 @@ static const NSTimeInterval kShrinkingCameraShutterAnimationDuration = 1.5;
             initialVelocity = -1.0f;
             animations = ^
             {
-                self.frame = CGRectMake(0, 0, kMinHeightSize, kMinHeightSize);
+//                self.frame = CGRectMake(0, 0, kMinHeightSize, kMinHeightSize);
                 self.backgroundColor = [UIColor darkGrayColor];
+//                self.layer.cornerRadius = CGRectGetHeight(self.bounds) / 2;
+//                self.transform = CGAffineTransformMakeScale(2.5f, 2.5f);
             };
             
             break;

@@ -45,6 +45,11 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
 @property (nonatomic, strong) UIImage *previewImage;
 @property (nonatomic, assign, getter=isTrashOpen) BOOL trashOpen;
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *topSpaceTopToolsToContainerConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomSpaceBottomToolsToContainerConstraint;
+
+@property (weak, nonatomic) IBOutlet UIView *topToolsContainer;
+@property (weak, nonatomic) IBOutlet UIView *bottomToolsContainer;
 @property (weak, nonatomic) IBOutlet UIButton *closeButton;
 @property (nonatomic, weak) IBOutlet UIButton *switchCameraButton;
 @property (nonatomic, weak) IBOutlet UIButton *nextButton;
@@ -317,6 +322,38 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
 }
 
 #pragma mark - Property Accessors
+
+- (void)setToolsHidden:(BOOL)toolsHidden
+{
+    [self setToolsHidden:toolsHidden
+                animated:NO];
+}
+
+- (void)setToolsHidden:(BOOL)toolsHidden
+              animated:(BOOL)animated
+{
+    _toolsHidden = toolsHidden;
+    
+    void (^hideToolsBlock)(void) = ^void()
+    {
+        self.topSpaceTopToolsToContainerConstraint.constant = toolsHidden ? -CGRectGetHeight(self.topToolsContainer.frame) : 0.0f;
+        self.bottomSpaceBottomToolsToContainerConstraint.constant = toolsHidden ? -CGRectGetHeight(self.bottomToolsContainer.frame) : 0.0f;
+        [self.view layoutIfNeeded];
+    };
+    
+    if (!animated)
+    {
+        hideToolsBlock();
+    }
+    else
+    {
+        [UIView animateWithDuration:0.5f
+                              delay:0.0f
+                            options:kNilOptions
+                         animations:hideToolsBlock
+                         completion:nil];
+    }
+}
 
 - (void)setState:(VCameraViewControllerState)state
 {

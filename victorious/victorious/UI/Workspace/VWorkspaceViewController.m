@@ -336,14 +336,14 @@
 
 - (void)bringChromeOutOfView
 {
-    self.VerticalSpaceTopBarToContainer.constant = -CGRectGetHeight(self.topToolbar.frame);
-    self.verticalSpaceBottomBarToContainer.constant = -CGRectGetHeight(self.bottomToolbar.frame);
+//    self.VerticalSpaceTopBarToContainer.constant = -CGRectGetHeight(self.topToolbar.frame);
+//    self.verticalSpaceBottomBarToContainer.constant = -CGRectGetHeight(self.bottomToolbar.frame);
     self.blurredBackgroundImageView.alpha = 0.0f;
     self.view.backgroundColor = [UIColor clearColor];
     
-    self.snapShotView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.view addSubview:self.snapShotView];
-    self.snapShotView.frame = self.view.bounds;
+//    self.snapShotView.translatesAutoresizingMaskIntoConstraints = NO;
+//    [self.view addSubview:self.snapShotView];
+//    self.snapShotView.frame = self.view.bounds;
 //    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[snapshot]|"
 //                                                                      options:kNilOptions
 //                                                                      metrics:nil
@@ -371,7 +371,7 @@
 //    self.blurView = blurView;
 //    [self.view sendSubviewToBack:blurView];
     
-    [self.view sendSubviewToBack:self.snapShotView];
+//    [self.view sendSubviewToBack:self.snapShotView];
     [self.view layoutIfNeeded];
 }
 

@@ -63,4 +63,15 @@
  */
 @property (nonatomic, readonly) NSURL *capturedMediaURL;
 
+/**
+ *  A property indicating whether the camera controls are on screen.
+ */
+@property (nonatomic, assign) BOOL toolsHidden;
+
+/**
+ *  An animated version of the toolsHidden setter.
+ */
+- (void)setToolsHidden:(BOOL)toolsHidden
+              animated:(BOOL)animated;
+
 @end

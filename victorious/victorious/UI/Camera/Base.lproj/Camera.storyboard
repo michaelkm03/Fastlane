@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
@@ -148,8 +147,8 @@
                                 <rect key="frame" x="0.0" y="44" width="320" height="320"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="320" id="3Nf-Mq-dkk"/>
-                                    <constraint firstAttribute="width" constant="320" id="qvr-1H-Yfa"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="320" id="3Nf-Mq-dkk"/>
+                                    <constraint firstAttribute="width" secondItem="Cdq-4w-Bu5" secondAttribute="height" multiplier="1:1" id="ezv-zU-BZ0"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="r8c-9h-K1E" userLabel="Camera Control Container">
@@ -163,13 +162,14 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="Cdq-4w-Bu5" firstAttribute="top" secondItem="VHc-U1-zGw" secondAttribute="bottom" constant="44" id="3d6-rQ-KOT"/>
                             <constraint firstItem="umg-5s-weJ" firstAttribute="top" secondItem="VHc-U1-zGw" secondAttribute="bottom" id="4nb-z1-EII"/>
-                            <constraint firstItem="Cdq-4w-Bu5" firstAttribute="top" secondItem="umg-5s-weJ" secondAttribute="bottom" priority="750" id="HnB-xQ-SxQ"/>
+                            <constraint firstItem="Cdq-4w-Bu5" firstAttribute="leading" secondItem="AMw-cC-uUG" secondAttribute="leading" id="IVM-P9-6x5"/>
                             <constraint firstAttribute="centerY" secondItem="r8c-9h-K1E" secondAttribute="centerY" constant="-200" id="P4C-t4-sC3"/>
                             <constraint firstItem="umg-5s-weJ" firstAttribute="left" secondItem="AMw-cC-uUG" secondAttribute="left" id="PSn-o0-D9f"/>
                             <constraint firstItem="abs-NM-eiT" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Cdq-4w-Bu5" secondAttribute="bottom" id="Ujb-rf-uOh"/>
+                            <constraint firstAttribute="trailing" secondItem="Cdq-4w-Bu5" secondAttribute="trailing" id="VJG-ZH-kHE"/>
                             <constraint firstItem="umg-5s-weJ" firstAttribute="top" secondItem="VHc-U1-zGw" secondAttribute="bottom" id="W8s-ce-FH8"/>
-                            <constraint firstAttribute="centerX" secondItem="Cdq-4w-Bu5" secondAttribute="centerX" id="YNh-E5-lCq"/>
                             <constraint firstAttribute="centerX" secondItem="r8c-9h-K1E" secondAttribute="centerX" id="auc-1b-h6Z"/>
                             <constraint firstAttribute="right" secondItem="abs-NM-eiT" secondAttribute="right" id="de4-Ce-ltb"/>
                             <constraint firstAttribute="right" secondItem="umg-5s-weJ" secondAttribute="right" id="rOd-2e-gP1"/>
@@ -180,6 +180,8 @@
                     <nil key="simulatedStatusBarMetrics"/>
                     <nil key="simulatedTopBarMetrics"/>
                     <connections>
+                        <outlet property="bottomSpaceBottomToolsToContainerConstraint" destination="ua3-eR-hij" id="Xhy-U1-o4y"/>
+                        <outlet property="bottomToolsContainer" destination="abs-NM-eiT" id="meL-EP-aGk"/>
                         <outlet property="cameraControlContainer" destination="r8c-9h-K1E" id="gWM-fw-qDQ"/>
                         <outlet property="closeButton" destination="rt0-I5-ldA" id="kD2-bL-9BD"/>
                         <outlet property="deleteButton" destination="oAC-V4-Jg0" id="62s-tg-lPW"/>
@@ -189,11 +191,13 @@
                         <outlet property="previewView" destination="Cdq-4w-Bu5" id="uB4-J9-nz8"/>
                         <outlet property="searchButton" destination="Psc-Kh-PXS" id="waU-Sd-g7j"/>
                         <outlet property="switchCameraButton" destination="fQI-xE-BeV" id="Vk3-qf-zWV"/>
+                        <outlet property="topSpaceTopToolsToContainerConstraint" destination="4nb-z1-EII" id="oYd-rq-Z15"/>
+                        <outlet property="topToolsContainer" destination="umg-5s-weJ" id="rGM-cZ-hiG"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4dS-Xp-8dd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-208" y="43"/>
+            <point key="canvasLocation" x="-322" y="86"/>
         </scene>
         <!--Publish-->
         <scene sceneID="hiH-K5-ap5">
