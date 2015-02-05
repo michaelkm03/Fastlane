@@ -43,5 +43,6 @@
 @property (nonatomic, copy) NSString *filterName;
 @property (nonatomic, copy) NSString *embeddedText;
 @property (nonatomic, copy) NSString *textToolType;
+@property (nonatomic, assign) BOOL shouldSaveToCameraRoll;
 
 @end

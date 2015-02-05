@@ -63,10 +63,7 @@
 		0314D46819B46B5E00FA363C /* VPickerTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D30E19B46B5E00FA363C /* VPickerTextField.m */; };
 		0314D46919B46B5E00FA363C /* VSetExpirationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D31019B46B5E00FA363C /* VSetExpirationViewController.m */; };
 		0314D47919B46B5E00FA363C /* VCameraRollPublishShareController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D33219B46B5E00FA363C /* VCameraRollPublishShareController.m */; };
-		0314D47A19B46B5E00FA363C /* VFacebookPublishShareController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D33419B46B5E00FA363C /* VFacebookPublishShareController.m */; };
 		0314D47B19B46B5E00FA363C /* VPublishShareController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D33619B46B5E00FA363C /* VPublishShareController.m */; };
-		0314D47C19B46B5E00FA363C /* VPublishShareView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D33819B46B5E00FA363C /* VPublishShareView.m */; };
-		0314D47E19B46B5E00FA363C /* VTwitterPublishShareController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D33B19B46B5E00FA363C /* VTwitterPublishShareController.m */; };
 		0314D47F19B46B5E00FA363C /* VCameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D33D19B46B5E00FA363C /* VCameraViewController.m */; };
 		0314D48019B46B5E00FA363C /* VCommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D34019B46B5E00FA363C /* VCommentCell.m */; };
 		0314D48219B46B5E00FA363C /* VCommentsContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D34319B46B5E00FA363C /* VCommentsContainerViewController.m */; };
@@ -820,14 +817,8 @@
 		0314D31019B46B5E00FA363C /* VSetExpirationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSetExpirationViewController.m; sourceTree = "<group>"; };
 		0314D33119B46B5E00FA363C /* VCameraRollPublishShareController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCameraRollPublishShareController.h; sourceTree = "<group>"; };
 		0314D33219B46B5E00FA363C /* VCameraRollPublishShareController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCameraRollPublishShareController.m; sourceTree = "<group>"; };
-		0314D33319B46B5E00FA363C /* VFacebookPublishShareController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFacebookPublishShareController.h; sourceTree = "<group>"; };
-		0314D33419B46B5E00FA363C /* VFacebookPublishShareController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFacebookPublishShareController.m; sourceTree = "<group>"; };
 		0314D33519B46B5E00FA363C /* VPublishShareController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPublishShareController.h; sourceTree = "<group>"; };
 		0314D33619B46B5E00FA363C /* VPublishShareController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPublishShareController.m; sourceTree = "<group>"; };
-		0314D33719B46B5E00FA363C /* VPublishShareView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPublishShareView.h; sourceTree = "<group>"; };
-		0314D33819B46B5E00FA363C /* VPublishShareView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPublishShareView.m; sourceTree = "<group>"; };
-		0314D33A19B46B5E00FA363C /* VTwitterPublishShareController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTwitterPublishShareController.h; sourceTree = "<group>"; };
-		0314D33B19B46B5E00FA363C /* VTwitterPublishShareController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTwitterPublishShareController.m; sourceTree = "<group>"; };
 		0314D33C19B46B5E00FA363C /* VCameraViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCameraViewController.h; sourceTree = "<group>"; };
 		0314D33D19B46B5E00FA363C /* VCameraViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCameraViewController.m; sourceTree = "<group>"; };
 		0314D33F19B46B5E00FA363C /* VCommentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCommentCell.h; sourceTree = "<group>"; };
@@ -2186,15 +2177,9 @@
 			children = (
 				0314D33119B46B5E00FA363C /* VCameraRollPublishShareController.h */,
 				0314D33219B46B5E00FA363C /* VCameraRollPublishShareController.m */,
-				0314D33319B46B5E00FA363C /* VFacebookPublishShareController.h */,
-				0314D33419B46B5E00FA363C /* VFacebookPublishShareController.m */,
 				0314D33519B46B5E00FA363C /* VPublishShareController.h */,
 				0314D33619B46B5E00FA363C /* VPublishShareController.m */,
-				0314D33719B46B5E00FA363C /* VPublishShareView.h */,
-				0314D33819B46B5E00FA363C /* VPublishShareView.m */,
 				DB2A491119DF432F00CB687B /* VPublishShareView.xib */,
-				0314D33A19B46B5E00FA363C /* VTwitterPublishShareController.h */,
-				0314D33B19B46B5E00FA363C /* VTwitterPublishShareController.m */,
 			);
 			path = Share;
 			sourceTree = "<group>";
@@ -5100,7 +5085,6 @@
 				BE171E0C1868C211004E5202 /* VNode+Fetcher.m in Sources */,
 				D8E39BDF19CB7C80007FD86A /* VContentBackgroundSupplementaryView.m in Sources */,
 				D8E39BF119CB9D58007FD86A /* UIView+VShadows.m in Sources */,
-				0314D47A19B46B5E00FA363C /* VFacebookPublishShareController.m in Sources */,
 				BE799B9519C8A91C0023CE88 /* VAnswer.m in Sources */,
 				03B3D3D31A3BC4DD00F0634A /* VNumericalBadgeView.m in Sources */,
 				A7AA647D19E78EAA0068D2B1 /* victoriOS.xcdatamodeld in Sources */,
@@ -5201,7 +5185,6 @@
 				BE5C736A187E36E800A3340D /* VRule.m in Sources */,
 				A733D8FF1A23D0C70053E9F1 /* VNotificationSettings+RestKit.m in Sources */,
 				0314D0B319B4698800FA363C /* VObjectManager+ImageSearch.m in Sources */,
-				0314D47C19B46B5E00FA363C /* VPublishShareView.m in Sources */,
 				A743E7E41A0816D500339CB3 /* VPasswordValidator.m in Sources */,
 				0314D48C19B46B5E00FA363C /* VSelectorViewController.m in Sources */,
 				D8FC09071A51DBC100E5FBE4 /* VPlaceholderTextView.m in Sources */,
@@ -5222,7 +5205,6 @@
 				03449FE51A0C7EBB0070EC80 /* VSessionTimer.m in Sources */,
 				A77AD4F01A1FD8B600142F24 /* VAlertController.m in Sources */,
 				A7B514561A4517A80074282F /* VUtilityButtonCell.m in Sources */,
-				0314D47E19B46B5E00FA363C /* VTwitterPublishShareController.m in Sources */,
 				0314D46019B46B5E00FA363C /* VImagePreviewViewController.m in Sources */,
 				A7D288141A23F6CF006CF0EC /* VNotificationSettings+Fetcher.m in Sources */,
 				BE799BBF19C93C210023CE88 /* VDirectoryItemCell.m in Sources */,

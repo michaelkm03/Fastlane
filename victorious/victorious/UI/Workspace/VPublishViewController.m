@@ -22,6 +22,10 @@
 
 #import "NSURL+MediaType.h"
 
+#import "VCameraRollPublishShareController.h"
+
+@import AssetsLibrary;
+
 static const CGFloat kTriggerVelocity = 500.0f;
 static const CGFloat kSnapDampingConstant = 0.9f;
 static const CGFloat kTopSpacePublishPrompt = 50.0f;
@@ -48,6 +52,8 @@ static const CGFloat kTopSpacePublishPrompt = 50.0f;
 @property (nonatomic, copy, readwrite) void (^animateInBlock)(void);
 
 @property (nonatomic, assign) BOOL publishing;
+
+@property (nonatomic, strong) VCameraRollPublishShareController *cameraPublishController;
 
 @end
 
@@ -85,6 +91,9 @@ static const CGFloat kTopSpacePublishPrompt = 50.0f;
     [super viewDidLoad];
     
     [self setupBehaviors];
+    
+    self.cameraPublishController = [[VCameraRollPublishShareController alloc] init];
+    self.cameraPublishController.switchToConfigure = self.cameraRollSwitch;
     
     self.publishButton.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     self.publishButton.titleLabel.textColor = [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
@@ -160,6 +169,7 @@ static const CGFloat kTopSpacePublishPrompt = 50.0f;
     
     self.publishParameters.caption = self.captionTextView.text;
     self.publishParameters.captionType = VCaptionTypeNormal;
+    self.publishParameters.shouldSaveToCameraRoll = self.cameraRollSwitch.on;
     
     __weak typeof(self) welf = self;
     [[VObjectManager sharedManager] uploadMediaWithPublishParameters:self.publishParameters

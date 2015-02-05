@@ -35,6 +35,8 @@
 // Animators
 #import "VPublishBlurOverAnimator.h"
 
+@import AssetsLibrary;
+
 NSString * const VWorkspaceFlowControllerInitialCaptureStateKey = @"initialCaptureStateKey";
 NSString * const VWorkspaceFlowControllerSequenceToRemixKey = @"sequenceToRemixKey";
 
@@ -176,6 +178,17 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
         __weak typeof(VPublishViewController) *weakPublishViewController = publishViewController;
         publishViewController.completion = ^void(BOOL published)
         {
+            if (publishParameters.shouldSaveToCameraRoll)
+            {
+                if ([welf.capturedMediaURL v_hasImageExtension])
+                {
+                    [welf writeImageToAssetsLibrary:publishParameters.previewImage];
+                }
+                else
+                {
+                    [welf writeVideoToAssetsLibrary:publishParameters.mediaToUploadURL];
+                }
+            }
             if (published)
             {
                 if (welf.completion)
@@ -332,6 +345,28 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
     
     self.transitionAnimator.presenting = (operation == UINavigationControllerOperationPush) ? YES : NO;
     return self.transitionAnimator;
+}
+
+#pragma mark - Save To Camera Roll
+
+- (void)writeVideoToAssetsLibrary:(NSURL *)videoURL
+{
+    ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+    
+    if ([library videoAtPathIsCompatibleWithSavedPhotosAlbum:videoURL])
+    {
+        [library writeVideoAtPathToSavedPhotosAlbum:videoURL
+                                    completionBlock:nil];
+    }
+}
+
+- (void)writeImageToAssetsLibrary:(UIImage *)image
+{
+    ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+    
+    [library writeImageToSavedPhotosAlbum:image.CGImage
+                              orientation:(NSInteger)image.imageOrientation
+                          completionBlock:nil];
 }
 
 @end

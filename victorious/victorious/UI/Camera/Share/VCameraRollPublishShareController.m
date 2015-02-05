@@ -7,76 +7,49 @@
 //
 
 #import "VCameraRollPublishShareController.h"
-#import "VPublishShareView.h"
 #import "VThemeManager.h"
 
 @import AssetsLibrary;
 
-static NSString * const kVSaveToCameraRollDisabledKey = @"saveToCameraKey";
+static NSString * const kVSaveToCameraRollLastStateKey = @"saveToCameraKey";
 
 @implementation VCameraRollPublishShareController
 
-- (id)init
-{
-    self = [super init];
-    if (self)
-    {
-        self.shareView.title = NSLocalizedString(@"saveToLibrary", nil);
-        self.shareView.image = [UIImage imageNamed:@"share-btn-library"];
-        self.shareView.selectedColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-        [self configureInitialState];
-    }
-    return self;
-}
-
 - (void)configureInitialState
 {
-    BOOL disabled = [[NSUserDefaults standardUserDefaults] boolForKey:kVSaveToCameraRollDisabledKey];
-    if (!disabled && [ALAssetsLibrary authorizationStatus] == ALAuthorizationStatusAuthorized)
-    {
-        self.shareView.selectedState = VShareViewSelectedStateSelected;
-    }
+    BOOL lastState = [[NSUserDefaults standardUserDefaults] boolForKey:kVSaveToCameraRollLastStateKey];
+    self.switchToConfigure.on = lastState;
+    self.switchToConfigure.enabled = ([ALAssetsLibrary authorizationStatus] == ALAuthorizationStatusAuthorized);
+}
+
+- (void)setSwitchToConfigure:(UISwitch *)switchToConfigure
+{
+    [super setSwitchToConfigure:switchToConfigure];
+    [self configureInitialState];
 }
 
 - (void)shareButtonTapped
 {
-    if (self.shareView.selectedState == VShareViewSelectedStateNotSelected)
+    ALAuthorizationStatus authorizationStatus = [ALAssetsLibrary authorizationStatus];
+    if (authorizationStatus == ALAuthorizationStatusDenied || authorizationStatus == ALAuthorizationStatusRestricted)
     {
-        ALAuthorizationStatus authorizationStatus = [ALAssetsLibrary authorizationStatus];
-        if (authorizationStatus == ALAuthorizationStatusDenied || authorizationStatus == ALAuthorizationStatusRestricted)
-        {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"CameraRollDeniedTitle", nil)
-                                                            message:NSLocalizedString(@"CameraRollDenied", nil)
-                                                           delegate:nil
-                                                  cancelButtonTitle:NSLocalizedString(@"Close", nil) otherButtonTitles:nil, nil];
-            [alert show];
-        }
-        else if (authorizationStatus == ALAuthorizationStatusAuthorized)
-        {
-            self.shareView.selectedState = VShareViewSelectedStateSelected;
-            [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kVSaveToCameraRollDisabledKey];
-        }
-        
-        self.shareView.selectedState = VShareViewSelectedStateLimbo;
-
-        ALAssetsLibrary *assetsLibrary = [[ALAssetsLibrary alloc] init];
-        [assetsLibrary enumerateGroupsWithTypes:ALAssetsGroupSavedPhotos
-                                     usingBlock:^(ALAssetsGroup *group, BOOL *stop)
-        {
-            self.shareView.selectedState = VShareViewSelectedStateSelected;
-            [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kVSaveToCameraRollDisabledKey];
-            *stop = YES;
-        }
-                                   failureBlock:^(NSError *error)
-        {
-            self.shareView.selectedState = VShareViewSelectedStateNotSelected;
-        }];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"CameraRollDeniedTitle", nil)
+                                                        message:NSLocalizedString(@"CameraRollDenied", nil)
+                                                       delegate:nil
+                                              cancelButtonTitle:NSLocalizedString(@"Close", nil) otherButtonTitles:nil, nil];
+        [alert show];
+        [self.switchToConfigure setOn:NO
+                             animated:YES];
     }
-    else
-    {
-        self.shareView.selectedState = VShareViewSelectedStateNotSelected;
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kVSaveToCameraRollDisabledKey];
-    }
+    
+    ALAssetsLibrary *assetsLibrary = [[ALAssetsLibrary alloc] init];
+    [assetsLibrary enumerateGroupsWithTypes:ALAssetsGroupSavedPhotos
+                                 usingBlock:^(ALAssetsGroup *group, BOOL *stop)
+     {
+         *stop = YES;
+     }
+                               failureBlock:nil];
+    [[NSUserDefaults standardUserDefaults] setBool:self.switchToConfigure.on forKey:kVSaveToCameraRollLastStateKey];
 }
 
 @end
