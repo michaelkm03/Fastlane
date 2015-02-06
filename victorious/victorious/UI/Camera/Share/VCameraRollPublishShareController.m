@@ -19,7 +19,6 @@ static NSString * const kVSaveToCameraRollLastStateKey = @"saveToCameraKey";
 {
     ALAuthorizationStatus authorizationStatus = [ALAssetsLibrary authorizationStatus];
     BOOL accessGiven = !((authorizationStatus == ALAuthorizationStatusDenied) || (authorizationStatus == ALAuthorizationStatusRestricted));
-    self.switchToConfigure.enabled = accessGiven;
     
     if (!accessGiven)
     {
