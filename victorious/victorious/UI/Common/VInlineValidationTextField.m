@@ -19,6 +19,7 @@
 
 static const CGFloat kInlineValidationHeight = 20.0f;
 static const CGFloat kSideInset = 10.0f;
+static const CGFloat kBottomClearInset = 2.0f;
 
 @import AudioToolbox;
 
@@ -118,7 +119,7 @@ static const CGFloat kSideInset = 10.0f;
 {
     CGRect modifiedRect = [super clearButtonRectForBounds:bounds];
     
-    modifiedRect.origin.y = CGRectGetHeight(self.bounds) - CGRectGetHeight(modifiedRect);
+    modifiedRect.origin.y = CGRectGetHeight(self.bounds) - CGRectGetHeight(modifiedRect) - kBottomClearInset;
     
     return modifiedRect;
 }
