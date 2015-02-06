@@ -72,7 +72,7 @@
                                         </constraints>
                                     </imageView>
                                     <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tcb-RO-Azu" userLabel="Cancel Button">
-                                        <rect key="frame" x="270" y="4" width="50" height="50"/>
+                                        <rect key="frame" x="270" y="2" width="50" height="50"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="50" id="HUZ-OI-jhn"/>
                                             <constraint firstAttribute="width" constant="50" id="ouv-d1-CWu"/>
@@ -84,7 +84,7 @@
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="centerY" secondItem="tcb-RO-Azu" secondAttribute="centerY" constant="-1.5" id="0uI-ug-Dcf"/>
+                                    <constraint firstAttribute="centerY" secondItem="tcb-RO-Azu" secondAttribute="centerY" constant="0.5" id="0uI-ug-Dcf"/>
                                     <constraint firstItem="YDu-Qa-a39" firstAttribute="leading" secondItem="J1F-4E-CYS" secondAttribute="leading" id="CCj-JC-CI5"/>
                                     <constraint firstAttribute="trailing" secondItem="YDu-Qa-a39" secondAttribute="trailing" id="Gm9-lr-n2F"/>
                                     <constraint firstAttribute="trailing" secondItem="RxD-Py-mcF" secondAttribute="trailing" constant="8" id="M87-uV-2G9"/>
@@ -209,7 +209,7 @@
                                         </connections>
                                     </textField>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" reversesTitleShadowWhenHighlighted="YES" showsTouchWhenHighlighted="YES" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uO5-OM-4av" userLabel="Cancel Button">
-                                        <rect key="frame" x="270" y="4" width="50" height="50"/>
+                                        <rect key="frame" x="270" y="2" width="50" height="50"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="50" id="3mQ-26-CAj"/>
                                             <constraint firstAttribute="height" constant="50" id="pl3-Ef-F5a"/>
@@ -261,7 +261,7 @@
                                     <constraint firstAttribute="bottom" secondItem="ZdI-Zr-sBo" secondAttribute="bottom" id="hiK-1A-m2Q"/>
                                     <constraint firstItem="VBj-A0-3vt" firstAttribute="leading" secondItem="0Rk-A9-Gp7" secondAttribute="leading" constant="43" id="lR8-Ud-pOW"/>
                                     <constraint firstItem="ZdI-Zr-sBo" firstAttribute="leading" secondItem="0Rk-A9-Gp7" secondAttribute="leading" constant="1" id="mNf-L3-ALZ"/>
-                                    <constraint firstAttribute="centerY" secondItem="uO5-OM-4av" secondAttribute="centerY" constant="-1.5" id="t4O-cE-m4C"/>
+                                    <constraint firstAttribute="centerY" secondItem="uO5-OM-4av" secondAttribute="centerY" constant="0.5" id="t4O-cE-m4C"/>
                                 </constraints>
                             </view>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="REU-GT-RGj">
