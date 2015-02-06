@@ -20,7 +20,7 @@
 {
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        if (success)
+        if (success != nil)
         {
             success(operation, fullResponse, resultObjects);
         }
@@ -38,7 +38,7 @@
 {
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        if (success)
+        if (success != nil)
         {
             success(operation, fullResponse, resultObjects);
         }
@@ -52,6 +52,7 @@
 }
 
 - (RKManagedObjectRequestOperation *)getHashtagsSubscribedToWithPageType:(VPageType)pageType
+                                                            perPageLimit:(NSInteger)pageLimit
                                                            successBlock:(VSuccessBlock)success
                                                               failBlock:(VFailBlock)fail
 {
@@ -75,7 +76,7 @@
             [mainUser.managedObjectContext saveToPersistentStore:nil];
         }
 
-        if (success)
+        if (success != nil)
         {
             success(operation, fullResponse, resultObjects);
         }
@@ -83,7 +84,7 @@
     
     VFailBlock fullFailure = ^(NSOperation *operation, NSError *error)
     {
-        if (fail)
+        if (fail != nil)
         {
             fail(operation, error);
         }
@@ -93,6 +94,13 @@
     VAbstractFilter *hashtagFilter = [self.paginationManager filterForPath:@"/api/hashtag/subscribed_to_list"
                                                                 entityName:[VAbstractFilter entityName]
                                                       managedObjectContext:self.managedObjectStore.mainQueueManagedObjectContext];
+
+    // Check if page limit is not set and provide a default value
+    if (pageLimit == 0)
+    {
+        pageLimit = 15;
+    }
+    hashtagFilter.perPageNumber = [NSNumber numberWithInteger:pageLimit];
     
     return [self.paginationManager loadFilter:hashtagFilter withPageType:VPageTypeFirst successBlock:fullSuccess failBlock:fullFailure];
 }
@@ -125,7 +133,7 @@
         mainUser.hashtags = hashtagSet;
         [mainUser.managedObjectContext save:nil];
         
-        if (success)
+        if (success != nil)
         {
             success(operation, fullResponse, resultObjects);
         }
@@ -133,7 +141,7 @@
     
     VFailBlock fullFailure = ^(NSOperation *operation, NSError *error)
     {
-        if (fail)
+        if (fail != nil)
         {
             fail(operation, error);
         }
@@ -174,7 +182,7 @@
             }
         }
 
-        if (success)
+        if (success != nil)
         {
             success(operation, fullResponse, resultObjects);
         }
@@ -182,7 +190,7 @@
     
     VFailBlock fullFailure = ^(NSOperation *operation, NSError *error)
     {
-        if (fail)
+        if (fail != nil)
         {
             fail(operation, error);
         }
@@ -193,6 +201,40 @@
           parameters:@{@"hashtag":hashtag}
         successBlock:fullSuccess
            failBlock:fullFailure];
+}
+
+- (RKManagedObjectRequestOperation *)findHashtagsBySearchString:(NSString *)hashtag
+                                                   limitPerPage:(NSInteger)pageLimit
+                                                   successBlock:(VSuccessBlock)success
+                                                      failBlock:(VFailBlock)fail
+{
+    VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    {
+        if (success != nil)
+        {
+            success(operation, fullResponse, resultObjects);
+        }
+    };
+    
+    VFailBlock fullFailure = ^(NSOperation *operation, NSError *error)
+    {
+        if (fail != nil)
+        {
+            fail(operation, error);
+        }
+    };
+    
+    // Check if page limit is not set and provide a default value
+    if (pageLimit == 0)
+    {
+        pageLimit = 15;
+    }
+
+    return [self GET:[NSString stringWithFormat:@"/api/hashtag/search/%@/1/%ld", hashtag, pageLimit]
+               object:nil
+           parameters:nil
+         successBlock:fullSuccess
+            failBlock:fullFailure];
 }
 
 @end

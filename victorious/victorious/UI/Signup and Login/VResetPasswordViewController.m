@@ -72,10 +72,12 @@
     [[self view] endEditing:YES];
     
     NSString *newPassword = self.passwordTextField.text;
-    NSString *newPasswordConfirm = self.confirmPasswordTextField.text;
     
     NSError *outError = nil;
-    if ([self.passwordValidator validatePassword:newPassword withConfirmation:newPasswordConfirm error:&outError] )
+    [self.passwordValidator setConfirmationObject:self.confirmPasswordTextField
+                                      withKeyPath:NSStringFromSelector(@selector(text))];
+    if ([self.passwordValidator validateString:newPassword
+                                      andError:&outError])
     {
         [[VObjectManager sharedManager] resetPasswordWithUserToken:self.userToken
                                                        deviceToken:self.deviceToken

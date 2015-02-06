@@ -8,7 +8,7 @@
 
 #import "UIImageView+VLoadingAnimations.h"
 
-#import "UIImageView+AFNetworking.h"
+#import "UIImageView+WebCache.h"
 
 @implementation UIImageView (VLoadingAnimations)
 
@@ -16,28 +16,28 @@
         placeholderImage:(UIImage *)image
 {
     __weak UIImageView *weakSelf = self;
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-    [request addValue:@"image/*" forHTTPHeaderField:@"Accept"];
-    [self setImageWithURLRequest:request
-                                 placeholderImage:image
-                                          success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image)
-     {
-         __strong UIImageView *strongSelf = weakSelf;
-         if (!request)
+    
+    [self sd_setImageWithURL:url placeholderImage:image completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+        
+        __strong UIImageView *strongSelf = weakSelf;
+        //Check if image was loaded from cache
+        if (cacheType != SDImageCacheTypeNone || imageURL == nil)
+        {
+            //Set image without fade animation
+            strongSelf.image = image;
+            return;
+        }
+        
+        strongSelf.alpha = 0;
+        strongSelf.image = image;
+        [UIView animateWithDuration:.3f animations:^
          {
-             strongSelf.image = image;
-             return;
-         }
-         
-         strongSelf.alpha = 0;
-         strongSelf.image = image;
-         [UIView animateWithDuration:.3f animations:^
-          {
-              strongSelf.alpha = 1;
-          }];
-     }
-                                          failure:nil
-     ];
+             strongSelf.alpha = 1;
+         }];
+        
+        
+    }];
+    
 }
 
 @end

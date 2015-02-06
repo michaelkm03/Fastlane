@@ -215,7 +215,11 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
         [self restoreLivePreview];
     }
 
-    self.state = VCameraViewControllerStateInitializingHardware;
+    if (!self.didSelectAssetFromLibrary)
+    {
+        self.state = VCameraViewControllerStateInitializingHardware;
+    }
+    
     self.captureController.videoEncoder = nil;
     
     [MBProgressHUD showHUDAddedTo:self.previewView animated:NO];
@@ -1097,7 +1101,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
                    {
                        dispatch_async(dispatch_get_main_queue(), ^
                                       {
-                                          if ((self.capturedMediaURL != nil) && self.animationCompleted)
+                                          if (self.didSelectAssetFromLibrary || ((self.capturedMediaURL != nil) && self.animationCompleted))
                                           {
                                               self.state = VCameraViewControllerStateCapturedMedia;
                                           }
