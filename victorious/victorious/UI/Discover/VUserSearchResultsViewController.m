@@ -64,7 +64,7 @@ static NSString * const kVUserResultIdentifier = @"followerCell";
     [self configureTableView];
     
     // Setup Dismissal UIView
-    self.dismissTapView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320.0f, CGRectGetHeight(self.tableView.frame))];
+    self.dismissTapView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.tableView.frame), CGRectGetHeight(self.tableView.frame))];
     self.dismissTapView.backgroundColor = [UIColor clearColor];
     [self.view addSubview:self.dismissTapView];
     [self.view bringSubviewToFront:self.dismissTapView];

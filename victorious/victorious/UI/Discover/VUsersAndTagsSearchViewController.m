@@ -26,6 +26,9 @@
 // No Content View
 #import "VNoContentView.h"
 
+// Constants
+#import "VConstants.h"
+
 // Transtion
 #import "VSimpleModalTransition.h"
 
@@ -34,6 +37,8 @@
 
 NSString *const kVUserSearchResultsChangedNotification = @"VUserSearchResultsChangedNotification";
 NSString *const kVHashtagsSearchResultsChangedNotification = @"VHashtagsSearchResultsChangedNotification";
+
+static NSInteger const kVMaxSearchResults = 1000;
 
 @interface VUsersAndTagsSearchViewController () <UITextFieldDelegate, VUserSearchResultsViewControllerDelegate, VTagsSearchResultsViewControllerDelegate>
 
@@ -104,17 +109,6 @@ NSString *const kVHashtagsSearchResultsChangedNotification = @"VHashtagsSearchRe
     self.segmentControl.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     self.segmentControl.selectedSegmentIndex = 0;
     
-    // Add NSNotification Observers
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(segmentControlAction:)
-                                                 name:UITextFieldTextDidChangeNotification
-                                               object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(searchFieldTextChanged:)
-                                                 name:UITextFieldTextDidChangeNotification
-                                               object:nil];
-    
     // Setup Search Field
     self.searchField.placeholder = NSLocalizedString(@"Search people and hashtags", @"");
     [self.searchField setTextColor:[self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey]];
@@ -130,10 +124,35 @@ NSString *const kVHashtagsSearchResultsChangedNotification = @"VHashtagsSearchRe
     self.tapGestureRecognizer.numberOfTouchesRequired = 1;
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    // Add NSNotification Observers
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(segmentControlAction:)
+                                                 name:UITextFieldTextDidChangeNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(searchFieldTextChanged:)
+                                                 name:UITextFieldTextDidChangeNotification
+                                               object:nil];
+}
+
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     
+    if (self.segmentControl.selectedSegmentIndex == 0)
+    {
+        [self.userSearchResultsVC.tableView reloadData];
+    }
+    else
+    {
+        [self.tagsSearchResultsVC.tableView reloadData];
+    }
+
     [self.searchField becomeFirstResponder];
 }
 
@@ -215,7 +234,7 @@ NSString *const kVHashtagsSearchResultsChangedNotification = @"VHashtagsSearchRe
     VSuccessBlock searchSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         NSMutableArray *searchResults = [[NSMutableArray alloc] init];
-        NSArray *tags = [[fullResponse valueForKey:@"payload"] valueForKey:@"objects"];
+        NSArray *tags = [[fullResponse valueForKey:kVPayloadKey] valueForKey:kVObjectsKey];
         
         [tags enumerateObjectsUsingBlock:^(NSString *tag, NSUInteger idx, BOOL *stop)
         {
@@ -243,11 +262,11 @@ NSString *const kVHashtagsSearchResultsChangedNotification = @"VHashtagsSearchRe
         VLog(@"\n\nHashtag Search Failed with the following error:\n%@", error);
     };
 
-    NSString *searchTerm = [self.searchField.text stringByReplacingOccurrencesOfString:@" " withString:@""];
+    NSString *searchTerm = [self.searchField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     if (searchTerm.length > 0)
     {
         [[VObjectManager sharedManager] findHashtagsBySearchString:searchTerm
-                                                      limitPerPage:1000
+                                                      limitPerPage:kVMaxSearchResults
                                                       successBlock:searchSuccess
                                                          failBlock:searchFail];
     }
@@ -281,7 +300,7 @@ NSString *const kVHashtagsSearchResultsChangedNotification = @"VHashtagsSearchRe
     if ( [self.searchField.text length] > 0 )
     {
         [[VObjectManager sharedManager] findMessagableUsersBySearchString:self.searchField.text
-                                                                    limit:1000.0f
+                                                                    limit:kVMaxSearchResults
                                                          withSuccessBlock:searchSuccess
                                                                 failBlock:nil];
     }
@@ -324,12 +343,6 @@ NSString *const kVHashtagsSearchResultsChangedNotification = @"VHashtagsSearchRe
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
-//    if ( [string isEqualToString:@""] && textField.text.length == 0 )
-//    {
-//        self.userSearchResultsVC.view.alpha = 0;
-//        self.tagsSearchResultsVC.view.alpha = 0;
-//    }
-    
     return YES;
 }
 
