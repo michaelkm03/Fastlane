@@ -34,6 +34,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 @property (nonatomic) BOOL delegateNotifiedOfReadinessToPlay;
 @property (nonatomic) CMTime startTime;
 @property (nonatomic) CMTime endTime;
+@property (nonatomic) CMTime originalAssetDuration;
 @property (nonatomic) BOOL didPlayToEnd;
 @property (nonatomic, strong) NSTimer *toolbarHideTimer;
 @property (nonatomic, strong) NSDate *toolbarShowDate;
@@ -259,8 +260,10 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     self.player.actionAtItemEnd = loop ? AVPlayerActionAtItemEndNone : AVPlayerActionAtItemEndPause;
     
     const BOOL shouldLoopWithComposition = loop && !self.loopWithoutComposition;
-    [self.videoUtils createPlayerItemWithURL:itemURL loop:shouldLoopWithComposition readyCallback:^(AVPlayerItem *playerItem)
+    [self.videoUtils createPlayerItemWithURL:itemURL loop:shouldLoopWithComposition
+                               readyCallback:^(AVPlayerItem *playerItem, CMTime duration)
      {
+         self.originalAssetDuration = duration;
          [self.player replaceCurrentItemWithPlayerItem:playerItem];
      }];
 }
@@ -448,8 +451,20 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     return kCMTimeInvalid;
 }
 
+- (CMTime)timeAdjustedForLoopingVideoFromTime:(CMTime)time
+{
+    NSInteger scale = 10000;
+    NSInteger curr = CMTimeGetSeconds( time ) * (CGFloat)scale;
+    NSInteger orig = CMTimeGetSeconds( self.originalAssetDuration ) * (CGFloat)scale;
+    NSInteger mod = curr % orig;
+    NSLog( @"%@", @((CGFloat)mod / (CGFloat)scale) );
+    return CMTimeMakeWithSeconds( (CGFloat)mod / (CGFloat)scale, time.timescale );
+}
+
 - (void)didPlayToTime:(CMTime)time
 {
+    time = [self timeAdjustedForLoopingVideoFromTime:time];
+    
     Float64 durationInSeconds = CMTimeGetSeconds([self playerItemDuration]);
     Float64 timeInSeconds     = CMTimeGetSeconds(time);
     float percentElapsed      = timeInSeconds / durationInSeconds;

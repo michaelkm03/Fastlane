@@ -24,7 +24,23 @@ static const NSUInteger kCompositionAssetCount = 10;
  is shaved off of the end in order to ensure clean looping.*/
 static const Float64 kAssetLoopClipping = 0.08;
 
+@interface VVideoUtils()
+
+@property (nonatomic, readwrite) NSUInteger compositionLoopCount;
+
+@end
+
 @implementation VVideoUtils
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self)
+    {
+        _compositionLoopCount = 1;
+    }
+    return self;
+}
 
 - (AVComposition *)loopingCompositionWithAsset:(AVAsset *)asset
 {
@@ -40,7 +56,7 @@ static const Float64 kAssetLoopClipping = 0.08;
     return composition;
 }
 
-- (void)createPlayerItemWithURL:(NSURL *)itemURL loop:(BOOL)loop readyCallback:(void(^)(AVPlayerItem *))onReady
+- (void)createPlayerItemWithURL:(NSURL *)itemURL loop:(BOOL)loop readyCallback:(void(^)(AVPlayerItem *, CMTime duration))onReady
 {
     dispatch_async( dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0 ), ^void
                    {
@@ -49,10 +65,12 @@ static const Float64 kAssetLoopClipping = 0.08;
                        if ( loop )
                        {
                            AVComposition *composition = [self loopingCompositionWithAsset:asset];
+                           self.compositionLoopCount = kCompositionAssetCount;
                            playerItem = [AVPlayerItem playerItemWithAsset:composition];
                        }
                        else
                        {
+                           self.compositionLoopCount = 1;
                            playerItem = [AVPlayerItem playerItemWithAsset:asset];
                        }
                        
@@ -60,7 +78,7 @@ static const Float64 kAssetLoopClipping = 0.08;
                                       {
                                           if ( onReady != nil )
                                           {
-                                              onReady( playerItem );
+                                              onReady( playerItem, asset.duration );
                                           }
                                       });
                    });

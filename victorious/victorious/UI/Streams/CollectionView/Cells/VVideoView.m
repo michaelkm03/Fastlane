@@ -57,7 +57,7 @@
     
     _itemURL = itemURL;
     
-    [self.videoUtils createPlayerItemWithURL:itemURL loop:loop readyCallback:^(AVPlayerItem *playerItem)
+    [self.videoUtils createPlayerItemWithURL:itemURL loop:loop readyCallback:^(AVPlayerItem *playerItem, CMTime duration)
      {
          [self didFinishAssetCreation:playerItem];
      }];
