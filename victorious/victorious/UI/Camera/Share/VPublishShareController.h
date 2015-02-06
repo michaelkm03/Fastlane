@@ -8,16 +8,16 @@
 
 #import <Foundation/Foundation.h>
 
-@class VPublishShareView;
-
 /**
  Abstract base class for objects that manage
  the sharing of newly published content
  */
 @interface VPublishShareController : NSObject
 
-@property (nonatomic, readonly) VPublishShareView *shareView; ///< The share view that is being managed by the receiver
-@property (nonatomic, readonly, getter = isSelected) BOOL selected;  ///< YES if this share option has been authorized and selected by the user
+/**
+ *  The switch to configure defaults/enabled states for.
+ */
+@property (nonatomic, weak) UISwitch *switchToConfigure;
 
 /**
  This method can be overridden by subclasses
