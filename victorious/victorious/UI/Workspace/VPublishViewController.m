@@ -131,7 +131,7 @@ static const CGFloat kTopSpacePublishPrompt = 50.0f;
     
     NSMutableDictionary *attributes = [[NSMutableDictionary alloc] init];
     UIFont *headerFont = [self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
-    if (headerFont)
+    if (headerFont != nil)
     {
         [attributes setObject:headerFont forKey:NSFontAttributeName];
     }
