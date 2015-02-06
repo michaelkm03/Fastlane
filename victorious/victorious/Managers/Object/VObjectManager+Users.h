@@ -72,10 +72,12 @@ typedef NS_ENUM(NSUInteger, VSocialSelector)
                                        failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)findUsersBySearchString:(NSString *)search_string
+                                                       limit:(NSInteger)pageLimit
                                             withSuccessBlock:(VSuccessBlock)success
                                                    failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)findMessagableUsersBySearchString:(NSString *)search_string
+                                                                 limit:(NSInteger)pageLimit
                                                       withSuccessBlock:(VSuccessBlock)success
                                                              failBlock:(VFailBlock)fail;
 
