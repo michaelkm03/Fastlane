@@ -507,7 +507,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 {
     [super viewDidAppear:animated];
     
-    if (self.viewModel.sequence.remoteId && self.viewModel.shareURL)
+    if ((self.viewModel.sequence.remoteId != nil) && (self.viewModel.shareURL != nil))
     {
         NSString *handoffIdentifier = [NSString stringWithFormat:@"com.victorious.handoff.%@", self.viewModel.sequence.remoteId];
         self.handoffObject = [[NSUserActivity alloc] initWithActivityType:handoffIdentifier];
