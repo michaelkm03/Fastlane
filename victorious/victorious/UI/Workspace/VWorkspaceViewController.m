@@ -336,8 +336,8 @@
 
 - (void)bringChromeOutOfView
 {
-//    self.VerticalSpaceTopBarToContainer.constant = -CGRectGetHeight(self.topToolbar.frame);
-//    self.verticalSpaceBottomBarToContainer.constant = -CGRectGetHeight(self.bottomToolbar.frame);
+    self.VerticalSpaceTopBarToContainer.constant = -CGRectGetHeight(self.topToolbar.frame);
+    self.verticalSpaceBottomBarToContainer.constant = -CGRectGetHeight(self.bottomToolbar.frame);
     self.blurredBackgroundImageView.alpha = 0.0f;
     self.view.backgroundColor = [UIColor clearColor];
     

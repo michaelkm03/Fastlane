@@ -90,28 +90,28 @@ static const NSTimeInterval kShrinkingCameraShutterAnimationDuration = 1.5;
 
 - (void)showCameraFlashAnimationWithCompletion:(void (^)(void))completion
 {
-    [UIView animateWithDuration:0.2f
+    [UIView animateWithDuration:0.5f
                           delay:0.0f
          usingSpringWithDamping:1.0f
-          initialSpringVelocity:0.0f
-                        options:kNilOptions
+          initialSpringVelocity:-1.0f
+                        options:UIViewAnimationOptionBeginFromCurrentState
                      animations:^{
                          self.transform = CGAffineTransformMakeScale(1.5, 1.5f);
-                         self.backgroundColor = [UIColor darkGrayColor];
+                         self.backgroundColor = self.tintColor;
                      } completion:^(BOOL finished) {
-                         [UIView animateWithDuration:0.2f
+                         [UIView animateWithDuration:0.1f
                                                delay:0.0f
                               usingSpringWithDamping:1.0f
                                initialSpringVelocity:0.0f
                                              options:kNilOptions
                                           animations:^
                           {
-//                              self.backgroundColor = [UIColor blackColor];
-//                              self.alpha = 0.0f;
                               self.transform = CGAffineTransformMakeScale(0.01f, 0.01f);
+
                           }
                                           completion:^(BOOL finished)
                           {
+                              self.backgroundColor = [UIColor clearColor];
                               if (completion)
                               {
                                   completion();
