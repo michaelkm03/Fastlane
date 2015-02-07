@@ -507,11 +507,15 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 {
     [super viewDidAppear:animated];
     
-    self.handoffObject = [[NSUserActivity alloc] initWithActivityType:[NSString stringWithFormat:@"com.victorious.handoff.%@", self.viewModel.sequence.name]];
-    self.handoffObject.webpageURL = self.viewModel.shareURL;
-    self.handoffObject.delegate = self;
-    [self.handoffObject becomeCurrent];
-
+    if (self.viewModel.sequence.remoteId && self.viewModel.shareURL)
+    {
+        NSString *handoffIdentifier = [NSString stringWithFormat:@"com.victorious.handoff.%@", self.viewModel.sequence.remoteId];
+        self.handoffObject = [[NSUserActivity alloc] initWithActivityType:handoffIdentifier];
+        self.handoffObject.webpageURL = self.viewModel.shareURL;
+        self.handoffObject.delegate = self;
+        [self.handoffObject becomeCurrent];
+    }
+    
     [self.contentCollectionView flashScrollIndicators];
 }
 
