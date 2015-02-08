@@ -11,7 +11,7 @@
 #import "VCameraViewController.h"
 #import "VWorkspaceViewController.h"
 
-static const NSTimeInterval kBlurOverPresentTransitionDuration = 2.35f;
+static const NSTimeInterval kBlurOverPresentTransitionDuration = 0.5f;
 
 @implementation VVCameraShutterOverAnimator
 

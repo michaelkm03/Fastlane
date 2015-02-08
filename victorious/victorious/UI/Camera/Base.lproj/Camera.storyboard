@@ -145,10 +145,20 @@
                             </view>
                             <view contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="Cdq-4w-Bu5" userLabel="Preview View">
                                 <rect key="frame" x="0.0" y="44" width="320" height="320"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hnT-7W-SEH" userLabel="Gradient View" customClass="VRadialGradientView">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    </view>
+                                </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="320" id="3Nf-Mq-dkk"/>
+                                    <constraint firstItem="hnT-7W-SEH" firstAttribute="leading" secondItem="Cdq-4w-Bu5" secondAttribute="leading" id="GWF-eq-RJu"/>
+                                    <constraint firstAttribute="trailing" secondItem="hnT-7W-SEH" secondAttribute="trailing" id="Ven-iP-JLS"/>
                                     <constraint firstAttribute="width" secondItem="Cdq-4w-Bu5" secondAttribute="height" multiplier="1:1" id="ezv-zU-BZ0"/>
+                                    <constraint firstAttribute="bottom" secondItem="hnT-7W-SEH" secondAttribute="bottom" id="oAe-UU-Pfc"/>
+                                    <constraint firstItem="hnT-7W-SEH" firstAttribute="top" secondItem="Cdq-4w-Bu5" secondAttribute="top" id="xeU-tv-6QV"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="r8c-9h-K1E" userLabel="Camera Control Container">
@@ -188,6 +198,7 @@
                         <outlet property="nextButton" destination="P0d-F9-FuH" id="Wir-PA-wnL"/>
                         <outlet property="openAlbumButton" destination="W9w-XF-uIU" id="0Cs-b0-bYq"/>
                         <outlet property="previewView" destination="Cdq-4w-Bu5" id="uB4-J9-nz8"/>
+                        <outlet property="radialGradientView" destination="hnT-7W-SEH" id="Qmf-Pm-Fv9"/>
                         <outlet property="searchButton" destination="Psc-Kh-PXS" id="waU-Sd-g7j"/>
                         <outlet property="switchCameraButton" destination="fQI-xE-BeV" id="Vk3-qf-zWV"/>
                         <outlet property="topSpaceTopToolsToContainerConstraint" destination="4nb-z1-EII" id="oYd-rq-Z15"/>
@@ -338,7 +349,7 @@ and don't forget #hashtags</string>
                                             <action selector="changeCaptionType:" destination="1zz-KC-cVA" eventType="touchUpInside" id="SEd-WO-94L"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Xc-ND-ZII">
+                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Xc-ND-ZII">
                                         <rect key="frame" x="107" y="0.0" width="106" height="61"/>
                                         <state key="normal" title="Meme">
                                             <color key="titleColor" red="0.13725490200000001" green="0.13725490200000001" blue="0.13725490200000001" alpha="1" colorSpace="calibratedRGB"/>

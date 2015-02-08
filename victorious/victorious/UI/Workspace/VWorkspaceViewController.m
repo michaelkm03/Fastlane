@@ -340,38 +340,6 @@
     self.verticalSpaceBottomBarToContainer.constant = -CGRectGetHeight(self.bottomToolbar.frame);
     self.blurredBackgroundImageView.alpha = 0.0f;
     self.view.backgroundColor = [UIColor clearColor];
-    
-//    self.snapShotView.translatesAutoresizingMaskIntoConstraints = NO;
-//    [self.view addSubview:self.snapShotView];
-//    self.snapShotView.frame = self.view.bounds;
-//    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[snapshot]|"
-//                                                                      options:kNilOptions
-//                                                                      metrics:nil
-//                                                                        views:@{@"snapshot":self.snapShotView}]];
-//    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[snapshot]|"
-//                                                                      options:kNilOptions
-//                                                                      metrics:nil
-//                                                                        views:@{@"snapshot":self.snapShotView}]];
-
-    
-//    UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
-//    UIVisualEffectView *blurView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
-//    blurView.translatesAutoresizingMaskIntoConstraints = NO;
-//    [self.snapShotView addSubview:blurView];
-//    blurView.frame = self.snapShotView.bounds;
-//    [self.snapShotView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[blurView]|"
-//                                                                      options:kNilOptions
-//                                                                      metrics:nil
-//                                                                        views:NSDictionaryOfVariableBindings(blurView)]];
-//    [self.snapShotView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[blurView]|"
-//                                                                      options:kNilOptions
-//                                                                      metrics:nil
-//                                                                        views:NSDictionaryOfVariableBindings(blurView)]];
-//    blurView.alpha = 0.0f;
-//    self.blurView = blurView;
-//    [self.view sendSubviewToBack:blurView];
-    
-//    [self.view sendSubviewToBack:self.snapShotView];
     [self.view layoutIfNeeded];
 }
 
@@ -379,7 +347,6 @@
 {
     self.VerticalSpaceTopBarToContainer.constant = 0.0f;
     self.verticalSpaceBottomBarToContainer.constant = 0.0f;
-    
 
     [self.view layoutIfNeeded];
 }

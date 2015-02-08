@@ -21,6 +21,8 @@
 #import "VSettingManager.h"
 #import "VCameraControl.h"
 #import "VThemeManager.h"
+#import "VRadialGradientView.h"
+#import "VRadialGradientLayer.h"
 #import <FBKVOController.h>
 
 static const NSTimeInterval kAnimationDuration = 0.4;
@@ -64,6 +66,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
 @property (nonatomic, strong) VCameraControl *cameraControl;
 @property (nonatomic, strong) AVCaptureVideoPreviewLayer *previewLayer;
 @property (nonatomic, strong) UIView *previewSnapshot;
+@property (weak, nonatomic) IBOutlet VRadialGradientView *radialGradientView;
 
 @property (nonatomic, strong) VCameraCaptureController *captureController;
 
@@ -194,6 +197,19 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
                  forControlEvents:VCameraControlEventStartRecordingVideo];
     [self.cameraControl addTarget:self action:@selector(stopRecording)
                  forControlEvents:VCameraControlEventEndRecordingVideo];
+    
+    self.previewView.maskView = self.radialGradientView;
+    VRadialGradientLayer *radialGradientLayer = self.radialGradientView.radialGradientLayer;
+    
+    radialGradientLayer.colors = @[(id)[UIColor blackColor].CGColor,
+                                   (id)[UIColor clearColor].CGColor];
+    radialGradientLayer.innerCenter = CGPointMake(CGRectGetMidX(radialGradientLayer.bounds),
+                                                  CGRectGetMidY(radialGradientLayer.bounds));
+    radialGradientLayer.innerRadius = 499.0f;
+    radialGradientLayer.outerCenter = CGPointMake(CGRectGetMidX(radialGradientLayer.bounds),
+                                                  CGRectGetMidY(radialGradientLayer.bounds));
+    radialGradientLayer.outerRadius = 499.0f + 20.0f;
+
 }
 
 - (void)viewDidLayoutSubviews
@@ -357,6 +373,32 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
                          animations:hideToolsBlock
                          completion:nil];
     }
+    
+    VRadialGradientLayer *radialGradientLayer = self.radialGradientView.radialGradientLayer;
+    
+    [CATransaction begin];
+    
+    [CATransaction setCompletionBlock:^
+     {
+         [CATransaction begin];
+         
+         [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionDefault]];
+         [CATransaction setAnimationDuration:0.2f];
+         
+         radialGradientLayer.outerRadius = 401.0f;
+         radialGradientLayer.innerRadius = 400.0f - 20.0f;
+         
+         [CATransaction commit];
+     }];
+    
+    [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionDefault]];
+    [CATransaction setAnimationDuration:0.3f];
+    
+    radialGradientLayer.innerRadius = 0.0;
+    radialGradientLayer.outerRadius = 0.0f;
+    
+    [CATransaction commit];
+
 }
 
 - (void)setState:(VCameraViewControllerState)state
@@ -661,20 +703,22 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
         {
             dispatch_async(dispatch_get_main_queue(), ^
                            {
-                               [welf replacePreviewViewWithSnapshot];
+//                               [welf replacePreviewViewWithSnapshot];
+
                                [welf.cameraControl showCameraFlashAnimationWithCompletion:^
                                 {
-                                    dispatch_async(welf.captureAnimationQueue, ^
-                                                   {
-                                                       welf.animationCompleted = YES;
-                                                       dispatch_async(dispatch_get_main_queue(), ^
-                                                                      {
-                                                                          if ((welf.capturedMediaURL != nil) && welf.animationCompleted)
-                                                                          {
-                                                                              welf.state = VCameraViewControllerStateCapturedMedia;
-                                                                          }
-                                                                      });
-                                                   });
+                                           [welf setToolsHidden:NO animated:NO];
+//                                    dispatch_async(welf.captureAnimationQueue, ^
+//                                                   {
+//                                                       welf.animationCompleted = YES;
+//                                                       dispatch_async(dispatch_get_main_queue(), ^
+//                                                                      {
+//                                                                          if ((welf.capturedMediaURL != nil) && welf.animationCompleted)
+//                                                                          {
+//                                                                              welf.state = VCameraViewControllerStateCapturedMedia;
+//                                                                          }
+//                                                                      });
+//                                                   });
                                 }];
                            });
         }
