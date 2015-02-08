@@ -21,7 +21,12 @@
  If YES, the most recently captured media was
  selected from the user's asset library.
  */
-@property (nonatomic) BOOL didSelectAssetFromLibrary;
+@property (nonatomic, readonly) BOOL didSelectAssetFromLibrary;
+
+/**
+ YES if the user selected media from a web search.
+ */
+@property (nonatomic, readonly) BOOL didSelectFromWebSearch;
 
 /**
  *  If YES, the camera will call it's completion block immediately after taking the picture/video.
@@ -52,5 +57,20 @@
  Returns an instance of this class that will only take video, no photos.
  */
 + (VCameraViewController *)cameraViewControllerLimitedToVideo;
+
+/**
+ YES, if the camera has exited with a fullscreen shutter animation to black. Originating form shutterCenter in this viewController's view.
+ */
+@property (nonatomic, readonly) BOOL showedFullscreenShutterAnimation;
+
+/**
+ The origin of the growth of the shutter animation.
+ */
+@property (nonatomic, readonly) CGPoint shutterCenter;
+
+/**
+ The URL of the media captured by the camera. (May be remote).
+ */
+@property (nonatomic, readonly) NSURL *capturedMediaURL;
 
 @end

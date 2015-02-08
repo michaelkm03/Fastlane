@@ -136,8 +136,6 @@ static const NSInteger kAllCommentsZIndex = 6666;
                                                                     CGRectGetHeight(contentAttributes.frame));
             layoutAttributesForSupplementaryView.zIndex = kContentBackgroundZIndex;
         }
-            
-            
             break;
         case VContentViewSectionHistogramOrQuestion:
             break;

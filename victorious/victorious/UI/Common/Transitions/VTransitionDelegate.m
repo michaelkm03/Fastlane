@@ -91,11 +91,25 @@
                                                                    presentingController:(UIViewController *)presenting
                                                                        sourceController:(UIViewController *)source
 {
+    if ( [self.transition respondsToSelector:@selector(canPerformCustomTransitionFrom:to:)] )
+    {
+        if ( ![self.transition canPerformCustomTransitionFrom:presented to:presenting] )
+        {
+            return nil;
+        }
+    }
     return self.animator;
 }
 
 - (id <UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed
 {
+    if ( [self.transition respondsToSelector:@selector(canPerformCustomTransitionFrom:to:)] )
+    {
+        if ( ![self.transition canPerformCustomTransitionFrom:nil to:dismissed] )
+        {
+            return nil;
+        }
+    }
     return self.animator;
 }
 
@@ -104,6 +118,13 @@
                                                 fromViewController:(UIViewController *)fromVC
                                                   toViewController:(UIViewController *)toVC
 {
+    if ( [self.transition respondsToSelector:@selector(canPerformCustomTransitionFrom:to:)] )
+    {
+        if ( ![self.transition canPerformCustomTransitionFrom:fromVC to:toVC] )
+        {
+            return nil;
+        }
+    }
     return self.animator;
 }
 

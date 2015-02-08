@@ -127,6 +127,12 @@
 "Facebook"              =   "Facebook";
 "FacebookFailed"        =   "Could not connect to Facebook.";
 
+"Search people and hashtags"  =  "Search people or hashtags";
+"No People Found In Search Title" = "NO PEOPLE WERE FOUND";
+"No people found in search" = "Refine your search and try again.";
+"No Hashtags Found In Search Title" = "NO TAGS WERE FOUND!";
+"No hashtags found in search" = "Refine your search and try again.";
+
 "SearchFailed"          =   "Search failed.";
 "ImageDownloadFailed"   =   "Image download failed.";
 

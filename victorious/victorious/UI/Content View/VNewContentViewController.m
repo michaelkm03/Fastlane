@@ -87,8 +87,9 @@
 
 static const CGFloat kMaxInputBarHeight = 200.0f;
 
-@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, VEndCardViewControllerDelegate>
+@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, VEndCardViewControllerDelegate, NSUserActivityDelegate>
 
+@property (nonatomic, strong) NSUserActivity *handoffObject;
 
 @property (nonatomic, strong, readwrite) VContentViewViewModel *viewModel;
 @property (nonatomic, strong) NSURL *mediaURL;
@@ -467,9 +468,19 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     self.contentCollectionView.scrollIndicatorInsets = UIEdgeInsetsMake(VShrinkingContentLayoutMinimumContentHeight, 0, CGRectGetHeight(self.textEntryView.bounds), 0);
     self.contentCollectionView.contentInset = UIEdgeInsetsMake(0, 0, CGRectGetHeight(self.textEntryView.bounds) , 0);
     
-    [self.blurredBackgroundImageView setBlurredImageWithClearImage:self.placeholderImage
-                                                  placeholderImage:[UIImage resizeableImageWithColor:[[UIColor whiteColor] colorWithAlphaComponent:0.7f]]
-                                                         tintColor:[[UIColor whiteColor] colorWithAlphaComponent:0.7f]];
+    if (self.viewModel.sequence.isImage)
+    {
+        [self.blurredBackgroundImageView setBlurredImageWithURL:self.viewModel.imageURLRequest.URL
+                                               placeholderImage:self.placeholderImage
+                                                      tintColor:nil];
+    }
+    else
+    {
+        [self.blurredBackgroundImageView setBlurredImageWithClearImage:self.placeholderImage
+                                                      placeholderImage:nil
+                                                             tintColor:nil];
+    }
+    
 
     if (self.viewModel.type == VContentViewTypeVideo)
     {
@@ -486,13 +497,25 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-
+    
+    if ((self.viewModel.sequence.remoteId != nil) && (self.viewModel.shareURL != nil))
+    {
+        NSString *handoffIdentifier = [NSString stringWithFormat:@"com.victorious.handoff.%@", self.viewModel.sequence.remoteId];
+        self.handoffObject = [[NSUserActivity alloc] initWithActivityType:handoffIdentifier];
+        self.handoffObject.webpageURL = self.viewModel.shareURL;
+        self.handoffObject.delegate = self;
+        [self.handoffObject becomeCurrent];
+    }
+    
     [self.contentCollectionView flashScrollIndicators];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
+    self.handoffObject.delegate = nil;
+    [self.handoffObject invalidate];
     
     // We don't care about these notifications anymore but we still care about new user loggedin
     [[NSNotificationCenter defaultCenter] removeObserver:self
@@ -1464,7 +1487,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)showNextSequence
 {
-#warning Get the next sequence from the end card model
+#warning Get the next sequence from the end card model when backend implements this
     VSequence *nextSequence = self.viewModel.sequence;
     VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithSequence:nextSequence depenencyManager:self.dependencyManager];
     VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel
@@ -1533,6 +1556,13 @@ referenceSizeForHeaderInSection:(NSInteger)section
                                    animationControllerForOperation:operation
                                                 fromViewController:fromVC
                                                   toViewController:toVC];
+}
+
+#pragma mark - NSUserActivityDelegate
+
+- (void)userActivityWasContinued:(NSUserActivity *)userActivity
+{
+    [self.videoCell pause];
 }
 
 @end

@@ -14,6 +14,13 @@ extern NSString * const VInputAccessoryViewKeyboardFrameDidChangeNotification;
 
 const CGFloat VInputAccessoryViewDesiredMinimumHeight;
 
+/**
+ *  !!!ATTENTION!!!
+ *  !!!ATTENTION!!!
+ *  Need to provide one of these on your UIViewController that controls the superview of the keyboardInputAccessoryView.
+ *  !!!ATTENTION!!!
+ *  !!!ATTENTION!!!
+ */
 @interface VInputAccessoryView : UIView
 
 @end

@@ -42,7 +42,7 @@
     NSString *emailAddress = @"patrick@getvictorious.com";
     NSError *error = nil;
     
-    XCTAssert( [self.emailValidator validateEmailAddress:emailAddress error:&error] );
+    XCTAssert( [self.emailValidator validateString:emailAddress andError:&error] );
     XCTAssertNil( error );
 }
 
@@ -51,65 +51,55 @@
     NSError *error = nil;
     
     error = nil;
-    XCTAssertFalse( [self.emailValidator validateEmailAddress:@"" error:&error] );
+    XCTAssertFalse( [self.emailValidator validateString:@"" andError:&error] );
     XCTAssertNotNil( error );
     XCTAssertEqual( error.code, VSignupErrorCodeInvalidEmailAddress );
     
     error = nil;
-    XCTAssertFalse( [self.emailValidator validateEmailAddress:nil error:&error] );
+    XCTAssertFalse( [self.emailValidator validateString:nil andError:&error] );
     XCTAssertNotNil( error );
     XCTAssertEqual( error.code, VSignupErrorCodeInvalidEmailAddress );
     
     error = nil;
-    XCTAssertFalse( [self.emailValidator validateEmailAddress:@"adsp9u8had3" error:&error] );
+    XCTAssertFalse( [self.emailValidator validateString:@"adsp9u8had3" andError:&error] );
     XCTAssertNotNil( error );
     XCTAssertEqual( error.code, VSignupErrorCodeInvalidEmailAddress );
     
     error = nil;
-    XCTAssertFalse( [self.emailValidator validateEmailAddress:@"dsadsa@dsadsa" error:&error] );
+    XCTAssertFalse( [self.emailValidator validateString:@"dsadsa@dsadsa" andError:&error] );
     XCTAssertNotNil( error );
     XCTAssertEqual( error.code, VSignupErrorCodeInvalidEmailAddress );
     
     error = nil;
-    XCTAssertFalse( [self.emailValidator validateEmailAddress:@"dsadsa2.com" error:&error] );
+    XCTAssertFalse( [self.emailValidator validateString:@"dsadsa2.com" andError:&error] );
     XCTAssertNotNil( error );
     XCTAssertEqual( error.code, VSignupErrorCodeInvalidEmailAddress );
     
     error = nil;
-    XCTAssertFalse( [self.emailValidator validateEmailAddress:@"@dsadas.com" error:&error] );
+    XCTAssertFalse( [self.emailValidator validateString:@"@dsadas.com" andError:&error] );
     XCTAssertNotNil( error );
     XCTAssertEqual( error.code, VSignupErrorCodeInvalidEmailAddress );
     
     error = nil;
-    XCTAssertFalse( [self.emailValidator validateEmailAddress:@"@.com" error:&error] );
+    XCTAssertFalse( [self.emailValidator validateString:@"@.com" andError:&error] );
     XCTAssertNotNil( error );
     XCTAssertEqual( error.code, VSignupErrorCodeInvalidEmailAddress );
     
     error = nil;
-    XCTAssertFalse( [self.emailValidator validateEmailAddress:@"dsadsa@dsa." error:&error] );
+    XCTAssertFalse( [self.emailValidator validateString:@"dsadsa@dsa." andError:&error] );
     XCTAssertNotNil( error );
     XCTAssertEqual( error.code, VSignupErrorCodeInvalidEmailAddress );
 }
 
 - (void)testLocalizedErrorStrings
 {
-    NSString *title = nil;
-    NSString *message = nil;
     NSError *error = nil;
-    
-    title = nil;
-    message = nil;
-    error = [NSError errorWithDomain:@"" code:VSignupErrorCodeInvalidEmailAddress userInfo:nil];
-    XCTAssert( [self.emailValidator localizedErrorStringsForError:error title:&title message:&message] );
-    XCTAssert( [title isEqualToString:NSLocalizedString( @"EmailValidation", @"")] );
-    XCTAssertNil( message );
-    
-    title = nil;
-    message = nil;
-    error = [NSError errorWithDomain:@"" code:-1 userInfo:nil];
-    XCTAssert( [self.emailValidator localizedErrorStringsForError:error title:&title message:&message] );
-    XCTAssert( [title isEqualToString:NSLocalizedString( @"EmailValidation", @"")] );
-    XCTAssertNil( message );
+
+    [self.emailValidator validateString:@"" andError:&error];
+    XCTAssert( [error.localizedDescription isEqualToString:NSLocalizedString( @"EmailValidation", @"")] );
+
+    [self.emailValidator validateString:@".com" andError:&error];
+    XCTAssert( [error.localizedDescription isEqualToString:NSLocalizedString( @"EmailValidation", @"")] );
 }
 
 @end

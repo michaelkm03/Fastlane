@@ -13,7 +13,6 @@
 #import "VSettingManager.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Private.h"
-#import "UIImageView+AFNetworking.h"
 #import "VFileCache.h"
 #import "VFileCache+VVoteType.h"
 #import "VVoteType+Fetcher.h"
