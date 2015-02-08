@@ -50,36 +50,8 @@
     self.videoPlayerViewController.shouldContinuePlayingAfterDismissal = YES;
     self.videoPlayerViewController.shouldChangeVideoGravityOnDoubleTap = YES;
     [self.contentView addSubview:self.videoPlayerViewController.view];
-    self.videoPlayerViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.videoPlayerViewController.view.hidden = YES;
-    
-    //[self addConstraintsToVideoPlayerSubview:self.videoPlayerViewController.view];
-    //self.shrinkingContentView = self.videoPlayerViewController.view;
-}
-
-- (void)addConstraintsToVideoPlayerSubview:(UIView *)subview
-{
-    // This will match the width to the superview, keep the aspect ratio square, and center vertically.
-    subview.translatesAutoresizingMaskIntoConstraints = NO;
-    NSDictionary *views = @{ @"subview" : subview };
-    [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[subview]|"
-                                                                             options:kNilOptions
-                                                                             metrics:nil
-                                                                               views:views]];
-    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:subview
-                                                                 attribute:NSLayoutAttributeCenterY
-                                                                 relatedBy:NSLayoutRelationEqual
-                                                                    toItem:self.contentView
-                                                                 attribute:NSLayoutAttributeCenterY
-                                                                multiplier:1.0f
-                                                                  constant:0.0f]];
-    [subview addConstraint:[NSLayoutConstraint constraintWithItem:subview
-                                                        attribute:NSLayoutAttributeHeight
-                                                        relatedBy:NSLayoutRelationEqual
-                                                           toItem:subview
-                                                        attribute:NSLayoutAttributeWidth
-                                                       multiplier:1.0f
-                                                         constant:0.0f]];
+    self.shrinkingContentView = self.videoPlayerViewController.view;
 }
 
 - (void)dealloc

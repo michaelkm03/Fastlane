@@ -21,4 +21,11 @@
     return CGSizeMake(CGRectGetWidth(bounds), CGRectGetWidth(bounds));
 }
 
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    
+    self.shrinkingContentView = self.contentImageView;
+}
+
 @end

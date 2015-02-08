@@ -98,23 +98,6 @@
     }
 }
 
-- (void)update:(CADisplayLink *)displayLink
-{
-    const CGAffineTransform currentTransform = self.shrinkingContentView.transform;
-    self.shrinkingContentView.transform = CGAffineTransformIdentity;
-    const CGRect videoFrame = self.shrinkingContentView.frame;
-    self.shrinkingContentView.transform = currentTransform;
-    const CGRect currentFrame = [[self.contentView.layer presentationLayer] frame];
-    
-    const CGFloat translateY = 0; //(CGRectGetHeight(videoFrame) - CGRectGetHeight(currentFrame)) * 0.5f;
-    const CGFloat scale = MIN( CGRectGetHeight(currentFrame) / CGRectGetHeight(videoFrame), 1.0f );
-    
-    CGAffineTransform transform = CGAffineTransformIdentity;
-    transform = CGAffineTransformTranslate( transform, 0.0f, -translateY );
-    transform = CGAffineTransformScale( transform, scale, scale );
-    self.shrinkingContentView.transform = transform;
-}
-
 - (void)prepareForReuse
 {
     [super prepareForReuse];
@@ -126,11 +109,57 @@
     }
 }
 
+#pragma mark - Shrinking Layout
+
+- (void)update:(CADisplayLink *)displayLink
+{
+    UIInterfaceOrientation currentOrientation = [UIApplication sharedApplication].statusBarOrientation;
+    if ( UIInterfaceOrientationIsPortrait( currentOrientation ) )
+    {
+        [self updateContentToShrinkingLayout];
+    }
+}
+
+- (void)updateContentToShrinkingLayout
+{
+    const CGAffineTransform currentTransform = self.shrinkingContentView.transform;
+    self.shrinkingContentView.transform = CGAffineTransformIdentity;
+    const CGRect videoFrame = self.shrinkingContentView.frame;
+    self.shrinkingContentView.transform = currentTransform;
+    const CGRect currentFrame = [[self.contentView.layer presentationLayer] frame];
+    
+    const CGFloat translateY = (CGRectGetHeight(videoFrame) - CGRectGetHeight(currentFrame)) * 0.5f;
+    const CGFloat scale = MIN( CGRectGetHeight(currentFrame) / CGRectGetHeight(videoFrame), 1.0f );
+    
+    CGAffineTransform transform = CGAffineTransformIdentity;
+    transform = CGAffineTransformTranslate( transform, 0.0f, -translateY );
+    transform = CGAffineTransformScale( transform, scale, scale );
+    self.shrinkingContentView.transform = transform;
+}
+
 #pragma mark - Rotation
 
 - (void)handleRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
 {
     [self.endCardViewController handleRotationToInterfaceOrientation:toInterfaceOrientation];
+    
+    self.shrinkingContentView.frame = self.bounds;
+    
+    // If we're in landscape, we need to add autolayout constraints to make sure the view set as
+    // the `shrinkingContentView` will size to fit the full screen.  Otherwise we remove all constraints
+    // so that transformations can be applied properly in `updateContentToShrinkingLayout` method.
+    if ( UIInterfaceOrientationIsLandscape(toInterfaceOrientation) )
+    {
+        self.shrinkingContentView.transform = CGAffineTransformIdentity;
+        self.shrinkingContentView.frame = self.shrinkingContentView.superview.bounds;
+        self.shrinkingContentView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    }
+    else
+    {
+        self.shrinkingContentView.autoresizingMask = 0;
+    }
+    
+    [self.shrinkingContentView layoutIfNeeded];
 }
 
 #pragma mark - UIView
