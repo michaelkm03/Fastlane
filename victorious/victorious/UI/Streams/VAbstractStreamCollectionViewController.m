@@ -66,6 +66,10 @@ const CGFloat kVLoadNextPagePoint = .75f;
     self.automaticallyAdjustsScrollViewInsets = NO;
     
     self.collectionView.alwaysBounceVertical = YES;
+    
+    [self.collectionView registerNib:[VFooterActivityIndicatorView nibForSupplementaryView]
+          forSupplementaryViewOfKind:UICollectionElementKindSectionFooter
+                 withReuseIdentifier:[VFooterActivityIndicatorView reuseIdentifier]];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -170,6 +174,8 @@ const CGFloat kVLoadNextPagePoint = .75f;
     self.refreshControl.hidden = NO;
 }
 
+#pragma mark - Bottom activity indicator footer
+
 - (void)animateNewlyPopulatedCell:(UICollectionViewCell *)cell
                  inCollectionView:(UICollectionView *)collectionView
                       atIndexPath:(NSIndexPath *)indexPath
@@ -193,6 +199,41 @@ const CGFloat kVLoadNextPagePoint = .75f;
                          completion:nil];
         
         self.previousNumberOfRowsInStreamSection = currentCount;
+    }
+}
+
+- (BOOL)canDisplayActivityViewFooterOnCollectionView:(UICollectionView *)collectionView inSection:(NSInteger)section
+{
+    const BOOL isLastSection = section == MAX( [self.collectionView numberOfSections] - 1, 0);
+    const BOOL hasOneOrMoreItems = [collectionView numberOfItemsInSection:section] > 1;
+    return isLastSection && hasOneOrMoreItems;
+}
+
+#pragma mark - UICollectionViewDelegate
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section
+{
+    if ( [self canDisplayActivityViewFooterOnCollectionView:collectionView inSection:section] )
+    {
+        return [VFooterActivityIndicatorView desiredSizeWithCollectionViewBounds:collectionView.bounds];
+    }
+    
+    return CGSizeZero;
+}
+
+- (void)collectionView:(UICollectionView *)collectionView willDisplaySupplementaryView:(UICollectionReusableView *)view forElementKind:(NSString *)elementKind atIndexPath:(NSIndexPath *)indexPath
+{
+    if ( [view isKindOfClass:[VFooterActivityIndicatorView class]] )
+    {
+        [((VFooterActivityIndicatorView *)view) setActivityIndicatorVisible:YES animated:YES];
+    }
+}
+
+- (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ( [self canDisplayActivityViewFooterOnCollectionView:collectionView inSection:indexPath.section] )
+    {
+        [self animateNewlyPopulatedCell:cell inCollectionView:collectionView atIndexPath:indexPath];
     }
 }
 

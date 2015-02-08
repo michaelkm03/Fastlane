@@ -214,9 +214,6 @@ static CGFloat const kTemplateCLineSpacing = 8;
           forCellWithReuseIdentifier:[VStreamCollectionCellPoll suggestedReuseIdentifier]];
     [self.collectionView registerNib:[VStreamCollectionCellWebContent nibForCell]
           forCellWithReuseIdentifier:[VStreamCollectionCellWebContent suggestedReuseIdentifier]];
-    [self.collectionView registerNib:[VFooterActivityIndicatorView nibForSupplementaryView]
-          forSupplementaryViewOfKind:UICollectionElementKindSectionFooter
-                 withReuseIdentifier:[VFooterActivityIndicatorView reuseIdentifier]];
     
     self.collectionView.backgroundColor = [[VThemeManager sharedThemeManager] preferredBackgroundColor];
     
@@ -507,30 +504,11 @@ static CGFloat const kTemplateCLineSpacing = 8;
     }
 }
 
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section
-{
-    if ( [self.streamDataSource canDisplayActivityViewFooterOnCollectionView:collectionView inSection:section] )
-    {
-        return [VFooterActivityIndicatorView desiredSizeWithCollectionViewBounds:collectionView.bounds];
-    }
-    
-    return CGSizeZero;
-}
+#pragma mark - Activity indivator footer
 
-- (void)collectionView:(UICollectionView *)collectionView willDisplaySupplementaryView:(UICollectionReusableView *)view forElementKind:(NSString *)elementKind atIndexPath:(NSIndexPath *)indexPath
+- (BOOL)canDisplayActivityViewFooterOnCollectionView:(UICollectionView *)collectionView inSection:(NSInteger)section
 {
-    if ( [view isKindOfClass:[VFooterActivityIndicatorView class]] )
-    {
-        [((VFooterActivityIndicatorView *)view) setActivityIndicatorVisible:YES animated:YES];
-    }
-}
-
-- (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    if ( [self.streamDataSource canDisplayActivityViewFooterOnCollectionView:collectionView inSection:indexPath.section] )
-    {
-        [self animateNewlyPopulatedCell:cell inCollectionView:collectionView atIndexPath:indexPath];
-    }
+    return [super canDisplayActivityViewFooterOnCollectionView:collectionView inSection:section];
 }
 
 #pragma mark - VStreamCollectionDataDelegate
