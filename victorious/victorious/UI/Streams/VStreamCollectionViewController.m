@@ -362,8 +362,9 @@ static CGFloat const kTemplateCLineSpacing = 8;
     };
     
     [[VObjectManager sharedManager] getHashtagsSubscribedToWithPageType:VPageTypeFirst
-                                                          successBlock:successBlock
-                                                             failBlock:failureBlock];
+                                                           perPageLimit:1000
+                                                           successBlock:successBlock
+                                                              failBlock:failureBlock];
 }
 
 - (void)updateHashtagNavButton:(NSArray *)hashtags
