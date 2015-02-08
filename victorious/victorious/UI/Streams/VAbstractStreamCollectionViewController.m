@@ -48,6 +48,7 @@ const CGFloat kVLoadNextPagePoint = .75f;
 @property (nonatomic, strong) NSLayoutConstraint *headerYConstraint;
 
 @property (nonatomic, assign) NSUInteger previousNumberOfRowsInStreamSection;
+@property (nonatomic, assign) BOOL shouldAnimateActivityViewFooter;
 
 @end
 
@@ -202,18 +203,30 @@ const CGFloat kVLoadNextPagePoint = .75f;
     }
 }
 
-- (BOOL)canDisplayActivityViewFooterOnCollectionView:(UICollectionView *)collectionView inSection:(NSInteger)section
+- (BOOL)shouldDisplayActivityViewFooterForCollectionView:(UICollectionView *)collectionView inSection:(NSInteger)section
 {
     const BOOL isLastSection = section == MAX( [self.collectionView numberOfSections] - 1, 0);
     const BOOL hasOneOrMoreItems = [collectionView numberOfItemsInSection:section] > 1;
     return isLastSection && hasOneOrMoreItems;
 }
 
+- (BOOL)shouldAnimateActivityViewFooter
+{
+    // Once this property is read as YES, it automatically returns to NO
+    if ( _shouldAnimateActivityViewFooter )
+    {
+        _shouldAnimateActivityViewFooter = NO;
+        return YES;
+    }
+    
+    return NO;
+}
+
 #pragma mark - UICollectionViewDelegate
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section
 {
-    if ( [self canDisplayActivityViewFooterOnCollectionView:collectionView inSection:section] )
+    if ( [self shouldDisplayActivityViewFooterForCollectionView:collectionView inSection:section] )
     {
         return [VFooterActivityIndicatorView desiredSizeWithCollectionViewBounds:collectionView.bounds];
     }
@@ -223,7 +236,7 @@ const CGFloat kVLoadNextPagePoint = .75f;
 
 - (void)collectionView:(UICollectionView *)collectionView willDisplaySupplementaryView:(UICollectionReusableView *)view forElementKind:(NSString *)elementKind atIndexPath:(NSIndexPath *)indexPath
 {
-    if ( [view isKindOfClass:[VFooterActivityIndicatorView class]] )
+    if ( [self shouldAnimateActivityViewFooter] && [view isKindOfClass:[VFooterActivityIndicatorView class]] )
     {
         [((VFooterActivityIndicatorView *)view) setActivityIndicatorVisible:YES animated:YES];
     }
@@ -231,7 +244,7 @@ const CGFloat kVLoadNextPagePoint = .75f;
 
 - (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ( [self canDisplayActivityViewFooterOnCollectionView:collectionView inSection:indexPath.section] )
+    if ( [self shouldDisplayActivityViewFooterForCollectionView:collectionView inSection:indexPath.section] )
     {
         [self animateNewlyPopulatedCell:cell inCollectionView:collectionView atIndexPath:indexPath];
     }
@@ -246,6 +259,7 @@ const CGFloat kVLoadNextPagePoint = .75f;
         return;
     }
     
+    self.shouldAnimateActivityViewFooter = YES;
     [self.streamDataSource loadNextPageWithSuccess:^(void)
      {
          __weak typeof(self) welf = self;

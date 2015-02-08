@@ -186,8 +186,8 @@ NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamColl
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView
            viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
 {
-    if ( [self.delegate respondsToSelector:@selector(canDisplayActivityViewFooterOnCollectionView:inSection:)] &&
-        [self.delegate canDisplayActivityViewFooterOnCollectionView:collectionView inSection:indexPath.section] )
+    if ( [self.delegate respondsToSelector:@selector(shouldDisplayActivityViewFooterForCollectionView:inSection:)] &&
+        [self.delegate shouldDisplayActivityViewFooterForCollectionView:collectionView inSection:indexPath.section] )
     {
         return [self.collectionView dequeueReusableSupplementaryViewOfKind:kind
                                                        withReuseIdentifier:[VFooterActivityIndicatorView reuseIdentifier]

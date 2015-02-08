@@ -55,7 +55,6 @@
 
 #import "VConstants.h"
 #import "VTracking.h"
-#import "VFooterActivityIndicatorView.h"
 
 static NSString * const kStreamsKey = @"streams";
 static NSString * const kInitialKey = @"initial";
@@ -506,9 +505,9 @@ static CGFloat const kTemplateCLineSpacing = 8;
 
 #pragma mark - Activity indivator footer
 
-- (BOOL)canDisplayActivityViewFooterOnCollectionView:(UICollectionView *)collectionView inSection:(NSInteger)section
+- (BOOL)shouldDisplayActivityViewFooterForCollectionView:(UICollectionView *)collectionView inSection:(NSInteger)section
 {
-    return [super canDisplayActivityViewFooterOnCollectionView:collectionView inSection:section];
+    return [super shouldDisplayActivityViewFooterForCollectionView:collectionView inSection:section];
 }
 
 #pragma mark - VStreamCollectionDataDelegate

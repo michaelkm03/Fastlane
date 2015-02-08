@@ -43,25 +43,33 @@ static const CGFloat kSupplementaryViewHeight = 60.0f;
 
 - (void)setActivityIndicatorVisible:(BOOL)visible animated:(BOOL)animated
 {
-    CGFloat scale = visible ? 0.0f : kActivityIndicatorScale;
-    self.activityIndicator.transform = CGAffineTransformMakeRotation( 0 );
-    self.activityIndicator.transform = CGAffineTransformMakeScale( scale, scale );
+    void (^animations)() = ^
+    {
+        // Set the final target state of the animation
+        CGFloat scale = visible ? kActivityIndicatorScale : 0.0f;
+        self.activityIndicator.transform = CGAffineTransformMakeRotation( -M_PI * 5.0f );
+        self.activityIndicator.transform = CGAffineTransformMakeScale( scale, scale );
+    };
     
-    [UIView animateWithDuration:0.5f
-                          delay:0.25f
-         usingSpringWithDamping:0.9f
-          initialSpringVelocity:0.8f
-                        options:kNilOptions
-                     animations:^
-     {
-         CGFloat scale = visible ? kActivityIndicatorScale : 0.0f;
-         self.activityIndicator.transform = CGAffineTransformMakeRotation( -M_PI * 5.0f );
-         self.activityIndicator.transform = CGAffineTransformMakeScale( scale, scale );
-     }
-                     completion:^(BOOL finished)
-     {
-         
-     }];
+    if ( animated )
+    {
+        // Set initial state of animation
+        CGFloat scale = visible ? 0.0f : kActivityIndicatorScale;
+        self.activityIndicator.transform = CGAffineTransformMakeRotation( 0 );
+        self.activityIndicator.transform = CGAffineTransformMakeScale( scale, scale );
+        
+        [UIView animateWithDuration:0.5f
+                              delay:0.25f
+             usingSpringWithDamping:0.9f
+              initialSpringVelocity:0.8f
+                            options:kNilOptions
+                         animations:animations
+                         completion:nil];
+    }
+    else
+    {
+        animations();
+    }
 }
 
 @end

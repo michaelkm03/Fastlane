@@ -36,7 +36,7 @@ extern NSString *const VStreamCollectionDataSourceDidChangeNotification;
  *
  *  @return YES to create and supply the footer the collection view, or NO if footer is not required.
  */
-- (BOOL)canDisplayActivityViewFooterOnCollectionView:(UICollectionView *)collectionView inSection:(NSInteger)section;
+- (BOOL)shouldDisplayActivityViewFooterForCollectionView:(UICollectionView *)collectionView inSection:(NSInteger)section;
 
 @end
 
