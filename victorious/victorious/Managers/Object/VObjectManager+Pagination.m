@@ -397,7 +397,6 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
         }
         
         NSMutableOrderedSet *streamItems = [stream.streamItems mutableCopy];
-        
         for (VStreamItem *streamItem in resultObjects)
         {
             VStreamItem *streamItemInContext = (VStreamItem *)[stream.managedObjectContext objectWithID:streamItem.objectID];
