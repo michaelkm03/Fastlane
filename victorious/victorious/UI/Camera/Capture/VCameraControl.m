@@ -86,36 +86,23 @@ static const NSTimeInterval kShrinkingCameraShutterAnimationDuration = 1.5;
     self.cameraControlState = VCameraControlStateDefault;
 }
 
-- (void)showCameraFlashAnimationWithCompletion:(void (^)(void))completion
+- (void)flashGrowAnimations
 {
-    [UIView animateWithDuration:0.5f
+    [UIView animateWithDuration:0.75f
                           delay:0.0f
-         usingSpringWithDamping:1.0f
-          initialSpringVelocity:-1.0f
-                        options:UIViewAnimationOptionBeginFromCurrentState
-                     animations:^{
-                         self.transform = CGAffineTransformMakeScale(1.5, 1.5f);
-                         self.backgroundColor = self.tintColor;
-                     } completion:^(BOOL finished) {
-                         [UIView animateWithDuration:0.1f
-                                               delay:0.0f
-                              usingSpringWithDamping:1.0f
-                               initialSpringVelocity:0.0f
-                                             options:kNilOptions
-                                          animations:^
-                          {
-                              self.transform = CGAffineTransformMakeScale(0.01f, 0.01f);
+                        options:UIViewAnimationOptionCurveEaseIn
+                     animations:^
+     {
+         self.transform = CGAffineTransformMakeScale(1.5, 1.5f);
+         self.backgroundColor = self.tintColor;
+     }
+                     completion:nil];
 
-                          }
-                                          completion:^(BOOL finished)
-                          {
-                              self.backgroundColor = [UIColor clearColor];
-                              if (completion)
-                              {
-                                  completion();
-                              }
-                          }];
-                     }];
+}
+
+- (void)flashShutterAnimations
+{
+    self.transform = CGAffineTransformMakeScale(0.01f, 0.01f);
 }
 
 #pragma mark - Setters

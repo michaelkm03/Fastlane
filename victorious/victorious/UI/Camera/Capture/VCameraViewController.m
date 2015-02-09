@@ -28,6 +28,9 @@
 static const NSTimeInterval kAnimationDuration = 0.4;
 static const NSTimeInterval kErrorMessageDisplayDuration = 3.0;
 static const NSTimeInterval kErrorMessageDisplayDurationLong = 10.0; ///< For extra serious errors
+static const NSTimeInterval kCameraShutterShrinkDuration = 0.2;
+static const NSTimeInterval kCameraShutterGrowDuration = 0.3;
+static const CGFloat kGradientMagnitude = 20.0f;
 static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
 
 typedef NS_ENUM(NSInteger, VCameraViewControllerState)
@@ -199,16 +202,6 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
                  forControlEvents:VCameraControlEventEndRecordingVideo];
     
     self.previewView.maskView = self.radialGradientView;
-    VRadialGradientLayer *radialGradientLayer = self.radialGradientView.radialGradientLayer;
-    
-    radialGradientLayer.colors = @[(id)[UIColor blackColor].CGColor,
-                                   (id)[UIColor clearColor].CGColor];
-    radialGradientLayer.innerCenter = CGPointMake(CGRectGetMidX(radialGradientLayer.bounds),
-                                                  CGRectGetMidY(radialGradientLayer.bounds));
-    radialGradientLayer.innerRadius = 499.0f;
-    radialGradientLayer.outerCenter = CGPointMake(CGRectGetMidX(radialGradientLayer.bounds),
-                                                  CGRectGetMidY(radialGradientLayer.bounds));
-    radialGradientLayer.outerRadius = 499.0f + 20.0f;
 }
 
 - (void)viewDidLayoutSubviews
@@ -222,6 +215,17 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
     [super viewWillAppear:animated];
     
     [self.cameraControl restoreCameraControlToDefault];
+    
+    VRadialGradientLayer *radialGradientLayer = self.radialGradientView.radialGradientLayer;
+    
+    radialGradientLayer.colors = @[(id)[UIColor blackColor].CGColor,
+                                   (id)[UIColor clearColor].CGColor];
+    radialGradientLayer.innerCenter = CGPointMake(CGRectGetMidX(radialGradientLayer.bounds),
+                                                  CGRectGetMidY(radialGradientLayer.bounds));
+    radialGradientLayer.innerRadius = CGRectGetHeight(self.view.bounds);
+    radialGradientLayer.outerCenter = CGPointMake(CGRectGetMidX(radialGradientLayer.bounds),
+                                                  CGRectGetMidY(radialGradientLayer.bounds));
+    radialGradientLayer.outerRadius = CGRectGetHeight(self.view.bounds) + kGradientMagnitude;
     
     self.navigationController.navigationBarHidden = YES;
     
@@ -682,42 +686,47 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
                                    [CATransaction setCompletionBlock:^
                                     {
                                         [CATransaction begin];
+                                        [CATransaction setCompletionBlock:^
                                         {
-                                            [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionDefault]];
-                                            [CATransaction setAnimationDuration:0.2f];
+                                            dispatch_async(welf.captureAnimationQueue, ^
+                                                           {
+                                                               welf.animationCompleted = YES;
+                                                               dispatch_async(dispatch_get_main_queue(), ^
+                                                                              {
+                                                                                  if ((welf.capturedMediaURL != nil) && welf.animationCompleted)
+                                                                                  {
+                                                                                      welf.state = VCameraViewControllerStateCapturedMedia;
+                                                                                  }
+                                                                              });
+                                                           });
+                                        }];
+                                        {
+                                            [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut]];
+                                            [CATransaction setAnimationDuration:kCameraShutterGrowDuration];
                                             
-                                            radialGradientLayer.outerRadius = 401.0f;
-                                            radialGradientLayer.innerRadius = 400.0f - 20.0f;
+                                            radialGradientLayer.outerRadius = CGRectGetHeight(self.view.bounds);
+                                            radialGradientLayer.innerRadius = CGRectGetHeight(self.view.bounds) - kGradientMagnitude;
                                         }
                                         [CATransaction commit];
                                     }];
-                                   [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionDefault]];
-                                   [CATransaction setAnimationDuration:0.5f];
+                                   [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn]];
+                                   [CATransaction setAnimationDuration:kCameraShutterShrinkDuration];
                                    radialGradientLayer.innerRadius = 0.0;
-                                   radialGradientLayer.outerRadius = 0.0f;
+                                   radialGradientLayer.outerRadius = 0.1f;
                                }
                                [CATransaction commit];
+                               [UIView animateWithDuration:kCameraShutterShrinkDuration
+                                                animations:^
+                               {
+                                   welf.cameraControl.transform = CGAffineTransformMakeScale(0.01f, 0.01f);
+                               }];
                                
                                [welf replacePreviewViewWithSnapshot];
-
-                               [welf.cameraControl showCameraFlashAnimationWithCompletion:^
-                                {
-                                    dispatch_async(welf.captureAnimationQueue, ^
-                                                   {
-                                                       welf.animationCompleted = YES;
-                                                       dispatch_async(dispatch_get_main_queue(), ^
-                                                                      {
-                                                                          if ((welf.capturedMediaURL != nil) && welf.animationCompleted)
-                                                                          {
-                                                                              welf.state = VCameraViewControllerStateCapturedMedia;
-                                                                          }
-                                                                      });
-                                                   });
-                                }];
                            });
         }
     }];
     
+    [self.cameraControl flashGrowAnimations];
     self.state = VCameraViewControllerStateWaitingOnHardwareImageCapture;
     [self.captureController captureStillWithCompletion:^(UIImage *image, NSError *error)
     {
