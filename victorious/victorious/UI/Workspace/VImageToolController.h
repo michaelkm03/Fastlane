@@ -13,7 +13,7 @@ typedef NS_ENUM(NSInteger, VImageToolControllerInitialImageEditState)
 {
     VImageToolControllerInitialImageEditStateCrop,
     VImageToolControllerInitialImageEditStateFilter,
-    VImageToolControllerInitialImageEditStateText, // Default
+    VImageToolControllerInitialImageEditStateText,
 };
 
 @interface VImageToolController : VToolController
