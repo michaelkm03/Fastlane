@@ -80,9 +80,6 @@
     
     [self setupTitleTextView];
     
-    [self.transitionPlaceholder addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(emailClicked:)]];
-    self.transitionPlaceholder.userInteractionEnabled = YES;
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidAbortCreateProfile:) name:VProfileCreateViewControllerWasAbortedNotification object:nil];
 }
 
@@ -318,7 +315,6 @@
     self.twitterButton.userInteractionEnabled = NO;
     self.facebookButton.userInteractionEnabled = NO;
     self.signupWithEmailButton.userInteractionEnabled = NO;
-    self.transitionPlaceholder.userInteractionEnabled = NO;
 }
 
 - (void)enableButtons
@@ -326,7 +322,6 @@
     self.twitterButton.userInteractionEnabled = YES;
     self.facebookButton.userInteractionEnabled = YES;
     self.signupWithEmailButton.userInteractionEnabled = YES;
-    self.transitionPlaceholder.userInteractionEnabled = YES;
 }
 
 - (IBAction)signup:(id)sender

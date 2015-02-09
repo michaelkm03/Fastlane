@@ -12,6 +12,15 @@ int main(int argc, char *argv[])
 {
     @autoreleasepool
     {
-        return UIApplicationMain(argc, argv, nil, NSStringFromClass([VAppDelegate class]));
+        @try {
+            
+            return UIApplicationMain(argc, argv, nil, NSStringFromClass([VAppDelegate class]));
+        }
+        @catch (NSException *exception) {
+            NSLog( @"EXC = %@", exception );
+        }
+        @finally {
+            
+        }
     }
 }

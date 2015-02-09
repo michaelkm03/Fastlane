@@ -48,11 +48,12 @@
     self.confirmPasswordTextField.delegate = self;
 
     self.cancelButton.style = VButtonStyleSecondary;
-    self.cancelButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
+    self.cancelButton.primaryColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    self.cancelButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
     
     self.signupButton.style = VButtonStylePrimary;
-    self.signupButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-    self.signupButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
+    self.signupButton.primaryColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    self.signupButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
     
     self.emailTextField.validator = [[VEmailValidator alloc] init];
     [self.emailTextField applyTextFieldStyle:VTextFieldStyleLoginRegistration];

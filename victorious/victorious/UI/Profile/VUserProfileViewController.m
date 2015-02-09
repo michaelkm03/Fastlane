@@ -344,12 +344,11 @@ static NSString * const kUserKey = @"user";
     else
     {
         VUserProfileHeaderView *header = self.profileHeaderView;
-        [header.followButtonActivityIndicator startAnimating];
+        [self.profileHeaderView.editProfileButton showActivityIndicator];
         
         VFailBlock fail = ^(NSOperation *operation, NSError *error)
         {
             header.editProfileButton.enabled = YES;
-            [header.followButtonActivityIndicator stopAnimating];
             
             UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:nil
                                                                    message:NSLocalizedString(@"UnfollowError", @"")
@@ -372,9 +371,6 @@ static NSString * const kUserKey = @"user";
                 header.editProfileButton.selected = YES;
                 header.numberOfFollowers++;
             }
-            
-            
-            [header.followButtonActivityIndicator stopAnimating];
         };
         
         if (header.editProfileButton.selected)

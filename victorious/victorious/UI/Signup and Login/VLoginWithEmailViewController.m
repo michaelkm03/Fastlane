@@ -22,13 +22,15 @@
 #import "VPasswordValidator.h"
 #import "VEmailValidator.h"
 #import "VAutomation.h"
+#import "VButton.h"
 #import "VInlineValidationTextField.h"
 
 @interface VLoginWithEmailViewController () <UITextFieldDelegate, UINavigationControllerDelegate, UIAlertViewDelegate>
 @property (nonatomic, weak) IBOutlet    VInlineValidationTextField     *usernameTextField;
 @property (nonatomic, weak) IBOutlet    VInlineValidationTextField     *passwordTextField;
-@property (nonatomic, weak) IBOutlet    UIButton       *loginButton;
-@property (nonatomic, weak) IBOutlet    UIButton       *cancelButton;
+@property (nonatomic, weak) IBOutlet    VButton        *loginButton;
+@property (nonatomic, weak) IBOutlet    VButton        *cancelButton;
+
 @property (nonatomic, weak) IBOutlet    UIButton       *forgotPasswordButton;
 @property (nonatomic, strong)           VUser          *profile;
 @property (nonatomic, strong)           NSString       *deviceToken;
@@ -63,16 +65,13 @@
     self.passwordTextField.activePlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Minimum 8 Characters", @"Password character requirement.")
                                                                                attributes:@{NSForegroundColorAttributeName : activePlaceholderColor}];
     
-    self.cancelButton.layer.borderColor = [UIColor colorWithWhite:0.14 alpha:1.0].CGColor;
-    self.cancelButton.layer.borderWidth = 2.0;
-    self.cancelButton.layer.cornerRadius = 3.0;
-    self.cancelButton.backgroundColor = [UIColor clearColor];
     self.cancelButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
-    [self.cancelButton setTitleColor:[UIColor colorWithWhite:0.14 alpha:1.0] forState:UIControlStateNormal];
+    self.cancelButton.primaryColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    self.cancelButton.style = VButtonStyleSecondary;
 
-    self.loginButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     self.loginButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
-    [self.loginButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    self.loginButton.primaryColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    self.loginButton.style = VButtonStylePrimary;
     
     self.forgotPasswordButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
     [self.forgotPasswordButton setTitleColor:[UIColor colorWithWhite:0.14 alpha:1.0] forState:UIControlStateNormal];

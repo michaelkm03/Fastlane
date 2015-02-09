@@ -18,6 +18,4 @@ typedef NS_ENUM(NSUInteger, VLoginType)
 
 + (VLoginViewController *)loginViewController;
 
-@property (nonatomic, weak) IBOutlet    UIView         *transitionPlaceholder;
-
 @end
