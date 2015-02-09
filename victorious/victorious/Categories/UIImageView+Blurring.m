@@ -25,7 +25,7 @@ static const CGFloat kVSaturationDeltaFactor = 1.8f;
     return objc_getAssociatedObject(self, &kAssociatedObjectKey);
 }
 
-- (void)setBlurredImageWithClearImage:(UIImage *)image placeholderImage:(UIImage *)placeholderImage tintColor:(UIColor *)tintColor
+- (void)setBlurredImageWithClearImage:(UIImage *)image placeholderImage:(UIImage *)placeholderImage tintColor:(UIColor *)tintColor animate:(BOOL)shouldAnimate
 {
     self.image = placeholderImage;
     
@@ -41,8 +41,22 @@ static const CGFloat kVSaturationDeltaFactor = 1.8f;
                        dispatch_async(dispatch_get_main_queue(), ^
                                       {
                                           welf.image = blurredImage;
+                                          if (shouldAnimate)
+                                          {
+                                              welf.alpha = 0.0f;
+                                              [UIView animateWithDuration:0.5f
+                                                               animations:^
+                                               {
+                                                   welf.alpha = 1.0f;
+                                               }];
+                                          }
                                       });
                    });
+}
+
+- (void)setBlurredImageWithClearImage:(UIImage *)image placeholderImage:(UIImage *)placeholderImage tintColor:(UIColor *)tintColor
+{
+    [self setBlurredImageWithClearImage:image placeholderImage:placeholderImage tintColor:tintColor animate:NO];
 }
 
 - (void)setBlurredImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholderImage tintColor:(UIColor *)tintColor
