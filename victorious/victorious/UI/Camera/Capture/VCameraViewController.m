@@ -66,7 +66,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
 @property (nonatomic, strong) VCameraControl *cameraControl;
 @property (nonatomic, strong) AVCaptureVideoPreviewLayer *previewLayer;
 @property (nonatomic, strong) UIView *previewSnapshot;
-@property (weak, nonatomic) IBOutlet VRadialGradientView *radialGradientView;
+@property (nonatomic, strong) IBOutlet VRadialGradientView *radialGradientView;
 
 @property (nonatomic, strong) VCameraCaptureController *captureController;
 
@@ -209,7 +209,6 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
     radialGradientLayer.outerCenter = CGPointMake(CGRectGetMidX(radialGradientLayer.bounds),
                                                   CGRectGetMidY(radialGradientLayer.bounds));
     radialGradientLayer.outerRadius = 499.0f + 20.0f;
-
 }
 
 - (void)viewDidLayoutSubviews
@@ -373,32 +372,6 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
                          animations:hideToolsBlock
                          completion:nil];
     }
-    
-    VRadialGradientLayer *radialGradientLayer = self.radialGradientView.radialGradientLayer;
-    
-    [CATransaction begin];
-    
-    [CATransaction setCompletionBlock:^
-     {
-         [CATransaction begin];
-         
-         [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionDefault]];
-         [CATransaction setAnimationDuration:0.2f];
-         
-         radialGradientLayer.outerRadius = 401.0f;
-         radialGradientLayer.innerRadius = 400.0f - 20.0f;
-         
-         [CATransaction commit];
-     }];
-    
-    [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionDefault]];
-    [CATransaction setAnimationDuration:0.3f];
-    
-    radialGradientLayer.innerRadius = 0.0;
-    radialGradientLayer.outerRadius = 0.0f;
-    
-    [CATransaction commit];
-
 }
 
 - (void)setState:(VCameraViewControllerState)state
@@ -703,22 +676,43 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
         {
             dispatch_async(dispatch_get_main_queue(), ^
                            {
-//                               [welf replacePreviewViewWithSnapshot];
+                               VRadialGradientLayer *radialGradientLayer = self.radialGradientView.radialGradientLayer;
+                               [CATransaction begin];
+                               {
+                                   [CATransaction setCompletionBlock:^
+                                    {
+                                        [CATransaction begin];
+                                        {
+                                            [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionDefault]];
+                                            [CATransaction setAnimationDuration:0.2f];
+                                            
+                                            radialGradientLayer.outerRadius = 401.0f;
+                                            radialGradientLayer.innerRadius = 400.0f - 20.0f;
+                                        }
+                                        [CATransaction commit];
+                                    }];
+                                   [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionDefault]];
+                                   [CATransaction setAnimationDuration:0.5f];
+                                   radialGradientLayer.innerRadius = 0.0;
+                                   radialGradientLayer.outerRadius = 0.0f;
+                               }
+                               [CATransaction commit];
+                               
+                               [welf replacePreviewViewWithSnapshot];
 
                                [welf.cameraControl showCameraFlashAnimationWithCompletion:^
                                 {
-                                           [welf setToolsHidden:NO animated:NO];
-//                                    dispatch_async(welf.captureAnimationQueue, ^
-//                                                   {
-//                                                       welf.animationCompleted = YES;
-//                                                       dispatch_async(dispatch_get_main_queue(), ^
-//                                                                      {
-//                                                                          if ((welf.capturedMediaURL != nil) && welf.animationCompleted)
-//                                                                          {
-//                                                                              welf.state = VCameraViewControllerStateCapturedMedia;
-//                                                                          }
-//                                                                      });
-//                                                   });
+                                    dispatch_async(welf.captureAnimationQueue, ^
+                                                   {
+                                                       welf.animationCompleted = YES;
+                                                       dispatch_async(dispatch_get_main_queue(), ^
+                                                                      {
+                                                                          if ((welf.capturedMediaURL != nil) && welf.animationCompleted)
+                                                                          {
+                                                                              welf.state = VCameraViewControllerStateCapturedMedia;
+                                                                          }
+                                                                      });
+                                                   });
                                 }];
                            });
         }
@@ -1026,6 +1020,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
 {
     UIView *snapshot = [self.previewView snapshotViewAfterScreenUpdates:NO];
     snapshot.frame = self.previewView.frame;
+    snapshot.maskView = self.radialGradientView;
     [self.view addSubview:snapshot];
     [self.view bringSubviewToFront:self.cameraControlContainer];
     

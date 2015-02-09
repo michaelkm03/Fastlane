@@ -11,11 +11,9 @@
 static const CGFloat kMinHeightSize = 80.0f;
 static const CGFloat kWidthScaleFactorImageOnly = 1.2f;
 static const CGFloat kWidthScaleFactorDefault = 1.7f;
-static const CGFloat kCameraShutterGrowScaleFacotr = 13.0f;
 static const NSTimeInterval kMaxElapsedTimeImageTriggerWithVideo = 0.2;
 static const NSTimeInterval kRecordingTriggerDuration = 0.45;
 static const NSTimeInterval kTransitionToRecordingAnimationDuration = 0.2;
-static const NSTimeInterval kCameraShutterGrowAnimationDuration = 0.25;
 static const NSTimeInterval kRecordingShrinkAnimationDuration = 0.2;
 static const NSTimeInterval kNotRecordingTrackingTime = 0.0;
 static const NSTimeInterval kShrinkingCameraShutterAnimationDuration = 1.5;
@@ -196,10 +194,6 @@ static const NSTimeInterval kShrinkingCameraShutterAnimationDuration = 1.5;
             animationDuration = kRecordingTriggerDuration;
             animations = ^
             {
-//                CGFloat scaledWidth = [self growingFactorForCaptureMode:self.captureMode] * CGRectGetWidth(self.frame);
-//                CGFloat deltaWitdh = scaledWidth - CGRectGetWidth(self.frame);
-//                self.frame = CGRectMake(- deltaWitdh/2, - deltaWitdh/2, scaledWidth, scaledWidth);\
-//                self.layer.cornerRadius = CGRectGetHeight(self.frame) / 2;
                 self.transform = CGAffineTransformMakeScale(1.2f, 1.2f);
                 self.progressView.frame = CGRectMake(CGRectGetMinX(self.bounds),
                                                      CGRectGetMinY(self.bounds),
@@ -237,12 +231,8 @@ static const NSTimeInterval kShrinkingCameraShutterAnimationDuration = 1.5;
             initialVelocity = -1.0f;
             animations = ^
             {
-//                self.frame = CGRectMake(0, 0, kMinHeightSize, kMinHeightSize);
                 self.backgroundColor = [UIColor darkGrayColor];
-//                self.layer.cornerRadius = CGRectGetHeight(self.bounds) / 2;
-//                self.transform = CGAffineTransformMakeScale(2.5f, 2.5f);
             };
-            
             break;
         }
     }

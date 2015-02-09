@@ -24,15 +24,14 @@ static const NSTimeInterval kBlurOverPresentTransitionDuration = 0.5f;
 {
     UIViewController *fromViewController = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
     UIViewController *toViewController = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
-
     [[transitionContext containerView] addSubview:fromViewController.view];
+    [[transitionContext containerView] addSubview:toViewController.view];
     
     if ([toViewController isKindOfClass:[VWorkspaceViewController class]])
     {
         VWorkspaceViewController *workvc = (VWorkspaceViewController *)toViewController;
         [workvc bringChromeOutOfView];
     }
-    [[transitionContext containerView] addSubview:toViewController.view];
     
     [UIView animateWithDuration:[self transitionDuration:transitionContext]
                           delay:0.0f
