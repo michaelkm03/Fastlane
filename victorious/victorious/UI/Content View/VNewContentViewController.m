@@ -125,7 +125,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 @property (nonatomic, assign) CMTime realtimeCommentBeganTime;
 
 @property (nonatomic, strong) VTransitionDelegate *transitionDelegate;
-@property (nonatomic, strong) VScrollPaginator *scrollPaginator;
+@property (nonatomic, weak) IBOutlet VScrollPaginator *scrollPaginator;
 
 @property (nonatomic, strong) VCommentHighlighter *commentHighlighter;
 
@@ -347,8 +347,6 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    self.scrollPaginator = [[VScrollPaginator alloc] initWithDelegate:self];
 
     self.commentHighlighter = [[VCommentHighlighter alloc] initWithCollectionView:self.contentCollectionView];
     
