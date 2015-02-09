@@ -23,25 +23,28 @@
 #import "VObjectManager.h"
 #import "VAutomation.h"
 
+#import "VLoginButton.h"
+
+#import "CCHLinkTextView.h"
+#import "CCHLinkTextViewDelegate.h"
+#import "CCHLinkGestureRecognizer.h"
+
 @import Accounts;
 @import Social;
 
-@interface VLoginViewController ()  <UINavigationControllerDelegate, VSelectorViewControllerDelegate>
+@interface VLoginViewController ()  <UINavigationControllerDelegate, VSelectorViewControllerDelegate, CCHLinkTextViewDelegate>
 
-@property (nonatomic, strong)           VUser          *profile;
+@property (nonatomic, strong) VUser *profile;
 
-@property (nonatomic, weak) IBOutlet    UIButton       *facebookButton;
-@property (nonatomic, weak) IBOutlet    UIButton       *twitterButton;
+@property (nonatomic, weak) IBOutlet VLoginButton *facebookButton;
+@property (nonatomic, weak) IBOutlet VLoginButton *twitterButton;
+@property (nonatomic, weak) IBOutlet VLoginButton *signupWithEmailButton;
 
-@property (nonatomic, weak) IBOutlet    UIImageView    *backgroundImageView;
-@property (nonatomic, weak) IBOutlet    UILabel        *fauxEmailLoginButton;
-@property (nonatomic, weak) IBOutlet    UILabel        *fauxPasswordLoginButton;
+@property (weak, nonatomic) IBOutlet CCHLinkTextView *loginTextView;
 
-@property (nonatomic, weak) IBOutlet    UILabel        *facebookButtonLabel;
-@property (nonatomic, weak) IBOutlet    UILabel        *twitterButtonLabel;
-@property (nonatomic, weak) IBOutlet    UIButton       *signupWithEmailButton;
+@property (nonatomic, weak) IBOutlet UIImageView *backgroundImageView;
 
-@property (nonatomic, assign)           VLoginType      loginType;
+@property (nonatomic, assign) VLoginType loginType;
 
 @end
 
@@ -62,21 +65,20 @@
     
     self.backgroundImageView.image = backgroundImage;
     [self addGradientToImageView:self.backgroundImageView];
-
-    self.fauxEmailLoginButton.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
-    self.fauxEmailLoginButton.textColor = [UIColor whiteColor];
-    self.fauxPasswordLoginButton.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
-    self.fauxPasswordLoginButton.textColor = [UIColor whiteColor];
     
-    self.facebookButtonLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
-    self.facebookButtonLabel.textColor = [UIColor whiteColor];
-    self.twitterButtonLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
-    self.twitterButtonLabel.textColor = [UIColor whiteColor];
-    self.signupWithEmailButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
+    [self.facebookButton setFont:[[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont]];
+    [self.facebookButton setTextColor:[UIColor whiteColor]];
+    self.facebookButton.accessibilityIdentifier = VAutomationIdentifierLoginFacebook;
     
-    self.fauxEmailLoginButton.accessibilityIdentifier = VAutomationIdentifierLoginSelectEmail;
-    self.fauxPasswordLoginButton.accessibilityIdentifier = VAutomationIdentifierLoginSelectPassword;
+    [self.signupWithEmailButton setFont:[[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont]];
+    [self.signupWithEmailButton setTextColor:[UIColor whiteColor]];
     self.signupWithEmailButton.accessibilityIdentifier = VAutomationIdentifierLoginSignUp;
+    
+    [self.twitterButton setFont:[[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont]];
+    [self.twitterButton setTextColor:[UIColor whiteColor]];
+    self.twitterButton.accessibilityIdentifier = VAutomationIdentifierLoginTwitter;
+    
+    [self setupTitleTextView];
     
     [self.transitionPlaceholder addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(emailClicked:)]];
     self.transitionPlaceholder.userInteractionEnabled = YES;
@@ -135,6 +137,47 @@
 - (BOOL)prefersStatusBarHidden
 {
     return YES;
+}
+
+#pragma mark - CCHLinkTextView
+
+- (void)setupTitleTextView
+{
+    self.loginTextView.linkDelegate = self;
+    self.loginTextView.textContainerInset = UIEdgeInsetsMake( 12, 0, 0, 0 );
+    self.loginTextView.textContainer.maximumNumberOfLines = 1;
+    self.loginTextView.textContainer.lineBreakMode = NSLineBreakByTruncatingTail;
+
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    paragraphStyle.alignment = NSTextAlignmentCenter;
+    UIColor *normalColor = [UIColor whiteColor];
+    UIColor *linkColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    UIFont *font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
+    
+    NSDictionary *attributes = @{ NSFontAttributeName : font ?: [NSNull null],
+                                  NSForegroundColorAttributeName : normalColor,
+                                  NSParagraphStyleAttributeName : paragraphStyle };
+    
+    NSString *linkText = NSLocalizedString( @"Log in here", @"" );
+    NSString *normalText = NSLocalizedString( @"Already Registered?", @"" );
+    NSString *text = [NSString stringWithFormat:NSLocalizedString( @"%@ %@", @""), normalText, linkText];
+    
+    NSDictionary *linkAttributes = @{ NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle | NSUnderlinePatternSolid),
+                                      NSForegroundColorAttributeName : linkColor,
+                                      NSUnderlineColorAttributeName : linkColor,
+                                      CCHLinkAttributeName : linkText };
+    
+    NSMutableAttributedString *mutableAttributedString = [[NSMutableAttributedString alloc] initWithString:text attributes:attributes];
+    [mutableAttributedString addAttributes:linkAttributes range:[text rangeOfString:linkText]];
+    self.loginTextView.tintColor = linkColor;
+    self.loginTextView.attributedText = mutableAttributedString;
+}
+
+#pragma mark - CCHLinkTextViewDelegate
+
+- (void)linkTextView:(CCHLinkTextView *)linkTextView didTapLinkWithValue:(id)value
+{
+    [self performSegueWithIdentifier:@"toEmailLogin" sender:self];
 }
 
 #pragma mark - Support
@@ -272,23 +315,18 @@
 
 - (void)disableButtons
 {
-    self.facebookButton.enabled = NO;
-    self.twitterButton.enabled = NO;
+    self.twitterButton.userInteractionEnabled = NO;
+    self.facebookButton.userInteractionEnabled = NO;
     self.signupWithEmailButton.userInteractionEnabled = NO;
     self.transitionPlaceholder.userInteractionEnabled = NO;
 }
 
 - (void)enableButtons
 {
-    self.facebookButton.enabled = YES;
-    self.twitterButton.enabled = YES;
+    self.twitterButton.userInteractionEnabled = YES;
+    self.facebookButton.userInteractionEnabled = YES;
     self.signupWithEmailButton.userInteractionEnabled = YES;
     self.transitionPlaceholder.userInteractionEnabled = YES;
-}
-
-- (IBAction)emailClicked:(id)sender
-{
-    [self performSegueWithIdentifier:@"toEmailLogin" sender:self];
 }
 
 - (IBAction)signup:(id)sender

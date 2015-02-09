@@ -29,6 +29,8 @@ static NSString * const VAutomationIdentifierLoginSubmit                = @"Logi
 static NSString * const VAutomationIdentifierLoginCancel                = @"Login Cancel";
 static NSString * const VAutomationIdentifierLoginForgotPassword        = @"Login Forgot Password";
 static NSString * const VAutomationIdentifierLoginSignUp                = @"Login Sign Up";
+static NSString * const VAutomationIdentifierLoginFacebook              = @"Login Facebook";
+static NSString * const VAutomationIdentifierLoginTwitter               = @"Login Twitter";
 
 static NSString * const VAutomationIdentifierSignupUsernameField        = @"Signup Username Field";
 static NSString * const VAutomationIdentifierSignupPasswordField        = @"Signup Password Field";
