@@ -106,21 +106,6 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-    NSLayoutConstraint *searchTopConstraint = [NSLayoutConstraint constraintWithItem:self.searchBarContainer
-                                                                          attribute:NSLayoutAttributeTop
-                                                                          relatedBy:NSLayoutRelationEqual
-                                                                             toItem:self.topLayoutGuide
-                                                                          attribute:NSLayoutAttributeBottom
-                                                                         multiplier:1.0
-                                                                           constant:0];
-    [self.view addConstraint:searchTopConstraint];
-    [self.view layoutIfNeeded];
-}
-
 - (BOOL)shouldAutorotate
 {
     return NO;

@@ -15,6 +15,7 @@
 #import "VObjectManager+Login.h"
 #import "VUser.h"
 #import "VHashtag.h"
+#import "VStream+Fetcher.h"
 
 // Stream
 #import "VStreamCollectionViewController.h"
@@ -114,7 +115,7 @@ static NSString * const kVTagResultIdentifier = @"VTrendingTagCell";
 
 - (void)showStreamWithHashtag:(VHashtag *)hashtag
 {
-    VStreamCollectionViewController *stream = [VStreamCollectionViewController hashtagStreamWithHashtag:hashtag.tag];
+    VStreamCollectionViewController *stream = [VStreamCollectionViewController streamViewControllerForStream:[VStream streamForHashTag:hashtag.tag]];
     [self.navigationController pushViewController:stream animated:YES];
 }
 
