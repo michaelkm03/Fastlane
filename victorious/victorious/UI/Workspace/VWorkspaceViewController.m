@@ -59,7 +59,7 @@
 @property (nonatomic, strong) NSDictionary *toolForBarButtonItemMap;
 @property (nonatomic, strong) NSDictionary *barButtonItemForToolMap;
 
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *VerticalSpaceTopBarToContainer;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceTopBarToContainer;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceBottomBarToContainer;
 
 @property (nonatomic, strong) UIVisualEffectView *blurView;
@@ -337,7 +337,7 @@
 
 - (void)bringChromeOutOfView
 {
-    self.VerticalSpaceTopBarToContainer.constant = -CGRectGetHeight(self.topToolbar.frame);
+    self.verticalSpaceTopBarToContainer.constant = -CGRectGetHeight(self.topToolbar.frame);
     self.verticalSpaceBottomBarToContainer.constant = -CGRectGetHeight(self.bottomToolbar.frame);
     self.blurredBackgroundImageView.alpha = 0.0f;
     self.view.backgroundColor = [UIColor clearColor];
@@ -346,7 +346,7 @@
 
 - (void)bringChromeIntoView
 {
-    self.VerticalSpaceTopBarToContainer.constant = 0.0f;
+    self.verticalSpaceTopBarToContainer.constant = 0.0f;
     self.verticalSpaceBottomBarToContainer.constant = 0.0f;
 
     [self.view layoutIfNeeded];

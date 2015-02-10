@@ -81,7 +81,6 @@ static const CGFloat kGradientMagnitude = 20.0f;
              VWorkspaceViewController *workspaceVC = (VWorkspaceViewController *)toViewController;
              [workspaceVC bringChromeIntoView];
          }
-         #pragma mark - should abstract this
          if ([fromViewController isKindOfClass:[VCameraViewController class]])
          {
              VCameraViewController *cameraVC = (VCameraViewController *)fromViewController;

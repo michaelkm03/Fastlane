@@ -92,10 +92,10 @@
                                 <rect key="frame" x="0.0" y="427" width="320" height="141"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="W9w-XF-uIU" userLabel="Open Album Button">
-                                        <rect key="frame" x="20" y="41" width="60" height="60"/>
+                                        <rect key="frame" x="20" y="42" width="55" height="55"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="60" id="232-Lo-pe8"/>
-                                            <constraint firstAttribute="height" constant="60" id="rxR-jU-aGO"/>
+                                            <constraint firstAttribute="width" constant="55" id="232-Lo-pe8"/>
+                                            <constraint firstAttribute="height" constant="55" id="rxR-jU-aGO"/>
                                         </constraints>
                                         <state key="normal" image="cameraButtonSwitchToPhoto">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -105,25 +105,26 @@
                                         </connections>
                                     </button>
                                     <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oAC-V4-Jg0" userLabel="Delete Button">
-                                        <rect key="frame" x="20" y="41" width="60" height="60"/>
+                                        <rect key="frame" x="20" y="46" width="55" height="55"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="60" id="CZl-Ov-zlR"/>
-                                            <constraint firstAttribute="width" constant="60" id="a6j-vb-wCM"/>
+                                            <constraint firstAttribute="height" constant="55" id="CZl-Ov-zlR"/>
+                                            <constraint firstAttribute="width" constant="55" id="a6j-vb-wCM"/>
                                         </constraints>
-                                        <state key="normal" image="cameraButtonDelete">
+                                        <inset key="imageEdgeInsets" minX="5" minY="5" maxX="5" maxY="5"/>
+                                        <state key="normal" image="trash_btn">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
                                             <action selector="trashAction:" destination="N4E-ak-ozN" eventType="touchUpInside" id="HOO-SS-wMO"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Psc-Kh-PXS" userLabel="Search Button">
+                                    <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Psc-Kh-PXS" userLabel="Search Button">
                                         <rect key="frame" x="240" y="41" width="60" height="60"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="60" id="9oQ-SU-gpE"/>
                                             <constraint firstAttribute="height" constant="60" id="s1m-N7-JnY"/>
                                         </constraints>
-                                        <state key="normal" image="SearchIcon">
+                                        <state key="normal" image="search-btn">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
@@ -133,7 +134,7 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="centerY" secondItem="W9w-XF-uIU" secondAttribute="centerY" constant="-0.5" id="5WL-Ij-kNM"/>
+                                    <constraint firstItem="W9w-XF-uIU" firstAttribute="centerY" secondItem="Psc-Kh-PXS" secondAttribute="centerY" constant="-1" id="2C2-lL-FQm"/>
                                     <constraint firstItem="W9w-XF-uIU" firstAttribute="left" secondItem="abs-NM-eiT" secondAttribute="left" constant="20" id="A5R-gK-mQR"/>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="110" id="RNJ-fi-meW"/>
                                     <constraint firstAttribute="height" priority="250" constant="141" id="Ssz-30-ICj"/>
@@ -162,7 +163,7 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="r8c-9h-K1E" userLabel="Camera Control Container">
-                                <rect key="frame" x="120" y="444" width="80" height="80"/>
+                                <rect key="frame" x="120" y="458" width="80" height="80"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="80" id="8U8-te-6af"/>
@@ -175,12 +176,12 @@
                             <constraint firstItem="Cdq-4w-Bu5" firstAttribute="top" secondItem="VHc-U1-zGw" secondAttribute="bottom" constant="44" id="3d6-rQ-KOT"/>
                             <constraint firstItem="umg-5s-weJ" firstAttribute="top" secondItem="VHc-U1-zGw" secondAttribute="bottom" id="4nb-z1-EII"/>
                             <constraint firstItem="Cdq-4w-Bu5" firstAttribute="leading" secondItem="AMw-cC-uUG" secondAttribute="leading" id="IVM-P9-6x5"/>
-                            <constraint firstAttribute="centerY" secondItem="r8c-9h-K1E" secondAttribute="centerY" constant="-200" id="P4C-t4-sC3"/>
                             <constraint firstItem="umg-5s-weJ" firstAttribute="left" secondItem="AMw-cC-uUG" secondAttribute="left" id="PSn-o0-D9f"/>
                             <constraint firstItem="abs-NM-eiT" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Cdq-4w-Bu5" secondAttribute="bottom" id="Ujb-rf-uOh"/>
                             <constraint firstAttribute="trailing" secondItem="Cdq-4w-Bu5" secondAttribute="trailing" id="VJG-ZH-kHE"/>
                             <constraint firstAttribute="centerX" secondItem="r8c-9h-K1E" secondAttribute="centerX" id="auc-1b-h6Z"/>
                             <constraint firstAttribute="right" secondItem="abs-NM-eiT" secondAttribute="right" id="de4-Ce-ltb"/>
+                            <constraint firstItem="Psc-Kh-PXS" firstAttribute="centerY" secondItem="r8c-9h-K1E" secondAttribute="centerY" id="gad-uU-TNk"/>
                             <constraint firstAttribute="right" secondItem="umg-5s-weJ" secondAttribute="right" id="rOd-2e-gP1"/>
                             <constraint firstItem="e2F-3b-vgF" firstAttribute="top" secondItem="abs-NM-eiT" secondAttribute="bottom" id="ua3-eR-hij"/>
                             <constraint firstItem="abs-NM-eiT" firstAttribute="left" secondItem="AMw-cC-uUG" secondAttribute="left" id="wvD-uc-4A8"/>
@@ -211,14 +212,14 @@
         </scene>
     </scenes>
     <resources>
-        <image name="SearchIcon" width="30" height="31"/>
         <image name="cameraButtonClose" width="24" height="24"/>
-        <image name="cameraButtonDelete" width="60" height="60"/>
         <image name="cameraButtonFlashOff" width="24" height="32"/>
         <image name="cameraButtonFlashOn" width="24" height="32"/>
         <image name="cameraButtonFlip" width="36" height="36"/>
         <image name="cameraButtonNext" width="24" height="24"/>
         <image name="cameraButtonSwitchToPhoto" width="34" height="34"/>
+        <image name="search-btn" width="47" height="47"/>
+        <image name="trash_btn" width="47" height="47"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

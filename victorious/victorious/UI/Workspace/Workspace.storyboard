@@ -84,13 +84,13 @@
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
                     <connections>
-                        <outlet property="VerticalSpaceTopBarToContainer" destination="Wch-on-DA4" id="8Vo-PS-7Al"/>
                         <outlet property="blurredBackgroundImageView" destination="rB7-pY-luZ" id="Gwp-ON-jBt"/>
                         <outlet property="bottomToolbar" destination="tla-hc-Ct5" id="QiO-Fi-Arc"/>
                         <outlet property="canvasView" destination="8c5-o3-ehb" id="DSZ-xC-dlK"/>
                         <outlet property="topToolbar" destination="uLJ-ZJ-TSs" id="VtT-RG-Hlb"/>
                         <outlet property="verticalSpaceBottomBarToContainer" destination="pnB-hJ-LMB" id="LEH-SF-w5l"/>
                         <outlet property="verticalSpaceCanvasToTopOfContainerConstraint" destination="Uz7-kB-w8t" id="Yca-9A-jZ7"/>
+                        <outlet property="verticalSpaceTopBarToContainer" destination="Wch-on-DA4" id="u8E-hq-mUE"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="29c-Qz-2Z5" userLabel="First Responder" sceneMemberID="firstResponder"/>

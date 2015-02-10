@@ -207,6 +207,9 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
 {
     [super viewDidLayoutSubviews];
     self.previewLayer.frame = self.previewView.layer.bounds;
+    self.deleteButton.layer.cornerRadius = CGRectGetHeight(self.deleteButton.bounds) / 2;
+    self.openAlbumButton.layer.cornerRadius = 5.0f;
+    self.openAlbumButton.layer.masksToBounds = YES;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -416,6 +419,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
             self.deleteButton.hidden = YES;
 
             self.cameraControl.enabled = YES;
+            self.cameraControl.alpha = 1.0f;
             [self updateProgressForSecond:0.0f];
             
             self.switchCameraButton.enabled = YES;
@@ -441,7 +445,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
             break;
         case VCameraViewControllerStateRecording:
         {
-            [self.deleteButton setImage:[UIImage imageNamed:@"trash_icon"] forState:UIControlStateNormal];
+            [self.deleteButton setBackgroundColor:[UIColor clearColor]];
             self.deleteButton.hidden = NO;
             self.searchButton.hidden = YES;
             self.deleteButton.enabled = YES;
@@ -705,10 +709,16 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
                                }
                                [CATransaction commit];
                                [UIView animateWithDuration:kCameraShutterShrinkDuration
+                                                     delay:0.0f
+                                                   options:UIViewAnimationOptionCurveEaseIn
                                                 animations:^
-                               {
-                                   welf.cameraControl.transform = CGAffineTransformMakeScale(0.01f, 0.01f);
-                               }];
+                                {
+                                    welf.cameraControl.transform = CGAffineTransformMakeScale(0.01f, 0.01f);
+                                }
+                                                completion:^(BOOL finished)
+                                {
+                                    welf.cameraControl.alpha = 0.0f;
+                                }];
                                
                                [welf replacePreviewViewWithSnapshot];
                            });
@@ -745,8 +755,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
     if (!self.isTrashOpen)
     {
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraUserDidSelectDelete];
-        
-        [self.deleteButton setImage:[UIImage imageNamed:@"cameraButtonDeleteConfirm"] forState:UIControlStateNormal];
+        [self.deleteButton setBackgroundColor:[UIColor redColor]];
         self.trashOpen = YES;
     }
     else
@@ -926,6 +935,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
                      *innerStop = YES;
                      
                      [self.openAlbumButton setImage:latestPhoto forState:UIControlStateNormal];
+                     
                      void (^animations)(void) = ^(void)
                      {
                          self.openAlbumButton.hidden = NO;
@@ -971,7 +981,8 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
     };
     void (^completion)(BOOL) = ^(BOOL finished)
     {
-        [self.deleteButton setImage:[UIImage imageNamed:@"close-btn"] forState:UIControlStateNormal];
+        [self.deleteButton setImage:[UIImage imageNamed:@"trash_btn"]
+                           forState:UIControlStateNormal];
     };
     
     if (animated)
