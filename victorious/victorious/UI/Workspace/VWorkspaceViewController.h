@@ -34,7 +34,7 @@ typedef void (^VWorkspaceCompletion)(BOOL finished, UIImage *previewImage, NSURL
 
 @property (nonatomic, assign) BOOL shouldConfirmCancels; ///< The workspace will show a "discard" action sheet before calling it's completion block
 
-@property (nonatomic, readonly) VCanvasView *canvasView;
+@property (nonatomic, weak, readonly) VCanvasView *canvasView;
 
 - (void)bringChromeOutOfView;
 - (void)bringChromeIntoView;
