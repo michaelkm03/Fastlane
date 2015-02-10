@@ -38,12 +38,18 @@
 @property (nonatomic, strong)           UIAlertView    *thanksAlert;
 @property (nonatomic)                   BOOL            alertDismissed;
 
-@property (nonatomic, strong)           VPasswordValidator *passwordValidator;
 @property (nonatomic, strong)           VEmailValidator *emailValidator;
+@property (nonatomic, strong)           VPasswordValidator *passwordValidator;
 
 @end
 
 @implementation VLoginWithEmailViewController
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:self.usernameTextField];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:self.passwordTextField];
+}
 
 - (void)viewDidLoad
 {
@@ -51,13 +57,17 @@
 
     self.view.layer.contents = (id)[[[VThemeManager sharedThemeManager] themedBackgroundImageForDevice] applyBlurWithRadius:25 tintColor:[UIColor colorWithWhite:1.0 alpha:0.7] saturationDeltaFactor:1.8 maskImage:nil].CGImage;
 
-    self.usernameTextField.validator = [[VEmailValidator alloc] init];
+    self.emailValidator = [[VEmailValidator alloc] init];
+    self.passwordValidator = [[VPasswordValidator alloc] init];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:self.usernameTextField];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:self.passwordTextField];
+    
     [self.usernameTextField applyTextFieldStyle:VTextFieldStyleLoginRegistration];
     self.usernameTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.usernameTextField.placeholder attributes:@{NSForegroundColorAttributeName : [UIColor colorWithWhite:0.14 alpha:1.0]}];
     UIColor *activePlaceholderColor = [UIColor colorWithRed:102/255.0f green:102/255.0f blue:102/255.0f alpha:1.0f];
     self.usernameTextField.activePlaceholder = [[NSAttributedString alloc] initWithString:self.usernameTextField.placeholder attributes:@{NSForegroundColorAttributeName : activePlaceholderColor}];
     
-    self.passwordTextField.validator = [[VPasswordValidator alloc] init];
     [self.passwordTextField applyTextFieldStyle:VTextFieldStyleLoginRegistration];
     self.passwordTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.passwordTextField.placeholder attributes:@{NSForegroundColorAttributeName : [UIColor colorWithWhite:0.14 alpha:1.0]}];
     self.passwordTextField.activePlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Minimum 8 Characters", @"Password character requirement.")
@@ -127,29 +137,36 @@
 
 #pragma mark - Validation
 
-- (BOOL)shouldLoginWithUsername:(NSString *)emailAddress password:(NSString *)password
+- (BOOL)shouldLogin
 {
     NSError *validationError;
+    BOOL shouldLogin;
+    id newResponder = nil;
     
-    if (![self.emailValidator validateString:emailAddress andError:&validationError])
+    if (![self.emailValidator validateString:self.usernameTextField.text andError:&validationError])
     {
-        self.usernameTextField.showInlineValidation = YES;
-        [self.usernameTextField validateTextWithValidator:self.emailValidator];
-        [self.usernameTextField showIncorrectTextAnimationAndVibration];
-        [self.usernameTextField becomeFirstResponder];
-        return NO;
+        [self.usernameTextField showInvalidText:validationError.localizedDescription animated:YES shake:YES];
+        shouldLogin = NO;
+        
+        if (newResponder == nil)
+        {
+            [self.usernameTextField becomeFirstResponder];
+            newResponder = self.usernameTextField;
+        }
     }
     
-    if ( ![self.passwordValidator validateString:password andError:&validationError] )
+    if ( ![self.passwordValidator validateString:self.passwordTextField.text andError:&validationError])
     {
-        self.passwordTextField.showInlineValidation = YES;
-        [self.passwordTextField validateTextWithValidator:self.passwordValidator];
-        [self.passwordTextField showIncorrectTextAnimationAndVibration];
-        [self.passwordTextField becomeFirstResponder];
-        return NO;
+        [self.passwordTextField showInvalidText:validationError.localizedDescription animated:YES shake:YES];
+        shouldLogin = NO;
+        
+        if (newResponder == nil)
+        {
+            [self.passwordTextField becomeFirstResponder];
+        }
     }
     
-    return YES;
+    return shouldLogin;
 }
 
 #pragma mark - State
@@ -193,7 +210,7 @@
 {
     [[self view] endEditing:YES];
 
-    if ([self shouldLoginWithUsername:self.usernameTextField.text password:self.passwordTextField.text])
+    if ([self shouldLogin])
     {
         self.loginButton.enabled = NO;
         [[VUserManager sharedInstance] loginViaEmail:self.usernameTextField.text
@@ -276,49 +293,44 @@
     }
 }
 
-#pragma mark - UITextFieldDelegate
+#pragma mark - Notifications
 
-- (BOOL)textFieldShouldReturn:(VInlineValidationTextField *)textField
+- (void)textFieldDidChange:(NSNotification *)notification
 {
-    if (![textField.validator validateString:textField.text
-                                    andError:nil])
-    {
-        [textField showIncorrectTextAnimationAndVibration];
-        textField.showInlineValidation = YES;
-    }
+    VInlineValidationTextField *textField = notification.object;
+    NSError *validationError;
     
     if (textField == self.usernameTextField)
     {
-        [self.passwordTextField becomeFirstResponder];
+        BOOL validEmail = [self.emailValidator validateString:textField.text
+                                                     andError:&validationError];
+        if (!validEmail)
+        {
+            [textField showInvalidText:validationError.localizedDescription animated:NO shake:NO];
+        }
+        else
+        {
+            [textField hideInvalidText];
+        }
     }
-    else if (textField == self.passwordTextField)
+    if (textField == self.passwordTextField)
     {
-        [self.passwordTextField resignFirstResponder];
-        [self login:nil];
+        [self.passwordValidator setConfirmationObject:nil
+                                          withKeyPath:nil];
+        BOOL validPassword = [self.passwordValidator validateString:textField.text
+                                                           andError:&validationError];
+        if (!validPassword)
+        {
+            [textField showInvalidText:validationError.localizedDescription animated:NO shake:NO];
+        }
+        else
+        {
+            [textField hideInvalidText];
+        }
     }
-    
-    return YES;
 }
 
-- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
-{
-    BOOL validUsername = [self.usernameTextField.validator validateString:self.usernameTextField.text
-                                                                 andError:nil];
-
-    if ([self.usernameTextField isFirstResponder] && !validUsername)
-    {
-        self.usernameTextField.showInlineValidation = YES;
-    }
-    
-    BOOL validPassword = [self.passwordTextField.validator validateString:self.passwordTextField.text
-                                                              andError:nil];
-    if ([self.passwordTextField isFirstResponder] && !validPassword)
-    {
-        self.passwordTextField.showInlineValidation = YES;
-    }
-    
-    return YES;
-}
+#pragma mark - UIResponder
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
