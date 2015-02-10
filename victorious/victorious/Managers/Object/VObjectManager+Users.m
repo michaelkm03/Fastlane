@@ -358,20 +358,31 @@ static NSString * const kVAPIParamSearch = @"search";
 }
 
 - (RKManagedObjectRequestOperation *)findUsersBySearchString:(NSString *)search_string
+                                                       limit:(NSInteger)pageLimit
                                             withSuccessBlock:(VSuccessBlock)success
                                                    failBlock:(VFailBlock)fail
 {
-    return [self findUsersBySearchString:search_string context:nil withSuccessBlock:success failBlock:fail];
+    return [self findUsersBySearchString:search_string
+                                   limit:pageLimit
+                                 context:nil
+                        withSuccessBlock:success
+                               failBlock:fail];
 }
 
 - (RKManagedObjectRequestOperation *)findMessagableUsersBySearchString:(NSString *)search_string
+                                                                 limit:(NSInteger)pageLimit
                                                       withSuccessBlock:(VSuccessBlock)success
                                                              failBlock:(VFailBlock)fail
 {
-    return [self findUsersBySearchString:search_string context:kVAPIParamMessage withSuccessBlock:success failBlock:fail];
+    return [self findUsersBySearchString:search_string
+                                   limit:pageLimit
+                                 context:kVAPIParamMessage
+                        withSuccessBlock:success
+                               failBlock:fail];
 }
 
 - (RKManagedObjectRequestOperation *)findUsersBySearchString:(NSString *)search_string
+                                                       limit:(NSInteger)pageLimit
                                                      context:(NSString *)context
                                             withSuccessBlock:(VSuccessBlock)success
                                                    failBlock:(VFailBlock)fail
@@ -382,19 +393,11 @@ static NSString * const kVAPIParamSearch = @"search";
         {
             success(operation, fullResponse, resultObjects);
         }
-    };
+    };    
     
-    
-    NSMutableDictionary *params = [@{ kVAPIParamSearch : search_string } mutableCopy];
-    
-    if (context.length)
-    {
-        params[kVAPIParamContext] = context;
-    }
-    
-    return [self POST:@"/api/userinfo/search"
+    return [self GET:[NSString stringWithFormat:@"/api/userinfo/search/%@/%ld/%@", search_string, pageLimit, context]
                object:nil
-           parameters:params
+           parameters:nil
          successBlock:fullSuccess
             failBlock:fail];
 }
