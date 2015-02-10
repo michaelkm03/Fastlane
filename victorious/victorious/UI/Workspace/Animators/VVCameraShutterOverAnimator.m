@@ -8,14 +8,17 @@
 
 #import "VVCameraShutterOverAnimator.h"
 
+// ViewControllers
 #import "VCameraViewController.h"
 #import "VWorkspaceViewController.h"
 
+// Masking
 #import "VRadialGradientView.h"
 #import "VRadialGradientLayer.h"
 #import "VCanvasView.h"
 
-static const NSTimeInterval kCameraShutterAnimationDuration = 0.35;
+static const NSTimeInterval kCameraShutterAnimationDuration = 0.45;
+static const CGFloat kGradientMagnitude = 20.0f;
 
 @implementation VVCameraShutterOverAnimator
 
@@ -53,14 +56,13 @@ static const NSTimeInterval kCameraShutterAnimationDuration = 0.35;
         
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
                        {
-                           VRadialGradientLayer *radialGradientLayer = radialGradientMaskView.radialGradientLayer;
                            [CATransaction begin];
                            {
                                [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut]];
                                [CATransaction setAnimationDuration:kCameraShutterAnimationDuration];
                                
-                               radialGradientLayer.innerRadius = CGRectGetHeight(workvc.canvasView.frame);
-                               radialGradientLayer.outerRadius = CGRectGetHeight(workvc.canvasView.frame) + 1.0f;
+                               radialGradientLayer.innerRadius = CGRectGetHeight(workvc.canvasView.bounds);
+                               radialGradientLayer.outerRadius = CGRectGetHeight(workvc.canvasView.bounds) + kGradientMagnitude;
                            }
                            [CATransaction commit];
                        });
