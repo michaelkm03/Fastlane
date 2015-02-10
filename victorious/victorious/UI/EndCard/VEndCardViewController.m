@@ -12,7 +12,6 @@
 #import "VDependencyManager.h"
 #import "VVideoSettings.h"
 
-static const BOOL kForceIOS7 = NO;
 static NSString * const kStoryboardName = @"EndCard";
 
 @interface VEndCardViewController () <UICollectionViewDataSource, UICollectionViewDelegate, VEndCardBannerViewControllerDelegate>

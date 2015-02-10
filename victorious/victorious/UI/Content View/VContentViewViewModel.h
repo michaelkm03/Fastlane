@@ -97,6 +97,8 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
 
 - (void)fetchSequenceData;
 
+- (void)loadNextSequenceSuccess:(void(^)(VSequence *))success failure:(void(^)(NSError *))failure;
+
 - (void)addCommentWithText:(NSString *)text
                   mediaURL:(NSURL *)mediaURL
                   realTime:(CMTime)realTime

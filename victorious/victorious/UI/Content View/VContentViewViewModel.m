@@ -181,14 +181,54 @@
     [[VObjectManager sharedManager] fetchSequenceByID:self.sequence.remoteId
                                          successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
-        // This is here to update the vote counts
-        [self.experienceEnhancerController updateData];
+         // This is here to update the vote counts
+         [self.experienceEnhancerController updateData];
          
          [self createVideoModel];
          
          [self.delegate didUpdateContent];
-    }
+     }
                                             failBlock:nil];
+}
+
+- (void)loadNextSequenceSuccess:(void(^)(VSequence *))success failure:(void(^)(NSError *))failure
+{
+    NSString *nextSequenceId = self.videoViewModel.endCardViewModel.nextSequenceId;
+    if ( nextSequenceId == nil )
+    {
+        if ( failure != nil )
+        {
+            NSString *message = @"Unable to load next sequence beacuse the ID is invalid.";
+            failure( [NSError errorWithDomain:message code:-1 userInfo:nil] );
+        }
+        return;
+    }
+    
+    [[VObjectManager sharedManager] fetchSequenceByID:nextSequenceId
+                                         successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+     {
+         VSequence *nextSequence = resultObjects.firstObject;
+         if ( nextSequence == nil || ![nextSequence isKindOfClass:[VSequence class]] )
+         {
+             if ( failure != nil )
+             {
+                 NSString *message = @"Response did not contain a valid sequence.";
+                 failure( [NSError errorWithDomain:message code:-1 userInfo:nil] );
+             }
+         }
+         
+         if ( success != nil )
+         {
+             success( nextSequence );
+         }
+     }
+                                            failBlock:^(NSOperation *operation, NSError *error)
+     {
+         if ( failure != nil )
+         {
+             failure( error );
+         }
+     }];
 }
 
 - (void)createVideoModel
@@ -253,6 +293,7 @@
         {
             // In the real app, the dependency manager will be injected:
             endCardModel.videoTitle = @"January Vacation Blog";
+            endCardModel.nextSequenceId = self.sequence.remoteId; // Playing the current sequence again as if it was the next
             endCardModel.nextVideoTitle = @"Alejandro Manzano Grumpy Cat Boyce Avenue";
             endCardModel.nextVideoThumbailImageURL = [NSURL URLWithString:@"http://media-dev-public.s3-website-us-west-1.amazonaws.com/5be17bf6f22dd793554be9cf75a3e26e/640x640.jpg"];
             endCardModel.streamName = @"Recent";
@@ -261,11 +302,11 @@
             endCardModel.countdownDuration = 6000;
             endCardModel.dependencyManager = self.dependencyManager;
             self.videoViewModel.endCardViewModel = endCardModel;
-            
-            return endCardModel;
+            return self.videoViewModel.endCardViewModel;
         }
         
         endCardModel.videoTitle = self.sequence.name;
+        endCardModel.nextSequenceId = nextSequence.remoteId;
         endCardModel.nextVideoTitle = nextSequence.name;
         endCardModel.nextVideoThumbailImageURL = [NSURL URLWithString:(NSString *)nextSequence.previewData];
         endCardModel.streamName = stream.name;

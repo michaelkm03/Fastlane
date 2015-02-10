@@ -102,11 +102,7 @@
 {
     [super prepareForReuse];
     
-    if ( self.endCardViewController != nil )
-    {
-        [self.endCardViewController.view removeFromSuperview];
-        self.endCardViewController = nil;
-    }
+    [self hideEndCard:YES];
 }
 
 #pragma mark - Shrinking Layout
@@ -201,14 +197,32 @@
                                                                         minViewHeight:self.minSize.height
                                                                         maxViewHeight:self.maxSize.height];
         self.endCardViewController.delegate = self;
-        [self.contentView addSubview:self.endCardViewController.view];
-        self.endCardViewController.view.frame = self.contentView.bounds;
-        [self.contentView v_addFitToParentConstraintsToSubview:self.endCardViewController.view];
     }
+    
+    [self.contentView addSubview:self.endCardViewController.view];
+    self.endCardViewController.view.frame = self.contentView.bounds;
+    [self.contentView v_addFitToParentConstraintsToSubview:self.endCardViewController.view];
     
     UIInterfaceOrientation currentOrientation = [UIApplication sharedApplication].statusBarOrientation;
     [self.endCardViewController handleRotationToInterfaceOrientation:currentOrientation];
     [self.endCardViewController transitionIn];
+}
+
+- (void)hideEndCard
+{
+    [self hideEndCard:NO];
+}
+
+- (void)hideEndCard:(BOOL)cleanup
+{
+    if ( self.endCardViewController != nil )
+    {
+        [self.endCardViewController.view removeFromSuperview];
+        if ( cleanup )
+        {
+            self.endCardViewController = nil;
+        }
+    }
 }
 
 #pragma mark - VEndCardViewControllerDelegate

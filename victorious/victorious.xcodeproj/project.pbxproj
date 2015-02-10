@@ -322,7 +322,7 @@
 		A70564BC19E7817C004A8387 /* VObjectManager+Discover.m in Sources */ = {isa = PBXBuildFile; fileRef = A70564BB19E7817C004A8387 /* VObjectManager+Discover.m */; };
 		A70564C319E781EE004A8387 /* VNoContentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A70564C119E781EE004A8387 /* VNoContentTableViewCell.m */; };
 		A70564C719E7820A004A8387 /* VHashtag+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A70564C619E7820A004A8387 /* VHashtag+RestKit.m */; };
-		A708C9581A7FFF67000EE1EE /* VRotationHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A708C9571A7FFF67000EE1EE /* VRotationHelper.m */; };
+		A708C9581A7FFF67000EE1EE /* VContentViewRotationHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A708C9571A7FFF67000EE1EE /* VContentViewRotationHelper.m */; };
 		A708C95B1A8067B9000EE1EE /* VContentRepopulateTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = A708C95A1A8067B9000EE1EE /* VContentRepopulateTransition.m */; };
 		A709642419F0A13800CE6633 /* VTracking+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A709642319F0A13800CE6633 /* VTracking+RestKit.m */; };
 		A70AFE641A1684880027549F /* VFlurryTrackingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A70AFE631A1684880027549F /* VFlurryTrackingTests.m */; };
@@ -439,6 +439,7 @@
 		A7A2E0071A38E44B00F8C705 /* VPurchaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A2E0041A38E44B00F8C705 /* VPurchaseViewController.m */; };
 		A7A2E00C1A38E47400F8C705 /* Purchases.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7A2E00B1A38E47400F8C705 /* Purchases.storyboard */; };
 		A7A2E0121A391A7D00F8C705 /* VPurchaseRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A2E0111A391A7D00F8C705 /* VPurchaseRecord.m */; };
+		A7A343DB1A8A8452000F0BCF /* VContentViewAlertHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A343DA1A8A8452000F0BCF /* VContentViewAlertHelper.m */; };
 		A7A390C51A32441E00709812 /* VButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A390C41A32441E00709812 /* VButton.m */; };
 		A7A390CA1A3257A300709812 /* ContentView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7A390C91A3257A300709812 /* ContentView.storyboard */; };
 		A7A7D61819DE178F00B18AB7 /* VAuthorizationViewControllerFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = A735323219DB60600040DB30 /* VAuthorizationViewControllerFactory.m */; };
@@ -1298,8 +1299,8 @@
 		A70564C519E7820A004A8387 /* VHashtag+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VHashtag+RestKit.h"; sourceTree = "<group>"; };
 		A70564C619E7820A004A8387 /* VHashtag+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VHashtag+RestKit.m"; sourceTree = "<group>"; };
 		A70564CB19E78250004A8387 /* VDiscoverViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDiscoverViewControllerTests.m; sourceTree = "<group>"; };
-		A708C9561A7FFF67000EE1EE /* VRotationHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VRotationHelper.h; sourceTree = "<group>"; };
-		A708C9571A7FFF67000EE1EE /* VRotationHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VRotationHelper.m; sourceTree = "<group>"; };
+		A708C9561A7FFF67000EE1EE /* VContentViewRotationHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentViewRotationHelper.h; sourceTree = "<group>"; };
+		A708C9571A7FFF67000EE1EE /* VContentViewRotationHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VContentViewRotationHelper.m; sourceTree = "<group>"; };
 		A708C9591A8067B9000EE1EE /* VContentRepopulateTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentRepopulateTransition.h; sourceTree = "<group>"; };
 		A708C95A1A8067B9000EE1EE /* VContentRepopulateTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VContentRepopulateTransition.m; sourceTree = "<group>"; };
 		A709635719EEE87300CE6633 /* VFileCache+VoteTypeTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VFileCache+VoteTypeTests.m"; sourceTree = "<group>"; };
@@ -1464,6 +1465,8 @@
 		A7A2E00B1A38E47400F8C705 /* Purchases.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Purchases.storyboard; path = Purchases/Purchases.storyboard; sourceTree = "<group>"; };
 		A7A2E0101A391A7D00F8C705 /* VPurchaseRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VPurchaseRecord.h; path = Purchases/VPurchaseRecord.h; sourceTree = "<group>"; };
 		A7A2E0111A391A7D00F8C705 /* VPurchaseRecord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VPurchaseRecord.m; path = Purchases/VPurchaseRecord.m; sourceTree = "<group>"; };
+		A7A343D91A8A8452000F0BCF /* VContentViewAlertHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentViewAlertHelper.h; sourceTree = "<group>"; };
+		A7A343DA1A8A8452000F0BCF /* VContentViewAlertHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VContentViewAlertHelper.m; sourceTree = "<group>"; };
 		A7A390C31A32441E00709812 /* VButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VButton.h; sourceTree = "<group>"; };
 		A7A390C41A32441E00709812 /* VButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VButton.m; sourceTree = "<group>"; };
 		A7A390C91A3257A300709812 /* ContentView.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ContentView.storyboard; sourceTree = "<group>"; };
@@ -2354,16 +2357,18 @@
 				0314D37719B46B5E00FA363C /* VActionBarViewController.m */,
 				A75C10321A65DE6F00439809 /* VCommentHighlighter.h */,
 				A75C10331A65DE6F00439809 /* VCommentHighlighter.m */,
+				A7A343D91A8A8452000F0BCF /* VContentViewAlertHelper.h */,
+				A7A343DA1A8A8452000F0BCF /* VContentViewAlertHelper.m */,
 				D8E39BB419CB7C3C007FD86A /* VContentViewViewModel.h */,
 				D8E39BB519CB7C3C007FD86A /* VContentViewViewModel.m */,
 				D8E39BB619CB7C3C007FD86A /* VNewContentViewController.h */,
 				D8E39BB719CB7C3C007FD86A /* VNewContentViewController.m */,
 				D8360CE819E3640000D7E260 /* VNewContentViewController+Actions.h */,
 				D8360CE919E3640000D7E260 /* VNewContentViewController+Actions.m */,
+				A708C9561A7FFF67000EE1EE /* VContentViewRotationHelper.h */,
+				A708C9571A7FFF67000EE1EE /* VContentViewRotationHelper.m */,
 				D8917EA019F8498F0070BDBB /* VVideoCellViewModel.h */,
 				D8917EA119F8498F0070BDBB /* VVideoCellViewModel.m */,
-				A708C9561A7FFF67000EE1EE /* VRotationHelper.h */,
-				A708C9571A7FFF67000EE1EE /* VRotationHelper.m */,
 			);
 			path = "Content View";
 			sourceTree = "<group>";
@@ -5138,7 +5143,7 @@
 				D89A500B1A000E790010D050 /* VFollowUserControl.m in Sources */,
 				0314D48519B46B5E00FA363C /* VKeyboardBarContainerViewController.m in Sources */,
 				0314D49919B46B5E00FA363C /* VActionBarViewController.m in Sources */,
-				A708C9581A7FFF67000EE1EE /* VRotationHelper.m in Sources */,
+				A708C9581A7FFF67000EE1EE /* VContentViewRotationHelper.m in Sources */,
 				0314D4BE19B46B5E00FA363C /* VFollowerTableViewController.m in Sources */,
 				0314D49819B46B5E00FA363C /* VRTCUserPostedAtFormatter.m in Sources */,
 				BE88FF711A0005E70064AB28 /* VSequenceActionController.m in Sources */,
@@ -5404,6 +5409,7 @@
 				BE88FF721A0005E70064AB28 /* VStreamCellActionView.m in Sources */,
 				BEC833BB19D3646E00341EA9 /* VComment.m in Sources */,
 				BE88FF8F1A00060E0064AB28 /* VNavigationHeaderView.m in Sources */,
+				A7A343DB1A8A8452000F0BCF /* VContentViewAlertHelper.m in Sources */,
 				0314D07619B467A100FA363C /* VSequence+Fetcher.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

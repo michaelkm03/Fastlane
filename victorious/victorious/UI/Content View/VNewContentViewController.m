@@ -79,11 +79,12 @@
 #import "VCommentHighlighter.h"
 #import "VScrollPaginator.h"
 #import "VSequenceActionController.h"
-#import "VRotationHelper.h"
+#import "VContentViewRotationHelper.h"
 #import "VEndCard.h"
 #import "VContentRepopulateTransition.h"
 #import "VCommentHighlighter.h"
 #import "VEndCardActionModel.h"
+#import "VContentViewAlertHelper.h"
 
 static const CGFloat kMaxInputBarHeight = 200.0f;
 
@@ -131,7 +132,9 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 
 @property (nonatomic, strong, readwrite) VSequenceActionController *sequenceActionController;
 @property (nonatomic, weak) VDependencyManager *dependencyManager;
-@property (nonatomic, strong) VRotationHelper *rotationHelper;
+
+@property (nonatomic, weak) IBOutlet VContentViewAlertHelper *alertHelper;
+@property (nonatomic, weak) IBOutlet VContentViewRotationHelper *rotationHelper;
 
 @end
 
@@ -430,8 +433,6 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
     
     [self.viewModel reloadData];
-    
-    self.rotationHelper = [[VRotationHelper alloc] init];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -1277,32 +1278,16 @@ referenceSizeForHeaderInSection:(NSInteger)section
         [self.textEntryView setSelectedThumbnail:nil];
     };
     
-    // We already have a selected media does the user want to discard and re-take?
-    NSString *actionSheetTitle = NSLocalizedString(@"Delete this content and select something else?", @"User has already selected media (pictire/video) as an attachment for commenting.");
-    NSString *discardActionTitle = NSLocalizedString(@"Delete", @"Delete the previously selected item. This is a destructive operation.");
-    NSString *cancelActionTitle = NSLocalizedString(@"Cancel", @"Cancel button.");
     
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:actionSheetTitle
-                                                                             message:nil
-                                                                      preferredStyle:UIAlertControllerStyleActionSheet];
-    
-    UIAlertAction *deleteAction = [UIAlertAction actionWithTitle:discardActionTitle
-                                                            style:UIAlertActionStyleDestructive
-                                                          handler:^(UIAlertAction *action)
-                                    {
-                                        clearMediaSelection();
-                                        showCamera();
-                                    }];
-    [alertController addAction:deleteAction];
-    
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:cancelActionTitle
-                                                           style:UIAlertActionStyleCancel
-                                                         handler:^(UIAlertAction *action)
-                                   {
-                                       [[VThemeManager sharedThemeManager] applyStyling];
-                                   }];
-    [alertController addAction:cancelAction];
-    
+    UIAlertController *alertController = [self.alertHelper alertForConfirmDiscardMediaWithDelete:^
+                                          {
+                                              clearMediaSelection();
+                                              showCamera();
+                                          }
+                                                                                          cancel:^
+                                          {
+                                              [[VThemeManager sharedThemeManager] applyStyling];
+                                          }];
     [[VThemeManager sharedThemeManager] removeStyling];
     [self presentViewController:alertController animated:YES completion:nil];
 }
@@ -1472,32 +1457,30 @@ referenceSizeForHeaderInSection:(NSInteger)section
 {
     [self.videoCell seekToStart];
     [endCardViewController transitionOutAllWithBackground:YES completion:^
-    {
-        [self.videoCell replay];
+     {
+         [self.videoCell hideEndCard];
+         [self.videoCell replay];
     }];
 }
 
 - (void)nextSelectedFromEndCard:(VEndCardViewController *)endCardViewController
 {
-    [endCardViewController transitionOutAllWithBackground:NO completion:^
-    {
-        [self showNextSequence];
-    }];
-}
-
-- (void)showNextSequence
-{
-#warning Get the next sequence from the end card model when backend implements this
-    VSequence *nextSequence = self.viewModel.sequence;
-    VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithSequence:nextSequence depenencyManager:self.dependencyManager];
-    VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel
-                                                                                                   dependencyManager:self.dependencyManager];
-    contentViewController.dependencyManagerForHistogramExperiment = self.dependencyManager;
-    contentViewController.delegate = self.delegate;
+    [endCardViewController transitionOutAllWithBackground:NO completion:nil];
     
-    self.navigationController.delegate = contentViewController;
-    contentViewController.transitioningDelegate = self.repopulateTransitionDelegate;
-    [self.navigationController pushViewController:contentViewController animated:YES];
+    [self.viewModel loadNextSequenceSuccess:^(VSequence *sequence)
+     {
+         [self showNextSequence:sequence];
+     }
+                                    failure:^(NSError *error)
+     {
+         [self.videoCell hideEndCard];
+         
+         [[VThemeManager sharedThemeManager] removeStyling];
+         [self presentViewController:[self.alertHelper alertForNextSequenceErrorWithDismiss:^
+                                      {
+                                          [[VThemeManager sharedThemeManager] applyStyling];
+                                      }] animated:YES completion:nil];
+     }];
 }
 
 - (void)actionCellSelected:(VEndCardActionCell *)actionCell atIndex:(NSUInteger)index
@@ -1535,6 +1518,20 @@ referenceSizeForHeaderInSection:(NSInteger)section
 - (void)disableEndcardAutoplay
 {
     [self.contentCell disableEndcardAutoplay];
+}
+
+- (void)showNextSequence:(VSequence *)nextSequence
+{
+    VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithSequence:nextSequence
+                                                                             depenencyManager:self.dependencyManager];
+    VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel
+                                                                                                   dependencyManager:self.dependencyManager];
+    contentViewController.dependencyManagerForHistogramExperiment = self.dependencyManager;
+    contentViewController.delegate = self.delegate;
+    
+    self.navigationController.delegate = contentViewController;
+    contentViewController.transitioningDelegate = self.repopulateTransitionDelegate;
+    [self.navigationController pushViewController:contentViewController animated:YES];
 }
 
 #pragma mark - UINavigationControllerDelegate

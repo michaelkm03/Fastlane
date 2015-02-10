@@ -19,6 +19,7 @@
 @property (nonatomic, strong) NSString *videoAuthorName;
 @property (nonatomic, strong) NSURL *videoAuthorProfileImageURL;
 @property (nonatomic, strong) NSString *videoTitle;
+@property (nonatomic, strong) NSString *nextSequenceId;
 @property (nonatomic, strong) NSString *streamName;
 @property (nonatomic, strong) NSString *nextVideoTitle;
 @property (nonatomic, strong) NSURL *nextVideoThumbailImageURL;

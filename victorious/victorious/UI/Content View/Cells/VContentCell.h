@@ -62,6 +62,11 @@
 - (void)showEndCardWithViewModel:(VEndCardModel *)model;
 
 /**
+ Hides the end card by removing it from the view hiearchy.
+ */
+- (void)hideEndCard;
+
+/**
  Properly rotates itself and subcomponents based on the rotation of the collection view.
  Make sure to forward this from your collection view controller.
  */

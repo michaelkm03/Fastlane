@@ -1,5 +1,5 @@
 //
-//  VRotationHelper.h
+//  VContentViewRotationHelper.h
 //  victorious
 //
 //  Created by Patrick Lynch on 2/2/15.
@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface VRotationHelper : NSObject
+@interface VContentViewRotationHelper : NSObject
 
 @property (nonatomic, assign, readonly) BOOL isLandscape;
 

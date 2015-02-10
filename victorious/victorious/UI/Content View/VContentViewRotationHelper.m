@@ -1,21 +1,21 @@
 //
-//  VRotationHelper.m
+//  VContentViewRotationHelper.m
 //  victorious
 //
 //  Created by Patrick Lynch on 2/2/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VRotationHelper.h"
+#import "VContentViewRotationHelper.h"
 
-@interface VRotationHelper()
+@interface VContentViewRotationHelper()
 
 @property (nonatomic, assign) CGPoint preRotationContentOffset;
 @property (nonatomic, assign, readwrite) BOOL isLandscape;
 
 @end
 
-@implementation VRotationHelper
+@implementation VContentViewRotationHelper
 
 - (void)handleRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
                          targetContentOffset:(CGPoint)targetContentOffset
