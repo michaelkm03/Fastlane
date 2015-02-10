@@ -32,6 +32,9 @@ typedef NS_ENUM(NSInteger, VTextFieldStyle)
                animated:(BOOL)animated
                   shake:(BOOL)shake;
 
+/**
+ *  Hide the invalid text.
+ */
 - (void)hideInvalidText;
 
 /**
