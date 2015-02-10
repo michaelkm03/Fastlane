@@ -160,7 +160,7 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
         [self.agreementText addLinkToURL:url withRange:linkRange];
     }
     
-    self.doneButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVButton1Font];
+    self.doneButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
     [self.doneButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     self.doneButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     

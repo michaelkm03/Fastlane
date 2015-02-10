@@ -28,6 +28,7 @@
 #import "CCHLinkTextView.h"
 #import "CCHLinkTextViewDelegate.h"
 #import "VLinkTextViewHelper.h"
+#import "MBProgressHUD.h"
 
 @import Accounts;
 @import Social;
@@ -187,7 +188,7 @@
 
 - (IBAction)facebookClicked:(id)sender
 {
-    [self disableButtons];
+    [self showLoginProgress];
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithFacebookSelected];
     [[VUserManager sharedInstance] loginViaFacebookOnCompletion:^(VUser *user, BOOL created)
     {
@@ -211,14 +212,14 @@
         {
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithFacebookDidFail];
             [self didFailWithError:error];
-            [self enableButtons];
+            [self hideLoginProgress];
         });
     }];
 }
 
 - (IBAction)twitterClicked:(id)sender
 {
-    [self disableButtons];
+    [self showLoginProgress];
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithTwitterSelected];
     ACAccountStore *account = [[ACAccountStore alloc] init];
     ACAccountType *accountType = [account accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
@@ -229,7 +230,7 @@
             dispatch_async(dispatch_get_main_queue(), ^(void)
             {
                 [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithTwitterDidFailNoAccounts];
-                [self enableButtons];
+                [self hideLoginProgress];
                 [self twitterAccessDidFail:error];
             });
         }
@@ -241,7 +242,7 @@
                 dispatch_async(dispatch_get_main_queue(), ^(void)
                 {
                     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithTwitterDidFailDenied];
-                    [self enableButtons];
+                    [self hideLoginProgress];
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"NoTwitterTitle", @"")
                                                                     message:NSLocalizedString(@"NoTwitterMessage", @"")
                                                                    delegate:nil
@@ -282,18 +283,18 @@
     }];
 }
 
-- (void)disableButtons
+- (void)showLoginProgress
 {
-    self.twitterButton.userInteractionEnabled = NO;
-    self.facebookButton.userInteractionEnabled = NO;
-    self.signupWithEmailButton.userInteractionEnabled = NO;
+    self.twitterButton.enabled = NO;
+    self.facebookButton.enabled = NO;
+    self.signupWithEmailButton.enabled = NO;
 }
 
-- (void)enableButtons
+- (void)hideLoginProgress
 {
-    self.twitterButton.userInteractionEnabled = YES;
-    self.facebookButton.userInteractionEnabled = YES;
-    self.signupWithEmailButton.userInteractionEnabled = YES;
+    self.twitterButton.enabled = YES;
+    self.facebookButton.enabled = YES;
+    self.signupWithEmailButton.enabled = YES;
 }
 
 - (IBAction)signup:(id)sender
@@ -352,7 +353,7 @@
 
 - (void)vSelectorViewControllerDidCancel:(VSelectorViewController *)selectorViewController
 {
-    [self enableButtons];
+    [self hideLoginProgress];
     [self dismissViewControllerAnimated:YES
                              completion:nil];
 }
@@ -386,7 +387,7 @@
          
          [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithTwitterDidFailUnknown];
          
-         [self enableButtons];
+         [self hideLoginProgress];
          [self didFailWithError:error];
      }];
 }

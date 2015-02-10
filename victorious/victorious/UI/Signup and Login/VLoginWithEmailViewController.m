@@ -95,6 +95,7 @@
     NSString *normalText = NSLocalizedString( @"Forgot Password?", @"" );
     NSString *text = [NSString stringWithFormat:NSLocalizedString( @"%@ %@", @""), normalText, linkText];
     NSRange range = [text rangeOfString:linkText];
+    self.forgotPasswordTextView.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
     [self.linkTextHelper setupLinkTextView:self.forgotPasswordTextView withText:text range:range];
     self.forgotPasswordTextView.linkDelegate = self;
     self.forgotPasswordTextView.accessibilityIdentifier = VAutomationIdentifierLoginForgotPassword;
