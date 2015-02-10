@@ -296,9 +296,10 @@
 
 - (void)canvasViewDidUpdateAsset:(NSNotification *)notification
 {
-//    [self.blurredBackgroundImageView setBlurredImageWithClearImage:self.canvasView.asset
-//                                                  placeholderImage:nil
-//                                                         tintColor:[[UIColor blackColor] colorWithAlphaComponent:0.5f]];
+    [self.blurredBackgroundImageView setBlurredImageWithClearImage:self.canvasView.asset
+                                                  placeholderImage:nil
+                                                         tintColor:[[UIColor blackColor] colorWithAlphaComponent:0.5f]
+                                                           animate:YES];
 }
 
 #pragma mark - VWorkspaceToolControllerDelegate

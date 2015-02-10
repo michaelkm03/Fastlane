@@ -28,8 +28,7 @@
 static const NSTimeInterval kAnimationDuration = 0.4;
 static const NSTimeInterval kErrorMessageDisplayDuration = 3.0;
 static const NSTimeInterval kErrorMessageDisplayDurationLong = 10.0; ///< For extra serious errors
-static const NSTimeInterval kCameraShutterShrinkDuration = 0.2;
-static const NSTimeInterval kCameraShutterGrowDuration = 0.3;
+static const NSTimeInterval kCameraShutterShrinkDuration = 0.25;
 static const CGFloat kGradientMagnitude = 20.0f;
 static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
 
@@ -47,7 +46,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
 
 @property (nonatomic, assign) VCameraViewControllerState state;
 @property (nonatomic, readwrite) NSURL *capturedMediaURL;
-@property (nonatomic, strong) UIImage *previewImage;
+@property (nonatomic, strong, readwrite) UIImage *previewImage;
 @property (nonatomic, assign, getter=isTrashOpen) BOOL trashOpen;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *topSpaceTopToolsToContainerConstraint;
@@ -681,33 +680,23 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
             dispatch_async(dispatch_get_main_queue(), ^
                            {
                                VRadialGradientLayer *radialGradientLayer = self.radialGradientView.radialGradientLayer;
+                               radialGradientLayer.outerRadius = CGRectGetHeight(self.previewView.bounds);
+                               radialGradientLayer.innerRadius = CGRectGetHeight(self.previewView.bounds) - kGradientMagnitude;
                                [CATransaction begin];
                                {
                                    [CATransaction setCompletionBlock:^
                                     {
-                                        [CATransaction begin];
-                                        [CATransaction setCompletionBlock:^
-                                        {
-                                            dispatch_async(welf.captureAnimationQueue, ^
-                                                           {
-                                                               welf.animationCompleted = YES;
-                                                               dispatch_async(dispatch_get_main_queue(), ^
+                                        dispatch_async(welf.captureAnimationQueue, ^
+                                                       {
+                                                           welf.animationCompleted = YES;
+                                                           dispatch_async(dispatch_get_main_queue(), ^
+                                                                          {
+                                                                              if ((welf.capturedMediaURL != nil) && welf.animationCompleted)
                                                                               {
-                                                                                  if ((welf.capturedMediaURL != nil) && welf.animationCompleted)
-                                                                                  {
-                                                                                      welf.state = VCameraViewControllerStateCapturedMedia;
-                                                                                  }
-                                                                              });
-                                                           });
-                                        }];
-                                        {
-                                            [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut]];
-                                            [CATransaction setAnimationDuration:kCameraShutterGrowDuration];
-                                            
-                                            radialGradientLayer.outerRadius = CGRectGetHeight(self.view.bounds);
-                                            radialGradientLayer.innerRadius = CGRectGetHeight(self.view.bounds) - kGradientMagnitude;
-                                        }
-                                        [CATransaction commit];
+                                                                                  welf.state = VCameraViewControllerStateCapturedMedia;
+                                                                              }
+                                                                          });
+                                                       });
                                     }];
                                    [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn]];
                                    [CATransaction setAnimationDuration:kCameraShutterShrinkDuration];

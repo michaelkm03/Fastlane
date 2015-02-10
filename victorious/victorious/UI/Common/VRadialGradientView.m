@@ -17,6 +17,15 @@
     return [VRadialGradientLayer class];
 }
 
+#pragma mark - Init
+
+- (void)sharedInit
+{
+    self.backgroundColor = [UIColor clearColor];
+}
+
+#pragma mark - Property Accessors
+
 - (VRadialGradientLayer *)radialGradientLayer
 {
     return (VRadialGradientLayer *)self.layer;

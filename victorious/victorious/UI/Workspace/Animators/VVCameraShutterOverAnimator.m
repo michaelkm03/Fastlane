@@ -11,13 +11,17 @@
 #import "VCameraViewController.h"
 #import "VWorkspaceViewController.h"
 
-static const NSTimeInterval kBlurOverPresentTransitionDuration = 0.5f;
+#import "VRadialGradientView.h"
+#import "VRadialGradientLayer.h"
+#import "VCanvasView.h"
+
+static const NSTimeInterval kCameraShutterAnimationDuration = 0.35;
 
 @implementation VVCameraShutterOverAnimator
 
 - (NSTimeInterval)transitionDuration:(id<UIViewControllerContextTransitioning>)transitionContext
 {
-    return kBlurOverPresentTransitionDuration;
+    return kCameraShutterAnimationDuration;
 }
 
 - (void)animateTransition:(id<UIViewControllerContextTransitioning>)transitionContext
@@ -26,16 +30,44 @@ static const NSTimeInterval kBlurOverPresentTransitionDuration = 0.5f;
     UIViewController *toViewController = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
     [[transitionContext containerView] addSubview:fromViewController.view];
     [[transitionContext containerView] addSubview:toViewController.view];
-    
+
+    VRadialGradientView *radialGradientMaskView;
     if ([toViewController isKindOfClass:[VWorkspaceViewController class]])
     {
         VWorkspaceViewController *workvc = (VWorkspaceViewController *)toViewController;
         [workvc bringChromeOutOfView];
+        
+        radialGradientMaskView = [[VRadialGradientView alloc] initWithFrame:workvc.canvasView.bounds];
+        VRadialGradientLayer *radialGradientLayer = radialGradientMaskView.radialGradientLayer;
+        radialGradientLayer.colors = @[(id)[UIColor clearColor].CGColor,
+                                       (id)[UIColor blackColor].CGColor];
+        radialGradientLayer.innerCenter = CGPointMake(CGRectGetMidX(radialGradientLayer.bounds),
+                                                      CGRectGetMidY(radialGradientLayer.bounds));
+        radialGradientLayer.innerRadius = 0.0f;
+        radialGradientLayer.outerCenter = CGPointMake(CGRectGetMidX(radialGradientLayer.bounds),
+                                                      CGRectGetMidY(radialGradientLayer.bounds));
+        radialGradientLayer.outerRadius = 1.0f;
+        radialGradientMaskView.backgroundColor = [UIColor clearColor];
+        workvc.view.maskView = radialGradientMaskView;
+        [workvc.canvasView addSubview:radialGradientMaskView];
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+                       {
+                           VRadialGradientLayer *radialGradientLayer = radialGradientMaskView.radialGradientLayer;
+                           [CATransaction begin];
+                           {
+                               [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut]];
+                               [CATransaction setAnimationDuration:kCameraShutterAnimationDuration];
+                               
+                               radialGradientLayer.innerRadius = CGRectGetHeight(workvc.canvasView.frame);
+                               radialGradientLayer.outerRadius = CGRectGetHeight(workvc.canvasView.frame) + 1.0f;
+                           }
+                           [CATransaction commit];
+                       });
     }
-    
     [UIView animateWithDuration:[self transitionDuration:transitionContext]
                           delay:0.0f
-         usingSpringWithDamping:0.9f
+         usingSpringWithDamping:1.0f
           initialSpringVelocity:-1.0f
                         options:UIViewAnimationOptionAllowUserInteraction
                      animations:^

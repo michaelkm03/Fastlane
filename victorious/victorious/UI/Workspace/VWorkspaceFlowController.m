@@ -360,6 +360,8 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
     {
         VCameraViewController *cameraViewController = (VCameraViewController *)toVC;
         [cameraViewController setToolsHidden:NO];
+        self.state = VWorkspaceFlowControllerStateCapture;
+        return nil;
     }
     
     if (![fromVC isKindOfClass:[VPublishViewController class]] && ![toVC isKindOfClass:[VPublishViewController class]])

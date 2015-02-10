@@ -88,7 +88,7 @@ static const NSTimeInterval kShrinkingCameraShutterAnimationDuration = 1.5;
 
 - (void)flashGrowAnimations
 {
-    [UIView animateWithDuration:0.75f
+    [UIView animateWithDuration:1.75f
                           delay:0.0f
                         options:UIViewAnimationOptionCurveEaseIn
                      animations:^
@@ -97,7 +97,6 @@ static const NSTimeInterval kShrinkingCameraShutterAnimationDuration = 1.5;
          self.backgroundColor = self.tintColor;
      }
                      completion:nil];
-
 }
 
 - (void)flashShutterAnimations
@@ -218,7 +217,7 @@ static const NSTimeInterval kShrinkingCameraShutterAnimationDuration = 1.5;
             initialVelocity = -1.0f;
             animations = ^
             {
-                self.backgroundColor = [UIColor darkGrayColor];
+                self.backgroundColor = self.tintColor;
             };
             break;
         }

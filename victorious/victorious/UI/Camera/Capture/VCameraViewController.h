@@ -64,6 +64,11 @@
 @property (nonatomic, readonly) NSURL *capturedMediaURL;
 
 /**
+ A Preview image (may be lower quality than asset at capturedMediaURL).
+ */
+@property (nonatomic, readonly) UIImage *preivewImage;
+
+/**
  *  A property indicating whether the camera controls are on screen.
  */
 @property (nonatomic, assign) BOOL toolsHidden;
