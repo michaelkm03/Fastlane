@@ -71,12 +71,12 @@
 /**
  *  A property indicating whether the camera controls are on screen.
  */
-@property (nonatomic, assign) BOOL toolsHidden;
+@property (nonatomic, assign, getter=isToolBarHidden) BOOL toolbarHidden;
 
 /**
  *  An animated version of the toolsHidden setter.
  */
-- (void)setToolsHidden:(BOOL)toolsHidden
-              animated:(BOOL)animated;
+- (void)setToolbarHidden:(BOOL)toolbarHidden
+                animated:(BOOL)animated;
 
 @end

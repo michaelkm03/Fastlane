@@ -49,16 +49,16 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
 @property (nonatomic, strong, readwrite) UIImage *previewImage;
 @property (nonatomic, assign, getter=isTrashOpen) BOOL trashOpen;
 
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *topSpaceTopToolsToContainerConstraint;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomSpaceBottomToolsToContainerConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *topSpaceTopToolsToContainerConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *bottomSpaceBottomToolsToContainerConstraint;
 
-@property (weak, nonatomic) IBOutlet UIView *topToolsContainer;
-@property (weak, nonatomic) IBOutlet UIView *bottomToolsContainer;
-@property (weak, nonatomic) IBOutlet UIButton *closeButton;
+@property (nonatomic, weak) IBOutlet UIView *topToolsContainer;
+@property (nonatomic, weak) IBOutlet UIView *bottomToolsContainer;
+@property (nonatomic, weak) IBOutlet UIButton *closeButton;
 @property (nonatomic, weak) IBOutlet UIButton *switchCameraButton;
 @property (nonatomic, weak) IBOutlet UIButton *nextButton;
 @property (nonatomic, weak) IBOutlet UIButton *flashButton;
-@property (weak, nonatomic) IBOutlet UIButton *searchButton;
+@property (nonatomic, weak) IBOutlet UIButton *searchButton;
 @property (nonatomic, weak) IBOutlet UIView *previewView;
 
 @property (nonatomic, weak) IBOutlet UIButton *openAlbumButton;
@@ -345,16 +345,16 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
 
 #pragma mark - Property Accessors
 
-- (void)setToolsHidden:(BOOL)toolsHidden
+- (void)setToolbarHidden:(BOOL)toolsHidden
 {
-    [self setToolsHidden:toolsHidden
+    [self setToolbarHidden:toolsHidden
                 animated:NO];
 }
 
-- (void)setToolsHidden:(BOOL)toolsHidden
+- (void)setToolbarHidden:(BOOL)toolsHidden
               animated:(BOOL)animated
 {
-    _toolsHidden = toolsHidden;
+    _toolbarHidden = toolsHidden;
     
     void (^hideToolsBlock)(void) = ^void()
     {

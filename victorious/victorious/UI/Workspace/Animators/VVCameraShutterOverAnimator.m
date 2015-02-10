@@ -17,7 +17,7 @@
 #import "VRadialGradientLayer.h"
 #import "VCanvasView.h"
 
-static const NSTimeInterval kCameraShutterAnimationDuration = 0.45;
+static const NSTimeInterval kCameraShutterAnimationDuration = 0.55;
 static const CGFloat kGradientMagnitude = 20.0f;
 
 @implementation VVCameraShutterOverAnimator
@@ -56,6 +56,7 @@ static const CGFloat kGradientMagnitude = 20.0f;
         
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
                        {
+                           [CATransaction lock];
                            [CATransaction begin];
                            {
                                [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut]];
@@ -65,6 +66,7 @@ static const CGFloat kGradientMagnitude = 20.0f;
                                radialGradientLayer.outerRadius = CGRectGetHeight(workvc.canvasView.bounds) + kGradientMagnitude;
                            }
                            [CATransaction commit];
+                           [CATransaction unlock];
                        });
     }
     [UIView animateWithDuration:[self transitionDuration:transitionContext]
@@ -83,12 +85,12 @@ static const CGFloat kGradientMagnitude = 20.0f;
          if ([fromViewController isKindOfClass:[VCameraViewController class]])
          {
              VCameraViewController *cameraVC = (VCameraViewController *)fromViewController;
-             [cameraVC setToolsHidden:self.presenting];
+             [cameraVC setToolbarHidden:self.presenting];
          }
          if ([toViewController isKindOfClass:[VCameraViewController class]])
          {
              VCameraViewController *cameraVC = (VCameraViewController *)toViewController;
-             [cameraVC setToolsHidden:self.presenting];
+             [cameraVC setToolbarHidden:self.presenting];
          }
      }
                      completion:^(BOOL finished)
