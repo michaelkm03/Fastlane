@@ -215,11 +215,6 @@ const CGFloat kVLoadNextPagePoint = .75f;
         [self loadNextPageAction];
     }
     
-    if ([self.delegate respondsToSelector:@selector(scrollViewDidScroll:)])
-    {
-        [self.delegate scrollViewDidScroll:scrollView];
-    }
-    
     [self.navigationControllerScrollDelegate scrollViewDidScroll:scrollView];
 }
 
