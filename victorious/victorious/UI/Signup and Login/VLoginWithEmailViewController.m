@@ -25,23 +25,30 @@
 #import "VButton.h"
 #import "VInlineValidationTextField.h"
 
-@interface VLoginWithEmailViewController () <UITextFieldDelegate, UINavigationControllerDelegate, UIAlertViewDelegate>
-@property (nonatomic, weak) IBOutlet    VInlineValidationTextField     *usernameTextField;
-@property (nonatomic, weak) IBOutlet    VInlineValidationTextField     *passwordTextField;
-@property (nonatomic, weak) IBOutlet    VButton        *loginButton;
-@property (nonatomic, weak) IBOutlet    VButton        *cancelButton;
+#import "CCHLinkTextView.h"
+#import "VLinkTextViewHelper.h"
+#import "CCHLinkTextViewDelegate.h"
 
-@property (nonatomic, weak) IBOutlet    UIButton       *forgotPasswordButton;
-@property (nonatomic, strong)           VUser          *profile;
-@property (nonatomic, strong)           NSString       *deviceToken;
-@property (nonatomic, strong)           NSString       *userToken;
+@interface VLoginWithEmailViewController () <UITextFieldDelegate, UINavigationControllerDelegate, UIAlertViewDelegate, CCHLinkTextViewDelegate>
 
-@property (nonatomic, strong)           UIAlertView    *resetAlert;
-@property (nonatomic, strong)           UIAlertView    *thanksAlert;
-@property (nonatomic)                   BOOL            alertDismissed;
+@property (nonatomic, weak) IBOutlet VInlineValidationTextField *usernameTextField;
+@property (nonatomic, weak) IBOutlet VInlineValidationTextField *passwordTextField;
+@property (nonatomic, weak) IBOutlet VButton *loginButton;
+@property (nonatomic, weak) IBOutlet VButton *cancelButton;
 
-@property (nonatomic, strong)           VPasswordValidator *passwordValidator;
-@property (nonatomic, strong)           VEmailValidator *emailValidator;
+@property (nonatomic, strong) VUser *profile;
+@property (nonatomic, strong) NSString *deviceToken;
+@property (nonatomic, strong) NSString *userToken;
+
+@property (nonatomic, strong) UIAlertView *resetAlert;
+@property (nonatomic, strong) UIAlertView *thanksAlert;
+@property (nonatomic) BOOL alertDismissed;
+
+@property (nonatomic, strong) VPasswordValidator *passwordValidator;
+@property (nonatomic, strong) VEmailValidator *emailValidator;
+
+@property (nonatomic, strong) IBOutlet VLinkTextViewHelper *linkTextHelper;
+@property (nonatomic, strong) IBOutlet CCHLinkTextView *forgotPasswordTextView;
 
 @end
 
@@ -73,20 +80,24 @@
     self.loginButton.primaryColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     self.loginButton.style = VButtonStylePrimary;
     
-    self.forgotPasswordButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
-    [self.forgotPasswordButton setTitleColor:[UIColor colorWithWhite:0.14 alpha:1.0] forState:UIControlStateNormal];
-    
-    self.usernameTextField.delegate  =   self;
-    self.passwordTextField.delegate  =   self;
+    self.usernameTextField.delegate = self;
+    self.passwordTextField.delegate = self;
     
     self.usernameTextField.accessibilityIdentifier = VAutomationIdentifierLoginUsernameField;
     self.passwordTextField.accessibilityIdentifier = VAutomationIdentifierLoginPasswordField;
-    self.forgotPasswordButton.accessibilityIdentifier = VAutomationIdentifierLoginForgotPassword;
     self.cancelButton.accessibilityIdentifier = VAutomationIdentifierLoginCancel;
     self.loginButton.accessibilityIdentifier = VAutomationIdentifierLoginSubmit;
     
     self.passwordValidator = [[VPasswordValidator alloc] init];
     self.emailValidator = [[VEmailValidator alloc] init];
+    
+    NSString *linkText = NSLocalizedString( @"Reset here", @"" );
+    NSString *normalText = NSLocalizedString( @"Forgot Password?", @"" );
+    NSString *text = [NSString stringWithFormat:NSLocalizedString( @"%@ %@", @""), normalText, linkText];
+    NSRange range = [text rangeOfString:linkText];
+    [self.linkTextHelper setupLinkTextView:self.forgotPasswordTextView withText:text range:range];
+    self.forgotPasswordTextView.linkDelegate = self;
+    self.forgotPasswordTextView.accessibilityIdentifier = VAutomationIdentifierLoginForgotPassword;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -122,6 +133,13 @@
 - (NSUInteger)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskPortrait;
+}
+
+#pragma mark - CCHLinkTextViewDelegate
+
+- (void)linkTextView:(CCHLinkTextView *)linkTextView didTapLinkWithValue:(id)value
+{
+    [self performSegueWithIdentifier:@"toEnterResetToken" sender:self];
 }
 
 #pragma mark - Validation

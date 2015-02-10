@@ -29,6 +29,8 @@ static const CGFloat kBottomClearInset = 2.0f;
 
 @property (nonatomic, strong) NSAttributedString *oldPlaceholder;
 
+@property (nonatomic, strong) CALayer *bottomBorder;
+
 @end
 
 @implementation VInlineValidationTextField
@@ -69,6 +71,8 @@ static const CGFloat kBottomClearInset = 2.0f;
     self.inlineValidationView.hidden = !self.showInlineValidation;
     self.translatesAutoresizingMaskIntoConstraints = NO;
     [self addSubview:self.inlineValidationView];
+    
+    self.separatorColor = [[UIColor blackColor] colorWithAlphaComponent:0.25f];
 }
 
 #pragma mark - UIResponder
@@ -212,6 +216,18 @@ static const CGFloat kBottomClearInset = 2.0f;
                                          andError:&validationError];
     self.inlineValidationView.inlineValidationText = validationError.localizedDescription;
     self.inlineValidationView.hidden = !(!isValid && self.showInlineValidation);
+}
+
+- (void)drawRect:(CGRect)rect
+{
+    [super drawRect:rect];
+    
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetLineWidth( context, 2.0 );
+    CGContextSetStrokeColorWithColor( context, self.separatorColor.CGColor );
+    CGContextMoveToPoint( context, CGRectGetMinX(rect), CGRectGetMaxY(rect) );
+    CGContextAddLineToPoint( context, CGRectGetMaxX(rect), CGRectGetMaxY(rect) );
+    CGContextStrokePath( context );
 }
 
 @end

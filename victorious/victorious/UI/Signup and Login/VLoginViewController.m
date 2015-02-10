@@ -27,7 +27,7 @@
 
 #import "CCHLinkTextView.h"
 #import "CCHLinkTextViewDelegate.h"
-#import "CCHLinkGestureRecognizer.h"
+#import "VLinkTextViewHelper.h"
 
 @import Accounts;
 @import Social;
@@ -45,6 +45,7 @@
 @property (nonatomic, weak) IBOutlet UIImageView *backgroundImageView;
 
 @property (nonatomic, assign) VLoginType loginType;
+@property (nonatomic, strong) IBOutlet VLinkTextViewHelper *linkTextHelper;
 
 @end
 
@@ -78,7 +79,12 @@
     [self.twitterButton setTextColor:[UIColor whiteColor]];
     self.twitterButton.accessibilityIdentifier = VAutomationIdentifierLoginTwitter;
     
-    [self setupTitleTextView];
+    NSString *linkText = NSLocalizedString( @"Log in here", @"" );
+    NSString *normalText = NSLocalizedString( @"Already Registered?", @"" );
+    NSString *text = [NSString stringWithFormat:NSLocalizedString( @"%@ %@", @""), normalText, linkText];
+    NSRange range = [text rangeOfString:linkText];
+    [self.linkTextHelper setupLinkTextView:self.loginTextView withText:text range:range];
+    self.loginTextView.linkDelegate = self;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidAbortCreateProfile:) name:VProfileCreateViewControllerWasAbortedNotification object:nil];
 }
@@ -134,40 +140,6 @@
 - (BOOL)prefersStatusBarHidden
 {
     return YES;
-}
-
-#pragma mark - CCHLinkTextView
-
-- (void)setupTitleTextView
-{
-    self.loginTextView.linkDelegate = self;
-    self.loginTextView.textContainerInset = UIEdgeInsetsMake( 12, 0, 0, 0 );
-    self.loginTextView.textContainer.maximumNumberOfLines = 1;
-    self.loginTextView.textContainer.lineBreakMode = NSLineBreakByTruncatingTail;
-
-    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    paragraphStyle.alignment = NSTextAlignmentCenter;
-    UIColor *normalColor = [UIColor whiteColor];
-    UIColor *linkColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-    UIFont *font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
-    
-    NSDictionary *attributes = @{ NSFontAttributeName : font ?: [NSNull null],
-                                  NSForegroundColorAttributeName : normalColor,
-                                  NSParagraphStyleAttributeName : paragraphStyle };
-    
-    NSString *linkText = NSLocalizedString( @"Log in here", @"" );
-    NSString *normalText = NSLocalizedString( @"Already Registered?", @"" );
-    NSString *text = [NSString stringWithFormat:NSLocalizedString( @"%@ %@", @""), normalText, linkText];
-    
-    NSDictionary *linkAttributes = @{ NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle | NSUnderlinePatternSolid),
-                                      NSForegroundColorAttributeName : linkColor,
-                                      NSUnderlineColorAttributeName : linkColor,
-                                      CCHLinkAttributeName : linkText };
-    
-    NSMutableAttributedString *mutableAttributedString = [[NSMutableAttributedString alloc] initWithString:text attributes:attributes];
-    [mutableAttributedString addAttributes:linkAttributes range:[text rangeOfString:linkText]];
-    self.loginTextView.tintColor = linkColor;
-    self.loginTextView.attributedText = mutableAttributedString;
 }
 
 #pragma mark - CCHLinkTextViewDelegate

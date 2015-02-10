@@ -28,6 +28,7 @@ typedef NS_ENUM( NSInteger, VButtonStyle )
     VButtonStyleSecondary
 };
 
+
 /**
  A button that handles custom drawing according to its style property.
  */
@@ -38,9 +39,9 @@ typedef NS_ENUM( NSInteger, VButtonStyle )
  */
 @property (nonatomic, assign) VButtonStyle style;
 
-@property (nonatomic, strong) UIColor *primaryColor;
+@property (nonatomic) UIColor *primaryColor;
 
-@property (nonatomic, strong) UIColor *secondaryColor;
+@property (nonatomic) UIColor *secondaryColor;
 
 + (UIColor *)defaultSecondaryColor;
 

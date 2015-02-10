@@ -16,10 +16,10 @@
 
 @interface VResetPasswordViewController ()  <UITextFieldDelegate>
 
-@property (nonatomic, weak) IBOutlet    UITextField    *passwordTextField;
-@property (nonatomic, weak) IBOutlet    UITextField    *confirmPasswordTextField;
-@property (nonatomic, weak) IBOutlet    VButton        *updateButton;
-@property (nonatomic, weak) IBOutlet    VButton        *cancelButton;
+@property (nonatomic, weak) IBOutlet UITextField *passwordTextField;
+@property (nonatomic, weak) IBOutlet UITextField *confirmPasswordTextField;
+@property (nonatomic, weak) IBOutlet VButton *updateButton;
+@property (nonatomic, weak) IBOutlet VButton *cancelButton;
 
 @property (nonatomic, strong) VPasswordValidator *passwordValidator;
 

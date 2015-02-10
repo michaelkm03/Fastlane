@@ -11,10 +11,17 @@
 @interface VLoginButton ()
 
 @property (nonatomic, weak) IBOutlet UILabel *label;
+@property (nonatomic, weak) IBOutlet UIButton *button;
 
 @end
 
 @implementation VLoginButton
+
+- (void)setEnabled:(BOOL)enabled
+{
+    _enabled = enabled;
+    self.button.enabled = enabled;
+}
 
 - (void)setFont:(UIFont *)font
 {

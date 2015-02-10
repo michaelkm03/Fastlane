@@ -9,11 +9,14 @@
 #import "VButton.h"
 #import "UIColor+VBrightness.h"
 
+static const BOOL kScaleUpAnimationEnabled      = NO;
+
 static const CGFloat kCornderRadius             = 3.0f;
 static const CGFloat kBorderWidth               = 1.5f;
-static const CGFloat kPrimaryHighlightModAmount = 0.1f;
+static const CGFloat kPrimaryHighlightModAmount = 0.2f;
 static const CGFloat kDefaultSecondaryGray      = 0.2f;
 static const CGFloat kStartScale                = 0.97f;
+
 
 @interface VButton ()
 
@@ -47,7 +50,8 @@ static const CGFloat kStartScale                = 0.97f;
 {
     static UIActivityIndicatorView *activityIndicator;
     static dispatch_once_t onceToken;
-    dispatch_once( &onceToken, ^{
+    dispatch_once( &onceToken, ^
+    {
         activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
         activityIndicator.center = CGPointMake(CGRectGetWidth(self.frame) / 2.0, CGRectGetHeight(self.frame) / 2.0);
         [self addSubview:activityIndicator];
@@ -128,7 +132,10 @@ static const CGFloat kStartScale                = 0.97f;
     
     self.layer.cornerRadius = kCornderRadius;
     
-    self.transform = CGAffineTransformMakeScale( kStartScale, kStartScale );
+    if ( kScaleUpAnimationEnabled )
+    {
+        self.transform = CGAffineTransformMakeScale( kStartScale, kStartScale );
+    }
     
     [self setNeedsDisplay];
 }
@@ -152,18 +159,21 @@ static const CGFloat kStartScale                = 0.97f;
 
 - (void)setHighlighted:(BOOL)highlighted
 {
-    [UIView animateWithDuration:highlighted ? 0.3f : 0.5f
+    [UIView animateWithDuration:highlighted ? 0.2f : 0.3f
                           delay:0.0f
          usingSpringWithDamping:0.8f
           initialSpringVelocity:0.8f
                         options:kNilOptions animations:^
      {
          [self applyAnimatedHighlight:highlighted];
-     } completion:nil];
+     }
+                     completion:nil];
 }
 
 - (void)setTitle:(NSString *)title forState:(UIControlState)state
 {
+    [super setTitle:title forState:UIControlStateNormal];
+    
     if ( self.titleLabel.text == nil || self.titleLabel.text.length == 0 || [self.titleLabel.text isEqualToString:title] )
     {
         [super setTitle:title forState:UIControlStateNormal];
@@ -208,13 +218,17 @@ static const CGFloat kStartScale                = 0.97f;
             break;
         }
     }
-    if ( highlighted )
+    
+    if ( kScaleUpAnimationEnabled )
     {
-        self.transform = CGAffineTransformIdentity;
-    }
-    else
-    {
-        self.transform = CGAffineTransformMakeScale( kStartScale, kStartScale );
+        if ( highlighted )
+        {
+            self.transform = CGAffineTransformIdentity;
+        }
+        else
+        {
+            self.transform = CGAffineTransformMakeScale( kStartScale, kStartScale );
+        }
     }
 }
 

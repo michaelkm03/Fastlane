@@ -15,15 +15,19 @@
 #import "VObjectManager+Login.h"
 #import "VResetPasswordViewController.h"
 
-@interface VEnterResetTokenViewController () <UITextFieldDelegate>
+#import "VLinkTextViewHelper.h"
+#import "CCHLinkTextView.h"
+#import "CCHLinkTextViewDelegate.h"
+
+@interface VEnterResetTokenViewController () <UITextFieldDelegate, CCHLinkTextViewDelegate>
 
 @property (nonatomic, weak) IBOutlet UILabel *titleLabel;
 @property (nonatomic, weak) IBOutlet UILabel *messageLabel;
 @property (nonatomic, weak) IBOutlet UILabel *enterCodeLabel;
-
 @property (nonatomic, weak) IBOutlet UITextField *codeField;
 
-@property (nonatomic, weak) IBOutlet UIButton *resendButton;
+@property (nonatomic, weak) IBOutlet CCHLinkTextView *resendEmailTextView;
+@property (nonatomic, weak) IBOutlet VLinkTextViewHelper *linkTextHelper;
 
 @end
 
@@ -65,10 +69,9 @@
 
     self.codeField.tintColor = [UIColor blueColor];
     
-    [self.resendButton.titleLabel setTextColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor]];
-    [self.resendButton.titleLabel setFont:[[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont]];
-    
-    // Do any additional setup after loading the view.
+    NSString *text = NSLocalizedString( @"Resent Email", @"" );
+    [self.linkTextHelper setupLinkTextView:self.resendEmailTextView withText:text range:[text rangeOfString:text]];
+    self.resendEmailTextView.linkDelegate = self;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -88,9 +91,7 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-
-
-- (IBAction)pressedResend:(id)sender
+- (void)resendToken
 {
     [[self view] endEditing:YES];
     
@@ -126,6 +127,13 @@
              [alert show];
          }];
     }
+}
+
+#pragma mark - CCHLinkTextViewDelegate
+
+- (void)linkTextView:(CCHLinkTextView *)linkTextView didTapLinkWithValue:(id)value
+{
+    [self resendToken];
 }
 
 #pragma mark - UITextFieldDelegate

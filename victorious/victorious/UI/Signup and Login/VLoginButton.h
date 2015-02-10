@@ -10,6 +10,8 @@
 
 @interface VLoginButton : UIView
 
+@property (nonatomic, assign) BOOL enabled;
+
 - (void)setFont:(UIFont *)font;
 
 - (void)setTextColor:(UIColor *)textColor;

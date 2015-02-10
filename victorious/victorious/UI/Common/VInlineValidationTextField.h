@@ -36,6 +36,11 @@ typedef NS_ENUM(NSInteger, VTextFieldStyle)
 @property (nonatomic) BOOL showInlineValidation;
 
 /**
+ *  Color of the line that runs along the bottom to separate in a multi-field form.
+ */
+@property (nonatomic) UIColor *separatorColor;
+
+/**
  *  Show a shake animation (like the lock screen incorrect password), and vibrate the device.
  */
 - (void)showIncorrectTextAnimationAndVibration;
