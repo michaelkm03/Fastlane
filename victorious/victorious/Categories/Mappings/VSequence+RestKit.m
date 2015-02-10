@@ -71,7 +71,7 @@
     RKRelationshipMapping *trackingMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"tracking"
                                                                                          toKeyPath:VSelectorName(tracking)
                                                                                        withMapping:[VTracking entityMapping]];
-    RKRelationshipMapping *endCardMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"autoplay.endcard"
+    RKRelationshipMapping *endCardMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"endcard"
                                                                                          toKeyPath:VSelectorName(endCard)
                                                                                        withMapping:[VEndCard entityMapping]];
     [mapping addPropertyMapping:voteResultMapping];

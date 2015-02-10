@@ -215,7 +215,10 @@
                           withTotalTime:[videoPlayer playerItemDuration]];
     self.videoDidEnd = YES;
     
-    [super showEndCardWithViewModel:self.viewModel.endCardViewModel];
+    if ( self.viewModel.endCardViewModel != nil )
+    {
+        [super showEndCardWithViewModel:self.viewModel.endCardViewModel];
+    }
 }
 
 - (void)videoPlayerWillStartPlaying:(VCVideoPlayerViewController *)videoPlayer

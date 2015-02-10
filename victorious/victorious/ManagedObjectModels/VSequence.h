@@ -42,6 +42,7 @@
 @property (nonatomic, retain) VTracking *tracking;
 @property (nonatomic, retain) VUser *user;
 @property (nonatomic, retain) VEndCard *endCard;
+@property (nonatomic, retain) VEndCard *parentEndCard;
 @property (nonatomic, retain) NSSet *voteResults;
 @end
 

@@ -260,7 +260,7 @@
     
     VSequence *nextSequence = self.sequence.endCard.nextSequence;
     VStream *stream = nextSequence.streams.allObjects.firstObject;
-    if ( nextSequence || useHardCodedData )
+    if ( nextSequence )
     {
         VEndCardModel *endCardModel = [[VEndCardModel alloc] init];
         

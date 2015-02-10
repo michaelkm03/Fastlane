@@ -47,5 +47,6 @@
 @dynamic user;
 @dynamic voteResults;
 @dynamic endCard;
+@dynamic parentEndCard;
 
 @end

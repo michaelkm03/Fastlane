@@ -17,6 +17,7 @@
 @property (nonatomic, retain) NSNumber *canRepost;
 @property (nonatomic, retain) NSNumber *canShare;
 @property (nonatomic, retain) NSNumber *countdownDuration;
+@property (nonatomic, retain) VSequence *parentSequence;
 @property (nonatomic, retain) VSequence *nextSequence;
 
 @end

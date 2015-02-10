@@ -17,5 +17,6 @@
 @dynamic canShare;
 @dynamic countdownDuration;
 @dynamic nextSequence;
+@dynamic parentSequence;
 
 @end
