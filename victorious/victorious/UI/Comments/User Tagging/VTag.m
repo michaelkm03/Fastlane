@@ -1,0 +1,92 @@
+//
+//  VTag.m
+//  victorious
+//
+//  Created by Sharif Ahmed on 2/6/15.
+//  Copyright (c) 2015 Victorious. All rights reserved.
+//
+
+#import "VTag.h"
+#import "VHashtag.h"
+#import "VUser.h"
+#import "VTagStringFormatter.h"
+
+@interface VTag ()
+
+@end
+
+@implementation VTag
+
+#pragma mark - internal init
+
+//Setup a VTag object with a provided display and database-formatted string
+- (instancetype)initWithDisplayString:(NSString *)displayString
+              databaseFormattedString:(NSString *)databaseFormattedString
+               andTagStringAttributes:(NSDictionary *)tagStringAttributes
+{
+    self = [super init];
+    if (self)
+    {
+        _displayString = [[NSMutableAttributedString alloc] initWithString:displayString];
+        _tagStringAttributes = tagStringAttributes;
+        [_displayString setAttributes:tagStringAttributes range:NSMakeRange(0, displayString.length)];
+        _databaseFormattedString = databaseFormattedString;
+    }
+    return self;
+}
+
+#pragma mark - visible functions
+
+// Generate a new tag from the given database-formatted string and string attributes dictionary
++ (instancetype)tagWithHashtagString:(NSString *)hashtagString
+              andTagStringAttributes:(NSDictionary *)tagStringAttributes
+{
+    //Find the location, if any, of the hashtag tag within the userString
+    NSArray *matches = [[VTagStringFormatter hashtagRegex] matchesInString:hashtagString
+                                                                   options:0
+                                                                     range:NSMakeRange(0, hashtagString.length)];
+    
+    //There should only be one match
+    NSTextCheckingResult *hashtagCheckResult = [matches lastObject];
+    
+    //result rangeAtIndex 1 has the value of the regex closure (the display string)
+    return [[VTag alloc] initWithDisplayString:[hashtagString substringWithRange:[hashtagCheckResult rangeAtIndex:1]] databaseFormattedString:hashtagString andTagStringAttributes:tagStringAttributes];
+}
+
+// Generate a new tag from the given database-formatted string and string attributes dictionary
++ (instancetype)tagWithUserString:(NSString *)userString
+           andTagStringAttributes:(NSDictionary *)tagStringAttributes
+{
+    //Find the location, if any, of the user name within the userString
+    NSArray *matches = [[VTagStringFormatter userRegex] matchesInString:userString
+                                                                options:0
+                                                                  range:NSMakeRange(0, userString.length)];
+    
+    //There should only be one match
+    NSTextCheckingResult *userCheckResult = [matches lastObject];
+    
+    //result rangeAtIndex 1 has the value of the regex closure (the display string)
+    return [[VTag alloc] initWithDisplayString:[userString substringWithRange:[userCheckResult rangeAtIndex:1]] databaseFormattedString:userString andTagStringAttributes:tagStringAttributes];
+}
+
+// Generate a new tag from the given user and string attributes dictionary
++ (instancetype)tagWithUser:(VUser *)user
+     andTagStringAttributes:(NSDictionary *)tagStringAttributes
+{
+    NSAssert(user != nil, @"Must supply a user to create a tag");
+    NSAssert(tagStringAttributes != nil, @"Must supply tagStringAttributes to format");
+    
+    return [self tagWithUserString:[VTagStringFormatter databaseFormattedStringFromUser:user] andTagStringAttributes:tagStringAttributes];
+}
+
+// Generate a new tag from the given hashtag and string attributes dictionary
++ (instancetype)tagWithHashtag:(VHashtag *)hashtag
+        andTagStringAttributes:(NSDictionary *)tagStringAttributes
+{
+    NSAssert(hashtag != nil, @"Must supply a hashtag to create a tag");
+    NSAssert(tagStringAttributes != nil, @"Must supply tagStringAttributes to format");
+    
+    return [self tagWithHashtagString:[VTagStringFormatter databaseFormattedStringFromHashtag:hashtag] andTagStringAttributes:tagStringAttributes];
+}
+
+@end

@@ -8,6 +8,7 @@
 
 #import "VKeyboardInputAccessoryView.h"
 #import "VUserTaggingTextStorage.h"
+#import "VDependencyManager.h"
 
 // Constants
 #import "VConstants.h"
@@ -17,7 +18,7 @@
 
 const CGFloat VInputAccessoryViewDesiredMinimumHeight = 47.0f;
 
-@interface VKeyboardInputAccessoryView () <UITextViewDelegate, VUserTaggingTextStorageDelegate>
+@interface VKeyboardInputAccessoryView () <UITextViewDelegate>
 
 @property (nonatomic, assign) BOOL selectedMedia;
 @property (nonatomic, strong) VUserTaggingTextStorage *textStorage;
@@ -33,29 +34,33 @@ const CGFloat VInputAccessoryViewDesiredMinimumHeight = 47.0f;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceTextViewTopToContainerConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceTextViewToBottomContainerConstraint;
 
+@property (weak, nonatomic) VDependencyManager *dependencyManager;
+
 @end
 
 @implementation VKeyboardInputAccessoryView
 
 #pragma mark - Factory Methods
 
-+ (VKeyboardInputAccessoryView *)defaultInputAccessoryView
++ (VKeyboardInputAccessoryView *)defaultInputAccessoryViewWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     UINib *nibForInputAccessoryView = [UINib nibWithNibName:NSStringFromClass([self class])
                                                      bundle:nil];
     NSArray *nibContents = [nibForInputAccessoryView instantiateWithOwner:nil
                                                                   options:nil];
     
-    return [nibContents firstObject];
+    VKeyboardInputAccessoryView *accessoryView = [nibContents firstObject];
+    accessoryView.dependencyManager = dependencyManager;
+    
+    return accessoryView;
 }
 
 #pragma mark - Initialization
 
 - (void)awakeFromNib
 {
-    self.textStorage = [[VUserTaggingTextStorage alloc] init];
-    self.textStorage.delegate = self;
-    
+    self.textStorage = [[VUserTaggingTextStorage alloc] initWithString:nil andDependencyManager:self.dependencyManager textView:nil taggingDelegate:self.delegate];
+
     NSLayoutManager *layoutManager = [[NSLayoutManager alloc] init];
     [self.textStorage addLayoutManager:layoutManager];
     
@@ -71,6 +76,8 @@ const CGFloat VInputAccessoryViewDesiredMinimumHeight = 47.0f;
     
     [self.editingTextSuperview addSubview:editingTextView];
     self.editingTextView = editingTextView;
+    
+    self.textStorage.textView = self.editingTextView;
     
     [self.editingTextSuperview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[editingTextView]|"
                                                                                       options:0
@@ -103,7 +110,8 @@ const CGFloat VInputAccessoryViewDesiredMinimumHeight = 47.0f;
 
 - (NSString *)composedText
 {
-    return self.editingTextView.text ?: @"";
+    NSString *composedText = [self.textStorage databaseFormattedString];
+    return composedText ?: @"";
 }
 
 - (void)setPlaceholderText:(NSString *)placeholderText
@@ -248,8 +256,14 @@ shouldChangeTextInRange:(NSRange)range
     self.sendButton.enabled = (self.selectedMedia || (self.composedText.length > 0));
 }
 
-@end
+- (void)setDelegate:(id<VKeyboardInputAccessoryViewDelegate>)delegate
+{
+    _delegate = delegate;
+    self.textStorage.taggingDelegate = delegate;
+    self.textStorage.textView = self.editingTextView;
+}
 
+@end
 
 #pragma mark - Input AccessoryView
 

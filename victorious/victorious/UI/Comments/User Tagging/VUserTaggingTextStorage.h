@@ -7,17 +7,27 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "VUserTaggingTextStorageDelegate.h"
 
-@protocol VUserTaggingTextStorageDelegate <NSTextStorageDelegate>
-
-
-
-@end
+@class VDependencyManager;
 
 /**
  An NSTextStorage subclass that supports
  searching and tagging users.
  */
 @interface VUserTaggingTextStorage : NSTextStorage
+
+- (instancetype)initWithString:(NSString *)str andDependencyManager:(VDependencyManager *)dependencyManager
+                      textView:(UITextView *)textView
+               taggingDelegate:(id<VUserTaggingTextStorageDelegate>)taggingDelegate;
+
+//Create a database-formatted version of the current attributed string
+- (NSString *)databaseFormattedString;
+
+@property (nonatomic, weak) id<VUserTaggingTextStorageDelegate>taggingDelegate;
+@property (nonatomic, weak) VDependencyManager *dependencyManager;
+@property (nonatomic, weak) UITextView *textView;
+@property (nonatomic) NSDictionary *defaultStringAttributes;
+@property (nonatomic) NSDictionary *tagStringAttributes;
 
 @end

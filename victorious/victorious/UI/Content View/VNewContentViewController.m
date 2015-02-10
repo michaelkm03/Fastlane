@@ -367,7 +367,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     
     if (self.viewModel.sequence.canComment)
     {
-        VKeyboardInputAccessoryView *inputAccessoryView = [VKeyboardInputAccessoryView defaultInputAccessoryView];
+        VKeyboardInputAccessoryView *inputAccessoryView = [VKeyboardInputAccessoryView defaultInputAccessoryViewWithDependencyManager:nil];
         inputAccessoryView.translatesAutoresizingMaskIntoConstraints = NO;
         inputAccessoryView.returnKeyType = UIReturnKeyDone;
         inputAccessoryView.delegate = self;
@@ -400,7 +400,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
                                                                                       attribute:NSLayoutAttributeBottom
                                                                                      multiplier:1.0f
                                                                                        constant:0.0f];
-        self.bottomKeyboardToContainerBottomConstraint.priority = UILayoutPriorityDefaultLow;
+        //self.bottomKeyboardToContainerBottomConstraint.priority = UILayoutPriorityDefaultLow;
         [self.view insertSubview:inputAccessoryView
                     belowSubview:self.landscapeMaskOverlay];
         [self.view addConstraints:@[self.keyboardInputBarHeightConstraint, inputViewLeadingConstraint, inputViewTrailingconstraint, self.bottomKeyboardToContainerBottomConstraint]];
@@ -1332,6 +1332,30 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     self.enteringRealTimeComment = NO;
     self.realtimeCommentBeganTime = kCMTimeZero;
+}
+
+- (void)userTaggingTextStorage:(VUserTaggingTextStorage *)textStorage wantsToDismissViewController:(UITableViewController *)tableViewController
+{
+    [tableViewController.view removeFromSuperview];
+}
+
+- (void)userTaggingTextStorage:(VUserTaggingTextStorage *)textStorage wantsToShowViewController:(UIViewController *)viewController
+{    
+    // Inline Search layout constraints
+    UIView *searchTableView = viewController.view;
+    UIView *superview = self.view;
+    [superview insertSubview:searchTableView belowSubview:self.textEntryView];
+    [searchTableView setTranslatesAutoresizingMaskIntoConstraints:NO];
+    searchTableView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+    NSDictionary *views = @{@"searchTableView":searchTableView, @"textEntryView":self.textEntryView};
+    [superview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[searchTableView][textEntryView]"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:views]];
+    [superview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[searchTableView]|"
+                                                                      options:kNilOptions
+                                                                      metrics:nil
+                                                                        views:views]];
 }
 
 #pragma mark - VExperienceEnhancerControllerDelegate
