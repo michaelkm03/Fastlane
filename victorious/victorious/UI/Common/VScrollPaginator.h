@@ -29,10 +29,7 @@
 
 @interface VScrollPaginator : NSObject
 
-/**
- Designated initializer requiring a delegate.
- */
-- (instancetype)initWithDelegate:(id<VScrollPaginatorDelegate>)delegate NS_DESIGNATED_INITIALIZER;
+@property (nonatomic, weak) IBOutlet id<VScrollPaginatorDelegate> delegate;
 
 /*
  Drives the calculations of when next and previous pages should be loaded,
