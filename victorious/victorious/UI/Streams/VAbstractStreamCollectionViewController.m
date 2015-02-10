@@ -32,14 +32,25 @@
 #import "VAbstractFilter.h"
 
 #import "VSettingManager.h"
+#import "VScrollPaginator.h"
+#import "VImageSearchResultsFooterView.h"
+#import "VFooterActivityIndicatorView.h"
 
 const CGFloat kVLoadNextPagePoint = .75f;
 
 @interface VAbstractStreamCollectionViewController () <UICollectionViewDelegate>
 
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
+@property (nonatomic, weak) IBOutlet VScrollPaginator *scrollPaginator;
+@property (nonatomic, strong) UIActivityIndicatorView *bottomActivityIndicator;
+
+@property (nonatomic, strong) VImageSearchResultsFooterView *refreshFooter;
+
 @property (nonatomic, strong) NSLayoutConstraint *headerYConstraint;
 @property (nonatomic, strong) VNavigationControllerScrollDelegate *navigationControllerScrollDelegate;
+
+@property (nonatomic, assign) NSUInteger previousNumberOfRowsInStreamSection;
+@property (nonatomic, assign) BOOL shouldAnimateActivityViewFooter;
 
 @end
 
@@ -81,12 +92,16 @@ const CGFloat kVLoadNextPagePoint = .75f;
 {
     [super viewDidLoad];
     self.collectionView.contentInset = self.v_layoutInsets;
+
+    [self.collectionView registerNib:[VFooterActivityIndicatorView nibForSupplementaryView]
+          forSupplementaryViewOfKind:UICollectionElementKindSectionFooter
+                 withReuseIdentifier:[VFooterActivityIndicatorView reuseIdentifier]];
 }
 
 - (void)v_setLayoutInsets:(UIEdgeInsets)layoutInsets
 {
     [super v_setLayoutInsets:layoutInsets];
-
+    
     if ( [self isViewLoaded] )
     {
         self.collectionView.contentInset = layoutInsets;
@@ -101,6 +116,7 @@ const CGFloat kVLoadNextPagePoint = .75f;
     {
         [self refresh:nil];
     }
+    
     
     [self.refreshControl removeFromSuperview];
     self.refreshControl = [[UIRefreshControl alloc] init];
@@ -152,7 +168,11 @@ const CGFloat kVLoadNextPagePoint = .75f;
 
 - (IBAction)refresh:(UIRefreshControl *)sender
 {
-    [self refreshWithCompletion:nil];
+    [self refreshWithCompletion:^
+    {
+        const NSInteger lastSection = MAX( 0, [self.collectionView numberOfSections] - 1 );
+        self.previousNumberOfRowsInStreamSection = [self.collectionView numberOfItemsInSection:lastSection];
+    }];
 }
 
 - (void)refreshWithCompletion:(void(^)(void))completionBlock
@@ -184,13 +204,91 @@ const CGFloat kVLoadNextPagePoint = .75f;
     self.refreshControl.hidden = NO;
 }
 
-- (void)loadNextPageAction
+#pragma mark - Bottom activity indicator footer
+
+- (void)animateNewlyPopulatedCell:(UICollectionViewCell *)cell
+                 inCollectionView:(UICollectionView *)collectionView
+                      atIndexPath:(NSIndexPath *)indexPath
+{
+    const NSUInteger currentCount = [self.collectionView numberOfItemsInSection:indexPath.section];
+    const BOOL newPageDidLoad = currentCount != self.previousNumberOfRowsInStreamSection;
+    const BOOL isFirstRowOfNewPage = indexPath.row == (NSInteger) self.previousNumberOfRowsInStreamSection;
+    if ( newPageDidLoad && isFirstRowOfNewPage )
+    {
+        const CGFloat translationY = [VFooterActivityIndicatorView desiredSizeWithCollectionViewBounds:collectionView.bounds].height;
+        cell.transform = CGAffineTransformMakeTranslation( 0.0f, translationY );
+        [UIView animateWithDuration:0.5f
+                              delay:0.0f
+             usingSpringWithDamping:0.9f
+              initialSpringVelocity:0.2f
+                            options:kNilOptions
+                         animations:^
+         {
+             cell.transform = CGAffineTransformIdentity;
+         }
+                         completion:nil];
+        
+        self.previousNumberOfRowsInStreamSection = currentCount;
+    }
+}
+
+- (BOOL)shouldDisplayActivityViewFooterForCollectionView:(UICollectionView *)collectionView inSection:(NSInteger)section
+{
+    const BOOL isLastSection = section == MAX( [self.collectionView numberOfSections] - 1, 0);
+    const BOOL hasOneOrMoreItems = [collectionView numberOfItemsInSection:section] > 1;
+    return isLastSection && hasOneOrMoreItems;
+}
+
+- (BOOL)shouldAnimateActivityViewFooter
+{
+    // Once this property is read as YES, it automatically returns to NO
+    if ( _shouldAnimateActivityViewFooter )
+    {
+        _shouldAnimateActivityViewFooter = NO;
+        return YES;
+    }
+    
+    return NO;
+}
+
+#pragma mark - UICollectionViewDelegate
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section
+{
+    if ( [self shouldDisplayActivityViewFooterForCollectionView:collectionView inSection:section] )
+    {
+        return [VFooterActivityIndicatorView desiredSizeWithCollectionViewBounds:collectionView.bounds];
+    }
+    
+    return CGSizeZero;
+}
+
+- (void)collectionView:(UICollectionView *)collectionView willDisplaySupplementaryView:(UICollectionReusableView *)view forElementKind:(NSString *)elementKind atIndexPath:(NSIndexPath *)indexPath
+{
+    if ( [self shouldAnimateActivityViewFooter] && [view isKindOfClass:[VFooterActivityIndicatorView class]] )
+    {
+        [((VFooterActivityIndicatorView *)view) setActivityIndicatorVisible:YES animated:YES];
+    }
+}
+
+- (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ( [self shouldDisplayActivityViewFooterForCollectionView:collectionView inSection:indexPath.section] )
+    {
+        [self animateNewlyPopulatedCell:cell inCollectionView:collectionView atIndexPath:indexPath];
+    }
+}
+
+#pragma mark - VScrollPaginatorDelegate
+
+- (void)shouldLoadNextPage
 {
     if (self.streamDataSource.isFilterLoading)
     {
         return;
     }
     
+    self.shouldAnimateActivityViewFooter = YES;
     [self.streamDataSource loadNextPageWithSuccess:^(void)
      {
          __weak typeof(self) welf = self;
@@ -208,13 +306,7 @@ const CGFloat kVLoadNextPagePoint = .75f;
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    const CGFloat scrollThreshold = scrollView.contentSize.height * kVLoadNextPagePoint;
-    const BOOL isAcrossThreshold = scrollView.contentOffset.y + CGRectGetHeight(scrollView.bounds) > scrollThreshold;
-    if ( self.streamDataSource.count && ![self.streamDataSource isFilterLoading] && isAcrossThreshold )
-    {
-        [self loadNextPageAction];
-    }
-    
+    [self.scrollPaginator scrollViewDidScroll:scrollView];
     [self.navigationControllerScrollDelegate scrollViewDidScroll:scrollView];
 }
 

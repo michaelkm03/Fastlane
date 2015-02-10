@@ -160,8 +160,9 @@ static CGFloat const kTopInset = 22.0f; ///< The space between the top of the vi
     };
     
     [[VObjectManager sharedManager] getHashtagsSubscribedToWithPageType:VPageTypeFirst
-                                                          successBlock:successBlock
-                                                             failBlock:failureBlock];
+                                                           perPageLimit:1000
+                                                           successBlock:successBlock
+                                                              failBlock:failureBlock];
 }
 
 - (void)updateUserHashtags:(NSArray *)hashtags

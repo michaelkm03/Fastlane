@@ -10,6 +10,7 @@
 
 //UI
 #import "VDirectoryItemCell.h"
+#import "VFooterActivityIndicatorView.h"
 
 //Managers
 #import "VObjectManager+Pagination.h"
@@ -182,8 +183,17 @@ NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamColl
     return 1;
 }
 
-- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
+- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView
+           viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
 {
+    if ( [self.delegate respondsToSelector:@selector(shouldDisplayActivityViewFooterForCollectionView:inSection:)] &&
+        [self.delegate shouldDisplayActivityViewFooterForCollectionView:collectionView inSection:indexPath.section] )
+    {
+        return [self.collectionView dequeueReusableSupplementaryViewOfKind:kind
+                                                       withReuseIdentifier:[VFooterActivityIndicatorView reuseIdentifier]
+                                                              forIndexPath:indexPath];
+    }
+    
     return nil;
 }
 

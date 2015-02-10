@@ -41,6 +41,8 @@
 #import "VObjectManager+Login.h"
 #import "UIStoryboard+VMainStoryboard.h"
 
+#import "VTrackingManager.h"
+
 @interface VUserSearchViewController () <UITextFieldDelegate>
 @property (nonatomic, weak) IBOutlet UIView *noResultsView;
 @property (nonatomic, weak) IBOutlet UIImageView *noResultsIcon;
@@ -215,6 +217,7 @@
     {
         [self.activityIndicatorView startAnimating];
         [[VObjectManager sharedManager] findMessagableUsersBySearchString:self.searchField.text
+                                                                    limit:100
                                                          withSuccessBlock:searchSuccess
                                                                 failBlock:searchFail];
     }

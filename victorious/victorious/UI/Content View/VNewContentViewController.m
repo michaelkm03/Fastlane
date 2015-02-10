@@ -73,7 +73,7 @@
 
 #import "VTransitionDelegate.h"
 #import "VEditCommentViewController.h"
-#import "VModalTransition.h"
+#import "VSimpleModalTransition.h"
 
 #import "VTracking.h"
 #import "VCommentHighlighter.h"
@@ -125,7 +125,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 @property (nonatomic, assign) CMTime realtimeCommentBeganTime;
 
 @property (nonatomic, strong) VTransitionDelegate *transitionDelegate;
-@property (nonatomic, strong) VScrollPaginator *scrollPaginator;
+@property (nonatomic, weak) IBOutlet VScrollPaginator *scrollPaginator;
 
 @property (nonatomic, strong) VCommentHighlighter *commentHighlighter;
 
@@ -141,7 +141,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     contentViewController.viewModel = viewModel;
     contentViewController.hasAutoPlayed = NO;
     
-    VModalTransition *modalTransition = [[VModalTransition alloc] init];
+    VSimpleModalTransition *modalTransition = [[VSimpleModalTransition alloc] init];
     contentViewController.transitionDelegate = [[VTransitionDelegate alloc] initWithTransition:modalTransition];
     contentViewController.elapsedTimeFormatter = [[VElapsedTimeFormatter alloc] init];
     
@@ -347,8 +347,6 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    self.scrollPaginator = [[VScrollPaginator alloc] initWithDelegate:self];
 
     self.commentHighlighter = [[VCommentHighlighter alloc] initWithCollectionView:self.contentCollectionView];
     
@@ -507,11 +505,15 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 {
     [super viewDidAppear:animated];
     
-    self.handoffObject = [[NSUserActivity alloc] initWithActivityType:[NSString stringWithFormat:@"com.victorious.handoff.%@", self.viewModel.sequence.name]];
-    self.handoffObject.webpageURL = self.viewModel.shareURL;
-    self.handoffObject.delegate = self;
-    [self.handoffObject becomeCurrent];
-
+    if ((self.viewModel.sequence.remoteId != nil) && (self.viewModel.shareURL != nil))
+    {
+        NSString *handoffIdentifier = [NSString stringWithFormat:@"com.victorious.handoff.%@", self.viewModel.sequence.remoteId];
+        self.handoffObject = [[NSUserActivity alloc] initWithActivityType:handoffIdentifier];
+        self.handoffObject.webpageURL = self.viewModel.shareURL;
+        self.handoffObject.delegate = self;
+        [self.handoffObject becomeCurrent];
+    }
+    
     [self.contentCollectionView flashScrollIndicators];
 }
 

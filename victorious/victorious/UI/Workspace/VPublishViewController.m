@@ -20,6 +20,12 @@
 
 #import <MBProgressHUD/MBProgressHUD.h>
 
+#import "NSURL+MediaType.h"
+
+#import "VCameraRollPublishShareController.h"
+
+@import AssetsLibrary;
+
 static const CGFloat kTriggerVelocity = 500.0f;
 static const CGFloat kSnapDampingConstant = 0.9f;
 static const CGFloat kTopSpacePublishPrompt = 50.0f;
@@ -35,6 +41,8 @@ static const CGFloat kTopSpacePublishPrompt = 50.0f;
 @property (weak, nonatomic) IBOutlet UIButton *cancelButton;
 @property (strong, nonatomic) IBOutlet UIPanGestureRecognizer *panGestureRecognizer;
 @property (strong, nonatomic) IBOutlet UITapGestureRecognizer *tapGestureRecognizer;
+@property (weak, nonatomic) IBOutlet UILabel *saveToCameraRollLabel;
+@property (weak, nonatomic) IBOutlet UISwitch *cameraRollSwitch;
 
 @property (nonatomic, strong) UIDynamicAnimator *animator;
 @property (nonatomic, strong) UIAttachmentBehavior *attachmentBehavior;
@@ -44,6 +52,8 @@ static const CGFloat kTopSpacePublishPrompt = 50.0f;
 @property (nonatomic, copy, readwrite) void (^animateInBlock)(void);
 
 @property (nonatomic, assign) BOOL publishing;
+
+@property (nonatomic, strong) VCameraRollPublishShareController *cameraPublishController;
 
 @end
 
@@ -82,9 +92,14 @@ static const CGFloat kTopSpacePublishPrompt = 50.0f;
     
     [self setupBehaviors];
     
+    self.cameraPublishController = [[VCameraRollPublishShareController alloc] init];
+    self.cameraPublishController.switchToConfigure = self.cameraRollSwitch;
+    
     self.publishButton.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     self.publishButton.titleLabel.textColor = [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
     self.captionTextView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+    self.saveToCameraRollLabel.font = [self.dependencyManager fontForKey:VDependencyManagerLabel2FontKey];
+    self.cameraRollSwitch.onTintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     
     __weak typeof(self) welf = self;
     
@@ -114,14 +129,15 @@ static const CGFloat kTopSpacePublishPrompt = 50.0f;
     inputAccessoryView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     self.captionTextView.inputAccessoryView = inputAccessoryView;
     
+    NSMutableDictionary *attributes = [[NSMutableDictionary alloc] init];
     UIFont *headerFont = [self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
     if (headerFont != nil)
     {
-        self.cancelButton.titleLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Cancel", @"")
-                                                                                      attributes:@{NSFontAttributeName: headerFont}];
+        [attributes setObject:headerFont forKey:NSFontAttributeName];
     }
-    self.cancelButton.titleLabel.text = NSLocalizedString(@"Cancel", @"");
-
+    self.cancelButton.titleLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Cancel", @"")
+                                                                                  attributes:attributes];
+    
     self.previewImageView.image = self.publishParameters.previewImage;
 }
 
@@ -158,6 +174,7 @@ static const CGFloat kTopSpacePublishPrompt = 50.0f;
     
     self.publishParameters.caption = self.captionTextView.text;
     self.publishParameters.captionType = VCaptionTypeNormal;
+    self.publishParameters.shouldSaveToCameraRoll = self.cameraRollSwitch.on;
     
     __weak typeof(self) welf = self;
     [[VObjectManager sharedManager] uploadMediaWithPublishParameters:self.publishParameters
@@ -237,6 +254,14 @@ static const CGFloat kTopSpacePublishPrompt = 50.0f;
 - (void)handleGestureEnd:(UIPanGestureRecognizer *)gestureRecognizer
 {
     [self.animator removeBehavior:self.attachmentBehavior];
+    
+    __weak __typeof__(self) weakSelf = self;
+    BOOL offScreen = CGRectIsNull(CGRectIntersection(self.view.bounds, self.publishPrompt.frame));
+    if (offScreen && weakSelf.completion)
+    {
+        weakSelf.completion(NO);
+        return;
+    }
     
     CGPoint velocity = [gestureRecognizer velocityInView:self.view];
     CGFloat velocityMagnitude = hypot(velocity.x, velocity.y);
@@ -325,10 +350,19 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
 {
-    if (CGRectContainsPoint(self.captionTextView.bounds, [touch locationInView:self.captionTextView]))
+    BOOL onCameraRollSwitch = CGRectContainsPoint(self.cameraRollSwitch.bounds, [touch locationInView:self.cameraRollSwitch]);
+    BOOL onCaptionTextView = CGRectContainsPoint(self.captionTextView.bounds, [touch locationInView:self.captionTextView]);
+    if (onCameraRollSwitch || onCaptionTextView)
     {
         return NO;
     }
+    
+    BOOL onPublishPrompt = CGRectContainsPoint(self.publishPrompt.bounds, [touch locationInView:self.publishPrompt]);
+    if (onPublishPrompt && (gestureRecognizer == self.tapGestureRecognizer))
+    {
+        return NO;
+    }
+    
     return YES;
 }
 
