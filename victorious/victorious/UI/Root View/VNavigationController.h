@@ -10,6 +10,8 @@
 
 #import <UIKit/UIKit.h>
 
+@class VNavigationControllerScrollDelegate;
+
 /**
  A wrapper around UINavigation controller 
  that adds some new functionality
@@ -29,6 +31,22 @@
  */
 @property (nonatomic, strong) UIBarItem *leftBarButtonItem;
 
+/**
+ A supplementary header view, if one exists
+ */
+@property (nonatomic, readonly) UIView *supplementaryHeaderView;
+
+/**
+ Adds a transform to the navigation bar and any supplemental header views
+ */
+- (void)transformNavigationBar:(CGAffineTransform)transform;
+
+/**
+ Hides the navigation bar and any supplementary 
+ header view without animation.
+ */
+- (void)setNavigationBarHidden:(BOOL)hidden;
+
 @end
 
 #pragma mark -
@@ -45,13 +63,10 @@
 - (BOOL)v_prefersNavigationBarHidden;
 
 /**
- If you have a scroll view in your view heirarchy and you
- would like the navigation bar to automatically appear
- and disappear as the user scrolls, set yourself
- as a scroll view delegate and call this method from
- within your -scrollViewDidScroll: method.
+ If this view controller has been pushed onto a navigation controller
+ controlled by an instance of VNavigationController, return it.
  */
-- (void)v_scrollViewDidScroll:(UIScrollView *)scrollView;
+- (VNavigationController *)v_navigationController;
 
 @end
 

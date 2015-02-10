@@ -160,9 +160,9 @@
 		03484C071930294D00403FB1 /* NSURL+MediaType.m in Sources */ = {isa = PBXBuildFile; fileRef = 03484C061930294D00403FB1 /* NSURL+MediaType.m */; };
 		034BCC3F19F5CF5D00114F6C /* MuseoSans-500.otf in Resources */ = {isa = PBXBuildFile; fileRef = 03C1859019B42CEA00E27D05 /* MuseoSans-500.otf */; };
 		0350426A194F711A008D78A3 /* NSIndexSet+Map.m in Sources */ = {isa = PBXBuildFile; fileRef = 03504269194F711A008D78A3 /* NSIndexSet+Map.m */; };
+		0358FCEE1A65E785004DD7A1 /* VScaffoldViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0358FCED1A65E785004DD7A1 /* VScaffoldViewController.m */; };
 		035B1B6A1A4A1DA300A8D365 /* VHamburgerButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 035B1B691A4A1DA300A8D365 /* VHamburgerButton.m */; };
 		035B1B6C1A4A1F6800A8D365 /* VHamburgerButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = 035B1B6B1A4A1F6800A8D365 /* VHamburgerButton.xib */; };
-		0358FCEE1A65E785004DD7A1 /* VScaffoldViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0358FCED1A65E785004DD7A1 /* VScaffoldViewController.m */; };
 		03610584194140AA0069D49E /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 03610583194140AA0069D49E /* libsqlite3.dylib */; };
 		0361058A194154F40069D49E /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03610589194154F40069D49E /* SystemConfiguration.framework */; };
 		0362B42019F5F6950036B9C8 /* defaultTheme.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0314D07D19B4688E00FA363C /* defaultTheme.plist */; };
@@ -224,6 +224,7 @@
 		036F38971A0C4DEA0014DF66 /* Volkhov-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F38611A0C4DEA0014DF66 /* Volkhov-Bold.ttf */; };
 		036F38981A0C4DEA0014DF66 /* Volkhov-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F38621A0C4DEA0014DF66 /* Volkhov-Regular.ttf */; };
 		036F4E781A1302E600F9E721 /* VTemplateGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 036F4E771A1302E600F9E721 /* VTemplateGenerator.m */; };
+		0371F80F1A85B82C00A4257B /* VNavigationControllerScrollDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 03363C161A8426C40027B415 /* VNavigationControllerScrollDelegate.m */; };
 		0372587519D61B0800836B3F /* VUploadTaskCreator.m in Sources */ = {isa = PBXBuildFile; fileRef = 0372587419D61B0800836B3F /* VUploadTaskCreator.m */; };
 		037A643019F727AB0001C90B /* VCVideoPlayerToolbarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 037A642F19F727AB0001C90B /* VCVideoPlayerToolbarView.xib */; };
 		037CB73519CFE02C0084BBED /* sampleImage.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 037CB73419CFE02C0084BBED /* sampleImage.jpg */; };
@@ -1005,6 +1006,8 @@
 		0330D4281A6ED98D007EEEE4 /* VNavigationDestinationsProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNavigationDestinationsProvider.h; sourceTree = "<group>"; };
 		0330D4291A6F5BAE007EEEE4 /* NSURL+VPathHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+VPathHelper.h"; sourceTree = "<group>"; };
 		0330D42A1A6F5BAE007EEEE4 /* NSURL+VPathHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+VPathHelper.m"; sourceTree = "<group>"; };
+		03363C151A8426C40027B415 /* VNavigationControllerScrollDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNavigationControllerScrollDelegate.h; sourceTree = "<group>"; };
+		03363C161A8426C40027B415 /* VNavigationControllerScrollDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNavigationControllerScrollDelegate.m; sourceTree = "<group>"; };
 		033F770E1A2D6B8A00E6A13A /* VUnreadMessageCountCoordinator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUnreadMessageCountCoordinator.h; sourceTree = "<group>"; };
 		033F770F1A2D6B8A00E6A13A /* VUnreadMessageCountCoordinator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUnreadMessageCountCoordinator.m; sourceTree = "<group>"; };
 		0343AF7F1A143E6D0025B9F8 /* VObjectManager+LoginTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VObjectManager+LoginTests.m"; sourceTree = "<group>"; };
@@ -1016,11 +1019,11 @@
 		03484C061930294D00403FB1 /* NSURL+MediaType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+MediaType.m"; sourceTree = "<group>"; };
 		03504268194F711A008D78A3 /* NSIndexSet+Map.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSIndexSet+Map.h"; sourceTree = "<group>"; };
 		03504269194F711A008D78A3 /* NSIndexSet+Map.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSIndexSet+Map.m"; sourceTree = "<group>"; };
+		0358FCEC1A65E785004DD7A1 /* VScaffoldViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VScaffoldViewController.h; sourceTree = "<group>"; };
+		0358FCED1A65E785004DD7A1 /* VScaffoldViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VScaffoldViewController.m; sourceTree = "<group>"; };
 		035B1B681A4A1DA300A8D365 /* VHamburgerButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHamburgerButton.h; sourceTree = "<group>"; };
 		035B1B691A4A1DA300A8D365 /* VHamburgerButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHamburgerButton.m; sourceTree = "<group>"; };
 		035B1B6B1A4A1F6800A8D365 /* VHamburgerButton.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VHamburgerButton.xib; sourceTree = "<group>"; };
-		0358FCEC1A65E785004DD7A1 /* VScaffoldViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VScaffoldViewController.h; sourceTree = "<group>"; };
-		0358FCED1A65E785004DD7A1 /* VScaffoldViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VScaffoldViewController.m; sourceTree = "<group>"; };
 		03610583194140AA0069D49E /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		03610589194154F40069D49E /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		036AA36119F32B3800FE6B9D /* VPhotoLibraryManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPhotoLibraryManager.h; sourceTree = "<group>"; };
@@ -2267,9 +2270,13 @@
 				D8AF00EE1A128A7200B147C4 /* VHashTagTextView.m */,
 				A7F8DD4B1A0B065800F82256 /* VHeaderView.h */,
 				A7F8DD4C1A0B065800F82256 /* VHeaderView.m */,
-				03B3D3DB1A3ECC9500F0634A /* VMultipleContainerViewController */,
+				D8B70FE51A8015E500090C5E /* VInlineValidationTextField.h */,
+				D8B70FE61A8015E500090C5E /* VInlineValidationTextField.m */,
+				D8B70FE81A805CC800090C5E /* VInlineValidationView.h */,
+				D8B70FE91A805CC800090C5E /* VInlineValidationView.m */,
 				D8C1FD061A69C2E40072892B /* VKeyboardNotificationManager.h */,
 				D8C1FD071A69C2E40072892B /* VKeyboardNotificationManager.m */,
+				03B3D3DB1A3ECC9500F0634A /* VMultipleContainerViewController */,
 				A70564C019E781EE004A8387 /* VNoContentTableViewCell.h */,
 				A70564C119E781EE004A8387 /* VNoContentTableViewCell.m */,
 				03FD87D419F96F6900D93BAA /* VNoContentTableViewCell.xib */,
@@ -2290,10 +2297,6 @@
 				A73A86C81A6EE39C008C6355 /* VVideoUtils.m */,
 				A73A87001A71ADF9008C6355 /* VVideoView.h */,
 				A73A87011A71ADF9008C6355 /* VVideoView.m */,
-				D8B70FE51A8015E500090C5E /* VInlineValidationTextField.h */,
-				D8B70FE61A8015E500090C5E /* VInlineValidationTextField.m */,
-				D8B70FE81A805CC800090C5E /* VInlineValidationView.h */,
-				D8B70FE91A805CC800090C5E /* VInlineValidationView.m */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -2521,6 +2524,8 @@
 				0314D3EA19B46B5E00FA363C /* VMenuController.m */,
 				03B3D3D41A3D172800F0634A /* VNavigationController.h */,
 				03B3D3D51A3D172800F0634A /* VNavigationController.m */,
+				03363C151A8426C40027B415 /* VNavigationControllerScrollDelegate.h */,
+				03363C161A8426C40027B415 /* VNavigationControllerScrollDelegate.m */,
 				0314D3EB19B46B5E00FA363C /* VRootViewController.h */,
 				0314D3EC19B46B5E00FA363C /* VRootViewController.m */,
 				0358FCEC1A65E785004DD7A1 /* VScaffoldViewController.h */,
@@ -3727,6 +3732,7 @@
 				BE9674F919E335060072E87A /* VMarqueeControllerTests.m */,
 				0309318F1A18426E004E9781 /* VMenuCollectionViewDataSourceTests.m */,
 				BE9674FA19E335060072E87A /* VMultipartFormDataWriterTests.m */,
+				D80BAB561A688673003A3068 /* VNodeFetcherTests.m */,
 				A7B98A431A267AAA00C58335 /* VNotificationSettingsStateManagerTests.m */,
 				A7D2881F1A2507A0006CF0EC /* VNotificationSettingsViewControllerTests.m */,
 				0343AF7F1A143E6D0025B9F8 /* VObjectManager+LoginTests.m */,
@@ -3752,7 +3758,6 @@
 				A7AB4FE819F5A6A300BFFE35 /* VVoteTypeFetcherTests.m */,
 				D871A4011A157D650046A12C /* VVRTCUserPostedAtFormatterTests.m */,
 				A769C3F41A131F5C00698D0C /* VWebViewFactoryTests.m */,
-				D80BAB561A688673003A3068 /* VNodeFetcherTests.m */,
 			);
 			path = victoriousTests;
 			sourceTree = "<group>";
@@ -4978,6 +4983,7 @@
 				D8C7CF5D19DCCD0200BA33E5 /* VExperienceEnhancerCell.m in Sources */,
 				A7F8DD4D1A0B065800F82256 /* VHeaderView.m in Sources */,
 				BE5C7388187E37E500A3340D /* VConversation+RestKit.m in Sources */,
+				0371F80F1A85B82C00A4257B /* VNavigationControllerScrollDelegate.m in Sources */,
 				0314D4A019B46B5E00FA363C /* VImageSearchResultCell.m in Sources */,
 				BE89D981192141D600D97E7F /* VUser+Fetcher.m in Sources */,
 				A7976D0719FAE8EA00B5A145 /* AVAsset+Orientation.m in Sources */,

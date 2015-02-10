@@ -8,16 +8,24 @@
 
 #import "VDependencyManager.h"
 #import "VNavigationController.h"
+#import "VNavigationControllerScrollDelegate.h"
 #import "UIImage+VSolidColor.h"
 #import "UIViewController+VLayoutInsets.h"
 
 #import <objc/runtime.h>
+
+@interface UIViewController (VNavigationControllerPrivate)
+
+- (void)v_setNavigationController:(VNavigationController *)navigationController;
+
+@end
 
 @interface VNavigationController () <UINavigationControllerDelegate>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) UINavigationController *innerNavigationController;
 @property (nonatomic, strong) UIView *supplementaryHeaderView;
+@property (nonatomic, strong) UIViewController *displayedViewController; ///< The view controller currently on the top of the nav stack, as far as we know
 
 @end
 
@@ -119,6 +127,29 @@
 - (BOOL)shouldAutorotate
 {
     return self.innerNavigationController.topViewController.shouldAutorotate;
+}
+
+#pragma mark -
+
+- (void)transformNavigationBar:(CGAffineTransform)transform
+{
+    self.innerNavigationController.navigationBar.transform = transform;
+    self.supplementaryHeaderView.transform = transform;
+}
+
+- (void)setNavigationBarHidden:(BOOL)hidden
+{
+    [self.innerNavigationController setNavigationBarHidden:hidden animated:NO];
+    
+    if ( hidden )
+    {
+        self.supplementaryHeaderView.hidden = YES;
+    }
+    else if ( self.supplementaryHeaderView != nil )
+    {
+        self.supplementaryHeaderView.hidden = NO;
+        [self addSupplementaryHeaderView:self.supplementaryHeaderView];
+    }
 }
 
 #pragma mark - Supplementary Header Views
@@ -267,6 +298,7 @@
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
     [self provideLayoutInsetsToViewController:viewController];
+    [viewController v_setNavigationController:self];
     
     BOOL prefersNavigationBarHidden = [viewController v_prefersNavigationBarHidden];
     
@@ -279,6 +311,11 @@
     {
         [self.innerNavigationController setNavigationBarHidden:YES animated:animated];
         [self setNeedsStatusBarAppearanceUpdate];
+    }
+    
+    if ( viewController.toolbarItems.count > 0 )
+    {
+        [self.innerNavigationController setToolbarHidden:NO animated:animated];
     }
     
     UIView *newSupplementaryHeaderView = viewController.navigationItem.v_supplementaryHeaderView;
@@ -316,9 +353,17 @@
     }
 }
 
+- (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    [self.displayedViewController v_setNavigationController:nil];
+    self.displayedViewController = viewController;
+}
+
 @end
 
 #pragma mark -
+
+static char kNavigationControllerKey;
 
 @implementation UIViewController (VNavigationController)
 
@@ -327,9 +372,26 @@
     return NO;
 }
 
-- (void)v_scrollViewDidScroll:(UIScrollView *)scrollView
+- (VNavigationController *)v_navigationController
 {
-    // TODO
+    VNavigationController *navigationController = (VNavigationController *)objc_getAssociatedObject(self, &kNavigationControllerKey);
+    
+    if ( navigationController == nil )
+    {
+        return [self.parentViewController v_navigationController];
+    }
+    return navigationController;
+}
+
+@end
+
+#pragma mark -
+
+@implementation UIViewController (VNavigationControllerPrivate)
+
+- (void)v_setNavigationController:(VNavigationController *)navigationController
+{
+    objc_setAssociatedObject(self, &kNavigationControllerKey, navigationController, OBJC_ASSOCIATION_ASSIGN);
 }
 
 @end

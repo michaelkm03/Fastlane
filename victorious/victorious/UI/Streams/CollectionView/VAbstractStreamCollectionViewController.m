@@ -15,6 +15,7 @@
 
 #import "UIActionSheet+VBlocks.h"
 #import "UIViewController+VLayoutInsets.h"
+#import "VNavigationControllerScrollDelegate.h"
 #import "VObjectManager+Login.h"
 
 //View Controllers
@@ -37,8 +38,8 @@ const CGFloat kVLoadNextPagePoint = .75f;
 @interface VAbstractStreamCollectionViewController () <UICollectionViewDelegate>
 
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
-
 @property (nonatomic, strong) NSLayoutConstraint *headerYConstraint;
+@property (nonatomic, strong) VNavigationControllerScrollDelegate *navigationControllerScrollDelegate;
 
 @end
 
@@ -110,6 +111,18 @@ const CGFloat kVLoadNextPagePoint = .75f;
     //Since we're using the collection flow delegate method for the insets, we need to manually position the frame of the refresh control.
     subView.frame = CGRectMake(CGRectGetMinX(subView.frame), CGRectGetMinY(subView.frame) + self.contentInset.top / 2,
                                CGRectGetWidth(subView.frame), CGRectGetHeight(subView.frame));
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    self.navigationControllerScrollDelegate = [[VNavigationControllerScrollDelegate alloc] initWithNavigationController:[self v_navigationController]];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    self.navigationControllerScrollDelegate = nil;
 }
 
 - (void)setCurrentStream:(VStream *)currentStream
@@ -206,6 +219,18 @@ const CGFloat kVLoadNextPagePoint = .75f;
     {
         [self.delegate scrollViewDidScroll:scrollView];
     }
+    
+    [self.navigationControllerScrollDelegate scrollViewDidScroll:scrollView];
+}
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    [self.navigationControllerScrollDelegate scrollViewWillBeginDragging:scrollView];
+}
+
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
+{
+    [self.navigationControllerScrollDelegate scrollViewWillEndDragging:scrollView withVelocity:velocity targetContentOffset:targetContentOffset];
 }
 
 #pragma mark - VStreamCollectionDataDelegate
