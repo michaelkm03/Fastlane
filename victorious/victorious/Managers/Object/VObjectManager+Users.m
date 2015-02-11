@@ -395,7 +395,7 @@ static NSString * const kVAPIParamSearch = @"search";
         }
     };    
     
-    return [self GET:[NSString stringWithFormat:@"/api/userinfo/search/%@/%ld/%@", search_string, pageLimit, context]
+    return [self GET:[NSString stringWithFormat:@"/api/userinfo/search/%@/%ld/%@", search_string, (long)pageLimit, context]
                object:nil
            parameters:nil
          successBlock:fullSuccess
