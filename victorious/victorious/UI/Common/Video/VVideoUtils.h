@@ -23,6 +23,4 @@
  */
 - (void)createPlayerItemWithURL:(NSURL *)itemURL loop:(BOOL)loop readyCallback:(void(^)(AVPlayerItem *, CMTime duration))onReady;
 
-@property (nonatomic, readonly) NSUInteger compositionLoopCount;
-
 @end

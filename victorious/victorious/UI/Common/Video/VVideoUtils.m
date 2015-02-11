@@ -32,16 +32,6 @@ static const Float64 kAssetLoopClipping = 0.08;
 
 @implementation VVideoUtils
 
-- (instancetype)init
-{
-    self = [super init];
-    if (self)
-    {
-        _compositionLoopCount = 1;
-    }
-    return self;
-}
-
 - (AVComposition *)loopingCompositionWithAsset:(AVAsset *)asset
 {
     AVMutableComposition *composition = [[AVMutableComposition alloc] init];
@@ -65,12 +55,10 @@ static const Float64 kAssetLoopClipping = 0.08;
                        if ( loop )
                        {
                            AVComposition *composition = [self loopingCompositionWithAsset:asset];
-                           self.compositionLoopCount = kCompositionAssetCount;
                            playerItem = [AVPlayerItem playerItemWithAsset:composition];
                        }
                        else
                        {
-                           self.compositionLoopCount = 1;
                            playerItem = [AVPlayerItem playerItemWithAsset:asset];
                        }
                        
