@@ -379,9 +379,10 @@
 "RepostedContentView"   =   " REPOSTED";
 "Comment"               =   "Comment";
 
-"repostedFromFormat"      =   "Repost from %@";
+"repostedFromFormat"    =   "%@ content reposted by %@";
+"multipleRepostedFromFormat" = "%@ content reposted by %@ + %lu other people";
 "remixedFromFormat"     =   "Remix from %@";
-"giffedFromFormat"       =   "GIF from %@";
+"giffedFromFormat"      =   "GIF from %@";
 
 "leaveACommentFormat"   =   "Leave a comment at %@";
 

@@ -99,7 +99,31 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
     NSString *parentUserString;
     if (self.sequence.isRepost.boolValue && self.sequence.parentUser != nil)
     {
-        parentUserString = [NSString stringWithFormat:NSLocalizedString(@"repostedFromFormat", nil), text];
+        if ( [self.sequence.repostCount integerValue] == 0 )
+        {
+            parentUserString = [NSString stringWithFormat:NSLocalizedString(@"repostedFromFormat", nil), text, self.sequence.user.name];
+        }
+        else
+        {
+            NSNumber *creatorId = self.sequence.createdBy;
+            NSSet *creatorSet = [self.sequence.reposters objectsPassingTest:^BOOL(VUser *user, BOOL *stop) {
+                
+                return [user.remoteId isEqual:creatorId];
+                
+            }];
+            
+            NSString *reposterName;
+            if ( creatorSet.count == 1 )
+            {
+                reposterName = [[creatorSet anyObject] name];
+            }
+            else
+            {
+                reposterName = [[self.sequence.reposters anyObject] name];
+            }
+            
+            parentUserString = [NSString stringWithFormat:NSLocalizedString(@"multipleRepostedFromFormat", nil), text, reposterName, [self.sequence.repostCount unsignedLongValue]];
+        }
     }
     
     if (self.sequence.isRemix.boolValue && self.sequence.parentUser != nil)
