@@ -16,7 +16,6 @@
 
 #import "UIImageView+VLoadingAnimations.h"
 #import "UIImage+ImageCreation.h"
-#import "UIButton+VImageLoading.h"
 
 #import "VThemeManager.h"
 #import "VSettingManager.h"

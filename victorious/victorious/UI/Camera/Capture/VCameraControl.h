@@ -69,8 +69,13 @@ IB_DESIGNABLE
 - (void)restoreCameraControlToDefault;
 
 /**
- *  Applies a scale transform indicating the the shutter of a camera.
+ *  The camera control will grow and change color to indicate waiting on the hardware. No need to call this in an animation block as it will run it's own animations.
  */
-- (void)showCameraFlashAnimationWithCompletion:(void (^)(void))completion;
+- (void)flashGrowAnimations;
+
+/**
+ *  The camera control will shrink to oblivion indicating a successful camera capture. This must be called in an animation block to animate.
+ */
+- (void)flashShutterAnimations;
 
 @end

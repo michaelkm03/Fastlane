@@ -86,6 +86,9 @@
 #import "VEndCardActionModel.h"
 #import "VContentViewAlertHelper.h"
 
+#import <SDWebImage/UIImageView+WebCache.h>
+
+#define HANDOFFENABLED 0
 static const CGFloat kMaxInputBarHeight = 200.0f;
 
 @interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, VEndCardViewControllerDelegate, NSUserActivityDelegate>
@@ -124,9 +127,14 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 @property (nonatomic, assign) BOOL enteringRealTimeComment;
 @property (nonatomic, assign) CMTime realtimeCommentBeganTime;
 
+<<<<<<< HEAD
 @property (nonatomic, strong) VTransitionDelegate *modalTransitionDelegate;
 @property (nonatomic, strong) VTransitionDelegate *repopulateTransitionDelegate;
 @property (nonatomic, strong) VScrollPaginator *scrollPaginator;
+=======
+@property (nonatomic, strong) VTransitionDelegate *transitionDelegate;
+@property (nonatomic, weak) IBOutlet VScrollPaginator *scrollPaginator;
+>>>>>>> 2c42aa8e4f389bf7fa238273ce8a5e1b16d6dceb
 
 @property (nonatomic, strong) VCommentHighlighter *commentHighlighter;
 
@@ -336,10 +344,13 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+<<<<<<< HEAD
     
     self.sequenceActionController = [[VSequenceActionController alloc] init];
     
     self.scrollPaginator = [[VScrollPaginator alloc] initWithDelegate:self];
+=======
+>>>>>>> 2c42aa8e4f389bf7fa238273ce8a5e1b16d6dceb
 
     self.commentHighlighter = [[VCommentHighlighter alloc] initWithCollectionView:self.contentCollectionView];
     
@@ -499,6 +510,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 {
     [super viewDidAppear:animated];
     
+#if HANDOFFENABLED
     if ((self.viewModel.sequence.remoteId != nil) && (self.viewModel.shareURL != nil))
     {
         NSString *handoffIdentifier = [NSString stringWithFormat:@"com.victorious.handoff.%@", self.viewModel.sequence.remoteId];
@@ -507,6 +519,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
         self.handoffObject.delegate = self;
         [self.handoffObject becomeCurrent];
     }
+#endif
     
     [self.contentCollectionView flashScrollIndicators];
 }
@@ -515,8 +528,10 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 {
     [super viewWillDisappear:animated];
     
+#if HANDOFFENABLED
     self.handoffObject.delegate = nil;
     [self.handoffObject invalidate];
+#endif
     
     // We don't care about these notifications anymore but we still care about new user loggedin
     [[NSNotificationCenter defaultCenter] removeObserver:self
@@ -770,10 +785,8 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
             {
                 VContentImageCell *imageCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentImageCell suggestedReuseIdentifier]
                                                                                          forIndexPath:indexPath];
-                [imageCell.contentImageView setImageWithURLRequest:self.viewModel.imageURLRequest
-                                                  placeholderImage:self.placeholderImage?:nil
-                                                           success:nil
-                                                           failure:nil];
+                [imageCell.contentImageView sd_setImageWithURL:self.viewModel.imageURLRequest.URL
+                                              placeholderImage:self.placeholderImage?:nil];
                 self.contentCell = imageCell;
                 self.contentCell.endCardDelegate = self;
                 return imageCell;

@@ -21,11 +21,15 @@
 #import "VSettingManager.h"
 #import "VCameraControl.h"
 #import "VThemeManager.h"
+#import "VRadialGradientView.h"
+#import "VRadialGradientLayer.h"
 #import <FBKVOController.h>
 
 static const NSTimeInterval kAnimationDuration = 0.4;
 static const NSTimeInterval kErrorMessageDisplayDuration = 3.0;
 static const NSTimeInterval kErrorMessageDisplayDurationLong = 10.0; ///< For extra serious errors
+static const NSTimeInterval kCameraShutterShrinkDuration = 0.25;
+static const CGFloat kGradientMagnitude = 20.0f;
 static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
 
 typedef NS_ENUM(NSInteger, VCameraViewControllerState)
@@ -42,14 +46,19 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
 
 @property (nonatomic, assign) VCameraViewControllerState state;
 @property (nonatomic, readwrite) NSURL *capturedMediaURL;
-@property (nonatomic, strong) UIImage *previewImage;
+@property (nonatomic, strong, readwrite) UIImage *previewImage;
 @property (nonatomic, assign, getter=isTrashOpen) BOOL trashOpen;
 
-@property (weak, nonatomic) IBOutlet UIButton *closeButton;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *topSpaceTopToolsToContainerConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *bottomSpaceBottomToolsToContainerConstraint;
+
+@property (nonatomic, weak) IBOutlet UIView *topToolsContainer;
+@property (nonatomic, weak) IBOutlet UIView *bottomToolsContainer;
+@property (nonatomic, weak) IBOutlet UIButton *closeButton;
 @property (nonatomic, weak) IBOutlet UIButton *switchCameraButton;
 @property (nonatomic, weak) IBOutlet UIButton *nextButton;
 @property (nonatomic, weak) IBOutlet UIButton *flashButton;
-@property (weak, nonatomic) IBOutlet UIButton *searchButton;
+@property (nonatomic, weak) IBOutlet UIButton *searchButton;
 @property (nonatomic, weak) IBOutlet UIView *previewView;
 
 @property (nonatomic, weak) IBOutlet UIButton *openAlbumButton;
@@ -59,13 +68,14 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
 @property (nonatomic, strong) VCameraControl *cameraControl;
 @property (nonatomic, strong) AVCaptureVideoPreviewLayer *previewLayer;
 @property (nonatomic, strong) UIView *previewSnapshot;
+@property (nonatomic, strong) IBOutlet VRadialGradientView *radialGradientView;
 
 @property (nonatomic, strong) VCameraCaptureController *captureController;
 
 @property (nonatomic) BOOL allowVideo; ///< THIS property specifies whether we SHOULD allow video (according to the wishes of the calling class)
 @property (nonatomic) BOOL videoEnabled; ///< THIS property specifies whether we CAN allow video (according to device restrictions)
 @property (nonatomic) BOOL allowPhotos;
-@property (nonatomic, readwrite) BOOL showedFullscreenShutterAnimation;
+
 @property (nonatomic, readwrite) BOOL didSelectAssetFromLibrary;
 @property (nonatomic, readwrite) BOOL didSelectFromWebSearch;
 @property (nonatomic, copy) NSString *initialCaptureMode;
@@ -189,12 +199,17 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
                  forControlEvents:VCameraControlEventStartRecordingVideo];
     [self.cameraControl addTarget:self action:@selector(stopRecording)
                  forControlEvents:VCameraControlEventEndRecordingVideo];
+    
+    self.previewView.maskView = self.radialGradientView;
 }
 
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
     self.previewLayer.frame = self.previewView.layer.bounds;
+    self.deleteButton.layer.cornerRadius = CGRectGetHeight(self.deleteButton.bounds) / 2;
+    self.openAlbumButton.layer.cornerRadius = 5.0f;
+    self.openAlbumButton.layer.masksToBounds = YES;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -202,6 +217,17 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
     [super viewWillAppear:animated];
     
     [self.cameraControl restoreCameraControlToDefault];
+    
+    VRadialGradientLayer *radialGradientLayer = self.radialGradientView.radialGradientLayer;
+    
+    radialGradientLayer.colors = @[(id)[UIColor blackColor].CGColor,
+                                   (id)[UIColor clearColor].CGColor];
+    radialGradientLayer.innerCenter = CGPointMake(CGRectGetMidX(radialGradientLayer.bounds),
+                                                  CGRectGetMidY(radialGradientLayer.bounds));
+    radialGradientLayer.innerRadius = CGRectGetHeight(self.view.bounds);
+    radialGradientLayer.outerCenter = CGPointMake(CGRectGetMidX(radialGradientLayer.bounds),
+                                                  CGRectGetMidY(radialGradientLayer.bounds));
+    radialGradientLayer.outerRadius = CGRectGetHeight(self.view.bounds) + kGradientMagnitude;
     
     self.navigationController.navigationBarHidden = YES;
     
@@ -320,15 +346,39 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
     }
 }
 
-#pragma mark - Public Methods
+#pragma mark - Property Accessors
 
-- (CGPoint)shutterCenter
+- (void)setToolbarHidden:(BOOL)toolsHidden
 {
-    return [self.cameraControlContainer convertPoint:self.cameraControl.center
-                                              toView:self.view];
+    [self setToolbarHidden:toolsHidden
+                animated:NO];
 }
 
-#pragma mark - Property Accessors
+- (void)setToolbarHidden:(BOOL)toolsHidden
+              animated:(BOOL)animated
+{
+    _toolbarHidden = toolsHidden;
+    
+    void (^hideToolsBlock)(void) = ^void()
+    {
+        self.topSpaceTopToolsToContainerConstraint.constant = toolsHidden ? -CGRectGetHeight(self.topToolsContainer.frame) : 0.0f;
+        self.bottomSpaceBottomToolsToContainerConstraint.constant = toolsHidden ? -CGRectGetHeight(self.bottomToolsContainer.frame) : 0.0f;
+        [self.view layoutIfNeeded];
+    };
+    
+    if (!animated)
+    {
+        hideToolsBlock();
+    }
+    else
+    {
+        [UIView animateWithDuration:0.5f
+                              delay:0.0f
+                            options:kNilOptions
+                         animations:hideToolsBlock
+                         completion:nil];
+    }
+}
 
 - (void)setState:(VCameraViewControllerState)state
 {
@@ -369,6 +419,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
             self.deleteButton.hidden = YES;
 
             self.cameraControl.enabled = YES;
+            self.cameraControl.alpha = 1.0f;
             [self updateProgressForSecond:0.0f];
             
             self.switchCameraButton.enabled = YES;
@@ -390,12 +441,11 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
             self.nextButton.enabled = NO;
             
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraDidCapturePhoto];
-            self.showedFullscreenShutterAnimation = YES;
         }
             break;
         case VCameraViewControllerStateRecording:
         {
-            [self.deleteButton setImage:[UIImage imageNamed:@"trash_icon"] forState:UIControlStateNormal];
+            [self.deleteButton setBackgroundColor:[UIColor clearColor]];
             self.deleteButton.hidden = NO;
             self.searchButton.hidden = YES;
             self.deleteButton.enabled = YES;
@@ -510,7 +560,6 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
         {
             welf.capturedMediaURL = capturedMediaURL;
             welf.previewImage = previewImage;
-            welf.showedFullscreenShutterAnimation = NO;
             welf.didSelectFromWebSearch = YES;
             welf.state = VCameraViewControllerStateCapturedMedia;
         }
@@ -634,26 +683,49 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
         {
             dispatch_async(dispatch_get_main_queue(), ^
                            {
-                               [welf replacePreviewViewWithSnapshot];
-                               [welf.cameraControl showCameraFlashAnimationWithCompletion:^
-                                {
-                                    dispatch_async(welf.captureAnimationQueue, ^
-                                                   {
-                                                       welf.showedFullscreenShutterAnimation = YES;
-                                                       welf.animationCompleted = YES;
-                                                       dispatch_async(dispatch_get_main_queue(), ^
-                                                                      {
-                                                                          if ((welf.capturedMediaURL != nil) && welf.animationCompleted)
+                               VRadialGradientLayer *radialGradientLayer = self.radialGradientView.radialGradientLayer;
+                               radialGradientLayer.outerRadius = CGRectGetHeight(self.previewView.bounds);
+                               radialGradientLayer.innerRadius = CGRectGetHeight(self.previewView.bounds) - kGradientMagnitude;
+                               [CATransaction begin];
+                               {
+                                   [CATransaction setCompletionBlock:^
+                                    {
+                                        dispatch_async(welf.captureAnimationQueue, ^
+                                                       {
+                                                           welf.animationCompleted = YES;
+                                                           dispatch_async(dispatch_get_main_queue(), ^
                                                                           {
-                                                                              welf.state = VCameraViewControllerStateCapturedMedia;
-                                                                          }
-                                                                      });
-                                                   });
+                                                                              if ((welf.capturedMediaURL != nil) && welf.animationCompleted)
+                                                                              {
+                                                                                  welf.state = VCameraViewControllerStateCapturedMedia;
+                                                                              }
+                                                                          });
+                                                       });
+                                    }];
+                                   [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn]];
+                                   [CATransaction setAnimationDuration:kCameraShutterShrinkDuration];
+                                   radialGradientLayer.innerRadius = 0.0;
+                                   radialGradientLayer.outerRadius = 0.1f;
+                               }
+                               [CATransaction commit];
+                               [UIView animateWithDuration:kCameraShutterShrinkDuration
+                                                     delay:0.0f
+                                                   options:UIViewAnimationOptionCurveEaseIn
+                                                animations:^
+                                {
+                                    welf.cameraControl.transform = CGAffineTransformMakeScale(0.01f, 0.01f);
+                                }
+                                                completion:^(BOOL finished)
+                                {
+                                    welf.cameraControl.alpha = 0.0f;
                                 }];
+                               
+                               [welf replacePreviewViewWithSnapshot];
                            });
         }
     }];
     
+    [self.cameraControl flashGrowAnimations];
     self.state = VCameraViewControllerStateWaitingOnHardwareImageCapture;
     [self.captureController captureStillWithCompletion:^(UIImage *image, NSError *error)
     {
@@ -683,8 +755,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
     if (!self.isTrashOpen)
     {
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraUserDidSelectDelete];
-        
-        [self.deleteButton setImage:[UIImage imageNamed:@"cameraButtonDeleteConfirm"] forState:UIControlStateNormal];
+        [self.deleteButton setBackgroundColor:[UIColor redColor]];
         self.trashOpen = YES;
     }
     else
@@ -743,7 +814,6 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
 {
     self.captureController.videoEncoder.recording = NO;
     self.switchCameraButton.enabled = YES;
-    self.showedFullscreenShutterAnimation = NO;
     [self updateOrientation];
 }
 
@@ -865,6 +935,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
                      *innerStop = YES;
                      
                      [self.openAlbumButton setImage:latestPhoto forState:UIControlStateNormal];
+                     
                      void (^animations)(void) = ^(void)
                      {
                          self.openAlbumButton.hidden = NO;
@@ -910,7 +981,8 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
     };
     void (^completion)(BOOL) = ^(BOOL finished)
     {
-        [self.deleteButton setImage:[UIImage imageNamed:@"close-btn"] forState:UIControlStateNormal];
+        [self.deleteButton setImage:[UIImage imageNamed:@"trash_btn"]
+                           forState:UIControlStateNormal];
     };
     
     if (animated)
@@ -957,6 +1029,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
 {
     UIView *snapshot = [self.previewView snapshotViewAfterScreenUpdates:NO];
     snapshot.frame = self.previewView.frame;
+    snapshot.maskView = self.radialGradientView;
     [self.view addSubview:snapshot];
     [self.view bringSubviewToFront:self.cameraControlContainer];
     
