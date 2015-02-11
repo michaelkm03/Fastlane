@@ -64,6 +64,11 @@ static const CGFloat kTimelineDarkeningAlpha = 0.5f;
 - (void)setMaximumEndTime:(CMTime)maximumEndTime
 {
     _maximumEndTime = maximumEndTime;
+    
+    if (CMTIME_COMPARE_INLINE(maximumEndTime, <, self.maximumTrimDuration))
+    {
+        self.maximumTrimDuration = maximumEndTime;
+    }
     [self.thumbnailCollecitonView.collectionViewLayout invalidateLayout];
 }
 
@@ -265,6 +270,7 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
     NSString *title = [NSString stringWithFormat:@"%@ %@", [NSString stringWithFormat:@"%.0f", CMTimeGetSeconds(time)], NSLocalizedString(@"s", @"Second time interval abbreviation.")];
     self.trimControl.attributedTitle = [[NSAttributedString alloc] initWithString:title
                                                                        attributes:@{NSFontAttributeName: [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font]}];
+    self.trimControl.nonSelectablePadding = CMTimeSubtract(self.maximumEndTime, CMTimeSubtract(self.trimControl.maxDuration, self.selectedTimeRange.start));
 }
 
 - (CGFloat)timelineWidthPerSecond
