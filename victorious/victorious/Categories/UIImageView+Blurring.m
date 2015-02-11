@@ -9,6 +9,7 @@
 #import "UIImageView+Blurring.h"
 #import "UIImage+ImageEffects.h"
 #import "UIImage+Resize.h"
+#import <SDWebImage/UIImageView+WebCache.h>
 
 @import AVFoundation;
 
@@ -47,66 +48,56 @@ static const CGFloat kVSaturationDeltaFactor = 1.8f;
 
 - (void)setBlurredImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholderImage tintColor:(UIColor *)tintColor
 {
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-    [request addValue:@"image/*" forHTTPHeaderField:@"Accept"];
-    
     __weak UIImageView *weakSelf = self;
-    [self setImageWithURLRequest:request
-                placeholderImage:[placeholderImage applyTintEffectWithColor:tintColor]
-                         success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image)
-                         {
-                             __strong UIImageView *strongSelf = weakSelf;
-                             objc_setAssociatedObject(strongSelf, &kAssociatedObjectKey, image, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-                             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^
-                             {
-                                 UIImage *blurredImage = [image applyBlurWithRadius:kVBlurRadius
-                                                                                 tintColor:tintColor
-                                                                     saturationDeltaFactor:kVSaturationDeltaFactor
-                                                                                 maskImage:nil];
-                                 dispatch_async(dispatch_get_main_queue(), ^
-                                 {
-                                     weakSelf.alpha = 0;
-                                     weakSelf.image = blurredImage;
-                                     [UIView animateWithDuration:.1f animations:^
-                                     {
-                                         weakSelf.alpha = 1.0f;
-                                     }];
-                                 });
-                             });
-                         }
-                         failure:nil];
+    
+    [self sd_setImageWithURL:url
+            placeholderImage:[placeholderImage applyTintEffectWithColor:tintColor]
+                   completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL)
+     {
+         __strong UIImageView *strongSelf = weakSelf;
+         objc_setAssociatedObject(strongSelf, &kAssociatedObjectKey, image, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^
+                        {
+                            UIImage *blurredImage = [image applyBlurWithRadius:kVBlurRadius
+                                                                     tintColor:tintColor
+                                                         saturationDeltaFactor:kVSaturationDeltaFactor
+                                                                     maskImage:nil];
+                            dispatch_async(dispatch_get_main_queue(), ^
+                                           {
+                                               weakSelf.alpha = 0;
+                                               weakSelf.image = blurredImage;
+                                               [UIView animateWithDuration:.1f animations:^
+                                                {
+                                                    weakSelf.alpha = 1.0f;
+                                                }];
+                                           });
+                        });
+         
+     }];
 }
 //TODO CAHNGE OTHER THINGS TO EXTRALIGHT
 - (void)setLightBlurredImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholderImage
 {
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-    [request addValue:@"image/*" forHTTPHeaderField:@"Accept"];
-    
     __weak UIImageView *weakSelf = self;
-    [self setImageWithURLRequest:request
-                placeholderImage:[placeholderImage applyLightEffect]
-                         success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image)
-     {
-         __strong UIImageView *strongSelf = weakSelf;
-         strongSelf.image = [image applyLightEffect];
-     }
-                         failure:nil];
+    [self sd_setImageWithURL:url
+            placeholderImage:[placeholderImage applyLightEffect]
+                   completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL)
+    {
+        __strong UIImageView *strongSelf = weakSelf;
+        strongSelf.image = [image applyLightEffect];
+    }];
 }
 
 - (void)setExtraLightBlurredImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholderImage
 {
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-    [request addValue:@"image/*" forHTTPHeaderField:@"Accept"];
-    
     __weak UIImageView *weakSelf = self;
-    [self setImageWithURLRequest:request
-                placeholderImage:[placeholderImage applyExtraLightEffect]
-                         success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image)
-     {
-         __strong UIImageView *strongSelf = weakSelf;
-         strongSelf.image = [image applyExtraLightEffect];
-     }
-                         failure:nil];
+    [self sd_setImageWithURL:url
+            placeholderImage:[placeholderImage applyExtraLightEffect]
+                   completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL)
+    {
+        __strong UIImageView *strongSelf = weakSelf;
+        strongSelf.image = [image applyExtraLightEffect];
+    }];
 }
 
 @end

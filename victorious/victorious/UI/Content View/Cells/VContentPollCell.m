@@ -16,6 +16,8 @@
 
 #import "VCVideoPlayerViewController.h"
 
+#import <SDWebImage/UIImageView+WebCache.h>
+
 static const CGFloat kDesiredPollCellHeight = 214.0f;
 
 @interface VContentPollCell () <VCVideoPlayerDelegate>
@@ -105,13 +107,13 @@ static const CGFloat kDesiredPollCellHeight = 214.0f;
 - (void)setAnswerAThumbnailMediaURL:(NSURL *)answerAThumbnailMediaURL
 {
     _answerAThumbnailMediaURL = [answerAThumbnailMediaURL copy];
-    [self.answerAThumbnail setImageWithURL:_answerAThumbnailMediaURL];
+    [self.answerAThumbnail sd_setImageWithURL:_answerAThumbnailMediaURL];
 }
 
 - (void)setAnswerBThumbnailMediaURL:(NSURL *)answerBThumbnailMediaURL
 {
     _answerBThumbnailMediaURL = [answerBThumbnailMediaURL copy];
-    [self.answerBThumbnail setImageWithURL:_answerBThumbnailMediaURL];
+    [self.answerBThumbnail sd_setImageWithURL:_answerBThumbnailMediaURL];
 }
 
 - (void)setAnswerAIsFavored:(BOOL)answerAIsFavored
