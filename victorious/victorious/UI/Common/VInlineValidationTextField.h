@@ -25,12 +25,15 @@ typedef NS_ENUM(NSInteger, VTextFieldStyle)
  */
 @property (nonatomic, strong) NSAttributedString *activePlaceholder;
 
+@property (nonatomic, readonly) BOOL hasResignedFirstResponder;
+
 /**
- *  Show invalid text with a conditional animation.
+ *  Show invalid text with a conditional animation. Will not show animation or text while hasResignedFirstResponder AND force are NO. 
  */
 - (void)showInvalidText:(NSString *)invalidText
                animated:(BOOL)animated
-                  shake:(BOOL)shake;
+                  shake:(BOOL)shake
+                 forced:(BOOL)force;
 
 /**
  *  Hide the invalid text.

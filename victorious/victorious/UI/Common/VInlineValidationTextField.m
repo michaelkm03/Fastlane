@@ -29,6 +29,8 @@ static const CGFloat kBottomClearInset = 2.0f;
 
 @property (nonatomic, strong) NSAttributedString *oldPlaceholder;
 
+@property (nonatomic, readwrite) BOOL hasResignedFirstResponder;
+
 @end
 
 @implementation VInlineValidationTextField
@@ -89,6 +91,7 @@ static const CGFloat kBottomClearInset = 2.0f;
     {
         self.attributedPlaceholder = self.oldPlaceholder;
     }
+    self.hasResignedFirstResponder = YES;
     return [super resignFirstResponder];
 }
 
@@ -134,7 +137,13 @@ static const CGFloat kBottomClearInset = 2.0f;
 - (void)showInvalidText:(NSString *)invalidText
                animated:(BOOL)animated
                   shake:(BOOL)shake
+                 forced:(BOOL)force
 {
+    if (!force && !self.hasResignedFirstResponder)
+    {
+        return;
+    }
+    
     self.inlineValidationView.inlineValidationText = invalidText;
     self.inlineValidationView.hidden = NO;
     

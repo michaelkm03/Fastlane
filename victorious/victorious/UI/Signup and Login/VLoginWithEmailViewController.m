@@ -49,6 +49,9 @@
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:self.usernameTextField];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:self.passwordTextField];
+    
+    self.usernameTextField.delegate = nil;
+    self.passwordTextField.delegate = nil;
 }
 
 - (void)viewDidLoad
@@ -67,11 +70,13 @@
     self.usernameTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.usernameTextField.placeholder attributes:@{NSForegroundColorAttributeName : [UIColor colorWithWhite:0.14 alpha:1.0]}];
     UIColor *activePlaceholderColor = [UIColor colorWithRed:102/255.0f green:102/255.0f blue:102/255.0f alpha:1.0f];
     self.usernameTextField.activePlaceholder = [[NSAttributedString alloc] initWithString:self.usernameTextField.placeholder attributes:@{NSForegroundColorAttributeName : activePlaceholderColor}];
+    self.usernameTextField.delegate = self;
     
     [self.passwordTextField applyTextFieldStyle:VTextFieldStyleLoginRegistration];
     self.passwordTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.passwordTextField.placeholder attributes:@{NSForegroundColorAttributeName : [UIColor colorWithWhite:0.14 alpha:1.0]}];
     self.passwordTextField.activePlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Minimum 8 Characters", @"Password character requirement.")
                                                                                attributes:@{NSForegroundColorAttributeName : activePlaceholderColor}];
+    self.passwordTextField.delegate = self;
     
     self.cancelButton.layer.borderColor = [UIColor colorWithWhite:0.14 alpha:1.0].CGColor;
     self.cancelButton.layer.borderWidth = 2.0;
@@ -145,7 +150,10 @@
     
     if (![self.emailValidator validateString:self.usernameTextField.text andError:&validationError])
     {
-        [self.usernameTextField showInvalidText:validationError.localizedDescription animated:YES shake:YES];
+        [self.usernameTextField showInvalidText:validationError.localizedDescription
+                                       animated:YES
+                                          shake:YES
+                                         forced:YES];
         shouldLogin = NO;
         
         if (newResponder == nil)
@@ -157,7 +165,10 @@
     
     if ( ![self.passwordValidator validateString:self.passwordTextField.text andError:&validationError])
     {
-        [self.passwordTextField showInvalidText:validationError.localizedDescription animated:YES shake:YES];
+        [self.passwordTextField showInvalidText:validationError.localizedDescription
+                                       animated:YES
+                                          shake:YES
+                                         forced:YES];
         shouldLogin = NO;
         
         if (newResponder == nil)
@@ -298,36 +309,15 @@
 - (void)textFieldDidChange:(NSNotification *)notification
 {
     VInlineValidationTextField *textField = notification.object;
-    NSError *validationError;
-    
-    if (textField == self.usernameTextField)
-    {
-        BOOL validEmail = [self.emailValidator validateString:textField.text
-                                                     andError:&validationError];
-        if (!validEmail)
-        {
-            [textField showInvalidText:validationError.localizedDescription animated:NO shake:NO];
-        }
-        else
-        {
-            [textField hideInvalidText];
-        }
-    }
-    if (textField == self.passwordTextField)
-    {
-        [self.passwordValidator setConfirmationObject:nil
-                                          withKeyPath:nil];
-        BOOL validPassword = [self.passwordValidator validateString:textField.text
-                                                           andError:&validationError];
-        if (!validPassword)
-        {
-            [textField showInvalidText:validationError.localizedDescription animated:NO shake:NO];
-        }
-        else
-        {
-            [textField hideInvalidText];
-        }
-    }
+    [self validateWithTextField:textField];
+}
+
+#pragma mark - UITextFieldDelegate
+
+- (BOOL)textFieldShouldEndEditing:(VInlineValidationTextField *)textField
+{
+    [self validateWithTextField:textField];
+    return YES;
 }
 
 #pragma mark - UIResponder
@@ -347,6 +337,48 @@
         profileViewController.profile = self.profile;
         profileViewController.loginType = kVLoginTypeEmail;
         profileViewController.registrationModel = [[VRegistrationModel alloc] init];
+    }
+}
+
+#pragma mark - Private Methods
+
+- (void)validateWithTextField:(VInlineValidationTextField *)textField
+{
+    NSError *validationError;
+    
+    if (textField == self.usernameTextField)
+    {
+        BOOL validEmail = [self.emailValidator validateString:textField.text
+                                                     andError:&validationError];
+        if (!validEmail)
+        {
+            [textField showInvalidText:validationError.localizedDescription
+                              animated:NO
+                                 shake:NO
+                                forced:NO];
+        }
+        else
+        {
+            [textField hideInvalidText];
+        }
+    }
+    if (textField == self.passwordTextField)
+    {
+        [self.passwordValidator setConfirmationObject:nil
+                                          withKeyPath:nil];
+        BOOL validPassword = [self.passwordValidator validateString:textField.text
+                                                           andError:&validationError];
+        if (!validPassword)
+        {
+            [textField showInvalidText:validationError.localizedDescription
+                              animated:NO
+                                 shake:NO
+                                forced:NO];
+        }
+        else
+        {
+            [textField hideInvalidText];
+        }
     }
 }
 
