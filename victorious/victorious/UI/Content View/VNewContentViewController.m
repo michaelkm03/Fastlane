@@ -73,7 +73,7 @@
 
 #import "VTransitionDelegate.h"
 #import "VEditCommentViewController.h"
-#import "VModalTransition.h"
+#import "VSimpleModalTransition.h"
 
 #import "VTracking.h"
 #import "VCommentHighlighter.h"
@@ -81,11 +81,14 @@
 
 #import <SDWebImage/UIImageView+WebCache.h>
 
+#define HANDOFFENABLED 0
 static const CGFloat kMaxInputBarHeight = 200.0f;
 
-@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate,VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate>
+@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate,VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, NSUserActivityDelegate>
 
 #import "VCommentHighlighter.h"
+
+@property (nonatomic, strong) NSUserActivity *handoffObject;
 
 @property (nonatomic, strong, readwrite) VContentViewViewModel *viewModel;
 @property (nonatomic, strong) NSURL *mediaURL;
@@ -125,7 +128,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 @property (nonatomic, assign) CMTime realtimeCommentBeganTime;
 
 @property (nonatomic, strong) VTransitionDelegate *transitionDelegate;
-@property (nonatomic, strong) VScrollPaginator *scrollPaginator;
+@property (nonatomic, weak) IBOutlet VScrollPaginator *scrollPaginator;
 
 @property (nonatomic, strong) VCommentHighlighter *commentHighlighter;
 
@@ -141,7 +144,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     contentViewController.viewModel = viewModel;
     contentViewController.hasAutoPlayed = NO;
     
-    VModalTransition *modalTransition = [[VModalTransition alloc] init];
+    VSimpleModalTransition *modalTransition = [[VSimpleModalTransition alloc] init];
     contentViewController.transitionDelegate = [[VTransitionDelegate alloc] initWithTransition:modalTransition];
     contentViewController.elapsedTimeFormatter = [[VElapsedTimeFormatter alloc] init];
     
@@ -347,8 +350,6 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    self.scrollPaginator = [[VScrollPaginator alloc] initWithDelegate:self];
 
     self.commentHighlighter = [[VCommentHighlighter alloc] initWithCollectionView:self.contentCollectionView];
     
@@ -506,13 +507,29 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-
+    
+#if HANDOFFENABLED
+    if ((self.viewModel.sequence.remoteId != nil) && (self.viewModel.shareURL != nil))
+    {
+        NSString *handoffIdentifier = [NSString stringWithFormat:@"com.victorious.handoff.%@", self.viewModel.sequence.remoteId];
+        self.handoffObject = [[NSUserActivity alloc] initWithActivityType:handoffIdentifier];
+        self.handoffObject.webpageURL = self.viewModel.shareURL;
+        self.handoffObject.delegate = self;
+        [self.handoffObject becomeCurrent];
+    }
+#endif
+    
     [self.contentCollectionView flashScrollIndicators];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
+#if HANDOFFENABLED
+    self.handoffObject.delegate = nil;
+    [self.handoffObject invalidate];
+#endif
     
     // We don't care about these notifications anymore but we still care about new user loggedin
     [[NSNotificationCenter defaultCenter] removeObserver:self
@@ -1454,6 +1471,13 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 - (void)shouldLoadPreviousPage
 {
     [self.viewModel loadComments:VPageTypePrevious];
+}
+
+#pragma mark - NSUserActivityDelegate
+
+- (void)userActivityWasContinued:(NSUserActivity *)userActivity
+{
+    [self.videoCell pause];
 }
 
 @end

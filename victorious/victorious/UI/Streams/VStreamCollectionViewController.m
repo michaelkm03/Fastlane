@@ -65,10 +65,10 @@ static NSString * const kStreamURLPathKey = @"streamUrlPath";
 static NSString * const kTitleKey = @"title";
 static NSString * const kIsHomeKey = @"isHome";
 static NSString * const kCanAddContentKey = @"canAddContent";
-static NSString * const kStreamCollectionStoryboardId = @"kStreamCollection";
+static NSString * const kStreamCollectionStoryboardId = @"StreamCollection";
 static CGFloat const kTemplateCLineSpacing = 8;
 
-@interface VStreamCollectionViewController () <VNavigationHeaderDelegate, VMarqueeDelegate, VSequenceActionsDelegate, VUploadProgressViewControllerDelegate>
+@interface VStreamCollectionViewController () <VNavigationHeaderDelegate, VMarqueeDelegate, VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout>
 
 @property (strong, nonatomic) VStreamCollectionViewDataSource *directoryDataSource;
 @property (strong, nonatomic) NSIndexPath *lastSelectedIndexPath;
@@ -223,6 +223,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
     self.streamDataSource.collectionView = self.collectionView;
     self.collectionView.dataSource = self.streamDataSource;
     
+    
     // Fetch Users Hashtags
    [self fetchHashtagsForLoggedInUser];
     
@@ -359,8 +360,9 @@ static CGFloat const kTemplateCLineSpacing = 8;
     };
     
     [[VObjectManager sharedManager] getHashtagsSubscribedToWithPageType:VPageTypeFirst
-                                                          successBlock:successBlock
-                                                             failBlock:failureBlock];
+                                                           perPageLimit:1000
+                                                           successBlock:successBlock
+                                                              failBlock:failureBlock];
 }
 
 - (void)updateHashtagNavButton:(NSArray *)hashtags
@@ -501,6 +503,13 @@ static CGFloat const kTemplateCLineSpacing = 8;
     {
         [((VStreamCollectionCell *)cell) pauseVideo];
     }
+}
+
+#pragma mark - Activity indivator footer
+
+- (BOOL)shouldDisplayActivityViewFooterForCollectionView:(UICollectionView *)collectionView inSection:(NSInteger)section
+{
+    return [super shouldDisplayActivityViewFooterForCollectionView:collectionView inSection:section];
 }
 
 #pragma mark - VStreamCollectionDataDelegate

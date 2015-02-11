@@ -11,37 +11,78 @@
 #import "VConstants.h"
 
 /**
- *  Upload a new media item and create a sequence for that item.
- *
- *  name             The name or caption of the sequence.
- *  previewImage     A preview image of the sequence.
- *  type             The VCaptionType used on the sequence.
- *  parentSequenceId The parent sequence id if this is a remix.
- *  parentNodeId     The parent node id of this is a remix.
- *  loopType         The loop type if this is a video.
- *  mediaUrl         The media url to use for uploading.
- *  isGIF            Whether or not this is a gif asset.
- *  didCrop          Whether or not the user did use the crop feature.
- *  didTrim          Whether or not the user trimmed.
- *  filterName       The name of the filter used.
- *  embeddedText     The embedded text in the image if the user embedded text.
- *  textToolType     The text tool type (ex: MEME).
+ *  A simple model for sharing publish parameters among different objects.
  */
-
 @interface VPublishParameters : NSObject
 
+/**
+ *  The name or caption of the sequence.
+ */
 @property (nonatomic, strong) NSString *caption;
+
+/**
+ *  A preview image to use in UI such as the upload bar/publish screen.
+ */
 @property (nonatomic, strong) UIImage *previewImage;
+
+/**
+ *  The VCaptionType used on the sequence.
+ */
 @property (nonatomic, assign) VCaptionType captionType;
+
+/**
+ *  The parent sequence id if this is a remix.
+ */
 @property (nonatomic, strong) NSNumber *parentSequenceID;
+
+/**
+ *  The parent node id if this is a remix.
+ */
 @property (nonatomic, strong) NSNumber *parentNodeID;
+
+/**
+ *  The loop type if this is a video.
+ */
 @property (nonatomic, assign) VLoopType loopType;
+
+/**
+ *  The media url to use for uploading.
+ */
 @property (nonatomic, strong) NSURL *mediaToUploadURL;
+
+/**
+ *  Whether or not this is a gif asset.
+ */
 @property (nonatomic, assign) BOOL isGIF;
+
+/**
+ *  Whether or not the user used the crop feature during creation of this asset.
+ */
 @property (nonatomic, assign) BOOL didCrop;
+
+/**
+ *  Whether or not the user trimmed.
+ */
 @property (nonatomic, assign) BOOL didTrim;
+
+/**
+ *  The name of the filter used.
+ */
 @property (nonatomic, copy) NSString *filterName;
+
+/**
+ *  The embedded text in the image if the user embedded text.
+ */
 @property (nonatomic, copy) NSString *embeddedText;
+
+/**
+ *  The text tool type (ex: MEME).
+ */
 @property (nonatomic, copy) NSString *textToolType;
+
+/**
+ *  A boolean indicating whether or not this asset should be saved to the user's camera roll on publish.
+ */
+@property (nonatomic, assign) BOOL shouldSaveToCameraRoll;
 
 @end

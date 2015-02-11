@@ -157,7 +157,7 @@
              
              [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
                                                           method:RKRequestMethodAny
-                                                     pathPattern:@"/api/userinfo/search"
+                                                     pathPattern:@"/api/userinfo/search/:search_term/:limit/:context"
                                                          keyPath:@"payload"
                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
              

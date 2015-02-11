@@ -156,8 +156,9 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
     };
     
     [[VObjectManager sharedManager] getHashtagsSubscribedToWithPageType:VPageTypeFirst
-                                                          successBlock:successBlock
-                                                             failBlock:failureBlock];
+                                                           perPageLimit:1000
+                                                           successBlock:successBlock
+                                                              failBlock:failureBlock];
 }
 
 - (void)updateUserHashtags:(NSArray *)hashtags
