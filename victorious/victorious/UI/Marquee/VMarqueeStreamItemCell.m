@@ -29,12 +29,13 @@
 @property (nonatomic, weak) IBOutlet UIImageView *previewImageView;
 @property (nonatomic, weak) IBOutlet UIImageView *pollOrImageView;
 @property (nonatomic, weak) IBOutlet UIView *webViewContainer;
+@property (nonatomic, weak) IBOutlet UIView *detailsContainer;
+@property (nonatomic, weak) IBOutlet UIView *detailsBackgroundView;
 @property (nonatomic, strong) VStreamWebViewController *webViewController;
 
 @property (nonatomic, weak) IBOutlet VDefaultProfileButton *profileImageButton;
 
-@property (nonatomic) CGRect originalNameLabelFrame;
-@property (nonatomic, strong) NSLayoutConstraint *centerConstraint;
+@property (nonatomic, strong) NSTimer *hideTimer;
 
 @end
 
@@ -46,8 +47,6 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
 {
     [super awakeFromNib];
     
-    self.originalNameLabelFrame = self.nameLabel.frame;
-
     self.profileImageButton.layer.borderColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor].CGColor;
     self.profileImageButton.layer.borderWidth = 4;
     
@@ -56,14 +55,7 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
     
     self.nameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
     
-    self.centerConstraint = [NSLayoutConstraint constraintWithItem:self.nameLabel
-                                                                        attribute:NSLayoutAttributeCenterX
-                                                                        relatedBy:NSLayoutRelationEqual
-                                                                           toItem:self
-                                                                        attribute:NSLayoutAttributeCenterX
-                                                                       multiplier:1
-                                                                         constant:0];
-    [self addConstraint:self.centerConstraint];
+    self.detailsContainer.alpha = 0.0;
 }
 
 - (void)setStreamItem:(VStreamItem *)streamItem
@@ -71,11 +63,12 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
     _streamItem = streamItem;
     
     self.nameLabel.text = streamItem.name;
-    [self.nameLabel sizeToFit];
     
     NSURL *previewImageUrl = [NSURL URLWithString: [streamItem.previewImagePaths firstObject]];
     [self.previewImageView fadeInImageAtURL:previewImageUrl
                            placeholderImage:[UIImage resizeableImageWithColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]]];
+    
+    self.detailsBackgroundView.backgroundColor = [[VThemeManager sharedThemeManager] preferredBackgroundColor];
     
     if ( [streamItem isKindOfClass:[VSequence class]] )
     {
@@ -99,6 +92,32 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
     else
     {
         self.profileImageButton.hidden = YES;
+    }
+    
+    [self makeDetailsContainerVisible:YES animated:NO];
+    [self.hideTimer invalidate];
+    self.hideTimer = [NSTimer scheduledTimerWithTimeInterval:3.0f
+                                                      target:self
+                                                    selector:@selector(hideDetailContainer)
+                                                    userInfo:nil
+                                                     repeats:NO];
+}
+
+- (void)makeDetailsContainerVisible:(BOOL)visible animated:(BOOL)animated
+{
+    CGFloat targetAlpha = visible ? 1.0 : 0.0;
+    
+    if ( animated )
+    {
+        [UIView animateWithDuration:0.5f animations:^{
+            
+            self.detailsContainer.alpha = targetAlpha;
+            
+        }];
+    }
+    else
+    {
+        self.detailsContainer.alpha = targetAlpha;
     }
 }
 
@@ -126,22 +145,17 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
     [self.webViewController setUrl:[NSURL URLWithString:contentUrl]];
 }
 
+- (void)hideDetailContainer
+{
+    [self makeDetailsContainerVisible:NO animated:YES];
+}
+
 - (void)prepareForReuse
 {
     [super prepareForReuse];
     
     self.streamItem = nil;
-    self.nameLabel.frame = self.originalNameLabelFrame;
-    [self removeConstraint:self.centerConstraint];
-    self.centerConstraint = [NSLayoutConstraint constraintWithItem:self.nameLabel
-                                                         attribute:NSLayoutAttributeCenterX
-                                                         relatedBy:NSLayoutRelationEqual
-                                                            toItem:self
-                                                         attribute:NSLayoutAttributeCenterX
-                                                        multiplier:1
-                                                          constant:0];
-    [self addConstraint:self.centerConstraint];
-    [self layoutIfNeeded];
+    [self makeDetailsContainerVisible:YES animated:NO];
 }
 
 - (IBAction)userSelected:(id)sender
