@@ -25,25 +25,20 @@ typedef NS_ENUM(NSInteger, VTextFieldStyle)
  */
 @property (nonatomic, strong) NSAttributedString *activePlaceholder;
 
-/**
- *  The validator to use, if any.
- */
-@property (nonatomic, strong) VStringValidator *validator;
+@property (nonatomic, readonly) BOOL hasResignedFirstResponder;
 
 /**
- *  Indicates whether or not to show inline validation.
+ *  Show invalid text with a conditional animation. Will not show animation or text while hasResignedFirstResponder AND force are NO. 
  */
-@property (nonatomic) BOOL showInlineValidation;
+- (void)showInvalidText:(NSString *)invalidText
+               animated:(BOOL)animated
+                  shake:(BOOL)shake
+                 forced:(BOOL)force;
 
 /**
- *  Show a shake animation (like the lock screen incorrect password), and vibrate the device.
+ *  Hide the invalid text.
  */
-- (void)showIncorrectTextAnimationAndVibration;
-
-/**
- *  Validate this textfield with a validator that may or may not be the VInlineValidationTextField's own.
- */
-- (void)validateTextWithValidator:(VStringValidator *)validator;
+- (void)hideInvalidText;
 
 /**
  *  A style to use for the text field.
