@@ -34,6 +34,10 @@
                                       NSUnderlineColorAttributeName : linkColor,
                                       CCHLinkAttributeName : [text substringWithRange:range] };
     
+    UIColor *touchTextColor = [linkColor colorWithAlphaComponent:0.5f];
+    linkTextView.linkTextTouchAttributes = @{ NSForegroundColorAttributeName : touchTextColor,
+                                              NSUnderlineColorAttributeName : touchTextColor };
+    
     NSMutableAttributedString *mutableAttributedString = [[NSMutableAttributedString alloc] initWithString:text attributes:attributes];
     [mutableAttributedString addAttributes:linkAttributes range:range];
     linkTextView.tintColor = linkColor;

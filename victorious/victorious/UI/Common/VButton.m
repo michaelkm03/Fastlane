@@ -9,13 +9,14 @@
 #import "VButton.h"
 #import "UIColor+VBrightness.h"
 
-static const BOOL kScaleUpAnimationEnabled      = NO;
+static const BOOL kScaleUpAnimationEnabled      = YES;
 
 static const CGFloat kCornderRadius             = 3.0f;
 static const CGFloat kBorderWidth               = 1.5f;
 static const CGFloat kPrimaryHighlightModAmount = 0.2f;
 static const CGFloat kDefaultSecondaryGray      = 0.2f;
-static const CGFloat kStartScale                = 0.97f;
+static const CGFloat kStartScale                = 1.0f; //0.97f;
+static const CGFloat kEndScale                  = 0.99f; //1.0f;
 
 
 @interface VButton ()
@@ -159,7 +160,7 @@ static const CGFloat kStartScale                = 0.97f;
 
 - (void)setHighlighted:(BOOL)highlighted
 {
-    [UIView animateWithDuration:highlighted ? 0.2f : 0.3f
+    [UIView animateWithDuration:highlighted ? 0.1f : 0.3f
                           delay:0.0f
          usingSpringWithDamping:0.8f
           initialSpringVelocity:0.8f
@@ -173,6 +174,8 @@ static const CGFloat kStartScale                = 0.97f;
 - (void)setTitle:(NSString *)title forState:(UIControlState)state
 {
     [super setTitle:title forState:UIControlStateNormal];
+    
+    return;
     
     if ( self.titleLabel.text == nil || self.titleLabel.text.length == 0 || [self.titleLabel.text isEqualToString:title] )
     {
@@ -205,7 +208,7 @@ static const CGFloat kStartScale                = 0.97f;
     {
         case VButtonStylePrimary:
         {
-            UIColor *modded = [self.primaryColor v_colorLightenedBy:kPrimaryHighlightModAmount];
+            UIColor *modded = [self.primaryColor v_colorDarkenedBy:kPrimaryHighlightModAmount];
             UIColor *color = highlighted ? modded : self.primaryColor;
             [self privateSetBackgroundColor:color];
             break;
@@ -223,7 +226,7 @@ static const CGFloat kStartScale                = 0.97f;
     {
         if ( highlighted )
         {
-            self.transform = CGAffineTransformIdentity;
+            self.transform = CGAffineTransformMakeScale( kEndScale, kEndScale );
         }
         else
         {

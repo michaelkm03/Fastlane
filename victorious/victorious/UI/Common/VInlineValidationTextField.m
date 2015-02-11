@@ -218,16 +218,4 @@ static const CGFloat kBottomClearInset = 2.0f;
     self.inlineValidationView.hidden = !(!isValid && self.showInlineValidation);
 }
 
-- (void)drawRect:(CGRect)rect
-{
-    [super drawRect:rect];
-    
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextSetLineWidth( context, 2.0 );
-    CGContextSetStrokeColorWithColor( context, self.separatorColor.CGColor );
-    CGContextMoveToPoint( context, CGRectGetMinX(rect), CGRectGetMaxY(rect) );
-    CGContextAddLineToPoint( context, CGRectGetMaxX(rect), CGRectGetMaxY(rect) );
-    CGContextStrokePath( context );
-}
-
 @end
