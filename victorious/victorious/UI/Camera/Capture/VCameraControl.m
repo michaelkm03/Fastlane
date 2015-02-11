@@ -11,11 +11,9 @@
 static const CGFloat kMinHeightSize = 80.0f;
 static const CGFloat kWidthScaleFactorImageOnly = 1.2f;
 static const CGFloat kWidthScaleFactorDefault = 1.7f;
-static const CGFloat kCameraShutterGrowScaleFacotr = 13.0f;
 static const NSTimeInterval kMaxElapsedTimeImageTriggerWithVideo = 0.2;
 static const NSTimeInterval kRecordingTriggerDuration = 0.45;
 static const NSTimeInterval kTransitionToRecordingAnimationDuration = 0.2;
-static const NSTimeInterval kCameraShutterGrowAnimationDuration = 0.25;
 static const NSTimeInterval kRecordingShrinkAnimationDuration = 0.2;
 static const NSTimeInterval kNotRecordingTrackingTime = 0.0;
 static const NSTimeInterval kShrinkingCameraShutterAnimationDuration = 1.5;
@@ -88,23 +86,22 @@ static const NSTimeInterval kShrinkingCameraShutterAnimationDuration = 1.5;
     self.cameraControlState = VCameraControlStateDefault;
 }
 
-- (void)showCameraFlashAnimationWithCompletion:(void (^)(void))completion
+- (void)flashGrowAnimations
 {
-    [UIView animateWithDuration:kCameraShutterGrowAnimationDuration
+    [UIView animateWithDuration:1.75f
                           delay:0.0f
-                        options:UIViewAnimationOptionCurveEaseInOut
+                        options:UIViewAnimationOptionCurveEaseIn
                      animations:^
      {
-         self.backgroundColor = [UIColor blackColor];
-         self.transform = CGAffineTransformMakeScale(kCameraShutterGrowScaleFacotr, kCameraShutterGrowScaleFacotr);
+         self.transform = CGAffineTransformMakeScale(1.5, 1.5f);
+         self.backgroundColor = self.tintColor;
      }
-                     completion:^(BOOL finished)
-     {
-         if (completion)
-         {
-             completion();
-         }
-     }];
+                     completion:nil];
+}
+
+- (void)flashShutterAnimations
+{
+    self.transform = CGAffineTransformMakeScale(0.01f, 0.01f);
 }
 
 #pragma mark - Setters
@@ -183,10 +180,7 @@ static const NSTimeInterval kShrinkingCameraShutterAnimationDuration = 1.5;
             animationDuration = kRecordingTriggerDuration;
             animations = ^
             {
-                CGFloat scaledWidth = [self growingFactorForCaptureMode:self.captureMode] * CGRectGetWidth(self.frame);
-                CGFloat deltaWitdh = scaledWidth - CGRectGetWidth(self.frame);
-                self.frame = CGRectMake(- deltaWitdh/2, 0.0f, scaledWidth, CGRectGetHeight(self.frame));\
-                self.layer.cornerRadius = CGRectGetHeight(self.frame) / 2;
+                self.transform = CGAffineTransformMakeScale(1.2f, 1.2f);
                 self.progressView.frame = CGRectMake(CGRectGetMinX(self.bounds),
                                                      CGRectGetMinY(self.bounds),
                                                      CGRectGetWidth(self.bounds) * self.recordingProgress,
@@ -223,10 +217,8 @@ static const NSTimeInterval kShrinkingCameraShutterAnimationDuration = 1.5;
             initialVelocity = -1.0f;
             animations = ^
             {
-                self.frame = CGRectMake(0, 0, kMinHeightSize, kMinHeightSize);
-                self.backgroundColor = [UIColor darkGrayColor];
+                self.backgroundColor = self.tintColor;
             };
-            
             break;
         }
     }
