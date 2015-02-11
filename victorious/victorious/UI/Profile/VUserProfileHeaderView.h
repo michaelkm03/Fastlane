@@ -41,6 +41,8 @@
 @property (nonatomic) NSInteger numberOfFollowers;
 @property (nonatomic) NSInteger numberOfFollowing;
 
+@property (nonatomic, assign) BOOL isFollowingUser;
+
 + (instancetype)newViewWithFrame:(CGRect)frame;
 
 @end

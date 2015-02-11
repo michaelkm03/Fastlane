@@ -9,15 +9,13 @@
 #import "VButton.h"
 #import "UIColor+VBrightness.h"
 
-static const BOOL kScaleUpAnimationEnabled      = YES;
-
-static const CGFloat kCornderRadius             = 3.0f;
-static const CGFloat kBorderWidth               = 1.5f;
-static const CGFloat kPrimaryHighlightModAmount = 0.2f;
-static const CGFloat kDefaultSecondaryGray      = 0.2f;
-static const CGFloat kStartScale                = 1.0f; //0.97f;
-static const CGFloat kEndScale                  = 0.99f; //1.0f;
-
+static const CGFloat kCornderRadius                 = 3.0f;
+static const CGFloat kBorderWidth                   = 1.5f;
+static const CGFloat kPrimaryHighlightModAmount     = 0.2f;
+static const CGFloat kDefaultSecondaryGray          = 0.2f;
+static const CGFloat kStartScale                    = 1.0f;
+static const CGFloat kEndScale                      = 0.98f;
+static const CGFloat kActivityIndicatorShowDuration = 0.4f;
 
 @interface VButton ()
 
@@ -49,44 +47,39 @@ static const CGFloat kEndScale                  = 0.99f; //1.0f;
 
 - (void)createActivityIndicator
 {
-    static UIActivityIndicatorView *activityIndicator;
-    static dispatch_once_t onceToken;
-    dispatch_once( &onceToken, ^
+    if ( self.activityIndicator == nil )
     {
-        activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-        activityIndicator.center = CGPointMake(CGRectGetWidth(self.frame) / 2.0, CGRectGetHeight(self.frame) / 2.0);
-        [self addSubview:activityIndicator];
-        self.activityIndicator.hidden = YES;
+        self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+        self.activityIndicator.center = CGPointMake(CGRectGetWidth(self.frame) / 2.0, CGRectGetHeight(self.frame) / 2.0);
+        [self addSubview:_activityIndicator];
+        [self.activityIndicator startAnimating];
         self.activityIndicator.alpha = 0.0f;
-    });
-    self.activityIndicator = activityIndicator;
+    }
+    [self updateAppearance];
 }
 
 - (void)showActivityIndicator
 {
     [self createActivityIndicator];
-    [self.activityIndicator startAnimating];
-    self.activityIndicator.hidden = NO;
-    self.activityIndicator.alpha = 0.0f;
-    [UIView animateWithDuration:0.2f animations:^
+    
+    self.titleLabel.alpha = 0.0f;
+    [UIView animateWithDuration:kActivityIndicatorShowDuration animations:^
      {
-         self.titleLabel.alpha = 0.0f;
          self.activityIndicator.alpha = 1.0f;
-     }];
+     }
+                     completion:nil];
 }
 
 - (void)hideActivityIndicator
 {
     [self createActivityIndicator];
     
-    [UIView animateWithDuration:0.2f animations:^
+    self.activityIndicator.alpha = 0.0f;
+    [UIView animateWithDuration:kActivityIndicatorShowDuration animations:^
      {
-         self.activityIndicator.alpha = 0.0f;
+         self.titleLabel.alpha = 1.0f;
      }
-                     completion:^(BOOL finished)
-     {
-         self.activityIndicator.hidden = YES;
-     }];
+                     completion:nil];
 }
 
 - (void)commonInit
@@ -120,6 +113,7 @@ static const CGFloat kEndScale                  = 0.99f; //1.0f;
             self.layer.borderWidth = 0.0;
             self.layer.borderColor = [UIColor clearColor].CGColor;
             self.backgroundColor = self.primaryColor;
+            self.activityIndicator.color = self.titleLabel.textColor;
             [self setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
             break;
             
@@ -127,16 +121,14 @@ static const CGFloat kEndScale                  = 0.99f; //1.0f;
             self.layer.borderWidth = kBorderWidth;
             [self setTitleColor:self.secondaryColor forState:UIControlStateNormal];
             self.layer.borderColor = self.secondaryColor.CGColor;
+            self.activityIndicator.color = self.titleLabel.textColor;
             self.backgroundColor = [UIColor clearColor];
             break;
     }
     
     self.layer.cornerRadius = kCornderRadius;
     
-    if ( kScaleUpAnimationEnabled )
-    {
-        self.transform = CGAffineTransformMakeScale( kStartScale, kStartScale );
-    }
+    self.transform = CGAffineTransformMakeScale( kStartScale, kStartScale );
     
     [self setNeedsDisplay];
 }
@@ -174,31 +166,9 @@ static const CGFloat kEndScale                  = 0.99f; //1.0f;
 - (void)setTitle:(NSString *)title forState:(UIControlState)state
 {
     [super setTitle:title forState:UIControlStateNormal];
-    
-    return;
-    
-    if ( self.titleLabel.text == nil || self.titleLabel.text.length == 0 || [self.titleLabel.text isEqualToString:title] )
+    if ( self.activityIndicator != nil )
     {
-        [super setTitle:title forState:UIControlStateNormal];
-    }
-    else
-    {
-        if ( self.activityIndicator != nil )
-        {
-            [self hideActivityIndicator];
-        }
-        [UIView animateWithDuration:0.2f animations:^
-         {
-             self.titleLabel.alpha = 0.0f;
-         }
-                         completion:^(BOOL finished)
-         {
-             [super setTitle:title forState:UIControlStateNormal];
-             [UIView animateWithDuration:0.2f animations:^
-              {
-                  self.titleLabel.alpha = 1.0f;
-              }];
-         }];
+        [self hideActivityIndicator];
     }
 }
 
@@ -222,16 +192,13 @@ static const CGFloat kEndScale                  = 0.99f; //1.0f;
         }
     }
     
-    if ( kScaleUpAnimationEnabled )
+    if ( highlighted )
     {
-        if ( highlighted )
-        {
-            self.transform = CGAffineTransformMakeScale( kEndScale, kEndScale );
-        }
-        else
-        {
-            self.transform = CGAffineTransformMakeScale( kStartScale, kStartScale );
-        }
+        self.transform = CGAffineTransformMakeScale( kEndScale, kEndScale );
+    }
+    else
+    {
+        self.transform = CGAffineTransformMakeScale( kStartScale, kStartScale );
     }
 }
 
