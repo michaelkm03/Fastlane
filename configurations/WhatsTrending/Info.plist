@@ -5,7 +5,7 @@
 	<key>CFBundleDisplayName</key>
 	<string>${ProductPrefix}Trending</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.getvictorious.${ProductPrefix}whatstrending</string>
+	<string>com.fluidesign.${ProductPrefix}mobileroadie.2189</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>

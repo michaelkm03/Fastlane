@@ -15,6 +15,18 @@
  and then call these methods accordingly while the transition is being performed.
  */
 @protocol VAnimatedTransition <NSObject>
+@optional
+
+/**
+ Called just before a conforming class is submitted to UITransitioningDelegate as the animation controller
+ that conforms to UIViewControllerAnimatedTransitioning.  This allows a custom transition class that
+ implements VAnimatedTransition to decide whether the custom animation should be used according
+ to which types of view controllers are being transitioned to and from.  Return YES to allow
+ the custom transition or NO to use the default transition.
+ */
+- (BOOL)canPerformCustomTransitionFrom:(UIViewController *)fromViewController to:(UIViewController *)toViewController;
+
+@required
 
 /**
  Set initial state (if required) before animation will actually start

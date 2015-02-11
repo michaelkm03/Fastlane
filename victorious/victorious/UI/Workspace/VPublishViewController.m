@@ -20,6 +20,12 @@
 
 #import <MBProgressHUD/MBProgressHUD.h>
 
+#import "NSURL+MediaType.h"
+
+#import "VCameraRollPublishShareController.h"
+
+@import AssetsLibrary;
+
 static const CGFloat kTriggerVelocity = 500.0f;
 static const CGFloat kSnapDampingConstant = 0.9f;
 static const CGFloat kTopSpacePublishPrompt = 50.0f;
@@ -35,6 +41,8 @@ static const CGFloat kTopSpacePublishPrompt = 50.0f;
 @property (weak, nonatomic) IBOutlet UIButton *cancelButton;
 @property (strong, nonatomic) IBOutlet UIPanGestureRecognizer *panGestureRecognizer;
 @property (strong, nonatomic) IBOutlet UITapGestureRecognizer *tapGestureRecognizer;
+@property (weak, nonatomic) IBOutlet UILabel *saveToCameraRollLabel;
+@property (weak, nonatomic) IBOutlet UISwitch *cameraRollSwitch;
 
 @property (nonatomic, strong) UIDynamicAnimator *animator;
 @property (nonatomic, strong) UIAttachmentBehavior *attachmentBehavior;
@@ -44,6 +52,8 @@ static const CGFloat kTopSpacePublishPrompt = 50.0f;
 @property (nonatomic, copy, readwrite) void (^animateInBlock)(void);
 
 @property (nonatomic, assign) BOOL publishing;
+
+@property (nonatomic, strong) VCameraRollPublishShareController *cameraPublishController;
 
 @end
 
@@ -80,11 +90,14 @@ static const CGFloat kTopSpacePublishPrompt = 50.0f;
 {
     [super viewDidLoad];
     
-    [self setupBehaviors];
+    self.cameraPublishController = [[VCameraRollPublishShareController alloc] init];
+    self.cameraPublishController.switchToConfigure = self.cameraRollSwitch;
     
     self.publishButton.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     self.publishButton.titleLabel.textColor = [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
     self.captionTextView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+    self.saveToCameraRollLabel.font = [self.dependencyManager fontForKey:VDependencyManagerLabel2FontKey];
+    self.cameraRollSwitch.onTintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     
     __weak typeof(self) welf = self;
     
@@ -105,7 +118,7 @@ static const CGFloat kTopSpacePublishPrompt = 50.0f;
         self.captionTextView.typingAttributes = @{NSFontAttributeName: label3Font};
     }
     
-    VContentInputAccessoryView *inputAccessoryView = [[VContentInputAccessoryView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 44.0f)];
+    VContentInputAccessoryView *inputAccessoryView = [[VContentInputAccessoryView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth([[UIScreen mainScreen] bounds]), 44.0f)];
     self.captionTextView.textContainerInset = UIEdgeInsetsMake(10, 6, 0, 6);
     self.captionTextView.backgroundColor = [UIColor clearColor];
     inputAccessoryView.textInputView = self.captionTextView;
@@ -114,14 +127,15 @@ static const CGFloat kTopSpacePublishPrompt = 50.0f;
     inputAccessoryView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     self.captionTextView.inputAccessoryView = inputAccessoryView;
     
+    NSMutableDictionary *attributes = [[NSMutableDictionary alloc] init];
     UIFont *headerFont = [self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
     if (headerFont != nil)
     {
-        self.cancelButton.titleLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Cancel", @"")
-                                                                                      attributes:@{NSFontAttributeName: headerFont}];
+        [attributes setObject:headerFont forKey:NSFontAttributeName];
     }
-    self.cancelButton.titleLabel.text = NSLocalizedString(@"Cancel", @"");
-
+    self.cancelButton.titleLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Cancel", @"")
+                                                                                  attributes:attributes];
+    
     self.previewImageView.image = self.publishParameters.previewImage;
 }
 
@@ -129,7 +143,9 @@ static const CGFloat kTopSpacePublishPrompt = 50.0f;
 {
     [super viewDidLayoutSubviews];
     
-    CGRect referenceBounds = self.animator.referenceView.bounds;
+    [self setupBehaviors];
+    
+    CGRect referenceBounds = self.publishPrompt.bounds;
     CGFloat inset = -hypot(CGRectGetWidth(referenceBounds), CGRectGetHeight(referenceBounds)); // hypot will ensure we are fully offscreen
     UIEdgeInsets edgeInsets = UIEdgeInsetsMake(inset, inset, inset, inset);
     [self.collisionBehavior setTranslatesReferenceBoundsIntoBoundaryWithInsets:edgeInsets];
@@ -158,6 +174,7 @@ static const CGFloat kTopSpacePublishPrompt = 50.0f;
     
     self.publishParameters.caption = self.captionTextView.text;
     self.publishParameters.captionType = VCaptionTypeNormal;
+    self.publishParameters.shouldSaveToCameraRoll = self.cameraRollSwitch.on;
     
     __weak typeof(self) welf = self;
     [[VObjectManager sharedManager] uploadMediaWithPublishParameters:self.publishParameters
@@ -237,6 +254,14 @@ static const CGFloat kTopSpacePublishPrompt = 50.0f;
 - (void)handleGestureEnd:(UIPanGestureRecognizer *)gestureRecognizer
 {
     [self.animator removeBehavior:self.attachmentBehavior];
+    
+    __weak __typeof__(self) weakSelf = self;
+    BOOL offScreen = CGRectIsNull(CGRectIntersection(self.view.bounds, self.publishPrompt.frame));
+    if (offScreen && weakSelf.completion)
+    {
+        weakSelf.completion(NO);
+        return;
+    }
     
     CGPoint velocity = [gestureRecognizer velocityInView:self.view];
     CGFloat velocityMagnitude = hypot(velocity.x, velocity.y);
@@ -325,10 +350,19 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
 {
-    if (CGRectContainsPoint(self.captionTextView.bounds, [touch locationInView:self.captionTextView]))
+    BOOL onCameraRollSwitch = CGRectContainsPoint(self.cameraRollSwitch.bounds, [touch locationInView:self.cameraRollSwitch]);
+    BOOL onCaptionTextView = CGRectContainsPoint(self.captionTextView.bounds, [touch locationInView:self.captionTextView]);
+    if (onCameraRollSwitch || onCaptionTextView)
     {
         return NO;
     }
+    
+    BOOL onPublishPrompt = CGRectContainsPoint(self.publishPrompt.bounds, [touch locationInView:self.publishPrompt]);
+    if (onPublishPrompt && (gestureRecognizer == self.tapGestureRecognizer))
+    {
+        return NO;
+    }
+    
     return YES;
 }
 
@@ -355,18 +389,18 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
                                                                     mode:UIPushBehaviorModeInstantaneous];
     self.pushBehavior = pushBehavior;
     
+    // This will snap our content back to the center of the screen
+    UISnapBehavior *snap = [[UISnapBehavior alloc] initWithItem:self.publishPrompt
+                                                    snapToPoint:CGPointMake(CGRectGetWidth([[UIScreen mainScreen] bounds]) / 2,
+                                                                            kTopSpacePublishPrompt + (CGRectGetHeight(self.publishPrompt.frame) * 0.5f))];
+    snap.damping = kSnapDampingConstant;
+    self.snapBehavior = snap;
+    
     // This will be used for determining when the publish prompt has gone offscreen
     UICollisionBehavior *collision = [[UICollisionBehavior alloc] initWithItems:@[self.publishPrompt]];
     collision.collisionDelegate = self;
     self.collisionBehavior = collision;
     [self.animator addBehavior:collision];
-    
-    // This will snap our content back to the center of the screen
-    UISnapBehavior *snap = [[UISnapBehavior alloc] initWithItem:self.publishPrompt
-                                                    snapToPoint:CGPointMake(self.view.center.x,
-                                                                            kTopSpacePublishPrompt + (CGRectGetHeight(self.publishPrompt.frame) * 0.5f))];
-    snap.damping = kSnapDampingConstant;
-    self.snapBehavior = snap;
 }
 
 @end

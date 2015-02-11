@@ -18,15 +18,15 @@
 #import "VUserManager.h"
 #import "VThemeManager.h"
 #import "UIImage+ImageEffects.h"
-#import "VLoginTransitionAnimator.h"
 #import "UIAlertView+VBlocks.h"
 #import "VPasswordValidator.h"
 #import "VEmailValidator.h"
 #import "VAutomation.h"
+#import "VInlineValidationTextField.h"
 
 @interface VLoginWithEmailViewController () <UITextFieldDelegate, UINavigationControllerDelegate, UIAlertViewDelegate>
-@property (nonatomic, weak) IBOutlet    UITextField    *usernameTextField;
-@property (nonatomic, weak) IBOutlet    UITextField    *passwordTextField;
+@property (nonatomic, weak) IBOutlet    VInlineValidationTextField     *usernameTextField;
+@property (nonatomic, weak) IBOutlet    VInlineValidationTextField     *passwordTextField;
 @property (nonatomic, weak) IBOutlet    UIButton       *loginButton;
 @property (nonatomic, weak) IBOutlet    UIButton       *cancelButton;
 @property (nonatomic, weak) IBOutlet    UIButton       *forgotPasswordButton;
@@ -51,12 +51,17 @@
 
     self.view.layer.contents = (id)[[[VThemeManager sharedThemeManager] themedBackgroundImageForDevice] applyBlurWithRadius:25 tintColor:[UIColor colorWithWhite:1.0 alpha:0.7] saturationDeltaFactor:1.8 maskImage:nil].CGImage;
 
-    self.usernameTextField.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
-    self.usernameTextField.textColor = [UIColor colorWithWhite:0.14 alpha:1.0];
+    self.usernameTextField.validator = [[VEmailValidator alloc] init];
+    [self.usernameTextField applyTextFieldStyle:VTextFieldStyleLoginRegistration];
     self.usernameTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.usernameTextField.placeholder attributes:@{NSForegroundColorAttributeName : [UIColor colorWithWhite:0.14 alpha:1.0]}];
-    self.passwordTextField.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
-    self.passwordTextField.textColor = [UIColor colorWithWhite:0.14 alpha:1.0];
+    UIColor *activePlaceholderColor = [UIColor colorWithRed:102/255.0f green:102/255.0f blue:102/255.0f alpha:1.0f];
+    self.usernameTextField.activePlaceholder = [[NSAttributedString alloc] initWithString:self.usernameTextField.placeholder attributes:@{NSForegroundColorAttributeName : activePlaceholderColor}];
+    
+    self.passwordTextField.validator = [[VPasswordValidator alloc] init];
+    [self.passwordTextField applyTextFieldStyle:VTextFieldStyleLoginRegistration];
     self.passwordTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.passwordTextField.placeholder attributes:@{NSForegroundColorAttributeName : [UIColor colorWithWhite:0.14 alpha:1.0]}];
+    self.passwordTextField.activePlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Minimum 8 Characters", @"Password character requirement.")
+                                                                               attributes:@{NSForegroundColorAttributeName : activePlaceholderColor}];
     
     self.cancelButton.layer.borderColor = [UIColor colorWithWhite:0.14 alpha:1.0].CGColor;
     self.cancelButton.layer.borderWidth = 2.0;
@@ -126,15 +131,21 @@
 {
     NSError *validationError;
     
-    if (![self.emailValidator validateEmailAddress:emailAddress error:&validationError])
+    if (![self.emailValidator validateString:emailAddress andError:&validationError])
     {
-        [self.emailValidator showAlertInViewController:self withError:validationError];
+        self.usernameTextField.showInlineValidation = YES;
+        [self.usernameTextField validateTextWithValidator:self.emailValidator];
+        [self.usernameTextField showIncorrectTextAnimationAndVibration];
+        [self.usernameTextField becomeFirstResponder];
         return NO;
     }
     
-    if ( ![self.passwordValidator validatePassword:password error:&validationError] )
+    if ( ![self.passwordValidator validateString:password andError:&validationError] )
     {
-        [self.passwordValidator showAlertInViewController:self withError:validationError];
+        self.passwordTextField.showInlineValidation = YES;
+        [self.passwordTextField validateTextWithValidator:self.passwordValidator];
+        [self.passwordTextField showIncorrectTextAnimationAndVibration];
+        [self.passwordTextField becomeFirstResponder];
         return NO;
     }
     
@@ -267,8 +278,15 @@
 
 #pragma mark - UITextFieldDelegate
 
-- (BOOL)textFieldShouldReturn:(UITextField *)textField
+- (BOOL)textFieldShouldReturn:(VInlineValidationTextField *)textField
 {
+    if (![textField.validator validateString:textField.text
+                                    andError:nil])
+    {
+        [textField showIncorrectTextAnimationAndVibration];
+        textField.showInlineValidation = YES;
+    }
+    
     if (textField == self.usernameTextField)
     {
         [self.passwordTextField becomeFirstResponder];
@@ -277,6 +295,26 @@
     {
         [self.passwordTextField resignFirstResponder];
         [self login:nil];
+    }
+    
+    return YES;
+}
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+    BOOL validUsername = [self.usernameTextField.validator validateString:self.usernameTextField.text
+                                                                 andError:nil];
+
+    if ([self.usernameTextField isFirstResponder] && !validUsername)
+    {
+        self.usernameTextField.showInlineValidation = YES;
+    }
+    
+    BOOL validPassword = [self.passwordTextField.validator validateString:self.passwordTextField.text
+                                                              andError:nil];
+    if ([self.passwordTextField isFirstResponder] && !validPassword)
+    {
+        self.passwordTextField.showInlineValidation = YES;
     }
     
     return YES;
@@ -298,30 +336,6 @@
         profileViewController.loginType = kVLoginTypeEmail;
         profileViewController.registrationModel = [[VRegistrationModel alloc] init];
     }
-}
-
-- (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
-                                  animationControllerForOperation:(UINavigationControllerOperation)operation
-                                               fromViewController:(UIViewController *)fromVC
-                                                 toViewController:(UIViewController *)toVC
-{
-    if ([toVC isKindOfClass:[VResetPasswordViewController class]])
-    {
-        VLoginTransitionAnimator   *animator = [[VLoginTransitionAnimator alloc] init];
-        animator.presenting = (operation == UINavigationControllerOperationPush);
-        return animator;
-    }
-    else if ([toVC isKindOfClass:[VEnterResetTokenViewController class]])
-    {
-        ((VEnterResetTokenViewController *)toVC).deviceToken = self.deviceToken;
-    }
-    else if ([toVC isKindOfClass:[VLoginViewController class]])
-    {
-        VLoginTransitionAnimator   *animator = [[VLoginTransitionAnimator alloc] init];
-        animator.presenting = (operation == UINavigationControllerOperationPush);
-        return animator;
-    }
-    return nil;
 }
 
 @end

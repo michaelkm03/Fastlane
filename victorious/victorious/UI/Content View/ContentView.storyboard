@@ -106,10 +106,16 @@
                         <outlet property="landscapeMaskOverlay" destination="ZqS-Yk-BYa" id="MDK-Ti-0nG"/>
                         <outlet property="leadingCollectionViewToContainer" destination="e8f-31-PHL" id="lgG-EN-y7q"/>
                         <outlet property="moreButton" destination="p1f-ge-RSn" id="SMD-h7-BkQ"/>
+                        <outlet property="scrollPaginator" destination="Fi1-i6-cwe" id="IMt-eS-rBz"/>
                         <outlet property="trailingCollectionViewToContainer" destination="beS-6z-oSD" id="Nxc-Dh-5cG"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rXP-pS-SbF" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <customObject id="Fi1-i6-cwe" customClass="VScrollPaginator">
+                    <connections>
+                        <outlet property="delegate" destination="9O1-S6-jeB" id="oJq-zS-doN"/>
+                    </connections>
+                </customObject>
             </objects>
             <point key="canvasLocation" x="267" y="188"/>
         </scene>

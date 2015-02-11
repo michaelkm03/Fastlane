@@ -24,8 +24,8 @@
                         <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hcw-4q-StV">
                             <rect key="frame" x="20" y="416" width="280" height="34"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="280" id="gyn-ZP-xXy"/>
                                 <constraint firstAttribute="height" constant="34" id="j3t-1s-iCa"/>
+                                <constraint firstAttribute="width" constant="280" id="l9r-WC-C5K"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <state key="normal" title="Add All">
@@ -43,7 +43,7 @@
                         <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="STB-yT-Q8k">
                             <rect key="frame" x="20" y="416" width="280" height="34"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="280" id="U2Y-r3-nhE"/>
+                                <constraint firstAttribute="width" constant="280" id="6F3-6u-Rns"/>
                                 <constraint firstAttribute="height" constant="34" id="gSF-zo-RRv"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -62,14 +62,14 @@
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="trailing" secondItem="hcw-4q-StV" secondAttribute="trailing" constant="20" id="3Ui-G3-nAF"/>
                         <constraint firstItem="gft-qK-0Rj" firstAttribute="top" secondItem="zKc-GL-com" secondAttribute="top" id="7Kd-nV-Hu7"/>
                         <constraint firstItem="gft-qK-0Rj" firstAttribute="leading" secondItem="zKc-GL-com" secondAttribute="leading" id="8fC-of-Ivo"/>
                         <constraint firstAttribute="bottom" secondItem="STB-yT-Q8k" secondAttribute="bottom" constant="13" id="8i0-aj-Q0C"/>
                         <constraint firstAttribute="bottom" secondItem="hcw-4q-StV" secondAttribute="bottom" constant="13" id="9O6-VT-VbY"/>
+                        <constraint firstAttribute="centerX" secondItem="hcw-4q-StV" secondAttribute="centerX" id="M5l-op-5aU"/>
                         <constraint firstAttribute="trailing" secondItem="gft-qK-0Rj" secondAttribute="trailing" id="TkI-RK-zpO"/>
-                        <constraint firstAttribute="trailing" secondItem="STB-yT-Q8k" secondAttribute="trailing" constant="20" id="cFl-iN-gwD"/>
                         <constraint firstAttribute="bottom" secondItem="gft-qK-0Rj" secondAttribute="bottom" constant="60" id="hnl-ei-4jf"/>
+                        <constraint firstAttribute="centerX" secondItem="STB-yT-Q8k" secondAttribute="centerX" id="oGM-n0-aBy"/>
                     </constraints>
                 </view>
                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vvS-Je-aZT" userLabel="Error View">
