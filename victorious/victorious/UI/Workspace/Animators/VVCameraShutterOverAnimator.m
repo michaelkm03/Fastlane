@@ -7,52 +7,94 @@
 //
 
 #import "VVCameraShutterOverAnimator.h"
-#import "VCameraViewController.h"
 
-static const NSTimeInterval kBlurOverPresentTransitionDuration = 0.35f;
+// ViewControllers
+#import "VCameraViewController.h"
+#import "VWorkspaceViewController.h"
+
+// Masking
+#import "VRadialGradientView.h"
+#import "VRadialGradientLayer.h"
+#import "VCanvasView.h"
+
+static const NSTimeInterval kCameraShutterAnimationDuration = 0.55;
+static const CGFloat kGradientMagnitude = 20.0f;
 
 @implementation VVCameraShutterOverAnimator
 
 - (NSTimeInterval)transitionDuration:(id<UIViewControllerContextTransitioning>)transitionContext
 {
-    return kBlurOverPresentTransitionDuration;
+    return kCameraShutterAnimationDuration;
 }
 
 - (void)animateTransition:(id<UIViewControllerContextTransitioning>)transitionContext
 {
     UIViewController *fromViewController = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
     UIViewController *toViewController = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
-
+    [[transitionContext containerView] addSubview:fromViewController.view];
     [[transitionContext containerView] addSubview:toViewController.view];
-    
-    CGRect finalFrameForToViewController = [transitionContext finalFrameForViewController:toViewController];
-    CGFloat largerDimension = MAX(CGRectGetWidth(finalFrameForToViewController), CGRectGetHeight(finalFrameForToViewController));
-    UIView *circleView = [[UIView alloc] initWithFrame:CGRectMake(finalFrameForToViewController.origin.x, finalFrameForToViewController.origin.y, largerDimension, largerDimension)];
-    circleView.center = toViewController.view.center;
-    if ([fromViewController isKindOfClass:[VCameraViewController class]])
+
+    VRadialGradientView *radialGradientMaskView;
+    if ([toViewController isKindOfClass:[VWorkspaceViewController class]])
     {
-        VCameraViewController *cameraViewController = (VCameraViewController *)fromViewController;
-        circleView.center = [[transitionContext containerView] convertPoint:cameraViewController.shutterCenter fromView:cameraViewController.view];
+        VWorkspaceViewController *workvc = (VWorkspaceViewController *)toViewController;
+        [workvc bringChromeOutOfView];
+        
+        radialGradientMaskView = [[VRadialGradientView alloc] initWithFrame:workvc.canvasView.bounds];
+        VRadialGradientLayer *radialGradientLayer = radialGradientMaskView.radialGradientLayer;
+        radialGradientLayer.colors = @[(id)[UIColor clearColor].CGColor,
+                                       (id)[UIColor blackColor].CGColor];
+        radialGradientLayer.innerCenter = CGPointMake(CGRectGetMidX(radialGradientLayer.bounds),
+                                                      CGRectGetMidY(radialGradientLayer.bounds));
+        radialGradientLayer.innerRadius = 0.0f;
+        radialGradientLayer.outerCenter = CGPointMake(CGRectGetMidX(radialGradientLayer.bounds),
+                                                      CGRectGetMidY(radialGradientLayer.bounds));
+        radialGradientLayer.outerRadius = 1.0f;
+        radialGradientMaskView.backgroundColor = [UIColor clearColor];
+        workvc.view.maskView = radialGradientMaskView;
+        [workvc.canvasView addSubview:radialGradientMaskView];
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+                       {
+                           [CATransaction lock];
+                           [CATransaction begin];
+                           {
+                               [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut]];
+                               [CATransaction setAnimationDuration:kCameraShutterAnimationDuration];
+                               
+                               radialGradientLayer.innerRadius = CGRectGetHeight(workvc.canvasView.bounds);
+                               radialGradientLayer.outerRadius = CGRectGetHeight(workvc.canvasView.bounds) + kGradientMagnitude;
+                           }
+                           [CATransaction commit];
+                           [CATransaction unlock];
+                       });
     }
-    circleView.layer.cornerRadius = CGRectGetWidth(circleView.bounds)/2;
-    circleView.backgroundColor = [UIColor blackColor];
-    circleView.userInteractionEnabled = NO;
-    [[transitionContext containerView] addSubview:circleView];
-    
     [UIView animateWithDuration:[self transitionDuration:transitionContext]
                           delay:0.0f
-         usingSpringWithDamping:0.9f
+         usingSpringWithDamping:1.0f
           initialSpringVelocity:-1.0f
                         options:UIViewAnimationOptionAllowUserInteraction
                      animations:^
      {
-         circleView.transform = CGAffineTransformMakeScale(0.00001f, 0.00001f);
-         circleView.alpha = 0.0f;
+         if ([toViewController isKindOfClass:[VWorkspaceViewController class]])
+         {
+             VWorkspaceViewController *workspaceVC = (VWorkspaceViewController *)toViewController;
+             [workspaceVC bringChromeIntoView];
+         }
+         if ([fromViewController isKindOfClass:[VCameraViewController class]])
+         {
+             VCameraViewController *cameraVC = (VCameraViewController *)fromViewController;
+             [cameraVC setToolbarHidden:self.presenting];
+         }
+         if ([toViewController isKindOfClass:[VCameraViewController class]])
+         {
+             VCameraViewController *cameraVC = (VCameraViewController *)toViewController;
+             [cameraVC setToolbarHidden:self.presenting];
+         }
      }
                      completion:^(BOOL finished)
     {
-        [circleView removeFromSuperview];
-        [transitionContext completeTransition:finished];
+        [transitionContext completeTransition:YES];
     }];
 }
 

@@ -265,7 +265,7 @@ static const char kWorkspaceFlowControllerKey;
                                                     handler:^(VAlertAction *action)
                                {
                                    [self presentCreateFlowWithInitialCaptureState:VWorkspaceFlowControllerInitialCaptureStateVideo
-                                                            initialImageEditState:VImageToolControllerInitialImageEditStateCrop
+                                                            initialImageEditState:VImageToolControllerInitialImageEditStateText
                                                          andInitialVideoEditState:VVideoToolControllerInitialVideoEditStateGIF];
                                }]];
     [alertControler addAction:[VAlertAction buttonWithTitle:NSLocalizedString(@"Create a Poll", @"") handler:^(VAlertAction *action)
@@ -304,7 +304,7 @@ static const char kWorkspaceFlowControllerKey;
 - (void)presentCreateFlowWithInitialCaptureState:(VWorkspaceFlowControllerInitialCaptureState)initialCaptureState
 {
     [self presentCreateFlowWithInitialCaptureState:initialCaptureState
-                             initialImageEditState:VImageToolControllerInitialImageEditStateCrop
+                             initialImageEditState:VImageToolControllerInitialImageEditStateText
                           andInitialVideoEditState:VVideoToolControllerInitialVideoEditStateVideo];
 }
 

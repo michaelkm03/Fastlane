@@ -21,7 +21,6 @@
 #import "VNode+Fetcher.h"
 #import "VAsset.h"
 
-#import "UIButton+VImageLoading.h"
 #import "UIImage+ImageCreation.h"
 
 #import "VConstants.h"

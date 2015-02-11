@@ -5,32 +5,22 @@
 	<key>CFBundleDisplayName</key>
 	<string>${ProductPrefix}LinusTech</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.getvictorious.${ProductPrefix}LinusTechTips</string>
+	<string>com.getvictorious.${ProductPrefix}linustechtips</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fb1374328719478033</string>
-			</array>
-		</dict>
-		<dict>
-			<key>CFBundleURLName</key>
-			<string>com.getvictorious.deeplinking.scheme</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>${ProductPrefix}linustech</string>
+				<string>fb855654697829284</string>
 			</array>
 		</dict>
 	</array>
 	<key>FacebookAppID</key>
-	<string>1374328719478033</string>
-	<key>FacebookDisplayName</key>
-	<string>VictoriousApp Dev</string>
+	<string>855654697829284</string>
 	<key>TWITTER_CONSUMER_KEY</key>
-	<string>MhDYRpVPTaGQgWBT7ChmxQ</string>
+	<string>JpNyYmhrfle7xAY0yoVi6lEXL</string>
 	<key>TWITTER_CONSUMER_SECRET</key>
-	<string>damxXK28SCObMZ1CEMTLszm3v8mdRt0L1wuVnzXtH1E</string>
+	<string>3MWSqCPmWj9UTdQVGP1qyOax0e9yoihDYdLnu170ze9wY8k3TP</string>
 	<key>TestflightReleaseAppToken</key>
 	<string>4b27cca6-84af-4586-8248-85a79c643c64</string>
 	<key>TestflightQAAppToken</key>
@@ -38,10 +28,10 @@
 	<key>TestflightStagingAppToken</key>
 	<string>0fc3d522-364a-423f-ad51-6baf62001a3a</string>
 	<key>VictoriousAppID</key>
-	<integer>0</integer>
+	<integer>19</integer>
 	<key>StagingAppID</key>
-	<integer>20</integer>
+	<integer>33</integer>
 	<key>QAAppID</key>
-	<integer>0</integer>
+	<integer>17</integer>
 </dict>
 </plist>

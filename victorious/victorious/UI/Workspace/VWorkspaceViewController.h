@@ -10,7 +10,7 @@
 
 #import "VHasManagedDependencies.h"
 
-@class VToolController;
+@class VToolController, VCanvasView;
 
 typedef void (^VWorkspaceCompletion)(BOOL finished, UIImage *previewImage, NSURL *renderedMediaURL);
 
@@ -32,6 +32,11 @@ typedef void (^VWorkspaceCompletion)(BOOL finished, UIImage *previewImage, NSURL
 
 @property (nonatomic, readonly) VToolController *toolController; ///< The toolController
 
-@property (nonatomic, assign) BOOL shouldConfirmCancels; ///< The workspace will show a "discard" action sheet before calling it's completion block 
+@property (nonatomic, assign) BOOL shouldConfirmCancels; ///< The workspace will show a "discard" action sheet before calling it's completion block
+
+@property (nonatomic, weak, readonly) VCanvasView *canvasView;
+
+- (void)bringChromeOutOfView;
+- (void)bringChromeIntoView;
 
 @end
