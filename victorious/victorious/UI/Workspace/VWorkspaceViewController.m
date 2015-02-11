@@ -59,6 +59,11 @@
 @property (nonatomic, strong) NSDictionary *toolForBarButtonItemMap;
 @property (nonatomic, strong) NSDictionary *barButtonItemForToolMap;
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceTopBarToContainer;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceBottomBarToContainer;
+
+@property (nonatomic, strong) UIVisualEffectView *blurView;
+
 @end
 
 @implementation VWorkspaceViewController
@@ -293,7 +298,8 @@
 {
     [self.blurredBackgroundImageView setBlurredImageWithClearImage:self.canvasView.asset
                                                   placeholderImage:nil
-                                                         tintColor:[[UIColor blackColor] colorWithAlphaComponent:0.5f]];
+                                                         tintColor:[[UIColor blackColor] colorWithAlphaComponent:0.5f]
+                                                           animate:YES];
 }
 
 #pragma mark - VWorkspaceToolControllerDelegate
@@ -325,6 +331,25 @@
     inspectorViewController.view.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     [self addToolViewController:inspectorViewController];
     [self positionToolViewControllerOnInspector:inspectorViewController];
+}
+
+#pragma mark - Public Methods
+
+- (void)bringChromeOutOfView
+{
+    self.verticalSpaceTopBarToContainer.constant = -CGRectGetHeight(self.topToolbar.frame);
+    self.verticalSpaceBottomBarToContainer.constant = -CGRectGetHeight(self.bottomToolbar.frame);
+    self.blurredBackgroundImageView.alpha = 0.0f;
+    self.view.backgroundColor = [UIColor clearColor];
+    [self.view layoutIfNeeded];
+}
+
+- (void)bringChromeIntoView
+{
+    self.verticalSpaceTopBarToContainer.constant = 0.0f;
+    self.verticalSpaceBottomBarToContainer.constant = 0.0f;
+
+    [self.view layoutIfNeeded];
 }
 
 #pragma mark - Private Methods
