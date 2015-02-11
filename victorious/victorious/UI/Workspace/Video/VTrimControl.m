@@ -112,6 +112,11 @@ static inline CGPoint ClampX(CGPoint point, CGFloat xMin, CGFloat xMax)
     
     if (!self.hasPerformedInitialLayout)
     {
+        UIView *trimOpenView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMinY(self.trimThumbBody.frame)+2, kTrimBodyWidth, CGRectGetHeight(self.trimThumbBody.frame)-2)];
+        trimOpenView.backgroundColor = [UIColor whiteColor];
+        trimOpenView.userInteractionEnabled = NO;
+        [self addSubview:trimOpenView];
+        
         [self updateThumAndDimmingViewWithNewThumbCenter:CGPointMake(CGRectGetMaxX(self.bounds) - (CGRectGetWidth(self.trimThumbHead.frame) / 2), self.trimThumbHead.center.y)];
         self.hasPerformedInitialLayout = YES;
         
