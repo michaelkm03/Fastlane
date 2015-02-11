@@ -52,7 +52,7 @@ static const CGFloat kDirectoryItemBaseWidth = 145.0f;
 
 + (CGFloat)desiredStreamOfStreamsHeightForWidth:(CGFloat)width
 {
-    return (kDirectoryItemBaseHeight - kDirectoryItemBaseWidth) + kDirectoryItemBaseWidth * width / kDirectoryItemBaseWidth + kDirectoryItemStackHeight;
+    return (kDirectoryItemBaseHeight - kDirectoryItemBaseWidth) + ((kDirectoryItemBaseWidth * width) / kDirectoryItemBaseWidth) + kDirectoryItemStackHeight;
 }
 
 + (CGFloat)desiredStreamOfContentHeightForWidth:(CGFloat)width

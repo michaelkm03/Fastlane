@@ -118,7 +118,7 @@ static const CGFloat kTopSpacePublishPrompt = 50.0f;
         self.captionTextView.typingAttributes = @{NSFontAttributeName: label3Font};
     }
     
-    VContentInputAccessoryView *inputAccessoryView = [[VContentInputAccessoryView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth([[UIScreen mainScreen] bounds]), 44.0f)];
+    VContentInputAccessoryView *inputAccessoryView = [[VContentInputAccessoryView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 44.0f)];
     self.captionTextView.textContainerInset = UIEdgeInsetsMake(10, 6, 0, 6);
     self.captionTextView.backgroundColor = [UIColor clearColor];
     inputAccessoryView.textInputView = self.captionTextView;
@@ -391,7 +391,7 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
     
     // This will snap our content back to the center of the screen
     UISnapBehavior *snap = [[UISnapBehavior alloc] initWithItem:self.publishPrompt
-                                                    snapToPoint:CGPointMake(CGRectGetWidth([[UIScreen mainScreen] bounds]) / 2,
+                                                    snapToPoint:CGPointMake(CGRectGetWidth([self.view bounds]) / 2,
                                                                             kTopSpacePublishPrompt + (CGRectGetHeight(self.publishPrompt.frame) * 0.5f))];
     snap.damping = kSnapDampingConstant;
     self.snapBehavior = snap;

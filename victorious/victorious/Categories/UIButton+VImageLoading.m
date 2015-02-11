@@ -8,6 +8,7 @@
 
 #import "UIButton+VImageLoading.h"
 #import "NSString+VParseHelp.h"
+#import <SDWebImage/UIButton+WebCache.h>
 
 @implementation UIButton (VImageLoading)
 

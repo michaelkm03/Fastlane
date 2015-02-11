@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14A389a" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -19,18 +18,18 @@
                     </constraints>
                 </imageView>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="NO MESSAGES YET" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" preferredMaxLayoutWidth="260" translatesAutoresizingMaskIntoConstraints="NO" id="hx0-YK-T9j">
-                    <rect key="frame" x="30" y="243" width="260" height="23"/>
+                    <rect key="frame" x="31" y="243" width="259" height="23"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="260" id="u9b-iG-JH2"/>
+                        <constraint firstAttribute="width" constant="259" id="u9b-iG-JH2"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="19"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You can send messages to anyone on the app!  Just go to their profile and click the compose icon in the top right corner." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" preferredMaxLayoutWidth="220" translatesAutoresizingMaskIntoConstraints="NO" id="1Uw-A9-zfF">
-                    <rect key="frame" x="50" y="276" width="220" height="102"/>
+                    <rect key="frame" x="51" y="276" width="219" height="102"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="220" id="z4w-NF-c5z"/>
+                        <constraint firstAttribute="width" constant="219" id="z4w-NF-c5z"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>

@@ -253,7 +253,7 @@ static char KVOContext;
 
     if (self.firstMediaURL)
     {
-        self.mediaButtonLeftSpacingConstraint.constant = self.view.bounds.size.width / 2;
+        self.mediaButtonLeftSpacingConstraint.constant = CGRectGetWidth(self.view.bounds) / 2;
     }
     else
     {
