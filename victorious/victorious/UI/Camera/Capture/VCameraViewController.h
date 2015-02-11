@@ -59,18 +59,24 @@
 + (VCameraViewController *)cameraViewControllerLimitedToVideo;
 
 /**
- YES, if the camera has exited with a fullscreen shutter animation to black. Originating form shutterCenter in this viewController's view.
- */
-@property (nonatomic, readonly) BOOL showedFullscreenShutterAnimation;
-
-/**
- The origin of the growth of the shutter animation.
- */
-@property (nonatomic, readonly) CGPoint shutterCenter;
-
-/**
  The URL of the media captured by the camera. (May be remote).
  */
 @property (nonatomic, readonly) NSURL *capturedMediaURL;
+
+/**
+ A Preview image (may be lower quality than asset at capturedMediaURL).
+ */
+@property (nonatomic, readonly) UIImage *preivewImage;
+
+/**
+ *  A property indicating whether the camera controls are on screen.
+ */
+@property (nonatomic, assign, getter=isToolBarHidden) BOOL toolbarHidden;
+
+/**
+ *  An animated version of the toolsHidden setter.
+ */
+- (void)setToolbarHidden:(BOOL)toolbarHidden
+                animated:(BOOL)animated;
 
 @end

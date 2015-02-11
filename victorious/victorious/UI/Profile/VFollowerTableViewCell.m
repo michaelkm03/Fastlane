@@ -11,6 +11,7 @@
 #import "VObjectManager+Login.h"
 #import "VUser.h"
 #import "VThemeManager.h"
+#import <SDWebImage/UIImageView+WebCache.h>
 
 @interface      VFollowerTableViewCell ()
 
@@ -29,10 +30,12 @@
 {
     _profile = profile;
 
-    self.followImage   = [UIImage imageNamed:@"buttonFollow"];
+    //UIImage *sImg = [[UIImage imageNamed:@"buttonFollow"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    self.followImage   = [[UIImage imageNamed:@"buttonFollow"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     self.unfollowImage = [UIImage imageNamed:@"buttonFollowed"];
     
-    [self.profileImage setImageWithURL:[NSURL URLWithString: profile.pictureUrl] placeholderImage:[UIImage imageNamed:@"profileGenericUser"]];
+    [self.profileImage sd_setImageWithURL:[NSURL URLWithString: profile.pictureUrl]
+                         placeholderImage:[UIImage imageNamed:@"profileGenericUser"]];
     self.profileImage.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
     self.profileImage.layer.cornerRadius = CGRectGetHeight(self.profileImage.bounds)/2;
     self.profileImage.layer.borderWidth = 1.0;
@@ -52,6 +55,11 @@
     {
         self.followButton.hidden = YES;
     }
+    
+    if ([self respondsToSelector:@selector(setLayoutMargins:)])
+    {
+        [self setLayoutMargins:UIEdgeInsetsZero];
+    }
 }
 
 - (void)setHaveRelationship:(BOOL)haveRelationship
@@ -64,6 +72,7 @@
     }
     else
     {
+        self.followButton.imageView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
         self.followButton.imageView.image = self.followImage;
     }
 }

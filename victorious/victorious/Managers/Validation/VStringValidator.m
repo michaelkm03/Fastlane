@@ -47,7 +47,7 @@ NSString *const VValdationErrorTitleKey = @"VValdationErrorTitle";
     {
         return;
     }
-    id objectAtKeyPath = [confirmationObject valueForKeyPath:keyPath];
+    __unused id objectAtKeyPath = [confirmationObject valueForKeyPath:keyPath];
     NSAssert([objectAtKeyPath isKindOfClass:[NSString class]], @"Needs to resolve to an NSString");
 }
 

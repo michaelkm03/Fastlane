@@ -13,28 +13,7 @@
 #warning VScrollPaginator is logging pagination events.  Please turn this off before merging.
 #endif
 
-@interface VScrollPaginator()
-
-@property (nonatomic, weak) id<VScrollPaginatorDelegate> delegate;
-
-@end
-
 @implementation VScrollPaginator
-
-- (instancetype)init
-{
-    return [self initWithDelegate:nil];
-}
-
-- (instancetype)initWithDelegate:(id<VScrollPaginatorDelegate>)delegate
-{
-    self = [super init];
-    if (self)
-    {
-        _delegate = delegate;
-    }
-    return self;
-}
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {

@@ -13,13 +13,32 @@
 #import "VSettingManager.h"
 #import "UIViewController+VNavMenu.h"
 #import "VDiscoverViewControllerProtocol.h"
+#import "VObjectManager+Login.h"
+#import "VObjectManager+Users.h"
+#import "VUser.h"
+#import "VAuthorizationViewControllerFactory.h"
 
-@interface VDiscoverContainerViewController () <VNavigationHeaderDelegate>
+// Dependency Manager
+#import "VDependencyManager.h"
 
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *searchBarHeightConstraint;
+// Users and Tags Search
+#import "VUsersAndTagsSearchViewController.h"
 
-@property (nonatomic, weak) IBOutlet UIView *searchBarContainer;
+// Transition
+#import "VSearchResultsTransition.h"
+#import "VTransitionDelegate.h"
+
+@interface VDiscoverContainerViewController () <VNavigationHeaderDelegate, UITextFieldDelegate>
+
+@property (nonatomic, weak) IBOutlet UITextField *searchField;
+@property (nonatomic, weak) IBOutlet UIButton *searchIconButton;
 @property (nonatomic, weak) id<VDiscoverViewControllerProtocol> childViewController;
+
+@property (nonatomic, strong) UINavigationController *searchNavigationController;
+@property (nonatomic, strong) VUsersAndTagsSearchViewController *usersAndTagsSearchViewController;
+@property (nonatomic, strong) VTransitionDelegate *transitionDelegate;
+
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end
 
@@ -37,7 +56,9 @@
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    return [self instantiateFromStoryboard:@"Discover"];
+    VDiscoverContainerViewController *discoverContainer = [self instantiateFromStoryboard:@"Discover"];
+    discoverContainer.dependencyManager = dependencyManager;
+    return discoverContainer;
 }
 
 #pragma mark -
@@ -45,11 +66,42 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    // For now, search is hidden.  Uncomment this when the time comes to implement it.
-    self.searchBarHeightConstraint.constant = 0;
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showSuggestedPersonProfile:) name:kVDiscoverUserProfileSelectedNotification object:nil];
+
+    self.searchField.placeholder = NSLocalizedString(@"Search people and hashtags", @"");
+    self.searchField.delegate = self;
+
+    VSearchResultsTransition *viewTransition = [[VSearchResultsTransition alloc] init];
+    self.transitionDelegate = [[VTransitionDelegate alloc] initWithTransition:viewTransition];
+
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(showSuggestedPersonProfile:)
+                                                 name:kVDiscoverUserProfileSelectedNotification
+                                               object:nil];
+
+    [self v_addNewNavHeaderWithTitles:nil];
+    self.navHeaderView.delegate = self;
+    NSLayoutConstraint *searchTopConstraint = [NSLayoutConstraint constraintWithItem:self.searchBarContainer
+                                                                           attribute:NSLayoutAttributeTop
+                                                                           relatedBy:NSLayoutRelationEqual
+                                                                              toItem:self.navHeaderView
+                                                                           attribute:NSLayoutAttributeBottom
+                                                                          multiplier:1.0
+                                                                            constant:0];
+    [self.view addConstraint:searchTopConstraint];
+    [self.view layoutIfNeeded];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)dealloc
@@ -68,23 +120,6 @@
     : UIStatusBarStyleDefault;
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-    [self v_addNewNavHeaderWithTitles:nil];
-    self.navHeaderView.delegate = self;
-    NSLayoutConstraint *searchTopConstraint = [NSLayoutConstraint constraintWithItem:self.searchBarContainer
-                                                                          attribute:NSLayoutAttributeTop
-                                                                          relatedBy:NSLayoutRelationEqual
-                                                                             toItem:self.navHeaderView
-                                                                          attribute:NSLayoutAttributeBottom
-                                                                         multiplier:1.0
-                                                                           constant:0];
-    [self.view addConstraint:searchTopConstraint];
-    [self.view layoutIfNeeded];
-}
-
 - (BOOL)shouldAutorotate
 {
     return NO;
@@ -95,13 +130,7 @@
     return UIInterfaceOrientationMaskPortrait;
 }
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    if ( [segue.destinationViewController conformsToProtocol:@protocol(VDiscoverViewControllerProtocol)] )
-    {
-        self.childViewController = (id<VDiscoverViewControllerProtocol>)segue.destinationViewController;
-    }
-}
+#pragma mark - Show Profile
 
 - (void)showSuggestedPersonProfile:(NSNotification *)note
 {
@@ -109,13 +138,13 @@
     {
         return;
     }
-    
+
     VUser *user = note.userInfo[ kVDiscoverUserProfileSelectedKeyUser ];
     if ( user == nil )
     {
         return;
     }
-    
+
     VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithUser:user];
     if ( self.navigationController != nil )
     {
@@ -127,13 +156,53 @@
     }
 }
 
+#pragma mark - Button Actions
+
+- (IBAction)closeButtonAction:(id)sender
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (IBAction)searchIconButtonAction:(id)sender
+{
+    [self.searchField becomeFirstResponder];
+}
+
 #pragma mark - VNavigationDestination
 
 - (BOOL)shouldNavigateWithAlternateDestination:(UIViewController *__autoreleasing *)alternateViewController
 {
     [self.childViewController refresh:YES];
-    
+
     return YES;
+}
+
+#pragma mark - UITextFieldDelegate
+
+ - (void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    // Release the search field
+    [self.searchField resignFirstResponder];
+
+    VUsersAndTagsSearchViewController *searchViewController = [VUsersAndTagsSearchViewController initWithDependencyManager:self.dependencyManager];
+    searchViewController.transitioningDelegate = self.transitionDelegate;
+    self.navigationController.delegate = self.transitionDelegate;
+    [self.navigationController pushViewController:searchViewController animated:YES];
+}
+
+#pragma mark - Navigation
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ( [segue.destinationViewController conformsToProtocol:@protocol(VDiscoverViewControllerProtocol)] )
+    {
+        self.childViewController = (id<VDiscoverViewControllerProtocol>)segue.destinationViewController;
+    }
+
+    if ( [[segue identifier] isEqualToString:@"usersTagsSearchSegue"] )
+    {
+        self.usersAndTagsSearchViewController = segue.destinationViewController;
+    }
 }
 
 @end

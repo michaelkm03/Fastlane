@@ -7,35 +7,21 @@
 //
 
 #import "VPublishShareController.h"
-#import "VPublishShareView.h"
-
-@interface VPublishShareController ()
-
-@property (nonatomic, strong, readwrite) VPublishShareView *shareView;
-
-@end
 
 @implementation VPublishShareController
 
-- (id)init
-{
-    self = [super init];
-    if (self)
-    {
-        self.shareView = [[VPublishShareView alloc] init];
-        typeof(self) __weak weakSelf = self;
-        self.shareView.selectionBlock = ^{ [weakSelf shareButtonTapped]; };
-    }
-    return self;
-}
-
 - (void)shareButtonTapped
 {
+    NSAssert(false, @"Implement in subclasses!");
 }
 
-- (BOOL)isSelected
+- (void)setSwitchToConfigure:(UISwitch *)switchToConfigure
 {
-    return self.shareView.selectedState == VShareViewSelectedStateSelected;
+    _switchToConfigure = switchToConfigure;
+    
+    [switchToConfigure addTarget:self
+                          action:@selector(shareButtonTapped)
+                forControlEvents:UIControlEventValueChanged];
 }
 
 @end

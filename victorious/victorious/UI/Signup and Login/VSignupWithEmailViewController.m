@@ -32,8 +32,6 @@
 @property (nonatomic, weak) IBOutlet    VButton       *signupButton;
 @property (nonatomic, strong)   VUser  *profile;
 @property (nonatomic, strong)   VRegistrationModel *registrationModel;
-@property (nonatomic, strong)   VPasswordValidator *passwordValidator;
-@property (nonatomic, strong)   VEmailValidator *emailValidator;
 
 @end
 
@@ -73,10 +71,6 @@
     self.confirmPasswordTextField.activePlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Minimum 8 characters", @"") attributes:@{NSForegroundColorAttributeName : activePlaceholderColor}];
     
     self.registrationModel = [[VRegistrationModel alloc] init];
-    
-    // Validators
-    self.passwordValidator = [[VPasswordValidator alloc] init];
-    self.emailValidator = [[VEmailValidator alloc] init];
     
     // Accessibility IDs
     self.cancelButton.accessibilityIdentifier = VAutomationIdentifierSignupCancel;
@@ -124,8 +118,8 @@
 {
     NSError *validationError;
 
-    if (![self.emailValidator validateString:emailAddress
-                                    andError:&validationError])
+    if (![self.emailTextField.validator validateString:emailAddress
+                                              andError:&validationError])
     {
         self.emailTextField.showInlineValidation = YES;
         [self.emailTextField becomeFirstResponder];
@@ -133,14 +127,15 @@
         return NO;
     }
 
-    [self.confirmPasswordTextField.validator setConfirmationObject:self.confirmPasswordTextField
-                                                       withKeyPath:NSStringFromSelector(@selector(text))];
-    if (![self.passwordValidator validateString:self.passwordTextField.text
-                                       andError:&validationError])
+    [self.passwordTextField.validator setConfirmationObject:self.confirmPasswordTextField
+                                                withKeyPath:NSStringFromSelector(@selector(text))];
+    if (![self.passwordTextField.validator validateString:self.passwordTextField.text
+                                                 andError:&validationError])
     {
         if (validationError.code == VErrorCodeInvalidPasswordsDoNotMatch)
         {
             self.confirmPasswordTextField.showInlineValidation = YES;
+            [self.confirmPasswordTextField validateTextWithValidator:self.passwordTextField.validator];
             [self.confirmPasswordTextField showIncorrectTextAnimationAndVibration];
         }
         else
