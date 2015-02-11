@@ -29,11 +29,8 @@ static const CGFloat kBottomClearInset = 2.0f;
 
 @property (nonatomic, strong) NSAttributedString *oldPlaceholder;
 
-<<<<<<< HEAD
 @property (nonatomic, strong) CALayer *bottomBorder;
-=======
 @property (nonatomic, readwrite) BOOL hasResignedFirstResponder;
->>>>>>> 2c42aa8e4f389bf7fa238273ce8a5e1b16d6dceb
 
 @end
 

@@ -31,7 +31,6 @@
 
 @interface VLoginWithEmailViewController () <UITextFieldDelegate, UINavigationControllerDelegate, UIAlertViewDelegate, CCHLinkTextViewDelegate>
 
-<<<<<<< HEAD
 @property (nonatomic, weak) IBOutlet VFormValidationTextField *usernameTextField;
 @property (nonatomic, weak) IBOutlet VFormValidationTextField *passwordTextField;
 @property (nonatomic, weak) IBOutlet VButton *loginButton;
@@ -50,10 +49,6 @@
 
 @property (nonatomic, strong) IBOutlet VLinkTextViewHelper *linkTextHelper;
 @property (nonatomic, strong) IBOutlet CCHLinkTextView *forgotPasswordTextView;
-=======
-@property (nonatomic, strong)           VEmailValidator *emailValidator;
-@property (nonatomic, strong)           VPasswordValidator *passwordValidator;
->>>>>>> 2c42aa8e4f389bf7fa238273ce8a5e1b16d6dceb
 
 @end
 
@@ -332,7 +327,6 @@
     }
 }
 
-<<<<<<< HEAD
 - (void)showInvalidEmailForResetPasswordErrorWithMessage:(NSString *)message title:(NSString *)title
 {
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
@@ -343,10 +337,7 @@
     [alert show];
 }
 
-#pragma mark - UITextFieldDelegate
-=======
 #pragma mark - Notifications
->>>>>>> 2c42aa8e4f389bf7fa238273ce8a5e1b16d6dceb
 
 - (void)textFieldDidChange:(NSNotification *)notification
 {
