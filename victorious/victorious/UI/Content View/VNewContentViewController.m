@@ -79,6 +79,8 @@
 #import "VCommentHighlighter.h"
 #import "VScrollPaginator.h"
 
+#import <SDWebImage/UIImageView+WebCache.h>
+
 #define HANDOFFENABLED 0
 static const CGFloat kMaxInputBarHeight = 200.0f;
 
@@ -781,10 +783,8 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
             {
                 VContentImageCell *imageCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentImageCell suggestedReuseIdentifier]
                                                                                          forIndexPath:indexPath];
-                [imageCell.contentImageView setImageWithURLRequest:self.viewModel.imageURLRequest
-                                                  placeholderImage:self.placeholderImage?:nil
-                                                           success:nil
-                                                           failure:nil];
+                [imageCell.contentImageView sd_setImageWithURL:self.viewModel.imageURLRequest.URL
+                                              placeholderImage:self.placeholderImage?:nil];
                 self.contentCell = imageCell;
                 return imageCell;
             }

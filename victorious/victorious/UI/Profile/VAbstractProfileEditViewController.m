@@ -14,6 +14,7 @@
 #import "VThemeManager.h"
 #import "VContentInputAccessoryView.h"
 #import "VConstants.h"
+#import <SDWebImage/UIImageView+WebCache.h>
 
 @interface VAbstractProfileEditViewController () <VContentInputAccessoryViewDelegate>
 
@@ -128,7 +129,8 @@
     self.backgroundImageView = backgroundImageView;
     
     NSURL  *imageURL    =   [NSURL URLWithString:profile.pictureUrl];
-    [self.profileImageView setImageWithURL:imageURL placeholderImage:nil];
+    [self.profileImageView sd_setImageWithURL:imageURL
+                             placeholderImage:nil];
 }
 
 #pragma mark - Actions

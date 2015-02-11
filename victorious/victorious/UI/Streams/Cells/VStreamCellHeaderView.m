@@ -19,7 +19,6 @@
 #import "VAsset.h"
 #import "VLargeNumberFormatter.h"
 #import "UIImage+ImageCreation.h"
-#import "UIButton+VImageLoading.h"
 #import "VConstants.h"
 
 #import "VUserProfileViewController.h"
