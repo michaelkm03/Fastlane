@@ -14,6 +14,7 @@
 #import "VImageSearchViewController.h"
 #import "VThemeManager.h"
 #import "UIStoryboard+VMainStoryboard.h"
+#import <SDWebImage/UIImageView+WebCache.h>
 
 static NSString * const kSearchResultCellReuseIdentifier          = @"kSearchResultCellReuseIdentifier";
 static NSString * const kSearchResultSectionFooterReuseIdentifier = @"kSearchResultSectionFooterReuseIdentifier";
@@ -192,7 +193,7 @@ static const CGFloat    kHeightRatioForRefresh                    =  0.1f;
 - (UICollectionViewCell *)dataSource:(VImageSearchDataSource *)dataSource cellForSearchResult:(VImageSearchResult *)searchResult atIndexPath:(NSIndexPath *)indexPath
 {
     VImageSearchResultCell *searchResultCell = (VImageSearchResultCell *)[self.collectionView dequeueReusableCellWithReuseIdentifier:kSearchResultCellReuseIdentifier forIndexPath:indexPath];
-    [searchResultCell.imageView setImageWithURL:searchResult.thumbnailURL];
+    [searchResultCell.imageView sd_setImageWithURL:searchResult.thumbnailURL];
     return searchResultCell;
 }
 

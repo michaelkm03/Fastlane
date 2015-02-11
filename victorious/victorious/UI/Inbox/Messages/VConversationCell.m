@@ -13,7 +13,6 @@
 #import "VMessage+RestKit.h"
 #import "VUser+RestKit.h"
 
-#import "UIButton+VImageLoading.h"
 #import "UIImage+ImageCreation.h"
 
 #import "VUserProfileViewController.h"

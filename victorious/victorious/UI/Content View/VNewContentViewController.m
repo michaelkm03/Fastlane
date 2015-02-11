@@ -79,6 +79,9 @@
 #import "VCommentHighlighter.h"
 #import "VScrollPaginator.h"
 
+#import <SDWebImage/UIImageView+WebCache.h>
+
+#define HANDOFFENABLED 0
 static const CGFloat kMaxInputBarHeight = 200.0f;
 
 @interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate,VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, NSUserActivityDelegate>
@@ -505,6 +508,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 {
     [super viewDidAppear:animated];
     
+#if HANDOFFENABLED
     if ((self.viewModel.sequence.remoteId != nil) && (self.viewModel.shareURL != nil))
     {
         NSString *handoffIdentifier = [NSString stringWithFormat:@"com.victorious.handoff.%@", self.viewModel.sequence.remoteId];
@@ -513,6 +517,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
         self.handoffObject.delegate = self;
         [self.handoffObject becomeCurrent];
     }
+#endif
     
     [self.contentCollectionView flashScrollIndicators];
 }
@@ -521,8 +526,10 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 {
     [super viewWillDisappear:animated];
     
+#if HANDOFFENABLED
     self.handoffObject.delegate = nil;
     [self.handoffObject invalidate];
+#endif
     
     // We don't care about these notifications anymore but we still care about new user loggedin
     [[NSNotificationCenter defaultCenter] removeObserver:self
@@ -776,10 +783,8 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
             {
                 VContentImageCell *imageCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentImageCell suggestedReuseIdentifier]
                                                                                          forIndexPath:indexPath];
-                [imageCell.contentImageView setImageWithURLRequest:self.viewModel.imageURLRequest
-                                                  placeholderImage:self.placeholderImage?:nil
-                                                           success:nil
-                                                           failure:nil];
+                [imageCell.contentImageView sd_setImageWithURL:self.viewModel.imageURLRequest.URL
+                                              placeholderImage:self.placeholderImage?:nil];
                 self.contentCell = imageCell;
                 return imageCell;
             }

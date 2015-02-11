@@ -9,7 +9,6 @@
 #import "MBProgressHUD.h"
 #import "NSDate+timeSince.h"
 #import "NSURL+MediaType.h"
-#import "UIButton+VImageLoading.h"
 #import "UIImage+ImageEffects.h"
 #import "VCommentTextAndMediaView.h"
 #import "VConstants.h"
@@ -27,6 +26,7 @@
 #import "VUserProfileViewController.h"
 #import "VObjectManager+DirectMessaging.h"
 #import "VDefaultProfileImageView.h"
+#import <SDWebImage/UIImageView+WebCache.h>
 
 @interface VMessageViewController () <VMessageTableDataDelegate>
 
@@ -163,7 +163,7 @@
     {
         cell.commentTextView.hasMedia = YES;
         cell.commentTextView.mediaThumbnailView.hidden = NO;
-        [cell.commentTextView.mediaThumbnailView setImageWithURL:[NSURL URLWithString:message.thumbnailPath]];
+        [cell.commentTextView.mediaThumbnailView sd_setImageWithURL:[NSURL URLWithString:message.thumbnailPath]];
         if ([message.mediaPath v_hasVideoExtension])
         {
             cell.commentTextView.onMediaTapped = [cell.commentTextView standardMediaTapHandlerWithMediaURL:[NSURL URLWithString:message.mediaPath] presentingViewController:self];
@@ -178,7 +178,7 @@
     NSURL *pictureURL = [NSURL URLWithString:message.sender.pictureUrl];
     if (pictureURL)
     {
-        [cell.profileImageView setImageWithURL:pictureURL];
+        [cell.profileImageView sd_setImageWithURL:pictureURL];
     }
     cell.onProfileImageTapped = ^(void)
     {
