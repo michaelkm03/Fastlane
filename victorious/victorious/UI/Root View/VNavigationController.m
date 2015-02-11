@@ -25,9 +25,13 @@
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) UINavigationController *innerNavigationController;
 @property (nonatomic, strong) UIView *supplementaryHeaderView;
+@property (nonatomic, strong) UIView *statusBarBackgroundView;
 @property (nonatomic, strong) UIViewController *displayedViewController; ///< The view controller currently on the top of the nav stack, as far as we know
+@property (nonatomic) BOOL wantsStatusBarHidden;
 
 @end
+
+static const CGFloat kStatusBarHeight = 20.0f;
 
 @implementation VNavigationController
 
@@ -81,6 +85,20 @@
                                                                         views:NSDictionaryOfVariableBindings(innerNavigationControllerView)]];
     [self addNavigationBarStyles];
     [self.innerNavigationController didMoveToParentViewController:self];
+
+    UIView *statusBarBackgroundView = [[UIView alloc] init];
+    statusBarBackgroundView.translatesAutoresizingMaskIntoConstraints = NO;
+    statusBarBackgroundView.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
+    [self.view addSubview:statusBarBackgroundView];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[statusBarBackgroundView]|"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:NSDictionaryOfVariableBindings(statusBarBackgroundView)]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[statusBarBackgroundView(==kStatusBarHeight)]"
+                                                                      options:0
+                                                                      metrics:@{ @"kStatusBarHeight": @(kStatusBarHeight) }
+                                                                        views:NSDictionaryOfVariableBindings(statusBarBackgroundView)]];
+    self.statusBarBackgroundView = statusBarBackgroundView;
 }
 
 - (void)addNavigationBarStyles
@@ -114,9 +132,14 @@
     return UIStatusBarStyleLightContent;
 }
 
+- (UIStatusBarAnimation)preferredStatusBarUpdateAnimation
+{
+    return UIStatusBarAnimationFade;
+}
+
 - (BOOL)prefersStatusBarHidden
 {
-    return self.innerNavigationController.navigationBarHidden;
+    return self.wantsStatusBarHidden;
 }
 
 - (NSUInteger)supportedInterfaceOrientations
@@ -152,9 +175,10 @@
     }
 }
 
-#pragma mark - Supplementary Header Views
-
-- (void)addSupplementaryHeaderView:(UIView *)supplementaryHeaderView withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)transition
+- (void)performCompanionAnimation:(void(^)(void))animation
+        withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)transition
+                           before:(void(^)(void))beforeBlock
+                       completion:(void(^)(void))completion
 {
     if ( [transition isInteractive] )
     {
@@ -162,46 +186,10 @@
         {
             if ( ![context isCancelled] )
             {
-                [self addSupplementaryHeaderView:supplementaryHeaderView];
-                if ( [context isAnimated] )
+                if ( beforeBlock != nil )
                 {
-                    supplementaryHeaderView.alpha = 0;
-                    [UIView animateWithDuration:[context transitionDuration] / [context completionVelocity]
-                                          delay:0
-                                        options:[context completionCurve] << 16
-                                     animations:^(void)
-                    {
-                        supplementaryHeaderView.alpha = 1.0f;
-                    }
-                                     completion:nil];
+                    beforeBlock();
                 }
-            }
-        }];
-    }
-    else
-    {
-        [self addSupplementaryHeaderView:supplementaryHeaderView];
-        if ( [transition isAnimated] )
-        {
-            supplementaryHeaderView.alpha = 0;
-            [transition animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context)
-            {
-                supplementaryHeaderView.alpha = 1.0f;
-            }
-                                        completion:nil];
-            
-        }
-    }
-}
-
-- (void)removeSupplementaryHeaderViewWithTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)transition
-{
-    if ( [transition isInteractive] )
-    {
-        [transition notifyWhenInteractionEndsUsingBlock:^(id<UIViewControllerTransitionCoordinatorContext> context)
-        {
-            if ( ![context isCancelled] )
-            {
                 if ( [context isAnimated] )
                 {
                     [UIView animateWithDuration:[context transitionDuration] / [context completionVelocity]
@@ -209,38 +197,99 @@
                                         options:[context completionCurve] << 16
                                      animations:^(void)
                     {
-                        self.supplementaryHeaderView.alpha = 0;
+                        if ( animation != nil )
+                        {
+                            animation();
+                        }
                     }
-                                    completion:^(BOOL finished)
+                                     completion:^(BOOL finished)
                     {
-                        [self removeSupplementaryHeaderView];
+                        if ( completion != nil )
+                        {
+                            completion();
+                        }
                     }];
                 }
                 else
                 {
-                    [self removeSupplementaryHeaderView];
+                    if ( animation != nil )
+                    {
+                        animation();
+                    }
+                    if ( completion != nil )
+                    {
+                        completion();
+                    }
                 }
             }
         }];
     }
     else
     {
+        if ( beforeBlock != nil )
+        {
+            beforeBlock();
+        }
         if ( [transition isAnimated] )
         {
             [transition animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context)
             {
-                self.supplementaryHeaderView.alpha = 0;
+                if ( animation != nil )
+                {
+                    animation();
+                }
             }
-                                        completion:^(id<UIViewControllerTransitionCoordinatorContext> context)
+                                       completion:^(id<UIViewControllerTransitionCoordinatorContext> context)
             {
-                [self removeSupplementaryHeaderView];
+                if (completion != nil )
+                {
+                    completion();
+                }
             }];
         }
         else
         {
-            [self removeSupplementaryHeaderView];
+            if ( animation != nil )
+            {
+                animation();
+            }
+            if ( completion != nil )
+            {
+                completion();
+            }
         }
     }
+}
+
+#pragma mark - Supplementary Header Views
+
+- (void)addSupplementaryHeaderView:(UIView *)supplementaryHeaderView withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)transition
+{
+    [self performCompanionAnimation:^(void)
+    {
+        supplementaryHeaderView.alpha = 1.0f;
+    }
+          withTransitionCoordinator:transition
+                             before:^(void)
+    {
+        [self addSupplementaryHeaderView:supplementaryHeaderView];
+        supplementaryHeaderView.alpha = 0;
+    }
+                         completion:nil];
+}
+
+- (void)removeSupplementaryHeaderViewWithTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)transition
+{
+    [self performCompanionAnimation:^(void)
+    {
+        self.supplementaryHeaderView.alpha = 0;
+    }
+          withTransitionCoordinator:transition
+                             before:nil
+                         completion:^(void)
+    {
+        [self removeSupplementaryHeaderView];
+    }];
 }
 
 - (void)removeSupplementaryHeaderView
@@ -256,8 +305,10 @@
         [self removeSupplementaryHeaderView];
     }
     
-    [self.view addSubview:supplementaryHeaderView];
+    [self.view insertSubview:supplementaryHeaderView belowSubview:self.statusBarBackgroundView];
     supplementaryHeaderView.translatesAutoresizingMaskIntoConstraints = NO;
+    supplementaryHeaderView.transform = CGAffineTransformIdentity;
+    supplementaryHeaderView.hidden = NO;
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.innerNavigationController.navigationBar
                                                           attribute:NSLayoutAttributeBottom
                                                           relatedBy:NSLayoutRelationEqual
@@ -302,15 +353,48 @@
     
     BOOL prefersNavigationBarHidden = [viewController v_prefersNavigationBarHidden];
     
+    if ( !prefersNavigationBarHidden && self.statusBarBackgroundView.hidden )
+    {
+        if ( viewController.transitionCoordinator == nil )
+        {
+            self.statusBarBackgroundView.hidden = YES;
+        }
+        else
+        {
+            [self performCompanionAnimation:^(void)
+            {
+                self.statusBarBackgroundView.alpha = 1.0f;
+            }
+                  withTransitionCoordinator:viewController.transitionCoordinator
+                                     before:^(void)
+            {
+                self.statusBarBackgroundView.hidden = NO;
+                self.statusBarBackgroundView.alpha = 0;
+            }
+                                 completion:nil];
+        }
+    }
+    else if ( prefersNavigationBarHidden && !self.statusBarBackgroundView.hidden )
+    {
+        [self performCompanionAnimation:^(void)
+        {
+            self.statusBarBackgroundView.alpha = 0;
+        }
+              withTransitionCoordinator:viewController.transitionCoordinator
+                                 before:nil
+                             completion:^(void)
+        {
+            self.statusBarBackgroundView.hidden = YES;
+        }];
+    }
+    
     if ( !prefersNavigationBarHidden && self.innerNavigationController.navigationBarHidden )
     {
         [self.innerNavigationController setNavigationBarHidden:NO animated:animated];
-        [self setNeedsStatusBarAppearanceUpdate];
     }
     else if ( prefersNavigationBarHidden && !self.innerNavigationController.navigationBarHidden )
     {
         [self.innerNavigationController setNavigationBarHidden:YES animated:animated];
-        [self setNeedsStatusBarAppearanceUpdate];
     }
     
     if ( viewController.toolbarItems.count > 0 )
@@ -344,6 +428,27 @@
         }
     }
     
+    BOOL wantsStatusBarHidden = prefersNavigationBarHidden;
+    if ( wantsStatusBarHidden != self.wantsStatusBarHidden )
+    {
+        if ( [viewController.transitionCoordinator isInteractive] )
+        {
+            [viewController.transitionCoordinator notifyWhenInteractionEndsUsingBlock:^(id<UIViewControllerTransitionCoordinatorContext> context)
+            {
+                if ( ![context isCancelled] )
+                {
+                    self.wantsStatusBarHidden = wantsStatusBarHidden;
+                    [self setNeedsStatusBarAppearanceUpdate];
+                }
+            }];
+        }
+        else
+        {
+            self.wantsStatusBarHidden = wantsStatusBarHidden;
+            [self setNeedsStatusBarAppearanceUpdate];
+        }
+    }
+    
     if ( self.leftBarButtonItem != nil &&
          navigationController.viewControllers.count > 0 &&
          navigationController.viewControllers[0] == viewController &&
@@ -355,8 +460,11 @@
 
 - (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
-    [self.displayedViewController v_setNavigationController:nil];
-    self.displayedViewController = viewController;
+    if ( viewController != self.displayedViewController )
+    {
+        [self.displayedViewController v_setNavigationController:nil];
+        self.displayedViewController = viewController;
+    }
 }
 
 @end

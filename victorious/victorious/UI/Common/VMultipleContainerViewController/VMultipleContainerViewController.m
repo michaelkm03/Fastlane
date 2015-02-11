@@ -75,6 +75,7 @@ static NSString * const kInitialKey = @"initial";
     collectionView.dataSource = self;
     collectionView.delegate = self;
     collectionView.scrollEnabled = NO;
+    collectionView.scrollsToTop = NO;
     [collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:kCellReuseID];
     [self.view addSubview:collectionView];
     self.collectionView = collectionView;
