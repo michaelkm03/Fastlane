@@ -166,7 +166,10 @@ shouldChangeTextInRange:(NSRange)range
     styledFont = [styledFont fontWithSize:self.textView.font.pointSize];
     
     NSMutableDictionary *sizedAttributes = [[NSMutableDictionary alloc] initWithDictionary:self.textType.attributes];
-    sizedAttributes[NSFontAttributeName] = styledFont;
+    if (styledFont)
+    {
+        sizedAttributes[NSFontAttributeName] = styledFont;
+    }
     
     NSRange selectedRange = textView.selectedRange;
     textView.attributedText = [[NSAttributedString alloc] initWithString:self.textView.text
