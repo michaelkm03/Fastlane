@@ -229,11 +229,11 @@
 		037FCEF31A8A794300E8ABFC /* VHamburgerButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 037FCEEE1A8A794300E8ABFC /* VHamburgerButton.m */; };
 		037FCEF41A8A794300E8ABFC /* VNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 037FCEF01A8A794300E8ABFC /* VNavigationController.m */; };
 		037FCEF51A8A794300E8ABFC /* VNavigationControllerScrollDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 037FCEF21A8A794300E8ABFC /* VNavigationControllerScrollDelegate.m */; };
-		037FCEF71A8A795600E8ABFC /* VHamburgerButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = 037FCEF61A8A795600E8ABFC /* VHamburgerButton.xib */; };
 		037FCEFA1A8A7A2E00E8ABFC /* UIViewController+VLayoutInsets.m in Sources */ = {isa = PBXBuildFile; fileRef = 037FCEF91A8A7A2E00E8ABFC /* UIViewController+VLayoutInsets.m */; };
 		037FCF021A8A8A7800E8ABFC /* VBasicSelectorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 037FCEFD1A8A8A7800E8ABFC /* VBasicSelectorView.m */; };
 		037FCF031A8A8A7800E8ABFC /* VMultipleContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 037FCEFF1A8A8A7800E8ABFC /* VMultipleContainerViewController.m */; };
 		037FCF041A8A8A7800E8ABFC /* VSelectorViewBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 037FCF011A8A8A7800E8ABFC /* VSelectorViewBase.m */; };
+		037FCF061A8B0B2500E8ABFC /* VHamburgerButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = 037FCF051A8B0B2500E8ABFC /* VHamburgerButton.xib */; };
 		03811D3419353486005687FF /* VAlertViewBlockDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 03811D3319353486005687FF /* VAlertViewBlockDelegate.m */; };
 		0385FEE918EF41B4009FBD68 /* VImageSearchResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 0385FEE818EF41B4009FBD68 /* VImageSearchResult.m */; };
 		038B7F9519DB8D2500F739DF /* ADEUMInstrumentation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 038B7F9419DB8D2500F739DF /* ADEUMInstrumentation.framework */; };
@@ -1096,7 +1096,6 @@
 		037FCEF01A8A794300E8ABFC /* VNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNavigationController.m; sourceTree = "<group>"; };
 		037FCEF11A8A794300E8ABFC /* VNavigationControllerScrollDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNavigationControllerScrollDelegate.h; sourceTree = "<group>"; };
 		037FCEF21A8A794300E8ABFC /* VNavigationControllerScrollDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNavigationControllerScrollDelegate.m; sourceTree = "<group>"; };
-		037FCEF61A8A795600E8ABFC /* VHamburgerButton.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VHamburgerButton.xib; sourceTree = "<group>"; };
 		037FCEF81A8A7A2E00E8ABFC /* UIViewController+VLayoutInsets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+VLayoutInsets.h"; sourceTree = "<group>"; };
 		037FCEF91A8A7A2E00E8ABFC /* UIViewController+VLayoutInsets.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+VLayoutInsets.m"; sourceTree = "<group>"; };
 		037FCEFC1A8A8A7800E8ABFC /* VBasicSelectorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VBasicSelectorView.h; sourceTree = "<group>"; };
@@ -1105,6 +1104,7 @@
 		037FCEFF1A8A8A7800E8ABFC /* VMultipleContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMultipleContainerViewController.m; sourceTree = "<group>"; };
 		037FCF001A8A8A7800E8ABFC /* VSelectorViewBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSelectorViewBase.h; sourceTree = "<group>"; };
 		037FCF011A8A8A7800E8ABFC /* VSelectorViewBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSelectorViewBase.m; sourceTree = "<group>"; };
+		037FCF051A8B0B2500E8ABFC /* VHamburgerButton.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VHamburgerButton.xib; sourceTree = "<group>"; };
 		03811D3219353486005687FF /* VAlertViewBlockDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAlertViewBlockDelegate.h; sourceTree = "<group>"; };
 		03811D3319353486005687FF /* VAlertViewBlockDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAlertViewBlockDelegate.m; sourceTree = "<group>"; };
 		0385FEE718EF41B4009FBD68 /* VImageSearchResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VImageSearchResult.h; sourceTree = "<group>"; };
@@ -2018,7 +2018,6 @@
 			children = (
 				03B3D3CE1A3BBCE900F0634A /* VBadgeBackgroundView.h */,
 				03B3D3CF1A3BBCE900F0634A /* VBadgeBackgroundView.m */,
-				037FCEF61A8A795600E8ABFC /* VHamburgerButton.xib */,
 				030931881A18425B004E9781 /* VMenuCollectionViewCell.h */,
 				030931891A18425B004E9781 /* VMenuCollectionViewCell.m */,
 				0309318A1A18425B004E9781 /* VMenuCollectionViewDataSource.h */,
@@ -2510,6 +2509,7 @@
 				0314D3E419B46B5E00FA363C /* UIViewController+VSideMenuViewController.m */,
 				037FCEED1A8A794300E8ABFC /* VHamburgerButton.h */,
 				037FCEEE1A8A794300E8ABFC /* VHamburgerButton.m */,
+				037FCF051A8B0B2500E8ABFC /* VHamburgerButton.xib */,
 				0314D3E719B46B5E00FA363C /* VLoadingViewController.h */,
 				0314D3E819B46B5E00FA363C /* VLoadingViewController.m */,
 				0314D3E919B46B5E00FA363C /* VMenuController.h */,
@@ -4733,7 +4733,7 @@
 				A75FAF1C19E8AC1E00EB87C1 /* VTrendingTagCell.xib in Resources */,
 				03C1858219B42C9100E27D05 /* Roboto-BlackItalic.ttf in Resources */,
 				036F386C1A0C4DEA0014DF66 /* DroidSans.ttf in Resources */,
-				037FCEF71A8A795600E8ABFC /* VHamburgerButton.xib in Resources */,
+				037FCF061A8B0B2500E8ABFC /* VHamburgerButton.xib in Resources */,
 				A7AEF9A91A83F1C300A3D3A0 /* VStreamCollectionCell.xib in Resources */,
 				03C1858419B42C9100E27D05 /* Roboto-BoldItalic.ttf in Resources */,
 				A7AEF9B81A83F1C300A3D3A0 /* VDirectoryViewController.xib in Resources */,
