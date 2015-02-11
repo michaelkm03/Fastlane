@@ -457,7 +457,6 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     NSInteger curr = CMTimeGetSeconds( time ) * (CGFloat)scale;
     NSInteger orig = CMTimeGetSeconds( self.originalAssetDuration ) * (CGFloat)scale;
     NSInteger mod = curr % orig;
-    NSLog( @"%@", @((CGFloat)mod / (CGFloat)scale) );
     return CMTimeMakeWithSeconds( (CGFloat)mod / (CGFloat)scale, time.timescale );
 }
 
