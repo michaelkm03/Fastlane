@@ -510,7 +510,6 @@
 		BE171E3A1868C266004E5202 /* NSString+VParseHelp.m in Sources */ = {isa = PBXBuildFile; fileRef = BE171E381868C266004E5202 /* NSString+VParseHelp.m */; };
 		BE24782F193E9E8E0074191C /* VAbstractFilter+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE24782E193E9E8E0074191C /* VAbstractFilter+RestKit.m */; };
 		BE2C071219D5E842002AB82A /* VMarqueeTabIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2C071119D5E842002AB82A /* VMarqueeTabIndicatorView.m */; };
-		BE40559418A1828D00092AE1 /* UIButton+VImageLoading.m in Sources */ = {isa = PBXBuildFile; fileRef = BE40559318A1828D00092AE1 /* UIButton+VImageLoading.m */; };
 		BE42842919DDC19100AEDBA6 /* VDefaultProfileButton.m in Sources */ = {isa = PBXBuildFile; fileRef = BE42842819DDC19100AEDBA6 /* VDefaultProfileButton.m */; };
 		BE42842C19DDD0D500AEDBA6 /* VDefaultProfileImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE42842B19DDD0D500AEDBA6 /* VDefaultProfileImageView.m */; };
 		BE46F02A19D0C4B700CD7EF6 /* VMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = BE46F02919D0C4B700CD7EF6 /* VMessage.m */; };
@@ -1566,8 +1565,6 @@
 		BE24782E193E9E8E0074191C /* VAbstractFilter+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VAbstractFilter+RestKit.m"; sourceTree = "<group>"; };
 		BE2C071019D5E842002AB82A /* VMarqueeTabIndicatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMarqueeTabIndicatorView.h; sourceTree = "<group>"; };
 		BE2C071119D5E842002AB82A /* VMarqueeTabIndicatorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMarqueeTabIndicatorView.m; sourceTree = "<group>"; };
-		BE40559218A1828D00092AE1 /* UIButton+VImageLoading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+VImageLoading.h"; sourceTree = "<group>"; };
-		BE40559318A1828D00092AE1 /* UIButton+VImageLoading.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+VImageLoading.m"; sourceTree = "<group>"; };
 		BE42842719DDC19100AEDBA6 /* VDefaultProfileButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDefaultProfileButton.h; sourceTree = "<group>"; };
 		BE42842819DDC19100AEDBA6 /* VDefaultProfileButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDefaultProfileButton.m; sourceTree = "<group>"; };
 		BE42842A19DDD0D500AEDBA6 /* VDefaultProfileImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDefaultProfileImageView.h; sourceTree = "<group>"; };
@@ -3766,8 +3763,6 @@
 				BE799BAF19C8DF4B0023CE88 /* OrderedSets */,
 				0314D06219B466C100FA363C /* UIActivityViewController+VStatusBarHandling.h */,
 				0314D06319B466C100FA363C /* UIActivityViewController+VStatusBarHandling.m */,
-				BE40559218A1828D00092AE1 /* UIButton+VImageLoading.h */,
-				BE40559318A1828D00092AE1 /* UIButton+VImageLoading.m */,
 				A79873C81A6496A50014D099 /* UIColor+VBrightness.h */,
 				A79873C91A6496A50014D099 /* UIColor+VBrightness.m */,
 				0314D06519B4670A00FA363C /* UIImage+Cropping.h */,
@@ -4975,7 +4970,6 @@
 				0314D4E919B46B5E00FA363C /* VTabInfo.m in Sources */,
 				0314D4D019B46B5E00FA363C /* VLoadingViewController.m in Sources */,
 				BE5DE3F618DA72140047B67E /* VInteractionAction.m in Sources */,
-				BE40559418A1828D00092AE1 /* UIButton+VImageLoading.m in Sources */,
 				0314D46519B46B5E00FA363C /* VCompositeSnapshotController.m in Sources */,
 				03484BFE192E9D2100403FB1 /* NSLayoutConstraint+CenterConstraints.m in Sources */,
 				0385FEE918EF41B4009FBD68 /* VImageSearchResult.m in Sources */,

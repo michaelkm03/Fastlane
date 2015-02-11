@@ -56,6 +56,8 @@
 #import "VConstants.h"
 #import "VTracking.h"
 
+#import <SDWebImage/UIImageView+WebCache.h>
+
 static NSString * const kStreamsKey = @"streams";
 static NSString * const kInitialKey = @"initial";
 static NSString * const kMarqueeKey = @"marquee";
@@ -555,7 +557,7 @@ static CGFloat const kTemplateCLineSpacing = 8;
         for (NSURL *imageUrl in [preloadSequence initialImageURLs])
         {
             UIImageView *preloadView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
-            [preloadView setImageWithURL:imageUrl];
+            [preloadView sd_setImageWithURL:imageUrl];
             
             [self.preloadImageCache setObject:preloadView forKey:imageUrl.absoluteString];
         }
