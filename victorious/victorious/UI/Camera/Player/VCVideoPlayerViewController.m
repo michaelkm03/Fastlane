@@ -453,11 +453,21 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 
 - (CMTime)timeAdjustedForLoopingVideoFromTime:(CMTime)time
 {
-    NSInteger scale = 10000;
-    NSInteger curr = CMTimeGetSeconds( time ) * (CGFloat)scale;
-    NSInteger orig = CMTimeGetSeconds( self.originalAssetDuration ) * (CGFloat)scale;
-    NSInteger mod = curr % orig;
-    return CMTimeMakeWithSeconds( (CGFloat)mod / (CGFloat)scale, time.timescale );
+    int currentLoop = 0;
+    CMTime compareTime = time;
+    while ( CMTimeCompare( compareTime, self.originalAssetDuration) > 0 )
+    {
+        compareTime = CMTimeSubtract( compareTime, self.originalAssetDuration );
+        currentLoop++;
+    }
+    
+    CMTime adjustment = CMTimeMultiply( self.originalAssetDuration, currentLoop );
+    CMTime output = CMTimeSubtract( time, adjustment );
+ 
+    // Uncomment to debug adjusted time and current loop:
+    // VLog( @"adjusted time (%i): %.2f", currentLoop, CMTimeGetSeconds( output ) );
+    
+    return output;
 }
 
 - (void)didPlayToTime:(CMTime)time
