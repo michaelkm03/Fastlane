@@ -28,7 +28,6 @@ typedef NS_ENUM( NSInteger, VButtonStyle )
     VButtonStyleSecondary
 };
 
-
 /**
  A button that handles custom drawing according to its style property.
  */
@@ -39,14 +38,28 @@ typedef NS_ENUM( NSInteger, VButtonStyle )
  */
 @property (nonatomic, assign) VButtonStyle style;
 
+/**
+ A color used for display according to the configured `style` property.
+ @see `VButtonStyle` enum for emments explaining uses.
+ */
 @property (nonatomic) UIColor *primaryColor;
 
+/**
+ A color used for display according to the configured `style` property.
+ @see `VButtonStyle` enum for emments explaining uses.
+ */
 @property (nonatomic) UIColor *secondaryColor;
 
-+ (UIColor *)defaultSecondaryColor;
-
+/**
+ Shoes the text and shows an activity indicator centered in the button to
+ represent a loading state.
+ */
 - (void)showActivityIndicator;
 
+/**
+ Hides the activity indicator, if visible, and shows the title text of the button
+ with whatever text was last set.
+ */
 - (void)hideActivityIndicator;
 
 @end
