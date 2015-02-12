@@ -288,7 +288,7 @@ static inline CGPoint ClampX(CGPoint point, CGFloat xMin, CGFloat xMax)
 - (void)updateSelectedDuration
 {
     CGFloat percentSelected = CGRectGetMidX(self.trimThumbBody.frame) / CGRectGetWidth(self.bounds);
-    self.selectedDuration =  CMTimeMake(percentSelected * self.maxDuration.value, self.maxDuration.timescale);
+    self.selectedDuration =  CMTimeMultiplyByFloat64(self.maxDuration, percentSelected);
 }
 
 - (void)updateThumAndDimmingViewWithNewThumbCenter:(CGPoint)thumbCenter
