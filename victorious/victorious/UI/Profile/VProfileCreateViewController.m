@@ -521,9 +521,13 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
 
 - (BOOL)shouldCreateProfile
 {
+    const BOOL isProfileImageRequired = NO; //[[VSettingManager sharedManager] settingEnabledForKey:VExperimentsRequireProfileImage];
+    
+#warning testing only
+    
     BOOL    isValid =   ((self.usernameTextField.text.length > 0) &&
                          (self.locationTextField.text.length > 0) &&
-                         (self.registrationModel.profileImageURL || self.profile.pictureUrl.length || ![[VSettingManager sharedManager] settingEnabledForKey:VExperimentsRequireProfileImage]) &&
+                         (self.registrationModel.profileImageURL || self.profile.pictureUrl.length || !isProfileImageRequired) &&
                          ([self.agreeSwitch isOn]));
     
     if (isValid)
@@ -544,7 +548,7 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
         [errorMsg appendFormat:@"\n%@", NSLocalizedString(@"ProfileRequiredLoc", @"")];
     }
     
-    if (!self.registrationModel.profileImageURL && !self.profile.pictureUrl.length && [[VSettingManager sharedManager] settingEnabledForKey:VExperimentsRequireProfileImage])
+    if (!self.registrationModel.profileImageURL && !self.profile.pictureUrl.length && isProfileImageRequired)
     {
         [errorMsg appendFormat:@"\n%@", NSLocalizedString(@"ProfileRequiredPhoto", @"")];
     }
