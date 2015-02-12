@@ -99,14 +99,13 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
     NSString *parentUserString;
     if (self.sequence.isRepost.boolValue && self.sequence.parentUser != nil)
     {
-        NSString *posterName = self.sequence.user.name;
         if ( [self.sequence.repostCount integerValue] == 0 )
         {
-            parentUserString = [NSString stringWithFormat:NSLocalizedString(@"repostedByFormat", nil), posterName];
+            parentUserString = [NSString stringWithFormat:NSLocalizedString(@"repostedByFormat", nil), text];
         }
         else
         {
-            parentUserString = [NSString stringWithFormat:NSLocalizedString(@"multipleRepostedByFormat", nil), posterName, [self.sequence.repostCount unsignedLongValue]];
+            parentUserString = [NSString stringWithFormat:NSLocalizedString(@"multipleRepostedByFormat", nil), text, [self.sequence.repostCount unsignedLongValue]];
         }
     }
     
@@ -172,11 +171,12 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
     }
     
     VUser *originalPoster = self.sequence.user;
-    VUser *reposter = nil;
-    if ( self.sequence.isRepost )
+    VUser *parentUser = self.sequence.parentUser;
+    
+    if ( [self.sequence.isRepost boolValue] )
     {
         originalPoster = self.sequence.parentUser;
-        reposter = self.sequence.user;
+        parentUser = self.sequence.user;
     }
     
     [self.profileImageButton setProfileImageURL:[NSURL URLWithString:originalPoster.pictureUrl]
@@ -188,7 +188,7 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
     NSString *commentCount = self.sequence.commentCount.integerValue ? [largeNumberFormatter stringForInteger:self.sequence.commentCount.integerValue] : @"";
     [self.commentButton setTitle:commentCount forState:UIControlStateNormal];
     
-    [self setParentText:reposter.name];
+    [self setParentText:parentUser != nil ? parentUser.name : @""];
     
     // Set username and format date
     self.usernameLabel.text = originalPoster.name;
