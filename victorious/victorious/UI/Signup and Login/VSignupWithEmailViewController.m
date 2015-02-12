@@ -256,7 +256,10 @@
 
 - (BOOL)textFieldShouldEndEditing:(VInlineValidationTextField *)textField
 {
-    [self validateWithTextField:textField];
+    if ( textField.text.length > 0 )
+    {
+        [self validateWithTextField:textField];
+    }
     return YES;
 }
 
