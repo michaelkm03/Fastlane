@@ -99,9 +99,14 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
     NSString *parentUserString;
     if (self.sequence.isRepost.boolValue && self.sequence.parentUser != nil)
     {
-        if ( [self.sequence.repostCount integerValue] == 0 )
+        NSUInteger repostCount = [self.sequence.repostCount unsignedIntegerValue];
+        if ( repostCount == 0 )
         {
             parentUserString = [NSString stringWithFormat:NSLocalizedString(@"repostedByFormat", nil), text];
+        }
+        else if ( repostCount == 1 )
+        {
+            parentUserString = [NSString stringWithFormat:NSLocalizedString(@"doubleRepostedByFormat", nil), text];
         }
         else
         {

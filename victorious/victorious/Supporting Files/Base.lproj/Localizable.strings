@@ -380,6 +380,7 @@
 "Comment"               =   "Comment";
 
 "repostedByFormat"    =   "Reposted by %@";
+"doubleRepostedByFormat" = "Reposted by %@ + 1 other person";
 "multipleRepostedByFormat" = "Reposted by %@ + %lu other people";
 "remixedFromFormat"     =   "Remix from %@";
 "giffedFromFormat"      =   "GIF from %@";
