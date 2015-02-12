@@ -63,6 +63,7 @@ static NSUInteger const kVUserBannedError               = 1007;
 
 static NSUInteger const kVMediaAlreadyCreatedError      = 1005;
 static NSUInteger const kVCommentAlreadyFlaggedError    = 1005;
+static NSUInteger const kVSequenceAlreadyReposted       = 1005;
 
 static NSUInteger const kVUpgradeRequiredError          = 426;
 static NSUInteger const kVUnauthoizedError              = 401;

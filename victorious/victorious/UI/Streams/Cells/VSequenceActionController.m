@@ -213,6 +213,9 @@ static const char kAssociatedWorkspaceFlowKey;
                                   successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
          node.sequence.repostCount = @( node.sequence.repostCount.integerValue + 1 );
+         
+         [self updateRespostsForUser:[VObjectManager sharedManager].mainUser withSequence:node.sequence];
+         
          if ( completion != nil )
          {
              completion( YES );
@@ -220,11 +223,26 @@ static const char kAssociatedWorkspaceFlowKey;
      }
                                      failBlock:^(NSOperation *operation, NSError *error)
      {
+         if ( error.code == kVSequenceAlreadyReposted )
+         {
+             [self updateRespostsForUser:[VObjectManager sharedManager].mainUser withSequence:node.sequence];
+         }
+         
          if ( completion != nil )
          {
              completion( NO );
          }
      }];
+}
+
+- (void)updateRespostsForUser:(VUser *)user withSequence:(VSequence *)sequence
+{
+    NSError *error = nil;
+    [user addRepostedSequencesObject:sequence];
+    if ( ![user.managedObjectContext saveToPersistentStore:&error] )
+    {
+        VLog( @"Error marking sequence as reposted for main user: %@", error );
+    }
 }
 
 - (void)showRepostersFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence

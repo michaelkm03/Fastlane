@@ -38,6 +38,7 @@
 @property (nonatomic, retain) NSSet *postedSequences;
 @property (nonatomic, retain) NSSet *remixedSequences;
 @property (nonatomic, retain) NSSet *repostedSequences;
+
 @end
 
 @interface VUser (CoreDataGeneratedAccessors)
@@ -91,5 +92,10 @@
 - (void)removeRemixedSequencesObject:(VSequence *)value;
 - (void)addRemixedSequences:(NSSet *)values;
 - (void)removeRemixedSequences:(NSSet *)values;
+
+- (void)addRepostedSequencesObject:(VSequence *)value;
+- (void)removeRepostedSequencesObject:(VSequence *)value;
+- (void)addRepostedSequences:(NSSet *)values;
+- (void)removeRepostedSequences:(NSSet *)values;
 
 @end
