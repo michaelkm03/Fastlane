@@ -15,12 +15,13 @@
  */
 @interface VCommentTextAndMediaView : UIView
 
-@property (nonatomic, copy)           NSString     *text;
-@property (nonatomic, weak, readonly) UIImageView  *mediaThumbnailView;
-@property (nonatomic, weak, readonly) UIImageView  *playIcon; ///< Default is hidden. Show for video content
-@property (nonatomic)                 CGFloat       preferredMaxLayoutWidth; ///< Used when calculating intrinsicContentSize
-@property (nonatomic)                 BOOL          hasMedia;                ///< If YES, the size of the media thumbnail is included in the intrinsicContentSize
-@property (nonatomic, copy)           void        (^onMediaTapped)(); ///< Called when the user taps the media icon
+@property (nonatomic, copy)           NSString           *text;
+@property (nonatomic, copy)           NSAttributedString *attributedText;
+@property (nonatomic, weak, readonly) UIImageView        *mediaThumbnailView;
+@property (nonatomic, weak, readonly) UIImageView        *playIcon; ///< Default is hidden. Show for video content
+@property (nonatomic)                 CGFloat            preferredMaxLayoutWidth; ///< Used when calculating intrinsicContentSize
+@property (nonatomic)                 BOOL               hasMedia;                ///< If YES, the size of the media thumbnail is included in the intrinsicContentSize
+@property (nonatomic, copy)           void               (^onMediaTapped)(); ///< Called when the user taps the media icon
 
 @property (nonatomic) UIFont *textFont;
 
@@ -47,5 +48,8 @@ Same as above but without a custom font.
  Removes common customizations (text, images, etc) and returns this view to a pristine state.
  */
 - (void)resetView;
+
++ (NSDictionary *)attributesForTextWithFont:(UIFont *)font;
++ (NSDictionary *)attributesForText;
 
 @end

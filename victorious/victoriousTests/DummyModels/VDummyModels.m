@@ -12,6 +12,7 @@
 #import "VUser.h"
 #import "VVoteResult.h"
 #import "VTracking.h"
+#import "VTag.h"
 
 static NSManagedObjectContext *context = nil;
 
@@ -110,6 +111,36 @@ NSString * const kMacroBallisticsCount = @"%%COUNT%%";
         [models addObject:result];
     }
     return [NSArray arrayWithArray:models];
+}
+
++ (NSArray *)createUserTags:(NSInteger)count
+{
+    NSMutableArray *models = [[NSMutableArray alloc] init];
+    for ( NSInteger i = 0; i < count; i++ )
+    {
+        NSString *displayString = [NSString stringWithFormat:@"user %lu", (unsigned long)i];
+        VTag *tag = [[VTag alloc] initWithAttributedDisplayString:[[NSMutableAttributedString alloc] initWithString:displayString]
+                                          databaseFormattedString:[NSString stringWithFormat:@"@{%lu:%@}", (unsigned long)i, displayString]
+                                           andTagStringAttributes:@{NSFontAttributeName : [UIFont fontWithName:@"helvetica" size:10.0],
+                                                                    NSForegroundColorAttributeName : [UIColor redColor]}];
+        [models addObject:tag];
+    }
+    return models;
+}
+
++ (NSArray *)createHashtagTags:(NSInteger)count
+{
+    NSMutableArray *models = [[NSMutableArray alloc] init];
+    for ( NSInteger i = 0; i < count; i++ )
+    {
+        NSString *displayString = [NSString stringWithFormat:@"#hashtag_%lu", (unsigned long)i];
+        VTag *tag = [[VTag alloc] initWithAttributedDisplayString:[[NSMutableAttributedString alloc] initWithString:displayString]
+                                          databaseFormattedString:displayString
+                                           andTagStringAttributes:@{NSFontAttributeName : [UIFont fontWithName:@"helvetica" size:10.0],
+                                                                    NSForegroundColorAttributeName : [UIColor redColor]}];
+        [models addObject:tag];
+    }
+    return models;
 }
 
 @end

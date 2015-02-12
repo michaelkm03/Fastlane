@@ -153,4 +153,30 @@
                      completion:nil];
 }
 
+#pragma mark - VUserTaggingTextStorageDelegate
+
+- (void)userTaggingTextStorage:(VUserTaggingTextStorage *)textStorage wantsToDismissViewController:(UITableViewController *)tableViewController
+{
+    [tableViewController.view removeFromSuperview];
+}
+
+- (void)userTaggingTextStorage:(VUserTaggingTextStorage *)textStorage wantsToShowViewController:(UIViewController *)viewController
+{
+    // Inline Search layout constraints
+    UIView *searchTableView = viewController.view;
+    UIView *superview = self.view;
+    [superview addSubview:searchTableView];
+    [searchTableView setTranslatesAutoresizingMaskIntoConstraints:NO];
+    searchTableView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+    NSDictionary *views = @{@"searchTableView":searchTableView, @"textEntryView":self.keyboardBarViewController.view};
+    [superview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[searchTableView][textEntryView]"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:views]];
+    [superview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[searchTableView]|"
+                                                                      options:kNilOptions
+                                                                      metrics:nil
+                                                                        views:views]];
+}
+
 @end
