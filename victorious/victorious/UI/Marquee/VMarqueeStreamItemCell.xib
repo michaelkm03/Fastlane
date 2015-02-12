@@ -37,7 +37,7 @@
                                 <rect key="frame" x="0.0" y="20" width="320" height="84"/>
                                 <subviews>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" minimumScaleFactor="0.90000000000000002" preferredMaxLayoutWidth="274" translatesAutoresizingMaskIntoConstraints="NO" id="9uF-IU-Ue1">
-                                        <rect key="frame" x="23" y="8" width="274" height="58"/>
+                                        <rect key="frame" x="23" y="20" width="274" height="46"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
@@ -48,7 +48,7 @@
                                     <constraint firstAttribute="trailing" secondItem="9uF-IU-Ue1" secondAttribute="trailing" constant="23" id="7a1-OB-NpY"/>
                                     <constraint firstAttribute="bottom" secondItem="9uF-IU-Ue1" secondAttribute="bottom" constant="18" id="96H-Wj-DUE"/>
                                     <constraint firstItem="9uF-IU-Ue1" firstAttribute="leading" secondItem="gwI-zs-1vj" secondAttribute="leading" constant="23" id="Vld-67-S0f"/>
-                                    <constraint firstItem="9uF-IU-Ue1" firstAttribute="top" secondItem="gwI-zs-1vj" secondAttribute="top" constant="8" id="hGT-qv-10z"/>
+                                    <constraint firstItem="9uF-IU-Ue1" firstAttribute="top" secondItem="gwI-zs-1vj" secondAttribute="top" constant="20" id="hGT-qv-10z"/>
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fOr-V2-P1Q" customClass="VDefaultProfileButton">

@@ -109,7 +109,8 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
     
     if ( animated )
     {
-        [UIView animateWithDuration:0.5f animations:^{
+        [UIView animateWithDuration:0.5f animations:^
+        {
             
             self.detailsContainer.alpha = targetAlpha;
             
