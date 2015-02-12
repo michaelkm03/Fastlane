@@ -99,30 +99,14 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
     NSString *parentUserString;
     if (self.sequence.isRepost.boolValue && self.sequence.parentUser != nil)
     {
+        NSString *posterName = self.sequence.user.name;
         if ( [self.sequence.repostCount integerValue] == 0 )
         {
-            parentUserString = [NSString stringWithFormat:NSLocalizedString(@"repostedFromFormat", nil), text, self.sequence.user.name];
+            parentUserString = [NSString stringWithFormat:NSLocalizedString(@"repostedByFormat", nil), posterName];
         }
         else
         {
-            NSNumber *creatorId = self.sequence.createdBy;
-            NSSet *creatorSet = [self.sequence.reposters objectsPassingTest:^BOOL(VUser *user, BOOL *stop) {
-                
-                return [user.remoteId isEqual:creatorId];
-                
-            }];
-            
-            NSString *reposterName;
-            if ( creatorSet.count == 1 )
-            {
-                reposterName = [[creatorSet anyObject] name];
-            }
-            else
-            {
-                reposterName = [[self.sequence.reposters anyObject] name];
-            }
-            
-            parentUserString = [NSString stringWithFormat:NSLocalizedString(@"multipleRepostedFromFormat", nil), text, reposterName, [self.sequence.repostCount unsignedLongValue]];
+            parentUserString = [NSString stringWithFormat:NSLocalizedString(@"multipleRepostedByFormat", nil), posterName, [self.sequence.repostCount unsignedLongValue]];
         }
     }
     
@@ -196,9 +180,10 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
     NSString *commentCount = self.sequence.commentCount.integerValue ? [largeNumberFormatter stringForInteger:self.sequence.commentCount.integerValue] : @"";
     [self.commentButton setTitle:commentCount forState:UIControlStateNormal];
     
-    [self setParentText:self.sequence.parentUser.name];
+    [self setParentText:[self.sequence.isRepost boolValue] ? self.sequence.user.name : self.sequence.parentUser.name];
+    
     // Set username and format date
-    self.usernameLabel.text = self.sequence.user.name;
+    self.usernameLabel.text = [self.sequence.isRepost boolValue] ? self.sequence.parentUser.name : self.sequence.user.name;
     self.dateLabel.text = [self.sequence.releasedAt timeSince];
     
     // Check if this is a repost / remix and size the userInfoView accordingly
