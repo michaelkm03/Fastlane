@@ -11,10 +11,13 @@
 #import "VThemeManager.h"
 #import "VObjectManager+Comment.h"
 #import "VAlertController.h"
+#import "VUserTaggingTextStorage.h"
+#import "VTagStringFormatter.h"
 
 static const CGFloat kTextViewInsetsHorizontal  = 15.0f;
 static const CGFloat kTextViewInsetsVertical    = 18.0f;
 static const CGFloat kTextViewToViewRatioMax    =  0.4f;
+static const CGFloat kSearchTableAnimationDuration = 0.3f;
 
 @implementation VCommentTextView
 
@@ -27,12 +30,16 @@ static const CGFloat kTextViewToViewRatioMax    =  0.4f;
 
 @end
 
-@interface VEditCommentViewController() <UITextViewDelegate>
+@interface VEditCommentViewController() <UITextViewDelegate, VUserTaggingTextStorageDelegate>
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *modalContainerHeightConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *textViewVerticalAlignmentConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *cancelButtonBottomConstraint;
 @property (weak, nonatomic) IBOutlet UITextView *editTextView;
+@property (nonatomic, strong) VUserTaggingTextStorage *textStorage;
+@property (nonatomic, assign) CGFloat keyboardHeight;
 @property (nonatomic, assign) BOOL isDismissing;
+@property (nonatomic, strong) UIViewController *searchViewController;
 
 @property (strong, nonatomic) VComment *comment;
 
@@ -66,6 +73,8 @@ static const CGFloat kTextViewToViewRatioMax    =  0.4f;
                                                             kTextViewInsetsVertical,
                                                             kTextViewInsetsHorizontal );
     
+    self.textStorage = [[VUserTaggingTextStorage alloc] initWithString:self.editTextView.text andDependencyManager:nil textView:self.editTextView taggingDelegate:self];
+        
     [self updateSize];
 }
 
@@ -84,6 +93,11 @@ static const CGFloat kTextViewToViewRatioMax    =  0.4f;
 - (void)viewWillDisappear:(BOOL)animated
 {
     [self setButtonsVisible:NO delay:0.0f];
+    
+    if ( self.searchViewController )
+    {
+        [self animateTableDisappearance];
+    }
     
     [super viewWillDisappear:animated];
     
@@ -141,7 +155,7 @@ static const CGFloat kTextViewToViewRatioMax    =  0.4f;
 
 - (IBAction)onConfirm:(id)sender
 {
-    self.comment.text = self.editTextView.text;
+    self.comment.text = [self.textStorage databaseFormattedString];
     
     [[VObjectManager sharedManager] editComment:self.comment
                                    successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
@@ -195,6 +209,61 @@ static const CGFloat kTextViewToViewRatioMax    =  0.4f;
     }];
 }
 
+#pragma mark - VUserTaggingTextStorageDelegate
+
+- (void)userTaggingTextStorage:(VUserTaggingTextStorage *)textStorage wantsToShowViewController:(UIViewController *)viewController
+{
+    self.searchViewController = viewController;
+    [UIView animateWithDuration:kSearchTableAnimationDuration animations:^{
+       
+        self.textViewVerticalAlignmentConstraint.constant = 0;
+        [self.view layoutIfNeeded];
+        
+    } completion:^(BOOL finished) {
+        
+        [viewController.view setTranslatesAutoresizingMaskIntoConstraints:NO];
+        [viewController.view setAutoresizingMask:UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth];
+        viewController.view.layer.cornerRadius = 2;
+        [viewController.view setClipsToBounds:YES];
+        [viewController.view setFrame:CGRectZero];
+        [viewController.view setCenter:self.modalContainer.center];
+        [self.view addSubview:viewController.view];
+        NSDictionary *metrics = @{@"spacing":@(kTextViewInsetsHorizontal)};
+        NSDictionary *views = @{@"view":viewController.view, @"search":self.modalContainer};
+        
+        [UIView animateWithDuration:kSearchTableAnimationDuration animations:^{
+           
+            [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-spacing-[view]-spacing-[search]" options:0 metrics:metrics views:views]];
+            [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-spacing-[view]-spacing-|" options:0 metrics:metrics views:views]];
+            
+        }];
+        
+    }];
+    
+}
+
+- (void)userTaggingTextStorage:(VUserTaggingTextStorage *)textStorage wantsToDismissViewController:(UIViewController *)viewController
+{
+    [self animateTableDisappearance];
+}
+
+- (void)animateTableDisappearance
+{
+    [UIView animateWithDuration:kSearchTableAnimationDuration animations:^{
+        
+        self.textViewVerticalAlignmentConstraint.constant = self.keyboardHeight * 0.5f;
+        [self.searchViewController.view setAlpha:0.0];
+        [self.view layoutIfNeeded];
+        
+    } completion:^(BOOL finished) {
+       
+        [self.searchViewController.view removeFromSuperview];
+        [self.searchViewController.view setAlpha:1.0];
+        self.searchViewController = nil;
+        
+    }];
+}
+
 #pragma mark - UITextViewDelegate
 
 - (void)textViewDidEndEditing:(UITextView *)textView
@@ -232,6 +301,8 @@ static const CGFloat kTextViewToViewRatioMax    =  0.4f;
     CGFloat height = CGRectGetHeight( [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue] );
     NSTimeInterval duration = [[notification.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
     UIViewAnimationOptions options = [[notification.userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] integerValue];
+    self.keyboardHeight = height;
+    self.cancelButtonBottomConstraint.constant = height;
     
     [UIView animateWithDuration:duration delay:0.0f options:options animations:^
      {

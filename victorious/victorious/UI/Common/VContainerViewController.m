@@ -27,7 +27,7 @@
     [super viewDidLoad];
     
     self.containedViewController = [self.childViewControllers lastObject];
-    
+        
     [self v_addNewNavHeaderWithTitles:nil];
     self.navHeaderView.delegate = self;
 }
