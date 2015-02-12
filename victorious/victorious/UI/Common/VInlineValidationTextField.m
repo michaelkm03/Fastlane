@@ -72,8 +72,6 @@ static const CGFloat kBottomClearInset = 2.0f;
     self.inlineValidationView.hidden = YES;
     self.translatesAutoresizingMaskIntoConstraints = NO;
     [self addSubview:self.inlineValidationView];
-    
-    self.separatorColor = [[UIColor blackColor] colorWithAlphaComponent:0.25f];
 }
 
 #pragma mark - UIResponder

@@ -28,16 +28,7 @@ typedef NS_ENUM(NSInteger, VTextFieldStyle)
 @property (nonatomic, readonly) BOOL hasResignedFirstResponder;
 
 /**
-<<<<<<< HEAD
- *  Color of the line that runs along the bottom to separate in a multi-field form.
- */
-@property (nonatomic) UIColor *separatorColor;
-
-/**
- *  Show a shake animation (like the lock screen incorrect password), and vibrate the device.
-=======
- *  Show invalid text with a conditional animation. Will not show animation or text while hasResignedFirstResponder AND force are NO. 
->>>>>>> 2c42aa8e4f389bf7fa238273ce8a5e1b16d6dceb
+ *  Show invalid text with a conditional animation. Will not show animation or text while hasResignedFirstResponder AND force are NO.
  */
 - (void)showInvalidText:(NSString *)invalidText
                animated:(BOOL)animated

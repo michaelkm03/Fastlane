@@ -348,7 +348,26 @@
 
 - (BOOL)textFieldShouldEndEditing:(VInlineValidationTextField *)textField
 {
-    [self validateWithTextField:textField];
+    if ( textField.text.length > 0 )
+    {
+        [self validateWithTextField:textField];
+    }
+    
+    return YES;
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    if (textField == self.usernameTextField)
+    {
+        [self.passwordTextField becomeFirstResponder];
+    }
+    else if (textField == self.passwordTextField)
+    {
+        [self.passwordTextField resignFirstResponder];
+        [self login:nil];
+    }
+    
     return YES;
 }
 

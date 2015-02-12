@@ -260,6 +260,25 @@
     return YES;
 }
 
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    if ([textField isEqual:self.emailTextField])
+    {
+        [self.passwordTextField becomeFirstResponder];
+    }
+    else if ([textField isEqual:self.passwordTextField])
+    {
+        [self.confirmPasswordTextField becomeFirstResponder];
+    }
+    else
+    {
+        [self signup:textField];
+        [self.confirmPasswordTextField resignFirstResponder];
+    }
+    
+    return YES;
+}
+
 #pragma mark - TTTAttributedLabelDelegate
 
 - (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url
