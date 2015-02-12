@@ -10,6 +10,7 @@
 
 #import "VThemeManager.h"
 #import "VSettingManager.h"
+#import <SDWebImage/UIImageView+WebCache.h>
 
 @implementation VDefaultProfileImageView
 
@@ -43,7 +44,8 @@
 
 - (void)setProfileImageURL:(NSURL *)url
 {
-    [self setImageWithURL:url placeholderImage:[self defaultImage]];
+    [self sd_setImageWithURL:url
+            placeholderImage:[self defaultImage]];
     self.tintColor = [[[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor] colorWithAlphaComponent:.3f];
 }
 

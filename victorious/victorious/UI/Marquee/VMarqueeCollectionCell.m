@@ -41,6 +41,7 @@ static const CGFloat kMarqueeBufferHeight = 3;
     [self.collectionView registerNib:[VMarqueeStreamItemCell nibForCell] forCellWithReuseIdentifier:[VMarqueeStreamItemCell suggestedReuseIdentifier]];
     
     self.tabView = [[VMarqueeTabIndicatorView alloc] initWithFrame:self.tabContainerView.frame];
+    [self.tabView setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin];
     
     if (![[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
     {
@@ -63,6 +64,15 @@ static const CGFloat kMarqueeBufferHeight = 3;
     }
     
     [self addSubview:self.tabView];
+    
+    //Add constraints to tabView so it stays centered in it's superview
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.tabView
+                                                     attribute:NSLayoutAttributeCenterX
+                                                     relatedBy:NSLayoutRelationEqual
+                                                        toItem:self.tabView.superview
+                                                     attribute:NSLayoutAttributeCenterX
+                                                    multiplier:1.0f constant:0.0f]];
+
 }
 
 - (void)setMarquee:(VMarqueeController *)marquee

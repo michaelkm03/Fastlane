@@ -12,6 +12,7 @@
 #import "VObjectManager.h"
 #import "VObjectManager+Login.h"
 #import "VFollowUserControl.h"
+#import <SDWebImage/UIImageView+WebCache.h>
 
 NSString * const VInviteFriendTableViewCellNibName = @"VInviteFriendTableViewCell";
 
@@ -62,7 +63,8 @@ NSString * const VInviteFriendTableViewCellNibName = @"VInviteFriendTableViewCel
 {
     _profile = profile;
     
-    [self.profileImage setImageWithURL:[NSURL URLWithString:profile.pictureUrl] placeholderImage:[UIImage imageNamed:@"profileGenericUser"]];
+    [self.profileImage sd_setImageWithURL:[NSURL URLWithString:profile.pictureUrl]
+                         placeholderImage:[UIImage imageNamed:@"profileGenericUser"]];
     self.profileName.text = profile.name;
     self.profileLocation.text = profile.location;
     

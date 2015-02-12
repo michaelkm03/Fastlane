@@ -27,6 +27,8 @@
 #import "UIView+AutoLayout.h"
 #import "VTagStringFormatter.h"
 
+#import <SDWebImage/UIImageView+WebCache.h>
+
 static const UIEdgeInsets kTextInsets        = { 36.0f, 56.0f, 11.0f, 25.0f };
 
 static const CGFloat kImagePreviewLoadedAnimationDuration = 0.25f;
@@ -238,30 +240,27 @@ static NSCache *_sharedImageCache = nil;
     else
     {
         imageView.alpha = 0.0f;
-        [self.commentAndMediaView.mediaThumbnailView setImageWithURLRequest:[NSURLRequest requestWithURL:url]
-                                                           placeholderImage:nil
-                                                                    success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image)
-         {
-             /**
-              If the assetOrientation property was set, it was done so in a temporary comment
-              after the comment was posted and before it could be reloaded from the server.
-              In those cases, the rotation of the preview image will be off and requires adjustment
-              */
-             if ( self.mediaAssetOrientation != nil )
-             {
-                 UIDeviceOrientation orientation = (UIDeviceOrientation)self.mediaAssetOrientation.integerValue;
-                 image = [image imageRotatedByDegrees:[AVAsset rotationAdjustmentForOrientation:orientation]];
-             }
-             
-             [imageView setImage:image];
-             [UIView animateWithDuration:kImagePreviewLoadedAnimationDuration animations:^{
-                 imageView.alpha = 1.0f;
-             }];
-             [imageCache setObject:image forKey:keyString];
-             
-         } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-             imageView.image = nil;
-         }];
+        [self.commentAndMediaView.mediaThumbnailView sd_setImageWithURL:url
+                                                              completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL)
+        {
+            /**
+             If the assetOrientation property was set, it was done so in a temporary comment
+             after the comment was posted and before it could be reloaded from the server.
+             In those cases, the rotation of the preview image will be off and requires adjustment
+             */
+            if ( self.mediaAssetOrientation != nil )
+            {
+                UIDeviceOrientation orientation = (UIDeviceOrientation)self.mediaAssetOrientation.integerValue;
+                image = [image imageRotatedByDegrees:[AVAsset rotationAdjustmentForOrientation:orientation]];
+            }
+            
+            [imageView setImage:image];
+            [UIView animateWithDuration:kImagePreviewLoadedAnimationDuration animations:^
+            {
+                imageView.alpha = 1.0f;
+            }];
+            [imageCache setObject:image forKey:keyString];
+        }];
     }
 }
 
@@ -287,8 +286,8 @@ static NSCache *_sharedImageCache = nil;
 {
     _URLForCommenterAvatar = [URLForCommenterAvatar copy];
 
-    [self.commentersAvatarImageView setImageWithURL:URLForCommenterAvatar
-                                   placeholderImage:self.commentersAvatarImageView.image];
+    [self.commentersAvatarImageView sd_setImageWithURL:URLForCommenterAvatar
+                                      placeholderImage:self.commentersAvatarImageView.image];
 
 }
 

@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14A389a" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
@@ -30,18 +29,38 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WFR-h6-Ez8" userLabel="Shade View">
                         <rect key="frame" x="0.0" y="50" width="302" height="202"/>
                         <subviews>
-                            <view alpha="0.15000000596046448" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yYl-by-YLg">
+                            <view alpha="0.15000000596046448" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yYl-by-YLg">
                                 <rect key="frame" x="0.0" y="0.0" width="302" height="202"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="topGradient" translatesAutoresizingMaskIntoConstraints="NO" id="cPB-fc-oTt">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="topGradient" translatesAutoresizingMaskIntoConstraints="NO" id="cPB-fc-oTt">
                                 <rect key="frame" x="0.0" y="0.0" width="302" height="52"/>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="BottomGradient" translatesAutoresizingMaskIntoConstraints="NO" id="gza-QN-Veo">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BottomGradient" translatesAutoresizingMaskIntoConstraints="NO" id="gza-QN-Veo">
                                 <rect key="frame" x="0.0" y="100" width="302" height="102"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="PollBarOr" translatesAutoresizingMaskIntoConstraints="NO" id="oTO-Bh-qw9">
+                                <rect key="frame" x="118" y="65" width="65" height="72"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="yYl-by-YLg" secondAttribute="trailing" id="4Aw-NH-Qcl"/>
+                            <constraint firstItem="cPB-fc-oTt" firstAttribute="leading" secondItem="WFR-h6-Ez8" secondAttribute="leading" id="B4q-EH-Wmk"/>
+                            <constraint firstItem="yYl-by-YLg" firstAttribute="top" secondItem="WFR-h6-Ez8" secondAttribute="top" id="QjD-P7-Vf9"/>
+                            <constraint firstItem="gza-QN-Veo" firstAttribute="leading" secondItem="WFR-h6-Ez8" secondAttribute="leading" id="Sod-DC-Mcw"/>
+                            <constraint firstAttribute="centerY" secondItem="oTO-Bh-qw9" secondAttribute="centerY" id="TLt-oa-GIk"/>
+                            <constraint firstItem="cPB-fc-oTt" firstAttribute="trailing" secondItem="gza-QN-Veo" secondAttribute="trailing" id="WKZ-qV-6Z3"/>
+                            <constraint firstAttribute="bottom" secondItem="yYl-by-YLg" secondAttribute="bottom" id="any-4c-r2o"/>
+                            <constraint firstItem="cPB-fc-oTt" firstAttribute="leading" secondItem="gza-QN-Veo" secondAttribute="leading" id="bhE-mW-9NV"/>
+                            <constraint firstItem="gza-QN-Veo" firstAttribute="top" secondItem="cPB-fc-oTt" secondAttribute="bottom" constant="48" id="gZs-VB-Kps"/>
+                            <constraint firstAttribute="trailing" secondItem="gza-QN-Veo" secondAttribute="trailing" id="kjh-ET-DTA"/>
+                            <constraint firstItem="cPB-fc-oTt" firstAttribute="top" secondItem="WFR-h6-Ez8" secondAttribute="top" id="klM-Q7-0SB"/>
+                            <constraint firstAttribute="centerX" secondItem="oTO-Bh-qw9" secondAttribute="centerX" id="r2N-hE-ihb"/>
+                            <constraint firstItem="yYl-by-YLg" firstAttribute="leading" secondItem="WFR-h6-Ez8" secondAttribute="leading" id="suf-sC-nEt"/>
+                            <constraint firstAttribute="trailing" secondItem="cPB-fc-oTt" secondAttribute="trailing" id="tVk-sM-7iH"/>
+                            <constraint firstAttribute="bottom" secondItem="gza-QN-Veo" secondAttribute="bottom" id="yFF-Za-MSu"/>
+                        </constraints>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VUD-I2-add" customClass="VStreamCellHeaderView">
                         <rect key="frame" x="0.0" y="0.0" width="302" height="50"/>
@@ -50,9 +69,6 @@
                             <constraint firstAttribute="width" secondItem="VUD-I2-add" secondAttribute="height" multiplier="151:25" id="As4-7V-KhG"/>
                         </constraints>
                     </view>
-                    <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="PollBarOr" translatesAutoresizingMaskIntoConstraints="NO" id="oTO-Bh-qw9">
-                        <rect key="frame" x="118" y="115" width="65" height="72"/>
-                    </imageView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5hj-dg-nbn" customClass="VStreamCellActionView">
                         <rect key="frame" x="-1" y="329" width="304" height="41"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -92,7 +108,7 @@
                 <constraint firstAttribute="trailing" secondItem="2qV-rt-BGZ" secondAttribute="trailing" constant="24" id="xpF-lk-QOm"/>
                 <constraint firstItem="VUD-I2-add" firstAttribute="leading" secondItem="Wcp-yr-gTs" secondAttribute="leading" id="yf6-2X-y8F"/>
             </constraints>
-            <size key="customSize" width="267" height="161"/>
+            <size key="customSize" width="345" height="221"/>
             <connections>
                 <outlet property="actionView" destination="5hj-dg-nbn" id="0dp-IR-bke"/>
                 <outlet property="captionTextView" destination="2qV-rt-BGZ" id="df9-Wt-hPG"/>

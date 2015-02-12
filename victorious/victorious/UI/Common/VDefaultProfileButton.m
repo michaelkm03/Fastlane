@@ -10,7 +10,7 @@
 
 #import "VThemeManager.h"
 
-#import "UIButton+VImageLoading.h"
+#import <SDWebImage/UIButton+WebCache.h>
 #import "VSettingManager.h"
 
 @implementation VDefaultProfileButton
@@ -39,7 +39,8 @@
     NSString *colorKey = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled] ? kVLinkColor : kVAccentColor;
     self.tintColor = [[[VThemeManager sharedThemeManager] themedColorForKey:colorKey] colorWithAlphaComponent:.3f];
     
-    self.layer.cornerRadius = CGRectGetHeight(self.bounds)/2;
+    CGFloat radius = CGRectGetHeight(self.bounds)/2;
+    self.layer.cornerRadius = radius;
     self.clipsToBounds = YES;
     
     self.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
@@ -51,9 +52,9 @@
     
     UIImage *defaultImage = [[UIImage imageNamed:@"profile_thumb"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     
-    [self setImageWithURL:url
-         placeholderImage:defaultImage
-                 forState:controlState];
+    [self sd_setImageWithURL:url
+                    forState:controlState
+            placeholderImage:defaultImage];
     
     self.imageView.tintColor = self.tintColor;
 }

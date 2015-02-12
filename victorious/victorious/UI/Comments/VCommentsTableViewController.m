@@ -38,6 +38,7 @@
 
 #import "VEditCommentViewController.h"
 #import "VTransitionDelegate.h"
+#import <SDWebImage/UIImageView+WebCache.h>
 
 #import "VTagStringFormatter.h"
 
@@ -247,7 +248,7 @@
     {
         cell.commentTextView.hasMedia = YES;
         cell.commentTextView.mediaThumbnailView.hidden = NO;
-        [cell.commentTextView.mediaThumbnailView setImageWithURL:comment.previewImageURL];
+        [cell.commentTextView.mediaThumbnailView sd_setImageWithURL:comment.previewImageURL];
         if ([comment.mediaUrl isKindOfClass:[NSString class]] && [comment.mediaUrl v_hasVideoExtension])
         {
             cell.commentTextView.onMediaTapped = [cell.commentTextView standardMediaTapHandlerWithMediaURL:[NSURL URLWithString:comment.mediaUrl] presentingViewController:self];
