@@ -643,14 +643,25 @@ static CGFloat const kTemplateCLineSpacing = 8;
     [self.sequenceActionController shareFromViewController:self sequence:sequence node:[sequence firstNode]];
 }
 
-- (BOOL)willRepostSequence:(VSequence *)sequence fromView:(UIView *)view
+- (void)willRepostSequence:(VSequence *)sequence fromView:(UIView *)view
 {
-    return [self.sequenceActionController repostActionFromViewController:self node:[sequence firstNode]];
+    [self willRepostSequence:sequence fromView:view completion:nil];
+}
+
+- (void)willRepostSequence:(VSequence *)sequence fromView:(UIView *)view completion:(void(^)(BOOL))completion
+{
+    [self.sequenceActionController repostActionFromViewController:self node:[sequence firstNode] completion:completion];
 }
 
 - (void)willFlagSequence:(VSequence *)sequence fromView:(UIView *)view
 {
     [self.sequenceActionController flagSheetFromViewController:self sequence:sequence];
+}
+
+- (BOOL)hasRepostedSequence:(VSequence *)sequence
+{
+    NSLog( @"%@", [VObjectManager sharedManager].mainUser.repostedSequences );
+    return [sequence canRepost];// && ![[VObjectManager sharedManager].mainUser.repostedSequences containsObject:sequence];
 }
 
 - (void)hashTag:(NSString *)hashtag tappedFromSequence:(VSequence *)sequence fromView:(UIView *)view

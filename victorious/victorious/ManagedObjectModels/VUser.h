@@ -37,7 +37,7 @@
 @property (nonatomic, retain) NSSet *pollResults;
 @property (nonatomic, retain) NSSet *postedSequences;
 @property (nonatomic, retain) NSSet *remixedSequences;
-@property (nonatomic, retain) VSequence *repostedSequences;
+@property (nonatomic, retain) NSSet *repostedSequences;
 @end
 
 @interface VUser (CoreDataGeneratedAccessors)

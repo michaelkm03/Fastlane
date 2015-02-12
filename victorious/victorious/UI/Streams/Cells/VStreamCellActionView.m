@@ -15,10 +15,16 @@
 
 static CGFloat const kGreyBackgroundColor = 0.94509803921;
 static CGFloat const kVActionButtonBuffer = 15;
+static CGFloat const kVScaleActive       = 1.0f;
+static CGFloat const kVScaleScaledUp     = 1.4f;
 
 @interface VStreamCellActionView()
 
 @property (nonatomic, strong) NSMutableArray *actionButtons;
+
+@property (nonatomic, weak) UIButton *repostButton;
+
+@property (nonatomic, assign) BOOL isAnimatingButton;
 
 @end
 
@@ -36,6 +42,11 @@ static CGFloat const kVActionButtonBuffer = 15;
 - (void)layoutSubviews
 {
     [super layoutSubviews];
+    
+    if ( self.isAnimatingButton )
+    {
+        return;
+    }
 
     for (NSUInteger i = 0; i < self.actionButtons.count; i++)
     {
@@ -89,6 +100,16 @@ static CGFloat const kVActionButtonBuffer = 15;
 {
     UIButton *button = [self addButtonWithImage:[UIImage imageNamed:@"remixIcon-C"]];
     [button addTarget:self action:@selector(remixAction:) forControlEvents:UIControlEventTouchUpInside];
+    
+    BOOL hasRespoted = NO;
+    if ( [self.delegate respondsToSelector:@selector(hasRepostedSequence:)] )
+    {
+        hasRespoted = [self.delegate hasRepostedSequence:self.sequence];
+    }
+    
+    self.repostButton.alpha = hasRespoted ? 0.5f : 1.0f;
+    NSString *imageName = hasRespoted ? @"repostIcon-success-C" : @"repostIcon-C";
+    [self.repostButton setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
 }
 
 - (void)remixAction:(id)sender
@@ -101,19 +122,54 @@ static CGFloat const kVActionButtonBuffer = 15;
 
 - (void)addRepostButton
 {
-    UIButton *button = [self addButtonWithImage:[UIImage imageNamed:@"repostIcon-C"]];
-    [button addTarget:self action:@selector(repostAction:) forControlEvents:UIControlEventTouchUpInside];
+    self.repostButton = [self addButtonWithImage:[UIImage imageNamed:@"repostIcon-C"]];
+    [self.repostButton addTarget:self action:@selector(repostAction:) forControlEvents:UIControlEventTouchUpInside];
 }
 
 - (void)repostAction:(id)sender
 {
-    BOOL canRepost = YES;
-    if ([self.delegate respondsToSelector:@selector(willRepostSequence:fromView:)])
+    if ( ![self.delegate respondsToSelector:@selector(willRepostSequence:fromView:completion:)] ||
+         ![self.delegate respondsToSelector:@selector(hasRepostedSequence:)] )
     {
-        canRepost = [self.delegate willRepostSequence:self.sequence fromView:self];
+        return;
     }
     
-    ((UIButton *)sender).enabled = canRepost;
+    if ( ![self.delegate hasRepostedSequence:self.sequence] )
+    {
+        return;
+    }
+    
+    self.repostButton.alpha = 0.5f;
+    
+    [self.delegate willRepostSequence:self.sequence fromView:self completion:^(BOOL didSucceed)
+     {
+         self.isAnimatingButton = YES;
+         [self.repostButton setImage:[UIImage imageNamed:@"repostIcon-success-C"] forState:UIControlStateNormal];
+         
+         [UIView animateWithDuration:0.15f
+                               delay:0.0f
+              usingSpringWithDamping:1.0f
+               initialSpringVelocity:0.8f
+                             options:kNilOptions animations:^
+          {
+              self.repostButton.transform = CGAffineTransformMakeScale( kVScaleScaledUp, kVScaleScaledUp );
+          }
+                          completion:^(BOOL finished)
+          {
+              [UIView animateWithDuration:0.5f
+                                    delay:0.0f
+                   usingSpringWithDamping:0.8f
+                    initialSpringVelocity:0.9f
+                                  options:kNilOptions animations:^
+               {
+                   self.repostButton.transform = CGAffineTransformMakeScale( kVScaleActive, kVScaleActive );
+               }
+                               completion:^(BOOL finished)
+               {
+                   self.isAnimatingButton = NO;
+               }];
+          }];
+     }];
 }
 
 - (void)addFlagButton
