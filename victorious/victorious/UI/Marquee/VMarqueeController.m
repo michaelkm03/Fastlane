@@ -150,8 +150,7 @@
 - (void)enableTimer
 {
     [self.autoScrollTimer invalidate];
-    CGFloat duration = 5.0f;
-    self.autoScrollTimer = [NSTimer scheduledTimerWithTimeInterval:duration
+    self.autoScrollTimer = [NSTimer scheduledTimerWithTimeInterval:5.0f
                                                             target:self
                                                           selector:@selector(selectNextTab)
                                                           userInfo:nil
