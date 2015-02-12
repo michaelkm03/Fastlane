@@ -16,6 +16,13 @@
 @interface VTag : NSObject
 
 /**
+ FOR USE IN TESTS
+ */
+- (instancetype)initWithAttributedDisplayString:(NSMutableAttributedString *)displayString
+                        databaseFormattedString:(NSString *)databaseFormattedString
+                         andTagStringAttributes:(NSDictionary *)tagStringAttributes;
+
+/**
  Generate a new tag from the given user and string attributes dictionary
  
  @param user a VUser object with valid name and remoteId fields.

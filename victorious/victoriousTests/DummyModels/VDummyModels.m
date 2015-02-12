@@ -118,12 +118,11 @@ NSString * const kMacroBallisticsCount = @"%%COUNT%%";
     NSMutableArray *models = [[NSMutableArray alloc] init];
     for ( NSInteger i = 0; i < count; i++ )
     {
-        VTag *tag = [[VTag alloc] init];
         NSString *displayString = [NSString stringWithFormat:@"user %lu", (unsigned long)i];
-        tag.displayString = [[NSMutableAttributedString alloc] initWithString:displayString];
-        tag.databaseFormattedString = [NSString stringWithFormat:@"@{%lu:%@}", (unsigned long)i, displayString];
-        tag.tagStringAttributes = @{NSFontAttributeName : [UIFont fontWithName:@"helvetica" size:10.0],
-                                    NSForegroundColorAttributeName : [UIColor redColor]};
+        VTag *tag = [[VTag alloc] initWithAttributedDisplayString:[[NSMutableAttributedString alloc] initWithString:displayString]
+                                          databaseFormattedString:[NSString stringWithFormat:@"@{%lu:%@}", (unsigned long)i, displayString]
+                                           andTagStringAttributes:@{NSFontAttributeName : [UIFont fontWithName:@"helvetica" size:10.0],
+                                                                    NSForegroundColorAttributeName : [UIColor redColor]}];
         [models addObject:tag];
     }
     return models;
@@ -134,12 +133,11 @@ NSString * const kMacroBallisticsCount = @"%%COUNT%%";
     NSMutableArray *models = [[NSMutableArray alloc] init];
     for ( NSInteger i = 0; i < count; i++ )
     {
-        VTag *tag = [[VTag alloc] init];
         NSString *displayString = [NSString stringWithFormat:@"#hashtag_%lu", (unsigned long)i];
-        tag.displayString = [[NSMutableAttributedString alloc] initWithString:displayString];
-        tag.databaseFormattedString = displayString;
-        tag.tagStringAttributes = @{NSFontAttributeName : [UIFont fontWithName:@"helvetica" size:10.0],
-                                    NSForegroundColorAttributeName : [UIColor redColor]};
+        VTag *tag = [[VTag alloc] initWithAttributedDisplayString:[[NSMutableAttributedString alloc] initWithString:displayString]
+                                          databaseFormattedString:displayString
+                                           andTagStringAttributes:@{NSFontAttributeName : [UIFont fontWithName:@"helvetica" size:10.0],
+                                                                    NSForegroundColorAttributeName : [UIColor redColor]}];
         [models addObject:tag];
     }
     return models;

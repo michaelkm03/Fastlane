@@ -17,9 +17,24 @@
 
 @implementation VTag
 
+#pragma mark - testing init
+
+- (instancetype)initWithAttributedDisplayString:(NSMutableAttributedString *)displayString
+                        databaseFormattedString:(NSString *)databaseFormattedString
+                         andTagStringAttributes:(NSDictionary *)tagStringAttributes
+{
+    self = [super init];
+    if ( self != nil )
+    {
+        _displayString = displayString;
+        _tagStringAttributes = tagStringAttributes;
+        _databaseFormattedString = databaseFormattedString;
+    }
+    return self;
+}
+
 #pragma mark - internal init
 
-//Setup a VTag object with a provided display and database-formatted string
 - (instancetype)initWithDisplayString:(NSString *)displayString
               databaseFormattedString:(NSString *)databaseFormattedString
                andTagStringAttributes:(NSDictionary *)tagStringAttributes

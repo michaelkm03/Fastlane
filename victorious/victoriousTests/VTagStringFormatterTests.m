@@ -51,15 +51,9 @@
     self.databaseFormattedUser = [NSString stringWithFormat:@"@{%@:%@}", self.user.remoteId, userName];
     self.databaseFormattedHashtag = [NSString stringWithFormat:@"#%@", hashtagTag];
     
-    self.userTag = [[VTag alloc] init];
-    self.userTag.databaseFormattedString = self.databaseFormattedUser;
-    self.userTag.displayString = [[NSMutableAttributedString alloc] initWithString:userName attributes:self.tagStringAttributes];
-    self.userTag.tagStringAttributes = self.tagStringAttributes;
+    self.userTag = [[VTag alloc] initWithAttributedDisplayString:[[NSMutableAttributedString alloc] initWithString:userName attributes:self.tagStringAttributes] databaseFormattedString:self.databaseFormattedUser andTagStringAttributes:self.tagStringAttributes];
     
-    self.hashtagTag = [[VTag alloc] init];
-    self.hashtagTag.databaseFormattedString = self.databaseFormattedHashtag;
-    self.hashtagTag.displayString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"#%@", self.hashtag.tag] attributes:self.tagStringAttributes];
-    self.hashtagTag.tagStringAttributes = self.tagStringAttributes;
+    self.hashtagTag = [[VTag alloc] initWithAttributedDisplayString:[[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"#%@", self.hashtag.tag] attributes:self.tagStringAttributes] databaseFormattedString:self.databaseFormattedHashtag andTagStringAttributes:self.tagStringAttributes];
     
     self.tags = @[self.userTag, self.hashtagTag];
     
