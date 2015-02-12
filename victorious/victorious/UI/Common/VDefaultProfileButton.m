@@ -39,7 +39,8 @@
     NSString *colorKey = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled] ? kVLinkColor : kVAccentColor;
     self.tintColor = [[[VThemeManager sharedThemeManager] themedColorForKey:colorKey] colorWithAlphaComponent:.3f];
     
-    self.layer.cornerRadius = CGRectGetHeight(self.bounds)/2;
+    CGFloat radius = CGRectGetHeight(self.bounds)/2;
+    self.layer.cornerRadius = radius;
     self.clipsToBounds = YES;
     
     self.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];

@@ -7,12 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "VUserTaggingTextStorageDelegate.h"
 
-@class VKeyboardInputAccessoryView;
+@class VKeyboardInputAccessoryView, VDependencyManager;
 
 extern NSString * const VInputAccessoryViewKeyboardFrameDidChangeNotification;
 
-const CGFloat VInputAccessoryViewDesiredMinimumHeight;
+extern const CGFloat VInputAccessoryViewDesiredMinimumHeight;
 
 /**
  *  !!!ATTENTION!!!
@@ -25,7 +26,7 @@ const CGFloat VInputAccessoryViewDesiredMinimumHeight;
 
 @end
 
-@protocol VKeyboardInputAccessoryViewDelegate <NSObject>
+@protocol VKeyboardInputAccessoryViewDelegate <NSObject, VUserTaggingTextStorageDelegate>
 
 /**
  *  Notifies the delegate of the input accessory view that the send button has been pressed.
@@ -86,7 +87,7 @@ const CGFloat VInputAccessoryViewDesiredMinimumHeight;
  *
  *  @return A newly instantiated inputAccessoryView.
  */
-+ (VKeyboardInputAccessoryView *)defaultInputAccessoryView;
++ (VKeyboardInputAccessoryView *)defaultInputAccessoryViewWithDependencyManager:(VDependencyManager *)dependencyManager;
 
 /**
  *  The object that acts as the delegate of the receiving VKeyboardInputAccessoryView.

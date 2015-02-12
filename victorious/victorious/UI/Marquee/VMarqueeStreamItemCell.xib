@@ -15,7 +15,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8ks-bN-miQ" userLabel="Web View Container">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="200"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="283"/>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ODe-uo-H79">
@@ -24,12 +24,6 @@
                     <imageView hidden="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="PollBarOr" translatesAutoresizingMaskIntoConstraints="NO" id="83k-OL-pLv">
                         <rect key="frame" x="127" y="106" width="65" height="72"/>
                     </imageView>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BottomGradient" translatesAutoresizingMaskIntoConstraints="NO" id="e5s-qD-eD8">
-                        <rect key="frame" x="0.0" y="181" width="320" height="102"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="102" id="4yK-3A-jfs"/>
-                        </constraints>
-                    </imageView>
                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7bg-N6-FzQ" userLabel="DetailsContainer">
                         <rect key="frame" x="0.0" y="179" width="320" height="104"/>
                         <subviews>
@@ -37,7 +31,7 @@
                                 <rect key="frame" x="0.0" y="20" width="320" height="84"/>
                                 <subviews>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" minimumScaleFactor="0.90000000000000002" preferredMaxLayoutWidth="274" translatesAutoresizingMaskIntoConstraints="NO" id="9uF-IU-Ue1">
-                                        <rect key="frame" x="23" y="20" width="274" height="46"/>
+                                        <rect key="frame" x="23" y="20" width="274" height="38"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
@@ -46,7 +40,7 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="9uF-IU-Ue1" secondAttribute="trailing" constant="23" id="7a1-OB-NpY"/>
-                                    <constraint firstAttribute="bottom" secondItem="9uF-IU-Ue1" secondAttribute="bottom" constant="18" id="96H-Wj-DUE"/>
+                                    <constraint firstAttribute="bottom" secondItem="9uF-IU-Ue1" secondAttribute="bottom" constant="26" id="96H-Wj-DUE"/>
                                     <constraint firstItem="9uF-IU-Ue1" firstAttribute="leading" secondItem="gwI-zs-1vj" secondAttribute="leading" constant="23" id="Vld-67-S0f"/>
                                     <constraint firstItem="9uF-IU-Ue1" firstAttribute="top" secondItem="gwI-zs-1vj" secondAttribute="top" constant="20" id="hGT-qv-10z"/>
                                 </constraints>
@@ -84,7 +78,6 @@
                 <constraint firstItem="ODe-uo-H79" firstAttribute="leading" secondItem="tdJ-QP-9ol" secondAttribute="leading" id="1ty-At-fXf"/>
                 <constraint firstItem="ODe-uo-H79" firstAttribute="top" secondItem="tdJ-QP-9ol" secondAttribute="top" id="5uf-3A-yHo"/>
                 <constraint firstAttribute="trailing" secondItem="ODe-uo-H79" secondAttribute="trailing" id="7bJ-QV-5tr"/>
-                <constraint firstAttribute="trailing" secondItem="e5s-qD-eD8" secondAttribute="trailing" id="8dA-6w-JnK"/>
                 <constraint firstAttribute="bottom" secondItem="7bg-N6-FzQ" secondAttribute="bottom" id="CEM-4V-WOi"/>
                 <constraint firstAttribute="trailing" secondItem="7bg-N6-FzQ" secondAttribute="trailing" id="DEh-IS-voR"/>
                 <constraint firstAttribute="centerX" secondItem="ODe-uo-H79" secondAttribute="centerX" id="QnN-ct-3wG"/>
@@ -94,18 +87,20 @@
                 <constraint firstAttribute="trailing" secondItem="ODe-uo-H79" secondAttribute="trailing" id="cy7-gA-i1P"/>
                 <constraint firstItem="ODe-uo-H79" firstAttribute="top" secondItem="tdJ-QP-9ol" secondAttribute="top" id="f30-pZ-MTc"/>
                 <constraint firstItem="83k-OL-pLv" firstAttribute="centerY" secondItem="ODe-uo-H79" secondAttribute="centerY" id="i2s-Tt-pGG"/>
-                <constraint firstItem="e5s-qD-eD8" firstAttribute="leading" secondItem="tdJ-QP-9ol" secondAttribute="leading" id="i57-fX-wre"/>
                 <constraint firstItem="7bg-N6-FzQ" firstAttribute="leading" secondItem="tdJ-QP-9ol" secondAttribute="leading" id="l50-vI-qec"/>
-                <constraint firstAttribute="bottom" secondItem="8ks-bN-miQ" secondAttribute="bottom" constant="83" id="pPM-hV-S1E"/>
+                <constraint firstAttribute="bottom" secondItem="8ks-bN-miQ" secondAttribute="bottom" id="pPM-hV-S1E"/>
                 <constraint firstItem="8ks-bN-miQ" firstAttribute="top" secondItem="tdJ-QP-9ol" secondAttribute="top" id="q2n-2F-3ed"/>
-                <constraint firstAttribute="bottom" secondItem="e5s-qD-eD8" secondAttribute="bottom" id="qza-d5-6Wz"/>
                 <constraint firstItem="ODe-uo-H79" firstAttribute="leading" secondItem="tdJ-QP-9ol" secondAttribute="leading" id="s8c-bt-paC"/>
                 <constraint firstAttribute="bottom" secondItem="ODe-uo-H79" secondAttribute="bottom" id="sPE-Yd-12F"/>
             </constraints>
             <size key="customSize" width="564" height="543"/>
             <connections>
                 <outlet property="detailsBackgroundView" destination="gwI-zs-1vj" id="SRu-tQ-F92"/>
+                <outlet property="detailsBottomLayoutConstraint" destination="CEM-4V-WOi" id="owa-8s-Ifr"/>
                 <outlet property="detailsContainer" destination="7bg-N6-FzQ" id="uuv-DS-Udf"/>
+                <outlet property="detailsHeightLayoutConstraint" destination="C01-Nu-bfJ" id="CCp-yL-V61"/>
+                <outlet property="labelBottomLayoutConstriant" destination="96H-Wj-DUE" id="bKg-7G-ly6"/>
+                <outlet property="labelTopLayoutConstriant" destination="hGT-qv-10z" id="JGJ-Hm-Jda"/>
                 <outlet property="nameLabel" destination="9uF-IU-Ue1" id="7S4-Fr-41h"/>
                 <outlet property="pollOrImageView" destination="83k-OL-pLv" id="FQG-Gj-orE"/>
                 <outlet property="previewImageView" destination="ODe-uo-H79" id="Piw-D9-iUM"/>
@@ -116,7 +111,6 @@
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="BottomGradient" width="320" height="102"/>
         <image name="PollBarOr" width="65" height="72"/>
         <image name="profile_full" width="80" height="80"/>
     </resources>

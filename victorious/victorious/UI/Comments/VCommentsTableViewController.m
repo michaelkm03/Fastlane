@@ -40,6 +40,8 @@
 #import "VTransitionDelegate.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 
+#import "VTagStringFormatter.h"
+
 @import Social;
 
 @interface VCommentsTableViewController () <VEditCommentViewControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate>
@@ -234,7 +236,14 @@
         cell.usernameLabel.attributedText = [VRTCUserPostedAtFormatter formattedRTCUserPostedAtStringWithUserName:comment.user.name
                                                                                       andPostedTime:comment.realtime];
     }
-    cell.commentTextView.text = comment.text;
+    
+    //Ugly, but only way I can think of to reliably update to proper string formatting per each cell
+    NSDictionary *defaultStringAttributes = cell.commentTextView.textFont ? [VCommentTextAndMediaView attributesForTextWithFont:cell.commentTextView.textFont] : [VCommentTextAndMediaView attributesForText];
+    NSMutableDictionary *tagStringAttributes = [[NSMutableDictionary alloc] initWithDictionary:defaultStringAttributes];
+    [tagStringAttributes setObject:[[VThemeManager sharedThemeManager] themedColorForKey:[VTagStringFormatter defaultThemeManagerTagColorKey]] forKey:NSForegroundColorAttributeName];
+    NSMutableAttributedString *formattedCommentText = [[NSMutableAttributedString alloc] initWithString:comment.text attributes:defaultStringAttributes];
+    [VTagStringFormatter tagDictionaryFromFormattingAttributedString:formattedCommentText withTagStringAttributes:tagStringAttributes andDefaultStringAttributes:defaultStringAttributes];
+    cell.commentTextView.attributedText = formattedCommentText;
     if (comment.hasMedia)
     {
         cell.commentTextView.hasMedia = YES;
