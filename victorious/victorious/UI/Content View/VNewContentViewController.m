@@ -127,22 +127,17 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 @property (nonatomic, assign) BOOL enteringRealTimeComment;
 @property (nonatomic, assign) CMTime realtimeCommentBeganTime;
 
-<<<<<<< HEAD
 @property (nonatomic, strong) VTransitionDelegate *modalTransitionDelegate;
 @property (nonatomic, strong) VTransitionDelegate *repopulateTransitionDelegate;
-@property (nonatomic, strong) VScrollPaginator *scrollPaginator;
-=======
-@property (nonatomic, strong) VTransitionDelegate *transitionDelegate;
-@property (nonatomic, weak) IBOutlet VScrollPaginator *scrollPaginator;
->>>>>>> 2c42aa8e4f389bf7fa238273ce8a5e1b16d6dceb
 
 @property (nonatomic, strong) VCommentHighlighter *commentHighlighter;
 
-@property (nonatomic, strong, readwrite) VSequenceActionController *sequenceActionController;
 @property (nonatomic, weak) VDependencyManager *dependencyManager;
 
 @property (nonatomic, weak) IBOutlet VContentViewAlertHelper *alertHelper;
 @property (nonatomic, weak) IBOutlet VContentViewRotationHelper *rotationHelper;
+@property (nonatomic, weak) IBOutlet VScrollPaginator *scrollPaginator;
+@property (nonatomic, strong, readwrite) IBOutlet VSequenceActionController *sequenceActionController;
 
 @end
 
@@ -344,13 +339,6 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-<<<<<<< HEAD
-    
-    self.sequenceActionController = [[VSequenceActionController alloc] init];
-    
-    self.scrollPaginator = [[VScrollPaginator alloc] initWithDelegate:self];
-=======
->>>>>>> 2c42aa8e4f389bf7fa238273ce8a5e1b16d6dceb
 
     self.commentHighlighter = [[VCommentHighlighter alloc] initWithCollectionView:self.contentCollectionView];
     
@@ -371,7 +359,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     
     if (self.viewModel.sequence.canComment)
     {
-        VKeyboardInputAccessoryView *inputAccessoryView = [VKeyboardInputAccessoryView defaultInputAccessoryView];
+        VKeyboardInputAccessoryView *inputAccessoryView = [VKeyboardInputAccessoryView defaultInputAccessoryViewWithDependencyManager:nil];
         inputAccessoryView.translatesAutoresizingMaskIntoConstraints = NO;
         inputAccessoryView.returnKeyType = UIReturnKeyDone;
         inputAccessoryView.delegate = self;
@@ -404,6 +392,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
                                                                                       attribute:NSLayoutAttributeBottom
                                                                                      multiplier:1.0f
                                                                                        constant:0.0f];
+
         self.bottomKeyboardToContainerBottomConstraint.priority = UILayoutPriorityDefaultLow;
         [self.view addSubview:inputAccessoryView];
         [self.view addConstraints:@[self.keyboardInputBarHeightConstraint, inputViewLeadingConstraint, inputViewTrailingconstraint, self.bottomKeyboardToContainerBottomConstraint]];
@@ -1340,6 +1329,30 @@ referenceSizeForHeaderInSection:(NSInteger)section
 {
     self.enteringRealTimeComment = NO;
     self.realtimeCommentBeganTime = kCMTimeZero;
+}
+
+- (void)userTaggingTextStorage:(VUserTaggingTextStorage *)textStorage wantsToDismissViewController:(UITableViewController *)tableViewController
+{
+    [tableViewController.view removeFromSuperview];
+}
+
+- (void)userTaggingTextStorage:(VUserTaggingTextStorage *)textStorage wantsToShowViewController:(UIViewController *)viewController
+{    
+    // Inline Search layout constraints
+    UIView *searchTableView = viewController.view;
+    UIView *superview = self.view;
+    [superview insertSubview:searchTableView belowSubview:self.textEntryView];
+    [searchTableView setTranslatesAutoresizingMaskIntoConstraints:NO];
+    searchTableView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+    NSDictionary *views = @{@"searchTableView":searchTableView, @"textEntryView":self.textEntryView};
+    [superview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[searchTableView][textEntryView]"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:views]];
+    [superview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[searchTableView]|"
+                                                                      options:kNilOptions
+                                                                      metrics:nil
+                                                                        views:views]];
 }
 
 #pragma mark - VExperienceEnhancerControllerDelegate

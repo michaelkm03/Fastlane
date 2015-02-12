@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<<<<<<< HEAD
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="9O1-S6-jeB">
-=======
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="9O1-S6-jeB">
->>>>>>> 2c42aa8e4f389bf7fa238273ce8a5e1b16d6dceb
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
     <scenes>
         <!--New Content View Controller-->
@@ -84,9 +79,9 @@
                             <constraint firstItem="uhm-oa-mP9" firstAttribute="top" secondItem="iL5-FN-2xy" secondAttribute="bottom" id="LfD-GC-NjT"/>
                             <constraint firstAttribute="trailing" secondItem="cR6-Xx-dKv" secondAttribute="trailing" id="RFO-rT-1tp"/>
                             <constraint firstItem="DRU-0d-Xgx" firstAttribute="leading" secondItem="oR4-K5-HTJ" secondAttribute="leading" id="UCM-D2-PqF"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="iL5-FN-2xy" secondAttribute="trailing" constant="-16" id="beS-6z-oSD"/>
+                            <constraint firstAttribute="trailing" secondItem="iL5-FN-2xy" secondAttribute="trailing" id="beS-6z-oSD"/>
                             <constraint firstItem="p1f-ge-RSn" firstAttribute="top" secondItem="C41-xf-66J" secondAttribute="bottom" id="e5L-GF-jrX"/>
-                            <constraint firstItem="iL5-FN-2xy" firstAttribute="leading" secondItem="oR4-K5-HTJ" secondAttribute="leadingMargin" constant="-16" id="e8f-31-PHL"/>
+                            <constraint firstItem="iL5-FN-2xy" firstAttribute="leading" secondItem="oR4-K5-HTJ" secondAttribute="leading" id="e8f-31-PHL"/>
                             <constraint firstItem="cR6-Xx-dKv" firstAttribute="leading" secondItem="oR4-K5-HTJ" secondAttribute="leading" id="gQc-P8-blV"/>
                             <constraint firstAttribute="trailing" secondItem="DRU-0d-Xgx" secondAttribute="trailing" id="gsG-Xa-7Uz"/>
                             <constraint firstAttribute="trailing" secondItem="p1f-ge-RSn" secondAttribute="trailing" id="khd-Kq-iJM"/>
@@ -102,25 +97,21 @@
                         <outlet property="contentCollectionView" destination="iL5-FN-2xy" id="IRA-Ie-iCh"/>
                         <outlet property="leadingCollectionViewToContainer" destination="e8f-31-PHL" id="lgG-EN-y7q"/>
                         <outlet property="moreButton" destination="p1f-ge-RSn" id="SMD-h7-BkQ"/>
-<<<<<<< HEAD
-                        <outlet property="rotationHelper" destination="8SL-2O-WKa" id="ynF-CJ-Oa3"/>
-=======
-                        <outlet property="scrollPaginator" destination="Fi1-i6-cwe" id="IMt-eS-rBz"/>
->>>>>>> 2c42aa8e4f389bf7fa238273ce8a5e1b16d6dceb
+                        <outlet property="rotationHelper" destination="8SL-2O-WKa" id="pwD-gM-Em7"/>
+                        <outlet property="scrollPaginator" destination="Fi1-i6-cwe" id="iJF-wU-hma"/>
+                        <outlet property="sequenceActionController" destination="1Jx-SR-aWO" id="3CZ-67-vQ9"/>
                         <outlet property="trailingCollectionViewToContainer" destination="beS-6z-oSD" id="Nxc-Dh-5cG"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rXP-pS-SbF" userLabel="First Responder" sceneMemberID="firstResponder"/>
-<<<<<<< HEAD
                 <customObject id="EZ0-yt-FUS" customClass="VContentViewAlertHelper"/>
                 <customObject id="8SL-2O-WKa" customClass="VContentViewRotationHelper"/>
-=======
                 <customObject id="Fi1-i6-cwe" customClass="VScrollPaginator">
                     <connections>
                         <outlet property="delegate" destination="9O1-S6-jeB" id="oJq-zS-doN"/>
                     </connections>
                 </customObject>
->>>>>>> 2c42aa8e4f389bf7fa238273ce8a5e1b16d6dceb
+                <customObject id="1Jx-SR-aWO" customClass="VSequenceActionController"/>
             </objects>
             <point key="canvasLocation" x="267" y="188"/>
         </scene>

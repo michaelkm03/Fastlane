@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="PNZ-XS-GB1">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14A389a" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="PNZ-XS-GB1">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
@@ -23,7 +23,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fy3-yg-vQF">
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fy3-yg-vQF">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <connections>
                                     <segue destination="kYh-dZ-t7J" kind="embed" id="rij-xf-Bpp"/>
@@ -31,6 +31,12 @@
                             </containerView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="fy3-yg-vQF" secondAttribute="trailing" id="E4C-qd-qJV"/>
+                            <constraint firstItem="fy3-yg-vQF" firstAttribute="leading" secondItem="Z5g-Pn-XsZ" secondAttribute="leading" id="Qdr-mO-d9W"/>
+                            <constraint firstItem="fy3-yg-vQF" firstAttribute="top" secondItem="Z5g-Pn-XsZ" secondAttribute="top" id="RSw-Lx-GtW"/>
+                            <constraint firstItem="vSS-Gv-eds" firstAttribute="top" secondItem="fy3-yg-vQF" secondAttribute="bottom" id="k0R-vp-pCZ"/>
+                        </constraints>
                     </view>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
                 </viewController>
@@ -321,8 +327,11 @@
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LM5-sK-eej" customClass="VButton">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LM5-sK-eej" customClass="VButton">
                                                     <rect key="frame" x="20" y="0.0" width="280" height="43"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="280" id="iLk-M4-zZE"/>
+                                                    </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <state key="normal" title="Log out">
@@ -334,6 +343,11 @@
                                                     </connections>
                                                 </button>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="centerX" secondItem="LM5-sK-eej" secondAttribute="centerX" id="3ax-I1-gTe"/>
+                                                <constraint firstAttribute="bottom" secondItem="LM5-sK-eej" secondAttribute="bottom" id="LAb-Gq-Q8w"/>
+                                                <constraint firstItem="LM5-sK-eej" firstAttribute="top" secondItem="1b6-aa-YNy" secondAttribute="top" id="qeA-Ba-HT6"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </tableViewCell>
@@ -344,14 +358,22 @@
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OZa-mN-lgJ">
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OZa-mN-lgJ">
                                                     <rect key="frame" x="20" y="11" width="280" height="21"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="280" id="uGW-7o-LGH"/>
+                                                    </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="OZa-mN-lgJ" secondAttribute="bottom" constant="11" id="2Xu-Ju-BTV"/>
+                                                <constraint firstAttribute="centerX" secondItem="OZa-mN-lgJ" secondAttribute="centerX" id="OUF-WB-L01"/>
+                                                <constraint firstItem="OZa-mN-lgJ" firstAttribute="top" secondItem="Gcj-EI-Wy4" secondAttribute="top" constant="11" id="p1b-74-Hxk"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </tableViewCell>

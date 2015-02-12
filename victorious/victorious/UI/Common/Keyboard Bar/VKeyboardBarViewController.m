@@ -18,15 +18,19 @@
 #import "VConstants.h"
 #import "VThemeManager.h"
 #import "VAppDelegate.h"
+#import "VUserTaggingTextStorage.h"
+#import "VTagStringFormatter.h"
 
 static const NSInteger kCharacterLimit = 255;
 
 @interface VKeyboardBarViewController() <UITextViewDelegate>
 
-@property (nonatomic, weak, readwrite) IBOutlet UITextView *textView;
+@property (nonatomic, weak, readwrite) IBOutlet UIView *textViewContainer;
+@property (nonatomic, strong, readwrite) UITextView *textView;
 @property (weak, nonatomic) IBOutlet UIButton *mediaButton;
 @property (weak, nonatomic) IBOutlet UIButton *sendButton;
 @property (nonatomic, strong) NSURL *mediaURL;
+@property (nonatomic, strong) VUserTaggingTextStorage *textStorage;
 
 @end
 
@@ -46,6 +50,26 @@ static const NSInteger kCharacterLimit = 255;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.textStorage = [[VUserTaggingTextStorage alloc] initWithString:nil andDependencyManager:nil textView:nil taggingDelegate:self.delegate];
+    
+    NSLayoutManager *layoutManager = [[NSLayoutManager alloc] init];
+    [self.textStorage addLayoutManager:layoutManager];
+    
+    NSTextContainer *textContainer = [[NSTextContainer alloc] init];
+    [layoutManager addTextContainer:textContainer];
+    
+    self.textView = [[UITextView alloc] initWithFrame:CGRectZero textContainer:textContainer];
+    self.textView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.textView setBackgroundColor:[UIColor clearColor]];
+    self.textView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    [self.textViewContainer addSubview:self.textView];
+    NSDictionary *views = @{@"view":self.textView};
+    [self.textViewContainer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[view]|" options:0 metrics:nil views:views]];
+    [self.textViewContainer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[view]|" options:0 metrics:nil views:views]];
+    self.textView.delegate = self;
+    
+    [self.textStorage setTextView:self.textView];
     
     [self.textView addObserver:self forKeyPath:NSStringFromSelector(@selector(contentSize)) options:0 context:nil];
     
@@ -111,7 +135,8 @@ static const NSInteger kCharacterLimit = 255;
 
     if ([self.delegate respondsToSelector:@selector(keyboardBar:didComposeWithText:mediaURL:)])
     {
-        [self.delegate keyboardBar:self didComposeWithText:self.textView.text mediaURL:self.mediaURL];
+        NSString *text = [self.textStorage databaseFormattedString];
+        [self.delegate keyboardBar:self didComposeWithText:text mediaURL:self.mediaURL];
     }
     if (self.shouldAutoClearOnCompose)
     {

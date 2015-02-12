@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="i4T-vl-Hiv">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14A389a" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="i4T-vl-Hiv">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
     <scenes>
         <!--Edit Comment View Controller-->
@@ -78,9 +78,10 @@
                             <constraint firstAttribute="trailing" secondItem="dP8-Ja-hRs" secondAttribute="trailing" constant="15" id="72l-n2-JAb"/>
                             <constraint firstAttribute="trailing" secondItem="HqW-eb-DVP" secondAttribute="trailing" id="DoT-6C-KWj"/>
                             <constraint firstItem="Jjr-oi-20m" firstAttribute="trailing" secondItem="dP8-Ja-hRs" secondAttribute="trailing" constant="15" id="IKb-ia-TQj"/>
+                            <constraint firstItem="FOD-bP-uba" firstAttribute="top" relation="greaterThanOrEqual" secondItem="90X-60-02E" secondAttribute="bottom" id="W5R-qA-yjE"/>
                             <constraint firstItem="dP8-Ja-hRs" firstAttribute="leading" secondItem="RqT-Pl-a02" secondAttribute="leading" constant="15" id="ZuE-De-s6c"/>
                             <constraint firstItem="HqW-eb-DVP" firstAttribute="leading" secondItem="RqT-Pl-a02" secondAttribute="leading" id="avM-nM-36K"/>
-                            <constraint firstAttribute="centerY" secondItem="dP8-Ja-hRs" secondAttribute="centerY" id="c25-7o-ksD"/>
+                            <constraint firstAttribute="centerY" secondItem="dP8-Ja-hRs" secondAttribute="centerY" priority="499" id="c25-7o-ksD"/>
                             <constraint firstItem="HqW-eb-DVP" firstAttribute="top" secondItem="eft-YB-hAU" secondAttribute="bottom" id="oUg-gk-cC6"/>
                             <constraint firstItem="FOD-bP-uba" firstAttribute="top" secondItem="HqW-eb-DVP" secondAttribute="bottom" id="oqE-Qp-MWa"/>
                             <constraint firstItem="90X-60-02E" firstAttribute="top" secondItem="dP8-Ja-hRs" secondAttribute="bottom" constant="-3" id="pfw-OS-w1J"/>
@@ -93,6 +94,7 @@
                         <outlet property="backgroundScreen" destination="HqW-eb-DVP" id="h09-1K-YoV"/>
                         <outlet property="buttonCancel" destination="90X-60-02E" id="cvE-z4-aSR"/>
                         <outlet property="buttonConfirm" destination="Jjr-oi-20m" id="oSo-cx-RH4"/>
+                        <outlet property="cancelButtonBottomConstraint" destination="W5R-qA-yjE" id="l8i-Vb-BAk"/>
                         <outlet property="editTextView" destination="VV7-qm-Y1W" id="56t-lN-KEq"/>
                         <outlet property="modalContainer" destination="dP8-Ja-hRs" id="aAH-qn-1VP"/>
                         <outlet property="modalContainerHeightConstraint" destination="ush-eL-0ue" id="3V3-S8-uvk"/>
