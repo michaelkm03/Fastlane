@@ -8,7 +8,6 @@
 
 #import "VUserTaggingTextStorage.h"
 #import "VInlineSearchTableViewController.h"
-#import "VInlineUserSearch.h"
 #import "VUser.h"
 #import "VThemeManager.h"
 #import "VDependencyManager.h"
@@ -36,6 +35,7 @@ static NSString * const kThreeSpaces = @"   ";
 @property (nonatomic) NSString *tagDelimiterString;
 @property (nonatomic) NSRange selectionRange;
 @property (nonatomic) NSRange tagSelectionRange;
+@property (nonatomic) BOOL needsSelectionUpdate;
 
 @end
 
@@ -52,7 +52,7 @@ static NSString * const kThreeSpaces = @"   ";
         _textView = textView;
         
         //If passed in a textview, add our layout manager to its layout managers
-        if ( _textView )
+        if ( _textView != nil )
         {
             [self addLayoutManager:_textView.layoutManager];
         }
@@ -62,7 +62,7 @@ static NSString * const kThreeSpaces = @"   ";
             //Add already present string to inner storage
             [self replaceCharactersInRange:NSMakeRange(0, 0) withString:str];
             self.tagDictionary = [VTagStringFormatter tagDictionaryFromFormattingAttributedString:self withTagStringAttributes:self.tagStringAttributes andDefaultStringAttributes:self.defaultStringAttributes];
-            if ( _textView )
+            if ( _textView != nil )
             {
                 [_textView setSelectedRange:NSMakeRange(str.length - 1, 0)];
             }
@@ -82,19 +82,10 @@ static NSString * const kThreeSpaces = @"   ";
         return;
     }
     
-    switch (state)
-    {
-        case VUserTaggingTextStorageStateSearchActive:
-            [self.searchTableViewController searchFollowingList:[self.innerStorage.string substringWithRange:self.searchTermRange]];
-            break;
-            
-        default:
-            break;
-    }
-    
     if (state == VUserTaggingTextStorageStateSearchActive)
     {
         //Search is active, let the delegate know it should show the table
+        [self.searchTableViewController searchFollowingList:[self.innerStorage.string substringWithRange:self.searchTermRange]];
         [self.taggingDelegate userTaggingTextStorage:self wantsToShowViewController:self.searchTableViewController];
     }
     else if (state == VUserTaggingTextStorageStateInactive)
@@ -132,6 +123,7 @@ static NSString * const kThreeSpaces = @"   ";
 
 - (void)replaceCharactersInRange:(NSRange)range withString:(NSString *)string
 {
+    self.needsSelectionUpdate = NO;
     if (self.string.length > 0)
     {
         if (range.location != 0)
@@ -142,6 +134,7 @@ static NSString * const kThreeSpaces = @"   ";
                 //Check if the string to the left of us has tag formatting
                 if ( [self containsAttributes:self.tagStringAttributes atIndex:range.location - 1] )
                 {
+                    self.needsSelectionUpdate = YES;
                     range.length++;
                     if ([[self.string substringWithRange:range] isEqualToString:self.tagDelimiterString])
                     {
@@ -164,6 +157,7 @@ static NSString * const kThreeSpaces = @"   ";
             {
                 //Trying to append right before end delimiter string, just move replace range before it
                 range.location--;
+                self.needsSelectionUpdate = YES;
             }
         }
         
@@ -172,6 +166,8 @@ static NSString * const kThreeSpaces = @"   ";
             NSIndexSet *tagRanges = [VTagStringFormatter tagRangesInRange:range ofAttributedString:self withTagDictionary:self.tagDictionary];
             if (tagRanges != nil)
             {
+                self.needsSelectionUpdate = YES;
+                self.tagSelectionRange = range;
                 range = [self updateAndReplaceFoundTagsInRanges:tagRanges foundInRange:range];
             }
             else if ([[self.string substringWithRange:NSMakeRange(range.location, 1)] isEqualToString:self.tagDelimiterString])
@@ -187,6 +183,7 @@ static NSString * const kThreeSpaces = @"   ";
                     //We've only selected a delim string but should delete the whole tag associated with it. Find the tag and delete that range
                     NSRange testRange = NSMakeRange(MAX(0, (NSInteger)range.location - 1), MIN(self.string.length - range.location, range.length));
                     NSIndexSet *tagRanges = [VTagStringFormatter tagRangesInRange:testRange ofAttributedString:self withTagDictionary:self.tagDictionary];
+                    self.needsSelectionUpdate = YES;
                     range = [self updateAndReplaceFoundTagsInRanges:tagRanges foundInRange:testRange];
                 }
             }
@@ -208,12 +205,6 @@ static NSString * const kThreeSpaces = @"   ";
     self.selectionRange = NSMakeRange(range.location + selectionAdditor, 0);
     [self updateStateForReplacementString:string andReplacementRange:range];
     [self edited:NSTextStorageEditedCharacters range:range changeInLength:(string.length - range.length)];
-    
-    //Set cursor to end of end text (needs to be set somewhere inside the string, otherwise app crashes)
-    if (self.textView.selectedRange.location >= _innerStorage.length)
-    {
-        self.textView.selectedRange = NSMakeRange(range.location + string.length, 0);
-    }
 }
 
 //Checks that all provided attributes are present in our attributed string at the provided index
@@ -234,7 +225,10 @@ static NSString * const kThreeSpaces = @"   ";
 - (void)endEditing
 {
     [super endEditing];
-    self.textView.selectedRange = self.selectionRange;
+    if ( self.needsSelectionUpdate || self.textView.selectedRange.location >= _innerStorage.length )
+    {
+        self.textView.selectedRange = self.selectionRange;
+    }
 }
 
 //Update search state
@@ -325,7 +319,7 @@ static NSString * const kThreeSpaces = @"   ";
         return;
     }
     
-    BOOL badTagFormatting = (range.location == self.tagSelectionRange.location && range.length == self.tagSelectionRange.length);
+    BOOL badTagFormatting = range.location == self.tagSelectionRange.location;
     if ( range.length == 1 && ([[self.string substringWithRange:range] isEqualToString:self.tagDelimiterString] || badTagFormatting) )
     {
         attrs = self.defaultStringAttributes;
@@ -339,7 +333,7 @@ static NSString * const kThreeSpaces = @"   ";
     if (!self.defaultStringAttributes)
     {
         NSMutableDictionary *dsa = [[NSMutableDictionary alloc] initWithDictionary:attrs];
-        if ([dsa objectForKey:NSForegroundColorAttributeName] == nil)
+        if ( [dsa objectForKey:NSForegroundColorAttributeName] == nil )
         {
             //Set the text color to black if none is specified
             [dsa setObject:[UIColor blackColor] forKey:NSForegroundColorAttributeName];
@@ -352,7 +346,7 @@ static NSString * const kThreeSpaces = @"   ";
         NSMutableDictionary *tsa = [[NSMutableDictionary alloc] initWithDictionary:attrs];
         
         UIColor *tagColor = [self.dependencyManager colorForKey:[VTagStringFormatter defaultDependencyManagerTagColorKey]];
-        if (tagColor == nil)
+        if ( tagColor == nil)
         {
             tagColor = [[VThemeManager sharedThemeManager] themedColorForKey:[VTagStringFormatter defaultThemeManagerTagColorKey]];
         }
@@ -368,7 +362,7 @@ static NSString * const kThreeSpaces = @"   ";
 //Convenience wrapper for the VTagStringFormatter delimiter string
 - (NSString *)tagDelimiterString
 {
-    if ( _tagDelimiterString )
+    if ( _tagDelimiterString != nil )
     {
         return _tagDelimiterString;
     }
@@ -380,7 +374,7 @@ static NSString * const kThreeSpaces = @"   ";
 //Lazy searchTableViewController init
 - (VInlineSearchTableViewController *)searchTableViewController
 {
-    if (_searchTableViewController)
+    if ( _searchTableViewController != nil )
     {
         return _searchTableViewController;
     }

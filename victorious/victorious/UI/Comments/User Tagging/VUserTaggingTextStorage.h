@@ -21,10 +21,12 @@
                       textView:(UITextView *)textView
                taggingDelegate:(id<VUserTaggingTextStorageDelegate>)taggingDelegate;
 
-//Create a database-formatted version of the current attributed string
+/**
+ Create a database-formatted version of the current attributed string
+ */
 - (NSString *)databaseFormattedString;
 
-@property (nonatomic, weak) id<VUserTaggingTextStorageDelegate>taggingDelegate;
+@property (nonatomic, weak) id <VUserTaggingTextStorageDelegate> taggingDelegate;
 @property (nonatomic, weak) VDependencyManager *dependencyManager;
 @property (nonatomic, weak) UITextView *textView;
 @property (nonatomic) NSDictionary *defaultStringAttributes;

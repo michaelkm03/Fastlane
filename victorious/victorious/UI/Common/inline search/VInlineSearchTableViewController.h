@@ -29,7 +29,7 @@
 /**
  Delegate object for the controller protocol
  */
-@property (nonatomic, weak) id<VInlineSearchTableViewControllerDelegate>delegate;
+@property (nonatomic, weak) id <VInlineSearchTableViewControllerDelegate> delegate;
 
 /**
  Called to perform a user search

@@ -38,7 +38,9 @@
  */
 - (void)decrementTagWithKey:(NSString *)key;
 
-//All of the tags in the tagDictionary represented in an array. Only one of each tag, regardless of it's number of occurrences in the tagDictionary, will be returned.
+/**
+ All of the tags in the tagDictionary represented in an array. Only one of each tag, regardless of it's number of occurrences in the tagDictionary, will be returned.
+ */
 - (NSArray *)tags;
 
 /**
@@ -59,7 +61,9 @@
  */
 + (NSString *)keyForTag:(VTag *)tag;
 
-//The count of items in the tagDictionary
+/**
+ The count of items in the tagDictionary
+ */
 - (NSUInteger)count;
 
 @end

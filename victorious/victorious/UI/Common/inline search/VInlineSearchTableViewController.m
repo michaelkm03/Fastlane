@@ -24,7 +24,8 @@
 
 static NSString * const kVInlineUserCellIdentifier = @"followerCell";
 
-typedef NS_ENUM(NSInteger, VInlineSearchState) {
+typedef NS_ENUM(NSInteger, VInlineSearchState)
+{
     VInlineSearchStateNoSearch,
     VInlineSearchStateNoResults,
     VInlineSearchStateSearching,
@@ -168,7 +169,7 @@ typedef NS_ENUM(NSInteger, VInlineSearchState) {
 
 - (UILabel *)backgroundLabel
 {
-    if (_backgroundLabel)
+    if ( _backgroundLabel != nil )
     {
         return _backgroundLabel;
     }

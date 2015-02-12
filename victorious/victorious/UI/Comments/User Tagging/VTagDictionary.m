@@ -38,7 +38,6 @@
 
 @implementation VTagDictionary
 
-//Generate a new tagDictionary from the provided array of tags
 + (instancetype)tagDictionaryWithTags:(NSArray *)tags
 {
     VTagDictionary *dictionary = [[VTagDictionary alloc] init];
@@ -52,7 +51,6 @@
     return dictionary;
 }
 
-//Add or update the number of occurrences of a tag in the tagDictionary
 - (void)incrementTag:(VTag *)tag
 {
     if ( tag == nil )
@@ -72,7 +70,6 @@
     }
 }
 
-//Decrement the number of occurrences or delete a tag in the tagDictionary
 - (void)decrementTagWithKey:(NSString *)key
 {
     if ( key == nil )
@@ -88,7 +85,6 @@
     }
 }
 
-//All of the tags in the tagDictionary represented in an array. Only one of each tag, regardless of it's number of occurrences in the tagDictionary, will be returned. Will return nil if no tags are stored in the dictionary
 - (NSArray *)tags
 {
     NSMutableArray *tags = [[NSMutableArray alloc] init];
@@ -99,19 +95,16 @@
     return tags.count > 0 ? tags : nil;
 }
 
-//Get the tag corresponding to a given key
 - (VTag *)tagForKey:(NSString *)key
 {
     return [(VTrackedTag *)[self.tagDictionary objectForKey:key] tag];
 }
 
-//The key corresponding to the provided tag
 + (NSString *)keyForTag:(VTag *)tag
 {
     return tag.displayString.string;
 }
 
-//The count of items in the tagDictionary
 - (NSUInteger)count
 {
     return self.tagDictionary.count;
@@ -120,7 +113,7 @@
 //Lazy internal dictionary init
 - (NSMutableDictionary *)tagDictionary
 {
-    if (_tagDictionary)
+    if ( _tagDictionary != nil )
     {
         return _tagDictionary;
     }

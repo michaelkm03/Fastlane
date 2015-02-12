@@ -25,7 +25,7 @@
                andTagStringAttributes:(NSDictionary *)tagStringAttributes
 {
     self = [super init];
-    if (self)
+    if ( self != nil )
     {
         _displayString = [[NSMutableAttributedString alloc] initWithString:displayString];
         _tagStringAttributes = tagStringAttributes;
@@ -37,7 +37,6 @@
 
 #pragma mark - visible functions
 
-// Generate a new tag from the given database-formatted string and string attributes dictionary
 + (instancetype)tagWithHashtagString:(NSString *)hashtagString
               andTagStringAttributes:(NSDictionary *)tagStringAttributes
 {
@@ -53,7 +52,6 @@
     return [[VTag alloc] initWithDisplayString:[hashtagString substringWithRange:[hashtagCheckResult rangeAtIndex:1]] databaseFormattedString:hashtagString andTagStringAttributes:tagStringAttributes];
 }
 
-// Generate a new tag from the given database-formatted string and string attributes dictionary
 + (instancetype)tagWithUserString:(NSString *)userString
            andTagStringAttributes:(NSDictionary *)tagStringAttributes
 {
@@ -69,7 +67,6 @@
     return [[VTag alloc] initWithDisplayString:[userString substringWithRange:[userCheckResult rangeAtIndex:1]] databaseFormattedString:userString andTagStringAttributes:tagStringAttributes];
 }
 
-// Generate a new tag from the given user and string attributes dictionary
 + (instancetype)tagWithUser:(VUser *)user
      andTagStringAttributes:(NSDictionary *)tagStringAttributes
 {
@@ -79,7 +76,6 @@
     return [self tagWithUserString:[VTagStringFormatter databaseFormattedStringFromUser:user] andTagStringAttributes:tagStringAttributes];
 }
 
-// Generate a new tag from the given hashtag and string attributes dictionary
 + (instancetype)tagWithHashtag:(VHashtag *)hashtag
         andTagStringAttributes:(NSDictionary *)tagStringAttributes
 {

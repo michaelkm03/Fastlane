@@ -325,7 +325,7 @@ static NSCache *_sharedImageCache = nil;
 
 - (NSDictionary *)tagStringAttributes
 {
-    if ( _tagStringAttributes )
+    if ( _tagStringAttributes != nil )
     {
         return _tagStringAttributes;
     }
@@ -339,7 +339,7 @@ static NSCache *_sharedImageCache = nil;
 
 - (NSDictionary *)defaultStringAttributes
 {
-    if ( _defaultStringAttributes )
+    if ( _defaultStringAttributes != nil )
     {
         return _defaultStringAttributes;
     }

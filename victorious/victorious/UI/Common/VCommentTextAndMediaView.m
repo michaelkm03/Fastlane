@@ -251,7 +251,6 @@ static const CGFloat kSpacingBetweenTextAndEdge = 35.0f;
     [self invalidateIntrinsicContentSize];
 }
 
-
 - (void)setPreferredMaxLayoutWidth:(CGFloat)preferredMaxLayoutWidth
 {
     _preferredMaxLayoutWidth = preferredMaxLayoutWidth;

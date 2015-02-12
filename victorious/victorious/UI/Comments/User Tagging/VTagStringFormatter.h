@@ -7,9 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "VTagDictionary.h"
 
-@class VUser, VHashtag;
+@class VUser, VHashtag, VTagDictionary;
 
 /**
  A helper for converting attributed strings with tags from display-formatted to database-formatted and visa versa.
@@ -83,19 +82,29 @@
               ofAttributedString:(NSAttributedString *)attributedString
                withTagDictionary:(VTagDictionary *)tagDictionary;
 
-//String key for tag color from dependency manager
+/**
+ String key for tag color from dependency manager
+ */
 + (NSString *)defaultDependencyManagerTagColorKey;
 
-//String key for tag color from theme manager
+/**
+ String key for tag color from theme manager
+ */
 + (NSString *)defaultThemeManagerTagColorKey;
 
-//Shared delimiter string used as delimiter on either side of tag strings for easy recognition and formatting
+/**
+ Shared delimiter string used as delimiter on either side of tag strings for easy recognition and formatting
+ */
 + (NSString *)delimiterString;
 
-//Shared NSRegularExpression for matching database-formatted VUsers in strings
+/**
+ Shared NSRegularExpression for matching database-formatted VUsers in strings
+ */
 + (NSRegularExpression *)userRegex;
 
-//Shared NSRegularExpression for matching database-formatted VHashtags in strings
+/**
+ Shared NSRegularExpression for matching database-formatted VHashtags in strings
+ */
 + (NSRegularExpression *)hashtagRegex;
 
 @end

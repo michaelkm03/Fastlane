@@ -59,13 +59,19 @@
 + (instancetype)tagWithHashtagString:(NSString *)hashtagString
               andTagStringAttributes:(NSDictionary *)tagStringAttributes;
 
-//The display string corresponding to the string or object used to init the tag
-@property (nonatomic) NSMutableAttributedString *displayString;
+/**
+ The display string corresponding to the string or object used to init the tag
+ */
+@property (nonatomic, readonly) NSMutableAttributedString *displayString;
 
-//The database-formatted string corresponding to the string used to init the tag
-@property (nonatomic) NSString *databaseFormattedString;
+/**
+ The database-formatted string corresponding to the string used to init the tag
+ */
+@property (nonatomic, readonly) NSString *databaseFormattedString;
 
-//The string attributes the tag should have when embedded in an attributed string
-@property (nonatomic) NSDictionary *tagStringAttributes;
+/**
+ The string attributes the tag should have when embedded in an attributed string
+ */
+@property (nonatomic, readonly) NSDictionary *tagStringAttributes;
 
 @end

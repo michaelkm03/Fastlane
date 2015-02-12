@@ -13,10 +13,10 @@
 #import "VHashtag.h"
 #import "VUser.h"
 #import "VUserTaggingTextStorage.h"
+#import "VTagDictionary.h"
 
 @implementation VTagStringFormatter
 
-//Format the provided attributed string with provided attributes and return an tagDictionary of recognized tags
 + (VTagDictionary *)tagDictionaryFromFormattingAttributedString:(NSMutableAttributedString *)attributedString
                                withTagStringAttributes:(NSDictionary *)tagStringAttributes
                                andDefaultStringAttributes:(NSDictionary *)defaultStringAttributes
@@ -68,7 +68,6 @@
     
 }
 
-//Generate a database-formatted string from the provided attributed string that contains display-formatted strings from tags in the provided tags array
 + (NSString *)databaseFormattedStringFromAttributedString:(NSMutableAttributedString *)attributedString
                                                  withTags:(NSArray *)tags
 {
@@ -87,7 +86,6 @@
     
 }
 
-//Add delimiting strings with provided string attributes to provided attributed string
 + (NSMutableAttributedString *)delimitedAttributedString:(NSAttributedString *)attributedString
                                  withDelimiterAttributes:(NSDictionary *)attributes
 {
@@ -101,7 +99,6 @@
     return delimString;
 }
 
-//Generate a database-formatted string from the provided user
 + (NSString *)databaseFormattedStringFromUser:(VUser *)user
 {
     if ( user == nil )
@@ -111,7 +108,6 @@
     return [NSString stringWithFormat:@"@{%@:%@}", [user.remoteId stringValue], user.name];
 }
 
-//Generate a database-formatted string from the provided hashtag
 + (NSString *)databaseFormattedStringFromHashtag:(VHashtag *)hashtag
 {
     if ( hashtag == nil )
@@ -121,7 +117,6 @@
     return [NSString stringWithFormat:@"#%@", hashtag.tag];
 }
 
-//All ranges of tags in provided range of attributed string containing tags in the provided tagDictionary. Returned ranges will include full ranges of any partial tags found in the provided range. Delimiter strings are included in the returned ranges.
 + (NSIndexSet *)tagRangesInRange:(NSRange)range
               ofAttributedString:(NSAttributedString *)attributedString
                withTagDictionary:(VTagDictionary *)tagDictionary
@@ -148,19 +143,16 @@
 
 #pragma mark - static resources
 
-//String key for tag color from dependency manager
 + (NSString *)defaultDependencyManagerTagColorKey
 {
     return VDependencyManagerLinkColorKey;
 }
 
-//String key for tag color from theme manager
 + (NSString *)defaultThemeManagerTagColorKey
 {
     return kVLinkColor;
 }
 
-//Shared delimiter string used as delimiter on either side of tag strings for easy recognition and formatting
 + (NSString *)delimiterString
 {
     static NSString *delimiterString;
@@ -174,7 +166,6 @@
     return delimiterString;
 }
 
-//Shared NSRegularExpression for matching database-formatted VUsers in strings
 + (NSRegularExpression *)userRegex
 {
     static NSRegularExpression *userRegex;
@@ -188,7 +179,6 @@
     return userRegex;
 }
 
-//Shared NSRegularExpression for matching database-formatted VHashtags in strings
 + (NSRegularExpression *)hashtagRegex
 {
     static NSRegularExpression *hashtagRegex;

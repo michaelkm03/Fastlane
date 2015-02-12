@@ -400,7 +400,6 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
                                                                                       attribute:NSLayoutAttributeBottom
                                                                                      multiplier:1.0f
                                                                                        constant:0.0f];
-        //self.bottomKeyboardToContainerBottomConstraint.priority = UILayoutPriorityDefaultLow;
         [self.view insertSubview:inputAccessoryView
                     belowSubview:self.landscapeMaskOverlay];
         [self.view addConstraints:@[self.keyboardInputBarHeightConstraint, inputViewLeadingConstraint, inputViewTrailingconstraint, self.bottomKeyboardToContainerBottomConstraint]];
