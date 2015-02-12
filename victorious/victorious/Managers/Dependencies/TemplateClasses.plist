@@ -38,6 +38,8 @@
 	<string>VMultipleContainerViewController</string>
 	<key>basic.multiScreenSelector</key>
 	<string>VBasicSelectorView</string>
+	<key>textbar.multiScreenSelector</key>
+	<string>VTextbarSelectorView</string>
 	<key>inbox.screen</key>
 	<string>VInboxContainerViewController</string>
 	<key>currentUserProfile.screen</key>

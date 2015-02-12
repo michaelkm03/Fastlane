@@ -10,6 +10,7 @@
 #import "VDependencyManager.h"
 #import "VScaffoldViewController.h"
 #import "VTemplateGenerator.h"
+#import "VSettingManager.h"
 
 static NSString * const kIDKey = @"id";
 static NSString * const kReferenceIDKey = @"referenceID";
@@ -89,37 +90,44 @@ static NSString * const kVideoMuted = @"videoMuted";
 {
     NSMutableDictionary *template = [[NSMutableDictionary alloc] init];
     [self.dataFromInitCall enumerateKeysAndObjectsUsingBlock:^(NSString *key, id obj, BOOL *stop)
-    {
-        if ([key isEqual:kAppearanceKey])
-        {
-            if ([obj isKindOfClass:[NSDictionary class]])
-            {
-                [template addEntriesFromDictionary:obj];
-                
-                NSDictionary *accentColor = obj[VDependencyManagerAccentColorKey];
-                
-                if ( accentColor == nil )
-                {
-                    accentColor = @{
-                        kRedKey: @0,
-                        kBlueKey: @0,
-                        kGreenKey: @0,
-                        kAlphaKey: @1
-                    };
-                }
-                self.accentColor = accentColor;
-            }
-        }
-        else
-        {
-            template[key] = obj;
-        }
-    }];
+     {
+         if ([key isEqual:kAppearanceKey])
+         {
+             if ([obj isKindOfClass:[NSDictionary class]])
+             {
+                 [template addEntriesFromDictionary:obj];
+                 
+                 NSDictionary *accentColor = obj[VDependencyManagerAccentColorKey];
+                 
+                 if ( accentColor == nil )
+                 {
+                     accentColor = @{
+                                     kRedKey: @0,
+                                     kBlueKey: @0,
+                                     kGreenKey: @0,
+                                     kAlphaKey: @1
+                                     };
+                 }
+                 self.accentColor = accentColor;
+             }
+         }
+         else
+         {
+             template[key] = obj;
+         }
+     }];
+    
+#warning SEEMS WRONG
+    NSString *screenSelectorClassNameKey = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled] ? @"basic.multiScreenSelector" : @"textbar.multiScreenSelector";
     
     template[VDependencyManagerScaffoldViewControllerKey] = @{ kClassNameKey: @"sideMenu.scaffold",
                                                                VDependencyManagerInitialViewControllerKey: @{ kReferenceIDKey: self.firstMenuItemID },
                                                                VScaffoldViewControllerMenuComponentKey: [self menuComponent],
-                                                               VScaffoldViewControllerUserProfileViewComponentKey: @{ kClassNameKey: @"userProfile.screen" }
+                                                               VScaffoldViewControllerUserProfileViewComponentKey: @{ kClassNameKey: @"userProfile.screen" },
+                                                               kSelectorKey: @{
+                                                                       kClassNameKey: screenSelectorClassNameKey,
+                                                                       VDependencyManagerBackgroundColorKey: self.accentColor,
+                                                                       },
                                                             };
 #warning Hackey
     template[VDependencyManagerWorkspaceFlowKey] = [self workspaceFlowComponent];
@@ -307,10 +315,6 @@ static NSString * const kVideoMuted = @"videoMuted";
                                 kStreamUrlPathKey: @"/api/sequence/follows_detail_list_by_stream/0/home",
                             }
                         ],
-                        kSelectorKey: @{
-                            kClassNameKey: @"basic.multiScreenSelector",
-                            VDependencyManagerBackgroundColorKey: self.accentColor,
-                        },
                         kInitialKey: @{
                             kReferenceIDKey: self.homeRecentID,
                         },
