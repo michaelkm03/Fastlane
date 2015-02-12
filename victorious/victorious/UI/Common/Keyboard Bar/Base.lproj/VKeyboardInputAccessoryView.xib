@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14A389a" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -50,12 +49,10 @@
                         <action selector="pressedSend:" destination="4R1-Iz-B2b" eventType="touchUpInside" id="Etj-tG-i4b"/>
                     </connections>
                 </button>
-                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="rf1-jW-e0u" userLabel="EditingView">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fCw-uq-qJB" userLabel="Editing Superview">
                     <rect key="frame" x="55" y="5" width="210" height="35"/>
-                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                </textView>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </view>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Placeholder" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YZC-40-a60" userLabel="Placeholder Label">
                     <rect key="frame" x="60" y="14" width="77" height="17"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -65,33 +62,33 @@
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="Sf4-eg-OpA" firstAttribute="leading" secondItem="rf1-jW-e0u" secondAttribute="trailing" id="2ev-Cm-vM4"/>
+                <constraint firstAttribute="bottom" secondItem="fCw-uq-qJB" secondAttribute="bottom" constant="5" id="7Lg-3j-LfC"/>
                 <constraint firstAttribute="bottom" secondItem="xNE-2e-L1E" secondAttribute="bottom" id="9AR-c3-ZRh"/>
                 <constraint firstItem="tcE-MJ-goG" firstAttribute="leading" secondItem="4R1-Iz-B2b" secondAttribute="leading" id="DOc-V1-3tg"/>
                 <constraint firstAttribute="trailing" secondItem="tcE-MJ-goG" secondAttribute="trailing" id="IHQ-ky-fav"/>
                 <constraint firstItem="tcE-MJ-goG" firstAttribute="top" secondItem="4R1-Iz-B2b" secondAttribute="top" id="K4L-MT-bxE"/>
                 <constraint firstItem="Sf4-eg-OpA" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="YZC-40-a60" secondAttribute="trailing" constant="10" id="PGu-2i-SKd"/>
-                <constraint firstItem="rf1-jW-e0u" firstAttribute="leading" secondItem="xNE-2e-L1E" secondAttribute="trailing" id="U1R-dt-vxw"/>
-                <constraint firstItem="YZC-40-a60" firstAttribute="leading" secondItem="rf1-jW-e0u" secondAttribute="leading" constant="5" id="c4y-6C-Cp8"/>
-                <constraint firstAttribute="bottom" secondItem="rf1-jW-e0u" secondAttribute="bottom" constant="5" id="dUC-yX-OIj"/>
+                <constraint firstItem="fCw-uq-qJB" firstAttribute="top" secondItem="4R1-Iz-B2b" secondAttribute="top" constant="5" id="U7d-bi-ywK"/>
                 <constraint firstAttribute="bottom" secondItem="olt-8p-I1t" secondAttribute="bottom" constant="5" id="dh9-Pw-m6y"/>
-                <constraint firstItem="rf1-jW-e0u" firstAttribute="top" secondItem="4R1-Iz-B2b" secondAttribute="top" constant="5" id="eRB-c0-lGG"/>
                 <constraint firstAttribute="centerY" secondItem="YZC-40-a60" secondAttribute="centerY" id="gwJ-Js-j0p"/>
                 <constraint firstItem="olt-8p-I1t" firstAttribute="leading" secondItem="4R1-Iz-B2b" secondAttribute="leading" constant="10" id="hMG-Qj-LFl"/>
                 <constraint firstItem="xNE-2e-L1E" firstAttribute="leading" secondItem="4R1-Iz-B2b" secondAttribute="leading" id="mFM-q7-3ml"/>
                 <constraint firstAttribute="bottom" secondItem="Sf4-eg-OpA" secondAttribute="bottom" id="np7-Bq-PYE"/>
+                <constraint firstItem="YZC-40-a60" firstAttribute="leading" secondItem="fCw-uq-qJB" secondAttribute="leading" constant="5" id="qg7-yC-LCU"/>
                 <constraint firstAttribute="trailing" secondItem="Sf4-eg-OpA" secondAttribute="trailing" id="r66-Fc-kSw"/>
+                <constraint firstItem="fCw-uq-qJB" firstAttribute="leading" secondItem="xNE-2e-L1E" secondAttribute="trailing" id="sxZ-Kr-Khu"/>
+                <constraint firstItem="Sf4-eg-OpA" firstAttribute="leading" secondItem="fCw-uq-qJB" secondAttribute="trailing" id="xbE-Mx-Tr2"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outlet property="attachmentThumbnail" destination="olt-8p-I1t" id="fIP-qi-F2a"/>
                 <outlet property="attachmentsButton" destination="xNE-2e-L1E" id="dDB-tw-RFl"/>
-                <outlet property="editingTextView" destination="rf1-jW-e0u" id="iXk-mI-XeQ"/>
+                <outlet property="editingTextSuperview" destination="fCw-uq-qJB" id="8v6-NY-K2B"/>
                 <outlet property="placeholderLabel" destination="YZC-40-a60" id="g1x-a4-AmU"/>
                 <outlet property="sendButton" destination="Sf4-eg-OpA" id="9yB-no-TC5"/>
-                <outlet property="verticalSpaceTextViewToBottomContainerConstraint" destination="dUC-yX-OIj" id="Wdd-DR-xCo"/>
-                <outlet property="verticalSpaceTextViewTopToContainerConstraint" destination="eRB-c0-lGG" id="njB-cf-D6T"/>
+                <outlet property="verticalSpaceTextViewToBottomContainerConstraint" destination="7Lg-3j-LfC" id="M96-b5-SpL"/>
+                <outlet property="verticalSpaceTextViewTopToContainerConstraint" destination="U7d-bi-ywK" id="21e-bt-uwp"/>
             </connections>
             <point key="canvasLocation" x="143" y="511.5"/>
         </view>
