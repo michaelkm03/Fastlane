@@ -71,13 +71,7 @@ static const CGFloat kMarqueeBufferHeight = 3;
                                                      relatedBy:NSLayoutRelationEqual
                                                         toItem:self.tabView.superview
                                                      attribute:NSLayoutAttributeCenterX
-                                                    multiplier:1.f constant:0.f]];
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.tabView
-                                                     attribute:NSLayoutAttributeCenterY
-                                                     relatedBy:NSLayoutRelationEqual
-                                                        toItem:self.tabView.superview
-                                                     attribute:NSLayoutAttributeCenterY
-                                                    multiplier:1.f constant:0.f]];
+                                                    multiplier:1.0f constant:0.0f]];
 
 }
 

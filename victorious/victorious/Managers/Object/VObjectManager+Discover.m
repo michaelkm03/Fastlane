@@ -230,7 +230,7 @@
         pageLimit = 15;
     }
 
-    return [self GET:[NSString stringWithFormat:@"/api/hashtag/search/%@/1/%ld", hashtag, pageLimit]
+    return [self GET:[NSString stringWithFormat:@"/api/hashtag/search/%@/1/%ld", hashtag, (long)pageLimit]
                object:nil
            parameters:nil
          successBlock:fullSuccess

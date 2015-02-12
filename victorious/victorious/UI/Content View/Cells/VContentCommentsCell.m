@@ -248,7 +248,8 @@ static NSCache *_sharedImageCache = nil;
             }
             
             [imageView setImage:image];
-            [UIView animateWithDuration:kImagePreviewLoadedAnimationDuration animations:^{
+            [UIView animateWithDuration:kImagePreviewLoadedAnimationDuration animations:^
+            {
                 imageView.alpha = 1.0f;
             }];
             [imageCache setObject:image forKey:keyString];
