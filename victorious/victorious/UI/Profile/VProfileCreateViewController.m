@@ -29,6 +29,7 @@
 
 #import "UIAlertView+VBlocks.h"
 #import "VAutomation.h"
+#import "VButton.h"
 
 NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreateProfileAborted";
 
@@ -51,7 +52,7 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
 
 @property (nonatomic, weak) IBOutlet    UISwitch           *agreeSwitch;
 @property (nonatomic, weak) IBOutlet    TTTAttributedLabel *agreementText;
-@property (nonatomic, weak) IBOutlet    UIButton           *doneButton;
+@property (nonatomic, weak) IBOutlet    VButton           *doneButton;
 
 @property (nonatomic, strong)   UIBarButtonItem            *countDownLabel;
 @property (nonatomic, strong)   UIBarButtonItem            *usernameCountDownLabel;
@@ -162,7 +163,8 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
     
     self.doneButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
     [self.doneButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    self.doneButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    self.doneButton.primaryColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    self.doneButton.style = VButtonStylePrimary;
     
     self.agreeSwitch.onTintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     
