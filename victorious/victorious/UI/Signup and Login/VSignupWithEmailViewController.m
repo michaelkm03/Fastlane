@@ -21,13 +21,13 @@
 #import "VEmailValidator.h"
 #import "VAutomation.h"
 #import "VButton.h"
-#import "VFormValidationTextField.h"
+#import "VInlineValidationTextField.h"
 
 @interface VSignupWithEmailViewController ()    <UITextFieldDelegate, UINavigationControllerDelegate, TTTAttributedLabelDelegate>
 
-@property (nonatomic, weak) IBOutlet VFormValidationTextField *emailTextField;
-@property (nonatomic, weak) IBOutlet VFormValidationTextField *passwordTextField;
-@property (nonatomic, weak) IBOutlet VFormValidationTextField *confirmPasswordTextField;
+@property (nonatomic, weak) IBOutlet VInlineValidationTextField *emailTextField;
+@property (nonatomic, weak) IBOutlet VInlineValidationTextField *passwordTextField;
+@property (nonatomic, weak) IBOutlet VInlineValidationTextField *confirmPasswordTextField;
 @property (nonatomic, weak) IBOutlet    VButton       *cancelButton;
 @property (nonatomic, weak) IBOutlet    VButton       *signupButton;
 @property (nonatomic, strong)   VUser  *profile;

@@ -433,7 +433,6 @@
 		A7A2E00C1A38E47400F8C705 /* Purchases.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7A2E00B1A38E47400F8C705 /* Purchases.storyboard */; };
 		A7A2E0121A391A7D00F8C705 /* VPurchaseRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A2E0111A391A7D00F8C705 /* VPurchaseRecord.m */; };
 		A7A343CD1A898AD0000F0BCF /* VLinkTextViewHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A343CC1A898AD0000F0BCF /* VLinkTextViewHelper.m */; };
-		A7A343DE1A8AC61D000F0BCF /* VFormValidationTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A343DD1A8AC61D000F0BCF /* VFormValidationTextField.m */; };
 		A7A390C51A32441E00709812 /* VButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A390C41A32441E00709812 /* VButton.m */; };
 		A7A390CA1A3257A300709812 /* ContentView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7A390C91A3257A300709812 /* ContentView.storyboard */; };
 		A7A7D61819DE178F00B18AB7 /* VAuthorizationViewControllerFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = A735323219DB60600040DB30 /* VAuthorizationViewControllerFactory.m */; };
@@ -1444,8 +1443,6 @@
 		A7A2E0111A391A7D00F8C705 /* VPurchaseRecord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VPurchaseRecord.m; path = Purchases/VPurchaseRecord.m; sourceTree = "<group>"; };
 		A7A343CB1A898AD0000F0BCF /* VLinkTextViewHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLinkTextViewHelper.h; sourceTree = "<group>"; };
 		A7A343CC1A898AD0000F0BCF /* VLinkTextViewHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VLinkTextViewHelper.m; sourceTree = "<group>"; };
-		A7A343DC1A8AC61D000F0BCF /* VFormValidationTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFormValidationTextField.h; sourceTree = "<group>"; };
-		A7A343DD1A8AC61D000F0BCF /* VFormValidationTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFormValidationTextField.m; sourceTree = "<group>"; };
 		A7A390C31A32441E00709812 /* VButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VButton.h; sourceTree = "<group>"; };
 		A7A390C41A32441E00709812 /* VButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VButton.m; sourceTree = "<group>"; };
 		A7A390C91A3257A300709812 /* ContentView.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ContentView.storyboard; sourceTree = "<group>"; };
@@ -2589,8 +2586,6 @@
 				A77FB91F1A89448C003E9AA2 /* VLoginButton.m */,
 				A7A343CB1A898AD0000F0BCF /* VLinkTextViewHelper.h */,
 				A7A343CC1A898AD0000F0BCF /* VLinkTextViewHelper.m */,
-				A7A343DC1A8AC61D000F0BCF /* VFormValidationTextField.h */,
-				A7A343DD1A8AC61D000F0BCF /* VFormValidationTextField.m */,
 			);
 			path = "Signup and Login";
 			sourceTree = "<group>";
@@ -3878,10 +3873,6 @@
 				BE799BAF19C8DF4B0023CE88 /* OrderedSets */,
 				0314D06219B466C100FA363C /* UIActivityViewController+VStatusBarHandling.h */,
 				0314D06319B466C100FA363C /* UIActivityViewController+VStatusBarHandling.m */,
-				BE40559218A1828D00092AE1 /* UIButton+VImageLoading.h */,
-				BE40559318A1828D00092AE1 /* UIButton+VImageLoading.m */,
-				A79873C81A6496A50014D099 /* UIColor+VBrightness.h */,
-				A79873C91A6496A50014D099 /* UIColor+VBrightness.m */,
 				0314D06519B4670A00FA363C /* UIImage+Cropping.h */,
 				A77FB9211A897200003E9AA2 /* UIColor+VBrightness.h */,
 				A77FB9221A897200003E9AA2 /* UIColor+VBrightness.m */,
@@ -5038,7 +5029,6 @@
 				0314D4FE19B46B5E00FA363C /* VEphemeralTimerView.m in Sources */,
 				03CF1520195CFBE600F6477B /* NSArray+VMap.m in Sources */,
 				0314D4E119B46B5E00FA363C /* VFindFriendsTableViewController.m in Sources */,
-				A7A343DE1A8AC61D000F0BCF /* VFormValidationTextField.m in Sources */,
 				D80A94DE1A53941D0035D788 /* VTrimControl.m in Sources */,
 				D8208A551A2FA7E3003C187D /* VFilterTool.m in Sources */,
 				D82E76E319F5C06100FFB722 /* VContentPollBallotCell.m in Sources */,

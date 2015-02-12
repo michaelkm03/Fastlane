@@ -13,12 +13,12 @@
 #import "VConstants.h"
 #import "VPasswordValidator.h"
 #import "VButton.h"
-#import "VFormValidationTextField.h"
+#import "VInlineValidationTextField.h"
 
 @interface VResetPasswordViewController ()  <UITextFieldDelegate>
 
-@property (nonatomic, weak) IBOutlet VFormValidationTextField *passwordTextField;
-@property (nonatomic, weak) IBOutlet VFormValidationTextField *confirmPasswordTextField;
+@property (nonatomic, weak) IBOutlet VInlineValidationTextField *passwordTextField;
+@property (nonatomic, weak) IBOutlet VInlineValidationTextField *confirmPasswordTextField;
 @property (nonatomic, weak) IBOutlet VButton *updateButton;
 @property (nonatomic, weak) IBOutlet VButton *cancelButton;
 
