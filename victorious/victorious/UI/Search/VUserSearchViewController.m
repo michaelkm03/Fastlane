@@ -216,10 +216,11 @@
     if ([self.searchField.text length] > 0)
     {
         [self.activityIndicatorView startAnimating];
-        [[VObjectManager sharedManager] findMessagableUsersBySearchString:self.searchField.text
-                                                                    limit:100
-                                                         withSuccessBlock:searchSuccess
-                                                                failBlock:searchFail];
+        [[VObjectManager sharedManager] findUsersBySearchString:self.searchField.text
+                                                          limit:100
+                                                        context:VObjectManagerSearchContextUserTag
+                                               withSuccessBlock:searchSuccess
+                                                      failBlock:searchFail];
     }
     else
     {

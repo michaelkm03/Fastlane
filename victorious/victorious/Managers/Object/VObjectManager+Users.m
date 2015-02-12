@@ -29,12 +29,14 @@
 
 @end
 
-NSString *const VMainUserDidChangeFollowingUserNotification  = @"VMainUserDidChangeFollowingUserNotification";
-NSString *const VMainUserDidChangeFollowingUserKeyUser       = @"VMainUserDidChangeFollowingUserKeyUser";
+NSString * const VMainUserDidChangeFollowingUserNotification  = @"VMainUserDidChangeFollowingUserNotification";
+NSString * const VMainUserDidChangeFollowingUserKeyUser = @"VMainUserDidChangeFollowingUserKeyUser";
 
-static NSString * const kVAPIParamMessage = @"message";
-static NSString * const kVAPIParamContext = @"context";
+NSString * const VObjectManagerSearchContextMessage = @"message";
+NSString * const VObjectManagerSearchContextUserTag = @"userTag";
+
 static NSString * const kVAPIParamSearch = @"search";
+static NSString * const kVAPIParamContext = @"context";
 
 @implementation VObjectManager (Users)
 
@@ -355,30 +357,6 @@ static NSString * const kVAPIParamSearch = @"search";
            parameters:@{ @"emails": emailString }
          successBlock:fullSuccess
             failBlock:fail];
-}
-
-- (RKManagedObjectRequestOperation *)findUsersBySearchString:(NSString *)search_string
-                                                       limit:(NSInteger)pageLimit
-                                            withSuccessBlock:(VSuccessBlock)success
-                                                   failBlock:(VFailBlock)fail
-{
-    return [self findUsersBySearchString:search_string
-                                   limit:pageLimit
-                                 context:nil
-                        withSuccessBlock:success
-                               failBlock:fail];
-}
-
-- (RKManagedObjectRequestOperation *)findMessagableUsersBySearchString:(NSString *)search_string
-                                                                 limit:(NSInteger)pageLimit
-                                                      withSuccessBlock:(VSuccessBlock)success
-                                                             failBlock:(VFailBlock)fail
-{
-    return [self findUsersBySearchString:search_string
-                                   limit:pageLimit
-                                 context:kVAPIParamMessage
-                        withSuccessBlock:success
-                               failBlock:fail];
 }
 
 - (RKManagedObjectRequestOperation *)findUsersBySearchString:(NSString *)search_string

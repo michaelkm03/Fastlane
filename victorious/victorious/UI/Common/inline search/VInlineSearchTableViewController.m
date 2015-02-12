@@ -88,11 +88,11 @@ typedef NS_ENUM(NSInteger, VInlineSearchState)
     
     if ([searchText length] > 0)
     {
-        self.searchState = VInlineSearchStateSearching;
-        self.searchOperation = [[VObjectManager sharedManager] findMessagableUsersBySearchString:searchText
-                                                                                           limit:20
-                                                                                withSuccessBlock:searchSuccess
-                                                                                       failBlock:nil];
+        [[VObjectManager sharedManager] findUsersBySearchString:searchText
+                                                          limit:20
+                                                        context:VObjectManagerSearchContextUserTag
+                                               withSuccessBlock:searchSuccess
+                                                      failBlock:nil];
     }
     else
     {
