@@ -110,7 +110,7 @@ static const CGFloat kActivityIndicatorShowDuration = 0.4f;
     switch ( self.style )
     {
         case VButtonStylePrimary:
-            self.layer.borderWidth = 0.0;
+            self.layer.borderWidth = 0.0f;
             self.layer.borderColor = [UIColor clearColor].CGColor;
             self.backgroundColor = self.primaryColor;
             self.activityIndicator.color = self.titleLabel.textColor;
