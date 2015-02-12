@@ -29,7 +29,6 @@
 
 static NSString * const kStreamDirectoryStoryboardId = @"kStreamDirectory";
 static NSString * const kStreamURLPathKey = @"streamUrlPath";
-static NSString * const kTitleKey = @"title";
 
 static CGFloat const kDirectoryInset = 10.0f;
 
@@ -56,7 +55,7 @@ static CGFloat const kDirectoryInset = 10.0f;
 {
     NSAssert([NSThread isMainThread], @"This method must be called on the main thread");
     VStream *stream = [VStream streamForPath:[dependencyManager stringForKey:kStreamURLPathKey] inContext:dependencyManager.objectManager.managedObjectStore.mainQueueManagedObjectContext];
-    stream.name = [dependencyManager stringForKey:kTitleKey];
+    stream.name = [dependencyManager stringForKey:VDependencyManagerTitleKey];
     return [self streamDirectoryForStream:stream];
 }
 

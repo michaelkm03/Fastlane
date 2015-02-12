@@ -25,7 +25,6 @@
 static NSString * const kCellReuseID = @"kCellReuseID";
 static NSString * const kScreensKey = @"screens";
 static NSString * const kSelectorKey =  @"selector";
-static NSString * const kTitleKey = @"title";
 static NSString * const kInitialKey = @"initial";
 
 @implementation VMultipleContainerViewController
@@ -55,7 +54,7 @@ static NSString * const kInitialKey = @"initial";
         _selector.viewControllers = _viewControllers;
         _selector.delegate = self;
         self.navigationItem.v_supplementaryHeaderView = _selector;
-        self.title = [dependencyManager stringForKey:kTitleKey];
+        self.title = [dependencyManager stringForKey:VDependencyManagerTitleKey];
     }
     return self;
 }

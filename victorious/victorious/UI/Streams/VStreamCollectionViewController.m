@@ -59,12 +59,6 @@
 
 #import <SDWebImage/UIImageView+WebCache.h>
 
-static NSString * const kStreamsKey = @"streams";
-static NSString * const kInitialKey = @"initial";
-static NSString * const kMarqueeKey = @"marquee";
-static NSString * const kStreamURLPathKey = @"streamUrlPath";
-static NSString * const kTitleKey = @"title";
-static NSString * const kIsHomeKey = @"isHome";
 static NSString * const kCanAddContentKey = @"canAddContent";
 static NSString * const kStreamCollectionStoryboardId = @"StreamCollection";
 static CGFloat const kTemplateCLineSpacing = 8;
