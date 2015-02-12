@@ -218,8 +218,11 @@ static CGFloat easeInQuint( CGFloat t, CGFloat b, CGFloat c, CGFloat d )
     }
     else
     {
+        const NSUInteger numActions = [self.collectionView numberOfItemsInSection:0];
+        const NSTimeInterval visibleDelay = 0.25f + (0.25f * numActions);
+        
         [UIView animateWithDuration:visible ? 0.75f : 0.4f
-                              delay:visible ? 1.0f : 0.0f
+                              delay:visible ? visibleDelay : 0.0f
              usingSpringWithDamping:visible ? 0.7 : 1.0f
               initialSpringVelocity:0.6
                             options:kNilOptions animations:^
