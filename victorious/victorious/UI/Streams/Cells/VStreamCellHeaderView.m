@@ -171,7 +171,15 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
         return;
     }
     
-    [self.profileImageButton setProfileImageURL:[NSURL URLWithString:self.sequence.user.pictureUrl]
+    VUser *originalPoster = self.sequence.user;
+    VUser *reposter = nil;
+    if ( self.sequence.isRepost )
+    {
+        originalPoster = self.sequence.parentUser;
+        reposter = self.sequence.user;
+    }
+    
+    [self.profileImageButton setProfileImageURL:[NSURL URLWithString:originalPoster.pictureUrl]
                                        forState:UIControlStateNormal];
     
     self.dateLabel.text = [self.sequence.releasedAt timeSince];
@@ -180,10 +188,10 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
     NSString *commentCount = self.sequence.commentCount.integerValue ? [largeNumberFormatter stringForInteger:self.sequence.commentCount.integerValue] : @"";
     [self.commentButton setTitle:commentCount forState:UIControlStateNormal];
     
-    [self setParentText:[self.sequence.isRepost boolValue] ? self.sequence.user.name : self.sequence.parentUser.name];
+    [self setParentText:reposter.name];
     
     // Set username and format date
-    self.usernameLabel.text = [self.sequence.isRepost boolValue] ? self.sequence.parentUser.name : self.sequence.user.name;
+    self.usernameLabel.text = originalPoster.name;
     self.dateLabel.text = [self.sequence.releasedAt timeSince];
     
     // Check if this is a repost / remix and size the userInfoView accordingly
