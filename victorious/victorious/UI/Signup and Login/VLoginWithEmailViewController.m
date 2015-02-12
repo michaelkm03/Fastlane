@@ -201,7 +201,6 @@
 
 - (void)didLoginWithUser:(VUser *)mainUser
 {
-    VLog(@"Succesfully logged in as: %@", mainUser);
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithEmailDidSucceed];
     
     self.profile = mainUser;
