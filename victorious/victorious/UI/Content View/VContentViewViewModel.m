@@ -238,7 +238,8 @@
 - (void)createVideoModel
 {
     // Sets up the monetization chain
-    if (self.sequence.adBreaks.count > 0 )
+#warning This disables ads... remove the '&& NO'
+    if (self.sequence.adBreaks.count > 0 && NO )
     {
         [self createAdChainWithCompletion];
         self.videoViewModel = [VVideoCellViewModel videoCellViewModelWithItemURL:[self videoURL]

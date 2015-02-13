@@ -72,9 +72,9 @@ static const NSUInteger kDefaultLineWidth = 4.0f;
     const CGFloat radius = (CGRectGetWidth(self.bounds) - lineWidth) * 0.5f;
     const CGPoint centerPoint = CGPointMake( CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds) );
     
-    for ( NSUInteger i = 0; i < kNumRingSegments ; i++ )
+    for ( NSUInteger i = 0; i < kNumRingSegments; i++ )
     {
-        const CGFloat t = (CGFloat)i / (CGFloat)kNumRingSegments * 2.0f * 3.14159f;
+        const CGFloat t = (CGFloat)i / (CGFloat)(kNumRingSegments - 1) * 2.0f * 3.14159f;
         const CGFloat x = centerPoint.x + sin( t ) * radius;
         const CGFloat y = centerPoint.y - cos( t ) * radius;
         _points[ i ] = CGPointMake( x, y );
@@ -107,22 +107,16 @@ static const NSUInteger kDefaultLineWidth = 4.0f;
     CGContextSetLineWidth( context, self.lineWidth );
     CGContextSetStrokeColorWithColor( context, color.CGColor );
     
-    const NSUInteger len = ((CGFloat)kNumRingSegments) * completionRatio + 1;
+    const NSUInteger len = ((CGFloat)kNumRingSegments) * completionRatio;
     for ( NSUInteger i = 0; i < len; i++ )
     {
+        const CGPoint point = _points[ i ];
         if ( i == 0 )
         {
-            const CGPoint point = _points[ i ];
             CGContextMoveToPoint( context, point.x, point.y );
-        }
-        else if ( i == len )
-        {
-            const CGPoint point = _points[ 0 ];
-            CGContextAddLineToPoint( context, point.x, point.y );
         }
         else
         {
-            const CGPoint point = _points[ i ];
             CGContextAddLineToPoint( context, point.x, point.y );
         }
     }
