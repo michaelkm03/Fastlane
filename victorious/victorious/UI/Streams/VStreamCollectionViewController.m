@@ -660,7 +660,6 @@ static CGFloat const kTemplateCLineSpacing = 8;
 
 - (BOOL)hasRepostedSequence:(VSequence *)sequence
 {
-    NSLog( @" >> >>> >> >> repostedSequences = %@", [VObjectManager sharedManager].mainUser.repostedSequences.allObjects );
     const BOOL userHasRepostedSequence = [[VObjectManager sharedManager].mainUser.repostedSequences containsObject:sequence];
     return userHasRepostedSequence;
 }

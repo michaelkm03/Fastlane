@@ -45,8 +45,6 @@
                    preloadedImage:(UIImage *)preloadedImage
                        completion:(void(^)(BOOL))completion;
 
-- (BOOL)canRespost;
-
 - (void)showRemixStreamFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence;
 
 - (void)repostActionFromViewController:(UIViewController *)viewController node:(VNode *)node;

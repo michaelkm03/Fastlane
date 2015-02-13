@@ -151,7 +151,8 @@ static CGFloat const kRepostedDisabledAlpha     = 0.3f;
                                delay:0.0f
               usingSpringWithDamping:1.0f
                initialSpringVelocity:0.8f
-                             options:kNilOptions animations:^
+                             options:kNilOptions
+                          animations:^
           {
               self.repostButton.transform = CGAffineTransformMakeScale( kScaleScaledUp, kScaleScaledUp );
           }
@@ -161,7 +162,8 @@ static CGFloat const kRepostedDisabledAlpha     = 0.3f;
                                     delay:0.0f
                    usingSpringWithDamping:0.8f
                     initialSpringVelocity:0.9f
-                                  options:kNilOptions animations:^
+                                  options:kNilOptions
+                               animations:^
                {
                    self.repostButton.transform = CGAffineTransformMakeScale( kScaleActive, kScaleActive );
                }
