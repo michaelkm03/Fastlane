@@ -484,7 +484,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     if (self.viewModel.sequence.isImage)
     {
         [self.blurredBackgroundImageView setBlurredImageWithURL:self.viewModel.imageURLRequest.URL
-                                               placeholderImage:self.placeholderImage
+                                               placeholderImage:nil
                                                       tintColor:nil];
     }
     else

@@ -13,18 +13,10 @@
 
 @import AVFoundation;
 
-#import <objc/runtime.h>
-
-static const char kAssociatedObjectKey;
 static const CGFloat kVBlurRadius = 12.5f;
 static const CGFloat kVSaturationDeltaFactor = 1.8f;
 
 @implementation UIImageView (Blurring)
-
-- (UIImage *)downloadedImage
-{
-    return objc_getAssociatedObject(self, &kAssociatedObjectKey);
-}
 
 - (void)setBlurredImageWithClearImage:(UIImage *)image placeholderImage:(UIImage *)placeholderImage tintColor:(UIColor *)tintColor animate:(BOOL)shouldAnimate
 {
@@ -63,27 +55,33 @@ static const CGFloat kVSaturationDeltaFactor = 1.8f;
 - (void)setBlurredImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholderImage tintColor:(UIColor *)tintColor
 {
     __weak UIImageView *weakSelf = self;
-    
+
+    self.alpha = 0;
+    self.image = placeholderImage;
     [self sd_setImageWithURL:url
             placeholderImage:[placeholderImage applyTintEffectWithColor:tintColor]
                    completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL)
      {
          __strong UIImageView *strongSelf = weakSelf;
-         objc_setAssociatedObject(strongSelf, &kAssociatedObjectKey, image, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+         strongSelf.image = placeholderImage;
+         
          dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^
                         {
-                            UIImage *blurredImage = [image applyBlurWithRadius:kVBlurRadius
+                            UIImage *resizedImage = [image resizedImage:AVMakeRectWithAspectRatioInsideRect(image.size, weakSelf.bounds).size
+                                                   interpolationQuality:kCGInterpolationLow];
+                            UIImage *blurredImage = [resizedImage applyBlurWithRadius:kVBlurRadius
                                                                      tintColor:tintColor
                                                          saturationDeltaFactor:kVSaturationDeltaFactor
                                                                      maskImage:nil];
                             dispatch_async(dispatch_get_main_queue(), ^
                                            {
-                                               weakSelf.alpha = 0;
                                                weakSelf.image = blurredImage;
-                                               [UIView animateWithDuration:.1f animations:^
-                                                {
-                                                    weakSelf.alpha = 1.0f;
-                                                }];
+                                               [UIView animateWithDuration:0.5f
+                                                                     delay:0.0f
+                                                                   options:UIViewAnimationOptionCurveEaseInOut
+                                                                animations:^{
+                                                                    weakSelf.alpha = 1.0f;
+                                                                } completion:nil];
                                            });
                         });
          
