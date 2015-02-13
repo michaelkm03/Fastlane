@@ -36,6 +36,7 @@
 #import "VFooterActivityIndicatorView.h"
 
 const CGFloat kVLoadNextPagePoint = .75f;
+const CGFloat kTopMargin = 10.0f;
 
 @interface VAbstractStreamCollectionViewController () <UICollectionViewDelegate>
 
@@ -103,7 +104,7 @@ const CGFloat kVLoadNextPagePoint = .75f;
     
     if ( [self isViewLoaded] )
     {
-        self.collectionView.contentInset = layoutInsets;
+        self.collectionView.contentInset = UIEdgeInsetsMake(layoutInsets.top + kTopMargin, layoutInsets.left, layoutInsets.bottom, layoutInsets.right);
     }
 }
 
@@ -288,7 +289,7 @@ const CGFloat kVLoadNextPagePoint = .75f;
 
 - (void)shouldLoadNextPage
 {
-    if (self.streamDataSource.isFilterLoading)
+    if (self.streamDataSource.count == 0 || self.streamDataSource.isFilterLoading)
     {
         return;
     }

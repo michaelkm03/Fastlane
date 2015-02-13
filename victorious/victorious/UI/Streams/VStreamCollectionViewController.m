@@ -65,6 +65,7 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 
 static NSString * const kCanAddContentKey = @"canAddContent";
+static NSString * const kMarqueeKey = @"marquee";
 static NSString * const kStreamCollectionStoryboardId = @"StreamCollection";
 static CGFloat const kTemplateCLineSpacing = 8;
 
@@ -93,6 +94,10 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
 {
     VStreamCollectionViewController *streamCollection = (VStreamCollectionViewController *)[[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier:kStreamCollectionStoryboardId];
     streamCollection.currentStream = stream;
+
+    streamCollection.streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:stream];
+    streamCollection.streamDataSource.delegate = streamCollection;
+
     return streamCollection;
 }
 
@@ -109,7 +114,7 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
     VStreamCollectionViewController *streamCollectionVC = [self streamViewControllerForStream:stream];
     streamCollectionVC.dependencyManager = dependencyManager;
     
-    if ( [[dependencyManager numberForKey:@"experiments.marquee_enabled"] boolValue] )
+    if ( [[dependencyManager numberForKey:kMarqueeKey] boolValue] )
     {
         streamCollectionVC.shouldDisplayMarquee = YES;
     }
@@ -154,11 +159,8 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
           forCellWithReuseIdentifier:[VStreamCollectionCellWebContent suggestedReuseIdentifier]];
     
     self.collectionView.backgroundColor = [[VThemeManager sharedThemeManager] preferredBackgroundColor];
-    
-    self.streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:self.currentStream];
-    self.streamDataSource.delegate = self;
-    self.streamDataSource.collectionView = self.collectionView;
     self.collectionView.dataSource = self.streamDataSource;
+    self.streamDataSource.collectionView = self.collectionView;
     
     // Notifications
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -249,10 +251,15 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
 
 - (void)setCurrentStream:(VStream *)currentStream
 {
-    self.streamDataSource.hasHeaderCell = NO;
     self.title = currentStream.name;
     self.navigationItem.title = currentStream.name;
     [super setCurrentStream:currentStream];
+}
+
+- (void)setShouldDisplayMarquee:(BOOL)shouldDisplayMarquee
+{
+    _shouldDisplayMarquee = shouldDisplayMarquee;
+    self.streamDataSource.hasHeaderCell = shouldDisplayMarquee;
 }
 
 #pragma mark - Sequence Creation
@@ -513,40 +520,6 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
         }
     }
 }
-
-#pragma mark - VNavigationHeaderDelegate
-
-// TODO
-#if 0
-- (BOOL)navSelector:(UIView<VNavigationSelectorProtocol> *)navSelector changedToIndex:(NSInteger)index
-{
-    VStream *stream = self.allStreams[index];
-    if ( stream.apiPath != nil
-        && [stream.apiPath rangeOfString:VStreamFollowerStreamPath].location != NSNotFound
-        && ![VObjectManager sharedManager].authorized)
-    {
-        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
-        return NO;
-    }
-    
-    if (self.allStreams.count <= (NSUInteger)index)
-    {
-        return NO;
-    }
-    
-    [[VTrackingManager sharedInstance] clearQueuedEventsWithName:VTrackingEventSequenceDidAppearInStream];
-    
-    self.currentStream = self.allStreams[index];
-    
-    //Only reload if we have no items, the filter is not loading, and we have a refresh control (if theres no refreshControl the view isn't done loading)
-    if (!self.currentStream.streamItems.count && !self.streamDataSource.isFilterLoading && self.refreshControl)
-    {
-        [self refresh:self.refreshControl];
-    }
-    
-    return YES;
-}
-#endif
 
 #pragma mark - VSequenceActionsDelegate
 

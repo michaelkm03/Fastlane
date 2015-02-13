@@ -428,6 +428,7 @@ static NSString * const kVideoMuted = @"videoMuted";
                     kTitleKey: NSLocalizedString(@"Recent", @""),
                     VStreamCollectionViewControllerStreamURLPathKey: [self urlPathForStreamCategories:[VUGCCategories() arrayByAddingObjectsFromArray:VOwnerCategories()]],
                     kCanAddContentKey: @YES,
+                    kMarqueeKey: @YES,
                     },
                 @{
                     kClassNameKey: @"followingStream.screen",
