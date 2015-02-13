@@ -121,9 +121,16 @@
     
     //  Set background image
     UIImageView *backgroundImageView = [[UIImageView alloc] initWithFrame:self.tableView.backgroundView.frame];
-    [backgroundImageView setBlurredImageWithURL:[NSURL URLWithString:profile.pictureUrl]
-                               placeholderImage:[UIImage imageNamed:@"profileGenericUser"]
-                                      tintColor:[UIColor colorWithWhite:1.0 alpha:0.3]];
+    if ( profile.pictureUrl != nil )
+    {
+        [backgroundImageView setBlurredImageWithURL:[NSURL URLWithString:profile.pictureUrl]
+                                   placeholderImage:[UIImage imageNamed:@"profileGenericUser"]
+                                          tintColor:[UIColor colorWithWhite:1.0 alpha:0.3]];
+    }
+    else
+    {
+        backgroundImageView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.4f];
+    }
     backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
     self.tableView.backgroundView = backgroundImageView;
     self.backgroundImageView = backgroundImageView;
