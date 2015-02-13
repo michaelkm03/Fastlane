@@ -144,12 +144,13 @@
 - (void)disableTimer
 {
     [self.autoScrollTimer invalidate];
+    //Hide all detail boxes here
 }
 
 - (void)enableTimer
 {
     [self.autoScrollTimer invalidate];
-    self.autoScrollTimer = [NSTimer scheduledTimerWithTimeInterval:5.0
+    self.autoScrollTimer = [NSTimer scheduledTimerWithTimeInterval:kVDetailVisibilityDuration + kVDetailHideDuration
                                                             target:self
                                                           selector:@selector(selectNextTab)
                                                           userInfo:nil

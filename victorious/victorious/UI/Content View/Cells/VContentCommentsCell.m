@@ -25,6 +25,7 @@
 #import "VComment+Fetcher.h"
 #import "NSURL+MediaType.h"
 #import "UIView+AutoLayout.h"
+#import "VTagStringFormatter.h"
 
 #import <SDWebImage/UIImageView+WebCache.h>
 
@@ -49,10 +50,13 @@ static NSCache *_sharedImageCache = nil;
 @property (nonatomic, copy) NSString *commenterName;
 @property (nonatomic, copy) NSString *timestampText;
 @property (nonatomic, copy) NSString *realTimeCommentText;
-@property (nonatomic, copy) NSString *commentBody;
+@property (nonatomic, copy) NSAttributedString *commentBody;
 @property (nonatomic, assign) BOOL hasMedia;
 @property (nonatomic, copy) NSURL *mediaPreviewURL;
 @property (nonatomic, assign) BOOL mediaIsVideo;
+
+@property (nonatomic) NSDictionary *tagStringAttributes;
+@property (nonatomic) NSDictionary *defaultStringAttributes;
 
 @end
 
@@ -172,7 +176,10 @@ static NSCache *_sharedImageCache = nil;
     _comment = comment;
     
     self.mediaAssetOrientation = comment.assetOrientation;
-    self.commentBody = comment.text;
+    
+    NSMutableAttributedString *formattedCommentText = [[NSMutableAttributedString alloc] initWithString:comment.text attributes:self.defaultStringAttributes];
+    [VTagStringFormatter tagDictionaryFromFormattingAttributedString:formattedCommentText withTagStringAttributes:self.tagStringAttributes andDefaultStringAttributes:self.defaultStringAttributes];
+    self.commentBody = formattedCommentText;
     self.commenterName = comment.user.name;
     self.URLForCommenterAvatar = [NSURL URLWithString:comment.user.pictureUrl];
     self.timestampText = [comment.postedAt timeSince];
@@ -248,7 +255,8 @@ static NSCache *_sharedImageCache = nil;
             }
             
             [imageView setImage:image];
-            [UIView animateWithDuration:kImagePreviewLoadedAnimationDuration animations:^{
+            [UIView animateWithDuration:kImagePreviewLoadedAnimationDuration animations:^
+            {
                 imageView.alpha = 1.0f;
             }];
             [imageCache setObject:image forKey:keyString];
@@ -262,10 +270,10 @@ static NSCache *_sharedImageCache = nil;
     self.commentAndMediaView.playIcon.hidden = !mediaIsVideo;
 }
 
-- (void)setCommentBody:(NSString *)commentBody
+- (void)setCommentBody:(NSAttributedString *)commentBody
 {
     _commentBody = [commentBody  copy];
-    self.commentAndMediaView.text = commentBody;
+    self.commentAndMediaView.attributedText = _commentBody;
 }
 
 - (void)setCommenterName:(NSString *)commenterName
@@ -310,6 +318,33 @@ static NSCache *_sharedImageCache = nil;
 - (NSURL *)mediaURL
 {
     return [NSURL URLWithString:self.comment.mediaUrl];
+}
+
+#pragma mark - lazy loading of string attributes
+
+- (NSDictionary *)tagStringAttributes
+{
+    if ( _tagStringAttributes != nil )
+    {
+        return _tagStringAttributes;
+    }
+    
+    NSDictionary *defaultStringAttributes = self.defaultStringAttributes;
+    NSMutableDictionary *tagStringAttributes = [[NSMutableDictionary alloc] initWithDictionary:defaultStringAttributes];
+    [tagStringAttributes setObject:[[VThemeManager sharedThemeManager] themedColorForKey:[VTagStringFormatter defaultThemeManagerTagColorKey]] forKey:NSForegroundColorAttributeName];
+    _tagStringAttributes = tagStringAttributes;
+    return _tagStringAttributes;
+}
+
+- (NSDictionary *)defaultStringAttributes
+{
+    if ( _defaultStringAttributes != nil )
+    {
+        return _defaultStringAttributes;
+    }
+    
+    _defaultStringAttributes = [VCommentTextAndMediaView attributesForTextWithFont:self.commentAndMediaView.textFont];
+    return _defaultStringAttributes;
 }
 
 @end

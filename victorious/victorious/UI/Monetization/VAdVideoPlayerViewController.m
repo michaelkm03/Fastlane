@@ -75,8 +75,11 @@
 {
     self.adViewController.delegate = self;
     self.adViewController.adServerMonetizationDetails = self.adDetails;
-    self.adViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    self.adViewController.view.frame = CGRectMake(0.0f, 40.0f, 320.0f, 280.0f);
+    if (self.monetizationPartner != VMonetizationPartnerTremor)
+    {
+        self.adViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        self.adViewController.view.frame = CGRectMake(0.0f, 40.0f, 320.0f, 280.0f);
+    }
     [self addChildViewController:self.adViewController];
     [self.view addSubview:self.adViewController.view];
     [self.adViewController didMoveToParentViewController:self];
