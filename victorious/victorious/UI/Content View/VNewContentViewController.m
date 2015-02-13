@@ -284,13 +284,15 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 
 - (BOOL)shouldAutorotate
 {
-    BOOL shouldRotate = ((self.viewModel.type == VContentViewTypeVideo) && (self.videoCell.status == AVPlayerStatusReadyToPlay) && !self.presentedViewController && !self.videoCell.isPlayingAd);
+    BOOL hasVideoAsset = self.viewModel.type == VContentViewTypeVideo || self.viewModel.type == VContentViewTypeGIFVideo;
+    BOOL shouldRotate = (hasVideoAsset && self.videoCell.status == AVPlayerStatusReadyToPlay && !self.presentedViewController && !self.videoCell.isPlayingAd);
     return shouldRotate;
 }
 
 - (NSUInteger)supportedInterfaceOrientations
 {
-    BOOL isVideoAndReadyToPlay = (self.viewModel.type == VContentViewTypeVideo) &&  (self.videoCell.status == AVPlayerStatusReadyToPlay);
+    BOOL hasVideoAsset = self.viewModel.type == VContentViewTypeVideo || self.viewModel.type == VContentViewTypeGIFVideo;
+    BOOL isVideoAndReadyToPlay = hasVideoAsset &&  (self.videoCell.status == AVPlayerStatusReadyToPlay);
     return (isVideoAndReadyToPlay) ? UIInterfaceOrientationMaskAllButUpsideDown : UIInterfaceOrientationMaskPortrait;
 }
 
@@ -787,6 +789,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
                 self.contentCell = imageCell;
                 return imageCell;
             }
+            case VContentViewTypeGIFVideo:
             case VContentViewTypeVideo:
             {
                 if (self.videoCell)
@@ -1057,6 +1060,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
                 case VContentViewTypeImage:
                     return [VContentImageCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
                 case VContentViewTypeVideo:
+                case VContentViewTypeGIFVideo:
                     return [VContentVideoCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
                 case VContentViewTypePoll:
                     return [VContentPollCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
@@ -1142,7 +1146,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     didPlayToTime:(CMTime)time
         totalTime:(CMTime)totalTime
 {
-    if (!self.enteringRealTimeComment)
+    if (!self.enteringRealTimeComment && self.viewModel.type == VContentViewTypeVideo )
     {
         self.textEntryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), [self.elapsedTimeFormatter stringForCMTime:time]];
     }
@@ -1315,7 +1319,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 
 - (void)keyboardInputAccessoryViewDidClearInput:(VKeyboardInputAccessoryView *)inpoutAccessoryView
 {
-    if (self.viewModel.type != VContentViewTypeVideo)
+    if (self.viewModel.type != VContentViewTypeVideo || self.viewModel.type == VContentViewTypeGIFVideo)
     {
         return;
     }
@@ -1330,7 +1334,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
         return;
     }
     
-    if (self.viewModel.type != VContentViewTypeVideo)
+    if ( self.viewModel.type != VContentViewTypeVideo )
     {
         return;
     }
