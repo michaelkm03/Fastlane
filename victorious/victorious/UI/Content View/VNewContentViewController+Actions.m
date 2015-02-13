@@ -41,38 +41,13 @@
 
 #import "VSequenceActionController.h"
 
-#import <objc/runtime.h>
-
-static const char kSequenceActionControllerKey;
-
-@interface VNewContentViewController ()
-
-@property VSequenceActionController *sequenceActionController;
-
-@end
-
 @implementation VNewContentViewController (Actions)
 
-- (void)setSequenceActionController:(VSequenceActionController *)sequenceActionController
-{
-    objc_setAssociatedObject(self, &kSequenceActionControllerKey, sequenceActionController, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
-
-- (VSequenceActionController *)sequenceActionController
-{
-    VSequenceActionController *sequenceActionController = objc_getAssociatedObject(self, &kSequenceActionControllerKey);
-    return sequenceActionController;
-}
-
 - (IBAction)pressedMore:(id)sender
-{
-    if (self.sequenceActionController == nil)
-    {
-        self.sequenceActionController = [[VSequenceActionController alloc] init];
-    }
-    
-    
+{   
     NSMutableArray *actionItems = [[NSMutableArray alloc] init];
+    
+    [self disableEndcardAutoplay];
     
     VActionSheetViewController *actionSheetViewController = [VActionSheetViewController actionSheetViewController];
     VNewContentViewController *contentViewController = self;

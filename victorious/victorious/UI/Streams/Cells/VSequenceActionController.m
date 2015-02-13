@@ -134,12 +134,13 @@ static const char kAssociatedWorkspaceFlowKey;
     __weak typeof(self) welf = self;
     self.workspaceFlowController.completion = ^void(BOOL finished)
     {
+        __strong typeof(self) strongSelf = welf;
         [weakViewController dismissViewControllerAnimated:YES
                                                completion:^{
                                                    if (completion)
                                                    {
                                                        completion(finished);
-                                                       welf.workspaceFlowController = nil;
+                                                       strongSelf.workspaceFlowController = nil;
                                                    }
                                                }];
     };
@@ -256,6 +257,11 @@ static const char kAssociatedWorkspaceFlowKey;
 
 - (void)shareFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence node:(VNode *)node
 {
+    [self shareFromViewController:viewController sequence:sequence node:node completion:nil];
+}
+
+- (void)shareFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence node:(VNode *)node completion:(void(^)())completion
+{
     //Remove the styling for the mail view.
     [[VThemeManager sharedThemeManager] removeStyling];
     
@@ -277,6 +283,11 @@ static const char kAssociatedWorkspaceFlowKey;
         
         [[VThemeManager sharedThemeManager] applyStyling];
         [viewController reloadInputViews];
+        
+        if ( completion != nil )
+        {
+            completion();
+        }
     };
     
     [viewController presentViewController:activityViewController

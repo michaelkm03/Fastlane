@@ -54,8 +54,25 @@
  */
 - (void)play;
 
+/**
+ Seek to the start of the video.  Does not pause or play, just resets the time.
+ */
+- (void)seekToStart;
+
+/**
+ Seek to the start of the video and play.
+ */
+- (void)replay;
+
+/**
+ Stop playing the video and hold at the current frame.
+*/
 - (void)pause;
 
+/**
+ Toggle the video player timeline, scrubber, play button and any other
+ visual elements that overlay the video content.
+ */
 - (void)togglePlayControls;
 
 /**

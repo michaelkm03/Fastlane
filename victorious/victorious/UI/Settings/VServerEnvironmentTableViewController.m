@@ -11,6 +11,7 @@
 #import "VServerEnvironmentTableViewController.h"
 #import "VSessionTimer.h"
 #import "UIViewController+VNavMenu.h"
+#import "VThemeManager.h"
 
 @interface VServerEnvironmentTableViewController () <VNavigationHeaderDelegate>
 
@@ -77,6 +78,7 @@
 {
     static NSString * const reuseID = @"serverCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseID forIndexPath:indexPath];
+    cell.textLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
     cell.textLabel.text = [(VEnvironment *)self.serverEnvironments[indexPath.row] name];
     
     VEnvironment *environment = [VObjectManager currentEnvironment];

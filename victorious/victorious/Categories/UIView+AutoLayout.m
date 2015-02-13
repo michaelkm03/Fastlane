@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "UIView+AutoLayout.h"
+#import "UIView+Autolayout.h"
 
 @implementation UIView (AutoLayout)
 

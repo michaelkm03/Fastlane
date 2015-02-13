@@ -1,5 +1,5 @@
 //
-//  UIView+AutoLayout.h
+//  UIView+Autolayout.h
 //  victorious
 //
 //  Created by Patrick Lynch on 12/22/14.

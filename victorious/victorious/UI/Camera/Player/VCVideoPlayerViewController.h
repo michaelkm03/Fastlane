@@ -51,6 +51,7 @@
 @property (nonatomic, assign) BOOL shouldChangeVideoGravityOnDoubleTap;
 @property (nonatomic, assign) BOOL isAudioEnabled;
 @property (nonatomic, assign) BOOL loopWithoutComposition;              ///< Loops by playing the asset again instead of making a composition that repeats
+@property (nonatomic, assign) BOOL toolbarHidden;
 
 - (void)toggleToolbarHidden;
 

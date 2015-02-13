@@ -78,15 +78,20 @@
 #import "VTracking.h"
 #import "VCommentHighlighter.h"
 #import "VScrollPaginator.h"
+#import "VSequenceActionController.h"
+#import "VContentViewRotationHelper.h"
+#import "VEndCard.h"
+#import "VContentRepopulateTransition.h"
+#import "VCommentHighlighter.h"
+#import "VEndCardActionModel.h"
+#import "VContentViewAlertHelper.h"
 
 #import <SDWebImage/UIImageView+WebCache.h>
 
 #define HANDOFFENABLED 0
 static const CGFloat kMaxInputBarHeight = 200.0f;
 
-@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate,VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, NSUserActivityDelegate>
-
-#import "VCommentHighlighter.h"
+@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, VEndCardViewControllerDelegate, NSUserActivityDelegate>
 
 @property (nonatomic, strong) NSUserActivity *handoffObject;
 
@@ -98,7 +103,6 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 @property (nonatomic, weak) IBOutlet UIImageView *blurredBackgroundImageView;
 @property (weak, nonatomic) IBOutlet UIButton *closeButton;
 @property (weak, nonatomic) IBOutlet UIButton *moreButton;
-@property (weak, nonatomic) IBOutlet UIView *landscapeMaskOverlay;
 
 // Cells
 @property (nonatomic, weak) VContentCell *contentCell;
@@ -119,18 +123,21 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *leadingCollectionViewToContainer;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *trailingCollectionViewToContainer;
 
-@property (nonatomic, assign) CGAffineTransform targetTransform;
-@property (nonatomic, assign) CGRect oldRect;
-@property (nonatomic, assign) CGAffineTransform videoTransform;
-
 // RTC
 @property (nonatomic, assign) BOOL enteringRealTimeComment;
 @property (nonatomic, assign) CMTime realtimeCommentBeganTime;
 
-@property (nonatomic, strong) VTransitionDelegate *transitionDelegate;
-@property (nonatomic, weak) IBOutlet VScrollPaginator *scrollPaginator;
+@property (nonatomic, strong) VTransitionDelegate *modalTransitionDelegate;
+@property (nonatomic, strong) VTransitionDelegate *repopulateTransitionDelegate;
 
 @property (nonatomic, strong) VCommentHighlighter *commentHighlighter;
+
+@property (nonatomic, weak) VDependencyManager *dependencyManager;
+
+@property (nonatomic, weak) IBOutlet VContentViewAlertHelper *alertHelper;
+@property (nonatomic, weak) IBOutlet VContentViewRotationHelper *rotationHelper;
+@property (nonatomic, weak) IBOutlet VScrollPaginator *scrollPaginator;
+@property (nonatomic, strong, readwrite) IBOutlet VSequenceActionController *sequenceActionController;
 
 @end
 
@@ -139,13 +146,18 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 #pragma mark - Factory Methods
 
 + (VNewContentViewController *)contentViewControllerWithViewModel:(VContentViewViewModel *)viewModel
+                                                dependencyManager:(VDependencyManager *)dependencyManager
 {
     VNewContentViewController *contentViewController = [[UIStoryboard storyboardWithName:@"ContentView" bundle:nil] instantiateInitialViewController];
     contentViewController.viewModel = viewModel;
     contentViewController.hasAutoPlayed = NO;
+    contentViewController.dependencyManager = dependencyManager;
     
     VSimpleModalTransition *modalTransition = [[VSimpleModalTransition alloc] init];
-    contentViewController.transitionDelegate = [[VTransitionDelegate alloc] initWithTransition:modalTransition];
+    contentViewController.modalTransitionDelegate = [[VTransitionDelegate alloc] initWithTransition:modalTransition];
+    VContentRepopulateTransition *repopulateTransition = [[VContentRepopulateTransition alloc] init];
+    contentViewController.repopulateTransitionDelegate = [[VTransitionDelegate alloc] initWithTransition:repopulateTransition];
+    
     contentViewController.elapsedTimeFormatter = [[VElapsedTimeFormatter alloc] init];
     
     viewModel.delegate = contentViewController;
@@ -279,7 +291,6 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     return _inputAccessoryView;
 }
 
-#pragma mark - UIViewController
 #pragma mark Rotation
 
 - (BOOL)shouldAutorotate
@@ -296,55 +307,33 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     return (isVideoAndReadyToPlay) ? UIInterfaceOrientationMaskAllButUpsideDown : UIInterfaceOrientationMaskPortrait;
 }
 
-#pragma mark iOS8.0+
-
-- (void)viewWillTransitionToSize:(CGSize)size
-       withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
     [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context)
      {
-         [self alongsideRotationupdates];
+         [self handleRotationToInterfaceOrientation:[UIApplication sharedApplication].statusBarOrientation];
      }
-                                 completion:^(id<UIViewControllerTransitionCoordinatorContext> context)
-     {
-         [self finishedRotationUpdates];
-     }];
+                                 completion:nil];
 }
 
-#pragma mark Shared
-
-- (void)alongsideRotationupdates
+- (void)handleRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
 {
-    [self.inputAccessoryView endEditing:YES];
-    
-    if (self.presentedViewController)
+    const CGSize experienceEnhancerCellSize = [VExperienceEnhancerBarCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
+    const CGPoint fixedLandscapeOffset = CGPointMake( 0.0f, experienceEnhancerCellSize.height );
+    [self.rotationHelper handleRotationToInterfaceOrientation:toInterfaceOrientation
+                                          targetContentOffset:fixedLandscapeOffset
+                                               collectionView:self.contentCollectionView
+                                                affectedViews:@[ self.textEntryView, self.moreButton ]];
+    if ( self.videoCell != nil )
     {
-        return;
-    }
-    
-    self.landscapeMaskOverlay.alpha = (UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation)) ? 1.0f : 0.0f;
-    if (UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation))
-    {
-        [self.view addSubview:self.videoCell.videoPlayerContainer];
-        [self.view bringSubviewToFront:self.closeButton];
-        self.videoCell.videoPlayerContainer.frame = self.view.bounds;
-    }
-    else
-    {
-        [self.videoCell togglePlayControls];
-        self.videoCell.videoPlayerContainer.frame = self.videoCell.bounds;
-        self.videoCell.videoPlayerContainer.transform = self.videoCell.transform;
+        [self.videoCell handleRotationToInterfaceOrientation:toInterfaceOrientation];
     }
 }
 
-- (void)finishedRotationUpdates
+- (void)updateOrientation
 {
-    if (UIInterfaceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation))
-    {
-        self.videoCell.videoPlayerContainer.transform = CGAffineTransformIdentity;
-        [self.videoCell.contentView addSubview:self.videoCell.videoPlayerContainer];
-        [self.contentCollectionView.collectionViewLayout invalidateLayout];
-    }
+    UIInterfaceOrientation currentOrientation = [UIApplication sharedApplication].statusBarOrientation;
+    [self handleRotationToInterfaceOrientation:currentOrientation];
 }
 
 #pragma mark View Lifecycle
@@ -405,8 +394,9 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
                                                                                       attribute:NSLayoutAttributeBottom
                                                                                      multiplier:1.0f
                                                                                        constant:0.0f];
-        [self.view insertSubview:inputAccessoryView
-                    belowSubview:self.landscapeMaskOverlay];
+
+        self.bottomKeyboardToContainerBottomConstraint.priority = UILayoutPriorityDefaultLow;
+        [self.view addSubview:inputAccessoryView];
         [self.view addConstraints:@[self.keyboardInputBarHeightConstraint, inputViewLeadingConstraint, inputViewTrailingconstraint, self.bottomKeyboardToContainerBottomConstraint]];
     }
     
@@ -503,6 +493,8 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     {
         self.textEntryView.placeholderText = NSLocalizedString(@"LeaveAComment", @"");
     }
+    
+    [self updateOrientation];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -591,9 +583,9 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     }
     
     VPurchaseViewController *viewController = [VPurchaseViewController purchaseViewControllerWithVoteType:experienceEnhander.voteType];
-    viewController.transitioningDelegate = self.transitionDelegate;
+    viewController.transitioningDelegate = self.modalTransitionDelegate;
     viewController.delegate = self;
-    [self presentViewController:viewController animated:YES completion:nil];
+    [self.navigationController pushViewController:viewController animated:YES];
 }
 
 - (void)showLoginViewController:(NSNotification *)notification
@@ -787,6 +779,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
                 [imageCell.contentImageView sd_setImageWithURL:self.viewModel.imageURLRequest.URL
                                               placeholderImage:self.placeholderImage?:nil];
                 self.contentCell = imageCell;
+                self.contentCell.endCardDelegate = self;
                 return imageCell;
             }
             case VContentViewTypeGIFVideo:
@@ -810,9 +803,12 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
                 __weak typeof(self) welf = self;
                 [self.videoCell setAnimateAlongsizePlayControlsBlock:^(BOOL playControlsHidden)
                 {
-                    welf.moreButton.alpha = playControlsHidden ? 0.0f : 1.0f;
-                    welf.closeButton.alpha = playControlsHidden ? 0.0f : 1.0f;
+                    const BOOL shouldHide = playControlsHidden && !welf.videoCell.isEndCardShowing;
+                    welf.moreButton.alpha = shouldHide ? 0.0f : 1.0f;
+                    welf.closeButton.alpha = shouldHide ? 0.0f : 1.0f;
                 }];
+                videoCell.endCardDelegate = self;
+                videoCell.minSize = CGSizeMake( self.contentCell.minSize.width, VShrinkingContentLayoutMinimumContentHeight );
                 return videoCell;
             }
             case VContentViewTypePoll:
@@ -1083,14 +1079,18 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
         }
         case VContentViewSectionAllComments:
         {
+            const CGFloat minBound = MIN( CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds) );
             VComment *comment = self.viewModel.comments[indexPath.row];
-            CGSize size = [VContentCommentsCell sizeWithFullWidth:CGRectGetWidth(self.contentCollectionView.bounds)
+            CGSize size = [VContentCommentsCell sizeWithFullWidth:minBound
                                                       commentBody:comment.text
                                                       andHasMedia:comment.hasMedia];
-            return CGSizeMake( CGRectGetWidth(self.view.bounds), size.height );
+            return CGSizeMake( minBound, size.height );
         }
         case VContentViewSectionCount:
-            return CGSizeMake(CGRectGetWidth(self.view.bounds), CGRectGetWidth(self.view.bounds));
+        {
+            const CGFloat minBound = MIN( CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds) );
+            return CGSizeMake( minBound, minBound );
+        }
     }
 }
 
@@ -1116,13 +1116,13 @@ referenceSizeForHeaderInSection:(NSInteger)section
     }
 }
 
-- (void)collectionView:(UICollectionView *)collectionView
-didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([indexPath compare:[self indexPathForContentView]] == NSOrderedSame)
+    const BOOL isContentSection = [indexPath compare:[self indexPathForContentView]] == NSOrderedSame;
+    
+    if ( !self.rotationHelper.isLandscape && isContentSection )
     {
-        [self.contentCollectionView setContentOffset:CGPointMake(0, 0)
-                                            animated:YES];
+        [self.contentCollectionView setContentOffset:CGPointMake(0, 0) animated:YES];
     }
 }
 
@@ -1142,9 +1142,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 
 #pragma mark - VContentVideoCellDelegate
 
-- (void)videoCell:(VContentVideoCell *)videoCell
-    didPlayToTime:(CMTime)time
-        totalTime:(CMTime)totalTime
+- (void)videoCell:(VContentVideoCell *)videoCell didPlayToTime:(CMTime)time totalTime:(CMTime)totalTime
 {
     if (!self.enteringRealTimeComment && self.viewModel.type == VContentViewTypeVideo )
     {
@@ -1170,8 +1168,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
     }
 }
 
-- (void)videoCellPlayedToEnd:(VContentVideoCell *)videoCell
-               withTotalTime:(CMTime)totalTime
+- (void)videoCellPlayedToEnd:(VContentVideoCell *)videoCell withTotalTime:(CMTime)totalTime
 {
     self.histogramCell.histogramView.progress = CMTimeGetSeconds(totalTime) / CMTimeGetSeconds(totalTime);
     if (!self.enteringRealTimeComment)
@@ -1287,32 +1284,16 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
         [self.textEntryView setSelectedThumbnail:nil];
     };
     
-    // We already have a selected media does the user want to discard and re-take?
-    NSString *actionSheetTitle = NSLocalizedString(@"Delete this content and select something else?", @"User has already selected media (pictire/video) as an attachment for commenting.");
-    NSString *discardActionTitle = NSLocalizedString(@"Delete", @"Delete the previously selected item. This is a destructive operation.");
-    NSString *cancelActionTitle = NSLocalizedString(@"Cancel", @"Cancel button.");
     
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:actionSheetTitle
-                                                                             message:nil
-                                                                      preferredStyle:UIAlertControllerStyleActionSheet];
-    
-    UIAlertAction *deleteAction = [UIAlertAction actionWithTitle:discardActionTitle
-                                                            style:UIAlertActionStyleDestructive
-                                                          handler:^(UIAlertAction *action)
-                                    {
-                                        clearMediaSelection();
-                                        showCamera();
-                                    }];
-    [alertController addAction:deleteAction];
-    
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:cancelActionTitle
-                                                           style:UIAlertActionStyleCancel
-                                                         handler:^(UIAlertAction *action)
-                                   {
-                                       [[VThemeManager sharedThemeManager] applyStyling];
-                                   }];
-    [alertController addAction:cancelAction];
-    
+    UIAlertController *alertController = [self.alertHelper alertForConfirmDiscardMediaWithDelete:^
+                                          {
+                                              clearMediaSelection();
+                                              showCamera();
+                                          }
+                                                                                          cancel:^
+                                          {
+                                              [[VThemeManager sharedThemeManager] applyStyling];
+                                          }];
     [[VThemeManager sharedThemeManager] removeStyling];
     [self presentViewController:alertController animated:YES completion:nil];
 }
@@ -1439,7 +1420,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 - (void)editComment:(VComment *)comment
 {
     VEditCommentViewController *editViewController = [VEditCommentViewController instantiateFromStoryboardWithComment:comment];
-    editViewController.transitioningDelegate = self.transitionDelegate;
+    editViewController.transitioningDelegate = self.modalTransitionDelegate;
     editViewController.delegate = self;
     [self presentViewController:editViewController animated:YES completion:nil];
 }
@@ -1498,6 +1479,107 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 - (void)shouldLoadPreviousPage
 {
     [self.viewModel loadComments:VPageTypePrevious];
+}
+
+#pragma mark - VEndCardViewControllerDelegate
+
+- (void)replaySelectedFromEndCard:(VEndCardViewController *)endCardViewController
+{
+    [self.videoCell seekToStart];
+    [endCardViewController transitionOutAllWithBackground:YES completion:^
+     {
+         [self.videoCell hideEndCard];
+         [self.videoCell replay];
+    }];
+}
+
+- (void)nextSelectedFromEndCard:(VEndCardViewController *)endCardViewController
+{
+    [endCardViewController transitionOutAllWithBackground:NO completion:nil];
+    
+    [self.viewModel loadNextSequenceSuccess:^(VSequence *sequence)
+     {
+         [self showNextSequence:sequence];
+     }
+                                    failure:^(NSError *error)
+     {
+         [self.videoCell hideEndCard];
+         
+         [[VThemeManager sharedThemeManager] removeStyling];
+         [self presentViewController:[self.alertHelper alertForNextSequenceErrorWithDismiss:^
+                                      {
+                                          [[VThemeManager sharedThemeManager] applyStyling];
+                                      }] animated:YES completion:nil];
+     }];
+}
+
+- (void)actionCellSelected:(VEndCardActionCell *)actionCell atIndex:(NSUInteger)index
+{
+    if ( [actionCell.actionIdentifier isEqualToString:VEndCardActionIdentifierGIF] )
+    {
+        [self.sequenceActionController showRemixOnViewController:self.navigationController
+                                                    withSequence:self.viewModel.sequence
+                                            andDependencyManager:self.dependencyManager
+                                                  preloadedImage:nil
+                                                      completion:nil];
+    }
+    else if ( [actionCell.actionIdentifier isEqualToString:VEndCardActionIdentifierRepost] )
+    {
+        [self.sequenceActionController repostActionFromViewController:self.navigationController
+                                                                 node:self.viewModel.currentNode
+                                                           completion:^(BOOL finished)
+         {
+             [actionCell showSuccessState];
+             actionCell.enabled = NO;
+         }];
+    }
+    else if ( [actionCell.actionIdentifier isEqualToString:VEndCardActionIdentifierShare] )
+    {
+        [self.sequenceActionController shareFromViewController:self.navigationController
+                                                      sequence:self.viewModel.sequence
+                                                          node:self.viewModel.currentNode
+                                                    completion:nil];
+    }
+}
+
+- (void)disableEndcardAutoplay
+{
+    [self.contentCell disableEndcardAutoplay];
+}
+
+- (void)showNextSequence:(VSequence *)nextSequence
+{
+    VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithSequence:nextSequence
+                                                                             depenencyManager:self.dependencyManager];
+    VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel
+                                                                                                   dependencyManager:self.dependencyManager];
+    contentViewController.dependencyManagerForHistogramExperiment = self.dependencyManager;
+    contentViewController.delegate = self.delegate;
+    
+    self.navigationController.delegate = contentViewController;
+    contentViewController.transitioningDelegate = self.repopulateTransitionDelegate;
+    [self.navigationController pushViewController:contentViewController animated:YES];
+}
+
+#pragma mark - UINavigationControllerDelegate
+
+- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    if ( [viewController isKindOfClass:[VNewContentViewController class]] )
+    {
+        navigationController.viewControllers = @[ navigationController.viewControllers.lastObject ];
+    }
+}
+
+- (id <UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
+                                   animationControllerForOperation:(UINavigationControllerOperation)operation
+                                                fromViewController:(UIViewController *)fromVC
+                                                  toViewController:(UIViewController *)toVC
+{
+    return [self.repopulateTransitionDelegate navigationController:navigationController
+                                   animationControllerForOperation:operation
+                                                fromViewController:fromVC
+                                                  toViewController:toVC];
 }
 
 #pragma mark - NSUserActivityDelegate

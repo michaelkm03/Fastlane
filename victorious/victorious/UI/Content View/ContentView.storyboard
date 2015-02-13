@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14A389a" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="9O1-S6-jeB">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="9O1-S6-jeB">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--New Content View Controller-->
@@ -69,14 +68,9 @@
                                     <action selector="pressedMore:" destination="9O1-S6-jeB" eventType="touchUpInside" id="v7T-RD-b45"/>
                                 </connections>
                             </button>
-                            <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZqS-Yk-BYa" userLabel="Landscape Overlay">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="uhm-oa-mP9" firstAttribute="top" secondItem="ZqS-Yk-BYa" secondAttribute="bottom" id="2Ng-Lc-W7z"/>
                             <constraint firstItem="uhm-oa-mP9" firstAttribute="top" secondItem="DRU-0d-Xgx" secondAttribute="bottom" id="7Z0-lf-xNw"/>
                             <constraint firstItem="DRU-0d-Xgx" firstAttribute="top" secondItem="C41-xf-66J" secondAttribute="bottom" id="D0c-mu-myW"/>
                             <constraint firstItem="ToS-oB-8Vg" firstAttribute="top" secondItem="C41-xf-66J" secondAttribute="bottom" id="Dh4-9h-GaK"/>
@@ -88,34 +82,36 @@
                             <constraint firstAttribute="trailing" secondItem="iL5-FN-2xy" secondAttribute="trailing" id="beS-6z-oSD"/>
                             <constraint firstItem="p1f-ge-RSn" firstAttribute="top" secondItem="C41-xf-66J" secondAttribute="bottom" id="e5L-GF-jrX"/>
                             <constraint firstItem="iL5-FN-2xy" firstAttribute="leading" secondItem="oR4-K5-HTJ" secondAttribute="leading" id="e8f-31-PHL"/>
-                            <constraint firstItem="ZqS-Yk-BYa" firstAttribute="leading" secondItem="oR4-K5-HTJ" secondAttribute="leadingMargin" constant="-16" id="g9n-Ny-Xup"/>
                             <constraint firstItem="cR6-Xx-dKv" firstAttribute="leading" secondItem="oR4-K5-HTJ" secondAttribute="leading" id="gQc-P8-blV"/>
-                            <constraint firstItem="ZqS-Yk-BYa" firstAttribute="top" secondItem="C41-xf-66J" secondAttribute="bottom" id="gqK-62-4xl"/>
                             <constraint firstAttribute="trailing" secondItem="DRU-0d-Xgx" secondAttribute="trailing" id="gsG-Xa-7Uz"/>
                             <constraint firstAttribute="trailing" secondItem="p1f-ge-RSn" secondAttribute="trailing" id="khd-Kq-iJM"/>
                             <constraint firstItem="uhm-oa-mP9" firstAttribute="top" secondItem="cR6-Xx-dKv" secondAttribute="bottom" id="o7i-Rm-QJD"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="ZqS-Yk-BYa" secondAttribute="trailing" constant="-16" id="qxG-LQ-B24"/>
                             <constraint firstItem="ToS-oB-8Vg" firstAttribute="leading" secondItem="oR4-K5-HTJ" secondAttribute="leading" id="uNw-CT-JPL"/>
                         </constraints>
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
                     <connections>
+                        <outlet property="alertHelper" destination="EZ0-yt-FUS" id="3y7-Ng-QvJ"/>
                         <outlet property="blurredBackgroundImageView" destination="DRU-0d-Xgx" id="Fc0-AK-MDc"/>
                         <outlet property="closeButton" destination="ToS-oB-8Vg" id="8eJ-1C-sNZ"/>
                         <outlet property="contentCollectionView" destination="iL5-FN-2xy" id="IRA-Ie-iCh"/>
-                        <outlet property="landscapeMaskOverlay" destination="ZqS-Yk-BYa" id="MDK-Ti-0nG"/>
                         <outlet property="leadingCollectionViewToContainer" destination="e8f-31-PHL" id="lgG-EN-y7q"/>
                         <outlet property="moreButton" destination="p1f-ge-RSn" id="SMD-h7-BkQ"/>
-                        <outlet property="scrollPaginator" destination="Fi1-i6-cwe" id="IMt-eS-rBz"/>
+                        <outlet property="rotationHelper" destination="8SL-2O-WKa" id="pwD-gM-Em7"/>
+                        <outlet property="scrollPaginator" destination="Fi1-i6-cwe" id="iJF-wU-hma"/>
+                        <outlet property="sequenceActionController" destination="1Jx-SR-aWO" id="3CZ-67-vQ9"/>
                         <outlet property="trailingCollectionViewToContainer" destination="beS-6z-oSD" id="Nxc-Dh-5cG"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rXP-pS-SbF" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <customObject id="EZ0-yt-FUS" customClass="VContentViewAlertHelper"/>
+                <customObject id="8SL-2O-WKa" customClass="VContentViewRotationHelper"/>
                 <customObject id="Fi1-i6-cwe" customClass="VScrollPaginator">
                     <connections>
                         <outlet property="delegate" destination="9O1-S6-jeB" id="oJq-zS-doN"/>
                     </connections>
                 </customObject>
+                <customObject id="1Jx-SR-aWO" customClass="VSequenceActionController"/>
             </objects>
             <point key="canvasLocation" x="267" y="188"/>
         </scene>
