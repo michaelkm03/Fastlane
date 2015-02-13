@@ -192,6 +192,7 @@
 
 #pragma mark - UINavigationControllerDelegate methods
 
+#if 0
 - (id <UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
                                    animationControllerForOperation:(UINavigationControllerOperation)operation
                                                 fromViewController:(UIViewController *)fromVC
@@ -202,5 +203,6 @@
                                       fromViewController:fromVC
                                         toViewController:toVC];
 }
+#endif
 
 @end
