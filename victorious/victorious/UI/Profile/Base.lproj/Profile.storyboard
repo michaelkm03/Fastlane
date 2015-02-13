@@ -277,10 +277,10 @@
             </objects>
             <point key="canvasLocation" x="19" y="66"/>
         </scene>
-        <!--Profile Following Container View Controller-->
+        <!--Following-->
         <scene sceneID="aSZ-yu-jMd">
             <objects>
-                <viewController id="86q-5Y-HrO" customClass="VProfileFollowingContainerViewController" sceneMemberID="viewController">
+                <viewController title="Following" id="86q-5Y-HrO" customClass="VProfileFollowingContainerViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="PoE-cr-IZB"/>
                         <viewControllerLayoutGuide type="bottom" id="nBb-NB-dHn"/>
@@ -290,18 +290,18 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5de-sT-TwA">
-                                <rect key="frame" x="0.0" y="37" width="320" height="531"/>
+                                <rect key="frame" x="0.0" y="20" width="320" height="548"/>
                             </containerView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="5de-sT-TwA" firstAttribute="leading" secondItem="bFt-nf-xe8" secondAttribute="leading" id="D2P-wB-i5t"/>
                             <constraint firstItem="nBb-NB-dHn" firstAttribute="top" secondItem="5de-sT-TwA" secondAttribute="bottom" id="JOE-wO-RbJ"/>
-                            <constraint firstItem="5de-sT-TwA" firstAttribute="top" secondItem="PoE-cr-IZB" secondAttribute="bottom" constant="37" id="Z5q-ee-4VL"/>
+                            <constraint firstItem="5de-sT-TwA" firstAttribute="top" secondItem="PoE-cr-IZB" secondAttribute="bottom" id="Z5q-ee-4VL"/>
                             <constraint firstAttribute="trailing" secondItem="5de-sT-TwA" secondAttribute="trailing" id="zrP-J8-6DV"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="5Ss-xa-8iX"/>
+                    <navigationItem key="navigationItem" title="Following" id="5Ss-xa-8iX"/>
                     <connections>
                         <outlet property="containerView" destination="5de-sT-TwA" id="2F7-6w-7Dc"/>
                     </connections>
