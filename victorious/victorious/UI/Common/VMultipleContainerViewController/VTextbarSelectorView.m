@@ -11,13 +11,15 @@
 #import "VDependencyManager.h"
 
 static CGFloat const kVBarHeight = 40;
-static CGFloat const kVLineHeight = 1;
+static CGFloat const kVTrackLineHeight = 1;
+static CGFloat const kVLineHeight = 3;
 static CGFloat const kVLineAnimationDuration = 0.25f;
 
 @interface VTextbarSelectorView ()
 
 @property (nonatomic) NSMutableArray *buttons;
-@property (nonatomic) UIView *line;
+@property (nonatomic) UIView *selectionLine;
+@property (nonatomic) UIView *trackLine;
 @property (nonatomic) NSLayoutConstraint *lineLeftConstraint;
 @property (nonatomic) NSUInteger realActiveViewControllerIndex;
 
@@ -88,18 +90,27 @@ static CGFloat const kVLineAnimationDuration = 0.25f;
 - (void)setBounds:(CGRect)bounds
 {
     [super setBounds:bounds];
-    [self updateLineConstraintAnimated:NO];
+    [self makeButtonsFromCurrentViewControllers];
 }
 
 #pragma mark - view setup
 
 - (void)makeButtonsFromCurrentViewControllers
 {
+    if ( CGRectEqualToRect(CGRectZero, self.bounds) )
+    {
+        return;
+    }
+    
+    [self removeConstraints:self.constraints];
+    [self.selectionLine removeConstraints:self.selectionLine.constraints];
+    
     //Remove any existing subviews from superview
     for ( UIButton *button in self.buttons )
     {
         [button removeFromSuperview];
     }
+    [self.buttons removeAllObjects];
     
     UIView *view = [[UIView alloc] init];
 
@@ -109,7 +120,7 @@ static CGFloat const kVLineAnimationDuration = 0.25f;
     
     NSDictionary *views = NSDictionaryOfVariableBindings(view);
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[view]|" options:0 metrics:nil views:views]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[view(barHeight)]|" options:0 metrics:@{@"barHeight":@(kVBarHeight)} views:views]];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[view(barHeight)]|" options:0 metrics:@{ @"barHeight" : @(kVBarHeight)} views:views]];
     
     __weak VTextbarSelectorView *wSelf = self;
     __block UIButton *priorButton = nil;
@@ -155,29 +166,34 @@ static CGFloat const kVLineAnimationDuration = 0.25f;
         
     }];
     
-    if ( self.line == nil )
+    if ( self.trackLine == nil )
     {
-        self.line = [[UIView alloc] init];
-        self.line.translatesAutoresizingMaskIntoConstraints = NO;
-        self.line.backgroundColor = buttonTextColor;
-        [self addSubview:self.line];
-    }
-    else
-    {
-        [self.line removeConstraints:self.line.constraints];
+        [self setupTrackLine];
+        [self addSubview:self.trackLine];
     }
     
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[line(lineHeight)]" options:0 metrics:@{ @"lineHeight" : @(kVLineHeight) } views:@{ @"line" : self.line }]];
+    views = @{ @"line" : self.trackLine };
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[line(lineHeight)]" options:0 metrics:@{ @"lineHeight" : @(kVTrackLineHeight) } views:views]];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[line]|" options:0 metrics:nil views:views]];
+    
+    //Setting up selection line
+    if ( self.selectionLine == nil )
+    {
+        [self setupSelectionLineWithBackgroundColor:buttonTextColor];
+        [self addSubview:self.selectionLine];
+    }
+    
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-trackHeight-[line(lineHeight)]" options:0 metrics:@{ @"lineHeight" : @(kVLineHeight), @"trackHeight" : @(kVTrackLineHeight) } views:@{ @"line" : self.selectionLine }]];
 
     [self addConstraint:[NSLayoutConstraint constraintWithItem:self
                                                     attribute:NSLayoutAttributeWidth
                                                     relatedBy:NSLayoutRelationEqual
-                                                       toItem:self.line
+                                                       toItem:self.selectionLine
                                                     attribute:NSLayoutAttributeWidth
                                                    multiplier:self.viewControllers.count
                                                      constant:0.0]];
     
-    self.lineLeftConstraint = [NSLayoutConstraint constraintWithItem:self.line
+    self.lineLeftConstraint = [NSLayoutConstraint constraintWithItem:self.selectionLine
                                                            attribute:NSLayoutAttributeLeading
                                                            relatedBy:NSLayoutRelationEqual
                                                               toItem:self
@@ -187,6 +203,20 @@ static CGFloat const kVLineAnimationDuration = 0.25f;
     [self addConstraint:self.lineLeftConstraint];
     
     _realActiveViewControllerIndex = 0;
+}
+
+- (void)setupSelectionLineWithBackgroundColor:(UIColor *)backgroundColor
+{
+    self.selectionLine = [[UIView alloc] init];
+    self.selectionLine.translatesAutoresizingMaskIntoConstraints = NO;
+    self.selectionLine.backgroundColor = backgroundColor;
+}
+
+- (void)setupTrackLine
+{
+    self.trackLine = [[UIView alloc] init];
+    self.trackLine.translatesAutoresizingMaskIntoConstraints = NO;
+    self.trackLine.backgroundColor = [UIColor colorWithWhite:0.7 alpha:0.3];
 }
 
 #pragma mark - lazy inits
