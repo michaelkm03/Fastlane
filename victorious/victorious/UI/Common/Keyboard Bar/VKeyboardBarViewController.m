@@ -51,7 +51,7 @@ static const NSInteger kCharacterLimit = 255;
 {
     [super viewDidLoad];
     
-    self.textStorage = [[VUserTaggingTextStorage alloc] initWithString:nil andDependencyManager:nil textView:nil taggingDelegate:self.delegate];
+    self.textStorage = [[VUserTaggingTextStorage alloc] initWithString:nil textView:nil taggingDelegate:self.delegate];
     
     NSLayoutManager *layoutManager = [[NSLayoutManager alloc] init];
     [self.textStorage addLayoutManager:layoutManager];
@@ -63,6 +63,10 @@ static const NSInteger kCharacterLimit = 255;
     self.textView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.textView setBackgroundColor:[UIColor clearColor]];
     self.textView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    self.textView.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel1Font];
+    UIEdgeInsets textContainerInset = self.textView.textContainerInset;
+    textContainerInset.top += 3;
+    self.textView.textContainerInset = textContainerInset;
     [self.textViewContainer addSubview:self.textView];
     NSDictionary *views = @{@"view":self.textView};
     [self.textViewContainer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[view]|" options:0 metrics:nil views:views]];
