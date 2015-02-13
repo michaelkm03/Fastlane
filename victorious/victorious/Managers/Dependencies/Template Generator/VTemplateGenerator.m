@@ -350,16 +350,18 @@ static NSString * const kVideoMuted = @"videoMuted";
                     kIdentifierKey: @"Menu Community",
                     kTitleKey: NSLocalizedString(@"Community", @""),
                     kDestinationKey: @{
-                        kClassNameKey: @"stream.screen",
+                        kClassNameKey: @"basic.multiScreen",
                         kTitleKey: NSLocalizedString(@"Community", @""),
                         kCanAddContentKey: @YES,
-                        kStreamsKey: @[
+                        kScreensKey: @[
                             @{
+                                kClassNameKey: @"stream.screen",
                                 kTitleKey: NSLocalizedString(@"Featured", @""),
                                 VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/hot_detail_list_by_stream/ugc",
                                 kCanAddContentKey: @YES,
                             },
                             @{
+                                kClassNameKey: @"stream.screen",
                                 kInitialKey: @YES,
                                 kTitleKey: NSLocalizedString(@"Recent", @""),
                                 VStreamCollectionViewControllerStreamURLPathKey: [self urlPathForStreamCategories:VUGCCategories()],
@@ -503,7 +505,7 @@ static NSString * const kVideoMuted = @"videoMuted";
             kDestinationKey: @{
                 kClassNameKey: @"stream.screen",
                 kTitleKey: NSLocalizedString(@"Owner", @""),
-                kStreamsKey: @[
+                kScreensKey: @[
                     @{
                         kTitleKey: NSLocalizedString(@"Featured", @""),
                         VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/hot_detail_list_by_stream/owner"
