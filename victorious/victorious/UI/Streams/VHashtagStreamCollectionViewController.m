@@ -20,7 +20,7 @@
 
 @interface VHashtagStreamCollectionViewController ()
 
-@property (nonatomic, assign) BOOL isSubscribedToHashtag;
+@property (nonatomic, assign, getter=isFollowingSelectedHashtag) BOOL followingSelectedHashtag;
 @property (nonatomic, strong) NSString *selectedHashtag;
 @property (nonatomic, weak) MBProgressHUD *failureHUD;
 
@@ -83,22 +83,17 @@
     NSAssert( self.selectedHashtag != nil, @"Houston, we have an issue." );
     NSAssert( self.selectedHashtag.length > 0, @"Houston, we have an issue." );
     
-    NSString *buttonImageName = @"streamFollowHashtag";
-    BOOL subscribed = NO;
-    
     VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-    
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"tag == %@", self.selectedHashtag];
     VHashtag *hashtag = [mainUser.hashtags filteredOrderedSetUsingPredicate:predicate].firstObject;
-    if ( hashtag != nil )
-    {
-        buttonImageName = @"followedHashtag";
-        subscribed = YES;
-    }
-    
-    UIImage *hashtagButtonImage = [[UIImage imageNamed:buttonImageName]  imageWithRenderingMode:UIImageRenderingModeAutomatic];
+    self.followingSelectedHashtag = hashtag != nil;
+}
+
+- (void)setFollowingSelectedHashtag:(BOOL)followingSelectedHashtag
+{
+    NSString *buttonImageName = followingSelectedHashtag ? @"followedHashtag" : @"streamFollowHashtag";
+    UIImage *hashtagButtonImage = [[UIImage imageNamed:buttonImageName] imageWithRenderingMode:UIImageRenderingModeAutomatic];
     [self.navHeaderView setRightButtonImage:hashtagButtonImage withAction:@selector(followUnfollowHashtagButtonAction:) onTarget:nil];
-    self.isSubscribedToHashtag = subscribed;
 }
 
 #pragma mark - Hashtag Button Actions
@@ -191,18 +186,15 @@
     }
     
     // Reset the hashtag button image
-    // TODO
-    //    UIImage *hashtagButtonImage = [[UIImage imageNamed:buttonImageName] imageWithRenderingMode:UIImageRenderingModeAutomatic];
-    //    [self.navHeaderView setRightButtonImage:hashtagButtonImage withAction:nil onTarget:nil];
-    
+    UIImage *hashtagButtonImage = [[UIImage imageNamed:buttonImageName] imageWithRenderingMode:UIImageRenderingModeAutomatic];
+    [self.navHeaderView setRightButtonImage:hashtagButtonImage withAction:nil onTarget:nil];
     
     // Set button back to normal state
     sender.userInteractionEnabled = YES;
     sender.alpha = 1.0f;
     
     // Fire NSNotification to signal change in the status of this hashtag
-    [[NSNotificationCenter defaultCenter] postNotificationName:kHashtagStatusChangedNotification
-                                                        object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kHashtagStatusChangedNotification object:nil];
 }
 
 @end
