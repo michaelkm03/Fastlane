@@ -19,7 +19,6 @@
 #import "VThemeManager.h"
 #import "UIImage+ImageEffects.h"
 #import "UIStoryboard+VMainStoryboard.h"
-#import "UIViewController+VSideMenuViewController.h"
 
 @interface VSideMenuViewController ()
 

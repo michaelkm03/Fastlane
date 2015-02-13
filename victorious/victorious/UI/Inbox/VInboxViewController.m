@@ -12,7 +12,6 @@
 #import "VUnreadMessageCountCoordinator.h"
 #import "VUserSearchViewController.h"
 #import "VLoginViewController.h"
-#import "UIViewController+VSideMenuViewController.h"
 #import "VConversation+RestKit.h"
 #import "VNotification+RestKit.h"
 #import "VMessageViewController.h"
@@ -299,11 +298,6 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
 {
     self.fetchedResultsController = nil;
     [self performFetch];
-}
-
-- (IBAction)showMenu
-{
-    [self.sideMenuViewController presentMenuViewController];
 }
 
 - (IBAction)refresh:(UIRefreshControl *)sender
