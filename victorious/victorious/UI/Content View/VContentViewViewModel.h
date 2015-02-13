@@ -62,6 +62,10 @@ typedef NS_ENUM(NSInteger, VContentViewType)
      */
     VContentViewTypeVideo,
     /**
+     *  GIF content type.
+     */
+    VContentViewTypeGIFVideo,
+    /**
      *  Poll content type.
      */
     VContentViewTypePoll
@@ -189,11 +193,6 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
 @property (nonatomic, readonly) BOOL audioMuted;
 
 #pragma mark - Comments
-
-/**
- *  If a video content has any real time comments this will be YES.
- */
-@property (nonatomic, readonly) BOOL shouldShowRealTimeComents;
 
 /**
  *  Fetches comments and realtime comments for this viewModel's sequence.

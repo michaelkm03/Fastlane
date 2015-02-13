@@ -119,18 +119,27 @@
     
     self.tagLinePlaceholderLabel.hidden = (profile.tagline.length > 0);
     
-    //  Set background image
+    // Create background image
     UIImageView *backgroundImageView = [[UIImageView alloc] initWithFrame:self.tableView.backgroundView.frame];
-    [backgroundImageView setBlurredImageWithURL:[NSURL URLWithString:profile.pictureUrl]
-                               placeholderImage:[UIImage imageNamed:@"profileGenericUser"]
-                                      tintColor:[UIColor colorWithWhite:1.0 alpha:0.3]];
     backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
     self.tableView.backgroundView = backgroundImageView;
     self.backgroundImageView = backgroundImageView;
     
-    NSURL  *imageURL    =   [NSURL URLWithString:profile.pictureUrl];
-    [self.profileImageView sd_setImageWithURL:imageURL
-                             placeholderImage:nil];
+    // Set profile images
+    NSURL *profileImageURL = [NSURL URLWithString:profile.pictureUrl];
+    if ( profileImageURL != nil && profile.pictureUrl.length > 0 )
+    {
+        [backgroundImageView setBlurredImageWithURL:profileImageURL
+                                   placeholderImage:[UIImage imageNamed:@"profileGenericUser"]
+                                          tintColor:[UIColor colorWithWhite:1.0 alpha:0.3]];
+        [self.profileImageView sd_setImageWithURL:profileImageURL placeholderImage:nil];
+    }
+    else
+    {
+        backgroundImageView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.4f];
+        self.profileImageView.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.5f];
+    }
+    
 }
 
 #pragma mark - Actions

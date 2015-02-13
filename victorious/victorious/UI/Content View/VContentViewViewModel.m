@@ -82,10 +82,14 @@
         {
             _type = VContentViewTypePoll;
         }
-        else if ([sequence isVideo])
+        else if ([sequence isVideo] && ![sequence isGIFVideo])
         {
             _type = VContentViewTypeVideo;
             _realTimeCommentsViewModel = [[VRealtimeCommentsViewModel alloc] init];
+        }
+        else if ([sequence isGIFVideo])
+        {
+            _type = VContentViewTypeGIFVideo;
         }
         else if ([sequence isImage])
         {
@@ -338,12 +342,6 @@
     return [self.currentAsset.audioMuted boolValue];
 }
 
-- (BOOL)shouldShowRealTimeComents
-{
-    NSArray *realTimeComments = [self.currentAsset.comments array];
-    return (realTimeComments.count > 0) ? YES : NO;
-}
-
 - (void)setComments:(NSArray *)comments
 {
     NSArray *sortedComments = [comments sortedArrayUsingComparator:^NSComparisonResult(VComment *comment1, VComment *comment2)
@@ -492,6 +490,7 @@
             case VContentViewTypeImage:
                 shareText = [NSString stringWithFormat:NSLocalizedString(@"OwnerShareImageFormat", nil), self.sequence.user.name];
                 break;
+            case VContentViewTypeGIFVideo:
             case VContentViewTypeVideo:
                 shareText = [NSString stringWithFormat:NSLocalizedString(@"OwnerShareVideoFormat", nil), self.sequence.name, self.sequence.user.name];
                 break;
@@ -509,6 +508,7 @@
             case VContentViewTypeImage:
                 shareText = NSLocalizedString(@"UGCShareImageFormat", nil);
                 break;
+            case VContentViewTypeGIFVideo:
             case VContentViewTypeVideo:
                 shareText = NSLocalizedString(@"UGCShareVideoFormat", nil);
                 break;

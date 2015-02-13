@@ -62,11 +62,12 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:self.confirmPasswordTextField];
 
     self.cancelButton.style = VButtonStyleSecondary;
-    self.cancelButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
+    self.cancelButton.primaryColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    self.cancelButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
     
     self.signupButton.style = VButtonStylePrimary;
-    self.signupButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-    self.signupButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
+    self.signupButton.primaryColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    self.signupButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
     
     self.emailValidator = [[VEmailValidator alloc] init];
     self.passwordValidator = [[VPasswordValidator alloc] init];
@@ -255,7 +256,29 @@
 
 - (BOOL)textFieldShouldEndEditing:(VInlineValidationTextField *)textField
 {
-    [self validateWithTextField:textField];
+    if ( textField.text.length > 0 )
+    {
+        [self validateWithTextField:textField];
+    }
+    return YES;
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    if ([textField isEqual:self.emailTextField])
+    {
+        [self.passwordTextField becomeFirstResponder];
+    }
+    else if ([textField isEqual:self.passwordTextField])
+    {
+        [self.confirmPasswordTextField becomeFirstResponder];
+    }
+    else
+    {
+        [self signup:textField];
+        [self.confirmPasswordTextField resignFirstResponder];
+    }
+    
     return YES;
 }
 

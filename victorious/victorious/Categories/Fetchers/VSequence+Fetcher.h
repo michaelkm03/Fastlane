@@ -26,6 +26,7 @@
 - (BOOL)canComment;
 - (BOOL)canRepost;
 - (BOOL)isVoteCountVisible;
+- (BOOL)isGIFVideo;
 
 - (VNode *)firstNode;
 

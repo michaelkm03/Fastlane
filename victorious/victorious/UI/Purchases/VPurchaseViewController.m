@@ -85,11 +85,11 @@
     NSString *fontNameRegular = @"MuseoSans-300";
     NSString *fontNameBold = @"MuseoSans-500";
     
-    self.unlockButton.backgroundColor = linkColor;
+    self.unlockButton.primaryColor = linkColor;
     self.unlockButton.titleLabel.font = [UIFont fontWithName:fontNameRegular size:18.0f];
-    
     self.unlockButton.style = VButtonStylePrimary;
     
+    self.unlockButton.primaryColor = linkColor;
     self.restoreButton.titleLabel.font = [UIFont fontWithName:fontNameRegular size:15.0f];
     self.restoreButton.style = VButtonStyleSecondary;
     

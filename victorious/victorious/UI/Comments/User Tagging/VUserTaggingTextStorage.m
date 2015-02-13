@@ -9,8 +9,6 @@
 #import "VUserTaggingTextStorage.h"
 #import "VInlineSearchTableViewController.h"
 #import "VUser.h"
-#import "VThemeManager.h"
-#import "VDependencyManager.h"
 #import "VTag.h"
 #import "VTagStringFormatter.h"
 #import "VTagDictionary.h"
@@ -41,18 +39,20 @@ static NSString * const kThreeSpaces = @"   ";
 
 @implementation VUserTaggingTextStorage
 
-- (instancetype)initWithString:(NSString *)str andDependencyManager:(VDependencyManager *)dependencyManager textView:(UITextView *)textView taggingDelegate:(id<VUserTaggingTextStorageDelegate>)taggingDelegate
+- (instancetype)initWithString:(NSString *)str
+                      textView:(UITextView *)textView
+               taggingDelegate:(id<VUserTaggingTextStorageDelegate>)taggingDelegate
 {
     self = [super init];
     if ( self != nil )
     {
         _innerStorage = [[NSMutableAttributedString alloc] init];
-        _dependencyManager = dependencyManager;
         _taggingDelegate = taggingDelegate;
         _textView = textView;
+        BOOL hasTextView = _textView != nil;
         
         //If passed in a textview, add our layout manager to its layout managers
-        if ( _textView != nil )
+        if ( hasTextView )
         {
             [self addLayoutManager:_textView.layoutManager];
         }
@@ -60,11 +60,16 @@ static NSString * const kThreeSpaces = @"   ";
         if ( str != nil && str.length > 0 )
         {
             //Add already present string to inner storage
+            if ( hasTextView )
+            {
+                [self setupStringAttributesDictionariesFromTextView:textView];
+            }
+            
             [self replaceCharactersInRange:NSMakeRange(0, 0) withString:str];
             self.tagDictionary = [VTagStringFormatter tagDictionaryFromFormattingAttributedString:self withTagStringAttributes:self.tagStringAttributes andDefaultStringAttributes:self.defaultStringAttributes];
-            if ( _textView != nil )
+            if ( hasTextView )
             {
-                [_textView setSelectedRange:NSMakeRange(str.length - 1, 0)];
+                [_textView setSelectedRange:NSMakeRange(str.length, 0)];
             }
         }
         else
@@ -311,6 +316,12 @@ static NSString * const kThreeSpaces = @"   ";
     return [VTagStringFormatter databaseFormattedStringFromAttributedString:self withTags:[self.tagDictionary tags]];
 }
 
+- (void)setTextView:(UITextView *)textView
+{
+    _textView = textView;
+    [self setupStringAttributesDictionariesFromTextView:textView];
+}
+
 - (void)setAttributes:(NSDictionary *)attrs range:(NSRange)range
 {
     //This accounts for an awful little bug in subclassingn NSTextStorage
@@ -329,34 +340,27 @@ static NSString * const kThreeSpaces = @"   ";
         }
     }
     
-    //Setup string attributes if not already set here or by another class
-    if (!self.defaultStringAttributes)
-    {
-        NSMutableDictionary *dsa = [[NSMutableDictionary alloc] initWithDictionary:attrs];
-        if ( [dsa objectForKey:NSForegroundColorAttributeName] == nil )
-        {
-            //Set the text color to black if none is specified
-            [dsa setObject:[UIColor blackColor] forKey:NSForegroundColorAttributeName];
-        }
-        self.defaultStringAttributes = dsa;
-    }
-    
-    if (!self.tagStringAttributes)
-    {
-        NSMutableDictionary *tsa = [[NSMutableDictionary alloc] initWithDictionary:attrs];
-        
-        UIColor *tagColor = [self.dependencyManager colorForKey:[VTagStringFormatter defaultDependencyManagerTagColorKey]];
-        if ( tagColor == nil)
-        {
-            tagColor = [[VThemeManager sharedThemeManager] themedColorForKey:[VTagStringFormatter defaultThemeManagerTagColorKey]];
-        }
-        
-        [tsa setObject:tagColor forKey:NSForegroundColorAttributeName];
-        self.tagStringAttributes = tsa;
-    }
-    
-    [self.innerStorage setAttributes:attrs range:range];
+    //
+    [self.innerStorage setAttributes:[self attributesForColor:[attrs objectForKey:NSForegroundColorAttributeName]] range:range];
     [self edited:NSTextStorageEditedAttributes range:range changeInLength:0];
+}
+
+- (NSDictionary *)attributesForColor:(UIColor *)color
+{
+    return [color isEqual:[self.tagStringAttributes objectForKey:NSForegroundColorAttributeName]] ? self.tagStringAttributes : self.defaultStringAttributes;
+}
+
+- (void)setupStringAttributesDictionariesFromTextView:(UITextView *)textView
+{
+    if ( [textView.typingAttributes objectForKey:NSFontAttributeName] == nil )
+    {
+        return;
+    }
+    
+    NSMutableDictionary *attributes = [[NSMutableDictionary alloc] initWithDictionary:textView.typingAttributes];
+    self.defaultStringAttributes =  attributes;
+    [attributes addEntriesFromDictionary:textView.linkTextAttributes];
+    self.tagStringAttributes = attributes;
 }
 
 //Convenience wrapper for the VTagStringFormatter delimiter string

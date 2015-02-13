@@ -23,25 +23,30 @@
 #import "VObjectManager.h"
 #import "VAutomation.h"
 
+#import "VLoginButton.h"
+
+#import "CCHLinkTextView.h"
+#import "CCHLinkTextViewDelegate.h"
+#import "VLinkTextViewHelper.h"
+#import "MBProgressHUD.h"
+
 @import Accounts;
 @import Social;
 
-@interface VLoginViewController ()  <UINavigationControllerDelegate, VSelectorViewControllerDelegate>
+@interface VLoginViewController ()  <UINavigationControllerDelegate, VSelectorViewControllerDelegate, CCHLinkTextViewDelegate>
 
-@property (nonatomic, strong)           VUser          *profile;
+@property (nonatomic, strong) VUser *profile;
 
-@property (nonatomic, weak) IBOutlet    UIButton       *facebookButton;
-@property (nonatomic, weak) IBOutlet    UIButton       *twitterButton;
+@property (nonatomic, weak) IBOutlet VLoginButton *facebookButton;
+@property (nonatomic, weak) IBOutlet VLoginButton *twitterButton;
+@property (nonatomic, weak) IBOutlet VLoginButton *signupWithEmailButton;
 
-@property (nonatomic, weak) IBOutlet    UIImageView    *backgroundImageView;
-@property (nonatomic, weak) IBOutlet    UILabel        *fauxEmailLoginButton;
-@property (nonatomic, weak) IBOutlet    UILabel        *fauxPasswordLoginButton;
+@property (weak, nonatomic) IBOutlet CCHLinkTextView *loginTextView;
 
-@property (nonatomic, weak) IBOutlet    UILabel        *facebookButtonLabel;
-@property (nonatomic, weak) IBOutlet    UILabel        *twitterButtonLabel;
-@property (nonatomic, weak) IBOutlet    UIButton       *signupWithEmailButton;
+@property (nonatomic, weak) IBOutlet UIImageView *backgroundImageView;
 
-@property (nonatomic, assign)           VLoginType      loginType;
+@property (nonatomic, assign) VLoginType loginType;
+@property (nonatomic, strong) IBOutlet VLinkTextViewHelper *linkTextHelper;
 
 @end
 
@@ -62,24 +67,25 @@
     
     self.backgroundImageView.image = backgroundImage;
     [self addGradientToImageView:self.backgroundImageView];
-
-    self.fauxEmailLoginButton.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
-    self.fauxEmailLoginButton.textColor = [UIColor whiteColor];
-    self.fauxPasswordLoginButton.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
-    self.fauxPasswordLoginButton.textColor = [UIColor whiteColor];
     
-    self.facebookButtonLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
-    self.facebookButtonLabel.textColor = [UIColor whiteColor];
-    self.twitterButtonLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
-    self.twitterButtonLabel.textColor = [UIColor whiteColor];
-    self.signupWithEmailButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
+    [self.facebookButton setFont:[[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont]];
+    [self.facebookButton setTextColor:[UIColor whiteColor]];
+    self.facebookButton.accessibilityIdentifier = VAutomationIdentifierLoginFacebook;
     
-    self.fauxEmailLoginButton.accessibilityIdentifier = VAutomationIdentifierLoginSelectEmail;
-    self.fauxPasswordLoginButton.accessibilityIdentifier = VAutomationIdentifierLoginSelectPassword;
+    [self.signupWithEmailButton setFont:[[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont]];
+    [self.signupWithEmailButton setTextColor:[UIColor whiteColor]];
     self.signupWithEmailButton.accessibilityIdentifier = VAutomationIdentifierLoginSignUp;
     
-    [self.transitionPlaceholder addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(emailClicked:)]];
-    self.transitionPlaceholder.userInteractionEnabled = YES;
+    [self.twitterButton setFont:[[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont]];
+    [self.twitterButton setTextColor:[UIColor whiteColor]];
+    self.twitterButton.accessibilityIdentifier = VAutomationIdentifierLoginTwitter;
+    
+    NSString *linkText = NSLocalizedString( @"Log in here", @"" );
+    NSString *normalText = NSLocalizedString( @"Already Registered?", @"" );
+    NSString *text = [NSString stringWithFormat:NSLocalizedString( @"%@ %@", @""), normalText, linkText];
+    NSRange range = [text rangeOfString:linkText];
+    [self.linkTextHelper setupLinkTextView:self.loginTextView withText:text range:range];
+    self.loginTextView.linkDelegate = self;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidAbortCreateProfile:) name:VProfileCreateViewControllerWasAbortedNotification object:nil];
 }
@@ -137,6 +143,13 @@
     return YES;
 }
 
+#pragma mark - CCHLinkTextViewDelegate
+
+- (void)linkTextView:(CCHLinkTextView *)linkTextView didTapLinkWithValue:(id)value
+{
+    [self performSegueWithIdentifier:@"toEmailLogin" sender:self];
+}
+
 #pragma mark - Support
 
 - (void)addGradientToImageView:(UIView *)view
@@ -175,7 +188,7 @@
 
 - (IBAction)facebookClicked:(id)sender
 {
-    [self disableButtons];
+    [self showLoginProgress];
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithFacebookSelected];
     [[VUserManager sharedInstance] loginViaFacebookOnCompletion:^(VUser *user, BOOL created)
     {
@@ -199,14 +212,14 @@
         {
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithFacebookDidFail];
             [self didFailWithError:error];
-            [self enableButtons];
+            [self hideLoginProgress];
         });
     }];
 }
 
 - (IBAction)twitterClicked:(id)sender
 {
-    [self disableButtons];
+    [self showLoginProgress];
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithTwitterSelected];
     ACAccountStore *account = [[ACAccountStore alloc] init];
     ACAccountType *accountType = [account accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
@@ -217,7 +230,7 @@
             dispatch_async(dispatch_get_main_queue(), ^(void)
             {
                 [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithTwitterDidFailNoAccounts];
-                [self enableButtons];
+                [self hideLoginProgress];
                 [self twitterAccessDidFail:error];
             });
         }
@@ -229,7 +242,7 @@
                 dispatch_async(dispatch_get_main_queue(), ^(void)
                 {
                     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithTwitterDidFailDenied];
-                    [self enableButtons];
+                    [self hideLoginProgress];
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"NoTwitterTitle", @"")
                                                                     message:NSLocalizedString(@"NoTwitterMessage", @"")
                                                                    delegate:nil
@@ -270,25 +283,18 @@
     }];
 }
 
-- (void)disableButtons
+- (void)showLoginProgress
 {
-    self.facebookButton.enabled = NO;
     self.twitterButton.enabled = NO;
-    self.signupWithEmailButton.userInteractionEnabled = NO;
-    self.transitionPlaceholder.userInteractionEnabled = NO;
+    self.facebookButton.enabled = NO;
+    self.signupWithEmailButton.enabled = NO;
 }
 
-- (void)enableButtons
+- (void)hideLoginProgress
 {
-    self.facebookButton.enabled = YES;
     self.twitterButton.enabled = YES;
-    self.signupWithEmailButton.userInteractionEnabled = YES;
-    self.transitionPlaceholder.userInteractionEnabled = YES;
-}
-
-- (IBAction)emailClicked:(id)sender
-{
-    [self performSegueWithIdentifier:@"toEmailLogin" sender:self];
+    self.facebookButton.enabled = YES;
+    self.signupWithEmailButton.enabled = YES;
 }
 
 - (IBAction)signup:(id)sender
@@ -347,7 +353,7 @@
 
 - (void)vSelectorViewControllerDidCancel:(VSelectorViewController *)selectorViewController
 {
-    [self enableButtons];
+    [self hideLoginProgress];
     [self dismissViewControllerAnimated:YES
                              completion:nil];
 }
@@ -381,7 +387,7 @@
          
          [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithTwitterDidFailUnknown];
          
-         [self enableButtons];
+         [self hideLoginProgress];
          [self didFailWithError:error];
      }];
 }

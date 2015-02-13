@@ -18,8 +18,7 @@
 
 - (void)testInit
 {
-    XCTAssertNoThrow([VKeyboardInputAccessoryView defaultInputAccessoryViewWithDependencyManager:nil], @"should not throw excpetion for nil dependency manager");
-    XCTAssertNotNil([VKeyboardInputAccessoryView defaultInputAccessoryViewWithDependencyManager:nil], @"should return a valid keyboardInputAccessoryView for nil dependency manager");
+    XCTAssertNotNil([VKeyboardInputAccessoryView defaultInputAccessoryView], @"should return a valid keyboardInputAccessoryView for nil dependency manager");
 }
 
 @end

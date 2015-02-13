@@ -303,7 +303,8 @@
 "EnterCodeTitle"        =   "ENTER CODE";
 "ResendEmail"           =   "Resend Email";
 
-"EmailNotFound"         =   "That E-mail address was not found. Please check that you are using the e-mail account you used to create this account.";
+"EmailNotFound"         =   "The email provided was not found. Please enter the email used to create this account.";
+"EmailNotValid"         =   "Please enter the email used to create this account.";
 "Thanks"                =   "Thanks!";
 "CannotVerify"          =   "Cannot Verify Account";
 "IncorrectCode"         =   "The code used for account verification is incorrect.";
