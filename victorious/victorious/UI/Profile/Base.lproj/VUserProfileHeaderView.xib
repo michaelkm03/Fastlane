@@ -117,7 +117,7 @@
                     </constraints>
                 </view>
             </subviews>
-            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.29999999999999999" colorSpace="calibratedRGB"/>
+            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.40000000000000002" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstAttribute="centerY" secondItem="hml-7T-io9" secondAttribute="centerY" priority="999" constant="30" id="1QL-q2-khy"/>
                 <constraint firstItem="S4j-eS-daM" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="36" id="5yZ-Mo-8bM"/>
