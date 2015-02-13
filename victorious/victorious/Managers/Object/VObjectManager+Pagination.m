@@ -44,23 +44,27 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
     
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        VAbstractFilter *filter = (VAbstractFilter *)[self.managedObjectStore.mainQueueManagedObjectContext objectWithID:filterID];
-        filter.maxPageNumber = @([fullResponse[@"total_pages"] integerValue]);
-        filter.currentPageNumber = @([fullResponse[@"page_number"] integerValue]);
-        [filter.managedObjectContext saveToPersistentStore:nil];
-        
-        VSequence *sequenceInContext = (VSequence *)[self.managedObjectStore.mainQueueManagedObjectContext objectWithID:sequence.objectID];
-        
-        NSMutableOrderedSet *comments = [[NSMutableOrderedSet alloc] initWithArray:resultObjects];
-        [comments addObjectsFromArray:sequence.comments.array];
-        sequenceInContext.comments = [comments copy];
-        
-        [sequenceInContext.managedObjectContext saveToPersistentStore:nil];
-        
-        if (success)
+        void(^paginationBlock)(void) = ^(void)
         {
-            success(operation, fullResponse, resultObjects);
-        }
+            VAbstractFilter *filter = (VAbstractFilter *)[self.managedObjectStore.mainQueueManagedObjectContext objectWithID:filterID];
+            filter.maxPageNumber = @([fullResponse[@"total_pages"] integerValue]);
+            filter.currentPageNumber = @([fullResponse[@"page_number"] integerValue]);
+            [filter.managedObjectContext saveToPersistentStore:nil];
+            
+            VSequence *sequenceInContext = (VSequence *)[self.managedObjectStore.mainQueueManagedObjectContext objectWithID:sequence.objectID];
+            
+            NSMutableOrderedSet *comments = [[NSMutableOrderedSet alloc] initWithArray:resultObjects];
+            [comments addObjectsFromArray:sequence.comments.array];
+            sequenceInContext.comments = [comments copy];
+            
+            [sequenceInContext.managedObjectContext saveToPersistentStore:nil];
+            
+            if (success)
+            {
+                success(operation, fullResponse, resultObjects);
+            }
+        };
+        [self parseResultCommentsForMissingUsers:resultObjects withCompletion:paginationBlock];
     };
     
     NSString *path = [NSString stringWithFormat:@"/api/comment/find/%@/%@/%@", sequence.remoteId, commentId, filter.perPageNumber];
@@ -103,32 +107,8 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
                 success(operation, fullResponse, resultObjects);
             }
         };
-        
-        NSMutableArray *nonExistantUsers = [[NSMutableArray alloc] init];
-        for (VComment *comment in resultObjects)
-        {
-            if (!comment.user)
-            {
-                [nonExistantUsers addObject:comment.userId];
-            }
-        }
-        if ([nonExistantUsers count])
-        {
-            [[VObjectManager sharedManager] fetchUsers:nonExistantUsers
-                                      withSuccessBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-             {
-                 paginationBlock();
-             }
-                                             failBlock:^(NSOperation *operation, NSError *error)
-             {
-                 VLog(@"Failed with error: %@", error);
-                 paginationBlock();
-             }];
-        }
-        else
-        {
-            paginationBlock();
-        }
+        [self parseResultCommentsForMissingUsers:resultObjects
+                                 withCompletion:paginationBlock];
     };
     
     NSString *apiPath = [@"/api/comment/all/" stringByAppendingString: sequence.remoteId];
@@ -139,6 +119,44 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
                                  withPageType:pageType
                                  successBlock:fullSuccessBlock
                                     failBlock:fail];
+}
+
+- (void)parseResultCommentsForMissingUsers:(NSArray *)resultObjects
+                           withCompletion:(void (^)(void))completion
+{
+    NSMutableArray *nonExistantUsers = [[NSMutableArray alloc] init];
+    for (VComment *comment in resultObjects)
+    {
+        if (!comment.user)
+        {
+            [nonExistantUsers addObject:comment.userId];
+        }
+    }
+    if ([nonExistantUsers count])
+    {
+        [[VObjectManager sharedManager] fetchUsers:nonExistantUsers
+                                  withSuccessBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+         {
+             if (completion)
+             {
+                 completion();
+             }
+         }
+                                         failBlock:^(NSOperation *operation, NSError *error)
+         {
+             if (completion)
+             {
+                 completion();
+             }
+         }];
+    }
+    else
+    {
+        if (completion)
+        {
+            completion();
+        }
+    }
 }
 
 #pragma mark - Notifications
