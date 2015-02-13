@@ -373,7 +373,7 @@ static NSString * const kVAPIParamContext = @"context";
         }
     };    
     
-    return [self GET:[NSString stringWithFormat:@"/api/userinfo/search/%@/%ld/%@", search_string, (long)pageLimit, context]
+    return [self GET:[NSString stringWithFormat:@"/api/userinfo/search/%@/%ld/%@", [search_string stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding], (long)pageLimit, context]
                object:nil
            parameters:nil
          successBlock:fullSuccess
