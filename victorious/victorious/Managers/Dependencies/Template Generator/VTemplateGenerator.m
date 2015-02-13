@@ -13,6 +13,7 @@
 #import "VScaffoldViewController.h"
 #import "VStreamCollectionViewController.h"
 #import "VTemplateGenerator.h"
+#import "VSettingManager.h"
 
 static NSString * const kIDKey = @"id";
 static NSString * const kReferenceIDKey = @"referenceID";
@@ -93,32 +94,32 @@ static NSString * const kVideoMuted = @"videoMuted";
 {
     NSMutableDictionary *template = [[NSMutableDictionary alloc] init];
     [self.dataFromInitCall enumerateKeysAndObjectsUsingBlock:^(NSString *key, id obj, BOOL *stop)
-    {
-        if ([key isEqual:kAppearanceKey])
-        {
-            if ([obj isKindOfClass:[NSDictionary class]])
-            {
-                [template addEntriesFromDictionary:obj];
-                
-                NSDictionary *accentColor = obj[VDependencyManagerAccentColorKey];
-                
-                if ( accentColor == nil )
-                {
-                    accentColor = @{
-                        kRedKey: @0,
-                        kBlueKey: @0,
-                        kGreenKey: @0,
-                        kAlphaKey: @1
-                    };
-                }
-                self.accentColor = accentColor;
-            }
-        }
-        else
-        {
-            template[key] = obj;
-        }
-    }];
+     {
+         if ([key isEqual:kAppearanceKey])
+         {
+             if ([obj isKindOfClass:[NSDictionary class]])
+             {
+                 [template addEntriesFromDictionary:obj];
+                 
+                 NSDictionary *accentColor = obj[VDependencyManagerAccentColorKey];
+                 
+                 if ( accentColor == nil )
+                 {
+                     accentColor = @{
+                                     kRedKey: @0,
+                                     kBlueKey: @0,
+                                     kGreenKey: @0,
+                                     kAlphaKey: @1
+                                     };
+                 }
+                 self.accentColor = accentColor;
+             }
+         }
+         else
+         {
+             template[key] = obj;
+         }
+     }];
     
     template[VDependencyManagerScaffoldViewControllerKey] = @{ kClassNameKey: @"sideMenu.scaffold",
                                                                VHamburgerButtonIconKey: (self.templateCEnabled ? [UIImage imageNamed:@"menuC"] : [UIImage imageNamed:@"Menu"] ),
@@ -126,11 +127,34 @@ static NSString * const kVideoMuted = @"videoMuted";
                                                                VScaffoldViewControllerMenuComponentKey: [self menuComponent],
                                                                VStreamCollectionViewControllerCreateSequenceIconKey: (self.templateCEnabled ? [UIImage imageNamed:@"createContentButtonC"] : [UIImage imageNamed:@"createContentButton"]),
                                                                VScaffoldViewControllerUserProfileViewComponentKey: @{ kClassNameKey: @"userProfile.screen" },
+                                                               kSelectorKey: [self kSelectorKeyFromInitDictionary:self.dataFromInitCall],
                                                                VScaffoldViewControllerNavigationBarAppearanceKey: [self navigationBarAppearance],
                                                             };
     template[VDependencyManagerWorkspaceFlowKey] = [self workspaceFlowComponent];
     
     return template;
+}
+
+- (NSDictionary *)kSelectorKeyFromInitDictionary:(NSDictionary *)initDictionary
+{
+    NSDictionary *kSelectorKey = @{
+                                   kClassNameKey: @"basic.multiScreenSelector",
+                                   VDependencyManagerBackgroundColorKey: self.accentColor,
+                                   };
+    
+    if ( [[(NSDictionary *)[initDictionary objectForKey:@"experiments"] objectForKey:@"template_c_enabled"] boolValue] )
+    {
+        kSelectorKey =  @{
+                          kClassNameKey: @"textbar.multiScreenSelector",
+                          VDependencyManagerBackgroundColorKey:@{
+                                              kRedKey: @255,
+                                              kBlueKey: @255,
+                                              kGreenKey: @255,
+                                              kAlphaKey: @1
+                                              }
+                          };
+    }
+    return kSelectorKey;
 }
 
 - (NSDictionary *)workspaceFlowComponent
@@ -340,10 +364,6 @@ static NSString * const kVideoMuted = @"videoMuted";
                                 VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/follows_detail_list_by_stream/0/home",
                             }
                         ],
-                        kSelectorKey: @{
-                            kClassNameKey: @"basic.multiScreenSelector",
-                            VDependencyManagerBackgroundColorKey: self.accentColor,
-                        },
                         kInitialKey: @{
                             kReferenceIDKey: self.homeRecentID,
                         },
