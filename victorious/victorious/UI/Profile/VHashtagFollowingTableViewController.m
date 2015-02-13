@@ -20,6 +20,7 @@
 #import "VStreamCollectionViewController.h"
 #import "VNoContentView.h"
 #import <MBProgressHUD.h>
+#import "VHashtagStreamCollectionViewController.h"
 
 static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
 
@@ -213,9 +214,8 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
 
 - (void)showStreamWithHashtag:(VHashtag *)hashtag
 {
-    VStream *stream = [VStream streamForHashTag:hashtag.tag];
-    VStreamCollectionViewController *streamViewController = [VStreamCollectionViewController streamViewControllerForStream:stream];
-    [self.navigationController pushViewController:streamViewController animated:YES];
+    VHashtagStreamCollectionViewController *vc = [VHashtagStreamCollectionViewController instantiateWithHashtag:hashtag.tag];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark - Subscribe / Unsubscribe Actions

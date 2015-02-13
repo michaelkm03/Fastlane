@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import <objc/runtime.h>
+
 #import "VNewContentViewController+Actions.h"
 
 // Theme
@@ -38,10 +40,8 @@
 #import "VLoginViewController.h"
 #import "VStreamCollectionViewController.h"
 #import "VAuthorizationViewControllerFactory.h"
-
 #import "VSequenceActionController.h"
-
-#import <objc/runtime.h>
+#import "VHashtagStreamCollectionViewController.h"
 
 static const char kSequenceActionControllerKey;
 
@@ -94,13 +94,11 @@ static const char kSequenceActionControllerKey;
     VActionItem *descripTionItem = [VActionItem descriptionActionItemWithText:self.viewModel.name
                                                       hashTagSelectionHandler:^(NSString *hashTag)
                                     {
-                                        VStreamCollectionViewController *stream = [VStreamCollectionViewController streamViewControllerForStream:[VStream streamForHashTag:hashTag]];
+                                        VHashtagStreamCollectionViewController *vc = [VHashtagStreamCollectionViewController instantiateWithHashtag:hashTag];
                                         
-                                        [contentViewController dismissViewControllerAnimated:YES
-                                                                 completion:^
+                                        [contentViewController dismissViewControllerAnimated:YES completion:^
                                          {
-                                             [contentViewController.navigationController pushViewController:stream
-                                                                                  animated:YES];
+                                             [contentViewController.navigationController pushViewController:vc animated:YES];
                                          }];
                                     }];
 

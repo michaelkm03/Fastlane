@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import <SDWebImage/UIImageView+WebCache.h>
+
 #import "VScaffoldViewController.h"
 #import "VStreamCollectionViewController.h"
 #import "VStreamCollectionViewDataSource.h"
@@ -30,7 +32,6 @@
 
 //Views
 #import "VNoContentView.h"
-#import "MBProgressHUD.h"
 
 //Data models
 #import "VStream+Fetcher.h"
@@ -56,8 +57,7 @@
 
 #import "VConstants.h"
 #import "VTracking.h"
-
-#import <SDWebImage/UIImageView+WebCache.h>
+#import "VHashtagStreamCollectionViewController.h"
 
 static NSString * const kCanAddContentKey = @"canAddContent";
 static NSString * const kStreamCollectionStoryboardId = @"StreamCollection";
@@ -75,9 +75,6 @@ NSString * const VDependencyManagerStreamURLPathKey = @"streamUrlPath";
 @property (strong, nonatomic) VSequenceActionController *sequenceActionController;
 
 @property (nonatomic, assign) BOOL hasRefreshed;
-@property (nonatomic, assign) BOOL isSubscribedToHashtag;
-@property (nonatomic, strong) NSString *selectedHashtag;
-@property (nonatomic, weak) MBProgressHUD *failureHUD;
 
 @end
 
@@ -157,10 +154,6 @@ NSString * const VDependencyManagerStreamURLPathKey = @"streamUrlPath";
     self.streamDataSource.delegate = self;
     self.streamDataSource.collectionView = self.collectionView;
     self.collectionView.dataSource = self.streamDataSource;
-    
-    
-    // Fetch Users Hashtags
-   [self fetchHashtagsForLoggedInUser];
     
     // Notifications
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -255,56 +248,6 @@ NSString * const VDependencyManagerStreamURLPathKey = @"streamUrlPath";
     self.title = currentStream.name;
     self.navigationItem.title = currentStream.name;
     [super setCurrentStream:currentStream];
-}
-
-#pragma mark - Fetch Users Tags
-
-- (void)fetchHashtagsForLoggedInUser
-{
-    VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-    {
-        [self updateHashtagNavButton:resultObjects];
-    };
-    
-    VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
-    {
-        VLog(@"%@\n%@", operation, error);
-    };
-    
-    [[VObjectManager sharedManager] getHashtagsSubscribedToWithPageType:VPageTypeFirst
-                                                           perPageLimit:1000
-                                                           successBlock:successBlock
-                                                              failBlock:failureBlock];
-}
-
-- (void)updateHashtagNavButton:(NSArray *)hashtags
-{
-    __block NSString *buttonImageName = @"streamFollowHashtag";
-    __block BOOL subscribed = NO;
-    
-    VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-    NSMutableOrderedSet *tagSet = [mainUser.hashtags mutableCopy];
-    
-    [hashtags enumerateObjectsUsingBlock:^(VHashtag *hashtag, NSUInteger idx, BOOL *stop) {
-        [tagSet addObject:hashtag];
-        if ([hashtag.tag isEqualToString:self.selectedHashtag])
-        {
-            buttonImageName = @"followedHashtag";
-            subscribed = YES;
-        }
-    }];
-    
-    mainUser.hashtags = tagSet;
-    [mainUser.managedObjectContext save:nil];
-    
-    if (self.selectedHashtag)
-    {
-//        UIImage *hashtagButtonImage = [[UIImage imageNamed:buttonImageName]  imageWithRenderingMode:UIImageRenderingModeAutomatic];
-  
-        // TODO
-//        [self.navHeaderView setRightButtonImage:hashtagButtonImage withAction:@selector(followUnfollowHashtagButtonAction:) onTarget:nil];
-        self.isSubscribedToHashtag = subscribed;
-    }
 }
 
 #pragma mark - VMarqueeDelegate
@@ -573,8 +516,8 @@ NSString * const VDependencyManagerStreamURLPathKey = @"streamUrlPath";
     }
     
     // Instantiate and push to stack
-    VStreamCollectionViewController *hashtagStream = [VStreamCollectionViewController streamViewControllerForStream:[VStream streamForHashTag:hashtag]];
-    [self.navigationController pushViewController:hashtagStream animated:YES];
+    VHashtagStreamCollectionViewController *vc = [VHashtagStreamCollectionViewController instantiateWithHashtag:hashtag];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark - Actions
@@ -606,110 +549,6 @@ NSString * const VDependencyManagerStreamURLPathKey = @"streamUrlPath";
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventSequenceSelected parameters:params];
     
     [[self.dependencyManager scaffoldViewController] showContentViewWithSequence:sequence commentId:nil placeHolderImage:previewImage];
-}
-
-#pragma mark - Hashtag Button Actions
-
-- (void)followUnfollowHashtagButtonAction:(UIButton *)sender
-{
-    // Check if logged in before attempting to subscribe / unsubscribe
-    if (![VObjectManager sharedManager].authorized)
-    {
-        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
-        return;
-    }
-    
-    // Disable the sub/unsub button
-    sender.userInteractionEnabled = NO;
-    sender.alpha = 0.3f;
-
-    if (self.isSubscribedToHashtag)
-    {
-        [self unfollowHashtagAction:sender];
-    }
-    else
-    {
-        [self followHashtagAction:sender];
-    }
-}
-
-- (void)followHashtagAction:(UIButton *)sender
-{
-    VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-    {
-        // Animate follow button
-        self.isSubscribedToHashtag = YES;
-        [self updateSubscribeStatusAnimated:YES button:sender];
-    };
-    
-    VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
-    {
-        self.failureHUD = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
-        self.failureHUD.mode = MBProgressHUDModeText;
-        self.failureHUD.detailsLabelText = NSLocalizedString(@"HashtagSubscribeError", @"");
-        [self.failureHUD hide:YES afterDelay:3.0f];
-        
-        // Set button back to normal state
-        sender.userInteractionEnabled = YES;
-        sender.alpha = 1.0f;
-    };
-    
-    // Backend Subscribe to Hashtag call
-    [[VObjectManager sharedManager] subscribeToHashtag:self.selectedHashtag
-                                          successBlock:successBlock
-                                             failBlock:failureBlock];
-}
-
-- (void)unfollowHashtagAction:(UIButton *)sender
-{
-    VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-    {
-        self.isSubscribedToHashtag = NO;
-        [self updateSubscribeStatusAnimated:YES button:sender];
-    };
-    
-    VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
-    {
-        self.failureHUD = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
-        self.failureHUD.mode = MBProgressHUDModeText;
-        self.failureHUD.detailsLabelText = NSLocalizedString(@"HashtagUnsubscribeError", @"");
-        [self.failureHUD hide:YES afterDelay:3.0f];
-        
-        // Set button back to normal state
-        sender.userInteractionEnabled = YES;
-        sender.alpha = 1.0f;
-    };
-    
-    // Backend Unsubscribe to Hashtag call
-    [[VObjectManager sharedManager] unsubscribeToHashtag:self.selectedHashtag
-                                            successBlock:successBlock
-                                               failBlock:failureBlock];
-}
-
-#pragma mark - Follow / Unfollow Hashtag Completion Method
-
-- (void)updateSubscribeStatusAnimated:(BOOL)animated button:(UIButton *)sender
-{
-    NSString *buttonImageName = @"streamFollowHashtag";
-    
-    if (self.isSubscribedToHashtag)
-    {
-        buttonImageName = @"followedHashtag";
-    }
-
-    // Reset the hashtag button image
-    // TODO
-//    UIImage *hashtagButtonImage = [[UIImage imageNamed:buttonImageName] imageWithRenderingMode:UIImageRenderingModeAutomatic];
-//    [self.navHeaderView setRightButtonImage:hashtagButtonImage withAction:nil onTarget:nil];
-    
-    
-    // Set button back to normal state
-    sender.userInteractionEnabled = YES;
-    sender.alpha = 1.0f;
-
-    // Fire NSNotification to signal change in the status of this hashtag
-    [[NSNotificationCenter defaultCenter] postNotificationName:kHashtagStatusChangedNotification
-                                                        object:nil];
 }
 
 #pragma mark - Notifications
