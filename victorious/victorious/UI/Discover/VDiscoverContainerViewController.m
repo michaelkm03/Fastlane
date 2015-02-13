@@ -165,14 +165,13 @@
 
 #pragma mark - UITextFieldDelegate
 
- - (void)textFieldDidBeginEditing:(UITextField *)textField
+- (void)textFieldDidBeginEditing:(UITextField *)textField
 {
     // Release the search field
     [self.searchField resignFirstResponder];
 
     VUsersAndTagsSearchViewController *searchViewController = [VUsersAndTagsSearchViewController initWithDependencyManager:self.dependencyManager];
     searchViewController.transitioningDelegate = self.transitionDelegate;
-    self.navigationController.delegate = self.transitionDelegate;
     [self.navigationController pushViewController:searchViewController animated:YES];
 }
 
@@ -189,6 +188,19 @@
     {
         self.usersAndTagsSearchViewController = segue.destinationViewController;
     }
+}
+
+#pragma mark - UINavigationControllerDelegate methods
+
+- (id <UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
+                                   animationControllerForOperation:(UINavigationControllerOperation)operation
+                                                fromViewController:(UIViewController *)fromVC
+                                                  toViewController:(UIViewController *)toVC
+{
+    return [self.transitionDelegate navigationController:navigationController
+                         animationControllerForOperation:operation
+                                      fromViewController:fromVC
+                                        toViewController:toVC];
 }
 
 @end
