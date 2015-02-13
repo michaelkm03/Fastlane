@@ -370,7 +370,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     
     if (self.viewModel.sequence.canComment)
     {
-        VKeyboardInputAccessoryView *inputAccessoryView = [VKeyboardInputAccessoryView defaultInputAccessoryViewWithDependencyManager:nil];
+        VKeyboardInputAccessoryView *inputAccessoryView = [VKeyboardInputAccessoryView defaultInputAccessoryView];
         inputAccessoryView.translatesAutoresizingMaskIntoConstraints = NO;
         inputAccessoryView.returnKeyType = UIReturnKeyDone;
         inputAccessoryView.delegate = self;

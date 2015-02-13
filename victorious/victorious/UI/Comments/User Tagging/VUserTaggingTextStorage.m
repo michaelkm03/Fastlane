@@ -9,8 +9,6 @@
 #import "VUserTaggingTextStorage.h"
 #import "VInlineSearchTableViewController.h"
 #import "VUser.h"
-#import "VThemeManager.h"
-#import "VDependencyManager.h"
 #import "VTag.h"
 #import "VTagStringFormatter.h"
 #import "VTagDictionary.h"
@@ -42,7 +40,6 @@ static NSString * const kThreeSpaces = @"   ";
 @implementation VUserTaggingTextStorage
 
 - (instancetype)initWithString:(NSString *)str
-          andDependencyManager:(VDependencyManager *)dependencyManager
                       textView:(UITextView *)textView
                taggingDelegate:(id<VUserTaggingTextStorageDelegate>)taggingDelegate
 {
@@ -50,7 +47,6 @@ static NSString * const kThreeSpaces = @"   ";
     if ( self != nil )
     {
         _innerStorage = [[NSMutableAttributedString alloc] init];
-        _dependencyManager = dependencyManager;
         _taggingDelegate = taggingDelegate;
         _textView = textView;
         BOOL hasTextView = _textView != nil;
@@ -66,7 +62,7 @@ static NSString * const kThreeSpaces = @"   ";
             //Add already present string to inner storage
             if ( hasTextView )
             {
-                [self setupStringAttributesDictionariesWithAttributes:textView.typingAttributes];
+                [self setupStringAttributesDictionariesFromTextView:textView];
             }
             
             [self replaceCharactersInRange:NSMakeRange(0, 0) withString:str];
@@ -323,7 +319,7 @@ static NSString * const kThreeSpaces = @"   ";
 - (void)setTextView:(UITextView *)textView
 {
     _textView = textView;
-    [self setupStringAttributesDictionariesWithAttributes:textView.typingAttributes];
+    [self setupStringAttributesDictionariesFromTextView:textView];
 }
 
 - (void)setAttributes:(NSDictionary *)attrs range:(NSRange)range
@@ -344,12 +340,7 @@ static NSString * const kThreeSpaces = @"   ";
         }
     }
     
-    //Setup string attributes if not already set here or by another class
-    if ( self.defaultStringAttributes == nil && self.tagStringAttributes == nil )
-    {
-        [self setupStringAttributesDictionariesWithAttributes:attrs];
-    }
-    
+    //
     [self.innerStorage setAttributes:[self attributesForColor:[attrs objectForKey:NSForegroundColorAttributeName]] range:range];
     [self edited:NSTextStorageEditedAttributes range:range changeInLength:0];
 }
@@ -359,33 +350,17 @@ static NSString * const kThreeSpaces = @"   ";
     return [color isEqual:[self.tagStringAttributes objectForKey:NSForegroundColorAttributeName]] ? self.tagStringAttributes : self.defaultStringAttributes;
 }
 
-- (void)setupStringAttributesDictionariesWithAttributes:(NSDictionary *)attributes
+- (void)setupStringAttributesDictionariesFromTextView:(UITextView *)textView
 {
-    if ( [attributes objectForKey:NSFontAttributeName] == nil )
+    if ( [textView.typingAttributes objectForKey:NSFontAttributeName] == nil )
     {
         return;
     }
     
-    NSMutableDictionary *dsa = [[NSMutableDictionary alloc] initWithDictionary:attributes];
-    
-    //Set the text color to black if none is specified
-    if ( [dsa objectForKey:NSForegroundColorAttributeName] )
-    {
-        [dsa setObject:[UIColor blackColor] forKey:NSForegroundColorAttributeName];
-    }
-    
-    self.defaultStringAttributes = dsa;
-    
-    NSMutableDictionary *tsa = [[NSMutableDictionary alloc] initWithDictionary:attributes];
-    
-    UIColor *tagColor = [self.dependencyManager colorForKey:[VTagStringFormatter defaultDependencyManagerTagColorKey]];
-    if ( tagColor == nil)
-    {
-        tagColor = [[VThemeManager sharedThemeManager] themedColorForKey:[VTagStringFormatter defaultThemeManagerTagColorKey]];
-    }
-    [tsa setObject:tagColor forKey:NSForegroundColorAttributeName];
-    
-    self.tagStringAttributes = tsa;
+    NSMutableDictionary *attributes = [[NSMutableDictionary alloc] initWithDictionary:textView.typingAttributes];
+    self.defaultStringAttributes =  attributes;
+    [attributes addEntriesFromDictionary:textView.linkTextAttributes];
+    self.tagStringAttributes = attributes;
 }
 
 //Convenience wrapper for the VTagStringFormatter delimiter string

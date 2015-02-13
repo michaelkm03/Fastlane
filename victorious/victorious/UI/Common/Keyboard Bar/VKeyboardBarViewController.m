@@ -51,7 +51,7 @@ static const NSInteger kCharacterLimit = 255;
 {
     [super viewDidLoad];
     
-    self.textStorage = [[VUserTaggingTextStorage alloc] initWithString:nil andDependencyManager:nil textView:nil taggingDelegate:self.delegate];
+    self.textStorage = [[VUserTaggingTextStorage alloc] initWithString:nil textView:nil taggingDelegate:self.delegate];
     
     NSLayoutManager *layoutManager = [[NSLayoutManager alloc] init];
     [self.textStorage addLayoutManager:layoutManager];

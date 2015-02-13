@@ -87,7 +87,7 @@ extern const CGFloat VInputAccessoryViewDesiredMinimumHeight;
  *
  *  @return A newly instantiated inputAccessoryView.
  */
-+ (VKeyboardInputAccessoryView *)defaultInputAccessoryViewWithDependencyManager:(VDependencyManager *)dependencyManager;
++ (VKeyboardInputAccessoryView *)defaultInputAccessoryView;
 
 /**
  *  The object that acts as the delegate of the receiving VKeyboardInputAccessoryView.
