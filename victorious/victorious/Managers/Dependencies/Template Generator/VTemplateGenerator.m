@@ -11,6 +11,7 @@
 #import "VDependencyManager+VScaffoldViewController.h"
 #import "VHamburgerButton.h"
 #import "VScaffoldViewController.h"
+#import "VStreamCollectionViewController.h"
 #import "VTemplateGenerator.h"
 
 static NSString * const kIDKey = @"id";
@@ -30,7 +31,6 @@ static NSString * const kMarqueeKey = @"marquee";
 static NSString * const kCanAddContentKey = @"canAddContent";
 static NSString * const kStreamsKey = @"streams";
 static NSString * const kInitialKey = @"initial";
-static NSString * const kStreamUrlPathKey = @"streamUrlPath";
 static NSString * const kUserSpecificKey = @"isUserSpecific";
 
 static NSString * const kRedKey = @"red";
@@ -124,6 +124,7 @@ static NSString * const kVideoMuted = @"videoMuted";
                                                                VHamburgerButtonIconKey: (self.templateCEnabled ? [UIImage imageNamed:@"menuC"] : [UIImage imageNamed:@"Menu"] ),
                                                                VDependencyManagerInitialViewControllerKey: @{ kReferenceIDKey: self.firstMenuItemID },
                                                                VScaffoldViewControllerMenuComponentKey: [self menuComponent],
+                                                               VStreamCollectionViewControllerCreateSequenceIconKey: (self.templateCEnabled ? [UIImage imageNamed:@"createContentButtonC"] : [UIImage imageNamed:@"createContentButton"]),
                                                                VScaffoldViewControllerUserProfileViewComponentKey: @{ kClassNameKey: @"userProfile.screen" },
                                                                VScaffoldViewControllerNavigationBarAppearanceKey: [self navigationBarAppearance],
                                                             };
@@ -323,20 +324,20 @@ static NSString * const kVideoMuted = @"videoMuted";
                             @{
                                 kClassNameKey: @"stream.screen",
                                 kTitleKey: NSLocalizedString(@"Featured", @""),
-                                kStreamUrlPathKey: @"/api/sequence/hot_detail_list_by_stream/home",
+                                VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/hot_detail_list_by_stream/home",
                                 kIsHomeKey: @YES,
                             },
                             @{
                                 kIDKey: self.homeRecentID,
                                 kClassNameKey: @"stream.screen",
                                 kTitleKey: NSLocalizedString(@"Recent", @""),
-                                kStreamUrlPathKey: [self urlPathForStreamCategories:[VUGCCategories() arrayByAddingObjectsFromArray:VOwnerCategories()]],
+                                VStreamCollectionViewControllerStreamURLPathKey: [self urlPathForStreamCategories:[VUGCCategories() arrayByAddingObjectsFromArray:VOwnerCategories()]],
                                 kCanAddContentKey: @YES,
                             },
                             @{
                                 kClassNameKey: @"followingStream.screen",
                                 kTitleKey: NSLocalizedString(@"Following", @""),
-                                kStreamUrlPathKey: @"/api/sequence/follows_detail_list_by_stream/0/home",
+                                VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/follows_detail_list_by_stream/0/home",
                             }
                         ],
                         kSelectorKey: @{
@@ -359,12 +360,12 @@ static NSString * const kVideoMuted = @"videoMuted";
                         kStreamsKey: @[
                             @{
                                 kTitleKey: NSLocalizedString(@"Featured", @""),
-                                kStreamUrlPathKey: @"/api/sequence/hot_detail_list_by_stream/ugc"
+                                VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/hot_detail_list_by_stream/ugc"
                             },
                             @{
                                 kInitialKey: @YES,
                                 kTitleKey: NSLocalizedString(@"Recent", @""),
-                                kStreamUrlPathKey: [self urlPathForStreamCategories:VUGCCategories()],
+                                VStreamCollectionViewControllerStreamURLPathKey: [self urlPathForStreamCategories:VUGCCategories()],
                             },
                         ]
                     }
@@ -415,14 +416,14 @@ static NSString * const kVideoMuted = @"videoMuted";
     NSDictionary *stream = @{
       kTitleKey: NSLocalizedString(@"Recent", @""),
       kInitialKey: @YES,
-      kStreamUrlPathKey: [self urlPathForStreamCategories:[VUGCCategories() arrayByAddingObjectsFromArray:VOwnerCategories()]]
+      VStreamCollectionViewControllerStreamURLPathKey: [self urlPathForStreamCategories:[VUGCCategories() arrayByAddingObjectsFromArray:VOwnerCategories()]]
     };
     
     NSNumber *marqueeEnabled = [self.dataFromInitCall valueForKeyPath:@"experiments.marquee_enabled"];
     if ( [marqueeEnabled isKindOfClass:[NSNumber class]] && [marqueeEnabled boolValue] )
     {
         NSMutableDictionary *mutableStream = [stream mutableCopy];
-        mutableStream[kMarqueeKey] = @{ kStreamUrlPathKey: @"/api/sequence/detail_list_by_stream/marquee" };
+        mutableStream[kMarqueeKey] = @{ VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/detail_list_by_stream/marquee" };
         return [mutableStream copy];
     }
     return stream;
@@ -439,7 +440,7 @@ static NSString * const kVideoMuted = @"videoMuted";
             kDestinationKey: @{
                 kClassNameKey: @"streamDirectory.screen",
                 kTitleKey: NSLocalizedString(@"Channels", nil),
-                kStreamUrlPathKey: @"/api/sequence/detail_list_by_stream/directory"
+                VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/detail_list_by_stream/directory"
             }
         };
     }
@@ -454,12 +455,12 @@ static NSString * const kVideoMuted = @"videoMuted";
                 kStreamsKey: @[
                     @{
                         kTitleKey: NSLocalizedString(@"Featured", @""),
-                        kStreamUrlPathKey: @"/api/sequence/hot_detail_list_by_stream/owner"
+                        VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/hot_detail_list_by_stream/owner"
                     },
                     @{
                         kInitialKey: @YES,
                         kTitleKey: NSLocalizedString(@"Recent", @""),
-                        kStreamUrlPathKey: [self urlPathForStreamCategories:VOwnerCategories()],
+                        VStreamCollectionViewControllerStreamURLPathKey: [self urlPathForStreamCategories:VOwnerCategories()],
                     }
                 ]
             }

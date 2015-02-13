@@ -13,7 +13,8 @@
 #import "VSequenceActionsDelegate.h"
 #import "VNewContentViewController.h"
 
-extern NSString * const VDependencyManagerStreamURLPathKey;
+extern NSString * const VStreamCollectionViewControllerStreamURLPathKey; ///< The key that identifies the stream URL path in VDependencyManager
+extern NSString * const VStreamCollectionViewControllerCreateSequenceIconKey; ///< The key that identifies the create sequence icon in VDependencyManager
 
 @class VStreamCollectionViewDataSource;
 

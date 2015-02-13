@@ -6,8 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import <SDWebImage/UIImageView+WebCache.h>
-
+#import "VAutomation.h"
 #import "VScaffoldViewController.h"
 #import "VStreamCollectionViewController.h"
 #import "VStreamCollectionViewDataSource.h"
@@ -20,7 +19,9 @@
 #import "VRootViewController.h"
 
 //Controllers
+#import "VAlertController.h"
 #import "VCommentsContainerViewController.h"
+#import "VCreatePollViewController.h"
 #import "VUploadProgressViewController.h"
 #import "VUserProfileViewController.h"
 #import "VMarqueeController.h"
@@ -29,6 +30,7 @@
 #import "VWebBrowserViewController.h"
 #import "VNavigationController.h"
 #import "VNewContentViewController.h"
+#import "VWorkspaceFlowController.h"
 
 //Views
 #import "VNoContentView.h"
@@ -59,11 +61,14 @@
 #import "VTracking.h"
 #import "VHashtagStreamCollectionViewController.h"
 
+#import <SDWebImage/UIImageView+WebCache.h>
+
 static NSString * const kCanAddContentKey = @"canAddContent";
 static NSString * const kStreamCollectionStoryboardId = @"StreamCollection";
 static CGFloat const kTemplateCLineSpacing = 8;
 
-NSString * const VDependencyManagerStreamURLPathKey = @"streamUrlPath";
+NSString * const VStreamCollectionViewControllerStreamURLPathKey = @"streamUrlPath";
+NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"createSequenceIcon";
 
 @interface VStreamCollectionViewController () <VMarqueeDelegate, VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout>
 
@@ -71,6 +76,7 @@ NSString * const VDependencyManagerStreamURLPathKey = @"streamUrlPath";
 @property (strong, nonatomic) NSIndexPath *lastSelectedIndexPath;
 @property (strong, nonatomic) NSCache *preloadImageCache;
 @property (strong, nonatomic) VMarqueeController *marquee;
+@property (strong, nonatomic) VWorkspaceFlowController *workspaceFlowController;
 
 @property (strong, nonatomic) VSequenceActionController *sequenceActionController;
 
@@ -95,11 +101,12 @@ NSString * const VDependencyManagerStreamURLPathKey = @"streamUrlPath";
 {
     NSAssert([NSThread isMainThread], @"This method must be called on the main thread");
     
-    NSString *urlPathKey = [dependencyManager stringForKey:VDependencyManagerStreamURLPathKey];
+    NSString *urlPathKey = [dependencyManager stringForKey:VStreamCollectionViewControllerStreamURLPathKey];
     VStream *stream = [VStream streamForPath:urlPathKey inContext:dependencyManager.objectManager.managedObjectStore.mainQueueManagedObjectContext];
     stream.name = [dependencyManager stringForKey:VDependencyManagerTitleKey];
     
     VStreamCollectionViewController *streamCollectionVC = [self streamViewControllerForStream:stream];
+    streamCollectionVC.dependencyManager = dependencyManager;
     
     if ( [[dependencyManager numberForKey:@"experiments.marquee_enabled"] boolValue] )
     {
@@ -108,8 +115,7 @@ NSString * const VDependencyManagerStreamURLPathKey = @"streamUrlPath";
     
     if ( [[dependencyManager numberForKey:kCanAddContentKey] boolValue] )
     {
-        // TODO
-//        [streamCollectionVC v_addCreateSequenceButton];
+        [streamCollectionVC addCreateSequenceButton];
     }
     
     NSNumber *cellVisibilityRatio = [dependencyManager numberForKey:@"experiments.stream_atf_view_threshold"];
@@ -118,8 +124,6 @@ NSString * const VDependencyManagerStreamURLPathKey = @"streamUrlPath";
         streamCollectionVC.trackingMinRequiredCellVisibilityRatio = cellVisibilityRatio.floatValue;
     }
     
-    streamCollectionVC.dependencyManager = dependencyManager;
-
     return streamCollectionVC;
 }
 
@@ -248,6 +252,86 @@ NSString * const VDependencyManagerStreamURLPathKey = @"streamUrlPath";
     self.title = currentStream.name;
     self.navigationItem.title = currentStream.name;
     [super setCurrentStream:currentStream];
+}
+
+#pragma mark - Sequence Creation
+
+- (void)addCreateSequenceButton
+{
+    UIImage *image = [self.dependencyManager templateValueOfType:[UIImage class] forKey:VStreamCollectionViewControllerCreateSequenceIconKey];
+    UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(createSequenceAction:)];
+    barButton.accessibilityIdentifier = VAutomationIdentifierAddPost;
+    self.navigationItem.rightBarButtonItem = barButton;
+}
+
+- (IBAction)createSequenceAction:(id)sender
+{
+    if (![VObjectManager sharedManager].authorized)
+    {
+        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
+        return;
+    }
+    
+    [self showContentTypeSelection];
+}
+
+- (void)showContentTypeSelection
+{
+    VAlertController *alertControler = [VAlertController actionSheetWithTitle:nil message:nil];
+    [alertControler addAction:[VAlertAction cancelButtonWithTitle:NSLocalizedString(@"CancelButton", @"Cancel button") handler:nil]];
+    [alertControler addAction:[VAlertAction buttonWithTitle:NSLocalizedString(@"Create a Video Post", @"") handler:^(VAlertAction *action)
+                               {
+                                   [self presentCreateFlowWithInitialCaptureState:VWorkspaceFlowControllerInitialCaptureStateVideo];
+                               }]];
+    [alertControler addAction:[VAlertAction buttonWithTitle:NSLocalizedString(@"Create an Image Post", @"") handler:^(VAlertAction *action)
+                               {
+                                   [self presentCreateFlowWithInitialCaptureState:VWorkspaceFlowControllerInitialCaptureStateImage];
+                               }]];
+    [alertControler addAction:[VAlertAction buttonWithTitle:NSLocalizedString(@"Create a GIF", @"Create a gif action button.")
+                                                    handler:^(VAlertAction *action)
+                               {
+                                   [self presentCreateFlowWithInitialCaptureState:VWorkspaceFlowControllerInitialCaptureStateVideo
+                                                            initialImageEditState:VImageToolControllerInitialImageEditStateText
+                                                         andInitialVideoEditState:VVideoToolControllerInitialVideoEditStateGIF];
+                               }]];
+    [alertControler addAction:[VAlertAction buttonWithTitle:NSLocalizedString(@"Create a Poll", @"") handler:^(VAlertAction *action)
+                               {
+                                   VCreatePollViewController *createViewController = [VCreatePollViewController newCreatePollViewController];
+                                   [self.navigationController pushViewController:createViewController animated:YES];
+                               }]];
+    [alertControler presentInViewController:self animated:YES completion:nil];
+}
+
+- (void)presentCreateFlowWithInitialCaptureState:(VWorkspaceFlowControllerInitialCaptureState)initialCaptureState
+                           initialImageEditState:(VImageToolControllerInitialImageEditState)initialImageEdit
+                        andInitialVideoEditState:(VVideoToolControllerInitialVideoEditState)initialVideoEdit
+{
+    VDependencyManager *dependencyManager = [(id)self dependencyManager];
+    
+    self.workspaceFlowController = [dependencyManager templateValueOfType:[VWorkspaceFlowController class]
+                                                                   forKey:VDependencyManagerWorkspaceFlowKey
+                                                    withAddedDependencies:@{VWorkspaceFlowControllerInitialCaptureStateKey:@(initialCaptureState),
+                                                                            VImageToolControllerInitialImageEditStateKey:@(initialImageEdit),
+                                                                            VVideoToolControllerInitalVideoEditStateKey:@(initialVideoEdit)}];
+    __weak typeof(self) welf = self;
+    self.workspaceFlowController.completion = ^void(BOOL finished)
+    {
+        [welf dismissViewControllerAnimated:YES
+                                 completion:^
+         {
+             welf.workspaceFlowController = nil;
+         }];
+    };
+    [self presentViewController:self.workspaceFlowController.flowRootViewController
+                       animated:YES
+                     completion:nil];
+}
+
+- (void)presentCreateFlowWithInitialCaptureState:(VWorkspaceFlowControllerInitialCaptureState)initialCaptureState
+{
+    [self presentCreateFlowWithInitialCaptureState:initialCaptureState
+                             initialImageEditState:VImageToolControllerInitialImageEditStateText
+                          andInitialVideoEditState:VVideoToolControllerInitialVideoEditStateVideo];
 }
 
 #pragma mark - VMarqueeDelegate
