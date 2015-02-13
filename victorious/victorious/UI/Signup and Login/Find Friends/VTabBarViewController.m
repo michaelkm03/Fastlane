@@ -96,17 +96,6 @@ static const CGFloat kButtonMargin           =  0.5f;
 
 }
 
-- (void)updateViewConstraints
-{
-    NSUInteger totalButtons = self.viewControllers.count;
-    CGFloat buttonWidth = (CGRectGetWidth(self.view.bounds) + kButtonMargin * (1 - (CGFloat)totalButtons)) / (CGFloat)totalButtons;
-    for (NSLayoutConstraint *constraint in self.buttonWidthConstraints)
-    {
-        constraint.constant = buttonWidth;
-    }
-    [super updateViewConstraints];
-}
-
 #pragma mark -
 
 - (void)addButtons
@@ -145,10 +134,11 @@ static const CGFloat kButtonMargin           =  0.5f;
             [self.buttonsSuperview addConstraint:buttonWidthConstraint];
             [buttonWidthConstraints addObject:buttonWidthConstraint];
  
+            //All buttons will have equal width, accomplished by forcing width of every button currently being assigned constraints to be width of previous button
             if (buttons.count == self.viewControllers.count - 1) // last button
             {
                 UIButton *previousButton = [buttons lastObject];
-                [self.buttonsSuperview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[previousButton]-margin-[button]|"
+                [self.buttonsSuperview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[previousButton]-margin-[button(==previousButton)]|"
                                                                                               options:NSLayoutFormatDirectionLeftToRight
                                                                                               metrics:@{ @"margin": @(kButtonMargin) }
                                                                                                 views:NSDictionaryOfVariableBindings(previousButton, button)]];
@@ -156,7 +146,7 @@ static const CGFloat kButtonMargin           =  0.5f;
             else if (buttons.count) // one of the middle buttons
             {
                 UIButton *previousButton = [buttons lastObject];
-                [self.buttonsSuperview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[previousButton]-margin-[button]"
+                [self.buttonsSuperview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[previousButton]-margin-[button(==previousButton)]"
                                                                                               options:NSLayoutFormatDirectionLeftToRight
                                                                                               metrics:@{ @"margin": @(kButtonMargin) }
                                                                                                 views:NSDictionaryOfVariableBindings(previousButton, button)]];
