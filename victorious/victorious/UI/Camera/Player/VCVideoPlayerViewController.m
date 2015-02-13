@@ -355,37 +355,11 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 
 #pragma mark - Toolbar
 
-- (void)toggleToolbarHidden
+- (void)setToolbarHidden:(BOOL)toolbarHidden
 {
-    if (self.toolbarAnimating || !self.shouldShowToolbar)
-    {
-        return;
-    }
-    if (self.toolbarView.hidden)
-    {
-        self.toolbarView.hidden = NO;
-        self.overlayView.hidden = NO;
-        self.toolbarView.alpha  =  0;
-        self.overlayView.alpha  =  0;
-        self.toolbarAnimating = YES;
-        [UIView animateWithDuration:kToolbarAnimationDuration
-                              delay:0
-                            options:UIViewAnimationOptionCurveLinear
-                         animations:^(void)
-         {
-             if (self.animateWithPlayControls)
-             {
-                 self.animateWithPlayControls(NO);
-             }
-             self.toolbarView.alpha = 1.0f;
-             self.overlayView.alpha = 1.0f;
-         }
-                         completion:^(BOOL finished)
-         {
-             self.toolbarAnimating = NO;
-         }];
-    }
-    else
+    _toolbarHidden = toolbarHidden;
+    
+    if ( _toolbarHidden )
     {
         [self stopToolbarTimer];
         self.toolbarAnimating = YES;
@@ -410,6 +384,39 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
              self.toolbarAnimating = NO;
          }];
     }
+    else
+    {
+        self.toolbarView.hidden = NO;
+        self.overlayView.hidden = NO;
+        self.toolbarView.alpha  =  0;
+        self.toolbarAnimating = YES;
+        [UIView animateWithDuration:kToolbarAnimationDuration
+                              delay:0
+                            options:UIViewAnimationOptionCurveLinear
+                         animations:^(void)
+         {
+             if (self.animateWithPlayControls)
+             {
+                 self.animateWithPlayControls(NO);
+             }
+             self.toolbarView.alpha = 1.0f;
+             self.overlayView.alpha = 1.0f;
+         }
+                         completion:^(BOOL finished)
+         {
+             self.toolbarAnimating = NO;
+         }];
+    }
+}
+
+- (void)toggleToolbarHidden
+{
+    if (self.toolbarAnimating || !self.shouldShowToolbar)
+    {
+        return;
+    }
+    
+    self.toolbarHidden = !self.toolbarHidden;
 }
 
 - (void)startToolbarTimer
@@ -959,7 +966,12 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 
 - (void)enableTrackingWithTrackingItem:(VTracking *)trackingItem
 {
-    NSParameterAssert( [trackingItem isKindOfClass:[VTracking class]] && trackingItem != nil );
+    if ( trackingItem == nil )
+    {
+        return;
+    }
+    
+    NSParameterAssert( [trackingItem isKindOfClass:[VTracking class]] );
     
     self.trackingItem = trackingItem;
 }

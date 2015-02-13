@@ -134,12 +134,13 @@ static const char kAssociatedWorkspaceFlowKey;
     __weak typeof(self) welf = self;
     self.workspaceFlowController.completion = ^void(BOOL finished)
     {
+        __strong typeof(self) strongSelf = welf;
         [weakViewController dismissViewControllerAnimated:YES
                                                completion:^{
                                                    if (completion)
                                                    {
                                                        completion(finished);
-                                                       welf.workspaceFlowController = nil;
+                                                       strongSelf.workspaceFlowController = nil;
                                                    }
                                                }];
     };
@@ -180,17 +181,33 @@ static const char kAssociatedWorkspaceFlowKey;
 
 #pragma mark - Repost
 
-- (BOOL)repostActionFromViewController:(UIViewController *)viewController node:(VNode *)node
+- (BOOL)canRespost
 {
-    return [self repostActionFromViewController:viewController node:node completion:nil];
+    if (![VObjectManager sharedManager].authorized)
+    {
+        return NO;
+    }
+    
+    return YES;
 }
 
-- (BOOL)repostActionFromViewController:(UIViewController *)viewController node:(VNode *)node completion:(void(^)(BOOL))completion
+- (void)repostActionFromViewController:(UIViewController *)viewController node:(VNode *)node
 {
     if (![VObjectManager sharedManager].authorized)
     {
         [viewController presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
-        return NO;
+        return;
+    }
+    
+    [self repostActionFromViewController:viewController node:node completion:nil];
+}
+
+- (void)repostActionFromViewController:(UIViewController *)viewController node:(VNode *)node completion:(void(^)(BOOL))completion
+{
+    if (![VObjectManager sharedManager].authorized)
+    {
+        [viewController presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
+        return;
     }
     
     [[VObjectManager sharedManager] repostNode:node
@@ -198,6 +215,9 @@ static const char kAssociatedWorkspaceFlowKey;
                                   successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
          node.sequence.repostCount = @( node.sequence.repostCount.integerValue + 1 );
+         
+         [self updateRespostsForUser:[VObjectManager sharedManager].mainUser withSequence:node.sequence];
+         
          if ( completion != nil )
          {
              completion( YES );
@@ -205,13 +225,26 @@ static const char kAssociatedWorkspaceFlowKey;
      }
                                      failBlock:^(NSOperation *operation, NSError *error)
      {
+         if ( error.code == kVSequenceAlreadyReposted )
+         {
+             [self updateRespostsForUser:[VObjectManager sharedManager].mainUser withSequence:node.sequence];
+         }
+         
          if ( completion != nil )
          {
              completion( NO );
          }
      }];
-    
-    return YES;
+}
+
+- (void)updateRespostsForUser:(VUser *)user withSequence:(VSequence *)sequence
+{
+    NSError *error = nil;
+    [user addRepostedSequencesObject:sequence];
+    if ( ![user.managedObjectContext saveToPersistentStore:&error] )
+    {
+        VLog( @"Error marking sequence as reposted for main user: %@", error );
+    }
 }
 
 - (void)showRepostersFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence
@@ -224,6 +257,11 @@ static const char kAssociatedWorkspaceFlowKey;
 #pragma mark - Share
 
 - (void)shareFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence node:(VNode *)node
+{
+    [self shareFromViewController:viewController sequence:sequence node:node completion:nil];
+}
+
+- (void)shareFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence node:(VNode *)node completion:(void(^)())completion
 {
     VFacebookActivity *fbActivity = [[VFacebookActivity alloc] init];
     UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[sequence ?: [NSNull null],
@@ -242,6 +280,11 @@ static const char kAssociatedWorkspaceFlowKey;
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidShare parameters:params];
         
         [viewController reloadInputViews];
+        
+        if ( completion != nil )
+        {
+            completion();
+        }
     };
     
     [viewController presentViewController:activityViewController

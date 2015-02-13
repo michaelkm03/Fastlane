@@ -7,6 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "VEndCardModel.h"
+
 /**
  Enumeration of supported ad networks
  */
@@ -65,5 +67,12 @@ typedef NS_ENUM(NSInteger, VMonetizationPartner){
  NSArray that contains all of the ad details
  */
 @property (nonatomic, readonly) NSArray *monetizationDetails;
+
+/**
+ All the data necessary to display and populate the end card
+ after a video has finished playing.  If this is `nil`, then there is
+ no end card for this video and it should not be displayed.
+ */
+@property (nonatomic, strong, readwrite) VEndCardModel *endCardViewModel;
 
 @end

@@ -9,7 +9,7 @@
 #import "VTextToolViewController.h"
 #import "VCapitalizingTextStorage.h"
 
-static const CGFloat kTextRenderingSize = 1024;
+static const CGFloat kTextRenderingSize = 1024.0f;
 
 @interface VTextToolViewController () <UITextViewDelegate, NSTextStorageDelegate>
 
@@ -166,7 +166,10 @@ shouldChangeTextInRange:(NSRange)range
     styledFont = [styledFont fontWithSize:self.textView.font.pointSize];
     
     NSMutableDictionary *sizedAttributes = [[NSMutableDictionary alloc] initWithDictionary:self.textType.attributes];
-    sizedAttributes[NSFontAttributeName] = styledFont;
+    if (styledFont != nil)
+    {
+        sizedAttributes[NSFontAttributeName] = styledFont;
+    }
     
     NSRange selectedRange = textView.selectedRange;
     textView.attributedText = [[NSAttributedString alloc] initWithString:self.textView.text

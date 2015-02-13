@@ -20,7 +20,7 @@
 #import "VThemeManager.h"
 #import "VSettingManager.h"
 #import "VStreamWebViewController.h"
-#import "UIVIew+AutoLayout.h"
+#import "UIView+Autolayout.h"
 
 CGFloat const kVDetailVisibilityDuration = 3.0f;
 CGFloat const kVDetailHideDuration = 2.0f;

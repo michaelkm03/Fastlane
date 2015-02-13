@@ -573,14 +573,25 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
     [self.sequenceActionController shareFromViewController:self sequence:sequence node:[sequence firstNode]];
 }
 
-- (BOOL)willRepostSequence:(VSequence *)sequence fromView:(UIView *)view
+- (void)willRepostSequence:(VSequence *)sequence fromView:(UIView *)view
 {
-    return [self.sequenceActionController repostActionFromViewController:self node:[sequence firstNode]];
+    [self willRepostSequence:sequence fromView:view completion:nil];
+}
+
+- (void)willRepostSequence:(VSequence *)sequence fromView:(UIView *)view completion:(void(^)(BOOL))completion
+{
+    [self.sequenceActionController repostActionFromViewController:self node:[sequence firstNode] completion:completion];
 }
 
 - (void)willFlagSequence:(VSequence *)sequence fromView:(UIView *)view
 {
     [self.sequenceActionController flagSheetFromViewController:self sequence:sequence];
+}
+
+- (BOOL)hasRepostedSequence:(VSequence *)sequence
+{
+    const BOOL userHasRepostedSequence = [[VObjectManager sharedManager].mainUser.repostedSequences containsObject:sequence];
+    return userHasRepostedSequence;
 }
 
 - (void)hashTag:(NSString *)hashtag tappedFromSequence:(VSequence *)sequence fromView:(UIView *)view

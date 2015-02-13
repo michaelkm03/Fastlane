@@ -8,7 +8,7 @@
 
 #import "VSwipeViewController.h"
 #import "VUtilityButtonsViewController.h"
-#import "UIView+AutoLayout.h"
+#import "UIView+Autolayout.h"
 #import "VSwipeView.h"
 
 @interface VSwipeViewController () <UIScrollViewDelegate, VUtilityButtonsViewControllerDelegate>

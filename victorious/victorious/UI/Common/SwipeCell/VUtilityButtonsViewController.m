@@ -8,7 +8,7 @@
 
 #import "VUtilityButtonsViewController.h"
 #import "VUtilityButtonCell.h"
-#import "UIView+AutoLayout.h"
+#import "UIView+Autolayout.h"
 
 static const CGFloat kCollectionViewSectionsCount = 1;
 

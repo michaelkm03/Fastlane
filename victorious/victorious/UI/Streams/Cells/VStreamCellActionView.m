@@ -13,12 +13,19 @@
 
 #import "VConstants.h"
 
-static CGFloat const kGreyBackgroundColor = 0.94509803921;
-static CGFloat const kVActionButtonBuffer = 15;
+static CGFloat const kGreyBackgroundColor       = 0.94509803921;
+static CGFloat const kActionButtonBuffer        = 15;
+static CGFloat const kScaleActive               = 1.0f;
+static CGFloat const kScaleScaledUp             = 1.4f;
+static CGFloat const kRepostedDisabledAlpha     = 0.3f;
 
 @interface VStreamCellActionView()
 
 @property (nonatomic, strong) NSMutableArray *actionButtons;
+
+@property (nonatomic, weak) UIButton *repostButton;
+
+@property (nonatomic, assign) BOOL isAnimatingButton;
 
 @end
 
@@ -36,6 +43,11 @@ static CGFloat const kVActionButtonBuffer = 15;
 - (void)layoutSubviews
 {
     [super layoutSubviews];
+    
+    if ( self.isAnimatingButton )
+    {
+        return;
+    }
 
     for (NSUInteger i = 0; i < self.actionButtons.count; i++)
     {
@@ -43,20 +55,20 @@ static CGFloat const kVActionButtonBuffer = 15;
         CGRect frame = button.frame;
         if (i == 0)
         {
-            frame.origin.x = kVActionButtonBuffer;
+            frame.origin.x = kActionButtonBuffer;
         }
         else if (i == self.actionButtons.count-1)
         {
-            frame.origin.x = CGRectGetWidth(self.bounds) - CGRectGetWidth(button.bounds) - kVActionButtonBuffer;
+            frame.origin.x = CGRectGetWidth(self.bounds) - CGRectGetWidth(button.bounds) - kActionButtonBuffer;
         }
         else
         {
             //Count up all the available space (minus buttons and the buffers)
-            CGFloat leftOvers = CGRectGetWidth(self.bounds) - CGRectGetWidth(button.bounds) * self.actionButtons.count - kVActionButtonBuffer * 2;
+            CGFloat leftOvers = CGRectGetWidth(self.bounds) - CGRectGetWidth(button.bounds) * self.actionButtons.count - kActionButtonBuffer * 2;
             //Left overs per button. 
             CGFloat leftoversPerButton = leftOvers / (self.actionButtons.count - 1);
             
-            frame.origin.x = kVActionButtonBuffer + (leftoversPerButton + CGRectGetWidth(button.bounds)) * i;
+            frame.origin.x = kActionButtonBuffer + (leftoversPerButton + CGRectGetWidth(button.bounds)) * i;
         }
         button.frame = frame;
     }
@@ -101,19 +113,66 @@ static CGFloat const kVActionButtonBuffer = 15;
 
 - (void)addRepostButton
 {
-    UIButton *button = [self addButtonWithImage:[UIImage imageNamed:@"repostIcon-C"]];
-    [button addTarget:self action:@selector(repostAction:) forControlEvents:UIControlEventTouchUpInside];
+    self.repostButton = [self addButtonWithImage:[UIImage imageNamed:@"repostIcon-C"]];
+    [self.repostButton addTarget:self action:@selector(repostAction:) forControlEvents:UIControlEventTouchUpInside];
+    
+    BOOL hasRespoted = NO;
+    if ( [self.delegate respondsToSelector:@selector(hasRepostedSequence:)] )
+    {
+        hasRespoted = [self.delegate hasRepostedSequence:self.sequence];
+    }
+    
+    self.repostButton.alpha = hasRespoted ? kRepostedDisabledAlpha : 1.0f;
+    NSString *imageName = hasRespoted ? @"repostIcon-success-C" : @"repostIcon-C";
+    [self.repostButton setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
 }
 
 - (void)repostAction:(id)sender
 {
-    BOOL canRepost = YES;
-    if ([self.delegate respondsToSelector:@selector(willRepostSequence:fromView:)])
+    if ( ![self.delegate respondsToSelector:@selector(willRepostSequence:fromView:completion:)] ||
+         ![self.delegate respondsToSelector:@selector(hasRepostedSequence:)] )
     {
-        canRepost = [self.delegate willRepostSequence:self.sequence fromView:self];
+        return;
     }
     
-    ((UIButton *)sender).enabled = canRepost;
+    if ( [self.delegate hasRepostedSequence:self.sequence] )
+    {
+        return;
+    }
+    
+    self.repostButton.alpha = kRepostedDisabledAlpha;
+    
+    [self.delegate willRepostSequence:self.sequence fromView:self completion:^(BOOL didSucceed)
+     {
+         self.isAnimatingButton = YES;
+         [self.repostButton setImage:[UIImage imageNamed:@"repostIcon-success-C"] forState:UIControlStateNormal];
+         
+         [UIView animateWithDuration:0.15f
+                               delay:0.0f
+              usingSpringWithDamping:1.0f
+               initialSpringVelocity:0.8f
+                             options:kNilOptions
+                          animations:^
+          {
+              self.repostButton.transform = CGAffineTransformMakeScale( kScaleScaledUp, kScaleScaledUp );
+          }
+                          completion:^(BOOL finished)
+          {
+              [UIView animateWithDuration:0.5f
+                                    delay:0.0f
+                   usingSpringWithDamping:0.8f
+                    initialSpringVelocity:0.9f
+                                  options:kNilOptions
+                               animations:^
+               {
+                   self.repostButton.transform = CGAffineTransformMakeScale( kScaleActive, kScaleActive );
+               }
+                               completion:^(BOOL finished)
+               {
+                   self.isAnimatingButton = NO;
+               }];
+          }];
+     }];
 }
 
 - (void)addFlagButton

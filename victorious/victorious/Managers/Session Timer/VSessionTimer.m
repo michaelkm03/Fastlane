@@ -113,8 +113,12 @@ static NSTimeInterval const kMinimumTimeBetweenSessions = 1800.0; // 30 minutes
 {
     VTracking *applicationTracking = [VSettingManager sharedManager].applicationTracking;
     
+    NSDate *startDate = self.sessionStartTime;
+    NSDate *endDate = [[NSUserDefaults standardUserDefaults] objectForKey:kSessionEndTimeDefaultsKey];
+    NSTimeInterval sessionDuration = [endDate timeIntervalSinceDate:startDate] * 1000;  // Backend requires milliseconds
+    
     NSArray* trackingURLs = applicationTracking != nil ? applicationTracking.appEnterBackground : @[];
-    NSDictionary *params = @{ VTrackingKeyUrls : trackingURLs };
+    NSDictionary *params = @{ VTrackingKeyUrls : trackingURLs, VTrackingKeySessionTime : [NSNumber numberWithUnsignedInteger:sessionDuration] };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventApplicationDidEnterBackground parameters:params];
 }
 
@@ -122,8 +126,8 @@ static NSTimeInterval const kMinimumTimeBetweenSessions = 1800.0; // 30 minutes
 
 - (void)applicationDidEnterBackground:(NSNotification *)notification
 {
-    [self trackApplicationBackground];
     [self sessionDidEnd];
+    [self trackApplicationBackground];
 }
 
 - (void)applicationDidBecomeActive:(NSNotification *)notification

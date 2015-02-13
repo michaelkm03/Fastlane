@@ -12,7 +12,7 @@
 #import "VSequence+Fetcher.h"
 
 #import "VStreamWebViewController.h"
-#import "UIVIew+AutoLayout.h"
+#import "UIView+Autolayout.h"
 
 @interface VStreamCollectionCellWebContent()
 

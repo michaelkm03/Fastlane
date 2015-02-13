@@ -95,11 +95,13 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
  *
  *  @return An initialized VContentViewModel.
  */
-- (instancetype)initWithSequence:(VSequence *)sequence;
+- (instancetype)initWithSequence:(VSequence *)sequence depenencyManager:(VDependencyManager *)dependencyManager;
 
 - (void)reloadData;
 
 - (void)fetchSequenceData;
+
+- (void)loadNextSequenceSuccess:(void(^)(VSequence *))success failure:(void(^)(NSError *))failure;
 
 - (void)addCommentWithText:(NSString *)text
                   mediaURL:(NSURL *)mediaURL

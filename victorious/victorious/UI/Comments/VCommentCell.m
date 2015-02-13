@@ -11,7 +11,7 @@
 #import "VThemeManager.h"
 #import "UIImage+ImageCreation.h"
 #import "VDefaultProfileImageView.h"
-#import "UIVIew+AutoLayout.h"
+#import "UIView+Autolayout.h"
 
 NSString * const kVCommentCellNibName = @"VCommentCell";
 

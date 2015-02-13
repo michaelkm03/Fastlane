@@ -64,6 +64,13 @@ static const CGFloat kTimelineDarkeningAlpha = 0.5f;
 - (void)setMaximumEndTime:(CMTime)maximumEndTime
 {
     _maximumEndTime = maximumEndTime;
+    
+    if (CMTIME_COMPARE_INLINE(maximumEndTime, <, self.maximumTrimDuration))
+    {
+        self.maximumTrimDuration = maximumEndTime;
+        [self.delegate trimmerViewController:self
+                  didUpdateSelectedTimeRange:self.selectedTimeRange];
+    }
     [self.thumbnailCollecitonView.collectionViewLayout invalidateLayout];
 }
 

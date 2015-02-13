@@ -10,12 +10,15 @@
 #import "VConstants.h"
 #import "VCVideoPlayerViewController.h"
 #import "VAdVideoPlayerViewController.h"
+#import "VEndCard.h"
+#import "UIView+Autolayout.h"
 
 @interface VContentVideoCell () <VCVideoPlayerDelegate, VAdVideoPlayerViewControllerDelegate>
 
 @property (nonatomic, strong, readwrite) VCVideoPlayerViewController *videoPlayerViewController;
 @property (nonatomic, strong, readwrite) VAdVideoPlayerViewController *adPlayerViewController;
 @property (nonatomic, assign, readwrite) BOOL isPlayingAd;
+@property (nonatomic, assign, readwrite) BOOL videoDidEnd;
 @property (nonatomic, strong) NSURL *contentURL;
 
 @end
@@ -24,23 +27,31 @@
 
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {
-    return CGSizeMake(CGRectGetWidth(bounds), CGRectGetWidth(bounds));
+    const CGFloat minSide = MIN( CGRectGetWidth(bounds), CGRectGetHeight(bounds) );
+    return CGSizeMake( CGRectGetWidth(bounds), minSide );
 }
 
 #pragma mark - NSObject
+
+- (void)prepareForReuse
+{
+    [super prepareForReuse];
+    
+    self.videoPlayerViewController.view.hidden = YES;
+}
 
 - (void)awakeFromNib
 {
     [super awakeFromNib];
     
-    self.videoPlayerViewController = [[VCVideoPlayerViewController alloc] initWithNibName:nil
-                                                                                   bundle:nil];
+    self.videoPlayerViewController = [[VCVideoPlayerViewController alloc] initWithNibName:nil bundle:nil];
     self.videoPlayerViewController.delegate = self;
     self.videoPlayerViewController.view.frame = self.contentView.bounds;
-    self.videoPlayerViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.videoPlayerViewController.shouldContinuePlayingAfterDismissal = YES;
     self.videoPlayerViewController.shouldChangeVideoGravityOnDoubleTap = YES;
     [self.contentView addSubview:self.videoPlayerViewController.view];
+    self.videoPlayerViewController.view.hidden = YES;
+    self.shrinkingContentView = self.videoPlayerViewController.view;
 }
 
 - (void)dealloc
@@ -53,6 +64,8 @@
 - (void)setViewModel:(VVideoCellViewModel *)viewModel
 {
     _viewModel = viewModel;
+    
+    self.videoPlayerViewController.view.hidden = YES;
     
     self.contentURL = viewModel.itemURL;
     self.loop = viewModel.loop;
@@ -138,9 +151,24 @@
 
 #pragma mark - Public Methods
 
+- (void)seekToStart
+{
+    [self.videoPlayerViewController.player seekToTime:kCMTimeZero];
+}
+
+- (void)replay
+{
+    self.videoDidEnd = NO;
+    [self.videoPlayerViewController.player seekToTime:kCMTimeZero];
+    [self.videoPlayerViewController.player play];
+}
+
 - (void)play
 {
-    self.videoPlayerViewController.player.rate = self.speed;
+    if ( !self.videoDidEnd )
+    {
+        self.videoPlayerViewController.player.rate = self.speed;
+    }
 }
 
 - (void)pause
@@ -150,7 +178,7 @@
 
 - (void)togglePlayControls
 {
-    // This may not do any if `videoPlayerViewController`'s `shouldShowToolbar` is set to NO
+    // This will not do anything if `videoPlayerViewController.shouldShowToolbar` is set to NO
     [self.videoPlayerViewController toggleToolbarHidden];
 }
 
@@ -176,6 +204,7 @@
 
 - (void)videoPlayerReadyToPlay:(VCVideoPlayerViewController *)videoPlayer
 {
+    self.videoPlayerViewController.view.hidden = NO;
     [self.delegate videoCellReadyToPlay:self];
 }
 
@@ -184,6 +213,12 @@
     // This should only be forwarded from the content video player
     [self.delegate videoCellPlayedToEnd:self
                           withTotalTime:[videoPlayer playerItemDuration]];
+    self.videoDidEnd = YES;
+    
+    if ( self.viewModel.endCardViewModel != nil )
+    {
+        [super showEndCardWithViewModel:self.viewModel.endCardViewModel];
+    }
 }
 
 - (void)videoPlayerWillStartPlaying:(VCVideoPlayerViewController *)videoPlayer

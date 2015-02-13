@@ -8,9 +8,6 @@
 
 #import "VContentViewViewModel.h"
 
-// Experiments
-#import "VSettingManager.h"
-
 // Models
 #import "VComment.h"
 #import "VUser.h"
@@ -45,6 +42,15 @@
 #import "VAdBreak.h"
 #import "VAdBreakFallback.h"
 
+// End Card
+#import "VEndCard.h"
+#import "VStream.h"
+#import "VThemeManager.h"
+#import "VEndCardModel.h"
+#import "VDependencyManager.h"
+#import "VVideoSettings.h"
+#import "VEndCardActionModel.h"
+
 @interface VContentViewViewModel ()
 
 @property (nonatomic, strong, readwrite) VSequence *sequence;
@@ -64,6 +70,7 @@
 @property (nonatomic, assign, readwrite) NSArray *monetizationDetails;
 
 @property (nonatomic, assign) BOOL hasCreatedAdChain;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end
 
@@ -71,12 +78,14 @@
 
 #pragma mark - Initializers
 
-- (instancetype)initWithSequence:(VSequence *)sequence
+- (instancetype)initWithSequence:(VSequence *)sequence depenencyManager:(VDependencyManager *)dependencyManager
 {
     self = [super init];
     if (self)
     {
         _sequence = sequence;
+        
+        _dependencyManager = dependencyManager;
         
         if ([sequence isPoll])
         {
@@ -106,6 +115,10 @@
         _currentNode = [sequence firstNode];
         
         _currentAsset = [_currentNode mp4Asset];
+        if ( _currentAsset == nil )
+        {
+            _currentAsset = [_currentNode imageAsset];
+        }
         
         // Set the default ad chain index
         self.currentAdChainIndex = 0;
@@ -138,7 +151,7 @@
 
 #pragma mark - Create the ad chain
 
-- (void)createAdChainWithCompletion:(void(^)(void))completionBlock
+- (void)createAdChainWithCompletion
 {
     if (self.hasCreatedAdChain)
     {
@@ -163,11 +176,6 @@
     self.monetizationPartner = adSystemPartner;
     self.monetizationDetails = self.adChain;
     self.hasCreatedAdChain = YES;
-    
-    if (completionBlock)
-    {
-        completionBlock();
-    }
 }
 
 #pragma mark - Sequence data fetching methods
@@ -177,32 +185,135 @@
     [[VObjectManager sharedManager] fetchSequenceByID:self.sequence.remoteId
                                          successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
-        // This is here to update the vote counts
-        [self.experienceEnhancerController updateData];
+         // This is here to update the vote counts
+         [self.experienceEnhancerController updateData];
          
-        // Sets up the monetization chain
-         if (self.sequence.adBreaks.count > 0)
-         {
-             [self createAdChainWithCompletion:^(void)
-              {
-                  self.videoViewModel = [VVideoCellViewModel videoCellViewModelWithItemURL:[self videoURL]
-                                                                              withAdSystem:self.monetizationPartner
-                                                                               withDetails:self.monetizationDetails
-                                                                                  withLoop:[self loop]];
-                  [self.delegate didUpdateContent];
-              }];
-         }
-         else
-         {
-             self.videoViewModel = [VVideoCellViewModel videoCellViewModelWithItemURL:[self videoURL]
-                                                                         withAdSystem:VMonetizationPartnerNone
-                                                                          withDetails:nil
-                                                                             withLoop:[self loop]];
-             [self.delegate didUpdateContent];
-
-         }
-    }
+         [self createVideoModel];
+         
+         [self.delegate didUpdateContent];
+     }
                                             failBlock:nil];
+}
+
+- (void)loadNextSequenceSuccess:(void(^)(VSequence *))success failure:(void(^)(NSError *))failure
+{
+    NSString *nextSequenceId = self.videoViewModel.endCardViewModel.nextSequenceId;
+    if ( nextSequenceId == nil )
+    {
+        if ( failure != nil )
+        {
+            NSString *message = @"Unable to load next sequence beacuse the ID is invalid.";
+            failure( [NSError errorWithDomain:message code:-1 userInfo:nil] );
+        }
+        return;
+    }
+    
+    [[VObjectManager sharedManager] fetchSequenceByID:nextSequenceId
+                                         successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+     {
+         VSequence *nextSequence = resultObjects.firstObject;
+         if ( nextSequence == nil || ![nextSequence isKindOfClass:[VSequence class]] )
+         {
+             if ( failure != nil )
+             {
+                 NSString *message = @"Response did not contain a valid sequence.";
+                 failure( [NSError errorWithDomain:message code:-1 userInfo:nil] );
+             }
+         }
+         
+         if ( success != nil )
+         {
+             success( nextSequence );
+         }
+     }
+                                            failBlock:^(NSOperation *operation, NSError *error)
+     {
+         if ( failure != nil )
+         {
+             failure( error );
+         }
+     }];
+}
+
+- (void)createVideoModel
+{
+    // Sets up the monetization chain
+#warning This disables ads... remove the '&& NO'
+    if (self.sequence.adBreaks.count > 0 && NO )
+    {
+        [self createAdChainWithCompletion];
+        self.videoViewModel = [VVideoCellViewModel videoCellViewModelWithItemURL:[self videoURL]
+                                                                    withAdSystem:self.monetizationPartner
+                                                                     withDetails:self.monetizationDetails
+                                                                        withLoop:[self loop]];
+    }
+    else
+    {
+        self.videoViewModel = [VVideoCellViewModel videoCellViewModelWithItemURL:[self videoURL]
+                                                                    withAdSystem:VMonetizationPartnerNone
+                                                                     withDetails:nil
+                                                                        withLoop:[self loop]];
+    }
+    
+    self.videoViewModel.endCardViewModel = [self createEndCardModel];
+}
+
+- (VEndCardModel *)createEndCardModel
+{
+    if ( self.sequence.endCard == nil  )
+    {
+        return nil;
+    }
+    
+    VSequence *nextSequence = self.sequence.endCard.nextSequence;
+    if ( nextSequence == nil  )
+    {
+        return nil;
+    }
+    
+    VEndCardModel *endCardModel = [[VEndCardModel alloc] init];
+    endCardModel.videoTitle = self.sequence.sequenceDescription;
+    endCardModel.nextSequenceId = nextSequence.remoteId;
+    endCardModel.nextVideoTitle = nextSequence.sequenceDescription;
+    endCardModel.nextVideoThumbailImageURL = [NSURL URLWithString:(NSString *)nextSequence.previewImagesObject];
+    endCardModel.streamName = self.sequence.endCard.streamName ?: @"";
+    endCardModel.videoAuthorName = nextSequence.user.name;
+    endCardModel.videoAuthorProfileImageURL = [NSURL URLWithString:nextSequence.user.pictureUrl];
+    endCardModel.countdownDuration = self.sequence.endCard.countdownDuration.unsignedIntegerValue;
+    endCardModel.dependencyManager = self.dependencyManager;
+    
+    // Set up actions
+    NSMutableArray *actions = [[NSMutableArray alloc] init];
+    VEndCardActionModel *action = nil;
+    if ( self.sequence.endCard.canRemix.boolValue )
+    {
+        action = [[VEndCardActionModel alloc] init];
+        action.identifier = VEndCardActionIdentifierGIF;
+        action.textLabelDefault = NSLocalizedString( @"GIF", @"Created a GIF from this video" );
+        action.iconImageNameDefault = @"action_gif";
+        [actions addObject:action];
+    }
+    if ( self.sequence.endCard.canRepost.boolValue )
+    {
+        action = [[VEndCardActionModel alloc] init];
+        action.identifier = VEndCardActionIdentifierRepost;
+        action.textLabelDefault = NSLocalizedString( @"Repost", @"Post a copy of this video" );
+        action.textLabelSuccess = NSLocalizedString( @"Reposted", @"Indicating the vidoe has already been reposted." );
+        action.iconImageNameDefault = @"action_repost";
+        action.iconImageNameSuccess = @"action_success";
+        [actions addObject:action];
+    }
+    if ( self.sequence.endCard.canShare.boolValue )
+    {
+        action = [[VEndCardActionModel alloc] init];
+        action.identifier = VEndCardActionIdentifierShare;
+        action.textLabelDefault = NSLocalizedString( @"Share", @"Share this video" );
+        action.iconImageNameDefault = @"action_share";
+        [actions addObject:action];
+    }
+    endCardModel.actions = [NSArray arrayWithArray:actions];
+    
+    return endCardModel;
 }
 
 - (void)reloadData
@@ -279,7 +390,7 @@
     NSURL *imageUrl;
     if (self.type == VContentViewTypeImage)
     {
-        imageUrl = [NSURL URLWithString:self.currentAsset.data];
+        imageUrl = [NSURL URLWithString:[self.sequence.firstNode imageAsset].data];
     }
     else
     {

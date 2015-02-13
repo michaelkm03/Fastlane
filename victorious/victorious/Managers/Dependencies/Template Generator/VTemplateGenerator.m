@@ -182,7 +182,7 @@ static NSString * const kVideoMuted = @"videoMuted";
                  kClassNameKey: @"trim.video.tool",
                  kTitleKey: @"gif",
                  kVideoFrameDurationValue: @1,
-                 kVideoFrameDurationTimescale: @8,
+                 kVideoFrameDurationTimescale: @4,
                  kVideoMuted: @YES
                  }
              ];
