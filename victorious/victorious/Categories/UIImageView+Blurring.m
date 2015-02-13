@@ -55,7 +55,8 @@ static const CGFloat kVSaturationDeltaFactor = 1.8f;
 - (void)setBlurredImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholderImage tintColor:(UIColor *)tintColor
 {
     __weak UIImageView *weakSelf = self;
-    
+
+    self.image = placeholderImage;
     [self sd_setImageWithURL:url
             placeholderImage:[placeholderImage applyTintEffectWithColor:tintColor]
                    completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL)
