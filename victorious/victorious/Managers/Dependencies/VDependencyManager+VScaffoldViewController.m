@@ -7,10 +7,16 @@
 //
 
 #import "VDependencyManager+VScaffoldViewController.h"
+#import "VScaffoldViewController.h"
 
 NSString * const VScaffoldViewControllerNavigationBarAppearanceKey = @"navigationBarAppearance";
 
 @implementation VDependencyManager (VScaffoldViewController)
+
+- (VScaffoldViewController *)scaffoldViewController
+{
+    return [self singletonObjectOfType:[VScaffoldViewController class] forKey:VDependencyManagerScaffoldViewControllerKey];
+}
 
 - (VDependencyManager *)dependencyManagerForNavigationBar
 {

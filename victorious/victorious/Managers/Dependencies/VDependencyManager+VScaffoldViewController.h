@@ -14,7 +14,14 @@
  */
 extern NSString * const VScaffoldViewControllerNavigationBarAppearanceKey;
 
+@class VScaffoldViewController;
+
 @interface VDependencyManager (VScaffoldViewController)
+
+/**
+ Returns a reference to the singleton instance of the current template's scaffolding
+ */
+- (VScaffoldViewController *)scaffoldViewController;
 
 /**
  Returns a dependency manager that provides style 

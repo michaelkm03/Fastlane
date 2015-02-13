@@ -44,6 +44,7 @@
 
 //Managers
 #import "VDependencyManager+VObjectManager.h"
+#import "VDependencyManager+VScaffoldViewController.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Discover.h"
