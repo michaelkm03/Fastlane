@@ -18,5 +18,6 @@
 @dynamic countdownDuration;
 @dynamic nextSequence;
 @dynamic parentSequence;
+@dynamic streamName;
 
 @end

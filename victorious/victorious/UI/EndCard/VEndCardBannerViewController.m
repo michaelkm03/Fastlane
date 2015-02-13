@@ -122,7 +122,7 @@
     self.nextVideoAuthorImageView.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:model.videoAuthorProfileImageURL]];
 }
 
-#pragma mark - Actions
+#pragma mark - Actions f
 
 - (IBAction)onNextTapped:(id)sender
 {

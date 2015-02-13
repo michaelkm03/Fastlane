@@ -234,7 +234,7 @@
 - (void)createVideoModel
 {
     // Sets up the monetization chain
-    if (self.sequence.adBreaks.count > 0)
+    if (self.sequence.adBreaks.count > 0 )
     {
         [self createAdChainWithCompletion];
         self.videoViewModel = [VVideoCellViewModel videoCellViewModelWithItemURL:[self videoURL]
@@ -255,78 +255,60 @@
 
 - (VEndCardModel *)createEndCardModel
 {
-#warning This is hardcoded data for testing only. Delete this BOOL
-    BOOL useHardCodedData = YES;
-    
-    VSequence *nextSequence = self.sequence.endCard.nextSequence;
-    VStream *stream = nextSequence.streams.allObjects.firstObject;
-    if ( nextSequence || useHardCodedData )
+    if ( self.sequence.endCard == nil  )
     {
-        VEndCardModel *endCardModel = [[VEndCardModel alloc] init];
-        
-        NSMutableArray *actions = [[NSMutableArray alloc] init];
-        VEndCardActionModel *action = nil;
-        
-        if ( self.sequence.endCard.canRemix.boolValue && NO )
-        {
-            action = [[VEndCardActionModel alloc] init];
-            action.identifier = VEndCardActionIdentifierGIF;
-            action.textLabelDefault = NSLocalizedString( @"GIF", @"Created a GIF from this video" );
-            action.iconImageNameDefault = @"action_gif";
-            [actions addObject:action];
-        }
-        
-        if ( self.sequence.endCard.canRepost.boolValue )
-        {
-            action = [[VEndCardActionModel alloc] init];
-            action.identifier = VEndCardActionIdentifierRepost;
-            action.textLabelDefault = NSLocalizedString( @"Repost", @"Post a copy of this video" );
-            action.textLabelSuccess = NSLocalizedString( @"Reposted", @"Indicating the vidoe has already been reposted." );
-            action.iconImageNameDefault = @"action_repost";
-            action.iconImageNameSuccess = @"action_success";
-            [actions addObject:action];
-        }
-        
-        if ( self.sequence.endCard.canShare.boolValue )
-        {
-            action = [[VEndCardActionModel alloc] init];
-            action.identifier = VEndCardActionIdentifierShare;
-            action.textLabelDefault = NSLocalizedString( @"Share", @"Share this video" );
-            action.iconImageNameDefault = @"action_share";
-            [actions addObject:action];
-        }
-        
-        endCardModel.actions = [NSArray arrayWithArray:actions];
-        
-        if ( useHardCodedData )
-        {
-            // In the real app, the dependency manager will be injected:
-            endCardModel.videoTitle = @"January Vacation Blog";
-            endCardModel.nextSequenceId = self.sequence.remoteId; // Playing the current sequence again as if it was the next
-            endCardModel.nextVideoTitle = @"Alejandro Manzano Grumpy Cat Boyce Avenue";
-            endCardModel.nextVideoThumbailImageURL = [NSURL URLWithString:@"http://media-dev-public.s3-website-us-west-1.amazonaws.com/5be17bf6f22dd793554be9cf75a3e26e/640x640.jpg"];
-            endCardModel.streamName = @"Recent";
-            endCardModel.videoAuthorName = @"Jonathan Moore";
-            endCardModel.videoAuthorProfileImageURL = [NSURL URLWithString:@"http://media-dev-public.s3-website-us-west-1.amazonaws.com/39ce6fa60e5f369a3f6359298b0959c9/80x80.jpg"];
-            endCardModel.countdownDuration = 6000;
-            endCardModel.dependencyManager = self.dependencyManager;
-            self.videoViewModel.endCardViewModel = endCardModel;
-            return self.videoViewModel.endCardViewModel;
-        }
-        
-        endCardModel.videoTitle = self.sequence.name;
-        endCardModel.nextSequenceId = nextSequence.remoteId;
-        endCardModel.nextVideoTitle = nextSequence.name;
-        endCardModel.nextVideoThumbailImageURL = [NSURL URLWithString:(NSString *)nextSequence.previewData];
-        endCardModel.streamName = stream.name;
-        endCardModel.videoAuthorName = nextSequence.user.name;
-        endCardModel.videoAuthorProfileImageURL = [NSURL URLWithString:nextSequence.user.pictureUrl];
-        endCardModel.countdownDuration = self.sequence.endCard.countdownDuration.unsignedIntegerValue;
-        endCardModel.dependencyManager = self.dependencyManager;
-        self.videoViewModel.endCardViewModel = endCardModel;
+        return nil;
     }
     
-    return nil;
+    VSequence *nextSequence = self.sequence.endCard.nextSequence;
+    if ( nextSequence == nil  )
+    {
+        return nil;
+    }
+    
+    VEndCardModel *endCardModel = [[VEndCardModel alloc] init];
+    endCardModel.videoTitle = self.sequence.sequenceDescription;
+    endCardModel.nextSequenceId = nextSequence.remoteId;
+    endCardModel.nextVideoTitle = nextSequence.sequenceDescription;
+    endCardModel.nextVideoThumbailImageURL = [NSURL URLWithString:(NSString *)nextSequence.previewImagesObject];
+    endCardModel.streamName = self.sequence.endCard.streamName ?: @"";
+    endCardModel.videoAuthorName = nextSequence.user.name;
+    endCardModel.videoAuthorProfileImageURL = [NSURL URLWithString:nextSequence.user.pictureUrl];
+    endCardModel.countdownDuration = self.sequence.endCard.countdownDuration.unsignedIntegerValue;
+    endCardModel.dependencyManager = self.dependencyManager;
+    
+    // Set up actions
+    NSMutableArray *actions = [[NSMutableArray alloc] init];
+    VEndCardActionModel *action = nil;
+    if ( self.sequence.endCard.canRemix.boolValue )
+    {
+        action = [[VEndCardActionModel alloc] init];
+        action.identifier = VEndCardActionIdentifierGIF;
+        action.textLabelDefault = NSLocalizedString( @"GIF", @"Created a GIF from this video" );
+        action.iconImageNameDefault = @"action_gif";
+        [actions addObject:action];
+    }
+    if ( self.sequence.endCard.canRepost.boolValue )
+    {
+        action = [[VEndCardActionModel alloc] init];
+        action.identifier = VEndCardActionIdentifierRepost;
+        action.textLabelDefault = NSLocalizedString( @"Repost", @"Post a copy of this video" );
+        action.textLabelSuccess = NSLocalizedString( @"Reposted", @"Indicating the vidoe has already been reposted." );
+        action.iconImageNameDefault = @"action_repost";
+        action.iconImageNameSuccess = @"action_success";
+        [actions addObject:action];
+    }
+    if ( self.sequence.endCard.canShare.boolValue )
+    {
+        action = [[VEndCardActionModel alloc] init];
+        action.identifier = VEndCardActionIdentifierShare;
+        action.textLabelDefault = NSLocalizedString( @"Share", @"Share this video" );
+        action.iconImageNameDefault = @"action_share";
+        [actions addObject:action];
+    }
+    endCardModel.actions = [NSArray arrayWithArray:actions];
+    
+    return endCardModel;
 }
 
 - (void)reloadData

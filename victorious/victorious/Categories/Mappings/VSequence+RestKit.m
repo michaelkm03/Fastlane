@@ -79,7 +79,6 @@
     [mapping addPropertyMapping:trackingMapping];
     [mapping addPropertyMapping:endCardMapping];
     
-    
     [mapping addConnectionForRelationship:@"comments" connectedBy:@{@"remoteId" : @"sequenceId"}];
     
     return mapping;

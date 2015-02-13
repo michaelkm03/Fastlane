@@ -83,6 +83,7 @@
         <attribute name="canRepost" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="canShare" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="countdownDuration" optional="YES" attributeType="Integer 32" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="streamName" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="nextSequence" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Sequence" inverseName="parentEndCard" inverseEntity="Sequence" syncable="YES"/>
         <relationship name="parentSequence" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Sequence" inverseName="endCard" inverseEntity="Sequence" syncable="YES"/>
     </entity>
@@ -287,7 +288,7 @@
         <element name="Asset" positionX="646" positionY="-441" width="128" height="225"/>
         <element name="Comment" positionX="1078" positionY="38" width="128" height="330"/>
         <element name="Conversation" positionX="1528" positionY="-468" width="128" height="148"/>
-        <element name="EndCard" positionX="693" positionY="-648" width="128" height="133"/>
+        <element name="EndCard" positionX="693" positionY="-648" width="128" height="148"/>
         <element name="Hashtag" positionX="1087" positionY="-630" width="128" height="88"/>
         <element name="Interaction" positionX="646" positionY="-208" width="128" height="208"/>
         <element name="InteractionAction" positionX="495" positionY="-162" width="128" height="105"/>
