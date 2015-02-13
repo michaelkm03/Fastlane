@@ -29,6 +29,8 @@ static const CGFloat kBottomClearInset = 2.0f;
 
 @property (nonatomic, strong) NSAttributedString *oldPlaceholder;
 
+@property (nonatomic, readwrite) BOOL hasResignedFirstResponder;
+
 @end
 
 @implementation VInlineValidationTextField
@@ -66,7 +68,7 @@ static const CGFloat kBottomClearInset = 2.0f;
 {
     CGRect inlineValidationFrame = CGRectMake(CGRectGetMinX(self.bounds), CGRectGetMinY(self.bounds), CGRectGetWidth(self.bounds), kInlineValidationHeight);
     self.inlineValidationView = [[VInlineValidationView alloc] initWithFrame:inlineValidationFrame];
-    self.inlineValidationView.hidden = !self.showInlineValidation;
+    self.inlineValidationView.hidden = YES;
     self.translatesAutoresizingMaskIntoConstraints = NO;
     [self addSubview:self.inlineValidationView];
 }
@@ -89,6 +91,7 @@ static const CGFloat kBottomClearInset = 2.0f;
     {
         self.attributedPlaceholder = self.oldPlaceholder;
     }
+    self.hasResignedFirstResponder = YES;
     return [super resignFirstResponder];
 }
 
@@ -126,28 +129,42 @@ static const CGFloat kBottomClearInset = 2.0f;
 
 #pragma mark - Public Methods
 
-- (void)setValidator:(VStringValidator *)validator
+- (void)hideInvalidText
 {
-    if (_validator == validator)
+    self.inlineValidationView.hidden = YES;
+}
+
+- (void)showInvalidText:(NSString *)invalidText
+               animated:(BOOL)animated
+                  shake:(BOOL)shake
+                 forced:(BOOL)force
+{
+    if (!force && !self.hasResignedFirstResponder)
     {
         return;
     }
     
-    if (validator)
+    self.inlineValidationView.inlineValidationText = invalidText;
+    self.inlineValidationView.hidden = NO;
+    
+    if (animated)
     {
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(textChanged:)
-                                                     name:UITextFieldTextDidChangeNotification
-                                                   object:self];
+        [self showIncorrectTextAnimationAndVibration];
     }
     
-    _validator = validator;
+    if (shake)
+    {
+        [self playVibration];
+    }
+}
+
+- (void)playVibration
+{
+    AudioServicesPlayAlertSound(kSystemSoundID_Vibrate);
 }
 
 - (void)showIncorrectTextAnimationAndVibration
 {
-    AudioServicesPlayAlertSound(kSystemSoundID_Vibrate);
-    
     [UIView animateKeyframesWithDuration:0.35f
                                    delay:0.0f
                                  options:UIViewKeyframeAnimationOptionCalculationModeCubic
@@ -176,12 +193,6 @@ static const CGFloat kBottomClearInset = 2.0f;
     
 }
 
-- (void)setShowInlineValidation:(BOOL)showInlineValidation
-{
-    _showInlineValidation = showInlineValidation;
-    [self validateTextWithValidator:self.validator];
-}
-
 - (void)applyTextFieldStyle:(VTextFieldStyle)textFieldStyle
 {
     switch (textFieldStyle)
@@ -194,24 +205,6 @@ static const CGFloat kBottomClearInset = 2.0f;
         default:
             break;
     }
-}
-
-#pragma mark - Notification Handlers
-
-- (void)textChanged:(NSNotification *)notification
-{
-    [self validateTextWithValidator:self.validator];
-}
-
-#pragma mark - Private Methods
-
-- (void)validateTextWithValidator:(VStringValidator *)validator
-{
-    NSError *validationError;
-    BOOL isValid = [self.validator validateString:self.text
-                                         andError:&validationError];
-    self.inlineValidationView.inlineValidationText = validationError.localizedDescription;
-    self.inlineValidationView.hidden = !(!isValid && self.showInlineValidation);
 }
 
 @end

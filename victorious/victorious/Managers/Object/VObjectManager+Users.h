@@ -11,6 +11,9 @@
 extern NSString *const VMainUserDidChangeFollowingUserNotification;
 extern NSString *const VMainUserDidChangeFollowingUserKeyUser;
 
+extern NSString * const VObjectManagerSearchContextMessage; ///< A search context for finding messagable users
+extern NSString * const VObjectManagerSearchContextUserTag; ///< A search context for finding taggable users
+
 typedef NS_ENUM(NSUInteger, VSocialSelector)
 {
     kVFacebookSocialSelector,
@@ -71,14 +74,15 @@ typedef NS_ENUM(NSUInteger, VSocialSelector)
                                 withSuccessBlock:(VSuccessBlock)success
                                        failBlock:(VFailBlock)fail;
 
+/**
+ Search for users
+ 
+ @param context One of the VObjectManagerSearchContext string constants.
+ */
 - (RKManagedObjectRequestOperation *)findUsersBySearchString:(NSString *)search_string
                                                        limit:(NSInteger)pageLimit
+                                                     context:(NSString *)context
                                             withSuccessBlock:(VSuccessBlock)success
                                                    failBlock:(VFailBlock)fail;
-
-- (RKManagedObjectRequestOperation *)findMessagableUsersBySearchString:(NSString *)search_string
-                                                                 limit:(NSInteger)pageLimit
-                                                      withSuccessBlock:(VSuccessBlock)success
-                                                             failBlock:(VFailBlock)fail;
 
 @end

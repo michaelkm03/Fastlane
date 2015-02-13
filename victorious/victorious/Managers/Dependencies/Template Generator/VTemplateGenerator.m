@@ -8,6 +8,8 @@
 
 #import "VConstants.h"
 #import "VDependencyManager.h"
+#import "VDependencyManager+VScaffoldViewController.h"
+#import "VHamburgerButton.h"
 #import "VScaffoldViewController.h"
 #import "VTemplateGenerator.h"
 #import "VSettingManager.h"
@@ -66,6 +68,7 @@ static NSString * const kVideoMuted = @"videoMuted";
 @interface VTemplateGenerator ()
 
 @property (nonatomic, strong) NSDictionary *dataFromInitCall;
+@property (nonatomic) BOOL templateCEnabled;
 @property (nonatomic, strong) NSString *firstMenuItemID;
 @property (nonatomic, strong) NSString *homeRecentID;
 @property (nonatomic, strong) NSDictionary *accentColor;
@@ -82,6 +85,7 @@ static NSString * const kVideoMuted = @"videoMuted";
         _dataFromInitCall = initData;
         _firstMenuItemID = [[NSUUID UUID] UUIDString];
         _homeRecentID = [[NSUUID UUID] UUIDString];
+        _templateCEnabled = [[_dataFromInitCall valueForKeyPath:@"experiments.template_c_enabled"] boolValue];
     }
     return self;
 }
@@ -118,12 +122,13 @@ static NSString * const kVideoMuted = @"videoMuted";
      }];
     
     template[VDependencyManagerScaffoldViewControllerKey] = @{ kClassNameKey: @"sideMenu.scaffold",
+                                                               VHamburgerButtonIconKey: (self.templateCEnabled ? [UIImage imageNamed:@"menuC"] : [UIImage imageNamed:@"Menu"] ),
                                                                VDependencyManagerInitialViewControllerKey: @{ kReferenceIDKey: self.firstMenuItemID },
                                                                VScaffoldViewControllerMenuComponentKey: [self menuComponent],
                                                                VScaffoldViewControllerUserProfileViewComponentKey: @{ kClassNameKey: @"userProfile.screen" },
                                                                kSelectorKey: [self kSelectorKeyFromInitDictionary:self.dataFromInitCall],
+                                                               VScaffoldViewControllerNavigationBarAppearanceKey: [self navigationBarAppearance],
                                                             };
-#warning Hackey
     template[VDependencyManagerWorkspaceFlowKey] = [self workspaceFlowComponent];
     
     return template;
@@ -297,6 +302,33 @@ static NSString * const kVideoMuted = @"videoMuted";
              kTitleKey: @"crop",
              kFilterIndexKey: @1,
              };
+}
+
+- (NSDictionary *)navigationBarAppearance
+{
+    if ( self.templateCEnabled )
+    {
+        return @{
+                 VDependencyManagerBackgroundColorKey: @{
+                         kRedKey: @255,
+                         kGreenKey: @255,
+                         kBlueKey: @255,
+                         kAlphaKey: @1
+                         },
+                 VDependencyManagerMainTextColorKey: @{
+                         kRedKey: @0,
+                         kGreenKey: @0,
+                         kBlueKey: @0,
+                         kAlphaKey: @1
+                         }
+                 };
+    }
+    else
+    {
+        return @{
+                 VDependencyManagerBackgroundColorKey: self.dataFromInitCall[@"appearance"][@"color.accent"]
+                 };
+    }
 }
 
 - (NSDictionary *)menuComponent

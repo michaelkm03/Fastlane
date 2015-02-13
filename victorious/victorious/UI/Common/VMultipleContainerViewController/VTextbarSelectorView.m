@@ -7,11 +7,12 @@
 //
 
 #import "VTextbarSelectorView.h"
-#import "VDependencyManager.h"
 #import "NSArray+VMap.h"
+#import "VDependencyManager.h"
 
 static CGFloat const kVBarHeight = 40;
 static CGFloat const kVLineHeight = 1;
+static CGFloat const kVLineAnimationDuration = 0.25f;
 
 @interface VTextbarSelectorView ()
 
@@ -45,7 +46,7 @@ static CGFloat const kVLineHeight = 1;
 - (void)setActiveViewControllerIndex:(NSUInteger)activeViewControllerIndex
 {
     self.realActiveViewControllerIndex = activeViewControllerIndex;
-    [self updateLineConstraint];
+    [self updateLineConstraintAnimated:YES];
 }
 
 //Must implement, otherwise NSNotFound is returned
@@ -66,16 +67,28 @@ static CGFloat const kVLineHeight = 1;
 
 #pragma mark - display updating
 
-- (void)updateLineConstraint
+- (void)updateLineConstraintAnimated:(BOOL)animated
 {
     CGFloat constriantConstant = ( CGRectGetWidth(self.bounds) / self.buttons.count ) * self.activeViewControllerIndex;
-    self.lineLeftConstraint.constant = constriantConstant;
+    if ( animated )
+    {
+        [UIView animateWithDuration:kVLineAnimationDuration animations:^
+         {
+             self.lineLeftConstraint.constant = constriantConstant;
+             [self layoutIfNeeded];
+         }];
+    }
+    else
+    {
+        self.lineLeftConstraint.constant = constriantConstant;
+        [self setNeedsLayout];
+    }
 }
 
 - (void)setBounds:(CGRect)bounds
 {
     [super setBounds:bounds];
-    [self updateLineConstraint];
+    [self updateLineConstraintAnimated:NO];
 }
 
 #pragma mark - view setup
@@ -101,7 +114,7 @@ static CGFloat const kVLineHeight = 1;
     __weak VTextbarSelectorView *wSelf = self;
     __block UIButton *priorButton = nil;
     UIColor *buttonTextColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
-    UIFont *buttonFont = [UIFont boldSystemFontOfSize:16];
+    UIFont *buttonFont = [self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
     [self.viewControllers enumerateObjectsUsingBlock:^(UIViewController *viewController, NSUInteger idx, BOOL *stop) {
         
         VTextbarSelectorView *sSelf = wSelf;
@@ -123,7 +136,7 @@ static CGFloat const kVLineHeight = 1;
         NSDictionary *buttonDictionary = NSDictionaryOfVariableBindings(button);
         [sSelf addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[button]|" options:0 metrics:nil views:buttonDictionary]];
         
-        if ( !priorButton )
+        if ( priorButton == nil )
         {
             [sSelf addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[button]" options:0 metrics:nil views:buttonDictionary]];
         }
@@ -180,7 +193,7 @@ static CGFloat const kVLineHeight = 1;
 
 - (NSMutableArray *)buttons
 {
-    if ( _buttons )
+    if ( _buttons != nil )
     {
         return _buttons;
     }

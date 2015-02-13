@@ -29,6 +29,7 @@
 static const CGFloat kTriggerVelocity = 500.0f;
 static const CGFloat kSnapDampingConstant = 0.9f;
 static const CGFloat kTopSpacePublishPrompt = 50.0f;
+static const CGFloat kAccessoryViewHeight = 44.0f;
 
 @interface VPublishViewController () <UICollisionBehaviorDelegate, UITextViewDelegate, UIGestureRecognizerDelegate, VContentInputAccessoryViewDelegate>
 
@@ -90,8 +91,6 @@ static const CGFloat kTopSpacePublishPrompt = 50.0f;
 {
     [super viewDidLoad];
     
-    [self setupBehaviors];
-    
     self.cameraPublishController = [[VCameraRollPublishShareController alloc] init];
     self.cameraPublishController.switchToConfigure = self.cameraRollSwitch;
     
@@ -120,7 +119,7 @@ static const CGFloat kTopSpacePublishPrompt = 50.0f;
         self.captionTextView.typingAttributes = @{NSFontAttributeName: label3Font};
     }
     
-    VContentInputAccessoryView *inputAccessoryView = [[VContentInputAccessoryView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 44.0f)];
+    VContentInputAccessoryView *inputAccessoryView = [[VContentInputAccessoryView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), kAccessoryViewHeight)];
     self.captionTextView.textContainerInset = UIEdgeInsetsMake(10, 6, 0, 6);
     self.captionTextView.backgroundColor = [UIColor clearColor];
     inputAccessoryView.textInputView = self.captionTextView;
@@ -145,7 +144,9 @@ static const CGFloat kTopSpacePublishPrompt = 50.0f;
 {
     [super viewDidLayoutSubviews];
     
-    CGRect referenceBounds = self.animator.referenceView.bounds;
+    [self setupBehaviors];
+    
+    CGRect referenceBounds = self.publishPrompt.bounds;
     CGFloat inset = -hypot(CGRectGetWidth(referenceBounds), CGRectGetHeight(referenceBounds)); // hypot will ensure we are fully offscreen
     UIEdgeInsets edgeInsets = UIEdgeInsetsMake(inset, inset, inset, inset);
     [self.collisionBehavior setTranslatesReferenceBoundsIntoBoundaryWithInsets:edgeInsets];
@@ -389,18 +390,18 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
                                                                     mode:UIPushBehaviorModeInstantaneous];
     self.pushBehavior = pushBehavior;
     
+    // This will snap our content back to the center of the screen
+    UISnapBehavior *snap = [[UISnapBehavior alloc] initWithItem:self.publishPrompt
+                                                    snapToPoint:CGPointMake(CGRectGetWidth(self.view.bounds) / 2,
+                                                                            kTopSpacePublishPrompt + (CGRectGetHeight(self.publishPrompt.frame) * 0.5f))];
+    snap.damping = kSnapDampingConstant;
+    self.snapBehavior = snap;
+    
     // This will be used for determining when the publish prompt has gone offscreen
     UICollisionBehavior *collision = [[UICollisionBehavior alloc] initWithItems:@[self.publishPrompt]];
     collision.collisionDelegate = self;
     self.collisionBehavior = collision;
     [self.animator addBehavior:collision];
-    
-    // This will snap our content back to the center of the screen
-    UISnapBehavior *snap = [[UISnapBehavior alloc] initWithItem:self.publishPrompt
-                                                    snapToPoint:CGPointMake(self.view.center.x,
-                                                                            kTopSpacePublishPrompt + (CGRectGetHeight(self.publishPrompt.frame) * 0.5f))];
-    snap.damping = kSnapDampingConstant;
-    self.snapBehavior = snap;
 }
 
 @end

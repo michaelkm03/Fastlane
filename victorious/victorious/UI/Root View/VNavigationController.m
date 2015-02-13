@@ -7,8 +7,10 @@
 //
 
 #import "VDependencyManager.h"
+#import "VDependencyManager+VScaffoldViewController.h"
 #import "VNavigationController.h"
 #import "VNavigationControllerScrollDelegate.h"
+#import "VScaffoldViewController.h"
 #import "UIImage+VSolidColor.h"
 #import "UIViewController+VLayoutInsets.h"
 
@@ -22,12 +24,13 @@
 
 @interface VNavigationController () <UINavigationControllerDelegate>
 
-@property (nonatomic, strong) VDependencyManager *dependencyManager;
+@property (nonatomic, readonly) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) UINavigationController *innerNavigationController;
 @property (nonatomic, strong) UIView *supplementaryHeaderView;
 @property (nonatomic, strong) UIView *statusBarBackgroundView;
 @property (nonatomic, strong) UIViewController *displayedViewController; ///< The view controller currently on the top of the nav stack, as far as we know
 @property (nonatomic) BOOL wantsStatusBarHidden;
+@property (nonatomic) UIStatusBarStyle statusBarStyle;
 
 @end
 
@@ -54,6 +57,7 @@ static const CGFloat kStatusBarHeight = 20.0f;
     if (self != nil)
     {
         _dependencyManager = dependencyManager;
+        _statusBarStyle = [self statusBarStyleForColor:[[_dependencyManager dependencyManagerForNavigationBar] colorForKey:VDependencyManagerBackgroundColorKey]];
     }
     return self;
 }
@@ -63,6 +67,34 @@ static const CGFloat kStatusBarHeight = 20.0f;
 - (void)dealloc
 {
     _innerNavigationController.delegate = nil;
+}
+
+- (UIStatusBarStyle)statusBarStyleForColor:(UIColor *)color
+{
+    CGFloat red = 0;
+    CGFloat green = 0;
+    CGFloat blue = 0;
+    CGFloat alpha = 0;
+    
+    if ( ![color getRed:&red green:&green blue:&blue alpha:&alpha] )
+    {
+        return UIStatusBarStyleDefault;
+    }
+    
+    // Relative luminance in colorimetric spaces - http://en.wikipedia.org/wiki/Luminance_(relative)
+    red *= 0.2126f;
+    green *= 0.7152f;
+    blue *= 0.0722f;
+    CGFloat luminance = red + green + blue;
+    
+    if ( luminance < 0.6f )
+    {
+        return UIStatusBarStyleLightContent;
+    }
+    else
+    {
+        return UIStatusBarStyleDefault;
+    }
 }
 
 #pragma mark - View Lifecycle
@@ -88,7 +120,7 @@ static const CGFloat kStatusBarHeight = 20.0f;
 
     UIView *statusBarBackgroundView = [[UIView alloc] init];
     statusBarBackgroundView.translatesAutoresizingMaskIntoConstraints = NO;
-    statusBarBackgroundView.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
+    statusBarBackgroundView.backgroundColor = [[self.dependencyManager dependencyManagerForNavigationBar] colorForKey:VDependencyManagerBackgroundColorKey];
     [self.view addSubview:statusBarBackgroundView];
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[statusBarBackgroundView]|"
                                                                       options:0
@@ -103,14 +135,15 @@ static const CGFloat kStatusBarHeight = 20.0f;
 
 - (void)addNavigationBarStyles
 {
-    [self.innerNavigationController.navigationBar setBackgroundImage:[UIImage v_imageWithColor:[self.dependencyManager colorForKey:VDependencyManagerAccentColorKey]]
+    VDependencyManager *dependenciesForNavigationBar = [self.dependencyManager dependencyManagerForNavigationBar];
+    [self.innerNavigationController.navigationBar setBackgroundImage:[UIImage v_imageWithColor:[dependenciesForNavigationBar colorForKey:VDependencyManagerBackgroundColorKey]]
                                                  forBarPosition:UIBarPositionAny
                                                      barMetrics:UIBarMetricsDefault];
     self.innerNavigationController.navigationBar.shadowImage = [UIImage v_imageWithColor:[UIColor clearColor]];
     
     NSMutableDictionary *titleAttributes = [NSMutableDictionary dictionary];
-    UIColor *navigationBarTitleTintColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
-    UIFont *navigationBarTitleFont = [self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
+    UIColor *navigationBarTitleTintColor = [dependenciesForNavigationBar colorForKey:VDependencyManagerMainTextColorKey];
+    UIFont *navigationBarTitleFont = [dependenciesForNavigationBar fontForKey:VDependencyManagerHeaderFontKey];
     
     if ( navigationBarTitleTintColor != nil )
     {
@@ -129,7 +162,7 @@ static const CGFloat kStatusBarHeight = 20.0f;
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return UIStatusBarStyleLightContent;
+    return self.statusBarStyle;
 }
 
 - (UIStatusBarAnimation)preferredStatusBarUpdateAnimation

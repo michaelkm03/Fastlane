@@ -244,6 +244,13 @@ static const CGFloat kSpacingBetweenTextAndEdge = 35.0f;
     [self invalidateIntrinsicContentSize];
 }
 
+- (void)setAttributedText:(NSAttributedString *)attributedText
+{
+    _attributedText = [attributedText copy];
+    self.textView.attributedText = _attributedText;
+    [self invalidateIntrinsicContentSize];
+}
+
 - (void)setPreferredMaxLayoutWidth:(CGFloat)preferredMaxLayoutWidth
 {
     _preferredMaxLayoutWidth = preferredMaxLayoutWidth;

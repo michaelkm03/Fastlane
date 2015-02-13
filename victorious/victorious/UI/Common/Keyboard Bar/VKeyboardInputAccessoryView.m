@@ -7,6 +7,8 @@
 //
 
 #import "VKeyboardInputAccessoryView.h"
+#import "VUserTaggingTextStorage.h"
+#import "VDependencyManager.h"
 
 // Constants
 #import "VConstants.h"
@@ -19,16 +21,20 @@ const CGFloat VInputAccessoryViewDesiredMinimumHeight = 47.0f;
 @interface VKeyboardInputAccessoryView () <UITextViewDelegate>
 
 @property (nonatomic, assign) BOOL selectedMedia;
+@property (nonatomic, strong) VUserTaggingTextStorage *textStorage;
 
 @property (weak, nonatomic) IBOutlet UIImageView *attachmentThumbnail;
 
 @property (nonatomic, weak) IBOutlet UIButton *attachmentsButton;
 @property (nonatomic, weak) IBOutlet UIButton *sendButton;
-@property (nonatomic, weak) IBOutlet UITextView *editingTextView;
+@property (nonatomic, weak) UITextView *editingTextView;
+@property (nonatomic, weak) IBOutlet UIView *editingTextSuperview;
 @property (nonatomic, weak) IBOutlet UILabel *placeholderLabel;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceTextViewTopToContainerConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceTextViewToBottomContainerConstraint;
+
+@property (weak, nonatomic) VDependencyManager *dependencyManager;
 
 @end
 
@@ -36,14 +42,51 @@ const CGFloat VInputAccessoryViewDesiredMinimumHeight = 47.0f;
 
 #pragma mark - Factory Methods
 
-+ (VKeyboardInputAccessoryView *)defaultInputAccessoryView
++ (VKeyboardInputAccessoryView *)defaultInputAccessoryViewWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     UINib *nibForInputAccessoryView = [UINib nibWithNibName:NSStringFromClass([self class])
                                                      bundle:nil];
     NSArray *nibContents = [nibForInputAccessoryView instantiateWithOwner:nil
                                                                   options:nil];
     
-    return [nibContents firstObject];
+    VKeyboardInputAccessoryView *accessoryView = [nibContents firstObject];
+    accessoryView.dependencyManager = dependencyManager;
+    
+    return accessoryView;
+}
+
+#pragma mark - Initialization
+
+- (void)awakeFromNib
+{
+    self.textStorage = [[VUserTaggingTextStorage alloc] initWithString:nil andDependencyManager:self.dependencyManager textView:nil taggingDelegate:self.delegate];
+
+    NSLayoutManager *layoutManager = [[NSLayoutManager alloc] init];
+    [self.textStorage addLayoutManager:layoutManager];
+    
+    NSTextContainer *textContainer = [[NSTextContainer alloc] init];
+    [layoutManager addTextContainer:textContainer];
+    
+    UITextView *editingTextView = [[UITextView alloc] initWithFrame:CGRectZero textContainer:textContainer];
+    editingTextView.translatesAutoresizingMaskIntoConstraints = NO;
+    editingTextView.delegate = self;
+    editingTextView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    editingTextView.font = [UIFont systemFontOfSize:14.0f];
+    editingTextView.autocapitalizationType = UITextAutocapitalizationTypeSentences;
+    
+    [self.editingTextSuperview addSubview:editingTextView];
+    self.editingTextView = editingTextView;
+    
+    self.textStorage.textView = self.editingTextView;
+    
+    [self.editingTextSuperview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[editingTextView]|"
+                                                                                      options:0
+                                                                                      metrics:nil
+                                                                                        views:NSDictionaryOfVariableBindings(editingTextView)]];
+    [self.editingTextSuperview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[editingTextView]|"
+                                                                                      options:0
+                                                                                      metrics:nil
+                                                                                        views:NSDictionaryOfVariableBindings(editingTextView)]];
 }
 
 #pragma mark - UIView
@@ -51,14 +94,11 @@ const CGFloat VInputAccessoryViewDesiredMinimumHeight = 47.0f;
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    self.editingTextView.delegate = self;
     
     [self.sendButton setTitleColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor]
                           forState:UIControlStateNormal];
     [self.sendButton setTitleColor:[UIColor lightGrayColor]
                           forState:UIControlStateDisabled];
-    
-    self.editingTextView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
 }
 
 - (CGSize)intrinsicContentSize
@@ -70,7 +110,8 @@ const CGFloat VInputAccessoryViewDesiredMinimumHeight = 47.0f;
 
 - (NSString *)composedText
 {
-    return self.editingTextView.text ?: @"";
+    NSString *composedText = [self.textStorage databaseFormattedString];
+    return composedText ?: @"";
 }
 
 - (void)setPlaceholderText:(NSString *)placeholderText
@@ -215,8 +256,14 @@ shouldChangeTextInRange:(NSRange)range
     self.sendButton.enabled = (self.selectedMedia || (self.composedText.length > 0));
 }
 
-@end
+- (void)setDelegate:(id<VKeyboardInputAccessoryViewDelegate>)delegate
+{
+    _delegate = delegate;
+    self.textStorage.taggingDelegate = delegate;
+    self.textStorage.textView = self.editingTextView;
+}
 
+@end
 
 #pragma mark - Input AccessoryView
 

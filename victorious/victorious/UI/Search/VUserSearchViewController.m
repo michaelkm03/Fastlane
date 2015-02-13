@@ -44,6 +44,7 @@
 #import "VTrackingManager.h"
 
 @interface VUserSearchViewController () <UITextFieldDelegate>
+
 @property (nonatomic, weak) IBOutlet UIView *noResultsView;
 @property (nonatomic, weak) IBOutlet UIImageView *noResultsIcon;
 @property (nonatomic, weak) IBOutlet UILabel *noResultsTitleLabel;
@@ -68,6 +69,8 @@
 - (void)runUserSearch:(id)sender;
 
 @end
+
+static const NSInteger kSearchResultLimit = 100;
 
 @implementation VUserSearchViewController
 
@@ -216,10 +219,11 @@
     if ([self.searchField.text length] > 0)
     {
         [self.activityIndicatorView startAnimating];
-        [[VObjectManager sharedManager] findMessagableUsersBySearchString:self.searchField.text
-                                                                    limit:100
-                                                         withSuccessBlock:searchSuccess
-                                                                failBlock:searchFail];
+        [[VObjectManager sharedManager] findUsersBySearchString:self.searchField.text
+                                                          limit:kSearchResultLimit
+                                                        context:VObjectManagerSearchContextUserTag
+                                               withSuccessBlock:searchSuccess
+                                                      failBlock:searchFail];
     }
     else
     {

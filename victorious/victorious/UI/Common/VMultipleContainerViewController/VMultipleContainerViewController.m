@@ -7,7 +7,7 @@
 //
 
 #import "UIViewController+VLayoutInsets.h"
-#import "VDependencyManager.h"
+#import "VDependencyManager+VScaffoldViewController.h"
 #import "VMultipleContainerViewController.h"
 #import "VNavigationController.h"
 #import "VSelectorViewBase.h"
@@ -50,7 +50,7 @@ static NSString * const kInitialKey = @"initial";
     {
         _dependencyManager = dependencyManager;
         _viewControllers = [dependencyManager arrayOfSingletonValuesOfType:[UIViewController class] forKey:kScreensKey];
-        _selector = [dependencyManager singletonObjectOfType:[VSelectorViewBase class] forKey:kSelectorKey];
+        _selector = [[dependencyManager dependencyManagerForNavigationBar] singletonObjectOfType:[VSelectorViewBase class] forKey:kSelectorKey];
         _selector.viewControllers = _viewControllers;
         _selector.delegate = self;
         self.navigationItem.v_supplementaryHeaderView = _selector;
