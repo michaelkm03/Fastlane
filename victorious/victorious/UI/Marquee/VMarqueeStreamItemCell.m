@@ -22,6 +22,12 @@
 #import "VStreamWebViewController.h"
 #import "UIVIew+AutoLayout.h"
 
+CGFloat const kVDetailVisibilityDuration = 3.0f;
+CGFloat const kVDetailHideDuration = 2.0f;
+static CGFloat const kVDetailHideTime = 0.3f;
+static CGFloat const kVDetailBounceHeight = 8.0f;
+static CGFloat const kVDetailBounceTime = 0.15f;
+
 @interface VMarqueeStreamItemCell ()
 
 @property (nonatomic, weak) IBOutlet UILabel *nameLabel;
@@ -29,12 +35,17 @@
 @property (nonatomic, weak) IBOutlet UIImageView *previewImageView;
 @property (nonatomic, weak) IBOutlet UIImageView *pollOrImageView;
 @property (nonatomic, weak) IBOutlet UIView *webViewContainer;
+@property (nonatomic, weak) IBOutlet UIView *detailsContainer;
+@property (nonatomic, weak) IBOutlet UIView *detailsBackgroundView;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *detailsBottomLayoutConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *detailsHeightLayoutConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *labelTopLayoutConstriant;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *labelBottomLayoutConstriant;
 @property (nonatomic, strong) VStreamWebViewController *webViewController;
 
 @property (nonatomic, weak) IBOutlet VDefaultProfileButton *profileImageButton;
 
-@property (nonatomic) CGRect originalNameLabelFrame;
-@property (nonatomic, strong) NSLayoutConstraint *centerConstraint;
+@property (nonatomic, strong) NSTimer *hideTimer;
 
 @end
 
@@ -46,8 +57,6 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
 {
     [super awakeFromNib];
     
-    self.originalNameLabelFrame = self.nameLabel.frame;
-
     self.profileImageButton.layer.borderColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor].CGColor;
     self.profileImageButton.layer.borderWidth = 4;
     
@@ -55,15 +64,6 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
     self.nameLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:textColorKey];
     
     self.nameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
-    
-    self.centerConstraint = [NSLayoutConstraint constraintWithItem:self.nameLabel
-                                                                        attribute:NSLayoutAttributeCenterX
-                                                                        relatedBy:NSLayoutRelationEqual
-                                                                           toItem:self
-                                                                        attribute:NSLayoutAttributeCenterX
-                                                                       multiplier:1
-                                                                         constant:0];
-    [self addConstraint:self.centerConstraint];
 }
 
 - (void)setStreamItem:(VStreamItem *)streamItem
@@ -71,11 +71,18 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
     _streamItem = streamItem;
     
     self.nameLabel.text = streamItem.name;
-    [self.nameLabel sizeToFit];
+    if ( self.nameLabel.text != nil )
+    {
+        CGFloat detailsHeight = [self detailContainerHeightForText:self.nameLabel.text withFont:[self.nameLabel font]];
+        self.detailsHeightLayoutConstraint.constant = detailsHeight;
+        [self layoutIfNeeded];
+    }
     
     NSURL *previewImageUrl = [NSURL URLWithString: [streamItem.previewImagePaths firstObject]];
     [self.previewImageView fadeInImageAtURL:previewImageUrl
                            placeholderImage:[UIImage resizeableImageWithColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]]];
+    
+    self.detailsBackgroundView.backgroundColor = [[VThemeManager sharedThemeManager] preferredBackgroundColor];
     
     if ( [streamItem isKindOfClass:[VSequence class]] )
     {
@@ -100,7 +107,62 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
     {
         self.profileImageButton.hidden = YES;
     }
+    
+    //Timer for marquee details auto-hiding
+    [self setDetailsContainerVisible:YES animated:NO];
+    [self.hideTimer invalidate];
+    self.hideTimer = [NSTimer scheduledTimerWithTimeInterval:kVDetailVisibilityDuration
+                                                      target:self
+                                                    selector:@selector(hideDetailContainer)
+                                                    userInfo:nil
+                                                     repeats:NO];
 }
+
+#pragma mark - Detail height determination
+
+- (CGFloat)detailContainerHeightForText:(NSString *)text withFont:(UIFont *)font
+{
+    CGFloat maxWidth = CGRectGetWidth(self.nameLabel.bounds);
+    CGRect textBounds = [text boundingRectWithSize:CGSizeMake(maxWidth, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName : font} context:NULL];
+    return fabsf(self.labelBottomLayoutConstriant.constant) + fabsf(self.labelTopLayoutConstriant.constant) + self.detailsBackgroundView.frame.origin.y + CGRectGetHeight(textBounds) + kVDetailBounceHeight;
+}
+
+#pragma mark - Detail container animation
+
+//Selector hit by timer
+- (void)hideDetailContainer
+{
+    [self setDetailsContainerVisible:NO animated:YES];
+}
+
+- (void)setDetailsContainerVisible:(BOOL)visible animated:(BOOL)animated
+{
+    CGFloat targetConstraintValue = visible ? -kVDetailBounceHeight : - self.detailsContainer.bounds.size.height;
+    
+    if ( animated )
+    {
+        [UIView animateWithDuration:kVDetailBounceTime animations:^
+        {
+            self.detailsBottomLayoutConstraint.constant = 0.0f;
+            [self layoutIfNeeded];
+        }
+        completion:^(BOOL finished)
+        {
+            [UIView animateWithDuration:kVDetailHideTime animations:^
+             {
+                 self.detailsBottomLayoutConstraint.constant = targetConstraintValue;
+                 [self layoutIfNeeded];
+             }];
+        }];
+    }
+    else
+    {
+        self.detailsBottomLayoutConstraint.constant = targetConstraintValue;
+        [self setNeedsLayout];
+    }
+}
+
+#pragma mark - Cell setup
 
 - (void)cleanupWebView
 {
@@ -131,17 +193,7 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
     [super prepareForReuse];
     
     self.streamItem = nil;
-    self.nameLabel.frame = self.originalNameLabelFrame;
-    [self removeConstraint:self.centerConstraint];
-    self.centerConstraint = [NSLayoutConstraint constraintWithItem:self.nameLabel
-                                                         attribute:NSLayoutAttributeCenterX
-                                                         relatedBy:NSLayoutRelationEqual
-                                                            toItem:self
-                                                         attribute:NSLayoutAttributeCenterX
-                                                        multiplier:1
-                                                          constant:0];
-    [self addConstraint:self.centerConstraint];
-    [self layoutIfNeeded];
+    [self setDetailsContainerVisible:YES animated:NO];
 }
 
 - (IBAction)userSelected:(id)sender

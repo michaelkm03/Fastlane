@@ -17,8 +17,6 @@
 #import "UIStoryboard+VMainStoryboard.h"
 #import "victorious-Swift.h"  // for NSString+Unicode (imports all Swift files)
 
-static const CGFloat kPreviewImageWidth = 160.0f;
-
 static const NSInteger kMinLength = 2;
 
 static char KVOContext;
@@ -255,7 +253,7 @@ static char KVOContext;
 
     if (self.firstMediaURL)
     {
-        self.mediaButtonLeftSpacingConstraint.constant = kPreviewImageWidth;
+        self.mediaButtonLeftSpacingConstraint.constant = CGRectGetWidth(self.view.bounds) / 2;
     }
     else
     {

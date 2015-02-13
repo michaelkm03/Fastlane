@@ -22,12 +22,12 @@ extern NSString * const VDirectoryItemCellNameStream;
 /**
  *  The desired height for a directory item cell that has space for a stack-style extension at the bottom.
  */
-+ (CGFloat)desiredStreamOfStreamsHeight;
++ (CGFloat)desiredStreamOfStreamsHeightForWidth:(CGFloat)width;
 
 /**
  *  The desired height for a directory item cell that is just a stream of content.
  */
-+ (CGFloat)desiredStreamOfContentHeight;
++ (CGFloat)desiredStreamOfContentHeightForWidth:(CGFloat)width;
 
 /**
  *  The VStreamItem used to populate fields on the cell.

@@ -10,6 +10,9 @@
 
 #import "VSharedCollectionReusableViewMethods.h"
 
+extern CGFloat const kVDetailVisibilityDuration;
+extern CGFloat const kVDetailHideDuration;
+
 @class VStreamItem, VUser, VMarqueeStreamItemCell, VDefaultProfileButton;
 
 /**

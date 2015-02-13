@@ -6,9 +6,11 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "VUserTaggingTextStorageDelegate.h"
+
 @class VKeyboardBarViewController;
 
-@protocol VKeyboardBarDelegate <NSObject>
+@protocol VKeyboardBarDelegate <NSObject, VUserTaggingTextStorageDelegate>
 @required
 
 @optional
@@ -20,7 +22,7 @@
 
 @interface VKeyboardBarViewController : UIViewController
 
-@property (nonatomic, weak, readonly) IBOutlet UITextView *textView;
+@property (nonatomic, strong, readonly) UITextView *textView;
 @property (nonatomic, weak)   id<VKeyboardBarDelegate>  delegate;
 @property (nonatomic, strong) NSAttributedString       *textViewText;
 @property (nonatomic, weak)   IBOutlet UILabel         *promptLabel;

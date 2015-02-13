@@ -27,6 +27,7 @@ NSString * const VDirectoryItemCellNameStream = @"VStreamDirectoryItemCell";
 
 static const CGFloat kDirectoryItemBaseHeight = 217.0f;
 static const CGFloat kDirectoryItemStackHeight = 8.0f;
+static const CGFloat kDirectoryItemBaseWidth = 145.0f;
 
 @interface VDirectoryItemCell()
 
@@ -46,18 +47,17 @@ static const CGFloat kDirectoryItemStackHeight = 8.0f;
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {
     CGFloat width = CGRectGetWidth(bounds) * .453; //from spec, 290 width on 640
-    return CGSizeMake(width, kDirectoryItemBaseHeight);
+    return CGSizeMake(width, [self desiredStreamOfStreamsHeightForWidth:width]);
 }
 
-+ (CGFloat)desiredStreamOfStreamsHeight
++ (CGFloat)desiredStreamOfStreamsHeightForWidth:(CGFloat)width
 {
-    return kDirectoryItemBaseHeight + kDirectoryItemStackHeight;
+    return (kDirectoryItemBaseHeight - kDirectoryItemBaseWidth) + ((kDirectoryItemBaseWidth * width) / kDirectoryItemBaseWidth) + kDirectoryItemStackHeight;
 }
 
-+ (CGFloat)desiredStreamOfContentHeight
++ (CGFloat)desiredStreamOfContentHeightForWidth:(CGFloat)width
 {
-    return [self desiredStreamOfStreamsHeight];
-    return kDirectoryItemBaseHeight;
+    return [self desiredStreamOfStreamsHeightForWidth:width];
 }
 
 #pragma mark - NSObject
