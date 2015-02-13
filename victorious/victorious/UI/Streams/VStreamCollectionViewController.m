@@ -98,7 +98,8 @@ NSString * const VDependencyManagerStreamURLPathKey = @"streamUrlPath";
 {
     NSAssert([NSThread isMainThread], @"This method must be called on the main thread");
     
-    VStream *stream = [VStream streamForPath:[dependencyManager stringForKey:VDependencyManagerStreamURLPathKey] inContext:dependencyManager.objectManager.managedObjectStore.mainQueueManagedObjectContext];
+    NSString *urlPathKey = [dependencyManager stringForKey:VDependencyManagerStreamURLPathKey];
+    VStream *stream = [VStream streamForPath:urlPathKey inContext:dependencyManager.objectManager.managedObjectStore.mainQueueManagedObjectContext];
     stream.name = [dependencyManager stringForKey:VDependencyManagerTitleKey];
     
     VStreamCollectionViewController *streamCollectionVC = [self streamViewControllerForStream:stream];
