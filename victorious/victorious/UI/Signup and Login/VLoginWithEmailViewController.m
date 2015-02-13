@@ -162,7 +162,7 @@
 - (BOOL)shouldLogin
 {
     NSError *validationError;
-    BOOL shouldLogin;
+    BOOL shouldLogin = YES;
     id newResponder = nil;
     
     if (![self.emailValidator validateString:self.usernameTextField.text andError:&validationError])
