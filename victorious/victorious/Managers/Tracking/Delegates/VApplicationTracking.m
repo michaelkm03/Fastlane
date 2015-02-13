@@ -26,7 +26,7 @@ static NSString * const kMacroShareDestination       = @"%%SHARE_DEST%%";
 static NSString * const kMacroNotificationID         = @"%%NOTIF_ID%%";
 static NSString * const kMacroSessionTime            = @"%%SESSION_TIME%%";
 
-#define APPLICATION_TRACKING_LOGGING_ENABLED 
+#define APPLICATION_TRACKING_LOGGING_ENABLED 0
 
 #if DEBUG && APPLICATION_TRACKING_LOGGING_ENABLED
 #warning Tracking logging is enabled. Please remember to disable it when you're done debugging.
