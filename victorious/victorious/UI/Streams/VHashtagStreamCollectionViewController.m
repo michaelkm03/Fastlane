@@ -7,7 +7,6 @@
 //
 
 #import "VHashtagStreamCollectionViewController.h"
-#import "UIViewController+VNavMenu.h"
 #import "UIStoryboard+VMainStoryboard.h"
 #import "VObjectManager+Discover.h"
 #import "VObjectManager+Login.h"
@@ -17,6 +16,7 @@
 #import "MBProgressHUD.h"
 #import "VObjectManager+Sequence.h"
 #import "VStream+Fetcher.h"
+#import "VNoContentView.h"
 
 @interface VHashtagStreamCollectionViewController ()
 
@@ -24,9 +24,13 @@
 @property (nonatomic, strong) NSString *selectedHashtag;
 @property (nonatomic, weak) MBProgressHUD *failureHUD;
 
+@property (nonatomic, strong) VNoContentView *noContentView;
+
 @end
 
 @implementation VHashtagStreamCollectionViewController
+
+#pragma mark - Instantiation
 
 + (instancetype)instantiateWithHashtag:(NSString *)hashtag
 {
@@ -43,6 +47,8 @@
     return streamCollection;
 }
 
+#pragma mark - View controller life cycle
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -56,7 +62,7 @@
 {
     VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        [self updateHashtagNavButton];
+        [self updateUserFollowingStatus];
     };
     
     VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
@@ -74,31 +80,45 @@
 {
     [super refreshWithCompletion:^
      {
-         [self updateHashtagNavButton];
+         [self updateUserFollowingStatus];
+         [self dataSourceDidRefresh];
      }];
 }
 
-- (void)updateHashtagNavButton
+- (void)updateUserFollowingStatus
 {
-    NSAssert( self.selectedHashtag != nil, @"Houston, we have an issue." );
-    NSAssert( self.selectedHashtag.length > 0, @"Houston, we have an issue." );
+    NSAssert( self.selectedHashtag != nil, @"To present this view controller, there must be a selected hashtag." );
+    NSAssert( self.selectedHashtag.length > 0, @"To present this view controller, there must be a selected hashtag." );
     
     VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"tag == %@", self.selectedHashtag];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"tag == %@", self.selectedHashtag.lowercaseString];
     VHashtag *hashtag = [mainUser.hashtags filteredOrderedSetUsingPredicate:predicate].firstObject;
     self.followingSelectedHashtag = hashtag != nil;
 }
 
-- (void)setFollowingSelectedHashtag:(BOOL)followingSelectedHashtag
+- (void)dataSourceDidRefresh
 {
-    NSString *buttonImageName = followingSelectedHashtag ? @"followedHashtag" : @"streamFollowHashtag";
-    UIImage *hashtagButtonImage = [[UIImage imageNamed:buttonImageName] imageWithRenderingMode:UIImageRenderingModeAutomatic];
-    [self.navHeaderView setRightButtonImage:hashtagButtonImage withAction:@selector(followUnfollowHashtagButtonAction:) onTarget:nil];
+    if ( self.streamDataSource.count == 0 )
+    {
+        if ( self.noContentView == nil )
+        {
+            self.noContentView = [VNoContentView noContentViewWithFrame:self.collectionView.frame];
+            self.noContentView.titleLabel.text = NSLocalizedString( @"NoHashtagsTitle", @"" );
+            self.noContentView.messageLabel.text = [NSString stringWithFormat:NSLocalizedString( @"NoHashtagsMessage", @"" ), self.selectedHashtag];
+            self.noContentView.iconImageView.image = [UIImage imageNamed:@"tabIconHashtag"];
+        }
+        
+        self.collectionView.backgroundView = self.noContentView;
+    }
+    else
+    {
+        self.collectionView.backgroundView = nil;
+    }
 }
 
-#pragma mark - Hashtag Button Actions
+#pragma mark - Follow / Unfollow actions
 
-- (void)followUnfollowHashtagButtonAction:(UIButton *)sender
+- (void)toggleFollowHashtag
 {
     // Check if logged in before attempting to subscribe / unsubscribe
     if (![VObjectManager sharedManager].authorized)
@@ -107,27 +127,27 @@
         return;
     }
     
-    // Disable the sub/unsub button
-    sender.userInteractionEnabled = NO;
-    sender.alpha = 0.3f;
-    
-    if (self.isSubscribedToHashtag)
+    if ( self.isFollowingSelectedHashtag )
     {
-        [self unfollowHashtagAction:sender];
+        [self unfollowHashtag];
     }
     else
     {
-        [self followHashtagAction:sender];
+        [self followHashtag];
     }
 }
 
-- (void)followHashtagAction:(UIButton *)sender
+- (void)followHashtag
 {
+    self.navigationItem.rightBarButtonItem.enabled = NO;
+    
     VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         // Animate follow button
-        self.isSubscribedToHashtag = YES;
-        [self updateSubscribeStatusAnimated:YES button:sender];
+        self.followingSelectedHashtag = YES;
+        [[NSNotificationCenter defaultCenter] postNotificationName:kHashtagStatusChangedNotification object:nil];
+        
+        self.navigationItem.rightBarButtonItem.enabled = YES;
     };
     
     VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
@@ -137,9 +157,7 @@
         self.failureHUD.detailsLabelText = NSLocalizedString(@"HashtagSubscribeError", @"");
         [self.failureHUD hide:YES afterDelay:3.0f];
         
-        // Set button back to normal state
-        sender.userInteractionEnabled = YES;
-        sender.alpha = 1.0f;
+        self.navigationItem.rightBarButtonItem.enabled = YES;
     };
     
     // Backend Subscribe to Hashtag call
@@ -148,12 +166,16 @@
                                              failBlock:failureBlock];
 }
 
-- (void)unfollowHashtagAction:(UIButton *)sender
+- (void)unfollowHashtag
 {
+    self.navigationItem.rightBarButtonItem.enabled = NO;
+    
     VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        self.isSubscribedToHashtag = NO;
-        [self updateSubscribeStatusAnimated:YES button:sender];
+        self.followingSelectedHashtag = NO;
+        [[NSNotificationCenter defaultCenter] postNotificationName:kHashtagStatusChangedNotification object:nil];
+        
+        self.navigationItem.rightBarButtonItem.enabled = YES;
     };
     
     VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
@@ -163,9 +185,7 @@
         self.failureHUD.detailsLabelText = NSLocalizedString(@"HashtagUnsubscribeError", @"");
         [self.failureHUD hide:YES afterDelay:3.0f];
         
-        // Set button back to normal state
-        sender.userInteractionEnabled = YES;
-        sender.alpha = 1.0f;
+        self.navigationItem.rightBarButtonItem.enabled = YES;
     };
     
     // Backend Unsubscribe to Hashtag call
@@ -174,27 +194,37 @@
                                                failBlock:failureBlock];
 }
 
-#pragma mark - Follow / Unfollow Hashtag Completion Method
+#pragma mark - UIBarButtonItem state management
 
-- (void)updateSubscribeStatusAnimated:(BOOL)animated button:(UIButton *)sender
+- (void)setFollowingSelectedHashtag:(BOOL)followingSelectedHashtag
 {
-    NSString *buttonImageName = @"streamFollowHashtag";
+    BOOL isAlreadyNewValue = _followingSelectedHashtag == followingSelectedHashtag;
     
-    if (self.isSubscribedToHashtag)
+    _followingSelectedHashtag = followingSelectedHashtag;
+    
+    [self updateFollowingStatusAnimated:!isAlreadyNewValue];
+}
+
+- (UIImage *)followButtonImage
+{
+    NSString *imageName = self.isFollowingSelectedHashtag ? @"followedHashtag" : @"streamFollowHashtag";
+    return [UIImage imageNamed:imageName];
+}
+
+- (void)updateFollowingStatusAnimated:(BOOL)animated
+{
+    if ( self.streamDataSource.count == 0 )
     {
-        buttonImageName = @"followedHashtag";
+        self.navigationItem.rightBarButtonItem = nil;
+        return;
     }
     
     // Reset the hashtag button image
-    UIImage *hashtagButtonImage = [[UIImage imageNamed:buttonImageName] imageWithRenderingMode:UIImageRenderingModeAutomatic];
-    [self.navHeaderView setRightButtonImage:hashtagButtonImage withAction:nil onTarget:nil];
-    
-    // Set button back to normal state
-    sender.userInteractionEnabled = YES;
-    sender.alpha = 1.0f;
-    
-    // Fire NSNotification to signal change in the status of this hashtag
-    [[NSNotificationCenter defaultCenter] postNotificationName:kHashtagStatusChangedNotification object:nil];
+    UIImage *hashtagButtonImage = [[self followButtonImage] imageWithRenderingMode:UIImageRenderingModeAutomatic];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:hashtagButtonImage
+                                                                              style:UIBarButtonItemStylePlain
+                                                                             target:self
+                                                                             action:@selector(toggleFollowHashtag)];
 }
 
 @end
