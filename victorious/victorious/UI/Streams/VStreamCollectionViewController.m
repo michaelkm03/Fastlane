@@ -94,10 +94,6 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
 {
     VStreamCollectionViewController *streamCollection = (VStreamCollectionViewController *)[[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier:kStreamCollectionStoryboardId];
     streamCollection.currentStream = stream;
-
-    streamCollection.streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:stream];
-    streamCollection.streamDataSource.delegate = streamCollection;
-
     return streamCollection;
 }
 
@@ -113,6 +109,8 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
     
     VStreamCollectionViewController *streamCollectionVC = [self streamViewControllerForStream:stream];
     streamCollectionVC.dependencyManager = dependencyManager;
+    streamCollectionVC.streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:stream];
+    streamCollectionVC.streamDataSource.delegate = streamCollectionVC;
     
     if ( [[dependencyManager numberForKey:kMarqueeKey] boolValue] )
     {
