@@ -1369,7 +1369,44 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Zcv-lI-oab" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3813" y="-234"/>
+            <point key="canvasLocation" x="-3813" y="-233"/>
+        </scene>
+        <!--Hashtag Stream Collection View Controller-->
+        <scene sceneID="igw-MW-0OC">
+            <objects>
+                <viewController storyboardIdentifier="VHashtagStreamCollectionViewController" id="wno-C0-sMI" customClass="VHashtagStreamCollectionViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="cog-8U-u03"/>
+                        <viewControllerLayoutGuide type="bottom" id="9hD-0I-CKG"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="DmE-tQ-2O9">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="cFZ-XB-0RG">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <color key="backgroundColor" red="0.97254901959999995" green="0.97254901959999995" blue="0.97254901959999995" alpha="1" colorSpace="calibratedRGB"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="S7r-ql-V1u">
+                                    <size key="itemSize" width="154" height="199"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells/>
+                                <connections>
+                                    <outlet property="delegate" destination="wno-C0-sMI" id="aEO-Xg-hSh"/>
+                                </connections>
+                            </collectionView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <outlet property="collectionView" destination="cFZ-XB-0RG" id="FJd-pK-AcQ"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="zSe-kt-67Y" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-3412" y="-233"/>
         </scene>
     </scenes>
     <resources>

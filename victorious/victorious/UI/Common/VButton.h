@@ -15,11 +15,12 @@
 typedef NS_ENUM( NSInteger, VButtonStyle )
 {
     /**
-     A solid background color (which you set using `backgroundColor`
-     like normal, with white text and rounded corners.  This style indicates
+     A solid background color, colored by `primaryColor`,
+     with white text and rounded corners.  This style indicates
      a primary action, such as `submit` on a form.
      */
     VButtonStylePrimary,
+    
     /** 
      A clear background color and gray stroke and text.  This style indicates
      a secondary action, such as `cancel` on a form.
@@ -35,6 +36,30 @@ typedef NS_ENUM( NSInteger, VButtonStyle )
 /**
  Sets the style according to the specified value and redraws right away.
  */
-@property (nonatomic, assign) IBInspectable VButtonStyle style;
+@property (nonatomic, assign) VButtonStyle style;
+
+/**
+ A color used for display according to the configured `style` property.
+ @see `VButtonStyle` enum for emments explaining uses.
+ */
+@property (nonatomic) UIColor *primaryColor;
+
+/**
+ A color used for display according to the configured `style` property.
+ @see `VButtonStyle` enum for emments explaining uses.
+ */
+@property (nonatomic) UIColor *secondaryColor;
+
+/**
+ Shoes the text and shows an activity indicator centered in the button to
+ represent a loading state.
+ */
+- (void)showActivityIndicator;
+
+/**
+ Hides the activity indicator, if visible, and shows the title text of the button
+ with whatever text was last set.
+ */
+- (void)hideActivityIndicator;
 
 @end

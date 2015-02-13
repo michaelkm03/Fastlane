@@ -431,15 +431,19 @@
 		A77AD4FB1A1FF33100142F24 /* VAlertControllerAdvancedTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A77AD4FA1A1FF33100142F24 /* VAlertControllerAdvancedTests.m */; };
 		A77AD5011A2011E000142F24 /* UIActionSheet+VBlocks.m in Sources */ = {isa = PBXBuildFile; fileRef = A77AD4FE1A2011E000142F24 /* UIActionSheet+VBlocks.m */; };
 		A77AD5021A2011E000142F24 /* UIAlertView+VBlocks.m in Sources */ = {isa = PBXBuildFile; fileRef = A77AD5001A2011E000142F24 /* UIAlertView+VBlocks.m */; };
+		A77FB9201A89448C003E9AA2 /* VLoginButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A77FB91F1A89448C003E9AA2 /* VLoginButton.m */; };
+		A77FB9231A897201003E9AA2 /* UIColor+VBrightness.m in Sources */ = {isa = PBXBuildFile; fileRef = A77FB9221A897200003E9AA2 /* UIColor+VBrightness.m */; };
 		A790C8291A01980F00C4F208 /* VTrackingEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = A790C8231A01980F00C4F208 /* VTrackingEvent.m */; };
 		A790C82A1A01980F00C4F208 /* VTrackingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A790C8251A01980F00C4F208 /* VTrackingManager.m */; };
 		A7976D0719FAE8EA00B5A145 /* AVAsset+Orientation.m in Sources */ = {isa = PBXBuildFile; fileRef = A7976D0619FAE8EA00B5A145 /* AVAsset+Orientation.m */; };
-		A79873CA1A6496A50014D099 /* UIColor+VBrightness.m in Sources */ = {isa = PBXBuildFile; fileRef = A79873C91A6496A50014D099 /* UIColor+VBrightness.m */; };
 		A7A2DFFF1A37813D00F8C705 /* VPurchaseActionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A2DFFE1A37813D00F8C705 /* VPurchaseActionCell.m */; };
 		A7A2E0011A38C7B700F8C705 /* NSData+AESTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A2E0001A38C7B700F8C705 /* NSData+AESTests.m */; };
 		A7A2E0071A38E44B00F8C705 /* VPurchaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A2E0041A38E44B00F8C705 /* VPurchaseViewController.m */; };
 		A7A2E00C1A38E47400F8C705 /* Purchases.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7A2E00B1A38E47400F8C705 /* Purchases.storyboard */; };
 		A7A2E0121A391A7D00F8C705 /* VPurchaseRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A2E0111A391A7D00F8C705 /* VPurchaseRecord.m */; };
+		A7A343E21A8D6AE1000F0BCF /* VFollowingStreamCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A343E11A8D6AE1000F0BCF /* VFollowingStreamCollectionViewController.m */; };
+		A7A343E51A8D896C000F0BCF /* VHashtagStreamCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A343E41A8D896C000F0BCF /* VHashtagStreamCollectionViewController.m */; };
+		A7A343CD1A898AD0000F0BCF /* VLinkTextViewHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A343CC1A898AD0000F0BCF /* VLinkTextViewHelper.m */; };
 		A7A390C51A32441E00709812 /* VButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A390C41A32441E00709812 /* VButton.m */; };
 		A7A390CA1A3257A300709812 /* ContentView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7A390C91A3257A300709812 /* ContentView.storyboard */; };
 		A7A7D61819DE178F00B18AB7 /* VAuthorizationViewControllerFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = A735323219DB60600040DB30 /* VAuthorizationViewControllerFactory.m */; };
@@ -1454,6 +1458,10 @@
 		A77AD4FE1A2011E000142F24 /* UIActionSheet+VBlocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIActionSheet+VBlocks.m"; sourceTree = "<group>"; };
 		A77AD4FF1A2011E000142F24 /* UIAlertView+VBlocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertView+VBlocks.h"; sourceTree = "<group>"; };
 		A77AD5001A2011E000142F24 /* UIAlertView+VBlocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertView+VBlocks.m"; sourceTree = "<group>"; };
+		A77FB91E1A89448C003E9AA2 /* VLoginButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLoginButton.h; sourceTree = "<group>"; };
+		A77FB91F1A89448C003E9AA2 /* VLoginButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VLoginButton.m; sourceTree = "<group>"; };
+		A77FB9211A897200003E9AA2 /* UIColor+VBrightness.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+VBrightness.h"; sourceTree = "<group>"; };
+		A77FB9221A897200003E9AA2 /* UIColor+VBrightness.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+VBrightness.m"; sourceTree = "<group>"; };
 		A7814A0919E5FD0600D89B90 /* VPasswordValidationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPasswordValidationTests.m; sourceTree = "<group>"; };
 		A790C8221A01980F00C4F208 /* VTrackingEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTrackingEvent.h; sourceTree = "<group>"; };
 		A790C8231A01980F00C4F208 /* VTrackingEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTrackingEvent.m; sourceTree = "<group>"; };
@@ -1462,8 +1470,6 @@
 		A7976D0519FAE8EA00B5A145 /* AVAsset+Orientation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AVAsset+Orientation.h"; sourceTree = "<group>"; };
 		A7976D0619FAE8EA00B5A145 /* AVAsset+Orientation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AVAsset+Orientation.m"; sourceTree = "<group>"; };
 		A7976D0819FAE94300B5A145 /* AVAsset+OrientationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AVAsset+OrientationTests.m"; sourceTree = "<group>"; };
-		A79873C81A6496A50014D099 /* UIColor+VBrightness.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+VBrightness.h"; sourceTree = "<group>"; };
-		A79873C91A6496A50014D099 /* UIColor+VBrightness.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+VBrightness.m"; sourceTree = "<group>"; };
 		A7A2DFFD1A37813D00F8C705 /* VPurchaseActionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPurchaseActionCell.h; sourceTree = "<group>"; };
 		A7A2DFFE1A37813D00F8C705 /* VPurchaseActionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPurchaseActionCell.m; sourceTree = "<group>"; };
 		A7A2E0001A38C7B700F8C705 /* NSData+AESTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+AESTests.m"; sourceTree = "<group>"; };
@@ -1472,6 +1478,12 @@
 		A7A2E00B1A38E47400F8C705 /* Purchases.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Purchases.storyboard; path = Purchases/Purchases.storyboard; sourceTree = "<group>"; };
 		A7A2E0101A391A7D00F8C705 /* VPurchaseRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VPurchaseRecord.h; path = Purchases/VPurchaseRecord.h; sourceTree = "<group>"; };
 		A7A2E0111A391A7D00F8C705 /* VPurchaseRecord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VPurchaseRecord.m; path = Purchases/VPurchaseRecord.m; sourceTree = "<group>"; };
+		A7A343E01A8D6AE1000F0BCF /* VFollowingStreamCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFollowingStreamCollectionViewController.h; sourceTree = "<group>"; };
+		A7A343E11A8D6AE1000F0BCF /* VFollowingStreamCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFollowingStreamCollectionViewController.m; sourceTree = "<group>"; };
+		A7A343E31A8D896C000F0BCF /* VHashtagStreamCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHashtagStreamCollectionViewController.h; sourceTree = "<group>"; };
+		A7A343E41A8D896C000F0BCF /* VHashtagStreamCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHashtagStreamCollectionViewController.m; sourceTree = "<group>"; };
+		A7A343CB1A898AD0000F0BCF /* VLinkTextViewHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLinkTextViewHelper.h; sourceTree = "<group>"; };
+		A7A343CC1A898AD0000F0BCF /* VLinkTextViewHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VLinkTextViewHelper.m; sourceTree = "<group>"; };
 		A7A390C31A32441E00709812 /* VButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VButton.h; sourceTree = "<group>"; };
 		A7A390C41A32441E00709812 /* VButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VButton.m; sourceTree = "<group>"; };
 		A7A390C91A3257A300709812 /* ContentView.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ContentView.storyboard; sourceTree = "<group>"; };
@@ -2631,6 +2643,10 @@
 				0314D42E19B46B5E00FA363C /* VSignupTransitionAnimator.m */,
 				0314D42F19B46B5E00FA363C /* VSignupWithEmailViewController.h */,
 				0314D43019B46B5E00FA363C /* VSignupWithEmailViewController.m */,
+				A77FB91E1A89448C003E9AA2 /* VLoginButton.h */,
+				A77FB91F1A89448C003E9AA2 /* VLoginButton.m */,
+				A7A343CB1A898AD0000F0BCF /* VLinkTextViewHelper.h */,
+				A7A343CC1A898AD0000F0BCF /* VLinkTextViewHelper.m */,
 			);
 			path = "Signup and Login";
 			sourceTree = "<group>";
@@ -2688,6 +2704,10 @@
 				0314D44519B46B5E00FA363C /* VEphemeralTimerView.h */,
 				0314D44619B46B5E00FA363C /* VEphemeralTimerView.m */,
 				DB2A495919DF455D00CB687B /* VEphemeralTimerView.xib */,
+				A7A343E01A8D6AE1000F0BCF /* VFollowingStreamCollectionViewController.h */,
+				A7A343E11A8D6AE1000F0BCF /* VFollowingStreamCollectionViewController.m */,
+				A7A343E31A8D896C000F0BCF /* VHashtagStreamCollectionViewController.h */,
+				A7A343E41A8D896C000F0BCF /* VHashtagStreamCollectionViewController.m */,
 				A7AEF9981A83F1C300A3D3A0 /* VSequenceActionsDelegate.h */,
 				A7AEF9991A83F1C300A3D3A0 /* VStreamCollectionViewController.h */,
 				A7AEF99A1A83F1C300A3D3A0 /* VStreamCollectionViewController.m */,
@@ -3962,9 +3982,9 @@
 				BE799BAF19C8DF4B0023CE88 /* OrderedSets */,
 				0314D06219B466C100FA363C /* UIActivityViewController+VStatusBarHandling.h */,
 				0314D06319B466C100FA363C /* UIActivityViewController+VStatusBarHandling.m */,
-				A79873C81A6496A50014D099 /* UIColor+VBrightness.h */,
-				A79873C91A6496A50014D099 /* UIColor+VBrightness.m */,
 				0314D06519B4670A00FA363C /* UIImage+Cropping.h */,
+				A77FB9211A897200003E9AA2 /* UIColor+VBrightness.h */,
+				A77FB9221A897200003E9AA2 /* UIColor+VBrightness.m */,
 				0314D06619B4670A00FA363C /* UIImage+Cropping.m */,
 				0314D06719B4670A00FA363C /* UIImage+ImageCreation.h */,
 				0314D06819B4670A00FA363C /* UIImage+ImageCreation.m */,
@@ -5116,6 +5136,8 @@
 				037CB74219CFE8B20084BBED /* VUploadManager.m in Sources */,
 				03B83B6219E0D2CC00DC04E4 /* VUploadProgressViewController.m in Sources */,
 				DB531B501A41F85500B4ADC8 /* VHashtagFollowingTableViewController.m in Sources */,
+				A7A343CD1A898AD0000F0BCF /* VLinkTextViewHelper.m in Sources */,
+				A77FB9231A897201003E9AA2 /* UIColor+VBrightness.m in Sources */,
 				0314D49F19B46B5E00FA363C /* VImageSearchDataSource.m in Sources */,
 				0314D4D619B46B5E00FA363C /* VChangePasswordViewController.m in Sources */,
 				BE88FF921A00060E0064AB28 /* VSwipeNavSelector.m in Sources */,
@@ -5308,7 +5330,9 @@
 				0314D4A519B46B5E00FA363C /* VForceUpgradeViewController.m in Sources */,
 				0314D4E219B46B5E00FA363C /* VFindInstagramFriendsViewController.m in Sources */,
 				0326BBBA19A8183800D995DA /* VPushNotificationManager.m in Sources */,
+				A7A343E51A8D896C000F0BCF /* VHashtagStreamCollectionViewController.m in Sources */,
 				0314D4F319B46B5E00FA363C /* VSignupWithEmailViewController.m in Sources */,
+				A77FB9201A89448C003E9AA2 /* VLoginButton.m in Sources */,
 				A7738B101A4B4A0D008EA973 /* VCommentCellUtilitesController.m in Sources */,
 				0314D0B919B4698800FA363C /* VObjectManager.m in Sources */,
 				D8E39BDC19CB7C80007FD86A /* VContentPollCell.m in Sources */,
@@ -5338,7 +5362,6 @@
 				D8CA63C119D5DEE2002046E5 /* UIView+MotionEffects.m in Sources */,
 				A7AEF9C61A83F2AD00A3D3A0 /* VFollowersTextFormatter.m in Sources */,
 				A743E7E71A08173B00339CB3 /* VEmailValidator.m in Sources */,
-				A79873CA1A6496A50014D099 /* UIColor+VBrightness.m in Sources */,
 				DB531B561A425A7200B4ADC8 /* VHashtag.m in Sources */,
 				0314D4B519B46B5E00FA363C /* VLightboxDisplayAnimator.m in Sources */,
 				0314D4C019B46B5E00FA363C /* VProfileCreateViewController.m in Sources */,

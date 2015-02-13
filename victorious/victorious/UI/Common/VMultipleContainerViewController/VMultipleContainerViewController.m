@@ -168,6 +168,9 @@ static NSString * const kInitialKey = @"initial";
     [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:index inSection:0]
                                 atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally
                                         animated:animated];
+    
+    UIViewController *viewController = self.viewControllers[index];
+    self.navigationItem.rightBarButtonItem = viewController.navigationItem.rightBarButtonItem;
 }
 
 #pragma mark - UICollectionViewDelegate methods

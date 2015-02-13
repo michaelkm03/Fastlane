@@ -28,7 +28,7 @@ typedef NS_ENUM(NSInteger, VTextFieldStyle)
 @property (nonatomic, readonly) BOOL hasResignedFirstResponder;
 
 /**
- *  Show invalid text with a conditional animation. Will not show animation or text while hasResignedFirstResponder AND force are NO. 
+ *  Show invalid text with a conditional animation. Will not show animation or text while hasResignedFirstResponder AND force are NO.
  */
 - (void)showInvalidText:(NSString *)invalidText
                animated:(BOOL)animated

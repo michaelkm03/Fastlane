@@ -24,6 +24,7 @@
 #import "VUser.h"
 #import "VAuthorizationViewControllerFactory.h"
 #import "VConstants.h"
+#import "VHashtagStreamCollectionViewController.h"
 
 static NSString * const kVSuggestedPeopleIdentifier = @"VSuggestedPeopleCell";
 static NSString * const kVTrendingTagIdentifier = @"VTrendingTagCell";
@@ -373,8 +374,8 @@ static CGFloat const kTopInset = 22.0f; ///< The space between the top of the vi
 
 - (void)showStreamWithHashtag:(VHashtag *)hashtag
 {
-    VStreamCollectionViewController *stream = [VStreamCollectionViewController streamViewControllerForStream:[VStream streamForHashTag:hashtag.tag]];
-    [self.navigationController pushViewController:stream animated:YES];
+    VHashtagStreamCollectionViewController *vc = [VHashtagStreamCollectionViewController instantiateWithHashtag:hashtag.tag];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark - Subscribe / Unsubscribe Actions

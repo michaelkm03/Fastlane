@@ -73,7 +73,7 @@ static const CGFloat kSearchTableAnimationDuration = 0.3f;
                                                             kTextViewInsetsVertical,
                                                             kTextViewInsetsHorizontal );
     
-    self.textStorage = [[VUserTaggingTextStorage alloc] initWithString:self.editTextView.text andDependencyManager:nil textView:self.editTextView taggingDelegate:self];
+    self.textStorage = [[VUserTaggingTextStorage alloc] initWithString:self.editTextView.text textView:self.editTextView taggingDelegate:self];
         
     [self updateSize];
 }

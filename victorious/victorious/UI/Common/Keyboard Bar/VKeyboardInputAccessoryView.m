@@ -8,7 +8,6 @@
 
 #import "VKeyboardInputAccessoryView.h"
 #import "VUserTaggingTextStorage.h"
-#import "VDependencyManager.h"
 
 // Constants
 #import "VConstants.h"
@@ -34,15 +33,13 @@ const CGFloat VInputAccessoryViewDesiredMinimumHeight = 47.0f;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceTextViewTopToContainerConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceTextViewToBottomContainerConstraint;
 
-@property (weak, nonatomic) VDependencyManager *dependencyManager;
-
 @end
 
 @implementation VKeyboardInputAccessoryView
 
 #pragma mark - Factory Methods
 
-+ (VKeyboardInputAccessoryView *)defaultInputAccessoryViewWithDependencyManager:(VDependencyManager *)dependencyManager
++ (VKeyboardInputAccessoryView *)defaultInputAccessoryView
 {
     UINib *nibForInputAccessoryView = [UINib nibWithNibName:NSStringFromClass([self class])
                                                      bundle:nil];
@@ -50,7 +47,6 @@ const CGFloat VInputAccessoryViewDesiredMinimumHeight = 47.0f;
                                                                   options:nil];
     
     VKeyboardInputAccessoryView *accessoryView = [nibContents firstObject];
-    accessoryView.dependencyManager = dependencyManager;
     
     return accessoryView;
 }
@@ -59,7 +55,7 @@ const CGFloat VInputAccessoryViewDesiredMinimumHeight = 47.0f;
 
 - (void)awakeFromNib
 {
-    self.textStorage = [[VUserTaggingTextStorage alloc] initWithString:nil andDependencyManager:self.dependencyManager textView:nil taggingDelegate:self.delegate];
+    self.textStorage = [[VUserTaggingTextStorage alloc] initWithString:nil textView:nil taggingDelegate:self.delegate];
 
     NSLayoutManager *layoutManager = [[NSLayoutManager alloc] init];
     [self.textStorage addLayoutManager:layoutManager];
@@ -71,7 +67,10 @@ const CGFloat VInputAccessoryViewDesiredMinimumHeight = 47.0f;
     editingTextView.translatesAutoresizingMaskIntoConstraints = NO;
     editingTextView.delegate = self;
     editingTextView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-    editingTextView.font = [UIFont systemFontOfSize:14.0f];
+    editingTextView.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel1Font];
+    UIEdgeInsets textContainerInset = editingTextView.textContainerInset;
+    textContainerInset.top += 3;
+    editingTextView.textContainerInset = textContainerInset;
     editingTextView.autocapitalizationType = UITextAutocapitalizationTypeSentences;
     
     [self.editingTextSuperview addSubview:editingTextView];

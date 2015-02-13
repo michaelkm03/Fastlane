@@ -117,7 +117,7 @@
 
 - (CMTime)currentTime
 {
-    return self.videoPlayerViewController.player.currentTime;
+    return self.videoPlayerViewController.currentTime;
 }
 
 - (void)setPlayerControlsDisabled:(BOOL)playerControlsDisabled
