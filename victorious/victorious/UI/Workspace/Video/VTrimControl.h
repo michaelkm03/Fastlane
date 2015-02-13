@@ -24,11 +24,6 @@
 @property (nonatomic, assign) CMTime maxDuration;
 
 /**
- *  Indicates negative space that should be left at the end to indicate the user is unable to select this area.
- */
-@property (nonatomic, assign) CMTime nonSelectablePadding;
-
-/**
  *  The text to display in the thumb head.
  */
 @property (nonatomic, copy) NSAttributedString *attributedTitle;
