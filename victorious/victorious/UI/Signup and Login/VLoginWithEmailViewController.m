@@ -22,24 +22,32 @@
 #import "VPasswordValidator.h"
 #import "VEmailValidator.h"
 #import "VAutomation.h"
+#import "VButton.h"
 #import "VInlineValidationTextField.h"
+#import "CCHLinkTextView.h"
+#import "VLinkTextViewHelper.h"
+#import "CCHLinkTextViewDelegate.h"
 
-@interface VLoginWithEmailViewController () <UITextFieldDelegate, UINavigationControllerDelegate, UIAlertViewDelegate>
-@property (nonatomic, weak) IBOutlet    VInlineValidationTextField     *usernameTextField;
-@property (nonatomic, weak) IBOutlet    VInlineValidationTextField     *passwordTextField;
-@property (nonatomic, weak) IBOutlet    UIButton       *loginButton;
-@property (nonatomic, weak) IBOutlet    UIButton       *cancelButton;
-@property (nonatomic, weak) IBOutlet    UIButton       *forgotPasswordButton;
-@property (nonatomic, strong)           VUser          *profile;
-@property (nonatomic, strong)           NSString       *deviceToken;
-@property (nonatomic, strong)           NSString       *userToken;
+@interface VLoginWithEmailViewController () <UITextFieldDelegate, UINavigationControllerDelegate, UIAlertViewDelegate, CCHLinkTextViewDelegate>
 
-@property (nonatomic, strong)           UIAlertView    *resetAlert;
-@property (nonatomic, strong)           UIAlertView    *thanksAlert;
-@property (nonatomic)                   BOOL            alertDismissed;
+@property (nonatomic, weak) IBOutlet VInlineValidationTextField *usernameTextField;
+@property (nonatomic, weak) IBOutlet VInlineValidationTextField *passwordTextField;
+@property (nonatomic, weak) IBOutlet VButton *loginButton;
+@property (nonatomic, weak) IBOutlet VButton *cancelButton;
 
-@property (nonatomic, strong)           VEmailValidator *emailValidator;
-@property (nonatomic, strong)           VPasswordValidator *passwordValidator;
+@property (nonatomic, strong) VUser *profile;
+@property (nonatomic, strong) NSString *deviceToken;
+@property (nonatomic, strong) NSString *userToken;
+
+@property (nonatomic, strong) UIAlertView *resetAlert;
+@property (nonatomic, strong) UIAlertView *thanksAlert;
+@property (nonatomic) BOOL alertDismissed;
+
+@property (nonatomic, strong) VPasswordValidator *passwordValidator;
+@property (nonatomic, strong) VEmailValidator *emailValidator;
+
+@property (nonatomic, strong) IBOutlet VLinkTextViewHelper *linkTextHelper;
+@property (nonatomic, strong) IBOutlet CCHLinkTextView *forgotPasswordTextView;
 
 @end
 
@@ -78,31 +86,33 @@
                                                                                attributes:@{NSForegroundColorAttributeName : activePlaceholderColor}];
     self.passwordTextField.delegate = self;
     
-    self.cancelButton.layer.borderColor = [UIColor colorWithWhite:0.14 alpha:1.0].CGColor;
-    self.cancelButton.layer.borderWidth = 2.0;
-    self.cancelButton.layer.cornerRadius = 3.0;
-    self.cancelButton.backgroundColor = [UIColor clearColor];
     self.cancelButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
-    [self.cancelButton setTitleColor:[UIColor colorWithWhite:0.14 alpha:1.0] forState:UIControlStateNormal];
+    self.cancelButton.primaryColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    self.cancelButton.style = VButtonStyleSecondary;
 
-    self.loginButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     self.loginButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
-    [self.loginButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    self.loginButton.primaryColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    self.loginButton.style = VButtonStylePrimary;
     
-    self.forgotPasswordButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
-    [self.forgotPasswordButton setTitleColor:[UIColor colorWithWhite:0.14 alpha:1.0] forState:UIControlStateNormal];
-    
-    self.usernameTextField.delegate  =   self;
-    self.passwordTextField.delegate  =   self;
+    self.usernameTextField.delegate = self;
+    self.passwordTextField.delegate = self;
     
     self.usernameTextField.accessibilityIdentifier = VAutomationIdentifierLoginUsernameField;
     self.passwordTextField.accessibilityIdentifier = VAutomationIdentifierLoginPasswordField;
-    self.forgotPasswordButton.accessibilityIdentifier = VAutomationIdentifierLoginForgotPassword;
     self.cancelButton.accessibilityIdentifier = VAutomationIdentifierLoginCancel;
     self.loginButton.accessibilityIdentifier = VAutomationIdentifierLoginSubmit;
     
     self.passwordValidator = [[VPasswordValidator alloc] init];
     self.emailValidator = [[VEmailValidator alloc] init];
+    
+    NSString *linkText = NSLocalizedString( @"Reset here", @"" );
+    NSString *normalText = NSLocalizedString( @"Forgot Password?", @"" );
+    NSString *text = [NSString stringWithFormat:NSLocalizedString( @"%@ %@", @""), normalText, linkText];
+    NSRange range = [text rangeOfString:linkText];
+    self.forgotPasswordTextView.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
+    [self.linkTextHelper setupLinkTextView:self.forgotPasswordTextView withText:text range:range];
+    self.forgotPasswordTextView.linkDelegate = self;
+    self.forgotPasswordTextView.accessibilityIdentifier = VAutomationIdentifierLoginForgotPassword;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -140,12 +150,19 @@
     return UIInterfaceOrientationMaskPortrait;
 }
 
+#pragma mark - CCHLinkTextViewDelegate
+
+- (void)linkTextView:(CCHLinkTextView *)linkTextView didTapLinkWithValue:(id)value
+{
+    [self forgotPassword:nil];
+}
+
 #pragma mark - Validation
 
 - (BOOL)shouldLogin
 {
     NSError *validationError;
-    BOOL shouldLogin;
+    BOOL shouldLogin = YES;
     id newResponder = nil;
     
     if (![self.emailValidator validateString:self.usernameTextField.text andError:&validationError])
@@ -184,7 +201,6 @@
 
 - (void)didLoginWithUser:(VUser *)mainUser
 {
-    VLog(@"Succesfully logged in as: %@", mainUser);
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithEmailDidSucceed];
     
     self.profile = mainUser;
@@ -249,16 +265,16 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
- -(IBAction)forgotPassword:(id)sender
+- (IBAction)forgotPassword:(id)sender
 {
     [[self view] endEditing:YES];
     self.alertDismissed = NO;
-
-    self.resetAlert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ResetPassword", @"")
-                                                     message:NSLocalizedString(@"ResetPasswordPrompt", @"")
-                                                    delegate:self
-                                           cancelButtonTitle:NSLocalizedString(@"CancelButton", @"")
-                                           otherButtonTitles:NSLocalizedString(@"ResetButton", @""), nil];
+    
+    self.resetAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ResetPassword", @"")
+                                                 message:NSLocalizedString(@"ResetPasswordPrompt", @"")
+                                                delegate:self
+                                       cancelButtonTitle:NSLocalizedString(@"CancelButton", @"")
+                                       otherButtonTitles:NSLocalizedString(@"ResetButton", @""), nil];
 
     self.resetAlert.alertViewStyle = UIAlertViewStylePlainTextInput;
     [self.resetAlert textFieldAtIndex:0].placeholder = NSLocalizedString(@"ResetPasswordPlaceholder", @"");
@@ -274,6 +290,14 @@
         if (buttonIndex == alertView.firstOtherButtonIndex)
         {
             NSString *emailEntered = [alertView textFieldAtIndex:0].text;
+            if ( emailEntered == nil || emailEntered.length == 0 )
+            {
+                NSString *message = NSLocalizedString(@"EmailNotValid", @"");
+                NSString *title = NSLocalizedString(@"EmailValidation", @"");
+                [self showInvalidEmailForResetPasswordErrorWithMessage:message title:title];
+                return;
+            }
+            
             [[VObjectManager sharedManager] requestPasswordResetForEmail:emailEntered
                                                             successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
              {
@@ -282,12 +306,9 @@
              }
                                                                failBlock:^(NSOperation *operation, NSError *error)
              {
-                 UIAlertView   *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EmailValidation", @"")
-                                                                       message:NSLocalizedString(@"EmailNotFound", @"")
-                                                                      delegate:nil
-                                                             cancelButtonTitle:nil
-                                                             otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
-                 [alert show];
+                 NSString *message = NSLocalizedString(@"EmailNotFound", @"");
+                 NSString *title = NSLocalizedString(@"EmailValidation", @"");
+                 [self showInvalidEmailForResetPasswordErrorWithMessage:message title:title];
              }];
         }
     }
@@ -304,6 +325,16 @@
     }
 }
 
+- (void)showInvalidEmailForResetPasswordErrorWithMessage:(NSString *)message title:(NSString *)title
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
+                                                    message:message
+                                                   delegate:nil
+                                          cancelButtonTitle:nil
+                                          otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
+    [alert show];
+}
+
 #pragma mark - Notifications
 
 - (void)textFieldDidChange:(NSNotification *)notification
@@ -316,7 +347,26 @@
 
 - (BOOL)textFieldShouldEndEditing:(VInlineValidationTextField *)textField
 {
-    [self validateWithTextField:textField];
+    if ( textField.text.length > 0 )
+    {
+        [self validateWithTextField:textField];
+    }
+    
+    return YES;
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    if (textField == self.usernameTextField)
+    {
+        [self.passwordTextField becomeFirstResponder];
+    }
+    else if (textField == self.passwordTextField)
+    {
+        [self.passwordTextField resignFirstResponder];
+        [self login:nil];
+    }
+    
     return YES;
 }
 

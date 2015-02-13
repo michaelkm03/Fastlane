@@ -23,6 +23,7 @@
 #import "VThemeManager.h"
 
 static NSString * const kVInlineUserCellIdentifier = @"followerCell";
+static const NSInteger kSearchResultLimit = 20;
 
 typedef NS_ENUM(NSInteger, VInlineSearchState)
 {
@@ -88,11 +89,11 @@ typedef NS_ENUM(NSInteger, VInlineSearchState)
     
     if ([searchText length] > 0)
     {
-        self.searchState = VInlineSearchStateSearching;
-        self.searchOperation = [[VObjectManager sharedManager] findMessagableUsersBySearchString:searchText
-                                                                                           limit:20
-                                                                                withSuccessBlock:searchSuccess
-                                                                                       failBlock:nil];
+        [[VObjectManager sharedManager] findUsersBySearchString:searchText
+                                                          limit:kSearchResultLimit
+                                                        context:VObjectManagerSearchContextUserTag
+                                               withSuccessBlock:searchSuccess
+                                                      failBlock:nil];
     }
     else
     {

@@ -30,11 +30,12 @@
 #import "VVideoSettings.h"
 
 static const NSInteger kSettingsSectionIndex         = 0;
+
 static const NSInteger kChangePasswordIndex          = 0;
 static const NSInteger kChromecastButtonIndex        = 2;
 static const NSInteger kPushNotificationsButtonIndex = 3;
 static const NSInteger kServerEnvironmentButtonIndex = 4;
-static const NSInteger kResetPurchasesButtonIndex = 5;
+static const NSInteger kResetPurchasesButtonIndex    = 5;
 
 static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
 
@@ -172,7 +173,8 @@ static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
 
 - (void)updateLogoutButtonState
 {
-    self.logoutButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    self.logoutButton.primaryColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    self.logoutButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
     
     if ([VObjectManager sharedManager].mainUserLoggedIn)
     {

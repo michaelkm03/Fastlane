@@ -299,10 +299,11 @@ static NSInteger const kVMaxSearchResults = 1000;
     
     if ( [self.searchField.text length] > 0 )
     {
-        [[VObjectManager sharedManager] findMessagableUsersBySearchString:self.searchField.text
-                                                                    limit:kVMaxSearchResults
-                                                         withSuccessBlock:searchSuccess
-                                                                failBlock:nil];
+        [[VObjectManager sharedManager] findUsersBySearchString:self.searchField.text
+                                                          limit:kVMaxSearchResults
+                                                        context:VObjectManagerSearchContextMessage
+                                               withSuccessBlock:searchSuccess
+                                                      failBlock:nil];
     }
     else
     {

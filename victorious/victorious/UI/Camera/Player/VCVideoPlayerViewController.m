@@ -34,6 +34,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 @property (nonatomic) BOOL delegateNotifiedOfReadinessToPlay;
 @property (nonatomic) CMTime startTime;
 @property (nonatomic) CMTime endTime;
+@property (nonatomic) CMTime originalAssetDuration;
 @property (nonatomic) BOOL didPlayToEnd;
 @property (nonatomic, strong) NSTimer *toolbarHideTimer;
 @property (nonatomic, strong) NSDate *toolbarShowDate;
@@ -259,8 +260,10 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     self.player.actionAtItemEnd = loop ? AVPlayerActionAtItemEndNone : AVPlayerActionAtItemEndPause;
     
     const BOOL shouldLoopWithComposition = loop && !self.loopWithoutComposition;
-    [self.videoUtils createPlayerItemWithURL:itemURL loop:shouldLoopWithComposition readyCallback:^(AVPlayerItem *playerItem)
+    [self.videoUtils createPlayerItemWithURL:itemURL loop:shouldLoopWithComposition
+                               readyCallback:^(AVPlayerItem *playerItem, CMTime duration)
      {
+         self.originalAssetDuration = duration;
          [self.player replaceCurrentItemWithPlayerItem:playerItem];
      }];
 }
@@ -455,8 +458,30 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     return kCMTimeInvalid;
 }
 
+- (CMTime)timeAdjustedForLoopingVideoFromTime:(CMTime)time
+{
+    int currentLoop = 0;
+    CMTime compareTime = time;
+    
+    while ( CMTIME_COMPARE_INLINE( compareTime, >, self.originalAssetDuration) )
+    {
+        compareTime = CMTimeSubtract( compareTime, self.originalAssetDuration );
+        currentLoop++;
+    }
+    
+    CMTime adjustment = CMTimeMultiply( self.originalAssetDuration, currentLoop );
+    CMTime output = CMTimeSubtract( time, adjustment );
+ 
+    // Uncomment to debug adjusted time and current loop:
+    // VLog( @"adjusted time (%i): %.2f", currentLoop, CMTimeGetSeconds( output ) );
+    
+    return output;
+}
+
 - (void)didPlayToTime:(CMTime)time
 {
+    time = [self timeAdjustedForLoopingVideoFromTime:time];
+    
     Float64 durationInSeconds = CMTimeGetSeconds([self playerItemDuration]);
     Float64 timeInSeconds     = CMTimeGetSeconds(time);
     float percentElapsed      = timeInSeconds / durationInSeconds;

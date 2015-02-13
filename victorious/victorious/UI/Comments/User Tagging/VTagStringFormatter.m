@@ -127,16 +127,14 @@
     NSUInteger startIndex = range.location;
     while ( startIndex <= range.location + range.length )
     {
-        NSRange tagRange = [self rangeOfTagAtIndex:startIndex ofAttributedString:attributedString withTagDictionary:tagDictionary];
-        if ( tagRange.location != NSNotFound )
+        NSRange tagRange;
+        BOOL foundTag = [self foundTagAtIndex:startIndex ofAttributedString:attributedString withTagDictionary:tagDictionary range:&tagRange];
+        if ( foundTag )
         {
             [tagRanges addIndexesInRange:tagRange];
-            startIndex = tagRange.location + tagRange.length;
         }
-        else
-        {
-            startIndex += tagRange.length;
-        }
+        startIndex = tagRange.location + tagRange.length + 1;
+
     }
     return tagRanges.count > 0 ? tagRanges : nil;
 }
@@ -202,18 +200,18 @@
 }
 
 //Find the range of a tag contained within the provided tag dictionary with tag attributes that has a character at the provided index of the provided attributed string
-+ (NSRange)rangeOfTagAtIndex:(NSInteger)index
-          ofAttributedString:(NSAttributedString *)attributedString
-           withTagDictionary:(VTagDictionary *)tagDictionary
++ (BOOL)foundTagAtIndex:(NSInteger)index
+     ofAttributedString:(NSAttributedString *)attributedString
+      withTagDictionary:(VTagDictionary *)tagDictionary
+                  range:(NSRangePointer)range
 {
     if (index >= (NSInteger)attributedString.string.length)
     {
-        return NSMakeRange(NSNotFound, NSNotFound);;
+        return NO;
     }
     
-    NSRange range;
-    NSDictionary *attrs = [attributedString attributesAtIndex:index effectiveRange:&range];
-    NSString *key = [attributedString.string substringWithRange:range];
+    NSDictionary *attrs = [attributedString attributesAtIndex:index effectiveRange:range];
+    NSString *key = [attributedString.string substringWithRange:*range];
     VTag *tag = [tagDictionary tagForKey:key];
     
     if ( tag )
@@ -222,18 +220,14 @@
         {
             if ( ![[attrs objectForKey:key] isEqual:[tag.tagStringAttributes objectForKey:key]] )
             {
-                return NSMakeRange(NSNotFound, range.length); //The attributes in the string do not match those from our tag, so no match
+                return NO; //The attributes in the string do not match those from our tag, so no match
             }
         }
-        return NSMakeRange(range.location - 1, range.length + 2); //1s on either side take delimiting chars into account
+        (*range).location -= 1;
+        (*range).length += 2;
+        return YES; //1s on either side take delimiting chars into account
     }
-    return NSMakeRange(NSNotFound, range.length); //The attributes in the string do not match those from our tag, so no match
-    
-    if ([tag.tagStringAttributes isEqualToDictionary:attrs])
-    {
-        return NSMakeRange(range.location - 1, range.length + 2); //1s on either side take delimiting chars into account
-    }
-    return NSMakeRange(NSNotFound, range.length); //The attributes in the string do not match those from our tag, so no match
+    return NO; //The attributes in the string do not match those from our tag, so no match
 }
 
 @end

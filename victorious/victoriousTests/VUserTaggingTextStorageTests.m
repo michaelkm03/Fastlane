@@ -51,12 +51,10 @@
 - (void)testInit
 {
     XCTAssertNoThrow([[VUserTaggingTextStorage alloc] initWithString:nil
-                                                andDependencyManager:nil
                                                             textView:nil
                                                      taggingDelegate:nil], @"should not throw error for nil init fields");
     
     VUserTaggingTextStorage *textStorage = [[VUserTaggingTextStorage alloc] initWithString:self.databaseFormattedString
-                                                                      andDependencyManager:nil
                                                                                   textView:nil
                                                                            taggingDelegate:nil];
     XCTAssertTrue([self.displayFormattedString isEqualToString:textStorage.string], @"text storage didn't automatically create display-formatted string after init with string");
@@ -66,7 +64,6 @@
 {
     //Would love to get the init taken out of here, but how the string is formatted is tied to this init call
     VUserTaggingTextStorage *textStorage = [[VUserTaggingTextStorage alloc] initWithString:self.databaseFormattedString
-                                                                      andDependencyManager:nil
                                                                                   textView:nil
                                                                            taggingDelegate:nil];
     

@@ -17,7 +17,7 @@
  */
 @interface VUserTaggingTextStorage : NSTextStorage
 
-- (instancetype)initWithString:(NSString *)str andDependencyManager:(VDependencyManager *)dependencyManager
+- (instancetype)initWithString:(NSString *)str
                       textView:(UITextView *)textView
                taggingDelegate:(id<VUserTaggingTextStorageDelegate>)taggingDelegate;
 
@@ -29,7 +29,7 @@
 @property (nonatomic, weak) id <VUserTaggingTextStorageDelegate> taggingDelegate;
 @property (nonatomic, weak) VDependencyManager *dependencyManager;
 @property (nonatomic, weak) UITextView *textView;
-@property (nonatomic) NSDictionary *defaultStringAttributes;
-@property (nonatomic) NSDictionary *tagStringAttributes;
+@property (nonatomic, copy) NSDictionary *defaultStringAttributes;
+@property (nonatomic, copy) NSDictionary *tagStringAttributes;
 
 @end

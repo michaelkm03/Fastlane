@@ -303,7 +303,8 @@
 "EnterCodeTitle"        =   "ENTER CODE";
 "ResendEmail"           =   "Resend Email";
 
-"EmailNotFound"         =   "That E-mail address was not found. Please check that you are using the e-mail account you used to create this account.";
+"EmailNotFound"         =   "The email provided was not found. Please enter the email used to create this account.";
+"EmailNotValid"         =   "Please enter the email used to create this account.";
 "Thanks"                =   "Thanks!";
 "CannotVerify"          =   "Cannot Verify Account";
 "IncorrectCode"         =   "The code used for account verification is incorrect.";
@@ -379,9 +380,11 @@
 "RepostedContentView"   =   " REPOSTED";
 "Comment"               =   "Comment";
 
-"repostedFromFormat"      =   "Repost from %@";
+"repostedByFormat"    =   "Reposted by %@";
+"doubleRepostedByFormat" = "Reposted by %@ + 1 other person";
+"multipleRepostedByFormat" = "Reposted by %@ + %lu other people";
 "remixedFromFormat"     =   "Remix from %@";
-"giffedFromFormat"       =   "GIF from %@";
+"giffedFromFormat"      =   "GIF from %@";
 
 "leaveACommentFormat"   =   "Leave a comment at %@";
 

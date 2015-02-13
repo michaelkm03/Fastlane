@@ -34,6 +34,8 @@ static const CGFloat kTrimBodyWidth = 5.0f;
 @property (nonatomic, strong) UICollisionBehavior *collisionBehavior;
 @property (nonatomic, strong) UIDynamicItemBehavior *itemBehavior;
 
+@property (nonatomic, assign) BOOL hasPerformedInitialLayout;
+
 @end
 
 static inline CGFloat TrimHeadYCenter()
@@ -78,7 +80,7 @@ static inline CGPoint ClampX(CGPoint point, CGFloat xMin, CGFloat xMax)
 
 - (void)sharedInit
 {
-    self.trimThumbHead = [[UIView alloc] initWithFrame:CGRectMake(0, 2, kTrimHeadWidth, kTrimHeadHeight)];
+    self.trimThumbHead = [[UIView alloc] initWithFrame:CGRectMake(0, 2.0f, kTrimHeadWidth, kTrimHeadHeight)];
     self.trimThumbHead.backgroundColor = [UIColor whiteColor];
     [self addSubview:self.trimThumbHead];
     self.headGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self
@@ -94,18 +96,6 @@ static inline CGPoint ClampX(CGPoint point, CGFloat xMin, CGFloat xMax)
     self.bodyGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self
                                                                          action:@selector(pannedThumb:)];
     [self.trimThumbBody addGestureRecognizer:self.bodyGestureRecognizer];
-    
-    self.animator = [[UIDynamicAnimator alloc] initWithReferenceView:self];
-    self.pushBehavior = [[UIPushBehavior alloc] initWithItems:@[self.trimThumbHead] mode:UIPushBehaviorModeInstantaneous];
-    self.collisionBehavior = [[UICollisionBehavior alloc] initWithItems:@[self.trimThumbHead]];
-    self.collisionBehavior.translatesReferenceBoundsIntoBoundary = YES;
-    [self.collisionBehavior setTranslatesReferenceBoundsIntoBoundaryWithInsets:UIEdgeInsetsMake(0, -CGRectGetWidth(self.trimThumbHead.bounds)/4, 0.0f, -CGRectGetWidth(self.trimThumbHead.bounds)/2)]; // Hackey should make full width seekable
-    self.collisionBehavior.collisionDelegate = self;
-    self.itemBehavior = [[UIDynamicItemBehavior alloc] initWithItems:@[self.trimThumbHead]];
-    self.itemBehavior.resistance = 10.5f;
-    self.itemBehavior.allowsRotation = NO;
-    [self.animator addBehavior:self.collisionBehavior];
-    
     self.thumbLabel = [[UILabel alloc] initWithFrame:self.trimThumbHead.bounds];
     [self.trimThumbHead addSubview:self.thumbLabel];
 }
@@ -119,6 +109,28 @@ static inline CGPoint ClampX(CGPoint point, CGFloat xMin, CGFloat xMax)
                                           kTrimBodyWidth,
                                           CGRectGetMaxY(self.bounds) - CGRectGetMaxY(self.trimThumbHead.frame));
     [self updateThumAndDimmingViewWithNewThumbCenter:self.trimThumbHead.center];
+    
+    if (!self.hasPerformedInitialLayout)
+    {
+        UIView *trimOpenView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMinY(self.trimThumbBody.frame)+2, kTrimBodyWidth, CGRectGetHeight(self.trimThumbBody.frame)-2)];
+        trimOpenView.backgroundColor = [UIColor whiteColor];
+        trimOpenView.userInteractionEnabled = NO;
+        [self addSubview:trimOpenView];
+        
+        [self updateThumAndDimmingViewWithNewThumbCenter:CGPointMake(CGRectGetMaxX(self.bounds) - (CGRectGetWidth(self.trimThumbHead.frame) / 2), self.trimThumbHead.center.y)];
+        self.hasPerformedInitialLayout = YES;
+        
+        self.animator = [[UIDynamicAnimator alloc] initWithReferenceView:self];
+        self.pushBehavior = [[UIPushBehavior alloc] initWithItems:@[self.trimThumbHead] mode:UIPushBehaviorModeInstantaneous];
+        self.collisionBehavior = [[UICollisionBehavior alloc] initWithItems:@[self.trimThumbHead]];
+        self.collisionBehavior.translatesReferenceBoundsIntoBoundary = YES;
+        [self.collisionBehavior setTranslatesReferenceBoundsIntoBoundaryWithInsets:UIEdgeInsetsMake(0, -CGRectGetWidth(self.trimThumbHead.bounds)/4, 0.0f, -CGRectGetWidth(self.trimThumbHead.bounds)/2)]; // Hackey should make full width seekable
+        self.collisionBehavior.collisionDelegate = self;
+        self.itemBehavior = [[UIDynamicItemBehavior alloc] initWithItems:@[self.trimThumbHead]];
+        self.itemBehavior.resistance = 10.5f;
+        self.itemBehavior.allowsRotation = NO;
+        [self.animator addBehavior:self.collisionBehavior];
+    }
 }
 
 - (UIView *)hitTest:(CGPoint)point
@@ -276,7 +288,7 @@ static inline CGPoint ClampX(CGPoint point, CGFloat xMin, CGFloat xMax)
 - (void)updateSelectedDuration
 {
     CGFloat percentSelected = CGRectGetMidX(self.trimThumbBody.frame) / CGRectGetWidth(self.bounds);
-    self.selectedDuration =  CMTimeMake(percentSelected * self.maxDuration.value, self.maxDuration.timescale);
+    self.selectedDuration =  CMTimeMultiplyByFloat64(self.maxDuration, percentSelected);
 }
 
 - (void)updateThumAndDimmingViewWithNewThumbCenter:(CGPoint)thumbCenter

@@ -47,9 +47,9 @@
 
 - (void)showRemixStreamFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence;
 
+- (void)repostActionFromViewController:(UIViewController *)viewController node:(VNode *)node;
 
-- (BOOL)repostActionFromViewController:(UIViewController *)viewController node:(VNode *)node;///<Returns true if the user is allow to repost, false if not
-- (BOOL)repostActionFromViewController:(UIViewController *)viewController node:(VNode *)node completion:(void(^)(BOOL))completion;
+- (void)repostActionFromViewController:(UIViewController *)viewController node:(VNode *)node completion:(void(^)(BOOL))completion;
 
 - (void)showRepostersFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence;
 
@@ -57,6 +57,7 @@
 - (void)shareFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence node:(VNode *)node;
 
 - (void)flagSheetFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence;
+
 - (void)flagActionForSequence:(VSequence *)sequence;
 
 @end

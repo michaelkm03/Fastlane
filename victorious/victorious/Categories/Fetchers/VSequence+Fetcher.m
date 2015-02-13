@@ -16,8 +16,6 @@
 #import "VUser.h"
 #import "VAsset.h"
 
-#define SIMULATE_GIF_FOR_ALL_VIDEOS 0
-
 typedef NS_OPTIONS(NSInteger, VSequencePermissionOptions)
 {
     VSequencePermissionOptionsNone        = 0,
@@ -72,6 +70,16 @@ typedef NS_OPTIONS(NSInteger, VSequencePermissionOptions)
     }
     
     return false;
+}
+
+- (BOOL)isGIFVideo
+{
+    VAsset *asset = [[self firstNode] mp4Asset];
+    return asset != nil &&
+            asset.playerControlsDisabled.boolValue == YES &&
+            asset.loop.boolValue == YES &&
+            asset.audioMuted.boolValue == YES &&
+            asset.streamAutoplay.boolValue == YES;
 }
 
 - (BOOL)isOwnerContent
@@ -153,17 +161,6 @@ typedef NS_OPTIONS(NSInteger, VSequencePermissionOptions)
     {
         return nil;
     }
-    
-#if SIMULATE_GIF_FOR_ALL_VIDEOS
-#warning This is hardcoded tests to simulate a GIF video configuration.  Turn it off!
-    [node.assets enumerateObjectsUsingBlock:^(VAsset *asset, NSUInteger idx, BOOL *stop)
-     {
-         asset.playerControlsDisabled = @(YES);
-         asset.loop = @(YES);
-         asset.audioMuted = @(YES);
-         asset.streamAutoplay = @(YES);
-     }];
-#endif
     
     __block VAsset *primaryAsset = [node.assets firstObject];
     

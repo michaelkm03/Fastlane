@@ -282,7 +282,7 @@ static NSString * const kUserKey = @"user";
                                   successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
          {
              VUserProfileHeaderView *header = self.profileHeaderView;
-             header.editProfileButton.selected = [resultObjects[0] boolValue];
+             header.isFollowingUser = [resultObjects[0] boolValue];
              header.user = header.user;
          }
                                      failBlock:nil];
@@ -340,55 +340,47 @@ static NSString * const kUserKey = @"user";
     if (self.isMe)
     {
         [self performSegueWithIdentifier:@"toEditProfile" sender:self];
+        return;
+    }
+    
+    VUserProfileHeaderView *header = self.profileHeaderView;
+    header.editProfileButton.enabled = NO;
+    
+    [self.profileHeaderView.editProfileButton showActivityIndicator];
+    
+    VFailBlock fail = ^(NSOperation *operation, NSError *error)
+    {
+        header.editProfileButton.enabled = YES;
+        [header.editProfileButton hideActivityIndicator];
+        
+        [[[UIAlertView alloc] initWithTitle:nil
+                                    message:NSLocalizedString(@"UnfollowError", @"")
+                                   delegate:nil
+                          cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                          otherButtonTitles:nil] show];
+    };
+    
+    if ( header.isFollowingUser )
+    {
+        [[VObjectManager sharedManager] unfollowUser:self.profile
+                                        successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+         {
+             header.editProfileButton.enabled = YES;
+             header.isFollowingUser = NO;
+             header.numberOfFollowers--;
+         }
+                                           failBlock:fail];
     }
     else
     {
-        VUserProfileHeaderView *header = self.profileHeaderView;
-        [header.followButtonActivityIndicator startAnimating];
-        
-        VFailBlock fail = ^(NSOperation *operation, NSError *error)
-        {
-            header.editProfileButton.enabled = YES;
-            [header.followButtonActivityIndicator stopAnimating];
-            
-            UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:nil
-                                                                   message:NSLocalizedString(@"UnfollowError", @"")
-                                                                  delegate:nil
-                                                         cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
-                                                         otherButtonTitles:nil];
-            [alert show];
-        };
-        VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *objects)
-        {
-            header.editProfileButton.enabled = YES;
-            
-            if ( header.editProfileButton.selected )
-            {
-                header.editProfileButton.selected = NO;
-                header.numberOfFollowers--;
-            }
-            else
-            {
-                header.editProfileButton.selected = YES;
-                header.numberOfFollowers++;
-            }
-            
-            
-            [header.followButtonActivityIndicator stopAnimating];
-        };
-        
-        if (header.editProfileButton.selected)
-        {
-            [[VObjectManager sharedManager] unfollowUser:self.profile
-                                            successBlock:success
-                                               failBlock:fail];
-        }
-        else
-        {
-            [[VObjectManager sharedManager] followUser:self.profile
-                                          successBlock:success
-                                             failBlock:fail];
-        }
+        [[VObjectManager sharedManager] followUser:self.profile
+                                      successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+         {
+             header.editProfileButton.enabled = YES;
+             header.isFollowingUser = YES;
+             header.numberOfFollowers++;
+         }
+                                         failBlock:fail];
     }
 }
 
