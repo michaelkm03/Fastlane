@@ -13,6 +13,7 @@
 #import "VScaffoldViewController.h"
 #import "VStreamCollectionViewController.h"
 #import "VTemplateGenerator.h"
+#import "VThemeManager.h"
 #import "VSettingManager.h"
 
 static NSString * const kIDKey = @"id";
@@ -42,6 +43,7 @@ static NSString * const kAlphaKey = @"alpha";
 // Other misc. properties
 static NSString * const kScreensKey = @"screens";
 static NSString * const kSelectorKey =  @"selector";
+static NSString * const kTitleImageKey = @"titleImage";
 
 // Workspace properties
 static NSString * const kToolsKey = @"tools";
@@ -341,35 +343,7 @@ static NSString * const kVideoMuted = @"videoMuted";
                 @{
                     kIdentifierKey: @"Menu Home",
                     kTitleKey: NSLocalizedString(@"Home", @""),
-                    kDestinationKey: @{
-                        kIDKey: self.firstMenuItemID,
-                        kClassNameKey: @"basic.multiScreen",
-                        kScreensKey: @[
-                            @{
-                                kClassNameKey: @"stream.screen",
-                                kTitleKey: NSLocalizedString(@"Featured", @""),
-                                VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/hot_detail_list_by_stream/home",
-                                kIsHomeKey: @YES,
-                                kCanAddContentKey: @YES,
-                            },
-                            @{
-                                kIDKey: self.homeRecentID,
-                                kClassNameKey: @"stream.screen",
-                                kTitleKey: NSLocalizedString(@"Recent", @""),
-                                VStreamCollectionViewControllerStreamURLPathKey: [self urlPathForStreamCategories:[VUGCCategories() arrayByAddingObjectsFromArray:VOwnerCategories()]],
-                                kCanAddContentKey: @YES,
-                            },
-                            @{
-                                kClassNameKey: @"followingStream.screen",
-                                kTitleKey: NSLocalizedString(@"Following", @""),
-                                VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/follows_detail_list_by_stream/0/home",
-                                kCanAddContentKey: @YES,
-                            }
-                        ],
-                        kInitialKey: @{
-                            kReferenceIDKey: self.homeRecentID,
-                        },
-                    }
+                    kDestinationKey: [self homeScreen],
                 },
                 [self ownerStreamMenuItem],
                 @{
@@ -433,6 +407,58 @@ static NSString * const kVideoMuted = @"videoMuted";
 {
     NSString *categoryString = [categories componentsJoinedByString:@","];
     return [@"/api/sequence/detail_list_by_category/" stringByAppendingString:(categoryString ?: @"0")];
+}
+                
+- (NSDictionary *)homeScreen
+{
+    NSMutableDictionary *homeScreen = [@{
+        kIDKey: self.firstMenuItemID,
+        kClassNameKey: @"basic.multiScreen",
+        kScreensKey: @[
+                @{
+                    kClassNameKey: @"stream.screen",
+                    kTitleKey: NSLocalizedString(@"Featured", @""),
+                    VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/hot_detail_list_by_stream/home",
+                    kIsHomeKey: @YES,
+                    kCanAddContentKey: @YES,
+                    },
+                @{
+                    kIDKey: self.homeRecentID,
+                    kClassNameKey: @"stream.screen",
+                    kTitleKey: NSLocalizedString(@"Recent", @""),
+                    VStreamCollectionViewControllerStreamURLPathKey: [self urlPathForStreamCategories:[VUGCCategories() arrayByAddingObjectsFromArray:VOwnerCategories()]],
+                    kCanAddContentKey: @YES,
+                    },
+                @{
+                    kClassNameKey: @"followingStream.screen",
+                    kTitleKey: NSLocalizedString(@"Following", @""),
+                    VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/follows_detail_list_by_stream/0/home",
+                    kCanAddContentKey: @YES,
+                    }
+                ],
+        kInitialKey: @{
+                kReferenceIDKey: self.homeRecentID,
+                },
+        } mutableCopy];
+    
+    UIImage *headerImage = [self homeHeaderImage];
+    if ( headerImage != nil )
+    {
+        homeScreen[kTitleImageKey] = headerImage;
+    }
+    
+    return homeScreen;
+}
+
+- (UIImage *)homeHeaderImage
+{
+    // This is a terrible hack. By default the header image is a 1x1 pt image. If this is what we get back in themedImageForKey return nil.
+    UIImage *headerImage = [UIImage imageNamed:VThemeManagerHomeHeaderImageKey];
+    if ((headerImage.size.width == 1) && (headerImage.size.height == 1))
+    {
+        return nil;
+    }
+    return headerImage;
 }
 
 - (NSDictionary *)homeRecentStream

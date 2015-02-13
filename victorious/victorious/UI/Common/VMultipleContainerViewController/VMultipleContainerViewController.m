@@ -8,6 +8,7 @@
 
 #import "UIViewController+VLayoutInsets.h"
 #import "VDependencyManager+VScaffoldViewController.h"
+#import "VDependencyManager+VNavigationItem.h"
 #import "VMultipleContainerViewController.h"
 #import "VNavigationController.h"
 #import "VSelectorViewBase.h"
@@ -54,6 +55,7 @@ static NSString * const kInitialKey = @"initial";
         _selector.viewControllers = _viewControllers;
         _selector.delegate = self;
         self.navigationItem.v_supplementaryHeaderView = _selector;
+        [_dependencyManager addPropertiesToNavigationItem:self.navigationItem];
         self.title = [dependencyManager stringForKey:VDependencyManagerTitleKey];
     }
     return self;
