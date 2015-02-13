@@ -132,6 +132,11 @@ static NSString * const kInitialKey = @"initial";
 
 #pragma mark - Rotation
 
+- (NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
 - (BOOL)shouldAutorotate
 {
     return NO;
