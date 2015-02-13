@@ -13,9 +13,6 @@
 
 @import AVFoundation;
 
-#import <objc/runtime.h>
-
-static const char kAssociatedObjectKey;
 static const CGFloat kVBlurRadius = 12.5f;
 static const CGFloat kVSaturationDeltaFactor = 1.8f;
 
