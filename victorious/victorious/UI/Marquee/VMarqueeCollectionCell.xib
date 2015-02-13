@@ -25,10 +25,10 @@
                         <cells/>
                     </collectionView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6L3-2K-X3f">
-                        <rect key="frame" x="10" y="255" width="300" height="28"/>
+                        <rect key="frame" x="10" y="261" width="300" height="26"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="28" id="vbw-sc-8gG"/>
+                            <constraint firstAttribute="height" constant="26" id="hRc-RT-D2i"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -36,11 +36,11 @@
             </view>
             <constraints>
                 <constraint firstItem="f4U-R2-d0M" firstAttribute="leading" secondItem="RbQ-PL-xYT" secondAttribute="leading" id="4O9-d9-aTL"/>
-                <constraint firstAttribute="bottom" secondItem="6L3-2K-X3f" secondAttribute="bottom" constant="4" id="MTQ-Fl-Nug"/>
+                <constraint firstAttribute="trailing" secondItem="6L3-2K-X3f" secondAttribute="trailing" constant="10" id="XbJ-PB-GkG"/>
                 <constraint firstItem="f4U-R2-d0M" firstAttribute="top" secondItem="RbQ-PL-xYT" secondAttribute="top" constant="-2" id="eAI-nQ-f1g"/>
-                <constraint firstItem="6L3-2K-X3f" firstAttribute="leading" secondItem="RbQ-PL-xYT" secondAttribute="leading" constant="10" id="gZ3-1I-bV6"/>
+                <constraint firstAttribute="bottom" secondItem="6L3-2K-X3f" secondAttribute="bottom" id="nLb-pS-n5z"/>
                 <constraint firstAttribute="bottom" secondItem="f4U-R2-d0M" secondAttribute="bottom" constant="2" id="pWJ-kZ-a4B"/>
-                <constraint firstAttribute="trailing" secondItem="6L3-2K-X3f" secondAttribute="trailing" constant="10" id="tkW-jj-FUP"/>
+                <constraint firstItem="6L3-2K-X3f" firstAttribute="leading" secondItem="RbQ-PL-xYT" secondAttribute="leading" constant="10" id="wn0-wp-Qh9"/>
                 <constraint firstAttribute="trailing" secondItem="f4U-R2-d0M" secondAttribute="trailing" id="xVf-E6-4xF"/>
             </constraints>
             <size key="customSize" width="428" height="278"/>
