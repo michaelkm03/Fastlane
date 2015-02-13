@@ -17,7 +17,8 @@
  */
 @interface VUserTaggingTextStorage : NSTextStorage
 
-- (instancetype)initWithString:(NSString *)str andDependencyManager:(VDependencyManager *)dependencyManager
+- (instancetype)initWithString:(NSString *)str
+          andDependencyManager:(VDependencyManager *)dependencyManager
                       textView:(UITextView *)textView
                taggingDelegate:(id<VUserTaggingTextStorageDelegate>)taggingDelegate;
 

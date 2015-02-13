@@ -71,7 +71,10 @@ const CGFloat VInputAccessoryViewDesiredMinimumHeight = 47.0f;
     editingTextView.translatesAutoresizingMaskIntoConstraints = NO;
     editingTextView.delegate = self;
     editingTextView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-    editingTextView.font = [UIFont systemFontOfSize:14.0f];
+    editingTextView.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel1Font];
+    UIEdgeInsets textContainerInset = editingTextView.textContainerInset;
+    textContainerInset.top += 3;
+    editingTextView.textContainerInset = textContainerInset;
     editingTextView.autocapitalizationType = UITextAutocapitalizationTypeSentences;
     
     [self.editingTextSuperview addSubview:editingTextView];
