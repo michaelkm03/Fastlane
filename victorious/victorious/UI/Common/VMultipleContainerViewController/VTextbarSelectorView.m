@@ -202,7 +202,11 @@ static CGFloat const kVLineAnimationDuration = 0.25f;
                                                             constant:0.0];
     [self addConstraint:self.lineLeftConstraint];
     
-    _realActiveViewControllerIndex = 0;
+    if ( _realActiveViewControllerIndex >= self.buttons.count )
+    {
+        _realActiveViewControllerIndex = 0;
+    }
+    [self updateLineConstraintAnimated:NO];
 }
 
 - (void)setupSelectionLineWithBackgroundColor:(UIColor *)backgroundColor
