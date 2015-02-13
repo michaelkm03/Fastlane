@@ -84,11 +84,11 @@ const CGFloat kVLoadNextPagePoint = .75f;
         self.contentInset = insets;
     }
 
-    if ( !self.refreshControl.isRefreshing && self.streamDataSource.count == 0 )
+    BOOL shouldRefresh = !self.refreshControl.isRefreshing && self.streamDataSource.count == 0;
+    if ( shouldRefresh )
     {
         [self refresh:nil];
     }
-    
     
     [self.refreshControl removeFromSuperview];
     self.refreshControl = [[UIRefreshControl alloc] init];
@@ -99,6 +99,12 @@ const CGFloat kVLoadNextPagePoint = .75f;
     //Since we're using the collection flow delegate method for the insets, we need to manually position the frame of the refresh control.
     subView.frame = CGRectMake(CGRectGetMinX(subView.frame), CGRectGetMinY(subView.frame) + self.contentInset.top / 2,
                                CGRectGetWidth(subView.frame), CGRectGetHeight(subView.frame));
+    
+    if ( shouldRefresh )
+    {
+        //If we start fetching again, we need to tell our NEW refresh control to start refreshing
+        [self.refreshControl beginRefreshing];
+    }
 }
 
 - (BOOL)prefersStatusBarHidden
