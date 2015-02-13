@@ -350,6 +350,7 @@ static NSString * const kVideoMuted = @"videoMuted";
                                 kTitleKey: NSLocalizedString(@"Featured", @""),
                                 VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/hot_detail_list_by_stream/home",
                                 kIsHomeKey: @YES,
+                                kCanAddContentKey: @YES,
                             },
                             @{
                                 kIDKey: self.homeRecentID,
@@ -362,6 +363,7 @@ static NSString * const kVideoMuted = @"videoMuted";
                                 kClassNameKey: @"followingStream.screen",
                                 kTitleKey: NSLocalizedString(@"Following", @""),
                                 VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/follows_detail_list_by_stream/0/home",
+                                kCanAddContentKey: @YES,
                             }
                         ],
                         kInitialKey: @{
@@ -380,12 +382,14 @@ static NSString * const kVideoMuted = @"videoMuted";
                         kStreamsKey: @[
                             @{
                                 kTitleKey: NSLocalizedString(@"Featured", @""),
-                                VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/hot_detail_list_by_stream/ugc"
+                                VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/hot_detail_list_by_stream/ugc",
+                                kCanAddContentKey: @YES,
                             },
                             @{
                                 kInitialKey: @YES,
                                 kTitleKey: NSLocalizedString(@"Recent", @""),
                                 VStreamCollectionViewControllerStreamURLPathKey: [self urlPathForStreamCategories:VUGCCategories()],
+                                kCanAddContentKey: @YES,
                             },
                         ]
                     }
