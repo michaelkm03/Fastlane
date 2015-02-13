@@ -99,7 +99,19 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
     NSString *parentUserString;
     if (self.sequence.isRepost.boolValue && self.sequence.parentUser != nil)
     {
-        parentUserString = [NSString stringWithFormat:NSLocalizedString(@"repostedFromFormat", nil), text];
+        NSUInteger repostCount = [self.sequence.repostCount unsignedIntegerValue];
+        if ( repostCount == 0 )
+        {
+            parentUserString = [NSString stringWithFormat:NSLocalizedString(@"repostedByFormat", nil), text];
+        }
+        else if ( repostCount == 1 )
+        {
+            parentUserString = [NSString stringWithFormat:NSLocalizedString(@"doubleRepostedByFormat", nil), text];
+        }
+        else
+        {
+            parentUserString = [NSString stringWithFormat:NSLocalizedString(@"multipleRepostedByFormat", nil), text, [self.sequence.repostCount unsignedLongValue]];
+        }
     }
     
     if (self.sequence.isRemix.boolValue && self.sequence.parentUser != nil)
@@ -163,7 +175,16 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
         return;
     }
     
-    [self.profileImageButton setProfileImageURL:[NSURL URLWithString:self.sequence.user.pictureUrl]
+    VUser *originalPoster = self.sequence.user;
+    VUser *parentUser = self.sequence.parentUser;
+    
+    if ( [self.sequence.isRepost boolValue] )
+    {
+        originalPoster = self.sequence.parentUser;
+        parentUser = self.sequence.user;
+    }
+    
+    [self.profileImageButton setProfileImageURL:[NSURL URLWithString:originalPoster.pictureUrl]
                                        forState:UIControlStateNormal];
     
     self.dateLabel.text = [self.sequence.releasedAt timeSince];
@@ -172,9 +193,10 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
     NSString *commentCount = self.sequence.commentCount.integerValue ? [largeNumberFormatter stringForInteger:self.sequence.commentCount.integerValue] : @"";
     [self.commentButton setTitle:commentCount forState:UIControlStateNormal];
     
-    [self setParentText:self.sequence.parentUser.name];
+    [self setParentText:parentUser != nil ? parentUser.name : @""];
+    
     // Set username and format date
-    self.usernameLabel.text = self.sequence.user.name;
+    self.usernameLabel.text = originalPoster.name;
     self.dateLabel.text = [self.sequence.releasedAt timeSince];
     
     // Check if this is a repost / remix and size the userInfoView accordingly
