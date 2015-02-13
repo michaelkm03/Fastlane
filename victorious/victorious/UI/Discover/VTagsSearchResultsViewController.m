@@ -6,38 +6,23 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
+#import <MBProgressHUD.h>
+
 #import "VTagsSearchResultsViewController.h"
 #import "VUsersAndTagsSearchViewController.h"
-
-// VObjectManager
 #import "VObjectManager+Discover.h"
 #import "VObjectManager+Users.h"
 #import "VObjectManager+Login.h"
 #import "VUser.h"
 #import "VHashtag.h"
 #import "VStream+Fetcher.h"
-
-// Stream
 #import "VStreamCollectionViewController.h"
-
-// Constants
 #import "VConstants.h"
-
-// Dependency Manager
 #import "VDependencyManager.h"
-
-// Auth Factory
 #import "VAuthorizationViewControllerFactory.h"
-
-// Tableview Cell
 #import "VTrendingTagCell.h"
-
-// No Content View
 #import "VNoContentView.h"
-
-// MBProgressHUD
-#import <MBProgressHUD.h>
-
+#import "VHashtagStreamCollectionViewController.h"
 
 static NSString * const kVTagResultIdentifier = @"VTrendingTagCell";
 
@@ -115,8 +100,8 @@ static NSString * const kVTagResultIdentifier = @"VTrendingTagCell";
 
 - (void)showStreamWithHashtag:(VHashtag *)hashtag
 {
-    VStreamCollectionViewController *stream = [VStreamCollectionViewController streamViewControllerForStream:[VStream streamForHashTag:hashtag.tag]];
-    [self.navigationController pushViewController:stream animated:YES];
+    VHashtagStreamCollectionViewController *vc = [VHashtagStreamCollectionViewController instantiateWithHashtag:hashtag.tag];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark - UI setup
