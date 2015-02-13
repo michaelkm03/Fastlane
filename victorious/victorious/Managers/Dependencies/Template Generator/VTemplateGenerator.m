@@ -117,22 +117,38 @@ static NSString * const kVideoMuted = @"videoMuted";
          }
      }];
     
-#warning SEEMS WRONG
-    NSString *screenSelectorClassNameKey = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled] ? @"basic.multiScreenSelector" : @"textbar.multiScreenSelector";
-    
     template[VDependencyManagerScaffoldViewControllerKey] = @{ kClassNameKey: @"sideMenu.scaffold",
                                                                VDependencyManagerInitialViewControllerKey: @{ kReferenceIDKey: self.firstMenuItemID },
                                                                VScaffoldViewControllerMenuComponentKey: [self menuComponent],
                                                                VScaffoldViewControllerUserProfileViewComponentKey: @{ kClassNameKey: @"userProfile.screen" },
-                                                               kSelectorKey: @{
-                                                                       kClassNameKey: screenSelectorClassNameKey,
-                                                                       VDependencyManagerBackgroundColorKey: self.accentColor,
-                                                                       },
+                                                               kSelectorKey: [self kSelectorKeyFromInitDictionary:self.dataFromInitCall],
                                                             };
 #warning Hackey
     template[VDependencyManagerWorkspaceFlowKey] = [self workspaceFlowComponent];
     
     return template;
+}
+
+- (NSDictionary *)kSelectorKeyFromInitDictionary:(NSDictionary *)initDictionary
+{
+    NSDictionary *kSelectorKey = @{
+                                   kClassNameKey: @"basic.multiScreenSelector",
+                                   VDependencyManagerBackgroundColorKey: self.accentColor,
+                                   };
+    
+    if ( [[(NSDictionary *)[initDictionary objectForKey:@"experiments"] objectForKey:@"template_c_enabled"] boolValue] )
+    {
+        kSelectorKey =  @{
+                          kClassNameKey: @"textbar.multiScreenSelector",
+                          VDependencyManagerBackgroundColorKey:@{
+                                              kRedKey: @255,
+                                              kBlueKey: @255,
+                                              kGreenKey: @255,
+                                              kAlphaKey: @1
+                                              }
+                          };
+    }
+    return kSelectorKey;
 }
 
 - (NSDictionary *)workspaceFlowComponent
