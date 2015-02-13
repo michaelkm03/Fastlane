@@ -11,17 +11,20 @@
 #import "VHamburgerButton.h"
 #import "VNumericalBadgeView.h"
 
+NSString * const VHamburgerButtonIconKey = @"menuIcon";
+
 @interface VHamburgerButton ()
 
 @property (nonatomic, weak) IBOutlet UIButton *hamburgerButton;
 @property (nonatomic, weak) IBOutlet VNumericalBadgeView *badgeView;
 @property (nonatomic, weak) IBOutlet VBadgeBackgroundView *badgeBorder;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end
 
 @implementation VHamburgerButton
 
-+ (instancetype)hamburgerButtonFromNib
++ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     UINib *nib = [UINib nibWithNibName:NSStringFromClass(self) bundle:nil];
     NSArray *objects = [nib instantiateWithOwner:nil options:nil];
@@ -29,6 +32,7 @@
     {
         if ( [object isKindOfClass:self] )
         {
+            ((VHamburgerButton *)object).dependencyManager = dependencyManager;
             return object;
         }
     }
@@ -65,7 +69,7 @@
     self.hamburgerButton.tintColor = tintColor;
     self.badgeBorder.color = self.backgroundColor;
     
-    UIImage *image = [self.hamburgerButton.currentImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    UIImage *image = [[self.dependencyManager templateValueOfType:[UIImage class] forKey:VHamburgerButtonIconKey] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     [self.hamburgerButton setImage:image forState:UIControlStateNormal];
     
     self.badgeView.font = [dependencyManager fontForKey:VDependencyManagerParagraphFontKey];

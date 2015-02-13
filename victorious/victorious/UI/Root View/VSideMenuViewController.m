@@ -7,6 +7,7 @@
 //
 
 #import "VDependencyManager.h"
+#import "VDependencyManager+VScaffoldViewController.h"
 #import "VHamburgerButton.h"
 #import "VMenuController.h"
 #import "VNavigationController.h"
@@ -93,8 +94,7 @@
     
     self.contentViewController = [[VNavigationController alloc] initWithDependencyManager:self.dependencyManager];
     
-    self.hamburgerButton = [VHamburgerButton hamburgerButtonFromNib];
-    self.hamburgerButton.dependencyManager = self.dependencyManager;
+    self.hamburgerButton = [VHamburgerButton newWithDependencyManager:[self.dependencyManager dependencyManagerForNavigationBar]];
     [self.hamburgerButton addTarget:self action:@selector(presentMenuViewController) forControlEvents:UIControlEventTouchUpInside];
     self.contentViewController.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.hamburgerButton];
     
