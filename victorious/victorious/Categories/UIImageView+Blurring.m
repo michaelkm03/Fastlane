@@ -21,11 +21,6 @@ static const CGFloat kVSaturationDeltaFactor = 1.8f;
 
 @implementation UIImageView (Blurring)
 
-- (UIImage *)downloadedImage
-{
-    return objc_getAssociatedObject(self, &kAssociatedObjectKey);
-}
-
 - (void)setBlurredImageWithClearImage:(UIImage *)image placeholderImage:(UIImage *)placeholderImage tintColor:(UIColor *)tintColor animate:(BOOL)shouldAnimate
 {
     self.image = placeholderImage;
@@ -69,10 +64,12 @@ static const CGFloat kVSaturationDeltaFactor = 1.8f;
                    completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL)
      {
          __strong UIImageView *strongSelf = weakSelf;
-         objc_setAssociatedObject(strongSelf, &kAssociatedObjectKey, image, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+         strongSelf.image = placeholderImage;
          dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^
                         {
-                            UIImage *blurredImage = [image applyBlurWithRadius:kVBlurRadius
+                            UIImage *resizedImage = [image resizedImage:AVMakeRectWithAspectRatioInsideRect(image.size, weakSelf.bounds).size
+                                                   interpolationQuality:kCGInterpolationLow];
+                            UIImage *blurredImage = [resizedImage applyBlurWithRadius:kVBlurRadius
                                                                      tintColor:tintColor
                                                          saturationDeltaFactor:kVSaturationDeltaFactor
                                                                      maskImage:nil];

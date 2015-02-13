@@ -275,7 +275,7 @@
     NSURL *imageUrl;
     if (self.type == VContentViewTypeImage)
     {
-        imageUrl = [NSURL URLWithString:self.currentAsset.data];
+        imageUrl = [NSURL URLWithString:[self.sequence.firstNode imageAsset].data];
     }
     else
     {
