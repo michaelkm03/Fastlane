@@ -455,7 +455,8 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 {
     int currentLoop = 0;
     CMTime compareTime = time;
-    while ( CMTimeCompare( compareTime, self.originalAssetDuration) > 0 )
+    
+    while ( CMTIME_COMPARE_INLINE( compareTime, >, self.originalAssetDuration) )
     {
         compareTime = CMTimeSubtract( compareTime, self.originalAssetDuration );
         currentLoop++;
