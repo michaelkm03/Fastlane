@@ -80,7 +80,7 @@ static inline CGPoint ClampX(CGPoint point, CGFloat xMin, CGFloat xMax)
 
 - (void)sharedInit
 {
-    self.trimThumbHead = [[UIView alloc] initWithFrame:CGRectMake(0, 2, kTrimHeadWidth, kTrimHeadHeight)];
+    self.trimThumbHead = [[UIView alloc] initWithFrame:CGRectMake(0, 2.0f, kTrimHeadWidth, kTrimHeadHeight)];
     self.trimThumbHead.backgroundColor = [UIColor whiteColor];
     [self addSubview:self.trimThumbHead];
     self.headGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self
