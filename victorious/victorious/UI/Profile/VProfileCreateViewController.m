@@ -521,9 +521,7 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
 
 - (BOOL)shouldCreateProfile
 {
-    const BOOL isProfileImageRequired = NO; //[[VSettingManager sharedManager] settingEnabledForKey:VExperimentsRequireProfileImage];
-    
-#warning testing only
+    const BOOL isProfileImageRequired = [[VSettingManager sharedManager] settingEnabledForKey:VExperimentsRequireProfileImage];
     
     BOOL    isValid =   ((self.usernameTextField.text.length > 0) &&
                          (self.locationTextField.text.length > 0) &&

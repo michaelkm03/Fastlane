@@ -1525,16 +1525,13 @@ referenceSizeForHeaderInSection:(NSInteger)section
     }
     else if ( [actionCell.actionIdentifier isEqualToString:VEndCardActionIdentifierRepost] )
     {
-        BOOL canRepost = [self.sequenceActionController repostActionFromViewController:self.navigationController
-                                                                                  node:self.viewModel.currentNode
-                                                                            completion:^(BOOL finished)
-                          {
-                              [actionCell showSuccessState];
-                          }];
-        if ( canRepost )
-        {
-            actionCell.enabled = NO;
-        }
+        [self.sequenceActionController repostActionFromViewController:self.navigationController
+                                                                 node:self.viewModel.currentNode
+                                                           completion:^(BOOL finished)
+         {
+             [actionCell showSuccessState];
+             actionCell.enabled = NO;
+         }];
     }
     else if ( [actionCell.actionIdentifier isEqualToString:VEndCardActionIdentifierShare] )
     {
