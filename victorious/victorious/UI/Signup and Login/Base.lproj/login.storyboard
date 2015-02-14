@@ -180,7 +180,7 @@
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wIo-IZ-7QY" userLabel="Separator">
                                 <rect key="frame" x="18" y="60" width="284" height="1"/>
-                                <color key="backgroundColor" red="0.51911695075757569" green="0.51911695075757569" blue="0.51911695075757569" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.25" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="HnO-hu-zIr"/>
                                 </constraints>
@@ -197,7 +197,7 @@
                             </textField>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xjn-na-QHs" userLabel="Separator">
                                 <rect key="frame" x="18" y="109" width="284" height="1"/>
-                                <color key="backgroundColor" red="0.51911695075757569" green="0.51911695075757569" blue="0.51911695075757569" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.25" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="pVr-fN-BjO"/>
                                 </constraints>
@@ -317,7 +317,7 @@
                             </textField>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dyU-PZ-r0Q" userLabel="Separator">
                                 <rect key="frame" x="18" y="59" width="284" height="1"/>
-                                <color key="backgroundColor" red="0.51911695079999998" green="0.51911695079999998" blue="0.51911695079999998" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.25" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="KeV-hM-WnU"/>
                                 </constraints>
@@ -334,7 +334,7 @@
                             </textField>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6uf-43-6Uy" userLabel="Separator">
                                 <rect key="frame" x="18" y="109" width="284" height="1"/>
-                                <color key="backgroundColor" red="0.51911695079999998" green="0.51911695079999998" blue="0.51911695079999998" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.25" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="VwL-Ja-GkW"/>
                                 </constraints>
@@ -647,21 +647,21 @@
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ryz-b4-2zc" userLabel="Separator">
                                 <rect key="frame" x="18" y="60" width="284" height="1"/>
-                                <color key="backgroundColor" red="0.51911695079999998" green="0.51911695079999998" blue="0.51911695079999998" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.25" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="D27-rW-FPu"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HPS-EA-AUa" userLabel="Separator">
                                 <rect key="frame" x="18" y="110" width="284" height="1"/>
-                                <color key="backgroundColor" red="0.51911695079999998" green="0.51911695079999998" blue="0.51911695079999998" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.25" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="v5l-zh-cen"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ldF-FI-Yzq" userLabel="Separator">
                                 <rect key="frame" x="18" y="159" width="284" height="1"/>
-                                <color key="backgroundColor" red="0.51911695079999998" green="0.51911695079999998" blue="0.51911695079999998" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.25" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="PGM-CU-8gV"/>
                                 </constraints>
@@ -887,6 +887,6 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="qFR-HG-giH"/>
+        <segue reference="671-FK-1wm"/>
     </inferredMetricsTieBreakers>
 </document>
