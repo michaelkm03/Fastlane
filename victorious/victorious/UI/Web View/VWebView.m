@@ -10,10 +10,6 @@
 
 #import "VWebView.h"
 
-static NSString * const kMailToPrefix = @"mailto";
-static NSString * const kITunesPrefix = @"http://itunes.apple.com";
-static NSString * const kITunesPrefixSSL = @"https://itunes.apple.com";
-
 @interface VWebView() <WKNavigationDelegate>
 
 @property (nonatomic, strong) NSTimer *progressBarAnimationTimer;
@@ -62,16 +58,11 @@ static NSString * const kITunesPrefixSSL = @"https://itunes.apple.com";
 
 - (void)loadRequest:(NSURLRequest *)request
 {
-#warning delete this, testing only:
-    //[self loadHTMLString:nil baseURL:nil];
-    [self.webView loadRequest:request];
+    [self loadHTMLString:nil baseURL:nil];
 }
 
 - (void)loadHTMLString:(NSString *)string baseURL:(NSURL *)baseURL
 {
-#warning delete this, testing only:
-    //string = @"<a href=\"https://itunes.apple.com/us/app/escape-run/id555012306?mt=8\" style=\"font-size: 50px;\">LINK</a>";
-    //baseURL = [NSURL URLWithString:@"http://www.apple.com"];
     [self.webView loadHTMLString:string baseURL:baseURL];
 }
 
@@ -134,7 +125,7 @@ static NSString * const kITunesPrefixSSL = @"https://itunes.apple.com";
 
 - (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler
 {
-    if ( [self shouldURLInSafari:navigationAction.request.URL] )
+    if ( [navigationAction.request.URL.scheme.lowercaseString rangeOfString:@"http"].location != 0 )
     {
         [[UIApplication sharedApplication] openURL:navigationAction.request.URL];
         decisionHandler( WKNavigationActionPolicyCancel );
@@ -143,25 +134,6 @@ static NSString * const kITunesPrefixSSL = @"https://itunes.apple.com";
     {
         decisionHandler( WKNavigationActionPolicyAllow );
     }
-}
-
-#pragma mark - Helpers
-
-- (BOOL)shouldURLInSafari:(NSURL *)url
-{
-    __block BOOL output = NO;
-    
-    NSString *urlString = url.absoluteString;
-    [@[ kMailToPrefix, kITunesPrefix, kITunesPrefixSSL ] enumerateObjectsUsingBlock:^(NSString *prefix, NSUInteger idx, BOOL *stop)
-    {
-        if ( [urlString rangeOfString:prefix].location == 0 )
-        {
-            output = YES;
-            *stop = YES;
-        }
-    }];
-    
-    return output;
 }
 
 @end
