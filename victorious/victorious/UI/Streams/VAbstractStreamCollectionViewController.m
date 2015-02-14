@@ -19,10 +19,10 @@
 
 //View Controllers
 #import "UIViewController+VSideMenuViewController.h"
-#import "VCameraViewController.h"
 #import "VCreatePollViewController.h"
 #import "VFindFriendsViewController.h"
 #import "VAuthorizationViewControllerFactory.h"
+#import "VWorkspaceFlowController.h"
 
 //Data Models
 #import "VStream+Fetcher.h"

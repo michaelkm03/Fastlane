@@ -44,12 +44,12 @@
 #import "UIActionSheet+VBlocks.h"
 
 // ViewControllers
-#import "VCameraViewController.h"
 #import "VVideoLightboxViewController.h"
 #import "VImageLightboxViewController.h"
 #import "VUserProfileViewController.h"
 #import "VAuthorizationViewControllerFactory.h"
 #import "VPurchaseViewController.h"
+#import "VWorkspaceFlowController.h"
 
 // Transitioning
 #import "VLightboxTransitioningDelegate.h"
@@ -91,7 +91,7 @@
 #define HANDOFFENABLED 0
 static const CGFloat kMaxInputBarHeight = 200.0f;
 
-@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, VEndCardViewControllerDelegate, NSUserActivityDelegate>
+@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, VEndCardViewControllerDelegate, NSUserActivityDelegate, VWorkspaceFlowControllerDelegate>
 
 @property (nonatomic, strong) NSUserActivity *handoffObject;
 
@@ -1243,33 +1243,11 @@ referenceSizeForHeaderInSection:(NSInteger)section
     
     void (^showCamera)(void) = ^void(void)
     {
-        VCameraViewController *cameraViewController = [VCameraViewController cameraViewControllerStartingWithStillCapture];
-        __weak typeof(self) welf = self;
-        cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
-        {
-            [[VThemeManager sharedThemeManager] applyStyling];
-            if (finished)
-            {
-                welf.mediaURL = capturedMediaURL;
-                [welf.textEntryView setSelectedThumbnail:previewImage];
-            }
-            [welf dismissViewControllerAnimated:YES completion:^
-             {
-                 if (finished)
-                 {
-                     [welf.textEntryView startEditing];
-                 }
-                 
-                 [UIView animateWithDuration:0.0f
-                                  animations:^
-                  {
-                      [welf.contentCollectionView reloadData];
-                      [welf.contentCollectionView.collectionViewLayout invalidateLayout];
-                  }];
-             }];
-        };
-        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:cameraViewController];
-        [self presentViewController:navController animated:YES completion:nil];
+        VWorkspaceFlowController *workspaceFlowController = [self.dependencyManager templateValueOfType:[VWorkspaceFlowController class]
+                                                                                                 forKey:VDependencyManagerWorkspaceFlowKey];
+        
+        workspaceFlowController.delegate = self;
+        [self presentViewController:workspaceFlowController.flowRootViewController animated:YES completion:nil];
     };
     
     if (self.mediaURL == nil)
@@ -1587,6 +1565,40 @@ referenceSizeForHeaderInSection:(NSInteger)section
 - (void)userActivityWasContinued:(NSUserActivity *)userActivity
 {
     [self.videoCell pause];
+}
+
+#pragma mark - VWorkspaceFlowControllerDelegate
+
+- (void)workspaceFlowControllerDidCancel:(VWorkspaceFlowController *)workspaceFlowController
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)workspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
+       finishedWithPreviewImage:(UIImage *)previewImage
+               capturedMediaURL:(NSURL *)capturedMediaURL
+{
+    [[VThemeManager sharedThemeManager] applyStyling];
+
+    self.mediaURL = capturedMediaURL;
+    [self.textEntryView setSelectedThumbnail:previewImage];
+
+    [self dismissViewControllerAnimated:YES completion:^
+     {
+         [self.textEntryView startEditing];
+         
+         [UIView animateWithDuration:0.0f
+                          animations:^
+          {
+              [self.contentCollectionView reloadData];
+              [self.contentCollectionView.collectionViewLayout invalidateLayout];
+          }];
+     }];
+}
+
+- (BOOL)shouldShowPublishForWOrkspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
+{
+    return NO;
 }
 
 @end

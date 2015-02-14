@@ -48,8 +48,9 @@
 
 static const char kAssociatedWorkspaceFlowKey;
 
-@interface VSequenceActionController ()
+@interface VSequenceActionController () <VWorkspaceFlowControllerDelegate>
 
+@property (nonatomic, strong) UIViewController *viewControllerPresentingWorkspace;
 @property (nonatomic, strong) VWorkspaceFlowController *workspaceFlowController;
 
 @end
@@ -113,8 +114,6 @@ static const char kAssociatedWorkspaceFlowKey;
         return;
     }
     
-    __weak UIViewController *weakViewController = viewController;
-    
     NSMutableDictionary *addedDependencies = [[NSMutableDictionary alloc] init];
     if (sequence)
     {
@@ -131,19 +130,8 @@ static const char kAssociatedWorkspaceFlowKey;
                                                                    forKey:VDependencyManagerWorkspaceFlowKey
                                                     withAddedDependencies:addedDependencies];
     
-    __weak typeof(self) welf = self;
-    self.workspaceFlowController.completion = ^void(BOOL finished)
-    {
-        __strong typeof(self) strongSelf = welf;
-        [weakViewController dismissViewControllerAnimated:YES
-                                               completion:^{
-                                                   if (completion)
-                                                   {
-                                                       completion(finished);
-                                                       strongSelf.workspaceFlowController = nil;
-                                                   }
-                                               }];
-    };
+    self.workspaceFlowController.delegate = self;
+    self.viewControllerPresentingWorkspace = viewController;
     [viewController presentViewController:self.workspaceFlowController.flowRootViewController
                                  animated:YES
                                completion:nil];
@@ -376,6 +364,30 @@ static const char kAssociatedWorkspaceFlowKey;
     }
     
     return shareText;
+}
+
+#pragma mark - VWorkspaceFlowControllerDelegate
+
+- (void)workspaceFlowControllerDidCancel:(VWorkspaceFlowController *)workspaceFlowController
+{
+    [self.viewControllerPresentingWorkspace dismissViewControllerAnimated:YES
+                                                               completion:^
+     {
+         self.workspaceFlowController = nil;
+         self.viewControllerPresentingWorkspace = nil;
+     }];
+}
+
+- (void)workspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
+       finishedWithPreviewImage:(UIImage *)previewImage
+               capturedMediaURL:(NSURL *)capturedMediaURL
+{
+    [self.viewControllerPresentingWorkspace dismissViewControllerAnimated:YES
+                                                               completion:^
+     {
+         self.workspaceFlowController = nil;
+         self.viewControllerPresentingWorkspace = nil;
+     }];
 }
 
 @end

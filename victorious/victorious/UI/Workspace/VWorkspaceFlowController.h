@@ -6,13 +6,29 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VFlowController.h"
 #import "VHasManagedDependencies.h"
 
 #import "VImageToolController.h"
 #import "VVideoToolController.h"
 
+typedef void (^VMediaCaptureCompletion)(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL);
+
 @class VSequence;
+
+@class VWorkspaceFlowController;
+
+@protocol VWorkspaceFlowControllerDelegate <NSObject>
+
+@required
+- (void)workspaceFlowControllerDidCancel:(VWorkspaceFlowController *)workspaceFlowController;
+- (void)workspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
+       finishedWithPreviewImage:(UIImage *)previewImage
+               capturedMediaURL:(NSURL *)capturedMediaURL;
+
+@optional
+- (BOOL)shouldShowPublishForWOrkspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController;
+
+@end
 
 // Defaults
 extern NSString * const VWorkspaceFlowControllerInitialCaptureStateKey;
@@ -42,6 +58,13 @@ extern NSString * const VWorkspaceFlowControllerPreloadedImageKey;
  *  For remix the sequence to remix can be injected via "VWorkspaceFlowControllerSequenceToRemixKey".
  *
  */
-@interface VWorkspaceFlowController : NSObject <VFlowController, VHasManagedDependancies>
+@interface VWorkspaceFlowController : NSObject <VHasManagedDependancies>
+
+#warning Should get rid of this when appropriate.
++ (instancetype)workspaceFlowController;
+
+@property (nonatomic, weak) id <VWorkspaceFlowControllerDelegate> delegate;
+
+@property (nonatomic, readonly) UIViewController *flowRootViewController;
 
 @end
