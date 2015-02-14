@@ -476,7 +476,7 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
 
 - (IBAction)takePicture:(id)sender
 {
-    VWorkspaceFlowController *workspaceFlowController = [VWorkspaceFlowController workspaceFlowController];
+    VWorkspaceFlowController *workspaceFlowController = [VWorkspaceFlowController workspaceFlowControllerWithoutADependencyManger];
     workspaceFlowController.delegate = self;
     [self presentViewController:workspaceFlowController.flowRootViewController
                        animated:YES

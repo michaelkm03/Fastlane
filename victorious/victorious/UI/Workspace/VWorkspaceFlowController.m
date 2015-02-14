@@ -79,7 +79,7 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
 
 @implementation VWorkspaceFlowController
 
-+ (instancetype)workspaceFlowController
++ (instancetype)workspaceFlowControllerWithoutADependencyManger
 {
     VDependencyManager *globalDependencyManager = [[VRootViewController rootViewController] dependencyManager];
     VWorkspaceFlowController *workspaceFlowController = [globalDependencyManager templateValueOfType:[VWorkspaceFlowController class]
@@ -257,7 +257,14 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
     switch (initialCaptureState)
     {
         case VWorkspaceFlowControllerInitialCaptureStateImage:
-            self.cameraViewController = [VCameraViewController cameraViewControllerStartingWithStillCapture];
+            if (self.isVideoEnabled)
+            {
+                self.cameraViewController = [VCameraViewController cameraViewControllerStartingWithStillCapture];
+            }
+            else
+            {
+                self.cameraViewController = [VCameraViewController cameraViewControllerLimitedToPhotos];
+            }
             break;
         case VWorkspaceFlowControllerInitialCaptureStateVideo:
             self.cameraViewController = [VCameraViewController cameraViewControllerStartingWithVideoCapture];

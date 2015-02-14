@@ -174,8 +174,9 @@ static const NSInteger kCharacterLimit = 255;
     {
         [[VThemeManager sharedThemeManager] applyStyling];
         
-        VWorkspaceFlowController *workspaceFlowController = [VWorkspaceFlowController workspaceFlowController];
+        VWorkspaceFlowController *workspaceFlowController = [VWorkspaceFlowController workspaceFlowControllerWithoutADependencyManger];
         workspaceFlowController.delegate = self;
+        workspaceFlowController.videoEnabled = NO;
         self.workspaceFlowController = workspaceFlowController;
         [self presentViewController:workspaceFlowController.flowRootViewController
                            animated:YES

@@ -147,8 +147,9 @@
 
 - (IBAction)takePicture:(id)sender
 {
-    VWorkspaceFlowController *workspaceFlowController = [VWorkspaceFlowController workspaceFlowController];
+    VWorkspaceFlowController *workspaceFlowController = [VWorkspaceFlowController workspaceFlowControllerWithoutADependencyManger];
     workspaceFlowController.delegate = self;
+    workspaceFlowController.videoEnabled = NO;
     self.workspaceFlowController = workspaceFlowController;
     [self presentViewController:workspaceFlowController.flowRootViewController
                        animated:YES
@@ -227,6 +228,8 @@
     self.profileImageView.image = previewImage;
     self.updatedProfileImage = capturedMediaURL;
     [self.backgroundImageView setBlurredImageWithClearImage:previewImage placeholderImage:self.backgroundImageView.image tintColor:nil];
+    [self dismissViewControllerAnimated:YES
+                             completion:nil];
 }
 
 - (BOOL)shouldShowPublishForWOrkspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController

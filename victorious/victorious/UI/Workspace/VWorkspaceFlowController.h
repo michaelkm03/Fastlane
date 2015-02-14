@@ -17,10 +17,25 @@ typedef void (^VMediaCaptureCompletion)(BOOL finished, UIImage *previewImage, NS
 
 @class VWorkspaceFlowController;
 
+/**
+ *  A delegate for modifying the behavior of the workspace flow controller.
+ */
 @protocol VWorkspaceFlowControllerDelegate <NSObject>
 
 @required
+
+/**
+ *  Notifies the delgate of a cancel. Should dismiss the workspace's rootVC here.
+ */
 - (void)workspaceFlowControllerDidCancel:(VWorkspaceFlowController *)workspaceFlowController;
+
+/**
+ *  Notifies the delegate that the workspaceflow is complete and ready to be dismissed.
+ *
+ *  @param workspaceFlowController The workspaceFlowController that just finished.
+ *  @param previewImage            A preview image representing the just created content.
+ *  @param capturedMediaURL        An NSURL of the location of the rendered content.
+ */
 - (void)workspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
        finishedWithPreviewImage:(UIImage *)previewImage
                capturedMediaURL:(NSURL *)capturedMediaURL;
@@ -60,11 +75,22 @@ extern NSString * const VWorkspaceFlowControllerPreloadedImageKey;
  */
 @interface VWorkspaceFlowController : NSObject <VHasManagedDependancies>
 
-#warning Should get rid of this when appropriate.
-+ (instancetype)workspaceFlowController;
+//TODO: this is a temporary workaround for when there may not be a dependency manager.
++ (instancetype)workspaceFlowControllerWithoutADependencyManger;
 
+/**
+ *  A delegate of the workspace flow controller.
+ */
 @property (nonatomic, weak) id <VWorkspaceFlowControllerDelegate> delegate;
 
+/**
+ *  Present this viewcontroller. Note, the workspaceflowcontroller is not retained by this viewcontroller. So it won't be enough to merely present this viewcontroller.
+ */
 @property (nonatomic, readonly) UIViewController *flowRootViewController;
+
+/**
+ *  Whether or not the user should be able to select or record video.
+ */
+@property (nonatomic, assign, getter=isVideoEnabled) BOOL videoEnabled;
 
 @end

@@ -281,7 +281,7 @@ static char KVOContext;
 
 - (IBAction)mediaButtonAction:(id)sender
 {
-    VWorkspaceFlowController *workspaceFlowController = [VWorkspaceFlowController workspaceFlowController];
+    VWorkspaceFlowController *workspaceFlowController = [VWorkspaceFlowController workspaceFlowControllerWithoutADependencyManger];
     workspaceFlowController.delegate = self;
     self.workspaceFlowController = workspaceFlowController;
     
