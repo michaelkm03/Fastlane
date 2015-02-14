@@ -193,6 +193,7 @@ typedef NS_ENUM(NSInteger, VInlineSearchState)
     
     VFollowerTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kVInlineUserCellIdentifier forIndexPath:indexPath];
     cell.showButton = NO;
+    cell.showLocation = NO;
     cell.profile = profile;
     return cell;
 }

@@ -13,6 +13,7 @@
 @property (nonatomic, strong)   VUser  *profile;
 @property (nonatomic, strong)   VUser  *owner;
 @property (nonatomic)           BOOL    showButton;
+@property (nonatomic)           BOOL    showLocation;
 @property (nonatomic)           BOOL    haveRelationship;
 
 @property (nonatomic, weak)     IBOutlet UIButton *followButton;

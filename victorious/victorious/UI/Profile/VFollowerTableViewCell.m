@@ -77,6 +77,26 @@
     }
 }
 
+- (void)setShowButton:(BOOL)showButton
+{
+    _showButton = showButton;
+    
+    if (!showButton)
+    {
+        self.followButton.hidden = YES;
+    }
+}
+
+- (void)setShowLocation:(BOOL)showLocation
+{
+    _showLocation = showLocation;
+    
+    if (!showLocation)
+    {
+        self.profileLocation.hidden = YES;
+    }
+}
+
 - (IBAction)follow:(id)sender
 {
     // Check for existance of follow block
