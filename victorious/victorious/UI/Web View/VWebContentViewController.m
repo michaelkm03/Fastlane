@@ -10,7 +10,7 @@
 #import "UIViewController+VNavMenu.h"
 #import "VThemeManager.h"
 #import "VSettingManager.h"
-#import "VWebViewFactory.h"
+#import "VWebView.h"
 
 @interface VWebContentViewController () <VNavigationHeaderDelegate, VWebViewDelegate>
 
@@ -26,8 +26,8 @@
 {
     [super viewDidLoad];
     
-    self.webView = [VWebViewFactory createWebView];
-    
+    self.webView = [[VWebView alloc] init];
+                    
     self.webView.asView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.webView.asView];
     self.webView.delegate = self;
@@ -49,7 +49,7 @@
     [self addConstraintsToWebView:self.webView.asView withHeaderView:self.navHeaderView];
 }
 
-- (void)addConstraintsToWebView:(UIWebView *)webView withHeaderView:(UIView *)headerView
+- (void)addConstraintsToWebView:(UIView *)webView withHeaderView:(UIView *)headerView
 {
     NSParameterAssert( webView.superview != nil );
     NSParameterAssert( headerView.superview != nil );
@@ -146,25 +146,25 @@
 
 #pragma mark - VWebViewDelegate
 
-- (void)webViewDidStartLoad:(id<VWebViewProtocol>)webView
+- (void)webViewDidStartLoad:(VWebView *)webView
 {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     [self.activityIndicator stopAnimating];
 }
 
-- (void)webViewDidFinishLoad:(id<VWebViewProtocol>)webView
+- (void)webViewDidFinishLoad:(VWebView *)webView
 {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     [self.activityIndicator stopAnimating];
 }
 
-- (void)webView:(id<VWebViewProtocol>)webView didFailLoadWithError:(NSError *)error
+- (void)webView:(VWebView *)webView didFailLoadWithError:(NSError *)error
 {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     [self.activityIndicator stopAnimating];
 }
 
-- (void)webView:(id<VWebViewProtocol>)webView didUpdateProgress:(float)progress
+- (void)webView:(VWebView *)webView didUpdateProgress:(float)progress
 {
 }
 

@@ -9,11 +9,11 @@
 #import "VWebBrowserViewController.h"
 #import "VWebBrowserHeaderViewController.h"
 #import "VSettingManager.h"
-#import "VWebViewFactory.h"
+#import "VWebView.h"
 #import "VWebBrowserActions.h"
 #import "VSequence+Fetcher.h"
 #import "VConstants.h"
-
+#import "VWebView.h"
 
 typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
 {
@@ -24,7 +24,7 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
 
 @interface VWebBrowserViewController() <VWebViewDelegate, VWebBrowserHeaderViewDelegate>
 
-@property (nonatomic, strong) id<VWebViewProtocol> webView;
+@property (nonatomic, strong) VWebView *webView;
 @property (nonatomic, strong) NSURL *currentURL;
 @property (nonatomic, assign) VWebBrowserViewControllerState state;
 @property (nonatomic, strong) VWebBrowserActions *actions;
@@ -54,7 +54,7 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
     
     self.headerViewController.browserDelegate = self;
     
-    self.webView = [VWebViewFactory createWebView];
+    self.webView = [[VWebView alloc] init];
     self.webView.delegate = self;
     [self.containerView addSubview:self.webView.asView];
     
@@ -140,14 +140,14 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
 
 #pragma mark - VWebViewDelegate
 
-- (void)webViewDidStartLoad:(id<VWebViewProtocol>)webView
+- (void)webViewDidStartLoad:(VWebView *)webView
 {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     self.state = VWebBrowserViewControllerStateLoading;
     [self.headerViewController updateHeaderState];
 }
 
-- (void)webViewDidFinishLoad:(id<VWebViewProtocol>)webView
+- (void)webViewDidFinishLoad:(VWebView *)webView
 {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     self.state = VWebBrowserViewControllerStateComplete;
@@ -155,20 +155,15 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
     [self updateWebViewPageInfo];
 }
 
-- (void)webView:(id<VWebViewProtocol>)webView didFailLoadWithError:(NSError *)error
+- (void)webView:(VWebView *)webView didFailLoadWithError:(NSError *)error
 {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     self.state = VWebBrowserViewControllerStateFailed;
     [self updateWebViewPageInfo];
 }
 
-- (void)webView:(id<VWebViewProtocol>)webView didUpdateProgress:(float)progress
+- (void)webView:(VWebView *)webView didUpdateProgress:(float)progress
 {
-    if ( !webView.isProgressSupported )
-    {
-        return;
-    }
-    
     if ( progress == 0.0f )
     {
         [self.headerViewController setLoadingStarted];

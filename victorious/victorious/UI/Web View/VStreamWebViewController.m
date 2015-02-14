@@ -9,15 +9,15 @@
 #import "VStreamWebViewController.h"
 #import "UIView+Autolayout.h"
 #import "VThemeManager.h"
-#import "VWebViewFactory.h"
 #import "VSequence+Fetcher.h"
+#import "VWebView.h"
 
 static const NSTimeInterval kWebViewFirstLoadAnimationDelay      = 0.0f;
 static const NSTimeInterval kWebViewFirstLoadAnimationDuration   = 0.35f;
 
 @interface VStreamWebViewController() <VWebViewDelegate>
 
-@property (nonatomic, strong) id<VWebViewProtocol> webView;
+@property (nonatomic, strong) VWebView *webView;
 @property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
 
 @end
@@ -31,7 +31,7 @@ static const NSTimeInterval kWebViewFirstLoadAnimationDuration   = 0.35f;
     UIColor *backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
     self.view.backgroundColor = backgroundColor;
     
-    self.webView = [VWebViewFactory createWebView];
+    self.webView = [[VWebView alloc] init];
     self.webView.delegate = self;
     self.webView.asView.userInteractionEnabled = NO;
     self.webView.asView.backgroundColor = [UIColor clearColor];
@@ -64,12 +64,12 @@ static const NSTimeInterval kWebViewFirstLoadAnimationDuration   = 0.35f;
 
 #pragma mark - VWebViewDelegate
 
-- (void)webViewDidStartLoad:(id<VWebViewProtocol>)webView
+- (void)webViewDidStartLoad:(VWebView *)webView
 {
     [self.activityIndicator startAnimating];
 }
 
-- (void)webViewDidFinishLoad:(id<VWebViewProtocol>)webView
+- (void)webViewDidFinishLoad:(VWebView *)webView
 {
     [self.activityIndicator stopAnimating];
     
@@ -80,12 +80,12 @@ static const NSTimeInterval kWebViewFirstLoadAnimationDuration   = 0.35f;
                      completion:nil];
 }
 
-- (void)webView:(id<VWebViewProtocol>)webView didFailLoadWithError:(NSError *)error
+- (void)webView:(VWebView *)webView didFailLoadWithError:(NSError *)error
 {
     [self.activityIndicator stopAnimating];
 }
 
-- (void)webView:(id<VWebViewProtocol>)webView didUpdateProgress:(float)progress
+- (void)webView:(VWebView *)webView didUpdateProgress:(float)progress
 {
 }
 

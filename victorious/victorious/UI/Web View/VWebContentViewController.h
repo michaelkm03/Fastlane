@@ -7,12 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "VWebViewProtocol.h"
+#import "VWebView.h"
 
 @interface VWebContentViewController : UIViewController
 
 @property (nonatomic, strong) NSURL *urlToView;
-@property (nonatomic, strong) id<VWebViewProtocol> webView;
+@property (nonatomic, strong) VWebView *webView;
 @property (nonatomic, assign) BOOL shouldShowLoadingState;
 
 - (void)addHeader;

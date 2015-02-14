@@ -1,5 +1,5 @@
 //
-//  VWebViewAdvanced.m
+//  VWebView.m
 //  victorious
 //
 //  Created by Patrick Lynch on 11/5/14.
@@ -8,18 +8,18 @@
 
 @import MessageUI;
 
-#import "VWebViewAdvanced.h"
+#import "VWebView.h"
 
 static NSString * const kMailToPrefix = @"mailto";
 
-@interface VWebViewAdvanced() <WKNavigationDelegate>
+@interface VWebView() <WKNavigationDelegate>
 
 @property (nonatomic, strong) NSTimer *progressBarAnimationTimer;
 @property (nonatomic, strong) WKWebView *webView;
 
 @end
 
-@implementation VWebViewAdvanced
+@implementation VWebView
 
 @synthesize delegate;
 
@@ -46,12 +46,7 @@ static NSString * const kMailToPrefix = @"mailto";
     [self.delegate webView:self didUpdateProgress:self.webView.estimatedProgress];
 }
 
-#pragma mark - UIWebViewProtocol
-
-- (BOOL)isProgressSupported
-{
-    return YES;
-}
+#pragma mark - Public methods
 
 - (UIView *)asView
 {
