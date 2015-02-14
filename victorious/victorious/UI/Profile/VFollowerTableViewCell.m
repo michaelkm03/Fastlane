@@ -81,20 +81,14 @@
 {
     _showButton = showButton;
     
-    if (!showButton)
-    {
-        self.followButton.hidden = YES;
-    }
+    self.followButton.hidden = showButton;
 }
 
 - (void)setShowLocation:(BOOL)showLocation
 {
     _showLocation = showLocation;
     
-    if (!showLocation)
-    {
-        self.profileLocation.hidden = YES;
-    }
+    self.profileLocation.hidden = showLocation;
 }
 
 - (IBAction)follow:(id)sender
