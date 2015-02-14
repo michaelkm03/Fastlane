@@ -11,6 +11,8 @@
 #import "VWebView.h"
 
 static NSString * const kMailToPrefix = @"mailto";
+static NSString * const kITunesPrefix = @"http://itunes.apple.com";
+static NSString * const kITunesPrefixSSL = @"https://itunes.apple.com";
 
 @interface VWebView() <WKNavigationDelegate>
 
@@ -60,11 +62,16 @@ static NSString * const kMailToPrefix = @"mailto";
 
 - (void)loadRequest:(NSURLRequest *)request
 {
+#warning delete this, testing only:
+    //[self loadHTMLString:nil baseURL:nil];
     [self.webView loadRequest:request];
 }
 
 - (void)loadHTMLString:(NSString *)string baseURL:(NSURL *)baseURL
 {
+#warning delete this, testing only:
+    //string = @"<a href=\"https://itunes.apple.com/us/app/escape-run/id555012306?mt=8\" style=\"font-size: 50px;\">LINK</a>";
+    //baseURL = [NSURL URLWithString:@"http://www.apple.com"];
     [self.webView loadHTMLString:string baseURL:baseURL];
 }
 
@@ -127,16 +134,34 @@ static NSString * const kMailToPrefix = @"mailto";
 
 - (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler
 {
-    NSString *urlString = navigationAction.request.URL.absoluteString;
-    if ( [urlString rangeOfString:kMailToPrefix].location == 0 )
+    if ( [self shouldURLInSafari:navigationAction.request.URL] )
     {
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString]];
+        [[UIApplication sharedApplication] openURL:navigationAction.request.URL];
         decisionHandler( WKNavigationActionPolicyCancel );
     }
     else
     {
         decisionHandler( WKNavigationActionPolicyAllow );
     }
+}
+
+#pragma mark - Helpers
+
+- (BOOL)shouldURLInSafari:(NSURL *)url
+{
+    __block BOOL output = NO;
+    
+    NSString *urlString = url.absoluteString;
+    [@[ kMailToPrefix, kITunesPrefix, kITunesPrefixSSL ] enumerateObjectsUsingBlock:^(NSString *prefix, NSUInteger idx, BOOL *stop)
+    {
+        if ( [urlString rangeOfString:prefix].location == 0 )
+        {
+            output = YES;
+            *stop = YES;
+        }
+    }];
+    
+    return output;
 }
 
 @end
