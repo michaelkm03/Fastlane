@@ -24,13 +24,6 @@
     NSAssert(attributedString != nil, @"Must supply a attributedString to format");
     NSAssert(tagStringAttributes != nil, @"Must supply tagStringAttributes to format");
     NSAssert(defaultStringAttributes != nil, @"Must supply defaultStringAttributes to format");
-    
-    if ( [attributedString isKindOfClass:[VUserTaggingTextStorage class]] )
-    {
-        VUserTaggingTextStorage *textStorage = (VUserTaggingTextStorage *)attributedString;
-        textStorage.defaultStringAttributes = defaultStringAttributes;
-        textStorage.tagStringAttributes = tagStringAttributes;
-    }
 
     //Return a set of found tags and format attributedString to show properly highlighted
     VTagDictionary *foundTags = [[VTagDictionary alloc] init];
@@ -133,7 +126,7 @@
         {
             [tagRanges addIndexesInRange:tagRange];
         }
-        startIndex = tagRange.location + tagRange.length + 1;
+        startIndex = MAX(tagRange.location + tagRange.length, startIndex) + 1;
 
     }
     return tagRanges.count > 0 ? tagRanges : nil;
@@ -216,13 +209,11 @@
     
     if ( tag )
     {
-        for ( NSString *key in tag.tagStringAttributes )
+        if ( ![[tag.tagStringAttributes objectForKey:NSForegroundColorAttributeName] isEqual:[attrs objectForKey:NSForegroundColorAttributeName]] )
         {
-            if ( ![[attrs objectForKey:key] isEqual:[tag.tagStringAttributes objectForKey:key]] )
-            {
-                return NO; //The attributes in the string do not match those from our tag, so no match
-            }
+            return NO; //The attributes in the string do not match those from our tag, so no match
         }
+        
         (*range).location -= 1;
         (*range).length += 2;
         return YES; //1s on either side take delimiting chars into account

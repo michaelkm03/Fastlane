@@ -12,7 +12,6 @@
 #import "VObjectManager+Comment.h"
 #import "VAlertController.h"
 #import "VUserTaggingTextStorage.h"
-#import "VTagStringFormatter.h"
 
 static const CGFloat kTextViewInsetsHorizontal  = 15.0f;
 static const CGFloat kTextViewInsetsVertical    = 18.0f;
@@ -126,6 +125,7 @@ static const CGFloat kSearchTableAnimationDuration = 0.3f;
 
          // Animates subviews, specifically the attached confirm/cancel buttons
          [self.view layoutIfNeeded];
+         
      }
                      completion:nil];
 }
@@ -233,7 +233,7 @@ static const CGFloat kSearchTableAnimationDuration = 0.3f;
         
         [UIView animateWithDuration:kSearchTableAnimationDuration animations:^{
            
-            [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-spacing-[view]-spacing-[search]" options:0 metrics:metrics views:views]];
+            [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-spacing-[view(>=100)]-spacing-[search]" options:0 metrics:metrics views:views]];
             [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-spacing-[view]-spacing-|" options:0 metrics:metrics views:views]];
             
         }];

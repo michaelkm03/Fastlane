@@ -19,7 +19,6 @@
 #import "VThemeManager.h"
 #import "VAppDelegate.h"
 #import "VUserTaggingTextStorage.h"
-#import "VTagStringFormatter.h"
 
 static const NSInteger kCharacterLimit = 255;
 
