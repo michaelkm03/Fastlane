@@ -65,6 +65,11 @@
     [self addSubview:segmentedControl];
     self.segmentedControl = segmentedControl;
     
+    if ( self.segmentedControl.numberOfSegments > 0 )
+    {
+        self.segmentedControl.selectedSegmentIndex = 0;
+    }
+    
     segmentedControl.tintColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     segmentedControl.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
     segmentedControl.layer.cornerRadius = 4;
