@@ -157,6 +157,15 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
           forCellWithReuseIdentifier:[VStreamCollectionCellWebContent suggestedReuseIdentifier]];
     
     self.collectionView.backgroundColor = [[VThemeManager sharedThemeManager] preferredBackgroundColor];
+    
+    if ( self.streamDataSource == nil )
+    {
+        self.streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:self.currentStream];
+        self.streamDataSource.delegate = self;
+        self.streamDataSource.collectionView = self.collectionView;
+        self.collectionView.dataSource = self.streamDataSource;
+    }
+    
     self.collectionView.dataSource = self.streamDataSource;
     self.streamDataSource.collectionView = self.collectionView;
     
