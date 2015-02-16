@@ -33,7 +33,7 @@ static const CGFloat kThresholdPercent = 0.25f;
 - (instancetype)initWithNavigationController:(VNavigationController *)navigationController
 {
     self = [super init];
-    if ( self )
+    if ( self != nil )
     {
         _navigationController = navigationController;
         _state = VNavigationControllerScrollDelegateStateInactive;
