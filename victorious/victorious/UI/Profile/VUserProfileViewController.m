@@ -208,7 +208,9 @@ static NSString * const kUserKey = @"user";
 
 - (void)addFriendsButton
 {
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"findFriendsIcon"]
+    BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
+    UIImage *findFriendsIcon = isTemplateC ? [UIImage imageNamed:@"findFriendsIconC"] : [UIImage imageNamed:@"findFriendsIcon"];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:findFriendsIcon
                                                                               style:UIBarButtonItemStylePlain
                                                                              target:self
                                                                              action:@selector(findFriendsAction:)];
