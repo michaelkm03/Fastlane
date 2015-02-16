@@ -67,6 +67,8 @@
 {
     _progress = progress;
     
+    NSLog( @"progress = %@", @(progress) );
+    
     void (^updates)(void) = ^void(void)
     {
         self.completedProgressView.frame = CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.bounds) * progress, CGRectGetHeight(self.bounds));

@@ -402,7 +402,6 @@
 		A769C3EA1A13176700698D0C /* VWebBrowserHeaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A769C3DC1A13176700698D0C /* VWebBrowserHeaderViewController.m */; };
 		A769C3EB1A13176700698D0C /* VWebBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A769C3DE1A13176700698D0C /* VWebBrowserViewController.m */; };
 		A769C3ED1A13176700698D0C /* VWebContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A769C3E11A13176700698D0C /* VWebContentViewController.m */; };
-		A769C3EE1A13176700698D0C /* VWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = A769C3E31A13176700698D0C /* VWebView.m */; };
 		A769C3F31A131D8C00698D0C /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F8DD621A0B1A8B00F82256 /* WebKit.framework */; };
 		A769C3F71A13D69500698D0C /* WebBrowser.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A769C3F61A13D69500698D0C /* WebBrowser.storyboard */; };
 		A769C3F91A13E7A400698D0C /* VSequenceWebContentTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A769C3F81A13E7A400698D0C /* VSequenceWebContentTests.m */; };
@@ -1369,7 +1368,6 @@
 		A743E7E81A081FFF00339CB3 /* VStringValidator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStringValidator.h; sourceTree = "<group>"; };
 		A743E7E91A081FFF00339CB3 /* VStringValidator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStringValidator.m; sourceTree = "<group>"; };
 		A743E7EB1A082AD200339CB3 /* VEmailValidatorTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEmailValidatorTests.m; sourceTree = "<group>"; };
-		A75597D01A8EA4D3002BE411 /* VWebViewDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VWebViewDelegate.h; sourceTree = "<group>"; };
 		A75C10321A65DE6F00439809 /* VCommentHighlighter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCommentHighlighter.h; sourceTree = "<group>"; };
 		A75C10331A65DE6F00439809 /* VCommentHighlighter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCommentHighlighter.m; sourceTree = "<group>"; };
 		A75FAEFA19E8A6D600EB87C1 /* VVoteSettingManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVoteSettingManagerTests.m; sourceTree = "<group>"; };
@@ -1412,8 +1410,6 @@
 		A769C3DE1A13176700698D0C /* VWebBrowserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VWebBrowserViewController.m; sourceTree = "<group>"; };
 		A769C3E01A13176700698D0C /* VWebContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VWebContentViewController.h; sourceTree = "<group>"; };
 		A769C3E11A13176700698D0C /* VWebContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VWebContentViewController.m; sourceTree = "<group>"; };
-		A769C3E21A13176700698D0C /* VWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VWebView.h; sourceTree = "<group>"; };
-		A769C3E31A13176700698D0C /* VWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VWebView.m; sourceTree = "<group>"; };
 		A769C3F61A13D69500698D0C /* WebBrowser.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = WebBrowser.storyboard; sourceTree = "<group>"; };
 		A769C3F81A13E7A400698D0C /* VSequenceWebContentTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSequenceWebContentTests.m; sourceTree = "<group>"; };
 		A771D0231A043AE8007CB0A5 /* VTrackingManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTrackingManagerTests.m; sourceTree = "<group>"; };
@@ -3534,9 +3530,6 @@
 				A769C3DE1A13176700698D0C /* VWebBrowserViewController.m */,
 				A769C3E01A13176700698D0C /* VWebContentViewController.h */,
 				A769C3E11A13176700698D0C /* VWebContentViewController.m */,
-				A769C3E21A13176700698D0C /* VWebView.h */,
-				A769C3E31A13176700698D0C /* VWebView.m */,
-				A75597D01A8EA4D3002BE411 /* VWebViewDelegate.h */,
 				A769C3F61A13D69500698D0C /* WebBrowser.storyboard */,
 			);
 			path = "Web View";
@@ -5449,7 +5442,6 @@
 				0314D09019B4694600FA363C /* VInteractionManager.m in Sources */,
 				A7B514541A4517A80074282F /* VSwipeTableViewCell.m in Sources */,
 				BE2C071219D5E842002AB82A /* VMarqueeTabIndicatorView.m in Sources */,
-				A769C3EE1A13176700698D0C /* VWebView.m in Sources */,
 				0314D47F19B46B5E00FA363C /* VCameraViewController.m in Sources */,
 				D888B52A1A86FC7800B34149 /* VRadialGradientLayer.m in Sources */,
 				A761C9D11A48A97C00F0D0F9 /* VUtilityButtonsViewController.m in Sources */,

@@ -6,18 +6,19 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
+@import WebKit;
+
 #import "VStreamWebViewController.h"
 #import "UIView+Autolayout.h"
 #import "VThemeManager.h"
 #import "VSequence+Fetcher.h"
-#import "VWebView.h"
 
 static const NSTimeInterval kWebViewFirstLoadAnimationDelay      = 0.0f;
 static const NSTimeInterval kWebViewFirstLoadAnimationDuration   = 0.35f;
 
-@interface VStreamWebViewController() <VWebViewDelegate>
+@interface VStreamWebViewController() <WKNavigationDelegate>
 
-@property (nonatomic, strong) VWebView *webView;
+@property (nonatomic, strong) WKWebView *webView;
 @property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
 
 @end
@@ -31,19 +32,19 @@ static const NSTimeInterval kWebViewFirstLoadAnimationDuration   = 0.35f;
     UIColor *backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
     self.view.backgroundColor = backgroundColor;
     
-    self.webView = [[VWebView alloc] init];
-    self.webView.delegate = self;
-    self.webView.asView.userInteractionEnabled = NO;
-    self.webView.asView.backgroundColor = [UIColor clearColor];
-    [self.view addSubview:self.webView.asView];
-    [self.view v_addFitToParentConstraintsToSubview:self.webView.asView];
+    self.webView = [[WKWebView alloc] init];
+    self.webView.navigationDelegate = self;
+    self.webView.userInteractionEnabled = NO;
+    self.webView.backgroundColor = [UIColor clearColor];
+    [self.view addSubview:self.webView];
+    [self.view v_addFitToParentConstraintsToSubview:self.webView];
     
     self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
     [self.view addSubview:self.activityIndicator];
     [self.view v_addCenterToParentContraintsToSubview:self.activityIndicator];
     
     // The webview should start off hidden before first load to prevent an ugly white background from showing
-    self.webView.asView.alpha = 0.0;
+    self.webView.alpha = 0.0;
 }
 
 - (void)setUrl:(NSURL *)url
@@ -62,31 +63,27 @@ static const NSTimeInterval kWebViewFirstLoadAnimationDuration   = 0.35f;
     }
 }
 
-#pragma mark - VWebViewDelegate
+#pragma mark - WKNavigationDelegate
 
-- (void)webViewDidStartLoad:(VWebView *)webView
-{
-    [self.activityIndicator startAnimating];
-}
-
-- (void)webViewDidFinishLoad:(VWebView *)webView
+- (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation
 {
     [self.activityIndicator stopAnimating];
     
     [UIView animateWithDuration:kWebViewFirstLoadAnimationDuration delay:kWebViewFirstLoadAnimationDelay options:kNilOptions animations:^
      {
-         self.webView.asView.alpha = 1.0f;
+         self.webView.alpha = 1.0f;
      }
                      completion:nil];
 }
 
-- (void)webView:(VWebView *)webView didFailLoadWithError:(NSError *)error
+- (void)webView:(WKWebView *)webView didFailNavigation:(WKNavigation *)navigation withError:(NSError *)error
 {
     [self.activityIndicator stopAnimating];
 }
 
-- (void)webView:(VWebView *)webView didUpdateProgress:(float)progress
+- (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(WKNavigation *)navigation
 {
+    [self.activityIndicator startAnimating];
 }
 
 @end

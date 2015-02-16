@@ -6,13 +6,14 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+@import WebKit;
+
 #import "VWebContentViewController.h"
 #import "UIViewController+VNavMenu.h"
 #import "VThemeManager.h"
 #import "VSettingManager.h"
-#import "VWebView.h"
 
-@interface VWebContentViewController () <VNavigationHeaderDelegate, VWebViewDelegate>
+@interface VWebContentViewController () <VNavigationHeaderDelegate, WKNavigationDelegate>
 
 @property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
 
@@ -26,11 +27,11 @@
 {
     [super viewDidLoad];
     
-    self.webView = [[VWebView alloc] init];
+    self.webView = [[WKWebView alloc] init];
                     
-    self.webView.asView.backgroundColor = [UIColor whiteColor];
-    [self.view addSubview:self.webView.asView];
-    self.webView.delegate = self;
+    self.webView.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:self.webView];
+    self.webView.navigationDelegate = self;
     
     self.urlToView = self.urlToView;
     
@@ -39,14 +40,14 @@
 
 - (void)setFailureWithError:(NSError *)error
 {
-    [self webView:self.webView didFailLoadWithError:error];
+    [self webView:self.webView didFailNavigation:nil withError:error];
 }
 
 - (void)addHeader
 {
     [self v_addNewNavHeaderWithTitles:nil];
     self.navHeaderView.delegate = self;
-    [self addConstraintsToWebView:self.webView.asView withHeaderView:self.navHeaderView];
+    [self addConstraintsToWebView:self.webView withHeaderView:self.navHeaderView];
 }
 
 - (void)addConstraintsToWebView:(UIView *)webView withHeaderView:(UIView *)headerView
@@ -105,10 +106,10 @@
         if ( !self.activityIndicator )
         {
             self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-            [self.webView.asView.superview addSubview:self.activityIndicator];
+            [self.webView.superview addSubview:self.activityIndicator];
             self.activityIndicator.hidesWhenStopped = YES;
         }
-        self.activityIndicator.center = self.webView.asView.superview.center;
+        self.activityIndicator.center = self.webView.superview.center;
         [self.activityIndicator startAnimating];
     }
 }
@@ -119,7 +120,7 @@
     
     [self.webView stopLoading];
     
-    self.webView.delegate = nil;    // disconnect the delegate as the webview is hidden
+    self.webView.navigationDelegate = nil;    // disconnect the delegate as the webview is hidden
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 
@@ -144,28 +145,37 @@
     : UIStatusBarStyleDefault;
 }
 
-#pragma mark - VWebViewDelegate
+#pragma mark - WKNavigationDelegate
 
-- (void)webViewDidStartLoad:(VWebView *)webView
+- (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation
+{
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    [self.activityIndicator stopAnimating];
+}
+
+- (void)webView:(WKWebView *)webView didFailNavigation:(WKNavigation *)navigation withError:(NSError *)error
+{
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    [self.activityIndicator stopAnimating];
+}
+
+- (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(WKNavigation *)navigation
 {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     [self.activityIndicator stopAnimating];
 }
 
-- (void)webViewDidFinishLoad:(VWebView *)webView
+- (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler
 {
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-    [self.activityIndicator stopAnimating];
-}
-
-- (void)webView:(VWebView *)webView didFailLoadWithError:(NSError *)error
-{
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-    [self.activityIndicator stopAnimating];
-}
-
-- (void)webView:(VWebView *)webView didUpdateProgress:(float)progress
-{
+    if ( [navigationAction.request.URL.scheme.lowercaseString rangeOfString:@"http"].location != 0 )
+    {
+        [[UIApplication sharedApplication] openURL:navigationAction.request.URL];
+        decisionHandler( WKNavigationActionPolicyCancel );
+    }
+    else
+    {
+        decisionHandler( WKNavigationActionPolicyAllow );
+    }
 }
 
 @end
