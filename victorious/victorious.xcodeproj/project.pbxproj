@@ -695,6 +695,8 @@
 		DB531B591A42709700B4ADC8 /* VUser.m in Sources */ = {isa = PBXBuildFile; fileRef = DB531B581A42709700B4ADC8 /* VUser.m */; };
 		DB58EF41199401E500D2A07F /* VNotification+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = DB58EF40199401E500D2A07F /* VNotification+RestKit.m */; };
 		DB58EF501994174900D2A07F /* VNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = DB58EF4F1994174900D2A07F /* VNotification.m */; };
+		DB7460371A93A5BE006C2245 /* VInlineUserTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DB7460351A93A5BE006C2245 /* VInlineUserTableViewCell.m */; };
+		DB7460381A93A5BE006C2245 /* VInlineUserTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB7460361A93A5BE006C2245 /* VInlineUserTableViewCell.xib */; };
 		DB82857A19F6DD3D006C6E2F /* VAdPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = DB82857919F6DD3C006C6E2F /* VAdPlayerView.m */; };
 		DB8D3A1319803A03005DD36D /* VHashTags.m in Sources */ = {isa = PBXBuildFile; fileRef = DB8D3A1219803A03005DD36D /* VHashTags.m */; };
 		DBAD6C9C1A2FD67F00AB5A4B /* libTremorVideoAd.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DBAD6C9A1A2FD67F00AB5A4B /* libTremorVideoAd.a */; };
@@ -1950,6 +1952,9 @@
 		DB58EF40199401E500D2A07F /* VNotification+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VNotification+RestKit.m"; sourceTree = "<group>"; };
 		DB58EF4E1994174900D2A07F /* VNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNotification.h; sourceTree = "<group>"; };
 		DB58EF4F1994174900D2A07F /* VNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNotification.m; sourceTree = "<group>"; };
+		DB7460341A93A5BE006C2245 /* VInlineUserTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VInlineUserTableViewCell.h; path = "../../inline search/VInlineUserTableViewCell.h"; sourceTree = "<group>"; };
+		DB7460351A93A5BE006C2245 /* VInlineUserTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VInlineUserTableViewCell.m; path = "../../inline search/VInlineUserTableViewCell.m"; sourceTree = "<group>"; };
+		DB7460361A93A5BE006C2245 /* VInlineUserTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = VInlineUserTableViewCell.xib; path = "../../inline search/VInlineUserTableViewCell.xib"; sourceTree = "<group>"; };
 		DB82857819F6DD3C006C6E2F /* VAdPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAdPlayerView.h; sourceTree = "<group>"; };
 		DB82857919F6DD3C006C6E2F /* VAdPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAdPlayerView.m; sourceTree = "<group>"; };
 		DB8D3A1119803A03005DD36D /* VHashTags.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHashTags.h; sourceTree = "<group>"; };
@@ -4538,6 +4543,17 @@
 			path = Cells;
 			sourceTree = "<group>";
 		};
+		DB7460391A93A5C9006C2245 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				DB7460341A93A5BE006C2245 /* VInlineUserTableViewCell.h */,
+				DB7460351A93A5BE006C2245 /* VInlineUserTableViewCell.m */,
+				DB7460361A93A5BE006C2245 /* VInlineUserTableViewCell.xib */,
+			);
+			name = Cell;
+			path = "../Inline Search/Cell";
+			sourceTree = "<group>";
+		};
 		DB8D3A10198039BD005DD36D /* HashTags */ = {
 			isa = PBXGroup;
 			children = (
@@ -4637,6 +4653,7 @@
 		F05AA97D1A83F6E3002F8917 /* Inline Search */ = {
 			isa = PBXGroup;
 			children = (
+				DB7460391A93A5C9006C2245 /* Cell */,
 				F05AA97E1A83F6E3002F8917 /* VInlineSearchTableViewController.h */,
 				F05AA97F1A83F6E3002F8917 /* VInlineSearchTableViewController.m */,
 			);
@@ -4760,6 +4777,7 @@
 				03C1858819B42C9100E27D05 /* Roboto-Medium.ttf in Resources */,
 				BE88FF901A00060E0064AB28 /* VNavigationHeaderView.xib in Resources */,
 				036F387C1A0C4DEA0014DF66 /* Merriweather-Bold.ttf in Resources */,
+				DB7460381A93A5BE006C2245 /* VInlineUserTableViewCell.xib in Resources */,
 				DB2A48FF19DF429700CB687B /* Main.storyboard in Resources */,
 				036F38901A0C4DEA0014DF66 /* Rosario-Regular.ttf in Resources */,
 				036F38861A0C4DEA0014DF66 /* PT_Sans-Web-Bold.ttf in Resources */,
@@ -5210,6 +5228,7 @@
 				0314D48519B46B5E00FA363C /* VKeyboardBarContainerViewController.m in Sources */,
 				0314D49919B46B5E00FA363C /* VActionBarViewController.m in Sources */,
 				A708C9581A7FFF67000EE1EE /* VContentViewRotationHelper.m in Sources */,
+				DB7460371A93A5BE006C2245 /* VInlineUserTableViewCell.m in Sources */,
 				0314D4BE19B46B5E00FA363C /* VFollowerTableViewController.m in Sources */,
 				0314D49819B46B5E00FA363C /* VRTCUserPostedAtFormatter.m in Sources */,
 				F0B390B91A852C7E00EE70C7 /* VTag.m in Sources */,

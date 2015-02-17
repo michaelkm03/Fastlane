@@ -9,7 +9,7 @@
 #import "VInlineSearchTableViewController.h"
 
 // Table View Cell
-#import "VFollowerTableViewCell.h"
+#import "VInlineUserTableViewCell.h"
 
 // VObject Manager
 #import "VObjectManager+Pagination.h"
@@ -22,7 +22,7 @@
 // Theme Manager
 #import "VThemeManager.h"
 
-static NSString * const kVInlineUserCellIdentifier = @"followerCell";
+static NSString * const kVInlineUserCellIdentifier = @"VInlineUserTableViewCell";
 static const NSInteger kSearchResultLimit = 20;
 
 typedef NS_ENUM(NSInteger, VInlineSearchState)
@@ -191,11 +191,8 @@ typedef NS_ENUM(NSInteger, VInlineSearchState)
 {
     VUser *profile = self.usersFollowing[indexPath.row];
     
-    VFollowerTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kVInlineUserCellIdentifier forIndexPath:indexPath];
-    cell.showButton = NO;
-    cell.showLocation = NO;
+    VInlineUserTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kVInlineUserCellIdentifier forIndexPath:indexPath];
     cell.profile = profile;
-    cell.profileName.font = [UIFont fontWithName:@"MuseoSans-300" size:15.0f];
     return cell;
 }
 

@@ -15,7 +15,6 @@
 
 @interface      VFollowerTableViewCell ()
 
-
 @property (nonatomic, strong) UIImage *followImage;
 @property (nonatomic, strong) UIImage *unfollowImage;
 
