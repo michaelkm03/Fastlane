@@ -15,7 +15,8 @@
 // Theme
 #import "VThemeManager.h"
 
-const CGFloat VInputAccessoryViewDesiredMinimumHeight = 47.0f;
+const CGFloat VInputAccessoryViewDesiredMinimumHeight = 51.0f;
+static const CGFloat VTextViewTopInsetAddition = 2.0f;
 
 @interface VKeyboardInputAccessoryView () <UITextViewDelegate>
 
@@ -30,8 +31,8 @@ const CGFloat VInputAccessoryViewDesiredMinimumHeight = 47.0f;
 @property (nonatomic, weak) IBOutlet UIView *editingTextSuperview;
 @property (nonatomic, weak) IBOutlet UILabel *placeholderLabel;
 
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceTextViewTopToContainerConstraint;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceTextViewToBottomContainerConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *verticalSpaceTextViewContainerToTopConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *verticalSpaceTextViewContainerToBottomConstraint;
 
 @end
 
@@ -68,9 +69,12 @@ const CGFloat VInputAccessoryViewDesiredMinimumHeight = 47.0f;
     editingTextView.delegate = self;
     editingTextView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     editingTextView.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel1Font];
+    
+    //Adding this to the top inset centers the text with it's placeholder
     UIEdgeInsets textContainerInset = editingTextView.textContainerInset;
-    textContainerInset.top += 3;
+    textContainerInset.top += VTextViewTopInsetAddition;
     editingTextView.textContainerInset = textContainerInset;
+    
     editingTextView.autocapitalizationType = UITextAutocapitalizationTypeSentences;
     
     [self.editingTextSuperview addSubview:editingTextView];
@@ -102,7 +106,7 @@ const CGFloat VInputAccessoryViewDesiredMinimumHeight = 47.0f;
 
 - (CGSize)intrinsicContentSize
 {
-    return CGSizeMake(320.0f, 45.0f);
+    return CGSizeMake(320.0f, VInputAccessoryViewDesiredMinimumHeight);
 }
 
 #pragma mark - Property Accessors
@@ -181,16 +185,19 @@ const CGFloat VInputAccessoryViewDesiredMinimumHeight = 47.0f;
 {
     self.placeholderLabel.hidden = (textView.text.length == 0) ? NO : YES;
     
-    CGFloat desiredHeight = self.verticalSpaceTextViewTopToContainerConstraint.constant + self.verticalSpaceTextViewToBottomContainerConstraint.constant + self.editingTextView.contentSize.height;
+    CGFloat width = CGRectGetWidth(self.editingTextView.bounds);
+    CGFloat textHeight = self.editingTextView.contentSize.height;
+
+    CGFloat desiredHeight = self.verticalSpaceTextViewContainerToTopConstraint.constant + self.verticalSpaceTextViewContainerToBottomConstraint.constant + textHeight + VTextViewTopInsetAddition;
     if (CGRectGetHeight(self.frame) < desiredHeight)
     {
         [self.delegate keyboardInputAccessoryView:self
-                                        wantsSize:CGSizeMake(CGRectGetWidth(self.frame), roundf(desiredHeight))];
+                                        wantsSize:CGSizeMake(width, roundf(desiredHeight))];
     }
     else if (CGRectGetHeight(self.frame) > desiredHeight)
     {
         [self.delegate keyboardInputAccessoryView:self
-                                        wantsSize:CGSizeMake(CGRectGetWidth(self.frame), fmaxf(desiredHeight, self.intrinsicContentSize.height))];
+                                        wantsSize:CGSizeMake(width, fmaxf(desiredHeight, self.intrinsicContentSize.height))];
     }
     
     if (textView.text.length == 0)
@@ -202,6 +209,9 @@ const CGFloat VInputAccessoryViewDesiredMinimumHeight = 47.0f;
     }
     
     [self updateSendButton];
+    
+    //Keeps currently selected range in view and fixes odd issue where top of text is cut off after layout
+    [self.editingTextView scrollRangeToVisible:self.editingTextView.selectedRange];
 }
 
 - (BOOL)textView:(UITextView *)textView

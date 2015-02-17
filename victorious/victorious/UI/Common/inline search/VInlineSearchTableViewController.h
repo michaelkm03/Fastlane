@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+extern const NSInteger kSearchTableDesiredMinimumHeight;
+
 @class VInlineSearchTableViewController, VUser;
 
 @protocol VInlineSearchTableViewControllerDelegate <NSObject>
@@ -21,6 +23,7 @@
  @param vInlineSearch Instance of the tableview controller being displayed
  */
 - (void)user:(VUser *)user wasSelectedFromTableView:(VInlineSearchTableViewController *)vInlineSearch;
+- (void)dismissButtonWasPressedInTableView:(VInlineSearchTableViewController *)vInlineSearch;
 
 @end
 

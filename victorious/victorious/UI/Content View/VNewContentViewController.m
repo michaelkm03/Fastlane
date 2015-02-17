@@ -88,6 +88,8 @@
 
 #import <SDWebImage/UIImageView+WebCache.h>
 
+#import "VInlineSearchTableViewController.h"
+
 #define HANDOFFENABLED 0
 static const CGFloat kMaxInputBarHeight = 200.0f;
 
@@ -1349,9 +1351,9 @@ referenceSizeForHeaderInSection:(NSInteger)section
     [searchTableView setTranslatesAutoresizingMaskIntoConstraints:NO];
     searchTableView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     NSDictionary *views = @{@"searchTableView":searchTableView, @"textEntryView":self.textEntryView};
-    [superview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[searchTableView][textEntryView]"
+    [superview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[searchTableView(>=height)][textEntryView]"
                                                                       options:0
-                                                                      metrics:nil
+                                                                      metrics:@{ @"height":@(kSearchTableDesiredMinimumHeight) }
                                                                         views:views]];
     [superview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[searchTableView]|"
                                                                       options:kNilOptions

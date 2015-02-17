@@ -22,6 +22,8 @@
 // Theme Manager
 #import "VThemeManager.h"
 
+const NSInteger kSearchTableDesiredMinimumHeight = 100;
+
 static NSString * const kVInlineUserCellIdentifier = @"followerCell";
 static const NSInteger kSearchResultLimit = 20;
 
@@ -38,7 +40,7 @@ typedef NS_ENUM(NSInteger, VInlineSearchState)
 @property (nonatomic, strong) NSArray *usersFollowing;
 @property (nonatomic, strong) NSLayoutConstraint *tableViewHeightConstraint;
 @property (nonatomic, assign) VInlineSearchState searchState;
-@property (nonatomic, strong) UILabel *backgroundLabel;
+@property (nonatomic, strong) UIButton *backgroundButton;
 @property (nonatomic, strong) NSTimer *UIUpdateTimer;
 @property (nonatomic, strong) RKObjectRequestOperation *searchOperation;
 
@@ -59,7 +61,7 @@ typedef NS_ENUM(NSInteger, VInlineSearchState)
     [self.tableView setSeparatorInset:UIEdgeInsetsZero];
     [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
     
-    self.tableView.backgroundView = self.backgroundLabel;
+    self.tableView.backgroundView = self.backgroundButton;
     self.searchState = VInlineSearchStateNoSearch;
 }
 
@@ -139,7 +141,7 @@ typedef NS_ENUM(NSInteger, VInlineSearchState)
 - (void)updateBackgroundView
 {
     //Assume success (no text)
-    NSString *labelText = nil;
+    NSString *buttonText = nil;
     UITableViewCellSeparatorStyle separatorStyle = UITableViewCellSeparatorStyleSingleLine;
     if ([self tableView:self.tableView numberOfRowsInSection:0] == 0)
     {
@@ -147,15 +149,15 @@ typedef NS_ENUM(NSInteger, VInlineSearchState)
         switch (self.searchState)
         {
             case VInlineSearchStateNoResults:
-                labelText = @"no results";
+                buttonText = @"no results";
                 break;
                 
             case VInlineSearchStateNoSearch:
-                labelText = @"search for users";
+                buttonText = @"search for users";
                 break;
                 
             case VInlineSearchStateSearching:
-                labelText = @"searching";
+                buttonText = @"searching";
                 break;
                 
             default:
@@ -164,20 +166,28 @@ typedef NS_ENUM(NSInteger, VInlineSearchState)
         
     }
     [self.tableView setSeparatorStyle:separatorStyle];
-    [self.backgroundLabel setText:labelText];
+    [self.backgroundButton setTitle:buttonText forState:UIControlStateNormal];
+    [self.backgroundButton setHidden:buttonText == nil];
     [self.tableView reloadData];
 }
 
-- (UILabel *)backgroundLabel
+- (UIButton *)backgroundButton
 {
-    if ( _backgroundLabel != nil )
+    if ( _backgroundButton != nil )
     {
-        return _backgroundLabel;
+        return _backgroundButton;
     }
     
-    _backgroundLabel = [[UILabel alloc] init];
-    _backgroundLabel.textAlignment = NSTextAlignmentCenter;
-    return _backgroundLabel;
+    _backgroundButton = [[UIButton alloc] init];
+    [[_backgroundButton titleLabel] setFont:[[VThemeManager sharedThemeManager] themedFontForKey:kVButton1Font]];
+    [_backgroundButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [_backgroundButton addTarget:self action:@selector(backgroundButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+    return _backgroundButton;
+}
+
+- (void)backgroundButtonPressed
+{
+    [self.delegate dismissButtonWasPressedInTableView:self];
 }
 
 #pragma mark - TableView Delegate Methods
