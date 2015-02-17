@@ -5,11 +5,6 @@
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <mutableArray key="MuseoSans-300.otf">
-            <string>MuseoSans-300</string>
-        </mutableArray>
-    </customFonts>
     <scenes>
         <!--Push Notifications-->
         <scene sceneID="CaJ-Gk-ZQq">
@@ -652,46 +647,17 @@
                                                 <action selector="onButtonTapped:" destination="CWE-b8-fYB" eventType="touchUpInside" id="7gS-lL-jqt"/>
                                             </connections>
                                         </button>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="df0-hh-KLf" userLabel="Loading View">
-                                            <rect key="frame" x="14" y="14" width="292" height="44"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Unlocking..." textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YwP-dh-Rfq" userLabel="Loading Message">
-                                                    <rect key="frame" x="8" y="3" width="189" height="39"/>
-                                                    <fontDescription key="fontDescription" name="MuseoSans-300" family="Museo Sans" pointSize="18"/>
-                                                    <color key="textColor" white="0.9660093246" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="I1e-aZ-Uqx">
-                                                    <rect key="frame" x="205" y="13" width="20" height="20"/>
-                                                </activityIndicatorView>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="YwP-dh-Rfq" firstAttribute="leading" secondItem="df0-hh-KLf" secondAttribute="leading" constant="8" id="2Qt-Es-qKK"/>
-                                                <constraint firstItem="I1e-aZ-Uqx" firstAttribute="top" secondItem="df0-hh-KLf" secondAttribute="top" constant="13" id="DGW-LQ-LJd"/>
-                                                <constraint firstAttribute="bottom" secondItem="YwP-dh-Rfq" secondAttribute="bottom" constant="2" id="SBh-1t-F1w"/>
-                                                <constraint firstItem="I1e-aZ-Uqx" firstAttribute="leading" secondItem="YwP-dh-Rfq" secondAttribute="trailing" constant="8" id="edF-Vf-SGQ"/>
-                                                <constraint firstItem="YwP-dh-Rfq" firstAttribute="top" secondItem="df0-hh-KLf" secondAttribute="top" constant="3" id="frx-ay-ong"/>
-                                                <constraint firstAttribute="trailing" secondItem="I1e-aZ-Uqx" secondAttribute="trailing" constant="67" id="l6f-3O-wMe"/>
-                                            </constraints>
-                                        </view>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="N5S-6f-jb6" firstAttribute="height" secondItem="df0-hh-KLf" secondAttribute="height" id="2CO-ov-EXi"/>
-                                        <constraint firstItem="N5S-6f-jb6" firstAttribute="centerX" secondItem="df0-hh-KLf" secondAttribute="centerX" id="Gb1-Lm-1vH"/>
                                         <constraint firstAttribute="trailing" secondItem="N5S-6f-jb6" secondAttribute="trailing" constant="14" id="KUL-fQ-yes"/>
                                         <constraint firstItem="N5S-6f-jb6" firstAttribute="leading" secondItem="iUO-cb-0C0" secondAttribute="leading" constant="14" id="OZU-M9-rE2"/>
-                                        <constraint firstItem="N5S-6f-jb6" firstAttribute="centerY" secondItem="df0-hh-KLf" secondAttribute="centerY" id="Pub-Po-IrK"/>
                                         <constraint firstAttribute="centerYWithinMargins" secondItem="N5S-6f-jb6" secondAttribute="centerYWithinMargins" constant="-1" id="cBk-05-5Wh"/>
-                                        <constraint firstItem="N5S-6f-jb6" firstAttribute="width" secondItem="df0-hh-KLf" secondAttribute="width" id="z3g-yc-CeD"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <connections>
-                                    <outlet property="activityIndicator" destination="I1e-aZ-Uqx" id="nKG-WF-4Ci"/>
                                     <outlet property="button" destination="N5S-6f-jb6" id="Wk3-ua-D5o"/>
-                                    <outlet property="loadingLabel" destination="YwP-dh-Rfq" id="8Cg-gy-uur"/>
-                                    <outlet property="loadingOverlay" destination="df0-hh-KLf" id="m0E-nI-Qde"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>

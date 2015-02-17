@@ -16,6 +16,7 @@
 #import "VAlertController.h"
 #import "VNoContentTableViewCell.h"
 #import "VPurchaseStringMaker.h"
+#import "VThemeManager.h"
 
 typedef NS_ENUM( NSInteger, VPurchaseSettingsTableViewSections )
 {
@@ -39,7 +40,6 @@ static const CGFloat kPurchasedItemCellRowHeight    = 60.0f;
 
 @interface VPurchaseSettingsViewController()
 
-@property (nonatomic, readonly) NSString *purchaseActionCellTitle;
 @property (nonatomic, strong) VFileCache *fileCache;
 @property (nonatomic, strong) VPurchaseManager *purchaseManager;
 @property (nonatomic, assign) BOOL isRestoringPurchases;
@@ -76,7 +76,11 @@ static const CGFloat kPurchasedItemCellRowHeight    = 60.0f;
     }
     
     self.isRestoringPurchases = YES;
-    [self.tableView reloadData];
+    
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:VPurchaseSettingsTableViewSectionActions];
+    VPurchaseActionCell *cell = (VPurchaseActionCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+    [cell.button showActivityIndicator];
+    cell.button.enabled = NO;
     
     [self.purchaseManager restorePurchasesSuccess:^(NSSet *restoreProductIdentifiers)
      {
@@ -93,10 +97,9 @@ static const CGFloat kPurchasedItemCellRowHeight    = 60.0f;
              NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:VPurchaseSettingsTableViewSectionPurchases];
              [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
              
-             NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:VPurchaseSettingsTableViewSectionActions];
-             VPurchaseActionCell *cell = (VPurchaseActionCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-             [cell setIsActionEnabled:!self.isRestoringPurchases withTitle:self.purchaseActionCellTitle];
          }
+         [cell.button hideActivityIndicator];
+         cell.button.enabled = YES;
      }
                                           failure:^(NSError *error)
      {
@@ -104,6 +107,9 @@ static const CGFloat kPurchasedItemCellRowHeight    = 60.0f;
          [self showError:error withTitle:title];
          self.isRestoringPurchases = NO;
          [self.tableView reloadData];
+         
+         [cell.button hideActivityIndicator];
+         cell.button.enabled = YES;
      }];
 }
 
@@ -118,18 +124,6 @@ static const CGFloat kPurchasedItemCellRowHeight    = 60.0f;
     VAlertController *alertConroller = [VAlertController alertWithTitle:title message:message];
     [alertConroller addAction:[VAlertAction cancelButtonWithTitle:NSLocalizedString( @"OKButton", nil ) handler:nil]];
     [alertConroller presentInViewController:self animated:YES completion:nil];
-}
-
-- (NSString *)purchaseActionCellTitle
-{
-    if ( self.isRestoringPurchases )
-    {
-        return NSLocalizedString( @"ActivityRestoring", nil);
-    }
-    else
-    {
-        return NSLocalizedString( @"SettingsRestorePurchases", nil);
-    }
 }
 
 #pragma mark - UITableViewDataSource
@@ -161,7 +155,11 @@ static const CGFloat kPurchasedItemCellRowHeight    = 60.0f;
     {
         NSString *identifier = NSStringFromClass( [VPurchaseActionCell class] );
         VPurchaseActionCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
-        [cell setIsActionEnabled:!self.isRestoringPurchases withTitle:self.purchaseActionCellTitle];
+        cell.button.style = VButtonStylePrimary;
+        cell.button.primaryColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+        cell.button.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
+        [cell.button setTitle:NSLocalizedString( @"SettingsRestorePurchases", nil) forState:UIControlStateNormal];
+        
         if ( indexPath.row == VPurchaseSettingsActionRestore )
         {
             [cell setAction:^(VPurchaseActionCell *actionCell)
@@ -172,8 +170,7 @@ static const CGFloat kPurchasedItemCellRowHeight    = 60.0f;
 #ifndef V_NO_RESET_PURCHASES
         else if ( indexPath.row == VPurchaseSettingsActionReset )
         {
-            NSString *title = @"Reset Purchases";
-            [cell setIsActionEnabled:YES withTitle:title];
+            [cell.button setTitle: @"Reset Purchases" forState:UIControlStateNormal];
             [cell setAction:^(VPurchaseActionCell *actionCell)
              {
                  [self.purchaseManager resetPurchases];
