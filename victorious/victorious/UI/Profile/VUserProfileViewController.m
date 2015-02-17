@@ -95,6 +95,7 @@ static NSString * const kUserKey = @"user";
     [super viewDidLoad];
     
     self.streamDataSource.hasHeaderCell = YES;
+    self.collectionView.alwaysBounceVertical = YES;
     
     self.isMe = (self.profile.remoteId.integerValue == [VObjectManager sharedManager].mainUser.remoteId.integerValue);
     
@@ -189,6 +190,21 @@ static NSString * const kUserKey = @"user";
     if (fromInbox)
     {
         self.navigationItem.rightBarButtonItem = nil;
+    }
+}
+
+- (void)viewDidLayoutSubviews
+{
+    CGFloat height = CGRectGetHeight(self.view.bounds) - self.topLayoutGuide.length;
+    height = self.streamDataSource.count ? kVSmallUserHeaderHeight : height;
+    
+    CGFloat width = CGRectGetWidth(self.collectionView.bounds);
+    CGSize newProfileSize = CGSizeMake(width, height);
+
+    if ( !CGSizeEqualToSize(newProfileSize, self.currentProfileSize) )
+    {
+        self.currentProfileSize = newProfileSize;
+        self.currentProfileCell.frame = CGRectMake(0.0f, 0.0f, newProfileSize.width, newProfileSize.height);
     }
 }
 
@@ -429,6 +445,7 @@ static NSString * const kUserKey = @"user";
     {
         VProfileHeaderCell *headerCell = [self.collectionView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([VProfileHeaderCell class]) forIndexPath:indexPath];
         headerCell.headerView = self.profileHeaderView;
+        self.profileHeaderView.frame = CGRectMake(0.0f, 0.0f, self.currentProfileSize.width, self.currentProfileSize.height);
         self.currentProfileCell = headerCell;
         return headerCell;
     }
