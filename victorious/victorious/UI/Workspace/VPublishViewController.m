@@ -22,8 +22,6 @@
 
 #import "NSURL+MediaType.h"
 
-#import "VCameraRollPublishShareController.h"
-
 @import AssetsLibrary;
 
 static const CGFloat kTriggerVelocity = 500.0f;
@@ -53,8 +51,6 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
 @property (nonatomic, copy, readwrite) void (^animateInBlock)(void);
 
 @property (nonatomic, assign) BOOL publishing;
-
-@property (nonatomic, strong) VCameraRollPublishShareController *cameraPublishController;
 
 @end
 
@@ -90,9 +86,6 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    self.cameraPublishController = [[VCameraRollPublishShareController alloc] init];
-    self.cameraPublishController.switchToConfigure = self.cameraRollSwitch;
     
     self.publishButton.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     [self.publishButton setTitleColor:[self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey]
