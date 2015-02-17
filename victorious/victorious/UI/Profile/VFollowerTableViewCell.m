@@ -15,6 +15,10 @@
 
 @interface      VFollowerTableViewCell ()
 
+@property (nonatomic, weak)     IBOutlet    UIImageView        *profileImage;
+@property (nonatomic, weak)     IBOutlet    UILabel            *profileName;
+@property (nonatomic, weak)     IBOutlet    UILabel            *profileLocation;
+
 @property (nonatomic, strong) UIImage *followImage;
 @property (nonatomic, strong) UIImage *unfollowImage;
 
@@ -71,20 +75,6 @@
         self.followButton.imageView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
         self.followButton.imageView.image = self.followImage;
     }
-}
-
-- (void)setShowButton:(BOOL)showButton
-{
-    _showButton = showButton;
-    
-    self.followButton.hidden = !showButton;
-}
-
-- (void)setShowLocation:(BOOL)showLocation
-{
-    _showLocation = showLocation;
-    
-    self.profileLocation.hidden = !showLocation;
 }
 
 - (IBAction)follow:(id)sender

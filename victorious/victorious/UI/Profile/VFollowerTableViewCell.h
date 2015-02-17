@@ -10,14 +10,9 @@
 
 @interface VFollowerTableViewCell : UITableViewCell
 
-@property (nonatomic, weak)     IBOutlet    UIImageView        *profileImage;
-@property (nonatomic, weak)     IBOutlet    UILabel            *profileName;
-@property (nonatomic, weak)     IBOutlet    UILabel            *profileLocation;
-
 @property (nonatomic, strong)   VUser  *profile;
 @property (nonatomic, strong)   VUser  *owner;
 @property (nonatomic)           BOOL    showButton;
-@property (nonatomic)           BOOL    showLocation;
 @property (nonatomic)           BOOL    haveRelationship;
 
 @property (nonatomic, weak)     IBOutlet UIButton *followButton;
