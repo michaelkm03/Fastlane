@@ -48,6 +48,7 @@ const CGFloat kTopMargin = 10.0f;
 
 @property (nonatomic, strong) NSLayoutConstraint *headerYConstraint;
 @property (nonatomic, strong) VNavigationControllerScrollDelegate *navigationControllerScrollDelegate;
+@property (nonatomic, readwrite) CGFloat topInset;
 
 @property (nonatomic, assign) NSUInteger previousNumberOfRowsInStreamSection;
 @property (nonatomic, assign) BOOL shouldAnimateActivityViewFooter;
@@ -55,6 +56,8 @@ const CGFloat kTopMargin = 10.0f;
 @end
 
 @implementation VAbstractStreamCollectionViewController
+
+#pragma mark - Init & Dealloc
 
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -88,24 +91,20 @@ const CGFloat kTopMargin = 10.0f;
     self.collectionView.delegate = nil;
 }
 
+#pragma mark - View Lifecycle
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.collectionView.contentInset = self.v_layoutInsets;
 
     [self.collectionView registerNib:[VFooterActivityIndicatorView nibForSupplementaryView]
           forSupplementaryViewOfKind:UICollectionElementKindSectionFooter
                  withReuseIdentifier:[VFooterActivityIndicatorView reuseIdentifier]];
-}
-
-- (void)v_setLayoutInsets:(UIEdgeInsets)layoutInsets
-{
-    [super v_setLayoutInsets:layoutInsets];
     
-    if ( [self isViewLoaded] )
-    {
-        self.collectionView.contentInset = UIEdgeInsetsMake(layoutInsets.top + kTopMargin, layoutInsets.left, layoutInsets.bottom, layoutInsets.right);
-    }
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    [self.refreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
+    [self.collectionView addSubview:self.refreshControl];
+    [self positionRefreshControl];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -115,23 +114,7 @@ const CGFloat kTopMargin = 10.0f;
     BOOL shouldRefresh = !self.refreshControl.isRefreshing && self.streamDataSource.count == 0;
     if ( shouldRefresh )
     {
-        [self refresh:nil];
-    }
-    
-    [self.refreshControl removeFromSuperview];
-    self.refreshControl = [[UIRefreshControl alloc] init];
-    [self.refreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
-    [self.collectionView addSubview:self.refreshControl];
-    UIView *subView = self.refreshControl.subviews[0];
-    
-    //Since we're using the collection flow delegate method for the insets, we need to manually position the frame of the refresh control.
-    subView.frame = CGRectMake(CGRectGetMinX(subView.frame), CGRectGetMinY(subView.frame) + self.contentInset.top / 2,
-                               CGRectGetWidth(subView.frame), CGRectGetHeight(subView.frame));
-    
-    if ( shouldRefresh )
-    {
-        //If we start fetching again, we need to tell our NEW refresh control to start refreshing
-        [self.refreshControl beginRefreshing];
+        [self refreshWithCompletion:nil];
     }
 }
 
@@ -147,6 +130,8 @@ const CGFloat kTopMargin = 10.0f;
     self.navigationControllerScrollDelegate = nil;
 }
 
+#pragma mark - Property Setters
+
 - (void)setCurrentStream:(VStream *)currentStream
 {
     _currentStream = currentStream;
@@ -157,17 +142,16 @@ const CGFloat kTopMargin = 10.0f;
     }
 }
 
-- (IBAction)findFriendsAction:(id)sender
+- (void)v_setLayoutInsets:(UIEdgeInsets)layoutInsets
 {
-    if (![VObjectManager sharedManager].authorized)
-    {
-        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
-        return;
-    }
+    [super v_setLayoutInsets:layoutInsets];
+    self.topInset = layoutInsets.top;
     
-    VFindFriendsViewController *ffvc = [VFindFriendsViewController newFindFriendsViewController];
-    [ffvc setShouldAutoselectNewFriends:NO];
-    [self.navigationController pushViewController:ffvc animated:YES];
+    if ( [self isViewLoaded] )
+    {
+        [self.collectionView.collectionViewLayout invalidateLayout];
+        [self positionRefreshControl];
+    }
 }
 
 #pragma mark - Refresh
@@ -208,6 +192,14 @@ const CGFloat kTopMargin = 10.0f;
     
     [self.refreshControl beginRefreshing];
     self.refreshControl.hidden = NO;
+}
+
+- (void)positionRefreshControl
+{
+    UIView *subView = self.refreshControl.subviews[0];
+    
+    // Since we're using the collection flow delegate method for the insets, we need to manually position the frame of the refresh control.
+    subView.center = CGPointMake(CGRectGetMidX(self.refreshControl.bounds), CGRectGetMidY(self.refreshControl.bounds) + self.topInset * 0.5f);
 }
 
 #pragma mark - Bottom activity indicator footer
@@ -255,6 +247,20 @@ const CGFloat kTopMargin = 10.0f;
     }
     
     return NO;
+}
+
+#pragma mark - UICollectionViewDelegateFlowLayout
+
+- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
+{
+    if (section == 0)
+    {
+        return UIEdgeInsetsMake(self.topInset, 0, 0, 0);
+    }
+    else
+    {
+        return UIEdgeInsetsZero;
+    }
 }
 
 #pragma mark - UICollectionViewDelegate

@@ -21,7 +21,7 @@
 
 @property (nonatomic, weak, readonly) UICollectionView *collectionView;///<The collection view used to display the streamItems
 
-@property (nonatomic) UIEdgeInsets contentInset;///<The default content inset that will be used when the view appears.  Will not be used if this VC has a nav header.
+@property (nonatomic, readonly) CGFloat topInset; ///< An amount by which to inset the top of the content in the collection view.
 
 /**
  Called by the refresh controller when the user activates it by scrolling up to the top.

@@ -148,10 +148,10 @@ static CGFloat const kDirectoryInset = 10.0f;
                         layout:(UICollectionViewLayout *)collectionViewLayout
         insetForSectionAtIndex:(NSInteger)section
 {
-    return UIEdgeInsetsMake(self.contentInset.top + kDirectoryInset,
-                            self.contentInset.left + kDirectoryInset,
-                            self.contentInset.bottom,
-                            self.contentInset.right + kDirectoryInset);
+    return UIEdgeInsetsMake(self.topInset + kDirectoryInset,
+                            kDirectoryInset,
+                            0,
+                            kDirectoryInset);
 }
 
 #pragma mark - VStreamCollectionDataDelegate

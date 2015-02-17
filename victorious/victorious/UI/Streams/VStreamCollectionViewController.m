@@ -441,17 +441,6 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
     return [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled] ? kTemplateCLineSpacing : 0;
 }
 
-- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView
-                        layout:(UICollectionViewLayout *)collectionViewLayout
-        insetForSectionAtIndex:(NSInteger)section
-{
-    if (section == 0)
-    {
-        return self.contentInset;
-    }
-    return UIEdgeInsetsZero;
-}
-
 - (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
 {
     if ( [cell isKindOfClass:[VStreamCollectionCell class]] )

@@ -94,8 +94,6 @@ static NSString * const kUserKey = @"user";
 {
     [super viewDidLoad];
     
-    self.automaticallyAdjustsScrollViewInsets = NO;
-    
     self.streamDataSource.hasHeaderCell = YES;
     
     self.isMe = (self.profile.remoteId.integerValue == [VObjectManager sharedManager].mainUser.remoteId.integerValue);
