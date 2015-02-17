@@ -14,7 +14,8 @@ const NSUInteger kVCompositionAssetCount = 10;
 /*
  When assets are added to the composition, this small bit of time
  is shaved off of the end in order to ensure clean looping.*/
-static const Float64 kAssetLoopClipping = 0.08;
+static const Float64 kAssetLoopClippingValue = 8;
+static const Float64 kAssetLoopClippingScale = 100;
 
 @interface VVideoUtils()
 
@@ -27,9 +28,10 @@ static const Float64 kAssetLoopClipping = 0.08;
 - (AVComposition *)loopingCompositionWithAsset:(AVAsset *)asset
 {
     AVMutableComposition *composition = [[AVMutableComposition alloc] init];
-    CMTime duration = CMTimeSubtract( asset.duration, CMTimeMake( kAssetLoopClipping, 1 ) );
+    CMTime clipping = CMTimeMake( kAssetLoopClippingValue, kAssetLoopClippingScale );
+    CMTime duration = CMTimeSubtract( asset.duration, clipping );
     CMTimeRange editRange;
-    CMTime minTime = CMTimeMake( 1, 1 );
+    CMTime minTime = kCMTimeZero;
     if ( CMTIME_COMPARE_INLINE( duration, <, minTime) )
     {
         editRange = CMTimeRangeMake( kCMTimeZero, minTime );
