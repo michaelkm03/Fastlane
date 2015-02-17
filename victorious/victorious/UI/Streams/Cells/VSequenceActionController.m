@@ -137,11 +137,12 @@
     [self showRemixOnViewController:viewController withSequence:sequence andDependencyManager:dependencyManager completion:nil];
 }
 
-- (void)showRemixStreamFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence
+- (void)showRemixStreamFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence andDependencyManager:(VDependencyManager *)dependencyManager
 {
     VStream *stream = [VStream remixStreamForSequence:sequence];
     stream.name = NSLocalizedString(@"Remixes", nil);
     VStreamCollectionViewController  *streamCollection = [VStreamCollectionViewController streamViewControllerForStream:stream];
+    streamCollection.dependencyManager = dependencyManager;
     
     VNoContentView *noRemixView = [VNoContentView noContentViewWithFrame:streamCollection.view.bounds];
     noRemixView.titleLabel.text = NSLocalizedString(@"NoRemixersTitle", @"");

@@ -115,6 +115,11 @@ const CGFloat kVLoadNextPagePoint = .75f;
     {
         [self refreshWithCompletion:nil];
     }
+    
+    if ( self.v_navigationController == nil && self.navigationController.navigationBarHidden )
+    {
+        [self.navigationController setNavigationBarHidden:NO animated:YES];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -131,6 +136,20 @@ const CGFloat kVLoadNextPagePoint = .75f;
 {
     [super viewWillDisappear:animated];
     self.navigationControllerScrollDelegate = nil;
+}
+
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    
+    if ( self.v_navigationController == nil )
+    {
+        if ( self.topInset != self.topLayoutGuide.length )
+        {
+            self.topInset = self.topLayoutGuide.length;
+            [self.collectionView.collectionViewLayout invalidateLayout];
+        }
+    }
 }
 
 - (void)addScrollDelegate

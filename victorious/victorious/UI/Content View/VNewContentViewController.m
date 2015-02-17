@@ -67,7 +67,7 @@
 
 // Experiments
 #import "VSettingManager.h"
-#import "VDependencyManager.h"
+#import "VDependencyManager+VScaffoldViewController.h"
 
 #import "VSequence+Fetcher.h"
 
@@ -494,6 +494,15 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     else
     {
         self.textEntryView.placeholderText = NSLocalizedString(@"LeaveAComment", @"");
+    }
+    
+    if ( self.navigationController != nil )
+    {
+        [self.dependencyManager applyStyleToNavigationBar:self.navigationController.navigationBar];
+        if ( !self.navigationController.navigationBarHidden )
+        {
+            [self.navigationController setNavigationBarHidden:YES animated:YES];
+        }
     }
     
     [self updateOrientation];
