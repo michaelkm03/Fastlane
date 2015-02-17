@@ -7,7 +7,7 @@
 //
 
 #import "VAbstractProfileEditViewController.h"
-#import "VCameraViewController.h"
+#import "VWorkspaceFlowController.h"
 #import "VUser.h"
 #import "UIImageView+Blurring.h"
 #import "UIImage+ImageEffects.h"
@@ -16,7 +16,7 @@
 #import "VConstants.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 
-@interface VAbstractProfileEditViewController () <VContentInputAccessoryViewDelegate>
+@interface VAbstractProfileEditViewController () <VContentInputAccessoryViewDelegate, VWorkspaceFlowControllerDelegate>
 
 @property (nonatomic, weak) IBOutlet UITableViewCell *captionCell;
 @property (nonatomic, assign) NSInteger numberOfLines;
@@ -146,20 +146,12 @@
 
 - (IBAction)takePicture:(id)sender
 {
-    UINavigationController *navigationController = [[UINavigationController alloc] init];
-    VCameraViewController *cameraViewController = [VCameraViewController cameraViewControllerLimitedToPhotos];
-    cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
-    {
-        [self dismissViewControllerAnimated:YES completion:nil];
-        if (finished && capturedMediaURL)
-        {
-            self.profileImageView.image = previewImage;
-            self.updatedProfileImage = capturedMediaURL;
-            [self.backgroundImageView setBlurredImageWithClearImage:previewImage placeholderImage:self.backgroundImageView.image tintColor:nil];
-        }
-    };
-    [navigationController pushViewController:cameraViewController animated:NO];
-    [self presentViewController:navigationController animated:YES completion:nil];
+    VWorkspaceFlowController *workspaceFlowController = [VWorkspaceFlowController workspaceFlowControllerWithoutADependencyManger];
+    workspaceFlowController.delegate = self;
+    workspaceFlowController.videoEnabled = NO;
+    [self presentViewController:workspaceFlowController.flowRootViewController
+                       animated:YES
+                     completion:nil];
 }
 
 #pragma mark - UITextFieldDelegate
@@ -215,6 +207,30 @@
                                            CGRectGetHeight([UIApplication sharedApplication].statusBarFrame), 0, 0, 0);
     self.tableView.contentInset = insets;
     self.tableView.scrollIndicatorInsets = insets;
+}
+
+#pragma mark - VWorkspaceFlowControllerDelegate
+
+- (void)workspaceFlowControllerDidCancel:(VWorkspaceFlowController *)workspaceFlowController
+{
+    [self dismissViewControllerAnimated:YES
+                             completion:nil];
+}
+
+- (void)workspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
+       finishedWithPreviewImage:(UIImage *)previewImage
+               capturedMediaURL:(NSURL *)capturedMediaURL
+{
+    self.profileImageView.image = previewImage;
+    self.updatedProfileImage = capturedMediaURL;
+    [self.backgroundImageView setBlurredImageWithClearImage:previewImage placeholderImage:self.backgroundImageView.image tintColor:nil];
+    [self dismissViewControllerAnimated:YES
+                             completion:nil];
+}
+
+- (BOOL)shouldShowPublishForWorkspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
+{
+    return NO;
 }
 
 @end
