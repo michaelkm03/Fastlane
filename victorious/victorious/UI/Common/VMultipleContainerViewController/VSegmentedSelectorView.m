@@ -1,5 +1,5 @@
 //
-//  VBasicSelectorView.m
+//  VSegmentedSelectorView.m
 //  victorious
 //
 //  Created by Josh Hinman on 12/16/14.
@@ -7,16 +7,16 @@
 //
 
 #import "NSArray+VMap.h"
-#import "VBasicSelectorView.h"
 #import "VDependencyManager.h"
+#import "VSegmentedSelectorView.h"
 
-@interface VBasicSelectorView ()
+@interface VSegmentedSelectorView ()
 
 @property (nonatomic, weak) UISegmentedControl *segmentedControl;
 
 @end
 
-@implementation VBasicSelectorView
+@implementation VSegmentedSelectorView
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {

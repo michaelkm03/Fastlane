@@ -1,5 +1,5 @@
 //
-//  VBasicSelectorView.h
+//  VSegmentedSelectorView.h
 //  victorious
 //
 //  Created by Josh Hinman on 12/16/14.
@@ -11,6 +11,6 @@
 /**
  A basic, UISegmented-control based implementation of VViewSelectorViewController
  */
-@interface VBasicSelectorView : VSelectorViewBase
+@interface VSegmentedSelectorView : VSelectorViewBase
 
 @end

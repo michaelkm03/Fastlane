@@ -231,7 +231,7 @@
 		037FCF1A1A8DAF0E00E8ABFC /* VNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 037FCF151A8DAF0E00E8ABFC /* VNavigationController.m */; };
 		037FCF1B1A8DAF0E00E8ABFC /* VNavigationControllerScrollDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 037FCF171A8DAF0E00E8ABFC /* VNavigationControllerScrollDelegate.m */; };
 		037FCF1E1A8DAF2A00E8ABFC /* UIViewController+VLayoutInsets.m in Sources */ = {isa = PBXBuildFile; fileRef = 037FCF1D1A8DAF2A00E8ABFC /* UIViewController+VLayoutInsets.m */; };
-		037FCF261A8DAF5400E8ABFC /* VBasicSelectorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 037FCF211A8DAF5400E8ABFC /* VBasicSelectorView.m */; };
+		037FCF261A8DAF5400E8ABFC /* VSegmentedSelectorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 037FCF211A8DAF5400E8ABFC /* VSegmentedSelectorView.m */; };
 		037FCF271A8DAF5400E8ABFC /* VMultipleContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 037FCF231A8DAF5400E8ABFC /* VMultipleContainerViewController.m */; };
 		037FCF281A8DAF5400E8ABFC /* VSelectorViewBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 037FCF251A8DAF5400E8ABFC /* VSelectorViewBase.m */; };
 		037FCF2B1A8DAF7600E8ABFC /* VDependencyManager+VScaffoldViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 037FCF2A1A8DAF7600E8ABFC /* VDependencyManager+VScaffoldViewController.m */; };
@@ -444,8 +444,8 @@
 		A7A2E0071A38E44B00F8C705 /* VPurchaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A2E0041A38E44B00F8C705 /* VPurchaseViewController.m */; };
 		A7A2E00C1A38E47400F8C705 /* Purchases.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7A2E00B1A38E47400F8C705 /* Purchases.storyboard */; };
 		A7A2E0121A391A7D00F8C705 /* VPurchaseRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A2E0111A391A7D00F8C705 /* VPurchaseRecord.m */; };
-		A7A343DB1A8A8452000F0BCF /* VContentViewAlertHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A343DA1A8A8452000F0BCF /* VContentViewAlertHelper.m */; };
 		A7A343CD1A898AD0000F0BCF /* VLinkTextViewHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A343CC1A898AD0000F0BCF /* VLinkTextViewHelper.m */; };
+		A7A343DB1A8A8452000F0BCF /* VContentViewAlertHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A343DA1A8A8452000F0BCF /* VContentViewAlertHelper.m */; };
 		A7A343E51A8D896C000F0BCF /* VHashtagStreamCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A343E41A8D896C000F0BCF /* VHashtagStreamCollectionViewController.m */; };
 		A7A390C51A32441E00709812 /* VButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A390C41A32441E00709812 /* VButton.m */; };
 		A7A390CA1A3257A300709812 /* ContentView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7A390C91A3257A300709812 /* ContentView.storyboard */; };
@@ -1127,8 +1127,8 @@
 		037FCF171A8DAF0E00E8ABFC /* VNavigationControllerScrollDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNavigationControllerScrollDelegate.m; sourceTree = "<group>"; };
 		037FCF1C1A8DAF2A00E8ABFC /* UIViewController+VLayoutInsets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+VLayoutInsets.h"; sourceTree = "<group>"; };
 		037FCF1D1A8DAF2A00E8ABFC /* UIViewController+VLayoutInsets.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+VLayoutInsets.m"; sourceTree = "<group>"; };
-		037FCF201A8DAF5400E8ABFC /* VBasicSelectorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VBasicSelectorView.h; sourceTree = "<group>"; };
-		037FCF211A8DAF5400E8ABFC /* VBasicSelectorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VBasicSelectorView.m; sourceTree = "<group>"; };
+		037FCF201A8DAF5400E8ABFC /* VSegmentedSelectorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSegmentedSelectorView.h; sourceTree = "<group>"; };
+		037FCF211A8DAF5400E8ABFC /* VSegmentedSelectorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSegmentedSelectorView.m; sourceTree = "<group>"; };
 		037FCF221A8DAF5400E8ABFC /* VMultipleContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMultipleContainerViewController.h; sourceTree = "<group>"; };
 		037FCF231A8DAF5400E8ABFC /* VMultipleContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMultipleContainerViewController.m; sourceTree = "<group>"; };
 		037FCF241A8DAF5400E8ABFC /* VSelectorViewBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSelectorViewBase.h; sourceTree = "<group>"; };
@@ -1492,10 +1492,10 @@
 		A7A2E00B1A38E47400F8C705 /* Purchases.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Purchases.storyboard; path = Purchases/Purchases.storyboard; sourceTree = "<group>"; };
 		A7A2E0101A391A7D00F8C705 /* VPurchaseRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VPurchaseRecord.h; path = Purchases/VPurchaseRecord.h; sourceTree = "<group>"; };
 		A7A2E0111A391A7D00F8C705 /* VPurchaseRecord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VPurchaseRecord.m; path = Purchases/VPurchaseRecord.m; sourceTree = "<group>"; };
-		A7A343D91A8A8452000F0BCF /* VContentViewAlertHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentViewAlertHelper.h; sourceTree = "<group>"; };
-		A7A343DA1A8A8452000F0BCF /* VContentViewAlertHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VContentViewAlertHelper.m; sourceTree = "<group>"; };
 		A7A343CB1A898AD0000F0BCF /* VLinkTextViewHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLinkTextViewHelper.h; sourceTree = "<group>"; };
 		A7A343CC1A898AD0000F0BCF /* VLinkTextViewHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VLinkTextViewHelper.m; sourceTree = "<group>"; };
+		A7A343D91A8A8452000F0BCF /* VContentViewAlertHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentViewAlertHelper.h; sourceTree = "<group>"; };
+		A7A343DA1A8A8452000F0BCF /* VContentViewAlertHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VContentViewAlertHelper.m; sourceTree = "<group>"; };
 		A7A343E01A8D6AE1000F0BCF /* VFollowingStreamCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFollowingStreamCollectionViewController.h; sourceTree = "<group>"; };
 		A7A343E11A8D6AE1000F0BCF /* VFollowingStreamCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFollowingStreamCollectionViewController.m; sourceTree = "<group>"; };
 		A7A343E31A8D896C000F0BCF /* VHashtagStreamCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHashtagStreamCollectionViewController.h; sourceTree = "<group>"; };
@@ -3058,10 +3058,10 @@
 		037FCF1F1A8DAF5400E8ABFC /* VMultipleContainerViewController */ = {
 			isa = PBXGroup;
 			children = (
-				037FCF201A8DAF5400E8ABFC /* VBasicSelectorView.h */,
-				037FCF211A8DAF5400E8ABFC /* VBasicSelectorView.m */,
 				037FCF221A8DAF5400E8ABFC /* VMultipleContainerViewController.h */,
 				037FCF231A8DAF5400E8ABFC /* VMultipleContainerViewController.m */,
+				037FCF201A8DAF5400E8ABFC /* VSegmentedSelectorView.h */,
+				037FCF211A8DAF5400E8ABFC /* VSegmentedSelectorView.m */,
 				037FCF241A8DAF5400E8ABFC /* VSelectorViewBase.h */,
 				037FCF251A8DAF5400E8ABFC /* VSelectorViewBase.m */,
 				F0A04FA41A8D6DF100504E26 /* VTextbarSelectorView.h */,
@@ -5138,7 +5138,6 @@
 				0314D4A119B46B5E00FA363C /* VImageSearchResultsFooterView.m in Sources */,
 				D8CA63BE19D5DB06002046E5 /* VActionSheetTransitioningDelegate.m in Sources */,
 				A7D707A01A7C144C00D9993F /* VEndCardViewController.m in Sources */,
-				BE88FF741A0005E70064AB28 /* VStreamCollectionCell.m in Sources */,
 				0314D07219B4670A00FA363C /* UIImage+Resize.m in Sources */,
 				D87351831A3112A3006D97B2 /* VCropOverlayView.m in Sources */,
 				A7AEF9D11A83F2F500A3D3A0 /* VVideoView.m in Sources */,
@@ -5160,7 +5159,6 @@
 				0314D4E919B46B5E00FA363C /* VTabInfo.m in Sources */,
 				0314D4D019B46B5E00FA363C /* VLoadingViewController.m in Sources */,
 				BE5DE3F618DA72140047B67E /* VInteractionAction.m in Sources */,
-				BE40559418A1828D00092AE1 /* UIButton+VImageLoading.m in Sources */,
 				A7D707821A7AFDA900D9993F /* VEndCard+RestKit.m in Sources */,
 				0314D46519B46B5E00FA363C /* VCompositeSnapshotController.m in Sources */,
 				03484BFE192E9D2100403FB1 /* NSLayoutConstraint+CenterConstraints.m in Sources */,
@@ -5206,7 +5204,7 @@
 				D8208A551A2FA7E3003C187D /* VFilterTool.m in Sources */,
 				D82E76E319F5C06100FFB722 /* VContentPollBallotCell.m in Sources */,
 				A7E398731A362578000E4CAC /* NSData+AES.m in Sources */,
-				037FCF261A8DAF5400E8ABFC /* VBasicSelectorView.m in Sources */,
+				037FCF261A8DAF5400E8ABFC /* VSegmentedSelectorView.m in Sources */,
 				0314D4F119B46B5E00FA363C /* VResetPasswordViewController.m in Sources */,
 				0314D47919B46B5E00FA363C /* VCameraRollPublishShareController.m in Sources */,
 				0314D4DC19B46B5E00FA363C /* VFacebookActivity.m in Sources */,

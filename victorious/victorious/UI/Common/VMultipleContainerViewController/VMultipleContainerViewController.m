@@ -13,7 +13,7 @@
 #import "VNavigationController.h"
 #import "VSelectorViewBase.h"
 
-@interface VMultipleContainerViewController () <UICollectionViewDataSource, UICollectionViewDelegate, VViewSelectorViewControllerDelegate>
+@interface VMultipleContainerViewController () <UICollectionViewDataSource, UICollectionViewDelegate, VSelectorViewDelegate>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, weak) UICollectionView *collectionView;
