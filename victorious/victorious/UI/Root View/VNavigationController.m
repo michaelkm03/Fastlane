@@ -158,6 +158,11 @@ static const CGFloat kStatusBarHeight = 20.0f;
     self.innerNavigationController.navigationBar.titleTextAttributes = titleAttributes;
 }
 
+- (void)viewDidLayoutSubviews
+{
+    [self provideLayoutInsetsToViewController:self.innerNavigationController.topViewController];
+}
+
 #pragma mark - Status bar & Rotation
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -354,8 +359,6 @@ static const CGFloat kStatusBarHeight = 20.0f;
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(supplementaryHeaderView)]];
     self.supplementaryHeaderView = supplementaryHeaderView;
-    [self.view layoutIfNeeded];
-    [self provideLayoutInsetsToViewController:self.innerNavigationController.topViewController];
 }
 
 - (void)provideLayoutInsetsToViewController:(UIViewController *)viewController
