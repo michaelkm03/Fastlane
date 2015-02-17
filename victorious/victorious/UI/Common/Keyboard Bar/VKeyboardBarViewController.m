@@ -89,7 +89,7 @@ static const NSInteger VDefaultKeyboardHeight = 51;
 
 - (void)addAccessoryBar
 {
-    VContentInputAccessoryView *inputAccessoryView = [[VContentInputAccessoryView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.view.bounds), 51.0f)];
+    VContentInputAccessoryView *inputAccessoryView = [[VContentInputAccessoryView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.view.bounds), VDefaultKeyboardHeight)];
     inputAccessoryView.textInputView = self.textView;
     inputAccessoryView.maxCharacterLength = kCharacterLimit;
     inputAccessoryView.tintColor = [UIColor colorWithRed:0.85f green:0.86f blue:0.87f alpha:1.0f];
