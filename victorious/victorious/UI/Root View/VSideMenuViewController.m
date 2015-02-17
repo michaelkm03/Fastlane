@@ -7,7 +7,10 @@
 //
 
 #import "VDependencyManager.h"
+#import "VDependencyManager+VScaffoldViewController.h"
+#import "VHamburgerButton.h"
 #import "VMenuController.h"
+#import "VNavigationController.h"
 #import "VNavigationDestination.h"
 #import "VProvidesNavigationMenuItemBadge.h"
 #import "VSettingManager.h"
@@ -16,16 +19,15 @@
 #import "VThemeManager.h"
 #import "UIImage+ImageEffects.h"
 #import "UIStoryboard+VMainStoryboard.h"
-#import "UIViewController+VNavMenu.h"
-#import "UIViewController+VSideMenuViewController.h"
 
-@interface VSideMenuViewController () <UIGestureRecognizerDelegate, UINavigationControllerDelegate>
+@interface VSideMenuViewController ()
 
 @property (strong, readwrite, nonatomic) VDependencyManager *dependencyManager;
 @property (strong, readwrite, nonatomic) UIImageView *backgroundImageView;
 @property (assign, readwrite, nonatomic) BOOL visible;
 @property (assign, readwrite, nonatomic) CGPoint originalPoint;
 @property (strong, readwrite, nonatomic) UIButton *contentButton;
+@property (strong, readwrite, nonatomic) VHamburgerButton *hamburgerButton;
 
 @end
 
@@ -60,14 +62,9 @@
 
 - (void)registerBadgeUpdateBlock
 {
-    __typeof(self) __weak weakSelf = self;
     VNavigationMenuItemBadgeNumberUpdateBlock badgeNumberUpdateBlock = ^(NSInteger badgeNumber)
     {
-        [[UIApplication sharedApplication] setApplicationIconBadgeNumber:badgeNumber];
-        [weakSelf.contentViewController.viewControllers enumerateObjectsUsingBlock:^(UIViewController *viewController, NSUInteger idx, BOOL *stop)
-         {
-             [viewController.navHeaderView setBadgeNumber:badgeNumber];
-         }];
+        [self.hamburgerButton setBadgeNumber:badgeNumber];
     };
     
     if ( [self.menuViewController respondsToSelector:@selector(setBadgeNumberUpdateBlock:)] )
@@ -94,8 +91,11 @@
     self.backgroundImage = [[[VThemeManager sharedThemeManager] themedBackgroundImageForDevice]
                             applyBlurWithRadius:25 tintColor:[UIColor colorWithWhite:0.0 alpha:0.75] saturationDeltaFactor:1.8 maskImage:nil];
     
-    self.contentViewController = [[UINavigationController alloc] init];
-    self.contentViewController.delegate = self;
+    self.contentViewController = [[VNavigationController alloc] initWithDependencyManager:self.dependencyManager];
+    
+    self.hamburgerButton = [VHamburgerButton newWithDependencyManager:[self.dependencyManager dependencyManagerForNavigationBar]];
+    [self.hamburgerButton addTarget:self action:@selector(presentMenuViewController) forControlEvents:UIControlEventTouchUpInside];
+    self.contentViewController.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.hamburgerButton];
     
     if (!_contentViewInLandscapeOffsetCenterX)
     {
@@ -125,11 +125,15 @@
     
     [self addChildViewController:self.menuViewController];
     self.menuViewController.view.frame = self.view.bounds;
+    self.menuViewController.view.translatesAutoresizingMaskIntoConstraints = YES;
+    self.menuViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self.view addSubview:self.menuViewController.view];
     [self.menuViewController didMoveToParentViewController:self];
 
     [self addChildViewController:self.contentViewController];
     self.contentViewController.view.frame = self.view.bounds;
+    self.contentViewController.view.translatesAutoresizingMaskIntoConstraints = YES;
+    self.contentViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self.view addSubview:self.contentViewController.view];
     [self.contentViewController didMoveToParentViewController:self];
     
@@ -301,12 +305,12 @@
     NSAssert(viewController != nil, @"Can't display a nil view controller");
     
     // Dismiss any modals
-    if ( self.presentedViewController )
+    if ( self.presentedViewController != nil )
     {
         [self dismissViewControllerAnimated:NO completion:nil];
     }
     
-    self.contentViewController.viewControllers = @[viewController];
+    self.contentViewController.innerNavigationController.viewControllers = @[viewController];
 }
 
 #pragma mark - Motion effects
@@ -316,7 +320,9 @@
     if (self.parallaxEnabled)
     {
        for (UIMotionEffect *effect in self.menuViewController.view.motionEffects)
+       {
            [self.menuViewController.view removeMotionEffect:effect];
+       }
 
        UIInterpolatingMotionEffect *interpolationHorizontal = [[UIInterpolatingMotionEffect alloc]initWithKeyPath:@"center.x" type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
        interpolationHorizontal.minimumRelativeValue = self.parallaxMenuMinimumRelativeValue;
@@ -366,7 +372,7 @@
     }
 }
 
-- (void)setContentViewController:(UINavigationController *)contentViewController
+- (void)setContentViewController:(VNavigationController *)contentViewController
 {
     NSAssert(!_contentViewController, @"contentViewController should only be set once");
     _contentViewController = contentViewController;
@@ -390,42 +396,6 @@
 - (UIStatusBarAnimation)preferredStatusBarUpdateAnimation
 {
     return UIStatusBarAnimationFade;
-}
-
-#pragma mark - UINavigationControllerDelegate methods
-
-- (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
-                                  animationControllerForOperation:(UINavigationControllerOperation)operation
-                                               fromViewController:(UIViewController *)fromVC
-                                                 toViewController:(UIViewController *)toVC
-{
-    if ([fromVC respondsToSelector:@selector(navigationController:animationControllerForOperation:fromViewController:toViewController:)])
-    {
-        return [(UIViewController<UINavigationControllerDelegate> *)fromVC navigationController:navigationController
-                                                                animationControllerForOperation:operation
-                                                                             fromViewController:fromVC
-                                                                               toViewController:toVC];
-    }
-    else if ([toVC respondsToSelector:@selector(navigationController:animationControllerForOperation:fromViewController:toViewController:)])
-    {
-        return [(UIViewController<UINavigationControllerDelegate> *)toVC navigationController:navigationController
-                                                              animationControllerForOperation:operation
-                                                                           fromViewController:fromVC
-                                                                             toViewController:toVC];
-    }
-    else
-    {
-        return nil;
-    }
-}
-
-- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
-{
-    if ( [self.menuViewController respondsToSelector:@selector(badgeNumber)] )
-    {
-        NSInteger badgeNumber = [(id<VProvidesNavigationMenuItemBadge>)self.menuViewController badgeNumber];
-        [viewController.navHeaderView setBadgeNumber:badgeNumber];
-    }
 }
 
 @end

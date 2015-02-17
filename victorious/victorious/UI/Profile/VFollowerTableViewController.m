@@ -17,7 +17,6 @@
 #import "VNoContentView.h"
 #import "VUserProfileViewController.h"
 #import "VConstants.h"
-#import "UIViewController+VNavMenu.h"
 #import "MBProgressHUD.h"
 
 @interface VFollowerTableViewController ()
@@ -32,12 +31,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    self.navigationItem.backBarButtonItem = nil;
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"cameraButtonBack"]
-                                                                             style:UIBarButtonItemStylePlain
-                                                                            target:self
-                                                                            action:@selector(goBack:)];
 
     self.tableView.backgroundColor = [UIColor colorWithWhite:0.97 alpha:1.0];
     
@@ -63,10 +56,6 @@
     }
     
     [self refreshFollowersList];
-    
-    UIEdgeInsets insets = self.tableView.contentInset;
-    insets.top = CGRectGetHeight(self.parentViewController.navHeaderView.frame);
-    self.tableView.contentInset = insets;
 }
 
 - (BOOL)shouldAutorotate
@@ -356,13 +345,6 @@
         self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
         self.tableView.backgroundView = nil;
     }
-}
-
-#pragma mark - Actions
-
-- (IBAction)goBack:(id)sender
-{
-    [self.navigationController popViewControllerAnimated:YES];
 }
 
 @end

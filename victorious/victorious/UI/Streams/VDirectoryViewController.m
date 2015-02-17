@@ -15,12 +15,7 @@
 #import "VStreamCollectionViewController.h"
 #import "VNewContentViewController.h"
 
-// Menu
-#import "UIViewController+VSideMenuViewController.h"
-#import "UIViewController+VNavMenu.h"
-
 // Views
-#import "VNavigationHeaderView.h"
 #import "MBProgressHUD.h"
 #import "VDirectoryItemCell.h"
 
@@ -34,11 +29,10 @@
 
 static NSString * const kStreamDirectoryStoryboardId = @"kStreamDirectory";
 static NSString * const kStreamURLPathKey = @"streamUrlPath";
-static NSString * const kTitleKey = @"title";
 
 static CGFloat const kDirectoryInset = 10.0f;
 
-@interface VDirectoryViewController () <UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, VNavigationHeaderDelegate, VStreamCollectionDataDelegate, VNewContentViewControllerDelegate, VNavigationHeaderDelegate>
+@interface VDirectoryViewController () <UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, VStreamCollectionDataDelegate, VNewContentViewControllerDelegate>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
@@ -52,13 +46,9 @@ static CGFloat const kDirectoryInset = 10.0f;
 {
     VDirectoryViewController *streamDirectory = [[VDirectoryViewController alloc] initWithNibName:nil
                                                                                            bundle:nil];
-    streamDirectory.defaultStream = stream;
     streamDirectory.currentStream = stream;
     streamDirectory.title = stream.name;
     streamDirectory.dependencyManager = dependencyManager;
-    
-    [streamDirectory v_addNewNavHeaderWithTitles:nil];
-    streamDirectory.navHeaderView.delegate = streamDirectory;
     
     return streamDirectory;
 }
@@ -69,7 +59,7 @@ static CGFloat const kDirectoryInset = 10.0f;
 {
     NSAssert([NSThread isMainThread], @"This method must be called on the main thread");
     VStream *stream = [VStream streamForPath:[dependencyManager stringForKey:kStreamURLPathKey] inContext:dependencyManager.objectManager.managedObjectStore.mainQueueManagedObjectContext];
-    stream.name = [dependencyManager stringForKey:kTitleKey];
+    stream.name = [dependencyManager stringForKey:VDependencyManagerTitleKey];
     return [self streamDirectoryForStream:stream dependencyManager:dependencyManager];
 }
 
@@ -90,8 +80,6 @@ static CGFloat const kDirectoryInset = 10.0f;
     self.collectionView.delegate = self;
     
     [self refresh:self.refreshControl];
-
-    [self.view layoutIfNeeded];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -105,17 +93,6 @@ static CGFloat const kDirectoryInset = 10.0f;
 - (BOOL)shouldAutorotate
 {
     return NO;
-}
-
-- (BOOL)prefersStatusBarHidden
-{
-    return !CGRectContainsRect(self.view.frame, self.navHeaderView.frame);
-}
-
-- (UIStatusBarStyle)preferredStatusBarStyle
-{
-    return ![[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled] ? UIStatusBarStyleLightContent
-    : UIStatusBarStyleDefault;
 }
 
 #pragma mark - CollectionViewDelegate
@@ -149,21 +126,13 @@ static CGFloat const kDirectoryInset = 10.0f;
     //Commented out code is the inital logic for supporting other stream types / sequences in streams.
     if ([item isKindOfClass:[VStream class]] && [((VStream *)item) onlyContainsSequences])
     {
-        VStreamCollectionViewController *streamCollection = [VStreamCollectionViewController streamViewControllerForDefaultStream: (VStream *)item andAllStreams:nil title:item.name];
+        VStreamCollectionViewController *streamCollection = [VStreamCollectionViewController streamViewControllerForStream:(VStream *)item];
         [self.navigationController pushViewController:streamCollection animated:YES];
     }
     else if ([item isKindOfClass:[VStream class]])
     {
-        VDirectoryViewController *streamDirectory = [[VDirectoryViewController alloc] initWithNibName:nil
-                                                                                               bundle:nil];
-        streamDirectory.defaultStream = (VStream *)item;
-        streamDirectory.currentStream = (VStream *)item;
-        streamDirectory.title = ((VStream *)item).name;
-
-        [self.navigationController pushViewController:streamDirectory animated:YES];
-
-        [streamDirectory v_addNewNavHeaderWithTitles:nil];
-        streamDirectory.navHeaderView.delegate = streamDirectory;
+        VDirectoryViewController *sos = [VDirectoryViewController streamDirectoryForStream:(VStream *)item dependencyManager:self.dependencyManager];
+        [self.navigationController pushViewController:sos animated:YES];
     }
     else if ([item isKindOfClass:[VSequence class]])
     {
@@ -179,10 +148,10 @@ static CGFloat const kDirectoryInset = 10.0f;
                         layout:(UICollectionViewLayout *)collectionViewLayout
         insetForSectionAtIndex:(NSInteger)section
 {
-    return UIEdgeInsetsMake(self.contentInset.top + kDirectoryInset,
-                            self.contentInset.left + kDirectoryInset,
-                            self.contentInset.bottom,
-                            self.contentInset.right + kDirectoryInset);
+    return UIEdgeInsetsMake(self.topInset + kDirectoryInset,
+                            kDirectoryInset,
+                            0,
+                            kDirectoryInset);
 }
 
 #pragma mark - VStreamCollectionDataDelegate

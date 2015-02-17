@@ -10,10 +10,9 @@
 #import "VObjectManager+Environment.h"
 #import "VServerEnvironmentTableViewController.h"
 #import "VSessionTimer.h"
-#import "UIViewController+VNavMenu.h"
 #import "VThemeManager.h"
 
-@interface VServerEnvironmentTableViewController () <VNavigationHeaderDelegate>
+@interface VServerEnvironmentTableViewController ()
 
 @property (nonatomic, strong) NSArray *serverEnvironments;
 @property (nonatomic, strong) VEnvironment *startingEnvironment;
@@ -34,8 +33,6 @@
     self.tableView.backgroundColor = [UIColor colorWithWhite:0.97 alpha:1.0];
     
     self.startingEnvironment = [VObjectManager currentEnvironment];
-    [self.parentViewController v_addNewNavHeaderWithTitles:nil];
-    self.parentViewController.navHeaderView.delegate = (UIViewController<VNavigationHeaderDelegate> *)self.parentViewController;
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -106,13 +103,6 @@
     cell.accessoryType = UITableViewCellAccessoryCheckmark;
     [VObjectManager setCurrentEnvironment:self.serverEnvironments[indexPath.row]];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-}
-
-#pragma mark - Actions
-
-- (IBAction)goBack:(id)sender
-{
-    [self.navigationController popViewControllerAnimated:YES];
 }
 
 @end

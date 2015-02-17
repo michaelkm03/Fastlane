@@ -9,6 +9,9 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+// multi-purpose keys
+extern NSString * const VDependencyManagerTitleKey;
+
 // Keys for colors
 extern NSString * const VDependencyManagerBackgroundColorKey;
 extern NSString * const VDependencyManagerSecondaryBackgroundColorKey;
@@ -171,8 +174,7 @@ extern NSString * const VDependencyManagerVideoWorkspaceKey;
  Calling this method twice with the same dictionary will return the same
  object both times.
  
- @param expectedType if the value found at keyPath is not this kind
-                     of class, we return nil.
+ @param expectedType The type of object you expect to get back
  @param configurationDictionary A dictionary of configuration attributes that describes the object
  */
 - (id)singletonObjectOfType:(Class)expectedType fromDictionary:(NSDictionary *)configurationDictionary;

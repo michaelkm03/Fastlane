@@ -8,7 +8,6 @@
 
 #import "VUserProfileViewController.h"
 #import "VUser.h"
-#import "UIViewController+VSideMenuViewController.h"
 #import "VLoginViewController.h"
 #import "VObjectManager+Users.h"
 #import "VObjectManager+DirectMessaging.h"
@@ -31,11 +30,9 @@
 
 #import "VUserProfileHeaderView.h"
 #import "VProfileHeaderCell.h"
-#import "VContainerViewController.h"
 
 #import "VAuthorizationViewControllerFactory.h"
 #import "VFindFriendsViewController.h"
-#import "UIViewController+VNavMenu.h"
 #import "VSettingManager.h"
 
 static const CGFloat kVSmallUserHeaderHeight = 319.0f;
@@ -44,7 +41,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
 static void * VUserProfileAttributesContext =  &VUserProfileAttributesContext;
 static NSString * const kUserKey = @"user";
 
-@interface VUserProfileViewController () <VUserProfileHeaderDelegate, VNavigationHeaderDelegate>
+@interface VUserProfileViewController () <VUserProfileHeaderDelegate>
 
 @property   (nonatomic, strong) VUser                  *profile;
 
@@ -97,9 +94,8 @@ static NSString * const kUserKey = @"user";
 {
     [super viewDidLoad];
     
-    self.automaticallyAdjustsScrollViewInsets = NO;
-    
     self.streamDataSource.hasHeaderCell = YES;
+    self.collectionView.alwaysBounceVertical = YES;
     
     self.isMe = (self.profile.remoteId.integerValue == [VObjectManager sharedManager].mainUser.remoteId.integerValue);
     
@@ -121,25 +117,21 @@ static NSString * const kUserKey = @"user";
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    [self v_addNewNavHeaderWithTitles:nil];
-    self.navHeaderView.delegate = self;
-    
+    [super viewWillAppear:animated];
+
     if (self.isMe)
     {
         [self addFriendsButton];
     }
     else if (!self.isMe && !self.profile.isDirectMessagingDisabled.boolValue)
     {
-        BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
-        UIImage *composeImage = isTemplateC ? [UIImage imageNamed:@"compose_btn"] : [UIImage imageNamed:@"profileCompose"];
-        [self.navHeaderView setRightButtonImage:composeImage withAction:@selector(composeMessage:) onTarget:self];
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"profileCompose"]
+                                                                                  style:UIBarButtonItemStylePlain
+                                                                                 target:self
+                                                                                 action:@selector(composeMessage:)];
     }
     
-    [super viewWillAppear:animated]; //Call super after the header is set up so the super class will set up the headers properly.
-    
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
-    
-    CGFloat height = CGRectGetHeight(self.view.bounds) - CGRectGetHeight(self.navHeaderView.frame);
+    CGFloat height = CGRectGetHeight(self.view.bounds) - self.topLayoutGuide.length;
     height = self.streamDataSource.count ? kVSmallUserHeaderHeight : height;
     
     CGFloat width = CGRectGetWidth(self.view.bounds);
@@ -201,6 +193,21 @@ static NSString * const kUserKey = @"user";
     }
 }
 
+- (void)viewDidLayoutSubviews
+{
+    CGFloat height = CGRectGetHeight(self.view.bounds) - self.topLayoutGuide.length;
+    height = self.streamDataSource.count ? kVSmallUserHeaderHeight : height;
+    
+    CGFloat width = CGRectGetWidth(self.collectionView.bounds);
+    CGSize newProfileSize = CGSizeMake(width, height);
+
+    if ( !CGSizeEqualToSize(newProfileSize, self.currentProfileSize) )
+    {
+        self.currentProfileSize = newProfileSize;
+        self.currentProfileCell.frame = CGRectMake(0.0f, 0.0f, newProfileSize.width, newProfileSize.height);
+    }
+}
+
 - (void)dealloc
 {
     [self.currentStream removeObserver:self forKeyPath:@"sequences"];
@@ -215,9 +222,12 @@ static NSString * const kUserKey = @"user";
 
 - (void)addFriendsButton
 {
-    [self.navHeaderView setRightButtonImage:[UIImage imageNamed:@"findFriendsIcon"]
-                                 withAction:@selector(findFriendsAction:)
-                                   onTarget:self];
+    BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
+    UIImage *findFriendsIcon = isTemplateC ? [UIImage imageNamed:@"findFriendsIconC"] : [UIImage imageNamed:@"findFriendsIcon"];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:findFriendsIcon
+                                                                              style:UIBarButtonItemStylePlain
+                                                                             target:self
+                                                                             action:@selector(findFriendsAction:)];
 }
 
 - (IBAction)findFriendsAction:(id)sender
@@ -435,6 +445,7 @@ static NSString * const kUserKey = @"user";
     {
         VProfileHeaderCell *headerCell = [self.collectionView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([VProfileHeaderCell class]) forIndexPath:indexPath];
         headerCell.headerView = self.profileHeaderView;
+        self.profileHeaderView.frame = CGRectMake(0.0f, 0.0f, self.currentProfileSize.width, self.currentProfileSize.height);
         self.currentProfileCell = headerCell;
         return headerCell;
     }

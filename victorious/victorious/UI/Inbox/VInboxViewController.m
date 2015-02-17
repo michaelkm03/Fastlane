@@ -12,7 +12,6 @@
 #import "VUnreadMessageCountCoordinator.h"
 #import "VUserSearchViewController.h"
 #import "VLoginViewController.h"
-#import "UIViewController+VSideMenuViewController.h"
 #import "VConversation+RestKit.h"
 #import "VNotification+RestKit.h"
 #import "VMessageViewController.h"
@@ -301,11 +300,6 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
     [self performFetch];
 }
 
-- (IBAction)showMenu
-{
-    [self.sideMenuViewController presentMenuViewController];
-}
-
 - (IBAction)refresh:(UIRefreshControl *)sender
 {
     VFailBlock fail = ^(NSOperation *operation, NSError *error)
@@ -354,7 +348,7 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
 
 - (IBAction)userSearchAction:(id)sender
 {
-    VUserSearchViewController *userSearch = [VUserSearchViewController sharedInstance];
+    VUserSearchViewController *userSearch = [VUserSearchViewController newFromStoryboard];
     [self.navigationController pushViewController:userSearch animated:YES];
 }
 

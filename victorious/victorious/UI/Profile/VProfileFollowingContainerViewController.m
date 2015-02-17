@@ -12,9 +12,8 @@
 #import "VTabBarViewController.h"
 #import "VTabInfo.h"
 #import "VThemeManager.h"
-#import "UIViewController+VNavMenu.h"
 
-@interface VProfileFollowingContainerViewController () <VNavigationHeaderDelegate>
+@interface VProfileFollowingContainerViewController ()
 
 @property (nonatomic, weak)   IBOutlet UIView   *headerView;
 @property (nonatomic, weak)   IBOutlet UIView   *containerView;
@@ -36,9 +35,6 @@
 {
     [super viewDidLoad];
     
-    [self v_addNewNavHeaderWithTitles:nil];
-    self.navHeaderView.delegate = self;
-
     self.headerView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
     
     [self addChildViewController:self.tabBarViewController];
@@ -49,12 +45,6 @@
     [self.tabBarViewController didMoveToParentViewController:self];
     self.tabBarViewController.buttonBackgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor];
     [self addInnerViewControllersToTabController:self.tabBarViewController];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    self.navigationController.navigationBarHidden = YES;
 }
 
 - (BOOL)prefersStatusBarHidden

@@ -6,15 +6,12 @@
 //  Copyright (c) 2014 Will Long. All rights reserved.
 //
 
+@import WebKit;
+
 #import "VTOSViewController.h"
 #import "VObjectManager+Websites.h"
 
 @implementation VTOSViewController
-
-- (void)awakeFromNib
-{
-    self.wantsStatusBar = YES;
-}
 
 #pragma mark - UIViewController
 
@@ -28,25 +25,13 @@
     {
         if ( !error )
         {
-            [self.webView loadHTMLString:htmlString baseURL:nil];
+            [self.webView loadHTMLString:htmlString baseURL:[NSURL URLWithString:@"http://www.victorious.com/"]];
         }
         else
         {
             [self setFailureWithError:error];
         }
     }];
-}
-
-- (BOOL)prefersStatusBarHidden
-{
-    return !self.wantsStatusBar;
-}
-
-#pragma mark - Actions
-
-- (IBAction)goBack:(id)sender
-{
-    [self.navigationController popViewControllerAnimated:YES];
 }
 
 @end

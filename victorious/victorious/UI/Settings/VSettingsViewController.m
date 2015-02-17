@@ -10,7 +10,6 @@
 
 #import "VDeviceInfo.h"
 #import "VSettingsViewController.h"
-#import "UIViewController+VSideMenuViewController.h"
 #import "VWebContentViewController.h"
 #import "VThemeManager.h"
 #import "VSettingManager.h"
@@ -22,7 +21,6 @@
 #import "VAppDelegate.h"
 #import "VLoginViewController.h"
 #import "VObjectManager+Websites.h"
-#import "UIViewController+VNavMenu.h"
 #import "VAutomation.h"
 #import "VNotificationSettingsViewController.h"
 #import "VButton.h"
@@ -61,6 +59,13 @@ static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
 
 @implementation VSettingsViewController
 
+#pragma mark VHasManagedDependencies conforming initializer
+
++ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    return [[UIStoryboard storyboardWithName:@"settings" bundle:nil] instantiateInitialViewController];
+}
+
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -95,10 +100,6 @@ static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
 {
     [super viewWillAppear:animated];
     
-    UIEdgeInsets insets = self.tableView.contentInset;
-    insets.top = 50;
-    self.tableView.contentInset = insets;
-    
     [self updateLogoutButtonState];
     
     self.serverEnvironmentCell.detailTextLabel.text = [[VObjectManager currentEnvironment] name];
@@ -116,8 +117,6 @@ static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
     self.showPurchaseSettings = [VPurchaseManager sharedInstance].isPurchasingEnabled;
     
     self.showPushNotificationSettings = YES;
-    
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginStatusDidChange:) name:kLoggedInChangedNotification object:nil];
     [self.tableView reloadData];
@@ -141,6 +140,7 @@ static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
 {
     return NO;
 }
+
 - (NSUInteger)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskPortrait;
@@ -209,11 +209,6 @@ static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
     
     [self.tableView beginUpdates];
     [self.tableView endUpdates];
-}
-
-- (IBAction)showMenu
-{
-    [self.sideMenuViewController presentMenuViewController];
 }
 
 #pragma mark - Navigation
@@ -293,9 +288,6 @@ static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
 {
     if ([MFMailComposeViewController canSendMail])
     {
-        // The style is removed then re-applied so the mail compose view controller has the default appearance
-        [[VThemeManager sharedThemeManager] removeStyling];
-        
         NSString *appName = [[VThemeManager sharedThemeManager] themedStringForKey:kVCreatorName];
         
         MFMailComposeViewController    *mailComposer = [[MFMailComposeViewController alloc] init];
@@ -313,10 +305,7 @@ static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
         [mailComposer setMessageBody:msgBody isHTML:NO];
         
         //  Dismiss the menu controller first, since we want to be a child of the root controller
-        [self presentViewController:mailComposer animated:YES completion:
-         ^{
-             [[VThemeManager sharedThemeManager] applyStyling];
-         }];
+        [self presentViewController:mailComposer animated:YES completion:nil];
     }
     else
     {

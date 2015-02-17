@@ -169,11 +169,6 @@ static char KVOContext;
 {
     [super viewWillAppear:animated];
 
-    if (![self.navigationController isNavigationBarHidden])
-    {
-        [self.navigationController setNavigationBarHidden:YES animated:YES];
-    }
-    
     if (!self.textViewsCleared)
     {
         self.leftAnswerTextView.text = @"";
@@ -185,11 +180,6 @@ static char KVOContext;
 - (NSUInteger)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskPortrait;
-}
-
-- (BOOL)prefersStatusBarHidden
-{
-    return YES;
 }
 
 - (BOOL)postButtonStateIsValid ///<Surfaces alert if content cannot be posted.  Returns YES if it can be posted and NO if it cannot.

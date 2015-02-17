@@ -9,6 +9,7 @@
 #import "NSArray+VMap.h"
 #import "UIStoryboard+VMainStoryboard.h"
 #import "VDependencyManager+VNavigationMenuItem.h"
+#import "VDependencyManager+VScaffoldViewController.h"
 #import "VMenuCollectionViewCell.h"
 #import "VMenuCollectionViewDataSource.h"
 #import "VMenuController.h"

@@ -9,7 +9,6 @@
 #import "VDependencyManager.h"
 #import "VNavigationMenuItem.h"
 
-static NSString * const kTitleKey = @"title";
 static NSString * const kIdentifierKey = @"identifier";
 static NSString * const kDestinationKey = @"destination";
 
@@ -30,7 +29,7 @@ static NSString * const kDestinationKey = @"destination";
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    NSString *title = [dependencyManager stringForKey:kTitleKey];
+    NSString *title = [dependencyManager stringForKey:VDependencyManagerTitleKey];
     NSString *identifier = [dependencyManager stringForKey:kIdentifierKey];
     id destination = [dependencyManager singletonObjectOfType:[NSObject class] forKey:kDestinationKey];
     return [self initWithTitle:title identifier:identifier icon:nil destination:destination];

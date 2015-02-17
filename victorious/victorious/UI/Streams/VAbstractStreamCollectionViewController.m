@@ -11,18 +11,18 @@
 #import "VStreamCollectionViewDataSource.h"
 #import "VDirectoryItemCell.h"
 
-#import "VNavigationHeaderView.h"
 #import "MBProgressHUD.h"
 
 #import "UIActionSheet+VBlocks.h"
+#import "UIViewController+VLayoutInsets.h"
+#import "VNavigationControllerScrollDelegate.h"
 #import "VObjectManager+Login.h"
 
 //View Controllers
-#import "UIViewController+VSideMenuViewController.h"
-#import "VCreatePollViewController.h"
 #import "VFindFriendsViewController.h"
 #import "VAuthorizationViewControllerFactory.h"
 #import "VWorkspaceFlowController.h"
+#import "VNavigationController.h"
 
 //Data Models
 #import "VStream+Fetcher.h"
@@ -31,13 +31,12 @@
 
 #import "VSettingManager.h"
 #import "VScrollPaginator.h"
-#import "UIViewController+VNavMenu.h"
 #import "VImageSearchResultsFooterView.h"
 #import "VFooterActivityIndicatorView.h"
 
 const CGFloat kVLoadNextPagePoint = .75f;
 
-@interface VAbstractStreamCollectionViewController () <UICollectionViewDelegate, VNavigationHeaderDelegate>
+@interface VAbstractStreamCollectionViewController ()
 
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, weak) IBOutlet VScrollPaginator *scrollPaginator;
@@ -46,6 +45,8 @@ const CGFloat kVLoadNextPagePoint = .75f;
 @property (nonatomic, strong) VImageSearchResultsFooterView *refreshFooter;
 
 @property (nonatomic, strong) NSLayoutConstraint *headerYConstraint;
+@property (nonatomic, strong) VNavigationControllerScrollDelegate *navigationControllerScrollDelegate;
+@property (nonatomic, readwrite) CGFloat topInset;
 
 @property (nonatomic, assign) NSUInteger previousNumberOfRowsInStreamSection;
 @property (nonatomic, assign) BOOL shouldAnimateActivityViewFooter;
@@ -54,69 +55,80 @@ const CGFloat kVLoadNextPagePoint = .75f;
 
 @implementation VAbstractStreamCollectionViewController
 
+#pragma mark - Init & Dealloc
+
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self != nil)
+    {
+        [self commonInit];
+    }
+    return self;
+}
+
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if ( self != nil )
+    {
+        [self commonInit];
+    }
+    return self;
+}
+
+- (void)commonInit
+{
+    self.automaticallyAdjustsScrollViewInsets = NO;
+    self.extendedLayoutIncludesOpaqueBars = YES;
+}
+
 - (void)dealloc
 {
     self.collectionView.dataSource = nil;
     self.collectionView.delegate = nil;
 }
 
+#pragma mark - View Lifecycle
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 
-    self.automaticallyAdjustsScrollViewInsets = NO;
-    
-    self.collectionView.alwaysBounceVertical = YES;
-    
     [self.collectionView registerNib:[VFooterActivityIndicatorView nibForSupplementaryView]
           forSupplementaryViewOfKind:UICollectionElementKindSectionFooter
                  withReuseIdentifier:[VFooterActivityIndicatorView reuseIdentifier]];
+    
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    [self.refreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
+    [self.collectionView addSubview:self.refreshControl];
+    [self positionRefreshControl];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
-    if (self.navHeaderView)
-    {
-        UIEdgeInsets insets = self.collectionView.contentInset;
-        insets.top = CGRectGetHeight(self.navHeaderView.bounds);
-        self.contentInset = insets;
-    }
-
     BOOL shouldRefresh = !self.refreshControl.isRefreshing && self.streamDataSource.count == 0;
     if ( shouldRefresh )
     {
-        [self refresh:nil];
-    }
-    
-    [self.refreshControl removeFromSuperview];
-    self.refreshControl = [[UIRefreshControl alloc] init];
-    [self.refreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
-    [self.collectionView addSubview:self.refreshControl];
-    UIView *subView = self.refreshControl.subviews[0];
-    
-    //Since we're using the collection flow delegate method for the insets, we need to manually position the frame of the refresh control.
-    subView.frame = CGRectMake(CGRectGetMinX(subView.frame), CGRectGetMinY(subView.frame) + self.contentInset.top / 2,
-                               CGRectGetWidth(subView.frame), CGRectGetHeight(subView.frame));
-    
-    if ( shouldRefresh )
-    {
-        //If we start fetching again, we need to tell our NEW refresh control to start refreshing
-        [self.refreshControl beginRefreshing];
+        [self refreshWithCompletion:nil];
     }
 }
 
-- (BOOL)prefersStatusBarHidden
+- (void)viewDidAppear:(BOOL)animated
 {
-    return !CGRectContainsRect(self.view.frame, self.navHeaderView.frame);
+    [super viewDidAppear:animated];
+    self.navigationControllerScrollDelegate = [[VNavigationControllerScrollDelegate alloc] initWithNavigationController:[self v_navigationController]];
 }
 
-- (UIStatusBarStyle)preferredStatusBarStyle
+- (void)viewWillDisappear:(BOOL)animated
 {
-    return ![[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled] ? UIStatusBarStyleLightContent
-    : UIStatusBarStyleDefault;
+    [super viewWillDisappear:animated];
+    self.navigationControllerScrollDelegate = nil;
 }
+
+#pragma mark - Property Setters
 
 - (void)setCurrentStream:(VStream *)currentStream
 {
@@ -128,17 +140,16 @@ const CGFloat kVLoadNextPagePoint = .75f;
     }
 }
 
-- (IBAction)findFriendsAction:(id)sender
+- (void)v_setLayoutInsets:(UIEdgeInsets)layoutInsets
 {
-    if (![VObjectManager sharedManager].authorized)
-    {
-        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
-        return;
-    }
+    [super v_setLayoutInsets:layoutInsets];
+    self.topInset = layoutInsets.top;
     
-    VFindFriendsViewController *ffvc = [VFindFriendsViewController newFindFriendsViewController];
-    [ffvc setShouldAutoselectNewFriends:NO];
-    [self.navigationController pushViewController:ffvc animated:YES];
+    if ( [self isViewLoaded] )
+    {
+        [self.collectionView.collectionViewLayout invalidateLayout];
+        [self positionRefreshControl];
+    }
 }
 
 #pragma mark - Refresh
@@ -179,6 +190,14 @@ const CGFloat kVLoadNextPagePoint = .75f;
     
     [self.refreshControl beginRefreshing];
     self.refreshControl.hidden = NO;
+}
+
+- (void)positionRefreshControl
+{
+    UIView *subView = self.refreshControl.subviews[0];
+    
+    // Since we're using the collection flow delegate method for the insets, we need to manually position the frame of the refresh control.
+    subView.center = CGPointMake(CGRectGetMidX(self.refreshControl.bounds), CGRectGetMidY(self.refreshControl.bounds) + self.topInset * 0.5f);
 }
 
 #pragma mark - Bottom activity indicator footer
@@ -228,6 +247,20 @@ const CGFloat kVLoadNextPagePoint = .75f;
     return NO;
 }
 
+#pragma mark - UICollectionViewDelegateFlowLayout
+
+- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
+{
+    if (section == 0)
+    {
+        return UIEdgeInsetsMake(self.topInset, 0, 0, 0);
+    }
+    else
+    {
+        return UIEdgeInsetsZero;
+    }
+}
+
 #pragma mark - UICollectionViewDelegate
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section
@@ -260,7 +293,7 @@ const CGFloat kVLoadNextPagePoint = .75f;
 
 - (void)shouldLoadNextPage
 {
-    if (self.streamDataSource.isFilterLoading)
+    if (self.streamDataSource.count == 0 || self.streamDataSource.isFilterLoading)
     {
         return;
     }
@@ -284,27 +317,17 @@ const CGFloat kVLoadNextPagePoint = .75f;
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     [self.scrollPaginator scrollViewDidScroll:scrollView];
-    
-    CGPoint translation = [scrollView.panGestureRecognizer translationInView:scrollView.superview];
-    if (translation.y < 0 && scrollView.contentOffset.y > CGRectGetHeight(self.navHeaderView.frame))
-    {
-        [UIView animateWithDuration:.2f animations:^
-         {
-             [self v_hideHeader];
-         }];
-    }
-    else if (translation.y > 0)
-    {
-        [UIView animateWithDuration:.2f animations:^
-         {
-             [self v_showHeader];
-         }];
-    }
-    
-    if ([self.delegate respondsToSelector:@selector(scrollViewDidScroll:)])
-    {
-        [self.delegate scrollViewDidScroll:scrollView];
-    }
+    [self.navigationControllerScrollDelegate scrollViewDidScroll:scrollView];
+}
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    [self.navigationControllerScrollDelegate scrollViewWillBeginDragging:scrollView];
+}
+
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
+{
+    [self.navigationControllerScrollDelegate scrollViewWillEndDragging:scrollView withVelocity:velocity targetContentOffset:targetContentOffset];
 }
 
 #pragma mark - VStreamCollectionDataDelegate
