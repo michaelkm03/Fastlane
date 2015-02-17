@@ -12,6 +12,7 @@
 #import "VObjectManager+Comment.h"
 #import "VAlertController.h"
 #import "VUserTaggingTextStorage.h"
+#import "VInlineSearchTableViewController.h"
 
 static const CGFloat kTextViewInsetsHorizontal  = 15.0f;
 static const CGFloat kTextViewInsetsVertical    = 18.0f;
@@ -228,12 +229,12 @@ static const CGFloat kSearchTableAnimationDuration = 0.3f;
         [viewController.view setFrame:CGRectZero];
         [viewController.view setCenter:self.modalContainer.center];
         [self.view addSubview:viewController.view];
-        NSDictionary *metrics = @{@"spacing":@(kTextViewInsetsHorizontal)};
+        NSDictionary *metrics = @{@"spacing":@(kTextViewInsetsHorizontal), @"height":@(kSearchTableDesiredMinimumHeight)};
         NSDictionary *views = @{@"view":viewController.view, @"search":self.modalContainer};
         
         [UIView animateWithDuration:kSearchTableAnimationDuration animations:^{
            
-            [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-spacing-[view(>=100)]-spacing-[search]" options:0 metrics:metrics views:views]];
+            [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-spacing-[view(>=height)]-spacing-[search]" options:0 metrics:metrics views:views]];
             [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-spacing-[view]-spacing-|" options:0 metrics:metrics views:views]];
             
         }];

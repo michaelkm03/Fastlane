@@ -63,9 +63,12 @@ static const NSInteger kCharacterLimit = 255;
     [self.textView setBackgroundColor:[UIColor clearColor]];
     self.textView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     self.textView.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel1Font];
+    
+    //Adding this to the top inset centers the text with it's placeholder
     UIEdgeInsets textContainerInset = self.textView.textContainerInset;
-    textContainerInset.top += 3;
+    textContainerInset.top += 3.0f;
     self.textView.textContainerInset = textContainerInset;
+    
     [self.textViewContainer addSubview:self.textView];
     NSDictionary *views = @{@"view":self.textView};
     [self.textViewContainer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[view]|" options:0 metrics:nil views:views]];

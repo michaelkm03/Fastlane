@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+extern const NSInteger kSearchTableDesiredMinimumHeight;
+
 @class VInlineSearchTableViewController, VUser;
 
 @protocol VInlineSearchTableViewControllerDelegate <NSObject>

@@ -22,6 +22,8 @@
 // Theme Manager
 #import "VThemeManager.h"
 
+const NSInteger kSearchTableDesiredMinimumHeight = 100;
+
 static NSString * const kVInlineUserCellIdentifier = @"followerCell";
 static const NSInteger kSearchResultLimit = 20;
 

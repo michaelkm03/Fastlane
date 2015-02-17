@@ -25,17 +25,16 @@ static NSString * const kThreeSpaces = @"   ";
 
 @interface VUserTaggingTextStorage () <VInlineSearchTableViewControllerDelegate>
 
-@property (nonatomic, strong) UITextView *innerStorage;
+//Using a UITextView to determine proper font for individual characters to support emojis and other languages (tested on korean)
+@property (nonatomic, strong) UITextView *innerTextView;
 @property (nonatomic, strong) NSMutableAttributedString *displayStorage;
-@property (nonatomic) NSInteger state;
-@property (nonatomic) NSRange searchTermRange; ///< This range includes the trigger character
-@property (nonatomic) VInlineSearchTableViewController *searchTableViewController;
-@property (nonatomic) VTagDictionary *tagDictionary;
-@property (nonatomic) NSString *tagDelimiterString;
-@property (nonatomic) NSRange tagSelectionRange;
-@property (nonatomic) BOOL needsSelectionUpdate;
-@property (nonatomic) NSCharacterSet *englishFormattedCharSet;
-@property (nonatomic) NSDictionary *unicodeStringAttributes;
+@property (nonatomic, assign) NSInteger state;
+@property (nonatomic, assign) NSRange searchTermRange; ///< This range includes the trigger character
+@property (nonatomic, strong) VInlineSearchTableViewController *searchTableViewController;
+@property (nonatomic, strong) VTagDictionary *tagDictionary;
+@property (nonatomic, strong) NSString *tagDelimiterString;
+@property (nonatomic, assign) NSRange tagSelectionRange;
+@property (nonatomic, assign) BOOL needsSelectionUpdate;
 
 @end
 
@@ -48,7 +47,7 @@ static NSString * const kThreeSpaces = @"   ";
     self = [super init];
     if ( self != nil )
     {
-        _innerStorage = [[UITextView alloc] init];
+        _innerTextView = [[UITextView alloc] init];
         _taggingDelegate = taggingDelegate;
         _textView = textView;
         BOOL hasTextView = _textView != nil;
@@ -57,7 +56,7 @@ static NSString * const kThreeSpaces = @"   ";
         if ( hasTextView )
         {
             [self addLayoutManager:_textView.layoutManager];
-            self.innerStorage.font = _textView.font;
+            self.innerTextView.font = _textView.font;
         }
         
         if ( str != nil && str.length > 0 && hasTextView)
@@ -85,7 +84,7 @@ static NSString * const kThreeSpaces = @"   ";
     if (state == VUserTaggingTextStorageStateSearchActive)
     {
         //Search is active, let the delegate know it should show the table
-        [self.searchTableViewController searchFollowingList:[self.innerStorage.text substringWithRange:self.searchTermRange]];
+        [self.searchTableViewController searchFollowingList:[self.innerTextView.text substringWithRange:self.searchTermRange]];
         [self.taggingDelegate userTaggingTextStorage:self wantsToShowViewController:self.searchTableViewController];
     }
     else if (state == VUserTaggingTextStorageStateInactive)
@@ -103,7 +102,7 @@ static NSString * const kThreeSpaces = @"   ";
     if (self.state == VUserTaggingTextStorageStateSearchActive)
     {
         //Search term has changed, send it to the search table
-        [self.searchTableViewController searchFollowingList:[[self.innerStorage.text substringWithRange:searchTermRange] stringByReplacingOccurrencesOfString:@"@" withString:@""]];
+        [self.searchTableViewController searchFollowingList:[[self.innerTextView.text substringWithRange:searchTermRange] stringByReplacingOccurrencesOfString:@"@" withString:@""]];
     }
 }
 
@@ -205,8 +204,8 @@ static NSString * const kThreeSpaces = @"   ";
         }
     }
     
-    [self.innerStorage replaceRange:[self textRangeFromRange:range inTextView:self.innerStorage] withText:string];
-    NSAttributedString *attrString = [self.innerStorage.attributedText attributedSubstringFromRange:NSMakeRange(range.location, string.length)];
+    [self.innerTextView replaceRange:[self textRangeFromRange:range inTextView:self.innerTextView] withText:string];
+    NSAttributedString *attrString = [self.innerTextView.attributedText attributedSubstringFromRange:NSMakeRange(range.location, string.length)];
     [self.displayStorage replaceCharactersInRange:range withAttributedString:attrString];
     [self updateStateForReplacementString:string andReplacementRange:range];
     [self edited:NSTextStorageEditedCharacters range:range changeInLength:(string.length - range.length)];
@@ -217,13 +216,19 @@ static NSString * const kThreeSpaces = @"   ";
 {
     if ( range.location + range.length < self.string.length && [self.tagDictionary tagForKey:[self.string substringWithRange:range]] != nil )
     {
+        //We've encountered a tag, add tag attributes
         NSMutableDictionary *mutableAttrs = [[self.displayStorage attributesAtIndex:range.location effectiveRange:nil] mutableCopy];
         [mutableAttrs setObject:[self.textView.linkTextAttributes objectForKey:NSForegroundColorAttributeName] forKey:NSForegroundColorAttributeName];
         attrs = mutableAttrs;
-        [self.displayStorage setAttributes:attrs range:range];
-        [self edited:NSTextStorageEditedAttributes range:range changeInLength:0];
     }
+
+    //Update font from internal UITextView
+    NSMutableDictionary *updatedAttrs = [attrs mutableCopy];
+    NSDictionary *innerAttrs = [[[self.innerTextView attributedText] attributesAtIndex:range.location effectiveRange:nil] dictionaryWithValuesForKeys:@[NSFontAttributeName]];
+    [updatedAttrs addEntriesFromDictionary:innerAttrs];    
     
+    [self.displayStorage setAttributes:updatedAttrs range:range];
+    [self edited:NSTextStorageEditedAttributes range:range changeInLength:0];
 }
 
 - (BOOL)isTagAtIndex:(NSUInteger)index
@@ -262,7 +267,6 @@ static NSString * const kThreeSpaces = @"   ";
     {
         self.textView.selectedRange = NSMakeRange(self.displayStorage.length, 0);
     }
-    [self.textView scrollRangeToVisible:self.textView.selectedRange];
 }
 
 //Update search state
@@ -301,7 +305,7 @@ static NSString * const kThreeSpaces = @"   ";
                 if ( self.searchTermRange.length >= 3 )
                 {
                     NSRange rangeOfLastThreeCharacters = NSMakeRange(self.searchTermRange.location + self.searchTermRange.length - 3, 3);
-                    NSString *lastThreeCharacters = [self.innerStorage.text substringWithRange:rangeOfLastThreeCharacters];
+                    NSString *lastThreeCharacters = [self.innerTextView.text substringWithRange:rangeOfLastThreeCharacters];
                     
                     if ( [lastThreeCharacters isEqualToString:kThreeSpaces] )
                     {
@@ -384,7 +388,7 @@ static NSString * const kThreeSpaces = @"   ";
 - (void)setTextView:(UITextView *)textView
 {
     _textView = textView;
-    self.innerStorage.font = textView.font;
+    self.innerTextView.font = textView.font;
 }
 
 #pragma mark - VInlineSearchTableViewControllerDelegate
