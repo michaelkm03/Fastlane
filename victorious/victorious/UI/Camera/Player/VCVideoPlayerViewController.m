@@ -463,6 +463,11 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     int currentLoop = 0;
     CMTime compareTime = time;
     
+    if (!CMTIME_IS_VALID(self.originalAssetDuration))
+    {
+        return time;
+    }
+    
     while ( CMTIME_COMPARE_INLINE( compareTime, >, self.originalAssetDuration) )
     {
         compareTime = CMTimeSubtract( compareTime, self.originalAssetDuration );
@@ -473,7 +478,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     CMTime output = CMTimeSubtract( time, adjustment );
  
     // Uncomment to debug adjusted time and current loop:
-    // VLog( @"adjusted time (%i): %.2f", currentLoop, CMTimeGetSeconds( output ) );
+//     VLog( @"Loops: (%i), AdjustedTime: %@, UnadjustedTime: %@, Original AssetDuration: %@", currentLoop, @(CMTimeGetSeconds( output )), @(CMTimeGetSeconds(time)), @(CMTimeGetSeconds(self.originalAssetDuration)));
     
     return output;
 }
