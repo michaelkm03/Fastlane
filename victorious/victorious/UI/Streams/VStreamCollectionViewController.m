@@ -81,7 +81,7 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
 @property (strong, nonatomic) VMarqueeController *marquee;
 
 @property (strong, nonatomic) VUploadProgressViewController *uploadProgressViewController;
-@property (nonatomic, strong) NSLayoutConstraint *uploadProgressViewYconstraint;
+@property (strong, nonatomic) NSLayoutConstraint *uploadProgressViewYconstraint;
 
 @property (strong, nonatomic) VSequenceActionController *sequenceActionController;
 
@@ -652,7 +652,7 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
                                                                        constant:self.topInset];
     [self.view addConstraint:self.uploadProgressViewYconstraint];
     
-    if (self.uploadProgressViewController.numberOfUploads)
+    if (self.uploadProgressViewController.numberOfUploads > 0)
     {
         [self setUploadsHidden:NO];
     }
