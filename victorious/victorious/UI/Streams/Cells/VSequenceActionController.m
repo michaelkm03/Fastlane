@@ -46,8 +46,6 @@
 #pragma mark - Workflow
 #import "VWorkspaceFlowController.h"
 
-static const char kAssociatedWorkspaceFlowKey;
-
 @interface VSequenceActionController () <VWorkspaceFlowControllerDelegate>
 
 @property (nonatomic, strong) UIViewController *viewControllerPresentingWorkspace;

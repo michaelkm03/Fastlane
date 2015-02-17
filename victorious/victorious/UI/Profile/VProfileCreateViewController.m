@@ -632,5 +632,9 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
                              completion:nil];
 }
 
+- (BOOL)shouldShowPublishForWorkspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
+{
+    return NO;
+}
 
 @end

@@ -19,7 +19,7 @@
 #import "VImageToolController.h"
 #import "VVideoToolController.h"
 
-#warning should remove me evenutally
+//TODO: Hackey
 #import "VRootViewController.h"
 
 // Category
@@ -158,7 +158,7 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
     {
         NSAssert((self.renderedMeidaURL != nil), @"We need a rendered media url to begin publishing!");
         
-        if ([self.delegate respondsToSelector:@selector(shouldShowPublishForWOrkspaceFlowController:)])
+        if ([self.delegate respondsToSelector:@selector(shouldShowPublishForWorkspaceFlowController:)])
         {
             BOOL shouldShowPublish = [self.delegate shouldShowPublishForWorkspaceFlowController:self];
             if (!shouldShowPublish)
@@ -380,7 +380,7 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
     };
     BOOL selectedFromAssetsLibraryOrSearch = self.cameraViewController.didSelectFromWebSearch || self.cameraViewController.didSelectAssetFromLibrary;
     BOOL shouldShowPublish = YES;
-    if ([self.delegate respondsToSelector:@selector(shouldShowPublishForWOrkspaceFlowController:)])
+    if ([self.delegate respondsToSelector:@selector(shouldShowPublishForWorkspaceFlowController:)])
     {
         shouldShowPublish = [self.delegate shouldShowPublishForWorkspaceFlowController:self];
     }
