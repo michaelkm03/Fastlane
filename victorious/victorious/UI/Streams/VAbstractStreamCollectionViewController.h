@@ -22,6 +22,7 @@
 @property (nonatomic, weak, readonly) UICollectionView *collectionView;///<The collection view used to display the streamItems
 
 @property (nonatomic, readonly) CGFloat topInset; ///< An amount by which to inset the top of the content in the collection view.
+@property (nonatomic) BOOL navigationBarShouldAutoHide; ///< Set to YES to hide the navigation bar on scroll
 
 /**
  Called by the refresh controller when the user activates it by scrolling up to the top.

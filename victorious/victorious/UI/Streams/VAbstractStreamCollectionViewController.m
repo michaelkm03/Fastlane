@@ -81,6 +81,7 @@ const CGFloat kVLoadNextPagePoint = .75f;
 {
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.extendedLayoutIncludesOpaqueBars = YES;
+    self.navigationBarShouldAutoHide = YES;
 }
 
 - (void)dealloc
@@ -124,7 +125,11 @@ const CGFloat kVLoadNextPagePoint = .75f;
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    self.navigationControllerScrollDelegate = [[VNavigationControllerScrollDelegate alloc] initWithNavigationController:[self v_navigationController]];
+    
+    if ( self.navigationBarShouldAutoHide )
+    {
+        [self addScrollDelegate];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -145,6 +150,11 @@ const CGFloat kVLoadNextPagePoint = .75f;
             [self.collectionView.collectionViewLayout invalidateLayout];
         }
     }
+}
+
+- (void)addScrollDelegate
+{
+    self.navigationControllerScrollDelegate = [[VNavigationControllerScrollDelegate alloc] initWithNavigationController:[self v_navigationController]];
 }
 
 #pragma mark - Property Setters
@@ -168,6 +178,24 @@ const CGFloat kVLoadNextPagePoint = .75f;
     {
         [self.collectionView.collectionViewLayout invalidateLayout];
         [self positionRefreshControl];
+    }
+}
+
+- (void)setNavigationBarShouldAutoHide:(BOOL)navigationBarShouldAutoHide
+{
+    if ( navigationBarShouldAutoHide == _navigationBarShouldAutoHide )
+    {
+        return;
+    }
+    _navigationBarShouldAutoHide = navigationBarShouldAutoHide;
+    
+    if ( navigationBarShouldAutoHide )
+    {
+        [self addScrollDelegate];
+    }
+    else
+    {
+        self.navigationControllerScrollDelegate = nil;
     }
 }
 
