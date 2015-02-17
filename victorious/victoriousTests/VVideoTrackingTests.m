@@ -48,7 +48,7 @@
 
 - (void)testEnableTrackingError
 {
-    XCTAssertThrows( [self.videoPlayer enableTrackingWithTrackingItem:nil] );
+    [self.videoPlayer enableTrackingWithTrackingItem:nil];
     XCTAssertFalse( self.videoPlayer.isTrackingEnabled );
     
     XCTAssertThrows( [self.videoPlayer enableTrackingWithTrackingItem:(VTracking *)[NSObject new]] );
