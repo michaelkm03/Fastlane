@@ -1436,8 +1436,8 @@ referenceSizeForHeaderInSection:(NSInteger)section
 {
     [self dismissViewControllerAnimated:YES completion:^void
      {
-         [self.contentCollectionView.visibleCells enumerateObjectsUsingBlock:^(VContentCommentsCell *cell, NSUInteger idx, BOOL *stop) {
-             
+         [self.contentCollectionView.visibleCells enumerateObjectsUsingBlock:^(VContentCommentsCell *cell, NSUInteger idx, BOOL *stop)
+         {
              if ( [cell isKindOfClass:[VContentCommentsCell class]] && [cell.comment.remoteId isEqualToNumber:comment.remoteId] )
              {
                  // Update the cell's comment to show the new text
