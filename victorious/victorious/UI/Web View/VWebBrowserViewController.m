@@ -6,14 +6,14 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+@import WebKit;
+
 #import "VWebBrowserViewController.h"
 #import "VWebBrowserHeaderViewController.h"
 #import "VSettingManager.h"
-#import "VWebViewFactory.h"
 #import "VWebBrowserActions.h"
 #import "VSequence+Fetcher.h"
 #import "VConstants.h"
-
 
 typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
 {
@@ -22,9 +22,9 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
     VWebBrowserViewControllerStateFailed,
 };
 
-@interface VWebBrowserViewController() <VWebViewDelegate, VWebBrowserHeaderViewDelegate>
+@interface VWebBrowserViewController() <WKNavigationDelegate, VWebBrowserHeaderViewDelegate>
 
-@property (nonatomic, strong) id<VWebViewProtocol> webView;
+@property (nonatomic, strong) WKWebView *webView;
 @property (nonatomic, strong) NSURL *currentURL;
 @property (nonatomic, assign) VWebBrowserViewControllerState state;
 @property (nonatomic, strong) VWebBrowserActions *actions;
@@ -33,6 +33,8 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
 @property (nonatomic, weak) IBOutlet UIView *containerView;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *containerViewX1Constraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *containerViewX2Constraint;
+
+@property (nonatomic, strong) NSTimer *progressBarAnimationTimer;
 
 @end
 
@@ -54,12 +56,12 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
     
     self.headerViewController.browserDelegate = self;
     
-    self.webView = [VWebViewFactory createWebView];
-    self.webView.delegate = self;
-    [self.containerView addSubview:self.webView.asView];
+    self.webView = [[WKWebView alloc] init];
+    self.webView.navigationDelegate = self;
+    [self.containerView addSubview:self.webView];
     
-    NSDictionary *views = @{ @"webView" : self.webView.asView };
-    self.webView.asView.translatesAutoresizingMaskIntoConstraints = NO;
+    NSDictionary *views = @{ @"webView" : self.webView };
+    self.webView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.containerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[webView]|"
                                                                                options:kNilOptions
                                                                                metrics:nil
@@ -101,6 +103,33 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
     }
 }
 
+- (void)updateProgressFromTimer
+{
+    [self webViewDidUpdateProgress:self.webView.estimatedProgress];
+}
+
+- (void)webViewDidUpdateProgress:(CGFloat)progress
+{
+    if ( progress == 0.0f )
+    {
+        [self.headerViewController setLoadingStarted];
+    }
+    else if ( progress < 0.0f )  // This is when an error has occurred
+    {
+        BOOL didFail = YES;
+        [self.headerViewController setLoadingComplete:didFail];
+    }
+    else if ( progress == 1.0f )
+    {
+        BOOL didFail = NO;
+        [self.headerViewController setLoadingComplete:didFail];
+    }
+    else
+    {
+        [self.headerViewController setLoadingProgress:progress];
+    }
+}
+
 #pragma mark - Data source
 
 - (void)setSequence:(VSequence *)sequence
@@ -138,54 +167,54 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
     [self loadUrl:[NSURL URLWithString:urlString]];
 }
 
-#pragma mark - VWebViewDelegate
+#pragma mark - WKNavigationDelegate
 
-- (void)webViewDidStartLoad:(id<VWebViewProtocol>)webView
+- (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation
+{
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    
+    self.state = VWebBrowserViewControllerStateComplete;
+    [self.headerViewController updateHeaderState];
+    [self updateWebViewPageInfo];
+    [self.progressBarAnimationTimer invalidate];
+    [self webViewDidUpdateProgress:1.0f];
+}
+
+- (void)webView:(WKWebView *)webView didFailNavigation:(WKNavigation *)navigation withError:(NSError *)error
+{
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    
+    self.state = VWebBrowserViewControllerStateFailed;
+    [self updateWebViewPageInfo];
+    [self.progressBarAnimationTimer invalidate];
+    [self webViewDidUpdateProgress:-1.0f];
+}
+
+- (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(WKNavigation *)navigation
 {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     self.state = VWebBrowserViewControllerStateLoading;
     [self.headerViewController updateHeaderState];
-}
-
-- (void)webViewDidFinishLoad:(id<VWebViewProtocol>)webView
-{
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-    self.state = VWebBrowserViewControllerStateComplete;
-    [self.headerViewController updateHeaderState];
-    [self updateWebViewPageInfo];
-}
-
-- (void)webView:(id<VWebViewProtocol>)webView didFailLoadWithError:(NSError *)error
-{
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-    self.state = VWebBrowserViewControllerStateFailed;
-    [self updateWebViewPageInfo];
-}
-
-- (void)webView:(id<VWebViewProtocol>)webView didUpdateProgress:(float)progress
-{
-    if ( !webView.isProgressSupported )
-    {
-        return;
-    }
     
-    if ( progress == 0.0f )
+    [self webViewDidUpdateProgress:0.0f];
+    [self.progressBarAnimationTimer invalidate];
+    self.progressBarAnimationTimer = [NSTimer scheduledTimerWithTimeInterval:1.0/30.0
+                                                                      target:self
+                                                                    selector:@selector(updateProgressFromTimer)
+                                                                    userInfo:nil
+                                                                     repeats:YES];
+}
+
+- (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler
+{
+    if ( [navigationAction.request.URL.scheme.lowercaseString rangeOfString:@"http"].location != 0 )
     {
-        [self.headerViewController setLoadingStarted];
-    }
-    else if ( progress < 0.0f )  // This is when an error has occurred
-    {
-        BOOL didFail = YES;
-        [self.headerViewController setLoadingComplete:didFail];
-    }
-    else if ( progress == 1.0f )
-    {
-        BOOL didFail = NO;
-        [self.headerViewController setLoadingComplete:didFail];
+        [[UIApplication sharedApplication] openURL:navigationAction.request.URL];
+        decisionHandler( WKNavigationActionPolicyCancel );
     }
     else
     {
-        [self.headerViewController setLoadingProgress:progress];
+        decisionHandler( WKNavigationActionPolicyAllow );
     }
 }
 

@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 Will Long. All rights reserved.
 //
 
+@import WebKit;
+
 #import "VTOSViewController.h"
 #import "VObjectManager+Websites.h"
 
