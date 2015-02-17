@@ -41,7 +41,7 @@ typedef void (^VMediaCaptureCompletion)(BOOL finished, UIImage *previewImage, NS
                capturedMediaURL:(NSURL *)capturedMediaURL;
 
 @optional
-- (BOOL)shouldShowPublishForWOrkspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController;
+- (BOOL)shouldShowPublishForWorkspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController;
 
 @end
 

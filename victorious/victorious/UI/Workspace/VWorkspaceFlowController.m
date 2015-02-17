@@ -160,7 +160,7 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
         
         if ([self.delegate respondsToSelector:@selector(shouldShowPublishForWOrkspaceFlowController:)])
         {
-            BOOL shouldShowPublish = [self.delegate shouldShowPublishForWOrkspaceFlowController:self];
+            BOOL shouldShowPublish = [self.delegate shouldShowPublishForWorkspaceFlowController:self];
             if (!shouldShowPublish)
             {
                 [self notifyDelegateOfFinishWithPreviewImage:self.previewImage
@@ -382,7 +382,7 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
     BOOL shouldShowPublish = YES;
     if ([self.delegate respondsToSelector:@selector(shouldShowPublishForWOrkspaceFlowController:)])
     {
-        shouldShowPublish = [self.delegate shouldShowPublishForWOrkspaceFlowController:self];
+        shouldShowPublish = [self.delegate shouldShowPublishForWorkspaceFlowController:self];
     }
     workspaceViewController.continueText = shouldShowPublish ? NSLocalizedString(@"Publish", @"") : NSLocalizedString(@"Next", @"");
 

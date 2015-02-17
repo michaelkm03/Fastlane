@@ -568,7 +568,7 @@ static char KVOContext;
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (BOOL)shouldShowPublishForWOrkspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
+- (BOOL)shouldShowPublishForWorkspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
 {
     return NO;
 }

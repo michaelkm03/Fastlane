@@ -342,7 +342,7 @@ static const NSInteger kCharacterLimit = 255;
      }];
 }
 
-- (BOOL)shouldShowPublishForWOrkspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
+- (BOOL)shouldShowPublishForWorkspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
 {
     return NO;
 }
