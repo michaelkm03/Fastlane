@@ -132,9 +132,9 @@ static NSString * const kVideoMuted = @"videoMuted";
                                                                VStreamCollectionViewControllerCreateSequenceIconKey: (self.templateCEnabled ? [UIImage imageNamed:@"createContentButtonC"] : [UIImage imageNamed:@"createContentButton"]),
                                                                VScaffoldViewControllerUserProfileViewComponentKey: @{ kClassNameKey: @"userProfile.screen" },
                                                                kSelectorKey: [self kSelectorKeyFromInitDictionary:self.dataFromInitCall],
-                                                               VScaffoldViewControllerNavigationBarAppearanceKey: [self navigationBarAppearance],
                                                             };
     template[VDependencyManagerWorkspaceFlowKey] = [self workspaceFlowComponent];
+    template[VScaffoldViewControllerNavigationBarAppearanceKey] = [self navigationBarAppearance];
     
     return template;
 }
