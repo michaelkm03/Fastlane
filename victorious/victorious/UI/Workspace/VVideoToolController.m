@@ -14,6 +14,7 @@
 
 // Should move this out of here.
 #import "VTrimVideoTool.h"
+#import "VVideoSnapshotTool.h"
 
 NSString * const VVideoToolControllerInitalVideoEditStateKey = @"VVideoToolControllerInitalVideoEditStateKey";
 
@@ -30,6 +31,12 @@ NSString * const VVideoToolControllerInitalVideoEditStateKey = @"VVideoToolContr
     [super setSelectedTool:selectedTool];
     
     [selectedTool setMediaURL:self.mediaURL];
+    
+    BOOL selectedToolIsSnapshot = [selectedTool isKindOfClass:[VVideoSnapshotTool class]];
+    if (self.canRenderAndExportChangeBlock)
+    {
+        self.canRenderAndExportChangeBlock(selectedToolIsSnapshot);
+    }
 }
 
 - (void)exportWithSourceAsset:(NSURL *)source

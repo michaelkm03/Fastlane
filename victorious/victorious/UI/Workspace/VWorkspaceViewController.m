@@ -230,7 +230,11 @@
         self.toolController = [[VVideoToolController alloc] initWithTools:[self.dependencyManager workspaceTools]];
         [(VVideoToolController *)self.toolController setMediaURL:mediaURL];
     }
-
+    __weak typeof(self) welf = self;
+    self.toolController.canRenderAndExportChangeBlock = ^void(BOOL canRenderAndExport)
+    {
+        welf.publi
+    };
     self.toolController.delegate = self;
 }
 

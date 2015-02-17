@@ -15,10 +15,23 @@ typedef NS_ENUM(NSInteger, VVideoToolControllerInitialVideoEditState)
     VVideoToolControllerInitialVideoEditStateGIF, // Default
 };
 
+@class VVideoToolController;
+
+@protocol VVideoToolControllerDelegate <NSObject>
+
+- (void)videoToolController:(VVideoToolController *)videoToolController
+ selectedSnapshotForEditing:(UIImage *)previewImage
+        renderedSnapshotURL:(NSURL *)renderedMediaURL;
+
+@end
+
 /**
  *  A VToolController subclass for managing video tools.
  */
 @interface VVideoToolController : VToolController
+
+
+@property (nonatomic, weak) id<VVideoToolControllerDelegate> videoToolControllerDelegate;
 
 /**
  *  The media URL to use for editing.
