@@ -243,6 +243,11 @@ static NSCache *_sharedImageCache = nil;
         [self.commentAndMediaView.mediaThumbnailView sd_setImageWithURL:url
                                                               completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL)
         {
+            if (error != nil)
+            {
+                return;
+            }
+            
             /**
              If the assetOrientation property was set, it was done so in a temporary comment
              after the comment was posted and before it could be reloaded from the server.
