@@ -7,7 +7,7 @@
 //
 
 #import "VUsersAndTagsSearchViewController.h"
-
+#import "VNavigationController.h"
 #import "VDiscoverContainerViewController.h"
 
 // VObjectManager
@@ -85,9 +85,6 @@ static NSInteger const kVMaxSearchResults = 1000;
 {
     [super viewDidLoad];
     
-    // Remove header
-    [self.navigationController setNavigationBarHidden:YES];
-    
     // Setup Search Results View Controllers
     self.userSearchResultsVC = [VUserSearchResultsViewController newWithDependencyManager:self.dependencyManager];
     self.userSearchResultsVC.delegate = self;
@@ -164,9 +161,9 @@ static NSInteger const kVMaxSearchResults = 1000;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
 }
 
-- (BOOL)prefersStatusBarHidden
+- (BOOL)v_prefersNavigationBarHidden
 {
-    return NO;
+    return YES;
 }
 
 - (BOOL)shouldAutorotate

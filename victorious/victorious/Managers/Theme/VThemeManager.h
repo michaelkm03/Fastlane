@@ -54,13 +54,6 @@ extern NSString * const kVSecondaryLinkColor;
 - (void)setTheme:(NSDictionary *)dictionary;
 - (void)updateToNewTheme;
 
-- (void)applyStyling;
-- (void)removeStyling;
-
-- (void)applyNormalNavBarStyling;
-- (void)applyClearNavBarStyling;
-- (void)removeNavBarStyling;
-
 - (UIImage *)themedBackgroundImageForDevice;
 - (UIColor *)preferredBackgroundColor;
 

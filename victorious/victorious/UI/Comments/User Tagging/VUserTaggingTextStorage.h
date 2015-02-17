@@ -23,13 +23,12 @@
 
 /**
  Create a database-formatted version of the current attributed string
+ IMPORTANT: this will return nil if the textView property is nil
  */
 - (NSString *)databaseFormattedString;
 
 @property (nonatomic, weak) id <VUserTaggingTextStorageDelegate> taggingDelegate;
 @property (nonatomic, weak) VDependencyManager *dependencyManager;
 @property (nonatomic, weak) UITextView *textView;
-@property (nonatomic, copy) NSDictionary *defaultStringAttributes;
-@property (nonatomic, copy) NSDictionary *tagStringAttributes;
 
 @end

@@ -11,7 +11,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface VDiscoverContainerViewController : UIViewController <VHasManagedDependancies, VNavigationDestination>
+@interface VDiscoverContainerViewController : UIViewController <VHasManagedDependancies, VNavigationDestination, UINavigationControllerDelegate>
 
 + (VDiscoverContainerViewController *)instantiateFromStoryboard:(NSString *)storyboardName;
 

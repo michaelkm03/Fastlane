@@ -361,7 +361,6 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
 {
     VTOSViewController *termsOfServiceVC = [self.storyboard instantiateViewControllerWithIdentifier:NSStringFromClass([VTOSViewController class])];
     termsOfServiceVC.title = NSLocalizedString(@"ToSText", @"");
-    termsOfServiceVC.wantsStatusBar = NO;
     [self.navigationController pushViewController:termsOfServiceVC animated:YES];
 }
 

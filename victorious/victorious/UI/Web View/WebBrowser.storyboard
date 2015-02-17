@@ -59,7 +59,7 @@
                         <viewControllerLayoutGuide type="top" id="S66-qs-wfS"/>
                         <viewControllerLayoutGuide type="bottom" id="xd6-ZA-jPh"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="Hl5-ah-vB3" customClass="VHeaderView">
+                    <view key="view" contentMode="scaleToFill" id="Hl5-ah-vB3">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>

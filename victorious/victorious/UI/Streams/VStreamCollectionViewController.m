@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "VAutomation.h"
 #import "VScaffoldViewController.h"
 #import "VStreamCollectionViewController.h"
 #import "VStreamCollectionViewDataSource.h"
@@ -18,18 +19,21 @@
 #import "VRootViewController.h"
 
 //Controllers
+#import "VAlertController.h"
 #import "VCommentsContainerViewController.h"
+#import "VCreatePollViewController.h"
+#import "VUploadProgressViewController.h"
 #import "VUserProfileViewController.h"
 #import "VMarqueeController.h"
 #import "VAuthorizationViewControllerFactory.h"
 #import "VSequenceActionController.h"
 #import "VWebBrowserViewController.h"
+#import "VNavigationController.h"
 #import "VNewContentViewController.h"
+#import "VWorkspaceFlowController.h"
 
 //Views
-#import "VNavigationHeaderView.h"
 #import "VNoContentView.h"
-#import "MBProgressHUD.h"
 
 //Data models
 #import "VStream+Fetcher.h"
@@ -40,6 +44,7 @@
 
 //Managers
 #import "VDependencyManager+VObjectManager.h"
+#import "VDependencyManager+VScaffoldViewController.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Discover.h"
@@ -51,36 +56,34 @@
 #import "UIImage+ImageCreation.h"
 #import "UIImageView+Blurring.h"
 #import "UIStoryboard+VMainStoryboard.h"
-#import "UIViewController+VNavMenu.h"
+#import "UIViewController+VLayoutInsets.h"
 
 #import "VConstants.h"
 #import "VTracking.h"
+#import "VHashtagStreamCollectionViewController.h"
 
 #import <SDWebImage/UIImageView+WebCache.h>
 
-static NSString * const kStreamsKey = @"streams";
-static NSString * const kInitialKey = @"initial";
-static NSString * const kMarqueeKey = @"marquee";
-static NSString * const kStreamURLPathKey = @"streamUrlPath";
-static NSString * const kTitleKey = @"title";
-static NSString * const kIsHomeKey = @"isHome";
 static NSString * const kCanAddContentKey = @"canAddContent";
+static NSString * const kMarqueeKey = @"marquee";
 static NSString * const kStreamCollectionStoryboardId = @"StreamCollection";
-static CGFloat const kTemplateCLineSpacing = 8;
+static CGFloat const kTemplateCLineSpacing = 8.0f;
+static CGFloat const kExtraPaddingForTemplateC = 10.0f;
 
-@interface VStreamCollectionViewController () <VNavigationHeaderDelegate, VMarqueeDelegate, VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout>
+NSString * const VStreamCollectionViewControllerStreamURLPathKey = @"streamUrlPath";
+NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"createSequenceIcon";
+
+@interface VStreamCollectionViewController () <VMarqueeDelegate, VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout>
 
 @property (strong, nonatomic) VStreamCollectionViewDataSource *directoryDataSource;
 @property (strong, nonatomic) NSIndexPath *lastSelectedIndexPath;
 @property (strong, nonatomic) NSCache *preloadImageCache;
 @property (strong, nonatomic) VMarqueeController *marquee;
+@property (strong, nonatomic) VWorkspaceFlowController *workspaceFlowController;
 
 @property (strong, nonatomic) VSequenceActionController *sequenceActionController;
 
 @property (nonatomic, assign) BOOL hasRefreshed;
-@property (nonatomic, assign) BOOL isSubscribedToHashtag;
-@property (nonatomic, strong) NSString *selectedHashtag;
-@property (nonatomic, weak) MBProgressHUD *failureHUD;
 
 @end
 
@@ -88,96 +91,36 @@ static CGFloat const kTemplateCLineSpacing = 8;
 
 #pragma mark - Factory methods
 
-+ (instancetype)hashtagStreamWithHashtag:(NSString *)hashtag
-{
-    // Check if hashtag is being followed or not
-    NSString *tagTitle = [@"#" stringByAppendingString:hashtag];
-    NSString *tagString = [hashtag lowercaseString];
-
-    VStream *defaultStream = [VStream streamForHashTag:tagString];
-    VStreamCollectionViewController *streamVC = [self streamViewControllerForDefaultStream:defaultStream
-                                                                             andAllStreams:@[ defaultStream ]
-                                                                                     title:tagTitle];
-    
-    streamVC.selectedHashtag = hashtag;
-    streamVC.dependencyManager = [[VRootViewController rootViewController] dependencyManager];
-    
-    return streamVC;
-}
-
-+ (instancetype)streamViewControllerForDefaultStream:(VStream *)stream andAllStreams:(NSArray *)allStreams title:(NSString *)title
-{
-    VStreamCollectionViewController *streamCollection = [self streamViewControllerForStream:stream];
-    
-    streamCollection.allStreams = allStreams;
-    
-    NSMutableArray *titles = [[NSMutableArray alloc] initWithCapacity:allStreams.count];
-    for (VStream *stream in allStreams)
-    {
-        [titles addObject:stream.name];
-    }
-    
-    streamCollection.title = title;
-    [streamCollection v_addNewNavHeaderWithTitles:titles];
-    streamCollection.navHeaderView.delegate = streamCollection;
-    NSInteger selectedStream = [allStreams indexOfObject:stream];
-    streamCollection.navHeaderView.navSelector.currentIndex = selectedStream;
-    streamCollection.dependencyManager = [[VRootViewController rootViewController] dependencyManager];
-    
-    return streamCollection;
-}
-
 + (instancetype)streamViewControllerForStream:(VStream *)stream
 {
     VStreamCollectionViewController *streamCollection = (VStreamCollectionViewController *)[[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier:kStreamCollectionStoryboardId];
-    
-    streamCollection.defaultStream = stream;
     streamCollection.currentStream = stream;
-    
     return streamCollection;
 }
 
-#pragma mark VHasManagedDependencies
+#pragma mark VHasManagedDependencies constructor
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     NSAssert([NSThread isMainThread], @"This method must be called on the main thread");
     
-    __block VStream *defaultStream = nil;
-    NSArray *streamConfiguration = [dependencyManager arrayForKey:kStreamsKey];
-    NSArray *allStreams = [streamConfiguration v_map:^(NSDictionary *streamConfig)
-    {
-        VStream *stream = [VStream streamForPath:streamConfig[kStreamURLPathKey] inContext:dependencyManager.objectManager.managedObjectStore.mainQueueManagedObjectContext];
-        stream.name = streamConfig[kTitleKey];
-        if ([streamConfig[kInitialKey] boolValue])
-        {
-            defaultStream = stream;
-        }
-        return stream;
-    }];
+    NSString *urlPathKey = [dependencyManager stringForKey:VStreamCollectionViewControllerStreamURLPathKey];
+    VStream *stream = [VStream streamForPath:urlPathKey inContext:dependencyManager.objectManager.managedObjectStore.mainQueueManagedObjectContext];
+    stream.name = [dependencyManager stringForKey:VDependencyManagerTitleKey];
     
-    if (defaultStream == nil && allStreams.count > 0)
-    {
-        defaultStream = allStreams[0];
-    }
+    VStreamCollectionViewController *streamCollectionVC = [self streamViewControllerForStream:stream];
+    streamCollectionVC.dependencyManager = dependencyManager;
+    streamCollectionVC.streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:stream];
+    streamCollectionVC.streamDataSource.delegate = streamCollectionVC;
     
-    VStreamCollectionViewController *streamCollectionVC = [self streamViewControllerForDefaultStream:defaultStream andAllStreams:allStreams title:[dependencyManager stringForKey:kTitleKey]];
-    
-    if ( [[dependencyManager numberForKey:kIsHomeKey] boolValue] )
-    {
-        [streamCollectionVC v_addUploadProgressView];
-        streamCollectionVC.uploadProgressViewController.delegate = streamCollectionVC;
-        streamCollectionVC.navHeaderView.showHeaderLogoImage = YES;
-    }
-    
-    if ( [[dependencyManager numberForKey:@"experiments.marquee_enabled"] boolValue] )
+    if ( [[dependencyManager numberForKey:kMarqueeKey] boolValue] )
     {
         streamCollectionVC.shouldDisplayMarquee = YES;
     }
     
     if ( [[dependencyManager numberForKey:kCanAddContentKey] boolValue] )
     {
-        [streamCollectionVC v_addCreateSequenceButton];
+        [streamCollectionVC addCreateSequenceButton];
     }
     
     NSNumber *cellVisibilityRatio = [dependencyManager numberForKey:@"experiments.stream_atf_view_threshold"];
@@ -186,8 +129,6 @@ static CGFloat const kTemplateCLineSpacing = 8;
         streamCollectionVC.trackingMinRequiredCellVisibilityRatio = cellVisibilityRatio.floatValue;
     }
     
-    streamCollectionVC.dependencyManager = dependencyManager;
-
     return streamCollectionVC;
 }
 
@@ -218,22 +159,22 @@ static CGFloat const kTemplateCLineSpacing = 8;
     
     self.collectionView.backgroundColor = [[VThemeManager sharedThemeManager] preferredBackgroundColor];
     
-    self.streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:self.currentStream];
-    self.streamDataSource.delegate = self;
-    self.streamDataSource.collectionView = self.collectionView;
+    if ( self.streamDataSource == nil )
+    {
+        self.streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:self.currentStream];
+        self.streamDataSource.delegate = self;
+        self.streamDataSource.collectionView = self.collectionView;
+        self.collectionView.dataSource = self.streamDataSource;
+    }
+    
     self.collectionView.dataSource = self.streamDataSource;
-    
-    
-    // Fetch Users Hashtags
-   [self fetchHashtagsForLoggedInUser];
+    self.streamDataSource.collectionView = self.collectionView;
     
     // Notifications
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(dataSourceDidChange:)
                                                  name:VStreamCollectionDataSourceDidChangeNotification
                                                object:self.streamDataSource];
-    
-
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(didEnterBackground:)
                                                  name:UIApplicationDidEnterBackgroundNotification
@@ -251,8 +192,6 @@ static CGFloat const kTemplateCLineSpacing = 8;
         [[VTrackingManager sharedInstance] startEvent:VTrackingEventStreamDidAppear parameters:params];
     }
 
-    [self.navHeaderView updateUIForVC:self];//Update the header view in case the nav stack has changed.
-    
     if (!self.streamDataSource.count)
     {
         [self refresh:self.refreshControl];
@@ -262,12 +201,8 @@ static CGFloat const kTemplateCLineSpacing = 8;
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
     [self.collectionView flashScrollIndicators];
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
-    
     [self updateCellVisibilityTracking];
-    
     [self updateCurrentlyPlayingMediaAsset];
 }
 
@@ -324,74 +259,95 @@ static CGFloat const kTemplateCLineSpacing = 8;
 
 - (void)setCurrentStream:(VStream *)currentStream
 {
-    if ([currentStream.apiPath isEqualToString:self.defaultStream.apiPath])
-    {
-        self.streamDataSource.hasHeaderCell =  self.shouldDisplayMarquee && self.marquee.streamDataSource.count;
-    }
-    else
-    {
-        self.streamDataSource.hasHeaderCell = NO;
-    }
-    
+    self.title = currentStream.name;
+    self.navigationItem.title = currentStream.name;
     [super setCurrentStream:currentStream];
 }
 
 - (void)setShouldDisplayMarquee:(BOOL)shouldDisplayMarquee
 {
     _shouldDisplayMarquee = shouldDisplayMarquee;
-    if (self.currentStream == self.defaultStream)
-    {
-        self.streamDataSource.hasHeaderCell = shouldDisplayMarquee;
-    }
+    self.streamDataSource.hasHeaderCell = shouldDisplayMarquee;
 }
 
-#pragma mark - Fetch Users Tags
+#pragma mark - Sequence Creation
 
-- (void)fetchHashtagsForLoggedInUser
+- (void)addCreateSequenceButton
 {
-    VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-    {
-        [self updateHashtagNavButton:resultObjects];
-    };
-    
-    VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
-    {
-        VLog(@"%@\n%@", operation, error);
-    };
-    
-    [[VObjectManager sharedManager] getHashtagsSubscribedToWithPageType:VPageTypeFirst
-                                                           perPageLimit:1000
-                                                           successBlock:successBlock
-                                                              failBlock:failureBlock];
+    UIImage *image = [self.dependencyManager templateValueOfType:[UIImage class] forKey:VStreamCollectionViewControllerCreateSequenceIconKey];
+    UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(createSequenceAction:)];
+    barButton.accessibilityIdentifier = VAutomationIdentifierAddPost;
+    self.navigationItem.rightBarButtonItem = barButton;
 }
 
-- (void)updateHashtagNavButton:(NSArray *)hashtags
+- (IBAction)createSequenceAction:(id)sender
 {
-    __block NSString *buttonImageName = @"streamFollowHashtag";
-    __block BOOL subscribed = NO;
-    
-    VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-    NSMutableOrderedSet *tagSet = [mainUser.hashtags mutableCopy];
-    
-    [hashtags enumerateObjectsUsingBlock:^(VHashtag *hashtag, NSUInteger idx, BOOL *stop) {
-        [tagSet addObject:hashtag];
-        if ([hashtag.tag isEqualToString:self.selectedHashtag])
-        {
-            buttonImageName = @"followedHashtag";
-            subscribed = YES;
-        }
-    }];
-    
-    mainUser.hashtags = tagSet;
-    [mainUser.managedObjectContext save:nil];
-    
-    if (self.selectedHashtag)
+    if (![VObjectManager sharedManager].authorized)
     {
-        UIImage *hashtagButtonImage = [[UIImage imageNamed:buttonImageName]  imageWithRenderingMode:UIImageRenderingModeAutomatic];
-        
-        [self.navHeaderView setRightButtonImage:hashtagButtonImage withAction:@selector(followUnfollowHashtagButtonAction:) onTarget:nil];
-        self.isSubscribedToHashtag = subscribed;
+        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
+        return;
     }
+    
+    [self showContentTypeSelection];
+}
+
+- (void)showContentTypeSelection
+{
+    VAlertController *alertControler = [VAlertController actionSheetWithTitle:nil message:nil];
+    [alertControler addAction:[VAlertAction cancelButtonWithTitle:NSLocalizedString(@"CancelButton", @"Cancel button") handler:nil]];
+    [alertControler addAction:[VAlertAction buttonWithTitle:NSLocalizedString(@"Create a Video Post", @"") handler:^(VAlertAction *action)
+                               {
+                                   [self presentCreateFlowWithInitialCaptureState:VWorkspaceFlowControllerInitialCaptureStateVideo];
+                               }]];
+    [alertControler addAction:[VAlertAction buttonWithTitle:NSLocalizedString(@"Create an Image Post", @"") handler:^(VAlertAction *action)
+                               {
+                                   [self presentCreateFlowWithInitialCaptureState:VWorkspaceFlowControllerInitialCaptureStateImage];
+                               }]];
+    [alertControler addAction:[VAlertAction buttonWithTitle:NSLocalizedString(@"Create a GIF", @"Create a gif action button.")
+                                                    handler:^(VAlertAction *action)
+                               {
+                                   [self presentCreateFlowWithInitialCaptureState:VWorkspaceFlowControllerInitialCaptureStateVideo
+                                                            initialImageEditState:VImageToolControllerInitialImageEditStateText
+                                                         andInitialVideoEditState:VVideoToolControllerInitialVideoEditStateGIF];
+                               }]];
+    [alertControler addAction:[VAlertAction buttonWithTitle:NSLocalizedString(@"Create a Poll", @"") handler:^(VAlertAction *action)
+                               {
+                                   VCreatePollViewController *createViewController = [VCreatePollViewController newCreatePollViewController];
+                                   [self.navigationController pushViewController:createViewController animated:YES];
+                               }]];
+    [alertControler presentInViewController:self animated:YES completion:nil];
+}
+
+- (void)presentCreateFlowWithInitialCaptureState:(VWorkspaceFlowControllerInitialCaptureState)initialCaptureState
+                           initialImageEditState:(VImageToolControllerInitialImageEditState)initialImageEdit
+                        andInitialVideoEditState:(VVideoToolControllerInitialVideoEditState)initialVideoEdit
+{
+    VDependencyManager *dependencyManager = [(id)self dependencyManager];
+    
+    self.workspaceFlowController = [dependencyManager templateValueOfType:[VWorkspaceFlowController class]
+                                                                   forKey:VDependencyManagerWorkspaceFlowKey
+                                                    withAddedDependencies:@{VWorkspaceFlowControllerInitialCaptureStateKey:@(initialCaptureState),
+                                                                            VImageToolControllerInitialImageEditStateKey:@(initialImageEdit),
+                                                                            VVideoToolControllerInitalVideoEditStateKey:@(initialVideoEdit)}];
+    __weak typeof(self) welf = self;
+    self.workspaceFlowController.completion = ^void(BOOL finished)
+    {
+        [welf dismissViewControllerAnimated:YES
+                                 completion:^
+         {
+             welf.workspaceFlowController = nil;
+         }];
+    };
+    [self presentViewController:self.workspaceFlowController.flowRootViewController
+                       animated:YES
+                     completion:nil];
+}
+
+- (void)presentCreateFlowWithInitialCaptureState:(VWorkspaceFlowControllerInitialCaptureState)initialCaptureState
+{
+    [self presentCreateFlowWithInitialCaptureState:initialCaptureState
+                             initialImageEditState:VImageToolControllerInitialImageEditStateText
+                          andInitialVideoEditState:VVideoToolControllerInitialVideoEditStateVideo];
 }
 
 #pragma mark - VMarqueeDelegate
@@ -486,17 +442,6 @@ static CGFloat const kTemplateCLineSpacing = 8;
     return [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled] ? kTemplateCLineSpacing : 0;
 }
 
-- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView
-                        layout:(UICollectionViewLayout *)collectionViewLayout
-        insetForSectionAtIndex:(NSInteger)section
-{
-    if (section == 0)
-    {
-        return self.contentInset;
-    }
-    return UIEdgeInsetsZero;
-}
-
 - (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
 {
     if ( [cell isKindOfClass:[VStreamCollectionCell class]] )
@@ -573,51 +518,6 @@ static CGFloat const kTemplateCLineSpacing = 8;
     }
 }
 
-#pragma mark - VNavigationHeaderDelegate
-
-- (BOOL)navSelector:(UIView<VNavigationSelectorProtocol> *)navSelector changedToIndex:(NSInteger)index
-{
-    VStream *stream = self.allStreams[index];
-    if ( stream.apiPath != nil
-        && [stream.apiPath rangeOfString:VStreamFollowerStreamPath].location != NSNotFound
-        && ![VObjectManager sharedManager].authorized)
-    {
-        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
-        return NO;
-    }
-    
-    if (self.allStreams.count <= (NSUInteger)index)
-    {
-        return NO;
-    }
-    
-    [[VTrackingManager sharedInstance] clearQueuedEventsWithName:VTrackingEventSequenceDidAppearInStream];
-    
-    self.currentStream = self.allStreams[index];
-    
-    //Only reload if we have no items, the filter is not loading, and we have a refresh control (if theres no refreshControl the view isn't done loading)
-    if (!self.currentStream.streamItems.count && !self.streamDataSource.isFilterLoading && self.refreshControl)
-    {
-        [self refresh:self.refreshControl];
-    }
-    
-    return YES;
-}
-
-#pragma mark - VUploadProgressViewControllerDelegate methods
-
-- (void)uploadProgressViewController:(VUploadProgressViewController *)upvc isNowDisplayingThisManyUploads:(NSInteger)uploadCount
-{
-    if (uploadCount)
-    {
-        [self v_showUploads];
-    }
-    else
-    {
-        [self v_hideUploads];
-    }
-}
-
 #pragma mark - VSequenceActionsDelegate
 
 - (void)willCommentOnSequence:(VSequence *)sequenceObject fromView:(VStreamCollectionCell *)streamCollectionCell
@@ -681,9 +581,9 @@ static CGFloat const kTemplateCLineSpacing = 8;
         }
     }
     
-    // Instanitate and push to stack
-    VStreamCollectionViewController *hashtagStream = [VStreamCollectionViewController hashtagStreamWithHashtag:hashtag];
-    [self.navigationController pushViewController:hashtagStream animated:YES];
+    // Instantiate and push to stack
+    VHashtagStreamCollectionViewController *vc = [VHashtagStreamCollectionViewController instantiateWithHashtag:hashtag];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark - Actions
@@ -715,109 +615,6 @@ static CGFloat const kTemplateCLineSpacing = 8;
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventSequenceSelected parameters:params];
     
     [[self.dependencyManager scaffoldViewController] showContentViewWithSequence:sequence commentId:nil placeHolderImage:previewImage];
-}
-
-#pragma mark - Hashtag Button Actions
-
-- (void)followUnfollowHashtagButtonAction:(UIButton *)sender
-{
-    // Check if logged in before attempting to subscribe / unsubscribe
-    if (![VObjectManager sharedManager].authorized)
-    {
-        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
-        return;
-    }
-    
-    // Disable the sub/unsub button
-    sender.userInteractionEnabled = NO;
-    sender.alpha = 0.3f;
-
-    if (self.isSubscribedToHashtag)
-    {
-        [self unfollowHashtagAction:sender];
-    }
-    else
-    {
-        [self followHashtagAction:sender];
-    }
-}
-
-- (void)followHashtagAction:(UIButton *)sender
-{
-    VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-    {
-        // Animate follow button
-        self.isSubscribedToHashtag = YES;
-        [self updateSubscribeStatusAnimated:YES button:sender];
-    };
-    
-    VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
-    {
-        self.failureHUD = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
-        self.failureHUD.mode = MBProgressHUDModeText;
-        self.failureHUD.detailsLabelText = NSLocalizedString(@"HashtagSubscribeError", @"");
-        [self.failureHUD hide:YES afterDelay:3.0f];
-        
-        // Set button back to normal state
-        sender.userInteractionEnabled = YES;
-        sender.alpha = 1.0f;
-    };
-    
-    // Backend Subscribe to Hashtag call
-    [[VObjectManager sharedManager] subscribeToHashtag:self.selectedHashtag
-                                          successBlock:successBlock
-                                             failBlock:failureBlock];
-}
-
-- (void)unfollowHashtagAction:(UIButton *)sender
-{
-    VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-    {
-        self.isSubscribedToHashtag = NO;
-        [self updateSubscribeStatusAnimated:YES button:sender];
-    };
-    
-    VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
-    {
-        self.failureHUD = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
-        self.failureHUD.mode = MBProgressHUDModeText;
-        self.failureHUD.detailsLabelText = NSLocalizedString(@"HashtagUnsubscribeError", @"");
-        [self.failureHUD hide:YES afterDelay:3.0f];
-        
-        // Set button back to normal state
-        sender.userInteractionEnabled = YES;
-        sender.alpha = 1.0f;
-    };
-    
-    // Backend Unsubscribe to Hashtag call
-    [[VObjectManager sharedManager] unsubscribeToHashtag:self.selectedHashtag
-                                            successBlock:successBlock
-                                               failBlock:failureBlock];
-}
-
-#pragma mark - Follow / Unfollow Hashtag Completion Method
-
-- (void)updateSubscribeStatusAnimated:(BOOL)animated button:(UIButton *)sender
-{
-    NSString *buttonImageName = @"streamFollowHashtag";
-    
-    if (self.isSubscribedToHashtag)
-    {
-        buttonImageName = @"followedHashtag";
-    }
-
-    // Reset the hashtag button image
-    UIImage *hashtagButtonImage = [[UIImage imageNamed:buttonImageName] imageWithRenderingMode:UIImageRenderingModeAutomatic];
-    [self.navHeaderView setRightButtonImage:hashtagButtonImage withAction:nil onTarget:nil];
-    
-    
-    // Set button back to normal state
-    sender.userInteractionEnabled = YES;
-    sender.alpha = 1.0f;
-
-    // Fire NSNotification to signal change in the status of this hashtag
-    [[NSNotificationCenter defaultCenter] postNotificationName:kHashtagStatusChangedNotification
-                                                        object:nil];
 }
 
 #pragma mark - Notifications
@@ -877,6 +674,28 @@ static CGFloat const kTemplateCLineSpacing = 8;
 - (void)didEnterBackground:(NSNotification *)notification
 {
     [[VTrackingManager sharedInstance] clearQueuedEventsWithName:VTrackingEventSequenceDidAppearInStream];
+}
+
+#pragma mark - UICollectionViewDelegateFlowLayout
+
+- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
+{
+    UIEdgeInsets insetsFromSuper = UIEdgeInsetsZero;
+    
+    if ( [super respondsToSelector:@selector(collectionView:layout:insetForSectionAtIndex:)] )
+    {
+        insetsFromSuper = [super collectionView:collectionView layout:collectionViewLayout insetForSectionAtIndex:section];
+    }
+    
+    if ( [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled] && !self.streamDataSource.hasHeaderCell )
+    {
+        insetsFromSuper.top += kExtraPaddingForTemplateC;
+        return insetsFromSuper;
+    }
+    else
+    {
+        return insetsFromSuper;
+    }
 }
 
 #pragma mark - UIScrollViewDelegate

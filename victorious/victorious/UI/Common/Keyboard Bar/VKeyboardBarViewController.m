@@ -19,9 +19,9 @@
 #import "VThemeManager.h"
 #import "VAppDelegate.h"
 #import "VUserTaggingTextStorage.h"
-#import "VTagStringFormatter.h"
 
 static const NSInteger kCharacterLimit = 255;
+static const NSInteger VDefaultKeyboardHeight = 51;
 
 @interface VKeyboardBarViewController() <UITextViewDelegate>
 
@@ -64,9 +64,12 @@ static const NSInteger kCharacterLimit = 255;
     [self.textView setBackgroundColor:[UIColor clearColor]];
     self.textView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     self.textView.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel1Font];
+    
+    //Adding this to the top inset centers the text with it's placeholder
     UIEdgeInsets textContainerInset = self.textView.textContainerInset;
-    textContainerInset.top += 3;
+    textContainerInset.top += 1.0f;
     self.textView.textContainerInset = textContainerInset;
+    
     [self.textViewContainer addSubview:self.textView];
     NSDictionary *views = @{@"view":self.textView};
     [self.textViewContainer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[view]|" options:0 metrics:nil views:views]];
@@ -86,7 +89,7 @@ static const NSInteger kCharacterLimit = 255;
 
 - (void)addAccessoryBar
 {
-    VContentInputAccessoryView *inputAccessoryView = [[VContentInputAccessoryView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.view.bounds), 44.0f)];
+    VContentInputAccessoryView *inputAccessoryView = [[VContentInputAccessoryView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.view.bounds), VDefaultKeyboardHeight)];
     inputAccessoryView.textInputView = self.textView;
     inputAccessoryView.maxCharacterLength = kCharacterLimit;
     inputAccessoryView.tintColor = [UIColor colorWithRed:0.85f green:0.86f blue:0.87f alpha:1.0f];
@@ -170,8 +173,6 @@ static const NSInteger kCharacterLimit = 255;
     }
     void (^showCamera)(void) = ^void(void)
     {
-        [[VThemeManager sharedThemeManager] applyStyling];
-        
         VCameraViewController *cameraViewController = [VCameraViewController cameraViewControllerStartingWithStillCapture];
         cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
         {
@@ -221,13 +222,9 @@ static const NSInteger kCharacterLimit = 255;
     [alertController addAction:discardAction];
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:cancelActionTitle
                                                            style:UIAlertActionStyleCancel
-                                                         handler:^(UIAlertAction *action)
-                                   {
-                                       [[VThemeManager sharedThemeManager] applyStyling];
-                                   }];
+                                                         handler:nil];
     [alertController addAction:cancelAction];
     
-    [[VThemeManager sharedThemeManager] removeStyling];
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
@@ -321,7 +318,7 @@ static const NSInteger kCharacterLimit = 255;
     {
         if ([self.delegate respondsToSelector:@selector(keyboardBar:wouldLikeToBeResizedToHeight:)])
         {
-            CGFloat desiredHeight = 14.0f + self.textView.contentSize.height;
+            CGFloat desiredHeight = fmaxf(14.0f + self.textView.contentSize.height, VDefaultKeyboardHeight);
             if (CGRectGetHeight(self.view.bounds) != desiredHeight)
             {
                 [self.delegate keyboardBar:self wouldLikeToBeResizedToHeight:desiredHeight];

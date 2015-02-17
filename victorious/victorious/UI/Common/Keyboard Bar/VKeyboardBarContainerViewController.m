@@ -8,6 +8,7 @@
 
 #import "VKeyboardBarContainerViewController.h"
 #import "VConstants.h"
+#import "VInlineSearchTableViewController.h"
 
 @interface VKeyboardBarContainerViewController()
 
@@ -43,7 +44,7 @@
                                                                        toItem:nil
                                                                     attribute:NSLayoutAttributeNotAnAttribute
                                                                    multiplier:1.0f
-                                                                     constant:47.0f];
+                                                                     constant:55.0f];
     [self.keyboardBarViewController.view addConstraint:self.keyboardBarHeightConstraint];
 
     UIView *keyboardView = self.keyboardBarViewController.view;
@@ -169,9 +170,9 @@
     [searchTableView setTranslatesAutoresizingMaskIntoConstraints:NO];
     searchTableView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     NSDictionary *views = @{@"searchTableView":searchTableView, @"textEntryView":self.keyboardBarViewController.view};
-    [superview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[searchTableView][textEntryView]"
+    [superview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[searchTableView(>=height)][textEntryView]"
                                                                       options:0
-                                                                      metrics:nil
+                                                                      metrics:@{ @"height":@(kSearchTableDesiredMinimumHeight) }
                                                                         views:views]];
     [superview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[searchTableView]|"
                                                                       options:kNilOptions

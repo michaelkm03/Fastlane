@@ -13,11 +13,6 @@
 
 @implementation VTOSViewController
 
-- (void)awakeFromNib
-{
-    self.wantsStatusBar = YES;
-}
-
 #pragma mark - UIViewController
 
 - (void)viewDidLoad
@@ -30,25 +25,13 @@
     {
         if ( !error )
         {
-            [self.webView loadHTMLString:htmlString baseURL:nil];
+            [self.webView loadHTMLString:htmlString baseURL:[NSURL URLWithString:@"http://www.victorious.com/"]];
         }
         else
         {
             [self setFailureWithError:error];
         }
     }];
-}
-
-- (BOOL)prefersStatusBarHidden
-{
-    return !self.wantsStatusBar;
-}
-
-#pragma mark - Actions
-
-- (IBAction)goBack:(id)sender
-{
-    [self.navigationController popViewControllerAnimated:YES];
 }
 
 @end

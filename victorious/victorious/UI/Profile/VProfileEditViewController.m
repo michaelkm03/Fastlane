@@ -15,7 +15,6 @@
 #import "VThemeManager.h"
 
 #import "VUserProfileViewController.h"
-#import "UIViewController+VNavMenu.h"
 
 @interface VProfileEditViewController ()
 
@@ -51,9 +50,6 @@
     [super viewWillAppear:animated];
     
     self.nameLabel.text = self.profile.name;
-    
-    [self.parentViewController.navHeaderView setRightButtonTitle:NSLocalizedString(@"Save", nil)
-                                                      withAction:@selector(done:) onTarget:self];
 }
 
 - (void)viewDidAppear:(BOOL)animated

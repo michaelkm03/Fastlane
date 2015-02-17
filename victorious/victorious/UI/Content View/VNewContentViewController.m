@@ -88,6 +88,8 @@
 
 #import <SDWebImage/UIImageView+WebCache.h>
 
+#import "VInlineSearchTableViewController.h"
+
 #define HANDOFFENABLED 0
 static const CGFloat kMaxInputBarHeight = 200.0f;
 
@@ -1247,7 +1249,6 @@ referenceSizeForHeaderInSection:(NSInteger)section
         __weak typeof(self) welf = self;
         cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
         {
-            [[VThemeManager sharedThemeManager] applyStyling];
             if (finished)
             {
                 welf.mediaURL = capturedMediaURL;
@@ -1284,17 +1285,12 @@ referenceSizeForHeaderInSection:(NSInteger)section
         [self.textEntryView setSelectedThumbnail:nil];
     };
     
-    
     UIAlertController *alertController = [self.alertHelper alertForConfirmDiscardMediaWithDelete:^
                                           {
                                               clearMediaSelection();
                                               showCamera();
                                           }
-                                                                                          cancel:^
-                                          {
-                                              [[VThemeManager sharedThemeManager] applyStyling];
-                                          }];
-    [[VThemeManager sharedThemeManager] removeStyling];
+                                                                                          cancel:nil];
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
@@ -1349,9 +1345,9 @@ referenceSizeForHeaderInSection:(NSInteger)section
     [searchTableView setTranslatesAutoresizingMaskIntoConstraints:NO];
     searchTableView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     NSDictionary *views = @{@"searchTableView":searchTableView, @"textEntryView":self.textEntryView};
-    [superview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[searchTableView][textEntryView]"
+    [superview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[searchTableView(>=height)][textEntryView]"
                                                                       options:0
-                                                                      metrics:nil
+                                                                      metrics:@{ @"height":@(kSearchTableDesiredMinimumHeight) }
                                                                         views:views]];
     [superview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[searchTableView]|"
                                                                       options:kNilOptions
@@ -1434,26 +1430,34 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)didFinishEditingComment:(VComment *)comment
 {
-    for ( VContentCommentsCell *cell in self.contentCollectionView.subviews )
+    [self dismissViewControllerAnimated:YES completion:^void
      {
-         if ( [cell isKindOfClass:[VContentCommentsCell class]] && [cell.comment.remoteId isEqualToNumber:comment.remoteId] )
+         [self.contentCollectionView.visibleCells enumerateObjectsUsingBlock:^(VContentCommentsCell *cell, NSUInteger idx, BOOL *stop)
          {
-             // Update the cell's comment to show the new text
-             cell.comment = comment;
-             
-             [self dismissViewControllerAnimated:YES completion:^void
-              {
-                  [self.contentCollectionView performBatchUpdates:^void
-                   {
-                       NSIndexPath *indexPathToInvalidate = [self.contentCollectionView indexPathForCell:cell];
-                       [self.contentCollectionView reloadItemsAtIndexPaths:@[ indexPathToInvalidate ]];
-                   }
-                                                       completion:nil];
-              }];
-             
-             break;
-         }
-     }
+             if ( [cell isKindOfClass:[VContentCommentsCell class]] && [cell.comment.remoteId isEqualToNumber:comment.remoteId] )
+             {
+                 // Update the cell's comment to show the new text
+                 cell.comment = comment;
+                 
+                 // Try to reload the cell without reloading the whole section
+                 NSIndexPath *indexPathToInvalidate = [self.contentCollectionView indexPathForCell:cell];
+                 if ( indexPathToInvalidate != nil && NO )
+                 {
+                     [self.contentCollectionView performBatchUpdates:^void
+                      {
+                          [self.contentCollectionView reloadItemsAtIndexPaths:@[ indexPathToInvalidate ]];
+                      }
+                                                          completion:nil];
+                 }
+                 else
+                 {
+                     [self.contentCollectionView reloadSections:[NSIndexSet indexSetWithIndex:VContentViewSectionAllComments] ];
+                 }
+                 
+                 *stop = YES;
+             }
+         }];
+     }];
 }
 
 #pragma mark VPurchaseViewControllerDelegate
@@ -1505,11 +1509,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
      {
          [self.videoCell hideEndCard];
          
-         [[VThemeManager sharedThemeManager] removeStyling];
-         [self presentViewController:[self.alertHelper alertForNextSequenceErrorWithDismiss:^
-                                      {
-                                          [[VThemeManager sharedThemeManager] applyStyling];
-                                      }] animated:YES completion:nil];
+         [self presentViewController:[self.alertHelper alertForNextSequenceErrorWithDismiss:nil] animated:YES completion:nil];
      }];
 }
 
