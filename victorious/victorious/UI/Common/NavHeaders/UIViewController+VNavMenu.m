@@ -285,6 +285,7 @@ static const char kWorkspaceFlowControllerKey;
                                                                             VImageToolControllerInitialImageEditStateKey:@(initialImageEdit),
                                                                             VVideoToolControllerInitalVideoEditStateKey:@(initialVideoEdit)}];
     self.workspaceFlowController.delegate = self;
+    self.workspaceFlowController.videoEnabled = YES;
     [self presentViewController:self.workspaceFlowController.flowRootViewController
                        animated:YES
                      completion:nil];

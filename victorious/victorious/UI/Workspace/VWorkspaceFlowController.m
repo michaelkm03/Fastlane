@@ -246,6 +246,23 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
     return self.flowNavigationController;
 }
 
+#pragma mark - Property Accessors
+
+- (void)setVideoEnabled:(BOOL)videoEnabled
+{
+    if (_videoEnabled == videoEnabled)
+    {
+        return;
+    }
+    _videoEnabled = videoEnabled;
+    
+    if (_state == VWorkspaceFlowControllerStateCapture)
+    {
+        [self.flowNavigationController popViewControllerAnimated:NO];
+        [self setupCapture];
+    }
+}
+
 #pragma mark - Private Methods
 
 - (void)setupCapture
