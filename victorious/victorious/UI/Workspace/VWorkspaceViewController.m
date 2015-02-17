@@ -236,7 +236,7 @@
     __weak typeof(self) welf = self;
     self.toolController.canRenderAndExportChangeBlock = ^void(BOOL canRenderAndExport)
     {
-        welf.publi
+        welf.continueButton.enabled = canRenderAndExport;
     };
     self.toolController.delegate = self;
 }

@@ -35,7 +35,7 @@ NSString * const VVideoToolControllerInitalVideoEditStateKey = @"VVideoToolContr
     BOOL selectedToolIsSnapshot = [selectedTool isKindOfClass:[VVideoSnapshotTool class]];
     if (self.canRenderAndExportChangeBlock)
     {
-        self.canRenderAndExportChangeBlock(selectedToolIsSnapshot);
+        self.canRenderAndExportChangeBlock(!selectedToolIsSnapshot);
     }
 }
 
