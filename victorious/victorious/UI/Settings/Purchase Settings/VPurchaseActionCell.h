@@ -7,11 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "VButton.h"
 
 @interface VPurchaseActionCell : UITableViewCell
 
-- (void)setAction:(void(^)(VPurchaseActionCell *))actionCallback;
+@property (weak, nonatomic) IBOutlet VButton *button;
 
-- (void)setIsActionEnabled:(BOOL)isActionEnabled withTitle:(NSString *)labelTitle;
+- (void)setAction:(void(^)(VPurchaseActionCell *))actionCallback;
 
 @end
