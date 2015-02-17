@@ -678,7 +678,7 @@
         <!--New Poll-->
         <scene sceneID="7Hk-3c-K7f">
             <objects>
-                <viewController storyboardIdentifier="VCreatePollViewController" id="ZDA-K5-K60" customClass="VCreatePollViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="VCreatePollViewController" extendedLayoutIncludesOpaqueBars="YES" id="ZDA-K5-K60" customClass="VCreatePollViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="A3o-wT-u1C"/>
                         <viewControllerLayoutGuide type="bottom" id="zRc-OV-VaM"/>
@@ -687,25 +687,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8OZ-gz-Jxr" userLabel="Close Button">
-                                <rect key="frame" x="0.0" y="3" width="51" height="51"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="51" id="Pqg-oO-B4B"/>
-                                    <constraint firstAttribute="height" constant="51" id="VOI-t3-ebd"/>
-                                </constraints>
-                                <state key="normal" image="Close">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="closeButtonAction:" destination="ZDA-K5-K60" eventType="touchUpInside" id="2mC-LP-KAD"/>
-                                </connections>
-                            </button>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="NEW POLL" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kOI-QN-Gzl" userLabel="Title Label">
-                                <rect key="frame" x="117" y="21" width="87" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ask a question..." lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hOL-9P-6fa" userLabel="Question Prompt">
                                 <rect key="frame" x="20" y="68" width="128" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -713,7 +694,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="KcL-yk-Mgj" userLabel="Question Text View">
-                                <rect key="frame" x="15" y="60" width="285" height="100"/>
+                                <rect key="frame" x="15" y="60" width="285" height="144"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done"/>
@@ -722,7 +703,7 @@
                                 </connections>
                             </textView>
                             <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rJm-hU-1CC" userLabel="Answers Superview">
-                                <rect key="frame" x="0.0" y="160" width="320" height="274"/>
+                                <rect key="frame" x="0.0" y="204" width="320" height="274"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uFq-1W-p8e" userLabel="Left Background">
                                         <rect key="frame" x="0.0" y="0.0" width="160" height="274"/>
@@ -949,28 +930,22 @@
                         <constraints>
                             <constraint firstAttribute="right" secondItem="ZZw-Pe-VXw" secondAttribute="right" id="3Mm-cr-rwJ"/>
                             <constraint firstItem="rJm-hU-1CC" firstAttribute="left" secondItem="h7T-CG-J0Y" secondAttribute="left" id="6q1-dX-2Hn"/>
-                            <constraint firstItem="KcL-yk-Mgj" firstAttribute="top" secondItem="A3o-wT-u1C" secondAttribute="bottom" constant="60" id="BG9-gt-Jgb"/>
-                            <constraint firstItem="kOI-QN-Gzl" firstAttribute="top" secondItem="A3o-wT-u1C" secondAttribute="bottom" constant="21" id="Esb-vw-wrV"/>
                             <constraint firstItem="KcL-yk-Mgj" firstAttribute="left" secondItem="h7T-CG-J0Y" secondAttribute="left" constant="15" id="G3j-ai-r5I"/>
                             <constraint firstAttribute="right" secondItem="rJm-hU-1CC" secondAttribute="right" id="GjI-W8-ZSw"/>
                             <constraint firstItem="rJm-hU-1CC" firstAttribute="top" secondItem="KcL-yk-Mgj" secondAttribute="bottom" id="Ie3-4G-Vgs"/>
                             <constraint firstItem="ZZw-Pe-VXw" firstAttribute="top" relation="greaterThanOrEqual" secondItem="rJm-hU-1CC" secondAttribute="bottom" id="Kah-QS-Ot3"/>
                             <constraint firstItem="hOL-9P-6fa" firstAttribute="top" secondItem="KcL-yk-Mgj" secondAttribute="top" constant="8" id="Ulg-l5-sEe"/>
-                            <constraint firstAttribute="centerX" secondItem="kOI-QN-Gzl" secondAttribute="centerX" constant="-0.5" id="WEx-v7-8dz"/>
                             <constraint firstItem="zRc-OV-VaM" firstAttribute="top" secondItem="ZZw-Pe-VXw" secondAttribute="bottom" id="Zit-vg-0My"/>
                             <constraint firstItem="rJm-hU-1CC" firstAttribute="top" secondItem="A3o-wT-u1C" secondAttribute="bottom" priority="750" constant="160" id="ffs-8e-lCu"/>
                             <constraint firstItem="ZZw-Pe-VXw" firstAttribute="left" secondItem="h7T-CG-J0Y" secondAttribute="left" id="jwi-pX-bd9"/>
-                            <constraint firstItem="8OZ-gz-Jxr" firstAttribute="top" secondItem="A3o-wT-u1C" secondAttribute="bottom" constant="3" id="t7d-CU-OFe"/>
+                            <constraint firstItem="KcL-yk-Mgj" firstAttribute="top" secondItem="A3o-wT-u1C" secondAttribute="bottom" constant="16" id="nw9-AY-1ij"/>
                             <constraint firstItem="hOL-9P-6fa" firstAttribute="leading" secondItem="KcL-yk-Mgj" secondAttribute="leading" constant="5" id="vCi-Mb-jNb"/>
-                            <constraint firstItem="8OZ-gz-Jxr" firstAttribute="left" secondItem="h7T-CG-J0Y" secondAttribute="left" id="yUf-qe-scb"/>
                             <constraint firstAttribute="right" secondItem="KcL-yk-Mgj" secondAttribute="right" constant="20" id="zYF-yH-6GV"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="New Poll" id="18V-Wp-b3G">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="1a4-9C-toh"/>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="New Poll" id="18V-Wp-b3G"/>
                     <nil key="simulatedStatusBarMetrics"/>
-                    <nil key="simulatedTopBarMetrics"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
                         <outlet property="addMediaView" destination="nrN-3e-ph5" id="Ich-kg-HuN"/>
                         <outlet property="answersSuperview" destination="rJm-hU-1CC" id="Kga-2P-EeG"/>
@@ -990,7 +965,6 @@
                         <outlet property="rightPreviewImageView" destination="8uD-1M-xDB" id="34j-rE-sg4"/>
                         <outlet property="rightRemoveButton" destination="HVK-af-tcT" id="guw-ay-vbl"/>
                         <outlet property="searchImageButton" destination="rJ2-38-P7S" id="Rgm-YP-32R"/>
-                        <outlet property="titleLabel" destination="kOI-QN-Gzl" id="bxG-C9-dec"/>
                         <outletCollection property="constraintsThatNeedHalfPointConstant" destination="Ix4-vo-cGD" id="qkE-JB-uvr"/>
                         <outletCollection property="constraintsThatNeedHalfPointConstant" destination="Mu0-uy-6Af" id="uab-m5-lT4"/>
                         <outletCollection property="constraintsThatNeedHalfPointConstant" destination="QLb-fH-9UP" id="DBI-u9-jhn"/>
