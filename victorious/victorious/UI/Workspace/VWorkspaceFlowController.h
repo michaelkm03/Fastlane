@@ -60,6 +60,7 @@ extern NSString * const VWorkspaceFlowControllerSequenceToRemixKey;
 extern NSString * const VWorkspaceFlowControllerPreloadedImageKey;
 
 /**
+ *  ATTENTION: The delegate MUST be set otherwise the workspace flow controller will be leaked.
  *  Supports injection of:
  *
  *  - Initial capture via "VWorkspaceFlowControllerInitialCaptureStateKey",
@@ -69,7 +70,7 @@ extern NSString * const VWorkspaceFlowControllerPreloadedImageKey;
  *
  *  - The preview image for the workspace. This will be the image that is used during editing.
  *  Use VWorkspaceFlowControllerPreloadedImageKey with a UIImage.
- *  
+ *
  *  For remix the sequence to remix can be injected via "VWorkspaceFlowControllerSequenceToRemixKey".
  *
  */
@@ -80,6 +81,7 @@ extern NSString * const VWorkspaceFlowControllerPreloadedImageKey;
 
 /**
  *  A delegate of the workspace flow controller.
+ *  ATTENTION: The delegate MUST be set otherwise the workspace flow controller will be leaked.
  */
 @property (nonatomic, weak) id <VWorkspaceFlowControllerDelegate> delegate;
 

@@ -294,7 +294,7 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
     self.cameraViewController.shouldSkipPreview = YES;
     self.cameraViewController.completionBlock = [self mediaCaptureCompletion];
     [self.flowNavigationController pushViewController:self.cameraViewController
-                                         animated:NO];
+                                             animated:NO];
 }
 
 - (VMediaCaptureCompletion)mediaCaptureCompletion
