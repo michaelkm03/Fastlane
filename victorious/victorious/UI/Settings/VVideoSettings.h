@@ -20,7 +20,7 @@ typedef NS_ENUM( NSUInteger, VAutoplaySetting )
     VAutoplaySettingCount
 };
 
-@interface VVideoSettings : UIViewController
+@interface VVideoSettings : NSObject
 
 /**
  Returns a localized string representing the user-facing display name of the provided setting.
