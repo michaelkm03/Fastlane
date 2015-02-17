@@ -163,7 +163,6 @@ static CGFloat const kVLineAnimationDuration = 0.25f;
         }
         priorButton = button;
         [sSelf.buttons addObject:button];
-        
     }];
     
     if ( self.trackLine == nil )

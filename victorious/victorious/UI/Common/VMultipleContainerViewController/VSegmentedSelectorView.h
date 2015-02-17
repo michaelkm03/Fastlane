@@ -9,7 +9,7 @@
 #import "VSelectorViewBase.h"
 
 /**
- A basic, UISegmented-control based implementation of VViewSelectorViewController
+ A UISegmentedControl-based selector
  */
 @interface VSegmentedSelectorView : VSelectorViewBase
 

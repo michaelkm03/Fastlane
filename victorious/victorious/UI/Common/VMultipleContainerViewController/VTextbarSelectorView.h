@@ -8,6 +8,9 @@
 
 #import "VSelectorViewBase.h"
 
+/**
+ A selector that uses basic text labels
+ */
 @interface VTextbarSelectorView : VSelectorViewBase
 
 @end
