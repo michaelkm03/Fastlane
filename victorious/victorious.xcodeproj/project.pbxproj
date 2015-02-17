@@ -1952,9 +1952,9 @@
 		DB58EF40199401E500D2A07F /* VNotification+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VNotification+RestKit.m"; sourceTree = "<group>"; };
 		DB58EF4E1994174900D2A07F /* VNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNotification.h; sourceTree = "<group>"; };
 		DB58EF4F1994174900D2A07F /* VNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNotification.m; sourceTree = "<group>"; };
-		DB7460341A93A5BE006C2245 /* VInlineUserTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VInlineUserTableViewCell.h; path = "../../inline search/VInlineUserTableViewCell.h"; sourceTree = "<group>"; };
-		DB7460351A93A5BE006C2245 /* VInlineUserTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VInlineUserTableViewCell.m; path = "../../inline search/VInlineUserTableViewCell.m"; sourceTree = "<group>"; };
-		DB7460361A93A5BE006C2245 /* VInlineUserTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = VInlineUserTableViewCell.xib; path = "../../inline search/VInlineUserTableViewCell.xib"; sourceTree = "<group>"; };
+		DB7460341A93A5BE006C2245 /* VInlineUserTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInlineUserTableViewCell.h; sourceTree = "<group>"; };
+		DB7460351A93A5BE006C2245 /* VInlineUserTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInlineUserTableViewCell.m; sourceTree = "<group>"; };
+		DB7460361A93A5BE006C2245 /* VInlineUserTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VInlineUserTableViewCell.xib; sourceTree = "<group>"; };
 		DB82857819F6DD3C006C6E2F /* VAdPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAdPlayerView.h; sourceTree = "<group>"; };
 		DB82857919F6DD3C006C6E2F /* VAdPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAdPlayerView.m; sourceTree = "<group>"; };
 		DB8D3A1119803A03005DD36D /* VHashTags.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHashTags.h; sourceTree = "<group>"; };

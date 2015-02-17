@@ -11,17 +11,10 @@
 @class VUser;
 
 @interface VInlineUserTableViewCell : UITableViewCell
-@property (nonatomic, strong)   VUser  *profile;
-@property (nonatomic, strong)   VUser  *owner;
-@property (nonatomic)           BOOL    showButton;
-@property (nonatomic)           BOOL    showLocation;
-@property (nonatomic)           BOOL    haveRelationship;
 
-@property (nonatomic, weak)     IBOutlet UIButton *followButton;
+@property (nonatomic, weak) IBOutlet UIImageView *profileImage;
+@property (nonatomic, weak) IBOutlet UILabel     *profileName;
 
-@property (nonatomic, copy) void (^followButtonAction)(void);
-
-- (void)disableFollowIcon:(id)sender;
-- (void)flipFollowIconAction:(id)sender;
+@property (nonatomic, strong) VUser  *profile;
 
 @end
