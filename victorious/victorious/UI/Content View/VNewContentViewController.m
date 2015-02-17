@@ -585,7 +585,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     VPurchaseViewController *viewController = [VPurchaseViewController purchaseViewControllerWithVoteType:experienceEnhander.voteType];
     viewController.transitioningDelegate = self.modalTransitionDelegate;
     viewController.delegate = self;
-    [self.navigationController pushViewController:viewController animated:YES];
+    [self presentViewController:viewController animated:YES completion:nil];
 }
 
 - (void)showLoginViewController:(NSNotification *)notification

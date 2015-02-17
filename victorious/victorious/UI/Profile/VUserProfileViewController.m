@@ -215,7 +215,9 @@ static NSString * const kUserKey = @"user";
 
 - (void)addFriendsButton
 {
-    [self.navHeaderView setRightButtonImage:[UIImage imageNamed:@"findFriendsIcon"]
+    BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
+    UIImage *findFriendsIcon = isTemplateC ? [UIImage imageNamed:@"findFriendsIconC"] : [UIImage imageNamed:@"findFriendsIcon"];
+    [self.navHeaderView setRightButtonImage:findFriendsIcon
                                  withAction:@selector(findFriendsAction:)
                                    onTarget:self];
 }
