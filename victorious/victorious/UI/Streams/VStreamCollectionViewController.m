@@ -73,14 +73,12 @@ static CGFloat const kExtraPaddingForTemplateC = 10.0f;
 NSString * const VStreamCollectionViewControllerStreamURLPathKey = @"streamUrlPath";
 NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"createSequenceIcon";
 
-@interface VStreamCollectionViewController () <VMarqueeDelegate, VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout>
+@interface VStreamCollectionViewController () <VMarqueeDelegate, VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, VWorkspaceFlowControllerDelegate, UICollectionViewDelegateFlowLayout>
 
 @property (strong, nonatomic) VStreamCollectionViewDataSource *directoryDataSource;
 @property (strong, nonatomic) NSIndexPath *lastSelectedIndexPath;
 @property (strong, nonatomic) NSCache *preloadImageCache;
 @property (strong, nonatomic) VMarqueeController *marquee;
-@property (strong, nonatomic) VWorkspaceFlowController *workspaceFlowController;
-
 @property (strong, nonatomic) VSequenceActionController *sequenceActionController;
 
 @property (nonatomic, assign) BOOL hasRefreshed;
@@ -94,6 +92,7 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
 + (instancetype)streamViewControllerForStream:(VStream *)stream
 {
     VStreamCollectionViewController *streamCollection = (VStreamCollectionViewController *)[[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier:kStreamCollectionStoryboardId];
+    
     streamCollection.currentStream = stream;
     return streamCollection;
 }
@@ -324,21 +323,15 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
 {
     VDependencyManager *dependencyManager = [(id)self dependencyManager];
     
-    self.workspaceFlowController = [dependencyManager templateValueOfType:[VWorkspaceFlowController class]
-                                                                   forKey:VDependencyManagerWorkspaceFlowKey
-                                                    withAddedDependencies:@{VWorkspaceFlowControllerInitialCaptureStateKey:@(initialCaptureState),
-                                                                            VImageToolControllerInitialImageEditStateKey:@(initialImageEdit),
-                                                                            VVideoToolControllerInitalVideoEditStateKey:@(initialVideoEdit)}];
-    __weak typeof(self) welf = self;
-    self.workspaceFlowController.completion = ^void(BOOL finished)
-    {
-        [welf dismissViewControllerAnimated:YES
-                                 completion:^
-         {
-             welf.workspaceFlowController = nil;
-         }];
-    };
-    [self presentViewController:self.workspaceFlowController.flowRootViewController
+    VWorkspaceFlowController *workspaceFlowController = [dependencyManager templateValueOfType:[VWorkspaceFlowController class]
+                                                                                        forKey:VDependencyManagerWorkspaceFlowKey
+                                                                         withAddedDependencies:@{VWorkspaceFlowControllerInitialCaptureStateKey:@(initialCaptureState),
+                                                                                                 VImageToolControllerInitialImageEditStateKey:@(initialImageEdit),
+                                                                                                 VVideoToolControllerInitalVideoEditStateKey:@(initialVideoEdit)}];
+    workspaceFlowController.videoEnabled = YES;
+    workspaceFlowController.delegate = self;
+    
+    [self presentViewController:workspaceFlowController.flowRootViewController
                        animated:YES
                      completion:nil];
 }
@@ -791,6 +784,20 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
                                                   eventId:sequence.remoteId];
         }
     }
+}
+
+#pragma mark - VWorkspaceFlowControllerDelegate
+
+- (void)workspaceFlowControllerDidCancel:(VWorkspaceFlowController *)workspaceFlowController
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)workspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
+       finishedWithPreviewImage:(UIImage *)previewImage
+               capturedMediaURL:(NSURL *)capturedMediaURL
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end
