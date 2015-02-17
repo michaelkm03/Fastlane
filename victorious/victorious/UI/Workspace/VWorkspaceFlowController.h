@@ -84,7 +84,7 @@ extern NSString * const VWorkspaceFlowControllerPreloadedImageKey;
 @property (nonatomic, weak) id <VWorkspaceFlowControllerDelegate> delegate;
 
 /**
- *  Present this viewcontroller. Note, the workspaceflowcontroller is not retained by this viewcontroller. So it won't be enough to merely present this viewcontroller.
+ *  Present this viewcontroller. Note, the WorkspaceFlowController IS retained by this viewcontroller. The workspace flow controller will be deallocated after did cancel or finished is called on it's delegate.
  */
 @property (nonatomic, readonly) UIViewController *flowRootViewController;
 

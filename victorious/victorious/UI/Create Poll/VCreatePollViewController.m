@@ -61,8 +61,6 @@ static char KVOContext;
 
 @property (nonatomic) BOOL textViewsCleared;
 
-@property (nonatomic, strong) VWorkspaceFlowController *workspaceFlowController;
-
 @end
 
 @implementation VCreatePollViewController
@@ -283,8 +281,7 @@ static char KVOContext;
 {
     VWorkspaceFlowController *workspaceFlowController = [VWorkspaceFlowController workspaceFlowControllerWithoutADependencyManger];
     workspaceFlowController.delegate = self;
-    self.workspaceFlowController = workspaceFlowController;
-    
+    workspaceFlowController.videoEnabled = YES;
     [self presentViewController:workspaceFlowController.flowRootViewController
                        animated:YES
                      completion:nil];
@@ -558,7 +555,6 @@ static char KVOContext;
 
 - (void)workspaceFlowControllerDidCancel:(VWorkspaceFlowController *)workspaceFlowController
 {
-    self.workspaceFlowController = nil;
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -566,7 +562,6 @@ static char KVOContext;
        finishedWithPreviewImage:(UIImage *)previewImage
                capturedMediaURL:(NSURL *)capturedMediaURL
 {
-    self.workspaceFlowController = nil;
     [self imagePickerFinishedWithURL:capturedMediaURL
                         previewImage:previewImage];
 

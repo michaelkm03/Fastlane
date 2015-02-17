@@ -41,12 +41,16 @@
 #import "VPublishBlurOverAnimator.h"
 #import "VVCameraShutterOverAnimator.h"
 
+// Here be dragons
+#import <objc/runtime.h>
 
 @import AssetsLibrary;
 
 NSString * const VWorkspaceFlowControllerInitialCaptureStateKey = @"initialCaptureStateKey";
 NSString * const VWorkspaceFlowControllerSequenceToRemixKey = @"sequenceToRemixKey";
 NSString * const VWorkspaceFlowControllerPreloadedImageKey = @"preloadedImageKey";
+
+static const char kAssociatedObjectKey;
 
 typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
 {
@@ -97,6 +101,7 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
         _flowNavigationController = [[UINavigationController alloc] init];
         _flowNavigationController.navigationBarHidden = YES;
         _flowNavigationController.delegate = self;
+        objc_setAssociatedObject(_flowNavigationController, &kAssociatedObjectKey, self, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
         _transitionAnimator = [[VPublishBlurOverAnimator alloc] init];
         
         _initialImageEditState = VImageToolControllerInitialImageEditStateText;
@@ -142,7 +147,7 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
         BOOL isRemix = [[self.flowNavigationController.viewControllers firstObject] isKindOfClass:[VWorkspaceViewController class]];
         if (isRemix)
         {
-            [self.delegate workspaceFlowControllerDidCancel:self];
+            [self notifyDelegateOfCancel];
         }
         else
         {
@@ -158,9 +163,8 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
             BOOL shouldShowPublish = [self.delegate shouldShowPublishForWOrkspaceFlowController:self];
             if (!shouldShowPublish)
             {
-                [self.delegate workspaceFlowController:self
-                              finishedWithPreviewImage:self.previewImage
-                                      capturedMediaURL:self.renderedMeidaURL];
+                [self notifyDelegateOfFinishWithPreviewImage:self.previewImage
+                                            capturedMediaURL:self.renderedMeidaURL];
                 return;
             }
         }
@@ -213,9 +217,9 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
             if (published)
             {
                 __strong typeof (welf) strongSelf = welf;
-                [strongSelf.delegate workspaceFlowController:strongSelf
-                                    finishedWithPreviewImage:strongSelf.previewImage
-                                            capturedMediaURL:strongSelf.renderedMeidaURL];            }
+                [strongSelf notifyDelegateOfFinishWithPreviewImage:strongSelf.previewImage
+                                                  capturedMediaURL:strongSelf.renderedMeidaURL];
+            }
             else
             {
                 welf.renderedMeidaURL = nil;
@@ -308,7 +312,7 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
         }
         else
         {
-            [strongSelf.delegate workspaceFlowControllerDidCancel:strongSelf];
+            [strongSelf notifyDelegateOfCancel];
         }
     };
 }
@@ -385,6 +389,23 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
     [self.flowNavigationController pushViewController:workspaceViewController
                                              animated:!selectedFromAssetsLibraryOrSearch];
 
+}
+
+#pragma mark - Notify Delegate Methods
+
+- (void)notifyDelegateOfCancel
+{
+    [self.delegate workspaceFlowControllerDidCancel:self];
+    objc_setAssociatedObject(self.flowNavigationController, &kAssociatedObjectKey, nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (void)notifyDelegateOfFinishWithPreviewImage:(UIImage *)previewImage
+                              capturedMediaURL:(NSURL *)capturedMediaURL
+{
+    [self.delegate workspaceFlowController:self
+                  finishedWithPreviewImage:previewImage
+                          capturedMediaURL:capturedMediaURL];
+    objc_setAssociatedObject(self.flowNavigationController, &kAssociatedObjectKey, nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 #pragma mark - UINavigationControllerDelegate

@@ -32,7 +32,6 @@ static const NSInteger kCharacterLimit = 255;
 @property (weak, nonatomic) IBOutlet UIButton *sendButton;
 @property (nonatomic, strong) NSURL *mediaURL;
 @property (nonatomic, strong) VUserTaggingTextStorage *textStorage;
-@property (nonatomic, strong) VWorkspaceFlowController *workspaceFlowController;
 
 @end
 
@@ -176,8 +175,7 @@ static const NSInteger kCharacterLimit = 255;
         
         VWorkspaceFlowController *workspaceFlowController = [VWorkspaceFlowController workspaceFlowControllerWithoutADependencyManger];
         workspaceFlowController.delegate = self;
-        workspaceFlowController.videoEnabled = NO;
-        self.workspaceFlowController = workspaceFlowController;
+        workspaceFlowController.videoEnabled = YES;
         [self presentViewController:workspaceFlowController.flowRootViewController
                            animated:YES
                          completion:nil];
@@ -327,7 +325,6 @@ static const NSInteger kCharacterLimit = 255;
 
 - (void)workspaceFlowControllerDidCancel:(VWorkspaceFlowController *)workspaceFlowController
 {
-    self.workspaceFlowController = nil;
     [self dismissViewControllerAnimated:YES
                              completion:nil];
 }
@@ -338,7 +335,6 @@ static const NSInteger kCharacterLimit = 255;
 {
     self.mediaURL = capturedMediaURL;
     [self.mediaButton setImage:previewImage forState:UIControlStateNormal];
-    self.workspaceFlowController = nil;
     [self dismissViewControllerAnimated:YES
                              completion:^
      {

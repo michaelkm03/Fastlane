@@ -40,7 +40,6 @@ static const char kWorkspaceFlowControllerKey;
 
 @property (nonatomic, strong) NSLayoutConstraint *navHeaderYConstraint;
 @property (nonatomic, strong) NSLayoutConstraint *uploadProgressViewYconstraint;
-@property (nonatomic, strong) VWorkspaceFlowController *workspaceFlowController;
 
 @end
 
@@ -279,14 +278,14 @@ static const char kWorkspaceFlowControllerKey;
 {
     VDependencyManager *dependencyManager = [(id)self dependencyManager];
     
-    self.workspaceFlowController = [dependencyManager templateValueOfType:[VWorkspaceFlowController class]
+    VWorkspaceFlowController *workspaceFlowController = [dependencyManager templateValueOfType:[VWorkspaceFlowController class]
                                                                    forKey:VDependencyManagerWorkspaceFlowKey
                                                     withAddedDependencies:@{VWorkspaceFlowControllerInitialCaptureStateKey:@(initialCaptureState),
                                                                             VImageToolControllerInitialImageEditStateKey:@(initialImageEdit),
                                                                             VVideoToolControllerInitalVideoEditStateKey:@(initialVideoEdit)}];
-    self.workspaceFlowController.delegate = self;
-    self.workspaceFlowController.videoEnabled = YES;
-    [self presentViewController:self.workspaceFlowController.flowRootViewController
+    workspaceFlowController.delegate = self;
+    workspaceFlowController.videoEnabled = YES;
+    [self presentViewController:workspaceFlowController.flowRootViewController
                        animated:YES
                      completion:nil];
 }
@@ -318,19 +317,13 @@ static const char kWorkspaceFlowControllerKey;
 - (void)workspaceFlowControllerDidCancel:(VWorkspaceFlowController *)workspaceFlowController
 {
     [self dismissViewControllerAnimated:YES
-                             completion:^
-     {
-         self.workspaceFlowController = nil;
-     }];
+                             completion:nil];
 }
 
 - (void)workspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController finishedWithPreviewImage:(UIImage *)previewImage capturedMediaURL:(NSURL *)capturedMediaURL
 {
     [self dismissViewControllerAnimated:YES
-                             completion:^
-     {
-         self.workspaceFlowController = nil;
-     }];
+                             completion:nil];
 }
 
 @end

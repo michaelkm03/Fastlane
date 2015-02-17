@@ -23,7 +23,6 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceTaglineTextViewTopToContainer;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceTaglineTextViewBottomToContainer;
 @property (nonatomic, weak) UIImageView *backgroundImageView;
-@property (nonatomic, strong) VWorkspaceFlowController *workspaceFlowController;
 
 @end
 
@@ -150,7 +149,6 @@
     VWorkspaceFlowController *workspaceFlowController = [VWorkspaceFlowController workspaceFlowControllerWithoutADependencyManger];
     workspaceFlowController.delegate = self;
     workspaceFlowController.videoEnabled = NO;
-    self.workspaceFlowController = workspaceFlowController;
     [self presentViewController:workspaceFlowController.flowRootViewController
                        animated:YES
                      completion:nil];
@@ -215,7 +213,6 @@
 
 - (void)workspaceFlowControllerDidCancel:(VWorkspaceFlowController *)workspaceFlowController
 {
-    self.workspaceFlowController = nil;
     [self dismissViewControllerAnimated:YES
                              completion:nil];
 }
@@ -224,7 +221,6 @@
        finishedWithPreviewImage:(UIImage *)previewImage
                capturedMediaURL:(NSURL *)capturedMediaURL
 {
-    self.workspaceFlowController = nil;
     self.profileImageView.image = previewImage;
     self.updatedProfileImage = capturedMediaURL;
     [self.backgroundImageView setBlurredImageWithClearImage:previewImage placeholderImage:self.backgroundImageView.image tintColor:nil];

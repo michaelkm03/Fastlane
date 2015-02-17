@@ -1247,6 +1247,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
                                                                                                  forKey:VDependencyManagerWorkspaceFlowKey];
         
         workspaceFlowController.delegate = self;
+        workspaceFlowController.videoEnabled = YES;
         [self presentViewController:workspaceFlowController.flowRootViewController animated:YES completion:nil];
     };
     
