@@ -33,11 +33,37 @@
     self.webView.navigationDelegate = self;
     
     self.urlToView = self.urlToView;
+    [self addConstraintsToWebView:self.webView];
 }
 
 - (void)setFailureWithError:(NSError *)error
 {
     [self webView:self.webView didFailNavigation:nil withError:error];
+}
+
+- (void)addConstraintsToWebView:(UIView *)webView
+{
+    NSParameterAssert( webView.superview != nil );
+    
+    webView.translatesAutoresizingMaskIntoConstraints = NO;
+    [webView.superview addConstraint:[NSLayoutConstraint constraintWithItem:webView
+                                                                  attribute:NSLayoutAttributeTop
+                                                                  relatedBy:NSLayoutRelationEqual
+                                                                     toItem:self.topLayoutGuide
+                                                                  attribute:NSLayoutAttributeBottom
+                                                                 multiplier:1.0f
+                                                                   constant:0.0f]];
+    [webView.superview addConstraint:[NSLayoutConstraint constraintWithItem:webView
+                                                                  attribute:NSLayoutAttributeBottom
+                                                                  relatedBy:NSLayoutRelationEqual
+                                                                     toItem:self.bottomLayoutGuide
+                                                                  attribute:NSLayoutAttributeTop
+                                                                 multiplier:1.0f
+                                                                   constant:0.0f]];
+    [webView.superview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[webView]-0-|"
+                                                                              options:kNilOptions
+                                                                              metrics:nil
+                                                                                views:NSDictionaryOfVariableBindings(webView)]];
 }
 
 - (void)setShouldShowLoadingState:(BOOL)shouldShowLoadingState
