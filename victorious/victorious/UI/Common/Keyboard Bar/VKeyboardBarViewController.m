@@ -21,6 +21,7 @@
 #import "VUserTaggingTextStorage.h"
 
 static const NSInteger kCharacterLimit = 255;
+static const NSInteger VDefaultKeyboardHeight = 51;
 
 @interface VKeyboardBarViewController() <UITextViewDelegate>
 
@@ -66,7 +67,7 @@ static const NSInteger kCharacterLimit = 255;
     
     //Adding this to the top inset centers the text with it's placeholder
     UIEdgeInsets textContainerInset = self.textView.textContainerInset;
-    textContainerInset.top += 3.0f;
+    textContainerInset.top += 1.0f;
     self.textView.textContainerInset = textContainerInset;
     
     [self.textViewContainer addSubview:self.textView];
@@ -88,7 +89,7 @@ static const NSInteger kCharacterLimit = 255;
 
 - (void)addAccessoryBar
 {
-    VContentInputAccessoryView *inputAccessoryView = [[VContentInputAccessoryView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.view.bounds), 44.0f)];
+    VContentInputAccessoryView *inputAccessoryView = [[VContentInputAccessoryView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.view.bounds), 51.0f)];
     inputAccessoryView.textInputView = self.textView;
     inputAccessoryView.maxCharacterLength = kCharacterLimit;
     inputAccessoryView.tintColor = [UIColor colorWithRed:0.85f green:0.86f blue:0.87f alpha:1.0f];
@@ -323,7 +324,7 @@ static const NSInteger kCharacterLimit = 255;
     {
         if ([self.delegate respondsToSelector:@selector(keyboardBar:wouldLikeToBeResizedToHeight:)])
         {
-            CGFloat desiredHeight = 14.0f + self.textView.contentSize.height;
+            CGFloat desiredHeight = fmaxf(14.0f + self.textView.contentSize.height, VDefaultKeyboardHeight);
             if (CGRectGetHeight(self.view.bounds) != desiredHeight)
             {
                 [self.delegate keyboardBar:self wouldLikeToBeResizedToHeight:desiredHeight];

@@ -222,10 +222,12 @@ static NSString * const kThreeSpaces = @"   ";
         attrs = mutableAttrs;
     }
 
-    //Update font from internal UITextView
+    //Update font and paragraph attributes from internal UITextView
     NSMutableDictionary *updatedAttrs = [attrs mutableCopy];
-    NSDictionary *innerAttrs = [[[self.innerTextView attributedText] attributesAtIndex:range.location effectiveRange:nil] dictionaryWithValuesForKeys:@[NSFontAttributeName]];
-    [updatedAttrs addEntriesFromDictionary:innerAttrs];    
+    NSMutableDictionary *innerAttrs = [[[self.innerTextView attributedText] attributesAtIndex:range.location effectiveRange:nil] mutableCopy];
+    [updatedAttrs addEntriesFromDictionary:innerAttrs];
+    
+    [self setupParagraphStyle:[updatedAttrs objectForKey:NSParagraphStyleAttributeName]];
     
     [self.displayStorage setAttributes:updatedAttrs range:range];
     [self edited:NSTextStorageEditedAttributes range:range changeInLength:0];
@@ -389,6 +391,18 @@ static NSString * const kThreeSpaces = @"   ";
 {
     _textView = textView;
     self.innerTextView.font = textView.font;
+    
+    //Add fixed-height paragraph style to center cursor in textView
+    NSMutableParagraphStyle *paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+    [self setupParagraphStyle:paragraphStyle];
+    [textView setTypingAttributes:@{ NSFontAttributeName : textView.font, NSParagraphStyleAttributeName : paragraphStyle }];
+}
+
+- (void)setupParagraphStyle:(NSMutableParagraphStyle *)paragraphStyle
+{
+    //Setting min and max line height centers different fonts and keeps line heights uniform
+    paragraphStyle.minimumLineHeight = 17.0f;
+    paragraphStyle.maximumLineHeight = 17.0f;
 }
 
 #pragma mark - VInlineSearchTableViewControllerDelegate
@@ -408,6 +422,11 @@ static NSString * const kThreeSpaces = @"   ";
     [self replaceCharactersInRange:self.searchTermRange withAttributedString:attributedString];
     
     self.textView.selectedRange = newSelection;
+}
+
+- (void)dismissButtonWasPressedInTableView:(VInlineSearchTableViewController *)vInlineSearch
+{
+    self.state = VUserTaggingTextStorageStateInactive;
 }
 
 @end

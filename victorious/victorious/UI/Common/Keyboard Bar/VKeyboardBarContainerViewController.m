@@ -44,7 +44,7 @@
                                                                        toItem:nil
                                                                     attribute:NSLayoutAttributeNotAnAttribute
                                                                    multiplier:1.0f
-                                                                     constant:47.0f];
+                                                                     constant:55.0f];
     [self.keyboardBarViewController.view addConstraint:self.keyboardBarHeightConstraint];
 
     UIView *keyboardView = self.keyboardBarViewController.view;

@@ -15,8 +15,8 @@
 // Theme
 #import "VThemeManager.h"
 
-const CGFloat VInputAccessoryViewDesiredMinimumHeight = 47.0f;
-static const CGFloat VTextViewTopInsetAddition = 3.0f;
+const CGFloat VInputAccessoryViewDesiredMinimumHeight = 51.0f;
+static const CGFloat VTextViewTopInsetAddition = 2.0f;
 
 @interface VKeyboardInputAccessoryView () <UITextViewDelegate>
 
@@ -106,7 +106,7 @@ static const CGFloat VTextViewTopInsetAddition = 3.0f;
 
 - (CGSize)intrinsicContentSize
 {
-    return CGSizeMake(320.0f, 45.0f);
+    return CGSizeMake(320.0f, VInputAccessoryViewDesiredMinimumHeight);
 }
 
 #pragma mark - Property Accessors

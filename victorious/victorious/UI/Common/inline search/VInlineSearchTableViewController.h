@@ -23,6 +23,7 @@ extern const NSInteger kSearchTableDesiredMinimumHeight;
  @param vInlineSearch Instance of the tableview controller being displayed
  */
 - (void)user:(VUser *)user wasSelectedFromTableView:(VInlineSearchTableViewController *)vInlineSearch;
+- (void)dismissButtonWasPressedInTableView:(VInlineSearchTableViewController *)vInlineSearch;
 
 @end
 
