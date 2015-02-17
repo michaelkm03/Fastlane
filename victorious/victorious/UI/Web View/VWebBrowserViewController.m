@@ -103,11 +103,6 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
     }
 }
 
-- (void)dealloc
-{
-    [self.progressBarAnimationTimer invalidate];
-}
-
 - (void)updateProgressFromTimer
 {
     [self webViewDidUpdateProgress:self.webView.estimatedProgress];
