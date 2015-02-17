@@ -400,7 +400,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iy9-Va-wjh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-4802" y="-1339.5"/>
+            <point key="canvasLocation" x="-4802" y="-1345.5"/>
         </scene>
         <!--Change Password-->
         <scene sceneID="jgg-OK-3hB">
@@ -528,7 +528,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IwE-mi-tse" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3302" y="-1339.5"/>
+            <point key="canvasLocation" x="-3304" y="-1345.5"/>
         </scene>
         <!--Privacy Policy-->
         <scene sceneID="Dbm-PF-rlC">
@@ -547,7 +547,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UNw-LC-tuc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-4418" y="-1339.5"/>
+            <point key="canvasLocation" x="-4418" y="-1345.5"/>
         </scene>
         <!--Server Environment-->
         <scene sceneID="quU-xZ-2Jq">
@@ -580,7 +580,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Imd-KZ-Wo5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3661" y="-1339.5"/>
+            <point key="canvasLocation" x="-3661" y="-1345.5"/>
         </scene>
         <!--Purchase Settings-->
         <scene sceneID="oSl-bU-Faw">
@@ -705,7 +705,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mG7-xu-zJg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-4039" y="-1339.5"/>
+            <point key="canvasLocation" x="-4041" y="-1345.5"/>
         </scene>
         <!--Video Autoplay Settings-->
         <scene sceneID="xfB-WG-Eh5">
@@ -733,23 +733,18 @@
                             <outlet property="delegate" destination="bDt-FM-3G4" id="b2r-rK-iM2"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="MMO-h3-iOL">
-                        <barButtonItem key="leftBarButtonItem" image="cameraButtonBack" id="TfV-Il-SXJ">
-                            <connections>
-                                <action selector="goBack:" destination="bDt-FM-3G4" id="XN2-CY-RRg"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Autoplay" id="MMO-h3-iOL"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+                    <connections>
+                        <outlet property="videoSettings" destination="WPS-3i-wyQ" id="Wsd-yE-mT9"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hZd-LQ-jLU" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <customObject id="WPS-3i-wyQ" customClass="VVideoSettings"/>
             </objects>
             <point key="canvasLocation" x="-5182" y="-1345.5"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="cameraButtonBack" width="22" height="17"/>
-    </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
