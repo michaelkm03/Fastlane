@@ -43,6 +43,11 @@ static CGFloat const kVLineAnimationDuration = 0.25f;
     [self makeButtonsFromCurrentViewControllers];
 }
 
+- (CGSize)intrinsicContentSize
+{
+    return CGSizeMake(UIViewNoIntrinsicMetric, 40.0f);
+}
+
 #pragma mark - activeViewControllerIndex updating
 
 - (void)setActiveViewControllerIndex:(NSUInteger)activeViewControllerIndex
