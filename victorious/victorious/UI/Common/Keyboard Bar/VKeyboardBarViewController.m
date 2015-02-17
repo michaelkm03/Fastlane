@@ -6,7 +6,8 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VCameraViewController.h"
+#import "VWorkspaceFlowController.h"
+
 #import "VContentInputAccessoryView.h"
 #import "VObjectManager+Comment.h"
 #import "VKeyboardBarViewController.h"
@@ -23,7 +24,7 @@
 
 static const NSInteger kCharacterLimit = 255;
 
-@interface VKeyboardBarViewController() <UITextViewDelegate>
+@interface VKeyboardBarViewController() <UITextViewDelegate, VWorkspaceFlowControllerDelegate>
 
 @property (nonatomic, weak, readwrite) IBOutlet UIView *textViewContainer;
 @property (nonatomic, strong, readwrite) UITextView *textView;
@@ -172,22 +173,12 @@ static const NSInteger kCharacterLimit = 255;
     {
         [[VThemeManager sharedThemeManager] applyStyling];
         
-        VCameraViewController *cameraViewController = [VCameraViewController cameraViewControllerStartingWithStillCapture];
-        cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
-        {
-            if (finished)
-            {
-                self.mediaURL = capturedMediaURL;
-                [self.mediaButton setImage:previewImage forState:UIControlStateNormal];
-            }
-            [self dismissViewControllerAnimated:YES
-                                     completion:^
-             {
-                 [self enableOrDisableSendButtonAsAppropriate];
-             }];
-        };
-        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:cameraViewController];
-        [self presentViewController:navController animated:YES completion:nil];
+        VWorkspaceFlowController *workspaceFlowController = [VWorkspaceFlowController workspaceFlowControllerWithoutADependencyManger];
+        workspaceFlowController.delegate = self;
+        workspaceFlowController.videoEnabled = YES;
+        [self presentViewController:workspaceFlowController.flowRootViewController
+                           animated:YES
+                         completion:nil];
     };
     
     if (self.mediaURL == nil)
@@ -328,6 +319,32 @@ static const NSInteger kCharacterLimit = 255;
             }
         }
     }
+}
+
+#pragma mark - VWorkspaceFlowControllerDelegate
+
+- (void)workspaceFlowControllerDidCancel:(VWorkspaceFlowController *)workspaceFlowController
+{
+    [self dismissViewControllerAnimated:YES
+                             completion:nil];
+}
+
+- (void)workspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
+       finishedWithPreviewImage:(UIImage *)previewImage
+               capturedMediaURL:(NSURL *)capturedMediaURL
+{
+    self.mediaURL = capturedMediaURL;
+    [self.mediaButton setImage:previewImage forState:UIControlStateNormal];
+    [self dismissViewControllerAnimated:YES
+                             completion:^
+     {
+         [self enableOrDisableSendButtonAsAppropriate];
+     }];
+}
+
+- (BOOL)shouldShowPublishForWOrkspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
+{
+    return NO;
 }
 
 @end

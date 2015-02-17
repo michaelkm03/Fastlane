@@ -48,25 +48,13 @@
 
 static const char kAssociatedWorkspaceFlowKey;
 
-@interface VSequenceActionController ()
+@interface VSequenceActionController () <VWorkspaceFlowControllerDelegate>
 
-@property (nonatomic, strong) VWorkspaceFlowController *workspaceFlowController;
+@property (nonatomic, strong) UIViewController *viewControllerPresentingWorkspace;
 
 @end
 
 @implementation VSequenceActionController
-
-#pragma mark - Properties
-
-- (void)setWorkspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
-{
-    objc_setAssociatedObject(self, &kAssociatedWorkspaceFlowKey, workspaceFlowController, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
-
-- (VWorkspaceFlowController *)workspaceFlowController
-{
-    return objc_getAssociatedObject(self, &kAssociatedWorkspaceFlowKey);
-}
 
 #pragma mark - Comments
 
@@ -113,8 +101,6 @@ static const char kAssociatedWorkspaceFlowKey;
         return;
     }
     
-    __weak UIViewController *weakViewController = viewController;
-    
     NSMutableDictionary *addedDependencies = [[NSMutableDictionary alloc] init];
     if (sequence)
     {
@@ -127,24 +113,13 @@ static const char kAssociatedWorkspaceFlowKey;
     [addedDependencies setObject:@(VImageToolControllerInitialImageEditStateText) forKey:VImageToolControllerInitialImageEditStateKey];
     [addedDependencies setObject:@(VVideoToolControllerInitialVideoEditStateGIF) forKey:VVideoToolControllerInitalVideoEditStateKey];
     
-    self.workspaceFlowController = [dependencyManager templateValueOfType:[VWorkspaceFlowController class]
+    VWorkspaceFlowController *workspaceFlowController = [dependencyManager templateValueOfType:[VWorkspaceFlowController class]
                                                                    forKey:VDependencyManagerWorkspaceFlowKey
                                                     withAddedDependencies:addedDependencies];
     
-    __weak typeof(self) welf = self;
-    self.workspaceFlowController.completion = ^void(BOOL finished)
-    {
-        __strong typeof(self) strongSelf = welf;
-        [weakViewController dismissViewControllerAnimated:YES
-                                               completion:^{
-                                                   if (completion)
-                                                   {
-                                                       completion(finished);
-                                                       strongSelf.workspaceFlowController = nil;
-                                                   }
-                                               }];
-    };
-    [viewController presentViewController:self.workspaceFlowController.flowRootViewController
+    workspaceFlowController.delegate = self;
+    self.viewControllerPresentingWorkspace = viewController;
+    [viewController presentViewController:workspaceFlowController.flowRootViewController
                                  animated:YES
                                completion:nil];
 }
@@ -376,6 +351,28 @@ static const char kAssociatedWorkspaceFlowKey;
     }
     
     return shareText;
+}
+
+#pragma mark - VWorkspaceFlowControllerDelegate
+
+- (void)workspaceFlowControllerDidCancel:(VWorkspaceFlowController *)workspaceFlowController
+{
+    [self.viewControllerPresentingWorkspace dismissViewControllerAnimated:YES
+                                                               completion:^
+     {
+         self.viewControllerPresentingWorkspace = nil;
+     }];
+}
+
+- (void)workspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
+       finishedWithPreviewImage:(UIImage *)previewImage
+               capturedMediaURL:(NSURL *)capturedMediaURL
+{
+    [self.viewControllerPresentingWorkspace dismissViewControllerAnimated:YES
+                                                               completion:^
+     {
+         self.viewControllerPresentingWorkspace = nil;
+     }];
 }
 
 @end

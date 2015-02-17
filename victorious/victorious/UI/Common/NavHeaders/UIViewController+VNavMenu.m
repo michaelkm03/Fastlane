@@ -21,17 +21,14 @@
 //Create Sequence import
 #import "VSettingManager.h"
 #import "VObjectManager+Login.h"
-#import "VCameraViewController.h"
 #import "VCreatePollViewController.h"
 #import "VAuthorizationViewControllerFactory.h"
 #import "VAlertController.h"
 #import "VThemeManager.h"
 #import "UIActionSheet+VBlocks.h"
 #import "VAutomation.h"
-#import "VWorkspaceViewController.h"
-#import "VPublishViewController.h"
-
 #import "VWorkspaceFlowController.h"
+#import "VPublishViewController.h"
 
 static const char kNavHeaderViewKey;
 static const char kNavHeaderYConstraintKey;
@@ -39,11 +36,10 @@ static const char kUploadProgressVCKey;
 static const char kUploadProgressYConstraintKey;
 static const char kWorkspaceFlowControllerKey;
 
-@interface UIViewController (VNavMenuPrivate)
+@interface UIViewController (VNavMenuPrivate) <VWorkspaceFlowControllerDelegate>
 
 @property (nonatomic, strong) NSLayoutConstraint *navHeaderYConstraint;
 @property (nonatomic, strong) NSLayoutConstraint *uploadProgressViewYconstraint;
-@property (nonatomic, strong) VWorkspaceFlowController *workspaceFlowController;
 
 @end
 
@@ -282,21 +278,14 @@ static const char kWorkspaceFlowControllerKey;
 {
     VDependencyManager *dependencyManager = [(id)self dependencyManager];
     
-    self.workspaceFlowController = [dependencyManager templateValueOfType:[VWorkspaceFlowController class]
+    VWorkspaceFlowController *workspaceFlowController = [dependencyManager templateValueOfType:[VWorkspaceFlowController class]
                                                                    forKey:VDependencyManagerWorkspaceFlowKey
                                                     withAddedDependencies:@{VWorkspaceFlowControllerInitialCaptureStateKey:@(initialCaptureState),
                                                                             VImageToolControllerInitialImageEditStateKey:@(initialImageEdit),
                                                                             VVideoToolControllerInitalVideoEditStateKey:@(initialVideoEdit)}];
-    __weak typeof(self) welf = self;
-    self.workspaceFlowController.completion = ^void(BOOL finished)
-    {
-        [welf dismissViewControllerAnimated:YES
-                                 completion:^
-        {
-            welf.workspaceFlowController = nil;
-        }];
-    };
-    [self presentViewController:self.workspaceFlowController.flowRootViewController
+    workspaceFlowController.delegate = self;
+    workspaceFlowController.videoEnabled = YES;
+    [self presentViewController:workspaceFlowController.flowRootViewController
                        animated:YES
                      completion:nil];
 }
@@ -321,6 +310,20 @@ static const char kWorkspaceFlowControllerKey;
 - (VWorkspaceFlowController *)workspaceFlowController
 {
     return objc_getAssociatedObject(self, &kWorkspaceFlowControllerKey);
+}
+
+#pragma mark - VWorkspaceFlowControllerDelegate
+
+- (void)workspaceFlowControllerDidCancel:(VWorkspaceFlowController *)workspaceFlowController
+{
+    [self dismissViewControllerAnimated:YES
+                             completion:nil];
+}
+
+- (void)workspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController finishedWithPreviewImage:(UIImage *)previewImage capturedMediaURL:(NSURL *)capturedMediaURL
+{
+    [self dismissViewControllerAnimated:YES
+                             completion:nil];
 }
 
 @end

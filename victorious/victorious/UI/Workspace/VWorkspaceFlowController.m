@@ -16,6 +16,11 @@
 
 // Tools
 #import "VToolController.h"
+#import "VImageToolController.h"
+#import "VVideoToolController.h"
+
+#warning should remove me evenutally
+#import "VRootViewController.h"
 
 // Category
 #import "NSURL+MediaType.h"
@@ -36,11 +41,16 @@
 #import "VPublishBlurOverAnimator.h"
 #import "VVCameraShutterOverAnimator.h"
 
+// Here be dragons
+#import <objc/runtime.h>
+
 @import AssetsLibrary;
 
 NSString * const VWorkspaceFlowControllerInitialCaptureStateKey = @"initialCaptureStateKey";
 NSString * const VWorkspaceFlowControllerSequenceToRemixKey = @"sequenceToRemixKey";
 NSString * const VWorkspaceFlowControllerPreloadedImageKey = @"preloadedImageKey";
+
+static const char kAssociatedObjectKey;
 
 typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
 {
@@ -56,7 +66,7 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
 @property (nonatomic, strong) NSURL *capturedMediaURL;
 @property (nonatomic, strong) NSURL *renderedMeidaURL;
 
-@property (nonatomic, strong) UIImage *previewImage;
+@property (nonatomic, strong, readwrite) UIImage *previewImage;
 
 @property (nonatomic, strong) UINavigationController *flowNavigationController;
 
@@ -73,7 +83,13 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
 
 @implementation VWorkspaceFlowController
 
-@synthesize completion = _completion;
++ (instancetype)workspaceFlowControllerWithoutADependencyManger
+{
+    VDependencyManager *globalDependencyManager = [[VRootViewController rootViewController] dependencyManager];
+    VWorkspaceFlowController *workspaceFlowController = [globalDependencyManager templateValueOfType:[VWorkspaceFlowController class]
+                                                                                              forKey:VDependencyManagerWorkspaceFlowKey];
+    return workspaceFlowController;
+}
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
@@ -85,6 +101,7 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
         _flowNavigationController = [[UINavigationController alloc] init];
         _flowNavigationController.navigationBarHidden = YES;
         _flowNavigationController.delegate = self;
+        objc_setAssociatedObject(_flowNavigationController, &kAssociatedObjectKey, self, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
         _transitionAnimator = [[VPublishBlurOverAnimator alloc] init];
         
         _initialImageEditState = VImageToolControllerInitialImageEditStateText;
@@ -130,14 +147,7 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
         BOOL isRemix = [[self.flowNavigationController.viewControllers firstObject] isKindOfClass:[VWorkspaceViewController class]];
         if (isRemix)
         {
-            if (self.completion)
-            {
-                self.completion(NO);
-            }
-            else
-            {
-                NSAssert(false, @"VWorkspaceFlowController requires a completion block!");
-            }
+            [self notifyDelegateOfCancel];
         }
         else
         {
@@ -147,6 +157,17 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
     else if ((oldState == VWorkspaceFlowControllerStateEdit) && (newState == VWorkspaceFlowControllerStatePublish))
     {
         NSAssert((self.renderedMeidaURL != nil), @"We need a rendered media url to begin publishing!");
+        
+        if ([self.delegate respondsToSelector:@selector(shouldShowPublishForWOrkspaceFlowController:)])
+        {
+            BOOL shouldShowPublish = [self.delegate shouldShowPublishForWOrkspaceFlowController:self];
+            if (!shouldShowPublish)
+            {
+                [self notifyDelegateOfFinishWithPreviewImage:self.previewImage
+                                            capturedMediaURL:self.renderedMeidaURL];
+                return;
+            }
+        }
         
         VPublishParameters *publishParameters = [[VPublishParameters alloc] init];
         publishParameters.mediaToUploadURL = self.renderedMeidaURL;
@@ -195,10 +216,9 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
             }
             if (published)
             {
-                if (welf.completion)
-                {
-                    welf.completion(YES);
-                }
+                __strong typeof (welf) strongSelf = welf;
+                [strongSelf notifyDelegateOfFinishWithPreviewImage:strongSelf.previewImage
+                                                  capturedMediaURL:strongSelf.renderedMeidaURL];
             }
             else
             {
@@ -230,6 +250,23 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
     return self.flowNavigationController;
 }
 
+#pragma mark - Property Accessors
+
+- (void)setVideoEnabled:(BOOL)videoEnabled
+{
+    if (_videoEnabled == videoEnabled)
+    {
+        return;
+    }
+    _videoEnabled = videoEnabled;
+    
+    if (_state == VWorkspaceFlowControllerStateCapture)
+    {
+        [self.flowNavigationController popViewControllerAnimated:NO];
+        [self setupCapture];
+    }
+}
+
 #pragma mark - Private Methods
 
 - (void)setupCapture
@@ -241,7 +278,14 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
     switch (initialCaptureState)
     {
         case VWorkspaceFlowControllerInitialCaptureStateImage:
-            self.cameraViewController = [VCameraViewController cameraViewControllerStartingWithStillCapture];
+            if (self.isVideoEnabled)
+            {
+                self.cameraViewController = [VCameraViewController cameraViewControllerStartingWithStillCapture];
+            }
+            else
+            {
+                self.cameraViewController = [VCameraViewController cameraViewControllerLimitedToPhotos];
+            }
             break;
         case VWorkspaceFlowControllerInitialCaptureStateVideo:
             self.cameraViewController = [VCameraViewController cameraViewControllerStartingWithVideoCapture];
@@ -250,7 +294,7 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
     self.cameraViewController.shouldSkipPreview = YES;
     self.cameraViewController.completionBlock = [self mediaCaptureCompletion];
     [self.flowNavigationController pushViewController:self.cameraViewController
-                                         animated:NO];
+                                             animated:NO];
 }
 
 - (VMediaCaptureCompletion)mediaCaptureCompletion
@@ -258,19 +302,17 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
     __weak typeof(self) welf = self;
     return ^void(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
     {
+        __strong typeof(welf) strongSelf = welf;
         if (finished)
         {
-            welf.capturedMediaURL = capturedMediaURL;
-            welf.previewImage = previewImage;
-            [welf transitionFromState:welf.state
-                              toState:VWorkspaceFlowControllerStateEdit];
+            strongSelf.capturedMediaURL = capturedMediaURL;
+            strongSelf.previewImage = previewImage;
+            [strongSelf transitionFromState:strongSelf.state
+                                    toState:VWorkspaceFlowControllerStateEdit];
         }
         else
         {
-            if (welf.completion != nil)
-            {
-                welf.completion(NO);
-            }
+            [strongSelf notifyDelegateOfCancel];
         }
     };
 }
@@ -337,9 +379,33 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
         }
     };
     BOOL selectedFromAssetsLibraryOrSearch = self.cameraViewController.didSelectFromWebSearch || self.cameraViewController.didSelectAssetFromLibrary;
+    BOOL shouldShowPublish = YES;
+    if ([self.delegate respondsToSelector:@selector(shouldShowPublishForWOrkspaceFlowController:)])
+    {
+        shouldShowPublish = [self.delegate shouldShowPublishForWOrkspaceFlowController:self];
+    }
+    workspaceViewController.continueText = shouldShowPublish ? NSLocalizedString(@"Publish", @"") : NSLocalizedString(@"Next", @"");
+
     [self.flowNavigationController pushViewController:workspaceViewController
                                              animated:!selectedFromAssetsLibraryOrSearch];
 
+}
+
+#pragma mark - Notify Delegate Methods
+
+- (void)notifyDelegateOfCancel
+{
+    [self.delegate workspaceFlowControllerDidCancel:self];
+    objc_setAssociatedObject(self.flowNavigationController, &kAssociatedObjectKey, nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (void)notifyDelegateOfFinishWithPreviewImage:(UIImage *)previewImage
+                              capturedMediaURL:(NSURL *)capturedMediaURL
+{
+    [self.delegate workspaceFlowController:self
+                  finishedWithPreviewImage:previewImage
+                          capturedMediaURL:capturedMediaURL];
+    objc_setAssociatedObject(self.flowNavigationController, &kAssociatedObjectKey, nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 #pragma mark - UINavigationControllerDelegate

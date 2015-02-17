@@ -48,6 +48,7 @@
 @property (nonatomic, weak) IBOutlet VCanvasView *canvasView;
 @property (nonatomic, weak) IBOutlet UIImageView *blurredBackgroundImageView;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *verticalSpaceCanvasToTopOfContainerConstraint;
+@property (nonatomic, weak) IBOutlet UIBarButtonItem *continueButton;
 @property (nonatomic, strong) NSMutableArray *inspectorConstraints;
 
 @property (nonatomic, strong) UIViewController *inspectorToolViewController;
@@ -106,6 +107,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [self.continueButton setTitle:self.continueText];
     
     self.view.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     
@@ -335,6 +338,15 @@
     inspectorViewController.view.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     [self addToolViewController:inspectorViewController];
     [self positionToolViewControllerOnInspector:inspectorViewController];
+}
+
+#pragma mark - Property Accessors
+
+- (void)setContinueText:(NSString *)continueText
+{
+    _continueText = [continueText copy];
+    
+    [self.continueButton setTitle:continueText];
 }
 
 #pragma mark - Public Methods
