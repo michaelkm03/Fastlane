@@ -9,11 +9,15 @@
 #import "VVideoSnapshotTool.h"
 #import "VDependencyManager.h"
 
+#import "VConstants.h"
+
 // ViewControllers
 #import "VCVideoPlayerViewController.h"
 #import "VSnapshotViewController.h"
 
-@interface VVideoSnapshotTool () <VCVideoPlayerDelegate>
+static const CGFloat kJPEGCompressionQuality    = 0.8f;
+
+@interface VVideoSnapshotTool () <VCVideoPlayerDelegate, VSnapshotViewControllerDelegate>
 
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, strong) UIImage *previewImage;
@@ -21,6 +25,9 @@
 
 @property (nonatomic, strong) VCVideoPlayerViewController *videoPlayerViewController;
 @property (nonatomic, strong) VSnapshotViewController *snapshotToolViewController;
+
+@property (nonatomic, strong) AVAssetImageGenerator *snapshotGenerator;
+
 @end
 
 @implementation VVideoSnapshotTool
@@ -42,6 +49,7 @@
         _videoPlayerViewController.videoPlayerLayerVideoGravity = AVLayerVideoGravityResizeAspectFill;
         
         _snapshotToolViewController = [[VSnapshotViewController alloc] initWithNibName:nil bundle:nil];
+        _snapshotToolViewController.delegate = self;
     }
     return self;
 }
@@ -51,6 +59,7 @@
 - (void)setMediaURL:(NSURL *)mediaURL
 {
     [self.videoPlayerViewController setItemURL:mediaURL loop:YES];
+    self.snapshotGenerator = [[AVAssetImageGenerator alloc] initWithAsset:[AVURLAsset assetWithURL:mediaURL]];
 }
 
 - (void)exportToURL:(NSURL *)url withCompletion:(void (^)(BOOL, UIImage *, NSError *))completion
@@ -92,6 +101,44 @@
 - (void)videoPlayerReadyToPlay:(VCVideoPlayerViewController *)videoPlayer
 {
     [videoPlayer.player play];
+}
+
+#pragma mark - VSnapshotViewControllerDelegate
+
+- (void)snapshotViewControllerWantsSnapshot:(VSnapshotViewController *)snapshotViewController
+{
+    snapshotViewController.buttonEnabled = NO;
+    [self.videoPlayerViewController.player pause];
+    __weak typeof(self) welf = self;
+    [self.snapshotGenerator generateCGImagesAsynchronouslyForTimes:@[[NSValue valueWithCMTime:self.videoPlayerViewController.currentTime]]
+                                                 completionHandler:^(CMTime requestedTime, CGImageRef image, CMTime actualTime, AVAssetImageGeneratorResult result, NSError *error)
+    {
+        if (error)
+        {
+            [welf.videoPlayerViewController.player play];
+            welf.snapshotToolViewController.buttonEnabled = YES;
+            return;
+        }
+        
+        UIImage *previewImage = [UIImage imageWithCGImage:image];
+        NSData *jpegData = UIImageJPEGRepresentation(previewImage, kJPEGCompressionQuality);
+        NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
+        NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:VConstantMediaExtensionJPG];
+        BOOL successfulRender = [jpegData writeToURL:tempFile atomically:NO];
+        
+        if (!successfulRender)
+        {
+            return;
+        }
+        
+        dispatch_async(dispatch_get_main_queue(), ^
+        {
+            if (welf.capturedSnapshotBlock)
+            {
+                welf.capturedSnapshotBlock(previewImage, welf.renderedMediaURL);
+            }
+        });
+    }];
 }
 
 @end

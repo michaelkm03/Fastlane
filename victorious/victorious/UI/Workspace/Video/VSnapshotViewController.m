@@ -10,28 +10,27 @@
 
 @interface VSnapshotViewController ()
 
+@property (weak, nonatomic) IBOutlet UIButton *snapshotButton;
+
 @end
 
 @implementation VSnapshotViewController
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+- (void)setButtonEnabled:(BOOL)buttonEnabled
+{
+    self.snapshotButton.enabled = buttonEnabled;
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (BOOL)buttonEnabled
+{
+    return self.snapshotButton.enabled;
 }
 
-/*
-#pragma mark - Navigation
+#pragma mark - Target/Action
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (IBAction)takeSnapshot:(id)sender
+{
+    [self.delegate snapshotViewControllerWantsSnapshot:self];
 }
-*/
 
 @end

@@ -32,6 +32,7 @@ NSString * const VVideoToolControllerInitalVideoEditStateKey = @"VVideoToolContr
     
     [selectedTool setMediaURL:self.mediaURL];
     
+// TODO: Add snapshot handling here
     BOOL selectedToolIsSnapshot = [selectedTool isKindOfClass:[VVideoSnapshotTool class]];
     if (self.canRenderAndExportChangeBlock)
     {
