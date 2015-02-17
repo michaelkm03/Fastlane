@@ -78,6 +78,7 @@ extern NSString * const VWorkspaceFlowControllerPreloadedImageKey;
 
 //TODO: this is a temporary workaround for when there may not be a dependency manager.
 + (instancetype)workspaceFlowControllerWithoutADependencyManger;
++ (instancetype)workspaceFlowControllerWithoutADependencyMangerWithInjection:(NSDictionary *)injectedDependencies;
 
 /**
  *  A delegate of the workspace flow controller.

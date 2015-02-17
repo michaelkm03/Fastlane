@@ -192,6 +192,11 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
 - (void)setFilter:(VPhotoFilter *)filter
 {
     _filter = filter;
+    
+    if (self.scaledImage == nil)
+    {
+        return;
+    }
 
     if ([self.renderedImageCache objectForKey:filter.description] != nil)
     {
