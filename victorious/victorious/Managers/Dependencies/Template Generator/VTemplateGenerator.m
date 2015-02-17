@@ -73,6 +73,7 @@ static NSString * const kVideoMuted = @"videoMuted";
 @property (nonatomic) BOOL templateCEnabled;
 @property (nonatomic, strong) NSString *firstMenuItemID;
 @property (nonatomic, strong) NSString *homeRecentID;
+@property (nonatomic, strong) NSString *communityRecentID;
 @property (nonatomic, strong) NSDictionary *accentColor;
 
 @end
@@ -87,6 +88,7 @@ static NSString * const kVideoMuted = @"videoMuted";
         _dataFromInitCall = initData;
         _firstMenuItemID = [[NSUUID UUID] UUIDString];
         _homeRecentID = [[NSUUID UUID] UUIDString];
+        _communityRecentID = [[NSUUID UUID] UUIDString];
         _templateCEnabled = [[_dataFromInitCall valueForKeyPath:@"experiments.template_c_enabled"] boolValue];
     }
     return self;
@@ -353,6 +355,7 @@ static NSString * const kVideoMuted = @"videoMuted";
                         kClassNameKey: @"basic.multiScreen",
                         kTitleKey: NSLocalizedString(@"Community", @""),
                         kCanAddContentKey: @YES,
+                        kInitialKey: @{ kReferenceIDKey: self.communityRecentID },
                         kScreensKey: @[
                             @{
                                 kClassNameKey: @"stream.screen",
@@ -362,7 +365,7 @@ static NSString * const kVideoMuted = @"videoMuted";
                             },
                             @{
                                 kClassNameKey: @"stream.screen",
-                                kInitialKey: @YES,
+                                kIDKey: self.communityRecentID,
                                 kTitleKey: NSLocalizedString(@"Recent", @""),
                                 VStreamCollectionViewControllerStreamURLPathKey: [self urlPathForStreamCategories:VUGCCategories()],
                                 kCanAddContentKey: @YES,
