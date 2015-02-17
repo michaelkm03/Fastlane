@@ -27,8 +27,17 @@ static const Float64 kAssetLoopClipping = 0.08;
 - (AVComposition *)loopingCompositionWithAsset:(AVAsset *)asset
 {
     AVMutableComposition *composition = [[AVMutableComposition alloc] init];
-    Float64 clippedDuration = CMTimeGetSeconds(asset.duration) - kAssetLoopClipping;
-    CMTimeRange editRange = CMTimeRangeMake( kCMTimeZero, CMTimeMakeWithSeconds( clippedDuration, 1 ) );
+    CMTime duration = CMTimeSubtract( asset.duration, CMTimeMake( kAssetLoopClipping, 1 ) );
+    CMTimeRange editRange;
+    CMTime minTime = CMTimeMake( 1, 1 );
+    if ( CMTIME_COMPARE_INLINE( duration, <, minTime) )
+    {
+        editRange = CMTimeRangeMake( kCMTimeZero, minTime );
+    }
+    else
+    {
+        editRange = CMTimeRangeMake( kCMTimeZero, duration );
+    }
     
     for ( NSUInteger i = 0; i < kVCompositionAssetCount; i++ )
     {
