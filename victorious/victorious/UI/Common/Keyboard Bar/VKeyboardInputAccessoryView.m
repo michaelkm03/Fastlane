@@ -34,6 +34,9 @@ static const CGFloat VTextViewTopInsetAddition = 2.0f;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *verticalSpaceTextViewContainerToTopConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *verticalSpaceTextViewContainerToBottomConstraint;
 
+- (IBAction)pressedSend:(id)sender;
+- (IBAction)pressedAttachments:(id)sender;
+
 @end
 
 @implementation VKeyboardInputAccessoryView
