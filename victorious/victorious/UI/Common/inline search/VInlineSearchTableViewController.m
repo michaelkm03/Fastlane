@@ -195,6 +195,7 @@ typedef NS_ENUM(NSInteger, VInlineSearchState)
     cell.showButton = NO;
     cell.showLocation = NO;
     cell.profile = profile;
+    cell.profileName.font = [UIFont fontWithName:@"MuseoSans-300" size:15.0f];
     return cell;
 }
 

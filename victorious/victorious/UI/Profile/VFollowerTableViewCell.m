@@ -15,9 +15,6 @@
 
 @interface      VFollowerTableViewCell ()
 
-@property (nonatomic, weak)     IBOutlet    UIImageView        *profileImage;
-@property (nonatomic, weak)     IBOutlet    UILabel            *profileName;
-@property (nonatomic, weak)     IBOutlet    UILabel            *profileLocation;
 
 @property (nonatomic, strong) UIImage *followImage;
 @property (nonatomic, strong) UIImage *unfollowImage;
@@ -81,14 +78,14 @@
 {
     _showButton = showButton;
     
-    self.followButton.hidden = showButton;
+    self.followButton.hidden = !showButton;
 }
 
 - (void)setShowLocation:(BOOL)showLocation
 {
     _showLocation = showLocation;
     
-    self.profileLocation.hidden = showLocation;
+    self.profileLocation.hidden = !showLocation;
 }
 
 - (IBAction)follow:(id)sender
