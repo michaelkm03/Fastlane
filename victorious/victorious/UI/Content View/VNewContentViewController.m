@@ -1430,26 +1430,34 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)didFinishEditingComment:(VComment *)comment
 {
-    for ( VContentCommentsCell *cell in self.contentCollectionView.subviews )
+    [self dismissViewControllerAnimated:YES completion:^void
      {
-         if ( [cell isKindOfClass:[VContentCommentsCell class]] && [cell.comment.remoteId isEqualToNumber:comment.remoteId] )
+         [self.contentCollectionView.visibleCells enumerateObjectsUsingBlock:^(VContentCommentsCell *cell, NSUInteger idx, BOOL *stop)
          {
-             // Update the cell's comment to show the new text
-             cell.comment = comment;
-             
-             [self dismissViewControllerAnimated:YES completion:^void
-              {
-                  [self.contentCollectionView performBatchUpdates:^void
-                   {
-                       NSIndexPath *indexPathToInvalidate = [self.contentCollectionView indexPathForCell:cell];
-                       [self.contentCollectionView reloadItemsAtIndexPaths:@[ indexPathToInvalidate ]];
-                   }
-                                                       completion:nil];
-              }];
-             
-             break;
-         }
-     }
+             if ( [cell isKindOfClass:[VContentCommentsCell class]] && [cell.comment.remoteId isEqualToNumber:comment.remoteId] )
+             {
+                 // Update the cell's comment to show the new text
+                 cell.comment = comment;
+                 
+                 // Try to reload the cell without reloading the whole section
+                 NSIndexPath *indexPathToInvalidate = [self.contentCollectionView indexPathForCell:cell];
+                 if ( indexPathToInvalidate != nil && NO )
+                 {
+                     [self.contentCollectionView performBatchUpdates:^void
+                      {
+                          [self.contentCollectionView reloadItemsAtIndexPaths:@[ indexPathToInvalidate ]];
+                      }
+                                                          completion:nil];
+                 }
+                 else
+                 {
+                     [self.contentCollectionView reloadSections:[NSIndexSet indexSetWithIndex:VContentViewSectionAllComments] ];
+                 }
+                 
+                 *stop = YES;
+             }
+         }];
+     }];
 }
 
 #pragma mark VPurchaseViewControllerDelegate
