@@ -35,7 +35,7 @@
         [collectionView setContentOffset:targetContentOffset animated:NO];
         collectionView.scrollEnabled = NO;
     }
-    else
+    else if ( !CGPointEqualToPoint( self.preRotationContentOffset, CGPointZero ) )
     {
         [collectionView setContentOffset:self.preRotationContentOffset animated:NO];
         collectionView.scrollEnabled = YES;

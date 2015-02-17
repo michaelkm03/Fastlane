@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="lY7-iJ-Wrx">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="lY7-iJ-Wrx">
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
     <scenes>
         <!--Web Browser View Controller-->
@@ -64,8 +63,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Vt8-xj-xda" userLabel="Progress bar" customClass="VProgressBarView">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vt8-xj-xda" userLabel="Progress bar" customClass="VProgressBarView">
+                                <rect key="frame" x="0.0" y="64" width="320" height="2"/>
                                 <color key="backgroundColor" red="1" green="0.035351606610000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="2" id="tJ6-5s-lwx"/>
+                                </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2n7-et-juQ" userLabel="Back Button">
                                 <rect key="frame" x="2" y="17" width="30" height="45"/>
@@ -129,9 +132,12 @@
                             <constraint firstItem="6my-03-sbB" firstAttribute="leading" secondItem="2n7-et-juQ" secondAttribute="trailing" constant="3" id="WME-O1-JeV"/>
                             <constraint firstItem="PTL-ew-6sW" firstAttribute="leading" secondItem="cNG-U0-zNK" secondAttribute="trailing" constant="1" id="WkO-KO-Ko8"/>
                             <constraint firstItem="cNG-U0-zNK" firstAttribute="leading" secondItem="6my-03-sbB" secondAttribute="trailing" constant="3" id="YZ6-dE-ype"/>
+                            <constraint firstItem="Vt8-xj-xda" firstAttribute="leading" secondItem="Hl5-ah-vB3" secondAttribute="leading" id="bBy-jo-iab"/>
                             <constraint firstItem="xd6-ZA-jPh" firstAttribute="top" secondItem="PTL-ew-6sW" secondAttribute="bottom" id="jeX-S7-Dje"/>
                             <constraint firstItem="2n7-et-juQ" firstAttribute="leading" secondItem="Hl5-ah-vB3" secondAttribute="leading" constant="2" id="qF7-aT-FSL"/>
                             <constraint firstItem="2n7-et-juQ" firstAttribute="top" secondItem="S66-qs-wfS" secondAttribute="bottom" constant="-3" id="qHd-Aj-iHu"/>
+                            <constraint firstItem="Vt8-xj-xda" firstAttribute="top" secondItem="xd6-ZA-jPh" secondAttribute="bottom" id="rlm-KS-zzK"/>
+                            <constraint firstAttribute="trailing" secondItem="Vt8-xj-xda" secondAttribute="trailing" id="sym-Fn-EPZ"/>
                         </constraints>
                     </view>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
