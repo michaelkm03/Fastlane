@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import <objc/runtime.h>
-
 #import "VNewContentViewController+Actions.h"
 
 // Theme

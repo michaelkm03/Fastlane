@@ -6,23 +6,38 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import <MBProgressHUD.h>
-
 #import "VTagsSearchResultsViewController.h"
 #import "VUsersAndTagsSearchViewController.h"
+
+// VObjectManager
 #import "VObjectManager+Discover.h"
 #import "VObjectManager+Users.h"
 #import "VObjectManager+Login.h"
 #import "VUser.h"
 #import "VHashtag.h"
-#import "VStream+Fetcher.h"
-#import "VStreamCollectionViewController.h"
-#import "VConstants.h"
-#import "VDependencyManager.h"
-#import "VAuthorizationViewControllerFactory.h"
-#import "VTrendingTagCell.h"
-#import "VNoContentView.h"
+
+// Stream
 #import "VHashtagStreamCollectionViewController.h"
+#import "VStreamCollectionViewController.h"
+
+// Constants
+#import "VConstants.h"
+
+// Dependency Manager
+#import "VDependencyManager.h"
+
+// Auth Factory
+#import "VAuthorizationViewControllerFactory.h"
+
+// Tableview Cell
+#import "VTrendingTagCell.h"
+
+// No Content View
+#import "VNoContentView.h"
+
+// MBProgressHUD
+#import <MBProgressHUD.h>
+
 
 static NSString * const kVTagResultIdentifier = @"VTrendingTagCell";
 

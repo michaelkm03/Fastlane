@@ -36,7 +36,6 @@
 #import "VFooterActivityIndicatorView.h"
 
 const CGFloat kVLoadNextPagePoint = .75f;
-const CGFloat kTopMargin = 10.0f;
 
 @interface VAbstractStreamCollectionViewController () <UICollectionViewDelegate>
 
