@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="PNZ-XS-GB1">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="kYh-dZ-t7J">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
@@ -11,40 +11,6 @@
         </mutableArray>
     </customFonts>
     <scenes>
-        <!--Settings-->
-        <scene sceneID="rUK-Y4-cAu">
-            <objects>
-                <viewController storyboardIdentifier="settingscontainer" title="Settings" id="PNZ-XS-GB1" customClass="VSettingsContainerViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="GAS-Sh-lf0"/>
-                        <viewControllerLayoutGuide type="bottom" id="vSS-Gv-eds"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="Z5g-Pn-XsZ">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fy3-yg-vQF">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <connections>
-                                    <segue destination="kYh-dZ-t7J" kind="embed" id="rij-xf-Bpp"/>
-                                </connections>
-                            </containerView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstAttribute="trailing" secondItem="fy3-yg-vQF" secondAttribute="trailing" id="E4C-qd-qJV"/>
-                            <constraint firstItem="fy3-yg-vQF" firstAttribute="leading" secondItem="Z5g-Pn-XsZ" secondAttribute="leading" id="Qdr-mO-d9W"/>
-                            <constraint firstItem="fy3-yg-vQF" firstAttribute="top" secondItem="Z5g-Pn-XsZ" secondAttribute="top" id="RSw-Lx-GtW"/>
-                            <constraint firstItem="vSS-Gv-eds" firstAttribute="top" secondItem="fy3-yg-vQF" secondAttribute="bottom" id="k0R-vp-pCZ"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" title="Settings" id="mOD-AG-APN"/>
-                    <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="QLn-SU-52b" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-4822" y="-3168"/>
-        </scene>
         <!--Push Notifications-->
         <scene sceneID="CaJ-Gk-ZQq">
             <objects>
@@ -91,7 +57,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xIg-N5-kgX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3641" y="-3042"/>
+            <point key="canvasLocation" x="-5542" y="-1345.5"/>
         </scene>
         <!--Settings-->
         <scene sceneID="sS9-Sh-Zfa">
@@ -268,7 +234,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="NLd-hk-jX3" kind="push" id="20V-Yw-Jzd"/>
+                                            <segue destination="bDt-FM-3G4" kind="push" id="3z8-Mo-x2W"/>
                                         </connections>
                                     </tableViewCell>
                                 </cells>
@@ -434,7 +400,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iy9-Va-wjh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-4790" y="-1339"/>
+            <point key="canvasLocation" x="-4802" y="-1339.5"/>
         </scene>
         <!--Change Password-->
         <scene sceneID="jgg-OK-3hB">
@@ -562,7 +528,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IwE-mi-tse" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-4077" y="-3689"/>
+            <point key="canvasLocation" x="-3302" y="-1339.5"/>
         </scene>
         <!--Privacy Policy-->
         <scene sceneID="Dbm-PF-rlC">
@@ -581,7 +547,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UNw-LC-tuc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-4318" y="-1339"/>
+            <point key="canvasLocation" x="-4418" y="-1339.5"/>
         </scene>
         <!--Server Environment-->
         <scene sceneID="quU-xZ-2Jq">
@@ -614,7 +580,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Imd-KZ-Wo5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2413" y="-1491"/>
+            <point key="canvasLocation" x="-3661" y="-1339.5"/>
         </scene>
         <!--Purchase Settings-->
         <scene sceneID="oSl-bU-Faw">
@@ -739,47 +705,14 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mG7-xu-zJg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3295" y="-1281"/>
-        </scene>
-        <!--Video Autoplay Settings Container-->
-        <scene sceneID="FRf-XV-jNd">
-            <objects>
-                <viewController title="Server Environment" id="NLd-hk-jX3" userLabel="Video Autoplay Settings Container" customClass="VContainerViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="mx6-Dy-y1w"/>
-                        <viewControllerLayoutGuide type="bottom" id="NAU-qH-kP3"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="T1O-qd-oMC">
-                        <rect key="frame" x="0.0" y="44" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ave-tB-HpG">
-                                <rect key="frame" x="0.0" y="64" width="320" height="504"/>
-                                <connections>
-                                    <segue destination="bDt-FM-3G4" kind="embed" id="H1j-Gm-r6m"/>
-                                </connections>
-                            </containerView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="ave-tB-HpG" firstAttribute="top" secondItem="mx6-Dy-y1w" secondAttribute="bottom" id="P11-qB-QjG"/>
-                            <constraint firstItem="ave-tB-HpG" firstAttribute="leading" secondItem="T1O-qd-oMC" secondAttribute="leading" id="Rt0-yH-fgO"/>
-                            <constraint firstItem="NAU-qH-kP3" firstAttribute="top" secondItem="ave-tB-HpG" secondAttribute="bottom" id="XQs-Rg-mep"/>
-                            <constraint firstAttribute="trailing" secondItem="ave-tB-HpG" secondAttribute="trailing" id="nBm-vM-p4D"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" id="TnD-UD-T2e"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="A64-3Y-jIX" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-3653" y="-2365"/>
+            <point key="canvasLocation" x="-4039" y="-1339.5"/>
         </scene>
         <!--Video Autoplay Settings-->
         <scene sceneID="xfB-WG-Eh5">
             <objects>
                 <tableViewController title="Server Environment" id="bDt-FM-3G4" userLabel="Video Autoplay Settings" customClass="VAutoplaySettingsViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="7SB-ip-Cnv">
-                        <rect key="frame" x="0.0" y="44" width="320" height="460"/>
+                        <rect key="frame" x="0.0" y="44" width="320" height="661"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <color key="separatorColor" red="0.96470588239999999" green="0.96470588239999999" blue="0.8862745098" alpha="1" colorSpace="calibratedRGB"/>
@@ -811,9 +744,12 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hZd-LQ-jLU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3202" y="-2365"/>
+            <point key="canvasLocation" x="-5182" y="-1345.5"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="cameraButtonBack" width="22" height="17"/>
+    </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
