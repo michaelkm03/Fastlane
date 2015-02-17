@@ -500,28 +500,6 @@ static const CGFloat kStatusBarHeight = 20.0f;
     }
 }
 
-- (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
-                                  animationControllerForOperation:(UINavigationControllerOperation)operation
-                                               fromViewController:(UIViewController *)fromVC
-                                                 toViewController:(UIViewController *)toVC
-{
-    if ( [fromVC respondsToSelector:@selector(navigationController:animationControllerForOperation:fromViewController:toViewController:)] )
-    {
-        return [(id<UINavigationControllerDelegate>)fromVC navigationController:navigationController
-                                                animationControllerForOperation:operation
-                                                             fromViewController:fromVC
-                                                               toViewController:toVC];
-    }
-    if ( [toVC respondsToSelector:@selector(navigationController:animationControllerForOperation:fromViewController:toViewController:)] )
-    {
-        return [(id<UINavigationControllerDelegate>)toVC navigationController:navigationController
-                                              animationControllerForOperation:operation
-                                                           fromViewController:fromVC
-                                                             toViewController:toVC];
-    }
-    return nil;
-}
-
 @end
 
 #pragma mark -
