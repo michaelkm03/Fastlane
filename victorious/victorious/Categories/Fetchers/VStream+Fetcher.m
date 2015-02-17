@@ -72,6 +72,7 @@ NSString * const VStreamFilterTypePopular = @"popular";
     NSManagedObjectContext *context = [[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext];
     VStream *stream = [self streamForPath:apiPath inContext:context];
     stream.hashtag = hashTag;
+    stream.name = [@"#" stringByAppendingString:hashTag];
     return stream;
 }
 

@@ -8,8 +8,13 @@
 
 #import "VConstants.h"
 #import "VDependencyManager.h"
+#import "VDependencyManager+VScaffoldViewController.h"
+#import "VHamburgerButton.h"
 #import "VScaffoldViewController.h"
+#import "VStreamCollectionViewController.h"
 #import "VTemplateGenerator.h"
+#import "VThemeManager.h"
+#import "VSettingManager.h"
 
 static NSString * const kIDKey = @"id";
 static NSString * const kReferenceIDKey = @"referenceID";
@@ -28,13 +33,17 @@ static NSString * const kMarqueeKey = @"marquee";
 static NSString * const kCanAddContentKey = @"canAddContent";
 static NSString * const kStreamsKey = @"streams";
 static NSString * const kInitialKey = @"initial";
-static NSString * const kStreamUrlPathKey = @"streamUrlPath";
 static NSString * const kUserSpecificKey = @"isUserSpecific";
 
 static NSString * const kRedKey = @"red";
 static NSString * const kGreenKey = @"green";
 static NSString * const kBlueKey = @"blue";
 static NSString * const kAlphaKey = @"alpha";
+
+// Other misc. properties
+static NSString * const kScreensKey = @"screens";
+static NSString * const kSelectorKey =  @"selector";
+static NSString * const kTitleImageKey = @"titleImage";
 
 // Workspace properties
 static NSString * const kToolsKey = @"tools";
@@ -61,7 +70,11 @@ static NSString * const kVideoMuted = @"videoMuted";
 @interface VTemplateGenerator ()
 
 @property (nonatomic, strong) NSDictionary *dataFromInitCall;
+@property (nonatomic) BOOL templateCEnabled;
 @property (nonatomic, strong) NSString *firstMenuItemID;
+@property (nonatomic, strong) NSString *homeRecentID;
+@property (nonatomic, strong) NSString *communityRecentID;
+@property (nonatomic, strong) NSDictionary *accentColor;
 
 @end
 
@@ -74,6 +87,9 @@ static NSString * const kVideoMuted = @"videoMuted";
     {
         _dataFromInitCall = initData;
         _firstMenuItemID = [[NSUUID UUID] UUIDString];
+        _homeRecentID = [[NSUUID UUID] UUIDString];
+        _communityRecentID = [[NSUUID UUID] UUIDString];
+        _templateCEnabled = [[_dataFromInitCall valueForKeyPath:@"experiments.template_c_enabled"] boolValue];
     }
     return self;
 }
@@ -82,29 +98,67 @@ static NSString * const kVideoMuted = @"videoMuted";
 {
     NSMutableDictionary *template = [[NSMutableDictionary alloc] init];
     [self.dataFromInitCall enumerateKeysAndObjectsUsingBlock:^(NSString *key, id obj, BOOL *stop)
-    {
-        if ([key isEqual:kAppearanceKey])
-        {
-            if ([obj isKindOfClass:[NSDictionary class]])
-            {
-                [template addEntriesFromDictionary:obj];
-            }
-        }
-        else
-        {
-            template[key] = obj;
-        }
-    }];
+     {
+         if ([key isEqual:kAppearanceKey])
+         {
+             if ([obj isKindOfClass:[NSDictionary class]])
+             {
+                 [template addEntriesFromDictionary:obj];
+                 
+                 NSDictionary *accentColor = obj[VDependencyManagerAccentColorKey];
+                 
+                 if ( accentColor == nil )
+                 {
+                     accentColor = @{
+                                     kRedKey: @0,
+                                     kBlueKey: @0,
+                                     kGreenKey: @0,
+                                     kAlphaKey: @1
+                                     };
+                 }
+                 self.accentColor = accentColor;
+             }
+         }
+         else
+         {
+             template[key] = obj;
+         }
+     }];
     
     template[VDependencyManagerScaffoldViewControllerKey] = @{ kClassNameKey: @"sideMenu.scaffold",
+                                                               VHamburgerButtonIconKey: (self.templateCEnabled ? [UIImage imageNamed:@"menuC"] : [UIImage imageNamed:@"Menu"] ),
                                                                VDependencyManagerInitialViewControllerKey: @{ kReferenceIDKey: self.firstMenuItemID },
                                                                VScaffoldViewControllerMenuComponentKey: [self menuComponent],
-                                                               VScaffoldViewControllerUserProfileViewComponentKey: @{ kClassNameKey: @"userProfile.screen" }
+                                                               VStreamCollectionViewControllerCreateSequenceIconKey: (self.templateCEnabled ? [UIImage imageNamed:@"createContentButtonC"] : [UIImage imageNamed:@"createContentButton"]),
+                                                               VScaffoldViewControllerUserProfileViewComponentKey: @{ kClassNameKey: @"userProfile.screen" },
+                                                               kSelectorKey: [self kSelectorKeyFromInitDictionary:self.dataFromInitCall],
+                                                               VScaffoldViewControllerNavigationBarAppearanceKey: [self navigationBarAppearance],
                                                             };
-#warning Hackey
     template[VDependencyManagerWorkspaceFlowKey] = [self workspaceFlowComponent];
     
     return template;
+}
+
+- (NSDictionary *)kSelectorKeyFromInitDictionary:(NSDictionary *)initDictionary
+{
+    NSDictionary *kSelectorKey = @{
+                                   kClassNameKey: @"basic.multiScreenSelector",
+                                   VDependencyManagerBackgroundColorKey: self.accentColor,
+                                   };
+    
+    if ( [[(NSDictionary *)[initDictionary objectForKey:@"experiments"] objectForKey:@"template_c_enabled"] boolValue] )
+    {
+        kSelectorKey =  @{
+                          kClassNameKey: @"textbar.multiScreenSelector",
+                          VDependencyManagerBackgroundColorKey:@{
+                                              kRedKey: @255,
+                                              kBlueKey: @255,
+                                              kGreenKey: @255,
+                                              kAlphaKey: @1
+                                              }
+                          };
+    }
+    return kSelectorKey;
 }
 
 - (NSDictionary *)workspaceFlowComponent
@@ -255,6 +309,33 @@ static NSString * const kVideoMuted = @"videoMuted";
              };
 }
 
+- (NSDictionary *)navigationBarAppearance
+{
+    if ( self.templateCEnabled )
+    {
+        return @{
+                 VDependencyManagerBackgroundColorKey: @{
+                         kRedKey: @255,
+                         kGreenKey: @255,
+                         kBlueKey: @255,
+                         kAlphaKey: @1
+                         },
+                 VDependencyManagerMainTextColorKey: @{
+                         kRedKey: @0,
+                         kGreenKey: @0,
+                         kBlueKey: @0,
+                         kAlphaKey: @1
+                         }
+                 };
+    }
+    else
+    {
+        return @{
+                 VDependencyManagerBackgroundColorKey: self.dataFromInitCall[@"appearance"][@"color.accent"]
+                 };
+    }
+}
+
 - (NSDictionary *)menuComponent
 {
     return @{
@@ -264,47 +345,30 @@ static NSString * const kVideoMuted = @"videoMuted";
                 @{
                     kIdentifierKey: @"Menu Home",
                     kTitleKey: NSLocalizedString(@"Home", @""),
-                    kDestinationKey: @{
-                        kIDKey: self.firstMenuItemID,
-                        kClassNameKey: @"stream.screen",
-                        kTitleKey: NSLocalizedString(@"Home", @""),
-                        kIsHomeKey: @YES,
-                        kCanAddContentKey: @YES,
-                        kStreamsKey: @[
-                            @{
-                                kTitleKey: NSLocalizedString(@"Featured", @""),
-                                kStreamUrlPathKey: @"/api/sequence/hot_detail_list_by_stream/home"
-                            },
-                            @{
-                                kTitleKey: NSLocalizedString(@"Recent", @""),
-                                kInitialKey: @YES,
-                                kStreamUrlPathKey: [self urlPathForStreamCategories:[VUGCCategories() arrayByAddingObjectsFromArray:VOwnerCategories()]]
-                            },
-                            @{
-                                kTitleKey: NSLocalizedString(@"Following", @""),
-                                kUserSpecificKey: @YES,
-                                kStreamUrlPathKey: @"/api/sequence/follows_detail_list_by_stream/0/home"
-                            }
-                        ]
-                    }
+                    kDestinationKey: [self homeScreen],
                 },
                 [self ownerStreamMenuItem],
                 @{
                     kIdentifierKey: @"Menu Community",
                     kTitleKey: NSLocalizedString(@"Community", @""),
                     kDestinationKey: @{
-                        kClassNameKey: @"stream.screen",
+                        kClassNameKey: @"basic.multiScreen",
                         kTitleKey: NSLocalizedString(@"Community", @""),
                         kCanAddContentKey: @YES,
-                        kStreamsKey: @[
+                        kInitialKey: @{ kReferenceIDKey: self.communityRecentID },
+                        kScreensKey: @[
                             @{
+                                kClassNameKey: @"stream.screen",
                                 kTitleKey: NSLocalizedString(@"Featured", @""),
-                                kStreamUrlPathKey: @"/api/sequence/hot_detail_list_by_stream/ugc"
+                                VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/hot_detail_list_by_stream/ugc",
+                                kCanAddContentKey: @YES,
                             },
                             @{
-                                kInitialKey: @YES,
+                                kClassNameKey: @"stream.screen",
+                                kIDKey: self.communityRecentID,
                                 kTitleKey: NSLocalizedString(@"Recent", @""),
-                                kStreamUrlPathKey: [self urlPathForStreamCategories:VUGCCategories()],
+                                VStreamCollectionViewControllerStreamURLPathKey: [self urlPathForStreamCategories:VUGCCategories()],
+                                kCanAddContentKey: @YES,
                             },
                         ]
                     }
@@ -349,20 +413,73 @@ static NSString * const kVideoMuted = @"videoMuted";
     NSString *categoryString = [categories componentsJoinedByString:@","];
     return [@"/api/sequence/detail_list_by_category/" stringByAppendingString:(categoryString ?: @"0")];
 }
+                
+- (NSDictionary *)homeScreen
+{
+    NSMutableDictionary *homeScreen = [@{
+        kIDKey: self.firstMenuItemID,
+        kClassNameKey: @"basic.multiScreen",
+        kScreensKey: @[
+                @{
+                    kClassNameKey: @"stream.screen",
+                    kTitleKey: NSLocalizedString(@"Featured", @""),
+                    VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/hot_detail_list_by_stream/home",
+                    kIsHomeKey: @YES,
+                    kCanAddContentKey: @YES,
+                    },
+                @{
+                    kIDKey: self.homeRecentID,
+                    kClassNameKey: @"stream.screen",
+                    kTitleKey: NSLocalizedString(@"Recent", @""),
+                    VStreamCollectionViewControllerStreamURLPathKey: [self urlPathForStreamCategories:[VUGCCategories() arrayByAddingObjectsFromArray:VOwnerCategories()]],
+                    kCanAddContentKey: @YES,
+                    kMarqueeKey: @YES,
+                    },
+                @{
+                    kClassNameKey: @"followingStream.screen",
+                    kTitleKey: NSLocalizedString(@"Following", @""),
+                    VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/follows_detail_list_by_stream/0/home",
+                    kCanAddContentKey: @YES,
+                    }
+                ],
+        kInitialKey: @{
+                kReferenceIDKey: self.homeRecentID,
+                },
+        } mutableCopy];
+    
+    UIImage *headerImage = [self homeHeaderImage];
+    if ( headerImage != nil )
+    {
+        homeScreen[kTitleImageKey] = headerImage;
+    }
+    
+    return homeScreen;
+}
+
+- (UIImage *)homeHeaderImage
+{
+    // This is a terrible hack. By default the header image is a 1x1 pt image. If this is what we get back in themedImageForKey return nil.
+    UIImage *headerImage = [UIImage imageNamed:VThemeManagerHomeHeaderImageKey];
+    if ((headerImage.size.width == 1) && (headerImage.size.height == 1))
+    {
+        return nil;
+    }
+    return headerImage;
+}
 
 - (NSDictionary *)homeRecentStream
 {
     NSDictionary *stream = @{
       kTitleKey: NSLocalizedString(@"Recent", @""),
       kInitialKey: @YES,
-      kStreamUrlPathKey: [self urlPathForStreamCategories:[VUGCCategories() arrayByAddingObjectsFromArray:VOwnerCategories()]]
+      VStreamCollectionViewControllerStreamURLPathKey: [self urlPathForStreamCategories:[VUGCCategories() arrayByAddingObjectsFromArray:VOwnerCategories()]]
     };
     
     NSNumber *marqueeEnabled = [self.dataFromInitCall valueForKeyPath:@"experiments.marquee_enabled"];
     if ( [marqueeEnabled isKindOfClass:[NSNumber class]] && [marqueeEnabled boolValue] )
     {
         NSMutableDictionary *mutableStream = [stream mutableCopy];
-        mutableStream[kMarqueeKey] = @{ kStreamUrlPathKey: @"/api/sequence/detail_list_by_stream/marquee" };
+        mutableStream[kMarqueeKey] = @{ VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/detail_list_by_stream/marquee" };
         return [mutableStream copy];
     }
     return stream;
@@ -379,7 +496,7 @@ static NSString * const kVideoMuted = @"videoMuted";
             kDestinationKey: @{
                 kClassNameKey: @"streamDirectory.screen",
                 kTitleKey: NSLocalizedString(@"Channels", nil),
-                kStreamUrlPathKey: @"/api/sequence/detail_list_by_stream/directory"
+                VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/detail_list_by_stream/directory"
             }
         };
     }
@@ -391,15 +508,15 @@ static NSString * const kVideoMuted = @"videoMuted";
             kDestinationKey: @{
                 kClassNameKey: @"stream.screen",
                 kTitleKey: NSLocalizedString(@"Owner", @""),
-                kStreamsKey: @[
+                kScreensKey: @[
                     @{
                         kTitleKey: NSLocalizedString(@"Featured", @""),
-                        kStreamUrlPathKey: @"/api/sequence/hot_detail_list_by_stream/owner"
+                        VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/hot_detail_list_by_stream/owner"
                     },
                     @{
                         kInitialKey: @YES,
                         kTitleKey: NSLocalizedString(@"Recent", @""),
-                        kStreamUrlPathKey: [self urlPathForStreamCategories:VOwnerCategories()],
+                        VStreamCollectionViewControllerStreamURLPathKey: [self urlPathForStreamCategories:VOwnerCategories()],
                     }
                 ]
             }

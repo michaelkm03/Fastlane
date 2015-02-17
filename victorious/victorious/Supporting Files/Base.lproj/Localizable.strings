@@ -411,6 +411,9 @@
 "NoFollowingHashtagsTitle"      =   "RUH-ROH! YOU HAVEN'T FOLLOWED ANY TAGS YET";
 "NoFollowingHashtagsMessage"    =   "Build a list of your favorite content by tapping items that have been tagged.";
 
+"NoHashtagsTitle"      =   "No hash tags here!";
+"NoHashtagsMessage"    =   "There were no posts found with the hashtag #%@.";
+
 "Type your feedback here..." = "Type your feedback here...";
 "Device:"               = "Device:";
 "OS Version:"           = "OS Version:";

@@ -21,9 +21,8 @@
 #import "VSettingManager.h"
 #import "VUnreadMessageCountCoordinator.h"
 #import "VConstants.h"
-#import "UIViewController+VNavMenu.h"
 
-@interface VInboxContainerViewController () <VNavigationHeaderDelegate>
+@interface VInboxContainerViewController ()
 
 @property (weak, nonatomic) IBOutlet UIView *noMessagesView;
 @property (weak, nonatomic) IBOutlet UILabel *noMessagesTitleLabel;
@@ -83,11 +82,10 @@ NSString * const VInboxContainerViewControllerInboxPushReceivedNotification = @"
     
     self.inboxViewController = self.childViewControllers.firstObject;
     
-    [self v_addNewNavHeaderWithTitles:nil];
-    self.navHeaderView.delegate = self;
-    [self.navHeaderView setRightButtonImage:[UIImage imageNamed:@"profileCompose"]
-                                 withAction:@selector(userSearchAction:)
-                                   onTarget:self.inboxViewController];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"profileCompose"]
+                                                                              style:UIBarButtonItemStylePlain
+                                                                             target:self.inboxViewController
+                                                                             action:@selector(userSearchAction:)];
 }
 
 - (BOOL)shouldAutorotate

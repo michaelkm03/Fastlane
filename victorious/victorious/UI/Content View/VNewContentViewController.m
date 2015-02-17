@@ -1249,7 +1249,6 @@ referenceSizeForHeaderInSection:(NSInteger)section
         __weak typeof(self) welf = self;
         cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
         {
-            [[VThemeManager sharedThemeManager] applyStyling];
             if (finished)
             {
                 welf.mediaURL = capturedMediaURL;
@@ -1286,17 +1285,12 @@ referenceSizeForHeaderInSection:(NSInteger)section
         [self.textEntryView setSelectedThumbnail:nil];
     };
     
-    
     UIAlertController *alertController = [self.alertHelper alertForConfirmDiscardMediaWithDelete:^
                                           {
                                               clearMediaSelection();
                                               showCamera();
                                           }
-                                                                                          cancel:^
-                                          {
-                                              [[VThemeManager sharedThemeManager] applyStyling];
-                                          }];
-    [[VThemeManager sharedThemeManager] removeStyling];
+                                                                                          cancel:nil];
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
@@ -1507,11 +1501,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
      {
          [self.videoCell hideEndCard];
          
-         [[VThemeManager sharedThemeManager] removeStyling];
-         [self presentViewController:[self.alertHelper alertForNextSequenceErrorWithDismiss:^
-                                      {
-                                          [[VThemeManager sharedThemeManager] applyStyling];
-                                      }] animated:YES completion:nil];
+         [self presentViewController:[self.alertHelper alertForNextSequenceErrorWithDismiss:nil] animated:YES completion:nil];
      }];
 }
 

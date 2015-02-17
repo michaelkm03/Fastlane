@@ -89,14 +89,3 @@ extern NSString * const VScaffoldViewControllerUserProfileViewComponentKey;
 - (void)displayResultOfNavigation:(UIViewController *)viewController;
 
 @end
-
-#pragma mark -
-
-@interface VDependencyManager (VScaffoldViewController)
-
-/**
- Returns a reference to the singleton instance of the current template's scaffolding
- */
-- (VScaffoldViewController *)scaffoldViewController;
-
-@end
