@@ -313,7 +313,8 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
         VComment *newComment;
         NSDictionary *payload = fullResponse[kVPayloadKey];
         NSNumber *commentID = @([payload[@"id"] integerValue]);
-        newComment = [self newCommentWithID:commentID onSequence:sequence text:text mediaURLPath:[mediaURL absoluteString]];
+        //Use payload to populate the text to avoid empty text if textcontainer containing text adjusts it before this block is called
+        newComment = [self newCommentWithID:commentID onSequence:sequence text:payload[@"text"] mediaURLPath:[mediaURL absoluteString]];
         newComment.realtime = time;
         [self fetchCommentByID:[payload[@"id"] integerValue] successBlock:nil failBlock:nil];
         if (asset)

@@ -167,7 +167,8 @@ static const char kAssociatedWorkspaceFlowKey;
 - (void)showRemixStreamFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence
 {
     VStream *stream = [VStream remixStreamForSequence:sequence];
-    VStreamCollectionViewController  *streamCollection = [VStreamCollectionViewController streamViewControllerForDefaultStream:stream andAllStreams:@[stream] title:NSLocalizedString(@"Remixes", nil)];
+    stream.name = NSLocalizedString(@"Remixes", nil);
+    VStreamCollectionViewController  *streamCollection = [VStreamCollectionViewController streamViewControllerForStream:stream];
     
     VNoContentView *noRemixView = [VNoContentView noContentViewWithFrame:streamCollection.view.bounds];
     noRemixView.titleLabel.text = NSLocalizedString(@"NoRemixersTitle", @"");
@@ -262,9 +263,6 @@ static const char kAssociatedWorkspaceFlowKey;
 
 - (void)shareFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence node:(VNode *)node completion:(void(^)())completion
 {
-    //Remove the styling for the mail view.
-    [[VThemeManager sharedThemeManager] removeStyling];
-    
     VFacebookActivity *fbActivity = [[VFacebookActivity alloc] init];
     UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[sequence ?: [NSNull null],
                                                                                                                  [self shareTextForSequence:sequence],
@@ -281,7 +279,6 @@ static const char kAssociatedWorkspaceFlowKey;
                                   VTrackingKeyUrls : sequence.tracking.share ?: @[] };
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidShare parameters:params];
         
-        [[VThemeManager sharedThemeManager] applyStyling];
         [viewController reloadInputViews];
         
         if ( completion != nil )

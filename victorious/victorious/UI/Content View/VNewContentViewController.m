@@ -88,6 +88,8 @@
 
 #import <SDWebImage/UIImageView+WebCache.h>
 
+#import "VInlineSearchTableViewController.h"
+
 #define HANDOFFENABLED 0
 static const CGFloat kMaxInputBarHeight = 200.0f;
 
@@ -585,7 +587,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     VPurchaseViewController *viewController = [VPurchaseViewController purchaseViewControllerWithVoteType:experienceEnhander.voteType];
     viewController.transitioningDelegate = self.modalTransitionDelegate;
     viewController.delegate = self;
-    [self.navigationController pushViewController:viewController animated:YES];
+    [self presentViewController:viewController animated:YES completion:nil];
 }
 
 - (void)showLoginViewController:(NSNotification *)notification
@@ -1247,7 +1249,6 @@ referenceSizeForHeaderInSection:(NSInteger)section
         __weak typeof(self) welf = self;
         cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
         {
-            [[VThemeManager sharedThemeManager] applyStyling];
             if (finished)
             {
                 welf.mediaURL = capturedMediaURL;
@@ -1284,17 +1285,12 @@ referenceSizeForHeaderInSection:(NSInteger)section
         [self.textEntryView setSelectedThumbnail:nil];
     };
     
-    
     UIAlertController *alertController = [self.alertHelper alertForConfirmDiscardMediaWithDelete:^
                                           {
                                               clearMediaSelection();
                                               showCamera();
                                           }
-                                                                                          cancel:^
-                                          {
-                                              [[VThemeManager sharedThemeManager] applyStyling];
-                                          }];
-    [[VThemeManager sharedThemeManager] removeStyling];
+                                                                                          cancel:nil];
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
@@ -1349,9 +1345,9 @@ referenceSizeForHeaderInSection:(NSInteger)section
     [searchTableView setTranslatesAutoresizingMaskIntoConstraints:NO];
     searchTableView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     NSDictionary *views = @{@"searchTableView":searchTableView, @"textEntryView":self.textEntryView};
-    [superview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[searchTableView][textEntryView]"
+    [superview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[searchTableView(>=height)][textEntryView]"
                                                                       options:0
-                                                                      metrics:nil
+                                                                      metrics:@{ @"height":@(kSearchTableDesiredMinimumHeight) }
                                                                         views:views]];
     [superview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[searchTableView]|"
                                                                       options:kNilOptions
@@ -1505,11 +1501,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
      {
          [self.videoCell hideEndCard];
          
-         [[VThemeManager sharedThemeManager] removeStyling];
-         [self presentViewController:[self.alertHelper alertForNextSequenceErrorWithDismiss:^
-                                      {
-                                          [[VThemeManager sharedThemeManager] applyStyling];
-                                      }] animated:YES completion:nil];
+         [self presentViewController:[self.alertHelper alertForNextSequenceErrorWithDismiss:nil] animated:YES completion:nil];
      }];
 }
 

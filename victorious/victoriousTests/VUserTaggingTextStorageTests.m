@@ -54,8 +54,9 @@
                                                             textView:nil
                                                      taggingDelegate:nil], @"should not throw error for nil init fields");
     
+    UITextView *textView = [[UITextView alloc] init];
     VUserTaggingTextStorage *textStorage = [[VUserTaggingTextStorage alloc] initWithString:self.databaseFormattedString
-                                                                                  textView:nil
+                                                                                  textView:textView
                                                                            taggingDelegate:nil];
     XCTAssertTrue([self.displayFormattedString isEqualToString:textStorage.string], @"text storage didn't automatically create display-formatted string after init with string");
 }
@@ -68,6 +69,14 @@
                                                                            taggingDelegate:nil];
     
     NSString *resultString = [textStorage databaseFormattedString];
+    XCTAssertNil(resultString, @"Database formatted string should return nil when textView is nil");
+    
+    UITextView *textView = [[UITextView alloc] init];
+    textStorage = [[VUserTaggingTextStorage alloc] initWithString:self.databaseFormattedString
+                                                         textView:textView
+                                                  taggingDelegate:nil];
+    
+    resultString = [textStorage databaseFormattedString];
     XCTAssertTrue([resultString isEqualToString:self.databaseFormattedString], @"creation of database formatted string failed");
 }
 

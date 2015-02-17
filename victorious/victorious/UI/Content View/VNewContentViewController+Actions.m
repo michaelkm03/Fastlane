@@ -38,8 +38,14 @@
 #import "VLoginViewController.h"
 #import "VStreamCollectionViewController.h"
 #import "VAuthorizationViewControllerFactory.h"
-
 #import "VSequenceActionController.h"
+#import "VHashtagStreamCollectionViewController.h"
+
+@interface VNewContentViewController ()
+
+@property VSequenceActionController *sequenceActionController;
+
+@end
 
 @implementation VNewContentViewController (Actions)
 
@@ -69,13 +75,11 @@
     VActionItem *descripTionItem = [VActionItem descriptionActionItemWithText:self.viewModel.name
                                                       hashTagSelectionHandler:^(NSString *hashTag)
                                     {
-                                        VStreamCollectionViewController *stream = [VStreamCollectionViewController hashtagStreamWithHashtag:hashTag];
+                                        VHashtagStreamCollectionViewController *vc = [VHashtagStreamCollectionViewController instantiateWithHashtag:hashTag];
                                         
-                                        [contentViewController dismissViewControllerAnimated:YES
-                                                                 completion:^
+                                        [contentViewController dismissViewControllerAnimated:YES completion:^
                                          {
-                                             [contentViewController.navigationController pushViewController:stream
-                                                                                  animated:YES];
+                                             [contentViewController.navigationController pushViewController:vc animated:YES];
                                          }];
                                     }];
 

@@ -77,6 +77,7 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
     self.parentLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font];
     self.dateLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font];
     [self.commentButton.titleLabel setFont:[[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font]];
+    self.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
     
     if ([[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
     {

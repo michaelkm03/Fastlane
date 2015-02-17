@@ -12,11 +12,9 @@
 #import "VThemeManager.h"
 #import "VConstants.h"
 #import "VPasswordValidator.h"
-
-#import "UIViewController+VNavMenu.h"
 #import "VSettingManager.h"
 
-@interface VChangePasswordViewController () <UITextFieldDelegate, VNavigationHeaderDelegate>
+@interface VChangePasswordViewController () <UITextFieldDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *oldPasswordTextField;
 @property (weak, nonatomic) IBOutlet UITextField *changedPasswordTextField;
@@ -35,10 +33,6 @@
 {
     [super viewDidLoad];
     
-    [self v_addNewNavHeaderWithTitles:nil];
-    self.navHeaderView.delegate = self;
-    [self.navHeaderView setRightButtonTitle:NSLocalizedString( @"Save", @"") withAction:@selector(saveChanges:) onTarget:self];
-
     self.oldPasswordTextField.delegate =   self;
     self.changedPasswordTextField.delegate =   self;
     self.confirmPasswordTextField.delegate =   self;
@@ -56,17 +50,6 @@
          textField.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
          textField.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
      }];
-}
-
-- (BOOL)prefersStatusBarHidden
-{
-    return !CGRectContainsRect(self.view.frame, self.navHeaderView.frame);
-}
-
-- (UIStatusBarStyle)preferredStatusBarStyle
-{
-    return ![[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled] ? UIStatusBarStyleLightContent
-    : UIStatusBarStyleDefault;
 }
 
 - (NSUInteger)supportedInterfaceOrientations
@@ -104,11 +87,6 @@
     {
         [self.passwordValidator showAlertInViewController:self withError:validationError];
     }
-}
-
-- (IBAction)goBack:(id)sender
-{
-    [self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark - UITextFieldDelegate

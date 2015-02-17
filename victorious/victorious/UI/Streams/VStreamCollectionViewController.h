@@ -13,7 +13,10 @@
 #import "VSequenceActionsDelegate.h"
 #import "VNewContentViewController.h"
 
-@class VStreamCollectionViewDataSource, VHashtag;
+extern NSString * const VStreamCollectionViewControllerStreamURLPathKey; ///< The key that identifies the stream URL path in VDependencyManager
+extern NSString * const VStreamCollectionViewControllerCreateSequenceIconKey; ///< The key that identifies the create sequence icon in VDependencyManager
+
+@class VStreamCollectionViewDataSource;
 
 @interface VStreamCollectionViewController : VAbstractStreamCollectionViewController <UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, VSequenceActionsDelegate, VHasManagedDependancies>
 
@@ -22,19 +25,8 @@
 @property (nonatomic, strong) UIView *noContentView;///<Sets this view as the background if it cannot fetch items for the current steam.
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
-+ (instancetype)hashtagStreamWithHashtag:(NSString *)hashtag;
-
 /**
- *  Returns a stream collection view controller with a victorious themed nav header.
- *
- *  @param stream     The first stream to display
- *  @param allStreams All streams for the view (the order will be used for the nav header)
- *  @param title      The title to use on the nav header.
- */
-+ (instancetype)streamViewControllerForDefaultStream:(VStream *)stream andAllStreams:(NSArray *)allStreams title:(NSString *)title;
-
-/**
- *  Returns a stream collection view control.  This method does not add a nav header to the VC.
+ *  Creates a new stream collection view controller
  *
  *  @param stream The stream to display
  */

@@ -12,6 +12,7 @@
 #import "VMessageContainerViewController.h"
 #import "VMessageTableDataSource.h"
 #import "VMessageViewController.h"
+#import "VNavigationController.h"
 #import "VObjectManager.h"
 #import "VObjectManager+ContentCreation.h"
 #import "VObjectManager+DirectMessaging.h"
@@ -161,6 +162,11 @@
 }
 
 - (BOOL)prefersStatusBarHidden
+{
+    return YES;
+}
+
+- (BOOL)v_prefersNavigationBarHidden
 {
     return YES;
 }

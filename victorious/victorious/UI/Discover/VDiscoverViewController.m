@@ -9,6 +9,7 @@
 #import <MBProgressHUD.h>
 #import "VDiscoverViewController.h"
 #import "VSuggestedPeopleCell.h"
+#import "VStream+Fetcher.h"
 #import "VTrendingTagCell.h"
 #import "VDiscoverTableHeaderViewController.h"
 #import "VSuggestedPeopleCollectionViewController.h"
@@ -23,9 +24,11 @@
 #import "VUser.h"
 #import "VAuthorizationViewControllerFactory.h"
 #import "VConstants.h"
+#import "VHashtagStreamCollectionViewController.h"
 
-static NSString * const kVSuggestedPeopleIdentifier          = @"VSuggestedPeopleCell";
-static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCell";
+static NSString * const kVSuggestedPeopleIdentifier = @"VSuggestedPeopleCell";
+static NSString * const kVTrendingTagIdentifier = @"VTrendingTagCell";
+static CGFloat const kTopInset = 22.0f; ///< The space between the top of the view controller and the top of the table view contents
 
 @interface VDiscoverViewController () <VDiscoverViewControllerProtocol, VSuggestedPeopleCollectionViewControllerDelegate>
 
@@ -64,6 +67,8 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
     
     [self registerCells];
     [self refresh:YES];
+    
+    self.tableView.contentInset = UIEdgeInsetsMake(kTopInset, 0.0f, 0.0f, 0.0f);
     
     // Watch for a change in the login status
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -369,8 +374,8 @@ static NSString * const kVTrendingTagIdentifier              = @"VTrendingTagCel
 
 - (void)showStreamWithHashtag:(VHashtag *)hashtag
 {
-    VStreamCollectionViewController *stream = [VStreamCollectionViewController hashtagStreamWithHashtag:hashtag.tag];
-    [self.navigationController pushViewController:stream animated:YES];
+    VHashtagStreamCollectionViewController *vc = [VHashtagStreamCollectionViewController instantiateWithHashtag:hashtag.tag];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark - Subscribe / Unsubscribe Actions
