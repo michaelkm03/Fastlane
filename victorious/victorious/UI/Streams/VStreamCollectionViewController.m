@@ -67,7 +67,8 @@
 static NSString * const kCanAddContentKey = @"canAddContent";
 static NSString * const kMarqueeKey = @"marquee";
 static NSString * const kStreamCollectionStoryboardId = @"StreamCollection";
-static CGFloat const kTemplateCLineSpacing = 8;
+static CGFloat const kTemplateCLineSpacing = 8.0f;
+static CGFloat const kExtraPaddingForTemplateC = 10.0f;
 
 NSString * const VStreamCollectionViewControllerStreamURLPathKey = @"streamUrlPath";
 NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"createSequenceIcon";
@@ -673,6 +674,28 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
 - (void)didEnterBackground:(NSNotification *)notification
 {
     [[VTrackingManager sharedInstance] clearQueuedEventsWithName:VTrackingEventSequenceDidAppearInStream];
+}
+
+#pragma mark - UICollectionViewDelegateFlowLayout
+
+- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
+{
+    UIEdgeInsets insetsFromSuper = UIEdgeInsetsZero;
+    
+    if ( [super respondsToSelector:@selector(collectionView:layout:insetForSectionAtIndex:)] )
+    {
+        insetsFromSuper = [super collectionView:collectionView layout:collectionViewLayout insetForSectionAtIndex:section];
+    }
+    
+    if ( [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled] && !self.streamDataSource.hasHeaderCell )
+    {
+        insetsFromSuper.top += kExtraPaddingForTemplateC;
+        return insetsFromSuper;
+    }
+    else
+    {
+        return insetsFromSuper;
+    }
 }
 
 #pragma mark - UIScrollViewDelegate

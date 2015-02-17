@@ -37,7 +37,7 @@
 
 const CGFloat kVLoadNextPagePoint = .75f;
 
-@interface VAbstractStreamCollectionViewController () <UICollectionViewDelegate>
+@interface VAbstractStreamCollectionViewController ()
 
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, weak) IBOutlet VScrollPaginator *scrollPaginator;
