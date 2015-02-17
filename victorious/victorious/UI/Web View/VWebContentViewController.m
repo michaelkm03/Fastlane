@@ -6,12 +6,13 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+@import WebKit;
+
 #import "VWebContentViewController.h"
 #import "VThemeManager.h"
 #import "VSettingManager.h"
-#import "VWebViewFactory.h"
 
-@interface VWebContentViewController () <VWebViewDelegate>
+@interface VWebContentViewController () <WKNavigationDelegate>
 
 @property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
 
@@ -25,36 +26,18 @@
 {
     [super viewDidLoad];
     
-    self.webView = [VWebViewFactory createWebView];
+    self.webView = [[WKWebView alloc] init];
     
-    self.webView.asView.backgroundColor = [UIColor whiteColor];
-    [self.view addSubview:self.webView.asView];
-    self.webView.delegate = self;
+    self.webView.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:self.webView];
+    self.webView.navigationDelegate = self;
     
     self.urlToView = self.urlToView;
-    
-    [self addConstraintsToWebView:self.webView.asView];
 }
 
 - (void)setFailureWithError:(NSError *)error
 {
-    [self webView:self.webView didFailLoadWithError:error];
-}
-
-- (void)addConstraintsToWebView:(UIView *)webView
-{
-    NSParameterAssert( webView.superview != nil );
-    
-    webView.translatesAutoresizingMaskIntoConstraints = NO;
-    NSDictionary *viewsDict = @{ @"webView" : webView };
-    [webView.superview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[webView]-0-|"
-                                                                              options:kNilOptions
-                                                                              metrics:nil
-                                                                                views:viewsDict]];
-    [webView.superview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[webView]-0-|"
-                                                                              options:kNilOptions
-                                                                              metrics:nil
-                                                                                views:viewsDict]];
+    [self webView:self.webView didFailNavigation:nil withError:error];
 }
 
 - (void)setShouldShowLoadingState:(BOOL)shouldShowLoadingState
@@ -81,10 +64,10 @@
         if ( !self.activityIndicator )
         {
             self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-            [self.webView.asView.superview addSubview:self.activityIndicator];
+            [self.webView.superview addSubview:self.activityIndicator];
             self.activityIndicator.hidesWhenStopped = YES;
         }
-        self.activityIndicator.center = self.webView.asView.superview.center;
+        self.activityIndicator.center = self.webView.superview.center;
         [self.activityIndicator startAnimating];
     }
 }
@@ -95,7 +78,7 @@
     
     [self.webView stopLoading];
     
-    self.webView.delegate = nil;    // disconnect the delegate as the webview is hidden
+    self.webView.navigationDelegate = nil;    // disconnect the delegate as the webview is hidden
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 
@@ -109,28 +92,37 @@
     return UIInterfaceOrientationMaskPortrait;
 }
 
-#pragma mark - VWebViewDelegate
+#pragma mark - WKNavigationDelegate
 
-- (void)webViewDidStartLoad:(id<VWebViewProtocol>)webView
+- (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation
+{
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    [self.activityIndicator stopAnimating];
+}
+
+- (void)webView:(WKWebView *)webView didFailNavigation:(WKNavigation *)navigation withError:(NSError *)error
+{
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    [self.activityIndicator stopAnimating];
+}
+
+- (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(WKNavigation *)navigation
 {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     [self.activityIndicator stopAnimating];
 }
 
-- (void)webViewDidFinishLoad:(id<VWebViewProtocol>)webView
+- (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler
 {
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-    [self.activityIndicator stopAnimating];
-}
-
-- (void)webView:(id<VWebViewProtocol>)webView didFailLoadWithError:(NSError *)error
-{
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-    [self.activityIndicator stopAnimating];
-}
-
-- (void)webView:(id<VWebViewProtocol>)webView didUpdateProgress:(float)progress
-{
+    if ( [navigationAction.request.URL.scheme.lowercaseString rangeOfString:@"http"].location != 0 )
+    {
+        [[UIApplication sharedApplication] openURL:navigationAction.request.URL];
+        decisionHandler( WKNavigationActionPolicyCancel );
+    }
+    else
+    {
+        decisionHandler( WKNavigationActionPolicyAllow );
+    }
 }
 
 @end

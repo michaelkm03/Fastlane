@@ -95,7 +95,8 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
     self.cameraPublishController.switchToConfigure = self.cameraRollSwitch;
     
     self.publishButton.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
-    self.publishButton.titleLabel.textColor = [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
+    [self.publishButton setTitleColor:[self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey]
+                             forState:UIControlStateNormal];
     self.captionTextView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     self.saveToCameraRollLabel.font = [self.dependencyManager fontForKey:VDependencyManagerLabel2FontKey];
     self.cameraRollSwitch.onTintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
@@ -132,10 +133,13 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
     UIFont *headerFont = [self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
     if (headerFont != nil)
     {
-        [attributes setObject:headerFont forKey:NSFontAttributeName];
+        attributes[NSFontAttributeName] = headerFont;
     }
     self.cancelButton.titleLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Cancel", @"")
                                                                                   attributes:attributes];
+    UIColor *textColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+    [self.cancelButton setTitleColor:textColor ?: [UIColor whiteColor]
+                            forState:UIControlStateNormal];
     
     self.previewImageView.image = self.publishParameters.previewImage;
 }
