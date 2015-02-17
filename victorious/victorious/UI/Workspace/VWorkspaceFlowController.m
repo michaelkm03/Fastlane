@@ -404,6 +404,7 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
 
 - (void)notifyDelegateOfCancel
 {
+    [self checkDelgate];
     [self.delegate workspaceFlowControllerDidCancel:self];
     objc_setAssociatedObject(self.flowNavigationController, &kAssociatedObjectKey, nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
@@ -411,10 +412,19 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
 - (void)notifyDelegateOfFinishWithPreviewImage:(UIImage *)previewImage
                               capturedMediaURL:(NSURL *)capturedMediaURL
 {
+    [self checkDelgate];
     [self.delegate workspaceFlowController:self
                   finishedWithPreviewImage:previewImage
                           capturedMediaURL:capturedMediaURL];
     objc_setAssociatedObject(self.flowNavigationController, &kAssociatedObjectKey, nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (void)checkDelgate
+{
+    if (self.delegate == nil)
+    {
+        NSAssert(false, @"VWorkspaceFlowController must have a delegate");
+    }
 }
 
 #pragma mark - UINavigationControllerDelegate
