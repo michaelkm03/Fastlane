@@ -127,6 +127,7 @@ static CGFloat const kDirectoryInset = 10.0f;
     if ([item isKindOfClass:[VStream class]] && [((VStream *)item) onlyContainsSequences])
     {
         VStreamCollectionViewController *streamCollection = [VStreamCollectionViewController streamViewControllerForStream:(VStream *)item];
+        streamCollection.dependencyManager = self.dependencyManager;
         [self.navigationController pushViewController:streamCollection animated:YES];
     }
     else if ([item isKindOfClass:[VStream class]])
