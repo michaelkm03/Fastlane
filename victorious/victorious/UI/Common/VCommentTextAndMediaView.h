@@ -32,8 +32,6 @@
  */
 + (CGFloat)estimatedHeightWithWidth:(CGFloat)width text:(NSString *)text withMedia:(BOOL)hasMedia andFont:(UIFont *)font;
 
-+ (CGFloat)estimatedHeightWithWidth:(CGFloat)width attributedText:(NSAttributedString *)attributedText withMedia:(BOOL)hasMedia andFont:(UIFont *)font;
-
 /**
 Same as above but without a custom font.
  */+ (CGFloat)estimatedHeightWithWidth:(CGFloat)width text:(NSString *)text withMedia:(BOOL)hasMedia;
