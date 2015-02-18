@@ -51,7 +51,7 @@ static NSString * const kVTagResultIdentifier = @"VTrendingTagCell";
 
 @implementation VTagsSearchResultsViewController
 
-+ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
++ (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     VTagsSearchResultsViewController *searchResultsVC = [[VTagsSearchResultsViewController alloc] init];
     searchResultsVC.dependencyManager = dependencyManager;
@@ -116,6 +116,7 @@ static NSString * const kVTagResultIdentifier = @"VTrendingTagCell";
 - (void)showStreamWithHashtag:(VHashtag *)hashtag
 {
     VHashtagStreamCollectionViewController *vc = [VHashtagStreamCollectionViewController instantiateWithHashtag:hashtag.tag];
+    vc.dependencyManager = self.dependencyManager;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
