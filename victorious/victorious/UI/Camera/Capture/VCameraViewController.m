@@ -671,7 +671,6 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
         {
             dispatch_async(dispatch_get_main_queue(), ^
                            {
-//                               VRadialGradientLayer *radialGradientLayer = //self.radialGradientView.radialGradientLayer;
                                [UIView animateWithDuration:kCameraShutterShrinkDuration
                                                      delay:0.0f
                                                    options:UIViewAnimationOptionCurveEaseIn
@@ -1040,7 +1039,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
             [CATransaction setAnimationDuration:kCameraShutterShrinkDuration];
             
             radialGradientLayer.innerRadius = 0.0f;
-            radialGradientLayer.outerRadius = 1.0f;//CGRectGetWidth(self.view.bounds)/2;
+            radialGradientLayer.outerRadius = 1.0f;
         }
         [CATransaction commit];
     });
