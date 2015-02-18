@@ -132,9 +132,9 @@ static NSString * const kVideoMuted = @"videoMuted";
                                                                VStreamCollectionViewControllerCreateSequenceIconKey: (self.templateCEnabled ? [UIImage imageNamed:@"createContentButtonC"] : [UIImage imageNamed:@"createContentButton"]),
                                                                VScaffoldViewControllerUserProfileViewComponentKey: @{ kClassNameKey: @"userProfile.screen" },
                                                                kSelectorKey: [self kSelectorKeyFromInitDictionary:self.dataFromInitCall],
-                                                               VScaffoldViewControllerNavigationBarAppearanceKey: [self navigationBarAppearance],
                                                             };
     template[VDependencyManagerWorkspaceFlowKey] = [self workspaceFlowComponent];
+    template[VScaffoldViewControllerNavigationBarAppearanceKey] = [self navigationBarAppearance];
     
     return template;
 }
@@ -506,14 +506,16 @@ static NSString * const kVideoMuted = @"videoMuted";
             kIdentifierKey: @"Menu Channel",
             kTitleKey: NSLocalizedString(@"Channel", @""),
             kDestinationKey: @{
-                kClassNameKey: @"stream.screen",
+                kClassNameKey: @"basic.multiScreen",
                 kTitleKey: NSLocalizedString(@"Owner", @""),
                 kScreensKey: @[
                     @{
+                        kClassNameKey: @"stream.screen",
                         kTitleKey: NSLocalizedString(@"Featured", @""),
                         VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/hot_detail_list_by_stream/owner"
                     },
                     @{
+                        kClassNameKey: @"stream.screen",
                         kInitialKey: @YES,
                         kTitleKey: NSLocalizedString(@"Recent", @""),
                         VStreamCollectionViewControllerStreamURLPathKey: [self urlPathForStreamCategories:VOwnerCategories()],

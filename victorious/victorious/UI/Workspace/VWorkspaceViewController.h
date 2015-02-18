@@ -25,6 +25,7 @@ typedef void (^VWorkspaceCompletion)(BOOL finished, UIImage *previewImage, NSURL
  */
 @interface VWorkspaceViewController : UIViewController <VHasManagedDependancies>
 
+@property (nonatomic, copy) NSString *continueText;
 @property (nonatomic, copy) VWorkspaceCompletion completionBlock; ///< Called upon completion. PreviewImage and RenderedMediaURL will be nil if unsuccessful.
 
 @property (nonatomic, strong) UIImage *previewImage; ///< An image to use in the canvas.

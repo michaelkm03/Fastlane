@@ -7,7 +7,7 @@
 //
 
 #import "VProfileCreateViewController.h"
-#import "VCameraViewController.h"
+#import "VWorkspaceFlowController.h"
 #import "VUser.h"
 #import "TTTAttributedLabel.h"
 #import "VThemeManager.h"
@@ -36,7 +36,7 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
 @import CoreLocation;
 @import AddressBookUI;
 
-@interface VProfileCreateViewController () <UITextFieldDelegate, UITextViewDelegate, TTTAttributedLabelDelegate, CLLocationManagerDelegate>
+@interface VProfileCreateViewController () <UITextFieldDelegate, UITextViewDelegate, TTTAttributedLabelDelegate, CLLocationManagerDelegate, VWorkspaceFlowControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIButton *backButton;
 
@@ -359,9 +359,17 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
 
 - (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url
 {
-    VTOSViewController *termsOfServiceVC = [self.storyboard instantiateViewControllerWithIdentifier:NSStringFromClass([VTOSViewController class])];
+    VTOSViewController *termsOfServiceVC = [[UIStoryboard storyboardWithName:@"settings" bundle:nil] instantiateViewControllerWithIdentifier:NSStringFromClass([VTOSViewController class])];
     termsOfServiceVC.title = NSLocalizedString(@"ToSText", @"");
-    [self.navigationController pushViewController:termsOfServiceVC animated:YES];
+    if ( self.navigationController != nil )
+    {
+        [self showViewController:termsOfServiceVC sender:nil];
+    }
+    else
+    {
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:termsOfServiceVC];
+        [self presentViewController:navigationController animated:YES completion:nil];
+    }
 }
 
 #pragma mark - CCLocationManagerDelegate
@@ -475,20 +483,12 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
 
 - (IBAction)takePicture:(id)sender
 {
-    UINavigationController *navigationController = [[UINavigationController alloc] init];
-    VCameraViewController *cameraViewController = [VCameraViewController cameraViewControllerLimitedToPhotos];
-    cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
-    {
-        [self dismissViewControllerAnimated:YES completion:nil];
-        if (finished && capturedMediaURL)
-        {
-            self.profileImageView.image = previewImage;
-            self.registrationModel.selectedImage = previewImage;
-            self.registrationModel.profileImageURL = capturedMediaURL;
-        }
-    };
-    [navigationController pushViewController:cameraViewController animated:NO];
-    [self presentViewController:navigationController animated:YES completion:nil];
+    VWorkspaceFlowController *workspaceFlowController = [VWorkspaceFlowController workspaceFlowControllerWithoutADependencyMangerWithInjection:@{VImageToolControllerInitialImageEditStateKey:@(VImageToolControllerInitialImageEditStateFilter)}];
+    workspaceFlowController.delegate = self;
+    workspaceFlowController.videoEnabled = NO;
+    [self presentViewController:workspaceFlowController.flowRootViewController
+                       animated:YES
+                     completion:nil];
 }
 
 - (IBAction)back:(id)sender
@@ -619,6 +619,30 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
     {
         self.registrationModel.locationText = self.locationTextField.text;
     }
+}
+
+#pragma mark - VWorkspaceFlowControllerDelegate
+
+- (void)workspaceFlowControllerDidCancel:(VWorkspaceFlowController *)workspaceFlowController
+{
+    [self dismissViewControllerAnimated:YES
+                             completion:nil];
+}
+
+- (void)workspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
+       finishedWithPreviewImage:(UIImage *)previewImage
+               capturedMediaURL:(NSURL *)capturedMediaURL
+{
+    self.profileImageView.image = previewImage;
+    self.registrationModel.selectedImage = previewImage;
+    self.registrationModel.profileImageURL = capturedMediaURL;
+    [self dismissViewControllerAnimated:YES
+                             completion:nil];
+}
+
+- (BOOL)shouldShowPublishForWorkspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
+{
+    return NO;
 }
 
 @end

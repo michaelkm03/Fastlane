@@ -19,7 +19,7 @@
 
 #pragma mark - Init
 
-- (void)sharedInit
+- (void)layoutSubviews
 {
     self.backgroundColor = [UIColor clearColor];
 }

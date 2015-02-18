@@ -29,7 +29,7 @@
 
 #import <SDWebImage/UIImageView+WebCache.h>
 
-static const UIEdgeInsets kTextInsets        = { 36.0f, 56.0f, 11.0f, 25.0f };
+static const UIEdgeInsets kTextInsets        = { 36.0f, 66.0f, 11.0f, 55.0f };
 
 static const CGFloat kImagePreviewLoadedAnimationDuration = 0.25f;
 

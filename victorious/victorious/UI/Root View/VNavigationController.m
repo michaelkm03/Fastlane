@@ -115,7 +115,7 @@ static const CGFloat kStatusBarHeight = 20.0f;
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(innerNavigationControllerView)]];
-    [self addNavigationBarStyles];
+    [self.dependencyManager applyStyleToNavigationBar:self.innerNavigationController.navigationBar];
     [self.innerNavigationController didMoveToParentViewController:self];
 
     UIView *statusBarBackgroundView = [[UIView alloc] init];
@@ -131,31 +131,6 @@ static const CGFloat kStatusBarHeight = 20.0f;
                                                                       metrics:@{ @"kStatusBarHeight": @(kStatusBarHeight) }
                                                                         views:NSDictionaryOfVariableBindings(statusBarBackgroundView)]];
     self.statusBarBackgroundView = statusBarBackgroundView;
-}
-
-- (void)addNavigationBarStyles
-{
-    VDependencyManager *dependenciesForNavigationBar = [self.dependencyManager dependencyManagerForNavigationBar];
-    [self.innerNavigationController.navigationBar setBackgroundImage:[UIImage v_imageWithColor:[dependenciesForNavigationBar colorForKey:VDependencyManagerBackgroundColorKey]]
-                                                 forBarPosition:UIBarPositionAny
-                                                     barMetrics:UIBarMetricsDefault];
-    self.innerNavigationController.navigationBar.shadowImage = [UIImage v_imageWithColor:[UIColor clearColor]];
-    
-    NSMutableDictionary *titleAttributes = [NSMutableDictionary dictionary];
-    UIColor *navigationBarTitleTintColor = [dependenciesForNavigationBar colorForKey:VDependencyManagerMainTextColorKey];
-    UIFont *navigationBarTitleFont = [dependenciesForNavigationBar fontForKey:VDependencyManagerHeaderFontKey];
-    
-    if ( navigationBarTitleTintColor != nil )
-    {
-        titleAttributes[NSForegroundColorAttributeName] = navigationBarTitleTintColor;
-        self.innerNavigationController.navigationBar.tintColor = navigationBarTitleTintColor;
-    }
-    
-    if ( navigationBarTitleFont != nil )
-    {
-        titleAttributes[NSFontAttributeName] = navigationBarTitleFont;
-    }
-    self.innerNavigationController.navigationBar.titleTextAttributes = titleAttributes;
 }
 
 - (void)viewDidLayoutSubviews

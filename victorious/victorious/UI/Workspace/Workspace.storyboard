@@ -47,7 +47,7 @@
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="9tq-gs-IN4">
                                         <color key="tintColor" red="0.5" green="0.0" blue="0.5" alpha="1" colorSpace="calibratedRGB"/>
                                     </barButtonItem>
-                                    <barButtonItem title="Publish" id="wbF-Jm-Fnh">
+                                    <barButtonItem title="Continue" id="wbF-Jm-Fnh">
                                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <action selector="publish:" destination="63Q-Vo-LWD" id="1Q5-i3-8b5"/>
@@ -87,6 +87,7 @@
                         <outlet property="blurredBackgroundImageView" destination="rB7-pY-luZ" id="Gwp-ON-jBt"/>
                         <outlet property="bottomToolbar" destination="tla-hc-Ct5" id="QiO-Fi-Arc"/>
                         <outlet property="canvasView" destination="8c5-o3-ehb" id="DSZ-xC-dlK"/>
+                        <outlet property="continueButton" destination="wbF-Jm-Fnh" id="7bj-Dh-hVf"/>
                         <outlet property="topToolbar" destination="uLJ-ZJ-TSs" id="VtT-RG-Hlb"/>
                         <outlet property="verticalSpaceBottomBarToContainer" destination="pnB-hJ-LMB" id="LEH-SF-w5l"/>
                         <outlet property="verticalSpaceCanvasToTopOfContainerConstraint" destination="Uz7-kB-w8t" id="Yca-9A-jZ7"/>

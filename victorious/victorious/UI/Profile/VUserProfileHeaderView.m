@@ -86,7 +86,7 @@
     // Set the text
     if ( isCurrentUser )
     {
-        [self.editProfileButton setStyle:VButtonStylePrimary];
+        [self.editProfileButton setStyle:VButtonStyleSecondary];
         self.editProfileButton.primaryColor = linkColor;
         self.editProfileButton.secondaryColor = [UIColor blackColor];
         [self.editProfileButton setTitle:NSLocalizedString(@"editProfileButton", @"") forState:UIControlStateNormal];

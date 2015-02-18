@@ -8,7 +8,6 @@
 
 #import "NSString+VParseHelp.h"
 #import "UIImage+ImageCreation.h"
-#import "VCameraViewController.h"
 #import "VContentInputAccessoryView.h"
 #import "VCreatePollViewController.h"
 #import "VImageSearchViewController.h"
@@ -16,12 +15,16 @@
 #import "VObjectManager+ContentCreation.h"
 #import "UIStoryboard+VMainStoryboard.h"
 #import "victorious-Swift.h"  // for NSString+Unicode (imports all Swift files)
+#import "VWorkspaceFlowController.h"
+
+#import "VDependencyManager.h"
+#import "VRootViewController.h"
 
 static const NSInteger kMinLength = 2;
 
 static char KVOContext;
 
-@interface VCreatePollViewController() <UITextViewDelegate>
+@interface VCreatePollViewController() <UITextViewDelegate, VWorkspaceFlowControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 
@@ -266,21 +269,12 @@ static char KVOContext;
 
 - (IBAction)mediaButtonAction:(id)sender
 {
-    VCameraViewController *cameraViewController = [VCameraViewController cameraViewControllerStartingWithStillCapture];
-    cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
-    {
-        if (finished)
-        {
-            [self imagePickerFinishedWithURL:capturedMediaURL
-                                previewImage:previewImage];
-        }
-
-        [self dismissViewControllerAnimated:YES completion:nil];
-    };
-
-    UINavigationController *navigationController = [[UINavigationController alloc] init];
-    [navigationController pushViewController:cameraViewController animated:NO];
-    [self presentViewController:navigationController animated:YES completion:nil];
+    VWorkspaceFlowController *workspaceFlowController = [VWorkspaceFlowController workspaceFlowControllerWithoutADependencyMangerWithInjection:@{VImageToolControllerInitialImageEditStateKey:@(VImageToolControllerInitialImageEditStateFilter), VVideoToolControllerInitalVideoEditStateKey:@(VVideoToolControllerInitialVideoEditStateVideo)}];
+    workspaceFlowController.delegate = self;
+    workspaceFlowController.videoEnabled = YES;
+    [self presentViewController:workspaceFlowController.flowRootViewController
+                       animated:YES
+                     completion:nil];
 }
 
 - (IBAction)clearLeftMedia:(id)sender
@@ -545,6 +539,28 @@ static char KVOContext;
             }
         }
     }
+}
+
+#pragma mark - VWorkspaceFlowControllerDelegate
+
+- (void)workspaceFlowControllerDidCancel:(VWorkspaceFlowController *)workspaceFlowController
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)workspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
+       finishedWithPreviewImage:(UIImage *)previewImage
+               capturedMediaURL:(NSURL *)capturedMediaURL
+{
+    [self imagePickerFinishedWithURL:capturedMediaURL
+                        previewImage:previewImage];
+
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (BOOL)shouldShowPublishForWorkspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
+{
+    return NO;
 }
 
 @end

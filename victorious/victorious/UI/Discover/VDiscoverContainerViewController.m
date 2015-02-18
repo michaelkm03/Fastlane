@@ -37,8 +37,6 @@
 @property (nonatomic, strong) VUsersAndTagsSearchViewController *usersAndTagsSearchViewController;
 @property (nonatomic, strong) VTransitionDelegate *transitionDelegate;
 
-@property (nonatomic, strong) VDependencyManager *dependencyManager;
-
 @end
 
 @implementation VDiscoverContainerViewController

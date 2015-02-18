@@ -64,9 +64,10 @@ static const CGFloat kSpacingBetweenTextAndEdge = 35.0f;
     self.textView.editable = NO;
     self.textView.scrollEnabled = NO;
     self.textView.userInteractionEnabled = YES;
-    self.textView.textContainerInset = UIEdgeInsetsMake(0.0, -5.0, 0.0, -5.0);
+    self.textView.textContainerInset = UIEdgeInsetsMake(0.0, -5.0, 2.0, -5.0);
     self.textView.dataDetectorTypes = UIDataDetectorTypeLink;
     self.textView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    self.textView.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel1Font];
     [self addSubview:self.textView];
     
     UIView *background = [[UIView alloc] init];

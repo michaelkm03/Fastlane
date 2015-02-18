@@ -18,4 +18,6 @@
 @property (nonatomic, weak) IBOutlet UIView *searchBarContainer;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *searchBarHeightConstraint;
 
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
+
 @end

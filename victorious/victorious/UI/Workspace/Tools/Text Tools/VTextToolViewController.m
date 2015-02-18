@@ -223,20 +223,21 @@ shouldChangeTextInRange:(NSRange)range
  */
 - (void)renderText
 {
-    if (self.textView == nil)
+    BOOL noText = ((self.textView.text == nil) || (self.textView.text.length == 0));
+    if ((self.textView == nil) || noText)
     {
         // Nothing to render
         return;
     }
     
-    CGFloat scaleFactor = kTextRenderingSize / CGRectGetWidth(self.view.bounds);
+    CGFloat scaleFactor =  kTextRenderingSize / CGRectGetWidth(self.view.bounds);
     CGRect scaledRect = CGRectMake(0,
                                    0,
                                    CGRectGetWidth(self.view.bounds) * scaleFactor,
                                    CGRectGetHeight(self.view.bounds) * scaleFactor);
     
     __block UIImage *renderedImage;
-    UIGraphicsBeginImageContextWithOptions(scaledRect.size, NO, scaleFactor);
+    UIGraphicsBeginImageContextWithOptions(scaledRect.size, NO, 1);
     {
         CGContextRef context = UIGraphicsGetCurrentContext();
         CGContextSaveGState(context);

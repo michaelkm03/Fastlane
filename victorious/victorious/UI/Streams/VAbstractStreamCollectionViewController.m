@@ -19,10 +19,9 @@
 #import "VObjectManager+Login.h"
 
 //View Controllers
-#import "VCameraViewController.h"
-#import "VCreatePollViewController.h"
 #import "VFindFriendsViewController.h"
 #import "VAuthorizationViewControllerFactory.h"
+#import "VWorkspaceFlowController.h"
 #import "VNavigationController.h"
 
 //Data Models
@@ -82,6 +81,7 @@ const CGFloat kVLoadNextPagePoint = .75f;
 {
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.extendedLayoutIncludesOpaqueBars = YES;
+    self.navigationBarShouldAutoHide = YES;
 }
 
 - (void)dealloc
@@ -115,18 +115,46 @@ const CGFloat kVLoadNextPagePoint = .75f;
     {
         [self refreshWithCompletion:nil];
     }
+    
+    if ( self.v_navigationController == nil && self.navigationController.navigationBarHidden )
+    {
+        [self.navigationController setNavigationBarHidden:NO animated:YES];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    self.navigationControllerScrollDelegate = [[VNavigationControllerScrollDelegate alloc] initWithNavigationController:[self v_navigationController]];
+    
+    if ( self.navigationBarShouldAutoHide )
+    {
+        [self addScrollDelegate];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     self.navigationControllerScrollDelegate = nil;
+}
+
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    
+    if ( self.v_navigationController == nil )
+    {
+        if ( self.topInset != self.topLayoutGuide.length )
+        {
+            self.topInset = self.topLayoutGuide.length;
+            [self.collectionView.collectionViewLayout invalidateLayout];
+        }
+    }
+}
+
+- (void)addScrollDelegate
+{
+    self.navigationControllerScrollDelegate = [[VNavigationControllerScrollDelegate alloc] initWithNavigationController:[self v_navigationController]];
 }
 
 #pragma mark - Property Setters
@@ -150,6 +178,24 @@ const CGFloat kVLoadNextPagePoint = .75f;
     {
         [self.collectionView.collectionViewLayout invalidateLayout];
         [self positionRefreshControl];
+    }
+}
+
+- (void)setNavigationBarShouldAutoHide:(BOOL)navigationBarShouldAutoHide
+{
+    if ( navigationBarShouldAutoHide == _navigationBarShouldAutoHide )
+    {
+        return;
+    }
+    _navigationBarShouldAutoHide = navigationBarShouldAutoHide;
+    
+    if ( navigationBarShouldAutoHide )
+    {
+        [self addScrollDelegate];
+    }
+    else
+    {
+        self.navigationControllerScrollDelegate = nil;
     }
 }
 

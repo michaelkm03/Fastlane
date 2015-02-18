@@ -73,17 +73,20 @@ static CGFloat const kExtraPaddingForTemplateC = 10.0f;
 NSString * const VStreamCollectionViewControllerStreamURLPathKey = @"streamUrlPath";
 NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"createSequenceIcon";
 
-@interface VStreamCollectionViewController () <VMarqueeDelegate, VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout>
+@interface VStreamCollectionViewController () <VMarqueeDelegate, VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, VWorkspaceFlowControllerDelegate, UICollectionViewDelegateFlowLayout>
 
 @property (strong, nonatomic) VStreamCollectionViewDataSource *directoryDataSource;
 @property (strong, nonatomic) NSIndexPath *lastSelectedIndexPath;
 @property (strong, nonatomic) NSCache *preloadImageCache;
 @property (strong, nonatomic) VMarqueeController *marquee;
-@property (strong, nonatomic) VWorkspaceFlowController *workspaceFlowController;
+
+@property (strong, nonatomic) VUploadProgressViewController *uploadProgressViewController;
+@property (strong, nonatomic) NSLayoutConstraint *uploadProgressViewYconstraint;
 
 @property (strong, nonatomic) VSequenceActionController *sequenceActionController;
 
 @property (nonatomic, assign) BOOL hasRefreshed;
+@property (nonatomic, assign) BOOL canAddContent;
 
 @end
 
@@ -94,6 +97,7 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
 + (instancetype)streamViewControllerForStream:(VStream *)stream
 {
     VStreamCollectionViewController *streamCollection = (VStreamCollectionViewController *)[[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier:kStreamCollectionStoryboardId];
+    
     streamCollection.currentStream = stream;
     return streamCollection;
 }
@@ -121,6 +125,7 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
     if ( [[dependencyManager numberForKey:kCanAddContentKey] boolValue] )
     {
         [streamCollectionVC addCreateSequenceButton];
+        [streamCollectionVC addUploadProgressView];
     }
     
     NSNumber *cellVisibilityRatio = [dependencyManager numberForKey:@"experiments.stream_atf_view_threshold"];
@@ -270,6 +275,12 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
     self.streamDataSource.hasHeaderCell = shouldDisplayMarquee;
 }
 
+- (void)v_setLayoutInsets:(UIEdgeInsets)layoutInsets
+{
+    [super v_setLayoutInsets:layoutInsets];
+    self.uploadProgressViewYconstraint.constant = layoutInsets.top;
+}
+
 #pragma mark - Sequence Creation
 
 - (void)addCreateSequenceButton
@@ -324,21 +335,15 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
 {
     VDependencyManager *dependencyManager = [(id)self dependencyManager];
     
-    self.workspaceFlowController = [dependencyManager templateValueOfType:[VWorkspaceFlowController class]
-                                                                   forKey:VDependencyManagerWorkspaceFlowKey
-                                                    withAddedDependencies:@{VWorkspaceFlowControllerInitialCaptureStateKey:@(initialCaptureState),
-                                                                            VImageToolControllerInitialImageEditStateKey:@(initialImageEdit),
-                                                                            VVideoToolControllerInitalVideoEditStateKey:@(initialVideoEdit)}];
-    __weak typeof(self) welf = self;
-    self.workspaceFlowController.completion = ^void(BOOL finished)
-    {
-        [welf dismissViewControllerAnimated:YES
-                                 completion:^
-         {
-             welf.workspaceFlowController = nil;
-         }];
-    };
-    [self presentViewController:self.workspaceFlowController.flowRootViewController
+    VWorkspaceFlowController *workspaceFlowController = [dependencyManager templateValueOfType:[VWorkspaceFlowController class]
+                                                                                        forKey:VDependencyManagerWorkspaceFlowKey
+                                                                         withAddedDependencies:@{VWorkspaceFlowControllerInitialCaptureStateKey:@(initialCaptureState),
+                                                                                                 VImageToolControllerInitialImageEditStateKey:@(initialImageEdit),
+                                                                                                 VVideoToolControllerInitalVideoEditStateKey:@(initialVideoEdit)}];
+    workspaceFlowController.videoEnabled = YES;
+    workspaceFlowController.delegate = self;
+    
+    [self presentViewController:workspaceFlowController.flowRootViewController
                        animated:YES
                      completion:nil];
 }
@@ -583,6 +588,7 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
     
     // Instantiate and push to stack
     VHashtagStreamCollectionViewController *vc = [VHashtagStreamCollectionViewController instantiateWithHashtag:hashtag];
+    vc.dependencyManager = self.dependencyManager;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -615,6 +621,63 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventSequenceSelected parameters:params];
     
     [[self.dependencyManager scaffoldViewController] showContentViewWithSequence:sequence commentId:nil placeHolderImage:previewImage];
+}
+
+#pragma mark - Upload Progress View
+
+- (void)addUploadProgressView
+{
+    self.uploadProgressViewController = [VUploadProgressViewController viewControllerForUploadManager:[[VObjectManager sharedManager] uploadManager]];
+    self.uploadProgressViewController.delegate = self;
+    [self addChildViewController:self.uploadProgressViewController];
+    self.uploadProgressViewController.view.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:self.uploadProgressViewController.view];
+    [self.uploadProgressViewController didMoveToParentViewController:self];
+    
+    UIView *upvc = self.uploadProgressViewController.view;
+    upvc.hidden = YES;
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[upvc]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(upvc)]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:upvc
+                                                          attribute:NSLayoutAttributeHeight
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:nil
+                                                          attribute:NSLayoutAttributeNotAnAttribute
+                                                         multiplier:1.0f
+                                                           constant:VUploadProgressViewControllerIdealHeight]];
+    self.uploadProgressViewYconstraint = [NSLayoutConstraint constraintWithItem:upvc
+                                                                      attribute:NSLayoutAttributeTop
+                                                                      relatedBy:NSLayoutRelationEqual
+                                                                         toItem:self.view
+                                                                      attribute:NSLayoutAttributeTop
+                                                                     multiplier:1.0f
+                                                                       constant:self.topInset];
+    [self.view addConstraint:self.uploadProgressViewYconstraint];
+    
+    if (self.uploadProgressViewController.numberOfUploads > 0)
+    {
+        [self setUploadsHidden:NO];
+    }
+}
+
+- (void)setUploadProgressViewController:(VUploadProgressViewController *)uploadProgressViewController
+{
+    [self.uploadProgressViewController willMoveToParentViewController:nil];
+    [self.uploadProgressViewController.view removeFromSuperview];
+    [self.uploadProgressViewController removeFromParentViewController];
+    [self addChildViewController:uploadProgressViewController];
+    [self.view addSubview:uploadProgressViewController.view];
+    [uploadProgressViewController didMoveToParentViewController:self];
+    _uploadProgressViewController = uploadProgressViewController;
+}
+
+- (void)setUploadsHidden:(BOOL)hidden
+{
+    if ( !hidden && self.navigationController.navigationBarHidden )
+    {
+        [[self v_navigationController] setNavigationBarHidden:NO];
+    }
+    self.uploadProgressViewController.view.hidden = hidden;
+    self.navigationBarShouldAutoHide = hidden;
 }
 
 #pragma mark - Notifications
@@ -696,6 +759,14 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
     {
         return insetsFromSuper;
     }
+}
+
+#pragma mark - VUploadProgressViewControllerDelegate methods
+
+- (void)uploadProgressViewController:(VUploadProgressViewController *)upvc isNowDisplayingThisManyUploads:(NSInteger)uploadCount
+{
+    BOOL uploadsShouldBeHidden = uploadCount <= 0;
+    [self setUploadsHidden:uploadsShouldBeHidden];
 }
 
 #pragma mark - UIScrollViewDelegate
@@ -791,6 +862,20 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
                                                   eventId:sequence.remoteId];
         }
     }
+}
+
+#pragma mark - VWorkspaceFlowControllerDelegate
+
+- (void)workspaceFlowControllerDidCancel:(VWorkspaceFlowController *)workspaceFlowController
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)workspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
+       finishedWithPreviewImage:(UIImage *)previewImage
+               capturedMediaURL:(NSURL *)capturedMediaURL
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end
