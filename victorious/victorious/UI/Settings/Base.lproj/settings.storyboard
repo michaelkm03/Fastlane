@@ -381,7 +381,7 @@
         <!--Terms of Service-->
         <scene sceneID="80e-2h-oqv">
             <objects>
-                <viewController storyboardIdentifier="aboutUs" useStoryboardIdentifierAsRestorationIdentifier="YES" id="uRj-bL-JcU" customClass="VTOSViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="VTOSViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="uRj-bL-JcU" customClass="VTOSViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="X30-bY-u4J"/>
                         <viewControllerLayoutGuide type="bottom" id="kNM-ik-iVo"/>
