@@ -51,7 +51,7 @@ static NSString * const kVTagResultIdentifier = @"VTrendingTagCell";
 
 @implementation VTagsSearchResultsViewController
 
-+ (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
++ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     VTagsSearchResultsViewController *searchResultsVC = [[VTagsSearchResultsViewController alloc] init];
     searchResultsVC.dependencyManager = dependencyManager;

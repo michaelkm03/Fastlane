@@ -88,7 +88,7 @@ static NSInteger const kVMaxSearchResults = 1000;
     // Setup Search Results View Controllers
     self.userSearchResultsVC = [VUserSearchResultsViewController newWithDependencyManager:self.dependencyManager];
     self.userSearchResultsVC.delegate = self;
-    self.tagsSearchResultsVC = [VTagsSearchResultsViewController initWithDependencyManager:self.dependencyManager];
+    self.tagsSearchResultsVC = [VTagsSearchResultsViewController newWithDependencyManager:self.dependencyManager];
     self.tagsSearchResultsVC.delegate = self;
     
     // Add view controllers to container view

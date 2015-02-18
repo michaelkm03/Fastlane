@@ -33,7 +33,7 @@
  
  @return An instance of VTagsSearchResultsViewController
  */
-+ (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager;
++ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager;
 
 /**
  Array to hold search results returned from backend

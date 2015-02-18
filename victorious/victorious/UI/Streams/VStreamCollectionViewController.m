@@ -588,6 +588,7 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
     
     // Instantiate and push to stack
     VHashtagStreamCollectionViewController *vc = [VHashtagStreamCollectionViewController instantiateWithHashtag:hashtag];
+    vc.dependencyManager = self.dependencyManager;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
