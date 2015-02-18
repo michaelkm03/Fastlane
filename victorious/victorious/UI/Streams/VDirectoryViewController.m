@@ -14,6 +14,7 @@
 // ViewControllers
 #import "VStreamCollectionViewController.h"
 #import "VNewContentViewController.h"
+#import "VScaffoldViewController.h"
 
 // Views
 #import "MBProgressHUD.h"
@@ -24,6 +25,7 @@
 #import "VSequence.h"
 
 #import "VDependencyManager+VObjectManager.h"
+#import "VDependencyManager+VScaffoldViewController.h"
 #import "VObjectManager.h"
 #import "VSettingManager.h"
 
@@ -32,7 +34,7 @@ static NSString * const kStreamURLPathKey = @"streamUrlPath";
 
 static CGFloat const kDirectoryInset = 10.0f;
 
-@interface VDirectoryViewController () <UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, VStreamCollectionDataDelegate, VNewContentViewControllerDelegate>
+@interface VDirectoryViewController () <UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, VStreamCollectionDataDelegate>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
@@ -133,15 +135,12 @@ static CGFloat const kDirectoryInset = 10.0f;
     else if ([item isKindOfClass:[VStream class]])
     {
         VDirectoryViewController *sos = [VDirectoryViewController streamDirectoryForStream:(VStream *)item dependencyManager:self.dependencyManager];
+        sos.dependencyManager = self.dependencyManager;
         [self.navigationController pushViewController:sos animated:YES];
     }
     else if ([item isKindOfClass:[VSequence class]])
     {
-        VContentViewViewModel *contentViewViewModel = [[VContentViewViewModel alloc] initWithSequence:(VSequence *)item depenencyManager:self.dependencyManager];
-        VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewViewModel
-                                                            dependencyManager:self.dependencyManager];
-        contentViewController.delegate = self;
-        [self.navigationController pushViewController:contentViewController animated:YES];
+        [[self.dependencyManager scaffoldViewController] showContentViewWithSequence:(VSequence *)item commentId:nil placeHolderImage:nil];
     }
 }
 
@@ -166,21 +165,6 @@ static CGFloat const kDirectoryInset = 10.0f;
     cell.streamItem = item;
     
     return cell;
-}
-
-#pragma mark - VNewContentViewControllerDelegate
-
-- (void)newContentViewControllerDidClose:(VNewContentViewController *)contentViewController
-{
-    [self.navigationController popViewControllerAnimated:YES];
-    contentViewController.delegate = nil;
-}
-
-- (void)newContentViewControllerDidDeleteContent:(VNewContentViewController *)contentViewController
-{
-    [self.navigationController popViewControllerAnimated:YES];
-    [self refresh:self.refreshControl];
-    contentViewController.delegate = nil;
 }
 
 @end
