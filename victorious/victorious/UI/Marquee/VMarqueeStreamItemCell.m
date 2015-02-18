@@ -27,6 +27,7 @@ CGFloat const kVDetailHideDuration = 2.0f;
 static CGFloat const kVDetailHideTime = 0.3f;
 static CGFloat const kVDetailBounceHeight = 8.0f;
 static CGFloat const kVDetailBounceTime = 0.15f;
+static CGFloat const kTitleOffsetForTemplateC = 6.5f;
 
 @interface VMarqueeStreamItemCell ()
 
@@ -40,7 +41,7 @@ static CGFloat const kVDetailBounceTime = 0.15f;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *detailsBottomLayoutConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *detailsHeightLayoutConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *labelTopLayoutConstriant;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *labelBottomLayoutConstriant;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *labelBottomLayoutConstraint;
 @property (nonatomic, strong) VStreamWebViewController *webViewController;
 
 @property (nonatomic, weak) IBOutlet VDefaultProfileButton *profileImageButton;
@@ -64,6 +65,12 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
     self.nameLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:textColorKey];
     
     self.nameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
+    
+    if ( [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled] )
+    {
+        self.labelTopLayoutConstriant.constant -= kTitleOffsetForTemplateC;
+        self.labelBottomLayoutConstraint.constant += kTitleOffsetForTemplateC;
+    }
 }
 
 - (void)setStreamItem:(VStreamItem *)streamItem
@@ -124,7 +131,7 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
 {
     CGFloat maxWidth = CGRectGetWidth(self.nameLabel.bounds);
     CGRect textBounds = [text boundingRectWithSize:CGSizeMake(maxWidth, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName : font} context:NULL];
-    return fabsf(self.labelBottomLayoutConstriant.constant) + fabsf(self.labelTopLayoutConstriant.constant) + self.detailsBackgroundView.frame.origin.y + CGRectGetHeight(textBounds) + kVDetailBounceHeight;
+    return fabsf(self.labelBottomLayoutConstraint.constant) + fabsf(self.labelTopLayoutConstriant.constant) + self.detailsBackgroundView.frame.origin.y + CGRectGetHeight(textBounds) + kVDetailBounceHeight;
 }
 
 #pragma mark - Detail container animation
