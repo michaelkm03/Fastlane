@@ -269,7 +269,7 @@ static char KVOContext;
 
 - (IBAction)mediaButtonAction:(id)sender
 {
-    VWorkspaceFlowController *workspaceFlowController = [VWorkspaceFlowController workspaceFlowControllerWithoutADependencyMangerWithInjection:@{VImageToolControllerInitialImageEditStateKey:@(VImageToolControllerInitialImageEditStateFilter)}];
+    VWorkspaceFlowController *workspaceFlowController = [VWorkspaceFlowController workspaceFlowControllerWithoutADependencyMangerWithInjection:@{VImageToolControllerInitialImageEditStateKey:@(VImageToolControllerInitialImageEditStateFilter), VVideoToolControllerInitalVideoEditStateKey:@(VVideoToolControllerInitialVideoEditStateVideo)}];
     workspaceFlowController.delegate = self;
     workspaceFlowController.videoEnabled = YES;
     [self presentViewController:workspaceFlowController.flowRootViewController

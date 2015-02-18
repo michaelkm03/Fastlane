@@ -174,7 +174,8 @@ static const NSInteger VDefaultKeyboardHeight = 51;
     }
     void (^showCamera)(void) = ^void(void)
     {
-        VWorkspaceFlowController *workspaceFlowController = [VWorkspaceFlowController workspaceFlowControllerWithoutADependencyManger];
+        VWorkspaceFlowController *workspaceFlowController = [VWorkspaceFlowController workspaceFlowControllerWithoutADependencyMangerWithInjection:@{VImageToolControllerInitialImageEditStateKey:@(VImageToolControllerInitialImageEditStateFilter),
+                                                                                                                                                     VVideoToolControllerInitalVideoEditStateKey:@(VVideoToolControllerInitialVideoEditStateVideo)}];
         workspaceFlowController.delegate = self;
         workspaceFlowController.videoEnabled = YES;
         [self presentViewController:workspaceFlowController.flowRootViewController

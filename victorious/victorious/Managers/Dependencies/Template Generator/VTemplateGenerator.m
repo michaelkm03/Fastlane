@@ -506,14 +506,16 @@ static NSString * const kVideoMuted = @"videoMuted";
             kIdentifierKey: @"Menu Channel",
             kTitleKey: NSLocalizedString(@"Channel", @""),
             kDestinationKey: @{
-                kClassNameKey: @"stream.screen",
+                kClassNameKey: @"basic.multiScreen",
                 kTitleKey: NSLocalizedString(@"Owner", @""),
                 kScreensKey: @[
                     @{
+                        kClassNameKey: @"stream.screen",
                         kTitleKey: NSLocalizedString(@"Featured", @""),
                         VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/hot_detail_list_by_stream/owner"
                     },
                     @{
+                        kClassNameKey: @"stream.screen",
                         kInitialKey: @YES,
                         kTitleKey: NSLocalizedString(@"Recent", @""),
                         VStreamCollectionViewControllerStreamURLPathKey: [self urlPathForStreamCategories:VOwnerCategories()],
