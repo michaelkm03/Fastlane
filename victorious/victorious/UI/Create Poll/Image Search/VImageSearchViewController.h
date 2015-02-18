@@ -7,7 +7,8 @@
 //
 
 #import "VImageSearchDataSource.h"
-#import "VMediaPreviewViewController.h"
+
+typedef void (^VMediaCaptureCompletion)(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL);
 
 #import <UIKit/UIKit.h>
 

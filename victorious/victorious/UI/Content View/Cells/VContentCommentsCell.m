@@ -29,7 +29,7 @@
 
 #import <SDWebImage/UIImageView+WebCache.h>
 
-static const UIEdgeInsets kTextInsets        = { 36.0f, 56.0f, 11.0f, 25.0f };
+static const UIEdgeInsets kTextInsets        = { 36.0f, 66.0f, 11.0f, 55.0f };
 
 static const CGFloat kImagePreviewLoadedAnimationDuration = 0.25f;
 
@@ -243,6 +243,11 @@ static NSCache *_sharedImageCache = nil;
         [self.commentAndMediaView.mediaThumbnailView sd_setImageWithURL:url
                                                               completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL)
         {
+            if (error != nil)
+            {
+                return;
+            }
+            
             /**
              If the assetOrientation property was set, it was done so in a temporary comment
              after the comment was posted and before it could be reloaded from the server.

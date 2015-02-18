@@ -12,20 +12,17 @@
 
 @class VStream, VNavigationHeaderView, VCollectionRefreshControl;
 
-@interface VAbstractStreamCollectionViewController : UIViewController <VStreamCollectionDataDelegate, UIScrollViewDelegate>
+@interface VAbstractStreamCollectionViewController : UIViewController <VStreamCollectionDataDelegate, UIScrollViewDelegate, UICollectionViewDelegateFlowLayout>
 
 @property (nonatomic, strong) UIRefreshControl *refreshControl;///<Refresh control for the collectionview
 @property (nonatomic, strong) VStream *currentStream;///<The stream to display
-@property (nonatomic, strong) VStream *defaultStream;///<The default stream
-@property (nonatomic, strong) NSArray *allStreams;///<All streams that can display
 
 @property (nonatomic, strong) VStreamCollectionViewDataSource *streamDataSource;///<The VStreamCollectionViewDataSource for the object.  NOTE: a subclass is responsible for creating / setting its on data source in view did load.
 
 @property (nonatomic, weak, readonly) UICollectionView *collectionView;///<The collection view used to display the streamItems
 
-@property (nonatomic, weak) id<UIScrollViewDelegate> delegate;///<Optional scrollViewDelegate in case this VC is a child VC.
-
-@property (nonatomic) UIEdgeInsets contentInset;///<The default content inset that will be used when the view appears.  Will not be used if this VC has a nav header.
+@property (nonatomic, readonly) CGFloat topInset; ///< An amount by which to inset the top of the content in the collection view.
+@property (nonatomic) BOOL navigationBarShouldAutoHide; ///< Set to YES to hide the navigation bar on scroll
 
 /**
  Called by the refresh controller when the user activates it by scrolling up to the top.

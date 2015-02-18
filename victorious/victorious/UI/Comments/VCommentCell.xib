@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14A389a" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
@@ -14,7 +14,10 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="250" text="Johnny Appleseed" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yUe-8b-fBQ" userLabel="usename label">
-                        <rect key="frame" x="66" y="14" width="196" height="15"/>
+                        <rect key="frame" x="66" y="11" width="196" height="19"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="19" id="yeW-Ve-cfS"/>
+                        </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                         <nil key="highlightedColor"/>
                     </label>
@@ -60,13 +63,15 @@
                 </subviews>
                 <constraints>
                     <constraint firstItem="LIQ-Uh-Qd1" firstAttribute="centerY" secondItem="nnt-e6-nzy" secondAttribute="centerY" id="3rf-au-JAw"/>
+                    <constraint firstItem="LIQ-Uh-Qd1" firstAttribute="centerY" secondItem="nnt-e6-nzy" secondAttribute="centerY" id="B2V-fX-AP7"/>
                     <constraint firstAttribute="right" secondItem="LIQ-Uh-Qd1" secondAttribute="right" constant="20" id="Df1-hd-8Et"/>
                     <constraint firstItem="yUe-8b-fBQ" firstAttribute="left" secondItem="eAW-cc-13j" secondAttribute="left" constant="66" id="Mqd-Tj-Zud"/>
-                    <constraint firstItem="yUe-8b-fBQ" firstAttribute="top" secondItem="eAW-cc-13j" secondAttribute="top" constant="14" id="N5I-mS-ds0"/>
+                    <constraint firstItem="yUe-8b-fBQ" firstAttribute="top" secondItem="eAW-cc-13j" secondAttribute="top" constant="11" id="N5I-mS-ds0"/>
                     <constraint firstItem="kz3-f7-Kav" firstAttribute="centerX" secondItem="rxs-Gg-jrR" secondAttribute="centerX" id="O91-x4-1Pr"/>
                     <constraint firstAttribute="bottom" secondItem="Gyn-y5-GEV" secondAttribute="bottom" constant="11" id="PHo-7I-Iy3"/>
+                    <constraint firstItem="LIQ-Uh-Qd1" firstAttribute="centerY" secondItem="yUe-8b-fBQ" secondAttribute="centerY" id="PkQ-XT-X0M"/>
                     <constraint firstItem="yUe-8b-fBQ" firstAttribute="trailing" secondItem="nnt-e6-nzy" secondAttribute="leading" constant="-8" id="YjX-HS-bm6"/>
-                    <constraint firstItem="Gyn-y5-GEV" firstAttribute="top" secondItem="yUe-8b-fBQ" secondAttribute="bottom" constant="10" id="bWO-9t-7if"/>
+                    <constraint firstItem="Gyn-y5-GEV" firstAttribute="top" secondItem="yUe-8b-fBQ" secondAttribute="bottom" constant="9" id="bWO-9t-7if"/>
                     <constraint firstItem="kz3-f7-Kav" firstAttribute="centerY" secondItem="rxs-Gg-jrR" secondAttribute="centerY" id="gMn-f5-VtX"/>
                     <constraint firstItem="nnt-e6-nzy" firstAttribute="top" secondItem="eAW-cc-13j" secondAttribute="top" constant="14" id="gwe-5S-Xt3"/>
                     <constraint firstItem="rxs-Gg-jrR" firstAttribute="left" secondItem="eAW-cc-13j" secondAttribute="left" constant="20" id="kAY-fC-vS0"/>

@@ -10,6 +10,6 @@
 
 @interface VUserSearchViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 
-+ (instancetype)sharedInstance;
++ (instancetype)newFromStoryboard;
 
 @end

@@ -19,7 +19,7 @@
 #import "VImageToolController.h"
 #import "VVideoToolController.h"
 
-#warning should remove me evenutally
+//TODO: Hackey
 #import "VRootViewController.h"
 
 // Category
@@ -82,6 +82,15 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
 @end
 
 @implementation VWorkspaceFlowController
+
++ (instancetype)workspaceFlowControllerWithoutADependencyMangerWithInjection:(NSDictionary *)injectedDependencies
+{
+    VDependencyManager *globalDependencyManager = [[VRootViewController rootViewController] dependencyManager];
+    VWorkspaceFlowController *workspaceFlowController = [globalDependencyManager templateValueOfType:[VWorkspaceFlowController class]
+                                                                                              forKey:VDependencyManagerWorkspaceFlowKey
+                                                                               withAddedDependencies:injectedDependencies];
+    return workspaceFlowController;
+}
 
 + (instancetype)workspaceFlowControllerWithoutADependencyManger
 {
@@ -158,9 +167,9 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
     {
         NSAssert((self.renderedMeidaURL != nil), @"We need a rendered media url to begin publishing!");
         
-        if ([self.delegate respondsToSelector:@selector(shouldShowPublishForWOrkspaceFlowController:)])
+        if ([self.delegate respondsToSelector:@selector(shouldShowPublishForWorkspaceFlowController:)])
         {
-            BOOL shouldShowPublish = [self.delegate shouldShowPublishForWOrkspaceFlowController:self];
+            BOOL shouldShowPublish = [self.delegate shouldShowPublishForWorkspaceFlowController:self];
             if (!shouldShowPublish)
             {
                 [self notifyDelegateOfFinishWithPreviewImage:self.previewImage
@@ -380,9 +389,9 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
     };
     BOOL selectedFromAssetsLibraryOrSearch = self.cameraViewController.didSelectFromWebSearch || self.cameraViewController.didSelectAssetFromLibrary;
     BOOL shouldShowPublish = YES;
-    if ([self.delegate respondsToSelector:@selector(shouldShowPublishForWOrkspaceFlowController:)])
+    if ([self.delegate respondsToSelector:@selector(shouldShowPublishForWorkspaceFlowController:)])
     {
-        shouldShowPublish = [self.delegate shouldShowPublishForWOrkspaceFlowController:self];
+        shouldShowPublish = [self.delegate shouldShowPublishForWorkspaceFlowController:self];
     }
     workspaceViewController.continueText = shouldShowPublish ? NSLocalizedString(@"Publish", @"") : NSLocalizedString(@"Next", @"");
 
@@ -395,6 +404,7 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
 
 - (void)notifyDelegateOfCancel
 {
+    [self checkDelgate];
     [self.delegate workspaceFlowControllerDidCancel:self];
     objc_setAssociatedObject(self.flowNavigationController, &kAssociatedObjectKey, nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
@@ -402,10 +412,19 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
 - (void)notifyDelegateOfFinishWithPreviewImage:(UIImage *)previewImage
                               capturedMediaURL:(NSURL *)capturedMediaURL
 {
+    [self checkDelgate];
     [self.delegate workspaceFlowController:self
                   finishedWithPreviewImage:previewImage
                           capturedMediaURL:capturedMediaURL];
     objc_setAssociatedObject(self.flowNavigationController, &kAssociatedObjectKey, nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (void)checkDelgate
+{
+    if (self.delegate == nil)
+    {
+        NSAssert(false, @"VWorkspaceFlowController must have a delegate");
+    }
 }
 
 #pragma mark - UINavigationControllerDelegate
@@ -417,6 +436,11 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
 {
     if ([fromVC isKindOfClass:[VCameraViewController class]] && [toVC isKindOfClass:[VWorkspaceViewController class]])
     {
+        VCameraViewController *cameraViewController = (VCameraViewController *)fromVC;
+        if (cameraViewController.didSelectAssetFromLibrary || cameraViewController.didSelectFromWebSearch)
+        {
+            return nil;
+        }
         VVCameraShutterOverAnimator *animator = [[VVCameraShutterOverAnimator alloc] init];
         animator.presenting = (operation == UINavigationControllerOperationPush);
         return animator;

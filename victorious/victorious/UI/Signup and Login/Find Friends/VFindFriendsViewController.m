@@ -20,23 +20,17 @@
 #import "VThemeManager.h"
 #import "VSettingManager.h"
 
-#import "UIViewController+VNavMenu.h"
-
 @import MessageUI;
 
-@interface VFindFriendsViewController () <MFMailComposeViewControllerDelegate, MFMessageComposeViewControllerDelegate, VFindFriendsTableViewControllerDelegate, VNavigationHeaderDelegate>
+@interface VFindFriendsViewController () <MFMailComposeViewControllerDelegate, MFMessageComposeViewControllerDelegate, VFindFriendsTableViewControllerDelegate>
 
-@property (nonatomic, weak)   IBOutlet UIView   *headerView;
-@property (nonatomic, weak)   IBOutlet UILabel  *titleLabel;
-@property (nonatomic, weak)   IBOutlet UIButton *backButton;
-@property (nonatomic, weak)   IBOutlet UIButton *inviteButton;
 @property (nonatomic, weak)   IBOutlet UIView   *containerView;
 
 @property (nonatomic, strong) VTabBarViewController           *tabBarViewController;
 @property (nonatomic, strong) VFindFriendsTableViewController *contactsInnerViewController;
 @property (nonatomic, strong) VFindFriendsTableViewController *facebookInnerViewController;
 @property (nonatomic, strong) VFindFriendsTableViewController *twitterInnerViewController;
-
+@property (nonatomic) BOOL shouldShowInvite;
 @property (nonatomic, strong) NSString *appStoreLink;
 
 @end
@@ -60,23 +54,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+    self.shouldShowInvite = [MFMailComposeViewController canSendMail] || [MFMessageComposeViewController canSendText];
     
-    [self v_addNewNavHeaderWithTitles:nil];
-    self.navHeaderView.delegate = self;
-    
-    [self.navHeaderView setRightButtonTitle:NSLocalizedString( @"Invite", @"") withAction:@selector(pressedInvite:) onTarget:self];
-    
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.containerView
-                                                          attribute:NSLayoutAttributeTop
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.navHeaderView
-                                                          attribute:NSLayoutAttributeBottom
-                                                         multiplier:1.0f
-                                                           constant:0]];
-    
-    self.headerView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
-    self.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVButton2Font];
-    self.inviteButton.hidden = ![MFMailComposeViewController canSendMail] && ![MFMessageComposeViewController canSendText];
+    if ( self.shouldShowInvite )
+    {
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Invite", @"") style:UIBarButtonItemStylePlain target:self action:@selector(pressedInvite:)];
+    }
     
     [self addChildViewController:self.tabBarViewController];
     self.tabBarViewController.view.frame = self.containerView.bounds;
@@ -89,12 +73,6 @@
     
     NSURL *appStoreUrl = [[VSettingManager sharedManager] urlForKey:kVAppStoreURL];
     self.appStoreLink = appStoreUrl.absoluteString;
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    self.navigationController.navigationBarHidden = YES;
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -133,11 +111,11 @@
     self.twitterInnerViewController = [[VFindTwitterFriendsTableViewController alloc] init];
     
     self.contactsInnerViewController.shouldAutoselectNewFriends = self.shouldAutoselectNewFriends;
-    self.contactsInnerViewController.shouldDisplayInviteButton = !self.inviteButton.hidden;
+    self.contactsInnerViewController.shouldDisplayInviteButton = self.shouldShowInvite;
     self.facebookInnerViewController.shouldAutoselectNewFriends = self.shouldAutoselectNewFriends;
-    self.facebookInnerViewController.shouldDisplayInviteButton = !self.inviteButton.hidden;
+    self.facebookInnerViewController.shouldDisplayInviteButton = self.shouldShowInvite;
     self.twitterInnerViewController.shouldAutoselectNewFriends = self.shouldAutoselectNewFriends;
-    self.twitterInnerViewController.shouldDisplayInviteButton = !self.inviteButton.hidden;
+    self.twitterInnerViewController.shouldDisplayInviteButton = self.shouldShowInvite;
     
     tabViewController.viewControllers = @[v_newTab(self.contactsInnerViewController, [UIImage imageNamed:@"inviteContacts"]),
                                           v_newTab(self.facebookInnerViewController, [UIImage imageNamed:@"inviteFacebook"]),
@@ -214,9 +192,6 @@
 {
     if ([MFMailComposeViewController canSendMail])
     {
-        // The style is removed then re-applied so the mail compose view controller has the default appearance
-        [[VThemeManager sharedThemeManager] removeStyling];
-        
         NSString *appName = [[VThemeManager sharedThemeManager] themedStringForKey:kVCreatorName];
         NSString *msgSubj = [NSLocalizedString(@"InviteFriendsSubject", @"") stringByReplacingOccurrencesOfString:@"%@" withString:appName];
         
@@ -238,9 +213,6 @@
 {
     if ([MFMessageComposeViewController canSendText])
     {
-        // The style is removed then re-applied so the mail compose view controller has the default appearance
-        [[VThemeManager sharedThemeManager] removeStyling];
-        
         NSString *appName = [[VThemeManager sharedThemeManager] themedStringForKey:kVCreatorName];
         NSString *msgSubj = [NSLocalizedString(@"InviteFriendsSubject", @"") stringByReplacingOccurrencesOfString:@"%@" withString:appName];
         
@@ -265,20 +237,14 @@
 
 - (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
 {
-    [self dismissViewControllerAnimated:YES completion:^(void)
-    {
-        [[VThemeManager sharedThemeManager] applyStyling];
-    }];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - MFMessageComposeViewControllerDelegate methods
 
 - (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result
 {
-    [self dismissViewControllerAnimated:YES completion:^(void)
-    {
-        [[VThemeManager sharedThemeManager] applyStyling];
-    }];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

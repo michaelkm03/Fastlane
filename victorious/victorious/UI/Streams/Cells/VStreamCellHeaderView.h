@@ -24,6 +24,8 @@
 @property (nonatomic, weak) IBOutlet VDefaultProfileButton *profileImageButton;
 @property (nonatomic, weak) IBOutlet UIButton *profileHitboxutton;
 @property (nonatomic, weak) IBOutlet UIButton *commentButton;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *usernameLabelBottomConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *usernameLabelTopConstraint;
 
 @property (nonatomic, weak) id<VSequenceActionsDelegate> delegate;
 

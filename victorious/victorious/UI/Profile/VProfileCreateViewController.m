@@ -359,10 +359,17 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
 
 - (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url
 {
-    VTOSViewController *termsOfServiceVC = [self.storyboard instantiateViewControllerWithIdentifier:NSStringFromClass([VTOSViewController class])];
+    VTOSViewController *termsOfServiceVC = [[UIStoryboard storyboardWithName:@"settings" bundle:nil] instantiateViewControllerWithIdentifier:NSStringFromClass([VTOSViewController class])];
     termsOfServiceVC.title = NSLocalizedString(@"ToSText", @"");
-    termsOfServiceVC.wantsStatusBar = NO;
-    [self.navigationController pushViewController:termsOfServiceVC animated:YES];
+    if ( self.navigationController != nil )
+    {
+        [self showViewController:termsOfServiceVC sender:nil];
+    }
+    else
+    {
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:termsOfServiceVC];
+        [self presentViewController:navigationController animated:YES completion:nil];
+    }
 }
 
 #pragma mark - CCLocationManagerDelegate
@@ -476,8 +483,9 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
 
 - (IBAction)takePicture:(id)sender
 {
-    VWorkspaceFlowController *workspaceFlowController = [VWorkspaceFlowController workspaceFlowControllerWithoutADependencyManger];
+    VWorkspaceFlowController *workspaceFlowController = [VWorkspaceFlowController workspaceFlowControllerWithoutADependencyMangerWithInjection:@{VImageToolControllerInitialImageEditStateKey:@(VImageToolControllerInitialImageEditStateFilter)}];
     workspaceFlowController.delegate = self;
+    workspaceFlowController.videoEnabled = NO;
     [self presentViewController:workspaceFlowController.flowRootViewController
                        animated:YES
                      completion:nil];
@@ -632,5 +640,9 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
                              completion:nil];
 }
 
+- (BOOL)shouldShowPublishForWorkspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
+{
+    return NO;
+}
 
 @end

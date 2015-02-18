@@ -169,11 +169,6 @@ static char KVOContext;
 {
     [super viewWillAppear:animated];
 
-    if (![self.navigationController isNavigationBarHidden])
-    {
-        [self.navigationController setNavigationBarHidden:YES animated:YES];
-    }
-    
     if (!self.textViewsCleared)
     {
         self.leftAnswerTextView.text = @"";
@@ -185,11 +180,6 @@ static char KVOContext;
 - (NSUInteger)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskPortrait;
-}
-
-- (BOOL)prefersStatusBarHidden
-{
-    return YES;
 }
 
 - (BOOL)postButtonStateIsValid ///<Surfaces alert if content cannot be posted.  Returns YES if it can be posted and NO if it cannot.
@@ -279,7 +269,7 @@ static char KVOContext;
 
 - (IBAction)mediaButtonAction:(id)sender
 {
-    VWorkspaceFlowController *workspaceFlowController = [VWorkspaceFlowController workspaceFlowControllerWithoutADependencyManger];
+    VWorkspaceFlowController *workspaceFlowController = [VWorkspaceFlowController workspaceFlowControllerWithoutADependencyMangerWithInjection:@{VImageToolControllerInitialImageEditStateKey:@(VImageToolControllerInitialImageEditStateFilter), VVideoToolControllerInitalVideoEditStateKey:@(VVideoToolControllerInitialVideoEditStateVideo)}];
     workspaceFlowController.delegate = self;
     workspaceFlowController.videoEnabled = YES;
     [self presentViewController:workspaceFlowController.flowRootViewController
@@ -568,7 +558,7 @@ static char KVOContext;
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (BOOL)shouldShowPublishForWOrkspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
+- (BOOL)shouldShowPublishForWorkspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
 {
     return NO;
 }

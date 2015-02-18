@@ -244,14 +244,3 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
 }
 
 @end
-
-#pragma mark -
-
-@implementation VDependencyManager (VScaffoldViewController)
-
-- (VScaffoldViewController *)scaffoldViewController
-{
-    return [self singletonObjectOfType:[VScaffoldViewController class] forKey:VDependencyManagerScaffoldViewControllerKey];
-}
-
-@end

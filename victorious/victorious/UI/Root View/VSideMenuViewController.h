@@ -10,6 +10,8 @@
 
 #import <UIKit/UIKit.h>
 
+@class VNavigationController;
+
 @interface VSideMenuViewController : VScaffoldViewController
 
 @property (assign, readwrite, nonatomic) NSTimeInterval animationDuration;
@@ -26,7 +28,7 @@
 @property (assign, readwrite, nonatomic) BOOL parallaxEnabled;
 @property (assign, readwrite, nonatomic) BOOL bouncesHorizontally;
 
-@property (strong, readonly, nonatomic)  UINavigationController *contentViewController;
+@property (strong, readonly, nonatomic)  VNavigationController *contentViewController;
 
 - (void)presentMenuViewController;
 - (void)hideMenuViewController;

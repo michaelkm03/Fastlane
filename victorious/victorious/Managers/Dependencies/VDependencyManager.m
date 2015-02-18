@@ -18,6 +18,9 @@
 static NSString * const kTemplateClassesFilename = @"TemplateClasses";
 static NSString * const kPlistFileExtension = @"plist";
 
+// multi-purpose keys
+NSString * const VDependencyManagerTitleKey = @"title";
+
 // Keys for colors
 NSString * const VDependencyManagerBackgroundColorKey = @"color.background";
 NSString * const VDependencyManagerSecondaryBackgroundColorKey = @"color.bacground.secondary";
@@ -90,7 +93,7 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
     {
         _parentManager = parentManager;
         _configuration = configuration;
-        _privateQueue = dispatch_queue_create("VDependencyManager private queue", DISPATCH_QUEUE_CONCURRENT);
+        _privateQueue = dispatch_queue_create("com.getvictorious.VDependencyManager", DISPATCH_QUEUE_CONCURRENT);
         _singletonsByKey = [[NSMutableDictionary alloc] init];
         _configurationDictionariesByID = [self findConfigurationDictionariesByIDInTemplateDictionary:configuration];
         

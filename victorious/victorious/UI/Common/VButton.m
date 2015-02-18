@@ -62,7 +62,7 @@ static const CGFloat kActivityIndicatorShowDuration = 0.4f;
 {
     [self createActivityIndicator];
     
-    self.titleLabel.alpha = 0.0f;
+    [self setTitleColor:[self.titleLabel.textColor colorWithAlphaComponent:0.0f] forState:UIControlStateNormal];
     [UIView animateWithDuration:kActivityIndicatorShowDuration animations:^
      {
          self.activityIndicator.alpha = 1.0f;
@@ -77,7 +77,7 @@ static const CGFloat kActivityIndicatorShowDuration = 0.4f;
     self.activityIndicator.alpha = 0.0f;
     [UIView animateWithDuration:kActivityIndicatorShowDuration animations:^
      {
-         self.titleLabel.alpha = 1.0f;
+         [self setTitleColor:[self.titleLabel.textColor colorWithAlphaComponent:1.0f] forState:UIControlStateNormal];
      }
                      completion:nil];
 }

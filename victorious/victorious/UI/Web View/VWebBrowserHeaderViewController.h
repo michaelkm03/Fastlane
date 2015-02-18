@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VHeaderView.h"
 #import "VProgressBarView.h"
 
 @protocol VWebBrowserHeaderViewDelegate <NSObject>

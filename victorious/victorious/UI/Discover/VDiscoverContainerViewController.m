@@ -11,7 +11,6 @@
 #import "VUser.h"
 #import "VUserProfileViewController.h"
 #import "VSettingManager.h"
-#import "UIViewController+VNavMenu.h"
 #import "VDiscoverViewControllerProtocol.h"
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Users.h"
@@ -28,7 +27,7 @@
 #import "VSearchResultsTransition.h"
 #import "VTransitionDelegate.h"
 
-@interface VDiscoverContainerViewController () <VNavigationHeaderDelegate, UITextFieldDelegate>
+@interface VDiscoverContainerViewController () <UITextFieldDelegate>
 
 @property (nonatomic, weak) IBOutlet UITextField *searchField;
 @property (nonatomic, weak) IBOutlet UIButton *searchIconButton;
@@ -37,8 +36,6 @@
 @property (nonatomic, strong) UINavigationController *searchNavigationController;
 @property (nonatomic, strong) VUsersAndTagsSearchViewController *usersAndTagsSearchViewController;
 @property (nonatomic, strong) VTransitionDelegate *transitionDelegate;
-
-@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end
 
@@ -85,12 +82,10 @@
                                                  name:kVDiscoverUserProfileSelectedNotification
                                                object:nil];
 
-    [self v_addNewNavHeaderWithTitles:nil];
-    self.navHeaderView.delegate = self;
     NSLayoutConstraint *searchTopConstraint = [NSLayoutConstraint constraintWithItem:self.searchBarContainer
                                                                            attribute:NSLayoutAttributeTop
                                                                            relatedBy:NSLayoutRelationEqual
-                                                                              toItem:self.navHeaderView
+                                                                              toItem:self.topLayoutGuide
                                                                            attribute:NSLayoutAttributeBottom
                                                                           multiplier:1.0
                                                                             constant:0];
@@ -107,17 +102,6 @@
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-- (BOOL)prefersStatusBarHidden
-{
-    return !CGRectContainsRect(self.view.frame, self.navHeaderView.frame);
-}
-
-- (UIStatusBarStyle)preferredStatusBarStyle
-{
-    return ![[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled] ? UIStatusBarStyleLightContent
-    : UIStatusBarStyleDefault;
 }
 
 - (BOOL)shouldAutorotate
@@ -179,14 +163,13 @@
 
 #pragma mark - UITextFieldDelegate
 
- - (void)textFieldDidBeginEditing:(UITextField *)textField
+- (void)textFieldDidBeginEditing:(UITextField *)textField
 {
     // Release the search field
     [self.searchField resignFirstResponder];
 
     VUsersAndTagsSearchViewController *searchViewController = [VUsersAndTagsSearchViewController initWithDependencyManager:self.dependencyManager];
     searchViewController.transitioningDelegate = self.transitionDelegate;
-    self.navigationController.delegate = self.transitionDelegate;
     [self.navigationController pushViewController:searchViewController animated:YES];
 }
 
@@ -204,5 +187,20 @@
         self.usersAndTagsSearchViewController = segue.destinationViewController;
     }
 }
+
+#pragma mark - UINavigationControllerDelegate methods
+
+#if 0
+- (id <UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
+                                   animationControllerForOperation:(UINavigationControllerOperation)operation
+                                                fromViewController:(UIViewController *)fromVC
+                                                  toViewController:(UIViewController *)toVC
+{
+    return [self.transitionDelegate navigationController:navigationController
+                         animationControllerForOperation:operation
+                                      fromViewController:fromVC
+                                        toViewController:toVC];
+}
+#endif
 
 @end
