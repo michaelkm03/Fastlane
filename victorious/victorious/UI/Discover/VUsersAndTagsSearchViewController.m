@@ -372,8 +372,6 @@ static NSInteger const kVMaxSearchResults = 1000;
     NSString *messageTitle, *messageText;
     UIImage *messageIcon;
     
-    [self.searchField resignFirstResponder];
-    
     VNoContentView *noResultsFoundView = [VNoContentView noContentViewWithFrame:self.searchResultsContainerView.frame];
     if ( self.segmentControl.selectedSegmentIndex == 0 )
     {
