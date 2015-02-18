@@ -40,7 +40,7 @@ static CGFloat const kTitleOffsetForTemplateC = 6.5f;
 @property (nonatomic, weak) IBOutlet UIView *detailsBackgroundView;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *detailsBottomLayoutConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *detailsHeightLayoutConstraint;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *labelTopLayoutConstriant;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *labelTopLayoutConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *labelBottomLayoutConstraint;
 @property (nonatomic, strong) VStreamWebViewController *webViewController;
 
@@ -68,7 +68,7 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
     
     if ( [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled] )
     {
-        self.labelTopLayoutConstriant.constant -= kTitleOffsetForTemplateC;
+        self.labelTopLayoutConstraint.constant -= kTitleOffsetForTemplateC;
         self.labelBottomLayoutConstraint.constant += kTitleOffsetForTemplateC;
     }
 }
@@ -131,7 +131,7 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
 {
     CGFloat maxWidth = CGRectGetWidth(self.nameLabel.bounds);
     CGRect textBounds = [text boundingRectWithSize:CGSizeMake(maxWidth, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName : font} context:NULL];
-    return fabsf(self.labelBottomLayoutConstraint.constant) + fabsf(self.labelTopLayoutConstriant.constant) + self.detailsBackgroundView.frame.origin.y + CGRectGetHeight(textBounds) + kVDetailBounceHeight;
+    return ABS(self.labelBottomLayoutConstraint.constant) + ABS(self.labelTopLayoutConstraint.constant) + CGRectGetMinY(self.detailsBackgroundView.frame) + CGRectGetHeight(textBounds) + kVDetailBounceHeight;
 }
 
 #pragma mark - Detail container animation

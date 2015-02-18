@@ -100,7 +100,7 @@
                 <outlet property="detailsContainer" destination="7bg-N6-FzQ" id="uuv-DS-Udf"/>
                 <outlet property="detailsHeightLayoutConstraint" destination="C01-Nu-bfJ" id="CCp-yL-V61"/>
                 <outlet property="labelBottomLayoutConstraint" destination="96H-Wj-DUE" id="xl4-Ya-53n"/>
-                <outlet property="labelTopLayoutConstriant" destination="hGT-qv-10z" id="JGJ-Hm-Jda"/>
+                <outlet property="labelTopLayoutConstraint" destination="hGT-qv-10z" id="1Dq-5q-e17"/>
                 <outlet property="nameLabel" destination="9uF-IU-Ue1" id="7S4-Fr-41h"/>
                 <outlet property="pollOrImageView" destination="83k-OL-pLv" id="FQG-Gj-orE"/>
                 <outlet property="previewImageView" destination="ODe-uo-H79" id="Piw-D9-iUM"/>
