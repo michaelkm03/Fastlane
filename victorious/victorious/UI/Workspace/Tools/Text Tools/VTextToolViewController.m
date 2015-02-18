@@ -9,7 +9,7 @@
 #import "VTextToolViewController.h"
 #import "VCapitalizingTextStorage.h"
 
-static const CGFloat kTextRenderingSize = 1024.0f;
+static const CGFloat kTextRenderingSize = 512.0f;
 
 @interface VTextToolViewController () <UITextViewDelegate, NSTextStorageDelegate>
 
