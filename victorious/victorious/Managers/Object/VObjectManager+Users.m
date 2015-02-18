@@ -33,7 +33,7 @@ NSString * const VMainUserDidChangeFollowingUserNotification  = @"VMainUserDidCh
 NSString * const VMainUserDidChangeFollowingUserKeyUser = @"VMainUserDidChangeFollowingUserKeyUser";
 
 NSString * const VObjectManagerSearchContextMessage = @"message";
-NSString * const VObjectManagerSearchContextUserTag = @"userTag";
+NSString * const VObjectManagerSearchContextUserTag = @"tag_user";
 
 static NSString * const kVAPIParamSearch = @"search";
 static NSString * const kVAPIParamContext = @"context";
