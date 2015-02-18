@@ -1255,7 +1255,9 @@ referenceSizeForHeaderInSection:(NSInteger)section
     void (^showCamera)(void) = ^void(void)
     {
         VWorkspaceFlowController *workspaceFlowController = [self.dependencyManager templateValueOfType:[VWorkspaceFlowController class]
-                                                                                                 forKey:VDependencyManagerWorkspaceFlowKey];
+                                                                                                 forKey:VDependencyManagerWorkspaceFlowKey
+                                                                                  withAddedDependencies:@{VImageToolControllerInitialImageEditStateKey:@(VImageToolControllerInitialImageEditStateFilter),
+                                                                                                          VVideoToolControllerInitalVideoEditStateKey:@(VVideoToolControllerInitialVideoEditStateVideo)}];
         
         workspaceFlowController.delegate = self;
         workspaceFlowController.videoEnabled = YES;
