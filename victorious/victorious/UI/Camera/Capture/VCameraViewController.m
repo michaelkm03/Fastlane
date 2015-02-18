@@ -28,7 +28,7 @@
 static const NSTimeInterval kAnimationDuration = 0.4;
 static const NSTimeInterval kErrorMessageDisplayDuration = 3.0;
 static const NSTimeInterval kErrorMessageDisplayDurationLong = 10.0; ///< For extra serious errors
-static const NSTimeInterval kCameraShutterShrinkDuration = 0.25;
+static const NSTimeInterval kCameraShutterShrinkDuration = 0.15;
 static const CGFloat kGradientMagnitude = 20.0f;
 static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
 
@@ -65,10 +65,11 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
 @property (nonatomic, weak) IBOutlet UIButton *deleteButton;
 @property (nonatomic, weak) IBOutlet UIView *cameraControlContainer;
 
+@property (nonatomic, weak) VRadialGradientView *radialGradientView;
+
 @property (nonatomic, strong) VCameraControl *cameraControl;
 @property (nonatomic, strong) AVCaptureVideoPreviewLayer *previewLayer;
 @property (nonatomic, strong) UIView *previewSnapshot;
-@property (nonatomic, strong) IBOutlet VRadialGradientView *radialGradientView;
 
 @property (nonatomic, strong) VCameraCaptureController *captureController;
 
@@ -199,8 +200,6 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
                  forControlEvents:VCameraControlEventStartRecordingVideo];
     [self.cameraControl addTarget:self action:@selector(stopRecording)
                  forControlEvents:VCameraControlEventEndRecordingVideo];
-    
-    self.previewView.maskView = self.radialGradientView;
 }
 
 - (void)viewDidLayoutSubviews
@@ -217,17 +216,6 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
     [super viewWillAppear:animated];
     
     [self.cameraControl restoreCameraControlToDefault];
-    
-    VRadialGradientLayer *radialGradientLayer = self.radialGradientView.radialGradientLayer;
-    
-    radialGradientLayer.colors = @[(id)[UIColor blackColor].CGColor,
-                                   (id)[UIColor clearColor].CGColor];
-    radialGradientLayer.innerCenter = CGPointMake(CGRectGetMidX(radialGradientLayer.bounds),
-                                                  CGRectGetMidY(radialGradientLayer.bounds));
-    radialGradientLayer.innerRadius = CGRectGetHeight(self.view.bounds);
-    radialGradientLayer.outerCenter = CGPointMake(CGRectGetMidX(radialGradientLayer.bounds),
-                                                  CGRectGetMidY(radialGradientLayer.bounds));
-    radialGradientLayer.outerRadius = CGRectGetHeight(self.view.bounds) + kGradientMagnitude;
     
     self.navigationController.navigationBarHidden = YES;
     
@@ -683,31 +671,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
         {
             dispatch_async(dispatch_get_main_queue(), ^
                            {
-                               VRadialGradientLayer *radialGradientLayer = self.radialGradientView.radialGradientLayer;
-                               radialGradientLayer.outerRadius = CGRectGetHeight(self.previewView.bounds);
-                               radialGradientLayer.innerRadius = CGRectGetHeight(self.previewView.bounds) - kGradientMagnitude;
-                               [CATransaction begin];
-                               {
-                                   [CATransaction setCompletionBlock:^
-                                    {
-                                        dispatch_async(welf.captureAnimationQueue, ^
-                                                       {
-                                                           welf.animationCompleted = YES;
-                                                           dispatch_async(dispatch_get_main_queue(), ^
-                                                                          {
-                                                                              if ((welf.capturedMediaURL != nil) && welf.animationCompleted)
-                                                                              {
-                                                                                  welf.state = VCameraViewControllerStateCapturedMedia;
-                                                                              }
-                                                                          });
-                                                       });
-                                    }];
-                                   [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn]];
-                                   [CATransaction setAnimationDuration:kCameraShutterShrinkDuration];
-                                   radialGradientLayer.innerRadius = 0.0;
-                                   radialGradientLayer.outerRadius = 0.1f;
-                               }
-                               [CATransaction commit];
+//                               VRadialGradientLayer *radialGradientLayer = //self.radialGradientView.radialGradientLayer;
                                [UIView animateWithDuration:kCameraShutterShrinkDuration
                                                      delay:0.0f
                                                    options:UIViewAnimationOptionCurveEaseIn
@@ -1028,20 +992,69 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
 - (void)replacePreviewViewWithSnapshot
 {
     UIView *snapshot = [self.previewView snapshotViewAfterScreenUpdates:NO];
-    snapshot.frame = self.previewView.frame;
-    snapshot.maskView = self.radialGradientView;
-    [self.view addSubview:snapshot];
+    [self.previewView addSubview:snapshot];
     [self.view bringSubviewToFront:self.cameraControlContainer];
-    
+    self.previewView.backgroundColor = [UIColor redColor];
     self.previewSnapshot = snapshot;
-    self.previewView.hidden = YES;
+    
+    VRadialGradientView *radialGradientView = [[VRadialGradientView alloc]  initWithFrame:self.previewView.bounds];
+    [self.previewView addSubview:radialGradientView];
+    self.radialGradientView = radialGradientView;
+    radialGradientView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.previewView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[radialGradientView]|"
+                                                                             options:kNilOptions
+                                                                             metrics:nil
+                                                                               views:NSDictionaryOfVariableBindings(radialGradientView)]];
+    [self.previewView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[radialGradientView]|"
+                                                                             options:kNilOptions
+                                                                             metrics:nil
+                                                                               views:NSDictionaryOfVariableBindings(radialGradientView)]];
+    [self.previewView layoutIfNeeded];
+    
+    VRadialGradientLayer *radialGradientLayer = (VRadialGradientLayer *)radialGradientView.layer;
+    radialGradientLayer.colors = @[(id)[UIColor clearColor].CGColor,
+                                   (id)[UIColor blackColor].CGColor];
+    radialGradientLayer.innerCenter = CGPointMake(CGRectGetMidX(radialGradientLayer.bounds), CGRectGetMidY(radialGradientLayer.bounds));
+    radialGradientLayer.innerRadius = CGRectGetWidth(self.view.bounds)*.75 - kGradientMagnitude;
+    radialGradientLayer.outerCenter = CGPointMake(CGRectGetMidX(radialGradientLayer.bounds), CGRectGetMidY(radialGradientLayer.bounds));
+    radialGradientLayer.outerRadius = CGRectGetWidth(self.view.bounds)*.75;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+    {
+        [CATransaction begin];
+        {
+            [CATransaction setCompletionBlock:^
+             {
+                 dispatch_async(self.captureAnimationQueue, ^
+                                {
+                                    self.animationCompleted = YES;
+                                    dispatch_async(dispatch_get_main_queue(), ^
+                                                   {
+                                                       if ((self.capturedMediaURL != nil) && self.animationCompleted)
+                                                       {
+                                                           self.state = VCameraViewControllerStateCapturedMedia;
+                                                       }
+                                                   });
+                                });
+                 self.previewView.alpha = 0.0f;
+             }];
+            [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn]];
+            [CATransaction setAnimationDuration:kCameraShutterShrinkDuration];
+            
+            radialGradientLayer.innerRadius = 0.0f;
+            radialGradientLayer.outerRadius = 1.0f;//CGRectGetWidth(self.view.bounds)/2;
+        }
+        [CATransaction commit];
+    });
+    
 }
 
 - (void)restoreLivePreview ///< The opposite of -replacePreviewViewWithSnapshot
 {
-    self.previewView.hidden = NO;
     [self.previewSnapshot removeFromSuperview];
     self.previewSnapshot = nil;
+    self.previewView.alpha = 1.0f;
+    self.radialGradientView.alpha = 0.0f;
+    [self.radialGradientView removeFromSuperview];
 }
 
 #pragma mark - VCameraVideoEncoderDelegate methods
