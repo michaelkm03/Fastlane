@@ -116,6 +116,7 @@ static NSString * const kVTagResultIdentifier = @"VTrendingTagCell";
 - (void)showStreamWithHashtag:(VHashtag *)hashtag
 {
     VHashtagStreamCollectionViewController *vc = [VHashtagStreamCollectionViewController instantiateWithHashtag:hashtag.tag];
+    vc.dependencyManager = self.dependencyManager;
     [self.navigationController pushViewController:vc animated:YES];
 }
 

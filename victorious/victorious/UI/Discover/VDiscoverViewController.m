@@ -8,6 +8,7 @@
 
 #import <MBProgressHUD.h>
 #import "VDiscoverViewController.h"
+#import "VDiscoverContainerViewController.h"
 #import "VSuggestedPeopleCell.h"
 #import "VStream+Fetcher.h"
 #import "VTrendingTagCell.h"
@@ -25,6 +26,8 @@
 #import "VAuthorizationViewControllerFactory.h"
 #import "VConstants.h"
 #import "VHashtagStreamCollectionViewController.h"
+#import "VDependencyManager.h"
+
 
 static NSString * const kVSuggestedPeopleIdentifier = @"VSuggestedPeopleCell";
 static NSString * const kVTrendingTagIdentifier = @"VTrendingTagCell";
@@ -370,11 +373,13 @@ static CGFloat const kTopInset = 22.0f; ///< The space between the top of the vi
     }
 }
 
-#pragma mark -
+#pragma mark - Show Hashtag Stream
 
 - (void)showStreamWithHashtag:(VHashtag *)hashtag
 {
+    VDiscoverContainerViewController *containerViewController = (VDiscoverContainerViewController *)self.parentViewController;
     VHashtagStreamCollectionViewController *vc = [VHashtagStreamCollectionViewController instantiateWithHashtag:hashtag.tag];
+    vc.dependencyManager = containerViewController.dependencyManager;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
