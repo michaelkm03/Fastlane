@@ -994,7 +994,6 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
     UIView *snapshot = [self.previewView snapshotViewAfterScreenUpdates:NO];
     [self.previewView addSubview:snapshot];
     [self.view bringSubviewToFront:self.cameraControlContainer];
-    self.previewView.backgroundColor = [UIColor redColor];
     self.previewSnapshot = snapshot;
     
     VRadialGradientView *radialGradientView = [[VRadialGradientView alloc]  initWithFrame:self.previewView.bounds];
