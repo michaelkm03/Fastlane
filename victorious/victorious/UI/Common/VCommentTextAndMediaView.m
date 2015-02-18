@@ -10,6 +10,7 @@
 #import "VLightboxTransitioningDelegate.h"
 #import "VThemeManager.h"
 #import "VVideoLightboxViewController.h"
+#import "VUserTaggingTextStorage.h"
 
 #ifdef __LP64__
 #define CEIL(a) ceil(a)
@@ -30,6 +31,7 @@ static const CGFloat kSpacingBetweenTextAndEdge = 35.0f;
 @property (nonatomic, readwrite) UIImageView *mediaThumbnailView;
 @property (nonatomic, readwrite) UIImageView *playIcon;
 @property (nonatomic, strong) UIView *mediaBackground;
+@property (nonatomic, strong) VUserTaggingTextStorage *userTaggingTextStorage;
 
 @end
 
@@ -57,17 +59,28 @@ static const CGFloat kSpacingBetweenTextAndEdge = 35.0f;
 
 - (void)commonInit
 {
-    self.textView = [[UITextView alloc] init];
+    self.userTaggingTextStorage = [[VUserTaggingTextStorage alloc] initWithString:nil textView:nil taggingDelegate:nil];
+    
+    NSLayoutManager *layoutManager = [[NSLayoutManager alloc] init];
+    [self.userTaggingTextStorage addLayoutManager:layoutManager];
+    
+    NSTextContainer *textContainer = [[NSTextContainer alloc] init];
+    [layoutManager addTextContainer:textContainer];
+    
+    self.textView = [[UITextView alloc] initWithFrame:CGRectZero textContainer:textContainer];
     self.textView.translatesAutoresizingMaskIntoConstraints = NO;
     self.textView.backgroundColor = [UIColor clearColor];
     self.textView.selectable = YES;
     self.textView.editable = NO;
     self.textView.scrollEnabled = NO;
     self.textView.userInteractionEnabled = YES;
-    self.textView.textContainerInset = UIEdgeInsetsMake(0.0, -5.0, 0.0, -5.0);
+    self.textView.textContainerInset = UIEdgeInsetsMake(0.0, -5.0, 2.0, -5.0);
     self.textView.dataDetectorTypes = UIDataDetectorTypeLink;
     self.textView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    self.textView.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel1Font];
     [self addSubview:self.textView];
+    
+    self.userTaggingTextStorage.textView = self.textView;
     
     UIView *background = [[UIView alloc] init];
     background.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
@@ -321,6 +334,23 @@ static const CGFloat kSpacingBetweenTextAndEdge = 35.0f;
                                              options:NSStringDrawingUsesLineFragmentOrigin
                                           attributes:font ? [self attributesForTextWithFont:font] : [self attributesForText]
                                              context:[[NSStringDrawingContext alloc] init]];
+    CGFloat mediaSize = hasMedia ? width + kSpacingBetweenTextAndMedia : 0.0f;
+    return CEIL(CGRectGetHeight(boundingRect)) + mediaSize;
+}
+
++ (CGFloat)estimatedHeightWithWidth:(CGFloat)width
+                     attributedText:(NSAttributedString *)attributedText
+                          withMedia:(BOOL)hasMedia
+                            andFont:(UIFont *)font
+{
+    if (!attributedText)
+    {
+        return 0;
+    }
+    
+    CGRect boundingRect = [attributedText boundingRectWithSize:CGSizeMake(width, CGFLOAT_MAX)
+                                                       options:NSStringDrawingUsesLineFragmentOrigin
+                                                       context:NULL];
     CGFloat mediaSize = hasMedia ? width + kSpacingBetweenTextAndMedia : 0.0f;
     return CEIL(CGRectGetHeight(boundingRect)) + mediaSize;
 }
