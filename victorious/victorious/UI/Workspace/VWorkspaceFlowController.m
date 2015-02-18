@@ -436,6 +436,11 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
 {
     if ([fromVC isKindOfClass:[VCameraViewController class]] && [toVC isKindOfClass:[VWorkspaceViewController class]])
     {
+        VCameraViewController *cameraViewController = (VCameraViewController *)fromVC;
+        if (cameraViewController.didSelectAssetFromLibrary || cameraViewController.didSelectFromWebSearch)
+        {
+            return nil;
+        }
         VVCameraShutterOverAnimator *animator = [[VVCameraShutterOverAnimator alloc] init];
         animator.presenting = (operation == UINavigationControllerOperationPush);
         return animator;
