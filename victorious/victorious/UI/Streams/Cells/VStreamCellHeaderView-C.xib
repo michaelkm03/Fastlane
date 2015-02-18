@@ -11,15 +11,6 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZNh-Ue-oXq">
-                    <rect key="frame" x="0.0" y="0.0" width="257" height="50"/>
-                    <state key="normal">
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <connections>
-                        <action selector="profileButtonAction:" destination="vMH-nh-jSy" eventType="touchUpInside" id="urQ-4v-Ce1"/>
-                    </connections>
-                </button>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="250" text="Username" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Evg-dt-yty">
                     <rect key="frame" x="48" y="7" width="79" height="24"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -36,7 +27,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" text="Repost by Barack Obama" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EEh-UG-ydX">
-                    <rect key="frame" x="48" y="27" width="242" height="12"/>
+                    <rect key="frame" x="48" y="25" width="242" height="16"/>
                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
@@ -61,6 +52,15 @@
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                 </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZNh-Ue-oXq">
+                    <rect key="frame" x="0.0" y="0.0" width="257" height="50"/>
+                    <state key="normal">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="profileButtonAction:" destination="vMH-nh-jSy" eventType="touchUpInside" id="urQ-4v-Ce1"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
@@ -68,8 +68,8 @@
                 <constraint firstAttribute="centerY" secondItem="aCm-Z1-zjM" secondAttribute="centerY" id="40H-f7-cFb"/>
                 <constraint firstItem="aCm-Z1-zjM" firstAttribute="leading" secondItem="vMH-nh-jSy" secondAttribute="leading" constant="11" id="6TK-Ei-zAQ"/>
                 <constraint firstItem="ZNh-Ue-oXq" firstAttribute="top" secondItem="vMH-nh-jSy" secondAttribute="top" id="BSJ-Ro-YV1"/>
-                <constraint firstItem="EEh-UG-ydX" firstAttribute="top" secondItem="C5f-48-MPU" secondAttribute="bottom" constant="3" id="D70-2F-KTS"/>
-                <constraint firstAttribute="bottom" secondItem="EEh-UG-ydX" secondAttribute="bottom" constant="11" id="Ewh-RL-c6K"/>
+                <constraint firstItem="EEh-UG-ydX" firstAttribute="top" secondItem="C5f-48-MPU" secondAttribute="bottom" constant="1" id="D70-2F-KTS"/>
+                <constraint firstAttribute="bottom" secondItem="EEh-UG-ydX" secondAttribute="bottom" constant="9" id="Ewh-RL-c6K"/>
                 <constraint firstItem="Evg-dt-yty" firstAttribute="centerY" secondItem="C5f-48-MPU" secondAttribute="centerY" id="ILR-HL-Mis"/>
                 <constraint firstItem="Evg-dt-yty" firstAttribute="leading" secondItem="aCm-Z1-zjM" secondAttribute="trailing" constant="5" id="KLq-2O-kfb"/>
                 <constraint firstItem="EEh-UG-ydX" firstAttribute="leading" secondItem="Evg-dt-yty" secondAttribute="leading" id="Lb5-wr-EYM"/>
