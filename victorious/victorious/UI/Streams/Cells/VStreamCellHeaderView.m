@@ -31,6 +31,12 @@ static VLargeNumberFormatter *largeNumberFormatter;
 static const CGFloat kUserInfoViewMaxHeight = 25.0f;
 static const CGFloat kCommentButtonBuffer = 5.0f;
 
+@interface VStreamCellHeaderView ()
+
+@property (nonatomic, assign) NSInteger defaultUsernameBottomConstraintValue;
+
+@end
+
 @implementation VStreamCellHeaderView
 
 - (id)initWithFrame:(CGRect)frame
@@ -87,6 +93,9 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
     }
     
     self.dateImageView.tintColor = self.dateLabel.textColor;
+    
+    self.defaultUsernameBottomConstraintValue = self.usernameLabelBottomConstraint.constant;
+    
 }
 
 - (void)hideCommentsButton
@@ -194,7 +203,17 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
     NSString *commentCount = self.sequence.commentCount.integerValue ? [largeNumberFormatter stringForInteger:self.sequence.commentCount.integerValue] : @"";
     [self.commentButton setTitle:commentCount forState:UIControlStateNormal];
     
-    [self setParentText:parentUser != nil ? parentUser.name : @""];
+    NSString *parentText = @"";
+    CGFloat usernameBottomConstant = self.usernameLabelTopConstraint.constant;
+    if ( parentUser != nil )
+    {
+        //Will show "reposted" or "remix" text, so reset the username to it's spot towards the top of the cell
+        parentText = parentUser.name;
+        usernameBottomConstant = self.defaultUsernameBottomConstraintValue;
+    }
+    
+    [self setParentText:parentText];
+    self.usernameLabelBottomConstraint.constant = usernameBottomConstant;
     
     // Set username and format date
     self.usernameLabel.text = originalPoster.name;
