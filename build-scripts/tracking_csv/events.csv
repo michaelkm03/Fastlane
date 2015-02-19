@@ -1,0 +1,180 @@
+// Tracking Event Names,// Comments
+// Application Lifecycle,
+ApplicationDidInstallForFirstTime,
+ApplicationDidLaunch,
+ApplicationDidEnterBackground,
+ApplicationDidEnterForeground,
+,
+// Navigation,
+UserDidSelectMainMenu,Params: CurrentSection
+UserDidSelectHamburgerMenuItem,Params: Section
+UserDidSelectTabBarSection,Params: Section
+SectionDidAppear,Params: Section
+,
+// Content Creation,
+UserDidSelectCreateButton,Params: CurrentSection
+UserDidSelectCreatePoll,
+UserDidSelectCreateVideo,
+UserDidSelectCreateGIF,
+UserDidSelectCreateImage,
+UserDidSelectCreateCancel,
+,
+// Camera,
+CameraDidSwitchToVideoCapture,
+CameraDidSwitchToPhotoCapture,
+CameraDidCapturePhoto,User did move from camera view to workspace with an image just taken
+CameraDidCaptureVideo,User did move from camera view to workspace with a video just recorded
+CameraUserDidPickImageFromLibrary,
+CameraUserDidPickVideoFromLibrary,
+CameraDidSearchForImage,Params: SearchTerm
+CameraDidSelectImageFromImageSearch,User selected an image from the image search.
+CameraDidExitImageSearch,User left the image search without selecting an image.
+CameraUserDidConfirmtDelete,User tapped the garbage icon to see deletion confirmation.
+CameraUserDidSelectDelete,User confirmed deletion of any recorded video.
+UserDidExitCamera,User tapped (X) icon to leave camera without capturing or importing a photo or video
+,
+// Workspace & Publish,
+UserDidSelectMeme,
+UserDidSelectQuote,
+UserDidSelectCropTool,
+UserDidSelectFilterTool,
+UserDidSelectTextTool,
+,
+UserDidPublishContent,"Params: TextType, TextLength, ContentType, CaptionLength, MediaType, CurrentSection, StreamName, MediaSource, DidCrop, FilterName"
+,
+CameraPublishDidCancel,User exited the workspace without publishing
+,
+UserDidPublishPoll,"Params: CaptionLength, CurrentSection, StreamName, MediaSource"
+UserDidExitPollCreation,
+UserDidFailValidationForPublishPoll,
+,
+UploadDidFail,
+UploadDidSucceed,
+UserDidCancelPendingUpload,
+UserDidCancelFailedUpload,
+,
+// Registration and Login,
+LoginDidShow,Params: CurrentSection
+UserDidCancelLogin,User exited out of the login prompt
+UserDidLogout,
+,
+UserDidSelectSignupWithEmail,
+UserDidSelectLoginWithEmail,
+SignupWithEmailDidFail,Params: ErrorMessage
+SignupWithEmailDidSucceed,
+LoginWithEmailDidFail,Params: ErrorMessage
+LoginWithEmailDidSucceed,
+SignupWithEmailValidationDidFail,Params: ErrorMessage
+LoginWithEmailValidationDidFail,Params: ErrorMessage
+UserDidCancelLoginWithEmail,
+UserDidCancelSignupWithEmail,
+,
+UserDidSelectConnectWithFacebook,
+SignupWithFacebookDidSucceed,
+SignupWithFacebookDidFail,Params: ErrorMessage
+LoginWithFacebookDidSucceed,
+LoginWithFacebookDidFail,Params: ErrorMessage
+,
+UserDidSelectConnectWithTwitter,
+SignupWithTwitterDidSucceed,
+SignupWithTwitterDidFail,Params: ErrorMessage
+LoginWithTwitterDidSucceed,
+LoginWithTwitterDidFailUnknown,Params: ErrorMessage
+LoginWithTwitterDidFailNoAccounts,Params: ErrorMessage
+LoginWithTwitterDidFailDenied,Params: ErrorMessage
+,
+CreateProfileValidationDidFail,Params: ErrorMessage
+CreateProfileDidSucceed,
+UserDidSelectExitCreateProfile,
+UserDidConfirmExitCreateProfile,
+UserDidSelectImageForCreateProfile,Params: MediaSource
+,
+,
+// User Profile,
+UserDidSelectEditProfile,
+UserDidSelectImageForEditProfile,Params: MediaSource
+ProfileDidUpdated,
+UserDidExitEditProfile,
+UserDidSelectProfileFollowing,
+UserDidSelectProfileFollowed,
+,
+,
+// Purchases,
+UserDidSelectLockedVoteType,
+UserDidPurchaseVoteType,
+UserDidRestorePurchasesFromPrompt,
+UserDidRestorePurchasesFromSettings,
+UserDidExitPurchasePrompt,
+PurchaseDidFail,Params: ErrorMessage
+RestorePurchasesDidFail,Params: ErrorMessage
+,
+// Content Interaction,
+SequenceDidAppearInStream,Backend mapping: cell-view
+ViewDidStart,Content was displayed in content view and began playing (if video); Backend mapping: view-start
+UserDidSelectItemFromStream,Backend mapping: cell-click
+UserDidSelectItemFromMarquee,Backend mapping: cell-click
+UserDidSelectStream,Params: StreamName
+StreamDidAppear,"Params: StreamName, StreamId, CurrentSection"
+,
+UserDidVoteSequence,
+UserDidRepostItem,"Params: SequenceId, TimeCurrent"
+RepostItemDidFail,Params: ErrorMessage
+UserDidFlagItem,Params: Context
+FlagItemDidFail,Params: ErrorMessage
+UserDidSelectShare,Params: Context
+ShareDidSucceed,"Params: Context, ShareDestination"
+ShareDidFail,Params: ErrorMessage
+UserDidSelectSelectRemix,Params: Context
+,
+// Comments,
+UserDidPostComment,"Params: TextLength, ContentType, MediaType, CurrentSection, StreamName"
+UserDidSelectEditComment,
+UserDidCompleteEditComment,
+UserDidExitEditComment,
+UserDidFlagComment,
+UserDidDeleteComment,
+EditCommentDidFail,Params: ErrorMessage
+FlagCommentDidFail,Params: ErrorMessage
+DeleteCommentDidFail,Params: ErrorMessage
+,
+// Video Playback,
+VideoDidComplete25,Backend mapping: video-25-complete
+VideoDidComplete50,Backend mapping: video-50-complete
+VideoDidComplete75,Backend mapping: video-75-complete
+VideoDidComplete100,Backend mapping: video-100-complete
+VideoDidFail,Backend mapping: video-error
+VideoDidStall,Backend mapping: video-stall
+VideoDidSkip,Backend mapping: video-skip
+,
+// Find Friends,
+UserDidSelectFindFriends,
+UserDidImportDeviceContacts,
+UserDidImportFacebookContacts,
+UserDidImportTwitterContacts,
+UserDidSelectInvite,
+UserDidInviteFiendsWithEmail,
+UserDidInviteFiendsWithSMS,
+UserDidSelectViewFollowers,
+,
+// Inbox,
+UserDidSelectCreateMessage,
+UserDidSendMessage,"Params: TextLength, MediaType"
+UserDidSelectMessage,
+UserDidSearchRecipient,"Params: SearchTerm, ResultCount"
+UserDidExitSearchRecipient,
+UserDidSelectUserFromSearchRecipient,
+UserDidFlagConversation,
+,
+// Discover,
+UserDidSelectTrendingHashtag,
+UserDidSelectSuggestedUser,
+UserDidSelectSearchBar,
+UserDidSearchUsersAndHashtags,"Params: SearchTerm, ResultCount"
+UserDidSelectDiscoverSearchUser,
+UserDidSelectDiscoverSearchHashtag,
+,
+// Following,
+UserDidFollowHashtag,Params: Context
+UserDidUnfollowHashtag,Params: Context
+UserDidFollowUser,Params: Context
+UserDidUnfollowUser,Params: Context

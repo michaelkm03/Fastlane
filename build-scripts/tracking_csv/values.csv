@@ -1,0 +1,35 @@
+// Tracking Event Values,// Comments
+// CurrentSection values,
+Home,
+Channels,
+Channel,
+Community,
+Discover,
+Inbox,
+Profile,
+Settings,
+,
+// TextType values,
+Meme,
+Quote,
+,
+// ContentType and MediaType values,
+GIF,
+Video,
+Image,
+Poll,
+,
+// MediaSource values,
+Camera,Photo or image was just capture from camera
+Lirbary,Photo or image was loaded from user's device library
+ImageSearch,Photo was loaded from the image search feature
+,
+// Context values,
+DiscoverSearch,Event triggered from discover section's search results
+InboxSearch,
+EndCard,Event triggered from the end card
+UserProfile,While viewing a user's profile (including your own)
+HashtagStream,Event occurred in a hashtag stream
+ContentView,Event occurred in content view
+Stream,"Any stream, as opposed to content view"
+CommentsView,The standlone comments view (not content view)
