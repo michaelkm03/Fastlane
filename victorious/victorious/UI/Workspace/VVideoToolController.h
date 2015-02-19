@@ -19,6 +19,13 @@ typedef NS_ENUM(NSInteger, VVideoToolControllerInitialVideoEditState)
 
 @protocol VVideoToolControllerDelegate <NSObject>
 
+/**
+ *  Informs the delegate that a snapshot of the video has been selected by a tool and would like an image workspace for working on it.
+ *
+ *  @param videoToolController The tool controller providing the snapshot.
+ *  @param previewImage        A preview image.
+ *  @param renderedMediaURL    A location on disk of the rendered snapshot.
+ */
 - (void)videoToolController:(VVideoToolController *)videoToolController
  selectedSnapshotForEditing:(UIImage *)previewImage
         renderedSnapshotURL:(NSURL *)renderedMediaURL;
@@ -30,6 +37,9 @@ typedef NS_ENUM(NSInteger, VVideoToolControllerInitialVideoEditState)
  */
 @interface VVideoToolController : VToolController
 
+/**
+ *  A delegate to inform about certain events. Currently just snapshots.
+ */
 @property (nonatomic, weak) id<VVideoToolControllerDelegate> videoToolControllerDelegate;
 
 /**
