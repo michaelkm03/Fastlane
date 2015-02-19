@@ -4579,6 +4579,7 @@
 				03CE66F819B50C340011BB9E /* Objective Clean */,
 				032948A81970BDA700208FBA /* Crashlytics */,
 				22C3ACF4C6878DDD064D31BF /* Copy Pods Resources */,
+				A744DB8F1A96723000553E35 /* Validate Tracking Constants Are Used */,
 			);
 			buildRules = (
 			);
@@ -4906,6 +4907,20 @@
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
+		};
+		A744DB8F1A96723000553E35 /* Validate Tracking Constants Are Used */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Validate Tracking Constants Are Used";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "SOURCE=\"${SRCROOT}/../build-scripts/tracking_csv/events.csv\"\n(cat $SOURCE ; echo) | while IFS=, read -r COLUMN_1 COLUMN_2\ndo\n    if [[ $COLUMN_1 != *\"//\"* ]] && [ ${#COLUMN_1} != 0 ];\n    then\n        SEARCH_STRING=\"VTrackingEvent$COLUMN_1\"\n        SEARCH_RESULT=$(find \"${SRCROOT}/victorious\" -name \"*.m\" -not -path \"*/Managers/Tracking/Delegates/*\" -print0 | xargs -0 egrep --with-filename --line-number --only-matching \"($SEARCH_STRING).*\\$\" | perl -p -e \"s/($SEARCH_STRING)/ warning: \\Tracking event not implemented./\")\n        LINE_COUNT=$(echo \"$SEARCH_RESULT\" | wc -l)\n        NUM_USES=$(($LINE_COUNT-1))\n        if [ $NUM_USES == 0 ];\n        then\n            echo $SEARCH_RESULT\n        fi\n    fi\ndone";
 		};
 		E8C387ACF3E64C873179907C /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
