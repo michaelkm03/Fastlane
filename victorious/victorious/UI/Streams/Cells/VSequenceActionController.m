@@ -254,7 +254,7 @@
                                   VTrackingKeyShareDestination : activityType ?: @"",
                                   VTrackingKeyUrls : sequence.tracking.share ?: @[],
                                   VTrackingKeyErrorMessage : activityError == nil ? @"" : activityError.localizedFailureReason };
-        NSString *eventName = completed ? VTrackingEventShareDidSucceed : VTrackingEventShareDidFail;
+        NSString *eventName = completed ? VTrackingEventUserDidShare : VTrackingEventUserShareDidFail;
         [[VTrackingManager sharedInstance] trackEvent:eventName parameters:params];
         
         [viewController reloadInputViews];

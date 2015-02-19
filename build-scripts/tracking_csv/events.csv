@@ -1,22 +1,23 @@
 // Tracking Event Names,// Comments
 // Application Lifecycle,
-ApplicationFirstInstall,
-ApplicationDidLaunch,
-ApplicationDidEnterBackground,
-ApplicationDidEnterForeground,
+ApplicationFirstInstall,Backend mapping: app-intall
+ApplicationDidLaunch,Backend mapping: app-init
+ApplicationDidEnterBackground,Backend mapping: app-stop; Params: SessionTime
+ApplicationDidEnterForeground,Backend mapping: app-start
 ,
 // Navigation,
-UserDidSelectMainMenu,Params: CurrentSection
-UserDidSelectHamburgerMenuItem,Params: Section
-UserDidSelectTabBarSection,Params: Section
+UserDidSelectMainMenu,User opened the main menu with the hamburger button; Params: CurrentSection (template driven value)
+UserDidSelectMainMenuSection,User selected a section from the main menu (hamburger menu); Params: Section  (template driven value)
+UserDidSelectTabBarSection,User selected a section from the tab bar; Params: Section  (template driven value)
+UserDidSelectStream,"User selected a tab or segmented control to change streams in a multiple stream view; Params: StreamName, StreamId"
 ,
 // Content Creation,
-UserDidSelectCreateButton,Params: CurrentSection
-UserDidSelectCreatePoll,
-UserDidSelectCreateVideo,
-UserDidSelectCreateGIF,
-UserDidSelectCreateImage,
-UserDidSelectCreateCancel,
+UserDidSelectCreatePost,"User tapped (+) button, displaying the content type selection; Params: CurrentSection (template driven value)"
+CreatePollSelected,
+CreateImagePostSelected,
+CreateVideoPostSelected,
+CreateGIFPostSelected,
+CreateCancelSelected,User selected cancel from create post content type selection; Params: CurrentSection (template driven value)
 ,
 // Camera,
 CameraDidSwitchToVideoCapture,
@@ -39,9 +40,8 @@ UserDidSelectCropTool,
 UserDidSelectFilterTool,
 UserDidSelectTextTool,
 ,
-UserDidPublishContent,"Params: TextType, TextLength, ContentType, CaptionLength, MediaType, CurrentSection, StreamName, MediaSource, DidCrop, FilterName"
-,
-CameraPublishDidCancel,User exited the workspace without publishing
+UserDidPublishContent,"Any non-poll post; Params: TextType, TextLength, CaptionLength, MediaType, CurrentSection, StreamName, MediaSource, DidCrop, FilterName"
+CameraPublishDidCancel,"User exited the camer view without producing output for workspace/publish, comment, message, etc."
 ,
 UserDidPublishPoll,"Params: CaptionLength, CurrentSection, StreamName, MediaSource"
 UserDidExitPollCreation,
@@ -82,21 +82,19 @@ LoginWithTwitterDidFailUnknown,Params: ErrorMessage
 LoginWithTwitterDidFailNoAccounts,Params: ErrorMessage
 LoginWithTwitterDidFailDenied,Params: ErrorMessage
 ,
+// Edt/Create Profile,
 CreateProfileValidationDidFail,Params: ErrorMessage
 CreateProfileDidSucceed,
 UserDidSelectExitCreateProfile,
 UserDidConfirmExitCreateProfile,
 UserDidSelectImageForCreateProfile,Params: MediaSource
 ,
-,
-// User Profile,
 UserDidSelectEditProfile,
 UserDidSelectImageForEditProfile,Params: MediaSource
-ProfileDidUpdated,
+ProfileDidUpdated,"Pardon the spelling error, it's a legacy/compatibility thing"
 UserDidExitEditProfile,
 UserDidSelectProfileFollowing,
 UserDidSelectProfileFollowed,
-,
 ,
 // Purchases,
 UserDidSelectLockedVoteType,
@@ -108,12 +106,12 @@ PurchaseDidFail,Params: ErrorMessage
 RestorePurchasesDidFail,Params: ErrorMessage
 ,
 // Content Interaction,
-SequenceDidAppearInStream,Backend mapping: cell-view
+SequenceDidAppearInStream,Stream cell became visible while scrolling stream (once per view); Backend mapping: cell-view
 ViewDidStart,Content was displayed in content view and began playing (if video); Backend mapping: view-start
 UserDidSelectItemFromStream,Backend mapping: cell-click
 UserDidSelectItemFromMarquee,Backend mapping: cell-click
-UserDidViewStream,"Params: CurrentSection, StreamName, StreamId"
-UserDidSelectHashtag,Params: Hashtag
+UserDidViewStream,"A stream was presented to the user, regardless of whether visible by default in a view or was seleted explicitly.  Params: CurrentSection, StreamName, StreamId"
+UserDidSelectCaptionHashtag,Params: Hashtag
 UserDidSelectTaggedUser,
 ,
 UserDidVoteSequence,
@@ -122,8 +120,8 @@ RepostItemDidFail,Params: ErrorMessage
 UserDidFlagItem,Params: Context
 FlagItemDidFail,Params: ErrorMessage
 UserDidSelectShare,Params: Context
-ShareDidSucceed,"Params: Context, ShareDestination"
-ShareDidFail,Params: ErrorMessage
+UserDidShare,"Params: Context, ShareDestination"
+UserShareDidFail,Params: ErrorMessage
 UserDidSelectSelectRemix,Params: Context
 ,
 // Comments,

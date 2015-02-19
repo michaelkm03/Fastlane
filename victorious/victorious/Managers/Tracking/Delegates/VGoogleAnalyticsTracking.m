@@ -107,12 +107,7 @@ NSString * const kVAnalyticsKeyValue            = @"GA_value";
 
 - (NSString *)screenNameForEventName:(NSString *)eventName parameters:(NSDictionary *)parameters
 {
-#warning FIX THIS, Anar says we still need it
-    /*if ( [eventName isEqualToString:VTrackingEventCameraPublishDidAppear] )
-    {
-        return @"Camera Publish";
-    }
-    else if ( [eventName isEqualToString:VTrackingEventCameraDidAppear] )
+    if ( [eventName isEqualToString:VTrackingEventCameraDidAppear] )
     {
         return @"Camera";
     }
@@ -147,7 +142,7 @@ NSString * const kVAnalyticsKeyValue            = @"GA_value";
     else if ( [eventName isEqualToString:VTrackingEventSearchDidAppear] )
     {
         return @"User Search";
-    }*/
+    }
     
     return nil;
 }
@@ -158,8 +153,7 @@ NSString * const kVAnalyticsKeyValue            = @"GA_value";
  */
 - (NSDictionary *)dictionaryWithParametersFromEventName:(NSString *)eventName params:(NSDictionary *)eventParams
 {
-#warning FIX THIS, Anar says we still need it
-    /*if ( [eventName isEqualToString:VTrackingEventApplicationDidLaunch] )
+    if ( [eventName isEqualToString:VTrackingEventApplicationDidLaunch] )
     {
         return @{ kVAnalyticsKeyCategory : kVAnalyticsEventCategoryAppLifecycle,
                   kVAnalyticsKeyAction : kVAnalyticsEventAppLaunch };
@@ -196,11 +190,6 @@ NSString * const kVAnalyticsKeyValue            = @"GA_value";
         return @{ kVAnalyticsKeyCategory : kVAnalyticsEventCategoryNavigation,
                   kVAnalyticsKeyAction : @"Camera Publish Cancelled" };
     }
-    else if ( [eventName isEqualToString:VTrackingEventCameraPublishDidGoBack] )
-    {
-        return @{ kVAnalyticsKeyCategory : kVAnalyticsEventCategoryNavigation,
-                  kVAnalyticsKeyAction : @"Camera Publish Back" };
-    }
     else if ( [eventName isEqualToString:VTrackingEventUserDidCancelLogin] )
     {
         return @{ kVAnalyticsKeyCategory : kVAnalyticsEventCategoryNavigation,
@@ -208,17 +197,9 @@ NSString * const kVAnalyticsKeyValue            = @"GA_value";
     }
     else if ( [eventName isEqualToString:VTrackingEventUserDidShare] )
     {
-        NSString *activityType = eventParams[ VTrackingKeyActivityType ];
+        NSString *activityType = eventParams[ VTrackingKeyShareDestination ];
         NSString *sequenceCategory = eventParams[ VTrackingKeySequenceCategory ];
         return @{ kVAnalyticsKeyCategory : [NSString stringWithFormat:@"Shared %@, via %@", sequenceCategory, activityType] };
-    }
-    else if ( [eventName isEqualToString:VTrackingEventRemixSelected] )
-    {
-        NSString *sequenceName = eventParams[ VTrackingKeySequenceId ];
-        NSString *sequenceId = eventParams[ VTrackingKeySequenceName ];
-        return @{ kVAnalyticsKeyCategory : kVAnalyticsEventCategoryNavigation,
-                  kVAnalyticsKeyAction : @"Pressed Remix",
-                  kVAnalyticsKeyLabel : [sequenceId stringByAppendingPathComponent:sequenceName] };
     }
     else if ( [eventName isEqualToString:VTrackingEventUserDidSelectMainMenu] )
     {
@@ -235,26 +216,6 @@ NSString * const kVAnalyticsKeyValue            = @"GA_value";
         NSString *streamName = eventParams[ VTrackingKeyStreamName ];
         return @{ kVAnalyticsKeyCategory : kVAnalyticsEventCategoryNavigation,
                   kVAnalyticsKeyAction : [NSString stringWithFormat:@"Selected Filter: %@", streamName] };
-    }
-    else if ( [eventName isEqualToString:VTrackingEventUserDidPublishImageWithTwitter] )
-    {
-        NSString *captionType = eventParams[ VTrackingKeyCaptionType ];
-        NSString *category = [NSString stringWithFormat:@"Published image with caption type %@ via twitter", captionType];
-        return @{ kVAnalyticsKeyCategory : category };
-    }
-    else if ( [eventName isEqualToString:VTrackingEventUserDidPublishVideoWithTwitter] )
-    {
-        return @{ kVAnalyticsKeyCategory : @"Published video via twitter" };
-    }
-    else if ( [eventName isEqualToString:VTrackingEventUserDidPublishImageWithFacebook] )
-    {
-        NSString *captionType = eventParams[ VTrackingKeyCaptionType ];
-        NSString *category = [NSString stringWithFormat:@"Published image with caption type %@ via facebook", captionType];
-        return @{ kVAnalyticsKeyCategory : category };
-    }
-    else if ( [eventName isEqualToString:VTrackingEventUserDidPublishVideoWithFacebook] )
-    {
-        return @{ kVAnalyticsKeyCategory : @"Published video via facebook" };
     }
     else if ( [eventName isEqualToString:VTrackingEventCameraDidCaptureVideo] )
     {
@@ -296,21 +257,6 @@ NSString * const kVAnalyticsKeyValue            = @"GA_value";
         return @{ kVAnalyticsKeyCategory : kVAnalyticsEventCategoryCamera,
                   kVAnalyticsKeyAction : @"Pick Video From Library" };
     }
-    else if ( [eventName isEqualToString:VTrackingEventCameraUserDidGoBack] )
-    {
-        return @{ kVAnalyticsKeyCategory : kVAnalyticsEventCategoryCamera,
-                  kVAnalyticsKeyAction : @"Pressed Back" };
-    }
-    else if ( [eventName isEqualToString:VTrackingEventCameraUserDidCancelDelete] )
-    {
-        return @{ kVAnalyticsKeyCategory : kVAnalyticsEventCategoryCamera,
-                  kVAnalyticsKeyAction : @"Trash Canceled" };
-    }
-    else if ( [eventName isEqualToString:VTrackingEventCameraUserCancelMediaCapture] )
-    {
-        return @{ kVAnalyticsKeyCategory : kVAnalyticsEventCategoryCamera,
-                  kVAnalyticsKeyAction : @"Cancel Media Capture" };
-    }
     else if ( [eventName isEqualToString:VTrackingEventSignupWithEmailDidSucceed] )
     {
         return @{ kVAnalyticsKeyCategory : @"Signed up via email" };
@@ -336,10 +282,10 @@ NSString * const kVAnalyticsKeyValue            = @"GA_value";
     {
         return @{ kVAnalyticsKeyCategory : @"Started signup via email" };
     }
-    else if ( [eventName isEqualToString:VTrackingEventUserDidSubmitSignupInfo] )
+    /*else if ( [eventName isEqualToString:VTrackingEventUserDidSubmitSignupInfo] )
     {
         return @{ kVAnalyticsKeyCategory : @"Submitted email and password" };
-    }
+    }*/
     else if ( [eventName isEqualToString:VTrackingEventUserDidPostComment] )
     {
         return @{ kVAnalyticsKeyCategory : kVAnalyticsEventCategoryInteraction,
@@ -424,7 +370,7 @@ NSString * const kVAnalyticsKeyValue            = @"GA_value";
     {
         return @{ kVAnalyticsKeyCategory : kVAnalyticsEventCategoryUserAccount,
                   kVAnalyticsKeyAction : @"Log Out" };
-    }*/
+    }
     
     return nil;
 }

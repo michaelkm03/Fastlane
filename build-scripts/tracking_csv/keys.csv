@@ -3,7 +3,7 @@ CurrentSection,"Which major section is selected, such as ""Home"", ""Indbox"", "
 Section,The section of the app that is being selected (not the CurrentSection).
 TextType,"For content creation, either Quote or Meme."
 TextLength,"Length of text for new post captions, comments or messages."
-ContentType,"For posts, either GIF, Video, Image or Poll (See tracking values list)"
+ContentType,"Indicates the type of some existing content with which a user is interacting (GIF, Video, Image or Poll).  Not to be confused with MediaType, which refers to the content being created."
 StreamName,The name of the last loaded stream from where the user has come.
 ErrorMessage,"For error events, should describe the error, if available."
 Context,A pre-defined context where the event has taken place (See tracking values list)

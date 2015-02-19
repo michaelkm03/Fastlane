@@ -2,7 +2,7 @@
 // victorious/victorious/Managers/Tracking/VTrackingConstants.h 
 // victorious 
 // 
-// Generated from CSV using script "tracking_generate_constants.sh" on 02/18/15. 
+// Generated from CSV using script "tracking_generate_constants.sh" on 02/19/15. 
 // Copyright (c) 2015 Victorious. All rights reserved. 
 // 
 
@@ -10,23 +10,24 @@
 
 // Tracking Event Names
 // Application Lifecycle
-extern NSString * const VTrackingEventApplicationFirstInstall; 
-extern NSString * const VTrackingEventApplicationDidLaunch; 
-extern NSString * const VTrackingEventApplicationDidEnterBackground; 
-extern NSString * const VTrackingEventApplicationDidEnterForeground; 
+extern NSString * const VTrackingEventApplicationFirstInstall; //< Backend mapping: app-intall
+extern NSString * const VTrackingEventApplicationDidLaunch; //< Backend mapping: app-init
+extern NSString * const VTrackingEventApplicationDidEnterBackground; //< Backend mapping: app-stop; Params: SessionTime
+extern NSString * const VTrackingEventApplicationDidEnterForeground; //< Backend mapping: app-start
 
 // Navigation
-extern NSString * const VTrackingEventUserDidSelectMainMenu; //< Params: CurrentSection
-extern NSString * const VTrackingEventUserDidSelectHamburgerMenuItem; //< Params: Section
-extern NSString * const VTrackingEventUserDidSelectTabBarSection; //< Params: Section
+extern NSString * const VTrackingEventUserDidSelectMainMenu; //< User opened the main menu with the hamburger button; Params: CurrentSection (template driven value)
+extern NSString * const VTrackingEventUserDidSelectMainMenuSection; //< User selected a section from the main menu (hamburger menu); Params: Section  (template driven value)
+extern NSString * const VTrackingEventUserDidSelectTabBarSection; //< User selected a section from the tab bar; Params: Section  (template driven value)
+extern NSString * const VTrackingEventUserDidSelectStream; //< "User selected a tab or segmented control to change streams in a multiple stream view; Params: StreamName, StreamId"
 
 // Content Creation
-extern NSString * const VTrackingEventUserDidSelectCreateButton; //< Params: CurrentSection
-extern NSString * const VTrackingEventUserDidSelectCreatePoll; 
-extern NSString * const VTrackingEventUserDidSelectCreateVideo; 
-extern NSString * const VTrackingEventUserDidSelectCreateGIF; 
-extern NSString * const VTrackingEventUserDidSelectCreateImage; 
-extern NSString * const VTrackingEventUserDidSelectCreateCancel; 
+extern NSString * const VTrackingEventUserDidSelectCreatePost; //< "User tapped (+) button, displaying the content type selection; Params: CurrentSection (template driven value)"
+extern NSString * const VTrackingEventCreatePollSelected; 
+extern NSString * const VTrackingEventCreateImagePostSelected; 
+extern NSString * const VTrackingEventCreateVideoPostSelected; 
+extern NSString * const VTrackingEventCreateGIFPostSelected; 
+extern NSString * const VTrackingEventCreateCancelSelected; //< User selected cancel from create post content type selection; Params: CurrentSection (template driven value)
 
 // Camera
 extern NSString * const VTrackingEventCameraDidSwitchToVideoCapture; 
@@ -49,9 +50,8 @@ extern NSString * const VTrackingEventUserDidSelectCropTool;
 extern NSString * const VTrackingEventUserDidSelectFilterTool; 
 extern NSString * const VTrackingEventUserDidSelectTextTool; 
 
-extern NSString * const VTrackingEventUserDidPublishContent; //< "Params: TextType, TextLength, ContentType, CaptionLength, MediaType, CurrentSection, StreamName, MediaSource, DidCrop, FilterName"
-
-extern NSString * const VTrackingEventCameraPublishDidCancel; //< User exited the workspace without publishing
+extern NSString * const VTrackingEventUserDidPublishContent; //< "Any non-poll post; Params: TextType, TextLength, CaptionLength, MediaType, CurrentSection, StreamName, MediaSource, DidCrop, FilterName"
+extern NSString * const VTrackingEventCameraPublishDidCancel; //< "User exited the camer view without producing output for workspace/publish, comment, message, etc."
 
 extern NSString * const VTrackingEventUserDidPublishPoll; //< "Params: CaptionLength, CurrentSection, StreamName, MediaSource"
 extern NSString * const VTrackingEventUserDidExitPollCreation; 
@@ -92,21 +92,19 @@ extern NSString * const VTrackingEventLoginWithTwitterDidFailUnknown; //< Params
 extern NSString * const VTrackingEventLoginWithTwitterDidFailNoAccounts; //< Params: ErrorMessage
 extern NSString * const VTrackingEventLoginWithTwitterDidFailDenied; //< Params: ErrorMessage
 
+// Edt/Create Profile
 extern NSString * const VTrackingEventCreateProfileValidationDidFail; //< Params: ErrorMessage
 extern NSString * const VTrackingEventCreateProfileDidSucceed; 
 extern NSString * const VTrackingEventUserDidSelectExitCreateProfile; 
 extern NSString * const VTrackingEventUserDidConfirmExitCreateProfile; 
 extern NSString * const VTrackingEventUserDidSelectImageForCreateProfile; //< Params: MediaSource
 
-
-// User Profile
 extern NSString * const VTrackingEventUserDidSelectEditProfile; 
 extern NSString * const VTrackingEventUserDidSelectImageForEditProfile; //< Params: MediaSource
-extern NSString * const VTrackingEventProfileDidUpdated; 
+extern NSString * const VTrackingEventProfileDidUpdated; //< "Pardon the spelling error, it's a legacy/compatibility thing"
 extern NSString * const VTrackingEventUserDidExitEditProfile; 
 extern NSString * const VTrackingEventUserDidSelectProfileFollowing; 
 extern NSString * const VTrackingEventUserDidSelectProfileFollowed; 
-
 
 // Purchases
 extern NSString * const VTrackingEventUserDidSelectLockedVoteType; 
@@ -118,12 +116,12 @@ extern NSString * const VTrackingEventPurchaseDidFail; //< Params: ErrorMessage
 extern NSString * const VTrackingEventRestorePurchasesDidFail; //< Params: ErrorMessage
 
 // Content Interaction
-extern NSString * const VTrackingEventSequenceDidAppearInStream; //< Backend mapping: cell-view
+extern NSString * const VTrackingEventSequenceDidAppearInStream; //< Stream cell became visible while scrolling stream (once per view); Backend mapping: cell-view
 extern NSString * const VTrackingEventViewDidStart; //< Content was displayed in content view and began playing (if video); Backend mapping: view-start
 extern NSString * const VTrackingEventUserDidSelectItemFromStream; //< Backend mapping: cell-click
 extern NSString * const VTrackingEventUserDidSelectItemFromMarquee; //< Backend mapping: cell-click
-extern NSString * const VTrackingEventUserDidViewStream; //< "Params: CurrentSection, StreamName, StreamId"
-extern NSString * const VTrackingEventUserDidSelectHashtag; //< Params: Hashtag
+extern NSString * const VTrackingEventUserDidViewStream; //< "A stream was presented to the user, regardless of whether visible by default in a view or was seleted explicitly.  Params: CurrentSection, StreamName, StreamId"
+extern NSString * const VTrackingEventUserDidSelectCaptionHashtag; //< Params: Hashtag
 extern NSString * const VTrackingEventUserDidSelectTaggedUser; 
 
 extern NSString * const VTrackingEventUserDidVoteSequence; 
@@ -132,8 +130,8 @@ extern NSString * const VTrackingEventRepostItemDidFail; //< Params: ErrorMessag
 extern NSString * const VTrackingEventUserDidFlagItem; //< Params: Context
 extern NSString * const VTrackingEventFlagItemDidFail; //< Params: ErrorMessage
 extern NSString * const VTrackingEventUserDidSelectShare; //< Params: Context
-extern NSString * const VTrackingEventShareDidSucceed; //< "Params: Context, ShareDestination"
-extern NSString * const VTrackingEventShareDidFail; //< Params: ErrorMessage
+extern NSString * const VTrackingEventUserDidShare; //< "Params: Context, ShareDestination"
+extern NSString * const VTrackingEventUserShareDidFail; //< Params: ErrorMessage
 extern NSString * const VTrackingEventUserDidSelectSelectRemix; //< Params: Context
 
 // Comments
@@ -205,7 +203,7 @@ extern NSString * const VTrackingKeyCurrentSection; //< "Which major section is 
 extern NSString * const VTrackingKeySection; //< The section of the app that is being selected (not the CurrentSection).
 extern NSString * const VTrackingKeyTextType; //< "For content creation, either Quote or Meme."
 extern NSString * const VTrackingKeyTextLength; //< "Length of text for new post captions, comments or messages."
-extern NSString * const VTrackingKeyContentType; //< "For posts, either GIF, Video, Image or Poll (See tracking values list)"
+extern NSString * const VTrackingKeyContentType; //< "Indicates the type of some existing content with which a user is interacting (GIF, Video, Image or Poll).  Not to be confused with MediaType, which refers to the content being created."
 extern NSString * const VTrackingKeyStreamName; //< The name of the last loaded stream from where the user has come.
 extern NSString * const VTrackingKeyErrorMessage; //< "For error events, should describe the error, if available."
 extern NSString * const VTrackingKeyContext; //< A pre-defined context where the event has taken place (See tracking values list)
@@ -230,16 +228,6 @@ extern NSString * const VTrackingKeyTimeCurrent; //< A decimal value in seconds 
 extern NSString * const VTrackingKeyHashtag; //< The hash tag without # symbol of an event related to hashtags
 
 // Tracking Event Values
-// CurrentSection values
-extern NSString * const VTrackingValueHome; 
-extern NSString * const VTrackingValueChannels; 
-extern NSString * const VTrackingValueChannel; 
-extern NSString * const VTrackingValueCommunity; 
-extern NSString * const VTrackingValueDiscover; 
-extern NSString * const VTrackingValueInbox; 
-extern NSString * const VTrackingValueProfile; 
-extern NSString * const VTrackingValueSettings; 
-
 // TextType values
 extern NSString * const VTrackingValueMeme; 
 extern NSString * const VTrackingValueQuote; 
@@ -257,6 +245,7 @@ extern NSString * const VTrackingValueImageSearch; //< Photo was loaded from the
 
 // Context values
 extern NSString * const VTrackingValueDiscoverSearch; //< Event triggered from discover section's search results
+extern NSString * const VTrackingValueTrendingHashtags; 
 extern NSString * const VTrackingValueInboxSearch; 
 extern NSString * const VTrackingValueEndCard; //< Event triggered from the end card
 extern NSString * const VTrackingValueUserProfile; //< While viewing a user's profile (including your own)

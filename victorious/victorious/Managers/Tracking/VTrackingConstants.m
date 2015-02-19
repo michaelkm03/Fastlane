@@ -2,7 +2,7 @@
 // victorious/victorious/Managers/Tracking/VTrackingConstants.m 
 // victorious 
 // 
-// Generated from CSV using script "tracking_generate_constants.sh" on 02/18/15. 
+// Generated from CSV using script "tracking_generate_constants.sh" on 02/19/15. 
 // Copyright (c) 2015 Victorious. All rights reserved. 
 // 
 
@@ -17,16 +17,17 @@ NSString * const VTrackingEventApplicationDidEnterForeground = @"ApplicationDidE
 
 // Navigation
 NSString * const VTrackingEventUserDidSelectMainMenu = @"UserDidSelectMainMenu";
-NSString * const VTrackingEventUserDidSelectHamburgerMenuItem = @"UserDidSelectHamburgerMenuItem";
+NSString * const VTrackingEventUserDidSelectMainMenuSection = @"UserDidSelectMainMenuSection";
 NSString * const VTrackingEventUserDidSelectTabBarSection = @"UserDidSelectTabBarSection";
+NSString * const VTrackingEventUserDidSelectStream = @"UserDidSelectStream";
 
 // Content Creation
-NSString * const VTrackingEventUserDidSelectCreateButton = @"UserDidSelectCreateButton";
-NSString * const VTrackingEventUserDidSelectCreatePoll = @"UserDidSelectCreatePoll";
-NSString * const VTrackingEventUserDidSelectCreateVideo = @"UserDidSelectCreateVideo";
-NSString * const VTrackingEventUserDidSelectCreateGIF = @"UserDidSelectCreateGIF";
-NSString * const VTrackingEventUserDidSelectCreateImage = @"UserDidSelectCreateImage";
-NSString * const VTrackingEventUserDidSelectCreateCancel = @"UserDidSelectCreateCancel";
+NSString * const VTrackingEventUserDidSelectCreatePost = @"UserDidSelectCreatePost";
+NSString * const VTrackingEventCreatePollSelected = @"CreatePollSelected";
+NSString * const VTrackingEventCreateImagePostSelected = @"CreateImagePostSelected";
+NSString * const VTrackingEventCreateVideoPostSelected = @"CreateVideoPostSelected";
+NSString * const VTrackingEventCreateGIFPostSelected = @"CreateGIFPostSelected";
+NSString * const VTrackingEventCreateCancelSelected = @"CreateCancelSelected";
 
 // Camera
 NSString * const VTrackingEventCameraDidSwitchToVideoCapture = @"CameraDidSwitchToVideoCapture";
@@ -50,7 +51,6 @@ NSString * const VTrackingEventUserDidSelectFilterTool = @"UserDidSelectFilterTo
 NSString * const VTrackingEventUserDidSelectTextTool = @"UserDidSelectTextTool";
 
 NSString * const VTrackingEventUserDidPublishContent = @"UserDidPublishContent";
-
 NSString * const VTrackingEventCameraPublishDidCancel = @"CameraPublishDidCancel";
 
 NSString * const VTrackingEventUserDidPublishPoll = @"UserDidPublishPoll";
@@ -92,21 +92,19 @@ NSString * const VTrackingEventLoginWithTwitterDidFailUnknown = @"LoginWithTwitt
 NSString * const VTrackingEventLoginWithTwitterDidFailNoAccounts = @"LoginWithTwitterDidFailNoAccounts";
 NSString * const VTrackingEventLoginWithTwitterDidFailDenied = @"LoginWithTwitterDidFailDenied";
 
+// Edt/Create Profile
 NSString * const VTrackingEventCreateProfileValidationDidFail = @"CreateProfileValidationDidFail";
 NSString * const VTrackingEventCreateProfileDidSucceed = @"CreateProfileDidSucceed";
 NSString * const VTrackingEventUserDidSelectExitCreateProfile = @"UserDidSelectExitCreateProfile";
 NSString * const VTrackingEventUserDidConfirmExitCreateProfile = @"UserDidConfirmExitCreateProfile";
 NSString * const VTrackingEventUserDidSelectImageForCreateProfile = @"UserDidSelectImageForCreateProfile";
 
-
-// User Profile
 NSString * const VTrackingEventUserDidSelectEditProfile = @"UserDidSelectEditProfile";
 NSString * const VTrackingEventUserDidSelectImageForEditProfile = @"UserDidSelectImageForEditProfile";
 NSString * const VTrackingEventProfileDidUpdated = @"ProfileDidUpdated";
 NSString * const VTrackingEventUserDidExitEditProfile = @"UserDidExitEditProfile";
 NSString * const VTrackingEventUserDidSelectProfileFollowing = @"UserDidSelectProfileFollowing";
 NSString * const VTrackingEventUserDidSelectProfileFollowed = @"UserDidSelectProfileFollowed";
-
 
 // Purchases
 NSString * const VTrackingEventUserDidSelectLockedVoteType = @"UserDidSelectLockedVoteType";
@@ -123,7 +121,7 @@ NSString * const VTrackingEventViewDidStart = @"ViewDidStart";
 NSString * const VTrackingEventUserDidSelectItemFromStream = @"UserDidSelectItemFromStream";
 NSString * const VTrackingEventUserDidSelectItemFromMarquee = @"UserDidSelectItemFromMarquee";
 NSString * const VTrackingEventUserDidViewStream = @"UserDidViewStream";
-NSString * const VTrackingEventUserDidSelectHashtag = @"UserDidSelectHashtag";
+NSString * const VTrackingEventUserDidSelectCaptionHashtag = @"UserDidSelectCaptionHashtag";
 NSString * const VTrackingEventUserDidSelectTaggedUser = @"UserDidSelectTaggedUser";
 
 NSString * const VTrackingEventUserDidVoteSequence = @"UserDidVoteSequence";
@@ -132,8 +130,8 @@ NSString * const VTrackingEventRepostItemDidFail = @"RepostItemDidFail";
 NSString * const VTrackingEventUserDidFlagItem = @"UserDidFlagItem";
 NSString * const VTrackingEventFlagItemDidFail = @"FlagItemDidFail";
 NSString * const VTrackingEventUserDidSelectShare = @"UserDidSelectShare";
-NSString * const VTrackingEventShareDidSucceed = @"ShareDidSucceed";
-NSString * const VTrackingEventShareDidFail = @"ShareDidFail";
+NSString * const VTrackingEventUserDidShare = @"UserDidShare";
+NSString * const VTrackingEventUserShareDidFail = @"UserShareDidFail";
 NSString * const VTrackingEventUserDidSelectSelectRemix = @"UserDidSelectSelectRemix";
 
 // Comments
@@ -230,16 +228,6 @@ NSString * const VTrackingKeyTimeCurrent = @"TimeCurrent";
 NSString * const VTrackingKeyHashtag = @"Hashtag";
 
 // Tracking Event Values
-// CurrentSection values
-NSString * const VTrackingValueHome = @"Home";
-NSString * const VTrackingValueChannels = @"Channels";
-NSString * const VTrackingValueChannel = @"Channel";
-NSString * const VTrackingValueCommunity = @"Community";
-NSString * const VTrackingValueDiscover = @"Discover";
-NSString * const VTrackingValueInbox = @"Inbox";
-NSString * const VTrackingValueProfile = @"Profile";
-NSString * const VTrackingValueSettings = @"Settings";
-
 // TextType values
 NSString * const VTrackingValueMeme = @"Meme";
 NSString * const VTrackingValueQuote = @"Quote";
@@ -257,6 +245,7 @@ NSString * const VTrackingValueImageSearch = @"ImageSearch";
 
 // Context values
 NSString * const VTrackingValueDiscoverSearch = @"DiscoverSearch";
+NSString * const VTrackingValueTrendingHashtags = @"TrendingHashtags";
 NSString * const VTrackingValueInboxSearch = @"InboxSearch";
 NSString * const VTrackingValueEndCard = @"EndCard";
 NSString * const VTrackingValueUserProfile = @"UserProfile";
