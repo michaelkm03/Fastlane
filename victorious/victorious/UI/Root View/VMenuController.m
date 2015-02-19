@@ -148,7 +148,10 @@ static char kKVOContext;
                               VTrackingKeySection : menuItem.title };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectMainSection parameters:params];
     
-    [[self.dependencyManager scaffoldViewController] navigateToDestination:menuItem.destination];
+    [[self.dependencyManager scaffoldViewController] navigateToDestination:menuItem.destination completion:^void
+     {
+         [[VTrackingManager sharedInstance] setValue:menuItem.title forSessionParameterWithKey:VTrackingKeyCurrentSection];
+     }];
 }
 
 #pragma mark - Key-Value Observation

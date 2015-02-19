@@ -76,6 +76,10 @@ NSString * const VTrackingEventSignupWithEmailValidationDidFail = @"SignupWithEm
 NSString * const VTrackingEventLoginWithEmailValidationDidFail = @"LoginWithEmailValidationDidFail";
 NSString * const VTrackingEventUserDidCancelLoginWithEmail = @"UserDidCancelLoginWithEmail";
 NSString * const VTrackingEventUserDidCancelSignupWithEmail = @"UserDidCancelSignupWithEmail";
+NSString * const VTrackingEventResetPasswordValidationDidFail = @"ResetPasswordValidationDidFail";
+NSString * const VTrackingEventUserDidSelectResetPassword = @"UserDidSelectResetPassword";
+NSString * const VTrackingEventResetPasswordDidSucceed = @"ResetPasswordDidSucceed";
+NSString * const VTrackingEventResetPasswordDidFail = @"ResetPasswordDidFail";
 
 NSString * const VTrackingEventLoginWithFacebookSelected = @"LoginWithFacebookSelected";
 NSString * const VTrackingEventSignupWithFacebookDidSucceed = @"SignupWithFacebookDidSucceed";
@@ -196,6 +200,10 @@ NSString * const VTrackingEventSetExpirationDidAppear = @"SetExpirationDidAppear
 NSString * const VTrackingEventSettingsDidAppear = @"SettingsDidAppear";
 NSString * const VTrackingEventStreamDidAppear = @"StreamDidAppear";
 NSString * const VTrackingEventSearchDidAppear = @"SearchDidAppear";
+
+// Settings
+NSString * const VTrackingEventUserDidSelectSetting = @"UserDidSelectSetting";
+NSString * const VTrackingEventUserDidChangeSetting = @"UserDidChangeSetting";
 
 // Tracking Event Parameters
 NSString * const VTrackingKeyCurrentSection = @"CurrentSection";

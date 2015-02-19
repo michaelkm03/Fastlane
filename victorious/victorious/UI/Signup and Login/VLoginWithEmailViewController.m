@@ -173,6 +173,9 @@
                                          forced:YES];
         shouldLogin = NO;
         
+        NSDictionary *params = @{ VTrackingKeyErrorMessage : validationError.localizedDescription };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithEmailValidationDidFail parameters:params];
+        
         if (newResponder == nil)
         {
             [self.usernameTextField becomeFirstResponder];
@@ -182,11 +185,15 @@
     
     if ( ![self.passwordValidator validateString:self.passwordTextField.text andError:&validationError])
     {
+        
         [self.passwordTextField showInvalidText:validationError.localizedDescription
                                        animated:YES
                                           shake:YES
                                          forced:YES];
         shouldLogin = NO;
+        
+        NSDictionary *params = @{ VTrackingKeyErrorMessage : validationError.localizedDescription };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithEmailValidationDidFail parameters:params];
         
         if (newResponder == nil)
         {
@@ -217,7 +224,9 @@
 
 - (void)didFailWithError:(NSError *)error
 {
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithEmailDidFail];
+    NSDictionary *params = @{ VTrackingKeyErrorMessage : error.localizedDescription };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithEmailDidFail parameters:params];
+    
     if (error.code != kVUserBannedError)
     {
         NSString       *message = [error.domain isEqualToString:kVictoriousErrorDomain] ? error.localizedDescription
@@ -262,6 +271,8 @@
 
 - (IBAction)cancel:(id)sender
 {
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidCancelLoginWithEmail];
+    
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -281,6 +292,8 @@
     [self.resetAlert textFieldAtIndex:0].keyboardType = UIKeyboardTypeEmailAddress;
     [self.resetAlert textFieldAtIndex:0].returnKeyType = UIReturnKeyDone;
     [self.resetAlert show];
+    
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectResetPassword];
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -295,6 +308,9 @@
                 NSString *message = NSLocalizedString(@"EmailNotValid", @"");
                 NSString *title = NSLocalizedString(@"EmailValidation", @"");
                 [self showInvalidEmailForResetPasswordErrorWithMessage:message title:title];
+                
+                NSDictionary *params = @{ VTrackingKeyErrorMessage : message };
+                [[VTrackingManager sharedInstance] trackEvent:VTrackingEventResetPasswordValidationDidFail parameters:params];
                 return;
             }
             
@@ -303,11 +319,16 @@
              {
                  self.deviceToken = resultObjects[0];
                  [self performSegueWithIdentifier:@"toEnterResetToken" sender:self];
+                 [[VTrackingManager sharedInstance] trackEvent:VTrackingEventResetPasswordDidSucceed];
              }
                                                                failBlock:^(NSOperation *operation, NSError *error)
              {
                  NSString *message = NSLocalizedString(@"EmailNotFound", @"");
                  NSString *title = NSLocalizedString(@"EmailValidation", @"");
+                 
+                 NSDictionary *params = @{ VTrackingKeyErrorMessage : message };
+                 [[VTrackingManager sharedInstance] trackEvent:VTrackingEventResetPasswordDidFail parameters:params];
+                 
                  [self showInvalidEmailForResetPasswordErrorWithMessage:message title:title];
              }];
         }

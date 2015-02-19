@@ -76,6 +76,10 @@ extern NSString * const VTrackingEventSignupWithEmailValidationDidFail; //< Para
 extern NSString * const VTrackingEventLoginWithEmailValidationDidFail; //< Params: ErrorMessage
 extern NSString * const VTrackingEventUserDidCancelLoginWithEmail; 
 extern NSString * const VTrackingEventUserDidCancelSignupWithEmail; 
+extern NSString * const VTrackingEventResetPasswordValidationDidFail; 
+extern NSString * const VTrackingEventUserDidSelectResetPassword; 
+extern NSString * const VTrackingEventResetPasswordDidSucceed; 
+extern NSString * const VTrackingEventResetPasswordDidFail; 
 
 extern NSString * const VTrackingEventLoginWithFacebookSelected; 
 extern NSString * const VTrackingEventSignupWithFacebookDidSucceed; 
@@ -196,6 +200,10 @@ extern NSString * const VTrackingEventSetExpirationDidAppear;
 extern NSString * const VTrackingEventSettingsDidAppear; 
 extern NSString * const VTrackingEventStreamDidAppear; 
 extern NSString * const VTrackingEventSearchDidAppear; 
+
+// Settings
+extern NSString * const VTrackingEventUserDidSelectSetting; //< User tapped one of the options in the settings section. Params: Name
+extern NSString * const VTrackingEventUserDidChangeSetting; //< User made a change to one of the options in the settings section.
 
 // Tracking Event Parameters
 extern NSString * const VTrackingKeyCurrentSection; //< "Which major section is selected, such as ""Home"", ""Indbox"", ""Profile"", etc."

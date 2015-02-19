@@ -291,13 +291,13 @@
     [self.contentViewController.view addSubview:self.contentButton];
 }
 
-- (void)navigateToDestination:(id)navigationDestination
+- (void)navigateToDestination:(id)navigationDestination completion:(void (^)())completion
 {
     if ( self.visible )
     {
         [self hideMenuViewController];
     }
-    [super navigateToDestination:navigationDestination];
+    [super navigateToDestination:navigationDestination completion:completion];
 }
 
 - (void)displayResultOfNavigation:(UIViewController *)viewController

@@ -74,15 +74,16 @@ extern NSString * const VScaffoldViewControllerUserProfileViewComponentKey;
  actually happens)
  
  @param navigationDestination Either an instance of UIViewController or an object conforming to VNavigationDestination
+ @param completion Block that will be executed when navigation action is completed.
  */
-- (void)navigateToDestination:(id)navigationDestination;
+- (void)navigateToDestination:(id)navigationDestination completion:(void(^)())completion;
 
 /**
  Displays the view controller that the user has navigated to through
  whatever primary means of navigation this scaffold provides. You
  normally don't need to call this method. It exists only as an
  override point for subclasses. (To programmatically effect 
- navigation, see -navigateToDestination:)
+ navigation, see -navigateToDestination:completion:)
  
  Subclasses MUST override. The base implementation does nothing.
  */

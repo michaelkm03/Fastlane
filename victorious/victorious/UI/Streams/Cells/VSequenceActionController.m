@@ -253,7 +253,7 @@
         NSDictionary *params = @{ VTrackingKeySequenceCategory : sequence.category ?: @"",
                                   VTrackingKeyShareDestination : activityType ?: @"",
                                   VTrackingKeyUrls : sequence.tracking.share ?: @[],
-                                  VTrackingKeyErrorMessage : activityError == nil ? @"" : activityError.localizedFailureReason };
+                                  VTrackingKeyErrorMessage : activityError == nil ? @"" : activityError.localizedDescription };
         NSString *eventName = completed ? VTrackingEventUserDidShare : VTrackingEventUserShareDidFail;
         [[VTrackingManager sharedInstance] trackEvent:eventName parameters:params];
         

@@ -109,8 +109,6 @@
 {
     [super viewDidAppear:animated];
     
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectSignupWithEmail];
-    
     [self.emailTextField becomeFirstResponder];
     self.navigationController.delegate = self;
 }
@@ -144,6 +142,10 @@
                                     animated:YES
                                        shake:YES
                                       forced:YES];
+        
+        NSDictionary *params = @{ VTrackingKeyErrorMessage : validationError.localizedDescription };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventSignupWithEmailValidationDidFail parameters:params];
+        
         shouldSignup = NO;
         [self.emailTextField becomeFirstResponder];
         newResponder = self.emailTextField;
@@ -157,6 +159,10 @@
                                        animated:YES
                                           shake:YES
                                          forced:YES];
+        
+        NSDictionary *params = @{ VTrackingKeyErrorMessage : validationError.localizedDescription };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventSignupWithEmailValidationDidFail parameters:params];
+        
         shouldSignup = NO;
         if (newResponder == nil)
         {
@@ -173,6 +179,10 @@
                                               animated:YES
                                                  shake:YES
                                                 forced:YES];
+        
+        NSDictionary *params = @{ VTrackingKeyErrorMessage : validationError.localizedDescription };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventSignupWithEmailValidationDidFail parameters:params];
+        
         shouldSignup = NO;
         if (newResponder == nil)
         {
@@ -187,6 +197,8 @@
 
 - (void)didSignUpWithUser:(VUser *)mainUser
 {
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventSignupWithEmailDidSucceed];
+    
     self.profile = mainUser;
     
     // Go to Part II of Sign-up
@@ -195,6 +207,8 @@
 
 - (void)didFailWithError:(NSError *)error
 {
+    NSDictionary *params = @{ VTrackingKeyErrorMessage : error.localizedDescription };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventSignupWithEmailDidFail parameters:params];
     
     UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"SignupFail", @"")
                                                            message:error.localizedDescription
@@ -227,7 +241,6 @@
                                                  userName:nil
                                              onCompletion:^(VUser *user, BOOL created)
          {
-             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventSignupWithEmailDidSucceed];
              [self didSignUpWithUser:user];
          }
                                                   onError:^(NSError *error)
@@ -239,6 +252,8 @@
 
 - (IBAction)cancel:(id)sender
 {
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidCancelSignupWithEmail];
+    
     [self.navigationController popViewControllerAnimated:YES];
 }
 

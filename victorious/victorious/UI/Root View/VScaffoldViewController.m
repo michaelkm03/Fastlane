@@ -120,7 +120,7 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
             }
             else
             {
-                [self navigateToDestination:viewController];
+                [self navigateToDestination:viewController completion:nil];
             }
         };
         
@@ -197,12 +197,17 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
 
 #pragma mark - Navigation
 
-- (void)navigateToDestination:(id)navigationDestination
+- (void)navigateToDestination:(id)navigationDestination completion:(void(^)())completion
 {
     void (^goTo)(UIViewController *) = ^(UIViewController *viewController)
     {
         NSAssert([viewController isKindOfClass:[UIViewController class]], @"non-UIViewController specified as destination for navigation");
         [self displayResultOfNavigation:viewController];
+        
+        if ( completion != nil )
+        {
+            completion();
+        }
     };
     
     if ([navigationDestination respondsToSelector:@selector(shouldNavigateWithAlternateDestination:)])
@@ -216,7 +221,7 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
             }
             else
             {
-                [self navigateToDestination:alternateDestination];
+                [self navigateToDestination:alternateDestination completion:completion];
             }
         }
     }

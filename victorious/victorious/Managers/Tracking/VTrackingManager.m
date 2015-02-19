@@ -56,6 +56,10 @@
 
 - (void)setValue:(NSString *)value forSessionParameterWithKey:(NSString *)key
 {
+#if TRACKING_ALERTS_ENABLED
+    [[[UIAlertView alloc] initWithTitle:@"Tracking Session Param" message:[NSString stringWithFormat:@"%@: %@", key, value] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+#endif
+    
     if ( value == nil )
     {
         [self.sessionParameters removeObjectForKey:key];
@@ -87,7 +91,16 @@
 #endif
     
 #if TRACKING_ALERTS_ENABLED
-    [[[UIAlertView alloc] initWithTitle:eventName message:[NSString stringWithFormat:@"%@", parameters] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+    NSString *message = @"";
+    for ( NSString *key in parameters )
+    {
+        message = [message stringByAppendingFormat:@"\n%@: %@", key, parameters [key]];
+    }
+    for ( NSString *key in self.sessionParameters )
+    {
+        message = [message stringByAppendingFormat:@"\n%@: %@", key, self.sessionParameters[key]];
+    }
+    [[[UIAlertView alloc] initWithTitle:eventName message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
 #endif
     
     [self.delegates enumerateObjectsUsingBlock:^(id<VTrackingDelegate> delegate, NSUInteger idx, BOOL *stop)

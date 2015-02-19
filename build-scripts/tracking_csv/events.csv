@@ -66,6 +66,10 @@ SignupWithEmailValidationDidFail,Params: ErrorMessage
 LoginWithEmailValidationDidFail,Params: ErrorMessage
 UserDidCancelLoginWithEmail,
 UserDidCancelSignupWithEmail,
+ResetPasswordValidationDidFail,
+UserDidSelectResetPassword,
+ResetPasswordDidSucceed,
+ResetPasswordDidFail,
 ,
 LoginWithFacebookSelected,
 SignupWithFacebookDidSucceed,
@@ -186,3 +190,7 @@ SetExpirationDidAppear,
 SettingsDidAppear,
 StreamDidAppear,
 SearchDidAppear,
+,
+// Settings,
+UserDidSelectSetting,User tapped one of the options in the settings section. Params: Name
+UserDidChangeSetting,User made a change to one of the options in the settings section.
