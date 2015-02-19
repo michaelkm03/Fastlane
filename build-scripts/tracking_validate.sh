@@ -4,11 +4,13 @@
 # called from root project folder.
 ###########
 
-echo -e "\nMissing Events:"
+LINE="  ***************  "
+
+echo -e "\n $LINE Missing Events $LINE"
 ./build-scripts/find_in_files.sh build-scripts/tracking_csv/events.csv victorious/victorious VTrackingEvent
 
-echo -e "\nMissing Keys:"
+echo -e "\n $LINE Missing Keys $LINE"
 ./build-scripts/find_in_files.sh build-scripts/tracking_csv/keys.csv victorious/victorious VTrackingKey
 
-echo -e "\nMissing Values:"
+echo -e "\n $LINE Missing Values $LINE"
 ./build-scripts/find_in_files.sh build-scripts/tracking_csv/values.csv victorious/victorious VTrackingValue

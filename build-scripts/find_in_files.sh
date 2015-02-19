@@ -26,8 +26,13 @@ fi
 
 (cat $SOURCE ; echo) | while IFS=, read -r COLUMN_1 COLUMN_2
 do
-	if [[ $COLUMN_1 != *"//"* ]] && [ ${#COLUMN_1} != 0 ];
+	if [[ $COLUMN_1 == *"//"* ]];
 	then
+        echo -e "$COLUMN_1"
+	elif [ ${#COLUMN_1} == 0 ];
+	then
+		echo ""
+	else
 		SEARCH_RESULT=$(egrep --with-filename --include \*.m --line-number -r "$PREFIX$COLUMN_1" "$SEARCH_DIR")
 		LINE_COUNT=$(echo "$SEARCH_RESULT" | wc -l)
 		NUM_USES=$(($LINE_COUNT-1))
@@ -36,7 +41,7 @@ do
 
 		if [ $NUM_USES == 0 ];
 		then
-			echo -e "$PREFIX$COLUMN_1"
+			echo -e "\t$PREFIX$COLUMN_1"
 		fi
 	fi
 done

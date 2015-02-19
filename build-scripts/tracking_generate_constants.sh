@@ -69,13 +69,13 @@ fi
 do
 	if [[ $COLUMN_1 == *"//"* ]];
 	then
-    echo -e "$COLUMN_1" >> $HEADER_FILE
-    echo -e "$COLUMN_1" >> $IMPLEMENTATION_FILE
+        echo -e "$COLUMN_1" >> $HEADER_FILE
+        echo -e "$COLUMN_1" >> $IMPLEMENTATION_FILE
 
 	elif [ ${#COLUMN_1} == 0 ];
 	then
-    echo -e "" >> $HEADER_FILE
-    echo -e "" >> $IMPLEMENTATION_FILE
+        echo -e "" >> $HEADER_FILE
+        echo -e "" >> $IMPLEMENTATION_FILE
 
 	else
 		DECLARATION="$PREFIX$COLUMN_1"
@@ -87,8 +87,8 @@ do
 			COMMENT=""
 		fi
 
-    echo -e "extern NSString * const $DECLARATION; $COMMENT" >> $HEADER_FILE
-    echo -e "NSString * const $DECLARATION = $DEFINITION;" >> $IMPLEMENTATION_FILE
+        echo -e "extern NSString * const $DECLARATION; $COMMENT" >> $HEADER_FILE
+        echo -e "NSString * const $DECLARATION = $DEFINITION;" >> $IMPLEMENTATION_FILE
 	fi
 
 done

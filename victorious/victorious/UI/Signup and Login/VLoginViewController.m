@@ -380,7 +380,8 @@
          [MBProgressHUD hideHUDForView:self.navigationController.view
                               animated:YES];
          
-         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithTwitterDidSucceed];
+         NSString *eventName = created ? VTrackingEventSignupWithTwitterDidSucceed : VTrackingEventLoginWithTwitterDidSucceed;
+         [[VTrackingManager sharedInstance] trackEvent:eventName];
          
          self.profile = user;
          if ( [self.profile.status isEqualToString:kUserStatusIncomplete] )
