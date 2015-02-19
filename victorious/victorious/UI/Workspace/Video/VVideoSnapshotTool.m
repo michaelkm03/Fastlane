@@ -47,6 +47,7 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
         _videoPlayerViewController.shouldShowToolbar = YES;
         _videoPlayerViewController.shouldChangeVideoGravityOnDoubleTap = NO;
         _videoPlayerViewController.videoPlayerLayerVideoGravity = AVLayerVideoGravityResizeAspectFill;
+        [_videoPlayerViewController.view layoutIfNeeded];
         
         _snapshotToolViewController = [[VSnapshotViewController alloc] initWithNibName:nil bundle:nil];
         _snapshotToolViewController.delegate = self;
@@ -113,7 +114,6 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
     self.snapshotGenerator = [[AVAssetImageGenerator alloc] initWithAsset:self.videoPlayerViewController.player.currentItem.asset];
     self.snapshotGenerator.appliesPreferredTrackTransform = YES;
     self.snapshotGenerator.apertureMode = AVAssetImageGeneratorApertureModeProductionAperture;
-    self.snapshotGenerator.maximumSize = self.videoPlayerViewController.view.frame.size;
     [self.snapshotGenerator generateCGImagesAsynchronouslyForTimes:@[[NSValue valueWithCMTime:self.videoPlayerViewController.currentTime]]
                                                  completionHandler:^(CMTime requestedTime, CGImageRef image, CMTime actualTime, AVAssetImageGeneratorResult result, NSError *error)
     {

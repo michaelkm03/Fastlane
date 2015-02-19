@@ -226,12 +226,23 @@
     
     if ([mediaURL v_hasImageExtension])
     {
-        self.toolController = [[VImageToolController alloc] initWithTools:[self.dependencyManager workspaceTools]];
+        VImageToolController *imageToolController = [[VImageToolController alloc] initWithTools:[self.dependencyManager workspaceTools]];
+        NSNumber *initialImageEditStateNumber = [self.dependencyManager templateValueOfType:[NSNumber class] forKey:VImageToolControllerInitialImageEditStateKey];
+        if (initialImageEditStateNumber != nil)
+        {
+             imageToolController.defaultImageTool = [initialImageEditStateNumber integerValue];
+        }
+        self.toolController = imageToolController;
     }
     else if ([mediaURL v_hasVideoExtension])
     {
-        self.toolController = [[VVideoToolController alloc] initWithTools:[self.dependencyManager workspaceTools]];
-        [(VVideoToolController *)self.toolController setMediaURL:mediaURL];
+        VVideoToolController *videoToolController = [[VVideoToolController alloc] initWithTools:[self.dependencyManager workspaceTools]];
+        NSNumber *initialVideoEditStateValue = [self.dependencyManager numberForKey:VVideoToolControllerInitalVideoEditStateKey];
+        if (initialVideoEditStateValue != nil)
+        {
+            videoToolController.defaultVideoTool = [initialVideoEditStateValue integerValue];
+        }
+        self.toolController = videoToolController;
     }
     __weak typeof(self) welf = self;
     self.toolController.canRenderAndExportChangeBlock = ^void(BOOL canRenderAndExport)
@@ -460,6 +471,8 @@
 - (void)positionToolViewControllerOnCanvas:(UIViewController *)toolViewController
 {
     toolViewController.view.translatesAutoresizingMaskIntoConstraints = NO;
+    // Prevent weird resizing if we are in an animation block.
+    toolViewController.view.frame = self.canvasView.frame;
     [self.view addConstraints:@[
                                 [NSLayoutConstraint constraintWithItem:toolViewController.view
                                                              attribute:NSLayoutAttributeTop

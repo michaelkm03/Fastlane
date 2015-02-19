@@ -74,9 +74,6 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
 
 @property (nonatomic, strong) VPublishBlurOverAnimator *transitionAnimator;
 
-@property (nonatomic, assign) VImageToolControllerInitialImageEditState initialImageEditState;
-@property (nonatomic, assign) VVideoToolControllerInitialVideoEditState initialVideoEditState;
-
 @property (nonatomic, readonly) VDependencyManager *dependencyManager;
 
 @end
@@ -112,20 +109,6 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
         _flowNavigationController.delegate = self;
         objc_setAssociatedObject(_flowNavigationController, &kAssociatedObjectKey, self, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
         _transitionAnimator = [[VPublishBlurOverAnimator alloc] init];
-        
-        _initialImageEditState = VImageToolControllerInitialImageEditStateText;
-        NSNumber *initalImageEditStateValue = [dependencyManager numberForKey:VImageToolControllerInitialImageEditStateKey];
-        if (initalImageEditStateValue != nil)
-        {
-            _initialImageEditState = [initalImageEditStateValue integerValue];
-        }
-        
-        _initialVideoEditState = VVideoToolControllerInitialVideoEditStateGIF;
-        NSNumber *initialVideoEditStateValue = [dependencyManager numberForKey:VVideoToolControllerInitalVideoEditStateKey];
-        if (initialVideoEditStateValue != nil)
-        {
-            _initialVideoEditState = [initialVideoEditStateValue integerValue];
-        }
         
         VSequence *sequenceToRemix = [dependencyManager templateValueOfType:[VSequence class] forKey:VWorkspaceFlowControllerSequenceToRemixKey];
         if (sequenceToRemix != nil)
@@ -348,15 +331,14 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
     {
         workspaceViewController = (VWorkspaceViewController *)[self.dependencyManager viewControllerForKey:VDependencyManagerImageWorkspaceKey];
         workspaceViewController.mediaURL = self.capturedMediaURL;
-        ((VImageToolController *)workspaceViewController.toolController).defaultImageTool = self.initialImageEditState;
     }
     else if ([self.capturedMediaURL v_hasVideoExtension])
     {
         workspaceViewController = (VWorkspaceViewController *)[self.dependencyManager viewControllerForKey:VDependencyManagerVideoWorkspaceKey];
         workspaceViewController.mediaURL = self.capturedMediaURL;
-        ((VVideoToolController *)workspaceViewController.toolController).defaultVideoTool = self.initialVideoEditState;
         VVideoToolController *videoToolController = (VVideoToolController *)workspaceViewController.toolController;
         videoToolController.videoToolControllerDelegate = self;
+        videoToolController.mediaURL = self.capturedMediaURL;
     }
     else
     {
@@ -487,6 +469,8 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
                           completionBlock:nil];
 }
 
+#pragma mark - VVideoToolControllerDelegate
+
 - (void)videoToolController:(VVideoToolController *)videoToolController
  selectedSnapshotForEditing:(UIImage *)previewImage
         renderedSnapshotURL:(NSURL *)renderedMediaURL
@@ -496,6 +480,10 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
                                                                                                                withAddedDependencies:@{VImageToolControllerInitialImageEditStateKey:@(VImageToolControllerInitialImageEditStateText)}];
     imageWorkspaceViewController.mediaURL = renderedMediaURL;
     imageWorkspaceViewController.previewImage = previewImage;
+    
+    VImageToolController *imageToolController = (VImageToolController *)imageWorkspaceViewController.toolController;
+    imageToolController.defaultImageTool = VImageToolControllerInitialImageEditStateText;
+    
     imageWorkspaceViewController.continueText = NSLocalizedString(@"Publish", nil);
     __weak typeof(self) welf = self;
     imageWorkspaceViewController.completionBlock = ^void(BOOL finished, UIImage *previewImage, NSURL *renderedImage)
