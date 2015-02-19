@@ -12,7 +12,8 @@
 /**
  Enumeration of supported ad networks
  */
-typedef NS_ENUM(NSInteger, VMonetizationPartner){
+typedef NS_ENUM(NSInteger, VMonetizationPartner)
+{
     /**
      No ad network present
      */

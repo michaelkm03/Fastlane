@@ -10,6 +10,8 @@
 #import "VObjectManager+Private.h"
 #import "VTrackingURLRequest.h"
 
+static NSString * const kMacroBookendToken           = @"%%";
+
 static NSString * const kMacroTimeFrom               = @"%%FROM_TIME%%";
 static NSString * const kMacroTimeTo                 = @"%%TO_TIME%%";
 static NSString * const kMacroTimeCurrent            = @"%%TIME_CURRENT%%";
@@ -164,13 +166,22 @@ static NSString * const kMacroSessionTime            = @"%%SESSION_TIME%%";
     [macros enumerateKeysAndObjectsUsingBlock:^(NSString *macroKey, NSString *macroValue, BOOL *stop)
     {
         // For each macro, find a value in the parameters dictionary
-        id value = parameters[ macroKey ];
-        NSString *stringWithNextMacro = [self stringFromString:output byReplacingString:macroValue withValue:value ?: @""];
+        id paramValue = parameters[ macroKey ];
+        NSString *stringWithNextMacro = [self stringFromString:output byReplacingString:macroValue withValue:paramValue ?: @""];
         if ( stringWithNextMacro != nil )
         {
             output = stringWithNextMacro;
         }
     }];
+    
+    while ( [output rangeOfString:kMacroBookendToken].location != NSNotFound )
+    {
+        NSRange startRange = [output rangeOfString:kMacroBookendToken];
+        NSString *nextSegment = [output substringFromIndex:startRange.location + startRange.length];
+        NSRange endRange = [nextSegment rangeOfString:kMacroBookendToken];
+        NSRange totalRange = NSMakeRange( startRange.location, endRange.location + endRange.length + kMacroBookendToken.length );
+        output = [output stringByReplacingCharactersInRange:totalRange withString:@""];
+    }
     
     return output;
 }
