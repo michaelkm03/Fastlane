@@ -143,6 +143,11 @@ static char kKVOContext;
     VNavigationMenuItem *menuItem = [self.collectionViewDataSource menuItemAtIndexPath:indexPath];
     
     [collectionView deselectItemAtIndexPath:indexPath animated:YES];
+    
+    NSDictionary *params = @{ VTrackingKeyMenuType : VTrackingValueHamburgerMenu,
+                              VTrackingKeySection : menuItem.title };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectMainSection parameters:params];
+    
     [[self.dependencyManager scaffoldViewController] navigateToDestination:menuItem.destination];
 }
 

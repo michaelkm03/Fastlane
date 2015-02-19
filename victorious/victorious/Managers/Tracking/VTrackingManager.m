@@ -10,7 +10,7 @@
 #import "VTrackingEvent.h"
 
 #define TRACKING_LOGGING_ENABLED 0
-#define TRACKING_ALERTS_ENABLED 0
+#define TRACKING_ALERTS_ENABLED 1
 
 #if TRACKING_LOGGING_ENABLED
 #warning Tracking logging is enabled. Please remember to disable it when you're done debugging.
@@ -84,6 +84,10 @@
     
 #if TRACKING_LOGGING_ENABLED
     VLog( @"Tracking: %@ to %lu delegates", eventName, (unsigned long)self.delegates.count);
+#endif
+    
+#if TRACKING_ALERTS_ENABLED
+    [[[UIAlertView alloc] initWithTitle:eventName message:[NSString stringWithFormat:@"%@", parameters] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
 #endif
     
     [self.delegates enumerateObjectsUsingBlock:^(id<VTrackingDelegate> delegate, NSUInteger idx, BOOL *stop)
@@ -164,10 +168,6 @@
     
 #if TRACKING_LOGGING_ENABLED
     VLog( @"Event Started: %@ to %lu delegates", eventName, (unsigned long)self.delegates.count);
-#endif
-    
-#if TRACKING_ALERTS_ENABLED
-    [[[UIAlertView alloc] initWithTitle:eventName message:[NSString stringWithFormat:@"%@", parameters] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
 #endif
     
     VTrackingEvent *event = [[VTrackingEvent alloc] initWithName:eventName parameters:parameters eventId:nil];
