@@ -463,11 +463,6 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     int currentLoop = 0;
     CMTime compareTime = time;
     
-    if (!CMTIME_IS_VALID(self.originalAssetDuration))
-    {
-        return time;
-    }
-    
     while ( CMTIME_COMPARE_INLINE( compareTime, >, self.originalAssetDuration) )
     {
         compareTime = CMTimeSubtract( compareTime, self.originalAssetDuration );
@@ -476,9 +471,9 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     
     CMTime adjustment = CMTimeMultiply( self.originalAssetDuration, currentLoop );
     CMTime output = CMTimeSubtract( time, adjustment );
- 
+    
     // Uncomment to debug adjusted time and current loop:
-//     VLog( @"Loops: (%i), AdjustedTime: %@, UnadjustedTime: %@, Original AssetDuration: %@", currentLoop, @(CMTimeGetSeconds( output )), @(CMTimeGetSeconds(time)), @(CMTimeGetSeconds(self.originalAssetDuration)));
+    // VLog( @"adjusted time (%i): %.2f", currentLoop, CMTimeGetSeconds( output ) );
     
     return output;
 }
@@ -487,7 +482,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 {
     time = [self timeAdjustedForLoopingVideoFromTime:time];
     
-    Float64 durationInSeconds = CMTimeGetSeconds([self playerItemDuration]);
+    Float64 durationInSeconds = CMTimeGetSeconds( self.originalAssetDuration );
     Float64 timeInSeconds     = CMTimeGetSeconds(time);
     float percentElapsed      = timeInSeconds / durationInSeconds;
     
@@ -496,7 +491,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     
     if ( [self didSkipFromPreviousTime:self.previousTime toCurrentTime:self.currentTime] )
     {
-        if ( self.isTrackingEnabled )
+        if ( self.isTrackingEnabled && self.shouldShowToolbar )
         {
             NSDictionary *params = @{ VTrackingKeyFromTime : @( CMTimeGetSeconds( self.previousTime ) ),
                                       VTrackingKeyToTime : @( CMTimeGetSeconds( self.currentTime ) ),
@@ -559,6 +554,18 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventVideoDidComplete75 parameters:params];
         }
         self.finishedThirdQuartile = YES;
+    }
+    
+    // `shouldSouldToolbar` indicates a GIF, and since GIFs are trimmed slightly at their ends for clean looping, we compare against just under 1.0f
+    // Tracking the final quartile for videos without composition-based looping occurrs in `playerItemDidPlayToEndTime`:
+    if ( !self.shouldShowToolbar && !self.finishedFourthQuartile && percentElapsed >= 0.98f)
+    {
+        if ( self.isTrackingEnabled )
+        {
+            NSDictionary *params = @{ VTrackingKeyUrls : self.trackingItem.videoComplete100 };
+            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventVideoDidComplete100 parameters:params];
+        }
+        self.finishedFourthQuartile = YES;
     }
     
     if (CMTIME_IS_VALID(self.endTime) && CMTIME_COMPARE_INLINE(time, >=, self.endTime))
@@ -783,6 +790,9 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 
 - (void)playerItemFailedToPlayToEndTime:(NSNotification *)notification
 {
+    NSDictionary *params = @{ VTrackingKeyErrorMessage : @"AVPlayerItemFailedToPlayToEndTimeNotification" };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventVideoDidFail parameters:params];
+    
     if (notification.object == self.player.currentItem)
     {
         self.player.rate = 0;
@@ -881,6 +891,9 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
                 {
                     if ([self.delegate respondsToSelector:@selector(videoPlayerFailed:)])
                     {
+                        NSDictionary *params = @{ VTrackingKeyErrorMessage : @"AVPlayerItemStatusFailed" };
+                        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventVideoDidFail parameters:params];
+                        
                         [self.delegate videoPlayerFailed:self];
                     }
                     break;
