@@ -56,6 +56,7 @@ NSString * const VTrackingEventUserDidPublishPoll = @"UserDidPublishPoll";
 NSString * const VTrackingEventUserDidExitPollCreation = @"UserDidExitPollCreation";
 NSString * const VTrackingEventUserDidFailValidationForPublishPoll = @"UserDidFailValidationForPublishPoll";
 
+// Upload bar
 NSString * const VTrackingEventUploadDidFail = @"UploadDidFail";
 NSString * const VTrackingEventUploadDidSucceed = @"UploadDidSucceed";
 NSString * const VTrackingEventUserDidCancelPendingUpload = @"UserDidCancelPendingUpload";
@@ -83,13 +84,11 @@ NSString * const VTrackingEventResetPasswordDidFail = @"ResetPasswordDidFail";
 
 NSString * const VTrackingEventLoginWithFacebookSelected = @"LoginWithFacebookSelected";
 NSString * const VTrackingEventSignupWithFacebookDidSucceed = @"SignupWithFacebookDidSucceed";
-NSString * const VTrackingEventSignupWithFacebookDidFail = @"SignupWithFacebookDidFail";
 NSString * const VTrackingEventLoginWithFacebookDidSucceed = @"LoginWithFacebookDidSucceed";
 NSString * const VTrackingEventLoginWithFacebookDidFail = @"LoginWithFacebookDidFail";
 
 NSString * const VTrackingEventLoginWithTwitterSelected = @"LoginWithTwitterSelected";
 NSString * const VTrackingEventSignupWithTwitterDidSucceed = @"SignupWithTwitterDidSucceed";
-NSString * const VTrackingEventSignupWithTwitterDidFail = @"SignupWithTwitterDidFail";
 NSString * const VTrackingEventLoginWithTwitterDidSucceed = @"LoginWithTwitterDidSucceed";
 NSString * const VTrackingEventLoginWithTwitterDidFailUnknown = @"LoginWithTwitterDidFailUnknown";
 NSString * const VTrackingEventLoginWithTwitterDidFailNoAccounts = @"LoginWithTwitterDidFailNoAccounts";

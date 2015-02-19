@@ -46,6 +46,7 @@ UserDidPublishPoll,"Params: CaptionLength, CurrentSection, StreamName, MediaSour
 UserDidExitPollCreation,
 UserDidFailValidationForPublishPoll,
 ,
+// Upload bar,
 UploadDidFail,
 UploadDidSucceed,
 UserDidCancelPendingUpload,
@@ -73,13 +74,11 @@ ResetPasswordDidFail,
 ,
 LoginWithFacebookSelected,
 SignupWithFacebookDidSucceed,
-SignupWithFacebookDidFail,Params: ErrorMessage
 LoginWithFacebookDidSucceed,
 LoginWithFacebookDidFail,Params: ErrorMessage
 ,
 LoginWithTwitterSelected,
 SignupWithTwitterDidSucceed,
-SignupWithTwitterDidFail,Params: ErrorMessage
 LoginWithTwitterDidSucceed,
 LoginWithTwitterDidFailUnknown,Params: ErrorMessage
 LoginWithTwitterDidFailNoAccounts,Params: ErrorMessage

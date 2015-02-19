@@ -56,6 +56,7 @@ extern NSString * const VTrackingEventUserDidPublishPoll; //< "Params: CaptionLe
 extern NSString * const VTrackingEventUserDidExitPollCreation; 
 extern NSString * const VTrackingEventUserDidFailValidationForPublishPoll; 
 
+// Upload bar
 extern NSString * const VTrackingEventUploadDidFail; 
 extern NSString * const VTrackingEventUploadDidSucceed; 
 extern NSString * const VTrackingEventUserDidCancelPendingUpload; 
@@ -83,13 +84,11 @@ extern NSString * const VTrackingEventResetPasswordDidFail;
 
 extern NSString * const VTrackingEventLoginWithFacebookSelected; 
 extern NSString * const VTrackingEventSignupWithFacebookDidSucceed; 
-extern NSString * const VTrackingEventSignupWithFacebookDidFail; //< Params: ErrorMessage
 extern NSString * const VTrackingEventLoginWithFacebookDidSucceed; 
 extern NSString * const VTrackingEventLoginWithFacebookDidFail; //< Params: ErrorMessage
 
 extern NSString * const VTrackingEventLoginWithTwitterSelected; 
 extern NSString * const VTrackingEventSignupWithTwitterDidSucceed; 
-extern NSString * const VTrackingEventSignupWithTwitterDidFail; //< Params: ErrorMessage
 extern NSString * const VTrackingEventLoginWithTwitterDidSucceed; 
 extern NSString * const VTrackingEventLoginWithTwitterDidFailUnknown; //< Params: ErrorMessage
 extern NSString * const VTrackingEventLoginWithTwitterDidFailNoAccounts; //< Params: ErrorMessage
