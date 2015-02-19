@@ -16,7 +16,6 @@ static const NSTimeInterval kRecordingTriggerDuration = 0.45;
 static const NSTimeInterval kTransitionToRecordingAnimationDuration = 0.2;
 static const NSTimeInterval kRecordingShrinkAnimationDuration = 0.2;
 static const NSTimeInterval kNotRecordingTrackingTime = 0.0;
-static const NSTimeInterval kShrinkingCameraShutterAnimationDuration = 1.5;
 
 @interface VCameraControl ()
 
@@ -180,7 +179,7 @@ static const NSTimeInterval kShrinkingCameraShutterAnimationDuration = 1.5;
             animationDuration = kRecordingTriggerDuration;
             animations = ^
             {
-                self.transform = CGAffineTransformMakeScale(1.2f, 1.2f);
+                self.frame = CGRectInset(self.frame, -35.0f, 0.0f);
                 self.progressView.frame = CGRectMake(CGRectGetMinX(self.bounds),
                                                      CGRectGetMinY(self.bounds),
                                                      CGRectGetWidth(self.bounds) * self.recordingProgress,
@@ -203,6 +202,7 @@ static const NSTimeInterval kShrinkingCameraShutterAnimationDuration = 1.5;
             
             animations = ^
             {
+                
                 self.progressView.frame = CGRectMake(CGRectGetMinX(self.bounds),
                                                      CGRectGetMinY(self.bounds),
                                                      CGRectGetWidth(self.bounds) * self.recordingProgress,
@@ -212,13 +212,22 @@ static const NSTimeInterval kShrinkingCameraShutterAnimationDuration = 1.5;
         }
         case VCameraControlStateCapturingImage:
         {
-            [self sendActionsForControlEvents:VCameraControlEventWantsStillImage];
-            animationDuration = kShrinkingCameraShutterAnimationDuration;
-            initialVelocity = -1.0f;
-            animations = ^
-            {
-                self.backgroundColor = self.tintColor;
-            };
+            [CATransaction commit];
+            [UIView animateWithDuration:0.35f
+                                  delay:0.0f
+                 usingSpringWithDamping:1.0f
+                  initialSpringVelocity:-1.0f
+                                options:UIViewAnimationOptionCurveEaseOut
+                             animations:^
+             {
+                 self.frame = CGRectMake(0, 0, kMinHeightSize, kMinHeightSize);
+             }
+                             completion:^(BOOL finished)
+             {
+                 [self sendActionsForControlEvents:VCameraControlEventWantsStillImage];
+             }];
+            _cameraControlState = cameraControlState;
+            return;
             break;
         }
     }
