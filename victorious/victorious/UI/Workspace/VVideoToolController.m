@@ -32,11 +32,17 @@ NSString * const VVideoToolControllerInitalVideoEditStateKey = @"VVideoToolContr
     
     [selectedTool setMediaURL:self.mediaURL];
     
-// TODO: Add snapshot handling here
     BOOL selectedToolIsSnapshot = [selectedTool isKindOfClass:[VVideoSnapshotTool class]];
-    if (self.canRenderAndExportChangeBlock)
+    if (self.canRenderAndExportChangeBlock && selectedToolIsSnapshot)
     {
         self.canRenderAndExportChangeBlock(!selectedToolIsSnapshot);
+        
+        VVideoSnapshotTool *snapshotTool = (VVideoSnapshotTool *)selectedTool;
+        __weak typeof(self) welf = self;
+        snapshotTool.capturedSnapshotBlock = ^void(UIImage *previewImage, NSURL *capturedMediaURL)
+        {
+            [welf.videoToolControllerDelegate videoToolController:self selectedSnapshotForEditing:previewImage renderedSnapshotURL:capturedMediaURL];
+        };
     }
 }
 

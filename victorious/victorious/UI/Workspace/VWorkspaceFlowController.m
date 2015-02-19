@@ -59,7 +59,7 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
     VWorkspaceFlowControllerStatePublish
 };
 
-@interface VWorkspaceFlowController () <UINavigationControllerDelegate>
+@interface VWorkspaceFlowController () <UINavigationControllerDelegate, VVideoToolControllerDelegate>
 
 @property (nonatomic, assign) VWorkspaceFlowControllerState state;
 
@@ -355,6 +355,8 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
         workspaceViewController = (VWorkspaceViewController *)[self.dependencyManager viewControllerForKey:VDependencyManagerVideoWorkspaceKey];
         workspaceViewController.mediaURL = self.capturedMediaURL;
         ((VVideoToolController *)workspaceViewController.toolController).defaultVideoTool = self.initialVideoEditState;
+        VVideoToolController *videoToolController = (VVideoToolController *)workspaceViewController.toolController;
+        videoToolController.videoToolControllerDelegate = self;
     }
     else
     {
@@ -483,6 +485,33 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
     [library writeImageToSavedPhotosAlbum:image.CGImage
                               orientation:(NSInteger)image.imageOrientation
                           completionBlock:nil];
+}
+
+- (void)videoToolController:(VVideoToolController *)videoToolController
+ selectedSnapshotForEditing:(UIImage *)previewImage
+        renderedSnapshotURL:(NSURL *)renderedMediaURL
+{
+    VWorkspaceViewController *imageWorkspaceViewController = (VWorkspaceViewController *)[self.dependencyManager templateValueOfType:[VWorkspaceViewController class]
+                                                                                                                              forKey:VDependencyManagerImageWorkspaceKey
+                                                                                                               withAddedDependencies:@{VImageToolControllerInitialImageEditStateKey:@(VImageToolControllerInitialImageEditStateText)}];
+    imageWorkspaceViewController.mediaURL = renderedMediaURL;
+    imageWorkspaceViewController.previewImage = previewImage;
+    imageWorkspaceViewController.continueText = NSLocalizedString(@"Publish", nil);
+    __weak typeof(self) welf = self;
+    imageWorkspaceViewController.completionBlock = ^void(BOOL finished, UIImage *previewImage, NSURL *renderedImage)
+    {
+        if (!finished)
+        {
+            [welf.flowNavigationController popViewControllerAnimated:YES];
+            return;
+        }
+        
+        welf.renderedMeidaURL = renderedImage;
+        welf.previewImage = previewImage;
+        [self transitionFromState:welf.state
+                          toState:VWorkspaceFlowControllerStatePublish];
+    };
+    [self.flowNavigationController pushViewController:imageWorkspaceViewController animated:YES];
 }
 
 @end

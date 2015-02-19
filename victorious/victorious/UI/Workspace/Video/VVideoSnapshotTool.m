@@ -45,7 +45,7 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
         _videoPlayerViewController.shouldFireAnalytics = NO;
         _videoPlayerViewController.loopWithoutComposition = YES;
         _videoPlayerViewController.shouldShowToolbar = YES;
-        _videoPlayerViewController.shouldChangeVideoGravityOnDoubleTap = YES;
+        _videoPlayerViewController.shouldChangeVideoGravityOnDoubleTap = NO;
         _videoPlayerViewController.videoPlayerLayerVideoGravity = AVLayerVideoGravityResizeAspectFill;
         
         _snapshotToolViewController = [[VSnapshotViewController alloc] initWithNibName:nil bundle:nil];
@@ -59,7 +59,6 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
 - (void)setMediaURL:(NSURL *)mediaURL
 {
     [self.videoPlayerViewController setItemURL:mediaURL loop:YES];
-    self.snapshotGenerator = [[AVAssetImageGenerator alloc] initWithAsset:[AVURLAsset assetWithURL:mediaURL]];
 }
 
 - (void)exportToURL:(NSURL *)url withCompletion:(void (^)(BOOL, UIImage *, NSError *))completion
@@ -110,6 +109,11 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
     snapshotViewController.buttonEnabled = NO;
     [self.videoPlayerViewController.player pause];
     __weak typeof(self) welf = self;
+    
+    self.snapshotGenerator = [[AVAssetImageGenerator alloc] initWithAsset:self.videoPlayerViewController.player.currentItem.asset];
+    self.snapshotGenerator.appliesPreferredTrackTransform = YES;
+    self.snapshotGenerator.apertureMode = AVAssetImageGeneratorApertureModeProductionAperture;
+    self.snapshotGenerator.maximumSize = self.videoPlayerViewController.view.frame.size;
     [self.snapshotGenerator generateCGImagesAsynchronouslyForTimes:@[[NSValue valueWithCMTime:self.videoPlayerViewController.currentTime]]
                                                  completionHandler:^(CMTime requestedTime, CGImageRef image, CMTime actualTime, AVAssetImageGeneratorResult result, NSError *error)
     {
@@ -133,9 +137,10 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
         
         dispatch_async(dispatch_get_main_queue(), ^
         {
+            self.snapshotToolViewController.buttonEnabled = YES;
             if (welf.capturedSnapshotBlock)
             {
-                welf.capturedSnapshotBlock(previewImage, welf.renderedMediaURL);
+                welf.capturedSnapshotBlock(previewImage, tempFile);
             }
         });
     }];

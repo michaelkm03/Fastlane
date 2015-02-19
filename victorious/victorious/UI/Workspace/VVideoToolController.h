@@ -30,7 +30,6 @@ typedef NS_ENUM(NSInteger, VVideoToolControllerInitialVideoEditState)
  */
 @interface VVideoToolController : VToolController
 
-
 @property (nonatomic, weak) id<VVideoToolControllerDelegate> videoToolControllerDelegate;
 
 /**
