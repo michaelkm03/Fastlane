@@ -17,8 +17,7 @@ extern NSString * const VTrackingEventApplicationDidEnterForeground; //< Backend
 
 // Navigation
 extern NSString * const VTrackingEventUserDidSelectMainMenu; //< User opened the main menu with the hamburger button; Params: CurrentSection (template driven value)
-extern NSString * const VTrackingEventUserDidSelectMainMenuSection; //< User selected a section from the main menu (hamburger menu); Params: Section  (template driven value)
-extern NSString * const VTrackingEventUserDidSelectTabBarSection; //< User selected a section from the tab bar; Params: Section  (template driven value)
+extern NSString * const VTrackingEventUserDidSelectMainSection; //< "User selected a section from the main menu.  Params: MenuType, Section  (template driven value)"
 extern NSString * const VTrackingEventUserDidSelectStream; //< "User selected a tab or segmented control to change streams in a multiple stream view; Params: StreamName, StreamId"
 
 // Content Creation
@@ -226,6 +225,7 @@ extern NSString * const VTrackingKeyFromTime; //< A decimal value in seconds of 
 extern NSString * const VTrackingKeyToTime; //< A decimal value in seconds of when a video skip event ended; Backend mapping: %%TIME_TO%%
 extern NSString * const VTrackingKeyTimeCurrent; //< A decimal value in seconds of the current playhead position of a video asset; Backend mapping: %%TIME_CURRENT%%
 extern NSString * const VTrackingKeyHashtag; //< The hash tag without # symbol of an event related to hashtags
+extern NSString * const VTrackingKeyMenuType; //< The type of main menu in which a main section navigation ocurred.
 
 // Tracking Event Values
 // TextType values
@@ -253,3 +253,7 @@ extern NSString * const VTrackingValueHashtagStream; //< Event occurred in a has
 extern NSString * const VTrackingValueContentView; //< Event occurred in content view
 extern NSString * const VTrackingValueStream; //< "Any stream, as opposed to content view"
 extern NSString * const VTrackingValueCommentsView; //< The standlone comments view (not content view)
+
+// Menu Type Values
+extern NSString * const VTrackingValueHamburgerMenu; 
+extern NSString * const VTrackingValueTabBar; 

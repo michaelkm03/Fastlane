@@ -7,8 +7,7 @@ ApplicationDidEnterForeground,Backend mapping: app-start
 ,
 // Navigation,
 UserDidSelectMainMenu,User opened the main menu with the hamburger button; Params: CurrentSection (template driven value)
-UserDidSelectMainMenuSection,User selected a section from the main menu (hamburger menu); Params: Section  (template driven value)
-UserDidSelectTabBarSection,User selected a section from the tab bar; Params: Section  (template driven value)
+UserDidSelectMainSection,"User selected a section from the main menu.  Params: MenuType, Section  (template driven value)"
 UserDidSelectStream,"User selected a tab or segmented control to change streams in a multiple stream view; Params: StreamName, StreamId"
 ,
 // Content Creation,

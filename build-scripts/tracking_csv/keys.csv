@@ -26,3 +26,4 @@ FromTime,A decimal value in seconds of when a video skip event began; Backend ma
 ToTime,A decimal value in seconds of when a video skip event ended; Backend mapping: %%TIME_TO%%
 TimeCurrent,A decimal value in seconds of the current playhead position of a video asset; Backend mapping: %%TIME_CURRENT%%
 Hashtag,The hash tag without # symbol of an event related to hashtags
+MenuType,The type of main menu in which a main section navigation ocurred.

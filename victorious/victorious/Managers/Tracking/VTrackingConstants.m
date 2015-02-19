@@ -17,8 +17,7 @@ NSString * const VTrackingEventApplicationDidEnterForeground = @"ApplicationDidE
 
 // Navigation
 NSString * const VTrackingEventUserDidSelectMainMenu = @"UserDidSelectMainMenu";
-NSString * const VTrackingEventUserDidSelectMainMenuSection = @"UserDidSelectMainMenuSection";
-NSString * const VTrackingEventUserDidSelectTabBarSection = @"UserDidSelectTabBarSection";
+NSString * const VTrackingEventUserDidSelectMainSection = @"UserDidSelectMainSection";
 NSString * const VTrackingEventUserDidSelectStream = @"UserDidSelectStream";
 
 // Content Creation
@@ -226,6 +225,7 @@ NSString * const VTrackingKeyFromTime = @"FromTime";
 NSString * const VTrackingKeyToTime = @"ToTime";
 NSString * const VTrackingKeyTimeCurrent = @"TimeCurrent";
 NSString * const VTrackingKeyHashtag = @"Hashtag";
+NSString * const VTrackingKeyMenuType = @"MenuType";
 
 // Tracking Event Values
 // TextType values
@@ -253,3 +253,7 @@ NSString * const VTrackingValueHashtagStream = @"HashtagStream";
 NSString * const VTrackingValueContentView = @"ContentView";
 NSString * const VTrackingValueStream = @"Stream";
 NSString * const VTrackingValueCommentsView = @"CommentsView";
+
+// Menu Type Values
+NSString * const VTrackingValueHamburgerMenu = @"HamburgerMenu";
+NSString * const VTrackingValueTabBar = @"TabBar";
