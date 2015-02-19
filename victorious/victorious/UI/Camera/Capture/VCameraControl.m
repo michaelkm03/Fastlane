@@ -16,7 +16,6 @@ static const NSTimeInterval kRecordingTriggerDuration = 0.45;
 static const NSTimeInterval kTransitionToRecordingAnimationDuration = 0.2;
 static const NSTimeInterval kRecordingShrinkAnimationDuration = 0.2;
 static const NSTimeInterval kNotRecordingTrackingTime = 0.0;
-static const NSTimeInterval kShrinkingCameraShutterAnimationDuration = 1.5;
 
 @interface VCameraControl ()
 
