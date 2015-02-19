@@ -288,7 +288,7 @@ static NSString * const kNotificationIDKey = @"notification_id";
 
     if ( [[UIApplication sharedApplication] applicationState] != UIApplicationStateActive )
     {
-        [[VTrackingManager sharedInstance] setValue:notificationID forSessionParameterWithKey:VTrackingKeyNotificationID];
+        [[VTrackingManager sharedInstance] setValue:notificationID forSessionParameterWithKey:VTrackingKeyNotificationId];
         if ( [self.sessionTimer shouldNewSessionStartNow] )
         {
             self.queuedURL = deeplink;
@@ -328,7 +328,7 @@ static NSString * const kNotificationIDKey = @"notification_id";
     
     if ( self.queuedNotificationID != nil )
     {
-        [[VTrackingManager sharedInstance] setValue:self.queuedNotificationID forSessionParameterWithKey:VTrackingKeyNotificationID];
+        [[VTrackingManager sharedInstance] setValue:self.queuedNotificationID forSessionParameterWithKey:VTrackingKeyNotificationId];
         self.queuedNotificationID = nil;
     }
     

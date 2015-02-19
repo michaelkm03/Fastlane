@@ -1,6 +1,6 @@
 // Tracking Event Names,// Comments
 // Application Lifecycle,
-ApplicationDidInstallForFirstTime,
+ApplicationFirstInstall,
 ApplicationDidLaunch,
 ApplicationDidEnterBackground,
 ApplicationDidEnterForeground,
@@ -9,7 +9,6 @@ ApplicationDidEnterForeground,
 UserDidSelectMainMenu,Params: CurrentSection
 UserDidSelectHamburgerMenuItem,Params: Section
 UserDidSelectTabBarSection,Params: Section
-SectionDidAppear,Params: Section
 ,
 // Content Creation,
 UserDidSelectCreateButton,Params: CurrentSection
@@ -56,7 +55,7 @@ UserDidCancelFailedUpload,
 // Registration and Login,
 LoginDidShow,Params: CurrentSection
 UserDidCancelLogin,User exited out of the login prompt
-UserDidLogout,
+UserDidLogOut,
 ,
 UserDidSelectSignupWithEmail,
 UserDidSelectLoginWithEmail,
@@ -69,13 +68,13 @@ LoginWithEmailValidationDidFail,Params: ErrorMessage
 UserDidCancelLoginWithEmail,
 UserDidCancelSignupWithEmail,
 ,
-UserDidSelectConnectWithFacebook,
+LoginWithFacebookSelected,
 SignupWithFacebookDidSucceed,
 SignupWithFacebookDidFail,Params: ErrorMessage
 LoginWithFacebookDidSucceed,
 LoginWithFacebookDidFail,Params: ErrorMessage
 ,
-UserDidSelectConnectWithTwitter,
+LoginWithTwitterSelected,
 SignupWithTwitterDidSucceed,
 SignupWithTwitterDidFail,Params: ErrorMessage
 LoginWithTwitterDidSucceed,
@@ -113,8 +112,9 @@ SequenceDidAppearInStream,Backend mapping: cell-view
 ViewDidStart,Content was displayed in content view and began playing (if video); Backend mapping: view-start
 UserDidSelectItemFromStream,Backend mapping: cell-click
 UserDidSelectItemFromMarquee,Backend mapping: cell-click
-UserDidSelectStream,Params: StreamName
-StreamDidAppear,"Params: StreamName, StreamId, CurrentSection"
+UserDidViewStream,"Params: CurrentSection, StreamName, StreamId"
+UserDidSelectHashtag,Params: Hashtag
+UserDidSelectTaggedUser,
 ,
 UserDidVoteSequence,
 UserDidRepostItem,"Params: SequenceId, TimeCurrent"
@@ -178,3 +178,14 @@ UserDidFollowHashtag,Params: Context
 UserDidUnfollowHashtag,Params: Context
 UserDidFollowUser,Params: Context
 UserDidUnfollowUser,Params: Context
+,
+// Google Analytics section durations,
+CameraDidAppear,
+CommentsDidAppear,
+CameraPreviewDidAppear,
+ProfileEditDidAppear,
+RemixStitchDidAppear,
+SetExpirationDidAppear,
+SettingsDidAppear,
+StreamDidAppear,
+SearchDidAppear,

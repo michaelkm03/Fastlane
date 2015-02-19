@@ -498,8 +498,8 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     {
         if ( self.isTrackingEnabled )
         {
-            NSDictionary *params = @{ VTrackingKeyTimeFrom : @( CMTimeGetSeconds( self.previousTime ) ),
-                                      VTrackingKeyTimeTo : @( CMTimeGetSeconds( self.currentTime ) ),
+            NSDictionary *params = @{ VTrackingKeyFromTime : @( CMTimeGetSeconds( self.previousTime ) ),
+                                      VTrackingKeyToTime : @( CMTimeGetSeconds( self.currentTime ) ),
                                       VTrackingKeyUrls : self.trackingItem.videoSkip };
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventVideoDidSkip parameters:params];
         }

@@ -25,3 +25,4 @@ SessionTime,An integer value representing milliseconds of an activity's duration
 FromTime,A decimal value in seconds of when a video skip event began; Backend mapping: %%TIME_FROM%%
 ToTime,A decimal value in seconds of when a video skip event ended; Backend mapping: %%TIME_TO%%
 TimeCurrent,A decimal value in seconds of the current playhead position of a video asset; Backend mapping: %%TIME_CURRENT%%
+Hashtag,The hash tag without # symbol of an event related to hashtags

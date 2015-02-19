@@ -10,7 +10,7 @@
 
 // Tracking Event Names
 // Application Lifecycle
-extern NSString * const VTrackingEventApplicationDidInstallForFirstTime; 
+extern NSString * const VTrackingEventApplicationFirstInstall; 
 extern NSString * const VTrackingEventApplicationDidLaunch; 
 extern NSString * const VTrackingEventApplicationDidEnterBackground; 
 extern NSString * const VTrackingEventApplicationDidEnterForeground; 
@@ -19,7 +19,6 @@ extern NSString * const VTrackingEventApplicationDidEnterForeground;
 extern NSString * const VTrackingEventUserDidSelectMainMenu; //< Params: CurrentSection
 extern NSString * const VTrackingEventUserDidSelectHamburgerMenuItem; //< Params: Section
 extern NSString * const VTrackingEventUserDidSelectTabBarSection; //< Params: Section
-extern NSString * const VTrackingEventSectionDidAppear; //< Params: Section
 
 // Content Creation
 extern NSString * const VTrackingEventUserDidSelectCreateButton; //< Params: CurrentSection
@@ -66,7 +65,7 @@ extern NSString * const VTrackingEventUserDidCancelFailedUpload;
 // Registration and Login
 extern NSString * const VTrackingEventLoginDidShow; //< Params: CurrentSection
 extern NSString * const VTrackingEventUserDidCancelLogin; //< User exited out of the login prompt
-extern NSString * const VTrackingEventUserDidLogout; 
+extern NSString * const VTrackingEventUserDidLogOut; 
 
 extern NSString * const VTrackingEventUserDidSelectSignupWithEmail; 
 extern NSString * const VTrackingEventUserDidSelectLoginWithEmail; 
@@ -79,13 +78,13 @@ extern NSString * const VTrackingEventLoginWithEmailValidationDidFail; //< Param
 extern NSString * const VTrackingEventUserDidCancelLoginWithEmail; 
 extern NSString * const VTrackingEventUserDidCancelSignupWithEmail; 
 
-extern NSString * const VTrackingEventUserDidSelectConnectWithFacebook; 
+extern NSString * const VTrackingEventLoginWithFacebookSelected; 
 extern NSString * const VTrackingEventSignupWithFacebookDidSucceed; 
 extern NSString * const VTrackingEventSignupWithFacebookDidFail; //< Params: ErrorMessage
 extern NSString * const VTrackingEventLoginWithFacebookDidSucceed; 
 extern NSString * const VTrackingEventLoginWithFacebookDidFail; //< Params: ErrorMessage
 
-extern NSString * const VTrackingEventUserDidSelectConnectWithTwitter; 
+extern NSString * const VTrackingEventLoginWithTwitterSelected; 
 extern NSString * const VTrackingEventSignupWithTwitterDidSucceed; 
 extern NSString * const VTrackingEventSignupWithTwitterDidFail; //< Params: ErrorMessage
 extern NSString * const VTrackingEventLoginWithTwitterDidSucceed; 
@@ -123,8 +122,9 @@ extern NSString * const VTrackingEventSequenceDidAppearInStream; //< Backend map
 extern NSString * const VTrackingEventViewDidStart; //< Content was displayed in content view and began playing (if video); Backend mapping: view-start
 extern NSString * const VTrackingEventUserDidSelectItemFromStream; //< Backend mapping: cell-click
 extern NSString * const VTrackingEventUserDidSelectItemFromMarquee; //< Backend mapping: cell-click
-extern NSString * const VTrackingEventUserDidSelectStream; //< Params: StreamName
-extern NSString * const VTrackingEventStreamDidAppear; //< "Params: StreamName, StreamId, CurrentSection"
+extern NSString * const VTrackingEventUserDidViewStream; //< "Params: CurrentSection, StreamName, StreamId"
+extern NSString * const VTrackingEventUserDidSelectHashtag; //< Params: Hashtag
+extern NSString * const VTrackingEventUserDidSelectTaggedUser; 
 
 extern NSString * const VTrackingEventUserDidVoteSequence; 
 extern NSString * const VTrackingEventUserDidRepostItem; //< "Params: SequenceId, TimeCurrent"
@@ -189,6 +189,17 @@ extern NSString * const VTrackingEventUserDidUnfollowHashtag; //< Params: Contex
 extern NSString * const VTrackingEventUserDidFollowUser; //< Params: Context
 extern NSString * const VTrackingEventUserDidUnfollowUser; //< Params: Context
 
+// Google Analytics section durations
+extern NSString * const VTrackingEventCameraDidAppear; 
+extern NSString * const VTrackingEventCommentsDidAppear; 
+extern NSString * const VTrackingEventCameraPreviewDidAppear; 
+extern NSString * const VTrackingEventProfileEditDidAppear; 
+extern NSString * const VTrackingEventRemixStitchDidAppear; 
+extern NSString * const VTrackingEventSetExpirationDidAppear; 
+extern NSString * const VTrackingEventSettingsDidAppear; 
+extern NSString * const VTrackingEventStreamDidAppear; 
+extern NSString * const VTrackingEventSearchDidAppear; 
+
 // Tracking Event Parameters
 extern NSString * const VTrackingKeyCurrentSection; //< "Which major section is selected, such as ""Home"", ""Indbox"", ""Profile"", etc."
 extern NSString * const VTrackingKeySection; //< The section of the app that is being selected (not the CurrentSection).
@@ -216,6 +227,7 @@ extern NSString * const VTrackingKeySessionTime; //< An integer value representi
 extern NSString * const VTrackingKeyFromTime; //< A decimal value in seconds of when a video skip event began; Backend mapping: %%TIME_FROM%%
 extern NSString * const VTrackingKeyToTime; //< A decimal value in seconds of when a video skip event ended; Backend mapping: %%TIME_TO%%
 extern NSString * const VTrackingKeyTimeCurrent; //< A decimal value in seconds of the current playhead position of a video asset; Backend mapping: %%TIME_CURRENT%%
+extern NSString * const VTrackingKeyHashtag; //< The hash tag without # symbol of an event related to hashtags
 
 // Tracking Event Values
 // CurrentSection values

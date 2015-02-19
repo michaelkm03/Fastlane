@@ -107,7 +107,8 @@ NSString * const kVAnalyticsKeyValue            = @"GA_value";
 
 - (NSString *)screenNameForEventName:(NSString *)eventName parameters:(NSDictionary *)parameters
 {
-    if ( [eventName isEqualToString:VTrackingEventCameraPublishDidAppear] )
+#warning FIX THIS, Anar says we still need it
+    /*if ( [eventName isEqualToString:VTrackingEventCameraPublishDidAppear] )
     {
         return @"Camera Publish";
     }
@@ -146,7 +147,7 @@ NSString * const kVAnalyticsKeyValue            = @"GA_value";
     else if ( [eventName isEqualToString:VTrackingEventSearchDidAppear] )
     {
         return @"User Search";
-    }
+    }*/
     
     return nil;
 }
@@ -157,7 +158,8 @@ NSString * const kVAnalyticsKeyValue            = @"GA_value";
  */
 - (NSDictionary *)dictionaryWithParametersFromEventName:(NSString *)eventName params:(NSDictionary *)eventParams
 {
-    if ( [eventName isEqualToString:VTrackingEventApplicationDidLaunch] )
+#warning FIX THIS, Anar says we still need it
+    /*if ( [eventName isEqualToString:VTrackingEventApplicationDidLaunch] )
     {
         return @{ kVAnalyticsKeyCategory : kVAnalyticsEventCategoryAppLifecycle,
                   kVAnalyticsKeyAction : kVAnalyticsEventAppLaunch };
@@ -422,7 +424,7 @@ NSString * const kVAnalyticsKeyValue            = @"GA_value";
     {
         return @{ kVAnalyticsKeyCategory : kVAnalyticsEventCategoryUserAccount,
                   kVAnalyticsKeyAction : @"Log Out" };
-    }
+    }*/
     
     return nil;
 }

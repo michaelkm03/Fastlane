@@ -237,6 +237,8 @@
 
 - (void)shareFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence node:(VNode *)node completion:(void(^)())completion
 {
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectShare];
+    
     VFacebookActivity *fbActivity = [[VFacebookActivity alloc] init];
     UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[sequence ?: [NSNull null],
                                                                                                                  [self shareTextForSequence:sequence],
@@ -249,9 +251,11 @@
     activityViewController.completionWithItemsHandler = ^(NSString *activityType, BOOL completed, NSArray *returnedItems, NSError *activityError)
     {
         NSDictionary *params = @{ VTrackingKeySequenceCategory : sequence.category ?: @"",
-                                  VTrackingKeyActivityType : activityType ?: @"",
-                                  VTrackingKeyUrls : sequence.tracking.share ?: @[] };
-        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidShare parameters:params];
+                                  VTrackingKeyShareDestination : activityType ?: @"",
+                                  VTrackingKeyUrls : sequence.tracking.share ?: @[],
+                                  VTrackingKeyErrorMessage : activityError == nil ? @"" : activityError.localizedFailureReason };
+        NSString *eventName = completed ? VTrackingEventShareDidSucceed : VTrackingEventShareDidFail;
+        [[VTrackingManager sharedInstance] trackEvent:eventName parameters:params];
         
         [viewController reloadInputViews];
         

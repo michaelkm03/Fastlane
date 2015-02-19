@@ -48,20 +48,15 @@ static NSString * const kMacroSessionTime            = @"%%SESSION_TIME%%";
     if (self)
     {
         // This is a mapping of generic parameters to application-specific macros
-        _parameterMacroMapping = @{ VTrackingKeyTimeFrom           : kMacroTimeFrom,
-                                    VTrackingKeyTimeTo             : kMacroTimeTo,
+        _parameterMacroMapping = @{ VTrackingKeyFromTime           : kMacroTimeFrom,
+                                    VTrackingKeyToTime             : kMacroTimeTo,
                                     VTrackingKeyTimeCurrent        : kMacroTimeCurrent,
                                     VTrackingKeyTimeStamp          : kMacroTimeStamp,
-                                    VTrackingKeyPageLabel          : kMacroPageLabel,
                                     VTrackingKeyStreamId           : kMacroStreamId,
                                     VTrackingKeySequenceId         : kMacroSequenceId,
                                     VTrackingKeyVoteCount          : kMacroBallisticsCount,
-                                    VTrackingKeyPositionX          : kMacroPositionX,
-                                    VTrackingKeyPositionY          : kMacroPositionY,
-                                    VTrackingKeyNavigiationFrom    : kMacroNavigiationFrom,
-                                    VTrackingKeyNavigiationTo      : kMacroNavigiationTo,
-                                    VTrackingKeyActivityType       : kMacroShareDestination,
-                                    VTrackingKeyNotificationID     : kMacroNotificationID,
+                                    VTrackingKeyShareDestination   : kMacroShareDestination,
+                                    VTrackingKeyNotificationId     : kMacroNotificationID,
                                     VTrackingKeySessionTime        : kMacroSessionTime };
     }
     return self;

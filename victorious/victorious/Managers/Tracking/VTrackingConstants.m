@@ -10,7 +10,7 @@
 
 // Tracking Event Names
 // Application Lifecycle
-NSString * const VTrackingEventApplicationDidInstallForFirstTime = @"ApplicationDidInstallForFirstTime";
+NSString * const VTrackingEventApplicationFirstInstall = @"ApplicationFirstInstall";
 NSString * const VTrackingEventApplicationDidLaunch = @"ApplicationDidLaunch";
 NSString * const VTrackingEventApplicationDidEnterBackground = @"ApplicationDidEnterBackground";
 NSString * const VTrackingEventApplicationDidEnterForeground = @"ApplicationDidEnterForeground";
@@ -19,7 +19,6 @@ NSString * const VTrackingEventApplicationDidEnterForeground = @"ApplicationDidE
 NSString * const VTrackingEventUserDidSelectMainMenu = @"UserDidSelectMainMenu";
 NSString * const VTrackingEventUserDidSelectHamburgerMenuItem = @"UserDidSelectHamburgerMenuItem";
 NSString * const VTrackingEventUserDidSelectTabBarSection = @"UserDidSelectTabBarSection";
-NSString * const VTrackingEventSectionDidAppear = @"SectionDidAppear";
 
 // Content Creation
 NSString * const VTrackingEventUserDidSelectCreateButton = @"UserDidSelectCreateButton";
@@ -66,7 +65,7 @@ NSString * const VTrackingEventUserDidCancelFailedUpload = @"UserDidCancelFailed
 // Registration and Login
 NSString * const VTrackingEventLoginDidShow = @"LoginDidShow";
 NSString * const VTrackingEventUserDidCancelLogin = @"UserDidCancelLogin";
-NSString * const VTrackingEventUserDidLogout = @"UserDidLogout";
+NSString * const VTrackingEventUserDidLogOut = @"UserDidLogOut";
 
 NSString * const VTrackingEventUserDidSelectSignupWithEmail = @"UserDidSelectSignupWithEmail";
 NSString * const VTrackingEventUserDidSelectLoginWithEmail = @"UserDidSelectLoginWithEmail";
@@ -79,13 +78,13 @@ NSString * const VTrackingEventLoginWithEmailValidationDidFail = @"LoginWithEmai
 NSString * const VTrackingEventUserDidCancelLoginWithEmail = @"UserDidCancelLoginWithEmail";
 NSString * const VTrackingEventUserDidCancelSignupWithEmail = @"UserDidCancelSignupWithEmail";
 
-NSString * const VTrackingEventUserDidSelectConnectWithFacebook = @"UserDidSelectConnectWithFacebook";
+NSString * const VTrackingEventLoginWithFacebookSelected = @"LoginWithFacebookSelected";
 NSString * const VTrackingEventSignupWithFacebookDidSucceed = @"SignupWithFacebookDidSucceed";
 NSString * const VTrackingEventSignupWithFacebookDidFail = @"SignupWithFacebookDidFail";
 NSString * const VTrackingEventLoginWithFacebookDidSucceed = @"LoginWithFacebookDidSucceed";
 NSString * const VTrackingEventLoginWithFacebookDidFail = @"LoginWithFacebookDidFail";
 
-NSString * const VTrackingEventUserDidSelectConnectWithTwitter = @"UserDidSelectConnectWithTwitter";
+NSString * const VTrackingEventLoginWithTwitterSelected = @"LoginWithTwitterSelected";
 NSString * const VTrackingEventSignupWithTwitterDidSucceed = @"SignupWithTwitterDidSucceed";
 NSString * const VTrackingEventSignupWithTwitterDidFail = @"SignupWithTwitterDidFail";
 NSString * const VTrackingEventLoginWithTwitterDidSucceed = @"LoginWithTwitterDidSucceed";
@@ -123,8 +122,9 @@ NSString * const VTrackingEventSequenceDidAppearInStream = @"SequenceDidAppearIn
 NSString * const VTrackingEventViewDidStart = @"ViewDidStart";
 NSString * const VTrackingEventUserDidSelectItemFromStream = @"UserDidSelectItemFromStream";
 NSString * const VTrackingEventUserDidSelectItemFromMarquee = @"UserDidSelectItemFromMarquee";
-NSString * const VTrackingEventUserDidSelectStream = @"UserDidSelectStream";
-NSString * const VTrackingEventStreamDidAppear = @"StreamDidAppear";
+NSString * const VTrackingEventUserDidViewStream = @"UserDidViewStream";
+NSString * const VTrackingEventUserDidSelectHashtag = @"UserDidSelectHashtag";
+NSString * const VTrackingEventUserDidSelectTaggedUser = @"UserDidSelectTaggedUser";
 
 NSString * const VTrackingEventUserDidVoteSequence = @"UserDidVoteSequence";
 NSString * const VTrackingEventUserDidRepostItem = @"UserDidRepostItem";
@@ -189,6 +189,17 @@ NSString * const VTrackingEventUserDidUnfollowHashtag = @"UserDidUnfollowHashtag
 NSString * const VTrackingEventUserDidFollowUser = @"UserDidFollowUser";
 NSString * const VTrackingEventUserDidUnfollowUser = @"UserDidUnfollowUser";
 
+// Google Analytics section durations
+NSString * const VTrackingEventCameraDidAppear = @"CameraDidAppear";
+NSString * const VTrackingEventCommentsDidAppear = @"CommentsDidAppear";
+NSString * const VTrackingEventCameraPreviewDidAppear = @"CameraPreviewDidAppear";
+NSString * const VTrackingEventProfileEditDidAppear = @"ProfileEditDidAppear";
+NSString * const VTrackingEventRemixStitchDidAppear = @"RemixStitchDidAppear";
+NSString * const VTrackingEventSetExpirationDidAppear = @"SetExpirationDidAppear";
+NSString * const VTrackingEventSettingsDidAppear = @"SettingsDidAppear";
+NSString * const VTrackingEventStreamDidAppear = @"StreamDidAppear";
+NSString * const VTrackingEventSearchDidAppear = @"SearchDidAppear";
+
 // Tracking Event Parameters
 NSString * const VTrackingKeyCurrentSection = @"CurrentSection";
 NSString * const VTrackingKeySection = @"Section";
@@ -216,6 +227,7 @@ NSString * const VTrackingKeySessionTime = @"SessionTime";
 NSString * const VTrackingKeyFromTime = @"FromTime";
 NSString * const VTrackingKeyToTime = @"ToTime";
 NSString * const VTrackingKeyTimeCurrent = @"TimeCurrent";
+NSString * const VTrackingKeyHashtag = @"Hashtag";
 
 // Tracking Event Values
 // CurrentSection values
