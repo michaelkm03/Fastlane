@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6254"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="VSnapshotViewController">
             <connections>
-                <outlet property="snapshotButton" destination="cE1-h3-lZx" id="GgB-nB-Uey"/>
+                <outlet property="cameraControlContainer" destination="40m-C7-irc" id="vh3-hg-dH7"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -16,25 +15,19 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cE1-h3-lZx">
-                    <rect key="frame" x="263" y="263" width="75" height="75"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="40m-C7-irc" userLabel="Camera Control Container">
+                    <rect key="frame" x="260" y="260" width="80" height="80"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="75" id="Apg-jV-EdZ"/>
-                        <constraint firstAttribute="width" secondItem="cE1-h3-lZx" secondAttribute="height" multiplier="1:1" id="dyI-wH-6NV"/>
+                        <constraint firstAttribute="width" constant="80" id="LU8-uP-uIh"/>
+                        <constraint firstAttribute="height" constant="80" id="dWT-cW-HeM"/>
                     </constraints>
-                    <state key="normal" title="Button">
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <connections>
-                        <action selector="takeSnapshot:" destination="-1" eventType="touchUpInside" id="LTC-8Y-Oya"/>
-                    </connections>
-                </button>
+                </view>
             </subviews>
             <color key="backgroundColor" white="0.66666666666666663" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstAttribute="centerY" secondItem="cE1-h3-lZx" secondAttribute="centerY" id="DpE-H4-QX3"/>
-                <constraint firstAttribute="centerX" secondItem="cE1-h3-lZx" secondAttribute="centerX" id="SN9-ug-CA2"/>
+                <constraint firstAttribute="centerX" secondItem="40m-C7-irc" secondAttribute="centerX" id="dvm-da-BKe"/>
+                <constraint firstAttribute="centerY" secondItem="40m-C7-irc" secondAttribute="centerY" id="rhL-C7-Zdt"/>
             </constraints>
         </view>
     </objects>
