@@ -62,9 +62,11 @@
 
 - (void)registerBadgeUpdateBlock
 {
+    __weak typeof(self) weakSelf = self;
     VNavigationMenuItemBadgeNumberUpdateBlock badgeNumberUpdateBlock = ^(NSInteger badgeNumber)
     {
-        [self.hamburgerButton setBadgeNumber:badgeNumber];
+        [weakSelf.hamburgerButton setBadgeNumber:badgeNumber];
+        [[UIApplication sharedApplication] setApplicationIconBadgeNumber:badgeNumber];
     };
     
     if ( [self.menuViewController respondsToSelector:@selector(setBadgeNumberUpdateBlock:)] )
