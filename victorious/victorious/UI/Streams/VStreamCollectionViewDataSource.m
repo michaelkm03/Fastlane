@@ -157,6 +157,16 @@ NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamColl
     }
 }
 
+- (void)setHasHeaderCell:(BOOL)hasHeaderCell
+{
+    if ( hasHeaderCell == _hasHeaderCell )
+    {
+        return;
+    }
+    _hasHeaderCell = hasHeaderCell;
+    [self.collectionView reloadData];
+}
+
 #pragma mark - UICollectionViewDataSource
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
