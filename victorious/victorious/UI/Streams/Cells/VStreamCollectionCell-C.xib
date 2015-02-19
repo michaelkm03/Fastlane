@@ -18,7 +18,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="302" height="50"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="width" secondItem="W6W-Ju-9kU" secondAttribute="height" multiplier="151:25" id="BD6-vG-1Z5"/>
+                            <constraint firstAttribute="height" constant="50" id="u2o-Xj-BtN"/>
                         </constraints>
                     </view>
                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Lorem ipsum dolor sit amet" translatesAutoresizingMaskIntoConstraints="NO" id="QyC-HK-x2o" customClass="VHashTagTextView">

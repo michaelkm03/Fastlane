@@ -20,6 +20,7 @@
 @property (nonatomic, assign, readwrite) BOOL isPlayingAd;
 @property (nonatomic, assign, readwrite) BOOL videoDidEnd;
 @property (nonatomic, strong) NSURL *contentURL;
+@property (nonatomic, assign) BOOL updatedVideoBounds;
 
 @end
 
@@ -49,9 +50,25 @@
     self.videoPlayerViewController.view.frame = self.contentView.bounds;
     self.videoPlayerViewController.shouldContinuePlayingAfterDismissal = YES;
     self.videoPlayerViewController.shouldChangeVideoGravityOnDoubleTap = YES;
-    [self.contentView addSubview:self.videoPlayerViewController.view];
-    self.videoPlayerViewController.view.hidden = YES;
-    self.shrinkingContentView = self.videoPlayerViewController.view;
+    UIView *videoPlayerView = self.videoPlayerViewController.view;
+    [self.contentView addSubview:videoPlayerView];
+    videoPlayerView.hidden = YES;
+    self.shrinkingContentView = videoPlayerView;
+}
+
+- (void)setBounds:(CGRect)bounds
+{
+    [super setBounds:bounds];
+    if ( !self.updatedVideoBounds )
+    {
+        /*
+         Updating video player bounds after first time bounds is set
+         Assumes cell will never be re-updated to a new "full" size but allows normal content
+            resizing to work its magic
+         */
+        self.updatedVideoBounds = YES;
+        self.videoPlayerViewController.view.frame = self.contentView.bounds;
+    }
 }
 
 - (void)dealloc
