@@ -286,6 +286,8 @@ static inline BOOL isSessionQueue()
             }
             dispatch_async(dispatch_get_main_queue(), ^(void)
             {
+                [self trackFailureWithError:uploadError];
+                
                 [[NSNotificationCenter defaultCenter] postNotificationName:VUploadManagerTaskFailedNotification
                                                                     object:uploadTask
                                                                   userInfo:@{VUploadManagerErrorUserInfoKey: uploadError,
@@ -650,6 +652,8 @@ totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend
                 }
                 dispatch_async(dispatch_get_main_queue(), ^(void)
                 {
+                    [self trackFailureWithError:error ?: victoriousError];
+                    
                     [[NSNotificationCenter defaultCenter] postNotificationName:VUploadManagerTaskFailedNotification
                                                                         object:taskInformation
                                                                       userInfo:@{VUploadManagerErrorUserInfoKey: error ?: victoriousError,
@@ -661,6 +665,8 @@ totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend
                 [self removeFromQueue:taskInformation];
                 dispatch_async(dispatch_get_main_queue(), ^(void)
                 {
+                    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUploadDidSucceed];
+                    
                     [[NSNotificationCenter defaultCenter] postNotificationName:VUploadManagerTaskFinishedNotification
                                                                         object:taskInformation
                                                                       userInfo:@{VUploadManagerUploadTaskUserInfoKey: taskInformation}];
@@ -696,6 +702,17 @@ totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend
             [self startNextWaitingTask];
         });
     }];
+}
+
+#pragma mark - Tracking helpers
+
+- (void)trackFailureWithError:(NSError *)error
+{
+    if ( error.code != NSURLErrorCancelled )
+    {
+        NSDictionary *params = @{ VTrackingKeyErrorMessage : error.localizedDescription ?: @"" };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUploadDidFail parameters:params];
+    }
 }
 
 @end
