@@ -640,6 +640,8 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     [self.view addSubview:[self.view snapshotViewAfterScreenUpdates:NO]];
     self.contentCollectionView.delegate = nil;
     self.videoCell.delegate = nil;
+    self.videoCell.adPlayerViewController = nil;
+    self.videoCell = nil;
     [self.contentCollectionView removeFromSuperview];
     [self.delegate newContentViewControllerDidClose:self];
 }

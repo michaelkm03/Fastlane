@@ -16,7 +16,6 @@
 @interface VContentVideoCell () <VCVideoPlayerDelegate, VAdVideoPlayerViewControllerDelegate>
 
 @property (nonatomic, strong, readwrite) VCVideoPlayerViewController *videoPlayerViewController;
-@property (nonatomic, strong, readwrite) VAdVideoPlayerViewController *adPlayerViewController;
 @property (nonatomic, assign, readwrite) BOOL isPlayingAd;
 @property (nonatomic, assign, readwrite) BOOL videoDidEnd;
 @property (nonatomic, strong) NSURL *contentURL;
@@ -57,6 +56,8 @@
 - (void)dealloc
 {
     [self.videoPlayerViewController disableTracking];
+    self.videoPlayerViewController = nil;
+    self.adPlayerViewController = nil;
 }
 
 #pragma mark - Property Accessors
