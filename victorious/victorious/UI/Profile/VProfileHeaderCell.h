@@ -12,5 +12,6 @@
 @interface VProfileHeaderCell : UICollectionViewCell
 
 @property (nonatomic, weak) IBOutlet VUserProfileHeaderView *headerView;
+@property (nonatomic, weak) NSLayoutConstraint *headerViewHeightConstraint;
 
 @end

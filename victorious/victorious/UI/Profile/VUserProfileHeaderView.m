@@ -20,12 +20,17 @@
 
 @implementation VUserProfileHeaderView
 
-+ (instancetype)newViewWithFrame:(CGRect)frame
++ (instancetype)newView
 {
     NSArray *nibViews = [[NSBundle mainBundle] loadNibNamed:NSStringFromClass([VUserProfileHeaderView class]) owner:self options:nil];
     VUserProfileHeaderView *view = [nibViews objectAtIndex:0];
+    return view;
+}
+
++ (instancetype)newViewWithFrame:(CGRect)frame
+{
+    VUserProfileHeaderView *view = [self newView];
     view.frame = frame;
-    
     return view;
 }
 
@@ -121,7 +126,7 @@
     [self.KVOController unobserve:_user];
 
     _user = user;
-    
+        
     if (_user == nil)
     {
         [self applyEditProfileButtonStyle];

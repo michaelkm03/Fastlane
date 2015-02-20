@@ -43,6 +43,7 @@
 
 @property (nonatomic, assign) BOOL isFollowingUser;
 
++ (instancetype)newView;
 + (instancetype)newViewWithFrame:(CGRect)frame;
 
 @end

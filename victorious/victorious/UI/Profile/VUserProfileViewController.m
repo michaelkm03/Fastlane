@@ -34,6 +34,8 @@
 #import "VAuthorizationViewControllerFactory.h"
 #import "VFindFriendsViewController.h"
 #import "VSettingManager.h"
+#import <FBKVOController.h>
+#import <MBProgressHUD.h>
 
 static const CGFloat kVSmallUserHeaderHeight = 319.0f;
 
@@ -41,9 +43,10 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
 static void * VUserProfileAttributesContext =  &VUserProfileAttributesContext;
 static NSString * const kUserKey = @"user";
 
-@interface VUserProfileViewController () <VUserProfileHeaderDelegate>
+@interface VUserProfileViewController () <VUserProfileHeaderDelegate, MBProgressHUDDelegate>
 
 @property   (nonatomic, strong) VUser                  *profile;
+@property (nonatomic, strong) NSNumber *remoteId;
 
 @property (nonatomic, strong) VUserProfileHeaderView *profileHeaderView;
 @property (nonatomic, strong) VProfileHeaderCell *currentProfileCell;
@@ -54,12 +57,38 @@ static NSString * const kUserKey = @"user";
 
 @property (nonatomic, strong) VProfileFollowingContainerViewController *followingAndHashtagsVC;
 
+@property (nonatomic, strong) MBProgressHUD *retryHUD;
+@property (nonatomic, strong) UIButton *retryProfileLoadButton;
+
+@property (nonatomic, assign) BOOL didEndViewWillAppear;
+
 @end
 
 @implementation VUserProfileViewController
 
-+ (instancetype)userProfileWithUser:(VUser *)aUser
++ (instancetype)userProfileWithRemoteId:(NSNumber *)remoteId
 {
+    VUserProfileViewController   *viewController  =   [[UIStoryboard storyboardWithName:@"Profile" bundle:nil] instantiateInitialViewController];
+    
+    viewController.dependencyManager = [[VRootViewController rootViewController] dependencyManager];
+    
+    VUser *mainUser = [VObjectManager sharedManager].mainUser;
+    BOOL isMe = (remoteId.integerValue == mainUser.remoteId.integerValue);
+    
+    if ( !isMe )
+    {
+        [viewController loadUserWithRemoteId:remoteId];
+    }
+    else
+    {
+        viewController.profile = mainUser;
+    }
+    
+    return viewController;
+}
+
++ (instancetype)userProfileWithUser:(VUser *)aUser
+{    
     VUserProfileViewController   *viewController  =   [[UIStoryboard storyboardWithName:@"Profile" bundle:nil] instantiateInitialViewController];
     viewController.profile = aUser;
     
@@ -93,7 +122,7 @@ static NSString * const kUserKey = @"user";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
     self.streamDataSource.hasHeaderCell = YES;
     self.collectionView.alwaysBounceVertical = YES;
     
@@ -107,10 +136,10 @@ static NSString * const kUserKey = @"user";
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginStateDidChange:) name:kLoggedInChangedNotification object:nil];
     }
     
-    [self.currentStream addObserver:self
-                         forKeyPath:@"sequences"
-                            options:NSKeyValueObservingOptionNew
-                            context:VUserProfileViewContext];
+    [self.KVOController observe:self.currentStream
+                        keyPath:@"sequences"
+                        options:NSKeyValueObservingOptionNew
+                        context:VUserProfileViewContext];
     
     [self.collectionView registerClass:[VProfileHeaderCell class] forCellWithReuseIdentifier:NSStringFromClass([VProfileHeaderCell class])];
 }
@@ -129,20 +158,6 @@ static NSString * const kUserKey = @"user";
                                                                                   style:UIBarButtonItemStylePlain
                                                                                  target:self
                                                                                  action:@selector(composeMessage:)];
-    }
-    
-    CGFloat height = CGRectGetHeight(self.view.bounds) - self.topLayoutGuide.length;
-    height = self.streamDataSource.count ? kVSmallUserHeaderHeight : height;
-    
-    CGFloat width = CGRectGetWidth(self.view.bounds);
-    self.currentProfileSize = CGSizeMake(width, height);
-    
-    if ( self.profileHeaderView == nil )
-    {
-        VUserProfileHeaderView *headerView =  [VUserProfileHeaderView newViewWithFrame:CGRectMake(0, 0, width, height)];
-        headerView.user = self.profile;
-        headerView.delegate = self;
-        self.profileHeaderView = headerView;
     }
 
     UIImage    *defaultBackgroundImage;
@@ -173,9 +188,9 @@ static NSString * const kUserKey = @"user";
         [self.profileHeaderView insertSubview:self.backgroundImageView atIndex:0];
     }
     
-    if (self.streamDataSource.count)
+    if ( self.streamDataSource.count != 0 )
     {
-        [self animateHeaderShrinkingWithDuration:0.0f];
+        [self shrinkHeaderAnimated:YES];
     }
     
     //If we came from the inbox we can get into a loop with the compose button, so hide it
@@ -191,6 +206,92 @@ static NSString * const kUserKey = @"user";
     {
         self.navigationItem.rightBarButtonItem = nil;
     }
+    
+    self.didEndViewWillAppear = YES;
+    [self attemptToRefreshProfileUI];
+}
+
+- (void)loadUserWithRemoteId:(NSNumber *)remoteId
+{
+    self.remoteId = remoteId;
+    if ( self.retryHUD == nil )
+    {
+        self.retryHUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    }
+    else
+    {
+        self.retryHUD.margin = MBDefaultMargin;
+        self.retryHUD.mode = MBProgressHUDModeIndeterminate;
+    }
+
+    __weak VUserProfileViewController *weakViewController = self;
+    [[VObjectManager sharedManager] fetchUser:self.remoteId
+                             withSuccessBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+     {
+         VUserProfileViewController *strongViewController = weakViewController;
+         if ( strongViewController == nil )
+         {
+             return;
+         }
+         
+         [strongViewController.retryHUD hide:YES];
+         strongViewController.retryHUD = nil;
+         strongViewController.profile = [resultObjects lastObject];
+     }
+                                    failBlock:^(NSOperation *operation, NSError *error)
+     {
+         VUserProfileViewController *strongViewController = weakViewController;
+         if ( strongViewController == nil )
+         {
+             return;
+         }
+         
+         //Handle profile load failure by changing navigationItem title and showing a retry button in the indicator
+         strongViewController.navigationItem.title = @"Profile load failed!";
+         strongViewController.retryHUD.margin = 0.0f;
+         strongViewController.retryHUD.mode = MBProgressHUDModeCustomView;
+         strongViewController.retryHUD.customView = strongViewController.retryProfileLoadButton;
+         [strongViewController.retryProfileLoadButton setUserInteractionEnabled:YES];
+     }];
+}
+
+- (void)retryProfileLoad
+{
+    //Disable user interaction to avoid spamming
+    [self.retryProfileLoadButton setUserInteractionEnabled:NO];
+    [self loadUserWithRemoteId:self.remoteId];
+}
+
+- (UIButton *)retryProfileLoadButton
+{
+    if ( _retryProfileLoadButton )
+    {
+        return _retryProfileLoadButton;
+    }
+    
+    /*
+     According to MBProgressHUD.h, a 37 x 37 square is the best fit for a custom view within a MBProgressHUD with DEFAULT margins. However, resetting the margins to 0.0f from the default MBDefaultMargin (which I've defined in the MBProgressHUD.h) means we can fill out the other 2 x MBDefaultMargin with the button to make a button that is the full size of the HUD.
+    */
+    CGFloat buttonSide = MBDefaultCustomViewSide + MBDefaultMargin * 2;
+    _retryProfileLoadButton = [[UIButton alloc] initWithFrame:CGRectMake(0.0f, 0.0f, buttonSide, buttonSide)];
+    [_retryProfileLoadButton addTarget:self action:@selector(retryProfileLoad) forControlEvents:UIControlEventTouchUpInside];
+    _retryProfileLoadButton.tintColor = [UIColor whiteColor];
+    [_retryProfileLoadButton setImage:[[UIImage imageNamed:@"uploadRetryButton"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
+    return _retryProfileLoadButton;
+}
+
+- (VUserProfileHeaderView *)profileHeaderView
+{
+    if ( _profileHeaderView != nil )
+    {
+        return _profileHeaderView;
+    }
+    
+    VUserProfileHeaderView *headerView =  [VUserProfileHeaderView newView];
+    headerView.user = self.profile;
+    headerView.delegate = self;
+    _profileHeaderView = headerView;
+    return _profileHeaderView;
 }
 
 - (void)viewDidLayoutSubviews
@@ -204,13 +305,12 @@ static NSString * const kUserKey = @"user";
     if ( !CGSizeEqualToSize(newProfileSize, self.currentProfileSize) )
     {
         self.currentProfileSize = newProfileSize;
-        self.currentProfileCell.frame = CGRectMake(0.0f, 0.0f, newProfileSize.width, newProfileSize.height);
     }
 }
 
 - (void)dealloc
 {
-    [self.currentStream removeObserver:self forKeyPath:@"sequences"];
+    [self.KVOController unobserve:self.currentStream keyPath:@"sequences"];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kLoggedInChangedNotification object:nil];
     if (self.profile != nil)
     {
@@ -261,15 +361,52 @@ static NSString * const kUserKey = @"user";
     
     _profile = profile;
     
-    [_profile addObserver:self forKeyPath:NSStringFromSelector(@selector(name)) options:NSKeyValueObservingOptionNew context:VUserProfileAttributesContext];
-    [_profile addObserver:self forKeyPath:NSStringFromSelector(@selector(location)) options:NSKeyValueObservingOptionNew context:VUserProfileAttributesContext];
-    [_profile addObserver:self forKeyPath:NSStringFromSelector(@selector(tagline)) options:NSKeyValueObservingOptionNew context:VUserProfileAttributesContext];
-    [_profile addObserver:self forKeyPath:NSStringFromSelector(@selector(pictureUrl)) options:NSKeyValueObservingOptionNew context:VUserProfileAttributesContext];
+    BOOL isMe = (profile.remoteId.integerValue == [VObjectManager sharedManager].mainUser.remoteId.integerValue);
+    NSString *profileName = profile.name ?: @"Profile";
+    
+    self.title = isMe ? NSLocalizedString(@"me", "") : profileName;
+    
+    [self.KVOController observe:_profile keyPath:NSStringFromSelector(@selector(name)) options:NSKeyValueObservingOptionNew context:VUserProfileAttributesContext];
+    [self.KVOController observe:_profile keyPath:NSStringFromSelector(@selector(location)) options:NSKeyValueObservingOptionNew context:VUserProfileAttributesContext];
+    [self.KVOController observe:_profile keyPath:NSStringFromSelector(@selector(tagline)) options:NSKeyValueObservingOptionNew context:VUserProfileAttributesContext];
+    [self.KVOController observe:_profile keyPath:NSStringFromSelector(@selector(pictureUrl)) options:NSKeyValueObservingOptionNew context:VUserProfileAttributesContext];
     
     self.currentStream = [VStream streamForUser:self.profile];
-    if ([self isViewLoaded])
+    
+    //Update title AFTER updating current stream as that update resets the title to nil (because there is nil name in the stream)
+    self.navigationItem.title = profileName;
+
+    [self attemptToRefreshProfileUI];
+}
+
+- (void)setDidEndViewWillAppear:(BOOL)didEndViewWillAppear
+{
+    _didEndViewWillAppear = didEndViewWillAppear;
+    
+}
+
+- (void)attemptToRefreshProfileUI
+{
+    //Ensuring viewWillAppear has finished and we have a valid profile ensures smooth profile and stream presentation by avoiding unnecessary refreshes even when loading from a remoteId
+    if ( self.didEndViewWillAppear && self.profile != nil )
     {
-        [self refresh:nil];
+        CGFloat height = CGRectGetHeight(self.view.bounds) - self.topLayoutGuide.length;
+        height = self.streamDataSource.count ? kVSmallUserHeaderHeight : height;
+        
+        CGFloat width = CGRectGetWidth(self.view.bounds);
+        self.currentProfileSize = CGSizeMake(width, height);
+        
+        self.profileHeaderView.user = self.profile;
+        
+        if ( self.streamDataSource.count == 0 )
+        {
+            [self refresh:nil];
+        }
+        else
+        {
+            [self shrinkHeaderAnimated:YES];
+            [self.collectionView reloadData];
+        }
     }
 }
 
@@ -277,10 +414,10 @@ static NSString * const kUserKey = @"user";
 
 - (void)stopObservingUserProfile
 {
-    [_profile removeObserver:self forKeyPath:NSStringFromSelector(@selector(name)) context:VUserProfileAttributesContext];
-    [_profile removeObserver:self forKeyPath:NSStringFromSelector(@selector(location)) context:VUserProfileAttributesContext];
-    [_profile removeObserver:self forKeyPath:NSStringFromSelector(@selector(tagline)) context:VUserProfileAttributesContext];
-    [_profile removeObserver:self forKeyPath:NSStringFromSelector(@selector(pictureUrl)) context:VUserProfileAttributesContext];
+    [self.KVOController unobserve:_profile keyPath:NSStringFromSelector(@selector(name))];
+    [self.KVOController unobserve:_profile keyPath:NSStringFromSelector(@selector(location))];
+    [self.KVOController unobserve:_profile keyPath:NSStringFromSelector(@selector(tagline))];
+    [self.KVOController unobserve:_profile keyPath:NSStringFromSelector(@selector(pictureUrl))];
 }
 
 - (void)loginStateDidChange:(NSNotification *)notification
@@ -303,18 +440,21 @@ static NSString * const kUserKey = @"user";
 
 - (void)refreshWithCompletion:(void (^)(void))completionBlock
 {
-    void (^fullCompletionBlock)(void) = ^void(void)
+    if ( self.profile != nil )
     {
-        if (self.streamDataSource.count)
+        void (^fullCompletionBlock)(void) = ^void(void)
         {
-            [self animateHeaderShrinkingWithDuration:.5f];
-        }
-        if (completionBlock)
-        {
-            completionBlock();
-        }
-    };
-    [super refreshWithCompletion:fullCompletionBlock];
+            if (self.streamDataSource.count)
+            {
+                [self shrinkHeaderAnimated:YES];
+            }
+            if (completionBlock)
+            {
+                completionBlock();
+            }
+        };
+        [super refreshWithCompletion:fullCompletionBlock];
+    }
 }
 
 - (IBAction)composeMessage:(id)sender
@@ -415,26 +555,29 @@ static NSString * const kUserKey = @"user";
 
 #pragma mark - Animation
 
-- (void)animateHeaderShrinkingWithDuration:(CGFloat)duration
+- (void)shrinkHeaderAnimated:(BOOL)animated
 {
-    CGSize newSize = CGSizeMake(CGRectGetWidth(self.collectionView.bounds), kVSmallUserHeaderHeight);
-    
-    [UIView animateWithDuration:duration
-                          delay:0.0f
-         usingSpringWithDamping:0.95f
-          initialSpringVelocity:0.0f
-                        options:UIViewAnimationOptionCurveLinear
-                     animations:^
-     {
-         self.currentProfileSize = newSize;
-
-         self.currentProfileCell.bounds = CGRectMake(CGRectGetMinX(self.collectionView.frame),
-                                                     CGRectGetMinY(self.collectionView.frame),
-                                                     newSize.width,
-                                                     newSize.height);
-         [self.currentProfileCell layoutIfNeeded];
-     }
-                     completion:nil];
+    if ( !animated )
+    {
+        self.currentProfileSize = CGSizeMake(CGRectGetWidth(self.collectionView.bounds), kVSmallUserHeaderHeight);
+        [self.currentProfileCell invalidateIntrinsicContentSize];
+    }
+    else
+    {
+        self.currentProfileSize = CGSizeMake(CGRectGetWidth(self.collectionView.bounds), kVSmallUserHeaderHeight);
+        CGRect newFrame = self.currentProfileCell.frame;
+        newFrame.size.height = self.currentProfileSize.height;
+        [UIView animateWithDuration:0.4f
+                              delay:0.0f
+             usingSpringWithDamping:0.95f
+              initialSpringVelocity:0.0f
+                            options:UIViewAnimationOptionCurveLinear
+                         animations:^
+         {
+             [self.currentProfileCell setFrame:newFrame];
+             [self.currentProfileCell layoutIfNeeded];
+         } completion:nil];
+    }
 }
 
 #pragma mark - VStreamCollectionDataDelegate
@@ -443,11 +586,14 @@ static NSString * const kUserKey = @"user";
 {
     if (self.streamDataSource.hasHeaderCell && indexPath.section == 0)
     {
-        VProfileHeaderCell *headerCell = [self.collectionView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([VProfileHeaderCell class]) forIndexPath:indexPath];
-        headerCell.headerView = self.profileHeaderView;
-        self.profileHeaderView.frame = CGRectMake(0.0f, 0.0f, self.currentProfileSize.width, self.currentProfileSize.height);
-        self.currentProfileCell = headerCell;
-        return headerCell;
+        if ( self.currentProfileCell == nil )
+        {
+            VProfileHeaderCell *headerCell = [self.collectionView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([VProfileHeaderCell class]) forIndexPath:indexPath];
+            headerCell.headerView = self.profileHeaderView;
+            self.currentProfileCell = headerCell;
+        }
+        self.currentProfileCell.hidden = self.profile == nil;
+        return self.currentProfileCell;
     }
     return [super dataSource:dataSource cellForIndexPath:indexPath];
 }
@@ -492,9 +638,9 @@ static NSString * const kUserKey = @"user";
     
     if (object == self.currentStream && [keyPath isEqualToString:NSStringFromSelector(@selector(streamItems))])
     {
-        if (self.streamDataSource.count)
+        if ( self.streamDataSource.count != 0 )
         {
-            [self animateHeaderShrinkingWithDuration:.5];
+            [self shrinkHeaderAnimated:YES];
         }
     }
     
