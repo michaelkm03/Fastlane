@@ -493,6 +493,8 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
 
 - (IBAction)back:(id)sender
 {
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectExitCreateProfile];
+    
     // Show Error Message
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ProfileIncomplete", @"")
                                        message:NSLocalizedString(@"ProfileAborted", @"")
@@ -501,6 +503,8 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
                     otherButtonTitlesAndBlocks:nil];
     
     [alert addButtonWithTitle:NSLocalizedString(@"OKButton", @"") block:^{
+        
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidConfirmExitCreateProfile];
         
         BOOL wasPushedFromViewControllerInLoginFlow = self.navigationController != nil;
         if ( wasPushedFromViewControllerInLoginFlow )
@@ -555,6 +559,8 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
         [errorMsg appendFormat:@"\n%@", NSLocalizedString(@"ProfileRequiredToS", @"")];
     }
     
+    NSDictionary *params = @{ VTrackingKeyErrorMessage : errorMsg ?: @"" };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateProfileValidationDidFail parameters:params];
     
     // Show Error Message
     UIAlertView    *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ProfileIncomplete", @"")
