@@ -53,6 +53,7 @@ static const CGFloat kPadding = 4.f;
 static const CGFloat kLabelFontSize = 16.f;
 static const CGFloat kDetailsLabelFontSize = 12.f;
 
+
 @interface MBProgressHUD () {
 	BOOL useAnimation;
 	SEL methodForExecution;
