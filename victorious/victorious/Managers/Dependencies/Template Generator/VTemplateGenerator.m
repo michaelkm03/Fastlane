@@ -16,6 +16,8 @@
 #import "VThemeManager.h"
 #import "VSettingManager.h"
 
+#define BOTTOM_NAV_ENABLED 1
+
 static NSString * const kIDKey = @"id";
 static NSString * const kReferenceIDKey = @"referenceID";
 static NSString * const kAppearanceKey = @"appearance";
@@ -125,14 +127,25 @@ static NSString * const kVideoMuted = @"videoMuted";
          }
      }];
     
-    template[VDependencyManagerScaffoldViewControllerKey] = @{ kClassNameKey: @"sideMenu.scaffold",
-                                                               VHamburgerButtonIconKey: (self.templateCEnabled ? [UIImage imageNamed:@"menuC"] : [UIImage imageNamed:@"Menu"] ),
-                                                               VDependencyManagerInitialViewControllerKey: @{ kReferenceIDKey: self.firstMenuItemID },
-                                                               VScaffoldViewControllerMenuComponentKey: [self menuComponent],
-                                                               VStreamCollectionViewControllerCreateSequenceIconKey: (self.templateCEnabled ? [UIImage imageNamed:@"createContentButtonC"] : [UIImage imageNamed:@"createContentButton"]),
-                                                               VScaffoldViewControllerUserProfileViewComponentKey: @{ kClassNameKey: @"userProfile.screen" },
-                                                               kSelectorKey: [self kSelectorKeyFromInitDictionary:self.dataFromInitCall],
-                                                            };
+    if (BOTTOM_NAV_ENABLED)
+    {
+        template[VDependencyManagerScaffoldViewControllerKey] = @{
+                                                                  kClassNameKey: @"bottomMenu.scaffold",
+                                                                  kItemsKey:[self bottomNavMenuItems]
+                                                                  };
+    }
+    else
+    {
+        template[VDependencyManagerScaffoldViewControllerKey] = @{ kClassNameKey: @"sideMenu.scaffold",
+                                                                   VHamburgerButtonIconKey: (self.templateCEnabled ? [UIImage imageNamed:@"menuC"] : [UIImage imageNamed:@"Menu"] ),
+                                                                   VDependencyManagerInitialViewControllerKey: @{ kReferenceIDKey: self.firstMenuItemID },
+                                                                   VScaffoldViewControllerMenuComponentKey: [self menuComponent],
+                                                                   VStreamCollectionViewControllerCreateSequenceIconKey: (self.templateCEnabled ? [UIImage imageNamed:@"createContentButtonC"] : [UIImage imageNamed:@"createContentButton"]),
+                                                                   VScaffoldViewControllerUserProfileViewComponentKey: @{ kClassNameKey: @"userProfile.screen" },
+                                                                   kSelectorKey: [self kSelectorKeyFromInitDictionary:self.dataFromInitCall],
+                                                                   };
+    }
+    
     template[VDependencyManagerWorkspaceFlowKey] = [self workspaceFlowComponent];
     template[VScaffoldViewControllerNavigationBarAppearanceKey] = [self navigationBarAppearance];
     
@@ -342,11 +355,7 @@ static NSString * const kVideoMuted = @"videoMuted";
         kClassNameKey: @"simple.menu",
         kItemsKey: @[
             @[
-                @{
-                    kIdentifierKey: @"Menu Home",
-                    kTitleKey: NSLocalizedString(@"Home", @""),
-                    kDestinationKey: [self homeScreen],
-                },
+                [self homeMenuItem],
                 [self ownerStreamMenuItem],
                 @{
                     kIdentifierKey: @"Menu Community",
@@ -382,20 +391,8 @@ static NSString * const kVideoMuted = @"videoMuted";
                 }
             ],
             @[
-                @{
-                    kIdentifierKey: @"Menu Inbox",
-                    kTitleKey: NSLocalizedString(@"Inbox", @""),
-                    kDestinationKey: @{
-                        kClassNameKey: @"inbox.screen"
-                    }
-                },
-                @{
-                    kIdentifierKey: @"Menu Profile",
-                    kTitleKey: NSLocalizedString(@"Profile", @""),
-                    kDestinationKey: @{
-                        kClassNameKey: @"currentUserProfile.screen"
-                    }
-                },
+                [self inboxMenuItem],
+                [self profileMenuItem],
                 @{
                     kIdentifierKey: @"Menu Settings",
                     kTitleKey: NSLocalizedString(@"Settings", @""),
@@ -406,6 +403,45 @@ static NSString * const kVideoMuted = @"videoMuted";
             ]
         ]
     };
+}
+
+- (NSArray *)bottomNavMenuItems
+{
+    return @[
+             [self homeMenuItem],
+             [self ownerStreamMenuItem],
+             ];
+}
+
+- (NSDictionary *)homeMenuItem
+{
+    return @{
+             kIdentifierKey: @"Menu Home",
+             kTitleKey: NSLocalizedString(@"Home", @""),
+             kDestinationKey: [self homeScreen],
+             };
+}
+
+- (NSDictionary *)profileMenuItem
+{
+    return @{
+             kIdentifierKey: @"Menu Profile",
+             kTitleKey: NSLocalizedString(@"Profile", @""),
+             kDestinationKey: @{
+                     kClassNameKey: @"currentUserProfile.screen"
+                     }
+             };
+}
+
+- (NSDictionary *)inboxMenuItem
+{
+    return @{
+             kIdentifierKey: @"Menu Inbox",
+             kTitleKey: NSLocalizedString(@"Inbox", @""),
+             kDestinationKey: @{
+                     kClassNameKey: @"inbox.screen"
+                     }
+             };
 }
 
 - (NSString *)urlPathForStreamCategories:(NSArray *)categories

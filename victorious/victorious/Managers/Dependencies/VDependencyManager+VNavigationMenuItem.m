@@ -28,19 +28,31 @@ NSString * const VDependencyManagerMenuItemsKey = @"items";
     {
         if ([section isKindOfClass:[NSArray class]])
         {
-            NSMutableArray *menuItems = [[NSMutableArray alloc] initWithCapacity:section.count];
-            for (NSDictionary *menuItemConfiguration in section)
-            {
-                if ([menuItemConfiguration isKindOfClass:[NSDictionary class]])
-                {
-                    VDependencyManager *dependencyManager = [self childDependencyManagerWithAddedConfiguration:menuItemConfiguration];
-                    [menuItems addObject:[[VNavigationMenuItem alloc] initWithDependencyManager:dependencyManager]];
-                }
-            };
+            NSArray *menuItems = [self menuItemsWithArrayOfDictionaryRepresentations:section];
             [menuItemSections addObject:[menuItems copy]];
         }
     }
     return [menuItemSections copy];
+}
+
+- (NSArray *)menuItems
+{
+    NSArray *menuItems = [self arrayForKey:VDependencyManagerMenuItemsKey];
+    return [[self menuItemsWithArrayOfDictionaryRepresentations:menuItems] copy];
+}
+
+- (NSArray *)menuItemsWithArrayOfDictionaryRepresentations:(NSArray *)menuItemRepresentations
+{
+    NSMutableArray *menuItems = [[NSMutableArray alloc] initWithCapacity:menuItemRepresentations.count];
+    for (NSDictionary *menuItemConfiguration in menuItemRepresentations)
+    {
+        if ([menuItemConfiguration isKindOfClass:[NSDictionary class]])
+        {
+            VDependencyManager *dependencyManager = [self childDependencyManagerWithAddedConfiguration:menuItemConfiguration];
+            [menuItems addObject:[[VNavigationMenuItem alloc] initWithDependencyManager:dependencyManager]];
+        }
+    };
+    return menuItems;
 }
 
 @end
