@@ -104,14 +104,14 @@ NSString * const VTrackingEventCreateProfileValidationDidFail = @"CreateProfileV
 NSString * const VTrackingEventCreateProfileDidSucceed = @"CreateProfileDidSucceed";
 NSString * const VTrackingEventUserDidSelectExitCreateProfile = @"UserDidSelectExitCreateProfile";
 NSString * const VTrackingEventUserDidConfirmExitCreateProfile = @"UserDidConfirmExitCreateProfile";
-NSString * const VTrackingEventUserDidSelectImageForCreateProfile = @"UserDidSelectImageForCreateProfile";
 
 NSString * const VTrackingEventUserDidSelectEditProfile = @"UserDidSelectEditProfile";
 NSString * const VTrackingEventUserDidSelectImageForEditProfile = @"UserDidSelectImageForEditProfile";
 NSString * const VTrackingEventProfileDidUpdated = @"ProfileDidUpdated";
 NSString * const VTrackingEventUserDidExitEditProfile = @"UserDidExitEditProfile";
+NSString * const VTrackingEventEditProfileValidationDidFail = @"EditProfileValidationDidFail";
 NSString * const VTrackingEventUserDidSelectProfileFollowing = @"UserDidSelectProfileFollowing";
-NSString * const VTrackingEventUserDidSelectProfileFollowed = @"UserDidSelectProfileFollowed";
+NSString * const VTrackingEventUserDidSelectProfileFollowers = @"UserDidSelectProfileFollowers";
 
 // Purchases
 NSString * const VTrackingEventUserDidSelectLockedVoteType = @"UserDidSelectLockedVoteType";

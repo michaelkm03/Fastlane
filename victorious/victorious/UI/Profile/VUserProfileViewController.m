@@ -349,6 +349,8 @@ static NSString * const kUserKey = @"user";
     
     if (self.isMe)
     {
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectEditProfile];
+        
         [self performSegueWithIdentifier:@"toEditProfile" sender:self];
         return;
     }

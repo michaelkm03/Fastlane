@@ -94,14 +94,14 @@ CreateProfileValidationDidFail,Params: ErrorMessage
 CreateProfileDidSucceed,
 UserDidSelectExitCreateProfile,
 UserDidConfirmExitCreateProfile,
-UserDidSelectImageForCreateProfile,Params: MediaSource
 ,
 UserDidSelectEditProfile,
-UserDidSelectImageForEditProfile,Params: MediaSource
+UserDidSelectImageForEditProfile,
 ProfileDidUpdated,"Pardon the spelling error, it's a legacy/compatibility thing"
 UserDidExitEditProfile,
+EditProfileValidationDidFail,
 UserDidSelectProfileFollowing,
-UserDidSelectProfileFollowed,
+UserDidSelectProfileFollowers,
 ,
 // Purchases,
 UserDidSelectLockedVoteType,Params: ProductIdentifier

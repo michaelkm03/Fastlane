@@ -104,14 +104,14 @@ extern NSString * const VTrackingEventCreateProfileValidationDidFail; //< Params
 extern NSString * const VTrackingEventCreateProfileDidSucceed; 
 extern NSString * const VTrackingEventUserDidSelectExitCreateProfile; 
 extern NSString * const VTrackingEventUserDidConfirmExitCreateProfile; 
-extern NSString * const VTrackingEventUserDidSelectImageForCreateProfile; //< Params: MediaSource
 
 extern NSString * const VTrackingEventUserDidSelectEditProfile; 
-extern NSString * const VTrackingEventUserDidSelectImageForEditProfile; //< Params: MediaSource
+extern NSString * const VTrackingEventUserDidSelectImageForEditProfile; 
 extern NSString * const VTrackingEventProfileDidUpdated; //< "Pardon the spelling error, it's a legacy/compatibility thing"
 extern NSString * const VTrackingEventUserDidExitEditProfile; 
+extern NSString * const VTrackingEventEditProfileValidationDidFail; 
 extern NSString * const VTrackingEventUserDidSelectProfileFollowing; 
-extern NSString * const VTrackingEventUserDidSelectProfileFollowed; 
+extern NSString * const VTrackingEventUserDidSelectProfileFollowers; 
 
 // Purchases
 extern NSString * const VTrackingEventUserDidSelectLockedVoteType; //< Params: ProductIdentifier
