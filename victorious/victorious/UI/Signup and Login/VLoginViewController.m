@@ -108,13 +108,11 @@
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:cancelButtonImage style:UIBarButtonItemStylePlain target:self action:@selector(closeButtonClicked:)];
     
     self.navigationController.delegate = self;
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
     
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginDidShow];
+    if ( self.navigationController.viewControllers.lastObject == self )
+    {
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginDidShow];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated

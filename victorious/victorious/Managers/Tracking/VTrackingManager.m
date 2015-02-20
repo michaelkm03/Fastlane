@@ -57,7 +57,10 @@
 - (void)setValue:(NSString *)value forSessionParameterWithKey:(NSString *)key
 {
 #if TRACKING_ALERTS_ENABLED
-    [[[UIAlertView alloc] initWithTitle:@"Tracking Session Param" message:[NSString stringWithFormat:@"%@: %@", key, value] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+    {
+        [[[UIAlertView alloc] initWithTitle:@"Tracking Session Param" message:[NSString stringWithFormat:@"%@: %@", key, value] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+    });
 #endif
     
     if ( value == nil )
