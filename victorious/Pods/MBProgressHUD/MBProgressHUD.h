@@ -30,9 +30,6 @@
 #import <UIKit/UIKit.h>
 #import <CoreGraphics/CoreGraphics.h>
 
-extern const CGFloat MBDefaultMargin;
-extern const CGFloat MBDefaultCustomViewSide;
-
 @protocol MBProgressHUDDelegate;
 
 

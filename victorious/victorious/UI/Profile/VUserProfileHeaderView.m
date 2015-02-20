@@ -27,13 +27,6 @@
     return view;
 }
 
-+ (instancetype)newViewWithFrame:(CGRect)frame
-{
-    VUserProfileHeaderView *view = [self newView];
-    view.frame = frame;
-    return view;
-}
-
 - (void)awakeFromNib
 {
     [super awakeFromNib];

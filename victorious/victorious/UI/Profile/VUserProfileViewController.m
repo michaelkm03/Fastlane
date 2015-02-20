@@ -41,6 +41,10 @@ static const CGFloat kVSmallUserHeaderHeight = 319.0f;
 
 static void * VUserProfileViewContext = &VUserProfileViewContext;
 static void * VUserProfileAttributesContext =  &VUserProfileAttributesContext;
+/*
+ According to MBProgressHUD.h, a 37 x 37 square is the best fit for a custom view within a MBProgressHUD
+ */
+static const CGFloat MBProgressHUDCustomViewSide = 37.0f;
 static NSString * const kUserKey = @"user";
 
 @interface VUserProfileViewController () <VUserProfileHeaderDelegate, MBProgressHUDDelegate>
@@ -61,6 +65,8 @@ static NSString * const kUserKey = @"user";
 @property (nonatomic, strong) UIButton *retryProfileLoadButton;
 
 @property (nonatomic, assign) BOOL didEndViewWillAppear;
+
+@property (nonatomic, assign) CGFloat defaultMBProgressHUDMargin;
 
 @end
 
@@ -88,7 +94,7 @@ static NSString * const kUserKey = @"user";
 }
 
 + (instancetype)userProfileWithUser:(VUser *)aUser
-{    
+{
     VUserProfileViewController   *viewController  =   [[UIStoryboard storyboardWithName:@"Profile" bundle:nil] instantiateInitialViewController];
     viewController.profile = aUser;
     
@@ -217,41 +223,30 @@ static NSString * const kUserKey = @"user";
     if ( self.retryHUD == nil )
     {
         self.retryHUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        self.defaultMBProgressHUDMargin = self.retryHUD.margin;
     }
     else
     {
-        self.retryHUD.margin = MBDefaultMargin;
+        self.retryHUD.margin = self.defaultMBProgressHUDMargin;
         self.retryHUD.mode = MBProgressHUDModeIndeterminate;
     }
 
-    __weak VUserProfileViewController *weakViewController = self;
     [[VObjectManager sharedManager] fetchUser:self.remoteId
                              withSuccessBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
-         VUserProfileViewController *strongViewController = weakViewController;
-         if ( strongViewController == nil )
-         {
-             return;
-         }
-         
-         [strongViewController.retryHUD hide:YES];
-         strongViewController.retryHUD = nil;
-         strongViewController.profile = [resultObjects lastObject];
+         [self.retryHUD hide:YES];
+         [self.retryProfileLoadButton removeFromSuperview];
+         self.retryHUD = nil;
+         self.profile = [resultObjects lastObject];
      }
                                     failBlock:^(NSOperation *operation, NSError *error)
      {
-         VUserProfileViewController *strongViewController = weakViewController;
-         if ( strongViewController == nil )
-         {
-             return;
-         }
-         
          //Handle profile load failure by changing navigationItem title and showing a retry button in the indicator
-         strongViewController.navigationItem.title = @"Profile load failed!";
-         strongViewController.retryHUD.margin = 0.0f;
-         strongViewController.retryHUD.mode = MBProgressHUDModeCustomView;
-         strongViewController.retryHUD.customView = strongViewController.retryProfileLoadButton;
-         [strongViewController.retryProfileLoadButton setUserInteractionEnabled:YES];
+         self.navigationItem.title = @"Profile load failed!";
+         self.retryHUD.mode = MBProgressHUDModeCustomView;
+         self.retryHUD.customView = self.retryProfileLoadButton;
+         self.retryHUD.margin = 0.0f;
+         [self.retryProfileLoadButton setUserInteractionEnabled:YES];
      }];
 }
 
@@ -264,16 +259,17 @@ static NSString * const kUserKey = @"user";
 
 - (UIButton *)retryProfileLoadButton
 {
-    if ( _retryProfileLoadButton )
+    if ( _retryProfileLoadButton != nil )
     {
         return _retryProfileLoadButton;
     }
     
     /*
-     According to MBProgressHUD.h, a 37 x 37 square is the best fit for a custom view within a MBProgressHUD with DEFAULT margins. However, resetting the margins to 0.0f from the default MBDefaultMargin (which I've defined in the MBProgressHUD.h) means we can fill out the other 2 x MBDefaultMargin with the button to make a button that is the full size of the HUD.
+     To make a full-HUD button, it needs to have origin (-margin, -margin) and size (margin * 2 + MBProgressHUDCustomViewSide, margin * 2 + MBProgressHUDCustomViewSide).
     */
-    CGFloat buttonSide = MBDefaultCustomViewSide + MBDefaultMargin * 2;
-    _retryProfileLoadButton = [[UIButton alloc] initWithFrame:CGRectMake(0.0f, 0.0f, buttonSide, buttonSide)];
+    CGFloat margin = self.defaultMBProgressHUDMargin;
+    CGFloat buttonSide = margin * 2 + MBProgressHUDCustomViewSide;
+    _retryProfileLoadButton = [[UIButton alloc] initWithFrame:CGRectMake(-margin, -margin, buttonSide, buttonSide)];
     [_retryProfileLoadButton addTarget:self action:@selector(retryProfileLoad) forControlEvents:UIControlEventTouchUpInside];
     _retryProfileLoadButton.tintColor = [UIColor whiteColor];
     [_retryProfileLoadButton setImage:[[UIImage imageNamed:@"uploadRetryButton"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
@@ -377,12 +373,6 @@ static NSString * const kUserKey = @"user";
     self.navigationItem.title = profileName;
 
     [self attemptToRefreshProfileUI];
-}
-
-- (void)setDidEndViewWillAppear:(BOOL)didEndViewWillAppear
-{
-    _didEndViewWillAppear = didEndViewWillAppear;
-    
 }
 
 - (void)attemptToRefreshProfileUI
@@ -576,7 +566,8 @@ static NSString * const kUserKey = @"user";
          {
              [self.currentProfileCell setFrame:newFrame];
              [self.currentProfileCell layoutIfNeeded];
-         } completion:nil];
+         }
+                         completion:nil];
     }
 }
 

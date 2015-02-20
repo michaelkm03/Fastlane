@@ -53,10 +53,6 @@ static const CGFloat kPadding = 4.f;
 static const CGFloat kLabelFontSize = 16.f;
 static const CGFloat kDetailsLabelFontSize = 12.f;
 
-//Newly exposed default values
-const CGFloat MBDefaultMargin = 20.0f;
-const CGFloat MBDefaultCustomViewSide = 37.0f;
-
 @interface MBProgressHUD () {
 	BOOL useAnimation;
 	SEL methodForExecution;
@@ -183,7 +179,7 @@ const CGFloat MBDefaultCustomViewSide = 37.0f;
 		self.xOffset = 0.0f;
 		self.yOffset = 0.0f;
 		self.dimBackground = NO;
-		self.margin = MBDefaultMargin;
+		self.margin = 20.0f;
 		self.cornerRadius = 10.0f;
 		self.graceTime = 0.0f;
 		self.minShowTime = 0.0f;
