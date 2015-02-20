@@ -131,11 +131,13 @@
     NSString *macro1 = self.applicaitonTracking.parameterMacroMapping.allValues[0];
     NSString *macro2 = self.applicaitonTracking.parameterMacroMapping.allValues[1];
     NSString *macro3 = self.applicaitonTracking.parameterMacroMapping.allValues[2];
+    NSString *macro4 = @"%%BRAND_NEW_UNKNOWN_MACRO%%";
+    NSString *macro5 = @"%%ANOTER NEW ONE%%";
     
     NSString *paramKey1 = self.applicaitonTracking.parameterMacroMapping.allKeys[0];
     NSString *paramKey3 = self.applicaitonTracking.parameterMacroMapping.allKeys[2];
     
-    NSString *string = [NSString stringWithFormat:@"%@/%@/%@", macro1, macro2, macro3 ];
+    NSString *string = [NSString stringWithFormat:@"%@/%@/%@/%@/%@", macro1, macro2, macro3, macro4, macro5 ];
     
     NSString *output;
     NSString *expected;
@@ -143,7 +145,9 @@
     
     parameters = @{ paramKey1 : @"value1",
                     // macro2 is missing intentionally to test the removal of the macro
-                    paramKey3 : @"value3" };
+                    paramKey3 : @"value3"
+                    // macro4 is missing intentionally to test the removal of the macro
+                    };
     
     output = [self.applicaitonTracking stringByReplacingMacros:self.applicaitonTracking.parameterMacroMapping
                                                       inString:string
@@ -151,6 +155,8 @@
     expected = [string stringByReplacingOccurrencesOfString:macro1 withString:parameters[ paramKey1 ]];
     expected = [expected stringByReplacingOccurrencesOfString:macro2 withString:@""];
     expected = [expected stringByReplacingOccurrencesOfString:macro3 withString:parameters[ paramKey3 ]];
+    expected = [expected stringByReplacingOccurrencesOfString:macro4 withString:@""];
+    expected = [expected stringByReplacingOccurrencesOfString:macro5 withString:@""];
     XCTAssertEqualObjects( output, expected, @"URL should only have registerd macros replaced, otherwise the macros should be removed." );
 }
 

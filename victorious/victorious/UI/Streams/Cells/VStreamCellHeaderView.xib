@@ -11,16 +11,6 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="75"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YtL-IO-nl6" userLabel="Profile Hitbox Button">
-                    <rect key="frame" x="0.0" y="0.0" width="247" height="75"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <state key="normal">
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <connections>
-                        <action selector="profileButtonAction:" destination="vMH-nh-jSy" eventType="touchUpInside" id="Nub-lE-m2J"/>
-                    </connections>
-                </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RMI-JK-HqJ" userLabel="Comment Button">
                     <rect key="frame" x="255" y="21" width="55" height="32"/>
                     <constraints>
@@ -75,6 +65,16 @@
                     <state key="normal">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YtL-IO-nl6" userLabel="Profile Hitbox Button">
+                    <rect key="frame" x="0.0" y="0.0" width="247" height="75"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <state key="normal">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="profileButtonAction:" destination="vMH-nh-jSy" eventType="touchUpInside" id="Nub-lE-m2J"/>
+                    </connections>
                 </button>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>

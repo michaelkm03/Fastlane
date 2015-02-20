@@ -61,6 +61,8 @@
 static const CGFloat kTemplateCYRatio = 1.3079470199; // 395/302
 static const CGFloat kTemplateCXRatio = 0.94375; // 320/302
 static const CGFloat kDescriptionBuffer = 18.0;
+static const CGFloat kTextViewInset = 20.0f; //Needs to be sum of textview inset from left and right
+static const CGFloat kTextViewLineFragmentPadding = 5.0f; //Since we don't update linefragment padding on the uitextview, this is the default 5.0
 
 @implementation VStreamCollectionCell
 
@@ -328,7 +330,9 @@ static const CGFloat kDescriptionBuffer = 18.0;
     
     if ( !sequence.nameEmbeddedInContent.boolValue && sequence.name.length > 0 )
     {
-        CGSize textSize = [sequence.name frameSizeForWidth:actual.width andAttributes:[self sequenceDescriptionAttributes]];
+        //Subtract insets and line fragment padding that is padding text in textview BEFORE calculating size
+        CGSize textSize = [sequence.name frameSizeForWidth:actual.width - kTextViewInset - kTextViewLineFragmentPadding * 2
+                                             andAttributes:[self sequenceDescriptionAttributes]];
         actual.height += textSize.height + kDescriptionBuffer;
     }
     

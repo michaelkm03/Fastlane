@@ -62,6 +62,9 @@
 - (IBAction)saveChanges:(id)sender
 {
     [[self view] endEditing:YES];
+
+    // Point the validator at the field to confirm the password
+    [self.passwordValidator setConfirmationObject:self.confirmPasswordTextField withKeyPath:@"text"];
     
     NSError *validationError;
     self.passwordValidator.currentPassword = self.oldPasswordTextField.text;

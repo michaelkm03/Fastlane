@@ -13,7 +13,7 @@
 // ViewModel
 #import "VVideoCellViewModel.h"
 
-@class VContentVideoCell, VTracking;
+@class VContentVideoCell, VTracking, VAdVideoPlayerViewController;
 
 @import AVFoundation;
 
@@ -74,6 +74,11 @@
  visual elements that overlay the video content.
  */
 - (void)togglePlayControls;
+
+/**
+ Public instance of ad video player -- TEMPORARY PATCH
+ */
+@property (nonatomic, strong, readwrite) VAdVideoPlayerViewController *adPlayerViewController;
 
 /**
  Should the video player hide the toolbar, disable tap to toggle toolbar,
