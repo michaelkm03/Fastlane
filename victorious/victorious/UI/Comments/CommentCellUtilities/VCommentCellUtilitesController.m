@@ -87,9 +87,14 @@ static const CGFloat kVCommentCellUtilityButtonWidth = 55.0f;
                            cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
                            otherButtonTitles:nil] show];
          
+         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidFlagComment];
+         
      }
                                       failBlock:^(NSOperation *operation, NSError *error)
      {
+         NSDictionary *params = @{ VTrackingKeyErrorMessage : error.localizedDescription ?: @"" };
+         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventFlagCommentDidFail parameters:params];
+         
          NSString *errorTitle = nil;
          NSString *errorMessage = nil;
          if ( error.code == kVCommentAlreadyFlaggedError )
@@ -118,9 +123,14 @@ static const CGFloat kVCommentCellUtilityButtonWidth = 55.0f;
                                      successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
          [self.delegate commentRemoved:self.comment];
+         
+         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidDeleteComment];
      }
                                         failBlock:^(NSOperation *operation, NSError *error)
      {
+         NSDictionary *params = @{ VTrackingKeyErrorMessage : error.localizedDescription ?: @"" };
+         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventDeleteCommentDidFail parameters:params];
+         
          [[[UIAlertView alloc] initWithTitle: NSLocalizedString(@"WereSorry", @"")
                                      message:NSLocalizedString(@"ErrorOccured", @"")
                                     delegate:nil
@@ -183,6 +193,7 @@ static const CGFloat kVCommentCellUtilityButtonWidth = 55.0f;
             [self flagComment];
             break;
         case VCommentCellUtilityTypeEdit:
+            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectEditComment];
             [self.delegate editComment:self.comment];
             break;
         case VCommentCellUtilityTypeDelete:

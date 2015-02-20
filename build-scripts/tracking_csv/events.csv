@@ -132,10 +132,11 @@ UserShareDidFail,Params: ErrorMessage
 UserDidSelectSelectRemix,Params: Context
 ,
 // Comments,
-UserDidPostComment,"Params: TextLength, ContentType, MediaType, CurrentSection, StreamName"
+UserDidPostComment,"Params: TextLength, ContentType, CurrentSection, StreamName"
+PostCommentDidFail,
 UserDidSelectEditComment,
 UserDidCompleteEditComment,
-UserDidExitEditComment,
+UserDidCancelEditComment,
 UserDidFlagComment,
 UserDidDeleteComment,
 EditCommentDidFail,Params: ErrorMessage

@@ -142,10 +142,11 @@ extern NSString * const VTrackingEventUserShareDidFail; //< Params: ErrorMessage
 extern NSString * const VTrackingEventUserDidSelectSelectRemix; //< Params: Context
 
 // Comments
-extern NSString * const VTrackingEventUserDidPostComment; //< "Params: TextLength, ContentType, MediaType, CurrentSection, StreamName"
+extern NSString * const VTrackingEventUserDidPostComment; //< "Params: TextLength, ContentType, CurrentSection, StreamName"
+extern NSString * const VTrackingEventPostCommentDidFail; 
 extern NSString * const VTrackingEventUserDidSelectEditComment; 
 extern NSString * const VTrackingEventUserDidCompleteEditComment; 
-extern NSString * const VTrackingEventUserDidExitEditComment; 
+extern NSString * const VTrackingEventUserDidCancelEditComment; 
 extern NSString * const VTrackingEventUserDidFlagComment; 
 extern NSString * const VTrackingEventUserDidDeleteComment; 
 extern NSString * const VTrackingEventEditCommentDidFail; //< Params: ErrorMessage
@@ -255,6 +256,7 @@ extern NSString * const VTrackingValueGIF;
 extern NSString * const VTrackingValueVideo; 
 extern NSString * const VTrackingValueImage; 
 extern NSString * const VTrackingValuePoll; 
+extern NSString * const VTrackingValueTextOnly; 
 
 // MediaSource values
 extern NSString * const VTrackingValueCamera; //< Photo or image was just capture from camera

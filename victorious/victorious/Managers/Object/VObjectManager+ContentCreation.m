@@ -321,10 +321,37 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
         {
             [asset addCommentsObject: newComment];
         }
-
-        if (success)
+        
+        NSString *extension = [[mediaURL pathExtension] lowercaseString];
+        NSString *contentType = VTrackingValueTextOnly;
+        if ( [@[ VConstantMediaExtensionMP4, VConstantMediaExtensionMOV ] containsObject:extension ] )
         {
-            success(operation, fullResponse, resultObjects);
+            // TODO: When better GIF differentiation is added, detect if a GIF is being supplied
+            contentType = VTrackingValueVideo;
+        }
+        else if ( [@[ VConstantMediaExtensionPNG, VConstantMediaExtensionJPG, VConstantMediaExtensionJPEG ] containsObject:extension ] )
+        {
+            contentType = VTrackingValueImage;
+        }
+        
+        NSDictionary *params = @{ VTrackingKeyTextLength : @(text.length),
+                                  VTrackingKeyContentType : contentType };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidPostComment parameters:params];
+
+        if ( success != nil )
+        {
+            success( operation, fullResponse, resultObjects );
+        }
+    };
+    
+    VFailBlock fullFail = ^(NSOperation *operation, NSError *error)
+    {
+        NSDictionary *params = @{ VTrackingKeyErrorMessage : error.localizedDescription ?: @"" };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventPostCommentDidFail parameters:params];
+        
+        if ( fail != nil )
+        {
+            fail( operation, error );
         }
     };
     
@@ -332,7 +359,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
                      toPath:@"/api/comment/add"
                  parameters:parameters
                successBlock:fullSuccess
-                  failBlock:fail];
+                  failBlock:fullFail];
 }
 
 - (VComment *)newCommentWithID:(NSNumber *)remoteID

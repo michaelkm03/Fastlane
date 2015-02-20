@@ -143,9 +143,10 @@ NSString * const VTrackingEventUserDidSelectSelectRemix = @"UserDidSelectSelectR
 
 // Comments
 NSString * const VTrackingEventUserDidPostComment = @"UserDidPostComment";
+NSString * const VTrackingEventPostCommentDidFail = @"PostCommentDidFail";
 NSString * const VTrackingEventUserDidSelectEditComment = @"UserDidSelectEditComment";
 NSString * const VTrackingEventUserDidCompleteEditComment = @"UserDidCompleteEditComment";
-NSString * const VTrackingEventUserDidExitEditComment = @"UserDidExitEditComment";
+NSString * const VTrackingEventUserDidCancelEditComment = @"UserDidCancelEditComment";
 NSString * const VTrackingEventUserDidFlagComment = @"UserDidFlagComment";
 NSString * const VTrackingEventUserDidDeleteComment = @"UserDidDeleteComment";
 NSString * const VTrackingEventEditCommentDidFail = @"EditCommentDidFail";
@@ -255,6 +256,7 @@ NSString * const VTrackingValueGIF = @"GIF";
 NSString * const VTrackingValueVideo = @"Video";
 NSString * const VTrackingValueImage = @"Image";
 NSString * const VTrackingValuePoll = @"Poll";
+NSString * const VTrackingValueTextOnly = @"TextOnly";
 
 // MediaSource values
 NSString * const VTrackingValueCamera = @"Camera";

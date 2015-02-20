@@ -8,6 +8,7 @@ GIF,
 Video,
 Image,
 Poll,
+TextOnly,
 ,
 // MediaSource values,
 Camera,Photo or image was just capture from camera
