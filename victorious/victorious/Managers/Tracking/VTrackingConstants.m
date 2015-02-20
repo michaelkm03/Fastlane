@@ -28,7 +28,7 @@ NSString * const VTrackingEventCreateVideoPostSelected = @"CreateVideoPostSelect
 NSString * const VTrackingEventCreateGIFPostSelected = @"CreateGIFPostSelected";
 NSString * const VTrackingEventCreateCancelSelected = @"CreateCancelSelected";
 
-// Camera
+// Camera (""Camera"" prefix for legacy/compatibility)"
 NSString * const VTrackingEventCameraDidSwitchToVideoCapture = @"CameraDidSwitchToVideoCapture";
 NSString * const VTrackingEventCameraDidSwitchToPhotoCapture = @"CameraDidSwitchToPhotoCapture";
 NSString * const VTrackingEventCameraDidCapturePhoto = @"CameraDidCapturePhoto";
@@ -36,11 +36,12 @@ NSString * const VTrackingEventCameraDidCaptureVideo = @"CameraDidCaptureVideo";
 NSString * const VTrackingEventCameraUserDidPickImageFromLibrary = @"CameraUserDidPickImageFromLibrary";
 NSString * const VTrackingEventCameraUserDidPickVideoFromLibrary = @"CameraUserDidPickVideoFromLibrary";
 NSString * const VTrackingEventCameraDidSearchForImage = @"CameraDidSearchForImage";
+NSString * const VTrackingEventCameraDidSelectImageSearch = @"CameraDidSelectImageSearch";
 NSString * const VTrackingEventCameraDidSelectImageFromImageSearch = @"CameraDidSelectImageFromImageSearch";
 NSString * const VTrackingEventCameraDidExitImageSearch = @"CameraDidExitImageSearch";
 NSString * const VTrackingEventCameraUserDidConfirmtDelete = @"CameraUserDidConfirmtDelete";
 NSString * const VTrackingEventCameraUserDidSelectDelete = @"CameraUserDidSelectDelete";
-NSString * const VTrackingEventUserDidExitCamera = @"UserDidExitCamera";
+NSString * const VTrackingEventCameraUserDidExit = @"CameraUserDidExit";
 
 // Workspace & Publish
 NSString * const VTrackingEventUserDidSelectMeme = @"UserDidSelectMeme";
@@ -50,7 +51,8 @@ NSString * const VTrackingEventUserDidSelectFilterTool = @"UserDidSelectFilterTo
 NSString * const VTrackingEventUserDidSelectTextTool = @"UserDidSelectTextTool";
 
 NSString * const VTrackingEventUserDidPublishContent = @"UserDidPublishContent";
-NSString * const VTrackingEventCameraPublishDidCancel = @"CameraPublishDidCancel";
+NSString * const VTrackingEventUserDidExitPublishConfirmation = @"UserDidExitPublishConfirmation";
+NSString * const VTrackingEventUserDidExitWorkspace = @"UserDidExitWorkspace";
 
 NSString * const VTrackingEventUserDidPublishPoll = @"UserDidPublishPoll";
 NSString * const VTrackingEventUserDidExitPollCreation = @"UserDidExitPollCreation";

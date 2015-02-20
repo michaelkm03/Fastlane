@@ -18,7 +18,7 @@ CreateVideoPostSelected,
 CreateGIFPostSelected,
 CreateCancelSelected,User selected cancel from create post content type selection; Params: CurrentSection (template driven value)
 ,
-// Camera,
+"// Camera (""Camera"" prefix for legacy/compatibility)",
 CameraDidSwitchToVideoCapture,
 CameraDidSwitchToPhotoCapture,
 CameraDidCapturePhoto,User did move from camera view to workspace with an image just taken
@@ -26,11 +26,12 @@ CameraDidCaptureVideo,User did move from camera view to workspace with a video j
 CameraUserDidPickImageFromLibrary,
 CameraUserDidPickVideoFromLibrary,
 CameraDidSearchForImage,Params: SearchTerm
+CameraDidSelectImageSearch,
 CameraDidSelectImageFromImageSearch,User selected an image from the image search.
 CameraDidExitImageSearch,User left the image search without selecting an image.
 CameraUserDidConfirmtDelete,User tapped the garbage icon to see deletion confirmation.
 CameraUserDidSelectDelete,User confirmed deletion of any recorded video.
-UserDidExitCamera,User tapped (X) icon to leave camera without capturing or importing a photo or video
+CameraUserDidExit,User tapped (X) icon to leave camera without capturing or importing a photo or video
 ,
 // Workspace & Publish,
 UserDidSelectMeme,
@@ -40,7 +41,8 @@ UserDidSelectFilterTool,
 UserDidSelectTextTool,
 ,
 UserDidPublishContent,"Any non-poll post; Params: TextType, TextLength, CaptionLength, MediaType, CurrentSection, StreamName, MediaSource, DidCrop, FilterName"
-CameraPublishDidCancel,"User exited the camer view without producing output for workspace/publish, comment, message, etc."
+UserDidExitPublishConfirmation,"User exited the camer view without producing output for workspace/publish, comment, message, etc."
+UserDidExitWorkspace,"User exited the workspace, discarding the captured image and any work done to it."
 ,
 UserDidPublishPoll,"Params: CaptionLength, CurrentSection, StreamName, MediaSource"
 UserDidExitPollCreation,

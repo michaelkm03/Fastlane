@@ -28,7 +28,7 @@ extern NSString * const VTrackingEventCreateVideoPostSelected;
 extern NSString * const VTrackingEventCreateGIFPostSelected; 
 extern NSString * const VTrackingEventCreateCancelSelected; //< User selected cancel from create post content type selection; Params: CurrentSection (template driven value)
 
-// Camera
+// Camera (""Camera"" prefix for legacy/compatibility)"
 extern NSString * const VTrackingEventCameraDidSwitchToVideoCapture; 
 extern NSString * const VTrackingEventCameraDidSwitchToPhotoCapture; 
 extern NSString * const VTrackingEventCameraDidCapturePhoto; //< User did move from camera view to workspace with an image just taken
@@ -36,11 +36,12 @@ extern NSString * const VTrackingEventCameraDidCaptureVideo; //< User did move f
 extern NSString * const VTrackingEventCameraUserDidPickImageFromLibrary; 
 extern NSString * const VTrackingEventCameraUserDidPickVideoFromLibrary; 
 extern NSString * const VTrackingEventCameraDidSearchForImage; //< Params: SearchTerm
+extern NSString * const VTrackingEventCameraDidSelectImageSearch; 
 extern NSString * const VTrackingEventCameraDidSelectImageFromImageSearch; //< User selected an image from the image search.
 extern NSString * const VTrackingEventCameraDidExitImageSearch; //< User left the image search without selecting an image.
 extern NSString * const VTrackingEventCameraUserDidConfirmtDelete; //< User tapped the garbage icon to see deletion confirmation.
 extern NSString * const VTrackingEventCameraUserDidSelectDelete; //< User confirmed deletion of any recorded video.
-extern NSString * const VTrackingEventUserDidExitCamera; //< User tapped (X) icon to leave camera without capturing or importing a photo or video
+extern NSString * const VTrackingEventCameraUserDidExit; //< User tapped (X) icon to leave camera without capturing or importing a photo or video
 
 // Workspace & Publish
 extern NSString * const VTrackingEventUserDidSelectMeme; 
@@ -50,7 +51,8 @@ extern NSString * const VTrackingEventUserDidSelectFilterTool;
 extern NSString * const VTrackingEventUserDidSelectTextTool; 
 
 extern NSString * const VTrackingEventUserDidPublishContent; //< "Any non-poll post; Params: TextType, TextLength, CaptionLength, MediaType, CurrentSection, StreamName, MediaSource, DidCrop, FilterName"
-extern NSString * const VTrackingEventCameraPublishDidCancel; //< "User exited the camer view without producing output for workspace/publish, comment, message, etc."
+extern NSString * const VTrackingEventUserDidExitPublishConfirmation; //< "User exited the camer view without producing output for workspace/publish, comment, message, etc."
+extern NSString * const VTrackingEventUserDidExitWorkspace; //< "User exited the workspace, discarding the captured image and any work done to it."
 
 extern NSString * const VTrackingEventUserDidPublishPoll; //< "Params: CaptionLength, CurrentSection, StreamName, MediaSource"
 extern NSString * const VTrackingEventUserDidExitPollCreation; 

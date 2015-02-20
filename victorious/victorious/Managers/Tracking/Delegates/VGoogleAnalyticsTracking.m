@@ -185,11 +185,6 @@ NSString * const kVAnalyticsKeyValue            = @"GA_value";
                   kVAnalyticsKeyAction : @"Selected Create Poll" };
     }
     
-    else if ( [eventName isEqualToString:VTrackingEventCameraPublishDidCancel] )
-    {
-        return @{ kVAnalyticsKeyCategory : kVAnalyticsEventCategoryNavigation,
-                  kVAnalyticsKeyAction : @"Camera Publish Cancelled" };
-    }
     else if ( [eventName isEqualToString:VTrackingEventUserDidCancelLogin] )
     {
         return @{ kVAnalyticsKeyCategory : kVAnalyticsEventCategoryNavigation,

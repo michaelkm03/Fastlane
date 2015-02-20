@@ -536,10 +536,14 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
     {
         self.completionBlock(NO, nil, nil);
     }
+    
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraUserDidExit];
 }
 
 - (IBAction)searchAction:(id)sender
 {
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraDidSelectImageSearch];
+    
     VImageSearchViewController *imageSearchViewController = [VImageSearchViewController newImageSearchViewController];
     __weak typeof(self) welf = self;
     imageSearchViewController.completionBlock = ^void(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
@@ -550,6 +554,12 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
             welf.previewImage = previewImage;
             welf.didSelectFromWebSearch = YES;
             welf.state = VCameraViewControllerStateCapturedMedia;
+            
+            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraDidSelectImageFromImageSearch];
+        }
+        else
+        {
+            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraDidExitImageSearch];
         }
         
         [welf dismissViewControllerAnimated:YES

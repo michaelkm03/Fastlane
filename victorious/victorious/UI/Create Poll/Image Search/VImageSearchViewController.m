@@ -149,6 +149,9 @@ static const CGFloat    kHeightRatioForRefresh                    =  0.1f;
                                               otherButtonTitles:nil];
         [alert show];
     }];
+    
+    NSDictionary *params = @{ VTrackingKeySearchTerm : self.searchField.text ?: @"" };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraDidSearchForImage parameters:params];
 }
 
 - (NSString *)searchTerm
