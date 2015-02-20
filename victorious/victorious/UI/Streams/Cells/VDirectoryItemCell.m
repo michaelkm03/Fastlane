@@ -25,9 +25,9 @@
 
 NSString * const VDirectoryItemCellNameStream = @"VStreamDirectoryItemCell";
 
-static const CGFloat kDirectoryItemBaseHeight = 217.0f;
-static const CGFloat kDirectoryItemStackHeight = 8.0f;
-static const CGFloat kDirectoryItemBaseWidth = 145.0f;
+const CGFloat kDirectoryItemBaseHeight = 217.0f;
+const CGFloat kDirectoryItemStackHeight = 8.0f;
+const CGFloat kDirectoryItemBaseWidth = 145.0f;
 
 @interface VDirectoryItemCell()
 
