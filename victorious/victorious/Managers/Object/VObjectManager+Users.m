@@ -231,6 +231,8 @@ static NSString * const kVAPIParamContext = @"context";
         [self.mainUser addFollowingObject:user];
         [self notifyIsFollowingUpdated];
         
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidFollowUser];
+        
         if (success)
         {
             success(operation, fullResponse, resultObjects);
@@ -254,6 +256,8 @@ static NSString * const kVAPIParamContext = @"context";
     {
         [self.mainUser removeFollowingObject:user];
         [self notifyIsFollowingUpdated];
+        
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidUnfollowUser];
         
         if (success)
         {

@@ -133,6 +133,8 @@
         mainUser.hashtags = hashtagSet;
         [mainUser.managedObjectContext save:nil];
         
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidFollowHashtag];
+        
         if (success != nil)
         {
             success(operation, fullResponse, resultObjects);
@@ -181,6 +183,8 @@
                 break;
             }
         }
+        
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidUnfollowHashtag];
 
         if (success != nil)
         {
