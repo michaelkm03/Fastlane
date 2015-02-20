@@ -115,12 +115,12 @@ NSString * const VTrackingEventUserDidSelectProfileFollowed = @"UserDidSelectPro
 
 // Purchases
 NSString * const VTrackingEventUserDidSelectLockedVoteType = @"UserDidSelectLockedVoteType";
-NSString * const VTrackingEventUserDidPurchaseVoteType = @"UserDidPurchaseVoteType";
-NSString * const VTrackingEventUserDidRestorePurchasesFromPrompt = @"UserDidRestorePurchasesFromPrompt";
-NSString * const VTrackingEventUserDidRestorePurchasesFromSettings = @"UserDidRestorePurchasesFromSettings";
-NSString * const VTrackingEventUserDidExitPurchasePrompt = @"UserDidExitPurchasePrompt";
+NSString * const VTrackingEventUserDidCompletePurchase = @"UserDidCompletePurchase";
+NSString * const VTrackingEventUserDidRestorePurchases = @"UserDidRestorePurchases";
+NSString * const VTrackingEventUserDidCancelPurchase = @"UserDidCancelPurchase";
 NSString * const VTrackingEventPurchaseDidFail = @"PurchaseDidFail";
 NSString * const VTrackingEventRestorePurchasesDidFail = @"RestorePurchasesDidFail";
+NSString * const VTrackingEventAppStoreProductRequestDidFail = @"AppStoreProductRequestDidFail";
 
 // Content Interaction
 NSString * const VTrackingEventSequenceDidAppearInStream = @"SequenceDidAppearInStream";
@@ -219,7 +219,6 @@ NSString * const VTrackingKeyContentType = @"ContentType";
 NSString * const VTrackingKeyStreamName = @"StreamName";
 NSString * const VTrackingKeyErrorMessage = @"ErrorMessage";
 NSString * const VTrackingKeyContext = @"Context";
-NSString * const VTrackingKeyMediaSource = @"MediaSource";
 NSString * const VTrackingKeySearchTerm = @"SearchTerm";
 NSString * const VTrackingKeyResultCount = @"ResultCount";
 NSString * const VTrackingKeyStreamId = @"StreamId";
@@ -244,7 +243,8 @@ NSString * const VTrackingKeyDidTrim = @"DidTrim";
 NSString * const VTrackingKeyDidSaveToDevice = @"DidSaveToDevice";
 NSString * const VTrackingKeyFilterName = @"FilterName";
 NSString * const VTrackingKeyName = @"Name";
-NSString * const VTrackingKeySaveToDevice = @"SaveToDevice";
+NSString * const VTrackingKeyProductIdentifier = @"ProductIdentifier";
+NSString * const VTrackingKeyCount = @"Count";
 
 // Tracking Event Values
 // TextType values

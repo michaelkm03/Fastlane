@@ -593,6 +593,9 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
         return;
     }
     
+    NSDictionary *params = @{ VTrackingKeyProductIdentifier : experienceEnhander.voteType.productIdentifier ?: @"" };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectLockedVoteType parameters:params];
+    
     VPurchaseViewController *viewController = [VPurchaseViewController purchaseViewControllerWithVoteType:experienceEnhander.voteType];
     viewController.transitioningDelegate = self.modalTransitionDelegate;
     viewController.delegate = self;

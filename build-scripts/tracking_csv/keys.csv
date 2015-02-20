@@ -7,7 +7,6 @@ ContentType,"Indicates the type of some existing content with which a user is in
 StreamName,The name of the last loaded stream from where the user has come.
 ErrorMessage,"For error events, should describe the error, if available."
 Context,A pre-defined context where the event has taken place (See tracking values list)
-MediaSource,"Whether it came from the library, camera, or image search."
 SearchTerm,Text entered for any search event
 ResultCount,Number of results returned for the search event.
 StreamId,A string containing the stream's remote ID; Backend mapping: %%STREAM_ID%%
@@ -27,9 +26,10 @@ TimeCurrent,A decimal value in seconds of the current playhead position of a vid
 Hashtag,The hash tag without # symbol of an event related to hashtags
 MenuType,The type of main menu in which a main section navigation ocurred.
 CaptionLength,
-DidCrop,
-DidTrim,
-DidSaveToDevice,
+DidCrop,Publishing—was the image cropped from its original size while editing
+DidTrim,Publishing—wwas the video trimmed from its original length while editing
+DidSaveToDevice,Publishing—whether or not user wanted to save the image/video/GIF to their device.
 FilterName,
-Name,
-SaveToDevice,"For publishing, whether or not user wanted to save the image/video/GIF to their device."
+Name,"Generic, to indicate a name associated with an event"
+ProductIdentifier,App Store or Google Play product identifier for a purchseable product.
+Count,"Generic, to indicate quantity associated with an event"

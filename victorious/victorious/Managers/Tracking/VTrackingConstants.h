@@ -114,13 +114,13 @@ extern NSString * const VTrackingEventUserDidSelectProfileFollowing;
 extern NSString * const VTrackingEventUserDidSelectProfileFollowed; 
 
 // Purchases
-extern NSString * const VTrackingEventUserDidSelectLockedVoteType; 
-extern NSString * const VTrackingEventUserDidPurchaseVoteType; 
-extern NSString * const VTrackingEventUserDidRestorePurchasesFromPrompt; 
-extern NSString * const VTrackingEventUserDidRestorePurchasesFromSettings; 
-extern NSString * const VTrackingEventUserDidExitPurchasePrompt; 
-extern NSString * const VTrackingEventPurchaseDidFail; //< Params: ErrorMessage
+extern NSString * const VTrackingEventUserDidSelectLockedVoteType; //< Params: ProductIdentifier
+extern NSString * const VTrackingEventUserDidCompletePurchase; //< Params: ProductIdentifier
+extern NSString * const VTrackingEventUserDidRestorePurchases; //< "Params: Count, CurrentSection"
+extern NSString * const VTrackingEventUserDidCancelPurchase; //< User exited from the purchase prompt without making a purchase; Params: ProductIdentifier
+extern NSString * const VTrackingEventPurchaseDidFail; //< "Params: ErrorMessage, ProductIdentifier"
 extern NSString * const VTrackingEventRestorePurchasesDidFail; //< Params: ErrorMessage
+extern NSString * const VTrackingEventAppStoreProductRequestDidFail; //< Params: ErrorMessage
 
 // Content Interaction
 extern NSString * const VTrackingEventSequenceDidAppearInStream; //< Stream cell became visible while scrolling stream (once per view); Backend mapping: cell-view
@@ -219,7 +219,6 @@ extern NSString * const VTrackingKeyContentType; //< "Indicates the type of some
 extern NSString * const VTrackingKeyStreamName; //< The name of the last loaded stream from where the user has come.
 extern NSString * const VTrackingKeyErrorMessage; //< "For error events, should describe the error, if available."
 extern NSString * const VTrackingKeyContext; //< A pre-defined context where the event has taken place (See tracking values list)
-extern NSString * const VTrackingKeyMediaSource; //< "Whether it came from the library, camera, or image search."
 extern NSString * const VTrackingKeySearchTerm; //< Text entered for any search event
 extern NSString * const VTrackingKeyResultCount; //< Number of results returned for the search event.
 extern NSString * const VTrackingKeyStreamId; //< A string containing the stream's remote ID; Backend mapping: %%STREAM_ID%%
@@ -239,12 +238,13 @@ extern NSString * const VTrackingKeyTimeCurrent; //< A decimal value in seconds 
 extern NSString * const VTrackingKeyHashtag; //< The hash tag without # symbol of an event related to hashtags
 extern NSString * const VTrackingKeyMenuType; //< The type of main menu in which a main section navigation ocurred.
 extern NSString * const VTrackingKeyCaptionLength; 
-extern NSString * const VTrackingKeyDidCrop; 
-extern NSString * const VTrackingKeyDidTrim; 
-extern NSString * const VTrackingKeyDidSaveToDevice; 
+extern NSString * const VTrackingKeyDidCrop; //< Publishing—was the image cropped from its original size while editing
+extern NSString * const VTrackingKeyDidTrim; //< Publishing—wwas the video trimmed from its original length while editing
+extern NSString * const VTrackingKeyDidSaveToDevice; //< Publishing—whether or not user wanted to save the image/video/GIF to their device.
 extern NSString * const VTrackingKeyFilterName; 
-extern NSString * const VTrackingKeyName; 
-extern NSString * const VTrackingKeySaveToDevice; //< "For publishing, whether or not user wanted to save the image/video/GIF to their device."
+extern NSString * const VTrackingKeyName; //< "Generic, to indicate a name associated with an event"
+extern NSString * const VTrackingKeyProductIdentifier; //< App Store or Google Play product identifier for a purchseable product.
+extern NSString * const VTrackingKeyCount; //< "Generic, to indicate quantity associated with an event"
 
 // Tracking Event Values
 // TextType values
