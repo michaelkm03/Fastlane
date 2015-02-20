@@ -293,6 +293,8 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
 
 - (IBAction)createSequenceAction:(id)sender
 {
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectCreatePost];
+    
     if (![VObjectManager sharedManager].authorized)
     {
         [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];

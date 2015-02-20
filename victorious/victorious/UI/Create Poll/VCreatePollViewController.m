@@ -57,6 +57,8 @@ static char KVOContext;
 @property (strong, nonatomic) NSURL *firstMediaURL;
 @property (strong, nonatomic) NSURL *secondMediaURL;
 
+@property (nonatomic, assign) BOOL didPublish;
+
 @property (strong, nonatomic) IBOutletCollection(NSLayoutConstraint) NSArray *constraintsThatNeedHalfPointConstant;
 
 @property (nonatomic) BOOL textViewsCleared;
@@ -75,6 +77,12 @@ static char KVOContext;
 {
     [self.leftAnswerTextView  removeObserver:self forKeyPath:NSStringFromSelector(@selector(contentSize)) context:&KVOContext];
     [self.rightAnswerTextView removeObserver:self forKeyPath:NSStringFromSelector(@selector(contentSize)) context:&KVOContext];
+    
+    if ( !self.didPublish )
+    {
+        NSDictionary *params = @{ VTrackingKeyContentType : VTrackingValuePoll };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidCancelPublish parameters:params];
+    }
 }
 
 - (void)viewDidLoad
@@ -208,6 +216,9 @@ static char KVOContext;
     
     if (errorMessage.length > 0)
     {
+        NSDictionary *params = @{ VTrackingKeyErrorMessage : errorMessage ?: @"" };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventPollDidFailValidation parameters:params];
+        
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Missing Content", nil)
                                                         message:errorMessage
                                                        delegate:nil
@@ -357,18 +368,21 @@ static char KVOContext;
                                              media1Url:self.firstMediaURL
                                              media2Url:self.secondMediaURL
                                             completion:nil];
+    
+    NSDictionary *params = @{ VTrackingKeyContentType : VTrackingValuePoll };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidPublishContent parameters:params];
+    
+    self.didPublish = YES;
+    
     [self.navigationController popViewControllerAnimated:YES];
     [[NSFileManager defaultManager] removeItemAtURL:self.firstMediaURL error:nil];
     [[NSFileManager defaultManager] removeItemAtURL:self.secondMediaURL error:nil];
 }
 
-- (IBAction)closeButtonAction:(id)sender
-{
-    [self.navigationController popViewControllerAnimated:YES];
-}
-
 - (IBAction)searchImageAction:(id)sender
 {
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventPollDidSelectImageSearch];
+    
     VImageSearchViewController *imageSearch = [VImageSearchViewController newImageSearchViewController];
     
     if (self.firstMediaURL)
@@ -385,6 +399,8 @@ static char KVOContext;
     {
         if (finished)
         {
+            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventPollDidSelectImageFromImageSearch];
+            
             if (self.firstMediaURL)
             {
                 if (!self.rightAnswerTextView.text || [self.rightAnswerTextView.text isEqualToString:@""])
@@ -402,6 +418,10 @@ static char KVOContext;
                 }
             }
             [self imagePickerFinishedWithURL:capturedMediaURL previewImage:previewImage];
+        }
+        else
+        {
+            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventPollDidExitImageSearch];
         }
         [self dismissViewControllerAnimated:YES completion:nil];
     };

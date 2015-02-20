@@ -18,7 +18,7 @@ CreateVideoPostSelected,
 CreateGIFPostSelected,
 CreateCancelSelected,User selected cancel from create post content type selection; Params: CurrentSection (template driven value)
 ,
-"// Camera (""Camera"" prefix for legacy/compatibility)",
+// Camera (Camera prefix for legacy/compatibility),
 CameraDidSwitchToVideoCapture,
 CameraDidSwitchToPhotoCapture,
 CameraDidCapturePhoto,User did move from camera view to workspace with an image just taken
@@ -32,21 +32,26 @@ CameraDidExitImageSearch,User left the image search without selecting an image.
 CameraUserDidConfirmtDelete,User tapped the garbage icon to see deletion confirmation.
 CameraUserDidSelectDelete,User confirmed deletion of any recorded video.
 CameraUserDidExit,User tapped (X) icon to leave camera without capturing or importing a photo or video
+CameraUserDidEnter,"Camera view appeared as part of content creation, image selection or remix."
 ,
-// Workspace & Publish,
-UserDidSelectMeme,
-UserDidSelectQuote,
-UserDidSelectCropTool,
-UserDidSelectFilterTool,
-UserDidSelectTextTool,
+// Workspace,
+UserDidSelectWorkspaceTool,Params: Name (template-driven)
+UserDidSelectWorkspaceTextType,Params: Name (template-driven)
+UserDidSelectWorkspaceFilter,Params: Name (template-driven)
+UserDidEnterWorkspaceText,"Params: TextType, TextLength"
+UserDidCropWorkspaceWithZoom,
+UserDidCropWorkspaceWithPan,
+UserDidCropWorkspaceWithDoubleTap,
+UserDidFinishWorkspaceEdits,Used tapped Publish or Continue button to continue to publish screen
 ,
-UserDidPublishContent,"Any non-poll post; Params: TextType, TextLength, CaptionLength, MediaType, CurrentSection, StreamName, MediaSource, DidCrop, FilterName"
-UserDidExitPublishConfirmation,"User exited the camer view without producing output for workspace/publish, comment, message, etc."
-UserDidExitWorkspace,"User exited the workspace, discarding the captured image and any work done to it."
+UserDidPublishContent,"Params: TextType, TextLength, CaptionLength, ContentType, CurrentSection, MediaSource, DidCrop, FilterName"
+UserDidCancelPublish,User exited a publish workflow without posting a content.
 ,
-UserDidPublishPoll,"Params: CaptionLength, CurrentSection, StreamName, MediaSource"
-UserDidExitPollCreation,
-UserDidFailValidationForPublishPoll,
+// Polls,
+PollDidSelectImageSearch,
+PollDidSelectImageFromImageSearch,
+PollDidExitImageSearch,
+PollDidFailValidation,Params: ErrorMessage
 ,
 // Upload bar,
 UploadDidFail,

@@ -138,8 +138,18 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
         {
             [self setupCapture];
         }
+        
     }
     return self;
+}
+
+- (void)resetTrackingSessionValues
+{
+    NSArray *relevantTrackingKeys = @[ VTrackingKeyTextLength, VTrackingKeyCaptionLength, VTrackingKeyDidCrop, VTrackingKeyFilterName, VTrackingKeyContentType, VTrackingKeyTextType ];
+    [relevantTrackingKeys enumerateObjectsUsingBlock:^(NSString *key, NSUInteger idx, BOOL *stop)
+     {
+         [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:key];
+     }];
 }
 
 - (void)transitionFromState:(VWorkspaceFlowControllerState)oldState

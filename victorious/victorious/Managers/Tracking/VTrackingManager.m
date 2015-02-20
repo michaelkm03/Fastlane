@@ -9,8 +9,8 @@
 #import "VTrackingManager.h"
 #import "VTrackingEvent.h"
 
-#define TRACKING_LOGGING_ENABLED 0
-#define TRACKING_ALERTS_ENABLED 1
+#define TRACKING_LOGGING_ENABLED 1
+#define TRACKING_ALERTS_ENABLED 0
 
 #if TRACKING_LOGGING_ENABLED
 #warning Tracking logging is enabled. Please remember to disable it when you're done debugging.
@@ -56,13 +56,6 @@
 
 - (void)setValue:(NSString *)value forSessionParameterWithKey:(NSString *)key
 {
-#if TRACKING_ALERTS_ENABLED
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
-    {
-        [[[UIAlertView alloc] initWithTitle:@"Tracking Session Param" message:[NSString stringWithFormat:@"%@: %@", key, value] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
-    });
-#endif
-    
     if ( value == nil )
     {
         [self.sessionParameters removeObjectForKey:key];
@@ -90,20 +83,24 @@
     NSDictionary *completeParams = [self addSessionParametersToDictionary:parameters];
     
 #if TRACKING_LOGGING_ENABLED
-    VLog( @"Tracking: %@ to %lu delegates", eventName, (unsigned long)self.delegates.count);
+    NSString *message = @"";
+    for ( NSString *key in completeParams )
+    {
+        message = [message stringByAppendingFormat:@"\n\t%@: %@", key, completeParams [key]];
+    }
+    NSLog( @"\n\nTRACKING: %@ (%lu delegates)%@\n\n", eventName, (unsigned long)self.delegates.count, message );
 #endif
     
 #if TRACKING_ALERTS_ENABLED
     NSString *message = @"";
-    for ( NSString *key in parameters )
+    for ( NSString *key in completeParams )
     {
-        message = [message stringByAppendingFormat:@"\n%@: %@", key, parameters [key]];
+        message = [message stringByAppendingFormat:@"\n%@: %@", key, completeParams [key]];
     }
-    for ( NSString *key in self.sessionParameters )
-    {
-        message = [message stringByAppendingFormat:@"\n%@: %@", key, self.sessionParameters[key]];
-    }
-    [[[UIAlertView alloc] initWithTitle:eventName message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+                   {
+                       [[[UIAlertView alloc] initWithTitle:eventName message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+                   });
 #endif
     
     [self.delegates enumerateObjectsUsingBlock:^(id<VTrackingDelegate> delegate, NSUInteger idx, BOOL *stop)
@@ -130,7 +127,7 @@
          {
              
 #if TRACKING_LOGGING_ENABLED
-             VLog( @"Event with duplicate key rejected.  Queued: %lu", (unsigned long)self.queuedEvents.count);
+             NSLog( @"Event with duplicate key rejected.  Queued: %lu", (unsigned long)self.queuedEvents.count);
 #endif
              doesEventExistForKey = YES;
              *stop = YES;
@@ -149,7 +146,7 @@
         [self trackEvent:event.name parameters:event.parameters];
         
 #if TRACKING_LOGGING_ENABLED
-        VLog( @"Event queued.  Queued: %lu", (unsigned long)self.queuedEvents.count);
+        NSLog( @"Event queued.  Queued: %lu", (unsigned long)self.queuedEvents.count);
 #endif
     }
 }
@@ -169,7 +166,7 @@
      }];
     
 #if TRACKING_LOGGING_ENABLED
-    VLog( @"Dequeued events:  %lu remain", (unsigned long)self.queuedEvents.count);
+    NSLog( @"Dequeued events:  %lu remain", (unsigned long)self.queuedEvents.count);
 #endif
 }
 
@@ -183,7 +180,7 @@
     [self endEvent:eventName];
     
 #if TRACKING_LOGGING_ENABLED
-    VLog( @"Event Started: %@ to %lu delegates", eventName, (unsigned long)self.delegates.count);
+    NSLog( @"Event Started: %@ to %lu delegates", eventName, (unsigned long)self.delegates.count);
 #endif
     
     VTrackingEvent *event = [[VTrackingEvent alloc] initWithName:eventName parameters:parameters eventId:nil];
@@ -204,7 +201,7 @@
     if ( event )
     {
 #if TRACKING_LOGGING_ENABLED
-        VLog( @"Event Ended: %@ to %lu delegates", eventName, (unsigned long)self.delegates.count);
+        NSLog( @"Event Ended: %@ to %lu delegates", eventName, (unsigned long)self.delegates.count);
 #endif
         __block NSTimeInterval duration = abs( [event.dateCreated timeIntervalSinceNow] );
         [self.delegates enumerateObjectsUsingBlock:^(id<VTrackingDelegate> delegate, NSUInteger idx, BOOL *stop)

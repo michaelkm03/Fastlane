@@ -28,7 +28,7 @@ NSString * const VTrackingEventCreateVideoPostSelected = @"CreateVideoPostSelect
 NSString * const VTrackingEventCreateGIFPostSelected = @"CreateGIFPostSelected";
 NSString * const VTrackingEventCreateCancelSelected = @"CreateCancelSelected";
 
-// Camera (""Camera"" prefix for legacy/compatibility)"
+// Camera (Camera prefix for legacy/compatibility)
 NSString * const VTrackingEventCameraDidSwitchToVideoCapture = @"CameraDidSwitchToVideoCapture";
 NSString * const VTrackingEventCameraDidSwitchToPhotoCapture = @"CameraDidSwitchToPhotoCapture";
 NSString * const VTrackingEventCameraDidCapturePhoto = @"CameraDidCapturePhoto";
@@ -42,21 +42,26 @@ NSString * const VTrackingEventCameraDidExitImageSearch = @"CameraDidExitImageSe
 NSString * const VTrackingEventCameraUserDidConfirmtDelete = @"CameraUserDidConfirmtDelete";
 NSString * const VTrackingEventCameraUserDidSelectDelete = @"CameraUserDidSelectDelete";
 NSString * const VTrackingEventCameraUserDidExit = @"CameraUserDidExit";
+NSString * const VTrackingEventCameraUserDidEnter = @"CameraUserDidEnter";
 
-// Workspace & Publish
-NSString * const VTrackingEventUserDidSelectMeme = @"UserDidSelectMeme";
-NSString * const VTrackingEventUserDidSelectQuote = @"UserDidSelectQuote";
-NSString * const VTrackingEventUserDidSelectCropTool = @"UserDidSelectCropTool";
-NSString * const VTrackingEventUserDidSelectFilterTool = @"UserDidSelectFilterTool";
-NSString * const VTrackingEventUserDidSelectTextTool = @"UserDidSelectTextTool";
+// Workspace
+NSString * const VTrackingEventUserDidSelectWorkspaceTool = @"UserDidSelectWorkspaceTool";
+NSString * const VTrackingEventUserDidSelectWorkspaceTextType = @"UserDidSelectWorkspaceTextType";
+NSString * const VTrackingEventUserDidSelectWorkspaceFilter = @"UserDidSelectWorkspaceFilter";
+NSString * const VTrackingEventUserDidEnterWorkspaceText = @"UserDidEnterWorkspaceText";
+NSString * const VTrackingEventUserDidCropWorkspaceWithZoom = @"UserDidCropWorkspaceWithZoom";
+NSString * const VTrackingEventUserDidCropWorkspaceWithPan = @"UserDidCropWorkspaceWithPan";
+NSString * const VTrackingEventUserDidCropWorkspaceWithDoubleTap = @"UserDidCropWorkspaceWithDoubleTap";
+NSString * const VTrackingEventUserDidFinishWorkspaceEdits = @"UserDidFinishWorkspaceEdits";
 
 NSString * const VTrackingEventUserDidPublishContent = @"UserDidPublishContent";
-NSString * const VTrackingEventUserDidExitPublishConfirmation = @"UserDidExitPublishConfirmation";
-NSString * const VTrackingEventUserDidExitWorkspace = @"UserDidExitWorkspace";
+NSString * const VTrackingEventUserDidCancelPublish = @"UserDidCancelPublish";
 
-NSString * const VTrackingEventUserDidPublishPoll = @"UserDidPublishPoll";
-NSString * const VTrackingEventUserDidExitPollCreation = @"UserDidExitPollCreation";
-NSString * const VTrackingEventUserDidFailValidationForPublishPoll = @"UserDidFailValidationForPublishPoll";
+// Polls
+NSString * const VTrackingEventPollDidSelectImageSearch = @"PollDidSelectImageSearch";
+NSString * const VTrackingEventPollDidSelectImageFromImageSearch = @"PollDidSelectImageFromImageSearch";
+NSString * const VTrackingEventPollDidExitImageSearch = @"PollDidExitImageSearch";
+NSString * const VTrackingEventPollDidFailValidation = @"PollDidFailValidation";
 
 // Upload bar
 NSString * const VTrackingEventUploadDidFail = @"UploadDidFail";
@@ -215,7 +220,6 @@ NSString * const VTrackingKeyContentType = @"ContentType";
 NSString * const VTrackingKeyStreamName = @"StreamName";
 NSString * const VTrackingKeyErrorMessage = @"ErrorMessage";
 NSString * const VTrackingKeyContext = @"Context";
-NSString * const VTrackingKeyMediaType = @"MediaType";
 NSString * const VTrackingKeyMediaSource = @"MediaSource";
 NSString * const VTrackingKeySearchTerm = @"SearchTerm";
 NSString * const VTrackingKeyResultCount = @"ResultCount";
@@ -235,13 +239,17 @@ NSString * const VTrackingKeyToTime = @"ToTime";
 NSString * const VTrackingKeyTimeCurrent = @"TimeCurrent";
 NSString * const VTrackingKeyHashtag = @"Hashtag";
 NSString * const VTrackingKeyMenuType = @"MenuType";
+NSString * const VTrackingKeyCaptionLength = @"CaptionLength";
+NSString * const VTrackingKeyDidCrop = @"DidCrop";
+NSString * const VTrackingKeyFilterName = @"FilterName";
+NSString * const VTrackingKeyName = @"Name";
 
 // Tracking Event Values
 // TextType values
 NSString * const VTrackingValueMeme = @"Meme";
 NSString * const VTrackingValueQuote = @"Quote";
 
-// ContentType and MediaType values
+// ContentType values
 NSString * const VTrackingValueGIF = @"GIF";
 NSString * const VTrackingValueVideo = @"Video";
 NSString * const VTrackingValueImage = @"Image";
@@ -266,3 +274,7 @@ NSString * const VTrackingValueCommentsView = @"CommentsView";
 // Menu Type Values
 NSString * const VTrackingValueHamburgerMenu = @"HamburgerMenu";
 NSString * const VTrackingValueTabBar = @"TabBar";
+
+// Booleans (to keep in sync cross platform)
+NSString * const VTrackingValueTrue  = @"True ";
+NSString * const VTrackingValueFalse  = @"False ";

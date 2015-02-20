@@ -18,6 +18,8 @@
 
 @property (nonatomic, assign) CGFloat lastRotation;
 
+@property (nonatomic, assign) BOOL didZoomFromDoubleTap;
+
 @end
 
 @implementation VCropToolViewController
@@ -69,6 +71,9 @@
     CGRect normalRect = CGRectMake(centerOfContentView.x - (normalWidth / 2), centerOfContentView.y - (normalWidth / 2), normalWidth, normalWidth);
     [self.croppingScrollView zoomToRect:self.croppingScrollView.zoomScale > self.croppingScrollView.minimumZoomScale ? normalRect : zoomedRect
                                animated:YES];
+    
+    self.didZoomFromDoubleTap = YES;
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidCropWorkspaceWithDoubleTap];
 }
 
 #pragma mark - Public Interface
@@ -139,6 +144,8 @@
     [self.croppingScrollView addSubview:self.proxyView];
     self.croppingScrollView.contentSize = proxyViewFrame.size;
     self.hasLayedOutScrollView = YES;
+    
+    [[VTrackingManager sharedInstance] setValue:VTrackingValueTrue forSessionParameterWithKey:VTrackingKeyDidCrop];
 }
 
 #pragma mark - UIScrollViewDelegate
@@ -154,6 +161,21 @@
     {
         self.onCropBoundsChange(scrollView);
     }
+}
+
+- (void)scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(CGFloat)scale
+{
+    if ( !self.didZoomFromDoubleTap )
+    {
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidCropWorkspaceWithZoom];
+    }
+    
+    self.didZoomFromDoubleTap = NO;
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidCropWorkspaceWithPan];
 }
 
 @end

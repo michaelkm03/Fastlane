@@ -185,30 +185,23 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
              UIAlertView *publishFailure = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Upload failure", @"")
                                                                       message:error.localizedDescription
                                                             cancelButtonTitle:NSLocalizedString(@"ok", @"")
-                                                               onCancelButton:^{
-                                                                   if (welf.completion != nil)
-                                                                   {
-                                                                       welf.completion(NO);
-                                                                   }
-                                                               } otherButtonTitlesAndBlocks:nil, nil];
+                                                               onCancelButton:^
+                                            {
+                                                [welf closeOnComplete:NO];
+                                            }
+                                                   otherButtonTitlesAndBlocks:nil, nil];
              [publishFailure show];
          }
          else
          {
-             if (welf.completion != nil)
-             {
-                 welf.completion(YES);
-             }
+             [welf closeOnComplete:YES];
          }
      }];
 }
 
 - (IBAction)tappedCancel:(id)sender
 {
-    if (self.completion != nil)
-    {
-        self.completion(NO);
-    }
+    [self closeOnComplete:NO];
 }
 
 - (IBAction)dismiss:(UITapGestureRecognizer *)tapGesture
@@ -220,10 +213,27 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
             [self.captionTextView resignFirstResponder];
             return;
         }
-        if (self.completion != nil)
-        {
-            self.completion(NO);
-        }
+        [self closeOnComplete:NO];
+    }
+}
+
+#pragma mark - Exit
+
+- (void)closeOnComplete:(BOOL)didPublish
+{
+    if ( didPublish )
+    {
+        NSDictionary *params = @{ VTrackingKeyCaptionLength : @(self.captionTextView.text.length) };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidPublishContent parameters:params];
+    }
+    else
+    {
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidCancelPublish];
+    }
+    
+    if ( self.completion != nil )
+    {
+        self.completion( didPublish );
     }
 }
 
@@ -257,7 +267,7 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
     BOOL offScreen = CGRectIsNull(CGRectIntersection(self.view.bounds, self.publishPrompt.frame));
     if (offScreen && weakSelf.completion)
     {
-        weakSelf.completion(NO);
+        [weakSelf closeOnComplete:NO];
         return;
     }
     
@@ -319,7 +329,7 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
     [self.animator removeAllBehaviors];
     if (self.completion != nil)
     {
-        self.completion(NO);
+        [self closeOnComplete:NO];
     }
 }
 

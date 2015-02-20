@@ -28,7 +28,7 @@ extern NSString * const VTrackingEventCreateVideoPostSelected;
 extern NSString * const VTrackingEventCreateGIFPostSelected; 
 extern NSString * const VTrackingEventCreateCancelSelected; //< User selected cancel from create post content type selection; Params: CurrentSection (template driven value)
 
-// Camera (""Camera"" prefix for legacy/compatibility)"
+// Camera (Camera prefix for legacy/compatibility)
 extern NSString * const VTrackingEventCameraDidSwitchToVideoCapture; 
 extern NSString * const VTrackingEventCameraDidSwitchToPhotoCapture; 
 extern NSString * const VTrackingEventCameraDidCapturePhoto; //< User did move from camera view to workspace with an image just taken
@@ -42,21 +42,26 @@ extern NSString * const VTrackingEventCameraDidExitImageSearch; //< User left th
 extern NSString * const VTrackingEventCameraUserDidConfirmtDelete; //< User tapped the garbage icon to see deletion confirmation.
 extern NSString * const VTrackingEventCameraUserDidSelectDelete; //< User confirmed deletion of any recorded video.
 extern NSString * const VTrackingEventCameraUserDidExit; //< User tapped (X) icon to leave camera without capturing or importing a photo or video
+extern NSString * const VTrackingEventCameraUserDidEnter; //< "Camera view appeared as part of content creation, image selection or remix."
 
-// Workspace & Publish
-extern NSString * const VTrackingEventUserDidSelectMeme; 
-extern NSString * const VTrackingEventUserDidSelectQuote; 
-extern NSString * const VTrackingEventUserDidSelectCropTool; 
-extern NSString * const VTrackingEventUserDidSelectFilterTool; 
-extern NSString * const VTrackingEventUserDidSelectTextTool; 
+// Workspace
+extern NSString * const VTrackingEventUserDidSelectWorkspaceTool; //< Params: Name (template-driven)
+extern NSString * const VTrackingEventUserDidSelectWorkspaceTextType; //< Params: Name (template-driven)
+extern NSString * const VTrackingEventUserDidSelectWorkspaceFilter; //< Params: Name (template-driven)
+extern NSString * const VTrackingEventUserDidEnterWorkspaceText; //< "Params: TextType, TextLength"
+extern NSString * const VTrackingEventUserDidCropWorkspaceWithZoom; 
+extern NSString * const VTrackingEventUserDidCropWorkspaceWithPan; 
+extern NSString * const VTrackingEventUserDidCropWorkspaceWithDoubleTap; 
+extern NSString * const VTrackingEventUserDidFinishWorkspaceEdits; //< Used tapped Publish or Continue button to continue to publish screen
 
-extern NSString * const VTrackingEventUserDidPublishContent; //< "Any non-poll post; Params: TextType, TextLength, CaptionLength, MediaType, CurrentSection, StreamName, MediaSource, DidCrop, FilterName"
-extern NSString * const VTrackingEventUserDidExitPublishConfirmation; //< "User exited the camer view without producing output for workspace/publish, comment, message, etc."
-extern NSString * const VTrackingEventUserDidExitWorkspace; //< "User exited the workspace, discarding the captured image and any work done to it."
+extern NSString * const VTrackingEventUserDidPublishContent; //< "Params: TextType, TextLength, CaptionLength, ContentType, CurrentSection, MediaSource, DidCrop, FilterName"
+extern NSString * const VTrackingEventUserDidCancelPublish; //< User exited a publish workflow without posting a content.
 
-extern NSString * const VTrackingEventUserDidPublishPoll; //< "Params: CaptionLength, CurrentSection, StreamName, MediaSource"
-extern NSString * const VTrackingEventUserDidExitPollCreation; 
-extern NSString * const VTrackingEventUserDidFailValidationForPublishPoll; 
+// Polls
+extern NSString * const VTrackingEventPollDidSelectImageSearch; 
+extern NSString * const VTrackingEventPollDidSelectImageFromImageSearch; 
+extern NSString * const VTrackingEventPollDidExitImageSearch; 
+extern NSString * const VTrackingEventPollDidFailValidation; //< Params: ErrorMessage
 
 // Upload bar
 extern NSString * const VTrackingEventUploadDidFail; 
@@ -215,7 +220,6 @@ extern NSString * const VTrackingKeyContentType; //< "Indicates the type of some
 extern NSString * const VTrackingKeyStreamName; //< The name of the last loaded stream from where the user has come.
 extern NSString * const VTrackingKeyErrorMessage; //< "For error events, should describe the error, if available."
 extern NSString * const VTrackingKeyContext; //< A pre-defined context where the event has taken place (See tracking values list)
-extern NSString * const VTrackingKeyMediaType; //< "For media attached to comments or messages: Image, Video or GIF"
 extern NSString * const VTrackingKeyMediaSource; //< "Whether it came from the library, camera, or image search."
 extern NSString * const VTrackingKeySearchTerm; //< Text entered for any search event
 extern NSString * const VTrackingKeyResultCount; //< Number of results returned for the search event.
@@ -235,13 +239,17 @@ extern NSString * const VTrackingKeyToTime; //< A decimal value in seconds of wh
 extern NSString * const VTrackingKeyTimeCurrent; //< A decimal value in seconds of the current playhead position of a video asset; Backend mapping: %%TIME_CURRENT%%
 extern NSString * const VTrackingKeyHashtag; //< The hash tag without # symbol of an event related to hashtags
 extern NSString * const VTrackingKeyMenuType; //< The type of main menu in which a main section navigation ocurred.
+extern NSString * const VTrackingKeyCaptionLength; 
+extern NSString * const VTrackingKeyDidCrop; 
+extern NSString * const VTrackingKeyFilterName; 
+extern NSString * const VTrackingKeyName; 
 
 // Tracking Event Values
 // TextType values
 extern NSString * const VTrackingValueMeme; 
 extern NSString * const VTrackingValueQuote; 
 
-// ContentType and MediaType values
+// ContentType values
 extern NSString * const VTrackingValueGIF; 
 extern NSString * const VTrackingValueVideo; 
 extern NSString * const VTrackingValueImage; 
@@ -266,3 +274,7 @@ extern NSString * const VTrackingValueCommentsView; //< The standlone comments v
 // Menu Type Values
 extern NSString * const VTrackingValueHamburgerMenu; 
 extern NSString * const VTrackingValueTabBar; 
+
+// Booleans (to keep in sync cross platform)
+extern NSString * const VTrackingValueTrue ; 
+extern NSString * const VTrackingValueFalse ; 
