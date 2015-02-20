@@ -171,12 +171,6 @@ static NSString * const kFilterIndexKey = @"filterIndex";
         // The first time the tool is selected, it is the default selection, not a user action
         if ( !activeToolWasUndefined )
         {
-            [[VTrackingManager sharedInstance] setValue:selectedTool.title
-                             forSessionParameterWithKey:VTrackingKeyTextType];
-            NSUInteger length = welf.canvasToolViewController.embeddedText.length;
-            [[VTrackingManager sharedInstance] setValue:[NSString stringWithFormat:@"%@", @(length)]
-                             forSessionParameterWithKey:VTrackingKeyTextLength];
-            
             NSDictionary *params = @{ VTrackingKeyName : selectedTool.title ?: @"" };
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectWorkspaceTextType parameters:params];
         }

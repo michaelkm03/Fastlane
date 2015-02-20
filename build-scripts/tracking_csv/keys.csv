@@ -28,5 +28,8 @@ Hashtag,The hash tag without # symbol of an event related to hashtags
 MenuType,The type of main menu in which a main section navigation ocurred.
 CaptionLength,
 DidCrop,
+DidTrim,
+DidSaveToDevice,
 FilterName,
 Name,
+SaveToDevice,"For publishing, whether or not user wanted to save the image/video/GIF to their device."

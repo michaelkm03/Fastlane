@@ -143,15 +143,6 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
     return self;
 }
 
-- (void)resetTrackingSessionValues
-{
-    NSArray *relevantTrackingKeys = @[ VTrackingKeyTextLength, VTrackingKeyCaptionLength, VTrackingKeyDidCrop, VTrackingKeyFilterName, VTrackingKeyContentType, VTrackingKeyTextType ];
-    [relevantTrackingKeys enumerateObjectsUsingBlock:^(NSString *key, NSUInteger idx, BOOL *stop)
-     {
-         [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:key];
-     }];
-}
-
 - (void)transitionFromState:(VWorkspaceFlowControllerState)oldState
                     toState:(VWorkspaceFlowControllerState)newState
 {
@@ -198,6 +189,7 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
             {
                 VVideoToolController *videoToolController = (VVideoToolController *)workspace.toolController;
                 publishParameters.isGIF = videoToolController.isGIF;
+                publishParameters.isVideo = YES;
                 publishParameters.didTrim = videoToolController.didTrim;
             }
             else if ([workspace.toolController isKindOfClass:[VImageToolController class]])
@@ -206,6 +198,8 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
                 publishParameters.embeddedText = imageToolController.embeddedText;
                 publishParameters.textToolType = imageToolController.textToolType;
                 publishParameters.filterName = imageToolController.filterName;
+                publishParameters.didCrop = imageToolController.didCrop;
+                publishParameters.isVideo = NO;
             }
         }
         VSequence *sequenceToRemix = [self.dependencyManager templateValueOfType:[VSequence class]

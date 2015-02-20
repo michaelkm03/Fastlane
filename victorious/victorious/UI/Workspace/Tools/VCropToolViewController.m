@@ -144,8 +144,6 @@
     [self.croppingScrollView addSubview:self.proxyView];
     self.croppingScrollView.contentSize = proxyViewFrame.size;
     self.hasLayedOutScrollView = YES;
-    
-    [[VTrackingManager sharedInstance] setValue:VTrackingValueTrue forSessionParameterWithKey:VTrackingKeyDidCrop];
 }
 
 #pragma mark - UIScrollViewDelegate

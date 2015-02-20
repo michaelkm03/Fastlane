@@ -2,7 +2,7 @@
 // victorious/victorious/Managers/Tracking/VTrackingConstants.m 
 // victorious 
 // 
-// Generated from CSV using script "tracking_generate_constants.sh" on 02/19/15. 
+// Generated from CSV using script "tracking_generate_constants.sh" on 02/20/15. 
 // Copyright (c) 2015 Victorious. All rights reserved. 
 // 
 
@@ -42,12 +42,10 @@ NSString * const VTrackingEventCameraDidExitImageSearch = @"CameraDidExitImageSe
 NSString * const VTrackingEventCameraUserDidConfirmtDelete = @"CameraUserDidConfirmtDelete";
 NSString * const VTrackingEventCameraUserDidSelectDelete = @"CameraUserDidSelectDelete";
 NSString * const VTrackingEventCameraUserDidExit = @"CameraUserDidExit";
-NSString * const VTrackingEventCameraUserDidEnter = @"CameraUserDidEnter";
 
 // Workspace
 NSString * const VTrackingEventUserDidSelectWorkspaceTool = @"UserDidSelectWorkspaceTool";
 NSString * const VTrackingEventUserDidSelectWorkspaceTextType = @"UserDidSelectWorkspaceTextType";
-NSString * const VTrackingEventUserDidSelectWorkspaceFilter = @"UserDidSelectWorkspaceFilter";
 NSString * const VTrackingEventUserDidEnterWorkspaceText = @"UserDidEnterWorkspaceText";
 NSString * const VTrackingEventUserDidCropWorkspaceWithZoom = @"UserDidCropWorkspaceWithZoom";
 NSString * const VTrackingEventUserDidCropWorkspaceWithPan = @"UserDidCropWorkspaceWithPan";
@@ -241,8 +239,11 @@ NSString * const VTrackingKeyHashtag = @"Hashtag";
 NSString * const VTrackingKeyMenuType = @"MenuType";
 NSString * const VTrackingKeyCaptionLength = @"CaptionLength";
 NSString * const VTrackingKeyDidCrop = @"DidCrop";
+NSString * const VTrackingKeyDidTrim = @"DidTrim";
+NSString * const VTrackingKeyDidSaveToDevice = @"DidSaveToDevice";
 NSString * const VTrackingKeyFilterName = @"FilterName";
 NSString * const VTrackingKeyName = @"Name";
+NSString * const VTrackingKeySaveToDevice = @"SaveToDevice";
 
 // Tracking Event Values
 // TextType values

@@ -2,7 +2,7 @@
 // victorious/victorious/Managers/Tracking/VTrackingConstants.h 
 // victorious 
 // 
-// Generated from CSV using script "tracking_generate_constants.sh" on 02/19/15. 
+// Generated from CSV using script "tracking_generate_constants.sh" on 02/20/15. 
 // Copyright (c) 2015 Victorious. All rights reserved. 
 // 
 
@@ -42,12 +42,10 @@ extern NSString * const VTrackingEventCameraDidExitImageSearch; //< User left th
 extern NSString * const VTrackingEventCameraUserDidConfirmtDelete; //< User tapped the garbage icon to see deletion confirmation.
 extern NSString * const VTrackingEventCameraUserDidSelectDelete; //< User confirmed deletion of any recorded video.
 extern NSString * const VTrackingEventCameraUserDidExit; //< User tapped (X) icon to leave camera without capturing or importing a photo or video
-extern NSString * const VTrackingEventCameraUserDidEnter; //< "Camera view appeared as part of content creation, image selection or remix."
 
 // Workspace
 extern NSString * const VTrackingEventUserDidSelectWorkspaceTool; //< Params: Name (template-driven)
 extern NSString * const VTrackingEventUserDidSelectWorkspaceTextType; //< Params: Name (template-driven)
-extern NSString * const VTrackingEventUserDidSelectWorkspaceFilter; //< Params: Name (template-driven)
 extern NSString * const VTrackingEventUserDidEnterWorkspaceText; //< "Params: TextType, TextLength"
 extern NSString * const VTrackingEventUserDidCropWorkspaceWithZoom; 
 extern NSString * const VTrackingEventUserDidCropWorkspaceWithPan; 
@@ -241,8 +239,11 @@ extern NSString * const VTrackingKeyHashtag; //< The hash tag without # symbol o
 extern NSString * const VTrackingKeyMenuType; //< The type of main menu in which a main section navigation ocurred.
 extern NSString * const VTrackingKeyCaptionLength; 
 extern NSString * const VTrackingKeyDidCrop; 
+extern NSString * const VTrackingKeyDidTrim; 
+extern NSString * const VTrackingKeyDidSaveToDevice; 
 extern NSString * const VTrackingKeyFilterName; 
 extern NSString * const VTrackingKeyName; 
+extern NSString * const VTrackingKeySaveToDevice; //< "For publishing, whether or not user wanted to save the image/video/GIF to their device."
 
 // Tracking Event Values
 // TextType values

@@ -174,6 +174,8 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
     self.publishParameters.captionType = VCaptionTypeNormal;
     self.publishParameters.shouldSaveToCameraRoll = self.cameraRollSwitch.on;
     
+    [self trackPublishWithPublishParameters:self.publishParameters];
+    
     __weak typeof(self) welf = self;
     [[VObjectManager sharedManager] uploadMediaWithPublishParameters:self.publishParameters
                                                           completion:^(NSURLResponse *response, NSData *responseData, NSDictionary *jsonResponse, NSError *error)
@@ -199,6 +201,35 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
      }];
 }
 
+- (void)trackPublishWithPublishParameters:(VPublishParameters *)publishParameters
+{
+    NSDictionary *common = @{ VTrackingKeyCaptionLength : @(publishParameters.caption .length),
+                              VTrackingKeyDidSaveToDevice : VTrackingBool(publishParameters.shouldSaveToCameraRoll) };
+    
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:common];
+    if ( publishParameters.isVideo )
+    {
+        params[ VTrackingKeyContentType ] = VTrackingValueVideo;
+        params[ VTrackingKeyDidTrim ] = VTrackingBool( publishParameters.didTrim );
+    }
+    else if ( publishParameters.isGIF )
+    {
+        params[ VTrackingKeyContentType ] = VTrackingValueGIF;
+        params[ VTrackingKeyDidTrim ] = VTrackingBool( publishParameters.didTrim );
+    }
+    else
+    {
+        params[ VTrackingKeyContentType ] = VTrackingValueImage;
+        params[ VTrackingKeyDidCrop ] = VTrackingBool( publishParameters.didCrop );
+        params[ VTrackingKeyFilterName ] = publishParameters.filterName ?: @"";
+        params[ VTrackingKeyTextType ] = publishParameters.textToolType ?: @"";
+        params[ VTrackingKeyTextLength ] = @(publishParameters.embeddedText.length);
+    }
+    
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidPublishContent
+                                       parameters:[NSDictionary dictionaryWithDictionary:params]];
+}
+
 - (IBAction)tappedCancel:(id)sender
 {
     [self closeOnComplete:NO];
@@ -221,12 +252,7 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
 
 - (void)closeOnComplete:(BOOL)didPublish
 {
-    if ( didPublish )
-    {
-        NSDictionary *params = @{ VTrackingKeyCaptionLength : @(self.captionTextView.text.length) };
-        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidPublishContent parameters:params];
-    }
-    else
+    if ( !didPublish )
     {
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidCancelPublish];
     }

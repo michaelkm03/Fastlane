@@ -32,12 +32,10 @@ CameraDidExitImageSearch,User left the image search without selecting an image.
 CameraUserDidConfirmtDelete,User tapped the garbage icon to see deletion confirmation.
 CameraUserDidSelectDelete,User confirmed deletion of any recorded video.
 CameraUserDidExit,User tapped (X) icon to leave camera without capturing or importing a photo or video
-CameraUserDidEnter,"Camera view appeared as part of content creation, image selection or remix."
 ,
 // Workspace,
 UserDidSelectWorkspaceTool,Params: Name (template-driven)
 UserDidSelectWorkspaceTextType,Params: Name (template-driven)
-UserDidSelectWorkspaceFilter,Params: Name (template-driven)
 UserDidEnterWorkspaceText,"Params: TextType, TextLength"
 UserDidCropWorkspaceWithZoom,
 UserDidCropWorkspaceWithPan,

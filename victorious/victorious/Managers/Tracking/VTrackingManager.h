@@ -10,6 +10,8 @@
 #import "VTrackingDelegate.h"
 #import "VTrackingConstants.h"
 
+#define VTrackingBool( input ) input ? VTrackingValueTrue : VTrackingValueFalse
+
 /**
  Receives and dispenses tracking events to any added services that conform to VTrackingDelegate.
  

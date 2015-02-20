@@ -111,18 +111,8 @@ static NSString * const kFilterIndexKey = @"filterIndex";
     __weak typeof(self) welf = self;
     self.toolPicker.onToolSelection = ^void(VFilterTypeTool <VWorkspaceTool> *selectedTool)
     {
-        BOOL wasFilterUndefined = welf.selectedFilter == nil;
-        
         welf.canvasView.filter = selectedTool.filter;
         welf.selectedFilter = selectedTool;
-        
-        // The first time the filter is selected, it is the default selection, not a user action
-        if ( !wasFilterUndefined )
-        {
-            NSDictionary *params = @{ VTrackingKeyName : selectedTool.title ?: @"" };
-            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectWorkspaceFilter parameters:params];
-            [[VTrackingManager sharedInstance] setValue:selectedTool.title forSessionParameterWithKey:VTrackingKeyFilterName];
-        }
     };
 }
 
