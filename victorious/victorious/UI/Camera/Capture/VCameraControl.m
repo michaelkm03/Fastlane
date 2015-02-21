@@ -212,20 +212,7 @@ static const NSTimeInterval kNotRecordingTrackingTime = 0.0;
         }
         case VCameraControlStateCapturingImage:
         {
-            [CATransaction commit];
-            [UIView animateWithDuration:0.35f
-                                  delay:0.0f
-                 usingSpringWithDamping:1.0f
-                  initialSpringVelocity:-1.0f
-                                options:UIViewAnimationOptionCurveEaseOut
-                             animations:^
-             {
-                 self.frame = CGRectMake(0, 0, kMinHeightSize, kMinHeightSize);
-             }
-                             completion:^(BOOL finished)
-             {
-                 [self sendActionsForControlEvents:VCameraControlEventWantsStillImage];
-             }];
+            [self sendActionsForControlEvents:VCameraControlEventWantsStillImage];
             _cameraControlState = cameraControlState;
             return;
             break;
@@ -250,8 +237,35 @@ static const NSTimeInterval kNotRecordingTrackingTime = 0.0;
     BOOL defaultTrackingWithTouch = [super beginTrackingWithTouch:touch
                                                         withEvent:event];
     self.currentStartTrackingTime = event.timestamp;
-    self.cameraControlState = VCameraControlStateGrowing;
-    
+
+    [UIView animateWithDuration:kRecordingTriggerDuration/2
+                     animations:^
+     {
+         self.alpha = 0.9f;
+         self.backgroundColor = [self tintColor];
+         self.transform = CGAffineTransformMakeScale(0.95f, 0.95f);
+     }
+                     completion:^(BOOL finished)
+     {
+         if (self.cameraControlState == VCameraControlStateDefault)
+         {
+             [UIView animateWithDuration:kRecordingTriggerDuration/2
+                              animations:^
+              {
+                  self.alpha = 1.0f;
+                  self.backgroundColor = [UIColor whiteColor];
+                  self.transform = CGAffineTransformIdentity;
+              }
+                              completion:^(BOOL finished)
+              {
+                  if ((self.cameraControlState == VCameraControlStateDefault) && self.isTracking)
+                  {
+                      self.cameraControlState = VCameraControlStateGrowing;
+                      self.cameraControlState = VCameraControlStateRecording;
+                  }
+              }];
+         }
+     }];
     return defaultTrackingWithTouch;
 }
 
@@ -270,9 +284,9 @@ static const NSTimeInterval kNotRecordingTrackingTime = 0.0;
     {
         shouldRecognizeImage = (elapsedTime <= kMaxElapsedTimeImageTriggerWithVideo);
     }
-    BOOL isRecording = (self.recordingProgress == 0.0f);
+    BOOL isNotRecording = (self.recordingProgress == 0.0f);
 
-    if (shouldRecognizeImage && isRecording && (self.captureMode & VCameraControlCaptureModeImage) && (self.cameraControlState == VCameraControlStateGrowing))
+    if (shouldRecognizeImage && isNotRecording && (self.captureMode & VCameraControlCaptureModeImage))
     {
         self.cameraControlState = VCameraControlStateCapturingImage;
     }
