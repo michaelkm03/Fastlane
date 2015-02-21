@@ -96,6 +96,11 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
     return self.snapshotToolViewController;
 }
 
+- (UIImage *)icon
+{
+    return [UIImage imageNamed:@"meme_btn"];
+}
+
 #pragma mark - VCVideoPlayerDelegate
 
 - (void)videoPlayerReadyToPlay:(VCVideoPlayerViewController *)videoPlayer
