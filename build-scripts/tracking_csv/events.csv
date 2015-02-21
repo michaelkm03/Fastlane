@@ -177,10 +177,9 @@ UserDidSelectUserFromSearchRecipient,
 UserDidFlagConversation,
 ,
 // Discover,
-UserDidSelectTrendingHashtag,
+UserDidSelectTrendingHashtag,Params: Hashtag
 UserDidSelectSuggestedUser,
 UserDidSelectSearchBar,
-UserDidSearchUsersAndHashtags,"Params: SearchTerm, ResultCount"
 UserDidSelectDiscoverSearchUser,
 UserDidSelectDiscoverSearchHashtag,
 ,

@@ -194,6 +194,8 @@ static NSInteger const kVMaxSearchResults = 1000;
     // Perform search
     if ( self.segmentControl.selectedSegmentIndex == 0 )
     {
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectDiscoverSearchUser];
+        
         self.userSearchResultsVC.view.alpha = 1.0f;
         self.tagsSearchResultsVC.view.alpha = 0;
         
@@ -209,6 +211,8 @@ static NSInteger const kVMaxSearchResults = 1000;
     }
     else if ( self.segmentControl.selectedSegmentIndex == 1 )
     {
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectDiscoverSearchHashtag];
+        
         self.userSearchResultsVC.view.alpha = 0;
         self.tagsSearchResultsVC.view.alpha = 1.0f;
 

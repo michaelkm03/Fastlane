@@ -187,10 +187,9 @@ extern NSString * const VTrackingEventUserDidSelectUserFromSearchRecipient;
 extern NSString * const VTrackingEventUserDidFlagConversation; 
 
 // Discover
-extern NSString * const VTrackingEventUserDidSelectTrendingHashtag; 
+extern NSString * const VTrackingEventUserDidSelectTrendingHashtag; //< Params: Hashtag
 extern NSString * const VTrackingEventUserDidSelectSuggestedUser; 
 extern NSString * const VTrackingEventUserDidSelectSearchBar; 
-extern NSString * const VTrackingEventUserDidSearchUsersAndHashtags; //< "Params: SearchTerm, ResultCount"
 extern NSString * const VTrackingEventUserDidSelectDiscoverSearchUser; 
 extern NSString * const VTrackingEventUserDidSelectDiscoverSearchHashtag; 
 

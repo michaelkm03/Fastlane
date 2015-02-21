@@ -190,7 +190,6 @@ NSString * const VTrackingEventUserDidFlagConversation = @"UserDidFlagConversati
 NSString * const VTrackingEventUserDidSelectTrendingHashtag = @"UserDidSelectTrendingHashtag";
 NSString * const VTrackingEventUserDidSelectSuggestedUser = @"UserDidSelectSuggestedUser";
 NSString * const VTrackingEventUserDidSelectSearchBar = @"UserDidSelectSearchBar";
-NSString * const VTrackingEventUserDidSearchUsersAndHashtags = @"UserDidSearchUsersAndHashtags";
 NSString * const VTrackingEventUserDidSelectDiscoverSearchUser = @"UserDidSelectDiscoverSearchUser";
 NSString * const VTrackingEventUserDidSelectDiscoverSearchHashtag = @"UserDidSelectDiscoverSearchHashtag";
 

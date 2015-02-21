@@ -264,6 +264,10 @@ static NSString * const VStoryboardViewControllerIndentifier    = @"suggestedPeo
 {
     VSuggestedPersonCollectionViewCell *cell = (VSuggestedPersonCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
     VUser *user = cell.user;
+    
+    NSDictionary *params = @{ VTrackingKeyName : user.name ?: @"" };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectSuggestedUser parameters:params];
+    
     NSDictionary *userInfo = @{ kVDiscoverUserProfileSelectedKeyUser : user };
     [[NSNotificationCenter defaultCenter] postNotificationName:kVDiscoverUserProfileSelectedNotification object:nil userInfo:userInfo];
 }

@@ -367,8 +367,13 @@ static CGFloat const kTopInset = 22.0f; ///< The space between the top of the vi
     // No actions available for kTableViewSectionSuggestedPeople
     if ( indexPath.section == VDiscoverViewControllerSectionTrendingTags && self.isShowingNoData == NO )
     {
-        // Show hashtag stream
         VHashtag *hashtag = self.trendingTags[ indexPath.row ];
+        
+        // Tracking
+        NSDictionary *params = @{ VTrackingKeyHashtag : hashtag.tag ?: @"" };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectTrendingHashtag parameters:params];
+        
+        // Show hashtag stream
         [self showStreamWithHashtag:hashtag];
     }
 }
