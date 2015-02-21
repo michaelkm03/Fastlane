@@ -131,7 +131,8 @@ static NSString * const kVideoMuted = @"videoMuted";
     {
         template[VDependencyManagerScaffoldViewControllerKey] = @{
                                                                   kClassNameKey: @"bottomMenu.scaffold",
-                                                                  kItemsKey:[self bottomNavMenuItems]
+                                                                  kItemsKey:[self bottomNavMenuItems],
+                                                                  VScaffoldViewControllerUserProfileViewComponentKey: [self profileScreen],
                                                                   };
     }
     else
@@ -141,7 +142,7 @@ static NSString * const kVideoMuted = @"videoMuted";
                                                                    VDependencyManagerInitialViewControllerKey: @{ kReferenceIDKey: self.firstMenuItemID },
                                                                    VScaffoldViewControllerMenuComponentKey: [self menuComponent],
                                                                    VStreamCollectionViewControllerCreateSequenceIconKey: (self.templateCEnabled ? [UIImage imageNamed:@"createContentButtonC"] : [UIImage imageNamed:@"createContentButton"]),
-                                                                   VScaffoldViewControllerUserProfileViewComponentKey: @{ kClassNameKey: @"userProfile.screen" },
+                                                                   VScaffoldViewControllerUserProfileViewComponentKey: [self profileScreen],
                                                                    kSelectorKey: [self kSelectorKeyFromInitDictionary:self.dataFromInitCall],
                                                                    };
     }
@@ -410,6 +411,8 @@ static NSString * const kVideoMuted = @"videoMuted";
     return @[
              [self homeMenuItem],
              [self ownerStreamMenuItem],
+             [self profileMenuItem],
+             [self inboxMenuItem],
              ];
 }
 
@@ -448,6 +451,11 @@ static NSString * const kVideoMuted = @"videoMuted";
 {
     NSString *categoryString = [categories componentsJoinedByString:@","];
     return [@"/api/sequence/detail_list_by_category/" stringByAppendingString:(categoryString ?: @"0")];
+}
+
+- (NSDictionary *)profileScreen
+{
+    return @{ kClassNameKey: @"userProfile.screen" };
 }
                 
 - (NSDictionary *)homeScreen
