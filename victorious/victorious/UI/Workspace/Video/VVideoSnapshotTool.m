@@ -119,6 +119,8 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
     self.snapshotGenerator = [[AVAssetImageGenerator alloc] initWithAsset:self.videoPlayerViewController.player.currentItem.asset];
     self.snapshotGenerator.appliesPreferredTrackTransform = YES;
     self.snapshotGenerator.apertureMode = AVAssetImageGeneratorApertureModeProductionAperture;
+    self.snapshotGenerator.requestedTimeToleranceAfter = kCMTimeZero;
+    self.snapshotGenerator.requestedTimeToleranceBefore = kCMTimeZero;
     [self.snapshotGenerator generateCGImagesAsynchronouslyForTimes:@[[NSValue valueWithCMTime:self.videoPlayerViewController.currentTime]]
                                                  completionHandler:^(CMTime requestedTime, CGImageRef image, CMTime actualTime, AVAssetImageGeneratorResult result, NSError *error)
     {
