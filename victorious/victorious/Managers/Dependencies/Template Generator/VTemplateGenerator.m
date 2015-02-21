@@ -133,6 +133,7 @@ static NSString * const kVideoMuted = @"videoMuted";
                                                                   kClassNameKey: @"bottomMenu.scaffold",
                                                                   kItemsKey:[self bottomNavMenuItems],
                                                                   VScaffoldViewControllerUserProfileViewComponentKey: [self profileScreen],
+                                                                  kSelectorKey: [self kSelectorKeyFromInitDictionary:self.dataFromInitCall]
                                                                   };
     }
     else
