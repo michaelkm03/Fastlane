@@ -237,6 +237,8 @@ static NSString * const kUserKey = @"user";
         [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
         return;
     }
+
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectFindFriends];
     
     VFindFriendsViewController *ffvc = [VFindFriendsViewController newFindFriendsViewController];
     [ffvc setShouldAutoselectNewFriends:NO];

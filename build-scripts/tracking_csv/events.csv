@@ -156,13 +156,16 @@ VideoDidSkip,Backend mapping: video-skip
 ,
 // Find Friends,
 UserDidSelectFindFriends,
-UserDidImportDeviceContacts,
-UserDidImportFacebookContacts,
-UserDidImportTwitterContacts,
+UserDidImportDeviceContacts,Params: Count (numer of contacts imported)
+UserDidImportFacebookContacts,Params: Count (numer of contacts imported)
+ImportFacebookContactsDidFail,Params: ErrorMessage
+UserDidImportTwitterContacts,Params: Count (numer of contacts imported)
+ImportTwitterContactsDidFail,Params: ErrorMessage
+UserDidImportInstagramContacts,Params: Count (numer of contacts imported)
+ImportInstagramContactsDidFail,Params: ErrorMessage
 UserDidSelectInvite,
 UserDidInviteFiendsWithEmail,
 UserDidInviteFiendsWithSMS,
-UserDidSelectViewFollowers,
 ,
 // Inbox,
 UserDidSelectCreateMessage,
