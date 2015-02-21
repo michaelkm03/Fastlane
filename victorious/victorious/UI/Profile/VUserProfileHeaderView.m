@@ -88,7 +88,7 @@
     {
         [self.editProfileButton setStyle:VButtonStyleSecondary];
         self.editProfileButton.primaryColor = linkColor;
-        self.editProfileButton.secondaryColor = [UIColor blackColor];
+        self.editProfileButton.secondaryColor = linkColor;
         [self.editProfileButton setTitle:NSLocalizedString(@"editProfileButton", @"") forState:UIControlStateNormal];
     }
     else
