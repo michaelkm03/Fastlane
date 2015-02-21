@@ -33,10 +33,11 @@
 #import "VScrollPaginator.h"
 #import "VImageSearchResultsFooterView.h"
 #import "VFooterActivityIndicatorView.h"
+#import "VMultipleContainerViewControllerChild.h"
 
 const CGFloat kVLoadNextPagePoint = .75f;
 
-@interface VAbstractStreamCollectionViewController ()
+@interface VAbstractStreamCollectionViewController () <VMultipleContainerViewControllerChild>
 
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, weak) IBOutlet VScrollPaginator *scrollPaginator;
@@ -50,6 +51,10 @@ const CGFloat kVLoadNextPagePoint = .75f;
 
 @property (nonatomic, assign) NSUInteger previousNumberOfRowsInStreamSection;
 @property (nonatomic, assign) BOOL shouldAnimateActivityViewFooter;
+
+// Tracking helpers
+@property (nonatomic, assign) BOOL didTrackViewDidAppear;
+@property (nonatomic, assign) BOOL canTrackViewDidAppear;
 
 @end
 
@@ -126,15 +131,25 @@ const CGFloat kVLoadNextPagePoint = .75f;
 {
     [super viewDidAppear:animated];
     
+    [[VTrackingManager sharedInstance] setValue:VTrackingValueStream forSessionParameterWithKey:VTrackingKeyContext];
+    
     if ( self.navigationBarShouldAutoHide )
     {
         [self addScrollDelegate];
+    }
+    
+    if ( self.isBeingPresented && self.canTrackViewDidAppear )
+    {
+        [self trackStreamDidAppear];
     }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
+    [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContext];
+    
     self.navigationControllerScrollDelegate = nil;
 }
 
@@ -155,6 +170,33 @@ const CGFloat kVLoadNextPagePoint = .75f;
 - (void)addScrollDelegate
 {
     self.navigationControllerScrollDelegate = [[VNavigationControllerScrollDelegate alloc] initWithNavigationController:[self v_navigationController]];
+}
+
+#pragma mark - VMultipleContainerViewControllerChild protocol
+
+- (void)viewControllerSelected
+{
+    if ( self.canTrackViewDidAppear )
+    {
+        self.didTrackViewDidAppear = YES;
+        [self trackStreamDidAppear];
+    }
+}
+
+- (void)viewControllerAppearedAsInitial
+{
+    if ( self.canTrackViewDidAppear && !self.didTrackViewDidAppear )
+    {
+        self.didTrackViewDidAppear = YES;
+        [self trackStreamDidAppear];
+    }
+}
+
+#pragma mark - Tracking helper
+
+- (void)trackStreamDidAppear
+{
+    // Override in subclasses
 }
 
 #pragma mark - Property Setters
@@ -219,6 +261,12 @@ const CGFloat kVLoadNextPagePoint = .75f;
     
     [self.streamDataSource refreshWithSuccess:^(void)
      {
+         self.canTrackViewDidAppear = YES;
+         if ( !self.didTrackViewDidAppear )
+         {
+             [self trackStreamDidAppear];
+         }
+         
          [self.refreshControl endRefreshing];
          if (completionBlock)
          {

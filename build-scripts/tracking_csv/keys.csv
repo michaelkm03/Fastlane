@@ -30,6 +30,7 @@ DidCrop,Publishing—was the image cropped from its original size while editing
 DidTrim,Publishing—wwas the video trimmed from its original length while editing
 DidSaveToDevice,Publishing—whether or not user wanted to save the image/video/GIF to their device.
 FilterName,
-Name,"Generic, to indicate a name associated with an event"
 ProductIdentifier,App Store or Google Play product identifier for a purchseable product.
+Name,"Generic, to indicate a name associated with an event"
 Count,"Generic, to indicate quantity associated with an event"
+RemoteId,"Generic, to indicate backend remote ID associated with an item"

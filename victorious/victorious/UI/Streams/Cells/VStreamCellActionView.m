@@ -105,6 +105,8 @@ static CGFloat const kRepostedDisabledAlpha     = 0.3f;
 
 - (void)remixAction:(id)sender
 {
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRemix];
+    
     if ([self.delegate respondsToSelector:@selector(willRemixSequence:fromView:)])
     {
         [self.delegate willRemixSequence:self.sequence fromView:self];

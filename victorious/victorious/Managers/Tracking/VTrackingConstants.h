@@ -127,19 +127,21 @@ extern NSString * const VTrackingEventSequenceDidAppearInStream; //< Stream cell
 extern NSString * const VTrackingEventViewDidStart; //< Content was displayed in content view and began playing (if video); Backend mapping: view-start
 extern NSString * const VTrackingEventUserDidSelectItemFromStream; //< Backend mapping: cell-click
 extern NSString * const VTrackingEventUserDidSelectItemFromMarquee; //< Backend mapping: cell-click
-extern NSString * const VTrackingEventUserDidViewStream; //< "A stream was presented to the user, regardless of whether visible by default in a view or was seleted explicitly.  Params: CurrentSection, StreamName, StreamId"
-extern NSString * const VTrackingEventUserDidSelectCaptionHashtag; //< Params: Hashtag
-extern NSString * const VTrackingEventUserDidSelectTaggedUser; 
+extern NSString * const VTrackingEventUserDidViewHashtagStream; //< Params: Hashtag
+extern NSString * const VTrackingEventUserDidViewStream; //< "Params: StreamName, Context, StreamId, CurrentSection"
 
 extern NSString * const VTrackingEventUserDidVoteSequence; 
-extern NSString * const VTrackingEventUserDidRepostItem; //< "Params: SequenceId, TimeCurrent"
-extern NSString * const VTrackingEventRepostItemDidFail; //< Params: ErrorMessage
-extern NSString * const VTrackingEventUserDidFlagItem; //< Params: Context
-extern NSString * const VTrackingEventFlagItemDidFail; //< Params: ErrorMessage
+extern NSString * const VTrackingEventUserDidRepost; //< "Params: SequenceId, TimeCurrent"
+extern NSString * const VTrackingEventRepostDidFail; //< Params: ErrorMessage
+extern NSString * const VTrackingEventUserDidFlagPost; //< Params: Context
+extern NSString * const VTrackingEventFlagPostDidFail; //< Params: ErrorMessage
 extern NSString * const VTrackingEventUserDidSelectShare; //< Params: Context
 extern NSString * const VTrackingEventUserDidShare; //< "Params: Context, ShareDestination"
 extern NSString * const VTrackingEventUserShareDidFail; //< Params: ErrorMessage
-extern NSString * const VTrackingEventUserDidSelectSelectRemix; //< Params: Context
+extern NSString * const VTrackingEventUserDidSelectRemix; //< Params: Context
+extern NSString * const VTrackingEventUserDidSelectShowRemixes; 
+extern NSString * const VTrackingEventUserDidSelectShowReposters; 
+extern NSString * const VTrackingEventUserDidDeletePost; 
 
 // Comments
 extern NSString * const VTrackingEventUserDidPostComment; //< "Params: TextLength, ContentType, CurrentSection, StreamName"
@@ -242,9 +244,10 @@ extern NSString * const VTrackingKeyDidCrop; //< Publishing—was the image crop
 extern NSString * const VTrackingKeyDidTrim; //< Publishing—wwas the video trimmed from its original length while editing
 extern NSString * const VTrackingKeyDidSaveToDevice; //< Publishing—whether or not user wanted to save the image/video/GIF to their device.
 extern NSString * const VTrackingKeyFilterName; 
-extern NSString * const VTrackingKeyName; //< "Generic, to indicate a name associated with an event"
 extern NSString * const VTrackingKeyProductIdentifier; //< App Store or Google Play product identifier for a purchseable product.
+extern NSString * const VTrackingKeyName; //< "Generic, to indicate a name associated with an event"
 extern NSString * const VTrackingKeyCount; //< "Generic, to indicate quantity associated with an event"
+extern NSString * const VTrackingKeyRemoteId; //< "Generic, to indicate backend remote ID associated with an item"
 
 // Tracking Event Values
 // TextType values

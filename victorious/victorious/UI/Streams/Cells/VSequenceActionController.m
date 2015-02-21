@@ -250,12 +250,22 @@
     activityViewController.excludedActivityTypes = @[UIActivityTypePostToFacebook];
     activityViewController.completionWithItemsHandler = ^(NSString *activityType, BOOL completed, NSArray *returnedItems, NSError *activityError)
     {
-        NSDictionary *params = @{ VTrackingKeySequenceCategory : sequence.category ?: @"",
-                                  VTrackingKeyShareDestination : activityType ?: @"",
-                                  VTrackingKeyUrls : sequence.tracking.share ?: @[],
-                                  VTrackingKeyErrorMessage : activityError == nil ? @"" : activityError.localizedDescription };
-        NSString *eventName = completed ? VTrackingEventUserDidShare : VTrackingEventUserShareDidFail;
-        [[VTrackingManager sharedInstance] trackEvent:eventName parameters:params];
+        if ( completed )
+        {
+            NSDictionary *params = @{ VTrackingKeySequenceCategory : sequence.category ?: @"",
+                                      VTrackingKeyShareDestination : activityType ?: @"",
+                                      VTrackingKeyUrls : sequence.tracking.share ?: @[] };
+            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidShare parameters:params];
+        }
+        else if ( activityError != nil )
+        {
+            NSDictionary *params = @{ VTrackingKeySequenceCategory : sequence.category ?: @"",
+                                      VTrackingKeyShareDestination : activityType ?: @"",
+                                      VTrackingKeyUrls : sequence.tracking.share ?: @[],
+                                      VTrackingKeyErrorMessage : activityError == nil ? @"" : activityError.localizedDescription };
+            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserShareDidFail parameters:params];
+        }
+        
         
         [viewController reloadInputViews];
         

@@ -109,7 +109,7 @@
     
     self.navigationController.delegate = self;
     
-    if ( self.navigationController.viewControllers.lastObject == self )
+    if ( self.isBeingPresented || self.navigationController.isBeingPresented )
     {
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginDidShow];
     }

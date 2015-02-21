@@ -127,19 +127,21 @@ NSString * const VTrackingEventSequenceDidAppearInStream = @"SequenceDidAppearIn
 NSString * const VTrackingEventViewDidStart = @"ViewDidStart";
 NSString * const VTrackingEventUserDidSelectItemFromStream = @"UserDidSelectItemFromStream";
 NSString * const VTrackingEventUserDidSelectItemFromMarquee = @"UserDidSelectItemFromMarquee";
+NSString * const VTrackingEventUserDidViewHashtagStream = @"UserDidViewHashtagStream";
 NSString * const VTrackingEventUserDidViewStream = @"UserDidViewStream";
-NSString * const VTrackingEventUserDidSelectCaptionHashtag = @"UserDidSelectCaptionHashtag";
-NSString * const VTrackingEventUserDidSelectTaggedUser = @"UserDidSelectTaggedUser";
 
 NSString * const VTrackingEventUserDidVoteSequence = @"UserDidVoteSequence";
-NSString * const VTrackingEventUserDidRepostItem = @"UserDidRepostItem";
-NSString * const VTrackingEventRepostItemDidFail = @"RepostItemDidFail";
-NSString * const VTrackingEventUserDidFlagItem = @"UserDidFlagItem";
-NSString * const VTrackingEventFlagItemDidFail = @"FlagItemDidFail";
+NSString * const VTrackingEventUserDidRepost = @"UserDidRepost";
+NSString * const VTrackingEventRepostDidFail = @"RepostDidFail";
+NSString * const VTrackingEventUserDidFlagPost = @"UserDidFlagPost";
+NSString * const VTrackingEventFlagPostDidFail = @"FlagPostDidFail";
 NSString * const VTrackingEventUserDidSelectShare = @"UserDidSelectShare";
 NSString * const VTrackingEventUserDidShare = @"UserDidShare";
 NSString * const VTrackingEventUserShareDidFail = @"UserShareDidFail";
-NSString * const VTrackingEventUserDidSelectSelectRemix = @"UserDidSelectSelectRemix";
+NSString * const VTrackingEventUserDidSelectRemix = @"UserDidSelectRemix";
+NSString * const VTrackingEventUserDidSelectShowRemixes = @"UserDidSelectShowRemixes";
+NSString * const VTrackingEventUserDidSelectShowReposters = @"UserDidSelectShowReposters";
+NSString * const VTrackingEventUserDidDeletePost = @"UserDidDeletePost";
 
 // Comments
 NSString * const VTrackingEventUserDidPostComment = @"UserDidPostComment";
@@ -242,9 +244,10 @@ NSString * const VTrackingKeyDidCrop = @"DidCrop";
 NSString * const VTrackingKeyDidTrim = @"DidTrim";
 NSString * const VTrackingKeyDidSaveToDevice = @"DidSaveToDevice";
 NSString * const VTrackingKeyFilterName = @"FilterName";
-NSString * const VTrackingKeyName = @"Name";
 NSString * const VTrackingKeyProductIdentifier = @"ProductIdentifier";
+NSString * const VTrackingKeyName = @"Name";
 NSString * const VTrackingKeyCount = @"Count";
+NSString * const VTrackingKeyRemoteId = @"RemoteId";
 
 // Tracking Event Values
 // TextType values

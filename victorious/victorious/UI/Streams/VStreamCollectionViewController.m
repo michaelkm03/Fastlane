@@ -239,6 +239,14 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
     self.preloadImageCache = nil;
 }
 
+#pragma mark - Tracking
+
+- (void)trackStreamDidAppear
+{
+    NSDictionary *params = @{ VTrackingKeyStreamName : self.currentStream.name ?: @"" };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidViewStream parameters:params];
+}
+
 #pragma mark - Properties
 
 - (VMarqueeController *)marquee
@@ -373,6 +381,10 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
 
 - (void)marquee:(VMarqueeController *)marquee selectedItem:(VStreamItem *)streamItem atIndexPath:(NSIndexPath *)path previewImage:(UIImage *)image
 {
+    NSDictionary *params = @{ VTrackingKeyName : streamItem.name ?: @"",
+                              VTrackingKeyRemoteId : streamItem.remoteId ?: @"" };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectItemFromMarquee parameters:params];
+    
     if ( [streamItem isKindOfClass:[VSequence class]] )
     {
         [self showContentViewForSequence:(VSequence *)streamItem withPreviewImage:image];
@@ -860,7 +872,8 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
     if ( visibiltyRatio >= self.trackingMinRequiredCellVisibilityRatio )
     {
         const VSequence *sequence = cell.sequence;
-        if ( sequence != nil )
+#warning Turn this back on, just for testing now
+        if ( sequence != nil && NO )
         {
             NSDictionary *params = @{ VTrackingKeySequenceId : sequence.remoteId,
                                       VTrackingKeyStreamId : self.currentStream.remoteId,

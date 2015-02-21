@@ -117,19 +117,21 @@ SequenceDidAppearInStream,Stream cell became visible while scrolling stream (onc
 ViewDidStart,Content was displayed in content view and began playing (if video); Backend mapping: view-start
 UserDidSelectItemFromStream,Backend mapping: cell-click
 UserDidSelectItemFromMarquee,Backend mapping: cell-click
-UserDidViewStream,"A stream was presented to the user, regardless of whether visible by default in a view or was seleted explicitly.  Params: CurrentSection, StreamName, StreamId"
-UserDidSelectCaptionHashtag,Params: Hashtag
-UserDidSelectTaggedUser,
+UserDidViewHashtagStream,Params: Hashtag
+UserDidViewStream,"Params: StreamName, Context, StreamId, CurrentSection"
 ,
 UserDidVoteSequence,
-UserDidRepostItem,"Params: SequenceId, TimeCurrent"
-RepostItemDidFail,Params: ErrorMessage
-UserDidFlagItem,Params: Context
-FlagItemDidFail,Params: ErrorMessage
+UserDidRepost,"Params: SequenceId, TimeCurrent"
+RepostDidFail,Params: ErrorMessage
+UserDidFlagPost,Params: Context
+FlagPostDidFail,Params: ErrorMessage
 UserDidSelectShare,Params: Context
 UserDidShare,"Params: Context, ShareDestination"
 UserShareDidFail,Params: ErrorMessage
-UserDidSelectSelectRemix,Params: Context
+UserDidSelectRemix,Params: Context
+UserDidSelectShowRemixes,
+UserDidSelectShowReposters,
+UserDidDeletePost,
 ,
 // Comments,
 UserDidPostComment,"Params: TextLength, ContentType, CurrentSection, StreamName"

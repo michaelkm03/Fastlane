@@ -11,8 +11,10 @@
 
 #define TRACKING_LOGGING_ENABLED 1
 #define TRACKING_ALERTS_ENABLED 0
+#define TRACKING_QUEUE_LOGGING_ENABLED 0
+#define TRACKING_SESSION_LOGGING_ENABLED 0
 
-#if TRACKING_LOGGING_ENABLED
+#if TRACKING_LOGGING_ENABLED || TRACKING_QUEUE_LOGGING_ENABLED || TRACKING_ALERTS_ENABLED || TRACKING_SESSION_LOGGING_ENABLED
 #warning Tracking logging is enabled. Please remember to disable it when you're done debugging.
 #endif
 
@@ -126,7 +128,7 @@
          if ( matchesEventId && matchesEventName )
          {
              
-#if TRACKING_LOGGING_ENABLED
+#if TRACKING_QUEUE_LOGGING_ENABLED
              NSLog( @"Event with duplicate key rejected.  Queued: %lu", (unsigned long)self.queuedEvents.count);
 #endif
              doesEventExistForKey = YES;
@@ -145,7 +147,7 @@
         [self.queuedEvents addObject:event];
         [self trackEvent:event.name parameters:event.parameters];
         
-#if TRACKING_LOGGING_ENABLED
+#if TRACKING_QUEUE_LOGGING_ENABLED
         NSLog( @"Event queued.  Queued: %lu", (unsigned long)self.queuedEvents.count);
 #endif
     }
@@ -165,7 +167,7 @@
          [self.queuedEvents removeObject:event];
      }];
     
-#if TRACKING_LOGGING_ENABLED
+#if TRACKING_QUEUE_LOGGING_ENABLED
     NSLog( @"Dequeued events:  %lu remain", (unsigned long)self.queuedEvents.count);
 #endif
 }
@@ -179,7 +181,7 @@
 {
     [self endEvent:eventName];
     
-#if TRACKING_LOGGING_ENABLED
+#if TRACKING_SESSION_LOGGING_ENABLED
     NSLog( @"Event Started: %@ to %lu delegates", eventName, (unsigned long)self.delegates.count);
 #endif
     
@@ -200,7 +202,7 @@
     __block VTrackingEvent *event = self.durationEvents[ eventName ];
     if ( event )
     {
-#if TRACKING_LOGGING_ENABLED
+#if TRACKING_SESSION_LOGGING_ENABLED
         NSLog( @"Event Ended: %@ to %lu delegates", eventName, (unsigned long)self.delegates.count);
 #endif
         __block NSTimeInterval duration = abs( [event.dateCreated timeIntervalSinceNow] );

@@ -422,6 +422,9 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
         }
         stream.streamItems = streamItems;
         
+        id streamId = fullResponse[ @"stream_id" ];
+        [[VTrackingManager sharedInstance] setValue:streamId forSessionParameterWithKey:VTrackingKeyStreamId];
+        
         if (success)
         {
             success(operation, fullResponse, resultObjects);

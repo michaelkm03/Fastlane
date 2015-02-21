@@ -227,11 +227,32 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
         parameters[@"name"] = name;
     }
     
+    VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    {
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidRepost];
+        
+        if ( success != nil )
+        {
+            success( operation, fullResponse, resultObjects );
+        }
+    };
+    
+    VFailBlock fullFail = ^(NSOperation *operation, NSError *error)
+    {
+        NSDictionary *params = @{ VTrackingKeyErrorMessage : error.localizedDescription ?: @"" };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventRepostDidFail parameters:params];
+        
+        if ( fail != nil )
+        {
+            fail( operation, error );
+        }
+    };
+    
     return [self POST:@"/api/repost/create"
                object:nil
            parameters:parameters
-         successBlock:success
-            failBlock:fail];
+         successBlock:fullSuccess
+            failBlock:fullFail];
 }
 
 - (NSString *)stringForLoopType:(VLoopType)type
