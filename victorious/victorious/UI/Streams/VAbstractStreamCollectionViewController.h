@@ -24,6 +24,9 @@
 @property (nonatomic, readonly) CGFloat topInset; ///< An amount by which to inset the top of the content in the collection view.
 @property (nonatomic) BOOL navigationBarShouldAutoHide; ///< Set to YES to hide the navigation bar on scroll
 
+@property (nonatomic, assign) BOOL didTrackViewDidAppear; //< Tracking helper, prevents duplicate events
+@property (nonatomic, assign) BOOL canTrackViewDidAppear; //< Tracking helper, prevents tracking views before enough data about the stream has been loaded
+
 /**
  Called by the refresh controller when the user activates it by scrolling up to the top.
  Forwards onto `refreshWithCompletion:`.
@@ -42,5 +45,12 @@
 - (void)animateNewlyPopulatedCell:(UICollectionViewCell *)cell
                  inCollectionView:(UICollectionView *)collectionView
                       atIndexPath:(NSIndexPath *)indexPath;
+
+/**
+ Designed to be overidden in subclasses so diffrent types of streams can respond to
+ handling tracking their event in their own way.
+ */
+- (void)trackStreamDidAppear;
+
 
 @end

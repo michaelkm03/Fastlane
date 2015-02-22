@@ -15,6 +15,7 @@
 @interface VFollowingStreamCollectionViewController ()
 
 @property (nonatomic, strong) VNoContentView *noContentView;
+@property (nonatomic, assign) BOOL shouldRefreshOnView;
 
 @end
 
@@ -45,9 +46,23 @@
                                                   object:[VObjectManager sharedManager]];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    if ( self.shouldRefreshOnView )
+    {
+        [self refreshWithCompletion:nil];
+        self.shouldRefreshOnView = NO;
+    }
+}
+
 - (void)loginStatusDidChange:(NSNotification *)notification
 {
-    [self refreshWithCompletion:nil];
+    self.didTrackViewDidAppear = NO;
+    self.canTrackViewDidAppear = NO;
+    [self.streamDataSource unloadStream];
+    self.shouldRefreshOnView = YES;
 }
 
 - (void)refreshWithCompletion:(void(^)(void))completionBlock

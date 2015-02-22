@@ -52,10 +52,6 @@ const CGFloat kVLoadNextPagePoint = .75f;
 @property (nonatomic, assign) NSUInteger previousNumberOfRowsInStreamSection;
 @property (nonatomic, assign) BOOL shouldAnimateActivityViewFooter;
 
-// Tracking helpers
-@property (nonatomic, assign) BOOL didTrackViewDidAppear;
-@property (nonatomic, assign) BOOL canTrackViewDidAppear;
-
 @end
 
 @implementation VAbstractStreamCollectionViewController

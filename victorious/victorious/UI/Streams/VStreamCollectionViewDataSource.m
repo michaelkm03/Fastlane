@@ -93,6 +93,11 @@ NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamColl
     return self.stream.streamItems.count;
 }
 
+- (void)unloadStream
+{
+    self.stream.streamItems = [[NSOrderedSet alloc] init];
+}
+
 - (void)refreshWithSuccess:(void (^)(void))successBlock failure:(void (^)(NSError *))failureBlock
 {
     self.isLoading = YES;

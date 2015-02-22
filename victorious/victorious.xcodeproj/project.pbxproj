@@ -362,6 +362,7 @@
 		A72005701A03ECDC00285A9C /* VTrackingURLRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = A720056F1A03ECDC00285A9C /* VTrackingURLRequest.m */; };
 		A733D8FC1A23D0980053E9F1 /* VNotificationSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = A733D8FB1A23D0980053E9F1 /* VNotificationSettings.m */; };
 		A733D8FF1A23D0C70053E9F1 /* VNotificationSettings+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A733D8FE1A23D0C70053E9F1 /* VNotificationSettings+RestKit.m */; };
+		A734A04D1A98278100C3E86F /* VSettingsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A734A04C1A98278100C3E86F /* VSettingsTableViewCell.m */; };
 		A73A877D1A76BD71008C6355 /* VStreamWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A73A877C1A76BD71008C6355 /* VStreamWebViewController.m */; };
 		A73EAEC01A4134C10021BB31 /* NSString+Unicode_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = A73EAEBF1A4134C10021BB31 /* NSString+Unicode_Tests.m */; };
 		A73EAEC31A41453C0021BB31 /* NSString+Unicode.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73EAEC21A41453C0021BB31 /* NSString+Unicode.swift */; };
@@ -1316,6 +1317,8 @@
 		A733D8FD1A23D0C70053E9F1 /* VNotificationSettings+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VNotificationSettings+RestKit.h"; sourceTree = "<group>"; };
 		A733D8FE1A23D0C70053E9F1 /* VNotificationSettings+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VNotificationSettings+RestKit.m"; sourceTree = "<group>"; };
 		A734A04A1A98018800C3E86F /* VMultipleContainerViewControllerChild.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VMultipleContainerViewControllerChild.h; path = victorious/UI/Common/VMultipleContainerViewControllerChild.h; sourceTree = SOURCE_ROOT; };
+		A734A04B1A98278100C3E86F /* VSettingsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSettingsTableViewCell.h; sourceTree = "<group>"; };
+		A734A04C1A98278100C3E86F /* VSettingsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSettingsTableViewCell.m; sourceTree = "<group>"; };
 		A735323119DB60600040DB30 /* VAuthorizationViewControllerFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAuthorizationViewControllerFactory.h; sourceTree = "<group>"; };
 		A735323219DB60600040DB30 /* VAuthorizationViewControllerFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAuthorizationViewControllerFactory.m; sourceTree = "<group>"; };
 		A73A877B1A76BD71008C6355 /* VStreamWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamWebViewController.h; sourceTree = "<group>"; };
@@ -2511,8 +2514,6 @@
 				DB2A494519DF44CF00CB687B /* settings.storyboard */,
 				A7D7076E1A79671C00D9993F /* VAutoplaySettingsViewController.h */,
 				A7D7076F1A79671C00D9993F /* VAutoplaySettingsViewController.m */,
-				A7D707711A797B8A00D9993F /* VVideoSettings.h */,
-				A7D707721A797B8A00D9993F /* VVideoSettings.m */,
 				0314D3F419B46B5E00FA363C /* VChangePasswordViewController.h */,
 				0314D3F519B46B5E00FA363C /* VChangePasswordViewController.m */,
 				0314D3F619B46B5E00FA363C /* VEnvironment.h */,
@@ -2521,10 +2522,14 @@
 				0314D3F919B46B5E00FA363C /* VPrivacyPoliciesViewController.m */,
 				0314D3FA19B46B5E00FA363C /* VServerEnvironmentTableViewController.h */,
 				0314D3FB19B46B5E00FA363C /* VServerEnvironmentTableViewController.m */,
+				A734A04B1A98278100C3E86F /* VSettingsTableViewCell.h */,
+				A734A04C1A98278100C3E86F /* VSettingsTableViewCell.m */,
 				0314D3FC19B46B5E00FA363C /* VSettingsViewController.h */,
 				0314D3FD19B46B5E00FA363C /* VSettingsViewController.m */,
 				0314D3FE19B46B5E00FA363C /* VTOSViewController.h */,
 				0314D3FF19B46B5E00FA363C /* VTOSViewController.m */,
+				A7D707711A797B8A00D9993F /* VVideoSettings.h */,
+				A7D707721A797B8A00D9993F /* VVideoSettings.m */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -5007,6 +5012,7 @@
 				D8C9CF2F19E4F417007B461E /* VHistogramCell.m in Sources */,
 				BE24782F193E9E8E0074191C /* VAbstractFilter+RestKit.m in Sources */,
 				A73A877D1A76BD71008C6355 /* VStreamWebViewController.m in Sources */,
+				A734A04D1A98278100C3E86F /* VSettingsTableViewCell.m in Sources */,
 				03AC453A19BA1F1000CE4351 /* NSString+VCrypto.m in Sources */,
 				03A2AD971926B9460034EB80 /* UIViewController+ForceOrientationChange.m in Sources */,
 				039ED28C19C808BA00305987 /* AVCaptureVideoPreviewLayer+VConvertPoint.m in Sources */,

@@ -143,7 +143,7 @@
                                        shake:YES
                                       forced:YES];
         
-        NSDictionary *params = @{ VTrackingKeyErrorMessage : validationError.localizedDescription };
+        NSDictionary *params = @{ VTrackingKeyErrorMessage : validationError.localizedDescription ?: @"" };
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventSignupWithEmailValidationDidFail parameters:params];
         
         shouldSignup = NO;
@@ -160,7 +160,7 @@
                                           shake:YES
                                          forced:YES];
         
-        NSDictionary *params = @{ VTrackingKeyErrorMessage : validationError.localizedDescription };
+        NSDictionary *params = @{ VTrackingKeyErrorMessage : validationError.localizedDescription ?: @"" };
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventSignupWithEmailValidationDidFail parameters:params];
         
         shouldSignup = NO;
@@ -180,7 +180,7 @@
                                                  shake:YES
                                                 forced:YES];
         
-        NSDictionary *params = @{ VTrackingKeyErrorMessage : validationError.localizedDescription };
+        NSDictionary *params = @{ VTrackingKeyErrorMessage : validationError.localizedDescription ?: @"" };
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventSignupWithEmailValidationDidFail parameters:params];
         
         shouldSignup = NO;
@@ -207,7 +207,7 @@
 
 - (void)didFailWithError:(NSError *)error
 {
-    NSDictionary *params = @{ VTrackingKeyErrorMessage : error.localizedDescription };
+    NSDictionary *params = @{ VTrackingKeyErrorMessage : error.localizedDescription ?: @"" };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventSignupWithEmailDidFail parameters:params];
     
     UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"SignupFail", @"")

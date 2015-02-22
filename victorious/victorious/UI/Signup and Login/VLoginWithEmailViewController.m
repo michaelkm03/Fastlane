@@ -173,7 +173,7 @@
                                          forced:YES];
         shouldLogin = NO;
         
-        NSDictionary *params = @{ VTrackingKeyErrorMessage : validationError.localizedDescription };
+        NSDictionary *params = @{ VTrackingKeyErrorMessage : validationError.localizedDescription ?: @"" };
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithEmailValidationDidFail parameters:params];
         
         if (newResponder == nil)
@@ -192,7 +192,7 @@
                                          forced:YES];
         shouldLogin = NO;
         
-        NSDictionary *params = @{ VTrackingKeyErrorMessage : validationError.localizedDescription };
+        NSDictionary *params = @{ VTrackingKeyErrorMessage : validationError.localizedDescription ?: @"" };
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithEmailValidationDidFail parameters:params];
         
         if (newResponder == nil)
@@ -309,7 +309,7 @@
                 NSString *title = NSLocalizedString(@"EmailValidation", @"");
                 [self showInvalidEmailForResetPasswordErrorWithMessage:message title:title];
                 
-                NSDictionary *params = @{ VTrackingKeyErrorMessage : message };
+                NSDictionary *params = @{ VTrackingKeyErrorMessage : message ?: @"" };
                 [[VTrackingManager sharedInstance] trackEvent:VTrackingEventResetPasswordValidationDidFail parameters:params];
                 return;
             }
@@ -326,7 +326,7 @@
                  NSString *message = NSLocalizedString(@"EmailNotFound", @"");
                  NSString *title = NSLocalizedString(@"EmailValidation", @"");
                  
-                 NSDictionary *params = @{ VTrackingKeyErrorMessage : message };
+                 NSDictionary *params = @{ VTrackingKeyErrorMessage : message ?: @"" };
                  [[VTrackingManager sharedInstance] trackEvent:VTrackingEventResetPasswordDidFail parameters:params];
                  
                  [self showInvalidEmailForResetPasswordErrorWithMessage:message title:title];

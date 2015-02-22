@@ -212,7 +212,7 @@
     {
         dispatch_async(dispatch_get_main_queue(), ^(void)
                        {
-                           NSDictionary *params = @{ VTrackingKeyErrorMessage : error.localizedDescription };
+                           NSDictionary *params = @{ VTrackingKeyErrorMessage : error.localizedDescription ?: @"" };
                            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithFacebookDidFail parameters:params];
                            
                            [self didFailWithError:error];
@@ -233,7 +233,7 @@
         {
             dispatch_async(dispatch_get_main_queue(), ^(void)
                            {
-                               NSDictionary *params = @{ VTrackingKeyErrorMessage : error.localizedDescription };
+                               NSDictionary *params = @{ VTrackingKeyErrorMessage : error.localizedDescription ?: @"" };
                                [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithTwitterDidFailNoAccounts parameters:params];
                                
                                [self hideLoginProgress];
@@ -247,7 +247,7 @@
             {
                 dispatch_async(dispatch_get_main_queue(), ^(void)
                 {
-                    NSDictionary *params = @{ VTrackingKeyErrorMessage : error.localizedDescription };
+                    NSDictionary *params = @{ VTrackingKeyErrorMessage : error.localizedDescription ?: @"" };
                     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithTwitterDidFailDenied parameters:params];
                     
                     [self hideLoginProgress];
@@ -396,7 +396,7 @@
          [MBProgressHUD hideHUDForView:self.navigationController.view
                               animated:YES];
          
-         NSDictionary *params = @{ VTrackingKeyErrorMessage : error.localizedDescription };
+         NSDictionary *params = @{ VTrackingKeyErrorMessage : error.localizedDescription ?: @"" };
          [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithTwitterDidFailUnknown parameters:params];
          
          [self hideLoginProgress];
