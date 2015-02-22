@@ -211,6 +211,11 @@ extern NSString * const VTrackingEventSearchDidAppear;
 // Settings
 extern NSString * const VTrackingEventUserDidSelectSetting; //< User tapped one of the options in the settings section. Params: Name
 
+// End Card
+extern NSString * const VTrackingEventUserDidSelectReplayVideo; 
+extern NSString * const VTrackingEventUserDidSelectPlayNextVideo; 
+extern NSString * const VTrackingEventNextVideoDidAutoPlay; 
+
 // Tracking Event Parameters
 extern NSString * const VTrackingKeyCurrentSection; //< "Which major section is selected, such as ""Home"", ""Indbox"", ""Profile"", etc."
 extern NSString * const VTrackingKeySection; //< The section of the app that is being selected (not the CurrentSection).
@@ -256,13 +261,18 @@ extern NSString * const VTrackingValuePoll;
 // Context values
 extern NSString * const VTrackingValueDiscoverSearch; //< Event triggered from discover section's search results
 extern NSString * const VTrackingValueTrendingHashtags; 
-extern NSString * const VTrackingValueInboxSearch; 
+extern NSString * const VTrackingValueUserSearch; 
 extern NSString * const VTrackingValueEndCard; //< Event triggered from the end card
 extern NSString * const VTrackingValueUserProfile; //< While viewing a user's profile (including your own)
 extern NSString * const VTrackingValueHashtagStream; //< Event occurred in a hashtag stream
 extern NSString * const VTrackingValueContentView; //< Event occurred in content view
 extern NSString * const VTrackingValueStream; //< "Any stream, as opposed to content view"
 extern NSString * const VTrackingValueCommentsView; //< The standlone comments view (not content view)
+extern NSString * const VTrackingValueProfileFollowing; 
+extern NSString * const VTrackingValueProfileFollowers; 
+extern NSString * const VTrackingValueSuggestedPeople; 
+extern NSString * const VTrackingValueFindFriends; 
+extern NSString * const VTrackingValueReposters; 
 
 // Menu Type Values
 extern NSString * const VTrackingValueHamburgerMenu; 

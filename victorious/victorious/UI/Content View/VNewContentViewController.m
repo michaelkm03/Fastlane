@@ -515,8 +515,6 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 {
     [super viewDidAppear:animated];
     
-    [[VTrackingManager sharedInstance] setValue:VTrackingValueContentView forSessionParameterWithKey:VTrackingKeyContext];
-    
 #if HANDOFFENABLED
     if ((self.viewModel.sequence.remoteId != nil) && (self.viewModel.shareURL != nil))
     {
@@ -534,8 +532,6 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    
-    [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContext];
     
 #if HANDOFFENABLED
     self.handoffObject.delegate = nil;
@@ -1507,6 +1503,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
     [self.viewModel loadNextSequenceSuccess:^(VSequence *sequence)
      {
          [self showNextSequence:sequence];
+         
      }
                                     failure:^(NSError *error)
      {

@@ -211,6 +211,11 @@ NSString * const VTrackingEventSearchDidAppear = @"SearchDidAppear";
 // Settings
 NSString * const VTrackingEventUserDidSelectSetting = @"UserDidSelectSetting";
 
+// End Card
+NSString * const VTrackingEventUserDidSelectReplayVideo = @"UserDidSelectReplayVideo";
+NSString * const VTrackingEventUserDidSelectPlayNextVideo = @"UserDidSelectPlayNextVideo";
+NSString * const VTrackingEventNextVideoDidAutoPlay = @"NextVideoDidAutoPlay";
+
 // Tracking Event Parameters
 NSString * const VTrackingKeyCurrentSection = @"CurrentSection";
 NSString * const VTrackingKeySection = @"Section";
@@ -256,13 +261,18 @@ NSString * const VTrackingValuePoll = @"Poll";
 // Context values
 NSString * const VTrackingValueDiscoverSearch = @"DiscoverSearch";
 NSString * const VTrackingValueTrendingHashtags = @"TrendingHashtags";
-NSString * const VTrackingValueInboxSearch = @"InboxSearch";
+NSString * const VTrackingValueUserSearch = @"UserSearch";
 NSString * const VTrackingValueEndCard = @"EndCard";
 NSString * const VTrackingValueUserProfile = @"UserProfile";
 NSString * const VTrackingValueHashtagStream = @"HashtagStream";
 NSString * const VTrackingValueContentView = @"ContentView";
 NSString * const VTrackingValueStream = @"Stream";
 NSString * const VTrackingValueCommentsView = @"CommentsView";
+NSString * const VTrackingValueProfileFollowing = @"ProfileFollowing";
+NSString * const VTrackingValueProfileFollowers = @"ProfileFollowers";
+NSString * const VTrackingValueSuggestedPeople = @"SuggestedPeople";
+NSString * const VTrackingValueFindFriends = @"FindFriends";
+NSString * const VTrackingValueReposters = @"Reposters";
 
 // Menu Type Values
 NSString * const VTrackingValueHamburgerMenu = @"HamburgerMenu";

@@ -200,3 +200,8 @@ SearchDidAppear,
 ,
 // Settings,
 UserDidSelectSetting,User tapped one of the options in the settings section. Params: Name
+,
+// End Card,
+UserDidSelectReplayVideo,
+UserDidSelectPlayNextVideo,
+NextVideoDidAutoPlay,

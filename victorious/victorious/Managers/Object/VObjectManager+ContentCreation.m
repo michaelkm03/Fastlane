@@ -8,7 +8,7 @@
 
 #import "NSURL+MediaType.h"
 #import "VObjectManager+ContentCreation.h"
-#import "VConversation.h"
+
 #import "VObjectManager+Private.h"
 #import "VUploadManager.h"
 #import "VUploadTaskCreator.h"

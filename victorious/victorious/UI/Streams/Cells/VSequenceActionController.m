@@ -266,7 +266,6 @@
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserShareDidFail parameters:params];
         }
         
-        
         [viewController reloadInputViews];
         
         if ( completion != nil )

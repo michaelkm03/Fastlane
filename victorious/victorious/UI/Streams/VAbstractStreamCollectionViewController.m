@@ -127,8 +127,6 @@ const CGFloat kVLoadNextPagePoint = .75f;
 {
     [super viewDidAppear:animated];
     
-    [[VTrackingManager sharedInstance] setValue:VTrackingValueStream forSessionParameterWithKey:VTrackingKeyContext];
-    
     if ( self.navigationBarShouldAutoHide )
     {
         [self addScrollDelegate];
@@ -143,8 +141,6 @@ const CGFloat kVLoadNextPagePoint = .75f;
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    
-    [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContext];
     
     self.navigationControllerScrollDelegate = nil;
 }

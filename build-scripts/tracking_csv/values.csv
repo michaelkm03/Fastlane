@@ -8,13 +8,18 @@ Poll,
 // Context values,
 DiscoverSearch,Event triggered from discover section's search results
 TrendingHashtags,
-InboxSearch,
+UserSearch,
 EndCard,Event triggered from the end card
 UserProfile,While viewing a user's profile (including your own)
 HashtagStream,Event occurred in a hashtag stream
 ContentView,Event occurred in content view
 Stream,"Any stream, as opposed to content view"
 CommentsView,The standlone comments view (not content view)
+ProfileFollowing,
+ProfileFollowers,
+SuggestedPeople,
+FindFriends,
+Reposters,
 ,
 // Menu Type Values,
 HamburgerMenu,

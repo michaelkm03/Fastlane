@@ -556,7 +556,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
         self.finishedThirdQuartile = YES;
     }
     
-    // `shouldSouldToolbar` indicates a GIF, and since GIFs are trimmed slightly at their ends for clean looping, we compare against just under 1.0f
+    // `shouldShowToolbar` indicates a GIF, and since GIFs are trimmed slightly at their ends for clean looping, we compare against just under 1.0f
     // Tracking the final quartile for videos without composition-based looping occurrs in `playerItemDidPlayToEndTime`:
     if ( !self.shouldShowToolbar && !self.finishedFourthQuartile && percentElapsed >= 0.98f)
     {

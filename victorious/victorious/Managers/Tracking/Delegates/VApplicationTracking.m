@@ -12,8 +12,8 @@
 
 static NSString * const kMacroBookendToken           = @"%%";
 
-static NSString * const kMacroTimeFrom               = @"%%FROM_TIME%%";
-static NSString * const kMacroTimeTo                 = @"%%TO_TIME%%";
+static NSString * const kMacroFromTime               = @"%%FROM_TIME%%";
+static NSString * const kMacroToTime                 = @"%%TO_TIME%%";
 static NSString * const kMacroTimeCurrent            = @"%%TIME_CURRENT%%";
 static NSString * const kMacroTimeStamp              = @"%%TIMESTAMP%%";
 static NSString * const kMacroStreamId               = @"%%STREAM_ID%%";
@@ -45,8 +45,8 @@ static NSString * const kMacroSessionTime            = @"%%SESSION_TIME%%";
     if (self)
     {
         // This is a mapping of generic parameters to application-specific macros
-        _parameterMacroMapping = @{ VTrackingKeyFromTime           : kMacroTimeFrom,
-                                    VTrackingKeyToTime             : kMacroTimeTo,
+        _parameterMacroMapping = @{ VTrackingKeyFromTime           : kMacroFromTime,
+                                    VTrackingKeyToTime             : kMacroToTime,
                                     VTrackingKeyTimeCurrent        : kMacroTimeCurrent,
                                     VTrackingKeyTimeStamp          : kMacroTimeStamp,
                                     VTrackingKeyStreamId           : kMacroStreamId,

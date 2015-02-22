@@ -66,6 +66,14 @@
     {
         self.sessionParameters[key] = value;
     }
+#if TRACKING_LOGGING_ENABLED
+    NSString *message = @"";
+    for ( NSString *key in self.sessionParameters )
+    {
+        message = [message stringByAppendingFormat:@"\n\t%@: %@", key, self.sessionParameters[key]];
+    }
+    NSLog( @"\n\nTRACKING SESSION PARAMS UPDATED: %@\n\n", message );
+#endif
 }
 
 - (void)clearSessionParameters
@@ -88,7 +96,7 @@
     NSString *message = @"";
     for ( NSString *key in completeParams )
     {
-        message = [message stringByAppendingFormat:@"\n\t%@: %@", key, completeParams [key]];
+        message = [message stringByAppendingFormat:@"\n\t%@: %@", key, completeParams[key]];
     }
     NSLog( @"\n\nTRACKING: %@ (%lu delegates)%@\n\n", eventName, (unsigned long)self.delegates.count, message );
 #endif
@@ -97,7 +105,7 @@
     NSString *message = @"";
     for ( NSString *key in completeParams )
     {
-        message = [message stringByAppendingFormat:@"\n%@: %@", key, completeParams [key]];
+        message = [message stringByAppendingFormat:@"\n%@: %@", key, completeParams[key]];
     }
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
                    {
