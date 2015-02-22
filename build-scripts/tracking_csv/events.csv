@@ -171,8 +171,6 @@ UserDidInviteFiendsWithSMS,
 UserDidSelectCreateMessage,
 UserDidSendMessage,"Params: TextLength, MediaType"
 UserDidSelectMessage,
-UserDidSearchRecipient,"Params: SearchTerm, ResultCount"
-UserDidExitSearchRecipient,
 UserDidSelectUserFromSearchRecipient,
 UserDidFlagConversation,
 ,
@@ -202,4 +200,3 @@ SearchDidAppear,
 ,
 // Settings,
 UserDidSelectSetting,User tapped one of the options in the settings section. Params: Name
-UserDidChangeSetting,User made a change to one of the options in the settings section.

@@ -2,7 +2,7 @@
 // victorious/victorious/Managers/Tracking/VTrackingConstants.m 
 // victorious 
 // 
-// Generated from CSV using script "tracking_generate_constants.sh" on 02/20/15. 
+// Generated from CSV using script "tracking_generate_constants.sh" on 02/22/15. 
 // Copyright (c) 2015 Victorious. All rights reserved. 
 // 
 
@@ -181,8 +181,6 @@ NSString * const VTrackingEventUserDidInviteFiendsWithSMS = @"UserDidInviteFiend
 NSString * const VTrackingEventUserDidSelectCreateMessage = @"UserDidSelectCreateMessage";
 NSString * const VTrackingEventUserDidSendMessage = @"UserDidSendMessage";
 NSString * const VTrackingEventUserDidSelectMessage = @"UserDidSelectMessage";
-NSString * const VTrackingEventUserDidSearchRecipient = @"UserDidSearchRecipient";
-NSString * const VTrackingEventUserDidExitSearchRecipient = @"UserDidExitSearchRecipient";
 NSString * const VTrackingEventUserDidSelectUserFromSearchRecipient = @"UserDidSelectUserFromSearchRecipient";
 NSString * const VTrackingEventUserDidFlagConversation = @"UserDidFlagConversation";
 
@@ -212,7 +210,6 @@ NSString * const VTrackingEventSearchDidAppear = @"SearchDidAppear";
 
 // Settings
 NSString * const VTrackingEventUserDidSelectSetting = @"UserDidSelectSetting";
-NSString * const VTrackingEventUserDidChangeSetting = @"UserDidChangeSetting";
 
 // Tracking Event Parameters
 NSString * const VTrackingKeyCurrentSection = @"CurrentSection";
@@ -220,20 +217,18 @@ NSString * const VTrackingKeySection = @"Section";
 NSString * const VTrackingKeyTextType = @"TextType";
 NSString * const VTrackingKeyTextLength = @"TextLength";
 NSString * const VTrackingKeyContentType = @"ContentType";
+NSString * const VTrackingKeyMediaType = @"MediaType";
 NSString * const VTrackingKeyStreamName = @"StreamName";
 NSString * const VTrackingKeyErrorMessage = @"ErrorMessage";
 NSString * const VTrackingKeyContext = @"Context";
 NSString * const VTrackingKeySearchTerm = @"SearchTerm";
-NSString * const VTrackingKeyResultCount = @"ResultCount";
 NSString * const VTrackingKeyStreamId = @"StreamId";
 NSString * const VTrackingKeyTimeStamp = @"TimeStamp";
 NSString * const VTrackingKeySequenceId = @"SequenceId";
-NSString * const VTrackingKeySequenceName = @"SequenceName";
 NSString * const VTrackingKeyVoteCount = @"VoteCount";
 NSString * const VTrackingKeyUrls = @"Urls";
 NSString * const VTrackingKeyShareDestination = @"ShareDestination";
 NSString * const VTrackingKeySequenceCategory = @"SequenceCategory";
-NSString * const VTrackingKeyAppViewName = @"AppViewName";
 NSString * const VTrackingKeyNotificationId = @"NotificationId";
 NSString * const VTrackingKeySessionTime = @"SessionTime";
 NSString * const VTrackingKeyFromTime = @"FromTime";
@@ -252,21 +247,11 @@ NSString * const VTrackingKeyCount = @"Count";
 NSString * const VTrackingKeyRemoteId = @"RemoteId";
 
 // Tracking Event Values
-// TextType values
-NSString * const VTrackingValueMeme = @"Meme";
-NSString * const VTrackingValueQuote = @"Quote";
-
 // ContentType values
 NSString * const VTrackingValueGIF = @"GIF";
 NSString * const VTrackingValueVideo = @"Video";
 NSString * const VTrackingValueImage = @"Image";
 NSString * const VTrackingValuePoll = @"Poll";
-NSString * const VTrackingValueTextOnly = @"TextOnly";
-
-// MediaSource values
-NSString * const VTrackingValueCamera = @"Camera";
-NSString * const VTrackingValueLirbary = @"Lirbary";
-NSString * const VTrackingValueImageSearch = @"ImageSearch";
 
 // Context values
 NSString * const VTrackingValueDiscoverSearch = @"DiscoverSearch";

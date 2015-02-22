@@ -286,7 +286,7 @@ static inline BOOL isSessionQueue()
             }
             dispatch_async(dispatch_get_main_queue(), ^(void)
             {
-                [self trackFailureWithError:uploadError];
+                [self trackFailureWithError:uploadError URL:uploadBodyFileURL];
                 
                 [[NSNotificationCenter defaultCenter] postNotificationName:VUploadManagerTaskFailedNotification
                                                                     object:uploadTask
@@ -652,7 +652,7 @@ totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend
                 }
                 dispatch_async(dispatch_get_main_queue(), ^(void)
                 {
-                    [self trackFailureWithError:error ?: victoriousError];
+                    [self trackFailureWithError:(error ?: victoriousError) URL:task.currentRequest.URL];
                     
                     [[NSNotificationCenter defaultCenter] postNotificationName:VUploadManagerTaskFailedNotification
                                                                         object:taskInformation
@@ -665,7 +665,8 @@ totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend
                 [self removeFromQueue:taskInformation];
                 dispatch_async(dispatch_get_main_queue(), ^(void)
                 {
-                    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUploadDidSucceed];
+                    NSDictionary *params = @{ VTrackingKeyMediaType : [task.currentRequest.URL pathExtension] ?: @"" };
+                    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUploadDidSucceed parameters:params];
                     
                     [[NSNotificationCenter defaultCenter] postNotificationName:VUploadManagerTaskFinishedNotification
                                                                         object:taskInformation
@@ -706,11 +707,12 @@ totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend
 
 #pragma mark - Tracking helpers
 
-- (void)trackFailureWithError:(NSError *)error
+- (void)trackFailureWithError:(NSError *)error URL:(NSURL *)url
 {
     if ( error.code != NSURLErrorCancelled )
     {
-        NSDictionary *params = @{ VTrackingKeyErrorMessage : error.localizedDescription ?: @"" };
+        NSDictionary *params = @{ VTrackingKeyErrorMessage : error.localizedDescription ?: @"",
+                                  VTrackingKeyMediaType : [url pathExtension] ?: @"" };
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUploadDidFail parameters:params];
     }
 }

@@ -2,7 +2,7 @@
 // victorious/victorious/Managers/Tracking/VTrackingConstants.h 
 // victorious 
 // 
-// Generated from CSV using script "tracking_generate_constants.sh" on 02/20/15. 
+// Generated from CSV using script "tracking_generate_constants.sh" on 02/22/15. 
 // Copyright (c) 2015 Victorious. All rights reserved. 
 // 
 
@@ -181,8 +181,6 @@ extern NSString * const VTrackingEventUserDidInviteFiendsWithSMS;
 extern NSString * const VTrackingEventUserDidSelectCreateMessage; 
 extern NSString * const VTrackingEventUserDidSendMessage; //< "Params: TextLength, MediaType"
 extern NSString * const VTrackingEventUserDidSelectMessage; 
-extern NSString * const VTrackingEventUserDidSearchRecipient; //< "Params: SearchTerm, ResultCount"
-extern NSString * const VTrackingEventUserDidExitSearchRecipient; 
 extern NSString * const VTrackingEventUserDidSelectUserFromSearchRecipient; 
 extern NSString * const VTrackingEventUserDidFlagConversation; 
 
@@ -212,7 +210,6 @@ extern NSString * const VTrackingEventSearchDidAppear;
 
 // Settings
 extern NSString * const VTrackingEventUserDidSelectSetting; //< User tapped one of the options in the settings section. Params: Name
-extern NSString * const VTrackingEventUserDidChangeSetting; //< User made a change to one of the options in the settings section.
 
 // Tracking Event Parameters
 extern NSString * const VTrackingKeyCurrentSection; //< "Which major section is selected, such as ""Home"", ""Indbox"", ""Profile"", etc."
@@ -220,20 +217,18 @@ extern NSString * const VTrackingKeySection; //< The section of the app that is 
 extern NSString * const VTrackingKeyTextType; //< "For content creation, either Quote or Meme."
 extern NSString * const VTrackingKeyTextLength; //< "Length of text for new post captions, comments or messages."
 extern NSString * const VTrackingKeyContentType; //< "Indicates the type of some existing content with which a user is interacting (GIF, Video, Image or Poll).  Not to be confused with MediaType, which refers to the content being created."
+extern NSString * const VTrackingKeyMediaType; //< "Indicates the type of some uploaded media by path extension (""jpg"", ""mp4"", etc.)"
 extern NSString * const VTrackingKeyStreamName; //< The name of the last loaded stream from where the user has come.
 extern NSString * const VTrackingKeyErrorMessage; //< "For error events, should describe the error, if available."
 extern NSString * const VTrackingKeyContext; //< A pre-defined context where the event has taken place (See tracking values list)
 extern NSString * const VTrackingKeySearchTerm; //< Text entered for any search event
-extern NSString * const VTrackingKeyResultCount; //< Number of results returned for the search event.
 extern NSString * const VTrackingKeyStreamId; //< A string containing the stream's remote ID; Backend mapping: %%STREAM_ID%%
 extern NSString * const VTrackingKeyTimeStamp; //< A string containing a timestamp with the following format: yyyy-MM-dd HH:mm:ss; Backend mapping %%TIME_STAMP%%
 extern NSString * const VTrackingKeySequenceId; //< Backend mapping: %%SEQUENCE_ID%%
-extern NSString * const VTrackingKeySequenceName; 
 extern NSString * const VTrackingKeyVoteCount; //< The number of votes (emotive ballistic/experience enhancer throws) that occurred; Backend mapping: %%COUNT%%
 extern NSString * const VTrackingKeyUrls; //< An array of 1 or more URLs with replaceable macros receied from the server
 extern NSString * const VTrackingKeyShareDestination; //< "An identifier for a share action, usually provided by the system (Facebook, Twitter, Email, SMS, etc.); Backend mapping: %%SHARE_DEST%%"
 extern NSString * const VTrackingKeySequenceCategory; //< A string representing the 'category' property of a sequence
-extern NSString * const VTrackingKeyAppViewName; 
 extern NSString * const VTrackingKeyNotificationId; //< The ID of the push notification that spawned the process in which the tracking event has occurred; Backend mapping: %%NOTIF_ID%%
 extern NSString * const VTrackingKeySessionTime; //< An integer value representing milliseconds of an activity's duration; Backend mapping: %%SESSION_TIME%%
 extern NSString * const VTrackingKeyFromTime; //< A decimal value in seconds of when a video skip event began; Backend mapping: %%TIME_FROM%%
@@ -252,21 +247,11 @@ extern NSString * const VTrackingKeyCount; //< "Generic, to indicate quantity as
 extern NSString * const VTrackingKeyRemoteId; //< "Generic, to indicate backend remote ID associated with an item"
 
 // Tracking Event Values
-// TextType values
-extern NSString * const VTrackingValueMeme; 
-extern NSString * const VTrackingValueQuote; 
-
 // ContentType values
 extern NSString * const VTrackingValueGIF; 
 extern NSString * const VTrackingValueVideo; 
 extern NSString * const VTrackingValueImage; 
 extern NSString * const VTrackingValuePoll; 
-extern NSString * const VTrackingValueTextOnly; 
-
-// MediaSource values
-extern NSString * const VTrackingValueCamera; //< Photo or image was just capture from camera
-extern NSString * const VTrackingValueLirbary; //< Photo or image was loaded from user's device library
-extern NSString * const VTrackingValueImageSearch; //< Photo was loaded from the image search feature
 
 // Context values
 extern NSString * const VTrackingValueDiscoverSearch; //< Event triggered from discover section's search results

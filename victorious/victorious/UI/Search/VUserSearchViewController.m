@@ -183,6 +183,8 @@ static const NSInteger kSearchResultLimit = 100;
         return;
     }
     
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectUserFromSearchRecipient];
+    
     VMessageContainerViewController *composeController = [VMessageContainerViewController messageViewControllerForUser:profile];
     [self.navigationController pushViewController:composeController animated:YES];
 }

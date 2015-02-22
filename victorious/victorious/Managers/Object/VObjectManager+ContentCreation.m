@@ -8,7 +8,7 @@
 
 #import "NSURL+MediaType.h"
 #import "VObjectManager+ContentCreation.h"
-
+#import "VConversation.h"
 #import "VObjectManager+Private.h"
 #import "VUploadManager.h"
 #import "VUploadTaskCreator.h"
@@ -343,20 +343,8 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
             [asset addCommentsObject: newComment];
         }
         
-        NSString *extension = [[mediaURL pathExtension] lowercaseString];
-        NSString *contentType = VTrackingValueTextOnly;
-        if ( [@[ VConstantMediaExtensionMP4, VConstantMediaExtensionMOV ] containsObject:extension ] )
-        {
-            // TODO: When better GIF differentiation is added, detect if a GIF is being supplied
-            contentType = VTrackingValueVideo;
-        }
-        else if ( [@[ VConstantMediaExtensionPNG, VConstantMediaExtensionJPG, VConstantMediaExtensionJPEG ] containsObject:extension ] )
-        {
-            contentType = VTrackingValueImage;
-        }
-        
         NSDictionary *params = @{ VTrackingKeyTextLength : @(text.length),
-                                  VTrackingKeyContentType : contentType };
+                                  VTrackingKeyMediaType : [mediaURL pathExtension] ?: @"" };
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidPostComment parameters:params];
 
         if ( success != nil )
@@ -433,9 +421,10 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
                                   @"text" : message.text ?: [NSNull null]
                                   } mutableCopy];
     NSDictionary *allURLs;
+    NSURL *mediaURL;
     if (message.mediaPath)
     {
-        NSURL *mediaURL = [NSURL URLWithString:message.mediaPath];
+        mediaURL = [NSURL URLWithString:message.mediaPath];
         allURLs = @{@"media_data": mediaURL};
         NSString *type = [message.mediaPath v_hasVideoExtension] ? @"video" : @"image";
         [parameters setValue:type forKey:@"media_type"];
@@ -443,6 +432,10 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
+        NSDictionary *params = @{ VTrackingKeyTextLength : @(message.text.length),
+                                  VTrackingKeyMediaType : [mediaURL pathExtension] ?: @"" };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSendMessage parameters:params];
+        
         if ([fullResponse isKindOfClass:[NSDictionary class]])
         {
             [message.managedObjectContext performBlock:^(void)

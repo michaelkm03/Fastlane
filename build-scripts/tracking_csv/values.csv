@@ -1,19 +1,9 @@
 // Tracking Event Values,// Comments
-// TextType values,
-Meme,
-Quote,
-,
 // ContentType values,
 GIF,
 Video,
 Image,
 Poll,
-TextOnly,
-,
-// MediaSource values,
-Camera,Photo or image was just capture from camera
-Lirbary,Photo or image was loaded from user's device library
-ImageSearch,Photo was loaded from the image search feature
 ,
 // Context values,
 DiscoverSearch,Event triggered from discover section's search results
