@@ -59,6 +59,8 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 @property (nonatomic, strong) VTrackingManager *trackingManager;
 @property (nonatomic, strong) VTracking *trackingItem;
 
+@property (nonatomic, assign) float rateBeforeScrubbing;
+
 @end
 
 @implementation VCVideoPlayerViewController
@@ -720,20 +722,26 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 - (IBAction)sliderTouchDown:(UISlider *)sender
 {
     self.sliderTouchActive = YES;
+    self.rateBeforeScrubbing = self.player.rate;
+    [self.player pause];
 }
 
 - (IBAction)sliderValueChanged:(UISlider *)slider
 {
     CMTime duration = [self playerItemDuration];
-    [self.player seekToTime:CMTimeMultiplyByFloat64(duration, self.toolbarView.slider.value)];
+    [self.player seekToTime:CMTimeMultiplyByFloat64(duration, slider.value)];
 }
 
-- (IBAction)sliderTouchUp:(UISlider *)sender
+- (IBAction)sliderTouchUp:(UISlider *)slider
 {
     self.toolbarShowDate = [NSDate date];
-    self.sliderTouchActive = NO;
     CMTime duration = [self playerItemDuration];
-    [self.player seekToTime:CMTimeMultiplyByFloat64(duration, self.toolbarView.slider.value)];
+    [self.player seekToTime:CMTimeMultiplyByFloat64(duration, slider.value)
+          completionHandler:^(BOOL finished)
+    {
+        [self.player setRate:self.rateBeforeScrubbing];
+        self.sliderTouchActive = NO;
+    }];
 }
 
 - (IBAction)sliderTouchCancelled:(id)sender
