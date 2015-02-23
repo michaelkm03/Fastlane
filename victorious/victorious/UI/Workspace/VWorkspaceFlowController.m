@@ -40,6 +40,7 @@
 // Animators
 #import "VPublishBlurOverAnimator.h"
 #import "VVCameraShutterOverAnimator.h"
+#import "VWorkspaceToWorkspaceAnimator.h"
 
 // Here be dragons
 #import <objc/runtime.h>
@@ -436,6 +437,12 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
         [cameraViewController setToolbarHidden:NO];
         self.state = VWorkspaceFlowControllerStateCapture;
         return nil;
+    }
+    
+    
+    if ([fromVC isKindOfClass:[VWorkspaceViewController class]] && [toVC isKindOfClass:[VWorkspaceViewController class]])
+    {
+        return [[VWorkspaceToWorkspaceAnimator alloc] init];
     }
     
     if (![fromVC isKindOfClass:[VPublishViewController class]] && ![toVC isKindOfClass:[VPublishViewController class]])

@@ -598,6 +598,7 @@
 		D836884119C370C400070F22 /* VBaseCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D836884019C370C400070F22 /* VBaseCollectionViewCell.m */; };
 		D836884419C3718A00070F22 /* VBaseSupplementaryView.m in Sources */ = {isa = PBXBuildFile; fileRef = D836884319C3718A00070F22 /* VBaseSupplementaryView.m */; };
 		D84FD73D19D5E5F200E7F9F2 /* VActionItem.m in Sources */ = {isa = PBXBuildFile; fileRef = D84FD73C19D5E5F200E7F9F2 /* VActionItem.m */; };
+		D86448A11A9ACCE700CD01AC /* VWorkspaceToWorkspaceAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = D86448A01A9ACCE700CD01AC /* VWorkspaceToWorkspaceAnimator.m */; };
 		D86BF34A1A42234500C9F420 /* VPublishViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D86BF3491A42234500C9F420 /* VPublishViewController.m */; };
 		D86BF34F1A42364B00C9F420 /* UIView+VDynamicsHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = D86BF34E1A42364B00C9F420 /* UIView+VDynamicsHelpers.m */; };
 		D86BF3511A4245CB00C9F420 /* VPublishViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D86BF3501A4245CB00C9F420 /* VPublishViewController.xib */; };
@@ -1774,6 +1775,8 @@
 		D836884319C3718A00070F22 /* VBaseSupplementaryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VBaseSupplementaryView.m; sourceTree = "<group>"; };
 		D84FD73B19D5E5F200E7F9F2 /* VActionItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VActionItem.h; sourceTree = "<group>"; };
 		D84FD73C19D5E5F200E7F9F2 /* VActionItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VActionItem.m; sourceTree = "<group>"; };
+		D864489F1A9ACCE700CD01AC /* VWorkspaceToWorkspaceAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VWorkspaceToWorkspaceAnimator.h; sourceTree = "<group>"; };
+		D86448A01A9ACCE700CD01AC /* VWorkspaceToWorkspaceAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VWorkspaceToWorkspaceAnimator.m; sourceTree = "<group>"; };
 		D86BF3481A42234500C9F420 /* VPublishViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPublishViewController.h; sourceTree = "<group>"; };
 		D86BF3491A42234500C9F420 /* VPublishViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPublishViewController.m; sourceTree = "<group>"; };
 		D86BF34D1A42364B00C9F420 /* UIView+VDynamicsHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+VDynamicsHelpers.h"; sourceTree = "<group>"; };
@@ -4294,6 +4297,8 @@
 				D86BF35B1A42683E00C9F420 /* VPublishBlurOverAnimator.m */,
 				D8332DBE1A7C72EB00C3FEE0 /* VVCameraShutterOverAnimator.h */,
 				D8332DBF1A7C72EB00C3FEE0 /* VVCameraShutterOverAnimator.m */,
+				D864489F1A9ACCE700CD01AC /* VWorkspaceToWorkspaceAnimator.h */,
+				D86448A01A9ACCE700CD01AC /* VWorkspaceToWorkspaceAnimator.m */,
 			);
 			path = Animators;
 			sourceTree = "<group>";
@@ -5193,6 +5198,7 @@
 				039ED29919C908F400305987 /* VCVideoPlayerToolbarSlider.m in Sources */,
 				D88CEAE81A92EEED00F5A837 /* VSnapshotViewController.m in Sources */,
 				A7D7079C1A7C144C00D9993F /* VEndCardAnimator.m in Sources */,
+				D86448A11A9ACCE700CD01AC /* VWorkspaceToWorkspaceAnimator.m in Sources */,
 				BE171E151868C211004E5202 /* VNodeAction+RestKit.m in Sources */,
 				03CE670019B640CD0011BB9E /* VDeviceInfo.m in Sources */,
 				A77AD5011A2011E000142F24 /* UIActionSheet+VBlocks.m in Sources */,

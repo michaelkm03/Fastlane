@@ -362,9 +362,16 @@
 
 #pragma mark - Public Methods
 
-- (void)bringChromeOutOfView
+- (void)bringTopChromeOutOfView
 {
     self.verticalSpaceTopBarToContainer.constant = -CGRectGetHeight(self.topToolbar.frame);
+    self.blurredBackgroundImageView.alpha = 0.0f;
+    self.view.backgroundColor = [UIColor clearColor];
+    [self.view layoutIfNeeded];
+}
+
+- (void)bringBottomChromeOutOfView
+{
     self.verticalSpaceBottomBarToContainer.constant = -CGRectGetHeight(self.bottomToolbar.frame);
     self.blurredBackgroundImageView.alpha = 0.0f;
     self.view.backgroundColor = [UIColor clearColor];
