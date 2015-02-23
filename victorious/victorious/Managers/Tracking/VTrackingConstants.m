@@ -2,7 +2,7 @@
 // victorious/victorious/Managers/Tracking/VTrackingConstants.m 
 // victorious 
 // 
-// Generated from CSV using script "tracking_generate_constants.sh" on 02/22/15. 
+// Generated from CSV using script "tracking_generate_constants.sh" on 02/23/15. 
 // Copyright (c) 2015 Victorious. All rights reserved. 
 // 
 
@@ -273,10 +273,6 @@ NSString * const VTrackingValueSuggestedPeople = @"SuggestedPeople";
 NSString * const VTrackingValueFindFriends = @"FindFriends";
 NSString * const VTrackingValueReposters = @"Reposters";
 
-// Menu Type Values
+// Menu types
 NSString * const VTrackingValueHamburgerMenu = @"HamburgerMenu";
 NSString * const VTrackingValueTabBar = @"TabBar";
-
-// Booleans (to keep in sync cross platform)
-NSString * const VTrackingValueTrue  = @"True ";
-NSString * const VTrackingValueFalse  = @"False ";

@@ -204,23 +204,23 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
 - (void)trackPublishWithPublishParameters:(VPublishParameters *)publishParameters
 {
     NSDictionary *common = @{ VTrackingKeyCaptionLength : @(publishParameters.caption .length),
-                              VTrackingKeyDidSaveToDevice : VTrackingBool(publishParameters.shouldSaveToCameraRoll) };
+                              VTrackingKeyDidSaveToDevice : @(publishParameters.shouldSaveToCameraRoll) };
     
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:common];
     if ( publishParameters.isVideo )
     {
         params[ VTrackingKeyContentType ] = VTrackingValueVideo;
-        params[ VTrackingKeyDidTrim ] = VTrackingBool( publishParameters.didTrim );
+        params[ VTrackingKeyDidTrim ] = @( publishParameters.didTrim );
     }
     else if ( publishParameters.isGIF )
     {
         params[ VTrackingKeyContentType ] = VTrackingValueGIF;
-        params[ VTrackingKeyDidTrim ] = VTrackingBool( publishParameters.didTrim );
+        params[ VTrackingKeyDidTrim ] = @( publishParameters.didTrim );
     }
     else
     {
         params[ VTrackingKeyContentType ] = VTrackingValueImage;
-        params[ VTrackingKeyDidCrop ] = VTrackingBool( publishParameters.didCrop );
+        params[ VTrackingKeyDidCrop ] = @( publishParameters.didCrop );
         params[ VTrackingKeyFilterName ] = publishParameters.filterName ?: @"";
         params[ VTrackingKeyTextType ] = publishParameters.textToolType ?: @"";
         params[ VTrackingKeyTextLength ] = @(publishParameters.embeddedText.length);
