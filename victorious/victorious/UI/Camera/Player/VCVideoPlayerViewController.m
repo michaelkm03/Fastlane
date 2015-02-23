@@ -722,6 +722,12 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     self.sliderTouchActive = YES;
 }
 
+- (IBAction)sliderValueChanged:(UISlider *)slider
+{
+    CMTime duration = [self playerItemDuration];
+    [self.player seekToTime:CMTimeMultiplyByFloat64(duration, self.toolbarView.slider.value)];
+}
+
 - (IBAction)sliderTouchUp:(UISlider *)sender
 {
     self.toolbarShowDate = [NSDate date];
