@@ -283,17 +283,13 @@ static const NSTimeInterval kNotRecordingTrackingTime = 0.0;
     {
         if (self.cameraControlState == VCameraControlStateDefault)
         {
-            VLog(@"highlight animations");
             self.alpha = kHighlightedAlpha;
-//            self.backgroundColor = [self.tintColor v_colorDarkenedBy:kHighlightedTintMixFactor];
             self.transform = CGAffineTransformMakeScale(kHighlightedScaleFactor, kHighlightedScaleFactor);
         }
     };
     void (^unhighLightAnimations)(void) = ^void(void)
     {
-        VLog(@"unhighlight animations");
         self.alpha = 1.0f;
-        self.backgroundColor = [UIColor whiteColor];
         self.transform = CGAffineTransformIdentity;
     };
     
