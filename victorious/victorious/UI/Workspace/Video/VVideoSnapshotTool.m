@@ -64,6 +64,7 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
 
 - (void)exportToURL:(NSURL *)url withCompletion:(void (^)(BOOL, UIImage *, NSError *))completion
 {
+    NSAssert(FALSE, @"This tool calls it's own completion block when it is finished!");
 }
 
 - (NSURL *)mediaURL
