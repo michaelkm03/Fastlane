@@ -740,7 +740,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     [self.player seekToTime:CMTimeMultiplyByFloat64(duration, slider.value)
           completionHandler:^(BOOL finished)
     {
-        if(self.shouldRestorePlaybackAfterSeeking)
+        if (self.shouldRestorePlaybackAfterSeeking)
         {
             [self.player setRate:self.rateBeforeScrubbing];
         }
