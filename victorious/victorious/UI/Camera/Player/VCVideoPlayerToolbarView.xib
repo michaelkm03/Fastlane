@@ -30,11 +30,11 @@
                     <color key="textColor" red="1" green="1" blue="1" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2iI-mz-ayL" userLabel="Slider Container">
-                    <rect key="frame" x="98" y="0.0" width="154" height="41"/>
+                <view opaque="NO" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2iI-mz-ayL" userLabel="Slider Container">
+                    <rect key="frame" x="98" y="0.0" width="153" height="41"/>
                     <subviews>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8ap-Xa-1Se" userLabel="Progress Backdrop">
-                            <rect key="frame" x="0.0" y="19" width="154" height="3"/>
+                        <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8ap-Xa-1Se" userLabel="Progress Backdrop">
+                            <rect key="frame" x="0.0" y="19" width="153" height="3"/>
                             <color key="backgroundColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="3" id="qZb-by-Uh5"/>
@@ -45,8 +45,8 @@
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
                         </view>
-                        <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zMc-7b-lj2" userLabel="Progress Indicator" customClass="VVideoDownloadProgressIndicatorView">
-                            <rect key="frame" x="0.0" y="19" width="154" height="3"/>
+                        <view opaque="NO" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zMc-7b-lj2" userLabel="Progress Indicator" customClass="VVideoDownloadProgressIndicatorView">
+                            <rect key="frame" x="0.0" y="19" width="153" height="3"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <userDefinedRuntimeAttributes>
                                 <userDefinedRuntimeAttribute type="color" keyPath="color">
@@ -54,14 +54,13 @@
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
                         </view>
-                        <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="cGW-8O-wY3" customClass="VCVideoPlayerToolbarSlider">
-                            <rect key="frame" x="-2" y="6" width="158" height="31"/>
+                        <slider opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="cGW-8O-wY3" customClass="VCVideoPlayerToolbarSlider">
+                            <rect key="frame" x="-2" y="6" width="157" height="31"/>
                             <connections>
                                 <action selector="sliderTouchCancelled:" destination="-1" eventType="touchCancel" id="VZb-rV-CUd"/>
                                 <action selector="sliderTouchDown:" destination="-1" eventType="touchDown" id="ywP-yW-GsI"/>
-                                <action selector="sliderTouchUp:" destination="-1" eventType="touchUpInside" id="gBN-wG-rxa"/>
-                                <action selector="sliderTouchUp:" destination="-1" eventType="touchUpOutside" id="sWb-9i-U8t"/>
-                                <action selector="sliderValueChanged:" destination="-1" eventType="valueChanged" id="H1w-JW-jHN"/>
+                                <action selector="sliderTouchUp:" destination="-1" eventType="touchUpInside" id="5Qh-8d-Ery"/>
+                                <action selector="sliderTouchUp:" destination="-1" eventType="touchUpOutside" id="QdX-zj-4jP"/>
                             </connections>
                         </slider>
                     </subviews>
@@ -80,7 +79,7 @@
                     </constraints>
                 </view>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10:45" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H77-4X-h6p" userLabel="Remaining Time">
-                    <rect key="frame" x="260" y="0.0" width="41" height="41"/>
+                    <rect key="frame" x="259" y="0.0" width="41" height="41"/>
                     <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="16"/>
                     <color key="textColor" red="1" green="1" blue="1" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>

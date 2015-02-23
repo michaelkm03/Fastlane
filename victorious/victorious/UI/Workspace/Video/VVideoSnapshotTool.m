@@ -54,7 +54,7 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
         _videoPlayerViewController.shouldShowToolbar = YES;
         _videoPlayerViewController.shouldChangeVideoGravityOnDoubleTap = NO;
         _videoPlayerViewController.videoPlayerLayerVideoGravity = AVLayerVideoGravityResizeAspectFill;
-//        _videoPlayerViewController.view.frame =  CGRectMake(0, 0, 320, 320);
+        _videoPlayerViewController.shouldRestorePlaybackAfterSeeking = NO;
         [_videoPlayerViewController.view layoutIfNeeded];
         
         _snapshotToolViewController = [[VSnapshotViewController alloc] initWithNibName:nil bundle:nil];

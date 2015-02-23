@@ -96,6 +96,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     self.shouldContinuePlayingAfterDismissal = YES;
     self.shouldShowToolbar = YES;
     self.shouldFireAnalytics = YES;
+    self.shouldRestorePlaybackAfterSeeking = YES;
     self.startTime = CMTimeMakeWithSeconds(0, 1);
     self.player = [[AVPlayer alloc] init];
     [self.player addObserver:self
@@ -739,7 +740,10 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     [self.player seekToTime:CMTimeMultiplyByFloat64(duration, slider.value)
           completionHandler:^(BOOL finished)
     {
-        [self.player setRate:self.rateBeforeScrubbing];
+        if(self.shouldRestorePlaybackAfterSeeking)
+        {
+            [self.player setRate:self.rateBeforeScrubbing];
+        }
         self.sliderTouchActive = NO;
     }];
 }
