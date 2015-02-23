@@ -258,19 +258,18 @@ extern NSString * const VTrackingValueVideo;
 extern NSString * const VTrackingValueImage; 
 extern NSString * const VTrackingValuePoll; 
 
-// Context values
+// Context values (to differentiate the source of similar actions)
 extern NSString * const VTrackingValueDiscoverSearch; //< Event triggered from discover section's search results
-extern NSString * const VTrackingValueTrendingHashtags; 
-extern NSString * const VTrackingValueUserSearch; 
+extern NSString * const VTrackingValueTrendingHashtags; //< Listed in Discover section
+extern NSString * const VTrackingValueUserSearch; //< "In Find Friends, Inbox, User tagging"
 extern NSString * const VTrackingValueEndCard; //< Event triggered from the end card
 extern NSString * const VTrackingValueUserProfile; //< While viewing a user's profile (including your own)
-extern NSString * const VTrackingValueHashtagStream; //< Event occurred in a hashtag stream
 extern NSString * const VTrackingValueContentView; //< Event occurred in content view
 extern NSString * const VTrackingValueStream; //< "Any stream, as opposed to content view"
 extern NSString * const VTrackingValueCommentsView; //< The standlone comments view (not content view)
 extern NSString * const VTrackingValueProfileFollowing; 
 extern NSString * const VTrackingValueProfileFollowers; 
-extern NSString * const VTrackingValueSuggestedPeople; 
+extern NSString * const VTrackingValueSuggestedPeople; //< In Discover section
 extern NSString * const VTrackingValueFindFriends; 
 extern NSString * const VTrackingValueReposters; 
 

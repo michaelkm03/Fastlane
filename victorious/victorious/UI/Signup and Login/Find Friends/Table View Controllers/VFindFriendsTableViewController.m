@@ -58,6 +58,20 @@
     }
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [[VTrackingManager sharedInstance] setValue:VTrackingValueFindFriends forSessionParameterWithKey:VTrackingKeyContext];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContext];
+}
+
 - (BOOL)prefersStatusBarHidden
 {
     return NO;

@@ -96,6 +96,15 @@
             self.tableView.contentOffset = CGPointMake(0, -self.refreshControl.bounds.size.height);
         } completion:nil];
     }
+    
+    [[VTrackingManager sharedInstance] setValue:VTrackingValueCommentsView forSessionParameterWithKey:VTrackingKeyContext];
+}
+
+- (void)viewWillDisppear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContext];
 }
 
 #pragma mark - Property Accessors

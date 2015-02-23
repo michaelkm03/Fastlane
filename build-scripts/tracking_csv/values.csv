@@ -5,19 +5,18 @@ Video,
 Image,
 Poll,
 ,
-// Context values,
+// Context values (to differentiate the source of similar actions),
 DiscoverSearch,Event triggered from discover section's search results
-TrendingHashtags,
-UserSearch,
+TrendingHashtags,Listed in Discover section
+UserSearch,"In Find Friends, Inbox, User tagging"
 EndCard,Event triggered from the end card
 UserProfile,While viewing a user's profile (including your own)
-HashtagStream,Event occurred in a hashtag stream
 ContentView,Event occurred in content view
 Stream,"Any stream, as opposed to content view"
 CommentsView,The standlone comments view (not content view)
 ProfileFollowing,
 ProfileFollowers,
-SuggestedPeople,
+SuggestedPeople,In Discover section
 FindFriends,
 Reposters,
 ,

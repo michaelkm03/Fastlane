@@ -872,8 +872,7 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
     if ( visibiltyRatio >= self.trackingMinRequiredCellVisibilityRatio )
     {
         const VSequence *sequence = cell.sequence;
-#warning Turn this back on, just for testing now
-        if ( sequence != nil && NO )
+        if ( sequence != nil )
         {
             NSDictionary *params = @{ VTrackingKeySequenceId : sequence.remoteId,
                                       VTrackingKeyStreamId : self.currentStream.remoteId,

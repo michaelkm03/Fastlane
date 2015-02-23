@@ -515,6 +515,8 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 {
     [super viewDidAppear:animated];
     
+    [[VTrackingManager sharedInstance] setValue:VTrackingValueContentView forSessionParameterWithKey:VTrackingKeyContext];
+    
 #if HANDOFFENABLED
     if ((self.viewModel.sequence.remoteId != nil) && (self.viewModel.shareURL != nil))
     {
@@ -532,6 +534,8 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
+    [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContext];
     
 #if HANDOFFENABLED
     self.handoffObject.delegate = nil;
@@ -1515,13 +1519,19 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)actionCellSelected:(VEndCardActionCell *)actionCell atIndex:(NSUInteger)index
 {
+    [[VTrackingManager sharedInstance] setValue:VTrackingValueEndCard forSessionParameterWithKey:VTrackingKeyContext];
+    
     if ( [actionCell.actionIdentifier isEqualToString:VEndCardActionIdentifierGIF] )
     {
         [self.sequenceActionController showRemixOnViewController:self.navigationController
                                                     withSequence:self.viewModel.sequence
                                             andDependencyManager:self.dependencyManager
                                                   preloadedImage:nil
-                                                      completion:nil];
+                                                      completion:^(BOOL finished)
+         {
+             [[VTrackingManager sharedInstance] setValue:VTrackingValueContentView
+                              forSessionParameterWithKey:VTrackingKeyContext];
+         }];
     }
     else if ( [actionCell.actionIdentifier isEqualToString:VEndCardActionIdentifierRepost] )
     {
@@ -1531,6 +1541,8 @@ referenceSizeForHeaderInSection:(NSInteger)section
          {
              [actionCell showSuccessState];
              actionCell.enabled = NO;
+             [[VTrackingManager sharedInstance] setValue:VTrackingValueContentView
+                              forSessionParameterWithKey:VTrackingKeyContext];
          }];
     }
     else if ( [actionCell.actionIdentifier isEqualToString:VEndCardActionIdentifierShare] )
@@ -1538,7 +1550,11 @@ referenceSizeForHeaderInSection:(NSInteger)section
         [self.sequenceActionController shareFromViewController:self.navigationController
                                                       sequence:self.viewModel.sequence
                                                           node:self.viewModel.currentNode
-                                                    completion:nil];
+                                                    completion:^
+         {
+             [[VTrackingManager sharedInstance] setValue:VTrackingValueContentView
+                              forSessionParameterWithKey:VTrackingKeyContext];
+         }];
     }
 }
 

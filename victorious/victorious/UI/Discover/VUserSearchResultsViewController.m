@@ -100,7 +100,16 @@ static NSString * const kVUserResultIdentifier = @"followerCell";
 {
     [super viewWillDisappear:animated];
     
+    [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContext];
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [[VTrackingManager sharedInstance] setValue:VTrackingValueUserSearch forSessionParameterWithKey:VTrackingKeyContext];
 }
 
 #pragma mark - UI setup

@@ -258,13 +258,12 @@ NSString * const VTrackingValueVideo = @"Video";
 NSString * const VTrackingValueImage = @"Image";
 NSString * const VTrackingValuePoll = @"Poll";
 
-// Context values
+// Context values (to differentiate the source of similar actions)
 NSString * const VTrackingValueDiscoverSearch = @"DiscoverSearch";
 NSString * const VTrackingValueTrendingHashtags = @"TrendingHashtags";
 NSString * const VTrackingValueUserSearch = @"UserSearch";
 NSString * const VTrackingValueEndCard = @"EndCard";
 NSString * const VTrackingValueUserProfile = @"UserProfile";
-NSString * const VTrackingValueHashtagStream = @"HashtagStream";
 NSString * const VTrackingValueContentView = @"ContentView";
 NSString * const VTrackingValueStream = @"Stream";
 NSString * const VTrackingValueCommentsView = @"CommentsView";

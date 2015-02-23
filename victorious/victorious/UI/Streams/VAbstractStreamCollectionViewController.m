@@ -132,6 +132,8 @@ const CGFloat kVLoadNextPagePoint = .75f;
         [self addScrollDelegate];
     }
     
+    [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingValueStream];
+    
     if ( self.isBeingPresented && self.canTrackViewDidAppear )
     {
         [self trackStreamDidAppear];
@@ -141,6 +143,8 @@ const CGFloat kVLoadNextPagePoint = .75f;
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
+    [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContext];
     
     self.navigationControllerScrollDelegate = nil;
 }

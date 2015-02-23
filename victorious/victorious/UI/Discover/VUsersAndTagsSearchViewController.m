@@ -151,6 +151,8 @@ static NSInteger const kVMaxSearchResults = 1000;
     }
 
     [self.searchField becomeFirstResponder];
+    
+    [[VTrackingManager sharedInstance] setValue:VTrackingValueDiscoverSearch forSessionParameterWithKey:VTrackingKeyContext];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -159,6 +161,8 @@ static NSInteger const kVMaxSearchResults = 1000;
     
     // Remove NSNotification Observers
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
+    
+    [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContext];
 }
 
 - (BOOL)v_prefersNavigationBarHidden
