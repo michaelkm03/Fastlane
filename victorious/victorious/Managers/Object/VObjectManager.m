@@ -469,9 +469,9 @@
     
     // Add location data to request if we have permission to collect it
     VLocationManager *locationManager = [VLocationManager sharedInstance];
-    if ([locationManager permissionGranted])
+    NSString *locationString = [locationManager httpFormattedLocationString];
+    if ([locationManager permissionGranted] && ![locationString isEqualToString:@""])
     {
-        NSString *locationString = [locationManager httpFormattedLocationString];
         [request addValue:locationString forHTTPHeaderField:@"X-Geo-Location"];
     }
 }

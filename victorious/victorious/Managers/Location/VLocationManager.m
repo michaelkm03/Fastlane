@@ -55,7 +55,13 @@
     VLog(@"\n\nDevice Location Details\n-----------------------\nLatitude: %@,\nLongitude: %@,\nPostal Code: %@\n\n", self.latitude, self.longitude, self.postalCode);
 #warning Location logging is enabled. Please disable it once when you're finished debugging.
 #endif
-    return [NSString stringWithFormat:@"latitude:%@, longitude:%@, postal_code:%@", self.latitude, self.longitude, self.postalCode];
+    
+    NSString *formattedString = @"";
+    if (self.latitude != nil && self.longitude != nil)
+    {
+        formattedString = [NSString stringWithFormat:@"latitude:%@, longitude:%@, postal_code:%@", self.latitude, self.longitude, self.postalCode];
+    }
+    return formattedString;
 }
 
 #pragma mark - Start / Stop Location Monitoring
