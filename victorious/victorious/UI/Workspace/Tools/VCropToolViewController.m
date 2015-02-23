@@ -8,6 +8,8 @@
 
 #import "VCropToolViewController.h"
 
+#import "UIScrollView+VCenterContent.h"
+
 @interface VCropToolViewController () <UIScrollViewDelegate>
 
 @property (nonatomic, weak, readwrite) IBOutlet UIScrollView *croppingScrollView;
@@ -138,6 +140,11 @@
     self.proxyView = [[UIView alloc] initWithFrame:proxyViewFrame];
     [self.croppingScrollView addSubview:self.proxyView];
     self.croppingScrollView.contentSize = proxyViewFrame.size;
+    
+    [self.view layoutIfNeeded];
+    
+    [self.croppingScrollView v_centerContentAnimated:NO];
+    
     self.hasLayedOutScrollView = YES;
 }
 
