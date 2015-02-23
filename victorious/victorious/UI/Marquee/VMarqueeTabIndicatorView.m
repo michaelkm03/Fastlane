@@ -121,29 +121,29 @@
     
     NSMutableArray *imageViews = [[NSMutableArray alloc] initWithCapacity:self.numberOfTabs];
     CGFloat imageWidth = self.tabImage.size.width;
-    CGFloat totalWidth = 0;
+    CGFloat xCenter = 0.0f;
     for (NSUInteger i = 0; i < self.numberOfTabs; i++)
     {
         UIImageView *imageView = [[UIImageView alloc] initWithImage:self.tabImage];
-        CGFloat xCenter = (i * (imageWidth + self.spacingBetweenTabs)) + (imageWidth / 2);
-        imageView.center = CGPointMake(xCenter, CGRectGetHeight(self.bounds) / 2);
+        xCenter = (i * (imageWidth + self.spacingBetweenTabs)) + (imageWidth / 2.0f);
+        imageView.center = CGPointMake(xCenter, CGRectGetHeight(self.bounds) / 2.0f);
         
         imageView.tintColor = i == self.currentlySelectedTab ? self.selectedColor : self.deselectedColor;
         
         [self.scrollView addSubview:imageView];
         imageViews[i] = imageView;
-        totalWidth += imageWidth + self.spacingBetweenTabs;
     }
+    CGFloat totalWidth = xCenter + imageWidth/2.0f;
     self.tabImageViews = imageViews;
     
     if (totalWidth < CGRectGetWidth(self.bounds))
     {
-        CGFloat xOffset = (CGRectGetWidth(self.bounds) - totalWidth) / 2;
-        self.scrollView.contentInset = UIEdgeInsetsMake(0, xOffset, 0, 0);
+        CGFloat xOffset = (CGRectGetWidth(self.bounds) - totalWidth) / 2.0f;
+        self.scrollView.contentInset = UIEdgeInsetsMake(0.0f, xOffset, 0.0f, 0.0f);
     }
     else
     {
-        self.scrollView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
+        self.scrollView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, 0.0f);
     }
 }
 

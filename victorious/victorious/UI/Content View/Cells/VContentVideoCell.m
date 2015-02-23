@@ -67,6 +67,7 @@
          */
         self.updatedVideoBounds = YES;
         self.videoPlayerViewController.view.frame = self.contentView.bounds;
+        self.adPlayerViewController.view.frame = self.contentView.bounds;
     }
 }
 
@@ -117,6 +118,8 @@
     [self.adPlayerViewController assignMonetizationPartner:monetizationPartner withDetails:details];
     self.adPlayerViewController.delegate = self;
     self.adPlayerViewController.view.hidden = NO;
+    [self.adPlayerViewController.view setFrame:self.contentView.bounds];
+
     [self.contentView addSubview:self.adPlayerViewController.view];
     
     [self.adPlayerViewController start];

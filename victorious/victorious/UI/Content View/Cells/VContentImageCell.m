@@ -28,7 +28,6 @@
     [super setBounds:bounds];
     if ( !self.updatedImageBounds )
     {
-        [self setBackgroundColor:[UIColor redColor]];
         /*
          Updating imageView bounds after first time bounds is set
          Assumes cell will never be re-updated to a new "full" size but allows normal content
