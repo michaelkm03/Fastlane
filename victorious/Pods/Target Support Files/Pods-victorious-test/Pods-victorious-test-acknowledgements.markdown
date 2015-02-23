@@ -1005,13 +1005,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 
-## TestFlightSDK
+## TestFairy
 
-All text and design is copyright © 2010-2014 TestFlight App, Inc.
-
-All rights reserved.
-
-https://testflightapp.com/tos/
 
 
 ## TransitionKit

@@ -7,7 +7,7 @@
 //
 
 #import "VAppDelegate.h"
-#import <TestFlightSDK/TestFlight.h>
+#import "TestFairy.h"
 #import "VThemeManager.h"
 #import "VReachability.h"
 
@@ -56,7 +56,9 @@ static BOOL isRunningTests(void) __attribute__((const));
     [ADEumInstrumentation initWithKey:@"AD-AAB-AAA-JWA"];
 #endif
     
-    [TestFlight setOptions:@{ TFOptionReportCrashes: @NO }];
+    [TestFairy begin:@"3f6a3cfe21285ffa606050752cfb6941ccedcf61"];
+    
+/*    [TestFlight setOptions:@{ TFOptionReportCrashes: @NO }];
 #ifdef QA
     [TestFlight takeOff:[[NSBundle mainBundle] objectForInfoDictionaryKey:kTestflightQAToken]];
 #elif STAGING
@@ -64,7 +66,7 @@ static BOOL isRunningTests(void) __attribute__((const));
 #elif DEBUG
 #else
     [TestFlight takeOff:[[NSBundle mainBundle] objectForInfoDictionaryKey:kTestflightReleaseToken]];
-#endif
+#endif*/
     
     [Crashlytics startWithAPIKey:@"58f61748f3d33b03387e43014fdfff29c5a1da73"];
     
