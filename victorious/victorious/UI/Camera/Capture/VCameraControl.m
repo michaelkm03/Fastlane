@@ -279,24 +279,17 @@ static const NSTimeInterval kNotRecordingTrackingTime = 0.0;
     
     [super setHighlighted:highlighted];
     
-    void (^highlightedAnimations)(void) = ^void(void)
-    {
-        if (self.cameraControlState == VCameraControlStateDefault)
-        {
-            self.alpha = kHighlightedAlpha;
-            self.transform = CGAffineTransformMakeScale(kHighlightedScaleFactor, kHighlightedScaleFactor);
-        }
-    };
-    void (^unhighLightAnimations)(void) = ^void(void)
-    {
-        self.alpha = 1.0f;
-        self.transform = CGAffineTransformIdentity;
-    };
-    
     if (highlighted)
     {
         [UIView animateWithDuration:kRecordingTriggerDuration/2
-                         animations:highlightedAnimations
+                         animations:^
+         {
+             if (self.cameraControlState == VCameraControlStateDefault)
+             {
+                 self.alpha = kHighlightedAlpha;
+                 self.transform = CGAffineTransformMakeScale(kHighlightedScaleFactor, kHighlightedScaleFactor);
+             }
+         }
                          completion:^(BOOL finished)
          {
              if ((self.cameraControlState == VCameraControlStateDefault) && self.isHighlighted)
@@ -319,7 +312,11 @@ static const NSTimeInterval kNotRecordingTrackingTime = 0.0;
     else
     {
         [UIView animateWithDuration:kRecordingTriggerDuration/2
-                         animations:unhighLightAnimations];
+                         animations:^
+         {
+             self.alpha = 1.0f;
+             self.transform = CGAffineTransformIdentity;
+         }];
     }
 }
 
