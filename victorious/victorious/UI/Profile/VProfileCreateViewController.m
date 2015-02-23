@@ -31,12 +31,14 @@
 #import "VAutomation.h"
 #import "VButton.h"
 
+#import "VLocationInfo.h"
+
 NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreateProfileAborted";
 
 @import CoreLocation;
 @import AddressBookUI;
 
-@interface VProfileCreateViewController () <UITextFieldDelegate, UITextViewDelegate, TTTAttributedLabelDelegate, CLLocationManagerDelegate, VWorkspaceFlowControllerDelegate>
+@interface VProfileCreateViewController () <UITextFieldDelegate, UITextViewDelegate, TTTAttributedLabelDelegate, VWorkspaceFlowControllerDelegate, VLocationInfoDelegate>
 
 @property (weak, nonatomic) IBOutlet UIButton *backButton;
 
@@ -47,8 +49,8 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
 
 @property (nonatomic, weak) IBOutlet UIImageView           *profileImageView;
 
-@property (nonatomic, strong) CLLocationManager            *locationManager;
-@property (nonatomic, strong) CLGeocoder                   *geoCoder;
+@property (nonatomic, strong) VLocationInfo                *locationInfo;
+@property (nonatomic, strong) CLGeocoder *geoCoder;
 
 @property (nonatomic, weak) IBOutlet    UISwitch           *agreeSwitch;
 @property (nonatomic, weak) IBOutlet    TTTAttributedLabel *agreementText;
@@ -123,11 +125,11 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
         && [CLLocationManager significantLocationChangeMonitoringAvailable]
         && !self.locationTextField.text.length)
     {
-        self.locationManager = [[CLLocationManager alloc] init];
-        self.locationManager.delegate = self;
-        if ([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)])
+        self.locationInfo = [VLocationInfo sharedInstance];
+        self.locationInfo.delegate = self;
+        if ([self.locationInfo.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)])
         {
-            [self.locationManager requestWhenInUseAuthorization];
+            [self.locationInfo.locationManager requestWhenInUseAuthorization];
         }
     }
     
@@ -185,7 +187,8 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
     
     self.navigationController.navigationBarHidden = YES;
 
-    [self.locationManager startMonitoringSignificantLocationChanges];
+    // Start location monitoring
+    [self.locationInfo startLocationChangesMonitoring];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(textFieldDidChange:)
@@ -231,7 +234,9 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
-    [self.locationManager  stopMonitoringSignificantLocationChanges];
+    
+    // Stop location monitoring
+    [self.locationInfo stopLocationChangesMonitoring];
 }
 
 - (BOOL)shouldAutorotate
@@ -372,50 +377,39 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
     }
 }
 
-#pragma mark - CCLocationManagerDelegate
+#pragma mark - VLocationInfoDelegate
 
-- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
+- (void)didReceiveLocations:(NSArray *)locations withLocationInfo:(VLocationInfo *)locationInfo
 {
-    [self.locationManager  stopUpdatingLocation];
-
     CLLocation *location = [locations lastObject];
-
     self.geoCoder = [[CLGeocoder alloc] init];
     [self.geoCoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error)
-    {
-        CLPlacemark            *mapLocation = [placemarks firstObject];
-        NSMutableDictionary    *locationDictionary = [NSMutableDictionary dictionaryWithCapacity:3];
-
-        if (mapLocation.locality)
-        {
-            [locationDictionary setObject:mapLocation.locality forKey:(__bridge NSString *)kABPersonAddressCityKey];
-        }
-
-        if (mapLocation.administrativeArea)
-        {
-            [locationDictionary setObject:mapLocation.administrativeArea forKey:(__bridge NSString *)kABPersonAddressStateKey];
-        }
-
-        [locationDictionary setObject:[(NSLocale *)[NSLocale autoupdatingCurrentLocale] objectForKey:NSLocaleCountryCode]
-                               forKey:(__bridge NSString *)kABPersonAddressCountryCodeKey];
-        
-        NSString *city = [locationDictionary valueForKey:@"City"];
-        NSString *state = [locationDictionary valueForKey:@"State"];
-        if ((city == nil) || (state == nil))
-        {
-            return;
-        }
-        self.locationTextField.text = [NSString stringWithFormat:@"%@, %@", city, state];
-        self.registrationModel.locationText = self.locationTextField.text;
-    }];
-}
-
-- (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status
-{
-    if (status == kCLAuthorizationStatusAuthorizedAlways || status == kCLAuthorizationStatusAuthorizedWhenInUse)
-    {
-        [manager startUpdatingLocation];
-    }
+     {
+         CLPlacemark            *mapLocation = [placemarks firstObject];
+         NSMutableDictionary    *locationDictionary = [NSMutableDictionary dictionaryWithCapacity:3];
+         
+         if (mapLocation.locality)
+         {
+             [locationDictionary setObject:mapLocation.locality forKey:(__bridge NSString *)kABPersonAddressCityKey];
+         }
+         
+         if (mapLocation.administrativeArea)
+         {
+             [locationDictionary setObject:mapLocation.administrativeArea forKey:(__bridge NSString *)kABPersonAddressStateKey];
+         }
+         
+         [locationDictionary setObject:[(NSLocale *)[NSLocale autoupdatingCurrentLocale] objectForKey:NSLocaleCountryCode]
+                                forKey:(__bridge NSString *)kABPersonAddressCountryCodeKey];
+         
+         NSString *city = [locationDictionary valueForKey:@"City"];
+         NSString *state = [locationDictionary valueForKey:@"State"];
+         if ((city == nil) || (state == nil))
+         {
+             return;
+         }
+         self.locationTextField.text = [NSString stringWithFormat:@"%@, %@", city, state];
+         self.registrationModel.locationText = self.locationTextField.text;
+     }];
 }
 
 #pragma mark - State
