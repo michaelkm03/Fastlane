@@ -9,6 +9,8 @@
 #import "VLocationInfo.h"
 @import AddressBookUI;
 
+#define EnableLocationInfoLogging 0  // Set this to 1 in order to view location details in the console log
+
 @interface VLocationInfo () <CLLocationManagerDelegate>
 
 @property (nonatomic, assign, readwrite) BOOL permissionGranted;
@@ -48,6 +50,11 @@
 
 - (NSString *)httpFormattedLocationString
 {
+    // I'm leaving this in here so we can confirm that requests
+#if DEBUG && EnableLocationInfoLogging
+    VLog(@"\n\nDevice Location Details\n-----------------------\nLatitude: %@,\nLongitude: %@,\nPostal Code: %@\n\n", self.latitude, self.longitude, self.postalCode);
+#warning Location logging is enabled. Please disable it once when you're finished debugging.
+#endif
     return [NSString stringWithFormat:@"latitude:%@, longitude:%@, postal_code:%@", self.latitude, self.longitude, self.postalCode];
 }
 

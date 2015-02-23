@@ -15,6 +15,7 @@
 #import "VPaginationManager.h"
 #import "VUploadManager.h"
 #import "VRootViewController.h"
+#import "VLocationInfo.h"
 
 #import "VConstants.h"
 
@@ -465,6 +466,14 @@
     [request addValue:@"iOS" forHTTPHeaderField:@"X-Client-Platform"];
     [request addValue:[[UIDevice currentDevice] systemVersion] forHTTPHeaderField:@"X-Client-OS-Version"];
     [request addValue:appVersion forHTTPHeaderField:@"X-Client-App-Version"];
+    
+    // Add location data to request if we have permission to collect it
+    VLocationInfo *locationInfo = [VLocationInfo sharedInstance];
+    if ([locationInfo permissionGranted])
+    {
+        NSString *locationString = [locationInfo httpFormattedLocationString];
+        [request addValue:locationString forHTTPHeaderField:@"X-Geo-Location"];
+    }
 }
 
 - (NSString *)rFC2822DateTimeString
