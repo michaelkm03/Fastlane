@@ -1,17 +1,17 @@
 //
-//  VLocationInfo.m
+//  VLocationManager.m
 //  victorious
 //
 //  Created by Lawrence Leach on 2/20/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VLocationInfo.h"
+#import "VLocationManager.h"
 @import AddressBookUI;
 
 #define EnableLocationInfoLogging 0  // Set this to 1 in order to view location details in the console log
 
-@interface VLocationInfo () <CLLocationManagerDelegate>
+@interface VLocationManager () <CLLocationManagerDelegate>
 
 @property (nonatomic, assign, readwrite) BOOL permissionGranted;
 @property (nonatomic, strong) NSString *latitude;
@@ -20,11 +20,11 @@
 
 @end
 
-@implementation VLocationInfo
+@implementation VLocationManager
 
 + (instancetype)sharedInstance
 {
-    static  VLocationInfo  *sharedInstance;
+    static  VLocationManager  *sharedInstance;
     static  dispatch_once_t onceToken;
     
     dispatch_once(&onceToken,
@@ -88,9 +88,9 @@
      }];
     
     // Send to delegate
-    if ([self.delegate respondsToSelector:@selector(didReceiveLocations:withLocationInfo:)])
+    if ([self.delegate respondsToSelector:@selector(didReceiveLocations:withLocationManager:)])
     {
-        [self.delegate didReceiveLocations:locations withLocationInfo:self];
+        [self.delegate didReceiveLocations:locations withLocationManager:self];
     }
 }
 

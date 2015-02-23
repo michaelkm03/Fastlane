@@ -31,14 +31,14 @@
 #import "VAutomation.h"
 #import "VButton.h"
 
-#import "VLocationInfo.h"
+#import "VLocationManager.h"
 
 NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreateProfileAborted";
 
 @import CoreLocation;
 @import AddressBookUI;
 
-@interface VProfileCreateViewController () <UITextFieldDelegate, UITextViewDelegate, TTTAttributedLabelDelegate, VWorkspaceFlowControllerDelegate, VLocationInfoDelegate>
+@interface VProfileCreateViewController () <UITextFieldDelegate, UITextViewDelegate, TTTAttributedLabelDelegate, VWorkspaceFlowControllerDelegate, VLocationManagerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIButton *backButton;
 
@@ -49,7 +49,7 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
 
 @property (nonatomic, weak) IBOutlet UIImageView           *profileImageView;
 
-@property (nonatomic, strong) VLocationInfo                *locationInfo;
+@property (nonatomic, strong) VLocationManager                *locationManager;
 @property (nonatomic, strong) CLGeocoder *geoCoder;
 
 @property (nonatomic, weak) IBOutlet    UISwitch           *agreeSwitch;
@@ -125,11 +125,11 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
         && [CLLocationManager significantLocationChangeMonitoringAvailable]
         && !self.locationTextField.text.length)
     {
-        self.locationInfo = [VLocationInfo sharedInstance];
-        self.locationInfo.delegate = self;
-        if ([self.locationInfo.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)])
+        self.locationManager = [VLocationManager sharedInstance];
+        self.locationManager.delegate = self;
+        if ([self.locationManager.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)])
         {
-            [self.locationInfo.locationManager requestWhenInUseAuthorization];
+            [self.locationManager.locationManager requestWhenInUseAuthorization];
         }
     }
     
@@ -188,7 +188,7 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
     self.navigationController.navigationBarHidden = YES;
 
     // Start location monitoring
-    [self.locationInfo startLocationChangesMonitoring];
+    [self.locationManager startLocationChangesMonitoring];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(textFieldDidChange:)
@@ -236,7 +236,7 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
     [super viewDidDisappear:animated];
     
     // Stop location monitoring
-    [self.locationInfo stopLocationChangesMonitoring];
+    [self.locationManager stopLocationChangesMonitoring];
 }
 
 - (BOOL)shouldAutorotate
@@ -379,7 +379,7 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
 
 #pragma mark - VLocationInfoDelegate
 
-- (void)didReceiveLocations:(NSArray *)locations withLocationInfo:(VLocationInfo *)locationInfo
+- (void)didReceiveLocations:(NSArray *)locations withLocationManager:(VLocationManager *)locationManager
 {
     CLLocation *location = [locations lastObject];
     self.geoCoder = [[CLGeocoder alloc] init];

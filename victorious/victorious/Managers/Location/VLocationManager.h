@@ -1,5 +1,5 @@
 //
-//  VLocationInfo.h
+//  VLocationManager.h
 //  victorious
 //
 //  Created by Lawrence Leach on 2/20/15.
@@ -9,9 +9,9 @@
 #import <Foundation/Foundation.h>
 @import CoreLocation;
 
-@class VLocationInfo;
+@class VLocationManager;
 
-@protocol VLocationInfoDelegate <NSObject>
+@protocol VLocationManagerDelegate <NSObject>
 
 @optional
 /**
@@ -20,11 +20,11 @@
  @param locations    NSArray of CLLocation objects
  @param locationInfo Instance of VLocationInfo
  */
-- (void)didReceiveLocations:(NSArray *)locations withLocationInfo:(VLocationInfo *)locationInfo;
+- (void)didReceiveLocations:(NSArray *)locations withLocationManager:(VLocationManager *)locationManager;
 
 @end
 
-@interface VLocationInfo : NSObject
+@interface VLocationManager : NSObject
 
 /**
  Read-only property to report on permission to use location information
@@ -39,7 +39,7 @@
 /**
  Delegate object to handle forwarding of CLLocation information
  */
-@property (nonatomic, weak) id<VLocationInfoDelegate>delegate;
+@property (nonatomic, weak) id<VLocationManagerDelegate>delegate;
 
 /**
  Singleton instance of VLocationInfo object
