@@ -281,32 +281,34 @@ static const NSTimeInterval kNotRecordingTrackingTime = 0.0;
     
     if (highlighted)
     {
+        if (self.cameraControlState != VCameraControlStateDefault)
+        {
+            return;
+        }
         [UIView animateWithDuration:kRecordingTriggerDuration/2
                          animations:^
          {
-             if (self.cameraControlState == VCameraControlStateDefault)
-             {
-                 self.alpha = kHighlightedAlpha;
-                 self.transform = CGAffineTransformMakeScale(kHighlightedScaleFactor, kHighlightedScaleFactor);
-             }
+             self.alpha = kHighlightedAlpha;
+             self.transform = CGAffineTransformMakeScale(kHighlightedScaleFactor, kHighlightedScaleFactor);
          }
                          completion:^(BOOL finished)
          {
-             if ((self.cameraControlState == VCameraControlStateDefault) && self.isHighlighted)
+             if ((self.cameraControlState != VCameraControlStateDefault) || !self.isHighlighted)
              {
-                 [UIView animateWithDuration:kRecordingTriggerDuration/2
-                                  animations:nil
-                                  completion:^(BOOL finished)
-                  {
-                      BOOL videoCaptureModeEnabled = (self.captureMode & VCameraControlCaptureModeVideo);
-                      if ((self.cameraControlState == VCameraControlStateDefault) &&
-                          videoCaptureModeEnabled &&
-                          self.isHighlighted)
-                      {
-                          self.cameraControlState = VCameraControlStateRecording;
-                      }
-                  }];
+                 return;
              }
+             [UIView animateWithDuration:kRecordingTriggerDuration/2
+                              animations:nil
+                              completion:^(BOOL finished)
+              {
+                  BOOL videoCaptureModeEnabled = (self.captureMode & VCameraControlCaptureModeVideo);
+                  if ((self.cameraControlState == VCameraControlStateDefault) &&
+                      videoCaptureModeEnabled &&
+                      self.isHighlighted)
+                  {
+                      self.cameraControlState = VCameraControlStateRecording;
+                  }
+              }];
          }];
     }
     else

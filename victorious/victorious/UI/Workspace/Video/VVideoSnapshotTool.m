@@ -7,9 +7,15 @@
 //
 
 #import "VVideoSnapshotTool.h"
+
+// Dependencies
 #import "VDependencyManager.h"
 
+// Constants
 #import "VConstants.h"
+
+// Views
+#import "VCanvasView.h"
 
 // ViewControllers
 #import "VCVideoPlayerViewController.h"
@@ -25,6 +31,7 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
 
 @property (nonatomic, strong) VCVideoPlayerViewController *videoPlayerViewController;
 @property (nonatomic, strong) VSnapshotViewController *snapshotToolViewController;
+@property (nonatomic, strong, readwrite) VCanvasView *canvasView;
 
 @property (nonatomic, strong) AVAssetImageGenerator *snapshotGenerator;
 
@@ -47,6 +54,7 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
         _videoPlayerViewController.shouldShowToolbar = YES;
         _videoPlayerViewController.shouldChangeVideoGravityOnDoubleTap = NO;
         _videoPlayerViewController.videoPlayerLayerVideoGravity = AVLayerVideoGravityResizeAspectFill;
+//        _videoPlayerViewController.view.frame =  CGRectMake(0, 0, 320, 320);
         [_videoPlayerViewController.view layoutIfNeeded];
         
         _snapshotToolViewController = [[VSnapshotViewController alloc] initWithNibName:nil bundle:nil];
@@ -73,6 +81,14 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
 }
 
 #pragma mark - VWorkspaceTool
+
+- (void)setCanvasView:(VCanvasView *)canvasView
+{
+    _canvasView = canvasView;
+    
+    self.videoPlayerViewController.view.frame = canvasView.bounds;
+    [self.videoPlayerViewController.view layoutIfNeeded];
+}
 
 - (void)setSelected:(BOOL)selected
 {
