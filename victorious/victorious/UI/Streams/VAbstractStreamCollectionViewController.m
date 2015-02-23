@@ -217,6 +217,10 @@ const CGFloat kVLoadNextPagePoint = .75f;
         return;
     }
     
+    //Start refresh control animation before calling refreshWithSuccess which has endRefreshing in its callback block
+    [self.refreshControl beginRefreshing];
+    self.refreshControl.hidden = NO;
+    
     [self.streamDataSource refreshWithSuccess:^(void)
      {
          [self.refreshControl endRefreshing];
@@ -234,9 +238,6 @@ const CGFloat kVLoadNextPagePoint = .75f;
          hud.userInteractionEnabled = NO;
          [hud hide:YES afterDelay:3.0];
      }];
-    
-    [self.refreshControl beginRefreshing];
-    self.refreshControl.hidden = NO;
 }
 
 - (void)positionRefreshControl

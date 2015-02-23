@@ -15,6 +15,7 @@
 
 @property   (nonatomic, readonly) VUser                  *profile;
 
++ (instancetype)userProfileWithRemoteId:(NSNumber *)remoteId;
 + (instancetype)userProfileWithUser:(VUser *)aUser;
 
 @end
