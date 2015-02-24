@@ -35,17 +35,22 @@
 {
     self.view = [[UIView alloc] init];
 
-    [self addChildViewController:self.containedViewController];
-    self.containedViewController.view.translatesAutoresizingMaskIntoConstraints = YES;
-    self.containedViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    [self.view addSubview:self.containedViewController.view];
-    [self.containedViewController didMoveToParentViewController:self];
+    if (self.containedViewController)
+    {
+        [self addChildViewController:self.containedViewController];
+        self.containedViewController.view.translatesAutoresizingMaskIntoConstraints = YES;
+        self.containedViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        [self.view addSubview:self.containedViewController.view];
+        [self.containedViewController didMoveToParentViewController:self];
+    }
 }
 
 #pragma mark - Property Accessors
 
 - (void)setContainedViewController:(UIViewController *)containedViewController
 {
+    NSParameterAssert(containedViewController);
+    
     if (_containedViewController == containedViewController)
     {
         return;
