@@ -37,6 +37,7 @@ const CGFloat kDirectoryItemBaseWidth = 145.0f;
 @property (nonatomic, weak) IBOutlet UIView *streamItemContainerOrTopStackItem;
 @property (weak, nonatomic) IBOutlet VExtendedView *middleStack;
 @property (weak, nonatomic) IBOutlet VExtendedView *bottomStack;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *topStackBottomConstraint;
 
 @end
 
@@ -52,12 +53,12 @@ const CGFloat kDirectoryItemBaseWidth = 145.0f;
 
 + (CGFloat)desiredStreamOfStreamsHeightForWidth:(CGFloat)width
 {
-    return (kDirectoryItemBaseHeight - kDirectoryItemBaseWidth) + ((kDirectoryItemBaseWidth * width) / kDirectoryItemBaseWidth) + kDirectoryItemStackHeight;
+    return [self desiredStreamOfContentHeightForWidth:width] + kDirectoryItemStackHeight;
 }
 
 + (CGFloat)desiredStreamOfContentHeightForWidth:(CGFloat)width
 {
-    return [self desiredStreamOfStreamsHeightForWidth:width];
+    return  ( kDirectoryItemBaseHeight / kDirectoryItemBaseWidth ) * width;
 }
 
 #pragma mark - NSObject
@@ -91,21 +92,11 @@ const CGFloat kDirectoryItemBaseWidth = 145.0f;
                            placeholderImage:[UIImage resizeableImageWithColor:
                                              [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]]];
     
-    if (![streamItem isKindOfClass:[VStream class]] )
-    {
-        return;
-    }
+    BOOL isStack = ([streamItem isKindOfClass:[VStream class]] && [((VStream *)streamItem) isStreamOfStreams]);
     
-    if (![((VStream *)streamItem) isStreamOfStreams])
-    {
-        return;
-    }
-    
-    self.bottomStack.hidden = NO;
-    self.middleStack.hidden = NO;
-    
-    [self.streamItemContainerOrTopStackItem layoutIfNeeded];
-    [self layoutIfNeeded];
+    self.bottomStack.hidden = !isStack;
+    self.middleStack.hidden = !isStack;
+    self.topStackBottomConstraint.constant = isStack ? kDirectoryItemStackHeight : 0.0f;
 }
 
 #pragma mark - UICollectionReusableView

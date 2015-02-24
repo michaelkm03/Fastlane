@@ -40,4 +40,6 @@ extern NSString * const VNetflixDirectoryItemCellNameStream;
  */
 @property (nonatomic, weak) id <VNetflixDirectoryItemCellDelegate> delegate;
 
+@property (nonatomic, readonly) BOOL isStreamOfStreamsRow;
+
 @end

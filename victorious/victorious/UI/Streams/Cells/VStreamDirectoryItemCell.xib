@@ -111,9 +111,9 @@
                 <constraint firstItem="3UW-gy-ZA4" firstAttribute="top" secondItem="I6G-G0-y8J" secondAttribute="top" id="T4y-Nr-RWQ"/>
                 <constraint firstAttribute="trailing" secondItem="JDm-oP-6CR" secondAttribute="trailing" constant="9" id="YLH-yM-Yix"/>
                 <constraint firstAttribute="bottom" secondItem="3UW-gy-ZA4" secondAttribute="bottom" constant="4" id="ZH5-hk-xLe"/>
+                <constraint firstAttribute="bottom" secondItem="Sik-LB-7bi" secondAttribute="bottom" constant="8" id="ZyF-a0-7FC"/>
                 <constraint firstAttribute="trailing" secondItem="Sik-LB-7bi" secondAttribute="trailing" id="cLG-c6-ToW"/>
                 <constraint firstAttribute="trailing" secondItem="3UW-gy-ZA4" secondAttribute="trailing" constant="4" id="jJH-tw-hkZ"/>
-                <constraint firstAttribute="bottom" secondItem="Sik-LB-7bi" secondAttribute="bottom" constant="8" id="lPR-l4-qwO"/>
             </constraints>
             <size key="customSize" width="145" height="224"/>
             <connections>
@@ -123,6 +123,7 @@
                 <outlet property="nameLabel" destination="deE-HG-45e" id="5gl-bA-Unx"/>
                 <outlet property="previewImageView" destination="gXM-go-fxe" id="bUL-M1-ixG"/>
                 <outlet property="streamItemContainerOrTopStackItem" destination="Sik-LB-7bi" id="BfN-Ve-t3G"/>
+                <outlet property="topStackBottomConstraint" destination="ZyF-a0-7FC" id="xmf-SV-FOT"/>
             </connections>
             <point key="canvasLocation" x="267.5" y="379.5"/>
         </collectionViewCell>

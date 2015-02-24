@@ -29,11 +29,13 @@
 #import "VObjectManager.h"
 #import "VSettingManager.h"
 
+#import "VDirectoryViewController.h"
+
 static NSString * const kStreamURLPathKey = @"streamUrlPath";
 
-static CGFloat const kDirectoryInset = 10.0f;
+static CGFloat const kDirectoryInset = 5.0f;
 
-@interface VNetflixDirectoryViewController () <UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, VStreamCollectionDataDelegate>
+@interface VNetflixDirectoryViewController () <UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, VStreamCollectionDataDelegate, VNetflixDirectoryItemCellDelegate>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
@@ -79,7 +81,7 @@ static CGFloat const kDirectoryInset = 10.0f;
     self.streamDataSource.collectionView = self.collectionView;
     self.collectionView.dataSource = self.streamDataSource;
     self.collectionView.delegate = self;
-    
+     
     [self refresh:self.refreshControl];
 }
 
@@ -101,18 +103,10 @@ static CGFloat const kDirectoryInset = 10.0f;
 - (CGSize)collectionView:(UICollectionView *)collectionView
                   layout:(UICollectionViewLayout *)collectionViewLayout
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)collectionViewLayout;
-    
+{    
     CGFloat width = CGRectGetWidth(collectionView.bounds);
     
-    BOOL isStreamOfStreamsRow = [[self.streamDataSource itemAtIndexPath:indexPath] isKindOfClass:[VStream class]];
-    
-    if (((indexPath.row % 2) == 1) && !isStreamOfStreamsRow)
-    {
-        NSIndexPath *previousIndexPath = [NSIndexPath indexPathForRow:indexPath.row-1 inSection:indexPath.section];
-        isStreamOfStreamsRow = [[self.streamDataSource itemAtIndexPath:previousIndexPath] isKindOfClass:[VStream class]];
-    }
+    BOOL isStreamOfStreamsRow = [[self.streamDataSource itemAtIndexPath:indexPath] isKindOfClass:[VStream class]] && [(VStream *)[self.streamDataSource itemAtIndexPath:indexPath] isStreamOfStreams];
     
     CGFloat height = isStreamOfStreamsRow ? [VNetflixDirectoryItemCell desiredStreamOfStreamsHeightForWidth:width] : [VNetflixDirectoryItemCell desiredStreamOfContentHeightForWidth:width];
     
@@ -122,7 +116,6 @@ static CGFloat const kDirectoryInset = 10.0f;
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     VStreamItem *item = [self.streamDataSource itemAtIndexPath:indexPath];
-    //Commented out code is the inital logic for supporting other stream types / sequences in streams.
     if ([item isKindOfClass:[VStream class]] && [((VStream *)item) onlyContainsSequences])
     {
         VStreamCollectionViewController *streamCollection = [VStreamCollectionViewController streamViewControllerForStream:(VStream *)item];
@@ -146,9 +139,19 @@ static CGFloat const kDirectoryInset = 10.0f;
         insetForSectionAtIndex:(NSInteger)section
 {
     return UIEdgeInsetsMake(self.topInset + kDirectoryInset,
-                            kDirectoryInset,
                             0,
-                            kDirectoryInset);
+                            kDirectoryInset,
+                            0);
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section
+{
+    return CGSizeZero;
+}
+
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
+{
+    return 0;
 }
 
 #pragma mark - VStreamCollectionDataDelegate
@@ -160,8 +163,45 @@ static CGFloat const kDirectoryInset = 10.0f;
     
     cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:VNetflixDirectoryItemCellNameStream forIndexPath:indexPath];
     cell.streamItem = item;
+    cell.delegate = self;
     
     return cell;
+}
+
+#pragma mark - VNetflixDirectoryItemCellNameStream
+
+- (void)netflixDirectoryItemCell:(VNetflixDirectoryItemCell *)vNetflixDirectoryItemCell didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    //Check to see if we've selected the the count of items in the cell's streamItem (which would mean we selected the "see more" cell)
+    if ( indexPath.row == 10 )
+    {
+        //Push a new directory view controller to show all contents of the selected streamItem
+        VStream *stream = [self.currentStream.streamItems objectAtIndex:[self.collectionView indexPathForCell:vNetflixDirectoryItemCell].row];
+        VNetflixDirectoryViewController *sos = [VNetflixDirectoryViewController streamDirectoryForStream:stream dependencyManager:self.dependencyManager];
+        sos.dependencyManager = self.dependencyManager;
+        [self.navigationController pushViewController:sos animated:YES];
+    }
+    else
+    {
+        //Check if we've selected a bit of content or another stream to present in a netflixCollectionViewController
+        VStreamItem *item = vNetflixDirectoryItemCell.streamItem;
+        if ([item isKindOfClass:[VStream class]] && [((VStream *)item) onlyContainsSequences])
+        {
+            VStreamCollectionViewController *streamCollection = [VStreamCollectionViewController streamViewControllerForStream:(VStream *)item];
+            streamCollection.dependencyManager = self.dependencyManager;
+            [self.navigationController pushViewController:streamCollection animated:YES];
+        }
+        else if ([item isKindOfClass:[VStream class]])
+        {
+            VNetflixDirectoryViewController *sos = [VNetflixDirectoryViewController streamDirectoryForStream:(VStream *)item dependencyManager:self.dependencyManager];
+            sos.dependencyManager = self.dependencyManager;
+            [self.navigationController pushViewController:sos animated:YES];
+        }
+        else if ([item isKindOfClass:[VSequence class]])
+        {
+            [[self.dependencyManager scaffoldViewController] showContentViewWithSequence:(VSequence *)item commentId:nil placeHolderImage:nil];
+        }
+    }
 }
 
 @end

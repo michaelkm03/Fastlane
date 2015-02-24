@@ -9,35 +9,28 @@
 #import "VNetflixDirectoryItemCell.h"
 
 #import "VDirectoryItemCell.h"
+#import "VSeeMoreDirectoryItemCell.h"
 
 //theme
 #import "VThemeManager.h"
 
 // Models
-#import "VStream.h"
-#import "VStreamItem+Fetcher.h"
-
-/*
-// Views
-#import "VExtendedView.h"
-
-// Categories
-#import "UIImageView+VLoadingAnimations.h"
-#import "UIImage+ImageCreation.h"
-
-// Models
-#import "VStream.h"
 #import "VStream+Fetcher.h"
 #import "VStreamItem+Fetcher.h"
- */
 
 NSString * const VNetflixDirectoryItemCellNameStream = @"VStreamNetflixDirectoryItemCell";
-static CGFloat const kNetflixDirectoryItemCellInset = 10.0f;
+static CGFloat const kNetflixDirectoryItemCellInset = 8.0f; //Must be >= 1.0f
+static CGFloat const kNetflixDirectoryItemLabelHeight = 34.0f;
+static CGFloat const kNetflixDirectoryItemCellBaseWidth = 320.0f;
+
+static CGFloat const kNetflixSubDirectoryItemCellBaseWidth = 140.0f;
+static CGFloat const kNetflixSubDirectoryItemCellBaseHeight = 206.0f;
 
 @interface VNetflixDirectoryItemCell() <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, weak) IBOutlet UILabel *nameLabel;
+@property (nonatomic, readwrite) BOOL isStreamOfStreamsRow;
 
 @end
 
@@ -47,18 +40,29 @@ static CGFloat const kNetflixDirectoryItemCellInset = 10.0f;
 
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {
-    CGFloat width = CGRectGetWidth(bounds) * .453; //from spec, 290 width on 640
+    CGFloat width = CGRectGetWidth(bounds);
     return CGSizeMake(width, [self desiredStreamOfStreamsHeightForWidth:width]);
 }
 
 + (CGFloat)desiredStreamOfStreamsHeightForWidth:(CGFloat)width
 {
-    return (kDirectoryItemBaseHeight - kDirectoryItemBaseWidth) + ((kDirectoryItemBaseWidth * width) / kDirectoryItemBaseWidth) + kDirectoryItemStackHeight;
+    return [self desiredStreamOfContentHeightForWidth:width] + kDirectoryItemStackHeight;
 }
 
 + (CGFloat)desiredStreamOfContentHeightForWidth:(CGFloat)width
 {
-    return [self desiredStreamOfStreamsHeightForWidth:width];
+    return [self directoryCellHeightForWidth:width] + kNetflixDirectoryItemLabelHeight + kNetflixDirectoryItemCellInset * 2;
+}
+
++ (CGFloat)directoryCellHeightForWidth:(CGFloat)width
+{
+    CGFloat multiplicant = width / kNetflixDirectoryItemCellBaseWidth;
+    return ( kNetflixSubDirectoryItemCellBaseHeight * multiplicant );
+}
+
++ (CGFloat)desiredCellWidthForBoundsWidth:(CGFloat)width
+{
+    return ( width / kNetflixDirectoryItemCellBaseWidth ) * kNetflixSubDirectoryItemCellBaseWidth;
 }
 
 #pragma mark - NSObject
@@ -72,8 +76,16 @@ static CGFloat const kNetflixDirectoryItemCellInset = 10.0f;
     
     self.collectionView.dataSource = self;
     self.collectionView.delegate = self;
-    UINib *nib = [UINib nibWithNibName:VDirectoryItemCellNameStream bundle:nil];
-    [self.collectionView registerNib:nib forCellWithReuseIdentifier:VDirectoryItemCellNameStream];
+    [self registerNibWithName:VDirectoryItemCellNameStream];
+    [self registerNibWithName:VSeeMoreDirectoryItemCellNameStream];
+    self.collectionView.backgroundColor = [UIColor clearColor];
+    
+    self.collectionView.contentInset = UIEdgeInsetsZero;
+}
+
+- (void)registerNibWithName:(NSString *)nibName
+{
+    [self.collectionView registerNib:[UINib nibWithNibName:nibName bundle:nil] forCellWithReuseIdentifier:nibName];
 }
 
 #pragma mark - Property Accessors
@@ -82,9 +94,9 @@ static CGFloat const kNetflixDirectoryItemCellInset = 10.0f;
 {
     _streamItem = streamItem;
     
-    self.nameLabel.text = streamItem.name;
-    
-#warning SETUP ARRAYS FOR COLLECTIONVIEW DATASOURCE HERE
+    self.isStreamOfStreamsRow = [self.streamItem isKindOfClass:[VStream class]] && [(VStream *)self.streamItem isStreamOfStreams];
+    self.nameLabel.text = [streamItem.name uppercaseString];
+    [self.collectionView reloadData];
 }
 
 #pragma mark - UICollectionReusableView
@@ -92,8 +104,7 @@ static CGFloat const kNetflixDirectoryItemCellInset = 10.0f;
 - (void)prepareForReuse
 {
     [super prepareForReuse];
-    
-#warning RESTORE DATASOURCE ARRAYS TO EMPTY
+    [self.collectionView setContentOffset:CGPointZero];
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -105,8 +116,7 @@ static CGFloat const kNetflixDirectoryItemCellInset = 10.0f;
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-#warning THIS WILL CHANGE TO GET THE NEW FIELD FROM THE STREAM ITEM (OR STREAM!?!)
-    return 1;// self.streamItem.streams.count;
+    return 11; //Should be something like self.streamItem.streams.count + 1; the +1 will be for the "see more" cell
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -114,8 +124,18 @@ static CGFloat const kNetflixDirectoryItemCellInset = 10.0f;
     VStreamItem *item = self.streamItem;
     VNetflixDirectoryItemCell *cell;
     
-    cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:VDirectoryItemCellNameStream forIndexPath:indexPath];
-    cell.streamItem = item;
+    //Check if item is last in number of items in section, this is the "show more" cell
+    if ( indexPath.item == 10)
+    {
+        cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:VSeeMoreDirectoryItemCellNameStream forIndexPath:indexPath];
+        [(VSeeMoreDirectoryItemCell *)cell updateBottomConstraintToConstant:self.isStreamOfStreamsRow ? kDirectoryItemStackHeight : 0.0f];
+    }
+    else
+    {
+        //Populate streamItem from item in stream instead of top-level stream item
+        cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:VDirectoryItemCellNameStream forIndexPath:indexPath];
+        cell.streamItem = item;
+    }
     
     return cell;
 }
@@ -133,27 +153,30 @@ static CGFloat const kNetflixDirectoryItemCellInset = 10.0f;
                   layout:(UICollectionViewLayout *)collectionViewLayout
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)collectionViewLayout;
+    CGFloat width = CGRectGetWidth(self.bounds);
     
-    CGFloat width = CGRectGetWidth(collectionView.bounds);
-    width = width - flowLayout.sectionInset.left - flowLayout.sectionInset.right - flowLayout.minimumInteritemSpacing;
-    width = floorf(width * 0.4f);
+    CGFloat height = [VNetflixDirectoryItemCell directoryCellHeightForWidth:width];
+    if ( self.isStreamOfStreamsRow )
+    {
+        height += kDirectoryItemStackHeight;
+    }
     
-    BOOL isStreamOfStreamsRow = [[(VDirectoryItemCell *)[self.collectionView cellForItemAtIndexPath:indexPath] streamItem] isKindOfClass:[VStream class]];
-    
-    CGFloat height = isStreamOfStreamsRow ? [VNetflixDirectoryItemCell desiredStreamOfStreamsHeightForWidth:width] : [VNetflixDirectoryItemCell desiredStreamOfContentHeightForWidth:width];
-    
-    return CGSizeMake(width, height);
+    return CGSizeMake([VNetflixDirectoryItemCell desiredCellWidthForBoundsWidth:width], height);
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView
                         layout:(UICollectionViewLayout *)collectionViewLayout
         insetForSectionAtIndex:(NSInteger)section
 {
-    return UIEdgeInsetsMake(kNetflixDirectoryItemCellInset,
+    return UIEdgeInsetsMake(kNetflixDirectoryItemCellInset / 2.0f,
                             kNetflixDirectoryItemCellInset,
-                            0,
+                            kNetflixDirectoryItemCellInset / 2.0f,
                             kNetflixDirectoryItemCellInset);
+}
+
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
+{
+    return kNetflixDirectoryItemCellInset;
 }
 
 @end
