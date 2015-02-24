@@ -23,13 +23,13 @@ usage() {
 	echo
 }
 
-if [[ "$APPNAME" == "" ]]; then
-	echo "Invalid input: Can't find an app named '${APPNAME}'."
+IPA_FILENAME="products/$APPNAME.ipa"
+
+if [ ! -f "${IPA_FILENAME}" ]; then
+	echo "Invalid input: Can't find an .ipa file in 'products' folder for app named '${APPNAME}'."
 	usage
 	exit 2
 fi
-
-IPA_FILENAME="products/$APPNAME.ipa"
 
 UPLOADER_VERSION=1.09
 
