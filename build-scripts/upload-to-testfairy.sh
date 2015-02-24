@@ -83,8 +83,6 @@ DSYM_ENDPOINT="http://app.testfairy.com/upload/dsym/";
 DSYM_FILE="products/$APPNAME.app.dSYM.zip"
 FILE_SIZE=$(stat -f "%z" "${DSYM_FILE}")
 
-echo "${TESTFAIRY_API_KEY}"
-
 echo "Uploading .dSYM ($DSYM_FILE) at ${FILE_SIZE} bytes to .dSYM server..."
 
 $CURL -s -F api_key="${TESTFAIRY_API_KEY}" -F dsym=@"${DSYM_FILE}" -o /dev/null "${DSYM_ENDPOINT}"
