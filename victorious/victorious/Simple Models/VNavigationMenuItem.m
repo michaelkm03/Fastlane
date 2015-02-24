@@ -11,6 +11,7 @@
 
 static NSString * const kIdentifierKey = @"identifier";
 static NSString * const kDestinationKey = @"destination";
+static NSString * const kIconKey = @"icon";
 
 @implementation VNavigationMenuItem
 
@@ -31,8 +32,9 @@ static NSString * const kDestinationKey = @"destination";
 {
     NSString *title = [dependencyManager stringForKey:VDependencyManagerTitleKey];
     NSString *identifier = [dependencyManager stringForKey:kIdentifierKey];
+    UIImage *icon = [dependencyManager templateValueOfType:[UIImage class] forKey:kIconKey];
     id destination = [dependencyManager singletonObjectOfType:[NSObject class] forKey:kDestinationKey];
-    return [self initWithTitle:title identifier:identifier icon:nil destination:destination];
+    return [self initWithTitle:title identifier:identifier icon:icon destination:destination];
 }
 
 - (BOOL)isEqual:(id)object

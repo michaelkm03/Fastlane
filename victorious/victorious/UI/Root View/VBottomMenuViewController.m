@@ -117,7 +117,10 @@ shouldSelectViewController:(VNavigationDestinationContainerViewController *)view
             shimViewController.containedViewController = containedNavigationController;
         }
         
-        shimViewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:menuItem.title image:nil selectedImage:nil];
+        shimViewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:nil
+                                                                      image:menuItem.icon
+                                                              selectedImage:menuItem.icon];
+        shimViewController.tabBarItem.imageInsets = UIEdgeInsetsMake(6, 0, -6, 0);
         [wrappedMenuItems addObject:shimViewController];
     }
     return wrappedMenuItems;

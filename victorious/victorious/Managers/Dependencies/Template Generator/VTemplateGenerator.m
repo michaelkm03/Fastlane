@@ -26,6 +26,7 @@ static NSString * const kClassNameKey = @"name";
 // Menu properties
 static NSString * const kItemsKey = @"items";
 static NSString * const kTitleKey = @"title";
+static NSString * const kIconKey = @"icon";
 static NSString * const kIdentifierKey = @"identifier";
 static NSString * const kDestinationKey = @"destination";
 
@@ -416,6 +417,7 @@ static NSString * const kVideoMuted = @"videoMuted";
     return @[
              [self homeMenuItem],
              [self ownerStreamMenuItem],
+             [self createMenuItem],
              [self profileMenuItem],
              [self inboxMenuItem],
              ];
@@ -427,6 +429,16 @@ static NSString * const kVideoMuted = @"videoMuted";
              kIdentifierKey: @"Menu Home",
              kTitleKey: NSLocalizedString(@"Home", @""),
              kDestinationKey: [self homeScreen],
+             kIconKey: [UIImage imageNamed:@"home"],
+             };
+}
+
+- (NSDictionary *)createMenuItem
+{
+    return @{
+             kTitleKey: NSLocalizedString(@"Create", @""),
+             kIconKey: [UIImage imageNamed:@"create"],
+             kDestinationKey: [self workspaceFlowComponent],
              };
 }
 
@@ -435,6 +447,7 @@ static NSString * const kVideoMuted = @"videoMuted";
     return @{
              kIdentifierKey: @"Menu Profile",
              kTitleKey: NSLocalizedString(@"Profile", @""),
+             kIconKey: [UIImage imageNamed:@"profile"],
              kDestinationKey: @{
                      kClassNameKey: @"currentUserProfile.screen"
                      }
@@ -446,6 +459,7 @@ static NSString * const kVideoMuted = @"videoMuted";
     return @{
              kIdentifierKey: @"Menu Inbox",
              kTitleKey: NSLocalizedString(@"Inbox", @""),
+             kIconKey: [UIImage imageNamed:@"inbox"],
              kDestinationKey: @{
                      kClassNameKey: @"inbox.screen"
                      }
@@ -542,6 +556,7 @@ static NSString * const kVideoMuted = @"videoMuted";
         return @{
             kIdentifierKey: @"Menu Channels",
             kTitleKey: NSLocalizedString(@"Channels", @""),
+            kIconKey: [UIImage imageNamed:@"channels"],
             kDestinationKey: @{
                 kClassNameKey: @"streamDirectory.screen",
                 kTitleKey: NSLocalizedString(@"Channels", nil),
@@ -554,6 +569,7 @@ static NSString * const kVideoMuted = @"videoMuted";
         return @{
             kIdentifierKey: @"Menu Channel",
             kTitleKey: NSLocalizedString(@"Channel", @""),
+            kIconKey: [UIImage imageNamed:@"channels"],
             kDestinationKey: @{
                 kClassNameKey: @"basic.multiScreen",
                 kTitleKey: NSLocalizedString(@"Owner", @""),
