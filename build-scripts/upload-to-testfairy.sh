@@ -23,6 +23,11 @@ usage() {
 	echo
 }
 
+if [[ "$APPNAME" == "" ]]; then
+	usage
+	exit 1
+fi
+
 IPA_FILENAME="products/$APPNAME.ipa"
 
 if [ ! -f "${IPA_FILENAME}" ]; then
