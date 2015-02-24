@@ -127,8 +127,10 @@
     [userInfo[UIKeyboardAnimationDurationUserInfoKey] getValue:&animationDuration];
     [userInfo[UIKeyboardFrameEndUserInfoKey] getValue:&keyboardEndFrame];
 
-    [UIView animateWithDuration:animationDuration delay:0
-                        options:(animationCurve << 16) animations:^
+    [UIView animateWithDuration:animationDuration
+                          delay:0
+                        options:(animationCurve << 16)
+                     animations:^
     {
         self.bottomConstraint.constant = -(CGRectGetHeight(self.view.bounds)-CGRectGetMinY(keyboardEndFrame));
         UITableView *tableView = self.conversationTableViewController.tableView;
