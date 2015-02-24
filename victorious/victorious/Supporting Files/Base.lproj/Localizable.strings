@@ -43,6 +43,7 @@
 "TimeSeparator"         =   ":";
 "InvalidTimePlaceholder"=   "-:--";
 
+"Get Started"           =   "Get Started";
 "SetupButton"           =   "Set up";
 "EmailValidation"       =   "Invalid Email Address";
 "PasswordValidation"    =   "Password is less than 8 characters";

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <scenes>
+        <!--First Time User Video View Controller-->
+        <scene sceneID="npe-Pl-jHI">
+            <objects>
+                <viewController storyboardIdentifier="WelcomeVideo" id="eLl-qp-GRA" customClass="VFirstTimeUserVideoViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="RlJ-HE-p9L"/>
+                        <viewControllerLayoutGuide type="bottom" id="mT9-B7-VTY"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="lnt-Ok-t9O">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="WaD-Bc-zOl" userLabel="Blurred Background Image">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oJA-97-ssS">
+                                <rect key="frame" x="160" y="503" width="280" height="50"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <state key="normal" title="Get Started">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="WaD-Bc-zOl" secondAttribute="trailing" constant="-16" id="1VB-KY-Mxp"/>
+                            <constraint firstItem="WaD-Bc-zOl" firstAttribute="top" secondItem="RlJ-HE-p9L" secondAttribute="bottom" constant="-20" id="5Tp-XU-OAn"/>
+                            <constraint firstItem="WaD-Bc-zOl" firstAttribute="leading" secondItem="lnt-Ok-t9O" secondAttribute="leadingMargin" constant="-16" id="Y19-fR-XQg"/>
+                            <constraint firstItem="mT9-B7-VTY" firstAttribute="top" secondItem="WaD-Bc-zOl" secondAttribute="bottom" id="kMC-Sf-ogo"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="3LK-5R-GdA" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="785" y="325"/>
+        </scene>
+    </scenes>
+</document>

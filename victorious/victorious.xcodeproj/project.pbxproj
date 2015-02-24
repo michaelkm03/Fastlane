@@ -711,6 +711,8 @@
 		DBDBE6F11A16766400DA1BB2 /* VSequence.m in Sources */ = {isa = PBXBuildFile; fileRef = DBDBE6F01A16766400DA1BB2 /* VSequence.m */; };
 		DBDDB8891A3F5A3900696071 /* VFollowHashtagControl.m in Sources */ = {isa = PBXBuildFile; fileRef = DBDDB8881A3F5A3900696071 /* VFollowHashtagControl.m */; };
 		DBE1077F1A2FFDCD005D303E /* VAdBreakFallback.m in Sources */ = {isa = PBXBuildFile; fileRef = DBE1077E1A2FFDCD005D303E /* VAdBreakFallback.m */; };
+		DBECEEE61A9D36BC0025C4F8 /* VFirstTimeUserVideoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBECEEE51A9D36BC0025C4F8 /* VFirstTimeUserVideoViewController.m */; };
+		DBECEEE81A9D36D70025C4F8 /* FirstTimeUserVideo.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DBECEEE71A9D36D70025C4F8 /* FirstTimeUserVideo.storyboard */; };
 		DBF77A291A416A57005BF1BE /* VProfileFollowingContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBF77A281A416A57005BF1BE /* VProfileFollowingContainerViewController.m */; };
 		DBF8B4AB1A78942900CFFD47 /* VUsersAndTagsSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBF8B4AA1A78942900CFFD47 /* VUsersAndTagsSearchViewController.m */; };
 		DBF8B4B11A79F8F300CFFD47 /* VUserSearchResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBF8B4B01A79F8F300CFFD47 /* VUserSearchResultsViewController.m */; };
@@ -1974,6 +1976,9 @@
 		DBDDB8881A3F5A3900696071 /* VFollowHashtagControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFollowHashtagControl.m; sourceTree = "<group>"; };
 		DBE1077D1A2FFDCD005D303E /* VAdBreakFallback.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAdBreakFallback.h; sourceTree = "<group>"; };
 		DBE1077E1A2FFDCD005D303E /* VAdBreakFallback.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAdBreakFallback.m; sourceTree = "<group>"; };
+		DBECEEE41A9D36BC0025C4F8 /* VFirstTimeUserVideoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFirstTimeUserVideoViewController.h; sourceTree = "<group>"; };
+		DBECEEE51A9D36BC0025C4F8 /* VFirstTimeUserVideoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFirstTimeUserVideoViewController.m; sourceTree = "<group>"; };
+		DBECEEE71A9D36D70025C4F8 /* FirstTimeUserVideo.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = FirstTimeUserVideo.storyboard; sourceTree = "<group>"; };
 		DBF77A271A416A57005BF1BE /* VProfileFollowingContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VProfileFollowingContainerViewController.h; sourceTree = "<group>"; };
 		DBF77A281A416A57005BF1BE /* VProfileFollowingContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VProfileFollowingContainerViewController.m; sourceTree = "<group>"; };
 		DBF8B4A91A78942900CFFD47 /* VUsersAndTagsSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUsersAndTagsSearchViewController.h; sourceTree = "<group>"; };
@@ -2221,6 +2226,7 @@
 				D8CA63AF19D51C8D002046E5 /* Action Sheet */,
 				D89A50071A000D540010D050 /* Controls */,
 				BE42842D19DDD0D800AEDBA6 /* DefaultProfileImages */,
+				DBECEEE31A9D361D0025C4F8 /* First Time User */,
 				F05AA97D1A83F6E3002F8917 /* Inline Search */,
 				0314D34919B46B5E00FA363C /* Keyboard Bar */,
 				A7B5144A1A4517A80074282F /* SwipeCell */,
@@ -4576,6 +4582,16 @@
 			path = FollowHashtagControl;
 			sourceTree = "<group>";
 		};
+		DBECEEE31A9D361D0025C4F8 /* First Time User */ = {
+			isa = PBXGroup;
+			children = (
+				DBECEEE41A9D36BC0025C4F8 /* VFirstTimeUserVideoViewController.h */,
+				DBECEEE51A9D36BC0025C4F8 /* VFirstTimeUserVideoViewController.m */,
+				DBECEEE71A9D36D70025C4F8 /* FirstTimeUserVideo.storyboard */,
+			);
+			path = "First Time User";
+			sourceTree = "<group>";
+		};
 		F05AA97D1A83F6E3002F8917 /* Inline Search */ = {
 			isa = PBXGroup;
 			children = (
@@ -4694,6 +4710,7 @@
 				036F388E1A0C4DEA0014DF66 /* RobotoSlab-Regular.ttf in Resources */,
 				036F38911A0C4DEA0014DF66 /* Signika-Light.ttf in Resources */,
 				03FD87D119F96EEB00D93BAA /* VHistogramCell.xib in Resources */,
+				DBECEEE81A9D36D70025C4F8 /* FirstTimeUserVideo.storyboard in Resources */,
 				036F388D1A0C4DEA0014DF66 /* RobotoSlab-Bold.ttf in Resources */,
 				0314D08619B4688E00FA363C /* Icon-29@2x.png in Resources */,
 				036F388F1A0C4DEA0014DF66 /* Rosario-Bold.ttf in Resources */,
@@ -5373,6 +5390,7 @@
 				A761C9D71A48CB9800F0D0F9 /* VSwipeView.m in Sources */,
 				0314D4E619B46B5E00FA363C /* VInviteFriendTableViewCell.m in Sources */,
 				A769C3EB1A13176700698D0C /* VWebBrowserViewController.m in Sources */,
+				DBECEEE61A9D36BC0025C4F8 /* VFirstTimeUserVideoViewController.m in Sources */,
 				DB2D6F9F1A802B080050F963 /* VSearchResultsTransition.m in Sources */,
 				D80C615B19D0F692006AE41A /* VProgressBarView.m in Sources */,
 				A7D707981A7C144C00D9993F /* VCountdownView.m in Sources */,
