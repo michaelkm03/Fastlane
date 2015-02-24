@@ -201,6 +201,10 @@ static NSString * const kVideoMuted = @"videoMuted";
                  kVideoFrameDurationValue: @1,
                  kVideoFrameDurationTimescale: @4,
                  kVideoMuted: @YES
+                 },
+             @{
+                 kClassNameKey: @"snapshot.video.tool",
+                 kTitleKey: @"meme",
                  }
              ];
 }

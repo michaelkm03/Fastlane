@@ -37,7 +37,8 @@ typedef void (^VWorkspaceCompletion)(BOOL finished, UIImage *previewImage, NSURL
 
 @property (nonatomic, weak, readonly) VCanvasView *canvasView;
 
-- (void)bringChromeOutOfView;
+- (void)bringTopChromeOutOfView;
+- (void)bringBottomChromeOutOfView;
 - (void)bringChromeIntoView;
 
 @end

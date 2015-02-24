@@ -211,28 +211,4 @@
     return [self voteComment:comment voteType:@"unvote" successBlock:success failBlock:fail];
 }
 
-#pragma mark -
-
-- (RKManagedObjectRequestOperation *)readComments:(NSArray *)readComments
-                                     successBlock:(VSuccessBlock)success
-                                        failBlock:(VFailBlock)fail
-{
-    return [self POST:@"/api/comment/mark"
-               object:nil
-           parameters:@{@"comment_ids":readComments, @"mark_as":@"read"}
-         successBlock:success
-            failBlock:fail];
-}
-
-- (RKManagedObjectRequestOperation *)unreadComments:(NSArray *)readComments
-                                     successBlock:(VSuccessBlock)success
-                                        failBlock:(VFailBlock)fail
-{
-    return [self POST:@"/api/comment/mark"
-               object:nil
-           parameters:@{@"comment_ids":readComments, @"mark_as":@"unread"}
-         successBlock:success
-            failBlock:fail];
-}
-
 @end

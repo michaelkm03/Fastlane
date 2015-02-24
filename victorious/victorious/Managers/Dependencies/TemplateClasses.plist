@@ -4,6 +4,8 @@
 <dict>
 	<key>trim.video.tool</key>
 	<string>VTrimVideoTool</string>
+	<key>snapshot.video.tool</key>
+	<string>VVideoSnapshotTool</string>
 	<key>basic.crop</key>
 	<string>VCropToolViewController</string>
 	<key>vertical.picker</key>
