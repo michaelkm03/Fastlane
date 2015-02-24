@@ -18,6 +18,10 @@
 
 @interface VAbstractProfileEditViewController () <VContentInputAccessoryViewDelegate, VWorkspaceFlowControllerDelegate>
 
+@property (nonatomic, weak) IBOutlet UILabel       *tagLinePlaceholderLabel;
+@property (nonatomic, weak) IBOutlet UIImageView    *profileImageView;
+@property (nonatomic, weak) IBOutlet UIButton       *cameraButton;
+
 @property (nonatomic, weak) IBOutlet UITableViewCell *captionCell;
 @property (nonatomic, assign) NSInteger numberOfLines;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceTaglineTextViewTopToContainer;
@@ -44,7 +48,7 @@
     self.cameraButton.layer.cornerRadius = CGRectGetHeight(self.cameraButton.bounds)/2;
     self.cameraButton.clipsToBounds = YES;
     
-    self.automaticallyAdjustsScrollViewInsets = NO;
+//    self.automaticallyAdjustsScrollViewInsets = NO;
     
     self.taglineTextView.inputAccessoryView =
     ({
@@ -122,8 +126,10 @@
     // Create background image
     UIImageView *backgroundImageView = [[UIImageView alloc] initWithFrame:self.tableView.backgroundView.frame];
     backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
+    backgroundImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.tableView.backgroundView = backgroundImageView;
     self.backgroundImageView = backgroundImageView;
+    self.edgesForExtendedLayout = UIRectEdgeAll;
     
     // Set profile images
     NSURL *profileImageURL = [NSURL URLWithString:profile.pictureUrl];
@@ -203,10 +209,10 @@
 
 - (void)restoreInsets
 {
-    UIEdgeInsets insets = UIEdgeInsetsMake(CGRectGetHeight(self.navigationController.navigationBar.bounds) +
-                                           CGRectGetHeight([UIApplication sharedApplication].statusBarFrame), 0, 0, 0);
-    self.tableView.contentInset = insets;
-    self.tableView.scrollIndicatorInsets = insets;
+//    UIEdgeInsets insets = UIEdgeInsetsMake(CGRectGetHeight(self.navigationController.navigationBar.bounds) +
+//                                           CGRectGetHeight([UIApplication sharedApplication].statusBarFrame), 0, 0, 0);
+//    self.tableView.contentInset = insets;
+//    self.tableView.scrollIndicatorInsets = insets;
 }
 
 #pragma mark - VWorkspaceFlowControllerDelegate

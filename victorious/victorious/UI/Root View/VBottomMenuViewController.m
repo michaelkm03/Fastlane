@@ -55,7 +55,7 @@
     self.internalTabBarViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self.internalTabBarViewController.tabBar setBarTintColor:[self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey]];
     [self.internalTabBarViewController.tabBar setTintColor:[self.dependencyManager colorForKey:VDependencyManagerLinkColorKey]];
-    self.internalTabBarViewController.tabBar.translucent = YES;
+    self.internalTabBarViewController.tabBar.translucent = NO;
     [self.view addSubview:self.internalTabBarViewController.view];
     [self.internalTabBarViewController didMoveToParentViewController:self];
     
