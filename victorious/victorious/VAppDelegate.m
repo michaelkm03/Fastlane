@@ -7,7 +7,6 @@
 //
 
 #import "VAppDelegate.h"
-#import "TestFairy.h"
 #import "VThemeManager.h"
 #import "VReachability.h"
 
@@ -56,15 +55,7 @@ static BOOL isRunningTests(void) __attribute__((const));
     [ADEumInstrumentation initWithKey:@"AD-AAB-AAA-JWA"];
 #endif
     
-#ifdef QA
-#ifdef STAGING
-    [TestFairy begin:@"3f6a3cfe21285ffa606050752cfb6941ccedcf61"];
-#endif
-#endif
-    
-    NSString *testFairyAPIKey = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"TestFairyAPIKey"];
-    NSAssert( testFairyAPIKey != nil, @"Could not rest the TestFairy API Key from Info.plist!" );
-    [Crashlytics startWithAPIKey:testFairyAPIKey];
+    [Crashlytics startWithAPIKey:@"58f61748f3d33b03387e43014fdfff29c5a1da73"];
     
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     [[VReachability reachabilityForInternetConnection] startNotifier];

@@ -33,7 +33,7 @@ AUTO_UPDATE="off"
 MAX_DURATION="10m"
 
 # Is video recording enabled for this build. valid values:  "on", "off", "wifi" 
-VIDEO="wifi"
+VIDEO="off"
 
 # Comment text will be included in the email sent to testers
 COMMENT=""

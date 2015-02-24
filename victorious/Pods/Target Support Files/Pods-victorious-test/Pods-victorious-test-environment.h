@@ -126,12 +126,6 @@
 #define COCOAPODS_VERSION_MINOR_TTTAttributedLabel 8
 #define COCOAPODS_VERSION_PATCH_TTTAttributedLabel 1
 
-// TestFairy
-#define COCOAPODS_POD_AVAILABLE_TestFairy
-#define COCOAPODS_VERSION_MAJOR_TestFairy 1
-#define COCOAPODS_VERSION_MINOR_TestFairy 3
-#define COCOAPODS_VERSION_PATCH_TestFairy 4
-
 // TransitionKit
 #define COCOAPODS_POD_AVAILABLE_TransitionKit
 #define COCOAPODS_VERSION_MAJOR_TransitionKit 2

@@ -1,2 +1,0 @@
-PODS_VICTORIOUS_TEST_TESTFAIRY_LIBRARY_SEARCH_PATHS = "$(PODS_ROOT)/TestFairy"
-PODS_VICTORIOUS_TEST_TESTFAIRY_OTHER_LDFLAGS = -l"TestFairy" -framework "AVFoundation" -framework "CoreMedia" -framework "CoreMotion" -framework "OpenGLES" -framework "SystemConfiguration" -framework "UIKit"
