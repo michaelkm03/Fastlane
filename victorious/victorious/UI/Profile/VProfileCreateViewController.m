@@ -325,6 +325,10 @@ static inline UIViewAnimationOptions animationOptionsWithCurve(UIViewAnimationCu
     {
         return UIViewAnimationOptionCurveEaseInOut;
     }
+    /*
+     Can't find a better way, this little hack converts UIViewAnimationCurve to a UIViewAnimationOptions which is useful
+     for matching up the animation with the keyboard
+     */
     return curve << 16;
 }
 
@@ -336,7 +340,7 @@ static inline UIViewAnimationOptions animationOptionsWithCurve(UIViewAnimationCu
     
     if ( self.previousKeyboardHeight == 0 )
     {
-        self.previousKeyboardHeight = endKeyboardFrame.size.height;
+        self.previousKeyboardHeight = CGRectGetHeight(endKeyboardFrame);
     }
     
     if ( [self.taglineTextView isFirstResponder] )
@@ -346,13 +350,13 @@ static inline UIViewAnimationOptions animationOptionsWithCurve(UIViewAnimationCu
 
         CGFloat heightDifference = endKeyboardFrame.size.height - self.previousKeyboardHeight;
         
-        if ( heightDifference >= self.taglineTextView.inputAccessoryView.frame.size.height && startKeyboardFrame.origin.y != self.view.bounds.size.height )
+        if ( heightDifference >= CGRectGetHeight(self.taglineTextView.inputAccessoryView.frame) && CGRectGetMinY(startKeyboardFrame) != CGRectGetHeight(self.view.bounds) )
         {
             //The tagTextView is active and just added it's accessoryView (which happens last) so set ready for animation
             self.addedAccessoryView = YES;
         }
         
-        if ( self.addedAccessoryView && (heightDifference != 0 || startKeyboardFrame.origin.y == self.view.bounds.size.height) )
+        if ( self.addedAccessoryView && ( heightDifference != 0 || CGRectGetMinY(startKeyboardFrame) == CGRectGetHeight(self.view.bounds) ) )
         {
             [self updateContentOffsetForKeyboardNotification:notification];
         }
@@ -363,7 +367,7 @@ static inline UIViewAnimationOptions animationOptionsWithCurve(UIViewAnimationCu
         self.addedAccessoryView = NO;
     }
     
-    self.previousKeyboardHeight = endKeyboardFrame.size.height;
+    self.previousKeyboardHeight = CGRectGetHeight(endKeyboardFrame);
 }
 
 - (void)updateContentOffsetForKeyboardNotification:(NSNotification *)notification
@@ -378,7 +382,7 @@ static inline UIViewAnimationOptions animationOptionsWithCurve(UIViewAnimationCu
     [userInfo[UIKeyboardAnimationCurveUserInfoKey] getValue:&animationCurve];
     [userInfo[UIKeyboardAnimationDurationUserInfoKey] getValue:&animationDuration];
     
-    CGFloat yOffset = MAX( - (self.taglineTextView.frame.origin.y + self.taglineTextView.bounds.size.height - self.view.bounds.size.height + endKeyboardFrame.size.height), - self.taglineTextView.frame.origin.y );
+    CGFloat yOffset = MAX( - (CGRectGetMinY(self.taglineTextView.frame) + CGRectGetHeight(self.taglineTextView.bounds) - CGRectGetHeight(self.view.bounds) + CGRectGetHeight(endKeyboardFrame) ), - self.taglineTextView.frame.origin.y );
     animationDuration = animationDuration == 0 ? 0.25f : animationDuration;
     [UIView animateWithDuration:animationDuration
                           delay:0.0f

@@ -143,7 +143,7 @@
     }
     else
     {
-        self.scrollView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, 0.0f);
+        self.scrollView.contentInset = UIEdgeInsetsZero;
     }
 }
 
