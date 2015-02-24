@@ -581,6 +581,7 @@
 		D80BAB5A1A688D83003A3068 /* VWorkspaceFlowController.m in Sources */ = {isa = PBXBuildFile; fileRef = D80BAB591A688D83003A3068 /* VWorkspaceFlowController.m */; };
 		D80C615B19D0F692006AE41A /* VProgressBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = D80C615A19D0F692006AE41A /* VProgressBarView.m */; };
 		D811BBBF19B92F75007398BF /* homeHeaderImage.png in Resources */ = {isa = PBXBuildFile; fileRef = D811BBBD19B92F75007398BF /* homeHeaderImage.png */; };
+		D816F7E41A966A0B00120798 /* UIScrollView+VCenterContent.m in Sources */ = {isa = PBXBuildFile; fileRef = D816F7E31A966A0B00120798 /* UIScrollView+VCenterContent.m */; };
 		D8208A551A2FA7E3003C187D /* VFilterTool.m in Sources */ = {isa = PBXBuildFile; fileRef = D8208A541A2FA7E3003C187D /* VFilterTool.m */; };
 		D825F4EE1A44AAEB00A196FB /* VCapitalizingTextStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = D825F4ED1A44AAEB00A196FB /* VCapitalizingTextStorage.m */; };
 		D82E76DE19F5BFED00FFB722 /* VContentPollQuestionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D82E76DD19F5BFED00FFB722 /* VContentPollQuestionCell.m */; };
@@ -596,6 +597,7 @@
 		D836884119C370C400070F22 /* VBaseCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D836884019C370C400070F22 /* VBaseCollectionViewCell.m */; };
 		D836884419C3718A00070F22 /* VBaseSupplementaryView.m in Sources */ = {isa = PBXBuildFile; fileRef = D836884319C3718A00070F22 /* VBaseSupplementaryView.m */; };
 		D84FD73D19D5E5F200E7F9F2 /* VActionItem.m in Sources */ = {isa = PBXBuildFile; fileRef = D84FD73C19D5E5F200E7F9F2 /* VActionItem.m */; };
+		D86448A11A9ACCE700CD01AC /* VWorkspaceToWorkspaceAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = D86448A01A9ACCE700CD01AC /* VWorkspaceToWorkspaceAnimator.m */; };
 		D86BF34A1A42234500C9F420 /* VPublishViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D86BF3491A42234500C9F420 /* VPublishViewController.m */; };
 		D86BF34F1A42364B00C9F420 /* UIView+VDynamicsHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = D86BF34E1A42364B00C9F420 /* UIView+VDynamicsHelpers.m */; };
 		D86BF3511A4245CB00C9F420 /* VPublishViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D86BF3501A4245CB00C9F420 /* VPublishViewController.xib */; };
@@ -607,6 +609,9 @@
 		D87351991A3260AC006D97B2 /* VFilterTypeTool.m in Sources */ = {isa = PBXBuildFile; fileRef = D87351981A3260AC006D97B2 /* VFilterTypeTool.m */; };
 		D888B52A1A86FC7800B34149 /* VRadialGradientLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = D888B5271A86FC7800B34149 /* VRadialGradientLayer.m */; };
 		D888B52B1A86FC7800B34149 /* VRadialGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = D888B5291A86FC7800B34149 /* VRadialGradientView.m */; };
+		D88CEAE41A92E17C00F5A837 /* VVideoSnapshotTool.m in Sources */ = {isa = PBXBuildFile; fileRef = D88CEAE31A92E17C00F5A837 /* VVideoSnapshotTool.m */; };
+		D88CEAE81A92EEED00F5A837 /* VSnapshotViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D88CEAE61A92EEED00F5A837 /* VSnapshotViewController.m */; };
+		D88CEAE91A92EEED00F5A837 /* VSnapshotViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D88CEAE71A92EEED00F5A837 /* VSnapshotViewController.xib */; };
 		D8917EA219F8498F0070BDBB /* VVideoCellViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D8917EA119F8498F0070BDBB /* VVideoCellViewModel.m */; };
 		D89AC2BC19F1FD6B00921131 /* VHistogramDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = D89AC2B919F1FD6B00921131 /* VHistogramDataSource.m */; };
 		D89AC2BD19F1FD6B00921131 /* VHistogramBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = D89AC2BB19F1FD6B00921131 /* VHistogramBarView.m */; };
@@ -1744,6 +1749,8 @@
 		D80C615A19D0F692006AE41A /* VProgressBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VProgressBarView.m; sourceTree = "<group>"; };
 		D811BBBD19B92F75007398BF /* homeHeaderImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = homeHeaderImage.png; sourceTree = "<group>"; };
 		D811BBBE19B92F75007398BF /* homeHeaderImage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "homeHeaderImage@2x.png"; sourceTree = "<group>"; };
+		D816F7E21A966A0B00120798 /* UIScrollView+VCenterContent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+VCenterContent.h"; sourceTree = "<group>"; };
+		D816F7E31A966A0B00120798 /* UIScrollView+VCenterContent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+VCenterContent.m"; sourceTree = "<group>"; };
 		D8208A531A2FA7E3003C187D /* VFilterTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFilterTool.h; sourceTree = "<group>"; };
 		D8208A541A2FA7E3003C187D /* VFilterTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFilterTool.m; sourceTree = "<group>"; };
 		D825F4EC1A44AAEB00A196FB /* VCapitalizingTextStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCapitalizingTextStorage.h; sourceTree = "<group>"; };
@@ -1773,6 +1780,8 @@
 		D836884319C3718A00070F22 /* VBaseSupplementaryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VBaseSupplementaryView.m; sourceTree = "<group>"; };
 		D84FD73B19D5E5F200E7F9F2 /* VActionItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VActionItem.h; sourceTree = "<group>"; };
 		D84FD73C19D5E5F200E7F9F2 /* VActionItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VActionItem.m; sourceTree = "<group>"; };
+		D864489F1A9ACCE700CD01AC /* VWorkspaceToWorkspaceAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VWorkspaceToWorkspaceAnimator.h; sourceTree = "<group>"; };
+		D86448A01A9ACCE700CD01AC /* VWorkspaceToWorkspaceAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VWorkspaceToWorkspaceAnimator.m; sourceTree = "<group>"; };
 		D86BF3481A42234500C9F420 /* VPublishViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPublishViewController.h; sourceTree = "<group>"; };
 		D86BF3491A42234500C9F420 /* VPublishViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPublishViewController.m; sourceTree = "<group>"; };
 		D86BF34D1A42364B00C9F420 /* UIView+VDynamicsHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+VDynamicsHelpers.h"; sourceTree = "<group>"; };
@@ -1793,6 +1802,11 @@
 		D888B5271A86FC7800B34149 /* VRadialGradientLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VRadialGradientLayer.m; sourceTree = "<group>"; };
 		D888B5281A86FC7800B34149 /* VRadialGradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VRadialGradientView.h; sourceTree = "<group>"; };
 		D888B5291A86FC7800B34149 /* VRadialGradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VRadialGradientView.m; sourceTree = "<group>"; };
+		D88CEAE21A92E17C00F5A837 /* VVideoSnapshotTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VVideoSnapshotTool.h; sourceTree = "<group>"; };
+		D88CEAE31A92E17C00F5A837 /* VVideoSnapshotTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVideoSnapshotTool.m; sourceTree = "<group>"; };
+		D88CEAE51A92EEED00F5A837 /* VSnapshotViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSnapshotViewController.h; sourceTree = "<group>"; };
+		D88CEAE61A92EEED00F5A837 /* VSnapshotViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSnapshotViewController.m; sourceTree = "<group>"; };
+		D88CEAE71A92EEED00F5A837 /* VSnapshotViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VSnapshotViewController.xib; sourceTree = "<group>"; };
 		D8917EA019F8498F0070BDBB /* VVideoCellViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VVideoCellViewModel.h; sourceTree = "<group>"; };
 		D8917EA119F8498F0070BDBB /* VVideoCellViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVideoCellViewModel.m; sourceTree = "<group>"; };
 		D89AC2B819F1FD6B00921131 /* VHistogramDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHistogramDataSource.h; sourceTree = "<group>"; };
@@ -3993,6 +4007,8 @@
 				03811D3319353486005687FF /* VAlertViewBlockDelegate.m */,
 				BE46F02B19D0CC3700CD7EF6 /* VConversation+UnreadMessageCount.h */,
 				BE46F02C19D0CC3700CD7EF6 /* VConversation+UnreadMessageCount.m */,
+				D816F7E21A966A0B00120798 /* UIScrollView+VCenterContent.h */,
+				D816F7E31A966A0B00120798 /* UIScrollView+VCenterContent.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -4256,6 +4272,9 @@
 			children = (
 				D80A94E41A546DF90035D788 /* VAssetThumbnailDataSource.h */,
 				D80A94E51A546DF90035D788 /* VAssetThumbnailDataSource.m */,
+				D88CEAE51A92EEED00F5A837 /* VSnapshotViewController.h */,
+				D88CEAE61A92EEED00F5A837 /* VSnapshotViewController.m */,
+				D88CEAE71A92EEED00F5A837 /* VSnapshotViewController.xib */,
 				D80A94E71A546E5E0035D788 /* VThumbnailCell.h */,
 				D80A94E81A546E5E0035D788 /* VThumbnailCell.m */,
 				D80A94EA1A546E680035D788 /* VThumbnailCell.xib */,
@@ -4267,6 +4286,8 @@
 				D80A94ED1A5472FB0035D788 /* VTrimVideoTool.m */,
 				D82EA50C1A577FF70008FD3E /* VVideoFrameRateComposition.h */,
 				D82EA50D1A577FF70008FD3E /* VVideoFrameRateComposition.m */,
+				D88CEAE21A92E17C00F5A837 /* VVideoSnapshotTool.h */,
+				D88CEAE31A92E17C00F5A837 /* VVideoSnapshotTool.m */,
 				D8ECB8F11A5C7CD200C8F67A /* VVideoWorkspaceTool.h */,
 			);
 			path = Video;
@@ -4300,6 +4321,8 @@
 				D86BF35B1A42683E00C9F420 /* VPublishBlurOverAnimator.m */,
 				D8332DBE1A7C72EB00C3FEE0 /* VVCameraShutterOverAnimator.h */,
 				D8332DBF1A7C72EB00C3FEE0 /* VVCameraShutterOverAnimator.m */,
+				D864489F1A9ACCE700CD01AC /* VWorkspaceToWorkspaceAnimator.h */,
+				D86448A01A9ACCE700CD01AC /* VWorkspaceToWorkspaceAnimator.m */,
 			);
 			path = Animators;
 			sourceTree = "<group>";
@@ -4804,6 +4827,7 @@
 				036F38811A0C4DEA0014DF66 /* OpenSans-Semibold.ttf in Resources */,
 				036F38661A0C4DEA0014DF66 /* Arvo-Regular.ttf in Resources */,
 				036F38631A0C4DEA0014DF66 /* Arimo-Bold.ttf in Resources */,
+				D88CEAE91A92EEED00F5A837 /* VSnapshotViewController.xib in Resources */,
 				A7E3985F1A34F6E1000E4CAC /* creator-avatar.png in Resources */,
 				036F38751A0C4DEA0014DF66 /* Kreon-Bold.ttf in Resources */,
 				036F38671A0C4DEA0014DF66 /* Bitter-Bold.ttf in Resources */,
@@ -5201,7 +5225,9 @@
 				037FCF1B1A8DAF0E00E8ABFC /* VNavigationControllerScrollDelegate.m in Sources */,
 				BE171D8C1868BE64004E5202 /* VAppDelegate.m in Sources */,
 				039ED29919C908F400305987 /* VCVideoPlayerToolbarSlider.m in Sources */,
+				D88CEAE81A92EEED00F5A837 /* VSnapshotViewController.m in Sources */,
 				A7D7079C1A7C144C00D9993F /* VEndCardAnimator.m in Sources */,
+				D86448A11A9ACCE700CD01AC /* VWorkspaceToWorkspaceAnimator.m in Sources */,
 				BE171E151868C211004E5202 /* VNodeAction+RestKit.m in Sources */,
 				03CE670019B640CD0011BB9E /* VDeviceInfo.m in Sources */,
 				A77AD5011A2011E000142F24 /* UIActionSheet+VBlocks.m in Sources */,
@@ -5221,6 +5247,7 @@
 				037CB74519CFE8D20084BBED /* VUploadTaskInformation.m in Sources */,
 				BE171E161868C211004E5202 /* VRule+RestKit.m in Sources */,
 				0314D4B619B46B5E00FA363C /* VLightboxTransitioningDelegate.m in Sources */,
+				D816F7E41A966A0B00120798 /* UIScrollView+VCenterContent.m in Sources */,
 				0314D4D219B46B5E00FA363C /* VRootViewController.m in Sources */,
 				DBDDB8891A3F5A3900696071 /* VFollowHashtagControl.m in Sources */,
 				0310DC4B1989A6AB0092DF50 /* NSString+VStringWithData.m in Sources */,
@@ -5264,6 +5291,7 @@
 				D8E39BB819CB7C3C007FD86A /* VContentViewViewModel.m in Sources */,
 				A7B98A421A264D1D00C58335 /* VNotificationSettingsStateManager.m in Sources */,
 				03CE66FC19B59F260011BB9E /* UIImage+ImageEffects.m in Sources */,
+				D88CEAE41A92E17C00F5A837 /* VVideoSnapshotTool.m in Sources */,
 				DBDBE6EE1A16736C00DA1BB2 /* VAdBreak.m in Sources */,
 				A75FAF2219E8AC1E00EB87C1 /* VSuggestedPeopleCollectionViewController.m in Sources */,
 				0314D4E519B46B5E00FA363C /* VFindFriendsViewController.m in Sources */,

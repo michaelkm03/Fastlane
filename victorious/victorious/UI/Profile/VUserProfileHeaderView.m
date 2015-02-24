@@ -20,12 +20,10 @@
 
 @implementation VUserProfileHeaderView
 
-+ (instancetype)newViewWithFrame:(CGRect)frame
++ (instancetype)newView
 {
     NSArray *nibViews = [[NSBundle mainBundle] loadNibNamed:NSStringFromClass([VUserProfileHeaderView class]) owner:self options:nil];
     VUserProfileHeaderView *view = [nibViews objectAtIndex:0];
-    view.frame = frame;
-    
     return view;
 }
 
@@ -88,7 +86,7 @@
     {
         [self.editProfileButton setStyle:VButtonStyleSecondary];
         self.editProfileButton.primaryColor = linkColor;
-        self.editProfileButton.secondaryColor = [UIColor blackColor];
+        self.editProfileButton.secondaryColor = linkColor;
         [self.editProfileButton setTitle:NSLocalizedString(@"editProfileButton", @"") forState:UIControlStateNormal];
     }
     else
@@ -121,7 +119,7 @@
     [self.KVOController unobserve:_user];
 
     _user = user;
-    
+        
     if (_user == nil)
     {
         [self applyEditProfileButtonStyle];

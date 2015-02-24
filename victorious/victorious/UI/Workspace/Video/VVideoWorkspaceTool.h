@@ -12,6 +12,9 @@
 
 /**
  *  All VideoWorkspaceTools must implement this for exporting.
+ *
+ *  NOTE: some tools have their own completion block and this method
+ *  should not be called on them.
  */
 - (void)exportToURL:(NSURL *)url
      withCompletion:(void (^)(BOOL finished, UIImage *previewImage, NSError *error))completion;

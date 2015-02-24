@@ -40,6 +40,8 @@
 
 - (instancetype)initWithTools:(NSArray /* NSArray of tools that conform to <VWorkspaceTool> */ *)tools NS_DESIGNATED_INITIALIZER;
 
+@property (nonatomic, copy) void (^canRenderAndExportChangeBlock)(BOOL canRenderAndExport);
+
 /**
  *  Call this method to export an asset.
  */

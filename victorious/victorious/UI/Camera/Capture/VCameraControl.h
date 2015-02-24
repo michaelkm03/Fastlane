@@ -22,7 +22,6 @@ enum
 typedef NS_ENUM(NSInteger, VCameraControlState)
 {
     VCameraControlStateDefault, ///< The default state of the control
-    VCameraControlStateGrowing, ///< While the control is expanding out in pill form before it has sent any controlEvents
     VCameraControlStateRecording, ///< When recordingProgress is greater than 0.0f
     VCameraControlStateCapturingImage, ///< A growing animation indicating the control is waiting on the hardward
 };
