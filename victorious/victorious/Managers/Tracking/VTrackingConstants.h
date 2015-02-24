@@ -2,7 +2,7 @@
 // victorious/victorious/Managers/Tracking/VTrackingConstants.h 
 // victorious 
 // 
-// Generated from CSV using script "tracking_generate_constants.sh" on 02/23/15. 
+// Generated from CSV using script "tracking_generate_constants.sh" on 02/24/15. 
 // Copyright (c) 2015 Victorious. All rights reserved. 
 // 
 
@@ -35,13 +35,13 @@ extern NSString * const VTrackingEventCameraDidCapturePhoto; //< User did move f
 extern NSString * const VTrackingEventCameraDidCaptureVideo; //< User did move from camera view to workspace with a video just recorded
 extern NSString * const VTrackingEventCameraUserDidPickImageFromLibrary; 
 extern NSString * const VTrackingEventCameraUserDidPickVideoFromLibrary; 
-extern NSString * const VTrackingEventCameraDidSearchForImage; //< Params: SearchTerm
-extern NSString * const VTrackingEventCameraDidSelectImageSearch; 
-extern NSString * const VTrackingEventCameraDidSelectImageFromImageSearch; //< User selected an image from the image search.
-extern NSString * const VTrackingEventCameraDidExitImageSearch; //< User left the image search without selecting an image.
-extern NSString * const VTrackingEventCameraUserDidConfirmtDelete; //< User tapped the garbage icon to see deletion confirmation.
-extern NSString * const VTrackingEventCameraUserDidSelectDelete; //< User confirmed deletion of any recorded video.
-extern NSString * const VTrackingEventCameraUserDidExit; //< User tapped (X) icon to leave camera without capturing or importing a photo or video
+extern NSString * const VTrackingEventCameraDidSearchForImage; //< Params: Context
+extern NSString * const VTrackingEventCameraDidSelectImageSearch; //< Params: Context
+extern NSString * const VTrackingEventCameraDidSelectImageFromImageSearch; //< Params: Context; User selected an image from the image search.
+extern NSString * const VTrackingEventCameraDidExitImageSearch; //< Params: Context; User left the image search without selecting an image.
+extern NSString * const VTrackingEventCameraUserDidConfirmtDelete; //< Params: Context; User tapped the garbage icon to see deletion confirmation.
+extern NSString * const VTrackingEventCameraUserDidSelectDelete; //< Params: Context; User confirmed deletion of any recorded video.
+extern NSString * const VTrackingEventCameraUserDidExit; //< Params: Context; User tapped (X) icon to leave camera without capturing or importing a photo or videoParams: Context;
 
 // Workspace
 extern NSString * const VTrackingEventUserDidSelectWorkspaceTool; //< Params: Name (template-driven)
@@ -60,6 +60,8 @@ extern NSString * const VTrackingEventPollDidSelectImageSearch;
 extern NSString * const VTrackingEventPollDidSelectImageFromImageSearch; 
 extern NSString * const VTrackingEventPollDidExitImageSearch; 
 extern NSString * const VTrackingEventPollDidFailValidation; //< Params: ErrorMessage
+extern NSString * const VTrackingEventUserDidSelectPollAnswer; 
+extern NSString * const VTrackingEventUserDidSelectPollMedia; 
 
 // Upload bar
 extern NSString * const VTrackingEventUploadDidFail; 
@@ -250,6 +252,7 @@ extern NSString * const VTrackingKeyProductIdentifier; //< App Store or Google P
 extern NSString * const VTrackingKeyName; //< "Generic, to indicate a name associated with an event"
 extern NSString * const VTrackingKeyCount; //< "Generic, to indicate quantity associated with an event"
 extern NSString * const VTrackingKeyRemoteId; //< "Generic, to indicate backend remote ID associated with an item"
+extern NSString * const VTrackingKeyIndex; //< "Generic, to indicate selected item in a list or group."
 
 // Tracking Event Values
 // ContentType values
@@ -272,6 +275,7 @@ extern NSString * const VTrackingValueProfileFollowers;
 extern NSString * const VTrackingValueSuggestedPeople; //< In Discover section
 extern NSString * const VTrackingValueFindFriends; 
 extern NSString * const VTrackingValueReposters; 
+extern NSString * const VTrackingValuePollCreation; 
 
 // Menu types
 extern NSString * const VTrackingValueHamburgerMenu; 

@@ -515,6 +515,8 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 {
     [super viewDidAppear:animated];
     
+    NSString *contextType = [self trackingValueForContentType] ?: @"";
+    [[VTrackingManager sharedInstance] setValue:contextType forSessionParameterWithKey:VTrackingKeyContentType];
     [[VTrackingManager sharedInstance] setValue:VTrackingValueContentView forSessionParameterWithKey:VTrackingKeyContext];
     
 #if HANDOFFENABLED
@@ -535,7 +537,11 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 {
     [super viewWillDisappear:animated];
     
-    [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContext];
+    if ( self.isBeingDismissed )
+    {
+        [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContentType];
+        [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContext];
+    }
     
 #if HANDOFFENABLED
     self.handoffObject.delegate = nil;
@@ -583,6 +589,25 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 - (BOOL)prefersStatusBarHidden
 {
     return YES;
+}
+
+#pragma mark - Tracking helpers
+
+- (NSString *)trackingValueForContentType
+{
+    switch (self.viewModel.type)
+    {
+        case VContentViewTypePoll:
+            return VTrackingValuePoll;
+        case VContentViewTypeImage:
+            return VTrackingValueImage;
+        case VContentViewTypeGIFVideo:
+            return VTrackingValueGIF;
+        case VContentViewTypeVideo:
+            return VTrackingValueVideo;
+        default:
+            return nil;
+    }
 }
 
 #pragma mark - Notification Handlers
@@ -853,6 +878,9 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
                 
                 pollCell.onAnswerASelection = ^void(BOOL isVideo, NSURL *mediaURL)
                 {
+                    NSDictionary *params = @{ VTrackingKeyIndex : @0, VTrackingKeyMediaType : [mediaURL pathExtension] ?: @"" };
+                    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectPollMedia parameters:params];
+                    
                     [welf showLightBoxWithMediaURL:mediaURL
                                       previewImage:weakPollCell.answerAPreviewImage
                                            isVideo:isVideo
@@ -860,6 +888,9 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
                 };
                 pollCell.onAnswerBSelection = ^void(BOOL isVideo, NSURL *mediaURL)
                 {
+                    NSDictionary *params = @{ VTrackingKeyIndex : @1, VTrackingKeyMediaType : [mediaURL pathExtension] ?: @"" };
+                    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectPollMedia parameters:params];
+                    
                     [welf showLightBoxWithMediaURL:mediaURL
                                       previewImage:weakPollCell.answerBPreviewImage
                                            isVideo:isVideo

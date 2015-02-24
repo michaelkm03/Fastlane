@@ -843,6 +843,9 @@
      {
          [self.delegate didUpdatePollsData];
          
+         NSDictionary *params = @{ VTrackingKeyIndex : selectedAnswer == VPollAnswerB ? @1 : @0 };
+         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectPollAnswer parameters:params];
+         
          completion(YES, nil);
      }
                                      failBlock:^(NSOperation *operation, NSError *error)

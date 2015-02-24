@@ -2,7 +2,7 @@
 // victorious/victorious/Managers/Tracking/VTrackingConstants.m 
 // victorious 
 // 
-// Generated from CSV using script "tracking_generate_constants.sh" on 02/23/15. 
+// Generated from CSV using script "tracking_generate_constants.sh" on 02/24/15. 
 // Copyright (c) 2015 Victorious. All rights reserved. 
 // 
 
@@ -60,6 +60,8 @@ NSString * const VTrackingEventPollDidSelectImageSearch = @"PollDidSelectImageSe
 NSString * const VTrackingEventPollDidSelectImageFromImageSearch = @"PollDidSelectImageFromImageSearch";
 NSString * const VTrackingEventPollDidExitImageSearch = @"PollDidExitImageSearch";
 NSString * const VTrackingEventPollDidFailValidation = @"PollDidFailValidation";
+NSString * const VTrackingEventUserDidSelectPollAnswer = @"UserDidSelectPollAnswer";
+NSString * const VTrackingEventUserDidSelectPollMedia = @"UserDidSelectPollMedia";
 
 // Upload bar
 NSString * const VTrackingEventUploadDidFail = @"UploadDidFail";
@@ -250,6 +252,7 @@ NSString * const VTrackingKeyProductIdentifier = @"ProductIdentifier";
 NSString * const VTrackingKeyName = @"Name";
 NSString * const VTrackingKeyCount = @"Count";
 NSString * const VTrackingKeyRemoteId = @"RemoteId";
+NSString * const VTrackingKeyIndex = @"Index";
 
 // Tracking Event Values
 // ContentType values
@@ -272,6 +275,7 @@ NSString * const VTrackingValueProfileFollowers = @"ProfileFollowers";
 NSString * const VTrackingValueSuggestedPeople = @"SuggestedPeople";
 NSString * const VTrackingValueFindFriends = @"FindFriends";
 NSString * const VTrackingValueReposters = @"Reposters";
+NSString * const VTrackingValuePollCreation = @"PollCreation";
 
 // Menu types
 NSString * const VTrackingValueHamburgerMenu = @"HamburgerMenu";

@@ -32,3 +32,4 @@ ProductIdentifier,App Store or Google Play product identifier for a purchseable 
 Name,"Generic, to indicate a name associated with an event"
 Count,"Generic, to indicate quantity associated with an event"
 RemoteId,"Generic, to indicate backend remote ID associated with an item"
+Index,"Generic, to indicate selected item in a list or group."

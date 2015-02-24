@@ -25,13 +25,13 @@ CameraDidCapturePhoto,User did move from camera view to workspace with an image 
 CameraDidCaptureVideo,User did move from camera view to workspace with a video just recorded
 CameraUserDidPickImageFromLibrary,
 CameraUserDidPickVideoFromLibrary,
-CameraDidSearchForImage,Params: SearchTerm
-CameraDidSelectImageSearch,
-CameraDidSelectImageFromImageSearch,User selected an image from the image search.
-CameraDidExitImageSearch,User left the image search without selecting an image.
-CameraUserDidConfirmtDelete,User tapped the garbage icon to see deletion confirmation.
-CameraUserDidSelectDelete,User confirmed deletion of any recorded video.
-CameraUserDidExit,User tapped (X) icon to leave camera without capturing or importing a photo or video
+CameraDidSearchForImage,Params: Context
+CameraDidSelectImageSearch,Params: Context
+CameraDidSelectImageFromImageSearch,Params: Context; User selected an image from the image search.
+CameraDidExitImageSearch,Params: Context; User left the image search without selecting an image.
+CameraUserDidConfirmtDelete,Params: Context; User tapped the garbage icon to see deletion confirmation.
+CameraUserDidSelectDelete,Params: Context; User confirmed deletion of any recorded video.
+CameraUserDidExit,Params: Context; User tapped (X) icon to leave camera without capturing or importing a photo or videoParams: Context;
 ,
 // Workspace,
 UserDidSelectWorkspaceTool,Params: Name (template-driven)
@@ -50,6 +50,8 @@ PollDidSelectImageSearch,
 PollDidSelectImageFromImageSearch,
 PollDidExitImageSearch,
 PollDidFailValidation,Params: ErrorMessage
+UserDidSelectPollAnswer,
+UserDidSelectPollMedia,
 ,
 // Upload bar,
 UploadDidFail,
