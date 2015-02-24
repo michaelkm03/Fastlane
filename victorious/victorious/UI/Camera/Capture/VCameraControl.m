@@ -15,7 +15,6 @@ static const CGFloat kWidthScaleFactorImageOnly = 1.2f;
 static const CGFloat kWidthScaleFactorDefault = 1.7f;
 static const CGFloat kHighlightedAlpha = 0.6f;
 static const CGFloat kHighlightedScaleFactor = 0.85;
-static const CGFloat kHighlightedTintMixFactor = 0.7f;
 
 static const NSTimeInterval kMaxElapsedTimeImageTriggerWithVideo = 0.2;
 static const NSTimeInterval kRecordingTriggerDuration = 0.45;
