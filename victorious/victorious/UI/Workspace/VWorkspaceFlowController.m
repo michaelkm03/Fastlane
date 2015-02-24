@@ -236,14 +236,12 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
     self.state = newState;
 }
 
-#pragma mark - VFlowController
+#pragma mark - Property Accessors
 
 - (UIViewController *)flowRootViewController
 {
     return self.flowNavigationController;
 }
-
-#pragma mark - Property Accessors
 
 - (void)setVideoEnabled:(BOOL)videoEnabled
 {

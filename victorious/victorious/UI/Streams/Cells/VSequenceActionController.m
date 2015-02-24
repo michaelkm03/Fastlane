@@ -114,8 +114,8 @@
     [addedDependencies setObject:@(VVideoToolControllerInitialVideoEditStateGIF) forKey:VVideoToolControllerInitalVideoEditStateKey];
     
     VWorkspaceFlowController *workspaceFlowController = [dependencyManager templateValueOfType:[VWorkspaceFlowController class]
-                                                                   forKey:VDependencyManagerWorkspaceFlowKey
-                                                    withAddedDependencies:addedDependencies];
+                                                                                        forKey:VDependencyManagerWorkspaceFlowKey
+                                                                         withAddedDependencies:addedDependencies];
     
     workspaceFlowController.delegate = self;
     self.viewControllerPresentingWorkspace = viewController;

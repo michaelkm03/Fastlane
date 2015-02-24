@@ -62,6 +62,15 @@
     self.internalTabBarViewController.viewControllers = [self wrappedNavigationDesinations];
 }
 
+- (NSUInteger)supportedInterfaceOrientations
+{
+    if (self.internalTabBarViewController.selectedViewController != nil)
+    {
+        [self.internalTabBarViewController.selectedViewController supportedInterfaceOrientations];
+    }
+    return UIInterfaceOrientationMaskPortrait;
+}
+
 #pragma mark - UITabBarControllerDelegate
 
 - (BOOL)tabBarController:(UITabBarController *)tabBarController

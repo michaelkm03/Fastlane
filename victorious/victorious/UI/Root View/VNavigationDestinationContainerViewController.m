@@ -35,7 +35,7 @@
 {
     self.view = [[UIView alloc] init];
 
-    if (self.containedViewController)
+    if (self.containedViewController != nil)
     {
         [self addChildViewController:self.containedViewController];
         self.containedViewController.view.translatesAutoresizingMaskIntoConstraints = YES;
