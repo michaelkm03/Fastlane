@@ -12,14 +12,24 @@ APPNAME=`basename "$1"`
 TESTER_GROUPS=$2
 
 # Should email testers about new version. Set to "off" to disable email notifications.
-[[ "$3" != "" ]] && NOTIFY="on" || NOTIFY="off"
+[[ "$3" == "--notify" ]] && NOTIFY="on" || NOTIFY="off"
 
-IPA_FILENAME="products/$APPNAME.ipa"
-if [ ! -f "${IPA_FILENAME}" ]; then
+usage() {
+	echo "Usage: upload-to-testfairy.sh <App Name> <Tester Groups> [--notify]"
+	echo
+	echo -e "  <App Name>\t\tThe name of the .ipa in the products folder of the app to upload."
+	echo -e "  <Tester Groups> \tComma-separated list (no spaces) of tester groups from TestFairy account to whom this build will be shared."
+	echo -e "  --notify\t\tWhether or not to notify invited testers."
+	echo
+}
+
+if [[ "$APPNAME" == "" ]]; then
+	echo "Invalid input: Can't find an app named '${APPNAME}'."
 	usage
-	echo "Can't find file: ${IPA_FILENAME}"
 	exit 2
 fi
+
+IPA_FILENAME="products/$APPNAME.ipa"
 
 UPLOADER_VERSION=1.09
 
@@ -42,11 +52,6 @@ COMMENT=""
 CURL=curl
 
 SERVER_ENDPOINT=http://app.testfairy.com
-
-usage() {
-	echo "Usage: testfairy-upload-ios.sh IPA_FILENAME"
-	echo
-}
 	
 verify_tools() {
 	# Check 'curl' tool
