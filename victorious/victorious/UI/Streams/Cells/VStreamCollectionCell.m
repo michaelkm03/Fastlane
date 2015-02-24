@@ -231,7 +231,7 @@ static const CGFloat kTextViewLineFragmentPadding = 5.0f; //Since we don't updat
     {
         [self.actionView addRepostButton];
     }
-    [self.actionView addFlagButton];
+    [self.actionView addMoreButton];
 }
 
 - (void)setHeight:(CGFloat)height

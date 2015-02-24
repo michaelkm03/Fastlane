@@ -190,6 +190,8 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
 {
     [super viewWillAppear:animated];
     
+    [[VTrackingManager sharedInstance] setValue:VTrackingValueStream forSessionParameterWithKey:VTrackingKeyContext];
+    
     NSString *streamName = self.currentStream.name;
     if ( streamName != nil )
     {
@@ -216,8 +218,12 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
     [super viewWillDisappear:animated];
     
     [[VTrackingManager sharedInstance] endEvent:VTrackingEventStreamDidAppear];
-    
     [[VTrackingManager sharedInstance] clearQueuedEventsWithName:VTrackingEventSequenceDidAppearInStream];
+    
+    if ( self.isBeingDismissed )
+    {
+        [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContext];
+    }
     
     [self.preloadImageCache removeAllObjects];
 }
@@ -350,6 +356,8 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
                            initialImageEditState:(VImageToolControllerInitialImageEditState)initialImageEdit
                         andInitialVideoEditState:(VVideoToolControllerInitialVideoEditState)initialVideoEdit
 {
+    [[VTrackingManager sharedInstance] setValue:VTrackingValueCreatePost forSessionParameterWithKey:VTrackingKeyContext];
+    
     VDependencyManager *dependencyManager = [(id)self dependencyManager];
     
     VWorkspaceFlowController *workspaceFlowController = [dependencyManager templateValueOfType:[VWorkspaceFlowController class]

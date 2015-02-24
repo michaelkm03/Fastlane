@@ -189,7 +189,7 @@ static char KVOContext;
 {
     [super viewDidAppear:animated];
     
-    [[VTrackingManager sharedInstance] setValue:VTrackingValuePollCreation forSessionParameterWithKey:VTrackingKeyContext];
+    [[VTrackingManager sharedInstance] setValue:VTrackingValueCreatePoll forSessionParameterWithKey:VTrackingKeyContext];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -398,7 +398,7 @@ static char KVOContext;
 
 - (IBAction)searchImageAction:(id)sender
 {
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventPollDidSelectImageSearch];
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraDidSelectImageSearch];
     
     VImageSearchViewController *imageSearch = [VImageSearchViewController newImageSearchViewController];
     
@@ -416,8 +416,6 @@ static char KVOContext;
     {
         if (finished)
         {
-            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventPollDidSelectImageFromImageSearch];
-            
             if (self.firstMediaURL)
             {
                 if (!self.rightAnswerTextView.text || [self.rightAnswerTextView.text isEqualToString:@""])
@@ -436,10 +434,7 @@ static char KVOContext;
             }
             [self imagePickerFinishedWithURL:capturedMediaURL previewImage:previewImage];
         }
-        else
-        {
-            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventPollDidExitImageSearch];
-        }
+        
         [self dismissViewControllerAnimated:YES completion:nil];
     };
     [self presentViewController:imageSearch animated:YES completion:nil];

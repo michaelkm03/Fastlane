@@ -35,13 +35,16 @@ NSString * const VTrackingEventCameraDidCapturePhoto = @"CameraDidCapturePhoto";
 NSString * const VTrackingEventCameraDidCaptureVideo = @"CameraDidCaptureVideo";
 NSString * const VTrackingEventCameraUserDidPickImageFromLibrary = @"CameraUserDidPickImageFromLibrary";
 NSString * const VTrackingEventCameraUserDidPickVideoFromLibrary = @"CameraUserDidPickVideoFromLibrary";
-NSString * const VTrackingEventCameraDidSearchForImage = @"CameraDidSearchForImage";
-NSString * const VTrackingEventCameraDidSelectImageSearch = @"CameraDidSelectImageSearch";
-NSString * const VTrackingEventCameraDidSelectImageFromImageSearch = @"CameraDidSelectImageFromImageSearch";
-NSString * const VTrackingEventCameraDidExitImageSearch = @"CameraDidExitImageSearch";
 NSString * const VTrackingEventCameraUserDidConfirmtDelete = @"CameraUserDidConfirmtDelete";
 NSString * const VTrackingEventCameraUserDidSelectDelete = @"CameraUserDidSelectDelete";
 NSString * const VTrackingEventCameraUserDidExit = @"CameraUserDidExit";
+NSString * const VTrackingEventCameraUserDidEnter = @"CameraUserDidEnter";
+
+// Image Search (Camera prefix for legacy/compatibility)
+NSString * const VTrackingEventCameraDidSelectImageSearch = @"CameraDidSelectImageSearch";
+NSString * const VTrackingEventCameraDidSearchForImage = @"CameraDidSearchForImage";
+NSString * const VTrackingEventCameraDidSelectImageFromImageSearch = @"CameraDidSelectImageFromImageSearch";
+NSString * const VTrackingEventCameraDidExitImageSearch = @"CameraDidExitImageSearch";
 
 // Workspace
 NSString * const VTrackingEventUserDidSelectWorkspaceTool = @"UserDidSelectWorkspaceTool";
@@ -56,9 +59,6 @@ NSString * const VTrackingEventUserDidPublishContent = @"UserDidPublishContent";
 NSString * const VTrackingEventUserDidCancelPublish = @"UserDidCancelPublish";
 
 // Polls
-NSString * const VTrackingEventPollDidSelectImageSearch = @"PollDidSelectImageSearch";
-NSString * const VTrackingEventPollDidSelectImageFromImageSearch = @"PollDidSelectImageFromImageSearch";
-NSString * const VTrackingEventPollDidExitImageSearch = @"PollDidExitImageSearch";
 NSString * const VTrackingEventPollDidFailValidation = @"PollDidFailValidation";
 NSString * const VTrackingEventUserDidSelectPollAnswer = @"UserDidSelectPollAnswer";
 NSString * const VTrackingEventUserDidSelectPollMedia = @"UserDidSelectPollMedia";
@@ -144,6 +144,7 @@ NSString * const VTrackingEventUserDidSelectRemix = @"UserDidSelectRemix";
 NSString * const VTrackingEventUserDidSelectShowRemixes = @"UserDidSelectShowRemixes";
 NSString * const VTrackingEventUserDidSelectShowReposters = @"UserDidSelectShowReposters";
 NSString * const VTrackingEventUserDidDeletePost = @"UserDidDeletePost";
+NSString * const VTrackingEventUserDidSelectMoreActions = @"UserDidSelectMoreActions";
 
 // Comments
 NSString * const VTrackingEventUserDidPostComment = @"UserDidPostComment";
@@ -275,7 +276,8 @@ NSString * const VTrackingValueProfileFollowers = @"ProfileFollowers";
 NSString * const VTrackingValueSuggestedPeople = @"SuggestedPeople";
 NSString * const VTrackingValueFindFriends = @"FindFriends";
 NSString * const VTrackingValueReposters = @"Reposters";
-NSString * const VTrackingValuePollCreation = @"PollCreation";
+NSString * const VTrackingValueCreatePoll = @"CreatePoll";
+NSString * const VTrackingValueCreatePost = @"CreatePost";
 
 // Menu types
 NSString * const VTrackingValueHamburgerMenu = @"HamburgerMenu";

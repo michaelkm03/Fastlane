@@ -177,14 +177,17 @@ static CGFloat const kRepostedDisabledAlpha     = 0.3f;
      }];
 }
 
-- (void)addFlagButton
+- (void)addMoreButton
 {
     UIButton *button = [self addButtonWithImage:[UIImage imageNamed:@"overflowBtn-C"]];
-    [button addTarget:self action:@selector(flagAction:) forControlEvents:UIControlEventTouchUpInside];
+    [button addTarget:self action:@selector(moreAction:) forControlEvents:UIControlEventTouchUpInside];
 }
 
-- (void)flagAction:(id)sender
+- (void)moreAction:(id)sender
 {
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectMoreActions parameters:nil];
+    
+    // TODO: Currently, this "More" button is just skipping ahead to the "Flag" actionsheet confirmation.  This may need to be sorted out in the future.
     if ([self.delegate respondsToSelector:@selector(willFlagSequence:fromView:)])
     {
         [self.delegate willFlagSequence:self.sequence fromView:self];

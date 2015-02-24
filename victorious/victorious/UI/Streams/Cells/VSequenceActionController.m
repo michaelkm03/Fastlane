@@ -283,6 +283,8 @@
 
 - (void)flagSheetFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence
 {
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectMoreActions parameters:nil];
+    
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
                                                     cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel button")
                                                        onCancelButton:nil

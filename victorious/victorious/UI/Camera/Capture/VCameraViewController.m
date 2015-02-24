@@ -200,6 +200,8 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
                  forControlEvents:VCameraControlEventStartRecordingVideo];
     [self.cameraControl addTarget:self action:@selector(stopRecording)
                  forControlEvents:VCameraControlEventEndRecordingVideo];
+    
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraUserDidEnter];
 }
 
 - (void)viewDidLayoutSubviews
@@ -554,12 +556,6 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
             welf.previewImage = previewImage;
             welf.didSelectFromWebSearch = YES;
             welf.state = VCameraViewControllerStateCapturedMedia;
-            
-            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraDidSelectImageFromImageSearch];
-        }
-        else
-        {
-            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraDidExitImageSearch];
         }
         
         [welf dismissViewControllerAnimated:YES

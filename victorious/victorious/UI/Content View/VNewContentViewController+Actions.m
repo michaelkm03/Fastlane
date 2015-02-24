@@ -50,7 +50,9 @@
 @implementation VNewContentViewController (Actions)
 
 - (IBAction)pressedMore:(id)sender
-{   
+{
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectMoreActions parameters:nil];
+    
     NSMutableArray *actionItems = [[NSMutableArray alloc] init];
     
     [self disableEndcardAutoplay];

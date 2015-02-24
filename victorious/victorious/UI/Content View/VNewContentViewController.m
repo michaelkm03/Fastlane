@@ -500,14 +500,6 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
         }
     }
     
-    if ( self.isBeingPresented || self.navigationController.isBeingPresented )
-    {
-        NSDictionary *params = @{ VTrackingKeyTimeCurrent : [NSDate date],
-                                  VTrackingKeySequenceId : self.viewModel.sequence.remoteId,
-                                  VTrackingKeyUrls : self.viewModel.sequence.tracking.viewStart ?: @[] };
-        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
-    }
-    
     [self updateOrientation];
 }
 
@@ -530,6 +522,14 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     }
 #endif
     
+    if ( self.isBeingPresented || self.navigationController.isBeingPresented )
+    {
+        NSDictionary *params = @{ VTrackingKeyTimeCurrent : [NSDate date],
+                                  VTrackingKeySequenceId : self.viewModel.sequence.remoteId,
+                                  VTrackingKeyUrls : self.viewModel.sequence.tracking.viewStart ?: @[] };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
+    }
+    
     [self.contentCollectionView flashScrollIndicators];
 }
 
@@ -537,9 +537,10 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 {
     [super viewWillDisappear:animated];
     
+    [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContentType];
+    
     if ( self.isBeingDismissed )
     {
-        [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContentType];
         [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContext];
     }
     

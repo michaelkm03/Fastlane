@@ -35,13 +35,16 @@ extern NSString * const VTrackingEventCameraDidCapturePhoto; //< User did move f
 extern NSString * const VTrackingEventCameraDidCaptureVideo; //< User did move from camera view to workspace with a video just recorded
 extern NSString * const VTrackingEventCameraUserDidPickImageFromLibrary; 
 extern NSString * const VTrackingEventCameraUserDidPickVideoFromLibrary; 
-extern NSString * const VTrackingEventCameraDidSearchForImage; //< Params: Context
-extern NSString * const VTrackingEventCameraDidSelectImageSearch; //< Params: Context
-extern NSString * const VTrackingEventCameraDidSelectImageFromImageSearch; //< Params: Context; User selected an image from the image search.
-extern NSString * const VTrackingEventCameraDidExitImageSearch; //< Params: Context; User left the image search without selecting an image.
 extern NSString * const VTrackingEventCameraUserDidConfirmtDelete; //< Params: Context; User tapped the garbage icon to see deletion confirmation.
 extern NSString * const VTrackingEventCameraUserDidSelectDelete; //< Params: Context; User confirmed deletion of any recorded video.
 extern NSString * const VTrackingEventCameraUserDidExit; //< Params: Context; User tapped (X) icon to leave camera without capturing or importing a photo or videoParams: Context;
+extern NSString * const VTrackingEventCameraUserDidEnter; //< Params: Context
+
+// Image Search (Camera prefix for legacy/compatibility)
+extern NSString * const VTrackingEventCameraDidSelectImageSearch; //< Params: Context
+extern NSString * const VTrackingEventCameraDidSearchForImage; //< Params: Context
+extern NSString * const VTrackingEventCameraDidSelectImageFromImageSearch; //< Params: Context; User selected an image from the image search.
+extern NSString * const VTrackingEventCameraDidExitImageSearch; //< Params: Context; User left the image search without selecting an image.
 
 // Workspace
 extern NSString * const VTrackingEventUserDidSelectWorkspaceTool; //< Params: Name (template-driven)
@@ -56,9 +59,6 @@ extern NSString * const VTrackingEventUserDidPublishContent; //< "Params: TextTy
 extern NSString * const VTrackingEventUserDidCancelPublish; //< User exited a publish workflow without posting a content.
 
 // Polls
-extern NSString * const VTrackingEventPollDidSelectImageSearch; 
-extern NSString * const VTrackingEventPollDidSelectImageFromImageSearch; 
-extern NSString * const VTrackingEventPollDidExitImageSearch; 
 extern NSString * const VTrackingEventPollDidFailValidation; //< Params: ErrorMessage
 extern NSString * const VTrackingEventUserDidSelectPollAnswer; 
 extern NSString * const VTrackingEventUserDidSelectPollMedia; 
@@ -144,6 +144,7 @@ extern NSString * const VTrackingEventUserDidSelectRemix; //< Params: Context
 extern NSString * const VTrackingEventUserDidSelectShowRemixes; 
 extern NSString * const VTrackingEventUserDidSelectShowReposters; 
 extern NSString * const VTrackingEventUserDidDeletePost; 
+extern NSString * const VTrackingEventUserDidSelectMoreActions; //< Params: Context
 
 // Comments
 extern NSString * const VTrackingEventUserDidPostComment; //< "Params: TextLength, ContentType, CurrentSection, StreamName"
@@ -275,7 +276,8 @@ extern NSString * const VTrackingValueProfileFollowers;
 extern NSString * const VTrackingValueSuggestedPeople; //< In Discover section
 extern NSString * const VTrackingValueFindFriends; 
 extern NSString * const VTrackingValueReposters; 
-extern NSString * const VTrackingValuePollCreation; 
+extern NSString * const VTrackingValueCreatePoll; 
+extern NSString * const VTrackingValueCreatePost; 
 
 // Menu types
 extern NSString * const VTrackingValueHamburgerMenu; 
