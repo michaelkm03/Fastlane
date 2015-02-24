@@ -56,19 +56,15 @@ static BOOL isRunningTests(void) __attribute__((const));
     [ADEumInstrumentation initWithKey:@"AD-AAB-AAA-JWA"];
 #endif
     
-    [TestFairy begin:@"3f6a3cfe21285ffa606050752cfb6941ccedcf61"];
-    
-/*    [TestFlight setOptions:@{ TFOptionReportCrashes: @NO }];
 #ifdef QA
-    [TestFlight takeOff:[[NSBundle mainBundle] objectForInfoDictionaryKey:kTestflightQAToken]];
-#elif STAGING
-    [TestFlight takeOff:[[NSBundle mainBundle] objectForInfoDictionaryKey:kTestflightStagingToken]];
-#elif DEBUG
-#else
-    [TestFlight takeOff:[[NSBundle mainBundle] objectForInfoDictionaryKey:kTestflightReleaseToken]];
-#endif*/
+#ifdef STAGING
+    [TestFairy begin:@"3f6a3cfe21285ffa606050752cfb6941ccedcf61"];
+#endif
+#endif
     
-    [Crashlytics startWithAPIKey:@"58f61748f3d33b03387e43014fdfff29c5a1da73"];
+    NSString *testFairyAPIKey = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"TestFairyAPIKey"];
+    NSAssert( testFairyAPIKey != nil, @"Could not rest the TestFairy API Key from Info.plist!" );
+    [Crashlytics startWithAPIKey:testFairyAPIKey];
     
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     [[VReachability reachabilityForInternetConnection] startNotifier];
