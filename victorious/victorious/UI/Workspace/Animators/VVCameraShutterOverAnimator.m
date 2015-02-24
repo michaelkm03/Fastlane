@@ -38,7 +38,8 @@ static const CGFloat kGradientMagnitude = 20.0f;
     if ([toViewController isKindOfClass:[VWorkspaceViewController class]])
     {
         VWorkspaceViewController *workvc = (VWorkspaceViewController *)toViewController;
-        [workvc bringChromeOutOfView];
+        [workvc bringTopChromeOutOfView];
+        [workvc bringBottomChromeOutOfView];
         
         radialGradientMaskView = [[VRadialGradientView alloc] initWithFrame:workvc.canvasView.bounds];
         VRadialGradientLayer *radialGradientLayer = radialGradientMaskView.radialGradientLayer;

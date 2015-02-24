@@ -269,7 +269,7 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
 
 - (void)updateTrimControlTitleWithTime:(CMTime)time
 {
-    NSString *title = [NSString stringWithFormat:@"%@ %@", [NSString stringWithFormat:@"%.0f", CMTimeGetSeconds(time)], NSLocalizedString(@"s", @"Second time interval abbreviation.")];
+    NSString *title = [NSString stringWithFormat:@"%@", [NSString stringWithFormat:@"%.2f", CMTimeGetSeconds(time)]];
     self.trimControl.attributedTitle = [[NSAttributedString alloc] initWithString:title
                                                                        attributes:@{NSFontAttributeName: [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font]}];
 }

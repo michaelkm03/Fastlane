@@ -77,37 +77,54 @@ static NSString * const kFilterIndexKey = @"filterIndex";
 
 - (CIImage *)imageByApplyingToolToInputImage:(CIImage *)inputImage
 {
-    // Bail out if we don't have any operations to do.
+    CIFilter *cropFilter = [CIFilter filterWithName:@"CICrop"];
+    
+    // Crop to center if we have never been selected
+    CIVector *cropVector = nil;
     if (self.cropViewController.croppingScrollView == nil)
     {
-        return inputImage;
+        [cropFilter setValue:inputImage
+                      forKey:kCIInputImageKey];
+        cropVector = [self cropVectroWithScrollView:self.canvasView.canvasScrollView inputImageExtent:inputImage.extent zoomScale:1.0f];
+    }
+    else
+    {
+        CIFilter *lanczosScaleFilter = [CIFilter filterWithName:@"CILanczosScaleTransform"];
+        [lanczosScaleFilter setValue:inputImage
+                              forKey:kCIInputImageKey];
+        CGFloat zoomScale = self.cropViewController.croppingScrollView.zoomScale;
+        [lanczosScaleFilter setValue:@(zoomScale)
+                              forKey:kCIInputScaleKey];
+        
+        // Crop at new size
+        [cropFilter setValue:[lanczosScaleFilter outputImage]
+                      forKey:kCIInputImageKey];
+        
+        cropVector = [self cropVectroWithScrollView:self.cropViewController.croppingScrollView inputImageExtent:inputImage.extent zoomScale:zoomScale];
     }
     
-    // Scale image up
-    CIFilter *lanczosScaleFilter = [CIFilter filterWithName:@"CILanczosScaleTransform"];
-    [lanczosScaleFilter setValue:inputImage
-                          forKey:kCIInputImageKey];
-    CGFloat zoomScale = self.cropViewController.croppingScrollView.zoomScale;
-    [lanczosScaleFilter setValue:@(zoomScale)
-                          forKey:kCIInputScaleKey];
-    
-    // Crop at new size
-    CIFilter *cropFilter = [CIFilter filterWithName:@"CICrop"];
-    [cropFilter setValue:[lanczosScaleFilter outputImage]
-                  forKey:kCIInputImageKey];
-    
-    CGFloat zoomedWidth = [inputImage extent].size.width * zoomScale;
-    CGFloat zoomedHeight = [inputImage extent].size.height * zoomScale;
-    CGPoint contentOffset = self.cropViewController.croppingScrollView.contentOffset;
-    CGSize contentSize = self.cropViewController.croppingScrollView.contentSize;
-    CGRect croppingBounds = self.cropViewController.croppingScrollView.bounds;
-    CIVector *cropVector = [CIVector vectorWithCGRect:CGRectMake(((contentOffset.x / contentSize.width)* zoomedWidth),
-                                                                 zoomedHeight - ((contentOffset.y / contentSize.height)* zoomedHeight) ,
-                                                                 (croppingBounds.size.width / contentSize.width)* zoomedWidth,
-                                                                 -((croppingBounds.size.height / contentSize.height)* zoomedHeight))];
     [cropFilter setValue:cropVector
                   forKey:@"inputRectangle"];
     return [cropFilter outputImage];
+}
+
+- (CIVector *)cropVectroWithScrollView:(UIScrollView *)scrollView
+                      inputImageExtent:(CGRect)extent
+                             zoomScale:(CGFloat)zoomScale
+{
+    CGFloat zoomedWidth = extent.size.width * zoomScale;
+    CGFloat zoomedHeight = extent.size.height * zoomScale;
+    CGPoint contentOffset = scrollView.contentOffset;
+    CGSize contentSize = scrollView.contentSize;
+    CGRect croppingBounds = scrollView.bounds;
+    if ((contentSize.width == 0) || (contentSize.height == 0))
+    {
+        return [CIVector vectorWithCGRect:extent];
+    }
+    return [CIVector vectorWithCGRect:CGRectMake(((contentOffset.x / contentSize.width)* zoomedWidth),
+                                                 zoomedHeight - ((contentOffset.y / contentSize.height)* zoomedHeight) ,
+                                                 (croppingBounds.size.width / contentSize.width)* zoomedWidth,
+                                                 -((croppingBounds.size.height / contentSize.height)* zoomedHeight))];
 }
 
 - (NSInteger)renderIndex
