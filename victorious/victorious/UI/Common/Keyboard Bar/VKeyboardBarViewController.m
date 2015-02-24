@@ -7,6 +7,8 @@
 //
 
 #import "VWorkspaceFlowController.h"
+#import "VImageToolController.h"
+#import "VVideoToolController.h"
 
 #import "VContentInputAccessoryView.h"
 #import "VObjectManager+Comment.h"

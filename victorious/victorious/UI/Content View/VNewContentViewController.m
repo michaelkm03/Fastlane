@@ -49,7 +49,11 @@
 #import "VUserProfileViewController.h"
 #import "VAuthorizationViewControllerFactory.h"
 #import "VPurchaseViewController.h"
+
+// Workspace
 #import "VWorkspaceFlowController.h"
+#import "VImageToolController.h"
+#import "VVideoToolController.h"
 
 // Transitioning
 #import "VLightboxTransitioningDelegate.h"

@@ -45,6 +45,8 @@
 
 #pragma mark - Workflow
 #import "VWorkspaceFlowController.h"
+#import "VImageToolController.h"
+#import "VVideoToolController.h"
 
 @interface VSequenceActionController () <VWorkspaceFlowControllerDelegate>
 

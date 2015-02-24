@@ -8,6 +8,7 @@
 
 #import "VAbstractProfileEditViewController.h"
 #import "VWorkspaceFlowController.h"
+#import "VImageToolController.h"
 #import "VUser.h"
 #import "UIImageView+Blurring.h"
 #import "UIImage+ImageEffects.h"

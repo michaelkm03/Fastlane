@@ -8,6 +8,8 @@
 
 #import "VProfileCreateViewController.h"
 #import "VWorkspaceFlowController.h"
+#import "VImageToolController.h"
+
 #import "VUser.h"
 #import "TTTAttributedLabel.h"
 #import "VThemeManager.h"
