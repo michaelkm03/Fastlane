@@ -11,7 +11,7 @@ SCHEME=$1
 CONFIGURATION=$2
 DEFAULT_PROVISIONING_PROFILE_NAME="Victorious Wildcard In-House Distribution"
 DEFAULT_CODESIGN_ID="iPhone Distribution: Victorious, Inc"
-DEFAULT_DEV_ACCOUNT="patrick@getvictorious.com"
+DEFAULT_DEV_ACCOUNT="build.server@getvictorious.com"
 
 shift 2
 
