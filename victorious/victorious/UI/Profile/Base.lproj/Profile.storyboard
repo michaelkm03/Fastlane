@@ -236,7 +236,7 @@
         <!--User Profile View Controller-->
         <scene sceneID="yKP-Pb-1QI">
             <objects>
-                <viewController storyboardIdentifier="kStreamCollection" extendedLayoutIncludesOpaqueBars="YES" id="phZ-Da-bnR" customClass="VUserProfileViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="kStreamCollection" id="phZ-Da-bnR" customClass="VUserProfileViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="uoI-6i-PuL"/>
                         <viewControllerLayoutGuide type="bottom" id="pF2-cg-eOY"/>
@@ -264,8 +264,8 @@
                         <constraints>
                             <constraint firstItem="Y5M-Rj-OwC" firstAttribute="leading" secondItem="dHO-Bc-ol7" secondAttribute="leading" id="A47-7N-ZNb"/>
                             <constraint firstItem="Y5M-Rj-OwC" firstAttribute="top" secondItem="dHO-Bc-ol7" secondAttribute="top" id="Kmm-E2-dub"/>
-                            <constraint firstItem="pF2-cg-eOY" firstAttribute="top" secondItem="Y5M-Rj-OwC" secondAttribute="bottom" id="fPc-5w-RD6"/>
                             <constraint firstAttribute="trailing" secondItem="Y5M-Rj-OwC" secondAttribute="trailing" id="iQF-sE-Rak"/>
+                            <constraint firstItem="Y5M-Rj-OwC" firstAttribute="bottom" secondItem="dHO-Bc-ol7" secondAttribute="bottomMargin" id="zn7-HI-Kdg"/>
                         </constraints>
                     </view>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
