@@ -67,9 +67,12 @@
         return dictionary;
     }
     
+    // Only include keys not contained in keysToExclude and that are not empty strings
     NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(NSString *key, NSDictionary *bindings)
                               {
-                                  return ![keysToExclude containsObject:key];
+                                  BOOL shoudBeExcluded = [keysToExclude containsObject:key];
+                                  BOOL isEmptyString = [dictionary[ key ] isKindOfClass:[NSString class]] && [dictionary[ key ] isEqualToString:@""];
+                                  return !shoudBeExcluded && !isEmptyString;
                               }];
     NSArray *filteredParameterKeys = [[dictionary allKeys] filteredArrayUsingPredicate:predicate];
     return[dictionary dictionaryWithValuesForKeys:filteredParameterKeys];

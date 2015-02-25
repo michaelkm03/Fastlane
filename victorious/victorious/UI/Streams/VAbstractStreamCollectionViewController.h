@@ -25,7 +25,7 @@
 @property (nonatomic, readonly) CGFloat topInset; ///< An amount by which to inset the top of the content in the collection view.
 @property (nonatomic) BOOL navigationBarShouldAutoHide; ///< Set to YES to hide the navigation bar on scroll
 
-@property (nonatomic, weak) IBOutlet VStreamTrackingHelper *streamTrackingHelper;
+@property (nonatomic, strong) VStreamTrackingHelper *streamTrackingHelper;
 
 /**
  Called by the refresh controller when the user activates it by scrolling up to the top.

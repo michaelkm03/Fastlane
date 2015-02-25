@@ -105,10 +105,7 @@ NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamColl
                                       pageType:VPageTypeNext
                                   successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
      {
-         [[VTrackingManager sharedInstance] setValue:self.stream.trackingIdentifier
-                          forSessionParameterWithKey:VTrackingKeyStreamId];
-         
-         if (successBlock)
+         if ( successBlock != nil )
          {
              successBlock();
          }
@@ -116,9 +113,9 @@ NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamColl
      }
                                                failBlock:^(NSOperation *operation, NSError *error)
      {
-         if (failureBlock)
+         if ( failureBlock != nil )
          {
-             failureBlock(error);
+             failureBlock( error );
          }
          self.isLoading = NO;
      }];

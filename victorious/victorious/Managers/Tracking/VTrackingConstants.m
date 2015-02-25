@@ -254,6 +254,7 @@ NSString * const VTrackingKeyName = @"Name";
 NSString * const VTrackingKeyCount = @"Count";
 NSString * const VTrackingKeyRemoteId = @"RemoteId";
 NSString * const VTrackingKeyIndex = @"Index";
+NSString * const VTrackingKeyUserLoggedIn = @"UserLoggedIn";
 
 // Tracking Event Values
 // ContentType values
@@ -278,7 +279,8 @@ NSString * const VTrackingValueFindFriends = @"FindFriends";
 NSString * const VTrackingValueReposters = @"Reposters";
 NSString * const VTrackingValueCreatePoll = @"CreatePoll";
 NSString * const VTrackingValueCreatePost = @"CreatePost";
+NSString * const VTrackingValueMessage = @"Message";
 
 // Menu types
 NSString * const VTrackingValueHamburgerMenu = @"HamburgerMenu";
-NSString * const VTrackingValueTabBar = @"TabBar";
+// TabBar

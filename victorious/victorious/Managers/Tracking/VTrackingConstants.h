@@ -254,6 +254,7 @@ extern NSString * const VTrackingKeyName; //< "Generic, to indicate a name assoc
 extern NSString * const VTrackingKeyCount; //< "Generic, to indicate quantity associated with an event"
 extern NSString * const VTrackingKeyRemoteId; //< "Generic, to indicate backend remote ID associated with an item"
 extern NSString * const VTrackingKeyIndex; //< "Generic, to indicate selected item in a list or group."
+extern NSString * const VTrackingKeyUserLoggedIn; //< "0 if user is logged out, 1 if user is logged in"
 
 // Tracking Event Values
 // ContentType values
@@ -278,7 +279,8 @@ extern NSString * const VTrackingValueFindFriends;
 extern NSString * const VTrackingValueReposters; 
 extern NSString * const VTrackingValueCreatePoll; 
 extern NSString * const VTrackingValueCreatePost; 
+extern NSString * const VTrackingValueMessage; 
 
 // Menu types
 extern NSString * const VTrackingValueHamburgerMenu; 
-extern NSString * const VTrackingValueTabBar; 
+// TabBar

@@ -194,8 +194,10 @@
     {
         dispatch_async(dispatch_get_main_queue(), ^(void)
                        {
-                           NSString *eventName = created ? VTrackingEventSignupWithFacebookDidSucceed : VTrackingEventLoginWithFacebookDidSucceed;
-                           [[VTrackingManager sharedInstance] trackEvent:eventName];
+                           if ( created )
+                           {
+                               [[VTrackingManager sharedInstance] trackEvent:VTrackingEventSignupWithFacebookDidSucceed];
+                           }
                            
                            self.profile = user;
                            if ( [self.profile.status isEqualToString:kUserStatusIncomplete] )

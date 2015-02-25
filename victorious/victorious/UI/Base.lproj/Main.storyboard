@@ -104,7 +104,7 @@
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
-                                            <action selector="flagConversation:" destination="acE-Yl-HFc" eventType="touchUpInside" id="kpy-D1-p5c"/>
+                                            <action selector="onMoreSelected:" destination="acE-Yl-HFc" eventType="touchUpInside" id="hM5-lf-yVh"/>
                                         </connections>
                                     </button>
                                 </subviews>

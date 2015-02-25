@@ -74,8 +74,7 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
 
 - (void)onStreamViewDidAppearWithStream:(VStream *)stream
 {
-    NSDictionary *params = @{ VTrackingKeyStreamName : stream.name ?: @"" };
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidViewStream parameters:params];
+    [self trackStreamDidAppear:stream];
 }
 
 #pragma mark - Cell visibily tracking (SequenceDidAppearInStream event)
@@ -88,7 +87,6 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
     }
     
     NSDictionary *params = @{ VTrackingKeySequenceId : sequence.remoteId,
-                              VTrackingKeyStreamId : stream.remoteId,
                               VTrackingKeyTimeStamp : [NSDate date],
                               VTrackingKeyUrls : sequence.tracking.cellView };
     [[VTrackingManager sharedInstance] queueEvent:VTrackingEventSequenceDidAppearInStream
@@ -99,9 +97,9 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
 - (void)onStreamCellSelectedWithStream:(VStream *)stream sequence:(VSequence *)sequence
 {
     NSDictionary *params = @{ VTrackingKeySequenceId : sequence.remoteId,
-                              VTrackingKeyStreamId : stream.remoteId,
                               VTrackingKeyTimeStamp : [NSDate date],
-                              VTrackingKeyUrls : sequence.tracking.cellClick };
+                              VTrackingKeyUrls : sequence.tracking.cellClick,
+                              VTrackingKeyStreamId : stream.trackingIdentifier ?: @""};
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectItemFromStream parameters:params];
 }
 
@@ -151,7 +149,8 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
 
 - (void)trackStreamDidAppear:(VStream *)stream
 {
-    NSDictionary *params = @{ VTrackingKeyStreamName : stream.name ?: @"" };
+    NSDictionary *params = @{ VTrackingKeyStreamName : stream.name ?: @"",
+                              VTrackingKeyStreamId : stream.trackingIdentifier ?: @""};
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidViewStream parameters:params];
 }
 

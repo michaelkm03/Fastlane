@@ -80,6 +80,8 @@ const CGFloat kVLoadNextPagePoint = .75f;
 
 - (void)commonInit
 {
+    self.streamTrackingHelper = [[VStreamTrackingHelper alloc] init];
+    
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.extendedLayoutIncludesOpaqueBars = YES;
     self.navigationBarShouldAutoHide = YES;

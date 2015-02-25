@@ -12,7 +12,7 @@
 #define TRACKING_LOGGING_ENABLED 0
 #define TRACKING_ALERTS_ENABLED 0
 #define TRACKING_QUEUE_LOGGING_ENABLED 0
-#define TRACKING_SESSION_PARAMETER_LOGGING_ENABLED 1
+#define TRACKING_SESSION_PARAMETER_LOGGING_ENABLED 0
 #define TRACKING_VIEW_SESSION_LOGGING_ENABLED 0
 
 #if TRACKING_LOGGING_ENABLED || TRACKING_QUEUE_LOGGING_ENABLED || TRACKING_ALERTS_ENABLED || TRACKING_VIEW_SESSION_LOGGING_ENABLED || TRACKING_SESSION_VALUE_LOGGING_ENABLED
@@ -57,7 +57,7 @@
 
 #pragma mark - Session Parameters
 
-- (void)setValue:(NSString *)value forSessionParameterWithKey:(NSString *)key
+- (void)setValue:(id)value forSessionParameterWithKey:(NSString *)key
 {
     if ( value == nil )
     {
@@ -258,7 +258,14 @@
     }
     
     NSMutableDictionary *mutable = [dictionary mutableCopy];
-    [mutable addEntriesFromDictionary:self.sessionParameters];
+    [self.sessionParameters enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop)
+    {
+        // Session parameters should not override parameters already inside dictionary
+        if ( mutable[ key ] == nil )
+        {
+            mutable[ key ] = obj;
+        }
+    }];
     return [NSDictionary dictionaryWithDictionary:mutable];
 }
 

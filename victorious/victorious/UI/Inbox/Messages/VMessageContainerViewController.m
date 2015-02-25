@@ -72,7 +72,16 @@
     self.titleLabel.text = messageVC.otherUser.name ?: @"Message";
 }
 
-- (IBAction)flagConversation:(id)sender
+- (IBAction)onMoreSelected:(id)sender
+{
+    NSDictionary *params = @{ VTrackingKeyContext : VTrackingValueMessage };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectMoreActions parameters:params];
+    
+    // This is the only option available as of now
+    [self flagConversation];
+}
+
+- (void)flagConversation
 {
     NSString *reportTitle = NSLocalizedString(@"ReportInappropriate", @"Comment report inappropriate button");
     

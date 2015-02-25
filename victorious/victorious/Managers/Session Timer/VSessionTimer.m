@@ -141,6 +141,9 @@ static NSTimeInterval const kMinimumTimeBetweenSessions = 1800.0; // 30 minutes
     NSArray* trackingURLs = applicationTracking != nil ? applicationTracking.appLaunch : @[];
     NSDictionary *params = @{ VTrackingKeyUrls : trackingURLs };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventApplicationDidLaunch parameters:params];
+    
+    // Set a default until the user logs in, either manually or automatically from saved info
+    [[VTrackingManager sharedInstance] setValue:@(NO) forSessionParameterWithKey:VTrackingKeyUserLoggedIn];
 }
 
 #pragma mark - NSNotification handlers

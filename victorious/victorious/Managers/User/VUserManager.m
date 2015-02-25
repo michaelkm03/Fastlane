@@ -93,7 +93,8 @@ static NSString * const kKeychainServiceName          = @"com.getvictorious.VUse
             VUser *user = [resultObjects firstObject];
             if ([user isKindOfClass:[VUser class]])
             {
-                [[VTrackingManager sharedInstance] trackEvent:VTrackingEventSignupWithFacebookDidSucceed];
+                NSString *eventName = created ? VTrackingEventSignupWithFacebookDidSucceed : VTrackingEventSignupWithFacebookDidSucceed;
+                [[VTrackingManager sharedInstance] trackEvent:eventName];
                 
                 [[NSUserDefaults standardUserDefaults] setInteger:kVLastLoginTypeFacebook
                                                            forKey:kLastLoginTypeUserDefaultsKey];
