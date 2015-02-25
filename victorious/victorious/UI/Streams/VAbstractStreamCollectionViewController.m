@@ -103,17 +103,8 @@ const CGFloat kVLoadNextPagePoint = .75f;
     [self.collectionView addSubview:self.refreshControl];
     [self positionRefreshControl];
     
-    if (self.tabBarController.tabBar.isTranslucent)
-    {
-        self.automaticallyAdjustsScrollViewInsets = YES;
-        self.extendedLayoutIncludesOpaqueBars = NO;
-        self.edgesForExtendedLayout = UIRectEdgeNone;
-    }
-    else
-    {
-        self.automaticallyAdjustsScrollViewInsets = NO;
-        self.extendedLayoutIncludesOpaqueBars = YES;
-    }
+    self.automaticallyAdjustsScrollViewInsets = NO;
+    self.extendedLayoutIncludesOpaqueBars = YES;
 }
 
 - (void)viewWillAppear:(BOOL)animated

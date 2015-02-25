@@ -133,6 +133,13 @@ static const CGFloat kStatusBarHeight = 20.0f;
     self.statusBarBackgroundView = statusBarBackgroundView;
 }
 
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    self.edgesForExtendedLayout = UIRectEdgeAll;
+}
+
 - (void)viewDidLayoutSubviews
 {
     [self provideLayoutInsetsToViewController:self.innerNavigationController.topViewController];

@@ -137,7 +137,7 @@ static NSString * const kVideoMuted = @"videoMuted";
                                                                   kItemsKey:[self bottomNavMenuItems],
                                                                   VScaffoldViewControllerUserProfileViewComponentKey: [self profileScreen],
                                                                   kSelectorKey: [self kSelectorKeyFromInitDictionary:self.dataFromInitCall],
-                                                                  VDependencyManagerBackgroundKey: [self lightTranslucentBackground],
+                                                                  VDependencyManagerBackgroundKey: [self solidWhiteBackground],
                                                                   };
     }
     else
@@ -595,22 +595,6 @@ static NSString * const kVideoMuted = @"videoMuted";
 }
 
 #pragma mark - Background
-
-- (NSDictionary *)darkTranslucentBackground
-{
-    return @{
-             kClassNameKey:@"translucent.background",
-             VTranslucentBackgroundBlurStyleKey:VTranslucentBackgroundBlurStyleDark
-             };
-}
-
-- (NSDictionary *)lightTranslucentBackground
-{
-    return @{
-             kClassNameKey:@"translucent.background",
-             VTranslucentBackgroundBlurStyleKey:VTranslucentBackgroundBlurStyleLight
-             };
-}
 
 - (NSDictionary *)solidWhiteBackground
 {
