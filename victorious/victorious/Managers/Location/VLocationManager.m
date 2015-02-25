@@ -9,7 +9,7 @@
 #import "VLocationManager.h"
 @import AddressBookUI;
 
-#define EnableLocationInfoLogging 0  // Set this to 1 in order to view location details in the console log
+#define EnableLocationInfoLogging 0  // Set this to 1 in order to view location details in the console log window
 
 @interface VLocationManager () <CLLocationManagerDelegate>
 
@@ -38,7 +38,7 @@
 
 - (instancetype)init
 {
-    self    =   [super init];
+    self = [super init];
     if (self)
     {
         _locationManager = [[CLLocationManager alloc] init];
@@ -50,8 +50,7 @@
 
 - (NSString *)httpFormattedLocationString
 {
-    // I'm leaving this in here so we can confirm that requests
-#if DEBUG && EnableLocationInfoLogging
+#if EnableLocationInfoLogging
     VLog(@"\n\nDevice Location Details\n-----------------------\nLatitude: %@,\nLongitude: %@,\nPostal Code: %@\n\n", self.latitude, self.longitude, self.postalCode);
 #warning Location logging is enabled. Please disable it once when you're finished debugging.
 #endif
@@ -89,8 +88,8 @@
      {
          CLPlacemark *mapLocation = [placemarks firstObject];
          self.postalCode = mapLocation.postalCode;
-         self.latitude = [[NSNumber numberWithDouble:mapLocation.location.coordinate.latitude] stringValue];
-         self.longitude = [[NSNumber numberWithDouble:mapLocation.location.coordinate.longitude] stringValue];
+         self.latitude = [NSString stringWithFormat:@"%f", mapLocation.location.coordinate.latitude];
+         self.longitude = [NSString stringWithFormat:@"%f", mapLocation.location.coordinate.longitude];
      }];
     
     // Send to delegate
