@@ -210,10 +210,10 @@
 
 - (void)restoreInsets
 {
-//    UIEdgeInsets insets = UIEdgeInsetsMake(CGRectGetHeight(self.navigationController.navigationBar.bounds) +
-//                                           CGRectGetHeight([UIApplication sharedApplication].statusBarFrame), 0, 0, 0);
-//    self.tableView.contentInset = insets;
-//    self.tableView.scrollIndicatorInsets = insets;
+    UIEdgeInsets insets = UIEdgeInsetsMake(CGRectGetHeight(self.navigationController.navigationBar.bounds) +
+                                           CGRectGetHeight([UIApplication sharedApplication].statusBarFrame), 0, 0, 0);
+    self.tableView.contentInset = insets;
+    self.tableView.scrollIndicatorInsets = insets;
 }
 
 #pragma mark - VWorkspaceFlowControllerDelegate
