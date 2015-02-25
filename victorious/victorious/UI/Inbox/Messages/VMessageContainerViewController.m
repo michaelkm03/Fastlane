@@ -28,9 +28,6 @@
 @interface VMessageContainerViewController ()
 
 @property (nonatomic, weak) IBOutlet UIImageView *backgroundImageView;
-@property (nonatomic, weak) IBOutlet UIButton    *backButton;
-@property (nonatomic, weak) IBOutlet UILabel     *titleLabel;
-@property (nonatomic, weak) IBOutlet UIButton    *moreButton;
 
 @end
 
@@ -48,12 +45,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    UIImage *moreImage = [self.moreButton imageForState:UIControlStateNormal];
-    [self.moreButton setImage:[moreImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
     
-    UIImage *backImage = [self.backButton imageForState:UIControlStateNormal];
-    [self.backButton setImage:[backImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
+    [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"More"] style:UIBarButtonItemStylePlain target:self action:@selector(flagConversation:)]];
 
     self.keyboardBarViewController.shouldAutoClearOnCompose = NO;
     self.keyboardBarViewController.hideAccessoryBar = YES;
@@ -69,7 +62,7 @@
     [super viewWillAppear:animated];
 
     VMessageViewController *messageVC = (VMessageViewController *)self.conversationTableViewController;
-    self.titleLabel.text = messageVC.otherUser.name ?: @"Message";
+    self.navigationItem.title = messageVC.otherUser.name ?: @"Message";
 }
 
 - (IBAction)flagConversation:(id)sender
@@ -161,14 +154,9 @@
     }
 }
 
-- (BOOL)prefersStatusBarHidden
-{
-    return YES;
-}
-
 - (BOOL)v_prefersNavigationBarHidden
 {
-    return YES;
+    return NO;
 }
 
 - (UITableViewController *)conversationTableViewController
