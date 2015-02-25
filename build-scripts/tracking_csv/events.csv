@@ -111,7 +111,7 @@ UserDidCompletePurchase,Params: ProductIdentifier
 UserDidRestorePurchases,"Params: Count, CurrentSection"
 UserDidCancelPurchase,User exited from the purchase prompt without making a purchase; Params: ProductIdentifier
 PurchaseDidFail,"Params: ErrorMessage, ProductIdentifier"
-ill,Params: ErrorMessage
+RestorePurchasesDidFail,Params: ErrorMessage
 AppStoreProductRequestDidFail,Params: ErrorMessage
 ,
 // Content Interaction,

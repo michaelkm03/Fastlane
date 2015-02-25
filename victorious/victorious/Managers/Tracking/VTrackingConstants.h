@@ -121,7 +121,7 @@ extern NSString * const VTrackingEventUserDidCompletePurchase; //< Params: Produ
 extern NSString * const VTrackingEventUserDidRestorePurchases; //< "Params: Count, CurrentSection"
 extern NSString * const VTrackingEventUserDidCancelPurchase; //< User exited from the purchase prompt without making a purchase; Params: ProductIdentifier
 extern NSString * const VTrackingEventPurchaseDidFail; //< "Params: ErrorMessage, ProductIdentifier"
-extern NSString * const VTrackingEventill; //< Params: ErrorMessage
+extern NSString * const VTrackingEventRestorePurchasesDidFail; //< Params: ErrorMessage
 extern NSString * const VTrackingEventAppStoreProductRequestDidFail; //< Params: ErrorMessage
 
 // Content Interaction

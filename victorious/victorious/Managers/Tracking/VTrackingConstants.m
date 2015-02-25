@@ -121,7 +121,7 @@ NSString * const VTrackingEventUserDidCompletePurchase = @"UserDidCompletePurcha
 NSString * const VTrackingEventUserDidRestorePurchases = @"UserDidRestorePurchases";
 NSString * const VTrackingEventUserDidCancelPurchase = @"UserDidCancelPurchase";
 NSString * const VTrackingEventPurchaseDidFail = @"PurchaseDidFail";
-NSString * const VTrackingEventill = @"ill";
+NSString * const VTrackingEventRestorePurchasesDidFail = @"RestorePurchasesDidFail";
 NSString * const VTrackingEventAppStoreProductRequestDidFail = @"AppStoreProductRequestDidFail";
 
 // Content Interaction
