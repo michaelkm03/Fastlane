@@ -146,8 +146,6 @@ const CGFloat kVLoadNextPagePoint = .75f;
     [self.streamTrackingHelper onStreamViewWillDisappearWithStream:self.currentStream
                                                   isBeingDismissed:self.isBeingDismissed];
     
-    [self.streamTrackingHelper resetCellVisibilityTracking];
-    
     self.navigationControllerScrollDelegate = nil;
 }
 

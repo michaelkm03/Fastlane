@@ -2,7 +2,7 @@
 // victorious/victorious/Managers/Tracking/VTrackingConstants.m 
 // victorious 
 // 
-// Generated from CSV using script "tracking_generate_constants.sh" on 02/24/15. 
+// Generated from CSV using script "tracking_generate_constants.sh" on 02/25/15. 
 // Copyright (c) 2015 Victorious. All rights reserved. 
 // 
 
@@ -271,6 +271,7 @@ NSString * const VTrackingValueEndCard = @"EndCard";
 NSString * const VTrackingValueUserProfile = @"UserProfile";
 NSString * const VTrackingValueContentView = @"ContentView";
 NSString * const VTrackingValueStream = @"Stream";
+NSString * const VTrackingValueHashtagStream = @"HashtagStream";
 NSString * const VTrackingValueCommentsView = @"CommentsView";
 NSString * const VTrackingValueProfileFollowing = @"ProfileFollowing";
 NSString * const VTrackingValueProfileFollowers = @"ProfileFollowers";

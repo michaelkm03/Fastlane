@@ -180,10 +180,6 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
                                              selector:@selector(dataSourceDidChange:)
                                                  name:VStreamCollectionDataSourceDidChangeNotification
                                                object:self.streamDataSource];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(didEnterBackground:)
-                                                 name:UIApplicationDidEnterBackgroundNotification
-                                               object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -732,11 +728,6 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
     {
         noContentUpdates();
     }
-}
-
-- (void)didEnterBackground:(NSNotification *)notification
-{
-    [self.streamTrackingHelper resetCellVisibilityTracking];
 }
 
 #pragma mark - UICollectionViewDelegateFlowLayout

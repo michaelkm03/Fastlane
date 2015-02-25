@@ -7,7 +7,7 @@
 //
 
 #import "VStreamTrackingHelper.h"
-#import "VStream.h"
+#import "VStream+Fetcher.h"
 #import "VSequence.h"
 #import "VTracking.h"
 
@@ -31,22 +31,25 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
                                                  selector:@selector(loginStatusDidChange:)
                                                      name:kStreamTrackingHelperLoggedInChangedNotification
                                                    object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(didEnterBackground:)
+                                                     name:UIApplicationDidEnterBackgroundNotification
+                                                   object:nil];
     }
     return self;
 }
 
 - (void)dealloc
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:kStreamTrackingHelperLoggedInChangedNotification
-                                                  object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - Apperance/disappearance
 
 - (void)onStreamViewWillAppearWithStream:(VStream *)stream
 {
-    [[VTrackingManager sharedInstance] setValue:VTrackingValueStream forSessionParameterWithKey:VTrackingKeyContext];
+    NSString *context = [stream isHashtagStream] ? VTrackingValueHashtagStream : VTrackingValueStream;
+    [[VTrackingManager sharedInstance] setValue:context forSessionParameterWithKey:VTrackingKeyContext];
     
     if ( stream.trackingIdentifier != nil )
     {
@@ -65,6 +68,8 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
 {
     [[VTrackingManager sharedInstance] endEvent:VTrackingEventStreamDidAppear];
     [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyStreamId];
+    
+    [self resetCellVisibilityTracking];
     
     if ( isBeingDismissed )
     {
@@ -101,11 +106,6 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
                               VTrackingKeyUrls : sequence.tracking.cellClick,
                               VTrackingKeyStreamId : stream.trackingIdentifier ?: @""};
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectItemFromStream parameters:params];
-}
-
-- (void)resetCellVisibilityTracking
-{
-    [[VTrackingManager sharedInstance] clearQueuedEventsWithName:VTrackingEventSequenceDidAppearInStream];
 }
 
 #pragma mark - State management for StreamDidAppear event
@@ -154,12 +154,22 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidViewStream parameters:params];
 }
 
+- (void)resetCellVisibilityTracking
+{
+    [[VTrackingManager sharedInstance] clearQueuedEventsWithName:VTrackingEventSequenceDidAppearInStream];
+}
+
 #pragma mark - Notificaiton handler
 
 - (void)loginStatusDidChange:(NSNotification *)notification
 {
     self.didTrackViewDidAppear = NO;
     self.canTrackViewDidAppear = NO;
+}
+
+- (void)didEnterBackground:(NSNotification *)notification
+{
+    [self resetCellVisibilityTracking];
 }
 
 @end

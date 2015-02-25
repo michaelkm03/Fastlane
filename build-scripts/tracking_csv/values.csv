@@ -13,6 +13,7 @@ EndCard,Event triggered from the end card
 UserProfile,While viewing a user's profile (including your own)
 ContentView,Event occurred in content view
 Stream,"Any stream, as opposed to content view"
+HashtagStream,
 CommentsView,The standlone comments view (not content view)
 ProfileFollowing,
 ProfileFollowers,
