@@ -8,6 +8,8 @@
 
 #import "VHasManagedDependencies.h"
 
+#import "VNavigationDestination.h"
+
 @class VWorkspaceFlowController;
 
 /**
@@ -59,8 +61,6 @@ extern NSString * const VWorkspaceFlowControllerSequenceToRemixKey;
 extern NSString * const VWorkspaceFlowControllerPreloadedImageKey;
 
 /**
- *  ATTENTION: The delegate MUST be set otherwise the workspace flow controller will be leaked.
- *
  *  Supports injection of:
  *
  *  - Initial capture via "VWorkspaceFlowControllerInitialCaptureStateKey",
@@ -73,7 +73,7 @@ extern NSString * const VWorkspaceFlowControllerPreloadedImageKey;
  *
  *  For remix the sequence to remix can be injected via "VWorkspaceFlowControllerSequenceToRemixKey".
  */
-@interface VWorkspaceFlowController : NSObject <VHasManagedDependancies>
+@interface VWorkspaceFlowController : NSObject <VHasManagedDependancies, VNavigationDestination>
 
 //TODO: this is a temporary workaround for when there may not be a dependency manager.
 + (instancetype)workspaceFlowControllerWithoutADependencyManger;
