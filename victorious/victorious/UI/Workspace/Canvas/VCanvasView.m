@@ -9,6 +9,7 @@
 #import "VCanvasView.h"
 #import "CIImage+VImage.h"
 #import <UIImageView+WebCache.h>
+#import "UIScrollView+VCenterContent.h"
 #import "VPhotoFilter.h"
 
 NSString * const VCanvasViewAssetSizeBecameAvailableNotification = @"VCanvasViewAssetSizeBecameAvailableNotification";
@@ -133,14 +134,11 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
     
     [self.imageView sd_setImageWithURL:URL placeholderImage:nil completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL)
     {
-        
         if (image)
         {
             imageFinishedLoadingBlock(image, YES);
         }
-        
     }];
-    
 }
 
 - (void)setSourceURL:(NSURL *)URL
@@ -185,8 +183,9 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
     
     self.canvasScrollView.contentSize = imageViewFrame.size;
     self.activityIndicator.center = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
-
     [self layoutIfNeeded];
+
+    [self.canvasScrollView v_centerContentAnimated:NO];
 }
 
 - (void)setFilter:(VPhotoFilter *)filter

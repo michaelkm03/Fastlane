@@ -268,9 +268,6 @@ const CGFloat kVLoadNextPagePoint = .75f;
          hud.userInteractionEnabled = NO;
          [hud hide:YES afterDelay:3.0];
      }];
-    
-    [self.refreshControl beginRefreshing];
-    self.refreshControl.hidden = NO;
 }
 
 - (void)positionRefreshControl

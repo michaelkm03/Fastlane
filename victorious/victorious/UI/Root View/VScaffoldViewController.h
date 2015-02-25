@@ -79,6 +79,15 @@ extern NSString * const VScaffoldViewControllerUserProfileViewComponentKey;
 - (void)navigateToDestination:(id)navigationDestination completion:(void(^)())completion;
 
 /**
+ Attempt to navigate to a destination (the destination will
+ be given a chance to cancel the navigation before it
+ actually happens)
+ 
+ @param navigationDestination Either an instance of UIViewController or an object conforming to VNavigationDestination
+ */
+- (void)navigateToDestination:(id)navigationDestination;
+
+/**
  Displays the view controller that the user has navigated to through
  whatever primary means of navigation this scaffold provides. You
  normally don't need to call this method. It exists only as an

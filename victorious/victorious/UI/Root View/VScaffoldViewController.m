@@ -120,7 +120,7 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
             }
             else
             {
-                [self navigateToDestination:viewController completion:nil];
+                [self navigateToDestination:viewController];
             }
         };
         

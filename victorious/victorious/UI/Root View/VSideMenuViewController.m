@@ -12,6 +12,7 @@
 #import "VMenuController.h"
 #import "VNavigationController.h"
 #import "VNavigationDestination.h"
+#import "VNavigationDestinationsProvider.h"
 #import "VProvidesNavigationMenuItemBadge.h"
 #import "VSettingManager.h"
 #import "VSideMenuViewController.h"
@@ -151,6 +152,15 @@
     if (initialVC != nil)
     {
         [self displayResultOfNavigation:initialVC];
+    }
+    else if ( [self.menuViewController respondsToSelector:@selector(navigationDestinations)] )
+    {
+        NSArray *destinations = [(id<VNavigationDestinationsProvider>)self.menuViewController navigationDestinations];
+        
+        if ( destinations.count > 0 )
+        {
+            [self navigateToDestination:destinations[0]];
+        }
     }
 }
 
