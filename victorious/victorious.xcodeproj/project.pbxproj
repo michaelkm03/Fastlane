@@ -719,6 +719,7 @@
 		F05AA9821A83F6E3002F8917 /* VInlineSearchTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F05AA97F1A83F6E3002F8917 /* VInlineSearchTableViewController.m */; };
 		F0804A6B1A8916BC00A0E1A1 /* VTagDictionaryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0804A6A1A8916BC00A0E1A1 /* VTagDictionaryTests.m */; };
 		F0804A6D1A892A5800A0E1A1 /* VTagStringFormatterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0804A6C1A892A5800A0E1A1 /* VTagStringFormatterTests.m */; };
+		F098D8151A9D29EA0003B6D4 /* VTagSensitiveTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = F098D8141A9D29EA0003B6D4 /* VTagSensitiveTextView.m */; };
 		F0A04FA61A8D6DF100504E26 /* VTextbarSelectorView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0A04FA51A8D6DF100504E26 /* VTextbarSelectorView.m */; };
 		F0B390B91A852C7E00EE70C7 /* VTag.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B390B81A852C7E00EE70C7 /* VTag.m */; };
 		F0B390BD1A8535E300EE70C7 /* VTagTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B390BC1A8535E300EE70C7 /* VTagTests.m */; };
@@ -1991,6 +1992,9 @@
 		F05AA9841A8401D0002F8917 /* VUserTaggingTextStorageDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUserTaggingTextStorageDelegate.h; sourceTree = "<group>"; };
 		F0804A6A1A8916BC00A0E1A1 /* VTagDictionaryTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTagDictionaryTests.m; sourceTree = "<group>"; };
 		F0804A6C1A892A5800A0E1A1 /* VTagStringFormatterTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTagStringFormatterTests.m; sourceTree = "<group>"; };
+		F098D8131A9D29EA0003B6D4 /* VTagSensitiveTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTagSensitiveTextView.h; sourceTree = "<group>"; };
+		F098D8141A9D29EA0003B6D4 /* VTagSensitiveTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTagSensitiveTextView.m; sourceTree = "<group>"; };
+		F098D8161A9D2E3B0003B6D4 /* VTagSensitiveTextViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTagSensitiveTextViewDelegate.h; sourceTree = "<group>"; };
 		F0A04FA41A8D6DF100504E26 /* VTextbarSelectorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextbarSelectorView.h; sourceTree = "<group>"; };
 		F0A04FA51A8D6DF100504E26 /* VTextbarSelectorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextbarSelectorView.m; sourceTree = "<group>"; };
 		F0B390B71A852C7E00EE70C7 /* VTag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTag.h; sourceTree = "<group>"; };
@@ -2266,6 +2270,9 @@
 				0314D35819B46B5E00FA363C /* VSelectorViewController.m */,
 				0314D44319B46B5E00FA363C /* VTableViewCell.h */,
 				0314D44419B46B5E00FA363C /* VTableViewCell.m */,
+				F098D8131A9D29EA0003B6D4 /* VTagSensitiveTextView.h */,
+				F098D8141A9D29EA0003B6D4 /* VTagSensitiveTextView.m */,
+				F098D8161A9D2E3B0003B6D4 /* VTagSensitiveTextViewDelegate.h */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -4986,6 +4993,7 @@
 				037FCF1A1A8DAF0E00E8ABFC /* VNavigationController.m in Sources */,
 				669D07CB1A3CB8FA00491878 /* VTextTypeTool.m in Sources */,
 				03AFF99219CBB99B004B8CD9 /* NSNotificationCenter+VNotificationDebugger.m in Sources */,
+				F098D8151A9D29EA0003B6D4 /* VTagSensitiveTextView.m in Sources */,
 				0314D0B619B4698800FA363C /* VObjectManager+Sequence.m in Sources */,
 				A7B98A3E1A264D0900C58335 /* VNotificationSettingsTableSection.m in Sources */,
 				D80A94EE1A5472FB0035D788 /* VTrimVideoTool.m in Sources */,

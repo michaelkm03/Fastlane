@@ -41,10 +41,12 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 
 #import "VTagStringFormatter.h"
+#import "VTag.h"
+#import "VTagSensitiveTextView.h"
 
 @import Social;
 
-@interface VCommentsTableViewController () <VEditCommentViewControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate>
+@interface VCommentsTableViewController () <VEditCommentViewControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VTagSensitiveTextViewDelegate>
 
 @property (nonatomic, strong) UIImageView *backgroundImageView;
 @property (nonatomic, assign) BOOL hasComments;
@@ -241,9 +243,10 @@
     NSDictionary *defaultStringAttributes = cell.commentTextView.textFont ? [VCommentTextAndMediaView attributesForTextWithFont:cell.commentTextView.textFont] : [VCommentTextAndMediaView attributesForText];
     NSMutableDictionary *tagStringAttributes = [[NSMutableDictionary alloc] initWithDictionary:defaultStringAttributes];
     [tagStringAttributes setObject:[[VThemeManager sharedThemeManager] themedColorForKey:[VTagStringFormatter defaultThemeManagerTagColorKey]] forKey:NSForegroundColorAttributeName];
-    NSMutableAttributedString *formattedCommentText = [[NSMutableAttributedString alloc] initWithString:comment.text attributes:defaultStringAttributes];
-    [VTagStringFormatter tagDictionaryFromFormattingAttributedString:formattedCommentText withTagStringAttributes:tagStringAttributes andDefaultStringAttributes:defaultStringAttributes];
-    cell.commentTextView.attributedText = formattedCommentText;
+    [cell.commentTextView.textView setupWithDatabaseFormattedText:comment.text
+                                                    tagAttributes:tagStringAttributes
+                                                defaultAttributes:defaultStringAttributes
+                                                andTagTapDelegate:self];
     if (comment.hasMedia)
     {
         cell.commentTextView.hasMedia = YES;
@@ -276,6 +279,12 @@
     cell.commentsUtilitiesDelegate = self;
     
     return cell;
+}
+
+- (void)tagSensitiveTextView:(VTagSensitiveTextView *)tagSensitiveTextView tappedTag:(VTag *)tag
+{
+    VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithRemoteId:tag.remoteId];
+    [self.navigationController pushViewController:profileViewController animated:YES];
 }
 
 #pragma mark - UITableViewDelegate

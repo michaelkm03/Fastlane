@@ -15,6 +15,8 @@
 #import "VTag.h"
 #import "VDummyModels.h"
 
+#warning ADD TESTS FOR REMOTE ID FIELD
+
 @interface VTagTests : XCTestCase
 
 @property (nonatomic) VDependencyManager *dependencyManager;

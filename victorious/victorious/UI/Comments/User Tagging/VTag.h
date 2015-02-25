@@ -77,6 +77,11 @@
 @property (nonatomic, readonly) NSString *databaseFormattedString;
 
 /**
+ The remoteId of the user found when parsing the tag. Will be nil for Hashtags.
+ */
+@property (nonatomic, readonly) NSNumber *remoteId;
+
+/**
  The string attributes the tag should have when embedded in an attributed string
  */
 @property (nonatomic, readonly) NSDictionary *tagStringAttributes;

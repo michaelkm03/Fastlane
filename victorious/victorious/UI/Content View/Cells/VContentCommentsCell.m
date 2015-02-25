@@ -28,6 +28,7 @@
 #import "VTagStringFormatter.h"
 
 #import <SDWebImage/UIImageView+WebCache.h>
+#import "VTagSensitiveTextView.h"
 
 static const UIEdgeInsets kTextInsets        = { 36.0f, 66.0f, 11.0f, 55.0f };
 
@@ -42,7 +43,6 @@ static NSCache *_sharedImageCache = nil;
 @property (weak, nonatomic) IBOutlet UILabel *timestampLabel;
 @property (weak, nonatomic) IBOutlet UILabel *realtimeCommentLocationLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *seperatorImageView;
-@property (weak, nonatomic) IBOutlet VCommentTextAndMediaView *commentAndMediaView;
 @property (weak, nonatomic) IBOutlet UIImageView *clockIconImageView;
 
 @property (nonatomic, strong) NSNumber *mediaAssetOrientation;
@@ -50,7 +50,7 @@ static NSCache *_sharedImageCache = nil;
 @property (nonatomic, copy) NSString *commenterName;
 @property (nonatomic, copy) NSString *timestampText;
 @property (nonatomic, copy) NSString *realTimeCommentText;
-@property (nonatomic, copy) NSAttributedString *commentBody;
+@property (nonatomic, copy) NSString *commentBody;
 @property (nonatomic, assign) BOOL hasMedia;
 @property (nonatomic, copy) NSURL *mediaPreviewURL;
 @property (nonatomic, assign) BOOL mediaIsVideo;
@@ -177,9 +177,7 @@ static NSCache *_sharedImageCache = nil;
     
     self.mediaAssetOrientation = comment.assetOrientation;
     
-    NSMutableAttributedString *formattedCommentText = [[NSMutableAttributedString alloc] initWithString:comment.text attributes:self.defaultStringAttributes];
-    [VTagStringFormatter tagDictionaryFromFormattingAttributedString:formattedCommentText withTagStringAttributes:self.tagStringAttributes andDefaultStringAttributes:self.defaultStringAttributes];
-    self.commentBody = formattedCommentText;
+    self.commentBody = comment.text;
     self.commenterName = comment.user.name;
     self.URLForCommenterAvatar = [NSURL URLWithString:comment.user.pictureUrl];
     self.timestampText = [comment.postedAt timeSince];
@@ -275,10 +273,13 @@ static NSCache *_sharedImageCache = nil;
     self.commentAndMediaView.playIcon.hidden = !mediaIsVideo;
 }
 
-- (void)setCommentBody:(NSAttributedString *)commentBody
+- (void)setCommentBody:(NSString *)commentBody
 {
     _commentBody = [commentBody  copy];
-    self.commentAndMediaView.attributedText = _commentBody;
+    [self.commentAndMediaView.textView setupWithDatabaseFormattedText:_commentBody
+                                                                    tagAttributes:self.tagStringAttributes
+                                                                defaultAttributes:self.defaultStringAttributes
+                                                                andTagTapDelegate:nil];
 }
 
 - (void)setCommenterName:(NSString *)commenterName

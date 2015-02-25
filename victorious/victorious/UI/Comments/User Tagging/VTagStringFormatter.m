@@ -163,7 +163,7 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^(void)
                   {
-                      userRegex = [NSRegularExpression regularExpressionWithPattern:@"@\\{.+?:(.+?)\\}"
+                      userRegex = [NSRegularExpression regularExpressionWithPattern:@"@\\{(.+?):(.+?)\\}"
                                                                             options:0
                                                                               error:nil];
                   });
