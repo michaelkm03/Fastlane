@@ -9,7 +9,7 @@
 #import "VTrackingManager.h"
 #import "VTrackingEvent.h"
 
-#define TRACKING_LOGGING_ENABLED 0
+#define TRACKING_LOGGING_ENABLED 1
 #define TRACKING_ALERTS_ENABLED 0
 #define TRACKING_QUEUE_LOGGING_ENABLED 0
 #define TRACKING_SESSION_PARAMETER_LOGGING_ENABLED 0
@@ -55,6 +55,27 @@
     return self;
 }
 
+- (NSString *)stringFromDictionary:(NSDictionary *)dictionary
+{
+    NSUInteger numSpaces = 17;
+    NSString *output = @"";
+    for ( NSString *key in dictionary )
+    {
+        id value = dictionary[key];
+        if ( [value isKindOfClass:[NSArray class]] )
+        {
+            value = [NSString stringWithFormat:@"(%@)", @(((NSArray *)value).count)];
+        }
+        NSString *stringValue = [NSString stringWithFormat:@"%@", value];
+        for ( NSUInteger i = 0; i < MAX( numSpaces - key.length, (NSUInteger)0); i++ )
+        {
+            stringValue = [@" " stringByAppendingString:stringValue];
+        }
+        output = [output stringByAppendingFormat:@"\n\t%@:%@", key, stringValue];
+    }
+    return output;
+}
+
 #pragma mark - Session Parameters
 
 - (void)setValue:(id)value forSessionParameterWithKey:(NSString *)key
@@ -68,12 +89,7 @@
         self.sessionParameters[key] = value;
     }
 #if TRACKING_SESSION_PARAMETER_LOGGING_ENABLED
-    NSString *message = @"";
-    for ( NSString *key in self.sessionParameters )
-    {
-        message = [message stringByAppendingFormat:@"\n\t%@: %@", key, self.sessionParameters[key]];
-    }
-    NSLog( @"\n\nTRACKING SESSION PARAMS UPDATED: %@\n\n", message );
+    NSLog( @"\n\nTRACKING SESSION PARAMS UPDATED: %@\n\n", [self stringFromDictionary:self.sessionParameters] );
 #endif
 }
 
@@ -94,12 +110,7 @@
     NSDictionary *completeParams = [self addSessionParametersToDictionary:parameters];
     
 #if TRACKING_LOGGING_ENABLED
-    NSString *message = @"";
-    for ( NSString *key in completeParams )
-    {
-        message = [message stringByAppendingFormat:@"\n\t%@: %@", key, completeParams[key]];
-    }
-    NSLog( @"\n\nTRACKING: %@ (%lu delegates)%@\n\n", eventName, (unsigned long)self.delegates.count, message );
+    NSLog( @"*** TRACKING (%lu delegates) ***\n>>> %@ <<< %@\n", (unsigned long)self.delegates.count, eventName, [self stringFromDictionary:completeParams] );
 #endif
     
 #if TRACKING_ALERTS_ENABLED

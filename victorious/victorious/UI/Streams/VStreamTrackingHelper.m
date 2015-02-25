@@ -131,7 +131,6 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
 {
     if ( self.canTrackViewDidAppear )
     {
-        self.didTrackViewDidAppear = YES;
         [self trackStreamDidAppear:stream];
     }
 }
@@ -140,7 +139,6 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
 {
     if ( self.canTrackViewDidAppear && !self.didTrackViewDidAppear )
     {
-        self.didTrackViewDidAppear = YES;
         [self trackStreamDidAppear:stream];
     }
 }
@@ -149,6 +147,8 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
 
 - (void)trackStreamDidAppear:(VStream *)stream
 {
+    self.didTrackViewDidAppear = YES;
+    
     NSDictionary *params = @{ VTrackingKeyStreamName : stream.name ?: @"",
                               VTrackingKeyStreamId : stream.trackingIdentifier ?: @""};
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidViewStream parameters:params];

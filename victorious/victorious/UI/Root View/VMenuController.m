@@ -84,6 +84,10 @@ static char kKVOContext;
                                     forKeyPath:NSStringFromSelector(@selector(badgeTotal))
                                        options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew)
                                        context:&kKVOContext];
+    
+    // Set the initial section in tracking session parameters
+    VNavigationMenuItem *menuItem = [self.collectionViewDataSource menuItemAtIndexPath:0];
+    [[VTrackingManager sharedInstance] setValue:menuItem.title forSessionParameterWithKey:VTrackingKeyCurrentSection];
 }
 
 - (void)viewDidLayoutSubviews
@@ -144,7 +148,6 @@ static char kKVOContext;
     
     [collectionView deselectItemAtIndexPath:indexPath animated:YES];
     
-    [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyCurrentSection];
     NSDictionary *params = @{ VTrackingKeyMenuType : VTrackingValueHamburgerMenu, VTrackingKeySection : menuItem.title };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectMainSection parameters:params];
     
