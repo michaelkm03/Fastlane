@@ -8,8 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-#warning ADD DOCUMENTATION
-
 @class VTagSensitiveTextView, VTag;
 
 @protocol VTagSensitiveTextViewDelegate <NSObject>

@@ -7,13 +7,10 @@
 //
 
 #import "VTag.h"
+#import "VUserTag.h"
 #import "VHashtag.h"
 #import "VUser.h"
 #import "VTagStringFormatter.h"
-
-@interface VTag ()
-
-@end
 
 @implementation VTag
 
@@ -37,15 +34,18 @@
 
 - (instancetype)initWithDisplayString:(NSString *)displayString
               databaseFormattedString:(NSString *)databaseFormattedString
-                             remoteId:(NSNumber *)remoteId
                andTagStringAttributes:(NSDictionary *)tagStringAttributes
 {
+    if ( displayString == nil || databaseFormattedString == nil || tagStringAttributes == nil )
+    {
+        return nil;
+    }
+    
     self = [super init];
     if ( self != nil )
     {
         _displayString = [[NSMutableAttributedString alloc] initWithString:displayString];
         _tagStringAttributes = tagStringAttributes;
-        _remoteId = remoteId;
         [_displayString setAttributes:tagStringAttributes range:NSMakeRange(0, displayString.length)];
         _databaseFormattedString = databaseFormattedString;
     }
@@ -66,7 +66,7 @@
     NSTextCheckingResult *hashtagCheckResult = [matches lastObject];
     
     //result rangeAtIndex 1 has the value of the regex closure (the display string)
-    return [[VTag alloc] initWithDisplayString:[hashtagString substringWithRange:[hashtagCheckResult rangeAtIndex:2]] databaseFormattedString:hashtagString remoteId:nil andTagStringAttributes:tagStringAttributes];
+    return [[VTag alloc] initWithDisplayString:[hashtagString substringWithRange:[hashtagCheckResult rangeAtIndex:1]] databaseFormattedString:hashtagString andTagStringAttributes:tagStringAttributes];
 }
 
 + (instancetype)tagWithUserString:(NSString *)userString
@@ -81,7 +81,7 @@
     NSTextCheckingResult *userCheckResult = [matches lastObject];
     
     //result rangeAtIndex 1 has the value of the regex closure (the display string)
-    return [[VTag alloc] initWithDisplayString:[userString substringWithRange:[userCheckResult rangeAtIndex:2]] databaseFormattedString:userString remoteId:@([[userString substringWithRange:[userCheckResult rangeAtIndex:1]] integerValue]) andTagStringAttributes:tagStringAttributes];
+    return [[VUserTag alloc] initWithDisplayString:[userString substringWithRange:[userCheckResult rangeAtIndex:2]] databaseFormattedString:userString remoteId:@([[userString substringWithRange:[userCheckResult rangeAtIndex:1]] integerValue]) andTagStringAttributes:tagStringAttributes];
 }
 
 + (instancetype)tagWithUser:(VUser *)user

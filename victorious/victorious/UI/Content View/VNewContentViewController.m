@@ -92,6 +92,8 @@
 #import "VCommentTextAndMediaView.h"
 #import "VTagSensitiveTextView.h"
 #import "VTag.h"
+#import "VUserTag.h"
+#import "VHashtagStreamCollectionViewController.h"
 
 #define HANDOFFENABLED 0
 static const CGFloat kMaxInputBarHeight = 200.0f;
@@ -697,8 +699,18 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 
 - (void)tagSensitiveTextView:(VTagSensitiveTextView *)tagSensitiveTextView tappedTag:(VTag *)tag
 {
-    VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithRemoteId:tag.remoteId];
-    [self.navigationController pushViewController:profileViewController animated:YES];
+    if ( [tag isKindOfClass:[VUserTag class]] )
+    {
+        //Tapped a user tag, show a profile view controller
+        VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithRemoteId:((VUserTag *)tag).remoteId];
+        [self.navigationController pushViewController:profileViewController animated:YES];
+    }
+    else
+    {
+        //Tapped a hashtag, show a hashtag view controller
+        VHashtagStreamCollectionViewController *hashtagViewController = [VHashtagStreamCollectionViewController instantiateWithHashtag:[tag.displayString.string substringFromIndex:1]];
+        [self.navigationController pushViewController:hashtagViewController animated:YES];
+    }
 }
 
 - (void)showLightBoxWithMediaURL:(NSURL *)mediaURL

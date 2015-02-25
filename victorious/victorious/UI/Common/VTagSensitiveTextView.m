@@ -75,7 +75,10 @@
                      defaultAttributes:(NSDictionary *)defaultAttributes
                      andTagTapDelegate:(id<VTagSensitiveTextViewDelegate>)tagTapDelegate
 {
-    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:databaseFormattedText attributes:defaultAttributes];
+    NSAssert(tagAttributes != nil, @"tagAttributes must be non-nil");
+    NSAssert(defaultAttributes != nil, @"defaultAttributes must be non-nil");
+    
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:databaseFormattedText != nil ? databaseFormattedText : @"" attributes:defaultAttributes];
     self.tagStringAttributes = tagAttributes;
     self.tagDictionary = [VTagStringFormatter tagDictionaryFromFormattingAttributedString:attributedString
                                                                   withTagStringAttributes:tagAttributes
@@ -91,19 +94,12 @@
 
 - (void)recievedTap:(UITapGestureRecognizer *)tapGestureRecognizer
 {
-    if ( self.tagStringAttributes == nil )
-    {
-        //Have nothing to do if we have no tag attributes to compare to
-        return;
-    }
-    
     NSLayoutManager *layoutManager = self.layoutManager;
     CGPoint location = [tapGestureRecognizer locationInView:self];
     location.x -= self.textContainerInset.left;
     location.y -= self.textContainerInset.top;
     
     // Find the character that's been tapped on
-    
     NSUInteger characterIndex;
     characterIndex = [layoutManager characterIndexForPoint:location
                                            inTextContainer:self.textContainer

@@ -42,7 +42,9 @@
 
 #import "VTagStringFormatter.h"
 #import "VTag.h"
+#import "VUserTag.h"
 #import "VTagSensitiveTextView.h"
+#import "VHashtagStreamCollectionViewController.h"
 
 @import Social;
 
@@ -283,8 +285,18 @@
 
 - (void)tagSensitiveTextView:(VTagSensitiveTextView *)tagSensitiveTextView tappedTag:(VTag *)tag
 {
-    VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithRemoteId:tag.remoteId];
-    [self.navigationController pushViewController:profileViewController animated:YES];
+    if ( [tag isKindOfClass:[VUserTag class]] )
+    {
+        //Tapped a user tag, show a profile view controller
+        VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithRemoteId:((VUserTag *)tag).remoteId];
+        [self.navigationController pushViewController:profileViewController animated:YES];
+    }
+    else
+    {
+        //Tapped a hashtag, show a hashtag view controller
+        VHashtagStreamCollectionViewController *hashtagViewController = [VHashtagStreamCollectionViewController instantiateWithHashtag:[tag.displayString.string substringFromIndex:1]];
+        [self.navigationController pushViewController:hashtagViewController animated:YES];
+    }
 }
 
 #pragma mark - UITableViewDelegate
