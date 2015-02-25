@@ -20,6 +20,7 @@ static NSString * const kPlistFileExtension = @"plist";
 
 // multi-purpose keys
 NSString * const VDependencyManagerTitleKey = @"title";
+NSString * const VDependencyManagerBackgroundKey = @"background";
 
 // Keys for colors
 NSString * const VDependencyManagerBackgroundColorKey = @"color.background";

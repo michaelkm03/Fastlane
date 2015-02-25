@@ -19,6 +19,11 @@
 #import "VNavigationController.h"
 #import "VNavigationDestinationContainerViewController.h"
 
+// Backgrounds
+#import "VTranslucentBackground.h"
+#import "VSolidColorBackground.h"
+
+
 @interface VBottomMenuViewController () <UITabBarControllerDelegate>
 
 @property (nonatomic, strong, readwrite) VDependencyManager *dependencyManager;
@@ -55,9 +60,24 @@
     self.internalTabBarViewController.view.frame = self.view.bounds;
     self.internalTabBarViewController.view.translatesAutoresizingMaskIntoConstraints = YES;
     self.internalTabBarViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    [self.internalTabBarViewController.tabBar setBarTintColor:[self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey]];
+    
+    // Configure Tab Bar
     [self.internalTabBarViewController.tabBar setTintColor:[self.dependencyManager colorForKey:VDependencyManagerLinkColorKey]];
-    self.internalTabBarViewController.tabBar.translucent = NO;
+    VBackground *backgroundForTabBar = [self.dependencyManager templateValueOfType:[VBackground class] forKey:VDependencyManagerBackgroundKey];
+    if ([backgroundForTabBar isKindOfClass:[VTranslucentBackground class]])
+    {
+        VTranslucentBackground *translucentBackground = (VTranslucentBackground *)backgroundForTabBar;
+        self.internalTabBarViewController.tabBar.translucent = YES;
+        self.internalTabBarViewController.tabBar.barStyle = translucentBackground.barStyleForTranslucentBackground;
+    }
+    else if ([backgroundForTabBar isKindOfClass:[VSolidColorBackground class]])
+    {
+        VSolidColorBackground *solidColorBackground = (VSolidColorBackground *)backgroundForTabBar;
+        self.internalTabBarViewController.tabBar.translucent = NO;
+        self.internalTabBarViewController.tabBar.barTintColor = solidColorBackground.backgroundColor;
+    }
+    
+    
     [self.view addSubview:self.internalTabBarViewController.view];
     [self.internalTabBarViewController didMoveToParentViewController:self];
     

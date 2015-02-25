@@ -8,6 +8,12 @@
 
 #import "VBackground.h"
 
+
+extern NSString * const VTranslucentBackgroundBlurStyleKey;
+extern NSString * const VTranslucentBackgroundBlurStyleExtraLight;
+extern NSString * const VTranslucentBackgroundBlurStyleLight;
+extern NSString * const VTranslucentBackgroundBlurStyleDark;
+
 /**
  *  A Translucent background. Elements should be placed underneath
     so that they can scroll and show through.

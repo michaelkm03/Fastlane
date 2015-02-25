@@ -9,10 +9,10 @@
 #import "VTranslucentBackground.h"
 #import "VDependencyManager.h"
 
-static NSString *const kBlurStyleKey = @"blurStyle";
-static NSString *const kBlurStyleExtraLight = @"extraLight";
-static NSString *const kBlurStyleLight = @"light";
-static NSString *const kBlurStyleDark = @"dark";
+NSString * const VTranslucentBackgroundBlurStyleKey = @"blurStyleKey";
+NSString * const VTranslucentBackgroundBlurStyleExtraLight = @"blurStyleExtraLight";
+NSString * const VTranslucentBackgroundBlurStyleLight = @"blurStyleLight";
+NSString * const VTranslucentBackgroundBlurStyleDark = @"blurStyleDark";
 
 @interface VTranslucentBackground ()
 
@@ -29,7 +29,7 @@ static NSString *const kBlurStyleDark = @"dark";
     self = [super initWithDependencyManager:dependencyManager];
     if (self)
     {
-        _blurStyle = [dependencyManager stringForKey:kBlurStyleKey];
+        _blurStyle = [dependencyManager stringForKey:VTranslucentBackgroundBlurStyleKey];
     }
     return self;
 }
@@ -84,15 +84,15 @@ static NSString *const kBlurStyleDark = @"dark";
 
 - (UIBlurEffectStyle)blurEffectStyleForString:(NSString *)blurStyle
 {
-    if ([blurStyle isEqualToString:kBlurStyleExtraLight])
+    if ([blurStyle isEqualToString:VTranslucentBackgroundBlurStyleExtraLight])
     {
         return UIBlurEffectStyleExtraLight;
     }
-    else if ([blurStyle isEqualToString:kBlurStyleLight])
+    else if ([blurStyle isEqualToString:VTranslucentBackgroundBlurStyleLight])
     {
         return UIBlurEffectStyleLight;
     }
-    else if ([blurStyle isEqualToString:kBlurStyleDark])
+    else if ([blurStyle isEqualToString:VTranslucentBackgroundBlurStyleDark])
     {
         return UIBlurEffectStyleDark;
     }

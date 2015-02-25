@@ -10,6 +10,12 @@
 
 @implementation VBackground
 
+- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    self = [super init];
+    return self;
+}
+
 - (UIView *)viewForBackground
 {
     NSAssert(false, @"Must be implemented by subclasses!");

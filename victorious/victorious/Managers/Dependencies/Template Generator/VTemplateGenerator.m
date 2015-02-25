@@ -15,6 +15,8 @@
 #import "VTemplateGenerator.h"
 #import "VThemeManager.h"
 #import "VSettingManager.h"
+#import "VTranslucentBackground.h"
+#import "VSolidColorBackground.h"
 
 #define BOTTOM_NAV_ENABLED 1
 
@@ -134,7 +136,8 @@ static NSString * const kVideoMuted = @"videoMuted";
                                                                   kClassNameKey: @"bottomMenu.scaffold",
                                                                   kItemsKey:[self bottomNavMenuItems],
                                                                   VScaffoldViewControllerUserProfileViewComponentKey: [self profileScreen],
-                                                                  kSelectorKey: [self kSelectorKeyFromInitDictionary:self.dataFromInitCall]
+                                                                  kSelectorKey: [self kSelectorKeyFromInitDictionary:self.dataFromInitCall],
+                                                                  VDependencyManagerBackgroundKey: [self lightTranslucentBackground],
                                                                   };
     }
     else
@@ -589,6 +592,37 @@ static NSString * const kVideoMuted = @"videoMuted";
             }
         };
     }
+}
+
+#pragma mark - Background
+
+- (NSDictionary *)darkTranslucentBackground
+{
+    return @{
+             kClassNameKey:@"translucent.background",
+             VTranslucentBackgroundBlurStyleKey:VTranslucentBackgroundBlurStyleDark
+             };
+}
+
+- (NSDictionary *)lightTranslucentBackground
+{
+    return @{
+             kClassNameKey:@"translucent.background",
+             VTranslucentBackgroundBlurStyleKey:VTranslucentBackgroundBlurStyleLight
+             };
+}
+
+- (NSDictionary *)solidWhiteBackground
+{
+    return @{
+             kClassNameKey:@"solidColor.background",
+             VSolidColorBackgroundKey: @{
+                     kRedKey: @255,
+                     kGreenKey: @255,
+                     kBlueKey: @255,
+                     kAlphaKey: @1
+                     },
+             };
 }
 
 @end

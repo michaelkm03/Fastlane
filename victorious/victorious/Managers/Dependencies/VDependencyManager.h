@@ -11,6 +11,7 @@
 
 // multi-purpose keys
 extern NSString * const VDependencyManagerTitleKey;
+extern NSString * const VDependencyManagerBackgroundKey;
 
 // Keys for colors
 extern NSString * const VDependencyManagerBackgroundColorKey;

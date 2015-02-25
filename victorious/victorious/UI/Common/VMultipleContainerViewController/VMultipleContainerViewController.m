@@ -35,8 +35,6 @@ static NSString * const kInitialKey = @"initial";
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self)
     {
-        self.automaticallyAdjustsScrollViewInsets = NO;
-        self.extendedLayoutIncludesOpaqueBars = YES;
         _didShowInitial = NO;
     }
     return self;

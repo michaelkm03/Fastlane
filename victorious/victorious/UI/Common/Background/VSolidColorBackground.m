@@ -9,7 +9,7 @@
 #import "VSolidColorBackground.h"
 #import "VDependencyManager.h"
 
-static NSString *const kColorKey = @"color";
+NSString * const VSolidColorBackgroundKey = @"color";
 
 @interface VSolidColorBackground ()
 
@@ -26,7 +26,7 @@ static NSString *const kColorKey = @"color";
     self = [super initWithDependencyManager:dependencyManager];
     if (self)
     {
-        _backgroundColor = [dependencyManager colorForKey:kColorKey];
+        _backgroundColor = [dependencyManager colorForKey:VSolidColorBackgroundKey];
     }
     return self;
 }
