@@ -89,7 +89,20 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
     _activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
     _activityIndicator.hidesWhenStopped = YES;
     _activityIndicator.center = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
+    _activityIndicator.translatesAutoresizingMaskIntoConstraints = NO;
     [self addSubview:_activityIndicator];
+    
+    //Add constraints to keep the actitivity indicator in the center of the canvas
+    NSDictionary *views = @{ @"activityIndicator":_activityIndicator };
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[activityIndicator]|"
+                                                                options:0
+                                                                metrics:nil
+                                                                   views:views]];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[activityIndicator]|"
+                                                                 options:0
+                                                                 metrics:nil
+                                                                   views:views]];
+    
     [_activityIndicator startAnimating];
 }
 

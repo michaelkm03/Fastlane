@@ -479,7 +479,7 @@
 {
     toolViewController.view.translatesAutoresizingMaskIntoConstraints = NO;
     // Prevent weird resizing if we are in an animation block.
-    toolViewController.view.frame = self.canvasView.frame;
+    toolViewController.view.frame = self.canvasView.bounds;
     [self.view addConstraints:@[
                                 [NSLayoutConstraint constraintWithItem:toolViewController.view
                                                              attribute:NSLayoutAttributeTop
