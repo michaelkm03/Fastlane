@@ -49,8 +49,6 @@
     self.cameraButton.layer.cornerRadius = CGRectGetHeight(self.cameraButton.bounds)/2;
     self.cameraButton.clipsToBounds = YES;
     
-//    self.automaticallyAdjustsScrollViewInsets = NO;
-    
     self.taglineTextView.inputAccessoryView =
     ({
         VContentInputAccessoryView *inputAccessoryView = [[VContentInputAccessoryView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 44.0f)];

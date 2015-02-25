@@ -25,6 +25,8 @@
 
 @property (nonatomic, strong) UITabBarController *internalTabBarViewController;
 
+@property (nonatomic, strong) VNavigationDestinationContainerViewController *willSelectContainerViewController;
+
 @end
 
 @implementation VBottomMenuViewController
@@ -76,36 +78,31 @@
 - (BOOL)tabBarController:(UITabBarController *)tabBarController
 shouldSelectViewController:(VNavigationDestinationContainerViewController *)viewController
 {
+    self.willSelectContainerViewController = viewController;
     [self navigateToDestination:viewController.navigationDestination];
-    
-    if ([viewController.navigationDestination respondsToSelector:@selector(shouldNavigateWithAlternateDestination:)])
-    {
-        UIViewController *alternateDestinationViewController = nil;
-        if (![viewController.navigationDestination shouldNavigateWithAlternateDestination:&alternateDestinationViewController])
-        {
-            return NO;
-        }
-        else
-        {
-            if (viewController.containedViewController == nil)
-            {
-                VNavigationController *navigationController = [[VNavigationController alloc] initWithDependencyManager:self.dependencyManager];
-                [navigationController.innerNavigationController pushViewController:alternateDestinationViewController
-                                                                          animated:NO];
-                viewController.containedViewController = navigationController;
-            }
-            return YES;
-        }
-    }
-    
-    return YES;
+    return NO;
 }
 
-/**
- *  We rely on UITabBarController's behavior here.
- */
 - (void)displayResultOfNavigation:(UIViewController *)viewController
 {
+    if ( self.presentedViewController != nil )
+    {
+        [self dismissViewControllerAnimated:NO completion:nil];
+    }
+    
+    if (self.willSelectContainerViewController != nil)
+    {
+        if (self.willSelectContainerViewController.containedViewController == nil)
+        {
+            VNavigationController *navigationController = [[VNavigationController alloc] initWithDependencyManager:self.dependencyManager];
+            [navigationController.innerNavigationController pushViewController:viewController
+                                                                      animated:NO];
+            [self.willSelectContainerViewController setContainedViewController:navigationController];
+        }
+        [self.internalTabBarViewController setSelectedViewController:self.willSelectContainerViewController];
+        self.willSelectContainerViewController = nil;
+        return;
+    }
 }
 
 #pragma mark - Private Methods
