@@ -38,8 +38,8 @@ fi
 
 UPLOADER_VERSION=1.09
 
-# Put your TestFairy API_KEY here. Find it in your TestFairy account settings.
-TESTFAIRY_API_KEY="d3b1ed7f2132f9dfc4ae381e8d36af7337261481"
+# TestFairy API_KEY here for build.server@getvictorious.com
+TESTFAIRY_API_KEY="61e501eea8b80b5596c7e17c9fea4739ec6e8a86"
 
 # If AUTO_UPDATE is "on" all users will be prompt to update to this build next time they run the app
 AUTO_UPDATE="off"
