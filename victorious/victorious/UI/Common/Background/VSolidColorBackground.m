@@ -1,0 +1,46 @@
+//
+//  VSolidColorBackground.m
+//  victorious
+//
+//  Created by Michael Sena on 2/24/15.
+//  Copyright (c) 2015 Victorious. All rights reserved.
+//
+
+#import "VSolidColorBackground.h"
+#import "VDependencyManager.h"
+
+static NSString *const kColorKey = @"color";
+
+@interface VSolidColorBackground ()
+
+@property (nonatomic, readwrite) VDependencyManager *dependencyManager;
+
+@property (nonatomic, readwrite) UIColor *backgroundColor;
+
+@end
+
+@implementation VSolidColorBackground
+
+- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    self = [super initWithDependencyManager:dependencyManager];
+    if (self)
+    {
+        _backgroundColor = [dependencyManager colorForKey:kColorKey];
+    }
+    return self;
+}
+
+#pragma mark - Overrides
+
+- (UIView *)viewForBackground
+{
+    UIView *viewForBackground = [[UIView alloc] initWithFrame:CGRectZero];
+    
+    viewForBackground.userInteractionEnabled = YES;
+    viewForBackground.backgroundColor = self.backgroundColor;
+    
+    return viewForBackground;
+}
+
+@end
