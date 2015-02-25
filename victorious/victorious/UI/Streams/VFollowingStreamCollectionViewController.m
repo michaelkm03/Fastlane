@@ -59,8 +59,6 @@
 
 - (void)loginStatusDidChange:(NSNotification *)notification
 {
-    self.didTrackViewDidAppear = NO;
-    self.canTrackViewDidAppear = NO;
     [self.streamDataSource unloadStream];
     self.shouldRefreshOnView = YES;
 }

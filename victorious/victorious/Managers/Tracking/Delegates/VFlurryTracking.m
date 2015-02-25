@@ -9,7 +9,7 @@
 #import "VFlurryTracking.h"
 #import "Flurry.h"
 
-#define FLURRY_TRACKING_LOGGING_ENABLED 1
+#define FLURRY_TRACKING_LOGGING_ENABLED 0
 
 #if DEBUG && FLURRY_TRACKING_LOGGING_ENABLED
 #warning Tracking logging is enabled. Please remember to disable it when you're done debugging.

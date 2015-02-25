@@ -189,15 +189,6 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    [[VTrackingManager sharedInstance] setValue:VTrackingValueStream forSessionParameterWithKey:VTrackingKeyContext];
-    
-    NSString *streamName = self.currentStream.name;
-    if ( streamName != nil )
-    {
-        NSDictionary *params = @{ VTrackingKeyStreamName : self.currentStream.name };
-        [[VTrackingManager sharedInstance] startEvent:VTrackingEventStreamDidAppear parameters:params];
-    }
 
     if (!self.streamDataSource.count)
     {
@@ -217,14 +208,6 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
 {
     [super viewWillDisappear:animated];
     
-    [[VTrackingManager sharedInstance] endEvent:VTrackingEventStreamDidAppear];
-    [[VTrackingManager sharedInstance] clearQueuedEventsWithName:VTrackingEventSequenceDidAppearInStream];
-    
-    if ( self.isBeingDismissed )
-    {
-        [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContext];
-    }
-    
     [self.preloadImageCache removeAllObjects];
 }
 
@@ -243,14 +226,6 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
     [super didReceiveMemoryWarning];
     
     self.preloadImageCache = nil;
-}
-
-#pragma mark - Tracking
-
-- (void)trackStreamDidAppear
-{
-    NSDictionary *params = @{ VTrackingKeyStreamName : self.currentStream.name ?: @"" };
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidViewStream parameters:params];
 }
 
 #pragma mark - Properties
@@ -643,11 +618,7 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
 
 - (void)showContentViewForSequence:(VSequence *)sequence withPreviewImage:(UIImage *)previewImage
 {
-    NSDictionary *params = @{ VTrackingKeySequenceId : sequence.remoteId,
-                              VTrackingKeyStreamId : self.currentStream.remoteId,
-                              VTrackingKeyTimeStamp : [NSDate date],
-                              VTrackingKeyUrls : sequence.tracking.cellClick };
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectItemFromStream parameters:params];
+    [self.streamTrackingHelper onStreamCellSelectedWithStream:self.currentStream sequence:sequence];
     
     [[self.dependencyManager scaffoldViewController] showContentViewWithSequence:sequence commentId:nil placeHolderImage:previewImage];
 }
@@ -765,7 +736,7 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
 
 - (void)didEnterBackground:(NSNotification *)notification
 {
-    [[VTrackingManager sharedInstance] clearQueuedEventsWithName:VTrackingEventSequenceDidAppearInStream];
+    [self.streamTrackingHelper resetCellVisibilityTracking];
 }
 
 #pragma mark - UICollectionViewDelegateFlowLayout
@@ -879,17 +850,7 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
 {
     if ( visibiltyRatio >= self.trackingMinRequiredCellVisibilityRatio )
     {
-        const VSequence *sequence = cell.sequence;
-        if ( sequence != nil )
-        {
-            NSDictionary *params = @{ VTrackingKeySequenceId : sequence.remoteId,
-                                      VTrackingKeyStreamId : self.currentStream.remoteId,
-                                      VTrackingKeyTimeStamp : [NSDate date],
-                                      VTrackingKeyUrls : sequence.tracking.cellView };
-            [[VTrackingManager sharedInstance] queueEvent:VTrackingEventSequenceDidAppearInStream
-                                               parameters:params
-                                                  eventId:sequence.remoteId];
-        }
+        [self.streamTrackingHelper onStreamCellDidBecomeVisibleWithStream:self.currentStream sequence:cell.sequence];
     }
 }
 

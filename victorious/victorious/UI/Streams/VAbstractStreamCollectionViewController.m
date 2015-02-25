@@ -111,6 +111,8 @@ const CGFloat kVLoadNextPagePoint = .75f;
 {
     [super viewWillAppear:animated];
     
+    [self.streamTrackingHelper onStreamViewWillAppearWithStream:self.currentStream];
+    
     BOOL shouldRefresh = !self.refreshControl.isRefreshing && self.streamDataSource.count == 0;
     if ( shouldRefresh )
     {
@@ -127,20 +129,22 @@ const CGFloat kVLoadNextPagePoint = .75f;
 {
     [super viewDidAppear:animated];
     
+    [self.streamTrackingHelper onStreamViewDidAppearWithStream:self.currentStream isBeingPresented:self.isBeingPresented];
+    
     if ( self.navigationBarShouldAutoHide )
     {
         [self addScrollDelegate];
-    }
-    
-    if ( self.isBeingPresented && self.canTrackViewDidAppear )
-    {
-        [self trackStreamDidAppear];
     }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
+    [self.streamTrackingHelper onStreamViewWillDisappearWithStream:self.currentStream
+                                                  isBeingDismissed:self.isBeingDismissed];
+    
+    [self.streamTrackingHelper resetCellVisibilityTracking];
     
     self.navigationControllerScrollDelegate = nil;
 }
@@ -168,20 +172,12 @@ const CGFloat kVLoadNextPagePoint = .75f;
 
 - (void)viewControllerSelected
 {
-    if ( self.canTrackViewDidAppear )
-    {
-        self.didTrackViewDidAppear = YES;
-        [self trackStreamDidAppear];
-    }
+    [self.streamTrackingHelper viewControllerSelected:self.currentStream];
 }
 
 - (void)viewControllerAppearedAsInitial
 {
-    if ( self.canTrackViewDidAppear && !self.didTrackViewDidAppear )
-    {
-        self.didTrackViewDidAppear = YES;
-        [self trackStreamDidAppear];
-    }
+    [self.streamTrackingHelper viewControllerAppearedAsInitial:self.currentStream];
 }
 
 #pragma mark - Tracking helper
@@ -251,13 +247,9 @@ const CGFloat kVLoadNextPagePoint = .75f;
         return;
     }
     
-    [self.streamDataSource refreshWithSuccess:^(void)
-     {
-         self.canTrackViewDidAppear = YES;
-         if ( !self.didTrackViewDidAppear )
-         {
-             [self trackStreamDidAppear];
-         }
+    [self.streamDataSource loadPage:VPageTypeFirst withSuccess:
+     ^{
+         [self.streamTrackingHelper streamDidLoad:self.currentStream];
          
          [self.refreshControl endRefreshing];
          if (completionBlock)
@@ -386,17 +378,15 @@ const CGFloat kVLoadNextPagePoint = .75f;
     }
     
     self.shouldAnimateActivityViewFooter = YES;
-    [self.streamDataSource loadNextPageWithSuccess:^(void)
-     {
+    [self.streamDataSource loadPage:VPageTypeNext withSuccess:
+     ^{
          __weak typeof(self) welf = self;
          dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
                         {
                             [welf.collectionView flashScrollIndicators];
                         });
      }
-                                              failure:^(NSError *error)
-     {
-     }];
+                                              failure:nil];
 }
 
 #pragma mark - UIScrollViewDelegate

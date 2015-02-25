@@ -98,36 +98,16 @@ NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamColl
     self.stream.streamItems = [[NSOrderedSet alloc] init];
 }
 
-- (void)refreshWithSuccess:(void (^)(void))successBlock failure:(void (^)(NSError *))failureBlock
-{
-    self.isLoading = YES;
-    [[VObjectManager sharedManager] loadStream:self.stream
-                                      pageType:VPageTypeFirst
-                                     successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-     {
-         if (successBlock)
-         {
-             successBlock();
-         }
-         self.isLoading = NO;
-     }
-                                        failBlock:^(NSOperation *operation, NSError *error)
-     {
-         if (failureBlock)
-         {
-             failureBlock(error);
-         }
-         self.isLoading = NO;
-     }];
-}
-
-- (void)loadNextPageWithSuccess:(void (^)(void))successBlock failure:(void (^)(NSError *))failureBlock
+- (void)loadPage:(VPageType)pageType withSuccess:(void (^)(void))successBlock failure:(void (^)(NSError *))failureBlock
 {
     self.isLoading = YES;
     [[VObjectManager sharedManager] loadStream:self.stream
                                       pageType:VPageTypeNext
                                   successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
      {
+         [[VTrackingManager sharedInstance] setValue:self.stream.trackingIdentifier
+                          forSessionParameterWithKey:VTrackingKeyStreamId];
+         
          if (successBlock)
          {
              successBlock();
