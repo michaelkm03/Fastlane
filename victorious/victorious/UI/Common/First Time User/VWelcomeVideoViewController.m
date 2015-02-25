@@ -1,19 +1,19 @@
 //
-//  VFirstTimeUserVideoViewController.m
+//  VWelcomeVideoViewController.m
 //  victorious
 //
 //  Created by Lawrence Leach on 2/24/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VFirstTimeUserVideoViewController.h"
+#import "VWelcomeVideoViewController.h"
 #import "VButton.h"
 #import "VDependencyManager.h"
 #import "UIImage+ImageEffects.h"
 
 static NSString * const VPlayFirstTimeUserVideo = @"com.getvictorious.settings.playWelcomeVideo";
 
-@interface VFirstTimeUserVideoViewController ()
+@interface VWelcomeVideoViewController ()
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, weak) IBOutlet VButton *getStartedButton;
@@ -21,11 +21,11 @@ static NSString * const VPlayFirstTimeUserVideo = @"com.getvictorious.settings.p
 
 @end
 
-@implementation VFirstTimeUserVideoViewController
+@implementation VWelcomeVideoViewController
 
 #pragma mark - Initializers
 
-+ (VFirstTimeUserVideoViewController *)instantiateFromStoryboard:(NSString *)storyboardName
++ (VWelcomeVideoViewController *)instantiateFromStoryboard:(NSString *)storyboardName
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:storyboardName bundle:[NSBundle bundleForClass:[self class]]];
     return [storyboard instantiateViewControllerWithIdentifier:@"WelcomeVideo"];
@@ -33,9 +33,14 @@ static NSString * const VPlayFirstTimeUserVideo = @"com.getvictorious.settings.p
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    VFirstTimeUserVideoViewController *firstTimeVC = [self instantiateFromStoryboard:@"FirstTimeUserVideo"];
+    VWelcomeVideoViewController *firstTimeVC = [self instantiateFromStoryboard:@"WelcomeVideo"];
     firstTimeVC.dependencyManager = dependencyManager;
     return firstTimeVC;
+}
+
++ (BOOL)hasBeenShown
+{
+    return [[[NSUserDefaults standardUserDefaults] valueForKey:VPlayFirstTimeUserVideo] boolValue];
 }
 
 #pragma mark - View Lifecycle Methods
@@ -77,12 +82,7 @@ static NSString * const VPlayFirstTimeUserVideo = @"com.getvictorious.settings.p
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-#pragma mark - NSUserDefaults
-
-- (BOOL)hasBeenShown
-{
-    return [[[NSUserDefaults standardUserDefaults] valueForKey:VPlayFirstTimeUserVideo] boolValue];
-}
+#pragma mark - Save to NSUserDefaults
 
 - (void)savePlaybackDefaults
 {

@@ -20,12 +20,14 @@
 #import "VComment.h"
 #import "VTracking.h"
 #import "VWebBrowserViewController.h"
+#import "VWelcomeVideoViewController.h"
 
 #import <MBProgressHUD.h>
 
 NSString * const VScaffoldViewControllerMenuComponentKey = @"menu";
 NSString * const VScaffoldViewControllerContentViewComponentKey = @"contentView";
 NSString * const VScaffoldViewControllerUserProfileViewComponentKey = @"userProfileView";
+NSString * const VScaffoldViewControllerWelcomeUserViewComponentKey = @"welcomeVideoView";
 
 static NSString * const kContentDeeplinkURLHostComponent = @"content";
 static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
@@ -45,6 +47,15 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
         _menuViewController = [dependencyManager viewControllerForKey:VScaffoldViewControllerMenuComponentKey];
     }
     return self;
+}
+
+#pragma mark - Lifecyle Methods
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    VLog(@"VScaffoldViewController did appear");
 }
 
 #pragma mark - Content View

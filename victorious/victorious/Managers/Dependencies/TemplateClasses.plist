@@ -52,5 +52,7 @@
 	<string>VSettingsViewController</string>
 	<key>discover.screen</key>
 	<string>VDiscoverContainerViewController</string>
+	<key>lightweight.contentView</key>
+	<string>VWelcomeVideoViewController</string>
 </dict>
 </plist>

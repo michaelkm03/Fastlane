@@ -67,6 +67,9 @@ static NSString * const kVideoMaxDuration = @"videoMaxDuration";
 static NSString * const kVideoMinDuration = @"videoMinDuration";
 static NSString * const kVideoMuted = @"videoMuted";
 
+// First-time Video
+static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
+
 @interface VTemplateGenerator ()
 
 @property (nonatomic, strong) NSDictionary *dataFromInitCall;
@@ -132,6 +135,7 @@ static NSString * const kVideoMuted = @"videoMuted";
                                                                VStreamCollectionViewControllerCreateSequenceIconKey: (self.templateCEnabled ? [UIImage imageNamed:@"createContentButtonC"] : [UIImage imageNamed:@"createContentButton"]),
                                                                VScaffoldViewControllerUserProfileViewComponentKey: @{ kClassNameKey: @"userProfile.screen" },
                                                                kSelectorKey: [self kSelectorKeyFromInitDictionary:self.dataFromInitCall],
+                                                               VScaffoldViewControllerWelcomeUserViewComponentKey: @{ kClassNameKey: @"lightweight.contentView" },
                                                             };
     template[VDependencyManagerWorkspaceFlowKey] = [self workspaceFlowComponent];
     template[VScaffoldViewControllerNavigationBarAppearanceKey] = [self navigationBarAppearance];

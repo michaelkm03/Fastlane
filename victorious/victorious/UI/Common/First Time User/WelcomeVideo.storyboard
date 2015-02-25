@@ -5,10 +5,10 @@
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
-        <!--First Time User Video View Controller-->
+        <!--Welcome Video View Controller-->
         <scene sceneID="npe-Pl-jHI">
             <objects>
-                <viewController storyboardIdentifier="WelcomeVideo" id="eLl-qp-GRA" customClass="VFirstTimeUserVideoViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="WelcomeVideo" id="eLl-qp-GRA" customClass="VWelcomeVideoViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="RlJ-HE-p9L"/>
                         <viewControllerLayoutGuide type="bottom" id="mT9-B7-VTY"/>
