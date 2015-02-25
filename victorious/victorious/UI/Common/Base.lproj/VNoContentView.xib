@@ -18,13 +18,19 @@
                     </constraints>
                 </imageView>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="NO MESSAGES YET" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" preferredMaxLayoutWidth="260" translatesAutoresizingMaskIntoConstraints="NO" id="hx0-YK-T9j">
-                    <rect key="frame" x="31" y="243" width="259" height="23"/>
+                    <rect key="frame" x="30" y="243" width="260" height="23"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="260" id="5Zd-jM-bVM"/>
+                    </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="19"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You can send messages to anyone on the app!  Just go to their profile and click the compose icon in the top right corner." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" preferredMaxLayoutWidth="220" translatesAutoresizingMaskIntoConstraints="NO" id="1Uw-A9-zfF">
-                    <rect key="frame" x="51" y="276" width="219" height="102"/>
+                    <rect key="frame" x="50" y="276" width="220" height="102"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="220" id="dIY-nB-8S7"/>
+                    </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
@@ -32,16 +38,12 @@
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="hx0-YK-T9j" firstAttribute="leading" secondItem="IRu-tO-WgG" secondAttribute="leading" constant="31" id="2Uc-EN-IpH"/>
-                <constraint firstItem="Vl7-Ht-CEA" firstAttribute="centerX" secondItem="hx0-YK-T9j" secondAttribute="centerX" id="4l1-Ze-xke"/>
+                <constraint firstAttribute="centerX" secondItem="Vl7-Ht-CEA" secondAttribute="centerX" id="18S-Ct-iCl"/>
                 <constraint firstItem="1Uw-A9-zfF" firstAttribute="top" secondItem="hx0-YK-T9j" secondAttribute="bottom" constant="10" id="Jfc-ZQ-nSc"/>
-                <constraint firstItem="1Uw-A9-zfF" firstAttribute="leading" secondItem="IRu-tO-WgG" secondAttribute="leading" constant="51" id="Kvg-cs-rjO"/>
-                <constraint firstAttribute="trailing" secondItem="1Uw-A9-zfF" secondAttribute="trailing" constant="50" id="SgM-bL-8vo"/>
-                <constraint firstAttribute="centerX" secondItem="hx0-YK-T9j" secondAttribute="centerX" id="TWW-aX-YcO"/>
-                <constraint firstAttribute="centerX" secondItem="1Uw-A9-zfF" secondAttribute="centerX" id="ld7-rs-OZl"/>
-                <constraint firstItem="hx0-YK-T9j" firstAttribute="centerY" secondItem="IRu-tO-WgG" secondAttribute="centerY" id="nhT-fX-gj8"/>
+                <constraint firstAttribute="centerX" secondItem="hx0-YK-T9j" secondAttribute="centerX" id="O8f-zu-8ae"/>
+                <constraint firstAttribute="centerY" secondItem="hx0-YK-T9j" secondAttribute="centerY" id="QwD-XJ-wjy"/>
                 <constraint firstItem="hx0-YK-T9j" firstAttribute="top" secondItem="Vl7-Ht-CEA" secondAttribute="bottom" constant="40" id="r7W-mP-xrF"/>
-                <constraint firstAttribute="trailing" secondItem="hx0-YK-T9j" secondAttribute="trailing" constant="30" id="swr-Lh-g7p"/>
+                <constraint firstAttribute="centerX" secondItem="1Uw-A9-zfF" secondAttribute="centerX" id="vRw-3J-9GE"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
