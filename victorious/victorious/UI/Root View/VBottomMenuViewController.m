@@ -20,7 +20,6 @@
 #import "VNavigationDestinationContainerViewController.h"
 
 // Backgrounds
-#import "VTranslucentBackground.h"
 #import "VSolidColorBackground.h"
 
 
@@ -64,19 +63,12 @@
     // Configure Tab Bar
     [self.internalTabBarViewController.tabBar setTintColor:[self.dependencyManager colorForKey:VDependencyManagerLinkColorKey]];
     VBackground *backgroundForTabBar = [self.dependencyManager templateValueOfType:[VBackground class] forKey:VDependencyManagerBackgroundKey];
-    if ([backgroundForTabBar isKindOfClass:[VTranslucentBackground class]])
-    {
-        VTranslucentBackground *translucentBackground = (VTranslucentBackground *)backgroundForTabBar;
-        self.internalTabBarViewController.tabBar.translucent = YES;
-        self.internalTabBarViewController.tabBar.barStyle = translucentBackground.barStyleForTranslucentBackground;
-    }
-    else if ([backgroundForTabBar isKindOfClass:[VSolidColorBackground class]])
+    if ([backgroundForTabBar isKindOfClass:[VSolidColorBackground class]])
     {
         VSolidColorBackground *solidColorBackground = (VSolidColorBackground *)backgroundForTabBar;
         self.internalTabBarViewController.tabBar.translucent = NO;
         self.internalTabBarViewController.tabBar.barTintColor = solidColorBackground.backgroundColor;
     }
-    
     
     [self.view addSubview:self.internalTabBarViewController.view];
     [self.internalTabBarViewController didMoveToParentViewController:self];
