@@ -121,12 +121,12 @@ extern NSString * const VTrackingEventUserDidCompletePurchase; //< Params: Produ
 extern NSString * const VTrackingEventUserDidRestorePurchases; //< "Params: Count, CurrentSection"
 extern NSString * const VTrackingEventUserDidCancelPurchase; //< User exited from the purchase prompt without making a purchase; Params: ProductIdentifier
 extern NSString * const VTrackingEventPurchaseDidFail; //< "Params: ErrorMessage, ProductIdentifier"
-extern NSString * const VTrackingEventRestorePurchasesDidFail; //< Params: ErrorMessage
+extern NSString * const VTrackingEventill; //< Params: ErrorMessage
 extern NSString * const VTrackingEventAppStoreProductRequestDidFail; //< Params: ErrorMessage
 
 // Content Interaction
 extern NSString * const VTrackingEventSequenceDidAppearInStream; //< Stream cell became visible while scrolling stream (once per view); Backend mapping: cell-view
-extern NSString * const VTrackingEventViewDidStart; //< Content was displayed in content view and began playing (if video); Backend mapping: view-start
+extern NSString * const VTrackingEventViewDidStart; //< "Content was displayed in content view and began playing (if video, make sure any ads are finished first); Backend mapping: view-start"
 extern NSString * const VTrackingEventUserDidSelectItemFromStream; //< Backend mapping: cell-click
 extern NSString * const VTrackingEventUserDidSelectItemFromMarquee; //< Backend mapping: cell-click
 extern NSString * const VTrackingEventUserDidViewHashtagStream; //< Params: Hashtag

@@ -522,9 +522,10 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     }
 #endif
     
-    if ( self.isBeingPresented || self.navigationController.isBeingPresented )
+    BOOL isBeingPresented = self.isBeingPresented || self.navigationController.isBeingPresented;
+    if ( isBeingPresented && self.videoCell == nil )
     {
-        NSDictionary *params = @{ VTrackingKeyTimeCurrent : [NSDate date],
+        NSDictionary *params = @{ VTrackingKeyTimeStamp : [NSDate date],
                                   VTrackingKeySequenceId : self.viewModel.sequence.remoteId,
                                   VTrackingKeyUrls : self.viewModel.sequence.tracking.viewStart ?: @[] };
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
@@ -1211,7 +1212,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 - (void)videoCellReadyToPlay:(VContentVideoCell *)videoCell
 {
     [UIViewController attemptRotationToDeviceOrientation];
-    if (!self.hasAutoPlayed)
+    if ( !self.hasAutoPlayed )
     {
         [self.videoCell play];
         self.hasAutoPlayed = YES;
@@ -1220,6 +1221,11 @@ referenceSizeForHeaderInSection:(NSInteger)section
         // If the video asset is playing, any ad (if there was one) is now over, and the
         // bar should be enabled.
         self.experienceEnhancerCell.experienceEnhancerBar.enabled = YES;
+        
+        NSDictionary *params = @{ VTrackingKeyTimeStamp : [NSDate date],
+                                  VTrackingKeySequenceId : self.viewModel.sequence.remoteId,
+                                  VTrackingKeyUrls : self.viewModel.sequence.tracking.viewStart ?: @[] };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
     }
 }
 

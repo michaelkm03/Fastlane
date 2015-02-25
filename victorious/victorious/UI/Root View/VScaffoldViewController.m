@@ -84,7 +84,7 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
                      completion:^(void)
     {
         // Track view-start event, similar to how content is tracking in VNewContentViewController when loaded
-        NSDictionary *params = @{ VTrackingKeyTimeCurrent : [NSDate date],
+        NSDictionary *params = @{ VTrackingKeyTimeStamp : [NSDate date],
                                   VTrackingKeySequenceId : sequence.remoteId,
                                   VTrackingKeyUrls : sequence.tracking.viewStart ?: @[] };
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];

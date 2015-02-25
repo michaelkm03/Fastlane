@@ -111,12 +111,12 @@ UserDidCompletePurchase,Params: ProductIdentifier
 UserDidRestorePurchases,"Params: Count, CurrentSection"
 UserDidCancelPurchase,User exited from the purchase prompt without making a purchase; Params: ProductIdentifier
 PurchaseDidFail,"Params: ErrorMessage, ProductIdentifier"
-RestorePurchasesDidFail,Params: ErrorMessage
+ill,Params: ErrorMessage
 AppStoreProductRequestDidFail,Params: ErrorMessage
 ,
 // Content Interaction,
 SequenceDidAppearInStream,Stream cell became visible while scrolling stream (once per view); Backend mapping: cell-view
-ViewDidStart,Content was displayed in content view and began playing (if video); Backend mapping: view-start
+ViewDidStart,"Content was displayed in content view and began playing (if video, make sure any ads are finished first); Backend mapping: view-start"
 UserDidSelectItemFromStream,Backend mapping: cell-click
 UserDidSelectItemFromMarquee,Backend mapping: cell-click
 UserDidViewHashtagStream,Params: Hashtag
