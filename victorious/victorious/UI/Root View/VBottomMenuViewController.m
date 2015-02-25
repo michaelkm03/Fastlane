@@ -78,27 +78,27 @@ shouldSelectViewController:(VNavigationDestinationContainerViewController *)view
 {
     [self navigateToDestination:viewController.navigationDestination];
     
-//    if ([viewController.navigationDestination respondsToSelector:@selector(shouldNavigateWithAlternateDestination:)])
-//    {
-//        UIViewController *alternateDestinationViewController = nil;
-//        if (![viewController.navigationDestination shouldNavigateWithAlternateDestination:&alternateDestinationViewController])
-//        {
-//            return NO;
-//        }
-//        else
-//        {
-//            if (viewController.containedViewController == nil)
-//            {
-//                VNavigationController *navigationController = [[VNavigationController alloc] initWithDependencyManager:self.dependencyManager];
-//                [navigationController.innerNavigationController pushViewController:alternateDestinationViewController
-//                                                                          animated:NO];
-//                viewController.containedViewController = navigationController;
-//            }
-//            return YES;
-//        }
-//    }
+    if ([viewController.navigationDestination respondsToSelector:@selector(shouldNavigateWithAlternateDestination:)])
+    {
+        UIViewController *alternateDestinationViewController = nil;
+        if (![viewController.navigationDestination shouldNavigateWithAlternateDestination:&alternateDestinationViewController])
+        {
+            return NO;
+        }
+        else
+        {
+            if (viewController.containedViewController == nil)
+            {
+                VNavigationController *navigationController = [[VNavigationController alloc] initWithDependencyManager:self.dependencyManager];
+                [navigationController.innerNavigationController pushViewController:alternateDestinationViewController
+                                                                          animated:NO];
+                viewController.containedViewController = navigationController;
+            }
+            return YES;
+        }
+    }
     
-    return NO;
+    return YES;
 }
 
 /**
@@ -106,22 +106,6 @@ shouldSelectViewController:(VNavigationDestinationContainerViewController *)view
  */
 - (void)displayResultOfNavigation:(UIViewController *)viewController
 {
-    for (VNavigationDestinationContainerViewController *wrapperViewController in self.internalTabBarViewController.viewControllers)
-    {
-        if (wrapperViewController.containedViewController == nil)
-        {
-            VNavigationController *navigationController = [[VNavigationController alloc] initWithDependencyManager:self.dependencyManager];
-            [navigationController.innerNavigationController pushViewController:viewController
-                                                                      animated:NO];
-            wrapperViewController.containedViewController = navigationController;
-        }
-
-        VNavigationController *navigationControllerForWrapper = (VNavigationController *)wrapperViewController.containedViewController;
-        if ([navigationControllerForWrapper.innerNavigationController.viewControllers firstObject] == viewController)
-        {
-            [self.internalTabBarViewController setSelectedViewController:wrapperViewController];
-        }
-    }
 }
 
 #pragma mark - Private Methods
