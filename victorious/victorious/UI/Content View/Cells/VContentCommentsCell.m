@@ -277,9 +277,9 @@ static NSCache *_sharedImageCache = nil;
 {
     _commentBody = [commentBody  copy];
     [self.commentAndMediaView.textView setupWithDatabaseFormattedText:_commentBody
-                                                                    tagAttributes:self.tagStringAttributes
-                                                                defaultAttributes:self.defaultStringAttributes
-                                                                andTagTapDelegate:nil];
+                                                        tagAttributes:self.tagStringAttributes
+                                                    defaultAttributes:self.defaultStringAttributes
+                                                    andTagTapDelegate:nil];
 }
 
 - (void)setCommenterName:(NSString *)commenterName
