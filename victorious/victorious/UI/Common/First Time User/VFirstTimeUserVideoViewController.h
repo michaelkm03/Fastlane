@@ -14,4 +14,8 @@
 
 + (VFirstTimeUserVideoViewController *)instantiateFromStoryboard:(NSString *)storyboardName;
 
+@property (nonatomic, strong) UIImage *imageSnapshot;
+
+- (BOOL)hasBeenShown;
+
 @end
