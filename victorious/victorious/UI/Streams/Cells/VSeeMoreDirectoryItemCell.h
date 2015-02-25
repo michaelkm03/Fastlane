@@ -14,4 +14,6 @@ extern NSString * const VSeeMoreDirectoryItemCellNameStream;
 
 - (void)updateBottomConstraintToConstant:(CGFloat)constant;
 
+@property (nonatomic, strong) UIColor *borderColor;
+@property (nonatomic, weak) IBOutlet UILabel *seeMoreLabel;
 @end

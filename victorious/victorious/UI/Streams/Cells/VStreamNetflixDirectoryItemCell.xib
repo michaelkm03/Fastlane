@@ -15,6 +15,7 @@
                 <subviews>
                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="H8d-UC-coe">
                         <rect key="frame" x="0.0" y="34" width="309" height="359"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="kfS-uT-6E6">
                             <size key="itemSize" width="50" height="50"/>
                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -23,7 +24,8 @@
                         </collectionViewFlowLayout>
                     </collectionView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WIl-pO-Mnw">
-                        <rect key="frame" x="8" y="0.0" width="293" height="34"/>
+                        <rect key="frame" x="10" y="0.0" width="289" height="34"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="34" id="A9W-B9-vtK"/>
                         </constraints>
@@ -37,11 +39,11 @@
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="H8d-UC-coe" secondAttribute="trailing" id="9yD-rD-yr4"/>
                 <constraint firstAttribute="bottom" secondItem="H8d-UC-coe" secondAttribute="bottom" id="cA4-Py-H3x"/>
-                <constraint firstAttribute="trailing" secondItem="WIl-pO-Mnw" secondAttribute="trailing" constant="8" id="f60-4r-Jou"/>
+                <constraint firstAttribute="trailing" secondItem="WIl-pO-Mnw" secondAttribute="trailing" constant="10" id="f60-4r-Jou"/>
                 <constraint firstItem="WIl-pO-Mnw" firstAttribute="top" secondItem="exY-Ip-htb" secondAttribute="top" id="mVf-f6-gzB"/>
                 <constraint firstItem="H8d-UC-coe" firstAttribute="top" secondItem="WIl-pO-Mnw" secondAttribute="bottom" id="nYe-tz-Y6N"/>
                 <constraint firstItem="H8d-UC-coe" firstAttribute="leading" secondItem="exY-Ip-htb" secondAttribute="leading" id="pvl-HW-h89"/>
-                <constraint firstItem="WIl-pO-Mnw" firstAttribute="leading" secondItem="exY-Ip-htb" secondAttribute="leading" constant="8" id="yyV-JY-XZV"/>
+                <constraint firstItem="WIl-pO-Mnw" firstAttribute="leading" secondItem="exY-Ip-htb" secondAttribute="leading" constant="10" id="yyV-JY-XZV"/>
             </constraints>
             <size key="customSize" width="309" height="393"/>
             <connections>

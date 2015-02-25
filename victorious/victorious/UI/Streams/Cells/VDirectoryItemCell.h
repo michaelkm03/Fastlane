@@ -34,8 +34,22 @@ extern const CGFloat kDirectoryItemBaseWidth;
 + (CGFloat)desiredStreamOfContentHeightForWidth:(CGFloat)width;
 
 /**
+    The label that will hold the stream name
+ */
+@property (nonatomic, weak) IBOutlet UILabel *nameLabel;
+
+/**
+    The label that will display the stream's count
+ */
+@property (nonatomic, weak) IBOutlet UILabel *countLabel;
+
+/**
  *  The VStreamItem used to populate fields on the cell.
  */
 @property (nonatomic, strong) VStreamItem *streamItem;
+
+@property (nonatomic, strong) UIColor *stackBackgroundColor;
+
+@property (nonatomic, strong) UIColor *stackBorderColor;
 
 @end

@@ -11,6 +11,7 @@
 @class VStreamItem, VNetflixDirectoryItemCell;
 
 extern NSString * const VNetflixDirectoryItemCellNameStream;
+extern CGFloat const kNetflixDirectoryItemCellInset;
 
 @protocol VNetflixDirectoryItemCellDelegate <NSObject>
 
@@ -40,6 +41,9 @@ extern NSString * const VNetflixDirectoryItemCellNameStream;
  */
 @property (nonatomic, weak) id <VNetflixDirectoryItemCellDelegate> delegate;
 
+/**
+ A convenient flag for checking if this row is of stream of stream cells or just a row of stream cells
+ */
 @property (nonatomic, readonly) BOOL isStreamOfStreamsRow;
 
 @end

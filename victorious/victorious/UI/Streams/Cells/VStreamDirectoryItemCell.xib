@@ -64,15 +64,15 @@
                             </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Some really really long text" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="123" translatesAutoresizingMaskIntoConstraints="NO" id="deE-HG-45e" userLabel="Stream Name Label">
                                 <rect key="frame" x="10" y="155" width="125" height="37"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="37" placeholder="YES" id="enn-sG-4wf"/>
-                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gga-cU-6P5" userLabel="Count Label">
                                 <rect key="frame" x="10" y="196" width="125" height="11"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="11" id="KLd-zq-VxO"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="9"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
@@ -80,6 +80,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="gga-cU-6P5" firstAttribute="top" secondItem="deE-HG-45e" secondAttribute="bottom" constant="4" id="6ps-P9-YsL"/>
                             <constraint firstAttribute="bottom" secondItem="dXz-4U-iLz" secondAttribute="bottom" id="E7t-2t-Khq"/>
                             <constraint firstItem="dXz-4U-iLz" firstAttribute="top" secondItem="Sik-LB-7bi" secondAttribute="top" id="JBv-WH-TQ0"/>
                             <constraint firstItem="deE-HG-45e" firstAttribute="leading" secondItem="Sik-LB-7bi" secondAttribute="leading" constant="10" id="QT2-Zu-cbW"/>
@@ -123,6 +124,7 @@
                 <outlet property="nameLabel" destination="deE-HG-45e" id="5gl-bA-Unx"/>
                 <outlet property="previewImageView" destination="gXM-go-fxe" id="bUL-M1-ixG"/>
                 <outlet property="streamItemContainerOrTopStackItem" destination="Sik-LB-7bi" id="BfN-Ve-t3G"/>
+                <outlet property="topStack" destination="dXz-4U-iLz" id="6Jr-Qn-lrh"/>
                 <outlet property="topStackBottomConstraint" destination="ZyF-a0-7FC" id="xmf-SV-FOT"/>
             </connections>
             <point key="canvasLocation" x="267.5" y="379.5"/>

@@ -138,7 +138,7 @@ static CGFloat const kDirectoryInset = 5.0f;
                         layout:(UICollectionViewLayout *)collectionViewLayout
         insetForSectionAtIndex:(NSInteger)section
 {
-    return UIEdgeInsetsMake(self.topInset + kDirectoryInset,
+    return UIEdgeInsetsMake(self.topInset + kNetflixDirectoryItemCellInset,
                             0,
                             kDirectoryInset,
                             0);

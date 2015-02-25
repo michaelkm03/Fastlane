@@ -19,7 +19,7 @@
 #import "VStreamItem+Fetcher.h"
 
 NSString * const VNetflixDirectoryItemCellNameStream = @"VStreamNetflixDirectoryItemCell";
-static CGFloat const kNetflixDirectoryItemCellInset = 8.0f; //Must be >= 1.0f
+CGFloat const kNetflixDirectoryItemCellInset = 10.0f; //Must be >= 1.0f
 static CGFloat const kNetflixDirectoryItemLabelHeight = 34.0f;
 static CGFloat const kNetflixDirectoryItemCellBaseWidth = 320.0f;
 
@@ -31,6 +31,7 @@ static CGFloat const kNetflixSubDirectoryItemCellBaseHeight = 206.0f;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, weak) IBOutlet UILabel *nameLabel;
 @property (nonatomic, readwrite) BOOL isStreamOfStreamsRow;
+@property (nonatomic, strong) UIColor *seeMoreAndHeaderTextColor;
 
 @end
 
@@ -51,7 +52,7 @@ static CGFloat const kNetflixSubDirectoryItemCellBaseHeight = 206.0f;
 
 + (CGFloat)desiredStreamOfContentHeightForWidth:(CGFloat)width
 {
-    return [self directoryCellHeightForWidth:width] + kNetflixDirectoryItemLabelHeight + kNetflixDirectoryItemCellInset * 2;
+    return [self directoryCellHeightForWidth:width] + kNetflixDirectoryItemLabelHeight + kNetflixDirectoryItemCellInset;
 }
 
 + (CGFloat)directoryCellHeightForWidth:(CGFloat)width
@@ -71,8 +72,10 @@ static CGFloat const kNetflixSubDirectoryItemCellBaseHeight = 206.0f;
 {
     [super awakeFromNib];
     
-    self.nameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont];
-    self.nameLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryLinkColor];
+    self.seeMoreAndHeaderTextColor = [UIColor colorWithRed:102.0f/255.0f green:102.0f/255.0f blue:102.0f/255.0f alpha:1.0f];
+    
+    self.nameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
+    self.nameLabel.textColor = self.seeMoreAndHeaderTextColor;
     
     self.collectionView.dataSource = self;
     self.collectionView.delegate = self;
@@ -104,7 +107,7 @@ static CGFloat const kNetflixSubDirectoryItemCellBaseHeight = 206.0f;
 - (void)prepareForReuse
 {
     [super prepareForReuse];
-    [self.collectionView setContentOffset:CGPointZero];
+    [self.collectionView setContentOffset:CGPointZero animated:NO];
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -122,19 +125,31 @@ static CGFloat const kNetflixSubDirectoryItemCellBaseHeight = 206.0f;
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     VStreamItem *item = self.streamItem;
-    VNetflixDirectoryItemCell *cell;
+    VBaseCollectionViewCell *cell;
+    
+    UIColor *borderColor = [UIColor blackColor];
+    UIColor *backgroundColor = [UIColor colorWithRed:38.0f/255.0f green:39.0f/255.0f blue:43.0f/255.0f alpha:1.0f];
     
     //Check if item is last in number of items in section, this is the "show more" cell
     if ( indexPath.item == 10)
     {
-        cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:VSeeMoreDirectoryItemCellNameStream forIndexPath:indexPath];
-        [(VSeeMoreDirectoryItemCell *)cell updateBottomConstraintToConstant:self.isStreamOfStreamsRow ? kDirectoryItemStackHeight : 0.0f];
+        VSeeMoreDirectoryItemCell *seeMoreCell = [self.collectionView dequeueReusableCellWithReuseIdentifier:VSeeMoreDirectoryItemCellNameStream forIndexPath:indexPath];
+        seeMoreCell.borderColor = borderColor;
+        seeMoreCell.backgroundColor = backgroundColor;
+        seeMoreCell.seeMoreLabel.textColor = self.seeMoreAndHeaderTextColor;
+        [seeMoreCell updateBottomConstraintToConstant:self.isStreamOfStreamsRow ? kDirectoryItemStackHeight : 0.0f];
+        cell = seeMoreCell;
     }
     else
     {
         //Populate streamItem from item in stream instead of top-level stream item
-        cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:VDirectoryItemCellNameStream forIndexPath:indexPath];
-        cell.streamItem = item;
+        VDirectoryItemCell *directoryCell = [self.collectionView dequeueReusableCellWithReuseIdentifier:VDirectoryItemCellNameStream forIndexPath:indexPath];
+        directoryCell.streamItem = item;
+        directoryCell.stackBorderColor = borderColor;
+        directoryCell.stackBackgroundColor = backgroundColor;
+        directoryCell.nameLabel.textColor = [UIColor whiteColor];
+        directoryCell.countLabel.textColor = [UIColor colorWithRed:153.0f/255.0f green:153.0f/255.0f blue:153.0f/255.0f alpha:1.0f];
+        cell = directoryCell;
     }
     
     return cell;
@@ -168,9 +183,9 @@ static CGFloat const kNetflixSubDirectoryItemCellBaseHeight = 206.0f;
                         layout:(UICollectionViewLayout *)collectionViewLayout
         insetForSectionAtIndex:(NSInteger)section
 {
-    return UIEdgeInsetsMake(kNetflixDirectoryItemCellInset / 2.0f,
+    return UIEdgeInsetsMake(0.0f,
                             kNetflixDirectoryItemCellInset,
-                            kNetflixDirectoryItemCellInset / 2.0f,
+                            kNetflixDirectoryItemCellInset,
                             kNetflixDirectoryItemCellInset);
 }
 

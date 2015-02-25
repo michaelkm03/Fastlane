@@ -31,12 +31,11 @@ const CGFloat kDirectoryItemBaseWidth = 145.0f;
 
 @interface VDirectoryItemCell()
 
-@property (nonatomic, strong) IBOutlet UIImageView *previewImageView;
-@property (nonatomic, strong) IBOutlet UILabel *nameLabel;
-@property (weak, nonatomic) IBOutlet UILabel *countLabel;
+@property (nonatomic, weak) IBOutlet UIImageView *previewImageView;
 @property (nonatomic, weak) IBOutlet UIView *streamItemContainerOrTopStackItem;
-@property (weak, nonatomic) IBOutlet VExtendedView *middleStack;
-@property (weak, nonatomic) IBOutlet VExtendedView *bottomStack;
+@property (nonatomic, weak) IBOutlet VExtendedView *topStack;
+@property (nonatomic, weak) IBOutlet VExtendedView *middleStack;
+@property (nonatomic, weak) IBOutlet VExtendedView *bottomStack;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *topStackBottomConstraint;
 
 @end
@@ -107,6 +106,30 @@ const CGFloat kDirectoryItemBaseWidth = 145.0f;
     
     self.bottomStack.hidden = YES;
     self.middleStack.hidden = YES;
+}
+
+- (void)setStackBackgroundColor:(UIColor *)stackBackgroundColor
+{
+    _stackBackgroundColor = stackBackgroundColor;
+    for (VExtendedView *view in [self stackViews])
+    {
+        [view setBackgroundColor:_stackBackgroundColor];
+    }
+}
+
+- (void)setStackBorderColor:(UIColor *)stackBorderColor
+{
+    _stackBorderColor = stackBorderColor;
+    for (VExtendedView *view in [self stackViews])
+    {
+        [view setBorderColor:_stackBorderColor];
+    }
+    
+}
+
+- (NSArray *)stackViews
+{
+    return @[self.topStack, self.middleStack, self.bottomStack];
 }
 
 @end
