@@ -76,27 +76,52 @@
 - (BOOL)tabBarController:(UITabBarController *)tabBarController
 shouldSelectViewController:(VNavigationDestinationContainerViewController *)viewController
 {
-    if ([viewController.navigationDestination respondsToSelector:@selector(shouldNavigateWithAlternateDestination:)])
+    [self navigateToDestination:viewController.navigationDestination];
+    
+//    if ([viewController.navigationDestination respondsToSelector:@selector(shouldNavigateWithAlternateDestination:)])
+//    {
+//        UIViewController *alternateDestinationViewController = nil;
+//        if (![viewController.navigationDestination shouldNavigateWithAlternateDestination:&alternateDestinationViewController])
+//        {
+//            return NO;
+//        }
+//        else
+//        {
+//            if (viewController.containedViewController == nil)
+//            {
+//                VNavigationController *navigationController = [[VNavigationController alloc] initWithDependencyManager:self.dependencyManager];
+//                [navigationController.innerNavigationController pushViewController:alternateDestinationViewController
+//                                                                          animated:NO];
+//                viewController.containedViewController = navigationController;
+//            }
+//            return YES;
+//        }
+//    }
+    
+    return NO;
+}
+
+/**
+ *  We rely on UITabBarController's behavior here.
+ */
+- (void)displayResultOfNavigation:(UIViewController *)viewController
+{
+    for (VNavigationDestinationContainerViewController *wrapperViewController in self.internalTabBarViewController.viewControllers)
     {
-        UIViewController *alternateDestinationViewController = nil;
-        if (![viewController.navigationDestination shouldNavigateWithAlternateDestination:&alternateDestinationViewController])
+        if (wrapperViewController.containedViewController == nil)
         {
-            return NO;
+            VNavigationController *navigationController = [[VNavigationController alloc] initWithDependencyManager:self.dependencyManager];
+            [navigationController.innerNavigationController pushViewController:viewController
+                                                                      animated:NO];
+            wrapperViewController.containedViewController = navigationController;
         }
-        else
+
+        VNavigationController *navigationControllerForWrapper = (VNavigationController *)wrapperViewController.containedViewController;
+        if ([navigationControllerForWrapper.innerNavigationController.viewControllers firstObject] == viewController)
         {
-            if (viewController.containedViewController == nil)
-            {
-                VNavigationController *navigationController = [[VNavigationController alloc] initWithDependencyManager:self.dependencyManager];
-                [navigationController.innerNavigationController pushViewController:alternateDestinationViewController
-                                                                          animated:NO];
-                viewController.containedViewController = navigationController;
-            }
-            return YES;
+            [self.internalTabBarViewController setSelectedViewController:wrapperViewController];
         }
     }
-    
-    return YES;
 }
 
 #pragma mark - Private Methods
