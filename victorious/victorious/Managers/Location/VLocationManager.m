@@ -58,7 +58,14 @@
     NSString *formattedString = @"";
     if (self.latitude != nil && self.longitude != nil)
     {
-        formattedString = [NSString stringWithFormat:@"latitude:%@, longitude:%@, postal_code:%@", self.latitude, self.longitude, self.postalCode];
+        if (self.postalCode != nil && ![self.postalCode isEqualToString:@""])
+        {
+            formattedString = [NSString stringWithFormat:@"latitude:%@, longitude:%@, postal_code:%@", self.latitude, self.longitude, self.postalCode];
+        }
+        else
+        {
+            formattedString = [NSString stringWithFormat:@"latitude:%@, longitude:%@, postal_code:", self.latitude, self.longitude];
+        }
     }
     return formattedString;
 }
@@ -81,22 +88,24 @@
 {
     [manager  stopUpdatingLocation];
     
+    __block CLPlacemark *locationPlacemark;
+    __weak typeof(self) welf = self;
     CLLocation *location = [locations lastObject];
-    
     CLGeocoder *geoCoder = [[CLGeocoder alloc] init];
     [geoCoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error)
      {
-         CLPlacemark *mapLocation = [placemarks firstObject];
-         self.postalCode = mapLocation.postalCode;
-         self.latitude = [NSString stringWithFormat:@"%f", mapLocation.location.coordinate.latitude];
-         self.longitude = [NSString stringWithFormat:@"%f", mapLocation.location.coordinate.longitude];
+         locationPlacemark = [placemarks firstObject];
+         welf.postalCode = locationPlacemark.postalCode;
+         
+         welf.latitude = [NSString stringWithFormat:@"%f", location.coordinate.latitude];
+         welf.longitude = [NSString stringWithFormat:@"%f", location.coordinate.longitude];
+         
+         // Send to delegate
+         if ([welf.delegate respondsToSelector:@selector(didReceiveLocations:withPlacemark:withLocationManager:)])
+         {
+             [welf.delegate didReceiveLocations:locations withPlacemark:locationPlacemark withLocationManager:welf];
+         }
      }];
-    
-    // Send to delegate
-    if ([self.delegate respondsToSelector:@selector(didReceiveLocations:withLocationManager:)])
-    {
-        [self.delegate didReceiveLocations:locations withLocationManager:self];
-    }
 }
 
 - (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status

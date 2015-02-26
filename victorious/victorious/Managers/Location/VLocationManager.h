@@ -17,10 +17,11 @@
 /**
  Returns an NSArray of locations as a result of a CoreLocation call
  
+ @param geoCoder     CLGeocoder object
  @param locations    NSArray of CLLocation objects
  @param locationInfo Instance of VLocationInfo
  */
-- (void)didReceiveLocations:(NSArray *)locations withLocationManager:(VLocationManager *)locationManager;
+- (void)didReceiveLocations:(NSArray *)locations withPlacemark:(CLPlacemark *)placemark withLocationManager:(VLocationManager *)locationManager;
 
 @end
 

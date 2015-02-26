@@ -234,9 +234,6 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
-    
-    // Stop location monitoring
-    [self.locationManager stopLocationChangesMonitoring];
 }
 
 - (BOOL)shouldAutorotate
@@ -377,39 +374,34 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
     }
 }
 
-#pragma mark - VLocationInfoDelegate
+#pragma mark - VLocationManagerDelegate
 
-- (void)didReceiveLocations:(NSArray *)locations withLocationManager:(VLocationManager *)locationManager
+- (void)didReceiveLocations:(NSArray *)locations withPlacemark:(CLPlacemark *)placemark withLocationManager:(VLocationManager *)locationManager
 {
-    CLLocation *location = [locations lastObject];
-    self.geoCoder = [[CLGeocoder alloc] init];
-    [self.geoCoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error)
-     {
-         CLPlacemark            *mapLocation = [placemarks firstObject];
-         NSMutableDictionary    *locationDictionary = [NSMutableDictionary dictionaryWithCapacity:3];
-         
-         if (mapLocation.locality)
-         {
-             [locationDictionary setObject:mapLocation.locality forKey:(__bridge NSString *)kABPersonAddressCityKey];
-         }
-         
-         if (mapLocation.administrativeArea)
-         {
-             [locationDictionary setObject:mapLocation.administrativeArea forKey:(__bridge NSString *)kABPersonAddressStateKey];
-         }
-         
-         [locationDictionary setObject:[(NSLocale *)[NSLocale autoupdatingCurrentLocale] objectForKey:NSLocaleCountryCode]
-                                forKey:(__bridge NSString *)kABPersonAddressCountryCodeKey];
-         
-         NSString *city = [locationDictionary valueForKey:@"City"];
-         NSString *state = [locationDictionary valueForKey:@"State"];
-         if ((city == nil) || (state == nil))
-         {
-             return;
-         }
-         self.locationTextField.text = [NSString stringWithFormat:@"%@, %@", city, state];
-         self.registrationModel.locationText = self.locationTextField.text;
-     }];
+    NSMutableDictionary *locationDictionary = [NSMutableDictionary dictionaryWithCapacity:3];
+    
+    if (placemark.locality)
+    {
+        [locationDictionary setObject:placemark.locality forKey:(__bridge NSString *)kABPersonAddressCityKey];
+    }
+    
+    if (placemark.administrativeArea)
+    {
+        [locationDictionary setObject:placemark.administrativeArea forKey:(__bridge NSString *)kABPersonAddressStateKey];
+    }
+    
+    [locationDictionary setObject:[(NSLocale *)[NSLocale autoupdatingCurrentLocale] objectForKey:NSLocaleCountryCode]
+                           forKey:(__bridge NSString *)kABPersonAddressCountryCodeKey];
+    
+    NSString *city = [locationDictionary valueForKey:@"City"];
+    NSString *state = [locationDictionary valueForKey:@"State"];
+    if ((city == nil) || (state == nil))
+    {
+        return;
+    }
+    self.locationTextField.text = [NSString stringWithFormat:@"%@, %@", city, state];
+    self.registrationModel.locationText = self.locationTextField.text;
+    
 }
 
 #pragma mark - State
