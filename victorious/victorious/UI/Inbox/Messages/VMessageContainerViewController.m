@@ -45,8 +45,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"More"] style:UIBarButtonItemStylePlain target:self action:@selector(flagConversation:)]];
 
     self.keyboardBarViewController.shouldAutoClearOnCompose = NO;
     self.keyboardBarViewController.hideAccessoryBar = YES;
@@ -60,9 +58,18 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
     VMessageViewController *messageVC = (VMessageViewController *)self.conversationTableViewController;
-    self.navigationItem.title = messageVC.otherUser.name ?: @"Message";
+    NSString *name =  messageVC.otherUser.name ?: @"Message";
+    if ( !self.presentingFromProfile )
+    {
+        self.navigationItem.title = name;
+    }
+    else
+    {
+        self.navigationItem.title = nil;
+    }
+    
+    [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"More"] style:UIBarButtonItemStylePlain target:self action:@selector(flagConversation:)]];
 }
 
 - (IBAction)flagConversation:(id)sender
@@ -103,11 +110,6 @@
                                            otherButtonTitlesAndBlocks:nil];
     
     [actionSheet showInView:self.view];
-}
-
-- (IBAction)goBack:(id)sender
-{
-    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)setOtherUser:(VUser *)otherUser
