@@ -64,7 +64,7 @@
         }
         else
         {
-            formattedString = [NSString stringWithFormat:@"latitude:%@, longitude:%@, postal_code:", self.latitude, self.longitude];
+            formattedString = [NSString stringWithFormat:@"latitude:%@, longitude:%@", self.latitude, self.longitude];
         }
     }
     return formattedString;

@@ -40,7 +40,7 @@
 /**
  Delegate object to handle forwarding of CLLocation information
  */
-@property (nonatomic, weak) id<VLocationManagerDelegate>delegate;
+@property (nonatomic, weak) id<VLocationManagerDelegate> delegate;
 
 /**
  Singleton instance of VLocationInfo object
