@@ -22,7 +22,7 @@
 // Backgrounds
 #import "VSolidColorBackground.h"
 
-NSString * const VTabMenuViewControllerMenuAppearanceKey = @"VTabMenuViewControllerMenuAppearanceKey";
+NSString * const VTabMenuViewControllerMenuAppearanceKey = @"menuAppearance";
 
 @interface VTabMenuViewController () <UITabBarControllerDelegate>
 
