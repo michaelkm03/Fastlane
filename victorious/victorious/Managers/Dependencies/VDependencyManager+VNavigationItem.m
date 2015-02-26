@@ -11,12 +11,22 @@
 #import "VNavigationMenuItem.h"
 #import "VNavigationDestination.h"
 #import "VRootViewController.h"
+#import <Objc/runtime.h>
 
 NSString * const VDependencyManagerTitleImageKey = @"titleImage";
+
+static const char kAssociatedObjectKey;
 
 @implementation VDependencyManager (VNavigationItem)
 
 - (void)addPropertiesToNavigationItem:(UINavigationItem *)navigationItem
+{
+    [self addPropertiesToNavigationItem:navigationItem
+               pushAccessoryMenuItemsOn:nil];
+}
+
+- (void)addPropertiesToNavigationItem:(UINavigationItem *)navigationItem
+             pushAccessoryMenuItemsOn:(UINavigationController *)navigationController
 {
     NSString *title = [self stringForKey:VDependencyManagerTitleKey];
     if ( title != nil )
@@ -30,23 +40,27 @@ NSString * const VDependencyManagerTitleImageKey = @"titleImage";
         navigationItem.titleView = [[UIImageView alloc] initWithImage:titleImage];
     }
     
-    VNavigationMenuItem *menuItem = [[self accessoryMenuItems] firstObject];
-    if ( menuItem != nil )
+    if (navigationController != nil)
     {
-        UIBarButtonItem *accessoryBarItem = [[UIBarButtonItem alloc] initWithImage:menuItem.icon style:UIBarButtonItemStylePlain target:self action:@selector(showAccessoryMenuItem)];
-//TODO: Change target
-        navigationItem.leftBarButtonItem = accessoryBarItem;
+        objc_setAssociatedObject(self, &kAssociatedObjectKey, navigationController, OBJC_ASSOCIATION_ASSIGN);
+        VNavigationMenuItem *menuItem = [[self accessoryMenuItems] firstObject];
+        if ( menuItem != nil )
+        {
+            UIBarButtonItem *accessoryBarItem = [[UIBarButtonItem alloc] initWithImage:menuItem.icon style:UIBarButtonItemStylePlain target:self action:@selector(showAccessoryMenuItemOnNavigation)];
+            navigationItem.leftBarButtonItem = accessoryBarItem;
+        }
     }
 }
 
-//TODO: Remove me 
-- (void)showAccessoryMenuItem
+- (void)showAccessoryMenuItemOnNavigation
 {
+    UINavigationController *navigationController = objc_getAssociatedObject(self, &kAssociatedObjectKey);
+    
     VNavigationMenuItem *menuItem = [[self accessoryMenuItems] firstObject];
     UIViewController *destination = nil;
     if ([((id <VNavigationDestination>)menuItem.destination) shouldNavigateWithAlternateDestination:&destination])
     {
-        [[VRootViewController rootViewController] presentViewController:destination animated:YES completion:nil];
+        [navigationController pushViewController:menuItem.destination animated:YES];
     }
     
 }

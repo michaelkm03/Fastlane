@@ -65,9 +65,9 @@
         <!--Settings-->
         <scene sceneID="sS9-Sh-Zfa">
             <objects>
-                <tableViewController storyboardIdentifier="settings" title="Settings" useStoryboardIdentifierAsRestorationIdentifier="YES" id="kYh-dZ-t7J" customClass="VSettingsViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="settings" title="Settings" extendedLayoutIncludesOpaqueBars="YES" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="kYh-dZ-t7J" customClass="VSettingsViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="45" sectionHeaderHeight="10" sectionFooterHeight="10" id="sD4-nd-dBH">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="725"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="661"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <color key="separatorColor" white="0.96600932459677424" alpha="1" colorSpace="calibratedWhite"/>
@@ -353,6 +353,7 @@
                             <outlet property="delegate" destination="kYh-dZ-t7J" id="dGR-q1-tQI"/>
                         </connections>
                     </tableView>
+                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Settings" id="udt-VU-0Rh"/>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>

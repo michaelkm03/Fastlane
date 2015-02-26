@@ -134,7 +134,8 @@ static NSString * const kUserKey = @"user";
     NSArray *menuItems = [self.dependencyManager menuItems];
     if ( menuItems != nil )
     {
-        [self.dependencyManager addPropertiesToNavigationItem:self.navigationItem];
+        [self.dependencyManager addPropertiesToNavigationItem:self.navigationItem
+                                     pushAccessoryMenuItemsOn:self.navigationController];
     }
     
     self.streamDataSource.hasHeaderCell = YES;
