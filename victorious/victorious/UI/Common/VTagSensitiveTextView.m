@@ -11,10 +11,14 @@
 #import "VTagStringFormatter.h"
 #import "VTagDictionary.h"
 #import "VTag.h"
+#import <CCHLinkGestureRecognizer.h>
 
-@interface VTagSensitiveTextView ()
+@interface VTagSensitiveTextView () <UIGestureRecognizerDelegate>
 
 @property (nonatomic, strong) VTagDictionary *tagDictionary;
+@property (nonatomic, assign) CGPoint touchDownLocation;
+@property (nonatomic, assign) NSRange highlightRange;
+@property (nonatomic, strong) VTag *selectedTag;
 
 @end
 
@@ -22,29 +26,9 @@
 
 #pragma mark - common inits
 
-- (instancetype)init
-{
-    self = [super init];
-    if ( self != nil )
-    {
-        [self setup];
-    }
-    return self;
-}
-
 - (instancetype)initWithCoder:(NSCoder *)aDecoder
 {
     self = [super initWithCoder:aDecoder];
-    if ( self != nil )
-    {
-        [self setup];
-    }
-    return self;
-}
-
-- (instancetype)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
     if ( self != nil )
     {
         [self setup];
@@ -64,8 +48,9 @@
 
 - (void)setup
 {
-    UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(recievedTap:)];
-    [self addGestureRecognizer:tapGestureRecognizer];
+    CCHLinkGestureRecognizer *linkGestureRecognizer = [[CCHLinkGestureRecognizer alloc] initWithTarget:self action:@selector(linkAction:)];
+    linkGestureRecognizer.delegate = self;
+    [self addGestureRecognizer:linkGestureRecognizer];
 }
 
 #pragma mark - customization from content
@@ -90,20 +75,49 @@
     }
 }
 
-#pragma mark - Tap handling
+#pragma mark - Touch handling
 
-- (void)recievedTap:(UITapGestureRecognizer *)tapGestureRecognizer
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
 {
-    NSLayoutManager *layoutManager = self.layoutManager;
-    CGPoint location = [tapGestureRecognizer locationInView:self];
+    return YES;
+}
+
+- (void)linkAction:(CCHLinkGestureRecognizer *)recognizer
+{
+    if ( recognizer.state == UIGestureRecognizerStateBegan )
+    {
+        NSAssert(CGPointEqualToPoint(self.touchDownLocation, CGPointZero), @"Invalid touch down location");
+        
+        CGPoint location = [recognizer locationInView:self];
+        self.touchDownLocation = location;
+        [self didTouchDownAtLocation:location];
+    }
+    else if ( recognizer.state == UIGestureRecognizerStateEnded )
+    {
+        NSAssert(!CGPointEqualToPoint(self.touchDownLocation, CGPointZero), @"Invalid touch down location");
+        
+        CGPoint location = self.touchDownLocation;
+        if ( recognizer.result == CCHLinkGestureRecognizerResultTap )
+        {
+            [self didTapAtLocation:location];
+        }
+        
+        [self didCancelTouchDownAtLocation:location];
+        self.touchDownLocation = CGPointZero;
+    }
+}
+
+- (void)didTouchDownAtLocation:(CGPoint)location
+{
+    //Highlight region here
     location.x -= self.textContainerInset.left;
     location.y -= self.textContainerInset.top;
     
     // Find the character that's been tapped on
     NSUInteger characterIndex;
-    characterIndex = [layoutManager characterIndexForPoint:location
-                                           inTextContainer:self.textContainer
-                  fractionOfDistanceBetweenInsertionPoints:NULL];
+    characterIndex = [self.layoutManager characterIndexForPoint:location
+                                                inTextContainer:self.textContainer
+                       fractionOfDistanceBetweenInsertionPoints:NULL];
     
     if (characterIndex < self.textStorage.length)
     {
@@ -116,10 +130,31 @@
             VTag *tag = [self.tagDictionary tagForKey:[self.attributedText.string substringWithRange:range]];
             if ( tag )
             {
-                [self.tagTapDelegate tagSensitiveTextView:self tappedTag:tag];
+                self.highlightRange = range;
+                self.selectedTag = tag;
+                UIColor *highlightColor = [[tag.tagStringAttributes objectForKey:NSForegroundColorAttributeName] colorWithAlphaComponent:0.5f];
+                [self.textStorage addAttribute:NSForegroundColorAttributeName value:highlightColor range:self.highlightRange];
             }
         }
     }
+}
+
+- (void)didTapAtLocation:(CGPoint)location
+{
+    if ( self.selectedTag != nil )
+    {
+        [self.tagTapDelegate tagSensitiveTextView:self tappedTag:self.selectedTag];
+    }
+}
+
+- (void)didCancelTouchDownAtLocation:(CGPoint)location
+{
+    if ( self.selectedTag )
+    {
+        [self.textStorage setAttributes:self.selectedTag.tagStringAttributes range:self.highlightRange];
+        self.selectedTag = nil;
+    }
+
 }
 
 @end

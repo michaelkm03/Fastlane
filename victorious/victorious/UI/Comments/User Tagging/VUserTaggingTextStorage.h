@@ -30,5 +30,6 @@
 @property (nonatomic, weak) id <VUserTaggingTextStorageDelegate> taggingDelegate;
 @property (nonatomic, weak) VDependencyManager *dependencyManager;
 @property (nonatomic, weak) UITextView *textView;
+@property (nonatomic, assign) BOOL disableSearching;
 
 @end
