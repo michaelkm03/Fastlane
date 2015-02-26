@@ -285,7 +285,7 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
 
 - (void)addCreateSequenceButton
 {
-    UIImage *image = [self.dependencyManager templateValueOfType:[UIImage class] forKey:VStreamCollectionViewControllerCreateSequenceIconKey];
+    UIImage *image = [self.dependencyManager imageForKey:VStreamCollectionViewControllerCreateSequenceIconKey];
     UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(createSequenceAction:)];
     barButton.accessibilityIdentifier = VAutomationIdentifierAddPost;
     self.navigationItem.rightBarButtonItem = barButton;

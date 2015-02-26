@@ -69,7 +69,7 @@ NSString * const VHamburgerButtonIconKey = @"menuIcon";
     self.hamburgerButton.tintColor = tintColor;
     self.badgeBorder.color = self.backgroundColor;
     
-    UIImage *image = [[self.dependencyManager templateValueOfType:[UIImage class] forKey:VHamburgerButtonIconKey] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    UIImage *image = [[self.dependencyManager imageForKey:VHamburgerButtonIconKey] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     [self.hamburgerButton setImage:image forState:UIControlStateNormal];
     
     self.badgeView.font = [dependencyManager fontForKey:VDependencyManagerParagraphFontKey];
