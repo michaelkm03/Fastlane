@@ -24,7 +24,7 @@ NSString * const VDependencyManagerTitleImageKey = @"titleImage";
         navigationItem.title = title;
     }
     
-    UIImage *titleImage = [self templateValueOfType:[UIImage class] forKey:VDependencyManagerTitleImageKey];
+    UIImage *titleImage = [self imageForKey:VDependencyManagerTitleImageKey];
     if ( titleImage != nil )
     {
         navigationItem.titleView = [[UIImageView alloc] initWithImage:titleImage];

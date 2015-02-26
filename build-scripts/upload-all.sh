@@ -12,7 +12,7 @@ for CONFIG in $CONFIGS
 do
     CONFIG="${CONFIG%.*}"
     IFS=" "
-    build-scripts/upload-to-testflight.sh "$CONFIG" "$TF_DISTRO_LIST" $*
+    build-scripts/upload-to-testfairy.sh "$CONFIG" "$TF_DISTRO_LIST" $*
     if [ $? != 0 ]; then
         FAILED="yes"
     fi

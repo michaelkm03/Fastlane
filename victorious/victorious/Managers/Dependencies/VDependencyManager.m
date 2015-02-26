@@ -57,6 +57,7 @@ static NSString * const kReferenceIDKey = @"referenceID";
 static NSString * const kClassNameKey = @"name";
 static NSString * const kFontNameKey = @"fontName";
 static NSString * const kFontSizeKey = @"fontSize";
+static NSString * const kImageURLKey = @"imageURL";
 
 // Keys for experiments
 NSString * const VDependencyManagerHistogramEnabledKey = @"experiments.histogram_enabled";
@@ -170,6 +171,28 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
 - (NSNumber *)numberForKey:(NSString *)key
 {
     return [self templateValueOfType:[NSNumber class] forKey:key];
+}
+
+- (UIImage *)imageForKey:(NSString *)key
+{
+    UIImage *image = nil;
+    NSDictionary *imageDictionary = [self templateValueOfType:[NSDictionary class] forKey:key];
+    
+    if ( imageDictionary != nil )
+    {
+        NSString *imageURL = imageDictionary[kImageURLKey];
+        
+        if (![imageURL isKindOfClass:[NSString class]])
+        {
+            return nil;
+        }
+        image = [UIImage imageNamed:imageURL];
+    }
+    else
+    {
+        image = [self templateValueOfType:[UIImage class] forKey:key];
+    }
+    return image;
 }
 
 - (UIViewController *)viewControllerForKey:(NSString *)key

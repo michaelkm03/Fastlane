@@ -28,9 +28,6 @@
 @interface VMessageContainerViewController ()
 
 @property (nonatomic, weak) IBOutlet UIImageView *backgroundImageView;
-@property (nonatomic, weak) IBOutlet UIButton    *backButton;
-@property (nonatomic, weak) IBOutlet UILabel     *titleLabel;
-@property (nonatomic, weak) IBOutlet UIButton    *moreButton;
 
 @end
 
@@ -49,12 +46,6 @@
 {
     [super viewDidLoad];
 
-    UIImage *moreImage = [self.moreButton imageForState:UIControlStateNormal];
-    [self.moreButton setImage:[moreImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
-    
-    UIImage *backImage = [self.backButton imageForState:UIControlStateNormal];
-    [self.backButton setImage:[backImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
-
     self.keyboardBarViewController.shouldAutoClearOnCompose = NO;
     self.keyboardBarViewController.hideAccessoryBar = YES;
     
@@ -67,9 +58,18 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
     VMessageViewController *messageVC = (VMessageViewController *)self.conversationTableViewController;
-    self.titleLabel.text = messageVC.otherUser.name ?: @"Message";
+    NSString *name =  messageVC.otherUser.name ?: @"Message";
+    if ( !self.presentingFromProfile )
+    {
+        self.navigationItem.title = name;
+    }
+    else
+    {
+        self.navigationItem.title = nil;
+    }
+    
+    [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"More"] style:UIBarButtonItemStylePlain target:self action:@selector(flagConversation:)]];
 }
 
 - (IBAction)flagConversation:(id)sender
@@ -110,11 +110,6 @@
                                            otherButtonTitlesAndBlocks:nil];
     
     [actionSheet showInView:self.view];
-}
-
-- (IBAction)goBack:(id)sender
-{
-    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)setOtherUser:(VUser *)otherUser
@@ -161,14 +156,9 @@
     }
 }
 
-- (BOOL)prefersStatusBarHidden
-{
-    return YES;
-}
-
 - (BOOL)v_prefersNavigationBarHidden
 {
-    return YES;
+    return NO;
 }
 
 - (UITableViewController *)conversationTableViewController

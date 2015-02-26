@@ -34,7 +34,6 @@
 
 #import "UIVIew+AutoLayout.h"
 
-
 NSString *const kVUserSearchResultsChangedNotification = @"VUserSearchResultsChangedNotification";
 NSString *const kVHashtagsSearchResultsChangedNotification = @"VHashtagsSearchResultsChangedNotification";
 
@@ -378,7 +377,7 @@ static NSInteger const kVMaxSearchResults = 1000;
         messageTitle = NSLocalizedString(@"No People Found In Search Title", @"");
         messageText = NSLocalizedString(@"No people found in search", @"");
         messageIcon = [[UIImage imageNamed:@"user-icon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-        self.userSearchResultsVC.tableView.backgroundView = noResultsFoundView;
+        self.tagsSearchResultsVC.tableView.backgroundView = noResultsFoundView;
         self.userSearchResultsVC.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     }
     else if ( self.segmentControl.selectedSegmentIndex == 1 )

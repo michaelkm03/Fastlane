@@ -40,8 +40,8 @@ static const CGFloat kMarqueeBufferHeight = 3;
 {
     [self.collectionView registerNib:[VMarqueeStreamItemCell nibForCell] forCellWithReuseIdentifier:[VMarqueeStreamItemCell suggestedReuseIdentifier]];
     
-    self.tabView = [[VMarqueeTabIndicatorView alloc] initWithFrame:self.tabContainerView.frame];
-    [self.tabView setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin];
+    self.tabView = [[VMarqueeTabIndicatorView alloc] initWithFrame:self.tabContainerView.bounds];
+    self.tabView.translatesAutoresizingMaskIntoConstraints = NO;
     
     if (![[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
     {
@@ -63,16 +63,17 @@ static const CGFloat kMarqueeBufferHeight = 3;
         self.backgroundColor = [UIColor clearColor];
     }
     
-    [self addSubview:self.tabView];
+    [self.tabContainerView addSubview:self.tabView];
     
-    //Add constraints to tabView so it stays centered in it's superview
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.tabView
-                                                     attribute:NSLayoutAttributeCenterX
-                                                     relatedBy:NSLayoutRelationEqual
-                                                        toItem:self.tabView.superview
-                                                     attribute:NSLayoutAttributeCenterX
-                                                    multiplier:1.0f constant:0.0f]];
-
+    NSDictionary *tabView = @{ @"tabView":self.tabView };
+    [self.tabContainerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[tabView]|"
+                                                                        options:0
+                                                                        metrics:nil
+                                                                          views:tabView]];
+    [self.tabContainerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[tabView]|"
+                                                                        options:0
+                                                                        metrics:nil
+                                                                          views:tabView]];
 }
 
 - (void)setMarquee:(VMarqueeController *)marquee

@@ -426,10 +426,11 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     NSAssert([NSThread isMainThread], @"This method should be called only on the main thread");
     VMessage *tempMessage = [self.managedObjectStore.mainQueueManagedObjectContext insertNewObjectForEntityForName:[VMessage entityName]];
     
-    tempMessage.text = text;
+    //Use a copy of the inputs to prevent the text and mediaPath from changing when these parameters fall out of memory or are reused
+    tempMessage.text = [text copy];
     tempMessage.postedAt = [NSDate dateWithTimeIntervalSinceNow:-1];
     tempMessage.thumbnailPath = [self localImageURLForVideo:mediaURLPath];
-    tempMessage.mediaPath = mediaURLPath;
+    tempMessage.mediaPath = [mediaURLPath copy];
     tempMessage.sender = self.mainUser;
     tempMessage.senderUserId = self.mainUser.remoteId;
     
