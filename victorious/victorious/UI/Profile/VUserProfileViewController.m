@@ -21,7 +21,6 @@
 #import "UIImageView+Blurring.h"
 #import "VThemeManager.h"
 #import "VObjectManager+Login.h"
-
 #import "VStream+Fetcher.h"
 
 #import "VObjectManager+ContentCreation.h"
@@ -30,6 +29,9 @@
 
 #import "VUserProfileHeaderView.h"
 #import "VProfileHeaderCell.h"
+
+#import "VDependencyManager+VNavigationItem.h"
+#import "VDependencyManager+VNavigationMenuItem.h"
 
 #import "VAuthorizationViewControllerFactory.h"
 #import "VFindFriendsViewController.h"
@@ -129,6 +131,12 @@ static NSString * const kUserKey = @"user";
 {
     [super viewDidLoad];
 
+    NSArray *menuItems = [self.dependencyManager menuItems];
+    if ( menuItems != nil )
+    {
+        [self.dependencyManager addPropertiesToNavigationItem:self.navigationItem];
+    }
+    
     self.streamDataSource.hasHeaderCell = YES;
     self.collectionView.alwaysBounceVertical = YES;
     

@@ -9,6 +9,7 @@
 #import "VDependencyManager.h"
 
 extern NSString * const VDependencyManagerMenuItemsKey; ///< An array of arrays of menu items
+extern NSString * const VDependencyManagerAccessoryMenuItemsKey;
 
 @interface VDependencyManager (VNavigationMenuItem)
 
@@ -26,5 +27,11 @@ extern NSString * const VDependencyManagerMenuItemsKey; ///< An array of arrays 
  is stored as an instance of VNavigationMenuItem.
  */
 - (NSArray /* VNavigationMenuItems */ *)menuItems;
+
+/**
+ Returns an array of accessory menu items. These should
+ be used for left/right navigation items for various screens.
+ */
+- (NSArray /* VNavigationMenuItems */ *)accessoryMenuItems;
 
 @end

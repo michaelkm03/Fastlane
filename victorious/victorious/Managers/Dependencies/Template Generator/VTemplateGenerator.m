@@ -40,6 +40,9 @@ static NSString * const kStreamsKey = @"streams";
 static NSString * const kInitialKey = @"initial";
 static NSString * const kUserSpecificKey = @"isUserSpecific";
 
+// Screen Properties
+static NSString * const kAccessoryMenuItemsKey = @"accessoryMenuItems";
+
 static NSString * const kRedKey = @"red";
 static NSString * const kGreenKey = @"green";
 static NSString * const kBlueKey = @"blue";
@@ -403,13 +406,7 @@ static NSString * const kVideoMuted = @"videoMuted";
             @[
                 [self inboxMenuItem],
                 [self profileMenuItem],
-                @{
-                    kIdentifierKey: @"Menu Settings",
-                    kTitleKey: NSLocalizedString(@"Settings", @""),
-                    kDestinationKey: @{
-                        kClassNameKey: @"settings.screen"
-                    }
-                }
+                [self settingsMenuItem],
             ]
         ]
     };
@@ -451,9 +448,7 @@ static NSString * const kVideoMuted = @"videoMuted";
              kIdentifierKey: @"Menu Profile",
              kTitleKey: NSLocalizedString(@"Profile", @""),
              kIconKey: @"profile",
-             kDestinationKey: @{
-                     kClassNameKey: @"currentUserProfile.screen"
-                     }
+             kDestinationKey: [self currentUserProfileScreen]
              };
 }
 
@@ -469,10 +464,35 @@ static NSString * const kVideoMuted = @"videoMuted";
              };
 }
 
+- (NSDictionary *)settingsMenuItem
+{
+    return @{
+             kIdentifierKey: @"Menu Settings",
+             kTitleKey: NSLocalizedString(@"Settings", @""),
+             kDestinationKey: @{
+                     kClassNameKey: @"settings.screen"
+                     }
+             };
+}
+
 - (NSString *)urlPathForStreamCategories:(NSArray *)categories
 {
     NSString *categoryString = [categories componentsJoinedByString:@","];
     return [@"/api/sequence/detail_list_by_category/" stringByAppendingString:(categoryString ?: @"0")];
+}
+
+- (NSDictionary *)currentUserProfileScreen
+{
+    if (BOTTOM_NAV_ENABLED)
+    {
+        return @{ kClassNameKey: @"currentUserProfile.screen",
+                  kIdentifierKey: @"Menu Current User.",
+                  kAccessoryMenuItemsKey: @[
+                          [self settingsMenuItem],
+                          ]
+                  };
+    }
+    return @{ kClassNameKey: @"currentUserProfile.screen" };
 }
 
 - (NSDictionary *)profileScreen
