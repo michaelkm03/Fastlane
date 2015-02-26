@@ -66,62 +66,12 @@
                         <viewControllerLayoutGuide type="bottom" id="RWl-oO-2Nk"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="wK6-zv-ecc">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="44" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="HgY-Pa-0TC" userLabel="Background Image View">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                             </imageView>
-                            <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7bq-1t-oAX" userLabel="Header View">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MHH-cG-KmJ" userLabel="Back Button">
-                                        <rect key="frame" x="0.0" y="0.0" width="56" height="60"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="56" id="hVE-uf-RJc"/>
-                                        </constraints>
-                                        <color key="tintColor" red="0.12156862745098039" green="0.12156862745098039" blue="0.12156862745098039" alpha="1" colorSpace="calibratedRGB"/>
-                                        <state key="normal" image="cameraButtonBack">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="goBack:" destination="acE-Yl-HFc" eventType="touchUpInside" id="mmf-1g-DZm"/>
-                                        </connections>
-                                    </button>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Conversation" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X81-AQ-EK0" userLabel="Title Label">
-                                        <rect key="frame" x="0.0" y="22" width="320" height="21"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ize-9d-bh3" userLabel="More Button">
-                                        <rect key="frame" x="276" y="0.0" width="44" height="60"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="44" id="4U2-DV-wjH"/>
-                                        </constraints>
-                                        <color key="tintColor" red="0.12156862745098039" green="0.12156862745098039" blue="0.12156862745098039" alpha="1" colorSpace="calibratedRGB"/>
-                                        <state key="normal" image="More">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="flagConversation:" destination="acE-Yl-HFc" eventType="touchUpInside" id="kpy-D1-p5c"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstItem="MHH-cG-KmJ" firstAttribute="left" secondItem="7bq-1t-oAX" secondAttribute="left" id="0vg-CY-rd5"/>
-                                    <constraint firstAttribute="bottom" secondItem="MHH-cG-KmJ" secondAttribute="bottom" id="Eqz-0S-NsT"/>
-                                    <constraint firstItem="X81-AQ-EK0" firstAttribute="top" secondItem="7bq-1t-oAX" secondAttribute="top" constant="22" id="Fkl-51-hzm"/>
-                                    <constraint firstAttribute="trailing" secondItem="X81-AQ-EK0" secondAttribute="trailing" id="L0s-hy-krl"/>
-                                    <constraint firstItem="X81-AQ-EK0" firstAttribute="leading" secondItem="7bq-1t-oAX" secondAttribute="leading" id="Qgk-Wv-ldm"/>
-                                    <constraint firstAttribute="right" secondItem="ize-9d-bh3" secondAttribute="right" id="U81-dV-0rn"/>
-                                    <constraint firstItem="MHH-cG-KmJ" firstAttribute="top" secondItem="7bq-1t-oAX" secondAttribute="top" id="Udw-Gh-aAU"/>
-                                    <constraint firstAttribute="height" constant="60" id="YqB-sn-Rqx"/>
-                                    <constraint firstItem="ize-9d-bh3" firstAttribute="top" secondItem="7bq-1t-oAX" secondAttribute="top" id="c5y-ke-bxe"/>
-                                    <constraint firstAttribute="bottom" secondItem="ize-9d-bh3" secondAttribute="bottom" id="kFx-S9-Q2o"/>
-                                </constraints>
-                            </view>
                             <view hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T2h-6n-Wb8" userLabel="Busy View">
                                 <rect key="frame" x="128" y="252" width="64" height="64"/>
                                 <subviews>
@@ -148,23 +98,17 @@
                             <constraint firstAttribute="centerY" secondItem="T2h-6n-Wb8" secondAttribute="centerY" id="90U-Ma-fpC"/>
                             <constraint firstAttribute="trailing" secondItem="HgY-Pa-0TC" secondAttribute="trailing" id="HiL-Dp-FJl"/>
                             <constraint firstItem="HgY-Pa-0TC" firstAttribute="top" secondItem="apj-Bv-lmT" secondAttribute="bottom" id="IQo-YO-1oL"/>
-                            <constraint firstItem="7bq-1t-oAX" firstAttribute="leading" secondItem="wK6-zv-ecc" secondAttribute="leading" id="Q7V-Ef-0SQ"/>
-                            <constraint firstAttribute="trailing" secondItem="7bq-1t-oAX" secondAttribute="trailing" id="eQJ-t5-Lb3"/>
                             <constraint firstAttribute="centerX" secondItem="T2h-6n-Wb8" secondAttribute="centerX" id="eQt-tg-swK"/>
                             <constraint firstItem="RWl-oO-2Nk" firstAttribute="top" secondItem="HgY-Pa-0TC" secondAttribute="bottom" id="fds-rE-EeU"/>
-                            <constraint firstItem="7bq-1t-oAX" firstAttribute="top" secondItem="apj-Bv-lmT" secondAttribute="bottom" id="jeV-dp-IZl"/>
                             <constraint firstItem="HgY-Pa-0TC" firstAttribute="leading" secondItem="wK6-zv-ecc" secondAttribute="leading" id="vqz-2K-0w8"/>
                         </constraints>
                     </view>
+                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <navigationItem key="navigationItem" title="Messages" id="AHd-Fh-04G"/>
                     <nil key="simulatedStatusBarMetrics"/>
                     <connections>
-                        <outlet property="backButton" destination="MHH-cG-KmJ" id="P4Y-Ln-Yiy"/>
                         <outlet property="backgroundImageView" destination="HgY-Pa-0TC" id="gD4-x5-SZk"/>
                         <outlet property="busyView" destination="T2h-6n-Wb8" id="UyM-4F-CUb"/>
-                        <outlet property="moreButton" destination="ize-9d-bh3" id="2aq-lj-ErZ"/>
-                        <outlet property="titleLabel" destination="X81-AQ-EK0" id="Mt1-gT-Ed2"/>
-                        <outlet property="topConstraintView" destination="7bq-1t-oAX" id="CUA-AV-XdP"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YVI-SC-OXd" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1419,13 +1363,11 @@
     <resources>
         <image name="Close" width="17" height="17"/>
         <image name="MessageCamera" width="22" height="23"/>
-        <image name="More" width="22" height="6"/>
         <image name="PollCreateOr" width="48" height="52"/>
         <image name="PostCamera" width="34" height="26"/>
         <image name="PostDelete" width="30" height="30"/>
         <image name="SearchIcon" width="30" height="31"/>
         <image name="SearchIconSmall" width="20" height="20"/>
-        <image name="cameraButtonBack" width="22" height="17"/>
         <image name="refreshIcon" width="13" height="15"/>
         <image name="user-icon" width="51" height="74"/>
     </resources>

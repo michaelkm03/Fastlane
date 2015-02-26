@@ -89,6 +89,7 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 
 #import "VInlineSearchTableViewController.h"
+#import "VNavigationController.h"
 
 #define HANDOFFENABLED 0
 static const CGFloat kMaxInputBarHeight = 200.0f;
@@ -585,6 +586,11 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 }
 
 - (BOOL)prefersStatusBarHidden
+{
+    return YES;
+}
+
+- (BOOL)v_prefersNavigationBarHidden
 {
     return YES;
 }
