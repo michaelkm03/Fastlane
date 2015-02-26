@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VBottomMenuViewController.h"
+#import "VTabMenuViewController.h"
 
 // UI Models
 #import "VNavigationMenuItem.h"
@@ -22,8 +22,9 @@
 // Backgrounds
 #import "VSolidColorBackground.h"
 
+NSString * const VTabMenuViewControllerMenuAppearanceKey = @"menuAppearance";
 
-@interface VBottomMenuViewController () <UITabBarControllerDelegate>
+@interface VTabMenuViewController () <UITabBarControllerDelegate>
 
 @property (nonatomic, strong, readwrite) VDependencyManager *dependencyManager;
 
@@ -33,7 +34,7 @@
 
 @end
 
-@implementation VBottomMenuViewController
+@implementation VTabMenuViewController
 
 #pragma mark - VHasManagedDependencies
 
@@ -62,7 +63,8 @@
     
     // Configure Tab Bar
     [self.internalTabBarViewController.tabBar setTintColor:[self.dependencyManager colorForKey:VDependencyManagerLinkColorKey]];
-    VBackground *backgroundForTabBar = [self.dependencyManager templateValueOfType:[VBackground class] forKey:VDependencyManagerBackgroundKey];
+    NSDictionary *tabBarAppearanceDictionary = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:VTabMenuViewControllerMenuAppearanceKey];
+    VBackground *backgroundForTabBar = [[self.dependencyManager childDependencyManagerWithAddedConfiguration:tabBarAppearanceDictionary] templateValueOfType:[VBackground class] forKey:VDependencyManagerBackgroundKey];
     if ([backgroundForTabBar isKindOfClass:[VSolidColorBackground class]])
     {
         VSolidColorBackground *solidColorBackground = (VSolidColorBackground *)backgroundForTabBar;

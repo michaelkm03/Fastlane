@@ -17,6 +17,7 @@
 #import "VSettingManager.h"
 #import "VTranslucentBackground.h"
 #import "VSolidColorBackground.h"
+#import "VTabMenuViewController.h"
 
 #define BOTTOM_NAV_ENABLED 1
 
@@ -136,11 +137,13 @@ static NSString * const kVideoMuted = @"videoMuted";
     if (BOTTOM_NAV_ENABLED)
     {
         template[VDependencyManagerScaffoldViewControllerKey] = @{
-                                                                  kClassNameKey: @"bottomMenu.scaffold",
+                                                                  kClassNameKey: @"tabMenu.scaffold",
                                                                   kItemsKey:[self bottomNavMenuItems],
                                                                   VScaffoldViewControllerUserProfileViewComponentKey: [self profileScreen],
                                                                   kSelectorKey: [self kSelectorKeyFromInitDictionary:self.dataFromInitCall],
-                                                                  VDependencyManagerBackgroundKey: [self solidWhiteBackground],
+                                                                  VTabMenuViewControllerMenuAppearanceKey: @{
+                                                                          VDependencyManagerBackgroundKey: [self solidWhiteBackground],
+                                                                          },
                                                                   };
     }
     else
