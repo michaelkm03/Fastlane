@@ -91,6 +91,11 @@ extern NSString * const VDependencyManagerVideoWorkspaceKey;
 - (NSNumber *)numberForKey:(NSString *)key;
 
 /**
+ Returns the UIImage with the specified key
+ */
+- (UIImage *)imageForKey:(NSString *)key;
+
+/**
  Returns a new instance of a view controller with the specified key
  */
 - (UIViewController *)viewControllerForKey:(NSString *)key;

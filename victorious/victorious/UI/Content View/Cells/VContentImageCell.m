@@ -10,6 +10,8 @@
 
 @interface VContentImageCell ()
 
+@property (nonatomic, assign) BOOL updatedImageBounds;
+
 @end
 
 @implementation VContentImageCell
@@ -19,6 +21,21 @@
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {
     return CGSizeMake(CGRectGetWidth(bounds), CGRectGetWidth(bounds));
+}
+
+- (void)setBounds:(CGRect)bounds
+{
+    [super setBounds:bounds];
+    if ( !self.updatedImageBounds )
+    {
+        /*
+         Updating imageView bounds after first time bounds is set
+         Assumes cell will never be re-updated to a new "full" size but allows normal content
+         resizing to work its magic
+         */
+        self.updatedImageBounds = YES;
+        self.contentImageView.frame = bounds;
+    }
 }
 
 - (void)awakeFromNib
