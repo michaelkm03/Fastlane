@@ -109,8 +109,8 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 
 @property (nonatomic, weak) IBOutlet UICollectionView *contentCollectionView;
 @property (nonatomic, weak) IBOutlet UIImageView *blurredBackgroundImageView;
-@property (weak, nonatomic) IBOutlet UIButton *closeButton;
-@property (weak, nonatomic) IBOutlet UIButton *moreButton;
+@property (nonatomic, weak) IBOutlet UIButton *closeButton;
+@property (nonatomic, weak) IBOutlet UIButton *moreButton;
 
 // Cells
 @property (nonatomic, weak) VContentCell *contentCell;
@@ -128,8 +128,8 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 // Constraints
 @property (nonatomic, weak) NSLayoutConstraint *bottomKeyboardToContainerBottomConstraint;
 @property (nonatomic, weak) NSLayoutConstraint *keyboardInputBarHeightConstraint;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *leadingCollectionViewToContainer;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *trailingCollectionViewToContainer;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *leadingCollectionViewToContainer;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *trailingCollectionViewToContainer;
 
 // RTC
 @property (nonatomic, assign) BOOL enteringRealTimeComment;
@@ -146,6 +146,8 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 @property (nonatomic, weak) IBOutlet VContentViewRotationHelper *rotationHelper;
 @property (nonatomic, weak) IBOutlet VScrollPaginator *scrollPaginator;
 @property (nonatomic, strong, readwrite) IBOutlet VSequenceActionController *sequenceActionController;
+
+@property (nonatomic, weak) UIView *snapshotView;
 
 @end
 
@@ -658,14 +660,41 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 
 - (IBAction)pressedClose:(id)sender
 {
+    [self removeCollectionViewFromContainer];
+    [self.delegate newContentViewControllerDidClose:self];
+}
+
+- (void)removeCollectionViewFromContainer
+{
     // Sometimes UICollecitonView hangs gets stuck in infinite loops while we are dismissing slowing the UI down to a crawl, by replacing it with a snapshot of the current UI we don't risk this happening.
-    [self.view addSubview:[self.view snapshotViewAfterScreenUpdates:NO]];
+    self.snapshotView = [self.view snapshotViewAfterScreenUpdates:NO];
+    [self.view addSubview:self.snapshotView];
     self.contentCollectionView.delegate = nil;
+    self.contentCollectionView.dataSource = nil;
     self.videoCell.delegate = nil;
     self.videoCell.adPlayerViewController = nil;
-    self.videoCell = nil;
     [self.contentCollectionView removeFromSuperview];
-    [self.delegate newContentViewControllerDidClose:self];
+}
+
+- (void)restoreCollectionView
+{
+    [self.snapshotView removeFromSuperview];
+    self.contentCollectionView.delegate = self;
+    self.contentCollectionView.dataSource = self;
+    self.videoCell.delegate = self;
+    self.contentCollectionView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:self.contentCollectionView];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[collectionView]|"
+                                                                      options:kNilOptions
+                                                                      metrics:nil
+                                                                        views:@{@"collectionView":self.contentCollectionView}]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[collectionView]|"
+                                                                      options:kNilOptions
+                                                                      metrics:nil
+                                                                        views:@{@"collectionView":self.contentCollectionView}]];
+    [self.view bringSubviewToFront:self.closeButton];
+    [self.view bringSubviewToFront:self.moreButton];
+    [self.view bringSubviewToFront:self.textEntryView];
 }
 
 #pragma mark - Private Mehods
