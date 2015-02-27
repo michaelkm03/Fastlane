@@ -158,7 +158,19 @@
     gradient.frame = view.bounds;
     gradient.colors = @[(id)[UIColor colorWithWhite:0.0 alpha:0.0].CGColor,
                         (id)[UIColor colorWithWhite:0.0 alpha:1.0].CGColor];
-    [view.layer insertSublayer:gradient atIndex:0];
+    
+    //Add gradient to new view with constraints so that the graidnt adjusts to new constraint changes on passed in view
+    UIView *subview = [[UIView alloc] initWithFrame:gradient.frame];
+    [subview setBackgroundColor:[UIColor clearColor]];
+    [view addSubview:subview];
+    [view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[subview]|"
+                                                                   options:0
+                                                                   metrics:nil
+                                                                     views:NSDictionaryOfVariableBindings(subview)]];
+    [view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[subview]|"
+                                                                    options:0
+                                                                    metrics:nil
+                                                                      views:NSDictionaryOfVariableBindings(subview)]];
 }
 
 - (void)twitterAccessDidFail:(NSError *)error

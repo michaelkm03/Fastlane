@@ -409,6 +409,11 @@
         profileViewController.loginType = kVLoginTypeEmail;
         profileViewController.registrationModel = [[VRegistrationModel alloc] init];
     }
+    else if ([segue.identifier isEqualToString:@"toEnterResetToken"])
+    {
+        VEnterResetTokenViewController *destinationVC = (VEnterResetTokenViewController *)segue.destinationViewController;
+        destinationVC.deviceToken = self.deviceToken;
+    }
 }
 
 #pragma mark - Private Methods

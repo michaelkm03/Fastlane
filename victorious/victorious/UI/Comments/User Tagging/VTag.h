@@ -23,6 +23,19 @@
                          andTagStringAttributes:(NSDictionary *)tagStringAttributes;
 
 /**
+ Create a new tag with the given displayString, databaseFormattedString, and tag string attributes. NOTE: IF NOT SUBCLASSING, USE CLASS DECLARATIONS INSTEAD; this is only for internal use and subclassing.
+ 
+ @param displayString the attributed string that will serve as the "displayString" property of this tag
+ @param databaseFormattedString the attributed string that will serve as the "displayString" property of this tag
+ @param tagStringAttributes the attributed string that will serve as the "displayString" property of this tag
+ 
+ @return a new VTag containing the given displayString, databaseFormattedString, and tagStringAttributes or nil if any parameter is nil
+ */
+- (instancetype)initWithDisplayString:(NSString *)displayString
+              databaseFormattedString:(NSString *)databaseFormattedString
+               andTagStringAttributes:(NSDictionary *)tagStringAttributes;
+
+/**
  Generate a new tag from the given user and string attributes dictionary
  
  @param user a VUser object with valid name and remoteId fields.

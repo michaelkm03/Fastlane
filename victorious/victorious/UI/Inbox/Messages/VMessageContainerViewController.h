@@ -15,6 +15,7 @@
 @property (nonatomic, readonly) VUser  *otherUser;
 @property (nonatomic, weak) IBOutlet UIView *busyView;
 @property (nonatomic, strong) VUnreadMessageCountCoordinator *messageCountCoordinator;
+@property (nonatomic, assign) BOOL presentingFromProfile;
 
 + (instancetype)messageViewControllerForUser:(VUser *)otherUser;
 

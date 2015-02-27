@@ -274,6 +274,12 @@ static NSString * const kThreeSpaces = @"   ";
 //Update search state
 - (void)updateStateForReplacementString:(NSString *)string andReplacementRange:(NSRange)range
 {
+    if ( self.disableSearching )
+    {
+        self.state = VUserTaggingTextStorageStateInactive;
+        return;
+    }
+    
     switch (self.state)
     {
         case VUserTaggingTextStorageStateInactive:

@@ -350,7 +350,7 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
         NSAssert(false, @"Media type not supported!");
     }
     
-    UIImage *preloadedImage = [self.dependencyManager templateValueOfType:[UIImage class] forKey:VWorkspaceFlowControllerPreloadedImageKey];
+    UIImage *preloadedImage = [self.dependencyManager imageForKey:VWorkspaceFlowControllerPreloadedImageKey];
     if (preloadedImage != nil)
     {
         workspaceViewController.previewImage = preloadedImage;

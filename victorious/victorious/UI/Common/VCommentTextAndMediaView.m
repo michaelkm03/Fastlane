@@ -10,6 +10,7 @@
 #import "VLightboxTransitioningDelegate.h"
 #import "VThemeManager.h"
 #import "VVideoLightboxViewController.h"
+#import "VTagSensitiveTextView.h"
 
 #ifdef __LP64__
 #define CEIL(a) ceil(a)
@@ -24,7 +25,6 @@ static const CGFloat kSpacingBetweenTextAndEdge = 35.0f;
 
 @interface VCommentTextAndMediaView ()
 
-@property (nonatomic, strong) UITextView *textView;
 @property (nonatomic) BOOL addedConstraints;
 @property (nonatomic, weak) UIButton *mediaButton;
 @property (nonatomic, readwrite) UIImageView *mediaThumbnailView;
@@ -57,7 +57,7 @@ static const CGFloat kSpacingBetweenTextAndEdge = 35.0f;
 
 - (void)commonInit
 {
-    self.textView = [[UITextView alloc] init];
+    self.textView = [[VTagSensitiveTextView alloc] init];
     self.textView.translatesAutoresizingMaskIntoConstraints = NO;
     self.textView.backgroundColor = [UIColor clearColor];
     self.textView.selectable = YES;

@@ -57,6 +57,10 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
 @property (nonatomic, strong)   UIBarButtonItem            *countDownLabel;
 @property (nonatomic, strong)   UIBarButtonItem            *usernameCountDownLabel;
 
+@property (nonatomic, assign) BOOL addedAccessoryView;
+
+@property (nonatomic, assign) CGFloat previousKeyboardHeight;
+
 @end
 
 @implementation VProfileCreateViewController
@@ -214,10 +218,10 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
     {
         [self.taglineTextView becomeFirstResponder];
     }
-
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillShow:)
-                                                 name:UIKeyboardWillShowNotification
+                                             selector:@selector(keyboardWillChangeFrame:)
+                                                 name:UIKeyboardWillChangeFrameNotification
                                                object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -315,27 +319,80 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
 
 #pragma mark - Notification Handlers
 
-- (void)keyboardWillShow:(NSNotification *)notification
+static inline UIViewAnimationOptions animationOptionsWithCurve(UIViewAnimationCurve curve)
 {
+    if ( curve > UIViewAnimationCurveLinear )
+    {
+        return UIViewAnimationOptionCurveEaseInOut;
+    }
+    /*
+     Can't find a better way, this little hack converts UIViewAnimationCurve to a UIViewAnimationOptions which is useful
+     for matching up the animation with the keyboard
+     */
+    return curve << 16;
+}
 
+- (void)keyboardWillChangeFrame:(NSNotification *)notification
+{
+    NSDictionary *userInfo = [notification userInfo];
+    CGRect endKeyboardFrame;
+    [userInfo[UIKeyboardFrameEndUserInfoKey] getValue:&endKeyboardFrame];
+    
+    if ( self.previousKeyboardHeight == 0 )
+    {
+        self.previousKeyboardHeight = CGRectGetHeight(endKeyboardFrame);
+    }
+    
+    if ( [self.taglineTextView isFirstResponder] )
+    {
+        CGRect startKeyboardFrame;
+        [userInfo[UIKeyboardFrameBeginUserInfoKey] getValue:&startKeyboardFrame];
+
+        CGFloat heightDifference = endKeyboardFrame.size.height - self.previousKeyboardHeight;
+        
+        if ( heightDifference >= CGRectGetHeight(self.taglineTextView.inputAccessoryView.frame) && CGRectGetMinY(startKeyboardFrame) != CGRectGetHeight(self.view.bounds) )
+        {
+            //The tagTextView is active and just added it's accessoryView (which happens last) so set ready for animation
+            self.addedAccessoryView = YES;
+        }
+        
+        if ( self.addedAccessoryView && ( heightDifference != 0 || CGRectGetMinY(startKeyboardFrame) == CGRectGetHeight(self.view.bounds) ) )
+        {
+            [self updateContentOffsetForKeyboardNotification:notification];
+        }
+    }
+    else
+    {
+        //The tagTextView is not active so we'll see the accessoryView re-added before we need to animate again
+        self.addedAccessoryView = NO;
+    }
+    
+    self.previousKeyboardHeight = CGRectGetHeight(endKeyboardFrame);
+}
+
+- (void)updateContentOffsetForKeyboardNotification:(NSNotification *)notification
+{
     NSTimeInterval animationDuration;
     UIViewAnimationCurve animationCurve;
     NSDictionary *userInfo = [notification userInfo];
+    CGRect endKeyboardFrame;
+    
+    [userInfo[UIKeyboardFrameEndUserInfoKey] getValue:&endKeyboardFrame];
     
     [userInfo[UIKeyboardAnimationCurveUserInfoKey] getValue:&animationCurve];
     [userInfo[UIKeyboardAnimationDurationUserInfoKey] getValue:&animationDuration];
-
-    if ([self.taglineTextView isFirstResponder])
-    {
-        [UIView animateWithDuration:animationDuration
-                              delay:0.0f
-                            options:(animationCurve << 16)
-                         animations:^
-        {
-            self.view.frame = CGRectOffset(self.view.bounds, 0, 0.0f - self.taglineTextView.bounds.size.height - VConstantsInputAccessoryHeight);
-        }
-                         completion:nil];
-    }
+    
+    CGFloat yOffset = MAX( - (CGRectGetMinY(self.taglineTextView.frame) + CGRectGetHeight(self.taglineTextView.bounds) - CGRectGetHeight(self.view.bounds) + CGRectGetHeight(endKeyboardFrame) ), - self.taglineTextView.frame.origin.y );
+    animationDuration = animationDuration == 0 ? 0.25f : animationDuration;
+    [UIView animateWithDuration:animationDuration
+                          delay:0.0f
+                        options:animationOptionsWithCurve(animationCurve)
+                     animations:^
+     {
+         //Animate the textview to just above the keyboard or, at worst, pinned to top of screen
+         self.view.frame = CGRectOffset(self.view.bounds, 0, yOffset);
+     }
+                     completion:nil];
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification
@@ -348,7 +405,8 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
     [userInfo[UIKeyboardAnimationDurationUserInfoKey] getValue:&animationDuration];
     
     [UIView animateWithDuration:animationDuration delay:0
-                        options:(animationCurve << 16) animations:^
+                        options:animationOptionsWithCurve(animationCurve)
+                     animations:^
      {
          self.view.frame = self.view.bounds;
      }
