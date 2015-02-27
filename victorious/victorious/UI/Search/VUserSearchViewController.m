@@ -221,7 +221,7 @@ static const NSInteger kSearchResultLimit = 100;
         [self.activityIndicatorView startAnimating];
         [[VObjectManager sharedManager] findUsersBySearchString:self.searchField.text
                                                           limit:kSearchResultLimit
-                                                        context:VObjectManagerSearchContextUserTag
+                                                        context:nil
                                                withSuccessBlock:searchSuccess
                                                       failBlock:searchFail];
     }
