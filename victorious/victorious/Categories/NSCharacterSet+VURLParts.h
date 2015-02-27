@@ -11,15 +11,15 @@
 @interface NSCharacterSet (VURLParts)
 
 /**
- Returns a character set of allowed characters in a part of a URL
- (i.e., all the allowed characters in the whole path, minus the
- path separator)
+ Returns a character set of allowed characters in a part of a URL path
+ (i.e., all the allowed characters in the path as a whole, minus the
+ path separator character)
  */
 + (NSCharacterSet *)v_pathPartCharacterSet;
 
 /**
  Returns a character set of allowed characters in a query parameter or value (i.e.,
- all the allowed characters in the whole query part, minus ?, &, and =)
+ all the allowed characters in the query as a whole, minus ?, &, and =)
  */
 + (NSCharacterSet *)v_queryPartCharacterSet;
 
