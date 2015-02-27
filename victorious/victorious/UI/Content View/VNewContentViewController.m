@@ -610,8 +610,6 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     return YES;
 }
 
-#pragma mark - Tracking helpers
-
 - (NSString *)trackingValueForContentType
 {
     switch (self.viewModel.type)
