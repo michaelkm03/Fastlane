@@ -7,7 +7,6 @@
 //
 
 #import "VObjectManager+Pagination.h"
-
 #import "VObjectManager+Private.h"
 #import "VObjectManager+Users.h"
 
@@ -23,6 +22,7 @@
 
 #import "VConstants.h"
 
+#import "NSCharacterSet+VURLParts.h"
 #import "NSString+VParseHelp.h"
 
 const NSInteger kTooManyNewMessagesErrorCode = 999;
@@ -36,7 +36,7 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
                                                   successBlock:(VSuccessBlock)success
                                                      failBlock:(VFailBlock)fail
 {
-    NSString *filterApiPath = [@"/api/comment/all/" stringByAppendingString: sequence.remoteId];
+    NSString *filterApiPath = [NSString stringWithFormat:@"/api/comment/all/%@/%@/%@", [sequence.remoteId stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet v_pathPartCharacterSet]], VPaginationManagerPageNumberMacro, VPaginationManagerItemsPerPageMacro];
     VAbstractFilter *filter = [self.paginationManager filterForPath:filterApiPath
                                                          entityName:[VAbstractFilter entityName]
                                                managedObjectContext:sequence.managedObjectContext];
@@ -111,7 +111,7 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
                                  withCompletion:paginationBlock];
     };
     
-    NSString *apiPath = [@"/api/comment/all/" stringByAppendingString: sequence.remoteId];
+    NSString *apiPath = [NSString stringWithFormat:@"/api/comment/all/%@/%@/%@", [sequence.remoteId stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet v_pathPartCharacterSet]], VPaginationManagerPageNumberMacro, VPaginationManagerItemsPerPageMacro];
     VAbstractFilter *filter = [self.paginationManager filterForPath:apiPath
                                                          entityName:[VAbstractFilter entityName]
                                                managedObjectContext:sequence.managedObjectContext];
@@ -169,7 +169,8 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
     __block RKManagedObjectRequestOperation *requestOperation = nil;
     [context performBlockAndWait:^(void)
     {
-        VAbstractFilter *listFilter = [self.paginationManager filterForPath:@"/api/message/notification_list"
+        NSString *apiPath = [NSString stringWithFormat:@"/api/message/notification_list/%@/%@", VPaginationManagerPageNumberMacro, VPaginationManagerItemsPerPageMacro];
+        VAbstractFilter *listFilter = [self.paginationManager filterForPath:apiPath
                                                                  entityName:[VAbstractFilter entityName]
                                                        managedObjectContext:context];
         
@@ -435,7 +436,7 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
 
 - (VAbstractFilter *)followerFilterForUser:(VUser *)user
 {
-    NSString *apiPath = [@"/api/follow/followers_list/" stringByAppendingString: user.remoteId.stringValue];
+    NSString *apiPath = [NSString stringWithFormat:@"/api/follow/followers_list/%ld/%@/%@", user.remoteId.longValue, VPaginationManagerPageNumberMacro, VPaginationManagerItemsPerPageMacro];
     return (VAbstractFilter *)[self.paginationManager filterForPath:apiPath
                                                          entityName:[VAbstractFilter entityName]
                                                managedObjectContext:user.managedObjectContext];
@@ -443,7 +444,7 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
 
 - (VAbstractFilter *)followingFilterForUser:(VUser *)user
 {
-    NSString *apiPath = [@"/api/follow/subscribed_to_list/" stringByAppendingString: user.remoteId.stringValue];
+    NSString *apiPath = [NSString stringWithFormat:@"/api/follow/subscribed_to_list/%ld/%@/%@", user.remoteId.longValue, VPaginationManagerPageNumberMacro, VPaginationManagerItemsPerPageMacro];
     VAbstractFilter *filter = (VAbstractFilter *)[self.paginationManager filterForPath:apiPath
                                                                             entityName:[VAbstractFilter entityName]
                                                                   managedObjectContext:user.managedObjectContext];
@@ -453,7 +454,7 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
 
 - (VAbstractFilter *)repostFilterForSequence:(VSequence *)sequence
 {
-    NSString *apiPath = [@"/api/repost/all/" stringByAppendingString: sequence.remoteId];
+    NSString *apiPath = [NSString stringWithFormat:@"/api/repost/all/%@/%@/%@", [sequence.remoteId stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet v_pathPartCharacterSet]], VPaginationManagerPageNumberMacro, VPaginationManagerItemsPerPageMacro];
     return (VAbstractFilter *)[self.paginationManager filterForPath:apiPath
                                                          entityName:[VAbstractFilter entityName]
                                                managedObjectContext:sequence.managedObjectContext];
@@ -461,14 +462,14 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
 
 - (VAbstractFilter *)inboxFilterForCurrentUserFromManagedObjectContext:(NSManagedObjectContext *)managedObjectContext
 {
-    return [self.paginationManager filterForPath:@"/api/message/conversation_list"
+    return [self.paginationManager filterForPath:[NSString stringWithFormat:@"/api/message/conversation_list/%@/%@", VPaginationManagerPageNumberMacro, VPaginationManagerItemsPerPageMacro]
                                       entityName:[VAbstractFilter entityName]
                             managedObjectContext:managedObjectContext];
 }
 
 - (VAbstractFilter *)commentsFilterForSequence:(VSequence *)sequence
 {
-    NSString *apiPath = [@"/api/comment/all/" stringByAppendingString: sequence.remoteId];
+    NSString *apiPath = [NSString stringWithFormat:@"/api/comment/all/%@/%@/%@", [sequence.remoteId stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet v_pathPartCharacterSet]], VPaginationManagerPageNumberMacro, VPaginationManagerItemsPerPageMacro];
     return [self.paginationManager filterForPath:apiPath
                                       entityName:[VAbstractFilter entityName]
                             managedObjectContext:sequence.managedObjectContext];
@@ -483,8 +484,9 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
     }
     else if (stream.remoteId.length)
     {
-        apiPath = [@"/api/sequence/detail_list_by_stream" stringByAppendingPathComponent:stream.remoteId ?: @"0"];
-        apiPath = [apiPath stringByAppendingPathComponent:stream.filterName ?: @"0"];
+        NSString *streamIDPathPart = [(stream.remoteId ?: @"0") stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet v_pathPartCharacterSet]];
+        NSString *streamFilterPathPart = [(stream.filterName ?: @"0") stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet v_pathPartCharacterSet]];
+        apiPath = [NSString stringWithFormat:@"/api/sequence/detail_list_by_stream/%@/%@/%@/%@", streamIDPathPart, streamFilterPathPart, VPaginationManagerPageNumberMacro, VPaginationManagerItemsPerPageMacro];
     }
     else
     {
@@ -498,7 +500,7 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
 
 - (NSString *)apiPathForConversationWithRemoteID:(NSNumber *)remoteID
 {
-    return [NSString stringWithFormat:@"/api/message/conversation/%ld/desc", remoteID.longValue];
+    return [NSString stringWithFormat:@"/api/message/conversation/%ld/desc/%@/%@", remoteID.longValue, VPaginationManagerPageNumberMacro, VPaginationManagerItemsPerPageMacro];
 }
 
 @end
