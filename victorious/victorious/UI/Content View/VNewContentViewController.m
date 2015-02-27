@@ -148,6 +148,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 @property (nonatomic, strong, readwrite) IBOutlet VSequenceActionController *sequenceActionController;
 
 @property (nonatomic, weak) UIView *snapshotView;
+@property (nonatomic, assign) CGPoint offsetBeforeRemoval;
 
 @end
 
@@ -664,11 +665,14 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     [self.delegate newContentViewControllerDidClose:self];
 }
 
+#pragma mark - Private Mehods
+
+
 - (void)removeCollectionViewFromContainer
 {
-    // Sometimes UICollecitonView hangs gets stuck in infinite loops while we are dismissing slowing the UI down to a crawl, by replacing it with a snapshot of the current UI we don't risk this happening.
     self.snapshotView = [self.view snapshotViewAfterScreenUpdates:NO];
     [self.view addSubview:self.snapshotView];
+    self.offsetBeforeRemoval = self.contentCollectionView.contentOffset;
     self.contentCollectionView.delegate = nil;
     self.contentCollectionView.dataSource = nil;
     self.videoCell.delegate = nil;
@@ -683,6 +687,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     self.contentCollectionView.dataSource = self;
     self.videoCell.delegate = self;
     self.contentCollectionView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.contentCollectionView.contentOffset = self.offsetBeforeRemoval;
     [self.view addSubview:self.contentCollectionView];
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[collectionView]|"
                                                                       options:kNilOptions
@@ -696,8 +701,6 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     [self.view bringSubviewToFront:self.moreButton];
     [self.view bringSubviewToFront:self.textEntryView];
 }
-
-#pragma mark - Private Mehods
 
 - (void)updateInitialExperienceEnhancerState
 {
