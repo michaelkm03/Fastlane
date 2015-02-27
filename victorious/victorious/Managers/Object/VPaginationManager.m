@@ -9,6 +9,10 @@
 #import "VAbstractFilter.h"
 #import "VObjectManager+Private.h"
 #import "VPaginationManager.h"
+#import "VURLMacroReplacement.h"
+
+NSString * const VPaginationManagerPageNumberMacro = @"%%PAGE_NUM%%";
+NSString * const VPaginationManagerItemsPerPageMacro = @"%%ITEMS_PER_PAGE%%";
 
 @interface VPaginationManager ()
 
@@ -81,7 +85,11 @@
     [self startLoadingFilter:filter];
     
     const NSUInteger pageNumber = [filter pageNumberForPageType:pageType];
-    NSString *path = [filter.filterAPIPath stringByAppendingFormat:@"/%ld/%ld", (long)pageNumber, (long)filter.perPageNumber.integerValue];
+    
+    NSDictionary *macroReplacements = @{ VPaginationManagerItemsPerPageMacro: [filter.perPageNumber stringValue],
+                                         VPaginationManagerPageNumberMacro: [NSString stringWithFormat:@"%lu", (unsigned long)pageNumber] };
+    
+    NSString *path = [VURLMacroReplacement urlByReplacingMacrosFromDictionary:macroReplacements inURLString:filter.filterAPIPath];
     return [self.objectManager GET:path object:nil parameters:nil successBlock:fullSuccess failBlock:fullFail];
 }
 
