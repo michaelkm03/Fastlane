@@ -137,6 +137,8 @@
 		<string>Volkhov-Bold.ttf</string>
 		<string>Volkhov-Regular.ttf</string>
 	</array>
+	<key>UILaunchStoryboardName</key>
+	<string>Launch Screen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
 	<key>UIRequiredDeviceCapabilities</key>
