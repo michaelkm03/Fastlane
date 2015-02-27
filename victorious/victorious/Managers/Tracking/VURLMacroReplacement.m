@@ -53,8 +53,16 @@ static NSString * const kQueryStringDelimiter = @"?";
 
     for (NSString *macro in macros.keyEnumerator)
     {
-        NSString *queryStringReplacementValue = [macros[macro] stringByAddingPercentEncodingWithAllowedCharacters:allowedCharacters];
-        output = [output stringByReplacingOccurrencesOfString:macro withString:queryStringReplacementValue];
+        NSString *replacementValue = macros[macro];
+        NSAssert([replacementValue isKindOfClass:[NSString class]], @"The replacement value needs to be a string");
+        
+        if ( ![replacementValue isKindOfClass:[NSString class]] )
+        {
+            // debug builds will never get here because they will fail the assertion above, but for production builds, let's do something non-crashy.
+            continue;
+        }
+        replacementValue = [macros[macro] stringByAddingPercentEncodingWithAllowedCharacters:allowedCharacters];
+        output = [output stringByReplacingOccurrencesOfString:macro withString:replacementValue];
     }
     
     // Remove any un-replaced macros
