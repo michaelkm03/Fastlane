@@ -6,6 +6,7 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
+#import "NSCharacterSet+VURLParts.h"
 #import "VURLMacroReplacement.h"
 
 NSString * const VURLMacroReplacementDelimiter = @"%%";
@@ -77,38 +78,6 @@ static NSString * const kQueryStringDelimiter = @"?";
     output = [macroRegex stringByReplacingMatchesInString:output options:0 range:NSMakeRange(0, output.length) withTemplate:@""];
     
     return output;
-}
-
-@end
-
-#pragma mark -
-
-@implementation NSCharacterSet (VURLMacroReplacementExtensions)
-
-+ (NSCharacterSet *)v_pathPartCharacterSet
-{
-    static NSCharacterSet *pathPartCharacterSet;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^(void)
-    {
-        NSMutableCharacterSet *mutableCharacterSet = [[NSCharacterSet URLPathAllowedCharacterSet] mutableCopy];
-        [mutableCharacterSet removeCharactersInRange:NSMakeRange('/', 1)];
-        pathPartCharacterSet = [mutableCharacterSet copy];
-    });
-    return pathPartCharacterSet;
-}
-
-+ (NSCharacterSet *)v_queryPartCharacterSet
-{
-    static NSCharacterSet *queryPartCharacterSet;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^(void)
-    {
-        NSMutableCharacterSet *mutableCharacterSet = [[NSCharacterSet URLQueryAllowedCharacterSet] mutableCopy];
-        [mutableCharacterSet removeCharactersInString:@"?&="];
-        queryPartCharacterSet = [mutableCharacterSet copy];
-    });
-    return queryPartCharacterSet;
 }
 
 @end

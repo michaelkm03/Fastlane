@@ -32,22 +32,3 @@ extern NSString * const VURLMacroReplacementDelimiter;
 + (NSString *)urlByReplacingMacrosFromDictionary:(NSDictionary *)macros inURLString:(NSString *)urlString;
 
 @end
-
-#pragma mark -
-
-@interface NSCharacterSet (VURLMacroReplacementExtensions)
-
-/**
- Returns a character set of allowed characters in a part of a URL
- (i.e., all the allowed characters in the whole path, minus the
- path separator)
- */
-+ (NSCharacterSet *)v_pathPartCharacterSet;
-
-/**
- Returns a character set of allowed characters in a query parameter or value (i.e.,
- all the allowed characters in the whole query part, minus ?, &, and =)
- */
-+ (NSCharacterSet *)v_queryPartCharacterSet;
-
-@end
