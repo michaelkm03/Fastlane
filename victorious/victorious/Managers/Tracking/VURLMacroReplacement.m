@@ -36,8 +36,6 @@ static NSString * const kQueryStringDelimiter = @"?";
     
     nonQueryString = [self urlByReplacingMacrosFromDictionary:macros inURLString:nonQueryString withAllowedCharacters:[NSCharacterSet v_pathPartCharacterSet]];
     
-    VLog(@"allowed: / %@", [[NSCharacterSet URLPathAllowedCharacterSet] characterIsMember:[@"/" characterAtIndex:0]] ? @"YES" : @"NO" );
-    
     if ( queryString != nil )
     {
         queryString = [self urlByReplacingMacrosFromDictionary:macros inURLString:queryString withAllowedCharacters:[NSCharacterSet v_queryPartCharacterSet]];
