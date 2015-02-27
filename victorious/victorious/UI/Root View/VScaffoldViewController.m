@@ -20,6 +20,7 @@
 #import "VComment.h"
 #import "VTracking.h"
 #import "VWebBrowserViewController.h"
+#import "VNavigationController.h"
 
 #import <MBProgressHUD.h>
 
@@ -70,8 +71,9 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
     contentViewController.placeholderImage = placeHolderImage;
     contentViewController.delegate = self;
     
-    UINavigationController *contentNav = [[UINavigationController alloc] initWithRootViewController:contentViewController];
-    contentNav.navigationBarHidden = YES;
+    VNavigationController *contentNav = [[VNavigationController alloc] initWithDependencyManager:self.dependencyManager];
+    contentNav.innerNavigationController.viewControllers = @[contentViewController];
+    contentNav.innerNavigationController.navigationBarHidden = YES;
     [self presentViewController:contentNav animated:YES completion:nil];
 }
 

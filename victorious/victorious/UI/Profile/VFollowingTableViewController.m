@@ -19,6 +19,8 @@
 #import "VThemeManager.h"
 #import "MBProgressHUD.h"
 
+static NSString * const kVFollowerCellName = @"followerCell";
+
 @interface VFollowingTableViewController ()
 
 @property (nonatomic, strong)   NSArray    *following;
@@ -32,7 +34,7 @@
 {
     [super viewDidLoad];
     self.tableView.backgroundColor = [UIColor colorWithWhite:0.97 alpha:1.0];
-    [self.tableView registerNib:[UINib nibWithNibName:@"followerCell" bundle:nil] forCellReuseIdentifier:@"followerCell"];
+    [self.tableView registerNib:[UINib nibWithNibName:kVFollowerCellName bundle:nil] forCellReuseIdentifier:kVFollowerCellName];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -202,7 +204,7 @@
     VUser *mainUser = [[VObjectManager sharedManager] mainUser];
     BOOL haveRelationship = [mainUser.following containsObject:profile];
 
-    VFollowerTableViewCell    *cell = [tableView dequeueReusableCellWithIdentifier:@"followerCell" forIndexPath:indexPath];
+    VFollowerTableViewCell    *cell = [tableView dequeueReusableCellWithIdentifier:kVFollowerCellName forIndexPath:indexPath];
     cell.profile = self.following[indexPath.row];
     cell.showButton = NO;
     cell.haveRelationship = haveRelationship;
@@ -240,7 +242,7 @@
 {
     if (scrollView.contentOffset.y + CGRectGetHeight(scrollView.bounds) > scrollView.contentSize.height * .75)
     {
-        [self loadMoreFollowings];
+        //[self loadMoreFollowings];
     }
 }
 
@@ -339,7 +341,7 @@
             msg = NSLocalizedString(@"ProfileNotFollowingMessage", @"");
         }
         
-        VNoContentView *notFollowingView = [VNoContentView noContentViewWithFrame:self.tableView.frame];
+        VNoContentView *notFollowingView = [VNoContentView noContentViewWithFrame:self.tableView.bounds];
         self.tableView.backgroundView = notFollowingView;
         notFollowingView.titleLabel.text = title;
         notFollowingView.messageLabel.text = msg;

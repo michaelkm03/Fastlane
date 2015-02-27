@@ -94,6 +94,7 @@
 #import "VTag.h"
 #import "VUserTag.h"
 #import "VHashtagStreamCollectionViewController.h"
+#import "VNavigationController.h"
 
 #define HANDOFFENABLED 0
 static const CGFloat kMaxInputBarHeight = 200.0f;
@@ -325,12 +326,23 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 
 - (void)handleRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
 {
+    NSMutableArray *affectedViews = [[NSMutableArray alloc] init];
+    if ( self.textEntryView != nil )
+    {
+        [affectedViews addObject:self.textEntryView];
+    }
+    if ( self.moreButton != nil )
+    {
+        [affectedViews addObject:self.moreButton];
+    }
+    
     const CGSize experienceEnhancerCellSize = [VExperienceEnhancerBarCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
     const CGPoint fixedLandscapeOffset = CGPointMake( 0.0f, experienceEnhancerCellSize.height );
+    
     [self.rotationHelper handleRotationToInterfaceOrientation:toInterfaceOrientation
                                           targetContentOffset:fixedLandscapeOffset
                                                collectionView:self.contentCollectionView
-                                                affectedViews:@[ self.textEntryView, self.moreButton ]];
+                                                affectedViews:[NSArray arrayWithArray:affectedViews]];
     if ( self.videoCell != nil )
     {
         [self.videoCell handleRotationToInterfaceOrientation:toInterfaceOrientation];
@@ -579,6 +591,11 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 }
 
 - (BOOL)prefersStatusBarHidden
+{
+    return YES;
+}
+
+- (BOOL)v_prefersNavigationBarHidden
 {
     return YES;
 }

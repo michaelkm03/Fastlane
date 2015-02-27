@@ -265,6 +265,27 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
     XCTAssertEqual(array[1], otherArray[1]);
 }
 
+#pragma mark - Images
+
+- (void)testImageWithName
+{
+    UIImage *expected = [UIImage imageNamed:@"Menu"];
+    UIImage *actual = [self.dependencyManager imageForKey:@"myImage"];
+    XCTAssertEqualObjects(expected, actual);
+}
+
+- (void)testImage
+{
+    // This test may fail if the "Menu" image is ever removed from our project, but that should be
+    // around the same time that the logic of this method will need to be updated anyway.
+    UIImage *sampleImage = [UIImage imageNamed:@"Menu"];
+    VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:nil
+                                                                                configuration:@{ @"myImage": sampleImage }
+                                                            dictionaryOfClassesByTemplateName:self.dictionaryOfClassesByTemplateName];
+    UIImage *actual = [dependencyManager imageForKey:@"myImage"];
+    XCTAssertEqualObjects(actual, sampleImage);
+}
+
 #pragma mark - Dictionaries
 
 - (void)testDictionary
