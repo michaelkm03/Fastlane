@@ -616,6 +616,7 @@
 		D8917EA219F8498F0070BDBB /* VVideoCellViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D8917EA119F8498F0070BDBB /* VVideoCellViewModel.m */; };
 		D89AC2BC19F1FD6B00921131 /* VHistogramDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = D89AC2B919F1FD6B00921131 /* VHistogramDataSource.m */; };
 		D89AC2BD19F1FD6B00921131 /* VHistogramBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = D89AC2BB19F1FD6B00921131 /* VHistogramBarView.m */; };
+		D89D7F7E1A9FF5F400B61783 /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = D89D7F7D1A9FF5F400B61783 /* Launch Screen.xib */; };
 		D8AF00EF1A128A7200B147C4 /* VHashTagTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = D8AF00EE1A128A7200B147C4 /* VHashTagTextView.m */; };
 		D8AF00F11A129CD100B147C4 /* VHashTagTextViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D8AF00F01A129CD100B147C4 /* VHashTagTextViewTests.m */; };
 		D8AF00F21A129FB000B147C4 /* VHashTagTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = D8AF00EE1A128A7200B147C4 /* VHashTagTextView.m */; };
@@ -1812,6 +1813,7 @@
 		D89AC2BA19F1FD6B00921131 /* VHistogramBarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHistogramBarView.h; sourceTree = "<group>"; };
 		D89AC2BB19F1FD6B00921131 /* VHistogramBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHistogramBarView.m; sourceTree = "<group>"; };
 		D89AC2BE19F1FEA700921131 /* VHistogramDataSourceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHistogramDataSourceTests.m; sourceTree = "<group>"; };
+		D89D7F7D1A9FF5F400B61783 /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "Launch Screen.xib"; sourceTree = "<group>"; };
 		D8AF00ED1A128A7200B147C4 /* VHashTagTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHashTagTextView.h; sourceTree = "<group>"; };
 		D8AF00EE1A128A7200B147C4 /* VHashTagTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHashTagTextView.m; sourceTree = "<group>"; };
 		D8AF00F01A129CD100B147C4 /* VHashTagTextViewTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHashTagTextViewTests.m; sourceTree = "<group>"; };
@@ -2190,6 +2192,7 @@
 				0314D43319B46B5E00FA363C /* Streams */,
 				A769C3D81A13176700698D0C /* Web View */,
 				D8A93F131A2E84A9009B8A18 /* Workspace */,
+				D89D7F7D1A9FF5F400B61783 /* Launch Screen.xib */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -4781,6 +4784,7 @@
 				A75FAF2019E8AC1E00EB87C1 /* VDiscoverTableHeaderViewController.xib in Resources */,
 				036F386E1A0C4DEA0014DF66 /* JosefinSans-SemiBold.ttf in Resources */,
 				0362B42119F5F6950036B9C8 /* VUploadProgressView.xib in Resources */,
+				D89D7F7E1A9FF5F400B61783 /* Launch Screen.xib in Resources */,
 				036F38651A0C4DEA0014DF66 /* Arvo-Bold.ttf in Resources */,
 				036F386B1A0C4DEA0014DF66 /* DroidSans-Bold.ttf in Resources */,
 				D8C7CF5F19DCCD0D00BA33E5 /* VExperienceEnhancerCell.xib in Resources */,
