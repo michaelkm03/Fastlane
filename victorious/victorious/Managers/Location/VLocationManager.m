@@ -7,9 +7,10 @@
 //
 
 #import "VLocationManager.h"
+#import <CoreLocation/CLAvailability.h>
 @import AddressBookUI;
 
-#define EnableLocationInfoLogging 0  // Set this to 1 in order to view location details in the console log window
+#define EnableLocationInfoLogging 1  // Set this to 1 in order to view location details in the console log window
 
 @interface VLocationManager () <CLLocationManagerDelegate>
 
@@ -46,6 +47,24 @@
     }
     
     return self;
+}
+
++ (BOOL)haveLocationServicesPermission
+{
+    if ( [CLLocationManager locationServicesEnabled] && ( [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedAlways || [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedWhenInUse ) )
+    {
+        return YES;
+    }
+    return NO;
+}
+
+- (CLPlacemark *)lastLocationRetrieved
+{
+    if (self.locationPlacemark != nil)
+    {
+        return self.locationPlacemark;
+    }
+    return nil;
 }
 
 - (NSString *)httpFormattedLocationString
@@ -86,15 +105,13 @@
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
 {
-    [manager  stopUpdatingLocation];
-    
-    __block CLPlacemark *locationPlacemark;
+    //__block CLPlacemark *locationPlacemark;
     CLLocation *location = [locations lastObject];
     CLGeocoder *geoCoder = [[CLGeocoder alloc] init];
     [geoCoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error)
      {
-         locationPlacemark = [placemarks firstObject];
-         self.postalCode = locationPlacemark.postalCode;
+         self.locationPlacemark = [placemarks firstObject];
+         self.postalCode = self.locationPlacemark.postalCode;
          
          self.latitude = [NSString stringWithFormat:@"%f", location.coordinate.latitude];
          self.longitude = [NSString stringWithFormat:@"%f", location.coordinate.longitude];
@@ -102,7 +119,7 @@
          // Send to delegate
          if ([self.delegate respondsToSelector:@selector(didReceiveLocations:withPlacemark:withLocationManager:)])
          {
-             [self.delegate didReceiveLocations:locations withPlacemark:locationPlacemark withLocationManager:self];
+             [self.delegate didReceiveLocations:locations withPlacemark:self.locationPlacemark withLocationManager:self];
          }
      }];
 }

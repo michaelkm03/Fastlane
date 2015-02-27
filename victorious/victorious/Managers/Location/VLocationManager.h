@@ -38,6 +38,11 @@
 @property (nonatomic, strong) CLLocationManager *locationManager;
 
 /**
+ CoreLocation CLPlacemark object to get detailed location information
+ */
+@property (nonatomic, strong) CLPlacemark *locationPlacemark;
+
+/**
  Delegate object to handle forwarding of CLLocation information
  */
 @property (nonatomic, weak) id<VLocationManagerDelegate> delegate;
@@ -48,6 +53,20 @@
  @return Instance of VLocationInfo
  */
 + (instancetype)sharedInstance;
+
+/**
+ Class method that reports location services permission
+ 
+ @return BOOL value indicating access permission
+ */
++ (BOOL)haveLocationServicesPermission;
+
+/**
+ Class method that returns the last location retrieved by the VLocationManager
+ 
+ @return NSString of the last location retrieved
+ */
+- (CLPlacemark *)lastLocationRetrieved;
 
 /**
  Formatted string of location information

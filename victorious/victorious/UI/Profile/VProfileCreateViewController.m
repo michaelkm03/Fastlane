@@ -107,7 +107,6 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
 #pragma clang diagnostic pop
     self.usernameTextField.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     self.usernameTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.usernameTextField.placeholder attributes:@{NSForegroundColorAttributeName :[UIColor colorWithWhite:0.355 alpha:1.000]}];
-
     
     self.locationTextField.delegate = self;
     self.locationTextField.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
@@ -118,7 +117,27 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
     }
     else
     {
-        self.locationTextField.text = @"";
+        if ([VLocationManager sharedInstance].lastLocationRetrieved != nil)
+        {
+            CLPlacemark *placemark = [VLocationManager sharedInstance].locationPlacemark;
+            NSDictionary *locationDictionary = [self formatLocationData:placemark];
+            
+            NSString *city = [locationDictionary valueForKey:@"City"];
+            NSString *state = [locationDictionary valueForKey:@"State"];
+            if ((city == nil) || (state == nil))
+            {
+                self.locationTextField.text = @"";
+            }
+            else
+            {
+                self.locationTextField.text = [NSString stringWithFormat:@"%@, %@", city, state];
+                self.registrationModel.locationText = self.locationTextField.text;
+            }
+        }
+        else
+        {
+            self.locationTextField.text = @"";
+        }
     }
     self.locationTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.locationTextField.placeholder attributes:@{NSForegroundColorAttributeName : [UIColor colorWithWhite:0.355 alpha:1.0]}];
     if ([CLLocationManager locationServicesEnabled]
@@ -127,10 +146,7 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
     {
         self.locationManager = [VLocationManager sharedInstance];
         self.locationManager.delegate = self;
-        if ([self.locationManager.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)])
-        {
-            [self.locationManager.locationManager requestWhenInUseAuthorization];
-        }
+        [self.locationManager.locationManager requestWhenInUseAuthorization];
     }
     
     self.tagLinePlaceholderLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
@@ -227,8 +243,6 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
                                              selector:@selector(keyboardWillHide:)
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
-    
-
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -249,6 +263,28 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
 - (BOOL)prefersStatusBarHidden
 {
     return YES;
+}
+
+#pragma mark - Format Location Data
+
+- (NSDictionary *)formatLocationData:(CLPlacemark *)placemark
+{
+    NSMutableDictionary *locationDictionary = [NSMutableDictionary dictionaryWithCapacity:3];
+    
+    if (placemark.locality)
+    {
+        [locationDictionary setObject:placemark.locality forKey:(__bridge NSString *)kABPersonAddressCityKey];
+    }
+    
+    if (placemark.administrativeArea)
+    {
+        [locationDictionary setObject:placemark.administrativeArea forKey:(__bridge NSString *)kABPersonAddressStateKey];
+    }
+    
+    [locationDictionary setObject:[(NSLocale *)[NSLocale autoupdatingCurrentLocale] objectForKey:NSLocaleCountryCode]
+                           forKey:(__bridge NSString *)kABPersonAddressCountryCodeKey];
+    
+    return [locationDictionary copy];
 }
 
 #pragma mark - UITextFieldDelegate
@@ -378,20 +414,7 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
 
 - (void)didReceiveLocations:(NSArray *)locations withPlacemark:(CLPlacemark *)placemark withLocationManager:(VLocationManager *)locationManager
 {
-    NSMutableDictionary *locationDictionary = [NSMutableDictionary dictionaryWithCapacity:3];
-    
-    if (placemark.locality)
-    {
-        [locationDictionary setObject:placemark.locality forKey:(__bridge NSString *)kABPersonAddressCityKey];
-    }
-    
-    if (placemark.administrativeArea)
-    {
-        [locationDictionary setObject:placemark.administrativeArea forKey:(__bridge NSString *)kABPersonAddressStateKey];
-    }
-    
-    [locationDictionary setObject:[(NSLocale *)[NSLocale autoupdatingCurrentLocale] objectForKey:NSLocaleCountryCode]
-                           forKey:(__bridge NSString *)kABPersonAddressCountryCodeKey];
+    NSDictionary *locationDictionary = [self formatLocationData:placemark];
     
     NSString *city = [locationDictionary valueForKey:@"City"];
     NSString *state = [locationDictionary valueForKey:@"State"];
@@ -401,7 +424,6 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
     }
     self.locationTextField.text = [NSString stringWithFormat:@"%@, %@", city, state];
     self.registrationModel.locationText = self.locationTextField.text;
-    
 }
 
 #pragma mark - State
