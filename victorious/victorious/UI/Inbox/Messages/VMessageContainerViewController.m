@@ -22,6 +22,7 @@
 #import "NSString+VParseHelp.h"
 
 #import "UIActionSheet+VBlocks.h"
+#import "VUserTaggingTextStorage.h"
 
 #import "MBProgressHUD.h"
 
@@ -48,6 +49,7 @@
 
     self.keyboardBarViewController.shouldAutoClearOnCompose = NO;
     self.keyboardBarViewController.hideAccessoryBar = YES;
+    self.keyboardBarViewController.textStorage.disableSearching = YES;
     
     [self addBackgroundImage];
     [self hideKeyboardBarIfNeeded];

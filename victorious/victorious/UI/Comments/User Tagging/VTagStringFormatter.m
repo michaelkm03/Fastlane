@@ -40,6 +40,10 @@
     {
         NSRange range = [[userCheckResults objectAtIndex:i] rangeAtIndex:0];
         VTag *tag = [VTag tagWithUserString:[rawString substringWithRange:range] andTagStringAttributes:tagStringAttributes];
+        if ( tag == nil )
+        {
+            continue;
+        }
         [foundTags incrementTag:tag];
         [attributedString replaceCharactersInRange:range withAttributedString:[self delimitedAttributedString:tag.displayString withDelimiterAttributes:defaultStringAttributes]];
     }
@@ -52,6 +56,10 @@
     {
         NSRange range = [[hashtagCheckResults objectAtIndex:i] rangeAtIndex:0];
         VTag *tag = [VTag tagWithHashtagString:[rawString substringWithRange:range] andTagStringAttributes:tagStringAttributes];
+        if ( tag == nil )
+        {
+            continue;
+        }
         [foundTags incrementTag:tag];
         [attributedString replaceCharactersInRange:range withAttributedString:[self delimitedAttributedString:tag.displayString withDelimiterAttributes:defaultStringAttributes]];
     }
@@ -163,7 +171,7 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^(void)
                   {
-                      userRegex = [NSRegularExpression regularExpressionWithPattern:@"@\\{.+?:(.+?)\\}"
+                      userRegex = [NSRegularExpression regularExpressionWithPattern:@"@\\{(.+?):(.+?)\\}"
                                                                             options:0
                                                                               error:nil];
                   });

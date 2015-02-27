@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
+@class VTagSensitiveTextView;
 /**
  This view is used inside the comment and messaging views
  to display comment text and any media that might
@@ -24,6 +25,7 @@
 @property (nonatomic, copy)           void               (^onMediaTapped)(); ///< Called when the user taps the media icon
 
 @property (nonatomic) UIFont *textFont;
+@property (nonatomic, strong) VTagSensitiveTextView *textView;
 
 /**
  Returns the ideal height for instances of this view
