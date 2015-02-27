@@ -453,7 +453,6 @@
 		A7AEF9B11A83F1C300A3D3A0 /* VFooterActivityIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7AEF98B1A83F1C300A3D3A0 /* VFooterActivityIndicatorView.m */; };
 		A7AEF9B21A83F1C300A3D3A0 /* VFooterActivityIndicatorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7AEF98C1A83F1C300A3D3A0 /* VFooterActivityIndicatorView.xib */; };
 		A7AEF9B61A83F1C300A3D3A0 /* VAbstractStreamCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7AEF9941A83F1C300A3D3A0 /* VAbstractStreamCollectionViewController.m */; };
-		A7AEF9B71A83F1C300A3D3A0 /* VDirectoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7AEF9961A83F1C300A3D3A0 /* VDirectoryViewController.m */; };
 		A7AEF9B91A83F1C300A3D3A0 /* VStreamCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7AEF99A1A83F1C300A3D3A0 /* VStreamCollectionViewController.m */; };
 		A7AEF9BA1A83F1C300A3D3A0 /* VStreamCollectionViewDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A7AEF99C1A83F1C300A3D3A0 /* VStreamCollectionViewDataSource.m */; };
 		A7AEF9C61A83F2AD00A3D3A0 /* VFollowersTextFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = A7AEF9C31A83F2AD00A3D3A0 /* VFollowersTextFormatter.m */; };
@@ -718,7 +717,6 @@
 		F028CF4E1A97A6B0005EE2B5 /* VNetflixDirectoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F028CF4D1A97A6B0005EE2B5 /* VNetflixDirectoryViewController.m */; };
 		F028CF531A97B172005EE2B5 /* VNetflixDirectoryItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F028CF521A97B172005EE2B5 /* VNetflixDirectoryItemCell.m */; };
 		F028CF551A97B261005EE2B5 /* VStreamNetflixDirectoryItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F028CF541A97B261005EE2B5 /* VStreamNetflixDirectoryItemCell.xib */; };
-		F028CF571A97C3BC005EE2B5 /* VDirectoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F028CF561A97C3BC005EE2B5 /* VDirectoryViewController.xib */; };
 		F028CF591A97C3EE005EE2B5 /* VNetflixDirectoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F028CF581A97C3EE005EE2B5 /* VNetflixDirectoryViewController.xib */; };
 		F05AA9821A83F6E3002F8917 /* VInlineSearchTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F05AA97F1A83F6E3002F8917 /* VInlineSearchTableViewController.m */; };
 		F0804A6B1A8916BC00A0E1A1 /* VTagDictionaryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0804A6A1A8916BC00A0E1A1 /* VTagDictionaryTests.m */; };
@@ -1493,8 +1491,6 @@
 		A7AEF98C1A83F1C300A3D3A0 /* VFooterActivityIndicatorView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VFooterActivityIndicatorView.xib; sourceTree = "<group>"; };
 		A7AEF9931A83F1C300A3D3A0 /* VAbstractStreamCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAbstractStreamCollectionViewController.h; sourceTree = "<group>"; };
 		A7AEF9941A83F1C300A3D3A0 /* VAbstractStreamCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAbstractStreamCollectionViewController.m; sourceTree = "<group>"; };
-		A7AEF9951A83F1C300A3D3A0 /* VDirectoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDirectoryViewController.h; sourceTree = "<group>"; };
-		A7AEF9961A83F1C300A3D3A0 /* VDirectoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDirectoryViewController.m; sourceTree = "<group>"; };
 		A7AEF9981A83F1C300A3D3A0 /* VSequenceActionsDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSequenceActionsDelegate.h; sourceTree = "<group>"; };
 		A7AEF9991A83F1C300A3D3A0 /* VStreamCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamCollectionViewController.h; sourceTree = "<group>"; };
 		A7AEF99A1A83F1C300A3D3A0 /* VStreamCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamCollectionViewController.m; sourceTree = "<group>"; };
@@ -1996,7 +1992,6 @@
 		F028CF511A97B172005EE2B5 /* VNetflixDirectoryItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNetflixDirectoryItemCell.h; sourceTree = "<group>"; };
 		F028CF521A97B172005EE2B5 /* VNetflixDirectoryItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNetflixDirectoryItemCell.m; sourceTree = "<group>"; };
 		F028CF541A97B261005EE2B5 /* VStreamNetflixDirectoryItemCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VStreamNetflixDirectoryItemCell.xib; sourceTree = "<group>"; };
-		F028CF561A97C3BC005EE2B5 /* VDirectoryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VDirectoryViewController.xib; sourceTree = "<group>"; };
 		F028CF581A97C3EE005EE2B5 /* VNetflixDirectoryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VNetflixDirectoryViewController.xib; sourceTree = "<group>"; };
 		F05AA97E1A83F6E3002F8917 /* VInlineSearchTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInlineSearchTableViewController.h; sourceTree = "<group>"; };
 		F05AA97F1A83F6E3002F8917 /* VInlineSearchTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInlineSearchTableViewController.m; sourceTree = "<group>"; };
@@ -2645,9 +2640,6 @@
 				F028CF4C1A97A6B0005EE2B5 /* VNetflixDirectoryViewController.h */,
 				F028CF4D1A97A6B0005EE2B5 /* VNetflixDirectoryViewController.m */,
 				F028CF581A97C3EE005EE2B5 /* VNetflixDirectoryViewController.xib */,
-				A7AEF9951A83F1C300A3D3A0 /* VDirectoryViewController.h */,
-				A7AEF9961A83F1C300A3D3A0 /* VDirectoryViewController.m */,
-				F028CF561A97C3BC005EE2B5 /* VDirectoryViewController.xib */,
 				0314D44519B46B5E00FA363C /* VEphemeralTimerView.h */,
 				0314D44619B46B5E00FA363C /* VEphemeralTimerView.m */,
 				DB2A495919DF455D00CB687B /* VEphemeralTimerView.xib */,
@@ -4819,7 +4811,6 @@
 				037FCF191A8DAF0E00E8ABFC /* VHamburgerButton.xib in Resources */,
 				A7AEF9A91A83F1C300A3D3A0 /* VStreamCollectionCell.xib in Resources */,
 				03C1858419B42C9100E27D05 /* Roboto-BoldItalic.ttf in Resources */,
-				F028CF571A97C3BC005EE2B5 /* VDirectoryViewController.xib in Resources */,
 				036F38871A0C4DEA0014DF66 /* PT_Sans-Web-Regular.ttf in Resources */,
 				A7FE8C3E19EDE91100B91EF2 /* HelveticaNeueLightItalic.ttf in Resources */,
 				039D02AC1A1043D300DB9236 /* TemplateClasses.plist in Resources */,
@@ -5356,7 +5347,6 @@
 				D8C1FD0B1A69DF0B0072892B /* VImageToolController.m in Sources */,
 				037FCF271A8DAF5400E8ABFC /* VMultipleContainerViewController.m in Sources */,
 				0314D4B019B46B5E00FA363C /* VFetchedResultsTableViewController.m in Sources */,
-				A7AEF9B71A83F1C300A3D3A0 /* VDirectoryViewController.m in Sources */,
 				A7738B081A4A36C9008EA973 /* VTransitionModel.m in Sources */,
 				BE5C736A187E36E800A3340D /* VRule.m in Sources */,
 				A733D8FF1A23D0C70053E9F1 /* VNotificationSettings+RestKit.m in Sources */,

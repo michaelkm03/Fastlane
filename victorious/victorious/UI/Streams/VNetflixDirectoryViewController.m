@@ -29,8 +29,6 @@
 #import "VObjectManager.h"
 #import "VSettingManager.h"
 
-#import "VDirectoryViewController.h"
-
 static NSString * const kStreamURLPathKey = @"streamUrlPath";
 
 static CGFloat const kDirectoryInset = 5.0f;
