@@ -1,5 +1,5 @@
 //
-//  VNetflixDirectoryViewController.h
+//  VDirectoryViewController.h
 //  victorious
 //
 //  Created by Sharif Ahmed on 2/20/15.
@@ -11,7 +11,7 @@
 
 @class VStream, VStreamCollectionViewDataSource;
 
-@interface VNetflixDirectoryViewController : VAbstractStreamCollectionViewController <VHasManagedDependancies>
+@interface VDirectoryViewController : VAbstractStreamCollectionViewController <VHasManagedDependancies>
 
 + (instancetype)streamDirectoryForStream:(VStream *)stream dependencyManager:(VDependencyManager *)dependencyManager;
 

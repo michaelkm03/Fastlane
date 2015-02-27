@@ -1,12 +1,12 @@
 //
-//  VNetflixDirectoryViewController.m
+//  VDirectoryViewController.m
 //  victorious
 //
 //  Created by Sharif Ahmed on 2/20/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VNetflixDirectoryViewController.h"
+#import "VDirectoryViewController.h"
 
 // Data Source
 #import "VStreamCollectionViewDataSource.h"
@@ -18,7 +18,7 @@
 
 // Views
 #import "MBProgressHUD.h"
-#import "VNetflixDirectoryItemCell.h"
+#import "VStreamDirectoryGroupCell.h"
 
 //Data Models
 #import "VStream+Fetcher.h"
@@ -33,19 +33,19 @@ static NSString * const kStreamURLPathKey = @"streamUrlPath";
 
 static CGFloat const kDirectoryInset = 5.0f;
 
-@interface VNetflixDirectoryViewController () <UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, VStreamCollectionDataDelegate, VNetflixDirectoryItemCellDelegate>
+@interface VDirectoryViewController () <UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, VStreamCollectionDataDelegate, VStreamDirectoryGroupCellDelegate>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end
 
-@implementation VNetflixDirectoryViewController
+@implementation VDirectoryViewController
 
 #pragma mark - Initializers
 
 + (instancetype)streamDirectoryForStream:(VStream *)stream dependencyManager:(VDependencyManager *)dependencyManager
 {
-    VNetflixDirectoryViewController *streamDirectory = [[VNetflixDirectoryViewController alloc] initWithNibName:nil
+    VDirectoryViewController *streamDirectory = [[VDirectoryViewController alloc] initWithNibName:nil
                                                                                                          bundle:nil];
     streamDirectory.currentStream = stream;
     streamDirectory.title = stream.name;
@@ -70,9 +70,9 @@ static CGFloat const kDirectoryInset = 5.0f;
 {
     [super viewDidLoad];
     
-    //Register cells
-    UINib *nib = [UINib nibWithNibName:VNetflixDirectoryItemCellNameStream bundle:nil];
-    [self.collectionView registerNib:nib forCellWithReuseIdentifier:VNetflixDirectoryItemCellNameStream];
+    NSString *identifier = NSStringFromClass([VStreamDirectoryGroupCell class]);
+    UINib *nib = [UINib nibWithNibName:identifier bundle:nil];
+    [self.collectionView registerNib:nib forCellWithReuseIdentifier:identifier];
     
     self.streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:self.currentStream];
     self.streamDataSource.delegate = self;
@@ -106,7 +106,7 @@ static CGFloat const kDirectoryInset = 5.0f;
     
     BOOL isStreamOfStreamsRow = [[self.streamDataSource itemAtIndexPath:indexPath] isKindOfClass:[VStream class]] && [(VStream *)[self.streamDataSource itemAtIndexPath:indexPath] isStreamOfStreams];
     
-    CGFloat height = isStreamOfStreamsRow ? [VNetflixDirectoryItemCell desiredStreamOfStreamsHeightForWidth:width] : [VNetflixDirectoryItemCell desiredStreamOfContentHeightForWidth:width];
+    CGFloat height = isStreamOfStreamsRow ? [VStreamDirectoryGroupCell desiredStreamOfStreamsHeightForWidth:width] : [VStreamDirectoryGroupCell desiredStreamOfContentHeightForWidth:width];
     
     return CGSizeMake(width, height);
 }
@@ -122,7 +122,7 @@ static CGFloat const kDirectoryInset = 5.0f;
     }
     else if ([item isKindOfClass:[VStream class]])
     {
-        VNetflixDirectoryViewController *sos = [VNetflixDirectoryViewController streamDirectoryForStream:(VStream *)item dependencyManager:self.dependencyManager];
+        VDirectoryViewController *sos = [VDirectoryViewController streamDirectoryForStream:(VStream *)item dependencyManager:self.dependencyManager];
         sos.dependencyManager = self.dependencyManager;
         [self.navigationController pushViewController:sos animated:YES];
     }
@@ -136,7 +136,7 @@ static CGFloat const kDirectoryInset = 5.0f;
                         layout:(UICollectionViewLayout *)collectionViewLayout
         insetForSectionAtIndex:(NSInteger)section
 {
-    return UIEdgeInsetsMake(self.topInset + kNetflixDirectoryItemCellInset,
+    return UIEdgeInsetsMake(self.topInset + kStreamDirectoryGroupCellInset,
                             0,
                             kDirectoryInset,
                             0);
@@ -157,32 +157,33 @@ static CGFloat const kDirectoryInset = 5.0f;
 - (UICollectionViewCell *)dataSource:(VStreamCollectionViewDataSource *)dataSource cellForIndexPath:(NSIndexPath *)indexPath
 {
     VStreamItem *item = [self.currentStream.streamItems objectAtIndex:indexPath.row];
-    VNetflixDirectoryItemCell *cell;
+    VStreamDirectoryGroupCell *cell;
     
-    cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:VNetflixDirectoryItemCellNameStream forIndexPath:indexPath];
+    NSString *identifier = NSStringFromClass([VStreamDirectoryGroupCell class]);
+    cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
     cell.streamItem = item;
     cell.delegate = self;
     
     return cell;
 }
 
-#pragma mark - VNetflixDirectoryItemCellNameStream
+#pragma mark - 
 
-- (void)netflixDirectoryItemCell:(VNetflixDirectoryItemCell *)vNetflixDirectoryItemCell didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+- (void)streamDirectoryGroupCell:(VStreamDirectoryGroupCell *)VStreamDirectoryGroupCell didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     //Check to see if we've selected the the count of items in the cell's streamItem (which would mean we selected the "see more" cell)
     if ( indexPath.row == 10 )
     {
         //Push a new directory view controller to show all contents of the selected streamItem
-        VStream *stream = [self.currentStream.streamItems objectAtIndex:[self.collectionView indexPathForCell:vNetflixDirectoryItemCell].row];
-        VNetflixDirectoryViewController *sos = [VNetflixDirectoryViewController streamDirectoryForStream:stream dependencyManager:self.dependencyManager];
+        VStream *stream = [self.currentStream.streamItems objectAtIndex:[self.collectionView indexPathForCell:VStreamDirectoryGroupCell].row];
+        VDirectoryViewController *sos = [VDirectoryViewController streamDirectoryForStream:stream dependencyManager:self.dependencyManager];
         sos.dependencyManager = self.dependencyManager;
         [self.navigationController pushViewController:sos animated:YES];
     }
     else
     {
-        //Check if we've selected a bit of content or another stream to present in a netflixCollectionViewController
-        VStreamItem *item = vNetflixDirectoryItemCell.streamItem;
+        //Check if we've selected a bit of content or another stream to present in a VDirectoryViewController
+        VStreamItem *item = VStreamDirectoryGroupCell.streamItem;
         if ([item isKindOfClass:[VStream class]] && [((VStream *)item) onlyContainsSequences])
         {
             VStreamCollectionViewController *streamCollection = [VStreamCollectionViewController streamViewControllerForStream:(VStream *)item];
@@ -191,7 +192,7 @@ static CGFloat const kDirectoryInset = 5.0f;
         }
         else if ([item isKindOfClass:[VStream class]])
         {
-            VNetflixDirectoryViewController *sos = [VNetflixDirectoryViewController streamDirectoryForStream:(VStream *)item dependencyManager:self.dependencyManager];
+            VDirectoryViewController *sos = [VDirectoryViewController streamDirectoryForStream:(VStream *)item dependencyManager:self.dependencyManager];
             sos.dependencyManager = self.dependencyManager;
             [self.navigationController pushViewController:sos animated:YES];
         }

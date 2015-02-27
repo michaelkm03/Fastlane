@@ -714,10 +714,10 @@
 		DBF8B4B11A79F8F300CFFD47 /* VUserSearchResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBF8B4B01A79F8F300CFFD47 /* VUserSearchResultsViewController.m */; };
 		DBF8B4B41A79F91300CFFD47 /* VTagsSearchResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBF8B4B31A79F91300CFFD47 /* VTagsSearchResultsViewController.m */; };
 		F015BEF31A8A8392008A0D67 /* VUserTaggingTextStorageTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F015BEF21A8A8392008A0D67 /* VUserTaggingTextStorageTests.m */; };
-		F028CF4E1A97A6B0005EE2B5 /* VNetflixDirectoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F028CF4D1A97A6B0005EE2B5 /* VNetflixDirectoryViewController.m */; };
-		F028CF531A97B172005EE2B5 /* VNetflixDirectoryItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F028CF521A97B172005EE2B5 /* VNetflixDirectoryItemCell.m */; };
-		F028CF551A97B261005EE2B5 /* VStreamNetflixDirectoryItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F028CF541A97B261005EE2B5 /* VStreamNetflixDirectoryItemCell.xib */; };
-		F028CF591A97C3EE005EE2B5 /* VNetflixDirectoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F028CF581A97C3EE005EE2B5 /* VNetflixDirectoryViewController.xib */; };
+		F028CF4E1A97A6B0005EE2B5 /* VDirectoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F028CF4D1A97A6B0005EE2B5 /* VDirectoryViewController.m */; };
+		F028CF531A97B172005EE2B5 /* VStreamDirectoryGroupCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F028CF521A97B172005EE2B5 /* VStreamDirectoryGroupCell.m */; };
+		F028CF551A97B261005EE2B5 /* VStreamDirectoryGroupCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F028CF541A97B261005EE2B5 /* VStreamDirectoryGroupCell.xib */; };
+		F028CF591A97C3EE005EE2B5 /* VDirectoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F028CF581A97C3EE005EE2B5 /* VDirectoryViewController.xib */; };
 		F05AA9821A83F6E3002F8917 /* VInlineSearchTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F05AA97F1A83F6E3002F8917 /* VInlineSearchTableViewController.m */; };
 		F0804A6B1A8916BC00A0E1A1 /* VTagDictionaryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0804A6A1A8916BC00A0E1A1 /* VTagDictionaryTests.m */; };
 		F0804A6D1A892A5800A0E1A1 /* VTagStringFormatterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0804A6C1A892A5800A0E1A1 /* VTagStringFormatterTests.m */; };
@@ -1987,12 +1987,12 @@
 		E8193ED8CA9746EB7E3D7AD2 /* Pods-victorious-test.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious-test.qa.xcconfig"; path = "Pods/Target Support Files/Pods-victorious-test/Pods-victorious-test.qa.xcconfig"; sourceTree = "<group>"; };
 		EDFC6598311E32933A2C83A7 /* Pods-test.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-test.staging.xcconfig"; path = "Pods/Target Support Files/Pods-test/Pods-test.staging.xcconfig"; sourceTree = "<group>"; };
 		F015BEF21A8A8392008A0D67 /* VUserTaggingTextStorageTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUserTaggingTextStorageTests.m; sourceTree = "<group>"; };
-		F028CF4C1A97A6B0005EE2B5 /* VNetflixDirectoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNetflixDirectoryViewController.h; sourceTree = "<group>"; };
-		F028CF4D1A97A6B0005EE2B5 /* VNetflixDirectoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNetflixDirectoryViewController.m; sourceTree = "<group>"; };
-		F028CF511A97B172005EE2B5 /* VNetflixDirectoryItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNetflixDirectoryItemCell.h; sourceTree = "<group>"; };
-		F028CF521A97B172005EE2B5 /* VNetflixDirectoryItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNetflixDirectoryItemCell.m; sourceTree = "<group>"; };
-		F028CF541A97B261005EE2B5 /* VStreamNetflixDirectoryItemCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VStreamNetflixDirectoryItemCell.xib; sourceTree = "<group>"; };
-		F028CF581A97C3EE005EE2B5 /* VNetflixDirectoryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VNetflixDirectoryViewController.xib; sourceTree = "<group>"; };
+		F028CF4C1A97A6B0005EE2B5 /* VDirectoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDirectoryViewController.h; sourceTree = "<group>"; };
+		F028CF4D1A97A6B0005EE2B5 /* VDirectoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDirectoryViewController.m; sourceTree = "<group>"; };
+		F028CF511A97B172005EE2B5 /* VStreamDirectoryGroupCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamDirectoryGroupCell.h; sourceTree = "<group>"; };
+		F028CF521A97B172005EE2B5 /* VStreamDirectoryGroupCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamDirectoryGroupCell.m; sourceTree = "<group>"; };
+		F028CF541A97B261005EE2B5 /* VStreamDirectoryGroupCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VStreamDirectoryGroupCell.xib; sourceTree = "<group>"; };
+		F028CF581A97C3EE005EE2B5 /* VDirectoryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VDirectoryViewController.xib; sourceTree = "<group>"; };
 		F05AA97E1A83F6E3002F8917 /* VInlineSearchTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInlineSearchTableViewController.h; sourceTree = "<group>"; };
 		F05AA97F1A83F6E3002F8917 /* VInlineSearchTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInlineSearchTableViewController.m; sourceTree = "<group>"; };
 		F05AA9841A8401D0002F8917 /* VUserTaggingTextStorageDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUserTaggingTextStorageDelegate.h; sourceTree = "<group>"; };
@@ -2637,9 +2637,9 @@
 				03B83B5819E0988200DC04E4 /* Upload Progress View */,
 				A7AEF9931A83F1C300A3D3A0 /* VAbstractStreamCollectionViewController.h */,
 				A7AEF9941A83F1C300A3D3A0 /* VAbstractStreamCollectionViewController.m */,
-				F028CF4C1A97A6B0005EE2B5 /* VNetflixDirectoryViewController.h */,
-				F028CF4D1A97A6B0005EE2B5 /* VNetflixDirectoryViewController.m */,
-				F028CF581A97C3EE005EE2B5 /* VNetflixDirectoryViewController.xib */,
+				F028CF4C1A97A6B0005EE2B5 /* VDirectoryViewController.h */,
+				F028CF4D1A97A6B0005EE2B5 /* VDirectoryViewController.m */,
+				F028CF581A97C3EE005EE2B5 /* VDirectoryViewController.xib */,
 				0314D44519B46B5E00FA363C /* VEphemeralTimerView.h */,
 				0314D44619B46B5E00FA363C /* VEphemeralTimerView.m */,
 				DB2A495919DF455D00CB687B /* VEphemeralTimerView.xib */,
@@ -3606,8 +3606,6 @@
 				A7AEF96E1A83F1C300A3D3A0 /* VDirectoryItemCell.m */,
 				F098D80B1A9C179C0003B6D4 /* VSeeMoreDirectoryItemCell.h */,
 				F098D80C1A9C179C0003B6D4 /* VSeeMoreDirectoryItemCell.m */,
-				F028CF511A97B172005EE2B5 /* VNetflixDirectoryItemCell.h */,
-				F028CF521A97B172005EE2B5 /* VNetflixDirectoryItemCell.m */,
 				A7AEF9731A83F1C300A3D3A0 /* VSequenceActionController.h */,
 				A7AEF9741A83F1C300A3D3A0 /* VSequenceActionController.m */,
 				A7AEF9751A83F1C300A3D3A0 /* VStreamCellActionView.h */,
@@ -3627,8 +3625,10 @@
 				A7AEF9831A83F1C300A3D3A0 /* VStreamCollectionCellWebContent.h */,
 				A7AEF9841A83F1C300A3D3A0 /* VStreamCollectionCellWebContent.m */,
 				A7AEF9851A83F1C300A3D3A0 /* VStreamCollectionCellWebContent.xib */,
+				F028CF511A97B172005EE2B5 /* VStreamDirectoryGroupCell.h */,
+				F028CF521A97B172005EE2B5 /* VStreamDirectoryGroupCell.m */,
+				F028CF541A97B261005EE2B5 /* VStreamDirectoryGroupCell.xib */,
 				A7AEF9861A83F1C300A3D3A0 /* VStreamDirectoryItemCell.xib */,
-				F028CF541A97B261005EE2B5 /* VStreamNetflixDirectoryItemCell.xib */,
 				F098D80E1A9C17AF0003B6D4 /* VStreamSeeMoreDirectoryItemCell.xib */,
 			);
 			path = Cells;
@@ -4729,7 +4729,7 @@
 				DB2A494319DF44CF00CB687B /* settings.storyboard in Resources */,
 				036F38691A0C4DEA0014DF66 /* DeliusUnicase-Bold.ttf in Resources */,
 				A7AEF9AF1A83F1C300A3D3A0 /* VStreamDirectoryItemCell.xib in Resources */,
-				F028CF591A97C3EE005EE2B5 /* VNetflixDirectoryViewController.xib in Resources */,
+				F028CF591A97C3EE005EE2B5 /* VDirectoryViewController.xib in Resources */,
 				0390085419F38BC600FD7EDF /* ActionSheet.storyboard in Resources */,
 				DB2A493B19DF449400CB687B /* Profile.storyboard in Resources */,
 				03C1858319B42C9100E27D05 /* Roboto-Bold.ttf in Resources */,
@@ -4753,7 +4753,7 @@
 				A7AEF9A41A83F1C300A3D3A0 /* VStreamCellHeaderView-C.xib in Resources */,
 				DBAD88FE19F5B83B00D678A0 /* OpenXMSDKResources.bundle in Resources */,
 				0390086C19F39F6A00FD7EDF /* VConversationCell.xib in Resources */,
-				F028CF551A97B261005EE2B5 /* VStreamNetflixDirectoryItemCell.xib in Resources */,
+				F028CF551A97B261005EE2B5 /* VStreamDirectoryGroupCell.xib in Resources */,
 				03C1857A19B42C9100E27D05 /* Impact.ttf in Resources */,
 				BE88FF801A0005FF0064AB28 /* VMarqueeCollectionCell.xib in Resources */,
 				D8E39BE019CB7C80007FD86A /* VContentBackgroundSupplementaryView.xib in Resources */,
@@ -5041,7 +5041,7 @@
 				DBB1A04A1A0025F600E16D62 /* VAdViewController.m in Sources */,
 				DBF77A291A416A57005BF1BE /* VProfileFollowingContainerViewController.m in Sources */,
 				DBAD6C9F1A2FD7B700AB5A4B /* VTremorAdViewController.m in Sources */,
-				F028CF4E1A97A6B0005EE2B5 /* VNetflixDirectoryViewController.m in Sources */,
+				F028CF4E1A97A6B0005EE2B5 /* VDirectoryViewController.m in Sources */,
 				0314D05E19B4663C00FA363C /* UINavigationController+RotationMethodForwarding.m in Sources */,
 				D825F4EE1A44AAEB00A196FB /* VCapitalizingTextStorage.m in Sources */,
 				D836884419C3718A00070F22 /* VBaseSupplementaryView.m in Sources */,
@@ -5264,7 +5264,7 @@
 				A70FC1251A31207400F5BBDE /* VVoteSettings.m in Sources */,
 				A70FC0F71A2D012E00F5BBDE /* VNotificationSettingsTableRow.m in Sources */,
 				A7B514531A4517A80074282F /* VSwipeCollectionViewCell.m in Sources */,
-				F028CF531A97B172005EE2B5 /* VNetflixDirectoryItemCell.m in Sources */,
+				F028CF531A97B172005EE2B5 /* VStreamDirectoryGroupCell.m in Sources */,
 				BEDF0FC918DBCB5500750EF6 /* VVoteType+Fetcher.m in Sources */,
 				A7E2EFCB1A49001000372547 /* VEditCommentViewController.m in Sources */,
 				A7EECAD81A37802500A8BAE1 /* VPurchaseCell.m in Sources */,

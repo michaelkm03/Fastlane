@@ -28,7 +28,7 @@
 #import "VInboxContainerViewController.h"
 #import "VUserProfileNavigationDestination.h"
 #import "VAuthorizationViewControllerFactory.h"
-#import "VNetflixDirectoryViewController.h"
+#import "VDirectoryViewController.h"
 #import "VDiscoverContainerViewController.h"
 
 #import "VStreamCollectionViewController.h"

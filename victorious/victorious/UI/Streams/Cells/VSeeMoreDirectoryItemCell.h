@@ -16,4 +16,5 @@ extern NSString * const VSeeMoreDirectoryItemCellNameStream;
 
 @property (nonatomic, strong) UIColor *borderColor;
 @property (nonatomic, weak) IBOutlet UILabel *seeMoreLabel;
+
 @end

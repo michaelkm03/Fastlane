@@ -1,5 +1,5 @@
 //
-//  VNetflixDirectoryItemCell.h
+//  VStreamDirectoryGroupCell.h
 //  victorious
 //
 //  Created by Sharif Ahmed on 2/20/15.
@@ -8,18 +8,17 @@
 
 #import "VBaseCollectionViewCell.h"
 
-@class VStreamItem, VNetflixDirectoryItemCell;
+@class VStreamItem, VStreamDirectoryGroupCell;
 
-extern NSString * const VNetflixDirectoryItemCellNameStream;
-extern CGFloat const kNetflixDirectoryItemCellInset;
+extern CGFloat const kStreamDirectoryGroupCellInset;
 
-@protocol VNetflixDirectoryItemCellDelegate <NSObject>
+@protocol VStreamDirectoryGroupCellDelegate <NSObject>
 
-- (void)netflixDirectoryItemCell:(VNetflixDirectoryItemCell *)vNetflixDirectoryItemCell didSelectItemAtIndexPath:(NSIndexPath *)indexPath;
+- (void)streamDirectoryGroupCell:(VStreamDirectoryGroupCell *)VStreamDirectoryGroupCell didSelectItemAtIndexPath:(NSIndexPath *)indexPath;
 
 @end
 
-@interface VNetflixDirectoryItemCell : VBaseCollectionViewCell
+@interface VStreamDirectoryGroupCell : VBaseCollectionViewCell
 
 /**
  *  The desired height for a directory item cell that has space for a stack-style extension at the bottom.
@@ -39,7 +38,7 @@ extern CGFloat const kNetflixDirectoryItemCellInset;
 /**
     The item cell delegate that will respond to selections made within the collectionView contained in this cell
  */
-@property (nonatomic, weak) id <VNetflixDirectoryItemCellDelegate> delegate;
+@property (nonatomic, weak) id <VStreamDirectoryGroupCellDelegate> delegate;
 
 /**
  A convenient flag for checking if this row is of stream of stream cells or just a row of stream cells
