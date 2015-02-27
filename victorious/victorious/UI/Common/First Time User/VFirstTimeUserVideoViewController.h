@@ -10,7 +10,7 @@
 
 @class VDependencyManager;
 
-@interface VWelcomeVideoViewController : UIViewController
+@interface VFirstTimeUserVideoViewController : UIViewController
 
 /**
  Factory method to instantiate the VFirstTimeUserVideoViewController
@@ -19,19 +19,18 @@
  
  @return Instance of VFirstTimeUserVideoViewController
  */
-+ (VWelcomeVideoViewController *)instantiateFromStoryboard:(NSString *)storyboardName;
++ (VFirstTimeUserVideoViewController *)instantiateFromStoryboard:(NSString *)storyboardName;
 
 /**
  Class method that reports if the Welcome video has been shown.
  
  @return BOOL indicating if user has previously viewed the app welcome video or not
  */
-+ (BOOL)hasBeenShown;
+- (BOOL)hasBeenShown;
 
 /**
  Image used for blurred background
  */
 @property (nonatomic, strong) UIImage *imageSnapshot;
-
 
 @end

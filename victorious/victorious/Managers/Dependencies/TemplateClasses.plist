@@ -53,6 +53,6 @@
 	<key>discover.screen</key>
 	<string>VDiscoverContainerViewController</string>
 	<key>lightweight.contentView</key>
-	<string>VWelcomeVideoViewController</string>
+	<string>VFirstTimeUserVideoViewController</string>
 </dict>
 </plist>

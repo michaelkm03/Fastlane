@@ -20,7 +20,7 @@
 #import "VComment.h"
 #import "VTracking.h"
 #import "VWebBrowserViewController.h"
-#import "VWelcomeVideoViewController.h"
+#import "VFirstTimeUserVideoViewController.h"
 
 #import <MBProgressHUD.h>
 
@@ -55,7 +55,25 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
 {
     [super viewDidAppear:animated];
     
-    VLog(@"VScaffoldViewController did appear");
+    // Show the First Time User Video if it hasn't been shown yet
+    VFirstTimeUserVideoViewController *myVC = [self.dependencyManager templateValueOfType:[VFirstTimeUserVideoViewController class] forKey:VScaffoldViewControllerWelcomeUserViewComponentKey];
+    if ([myVC hasBeenShown])
+    {
+        double delayInSeconds = 1.5;
+        dispatch_time_t showTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+        dispatch_after(showTime, dispatch_get_main_queue(), ^(void)
+                       {
+                           // Grab a screenshot of the current view
+                           UIGraphicsBeginImageContext(self.view.bounds.size);
+                           [self.view drawViewHierarchyInRect:self.view.bounds afterScreenUpdates:YES];
+                           UIImage *screenGrab = UIGraphicsGetImageFromCurrentImageContext();
+                           myVC.imageSnapshot = screenGrab;
+                           UIGraphicsEndImageContext();
+
+                           // Present the first-time user video view controller
+                           [self presentViewController:myVC animated:YES completion:nil];
+                       });
+    }
 }
 
 #pragma mark - Content View

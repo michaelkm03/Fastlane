@@ -1,19 +1,19 @@
 //
-//  VWelcomeVideoViewController.m
+//  VFirstTimeUserVideoViewController.m
 //  victorious
 //
 //  Created by Lawrence Leach on 2/24/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VWelcomeVideoViewController.h"
+#import "VFirstTimeUserVideoViewController.h"
 #import "VButton.h"
 #import "VDependencyManager.h"
 #import "UIImage+ImageEffects.h"
 
 static NSString * const VPlayFirstTimeUserVideo = @"com.getvictorious.settings.playWelcomeVideo";
 
-@interface VWelcomeVideoViewController ()
+@interface VFirstTimeUserVideoViewController ()
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, weak) IBOutlet VButton *getStartedButton;
@@ -21,24 +21,24 @@ static NSString * const VPlayFirstTimeUserVideo = @"com.getvictorious.settings.p
 
 @end
 
-@implementation VWelcomeVideoViewController
+@implementation VFirstTimeUserVideoViewController
 
 #pragma mark - Initializers
 
-+ (VWelcomeVideoViewController *)instantiateFromStoryboard:(NSString *)storyboardName
++ (VFirstTimeUserVideoViewController *)instantiateFromStoryboard:(NSString *)storyboardName
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:storyboardName bundle:[NSBundle bundleForClass:[self class]]];
-    return [storyboard instantiateViewControllerWithIdentifier:@"WelcomeVideo"];
+    return [storyboard instantiateViewControllerWithIdentifier:@"firstTimeUserVideo"];
 }
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    VWelcomeVideoViewController *firstTimeVC = [self instantiateFromStoryboard:@"WelcomeVideo"];
+    VFirstTimeUserVideoViewController *firstTimeVC = [self instantiateFromStoryboard:@"FirstTimeVideo"];
     firstTimeVC.dependencyManager = dependencyManager;
     return firstTimeVC;
 }
 
-+ (BOOL)hasBeenShown
+- (BOOL)hasBeenShown
 {
     return [[[NSUserDefaults standardUserDefaults] valueForKey:VPlayFirstTimeUserVideo] boolValue];
 }
@@ -63,7 +63,17 @@ static NSString * const VPlayFirstTimeUserVideo = @"com.getvictorious.settings.p
     [super viewDidAppear:animated];
     
     // Once shown, don't show again
-    //[self savePlaybackDefaults];
+    [self savePlaybackDefaults];
+}
+
+- (BOOL)prefersStatusBarHidden
+{
+    return YES;
+}
+
+- (BOOL)shouldAutorotate
+{
+    return NO;
 }
 
 #pragma mark - Setters
@@ -72,7 +82,8 @@ static NSString * const VPlayFirstTimeUserVideo = @"com.getvictorious.settings.p
 {
     _imageSnapshot = imageSnapshot;
     
-    self.backgroundImageView.image = [imageSnapshot applyDarkEffect];
+    UIImage *image = [_imageSnapshot applyDarkEffect];
+    self.backgroundImageView.image = image;
 }
 
 #pragma mark - Close Button Action
