@@ -9,6 +9,7 @@
 #import "VApplicationTracking.h"
 #import "VObjectManager+Private.h"
 #import "VTrackingURLRequest.h"
+#import "VURLMacroReplacement.h"
 
 static NSString * const kMacroBookendToken           = @"%%";
 
@@ -30,7 +31,7 @@ static NSString * const kMacroSessionTime            = @"%%SESSION_TIME%%";
 
 #define APPLICATION_TRACKING_LOGGING_ENABLED 0
 
-#if DEBUG && APPLICATION_TRACKING_LOGGING_ENABLED
+#if APPLICATION_TRACKING_LOGGING_ENABLED
 #warning Tracking logging is enabled. Please remember to disable it when you're done debugging.
 #endif
 
@@ -83,20 +84,6 @@ static NSString * const kMacroSessionTime            = @"%%SESSION_TIME%%";
     return dateFormatter;
 }
 
-- (NSString *)percentEncodedUrlString:(NSString *)originalUrl
-{
-    if ( !originalUrl )
-    {
-        return nil;
-    }
-    
-    NSString *output = originalUrl;
-    output = [output stringByReplacingOccurrencesOfString:@" " withString:@"%20"];
-    output = [output stringByReplacingOccurrencesOfString:@":" withString:@"%3A"];
-    output = [output stringByReplacingOccurrencesOfString:@"-" withString:@"%2D"];
-    return output;
-}
-
 - (NSInteger)trackEventWithUrls:(NSArray *)urls andParameters:(NSDictionary *)parameters
 {
     if ( ![self validateUrls:urls]  )
@@ -131,7 +118,7 @@ static NSString * const kMacroSessionTime            = @"%%SESSION_TIME%%";
     
     NSString *urlWithMacrosReplaced = [self stringByReplacingMacros:self.parameterMacroMapping
                                                            inString:url
-                                         withCorrspondingParameters:parameters];
+                                        withCorrespondingParameters:parameters];
     if ( !urlWithMacrosReplaced )
     {
         return NO;
@@ -158,73 +145,51 @@ static NSString * const kMacroSessionTime            = @"%%SESSION_TIME%%";
     return [VObjectManager sharedManager];
 }
 
-- (NSString *)stringByReplacingMacros:(NSDictionary *)macros inString:(NSString *)originalString withCorrspondingParameters:(NSDictionary *)parameters
+- (NSString *)stringByReplacingMacros:(NSDictionary *)macros inString:(NSString *)originalString withCorrespondingParameters:(NSDictionary *)parameters
 {
-    // Optimization
-    if ( !parameters|| parameters.allKeys.count == 0 )
+    NSMutableDictionary *replacementsDictionary = [[NSMutableDictionary alloc] initWithCapacity:parameters.count];
+    for (NSString *parameter in parameters.keyEnumerator)
     {
-        return originalString;
-    }
-    
-    __block NSString *output = originalString;
-    
-    [macros enumerateKeysAndObjectsUsingBlock:^(NSString *macroKey, NSString *macroValue, BOOL *stop)
-    {
-        // For each macro, find a value in the parameters dictionary
-        id paramValue = parameters[ macroKey ];
-        NSString *stringWithNextMacro = [self stringFromString:output byReplacingString:macroValue withValue:paramValue ?: @""];
-        if ( stringWithNextMacro != nil )
+        NSString *macro = self.parameterMacroMapping[parameter];
+        if ( macro != nil )
         {
-            output = stringWithNextMacro;
+            replacementsDictionary[macro] = [self stringFromParameterValue:parameters[parameter]];
         }
-    }];
-    
-    while ( [output rangeOfString:kMacroBookendToken].location != NSNotFound )
-    {
-        NSRange startRange = [output rangeOfString:kMacroBookendToken];
-        NSString *nextSegment = [output substringFromIndex:startRange.location + startRange.length];
-        NSRange endRange = [nextSegment rangeOfString:kMacroBookendToken];
-        NSRange totalRange = NSMakeRange( startRange.location, endRange.location + endRange.length + kMacroBookendToken.length );
-        output = [output stringByReplacingCharactersInRange:totalRange withString:@""];
     }
     
-    return output;
+    return [VURLMacroReplacement urlByReplacingMacrosFromDictionary:replacementsDictionary inURLString:originalString];
 }
 
-- (NSString *)stringFromString:(NSString *)originalString byReplacingString:(NSString *)stringToReplace withValue:(id)value
+- (NSString *)stringFromParameterValue:(id)value
 {
-    NSParameterAssert( originalString && originalString.length > 0 );
-    NSParameterAssert( stringToReplace && stringToReplace.length > 0 );
-    
-    NSString *replacementValue = nil;
+    NSString *stringValue = nil;
     
     if ( [value isKindOfClass:[NSDate class]] )
     {
-        replacementValue = [self.dateFormatter stringFromDate:(NSDate *)value];
-        replacementValue = [self percentEncodedUrlString:replacementValue];
+        stringValue = [self.dateFormatter stringFromDate:(NSDate *)value];
     }
     else if ( [value isKindOfClass:[NSNumber class]] )
     {
         if ( CFNumberIsFloatType( (CFNumberRef)value ) )
         {
-            replacementValue = [NSString stringWithFormat:@"%.2f", ((NSNumber *)value).floatValue];
+            stringValue = [NSString stringWithFormat:@"%.2f", ((NSNumber *)value).floatValue];
         }
         else
         {
-            replacementValue = [NSString stringWithFormat:@"%i", ((NSNumber *)value).intValue];
+            stringValue = [NSString stringWithFormat:@"%i", ((NSNumber *)value).intValue];
         }
     }
     else if ( [value isKindOfClass:[NSString class]] )
     {
-        replacementValue = value;
+        stringValue = value;
     }
     
-    if ( !replacementValue )
+    if ( !stringValue )
     {
         return nil;
     }
     
-    return [originalString stringByReplacingOccurrencesOfString:stringToReplace withString:replacementValue];
+    return stringValue;
 }
 
 - (void)sendRequest:(NSURLRequest *)request
@@ -238,7 +203,7 @@ static NSString * const kMacroSessionTime            = @"%%SESSION_TIME%%";
     NSError *connectionError = nil;
     [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&connectionError];
     
-#if DEBUG && APPLICATION_TRACKING_LOGGING_ENABLED
+#if APPLICATION_TRACKING_LOGGING_ENABLED
     if ( connectionError )
     {
         VLog( @"Applicaiton Tracking :: ERROR with URL %@ :: %@", request.URL.absoluteString, [connectionError localizedDescription] );
@@ -257,7 +222,7 @@ static NSString * const kMacroSessionTime            = @"%%SESSION_TIME%%";
     NSURL *url = [NSURL URLWithString:urlString];
     if ( url == nil )
     {
-#if DEBUG && APPLICATION_TRACKING_LOGGING_ENABLED
+#if APPLICATION_TRACKING_LOGGING_ENABLED
         VLog( @"Applicaiton Tracking :: ERROR :: Invalid URL %@.", urlString );
 #endif
         return nil;
