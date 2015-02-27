@@ -149,7 +149,7 @@
 
 - (void)didCancelTouchDownAtLocation:(CGPoint)location
 {
-    if ( self.selectedTag )
+    if ( self.selectedTag != nil )
     {
         [self.textStorage setAttributes:self.selectedTag.tagStringAttributes range:self.highlightRange];
         self.selectedTag = nil;
