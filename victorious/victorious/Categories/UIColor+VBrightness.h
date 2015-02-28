@@ -26,8 +26,4 @@
  */
 - (UIColor *)v_colorDarkenedBy:(CGFloat)amount;
 
-- (UIColor *)v_colorLightenedByRelativeAmount:(CGFloat)amount;
-
-- (UIColor *)v_colorDarkenedByRelativeAmount:(CGFloat)amount;
-
 @end

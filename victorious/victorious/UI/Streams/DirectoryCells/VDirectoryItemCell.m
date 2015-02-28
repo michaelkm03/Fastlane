@@ -70,7 +70,7 @@ const CGFloat kDirectoryItemBaseWidth = 145.0f;
     }
     
     [self.previewImageView fadeInImageAtURL:[NSURL URLWithString:[self.streamItem.previewImagePaths firstObject]]
-                           placeholderImage:[UIImage resizeableImageWithColor:[UIColor redColor]]];
+                           placeholderImage:nil];
     
     BOOL isStack = ([streamItem isKindOfClass:[VStream class]] && [((VStream *)streamItem) isStreamOfStreams]);
     

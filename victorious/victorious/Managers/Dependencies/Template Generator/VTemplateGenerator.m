@@ -38,6 +38,7 @@ static NSString * const kUserSpecificKey = @"isUserSpecific";
 // Directory Components
 static NSString * const kBackgroundColor = @"color.background";
 static NSString * const kTextColor = @"color.text";
+static NSString * const kAccentColor = @"color.accent";
 static NSString * const kTextColorAccent = @"color.text.accent";
 static NSString * const kCellComponentDirectoryGroup = @"cell.directory.group";
 static NSString * const kCellComponentDirectoryItem = @"cell.directory.item";
@@ -501,51 +502,18 @@ static NSString * const kVideoMuted = @"videoMuted";
     NSNumber *channelsEnabled = [self.dataFromInitCall valueForKeyPath:@"experiments.channels_enabled"];
     if ([channelsEnabled isKindOfClass:[NSNumber class]] && [channelsEnabled boolValue])
     {
-        return @{
-            kIdentifierKey: @"Menu Channels",
-                kTitleKey: NSLocalizedString(@"Channels", @""),
-                kDestinationKey: @{
-                    kClassNameKey: @"streamDirectory.screen",
-                        kTitleKey: NSLocalizedString(@"Channels", nil),
-                        VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/detail_list_by_stream/directory",
-                        kBackgroundColor: @{
-                            kRedKey: @20,
-                            kGreenKey: @20,
-                            kBlueKey: @20,
-                            kAlphaKey: @1
-                        },
-                        kCellComponentDirectoryGroup:
-                        @{
-                                kTextColor: @{
-                                    kRedKey: @128,
-                                    kGreenKey: @128,
-                                    kBlueKey: @128,
-                                    kAlphaKey: @1
-                                },
-                                kCellComponentDirectoryItem:
-                                    @{
-                                        kTextColor: @{
-                                            kRedKey: @150,
-                                            kGreenKey: @150,
-                                            kBlueKey: @150,
-                                            kAlphaKey: @1
-                                        },
-                                        kTextColorAccent: @{
-                                            kRedKey: @255,
-                                            kGreenKey: @255,
-                                            kBlueKey: @255,
-                                            kAlphaKey: @1
-                                        },
-                                        kBackgroundColor: @{
-                                            kRedKey: @40,
-                                            kGreenKey: @40,
-                                            kBlueKey: @40,
-                                            kAlphaKey: @1
-                                        },
-                                     }
-                                 }
-                         }
-                 };
+        NSDictionary *componentBase = @{ kIdentifierKey: @"Menu Channels",
+                                         kTitleKey: NSLocalizedString(@"Channels", @""),
+                                         kDestinationKey: @{
+                                                 kClassNameKey: @"streamDirectory.screen",
+                                                 kTitleKey: NSLocalizedString(@"Channels", nil),
+                                                 VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/detail_list_by_stream/directory",
+                                                 }
+                                         };
+        
+        NSMutableDictionary *completeComponent = [[NSMutableDictionary alloc] initWithDictionary:componentBase];
+        [completeComponent addEntriesFromDictionary:[self directoryLightTemplate]];
+        return [NSDictionary dictionaryWithDictionary:completeComponent];
     }
     else
     {
@@ -571,6 +539,102 @@ static NSString * const kVideoMuted = @"videoMuted";
             }
         };
     }
+}
+
+- (NSDictionary *)directoryLightTemplate
+{
+    return @{ kBackgroundColor:
+                  @{
+                      kRedKey: @238,
+                      kGreenKey: @238,
+                      kBlueKey: @238,
+                      kAlphaKey: @1
+                      },
+              kCellComponentDirectoryGroup:
+                  @{
+                      kTextColor: @{
+                              kRedKey: @128,
+                              kGreenKey: @128,
+                              kBlueKey: @128,
+                              kAlphaKey: @1
+                              },
+                      kCellComponentDirectoryItem:
+                          @{
+                              kTextColorAccent: @{ //< secodary text (quantity/see more arrow)
+                                      kRedKey: @153,
+                                      kGreenKey: @153,
+                                      kBlueKey: @153,
+                                      kAlphaKey: @1
+                                      },
+                              kTextColor: @{
+                                      kRedKey: @51,
+                                      kGreenKey: @51,
+                                      kBlueKey: @51,
+                                      kAlphaKey: @1
+                                      },
+                              kAccentColor: @{ //< border color
+                                      kRedKey: @204,
+                                      kGreenKey: @204,
+                                      kBlueKey: @204,
+                                      kAlphaKey: @1
+                                      },
+                              kBackgroundColor: @{
+                                      kRedKey: @255,
+                                      kGreenKey: @255,
+                                      kBlueKey: @255,
+                                      kAlphaKey: @1
+                                      },
+                              }
+                      }
+              };
+}
+
+- (NSDictionary *)directoryDarkTemplate
+{
+    return @{ kBackgroundColor:
+                  @{
+                      kRedKey: @20,
+                      kGreenKey: @20,
+                      kBlueKey: @20,
+                      kAlphaKey: @1
+                      },
+              kCellComponentDirectoryGroup:
+                  @{
+                      kTextColor: @{
+                              kRedKey: @128,
+                              kGreenKey: @128,
+                              kBlueKey: @128,
+                              kAlphaKey: @1
+                              },
+                      kCellComponentDirectoryItem:
+                          @{
+                              kTextColorAccent: @{ //< secodary text (quantity/see more arrow)
+                                      kRedKey: @150,
+                                      kGreenKey: @150,
+                                      kBlueKey: @150,
+                                      kAlphaKey: @1
+                                      },
+                              kTextColor: @{
+                                      kRedKey: @255,
+                                      kGreenKey: @255,
+                                      kBlueKey: @255,
+                                      kAlphaKey: @1
+                                      },
+                              kAccentColor: @{ //< border color
+                                      kRedKey: @0,
+                                      kGreenKey: @0,
+                                      kBlueKey: @0,
+                                      kAlphaKey: @1
+                                      },
+                              kBackgroundColor: @{
+                                      kRedKey: @40,
+                                      kGreenKey: @40,
+                                      kBlueKey: @40,
+                                      kAlphaKey: @1
+                                      },
+                              }
+                      }
+              };
 }
 
 @end

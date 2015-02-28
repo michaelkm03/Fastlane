@@ -145,6 +145,12 @@ NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamColl
     return [[[VObjectManager sharedManager] paginationManager] isLoadingFilter:filter];
 }
 
+- (BOOL)canLoadNextPage
+{
+    VAbstractFilter *filter = (VAbstractFilter *)[[VObjectManager sharedManager] filterForStream:self.stream];
+    return [filter canLoadPageType:VPageTypeNext];
+}
+
 - (NSInteger)sectionIndexForContent
 {
     if ( self.hasHeaderCell )
@@ -195,7 +201,7 @@ NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamColl
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView
            viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
-{
+{    
     if ( [self.delegate respondsToSelector:@selector(shouldDisplayActivityViewFooterForCollectionView:inSection:)] &&
         [self.delegate shouldDisplayActivityViewFooterForCollectionView:collectionView inSection:indexPath.section] )
     {

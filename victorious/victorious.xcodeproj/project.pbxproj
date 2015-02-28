@@ -366,7 +366,6 @@
 		A7299E7B1AA1099800B6BC1F /* VDirectoryGroupCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7299E751AA1099800B6BC1F /* VDirectoryGroupCell.xib */; };
 		A7299E7C1AA1099800B6BC1F /* VDirectoryItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7299E761AA1099800B6BC1F /* VDirectoryItemCell.xib */; };
 		A7299E7D1AA1099800B6BC1F /* VDirectorySeeMoreItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7299E771AA1099800B6BC1F /* VDirectorySeeMoreItemCell.xib */; };
-		A7299E861AA1485B00B6BC1F /* VDirectoryGroupViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A7299E851AA1485B00B6BC1F /* VDirectoryGroupViewModel.m */; };
 		A733D8FC1A23D0980053E9F1 /* VNotificationSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = A733D8FB1A23D0980053E9F1 /* VNotificationSettings.m */; };
 		A733D8FF1A23D0C70053E9F1 /* VNotificationSettings+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A733D8FE1A23D0C70053E9F1 /* VNotificationSettings+RestKit.m */; };
 		A73A877D1A76BD71008C6355 /* VStreamWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A73A877C1A76BD71008C6355 /* VStreamWebViewController.m */; };
@@ -1330,8 +1329,6 @@
 		A7299E751AA1099800B6BC1F /* VDirectoryGroupCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VDirectoryGroupCell.xib; sourceTree = "<group>"; };
 		A7299E761AA1099800B6BC1F /* VDirectoryItemCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VDirectoryItemCell.xib; sourceTree = "<group>"; };
 		A7299E771AA1099800B6BC1F /* VDirectorySeeMoreItemCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VDirectorySeeMoreItemCell.xib; sourceTree = "<group>"; };
-		A7299E841AA1485B00B6BC1F /* VDirectoryGroupViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDirectoryGroupViewModel.h; sourceTree = "<group>"; };
-		A7299E851AA1485B00B6BC1F /* VDirectoryGroupViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDirectoryGroupViewModel.m; sourceTree = "<group>"; };
 		A733D8FA1A23D0980053E9F1 /* VNotificationSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNotificationSettings.h; sourceTree = "<group>"; };
 		A733D8FB1A23D0980053E9F1 /* VNotificationSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNotificationSettings.m; sourceTree = "<group>"; };
 		A733D8FD1A23D0C70053E9F1 /* VNotificationSettings+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VNotificationSettings+RestKit.h"; sourceTree = "<group>"; };
@@ -3389,8 +3386,6 @@
 		A7299E6E1AA1099800B6BC1F /* DirectoryCells */ = {
 			isa = PBXGroup;
 			children = (
-				A7299E841AA1485B00B6BC1F /* VDirectoryGroupViewModel.h */,
-				A7299E851AA1485B00B6BC1F /* VDirectoryGroupViewModel.m */,
 				A7299E731AA1099800B6BC1F /* VDirectoryGroupCell.h */,
 				A7299E741AA1099800B6BC1F /* VDirectoryGroupCell.m */,
 				A7299E751AA1099800B6BC1F /* VDirectoryGroupCell.xib */,
@@ -5383,7 +5378,6 @@
 				A790C8291A01980F00C4F208 /* VTrackingEvent.m in Sources */,
 				0314D4F019B46B5E00FA363C /* VRegistrationModel.m in Sources */,
 				F0B390C31A88502D00EE70C7 /* VTagDictionary.m in Sources */,
-				A7299E861AA1485B00B6BC1F /* VDirectoryGroupViewModel.m in Sources */,
 				0386E1F71A8DDA7F00FC9BDF /* VFollowingStreamCollectionViewController.m in Sources */,
 				D8332DC01A7C72EB00C3FEE0 /* VVCameraShutterOverAnimator.m in Sources */,
 				037FCF1E1A8DAF2A00E8ABFC /* UIViewController+VLayoutInsets.m in Sources */,

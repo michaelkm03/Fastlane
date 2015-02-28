@@ -48,5 +48,4 @@ extern CGFloat const kStreamDirectoryGroupCellInset;
  */
 @property (nonatomic, readonly) BOOL isStreamOfStreamsRow;
 
-
 @end
