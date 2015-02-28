@@ -17,10 +17,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="WaD-Bc-zOl" userLabel="Blurred Background Image">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="WaD-Bc-zOl" userLabel="Blurred Background Image">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oJA-97-ssS" customClass="VButton">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oJA-97-ssS" customClass="VButton">
                                 <rect key="frame" x="160" y="503" width="280" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="280" id="Q4u-Tz-8wy"/>
@@ -42,7 +42,16 @@
                             <constraint firstItem="oJA-97-ssS" firstAttribute="centerX" secondItem="WaD-Bc-zOl" secondAttribute="centerX" id="NAc-PP-Ne3"/>
                             <constraint firstItem="WaD-Bc-zOl" firstAttribute="leading" secondItem="lnt-Ok-t9O" secondAttribute="leadingMargin" constant="-16" id="Y19-fR-XQg"/>
                             <constraint firstItem="mT9-B7-VTY" firstAttribute="top" secondItem="WaD-Bc-zOl" secondAttribute="bottom" id="kMC-Sf-ogo"/>
+                            <constraint firstAttribute="centerX" secondItem="oJA-97-ssS" secondAttribute="centerX" id="rR4-0J-01m"/>
+                            <constraint firstItem="oJA-97-ssS" firstAttribute="top" secondItem="RlJ-HE-p9L" secondAttribute="bottom" constant="483" id="uTR-Mv-hIa"/>
+                            <constraint firstItem="mT9-B7-VTY" firstAttribute="top" secondItem="oJA-97-ssS" secondAttribute="bottom" constant="47" id="z6C-Re-3Mg"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="NAc-PP-Ne3"/>
+                                <exclude reference="C9t-Ly-PyY"/>
+                            </mask>
+                        </variation>
                     </view>
                     <connections>
                         <outlet property="backgroundImageView" destination="WaD-Bc-zOl" id="brd-qM-yfm"/>

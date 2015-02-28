@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@class VDependencyManager;
+@class VDependencyManager, VSequence;
 
 @interface VFirstTimeUserVideoViewController : UIViewController
 
@@ -32,5 +32,10 @@
  Image used for blurred background
  */
 @property (nonatomic, strong) UIImage *imageSnapshot;
+
+/**
+ VSequence object that contains media url
+ */
+@property (nonatomic, strong) VSequence *sequence;
 
 @end

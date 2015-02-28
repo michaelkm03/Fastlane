@@ -57,7 +57,7 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
     
     // Show the First Time User Video if it hasn't been shown yet
     VFirstTimeUserVideoViewController *myVC = [self.dependencyManager templateValueOfType:[VFirstTimeUserVideoViewController class] forKey:VScaffoldViewControllerWelcomeUserViewComponentKey];
-    if ([myVC hasBeenShown])
+    if (![myVC hasBeenShown])
     {
         double delayInSeconds = 1.5;
         dispatch_time_t showTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
