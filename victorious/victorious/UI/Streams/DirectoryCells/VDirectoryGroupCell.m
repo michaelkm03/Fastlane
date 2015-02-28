@@ -14,6 +14,7 @@
 #import "VStream+Fetcher.h"
 #import "VStreamItem+Fetcher.h"
 #import "UIColor+VBrightness.h"
+#import "VSequence+Fetcher.h"
 
 CGFloat const kStreamDirectoryGroupCellInset = 10.0f; //Must be >= 1.0f
 static CGFloat const kStreamDirectoryItemLabelHeight = 34.0f;
@@ -159,7 +160,6 @@ static CGFloat const kStreamSubdirectoryItemCellBaseHeight = 206.0f;
         NSString *identifier = NSStringFromClass([VDirectoryItemCell class]);
         VDirectoryItemCell *directoryCell = [self.collectionView dequeueReusableCellWithReuseIdentifier:identifier
                                                                                            forIndexPath:indexPath];
-        directoryCell.streamItem = self.streamItem;
         
         directoryCell.stackBorderColor = borderColor;
         directoryCell.stackBackgroundColor = backgroundColor;
@@ -169,6 +169,23 @@ static CGFloat const kStreamSubdirectoryItemCellBaseHeight = 206.0f;
         
         directoryCell.countLabel.textColor = secondaryTextColor;
         directoryCell.countLabel.font = [self.itemCellDependencyManager fontForKey:@"itemQuantityFont"];
+        
+        directoryCell.nameLabel.text = self.streamItem.name;
+        
+        directoryCell.countLabel.text = @"";
+        if ([self.streamItem isKindOfClass:[VStream class]])
+        {
+            VStream *stream = (VStream *)self.streamItem;
+            directoryCell.countLabel.text = [NSString stringWithFormat:@"%@ %@", stream.count, NSLocalizedString(@"ITEMS", @"")];
+        }
+        
+        [directoryCell setPreviewImagePath:[self.streamItem.previewImagePaths firstObject] placeholderImage:nil];
+        
+        BOOL showStackedBackground = ([self.streamItem isKindOfClass:[VStream class]] && [((VStream *)self.streamItem) isStreamOfStreams]);
+        directoryCell.showStackedBackground = showStackedBackground;
+        
+        BOOL isVideoSequence = [self.streamItem isKindOfClass:[VSequence class]] && [((VSequence *)self.streamItem) isVideo];
+        directoryCell.showVideo = isVideoSequence;
         
         return directoryCell;
     }

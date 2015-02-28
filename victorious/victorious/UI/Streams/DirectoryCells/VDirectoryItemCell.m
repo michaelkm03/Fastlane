@@ -15,11 +15,6 @@
 #import "UIImageView+VLoadingAnimations.h"
 #import "UIImage+ImageCreation.h"
 
-// Models
-#import "VStream.h"
-#import "VStream+Fetcher.h"
-#import "VStreamItem+Fetcher.h"
-
 const CGFloat kDirectoryItemBaseHeight = 217.0f;
 const CGFloat kDirectoryItemStackHeight = 8.0f;
 const CGFloat kDirectoryItemBaseWidth = 145.0f;
@@ -32,6 +27,7 @@ const CGFloat kDirectoryItemBaseWidth = 145.0f;
 @property (nonatomic, weak) IBOutlet VExtendedView *middleStack;
 @property (nonatomic, weak) IBOutlet VExtendedView *bottomStack;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *topStackBottomConstraint;
+@property (nonatomic, weak) IBOutlet UIImageView *videoPlayButtonImageView;
 
 @end
 
@@ -57,26 +53,25 @@ const CGFloat kDirectoryItemBaseWidth = 145.0f;
 
 #pragma mark - Property Accessors
 
-- (void)setStreamItem:(VStreamItem *)streamItem
+- (void)setPreviewImagePath:(NSString *)previeWImagePath placeholderImage:(UIImage *)placeholderImage
 {
-    _streamItem = streamItem;
-    
-    self.nameLabel.text = streamItem.name;
-    
-    self.countLabel.text = @"";
-    if ([streamItem isKindOfClass:[VStream class]])
-    {
-        self.countLabel.text = [NSString stringWithFormat:@"%@ %@", ((VStream *)streamItem).count, NSLocalizedString(@"ITEMS", @"")];
-    }
-    
-    [self.previewImageView fadeInImageAtURL:[NSURL URLWithString:[self.streamItem.previewImagePaths firstObject]]
-                           placeholderImage:nil];
-    
-    BOOL isStack = ([streamItem isKindOfClass:[VStream class]] && [((VStream *)streamItem) isStreamOfStreams]);
-    
-    self.bottomStack.hidden = !isStack;
-    self.middleStack.hidden = !isStack;
-    self.topStackBottomConstraint.constant = isStack ? kDirectoryItemStackHeight : 0.0f;
+    [self.previewImageView fadeInImageAtURL:[NSURL URLWithString:previeWImagePath]
+                           placeholderImage:placeholderImage];
+}
+
+- (void)setShowVideo:(BOOL)showVideo
+{
+    _showVideo = showVideo;
+    self.videoPlayButtonImageView.hidden = !showVideo;
+}
+
+- (void)setShowStackedBackground:(BOOL)showStackedBackground
+{
+    _showStackedBackground = showStackedBackground;
+    self.bottomStack.hidden = !showStackedBackground;
+    self.middleStack.hidden = !showStackedBackground;
+    //self.nameLabel.textAlignment = showStackedBackground ? NSTextAlignmentCenter : NSTextAlignmentLeft;
+    self.topStackBottomConstraint.constant = showStackedBackground ? kDirectoryItemStackHeight : 0.0f;
 }
 
 #pragma mark - UICollectionReusableView
