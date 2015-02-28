@@ -154,12 +154,6 @@
                                                      pathPattern:@"/api/friend/find/twitter/:token/:secret"
                                                          keyPath:@"payload"
                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
-
-             [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
-                                                          method:RKRequestMethodAny
-                                                     pathPattern:@"/api/userinfo/search/:search_term/:limit"
-                                                         keyPath:@"payload"
-                                                     statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
              
              [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
                                                           method:RKRequestMethodAny
