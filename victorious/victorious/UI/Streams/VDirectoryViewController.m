@@ -18,7 +18,7 @@
 
 // Views
 #import "MBProgressHUD.h"
-#import "VStreamDirectoryGroupCell.h"
+#import "VDirectoryGroupCell.h"
 
 //Data Models
 #import "VStream+Fetcher.h"
@@ -29,11 +29,15 @@
 #import "VObjectManager.h"
 #import "VSettingManager.h"
 
+#import "UIColor+VBrightness.h"
+
 static NSString * const kStreamURLPathKey = @"streamUrlPath";
+static NSString * const kItemColor = @"itemColor";
+static NSString * const kBackgroundColor = @"backgroundColor";
 
 static CGFloat const kDirectoryInset = 5.0f;
 
-@interface VDirectoryViewController () <UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, VStreamCollectionDataDelegate, VStreamDirectoryGroupCellDelegate>
+@interface VDirectoryViewController () <UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, VStreamCollectionDataDelegate, VDirectoryGroupCellDelegate>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
@@ -70,7 +74,10 @@ static CGFloat const kDirectoryInset = 5.0f;
 {
     [super viewDidLoad];
     
-    NSString *identifier = NSStringFromClass([VStreamDirectoryGroupCell class]);
+    self.view.backgroundColor = [self.dependencyManager colorForKey:@"color.background"];
+    self.collectionView.backgroundColor = [UIColor clearColor];
+    
+    NSString *identifier = NSStringFromClass([VDirectoryGroupCell class]);
     UINib *nib = [UINib nibWithNibName:identifier bundle:nil];
     [self.collectionView registerNib:nib forCellWithReuseIdentifier:identifier];
     
@@ -106,7 +113,7 @@ static CGFloat const kDirectoryInset = 5.0f;
     
     BOOL isStreamOfStreamsRow = [[self.streamDataSource itemAtIndexPath:indexPath] isKindOfClass:[VStream class]] && [(VStream *)[self.streamDataSource itemAtIndexPath:indexPath] isStreamOfStreams];
     
-    CGFloat height = isStreamOfStreamsRow ? [VStreamDirectoryGroupCell desiredStreamOfStreamsHeightForWidth:width] : [VStreamDirectoryGroupCell desiredStreamOfContentHeightForWidth:width];
+    CGFloat height = isStreamOfStreamsRow ? [VDirectoryGroupCell desiredStreamOfStreamsHeightForWidth:width] : [VDirectoryGroupCell desiredStreamOfContentHeightForWidth:width];
     
     return CGSizeMake(width, height);
 }
@@ -156,26 +163,25 @@ static CGFloat const kDirectoryInset = 5.0f;
 
 - (UICollectionViewCell *)dataSource:(VStreamCollectionViewDataSource *)dataSource cellForIndexPath:(NSIndexPath *)indexPath
 {
-    VStreamItem *item = [self.currentStream.streamItems objectAtIndex:indexPath.row];
-    VStreamDirectoryGroupCell *cell;
-    
-    NSString *identifier = NSStringFromClass([VStreamDirectoryGroupCell class]);
+    NSString *identifier = NSStringFromClass([VDirectoryGroupCell class]);
+    VDirectoryGroupCell *cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
     cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
-    cell.streamItem = item;
+    cell.streamItem = [self.currentStream.streamItems objectAtIndex:indexPath.row];
     cell.delegate = self;
-    
+    NSDictionary *component = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:@"cell.directory.group"];
+    cell.dependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:component];
     return cell;
 }
 
 #pragma mark - 
 
-- (void)streamDirectoryGroupCell:(VStreamDirectoryGroupCell *)VStreamDirectoryGroupCell didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+- (void)streamDirectoryGroupCell:(VDirectoryGroupCell *)VDirectoryGroupCell didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     //Check to see if we've selected the the count of items in the cell's streamItem (which would mean we selected the "see more" cell)
     if ( indexPath.row == 10 )
     {
         //Push a new directory view controller to show all contents of the selected streamItem
-        VStream *stream = [self.currentStream.streamItems objectAtIndex:[self.collectionView indexPathForCell:VStreamDirectoryGroupCell].row];
+        VStream *stream = [self.currentStream.streamItems objectAtIndex:[self.collectionView indexPathForCell:VDirectoryGroupCell].row];
         VDirectoryViewController *sos = [VDirectoryViewController streamDirectoryForStream:stream dependencyManager:self.dependencyManager];
         sos.dependencyManager = self.dependencyManager;
         [self.navigationController pushViewController:sos animated:YES];
@@ -183,7 +189,7 @@ static CGFloat const kDirectoryInset = 5.0f;
     else
     {
         //Check if we've selected a bit of content or another stream to present in a VDirectoryViewController
-        VStreamItem *item = VStreamDirectoryGroupCell.streamItem;
+        VStreamItem *item = VDirectoryGroupCell.streamItem;
         if ([item isKindOfClass:[VStream class]] && [((VStream *)item) onlyContainsSequences])
         {
             VStreamCollectionViewController *streamCollection = [VStreamCollectionViewController streamViewControllerForStream:(VStream *)item];

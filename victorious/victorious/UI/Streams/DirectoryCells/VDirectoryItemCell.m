@@ -15,15 +15,10 @@
 #import "UIImageView+VLoadingAnimations.h"
 #import "UIImage+ImageCreation.h"
 
-//theme
-#import "VThemeManager.h"
-
 // Models
 #import "VStream.h"
 #import "VStream+Fetcher.h"
 #import "VStreamItem+Fetcher.h"
-
-NSString * const VDirectoryItemCellNameStream = @"VStreamDirectoryItemCell";
 
 const CGFloat kDirectoryItemBaseHeight = 217.0f;
 const CGFloat kDirectoryItemStackHeight = 8.0f;
@@ -60,19 +55,6 @@ const CGFloat kDirectoryItemBaseWidth = 145.0f;
     return  ( kDirectoryItemBaseHeight / kDirectoryItemBaseWidth ) * width;
 }
 
-#pragma mark - NSObject
-
-- (void)awakeFromNib
-{
-    [super awakeFromNib];
-    
-    self.nameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont];
-    self.nameLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryLinkColor];
-    
-    self.countLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel4Font];
-    self.nameLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryLinkColor];
-}
-
 #pragma mark - Property Accessors
 
 - (void)setStreamItem:(VStreamItem *)streamItem
@@ -88,8 +70,7 @@ const CGFloat kDirectoryItemBaseWidth = 145.0f;
     }
     
     [self.previewImageView fadeInImageAtURL:[NSURL URLWithString:[self.streamItem.previewImagePaths firstObject]]
-                           placeholderImage:[UIImage resizeableImageWithColor:
-                                             [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]]];
+                           placeholderImage:[UIImage resizeableImageWithColor:[UIColor redColor]]];
     
     BOOL isStack = ([streamItem isKindOfClass:[VStream class]] && [((VStream *)streamItem) isStreamOfStreams]);
     

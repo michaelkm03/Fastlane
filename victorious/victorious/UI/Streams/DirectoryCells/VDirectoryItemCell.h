@@ -12,8 +12,6 @@
 
 @class VStreamItem;
 
-extern NSString * const VDirectoryItemCellNameStream;
-
 extern const CGFloat kDirectoryItemBaseHeight;
 extern const CGFloat kDirectoryItemStackHeight;
 extern const CGFloat kDirectoryItemBaseWidth;

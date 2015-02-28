@@ -1,5 +1,5 @@
 //
-//  VStreamDirectoryGroupCell.h
+//  VDirectoryGroupCell.h
 //  victorious
 //
 //  Created by Sharif Ahmed on 2/20/15.
@@ -7,18 +7,19 @@
 //
 
 #import "VBaseCollectionViewCell.h"
+#import "VDependencyManager.h"
 
-@class VStreamItem, VStreamDirectoryGroupCell;
+@class VStreamItem, VDirectoryGroupCell;
 
 extern CGFloat const kStreamDirectoryGroupCellInset;
 
-@protocol VStreamDirectoryGroupCellDelegate <NSObject>
+@protocol VDirectoryGroupCellDelegate <NSObject>
 
-- (void)streamDirectoryGroupCell:(VStreamDirectoryGroupCell *)VStreamDirectoryGroupCell didSelectItemAtIndexPath:(NSIndexPath *)indexPath;
+- (void)streamDirectoryGroupCell:(VDirectoryGroupCell *)VDirectoryGroupCell didSelectItemAtIndexPath:(NSIndexPath *)indexPath;
 
 @end
 
-@interface VStreamDirectoryGroupCell : VBaseCollectionViewCell
+@interface VDirectoryGroupCell : VBaseCollectionViewCell
 
 /**
  *  The desired height for a directory item cell that has space for a stack-style extension at the bottom.
@@ -30,6 +31,8 @@ extern CGFloat const kStreamDirectoryGroupCellInset;
  */
 + (CGFloat)desiredStreamOfContentHeightForWidth:(CGFloat)width;
 
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
+
 /**
  *  The VStreamItem used to populate fields on the cell.
  */
@@ -38,11 +41,12 @@ extern CGFloat const kStreamDirectoryGroupCellInset;
 /**
     The item cell delegate that will respond to selections made within the collectionView contained in this cell
  */
-@property (nonatomic, weak) id <VStreamDirectoryGroupCellDelegate> delegate;
+@property (nonatomic, weak) id <VDirectoryGroupCellDelegate> delegate;
 
 /**
  A convenient flag for checking if this row is of stream of stream cells or just a row of stream cells
  */
 @property (nonatomic, readonly) BOOL isStreamOfStreamsRow;
+
 
 @end

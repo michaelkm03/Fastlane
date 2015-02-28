@@ -7,7 +7,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="VStreamDirectoryItemCell" id="I6G-G0-y8J" customClass="VDirectoryItemCell">
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="VDirectoryItemCell" id="I6G-G0-y8J" customClass="VDirectoryItemCell">
             <rect key="frame" x="0.0" y="0.0" width="145" height="225"/>
             <autoresizingMask key="autoresizingMask"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -127,7 +127,7 @@
                 <outlet property="topStack" destination="dXz-4U-iLz" id="6Jr-Qn-lrh"/>
                 <outlet property="topStackBottomConstraint" destination="ZyF-a0-7FC" id="xmf-SV-FOT"/>
             </connections>
-            <point key="canvasLocation" x="267.5" y="379.5"/>
+            <point key="canvasLocation" x="275.5" y="379.5"/>
         </collectionViewCell>
     </objects>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

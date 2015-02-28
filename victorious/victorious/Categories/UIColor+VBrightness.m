@@ -36,4 +36,30 @@
     return nil;
 }
 
+- (UIColor *)v_colorLightenedByRelativeAmount:(CGFloat)amount
+{
+    CGFloat r, g, b, a;
+    if ( [self getRed:&r green:&g blue:&b alpha:&a] )
+    {
+        return [UIColor colorWithRed:r + amount
+                               green:g + amount
+                                blue:b + amount
+                               alpha:a];
+    }
+    return nil;
+}
+
+- (UIColor *)v_colorDarkenedByRelativeAmount:(CGFloat)amount
+{
+    CGFloat r, g, b, a;
+    if ( [self getRed:&r green:&g blue:&b alpha:&a] )
+    {
+        return [UIColor colorWithRed:r - amount
+                               green:g - amount
+                                blue:b - amount
+                               alpha:a];
+    }
+    return nil;
+}
+
 @end

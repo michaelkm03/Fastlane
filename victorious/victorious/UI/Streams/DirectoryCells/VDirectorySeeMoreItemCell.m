@@ -1,31 +1,27 @@
 //
-//  VSeeMoreDirectoryItemCell.m
+//  VDirectorySeeMoreItemCell.m
 //  victorious
 //
 //  Created by Sharif Ahmed on 2/23/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VSeeMoreDirectoryItemCell.h"
+#import "VDirectorySeeMoreItemCell.h"
 #import "VExtendedView.h"
-#import "VThemeManager.h"
 
-NSString * const VSeeMoreDirectoryItemCellNameStream = @"VStreamSeeMoreDirectoryItemCell";
-
-@interface VSeeMoreDirectoryItemCell ()
+@interface VDirectorySeeMoreItemCell ()
 
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *bottomConstriant;
 @property (nonatomic, weak) IBOutlet VExtendedView *extendedView;
+@property (nonatomic, weak) IBOutlet UIImageView *imageView;
 
 @end
 
-@implementation VSeeMoreDirectoryItemCell
+@implementation VDirectorySeeMoreItemCell
 
 - (void)awakeFromNib
 {
     [super awakeFromNib];
-    
-    self.seeMoreLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
 }
 
 - (void)updateBottomConstraintToConstant:(CGFloat)constant
@@ -46,6 +42,15 @@ NSString * const VSeeMoreDirectoryItemCellNameStream = @"VStreamSeeMoreDirectory
 {
     _borderColor = borderColor;
     [self.extendedView setBorderColor:_borderColor];
+}
+
+- (void)setImageColor:(UIColor *)imageColor
+{
+    _imageColor = imageColor;
+    
+    UIImage *image = self.imageView.image;
+    self.imageView.tintColor = _imageColor;
+    self.imageView.image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
 }
 
 @end

@@ -1,22 +1,19 @@
 //
-//  VStreamDirectoryGroupCell.m
+//  VDirectoryGroupCell.m
 //  victorious
 //
 //  Created by Sharif Ahmed on 2/20/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VStreamDirectoryGroupCell.h"
-
+#import "VDirectoryGroupCell.h"
 #import "VDirectoryItemCell.h"
-#import "VSeeMoreDirectoryItemCell.h"
-
-//theme
-#import "VThemeManager.h"
+#import "VDirectorySeeMoreItemCell.h"
 
 // Models
 #import "VStream+Fetcher.h"
 #import "VStreamItem+Fetcher.h"
+#import "UIColor+VBrightness.h"
 
 CGFloat const kStreamDirectoryGroupCellInset = 10.0f; //Must be >= 1.0f
 static CGFloat const kStreamDirectoryItemLabelHeight = 34.0f;
@@ -25,16 +22,17 @@ static CGFloat const kStreamDirectoryGroupCellBaseWidth = 320.0f;
 static CGFloat const kStreamSubdirectoryItemCellBaseWidth = 140.0f;
 static CGFloat const kStreamSubdirectoryItemCellBaseHeight = 206.0f;
 
-@interface VStreamDirectoryGroupCell() <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
+@interface VDirectoryGroupCell() <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, weak) IBOutlet UILabel *nameLabel;
 @property (nonatomic, readwrite) BOOL isStreamOfStreamsRow;
-@property (nonatomic, strong) UIColor *seeMoreAndHeaderTextColor;
+
+@property (nonatomic, strong) VDependencyManager *itemCellDependencyManager;
 
 @end
 
-@implementation VStreamDirectoryGroupCell
+@implementation VDirectoryGroupCell
 
 #pragma mark - Sizing Methods
 
@@ -65,21 +63,31 @@ static CGFloat const kStreamSubdirectoryItemCellBaseHeight = 206.0f;
     return ( width / kStreamDirectoryGroupCellBaseWidth ) * kStreamSubdirectoryItemCellBaseWidth;
 }
 
+#pragma mark - View Model
+
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    _dependencyManager = dependencyManager;
+    
+    self.nameLabel.font = [_dependencyManager fontForKey:@"font.header"];
+    self.nameLabel.textColor = [_dependencyManager colorForKey:@"color.text"];
+    
+    NSDictionary *component = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:@"cell.directory.item"];
+    self.itemCellDependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:component];
+    
+    [self.collectionView reloadData];
+}
+
 #pragma mark - NSObject
 
 - (void)awakeFromNib
 {
     [super awakeFromNib];
     
-    self.seeMoreAndHeaderTextColor = [UIColor colorWithRed:102.0f/255.0f green:102.0f/255.0f blue:102.0f/255.0f alpha:1.0f];
-    
-    self.nameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
-    self.nameLabel.textColor = self.seeMoreAndHeaderTextColor;
-    
     self.collectionView.dataSource = self;
     self.collectionView.delegate = self;
-    [self registerNibWithName:VDirectoryItemCellNameStream];
-    [self registerNibWithName:VSeeMoreDirectoryItemCellNameStream];
+    [self registerNibWithName:NSStringFromClass([VDirectoryItemCell class])];
+    [self registerNibWithName:NSStringFromClass([VDirectorySeeMoreItemCell class])];
     self.collectionView.backgroundColor = [UIColor clearColor];
     
     self.collectionView.contentInset = UIEdgeInsetsZero;
@@ -126,28 +134,41 @@ static CGFloat const kStreamSubdirectoryItemCellBaseHeight = 206.0f;
     VStreamItem *item = self.streamItem;
     VBaseCollectionViewCell *cell;
     
-    UIColor *borderColor = [UIColor blackColor];
-    UIColor *backgroundColor = [UIColor colorWithRed:38.0f/255.0f green:39.0f/255.0f blue:43.0f/255.0f alpha:1.0f];
-    
     //Check if item is last in number of items in section, this is the "show more" cell
-    if ( indexPath.item == 10)
+    if ( indexPath.item == 10 )
     {
-        VSeeMoreDirectoryItemCell *seeMoreCell = [self.collectionView dequeueReusableCellWithReuseIdentifier:VSeeMoreDirectoryItemCellNameStream forIndexPath:indexPath];
-        seeMoreCell.borderColor = borderColor;
-        seeMoreCell.backgroundColor = backgroundColor;
-        seeMoreCell.seeMoreLabel.textColor = self.seeMoreAndHeaderTextColor;
+        NSString *identifier = NSStringFromClass([VDirectorySeeMoreItemCell class]);
+        VDirectorySeeMoreItemCell *seeMoreCell = [self.collectionView dequeueReusableCellWithReuseIdentifier:identifier
+                                                                                                forIndexPath:indexPath];
+        seeMoreCell.borderColor = [self.itemCellDependencyManager colorForKey:@"color.text.accent"];
+        seeMoreCell.imageColor = [self.itemCellDependencyManager colorForKey:@"color.text"];
+        seeMoreCell.backgroundColor = [self.itemCellDependencyManager colorForKey:@"color.background"];
+        
+        seeMoreCell.seeMoreLabel.textColor = [self.itemCellDependencyManager colorForKey:@"color.text.accent"];
+        seeMoreCell.seeMoreLabel.font = [self.itemCellDependencyManager fontForKey:@"seeMoreLabelFont"];
+        
         [seeMoreCell updateBottomConstraintToConstant:self.isStreamOfStreamsRow ? kDirectoryItemStackHeight : 0.0f];
+        
         cell = seeMoreCell;
     }
     else
     {
         //Populate streamItem from item in stream instead of top-level stream item
-        VDirectoryItemCell *directoryCell = [self.collectionView dequeueReusableCellWithReuseIdentifier:VDirectoryItemCellNameStream forIndexPath:indexPath];
+        NSString *identifier = NSStringFromClass([VDirectoryItemCell class]);
+        VDirectoryItemCell *directoryCell = [self.collectionView dequeueReusableCellWithReuseIdentifier:identifier
+                                                                                           forIndexPath:indexPath];
         directoryCell.streamItem = item;
-        directoryCell.stackBorderColor = borderColor;
-        directoryCell.stackBackgroundColor = backgroundColor;
-        directoryCell.nameLabel.textColor = [UIColor whiteColor];
-        directoryCell.countLabel.textColor = [UIColor colorWithRed:153.0f/255.0f green:153.0f/255.0f blue:153.0f/255.0f alpha:1.0f];
+        
+        directoryCell.stackBorderColor = [self.itemCellDependencyManager colorForKey:@"color.text.accent"];
+        UIColor *borderColor = [self.itemCellDependencyManager colorForKey:@"color.background"];
+        directoryCell.stackBackgroundColor = [borderColor v_colorDarkenedByRelativeAmount:0.2f];
+        
+        directoryCell.nameLabel.font = [self.itemCellDependencyManager fontForKey:@"itemLabelFont"];
+        directoryCell.nameLabel.textColor = [self.itemCellDependencyManager colorForKey:@"color.text.accent"];
+        
+        directoryCell.countLabel.textColor = [self.itemCellDependencyManager colorForKey:@"color.text"];
+        directoryCell.countLabel.font = [self.itemCellDependencyManager fontForKey:@"itemQuantityFont"];
+        
         cell = directoryCell;
     }
     
@@ -169,13 +190,13 @@ static CGFloat const kStreamSubdirectoryItemCellBaseHeight = 206.0f;
 {
     CGFloat width = CGRectGetWidth(self.bounds);
     
-    CGFloat height = [VStreamDirectoryGroupCell directoryCellHeightForWidth:width];
+    CGFloat height = [VDirectoryGroupCell directoryCellHeightForWidth:width];
     if ( self.isStreamOfStreamsRow )
     {
         height += kDirectoryItemStackHeight;
     }
     
-    return CGSizeMake([VStreamDirectoryGroupCell desiredCellWidthForBoundsWidth:width], height);
+    return CGSizeMake([VDirectoryGroupCell desiredCellWidthForBoundsWidth:width], height);
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView

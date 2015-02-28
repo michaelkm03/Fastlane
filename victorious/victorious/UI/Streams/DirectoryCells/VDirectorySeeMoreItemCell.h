@@ -1,5 +1,5 @@
 //
-//  VSeeMoreDirectoryItemCell.h
+//  VDirectorySeeMoreItemCell.h
 //  victorious
 //
 //  Created by Sharif Ahmed on 2/23/15.
@@ -8,13 +8,13 @@
 
 #import "VBaseCollectionViewCell.h"
 
-extern NSString * const VSeeMoreDirectoryItemCellNameStream;
-
-@interface VSeeMoreDirectoryItemCell : VBaseCollectionViewCell
+@interface VDirectorySeeMoreItemCell : VBaseCollectionViewCell
 
 - (void)updateBottomConstraintToConstant:(CGFloat)constant;
 
 @property (nonatomic, strong) UIColor *borderColor;
+@property (nonatomic, strong) UIColor *imageColor;
+
 @property (nonatomic, weak) IBOutlet UILabel *seeMoreLabel;
 
 @end

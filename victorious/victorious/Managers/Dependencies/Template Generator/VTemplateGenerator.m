@@ -35,6 +35,13 @@ static NSString * const kStreamsKey = @"streams";
 static NSString * const kInitialKey = @"initial";
 static NSString * const kUserSpecificKey = @"isUserSpecific";
 
+// Directory Components
+static NSString * const kBackgroundColor = @"color.background";
+static NSString * const kTextColor = @"color.text";
+static NSString * const kTextColorAccent = @"color.text.accent";
+static NSString * const kCellComponentDirectoryGroup = @"cell.directory.group";
+static NSString * const kCellComponentDirectoryItem = @"cell.directory.item";
+
 static NSString * const kRedKey = @"red";
 static NSString * const kGreenKey = @"green";
 static NSString * const kBlueKey = @"blue";
@@ -496,13 +503,49 @@ static NSString * const kVideoMuted = @"videoMuted";
     {
         return @{
             kIdentifierKey: @"Menu Channels",
-            kTitleKey: NSLocalizedString(@"Channels", @""),
-            kDestinationKey: @{
-                kClassNameKey: @"streamDirectory.screen",
-                kTitleKey: NSLocalizedString(@"Channels", nil),
-                VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/detail_list_by_stream/directory"
-            }
-        };
+                kTitleKey: NSLocalizedString(@"Channels", @""),
+                kDestinationKey: @{
+                    kClassNameKey: @"streamDirectory.screen",
+                        kTitleKey: NSLocalizedString(@"Channels", nil),
+                        VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/detail_list_by_stream/directory",
+                        kBackgroundColor: @{
+                            kRedKey: @20,
+                            kGreenKey: @20,
+                            kBlueKey: @20,
+                            kAlphaKey: @1
+                        },
+                        kCellComponentDirectoryGroup:
+                        @{
+                                kTextColor: @{
+                                    kRedKey: @128,
+                                    kGreenKey: @128,
+                                    kBlueKey: @128,
+                                    kAlphaKey: @1
+                                },
+                                kCellComponentDirectoryItem:
+                                    @{
+                                        kTextColor: @{
+                                            kRedKey: @150,
+                                            kGreenKey: @150,
+                                            kBlueKey: @150,
+                                            kAlphaKey: @1
+                                        },
+                                        kTextColorAccent: @{
+                                            kRedKey: @255,
+                                            kGreenKey: @255,
+                                            kBlueKey: @255,
+                                            kAlphaKey: @1
+                                        },
+                                        kBackgroundColor: @{
+                                            kRedKey: @40,
+                                            kGreenKey: @40,
+                                            kBlueKey: @40,
+                                            kAlphaKey: @1
+                                        },
+                                     }
+                                 }
+                         }
+                 };
     }
     else
     {
