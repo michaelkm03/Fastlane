@@ -8,12 +8,6 @@
 
 #import "VNavigationDestinationContainerViewController.h"
 
-@interface VNavigationDestinationContainerViewController ()
-
-@property (nonatomic, strong, readwrite) id <VNavigationDestination> navigationDestination;
-
-@end
-
 @implementation VNavigationDestinationContainerViewController
 
 #pragma mark - Initializers
