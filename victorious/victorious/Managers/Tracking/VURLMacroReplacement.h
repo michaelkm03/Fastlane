@@ -29,6 +29,6 @@ extern NSString * const VURLMacroReplacementDelimiter;
                The values will be used to replace instances of these macros in the URL string
  @param urlString A URL-like string containing macros to be replaced
  */
-+ (NSString *)urlByReplacingMacrosFromDictionary:(NSDictionary *)macros inURLString:(NSString *)urlString;
+- (NSString *)urlByReplacingMacrosFromDictionary:(NSDictionary *)macros inURLString:(NSString *)urlString;
 
 @end

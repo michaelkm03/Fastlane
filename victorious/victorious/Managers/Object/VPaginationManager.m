@@ -20,6 +20,7 @@ NSString * const VPaginationManagerItemsPerPageMacro = @"%%ITEMS_PER_PAGE%%";
 @property (nonatomic, strong) dispatch_queue_t                             filterIDQueue; ///< All access to filterIDs should go through this queue
 @property (nonatomic, strong) NSMutableSet /* NSString */                 *pathsBeingLoaded;
 @property (nonatomic, strong) dispatch_queue_t                             pathsBeingLoadedQueue; ///< All access to pathsBeingLoaded should go through this queue
+@property (nonatomic, strong) VURLMacroReplacement *macroReplacement;
 
 @end
 
@@ -35,6 +36,7 @@ NSString * const VPaginationManagerItemsPerPageMacro = @"%%ITEMS_PER_PAGE%%";
         _filterIDQueue = dispatch_queue_create("VPaginationManager.filterIDQueue", DISPATCH_QUEUE_CONCURRENT);
         _pathsBeingLoaded = [[NSMutableSet alloc] init];
         _pathsBeingLoadedQueue = dispatch_queue_create("VPaginationManager.pathsBeingLoadedQueue", DISPATCH_QUEUE_CONCURRENT);
+        _macroReplacement = [[VURLMacroReplacement alloc] init];
     }
     return self;
 }
@@ -89,7 +91,7 @@ NSString * const VPaginationManagerItemsPerPageMacro = @"%%ITEMS_PER_PAGE%%";
     NSDictionary *macroReplacements = @{ VPaginationManagerItemsPerPageMacro: [filter.perPageNumber stringValue],
                                          VPaginationManagerPageNumberMacro: [NSString stringWithFormat:@"%lu", (unsigned long)pageNumber] };
     
-    NSString *path = [VURLMacroReplacement urlByReplacingMacrosFromDictionary:macroReplacements inURLString:filter.filterAPIPath];
+    NSString *path = [self.macroReplacement urlByReplacingMacrosFromDictionary:macroReplacements inURLString:filter.filterAPIPath];
     return [self.objectManager GET:path object:nil parameters:nil successBlock:fullSuccess failBlock:fullFail];
 }
 

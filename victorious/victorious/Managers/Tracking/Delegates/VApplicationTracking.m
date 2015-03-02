@@ -11,8 +11,6 @@
 #import "VTrackingURLRequest.h"
 #import "VURLMacroReplacement.h"
 
-static NSString * const kMacroBookendToken           = @"%%";
-
 static NSString * const kMacroTimeFrom               = @"%%FROM_TIME%%";
 static NSString * const kMacroTimeTo                 = @"%%TO_TIME%%";
 static NSString * const kMacroTimeCurrent            = @"%%TIME_CURRENT%%";
@@ -38,6 +36,7 @@ static NSString * const kMacroSessionTime            = @"%%SESSION_TIME%%";
 @interface VApplicationTracking()
 
 @property (nonatomic, readonly) NSDictionary *parameterMacroMapping;
+@property (nonatomic, strong) VURLMacroReplacement *macroReplacement;
 
 @end
 
@@ -66,6 +65,7 @@ static NSString * const kMacroSessionTime            = @"%%SESSION_TIME%%";
                                     VTrackingKeyActivityType       : kMacroShareDestination,
                                     VTrackingKeyNotificationID     : kMacroNotificationID,
                                     VTrackingKeySessionTime        : kMacroSessionTime };
+        _macroReplacement = [[VURLMacroReplacement alloc] init];
     }
     return self;
 }
@@ -157,7 +157,7 @@ static NSString * const kMacroSessionTime            = @"%%SESSION_TIME%%";
         }
     }
     
-    return [VURLMacroReplacement urlByReplacingMacrosFromDictionary:replacementsDictionary inURLString:originalString];
+    return [self.macroReplacement urlByReplacingMacrosFromDictionary:replacementsDictionary inURLString:originalString];
 }
 
 - (NSString *)stringFromParameterValue:(id)value

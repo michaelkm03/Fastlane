@@ -15,7 +15,7 @@ static NSString * const kQueryStringDelimiter = @"?";
 
 @implementation VURLMacroReplacement
 
-+ (NSString *)urlByReplacingMacrosFromDictionary:(NSDictionary *)macros inURLString:(NSString *)urlString
+- (NSString *)urlByReplacingMacrosFromDictionary:(NSDictionary *)macros inURLString:(NSString *)urlString
 {
     NSString *nonQueryString = nil;
     NSString *queryString = nil;
@@ -48,7 +48,7 @@ static NSString * const kQueryStringDelimiter = @"?";
     }
 }
 
-+ (NSString *)urlByReplacingMacrosFromDictionary:(NSDictionary *)macros inURLString:(NSString *)urlString withAllowedCharacters:(NSCharacterSet *)allowedCharacters
+- (NSString *)urlByReplacingMacrosFromDictionary:(NSDictionary *)macros inURLString:(NSString *)urlString withAllowedCharacters:(NSCharacterSet *)allowedCharacters
 {
     NSString *output = urlString;
 
