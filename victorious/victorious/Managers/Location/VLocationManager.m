@@ -10,7 +10,7 @@
 #import <CoreLocation/CLAvailability.h>
 @import AddressBookUI;
 
-#define EnableLocationInfoLogging 1  // Set this to 1 in order to view location details in the console log window
+#define EnableLocationInfoLogging 0  // Set this to 1 in order to view location details in the console log window
 
 @interface VLocationManager () <CLLocationManagerDelegate>
 
@@ -105,7 +105,6 @@
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
 {
-    //__block CLPlacemark *locationPlacemark;
     CLLocation *location = [locations lastObject];
     CLGeocoder *geoCoder = [[CLGeocoder alloc] init];
     [geoCoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error)
