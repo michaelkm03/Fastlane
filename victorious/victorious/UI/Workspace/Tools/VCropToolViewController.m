@@ -144,7 +144,7 @@
     [self.view layoutIfNeeded];
     
     [self.croppingScrollView v_centerContentAnimated:NO];
-    
+
     self.hasLayedOutScrollView = YES;
 }
 
