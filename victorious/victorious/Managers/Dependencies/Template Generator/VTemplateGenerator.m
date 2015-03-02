@@ -146,7 +146,9 @@ static NSString * const kVideoMuted = @"videoMuted";
     else
     {
         template[VDependencyManagerScaffoldViewControllerKey] = @{ kClassNameKey: @"sideMenu.scaffold",
-                                                                   VHamburgerButtonIconKey: (self.templateCEnabled ? [UIImage imageNamed:@"menuC"] : [UIImage imageNamed:@"Menu"] ),
+                                                                   VHamburgerButtonIconKey: @{
+                                                                           VDependencyManagerImageURLKey:(self.templateCEnabled ? @"menuC":@"Menu"),
+                                                                           },
                                                                    VDependencyManagerInitialViewControllerKey: @{ kReferenceIDKey: self.firstMenuItemID },
                                                                    VScaffoldViewControllerMenuComponentKey: [self menuComponent],
                                                                    VStreamCollectionViewControllerCreateSequenceIconKey: (self.templateCEnabled ? [UIImage imageNamed:@"createContentButtonC"] : [UIImage imageNamed:@"createContentButton"]),
@@ -435,7 +437,9 @@ static NSString * const kVideoMuted = @"videoMuted";
              kIdentifierKey: @"Menu Home",
              kTitleKey: NSLocalizedString(@"Home", @""),
              kDestinationKey: [self homeScreen],
-             kIconKey:@"home",
+             kIconKey: @{
+                     VDependencyManagerImageURLKey: @"home",
+                     }
              };
 }
 
@@ -443,7 +447,9 @@ static NSString * const kVideoMuted = @"videoMuted";
 {
     return @{
              kTitleKey: NSLocalizedString(@"Create", @""),
-             kIconKey: @"create",
+             kIconKey: @{
+                     VDependencyManagerImageURLKey: @"create",
+                     },
              kDestinationKey: [self workspaceFlowComponent],
              };
 }
@@ -453,7 +459,9 @@ static NSString * const kVideoMuted = @"videoMuted";
     return @{
              kIdentifierKey: @"Menu Profile",
              kTitleKey: NSLocalizedString(@"Profile", @""),
-             kIconKey: @"profile",
+             kIconKey: @{
+                     VDependencyManagerImageURLKey: @"profile",
+                     },
              kDestinationKey: @{
                      kClassNameKey: @"currentUserProfile.screen"
                      }
@@ -465,7 +473,9 @@ static NSString * const kVideoMuted = @"videoMuted";
     return @{
              kIdentifierKey: @"Menu Inbox",
              kTitleKey: NSLocalizedString(@"Inbox", @""),
-             kIconKey: @"inbox",
+             kIconKey: @{
+                     VDependencyManagerImageURLKey: @"inbox",
+                     },
              kDestinationKey: @{
                      kClassNameKey: @"inbox.screen"
                      }
@@ -562,7 +572,9 @@ static NSString * const kVideoMuted = @"videoMuted";
         return @{
             kIdentifierKey: @"Menu Channels",
             kTitleKey: NSLocalizedString(@"Channels", @""),
-            kIconKey: @"channels",
+            kIconKey: @{
+                    VDependencyManagerImageURLKey:@"channels",
+                    },
             kDestinationKey: @{
                 kClassNameKey: @"streamDirectory.screen",
                 kTitleKey: NSLocalizedString(@"Channels", nil),
@@ -603,7 +615,7 @@ static NSString * const kVideoMuted = @"videoMuted";
 {
     return @{
              kClassNameKey:@"solidColor.background",
-             VSolidColorBackgroundKey: @{
+             VSolidColorBackgroundColorKey: @{
                      kRedKey: @255,
                      kGreenKey: @255,
                      kBlueKey: @255,
