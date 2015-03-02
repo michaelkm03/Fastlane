@@ -2236,8 +2236,8 @@
 		0314D34819B46B5E00FA363C /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				D876E1F91A9DA685002CAA29 /* Background */,
 				D8CA63AF19D51C8D002046E5 /* Action Sheet */,
+				D876E1F91A9DA685002CAA29 /* Background */,
 				D89A50071A000D540010D050 /* Controls */,
 				BE42842D19DDD0D800AEDBA6 /* DefaultProfileImages */,
 				F05AA97D1A83F6E3002F8917 /* Inline Search */,
@@ -4340,10 +4340,10 @@
 			children = (
 				D876E1FA1A9DA685002CAA29 /* VBackground.h */,
 				D876E1FB1A9DA685002CAA29 /* VBackground.m */,
-				D876E1FD1A9DA6CB002CAA29 /* VSolidColorBackground.h */,
-				D876E1FE1A9DA6CB002CAA29 /* VSolidColorBackground.m */,
 				D876E2001A9DA6DD002CAA29 /* VBlurredImageBackground.h */,
 				D876E2011A9DA6DD002CAA29 /* VBlurredImageBackground.m */,
+				D876E1FD1A9DA6CB002CAA29 /* VSolidColorBackground.h */,
+				D876E1FE1A9DA6CB002CAA29 /* VSolidColorBackground.m */,
 				D876E2031A9DA6EB002CAA29 /* VTranslucentBackground.h */,
 				D876E2041A9DA6EB002CAA29 /* VTranslucentBackground.m */,
 			);
