@@ -25,6 +25,6 @@
  *  If this is a translucent background and should show content scrolling underneath.
     Use this property to adjust insets or layout accordingly.
  */
-@property (nonatomic, readonly) BOOL isTranslucent;
+@property (nonatomic, readonly, getter=isTranslucent) BOOL translucent;
 
 @end

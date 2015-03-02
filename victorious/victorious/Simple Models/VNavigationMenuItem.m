@@ -17,7 +17,7 @@ static NSString * const kIconKey = @"icon";
 
 - (instancetype)initWithTitle:(NSString *)title
                    identifier:(NSString *)identifier
-                     iconName:(NSString *)iconName
+                         icon:(UIImage *)icon
                   destination:(id)destination
 {
     self = [super init];
@@ -25,7 +25,7 @@ static NSString * const kIconKey = @"icon";
     {
         _identifier = [identifier copy];
         _title = [title copy];
-        _icon = [UIImage imageNamed:iconName];
+        _icon = icon;
         _destination = destination;
     }
     return self;
@@ -35,9 +35,9 @@ static NSString * const kIconKey = @"icon";
 {
     NSString *title = [dependencyManager stringForKey:VDependencyManagerTitleKey];
     NSString *identifier = [dependencyManager stringForKey:kIdentifierKey];
-    NSString *iconName = [dependencyManager stringForKey:kIconKey];
+    UIImage *icon = [dependencyManager imageForKey:kIconKey];
     id destination = [dependencyManager singletonObjectOfType:[NSObject class] forKey:kDestinationKey];
-    return [self initWithTitle:title identifier:identifier iconName:iconName destination:destination];
+    return [self initWithTitle:title identifier:identifier icon:icon destination:destination];
 }
 
 - (BOOL)isEqual:(id)object

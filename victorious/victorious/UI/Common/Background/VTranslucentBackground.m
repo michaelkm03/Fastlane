@@ -9,7 +9,7 @@
 #import "VTranslucentBackground.h"
 #import "VDependencyManager.h"
 
-NSString * const VTranslucentBackgroundBlurStyleKey = @"blurStyleKey";
+NSString * const VTranslucentBackgroundBlurStyleKey = @"blurStyle";
 NSString * const VTranslucentBackgroundBlurStyleExtraLight = @"blurStyleExtraLight";
 NSString * const VTranslucentBackgroundBlurStyleLight = @"blurStyleLight";
 NSString * const VTranslucentBackgroundBlurStyleDark = @"blurStyleDark";
