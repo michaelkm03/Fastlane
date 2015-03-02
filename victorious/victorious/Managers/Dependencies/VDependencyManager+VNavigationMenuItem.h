@@ -21,10 +21,10 @@ extern NSString * const VDependencyManagerMenuItemsKey; ///< An array of arrays 
 - (NSArray /* NSArray of VNavigationMenuItem */ *)menuItemSections;
 
 /**
- Returns an array of menu items. There are no garuantees
+ Returns an array of menu items. There are no guarantees
  on the number of menu items that are returned. Each item
  is stored as an instance of VNavigationMenuItem.
  */
-- (NSArray /* VNavigationMenuItems */ *)menuItems;
+- (NSArray /* VNavigationMenuItem */ *)menuItems;
 
 @end

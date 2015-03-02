@@ -26,8 +26,7 @@ static NSString *const kImageKey;
     self = [super initWithDependencyManager:dependencyManager];
     if (self)
     {
-        _imageToBlur = [dependencyManager templateValueOfType:[UIImage class]
-                                                       forKey:kImageKey];
+        _imageToBlur = [dependencyManager imageForKey:kImageKey];
     }
     return self;
 }
