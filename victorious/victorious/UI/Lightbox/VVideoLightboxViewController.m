@@ -20,6 +20,9 @@
 @property (nonatomic)         BOOL                         videoLoaded;
 @property (nonatomic, strong) NSArray                     *previewImageConstraints;
 
+@property (nonatomic) BOOL isRotating;
+@property (nonatomic) BOOL wantsDismissal;
+
 @end
 
 @implementation VVideoLightboxViewController
@@ -131,6 +134,22 @@
         self.videoPlayer.delegate = nil;
         self.videoPlayer = nil;
     }
+}
+
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
+{
+    __weak typeof(self) welf = self;
+    self.isRotating = YES;
+    [coordinator animateAlongsideTransition:nil
+                                 completion:^(id<UIViewControllerTransitionCoordinatorContext> context)
+     {
+         __strong typeof(self) strongSelf = welf;
+         strongSelf.isRotating = NO;
+         if (strongSelf.wantsDismissal && strongSelf.onCloseButtonTapped)
+         {
+             strongSelf.onCloseButtonTapped();
+         }
+     }];
 }
 
 #pragma mark - Properties
@@ -250,6 +269,12 @@
 
 - (void)videoPlayerDidReachEndOfVideo:(VCVideoPlayerViewController *)videoPlayer
 {
+    if (self.isRotating)
+    {
+        self.wantsDismissal = YES;
+        return;
+    }
+    
     if (self.onVideoFinished)
     {
         self.onVideoFinished();

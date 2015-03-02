@@ -667,7 +667,6 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 
 #pragma mark - Private Mehods
 
-
 - (void)removeCollectionViewFromContainer
 {
     self.snapshotView = [self.view snapshotViewAfterScreenUpdates:NO];
@@ -787,6 +786,8 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
             [welf dismissViewControllerAnimated:YES
                                      completion:^
              {
+                 [[welf class] attemptRotationToDeviceOrientation];
+                 
                  [welf.contentCollectionView.collectionViewLayout invalidateLayout];
              }];
         }
