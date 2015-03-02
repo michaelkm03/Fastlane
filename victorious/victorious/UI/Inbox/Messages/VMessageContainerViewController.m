@@ -71,7 +71,7 @@
         self.navigationItem.title = nil;
     }
     
-    [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"More"] style:UIBarButtonItemStylePlain target:self action:@selector(flagConversation:)]];
+    [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"More"] style:UIBarButtonItemStylePlain target:self action:@selector(onMoreSelected:)]];
 }
 
 - (IBAction)onMoreSelected:(id)sender

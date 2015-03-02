@@ -20,6 +20,7 @@
 #import "VTracking.h"
 #import "VConstants.h"
 #import "VTemplateGenerator.h"
+#import "VLocationManager.h"
 
 static const NSTimeInterval kAnimationDuration = 0.2;
 
@@ -93,6 +94,12 @@ static NSString * const kNotificationIDKey = @"notification_id";
 
     self.sessionTimer = [[VSessionTimer alloc] init];
     [self.sessionTimer start];
+    
+    // Check if we have location services and start getting locations if we do
+    if ( [VLocationManager haveLocationServicesPermission] )
+    {
+        [[VLocationManager sharedInstance].locationManager startUpdatingLocation];
+    }
     
     [self showLoadingViewController];
 }

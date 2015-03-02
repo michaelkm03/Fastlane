@@ -76,6 +76,7 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
     _canvasScrollView.userInteractionEnabled = NO;
     _canvasScrollView.delegate = self;
     _canvasScrollView.translatesAutoresizingMaskIntoConstraints = NO;
+    _canvasScrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self addSubview:_canvasScrollView];
     
     _imageView = [[UIImageView alloc] initWithImage:nil];
