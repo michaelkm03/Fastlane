@@ -9,7 +9,7 @@
 #import "VDependencyManager.h"
 
 extern NSString * const VDependencyManagerMenuItemsKey; ///< An array of arrays of menu items
-extern NSString * const VDependencyManagerAccessoryMenuItemsKey;
+extern NSString * const VDependencyManagerAccessoryScreensKey; // An arry of accessory screens on a screen
 
 @interface VDependencyManager (VNavigationMenuItem)
 

@@ -11,7 +11,7 @@
 #import "VNavigationMenuItem.h"
 
 NSString * const VDependencyManagerMenuItemsKey = @"items";
-NSString * const VDependencyManagerAccessoryMenuItemsKey = @"accessoryMenuItems";
+NSString * const VDependencyManagerAccessoryScreensKey = @"accessoryScreens";
 
 @implementation VDependencyManager (VNavigationMenuItem)
 
@@ -44,7 +44,7 @@ NSString * const VDependencyManagerAccessoryMenuItemsKey = @"accessoryMenuItems"
 
 - (NSArray *)accessoryMenuItems
 {
-    NSArray *accessoryMenuItems = [self arrayForKey:VDependencyManagerAccessoryMenuItemsKey];
+    NSArray *accessoryMenuItems = [self arrayForKey:VDependencyManagerAccessoryScreensKey];
     return [self menuItemsWithArrayOfDictionaryRepresentations:accessoryMenuItems];
 }
 

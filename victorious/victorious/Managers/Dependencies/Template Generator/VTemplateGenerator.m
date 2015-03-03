@@ -18,6 +18,7 @@
 #import "VTranslucentBackground.h"
 #import "VSolidColorBackground.h"
 #import "VTabMenuViewController.h"
+#import "VDependencyManager+VNavigationMenuItem.h"
 
 #define BOTTOM_NAV_ENABLED 1
 
@@ -42,8 +43,6 @@ static NSString * const kInitialKey = @"initial";
 static NSString * const kUserSpecificKey = @"isUserSpecific";
 
 // Screen Properties
-static NSString * const kAccessoryMenuItemsKey = @"accessoryMenuItems";
-
 static NSString * const kRedKey = @"red";
 static NSString * const kGreenKey = @"green";
 static NSString * const kBlueKey = @"blue";
@@ -490,7 +489,7 @@ static NSString * const kVideoMuted = @"videoMuted";
     {
         return @{ kClassNameKey: @"currentUserProfile.screen",
                   kIdentifierKey: @"Menu Current User.",
-                  kAccessoryMenuItemsKey: @[
+                  VDependencyManagerAccessoryScreensKey: @[
                           [self settingsMenuItem],
                           ]
                   };
