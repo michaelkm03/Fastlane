@@ -11,6 +11,8 @@
 #import "VDependencyManager.h"
 #import "VSequence.h"
 #import "UIImage+ImageEffects.h"
+#import "VCVideoPlayerViewController.h"
+#import "VContentViewRotationHelper.h"
 
 static NSString * const VPlayFirstTimeUserVideo = @"com.getvictorious.settings.playWelcomeVideo";
 
@@ -20,6 +22,8 @@ static NSString * const VPlayFirstTimeUserVideo = @"com.getvictorious.settings.p
 @property (nonatomic, weak) IBOutlet VButton *getStartedButton;
 @property (nonatomic, weak) IBOutlet UIImageView *backgroundImageView;
 @property (nonatomic, strong) NSURL *mediaUrl;
+@property (nonatomic, strong) VCVideoPlayerViewController *videoPlayerViewController;
+@property (nonatomic, strong) VContentViewRotationHelper *rotationHelper;
 
 @end
 
@@ -56,6 +60,18 @@ static NSString * const VPlayFirstTimeUserVideo = @"com.getvictorious.settings.p
     self.getStartedButton.titleLabel.font = [self.dependencyManager fontForKey:VDependencyManagerParagraphFontKey];
     [self.getStartedButton setTitle:NSLocalizedString(@"Get Started", @"") forState:UIControlStateNormal];
     self.getStartedButton.style = VButtonStyleSecondary;
+    
+    // Setup Video player
+    CGFloat yPoint = CGRectGetHeight(self.view.bounds) / 2 - 160.0f;
+    self.videoPlayerViewController = [[VCVideoPlayerViewController alloc] initWithNibName:nil bundle:nil];
+    self.videoPlayerViewController.view.frame = CGRectMake(0, yPoint, 320.0f, 280.0f);
+    self.videoPlayerViewController.shouldContinuePlayingAfterDismissal = YES;
+    self.videoPlayerViewController.shouldChangeVideoGravityOnDoubleTap = YES;
+    [self.view addSubview:self.videoPlayerViewController.view];
+    self.videoPlayerViewController.view.hidden = NO;
+
+    // Set Media URL
+    self.mediaUrl = [NSURL URLWithString:@"http://cf.shacknews.com/video/robot/73b457a7524b822f5364905756cd9344_480p.mp4"];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -74,6 +90,19 @@ static NSString * const VPlayFirstTimeUserVideo = @"com.getvictorious.settings.p
     [super viewWillAppear:animated];
     
     self.backgroundImageView.image = [self.imageSnapshot applyDarkEffect];
+    [self updateOrientation];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    if (self.videoPlayerViewController.isPlaying)
+    {
+        [self.videoPlayerViewController.player pause];
+    }
+    self.videoPlayerViewController.view.hidden = YES;
+    self.videoPlayerViewController = nil;
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -81,16 +110,49 @@ static NSString * const VPlayFirstTimeUserVideo = @"com.getvictorious.settings.p
     return YES;
 }
 
+#pragma mark - Orientation Rotation
+
 - (BOOL)shouldAutorotate
 {
-    return NO;
+    return YES;
+}
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskAllButUpsideDown;
+}
+
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
+{
+    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context)
+     {
+         [self handleRotationToInterfaceOrientation:[UIApplication sharedApplication].statusBarOrientation];
+     }
+                                 completion:nil];
+}
+
+- (void)handleRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+{
+//    const CGPoint fixedLandscapeOffset = CGPointMake( 0.0f, 0.0f );
+//    [self.rotationHelper handleRotationToInterfaceOrientation:toInterfaceOrientation
+//                                          targetContentOffset:fixedLandscapeOffset
+//                                               collectionView:nil
+//                                                affectedViews:@[ self.getStartedButton ]];
+//    [self handleRotationToInterfaceOrientation:toInterfaceOrientation];
+}
+
+- (void)updateOrientation
+{
+    UIInterfaceOrientation currentOrientation = [UIApplication sharedApplication].statusBarOrientation;
+    [self handleRotationToInterfaceOrientation:currentOrientation];
 }
 
 #pragma mark - Video Playback
 
 - (void)showFirstTimeVideo
 {
-    
+    [self.videoPlayerViewController setItemURL:self.mediaUrl loop:NO];
+    [self.videoPlayerViewController.player play];
 }
 
 #pragma mark - Setters

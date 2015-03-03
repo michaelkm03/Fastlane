@@ -69,6 +69,7 @@ static NSString * const kVideoMuted = @"videoMuted";
 
 // First-time Video
 static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
+static NSString * const kFTUSequenceURLPath = @"sequenceUrlPath";
 
 @interface VTemplateGenerator ()
 
@@ -135,7 +136,7 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
                                                                VStreamCollectionViewControllerCreateSequenceIconKey: (self.templateCEnabled ? [UIImage imageNamed:@"createContentButtonC"] : [UIImage imageNamed:@"createContentButton"]),
                                                                VScaffoldViewControllerUserProfileViewComponentKey: @{ kClassNameKey: @"userProfile.screen" },
                                                                kSelectorKey: [self kSelectorKeyFromInitDictionary:self.dataFromInitCall],
-                                                               VScaffoldViewControllerWelcomeUserViewComponentKey: @{ kClassNameKey: @"lightweight.contentView" },
+                                                               VScaffoldViewControllerWelcomeUserViewComponentKey: [self firstTimeVideoComponent],
                                                             };
     template[VDependencyManagerWorkspaceFlowKey] = [self workspaceFlowComponent];
     template[VScaffoldViewControllerNavigationBarAppearanceKey] = [self navigationBarAppearance];
@@ -342,6 +343,15 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
                  VDependencyManagerBackgroundColorKey: self.dataFromInitCall[@"appearance"][@"color.accent"]
                  };
     }
+}
+
+- (NSDictionary *)firstTimeVideoComponent
+{
+    NSString *sequenceID = [self.dataFromInitCall valueForKeyPath:@"experiments.ftue_welcome_sequence_id"];
+    return @{
+             kClassNameKey: @"lightweight.contentView",
+             kFTUSequenceURLPath: [NSString stringWithFormat:@"/api/sequence/fetch/%@", sequenceID]
+             };
 }
 
 - (NSDictionary *)menuComponent
