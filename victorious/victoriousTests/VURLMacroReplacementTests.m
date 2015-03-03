@@ -13,14 +13,22 @@
 
 @interface VURLMacroReplacementTests : XCTestCase
 
+@property (nonatomic, strong) VURLMacroReplacement *macroReplacement;
+
 @end
 
 @implementation VURLMacroReplacementTests
 
+- (void)setUp
+{
+    [super setUp];
+    self.macroReplacement = [[VURLMacroReplacement alloc] init];
+}
+
 - (void)testReplacementInPath
 {
     NSString *expected = @"http://www.example.com/hello/wo=rld%2F";
-    NSString *actual = [VURLMacroReplacement urlByReplacingMacrosFromDictionary:@{ @"%%HELLO%%": @"wo=rld/" }
+    NSString *actual = [self.macroReplacement urlByReplacingMacrosFromDictionary:@{ @"%%HELLO%%": @"wo=rld/" }
                                                                     inURLString:@"http://www.example.com/hello/%%HELLO%%"];
     XCTAssertEqualObjects(expected, actual);
 }
@@ -28,7 +36,7 @@
 - (void)testReplacementInQueryString
 {
     NSString *expected = @"http://www.example.com/hello?a=wo%3Drld/&b=%26mpersand";
-    NSString *actual = [VURLMacroReplacement urlByReplacingMacrosFromDictionary:@{ @"%%HELLO%%": @"wo=rld/", @"%%B%%": @"&mpersand" }
+    NSString *actual = [self.macroReplacement urlByReplacingMacrosFromDictionary:@{ @"%%HELLO%%": @"wo=rld/", @"%%B%%": @"&mpersand" }
                                                                     inURLString:@"http://www.example.com/hello?a=%%HELLO%%&b=%%B%%"];
     XCTAssertEqualObjects(expected, actual);
 }
