@@ -112,8 +112,13 @@
               }
               else
               {
-                  enhancer.animationSequence = images;
-                  enhancer.flightImage = images.firstObject;
+                  NSMutableArray *adjustedSequence = [[NSMutableArray alloc] init];
+                  [images enumerateObjectsUsingBlock:^(UIImage *image, NSUInteger idx, BOOL *stop)
+                   {
+                       [adjustedSequence addObject:[UIImage imageWithCGImage:image.CGImage scale:[voteType.scaleFactor floatValue] orientation:image.imageOrientation]];
+                   }];
+                  enhancer.animationSequence = adjustedSequence;
+                  enhancer.flightImage = [adjustedSequence firstObject];
               }
           }];
          

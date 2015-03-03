@@ -88,17 +88,4 @@
     return @[];
 }
 
-- (CGSize)desiredSize
-{
-    CGFloat intrinsicWidth = self.flightImage.size.width;
-    CGFloat intrinsicHeight = self.flightImage.size.height;
-    
-    return CGSizeMake(intrinsicWidth * [self scaleFactor], intrinsicHeight * [self scaleFactor]);
-}
-
-- (CGFloat)scaleFactor
-{
-    return [self.voteType.scaleFactor floatValue] / [[UIScreen mainScreen] scale];
-}
-
 @end

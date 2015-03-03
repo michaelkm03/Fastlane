@@ -994,7 +994,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
             {
                 if (selectedEnhancer.isBallistic)
                 {
-                    CGRect animationFrameSize = CGRectMake(0, 0, selectedEnhancer.desiredSize.width, selectedEnhancer.desiredSize.height);
+                    CGRect animationFrameSize = CGRectMake(0, 0, selectedEnhancer.flightImage.size.width, selectedEnhancer.flightImage.size.width);
                     UIImageView *animationImageView = [[UIImageView alloc] initWithFrame:animationFrameSize];
                     animationImageView.contentMode = UIViewContentModeScaleAspectFit;
                     
