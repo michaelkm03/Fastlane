@@ -63,6 +63,15 @@
      }];
 }
 
+- (void)setBounds:(CGRect)bounds
+{
+    [super setBounds:bounds];
+    
+    //Since the playerLayer isn't a subview, we can't use constraints to make it's bounds change with its superview's
+    //Update bounds here to always have playerLayer's bounds fit its superview's
+    self.playerLayer.frame = self.bounds;
+}
+
 - (void)didFinishAssetCreation:(AVPlayerItem *)playerItem
 {
     [self.player replaceCurrentItemWithPlayerItem:playerItem];

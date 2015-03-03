@@ -49,7 +49,11 @@
 #import "VUserProfileViewController.h"
 #import "VAuthorizationViewControllerFactory.h"
 #import "VPurchaseViewController.h"
+
+// Workspace
 #import "VWorkspaceFlowController.h"
+#import "VImageToolController.h"
+#import "VVideoToolController.h"
 
 // Transitioning
 #import "VLightboxTransitioningDelegate.h"
@@ -89,11 +93,17 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 
 #import "VInlineSearchTableViewController.h"
+#import "VCommentTextAndMediaView.h"
+#import "VTagSensitiveTextView.h"
+#import "VTag.h"
+#import "VUserTag.h"
+#import "VHashtagStreamCollectionViewController.h"
+#import "VNavigationController.h"
 
 #define HANDOFFENABLED 0
 static const CGFloat kMaxInputBarHeight = 200.0f;
 
-@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, VEndCardViewControllerDelegate, NSUserActivityDelegate, VWorkspaceFlowControllerDelegate>
+@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, VEndCardViewControllerDelegate, NSUserActivityDelegate, VWorkspaceFlowControllerDelegate, VTagSensitiveTextViewDelegate>
 
 @property (nonatomic, strong) NSUserActivity *handoffObject;
 
@@ -103,8 +113,8 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 
 @property (nonatomic, weak) IBOutlet UICollectionView *contentCollectionView;
 @property (nonatomic, weak) IBOutlet UIImageView *blurredBackgroundImageView;
-@property (weak, nonatomic) IBOutlet UIButton *closeButton;
-@property (weak, nonatomic) IBOutlet UIButton *moreButton;
+@property (nonatomic, weak) IBOutlet UIButton *closeButton;
+@property (nonatomic, weak) IBOutlet UIButton *moreButton;
 
 // Cells
 @property (nonatomic, weak) VContentCell *contentCell;
@@ -122,8 +132,8 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 // Constraints
 @property (nonatomic, weak) NSLayoutConstraint *bottomKeyboardToContainerBottomConstraint;
 @property (nonatomic, weak) NSLayoutConstraint *keyboardInputBarHeightConstraint;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *leadingCollectionViewToContainer;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *trailingCollectionViewToContainer;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *leadingCollectionViewToContainer;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *trailingCollectionViewToContainer;
 
 // RTC
 @property (nonatomic, assign) BOOL enteringRealTimeComment;
@@ -140,6 +150,9 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 @property (nonatomic, weak) IBOutlet VContentViewRotationHelper *rotationHelper;
 @property (nonatomic, weak) IBOutlet VScrollPaginator *scrollPaginator;
 @property (nonatomic, strong, readwrite) IBOutlet VSequenceActionController *sequenceActionController;
+
+@property (nonatomic, weak) UIView *snapshotView;
+@property (nonatomic, assign) CGPoint offsetBeforeRemoval;
 
 @end
 
@@ -320,12 +333,23 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 
 - (void)handleRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
 {
+    NSMutableArray *affectedViews = [[NSMutableArray alloc] init];
+    if ( self.textEntryView != nil )
+    {
+        [affectedViews addObject:self.textEntryView];
+    }
+    if ( self.moreButton != nil )
+    {
+        [affectedViews addObject:self.moreButton];
+    }
+    
     const CGSize experienceEnhancerCellSize = [VExperienceEnhancerBarCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
     const CGPoint fixedLandscapeOffset = CGPointMake( 0.0f, experienceEnhancerCellSize.height );
+    
     [self.rotationHelper handleRotationToInterfaceOrientation:toInterfaceOrientation
                                           targetContentOffset:fixedLandscapeOffset
                                                collectionView:self.contentCollectionView
-                                                affectedViews:@[ self.textEntryView, self.moreButton ]];
+                                                affectedViews:[NSArray arrayWithArray:affectedViews]];
     if ( self.videoCell != nil )
     {
         [self.videoCell handleRotationToInterfaceOrientation:toInterfaceOrientation];
@@ -431,11 +455,6 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     
     self.viewModel.experienceEnhancerController.delegate = self;
     
-    NSDictionary *params = @{ VTrackingKeyTimeCurrent : [NSDate date],
-                              VTrackingKeySequenceId : self.viewModel.sequence.remoteId,
-                              VTrackingKeyUrls : self.viewModel.sequence.tracking.viewStart ?: @[] };
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
-    
     [self.viewModel reloadData];
 }
 
@@ -512,6 +531,10 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 {
     [super viewDidAppear:animated];
     
+    NSString *contextType = [self trackingValueForContentType] ?: @"";
+    [[VTrackingManager sharedInstance] setValue:contextType forSessionParameterWithKey:VTrackingKeyContentType];
+    [[VTrackingManager sharedInstance] setValue:VTrackingValueContentView forSessionParameterWithKey:VTrackingKeyContext];
+    
 #if HANDOFFENABLED
     if ((self.viewModel.sequence.remoteId != nil) && (self.viewModel.shareURL != nil))
     {
@@ -523,12 +546,28 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     }
 #endif
     
+    BOOL isBeingPresented = self.isBeingPresented || self.navigationController.isBeingPresented;
+    if ( isBeingPresented && self.videoCell == nil )
+    {
+        NSDictionary *params = @{ VTrackingKeyTimeStamp : [NSDate date],
+                                  VTrackingKeySequenceId : self.viewModel.sequence.remoteId,
+                                  VTrackingKeyUrls : self.viewModel.sequence.tracking.viewStart ?: @[] };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
+    }
+    
     [self.contentCollectionView flashScrollIndicators];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
+    [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContentType];
+    
+    if ( self.isBeingDismissed )
+    {
+        [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContext];
+    }
     
 #if HANDOFFENABLED
     self.handoffObject.delegate = nil;
@@ -573,9 +612,26 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     }
 }
 
-- (BOOL)prefersStatusBarHidden
+- (BOOL)v_prefersNavigationBarHidden
 {
     return YES;
+}
+
+- (NSString *)trackingValueForContentType
+{
+    switch (self.viewModel.type)
+    {
+        case VContentViewTypePoll:
+            return VTrackingValuePoll;
+        case VContentViewTypeImage:
+            return VTrackingValueImage;
+        case VContentViewTypeGIFVideo:
+            return VTrackingValueGIF;
+        case VContentViewTypeVideo:
+            return VTrackingValueVideo;
+        default:
+            return nil;
+    }
 }
 
 #pragma mark - Notification Handlers
@@ -592,6 +648,9 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     {
         return;
     }
+    
+    NSDictionary *params = @{ VTrackingKeyProductIdentifier : experienceEnhander.voteType.productIdentifier ?: @"" };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectLockedVoteType parameters:params];
     
     VPurchaseViewController *viewController = [VPurchaseViewController purchaseViewControllerWithVoteType:experienceEnhander.voteType];
     viewController.transitioningDelegate = self.modalTransitionDelegate;
@@ -636,17 +695,45 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 
 - (IBAction)pressedClose:(id)sender
 {
-    // Sometimes UICollecitonView hangs gets stuck in infinite loops while we are dismissing slowing the UI down to a crawl, by replacing it with a snapshot of the current UI we don't risk this happening.
-    [self.view addSubview:[self.view snapshotViewAfterScreenUpdates:NO]];
-    self.contentCollectionView.delegate = nil;
-    self.videoCell.delegate = nil;
-    self.videoCell.adPlayerViewController = nil;
-    self.videoCell = nil;
-    [self.contentCollectionView removeFromSuperview];
+    [self removeCollectionViewFromContainer];
     [self.delegate newContentViewControllerDidClose:self];
 }
 
 #pragma mark - Private Mehods
+
+- (void)removeCollectionViewFromContainer
+{
+    self.snapshotView = [self.view snapshotViewAfterScreenUpdates:NO];
+    [self.view addSubview:self.snapshotView];
+    self.offsetBeforeRemoval = self.contentCollectionView.contentOffset;
+    self.contentCollectionView.delegate = nil;
+    self.contentCollectionView.dataSource = nil;
+    self.videoCell.delegate = nil;
+    self.videoCell.adPlayerViewController = nil;
+    [self.contentCollectionView removeFromSuperview];
+}
+
+- (void)restoreCollectionView
+{
+    [self.snapshotView removeFromSuperview];
+    self.contentCollectionView.delegate = self;
+    self.contentCollectionView.dataSource = self;
+    self.videoCell.delegate = self;
+    self.contentCollectionView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.contentCollectionView.contentOffset = self.offsetBeforeRemoval;
+    [self.view addSubview:self.contentCollectionView];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[collectionView]|"
+                                                                      options:kNilOptions
+                                                                      metrics:nil
+                                                                        views:@{@"collectionView":self.contentCollectionView}]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[collectionView]|"
+                                                                      options:kNilOptions
+                                                                      metrics:nil
+                                                                        views:@{@"collectionView":self.contentCollectionView}]];
+    [self.view bringSubviewToFront:self.closeButton];
+    [self.view bringSubviewToFront:self.moreButton];
+    [self.view bringSubviewToFront:self.textEntryView];
+}
 
 - (void)updateInitialExperienceEnhancerState
 {
@@ -672,6 +759,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
                    withIndex:(NSInteger)index
 {
     commentCell.comment = self.viewModel.comments[index];
+    commentCell.commentAndMediaView.textView.tagTapDelegate = self;
     commentCell.swipeViewController.controllerDelegate = self;
     commentCell.commentsUtilitiesDelegate = self;
     
@@ -689,6 +777,22 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
         VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithUser:wCommentCell.comment.user];
         [welf.navigationController pushViewController:profileViewController animated:YES];
     };
+}
+
+- (void)tagSensitiveTextView:(VTagSensitiveTextView *)tagSensitiveTextView tappedTag:(VTag *)tag
+{
+    if ( [tag isKindOfClass:[VUserTag class]] )
+    {
+        //Tapped a user tag, show a profile view controller
+        VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithRemoteId:((VUserTag *)tag).remoteId];
+        [self.navigationController pushViewController:profileViewController animated:YES];
+    }
+    else
+    {
+        //Tapped a hashtag, show a hashtag view controller
+        VHashtagStreamCollectionViewController *hashtagViewController = [VHashtagStreamCollectionViewController instantiateWithHashtag:[tag.displayString.string substringFromIndex:1]];
+        [self.navigationController pushViewController:hashtagViewController animated:YES];
+    }
 }
 
 - (void)showLightBoxWithMediaURL:(NSURL *)mediaURL
@@ -716,6 +820,8 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
             [welf dismissViewControllerAnimated:YES
                                      completion:^
              {
+                 [[welf class] attemptRotationToDeviceOrientation];
+                 
                  [welf.contentCollectionView.collectionViewLayout invalidateLayout];
              }];
         }
@@ -843,6 +949,9 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
                 
                 pollCell.onAnswerASelection = ^void(BOOL isVideo, NSURL *mediaURL)
                 {
+                    NSDictionary *params = @{ VTrackingKeyIndex : @0, VTrackingKeyMediaType : [mediaURL pathExtension] ?: @"" };
+                    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectPollMedia parameters:params];
+                    
                     [welf showLightBoxWithMediaURL:mediaURL
                                       previewImage:weakPollCell.answerAPreviewImage
                                            isVideo:isVideo
@@ -850,6 +959,9 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
                 };
                 pollCell.onAnswerBSelection = ^void(BOOL isVideo, NSURL *mediaURL)
                 {
+                    NSDictionary *params = @{ VTrackingKeyIndex : @1, VTrackingKeyMediaType : [mediaURL pathExtension] ?: @"" };
+                    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectPollMedia parameters:params];
+                    
                     [welf showLightBoxWithMediaURL:mediaURL
                                       previewImage:weakPollCell.answerBPreviewImage
                                            isVideo:isVideo
@@ -1169,7 +1281,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 - (void)videoCellReadyToPlay:(VContentVideoCell *)videoCell
 {
     [UIViewController attemptRotationToDeviceOrientation];
-    if (!self.hasAutoPlayed)
+    if ( !self.hasAutoPlayed )
     {
         [self.videoCell play];
         self.hasAutoPlayed = YES;
@@ -1178,6 +1290,11 @@ referenceSizeForHeaderInSection:(NSInteger)section
         // If the video asset is playing, any ad (if there was one) is now over, and the
         // bar should be enabled.
         self.experienceEnhancerCell.experienceEnhancerBar.enabled = YES;
+        
+        NSDictionary *params = @{ VTrackingKeyTimeStamp : [NSDate date],
+                                  VTrackingKeySequenceId : self.viewModel.sequence.remoteId,
+                                  VTrackingKeyUrls : self.viewModel.sequence.tracking.viewStart ?: @[] };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
     }
 }
 
@@ -1497,6 +1614,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
     [self.viewModel loadNextSequenceSuccess:^(VSequence *sequence)
      {
          [self showNextSequence:sequence];
+         
      }
                                     failure:^(NSError *error)
      {
@@ -1508,13 +1626,19 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)actionCellSelected:(VEndCardActionCell *)actionCell atIndex:(NSUInteger)index
 {
+    [[VTrackingManager sharedInstance] setValue:VTrackingValueEndCard forSessionParameterWithKey:VTrackingKeyContext];
+    
     if ( [actionCell.actionIdentifier isEqualToString:VEndCardActionIdentifierGIF] )
     {
         [self.sequenceActionController showRemixOnViewController:self.navigationController
                                                     withSequence:self.viewModel.sequence
                                             andDependencyManager:self.dependencyManager
                                                   preloadedImage:nil
-                                                      completion:nil];
+                                                      completion:^(BOOL finished)
+         {
+             [[VTrackingManager sharedInstance] setValue:VTrackingValueContentView
+                              forSessionParameterWithKey:VTrackingKeyContext];
+         }];
     }
     else if ( [actionCell.actionIdentifier isEqualToString:VEndCardActionIdentifierRepost] )
     {
@@ -1524,6 +1648,8 @@ referenceSizeForHeaderInSection:(NSInteger)section
          {
              [actionCell showSuccessState];
              actionCell.enabled = NO;
+             [[VTrackingManager sharedInstance] setValue:VTrackingValueContentView
+                              forSessionParameterWithKey:VTrackingKeyContext];
          }];
     }
     else if ( [actionCell.actionIdentifier isEqualToString:VEndCardActionIdentifierShare] )
@@ -1531,7 +1657,11 @@ referenceSizeForHeaderInSection:(NSInteger)section
         [self.sequenceActionController shareFromViewController:self.navigationController
                                                       sequence:self.viewModel.sequence
                                                           node:self.viewModel.currentNode
-                                                    completion:nil];
+                                                    completion:^
+         {
+             [[VTrackingManager sharedInstance] setValue:VTrackingValueContentView
+                              forSessionParameterWithKey:VTrackingKeyContext];
+         }];
     }
 }
 

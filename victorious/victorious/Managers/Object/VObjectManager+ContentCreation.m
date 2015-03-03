@@ -227,11 +227,32 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
         parameters[@"name"] = name;
     }
     
+    VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    {
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidRepost];
+        
+        if ( success != nil )
+        {
+            success( operation, fullResponse, resultObjects );
+        }
+    };
+    
+    VFailBlock fullFail = ^(NSOperation *operation, NSError *error)
+    {
+        NSDictionary *params = @{ VTrackingKeyErrorMessage : error.localizedDescription ?: @"" };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventRepostDidFail parameters:params];
+        
+        if ( fail != nil )
+        {
+            fail( operation, error );
+        }
+    };
+    
     return [self POST:@"/api/repost/create"
                object:nil
            parameters:parameters
-         successBlock:success
-            failBlock:fail];
+         successBlock:fullSuccess
+            failBlock:fullFail];
 }
 
 - (NSString *)stringForLoopType:(VLoopType)type
@@ -321,10 +342,25 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
         {
             [asset addCommentsObject: newComment];
         }
+        
+        NSDictionary *params = @{ VTrackingKeyTextLength : @(text.length),
+                                  VTrackingKeyMediaType : [mediaURL pathExtension] ?: @"" };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidPostComment parameters:params];
 
-        if (success)
+        if ( success != nil )
         {
-            success(operation, fullResponse, resultObjects);
+            success( operation, fullResponse, resultObjects );
+        }
+    };
+    
+    VFailBlock fullFail = ^(NSOperation *operation, NSError *error)
+    {
+        NSDictionary *params = @{ VTrackingKeyErrorMessage : error.localizedDescription ?: @"" };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventPostCommentDidFail parameters:params];
+        
+        if ( fail != nil )
+        {
+            fail( operation, error );
         }
     };
     
@@ -332,7 +368,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
                      toPath:@"/api/comment/add"
                  parameters:parameters
                successBlock:fullSuccess
-                  failBlock:fail];
+                  failBlock:fullFail];
 }
 
 - (VComment *)newCommentWithID:(NSNumber *)remoteID
@@ -385,9 +421,10 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
                                   @"text" : message.text ?: [NSNull null]
                                   } mutableCopy];
     NSDictionary *allURLs;
+    NSURL *mediaURL;
     if (message.mediaPath)
     {
-        NSURL *mediaURL = [NSURL URLWithString:message.mediaPath];
+        mediaURL = [NSURL URLWithString:message.mediaPath];
         allURLs = @{@"media_data": mediaURL};
         NSString *type = [message.mediaPath v_hasVideoExtension] ? @"video" : @"image";
         [parameters setValue:type forKey:@"media_type"];
@@ -395,6 +432,10 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
+        NSDictionary *params = @{ VTrackingKeyTextLength : @(message.text.length),
+                                  VTrackingKeyMediaType : [mediaURL pathExtension] ?: @"" };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSendMessage parameters:params];
+        
         if ([fullResponse isKindOfClass:[NSDictionary class]])
         {
             [message.managedObjectContext performBlock:^(void)
@@ -426,10 +467,11 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     NSAssert([NSThread isMainThread], @"This method should be called only on the main thread");
     VMessage *tempMessage = [self.managedObjectStore.mainQueueManagedObjectContext insertNewObjectForEntityForName:[VMessage entityName]];
     
-    tempMessage.text = text;
+    //Use a copy of the inputs to prevent the text and mediaPath from changing when these parameters fall out of memory or are reused
+    tempMessage.text = [text copy];
     tempMessage.postedAt = [NSDate dateWithTimeIntervalSinceNow:-1];
     tempMessage.thumbnailPath = [self localImageURLForVideo:mediaURLPath];
-    tempMessage.mediaPath = mediaURLPath;
+    tempMessage.mediaPath = [mediaURLPath copy];
     tempMessage.sender = self.mainUser;
     tempMessage.senderUserId = self.mainUser.remoteId;
     

@@ -144,8 +144,6 @@
                                              andParent:nil
                                           successBlock:success
                                              failBlock:fail];
-    
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidPostComment];
 }
 
 - (IBAction)pressedBackButton:(id)sender

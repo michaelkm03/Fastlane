@@ -148,6 +148,8 @@
         return;
     }
     
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectInvite];
+    
     UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"InviteYourFriends", @"")
                                               cancelButtonTitle:nil
                                                  onCancelButton:nil
@@ -237,6 +239,11 @@
 
 - (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
 {
+    if ( result == MFMailComposeResultSent || result == MFMailComposeResultSaved )
+    {
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidInviteFiendsWithEmail];
+    }
+    
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -244,6 +251,11 @@
 
 - (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result
 {
+    if ( result == MessageComposeResultSent )
+    {
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidInviteFiendsWithSMS];
+    }
+    
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

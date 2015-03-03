@@ -122,6 +122,7 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
         {
             [self setupCapture];
         }
+        
     }
     return self;
 }
@@ -172,6 +173,7 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
             {
                 VVideoToolController *videoToolController = (VVideoToolController *)workspace.toolController;
                 publishParameters.isGIF = videoToolController.isGIF;
+                publishParameters.isVideo = YES;
                 publishParameters.didTrim = videoToolController.didTrim;
             }
             else if ([workspace.toolController isKindOfClass:[VImageToolController class]])
@@ -180,6 +182,8 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
                 publishParameters.embeddedText = imageToolController.embeddedText;
                 publishParameters.textToolType = imageToolController.textToolType;
                 publishParameters.filterName = imageToolController.filterName;
+                publishParameters.didCrop = imageToolController.didCrop;
+                publishParameters.isVideo = NO;
             }
         }
         VSequence *sequenceToRemix = [self.dependencyManager templateValueOfType:[VSequence class]
@@ -236,14 +240,21 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
     self.state = newState;
 }
 
-#pragma mark - VFlowController
+#pragma mark - VNavigationDestination
+
+- (BOOL)shouldNavigateWithAlternateDestination:(UIViewController *__autoreleasing *)alternateViewController
+{
+    VWorkspaceFlowController *newFlowController = [[VWorkspaceFlowController alloc] initWithDependencyManager:self.dependencyManager];
+    [[VRootViewController rootViewController] presentViewController:newFlowController.flowRootViewController animated:YES completion:nil];
+    return NO;
+}
+
+#pragma mark - Property Accessors
 
 - (UIViewController *)flowRootViewController
 {
     return self.flowNavigationController;
 }
-
-#pragma mark - Property Accessors
 
 - (void)setVideoEnabled:(BOOL)videoEnabled
 {
@@ -346,7 +357,7 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
         NSAssert(false, @"Media type not supported!");
     }
     
-    UIImage *preloadedImage = [self.dependencyManager templateValueOfType:[UIImage class] forKey:VWorkspaceFlowControllerPreloadedImageKey];
+    UIImage *preloadedImage = [self.dependencyManager imageForKey:VWorkspaceFlowControllerPreloadedImageKey];
     if (preloadedImage != nil)
     {
         workspaceViewController.previewImage = preloadedImage;
@@ -389,27 +400,39 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
 
 - (void)notifyDelegateOfCancel
 {
-    [self checkDelgate];
-    [self.delegate workspaceFlowControllerDidCancel:self];
+    if (self.delegate != nil)
+    {
+        [self.delegate workspaceFlowControllerDidCancel:self];
+    }
+    else
+    {
+        [self.flowRootViewController dismissViewControllerAnimated:YES
+                                                        completion:^
+        {
+            [self.flowNavigationController popToRootViewControllerAnimated:NO];
+        }];
+    }
     objc_setAssociatedObject(self.flowNavigationController, &kAssociatedObjectKey, nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (void)notifyDelegateOfFinishWithPreviewImage:(UIImage *)previewImage
                               capturedMediaURL:(NSURL *)capturedMediaURL
 {
-    [self checkDelgate];
-    [self.delegate workspaceFlowController:self
-                  finishedWithPreviewImage:previewImage
-                          capturedMediaURL:capturedMediaURL];
-    objc_setAssociatedObject(self.flowNavigationController, &kAssociatedObjectKey, nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
-
-- (void)checkDelgate
-{
-    if (self.delegate == nil)
+    if (self.delegate != nil)
     {
-        NSAssert(false, @"VWorkspaceFlowController must have a delegate");
+        [self.delegate workspaceFlowController:self
+                      finishedWithPreviewImage:previewImage
+                              capturedMediaURL:capturedMediaURL];
     }
+    else
+    {
+        [self.flowRootViewController dismissViewControllerAnimated:YES
+                                                        completion:^
+         {
+             [self.flowNavigationController popToRootViewControllerAnimated:NO];
+         }];
+    }
+    objc_setAssociatedObject(self.flowNavigationController, &kAssociatedObjectKey, nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 #pragma mark - UINavigationControllerDelegate

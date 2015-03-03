@@ -8,12 +8,7 @@
 
 #import "VHasManagedDependencies.h"
 
-#import "VImageToolController.h"
-#import "VVideoToolController.h"
-
-typedef void (^VMediaCaptureCompletion)(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL);
-
-@class VSequence;
+#import "VNavigationDestination.h"
 
 @class VWorkspaceFlowController;
 
@@ -41,6 +36,12 @@ typedef void (^VMediaCaptureCompletion)(BOOL finished, UIImage *previewImage, NS
                capturedMediaURL:(NSURL *)capturedMediaURL;
 
 @optional
+
+/**
+ *  Asks the delegate whether or not the workspace flow should show a publish screen for
+ *  creating a new sequence. If this is not implemented the workspace flow will show
+ *  a publish screen.
+ */
 - (BOOL)shouldShowPublishForWorkspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController;
 
 @end
@@ -60,7 +61,6 @@ extern NSString * const VWorkspaceFlowControllerSequenceToRemixKey;
 extern NSString * const VWorkspaceFlowControllerPreloadedImageKey;
 
 /**
- *  ATTENTION: The delegate MUST be set otherwise the workspace flow controller will be leaked.
  *  Supports injection of:
  *
  *  - Initial capture via "VWorkspaceFlowControllerInitialCaptureStateKey",
@@ -72,9 +72,8 @@ extern NSString * const VWorkspaceFlowControllerPreloadedImageKey;
  *  Use VWorkspaceFlowControllerPreloadedImageKey with a UIImage.
  *
  *  For remix the sequence to remix can be injected via "VWorkspaceFlowControllerSequenceToRemixKey".
- *
  */
-@interface VWorkspaceFlowController : NSObject <VHasManagedDependancies>
+@interface VWorkspaceFlowController : NSObject <VHasManagedDependancies, VNavigationDestination>
 
 //TODO: this is a temporary workaround for when there may not be a dependency manager.
 + (instancetype)workspaceFlowControllerWithoutADependencyManger;
@@ -87,7 +86,8 @@ extern NSString * const VWorkspaceFlowControllerPreloadedImageKey;
 @property (nonatomic, weak) id <VWorkspaceFlowControllerDelegate> delegate;
 
 /**
- *  Present this viewcontroller. Note, the WorkspaceFlowController IS retained by this viewcontroller. The workspace flow controller will be deallocated after did cancel or finished is called on it's delegate.
+ *  Present this viewcontroller. Note, the WorkspaceFlowController IS retained by this viewcontroller.
+ *  The workspace flow controller will be deallocated after did cancel or finished is called on it's delegate.
  */
 @property (nonatomic, readonly) UIViewController *flowRootViewController;
 

@@ -102,7 +102,7 @@
 "ProfileNoFollowersTitle"      =   "BE THE FIRST TO FOLLOW THIS USER";
 "ProfileNoFollowersMessage"    =   "Build your community by following other users. You’ll be alerted when they post new content.";
 
-"ProfileNotFollowingTitle"     =   "UH-OH! THIS PERSON ISN’T FOLLOWING ANYONE YET";
+"ProfileNotFollowingTitle"     =   "UH-OH! THIS PERSON ISN'T FOLLOWING ANYONE YET";
 "ProfileNotFollowingMessage"   =   "Create a community by following other users and encouraging them to follow you.";
 
 "SuggestedFollowersNone" =   "No Followers";

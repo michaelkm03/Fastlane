@@ -21,6 +21,7 @@
 #import "VTracking.h"
 #import "VWebBrowserViewController.h"
 #import "VFirstTimeUserVideoViewController.h"
+#import "VNavigationController.h"
 
 #import <MBProgressHUD.h>
 
@@ -54,7 +55,7 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
+
     // Show the First Time User Video if it hasn't been shown yet
     VFirstTimeUserVideoViewController *firstTimeUserVC = [self.dependencyManager templateValueOfType:[VFirstTimeUserVideoViewController class]
                                                                                    forKey:VScaffoldViewControllerWelcomeUserViewComponentKey];
@@ -86,12 +87,12 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
         [self showWebContentWithSequence:sequence];
         return;
     }
-    
+
     if ( self.presentedViewController )
     {
         [self dismissViewControllerAnimated:NO completion:nil];
     }
-    
+
     VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithSequence:sequence depenencyManager:self.dependencyManager];
     contentViewModel.deepLinkCommentId = commentId;
     VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel
@@ -99,26 +100,36 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
     contentViewController.dependencyManagerForHistogramExperiment = self.dependencyManager;
     contentViewController.placeholderImage = placeHolderImage;
     contentViewController.delegate = self;
-    
-    UINavigationController *contentNav = [[UINavigationController alloc] initWithRootViewController:contentViewController];
-    contentNav.navigationBarHidden = YES;
+
+    VNavigationController *contentNav = [[VNavigationController alloc] initWithDependencyManager:self.dependencyManager];
+    contentNav.innerNavigationController.viewControllers = @[contentViewController];
+    contentNav.innerNavigationController.navigationBarHidden = YES;
     [self presentViewController:contentNav animated:YES completion:nil];
 }
 
 - (void)showWebContentWithSequence:(VSequence *)sequence
 {
-    VWebBrowserViewController *viewController = [VWebBrowserViewController instantiateFromStoryboard];
-    viewController.sequence = sequence;
-    [self presentViewController:viewController
-                       animated:YES
-                     completion:^(void)
+    NSURL *sequenceContentURL = [NSURL URLWithString:sequence.webContentUrl];
+    const BOOL isCustomScheme = [sequenceContentURL.scheme rangeOfString:@"http"].location != 0;
+    if ( isCustomScheme && [[UIApplication sharedApplication] canOpenURL:sequenceContentURL] )
     {
-        // Track view-start event, similar to how content is tracking in VNewContentViewController when loaded
-        NSDictionary *params = @{ VTrackingKeyTimeCurrent : [NSDate date],
-                                  VTrackingKeySequenceId : sequence.remoteId,
-                                  VTrackingKeyUrls : sequence.tracking.viewStart ?: @[] };
-        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
-    }];
+        [[UIApplication sharedApplication] openURL:sequenceContentURL];
+    }
+    else
+    {
+        VWebBrowserViewController *viewController = [VWebBrowserViewController instantiateFromStoryboard];
+        viewController.sequence = sequence;
+        [self presentViewController:viewController
+                           animated:YES
+                         completion:^(void)
+         {
+             // Track view-start event, similar to how content is tracking in VNewContentViewController when loaded
+             NSDictionary *params = @{ VTrackingKeyTimeCurrent : [NSDate date],
+                                       VTrackingKeySequenceId : sequence.remoteId,
+                                       VTrackingKeyUrls : sequence.tracking.viewStart ?: @[] };
+             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
+         }];
+    }
 }
 
 #pragma mark - Deeplinks
@@ -133,7 +144,7 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
         }];
         return;
     }
-    
+
     if ( [self displayContentViewForDeeplinkURL:url] )
     {
         return;
@@ -153,7 +164,7 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
                 [self navigateToDestination:viewController];
             }
         };
-        
+
         NSArray *possibleHandlers = [(id<VNavigationDestinationsProvider>)self.menuViewController navigationDestinations];
         for (id<VDeeplinkHandler> handler in possibleHandlers)
         {
@@ -172,7 +183,7 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
 
 /**
  Displays a content view for deeplink URLs that point to content views.
- 
+
  @return YES if the given URL was a content URL, or NO if it was
          some other kind of deep link.
  */
@@ -182,17 +193,17 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
     {
         return NO;
     }
-    
+
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    
+
     NSString *sequenceID = [url v_firstNonSlashPathComponent];
     if ( sequenceID == nil )
     {
         return NO;
     }
-    
+
     NSNumber *commentId = @([url v_pathComponentAtIndex:2].integerValue);
-    
+
     [[self.dependencyManager objectManager] fetchSequenceByID:sequenceID
                                                  successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
@@ -211,7 +222,7 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
                                               otherButtonTitles:nil];
         [alert show];
     }];
-    
+
     return YES;
 }
 
@@ -229,12 +240,22 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
 
 - (void)navigateToDestination:(id)navigationDestination
 {
+    [self navigateToDestination:navigationDestination completion:nil];
+}
+
+- (void)navigateToDestination:(id)navigationDestination completion:(void(^)())completion
+{
     void (^goTo)(UIViewController *) = ^(UIViewController *viewController)
     {
         NSAssert([viewController isKindOfClass:[UIViewController class]], @"non-UIViewController specified as destination for navigation");
         [self displayResultOfNavigation:viewController];
+
+        if ( completion != nil )
+        {
+            completion();
+        }
     };
-    
+
     if ([navigationDestination respondsToSelector:@selector(shouldNavigateWithAlternateDestination:)])
     {
         UIViewController *alternateDestination = nil;
@@ -246,7 +267,7 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
             }
             else
             {
-                [self navigateToDestination:alternateDestination];
+                [self navigateToDestination:alternateDestination completion:completion];
             }
         }
     }

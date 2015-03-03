@@ -15,7 +15,10 @@
 #import "VObjectManager+ContentCreation.h"
 #import "UIStoryboard+VMainStoryboard.h"
 #import "victorious-Swift.h"  // for NSString+Unicode (imports all Swift files)
+
 #import "VWorkspaceFlowController.h"
+#import "VImageToolController.h"
+#import "VVideoToolController.h"
 
 #import "VDependencyManager.h"
 #import "VRootViewController.h"
@@ -57,6 +60,8 @@ static char KVOContext;
 @property (strong, nonatomic) NSURL *firstMediaURL;
 @property (strong, nonatomic) NSURL *secondMediaURL;
 
+@property (nonatomic, assign) BOOL didPublish;
+
 @property (strong, nonatomic) IBOutletCollection(NSLayoutConstraint) NSArray *constraintsThatNeedHalfPointConstant;
 
 @property (nonatomic) BOOL textViewsCleared;
@@ -75,6 +80,12 @@ static char KVOContext;
 {
     [self.leftAnswerTextView  removeObserver:self forKeyPath:NSStringFromSelector(@selector(contentSize)) context:&KVOContext];
     [self.rightAnswerTextView removeObserver:self forKeyPath:NSStringFromSelector(@selector(contentSize)) context:&KVOContext];
+    
+    if ( !self.didPublish )
+    {
+        NSDictionary *params = @{ VTrackingKeyContentType : VTrackingValuePoll };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidCancelPublish parameters:params];
+    }
 }
 
 - (void)viewDidLoad
@@ -177,6 +188,23 @@ static char KVOContext;
     }
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [[VTrackingManager sharedInstance] setValue:VTrackingValueCreatePoll forSessionParameterWithKey:VTrackingKeyContext];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    if ( self.isBeingDismissed )
+    {
+        [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContext];
+    }
+}
+
 - (NSUInteger)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskPortrait;
@@ -208,6 +236,9 @@ static char KVOContext;
     
     if (errorMessage.length > 0)
     {
+        NSDictionary *params = @{ VTrackingKeyErrorMessage : errorMessage ?: @"" };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventPollDidFailValidation parameters:params];
+        
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Missing Content", nil)
                                                         message:errorMessage
                                                        delegate:nil
@@ -357,18 +388,21 @@ static char KVOContext;
                                              media1Url:self.firstMediaURL
                                              media2Url:self.secondMediaURL
                                             completion:nil];
+    
+    NSDictionary *params = @{ VTrackingKeyContentType : VTrackingValuePoll };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidPublishContent parameters:params];
+    
+    self.didPublish = YES;
+    
     [self.navigationController popViewControllerAnimated:YES];
     [[NSFileManager defaultManager] removeItemAtURL:self.firstMediaURL error:nil];
     [[NSFileManager defaultManager] removeItemAtURL:self.secondMediaURL error:nil];
 }
 
-- (IBAction)closeButtonAction:(id)sender
-{
-    [self.navigationController popViewControllerAnimated:YES];
-}
-
 - (IBAction)searchImageAction:(id)sender
 {
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraDidSelectImageSearch];
+    
     VImageSearchViewController *imageSearch = [VImageSearchViewController newImageSearchViewController];
     
     if (self.firstMediaURL)
@@ -403,6 +437,7 @@ static char KVOContext;
             }
             [self imagePickerFinishedWithURL:capturedMediaURL previewImage:previewImage];
         }
+        
         [self dismissViewControllerAnimated:YES completion:nil];
     };
     [self presentViewController:imageSearch animated:YES completion:nil];

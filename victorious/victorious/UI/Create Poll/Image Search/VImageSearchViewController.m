@@ -119,10 +119,8 @@ static const CGFloat    kHeightRatioForRefresh                    =  0.1f;
 - (IBAction)closeButtonTapped:(id)sender
 {
     [self.searchField resignFirstResponder];
-    if (self.completionBlock)
-    {
-        self.completionBlock(NO, nil, nil);
-    }
+    
+    [self didFinishWithImageSelected:NO previewImage:nil capturedMediaURL:nil];
 }
 
 #pragma mark - 
@@ -149,6 +147,9 @@ static const CGFloat    kHeightRatioForRefresh                    =  0.1f;
                                               otherButtonTitles:nil];
         [alert show];
     }];
+    
+    NSDictionary *params = @{ VTrackingKeySearchTerm : self.searchField.text ?: @"" };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraDidSearchForImage parameters:params];
 }
 
 - (NSString *)searchTerm
@@ -176,6 +177,24 @@ static const CGFloat    kHeightRatioForRefresh                    =  0.1f;
     else
     {
         _searchTerm = [searchTerm copy];
+    }
+}
+
+- (void)didFinishWithImageSelected:(BOOL)wasImageSelected
+                      previewImage:(UIImage *)previewImage
+                  capturedMediaURL:(NSURL *)capturedMediaURL
+{
+    NSString *eventName = wasImageSelected ? VTrackingEventCameraDidSelectImageFromImageSearch : VTrackingEventCameraDidExitImageSearch;
+    NSDictionary *params = nil;
+    if ( [capturedMediaURL pathExtension] != nil )
+    {
+        params = @{ VTrackingKeyMediaType : [capturedMediaURL pathExtension] };
+    }
+    [[VTrackingManager sharedInstance] trackEvent:eventName parameters:params];
+    
+    if ( self.completionBlock != nil )
+    {
+        self.completionBlock( wasImageSelected, previewImage, capturedMediaURL );
     }
 }
 
@@ -235,14 +254,13 @@ static const CGFloat    kHeightRatioForRefresh                    =  0.1f;
             __typeof(self) strongSelf = weakSelf;
             if (strongSelf)
             {
-                if (strongSelf.completionBlock)
-                {
-                    NSData *jpegData = UIImageJPEGRepresentation(image, VConstantJPEGCompressionQuality);
-                    NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
-                    NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:VConstantMediaExtensionJPG];
-                    [jpegData writeToURL:tempFile atomically:NO];
-                    strongSelf.completionBlock(YES, image, tempFile);
-                }
+                NSData *jpegData = UIImageJPEGRepresentation(image, VConstantJPEGCompressionQuality);
+                NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
+                NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:VConstantMediaExtensionJPG];
+                [jpegData writeToURL:tempFile atomically:NO];
+                
+                [strongSelf didFinishWithImageSelected:YES previewImage:image capturedMediaURL:tempFile];
+                
                 [strongSelf.collectionView deselectItemAtIndexPath:indexPath animated:YES];
             }
         }

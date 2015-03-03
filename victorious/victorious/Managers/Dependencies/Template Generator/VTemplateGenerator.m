@@ -15,6 +15,11 @@
 #import "VTemplateGenerator.h"
 #import "VThemeManager.h"
 #import "VSettingManager.h"
+#import "VTranslucentBackground.h"
+#import "VSolidColorBackground.h"
+#import "VTabMenuViewController.h"
+
+#define BOTTOM_NAV_ENABLED 0
 
 static NSString * const kIDKey = @"id";
 static NSString * const kReferenceIDKey = @"referenceID";
@@ -24,6 +29,7 @@ static NSString * const kClassNameKey = @"name";
 // Menu properties
 static NSString * const kItemsKey = @"items";
 static NSString * const kTitleKey = @"title";
+static NSString * const kIconKey = @"icon";
 static NSString * const kIdentifierKey = @"identifier";
 static NSString * const kDestinationKey = @"destination";
 
@@ -108,9 +114,9 @@ static NSString * const kFTUSequenceURLPath = @"sequenceUrlPath";
              if ([obj isKindOfClass:[NSDictionary class]])
              {
                  [template addEntriesFromDictionary:obj];
-                 
+
                  NSDictionary *accentColor = obj[VDependencyManagerAccentColorKey];
-                 
+
                  if ( accentColor == nil )
                  {
                      accentColor = @{
@@ -128,19 +134,37 @@ static NSString * const kFTUSequenceURLPath = @"sequenceUrlPath";
              template[key] = obj;
          }
      }];
-    
-    template[VDependencyManagerScaffoldViewControllerKey] = @{ kClassNameKey: @"sideMenu.scaffold",
-                                                               VHamburgerButtonIconKey: (self.templateCEnabled ? [UIImage imageNamed:@"menuC"] : [UIImage imageNamed:@"Menu"] ),
-                                                               VDependencyManagerInitialViewControllerKey: @{ kReferenceIDKey: self.firstMenuItemID },
-                                                               VScaffoldViewControllerMenuComponentKey: [self menuComponent],
-                                                               VStreamCollectionViewControllerCreateSequenceIconKey: (self.templateCEnabled ? [UIImage imageNamed:@"createContentButtonC"] : [UIImage imageNamed:@"createContentButton"]),
-                                                               VScaffoldViewControllerUserProfileViewComponentKey: @{ kClassNameKey: @"userProfile.screen" },
-                                                               kSelectorKey: [self kSelectorKeyFromInitDictionary:self.dataFromInitCall],
-                                                               VScaffoldViewControllerWelcomeUserViewComponentKey: [self firstTimeVideoComponent],
-                                                            };
+
+    if (BOTTOM_NAV_ENABLED)
+    {
+        template[VDependencyManagerScaffoldViewControllerKey] = @{
+                                                                  kClassNameKey: @"tabMenu.scaffold",
+                                                                  kItemsKey:[self bottomNavMenuItems],
+                                                                  VScaffoldViewControllerUserProfileViewComponentKey: [self profileScreen],
+                                                                  kSelectorKey: [self kSelectorKeyFromInitDictionary:self.dataFromInitCall],
+                                                                  VTabMenuViewControllerMenuAppearanceKey: @{
+                                                                          VDependencyManagerBackgroundKey: [self solidWhiteBackground],
+                                                                          },
+                                                                  };
+    }
+    else
+    {
+        template[VDependencyManagerScaffoldViewControllerKey] = @{ kClassNameKey: @"sideMenu.scaffold",
+                                                                   VHamburgerButtonIconKey: @{
+                                                                           VDependencyManagerImageURLKey:(self.templateCEnabled ? @"menuC":@"Menu"),
+                                                                           },
+                                                                   VDependencyManagerInitialViewControllerKey: @{ kReferenceIDKey: self.firstMenuItemID },
+                                                                   VScaffoldViewControllerMenuComponentKey: [self menuComponent],
+                                                                   VStreamCollectionViewControllerCreateSequenceIconKey: (self.templateCEnabled ? [UIImage imageNamed:@"createContentButtonC"] : [UIImage imageNamed:@"createContentButton"]),
+                                                                   VScaffoldViewControllerUserProfileViewComponentKey: [self profileScreen],
+                                                                   kSelectorKey: [self kSelectorKeyFromInitDictionary:self.dataFromInitCall],
+                                                                   VScaffoldViewControllerWelcomeUserViewComponentKey: [self firstTimeVideoComponent],
+                                                                   };
+    }
+
     template[VDependencyManagerWorkspaceFlowKey] = [self workspaceFlowComponent];
     template[VScaffoldViewControllerNavigationBarAppearanceKey] = [self navigationBarAppearance];
-    
+
     return template;
 }
 
@@ -150,7 +174,7 @@ static NSString * const kFTUSequenceURLPath = @"sequenceUrlPath";
                                    kClassNameKey: @"basic.multiScreenSelector",
                                    VDependencyManagerBackgroundColorKey: self.accentColor,
                                    };
-    
+
     if ( [[(NSDictionary *)[initDictionary objectForKey:@"experiments"] objectForKey:@"template_c_enabled"] boolValue] )
     {
         kSelectorKey =  @{
@@ -360,11 +384,7 @@ static NSString * const kFTUSequenceURLPath = @"sequenceUrlPath";
         kClassNameKey: @"simple.menu",
         kItemsKey: @[
             @[
-                @{
-                    kIdentifierKey: @"Menu Home",
-                    kTitleKey: NSLocalizedString(@"Home", @""),
-                    kDestinationKey: [self homeScreen],
-                },
+                [self homeMenuItem],
                 [self ownerStreamMenuItem],
                 @{
                     kIdentifierKey: @"Menu Community",
@@ -378,7 +398,7 @@ static NSString * const kFTUSequenceURLPath = @"sequenceUrlPath";
                             @{
                                 kClassNameKey: @"stream.screen",
                                 kTitleKey: NSLocalizedString(@"Featured", @""),
-                                VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/hot_detail_list_by_stream/ugc",
+                                VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/hot_detail_list_by_stream/ugc/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%",
                                 kCanAddContentKey: @YES,
                             },
                             @{
@@ -400,20 +420,8 @@ static NSString * const kFTUSequenceURLPath = @"sequenceUrlPath";
                 }
             ],
             @[
-                @{
-                    kIdentifierKey: @"Menu Inbox",
-                    kTitleKey: NSLocalizedString(@"Inbox", @""),
-                    kDestinationKey: @{
-                        kClassNameKey: @"inbox.screen"
-                    }
-                },
-                @{
-                    kIdentifierKey: @"Menu Profile",
-                    kTitleKey: NSLocalizedString(@"Profile", @""),
-                    kDestinationKey: @{
-                        kClassNameKey: @"currentUserProfile.screen"
-                    }
-                },
+                [self inboxMenuItem],
+                [self profileMenuItem],
                 @{
                     kIdentifierKey: @"Menu Settings",
                     kTitleKey: NSLocalizedString(@"Settings", @""),
@@ -426,12 +434,79 @@ static NSString * const kFTUSequenceURLPath = @"sequenceUrlPath";
     };
 }
 
+- (NSArray *)bottomNavMenuItems
+{
+    return @[
+             [self homeMenuItem],
+             [self ownerStreamMenuItem],
+             [self createMenuItem],
+             [self profileMenuItem],
+             [self inboxMenuItem],
+             ];
+}
+
+- (NSDictionary *)homeMenuItem
+{
+    return @{
+             kIdentifierKey: @"Menu Home",
+             kTitleKey: NSLocalizedString(@"Home", @""),
+             kDestinationKey: [self homeScreen],
+             kIconKey: @{
+                     VDependencyManagerImageURLKey: @"home",
+                     }
+             };
+}
+
+- (NSDictionary *)createMenuItem
+{
+    return @{
+             kTitleKey: NSLocalizedString(@"Create", @""),
+             kIconKey: @{
+                     VDependencyManagerImageURLKey: @"create",
+                     },
+             kDestinationKey: [self workspaceFlowComponent],
+             };
+}
+
+- (NSDictionary *)profileMenuItem
+{
+    return @{
+             kIdentifierKey: @"Menu Profile",
+             kTitleKey: NSLocalizedString(@"Profile", @""),
+             kIconKey: @{
+                     VDependencyManagerImageURLKey: @"profile",
+                     },
+             kDestinationKey: @{
+                     kClassNameKey: @"currentUserProfile.screen"
+                     }
+             };
+}
+
+- (NSDictionary *)inboxMenuItem
+{
+    return @{
+             kIdentifierKey: @"Menu Inbox",
+             kTitleKey: NSLocalizedString(@"Inbox", @""),
+             kIconKey: @{
+                     VDependencyManagerImageURLKey: @"inbox",
+                     },
+             kDestinationKey: @{
+                     kClassNameKey: @"inbox.screen"
+                     }
+             };
+}
+
 - (NSString *)urlPathForStreamCategories:(NSArray *)categories
 {
-    NSString *categoryString = [categories componentsJoinedByString:@","];
-    return [@"/api/sequence/detail_list_by_category/" stringByAppendingString:(categoryString ?: @"0")];
+    NSString *categoryString = [categories componentsJoinedByString:@","] ?: @"0";
+    return [NSString stringWithFormat:@"/api/sequence/detail_list_by_category/%@/%%%%PAGE_NUM%%%%/%%%%ITEMS_PER_PAGE%%%%", categoryString];
 }
-                
+
+- (NSDictionary *)profileScreen
+{
+    return @{ kClassNameKey: @"userProfile.screen" };
+}
+
 - (NSDictionary *)homeScreen
 {
     NSMutableDictionary *homeScreen = [@{
@@ -441,7 +516,7 @@ static NSString * const kFTUSequenceURLPath = @"sequenceUrlPath";
                 @{
                     kClassNameKey: @"stream.screen",
                     kTitleKey: NSLocalizedString(@"Featured", @""),
-                    VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/hot_detail_list_by_stream/home",
+                    VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/hot_detail_list_by_stream/home/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%",
                     kIsHomeKey: @YES,
                     kCanAddContentKey: @YES,
                     },
@@ -456,7 +531,7 @@ static NSString * const kFTUSequenceURLPath = @"sequenceUrlPath";
                 @{
                     kClassNameKey: @"followingStream.screen",
                     kTitleKey: NSLocalizedString(@"Following", @""),
-                    VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/follows_detail_list_by_stream/0/home",
+                    VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/follows_detail_list_by_stream/0/home/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%",
                     kCanAddContentKey: @YES,
                     }
                 ],
@@ -464,13 +539,13 @@ static NSString * const kFTUSequenceURLPath = @"sequenceUrlPath";
                 kReferenceIDKey: self.homeRecentID,
                 },
         } mutableCopy];
-    
+
     UIImage *headerImage = [self homeHeaderImage];
     if ( headerImage != nil )
     {
         homeScreen[kTitleImageKey] = headerImage;
     }
-    
+
     return homeScreen;
 }
 
@@ -492,7 +567,7 @@ static NSString * const kFTUSequenceURLPath = @"sequenceUrlPath";
       kInitialKey: @YES,
       VStreamCollectionViewControllerStreamURLPathKey: [self urlPathForStreamCategories:[VUGCCategories() arrayByAddingObjectsFromArray:VOwnerCategories()]]
     };
-    
+
     NSNumber *marqueeEnabled = [self.dataFromInitCall valueForKeyPath:@"experiments.marquee_enabled"];
     if ( [marqueeEnabled isKindOfClass:[NSNumber class]] && [marqueeEnabled boolValue] )
     {
@@ -511,10 +586,13 @@ static NSString * const kFTUSequenceURLPath = @"sequenceUrlPath";
         return @{
             kIdentifierKey: @"Menu Channels",
             kTitleKey: NSLocalizedString(@"Channels", @""),
+            kIconKey: @{
+                    VDependencyManagerImageURLKey:@"channels",
+                    },
             kDestinationKey: @{
                 kClassNameKey: @"streamDirectory.screen",
                 kTitleKey: NSLocalizedString(@"Channels", nil),
-                VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/detail_list_by_stream/directory"
+                VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/detail_list_by_stream/directory/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%"
             }
         };
     }
@@ -523,6 +601,7 @@ static NSString * const kFTUSequenceURLPath = @"sequenceUrlPath";
         return @{
             kIdentifierKey: @"Menu Channel",
             kTitleKey: NSLocalizedString(@"Channel", @""),
+            kIconKey: @"channels",
             kDestinationKey: @{
                 kClassNameKey: @"basic.multiScreen",
                 kTitleKey: NSLocalizedString(@"Owner", @""),
@@ -530,7 +609,7 @@ static NSString * const kFTUSequenceURLPath = @"sequenceUrlPath";
                     @{
                         kClassNameKey: @"stream.screen",
                         kTitleKey: NSLocalizedString(@"Featured", @""),
-                        VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/hot_detail_list_by_stream/owner"
+                        VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/hot_detail_list_by_stream/owner/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%"
                     },
                     @{
                         kClassNameKey: @"stream.screen",
@@ -542,6 +621,21 @@ static NSString * const kFTUSequenceURLPath = @"sequenceUrlPath";
             }
         };
     }
+}
+
+#pragma mark - Background
+
+- (NSDictionary *)solidWhiteBackground
+{
+    return @{
+             kClassNameKey:@"solidColor.background",
+             VSolidColorBackgroundColorKey: @{
+                     kRedKey: @255,
+                     kGreenKey: @255,
+                     kBlueKey: @255,
+                     kAlphaKey: @1
+                     },
+             };
 }
 
 @end

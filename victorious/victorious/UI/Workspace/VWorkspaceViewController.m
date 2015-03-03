@@ -280,6 +280,8 @@
                                                      animated:YES];
     hudForView.labelText = NSLocalizedString(@"Rendering...", @"");
     
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidFinishWorkspaceEdits];
+    
     __weak typeof(self) welf = self;
     [self.toolController exportWithSourceAsset:self.mediaURL
                                 withCompletion:^(BOOL finished, NSURL *renderedMediaURL, UIImage *previewImage, NSError *error)
@@ -308,6 +310,9 @@
 {
     self.toolController.selectedTool = [self.toolForBarButtonItemMap objectForKey:sender.description];
     [self setSelectedBarButtonItem:sender];
+    
+    NSDictionary *params = @{ VTrackingKeyName : self.toolController.selectedTool.title ?: @"" };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectWorkspaceTool parameters:params];
 }
 
 #pragma mark - Notification Handlers
@@ -479,7 +484,7 @@
 {
     toolViewController.view.translatesAutoresizingMaskIntoConstraints = NO;
     // Prevent weird resizing if we are in an animation block.
-    toolViewController.view.frame = self.canvasView.frame;
+    toolViewController.view.frame = self.canvasView.bounds;
     [self.view addConstraints:@[
                                 [NSLayoutConstraint constraintWithItem:toolViewController.view
                                                              attribute:NSLayoutAttributeTop

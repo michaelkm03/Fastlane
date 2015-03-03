@@ -14,5 +14,6 @@
 @interface VFlurryTracking : NSObject <VTrackingDelegate>
 
 @property (nonatomic, readonly) BOOL enabled;
+@property (nonatomic, strong) NSArray *unwantedParameterKeys;
 
 @end

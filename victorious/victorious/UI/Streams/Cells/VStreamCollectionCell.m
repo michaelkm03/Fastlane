@@ -76,7 +76,19 @@ static const CGFloat kTextViewLineFragmentPadding = 5.0f; //Since we don't updat
     
     NSString *headerNibName = isTemplateC ? @"VStreamCellHeaderView-C" : @"VStreamCellHeaderView";
     self.streamCellHeaderView = [[[NSBundle mainBundle] loadNibNamed:headerNibName owner:self options:nil] objectAtIndex:0];
+    [self.streamCellHeaderView setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.streamCellHeaderView setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
     [self addSubview:self.streamCellHeaderView];
+    NSDictionary *views = @{ @"header":self.streamCellHeaderView };
+    CGFloat height = CGRectGetHeight(self.streamCellHeaderView.bounds);
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[header]|"
+                                                                 options:0
+                                                                 metrics:nil
+                                                                   views:views]];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[header(height)]"
+                                                                 options:0
+                                                                 metrics:@{ @"height":@(height) }
+                                                                   views:views]];
     self.streamCellHeaderView.delegate = self;
 }
 
@@ -231,7 +243,7 @@ static const CGFloat kTextViewLineFragmentPadding = 5.0f; //Since we don't updat
     {
         [self.actionView addRepostButton];
     }
-    [self.actionView addFlagButton];
+    [self.actionView addMoreButton];
 }
 
 - (void)setHeight:(CGFloat)height

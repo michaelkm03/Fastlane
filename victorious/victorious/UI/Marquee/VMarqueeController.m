@@ -91,7 +91,7 @@
 
 - (void)refreshWithSuccess:(void (^)(void))successBlock failure:(void (^)(NSError *))failureBlock
 {
-    [self.streamDataSource refreshWithSuccess:
+    [self.streamDataSource loadPage:VPageTypeFirst withSuccess:
      ^{
          [self scrolledToPage:0];
          

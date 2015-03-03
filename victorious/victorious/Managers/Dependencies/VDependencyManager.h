@@ -11,6 +11,8 @@
 
 // multi-purpose keys
 extern NSString * const VDependencyManagerTitleKey;
+extern NSString * const VDependencyManagerBackgroundKey;
+extern NSString * const VDependencyManagerImageURLKey;
 
 // Keys for colors
 extern NSString * const VDependencyManagerBackgroundColorKey;
@@ -88,6 +90,11 @@ extern NSString * const VDependencyManagerVideoWorkspaceKey;
  Returns the NSNumber with the specified key
  */
 - (NSNumber *)numberForKey:(NSString *)key;
+
+/**
+ Returns the UIImage with the specified key
+ */
+- (UIImage *)imageForKey:(NSString *)key;
 
 /**
  Returns a new instance of a view controller with the specified key

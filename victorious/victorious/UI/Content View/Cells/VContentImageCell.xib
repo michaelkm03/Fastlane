@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -13,12 +14,27 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OKp-Dj-CUq" userLabel="Content Image View">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="OKp-Dj-CUq" userLabel="Content Image View">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
+                        <constraints>
+                            <constraint firstAttribute="width" secondItem="OKp-Dj-CUq" secondAttribute="height" multiplier="1:1" id="YZq-cV-cdB"/>
+                        </constraints>
                     </imageView>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
+            <constraints>
+                <constraint firstItem="OKp-Dj-CUq" firstAttribute="leading" secondItem="yMK-fU-iYV" secondAttribute="leading" priority="999" id="1kW-F1-jip"/>
+                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="OKp-Dj-CUq" secondAttribute="trailing" id="Jah-qP-LFp"/>
+                <constraint firstAttribute="trailing" secondItem="OKp-Dj-CUq" secondAttribute="trailing" priority="999" id="Mp6-dY-JiQ"/>
+                <constraint firstItem="OKp-Dj-CUq" firstAttribute="top" relation="greaterThanOrEqual" secondItem="yMK-fU-iYV" secondAttribute="top" id="Wtb-ao-ggI"/>
+                <constraint firstItem="OKp-Dj-CUq" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="yMK-fU-iYV" secondAttribute="leading" id="dTG-fd-Mtb"/>
+                <constraint firstAttribute="centerY" secondItem="OKp-Dj-CUq" secondAttribute="centerY" id="jOH-Go-37B"/>
+                <constraint firstItem="OKp-Dj-CUq" firstAttribute="top" secondItem="yMK-fU-iYV" secondAttribute="top" priority="999" id="k3Q-Eh-0HF"/>
+                <constraint firstAttribute="centerX" secondItem="OKp-Dj-CUq" secondAttribute="centerX" id="lNF-YB-ekG"/>
+                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="OKp-Dj-CUq" secondAttribute="bottom" id="mo3-U9-FtC"/>
+                <constraint firstAttribute="bottom" secondItem="OKp-Dj-CUq" secondAttribute="bottom" priority="999" id="nfr-m7-B8t"/>
+            </constraints>
             <size key="customSize" width="50" height="117"/>
             <connections>
                 <outlet property="contentImageView" destination="OKp-Dj-CUq" id="XAS-aJ-4Uv"/>

@@ -12,6 +12,8 @@
 #import "VMultipleContainerViewController.h"
 #import "VNavigationController.h"
 #import "VSelectorViewBase.h"
+#import "VMultipleContainerViewControllerChild.h"
+#import "VMultipleContainerViewControllerChild.h"
 
 @interface VMultipleContainerViewController () <UICollectionViewDataSource, UICollectionViewDelegate, VSelectorViewDelegate>
 
@@ -35,8 +37,6 @@ static NSString * const kInitialKey = @"initial";
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self)
     {
-        self.automaticallyAdjustsScrollViewInsets = NO;
-        self.extendedLayoutIncludesOpaqueBars = YES;
         _didShowInitial = NO;
     }
     return self;
@@ -89,6 +89,8 @@ static NSString * const kInitialKey = @"initial";
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(collectionView)]];
+    self.extendedLayoutIncludesOpaqueBars = YES;
+    self.automaticallyAdjustsScrollViewInsets = NO;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -128,6 +130,17 @@ static NSString * const kInitialKey = @"initial";
 - (BOOL)prefersStatusBarHidden
 {
     return YES;
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    UIViewController *viewController = self.viewControllers[ self.selector.activeViewControllerIndex ];
+    if ( [viewController conformsToProtocol:@protocol(VMultipleContainerViewControllerChild)] )
+    {
+        [((id<VMultipleContainerViewControllerChild>)viewController) viewControllerAppearedAsInitial];
+    }
 }
 
 #pragma mark - Rotation
@@ -178,6 +191,11 @@ static NSString * const kInitialKey = @"initial";
     
     UIViewController *viewController = self.viewControllers[index];
     self.navigationItem.rightBarButtonItem = viewController.navigationItem.rightBarButtonItem;
+    
+    if ( [viewController conformsToProtocol:@protocol(VMultipleContainerViewControllerChild)] )
+    {
+        [((id<VMultipleContainerViewControllerChild>)viewController) viewControllerSelected];
+    }
 }
 
 #pragma mark - UICollectionViewDelegate methods

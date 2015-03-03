@@ -108,18 +108,16 @@
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:cancelButtonImage style:UIBarButtonItemStylePlain target:self action:@selector(closeButtonClicked:)];
     
     self.navigationController.delegate = self;
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    [[VTrackingManager sharedInstance] startEvent:@"Login"];
+    
+    if ( self.isBeingPresented || self.navigationController.isBeingPresented )
+    {
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginDidShow];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [[VTrackingManager sharedInstance] endEvent:@"Login"];
     
     // Stop being the navigation controller's delegate
     if (self.navigationController.delegate == self)
@@ -147,6 +145,8 @@
 
 - (void)linkTextView:(CCHLinkTextView *)linkTextView didTapLinkWithValue:(id)value
 {
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectLoginWithEmail];
+    
     [self performSegueWithIdentifier:@"toEmailLogin" sender:self];
 }
 
@@ -158,7 +158,19 @@
     gradient.frame = view.bounds;
     gradient.colors = @[(id)[UIColor colorWithWhite:0.0 alpha:0.0].CGColor,
                         (id)[UIColor colorWithWhite:0.0 alpha:1.0].CGColor];
-    [view.layer insertSublayer:gradient atIndex:0];
+    
+    //Add gradient to new view with constraints so that the graidnt adjusts to new constraint changes on passed in view
+    UIView *subview = [[UIView alloc] initWithFrame:gradient.frame];
+    [subview setBackgroundColor:[UIColor clearColor]];
+    [view addSubview:subview];
+    [view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[subview]|"
+                                                                   options:0
+                                                                   metrics:nil
+                                                                     views:NSDictionaryOfVariableBindings(subview)]];
+    [view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[subview]|"
+                                                                    options:0
+                                                                    metrics:nil
+                                                                      views:NSDictionaryOfVariableBindings(subview)]];
 }
 
 - (void)twitterAccessDidFail:(NSError *)error
@@ -194,7 +206,11 @@
     {
         dispatch_async(dispatch_get_main_queue(), ^(void)
                        {
-                           [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithFacebookDidSucceed];
+                           if ( created )
+                           {
+                               [[VTrackingManager sharedInstance] trackEvent:VTrackingEventSignupWithFacebookDidSucceed];
+                           }
+                           
                            self.profile = user;
                            if ( [self.profile.status isEqualToString:kUserStatusIncomplete] )
                            {
@@ -209,11 +225,13 @@
                                                          onError:^(NSError *error)
     {
         dispatch_async(dispatch_get_main_queue(), ^(void)
-        {
-            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithFacebookDidFail];
-            [self didFailWithError:error];
-            [self hideLoginProgress];
-        });
+                       {
+                           NSDictionary *params = @{ VTrackingKeyErrorMessage : error.localizedDescription ?: @"" };
+                           [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithFacebookDidFail parameters:params];
+                           
+                           [self didFailWithError:error];
+                           [self hideLoginProgress];
+                       });
     }];
 }
 
@@ -228,11 +246,13 @@
         if (!granted)
         {
             dispatch_async(dispatch_get_main_queue(), ^(void)
-            {
-                [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithTwitterDidFailNoAccounts];
-                [self hideLoginProgress];
-                [self twitterAccessDidFail:error];
-            });
+                           {
+                               NSDictionary *params = @{ VTrackingKeyErrorMessage : error.localizedDescription ?: @"" };
+                               [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithTwitterDidFailNoAccounts parameters:params];
+                               
+                               [self hideLoginProgress];
+                               [self twitterAccessDidFail:error];
+                           });
         }
         else
         {
@@ -241,7 +261,9 @@
             {
                 dispatch_async(dispatch_get_main_queue(), ^(void)
                 {
-                    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithTwitterDidFailDenied];
+                    NSDictionary *params = @{ VTrackingKeyErrorMessage : error.localizedDescription ?: @"" };
+                    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithTwitterDidFailDenied parameters:params];
+                    
                     [self hideLoginProgress];
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"NoTwitterTitle", @"")
                                                                     message:NSLocalizedString(@"NoTwitterMessage", @"")
@@ -299,6 +321,8 @@
 
 - (IBAction)signup:(id)sender
 {
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectSignupWithEmail];
+    
     [self performSegueWithIdentifier:@"toSignup" sender:self];
 }
 
@@ -368,7 +392,8 @@
          [MBProgressHUD hideHUDForView:self.navigationController.view
                               animated:YES];
          
-         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithTwitterDidSucceed];
+         NSString *eventName = created ? VTrackingEventSignupWithTwitterDidSucceed : VTrackingEventLoginWithTwitterDidSucceed;
+         [[VTrackingManager sharedInstance] trackEvent:eventName];
          
          self.profile = user;
          if ( [self.profile.status isEqualToString:kUserStatusIncomplete] )
@@ -385,7 +410,8 @@
          [MBProgressHUD hideHUDForView:self.navigationController.view
                               animated:YES];
          
-         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithTwitterDidFailUnknown];
+         NSDictionary *params = @{ VTrackingKeyErrorMessage : error.localizedDescription ?: @"" };
+         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithTwitterDidFailUnknown parameters:params];
          
          [self hideLoginProgress];
          [self didFailWithError:error];

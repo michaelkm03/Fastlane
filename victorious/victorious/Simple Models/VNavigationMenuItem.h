@@ -24,7 +24,10 @@
 /**
  Initializes a new instance of VNavigationMenuItem with the provided property values
  */
-- (instancetype)initWithTitle:(NSString *)title identifier:(NSString *)identifier icon:(UIImage *)icon destination:(id)destination NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithTitle:(NSString *)title
+                   identifier:(NSString *)identifier
+                         icon:(UIImage *)icon
+                  destination:(id)destination NS_DESIGNATED_INITIALIZER;
 
 /**
  initializes a new instance of VNavigationMenuItem, reading 

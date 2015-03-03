@@ -124,19 +124,16 @@
     
     self.confirmField.text = @"fdsafdsa";
     [self.passwordValidator validateString:@"asdfasdf" andError:&error];
-    XCTAssert( [error.localizedFailureReason isEqualToString:NSLocalizedString( @"PasswordError", @"")] );
-    XCTAssert( [error.localizedDescription isEqualToString:NSLocalizedString( @"PasswordNotMatching", @"")] );
+    XCTAssertEqualObjects( error.localizedDescription, NSLocalizedString( @"PasswordNotMatching", @"") );
     
     self.passwordValidator.currentPassword = @"asdfasdf";
     self.confirmField.text = @"asdfasdf";
     [self.passwordValidator validateString:@"asdfasdf" andError:&error];
-    XCTAssert( [error.localizedFailureReason isEqualToString:NSLocalizedString( @"ResetPasswordNewEqualsCurrentTitle", @"")] );
-    XCTAssert( [error.localizedDescription isEqualToString:NSLocalizedString( @"ResetPasswordNewEqualsCurrentMessage", @"")] );
+    XCTAssertEqualObjects( error.localizedDescription, NSLocalizedString( @"ResetPasswordNewEqualsCurrentMessage", @"") );
     
     [self.passwordValidator setConfirmationObject:nil withKeyPath:nil];
     [self.passwordValidator validateString:@"" andError:&error];
-    XCTAssert( [error.localizedFailureReason isEqualToString:NSLocalizedString( @"PasswordError", @"")] );
-    XCTAssert( [error.localizedDescription isEqualToString:NSLocalizedString( @"PasswordValidation", @"")] );
+    XCTAssertEqualObjects( error.localizedDescription, NSLocalizedString( @"PasswordValidation", @"") );
 }
 
 @end
