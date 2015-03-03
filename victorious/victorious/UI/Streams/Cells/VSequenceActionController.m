@@ -45,6 +45,8 @@
 
 #pragma mark - Workflow
 #import "VWorkspaceFlowController.h"
+#import "VImageToolController.h"
+#import "VVideoToolController.h"
 
 @interface VSequenceActionController () <VWorkspaceFlowControllerDelegate>
 
@@ -112,8 +114,8 @@
     [addedDependencies setObject:@(VVideoToolControllerInitialVideoEditStateGIF) forKey:VVideoToolControllerInitalVideoEditStateKey];
     
     VWorkspaceFlowController *workspaceFlowController = [dependencyManager templateValueOfType:[VWorkspaceFlowController class]
-                                                                   forKey:VDependencyManagerWorkspaceFlowKey
-                                                    withAddedDependencies:addedDependencies];
+                                                                                        forKey:VDependencyManagerWorkspaceFlowKey
+                                                                         withAddedDependencies:addedDependencies];
     
     workspaceFlowController.delegate = self;
     self.viewControllerPresentingWorkspace = viewController;

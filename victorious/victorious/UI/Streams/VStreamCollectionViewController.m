@@ -30,7 +30,11 @@
 #import "VWebBrowserViewController.h"
 #import "VNavigationController.h"
 #import "VNewContentViewController.h"
+
+// Workspace
 #import "VWorkspaceFlowController.h"
+#import "VImageToolController.h"
+#import "VVideoToolController.h"
 
 //Views
 #import "VNoContentView.h"
