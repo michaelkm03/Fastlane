@@ -169,6 +169,8 @@ static const NSTimeInterval kAnimationDuration = 0.2;
 
 - (void)accessoryButtonTappedInUploadProgressView:(VUploadProgressView *)uploadProgressView
 {
+    BOOL isFailed = uploadProgressView.state == VUploadProgressViewStateFailed;
+    
     switch (uploadProgressView.state)
     {
         case VUploadProgressViewStateFailed:
@@ -188,6 +190,10 @@ static const NSTimeInterval kAnimationDuration = 0.2;
                 {
                     [self removeUpload:uploadProgressView animated:YES];
                 }
+                
+                NSString *eventName = isFailed ? VTrackingEventUserDidCancelFailedUpload : VTrackingEventUserDidCancelPendingUpload;
+                [[VTrackingManager sharedInstance] trackEvent:eventName];
+                
                 [self.uploadManager cancelUploadTask:uploadProgressView.uploadTask];
             }
                                                    otherButtonTitlesAndBlocks:nil];

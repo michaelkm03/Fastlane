@@ -33,10 +33,11 @@
 #import "VScrollPaginator.h"
 #import "VImageSearchResultsFooterView.h"
 #import "VFooterActivityIndicatorView.h"
+#import "VMultipleContainerViewControllerChild.h"
 
 const CGFloat kVLoadNextPagePoint = .75f;
 
-@interface VAbstractStreamCollectionViewController ()
+@interface VAbstractStreamCollectionViewController () <VMultipleContainerViewControllerChild>
 
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, weak) IBOutlet VScrollPaginator *scrollPaginator;
@@ -79,6 +80,7 @@ const CGFloat kVLoadNextPagePoint = .75f;
 
 - (void)commonInit
 {
+    self.streamTrackingHelper = [[VStreamTrackingHelper alloc] init];
     self.navigationBarShouldAutoHide = YES;
 }
 
@@ -111,6 +113,8 @@ const CGFloat kVLoadNextPagePoint = .75f;
 {
     [super viewWillAppear:animated];
     
+    [self.streamTrackingHelper onStreamViewWillAppearWithStream:self.currentStream];
+    
     BOOL shouldRefresh = !self.refreshControl.isRefreshing && self.streamDataSource.count == 0;
     if ( shouldRefresh )
     {
@@ -127,6 +131,8 @@ const CGFloat kVLoadNextPagePoint = .75f;
 {
     [super viewDidAppear:animated];
     
+    [self.streamTrackingHelper onStreamViewDidAppearWithStream:self.currentStream isBeingPresented:self.isBeingPresented];
+    
     if ( self.navigationBarShouldAutoHide )
     {
         [self addScrollDelegate];
@@ -136,6 +142,10 @@ const CGFloat kVLoadNextPagePoint = .75f;
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
+    [self.streamTrackingHelper onStreamViewWillDisappearWithStream:self.currentStream
+                                                  isBeingDismissed:self.isBeingDismissed];
+    
     self.navigationControllerScrollDelegate = nil;
 }
 
@@ -156,6 +166,25 @@ const CGFloat kVLoadNextPagePoint = .75f;
 - (void)addScrollDelegate
 {
     self.navigationControllerScrollDelegate = [[VNavigationControllerScrollDelegate alloc] initWithNavigationController:[self v_navigationController]];
+}
+
+#pragma mark - VMultipleContainerViewControllerChild protocol
+
+- (void)viewControllerSelected
+{
+    [self.streamTrackingHelper viewControllerSelected:self.currentStream];
+}
+
+- (void)viewControllerAppearedAsInitial
+{
+    [self.streamTrackingHelper viewControllerAppearedAsInitial:self.currentStream];
+}
+
+#pragma mark - Tracking helper
+
+- (void)trackStreamDidAppear
+{
+    // Override in subclasses
 }
 
 #pragma mark - Property Setters
@@ -218,12 +247,10 @@ const CGFloat kVLoadNextPagePoint = .75f;
         return;
     }
     
-    //Start refresh control animation before calling refreshWithSuccess which has endRefreshing in its callback block
-    [self.refreshControl beginRefreshing];
-    self.refreshControl.hidden = NO;
-    
-    [self.streamDataSource refreshWithSuccess:^(void)
-     {
+    [self.streamDataSource loadPage:VPageTypeFirst withSuccess:
+     ^{
+         [self.streamTrackingHelper streamDidLoad:self.currentStream];
+         
          [self.refreshControl endRefreshing];
          if (completionBlock)
          {
@@ -349,17 +376,15 @@ const CGFloat kVLoadNextPagePoint = .75f;
     }
     
     self.shouldAnimateActivityViewFooter = YES;
-    [self.streamDataSource loadNextPageWithSuccess:^(void)
-     {
+    [self.streamDataSource loadPage:VPageTypeNext withSuccess:
+     ^{
          __weak typeof(self) welf = self;
          dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
                         {
                             [welf.collectionView flashScrollIndicators];
                         });
      }
-                                              failure:^(NSError *error)
-     {
-     }];
+                                              failure:nil];
 }
 
 #pragma mark - UIScrollViewDelegate

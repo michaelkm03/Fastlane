@@ -394,7 +394,7 @@ static NSString * const kVideoMuted = @"videoMuted";
                             @{
                                 kClassNameKey: @"stream.screen",
                                 kTitleKey: NSLocalizedString(@"Featured", @""),
-                                VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/hot_detail_list_by_stream/ugc",
+                                VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/hot_detail_list_by_stream/ugc/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%",
                                 kCanAddContentKey: @YES,
                             },
                             @{
@@ -494,8 +494,8 @@ static NSString * const kVideoMuted = @"videoMuted";
 
 - (NSString *)urlPathForStreamCategories:(NSArray *)categories
 {
-    NSString *categoryString = [categories componentsJoinedByString:@","];
-    return [@"/api/sequence/detail_list_by_category/" stringByAppendingString:(categoryString ?: @"0")];
+    NSString *categoryString = [categories componentsJoinedByString:@","] ?: @"0";
+    return [NSString stringWithFormat:@"/api/sequence/detail_list_by_category/%@/%%%%PAGE_NUM%%%%/%%%%ITEMS_PER_PAGE%%%%", categoryString];
 }
 
 - (NSDictionary *)profileScreen
@@ -512,7 +512,7 @@ static NSString * const kVideoMuted = @"videoMuted";
                 @{
                     kClassNameKey: @"stream.screen",
                     kTitleKey: NSLocalizedString(@"Featured", @""),
-                    VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/hot_detail_list_by_stream/home",
+                    VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/hot_detail_list_by_stream/home/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%",
                     kIsHomeKey: @YES,
                     kCanAddContentKey: @YES,
                     },
@@ -527,7 +527,7 @@ static NSString * const kVideoMuted = @"videoMuted";
                 @{
                     kClassNameKey: @"followingStream.screen",
                     kTitleKey: NSLocalizedString(@"Following", @""),
-                    VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/follows_detail_list_by_stream/0/home",
+                    VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/follows_detail_list_by_stream/0/home/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%",
                     kCanAddContentKey: @YES,
                     }
                 ],
@@ -584,7 +584,7 @@ static NSString * const kVideoMuted = @"videoMuted";
                                          kDestinationKey: @{
                                                  kClassNameKey: @"streamDirectory.screen",
                                                  kTitleKey: NSLocalizedString(@"Channels", nil),
-                                                 VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/detail_list_by_stream/directory",
+                                                 VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/detail_list_by_stream/directory/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%"
                                                  }
                                          };
         
@@ -605,7 +605,7 @@ static NSString * const kVideoMuted = @"videoMuted";
                     @{
                         kClassNameKey: @"stream.screen",
                         kTitleKey: NSLocalizedString(@"Featured", @""),
-                        VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/hot_detail_list_by_stream/owner"
+                        VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/hot_detail_list_by_stream/owner/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%"
                     },
                     @{
                         kClassNameKey: @"stream.screen",

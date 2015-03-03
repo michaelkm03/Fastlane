@@ -258,12 +258,20 @@ return;
     {
         if ( self.activeProductRequest.failureCallback != nil )
         {
+            NSDictionary *params = @{ VTrackingKeyProductIdentifier : productIdentifier ?: @"",
+                                      VTrackingKeyErrorMessage : error.localizedDescription ?: @""};
+            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventAppStoreProductRequestDidFail parameters:params];
+            
             self.activeProductRequest.failureCallback( error );
         }
         self.activeProductRequest = nil;
     }
     else if ( self.activePurchase != nil )
     {
+        NSDictionary *params = @{ VTrackingKeyProductIdentifier : productIdentifier ?: @"",
+                                  VTrackingKeyErrorMessage : error.localizedDescription ?: @""};
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventPurchaseDidFail parameters:params];
+        
         self.activePurchase.failureCallback( error );
         self.activePurchase = nil;
     }
@@ -278,6 +286,9 @@ return;
 #endif
     if ( self.activePurchase != nil && isValidProduct )
     {
+        NSDictionary *params = @{ VTrackingKeyProductIdentifier : productIdentifier ?: @"" };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidCompletePurchase parameters:params];
+        
         [self.purchaseRecord addProductIdentifier:productIdentifier];
         self.activePurchase.successCallback( [NSSet setWithObject:self.activePurchase.product] );
         self.activePurchase = nil;
@@ -343,6 +354,11 @@ return;
         {
             [self.purchaseRecord addProductIdentifier:identifier];
         }];
+        
+        
+        NSDictionary *params = @{ VTrackingKeyCount : @(self.activePurchaseRestore.restoredProductIdentifiers.count) };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidRestorePurchases parameters:params];
+        
         self.activePurchaseRestore.successCallback( self.activePurchaseRestore.restoredProductIdentifiers );
         self.activePurchaseRestore = nil;
     }
@@ -350,6 +366,9 @@ return;
 
 - (void)purchasesDidFailToRestoreWithError:(NSError *)error
 {
+    NSDictionary *params = @{ VTrackingKeyErrorMessage : error.localizedDescription ?: @""};
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventRestorePurchasesDidFail parameters:params];
+    
     NSString *message = NSLocalizedString( @"RestorePurchasesError", nil);
     NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : message };
     NSError *userFacingError = [NSError errorWithDomain:message code:error.code userInfo:userInfo];

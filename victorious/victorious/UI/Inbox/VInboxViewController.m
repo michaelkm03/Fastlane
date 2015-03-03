@@ -282,6 +282,8 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
     VConversation *conversation = [self.fetchedResultsController objectAtIndexPath:indexPath];
     if (conversation.user)
     {
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectMessage];
+        
         [self displayConversationForUser:conversation.user];
     }
 }
@@ -349,6 +351,8 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
 
 - (IBAction)userSearchAction:(id)sender
 {
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectCreateMessage];
+    
     VUserSearchViewController *userSearch = [VUserSearchViewController newFromStoryboard];
     userSearch.searchContext = VObjectManagerSearchContextMessage;
     [self.navigationController pushViewController:userSearch animated:YES];

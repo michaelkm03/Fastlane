@@ -18,5 +18,6 @@
 @dynamic streamContentType;
 @dynamic streamItems;
 @dynamic hashtag;
+@dynamic trackingIdentifier;
 
 @end

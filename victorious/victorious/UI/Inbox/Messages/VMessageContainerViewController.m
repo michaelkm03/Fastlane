@@ -71,10 +71,19 @@
         self.navigationItem.title = nil;
     }
     
-    [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"More"] style:UIBarButtonItemStylePlain target:self action:@selector(flagConversation:)]];
+    [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"More"] style:UIBarButtonItemStylePlain target:self action:@selector(onMoreSelected:)]];
 }
 
-- (IBAction)flagConversation:(id)sender
+- (IBAction)onMoreSelected:(id)sender
+{
+    NSDictionary *params = @{ VTrackingKeyContext : VTrackingValueMessage };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectMoreActions parameters:params];
+    
+    // This is the only option available as of now
+    [self flagConversation];
+}
+
+- (void)flagConversation
 {
     NSString *reportTitle = NSLocalizedString(@"ReportInappropriate", @"Comment report inappropriate button");
     
