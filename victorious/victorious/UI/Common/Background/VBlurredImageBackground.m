@@ -10,7 +10,7 @@
 #import "VDependencyManager.h"
 #import "UIImageView+Blurring.h"
 
-NSString * const VBlurredImageBackgroundImageToBlurKey = @"VBlurredImageBackgroundImageToBlurKey";
+NSString * const VBlurredImageBackgroundImageToBlurKey = @"image";
 
 @interface VBlurredImageBackground ()
 
