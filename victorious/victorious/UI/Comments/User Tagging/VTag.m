@@ -7,13 +7,10 @@
 //
 
 #import "VTag.h"
+#import "VUserTag.h"
 #import "VHashtag.h"
 #import "VUser.h"
 #import "VTagStringFormatter.h"
-
-@interface VTag ()
-
-@end
 
 @implementation VTag
 
@@ -39,6 +36,11 @@
               databaseFormattedString:(NSString *)databaseFormattedString
                andTagStringAttributes:(NSDictionary *)tagStringAttributes
 {
+    if ( displayString == nil || databaseFormattedString == nil || tagStringAttributes == nil )
+    {
+        return nil;
+    }
+    
     self = [super init];
     if ( self != nil )
     {
@@ -79,7 +81,7 @@
     NSTextCheckingResult *userCheckResult = [matches lastObject];
     
     //result rangeAtIndex 1 has the value of the regex closure (the display string)
-    return [[VTag alloc] initWithDisplayString:[userString substringWithRange:[userCheckResult rangeAtIndex:1]] databaseFormattedString:userString andTagStringAttributes:tagStringAttributes];
+    return [[VUserTag alloc] initWithDisplayString:[userString substringWithRange:[userCheckResult rangeAtIndex:2]] databaseFormattedString:userString remoteId:@([[userString substringWithRange:[userCheckResult rangeAtIndex:1]] integerValue]) andTagStringAttributes:tagStringAttributes];
 }
 
 + (instancetype)tagWithUser:(VUser *)user

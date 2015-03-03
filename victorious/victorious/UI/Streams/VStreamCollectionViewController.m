@@ -30,7 +30,11 @@
 #import "VWebBrowserViewController.h"
 #import "VNavigationController.h"
 #import "VNewContentViewController.h"
+
+// Workspace
 #import "VWorkspaceFlowController.h"
+#import "VImageToolController.h"
+#import "VVideoToolController.h"
 
 //Views
 #import "VNoContentView.h"
@@ -285,7 +289,7 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
 
 - (void)addCreateSequenceButton
 {
-    UIImage *image = [self.dependencyManager templateValueOfType:[UIImage class] forKey:VStreamCollectionViewControllerCreateSequenceIconKey];
+    UIImage *image = [self.dependencyManager imageForKey:VStreamCollectionViewControllerCreateSequenceIconKey];
     UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(createSequenceAction:)];
     barButton.accessibilityIdentifier = VAutomationIdentifierAddPost;
     self.navigationItem.rightBarButtonItem = barButton;

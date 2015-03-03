@@ -34,6 +34,7 @@ NSString * const VMainUserDidChangeFollowingUserKeyUser = @"VMainUserDidChangeFo
 
 NSString * const VObjectManagerSearchContextMessage = @"message";
 NSString * const VObjectManagerSearchContextUserTag = @"tag_user";
+NSString * const VObjectManagerSearchContextDiscover = @"discover";
 
 static NSString * const kVAPIParamSearch = @"search";
 static NSString * const kVAPIParamContext = @"context";
@@ -373,7 +374,13 @@ static NSString * const kVAPIParamContext = @"context";
         }
     };    
     
-    return [self GET:[NSString stringWithFormat:@"/api/userinfo/search/%@/%ld/%@", [search_string stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding], (long)pageLimit, context]
+    NSString *userSearchURL = [NSString stringWithFormat:@"/api/userinfo/search/%@/%ld", [search_string stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding], (long)pageLimit];
+    if (context != nil)
+    {
+        userSearchURL = [NSString stringWithFormat:@"%@/%@", userSearchURL, context];
+    }
+    
+    return [self GET:userSearchURL
                object:nil
            parameters:nil
          successBlock:fullSuccess

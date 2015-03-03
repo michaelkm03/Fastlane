@@ -41,10 +41,14 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 
 #import "VTagStringFormatter.h"
+#import "VTag.h"
+#import "VUserTag.h"
+#import "VTagSensitiveTextView.h"
+#import "VHashtagStreamCollectionViewController.h"
 
 @import Social;
 
-@interface VCommentsTableViewController () <VEditCommentViewControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate>
+@interface VCommentsTableViewController () <VEditCommentViewControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VTagSensitiveTextViewDelegate>
 
 @property (nonatomic, strong) UIImageView *backgroundImageView;
 @property (nonatomic, assign) BOOL hasComments;
@@ -241,9 +245,10 @@
     NSDictionary *defaultStringAttributes = cell.commentTextView.textFont ? [VCommentTextAndMediaView attributesForTextWithFont:cell.commentTextView.textFont] : [VCommentTextAndMediaView attributesForText];
     NSMutableDictionary *tagStringAttributes = [[NSMutableDictionary alloc] initWithDictionary:defaultStringAttributes];
     [tagStringAttributes setObject:[[VThemeManager sharedThemeManager] themedColorForKey:[VTagStringFormatter defaultThemeManagerTagColorKey]] forKey:NSForegroundColorAttributeName];
-    NSMutableAttributedString *formattedCommentText = [[NSMutableAttributedString alloc] initWithString:comment.text attributes:defaultStringAttributes];
-    [VTagStringFormatter tagDictionaryFromFormattingAttributedString:formattedCommentText withTagStringAttributes:tagStringAttributes andDefaultStringAttributes:defaultStringAttributes];
-    cell.commentTextView.attributedText = formattedCommentText;
+    [cell.commentTextView.textView setupWithDatabaseFormattedText:comment.text
+                                                    tagAttributes:tagStringAttributes
+                                                defaultAttributes:defaultStringAttributes
+                                                andTagTapDelegate:self];
     if (comment.hasMedia)
     {
         cell.commentTextView.hasMedia = YES;
@@ -276,6 +281,22 @@
     cell.commentsUtilitiesDelegate = self;
     
     return cell;
+}
+
+- (void)tagSensitiveTextView:(VTagSensitiveTextView *)tagSensitiveTextView tappedTag:(VTag *)tag
+{
+    if ( [tag isKindOfClass:[VUserTag class]] )
+    {
+        //Tapped a user tag, show a profile view controller
+        VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithRemoteId:((VUserTag *)tag).remoteId];
+        [self.navigationController pushViewController:profileViewController animated:YES];
+    }
+    else
+    {
+        //Tapped a hashtag, show a hashtag view controller
+        VHashtagStreamCollectionViewController *hashtagViewController = [VHashtagStreamCollectionViewController instantiateWithHashtag:[tag.displayString.string substringFromIndex:1]];
+        [self.navigationController pushViewController:hashtagViewController animated:YES];
+    }
 }
 
 #pragma mark - UITableViewDelegate

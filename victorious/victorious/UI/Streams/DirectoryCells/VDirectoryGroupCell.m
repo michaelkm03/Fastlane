@@ -16,6 +16,8 @@
 #import "UIColor+VBrightness.h"
 #import "VSequence+Fetcher.h"
 
+const NSUInteger VDirectoryMaxItemsPerGroup = 10;
+
 CGFloat const kStreamDirectoryGroupCellInset = 10.0f; //Must be >= 1.0f
 static CGFloat const kStreamDirectoryItemLabelHeight = 34.0f;
 static CGFloat const kStreamDirectoryGroupCellBaseWidth = 320.0f;
@@ -23,13 +25,12 @@ static CGFloat const kStreamDirectoryGroupCellBaseWidth = 320.0f;
 static CGFloat const kStreamSubdirectoryItemCellBaseWidth = 140.0f;
 static CGFloat const kStreamSubdirectoryItemCellBaseHeight = 206.0f;
 
-static const NSInteger kMaxItemsPerRow = 10;
-
 @interface VDirectoryGroupCell() <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
 
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, weak) IBOutlet UILabel *nameLabel;
 @property (nonatomic, readwrite) BOOL isStreamOfStreamsRow;
+@property (nonatomic, weak, readwrite) VStream *stream;
 
 @property (nonatomic, strong) VDependencyManager *itemCellDependencyManager;
 
@@ -106,6 +107,11 @@ static const NSInteger kMaxItemsPerRow = 10;
 {
     _streamItem = streamItem;
     
+    if ([_streamItem isKindOfClass:[VStream class]])
+    {
+        self.stream = (VStream *)self.streamItem;
+    }
+    
     self.isStreamOfStreamsRow = [self.streamItem isKindOfClass:[VStream class]] && [(VStream *)self.streamItem isStreamOfStreams];
     self.nameLabel.text = [streamItem.name uppercaseString];
     [self.collectionView reloadData];
@@ -128,7 +134,7 @@ static const NSInteger kMaxItemsPerRow = 10;
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return MIN( self.streamItem.streams.count, kMaxItemsPerRow + (NSUInteger)1 );
+    return MIN( self.stream.streamItems.count, VDirectoryMaxItemsPerGroup + (NSUInteger)1 );
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -139,7 +145,7 @@ static const NSInteger kMaxItemsPerRow = 10;
     UIColor *secondaryTextColor = [self.itemCellDependencyManager colorForKey:@"color.text.accent"];
     
     //Check if item is last in number of items in section, this is the "show more" cell
-    if ( indexPath.item == 10 )
+    if ( indexPath.item == VDirectoryMaxItemsPerGroup )
     {
         NSString *identifier = [VDirectorySeeMoreItemCell suggestedReuseIdentifier];
         VDirectorySeeMoreItemCell *seeMoreCell = [self.collectionView dequeueReusableCellWithReuseIdentifier:identifier
@@ -171,22 +177,35 @@ static const NSInteger kMaxItemsPerRow = 10;
         directoryCell.countLabel.textColor = secondaryTextColor;
         directoryCell.countLabel.font = [self.itemCellDependencyManager fontForKey:@"itemQuantityFont"];
         
-        directoryCell.nameLabel.text = self.streamItem.name;
+        // Common data
+        VStreamItem *streamItem = self.stream.streamItems[ indexPath.row ];
+        directoryCell.nameLabel.text = streamItem.name;
+        [directoryCell setPreviewImagePath:[streamItem.previewImagePaths firstObject] placeholderImage:nil];
+        directoryCell.showVideo = NO;
         
-        directoryCell.countLabel.text = @"";
-        if ([self.streamItem isKindOfClass:[VStream class]])
+        // Model-specific data
+        if ( [streamItem isKindOfClass:[VStream class]] )
         {
-            VStream *stream = (VStream *)self.streamItem;
-            directoryCell.countLabel.text = [NSString stringWithFormat:@"%@ %@", stream.count, NSLocalizedString(@"ITEMS", @"")];
+            VStream *stream = (VStream *)streamItem;
+            if ( stream.isStreamOfStreams )
+            {
+                directoryCell.countLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ STREAMS", @""), stream.count];
+                directoryCell.showStackedBackground = YES;
+            }
+            else
+            {
+                directoryCell.countLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ITEMS", @""), stream.count];
+                directoryCell.showStackedBackground = NO;
+            }
         }
-        
-        [directoryCell setPreviewImagePath:[self.streamItem.previewImagePaths firstObject] placeholderImage:nil];
-        
-        BOOL showStackedBackground = ([self.streamItem isKindOfClass:[VStream class]] && [((VStream *)self.streamItem) isStreamOfStreams]);
-        directoryCell.showStackedBackground = showStackedBackground;
-        
-        BOOL isVideoSequence = [self.streamItem isKindOfClass:[VSequence class]] && [((VSequence *)self.streamItem) isVideo];
-        directoryCell.showVideo = isVideoSequence;
+        else if ( [streamItem isKindOfClass:[VSequence class]] )
+        {
+            VSequence *sequence = (VSequence *)streamItem;
+            directoryCell.showVideo = [sequence isVideo];
+            directoryCell.showStackedBackground = NO;
+            directoryCell.nameLabel.text = sequence.name;
+            directoryCell.countLabel.text = @"";
+        }
         
         return directoryCell;
     }

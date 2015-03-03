@@ -70,7 +70,6 @@ const CGFloat kDirectoryItemBaseWidth = 145.0f;
     _showStackedBackground = showStackedBackground;
     self.bottomStack.hidden = !showStackedBackground;
     self.middleStack.hidden = !showStackedBackground;
-    //self.nameLabel.textAlignment = showStackedBackground ? NSTextAlignmentCenter : NSTextAlignmentLeft;
     self.topStackBottomConstraint.constant = showStackedBackground ? kDirectoryItemStackHeight : 0.0f;
 }
 

@@ -9,13 +9,15 @@
 #import "VBaseCollectionViewCell.h"
 #import "VDependencyManager.h"
 
-@class VStreamItem, VDirectoryGroupCell;
+extern const NSUInteger VDirectoryMaxItemsPerGroup;
+
+@class VStreamItem, VDirectoryGroupCell, VStream, VSequence;
 
 extern CGFloat const kStreamDirectoryGroupCellInset;
 
 @protocol VDirectoryGroupCellDelegate <NSObject>
 
-- (void)streamDirectoryGroupCell:(VDirectoryGroupCell *)VDirectoryGroupCell didSelectItemAtIndexPath:(NSIndexPath *)indexPath;
+- (void)streamDirectoryGroupCell:(VDirectoryGroupCell *)groupCell didSelectItemAtIndexPath:(NSIndexPath *)indexPath;
 
 @end
 
@@ -47,5 +49,9 @@ extern CGFloat const kStreamDirectoryGroupCellInset;
  A convenient flag for checking if this row is of stream of stream cells or just a row of stream cells
  */
 @property (nonatomic, readonly) BOOL isStreamOfStreamsRow;
+
+@property (nonatomic, weak, readonly) VStream *stream;
+
+@property (nonatomic, weak, readonly) VSequence *sequence;
 
 @end

@@ -18,7 +18,7 @@
     noContentView.frame = frame;
     noContentView.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading1Font];
     noContentView.messageLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
-    
+
     return noContentView;
 }
 

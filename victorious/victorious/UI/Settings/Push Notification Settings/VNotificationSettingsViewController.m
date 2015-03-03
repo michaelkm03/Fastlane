@@ -328,8 +328,8 @@
     {
         return 130.0f;
     }
-    
-    return [super tableView:tableView heightForRowAtIndexPath:indexPath];
+
+    return 44.0f;
 }
 
 @end

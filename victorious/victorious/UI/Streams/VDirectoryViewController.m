@@ -174,36 +174,42 @@ static CGFloat const kDirectoryInset = 5.0f;
 
 #pragma mark - 
 
-- (void)streamDirectoryGroupCell:(VDirectoryGroupCell *)VDirectoryGroupCell didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+- (void)streamDirectoryGroupCell:(VDirectoryGroupCell *)groupCell didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     //Check to see if we've selected the the count of items in the cell's streamItem (which would mean we selected the "see more" cell)
-    if ( indexPath.row == 10 )
+    if ( indexPath.row == (NSInteger)VDirectoryMaxItemsPerGroup )
     {
         //Push a new directory view controller to show all contents of the selected streamItem
-        VStream *stream = [self.currentStream.streamItems objectAtIndex:[self.collectionView indexPathForCell:VDirectoryGroupCell].row];
+        VStream *stream = [self.currentStream.streamItems objectAtIndex:[self.collectionView indexPathForCell:groupCell].row];
         VDirectoryViewController *directoryViewController = [VDirectoryViewController streamDirectoryForStream:stream dependencyManager:self.dependencyManager];
         directoryViewController.dependencyManager = self.dependencyManager;
         [self.navigationController pushViewController:directoryViewController animated:YES];
     }
     else
     {
-        //Check if we've selected a bit of content or another stream to present in a VDirectoryViewController
-        VStreamItem *item = VDirectoryGroupCell.streamItem;
-        if ([item isKindOfClass:[VStream class]] && [((VStream *)item) onlyContainsSequences])
+        VStreamItem *streamItem = groupCell.stream.streamItems[ indexPath.row ];
+        if ( [streamItem isKindOfClass:[VSequence class]] )
         {
-            VStreamCollectionViewController *streamCollection = [VStreamCollectionViewController streamViewControllerForStream:(VStream *)item];
-            streamCollection.dependencyManager = self.dependencyManager;
-            [self.navigationController pushViewController:streamCollection animated:YES];
+            VSequence *sequence = (VSequence *)streamItem;
+            [[self.dependencyManager scaffoldViewController] showContentViewWithSequence:sequence
+                                                                               commentId:nil
+                                                                        placeHolderImage:nil];
         }
-        else if ([item isKindOfClass:[VStream class]])
+        else if ( [streamItem isKindOfClass:[VStream class]] )
         {
-            VDirectoryViewController *directoryViewController = [VDirectoryViewController streamDirectoryForStream:(VStream *)item dependencyManager:self.dependencyManager];
-            directoryViewController.dependencyManager = self.dependencyManager;
-            [self.navigationController pushViewController:directoryViewController animated:YES];
-        }
-        else if ([item isKindOfClass:[VSequence class]])
-        {
-            [[self.dependencyManager scaffoldViewController] showContentViewWithSequence:(VSequence *)item commentId:nil placeHolderImage:nil];
+            VStream *stream = (VStream *)streamItem;
+            VAbstractStreamCollectionViewController *viewControllerToPresent;
+            if ( [stream onlyContainsSequences] )
+            {
+                viewControllerToPresent = [VStreamCollectionViewController streamViewControllerForStream:stream];
+                ((VStreamCollectionViewController *)viewControllerToPresent).dependencyManager = self.dependencyManager;
+            }
+            else
+            {
+                viewControllerToPresent = [VDirectoryViewController streamDirectoryForStream:stream
+                                                                           dependencyManager:self.dependencyManager];
+            }
+            [self.navigationController pushViewController:viewControllerToPresent animated:YES];
         }
     }
 }

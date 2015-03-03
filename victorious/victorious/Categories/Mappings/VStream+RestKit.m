@@ -17,15 +17,20 @@
     return @"VStream";
 }
 
++ (NSDictionary *)propertyMap
+{
+    return @{
+             @"id"                  :   VSelectorName(remoteId),
+             @"stream_content_type" :   VSelectorName(streamContentType),
+             @"name"                :   VSelectorName(name),
+             @"preview_image"       :   VSelectorName(previewImagesObject),
+             @"count"               :   VSelectorName(count),
+             };
+}
+
 + (RKEntityMapping *)entityMapping
 {
-    NSDictionary *propertyMap = @{
-                                  @"id"             :   VSelectorName(remoteId),
-                                  @"stream_content_type"     :   VSelectorName(streamContentType),
-                                  @"name"           :   VSelectorName(name),
-                                  @"preview_image"  :   VSelectorName(previewImagesObject),
-                                  @"count"          :   VSelectorName(count),
-                                  };
+    NSDictionary *propertyMap = [[self class] propertyMap];
     
     RKEntityMapping *mapping = [RKEntityMapping
                                 mappingForEntityForName:[self entityName]
@@ -35,6 +40,20 @@
     
     [mapping addAttributeMappingsFromDictionary:propertyMap];
     
+    RKRelationshipMapping *sequenceMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"stream_items"
+                                                                                         toKeyPath:VSelectorName(streamItems)
+                                                                                       withMapping:[[self class] childStreamMapping]];
+    [mapping addPropertyMapping:sequenceMapping];
+    
+    return mapping;
+}
+
++ (RKEntityMapping *)childStreamMapping
+{
+    NSDictionary *propertyMap = [[self class] propertyMap];
+    RKEntityMapping *mapping = [RKEntityMapping mappingForEntityForName:[VStream entityName]
+                                                   inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
+    [mapping addAttributeMappingsFromDictionary:propertyMap];
     return mapping;
 }
 

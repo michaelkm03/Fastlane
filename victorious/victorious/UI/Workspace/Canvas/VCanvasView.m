@@ -76,6 +76,7 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
     _canvasScrollView.userInteractionEnabled = NO;
     _canvasScrollView.delegate = self;
     _canvasScrollView.translatesAutoresizingMaskIntoConstraints = NO;
+    _canvasScrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self addSubview:_canvasScrollView];
     
     _imageView = [[UIImageView alloc] initWithImage:nil];
@@ -89,8 +90,34 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
     _activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
     _activityIndicator.hidesWhenStopped = YES;
     _activityIndicator.center = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
+    _activityIndicator.translatesAutoresizingMaskIntoConstraints = NO;
     [self addSubview:_activityIndicator];
+    
+    //Add constraints to keep the actitivity indicator in the center of the canvas
+    NSDictionary *views = @{ @"activityIndicator":_activityIndicator };
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[activityIndicator]|"
+                                                                options:0
+                                                                metrics:nil
+                                                                   views:views]];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[activityIndicator]|"
+                                                                 options:0
+                                                                 metrics:nil
+                                                                   views:views]];
+    
     [_activityIndicator startAnimating];
+}
+
+#pragma mark - UIVIew
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    
+    if (self.canvasScrollView.contentSize.width < CGRectGetWidth(self.bounds))
+    {
+        self.canvasScrollView.contentSize = self.bounds.size;
+        self.imageView.frame = self.canvasScrollView.bounds;
+    }
 }
 
 #pragma mark - Property Accessors

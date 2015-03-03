@@ -132,6 +132,12 @@
                                                            method:RKRequestMethodGET
                                                       pathPattern:@"/api/sequence/fetch/:sequence_id"
                                                           keyPath:@"payload"
+                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
+              
+              [RKResponseDescriptor responseDescriptorWithMapping:[VSequence entityMapping]
+                                                           method:RKRequestMethodGET
+                                                      pathPattern:@"/api/sequence/detail_list_by_stream/:stream/:page/:perpage"
+                                                          keyPath:@"payload"
                                                       statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)]
               ];
 }

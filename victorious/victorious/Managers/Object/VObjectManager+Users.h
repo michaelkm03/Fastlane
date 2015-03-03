@@ -13,6 +13,7 @@ extern NSString *const VMainUserDidChangeFollowingUserKeyUser;
 
 extern NSString * const VObjectManagerSearchContextMessage; ///< A search context for finding messagable users
 extern NSString * const VObjectManagerSearchContextUserTag; ///< A search context for finding taggable users
+extern NSString * const VObjectManagerSearchContextDiscover; ///< A search context for the discover user search
 
 typedef NS_ENUM(NSUInteger, VSocialSelector)
 {

@@ -76,6 +76,9 @@
                                                           self.keyboardBarHeightConstraint.constant,
                                                           conversationTableView.contentInset.right);
     conversationTableView.scrollIndicatorInsets = conversationTableView.contentInset;
+    
+    self.edgesForExtendedLayout = UIRectEdgeNone;
+    self.automaticallyAdjustsScrollViewInsets = NO;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -123,10 +126,12 @@
     [userInfo[UIKeyboardAnimationDurationUserInfoKey] getValue:&animationDuration];
     [userInfo[UIKeyboardFrameEndUserInfoKey] getValue:&keyboardEndFrame];
 
-    [UIView animateWithDuration:animationDuration delay:0
-                        options:(animationCurve << 16) animations:^
+    [UIView animateWithDuration:animationDuration
+                          delay:0
+                        options:(animationCurve << 16)
+                     animations:^
     {
-        self.bottomConstraint.constant = -(CGRectGetHeight([[UIScreen mainScreen] bounds])-CGRectGetMinY(keyboardEndFrame));
+        self.bottomConstraint.constant = -(CGRectGetHeight(self.view.bounds)-CGRectGetMinY(keyboardEndFrame));
         UITableView *tableView = self.conversationTableViewController.tableView;
         tableView.contentOffset = CGPointMake(0, tableView.contentOffset.y - self.bottomConstraint.constant);
         [self.view layoutIfNeeded];

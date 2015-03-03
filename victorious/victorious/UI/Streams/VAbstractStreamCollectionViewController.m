@@ -79,8 +79,6 @@ const CGFloat kVLoadNextPagePoint = .75f;
 
 - (void)commonInit
 {
-    self.automaticallyAdjustsScrollViewInsets = NO;
-    self.extendedLayoutIncludesOpaqueBars = YES;
     self.navigationBarShouldAutoHide = YES;
 }
 
@@ -104,6 +102,9 @@ const CGFloat kVLoadNextPagePoint = .75f;
     [self.refreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
     [self.collectionView addSubview:self.refreshControl];
     [self positionRefreshControl];
+    
+    self.automaticallyAdjustsScrollViewInsets = NO;
+    self.extendedLayoutIncludesOpaqueBars = YES;
 }
 
 - (void)viewWillAppear:(BOOL)animated

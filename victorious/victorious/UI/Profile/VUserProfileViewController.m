@@ -458,6 +458,7 @@ static NSString * const kUserKey = @"user";
     }
 
     VMessageContainerViewController    *composeController   = [VMessageContainerViewController messageViewControllerForUser:self.profile];
+    composeController.presentingFromProfile = YES;
     
     if ([self.navigationController.viewControllers containsObject:composeController])
     {
