@@ -23,7 +23,7 @@
     return self;
 }
 
-#pragma mark - UIViewController view lifecycle
+#pragma mark - UIViewController
 
 - (void)loadView
 {
@@ -37,6 +37,11 @@
         [self.view addSubview:self.containedViewController.view];
         [self.containedViewController didMoveToParentViewController:self];
     }
+}
+
+- (UIViewController *)childViewControllerForStatusBarStyle
+{
+    return self.containedViewController;
 }
 
 #pragma mark - Property Accessors
