@@ -12,6 +12,8 @@
 #import "VMultipleContainerViewController.h"
 #import "VNavigationController.h"
 #import "VSelectorViewBase.h"
+#import "VMultipleContainerViewControllerChild.h"
+#import "VMultipleContainerViewControllerChild.h"
 
 @interface VMultipleContainerViewController () <UICollectionViewDataSource, UICollectionViewDelegate, VSelectorViewDelegate>
 
@@ -130,6 +132,17 @@ static NSString * const kInitialKey = @"initial";
     return YES;
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    UIViewController *viewController = self.viewControllers[ self.selector.activeViewControllerIndex ];
+    if ( [viewController conformsToProtocol:@protocol(VMultipleContainerViewControllerChild)] )
+    {
+        [((id<VMultipleContainerViewControllerChild>)viewController) viewControllerAppearedAsInitial];
+    }
+}
+
 #pragma mark - Rotation
 
 - (NSUInteger)supportedInterfaceOrientations
@@ -178,6 +191,11 @@ static NSString * const kInitialKey = @"initial";
     
     UIViewController *viewController = self.viewControllers[index];
     self.navigationItem.rightBarButtonItem = viewController.navigationItem.rightBarButtonItem;
+    
+    if ( [viewController conformsToProtocol:@protocol(VMultipleContainerViewControllerChild)] )
+    {
+        [((id<VMultipleContainerViewControllerChild>)viewController) viewControllerSelected];
+    }
 }
 
 #pragma mark - UICollectionViewDelegate methods

@@ -422,6 +422,8 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
         }
         stream.streamItems = streamItems;
         
+        stream.trackingIdentifier = fullResponse[ @"stream_id" ];
+        
         if (success)
         {
             success(operation, fullResponse, resultObjects);

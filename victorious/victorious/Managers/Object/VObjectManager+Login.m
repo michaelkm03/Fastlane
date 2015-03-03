@@ -418,6 +418,8 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
 
     if (self.mainUser != nil)
     {
+        [[VTrackingManager sharedInstance] setValue:@(YES) forSessionParameterWithKey:VTrackingKeyUserLoggedIn];
+        
         [self loadConversationListWithPageType:VPageTypeFirst successBlock:nil failBlock:nil];
         [self pollResultsForUser:user successBlock:nil failBlock:nil];
         
@@ -454,6 +456,8 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
     NSManagedObjectContext *context = self.managedObjectStore.persistentStoreManagedObjectContext;
     [context performBlockAndWait:^(void)
     {
+        [[VTrackingManager sharedInstance] setValue:@(NO) forSessionParameterWithKey:VTrackingKeyUserLoggedIn];
+        
         NSFetchRequest *allConversations = [[NSFetchRequest alloc] init];
         [allConversations setEntity:[NSEntityDescription entityForName:[VConversation entityName] inManagedObjectContext:context]];
         [allConversations setIncludesPropertyValues:NO]; //only fetch the managedObjectID

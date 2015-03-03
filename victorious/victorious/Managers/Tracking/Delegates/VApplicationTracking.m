@@ -12,15 +12,10 @@
 
 static NSString * const kMacroBookendToken           = @"%%";
 
-static NSString * const kMacroTimeFrom               = @"%%FROM_TIME%%";
-static NSString * const kMacroTimeTo                 = @"%%TO_TIME%%";
+static NSString * const kMacroFromTime               = @"%%FROM_TIME%%";
+static NSString * const kMacroToTime                 = @"%%TO_TIME%%";
 static NSString * const kMacroTimeCurrent            = @"%%TIME_CURRENT%%";
-static NSString * const kMacroTimeStamp              = @"%%TIME_STAMP%%";
-static NSString * const kMacroPageLabel              = @"%%PAGE%%";
-static NSString * const kMacroPositionX              = @"%%XPOS%%";
-static NSString * const kMacroPositionY              = @"%%YPOS%%";
-static NSString * const kMacroNavigiationFrom        = @"%%NAV_FROM%%";
-static NSString * const kMacroNavigiationTo          = @"%%NAV_TO%%";
+static NSString * const kMacroTimeStamp              = @"%%TIMESTAMP%%";
 static NSString * const kMacroStreamId               = @"%%STREAM_ID%%";
 static NSString * const kMacroSequenceId             = @"%%SEQUENCE_ID%%";
 static NSString * const kMacroBallisticsCount        = @"%%COUNT%%";
@@ -50,20 +45,15 @@ static NSString * const kMacroSessionTime            = @"%%SESSION_TIME%%";
     if (self)
     {
         // This is a mapping of generic parameters to application-specific macros
-        _parameterMacroMapping = @{ VTrackingKeyTimeFrom           : kMacroTimeFrom,
-                                    VTrackingKeyTimeTo             : kMacroTimeTo,
+        _parameterMacroMapping = @{ VTrackingKeyFromTime           : kMacroFromTime,
+                                    VTrackingKeyToTime             : kMacroToTime,
                                     VTrackingKeyTimeCurrent        : kMacroTimeCurrent,
                                     VTrackingKeyTimeStamp          : kMacroTimeStamp,
-                                    VTrackingKeyPageLabel          : kMacroPageLabel,
                                     VTrackingKeyStreamId           : kMacroStreamId,
                                     VTrackingKeySequenceId         : kMacroSequenceId,
                                     VTrackingKeyVoteCount          : kMacroBallisticsCount,
-                                    VTrackingKeyPositionX          : kMacroPositionX,
-                                    VTrackingKeyPositionY          : kMacroPositionY,
-                                    VTrackingKeyNavigiationFrom    : kMacroNavigiationFrom,
-                                    VTrackingKeyNavigiationTo      : kMacroNavigiationTo,
-                                    VTrackingKeyActivityType       : kMacroShareDestination,
-                                    VTrackingKeyNotificationID     : kMacroNotificationID,
+                                    VTrackingKeyShareDestination   : kMacroShareDestination,
+                                    VTrackingKeyNotificationId     : kMacroNotificationID,
                                     VTrackingKeySessionTime        : kMacroSessionTime };
     }
     return self;

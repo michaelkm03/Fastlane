@@ -34,6 +34,11 @@ NSString * const VStreamFilterTypePopular = @"popular";
     return [self.streamContentType isEqualToString:kVStreamContentTypeStream];
 }
 
+- (BOOL)isHashtagStream
+{
+    return self.hashtag != nil;
+}
+
 + (VStream *)remixStreamForSequence:(VSequence *)sequence
 {
     NSString *apiPath = [@"/api/sequence/remixes_by_sequence/" stringByAppendingString: sequence.remoteId ?: @"0"];

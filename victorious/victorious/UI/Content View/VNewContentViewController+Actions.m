@@ -50,7 +50,9 @@
 @implementation VNewContentViewController (Actions)
 
 - (IBAction)pressedMore:(id)sender
-{   
+{
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectMoreActions parameters:nil];
+    
     NSMutableArray *actionItems = [[NSMutableArray alloc] init];
     
     [self disableEndcardAutoplay];
@@ -115,6 +117,7 @@
         };
         repostItem.detailSelectionHandler = ^(void)
         {
+            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectShowReposters];
             
             [self dismissViewControllerAnimated:YES
                                      completion:^
@@ -163,6 +166,7 @@
                                                                 [[VObjectManager sharedManager] removeSequence:self.viewModel.sequence
                                                                                                   successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
                                                                  {
+                                                                     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidDeletePost];
                                                                      [self.delegate newContentViewControllerDidDeleteContent:self];
                                                                  }
                                                                                                      failBlock:^(NSOperation *operation, NSError *error)
@@ -214,6 +218,8 @@
                                                               detailText:self.viewModel.remixCountText];
         remixItem.selectionHandler = ^(void)
         {
+            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRemix];
+            
             [contentViewController dismissViewControllerAnimated:YES
                                                       completion:^
              {
@@ -236,6 +242,8 @@
         };
         remixItem.detailSelectionHandler = ^(void)
         {
+            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectShowRemixes];
+            
             [contentViewController dismissViewControllerAnimated:YES
                                                       completion:^
              {

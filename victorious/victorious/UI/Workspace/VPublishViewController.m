@@ -174,6 +174,8 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
     self.publishParameters.captionType = VCaptionTypeNormal;
     self.publishParameters.shouldSaveToCameraRoll = self.cameraRollSwitch.on;
     
+    [self trackPublishWithPublishParameters:self.publishParameters];
+    
     __weak typeof(self) welf = self;
     [[VObjectManager sharedManager] uploadMediaWithPublishParameters:self.publishParameters
                                                           completion:^(NSURLResponse *response, NSData *responseData, NSDictionary *jsonResponse, NSError *error)
@@ -185,30 +187,52 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
              UIAlertView *publishFailure = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Upload failure", @"")
                                                                       message:error.localizedDescription
                                                             cancelButtonTitle:NSLocalizedString(@"ok", @"")
-                                                               onCancelButton:^{
-                                                                   if (welf.completion != nil)
-                                                                   {
-                                                                       welf.completion(NO);
-                                                                   }
-                                                               } otherButtonTitlesAndBlocks:nil, nil];
+                                                               onCancelButton:^
+                                            {
+                                                [welf closeOnComplete:NO];
+                                            }
+                                                   otherButtonTitlesAndBlocks:nil, nil];
              [publishFailure show];
          }
          else
          {
-             if (welf.completion != nil)
-             {
-                 welf.completion(YES);
-             }
+             [welf closeOnComplete:YES];
          }
      }];
 }
 
+- (void)trackPublishWithPublishParameters:(VPublishParameters *)publishParameters
+{
+    NSDictionary *common = @{ VTrackingKeyCaptionLength : @(publishParameters.caption .length),
+                              VTrackingKeyDidSaveToDevice : @(publishParameters.shouldSaveToCameraRoll) };
+    
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:common];
+    if ( publishParameters.isVideo )
+    {
+        params[ VTrackingKeyContentType ] = VTrackingValueVideo;
+        params[ VTrackingKeyDidTrim ] = @( publishParameters.didTrim );
+    }
+    else if ( publishParameters.isGIF )
+    {
+        params[ VTrackingKeyContentType ] = VTrackingValueGIF;
+        params[ VTrackingKeyDidTrim ] = @( publishParameters.didTrim );
+    }
+    else
+    {
+        params[ VTrackingKeyContentType ] = VTrackingValueImage;
+        params[ VTrackingKeyDidCrop ] = @( publishParameters.didCrop );
+        params[ VTrackingKeyFilterName ] = publishParameters.filterName ?: @"";
+        params[ VTrackingKeyTextType ] = publishParameters.textToolType ?: @"";
+        params[ VTrackingKeyTextLength ] = @(publishParameters.embeddedText.length);
+    }
+    
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidPublishContent
+                                       parameters:[NSDictionary dictionaryWithDictionary:params]];
+}
+
 - (IBAction)tappedCancel:(id)sender
 {
-    if (self.completion != nil)
-    {
-        self.completion(NO);
-    }
+    [self closeOnComplete:NO];
 }
 
 - (IBAction)dismiss:(UITapGestureRecognizer *)tapGesture
@@ -220,10 +244,22 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
             [self.captionTextView resignFirstResponder];
             return;
         }
-        if (self.completion != nil)
-        {
-            self.completion(NO);
-        }
+        [self closeOnComplete:NO];
+    }
+}
+
+#pragma mark - Exit
+
+- (void)closeOnComplete:(BOOL)didPublish
+{
+    if ( !didPublish )
+    {
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidCancelPublish];
+    }
+    
+    if ( self.completion != nil )
+    {
+        self.completion( didPublish );
     }
 }
 
@@ -257,7 +293,7 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
     BOOL offScreen = CGRectIsNull(CGRectIntersection(self.view.bounds, self.publishPrompt.frame));
     if (offScreen && weakSelf.completion)
     {
-        weakSelf.completion(NO);
+        [weakSelf closeOnComplete:NO];
         return;
     }
     
@@ -319,7 +355,7 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
     [self.animator removeAllBehaviors];
     if (self.completion != nil)
     {
-        self.completion(NO);
+        [self closeOnComplete:NO];
     }
 }
 

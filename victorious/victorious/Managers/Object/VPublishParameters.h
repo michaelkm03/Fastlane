@@ -56,6 +56,11 @@
 @property (nonatomic, assign) BOOL isGIF;
 
 /**
+ *  Whether or not this is a video asset (which could also be a GIF, but generally if this is NO then it's an image).
+ */
+@property (nonatomic, assign) BOOL isVideo;
+
+/**
  *  Whether or not the user used the crop feature during creation of this asset.
  */
 @property (nonatomic, assign) BOOL didCrop;

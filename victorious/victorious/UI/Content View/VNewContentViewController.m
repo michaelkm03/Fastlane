@@ -452,11 +452,6 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     
     self.viewModel.experienceEnhancerController.delegate = self;
     
-    NSDictionary *params = @{ VTrackingKeyTimeCurrent : [NSDate date],
-                              VTrackingKeySequenceId : self.viewModel.sequence.remoteId,
-                              VTrackingKeyUrls : self.viewModel.sequence.tracking.viewStart ?: @[] };
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
-    
     [self.viewModel reloadData];
 }
 
@@ -533,6 +528,10 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 {
     [super viewDidAppear:animated];
     
+    NSString *contextType = [self trackingValueForContentType] ?: @"";
+    [[VTrackingManager sharedInstance] setValue:contextType forSessionParameterWithKey:VTrackingKeyContentType];
+    [[VTrackingManager sharedInstance] setValue:VTrackingValueContentView forSessionParameterWithKey:VTrackingKeyContext];
+    
 #if HANDOFFENABLED
     if ((self.viewModel.sequence.remoteId != nil) && (self.viewModel.shareURL != nil))
     {
@@ -544,12 +543,28 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     }
 #endif
     
+    BOOL isBeingPresented = self.isBeingPresented || self.navigationController.isBeingPresented;
+    if ( isBeingPresented && self.videoCell == nil )
+    {
+        NSDictionary *params = @{ VTrackingKeyTimeStamp : [NSDate date],
+                                  VTrackingKeySequenceId : self.viewModel.sequence.remoteId,
+                                  VTrackingKeyUrls : self.viewModel.sequence.tracking.viewStart ?: @[] };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
+    }
+    
     [self.contentCollectionView flashScrollIndicators];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
+    [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContentType];
+    
+    if ( self.isBeingDismissed )
+    {
+        [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContext];
+    }
     
 #if HANDOFFENABLED
     self.handoffObject.delegate = nil;
@@ -594,14 +609,26 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     }
 }
 
-- (BOOL)prefersStatusBarHidden
+- (BOOL)v_prefersNavigationBarHidden
 {
     return YES;
 }
 
-- (BOOL)v_prefersNavigationBarHidden
+- (NSString *)trackingValueForContentType
 {
-    return YES;
+    switch (self.viewModel.type)
+    {
+        case VContentViewTypePoll:
+            return VTrackingValuePoll;
+        case VContentViewTypeImage:
+            return VTrackingValueImage;
+        case VContentViewTypeGIFVideo:
+            return VTrackingValueGIF;
+        case VContentViewTypeVideo:
+            return VTrackingValueVideo;
+        default:
+            return nil;
+    }
 }
 
 #pragma mark - Notification Handlers
@@ -618,6 +645,9 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     {
         return;
     }
+    
+    NSDictionary *params = @{ VTrackingKeyProductIdentifier : experienceEnhander.voteType.productIdentifier ?: @"" };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectLockedVoteType parameters:params];
     
     VPurchaseViewController *viewController = [VPurchaseViewController purchaseViewControllerWithVoteType:experienceEnhander.voteType];
     viewController.transitioningDelegate = self.modalTransitionDelegate;
@@ -886,6 +916,9 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
                 
                 pollCell.onAnswerASelection = ^void(BOOL isVideo, NSURL *mediaURL)
                 {
+                    NSDictionary *params = @{ VTrackingKeyIndex : @0, VTrackingKeyMediaType : [mediaURL pathExtension] ?: @"" };
+                    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectPollMedia parameters:params];
+                    
                     [welf showLightBoxWithMediaURL:mediaURL
                                       previewImage:weakPollCell.answerAPreviewImage
                                            isVideo:isVideo
@@ -893,6 +926,9 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
                 };
                 pollCell.onAnswerBSelection = ^void(BOOL isVideo, NSURL *mediaURL)
                 {
+                    NSDictionary *params = @{ VTrackingKeyIndex : @1, VTrackingKeyMediaType : [mediaURL pathExtension] ?: @"" };
+                    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectPollMedia parameters:params];
+                    
                     [welf showLightBoxWithMediaURL:mediaURL
                                       previewImage:weakPollCell.answerBPreviewImage
                                            isVideo:isVideo
@@ -1212,7 +1248,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 - (void)videoCellReadyToPlay:(VContentVideoCell *)videoCell
 {
     [UIViewController attemptRotationToDeviceOrientation];
-    if (!self.hasAutoPlayed)
+    if ( !self.hasAutoPlayed )
     {
         [self.videoCell play];
         self.hasAutoPlayed = YES;
@@ -1221,6 +1257,11 @@ referenceSizeForHeaderInSection:(NSInteger)section
         // If the video asset is playing, any ad (if there was one) is now over, and the
         // bar should be enabled.
         self.experienceEnhancerCell.experienceEnhancerBar.enabled = YES;
+        
+        NSDictionary *params = @{ VTrackingKeyTimeStamp : [NSDate date],
+                                  VTrackingKeySequenceId : self.viewModel.sequence.remoteId,
+                                  VTrackingKeyUrls : self.viewModel.sequence.tracking.viewStart ?: @[] };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
     }
 }
 
@@ -1540,6 +1581,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
     [self.viewModel loadNextSequenceSuccess:^(VSequence *sequence)
      {
          [self showNextSequence:sequence];
+         
      }
                                     failure:^(NSError *error)
      {
@@ -1551,13 +1593,19 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)actionCellSelected:(VEndCardActionCell *)actionCell atIndex:(NSUInteger)index
 {
+    [[VTrackingManager sharedInstance] setValue:VTrackingValueEndCard forSessionParameterWithKey:VTrackingKeyContext];
+    
     if ( [actionCell.actionIdentifier isEqualToString:VEndCardActionIdentifierGIF] )
     {
         [self.sequenceActionController showRemixOnViewController:self.navigationController
                                                     withSequence:self.viewModel.sequence
                                             andDependencyManager:self.dependencyManager
                                                   preloadedImage:nil
-                                                      completion:nil];
+                                                      completion:^(BOOL finished)
+         {
+             [[VTrackingManager sharedInstance] setValue:VTrackingValueContentView
+                              forSessionParameterWithKey:VTrackingKeyContext];
+         }];
     }
     else if ( [actionCell.actionIdentifier isEqualToString:VEndCardActionIdentifierRepost] )
     {
@@ -1567,6 +1615,8 @@ referenceSizeForHeaderInSection:(NSInteger)section
          {
              [actionCell showSuccessState];
              actionCell.enabled = NO;
+             [[VTrackingManager sharedInstance] setValue:VTrackingValueContentView
+                              forSessionParameterWithKey:VTrackingKeyContext];
          }];
     }
     else if ( [actionCell.actionIdentifier isEqualToString:VEndCardActionIdentifierShare] )
@@ -1574,7 +1624,11 @@ referenceSizeForHeaderInSection:(NSInteger)section
         [self.sequenceActionController shareFromViewController:self.navigationController
                                                       sequence:self.viewModel.sequence
                                                           node:self.viewModel.currentNode
-                                                    completion:nil];
+                                                    completion:^
+         {
+             [[VTrackingManager sharedInstance] setValue:VTrackingValueContentView
+                              forSessionParameterWithKey:VTrackingKeyContext];
+         }];
     }
 }
 

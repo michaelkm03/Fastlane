@@ -11,6 +11,7 @@
 #import "VSessionTimer.h"
 #import "VSettingManager.h"
 #import "VTracking.h"
+#import "VFirstInstallManager.h"
 
 #define TEST_NEW_SESSION 0 // Set to '1' to start a new session by leaving the app for only 10 seconds.
 
@@ -88,8 +89,15 @@ static NSTimeInterval const kMinimumTimeBetweenSessions = 1800.0; // 30 minutes
     {
         [[NSNotificationCenter defaultCenter] postNotificationName:VSessionTimerNewSessionShouldStart object:self];
     }
+    if ( self.firstLaunch )
+    {
+        [self trackApplicationLaunch];
+    }
+    else
+    {
+        [self trackApplicationForeground];
+    }
     self.firstLaunch = NO;
-    [self trackApplicationForeground];
 }
 
 - (void)sessionDidEnd
@@ -120,6 +128,22 @@ static NSTimeInterval const kMinimumTimeBetweenSessions = 1800.0; // 30 minutes
     NSArray* trackingURLs = applicationTracking != nil ? applicationTracking.appEnterBackground : @[];
     NSDictionary *params = @{ VTrackingKeyUrls : trackingURLs, VTrackingKeySessionTime : [NSNumber numberWithUnsignedInteger:sessionDuration] };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventApplicationDidEnterBackground parameters:params];
+}
+
+- (void)trackApplicationLaunch
+{
+    VTracking *applicationTracking = [VSettingManager sharedManager].applicationTracking;
+    
+    // Track first install
+    [[[VFirstInstallManager alloc] init] reportFirstInstallWithTracking:applicationTracking];
+    
+    // Tracking init (cold start)
+    NSArray* trackingURLs = applicationTracking != nil ? applicationTracking.appLaunch : @[];
+    NSDictionary *params = @{ VTrackingKeyUrls : trackingURLs };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventApplicationDidLaunch parameters:params];
+    
+    // Set a default until the user logs in, either manually or automatically from saved info
+    [[VTrackingManager sharedInstance] setValue:@(NO) forSessionParameterWithKey:VTrackingKeyUserLoggedIn];
 }
 
 #pragma mark - NSNotification handlers

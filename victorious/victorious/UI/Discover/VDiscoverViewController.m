@@ -367,8 +367,13 @@ static CGFloat const kTopInset = 22.0f; ///< The space between the top of the vi
     // No actions available for kTableViewSectionSuggestedPeople
     if ( indexPath.section == VDiscoverViewControllerSectionTrendingTags && self.isShowingNoData == NO )
     {
-        // Show hashtag stream
         VHashtag *hashtag = self.trendingTags[ indexPath.row ];
+        
+        // Tracking
+        NSDictionary *params = @{ VTrackingKeyHashtag : hashtag.tag ?: @"" };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectTrendingHashtag parameters:params];
+        
+        // Show hashtag stream
         [self showStreamWithHashtag:hashtag];
     }
 }
@@ -392,6 +397,8 @@ static CGFloat const kTopInset = 22.0f; ///< The space between the top of the vi
 
 - (void)subscribeToTagAction:(VHashtag *)hashtag
 {
+    [[VTrackingManager sharedInstance] setValue:VTrackingValueTrendingHashtags forSessionParameterWithKey:VTrackingKeyContext];
+    
     VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         // Add tag to user tags object
@@ -413,6 +420,8 @@ static CGFloat const kTopInset = 22.0f; ///< The space between the top of the vi
 
 - (void)unsubscribeToTagAction:(VHashtag *)hashtag
 {
+    [[VTrackingManager sharedInstance] setValue:VTrackingValueTrendingHashtags forSessionParameterWithKey:VTrackingKeyContext];
+    
     VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         // Remove tag to user tags object
@@ -434,6 +443,8 @@ static CGFloat const kTopInset = 22.0f; ///< The space between the top of the vi
 
 - (void)resetCellStateForHashtag:(VHashtag *)hashtag cellShouldRespond:(BOOL)respond failure:(BOOL)failed
 {
+    [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContext];
+    
     NSArray *indexPaths = [self.tableView indexPathsForVisibleRows];
     
     for (NSIndexPath *idxPath in indexPaths)
