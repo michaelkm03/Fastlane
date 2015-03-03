@@ -12,25 +12,25 @@
 #import "VTrackingURLRequest.h"
 #import "VObjectManager.h"
 #import "VObjectManager+Private.h"
+#import "VURLMacroReplacement.h"
 
 @interface VApplicationTracking (UnitTest)
 
 @property (nonatomic, readonly) NSDateFormatter *dateFormatter;
 @property (nonatomic, strong) NSDictionary *parameterMacroMapping;
 
-- (NSString *)stringFromString:(NSString *)originalString byReplacingString:(NSString *)stringToReplace withValue:(id)value;
+- (NSString *)stringFromParameterValue:(id)value;
 - (BOOL)trackEventWithUrl:(NSString *)url andParameters:(NSDictionary *)parameters;
-- (NSString *)stringByReplacingMacros:(NSDictionary *)macros inString:(NSString *)originalString withCorrspondingParameters:(NSDictionary *)parameters;
+- (NSString *)stringByReplacingMacros:(NSDictionary *)macros inString:(NSString *)originalString withCorrespondingParameters:(NSDictionary *)parameters;
 - (void)sendRequest:(NSURLRequest *)request;
 - (VObjectManager *)applicationObjectManager;
-- (NSString *)percentEncodedUrlString:(NSString *)originalUrl;
 
 @end
 
 
 @interface VApplicationTrackingTests : XCTestCase
 
-@property (nonatomic, strong) VApplicationTracking *applicaitonTracking;
+@property (nonatomic, strong) VApplicationTracking *applicationTracking;
 @property (nonatomic, assign) IMP sendRequestImp;
 @property (nonatomic, assign) IMP applicationObjectManagerImp;
 
@@ -52,10 +52,10 @@
                                                                 withBlock:^(NSURLRequest *request)
                                      {}];
     
-    self.applicaitonTracking = [[VApplicationTracking alloc] init];
+    self.applicationTracking = [[VApplicationTracking alloc] init];
     
-    XCTAssertNotNil( self.applicaitonTracking.parameterMacroMapping );
-    XCTAssertNotEqual( self.applicaitonTracking.parameterMacroMapping.allKeys.count, (NSUInteger)0 );
+    XCTAssertNotNil( self.applicationTracking.parameterMacroMapping );
+    XCTAssertNotEqual( self.applicationTracking.parameterMacroMapping.allKeys.count, (NSUInteger)0 );
 }
 
 - (void)tearDown
@@ -69,73 +69,73 @@
 - (void)testTrackEvents
 {
     NSArray *urls = @[ @"http://www.apple.com", @"http://www.yahoo.com", @"http://www.google.com" ];
-    XCTAssertEqual( [self.applicaitonTracking trackEventWithUrls:urls andParameters:nil], 0 );
+    XCTAssertEqual( [self.applicationTracking trackEventWithUrls:urls andParameters:nil], 0 );
     
-    XCTAssertEqual( [self.applicaitonTracking trackEventWithUrls:nil andParameters:nil], -1 );
-    XCTAssertEqual( [self.applicaitonTracking trackEventWithUrls:@[] andParameters:nil], -1 );
-    XCTAssertEqual( [self.applicaitonTracking trackEventWithUrls:(NSArray *)[NSObject new] andParameters:nil], -1 );
+    XCTAssertEqual( [self.applicationTracking trackEventWithUrls:nil andParameters:nil], -1 );
+    XCTAssertEqual( [self.applicationTracking trackEventWithUrls:@[] andParameters:nil], -1 );
+    XCTAssertEqual( [self.applicationTracking trackEventWithUrls:(NSArray *)[NSObject new] andParameters:nil], -1 );
     
     urls = @[ [NSNull null], @"http://www.apple.com", @"http://www.yahoo.com", @"http://www.google.com" ];
-    XCTAssertEqual( [self.applicaitonTracking trackEventWithUrls:urls andParameters:nil], 1 );
+    XCTAssertEqual( [self.applicationTracking trackEventWithUrls:urls andParameters:nil], 1 );
     
     urls = @[ [NSNull null], [NSNull null] ];
-    XCTAssertEqual( [self.applicaitonTracking trackEventWithUrls:urls andParameters:nil], 2 );
+    XCTAssertEqual( [self.applicationTracking trackEventWithUrls:urls andParameters:nil], 2 );
 }
 
 - (void)testTrackEvent
 {
-    XCTAssert( [self.applicaitonTracking trackEventWithUrl:@"http://www.google.com" andParameters:nil] );
-    XCTAssert( [self.applicaitonTracking trackEventWithUrl:@"http://www.google.com" andParameters:@{}] );
+    XCTAssert( [self.applicationTracking trackEventWithUrl:@"http://www.google.com" andParameters:nil] );
+    XCTAssert( [self.applicationTracking trackEventWithUrl:@"http://www.google.com" andParameters:@{}] );
 }
 
 - (void)testTrackEventNoValuesInvalid
 {
-    XCTAssertFalse( [self.applicaitonTracking trackEventWithUrl:@"" andParameters:nil] );
-    XCTAssertFalse( [self.applicaitonTracking trackEventWithUrl:nil andParameters:nil] );
-    XCTAssertFalse( [self.applicaitonTracking trackEventWithUrl:(NSString *)[NSObject new] andParameters:nil] );
+    XCTAssertFalse( [self.applicationTracking trackEventWithUrl:@"" andParameters:nil] );
+    XCTAssertFalse( [self.applicationTracking trackEventWithUrl:nil andParameters:nil] );
+    XCTAssertFalse( [self.applicationTracking trackEventWithUrl:(NSString *)[NSObject new] andParameters:nil] );
 }
 
 - (void)testTrackEventValues
 {
-    NSString *macro1 = self.applicaitonTracking.parameterMacroMapping.allKeys[0];
-    NSString *macro2 = self.applicaitonTracking.parameterMacroMapping.allKeys[1];
+    NSString *macro1 = self.applicationTracking.parameterMacroMapping.allKeys[0];
+    NSString *macro2 = self.applicationTracking.parameterMacroMapping.allKeys[1];
     NSString *urlWithMacros = [NSString stringWithFormat:@"http://www.example.com/%@/%@", macro1, macro2];
     
     NSDictionary *parameters = @{ macro1 : @"value1" , macro2 : @"value2" };
-    XCTAssert( [self.applicaitonTracking trackEventWithUrl:urlWithMacros andParameters:parameters] );
+    XCTAssert( [self.applicationTracking trackEventWithUrl:urlWithMacros andParameters:parameters] );
 }
 
 - (void)testTrackEventValuesInvalid
 {
-    NSString *macro1 = self.applicaitonTracking.parameterMacroMapping.allKeys[0];
-    NSString *macro2 = self.applicaitonTracking.parameterMacroMapping.allKeys[1];
+    NSString *macro1 = self.applicationTracking.parameterMacroMapping.allKeys[0];
+    NSString *macro2 = self.applicationTracking.parameterMacroMapping.allKeys[1];
     NSString *urlWithMacros = [NSString stringWithFormat:@"http://www.example.com/%@/%@", macro1, macro2];
     
     NSDictionary *parameters;
     
     parameters = @{ macro1 : @"value1" , macro2 : @"value2" };
-    XCTAssert( [self.applicaitonTracking trackEventWithUrl:urlWithMacros andParameters:parameters] );
+    XCTAssert( [self.applicationTracking trackEventWithUrl:urlWithMacros andParameters:parameters] );
     
     parameters = @{ macro1 : @3 , macro2 : @6 };
-    XCTAssert( [self.applicaitonTracking trackEventWithUrl:urlWithMacros andParameters:parameters] );
+    XCTAssert( [self.applicationTracking trackEventWithUrl:urlWithMacros andParameters:parameters] );
     
     parameters = @{ macro1 : [NSDate date] , macro2 : [NSDate date] };
-    XCTAssert( [self.applicaitonTracking trackEventWithUrl:urlWithMacros andParameters:parameters] );
+    XCTAssert( [self.applicationTracking trackEventWithUrl:urlWithMacros andParameters:parameters] );
     
     parameters = @{ macro1 : @5.0f , macro2 : @10.0f };
-    XCTAssert( [self.applicaitonTracking trackEventWithUrl:urlWithMacros andParameters:parameters] );
+    XCTAssert( [self.applicationTracking trackEventWithUrl:urlWithMacros andParameters:parameters] );
 }
 
 - (void)testMacroReplacement
 {
-    NSString *macro1 = self.applicaitonTracking.parameterMacroMapping.allValues[0];
-    NSString *macro2 = self.applicaitonTracking.parameterMacroMapping.allValues[1];
-    NSString *macro3 = self.applicaitonTracking.parameterMacroMapping.allValues[2];
+    NSString *macro1 = self.applicationTracking.parameterMacroMapping.allValues[0];
+    NSString *macro2 = self.applicationTracking.parameterMacroMapping.allValues[1];
+    NSString *macro3 = self.applicationTracking.parameterMacroMapping.allValues[2];
     NSString *macro4 = @"%%BRAND_NEW_UNKNOWN_MACRO%%";
     NSString *macro5 = @"%%ANOTER NEW ONE%%";
     
-    NSString *paramKey1 = self.applicaitonTracking.parameterMacroMapping.allKeys[0];
-    NSString *paramKey3 = self.applicaitonTracking.parameterMacroMapping.allKeys[2];
+    NSString *paramKey1 = self.applicationTracking.parameterMacroMapping.allKeys[0];
+    NSString *paramKey3 = self.applicationTracking.parameterMacroMapping.allKeys[2];
     
     NSString *string = [NSString stringWithFormat:@"%@/%@/%@/%@/%@", macro1, macro2, macro3, macro4, macro5 ];
     
@@ -149,9 +149,9 @@
                     // macro4 is missing intentionally to test the removal of the macro
                     };
     
-    output = [self.applicaitonTracking stringByReplacingMacros:self.applicaitonTracking.parameterMacroMapping
+    output = [self.applicationTracking stringByReplacingMacros:self.applicationTracking.parameterMacroMapping
                                                       inString:string
-                                    withCorrspondingParameters:parameters];
+                                    withCorrespondingParameters:parameters];
     expected = [string stringByReplacingOccurrencesOfString:macro1 withString:parameters[ paramKey1 ]];
     expected = [expected stringByReplacingOccurrencesOfString:macro2 withString:@""];
     expected = [expected stringByReplacingOccurrencesOfString:macro3 withString:parameters[ paramKey3 ]];
@@ -160,10 +160,8 @@
     XCTAssertEqualObjects( output, expected, @"URL should only have registerd macros replaced, otherwise the macros should be removed." );
 }
 
-- (void)testStringFromString
+- (void)testStringFromParameterValue
 {
-    NSString *macro = @"%%macro%%";
-    NSString *url = [NSString stringWithFormat:@"http://www.example.com/%@", macro];
     NSString *stringValue = @"__stringValue__";
     NSNumber *integerNumber = @1;
     NSNumber *floatNumber = @2.0f;
@@ -172,25 +170,20 @@
     NSString *output;
     NSString *expected;
     
-    output = [self.applicaitonTracking stringFromString:url byReplacingString:macro withValue:stringValue];
-    expected = [url stringByReplacingOccurrencesOfString:macro
-                                              withString:stringValue];
+    output = [self.applicationTracking stringFromParameterValue:stringValue];
+    expected = stringValue;
     XCTAssertEqualObjects( output, expected );
     
-    output = [self.applicaitonTracking stringFromString:url byReplacingString:macro withValue:integerNumber];
-    expected = [url stringByReplacingOccurrencesOfString:macro
-                                              withString:[NSString stringWithFormat:@"%i", integerNumber.intValue]];
+    output = [self.applicationTracking stringFromParameterValue:integerNumber];
+    expected = [NSString stringWithFormat:@"%i", integerNumber.intValue];
     XCTAssertEqualObjects( output, expected );
     
-    output = [self.applicaitonTracking stringFromString:url byReplacingString:macro withValue:floatNumber];
-    expected = [url stringByReplacingOccurrencesOfString:macro
-                                              withString:[NSString stringWithFormat:@"%.2f", floatNumber.floatValue]];
+    output = [self.applicationTracking stringFromParameterValue:floatNumber];
+    expected = [NSString stringWithFormat:@"%.2f", floatNumber.floatValue];
     XCTAssertEqualObjects( output, expected );
     
-    output = [self.applicaitonTracking stringFromString:url byReplacingString:macro withValue:dateValue];
-    NSString *dateString = [self.applicaitonTracking.dateFormatter stringFromDate:dateValue ];
-    dateString = [self.applicaitonTracking percentEncodedUrlString:dateString];
-    expected = [url stringByReplacingOccurrencesOfString:macro withString:dateString];
+    output = [self.applicationTracking stringFromParameterValue:dateValue];
+    expected = [self.applicationTracking.dateFormatter stringFromDate:dateValue];
     XCTAssertEqualObjects( output, expected );
 }
 
@@ -201,29 +194,24 @@
     NSString *output;
 
     url =  [NSString stringWithFormat:@"http://www.example.com/%@", macro];
-    output = [self.applicaitonTracking stringFromString:url byReplacingString:@"some_other_macro" withValue:@"valid_value"];
-    XCTAssertEqualObjects( output, url, @"Attempting to replace a macro not present in URL shoudl leave URL unchanged." );
+    output = [self.applicationTracking stringByReplacingMacros:self.applicationTracking.parameterMacroMapping
+                                                      inString:url
+                                   withCorrespondingParameters:@{ @"some_other_macro": @"valid_value" }];
+    NSString *expected = @"http://www.example.com/";
+    XCTAssertEqualObjects( output, expected, @"Attempting to replace a macro not present in URL should leave URL unchanged." );
     
     url = @"http://www.example.com/";
-    output = [self.applicaitonTracking stringFromString:url byReplacingString:macro withValue:@"valid_value"];
+    output = [self.applicationTracking stringByReplacingMacros:self.applicationTracking.parameterMacroMapping
+                                                      inString:url
+                                   withCorrespondingParameters:@{ @"some_other_macro": @"valid_value" }];
     XCTAssertEqualObjects( output, url, @"Attempting to replace a macro in a URL without macros should leave URL unchanged." );
     
     url =  [NSString stringWithFormat:@"http://www.example.com/%@", macro];
-    output = [self.applicaitonTracking stringFromString:url byReplacingString:@"some_other_macro" withValue:@"valid_value"];
-    XCTAssertEqualObjects( output, url, @"Attempting to replace a macro in a URL with the wrong macro should leave URL unchanged." );
-}
-
-- (void)testUrlStringFromUrlStringErrors
-{
-    NSString *macro = @"%%macro%%";
-    NSString *urlWithMacro = [NSString stringWithFormat:@"http://www.example.com/%@", macro];
-    
-    XCTAssertNil( [self.applicaitonTracking stringFromString:urlWithMacro byReplacingString:macro withValue:nil] );
-    XCTAssertNil( [self.applicaitonTracking stringFromString:urlWithMacro byReplacingString:macro withValue:[NSObject new]] );
-    
-    XCTAssertThrows( [self.applicaitonTracking stringFromString:@"" byReplacingString:macro withValue:@"valid_value"] );
-    XCTAssertThrows( [self.applicaitonTracking stringFromString:(NSString *)[NSObject new] byReplacingString:macro withValue:@"valid_value"] );
-    XCTAssertThrows( [self.applicaitonTracking stringFromString:nil byReplacingString:macro withValue:@"valid_value"] );
+    output = [self.applicationTracking stringByReplacingMacros:self.applicationTracking.parameterMacroMapping
+                                                      inString:url
+                                   withCorrespondingParameters:@{ @"some_other_macro": @"valid_value" }];
+    expected = @"http://www.example.com/";
+    XCTAssertEqualObjects( output, expected, @"Attempting to replace a macro in a URL with the wrong macro should leave URL unchanged." );
 }
 
 @end
