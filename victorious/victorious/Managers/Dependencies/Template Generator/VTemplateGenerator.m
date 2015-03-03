@@ -37,9 +37,11 @@ static NSString * const kUserSpecificKey = @"isUserSpecific";
 
 // Directory Components
 static NSString * const kBackgroundColor = @"color.background";
-static NSString * const kTextColor = @"color.text";
 static NSString * const kAccentColor = @"color.accent";
-static NSString * const kTextColorAccent = @"color.text.accent";
+static NSString * const kSecondaryAccentColor = @"color.accent.secondary";
+static NSString * const kTextColor = @"color.text";
+static NSString * const kTextContentColor = @"color.text.content";
+static NSString * const kTextAccentColor = @"color.text.accent";
 static NSString * const kCellComponentDirectoryGroup = @"cell.directory.group";
 static NSString * const kCellComponentDirectoryItem = @"cell.directory.item";
 
@@ -560,13 +562,25 @@ static NSString * const kVideoMuted = @"videoMuted";
                               },
                       kCellComponentDirectoryItem:
                           @{
-                              kTextColorAccent: @{ //< secodary text (quantity/see more arrow)
+                              kSecondaryAccentColor: @{ //< see more arrow
+                                      kRedKey: @200,
+                                      kGreenKey: @200,
+                                      kBlueKey: @200,
+                                      kAlphaKey: @1
+                                      },
+                              kTextContentColor: @{ //< see more text
+                                      kRedKey: @160,
+                                      kGreenKey: @160,
+                                      kBlueKey: @160,
+                                      kAlphaKey: @1
+                                      },
+                              kTextAccentColor: @{ //< quantity labe
                                       kRedKey: @153,
                                       kGreenKey: @153,
                                       kBlueKey: @153,
                                       kAlphaKey: @1
                                       },
-                              kTextColor: @{
+                              kTextColor: @{ //< name label
                                       kRedKey: @51,
                                       kGreenKey: @51,
                                       kBlueKey: @51,
@@ -578,7 +592,7 @@ static NSString * const kVideoMuted = @"videoMuted";
                                       kBlueKey: @204,
                                       kAlphaKey: @1
                                       },
-                              kBackgroundColor: @{
+                              kBackgroundColor: @{ // stacked background
                                       kRedKey: @255,
                                       kGreenKey: @255,
                                       kBlueKey: @255,
@@ -608,13 +622,25 @@ static NSString * const kVideoMuted = @"videoMuted";
                               },
                       kCellComponentDirectoryItem:
                           @{
-                              kTextColorAccent: @{ //< secodary text (quantity/see more arrow)
+                              kSecondaryAccentColor: @{ //< see more arrow
+                                      kRedKey: @95,
+                                      kGreenKey: @95,
+                                      kBlueKey: @95,
+                                      kAlphaKey: @1
+                                      },
+                              kTextContentColor: @{ //< see more text
+                                      kRedKey: @170,
+                                      kGreenKey: @170,
+                                      kBlueKey: @170,
+                                      kAlphaKey: @1
+                                      },
+                              kTextAccentColor: @{ //< quantity label
                                       kRedKey: @150,
                                       kGreenKey: @150,
                                       kBlueKey: @150,
                                       kAlphaKey: @1
                                       },
-                              kTextColor: @{
+                              kTextColor: @{ //< name label
                                       kRedKey: @255,
                                       kGreenKey: @255,
                                       kBlueKey: @255,
@@ -626,7 +652,7 @@ static NSString * const kVideoMuted = @"videoMuted";
                                       kBlueKey: @0,
                                       kAlphaKey: @1
                                       },
-                              kBackgroundColor: @{
+                              kBackgroundColor: @{ // stacked background
                                       kRedKey: @40,
                                       kGreenKey: @40,
                                       kBlueKey: @40,

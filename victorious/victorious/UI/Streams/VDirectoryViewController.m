@@ -77,7 +77,7 @@ static CGFloat const kDirectoryInset = 5.0f;
     self.view.backgroundColor = [self.dependencyManager colorForKey:@"color.background"];
     self.collectionView.backgroundColor = [UIColor clearColor];
     
-    NSString *identifier = NSStringFromClass([VDirectoryGroupCell class]);
+    NSString *identifier = [VDirectoryGroupCell suggestedReuseIdentifier];
     UINib *nib = [UINib nibWithNibName:identifier bundle:nil];
     [self.collectionView registerNib:nib forCellWithReuseIdentifier:identifier];
     
@@ -163,9 +163,8 @@ static CGFloat const kDirectoryInset = 5.0f;
 
 - (UICollectionViewCell *)dataSource:(VStreamCollectionViewDataSource *)dataSource cellForIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *identifier = NSStringFromClass([VDirectoryGroupCell class]);
+    NSString *identifier = [VDirectoryGroupCell suggestedReuseIdentifier];
     VDirectoryGroupCell *cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
-    cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
     cell.streamItem = [self.currentStream.streamItems objectAtIndex:indexPath.row];
     cell.delegate = self;
     NSDictionary *component = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:@"cell.directory.group"];
@@ -182,9 +181,9 @@ static CGFloat const kDirectoryInset = 5.0f;
     {
         //Push a new directory view controller to show all contents of the selected streamItem
         VStream *stream = [self.currentStream.streamItems objectAtIndex:[self.collectionView indexPathForCell:VDirectoryGroupCell].row];
-        VDirectoryViewController *sos = [VDirectoryViewController streamDirectoryForStream:stream dependencyManager:self.dependencyManager];
-        sos.dependencyManager = self.dependencyManager;
-        [self.navigationController pushViewController:sos animated:YES];
+        VDirectoryViewController *directoryViewController = [VDirectoryViewController streamDirectoryForStream:stream dependencyManager:self.dependencyManager];
+        directoryViewController.dependencyManager = self.dependencyManager;
+        [self.navigationController pushViewController:directoryViewController animated:YES];
     }
     else
     {
@@ -198,9 +197,9 @@ static CGFloat const kDirectoryInset = 5.0f;
         }
         else if ([item isKindOfClass:[VStream class]])
         {
-            VDirectoryViewController *sos = [VDirectoryViewController streamDirectoryForStream:(VStream *)item dependencyManager:self.dependencyManager];
-            sos.dependencyManager = self.dependencyManager;
-            [self.navigationController pushViewController:sos animated:YES];
+            VDirectoryViewController *directoryViewController = [VDirectoryViewController streamDirectoryForStream:(VStream *)item dependencyManager:self.dependencyManager];
+            directoryViewController.dependencyManager = self.dependencyManager;
+            [self.navigationController pushViewController:directoryViewController animated:YES];
         }
         else if ([item isKindOfClass:[VSequence class]])
         {

@@ -520,7 +520,7 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
             VSequence *preloadSequence = (VSequence *)streamItem;
             for (NSURL *imageUrl in [preloadSequence initialImageURLs])
             {
-                UIImageView *preloadView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
+                UIImageView *preloadView = [[UIImageView alloc] initWithFrame:CGRectZero];
                 [preloadView sd_setImageWithURL:imageUrl];
                 
                 [self.preloadImageCache setObject:preloadView forKey:imageUrl.absoluteString];

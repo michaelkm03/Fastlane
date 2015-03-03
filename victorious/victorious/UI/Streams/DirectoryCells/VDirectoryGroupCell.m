@@ -23,9 +23,11 @@ static CGFloat const kStreamDirectoryGroupCellBaseWidth = 320.0f;
 static CGFloat const kStreamSubdirectoryItemCellBaseWidth = 140.0f;
 static CGFloat const kStreamSubdirectoryItemCellBaseHeight = 206.0f;
 
+static const NSInteger kMaxItemsPerRow = 10;
+
 @interface VDirectoryGroupCell() <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
 
-@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
+@property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, weak) IBOutlet UILabel *nameLabel;
 @property (nonatomic, readwrite) BOOL isStreamOfStreamsRow;
 
@@ -73,8 +75,8 @@ static CGFloat const kStreamSubdirectoryItemCellBaseHeight = 206.0f;
     self.nameLabel.font = [_dependencyManager fontForKey:@"font.header"];
     self.nameLabel.textColor = [_dependencyManager colorForKey:@"color.text"];
     
-    NSDictionary *component = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:@"cell.directory.item"];
-    self.itemCellDependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:component];
+    NSDictionary *component = [_dependencyManager templateValueOfType:[NSDictionary class] forKey:@"cell.directory.item"];
+    self.itemCellDependencyManager = [_dependencyManager childDependencyManagerWithAddedConfiguration:component];
     
     [self.collectionView reloadData];
 }
@@ -87,16 +89,15 @@ static CGFloat const kStreamSubdirectoryItemCellBaseHeight = 206.0f;
     
     self.collectionView.dataSource = self;
     self.collectionView.delegate = self;
-    [self registerNibWithName:NSStringFromClass([VDirectoryItemCell class])];
-    [self registerNibWithName:NSStringFromClass([VDirectorySeeMoreItemCell class])];
+    
+    [self.collectionView registerNib:[VDirectoryItemCell nibForCell]
+          forCellWithReuseIdentifier:[VDirectoryItemCell suggestedReuseIdentifier]];
+    [self.collectionView registerNib:[VDirectorySeeMoreItemCell nibForCell]
+          forCellWithReuseIdentifier:[VDirectorySeeMoreItemCell suggestedReuseIdentifier]];
+    
     self.collectionView.backgroundColor = [UIColor clearColor];
     
     self.collectionView.contentInset = UIEdgeInsetsZero;
-}
-
-- (void)registerNibWithName:(NSString *)nibName
-{
-    [self.collectionView registerNib:[UINib nibWithNibName:nibName bundle:nil] forCellWithReuseIdentifier:nibName];
 }
 
 #pragma mark - Property Accessors
@@ -127,7 +128,7 @@ static CGFloat const kStreamSubdirectoryItemCellBaseHeight = 206.0f;
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return 11; //Should be something like self.streamItem.streams.count + 1; the +1 will be for the "see more" cell
+    return MIN( self.streamItem.streams.count, kMaxItemsPerRow + (NSUInteger)1 );
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -140,14 +141,14 @@ static CGFloat const kStreamSubdirectoryItemCellBaseHeight = 206.0f;
     //Check if item is last in number of items in section, this is the "show more" cell
     if ( indexPath.item == 10 )
     {
-        NSString *identifier = NSStringFromClass([VDirectorySeeMoreItemCell class]);
+        NSString *identifier = [VDirectorySeeMoreItemCell suggestedReuseIdentifier];
         VDirectorySeeMoreItemCell *seeMoreCell = [self.collectionView dequeueReusableCellWithReuseIdentifier:identifier
                                                                                                 forIndexPath:indexPath];
                                      
         seeMoreCell.borderColor = borderColor;
-        seeMoreCell.imageColor = [secondaryTextColor colorWithAlphaComponent:0.4f];
+        seeMoreCell.imageColor = [self.itemCellDependencyManager colorForKey:@"color.accent.secondary"];
         seeMoreCell.backgroundColor = backgroundColor;
-        seeMoreCell.seeMoreLabel.textColor = [textColor colorWithAlphaComponent:0.75f];
+        seeMoreCell.seeMoreLabel.textColor = [self.itemCellDependencyManager colorForKey:@"text.color.content"];
         seeMoreCell.seeMoreLabel.font = [self.itemCellDependencyManager fontForKey:@"seeMoreLabelFont"];
         
         [seeMoreCell updateBottomConstraintToConstant:self.isStreamOfStreamsRow ? kDirectoryItemStackHeight : 0.0f];
@@ -157,7 +158,7 @@ static CGFloat const kStreamSubdirectoryItemCellBaseHeight = 206.0f;
     else
     {
         //Populate streamItem from item in stream instead of top-level stream item
-        NSString *identifier = NSStringFromClass([VDirectoryItemCell class]);
+        NSString *identifier = [VDirectoryItemCell suggestedReuseIdentifier];
         VDirectoryItemCell *directoryCell = [self.collectionView dequeueReusableCellWithReuseIdentifier:identifier
                                                                                            forIndexPath:indexPath];
         

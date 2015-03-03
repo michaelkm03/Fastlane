@@ -100,7 +100,6 @@ const CGFloat kDirectoryItemBaseWidth = 145.0f;
     {
         [view setBorderColor:_stackBorderColor];
     }
-    
 }
 
 - (NSArray *)stackViews
