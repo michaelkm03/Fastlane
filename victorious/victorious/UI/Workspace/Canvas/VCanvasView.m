@@ -107,6 +107,19 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
     [_activityIndicator startAnimating];
 }
 
+#pragma mark - UIVIew
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    
+    if (self.canvasScrollView.contentSize.width < CGRectGetWidth(self.bounds))
+    {
+        self.canvasScrollView.contentSize = self.bounds.size;
+        self.imageView.frame = self.canvasScrollView.bounds;
+    }
+}
+
 #pragma mark - Property Accessors
 
 - (void)setSourceURL:(NSURL *)URL

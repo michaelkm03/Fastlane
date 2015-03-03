@@ -8,7 +8,7 @@
         <!--Followers-->
         <scene sceneID="aW5-Gl-D2H">
             <objects>
-                <tableViewController id="BFj-Qd-5qN" customClass="VFollowerTableViewController" sceneMemberID="viewController">
+                <tableViewController extendedLayoutIncludesOpaqueBars="YES" id="BFj-Qd-5qN" customClass="VFollowerTableViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="50" sectionHeaderHeight="22" sectionFooterHeight="22" id="puB-qa-IbY">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -35,9 +35,9 @@
         <!--Edit Profile-->
         <scene sceneID="IFO-fM-Zee">
             <objects>
-                <tableViewController storyboardIdentifier="editProfile" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="VKu-9O-01w" customClass="VProfileEditViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="editProfile" extendedLayoutIncludesOpaqueBars="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="VKu-9O-01w" customClass="VProfileEditViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" keyboardDismissMode="interactive" dataMode="static" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="1" sectionFooterHeight="1" id="o05-aU-osi">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="separatorColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -95,7 +95,7 @@
                                     <tableViewCell opaque="NO" alpha="0.30000001192092896" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="50" id="OFi-17-fbP">
                                         <rect key="frame" x="0.0" y="218" width="320" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" alpha="0.60000002384185791" contentMode="center" tableViewCell="OFi-17-fbP" id="JeS-ty-9hZ">
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="OFi-17-fbP" id="JeS-ty-9hZ">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
@@ -115,10 +115,10 @@
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </tableViewCell>
-                                    <tableViewCell opaque="NO" alpha="0.30000001192092896" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="50" id="4NE-aI-gzy">
+                                    <tableViewCell opaque="NO" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="50" id="4NE-aI-gzy">
                                         <rect key="frame" x="0.0" y="268" width="320" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" alpha="0.60000002384185791" contentMode="center" tableViewCell="4NE-aI-gzy" id="kxf-qD-bOA">
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="4NE-aI-gzy" id="kxf-qD-bOA">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
@@ -138,10 +138,10 @@
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </tableViewCell>
-                                    <tableViewCell opaque="NO" alpha="0.30000001192092896" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="100" id="faX-3g-k9v">
+                                    <tableViewCell opaque="NO" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="100" id="faX-3g-k9v">
                                         <rect key="frame" x="0.0" y="318" width="320" height="100"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" alpha="0.60000002384185791" contentMode="center" tableViewCell="faX-3g-k9v" id="r9d-Zd-uU3">
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="faX-3g-k9v" id="r9d-Zd-uU3">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="99"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
@@ -187,7 +187,8 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics" translucent="NO"/>
                     <connections>
                         <outlet property="cameraButton" destination="UJd-2d-MK1" id="7Ud-f8-mBv"/>
                         <outlet property="captionCell" destination="faX-3g-k9v" id="nSl-8o-1pm"/>
@@ -208,7 +209,7 @@
         <!--Following-->
         <scene sceneID="HVG-hQ-7jJ">
             <objects>
-                <tableViewController id="lpI-le-Hn9" customClass="VFollowingTableViewController" sceneMemberID="viewController">
+                <tableViewController extendedLayoutIncludesOpaqueBars="YES" id="lpI-le-Hn9" customClass="VFollowingTableViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="50" sectionHeaderHeight="22" sectionFooterHeight="22" id="8lT-EP-O62">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -263,8 +264,8 @@
                         <constraints>
                             <constraint firstItem="Y5M-Rj-OwC" firstAttribute="leading" secondItem="dHO-Bc-ol7" secondAttribute="leading" id="A47-7N-ZNb"/>
                             <constraint firstItem="Y5M-Rj-OwC" firstAttribute="top" secondItem="dHO-Bc-ol7" secondAttribute="top" id="Kmm-E2-dub"/>
-                            <constraint firstItem="pF2-cg-eOY" firstAttribute="top" secondItem="Y5M-Rj-OwC" secondAttribute="bottom" id="fPc-5w-RD6"/>
                             <constraint firstAttribute="trailing" secondItem="Y5M-Rj-OwC" secondAttribute="trailing" id="iQF-sE-Rak"/>
+                            <constraint firstItem="Y5M-Rj-OwC" firstAttribute="bottom" secondItem="dHO-Bc-ol7" secondAttribute="bottomMargin" id="zn7-HI-Kdg"/>
                         </constraints>
                     </view>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
@@ -283,7 +284,7 @@
         <!--Following-->
         <scene sceneID="aSZ-yu-jMd">
             <objects>
-                <viewController id="86q-5Y-HrO" customClass="VProfileFollowingContainerViewController" sceneMemberID="viewController">
+                <viewController extendedLayoutIncludesOpaqueBars="YES" id="86q-5Y-HrO" customClass="VProfileFollowingContainerViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="PoE-cr-IZB"/>
                         <viewControllerLayoutGuide type="bottom" id="nBb-NB-dHn"/>

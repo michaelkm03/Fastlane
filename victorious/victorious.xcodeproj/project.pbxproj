@@ -610,6 +610,12 @@
 		D87351831A3112A3006D97B2 /* VCropOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = D87351821A3112A3006D97B2 /* VCropOverlayView.m */; };
 		D87351881A3120F5006D97B2 /* VCanvasView.m in Sources */ = {isa = PBXBuildFile; fileRef = D87351871A3120F5006D97B2 /* VCanvasView.m */; };
 		D87351991A3260AC006D97B2 /* VFilterTypeTool.m in Sources */ = {isa = PBXBuildFile; fileRef = D87351981A3260AC006D97B2 /* VFilterTypeTool.m */; };
+		D876E1FC1A9DA685002CAA29 /* VBackground.m in Sources */ = {isa = PBXBuildFile; fileRef = D876E1FB1A9DA685002CAA29 /* VBackground.m */; };
+		D876E1FF1A9DA6CB002CAA29 /* VSolidColorBackground.m in Sources */ = {isa = PBXBuildFile; fileRef = D876E1FE1A9DA6CB002CAA29 /* VSolidColorBackground.m */; };
+		D876E2021A9DA6DD002CAA29 /* VBlurredImageBackground.m in Sources */ = {isa = PBXBuildFile; fileRef = D876E2011A9DA6DD002CAA29 /* VBlurredImageBackground.m */; };
+		D876E2051A9DA6EB002CAA29 /* VTranslucentBackground.m in Sources */ = {isa = PBXBuildFile; fileRef = D876E2041A9DA6EB002CAA29 /* VTranslucentBackground.m */; };
+		D87D70931A97C9EC002D4FED /* VTabMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D87D70921A97C9EC002D4FED /* VTabMenuViewController.m */; };
+		D87D70961A9804CD002D4FED /* VNavigationDestinationContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D87D70951A9804CD002D4FED /* VNavigationDestinationContainerViewController.m */; };
 		D888B52A1A86FC7800B34149 /* VRadialGradientLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = D888B5271A86FC7800B34149 /* VRadialGradientLayer.m */; };
 		D888B52B1A86FC7800B34149 /* VRadialGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = D888B5291A86FC7800B34149 /* VRadialGradientView.m */; };
 		D88CEAE41A92E17C00F5A837 /* VVideoSnapshotTool.m in Sources */ = {isa = PBXBuildFile; fileRef = D88CEAE31A92E17C00F5A837 /* VVideoSnapshotTool.m */; };
@@ -1805,6 +1811,18 @@
 		D87351871A3120F5006D97B2 /* VCanvasView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCanvasView.m; sourceTree = "<group>"; };
 		D87351971A3260AC006D97B2 /* VFilterTypeTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFilterTypeTool.h; sourceTree = "<group>"; };
 		D87351981A3260AC006D97B2 /* VFilterTypeTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFilterTypeTool.m; sourceTree = "<group>"; };
+		D876E1FA1A9DA685002CAA29 /* VBackground.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VBackground.h; sourceTree = "<group>"; };
+		D876E1FB1A9DA685002CAA29 /* VBackground.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VBackground.m; sourceTree = "<group>"; };
+		D876E1FD1A9DA6CB002CAA29 /* VSolidColorBackground.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSolidColorBackground.h; sourceTree = "<group>"; };
+		D876E1FE1A9DA6CB002CAA29 /* VSolidColorBackground.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSolidColorBackground.m; sourceTree = "<group>"; };
+		D876E2001A9DA6DD002CAA29 /* VBlurredImageBackground.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VBlurredImageBackground.h; sourceTree = "<group>"; };
+		D876E2011A9DA6DD002CAA29 /* VBlurredImageBackground.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VBlurredImageBackground.m; sourceTree = "<group>"; };
+		D876E2031A9DA6EB002CAA29 /* VTranslucentBackground.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTranslucentBackground.h; sourceTree = "<group>"; };
+		D876E2041A9DA6EB002CAA29 /* VTranslucentBackground.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTranslucentBackground.m; sourceTree = "<group>"; };
+		D87D70911A97C9EC002D4FED /* VTabMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTabMenuViewController.h; sourceTree = "<group>"; };
+		D87D70921A97C9EC002D4FED /* VTabMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTabMenuViewController.m; sourceTree = "<group>"; };
+		D87D70941A9804CD002D4FED /* VNavigationDestinationContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNavigationDestinationContainerViewController.h; sourceTree = "<group>"; };
+		D87D70951A9804CD002D4FED /* VNavigationDestinationContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNavigationDestinationContainerViewController.m; sourceTree = "<group>"; };
 		D888B5261A86FC7800B34149 /* VRadialGradientLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VRadialGradientLayer.h; sourceTree = "<group>"; };
 		D888B5271A86FC7800B34149 /* VRadialGradientLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VRadialGradientLayer.m; sourceTree = "<group>"; };
 		D888B5281A86FC7800B34149 /* VRadialGradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VRadialGradientView.h; sourceTree = "<group>"; };
@@ -2241,6 +2259,7 @@
 			isa = PBXGroup;
 			children = (
 				D8CA63AF19D51C8D002046E5 /* Action Sheet */,
+				D876E1F91A9DA685002CAA29 /* Background */,
 				D89A50071A000D540010D050 /* Controls */,
 				BE42842D19DDD0D800AEDBA6 /* DefaultProfileImages */,
 				F05AA97D1A83F6E3002F8917 /* Inline Search */,
@@ -2510,6 +2529,8 @@
 			isa = PBXGroup;
 			children = (
 				030931871A18425B004E9781 /* Menu */,
+				D87D70911A97C9EC002D4FED /* VTabMenuViewController.h */,
+				D87D70921A97C9EC002D4FED /* VTabMenuViewController.m */,
 				037FCF0B1A8B182A00E8ABFC /* VDeeplinkHandler.h */,
 				037FCF111A8DAF0E00E8ABFC /* VHamburgerButton.h */,
 				037FCF121A8DAF0E00E8ABFC /* VHamburgerButton.m */,
@@ -2522,6 +2543,8 @@
 				037FCF151A8DAF0E00E8ABFC /* VNavigationController.m */,
 				037FCF161A8DAF0E00E8ABFC /* VNavigationControllerScrollDelegate.h */,
 				037FCF171A8DAF0E00E8ABFC /* VNavigationControllerScrollDelegate.m */,
+				D87D70941A9804CD002D4FED /* VNavigationDestinationContainerViewController.h */,
+				D87D70951A9804CD002D4FED /* VNavigationDestinationContainerViewController.m */,
 				0314D3EB19B46B5E00FA363C /* VRootViewController.h */,
 				0314D3EC19B46B5E00FA363C /* VRootViewController.m */,
 				0358FCEC1A65E785004DD7A1 /* VScaffoldViewController.h */,
@@ -4346,6 +4369,21 @@
 			path = Canvas;
 			sourceTree = "<group>";
 		};
+		D876E1F91A9DA685002CAA29 /* Background */ = {
+			isa = PBXGroup;
+			children = (
+				D876E1FA1A9DA685002CAA29 /* VBackground.h */,
+				D876E1FB1A9DA685002CAA29 /* VBackground.m */,
+				D876E2001A9DA6DD002CAA29 /* VBlurredImageBackground.h */,
+				D876E2011A9DA6DD002CAA29 /* VBlurredImageBackground.m */,
+				D876E1FD1A9DA6CB002CAA29 /* VSolidColorBackground.h */,
+				D876E1FE1A9DA6CB002CAA29 /* VSolidColorBackground.m */,
+				D876E2031A9DA6EB002CAA29 /* VTranslucentBackground.h */,
+				D876E2041A9DA6EB002CAA29 /* VTranslucentBackground.m */,
+			);
+			path = Background;
+			sourceTree = "<group>";
+		};
 		D89A50071A000D540010D050 /* Controls */ = {
 			isa = PBXGroup;
 			children = (
@@ -5102,12 +5140,14 @@
 				0314D0B119B4698800FA363C /* VObjectManager+DirectMessaging.m in Sources */,
 				A720054C1A030D9300285A9C /* VTrackingConstants.m in Sources */,
 				03B3D3D01A3BBCE900F0634A /* VBadgeBackgroundView.m in Sources */,
+				D876E2021A9DA6DD002CAA29 /* VBlurredImageBackground.m in Sources */,
 				DBAD776719F7752D00B6A939 /* VAdBreak+RestKit.m in Sources */,
 				03F9D286191D77B000576AEE /* UIImage+VSolidColor.m in Sources */,
 				D8C7CF5D19DCCD0200BA33E5 /* VExperienceEnhancerCell.m in Sources */,
 				BE5C7388187E37E500A3340D /* VConversation+RestKit.m in Sources */,
 				A7D7077F1A7AFD8200D9993F /* VEndCard.m in Sources */,
 				0314D4A019B46B5E00FA363C /* VImageSearchResultCell.m in Sources */,
+				D876E1FF1A9DA6CB002CAA29 /* VSolidColorBackground.m in Sources */,
 				BE89D981192141D600D97E7F /* VUser+Fetcher.m in Sources */,
 				A7976D0719FAE8EA00B5A145 /* AVAsset+Orientation.m in Sources */,
 				0314D4E019B46B5E00FA363C /* VFindFriendsTableView.m in Sources */,
@@ -5222,6 +5262,7 @@
 				BE7D2E9118EB762A009E488E /* VVoteResult.m in Sources */,
 				D8C5CFE51A68497200EC819F /* VAsset.m in Sources */,
 				03C185BF19B42F0E00E27D05 /* VSequenceUserInteractions.m in Sources */,
+				D87D70961A9804CD002D4FED /* VNavigationDestinationContainerViewController.m in Sources */,
 				03C185BC19B42E5D00E27D05 /* TWSignedRequest.m in Sources */,
 				A7AEF9D01A83F2F500A3D3A0 /* VVideoUtils.m in Sources */,
 				BEA78C2B19C008F0006A1ABC /* VStream+Fetcher.m in Sources */,
@@ -5300,6 +5341,7 @@
 				0386E2001A8DECF900FC9BDF /* VDependencyManager+VNavigationItem.m in Sources */,
 				D8C8F5761A0403D4006BE3E8 /* VStream.m in Sources */,
 				BE46F02A19D0C4B700CD7EF6 /* VMessage.m in Sources */,
+				D87D70931A97C9EC002D4FED /* VTabMenuViewController.m in Sources */,
 				BE5C7382187E37C700A3340D /* VMessage+RestKit.m in Sources */,
 				0314D48319B46B5E00FA363C /* VCommentsTableViewController.m in Sources */,
 				03CE66F719B47B590011BB9E /* VTwitterManager.m in Sources */,
@@ -5314,6 +5356,7 @@
 				D8D945F61A2E8A760089D271 /* VWorkspaceViewController.m in Sources */,
 				A7D8532419F6F3B100EDBFF8 /* VTracking.m in Sources */,
 				BEF2C29618845EF500AAE975 /* VPollResult+RestKit.m in Sources */,
+				D876E1FC1A9DA685002CAA29 /* VBackground.m in Sources */,
 				D8E39BB919CB7C3C007FD86A /* VNewContentViewController.m in Sources */,
 				BEEDF46119D2337B000DF6F5 /* VStreamItem.m in Sources */,
 				A7A7D61819DE178F00B18AB7 /* VAuthorizationViewControllerFactory.m in Sources */,
@@ -5370,6 +5413,7 @@
 				0314D4A519B46B5E00FA363C /* VForceUpgradeViewController.m in Sources */,
 				A7D707701A79671C00D9993F /* VAutoplaySettingsViewController.m in Sources */,
 				0314D4E219B46B5E00FA363C /* VFindInstagramFriendsViewController.m in Sources */,
+				D876E2051A9DA6EB002CAA29 /* VTranslucentBackground.m in Sources */,
 				0326BBBA19A8183800D995DA /* VPushNotificationManager.m in Sources */,
 				A7A343E51A8D896C000F0BCF /* VHashtagStreamCollectionViewController.m in Sources */,
 				0314D4F319B46B5E00FA363C /* VSignupWithEmailViewController.m in Sources */,

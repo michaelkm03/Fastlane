@@ -849,7 +849,7 @@
         <!--Find Friends-->
         <scene sceneID="lTq-NW-HWb">
             <objects>
-                <viewController storyboardIdentifier="VFindFriendsViewController" title="Find Friends" id="qXP-WV-BMp" userLabel="Find Friends" customClass="VFindFriendsViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="VFindFriendsViewController" title="Find Friends" extendedLayoutIncludesOpaqueBars="YES" id="qXP-WV-BMp" userLabel="Find Friends" customClass="VFindFriendsViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="xx2-g0-nqh"/>
                         <viewControllerLayoutGuide type="bottom" id="qW9-9s-Kfq"/>
@@ -871,6 +871,7 @@
                             <constraint firstItem="qW9-9s-Kfq" firstAttribute="top" secondItem="RuM-Vh-XTe" secondAttribute="bottom" id="gSx-yP-mf1"/>
                         </constraints>
                     </view>
+                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <navigationItem key="navigationItem" id="NwV-bN-un0"/>
                     <connections>
                         <outlet property="containerView" destination="RuM-Vh-XTe" id="L2h-Zm-k3c"/>

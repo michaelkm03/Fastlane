@@ -305,7 +305,7 @@ static NSInteger const kVMaxSearchResults = 1000;
     {
         [[VObjectManager sharedManager] findUsersBySearchString:self.searchField.text
                                                           limit:kVMaxSearchResults
-                                                        context:VObjectManagerSearchContextMessage
+                                                        context:VObjectManagerSearchContextDiscover
                                                withSuccessBlock:searchSuccess
                                                       failBlock:nil];
     }

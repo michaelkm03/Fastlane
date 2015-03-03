@@ -80,6 +80,33 @@ static const NSInteger kSearchResultLimit = 100;
     return userSearchViewController;
 }
 
+#pragma mark - Init
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if (self)
+    {
+        [self sharedInit];
+    }
+    return self;
+}
+
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self)
+    {
+        [self sharedInit];
+    }
+    return self;
+}
+
+- (void)sharedInit
+{
+    _searchContext = VObjectManagerSearchContextDiscover;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -223,7 +250,7 @@ static const NSInteger kSearchResultLimit = 100;
         [self.activityIndicatorView startAnimating];
         [[VObjectManager sharedManager] findUsersBySearchString:self.searchField.text
                                                           limit:kSearchResultLimit
-                                                        context:VObjectManagerSearchContextUserTag
+                                                        context:self.searchContext
                                                withSuccessBlock:searchSuccess
                                                       failBlock:searchFail];
     }

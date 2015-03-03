@@ -20,6 +20,7 @@
 #import "VNotificationCell.h"
 #import "VObjectManager+DirectMessaging.h"
 #import "VObjectManager+Pagination.h"
+#import "VObjectManager+Users.h"
 #import "VPaginationManager.h"
 #import "VThemeManager.h"
 #import "VNoContentView.h"
@@ -353,6 +354,7 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectCreateMessage];
     
     VUserSearchViewController *userSearch = [VUserSearchViewController newFromStoryboard];
+    userSearch.searchContext = VObjectManagerSearchContextMessage;
     [self.navigationController pushViewController:userSearch animated:YES];
 }
 

@@ -49,6 +49,13 @@
     
 }
 
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    self.extendedLayoutIncludesOpaqueBars = YES;
+    self.edgesForExtendedLayout = UIRectEdgeAll;
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];

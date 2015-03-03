@@ -15,7 +15,10 @@
 #import "VObjectManager+ContentCreation.h"
 #import "UIStoryboard+VMainStoryboard.h"
 #import "victorious-Swift.h"  // for NSString+Unicode (imports all Swift files)
+
 #import "VWorkspaceFlowController.h"
+#import "VImageToolController.h"
+#import "VVideoToolController.h"
 
 #import "VDependencyManager.h"
 #import "VRootViewController.h"

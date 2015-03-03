@@ -37,8 +37,6 @@ static NSString * const kInitialKey = @"initial";
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self)
     {
-        self.automaticallyAdjustsScrollViewInsets = NO;
-        self.extendedLayoutIncludesOpaqueBars = YES;
         _didShowInitial = NO;
     }
     return self;
@@ -91,6 +89,8 @@ static NSString * const kInitialKey = @"initial";
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(collectionView)]];
+    self.extendedLayoutIncludesOpaqueBars = YES;
+    self.automaticallyAdjustsScrollViewInsets = NO;
 }
 
 - (void)viewWillAppear:(BOOL)animated
