@@ -20,8 +20,8 @@
 @interface VAbstractProfileEditViewController () <VContentInputAccessoryViewDelegate, VWorkspaceFlowControllerDelegate>
 
 @property (nonatomic, weak) IBOutlet UILabel *tagLinePlaceholderLabel;
-@property (nonatomic, weak) IBOutlet UIImageView    *profileImageView;
-@property (nonatomic, weak) IBOutlet UIButton       *cameraButton;
+@property (nonatomic, weak) IBOutlet UIImageView *profileImageView;
+@property (nonatomic, weak) IBOutlet UIButton *cameraButton;
 
 @property (nonatomic, weak) IBOutlet UITableViewCell *captionCell;
 @property (nonatomic, assign) NSInteger numberOfLines;

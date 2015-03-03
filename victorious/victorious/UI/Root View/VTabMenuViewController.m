@@ -83,9 +83,19 @@ NSString * const VTabMenuViewControllerMenuAppearanceKey = @"menuAppearance";
     return UIInterfaceOrientationMaskPortrait;
 }
 
-- (UIStatusBarStyle)preferredStatusBarStyle
+- (UIViewController *)childViewControllerForStatusBarStyle
 {
-    return [self.tabBarController.selectedViewController preferredStatusBarStyle];
+    return self.tabBarController.selectedViewController;
+}
+
+- (UIViewController *)childViewControllerForStatusBarHidden
+{
+    return self.tabBarController.selectedViewController;
+}
+
+- (UIStatusBarAnimation)preferredStatusBarUpdateAnimation
+{
+    return [self.tabBarController.selectedViewController preferredStatusBarUpdateAnimation];
 }
 
 #pragma mark - UITabBarControllerDelegate

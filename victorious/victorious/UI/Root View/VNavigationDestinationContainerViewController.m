@@ -44,6 +44,16 @@
     return self.containedViewController;
 }
 
+- (UIViewController *)childViewControllerForStatusBarHidden
+{
+    return self.containedViewController;
+}
+
+- (UIStatusBarAnimation)preferredStatusBarUpdateAnimation
+{
+    return [self.containedViewController preferredStatusBarUpdateAnimation];
+}
+
 #pragma mark - Property Accessors
 
 - (void)setContainedViewController:(UIViewController *)containedViewController
