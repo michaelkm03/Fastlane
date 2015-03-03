@@ -20,7 +20,7 @@
 #import "VNode+Fetcher.h"
 
 static NSString * const VPlayFirstTimeUserVideo = @"com.getvictorious.settings.playWelcomeVideo";
-NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
+
 NSString * const kFTUSequenceURLPath = @"sequenceUrlPath";
 
 
@@ -72,8 +72,9 @@ NSString * const kFTUSequenceURLPath = @"sequenceUrlPath";
     
     // Setup Video player
     CGFloat yPoint = CGRectGetHeight(self.view.bounds) / 2 - 160.0f;
+    CGFloat viewWidth = CGRectGetWidth(self.view.bounds);
     self.videoPlayerViewController = [[VCVideoPlayerViewController alloc] initWithNibName:nil bundle:nil];
-    self.videoPlayerViewController.view.frame = CGRectMake(0, yPoint, 320.0f, 280.0f);
+    self.videoPlayerViewController.view.frame = CGRectMake(0, yPoint, viewWidth, 280.0f);
     self.videoPlayerViewController.shouldContinuePlayingAfterDismissal = YES;
     self.videoPlayerViewController.shouldChangeVideoGravityOnDoubleTap = YES;
     [self.view addSubview:self.videoPlayerViewController.view];
@@ -86,20 +87,16 @@ NSString * const kFTUSequenceURLPath = @"sequenceUrlPath";
 - (void)fetchMediaSequenceObject
 {
     NSString *sequenceId = [[self.dependencyManager stringForKey:kFTUSequenceURLPath] lastPathComponent];
-    
-    
     [[VObjectManager sharedManager] fetchSequenceByID:sequenceId
                                          successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
     {
         self.sequence = (VSequence *)resultObjects.firstObject;
-        NSOrderedSet *nodeSet = self.sequence.nodes;
-        VNode *node = (VNode *)[nodeSet firstObject];
+        VNode *node = (VNode *)[self.sequence firstNode];
         VAsset *asset = [node mp4Asset];
         [self setupMediaPlayback:asset];
     }
                                             failBlock:^(NSOperation *operation, NSError *error)
     {
-        VLog(@"Fetch Failed!");
         [self closeVideoWindow];
     }];
 }
@@ -211,15 +208,6 @@ NSString * const kFTUSequenceURLPath = @"sequenceUrlPath";
     [self closeVideoWindow];
 }
 
-#pragma mark - Save to NSUserDefaults
-
-- (void)savePlaybackDefaults
-{
-    [[NSUserDefaults standardUserDefaults] setValue:@YES forKey:VPlayFirstTimeUserVideo];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-}
-
-
 - (void)closeVideoWindow
 {
     if (self.videoPlayerViewController.isPlaying)
@@ -232,5 +220,12 @@ NSString * const kFTUSequenceURLPath = @"sequenceUrlPath";
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+#pragma mark - Save to NSUserDefaults
+
+- (void)savePlaybackDefaults
+{
+    [[NSUserDefaults standardUserDefaults] setValue:@YES forKey:VPlayFirstTimeUserVideo];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
 
 @end

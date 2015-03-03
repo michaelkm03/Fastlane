@@ -74,6 +74,9 @@ static NSString * const kVideoMaxDuration = @"videoMaxDuration";
 static NSString * const kVideoMinDuration = @"videoMinDuration";
 static NSString * const kVideoMuted = @"videoMuted";
 
+// First-time User Video
+static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
+
 @interface VTemplateGenerator ()
 
 @property (nonatomic, strong) NSDictionary *dataFromInitCall;

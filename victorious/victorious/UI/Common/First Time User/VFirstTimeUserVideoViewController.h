@@ -10,7 +10,6 @@
 
 @class VDependencyManager, VSequence;
 
-extern NSString * const kFirstTimeVideoView;
 extern NSString * const kFTUSequenceURLPath;
 
 @interface VFirstTimeUserVideoViewController : UIViewController
