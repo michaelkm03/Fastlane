@@ -18,6 +18,7 @@
 #import "VTranslucentBackground.h"
 #import "VSolidColorBackground.h"
 #import "VTabMenuViewController.h"
+#import "VFirstTimeUserVideoViewController.h"
 
 #define BOTTOM_NAV_ENABLED 0
 
@@ -72,10 +73,6 @@ static NSString * const kVideoFrameDurationTimescale = @"frameDurationTimescale"
 static NSString * const kVideoMaxDuration = @"videoMaxDuration";
 static NSString * const kVideoMinDuration = @"videoMinDuration";
 static NSString * const kVideoMuted = @"videoMuted";
-
-// First-time Video
-static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
-static NSString * const kFTUSequenceURLPath = @"sequenceUrlPath";
 
 @interface VTemplateGenerator ()
 
@@ -142,6 +139,7 @@ static NSString * const kFTUSequenceURLPath = @"sequenceUrlPath";
                                                                   kItemsKey:[self bottomNavMenuItems],
                                                                   VScaffoldViewControllerUserProfileViewComponentKey: [self profileScreen],
                                                                   kSelectorKey: [self kSelectorKeyFromInitDictionary:self.dataFromInitCall],
+                                                                  VScaffoldViewControllerWelcomeUserViewComponentKey: [self firstTimeVideoComponent],
                                                                   VTabMenuViewControllerMenuAppearanceKey: @{
                                                                           VDependencyManagerBackgroundKey: [self solidWhiteBackground],
                                                                           },
@@ -371,7 +369,7 @@ static NSString * const kFTUSequenceURLPath = @"sequenceUrlPath";
 
 - (NSDictionary *)firstTimeVideoComponent
 {
-    NSString *sequenceID = [self.dataFromInitCall valueForKeyPath:@"experiments.ftue_welcome_sequence_id"];
+    NSString *sequenceID = self.dataFromInitCall[@"experiments"][@"ftue_welcome_sequence_id"];
     return @{
              kClassNameKey: @"lightweight.contentView",
              kFTUSequenceURLPath: [NSString stringWithFormat:@"/api/sequence/fetch/%@", sequenceID]

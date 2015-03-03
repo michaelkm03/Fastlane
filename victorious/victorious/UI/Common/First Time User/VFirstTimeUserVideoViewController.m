@@ -9,21 +9,30 @@
 #import "VFirstTimeUserVideoViewController.h"
 #import "VButton.h"
 #import "VDependencyManager.h"
-#import "VSequence.h"
+#import "VSequence+Fetcher.h"
 #import "UIImage+ImageEffects.h"
 #import "VCVideoPlayerViewController.h"
 #import "VContentViewRotationHelper.h"
+#import "VTemplateGenerator.h"
+#import "VActivityIndicatorView.h"
+#import "VObjectManager+Sequence.h"
+#import "VAsset+Fetcher.h"
+#import "VNode+Fetcher.h"
 
 static NSString * const VPlayFirstTimeUserVideo = @"com.getvictorious.settings.playWelcomeVideo";
+NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
+NSString * const kFTUSequenceURLPath = @"sequenceUrlPath";
+
 
 @interface VFirstTimeUserVideoViewController ()
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, weak) IBOutlet VButton *getStartedButton;
 @property (nonatomic, weak) IBOutlet UIImageView *backgroundImageView;
-@property (nonatomic, strong) NSURL *mediaUrl;
 @property (nonatomic, strong) VCVideoPlayerViewController *videoPlayerViewController;
 @property (nonatomic, strong) VContentViewRotationHelper *rotationHelper;
+@property (nonatomic, strong) VActivityIndicatorView *activityIndicator;
+@property (nonatomic, strong) NSURL *mediaUrl;
 
 @end
 
@@ -70,8 +79,41 @@ static NSString * const VPlayFirstTimeUserVideo = @"com.getvictorious.settings.p
     [self.view addSubview:self.videoPlayerViewController.view];
     self.videoPlayerViewController.view.hidden = NO;
 
-    // Set Media URL
-    self.mediaUrl = [NSURL URLWithString:@"http://cf.shacknews.com/video/robot/73b457a7524b822f5364905756cd9344_480p.mp4"];
+    // Setup Media Playback
+    [self fetchMediaSequenceObject];
+}
+
+- (void)fetchMediaSequenceObject
+{
+    NSString *sequenceId = [[self.dependencyManager stringForKey:kFTUSequenceURLPath] lastPathComponent];
+    
+    
+    [[VObjectManager sharedManager] fetchSequenceByID:sequenceId
+                                         successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+    {
+        self.sequence = (VSequence *)resultObjects.firstObject;
+        NSOrderedSet *nodeSet = self.sequence.nodes;
+        VNode *node = (VNode *)[nodeSet firstObject];
+        VAsset *asset = [node mp4Asset];
+        [self setupMediaPlayback:asset];
+    }
+                                            failBlock:^(NSOperation *operation, NSError *error)
+    {
+        VLog(@"Fetch Failed!");
+        [self closeVideoWindow];
+    }];
+}
+
+- (void)setupMediaPlayback:(VAsset *)asset
+{
+    if (asset.dataURL != nil)
+    {
+        self.mediaUrl = asset.dataURL;
+    }
+    else
+    {
+        [self closeVideoWindow];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -90,7 +132,7 @@ static NSString * const VPlayFirstTimeUserVideo = @"com.getvictorious.settings.p
     [super viewWillAppear:animated];
     
     self.backgroundImageView.image = [self.imageSnapshot applyDarkEffect];
-    [self updateOrientation];
+    //[self updateOrientation];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -166,7 +208,7 @@ static NSString * const VPlayFirstTimeUserVideo = @"com.getvictorious.settings.p
 
 - (IBAction)getStartedButtonAction:(id)sender
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self closeVideoWindow];
 }
 
 #pragma mark - Save to NSUserDefaults
@@ -176,5 +218,19 @@ static NSString * const VPlayFirstTimeUserVideo = @"com.getvictorious.settings.p
     [[NSUserDefaults standardUserDefaults] setValue:@YES forKey:VPlayFirstTimeUserVideo];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
+
+
+- (void)closeVideoWindow
+{
+    if (self.videoPlayerViewController.isPlaying)
+    {
+        [self.videoPlayerViewController.player pause];
+        self.videoPlayerViewController.view.hidden = YES;
+        self.videoPlayerViewController = nil;
+    }
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
 
 @end
