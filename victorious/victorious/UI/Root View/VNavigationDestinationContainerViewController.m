@@ -36,6 +36,7 @@
         self.containedViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         [self.view addSubview:self.containedViewController.view];
         [self.containedViewController didMoveToParentViewController:self];
+        [self setNeedsStatusBarAppearanceUpdate];
     }
 }
 
@@ -78,6 +79,7 @@
     containedViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self.view addSubview:containedViewController.view];
     [containedViewController didMoveToParentViewController:self];
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 @end
