@@ -134,7 +134,7 @@ extern NSString * const VDependencyManagerVideoWorkspaceKey;
  Returns the value stored for the specified key in the configuration
  dictionary of this instance, if present, or the closest ancestor.
  
- @param expectedType if the value found at keyPath is not this kind
+ @param expectedType if the value found at key is not this kind
  of class, we return nil.
  */
 - (id)templateValueOfType:(Class)expectedType forKey:(NSString *)key;
@@ -143,7 +143,7 @@ extern NSString * const VDependencyManagerVideoWorkspaceKey;
  Returns the value stored for the specified key in the configuration
  dictionary of this instance, if present, or the closest ancestor.
  
- @param expectedType if the value found at keyPath is not this kind
+ @param expectedType if the value found at key is not this kind
  of class, we return nil.
  @param dependencies If the returned object conforms to VHasManagedDependencies,
  a new instance of VDependencyManager will be provided to it, and these
@@ -159,7 +159,7 @@ extern NSString * const VDependencyManagerVideoWorkspaceKey;
  Calling this method twice with the same key will return the same
  object both times.
  
- @param expectedType if the value found at keyPath is not this kind
+ @param expectedType if the value found at key is not this kind
  of class, we return nil.
  */
 - (id)singletonObjectOfType:(Class)expectedType forKey:(NSString *)key;
