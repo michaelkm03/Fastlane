@@ -589,6 +589,9 @@ static NSString * const kVideoMuted = @"videoMuted";
     {
         NSDictionary *componentBase = @{ kIdentifierKey: @"Menu Channels",
                                          kTitleKey: NSLocalizedString(@"Channels", @""),
+                                         kIconKey: @{
+                                                 VDependencyManagerImageURLKey:@"channels",
+                                                 },
                                          kDestinationKey: @{
                                                  kClassNameKey: @"streamDirectory.screen",
                                                  kTitleKey: NSLocalizedString(@"Channels", nil),
