@@ -33,16 +33,13 @@
             "name": "testNewMethod"
         }]
     },
-    "video_quality": {
-        "capture": "medium",
-        "remix": "large"
-    },
+    "video_quality": "medium",
     "experiments": {
         "channels_enabled": true,
-        "histogram_enabled": false,
-        "require_profile_image": true,
         "template_c_enabled": false
     },
+    "require_profile_image": true,
+    "histogram_enabled": false,
     "arrayOfStrings": [ "red", "fish", "blue", "fish"],
     "arrayOfObjects": [
         {
