@@ -394,7 +394,7 @@ static char KVOContext;
     
     self.didPublish = YES;
     
-    [self.navigationController popViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
     [[NSFileManager defaultManager] removeItemAtURL:self.firstMediaURL error:nil];
     [[NSFileManager defaultManager] removeItemAtURL:self.secondMediaURL error:nil];
 }

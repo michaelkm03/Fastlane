@@ -25,6 +25,7 @@
 // Category
 #import "NSURL+MediaType.h"
 #import "UIActionSheet+VBlocks.h"
+#import "UIViewController+VContentCreationActionSheet.h"
 
 // ViewControllers
 #import "VCameraViewController.h"
@@ -244,9 +245,10 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
 
 - (BOOL)shouldNavigateWithAlternateDestination:(UIViewController *__autoreleasing *)alternateViewController
 {
-    VWorkspaceFlowController *newFlowController = [[VWorkspaceFlowController alloc] initWithDependencyManager:self.dependencyManager];
-    newFlowController.videoEnabled = YES;
-    [[VRootViewController rootViewController] presentViewController:newFlowController.flowRootViewController animated:YES completion:nil];
+//    VWorkspaceFlowController *newFlowController = [[VWorkspaceFlowController alloc] initWithDependencyManager:self.dependencyManager];
+//    newFlowController.videoEnabled = YES;
+//    [[VRootViewController rootViewController] presentViewController:newFlowController.flowRootViewController animated:YES completion:nil];
+    [[VRootViewController rootViewController] showContentTypeSelection];
     return NO;
 }
 
