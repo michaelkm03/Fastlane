@@ -17,8 +17,6 @@ extern NSString * const VStreamFollowerStreamPath;
 
 @interface VStream (Fetcher)
 
-- (BOOL)onlyContainsSequences;///<Returns True if the stream only contains sequences.  Else false.
-- (BOOL)isStreamOfStreams;
 - (BOOL)isHashtagStream;
 
 + (VStream *)remixStreamForSequence:(VSequence *)sequence; ///<Returns the remix stream for a sequence.  Note: stream object will be the mainQueueManagedObjectContext.
