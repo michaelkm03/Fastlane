@@ -245,6 +245,7 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
 - (BOOL)shouldNavigateWithAlternateDestination:(UIViewController *__autoreleasing *)alternateViewController
 {
     VWorkspaceFlowController *newFlowController = [[VWorkspaceFlowController alloc] initWithDependencyManager:self.dependencyManager];
+    newFlowController.videoEnabled = YES;
     [[VRootViewController rootViewController] presentViewController:newFlowController.flowRootViewController animated:YES completion:nil];
     return NO;
 }

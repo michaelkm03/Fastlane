@@ -19,7 +19,7 @@
 #import "VSolidColorBackground.h"
 #import "VTabMenuViewController.h"
 
-#define BOTTOM_NAV_ENABLED 0
+#define BOTTOM_NAV_ENABLED 1
 
 static NSString * const kIDKey = @"id";
 static NSString * const kReferenceIDKey = @"referenceID";
@@ -595,7 +595,9 @@ static NSString * const kVideoMuted = @"videoMuted";
         return @{
             kIdentifierKey: @"Menu Channel",
             kTitleKey: NSLocalizedString(@"Channel", @""),
-            kIconKey: @"channels",
+            kIconKey: @{
+                    VDependencyManagerImageURLKey:@"channels",
+                    },
             kDestinationKey: @{
                 kClassNameKey: @"basic.multiScreen",
                 kTitleKey: NSLocalizedString(@"Owner", @""),
