@@ -342,9 +342,14 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
 
 - (void)testDeepReference
 {
-    id viewController = [self.dependencyManager viewControllerForKey:@"deeplyReferencedNVC"];
+    VTestViewControllerWithNewMethod *viewController = (VTestViewControllerWithNewMethod *)[self.dependencyManager viewControllerForKey:@"deeplyReferencedNVC"];
     XCTAssert([viewController isKindOfClass:[VTestViewControllerWithNewMethod class]]);
     XCTAssert([viewController calledNewMethod]);
+    
+    // Test that the new object pulls its dependencies from its original context, not the context of the reference
+    NSString *expected = @"deep_store_url";
+    NSString *actual = [viewController.dependencyManager stringForKey:@"app_store_url"];
+    XCTAssertEqualObjects(expected, actual);
 }
 
 - (void)testMissingReferenceReturnsNil
@@ -499,6 +504,17 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
     
     id result2 = [dependencyManager templateValueOfType:[NSData class] forKey:kPFkey];
     XCTAssertEqual(result2, prefab);
+}
+
+- (void)testChildPropertiesOverrideParentPropertiesForSingletons
+{
+    NSDictionary *childConfiguration = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:@"ivc"];
+    VDependencyManager *childDependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:childConfiguration];
+    VTestViewControllerWithNewMethod *viewController = (VTestViewControllerWithNewMethod *)[childDependencyManager singletonViewControllerForKey:@"inner"];
+    
+    NSString *expected = @"http://example.com/";
+    NSString *actual = [viewController.dependencyManager stringForKey:@"app_store_url"];
+    XCTAssertEqualObjects(expected, actual);
 }
 
 #pragma mark - Children
