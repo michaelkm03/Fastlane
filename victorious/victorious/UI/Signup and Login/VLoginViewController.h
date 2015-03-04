@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "VAuthorizationViewController.h"
+
 typedef NS_ENUM(NSUInteger, VLoginType)
 {
     kVLoginTypeNone,
@@ -14,7 +16,9 @@ typedef NS_ENUM(NSUInteger, VLoginType)
     kVLoginTypeTwitter,
 };
 
-@interface VLoginViewController : UIViewController
+@interface VLoginViewController : UIViewController <VAuthorizationViewController>
+
+@property (nonatomic, strong) void (^authorizationCompletionAction)();
 
 + (VLoginViewController *)loginViewController;
 

@@ -8,12 +8,15 @@
 
 #import "VLoginViewController.h"
 #import "VRegistrationModel.h"
+#import "VAuthorizationViewController.h"
 
 extern NSString * const VProfileCreateViewControllerWasAbortedNotification;
 
 @class VUser;
 
-@interface VProfileCreateViewController : UIViewController
+@interface VProfileCreateViewController : UIViewController <VAuthorizationViewController>
+
+@property (nonatomic, strong) void (^authorizationCompletionAction)();
 
 @property (nonatomic, assign)   VLoginType      loginType;
 @property (nonatomic, strong)   VUser          *profile;

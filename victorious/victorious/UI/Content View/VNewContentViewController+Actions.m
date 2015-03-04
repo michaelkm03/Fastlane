@@ -37,7 +37,6 @@
 #import "VReposterTableViewController.h"
 #import "VLoginViewController.h"
 #import "VStreamCollectionViewController.h"
-#import "VAuthorizationViewControllerFactory.h"
 #import "VSequenceActionController.h"
 #import "VHashtagStreamCollectionViewController.h"
 

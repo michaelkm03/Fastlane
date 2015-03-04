@@ -15,7 +15,6 @@
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Users.h"
 #import "VUser.h"
-#import "VAuthorizationViewControllerFactory.h"
 
 // Dependency Manager
 #import "VDependencyManager.h"

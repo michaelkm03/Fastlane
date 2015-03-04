@@ -27,7 +27,6 @@
 #import "VSettingsViewController.h"
 #import "VInboxContainerViewController.h"
 #import "VUserProfileNavigationDestination.h"
-#import "VAuthorizationViewControllerFactory.h"
 #import "VDirectoryViewController.h"
 #import "VDiscoverContainerViewController.h"
 

@@ -363,6 +363,7 @@
 		A720055F1A030E4700285A9C /* VFlurryTracking.m in Sources */ = {isa = PBXBuildFile; fileRef = A720055B1A030E4700285A9C /* VFlurryTracking.m */; };
 		A72005601A030E4700285A9C /* VGoogleAnalyticsTracking.m in Sources */ = {isa = PBXBuildFile; fileRef = A720055D1A030E4700285A9C /* VGoogleAnalyticsTracking.m */; };
 		A72005701A03ECDC00285A9C /* VTrackingURLRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = A720056F1A03ECDC00285A9C /* VTrackingURLRequest.m */; };
+		A7299EA31AA69C1600B6BC1F /* VAuthorization.m in Sources */ = {isa = PBXBuildFile; fileRef = A7299EA21AA69C1600B6BC1F /* VAuthorization.m */; };
 		A733D8FC1A23D0980053E9F1 /* VNotificationSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = A733D8FB1A23D0980053E9F1 /* VNotificationSettings.m */; };
 		A733D8FF1A23D0C70053E9F1 /* VNotificationSettings+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A733D8FE1A23D0C70053E9F1 /* VNotificationSettings+RestKit.m */; };
 		A734A04D1A98278100C3E86F /* VSettingsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A734A04C1A98278100C3E86F /* VSettingsTableViewCell.m */; };
@@ -1337,6 +1338,9 @@
 		A72005611A030EB100285A9C /* VTrackingDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VTrackingDelegate.h; sourceTree = "<group>"; };
 		A720056E1A03ECDC00285A9C /* VTrackingURLRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTrackingURLRequest.h; sourceTree = "<group>"; };
 		A720056F1A03ECDC00285A9C /* VTrackingURLRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTrackingURLRequest.m; sourceTree = "<group>"; };
+		A7299EA01AA69C0200B6BC1F /* VAuthorizationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VAuthorizationViewController.h; path = Authorization/VAuthorizationViewController.h; sourceTree = "<group>"; };
+		A7299EA11AA69C1600B6BC1F /* VAuthorization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VAuthorization.h; path = Authorization/VAuthorization.h; sourceTree = "<group>"; };
+		A7299EA21AA69C1600B6BC1F /* VAuthorization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VAuthorization.m; path = Authorization/VAuthorization.m; sourceTree = "<group>"; };
 		A733D8FA1A23D0980053E9F1 /* VNotificationSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNotificationSettings.h; sourceTree = "<group>"; };
 		A733D8FB1A23D0980053E9F1 /* VNotificationSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNotificationSettings.m; sourceTree = "<group>"; };
 		A733D8FD1A23D0C70053E9F1 /* VNotificationSettings+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VNotificationSettings+RestKit.h"; sourceTree = "<group>"; };
@@ -3433,6 +3437,16 @@
 			path = Delegates;
 			sourceTree = "<group>";
 		};
+		A7299E9C1AA699EE00B6BC1F /* Authorization */ = {
+			isa = PBXGroup;
+			children = (
+				A7299EA11AA69C1600B6BC1F /* VAuthorization.h */,
+				A7299EA21AA69C1600B6BC1F /* VAuthorization.m */,
+				A7299EA01AA69C0200B6BC1F /* VAuthorizationViewController.h */,
+			);
+			name = Authorization;
+			sourceTree = "<group>";
+		};
 		A743E7DA1A08160300339CB3 /* FileCache */ = {
 			isa = PBXGroup;
 			children = (
@@ -4143,6 +4157,7 @@
 		BE171DD91868C211004E5202 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				A7299E9C1AA699EE00B6BC1F /* Authorization */,
 				039D02A71A1043D300DB9236 /* Dependencies */,
 				03CE66FD19B640CD0011BB9E /* Device Info */,
 				03CE66F019B47B590011BB9E /* Facebook */,
@@ -5092,6 +5107,7 @@
 				A7A2E0071A38E44B00F8C705 /* VPurchaseViewController.m in Sources */,
 				DB531B591A42709700B4ADC8 /* VUser.m in Sources */,
 				BE799BB519C8DF5B0023CE88 /* VSequence+OrderedSet.m in Sources */,
+				A7299EA31AA69C1600B6BC1F /* VAuthorization.m in Sources */,
 				0395575A19C14439005E32FB /* VCameraCaptureController.m in Sources */,
 				037FCF1A1A8DAF0E00E8ABFC /* VNavigationController.m in Sources */,
 				669D07CB1A3CB8FA00491878 /* VTextTypeTool.m in Sources */,
