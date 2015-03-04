@@ -58,6 +58,5 @@
 @property (nonatomic, assign) UIViewContentMode contentMode;
 @property (nonatomic, readonly) VVoteType *voteType;
 @property (nonatomic, readonly) BOOL isBallistic;
-@property (nonatomic, readonly) CGSize desiredSize;
 
 @end
