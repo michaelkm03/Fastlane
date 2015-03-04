@@ -53,6 +53,9 @@
         {
             "id": "b5b15ccc-151d-40ed-8d12-a9fcde6413f8",
             "name": "testInitMethod"
+        },
+        {
+            "referenceID": "ae742d8a-aaea-43db-b99a-707d72b147cb"
         }
     ],
     "otherNVC": {

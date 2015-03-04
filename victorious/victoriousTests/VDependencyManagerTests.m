@@ -243,26 +243,34 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
 - (void)testArrayOfSpecificType
 {
     NSArray *array = [self.dependencyManager arrayOfValuesOfType:[VTestViewControllerWithNewMethod class] forKey:@"arrayOfObjects"];
-    XCTAssertEqual(array.count, 2u);
+    XCTAssertEqual(array.count, 3u);
     XCTAssert([array[0] isKindOfClass:[VTestViewControllerWithNewMethod class]]);
     XCTAssert([array[0] calledNewMethod]);
     XCTAssert([array[1] isKindOfClass:[VTestViewControllerWithNewMethod class]]);
     XCTAssert([array[1] calledNewMethod]);
+    XCTAssert([array[2] isKindOfClass:[VTestViewControllerWithNewMethod class]]);
+    XCTAssert([array[2] calledNewMethod]);
 }
 
 - (void)testSingletonArrayOfSpecificType
 {
     NSArray *array = [self.dependencyManager arrayOfSingletonValuesOfType:[VTestViewControllerWithNewMethod class] forKey:@"arrayOfObjects"];
-    XCTAssertEqual(array.count, 2u);
+    XCTAssertEqual(array.count, 3u);
     XCTAssert([array[0] isKindOfClass:[VTestViewControllerWithNewMethod class]]);
     XCTAssert([array[0] calledNewMethod]);
     XCTAssert([array[1] isKindOfClass:[VTestViewControllerWithNewMethod class]]);
     XCTAssert([array[1] calledNewMethod]);
+    XCTAssert([array[2] isKindOfClass:[VTestViewControllerWithNewMethod class]]);
+    XCTAssert([array[2] calledNewMethod]);
     
     NSArray *otherArray = [self.dependencyManager arrayOfSingletonValuesOfType:[VTestViewControllerWithNewMethod class] forKey:@"arrayOfObjects"];
-    XCTAssertEqual(otherArray.count, 2u);
+    XCTAssertEqual(otherArray.count, 3u);
     XCTAssertEqual(array[0], otherArray[0]);
     XCTAssertEqual(array[1], otherArray[1]);
+    XCTAssertEqual(array[2], otherArray[2]);
+    
+    VTestViewControllerWithNewMethod *otherSingletonReference = (VTestViewControllerWithNewMethod *)[self.dependencyManager singletonViewControllerForKey:@"otherNVC"];
+    XCTAssertEqual(otherArray[2], otherSingletonReference);
 }
 
 #pragma mark - Images

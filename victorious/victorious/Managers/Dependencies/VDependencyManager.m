@@ -256,8 +256,13 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
         }
         else if ( [templateObject isKindOfClass:[NSDictionary class]] )
         {
-            id realObject = translation(expectedType, templateObject);
+            NSDictionary *componentDefinition = (NSDictionary *)templateObject;
+            if ( componentDefinition[kReferenceIDKey] != nil )
+            {
+                componentDefinition = self.configurationDictionariesByID[componentDefinition[kReferenceIDKey]];
+            }
             
+            id realObject = translation(expectedType, componentDefinition);
             if ( realObject != nil )
             {
                 [returnValue addObject:realObject];
