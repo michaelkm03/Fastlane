@@ -23,7 +23,7 @@
     return self;
 }
 
-- (void)performAuthorizedAction:(void(^)())actionBlock failure:(void(^)(UIViewController<VAuthorizationViewController> *viewController))failureBlock
+- (void)performAuthorizedAction:(void(^)())actionBlock failure:(void(^)(UIViewController *authorizationViewController))failureBlock
 {
     NSParameterAssert( actionBlock != nil );
     NSParameterAssert( failureBlock != nil );
@@ -32,6 +32,7 @@
     if ( self.objectManager.mainUserLoggedIn && !self.objectManager.mainUserProfileComplete )
     {
         VProfileCreateViewController *viewController = [VProfileCreateViewController profileCreateViewController];
+        [viewController setAuthorizationCompletionAction:actionBlock];
         viewController.profile = [VObjectManager sharedManager].mainUser;
         viewController.registrationModel = [[VRegistrationModel alloc] init];
         failureBlock( viewController );
@@ -39,7 +40,9 @@
     else if ( !self.objectManager.mainUserLoggedIn && !self.objectManager.mainUserProfileComplete )
     {
         VLoginViewController *viewController = [VLoginViewController loginViewController];
-        failureBlock( viewController );
+        [viewController setAuthorizationCompletionAction:actionBlock];
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+        failureBlock( navigationController );
     }
     else
     {

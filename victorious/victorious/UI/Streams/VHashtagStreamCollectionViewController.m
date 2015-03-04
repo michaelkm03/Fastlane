@@ -141,9 +141,9 @@
              [self followHashtag];
          }
      }
-                                   failure:^(UIViewController<VAuthorizationViewController> *viewController)
+                                   failure:^(UIViewController *authorizationViewController)
      {
-         [self presentViewController:viewController animated:YES completion:NULL];
+         [self presentViewController:authorizationViewController animated:YES completion:nil];
      }];
 }
 

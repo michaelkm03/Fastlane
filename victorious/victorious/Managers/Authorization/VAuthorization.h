@@ -17,6 +17,6 @@
 
 - (instancetype)initWithObjectManager:(VObjectManager *)objectManager;
 
-- (void)performAuthorizedAction:(void(^)())actionBlock failure:(void(^)(UIViewController<VAuthorizationViewController> *viewController))failureBlock;
+- (void)performAuthorizedAction:(void(^)())actionBlock failure:(void(^)(UIViewController *authorizationViewController))failureBlock;
 
 @end

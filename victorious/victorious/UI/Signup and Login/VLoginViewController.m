@@ -54,8 +54,22 @@
 
 + (VLoginViewController *)loginViewController
 {
-    UIStoryboard   *storyboard  =   [UIStoryboard storyboardWithName:@"login" bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"login" bundle:nil];
     return [storyboard instantiateInitialViewController];
+}
+
+- (void)loginDidFinishWithSuccess:(BOOL)success
+{
+    [self dismissViewControllerAnimated:YES completion:^void
+    {
+        if ( success )
+        {
+            if ( self.authorizationCompletionAction != nil )
+            {
+                self.authorizationCompletionAction();
+            }
+        }
+    }];
 }
 
 - (void)viewDidLoad
@@ -218,7 +232,7 @@
                            }
                            else
                            {
-                               [self dismissViewControllerAnimated:YES completion:nil];
+                               [self loginDidFinishWithSuccess:YES];
                            }
                        });
     }
@@ -330,7 +344,7 @@
 {
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidCancelLogin];
     
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self loginDidFinishWithSuccess:NO];
 }
 
 #pragma mark - Navigation
@@ -362,35 +376,30 @@
 
 - (void)userDidAbortCreateProfile:(NSNotification *)note
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self loginDidFinishWithSuccess:NO];
 }
 
 #pragma mark - VSelectorViewControllerDelegate
 
-- (void)vSelectorViewController:(VSelectorViewController *)selectorViewController
-                  didSelectItem:(id)selectedItem
+- (void)vSelectorViewController:(VSelectorViewController *)selectorViewController didSelectItem:(id)selectedItem
 {
     [self attemptLoginWithTwitterAccount:selectedItem];
-    [self dismissViewControllerAnimated:YES
-                             completion:nil];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)vSelectorViewControllerDidCancel:(VSelectorViewController *)selectorViewController
 {
     [self hideLoginProgress];
-    [self dismissViewControllerAnimated:YES
-                             completion:nil];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)attemptLoginWithTwitterAccount:(ACAccount *)twitterAccount
 {
-    [MBProgressHUD showHUDAddedTo:self.navigationController.view
-                         animated:YES];
+    [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
     [[VUserManager sharedInstance] loginViaTwitterWithTwitterID:twitterAccount.identifier
                                                    OnCompletion:^(VUser *user, BOOL created)
      {
-         [MBProgressHUD hideHUDForView:self.navigationController.view
-                              animated:YES];
+         [MBProgressHUD hideHUDForView:self.navigationController.view animated:YES];
          
          NSString *eventName = created ? VTrackingEventSignupWithTwitterDidSucceed : VTrackingEventLoginWithTwitterDidSucceed;
          [[VTrackingManager sharedInstance] trackEvent:eventName];
@@ -402,13 +411,12 @@
          }
          else
          {
-             [self dismissViewControllerAnimated:YES completion:NULL];
+             [self loginDidFinishWithSuccess:YES];
          }
          
      } onError:^(NSError *error)
      {
-         [MBProgressHUD hideHUDForView:self.navigationController.view
-                              animated:YES];
+         [MBProgressHUD hideHUDForView:self.navigationController.view animated:YES];
          
          NSDictionary *params = @{ VTrackingKeyErrorMessage : error.localizedDescription ?: @"" };
          [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithTwitterDidFailUnknown parameters:params];
