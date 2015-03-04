@@ -25,7 +25,7 @@ NSString * const VDependencyManagerImageURLKey = @"imageURL";
 
 // Keys for colors
 NSString * const VDependencyManagerBackgroundColorKey = @"color.background";
-NSString * const VDependencyManagerSecondaryBackgroundColorKey = @"color.bacground.secondary";
+NSString * const VDependencyManagerSecondaryBackgroundColorKey = @"color.background.secondary";
 NSString * const VDependencyManagerMainTextColorKey = @"color.text";
 NSString * const VDependencyManagerContentTextColorKey = @"color.text.content";
 NSString * const VDependencyManagerAccentColorKey = @"color.accent";
@@ -79,7 +79,6 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
 @property (nonatomic, strong) NSDictionary *configuration;
 @property (nonatomic, copy) NSDictionary *classesByTemplateName;
 @property (nonatomic, strong) NSMutableDictionary *singletonsByID; ///< This dictionary should only be accessed from the privateQueue
-@property (nonatomic, strong) NSMutableDictionary *singletonsByKey; ///< This dictionary should only be accessed from the privateQueue
 @property (nonatomic, strong) NSDictionary *configurationDictionariesByID;
 @property (nonatomic) dispatch_queue_t privateQueue;
 
@@ -95,10 +94,9 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
     if (self)
     {
         _parentManager = parentManager;
-        _configuration = configuration;
+        _configuration = [self preparedConfigurationWithUnpreparedDictionary:configuration];
         _privateQueue = dispatch_queue_create("com.getvictorious.VDependencyManager", DISPATCH_QUEUE_CONCURRENT);
-        _singletonsByKey = [[NSMutableDictionary alloc] init];
-        _configurationDictionariesByID = [self findConfigurationDictionariesByIDInTemplateDictionary:configuration];
+        _configurationDictionariesByID = [self findConfigurationDictionariesByIDInTemplateDictionary:_configuration];
         
         if (_parentManager == nil)
         {
@@ -273,49 +271,31 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
 
 - (id)singletonObjectOfType:(Class)expectedType forKey:(NSString *)key
 {
-    id previouslyCreatedSingleton = [self singletonObjectForKey:key];
+    id value = self.configuration[key];
     
-    if ( previouslyCreatedSingleton != nil )
+    if (value == nil)
     {
-        return previouslyCreatedSingleton;
-    }
-
-    id singleton = nil;
-    id templateValue = [self templateValueOfType:[NSObject class] forKey:key];
-
-    if ( [templateValue isKindOfClass:[NSDictionary class]] )
-    {
-        singleton = [self singletonObjectOfType:expectedType orNilFromDictionary:templateValue];
-        
-        if ( singleton == nil )
-        {
-            singleton = [self objectOfType:expectedType fromDictionary:templateValue];
-        }
-    }
-    else if ( [templateValue isKindOfClass:expectedType] )
-    {
-        singleton = templateValue;
+        return [self.parentManager singletonObjectOfType:expectedType forKey:key];
     }
     
-    if ( singleton != nil )
+    if ([value isKindOfClass:[NSDictionary class]] && value[kReferenceIDKey] != nil)
     {
-        [self setSingletonObject:singleton forKey:key];
+        value = [self configurationDictionaryForID:value[kReferenceIDKey]];
     }
-    return singleton;
+    
+    if ([value isKindOfClass:expectedType])
+    {
+        return value;
+    }
+    else if ([value isKindOfClass:[NSDictionary class]])
+    {
+        return [self singletonObjectOfType:expectedType fromDictionary:value];
+    }
+    
+    return nil;
 }
 
 - (id)singletonObjectOfType:(Class)expectedType fromDictionary:(NSDictionary *)configurationDictionary
-{
-    id singletonObject = [self singletonObjectOfType:expectedType orNilFromDictionary:configurationDictionary];
-    
-    if (singletonObject == nil)
-    {
-        singletonObject = [self objectOfType:expectedType fromDictionary:configurationDictionary];
-    }
-    return singletonObject;
-}
-
-- (id)singletonObjectOfType:(Class)expectedType orNilFromDictionary:(NSDictionary *)configurationDictionary
 {
     NSString *objID = configurationDictionary[kIDKey];
     
@@ -362,7 +342,7 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
     NSParameterAssert(singletonObject != nil);
     NSParameterAssert(objectID != nil);
 
-    if (self.singletonsByID)
+    if (self.singletonsByID != nil)
     {
         dispatch_barrier_async(self.privateQueue, ^(void)
         {
@@ -373,32 +353,6 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
     {
         [self.parentManager setSingletonObject:singletonObject forID:objectID];
     }
-}
-
-- (id)singletonObjectForKey:(NSString *)key
-{
-    id __block singletonObject = nil;
-    dispatch_sync(self.privateQueue, ^(void)
-    {
-        singletonObject = self.singletonsByKey[key];
-    });
-    
-    if (singletonObject != nil)
-    {
-        return singletonObject;
-    }
-    return [self.parentManager singletonObjectForKey:key];
-}
-
-- (void)setSingletonObject:(id)singletonObject forKey:(NSString *)key
-{
-    NSParameterAssert(singletonObject != nil);
-    NSParameterAssert(key != nil);
-    
-    dispatch_barrier_async(self.privateQueue, ^(void)
-    {
-        self.singletonsByKey[key] = singletonObject;
-    });
 }
 
 #pragma mark - Dependency getter primatives
@@ -528,6 +482,55 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
         weakEnumerationBlock(obj);
     }];
     return configurationDictionariesByID;
+}
+
+/**
+ Takes a configuration dictionary and returns it after adding IDs to any components that are missing one.
+ */
+- (NSDictionary *)preparedConfigurationWithUnpreparedDictionary:(NSDictionary *)configurationDictionary
+{
+    NSMutableDictionary *preparedDictionary = [configurationDictionary mutableCopy];
+    
+    NSArray *keys = preparedDictionary.allKeys;
+    for (id key in keys)
+    {
+        id value = preparedDictionary[key];
+        if ( [value isKindOfClass:[NSDictionary class]] )
+        {
+            NSDictionary *component = (NSDictionary *)value;
+            if ( [self isDictionaryAComponentWithoutAnID:component] )
+            {
+                preparedDictionary[key] = [self componentByAddingIDToComponent:component];
+            }
+        }
+        else if ( [value isKindOfClass:[NSArray class]] )
+        {
+            NSMutableArray *preparedArray = [value mutableCopy];
+            NSUInteger count = preparedArray.count;
+            for (NSUInteger n = 0; n < count; n++)
+            {
+                NSDictionary *component = preparedArray[n];
+                if ( [component isKindOfClass:[NSDictionary class]] && [self isDictionaryAComponentWithoutAnID:component] )
+                {
+                    preparedArray[n] = [self componentByAddingIDToComponent:component];
+                }
+            }
+            preparedDictionary[key] = preparedArray;
+        }
+    }
+    return preparedDictionary;
+}
+
+- (NSDictionary *)componentByAddingIDToComponent:(NSDictionary *)component
+{
+    NSMutableDictionary *preparedComponent = [component mutableCopy];
+    preparedComponent[kIDKey] = [[NSUUID UUID] UUIDString];
+    return preparedComponent;
+}
+
+- (BOOL)isDictionaryAComponentWithoutAnID:(NSDictionary *)possibleComponent
+{
+    return possibleComponent[kClassNameKey] != nil && possibleComponent[kIDKey] == nil;
 }
 
 - (VDependencyManager *)childDependencyManagerWithAddedConfiguration:(NSDictionary *)configuration
