@@ -28,7 +28,7 @@
 #import "VDependencyManager+VScaffoldViewController.h"
 #import "VObjectManager.h"
 #import "VSettingManager.h"
-
+#import "VStreamItem+Fetcher.h"
 #import "UIColor+VBrightness.h"
 
 static NSString * const kStreamURLPathKey = @"streamUrlPath";
@@ -111,17 +111,17 @@ static CGFloat const kDirectoryInset = 5.0f;
 {    
     CGFloat width = CGRectGetWidth(collectionView.bounds);
     
-    BOOL isStreamOfStreamsRow = [[self.streamDataSource itemAtIndexPath:indexPath] isKindOfClass:[VStream class]] && [(VStream *)[self.streamDataSource itemAtIndexPath:indexPath] isStreamOfStreams];
+    VStreamItem *streamItem = [self.streamDataSource itemAtIndexPath:indexPath];
     
-    CGFloat height = isStreamOfStreamsRow ? [VDirectoryGroupCell desiredStreamOfStreamsHeightForWidth:width] : [VDirectoryGroupCell desiredStreamOfContentHeightForWidth:width];
+    CGFloat height = streamItem.isStreamOfStreams ? [VDirectoryGroupCell desiredStreamOfStreamsHeightForWidth:width] : [VDirectoryGroupCell desiredStreamOfContentHeightForWidth:width];
     
-    return CGSizeMake(width, height);
+    return CGSizeMake( width, height );
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     VStreamItem *item = [self.streamDataSource itemAtIndexPath:indexPath];
-    if ([item isKindOfClass:[VStream class]] && [((VStream *)item) onlyContainsSequences])
+    if ( item.isSingleStream )
     {
         VStreamCollectionViewController *streamCollection = [VStreamCollectionViewController streamViewControllerForStream:(VStream *)item];
         streamCollection.dependencyManager = self.dependencyManager;
@@ -188,28 +188,24 @@ static CGFloat const kDirectoryInset = 5.0f;
     else
     {
         VStreamItem *streamItem = groupCell.stream.streamItems[ indexPath.row ];
-        if ( [streamItem isKindOfClass:[VSequence class]] )
+        if ( streamItem.isContent )
         {
             VSequence *sequence = (VSequence *)streamItem;
             [[self.dependencyManager scaffoldViewController] showContentViewWithSequence:sequence
                                                                                commentId:nil
                                                                         placeHolderImage:nil];
         }
-        else if ( [streamItem isKindOfClass:[VStream class]] )
+        else if ( streamItem.isSingleStream )
         {
-            VStream *stream = (VStream *)streamItem;
-            VAbstractStreamCollectionViewController *viewControllerToPresent;
-            if ( [stream onlyContainsSequences] )
-            {
-                viewControllerToPresent = [VStreamCollectionViewController streamViewControllerForStream:stream];
-                ((VStreamCollectionViewController *)viewControllerToPresent).dependencyManager = self.dependencyManager;
-            }
-            else
-            {
-                viewControllerToPresent = [VDirectoryViewController streamDirectoryForStream:stream
-                                                                           dependencyManager:self.dependencyManager];
-            }
-            [self.navigationController pushViewController:viewControllerToPresent animated:YES];
+            VStreamCollectionViewController *viewController = [VStreamCollectionViewController streamViewControllerForStream:(VStream *)streamItem];
+            viewController.dependencyManager = self.dependencyManager;
+            [self.navigationController pushViewController:viewController animated:YES];
+        }
+        else if ( streamItem.isStreamOfStreams )
+        {
+            VDirectoryViewController *viewController = [VDirectoryViewController streamDirectoryForStream:(VStream *)streamItem
+                                                                                        dependencyManager:self.dependencyManager];
+            [self.navigationController pushViewController:viewController animated:YES];
         }
     }
 }

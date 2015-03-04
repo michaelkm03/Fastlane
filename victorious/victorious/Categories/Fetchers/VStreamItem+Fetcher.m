@@ -8,7 +8,26 @@
 
 #import "VStreamItem+Fetcher.h"
 
+static NSString * const kVSequenceContentType = @"sequence";
+static NSString * const kVStreamContentTypeContent = @"content";
+static NSString * const kVStreamContentTypeStream = @"stream";
+
 @implementation VStreamItem (Fetcher)
+
+- (BOOL)isContent
+{
+    return self.streamContentType == nil;
+}
+
+- (BOOL)isSingleStream
+{
+    return [self.streamContentType isEqualToString:kVStreamContentTypeContent];
+}
+
+- (BOOL)isStreamOfStreams
+{
+    return [self.streamContentType isEqualToString:kVStreamContentTypeStream];
+}
 
 - (NSArray *)previewImagePaths
 {

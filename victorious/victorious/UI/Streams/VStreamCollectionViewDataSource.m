@@ -17,7 +17,8 @@
 #import "VPaginationManager.h"
 
 //Data Models
-#import "VStream.h"
+#import "VStream+Fetcher.h"
+#import "VSequence.h"
 
 static char KVOContext;
 

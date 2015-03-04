@@ -189,7 +189,7 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
+    
     if (!self.streamDataSource.count)
     {
         [self refresh:self.refreshControl];
@@ -429,24 +429,20 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
         return [VMarqueeCollectionCell desiredSizeWithCollectionViewBounds:self.view.bounds];
     }
     
-    VStreamItem *streamItem = [self.streamDataSource itemAtIndexPath:indexPath];
-    if ( [streamItem isKindOfClass:[VSequence class]] )
+    VSequence *sequence = (VSequence *)[self.streamDataSource itemAtIndexPath:indexPath];
+    if ([(VSequence *)[self.currentStream.streamItems objectAtIndex:indexPath.row] isPoll]
+        &&[[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
     {
-        VSequence *sequence = (VSequence *)streamItem;
-        if ( [sequence isPoll] &&[[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
-        {
-            return [VStreamCollectionCellPoll actualSizeWithCollectionViewBounds:self.collectionView.bounds sequence:sequence];
-        }
-        else if ( [sequence isPoll])
-        {
-            return [VStreamCollectionCellPoll desiredSizeWithCollectionViewBounds:self.collectionView.bounds];
-        }
-        else if ([[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
-        {
-            return [VStreamCollectionCell actualSizeWithCollectionViewBounds:self.collectionView.bounds sequence:sequence];
-        }
+        return [VStreamCollectionCellPoll actualSizeWithCollectionViewBounds:self.collectionView.bounds sequence:sequence];
     }
-    
+    else if ([(VSequence *)[self.currentStream.streamItems objectAtIndex:indexPath.row] isPoll])
+    {
+        return [VStreamCollectionCellPoll desiredSizeWithCollectionViewBounds:self.collectionView.bounds];
+    }
+    else if ([[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
+    {
+        return [VStreamCollectionCell actualSizeWithCollectionViewBounds:self.collectionView.bounds sequence:sequence];
+    }
     return [VStreamCollectionCell desiredSizeWithCollectionViewBounds:self.collectionView.bounds];
 }
 
@@ -461,6 +457,13 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
     {
         [((VStreamCollectionCell *)cell) pauseVideo];
     }
+}
+
+#pragma mark - Activity indivator footer
+
+- (BOOL)shouldDisplayActivityViewFooterForCollectionView:(UICollectionView *)collectionView inSection:(NSInteger)section
+{
+    return [super shouldDisplayActivityViewFooterForCollectionView:collectionView inSection:section];
 }
 
 #pragma mark - VStreamCollectionDataDelegate
@@ -478,34 +481,29 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
         return cell;
     }
     
+    VSequence *sequence = (VSequence *)[self.currentStream.streamItems objectAtIndex:indexPath.row];
     VStreamCollectionCell *cell;
-    VStreamItem *streamItem = [self.streamDataSource itemAtIndexPath:indexPath];
     
-    if ( [streamItem isKindOfClass:[VSequence class]] )
+    if ([sequence isPoll])
     {
-        VSequence *sequence = (VSequence *)streamItem;
-        if ( [sequence isPoll] )
-        {
-            cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:[VStreamCollectionCellPoll suggestedReuseIdentifier]
-                                                                  forIndexPath:indexPath];
-        }
-        else if ([sequence isPreviewWebContent])
-        {
-            NSString *identifier = [VStreamCollectionCellWebContent suggestedReuseIdentifier];
-            VStreamCollectionCellWebContent *cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:identifier
-                                                                                                   forIndexPath:indexPath];
-            cell.sequence = sequence;
-            return cell;
-        }
-        cell.sequence = sequence;
+        cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:[VStreamCollectionCellPoll suggestedReuseIdentifier]
+                                                              forIndexPath:indexPath];
     }
-    
-    if ( cell == nil )
+    else if ([sequence isPreviewWebContent])
+    {
+        NSString *identifier = [VStreamCollectionCellWebContent suggestedReuseIdentifier];
+        VStreamCollectionCellWebContent *cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:identifier
+                                                                                               forIndexPath:indexPath];
+        cell.sequence = sequence;
+        return cell;
+    }
+    else
     {
         cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:[VStreamCollectionCell suggestedReuseIdentifier]
                                                               forIndexPath:indexPath];
     }
     cell.delegate = self.actionDelegate ?: self;
+    cell.sequence = sequence;
     
     [self preloadSequencesAfterIndexPath:indexPath forDataSource:dataSource];
     
@@ -517,18 +515,14 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
     if ([dataSource count] > (NSUInteger)indexPath.row + 2u)
     {
         NSIndexPath *preloadPath = [NSIndexPath indexPathForRow:indexPath.row + 2 inSection:indexPath.section];
-        VStreamItem *streamItem = [dataSource itemAtIndexPath:preloadPath];
+        VSequence *preloadSequence = (VSequence *)[dataSource itemAtIndexPath:preloadPath];
         
-        if ( [streamItem isKindOfClass:[VSequence class]] )
+        for (NSURL *imageUrl in [preloadSequence initialImageURLs])
         {
-            VSequence *preloadSequence = (VSequence *)streamItem;
-            for (NSURL *imageUrl in [preloadSequence initialImageURLs])
-            {
-                UIImageView *preloadView = [[UIImageView alloc] initWithFrame:CGRectZero];
-                [preloadView sd_setImageWithURL:imageUrl];
-                
-                [self.preloadImageCache setObject:preloadView forKey:imageUrl.absoluteString];
-            }
+            UIImageView *preloadView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
+            [preloadView sd_setImageWithURL:imageUrl];
+            
+            [self.preloadImageCache setObject:preloadView forKey:imageUrl.absoluteString];
         }
     }
 }
