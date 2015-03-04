@@ -19,6 +19,8 @@ const CGFloat kDirectoryItemBaseHeight = 217.0f;
 const CGFloat kDirectoryItemStackHeight = 8.0f;
 const CGFloat kDirectoryItemBaseWidth = 145.0f;
 
+static const CGFloat kBorderWidth = 0.5f;
+
 @interface VDirectoryItemCell()
 
 @property (nonatomic, weak) IBOutlet UIImageView *previewImageView;
@@ -98,6 +100,7 @@ const CGFloat kDirectoryItemBaseWidth = 145.0f;
     for (VExtendedView *view in [self stackViews])
     {
         [view setBorderColor:_stackBorderColor];
+        [view setBorderWidth:kBorderWidth];
     }
 }
 

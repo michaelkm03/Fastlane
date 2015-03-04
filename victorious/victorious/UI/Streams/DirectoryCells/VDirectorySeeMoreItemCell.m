@@ -9,6 +9,8 @@
 #import "VDirectorySeeMoreItemCell.h"
 #import "VExtendedView.h"
 
+static const CGFloat kBorderWidth = 0.5f;
+
 @interface VDirectorySeeMoreItemCell ()
 
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *bottomConstriant;
@@ -24,15 +26,6 @@
     [super awakeFromNib];
 }
 
-- (void)updateBottomConstraintToConstant:(CGFloat)constant
-{
-    if ( self.bottomConstriant.constant != constant )
-    {
-        self.bottomConstriant.constant = constant;
-        [self layoutIfNeeded];
-    }
-}
-
 - (void)setBackgroundColor:(UIColor *)backgroundColor
 {
     [self.extendedView setBackgroundColor:backgroundColor];
@@ -42,6 +35,7 @@
 {
     _borderColor = borderColor;
     [self.extendedView setBorderColor:_borderColor];
+    [self.extendedView setBorderWidth:kBorderWidth];
 }
 
 - (void)setImageColor:(UIColor *)imageColor

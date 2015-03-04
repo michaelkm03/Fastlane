@@ -579,18 +579,38 @@ static NSString * const kVideoMuted = @"videoMuted";
     NSNumber *channelsEnabled = [self.dataFromInitCall valueForKeyPath:@"experiments.channels_enabled"];
     if ([channelsEnabled isKindOfClass:[NSNumber class]] && [channelsEnabled boolValue])
     {
-        NSDictionary *componentBase = @{ kIdentifierKey: @"Menu Channels",
-                                         kTitleKey: NSLocalizedString(@"Channels", @""),
-                                         kDestinationKey: @{
-                                                 kClassNameKey: @"streamDirectory.screen",
-                                                 kTitleKey: NSLocalizedString(@"Channels", nil),
-                                                 VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/detail_list_by_stream/directory/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%"
-                                                 }
-                                         };
-        
-        NSMutableDictionary *completeComponent = [[NSMutableDictionary alloc] initWithDictionary:componentBase];
-        [completeComponent addEntriesFromDictionary:[self directoryLightTemplate]];
-        return [NSDictionary dictionaryWithDictionary:completeComponent];
+        if ( YES )
+        {
+            NSDictionary *componentBase = @{ kIdentifierKey: @"Menu Channels",
+                                             kTitleKey: NSLocalizedString(@"Channels", @""),
+                                             kDestinationKey: @{
+                                                     kClassNameKey: @"directoryBrowser.screen",
+                                                     kTitleKey: NSLocalizedString(@"Channels", nil),
+                                                     VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/detail_list_by_stream/directory/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%"
+                                                     }
+                                             };
+            NSMutableDictionary *completeComponent = [[NSMutableDictionary alloc] initWithDictionary:componentBase];
+            [completeComponent addEntriesFromDictionary:[self directoryComponentLight]];
+            return [NSDictionary dictionaryWithDictionary:completeComponent];
+        }
+        else
+        {
+            return @{ kIdentifierKey: @"Menu Channels",
+                      kTitleKey: NSLocalizedString(@"Channels", @""),
+                      kDestinationKey: @{
+                              kClassNameKey: @"directory.screen",
+                              kTitleKey: NSLocalizedString(@"Channels", nil),
+                              VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/detail_list_by_stream/directory/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%"
+                              },
+                      kBackgroundColor: @{
+                              kRedKey: @0,
+                              kGreenKey: @0,
+                              kBlueKey: @0,
+                              kAlphaKey: @1
+                              },
+                      kCellComponentDirectoryItem: [self directoryCellComponentDark]
+                      };
+        }
     }
     else
     {
@@ -598,6 +618,7 @@ static NSString * const kVideoMuted = @"videoMuted";
             kIdentifierKey: @"Menu Channel",
             kTitleKey: NSLocalizedString(@"Channel", @""),
             kIconKey: @"channels",
+            kCellComponentDirectoryItem: [self directoryCellComponentLight],
             kDestinationKey: @{
                 kClassNameKey: @"basic.multiScreen",
                 kTitleKey: NSLocalizedString(@"Owner", @""),
@@ -619,139 +640,140 @@ static NSString * const kVideoMuted = @"videoMuted";
     }
 }
 
-- (NSDictionary *)directoryLightTemplate
+- (NSDictionary *)directoryComponentLight
 {
-    return @{ kBackgroundColor:
-                  @{
+    return @{ kBackgroundColor: @{
                       kRedKey: @238,
                       kGreenKey: @238,
                       kBlueKey: @238,
                       kAlphaKey: @1
                       },
-              kCellComponentDirectoryGroup:
-                  @{
+              kCellComponentDirectoryGroup: @{
                       kTextColor: @{
                               kRedKey: @128,
                               kGreenKey: @128,
                               kBlueKey: @128,
                               kAlphaKey: @1
                               },
-                      kCellComponentDirectoryItem:
-                          @{
-                              kSecondaryAccentColor: @{ //< see more arrow
-                                      kRedKey: @200,
-                                      kGreenKey: @200,
-                                      kBlueKey: @200,
-                                      kAlphaKey: @1
-                                      },
-                              kTextContentColor: @{ //< see more text
-                                      kRedKey: @160,
-                                      kGreenKey: @160,
-                                      kBlueKey: @160,
-                                      kAlphaKey: @1
-                                      },
-                              kTextAccentColor: @{ //< quantity labe
-                                      kRedKey: @153,
-                                      kGreenKey: @153,
-                                      kBlueKey: @153,
-                                      kAlphaKey: @1
-                                      },
-                              kTextColor: @{ //< name label
-                                      kRedKey: @51,
-                                      kGreenKey: @51,
-                                      kBlueKey: @51,
-                                      kAlphaKey: @1
-                                      },
-                              kAccentColor: @{ //< border color
-                                      kRedKey: @204,
-                                      kGreenKey: @204,
-                                      kBlueKey: @204,
-                                      kAlphaKey: @1
-                                      },
-                              kBackgroundColor: @{ // stacked background
-                                      kRedKey: @255,
-                                      kGreenKey: @255,
-                                      kBlueKey: @255,
-                                      kAlphaKey: @1
-                                      },
-                              }
+                      kCellComponentDirectoryItem: [self directoryCellComponentLight]
                       }
               };
 }
 
-- (NSDictionary *)directoryDarkTemplate
+- (NSDictionary *)directoryComponentDark
 {
-    return @{ kBackgroundColor:
-                  @{
+    return @{ kBackgroundColor: @{
                       kRedKey: @20,
                       kGreenKey: @20,
                       kBlueKey: @20,
                       kAlphaKey: @1
                       },
-              kCellComponentDirectoryGroup:
-                  @{
+              kCellComponentDirectoryGroup: @{
                       kTextColor: @{
                               kRedKey: @128,
                               kGreenKey: @128,
                               kBlueKey: @128,
                               kAlphaKey: @1
                               },
-                      kCellComponentDirectoryItem:
-                          @{
-                              kSecondaryAccentColor: @{ //< see more arrow
-                                      kRedKey: @95,
-                                      kGreenKey: @95,
-                                      kBlueKey: @95,
-                                      kAlphaKey: @1
-                                      },
-                              kTextContentColor: @{ //< see more text
-                                      kRedKey: @170,
-                                      kGreenKey: @170,
-                                      kBlueKey: @170,
-                                      kAlphaKey: @1
-                                      },
-                              kTextAccentColor: @{ //< quantity label
-                                      kRedKey: @150,
-                                      kGreenKey: @150,
-                                      kBlueKey: @150,
-                                      kAlphaKey: @1
-                                      },
-                              kTextColor: @{ //< name label
-                                      kRedKey: @255,
-                                      kGreenKey: @255,
-                                      kBlueKey: @255,
-                                      kAlphaKey: @1
-                                      },
-                              kAccentColor: @{ //< border color
-                                      kRedKey: @0,
-                                      kGreenKey: @0,
-                                      kBlueKey: @0,
-                                      kAlphaKey: @1
-                                      },
-                              kBackgroundColor: @{ // stacked background
-                                      kRedKey: @40,
-                                      kGreenKey: @40,
-                                      kBlueKey: @40,
-                                      kAlphaKey: @1
-                                      },
-                              }
+                      kCellComponentDirectoryItem: [self directoryCellComponentLight]
                       }
               };
+}
+
+- (NSDictionary *)directoryCellComponentLight
+{
+    return @{ kSecondaryAccentColor: @{ //< see more arrow
+                      kRedKey: @200,
+                      kGreenKey: @200,
+                      kBlueKey: @200,
+                      kAlphaKey: @1
+                      },
+              kTextContentColor: @{ //< see more text
+                      kRedKey: @160,
+                      kGreenKey: @160,
+                      kBlueKey: @160,
+                      kAlphaKey: @1
+                      },
+              kTextAccentColor: @{ //< quantity labe
+                      kRedKey: @153,
+                      kGreenKey: @153,
+                      kBlueKey: @153,
+                      kAlphaKey: @1
+                      },
+              kTextColor: @{ //< name label
+                      kRedKey: @51,
+                      kGreenKey: @51,
+                      kBlueKey: @51,
+                      kAlphaKey: @1
+                      },
+              kAccentColor: @{ //< border color
+                      kRedKey: @204,
+                      kGreenKey: @204,
+                      kBlueKey: @204,
+                      kAlphaKey: @1
+                      },
+              kBackgroundColor: @{ // stacked background
+                      kRedKey: @255,
+                      kGreenKey: @255,
+                      kBlueKey: @255,
+                      kAlphaKey: @1
+                      },
+              };
+}
+
+- (NSDictionary *)directoryCellComponentDark
+{
+    return  @{ kSecondaryAccentColor: @{ //< see more arrow
+                       kRedKey: @95,
+                       kGreenKey: @95,
+                       kBlueKey: @95,
+                       kAlphaKey: @1
+                       },
+               kTextContentColor: @{ //< see more text
+                       kRedKey: @170,
+                       kGreenKey: @170,
+                       kBlueKey: @170,
+                       kAlphaKey: @1
+                       },
+               kTextAccentColor: @{ //< quantity label
+                       kRedKey: @150,
+                       kGreenKey: @150,
+                       kBlueKey: @150,
+                       kAlphaKey: @1
+                       },
+               kTextColor: @{ //< name label
+                       kRedKey: @255,
+                       kGreenKey: @255,
+                       kBlueKey: @255,
+                       kAlphaKey: @1
+                       },
+               kAccentColor: @{ //< border color
+                       kRedKey: @0,
+                       kGreenKey: @0,
+                       kBlueKey: @0,
+                       kAlphaKey: @1
+                       },
+               kBackgroundColor: @{ // stacked background
+                       kRedKey: @40,
+                       kGreenKey: @40,
+                       kBlueKey: @40,
+                       kAlphaKey: @1
+                       },
+               };
 }
 
 #pragma mark - Background
 
 - (NSDictionary *)solidWhiteBackground
 {
-    return @{
-             kClassNameKey:@"solidColor.background",
-             VSolidColorBackgroundColorKey: @{
-                     kRedKey: @255,
-                     kGreenKey: @255,
-                     kBlueKey: @255,
-                     kAlphaKey: @1
-                     },
-             };
+    return @{ kClassNameKey:@"solidColor.background",
+              VSolidColorBackgroundColorKey: @{
+                      kRedKey: @255,
+                      kGreenKey: @255,
+                      kBlueKey: @255,
+                      kAlphaKey: @1
+                      },
+              };
 }
 
 @end

@@ -9,6 +9,7 @@
 #import "VDirectoryGroupCell.h"
 #import "VDirectoryItemCell.h"
 #import "VDirectorySeeMoreItemCell.h"
+#import "VDirectoryCellDecorator.h"
 
 // Models
 #import "VStream+Fetcher.h"
@@ -16,7 +17,7 @@
 #import "UIColor+VBrightness.h"
 #import "VSequence+Fetcher.h"
 
-const NSUInteger VDirectoryMaxItemsPerGroup = 10;
+const NSUInteger VDirectoryMaxItemsPerGroup = 2;
 
 CGFloat const kStreamDirectoryGroupCellInset = 10.0f; //Must be >= 1.0f
 static CGFloat const kStreamDirectoryItemLabelHeight = 34.0f;
@@ -29,9 +30,7 @@ static CGFloat const kStreamSubdirectoryItemCellBaseHeight = 206.0f;
 
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, weak) IBOutlet UILabel *nameLabel;
-@property (nonatomic, readwrite) BOOL isStreamOfStreamsRow;
-@property (nonatomic, weak, readwrite) VStream *stream;
-
+@property (nonatomic, strong) VDirectoryCellDecorator *cellDecorator;
 @property (nonatomic, strong) VDependencyManager *itemCellDependencyManager;
 
 @end
@@ -88,6 +87,8 @@ static CGFloat const kStreamSubdirectoryItemCellBaseHeight = 206.0f;
 {
     [super awakeFromNib];
     
+    self.cellDecorator = [[VDirectoryCellDecorator alloc] init];
+    
     self.collectionView.dataSource = self;
     self.collectionView.delegate = self;
     
@@ -103,17 +104,11 @@ static CGFloat const kStreamSubdirectoryItemCellBaseHeight = 206.0f;
 
 #pragma mark - Property Accessors
 
-- (void)setStreamItem:(VStreamItem *)streamItem
+- (void)setStream:(VStream *)stream
 {
-    _streamItem = streamItem;
+    _stream = stream;
     
-    if ([_streamItem isKindOfClass:[VStream class]])
-    {
-        self.stream = (VStream *)self.streamItem;
-    }
-    
-    self.isStreamOfStreamsRow = [self.streamItem isKindOfClass:[VStream class]] && [(VStream *)self.streamItem isStreamOfStreams];
-    self.nameLabel.text = [streamItem.name uppercaseString];
+    self.nameLabel.text = [stream.name uppercaseString];
     [self.collectionView reloadData];
 }
 
@@ -139,25 +134,13 @@ static CGFloat const kStreamSubdirectoryItemCellBaseHeight = 206.0f;
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    UIColor *backgroundColor = [self.itemCellDependencyManager colorForKey:@"color.background"];
-    UIColor *borderColor = [self.itemCellDependencyManager colorForKey:@"color.accent"];
-    UIColor *textColor = [self.itemCellDependencyManager colorForKey:@"color.text"];
-    UIColor *secondaryTextColor = [self.itemCellDependencyManager colorForKey:@"color.text.accent"];
-    
     //Check if item is last in number of items in section, this is the "show more" cell
     if ( indexPath.item == VDirectoryMaxItemsPerGroup )
     {
         NSString *identifier = [VDirectorySeeMoreItemCell suggestedReuseIdentifier];
         VDirectorySeeMoreItemCell *seeMoreCell = [self.collectionView dequeueReusableCellWithReuseIdentifier:identifier
                                                                                                 forIndexPath:indexPath];
-                                     
-        seeMoreCell.borderColor = borderColor;
-        seeMoreCell.imageColor = [self.itemCellDependencyManager colorForKey:@"color.accent.secondary"];
-        seeMoreCell.backgroundColor = backgroundColor;
-        seeMoreCell.seeMoreLabel.textColor = [self.itemCellDependencyManager colorForKey:@"text.color.content"];
-        seeMoreCell.seeMoreLabel.font = [self.itemCellDependencyManager fontForKey:@"seeMoreLabelFont"];
-        
-        [seeMoreCell updateBottomConstraintToConstant:self.isStreamOfStreamsRow ? kDirectoryItemStackHeight : 0.0f];
+        [self.cellDecorator applyStyleToSeeMoreCell:seeMoreCell withDependencyManager:self.itemCellDependencyManager];
         
         return seeMoreCell;
     }
@@ -167,45 +150,9 @@ static CGFloat const kStreamSubdirectoryItemCellBaseHeight = 206.0f;
         NSString *identifier = [VDirectoryItemCell suggestedReuseIdentifier];
         VDirectoryItemCell *directoryCell = [self.collectionView dequeueReusableCellWithReuseIdentifier:identifier
                                                                                            forIndexPath:indexPath];
-        
-        directoryCell.stackBorderColor = borderColor;
-        directoryCell.stackBackgroundColor = backgroundColor;
-        
-        directoryCell.nameLabel.font = [self.itemCellDependencyManager fontForKey:@"itemLabelFont"];
-        directoryCell.nameLabel.textColor = textColor;
-        
-        directoryCell.countLabel.textColor = secondaryTextColor;
-        directoryCell.countLabel.font = [self.itemCellDependencyManager fontForKey:@"itemQuantityFont"];
-        
-        // Common data
         VStreamItem *streamItem = self.stream.streamItems[ indexPath.row ];
-        directoryCell.nameLabel.text = streamItem.name;
-        [directoryCell setPreviewImagePath:[streamItem.previewImagePaths firstObject] placeholderImage:nil];
-        directoryCell.showVideo = NO;
-        
-        // Model-specific data
-        if ( [streamItem isKindOfClass:[VStream class]] )
-        {
-            VStream *stream = (VStream *)streamItem;
-            if ( stream.isStreamOfStreams )
-            {
-                directoryCell.countLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ STREAMS", @""), stream.count];
-                directoryCell.showStackedBackground = YES;
-            }
-            else
-            {
-                directoryCell.countLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ITEMS", @""), stream.count];
-                directoryCell.showStackedBackground = NO;
-            }
-        }
-        else if ( [streamItem isKindOfClass:[VSequence class]] )
-        {
-            VSequence *sequence = (VSequence *)streamItem;
-            directoryCell.showVideo = [sequence isVideo];
-            directoryCell.showStackedBackground = NO;
-            directoryCell.nameLabel.text = sequence.name;
-            directoryCell.countLabel.text = @"";
-        }
+        [self.cellDecorator populateCell:directoryCell withStreamItem:streamItem];
+        [self.cellDecorator applyStyleToCell:directoryCell withDependencyManager:self.itemCellDependencyManager];
         
         return directoryCell;
     }
@@ -229,7 +176,7 @@ static CGFloat const kStreamSubdirectoryItemCellBaseHeight = 206.0f;
     CGFloat width = CGRectGetWidth(self.bounds);
     
     CGFloat height = [VDirectoryGroupCell directoryCellHeightForWidth:width];
-    if ( self.isStreamOfStreamsRow )
+    if ( self.stream.isStreamOfStreams )
     {
         height += kDirectoryItemStackHeight;
     }

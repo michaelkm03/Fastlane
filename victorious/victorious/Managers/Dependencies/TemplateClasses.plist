@@ -42,7 +42,9 @@
 	<string>VStreamCollectionViewController</string>
 	<key>followingStream.screen</key>
 	<string>VFollowingStreamCollectionViewController</string>
-	<key>streamDirectory.screen</key>
+	<key>directoryBrowser.screen</key>
+	<string>VDirectoryBrowserViewController</string>
+	<key>directory.screen</key>
 	<string>VDirectoryViewController</string>
 	<key>basic.multiScreen</key>
 	<string>VMultipleContainerViewController</string>
