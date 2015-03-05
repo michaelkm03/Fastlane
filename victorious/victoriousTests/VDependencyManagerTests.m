@@ -322,17 +322,6 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
 
 #pragma mark - Instantiating objects via dictionaries and references
 
-- (void)testObjectFromDictionary
-{
-    NSDictionary *configuration = @{ @"name": kTestViewControllerNewMethodTemplateName, @"one": @1, @"two": @2 };
-    
-    VTestViewControllerWithNewMethod *vc = (VTestViewControllerWithNewMethod *)[self.dependencyManager objectOfType:[UIViewController class] fromDictionary:configuration];
-    XCTAssertNotNil(vc);
-    XCTAssertEqualObjects([vc.dependencyManager numberForKey:@"one"], @1);
-    XCTAssertEqualObjects([vc.dependencyManager numberForKey:@"two"], @2);
-    XCTAssertEqualObjects([vc.dependencyManager stringForKey:@"video_quality"], @"medium");
-}
-
 - (void)testReferencedObject
 {
     id viewController = [self.dependencyManager viewControllerForKey:@"otherNVC"];

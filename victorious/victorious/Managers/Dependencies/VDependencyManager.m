@@ -79,7 +79,7 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
 @property (nonatomic, strong) NSDictionary *configuration;
 @property (nonatomic, copy) NSDictionary *classesByTemplateName;
 @property (nonatomic, strong) NSMutableDictionary *singletonsByID; ///< This dictionary should only be accessed from the privateQueue
-@property (nonatomic, strong) NSDictionary *configurationDictionariesByID;
+@property (nonatomic, strong) NSMutableDictionary *childDependencyManagersByID; ///< This dictionary should only be accessed from the privateQueue
 @property (nonatomic) dispatch_queue_t privateQueue;
 
 @end
@@ -96,11 +96,12 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
         _parentManager = parentManager;
         _configuration = [self preparedConfigurationWithUnpreparedDictionary:configuration];
         _privateQueue = dispatch_queue_create("com.getvictorious.VDependencyManager", DISPATCH_QUEUE_CONCURRENT);
-        _configurationDictionariesByID = [self findConfigurationDictionariesByIDInTemplateDictionary:_configuration];
+        [self createChildDependencyManagersFromDictionary:_configuration];
         
         if (_parentManager == nil)
         {
             _singletonsByID = [[NSMutableDictionary alloc] init];
+            _childDependencyManagersByID = [[NSMutableDictionary alloc] init];
         }
         
         if (classesByTemplateName == nil)
@@ -215,9 +216,9 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
 {
     return [self arrayOfValuesOfType:expectedType
                               forKey:key
-                withTranslationBlock:^id(__unsafe_unretained Class expectedType, NSDictionary *dict)
+                withTranslationBlock:^id(__unsafe_unretained Class expectedType, VDependencyManager *dependencyManager)
     {
-        return [self objectOfType:expectedType fromDictionary:dict];
+        return [self objectOfType:expectedType withDependencyManager:dependencyManager];
     }];
 }
 
@@ -225,9 +226,9 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
 {
     return [self arrayOfValuesOfType:expectedType
                               forKey:key
-                withTranslationBlock:^id(__unsafe_unretained Class expectedType, NSDictionary *dict)
+                withTranslationBlock:^id(__unsafe_unretained Class expectedType, VDependencyManager *dependencyManager)
     {
-        return [self singletonObjectOfType:expectedType fromDictionary:dict];
+        return [self singletonObjectOfType:expectedType withDependencyManager:dependencyManager];
     }];
 }
 
@@ -237,7 +238,7 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
  @param array An array pulled straight from within the template configuration
  @param translation A block that, given an expected type and a configuration dictionary, will return an object described by that dictionary
  */
-- (NSArray *)arrayOfValuesOfType:(Class)expectedType forKey:(NSString *)key withTranslationBlock:(id(^)(Class, NSDictionary *))translation
+- (NSArray *)arrayOfValuesOfType:(Class)expectedType forKey:(NSString *)key withTranslationBlock:(id(^)(Class, VDependencyManager *))translation
 {
     NSParameterAssert(translation != nil);
     NSArray *templateArray = [self arrayForKey:key];
@@ -256,16 +257,24 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
         }
         else if ( [templateObject isKindOfClass:[NSDictionary class]] )
         {
+            VDependencyManager *dependencyManager = nil;
             NSDictionary *componentDefinition = (NSDictionary *)templateObject;
             if ( componentDefinition[kReferenceIDKey] != nil )
             {
-                componentDefinition = self.configurationDictionariesByID[componentDefinition[kReferenceIDKey]];
+                dependencyManager = [self childDependencyManagerForID:componentDefinition[kReferenceIDKey]];
+            }
+            else if ( componentDefinition[kIDKey] != nil )
+            {
+                dependencyManager = [self childDependencyManagerForID:componentDefinition[kIDKey]];
             }
             
-            id realObject = translation(expectedType, componentDefinition);
-            if ( realObject != nil )
+            if ( dependencyManager != nil )
             {
-                [returnValue addObject:realObject];
+                id realObject = translation(expectedType, dependencyManager);
+                if ( realObject != nil )
+                {
+                    [returnValue addObject:realObject];
+                }
             }
         }
     }
@@ -283,45 +292,53 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
         return [self.parentManager singletonObjectOfType:expectedType forKey:key];
     }
     
-    if ([value isKindOfClass:[NSDictionary class]] && value[kReferenceIDKey] != nil)
-    {
-        value = [self configurationDictionaryForID:value[kReferenceIDKey]];
-    }
-    
     if ([value isKindOfClass:expectedType])
     {
         return value;
     }
+    else if ( [value isKindOfClass:[NSDictionary class]] && [(NSDictionary *)value objectForKey:kReferenceIDKey] != nil )
+    {
+        VDependencyManager *dependencyManager = [self childDependencyManagerForID:[(NSDictionary *)value objectForKey:kReferenceIDKey]];
+        return [self singletonObjectOfType:expectedType withDependencyManager:dependencyManager];
+    }
     else if ([value isKindOfClass:[NSDictionary class]])
     {
-        return [self singletonObjectOfType:expectedType fromDictionary:value];
+        VDependencyManager *dependencyManager = [self childDependencyManagerForID:[(NSDictionary *)value valueForKey:kIDKey]];
+        return [self singletonObjectOfType:expectedType withDependencyManager:dependencyManager];
     }
-    
     return nil;
 }
 
-- (id)singletonObjectOfType:(Class)expectedType fromDictionary:(NSDictionary *)configurationDictionary
+/**
+ This method will create and store a new singleton if one doesn't exist already.
+ 
+ @seealso -singletonObjectForID:
+ */
+- (id)singletonObjectOfType:(Class)expectedType withDependencyManager:(VDependencyManager *)dependencyManager
 {
-    NSString *objID = configurationDictionary[kIDKey];
-    
-    if (objID == nil)
+    NSString *objectID = [dependencyManager stringForKey:kIDKey];
+    if ( objectID == nil )
     {
         return nil;
     }
-    id singletonObject = [self singletonObjectForID:objID];
+    id singleton = [self singletonObjectForID:objectID];
     
-    if (singletonObject == nil)
+    if ( singleton == nil )
     {
-        singletonObject = [self objectOfType:expectedType fromDictionary:configurationDictionary];
-        
-        if (singletonObject != nil)
+        singleton = [self objectOfType:expectedType withDependencyManager:dependencyManager];
+        if ( singleton != nil )
         {
-            [self setSingletonObject:singletonObject forID:objID];
+            [self setSingletonObject:singleton forID:objectID];
         }
     }
-    return singletonObject;
+    return singleton;
 }
 
+/**
+ This method will return nil if a singleton has not yet been created for the specified ID.
+ 
+ @seealso -singletonObjectOfType:withDependencyManager:
+ */
 - (id)singletonObjectForID:(NSString *)objectID
 {
     if (self.singletonsByID == nil)
@@ -342,6 +359,11 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
     return singletonObject;
 }
 
+/**
+ Stores a newly-created singleton so it can be retrieved again later
+ 
+ @seealso -singletonObjectForID:
+ */
 - (void)setSingletonObject:(id)singletonObject forID:(NSString *)objectID
 {
     NSParameterAssert(singletonObject != nil);
@@ -376,38 +398,35 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
         return [self.parentManager templateValueOfType:expectedType forKey:key withAddedDependencies:dependencies];
     }
     
-    if ([value isKindOfClass:[NSDictionary class]] && value[kReferenceIDKey] != nil)
+    if ( [value isKindOfClass:[NSDictionary class]] && [(NSDictionary *)value objectForKey:kReferenceIDKey] != nil )
     {
-        value = [self configurationDictionaryForID:value[kReferenceIDKey]];
+        VDependencyManager *dependencyManager = [self childDependencyManagerForID:[(NSDictionary *)value objectForKey:kReferenceIDKey]];
+        return [self objectOfType:expectedType withDependencyManager:dependencyManager];
     }
-    
-    if ([value isKindOfClass:expectedType])
+    else if ([value isKindOfClass:expectedType])
     {
         return value;
     }
     else if ([value isKindOfClass:[NSDictionary class]])
     {
-        NSDictionary *configurationDictionary = value;
+        VDependencyManager *dependencyManager = [self childDependencyManagerForID:[value valueForKey:kIDKey]];
         if ( dependencies != nil )
         {
-            NSMutableDictionary *configurationDictionaryWithAddedDependencies = [configurationDictionary mutableCopy];
-            [configurationDictionaryWithAddedDependencies addEntriesFromDictionary:dependencies];
-            configurationDictionary = [configurationDictionaryWithAddedDependencies copy];
+            dependencyManager = [dependencyManager childDependencyManagerWithAddedConfiguration:dependencies];
         }
-        return [self objectOfType:expectedType fromDictionary:configurationDictionary];
+        return [self objectOfType:expectedType withDependencyManager:dependencyManager];
     }
     
     return nil;
 }
 
-- (id)objectOfType:(Class)expectedType fromDictionary:(NSDictionary *)configurationDictionary
+- (id)objectOfType:(Class)expectedType withDependencyManager:(VDependencyManager *)dependencyManager
 {
-    Class templateClass = [self classWithTemplateName:configurationDictionary[kClassNameKey]];
+    Class templateClass = [self classWithTemplateName:[dependencyManager stringForKey:kClassNameKey]];
     
     if ([templateClass isSubclassOfClass:expectedType])
     {
         id object;
-        VDependencyManager *dependencyManager = [self childDependencyManagerWithAddedConfiguration:configurationDictionary];
         
         if ([templateClass instancesRespondToSelector:@selector(initWithDependencyManager:)])
         {
@@ -428,65 +447,102 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
         }
         return object;
     }
-    else if ( [expectedType isSubclassOfClass:[NSDictionary class]] )
-    {
-        return configurationDictionary;
-    }
     
     return nil;
-}
-
-- (NSDictionary *)configurationDictionaryForID:(NSString *)objectID
-{
-    NSDictionary *configurationDictionary = self.configurationDictionariesByID[objectID];
-    
-    if (configurationDictionary == nil)
-    {
-        return [self.parentManager configurationDictionaryForID:objectID];
-    }
-    return configurationDictionary;
 }
 
 #pragma mark - Helpers
 
 /**
- Scans the given template dictionary for configurations that specify an ID,
- and returns a dictionary where the key is an ID and the value is the 
- dictionary that specifies that key.
+ Finds all component definitions in the given dictionary
+ and creates child dependency managers for them.
  */
-- (NSDictionary *)findConfigurationDictionariesByIDInTemplateDictionary:(NSDictionary *)template
+- (void)createChildDependencyManagersFromDictionary:(NSDictionary *)dictionary
 {
-    NSMutableDictionary *configurationDictionariesByID = [[NSMutableDictionary alloc] init];
-    void (^__block __weak weakEnumerationBlock)(id);
-    void (^enumerationBlock)(id) = ^(id obj)
+    for ( id key in dictionary )
     {
-        if ([obj isKindOfClass:[NSDictionary class]])
+        NSDictionary *value = dictionary[key];
+        if ( [value isKindOfClass:[NSDictionary class]] )
         {
-            NSString *objID = obj[kIDKey];
-            if (objID != nil)
+            if ( value[kClassNameKey] != nil )
             {
-                configurationDictionariesByID[objID] = obj;
+                if ( value[kIDKey] != nil )
+                {
+                    VDependencyManager *childDependencyManager = [self childDependencyManagerWithAddedConfiguration:value];
+                    [self setChildDependencyManager:childDependencyManager forID:value[kIDKey]];
+                }
             }
-            [obj enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop)
+            else
             {
-                weakEnumerationBlock(obj);
-            }];
+                [self createChildDependencyManagersFromDictionary:value];
+            }
         }
-        else if ([obj isKindOfClass:[NSArray class]])
+        else if ( [value isKindOfClass:[NSArray class]] )
         {
-            [(NSArray *)obj enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop)
-            {
-                weakEnumerationBlock(obj);
-            }];
+            [self createChildDependencyManagersFromArray:(NSArray *)value];
         }
-    };
-    weakEnumerationBlock = enumerationBlock;
-    
-    [template enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop)
+    }
+}
+
+/**
+ Finds all component definitions in the given array
+ and creates child dependency managers for them.
+ */
+- (void)createChildDependencyManagersFromArray:(NSArray *)array
+{
+    for (NSDictionary *dictionary in array)
     {
-        weakEnumerationBlock(obj);
-    }];
-    return configurationDictionariesByID;
+        if ( [dictionary isKindOfClass:[NSDictionary class]] )
+        {
+            if ( dictionary[kClassNameKey] != nil )
+            {
+                if ( dictionary[kIDKey] != nil )
+                {
+                    VDependencyManager *childDependencyManager = [self childDependencyManagerWithAddedConfiguration:dictionary];
+                    [self setChildDependencyManager:childDependencyManager forID:dictionary[kIDKey]];
+                }
+            }
+            else
+            {
+                [self createChildDependencyManagersFromDictionary:dictionary];
+            }
+        }
+        else if ( [dictionary isKindOfClass:[NSArray class]] )
+        {
+            [self createChildDependencyManagersFromArray:(NSArray *)dictionary];
+        }
+    }
+}
+
+/**
+ Adds a new (or modifies an existing) entry in the childDependencyManagersByID dictionary
+ */
+- (void)setChildDependencyManager:(VDependencyManager *)childDependencyManager forID:(NSString *)objectID
+{
+    if ( self.childDependencyManagersByID == nil )
+    {
+        [self.parentManager setChildDependencyManager:childDependencyManager forID:objectID];
+        return;
+    }
+    dispatch_barrier_async(self.privateQueue, ^(void)
+    {
+        self.childDependencyManagersByID[objectID] = childDependencyManager;
+    });
+}
+
+- (VDependencyManager *)childDependencyManagerForID:(NSString *)objectID
+{
+    if ( self.childDependencyManagersByID == nil )
+    {
+        return [self.parentManager childDependencyManagerForID:objectID];
+    }
+    
+    __block VDependencyManager *childDependencyManager;
+    dispatch_sync(self.privateQueue, ^(void)
+    {
+        childDependencyManager = self.childDependencyManagersByID[objectID];
+    });
+    return childDependencyManager;
 }
 
 /**
