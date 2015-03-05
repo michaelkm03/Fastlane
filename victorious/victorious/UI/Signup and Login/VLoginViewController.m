@@ -145,6 +145,16 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    UIImage *cancelButtonImage = [[UIImage imageNamed:@"cameraButtonClose"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    UIBarButtonItem *closeButton = [[UIBarButtonItem alloc] initWithImage:cancelButtonImage style:UIBarButtonItemStylePlain target:self action:@selector(onDismiss:)];
+    [self.navigationItem setLeftBarButtonItem:closeButton animated:YES];
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -154,9 +164,6 @@
     self.navigationController.navigationBar.translucent = YES;
     [self.navigationController setNavigationBarHidden:NO animated:NO];
     
-    UIImage *cancelButtonImage = [[UIImage imageNamed:@"cameraButtonClose"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:cancelButtonImage style:UIBarButtonItemStylePlain target:self action:@selector(closeButtonClicked:)];
-    
     self.navigationController.delegate = self;
     
     if ( self.isBeingPresented || self.navigationController.isBeingPresented )
@@ -164,6 +171,7 @@
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginDidShow];
     }
     
+    // This will set the status bar white
     self.navigationController.navigationBar.barStyle = UIBarStyleBlack;
 }
 
@@ -176,6 +184,8 @@
     {
         self.navigationController.delegate = nil;
     }
+    
+    [self.navigationItem setLeftBarButtonItem:nil animated:YES];
 }
 
 - (BOOL)shouldAutorotate
@@ -373,7 +383,7 @@
     [self performSegueWithIdentifier:@"toSignup" sender:self];
 }
 
-- (IBAction)closeButtonClicked:(id)sender
+- (IBAction)onDismiss:(id)sender
 {
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidCancelLogin];
     
