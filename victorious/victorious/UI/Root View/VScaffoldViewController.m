@@ -100,7 +100,6 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
              [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
          }];
     }
-    
 }
 
 #pragma mark - Deeplinks
@@ -211,10 +210,20 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
 
 - (void)navigateToDestination:(id)navigationDestination
 {
+    [self navigateToDestination:navigationDestination completion:nil];
+}
+
+- (void)navigateToDestination:(id)navigationDestination completion:(void(^)())completion
+{
     void (^goTo)(UIViewController *) = ^(UIViewController *viewController)
     {
         NSAssert([viewController isKindOfClass:[UIViewController class]], @"non-UIViewController specified as destination for navigation");
         [self displayResultOfNavigation:viewController];
+        
+        if ( completion != nil )
+        {
+            completion();
+        }
     };
     
     if ([navigationDestination respondsToSelector:@selector(shouldNavigateWithAlternateDestination:)])
@@ -228,7 +237,7 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
             }
             else
             {
-                [self navigateToDestination:alternateDestination];
+                [self navigateToDestination:alternateDestination completion:completion];
             }
         }
     }

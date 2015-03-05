@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDisplayName</key>
+	<string>${ProductPrefix}Christeenie</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.getvictorious.${ProductPrefix}christeenie</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb833679356678966</string>
+			</array>
+		</dict>
+	</array>
+	<key>FacebookAppID</key>
+	<string>833679356678966</string>
+	<key>TWITTER_CONSUMER_KEY</key>
+	<string>zfWKCJLlZlcJhwYWYB43OeIhx</string>
+	<key>TWITTER_CONSUMER_SECRET</key>
+	<string>IZALT1I3OI22saW3lccn5zIR5AMFmxs1IJyeXgPgRIZt4XgPQp</string>
+	<key>VictoriousAppID</key>
+	<integer>21</integer>
+	<key>StagingAppID</key>
+	<integer>35</integer>
+	<key>QAAppID</key>
+	<integer>19</integer>
+	<key>GAID</key>
+	<string></string>
+	<key>CreatorSalutation</key>
+	<string>Christine Canchola</string>
+	<key>FlurryAPIKey</key>
+	<string>XXXXXXXXXX</string>
+</dict>
+</plist>

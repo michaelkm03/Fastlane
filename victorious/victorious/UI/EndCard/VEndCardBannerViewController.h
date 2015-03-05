@@ -14,7 +14,7 @@
 
 @protocol VEndCardBannerViewControllerDelegate <NSObject>
 
-- (void)nextVideoSelected;
+- (void)nextVideoSelectedWithAutoPlay:(BOOL)autoPlay;
 
 @end
 

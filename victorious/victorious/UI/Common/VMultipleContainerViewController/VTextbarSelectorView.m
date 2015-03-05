@@ -64,6 +64,11 @@ static CGFloat const kVLineAnimationDuration = 0.25f;
 
 - (void)pressedHeaderButton:(UIButton *)button
 {
+    if ( self.activeViewControllerIndex == (NSUInteger)button.tag )
+    {
+        return;
+    }
+    
     [self setActiveViewControllerIndex:button.tag];
     
     if ( [self.delegate respondsToSelector:@selector(viewSelector:didSelectViewControllerAtIndex:)] )

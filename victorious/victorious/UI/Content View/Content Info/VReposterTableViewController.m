@@ -67,6 +67,20 @@
     [self refreshRepostersList];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [[VTrackingManager sharedInstance] setValue:VTrackingValueReposters forSessionParameterWithKey:VTrackingKeyContext];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContext];
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -100,6 +114,9 @@
     VUser *mainUser = [[VObjectManager sharedManager] mainUser];
     if ([mainUser.following containsObject:cell.profile])
     {
+        NSDictionary *params = @{ VTrackingKeyContext : VTrackingValueReposters };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidUnfollowUser parameters:params];
+        
         [[VObjectManager sharedManager] unfollowUser:cell.profile
                                         successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
          {

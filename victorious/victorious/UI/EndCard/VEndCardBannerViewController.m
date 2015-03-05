@@ -75,7 +75,7 @@
 - (void)countDownComplete
 {
     [self.countdownViewController stopTimer];
-    [self.delegate nextVideoSelected];
+    [self.delegate nextVideoSelectedWithAutoPlay:YES];
 }
 
 - (void)showNextVideoDetails
@@ -127,9 +127,9 @@
 - (IBAction)onNextTapped:(id)sender
 {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
-    {
-        [self.delegate nextVideoSelected];
-    });
+                   {
+                       [self.delegate nextVideoSelectedWithAutoPlay:NO];
+                   });
 }
 
 @end

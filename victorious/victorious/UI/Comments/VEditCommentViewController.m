@@ -151,6 +151,8 @@ static const CGFloat kSearchTableAnimationDuration = 0.3f;
 
 - (IBAction)onBackgroundTapped:(id)sender
 {
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidCancelEditComment];
+    
     [self dismiss];
     self.isDismissing = YES;
 }
@@ -162,9 +164,13 @@ static const CGFloat kSearchTableAnimationDuration = 0.3f;
     [[VObjectManager sharedManager] editComment:self.comment
                                    successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
+         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidCompleteEditComment];
      }
                                       failBlock:^(NSOperation *operation, NSError *error)
      {
+         NSDictionary *params = @{ VTrackingKeyErrorMessage : error.localizedDescription ?: @"" };
+         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventEditCommentDidFail parameters:params];
+         
          VLog( @"Comment edit failed: %@", error.localizedDescription );
      }];
     

@@ -39,7 +39,7 @@
  tracking calls until cleared. To clear a
  previously set parameter, pass nil for value.
  */
-- (void)setValue:(NSString *)value forSessionParameterWithKey:(NSString *)key;
+- (void)setValue:(id)value forSessionParameterWithKey:(NSString *)key;
 
 /**
  Clears all session properties

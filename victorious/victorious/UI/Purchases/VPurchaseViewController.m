@@ -197,6 +197,8 @@
 
 - (IBAction)close:(id)sender
 {
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidCancelPurchase];
+    
     [self.delegate purchaseDidFinish:NO];
 }
 

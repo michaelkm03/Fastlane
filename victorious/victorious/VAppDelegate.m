@@ -65,8 +65,11 @@ static BOOL isRunningTests(void) __attribute__((const));
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
     
     [[VTrackingManager sharedInstance] addDelegate:[[VApplicationTracking alloc] init]];
-    [[VTrackingManager sharedInstance] addDelegate:[[VFlurryTracking alloc] init]];
     [[VTrackingManager sharedInstance] addDelegate:[[VGoogleAnalyticsTracking alloc] init]];
+    
+    VFlurryTracking *flurryTracking = [[VFlurryTracking alloc] init];
+    flurryTracking.unwantedParameterKeys = @[ VTrackingKeySequenceId, VTrackingKeyStreamId, VTrackingKeyTimeStamp ];
+    [[VTrackingManager sharedInstance] addDelegate:flurryTracking];
 
     return YES;
 }

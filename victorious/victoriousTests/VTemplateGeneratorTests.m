@@ -55,7 +55,7 @@
 - (void)testPropertiesFromExperiments
 {
     NSNumber *expected = @(YES);
-    NSNumber *actual = [self.template valueForKeyPath:@"experiments.histogram_enabled"];
+    NSNumber *actual = [self.template valueForKeyPath:@"histogram_enabled"];
     XCTAssertEqualObjects(expected, actual);
 }
 
