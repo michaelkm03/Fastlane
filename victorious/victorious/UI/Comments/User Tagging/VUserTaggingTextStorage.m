@@ -20,7 +20,7 @@ typedef NS_ENUM(NSInteger, VUserTaggingTextStorageState)
     VUserTaggingTextStorageStateSearchActive
 };
 
-static NSString * const kTriggerCharacter = @"@";
+static NSString * const kTriggerString = @"@";
 static NSString * const kThreeSpaces = @"   ";
 
 @interface VUserTaggingTextStorage () <VInlineSearchTableViewControllerDelegate>
@@ -84,7 +84,7 @@ static NSString * const kThreeSpaces = @"   ";
     if (state == VUserTaggingTextStorageStateSearchActive)
     {
         //Search is active, let the delegate know it should show the table
-        [self.searchTableViewController searchFollowingList:[self.innerTextView.text substringWithRange:self.searchTermRange]];
+        [self searchWithRange:self.searchTermRange];
         [self.taggingDelegate userTaggingTextStorage:self wantsToShowViewController:self.searchTableViewController];
     }
     else if (state == VUserTaggingTextStorageStateInactive)
@@ -102,7 +102,18 @@ static NSString * const kThreeSpaces = @"   ";
     if (self.state == VUserTaggingTextStorageStateSearchActive)
     {
         //Search term has changed, send it to the search table
-        [self.searchTableViewController searchFollowingList:[[self.innerTextView.text substringWithRange:searchTermRange] stringByReplacingOccurrencesOfString:@"@" withString:@""]];
+        [self searchWithRange:searchTermRange];
+    }
+}
+
+- (void)searchWithRange:(NSRange)range
+{
+    NSUInteger triggerCharacterLength = kTriggerString.length;
+    
+    //If range is <= triggerCharacterLength, the range is looking at a blank or only "kTriggerCharacter" string and does not need to search
+    if ( range.length > triggerCharacterLength )
+    {
+        [self.searchTableViewController searchFollowingList:[[self.innerTextView.text substringWithRange:range] substringFromIndex:triggerCharacterLength]];
     }
 }
 
@@ -284,10 +295,10 @@ static NSString * const kThreeSpaces = @"   ";
     {
         case VUserTaggingTextStorageStateInactive:
         {
-            if ( [string isEqualToString:kTriggerCharacter] )
+            if ( [string isEqualToString:kTriggerString] )
             {
                 self.state = VUserTaggingTextStorageStateTriggerCharacterDetected;
-                self.searchTermRange = NSMakeRange(range.location, kTriggerCharacter.length);
+                self.searchTermRange = NSMakeRange(range.location, kTriggerString.length);
             }
             break;
         }
