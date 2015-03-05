@@ -250,21 +250,25 @@ static NSString * const kThreeSpaces = @"   ";
         [updatedAttrs setObject:[self.textView.linkTextAttributes objectForKey:NSForegroundColorAttributeName] forKey:NSForegroundColorAttributeName];
     }
 
-    //Update font and paragraph attributes from internal UITextView
-    [innerAttrs removeObjectForKey:NSForegroundColorAttributeName];
+    //Update font to keep consistent formatting even when supporting emoji / other languages
     if ( [attrs objectForKey:NSFontAttributeName] )
     {
+        /*
+         The attributes want to specify a new foreground font, which is fine, but we need to add the original font
+         to the dictionary so when the next character is added we know what font it should have
+         */
         [updatedAttrs setValue:self.defaultFont forKey:@"NSOriginalFont"];
     }
     else
     {
+        /*
+         No font is specified by the system, use the font from the displayStorage (if specified) or the default font
+         */
         UIFont *font = [innerAttrs objectForKey:NSFontAttributeName];
-        if ( font == nil )
-        {
-            font = self.defaultFont;
-        }
+        font = font == nil ? self.defaultFont : font;
         [updatedAttrs setValue:font forKey:NSFontAttributeName];
     }
+    
     [updatedAttrs setValue:self.paragraphStyle forKey:NSParagraphStyleAttributeName];
     
     [self.displayStorage setAttributes:updatedAttrs range:range];
