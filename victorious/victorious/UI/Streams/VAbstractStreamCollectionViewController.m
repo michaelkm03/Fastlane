@@ -36,10 +36,10 @@
 
 const CGFloat kVLoadNextPagePoint = .75f;
 
-@interface VAbstractStreamCollectionViewController ()
+@interface VAbstractStreamCollectionViewController () <VScrollPaginatorDelegate>
 
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
-@property (nonatomic, weak) IBOutlet VScrollPaginator *scrollPaginator;
+@property (nonatomic, strong) VScrollPaginator *scrollPaginator;
 @property (nonatomic, strong) UIActivityIndicatorView *bottomActivityIndicator;
 
 @property (nonatomic, strong) VImageSearchResultsFooterView *refreshFooter;
@@ -79,6 +79,8 @@ const CGFloat kVLoadNextPagePoint = .75f;
 
 - (void)commonInit
 {
+    self.scrollPaginator = [[VScrollPaginator alloc] init];
+    self.scrollPaginator.delegate = self;
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.extendedLayoutIncludesOpaqueBars = YES;
     self.navigationBarShouldAutoHide = YES;
@@ -279,7 +281,7 @@ const CGFloat kVLoadNextPagePoint = .75f;
 {
     const BOOL isLastSection = section == MAX( [self.collectionView numberOfSections] - 1, 0);
     const BOOL hasOneOrMoreItems = [collectionView numberOfItemsInSection:section] > 1;
-    return isLastSection && hasOneOrMoreItems;
+    return isLastSection && hasOneOrMoreItems && [self.streamDataSource filterCanLoadNextPage];
 }
 
 - (BOOL)shouldAnimateActivityViewFooter
@@ -340,7 +342,7 @@ const CGFloat kVLoadNextPagePoint = .75f;
 
 - (void)shouldLoadNextPage
 {
-    if (self.streamDataSource.count == 0 || self.streamDataSource.isFilterLoading)
+    if (self.streamDataSource.count == 0 || self.streamDataSource.isFilterLoading || !self.streamDataSource.filterCanLoadNextPage)
     {
         return;
     }
