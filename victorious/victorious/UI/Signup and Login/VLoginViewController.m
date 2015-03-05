@@ -45,7 +45,10 @@
 @property (weak, nonatomic) IBOutlet CCHLinkTextView *loginTextView;
 
 @property (nonatomic, assign) VLoginType loginType;
-@property (nonatomic, strong) IBOutlet VLinkTextViewHelper *linkTextHelper;
+
+@property (nonatomic, weak) IBOutlet VLinkTextViewHelper *linkTextHelper;
+@property (nonatomic, weak) IBOutlet VLoginContextHelper *loginContextHelper;
+@property (nonatomic, weak) IBOutlet UITextView *loginContextTextView;
 
 @end
 
@@ -119,6 +122,9 @@
     self.blurredBackgroundView = [self createBlurredBackgroundView];
     NSArray *elementsArray = @[ self.contentContainer, self.signupWithEmailButton, self.facebookButton, self.twitterButton, self.loginTextView ];
     self.stackedElements = [NSOrderedSet orderedSetWithArray:elementsArray];
+    
+    NSString *loginContextText = [self.loginContextHelper textForContext:self.loginContextType];
+    self.loginContextTextView.text = loginContextText;
 }
 
 - (UIView *)createBlurredBackgroundView

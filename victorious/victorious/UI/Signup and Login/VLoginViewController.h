@@ -9,6 +9,7 @@
 #import "VAuthorizationViewController.h"
 #import "VTransitionDelegate.h"
 #import "VPresentWithBlurTransition.h"
+#import "VLoginContextHelper.h"
 
 typedef NS_ENUM(NSUInteger, VLoginType)
 {
@@ -40,5 +41,7 @@ typedef NS_ENUM(NSUInteger, VLoginType)
  VPresentWithBlurViewController
  */
 @property (nonatomic, strong) NSOrderedSet *stackedElements;
+
+@property (nonatomic, assign) VLoginContextType loginContextType;
 
 @end

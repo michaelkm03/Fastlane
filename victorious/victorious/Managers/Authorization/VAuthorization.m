@@ -36,7 +36,9 @@
     return self;
 }
 
-- (void)performAuthorizedActionFromViewController:(UIViewController *)presentingViewController withSuccess:(void(^)())successActionBlock
+- (void)performAuthorizedActionFromViewController:(UIViewController *)presentingViewController
+                                      withContext:(VLoginContextType)loginContext
+                                      withSuccess:(void(^)())successActionBlock
 {
     NSParameterAssert( successActionBlock != nil );
     NSParameterAssert( presentingViewController != nil );
@@ -54,6 +56,7 @@
     else if ( !self.objectManager.mainUserLoggedIn && !self.objectManager.mainUserProfileComplete )
     {
         VLoginViewController *viewController = [VLoginViewController loginViewController];
+        viewController.loginContextType = loginContext;
         [viewController setAuthorizationCompletionAction:successActionBlock];
         
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];

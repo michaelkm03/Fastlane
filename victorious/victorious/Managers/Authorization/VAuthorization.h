@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "VAuthorizationViewController.h"
+#import "VLoginContextHelper.h"
 
 @class VObjectManager, VDependencyManager;
 
@@ -19,6 +20,7 @@
                     dependencyManager:(VDependencyManager *)dependencyManager;
 
 - (void)performAuthorizedActionFromViewController:(UIViewController *)presentingViewController
+                                      withContext:(VLoginContextType)loginContext
                                       withSuccess:(void(^)())successActionBlock;
 
 @end

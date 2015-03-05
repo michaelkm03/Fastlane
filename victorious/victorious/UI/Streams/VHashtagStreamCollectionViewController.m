@@ -131,7 +131,9 @@
 {
     VAuthorization *authorization = [[VAuthorization alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                 dependencyManager:self.dependencyManager];
-    [authorization performAuthorizedActionFromViewController:self withSuccess:^void
+    [authorization performAuthorizedActionFromViewController:self
+                                                 withContext:VLoginContenxtFollowHashtag
+                                                 withSuccess:^void
      {
          if ( self.isFollowingSelectedHashtag )
          {
