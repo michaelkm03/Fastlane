@@ -14,6 +14,7 @@
  */
 typedef NS_ENUM( NSInteger, VLoginContextType )
 {
+    VLoginContenxtUnknown = -1,
     VLoginContenxtCreatePost,
     VLoginContenxtFollowHashtag,
     VLoginContenxtVoteSequence,

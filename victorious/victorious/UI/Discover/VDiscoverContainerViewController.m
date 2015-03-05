@@ -151,15 +151,6 @@
     [self.searchField becomeFirstResponder];
 }
 
-#pragma mark - VNavigationDestination
-
-- (BOOL)shouldNavigateWithAlternateDestination:(UIViewController *__autoreleasing *)alternateViewController
-{
-    [self.childViewController refresh:YES];
-
-    return YES;
-}
-
 #pragma mark - UITextFieldDelegate
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField

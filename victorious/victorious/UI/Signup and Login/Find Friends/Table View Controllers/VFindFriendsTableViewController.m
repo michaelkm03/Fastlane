@@ -14,10 +14,10 @@
 #import "NSArray+VMap.h"
 #import "VObjectManager+Users.h"
 #import "VObjectManager+Login.h"
-#import "VAuthorizationViewControllerFactory.h"
 #import "VUser.h"
 #import "VThemeManager.h"
 #import "VConstants.h"
+#import "VAuthorization.h"
 
 @interface VFindFriendsTableViewController () <UITableViewDataSource, UITableViewDelegate>
 
@@ -562,21 +562,22 @@
     // Tell the button what to do when it's tapped
     cell.followAction = ^(void)
     {
-        // Check if logged in before attempting to follow / unfollow
-        if (![VObjectManager sharedManager].authorized)
-        {
-            [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
-            return;
-        }
-        
-        if ([mainUser.following containsObject:profile])
-        {
-            [self unfollowFriendAction:profile];
-        }
-        else
-        {
-            [self followFriendAction:profile];
-        }
+        // Check for authorization first
+        VAuthorization *authorization = [[VAuthorization alloc] initWithObjectManager:[VObjectManager sharedManager]
+                                                                    dependencyManager:nil];
+        [authorization performAuthorizedActionFromViewController:self
+                                                     withContext:VLoginContenxtFollowUser
+                                                     withSuccess:^
+         {
+             if ([mainUser.following containsObject:profile])
+             {
+                 [self unfollowFriendAction:profile];
+             }
+             else
+             {
+                 [self followFriendAction:profile];
+             }
+         }];
     };
 
     return cell;

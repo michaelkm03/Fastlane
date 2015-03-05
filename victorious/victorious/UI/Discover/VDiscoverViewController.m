@@ -23,10 +23,10 @@
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Users.h"
 #import "VUser.h"
-#import "VAuthorizationViewControllerFactory.h"
 #import "VConstants.h"
 #import "VHashtagStreamCollectionViewController.h"
 #import "VDependencyManager.h"
+#import "VAuthorization.h"
 
 
 static NSString * const kVSuggestedPeopleIdentifier = @"VSuggestedPeopleCell";
@@ -221,9 +221,9 @@ static CGFloat const kTopInset = 22.0f; ///< The space between the top of the vi
     [self.tableView reloadData];
 }
 
-- (void)didAttemptActionThatRequiresLogin
+- (UIViewController *)componentRootViewController
 {
-    [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:nil];
+    return self;
 }
 
 #pragma mark - UITableViewDataSource
@@ -308,29 +308,31 @@ static CGFloat const kTopInset = 22.0f; ///< The space between the top of the vi
             __weak typeof(customCell) weakCell = customCell;
             customCell.subscribeToTagAction = ^(void)
             {
-                // Check if logged in before attempting to subscribe / unsubscribe
-                if (![VObjectManager sharedManager].authorized)
-                {
-                    [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
-                    return;
-                }
-                
                 // Disable follow / unfollow button
                 if (!weakCell.shouldCellRespond)
                 {
                     return;
                 }
-                weakCell.shouldCellRespond = NO;
                 
-                // Check if already subscribed to hashtag then subscribe or unsubscribe accordingly
-                if ([self isUserSubscribedToHashtag:hashtag.tag])
-                {
-                    [self unsubscribeToTagAction:hashtag];
-                }
-                else
-                {
-                    [self subscribeToTagAction:hashtag];
-                }
+                // Check for authorization first
+                VAuthorization *authorization = [[VAuthorization alloc] initWithObjectManager:[VObjectManager sharedManager]
+                                                                            dependencyManager:nil];
+                [authorization performAuthorizedActionFromViewController:self
+                                                             withContext:VLoginContenxtFollowHashtag
+                                                             withSuccess:^
+                 {
+                     weakCell.shouldCellRespond = NO;
+                     
+                     // Check if already subscribed to hashtag then subscribe or unsubscribe accordingly
+                     if ([self isUserSubscribedToHashtag:hashtag.tag])
+                     {
+                         [self unsubscribeToTagAction:hashtag];
+                     }
+                     else
+                     {
+                         [self subscribeToTagAction:hashtag];
+                     }
+                 }];
             };
             cell = customCell;
         }

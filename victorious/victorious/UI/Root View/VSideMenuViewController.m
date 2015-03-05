@@ -305,11 +305,14 @@
 
 - (void)navigateToDestination:(id)navigationDestination completion:(void (^)())completion
 {
-    if ( self.visible )
-    {
-        [self hideMenuViewController];
-    }
-    [super navigateToDestination:navigationDestination completion:completion];
+    [super navigateToDestination:navigationDestination completion:^void
+     {
+         if ( self.visible )
+         {
+             [self hideMenuViewController];
+         }
+         completion();
+     }];
 }
 
 - (void)displayResultOfNavigation:(UIViewController *)viewController

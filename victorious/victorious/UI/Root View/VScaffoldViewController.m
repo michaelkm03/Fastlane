@@ -21,6 +21,7 @@
 #import "VTracking.h"
 #import "VWebBrowserViewController.h"
 #import "VNavigationController.h"
+#import "VAuthorization.h"
 
 #import <MBProgressHUD.h>
 
@@ -33,6 +34,8 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
 
 @interface VScaffoldViewController () <VNewContentViewControllerDelegate>
 
+@property (nonatomic, strong) VAuthorization *authorization;
+
 @end
 
 @implementation VScaffoldViewController
@@ -44,6 +47,8 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
     {
         _dependencyManager = dependencyManager;
         _menuViewController = [dependencyManager viewControllerForKey:VScaffoldViewControllerMenuComponentKey];
+        _authorization = [[VAuthorization alloc] initWithObjectManager:[VObjectManager sharedManager]
+                                                     dependencyManager:self.dependencyManager];
     }
     return self;
 }
@@ -215,35 +220,42 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
 
 - (void)navigateToDestination:(id)navigationDestination completion:(void(^)())completion
 {
-    void (^goTo)(UIViewController *) = ^(UIViewController *viewController)
+    void (^performNavigation)(UIViewController *) = ^(UIViewController *viewController)
     {
-        NSAssert([viewController isKindOfClass:[UIViewController class]], @"non-UIViewController specified as destination for navigation");
-        [self displayResultOfNavigation:viewController];
+        UIViewController *alternateDestination = nil;
+        BOOL shouldNavigateToAlternateDestination = NO;
         
-        if ( completion != nil )
+        if ([navigationDestination respondsToSelector:@selector(shouldNavigateWithAlternateDestination:)])
         {
-            completion();
+            shouldNavigateToAlternateDestination = [navigationDestination shouldNavigateWithAlternateDestination:&alternateDestination];
+        }
+        
+        if ( shouldNavigateToAlternateDestination && alternateDestination != nil )
+        {
+            [self navigateToDestination:alternateDestination completion:completion];
+        }
+        else
+        {
+            NSAssert([viewController isKindOfClass:[UIViewController class]], @"non-UIViewController specified as destination for navigation");
+            [self displayResultOfNavigation:viewController];
+            
+            if ( completion != nil )
+            {
+                completion();
+            }
         }
     };
     
-    if ([navigationDestination respondsToSelector:@selector(shouldNavigateWithAlternateDestination:)])
+    if ([navigationDestination respondsToSelector:@selector(requiresAuthorization)] && [navigationDestination requiresAuthorization] )
     {
-        UIViewController *alternateDestination = nil;
-        if ( [navigationDestination shouldNavigateWithAlternateDestination:&alternateDestination] )
-        {
-            if ( alternateDestination == nil )
-            {
-                goTo(navigationDestination);
-            }
-            else
-            {
-                [self navigateToDestination:alternateDestination completion:completion];
-            }
-        }
+        [self.authorization performAuthorizedActionFromViewController:self withContext:VLoginContenxtUnknown withSuccess:^
+         {
+            performNavigation(navigationDestination);
+        }];
     }
     else
     {
-        goTo(navigationDestination);
+        performNavigation(navigationDestination);
     }
 }
 

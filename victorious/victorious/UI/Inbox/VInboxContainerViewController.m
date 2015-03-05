@@ -8,7 +8,7 @@
 
 #import "NSURL+VPathHelper.h"
 #import "UIStoryboard+VMainStoryboard.h"
-#import "VAuthorizationViewControllerFactory.h"
+#import "VAuthorization.h"
 #import "VConversation.h"
 #import "VDependencyManager+VObjectManager.h"
 #import "VInboxContainerViewController.h"
@@ -149,14 +149,8 @@ NSString * const VInboxContainerViewControllerInboxPushReceivedNotification = @"
 
 #pragma mark - VNavigationDestination methods
 
-- (BOOL)shouldNavigateWithAlternateDestination:(UIViewController *__autoreleasing *)alternateViewController
+- (BOOL)requiresAuthorization
 {
-    UIViewController *authorizationViewController = [VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:self.dependencyManager.objectManager];
-    if (authorizationViewController)
-    {
-        [[VRootViewController rootViewController] presentViewController:authorizationViewController animated:YES completion:nil];
-        return NO;
-    }
     return YES;
 }
 

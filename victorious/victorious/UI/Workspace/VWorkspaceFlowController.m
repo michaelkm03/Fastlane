@@ -242,11 +242,9 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
 
 #pragma mark - VNavigationDestination
 
-- (BOOL)shouldNavigateWithAlternateDestination:(UIViewController *__autoreleasing *)alternateViewController
+- (BOOL)requiresAuthorization
 {
-    VWorkspaceFlowController *newFlowController = [[VWorkspaceFlowController alloc] initWithDependencyManager:self.dependencyManager];
-    [[VRootViewController rootViewController] presentViewController:newFlowController.flowRootViewController animated:YES completion:nil];
-    return NO;
+    return YES;
 }
 
 #pragma mark - Property Accessors

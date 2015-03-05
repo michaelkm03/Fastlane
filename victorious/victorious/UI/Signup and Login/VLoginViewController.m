@@ -120,6 +120,8 @@
     
     // Some prep for VPresentWithBlurViewController elements
     self.blurredBackgroundView = [self createBlurredBackgroundView];
+#warning Fix up this gradient
+    [self addGradientToImageView:self.blurredBackgroundView];
     NSArray *elementsArray = @[ self.contentContainer, self.signupWithEmailButton, self.facebookButton, self.twitterButton, self.loginTextView ];
     self.stackedElements = [NSOrderedSet orderedSetWithArray:elementsArray];
     

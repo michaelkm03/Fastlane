@@ -34,4 +34,10 @@
  */
 - (BOOL)shouldNavigateWithAlternateDestination:(UIViewController *__autoreleasing *)alternateViewController;
 
+/***
+ Asks the receiver if displaying the destination requires authorization, i.e.
+ a logged in user.  Return YES and the scaffold will display the login prompt.
+ */
+- (BOOL)requiresAuthorization;
+
 @end
