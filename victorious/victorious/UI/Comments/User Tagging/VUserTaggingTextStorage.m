@@ -16,11 +16,11 @@
 typedef NS_ENUM(NSInteger, VUserTaggingTextStorageState)
 {
     VUserTaggingTextStorageStateInactive,
-    VUserTaggingTextStorageStateTriggerCharacterDetected,
+    VUserTaggingTextStorageStateTriggerStringDetected,
     VUserTaggingTextStorageStateSearchActive
 };
 
-static NSString * const kTriggerCharacter = @"@";
+static NSString * const kTriggerString = @"@";
 static NSString * const kThreeSpaces = @"   ";
 static NSString * const VOriginalFont = @"NSOriginalFont";
 
@@ -105,7 +105,7 @@ static NSString * const VOriginalFont = @"NSOriginalFont";
     if (state == VUserTaggingTextStorageStateSearchActive)
     {
         //Search is active, let the delegate know it should show the table
-        [self.searchTableViewController searchFollowingList:[self.string substringWithRange:self.searchTermRange]];
+        [self searchWithRange:self.searchTermRange];
         [self.taggingDelegate userTaggingTextStorage:self wantsToShowViewController:self.searchTableViewController];
     }
     else if (state == VUserTaggingTextStorageStateInactive)
@@ -123,7 +123,18 @@ static NSString * const VOriginalFont = @"NSOriginalFont";
     if (self.state == VUserTaggingTextStorageStateSearchActive)
     {
         //Search term has changed, send it to the search table
-        [self.searchTableViewController searchFollowingList:[[self.string substringWithRange:searchTermRange] stringByReplacingOccurrencesOfString:@"@" withString:@""]];
+        [self searchWithRange:searchTermRange];
+    }
+}
+
+- (void)searchWithRange:(NSRange)range
+{
+    NSUInteger triggerStringLength = kTriggerString.length;
+    
+    //If range is <= triggerCharacterLength, the range is looking at a blank or only "kTriggerCharacter" string and does not need to search
+    if ( range.length > triggerStringLength )
+    {
+        [self.searchTableViewController searchFollowingList:[[self.displayStorage.string substringWithRange:range] substringFromIndex:triggerStringLength]];
     }
 }
 
@@ -345,14 +356,14 @@ static NSString * const VOriginalFont = @"NSOriginalFont";
     {
         case VUserTaggingTextStorageStateInactive:
         {
-            if ( [string isEqualToString:kTriggerCharacter] )
+            if ( [string isEqualToString:kTriggerString] )
             {
-                self.state = VUserTaggingTextStorageStateTriggerCharacterDetected;
-                self.searchTermRange = NSMakeRange(range.location, kTriggerCharacter.length);
+                self.state = VUserTaggingTextStorageStateTriggerStringDetected;
+                self.searchTermRange = NSMakeRange(range.location, kTriggerString.length);
             }
             break;
         }
-        case VUserTaggingTextStorageStateTriggerCharacterDetected:
+        case VUserTaggingTextStorageStateTriggerStringDetected:
         {
             if ( string.length != 1 || ![[NSCharacterSet letterCharacterSet] characterIsMember:[string characterAtIndex:0]] )
             {
