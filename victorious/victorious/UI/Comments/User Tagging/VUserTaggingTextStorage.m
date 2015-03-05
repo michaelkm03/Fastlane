@@ -108,10 +108,12 @@ static NSString * const kThreeSpaces = @"   ";
 
 - (void)searchWithRange:(NSRange)range
 {
-    //If range is <= kTriggerCharacter.length, the range is looking at a blank or only "kTriggerCharacter" string and does not need to search
-    if ( range.length > kTriggerCharacter.length )
+    NSUInteger triggerCharacterLength = kTriggerCharacter.length;
+    
+    //If range is <= triggerCharacterLength, the range is looking at a blank or only "kTriggerCharacter" string and does not need to search
+    if ( range.length > triggerCharacterLength )
     {
-        [self.searchTableViewController searchFollowingList:[[self.innerTextView.text substringWithRange:range] substringFromIndex:1]];
+        [self.searchTableViewController searchFollowingList:[[self.innerTextView.text substringWithRange:range] substringFromIndex:triggerCharacterLength]];
     }
 }
 
