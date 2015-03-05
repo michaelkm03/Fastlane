@@ -9,14 +9,16 @@
 #import <Foundation/Foundation.h>
 #import "VAuthorizationViewController.h"
 
-@class VObjectManager;
+@class VObjectManager, VDependencyManager;
 
 @interface VAuthorization : NSObject
 
 @property (nonatomic, weak) VObjectManager *objectManager;
 
-- (instancetype)initWithObjectManager:(VObjectManager *)objectManager;
+- (instancetype)initWithObjectManager:(VObjectManager *)objectManager
+                    dependencyManager:(VDependencyManager *)dependencyManager;
 
-- (void)performAuthorizedAction:(void(^)())actionBlock failure:(void(^)(UIViewController *authorizationViewController))failureBlock;
+- (void)performAuthorizedActionFromViewController:(UIViewController *)presentingViewController
+                                      withSuccess:(void(^)())successActionBlock;
 
 @end

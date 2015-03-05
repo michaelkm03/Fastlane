@@ -29,6 +29,7 @@
 #import "CCHLinkTextViewDelegate.h"
 #import "VLinkTextViewHelper.h"
 #import "MBProgressHUD.h"
+#import "UIView+AutoLayout.h"
 
 @import Accounts;
 @import Social;
@@ -43,14 +44,25 @@
 
 @property (weak, nonatomic) IBOutlet CCHLinkTextView *loginTextView;
 
-@property (nonatomic, weak) IBOutlet UIImageView *backgroundImageView;
-
 @property (nonatomic, assign) VLoginType loginType;
 @property (nonatomic, strong) IBOutlet VLinkTextViewHelper *linkTextHelper;
 
 @end
 
 @implementation VLoginViewController
+
+- (void)setTransitionDelegate:(VTransitionDelegate *)transitionDelegate
+{
+    _transitionDelegate = transitionDelegate;
+    
+    UIViewController *viewController = self;
+    if ( self.navigationController != nil )
+    {
+        viewController = self.navigationController;
+    }
+    
+    viewController.transitioningDelegate = transitionDelegate;
+}
 
 + (VLoginViewController *)loginViewController
 {
@@ -60,7 +72,13 @@
 
 - (void)loginDidFinishWithSuccess:(BOOL)success
 {
-    [self dismissViewControllerAnimated:YES completion:^void
+    UIViewController *viewController = self;
+    if ( self.navigationController != nil )
+    {
+        viewController = self.navigationController;
+    }
+    
+    [viewController dismissViewControllerAnimated:YES completion:^void
     {
         if ( success )
         {
@@ -75,12 +93,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    UIImage    *backgroundImage = [[[VThemeManager sharedThemeManager] themedBackgroundImageForDevice]
-                                   applyBlurWithRadius:0 tintColor:[UIColor colorWithWhite:0.0 alpha:0.3] saturationDeltaFactor:1.8 maskImage:nil];
-    
-    self.backgroundImageView.image = backgroundImage;
-    [self addGradientToImageView:self.backgroundImageView];
     
     [self.facebookButton setFont:[[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont]];
     [self.facebookButton setTextColor:[UIColor whiteColor]];
@@ -102,6 +114,22 @@
     self.loginTextView.linkDelegate = self;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidAbortCreateProfile:) name:VProfileCreateViewControllerWasAbortedNotification object:nil];
+    
+    // Some prep for VPresentWithBlurViewController elements
+    self.blurredBackgroundView = [self createBlurredBackgroundView];
+    NSArray *elementsArray = @[ self.contentContainer, self.signupWithEmailButton, self.facebookButton, self.twitterButton, self.loginTextView ];
+    self.stackedElements = [NSOrderedSet orderedSetWithArray:elementsArray];
+}
+
+- (UIView *)createBlurredBackgroundView
+{
+    UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+    UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
+    UIView *backgroundView = blurEffectView;
+    [self.view addSubview:backgroundView];
+    [self.view sendSubviewToBack:backgroundView];
+    [self.view v_addFitToParentConstraintsToSubview:backgroundView];
+    return backgroundView;
 }
 
 - (void)dealloc
@@ -118,7 +146,7 @@
     self.navigationController.navigationBar.translucent = YES;
     [self.navigationController setNavigationBarHidden:NO animated:NO];
     
-    UIImage    *cancelButtonImage = [[UIImage imageNamed:@"cameraButtonClose"]  imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    UIImage *cancelButtonImage = [[UIImage imageNamed:@"cameraButtonClose"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:cancelButtonImage style:UIBarButtonItemStylePlain target:self action:@selector(closeButtonClicked:)];
     
     self.navigationController.delegate = self;
@@ -127,6 +155,8 @@
     {
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginDidShow];
     }
+    
+    self.navigationController.navigationBar.barStyle = UIBarStyleBlack;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -148,11 +178,6 @@
 - (NSUInteger)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskPortrait;
-}
-
-- (BOOL)prefersStatusBarHidden
-{
-    return YES;
 }
 
 #pragma mark - CCHLinkTextViewDelegate

@@ -471,6 +471,7 @@
 		A7B514551A4517A80074282F /* VSwipeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B514501A4517A80074282F /* VSwipeViewController.m */; };
 		A7B514561A4517A80074282F /* VUtilityButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B514521A4517A80074282F /* VUtilityButtonCell.m */; };
 		A7B514581A464E770074282F /* VUtilityButtonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7B514571A464E770074282F /* VUtilityButtonCell.xib */; };
+		A7B89EF01AA7B26A00475CC2 /* VPresentWithBlurTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B89EEF1AA7B26A00475CC2 /* VPresentWithBlurTransition.m */; };
 		A7B98A331A251D7D00C58335 /* VTestHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B98A321A251D7D00C58335 /* VTestHelpers.m */; };
 		A7B98A3D1A264D0900C58335 /* VNotificationSettingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B98A381A264D0900C58335 /* VNotificationSettingCell.m */; };
 		A7B98A3E1A264D0900C58335 /* VNotificationSettingsTableSection.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B98A3A1A264D0900C58335 /* VNotificationSettingsTableSection.m */; };
@@ -1542,6 +1543,8 @@
 		A7B514521A4517A80074282F /* VUtilityButtonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUtilityButtonCell.m; sourceTree = "<group>"; };
 		A7B514571A464E770074282F /* VUtilityButtonCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VUtilityButtonCell.xib; sourceTree = "<group>"; };
 		A7B5532F9C5AF61978DBF51E /* libPods-victorious.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-victorious.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A7B89EEE1AA7B26A00475CC2 /* VPresentWithBlurTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPresentWithBlurTransition.h; sourceTree = "<group>"; };
+		A7B89EEF1AA7B26A00475CC2 /* VPresentWithBlurTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPresentWithBlurTransition.m; sourceTree = "<group>"; };
 		A7B98A311A251D7D00C58335 /* VTestHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VTestHelpers.h; path = "Test Helpers/VTestHelpers.h"; sourceTree = "<group>"; };
 		A7B98A321A251D7D00C58335 /* VTestHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VTestHelpers.m; path = "Test Helpers/VTestHelpers.m"; sourceTree = "<group>"; };
 		A7B98A371A264D0900C58335 /* VNotificationSettingCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNotificationSettingCell.h; sourceTree = "<group>"; };
@@ -3554,6 +3557,8 @@
 				A7738B091A4A3744008EA973 /* VAnimatedTransition.h */,
 				A708C9591A8067B9000EE1EE /* VContentRepopulateTransition.h */,
 				A708C95A1A8067B9000EE1EE /* VContentRepopulateTransition.m */,
+				A7B89EEE1AA7B26A00475CC2 /* VPresentWithBlurTransition.h */,
+				A7B89EEF1AA7B26A00475CC2 /* VPresentWithBlurTransition.m */,
 				DB2D6F9D1A802B080050F963 /* VSearchResultsTransition.h */,
 				DB2D6F9E1A802B080050F963 /* VSearchResultsTransition.m */,
 				A7738B001A4A35DF008EA973 /* VSimpleModalTransition.h */,
@@ -5523,6 +5528,7 @@
 				A7AEF9AD1A83F1C300A3D3A0 /* VStreamCollectionCellWebContent.m in Sources */,
 				0314D49619B46B5E00FA363C /* VResultView.m in Sources */,
 				D80A94E61A546DF90035D788 /* VAssetThumbnailDataSource.m in Sources */,
+				A7B89EF01AA7B26A00475CC2 /* VPresentWithBlurTransition.m in Sources */,
 				A75FAF1F19E8AC1E00EB87C1 /* VDiscoverTableHeaderViewController.m in Sources */,
 				BE11447919D49AA4006A6D65 /* VMarqueeStreamItemCell.m in Sources */,
 				A761C9D41A48B1E500F0D0F9 /* UIView+AutoLayout.m in Sources */,

@@ -7,6 +7,8 @@
 //
 
 #import "VAuthorizationViewController.h"
+#import "VTransitionDelegate.h"
+#import "VPresentWithBlurTransition.h"
 
 typedef NS_ENUM(NSUInteger, VLoginType)
 {
@@ -16,10 +18,27 @@ typedef NS_ENUM(NSUInteger, VLoginType)
     kVLoginTypeTwitter,
 };
 
-@interface VLoginViewController : UIViewController <VAuthorizationViewController>
+@interface VLoginViewController : UIViewController <VAuthorizationViewController, VPresentWithBlurViewController>
 
 @property (nonatomic, strong) void (^authorizationCompletionAction)();
 
+@property (nonatomic, strong) VTransitionDelegate *transitionDelegate;
+
 + (VLoginViewController *)loginViewController;
+
+/**
+ VPresentWithBlurViewController
+ */
+@property (nonatomic, strong) UIView *blurredBackgroundView;
+
+/**
+ VPresentWithBlurViewController
+ */
+@property (nonatomic, strong) IBOutlet UIView *contentContainer;
+
+/**
+ VPresentWithBlurViewController
+ */
+@property (nonatomic, strong) NSOrderedSet *stackedElements;
 
 @end

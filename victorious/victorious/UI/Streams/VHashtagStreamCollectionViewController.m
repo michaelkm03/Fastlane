@@ -129,8 +129,9 @@
 
 - (void)toggleFollowHashtag
 {
-    VAuthorization *authorization = [[VAuthorization alloc] initWithObjectManager:[VObjectManager sharedManager]];
-    [authorization performAuthorizedAction:^
+    VAuthorization *authorization = [[VAuthorization alloc] initWithObjectManager:[VObjectManager sharedManager]
+                                                                dependencyManager:self.dependencyManager];
+    [authorization performAuthorizedActionFromViewController:self withSuccess:^void
      {
          if ( self.isFollowingSelectedHashtag )
          {
@@ -140,10 +141,6 @@
          {
              [self followHashtag];
          }
-     }
-                                   failure:^(UIViewController *authorizationViewController)
-     {
-         [self presentViewController:authorizationViewController animated:YES completion:nil];
      }];
 }
 
