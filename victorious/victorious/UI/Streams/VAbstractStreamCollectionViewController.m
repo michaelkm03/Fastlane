@@ -281,7 +281,7 @@ const CGFloat kVLoadNextPagePoint = .75f;
 {
     const BOOL isLastSection = section == MAX( [self.collectionView numberOfSections] - 1, 0);
     const BOOL hasOneOrMoreItems = [collectionView numberOfItemsInSection:section] > 1;
-    return isLastSection && hasOneOrMoreItems;
+    return isLastSection && hasOneOrMoreItems && [self.streamDataSource filterCanLoadNextPage];
 }
 
 - (BOOL)shouldAnimateActivityViewFooter
