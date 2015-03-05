@@ -26,6 +26,7 @@
 @property (nonatomic, strong) VStream *stream;
 @property (nonatomic, strong) VStreamCollectionViewDataSource *streamDataSource;
 @property (nonatomic, strong) VStreamItem *currentStreamItem;
+@property (nonatomic, assign) NSInteger currentPage;
 
 @property (nonatomic, strong) NSTimer *autoScrollTimer;
 
@@ -48,6 +49,7 @@
         self.streamDataSource.delegate = self;
         self.streamDataSource.collectionView = self.collectionView;
         self.collectionView.dataSource = self.streamDataSource;
+        self.currentPage = 0;
     }
     return self;
 }
@@ -134,17 +136,20 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     CGFloat pageWidth = self.collectionView.frame.size.width;
-    NSUInteger currentPage = self.collectionView.contentOffset.x / pageWidth;
-    if (currentPage < self.streamDataSource.count)
+    NSInteger currentPage = self.collectionView.contentOffset.x / pageWidth;
+    if ( currentPage != self.currentPage )
     {
-        [self scrolledToPage:currentPage];
+        self.currentPage = currentPage;
+        if ( (NSUInteger) self.currentPage < self.streamDataSource.count )
+        {
+            [self scrolledToPage:self.currentPage];
+        }
     }
 }
 
 - (void)disableTimer
 {
     [self.autoScrollTimer invalidate];
-    //Hide all detail boxes here
 }
 
 - (void)enableTimer
@@ -155,6 +160,10 @@
                                                           selector:@selector(selectNextTab)
                                                           userInfo:nil
                                                            repeats:NO];
+    if ( self.currentPage < [[self streamDataSource] collectionView:self.collectionView numberOfItemsInSection:0] )
+    {
+        [(VMarqueeStreamItemCell *)[self dataSource:self.streamDataSource cellForIndexPath:[NSIndexPath indexPathForRow:self.currentPage inSection:0]] setDetailsContainerVisible:YES animated:NO];
+    }
 }
 
 #pragma mark - VMarqueeCellDelegate

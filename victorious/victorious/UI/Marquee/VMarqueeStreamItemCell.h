@@ -29,6 +29,8 @@ extern CGFloat const kVDetailHideDuration;
  */
 @interface VMarqueeStreamItemCell : UICollectionViewCell <VSharedCollectionReusableViewMethods>
 
+- (void)setDetailsContainerVisible:(BOOL)visible animated:(BOOL)animated;
+
 @property (nonatomic, strong) VStreamItem *streamItem; ///<Stream item to display
 @property (nonatomic, weak) id<VMarqueeCellDelegate> delegate;
 @property (nonatomic, weak, readonly) UIImageView *previewImageView;

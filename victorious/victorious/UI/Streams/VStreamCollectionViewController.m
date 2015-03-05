@@ -194,6 +194,15 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
     {
         [self refresh:self.refreshControl];
     }
+    
+    if ( self.marquee != nil )
+    {
+        /*
+         Need to restart the timer to make sure the marquee continues to rotate after it's timer
+         has been invalidated by the presentation of another view controller
+         */
+        [self.marquee enableTimer];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
