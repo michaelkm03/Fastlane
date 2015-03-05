@@ -36,10 +36,10 @@
 
 const CGFloat kVLoadNextPagePoint = .75f;
 
-@interface VAbstractStreamCollectionViewController ()
+@interface VAbstractStreamCollectionViewController () <VScrollPaginatorDelegate>
 
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
-@property (nonatomic, weak) IBOutlet VScrollPaginator *scrollPaginator;
+@property (nonatomic, strong) VScrollPaginator *scrollPaginator;
 @property (nonatomic, strong) UIActivityIndicatorView *bottomActivityIndicator;
 
 @property (nonatomic, strong) VImageSearchResultsFooterView *refreshFooter;
@@ -79,6 +79,8 @@ const CGFloat kVLoadNextPagePoint = .75f;
 
 - (void)commonInit
 {
+    self.scrollPaginator = [[VScrollPaginator alloc] init];
+    self.scrollPaginator.delegate = self;
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.extendedLayoutIncludesOpaqueBars = YES;
     self.navigationBarShouldAutoHide = YES;
