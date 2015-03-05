@@ -54,11 +54,9 @@ static NSString * const VOriginalFont = @"NSOriginalFont";
         _defaultFont = defaultFont;
         BOOL hasTextView = _textView != nil;
         
-        //If passed in a textview, add our layout manager to its layout managers
         if ( hasTextView )
         {
-            [self addLayoutManager:_textView.layoutManager];
-            [self updateTypingAttributes];
+            [self setupTextView:_textView];
         }
         
         NSString *string = _textView.text;
@@ -80,14 +78,21 @@ static NSString * const VOriginalFont = @"NSOriginalFont";
 - (void)setTextView:(UITextView *)textView
 {
     _textView = textView;
-    [self updateTypingAttributes];
+    [self setupTextView:_textView];
 }
 
-- (void)updateTypingAttributes
+- (void)setupTextView:(UITextView *)textView
 {
-    NSMutableDictionary *typingAttributes = [self.textView.typingAttributes mutableCopy];
+    //Add layout manager if needed
+    if ( ![self.layoutManagers containsObject:textView.layoutManager] )
+    {
+        [self addLayoutManager:_textView.layoutManager];
+    }
+    
+    //Update the typing attributes to include the fixed-height paragraphStyle
+    NSMutableDictionary *typingAttributes = [textView.typingAttributes mutableCopy];
     [typingAttributes setValue:self.paragraphStyle forKey:NSParagraphStyleAttributeName];
-    [self.textView setTypingAttributes:typingAttributes];
+    [textView setTypingAttributes:typingAttributes];
 }
 
 - (void)setState:(NSInteger)state
@@ -131,7 +136,11 @@ static NSString * const VOriginalFont = @"NSOriginalFont";
 
 - (NSDictionary *)attributesAtIndex:(NSUInteger)location effectiveRange:(NSRangePointer)range
 {
-    return [self.displayStorage attributesAtIndex:location effectiveRange:range];
+    if ( location < self.displayStorage.length )
+    {
+        return [self.displayStorage attributesAtIndex:location effectiveRange:range];
+    }
+    return nil;
 }
 
 #pragma mark - NSMutableAttributedString primatives
@@ -226,7 +235,6 @@ static NSString * const VOriginalFont = @"NSOriginalFont";
     [self edited:NSTextStorageEditedCharacters range:range changeInLength:(string.length - range.length)];
 }
 
-
 - (void)setAttributes:(NSDictionary *)attrs range:(NSRange)range
 {
     if ( self.needsSelectionUpdate )
@@ -311,6 +319,12 @@ static NSString * const VOriginalFont = @"NSOriginalFont";
     if ( self.needsSelectionUpdate )
     {
         self.textView.selectedRange = self.tagSelectionRange;
+        
+        /*
+         We've just updated the cursor location because of tag interaction
+         All prior undo actions will be trying to edit the wrong section of our attributedString, remove them to prevent crashes
+         */
+        [self.textView.undoManager removeAllActions];
     }
     else if ( self.textView.selectedRange.location > self.displayStorage.length )
     {
