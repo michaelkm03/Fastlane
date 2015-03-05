@@ -12,7 +12,6 @@
 #import "VSequence+Fetcher.h"
 #import "UIImage+ImageEffects.h"
 #import "VCVideoPlayerViewController.h"
-#import "VContentViewRotationHelper.h"
 #import "VTemplateGenerator.h"
 #import "VActivityIndicatorView.h"
 #import "VObjectManager+Sequence.h"
@@ -25,32 +24,18 @@ NSString * const kFTUSequenceURLPath = @"sequenceUrlPath";
 
 @interface VFirstTimeUserVideoViewController () <VCVideoPlayerDelegate>
 
-@property (strong, nonatomic) IBOutletCollection(NSLayoutConstraint) NSArray *portraitConstraints;
-@property (strong, nonatomic) IBOutletCollection(NSLayoutConstraint) NSArray *landscapeConstraints;
+@property (nonatomic, strong) IBOutletCollection(NSLayoutConstraint) NSArray *portraitConstraints;
+@property (nonatomic, strong) IBOutletCollection(NSLayoutConstraint) NSArray *landscapeConstraints;
 
 @property (nonatomic, weak) IBOutlet VButton *getStartedButton;
 @property (nonatomic, weak) IBOutlet UIImageView *backgroundImageView;
 @property (nonatomic, weak) IBOutlet UIActivityIndicatorView *activityIndicator;
-@property (nonatomic, weak) IBOutlet UIView *videoPlayerView;
-@property (weak, nonatomic) IBOutlet UIView *containerView;
-
-//@property (nonatomic, strong) NSLayoutConstraint *videoPortraitCenterConstraint;
-//
-//@property (nonatomic, strong) NSLayoutConstraint *videoTopPortraitLayoutConstraint;
-//@property (nonatomic, strong) NSLayoutConstraint *videoBottomPortraitLayoutConstraint;
-//@property (nonatomic, strong) NSLayoutConstraint *videoLeftPortraitLayoutConstraint;
-//@property (nonatomic, strong) NSLayoutConstraint *videoRightPortraitLayoutConstraint;
-//
-//@property (nonatomic, strong) NSLayoutConstraint *videoTopLandscapeLayoutConstraint;
-//@property (nonatomic, strong) NSLayoutConstraint *videoBottomLandscapeLayoutConstraint;
-//@property (nonatomic, strong) NSLayoutConstraint *videoLeftLandscapeLayoutConstraint;
-//@property (nonatomic, strong) NSLayoutConstraint *videoRightLandscapeLayoutConstraint;
+@property (nonatomic, weak) IBOutlet UIView *containerView;
 
 @property (nonatomic, assign) CGRect portraitFrame;
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VCVideoPlayerViewController *videoPlayerViewController;
-//@property (nonatomic, strong) VContentViewRotationHelper *rotationHelper;
 
 @property (nonatomic, strong) NSURL *mediaUrl;
 
