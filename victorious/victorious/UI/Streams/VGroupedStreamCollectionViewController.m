@@ -1,12 +1,12 @@
 //
-//  VDirectoryBrowserViewController.m
+//  VGroupedStreamCollectionViewController.m
 //  victorious
 //
 //  Created by Sharif Ahmed on 2/20/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VDirectoryBrowserViewController.h"
+#import "VGroupedStreamCollectionViewController.h"
 
 // Data Source
 #import "VStreamCollectionViewDataSource.h"
@@ -37,19 +37,19 @@ static NSString * const kBackgroundColor = @"backgroundColor";
 
 static CGFloat const kDirectoryInset = 5.0f;
 
-@interface VDirectoryBrowserViewController () <UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, VStreamCollectionDataDelegate, VDirectoryGroupCellDelegate>
+@interface VGroupedStreamCollectionViewController () <UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, VStreamCollectionDataDelegate, VDirectoryGroupCellDelegate>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end
 
-@implementation VDirectoryBrowserViewController
+@implementation VGroupedStreamCollectionViewController
 
 #pragma mark - Initializers
 
 + (instancetype)streamDirectoryForStream:(VStream *)stream dependencyManager:(VDependencyManager *)dependencyManager
 {
-    VDirectoryBrowserViewController *streamDirectory = [[VDirectoryBrowserViewController alloc] initWithNibName:nil
+    VGroupedStreamCollectionViewController *streamDirectory = [[VGroupedStreamCollectionViewController alloc] initWithNibName:nil
                                                                                                          bundle:nil];
     streamDirectory.currentStream = stream;
     streamDirectory.title = stream.name;
@@ -129,7 +129,7 @@ static CGFloat const kDirectoryInset = 5.0f;
     }
     else if ([item isKindOfClass:[VStream class]])
     {
-        VDirectoryBrowserViewController *sos = [VDirectoryBrowserViewController streamDirectoryForStream:(VStream *)item dependencyManager:self.dependencyManager];
+        VGroupedStreamCollectionViewController *sos = [VGroupedStreamCollectionViewController streamDirectoryForStream:(VStream *)item dependencyManager:self.dependencyManager];
         sos.dependencyManager = self.dependencyManager;
         [self.navigationController pushViewController:sos animated:YES];
     }
@@ -181,7 +181,7 @@ static CGFloat const kDirectoryInset = 5.0f;
     {
         //Push a new directory view controller to show all contents of the selected streamItem
         VStream *stream = [self.currentStream.streamItems objectAtIndex:[self.collectionView indexPathForCell:groupCell].row];
-        VDirectoryBrowserViewController *directoryViewController = [VDirectoryBrowserViewController streamDirectoryForStream:stream dependencyManager:self.dependencyManager];
+        VGroupedStreamCollectionViewController *directoryViewController = [VGroupedStreamCollectionViewController streamDirectoryForStream:stream dependencyManager:self.dependencyManager];
         directoryViewController.dependencyManager = self.dependencyManager;
         [self.navigationController pushViewController:directoryViewController animated:YES];
     }
@@ -203,7 +203,7 @@ static CGFloat const kDirectoryInset = 5.0f;
         }
         else if ( streamItem.isStreamOfStreams )
         {
-            VDirectoryBrowserViewController *viewController = [VDirectoryBrowserViewController streamDirectoryForStream:(VStream *)streamItem
+            VGroupedStreamCollectionViewController *viewController = [VGroupedStreamCollectionViewController streamDirectoryForStream:(VStream *)streamItem
                                                                                         dependencyManager:self.dependencyManager];
             [self.navigationController pushViewController:viewController animated:YES];
         }

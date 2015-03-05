@@ -4,7 +4,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="VDirectoryBrowserViewController">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="VGroupedStreamCollectionViewController">
             <connections>
                 <outlet property="collectionView" destination="N8j-EA-VXD" id="JJb-7d-Dio"/>
                 <outlet property="view" destination="dRa-Ez-NPu" id="Ogd-Uc-eKw"/>

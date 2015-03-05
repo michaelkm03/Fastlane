@@ -579,12 +579,12 @@ static NSString * const kVideoMuted = @"videoMuted";
     NSNumber *channelsEnabled = [self.dataFromInitCall valueForKeyPath:@"experiments.channels_enabled"];
     if ([channelsEnabled isKindOfClass:[NSNumber class]] && [channelsEnabled boolValue])
     {
-        if ( YES )
+        if ( NO )
         {
             NSDictionary *componentBase = @{ kIdentifierKey: @"Menu Channels",
                                              kTitleKey: NSLocalizedString(@"Channels", @""),
                                              kDestinationKey: @{
-                                                     kClassNameKey: @"directoryBrowser.screen",
+                                                     kClassNameKey: @"groupedStream.screen",
                                                      kTitleKey: NSLocalizedString(@"Channels", nil),
                                                      VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/detail_list_by_stream/directory/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%"
                                                      }
