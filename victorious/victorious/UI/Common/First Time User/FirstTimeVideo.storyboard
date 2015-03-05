@@ -34,28 +34,24 @@
                                     <action selector="getStartedButtonAction:" destination="eLl-qp-GRA" eventType="touchUpInside" id="hhc-2i-SbS"/>
                                 </connections>
                             </button>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="rg4-dB-97K">
+                                <rect key="frame" x="282" y="281" width="37" height="37"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailingMargin" secondItem="WaD-Bc-zOl" secondAttribute="trailing" constant="-16" id="1VB-KY-Mxp"/>
                             <constraint firstItem="WaD-Bc-zOl" firstAttribute="top" secondItem="RlJ-HE-p9L" secondAttribute="bottom" constant="-20" id="5Tp-XU-OAn"/>
-                            <constraint firstItem="mT9-B7-VTY" firstAttribute="top" secondItem="oJA-97-ssS" secondAttribute="bottom" constant="47" id="C9t-Ly-PyY"/>
-                            <constraint firstItem="oJA-97-ssS" firstAttribute="centerX" secondItem="WaD-Bc-zOl" secondAttribute="centerX" id="NAc-PP-Ne3"/>
                             <constraint firstItem="WaD-Bc-zOl" firstAttribute="leading" secondItem="lnt-Ok-t9O" secondAttribute="leadingMargin" constant="-16" id="Y19-fR-XQg"/>
+                            <constraint firstItem="WaD-Bc-zOl" firstAttribute="centerX" secondItem="rg4-dB-97K" secondAttribute="centerX" constant="-0.5" id="iPI-Nv-7LH"/>
                             <constraint firstItem="mT9-B7-VTY" firstAttribute="top" secondItem="WaD-Bc-zOl" secondAttribute="bottom" id="kMC-Sf-ogo"/>
                             <constraint firstAttribute="centerX" secondItem="oJA-97-ssS" secondAttribute="centerX" id="rR4-0J-01m"/>
-                            <constraint firstItem="oJA-97-ssS" firstAttribute="top" secondItem="RlJ-HE-p9L" secondAttribute="bottom" constant="483" id="uTR-Mv-hIa"/>
+                            <constraint firstItem="WaD-Bc-zOl" firstAttribute="centerY" secondItem="rg4-dB-97K" secondAttribute="centerY" constant="0.5" id="wvw-8C-MmE"/>
                             <constraint firstItem="mT9-B7-VTY" firstAttribute="top" secondItem="oJA-97-ssS" secondAttribute="bottom" constant="47" id="z6C-Re-3Mg"/>
                         </constraints>
-                        <variation key="default">
-                            <mask key="constraints">
-                                <exclude reference="NAc-PP-Ne3"/>
-                                <exclude reference="uTR-Mv-hIa"/>
-                                <exclude reference="C9t-Ly-PyY"/>
-                            </mask>
-                        </variation>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="rg4-dB-97K" id="ycB-mN-5m9"/>
                         <outlet property="backgroundImageView" destination="WaD-Bc-zOl" id="brd-qM-yfm"/>
                         <outlet property="getStartedButton" destination="oJA-97-ssS" id="LuA-yp-Snk"/>
                     </connections>
