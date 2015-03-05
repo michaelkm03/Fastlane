@@ -210,7 +210,6 @@
     {
         return NO;
     }
-        
     UIColor *textColor = [attributedString attribute:NSForegroundColorAttributeName atIndex:index longestEffectiveRange:range inRange:NSMakeRange(0, attributedString.length)];
     NSString *key = [attributedString.string substringWithRange:*range];
     VTag *tag = [tagDictionary tagForKey:key];

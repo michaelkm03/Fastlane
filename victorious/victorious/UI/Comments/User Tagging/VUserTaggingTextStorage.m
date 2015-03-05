@@ -22,6 +22,7 @@ typedef NS_ENUM(NSInteger, VUserTaggingTextStorageState)
 
 static NSString * const kTriggerCharacter = @"@";
 static NSString * const kThreeSpaces = @"   ";
+static NSString * const VOriginalFont = @"NSOriginalFont";
 
 @interface VUserTaggingTextStorage () <VInlineSearchTableViewControllerDelegate>
 
@@ -257,7 +258,7 @@ static NSString * const kThreeSpaces = @"   ";
          The attributes want to specify a new foreground font, which is fine, but we need to add the original font
          to the dictionary so when the next character is added we know what font it should have
          */
-        [updatedAttrs setValue:self.defaultFont forKey:@"NSOriginalFont"];
+        [updatedAttrs setValue:self.defaultFont forKey:VOriginalFont];
     }
     else
     {
