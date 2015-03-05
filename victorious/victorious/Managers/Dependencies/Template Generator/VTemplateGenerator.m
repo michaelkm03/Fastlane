@@ -19,7 +19,8 @@
 #import "VSolidColorBackground.h"
 #import "VTabMenuViewController.h"
 
-#define BOTTOM_NAV_ENABLED 0
+#define BOTTOM_NAV_ENABLED 1
+#define CHANNELS_WITH_GROUP_STREAM_ENABLED 1
 
 static NSString * const kIDKey = @"id";
 static NSString * const kReferenceIDKey = @"referenceID";
@@ -584,66 +585,72 @@ static NSString * const kVideoMuted = @"videoMuted";
 
 - (NSDictionary *)ownerStreamMenuItem
 {
-    NSNumber *channelsEnabled = [self.dataFromInitCall valueForKeyPath:@"experiments.channels_enabled"];
-    if ([channelsEnabled isKindOfClass:[NSNumber class]] && [channelsEnabled boolValue])
+    NSNumber *channelsEnabledObject = [self.dataFromInitCall valueForKeyPath:@"experiments.channels_enabled"];
+    const BOOL channelsEnabled = [channelsEnabledObject isKindOfClass:[NSNumber class]] && [channelsEnabledObject boolValue];
+    
+    if ( CHANNELS_WITH_GROUP_STREAM_ENABLED && channelsEnabled )
     {
-        if ( NO )
-        {
-            NSDictionary *componentBase = @{ kIdentifierKey: @"Menu Channels",
-                                             kTitleKey: NSLocalizedString(@"Channels", @""),
-                                             kDestinationKey: @{
-                                                     kClassNameKey: @"groupedStream.screen",
-                                                     kTitleKey: NSLocalizedString(@"Channels", nil),
-                                                     VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/detail_list_by_stream/directory/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%"
-                                                     }
-                                             };
-            NSMutableDictionary *completeComponent = [[NSMutableDictionary alloc] initWithDictionary:componentBase];
-            [completeComponent addEntriesFromDictionary:[self directoryComponentLight]];
-            return [NSDictionary dictionaryWithDictionary:completeComponent];
-        }
-        else
-        {
-            return @{ kIdentifierKey: @"Menu Channels",
-                      kTitleKey: NSLocalizedString(@"Channels", @""),
-                      kDestinationKey: @{
-                              kClassNameKey: @"directory.screen",
-                              kTitleKey: NSLocalizedString(@"Channels", nil),
-                              VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/detail_list_by_stream/directory/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%"
-                              },
-                      kBackgroundColor: @{
-                              kRedKey: @0,
-                              kGreenKey: @0,
-                              kBlueKey: @0,
-                              kAlphaKey: @1
-                              },
-                      kCellComponentDirectoryItem: [self directoryCellComponentDark]
-                      };
-        }
+        NSDictionary *componentBase = @{ kIdentifierKey: @"Menu Channels",
+                                         kTitleKey: NSLocalizedString(@"Channels", @""),
+                                         kIconKey: @{
+                                                 VDependencyManagerImageURLKey: @"channels",
+                                                 },
+                                         kDestinationKey: @{
+                                                 kClassNameKey: @"groupedStream.screen",
+                                                 kTitleKey: NSLocalizedString(@"Channels", nil),
+                                                 VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/detail_list_by_stream/directory/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%"
+                                                 }
+                                         };
+        NSMutableDictionary *completeComponent = [[NSMutableDictionary alloc] initWithDictionary:componentBase];
+        [completeComponent addEntriesFromDictionary:[self directoryComponentLight]];
+        return [NSDictionary dictionaryWithDictionary:completeComponent];
+    }
+    else if ( channelsEnabled )
+    {
+        return @{ kIdentifierKey: @"Menu Channels",
+                  kTitleKey: NSLocalizedString(@"Channels", @""),
+                  kIconKey: @{
+                          VDependencyManagerImageURLKey: @"channels",
+                          },
+                  kDestinationKey: @{
+                          kClassNameKey: @"directory.screen",
+                          kTitleKey: NSLocalizedString(@"Channels", nil),
+                          VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/detail_list_by_stream/directory/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%"
+                          },
+                  kBackgroundColor: @{
+                          kRedKey: @0,
+                          kGreenKey: @0,
+                          kBlueKey: @0,
+                          kAlphaKey: @1
+                          },
+                  kCellComponentDirectoryItem: [self directoryCellComponentDark]
+                  };
     }
     else
     {
-        return @{
-            kIdentifierKey: @"Menu Channel",
-            kTitleKey: NSLocalizedString(@"Channel", @""),
-            kIconKey: @"channels",
-            kCellComponentDirectoryItem: [self directoryCellComponentLight],
-            kDestinationKey: @{
-                kClassNameKey: @"basic.multiScreen",
-                kTitleKey: NSLocalizedString(@"Owner", @""),
-                kScreensKey: @[
-                    @{
-                        kClassNameKey: @"stream.screen",
-                        kTitleKey: NSLocalizedString(@"Featured", @""),
-                        VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/hot_detail_list_by_stream/owner/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%"
-                    },
-                    @{
-                        kClassNameKey: @"stream.screen",
-                        kInitialKey: @YES,
-                        kTitleKey: NSLocalizedString(@"Recent", @""),
-                        VStreamCollectionViewControllerStreamURLPathKey: [self urlPathForStreamCategories:VOwnerCategories()],
-                    }
-                ]
-            }
+        return @{ kIdentifierKey: @"Menu Channel",
+                  kTitleKey: NSLocalizedString(@"Channel", @""),
+                  kIconKey: @{
+                          VDependencyManagerImageURLKey: @"channels",
+                          },
+                  kCellComponentDirectoryItem: [self directoryCellComponentLight],
+                  kDestinationKey: @{
+                          kClassNameKey: @"basic.multiScreen",
+                          kTitleKey: NSLocalizedString(@"Owner", @""),
+                          kScreensKey: @[
+                                  @{
+                                      kClassNameKey: @"stream.screen",
+                                      kTitleKey: NSLocalizedString(@"Featured", @""),
+                                      VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/hot_detail_list_by_stream/owner/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%"
+                                      },
+                                  @{
+                                      kClassNameKey: @"stream.screen",
+                                      kInitialKey: @YES,
+                                      kTitleKey: NSLocalizedString(@"Recent", @""),
+                                      VStreamCollectionViewControllerStreamURLPathKey: [self urlPathForStreamCategories:VOwnerCategories()],
+                                      }
+                                  ]
+                          }
         };
     }
 }
