@@ -79,18 +79,27 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
 
 - (void)showWebContentWithSequence:(VSequence *)sequence
 {
-    VWebBrowserViewController *viewController = [VWebBrowserViewController instantiateFromStoryboard];
-    viewController.sequence = sequence;
-    [self presentViewController:viewController
-                       animated:YES
-                     completion:^(void)
+    NSURL *sequenceContentURL = [NSURL URLWithString:sequence.webContentUrl];
+    const BOOL isCustomScheme = [sequenceContentURL.scheme rangeOfString:@"http"].location != 0;
+    if ( isCustomScheme && [[UIApplication sharedApplication] canOpenURL:sequenceContentURL] )
     {
-        // Track view-start event, similar to how content is tracking in VNewContentViewController when loaded
-        NSDictionary *params = @{ VTrackingKeyTimeCurrent : [NSDate date],
-                                  VTrackingKeySequenceId : sequence.remoteId,
-                                  VTrackingKeyUrls : sequence.tracking.viewStart ?: @[] };
-        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
-    }];
+        [[UIApplication sharedApplication] openURL:sequenceContentURL];
+    }
+    else
+    {
+        VWebBrowserViewController *viewController = [VWebBrowserViewController instantiateFromStoryboard];
+        viewController.sequence = sequence;
+        [self presentViewController:viewController
+                           animated:YES
+                         completion:^(void)
+         {
+             // Track view-start event, similar to how content is tracking in VNewContentViewController when loaded
+             NSDictionary *params = @{ VTrackingKeyTimeCurrent : [NSDate date],
+                                       VTrackingKeySequenceId : sequence.remoteId,
+                                       VTrackingKeyUrls : sequence.tracking.viewStart ?: @[] };
+             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
+         }];
+    }
 }
 
 #pragma mark - Deeplinks
@@ -201,10 +210,20 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
 
 - (void)navigateToDestination:(id)navigationDestination
 {
+    [self navigateToDestination:navigationDestination completion:nil];
+}
+
+- (void)navigateToDestination:(id)navigationDestination completion:(void(^)())completion
+{
     void (^goTo)(UIViewController *) = ^(UIViewController *viewController)
     {
         NSAssert([viewController isKindOfClass:[UIViewController class]], @"non-UIViewController specified as destination for navigation");
         [self displayResultOfNavigation:viewController];
+        
+        if ( completion != nil )
+        {
+            completion();
+        }
     };
     
     if ([navigationDestination respondsToSelector:@selector(shouldNavigateWithAlternateDestination:)])
@@ -218,7 +237,7 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
             }
             else
             {
-                [self navigateToDestination:alternateDestination];
+                [self navigateToDestination:alternateDestination completion:completion];
             }
         }
     }

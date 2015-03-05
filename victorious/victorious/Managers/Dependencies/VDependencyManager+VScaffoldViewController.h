@@ -30,6 +30,14 @@ extern NSString * const VScaffoldViewControllerNavigationBarAppearanceKey;
 - (void)applyStyleToNavigationBar:(UINavigationBar *)navigationBar;
 
 /**
+ Returns a set of extra dependencies that provide style
+ information for navigation bar elements. (To use this
+ dictionary, pass it as the last parameter to
+ -templateValueOfType:forKey:withAddedDependencies:
+ */
+- (NSDictionary *)styleDictionaryForNavigationBar;
+
+/**
  Returns a dependency manager that provides style 
  information for navigation bar elements.
  */

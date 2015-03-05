@@ -14,7 +14,7 @@
 
 @property (nonatomic, weak) UIImageView *animationImageView;
 @property (nonatomic, strong) VEndCardViewController *endCardViewController;
-@property (nonatomic, strong) CADisplayLink *displayLink;
+@property (nonatomic, weak) CADisplayLink *displayLink;
 
 @end
 
@@ -60,7 +60,7 @@
 {
     if ( self.displayLink != nil )
     {
-        [self.displayLink removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
+        [self.displayLink invalidate];
     }
 }
 
@@ -93,7 +93,7 @@
     }
     else
     {
-        [self.displayLink removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
+        [self.displayLink invalidate];
         self.displayLink = nil;
     }
 }

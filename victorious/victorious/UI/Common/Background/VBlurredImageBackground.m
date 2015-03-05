@@ -10,8 +10,7 @@
 #import "VDependencyManager.h"
 #import "UIImageView+Blurring.h"
 
-NSString *VBlurredImageBackgroundImageToBlurKey = @"VBlurredImageBackgroundImageToBlurKey";
-static NSString *const kImageKey;
+NSString * const VBlurredImageBackgroundImageToBlurKey = @"image";
 
 @interface VBlurredImageBackground ()
 
@@ -26,8 +25,7 @@ static NSString *const kImageKey;
     self = [super initWithDependencyManager:dependencyManager];
     if (self)
     {
-        _imageToBlur = [dependencyManager templateValueOfType:[UIImage class]
-                                                       forKey:kImageKey];
+        _imageToBlur = [dependencyManager imageForKey:VBlurredImageBackgroundImageToBlurKey];
     }
     return self;
 }

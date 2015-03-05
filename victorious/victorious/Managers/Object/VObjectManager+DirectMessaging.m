@@ -183,6 +183,8 @@ static NSString * const kUnreadCountKey = @"unread_count";
         return nil;
     }
     
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidFlagConversation];
+    
     VMessage *latestMessage = [conversation.messages lastObject];
     if (!latestMessage)
     {

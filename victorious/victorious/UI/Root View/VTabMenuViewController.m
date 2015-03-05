@@ -80,11 +80,22 @@ NSString * const VTabMenuViewControllerMenuAppearanceKey = @"menuAppearance";
 
 - (NSUInteger)supportedInterfaceOrientations
 {
-    if (self.internalTabBarViewController.selectedViewController != nil)
-    {
-        [self.internalTabBarViewController.selectedViewController supportedInterfaceOrientations];
-    }
     return UIInterfaceOrientationMaskPortrait;
+}
+
+- (UIViewController *)childViewControllerForStatusBarStyle
+{
+    return self.tabBarController.selectedViewController;
+}
+
+- (UIViewController *)childViewControllerForStatusBarHidden
+{
+    return self.tabBarController.selectedViewController;
+}
+
+- (UIStatusBarAnimation)preferredStatusBarUpdateAnimation
+{
+    return [self.tabBarController.selectedViewController preferredStatusBarUpdateAnimation];
 }
 
 #pragma mark - UITabBarControllerDelegate
@@ -114,6 +125,7 @@ shouldSelectViewController:(VNavigationDestinationContainerViewController *)view
             [self.willSelectContainerViewController setContainedViewController:navigationController];
         }
         [self.internalTabBarViewController setSelectedViewController:self.willSelectContainerViewController];
+        [self setNeedsStatusBarAppearanceUpdate];
         self.willSelectContainerViewController = nil;
         return;
     }

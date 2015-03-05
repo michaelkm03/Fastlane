@@ -8,12 +8,6 @@
 
 #import "VNavigationDestinationContainerViewController.h"
 
-@interface VNavigationDestinationContainerViewController ()
-
-@property (nonatomic, strong, readwrite) id <VNavigationDestination> navigationDestination;
-
-@end
-
 @implementation VNavigationDestinationContainerViewController
 
 #pragma mark - Initializers
@@ -29,7 +23,7 @@
     return self;
 }
 
-#pragma mark - UIViewController view lifecycle
+#pragma mark - UIViewController
 
 - (void)loadView
 {
@@ -42,7 +36,23 @@
         self.containedViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         [self.view addSubview:self.containedViewController.view];
         [self.containedViewController didMoveToParentViewController:self];
+        [self setNeedsStatusBarAppearanceUpdate];
     }
+}
+
+- (UIViewController *)childViewControllerForStatusBarStyle
+{
+    return self.containedViewController;
+}
+
+- (UIViewController *)childViewControllerForStatusBarHidden
+{
+    return self.containedViewController;
+}
+
+- (UIStatusBarAnimation)preferredStatusBarUpdateAnimation
+{
+    return [self.containedViewController preferredStatusBarUpdateAnimation];
 }
 
 #pragma mark - Property Accessors
@@ -69,6 +79,7 @@
     containedViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self.view addSubview:containedViewController.view];
     [containedViewController didMoveToParentViewController:self];
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 @end

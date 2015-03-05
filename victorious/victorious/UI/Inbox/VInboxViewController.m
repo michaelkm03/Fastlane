@@ -20,6 +20,7 @@
 #import "VNotificationCell.h"
 #import "VObjectManager+DirectMessaging.h"
 #import "VObjectManager+Pagination.h"
+#import "VObjectManager+Users.h"
 #import "VPaginationManager.h"
 #import "VThemeManager.h"
 #import "VNoContentView.h"
@@ -281,6 +282,8 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
     VConversation *conversation = [self.fetchedResultsController objectAtIndexPath:indexPath];
     if (conversation.user)
     {
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectMessage];
+        
         [self displayConversationForUser:conversation.user];
     }
 }
@@ -348,7 +351,10 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
 
 - (IBAction)userSearchAction:(id)sender
 {
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectCreateMessage];
+    
     VUserSearchViewController *userSearch = [VUserSearchViewController newFromStoryboard];
+    userSearch.searchContext = VObjectManagerSearchContextMessage;
     [self.navigationController pushViewController:userSearch animated:YES];
 }
 

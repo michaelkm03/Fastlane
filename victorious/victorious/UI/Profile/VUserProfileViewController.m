@@ -323,6 +323,20 @@ static NSString * const kUserKey = @"user";
     }
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [[VTrackingManager sharedInstance] setValue:VTrackingValueUserProfile forSessionParameterWithKey:VTrackingKeyContext];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContext];
+}
+
 #pragma mark - Find Friends
 
 - (void)addFriendsButton
@@ -342,6 +356,8 @@ static NSString * const kUserKey = @"user";
         [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
         return;
     }
+
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectFindFriends];
     
     VFindFriendsViewController *ffvc = [VFindFriendsViewController newFindFriendsViewController];
     [ffvc setShouldAutoselectNewFriends:NO];
@@ -489,6 +505,8 @@ static NSString * const kUserKey = @"user";
     
     if (self.isMe)
     {
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectEditProfile];
+        
         [self performSegueWithIdentifier:@"toEditProfile" sender:self];
         return;
     }

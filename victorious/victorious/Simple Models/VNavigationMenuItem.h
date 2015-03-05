@@ -26,7 +26,7 @@
  */
 - (instancetype)initWithTitle:(NSString *)title
                    identifier:(NSString *)identifier
-                     iconName:(NSString *)iconName
+                         icon:(UIImage *)icon
                   destination:(id)destination NS_DESIGNATED_INITIALIZER;
 
 /**

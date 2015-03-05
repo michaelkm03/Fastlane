@@ -8,7 +8,7 @@
 
 #import "VBackground.h"
 
-extern NSString * const VSolidColorBackgroundKey;
+extern NSString * const VSolidColorBackgroundColorKey;
 
 /**
  *  A background that is simply a solid color.

@@ -219,6 +219,8 @@
 
 - (IBAction)pressedFollowers:(id)sender
 {
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectProfileFollowers];
+    
     if ([self.delegate respondsToSelector:@selector(followerHandler)])
     {
         [self.delegate followerHandler];
@@ -227,6 +229,8 @@
 
 - (IBAction)pressedFollowering:(id)sender
 {
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectProfileFollowing];
+    
     if ([self.delegate respondsToSelector:@selector(followingHandler)])
     {
         [self.delegate followingHandler];

@@ -11,6 +11,9 @@
 #import "VObjectManager.h"
 #import "VAbstractFilter+RestKit.h"
 
+extern NSString * const VPaginationManagerPageNumberMacro; ///< A macro that, if it appears in the filter path, will be replaced by the page number
+extern NSString * const VPaginationManagerItemsPerPageMacro; ///< A macro that, if it appears in the filter path, will be replaced by the number of items per page
+
 @class VAbstractFilter;
 
 /**

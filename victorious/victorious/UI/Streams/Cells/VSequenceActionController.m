@@ -239,6 +239,8 @@
 
 - (void)shareFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence node:(VNode *)node completion:(void(^)())completion
 {
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectShare];
+    
     VFacebookActivity *fbActivity = [[VFacebookActivity alloc] init];
     UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[sequence ?: [NSNull null],
                                                                                                                  [self shareTextForSequence:sequence],
@@ -250,10 +252,21 @@
     activityViewController.excludedActivityTypes = @[UIActivityTypePostToFacebook];
     activityViewController.completionWithItemsHandler = ^(NSString *activityType, BOOL completed, NSArray *returnedItems, NSError *activityError)
     {
-        NSDictionary *params = @{ VTrackingKeySequenceCategory : sequence.category ?: @"",
-                                  VTrackingKeyActivityType : activityType ?: @"",
-                                  VTrackingKeyUrls : sequence.tracking.share ?: @[] };
-        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidShare parameters:params];
+        if ( completed )
+        {
+            NSDictionary *params = @{ VTrackingKeySequenceCategory : sequence.category ?: @"",
+                                      VTrackingKeyShareDestination : activityType ?: @"",
+                                      VTrackingKeyUrls : sequence.tracking.share ?: @[] };
+            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidShare parameters:params];
+        }
+        else if ( activityError != nil )
+        {
+            NSDictionary *params = @{ VTrackingKeySequenceCategory : sequence.category ?: @"",
+                                      VTrackingKeyShareDestination : activityType ?: @"",
+                                      VTrackingKeyUrls : sequence.tracking.share ?: @[],
+                                      VTrackingKeyErrorMessage : activityError == nil ? @"" : activityError.localizedDescription };
+            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserShareDidFail parameters:params];
+        }
         
         [viewController reloadInputViews];
         
@@ -272,6 +285,8 @@
 
 - (void)flagSheetFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence
 {
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectMoreActions parameters:nil];
+    
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
                                                     cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel button")
                                                        onCancelButton:nil

@@ -26,6 +26,7 @@
 #import "VButton.h"
 #import "VPurchaseManager.h"
 #import "VVideoSettings.h"
+#import "VSettingsTableViewCell.h"
 
 static const NSInteger kSettingsSectionIndex         = 0;
 
@@ -162,6 +163,13 @@ static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
     if (0 == indexPath.section && 1 == indexPath.row)
     {
         [self sendHelp:self];
+    }
+    
+    VSettingsTableViewCell *cell = (VSettingsTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
+    if ( [cell isKindOfClass:[VSettingsTableViewCell class]] )
+    {
+        NSDictionary *params = @{ VTrackingKeyName : cell.settingName ?: @"" };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectSetting parameters:params];
     }
 }
 

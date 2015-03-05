@@ -33,7 +33,6 @@ static const NSInteger VDefaultKeyboardHeight = 51;
 @property (weak, nonatomic) IBOutlet UIButton *mediaButton;
 @property (weak, nonatomic) IBOutlet UIButton *sendButton;
 @property (nonatomic, strong) NSURL *mediaURL;
-@property (nonatomic, strong) VUserTaggingTextStorage *textStorage;
 
 @end
 

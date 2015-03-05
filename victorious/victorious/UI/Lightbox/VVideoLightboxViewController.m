@@ -20,6 +20,9 @@
 @property (nonatomic)         BOOL                         videoLoaded;
 @property (nonatomic, strong) NSArray                     *previewImageConstraints;
 
+@property (nonatomic) BOOL isRotating;
+@property (nonatomic) BOOL wantsDismissal;
+
 @end
 
 @implementation VVideoLightboxViewController
@@ -83,34 +86,14 @@
         
         self.videoPlayer.view.translatesAutoresizingMaskIntoConstraints = NO;
         self.videoPlayer.view.alpha = 0;
-        [self.contentSuperview addConstraint:[NSLayoutConstraint constraintWithItem:self.videoPlayer.view
-                                                                          attribute:NSLayoutAttributeLeading
-                                                                          relatedBy:NSLayoutRelationEqual
-                                                                             toItem:self.previewImageView
-                                                                          attribute:NSLayoutAttributeLeading
-                                                                         multiplier:1.0f
-                                                                           constant:0.0f]];
-        [self.contentSuperview addConstraint:[NSLayoutConstraint constraintWithItem:self.videoPlayer.view
-                                                                          attribute:NSLayoutAttributeTrailing
-                                                                          relatedBy:NSLayoutRelationEqual
-                                                                             toItem:self.previewImageView
-                                                                          attribute:NSLayoutAttributeTrailing
-                                                                         multiplier:1.0f
-                                                                           constant:0.0f]];
-        [self.contentSuperview addConstraint:[NSLayoutConstraint constraintWithItem:self.videoPlayer.view
-                                                                          attribute:NSLayoutAttributeTop
-                                                                          relatedBy:NSLayoutRelationEqual
-                                                                             toItem:self.previewImageView
-                                                                          attribute:NSLayoutAttributeTop
-                                                                         multiplier:1.0f
-                                                                           constant:0.0f]];
-        [self.contentSuperview addConstraint:[NSLayoutConstraint constraintWithItem:self.videoPlayer.view
-                                                                          attribute:NSLayoutAttributeBottom
-                                                                          relatedBy:NSLayoutRelationEqual
-                                                                             toItem:self.previewImageView
-                                                                          attribute:NSLayoutAttributeBottom
-                                                                         multiplier:1.0f
-                                                                           constant:0.0f]];
+        [self.contentSuperview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[videoPlayerView]|"
+                                                                                      options:kNilOptions
+                                                                                      metrics:nil
+                                                                                        views:@{@"videoPlayerView":self.videoPlayer.view}]];
+        [self.contentSuperview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[videoPlayerView]|"
+                                                                                      options:kNilOptions
+                                                                                      metrics:nil
+                                                                                        views:@{@"videoPlayerView":self.videoPlayer.view}]];
         
         VActivityIndicatorView *activityIndicator = [[VActivityIndicatorView alloc] init];
         activityIndicator.translatesAutoresizingMaskIntoConstraints = NO;
@@ -151,6 +134,22 @@
         self.videoPlayer.delegate = nil;
         self.videoPlayer = nil;
     }
+}
+
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
+{
+    __weak typeof(self) welf = self;
+    self.isRotating = YES;
+    [coordinator animateAlongsideTransition:nil
+                                 completion:^(id<UIViewControllerTransitionCoordinatorContext> context)
+     {
+         __strong typeof(self) strongSelf = welf;
+         strongSelf.isRotating = NO;
+         if (strongSelf.wantsDismissal && strongSelf.onCloseButtonTapped)
+         {
+             strongSelf.onCloseButtonTapped();
+         }
+     }];
 }
 
 #pragma mark - Properties
@@ -270,6 +269,12 @@
 
 - (void)videoPlayerDidReachEndOfVideo:(VCVideoPlayerViewController *)videoPlayer
 {
+    if (self.isRotating)
+    {
+        self.wantsDismissal = YES;
+        return;
+    }
+    
     if (self.onVideoFinished)
     {
         self.onVideoFinished();

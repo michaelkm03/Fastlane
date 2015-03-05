@@ -75,18 +75,6 @@ NSString * const VInboxContainerViewControllerInboxPushReceivedNotification = @"
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    
-    if (self.tabBarController.tabBar.isTranslucent)
-    {
-        self.edgesForExtendedLayout = UIRectEdgeBottom;
-        self.automaticallyAdjustsScrollViewInsets = YES;
-        self.extendedLayoutIncludesOpaqueBars = YES;
-    }
-}
-
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];

@@ -77,15 +77,7 @@
                                                           conversationTableView.contentInset.right);
     conversationTableView.scrollIndicatorInsets = conversationTableView.contentInset;
     
-    if (!self.tabBarController.tabBar.isTranslucent)
-    {
-        self.extendedLayoutIncludesOpaqueBars = YES;
-        self.edgesForExtendedLayout = UIRectEdgeAll;
-    }
-    else
-    {
-        self.edgesForExtendedLayout = UIRectEdgeNone;
-    }
+    self.edgesForExtendedLayout = UIRectEdgeNone;
     self.automaticallyAdjustsScrollViewInsets = NO;
 }
 

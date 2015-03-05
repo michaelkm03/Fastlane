@@ -21,6 +21,6 @@
 - (void)addShareButton;
 - (void)addRemixButton;
 - (void)addRepostButton;
-- (void)addFlagButton;
+- (void)addMoreButton;
 
 @end

@@ -25,6 +25,7 @@
 static NSString * const kIDKey = @"id";
 static NSString * const kReferenceIDKey = @"referenceID";
 static NSString * const kAppearanceKey = @"appearance";
+static NSString * const kExperimentsKey = @"experiments";
 static NSString * const kClassNameKey = @"name";
 
 // Menu properties
@@ -127,6 +128,13 @@ static NSString * const kVideoMuted = @"videoMuted";
                  self.accentColor = accentColor;
              }
          }
+         else if ( [key isEqual:kExperimentsKey] )
+         {
+             if ( [obj isKindOfClass:[NSDictionary class]] )
+             {
+                 [template addEntriesFromDictionary:obj];
+             }
+         }
          else
          {
              template[key] = obj;
@@ -139,7 +147,7 @@ static NSString * const kVideoMuted = @"videoMuted";
                                                                   kClassNameKey: @"tabMenu.scaffold",
                                                                   kItemsKey:[self bottomNavMenuItems],
                                                                   VScaffoldViewControllerUserProfileViewComponentKey: [self profileScreen],
-                                                                  kSelectorKey: [self kSelectorKeyFromInitDictionary:self.dataFromInitCall],
+                                                                  kSelectorKey: [self multiScreenSelectorKey],
                                                                   VTabMenuViewControllerMenuAppearanceKey: @{
                                                                           VDependencyManagerBackgroundKey: [self solidWhiteBackground],
                                                                           },
@@ -148,12 +156,14 @@ static NSString * const kVideoMuted = @"videoMuted";
     else
     {
         template[VDependencyManagerScaffoldViewControllerKey] = @{ kClassNameKey: @"sideMenu.scaffold",
-                                                                   VHamburgerButtonIconKey: (self.templateCEnabled ? [UIImage imageNamed:@"menuC"] : [UIImage imageNamed:@"Menu"] ),
+                                                                   VHamburgerButtonIconKey: @{
+                                                                           VDependencyManagerImageURLKey:(self.templateCEnabled ? @"menuC":@"Menu"),
+                                                                           },
                                                                    VDependencyManagerInitialViewControllerKey: @{ kReferenceIDKey: self.firstMenuItemID },
                                                                    VScaffoldViewControllerMenuComponentKey: [self menuComponent],
                                                                    VStreamCollectionViewControllerCreateSequenceIconKey: (self.templateCEnabled ? [UIImage imageNamed:@"createContentButtonC"] : [UIImage imageNamed:@"createContentButton"]),
                                                                    VScaffoldViewControllerUserProfileViewComponentKey: [self profileScreen],
-                                                                   kSelectorKey: [self kSelectorKeyFromInitDictionary:self.dataFromInitCall],
+                                                                   kSelectorKey: [self multiScreenSelectorKey],
                                                                    };
     }
     
@@ -163,14 +173,14 @@ static NSString * const kVideoMuted = @"videoMuted";
     return template;
 }
 
-- (NSDictionary *)kSelectorKeyFromInitDictionary:(NSDictionary *)initDictionary
+- (NSDictionary *)multiScreenSelectorKey
 {
     NSDictionary *kSelectorKey = @{
                                    kClassNameKey: @"basic.multiScreenSelector",
                                    VDependencyManagerBackgroundColorKey: self.accentColor,
                                    };
     
-    if ( [[(NSDictionary *)[initDictionary objectForKey:@"experiments"] objectForKey:@"template_c_enabled"] boolValue] )
+    if ( self.templateCEnabled )
     {
         kSelectorKey =  @{
                           kClassNameKey: @"textbar.multiScreenSelector",
@@ -384,7 +394,7 @@ static NSString * const kVideoMuted = @"videoMuted";
                             @{
                                 kClassNameKey: @"stream.screen",
                                 kTitleKey: NSLocalizedString(@"Featured", @""),
-                                VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/hot_detail_list_by_stream/ugc",
+                                VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/hot_detail_list_by_stream/ugc/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%",
                                 kCanAddContentKey: @YES,
                             },
                             @{
@@ -431,7 +441,9 @@ static NSString * const kVideoMuted = @"videoMuted";
              kIdentifierKey: @"Menu Home",
              kTitleKey: NSLocalizedString(@"Home", @""),
              kDestinationKey: [self homeScreen],
-             kIconKey:@"home",
+             kIconKey: @{
+                     VDependencyManagerImageURLKey: @"home",
+                     }
              };
 }
 
@@ -439,7 +451,9 @@ static NSString * const kVideoMuted = @"videoMuted";
 {
     return @{
              kTitleKey: NSLocalizedString(@"Create", @""),
-             kIconKey: @"create",
+             kIconKey: @{
+                     VDependencyManagerImageURLKey: @"create",
+                     },
              kDestinationKey: [self workspaceFlowComponent],
              };
 }
@@ -449,8 +463,15 @@ static NSString * const kVideoMuted = @"videoMuted";
     return @{
              kIdentifierKey: @"Menu Profile",
              kTitleKey: NSLocalizedString(@"Profile", @""),
-             kIconKey: @"profile",
-             kDestinationKey: [self currentUserProfileScreen]
+             kDestinationKey: @{
+                     kClassNameKey: @"currentUserProfile.screen"
+                     },
+             kIconKey: @{
+                     VDependencyManagerImageURLKey: @"profile",
+                     },
+             VDependencyManagerAccessoryScreensKey: @[
+                     [self settingsMenuItem],
+                     ],
              };
 }
 
@@ -459,7 +480,9 @@ static NSString * const kVideoMuted = @"videoMuted";
     return @{
              kIdentifierKey: @"Menu Inbox",
              kTitleKey: NSLocalizedString(@"Inbox", @""),
-             kIconKey: @"inbox",
+             kIconKey: @{
+                     VDependencyManagerImageURLKey: @"inbox",
+                     },
              kDestinationKey: @{
                      kClassNameKey: @"inbox.screen"
                      }
@@ -479,8 +502,8 @@ static NSString * const kVideoMuted = @"videoMuted";
 
 - (NSString *)urlPathForStreamCategories:(NSArray *)categories
 {
-    NSString *categoryString = [categories componentsJoinedByString:@","];
-    return [@"/api/sequence/detail_list_by_category/" stringByAppendingString:(categoryString ?: @"0")];
+    NSString *categoryString = [categories componentsJoinedByString:@","] ?: @"0";
+    return [NSString stringWithFormat:@"/api/sequence/detail_list_by_category/%@/%%%%PAGE_NUM%%%%/%%%%ITEMS_PER_PAGE%%%%", categoryString];
 }
 
 - (NSDictionary *)currentUserProfileScreen
@@ -511,7 +534,7 @@ static NSString * const kVideoMuted = @"videoMuted";
                 @{
                     kClassNameKey: @"stream.screen",
                     kTitleKey: NSLocalizedString(@"Featured", @""),
-                    VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/hot_detail_list_by_stream/home",
+                    VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/hot_detail_list_by_stream/home/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%",
                     kIsHomeKey: @YES,
                     kCanAddContentKey: @YES,
                     },
@@ -526,7 +549,7 @@ static NSString * const kVideoMuted = @"videoMuted";
                 @{
                     kClassNameKey: @"followingStream.screen",
                     kTitleKey: NSLocalizedString(@"Following", @""),
-                    VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/follows_detail_list_by_stream/0/home",
+                    VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/follows_detail_list_by_stream/0/home/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%",
                     kCanAddContentKey: @YES,
                     }
                 ],
@@ -581,11 +604,13 @@ static NSString * const kVideoMuted = @"videoMuted";
         return @{
             kIdentifierKey: @"Menu Channels",
             kTitleKey: NSLocalizedString(@"Channels", @""),
-            kIconKey: @"channels",
+            kIconKey: @{
+                    VDependencyManagerImageURLKey:@"channels",
+                    },
             kDestinationKey: @{
                 kClassNameKey: @"streamDirectory.screen",
                 kTitleKey: NSLocalizedString(@"Channels", nil),
-                VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/detail_list_by_stream/directory"
+                VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/detail_list_by_stream/directory/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%"
             }
         };
     }
@@ -602,7 +627,7 @@ static NSString * const kVideoMuted = @"videoMuted";
                     @{
                         kClassNameKey: @"stream.screen",
                         kTitleKey: NSLocalizedString(@"Featured", @""),
-                        VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/hot_detail_list_by_stream/owner"
+                        VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/hot_detail_list_by_stream/owner/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%"
                     },
                     @{
                         kClassNameKey: @"stream.screen",
@@ -622,7 +647,7 @@ static NSString * const kVideoMuted = @"videoMuted";
 {
     return @{
              kClassNameKey:@"solidColor.background",
-             VSolidColorBackgroundKey: @{
+             VSolidColorBackgroundColorKey: @{
                      kRedKey: @255,
                      kGreenKey: @255,
                      kBlueKey: @255,

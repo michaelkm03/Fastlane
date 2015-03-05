@@ -80,8 +80,6 @@
         return;
     }
     sender.enabled = NO;
-    
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventProfileDidUpdated];
 
     MBProgressHUD  *progressHUD =   [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     progressHUD.labelText = NSLocalizedString(@"JustAMoment", @"");
@@ -95,11 +93,13 @@
                                                       tagline:self.taglineTextView.text
                                                  successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventProfileDidUpdated];
+        
         [progressHUD hide:YES];
         [self.navigationController popViewControllerAnimated:YES];
     }
                                                     failBlock:^(NSOperation *operation, NSError *error)
-    {
+    {   
         [progressHUD hide:YES];
         sender.enabled = YES;
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
@@ -138,6 +138,9 @@
         [errorMsg appendFormat:@"\n%@", NSLocalizedString(@"ProfileRequiredLoc", @"")];
     }
     
+    NSDictionary *params = @{ VTrackingKeyErrorMessage : errorMsg ?: @"" };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventEditProfileValidationDidFail parameters:params];
+    
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ProfileIncomplete", @"")
                                                     message:errorMsg
                                                    delegate:nil
@@ -150,6 +153,8 @@
 
 - (IBAction)goBack:(id)sender
 {
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidExitEditProfile];
+    
     [self.navigationController popViewControllerAnimated:YES];
 }
 

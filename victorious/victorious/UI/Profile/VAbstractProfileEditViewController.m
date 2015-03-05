@@ -19,9 +19,9 @@
 
 @interface VAbstractProfileEditViewController () <VContentInputAccessoryViewDelegate, VWorkspaceFlowControllerDelegate>
 
-@property (nonatomic, weak) IBOutlet UILabel       *tagLinePlaceholderLabel;
-@property (nonatomic, weak) IBOutlet UIImageView    *profileImageView;
-@property (nonatomic, weak) IBOutlet UIButton       *cameraButton;
+@property (nonatomic, weak) IBOutlet UILabel *tagLinePlaceholderLabel;
+@property (nonatomic, weak) IBOutlet UIImageView *profileImageView;
+@property (nonatomic, weak) IBOutlet UIButton *cameraButton;
 
 @property (nonatomic, weak) IBOutlet UITableViewCell *captionCell;
 @property (nonatomic, assign) NSInteger numberOfLines;
@@ -226,6 +226,8 @@
        finishedWithPreviewImage:(UIImage *)previewImage
                capturedMediaURL:(NSURL *)capturedMediaURL
 {
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectImageForEditProfile];
+    
     self.profileImageView.image = previewImage;
     self.updatedProfileImage = capturedMediaURL;
     [self.backgroundImageView setBlurredImageWithClearImage:previewImage placeholderImage:self.backgroundImageView.image tintColor:nil];

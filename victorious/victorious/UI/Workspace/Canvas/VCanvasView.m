@@ -76,6 +76,7 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
     _canvasScrollView.userInteractionEnabled = NO;
     _canvasScrollView.delegate = self;
     _canvasScrollView.translatesAutoresizingMaskIntoConstraints = NO;
+    _canvasScrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self addSubview:_canvasScrollView];
     
     _imageView = [[UIImageView alloc] initWithImage:nil];
@@ -104,6 +105,19 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
                                                                    views:views]];
     
     [_activityIndicator startAnimating];
+}
+
+#pragma mark - UIVIew
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    
+    if (self.canvasScrollView.contentSize.width < CGRectGetWidth(self.bounds))
+    {
+        self.canvasScrollView.contentSize = self.bounds.size;
+        self.imageView.frame = self.canvasScrollView.bounds;
+    }
 }
 
 #pragma mark - Property Accessors

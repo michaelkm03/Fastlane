@@ -58,6 +58,14 @@
             {
                 self.addressBook = addressBook;
                 CFRelease(addressBook);
+                
+                if ( self.addressBook != nil )
+                {
+                    NSArray *contacts = (__bridge_transfer NSArray *)ABAddressBookCopyArrayOfAllPeople(self.addressBook);
+                    NSDictionary *params = @{ VTrackingKeyCount : @(contacts.count) };
+                    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidImportDeviceContacts parameters:params];
+                }
+                
                 if (completionBlock)
                 {
                     completionBlock(YES, nil);

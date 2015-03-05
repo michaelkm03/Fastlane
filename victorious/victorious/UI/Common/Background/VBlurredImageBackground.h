@@ -8,7 +8,7 @@
 
 #import "VBackground.h"
 
-extern NSString *VBlurredImageBackgroundImageToBlurKey;
+extern NSString * const VBlurredImageBackgroundImageToBlurKey;
 
 /**
  *  A blurred image background. Inject an image to blur with: VBlurredImageBackgroundImageToBlurKey.

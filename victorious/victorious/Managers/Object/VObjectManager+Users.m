@@ -34,6 +34,7 @@ NSString * const VMainUserDidChangeFollowingUserKeyUser = @"VMainUserDidChangeFo
 
 NSString * const VObjectManagerSearchContextMessage = @"message";
 NSString * const VObjectManagerSearchContextUserTag = @"tag_user";
+NSString * const VObjectManagerSearchContextDiscover = @"discover";
 
 static NSString * const kVAPIParamSearch = @"search";
 static NSString * const kVAPIParamContext = @"context";
@@ -231,6 +232,8 @@ static NSString * const kVAPIParamContext = @"context";
         [self.mainUser addFollowingObject:user];
         [self notifyIsFollowingUpdated];
         
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidFollowUser];
+        
         if (success)
         {
             success(operation, fullResponse, resultObjects);
@@ -254,6 +257,8 @@ static NSString * const kVAPIParamContext = @"context";
     {
         [self.mainUser removeFollowingObject:user];
         [self notifyIsFollowingUpdated];
+        
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidUnfollowUser];
         
         if (success)
         {
@@ -373,7 +378,13 @@ static NSString * const kVAPIParamContext = @"context";
         }
     };    
     
-    return [self GET:[NSString stringWithFormat:@"/api/userinfo/search/%@/%ld/%@", [search_string stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding], (long)pageLimit, context]
+    NSString *userSearchURL = [NSString stringWithFormat:@"/api/userinfo/search/%@/%ld", [search_string stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding], (long)pageLimit];
+    if (context != nil)
+    {
+        userSearchURL = [NSString stringWithFormat:@"%@/%@", userSearchURL, context];
+    }
+    
+    return [self GET:userSearchURL
                object:nil
            parameters:nil
          successBlock:fullSuccess
@@ -386,20 +397,28 @@ static NSString * const kVAPIParamContext = @"context";
                                         withSuccessBlock:(VSuccessBlock)success
                                                failBlock:(VFailBlock)fail
 {
-    NSString       *path;
+    NSString *path;
+    NSString *eventNameFailure;
+    NSString *eventNameSuccess;
     
     switch (selector)
     {
         case kVFacebookSocialSelector:
             path = [@"/api/friend/find/facebook" stringByAppendingPathComponent:token];
+            eventNameSuccess = VTrackingEventUserDidImportFacebookContacts;
+            eventNameFailure = VTrackingEventImportFacebookContactsDidFail;
             break;
             
         case kVTwitterSocialSelector:
             path = [[@"/api/friend/find/twitter" stringByAppendingPathComponent:token] stringByAppendingPathComponent:secret];
+            eventNameSuccess = VTrackingEventUserDidImportTwitterContacts;
+            eventNameFailure = VTrackingEventImportTwitterContactsDidFail;
             break;
             
         case kVInstagramSocialSelector:
             path = [@"/api/friend/find/instagram" stringByAppendingPathComponent:token];
+            eventNameSuccess = VTrackingEventUserDidImportInstagramContacts;
+            eventNameFailure = VTrackingEventImportInstagramContactsDidFail;
             break;
             
         default:
@@ -421,9 +440,23 @@ static NSString * const kVAPIParamContext = @"context";
         }
         [self.managedObjectStore.mainQueueManagedObjectContext saveToPersistentStore:nil];
         
-        if (success)
+        NSDictionary *params = @{ VTrackingKeyCount : @(resultObjects.count) };
+        [[VTrackingManager sharedInstance] trackEvent:eventNameSuccess parameters:params];
+        
+        if ( success != nil )
         {
-            success(operation, fullResponse, resultObjects);
+            success( operation, fullResponse, resultObjects );
+        }
+    };
+    
+    
+    VFailBlock fullFail = ^(NSOperation *operation, NSError *error)
+    {
+        NSDictionary *params = @{ VTrackingKeyErrorMessage : error.localizedDescription ?: @"" };
+        [[VTrackingManager sharedInstance] trackEvent:eventNameFailure parameters:params];
+        if ( fail != nil )
+        {
+            fail( operation, error );
         }
     };
     
@@ -431,7 +464,7 @@ static NSString * const kVAPIParamContext = @"context";
               object:nil
           parameters:nil
         successBlock:fullSuccess
-           failBlock:fail];
+           failBlock:fullFail];
 }
 
 - (RKManagedObjectRequestOperation *)followUsers:(NSArray *)users
