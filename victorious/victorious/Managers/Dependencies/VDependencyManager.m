@@ -236,7 +236,7 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
  Returns an array of dependent objects created from a JSON array
  
  @param array An array pulled straight from within the template configuration
- @param translation A block that, given an expected type and a dependency manager instance, will return an object generated with that dependancy manager
+ @param translation A block that, given an expected type and a dependency manager instance, will return an object generated with that dependency manager
  */
 - (NSArray *)arrayOfValuesOfType:(Class)expectedType forKey:(NSString *)key withTranslationBlock:(id(^)(Class, VDependencyManager *))translation
 {
