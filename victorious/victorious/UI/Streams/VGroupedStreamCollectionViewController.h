@@ -1,5 +1,5 @@
 //
-//  VDirectoryBrowserViewController.h
+//  VGroupedStreamCollectionViewController.h
 //  victorious
 //
 //  Created by Sharif Ahmed on 2/20/15.
@@ -11,7 +11,7 @@
 
 @class VStream, VStreamCollectionViewDataSource;
 
-@interface VDirectoryBrowserViewController : VAbstractStreamCollectionViewController <VHasManagedDependancies>
+@interface VGroupedStreamCollectionViewController : VAbstractStreamCollectionViewController <VHasManagedDependancies>
 
 + (instancetype)streamDirectoryForStream:(VStream *)stream dependencyManager:(VDependencyManager *)dependencyManager;
 

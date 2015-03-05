@@ -584,7 +584,7 @@ static NSString * const kVideoMuted = @"videoMuted";
             NSDictionary *componentBase = @{ kIdentifierKey: @"Menu Channels",
                                              kTitleKey: NSLocalizedString(@"Channels", @""),
                                              kDestinationKey: @{
-                                                     kClassNameKey: @"directoryBrowser.screen",
+                                                     kClassNameKey: @"groupedStream.screen",
                                                      kTitleKey: NSLocalizedString(@"Channels", nil),
                                                      VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/detail_list_by_stream/directory/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%"
                                                      }

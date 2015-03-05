@@ -17,7 +17,7 @@
 #import "UIColor+VBrightness.h"
 #import "VSequence+Fetcher.h"
 
-const NSUInteger VDirectoryMaxItemsPerGroup = 2;
+const NSUInteger VDirectoryMaxItemsPerGroup = 10;
 
 CGFloat const kStreamDirectoryGroupCellInset = 10.0f; //Must be >= 1.0f
 static CGFloat const kStreamDirectoryItemLabelHeight = 34.0f;
