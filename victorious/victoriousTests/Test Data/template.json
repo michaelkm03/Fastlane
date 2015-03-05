@@ -17,7 +17,11 @@
     },
     "app_store_url": "https:\/\/itunes.apple.com\/us\/app\/id889351747",
     "ivc": {
-        "name": "testInitMethod"
+        "name": "testInitMethod",
+        "inner": {
+            "name": "testNewMethod",
+            "app_store_url": "http:\/\/example.com\/"
+        }
     },
     "nvc": {
         "id": "ae742d8a-aaea-43db-b99a-707d72b147cb",
@@ -31,7 +35,8 @@
         "thing": [{
             "id": "10c8b593-b463-4845-bdf0-9d34fcd4e174",
             "name": "testNewMethod"
-        }]
+        }],
+        "app_store_url": "deep_store_url"
     },
     "video_quality": "medium",
     "experiments": {
@@ -53,6 +58,9 @@
         {
             "id": "b5b15ccc-151d-40ed-8d12-a9fcde6413f8",
             "name": "testInitMethod"
+        },
+        {
+            "referenceID": "ae742d8a-aaea-43db-b99a-707d72b147cb"
         }
     ],
     "otherNVC": {

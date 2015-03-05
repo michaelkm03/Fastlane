@@ -78,6 +78,11 @@ NSString * const VImageToolControllerInitialImageEditStateKey = @"VImageToolCont
     
     [filterOrderTools enumerateObjectsUsingBlock:^(id <VWorkspaceTool> tool, NSUInteger idx, BOOL *stop)
      {
+         // Give tools a chance to see the current state of the canvas
+         if ([tool respondsToSelector:@selector(setCanvasView:)])
+         {
+             [tool setCanvasView:self.canvasView];
+         }
          filteredImage = [tool imageByApplyingToolToInputImage:filteredImage];
      }];
     
