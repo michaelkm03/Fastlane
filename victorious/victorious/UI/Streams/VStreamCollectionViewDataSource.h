@@ -77,6 +77,7 @@ extern NSString *const VStreamCollectionDataSourceDidChangeNotification;
 - (void)refreshWithSuccess:(void(^)(void))successBlock failure:(void(^)(NSError *error))failureBlock; ///<Refresh the stream items on self.stream
 - (void)loadNextPageWithSuccess:(void(^)(void))successBlock failure:(void(^)(NSError *error))failureBlock;///<Grab next page of stream items
 - (BOOL)isFilterLoading; ///< Returns YES if the filter is currently being loaded from the server
+- (BOOL)filterCanLoadNextPage; ///< Returns YES if the filter can load the next page
 - (NSInteger)sectionIndexForContent; ///< Returns either 0 or 1 depending on whether a header cell is present
 
 @end

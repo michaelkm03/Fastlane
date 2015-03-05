@@ -342,7 +342,7 @@ const CGFloat kVLoadNextPagePoint = .75f;
 
 - (void)shouldLoadNextPage
 {
-    if (self.streamDataSource.count == 0 || self.streamDataSource.isFilterLoading)
+    if (self.streamDataSource.count == 0 || self.streamDataSource.isFilterLoading || !self.streamDataSource.filterCanLoadNextPage)
     {
         return;
     }
