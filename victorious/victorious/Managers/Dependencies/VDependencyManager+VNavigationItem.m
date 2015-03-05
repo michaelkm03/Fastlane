@@ -60,7 +60,7 @@ static const char kAssociatedObjectKey;
     UIViewController *destination = nil;
     if ([((id <VNavigationDestination>)menuItem.destination) shouldNavigateWithAlternateDestination:&destination])
     {
-        [navigationController pushViewController:destination animated:YES];
+        [navigationController pushViewController:menuItem.destination animated:YES];
     }
     
 }
