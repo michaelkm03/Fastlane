@@ -217,8 +217,8 @@ static NSString * const kVideoMuted = @"videoMuted";
    didUpdateSelectedTimeRange:(CMTimeRange)selectedTimeRange
 {
     self.didTrim = YES;
-    [self.videoPlayerController setStartSeconds:CMTimeGetSeconds(selectedTimeRange.start)];
-    [self.videoPlayerController setEndSeconds:CMTimeGetSeconds(CMTimeAdd(selectedTimeRange.start, selectedTimeRange.duration))];
+//    [self.videoPlayerController setStartSeconds:CMTimeGetSeconds(selectedTimeRange.start)];
+//    [self.videoPlayerController setEndSeconds:CMTimeGetSeconds(CMTimeAdd(selectedTimeRange.start, selectedTimeRange.duration))];
 }
 
 - (void)trimmerViewControllerBeganSeeking:(VTrimmerViewController *)trimmerViewController
@@ -247,6 +247,7 @@ static NSString * const kVideoMuted = @"videoMuted";
       didPlayToTime:(CMTime)time
 {
     self.trimViewController.currentPlayTime = time;
+    VLog(@"%@", [NSValue valueWithCMTime:time]);
 }
 
 - (void)videoPlayerReadyToPlay:(VCVideoPlayerViewController *)videoPlayer
