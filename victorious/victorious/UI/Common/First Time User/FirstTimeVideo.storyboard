@@ -2,7 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
         <!--First Time User Video View Controller-->
@@ -14,14 +14,14 @@
                         <viewControllerLayoutGuide type="bottom" id="mT9-B7-VTY"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="lnt-Ok-t9O">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="800"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="WaD-Bc-zOl" userLabel="Blurred Background Image">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="800"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oJA-97-ssS" customClass="VButton">
-                                <rect key="frame" x="160" y="503" width="280" height="50"/>
+                                <rect key="frame" x="160" y="703" width="280" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="280" id="Q4u-Tz-8wy"/>
                                     <constraint firstAttribute="height" constant="50" id="nYf-hP-doB"/>
@@ -35,30 +35,56 @@
                                 </connections>
                             </button>
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="rg4-dB-97K">
-                                <rect key="frame" x="282" y="281" width="37" height="37"/>
+                                <rect key="frame" x="282" y="381" width="37" height="37"/>
                             </activityIndicatorView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sOS-ge-ov7" userLabel="Container">
+                                <rect key="frame" x="0.0" y="80" width="600" height="600"/>
+                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="sOS-ge-ov7" secondAttribute="height" multiplier="1:1" id="gYB-VG-Vw4" userLabel="Portrait"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="WaD-Bc-zOl" secondAttribute="trailing" constant="-16" id="1VB-KY-Mxp"/>
-                            <constraint firstItem="WaD-Bc-zOl" firstAttribute="top" secondItem="RlJ-HE-p9L" secondAttribute="bottom" constant="-20" id="5Tp-XU-OAn"/>
-                            <constraint firstItem="WaD-Bc-zOl" firstAttribute="leading" secondItem="lnt-Ok-t9O" secondAttribute="leadingMargin" constant="-16" id="Y19-fR-XQg"/>
-                            <constraint firstItem="WaD-Bc-zOl" firstAttribute="centerX" secondItem="rg4-dB-97K" secondAttribute="centerX" constant="-0.5" id="iPI-Nv-7LH"/>
-                            <constraint firstItem="mT9-B7-VTY" firstAttribute="top" secondItem="WaD-Bc-zOl" secondAttribute="bottom" id="kMC-Sf-ogo"/>
+                            <constraint firstAttribute="trailing" secondItem="WaD-Bc-zOl" secondAttribute="trailing" id="1nW-Dp-dWK"/>
+                            <constraint firstItem="sOS-ge-ov7" firstAttribute="leading" secondItem="lnt-Ok-t9O" secondAttribute="leading" id="2Da-7F-rzq"/>
+                            <constraint firstItem="mT9-B7-VTY" firstAttribute="top" secondItem="WaD-Bc-zOl" secondAttribute="bottom" id="9gV-25-c6n"/>
+                            <constraint firstItem="WaD-Bc-zOl" firstAttribute="leading" secondItem="lnt-Ok-t9O" secondAttribute="leading" id="Suk-ks-gLs"/>
+                            <constraint firstAttribute="centerY" secondItem="rg4-dB-97K" secondAttribute="centerY" id="aET-8a-rD1"/>
+                            <constraint firstItem="sOS-ge-ov7" firstAttribute="top" secondItem="RlJ-HE-p9L" secondAttribute="bottom" id="bBQ-lG-8io"/>
+                            <constraint firstItem="WaD-Bc-zOl" firstAttribute="top" secondItem="RlJ-HE-p9L" secondAttribute="bottom" id="dDU-Op-vEW"/>
+                            <constraint firstItem="mT9-B7-VTY" firstAttribute="top" secondItem="sOS-ge-ov7" secondAttribute="bottom" id="hZe-nW-RQ9"/>
+                            <constraint firstAttribute="trailing" secondItem="sOS-ge-ov7" secondAttribute="trailing" id="lfe-YK-gPa"/>
                             <constraint firstAttribute="centerX" secondItem="oJA-97-ssS" secondAttribute="centerX" id="rR4-0J-01m"/>
-                            <constraint firstItem="WaD-Bc-zOl" firstAttribute="centerY" secondItem="rg4-dB-97K" secondAttribute="centerY" constant="0.5" id="wvw-8C-MmE"/>
+                            <constraint firstAttribute="centerX" secondItem="rg4-dB-97K" secondAttribute="centerX" id="wn9-ts-YBf"/>
+                            <constraint firstAttribute="centerY" secondItem="sOS-ge-ov7" secondAttribute="centerY" constant="20" id="wx3-hg-d0N"/>
                             <constraint firstItem="mT9-B7-VTY" firstAttribute="top" secondItem="oJA-97-ssS" secondAttribute="bottom" constant="47" id="z6C-Re-3Mg"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="bBQ-lG-8io"/>
+                                <exclude reference="hZe-nW-RQ9"/>
+                            </mask>
+                        </variation>
                     </view>
+                    <nil key="simulatedStatusBarMetrics"/>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="600" height="800"/>
                     <connections>
                         <outlet property="activityIndicator" destination="rg4-dB-97K" id="ycB-mN-5m9"/>
                         <outlet property="backgroundImageView" destination="WaD-Bc-zOl" id="brd-qM-yfm"/>
+                        <outlet property="containerView" destination="sOS-ge-ov7" id="8sQ-1B-Yf2"/>
                         <outlet property="getStartedButton" destination="oJA-97-ssS" id="LuA-yp-Snk"/>
+                        <outletCollection property="portraitConstraints" destination="gYB-VG-Vw4" id="Bog-BO-9Rf"/>
+                        <outletCollection property="portraitConstraints" destination="wx3-hg-d0N" id="S2N-E9-nZa"/>
+                        <outletCollection property="landscapeConstraints" destination="bBQ-lG-8io" id="nX0-ms-mdt"/>
+                        <outletCollection property="landscapeConstraints" destination="hZe-nW-RQ9" id="bNd-Hn-2Np"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3LK-5R-GdA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="785" y="325"/>
+            <point key="canvasLocation" x="320" y="232"/>
         </scene>
     </scenes>
 </document>

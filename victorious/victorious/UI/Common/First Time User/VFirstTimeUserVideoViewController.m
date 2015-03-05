@@ -25,28 +25,32 @@ NSString * const kFTUSequenceURLPath = @"sequenceUrlPath";
 
 @interface VFirstTimeUserVideoViewController () <VCVideoPlayerDelegate>
 
+@property (strong, nonatomic) IBOutletCollection(NSLayoutConstraint) NSArray *portraitConstraints;
+@property (strong, nonatomic) IBOutletCollection(NSLayoutConstraint) NSArray *landscapeConstraints;
+
 @property (nonatomic, weak) IBOutlet VButton *getStartedButton;
 @property (nonatomic, weak) IBOutlet UIImageView *backgroundImageView;
 @property (nonatomic, weak) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (nonatomic, weak) IBOutlet UIView *videoPlayerView;
+@property (weak, nonatomic) IBOutlet UIView *containerView;
 
-@property (nonatomic, strong) NSLayoutConstraint *videoPortraitCenterConstraint;
-
-@property (nonatomic, strong) NSLayoutConstraint *videoTopPortraitLayoutConstraint;
-@property (nonatomic, strong) NSLayoutConstraint *videoBottomPortraitLayoutConstraint;
-@property (nonatomic, strong) NSLayoutConstraint *videoLeftPortraitLayoutConstraint;
-@property (nonatomic, strong) NSLayoutConstraint *videoRightPortraitLayoutConstraint;
-
-@property (nonatomic, strong) NSLayoutConstraint *videoTopLandscapeLayoutConstraint;
-@property (nonatomic, strong) NSLayoutConstraint *videoBottomLandscapeLayoutConstraint;
-@property (nonatomic, strong) NSLayoutConstraint *videoLeftLandscapeLayoutConstraint;
-@property (nonatomic, strong) NSLayoutConstraint *videoRightLandscapeLayoutConstraint;
+//@property (nonatomic, strong) NSLayoutConstraint *videoPortraitCenterConstraint;
+//
+//@property (nonatomic, strong) NSLayoutConstraint *videoTopPortraitLayoutConstraint;
+//@property (nonatomic, strong) NSLayoutConstraint *videoBottomPortraitLayoutConstraint;
+//@property (nonatomic, strong) NSLayoutConstraint *videoLeftPortraitLayoutConstraint;
+//@property (nonatomic, strong) NSLayoutConstraint *videoRightPortraitLayoutConstraint;
+//
+//@property (nonatomic, strong) NSLayoutConstraint *videoTopLandscapeLayoutConstraint;
+//@property (nonatomic, strong) NSLayoutConstraint *videoBottomLandscapeLayoutConstraint;
+//@property (nonatomic, strong) NSLayoutConstraint *videoLeftLandscapeLayoutConstraint;
+//@property (nonatomic, strong) NSLayoutConstraint *videoRightLandscapeLayoutConstraint;
 
 @property (nonatomic, assign) CGRect portraitFrame;
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VCVideoPlayerViewController *videoPlayerViewController;
-@property (nonatomic, strong) VContentViewRotationHelper *rotationHelper;
+//@property (nonatomic, strong) VContentViewRotationHelper *rotationHelper;
 
 @property (nonatomic, strong) NSURL *mediaUrl;
 
@@ -89,12 +93,6 @@ NSString * const kFTUSequenceURLPath = @"sequenceUrlPath";
     // Setup player
     [self setupVideoUI];
 
-    // NSNotification
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(handleOrientationChange)
-                                                 name:UIApplicationDidChangeStatusBarOrientationNotification
-                                               object:nil];
-
     // Setup Media Playback
     [self fetchMediaSequenceObject];
 }
@@ -110,123 +108,19 @@ NSString * const kFTUSequenceURLPath = @"sequenceUrlPath";
     self.videoPlayerViewController.shouldContinuePlayingAfterDismissal = YES;
     self.videoPlayerViewController.shouldChangeVideoGravityOnDoubleTap = YES;
 
-    self.videoPlayerViewController.view.translatesAutoresizingMaskIntoConstraints = NO;
-    
-    // Portrait Constraints
-    self.videoPortraitCenterConstraint = [NSLayoutConstraint constraintWithItem:self.videoPlayerViewController.view
-                                                                      attribute:NSLayoutAttributeCenterY
-                                                                      relatedBy:NSLayoutRelationEqual
-                                                                         toItem:self.view
-                                                                      attribute:NSLayoutAttributeCenterY
-                                                                     multiplier:0.0f
-                                                                       constant:0.0f];
-    
-    self.videoTopPortraitLayoutConstraint = [NSLayoutConstraint constraintWithItem:self.videoPlayerViewController.view
-                                                                         attribute:NSLayoutAttributeTop
-                                                                         relatedBy:NSLayoutRelationEqual
-                                                                            toItem:self.view
-                                                                         attribute:NSLayoutAttributeTop
-                                                                        multiplier:0.0f
-                                                                          constant:0.0f];
-    
-    self.videoBottomPortraitLayoutConstraint = [NSLayoutConstraint constraintWithItem:self.videoPlayerViewController.view
-                                                                            attribute:NSLayoutAttributeBottom
-                                                                            relatedBy:NSLayoutRelationEqual
-                                                                               toItem:self.view
-                                                                            attribute:NSLayoutAttributeBottom
-                                                                           multiplier:0.5f
-                                                                             constant:0.0f];
+    self.videoPlayerViewController.view.translatesAutoresizingMaskIntoConstraints = NO;;
 
-    self.videoLeftPortraitLayoutConstraint = [NSLayoutConstraint constraintWithItem:self.videoPlayerViewController.view
-                                                                          attribute:NSLayoutAttributeLeft
-                                                                          relatedBy:NSLayoutRelationEqual
-                                                                             toItem:self.view
-                                                                          attribute:NSLayoutAttributeLeft
-                                                                         multiplier:0.5f
-                                                                           constant:0.0f];
-    
-    self.videoRightPortraitLayoutConstraint = [NSLayoutConstraint constraintWithItem:self.videoPlayerViewController.view
-                                                                           attribute:NSLayoutAttributeRight
-                                                                           relatedBy:NSLayoutRelationEqual
-                                                                              toItem:self.view
-                                                                           attribute:NSLayoutAttributeRight
-                                                                          multiplier:1.0f
-                                                                            constant:0.0f];
+    [self.containerView addSubview:self.videoPlayerViewController.view];
+    [self.containerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[videoPlayerView]|"
+                                                                               options:kNilOptions
+                                                                               metrics:nil
+                                                                                 views:@{@"videoPlayerView":self.videoPlayerViewController.view}]];
+    [self.containerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[videoPlayerView]|"
+                                                                               options:kNilOptions
+                                                                               metrics:nil
+                                                                                 views:@{@"videoPlayerView":self.videoPlayerViewController.view}]];
 
-    // Landscape Constraints
-    self.videoTopLandscapeLayoutConstraint = [NSLayoutConstraint constraintWithItem:self.videoPlayerViewController.view
-                                                                         attribute:NSLayoutAttributeTop
-                                                                         relatedBy:NSLayoutRelationEqual
-                                                                            toItem:self.view
-                                                                         attribute:NSLayoutAttributeTop
-                                                                        multiplier:1.0f
-                                                                          constant:0.0f];
-    
-    self.videoBottomLandscapeLayoutConstraint = [NSLayoutConstraint constraintWithItem:self.videoPlayerViewController.view
-                                                                            attribute:NSLayoutAttributeBottom
-                                                                            relatedBy:NSLayoutRelationEqual
-                                                                               toItem:self.view
-                                                                            attribute:NSLayoutAttributeBottom
-                                                                           multiplier:1.0f
-                                                                             constant:0.0f];
-    
-    self.videoLeftLandscapeLayoutConstraint = [NSLayoutConstraint constraintWithItem:self.videoPlayerViewController.view
-                                                                          attribute:NSLayoutAttributeLeft
-                                                                          relatedBy:NSLayoutRelationEqual
-                                                                             toItem:self.view
-                                                                          attribute:NSLayoutAttributeLeft
-                                                                         multiplier:1.0f
-                                                                           constant:0.0f];
-    
-    self.videoRightLandscapeLayoutConstraint = [NSLayoutConstraint constraintWithItem:self.videoPlayerViewController.view
-                                                                           attribute:NSLayoutAttributeRight
-                                                                           relatedBy:NSLayoutRelationEqual
-                                                                              toItem:self.view
-                                                                           attribute:NSLayoutAttributeRight
-                                                                          multiplier:1.0f
-                                                                            constant:0.0f];
-
-    [self.view addSubview:self.videoPlayerViewController.view];
-    NSArray *constraintsArray = @[ self.videoPortraitCenterConstraint, self.videoTopPortraitLayoutConstraint, self.videoBottomPortraitLayoutConstraint, self.videoLeftPortraitLayoutConstraint, self.videoRightPortraitLayoutConstraint, self.videoTopLandscapeLayoutConstraint, self.videoBottomLandscapeLayoutConstraint, self.videoLeftLandscapeLayoutConstraint, self.videoRightLandscapeLayoutConstraint ];
-    [self.view addConstraints:constraintsArray];
-    
-    // Add Video player to view heirarchy
     self.videoPlayerViewController.view.hidden = NO;
-    
-    [self handleOrientationChange];
-}
-
-- (void)handleOrientationChange
-{
-    UIInterfaceOrientation currentOrientation = [UIApplication sharedApplication].statusBarOrientation;
-    if ( UIInterfaceOrientationIsPortrait(currentOrientation) )
-    {
-        self.videoPortraitCenterConstraint.active = YES;
-        self.videoTopPortraitLayoutConstraint.active = YES;
-        self.videoBottomPortraitLayoutConstraint.active = YES;
-        self.videoLeftPortraitLayoutConstraint.active = YES;
-        self.videoRightPortraitLayoutConstraint.active = YES;
-        
-        self.videoTopLandscapeLayoutConstraint.active = NO;
-        self.videoBottomLandscapeLayoutConstraint.active = NO;
-        self.videoLeftLandscapeLayoutConstraint.active = NO;
-        self.videoRightLandscapeLayoutConstraint.active = NO;
-    }
-    else if ( UIInterfaceOrientationIsLandscape(currentOrientation) )
-    {
-        self.videoPortraitCenterConstraint.active = NO;
-        self.videoTopPortraitLayoutConstraint.active = NO;
-        self.videoBottomPortraitLayoutConstraint.active = NO;
-        self.videoLeftPortraitLayoutConstraint.active = NO;
-        self.videoRightPortraitLayoutConstraint.active = NO;
-        
-        self.videoTopLandscapeLayoutConstraint.active = YES;
-        self.videoBottomLandscapeLayoutConstraint.active = YES;
-        self.videoLeftLandscapeLayoutConstraint.active = YES;
-        self.videoRightLandscapeLayoutConstraint.active = YES;
-    }
-    
-    [self.view setNeedsUpdateConstraints];
 }
 
 - (void)fetchMediaSequenceObject
@@ -312,7 +206,18 @@ NSString * const kFTUSequenceURLPath = @"sequenceUrlPath";
 {
     [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context)
      {
+         UIInterfaceOrientation currentOrientation = [UIApplication sharedApplication].statusBarOrientation;
          
+         [self.portraitConstraints enumerateObjectsUsingBlock:^(NSLayoutConstraint *constraint, NSUInteger idx, BOOL *stop)
+          {
+              constraint.active = UIInterfaceOrientationIsPortrait(currentOrientation);
+          }];
+         [self.landscapeConstraints enumerateObjectsUsingBlock:^(NSLayoutConstraint *constraint, NSUInteger idx, BOOL *stop)
+          {
+              constraint.active = UIInterfaceOrientationIsLandscape(currentOrientation);
+          }];
+         
+         [self.view layoutIfNeeded];
      }
                                  completion:nil];
 }
@@ -346,6 +251,7 @@ NSString * const kFTUSequenceURLPath = @"sequenceUrlPath";
     [self closeVideoWindow];
 }
 
+#warning REMOVE ME
 - (void)closeVideoWindow
 {
     if (self.videoPlayerViewController.isPlaying)
