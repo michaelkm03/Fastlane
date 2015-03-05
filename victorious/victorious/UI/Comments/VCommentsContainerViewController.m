@@ -6,8 +6,11 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VGoogleAnalyticsTracking.h"
 #import "VCommentsContainerViewController.h"
+
+#import "MBProgressHUD.h"
+
+#import "VGoogleAnalyticsTracking.h"
 #import "VCommentsTableViewController.h"
 #import "VKeyboardBarViewController.h"
 #import "VSequence+Fetcher.h"
@@ -18,12 +21,9 @@
 #import "UIImageView+Blurring.h"
 #import "UIImage+ImageCreation.h"
 #import "UIStoryboard+VMainStoryboard.h"
-
+#import "VAuthorization.h"
 #import "VThemeManager.h"
-
 #import "UIImage+ImageCreation.h"
-
-#import "MBProgressHUD.h"
 
 @interface VCommentsContainerViewController() <VCommentsTableViewControllerDelegate>
 
@@ -144,6 +144,12 @@
                                              andParent:nil
                                           successBlock:success
                                              failBlock:fail];
+}
+
+- (BOOL)canPerformAuthorizedAction
+{
+    VAuthorization *authorization = [[VAuthorization alloc] initWithObjectManager:[VObjectManager sharedManager] dependencyManager:nil];
+    return [authorization performAuthorizedActionFromViewController:self withContext:VLoginContextAddComment withSuccess:^{}];
 }
 
 - (IBAction)pressedBackButton:(id)sender

@@ -19,7 +19,7 @@
 - (instancetype)initWithObjectManager:(VObjectManager *)objectManager
                     dependencyManager:(VDependencyManager *)dependencyManager;
 
-- (void)performAuthorizedActionFromViewController:(UIViewController *)presentingViewController
+- (BOOL)performAuthorizedActionFromViewController:(UIViewController *)presentingViewController
                                       withContext:(VLoginContextType)loginContext
                                       withSuccess:(void(^)())successActionBlock;
 

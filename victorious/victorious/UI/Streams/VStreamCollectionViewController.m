@@ -288,7 +288,7 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
     VAuthorization *authorization = [[VAuthorization alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                 dependencyManager:self.dependencyManager];
     [authorization performAuthorizedActionFromViewController:self
-                                                 withContext:VLoginContenxtCreatePost
+                                                 withContext:VLoginContextCreatePost
                                                  withSuccess:^void
      {
          [self showContentTypeSelection];

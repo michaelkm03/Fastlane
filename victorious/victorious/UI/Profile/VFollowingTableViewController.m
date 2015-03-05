@@ -230,7 +230,7 @@ static NSString * const kVFollowerCellName = @"followerCell";
         VAuthorization *authorization = [[VAuthorization alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                     dependencyManager:nil];
         [authorization performAuthorizedActionFromViewController:self
-                                                     withContext:VLoginContenxtFollowUser
+                                                     withContext:VLoginContextFollowUser
                                                      withSuccess:^
          {
              if ([mainUser.following containsObject:profile])

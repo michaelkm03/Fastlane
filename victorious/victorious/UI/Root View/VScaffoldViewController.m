@@ -248,7 +248,7 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
     
     if ([navigationDestination respondsToSelector:@selector(requiresAuthorization)] && [navigationDestination requiresAuthorization] )
     {
-        [self.authorization performAuthorizedActionFromViewController:self withContext:VLoginContenxtUnknown withSuccess:^
+        [self.authorization performAuthorizedActionFromViewController:self withContext:VLoginContextUnknown withSuccess:^
          {
             performNavigation(navigationDestination);
         }];

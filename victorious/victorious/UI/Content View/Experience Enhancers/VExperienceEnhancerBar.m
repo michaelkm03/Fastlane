@@ -140,14 +140,6 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Check if the user is logged in first
-    if ( ![VObjectManager sharedManager].authorized )
-    {
-        [[NSNotificationCenter defaultCenter] postNotificationName:VExperienceEnhancerBarDidRequireLoginNotification object:nil];
-        return;
-    }
-    
-    
     VExperienceEnhancerCell *experienceEnhancerCell = (VExperienceEnhancerCell *)[collectionView cellForItemAtIndexPath:indexPath];
     if ( !experienceEnhancerCell.enabled )
     {
@@ -163,6 +155,22 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
         [[NSNotificationCenter defaultCenter] postNotificationName:VExperienceEnhancerBarDidRequirePurchasePrompt object:nil userInfo:userInfo];
         return;
     }
+    
+    // Check if the user is logged in first
+    if ( ![VObjectManager sharedManager].authorized )
+    {
+        NSDictionary *userInfo = @{ @"experienceEnhancerIndexPath" : indexPath };
+        [[NSNotificationCenter defaultCenter] postNotificationName:VExperienceEnhancerBarDidRequireLoginNotification object:nil userInfo:userInfo];
+        return;
+    }
+    
+    [self selectExperienceEnhancerAtIndex:indexPath];
+}
+
+- (void)selectExperienceEnhancerAtIndex:(NSIndexPath *)indexPath
+{
+    VExperienceEnhancer *enhancerForIndexPath = [self.enhancers objectAtIndex:indexPath.row];
+    VExperienceEnhancerCell *experienceEnhancerCell = (VExperienceEnhancerCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
     
     // Incrememnt the vote count
     [enhancerForIndexPath vote];

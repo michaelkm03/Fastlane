@@ -94,22 +94,6 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
-#pragma mark - Segmented Control
-
-- (void)toggleFilterControl:(NSInteger)idx
-{
-    VModeSelect = idx;
-    NSLog(@"\n\n-----\nSelected Index = %lu\n-----\n\n", (unsigned long)VModeSelect);
-    
-    if (![VObjectManager sharedManager].authorized)
-    {
-        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
-    }
-    
-    self.fetchedResultsController = nil;
-    [self performFetch];
-}
-
 #pragma mark - Overrides
 
 - (NSFetchedResultsController *)makeFetchedResultsController

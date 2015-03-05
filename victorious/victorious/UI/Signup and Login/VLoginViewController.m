@@ -172,7 +172,7 @@
     }
     
     // This will set the status bar white
-    self.navigationController.navigationBar.barStyle = UIBarStyleBlack;
+    //self.navigationController.navigationBar.barStyle = UIBarStyleBlack;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -185,7 +185,8 @@
         self.navigationController.delegate = nil;
     }
     
-    [self.navigationItem setLeftBarButtonItem:nil animated:YES];
+    // This fades out the bar item
+    [self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] init] animated:YES];
 }
 
 - (BOOL)shouldAutorotate

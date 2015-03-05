@@ -60,6 +60,6 @@
  */
 @property (nonatomic, weak) VDependencyManager *dependencyManagerForHistogramExperiment;
 
-@property (nonatomic, strong, readonly) IBOutlet VSequenceActionController *sequenceActionController;
+@property (nonatomic, weak, readonly) IBOutlet VSequenceActionController *sequenceActionController;
 
 @end

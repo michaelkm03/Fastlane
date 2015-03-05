@@ -11,11 +11,9 @@
 #import "VVideoToolController.h"
 
 #import "VContentInputAccessoryView.h"
-#import "VObjectManager+Comment.h"
 #import "VKeyboardBarViewController.h"
 #import "VLoginViewController.h"
 
-#import "VAuthorizationViewControllerFactory.h"
 #import "VObjectManager+Login.h"
 #import "UIActionSheet+VBlocks.h"
 #import "VConstants.h"
@@ -134,9 +132,8 @@ static const NSInteger VDefaultKeyboardHeight = 51;
 
 - (IBAction)sendButtonAction:(id)sender
 {
-    if (![VObjectManager sharedManager].authorized)
+    if ( ![self.delegate canPerformAuthorizedAction] )
     {
-        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
         return;
     }
     
@@ -168,11 +165,11 @@ static const NSInteger VDefaultKeyboardHeight = 51;
 
 - (void)cameraPressed:(id)sender
 {
-    if (![VObjectManager sharedManager].authorized)
+    if ( ![self.delegate canPerformAuthorizedAction] )
     {
-        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
         return;
     }
+    
     void (^showCamera)(void) = ^void(void)
     {
         VWorkspaceFlowController *workspaceFlowController = [VWorkspaceFlowController workspaceFlowControllerWithoutADependencyMangerWithInjection:@{VImageToolControllerInitialImageEditStateKey:@(VImageToolControllerInitialImageEditStateFilter),
@@ -258,11 +255,11 @@ static const NSInteger VDefaultKeyboardHeight = 51;
 
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView
 {
-    if (![VObjectManager sharedManager].authorized)
+    if ( ![self.delegate canPerformAuthorizedAction] )
     {
-        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
         return NO;
     }
+    
     return YES;
 }
 

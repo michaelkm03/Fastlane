@@ -36,7 +36,7 @@
     return self;
 }
 
-- (void)performAuthorizedActionFromViewController:(UIViewController *)presentingViewController
+- (BOOL)performAuthorizedActionFromViewController:(UIViewController *)presentingViewController
                                       withContext:(VLoginContextType)loginContext
                                       withSuccess:(void(^)())successActionBlock
 {
@@ -52,6 +52,7 @@
         viewController.profile = [VObjectManager sharedManager].mainUser;
         viewController.registrationModel = [[VRegistrationModel alloc] init];
         [presentingViewController presentViewController:viewController animated:YES completion:nil];
+        return NO;
     }
     else if ( !self.objectManager.mainUserLoggedIn && !self.objectManager.mainUserProfileComplete )
     {
@@ -62,10 +63,12 @@
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
         viewController.transitionDelegate = self.transition;
         [presentingViewController presentViewController:navigationController animated:YES completion:nil];
+        return NO;
     }
     else
     {
         successActionBlock();
+        return YES;
     }
 }
 

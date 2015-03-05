@@ -47,7 +47,6 @@
 #import "VVideoLightboxViewController.h"
 #import "VImageLightboxViewController.h"
 #import "VUserProfileViewController.h"
-#import "VAuthorizationViewControllerFactory.h"
 #import "VPurchaseViewController.h"
 
 // Workspace
@@ -99,6 +98,7 @@
 #import "VUserTag.h"
 #import "VHashtagStreamCollectionViewController.h"
 #import "VNavigationController.h"
+#import "VAuthorization.h"
 
 #define HANDOFFENABLED 0
 static const CGFloat kMaxInputBarHeight = 200.0f;
@@ -149,7 +149,8 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 @property (nonatomic, weak) IBOutlet VContentViewAlertHelper *alertHelper;
 @property (nonatomic, weak) IBOutlet VContentViewRotationHelper *rotationHelper;
 @property (nonatomic, weak) IBOutlet VScrollPaginator *scrollPaginator;
-@property (nonatomic, strong, readwrite) IBOutlet VSequenceActionController *sequenceActionController;
+@property (nonatomic, weak, readwrite) IBOutlet VSequenceActionController *sequenceActionController;
+@property (nonatomic, strong) VAuthorization *authorizationHelper;
 
 @property (nonatomic, weak) UIView *snapshotView;
 @property (nonatomic, assign) CGPoint offsetBeforeRemoval;
@@ -367,7 +368,10 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    
+    self.authorizationHelper = [[VAuthorization alloc] initWithObjectManager:[VObjectManager sharedManager]
+                                                           dependencyManager:self.dependencyManager];
+    
     self.commentHighlighter = [[VCommentHighlighter alloc] initWithCollectionView:self.contentCollectionView];
     
     // Hack to remove margins stuff should probably refactor :(
@@ -475,7 +479,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
                                                  name:kLoggedInChangedNotification
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(showLoginViewController:)
+                                             selector:@selector(experienceEnhancerDidRequireLogin:)
                                                  name:VExperienceEnhancerBarDidRequireLoginNotification
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -658,15 +662,18 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     [self presentViewController:viewController animated:YES completion:nil];
 }
 
-- (void)showLoginViewController:(NSNotification *)notification
+- (void)experienceEnhancerDidRequireLogin:(NSNotification *)notification
 {
-    UIViewController *loginViewController = [VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]];
-    if (loginViewController)
-    {
-        [self presentViewController:loginViewController
-                           animated:YES
-                         completion:nil];
-    }
+    [self.authorizationHelper performAuthorizedActionFromViewController:self withContext:VLoginContextVoteBallistic withSuccess:^
+     {
+         // Use the provided index path of the selected emotive ballistic that trigger the notificiation
+         // to perform the authorized action once authorization is successful
+         NSIndexPath *experienceEnhancerIndexPath = notification.userInfo[ @"experienceEnhancerIndexPath" ];
+         if ( experienceEnhancerIndexPath != nil )
+         {
+             [self.experienceEnhancerCell.experienceEnhancerBar selectExperienceEnhancerAtIndex:experienceEnhancerIndexPath];
+         }
+     }];
 }
 
 - (void)keyboardDidChangeFrame:(NSNotification *)notification
@@ -1009,39 +1016,27 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
                 __weak typeof(self) welf = self;
                 self.ballotCell.answerASelectionHandler = ^(void)
                 {
-                    UIViewController *loginViewController = [VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]];
-                    if (loginViewController)
+                    [welf.authorizationHelper performAuthorizedActionFromViewController:welf withContext:VLoginContextVotePoll withSuccess:^
                     {
-                        [welf presentViewController:loginViewController
-                                           animated:YES
-                                         completion:nil];
-                        return;
-                    }
-                    
-                    [welf.viewModel answerPollWithAnswer:VPollAnswerA
-                                              completion:^(BOOL succeeded, NSError *error)
-                    {
-                        [welf.pollCell setAnswerAPercentage:welf.viewModel.answerAPercentage
-                                                   animated:YES];
+                        [welf.viewModel answerPollWithAnswer:VPollAnswerA
+                                                  completion:^(BOOL succeeded, NSError *error)
+                         {
+                             [welf.pollCell setAnswerAPercentage:welf.viewModel.answerAPercentage
+                                                        animated:YES];
+                         }];
                     }];
                 };
                 self.ballotCell.answerBSelectionHandler = ^(void)
                 {
-                    UIViewController *loginViewController = [VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]];
-                    if (loginViewController)
-                    {
-                        [welf presentViewController:loginViewController
-                                           animated:YES
-                                         completion:nil];
-                        return;
-                    }
-                    
-                    [welf.viewModel answerPollWithAnswer:VPollAnswerB
-                                              completion:^(BOOL succeeded, NSError *error)
-                    {
-                        [welf.pollCell setAnswerBPercentage:welf.viewModel.answerBPercentage
-                                                   animated:YES];
-                    }];
+                    [welf.authorizationHelper performAuthorizedActionFromViewController:welf withContext:VLoginContextVotePoll withSuccess:^
+                     {
+                         [welf.viewModel answerPollWithAnswer:VPollAnswerB
+                                                   completion:^(BOOL succeeded, NSError *error)
+                          {
+                              [welf.pollCell setAnswerBPercentage:welf.viewModel.answerBPercentage
+                                                         animated:YES];
+                          }];
+                     }];
                 };
                 
                 return self.ballotCell;
@@ -1415,12 +1410,6 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)keyboardInputAccessoryViewDidBeginEditing:(VKeyboardInputAccessoryView *)inpoutAccessoryView
 {
-    if (![VObjectManager sharedManager].authorized)
-    {
-        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
-        return;
-    }
-    
     if ( self.viewModel.type != VContentViewTypeVideo )
     {
         return;
@@ -1431,8 +1420,11 @@ referenceSizeForHeaderInSection:(NSInteger)section
         [self.videoCell pause];
     }
     
-    self.enteringRealTimeComment = YES;
-    self.realtimeCommentBeganTime = self.videoCell.currentTime;
+    [self.authorizationHelper performAuthorizedActionFromViewController:self withContext:VLoginContextAddComment withSuccess:^
+     {
+         self.enteringRealTimeComment = YES;
+         self.realtimeCommentBeganTime = self.videoCell.currentTime;
+     }];
 }
 
 - (void)clearEditingRealTimeComment
