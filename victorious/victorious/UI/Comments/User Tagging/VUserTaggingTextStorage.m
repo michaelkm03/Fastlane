@@ -20,7 +20,7 @@ typedef NS_ENUM(NSInteger, VUserTaggingTextStorageState)
     VUserTaggingTextStorageStateSearchActive
 };
 
-static NSString * const kTriggerCharacter = @"@";
+static NSString * const kTriggerString = @"@";
 static NSString * const kThreeSpaces = @"   ";
 
 @interface VUserTaggingTextStorage () <VInlineSearchTableViewControllerDelegate>
@@ -108,7 +108,7 @@ static NSString * const kThreeSpaces = @"   ";
 
 - (void)searchWithRange:(NSRange)range
 {
-    NSUInteger triggerCharacterLength = kTriggerCharacter.length;
+    NSUInteger triggerCharacterLength = kTriggerString.length;
     
     //If range is <= triggerCharacterLength, the range is looking at a blank or only "kTriggerCharacter" string and does not need to search
     if ( range.length > triggerCharacterLength )
@@ -295,10 +295,10 @@ static NSString * const kThreeSpaces = @"   ";
     {
         case VUserTaggingTextStorageStateInactive:
         {
-            if ( [string isEqualToString:kTriggerCharacter] )
+            if ( [string isEqualToString:kTriggerString] )
             {
                 self.state = VUserTaggingTextStorageStateTriggerCharacterDetected;
-                self.searchTermRange = NSMakeRange(range.location, kTriggerCharacter.length);
+                self.searchTermRange = NSMakeRange(range.location, kTriggerString.length);
             }
             break;
         }
