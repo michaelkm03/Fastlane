@@ -24,6 +24,7 @@
 static NSString * const kIDKey = @"id";
 static NSString * const kReferenceIDKey = @"referenceID";
 static NSString * const kAppearanceKey = @"appearance";
+static NSString * const kExperimentsKey = @"experiments";
 static NSString * const kClassNameKey = @"name";
 
 // Menu properties
@@ -133,6 +134,13 @@ static NSString * const kVideoMuted = @"videoMuted";
                                      };
                  }
                  self.accentColor = accentColor;
+             }
+         }
+         else if ( [key isEqual:kExperimentsKey] )
+         {
+             if ( [obj isKindOfClass:[NSDictionary class]] )
+             {
+                 [template addEntriesFromDictionary:obj];
              }
          }
          else

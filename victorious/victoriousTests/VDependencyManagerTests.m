@@ -192,28 +192,28 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
 - (void)testString
 {
     NSString *expected = @"medium";
-    NSString *actual = [self.dependencyManager stringForKey:@"video_quality.capture"];
+    NSString *actual = [self.dependencyManager stringForKey:@"video_quality"];
     XCTAssertEqualObjects(expected, actual);
 }
 
 - (void)testStringViaGenericMethod
 {
     NSString *expected = @"medium";
-    NSString *actual = [self.dependencyManager templateValueOfType:[NSString class] forKey:@"video_quality.capture"];
+    NSString *actual = [self.dependencyManager templateValueOfType:[NSString class] forKey:@"video_quality"];
     XCTAssertEqualObjects(expected, actual);
 }
 
 - (void)testChildString
 {
     NSString *expected = @"medium";
-    NSString *actual = [self.childDependencyManager stringForKey:@"video_quality.capture"];
+    NSString *actual = [self.childDependencyManager stringForKey:@"video_quality"];
     XCTAssertEqualObjects(expected, actual);
 }
 
 - (void)testNumber
 {
     NSNumber *expected = @YES;
-    NSNumber *actual = [self.dependencyManager numberForKey:@"experiments.require_profile_image"];
+    NSNumber *actual = [self.dependencyManager numberForKey:@"require_profile_image"];
     XCTAssertNotNil(actual);
     XCTAssertEqualObjects(expected, actual);
 }
@@ -221,7 +221,7 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
 - (void)testChildNumber
 {
     NSNumber *expected = @NO;
-    NSNumber *actual = [self.childDependencyManager numberForKey:@"experiments.histogram_enabled"];
+    NSNumber *actual = [self.childDependencyManager numberForKey:@"histogram_enabled"];
     XCTAssertNotNil(actual);
     XCTAssertEqualObjects(expected, actual);
 }
@@ -292,8 +292,6 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
 {
     NSDictionary *expected = @{
         @"channels_enabled": @YES,
-        @"histogram_enabled": @NO,
-        @"require_profile_image": @YES,
         @"template_c_enabled": @NO
     };
     NSDictionary *actual = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:@"experiments"];
@@ -308,8 +306,6 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
 {
     NSDictionary *expected = @{
         @"channels_enabled": @YES,
-        @"histogram_enabled": @NO,
-        @"require_profile_image": @YES,
         @"template_c_enabled": @NO
     };
     NSDictionary *actual = [self.dependencyManager singletonObjectOfType:[NSDictionary class] forKey:@"experiments"];
@@ -326,7 +322,7 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
     XCTAssertNotNil(vc);
     XCTAssertEqualObjects([vc.dependencyManager numberForKey:@"one"], @1);
     XCTAssertEqualObjects([vc.dependencyManager numberForKey:@"two"], @2);
-    XCTAssertEqualObjects([vc.dependencyManager numberForKey:@"experiments.require_profile_image"], @YES);
+    XCTAssertEqualObjects([vc.dependencyManager stringForKey:@"video_quality"], @"medium");
 }
 
 - (void)testReferencedObject
@@ -488,7 +484,7 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
     VDependencyManager *childManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:@{ }];
     
     NSString *expected = @"medium";
-    NSString *actual = [childManager stringForKey:@"video_quality.capture"];
+    NSString *actual = [childManager stringForKey:@"video_quality"];
     XCTAssertEqualObjects(expected, actual);
 }
 
@@ -503,10 +499,10 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
 
 - (void)testChildManagerOverridesParent
 {
-    VDependencyManager *childManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:@{ @"video_quality.capture": @"low" }];
+    VDependencyManager *childManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:@{ @"video_quality": @"low" }];
     
     NSString *expected = @"low";
-    NSString *actual = [childManager stringForKey:@"video_quality.capture"];
+    NSString *actual = [childManager stringForKey:@"video_quality"];
     XCTAssertEqualObjects(expected, actual);
 }
 

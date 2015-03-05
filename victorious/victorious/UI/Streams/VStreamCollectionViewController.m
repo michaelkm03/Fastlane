@@ -132,7 +132,7 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
         [streamCollectionVC addUploadProgressView];
     }
     
-    NSNumber *cellVisibilityRatio = [dependencyManager numberForKey:@"experiments.stream_atf_view_threshold"];
+    NSNumber *cellVisibilityRatio = [dependencyManager numberForKey:@"stream_atf_view_threshold"];
     if ( cellVisibilityRatio != nil )
     {
         streamCollectionVC.trackingMinRequiredCellVisibilityRatio = cellVisibilityRatio.floatValue;

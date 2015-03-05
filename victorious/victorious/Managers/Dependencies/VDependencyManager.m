@@ -61,8 +61,8 @@ static NSString * const kFontSizeKey = @"fontSize";
 static NSString * const kImageURLKey = @"imageURL";
 
 // Keys for experiments
-NSString * const VDependencyManagerHistogramEnabledKey = @"experiments.histogram_enabled";
-NSString * const VDependencyManagerProfileImageRequiredKey = @"experiments.require_profile_image";
+NSString * const VDependencyManagerHistogramEnabledKey = @"histogram_enabled";
+NSString * const VDependencyManagerProfileImageRequiredKey = @"require_profile_image";
 
 // Keys for view controllers
 NSString * const VDependencyManagerScaffoldViewControllerKey = @"scaffold";
@@ -403,18 +403,18 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
 
 #pragma mark - Dependency getter primatives
 
-- (id)templateValueOfType:(Class)expectedType forKey:(NSString *)keyPath
+- (id)templateValueOfType:(Class)expectedType forKey:(NSString *)key
 {
-    return [self templateValueOfType:expectedType forKey:keyPath withAddedDependencies:nil];
+    return [self templateValueOfType:expectedType forKey:key withAddedDependencies:nil];
 }
 
-- (id)templateValueOfType:(Class)expectedType forKey:(NSString *)keyPath withAddedDependencies:(NSDictionary *)dependencies
+- (id)templateValueOfType:(Class)expectedType forKey:(NSString *)key withAddedDependencies:(NSDictionary *)dependencies
 {
-    id value = [self.configuration valueForKeyPath:keyPath];
+    id value = self.configuration[key];
     
     if (value == nil)
     {
-        return [self.parentManager templateValueOfType:expectedType forKey:keyPath withAddedDependencies:dependencies];
+        return [self.parentManager templateValueOfType:expectedType forKey:key withAddedDependencies:dependencies];
     }
     
     if ([value isKindOfClass:[NSDictionary class]] && value[kReferenceIDKey] != nil)
