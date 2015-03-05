@@ -236,7 +236,7 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
  Returns an array of dependent objects created from a JSON array
  
  @param array An array pulled straight from within the template configuration
- @param translation A block that, given an expected type and a configuration dictionary, will return an object described by that dictionary
+ @param translation A block that, given an expected type and a dependency manager instance, will return an object generated with that dependancy manager
  */
 - (NSArray *)arrayOfValuesOfType:(Class)expectedType forKey:(NSString *)key withTranslationBlock:(id(^)(Class, VDependencyManager *))translation
 {
@@ -251,30 +251,28 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
     NSMutableArray *returnValue = [[NSMutableArray alloc] initWithCapacity:templateArray.count];
     for (id templateObject in templateArray)
     {
-        if ( [templateObject isKindOfClass:expectedType] )
+        VDependencyManager *dependencyManager = nil;
+        
+        if ( [templateObject isKindOfClass:[NSDictionary class]] && [(NSDictionary *)templateObject objectForKey:kReferenceIDKey] != nil )
+        {
+            dependencyManager = [self childDependencyManagerForID:[(NSDictionary *)templateObject objectForKey:kReferenceIDKey]];
+        }
+        else if ( ![expectedType isSubclassOfClass:[NSDictionary class]] && [templateObject isKindOfClass:[NSDictionary class]] )
+        {
+            dependencyManager = [self childDependencyManagerForID:[(NSDictionary *)templateObject objectForKey:kIDKey]];
+        }
+        else if ( [templateObject isKindOfClass:expectedType] )
         {
             [returnValue addObject:templateObject];
+            continue;
         }
-        else if ( [templateObject isKindOfClass:[NSDictionary class]] )
+        
+        if ( dependencyManager != nil )
         {
-            VDependencyManager *dependencyManager = nil;
-            NSDictionary *componentDefinition = (NSDictionary *)templateObject;
-            if ( componentDefinition[kReferenceIDKey] != nil )
+            id realObject = translation(expectedType, dependencyManager);
+            if ( realObject != nil )
             {
-                dependencyManager = [self childDependencyManagerForID:componentDefinition[kReferenceIDKey]];
-            }
-            else if ( componentDefinition[kIDKey] != nil )
-            {
-                dependencyManager = [self childDependencyManagerForID:componentDefinition[kIDKey]];
-            }
-            
-            if ( dependencyManager != nil )
-            {
-                id realObject = translation(expectedType, dependencyManager);
-                if ( realObject != nil )
-                {
-                    [returnValue addObject:realObject];
-                }
+                [returnValue addObject:realObject];
             }
         }
     }
@@ -292,19 +290,19 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
         return [self.parentManager singletonObjectOfType:expectedType forKey:key];
     }
     
-    if ([value isKindOfClass:expectedType])
-    {
-        return value;
-    }
-    else if ( [value isKindOfClass:[NSDictionary class]] && [(NSDictionary *)value objectForKey:kReferenceIDKey] != nil )
+    if ( [value isKindOfClass:[NSDictionary class]] && [(NSDictionary *)value objectForKey:kReferenceIDKey] != nil )
     {
         VDependencyManager *dependencyManager = [self childDependencyManagerForID:[(NSDictionary *)value objectForKey:kReferenceIDKey]];
         return [self singletonObjectOfType:expectedType withDependencyManager:dependencyManager];
     }
-    else if ([value isKindOfClass:[NSDictionary class]])
+    else if ( ![expectedType isSubclassOfClass:[NSDictionary class]] && [value isKindOfClass:[NSDictionary class]] )
     {
         VDependencyManager *dependencyManager = [self childDependencyManagerForID:[(NSDictionary *)value valueForKey:kIDKey]];
         return [self singletonObjectOfType:expectedType withDependencyManager:dependencyManager];
+    }
+    else if ([value isKindOfClass:expectedType])
+    {
+        return value;
     }
     return nil;
 }
@@ -403,11 +401,7 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
         VDependencyManager *dependencyManager = [self childDependencyManagerForID:[(NSDictionary *)value objectForKey:kReferenceIDKey]];
         return [self objectOfType:expectedType withDependencyManager:dependencyManager];
     }
-    else if ([value isKindOfClass:expectedType])
-    {
-        return value;
-    }
-    else if ([value isKindOfClass:[NSDictionary class]])
+    else if ( [value isKindOfClass:[NSDictionary class]] && ![expectedType isSubclassOfClass:[NSDictionary class]] )
     {
         VDependencyManager *dependencyManager = [self childDependencyManagerForID:[value valueForKey:kIDKey]];
         if ( dependencies != nil )
@@ -415,6 +409,10 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
             dependencyManager = [dependencyManager childDependencyManagerWithAddedConfiguration:dependencies];
         }
         return [self objectOfType:expectedType withDependencyManager:dependencyManager];
+    }
+    else if ( [value isKindOfClass:expectedType] )
+    {
+        return value;
     }
     
     return nil;

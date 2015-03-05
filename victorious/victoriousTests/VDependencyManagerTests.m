@@ -187,6 +187,54 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
     XCTAssertNotNil(obj.dependencyManager);
 }
 
+#pragma mark - Objects
+
+- (void)testNSObjectInstantiation
+{
+    id nvc = [self.dependencyManager templateValueOfType:[NSObject class] forKey:@"nvc"];
+    XCTAssert([nvc isKindOfClass:[VTestViewControllerWithNewMethod class]]);
+}
+
+- (void)testNSObjectSingleton
+{
+    id nvc = [self.dependencyManager singletonObjectOfType:[NSObject class] forKey:@"nvc"];
+    XCTAssert([nvc isKindOfClass:[VTestViewControllerWithNewMethod class]]);
+}
+
+- (void)testNSObjectReference
+{
+    id nvc = [self.dependencyManager templateValueOfType:[NSObject class] forKey:@"otherNVC"];
+    XCTAssert([nvc isKindOfClass:[VTestViewControllerWithNewMethod class]]);
+}
+
+- (void)testNSObjectReferenceSingleton
+{
+    id nvc = [self.dependencyManager singletonObjectOfType:[NSObject class] forKey:@"otherNVC"];
+    XCTAssert([nvc isKindOfClass:[VTestViewControllerWithNewMethod class]]);
+}
+
+- (void)testArraysOfNSObjects
+{
+    NSArray *array = [self.dependencyManager arrayOfValuesOfType:[NSObject class] forKey:@"arrayOfObjects"];
+    XCTAssertEqual(array.count, 4u);
+    
+    XCTAssert([array[0] isKindOfClass:[VTestViewControllerWithNewMethod class]]);
+    XCTAssert([array[1] isKindOfClass:[VTestViewControllerWithNewMethod class]]);
+    XCTAssert([array[2] isKindOfClass:[VTestViewControllerWithInitMethod class]]);
+    XCTAssert([array[3] isKindOfClass:[VTestViewControllerWithNewMethod class]]);
+}
+
+- (void)testArraysOfSingletonNSObjects
+{
+    NSArray *array = [self.dependencyManager arrayOfSingletonValuesOfType:[NSObject class] forKey:@"arrayOfObjects"];
+    XCTAssertEqual(array.count, 4u);
+    
+    XCTAssert([array[0] isKindOfClass:[VTestViewControllerWithNewMethod class]]);
+    XCTAssert([array[1] isKindOfClass:[VTestViewControllerWithNewMethod class]]);
+    XCTAssert([array[2] isKindOfClass:[VTestViewControllerWithInitMethod class]]);
+    XCTAssert([array[3] isKindOfClass:[VTestViewControllerWithNewMethod class]]);
+}
+
 #pragma mark - Strings, numbers, arrays
 
 - (void)testString
@@ -320,7 +368,7 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
     XCTAssertEqualObjects(expected, actual);
 }
 
-#pragma mark - Instantiating objects via dictionaries and references
+#pragma mark - Instantiating objects via references
 
 - (void)testReferencedObject
 {
