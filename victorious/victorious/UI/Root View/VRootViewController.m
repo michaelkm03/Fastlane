@@ -174,7 +174,7 @@ static NSString * const kNotificationIDKey = @"notification_id";
     self.appLaunched = NO;
     VLoadingViewController *loadingViewController = [VLoadingViewController loadingViewController];
     loadingViewController.delegate = self;
-    [self showViewController:loadingViewController animated:NO];
+    [self showViewController:loadingViewController animated:NO completion:nil];
 }
 
 - (void)startAppWithInitData:(NSDictionary *)initData
@@ -195,7 +195,10 @@ static NSString * const kNotificationIDKey = @"notification_id";
     }
     
     VScaffoldViewController *scaffold = [self.dependencyManager scaffoldViewController];
-    [self showViewController:scaffold animated:YES];
+    [self showViewController:scaffold animated:YES completion:^(void)
+    {
+        self.appLaunched = YES;
+    }];
     
     if ( self.queuedURL != nil )
     {
@@ -204,7 +207,7 @@ static NSString * const kNotificationIDKey = @"notification_id";
     }
 }
 
-- (void)showViewController:(UIViewController *)viewController animated:(BOOL)animated
+- (void)showViewController:(UIViewController *)viewController animated:(BOOL)animated completion:(void(^)(void))completion
 {
     if (viewController)
     {
@@ -217,6 +220,10 @@ static NSString * const kNotificationIDKey = @"notification_id";
     {
         [viewController didMoveToParentViewController:self];
         [UIViewController attemptRotationToDeviceOrientation];
+        if ( completion != nil )
+        {
+            completion();
+        }
     };
     
     if (self.currentViewController)
@@ -338,7 +345,7 @@ static NSString * const kNotificationIDKey = @"notification_id";
         self.queuedNotificationID = nil;
     }
     
-    [self showViewController:nil animated:NO];
+    [self showViewController:nil animated:NO completion:nil];
     [RKObjectManager setSharedManager:nil];
     [VObjectManager setupObjectManager];
     [self showLoadingViewController];
@@ -367,7 +374,6 @@ static NSString * const kNotificationIDKey = @"notification_id";
 {
     if ( loadingViewController == self.currentViewController )
     {
-        self.appLaunched = YES;
         [self startAppWithInitData:initResponse];
     }
 }
