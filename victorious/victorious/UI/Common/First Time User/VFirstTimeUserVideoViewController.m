@@ -28,11 +28,9 @@ NSString * const kFTUSequenceURLPath = @"sequenceUrlPath";
 @property (nonatomic, strong) IBOutletCollection(NSLayoutConstraint) NSArray *landscapeConstraints;
 
 @property (nonatomic, weak) IBOutlet VButton *getStartedButton;
-@property (nonatomic, weak) IBOutlet UIImageView *backgroundImageView;
 @property (nonatomic, weak) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (nonatomic, weak) IBOutlet UIView *containerView;
-
-@property (nonatomic, assign) CGRect portraitFrame;
+@property (nonatomic, weak) IBOutlet UIView *backgroundBlurredView;
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VCVideoPlayerViewController *videoPlayerViewController;
@@ -75,7 +73,14 @@ NSString * const kFTUSequenceURLPath = @"sequenceUrlPath";
     [self.getStartedButton setTitle:NSLocalizedString(@"Get Started", @"") forState:UIControlStateNormal];
     self.getStartedButton.style = VButtonStyleSecondary;
     
-    // Setup player
+    // Set Background Blur Effect
+    self.backgroundBlurredView.backgroundColor = [UIColor clearColor];
+    UIVisualEffectView *viewForBackground = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight]];
+    viewForBackground.frame = self.backgroundBlurredView.bounds;
+    viewForBackground.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.backgroundBlurredView addSubview:viewForBackground];
+    
+    // Setup Player UI
     [self setupVideoUI];
 
     // Setup Media Playback
@@ -121,7 +126,7 @@ NSString * const kFTUSequenceURLPath = @"sequenceUrlPath";
     }
                                             failBlock:^(NSOperation *operation, NSError *error)
     {
-        [self closeVideoWindow];
+        [self getStartedButtonAction:nil];
     }];
 }
 
@@ -133,7 +138,7 @@ NSString * const kFTUSequenceURLPath = @"sequenceUrlPath";
     }
     else
     {
-        [self closeVideoWindow];
+        [self getStartedButtonAction:nil];
     }
 }
 
@@ -151,9 +156,6 @@ NSString * const kFTUSequenceURLPath = @"sequenceUrlPath";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    self.backgroundImageView.image = [self.imageSnapshot applyDarkEffect];
-    //[self updateOrientation];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -166,8 +168,6 @@ NSString * const kFTUSequenceURLPath = @"sequenceUrlPath";
     }
     self.videoPlayerViewController.view.hidden = YES;
     self.videoPlayerViewController = nil;
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -214,6 +214,12 @@ NSString * const kFTUSequenceURLPath = @"sequenceUrlPath";
     [self.activityIndicator stopAnimating];
 }
 
+- (void)videoPlayerFailed:(VCVideoPlayerViewController *)videoPlayer
+{
+    [self.activityIndicator stopAnimating];
+    [self getStartedButtonAction:nil];
+}
+
 #pragma mark - Video Playback
 
 - (void)showFirstTimeVideo
@@ -233,20 +239,14 @@ NSString * const kFTUSequenceURLPath = @"sequenceUrlPath";
 
 - (IBAction)getStartedButtonAction:(id)sender
 {
-    [self closeVideoWindow];
-}
-
-#warning REMOVE ME
-- (void)closeVideoWindow
-{
     if (self.videoPlayerViewController.isPlaying)
     {
         [self.videoPlayerViewController.player pause];
         self.videoPlayerViewController.view.hidden = YES;
         self.videoPlayerViewController = nil;
     }
-    
-    [self dismissViewControllerAnimated:YES completion:nil];
+
+    [self.delegate videoHasCompleted:self];
 }
 
 #pragma mark - Save to NSUserDefaults

@@ -639,4 +639,12 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
              };
 }
 
+- (NSDictionary *)translucentDarkBackground
+{
+    return @{
+             kClassNameKey:@"translucent.background",
+             VTranslucentBackgroundBlurStyleKey: VTranslucentBackgroundBlurStyleDark,
+             };
+}
+
 @end

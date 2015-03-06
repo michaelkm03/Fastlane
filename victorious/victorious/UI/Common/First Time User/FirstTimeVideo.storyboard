@@ -3,6 +3,7 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--First Time User Video View Controller-->
@@ -17,9 +18,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="800"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="WaD-Bc-zOl" userLabel="Blurred Background Image">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iGR-lx-Wig" userLabel="backgroundBlurredView">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="800"/>
-                            </imageView>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oJA-97-ssS" customClass="VButton">
                                 <rect key="frame" x="160" y="703" width="280" height="50"/>
                                 <constraints>
@@ -34,9 +36,6 @@
                                     <action selector="getStartedButtonAction:" destination="eLl-qp-GRA" eventType="touchUpInside" id="hhc-2i-SbS"/>
                                 </connections>
                             </button>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="rg4-dB-97K">
-                                <rect key="frame" x="282" y="381" width="37" height="37"/>
-                            </activityIndicatorView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sOS-ge-ov7" userLabel="Container">
                                 <rect key="frame" x="0.0" y="80" width="600" height="600"/>
                                 <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
@@ -44,17 +43,20 @@
                                     <constraint firstAttribute="width" secondItem="sOS-ge-ov7" secondAttribute="height" multiplier="1:1" id="gYB-VG-Vw4" userLabel="Portrait"/>
                                 </constraints>
                             </view>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="rg4-dB-97K">
+                                <rect key="frame" x="282" y="381" width="37" height="37"/>
+                            </activityIndicatorView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="WaD-Bc-zOl" secondAttribute="trailing" id="1nW-Dp-dWK"/>
                             <constraint firstItem="sOS-ge-ov7" firstAttribute="leading" secondItem="lnt-Ok-t9O" secondAttribute="leading" id="2Da-7F-rzq"/>
-                            <constraint firstItem="mT9-B7-VTY" firstAttribute="top" secondItem="WaD-Bc-zOl" secondAttribute="bottom" id="9gV-25-c6n"/>
-                            <constraint firstItem="WaD-Bc-zOl" firstAttribute="leading" secondItem="lnt-Ok-t9O" secondAttribute="leading" id="Suk-ks-gLs"/>
+                            <constraint firstItem="mT9-B7-VTY" firstAttribute="top" secondItem="iGR-lx-Wig" secondAttribute="bottom" id="5kV-KG-xb9"/>
                             <constraint firstAttribute="centerY" secondItem="rg4-dB-97K" secondAttribute="centerY" id="aET-8a-rD1"/>
                             <constraint firstItem="sOS-ge-ov7" firstAttribute="top" secondItem="RlJ-HE-p9L" secondAttribute="bottom" id="bBQ-lG-8io"/>
-                            <constraint firstItem="WaD-Bc-zOl" firstAttribute="top" secondItem="RlJ-HE-p9L" secondAttribute="bottom" id="dDU-Op-vEW"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="iGR-lx-Wig" secondAttribute="trailing" constant="-16" id="gGI-Sh-LZ7"/>
                             <constraint firstItem="mT9-B7-VTY" firstAttribute="top" secondItem="sOS-ge-ov7" secondAttribute="bottom" id="hZe-nW-RQ9"/>
+                            <constraint firstItem="iGR-lx-Wig" firstAttribute="top" secondItem="RlJ-HE-p9L" secondAttribute="bottom" id="jWp-Si-n7c"/>
+                            <constraint firstItem="iGR-lx-Wig" firstAttribute="leading" secondItem="lnt-Ok-t9O" secondAttribute="leadingMargin" constant="-16" id="jo2-pd-K8Y"/>
                             <constraint firstAttribute="trailing" secondItem="sOS-ge-ov7" secondAttribute="trailing" id="lfe-YK-gPa"/>
                             <constraint firstAttribute="centerX" secondItem="oJA-97-ssS" secondAttribute="centerX" id="rR4-0J-01m"/>
                             <constraint firstAttribute="centerX" secondItem="rg4-dB-97K" secondAttribute="centerX" id="wn9-ts-YBf"/>
@@ -73,7 +75,7 @@
                     <size key="freeformSize" width="600" height="800"/>
                     <connections>
                         <outlet property="activityIndicator" destination="rg4-dB-97K" id="ycB-mN-5m9"/>
-                        <outlet property="backgroundImageView" destination="WaD-Bc-zOl" id="brd-qM-yfm"/>
+                        <outlet property="backgroundBlurredView" destination="iGR-lx-Wig" id="80U-OM-88f"/>
                         <outlet property="containerView" destination="sOS-ge-ov7" id="8sQ-1B-Yf2"/>
                         <outlet property="getStartedButton" destination="oJA-97-ssS" id="LuA-yp-Snk"/>
                         <outletCollection property="portraitConstraints" destination="gYB-VG-Vw4" id="Bog-BO-9Rf"/>

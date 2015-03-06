@@ -8,9 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
-@class VDependencyManager, VSequence;
+@class VDependencyManager, VSequence, VFirstTimeUserVideoViewController;
 
 extern NSString * const kFTUSequenceURLPath;
+
+@protocol VFirstTimeUserVideoViewControllerDelegate <NSObject>
+
+- (void)videoHasCompleted:(VFirstTimeUserVideoViewController *)firstTimeUserVideoViewController;
+
+@end
 
 @interface VFirstTimeUserVideoViewController : UIViewController
 
@@ -29,6 +35,11 @@ extern NSString * const kFTUSequenceURLPath;
  @return BOOL indicating if user has previously viewed the app welcome video or not
  */
 - (BOOL)hasBeenShown;
+
+/**
+ Reports when the video has completed or failed to load
+ */
+@property (nonatomic, weak) id <VFirstTimeUserVideoViewControllerDelegate> delegate;
 
 /**
  Image used for blurred background

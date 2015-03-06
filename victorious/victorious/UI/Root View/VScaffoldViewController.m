@@ -33,7 +33,7 @@ NSString * const VScaffoldViewControllerWelcomeUserViewComponentKey = @"welcomeV
 static NSString * const kContentDeeplinkURLHostComponent = @"content";
 static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
 
-@interface VScaffoldViewController () <VNewContentViewControllerDelegate>
+@interface VScaffoldViewController () <VNewContentViewControllerDelegate, VFirstTimeUserVideoViewControllerDelegate>
 
 @end
 
@@ -58,19 +58,14 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
 
     // Show the First Time User Video if it hasn't been shown yet
     VFirstTimeUserVideoViewController *firstTimeUserVC = [self.dependencyManager templateValueOfType:[VFirstTimeUserVideoViewController class]
-                                                                                   forKey:VScaffoldViewControllerWelcomeUserViewComponentKey];
-    if ([firstTimeUserVC hasBeenShown])
+                                                                                              forKey:VScaffoldViewControllerWelcomeUserViewComponentKey];
+    if ( ![firstTimeUserVC hasBeenShown] )
     {
+        firstTimeUserVC.delegate = self;
         double delayInSeconds = 1.5;
         dispatch_time_t showTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
         dispatch_after(showTime, dispatch_get_main_queue(), ^(void)
                        {
-                           // Grab a screenshot of the current view
-                           UIGraphicsBeginImageContext(self.view.bounds.size);
-                           [self.view drawViewHierarchyInRect:self.view.bounds afterScreenUpdates:YES];
-                           UIImage *screenGrab = UIGraphicsGetImageFromCurrentImageContext();
-                           firstTimeUserVC.imageSnapshot = screenGrab;
-                           UIGraphicsEndImageContext();
 
                            // Present the first-time user video view controller
                            [self presentViewController:firstTimeUserVC animated:YES completion:nil];
@@ -130,6 +125,13 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
              [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
          }];
     }
+}
+
+#pragma mark - VFirstTimeUserVideoViewControllerDelegate
+
+- (void)videoHasCompleted:(VFirstTimeUserVideoViewController *)firstTimeUserVideoViewController
+{
+    [firstTimeUserVideoViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - Deeplinks
