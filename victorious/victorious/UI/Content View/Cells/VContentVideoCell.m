@@ -217,6 +217,10 @@
 - (void)videoPlayer:(VCVideoPlayerViewController *)videoPlayer
       didPlayToTime:(CMTime)time
 {
+    if (CMTIME_COMPARE_INLINE(time, ==, kCMTimeZero))
+    {
+        return;
+    }
     [self.loadingIndicator stopAnimating];
     [self.delegate videoCell:self
                didPlayToTime:time
