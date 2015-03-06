@@ -38,6 +38,7 @@ static NSString * const kNotificationIDKey = @"notification_id";
 @property (nonatomic, strong) NSURL *queuedURL; ///< A deeplink URL that came in before we were ready for it
 @property (nonatomic, strong) NSString *queuedNotificationID; ///< A notificationID that came in before we were ready for it
 @property (nonatomic) BOOL coldLaunch; ///< YES on first launch, NO subsequently
+@property (nonatomic) BOOL appLaunched; ///< YES when VLoadingViewController has finished its job
 
 @end
 
@@ -170,6 +171,7 @@ static NSString * const kNotificationIDKey = @"notification_id";
 
 - (void)showLoadingViewController
 {
+    self.appLaunched = NO;
     VLoadingViewController *loadingViewController = [VLoadingViewController loadingViewController];
     loadingViewController.delegate = self;
     [self showViewController:loadingViewController animated:NO];
@@ -324,6 +326,10 @@ static NSString * const kNotificationIDKey = @"notification_id";
 
 - (void)newSessionShouldStart:(NSNotification *)notification
 {
+    if ( !self.appLaunched )
+    {
+        return;
+    }
     [[VTrackingManager sharedInstance] clearSessionParameters];
     
     if ( self.queuedNotificationID != nil )
@@ -359,7 +365,11 @@ static NSString * const kNotificationIDKey = @"notification_id";
 
 - (void)loadingViewController:(VLoadingViewController *)loadingViewController didFinishLoadingWithInitResponse:(NSDictionary *)initResponse
 {
-    [self startAppWithInitData:initResponse];
+    if ( loadingViewController == self.currentViewController )
+    {
+        self.appLaunched = YES;
+        [self startAppWithInitData:initResponse];
+    }
 }
 
 @end
