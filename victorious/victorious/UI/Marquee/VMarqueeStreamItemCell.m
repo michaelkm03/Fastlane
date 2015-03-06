@@ -151,6 +151,7 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
 {
     CGFloat targetConstraintValue = visible ? -kVDetailBounceHeight : - self.detailsContainer.bounds.size.height;
     
+    [self.layer removeAllAnimations];
     if ( animated )
     {
         [UIView animateWithDuration:kVDetailBounceTime animations:^
@@ -170,7 +171,7 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
     else
     {
         self.detailsBottomLayoutConstraint.constant = targetConstraintValue;
-        [self setNeedsLayout];
+        [self setNeedsDisplay];
     }
 }
 

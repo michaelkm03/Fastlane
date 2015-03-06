@@ -27,6 +27,7 @@
 @property (nonatomic, strong) VStreamCollectionViewDataSource *streamDataSource;
 @property (nonatomic, strong) VStreamItem *currentStreamItem;
 @property (nonatomic, assign) NSInteger currentPage;
+@property (nonatomic, strong) NSMutableDictionary *marqueeCells;
 
 @property (nonatomic, strong) NSTimer *autoScrollTimer;
 
@@ -162,7 +163,12 @@
                                                            repeats:NO];
     if ( self.currentPage < [[self streamDataSource] collectionView:self.collectionView numberOfItemsInSection:0] )
     {
-        [(VMarqueeStreamItemCell *)[self dataSource:self.streamDataSource cellForIndexPath:[NSIndexPath indexPathForRow:self.currentPage inSection:0]] setDetailsContainerVisible:YES animated:NO];
+        VMarqueeStreamItemCell *marqueeCell = [self.marqueeCells objectForKey:@(self.currentPage)];
+        if ( marqueeCell != nil )
+        {
+            [marqueeCell setDetailsContainerVisible:YES animated:NO];
+            [marqueeCell restartHideTimer];
+        }
     }
 }
 
@@ -186,8 +192,22 @@
     cell.bounds = CGRectMake(0, 0, size.width, size.height);
     cell.streamItem = item;
     cell.delegate = self;
+    [self.marqueeCells setObject:cell forKey:@(indexPath.row)];
     
     return cell;
+}
+
+#pragma mark - lazy inits
+
+- (NSMutableDictionary *)marqueeCells
+{
+    if ( _marqueeCells != nil )
+    {
+        return _marqueeCells;
+    }
+    
+    _marqueeCells = [[NSMutableDictionary alloc] init];
+    return _marqueeCells;
 }
 
 @end
