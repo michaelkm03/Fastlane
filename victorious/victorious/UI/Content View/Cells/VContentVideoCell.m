@@ -294,7 +294,10 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
 - (void)videoPlayerFailed:(VCVideoPlayerViewController *)videoPlayer
 {
     self.failureRetryButton.hidden = NO;
-    self.videoPlayerViewController.view.hidden = YES;
+    [self.videoPlayerViewController.view removeFromSuperview];
+    self.videoPlayerViewController = nil;
+    [self.adPlayerViewController.view removeFromSuperview];
+    self.adPlayerViewController = nil;
     [self.loadingIndicator stopAnimating];
     [self.failureRetryButton setTitle:NSLocalizedString(@"Video loading failed.", @"") forState:UIControlStateNormal];
 }
