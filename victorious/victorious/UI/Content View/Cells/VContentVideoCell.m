@@ -249,6 +249,11 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
     {
         [self.videoPlayerViewController setItemURL:self.contentURL loop:self.loop];
     }
+    if ( self.playerControlsDisabled )
+    {
+        self.videoPlayerViewController.shouldShowToolbar = NO;
+        self.videoPlayerViewController.videoPlayerLayerVideoGravity = AVLayerVideoGravityResizeAspectFill;
+    }
 }
 
 #pragma mark - VCVideoPlayerDelegate
