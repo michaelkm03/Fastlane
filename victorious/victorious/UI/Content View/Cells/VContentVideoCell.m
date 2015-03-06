@@ -27,7 +27,7 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
 
 @property (nonatomic, assign) BOOL adDidStart;
 
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *loadingIndicator;
+@property (nonatomic, weak) IBOutlet UIActivityIndicatorView *loadingIndicator;
 @property (nonatomic, weak) IBOutlet UIButton *failureRetryButton;
 
 @end
