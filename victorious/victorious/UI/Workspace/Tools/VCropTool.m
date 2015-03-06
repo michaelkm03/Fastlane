@@ -85,7 +85,7 @@ static NSString * const kFilterIndexKey = @"filterIndex";
     {
         [cropFilter setValue:inputImage
                       forKey:kCIInputImageKey];
-        cropVector = [self cropVectroWithScrollView:self.canvasView.canvasScrollView inputImageExtent:inputImage.extent zoomScale:1.0f];
+        cropVector = [self cropVectorWithScrollView:self.canvasView.canvasScrollView inputImageExtent:inputImage.extent zoomScale:1.0f];
     }
     else
     {
@@ -100,15 +100,14 @@ static NSString * const kFilterIndexKey = @"filterIndex";
         [cropFilter setValue:[lanczosScaleFilter outputImage]
                       forKey:kCIInputImageKey];
         
-        cropVector = [self cropVectroWithScrollView:self.cropViewController.croppingScrollView inputImageExtent:inputImage.extent zoomScale:zoomScale];
+        cropVector = [self cropVectorWithScrollView:self.cropViewController.croppingScrollView inputImageExtent:inputImage.extent zoomScale:zoomScale];
     }
-    
     [cropFilter setValue:cropVector
                   forKey:@"inputRectangle"];
     return [cropFilter outputImage];
 }
 
-- (CIVector *)cropVectroWithScrollView:(UIScrollView *)scrollView
+- (CIVector *)cropVectorWithScrollView:(UIScrollView *)scrollView
                       inputImageExtent:(CGRect)extent
                              zoomScale:(CGFloat)zoomScale
 {
