@@ -16,12 +16,16 @@
 #import "VRootViewController.h"
 #import "VDependencyManager.h"
 
+static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
+
 @interface VContentVideoCell () <VCVideoPlayerDelegate, VAdVideoPlayerViewControllerDelegate>
 
 @property (nonatomic, strong, readwrite) VCVideoPlayerViewController *videoPlayerViewController;
 @property (nonatomic, assign, readwrite) BOOL isPlayingAd;
 @property (nonatomic, assign, readwrite) BOOL videoDidEnd;
 @property (nonatomic, strong) NSURL *contentURL;
+
+@property (nonatomic, assign) BOOL adDidStart;
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *loadingIndicator;
 @property (nonatomic, weak) IBOutlet UIButton *failureRetryButton;
@@ -115,6 +119,11 @@
     [self.contentView addSubview:self.adPlayerViewController.view];
     [self.contentView sendSubviewToBack:self.adPlayerViewController.view];
     [self.adPlayerViewController start];
+    [NSTimer scheduledTimerWithTimeInterval:kAdTimeoutTimeInterval
+                                     target:self
+                                   selector:@selector(adTimerFired:)
+                                   userInfo:nil
+                                    repeats:NO];
 }
 
 - (void)resumeContentPlayback
@@ -212,6 +221,18 @@
     [self.videoPlayerViewController enableTrackingWithTrackingItem:tracking];
 }
 
+#pragma mark - Private Methods
+
+- (void)adTimerFired:(NSTimer *)timer
+{
+    [timer invalidate];
+    if (!self.adDidStart)
+    {
+        [self.adPlayerViewController.view removeFromSuperview];
+        self.adPlayerViewController = nil;
+    }
+}
+
 #pragma mark - VCVideoPlayerDelegate
 
 - (void)videoPlayer:(VCVideoPlayerViewController *)videoPlayer
@@ -273,6 +294,7 @@
 - (void)adDidStartPlaybackForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController
 {
     [self.loadingIndicator stopAnimating];
+    self.adDidStart = YES;
 }
 
 - (void)adDidStopPlaybackForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController
