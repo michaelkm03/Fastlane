@@ -35,31 +35,28 @@
 
 #import "VLocationManager.h"
 
-NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreateProfileAborted";
-
 @import CoreLocation;
 @import AddressBookUI;
 
 @interface VProfileCreateViewController () <UITextFieldDelegate, UITextViewDelegate, TTTAttributedLabelDelegate, VWorkspaceFlowControllerDelegate, VLocationManagerDelegate>
 
-@property (weak, nonatomic) IBOutlet UIButton *backButton;
+@property (nonatomic, weak) IBOutlet UITextField *usernameTextField;
+@property (nonatomic, weak) IBOutlet UITextField *locationTextField;
+@property (nonatomic, weak) IBOutlet UITextView *taglineTextView;
+@property (nonatomic, weak) IBOutlet UILabel *tagLinePlaceholderLabel;
 
-@property (nonatomic, weak) IBOutlet UITextField           *usernameTextField;
-@property (nonatomic, weak) IBOutlet UITextField           *locationTextField;
-@property (nonatomic, weak) IBOutlet UITextView            *taglineTextView;
-@property (nonatomic, weak) IBOutlet UILabel               *tagLinePlaceholderLabel;
+@property (nonatomic, weak) IBOutlet UIImageView *profileImageView;
 
-@property (nonatomic, weak) IBOutlet UIImageView           *profileImageView;
-
-@property (nonatomic, strong) VLocationManager                *locationManager;
+@property (nonatomic, strong) VLocationManager *locationManager;
 @property (nonatomic, strong) CLGeocoder *geoCoder;
 
-@property (nonatomic, weak) IBOutlet    UISwitch           *agreeSwitch;
-@property (nonatomic, weak) IBOutlet    TTTAttributedLabel *agreementText;
-@property (nonatomic, weak) IBOutlet    VButton           *doneButton;
+@property (nonatomic, weak) IBOutlet UISwitch *agreeSwitch;
+@property (nonatomic, weak) IBOutlet TTTAttributedLabel *agreementText;
+@property (nonatomic, weak) IBOutlet UIButton *exitButton;
+@property (nonatomic, weak) IBOutlet VButton *doneButton;
 
-@property (nonatomic, strong)   UIBarButtonItem            *countDownLabel;
-@property (nonatomic, strong)   UIBarButtonItem            *usernameCountDownLabel;
+@property (nonatomic, strong) UIBarButtonItem *countDownLabel;
+@property (nonatomic, strong) UIBarButtonItem *usernameCountDownLabel;
 
 @property (nonatomic, assign) BOOL addedAccessoryView;
 
@@ -68,6 +65,8 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
 @end
 
 @implementation VProfileCreateViewController
+
+@synthesize delegate; //< VRegistrationViewController
 
 - (void)dealloc
 {
@@ -192,7 +191,8 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
     
     self.agreeSwitch.onTintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     
-    self.backButton.imageView.image = [self.backButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    NSString *exitButtonImage = self.navigationController == nil ? @"cameraButtonClose" : @"btnPrevArrowWhite";
+    [self.exitButton setImage:[UIImage imageNamed:exitButtonImage] forState:UIControlStateNormal];
     
     // Accessibility IDs
     self.doneButton.accessibilityIdentifier = VAutomationIdentifierProfileDone;
@@ -268,7 +268,7 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
 
 - (BOOL)prefersStatusBarHidden
 {
-    return YES;
+    return NO;
 }
 
 #pragma mark - Format Location Data
@@ -492,11 +492,21 @@ static inline UIViewAnimationOptions animationOptionsWithCurve(UIViewAnimationCu
 {
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateProfileDidSucceed];
     
-    [MBProgressHUD hideHUDForView:self.view
-                         animated:YES];
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
     
-    [self dismissViewControllerAnimated:YES
-                             completion:nil];
+    [self exitWithSuccess:YES];
+}
+
+- (void)exitWithSuccess:(BOOL)success
+{
+    if ( self.delegate != nil )
+    {
+        [self.delegate didFinishRegistrationStepWithSuccess:success];
+    }
+    else
+    {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
 }
 
 - (void)didFailWithError:(NSError *)error
@@ -559,7 +569,7 @@ static inline UIViewAnimationOptions animationOptionsWithCurve(UIViewAnimationCu
                      completion:nil];
 }
 
-- (IBAction)back:(id)sender
+- (IBAction)exit:(id)sender
 {
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectExitCreateProfile];
     
@@ -574,17 +584,8 @@ static inline UIViewAnimationOptions animationOptionsWithCurve(UIViewAnimationCu
         
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidConfirmExitCreateProfile];
         
-        BOOL wasPushedFromViewControllerInLoginFlow = self.navigationController != nil;
-        if ( wasPushedFromViewControllerInLoginFlow )
-        {
-            // The root of this login flow (VLoginViewController) should receive this and dismiss itself
-            [[NSNotificationCenter defaultCenter] postNotificationName:VProfileCreateViewControllerWasAbortedNotification object:nil];
-        }
-        else
-        {
-            // We're a standalone view controller, so we'll dismiss ourselves
-            [self dismissViewControllerAnimated:YES completion:nil];
-        }
+        [self exitWithSuccess:NO];
+        
     }];
     
     [alert show];

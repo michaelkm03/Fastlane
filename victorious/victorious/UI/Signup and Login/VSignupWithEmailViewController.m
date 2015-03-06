@@ -40,6 +40,8 @@
 
 @implementation VSignupWithEmailViewController
 
+@synthesize delegate; //< VRegistrationViewController
+
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:self.emailTextField];
@@ -115,7 +117,7 @@
 
 - (BOOL)prefersStatusBarHidden
 {
-    return YES;
+    return NO;
 }
 
 - (NSUInteger)supportedInterfaceOrientations
@@ -309,6 +311,7 @@
     if ([segue.identifier isEqualToString:@"toProfileWithEmail"])
     {
         VProfileCreateViewController *profileViewController = (VProfileCreateViewController *)segue.destinationViewController;
+        profileViewController.delegate = self;
         profileViewController.profile = self.profile;
         profileViewController.loginType = kVLoginTypeEmail;
         profileViewController.registrationModel = self.registrationModel;
@@ -373,6 +376,16 @@
             [textField hideInvalidText];
             [self.passwordTextField hideInvalidText];
         }
+    }
+}
+
+#pragma mark - VRegistrationViewControllerDelegate
+
+- (void)didFinishRegistrationStepWithSuccess:(BOOL)success
+{
+    if ( self.delegate != nil )
+    {
+        [self.delegate didFinishRegistrationStepWithSuccess:YES];
     }
 }
 

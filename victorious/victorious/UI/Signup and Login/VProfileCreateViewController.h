@@ -9,12 +9,11 @@
 #import "VLoginViewController.h"
 #import "VRegistrationModel.h"
 #import "VAuthorizationViewController.h"
-
-extern NSString * const VProfileCreateViewControllerWasAbortedNotification;
+#import "VRegistration.h"
 
 @class VUser;
 
-@interface VProfileCreateViewController : UIViewController <VAuthorizationViewController>
+@interface VProfileCreateViewController : UIViewController <VAuthorizationViewController, VRegistrationViewController>
 
 @property (nonatomic, strong) void (^authorizationCompletionAction)();
 

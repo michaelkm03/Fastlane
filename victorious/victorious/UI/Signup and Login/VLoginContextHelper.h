@@ -21,6 +21,8 @@ typedef NS_ENUM( NSInteger, VLoginContextType )
     VLoginContextVotePoll,
     VLoginContextFollowUser,
     VLoginContextViewProfile,
+    VLoginContextRepost,
+    VLoginContextRemix,
     VLoginContextAddComment
 };
                 

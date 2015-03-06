@@ -32,62 +32,50 @@
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="lga-od-5AW" userLabel="Product Description">
                                         <rect key="frame" x="12" y="113" width="265" height="78"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="265" id="kX4-PX-lcF"/>
-                                        </constraints>
                                         <string key="text">Come join our community.
 We promise that your information is safe with us!</string>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <fontDescription key="fontDescription" name="MuseoSans-500" family="Museo Sans" pointSize="17"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                     </textView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Creator Salutation" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ehP-K7-WBr" userLabel="Creator Name">
-                                        <rect key="frame" x="181" y="205" width="96" height="41"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1" text="Creator Salutation (Could be this long)" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ehP-K7-WBr" userLabel="Creator Name">
+                                        <rect key="frame" x="80" y="205" width="193" height="41"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="96" id="6Ah-Hf-wkP"/>
-                                            <constraint firstAttribute="height" constant="41" id="SJ3-B0-SOz"/>
+                                            <constraint firstAttribute="height" constant="41" id="YbV-ft-NR5"/>
+                                            <constraint firstAttribute="width" priority="1" constant="170" id="bAI-un-pHE"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="MuseoSans-300" family="Museo Sans" pointSize="11"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="creator-avatar.png" translatesAutoresizingMaskIntoConstraints="NO" id="Lq5-ni-jN5" userLabel="Creator Image">
-                                        <rect key="frame" x="138" y="207" width="35" height="35"/>
+                                        <rect key="frame" x="37" y="207" width="35" height="35"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="35" id="6Q8-EQ-4sz"/>
-                                            <constraint firstAttribute="height" constant="35" id="sgD-1l-o7s"/>
+                                            <constraint firstAttribute="height" constant="35" id="6TR-9b-UNr"/>
+                                            <constraint firstAttribute="width" constant="35" id="Jbc-Fz-ahj"/>
                                         </constraints>
                                     </imageView>
                                     <imageView userInteractionEnabled="NO" alpha="0.5" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="quote" translatesAutoresizingMaskIntoConstraints="NO" id="PD3-vC-Laa" userLabel="Quote">
                                         <rect key="frame" x="19" y="66" width="31" height="23"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="31" id="nWV-Mj-WKj"/>
-                                            <constraint firstAttribute="height" constant="23" id="nzr-GB-9cf"/>
+                                            <constraint firstAttribute="height" constant="23" id="4Vh-hw-sWk"/>
+                                            <constraint firstAttribute="width" constant="31" id="icv-8t-hxb"/>
                                         </constraints>
                                     </imageView>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="ehP-K7-WBr" secondAttribute="trailing" constant="11" id="1XK-s6-EwN"/>
-                                    <constraint firstItem="lga-od-5AW" firstAttribute="leading" secondItem="PD3-vC-Laa" secondAttribute="trailing" constant="-38" id="Q79-gd-B5C"/>
-                                    <constraint firstAttribute="trailing" secondItem="lga-od-5AW" secondAttribute="trailing" constant="11" id="RtM-EL-Lsj"/>
-                                    <constraint firstAttribute="centerY" secondItem="lga-od-5AW" secondAttribute="centerY" constant="12.5" id="T0c-qC-QDT"/>
-                                    <constraint firstItem="ehP-K7-WBr" firstAttribute="leading" secondItem="Lq5-ni-jN5" secondAttribute="trailing" constant="8" id="VLj-oB-kJI"/>
-                                    <constraint firstItem="ehP-K7-WBr" firstAttribute="top" secondItem="lga-od-5AW" secondAttribute="bottom" constant="14" id="YrP-Tp-KbS"/>
-                                    <constraint firstItem="lga-od-5AW" firstAttribute="leading" secondItem="0KZ-2K-j2Q" secondAttribute="leading" constant="12" id="dWF-m6-4YU"/>
-                                    <constraint firstItem="lga-od-5AW" firstAttribute="top" secondItem="PD3-vC-Laa" secondAttribute="bottom" constant="24" id="oHC-6j-YKq"/>
-                                    <constraint firstItem="ehP-K7-WBr" firstAttribute="top" secondItem="Lq5-ni-jN5" secondAttribute="bottom" constant="-37" id="uuD-gL-v3S"/>
+                                    <constraint firstItem="ehP-K7-WBr" firstAttribute="leading" secondItem="Lq5-ni-jN5" secondAttribute="trailing" constant="8" id="1Qq-2d-vXk"/>
+                                    <constraint firstAttribute="centerY" secondItem="lga-od-5AW" secondAttribute="centerY" constant="12.5" id="8rw-LE-MLZ"/>
+                                    <constraint firstItem="lga-od-5AW" firstAttribute="top" secondItem="PD3-vC-Laa" secondAttribute="bottom" constant="24" id="Af0-aV-VvO"/>
+                                    <constraint firstItem="Lq5-ni-jN5" firstAttribute="centerY" secondItem="ehP-K7-WBr" secondAttribute="centerY" constant="-1" id="Gcq-ay-HYR"/>
+                                    <constraint firstAttribute="trailing" secondItem="lga-od-5AW" secondAttribute="trailing" constant="11" id="LRn-Kw-ICT"/>
+                                    <constraint firstItem="lga-od-5AW" firstAttribute="leading" secondItem="PD3-vC-Laa" secondAttribute="trailing" constant="-38" id="ad6-w2-uir"/>
+                                    <constraint firstAttribute="trailing" secondItem="ehP-K7-WBr" secondAttribute="trailing" constant="15" id="qOy-Uf-wpU"/>
+                                    <constraint firstItem="ehP-K7-WBr" firstAttribute="top" secondItem="lga-od-5AW" secondAttribute="bottom" constant="14" id="ugs-2R-HUq"/>
+                                    <constraint firstItem="lga-od-5AW" firstAttribute="leading" secondItem="0KZ-2K-j2Q" secondAttribute="leading" constant="12" id="xVg-fz-dHR"/>
                                 </constraints>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1gE-9y-3sp" userLabel="Catch All">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <state key="normal">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="onDismiss:" destination="2Dw-jS-tpJ" eventType="touchUpInside" id="WBx-BA-X54"/>
-                                </connections>
-                            </button>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" text="Already Registered? Log in here" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="5M9-eq-LWT" userLabel="Already Regsitered?" customClass="CCHLinkTextView">
                                 <rect key="frame" x="16" y="525" width="288" height="35"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -186,22 +174,33 @@ We promise that your information is safe with us!</string>
                                     <outlet property="label" destination="gWK-fr-OZX" id="nHB-El-wdH"/>
                                 </connections>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="G8C-3E-1B5">
+                                <rect key="frame" x="0.0" y="20" width="59" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="59" id="FS0-Ob-eYv"/>
+                                    <constraint firstAttribute="height" constant="50" id="SSr-CK-X3c"/>
+                                </constraints>
+                                <state key="normal" image="cameraButtonClose">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="onDismiss:" destination="2Dw-jS-tpJ" eventType="touchUpInside" id="bTQ-Zh-i3g"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="2XQ-0V-UlZ" firstAttribute="top" secondItem="QtN-F1-Fqv" secondAttribute="bottom" constant="16" id="4MN-a5-Feg"/>
                             <constraint firstItem="5M9-eq-LWT" firstAttribute="leading" secondItem="oJn-Cb-glm" secondAttribute="leading" constant="16" id="6UR-7V-yku"/>
                             <constraint firstItem="5M9-eq-LWT" firstAttribute="top" secondItem="2XQ-0V-UlZ" secondAttribute="bottom" constant="3" id="Ddt-rM-9Cw"/>
-                            <constraint firstAttribute="trailing" secondItem="1gE-9y-3sp" secondAttribute="trailing" id="Erc-8c-upv"/>
                             <constraint firstAttribute="trailing" secondItem="0KZ-2K-j2Q" secondAttribute="trailing" constant="16" id="Hzg-dC-bvI"/>
-                            <constraint firstItem="0KZ-2K-j2Q" firstAttribute="top" secondItem="Cpd-8U-DhD" secondAttribute="bottom" constant="20" id="IyJ-Zl-Ofu"/>
-                            <constraint firstItem="9Aq-IC-kDE" firstAttribute="top" secondItem="1gE-9y-3sp" secondAttribute="bottom" id="L5S-No-1hL"/>
+                            <constraint firstItem="0KZ-2K-j2Q" firstAttribute="top" secondItem="Cpd-8U-DhD" secondAttribute="bottom" id="IyJ-Zl-Ofu"/>
                             <constraint firstAttribute="trailing" secondItem="5M9-eq-LWT" secondAttribute="trailing" constant="16" id="NVy-9P-UxD"/>
                             <constraint firstAttribute="centerX" secondItem="2XQ-0V-UlZ" secondAttribute="centerX" id="QDq-Iq-cVJ"/>
-                            <constraint firstItem="1gE-9y-3sp" firstAttribute="top" secondItem="Cpd-8U-DhD" secondAttribute="bottom" id="TCT-Zm-co8"/>
                             <constraint firstItem="QtN-F1-Fqv" firstAttribute="top" secondItem="wh7-OI-pHo" secondAttribute="bottom" constant="16" id="Um5-xr-XuY"/>
                             <constraint firstItem="wh7-OI-pHo" firstAttribute="top" secondItem="0KZ-2K-j2Q" secondAttribute="bottom" constant="15" id="cFW-hy-XvM"/>
-                            <constraint firstItem="1gE-9y-3sp" firstAttribute="leading" secondItem="oJn-Cb-glm" secondAttribute="leading" id="i3W-kw-EdS"/>
+                            <constraint firstItem="G8C-3E-1B5" firstAttribute="top" secondItem="Cpd-8U-DhD" secondAttribute="bottom" id="ddU-su-zWq"/>
+                            <constraint firstItem="G8C-3E-1B5" firstAttribute="leading" secondItem="oJn-Cb-glm" secondAttribute="leading" id="hJJ-HJ-stn"/>
                             <constraint firstItem="0KZ-2K-j2Q" firstAttribute="leading" secondItem="oJn-Cb-glm" secondAttribute="leading" constant="16" id="n76-zJ-nj9"/>
                             <constraint firstAttribute="centerX" secondItem="wh7-OI-pHo" secondAttribute="centerX" id="r5j-cH-6Re"/>
                             <constraint firstItem="9Aq-IC-kDE" firstAttribute="top" secondItem="5M9-eq-LWT" secondAttribute="bottom" constant="8" id="rxn-p5-1ar"/>
@@ -209,10 +208,12 @@ We promise that your information is safe with us!</string>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="isi-ni-Mut"/>
-                    <nil key="simulatedStatusBarMetrics"/>
+                    <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
                     <nil key="simulatedTopBarMetrics"/>
                     <connections>
                         <outlet property="contentContainer" destination="0KZ-2K-j2Q" id="A4O-cc-gkC"/>
+                        <outlet property="createAvatarImageview" destination="Lq5-ni-jN5" id="yNe-q3-Qnm"/>
+                        <outlet property="creatorNameLabel" destination="ehP-K7-WBr" id="d3n-n4-0eD"/>
                         <outlet property="facebookButton" destination="QtN-F1-Fqv" id="mqr-R0-Ab8"/>
                         <outlet property="linkTextHelper" destination="guI-vW-pY8" id="sJZ-dv-Q0J"/>
                         <outlet property="loginContextHelper" destination="jOc-o6-Jtn" id="kqs-Ef-ege"/>
@@ -244,14 +245,14 @@ We promise that your information is safe with us!</string>
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wIo-IZ-7QY" userLabel="Separator">
+                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wIo-IZ-7QY" userLabel="Separator">
                                 <rect key="frame" x="18" y="70" width="284" height="1"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.25" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="HnO-hu-zIr"/>
                                 </constraints>
                             </view>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="E-mail" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Jbh-n4-soS" customClass="VInlineValidationTextField">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="E-mail" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Jbh-n4-soS" customClass="VInlineValidationTextField">
                                 <rect key="frame" x="18" y="20" width="284" height="50"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -261,14 +262,14 @@ We promise that your information is safe with us!</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="emailAddress" returnKeyType="next"/>
                             </textField>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xjn-na-QHs" userLabel="Separator">
+                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Xjn-na-QHs" userLabel="Separator">
                                 <rect key="frame" x="18" y="119" width="284" height="1"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.25" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="pVr-fN-BjO"/>
                                 </constraints>
                             </view>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="3pO-cP-eTE" customClass="VInlineValidationTextField">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="3pO-cP-eTE" customClass="VInlineValidationTextField">
                                 <rect key="frame" x="18" y="70" width="284" height="50"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -278,7 +279,7 @@ We promise that your information is safe with us!</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="done" secureTextEntry="YES"/>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jhx-0Z-CyE" customClass="VButton">
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jhx-0Z-CyE" customClass="VButton">
                                 <rect key="frame" x="16" y="143" width="111" height="41"/>
                                 <color key="backgroundColor" white="0.66666666669999997" alpha="0.48999999999999999" colorSpace="calibratedWhite"/>
                                 <constraints>
@@ -291,7 +292,7 @@ We promise that your information is safe with us!</string>
                                     <action selector="cancel:" destination="iZ7-hd-8dA" eventType="touchUpInside" id="zy6-HO-0z1"/>
                                 </connections>
                             </button>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" text="Forgot Password? Reset here" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="bMr-K0-Coy" userLabel="Forgot Password?" customClass="CCHLinkTextView">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" text="Forgot Password? Reset here" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="bMr-K0-Coy" userLabel="Forgot Password?" customClass="CCHLinkTextView">
                                 <rect key="frame" x="18" y="192" width="270" height="35"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
@@ -301,7 +302,7 @@ We promise that your information is safe with us!</string>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                 <dataDetectorType key="dataDetectorTypes" link="YES"/>
                             </textView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5AW-ID-rMK" customClass="VButton">
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5AW-ID-rMK" customClass="VButton">
                                 <rect key="frame" x="142" y="143" width="160" height="41"/>
                                 <color key="backgroundColor" white="0.66666666669999997" alpha="0.48999999999999999" colorSpace="calibratedWhite"/>
                                 <constraints>
@@ -341,7 +342,7 @@ We promise that your information is safe with us!</string>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Login with E-mail" id="d29-FA-lll"/>
-                    <nil key="simulatedStatusBarMetrics"/>
+                    <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="blackOpaque"/>
                     <nil key="simulatedTopBarMetrics"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="320" height="568"/>
@@ -373,7 +374,7 @@ We promise that your information is safe with us!</string>
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="New Password" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="aDr-Jw-10s" customClass="VInlineValidationTextField">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="New Password" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="aDr-Jw-10s" customClass="VInlineValidationTextField">
                                 <rect key="frame" x="18" y="8" width="284" height="50"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -383,14 +384,14 @@ We promise that your information is safe with us!</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="emailAddress" returnKeyType="next" secureTextEntry="YES"/>
                             </textField>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dyU-PZ-r0Q" userLabel="Separator">
+                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dyU-PZ-r0Q" userLabel="Separator">
                                 <rect key="frame" x="18" y="59" width="284" height="1"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.25" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="KeV-hM-WnU"/>
                                 </constraints>
                             </view>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Confirm Password" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="tdl-Dc-Ep6" customClass="VInlineValidationTextField">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Confirm Password" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="tdl-Dc-Ep6" customClass="VInlineValidationTextField">
                                 <rect key="frame" x="18" y="59" width="284" height="50"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -400,14 +401,14 @@ We promise that your information is safe with us!</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="emailAddress" returnKeyType="done" secureTextEntry="YES"/>
                             </textField>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6uf-43-6Uy" userLabel="Separator">
+                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6uf-43-6Uy" userLabel="Separator">
                                 <rect key="frame" x="18" y="109" width="284" height="1"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.25" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="VwL-Ja-GkW"/>
                                 </constraints>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pg3-qh-eDX" customClass="VButton">
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pg3-qh-eDX" customClass="VButton">
                                 <rect key="frame" x="142" y="133" width="160" height="41"/>
                                 <color key="backgroundColor" white="0.66666666669999997" alpha="0.48999999999999999" colorSpace="calibratedWhite"/>
                                 <constraints>
@@ -422,7 +423,7 @@ We promise that your information is safe with us!</string>
                                     <action selector="update:" destination="uvb-TU-XJY" eventType="touchUpInside" id="MK5-an-uNS"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3e0-qS-x7b" customClass="VButton">
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3e0-qS-x7b" customClass="VButton">
                                 <rect key="frame" x="16" y="133" width="111" height="41"/>
                                 <color key="backgroundColor" white="0.66666666669999997" alpha="0.48999999999999999" colorSpace="calibratedWhite"/>
                                 <constraints>
@@ -482,57 +483,29 @@ We promise that your information is safe with us!</string>
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lrg-TW-8uF" userLabel="Header View">
-                                <rect key="frame" x="6" y="0.0" width="308" height="45"/>
-                                <subviews>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create Profile" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A8K-lD-yg5">
-                                        <rect key="frame" x="92" y="0.0" width="125" height="56"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="125" id="IPv-iM-0W8"/>
-                                            <constraint firstAttribute="height" constant="56" id="Yid-zQ-Gxz"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" name="STHeitiTC-Light" family="Heiti TC" pointSize="18"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uSe-Ez-hDV" userLabel="Back Button">
-                                        <rect key="frame" x="0.0" y="0.0" width="56" height="56"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="56" id="oWo-jp-9dG"/>
-                                            <constraint firstAttribute="width" constant="56" id="v3O-v4-vyy"/>
-                                        </constraints>
-                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                        <state key="normal" image="cameraButtonBack">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="back:" destination="a0y-4a-uKe" eventType="touchUpInside" id="Wuq-u7-Dwi"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create Profile" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xl3-0J-ghm">
+                                <rect key="frame" x="0.0" y="20" width="320" height="56"/>
                                 <constraints>
-                                    <constraint firstItem="A8K-lD-yg5" firstAttribute="top" secondItem="Lrg-TW-8uF" secondAttribute="top" id="OuM-Iv-S40"/>
-                                    <constraint firstAttribute="height" constant="45" id="ScX-qk-Vm2"/>
-                                    <constraint firstItem="uSe-Ez-hDV" firstAttribute="leading" secondItem="Lrg-TW-8uF" secondAttribute="leading" id="bBV-hd-TBU"/>
-                                    <constraint firstItem="uSe-Ez-hDV" firstAttribute="top" secondItem="Lrg-TW-8uF" secondAttribute="top" id="hHs-x4-bZf"/>
-                                    <constraint firstItem="A8K-lD-yg5" firstAttribute="centerX" secondItem="Lrg-TW-8uF" secondAttribute="centerX" id="osA-mT-YNz"/>
+                                    <constraint firstAttribute="height" constant="56" id="4Fb-D4-IlE"/>
                                 </constraints>
-                            </view>
+                                <fontDescription key="fontDescription" name="STHeitiTC-Light" family="Heiti TC" pointSize="18"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="createAvatar" translatesAutoresizingMaskIntoConstraints="NO" id="IgQ-W8-D43">
-                                <rect key="frame" x="119" y="53" width="80" height="80"/>
+                                <rect key="frame" x="119" y="73" width="80" height="80"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="80" id="gkA-r0-Gx8"/>
                                     <constraint firstAttribute="width" secondItem="IgQ-W8-D43" secondAttribute="height" multiplier="1:1" id="sHD-Sw-D7f"/>
                                 </constraints>
                             </imageView>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Name" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="qGa-ti-Owy">
-                                <rect key="frame" x="17" y="150" width="288" height="30"/>
+                                <rect key="frame" x="17" y="170" width="288" height="30"/>
                                 <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no" returnKeyType="next"/>
                             </textField>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.15000000596046448" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gPW-lo-bG3">
-                                <rect key="frame" x="17" y="179" width="288" height="1"/>
+                                <rect key="frame" x="17" y="199" width="288" height="1"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="62o-yY-ygd"/>
@@ -541,13 +514,13 @@ We promise that your information is safe with us!</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Location" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="pDv-b6-X4m">
-                                <rect key="frame" x="17" y="188" width="288" height="30"/>
+                                <rect key="frame" x="17" y="208" width="288" height="30"/>
                                 <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="next"/>
                             </textField>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.15000000596046448" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="43A-YH-4Jx">
-                                <rect key="frame" x="17" y="217" width="288" height="1"/>
+                                <rect key="frame" x="17" y="237" width="288" height="1"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="slE-ct-ToV"/>
@@ -556,28 +529,28 @@ We promise that your information is safe with us!</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XNN-n4-drt">
-                                <rect key="frame" x="13" y="229" width="292" height="111"/>
+                                <rect key="frame" x="13" y="249" width="292" height="71"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done"/>
                             </textView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tell us about yourself..." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kzi-75-z6l">
-                                <rect key="frame" x="17" y="239" width="288" height="17"/>
+                                <rect key="frame" x="17" y="259" width="288" height="17"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="I'm at least 13 years old and agree to the Terms of Service" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="223" translatesAutoresizingMaskIntoConstraints="NO" id="EGg-eb-7Dm" customClass="TTTAttributedLabel">
-                                <rect key="frame" x="77" y="357" width="223" height="41"/>
+                                <rect key="frame" x="77" y="337" width="223" height="41"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="aAM-6y-jy7">
-                                <rect key="frame" x="20" y="362" width="51" height="31"/>
+                                <rect key="frame" x="20" y="342" width="51" height="31"/>
                             </switch>
                             <view alpha="0.14999999999999999" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="g4a-Qc-DGP">
-                                <rect key="frame" x="6" y="340" width="308" height="1"/>
+                                <rect key="frame" x="6" y="320" width="308" height="1"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="ojJ-UX-46L"/>
@@ -596,24 +569,38 @@ We promise that your information is safe with us!</string>
                                     <action selector="done:" destination="a0y-4a-uKe" eventType="touchUpInside" id="Tjl-vS-jfN"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="C2V-FK-LsE" userLabel="Back Button">
+                                <rect key="frame" x="0.0" y="20" width="59" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="59" id="NPg-jK-pGQ"/>
+                                    <constraint firstAttribute="height" constant="50" id="pT7-Pn-ZzE"/>
+                                </constraints>
+                                <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <state key="normal" image="btnPrevArrowWhite"/>
+                                <connections>
+                                    <action selector="exit:" destination="a0y-4a-uKe" eventType="touchUpInside" id="1rE-Tg-dNT"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="pDv-b6-X4m" firstAttribute="leading" secondItem="43A-YH-4Jx" secondAttribute="leading" id="1PJ-fs-4xU"/>
                             <constraint firstItem="YrE-kb-O2F" firstAttribute="top" secondItem="9Wi-As-OwD" secondAttribute="bottom" constant="14" id="2lw-PA-k8S"/>
+                            <constraint firstItem="C2V-FK-LsE" firstAttribute="leading" secondItem="WzA-sY-SPH" secondAttribute="leading" id="3Hy-2K-JMB"/>
                             <constraint firstAttribute="trailing" secondItem="g4a-Qc-DGP" secondAttribute="trailing" constant="6" id="3ma-VP-nns"/>
                             <constraint firstItem="qGa-ti-Owy" firstAttribute="leading" secondItem="WzA-sY-SPH" secondAttribute="leading" constant="17" id="6ZU-wO-yKz"/>
                             <constraint firstItem="pDv-b6-X4m" firstAttribute="top" secondItem="gPW-lo-bG3" secondAttribute="bottom" constant="8" symbolic="YES" id="7hn-mr-IKO"/>
-                            <constraint firstItem="Lrg-TW-8uF" firstAttribute="trailing" secondItem="g4a-Qc-DGP" secondAttribute="trailing" id="8OQ-lF-oWx"/>
+                            <constraint firstItem="IgQ-W8-D43" firstAttribute="top" secondItem="xl3-0J-ghm" secondAttribute="bottom" constant="-3" id="9Kl-BX-NzS"/>
+                            <constraint firstAttribute="trailing" secondItem="xl3-0J-ghm" secondAttribute="trailing" id="9gz-FR-RBE"/>
                             <constraint firstItem="gPW-lo-bG3" firstAttribute="trailing" secondItem="pDv-b6-X4m" secondAttribute="trailing" id="Ag5-b9-wrb"/>
                             <constraint firstItem="XNN-n4-drt" firstAttribute="centerY" secondItem="WzA-sY-SPH" secondAttribute="centerY" id="C2M-bn-eyH"/>
                             <constraint firstItem="g4a-Qc-DGP" firstAttribute="top" secondItem="XNN-n4-drt" secondAttribute="bottom" id="Cnp-2b-CHu"/>
+                            <constraint firstItem="C2V-FK-LsE" firstAttribute="top" secondItem="NqE-Ur-2Nw" secondAttribute="bottom" id="EDM-wp-7kv"/>
                             <constraint firstItem="pDv-b6-X4m" firstAttribute="bottom" secondItem="43A-YH-4Jx" secondAttribute="bottom" id="FX4-0U-k4T"/>
                             <constraint firstItem="aAM-6y-jy7" firstAttribute="top" secondItem="g4a-Qc-DGP" secondAttribute="bottom" constant="21" id="G5p-4B-fuO"/>
                             <constraint firstItem="43A-YH-4Jx" firstAttribute="top" secondItem="gPW-lo-bG3" secondAttribute="bottom" constant="37" id="KtC-4z-4Li"/>
                             <constraint firstAttribute="trailing" secondItem="XNN-n4-drt" secondAttribute="trailing" constant="15" id="KvP-mv-Quw"/>
                             <constraint firstItem="EGg-eb-7Dm" firstAttribute="top" secondItem="g4a-Qc-DGP" secondAttribute="bottom" constant="16" id="LaW-Bh-aqp"/>
-                            <constraint firstItem="Lrg-TW-8uF" firstAttribute="top" secondItem="WzA-sY-SPH" secondAttribute="top" id="P12-7A-9jP"/>
                             <constraint firstItem="XNN-n4-drt" firstAttribute="top" secondItem="43A-YH-4Jx" secondAttribute="bottom" constant="11" id="PPS-R4-ot3"/>
                             <constraint firstItem="gPW-lo-bG3" firstAttribute="top" secondItem="IgQ-W8-D43" secondAttribute="bottom" constant="46" id="WVu-Uc-1XZ"/>
                             <constraint firstItem="XNN-n4-drt" firstAttribute="trailing" secondItem="43A-YH-4Jx" secondAttribute="trailing" id="Wi8-Fg-AXk"/>
@@ -622,9 +609,8 @@ We promise that your information is safe with us!</string>
                             <constraint firstItem="EGg-eb-7Dm" firstAttribute="leading" secondItem="aAM-6y-jy7" secondAttribute="trailing" constant="8" symbolic="YES" id="XG9-QF-Ep4"/>
                             <constraint firstItem="aAM-6y-jy7" firstAttribute="leading" secondItem="WzA-sY-SPH" secondAttribute="leading" constant="20" symbolic="YES" id="XYe-j6-Emp"/>
                             <constraint firstItem="XNN-n4-drt" firstAttribute="trailing" secondItem="kzi-75-z6l" secondAttribute="trailing" id="Ym9-RF-I7Z"/>
-                            <constraint firstItem="Lrg-TW-8uF" firstAttribute="leading" secondItem="g4a-Qc-DGP" secondAttribute="leading" id="avC-r8-u7f"/>
-                            <constraint firstItem="IgQ-W8-D43" firstAttribute="top" secondItem="Lrg-TW-8uF" secondAttribute="bottom" constant="8" symbolic="YES" id="b1V-Tk-Z2g"/>
                             <constraint firstItem="43A-YH-4Jx" firstAttribute="leading" secondItem="gPW-lo-bG3" secondAttribute="leading" id="cTp-T9-KYG"/>
+                            <constraint firstItem="xl3-0J-ghm" firstAttribute="leading" secondItem="WzA-sY-SPH" secondAttribute="leading" id="ckL-sM-j3f"/>
                             <constraint firstItem="gPW-lo-bG3" firstAttribute="leading" secondItem="qGa-ti-Owy" secondAttribute="leading" id="dgB-il-l4R"/>
                             <constraint firstItem="XNN-n4-drt" firstAttribute="centerX" secondItem="IgQ-W8-D43" secondAttribute="centerX" id="eOl-et-zO7"/>
                             <constraint firstItem="aAM-6y-jy7" firstAttribute="centerY" secondItem="EGg-eb-7Dm" secondAttribute="centerY" id="g18-Un-3rC"/>
@@ -634,18 +620,20 @@ We promise that your information is safe with us!</string>
                             <constraint firstItem="XNN-n4-drt" firstAttribute="leading" secondItem="kzi-75-z6l" secondAttribute="leading" constant="-4" id="nUf-Q0-WCf"/>
                             <constraint firstItem="qGa-ti-Owy" firstAttribute="trailing" secondItem="gPW-lo-bG3" secondAttribute="trailing" id="pLp-xw-iT7"/>
                             <constraint firstItem="qGa-ti-Owy" firstAttribute="top" secondItem="IgQ-W8-D43" secondAttribute="bottom" constant="17" id="ssx-Bw-hc6"/>
+                            <constraint firstItem="xl3-0J-ghm" firstAttribute="top" secondItem="NqE-Ur-2Nw" secondAttribute="bottom" id="tLL-75-qk7"/>
                             <constraint firstItem="XNN-n4-drt" firstAttribute="top" secondItem="kzi-75-z6l" secondAttribute="top" constant="-10" id="uMb-ay-c5d"/>
                             <constraint firstAttribute="trailing" secondItem="qGa-ti-Owy" secondAttribute="trailing" constant="15" id="ux3-15-9tY"/>
                             <constraint firstAttribute="trailing" secondItem="9Wi-As-OwD" secondAttribute="trailing" constant="16" id="wko-rI-3G7"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="flR-8t-hJ7"/>
-                    <nil key="simulatedStatusBarMetrics"/>
+                    <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="blackOpaque"/>
+                    <nil key="simulatedTopBarMetrics"/>
                     <connections>
                         <outlet property="agreeSwitch" destination="aAM-6y-jy7" id="j9w-kN-5Pj"/>
                         <outlet property="agreementText" destination="EGg-eb-7Dm" id="FOD-cg-woF"/>
-                        <outlet property="backButton" destination="uSe-Ez-hDV" id="sRf-Hq-JPG"/>
                         <outlet property="doneButton" destination="9Wi-As-OwD" id="AdC-3g-M03"/>
+                        <outlet property="exitButton" destination="C2V-FK-LsE" id="7LM-po-tcM"/>
                         <outlet property="locationTextField" destination="pDv-b6-X4m" id="4pT-rE-Jfi"/>
                         <outlet property="profileImageView" destination="IgQ-W8-D43" id="sjL-el-raS"/>
                         <outlet property="tagLinePlaceholderLabel" destination="kzi-75-z6l" id="ckt-sK-4Dc"/>
@@ -670,7 +658,7 @@ We promise that your information is safe with us!</string>
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="E-mail" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="A3z-ra-4Af" customClass="VInlineValidationTextField">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="E-mail" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="A3z-ra-4Af" customClass="VInlineValidationTextField">
                                 <rect key="frame" x="18" y="10" width="284" height="50"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -680,7 +668,7 @@ We promise that your information is safe with us!</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="emailAddress" returnKeyType="next"/>
                             </textField>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="UDE-m8-fBQ" customClass="VInlineValidationTextField">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="UDE-m8-fBQ" customClass="VInlineValidationTextField">
                                 <rect key="frame" x="18" y="60" width="284" height="50"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -690,7 +678,7 @@ We promise that your information is safe with us!</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="next" secureTextEntry="YES"/>
                             </textField>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Confirm Password" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="g23-E6-rHp" customClass="VInlineValidationTextField">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Confirm Password" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="g23-E6-rHp" customClass="VInlineValidationTextField">
                                 <rect key="frame" x="18" y="110" width="284" height="50"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -700,7 +688,7 @@ We promise that your information is safe with us!</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="done" secureTextEntry="YES"/>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KC8-6n-wgW" customClass="VButton">
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KC8-6n-wgW" customClass="VButton">
                                 <rect key="frame" x="144" y="179" width="160" height="41"/>
                                 <color key="backgroundColor" white="0.66666666669999997" alpha="0.48999999999999999" colorSpace="calibratedWhite"/>
                                 <constraints>
@@ -715,28 +703,28 @@ We promise that your information is safe with us!</string>
                                     <action selector="signup:" destination="WjX-TR-OnL" eventType="touchUpInside" id="QFY-RJ-cgn"/>
                                 </connections>
                             </button>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ryz-b4-2zc" userLabel="Separator">
+                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ryz-b4-2zc" userLabel="Separator">
                                 <rect key="frame" x="18" y="60" width="284" height="1"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.25" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="D27-rW-FPu"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HPS-EA-AUa" userLabel="Separator">
+                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HPS-EA-AUa" userLabel="Separator">
                                 <rect key="frame" x="18" y="110" width="284" height="1"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.25" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="v5l-zh-cen"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ldF-FI-Yzq" userLabel="Separator">
+                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ldF-FI-Yzq" userLabel="Separator">
                                 <rect key="frame" x="18" y="159" width="284" height="1"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.25" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="PGM-CU-8gV"/>
                                 </constraints>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7P1-3N-TQ4" customClass="VButton">
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7P1-3N-TQ4" customClass="VButton">
                                 <rect key="frame" x="18" y="179" width="112" height="41"/>
                                 <color key="backgroundColor" white="0.66666666669999997" alpha="0.48999999999999999" colorSpace="calibratedWhite"/>
                                 <constraints>
@@ -784,7 +772,7 @@ We promise that your information is safe with us!</string>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="vcf-6i-p2X"/>
-                    <nil key="simulatedStatusBarMetrics"/>
+                    <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="blackOpaque"/>
                     <connections>
                         <outlet property="cancelButton" destination="7P1-3N-TQ4" id="blr-6P-d4Z"/>
                         <outlet property="confirmPasswordTextField" destination="g23-E6-rHp" id="zEl-Hc-hM7"/>
@@ -810,7 +798,7 @@ We promise that your information is safe with us!</string>
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hJA-Pd-VfH" userLabel="Back Button">
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hJA-Pd-VfH" userLabel="Back Button">
                                 <rect key="frame" x="3" y="6" width="44" height="45"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="45" id="fCX-Rw-dNh"/>
@@ -822,7 +810,7 @@ We promise that your information is safe with us!</string>
                                     <action selector="pressedBack:" destination="Q74-bM-qRI" eventType="touchUpInside" id="rWd-9f-Mbh"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Thanks!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Lji-XP-yck">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Thanks!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Lji-XP-yck">
                                 <rect key="frame" x="27" y="36" width="266" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="bpg-z5-66T"/>
@@ -831,7 +819,7 @@ We promise that your information is safe with us!</string>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="An email was sent to this address containing a code to verify your account" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="sxb-gV-KJX">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="An email was sent to this address containing a code to verify your account" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="sxb-gV-KJX">
                                 <rect key="frame" x="27" y="74" width="266" height="80"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="80" id="q9n-dL-hG8"/>
@@ -840,7 +828,7 @@ We promise that your information is safe with us!</string>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ENTER CODE" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="CGW-Kx-wFZ">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="ENTER CODE" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="CGW-Kx-wFZ">
                                 <rect key="frame" x="27" y="162" width="266" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="VM4-Mg-kEX"/>
@@ -849,7 +837,7 @@ We promise that your information is safe with us!</string>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Eus-qL-qzu">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Eus-qL-qzu">
                                 <rect key="frame" x="27" y="191" width="266" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" returnKeyType="done"/>
@@ -857,7 +845,7 @@ We promise that your information is safe with us!</string>
                                     <outlet property="delegate" destination="Q74-bM-qRI" id="gZD-MP-mM6"/>
                                 </connections>
                             </textField>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" text="Resend Email" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="ucd-V3-oVY" userLabel="Forgot Password?" customClass="CCHLinkTextView">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" text="Resend Email" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="ucd-V3-oVY" userLabel="Forgot Password?" customClass="CCHLinkTextView">
                                 <rect key="frame" x="30" y="229" width="261" height="36"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
@@ -890,7 +878,7 @@ We promise that your information is safe with us!</string>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Jjo-Gf-qdP"/>
-                    <nil key="simulatedStatusBarMetrics"/>
+                    <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="blackOpaque"/>
                     <nil key="simulatedTopBarMetrics"/>
                     <connections>
                         <outlet property="codeField" destination="Eus-qL-qzu" id="ndR-xL-dYg"/>
@@ -946,7 +934,7 @@ We promise that your information is safe with us!</string>
     </scenes>
     <resources>
         <image name="btnPrevArrowWhite" width="24" height="24"/>
-        <image name="cameraButtonBack" width="22" height="17"/>
+        <image name="cameraButtonClose" width="24" height="24"/>
         <image name="createAvatar" width="80" height="80"/>
         <image name="creator-avatar.png" width="32" height="32"/>
         <image name="email_button" width="288" height="42"/>

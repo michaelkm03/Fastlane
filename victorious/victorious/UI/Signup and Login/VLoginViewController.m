@@ -34,7 +34,7 @@
 @import Accounts;
 @import Social;
 
-@interface VLoginViewController ()  <UINavigationControllerDelegate, VSelectorViewControllerDelegate, CCHLinkTextViewDelegate>
+@interface VLoginViewController ()  <UINavigationControllerDelegate, VSelectorViewControllerDelegate, CCHLinkTextViewDelegate, VRegistrationViewControllerDelegate>
 
 @property (nonatomic, strong) VUser *profile;
 
@@ -48,7 +48,11 @@
 
 @property (nonatomic, weak) IBOutlet VLinkTextViewHelper *linkTextHelper;
 @property (nonatomic, weak) IBOutlet VLoginContextHelper *loginContextHelper;
+
 @property (nonatomic, weak) IBOutlet UITextView *loginContextTextView;
+@property (nonatomic, weak) IBOutlet UILabel *creatorNameLabel;
+@property (nonatomic, weak) IBOutlet UIImageView *createAvatarImageview;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *creatorNameLabelWidthConstraint;
 
 @end
 
@@ -116,8 +120,6 @@
     [self.linkTextHelper setupLinkTextView:self.loginTextView withText:text range:range];
     self.loginTextView.linkDelegate = self;
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidAbortCreateProfile:) name:VProfileCreateViewControllerWasAbortedNotification object:nil];
-    
     // Some prep for VPresentWithBlurViewController elements
     self.blurredBackgroundView = [self createBlurredBackgroundView];
 #warning Fix up this gradient
@@ -127,17 +129,21 @@
     
     NSString *loginContextText = [self.loginContextHelper textForContext:self.loginContextType];
     self.loginContextTextView.text = loginContextText;
+    NSArray *tempNames = @[ @"Short", @"Medium Length", @"Very long name with many characters" ];
+    self.creatorNameLabel.text = [NSString stringWithFormat:@"%@", tempNames[ arc4random() % (NSUInteger)tempNames.count ] ];
+    self.creatorNameLabelWidthConstraint.constant = 300.0f;
+    [self.creatorNameLabel layoutIfNeeded];
 }
 
 - (UIView *)createBlurredBackgroundView
 {
     UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
     UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
-    UIView *backgroundView = blurEffectView;
-    [self.view addSubview:backgroundView];
-    [self.view sendSubviewToBack:backgroundView];
-    [self.view v_addFitToParentConstraintsToSubview:backgroundView];
-    return backgroundView;
+    blurEffectView.frame = self.view.bounds;
+    [self.view addSubview:blurEffectView];
+    [self.view sendSubviewToBack:blurEffectView];
+    [self.view v_addFitToParentConstraintsToSubview:blurEffectView];
+    return blurEffectView;
 }
 
 - (void)dealloc
@@ -145,24 +151,11 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    
-    UIImage *cancelButtonImage = [[UIImage imageNamed:@"cameraButtonClose"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    UIBarButtonItem *closeButton = [[UIBarButtonItem alloc] initWithImage:cancelButtonImage style:UIBarButtonItemStylePlain target:self action:@selector(onDismiss:)];
-    [self.navigationItem setLeftBarButtonItem:closeButton animated:YES];
-}
-
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
-    [self.navigationController.navigationBar setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
-    self.navigationController.navigationBar.shadowImage = [[UIImage alloc] init];
-    self.navigationController.navigationBar.translucent = YES;
-    [self.navigationController setNavigationBarHidden:NO animated:NO];
+    [self.navigationController setNavigationBarHidden:YES animated:NO];
     
     self.navigationController.delegate = self;
     
@@ -170,9 +163,6 @@
     {
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginDidShow];
     }
-    
-    // This will set the status bar white
-    //self.navigationController.navigationBar.barStyle = UIBarStyleBlack;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -184,9 +174,6 @@
     {
         self.navigationController.delegate = nil;
     }
-    
-    // This fades out the bar item
-    [self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] init] animated:YES];
 }
 
 - (BOOL)shouldAutorotate
@@ -199,6 +186,16 @@
     return UIInterfaceOrientationMaskPortrait;
 }
 
+- (BOOL)prefersStatusBarHidden
+{
+    return NO;
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
+}
+
 #pragma mark - CCHLinkTextViewDelegate
 
 - (void)linkTextView:(CCHLinkTextView *)linkTextView didTapLinkWithValue:(id)value
@@ -206,6 +203,13 @@
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectLoginWithEmail];
     
     [self performSegueWithIdentifier:@"toEmailLogin" sender:self];
+}
+
+#pragma mark - VRegistrationViewControllerDelegate
+
+- (void)didFinishRegistrationStepWithSuccess:(BOOL)success
+{
+    [self loginDidFinishWithSuccess:YES];
 }
 
 #pragma mark - Support
@@ -416,11 +420,15 @@
         profileViewController.loginType = kVLoginTypeEmail;
         profileViewController.profile = self.profile;
     }
-}
-
-- (void)userDidAbortCreateProfile:(NSNotification *)note
-{
-    [self loginDidFinishWithSuccess:NO];
+    else if ([segue.identifier isEqualToString:@"toEmailLogin"] ||
+             [segue.identifier isEqualToString:@"toSignup"])
+    {
+        if ( [segue.destinationViewController conformsToProtocol:@protocol(VRegistrationViewController)] )
+        {
+            id<VRegistrationViewController> registrationViewController = (id<VRegistrationViewController>)segue.destinationViewController;
+            registrationViewController.delegate = self;
+        }
+    }
 }
 
 #pragma mark - VSelectorViewControllerDelegate

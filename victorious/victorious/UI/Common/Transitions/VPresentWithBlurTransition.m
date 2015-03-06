@@ -120,7 +120,7 @@
      } completion:nil];
 }
 
-- (BOOL)requiresImageViewFromOriginViewController
+- (BOOL)requiresImageViewFromWindow
 {
     return YES;
 }

@@ -60,4 +60,6 @@
 
 - (void)flagActionForSequence:(VSequence *)sequence;
 
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
+
 @end

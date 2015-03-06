@@ -53,6 +53,8 @@
 
 @implementation VLoginWithEmailViewController
 
+@synthesize delegate; //< VRegistrationViewController
+
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:self.usernameTextField];
@@ -142,7 +144,7 @@
 
 - (BOOL)prefersStatusBarHidden
 {
-    return YES;
+    return NO;
 }
 
 - (NSUInteger)supportedInterfaceOrientations
@@ -212,13 +214,9 @@
     
     self.profile = mainUser;
     
-    if ( ![VObjectManager sharedManager].authorized )
+    if ( self.delegate != nil )
     {
-        [self performSegueWithIdentifier:@"toProfileWithEmail" sender:self];
-    }
-    else
-    {
-        [self dismissViewControllerAnimated:YES completion:nil];
+        [self.delegate didFinishRegistrationStepWithSuccess:YES];
     }
 }
 

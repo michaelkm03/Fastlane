@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-@interface VSignupWithEmailViewController : UIViewController
+#import "VRegistration.h"
+
+@interface VSignupWithEmailViewController : UIViewController <VRegistrationViewController, VRegistrationViewControllerDelegate>
 
 @end

@@ -150,7 +150,8 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 @property (nonatomic, weak) IBOutlet VContentViewRotationHelper *rotationHelper;
 @property (nonatomic, weak) IBOutlet VScrollPaginator *scrollPaginator;
 @property (nonatomic, weak, readwrite) IBOutlet VSequenceActionController *sequenceActionController;
-@property (nonatomic, strong) VAuthorization *authorizationHelper;
+
+@property (nonatomic, strong, readwrite) VAuthorization *authorizationHelper;
 
 @property (nonatomic, weak) UIView *snapshotView;
 @property (nonatomic, assign) CGPoint offsetBeforeRemoval;
@@ -695,7 +696,8 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 
 - (void)loginStatusDidChange:(NSNotification *)notification
 {
-    [self.viewModel reloadData];
+#warning Delete this if not needed:
+    //[self.viewModel reloadData];
 }
 
 #pragma mark - IBActions

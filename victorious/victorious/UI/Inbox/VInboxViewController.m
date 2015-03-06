@@ -25,8 +25,6 @@
 #import "VThemeManager.h"
 #import "VNoContentView.h"
 #import "VUser.h"
-
-#import "VAuthorizationViewControllerFactory.h"
 #import "VObjectManager+Login.h"
 
 NS_ENUM(NSUInteger, VModeSelect)
