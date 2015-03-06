@@ -224,7 +224,7 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
     {
         [self.adPlayerViewController.view removeFromSuperview];
         self.adPlayerViewController = nil;
-        [self.videoPlayerViewController.player play];
+        [self resumeContentPlayback];
     }
 }
 
