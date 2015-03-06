@@ -452,10 +452,6 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
                                                  name:VInputAccessoryViewKeyboardFrameDidChangeNotification
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(loginStatusDidChange:)
-                                                 name:kLoggedInChangedNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(showLoginViewController:)
                                                  name:VExperienceEnhancerBarDidRequireLoginNotification
                                                object:nil];
@@ -625,11 +621,6 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
         self.bottomKeyboardToContainerBottomConstraint.constant = newBottomKeyboardBarToContainerConstraintHeight;
         [self.view layoutIfNeeded];
     }
-}
-
-- (void)loginStatusDidChange:(NSNotification *)notification
-{
-    [self.viewModel reloadData];
 }
 
 #pragma mark - IBActions

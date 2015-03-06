@@ -114,7 +114,7 @@
 
         _currentNode = [sequence firstNode];
         
-        _currentAsset = [_currentNode mp4Asset];
+        _currentAsset = [_currentNode httpLiveStreamingAsset];
         if ( _currentAsset == nil )
         {
             _currentAsset = [_currentNode imageAsset];
@@ -429,7 +429,7 @@
 
 - (NSURL *)videoURL
 {
-    return [NSURL URLWithString:self.currentAsset.data];
+    return [NSURL URLWithString:[self.currentNode httpLiveStreamingAsset].data];
 }
 
 - (float)speed

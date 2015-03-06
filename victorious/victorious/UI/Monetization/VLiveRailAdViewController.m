@@ -16,7 +16,6 @@
 @interface VLiveRailAdViewController ()
 
 @property (nonatomic, strong) LiveRailAdManager *adManager;
-@property (nonatomic, strong) UIActivityIndicatorView *activityIndicatorView;
 @property (nonatomic, assign) BOOL adViewAppeared;
 @property (nonatomic, assign) BOOL adPlaying;
 @property (nonatomic, strong) NSString *pubID;
@@ -60,21 +59,6 @@
     }
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-    if (!self.adViewAppeared)
-    {
-        self.activityIndicatorView = [[UIActivityIndicatorView alloc] init];
-        self.activityIndicatorView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhiteLarge;
-        self.activityIndicatorView.hidesWhenStopped = YES;
-        self.activityIndicatorView.center = self.view.center;
-        [self.activityIndicatorView startAnimating];
-        [self.view addSubview:self.activityIndicatorView];
-    }
-}
-
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
@@ -100,7 +84,6 @@
         [self.adManager stopAd];
     }
     self.adManager = nil;
-    self.activityIndicatorView = nil;
 }
 
 - (void)willMoveToParentViewController:(UIViewController *)parent
@@ -132,7 +115,6 @@
     self.adManager.hidden = YES;
     [self.adManager stopAd];
     self.adManager = nil;
-    [self.activityIndicatorView stopAnimating];
 }
 
 #pragma mark - Ad Manager Start
@@ -268,8 +250,6 @@
     VLog(@"AdDidStartPlayback Fired");
 #endif
     self.adPlaying = YES;
-    
-    [self.activityIndicatorView stopAnimating];
     
     if ([self.delegate respondsToSelector:@selector(adDidStartPlaybackInAdViewController:)])
     {

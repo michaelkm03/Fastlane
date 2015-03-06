@@ -13,12 +13,23 @@
 #import "VEndCard.h"
 #import "UIView+Autolayout.h"
 
+#import "VRootViewController.h"
+#import "VDependencyManager.h"
+
+static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
+
 @interface VContentVideoCell () <VCVideoPlayerDelegate, VAdVideoPlayerViewControllerDelegate>
 
 @property (nonatomic, strong, readwrite) VCVideoPlayerViewController *videoPlayerViewController;
 @property (nonatomic, assign, readwrite) BOOL isPlayingAd;
 @property (nonatomic, assign, readwrite) BOOL videoDidEnd;
 @property (nonatomic, strong) NSURL *contentURL;
+
+@property (nonatomic, assign) BOOL adDidStart;
+@property (nonatomic, assign) BOOL videoDidStart;
+
+@property (nonatomic, weak) IBOutlet UIActivityIndicatorView *loadingIndicator;
+@property (nonatomic, weak) IBOutlet UIButton *failureRetryButton;
 
 @end
 
@@ -37,20 +48,16 @@
     [super prepareForReuse];
     
     self.videoPlayerViewController.view.hidden = YES;
+    self.failureRetryButton.hidden = YES;
 }
 
 - (void)awakeFromNib
 {
     [super awakeFromNib];
     
-    self.videoPlayerViewController = [[VCVideoPlayerViewController alloc] initWithNibName:nil bundle:nil];
-    self.videoPlayerViewController.delegate = self;
-    self.videoPlayerViewController.view.frame = self.contentView.bounds;
-    self.videoPlayerViewController.shouldContinuePlayingAfterDismissal = YES;
-    self.videoPlayerViewController.shouldChangeVideoGravityOnDoubleTap = YES;
-    [self.contentView addSubview:self.videoPlayerViewController.view];
-    self.videoPlayerViewController.view.hidden = YES;
-    self.shrinkingContentView = self.videoPlayerViewController.view;
+    self.failureRetryButton.hidden = YES;
+    self.failureRetryButton.enabled = NO;// If you remove this need to fix the retry logic
+    self.failureRetryButton.titleLabel.numberOfLines = 0;
 }
 
 - (void)dealloc
@@ -66,6 +73,8 @@
 {
     _viewModel = viewModel;
     
+    [self.loadingIndicator startAnimating];
+    [self setupVideoPlayer];
     self.videoPlayerViewController.view.hidden = YES;
     
     self.contentURL = viewModel.itemURL;
@@ -101,8 +110,13 @@
     self.adPlayerViewController.delegate = self;
     self.adPlayerViewController.view.hidden = NO;
     [self.contentView addSubview:self.adPlayerViewController.view];
-    
+    [self.contentView sendSubviewToBack:self.adPlayerViewController.view];
     [self.adPlayerViewController start];
+    [NSTimer scheduledTimerWithTimeInterval:kAdTimeoutTimeInterval
+                                     target:self
+                                   selector:@selector(adTimerFired:)
+                                   userInfo:nil
+                                    repeats:NO];
 }
 
 - (void)resumeContentPlayback
@@ -150,6 +164,14 @@
     self.videoPlayerViewController.isAudioEnabled = !_audioMuted;
 }
 
+- (IBAction)retryVideo:(id)sender
+{
+    [self replay];
+    [self setupVideoPlayer];
+    self.failureRetryButton.hidden = YES;
+    [self.loadingIndicator startAnimating];
+}
+
 #pragma mark - Public Methods
 
 - (void)seekToStart
@@ -193,11 +215,53 @@
     [self.videoPlayerViewController enableTrackingWithTrackingItem:tracking];
 }
 
+#pragma mark - Private Methods
+
+- (void)adTimerFired:(NSTimer *)timer
+{
+    [timer invalidate];
+    if (!self.adDidStart)
+    {
+        [self.adPlayerViewController.view removeFromSuperview];
+        self.adPlayerViewController = nil;
+        [self resumeContentPlayback];
+    }
+}
+
+- (void)setupVideoPlayer
+{
+    if (self.videoPlayerViewController != nil)
+    {
+        [self.videoPlayerViewController.view removeFromSuperview];
+        self.videoPlayerViewController = nil;
+    }
+    self.videoPlayerViewController = [[VCVideoPlayerViewController alloc] initWithNibName:nil bundle:nil];
+    self.videoPlayerViewController.delegate = self;
+    self.videoPlayerViewController.view.frame = self.contentView.bounds;
+    self.videoPlayerViewController.shouldContinuePlayingAfterDismissal = YES;
+    self.videoPlayerViewController.shouldChangeVideoGravityOnDoubleTap = YES;
+    [self.contentView addSubview:self.videoPlayerViewController.view];
+    [self.contentView sendSubviewToBack:self.videoPlayerViewController.view];
+    self.videoPlayerViewController.view.hidden = YES;
+    self.shrinkingContentView = self.videoPlayerViewController.view;
+    
+    if (self.contentURL)
+    {
+        [self.videoPlayerViewController setItemURL:self.contentURL loop:self.loop];
+    }
+}
+
 #pragma mark - VCVideoPlayerDelegate
 
 - (void)videoPlayer:(VCVideoPlayerViewController *)videoPlayer
       didPlayToTime:(CMTime)time
 {
+    if (CMTIME_COMPARE_INLINE(time, ==, kCMTimeZero))
+    {
+        return;
+    }
+    self.videoDidStart = YES;
+    [self.loadingIndicator stopAnimating];
     [self.delegate videoCell:self
                didPlayToTime:time
                    totalTime:[videoPlayer playerItemDuration]];
@@ -227,6 +291,17 @@
     [self.delegate videoCellWillStartPlaying:self];
 }
 
+- (void)videoPlayerFailed:(VCVideoPlayerViewController *)videoPlayer
+{
+    self.failureRetryButton.hidden = NO;
+    [self.videoPlayerViewController.view removeFromSuperview];
+    self.videoPlayerViewController = nil;
+    [self.adPlayerViewController.view removeFromSuperview];
+    self.adPlayerViewController = nil;
+    [self.loadingIndicator stopAnimating];
+    [self.failureRetryButton setTitle:NSLocalizedString(@"Video loading failed.", @"") forState:UIControlStateNormal];
+}
+
 #pragma mark - VAdVideoPlayerViewControllerDelegate
 
 - (void)adHadErrorForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController
@@ -241,10 +316,13 @@
 
 - (void)adDidStartPlaybackForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController
 {
+    [self.loadingIndicator stopAnimating];
+    self.adDidStart = YES;
 }
 
 - (void)adDidStopPlaybackForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController
 {
+    [self.loadingIndicator startAnimating];
 }
 
 - (void)adDidFinishForAdVideoPlayerViewController:(VAdVideoPlayerViewController *)adVideoPlayerViewController
