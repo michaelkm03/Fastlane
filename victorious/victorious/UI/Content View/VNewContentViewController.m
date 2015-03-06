@@ -193,7 +193,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 
 - (void)didUpdateCommentsWithPageType:(VPageType)pageType
 {
-    if (self.viewModel.comments.count > 0)
+    if (self.viewModel.comments.count > 0 && self.contentCollectionView.numberOfSections > VContentViewSectionAllComments)
     {
         if ([self.contentCollectionView numberOfItemsInSection:VContentViewSectionAllComments] > 0)
         {
