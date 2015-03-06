@@ -63,7 +63,7 @@ static const int64_t kAssetLoopClippingScale = 100;
                                                 {
                                                     playerItem = [AVPlayerItem playerItemWithAsset:asset];
                                                 }
-                                                dispatch_async( dispatch_get_main_queue(), ^z
+                                                dispatch_async( dispatch_get_main_queue(), ^
                                                                {
                                                                    if ( onReady != nil )
                                                                    {
