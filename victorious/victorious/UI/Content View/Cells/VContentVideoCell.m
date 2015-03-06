@@ -26,6 +26,7 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
 @property (nonatomic, strong) NSURL *contentURL;
 
 @property (nonatomic, assign) BOOL adDidStart;
+@property (nonatomic, assign) BOOL videoDidStart;
 
 @property (nonatomic, weak) IBOutlet UIActivityIndicatorView *loadingIndicator;
 @property (nonatomic, weak) IBOutlet UIButton *failureRetryButton;
@@ -54,15 +55,6 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
 {
     [super awakeFromNib];
     
-    self.videoPlayerViewController = [[VCVideoPlayerViewController alloc] initWithNibName:nil bundle:nil];
-    self.videoPlayerViewController.delegate = self;
-    self.videoPlayerViewController.view.frame = self.contentView.bounds;
-    self.videoPlayerViewController.shouldContinuePlayingAfterDismissal = YES;
-    self.videoPlayerViewController.shouldChangeVideoGravityOnDoubleTap = YES;
-    [self.contentView addSubview:self.videoPlayerViewController.view];
-    [self.contentView sendSubviewToBack:self.videoPlayerViewController.view];
-    self.videoPlayerViewController.view.hidden = YES;
-    self.shrinkingContentView = self.videoPlayerViewController.view;
     self.failureRetryButton.hidden = YES;
     self.failureRetryButton.titleLabel.numberOfLines = 0;
 }
@@ -81,7 +73,7 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
     _viewModel = viewModel;
     
     [self.loadingIndicator startAnimating];
-    
+    [self setupVideoPlayer];
     self.videoPlayerViewController.view.hidden = YES;
     
     self.contentURL = viewModel.itemURL;
@@ -174,6 +166,7 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
 - (IBAction)retryVideo:(id)sender
 {
     [self replay];
+    [self setupVideoPlayer];
     self.failureRetryButton.hidden = YES;
     [self.loadingIndicator startAnimating];
 }
@@ -230,6 +223,30 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
     {
         [self.adPlayerViewController.view removeFromSuperview];
         self.adPlayerViewController = nil;
+        [self.videoPlayerViewController.player play];
+    }
+}
+
+- (void)setupVideoPlayer
+{
+    if (self.videoPlayerViewController != nil)
+    {
+        [self.videoPlayerViewController.view removeFromSuperview];
+        self.videoPlayerViewController = nil;
+    }
+    self.videoPlayerViewController = [[VCVideoPlayerViewController alloc] initWithNibName:nil bundle:nil];
+    self.videoPlayerViewController.delegate = self;
+    self.videoPlayerViewController.view.frame = self.contentView.bounds;
+    self.videoPlayerViewController.shouldContinuePlayingAfterDismissal = YES;
+    self.videoPlayerViewController.shouldChangeVideoGravityOnDoubleTap = YES;
+    [self.contentView addSubview:self.videoPlayerViewController.view];
+    [self.contentView sendSubviewToBack:self.videoPlayerViewController.view];
+    self.videoPlayerViewController.view.hidden = YES;
+    self.shrinkingContentView = self.videoPlayerViewController.view;
+    
+    if (self.contentURL)
+    {
+        [self.videoPlayerViewController setItemURL:self.contentURL loop:self.loop];
     }
 }
 
@@ -242,6 +259,7 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
     {
         return;
     }
+    self.videoDidStart = YES;
     [self.loadingIndicator stopAnimating];
     [self.delegate videoCell:self
                didPlayToTime:time
