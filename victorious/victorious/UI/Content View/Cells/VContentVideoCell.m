@@ -56,6 +56,7 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
     [super awakeFromNib];
     
     self.failureRetryButton.hidden = YES;
+    self.failureRetryButton.enabled = NO;// If you remove this need to fix the retry logic
     self.failureRetryButton.titleLabel.numberOfLines = 0;
 }
 
@@ -294,7 +295,7 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
 {
     self.failureRetryButton.hidden = NO;
     [self.loadingIndicator stopAnimating];
-    [self.failureRetryButton setTitle:NSLocalizedString(@"Video loading failed. Retry?", @"") forState:UIControlStateNormal];
+    [self.failureRetryButton setTitle:NSLocalizedString(@"Video loading failed.", @"") forState:UIControlStateNormal];
 }
 
 #pragma mark - VAdVideoPlayerViewControllerDelegate
