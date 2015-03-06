@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDisplayName</key>
+	<string>${ProductPrefix}SkyCaptain</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.getvictorious.${ProductPrefix}skycaptain</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb804750832947831</string>
+			</array>
+		</dict>
+	</array>
+	<key>FacebookAppID</key>
+	<string>804750832947831</string>
+	<key>TWITTER_CONSUMER_KEY</key>
+	<string>ljtBMJdp22PM4xuxW7jiiWLcs</string>
+	<key>TWITTER_CONSUMER_SECRET</key>
+	<string>duuYVlroiVatCgwA0q43CjN0IrPXst4ek5GMShHCDVVL6kIidn</string>
+	<key>VictoriousAppID</key>
+	<integer>24</integer>
+	<key>StagingAppID</key>
+	<integer>38</integer>
+	<key>QAAppID</key>
+	<integer>22</integer>
+	<key>GAID</key>
+	<string></string>
+	<key>CreatorSalutation</key>
+	<string>Josh Hinman</string>
+	<key>FlurryAPIKey</key>
+	<string>XXXXXXXXXX</string>
+</dict>
+</plist>
