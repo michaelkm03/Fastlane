@@ -140,14 +140,6 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Check if the user is logged in first
-    if ( ![VObjectManager sharedManager].authorized )
-    {
-        [[NSNotificationCenter defaultCenter] postNotificationName:VExperienceEnhancerBarDidRequireLoginNotification object:nil];
-        return;
-    }
-    
-    
     VExperienceEnhancerCell *experienceEnhancerCell = (VExperienceEnhancerCell *)[collectionView cellForItemAtIndexPath:indexPath];
     if ( !experienceEnhancerCell.enabled )
     {
@@ -161,6 +153,13 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
     {
         NSDictionary *userInfo = @{ @"experienceEnhancer" : enhancerForIndexPath };
         [[NSNotificationCenter defaultCenter] postNotificationName:VExperienceEnhancerBarDidRequirePurchasePrompt object:nil userInfo:userInfo];
+        return;
+    }
+    
+    // Check if the user is logged in first
+    if ( ![VObjectManager sharedManager].authorized )
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:VExperienceEnhancerBarDidRequireLoginNotification object:nil];
         return;
     }
     
