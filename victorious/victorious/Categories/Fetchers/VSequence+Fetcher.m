@@ -15,6 +15,7 @@
 #import "VAnswer.h"
 #import "VUser.h"
 #import "VAsset.h"
+#import "VAsset+Fetcher.h"
 
 typedef NS_OPTIONS(NSInteger, VSequencePermissionOptions)
 {
@@ -233,6 +234,15 @@ typedef NS_OPTIONS(NSInteger, VSequencePermissionOptions)
 - (BOOL)canRemix
 {
     if ( [self isPoll] )
+    {
+        return NO;
+    }
+    
+    if ( self.isImage && [[[self firstNode] imageAsset] dataURL] == nil )
+    {
+        return NO;
+    }
+    else if ( self.isVideo && [[[self firstNode] mp4Asset] dataURL] == nil )
     {
         return NO;
     }
