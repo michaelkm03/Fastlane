@@ -8,6 +8,7 @@
 
 #import "VVideoUtils.h"
 #import "VConstants.h"
+#import <KVOController/FBKVOController.h>
 
 const NSUInteger kVCompositionAssetCount = 10;
 
@@ -47,27 +48,29 @@ static const int64_t kAssetLoopClippingScale = 100;
 
 - (void)createPlayerItemWithURL:(NSURL *)itemURL loop:(BOOL)loop readyCallback:(void(^)(AVPlayerItem *, CMTime duration))onReady
 {
-    dispatch_async( dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0 ), ^void
+    dispatch_async( dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0 ), ^void
                    {
-                       AVURLAsset *asset = [AVURLAsset URLAssetWithURL:itemURL options:nil];
-                       __block AVPlayerItem *playerItem = nil;
-                       if ( loop )
-                       {
-                           AVComposition *composition = [self loopingCompositionWithAsset:asset];
-                           playerItem = [AVPlayerItem playerItemWithAsset:composition];
-                       }
-                       else
-                       {
-                           playerItem = [AVPlayerItem playerItemWithAsset:asset];
-                       }
-                       
-                       dispatch_async( dispatch_get_main_queue(), ^
-                                      {
-                                          if ( onReady != nil )
-                                          {
-                                              onReady( playerItem, asset.duration );
-                                          }
-                                      });
+                       AVURLAsset *asset = [AVURLAsset URLAssetWithURL:itemURL options:@{AVURLAssetPreferPreciseDurationAndTimingKey:@(NO)}];
+                       [asset loadValuesAsynchronouslyForKeys:@[NSStringFromSelector(@selector(duration))]
+                                            completionHandler:^{
+                                                __block AVPlayerItem *playerItem = nil;
+                                                if ( loop )
+                                                {
+                                                    AVComposition *composition = [self loopingCompositionWithAsset:asset];
+                                                    playerItem = [AVPlayerItem playerItemWithAsset:composition];
+                                                }
+                                                else
+                                                {
+                                                    playerItem = [AVPlayerItem playerItemWithAsset:asset];
+                                                }
+                                                dispatch_async( dispatch_get_main_queue(), ^z
+                                                               {
+                                                                   if ( onReady != nil )
+                                                                   {
+                                                                       onReady( playerItem, asset.duration );
+                                                                   }
+                                                               });
+                                            }];
                    });
 }
 
