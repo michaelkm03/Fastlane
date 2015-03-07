@@ -143,7 +143,7 @@ static CGFloat const kVSelectionAnimationDuration = 0.35f;
         }
         
         //Note: Setting the button's text color to the "highlighted" color here so that it appears that way in the snapshot below
-        UIButton *button = [self newButtonWithCornerRadius:cornerRadius title:viewController.title andTextColor:buttonSelectionColor];
+        UIButton *button = [self newButtonWithCornerRadius:cornerRadius title:viewController.title font:[self.dependencyManager fontForKey:VDependencyManagerHeading3FontKey] andTextColor:buttonSelectionColor];
         button.tag = idx;
         [button addTarget:sSelf action:@selector(pressedHeaderButton:) forControlEvents:UIControlEventTouchUpInside];
         
@@ -191,6 +191,7 @@ static CGFloat const kVSelectionAnimationDuration = 0.35f;
     for (UIButton *button in self.buttons)
     {
         [button setTitleColor:self.pillColor forState:UIControlStateNormal];
+        [[button titleLabel] setFont:[self.dependencyManager fontForKey:VDependencyManagerHeading4FontKey]];
     }
     
     //Add the snapshot imageview to our bar
@@ -288,7 +289,7 @@ static CGFloat const kVSelectionAnimationDuration = 0.35f;
     [self makeButtonsFromCurrentViewControllers];
 }
 
-- (UIButton *)newButtonWithCornerRadius:(CGFloat)cornerRadius title:(NSString *)title andTextColor:(UIColor *)color
+- (UIButton *)newButtonWithCornerRadius:(CGFloat)cornerRadius title:(NSString *)title font:(UIFont *)font andTextColor:(UIColor *)color
 {
     //Create a label, set it's text to the title, give it constraints that fit it to it's spot in the view
     UIButton *button = [[UIButton alloc] init];
@@ -297,7 +298,7 @@ static CGFloat const kVSelectionAnimationDuration = 0.35f;
     [button setTitle:title forState:UIControlStateNormal];
     [button setTitleColor:color forState:UIControlStateNormal];
     [button setBackgroundColor:[UIColor clearColor]];
-    [[button titleLabel] setFont:[self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey]];
+    [[button titleLabel] setFont:font];
     [button setTitleColor:color forState:UIControlStateHighlighted];
     return button;
 }
