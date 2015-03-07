@@ -25,7 +25,6 @@
 #import "VUploadProgressViewController.h"
 #import "VUserProfileViewController.h"
 #import "VMarqueeController.h"
-#import "VAuthorizationViewControllerFactory.h"
 #import "VSequenceActionController.h"
 #import "VWebBrowserViewController.h"
 #import "VNavigationController.h"

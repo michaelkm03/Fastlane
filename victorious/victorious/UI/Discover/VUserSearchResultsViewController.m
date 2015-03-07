@@ -8,31 +8,15 @@
 
 #import "VUserSearchResultsViewController.h"
 #import "VUsersAndTagsSearchViewController.h"
-
-// VObjectManager
 #import "VObjectManager+Users.h"
 #import "VObjectManager+Login.h"
 #import "VUser.h"
-
-// User Profile
 #import "VUserProfileViewController.h"
-
-// Dependency Manager
 #import "VDependencyManager.h"
-
-// Constants
 #import "VConstants.h"
-
-// Auth Factory
-#import "VAuthorizationViewControllerFactory.h"
-
-// Table Cell
+#import "VAuthorization.h"
 #import "VFollowerTableViewCell.h"
-
-// No Content View
 #import "VNoContentView.h"
-
-// AutoLayout Category
 #import "UIVIew+AutoLayout.h"
 
 static NSString * const kVUserResultIdentifier = @"followerCell";
@@ -201,21 +185,20 @@ static NSString * const kVUserResultIdentifier = @"followerCell";
     // Tell the button what to do when it's tapped
     cell.followButtonAction = ^(void)
     {
-        // Check if logged in before attempting to follow / unfollow
-        if (![VObjectManager sharedManager].authorized)
-        {
-            [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
-            return;
-        }
-        
-        if ([mainUser.following containsObject:profile])
-        {
-            [self unfollowFriendAction:profile];
-        }
-        else
-        {
-            [self followFriendAction:profile];
-        }
+        VAuthorization *authorization = [[VAuthorization alloc] initWithObjectManager:[VObjectManager sharedManager]
+                                                                    dependencyManager:self.dependencyManager];
+        [authorization performAuthorizedActionFromViewController:self withContext:VLoginContextFollowUser withSuccess:^
+         {
+             
+             if ([mainUser.following containsObject:profile])
+             {
+                 [self unfollowFriendAction:profile];
+             }
+             else
+             {
+                 [self followFriendAction:profile];
+             }
+         }];
     };
     return cell;
 }

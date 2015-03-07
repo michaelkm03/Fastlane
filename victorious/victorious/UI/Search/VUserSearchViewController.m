@@ -212,7 +212,7 @@ static const NSInteger kSearchResultLimit = 100;
     
     VAuthorization *authorization = [[VAuthorization alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                 dependencyManager:self.dependencyManager];
-    [authorization performAuthorizedActionFromViewController:self withContext:VLoginContextUserSearch withSuccess:^
+    [authorization performAuthorizedActionFromViewController:self withContext:VLoginContextInbox withSuccess:^
     {
         VMessageContainerViewController *composeController = [VMessageContainerViewController messageViewControllerForUser:profile];
         [self.navigationController pushViewController:composeController animated:YES];

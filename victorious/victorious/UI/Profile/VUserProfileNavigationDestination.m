@@ -7,7 +7,6 @@
 //
 
 #import "NSURL+VPathHelper.h"
-#import "VAuthorizationViewControllerFactory.h"
 #import "VDependencyManager+VObjectManager.h"
 #import "VObjectManager+Users.h"
 #import "VRootViewController.h"

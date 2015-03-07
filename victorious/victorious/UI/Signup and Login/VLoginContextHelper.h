@@ -14,7 +14,7 @@
  */
 typedef NS_ENUM( NSInteger, VLoginContextType )
 {
-    VLoginContextUnknown = -1,
+    VLoginContextDefault = -1,
     VLoginContextCreatePost,
     VLoginContextFollowHashtag,
     VLoginContextFollowUser,
@@ -24,7 +24,7 @@ typedef NS_ENUM( NSInteger, VLoginContextType )
     VLoginContextRemix,
     VLoginContextViewProfile,
     VLoginContextAddComment,
-    VLoginContextUserSearch
+    VLoginContextInbox
 };
                 
 @interface VLoginContextHelper : NSObject

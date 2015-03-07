@@ -31,7 +31,7 @@
 #import "VUserProfileHeaderView.h"
 #import "VProfileHeaderCell.h"
 
-#import "VAuthorizationViewControllerFactory.h"
+#import "VAuthorization.h"
 #import "VFindFriendsViewController.h"
 #import "VSettingManager.h"
 #import <FBKVOController.h>
@@ -342,17 +342,16 @@ static NSString * const kUserKey = @"user";
 
 - (IBAction)findFriendsAction:(id)sender
 {
-    if (![VObjectManager sharedManager].authorized)
-    {
-        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
-        return;
-    }
-
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectFindFriends];
     
-    VFindFriendsViewController *ffvc = [VFindFriendsViewController newFindFriendsViewController];
-    [ffvc setShouldAutoselectNewFriends:NO];
-    [self.navigationController pushViewController:ffvc animated:YES];
+    VAuthorization *authorization = [[VAuthorization alloc] initWithObjectManager:[VObjectManager sharedManager]
+                                                                dependencyManager:self.dependencyManager];
+    [authorization performAuthorizedActionFromViewController:self withContext:VLoginContextInbox withSuccess:^
+     {
+         VFindFriendsViewController *ffvc = [VFindFriendsViewController newFindFriendsViewController];
+         [ffvc setShouldAutoselectNewFriends:NO];
+         [self.navigationController pushViewController:ffvc animated:YES];
+     }];
 }
 
 #pragma mark - Accessors
@@ -465,43 +464,46 @@ static NSString * const kUserKey = @"user";
 
 - (IBAction)composeMessage:(id)sender
 {
-    if (![VObjectManager sharedManager].authorized)
-    {
-        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]]
-                           animated:YES
-                         completion:NULL];
-        return;
-    }
-
-    VMessageContainerViewController    *composeController   = [VMessageContainerViewController messageViewControllerForUser:self.profile];
-    composeController.presentingFromProfile = YES;
-    
-    if ([self.navigationController.viewControllers containsObject:composeController])
-    {
-        [self.navigationController popToViewController:composeController animated:YES];
-    }
-    else
-    {
-        [self.navigationController pushViewController:composeController animated:YES];
-    }
+    VAuthorization *authorization = [[VAuthorization alloc] initWithObjectManager:[VObjectManager sharedManager]
+                                                                dependencyManager:self.dependencyManager];
+    [authorization performAuthorizedActionFromViewController:self withContext:VLoginContextInbox withSuccess:^
+     {
+         VMessageContainerViewController *composeController = [VMessageContainerViewController messageViewControllerForUser:self.profile];
+         composeController.presentingFromProfile = YES;
+         
+         if ([self.navigationController.viewControllers containsObject:composeController])
+         {
+             [self.navigationController popToViewController:composeController animated:YES];
+         }
+         else
+         {
+             [self.navigationController pushViewController:composeController animated:YES];
+         }
+     }];
 }
 
 - (void)editProfileHandler
 {
-    if (![VObjectManager sharedManager].authorized)
-    {
-        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
-        return;
-    }
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectEditProfile];
     
-    if (self.isMe)
-    {
-        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectEditProfile];
-        
-        [self performSegueWithIdentifier:@"toEditProfile" sender:self];
-        return;
-    }
-    
+    VLoginContextType context = self.isMe ? VLoginContextDefault : VLoginContextFollowUser;
+    VAuthorization *authorization = [[VAuthorization alloc] initWithObjectManager:[VObjectManager sharedManager]
+                                                                dependencyManager:self.dependencyManager];
+    [authorization performAuthorizedActionFromViewController:self withContext:context withSuccess:^
+     {
+         if ( self.isMe )
+         {
+             [self performSegueWithIdentifier:@"toEditProfile" sender:self];
+         }
+         else
+         {
+             [self toggleFollowUser];
+         }
+     }];
+}
+
+- (void)toggleFollowUser
+{
     VUserProfileHeaderView *header = self.profileHeaderView;
     header.editProfileButton.enabled = NO;
     

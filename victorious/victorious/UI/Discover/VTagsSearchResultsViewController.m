@@ -8,34 +8,17 @@
 
 #import "VTagsSearchResultsViewController.h"
 #import "VUsersAndTagsSearchViewController.h"
-
-// VObjectManager
 #import "VObjectManager+Discover.h"
 #import "VObjectManager+Users.h"
 #import "VObjectManager+Login.h"
 #import "VUser.h"
 #import "VHashtag.h"
-
-// Stream
 #import "VHashtagStreamCollectionViewController.h"
-#import "VStreamCollectionViewController.h"
-
-// Constants
 #import "VConstants.h"
-
-// Dependency Manager
 #import "VDependencyManager.h"
-
-// Auth Factory
-#import "VAuthorizationViewControllerFactory.h"
-
-// Tableview Cell
+#import "VAuthorization.h"
 #import "VTrendingTagCell.h"
-
-// No Content View
 #import "VNoContentView.h"
-
-// MBProgressHUD
 #import <MBProgressHUD.h>
 
 
@@ -191,13 +174,6 @@ static NSString * const kVTagResultIdentifier = @"VTrendingTagCell";
     __weak typeof(customCell) weakCell = customCell;
     customCell.subscribeToTagAction = ^(void)
     {
-        // Check if logged in before attempting to subscribe / unsubscribe to hashtag
-        if (![VObjectManager sharedManager].authorized)
-        {
-            [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
-            return;
-        }
-        
         // Disable follow / unfollow button
         if (!weakCell.shouldCellRespond)
         {
@@ -205,15 +181,20 @@ static NSString * const kVTagResultIdentifier = @"VTrendingTagCell";
         }
         weakCell.shouldCellRespond = NO;
         
-        // Check if already subscribed to hashtag then subscribe or unsubscribe accordingly
-        if (weakCell.isSubscribedToTag)
-        {
-            [self unsubscribeToTagAction:hashtag];
-        }
-        else
-        {
-            [self subscribeToTagAction:hashtag];
-        }
+        VAuthorization *authorization = [[VAuthorization alloc] initWithObjectManager:[VObjectManager sharedManager]
+                                                                    dependencyManager:self.dependencyManager];
+        [authorization performAuthorizedActionFromViewController:self withContext:VLoginContextInbox withSuccess:^
+         {
+             // Check if already subscribed to hashtag then subscribe or unsubscribe accordingly
+             if (weakCell.isSubscribedToTag)
+             {
+                 [self unsubscribeToTagAction:hashtag];
+             }
+             else
+             {
+                 [self subscribeToTagAction:hashtag];
+             }
+         }];
     };
     
     return customCell;
