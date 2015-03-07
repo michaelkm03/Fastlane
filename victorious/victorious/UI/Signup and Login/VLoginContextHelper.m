@@ -35,6 +35,9 @@
         case VLoginContextViewProfile:
             return @"Let other users in the community know who you are!  Sign up below to create an account.";
             
+        case VLoginContextUserSearch:
+            return @"You always can keep in touch with other community members.  Simply create an account an start chatting!";
+            
         default:
             return @"You must log in to perform this action.  Don't have an account? Create one below!";
     }

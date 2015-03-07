@@ -26,6 +26,9 @@
 - (instancetype)initWithObjectManager:(VObjectManager *)objectManager
                     dependencyManager:(VDependencyManager *)dependencyManager
 {
+    NSParameterAssert( dependencyManager != nil );
+    NSParameterAssert( objectManager != nil );
+    
     self = [super init];
     if (self)
     {

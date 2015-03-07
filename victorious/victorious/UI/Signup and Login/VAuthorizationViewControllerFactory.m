@@ -15,6 +15,7 @@
 
 + (UIViewController *)requiredViewControllerWithObjectManager:(VObjectManager *)objectManager
 {
+    NSAssert( NO, @"REMOVE ME" );
     return nil;
 }
 

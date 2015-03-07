@@ -46,11 +46,6 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
 
 @implementation VInboxViewController
 
-+ (instancetype)inboxViewController
-{
-    return [[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier:@"inbox"];
-}
-
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -335,7 +330,7 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
 {
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectCreateMessage];
     
-    VUserSearchViewController *userSearch = [VUserSearchViewController newFromStoryboard];
+    VUserSearchViewController *userSearch = [VUserSearchViewController newWithDependencyManager:self.dependencyManager];
     userSearch.searchContext = VObjectManagerSearchContextMessage;
     [self.navigationController pushViewController:userSearch animated:YES];
 }
