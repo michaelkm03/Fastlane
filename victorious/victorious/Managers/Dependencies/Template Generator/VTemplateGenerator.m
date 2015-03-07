@@ -156,7 +156,7 @@ static NSString * const kVideoMuted = @"videoMuted";
                                                                   kClassNameKey: @"tabMenu.scaffold",
                                                                   kItemsKey:[self bottomNavMenuItems],
                                                                   VScaffoldViewControllerUserProfileViewComponentKey: [self profileScreen],
-                                                                  kSelectorKey: [self kSelectorKeyFromInitDictionary:self.dataFromInitCall],
+                                                                  kSelectorKey: [self multiScreenSelectorKey],
                                                                   VTabMenuViewControllerMenuAppearanceKey: @{
                                                                           VDependencyManagerBackgroundKey: [self solidWhiteBackground],
                                                                           },
@@ -172,7 +172,7 @@ static NSString * const kVideoMuted = @"videoMuted";
                                                                    VScaffoldViewControllerMenuComponentKey: [self menuComponent],
                                                                    VStreamCollectionViewControllerCreateSequenceIconKey: (self.templateCEnabled ? [UIImage imageNamed:@"createContentButtonC"] : [UIImage imageNamed:@"createContentButton"]),
                                                                    VScaffoldViewControllerUserProfileViewComponentKey: [self profileScreen],
-                                                                   kSelectorKey: [self kSelectorKeyFromInitDictionary:self.dataFromInitCall],
+                                                                   kSelectorKey: [self multiScreenSelectorKey],
                                                                    };
     }
     
@@ -182,14 +182,14 @@ static NSString * const kVideoMuted = @"videoMuted";
     return template;
 }
 
-- (NSDictionary *)kSelectorKeyFromInitDictionary:(NSDictionary *)initDictionary
+- (NSDictionary *)multiScreenSelectorKey
 {
     NSDictionary *kSelectorKey = @{
                                    kClassNameKey: @"basic.multiScreenSelector",
                                    VDependencyManagerBackgroundColorKey: self.accentColor,
                                    };
     
-    if ( [[(NSDictionary *)[initDictionary objectForKey:@"experiments"] objectForKey:@"template_c_enabled"] boolValue] )
+    if ( self.templateCEnabled )
     {
         kSelectorKey =  @{
                           kClassNameKey: @"textbar.multiScreenSelector",

@@ -94,11 +94,13 @@
 
 - (void)adDidLoadForAdViewController:(VAdViewController *)adViewController
 {
+        VLog(@"");
     [self.delegate adDidLoadForAdVideoPlayerViewController:self];
 }
 
 - (void)adDidFinishForAdViewController:(VAdViewController *)adViewController
 {
+        VLog(@"");
     // Set ad playback flag
     self.adPlaying = NO;
     
@@ -114,6 +116,7 @@
 // Optional delegate methods
 - (void)adHadErrorInAdViewController:(VAdViewController *)adViewController
 {
+        VLog(@"");
     // Set ad playback flag
     self.adPlaying = NO;
 
@@ -133,6 +136,7 @@
 
 - (void)adHadImpressionInAdViewController:(VAdViewController *)adViewController
 {
+        VLog(@"");
     if ([self.delegate respondsToSelector:@selector(adHadImpressionForAdVideoPlayerViewController:)])
     {
         [self.delegate adHadImpressionForAdVideoPlayerViewController:self];
@@ -141,6 +145,7 @@
 
 - (void)adDidStartPlaybackInAdViewController:(VAdViewController *)adViewController
 {
+    VLog(@"");
     self.adPlaying = adViewController.isAdPlaying;
     
     if ([self.delegate respondsToSelector:@selector(adDidStartPlaybackForAdVideoPlayerViewController:)])
@@ -151,6 +156,7 @@
 
 - (void)adDidStopPlaybackInAdViewController:(VAdViewController *)adViewController
 {
+    VLog(@"ad stopped");
     self.adPlaying = adViewController.isAdPlaying;
     
     if ([self.delegate respondsToSelector:@selector(adDidStopPlaybackForAdVideoPlayerViewController:)])

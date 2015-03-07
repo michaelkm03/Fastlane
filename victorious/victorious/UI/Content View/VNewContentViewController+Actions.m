@@ -74,7 +74,7 @@
     };
     [actionItems addObject:userItem];
     
-    VActionItem *descripTionItem = [VActionItem descriptionActionItemWithText:self.viewModel.name
+    VActionItem *descriptionItem = [VActionItem descriptionActionItemWithText:self.viewModel.name
                                                       hashTagSelectionHandler:^(NSString *hashTag)
                                     {
                                         VHashtagStreamCollectionViewController *vc = [VHashtagStreamCollectionViewController instantiateWithHashtag:hashTag];
@@ -85,7 +85,7 @@
                                          }];
                                     }];
 
-    [actionItems addObject:descripTionItem];
+    [actionItems addObject:descriptionItem];
     
     [self addRemixToActionItems:actionItems
           contentViewController:contentViewController];
