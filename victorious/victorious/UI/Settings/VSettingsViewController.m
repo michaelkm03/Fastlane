@@ -56,6 +56,8 @@ static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
 
 @property (nonatomic, weak) IBOutlet VVideoSettings *videoSettings;
 
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
+
 @end
 
 @implementation VSettingsViewController
@@ -64,7 +66,9 @@ static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    return [[UIStoryboard storyboardWithName:@"settings" bundle:nil] instantiateInitialViewController];
+    VSettingsViewController *viewController = (VSettingsViewController *)[[UIStoryboard storyboardWithName:@"settings" bundle:nil] instantiateInitialViewController];
+    viewController.dependencyManager = dependencyManager;
+    return viewController;
 }
 
 - (void)dealloc
@@ -212,7 +216,7 @@ static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
     }
     else
     {
-        VLoginViewController *viewController = [VLoginViewController loginViewController];
+        VLoginViewController *viewController = [VLoginViewController loginViewControllerWithDependencyManager:self.dependencyManager];
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
         viewController.transitionDelegate = [[VTransitionDelegate alloc] initWithTransition:[[VPresentWithBlurTransition alloc] init]];
         [self presentViewController:navigationController animated:YES completion:nil];

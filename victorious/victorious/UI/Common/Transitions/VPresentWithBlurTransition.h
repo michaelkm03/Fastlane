@@ -13,7 +13,6 @@
 @protocol VPresentWithBlurViewController <NSObject>
 
 @property (nonatomic, strong) UIView *blurredBackgroundView;
-@property (nonatomic, strong) UIView *contentContainer;
 @property (nonatomic, strong) NSOrderedSet *stackedElements;
 
 @end

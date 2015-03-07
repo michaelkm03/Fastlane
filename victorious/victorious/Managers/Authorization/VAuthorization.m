@@ -56,7 +56,7 @@
     }
     else if ( !self.objectManager.mainUserLoggedIn && !self.objectManager.mainUserProfileComplete )
     {
-        VLoginViewController *viewController = [VLoginViewController loginViewController];
+        VLoginViewController *viewController = [VLoginViewController loginViewControllerWithDependencyManager:self.dependencyManager];
         viewController.loginContextType = loginContext;
         [viewController setAuthorizationCompletionAction:successActionBlock];
         

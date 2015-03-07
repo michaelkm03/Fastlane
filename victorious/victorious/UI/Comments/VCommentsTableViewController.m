@@ -369,7 +369,8 @@
 
 - (void)didSelectActionRequiringLogin
 {
-    [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+#warning add new one:
+    //[self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
 }
 
 #pragma mark - VEditCommentViewControllerDelegate

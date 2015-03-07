@@ -15,21 +15,6 @@
 
 + (UIViewController *)requiredViewControllerWithObjectManager:(VObjectManager *)objectManager
 {
-    if ( objectManager.mainUserLoggedIn && !objectManager.mainUserProfileComplete )
-    {
-        // User must create (complete) profile
-        
-        VProfileCreateViewController *viewController = [VProfileCreateViewController profileCreateViewController];
-        viewController.profile = [VObjectManager sharedManager].mainUser;
-        viewController.registrationModel = [[VRegistrationModel alloc] init];
-        return viewController;
-    }
-    else if ( !objectManager.mainUserLoggedIn && !objectManager.mainUserProfileComplete )
-    {
-        // User must login or create account
-        return [VLoginViewController loginViewController];
-    }
-    
     return nil;
 }
 

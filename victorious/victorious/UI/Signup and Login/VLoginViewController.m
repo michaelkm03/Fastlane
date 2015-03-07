@@ -30,6 +30,7 @@
 #import "VLinkTextViewHelper.h"
 #import "MBProgressHUD.h"
 #import "UIView+AutoLayout.h"
+#import "VDependencyManager.h"
 
 @import Accounts;
 @import Social;
@@ -38,43 +39,33 @@
 
 @property (nonatomic, strong) VUser *profile;
 
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
+
 @property (nonatomic, weak) IBOutlet VLoginButton *facebookButton;
 @property (nonatomic, weak) IBOutlet VLoginButton *twitterButton;
 @property (nonatomic, weak) IBOutlet VLoginButton *signupWithEmailButton;
 
-@property (weak, nonatomic) IBOutlet CCHLinkTextView *loginTextView;
+@property (nonatomic, weak) IBOutlet CCHLinkTextView *loginTextView;
 
 @property (nonatomic, assign) VLoginType loginType;
-
 @property (nonatomic, weak) IBOutlet VLinkTextViewHelper *linkTextHelper;
 @property (nonatomic, weak) IBOutlet VLoginContextHelper *loginContextHelper;
 
 @property (nonatomic, weak) IBOutlet UITextView *loginContextTextView;
 @property (nonatomic, weak) IBOutlet UILabel *creatorNameLabel;
-@property (nonatomic, weak) IBOutlet UIImageView *createAvatarImageview;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *creatorNameLabelWidthConstraint;
+@property (nonatomic, weak) IBOutlet UIView *contentContainer;
+@property (nonatomic, weak) IBOutlet UIImageView *creatorAvatarImageView;
 
 @end
 
 @implementation VLoginViewController
 
-- (void)setTransitionDelegate:(VTransitionDelegate *)transitionDelegate
-{
-    _transitionDelegate = transitionDelegate;
-    
-    UIViewController *viewController = self;
-    if ( self.navigationController != nil )
-    {
-        viewController = self.navigationController;
-    }
-    
-    viewController.transitioningDelegate = transitionDelegate;
-}
-
-+ (VLoginViewController *)loginViewController
++ (VLoginViewController *)loginViewControllerWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"login" bundle:nil];
-    return [storyboard instantiateInitialViewController];
+    VLoginViewController *viewController = (VLoginViewController *)[storyboard instantiateInitialViewController];
+    viewController.dependencyManager = dependencyManager;
+    return viewController;
 }
 
 - (void)loginDidFinishWithSuccess:(BOOL)success
@@ -120,30 +111,44 @@
     [self.linkTextHelper setupLinkTextView:self.loginTextView withText:text range:range];
     self.loginTextView.linkDelegate = self;
     
-    // Some prep for VPresentWithBlurViewController elements
-    self.blurredBackgroundView = [self createBlurredBackgroundView];
-#warning Fix up this gradient
-    [self addGradientToImageView:self.blurredBackgroundView];
-    NSArray *elementsArray = @[ self.contentContainer, self.signupWithEmailButton, self.facebookButton, self.twitterButton, self.loginTextView ];
+    // Some prep for VPresentWithBlurViewController background
+    self.blurredBackgroundView = [self createBackgroundView:self.view.bounds];
+    [self.view addSubview:self.blurredBackgroundView];
+    [self.view sendSubviewToBack:self.blurredBackgroundView];
+    [self.view v_addFitToParentConstraintsToSubview:self.blurredBackgroundView];
+    
+    // Some prep for VPresentWithBlurViewController animation (this is the order elements animate on screen)
+    NSArray *elementsArray = @[ self.contentContainer,
+                                self.signupWithEmailButton,
+                                self.facebookButton,
+                                self.twitterButton,
+                                self.loginTextView ];
     self.stackedElements = [NSOrderedSet orderedSetWithArray:elementsArray];
     
     NSString *loginContextText = [self.loginContextHelper textForContext:self.loginContextType];
-    self.loginContextTextView.text = loginContextText;
+    NSDictionary *attributes = [self stringAttributesWithFont:[self.dependencyManager fontForKey:@"font.heading3"]
+                                                        color:[UIColor whiteColor]
+                                                   lineHeight:23.0f];
+    self.loginContextTextView.attributedText = [[NSAttributedString alloc] initWithString:loginContextText attributes:attributes];
+    
+    NSDictionary *creatorInfo = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:@"owner"];
+    
+#warning TESTING ONLY
     NSArray *tempNames = @[ @"Short", @"Medium Length", @"Very long name with many characters" ];
-    self.creatorNameLabel.text = [NSString stringWithFormat:@"%@", tempNames[ arc4random() % (NSUInteger)tempNames.count ] ];
-    self.creatorNameLabelWidthConstraint.constant = 300.0f;
-    [self.creatorNameLabel layoutIfNeeded];
-}
-
-- (UIView *)createBlurredBackgroundView
-{
-    UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
-    UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
-    blurEffectView.frame = self.view.bounds;
-    [self.view addSubview:blurEffectView];
-    [self.view sendSubviewToBack:blurEffectView];
-    [self.view v_addFitToParentConstraintsToSubview:blurEffectView];
-    return blurEffectView;
+    creatorInfo = @{ @"name" : tempNames[ arc4random() % (NSUInteger)tempNames.count ],
+                     @"profile_image" : @"http://media-dev-public.s3-website-us-west-1.amazonaws.com/29a1e9ba45c9651ac78891e477d0bf73/80x80.jpg" };
+    
+    NSString *creatorName = creatorInfo[ @"name" ];
+    self.creatorNameLabel.text = creatorName;
+    self.creatorNameLabel.font = [self.dependencyManager fontForKey:@"font.label1"];
+    
+    NSString *creatorUrl = creatorInfo[ @"profile_image" ];
+    self.creatorAvatarImageView.layer.cornerRadius = 17.0f; // Enough to make it a circle
+    self.creatorAvatarImageView.layer.borderWidth = 1.0f;
+    self.creatorAvatarImageView.layer.borderColor = [self.dependencyManager colorForKey:@"color.link"].CGColor;
+    self.creatorAvatarImageView.layer.masksToBounds = YES;
+    self.creatorAvatarImageView.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:creatorUrl]]];
+    [self.creatorAvatarImageView setNeedsDisplay];
 }
 
 - (void)dealloc
@@ -196,6 +201,21 @@
     return UIStatusBarStyleLightContent;
 }
 
+#pragma mark - VPresentWithBlurViewController
+
+- (void)setTransitionDelegate:(VTransitionDelegate *)transitionDelegate
+{
+    _transitionDelegate = transitionDelegate;
+    
+    UIViewController *viewController = self;
+    if ( self.navigationController != nil )
+    {
+        viewController = self.navigationController;
+    }
+    
+    viewController.transitioningDelegate = transitionDelegate;
+}
+
 #pragma mark - CCHLinkTextViewDelegate
 
 - (void)linkTextView:(CCHLinkTextView *)linkTextView didTapLinkWithValue:(id)value
@@ -212,27 +232,31 @@
     [self loginDidFinishWithSuccess:YES];
 }
 
-#pragma mark - Support
+#pragma mark - Helpers
 
-- (void)addGradientToImageView:(UIView *)view
+- (NSDictionary *)stringAttributesWithFont:(UIFont *)font color:(UIColor *)color lineHeight:(CGFloat)lineHeight
 {
-    CAGradientLayer    *gradient    =   [CAGradientLayer layer];
-    gradient.frame = view.bounds;
-    gradient.colors = @[(id)[UIColor colorWithWhite:0.0 alpha:0.0].CGColor,
-                        (id)[UIColor colorWithWhite:0.0 alpha:1.0].CGColor];
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    paragraphStyle.alignment = NSTextAlignmentCenter;
+    paragraphStyle.minimumLineHeight = paragraphStyle.maximumLineHeight = lineHeight;
     
-    //Add gradient to new view with constraints so that the graidnt adjusts to new constraint changes on passed in view
-    UIView *subview = [[UIView alloc] initWithFrame:gradient.frame];
-    [subview setBackgroundColor:[UIColor clearColor]];
-    [view addSubview:subview];
-    [view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[subview]|"
-                                                                   options:0
-                                                                   metrics:nil
-                                                                     views:NSDictionaryOfVariableBindings(subview)]];
-    [view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[subview]|"
-                                                                    options:0
-                                                                    metrics:nil
-                                                                      views:NSDictionaryOfVariableBindings(subview)]];
+    return @{ NSFontAttributeName: font ?: [NSNull null],
+              NSForegroundColorAttributeName: color,
+              NSParagraphStyleAttributeName: paragraphStyle };
+}
+
+- (UIView *)createBackgroundView:(CGRect)bounds
+{
+    UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+    UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
+    blurEffectView.frame = bounds;
+    CAGradientLayer *gradientLayer = [CAGradientLayer layer];
+    gradientLayer.frame = bounds;
+    gradientLayer.colors = @[ (id)[UIColor colorWithWhite:0.0 alpha:0.0].CGColor,
+                              (id)[UIColor colorWithWhite:0.0 alpha:0.3].CGColor,
+                              (id)[UIColor colorWithWhite:0.0 alpha:0.8].CGColor ];
+    [blurEffectView.layer insertSublayer:gradientLayer atIndex:(unsigned)(blurEffectView.layer.sublayers.count-1)];
+    return blurEffectView;
 }
 
 - (void)twitterAccessDidFail:(NSError *)error

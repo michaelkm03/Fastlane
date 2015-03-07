@@ -15,7 +15,7 @@
     switch ( context )
     {
         case VLoginContextCreatePost:
-            return @"Come join our community.\nWe promise that your information is safe with us! (And here's some extra text that is testing how the textview will expand with its constrains.  Pretty sweet, ain't it?  We could keep going, line after line, adding more and more text until BAM—the app just explodes!)";
+            return @"Come join our community.\nWe promise that your information is safe with us!  And here's some extra text that is testing how the textview will expand with its constrains.  Pretty sweet, ain't it?  We could keep going, line after line, adding more and more text until BAM—the app just explodes!";
             
         case VLoginContextVoteBallistic:
             return @"These emojis are amazing, right?  Create an account first and then send some love!";

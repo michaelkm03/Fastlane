@@ -9,6 +9,9 @@
 #import "VPresentWithBlurTransition.h"
 #import "VTransitionModel.h"
 
+static CGFloat const kSlideDownAnimationDistance = 50.0f;
+static CGFloat const kSlideUpAnimationDistance = 75.0f;
+
 @implementation VPresentWithBlurTransition
 
 - (UIViewController<VPresentWithBlurViewController> *)toViewControllerFromModel:(VTransitionModel *)model
@@ -42,7 +45,7 @@
     [toViewController.view sendSubviewToBack:model.snapshotOfOriginView];
     [toViewController.stackedElements enumerateObjectsUsingBlock:^(UIView *view, NSUInteger idx, BOOL *stop)
      {
-         view.transform = CGAffineTransformMakeTranslation( 0.0f, 100.0f );
+         view.transform = CGAffineTransformMakeTranslation( 0.0f, kSlideUpAnimationDistance );
          view.alpha = 0.0f;
      }];
 
@@ -98,7 +101,7 @@
                              options:UIViewAnimationOptionCurveEaseOut
                           animations:^
           {
-              view.transform = CGAffineTransformMakeTranslation( 0.0f, 100.0f );
+              view.transform = CGAffineTransformMakeTranslation( 0.0f, kSlideDownAnimationDistance );
               view.alpha = 0.0f;
           }
                           completion:^(BOOL finished)
@@ -115,8 +118,7 @@
                         options:UIViewAnimationOptionCurveEaseOut
                      animations:^
      {
-         model.snapshotOfOriginView.alpha = 0.0f;
-         toViewController.blurredBackgroundView.alpha = 0.0f;
+         toViewController.view.alpha = 0.0f;
      } completion:nil];
 }
 
@@ -132,7 +134,7 @@
 
 - (NSTimeInterval)transitionOutDuration
 {
-    return 0.5f;
+    return 0.45f;
 }
 
 @end

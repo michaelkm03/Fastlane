@@ -1326,7 +1326,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 {
     if (![VObjectManager sharedManager].mainUser)
     {
-        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+        //[self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
         return;
     }
     __weak typeof(self) welf = self;
@@ -1364,7 +1364,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 {
     if (![VObjectManager sharedManager].mainUser)
     {
-        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+        //[self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
         return;
     }
     
@@ -1527,7 +1527,8 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)didSelectActionRequiringLogin
 {
-    [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+#warning fix this:
+    //[self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
 }
 
 #pragma mark - VEditCommentViewControllerDelegate

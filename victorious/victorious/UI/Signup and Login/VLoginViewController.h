@@ -19,23 +19,20 @@ typedef NS_ENUM(NSUInteger, VLoginType)
     kVLoginTypeTwitter,
 };
 
+@class VDependencyManager;
+
 @interface VLoginViewController : UIViewController <VAuthorizationViewController, VPresentWithBlurViewController>
+
++ (VLoginViewController *)loginViewControllerWithDependencyManager:(VDependencyManager *)dependencyManager;
 
 @property (nonatomic, strong) void (^authorizationCompletionAction)();
 
 @property (nonatomic, strong) VTransitionDelegate *transitionDelegate;
 
-+ (VLoginViewController *)loginViewController;
-
 /**
  VPresentWithBlurViewController
  */
 @property (nonatomic, strong) UIView *blurredBackgroundView;
-
-/**
- VPresentWithBlurViewController
- */
-@property (nonatomic, strong) IBOutlet UIView *contentContainer;
 
 /**
  VPresentWithBlurViewController
