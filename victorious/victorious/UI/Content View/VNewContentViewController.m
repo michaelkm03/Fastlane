@@ -476,6 +476,10 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
                                                  name:VInputAccessoryViewKeyboardFrameDidChangeNotification
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(experienceEnhancerDidRequireLogin:)
+                                                 name:VExperienceEnhancerBarDidRequireLoginNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(showPurchaseViewController:)
                                                  name:VExperienceEnhancerBarDidRequirePurchasePrompt
                                                object:nil];
@@ -1513,8 +1517,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)didSelectActionRequiringLogin
 {
-#warning fix this:
-    //[self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+    
 }
 
 #pragma mark - VEditCommentViewControllerDelegate
