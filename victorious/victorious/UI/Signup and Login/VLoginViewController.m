@@ -35,7 +35,7 @@
 @import Accounts;
 @import Social;
 
-@interface VLoginViewController ()  <UINavigationControllerDelegate, VSelectorViewControllerDelegate, CCHLinkTextViewDelegate, VRegistrationViewControllerDelegate>
+@interface VLoginViewController ()  <UINavigationControllerDelegate, VSelectorViewControllerDelegate, CCHLinkTextViewDelegate, VRegistrationStepDelegate>
 
 @property (nonatomic, strong) VUser *profile;
 
@@ -60,6 +60,8 @@
 
 @implementation VLoginViewController
 
+@synthesize authorizationCompletionAction; //< VAuthorizationViewController
+
 + (VLoginViewController *)loginViewControllerWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"login" bundle:nil];
@@ -70,22 +72,22 @@
 
 - (void)loginDidFinishWithSuccess:(BOOL)success
 {
-    UIViewController *viewController = self;
-    if ( self.navigationController != nil )
+    NSAssert( self.navigationController != nil && [self.navigationController.viewControllers.firstObject isEqual:self],
+             @"VLoginViewController can only exist as the root view controller of a navigation controller." );
+    
+    // If we're dismissing from a subsequently pushed navigation controller, disable the custom transition
+    if ( self.navigationController.viewControllers.count > 1 )
     {
-        viewController = self.navigationController;
+        self.navigationController.transitioningDelegate = nil;
     }
     
-    [viewController dismissViewControllerAnimated:YES completion:^void
-    {
-        if ( success )
-        {
-            if ( self.authorizationCompletionAction != nil )
-            {
-                self.authorizationCompletionAction();
-            }
-        }
-    }];
+    [self.navigationController dismissViewControllerAnimated:YES completion:^void
+     {
+         if ( success && self.authorizationCompletionAction != nil )
+         {
+             self.authorizationCompletionAction();
+         }
+     }];
 }
 
 - (void)viewDidLoad
@@ -225,11 +227,11 @@
     [self performSegueWithIdentifier:@"toEmailLogin" sender:self];
 }
 
-#pragma mark - VRegistrationViewControllerDelegate
+#pragma mark - VRegistrationStepDelegate
 
 - (void)didFinishRegistrationStepWithSuccess:(BOOL)success
 {
-    [self loginDidFinishWithSuccess:YES];
+    [self loginDidFinishWithSuccess:success];
 }
 
 #pragma mark - Helpers
@@ -447,10 +449,10 @@
     else if ([segue.identifier isEqualToString:@"toEmailLogin"] ||
              [segue.identifier isEqualToString:@"toSignup"])
     {
-        if ( [segue.destinationViewController conformsToProtocol:@protocol(VRegistrationViewController)] )
+        if ( [segue.destinationViewController conformsToProtocol:@protocol(VRegistrationStep)] )
         {
-            id<VRegistrationViewController> registrationViewController = (id<VRegistrationViewController>)segue.destinationViewController;
-            registrationViewController.delegate = self;
+            id<VRegistrationStep> registrationViewController = (id<VRegistrationStep>)segue.destinationViewController;
+            registrationViewController.registrationStepDelegate = self;
         }
     }
 }

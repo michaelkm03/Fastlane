@@ -25,8 +25,6 @@ typedef NS_ENUM(NSUInteger, VLoginType)
 
 + (VLoginViewController *)loginViewControllerWithDependencyManager:(VDependencyManager *)dependencyManager;
 
-@property (nonatomic, strong) void (^authorizationCompletionAction)();
-
 @property (nonatomic, strong) VTransitionDelegate *transitionDelegate;
 
 /**

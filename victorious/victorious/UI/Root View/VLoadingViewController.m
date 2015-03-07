@@ -156,6 +156,10 @@ static const NSUInteger kRetryAttempts = 5;
 {
     [[VObjectManager sharedManager] appInitWithSuccessBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
+#warning Turning off autologin for testing purposes:
+        [self onDoneLoadingWithInitData:fullResponse[kVPayloadKey]];
+        return;
+        
         [[VUserManager sharedInstance] loginViaSavedCredentialsOnCompletion:^(VUser *user, BOOL created)
         {
             [self onDoneLoadingWithInitData:fullResponse[kVPayloadKey]];

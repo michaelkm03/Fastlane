@@ -52,7 +52,6 @@
 
 @property (nonatomic, weak) IBOutlet UISwitch *agreeSwitch;
 @property (nonatomic, weak) IBOutlet TTTAttributedLabel *agreementText;
-@property (nonatomic, weak) IBOutlet UIButton *exitButton;
 @property (nonatomic, weak) IBOutlet VButton *doneButton;
 
 @property (nonatomic, strong) UIBarButtonItem *countDownLabel;
@@ -66,7 +65,9 @@
 
 @implementation VProfileCreateViewController
 
-@synthesize delegate; //< VRegistrationViewController
+@synthesize registrationStepDelegate; //< VRegistrationStep
+
+@synthesize authorizationCompletionAction; //< VAuthorizationViewController
 
 - (void)dealloc
 {
@@ -190,9 +191,6 @@
     self.doneButton.style = VButtonStylePrimary;
     
     self.agreeSwitch.onTintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-    
-    NSString *exitButtonImage = self.navigationController == nil ? @"cameraButtonClose" : @"btnPrevArrowWhite";
-    [self.exitButton setImage:[UIImage imageNamed:exitButtonImage] forState:UIControlStateNormal];
     
     // Accessibility IDs
     self.doneButton.accessibilityIdentifier = VAutomationIdentifierProfileDone;
@@ -499,13 +497,20 @@ static inline UIViewAnimationOptions animationOptionsWithCurve(UIViewAnimationCu
 
 - (void)exitWithSuccess:(BOOL)success
 {
-    if ( self.delegate != nil )
+    BOOL wasPresentedStandalone = self.navigationController == nil;
+    if ( wasPresentedStandalone )
     {
-        [self.delegate didFinishRegistrationStepWithSuccess:success];
+        [self dismissViewControllerAnimated:YES completion:^
+         {  
+            if ( self.authorizationCompletionAction != nil && success )
+            {
+                self.authorizationCompletionAction();
+            }
+        }];
     }
-    else
+    else if ( self.registrationStepDelegate != nil )
     {
-        [self dismissViewControllerAnimated:YES completion:nil];
+        [self.registrationStepDelegate didFinishRegistrationStepWithSuccess:success];
     }
 }
 
@@ -527,9 +532,17 @@ static inline UIViewAnimationOptions animationOptionsWithCurve(UIViewAnimationCu
 
 - (IBAction)done:(id)sender
 {
-    // Let the User Know Something Is Happening
-    [MBProgressHUD showHUDAddedTo:self.view
-                         animated:YES];
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    
+#warning Hardcoded for testing only:
+    if ( YES )
+    {
+        self.registrationModel.profileImageURL = [NSURL URLWithString:@""];
+        self.registrationModel.locationText = @"LOCATION";
+        self.registrationModel.taglineText = @"TAG LING";
+        [self performProfileCreationWithRegistrationModel:self.registrationModel];
+        return;
+    }
 
     if ([self shouldCreateProfile])
     {
@@ -542,21 +555,26 @@ static inline UIViewAnimationOptions animationOptionsWithCurve(UIViewAnimationCu
             return;
         }
         
-        [[VObjectManager sharedManager] updateVictoriousWithEmail:nil
-                                                         password:nil
-                                                             name:self.registrationModel.username
-                                                  profileImageURL:self.registrationModel.profileImageURL
-                                                         location:self.registrationModel.locationText
-                                                          tagline:self.registrationModel.taglineText
-                                                     successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-         {
-             [self didCreateProfile];
-         }
-                                                         failBlock:^(NSOperation *operation, NSError *error)
-         {
-             [self didFailWithError:error];
-         }];
+        [self performProfileCreationWithRegistrationModel:self.registrationModel];
     }
+}
+
+- (void)performProfileCreationWithRegistrationModel:(VRegistrationModel *)registrationModel
+{
+    [[VObjectManager sharedManager] updateVictoriousWithEmail:nil
+                                                     password:nil
+                                                         name:registrationModel.username
+                                              profileImageURL:registrationModel.profileImageURL
+                                                     location:registrationModel.locationText
+                                                      tagline:registrationModel.taglineText
+                                                 successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+     {
+         [self didCreateProfile];
+     }
+                                                    failBlock:^(NSOperation *operation, NSError *error)
+     {
+         [self didFailWithError:error];
+     }];
 }
 
 - (IBAction)takePicture:(id)sender

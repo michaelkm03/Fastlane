@@ -8,6 +8,6 @@
 
 #import "VRegistration.h"
 
-@interface VSignupWithEmailViewController : UIViewController <VRegistrationViewController, VRegistrationViewControllerDelegate>
+@interface VSignupWithEmailViewController : UIViewController <VRegistrationStep, VRegistrationStepDelegate>
 
 @end

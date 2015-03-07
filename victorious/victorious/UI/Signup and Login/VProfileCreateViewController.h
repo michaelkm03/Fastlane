@@ -13,9 +13,7 @@
 
 @class VUser;
 
-@interface VProfileCreateViewController : UIViewController <VAuthorizationViewController, VRegistrationViewController>
-
-@property (nonatomic, strong) void (^authorizationCompletionAction)();
+@interface VProfileCreateViewController : UIViewController <VAuthorizationViewController, VRegistrationStep>
 
 @property (nonatomic, assign)   VLoginType      loginType;
 @property (nonatomic, strong)   VUser          *profile;

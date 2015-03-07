@@ -53,7 +53,7 @@
 
 @implementation VLoginWithEmailViewController
 
-@synthesize delegate; //< VRegistrationViewController
+@synthesize registrationStepDelegate; //< VRegistrationStep
 
 - (void)dealloc
 {
@@ -214,9 +214,9 @@
     
     self.profile = mainUser;
     
-    if ( self.delegate != nil )
+    if ( self.registrationStepDelegate != nil )
     {
-        [self.delegate didFinishRegistrationStepWithSuccess:YES];
+        [self.registrationStepDelegate didFinishRegistrationStepWithSuccess:YES];
     }
 }
 
@@ -243,28 +243,37 @@
 - (IBAction)login:(id)sender
 {
     [[self view] endEditing:YES];
+    
+#warning Hardocded test with existing user on dev-victorious
+    [self performLoginWithUsername:@"user@user.com" password:@"password"];
+    return;
 
     if ([self shouldLogin])
     {
         self.loginButton.enabled = NO;
-        [[VUserManager sharedInstance] loginViaEmail:self.usernameTextField.text
-                                             password:self.passwordTextField.text
-                                         onCompletion:^(VUser *user, BOOL created)
-        {
-            dispatch_async(dispatch_get_main_queue(), ^(void)
-            {
-                [self didLoginWithUser:user];
-            });
-        }
-                                              onError:^(NSError *error)
-        {
-            dispatch_async(dispatch_get_main_queue(), ^(void)
-            {
-                [self didFailWithError:error];
-                self.loginButton.enabled = YES;
-            });
-        }];
+        [self performLoginWithUsername:self.usernameTextField.text password:self.passwordTextField.text];
     }
+}
+
+- (void)performLoginWithUsername:(NSString *)username password:(NSString *)password
+{
+    [[VUserManager sharedInstance] loginViaEmail:username
+                                        password:password
+                                    onCompletion:^(VUser *user, BOOL created)
+     {
+         dispatch_async(dispatch_get_main_queue(), ^(void)
+                        {
+                            [self didLoginWithUser:user];
+                        });
+     }
+                                         onError:^(NSError *error)
+     {
+         dispatch_async(dispatch_get_main_queue(), ^(void)
+                        {
+                            [self didFailWithError:error];
+                            self.loginButton.enabled = YES;
+                        });
+     }];
 }
 
 - (IBAction)cancel:(id)sender

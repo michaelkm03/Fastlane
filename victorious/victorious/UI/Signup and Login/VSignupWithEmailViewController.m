@@ -40,7 +40,7 @@
 
 @implementation VSignupWithEmailViewController
 
-@synthesize delegate; //< VRegistrationViewController
+@synthesize registrationStepDelegate; //< VRegistrationStep
 
 - (void)dealloc
 {
@@ -229,6 +229,12 @@
 {
     [[self view] endEditing:YES];
 
+    
+#warning Skipping validation for testing only:
+    [self performSignupWithEmail:[NSString stringWithFormat:@"user_%@@user.com", @( arc4random() % 10000000000 )]
+                        password:[NSString stringWithFormat:@"%@", @( 10000000000 + arc4random() % 10000000000 )]];
+    return;
+    
     if ([self shouldSignUp])
     {
         // Let the User Know Something Is Happening
@@ -238,18 +244,24 @@
         self.registrationModel.email = self.emailTextField.text;
         self.registrationModel.password = self.passwordTextField.text;
         
-        [[VUserManager sharedInstance] createEmailAccount:self.registrationModel.email
-                                                 password:self.registrationModel.password
-                                                 userName:nil
-                                             onCompletion:^(VUser *user, BOOL created)
-         {
-             [self didSignUpWithUser:user];
-         }
-                                                  onError:^(NSError *error)
-         {
-             [self didFailWithError:error];
-         }];
+        [self performSignupWithEmail:self.registrationModel.email
+                            password:self.registrationModel.password];
     }
+}
+
+- (void)performSignupWithEmail:(NSString *)email password:(NSString *)password
+{
+    [[VUserManager sharedInstance] createEmailAccount:email
+                                             password:password
+                                             userName:nil
+                                         onCompletion:^(VUser *user, BOOL created)
+     {
+         [self didSignUpWithUser:user];
+     }
+                                              onError:^(NSError *error)
+     {
+         [self didFailWithError:error];
+     }];
 }
 
 - (IBAction)cancel:(id)sender
@@ -311,7 +323,7 @@
     if ([segue.identifier isEqualToString:@"toProfileWithEmail"])
     {
         VProfileCreateViewController *profileViewController = (VProfileCreateViewController *)segue.destinationViewController;
-        profileViewController.delegate = self;
+        profileViewController.registrationStepDelegate = self;
         profileViewController.profile = self.profile;
         profileViewController.loginType = kVLoginTypeEmail;
         profileViewController.registrationModel = self.registrationModel;
@@ -379,13 +391,13 @@
     }
 }
 
-#pragma mark - VRegistrationViewControllerDelegate
+#pragma mark - VRegistrationStepDelegate
 
 - (void)didFinishRegistrationStepWithSuccess:(BOOL)success
 {
-    if ( self.delegate != nil )
+    if ( self.registrationStepDelegate != nil )
     {
-        [self.delegate didFinishRegistrationStepWithSuccess:YES];
+        [self.registrationStepDelegate didFinishRegistrationStepWithSuccess:success];
     }
 }
 

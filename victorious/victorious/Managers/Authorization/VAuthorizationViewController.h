@@ -11,6 +11,6 @@
 @protocol VAuthorizationViewController <NSObject>
 @required
 
-- (void)setAuthorizationCompletionAction:(void(^)())authorizationCompletionAction;
+@property (nonatomic, strong) void (^authorizationCompletionAction)();
 
 @end

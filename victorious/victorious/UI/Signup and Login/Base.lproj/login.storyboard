@@ -589,7 +589,7 @@ We promise that your information is safe with us!</string>
                                     <constraint firstAttribute="height" constant="50" id="pT7-Pn-ZzE"/>
                                 </constraints>
                                 <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                <state key="normal" image="btnPrevArrowWhite"/>
+                                <state key="normal" image="cameraButtonClose"/>
                                 <connections>
                                     <action selector="exit:" destination="a0y-4a-uKe" eventType="touchUpInside" id="1rE-Tg-dNT"/>
                                 </connections>
@@ -646,7 +646,6 @@ We promise that your information is safe with us!</string>
                         <outlet property="agreeSwitch" destination="aAM-6y-jy7" id="j9w-kN-5Pj"/>
                         <outlet property="agreementText" destination="EGg-eb-7Dm" id="FOD-cg-woF"/>
                         <outlet property="doneButton" destination="9Wi-As-OwD" id="AdC-3g-M03"/>
-                        <outlet property="exitButton" destination="C2V-FK-LsE" id="7LM-po-tcM"/>
                         <outlet property="locationTextField" destination="pDv-b6-X4m" id="4pT-rE-Jfi"/>
                         <outlet property="profileImageView" destination="IgQ-W8-D43" id="sjL-el-raS"/>
                         <outlet property="tagLinePlaceholderLabel" destination="kzi-75-z6l" id="ckt-sK-4Dc"/>
@@ -947,6 +946,7 @@ We promise that your information is safe with us!</string>
     </scenes>
     <resources>
         <image name="btnPrevArrowWhite" width="24" height="24"/>
+        <image name="cameraButtonClose" width="24" height="24"/>
         <image name="close-btn" width="17" height="18"/>
         <image name="createAvatar" width="80" height="80"/>
         <image name="creator-avatar.png" width="32" height="32"/>
