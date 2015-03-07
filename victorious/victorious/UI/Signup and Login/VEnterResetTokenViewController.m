@@ -33,6 +33,8 @@
 
 @implementation VEnterResetTokenViewController
 
+@synthesize registrationStepDelegate; //< VRegistrationStep
+
 + (instancetype)enterResetTokenViewController
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"login" bundle:nil];
@@ -161,9 +163,17 @@
     {
         // Pass along some properties that the next view controller will also need
         VResetPasswordViewController *resetViewController = (VResetPasswordViewController *)segue.destinationViewController;
+        resetViewController.registrationStepDelegate = self;
         resetViewController.deviceToken = self.deviceToken;
         resetViewController.userToken = self.userToken;
     }
+}
+
+#pragma mark - VRegistrationStepDelegate
+
+- (void)didFinishRegistrationStepWithSuccess:(BOOL)success
+{
+    [self.registrationStepDelegate didFinishRegistrationStepWithSuccess:success];
 }
 
 @end

@@ -419,6 +419,7 @@
     else if ([segue.identifier isEqualToString:@"toEnterResetToken"])
     {
         VEnterResetTokenViewController *destinationVC = (VEnterResetTokenViewController *)segue.destinationViewController;
+        destinationVC.registrationStepDelegate = self;
         destinationVC.deviceToken = self.deviceToken;
     }
 }
@@ -463,6 +464,13 @@
             [textField hideInvalidText];
         }
     }
+}
+
+#pragma mark - VRegistrationStepDelegate
+
+- (void)didFinishRegistrationStepWithSuccess:(BOOL)success
+{
+    [self.registrationStepDelegate didFinishRegistrationStepWithSuccess:success];
 }
 
 @end

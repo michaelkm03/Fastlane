@@ -28,6 +28,8 @@
 
 @implementation VResetPasswordViewController
 
+@synthesize registrationStepDelegate; //< VRegistrationStep
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -83,11 +85,17 @@
                                                        newPassword:newPassword
                                                       successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
          {
-             [self dismissViewControllerAnimated:YES completion:nil];
+             // This will always be NO for success because resetting password does not complete the login/registraiton process
+             [self.registrationStepDelegate didFinishRegistrationStepWithSuccess:NO];
+    
          }
                                                          failBlock:^(NSOperation *operation, NSError *error)
          {
-             [self dismissViewControllerAnimated:YES completion:nil];
+             NSString *title = NSLocalizedString( @"Error Resetting Password", @"" );
+             NSString *message = NSLocalizedString( @"Please check your network connection or try agian later.", @"" );
+             UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
+             [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString( @"OK", nil) style:UIAlertActionStyleCancel handler:nil]];
+             [self presentViewController:alertController animated:YES completion:nil];
          }];
     }
     else
@@ -98,7 +106,7 @@
 
 - (IBAction)cancel:(id)sender
 {
-    [self.navigationController popViewControllerAnimated:YES];
+    [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
 #pragma mark - UITextFieldDelegate

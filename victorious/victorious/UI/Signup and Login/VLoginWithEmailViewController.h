@@ -15,7 +15,7 @@ typedef NS_ENUM(NSUInteger, VLoginErrorCode)
     VLoginErrorCodeFailedLogin
 };
 
-@interface VLoginWithEmailViewController : UIViewController <VRegistrationStep>
+@interface VLoginWithEmailViewController : UIViewController <VRegistrationStep, VRegistrationStepDelegate>
 
 @property (nonatomic, weak) IBOutlet UIView *transitionPlaceholder;
 

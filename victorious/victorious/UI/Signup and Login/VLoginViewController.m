@@ -135,7 +135,7 @@
     
     NSDictionary *creatorInfo = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:@"owner"];
     
-#warning TESTING ONLY
+#warning Testing only until backend populates the `owner` field of the init response
     NSArray *tempNames = @[ @"Short", @"Medium Length", @"Very long name with many characters" ];
     creatorInfo = @{ @"name" : tempNames[ arc4random() % (NSUInteger)tempNames.count ],
                      @"profile_image" : @"http://media-dev-public.s3-website-us-west-1.amazonaws.com/29a1e9ba45c9651ac78891e477d0bf73/80x80.jpg" };

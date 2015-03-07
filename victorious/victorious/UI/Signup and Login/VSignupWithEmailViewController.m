@@ -228,7 +228,6 @@
 - (IBAction)signup:(id)sender
 {
     [[self view] endEditing:YES];
-
     
 #warning Skipping validation for testing only:
     [self performSignupWithEmail:[NSString stringWithFormat:@"user_%@@user.com", @( arc4random() % 10000000000 )]

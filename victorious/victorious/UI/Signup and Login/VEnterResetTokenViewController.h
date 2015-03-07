@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "VRegistration.h"
 
-@interface VEnterResetTokenViewController : UIViewController
+@interface VEnterResetTokenViewController : UIViewController <VRegistrationStep, VRegistrationStepDelegate>
 
 @property (nonatomic, strong)           NSString       *deviceToken;
 @property (nonatomic, strong)           NSString       *userToken;
