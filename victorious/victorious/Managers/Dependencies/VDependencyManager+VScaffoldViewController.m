@@ -19,10 +19,14 @@ NSString * const VScaffoldViewControllerNavigationBarAppearanceKey = @"navigatio
     return [self singletonObjectOfType:[VScaffoldViewController class] forKey:VDependencyManagerScaffoldViewControllerKey];
 }
 
+- (NSDictionary *)styleDictionaryForNavigationBar
+{
+    return [self templateValueOfType:[NSDictionary class] forKey:VScaffoldViewControllerNavigationBarAppearanceKey];
+}
+
 - (VDependencyManager *)dependencyManagerForNavigationBar
 {
-    NSDictionary *navigationBarAppearanceDictionary = [self templateValueOfType:[NSDictionary class] forKey:VScaffoldViewControllerNavigationBarAppearanceKey];
-    return [self childDependencyManagerWithAddedConfiguration:navigationBarAppearanceDictionary];
+    return [self childDependencyManagerWithAddedConfiguration:[self styleDictionaryForNavigationBar]];
 }
 
 - (void)applyStyleToNavigationBar:(UINavigationBar *)navigationBar

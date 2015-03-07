@@ -165,28 +165,6 @@ extern NSString * const VDependencyManagerVideoWorkspaceKey;
 - (id)singletonObjectOfType:(Class)expectedType forKey:(NSString *)key;
 
 /**
- Returns a new object defined by the given configuration dictionary
- 
- @param expectedType The type of object you expect to get back
- @param configurationDictionary A dictionary of configuration attributes that describes the object
- @return An object described by the configurationDictionary,
- or nil if no such key exists or is of the wrong type.
- */
-- (id)objectOfType:(Class)expectedType fromDictionary:(NSDictionary *)configurationDictionary;
-
-/**
- Returns a singleton object defined by the given configuration dictionary
- 
- @discussion
- Calling this method twice with the same dictionary will return the same
- object both times.
- 
- @param expectedType The type of object you expect to get back
- @param configurationDictionary A dictionary of configuration attributes that describes the object
- */
-- (id)singletonObjectOfType:(Class)expectedType fromDictionary:(NSDictionary *)configurationDictionary;
-
-/**
  Creates and returns a new dependency manager with the given configuration dictionary. The
  new dependency manager will have the receiver as its parent, and any dependencies
  it can't resolve will be passed up the heirarchy.

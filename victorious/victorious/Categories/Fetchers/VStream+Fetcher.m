@@ -12,6 +12,8 @@
 #import "VObjectManager.h"
 #import "VThemeManager.h"
 #import "VUser.h"
+#import "VPaginationManager.h"
+#import "NSCharacterSet+VURLParts.h"
 
 static NSString * const kVSequenceContentType = @"sequence";
 static NSString * const kVStreamContentTypeContent = @"content";
@@ -41,23 +43,25 @@ NSString * const VStreamFilterTypePopular = @"popular";
 
 + (VStream *)remixStreamForSequence:(VSequence *)sequence
 {
-    NSString *apiPath = [@"/api/sequence/remixes_by_sequence/" stringByAppendingString: sequence.remoteId ?: @"0"];
-    apiPath = [apiPath stringByAppendingPathComponent:@"%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%"];
+    NSString *escapedRemoteId = [(sequence.remoteId ?: @"0") stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet v_pathPartCharacterSet]];
+    NSString *apiPath = [NSString stringWithFormat:@"/api/sequence/remixes_by_sequence/%@/%@/%@",
+                         escapedRemoteId, VPaginationManagerPageNumberMacro, VPaginationManagerItemsPerPageMacro];
     return [self streamForPath:apiPath inContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
 }
 
 + (VStream *)streamForUser:(VUser *)user
 {
-    NSString *apiPath = [@"/api/sequence/detail_list_by_user/" stringByAppendingString: user.remoteId.stringValue ?: @"0"];
-    apiPath = [apiPath stringByAppendingPathComponent:@"%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%"];
+    NSString *escapedRemoteId = [(user.remoteId.stringValue ?: @"0") stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet v_pathPartCharacterSet]];
+    NSString *apiPath = [NSString stringWithFormat:@"/api/sequence/detail_list_by_user/%@/%@/%@",
+                         escapedRemoteId, VPaginationManagerPageNumberMacro, VPaginationManagerItemsPerPageMacro];
     return [self streamForPath:apiPath inContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
 }
 
 + (VStream *)streamForHashTag:(NSString *)hashTag
 {
-    NSAssert([NSThread isMainThread], @"Filters should be created on the main thread");
-    NSString *apiPath = [@"/api/sequence/detail_list_by_hashtag/" stringByAppendingString: hashTag];
-    apiPath = [apiPath stringByAppendingPathComponent:@"%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%"];
+    NSString *escapedHashtag = [hashTag stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet v_pathPartCharacterSet]];
+    NSString *apiPath = [NSString stringWithFormat:@"/api/sequence/detail_list_by_hashtag/%@/%@/%@",
+                         escapedHashtag, VPaginationManagerPageNumberMacro, VPaginationManagerItemsPerPageMacro];
     NSManagedObjectContext *context = [[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext];
     VStream *stream = [self streamForPath:apiPath inContext:context];
     stream.hashtag = hashTag;
