@@ -42,11 +42,6 @@ extern NSString * const kFTUSequenceURLPath;
 @property (nonatomic, weak) id <VFirstTimeUserVideoViewControllerDelegate> delegate;
 
 /**
- Image used for blurred background
- */
-@property (nonatomic, strong) UIImage *imageSnapshot;
-
-/**
  VSequence object that contains media url
  */
 @property (nonatomic, strong) VSequence *sequence;

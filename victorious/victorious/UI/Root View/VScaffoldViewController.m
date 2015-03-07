@@ -22,7 +22,7 @@
 #import "VWebBrowserViewController.h"
 #import "VFirstTimeUserVideoViewController.h"
 #import "VNavigationController.h"
-
+#import "VBlurOverTransitioner.h"
 #import <MBProgressHUD.h>
 
 NSString * const VScaffoldViewControllerMenuComponentKey = @"menu";
@@ -34,6 +34,8 @@ static NSString * const kContentDeeplinkURLHostComponent = @"content";
 static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
 
 @interface VScaffoldViewController () <VNewContentViewControllerDelegate, VFirstTimeUserVideoViewControllerDelegate>
+
+@property (nonatomic, strong) VBlurOverTransitioningDelegate *blurOverTransitionDelegate;
 
 @end
 
@@ -51,6 +53,17 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
 }
 
 #pragma mark - Lifecyle Methods
+#warning REMOVE ME
+- (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event
+{
+    VFirstTimeUserVideoViewController *firstTimeUserVC = [self.dependencyManager templateValueOfType:[VFirstTimeUserVideoViewController class]
+                                                                                              forKey:VScaffoldViewControllerWelcomeUserViewComponentKey];
+    firstTimeUserVC.delegate = self;
+    self.blurOverTransitionDelegate = [[VBlurOverTransitioningDelegate alloc] init];
+    firstTimeUserVC.transitioningDelegate = self.blurOverTransitionDelegate;
+    firstTimeUserVC.modalPresentationStyle = UIModalPresentationCustom;
+    [self presentViewController:firstTimeUserVC animated:YES completion:nil];
+}
 
 - (void)viewDidAppear:(BOOL)animated
 {
@@ -62,12 +75,15 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
     if ( ![firstTimeUserVC hasBeenShown] )
     {
         firstTimeUserVC.delegate = self;
-        double delayInSeconds = 1.5;
+        double delayInSeconds = 0.5;
         dispatch_time_t showTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
         dispatch_after(showTime, dispatch_get_main_queue(), ^(void)
                        {
 
                            // Present the first-time user video view controller
+                           self.blurOverTransitionDelegate = [[VBlurOverTransitioningDelegate alloc] init];
+                           firstTimeUserVC.transitioningDelegate = self.blurOverTransitionDelegate;
+                           firstTimeUserVC.modalPresentationStyle = UIModalPresentationCustom;
                            [self presentViewController:firstTimeUserVC animated:YES completion:nil];
                        });
     }

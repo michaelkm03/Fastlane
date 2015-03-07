@@ -75,10 +75,6 @@ NSString * const kFTUSequenceURLPath = @"sequenceUrlPath";
     
     // Set Background Blur Effect
     self.backgroundBlurredView.backgroundColor = [UIColor clearColor];
-    UIVisualEffectView *viewForBackground = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight]];
-    viewForBackground.frame = self.backgroundBlurredView.bounds;
-    viewForBackground.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.backgroundBlurredView addSubview:viewForBackground];
     
     // Setup Player UI
     [self setupVideoUI];
@@ -166,8 +162,6 @@ NSString * const kFTUSequenceURLPath = @"sequenceUrlPath";
     {
         [self.videoPlayerViewController.player pause];
     }
-    self.videoPlayerViewController.view.hidden = YES;
-    self.videoPlayerViewController = nil;
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -226,13 +220,6 @@ NSString * const kFTUSequenceURLPath = @"sequenceUrlPath";
 {
     [self.videoPlayerViewController setItemURL:self.mediaUrl loop:NO];
     [self.videoPlayerViewController.player play];
-}
-
-#pragma mark - Setters
-
-- (void)setImageSnapshot:(UIImage *)imageSnapshot
-{
-    _imageSnapshot = imageSnapshot;
 }
 
 #pragma mark - Close Button Action
