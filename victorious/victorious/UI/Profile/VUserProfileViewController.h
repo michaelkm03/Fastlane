@@ -33,4 +33,6 @@
  */
 - (VUserProfileViewController *)userProfileViewControllerWithUser:(VUser *)user forKey:(NSString *)key;
 
+- (VUserProfileViewController *)mainUserProfileViewController;
+
 @end

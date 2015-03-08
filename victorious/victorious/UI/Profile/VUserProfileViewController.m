@@ -39,6 +39,8 @@
 #import <FBKVOController.h>
 #import <MBProgressHUD.h>
 
+#import "VNotLoggedInProfileDataSource.h"
+
 static const CGFloat kVSmallUserHeaderHeight = 319.0f;
 
 static void * VUserProfileViewContext = &VUserProfileViewContext;
@@ -69,6 +71,8 @@ static NSString * const kUserKey = @"user";
 @property (nonatomic, assign) BOOL didEndViewWillAppear;
 
 @property (nonatomic, assign) CGFloat defaultMBProgressHUDMargin;
+
+@property (nonatomic, strong) VNotLoggedInProfileDataSource *notLoggedInDataSource;
 
 @end
 
@@ -130,6 +134,8 @@ static NSString * const kUserKey = @"user";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginStatusChanged:) name:kLoggedInChangedNotification object:nil];
 
     NSArray *menuItems = [self.dependencyManager menuItems];
     if ( menuItems != nil )
@@ -148,7 +154,10 @@ static NSString * const kUserKey = @"user";
     
     if (![VObjectManager sharedManager].mainUser)
     {
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginStateDidChange:) name:kLoggedInChangedNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(loginStateDidChange:)
+                                                     name:kLoggedInChangedNotification
+                                                   object:nil];
     }
     
     [self.KVOController observe:self.currentStream
@@ -157,6 +166,8 @@ static NSString * const kUserKey = @"user";
                         context:VUserProfileViewContext];
     
     [self.collectionView registerClass:[VProfileHeaderCell class] forCellWithReuseIdentifier:NSStringFromClass([VProfileHeaderCell class])];
+    
+    [self updateCollectionViewDataSource];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -630,11 +641,39 @@ static NSString * const kUserKey = @"user";
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (collectionView.dataSource == self.notLoggedInDataSource)
+    {
+        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]]
+                           animated:YES
+                         completion:NULL];
+        return;
+    }
+    
     if (self.streamDataSource.hasHeaderCell && indexPath.section == 0)
     {
         return;
     }
     [super collectionView:collectionView didSelectItemAtIndexPath:indexPath];
+}
+
+- (void)updateCollectionViewDataSource
+{
+    if ([[VObjectManager sharedManager] mainUserLoggedIn])
+    {
+        self.collectionView.dataSource = self.streamDataSource;
+    }
+    else
+    {
+        self.notLoggedInDataSource = [[VNotLoggedInProfileDataSource alloc] initWithCollectionView:self.collectionView];
+        self.collectionView.dataSource = self.notLoggedInDataSource;
+    }
+}
+
+#pragma mark - Notification
+
+- (void)loginStatusChanged:(NSNotification *)notification
+{
+    [self updateCollectionViewDataSource];
 }
 
 #pragma mark - KVO
@@ -675,7 +714,7 @@ static NSString * const kUserKey = @"user";
 
 - (VUserProfileViewController *)userProfileViewControllerWithUser:(VUser *)user forKey:(NSString *)key
 {
-    NSAssert(user != nil, @"user can't be nil");
+    NSAssert(user != nil, @"user cannot be nil");
     return [self templateValueOfType:[VUserProfileViewController class] forKey:key withAddedDependencies:@{ kUserKey: user }];
 }
 

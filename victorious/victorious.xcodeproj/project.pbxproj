@@ -636,6 +636,9 @@
 		D8B70FEA1A805CC800090C5E /* VInlineValidationView.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B70FE91A805CC800090C5E /* VInlineValidationView.m */; };
 		D8B827DA19D5FD8900CCD6D9 /* VActionItemTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B827D919D5FD8900CCD6D9 /* VActionItemTableViewCell.m */; };
 		D8B827DD19D5FDFE00CCD6D9 /* VDescriptionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B827DC19D5FDFE00CCD6D9 /* VDescriptionTableViewCell.m */; };
+		D8BB61961AAA8BF0007565BD /* VNotLoggedInProfileCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8BB61941AAA8BF0007565BD /* VNotLoggedInProfileCollectionViewCell.m */; };
+		D8BB61971AAA8BF0007565BD /* VNotLoggedInProfileCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8BB61951AAA8BF0007565BD /* VNotLoggedInProfileCollectionViewCell.xib */; };
+		D8BB619A1AAA8F95007565BD /* VNotLoggedInProfileDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = D8BB61991AAA8F95007565BD /* VNotLoggedInProfileDataSource.m */; };
 		D8C1FD051A69C0F60072892B /* VToolController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8C1FD041A69C0F60072892B /* VToolController.m */; };
 		D8C1FD081A69C2E40072892B /* VKeyboardNotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D8C1FD071A69C2E40072892B /* VKeyboardNotificationManager.m */; };
 		D8C1FD0B1A69DF0B0072892B /* VImageToolController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8C1FD0A1A69DF0B0072892B /* VImageToolController.m */; };
@@ -1861,6 +1864,11 @@
 		D8B827D919D5FD8900CCD6D9 /* VActionItemTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VActionItemTableViewCell.m; sourceTree = "<group>"; };
 		D8B827DB19D5FDFE00CCD6D9 /* VDescriptionTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDescriptionTableViewCell.h; sourceTree = "<group>"; };
 		D8B827DC19D5FDFE00CCD6D9 /* VDescriptionTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDescriptionTableViewCell.m; sourceTree = "<group>"; };
+		D8BB61931AAA8BF0007565BD /* VNotLoggedInProfileCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNotLoggedInProfileCollectionViewCell.h; sourceTree = "<group>"; };
+		D8BB61941AAA8BF0007565BD /* VNotLoggedInProfileCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNotLoggedInProfileCollectionViewCell.m; sourceTree = "<group>"; };
+		D8BB61951AAA8BF0007565BD /* VNotLoggedInProfileCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VNotLoggedInProfileCollectionViewCell.xib; sourceTree = "<group>"; };
+		D8BB61981AAA8F95007565BD /* VNotLoggedInProfileDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNotLoggedInProfileDataSource.h; sourceTree = "<group>"; };
+		D8BB61991AAA8F95007565BD /* VNotLoggedInProfileDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNotLoggedInProfileDataSource.m; sourceTree = "<group>"; };
 		D8C1FD031A69C0F60072892B /* VToolController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VToolController.h; sourceTree = "<group>"; };
 		D8C1FD041A69C0F60072892B /* VToolController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VToolController.m; sourceTree = "<group>"; };
 		D8C1FD061A69C2E40072892B /* VKeyboardNotificationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VKeyboardNotificationManager.h; sourceTree = "<group>"; };
@@ -2529,6 +2537,11 @@
 				037D2D581A196B9800947A22 /* VUserProfileNavigationDestination.m */,
 				0314D3CE19B46B5E00FA363C /* VUserProfileViewController.h */,
 				0314D3CF19B46B5E00FA363C /* VUserProfileViewController.m */,
+				D8BB61931AAA8BF0007565BD /* VNotLoggedInProfileCollectionViewCell.h */,
+				D8BB61941AAA8BF0007565BD /* VNotLoggedInProfileCollectionViewCell.m */,
+				D8BB61951AAA8BF0007565BD /* VNotLoggedInProfileCollectionViewCell.xib */,
+				D8BB61981AAA8F95007565BD /* VNotLoggedInProfileDataSource.h */,
+				D8BB61991AAA8F95007565BD /* VNotLoggedInProfileDataSource.m */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -4928,6 +4941,7 @@
 				034BCC3F19F5CF5D00114F6C /* MuseoSans-500.otf in Resources */,
 				0390088219F3A5D500FD7EDF /* VInviteFriendTableViewCell.xib in Resources */,
 				036F388A1A0C4DEA0014DF66 /* PT_Serif-Web-Regular.ttf in Resources */,
+				D8BB61971AAA8BF0007565BD /* VNotLoggedInProfileCollectionViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5376,6 +5390,7 @@
 				A7A7D61819DE178F00B18AB7 /* VAuthorizationViewControllerFactory.m in Sources */,
 				0314D4B419B46B5E00FA363C /* VLightboxDismissAnimator.m in Sources */,
 				A7A390C51A32441E00709812 /* VButton.m in Sources */,
+				D8BB61961AAA8BF0007565BD /* VNotLoggedInProfileCollectionViewCell.m in Sources */,
 				0314D4D119B46B5E00FA363C /* VMenuController.m in Sources */,
 				D8E39BB819CB7C3C007FD86A /* VContentViewViewModel.m in Sources */,
 				A7B98A421A264D1D00C58335 /* VNotificationSettingsStateManager.m in Sources */,
@@ -5424,6 +5439,7 @@
 				A720055E1A030E4700285A9C /* VApplicationTracking.m in Sources */,
 				A77AD4F21A1FD8B600142F24 /* VAlertControllerBasic.m in Sources */,
 				D8E39BEB19CB7D92007FD86A /* VKeyboardInputAccessoryView.m in Sources */,
+				D8BB619A1AAA8F95007565BD /* VNotLoggedInProfileDataSource.m in Sources */,
 				0314D4A519B46B5E00FA363C /* VForceUpgradeViewController.m in Sources */,
 				A7D707701A79671C00D9993F /* VAutoplaySettingsViewController.m in Sources */,
 				0314D4E219B46B5E00FA363C /* VFindInstagramFriendsViewController.m in Sources */,

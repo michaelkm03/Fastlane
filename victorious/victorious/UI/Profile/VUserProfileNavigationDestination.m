@@ -14,6 +14,7 @@
 #import "VScaffoldViewController.h"
 #import "VUserProfileNavigationDestination.h"
 #import "VUserProfileViewController.h"
+#import "VUser.h"
 
 static NSString * const kProfileDeeplinkHostComponent = @"profile";
 
@@ -53,23 +54,25 @@ static NSString * const kProfileDeeplinkHostComponent = @"profile";
 
 - (BOOL)shouldNavigateWithAlternateDestination:(UIViewController *__autoreleasing *)alternateViewController
 {
-    UIViewController *authorizationViewController = [VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:self.objectManager];
-    if (authorizationViewController)
-    {
-        [[VRootViewController rootViewController] presentViewController:authorizationViewController animated:YES completion:nil];
-        return NO;
-    }
-    else if (alternateViewController != nil)
-    {
-        VUserProfileViewController *userProfileViewController = [self.dependencyManager userProfileViewControllerWithUser:self.objectManager.mainUser forKey:VScaffoldViewControllerUserProfileViewComponentKey];
+//    return YES;
+//    UIViewController *authorizationViewController = [VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:self.objectManager];
+//    if (authorizationViewController)
+//    {
+//        [[VRootViewController rootViewController] presentViewController:authorizationViewController animated:YES completion:nil];
+//        return NO;
+//    }
+//    else if (alternateViewController != nil)
+//    {
+//        VUserProfileViewController *userProfileViewController =  [self.dependencyManager userProfileViewControllerWithUser:self.objectManager.mainUser forKey:VScaffoldViewControllerUserProfileViewComponentKey];
+    VUserProfileViewController *userProfileViewController = [VUserProfileViewController userProfileWithRemoteId:self.objectManager.mainUser.remoteId];
         if ( [userProfileViewController respondsToSelector:@selector(setDependencyManager:)] )
         {
             [userProfileViewController setDependencyManager:self.dependencyManager];
         }
         *alternateViewController = userProfileViewController;
         return YES;
-    }
-    return NO;
+//    }
+//    return NO;
 }
 
 #pragma mark - VDeeplinkHandler methods
