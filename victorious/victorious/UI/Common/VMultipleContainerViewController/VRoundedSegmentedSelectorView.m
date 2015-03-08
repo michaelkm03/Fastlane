@@ -24,9 +24,10 @@ static CGFloat const kVSelectionAnimationDuration = 0.35f;
 @property (nonatomic, strong) NSMutableArray *buttons;
 @property (nonatomic, strong) UIImageView *selectionView;
 @property (nonatomic, strong) NSLayoutConstraint *selectionViewLeftConstraint;
+@property (nonatomic, strong) NSLayoutConstraint *selectionViewWidthConstraint;
 @property (nonatomic, strong) UIColor *pillColor;
 
-@property (nonatomic, strong) CAShapeLayer *maskLayer;
+@property (nonatomic, strong) UIImageView *highlightMask;
 
 @end
 
@@ -45,7 +46,7 @@ static CGFloat const kVSelectionAnimationDuration = 0.35f;
 - (void)setViewControllers:(NSArray *)viewControllers
 {
     [super setViewControllers:viewControllers];
-    [self makeButtonsFromCurrentViewControllers];
+    [self setupWithCurrentViewControllers];
 }
 
 - (CGSize)intrinsicContentSize
@@ -58,7 +59,10 @@ static CGFloat const kVSelectionAnimationDuration = 0.35f;
 - (void)setActiveViewControllerIndex:(NSUInteger)activeViewControllerIndex
 {
     self.realActiveViewControllerIndex = activeViewControllerIndex;
-    [self updateSelectionViewConstraintAnimated:YES];
+    if ( [self hasValidLayout] )
+    {
+        [self updateSelectionViewConstraintAnimated:YES];
+    }
 }
 
 //Must implement, otherwise NSNotFound is returned
@@ -82,13 +86,76 @@ static CGFloat const kVSelectionAnimationDuration = 0.35f;
     }
 }
 
-- (void)makeButtonsFromCurrentViewControllers
+- (void)setupWithCurrentViewControllers
 {
-    if ( CGRectEqualToRect(CGRectZero, self.bounds) )
+    if ( ![self hasValidLayout] )
     {
         return;
     }
     
+    [self resetSubviews];
+    
+    [self addStaticViews];
+    
+    //Setup the buttons that will allow users to select different streams
+    __weak VRoundedSegmentedSelectorView *wSelf = self;
+    __block UIButton *priorButton = nil;
+    CGFloat cornerRadius = self.pillView.cornerRadius;
+    UIColor *buttonSelectionColor = [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
+    NSDictionary *buttonHorizontalInsetMetrics = @{ @"inset" : @(cornerRadius) };
+    [self.viewControllers enumerateObjectsUsingBlock:^(UIViewController *viewController, NSUInteger idx, BOOL *stop)
+    {
+        VRoundedSegmentedSelectorView *sSelf = wSelf;
+        if ( sSelf == nil )
+        {
+            return;
+        }
+        
+        //Note: Setting the button's text color to the "highlighted" color here so that it appears that way in the snapshot below
+        UIButton *button = [self newButtonWithCornerRadius:cornerRadius title:viewController.title font:[self.dependencyManager fontForKey:VDependencyManagerHeading3FontKey] andTextColor:buttonSelectionColor];
+        button.tag = idx;
+        [button addTarget:sSelf action:@selector(pressedHeaderButton:) forControlEvents:UIControlEventTouchUpInside];
+        
+        [sSelf addButton:button toContainer:sSelf.pillView afterPriorButton:priorButton withMetrics:buttonHorizontalInsetMetrics isLast:idx == sSelf.viewControllers.count - 1];
+        
+        priorButton = button;
+        
+        [sSelf.buttons addObject:button];
+    }];
+    
+    [self.pillView layoutIfNeeded];
+    
+    //Take a snapshot of the buttons in their current state so that our mask view will mask all of the button texts as it is moved across a single view
+    UIGraphicsBeginImageContextWithOptions(self.pillView.bounds.size, NO, 0.0);
+    [self.pillView.layer renderInContext:UIGraphicsGetCurrentContext()];
+    UIImage *barScreenShot = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    [self addSelectionView];
+    
+    //Reset buttons to proper "unhighlighted" color
+    for (UIButton *button in self.buttons)
+    {
+        [button setTitleColor:self.pillColor forState:UIControlStateNormal];
+        [[button titleLabel] setFont:[self.dependencyManager fontForKey:VDependencyManagerHeading4FontKey]];
+    }
+    
+    [self addHighlightViewWithSnapshot:barScreenShot];
+    
+    if ( _realActiveViewControllerIndex >= self.buttons.count )
+    {
+        _realActiveViewControllerIndex = 0;
+    }
+    [self updateSelectionViewConstraintAnimated:NO];
+}
+
+- (BOOL)hasValidLayout
+{
+    return !CGRectEqualToRect(CGRectZero, self.bounds);
+}
+
+- (void)resetSubviews
+{
     [self removeConstraints:self.constraints];
     [self.pillView removeConstraints:self.pillView.constraints];
     
@@ -99,7 +166,10 @@ static CGFloat const kVSelectionAnimationDuration = 0.35f;
     }
     [self.buttons removeAllObjects];
     [self.pillView removeFromSuperview];
-    
+}
+
+- (void)addStaticViews
+{
     //Create the background view which will house all of the selector views
     UIView *backgroundView = [[UIView alloc] init];
     backgroundView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -127,92 +197,6 @@ static CGFloat const kVSelectionAnimationDuration = 0.35f;
                                                                            options:0
                                                                            metrics:@{ @"topInset" : @(3.0f), @"pillHeight" : @(kVPillHeight) }
                                                                              views:pillViews]];
-    
-    //Setup the buttons that will allow users to select different streams
-    __weak VRoundedSegmentedSelectorView *wSelf = self;
-    __block UIButton *priorButton = nil;
-    CGFloat cornerRadius = self.pillView.cornerRadius;
-    UIColor *buttonSelectionColor = [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
-    NSDictionary *buttonHorizontalInsetMetrics = @{ @"inset" : @(cornerRadius) };
-    [self.viewControllers enumerateObjectsUsingBlock:^(UIViewController *viewController, NSUInteger idx, BOOL *stop) {
-        
-        VRoundedSegmentedSelectorView *sSelf = wSelf;
-        if ( sSelf == nil )
-        {
-            return;
-        }
-        
-        //Note: Setting the button's text color to the "highlighted" color here so that it appears that way in the snapshot below
-        UIButton *button = [self newButtonWithCornerRadius:cornerRadius title:viewController.title font:[self.dependencyManager fontForKey:VDependencyManagerHeading3FontKey] andTextColor:buttonSelectionColor];
-        button.tag = idx;
-        [button addTarget:sSelf action:@selector(pressedHeaderButton:) forControlEvents:UIControlEventTouchUpInside];
-        
-        [sSelf addButton:button toContainer:sSelf.pillView afterPriorButton:priorButton withMetrics:buttonHorizontalInsetMetrics isLast:idx == sSelf.viewControllers.count - 1];
-        
-        priorButton = button;
-        
-        [sSelf.buttons addObject:button];
-    }];
-    
-    [self.pillView layoutIfNeeded];
-    
-    //Take a snapshot of the buttons in their current state so that our mask view will mask all of the button texts as it is moved across a single view
-    UIGraphicsBeginImageContextWithOptions(self.pillView.bounds.size, NO, 0.0);
-    [self.pillView.layer renderInContext:UIGraphicsGetCurrentContext()];
-    UIImage *barScreenShot = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
-    //Now add the selectionView which will show which tab is selected. This must be done after the snapshot otherwise it will appear in the snapshot.
-    [self.pillView addSubview:self.selectionView];
-    NSDictionary *selectionViews = @{ @"selectionView" : self.selectionView };
-    [self.pillView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[selectionView]|"
-                                                                          options:0
-                                                                          metrics:nil
-                                                                            views:selectionViews]];
-    CGFloat selectionViewWidth = ( ( CGRectGetWidth(self.bounds) - kVHorizontalInset * 2 - cornerRadius * 2 ) / self.viewControllers.count ) + cornerRadius * 2;
-    [self.selectionView addConstraint:[NSLayoutConstraint constraintWithItem:self.selectionView
-                                                                   attribute:NSLayoutAttributeWidth
-                                                                   relatedBy:NSLayoutRelationEqual
-                                                                      toItem:nil
-                                                                   attribute:NSLayoutAttributeNotAnAttribute
-                                                                  multiplier:1.0f
-                                                                    constant:selectionViewWidth]];
-    self.selectionViewLeftConstraint = [NSLayoutConstraint constraintWithItem:self.selectionView
-                                                                    attribute:NSLayoutAttributeLeft
-                                                                    relatedBy:NSLayoutRelationEqual
-                                                                       toItem:self.pillView
-                                                                    attribute:NSLayoutAttributeLeft
-                                                                   multiplier:1.0f
-                                                                     constant:0.0f];
-    [self.pillView addConstraint:self.selectionViewLeftConstraint];
-    [self.selectionView layoutIfNeeded];
-    
-    //Reset buttons to proper "unhighlighted" color
-    for (UIButton *button in self.buttons)
-    {
-        [button setTitleColor:self.pillColor forState:UIControlStateNormal];
-        [[button titleLabel] setFont:[self.dependencyManager fontForKey:VDependencyManagerHeading4FontKey]];
-    }
-    
-    //Add the snapshot imageview to our bar
-    UIImageView *highlightOverView = [[UIImageView alloc] initWithImage:barScreenShot];
-    [self.pillView addSubview:highlightOverView];
-    [self.pillView v_addFitToParentConstraintsToSubview:highlightOverView];
-    
-    //Create the mask layer that will mask the snapshot of the highlighted text
-    self.maskLayer = [[CAShapeLayer alloc] init];
-    CGRect maskRect = self.selectionView.bounds;
-    self.maskLayer.cornerRadius = cornerRadius;
-    CGPathRef path = CGPathCreateWithRect(maskRect, NULL);
-    self.maskLayer.path = path;
-    CGPathRelease(path);
-    highlightOverView.layer.mask = self.maskLayer;
-    
-    if ( _realActiveViewControllerIndex >= self.buttons.count )
-    {
-        _realActiveViewControllerIndex = 0;
-    }
-    [self updateSelectionViewConstraintAnimated:NO];
 }
 
 - (void)addButton:(UIButton *)button toContainer:(UIView *)container afterPriorButton:(UIButton *)priorButton withMetrics:(NSDictionary *)metrics isLast:(BOOL)isLast
@@ -237,70 +221,120 @@ static CGFloat const kVSelectionAnimationDuration = 0.35f;
     }
 }
 
+- (void)addSelectionView
+{
+    //Now add the selectionView which will show which tab is selected. This must be done after the snapshot otherwise it will appear in the snapshot.
+    [self.pillView addSubview:self.selectionView];
+    NSDictionary *selectionViews = @{ @"selectionView" : self.selectionView };
+    [self.pillView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[selectionView]|"
+                                                                          options:0
+                                                                          metrics:nil
+                                                                            views:selectionViews]];
+    CGFloat selectionViewWidth = ( ( CGRectGetWidth(self.bounds) - kVHorizontalInset * 2 - self.pillView.cornerRadius * 2 ) / self.viewControllers.count ) + self.pillView.cornerRadius * 2;
+    self.selectionViewWidthConstraint = [NSLayoutConstraint constraintWithItem:self.selectionView
+                                                                     attribute:NSLayoutAttributeWidth
+                                                                     relatedBy:NSLayoutRelationEqual
+                                                                        toItem:nil
+                                                                     attribute:NSLayoutAttributeNotAnAttribute
+                                                                    multiplier:1.0f
+                                                                      constant:selectionViewWidth];
+    [self.selectionView addConstraint:self.selectionViewWidthConstraint];
+    self.selectionViewLeftConstraint = [NSLayoutConstraint constraintWithItem:self.selectionView
+                                                                    attribute:NSLayoutAttributeLeft
+                                                                    relatedBy:NSLayoutRelationEqual
+                                                                       toItem:self.pillView
+                                                                    attribute:NSLayoutAttributeLeft
+                                                                   multiplier:1.0f
+                                                                     constant:0.0f];
+    [self.pillView addConstraint:self.selectionViewLeftConstraint];
+    [self.selectionView layoutIfNeeded];
+}
+
+- (void)addHighlightViewWithSnapshot:(UIImage *)snapshot
+{
+    //Add the snapshot imageview to our bar
+    UIImageView *highlightOverView = [[UIImageView alloc] initWithImage:snapshot];
+    [self.pillView addSubview:highlightOverView];
+    [self.pillView v_addFitToParentConstraintsToSubview:highlightOverView];
+    
+    //Create the mask layer that will mask the snapshot of the highlighted text
+    self.highlightMask.frame = self.selectionView.bounds;
+    highlightOverView.maskView = self.highlightMask;
+}
+
 #pragma mark - display updating
 
 - (void)updateSelectionViewConstraintAnimated:(BOOL)animated
 {
-    UIButton *anyButton = self.buttons.firstObject;
-    if ( anyButton != nil )
+    CGFloat constriantConstant = [self selectionViewOffsetForIndex:self.activeViewControllerIndex];
+    CGRect targetMaskFrame = self.selectionView.frame;
+    targetMaskFrame.origin.x = constriantConstant;
+    CGFloat targetWidth = [self selectionViewWidthForIndex:self.activeViewControllerIndex];
+    targetMaskFrame.size.width = targetWidth;
+    if ( animated )
     {
-        CGFloat constriantConstant = ( CGRectGetWidth(anyButton.bounds) ) * self.activeViewControllerIndex;
-        CGRect targetMaskFrame = self.selectionView.frame;
-        targetMaskFrame.origin.x = constriantConstant;
-        CGPathRef targetPath = CGPathCreateWithRect(targetMaskFrame, NULL);
-        if ( animated )
-        {
-            targetMaskFrame.origin.x = CGRectGetMinX(((CALayer *)self.selectionView.layer.presentationLayer).frame);
-            CGPathRef startPath = CGPathCreateWithRect(targetMaskFrame, NULL);
-            [self.selectionView.layer removeAllAnimations];
-            self.selectionViewLeftConstraint.constant = CGRectGetMinX(targetMaskFrame);
-            [self.selectionView layoutIfNeeded];
-            [UIView animateWithDuration:kVSelectionAnimationDuration
-                             animations:^
-             {
-                 self.selectionViewLeftConstraint.constant = constriantConstant;
-                [self layoutIfNeeded];
-             }];
-            
-            CABasicAnimation *a = [CABasicAnimation animationWithKeyPath:@"path"];
-            [a setDuration:kVSelectionAnimationDuration];
-            [a setFromValue:(__bridge id)startPath];
-            [a setToValue:(__bridge id)targetPath];
-            [a setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
-            self.maskLayer.path = targetPath;
-            [self.maskLayer addAnimation:a forKey:@"path"];
-            CGPathRelease(targetPath);
-            CGPathRelease(startPath);
-
-        }
-        else
-        {
-            self.selectionViewLeftConstraint.constant = constriantConstant;
-            self.maskLayer.path = targetPath;
-            [self setNeedsLayout];
-            CGPathRelease(targetPath);
-        }
+        [UIView animateWithDuration:kVSelectionAnimationDuration
+                         animations:^
+         {
+             self.selectionViewLeftConstraint.constant = constriantConstant;
+             self.selectionViewWidthConstraint.constant = targetWidth;
+             self.highlightMask.frame = targetMaskFrame;
+             [self layoutIfNeeded];
+         }];
+    }
+    else
+    {
+        self.selectionViewLeftConstraint.constant = constriantConstant;
+        self.selectionViewWidthConstraint.constant = targetWidth;
+        self.highlightMask.frame = targetMaskFrame;
+        [self setNeedsLayout];
     }
 }
 
 - (void)setBounds:(CGRect)bounds
 {
     [super setBounds:bounds];
-    [self makeButtonsFromCurrentViewControllers];
+    [self setupWithCurrentViewControllers];
 }
 
-- (UIButton *)newButtonWithCornerRadius:(CGFloat)cornerRadius title:(NSString *)title font:(UIFont *)font andTextColor:(UIColor *)color
+
+#pragma mark - selectionView updating
+
+- (CGFloat)selectionViewOffsetForIndex:(NSUInteger)index
 {
-    //Create a label, set it's text to the title, give it constraints that fit it to it's spot in the view
-    UIButton *button = [[UIButton alloc] init];
-    [button setTranslatesAutoresizingMaskIntoConstraints:NO];
-    button.imageView.layer.cornerRadius = cornerRadius;
-    [button setTitle:title forState:UIControlStateNormal];
-    [button setTitleColor:color forState:UIControlStateNormal];
-    [button setBackgroundColor:[UIColor clearColor]];
-    [[button titleLabel] setFont:font];
-    [button setTitleColor:color forState:UIControlStateHighlighted];
-    return button;
+    CGFloat offset = 0;
+    for ( NSUInteger i = 0; i < index; i++ )
+    {
+        offset += [self selectionViewWidthForIndex:i];
+    }
+    
+    if ( index > 0 )
+    {
+        offset -= self.pillView.cornerRadius;
+    }
+    
+    if ( index == self.viewControllers.count - 1)
+    {
+        offset -= self.pillView.cornerRadius;
+    }
+    
+    return offset;
+}
+
+- (CGFloat)selectionViewWidthForIndex:(NSUInteger)index
+{
+    UIButton *anyButton = self.buttons.firstObject;
+    if ( anyButton != nil )
+    {
+        CGFloat width = CGRectGetWidth(anyButton.bounds);
+        if ( index == 0 || index == self.viewControllers.count - 1 )
+        {
+            //At an edge, add the corner radius so that the pill fits nicely into the edges
+            width += self.pillView.cornerRadius * 2;
+        }
+        return width;
+    }
+    return 0;
 }
 
 #pragma mark - lazy inits
@@ -348,12 +382,45 @@ static CGFloat const kVSelectionAnimationDuration = 0.35f;
         return _selectionView;
     }
     
-    _selectionView = [[UIImageView alloc] initWithImage:[UIImage resizeableImageWithColor:self.pillColor]];
-    _selectionView.clipsToBounds = YES;
-    _selectionView.backgroundColor = [UIColor blackColor];
-    _selectionView.translatesAutoresizingMaskIntoConstraints = NO;
-    _selectionView.layer.cornerRadius = self.pillView.cornerRadius;
+    _selectionView = [self newPillImageView];
     return _selectionView;
+}
+
+- (UIImageView *)highlightMask
+{
+    if ( _highlightMask )
+    {
+        return _highlightMask;
+    }
+    
+    _highlightMask = [self newPillImageView];
+    return _highlightMask;
+}
+
+#pragma mark - helper view creators
+
+- (UIImageView *)newPillImageView
+{
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage resizeableImageWithColor:self.pillColor]];
+    imageView.clipsToBounds = YES;
+    imageView.backgroundColor = [UIColor clearColor];
+    imageView.translatesAutoresizingMaskIntoConstraints = NO;
+    imageView.layer.cornerRadius = self.pillView.cornerRadius;
+    return imageView;
+}
+
+- (UIButton *)newButtonWithCornerRadius:(CGFloat)cornerRadius title:(NSString *)title font:(UIFont *)font andTextColor:(UIColor *)color
+{
+    //Create a label, set it's text to the title, give it constraints that fit it to it's spot in the view
+    UIButton *button = [[UIButton alloc] init];
+    [button setTranslatesAutoresizingMaskIntoConstraints:NO];
+    button.imageView.layer.cornerRadius = cornerRadius;
+    [button setTitle:title forState:UIControlStateNormal];
+    [button setTitleColor:color forState:UIControlStateNormal];
+    [button setBackgroundColor:[UIColor clearColor]];
+    [[button titleLabel] setFont:font];
+    [button setTitleColor:color forState:UIControlStateHighlighted];
+    return button;
 }
 
 @end

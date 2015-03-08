@@ -8,6 +8,9 @@
 
 #import "VSelectorViewBase.h"
 
+/*
+ A top nav selector that uses a pill-like overlay to highlight the selected tab
+ */
 @interface VRoundedSegmentedSelectorView : VSelectorViewBase
 
 @end
