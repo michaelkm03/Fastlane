@@ -66,7 +66,10 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
         dispatch_after(showTime, dispatch_get_main_queue(), ^(void)
                        {
                            // Present the first-time user video view controller
-                           [self presentViewController:firstTimeUserVC animated:YES completion:nil];
+                           if ( [firstTimeUserVC haveMediaUrl] )
+                           {
+                               [self presentViewController:firstTimeUserVC animated:YES completion:nil];
+                           }
                        });
     }
 }

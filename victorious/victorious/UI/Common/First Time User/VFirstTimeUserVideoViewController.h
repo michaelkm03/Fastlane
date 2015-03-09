@@ -37,6 +37,13 @@ extern NSString * const kFTUSequenceURLPath;
 - (BOOL)hasBeenShown;
 
 /**
+ Reports if a media url exists in order to show the First-time user video
+ 
+ @return BOOl indicating if a media url exists or not.
+ */
+- (BOOL)haveMediaUrl;
+
+/**
  Reports when the video has completed or failed to load
  */
 @property (nonatomic, weak) id <VFirstTimeUserVideoViewControllerDelegate> delegate;

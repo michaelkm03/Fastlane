@@ -149,7 +149,6 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
                                                                   kClassNameKey: @"tabMenu.scaffold",
                                                                   kItemsKey:[self bottomNavMenuItems],
                                                                   VScaffoldViewControllerUserProfileViewComponentKey: [self profileScreen],
-                                                                  kSelectorKey: [self kSelectorKeyFromInitDictionary:self.dataFromInitCall],
                                                                   VScaffoldViewControllerWelcomeUserViewComponentKey: [self firstTimeVideoComponent],
                                                                   kSelectorKey: [self multiScreenSelectorKey],
                                                                   VTabMenuViewControllerMenuAppearanceKey: @{
@@ -167,7 +166,6 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
                                                                    VScaffoldViewControllerMenuComponentKey: [self menuComponent],
                                                                    VStreamCollectionViewControllerCreateSequenceIconKey: (self.templateCEnabled ? [UIImage imageNamed:@"createContentButtonC"] : [UIImage imageNamed:@"createContentButton"]),
                                                                    VScaffoldViewControllerUserProfileViewComponentKey: [self profileScreen],
-                                                                   kSelectorKey: [self kSelectorKeyFromInitDictionary:self.dataFromInitCall],
                                                                    VScaffoldViewControllerWelcomeUserViewComponentKey: [self firstTimeVideoComponent],
                                                                    kSelectorKey: [self multiScreenSelectorKey],
                                                                    };

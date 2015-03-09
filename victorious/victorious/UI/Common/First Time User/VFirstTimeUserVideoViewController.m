@@ -53,12 +53,22 @@ NSString * const kFTUSequenceURLPath = @"sequenceUrlPath";
 {
     VFirstTimeUserVideoViewController *firstTimeVC = [self instantiateFromStoryboard:@"FirstTimeVideo"];
     firstTimeVC.dependencyManager = dependencyManager;
+    [firstTimeVC fetchMediaSequenceObject];
     return firstTimeVC;
 }
 
 - (BOOL)hasBeenShown
 {
     return [[[NSUserDefaults standardUserDefaults] valueForKey:VPlayFirstTimeUserVideo] boolValue];
+}
+
+- (BOOL)haveMediaUrl
+{
+    if (self.mediaUrl != nil)
+    {
+        return YES;
+    }
+    return NO;
 }
 
 #pragma mark - View Lifecycle Methods
@@ -122,7 +132,7 @@ NSString * const kFTUSequenceURLPath = @"sequenceUrlPath";
     }
                                             failBlock:^(NSOperation *operation, NSError *error)
     {
-        [self getStartedButtonAction:nil];
+        self.mediaUrl = nil;
     }];
 }
 
@@ -134,7 +144,7 @@ NSString * const kFTUSequenceURLPath = @"sequenceUrlPath";
     }
     else
     {
-        [self getStartedButtonAction:nil];
+        self.mediaUrl = nil;
     }
 }
 
