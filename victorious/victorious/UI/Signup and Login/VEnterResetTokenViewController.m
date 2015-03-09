@@ -164,6 +164,7 @@
         resetViewController.registrationStepDelegate = self;
         resetViewController.deviceToken = self.deviceToken;
         resetViewController.userToken = self.userToken;
+        resetViewController.dependencyManager = self.dependencyManager;
     }
 }
 

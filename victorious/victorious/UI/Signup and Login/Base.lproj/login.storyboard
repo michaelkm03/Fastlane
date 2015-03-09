@@ -254,7 +254,7 @@ We promise that your information is safe with us!</string>
                         <viewControllerLayoutGuide type="top" id="BsR-NW-aiF"/>
                         <viewControllerLayoutGuide type="bottom" id="ISK-mY-HI7"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="lEn-fY-x2F">
+                    <view key="view" contentMode="scaleToFill" id="lEn-fY-x2F" customClass="VTemplateBackgroundView">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
@@ -961,6 +961,6 @@ We promise that your information is safe with us!</string>
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="671-FK-1wm"/>
+        <segue reference="L0J-p9-vsT"/>
     </inferredMetricsTieBreakers>
 </document>

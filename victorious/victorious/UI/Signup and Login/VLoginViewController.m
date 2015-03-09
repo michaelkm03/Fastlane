@@ -448,14 +448,17 @@
         profileViewController.loginType = kVLoginTypeEmail;
         profileViewController.profile = self.profile;
     }
-    else if ([segue.identifier isEqualToString:@"toEmailLogin"] ||
-             [segue.identifier isEqualToString:@"toSignup"])
+    else if ([segue.identifier isEqualToString:@"toEmailLogin"])
     {
-        if ( [segue.destinationViewController conformsToProtocol:@protocol(VRegistrationStep)] )
-        {
-            id<VRegistrationStep> registrationViewController = (id<VRegistrationStep>)segue.destinationViewController;
-            registrationViewController.registrationStepDelegate = self;
-        }
+        VLoginWithEmailViewController *viewController = (VLoginWithEmailViewController *)segue.destinationViewController;
+        viewController.registrationStepDelegate = self;
+        viewController.dependencyManager = self.dependencyManager;
+    }
+    else if ([segue.identifier isEqualToString:@"toSignup"])
+    {
+        VSignupWithEmailViewController *viewController = (VSignupWithEmailViewController *)segue.destinationViewController;
+        viewController.registrationStepDelegate = self;
+        viewController.dependencyManager = self.dependencyManager;
     }
 }
 

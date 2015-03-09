@@ -413,12 +413,14 @@
         profileViewController.profile = self.profile;
         profileViewController.loginType = kVLoginTypeEmail;
         profileViewController.registrationModel = [[VRegistrationModel alloc] init];
+        profileViewController.dependencyManager = self.dependencyManager;
     }
     else if ([segue.identifier isEqualToString:@"toEnterResetToken"])
     {
         VEnterResetTokenViewController *destinationVC = (VEnterResetTokenViewController *)segue.destinationViewController;
         destinationVC.registrationStepDelegate = self;
         destinationVC.deviceToken = self.deviceToken;
+        destinationVC.dependencyManager = self.dependencyManager;
     }
 }
 
