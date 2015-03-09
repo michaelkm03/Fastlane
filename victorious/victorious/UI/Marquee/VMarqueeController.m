@@ -18,6 +18,7 @@
 #import "VMarqueeTabIndicatorView.h"
 
 #import "VThemeManager.h"
+#import "VTimerManager.h"
 
 @interface VMarqueeController () <VStreamCollectionDataDelegate, VMarqueeCellDelegate>
 
@@ -27,7 +28,7 @@
 @property (nonatomic, strong) VStreamCollectionViewDataSource *streamDataSource;
 @property (nonatomic, strong) VStreamItem *currentStreamItem;
 
-@property (nonatomic, strong) NSTimer *autoScrollTimer;
+@property (nonatomic, strong) VTimerManager *autoScrollTimer;
 
 @end
 
@@ -150,11 +151,16 @@
 - (void)enableTimer
 {
     [self.autoScrollTimer invalidate];
-    self.autoScrollTimer = [NSTimer scheduledTimerWithTimeInterval:kVDetailVisibilityDuration + kVDetailHideDuration
+    self.autoScrollTimer = [VTimerManager scheduledTimerManagerWithTimeInterval:kVDetailVisibilityDuration + kVDetailHideDuration
+                                                                         target:self
+                                                                       selector:@selector(selectNextTab)
+                                                                       userInfo:nil
+                                                                        repeats:NO];
+    /*self.autoScrollTimer = [NSTimer scheduledTimerWithTimeInterval:kVDetailVisibilityDuration + kVDetailHideDuration
                                                             target:self
                                                           selector:@selector(selectNextTab)
                                                           userInfo:nil
-                                                           repeats:NO];
+                                                           repeats:NO];*/
 }
 
 #pragma mark - VMarqueeCellDelegate
