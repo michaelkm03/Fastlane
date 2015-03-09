@@ -40,6 +40,7 @@
 #import <MBProgressHUD.h>
 
 #import "VNotAuthorizedDataSource.h"
+#import "VNotAuthorizedProfileCollectionViewCell.h"
 
 static const CGFloat kVSmallUserHeaderHeight = 319.0f;
 
@@ -326,7 +327,12 @@ static NSString * const kUserKey = @"user";
 
 - (void)dealloc
 {
-    [self.KVOController unobserve:self.currentStream keyPath:@"sequences"];
+    if (self.currentStream != nil)
+    {
+        [self.KVOController unobserve:self.currentStream keyPath:@"sequences"];
+    }
+    
+
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kLoggedInChangedNotification object:nil];
     if (self.profile != nil)
     {
@@ -632,6 +638,10 @@ static NSString * const kUserKey = @"user";
                   layout:(UICollectionViewLayout *)collectionViewLayout
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (self.collectionView.dataSource == self.notLoggedInDataSource)
+    {
+        return [VNotAuthorizedProfileCollectionViewCell desiredSizeWithCollectionViewBounds:collectionView.bounds];
+    }
     if (self.streamDataSource.hasHeaderCell && indexPath.section == 0)
     {
         return self.currentProfileSize;
@@ -658,6 +668,9 @@ static NSString * const kUserKey = @"user";
     {
         self.notLoggedInDataSource = [[VNotAuthorizedDataSource alloc] initWithCollectionView:self.collectionView];
         self.collectionView.dataSource = self.notLoggedInDataSource;
+        [self.backgroundImageView setBlurredImageWithClearImage:[UIImage imageNamed:@"Default"]
+                                               placeholderImage:nil
+                                                      tintColor:[[UIColor whiteColor] colorWithAlphaComponent:0.5f]];
     }
 }
 
@@ -666,9 +679,6 @@ static NSString * const kUserKey = @"user";
 - (void)loginStatusChanged:(NSNotification *)notification
 {
     [self updateCollectionViewDataSource];
-    [self.backgroundImageView setBlurredImageWithClearImage:[UIImage imageNamed:@"Default"]
-                                           placeholderImage:nil
-                                                  tintColor:nil];
 }
 
 #pragma mark - KVO

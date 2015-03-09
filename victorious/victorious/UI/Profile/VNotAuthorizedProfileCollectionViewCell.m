@@ -12,15 +12,23 @@
 #import "VNoContentView.h"
 #import "VButton.h"
 #import "VLoginRequest.h"
+#import "VThemeManager.h"
 
 @interface VNotAuthorizedProfileCollectionViewCell () <VLoginRequest>
 
-@property (weak, nonatomic) IBOutlet VNoContentView *noContentViewContainer;
+@property (weak, nonatomic) IBOutlet UIView *noContentViewContainer;
 @property (weak, nonatomic) IBOutlet VButton *loginButton;
 
 @end
 
 @implementation VNotAuthorizedProfileCollectionViewCell
+
+#pragma mark - VSharedCollectionReusableViewMethods
+
++ (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
+{
+    return CGSizeMake(CGRectGetWidth(bounds), 400.0f);
+}
 
 #pragma mark - NSObject
 
@@ -36,19 +44,9 @@
     noContentView.messageLabel.text = NSLocalizedString(@"Join me and together we can rule the galaxy as father and son. All the cool kids are doing it.", @"");
     
     [self.loginButton setStyle:VButtonStylePrimary];
-    self.loginButton.titleLabel.text = NSLocalizedString(@"Login", @"Log in call to action.");
-    
-}
-
-#pragma mark - UICollectionViewCell
-
-- (void)setSelected:(BOOL)selected
-{
-    [super setSelected:selected];
-    if (selected)
-    {
-        [self requestLogin];
-    }
+    [self.loginButton setTitle:NSLocalizedString(@"Login", @"") forState:UIControlStateNormal];
+    self.loginButton.primaryColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    self.loginButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
 }
 
 #pragma mark - Target/Action
