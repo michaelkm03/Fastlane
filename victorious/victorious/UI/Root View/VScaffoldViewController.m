@@ -20,19 +20,19 @@
 #import "VComment.h"
 #import "VTracking.h"
 #import "VWebBrowserViewController.h"
-#import "VFirstTimeUserVideoViewController.h"
+#import "VLightweightContentViewController.h"
 #import "VNavigationController.h"
 #import <MBProgressHUD.h>
 
 NSString * const VScaffoldViewControllerMenuComponentKey = @"menu";
 NSString * const VScaffoldViewControllerContentViewComponentKey = @"contentView";
 NSString * const VScaffoldViewControllerUserProfileViewComponentKey = @"userProfileView";
-NSString * const VScaffoldViewControllerWelcomeUserViewComponentKey = @"welcomeVideoView";
+NSString * const VScaffoldViewControllerFirstTimeUserViewComponentKey = @"firstTimeVideoView";
 
 static NSString * const kContentDeeplinkURLHostComponent = @"content";
 static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
 
-@interface VScaffoldViewController () <VNewContentViewControllerDelegate, VFirstTimeUserVideoViewControllerDelegate>
+@interface VScaffoldViewController () <VNewContentViewControllerDelegate, VLightweightContentViewControllerDelegate>
 
 @end
 
@@ -56,19 +56,19 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
     [super viewDidAppear:animated];
 
     // Show the First Time User Video if it hasn't been shown yet
-    VFirstTimeUserVideoViewController *firstTimeUserVC = [self.dependencyManager templateValueOfType:[VFirstTimeUserVideoViewController class]
-                                                                                              forKey:VScaffoldViewControllerWelcomeUserViewComponentKey];
-    if ( ![firstTimeUserVC hasBeenShown] )
+    VLightweightContentViewController *lightweightContentVC = [self.dependencyManager templateValueOfType:[VLightweightContentViewController class]
+                                                                                                   forKey:VScaffoldViewControllerFirstTimeUserViewComponentKey];
+    if ( ![lightweightContentVC hasBeenShown] )
     {
-        firstTimeUserVC.delegate = self;
+        lightweightContentVC.delegate = self;
         double delayInSeconds = 1.0;
         dispatch_time_t showTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
         dispatch_after(showTime, dispatch_get_main_queue(), ^(void)
                        {
                            // Present the first-time user video view controller
-                           if ( [firstTimeUserVC haveMediaUrl] )
+                           if ( [lightweightContentVC hasMediaUrl] )
                            {
-                               [self presentViewController:firstTimeUserVC animated:YES completion:nil];
+                               [self presentViewController:lightweightContentVC animated:YES completion:nil];
                            }
                        });
     }
@@ -130,7 +130,7 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
 
 #pragma mark - VFirstTimeUserVideoViewControllerDelegate
 
-- (void)videoHasCompleted:(VFirstTimeUserVideoViewController *)firstTimeUserVideoViewController
+- (void)videoHasCompleted:(VLightweightContentViewController *)firstTimeUserVideoViewController
 {
     [firstTimeUserVideoViewController dismissViewControllerAnimated:YES completion:nil];
 }

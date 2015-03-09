@@ -726,7 +726,7 @@
 		DBDD7D5F1A97F4EE0023CBF9 /* VLocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DBDD7D5E1A97F4EE0023CBF9 /* VLocationManager.m */; };
 		DBDDB8891A3F5A3900696071 /* VFollowHashtagControl.m in Sources */ = {isa = PBXBuildFile; fileRef = DBDDB8881A3F5A3900696071 /* VFollowHashtagControl.m */; };
 		DBE1077F1A2FFDCD005D303E /* VAdBreakFallback.m in Sources */ = {isa = PBXBuildFile; fileRef = DBE1077E1A2FFDCD005D303E /* VAdBreakFallback.m */; };
-		DBECEEE61A9D36BC0025C4F8 /* VFirstTimeUserVideoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBECEEE51A9D36BC0025C4F8 /* VFirstTimeUserVideoViewController.m */; };
+		DBECEEE61A9D36BC0025C4F8 /* VLightweightContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBECEEE51A9D36BC0025C4F8 /* VLightweightContentViewController.m */; };
 		DBECEEE81A9D36D70025C4F8 /* FirstTimeVideo.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DBECEEE71A9D36D70025C4F8 /* FirstTimeVideo.storyboard */; };
 		DBF77A291A416A57005BF1BE /* VProfileFollowingContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBF77A281A416A57005BF1BE /* VProfileFollowingContainerViewController.m */; };
 		DBF8B4AB1A78942900CFFD47 /* VUsersAndTagsSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBF8B4AA1A78942900CFFD47 /* VUsersAndTagsSearchViewController.m */; };
@@ -2024,8 +2024,8 @@
 		DBDDB8881A3F5A3900696071 /* VFollowHashtagControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFollowHashtagControl.m; sourceTree = "<group>"; };
 		DBE1077D1A2FFDCD005D303E /* VAdBreakFallback.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAdBreakFallback.h; sourceTree = "<group>"; };
 		DBE1077E1A2FFDCD005D303E /* VAdBreakFallback.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAdBreakFallback.m; sourceTree = "<group>"; };
-		DBECEEE41A9D36BC0025C4F8 /* VFirstTimeUserVideoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFirstTimeUserVideoViewController.h; sourceTree = "<group>"; };
-		DBECEEE51A9D36BC0025C4F8 /* VFirstTimeUserVideoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFirstTimeUserVideoViewController.m; sourceTree = "<group>"; };
+		DBECEEE41A9D36BC0025C4F8 /* VLightweightContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLightweightContentViewController.h; sourceTree = "<group>"; };
+		DBECEEE51A9D36BC0025C4F8 /* VLightweightContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VLightweightContentViewController.m; sourceTree = "<group>"; };
 		DBECEEE71A9D36D70025C4F8 /* FirstTimeVideo.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = FirstTimeVideo.storyboard; sourceTree = "<group>"; };
 		DBF77A271A416A57005BF1BE /* VProfileFollowingContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VProfileFollowingContainerViewController.h; sourceTree = "<group>"; };
 		DBF77A281A416A57005BF1BE /* VProfileFollowingContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VProfileFollowingContainerViewController.m; sourceTree = "<group>"; };
@@ -4710,8 +4710,8 @@
 		DBECEEE31A9D361D0025C4F8 /* First Time User */ = {
 			isa = PBXGroup;
 			children = (
-				DBECEEE41A9D36BC0025C4F8 /* VFirstTimeUserVideoViewController.h */,
-				DBECEEE51A9D36BC0025C4F8 /* VFirstTimeUserVideoViewController.m */,
+				DBECEEE41A9D36BC0025C4F8 /* VLightweightContentViewController.h */,
+				DBECEEE51A9D36BC0025C4F8 /* VLightweightContentViewController.m */,
 				DBECEEE71A9D36D70025C4F8 /* FirstTimeVideo.storyboard */,
 			);
 			path = "First Time User";
@@ -5547,7 +5547,7 @@
 				A761C9D71A48CB9800F0D0F9 /* VSwipeView.m in Sources */,
 				0314D4E619B46B5E00FA363C /* VInviteFriendTableViewCell.m in Sources */,
 				A769C3EB1A13176700698D0C /* VWebBrowserViewController.m in Sources */,
-				DBECEEE61A9D36BC0025C4F8 /* VFirstTimeUserVideoViewController.m in Sources */,
+				DBECEEE61A9D36BC0025C4F8 /* VLightweightContentViewController.m in Sources */,
 				DB2D6F9F1A802B080050F963 /* VSearchResultsTransition.m in Sources */,
 				D80C615B19D0F692006AE41A /* VProgressBarView.m in Sources */,
 				A7D707981A7C144C00D9993F /* VCountdownView.m in Sources */,

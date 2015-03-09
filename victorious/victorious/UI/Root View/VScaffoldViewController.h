@@ -31,7 +31,7 @@ extern NSString * const VScaffoldViewControllerUserProfileViewComponentKey;
 /**
  The key that identifies the welcome view component in the VDependencyManager
  */
-extern NSString * const VScaffoldViewControllerWelcomeUserViewComponentKey;
+extern NSString * const VScaffoldViewControllerFirstTimeUserViewComponentKey;
 
 /**
  Abstract base class for view controllers that act as "scaffolding",

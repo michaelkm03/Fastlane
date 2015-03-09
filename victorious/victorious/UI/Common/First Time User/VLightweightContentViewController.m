@@ -1,12 +1,12 @@
 //
-//  VFirstTimeUserVideoViewController.m
+//  VLightweightContentViewController.m
 //  victorious
 //
 //  Created by Lawrence Leach on 2/24/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VFirstTimeUserVideoViewController.h"
+#import "VLightweightContentViewController.h"
 #import "VButton.h"
 #import "VDependencyManager.h"
 #import "VSequence+Fetcher.h"
@@ -18,11 +18,11 @@
 #import "VAsset+Fetcher.h"
 #import "VNode+Fetcher.h"
 
-static NSString * const VPlayFirstTimeUserVideo = @"com.getvictorious.settings.playWelcomeVideo";
+static NSString * const VDidPlayFirstTimeUserVideo = @"com.getvictorious.settings.didPlayFirstTimeUserVideo";
 
 NSString * const kFTUSequenceURLPath = @"sequenceUrlPath";
 
-@interface VFirstTimeUserVideoViewController () <VCVideoPlayerDelegate>
+@interface VLightweightContentViewController () <VCVideoPlayerDelegate>
 
 @property (nonatomic, strong) IBOutletCollection(NSLayoutConstraint) NSArray *portraitConstraints;
 @property (nonatomic, strong) IBOutletCollection(NSLayoutConstraint) NSArray *landscapeConstraints;
@@ -39,11 +39,11 @@ NSString * const kFTUSequenceURLPath = @"sequenceUrlPath";
 
 @end
 
-@implementation VFirstTimeUserVideoViewController
+@implementation VLightweightContentViewController
 
 #pragma mark - Initializers
 
-+ (VFirstTimeUserVideoViewController *)instantiateFromStoryboard:(NSString *)storyboardName
++ (VLightweightContentViewController *)instantiateFromStoryboard:(NSString *)storyboardName
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:storyboardName bundle:[NSBundle bundleForClass:[self class]]];
     return [storyboard instantiateViewControllerWithIdentifier:@"firstTimeUserVideo"];
@@ -51,7 +51,7 @@ NSString * const kFTUSequenceURLPath = @"sequenceUrlPath";
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    VFirstTimeUserVideoViewController *firstTimeVC = [self instantiateFromStoryboard:@"FirstTimeVideo"];
+    VLightweightContentViewController *firstTimeVC = [self instantiateFromStoryboard:@"FirstTimeVideo"];
     firstTimeVC.dependencyManager = dependencyManager;
     [firstTimeVC fetchMediaSequenceObject];
     return firstTimeVC;
@@ -59,10 +59,10 @@ NSString * const kFTUSequenceURLPath = @"sequenceUrlPath";
 
 - (BOOL)hasBeenShown
 {
-    return [[[NSUserDefaults standardUserDefaults] valueForKey:VPlayFirstTimeUserVideo] boolValue];
+    return [[[NSUserDefaults standardUserDefaults] valueForKey:VDidPlayFirstTimeUserVideo] boolValue];
 }
 
-- (BOOL)haveMediaUrl
+- (BOOL)hasMediaUrl
 {
     if (self.mediaUrl != nil)
     {
@@ -83,19 +83,13 @@ NSString * const kFTUSequenceURLPath = @"sequenceUrlPath";
     [self.getStartedButton setTitle:NSLocalizedString(@"Get Started", @"") forState:UIControlStateNormal];
     self.getStartedButton.style = VButtonStyleSecondary;
     
-    // Set Background Color
     self.view.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
-    
-    // Setup Player UI
     [self setupVideoUI];
-
-    // Setup Media Playback
     [self fetchMediaSequenceObject];
 }
 
 - (void)setupVideoUI
 {
-    // Show activity indicator
     [self.activityIndicator startAnimating];
     
     // Setup Video player
@@ -157,11 +151,6 @@ NSString * const kFTUSequenceURLPath = @"sequenceUrlPath";
     
     // Play the video
     [self showFirstTimeVideo];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -250,7 +239,7 @@ NSString * const kFTUSequenceURLPath = @"sequenceUrlPath";
 
 - (void)savePlaybackDefaults
 {
-    [[NSUserDefaults standardUserDefaults] setValue:@YES forKey:VPlayFirstTimeUserVideo];
+    [[NSUserDefaults standardUserDefaults] setValue:@YES forKey:VDidPlayFirstTimeUserVideo];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 

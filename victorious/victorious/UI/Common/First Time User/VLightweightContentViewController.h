@@ -1,5 +1,5 @@
 //
-//  VWelcomeVideoViewController.h
+//  VLightweightContentViewController.h
 //  victorious
 //
 //  Created by Lawrence Leach on 2/24/15.
@@ -8,17 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
-@class VDependencyManager, VSequence, VFirstTimeUserVideoViewController;
+@class VDependencyManager, VSequence, VLightweightContentViewController;
 
 extern NSString * const kFTUSequenceURLPath;
 
-@protocol VFirstTimeUserVideoViewControllerDelegate <NSObject>
+@protocol VLightweightContentViewControllerDelegate <NSObject>
 
-- (void)videoHasCompleted:(VFirstTimeUserVideoViewController *)firstTimeUserVideoViewController;
+- (void)videoHasCompleted:(VLightweightContentViewController *)firstTimeUserVideoViewController;
 
 @end
 
-@interface VFirstTimeUserVideoViewController : UIViewController
+@interface VLightweightContentViewController : UIViewController
 
 /**
  Factory method to instantiate the VFirstTimeUserVideoViewController
@@ -27,7 +27,7 @@ extern NSString * const kFTUSequenceURLPath;
  
  @return Instance of VFirstTimeUserVideoViewController
  */
-+ (VFirstTimeUserVideoViewController *)instantiateFromStoryboard:(NSString *)storyboardName;
++ (VLightweightContentViewController *)instantiateFromStoryboard:(NSString *)storyboardName;
 
 /**
  Class method that reports if the Welcome video has been shown.
@@ -41,12 +41,12 @@ extern NSString * const kFTUSequenceURLPath;
  
  @return BOOl indicating if a media url exists or not.
  */
-- (BOOL)haveMediaUrl;
+- (BOOL)hasMediaUrl;
 
 /**
  Reports when the video has completed or failed to load
  */
-@property (nonatomic, weak) id <VFirstTimeUserVideoViewControllerDelegate> delegate;
+@property (nonatomic, weak) id <VLightweightContentViewControllerDelegate> delegate;
 
 /**
  VSequence object that contains media url
