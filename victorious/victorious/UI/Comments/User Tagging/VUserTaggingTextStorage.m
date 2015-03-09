@@ -16,17 +16,16 @@
 typedef NS_ENUM(NSInteger, VUserTaggingTextStorageState)
 {
     VUserTaggingTextStorageStateInactive,
-    VUserTaggingTextStorageStateTriggerCharacterDetected,
+    VUserTaggingTextStorageStateTriggerStringDetected,
     VUserTaggingTextStorageStateSearchActive
 };
 
 static NSString * const kTriggerString = @"@";
 static NSString * const kThreeSpaces = @"   ";
+static NSString * const VOriginalFont = @"NSOriginalFont";
 
 @interface VUserTaggingTextStorage () <VInlineSearchTableViewControllerDelegate>
 
-//Using a UITextView to determine proper font for individual characters to support emojis and other languages (tested on korean)
-@property (nonatomic, strong) UITextView *innerTextView;
 @property (nonatomic, strong) NSMutableAttributedString *displayStorage;
 @property (nonatomic, assign) NSInteger state;
 @property (nonatomic, assign) NSRange searchTermRange; ///< This range includes the trigger character
@@ -35,36 +34,38 @@ static NSString * const kThreeSpaces = @"   ";
 @property (nonatomic, strong) NSString *tagDelimiterString;
 @property (nonatomic, assign) NSRange tagSelectionRange;
 @property (nonatomic, assign) BOOL needsSelectionUpdate;
+@property (nonatomic, strong) NSMutableParagraphStyle *paragraphStyle;
 
 @end
 
 @implementation VUserTaggingTextStorage
 
-- (instancetype)initWithString:(NSString *)str
-                      textView:(UITextView *)textView
-               taggingDelegate:(id<VUserTaggingTextStorageDelegate>)taggingDelegate
+- (instancetype)initWithTextView:(UITextView *)textView
+                     defaultFont:(UIFont *)defaultFont
+                 taggingDelegate:(id<VUserTaggingTextStorageDelegate>)taggingDelegate
 {
+    NSAssert(defaultFont != nil, @"DefaultFont must not be nil");
+    
     self = [super init];
     if ( self != nil )
     {
-        _innerTextView = [[UITextView alloc] init];
         _taggingDelegate = taggingDelegate;
         _textView = textView;
+        _defaultFont = defaultFont;
         BOOL hasTextView = _textView != nil;
         
-        //If passed in a textview, add our layout manager to its layout managers
         if ( hasTextView )
         {
-            [self addLayoutManager:_textView.layoutManager];
-            self.innerTextView.font = _textView.font;
+            [self setupTextView:_textView];
         }
         
-        if ( str != nil && str.length > 0 && hasTextView)
+        NSString *string = _textView.text;
+        if ( hasTextView && string.length > 0 )
         {
-            NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] initWithString:str];
+            NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] initWithString:string];
             self.tagDictionary = [VTagStringFormatter tagDictionaryFromFormattingAttributedString:attrString withTagStringAttributes:_textView.linkTextAttributes andDefaultStringAttributes:_textView.typingAttributes];
-            [self replaceCharactersInRange:NSMakeRange(0, 0) withAttributedString:attrString];
-            [_textView setSelectedRange:NSMakeRange(str.length, 0)];
+            [self replaceCharactersInRange:NSMakeRange(0, self.length) withAttributedString:attrString];
+            [_textView setSelectedRange:NSMakeRange(attrString.length, 0)];
         }
         else
         {
@@ -72,6 +73,26 @@ static NSString * const kThreeSpaces = @"   ";
         }
     }
     return self;
+}
+
+- (void)setTextView:(UITextView *)textView
+{
+    _textView = textView;
+    [self setupTextView:_textView];
+}
+
+- (void)setupTextView:(UITextView *)textView
+{
+    //Add layout manager if needed
+    if ( ![self.layoutManagers containsObject:textView.layoutManager] )
+    {
+        [self addLayoutManager:_textView.layoutManager];
+    }
+    
+    //Update the typing attributes to include the fixed-height paragraphStyle
+    NSMutableDictionary *typingAttributes = [textView.typingAttributes mutableCopy];
+    [typingAttributes setValue:self.paragraphStyle forKey:NSParagraphStyleAttributeName];
+    [textView setTypingAttributes:typingAttributes];
 }
 
 - (void)setState:(NSInteger)state
@@ -108,12 +129,12 @@ static NSString * const kThreeSpaces = @"   ";
 
 - (void)searchWithRange:(NSRange)range
 {
-    NSUInteger triggerCharacterLength = kTriggerString.length;
+    NSUInteger triggerStringLength = kTriggerString.length;
     
     //If range is <= triggerCharacterLength, the range is looking at a blank or only "kTriggerCharacter" string and does not need to search
-    if ( range.length > triggerCharacterLength )
+    if ( range.length > triggerStringLength )
     {
-        [self.searchTableViewController searchFollowingList:[[self.innerTextView.text substringWithRange:range] substringFromIndex:triggerCharacterLength]];
+        [self.searchTableViewController searchFollowingList:[[self.displayStorage.string substringWithRange:range] substringFromIndex:triggerStringLength]];
     }
 }
 
@@ -126,7 +147,11 @@ static NSString * const kThreeSpaces = @"   ";
 
 - (NSDictionary *)attributesAtIndex:(NSUInteger)location effectiveRange:(NSRangePointer)range
 {
-    return [self.displayStorage attributesAtIndex:location effectiveRange:range];
+    if ( location < self.displayStorage.length )
+    {
+        return [self.displayStorage attributesAtIndex:location effectiveRange:range];
+    }
+    return nil;
 }
 
 #pragma mark - NSMutableAttributedString primatives
@@ -161,6 +186,7 @@ static NSString * const kThreeSpaces = @"   ";
                         range.location++;
                         range.length--;
                     }
+                    self.tagSelectionRange = range;
                     //Otherwise trying to append in the middle of a tag, replace the tag with this string (trigger that check by making the length > 0)
                 }
             }
@@ -170,7 +196,7 @@ static NSString * const kThreeSpaces = @"   ";
             NSString *compareString = [self.string substringWithRange:NSMakeRange(range.location - subtractor, 1)];
             if ( [compareString isEqualToString:self.tagDelimiterString] && range.location + 1 - subtractor < self.string.length && [self isTagAtIndex:range.location + 1 - subtractor] ) //Check if string to left of us is delim string
             {
-                //Trying to append right before end delimiter string, just move replace range before it
+                //Trying to append right after start delimiter string, just move replace range before it
                 range.location--;
                 self.needsSelectionUpdate = YES;
                 self.tagSelectionRange = range;
@@ -215,30 +241,55 @@ static NSString * const kThreeSpaces = @"   ";
         }
     }
     
-    [self.innerTextView replaceRange:[self textRangeFromRange:range inTextView:self.innerTextView] withText:string];
-    NSAttributedString *attrString = [self.innerTextView.attributedText attributedSubstringFromRange:NSMakeRange(range.location, string.length)];
-    [self.displayStorage replaceCharactersInRange:range withAttributedString:attrString];
+    [self.displayStorage replaceCharactersInRange:range withString:string];
     [self updateStateForReplacementString:string andReplacementRange:range];
     [self edited:NSTextStorageEditedCharacters range:range changeInLength:(string.length - range.length)];
 }
 
-
 - (void)setAttributes:(NSDictionary *)attrs range:(NSRange)range
 {
-    if ( range.location + range.length < self.string.length && [self.tagDictionary tagForKey:[self.string substringWithRange:range]] != nil )
+    if ( self.needsSelectionUpdate )
+    {
+        //Trying to update attributes when we are updating the cursor location. When updating cursor location, this function can be called with a range outside the string or a range where the old string was (which would make us set attributes incorrectly)
+        return;
+    }
+    
+    NSString *substring = [self.string substringWithRange:range];
+    NSMutableDictionary *innerAttrs = [[self.displayStorage attributesAtIndex:range.location effectiveRange:nil] mutableCopy];
+    [innerAttrs addEntriesFromDictionary:[self.textView typingAttributes]];
+    NSMutableDictionary *updatedAttrs = attrs != nil ? [attrs mutableCopy] : [[NSMutableDictionary alloc] init];
+    
+    if ( [substring isEqualToString:[VTagStringFormatter delimiterString]] && ![self containsAttributes:attrs atIndex:range.location] )
+    {
+        //We're trying to adjust the formatting of the delimiter string. This should NEVER be allowed, delimiters should always have their original formatting
+        return;
+    }
+    else if ( [self.tagDictionary tagForKey:substring] != nil )
     {
         //We've encountered a tag, add tag attributes
-        NSMutableDictionary *mutableAttrs = [[self.displayStorage attributesAtIndex:range.location effectiveRange:nil] mutableCopy];
-        [mutableAttrs setObject:[self.textView.linkTextAttributes objectForKey:NSForegroundColorAttributeName] forKey:NSForegroundColorAttributeName];
-        attrs = mutableAttrs;
+        [updatedAttrs setObject:[self.textView.linkTextAttributes objectForKey:NSForegroundColorAttributeName] forKey:NSForegroundColorAttributeName];
     }
 
-    //Update font and paragraph attributes from internal UITextView
-    NSMutableDictionary *updatedAttrs = [attrs mutableCopy];
-    NSMutableDictionary *innerAttrs = [[[self.innerTextView attributedText] attributesAtIndex:range.location effectiveRange:nil] mutableCopy];
-    [updatedAttrs addEntriesFromDictionary:innerAttrs];
+    //Update font to keep consistent formatting even when supporting emoji / other languages
+    if ( [attrs objectForKey:NSFontAttributeName] )
+    {
+        /*
+         The attributes want to specify a new foreground font, which is fine, but we need to add the original font
+         to the dictionary so when the next character is added we know what font it should have
+         */
+        [updatedAttrs setValue:self.defaultFont forKey:VOriginalFont];
+    }
+    else
+    {
+        /*
+         No font is specified by the system, use the font from the displayStorage (if specified) or the default font
+         */
+        UIFont *font = [innerAttrs objectForKey:NSFontAttributeName];
+        font = font == nil ? self.defaultFont : font;
+        [updatedAttrs setValue:font forKey:NSFontAttributeName];
+    }
     
-    [self setupParagraphStyle:[updatedAttrs objectForKey:NSParagraphStyleAttributeName]];
+    [updatedAttrs setValue:self.paragraphStyle forKey:NSParagraphStyleAttributeName];
     
     [self.displayStorage setAttributes:updatedAttrs range:range];
     [self edited:NSTextStorageEditedAttributes range:range changeInLength:0];
@@ -246,7 +297,11 @@ static NSString * const kThreeSpaces = @"   ";
 
 - (BOOL)isTagAtIndex:(NSUInteger)index
 {
-    return [self containsAttributes:self.textView.linkTextAttributes atIndex:index];
+    if ( self.tagDictionary.count == 0 )
+    {
+        return NO;
+    }
+    return [self containsAttributes:[[[self.tagDictionary tags] firstObject] tagStringAttributes] atIndex:index];
 }
 
 //Checks that all provided attributes are present in our attributed string at the provided index
@@ -275,6 +330,12 @@ static NSString * const kThreeSpaces = @"   ";
     if ( self.needsSelectionUpdate )
     {
         self.textView.selectedRange = self.tagSelectionRange;
+        
+        /*
+         We've just updated the cursor location because of tag interaction
+         All prior undo actions will be trying to edit the wrong section of our attributedString, remove them to prevent crashes
+         */
+        [self.textView.undoManager removeAllActions];
     }
     else if ( self.textView.selectedRange.location > self.displayStorage.length )
     {
@@ -297,12 +358,12 @@ static NSString * const kThreeSpaces = @"   ";
         {
             if ( [string isEqualToString:kTriggerString] )
             {
-                self.state = VUserTaggingTextStorageStateTriggerCharacterDetected;
+                self.state = VUserTaggingTextStorageStateTriggerStringDetected;
                 self.searchTermRange = NSMakeRange(range.location, kTriggerString.length);
             }
             break;
         }
-        case VUserTaggingTextStorageStateTriggerCharacterDetected:
+        case VUserTaggingTextStorageStateTriggerStringDetected:
         {
             if ( string.length != 1 || ![[NSCharacterSet letterCharacterSet] characterIsMember:[string characterAtIndex:0]] )
             {
@@ -324,7 +385,7 @@ static NSString * const kThreeSpaces = @"   ";
                 if ( self.searchTermRange.length >= 3 )
                 {
                     NSRange rangeOfLastThreeCharacters = NSMakeRange(self.searchTermRange.location + self.searchTermRange.length - 3, 3);
-                    NSString *lastThreeCharacters = [self.innerTextView.text substringWithRange:rangeOfLastThreeCharacters];
+                    NSString *lastThreeCharacters = [self.string substringWithRange:rangeOfLastThreeCharacters];
                     
                     if ( [lastThreeCharacters isEqualToString:kThreeSpaces] )
                     {
@@ -404,22 +465,20 @@ static NSString * const kThreeSpaces = @"   ";
     return _displayStorage;
 }
 
-- (void)setTextView:(UITextView *)textView
+- (NSMutableParagraphStyle *)paragraphStyle
 {
-    _textView = textView;
-    self.innerTextView.font = textView.font;
+    if ( _paragraphStyle != nil )
+    {
+        return _paragraphStyle;
+    }
     
-    //Add fixed-height paragraph style to center cursor in textView
-    NSMutableParagraphStyle *paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
-    [self setupParagraphStyle:paragraphStyle];
-    [textView setTypingAttributes:@{ NSFontAttributeName : textView.font, NSParagraphStyleAttributeName : paragraphStyle }];
-}
-
-- (void)setupParagraphStyle:(NSMutableParagraphStyle *)paragraphStyle
-{
+    _paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+    
     //Setting min and max line height centers different fonts and keeps line heights uniform
-    paragraphStyle.minimumLineHeight = 17.0f;
-    paragraphStyle.maximumLineHeight = 17.0f;
+    _paragraphStyle.minimumLineHeight = 17.0f;
+    _paragraphStyle.maximumLineHeight = 17.0f;
+    
+    return _paragraphStyle;
 }
 
 #pragma mark - VInlineSearchTableViewControllerDelegate
@@ -436,6 +495,7 @@ static NSString * const kThreeSpaces = @"   ";
     
     //Add newly selected tag to tagDictionary
     [self.tagDictionary incrementTag:tag];
+    
     [self replaceCharactersInRange:self.searchTermRange withAttributedString:attributedString];
     
     self.textView.selectedRange = newSelection;

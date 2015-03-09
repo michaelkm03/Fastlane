@@ -18,6 +18,8 @@
 @property (nonatomic) NSString *testStringFormat;
 @property (nonatomic) NSString *displayFormattedString;
 @property (nonatomic) NSString *databaseFormattedString;
+@property (nonatomic) UITextView *textView;
+@property (nonatomic) UIFont *defaultFont;
 
 @end
 
@@ -38,6 +40,10 @@
     NSString *wrappedHashtag = [[delimiterString stringByAppendingString:[NSString stringWithFormat:@"#%@", hashtag.tag]] stringByAppendingString:delimiterString];
     self.displayFormattedString = [NSString stringWithFormat:self.testStringFormat, wrappedUser, wrappedHashtag];
     self.databaseFormattedString = [NSString stringWithFormat:self.testStringFormat, [NSString stringWithFormat:@"@{%@:%@}", [user.remoteId stringValue], user.name], [NSString stringWithFormat:@"#%@", hashtag.tag]];
+    
+    self.textView = [[UITextView alloc] init];
+    self.defaultFont = [UIFont systemFontOfSize:13.0f];
+    self.textView.text = self.databaseFormattedString;
 }
 
 - (void)tearDown
@@ -45,36 +51,41 @@
     self.testStringFormat = nil;
     self.displayFormattedString = nil;
     self.databaseFormattedString = nil;
+    self.textView = nil;
+    self.defaultFont = nil;
     [super tearDown];
 }
 
 - (void)testInit
 {
-    XCTAssertNoThrow([[VUserTaggingTextStorage alloc] initWithString:nil
-                                                            textView:nil
-                                                     taggingDelegate:nil], @"should not throw error for nil init fields");
+    XCTAssertNoThrow([[VUserTaggingTextStorage alloc] initWithTextView:nil
+                                                           defaultFont:self.defaultFont
+                                                       taggingDelegate:nil], @"should not throw error for nil taggingDelegate or textView fields");
     
-    UITextView *textView = [[UITextView alloc] init];
-    VUserTaggingTextStorage *textStorage = [[VUserTaggingTextStorage alloc] initWithString:self.databaseFormattedString
-                                                                                  textView:textView
-                                                                           taggingDelegate:nil];
+    XCTAssertThrows([[VUserTaggingTextStorage alloc] initWithTextView:self.textView
+                                                           defaultFont:nil
+                                                       taggingDelegate:nil], @"should throw error for nil defaultFont");
+    
+    VUserTaggingTextStorage *textStorage = [[VUserTaggingTextStorage alloc] initWithTextView:self.textView
+                                                                                 defaultFont:self.defaultFont
+                                                                             taggingDelegate:nil];
     XCTAssertTrue([self.displayFormattedString isEqualToString:textStorage.string], @"text storage didn't automatically create display-formatted string after init with string");
+    XCTAssertTrue([self.defaultFont isEqual:textStorage.defaultFont], @"DefaultFont should be equivalent to passed in defaultFont");
 }
 
 - (void)testDatabaseFormattedString
 {
     //Would love to get the init taken out of here, but how the string is formatted is tied to this init call
-    VUserTaggingTextStorage *textStorage = [[VUserTaggingTextStorage alloc] initWithString:self.databaseFormattedString
-                                                                                  textView:nil
-                                                                           taggingDelegate:nil];
+    VUserTaggingTextStorage *textStorage = [[VUserTaggingTextStorage alloc] initWithTextView:nil
+                                                                                 defaultFont:self.defaultFont
+                                                                             taggingDelegate:nil];
     
     NSString *resultString = [textStorage databaseFormattedString];
     XCTAssertNil(resultString, @"Database formatted string should return nil when textView is nil");
     
-    UITextView *textView = [[UITextView alloc] init];
-    textStorage = [[VUserTaggingTextStorage alloc] initWithString:self.databaseFormattedString
-                                                         textView:textView
-                                                  taggingDelegate:nil];
+    textStorage = [[VUserTaggingTextStorage alloc] initWithTextView:self.textView
+                                                        defaultFont:self.defaultFont
+                                                    taggingDelegate:nil];
     
     resultString = [textStorage databaseFormattedString];
     XCTAssertTrue([resultString isEqualToString:self.databaseFormattedString], @"creation of database formatted string failed");
