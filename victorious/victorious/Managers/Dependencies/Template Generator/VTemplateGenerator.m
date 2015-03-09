@@ -19,7 +19,7 @@
 #import "VSolidColorBackground.h"
 #import "VTabMenuViewController.h"
 
-#define BOTTOM_NAV_ENABLED 1
+#define BOTTOM_NAV_ENABLED 0
 #define CHANNELS_WITH_GROUP_STREAM_ENABLED 1
 
 static NSString * const kIDKey = @"id";
