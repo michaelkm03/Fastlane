@@ -17,9 +17,19 @@
  */
 @interface VUserTaggingTextStorage : NSTextStorage
 
-- (instancetype)initWithString:(NSString *)str
-                      textView:(UITextView *)textView
-               taggingDelegate:(id<VUserTaggingTextStorageDelegate>)taggingDelegate;
+/**
+ Initialize a new VUserTaggingTextStorage with the given textView, default string font, and tagging delegate.
+ This function will automatically display-format the string in the textView. Font is required, other parameters are optional.
+ 
+ @param textView The UITextView who's text should be formatted and who's cursor should be moved around as tags are created / deleted
+ @param font The font to apply to non-tag strings
+ @param taggingDelegate The VUserTaggingTextStorageDelegate that will recieve tag touch events
+ 
+ @return a new VUserTaggingTextStorage instance that is managing the given textView
+ */
+- (instancetype)initWithTextView:(UITextView *)textView
+                     defaultFont:(UIFont *)defaultFont
+                 taggingDelegate:(id<VUserTaggingTextStorageDelegate>)taggingDelegate;
 
 /**
  Create a database-formatted version of the current attributed string
@@ -31,5 +41,6 @@
 @property (nonatomic, weak) VDependencyManager *dependencyManager;
 @property (nonatomic, weak) UITextView *textView;
 @property (nonatomic, assign) BOOL disableSearching;
+@property (nonatomic, strong) UIFont *defaultFont;
 
 @end
