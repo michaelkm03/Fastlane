@@ -63,8 +63,9 @@ static const CGFloat kSearchTableAnimationDuration = 0.3f;
     self.modalContainer.layer.borderColor = [UIColor colorWithWhite:0.9f alpha:1.0f].CGColor;
     self.modalContainer.layer.borderWidth = 1.0f;
     
+    UIFont *defaultFont = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel1Font];
     self.editTextView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-    self.editTextView.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel1Font];
+    self.editTextView.font = defaultFont;
     self.editTextView.returnKeyType = UIReturnKeyDone;
     self.editTextView.delegate = self;
     self.editTextView.text = self.comment.text;
@@ -72,8 +73,8 @@ static const CGFloat kSearchTableAnimationDuration = 0.3f;
                                                             kTextViewInsetsHorizontal,
                                                             kTextViewInsetsVertical,
                                                             kTextViewInsetsHorizontal );
-    
-    self.textStorage = [[VUserTaggingTextStorage alloc] initWithString:self.editTextView.text textView:self.editTextView taggingDelegate:self];
+        
+    self.textStorage = [[VUserTaggingTextStorage alloc] initWithTextView:self.editTextView defaultFont:defaultFont taggingDelegate:self];
         
     [self updateSize];
 }

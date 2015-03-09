@@ -24,7 +24,7 @@
                      defaultAttributes:(NSDictionary *)defaultAttributes
                      andTagTapDelegate:(id<VTagSensitiveTextViewDelegate>)tagTapDelegate;
 
-@property (nonatomic, strong) NSDictionary *tagStringAttributes;
-@property (nonatomic, weak) id <VTagSensitiveTextViewDelegate> tagTapDelegate;
+@property (nonatomic, readonly) NSDictionary *tagStringAttributes; ///< Attributes that will be applied to the display version of the tag text
+@property (nonatomic, weak) id <VTagSensitiveTextViewDelegate> tagTapDelegate; ///< The delegate that will recieve tag tap messages
 
 @end

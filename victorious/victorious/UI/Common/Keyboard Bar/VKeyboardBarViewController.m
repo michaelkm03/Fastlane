@@ -51,7 +51,19 @@ static const NSInteger VDefaultKeyboardHeight = 51;
 {
     [super viewDidLoad];
     
-    self.textStorage = [[VUserTaggingTextStorage alloc] initWithString:nil textView:nil taggingDelegate:self.delegate];
+    [self createTextView];
+    
+    [self addAccessoryBar];
+    
+    self.promptLabel.textColor = [UIColor lightGrayColor];
+    
+    [self enableOrDisableSendButtonAsAppropriate];
+}
+
+- (void)createTextView
+{
+    UIFont *defaultFont = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel1Font];
+    self.textStorage = [[VUserTaggingTextStorage alloc] initWithTextView:nil defaultFont:defaultFont taggingDelegate:self.delegate];
     
     NSLayoutManager *layoutManager = [[NSLayoutManager alloc] init];
     [self.textStorage addLayoutManager:layoutManager];
@@ -63,7 +75,7 @@ static const NSInteger VDefaultKeyboardHeight = 51;
     self.textView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.textView setBackgroundColor:[UIColor clearColor]];
     self.textView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-    self.textView.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel1Font];
+    self.textView.font = defaultFont;
     
     //Adding this to the top inset centers the text with it's placeholder
     UIEdgeInsets textContainerInset = self.textView.textContainerInset;
@@ -79,12 +91,6 @@ static const NSInteger VDefaultKeyboardHeight = 51;
     [self.textStorage setTextView:self.textView];
     
     [self.textView addObserver:self forKeyPath:NSStringFromSelector(@selector(contentSize)) options:0 context:nil];
-    
-    [self addAccessoryBar];
-    
-    self.promptLabel.textColor = [UIColor lightGrayColor];
-    
-    [self enableOrDisableSendButtonAsAppropriate];
 }
 
 - (void)addAccessoryBar

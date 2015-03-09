@@ -56,7 +56,8 @@ static const CGFloat VTextViewTopInsetAddition = 2.0f;
 
 - (void)awakeFromNib
 {
-    self.textStorage = [[VUserTaggingTextStorage alloc] initWithString:nil textView:nil taggingDelegate:self.delegate];
+    UIFont *defaultFont = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel1Font];
+    self.textStorage = [[VUserTaggingTextStorage alloc] initWithTextView:nil defaultFont:defaultFont taggingDelegate:self.delegate];
 
     NSLayoutManager *layoutManager = [[NSLayoutManager alloc] init];
     [self.textStorage addLayoutManager:layoutManager];
@@ -68,7 +69,7 @@ static const CGFloat VTextViewTopInsetAddition = 2.0f;
     editingTextView.translatesAutoresizingMaskIntoConstraints = NO;
     editingTextView.delegate = self;
     editingTextView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-    editingTextView.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel1Font];
+    editingTextView.font = defaultFont;
     
     //Adding this to the top inset centers the text with it's placeholder
     UIEdgeInsets textContainerInset = editingTextView.textContainerInset;
