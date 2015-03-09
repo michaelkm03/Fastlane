@@ -85,7 +85,6 @@
 {
     [super viewDidAppear:animated];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardFrameChanged:) name:UIKeyboardWillChangeFrameNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardFrameChanged:) name:UIKeyboardWillHideNotification object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -136,12 +135,12 @@
         CGFloat keyboardHeight = CGRectGetHeight(keyboardEndFrame);
         UITableView *tableView = self.conversationTableViewController.tableView;
         CGFloat offset = tableView.contentOffset.y + keyboardHeight;
+        CGFloat tableHeight = CGRectGetHeight(tableView.bounds);
+        CGFloat contentHeight = tableView.contentSize.height;
         if ( CGRectGetMinY(keyboardEndFrame) <= CGRectGetMaxY(self.view.bounds) )
         {
             //Keyboard is overlapping the table, adjust
             self.bottomConstraint.constant = -keyboardHeight;
-            CGFloat tableHeight = CGRectGetHeight(tableView.bounds);
-            CGFloat contentHeight = tableView.contentSize.height;
             if ( contentHeight < tableHeight && keyboardHeight != 0 )
             {
                 //Can't just move up content by constraint amount as we don't have enough content to fill out the whole table
@@ -161,7 +160,10 @@
         {
             //Keyboard is hidden, need to pin the inputView down to the bottom again
             self.bottomConstraint.constant = 0;
-            offset = MIN(0, offset);
+            if ( tableHeight >= contentHeight )
+            {
+                offset = 0;
+            }
         }
         tableView.contentOffset = CGPointMake(0, offset);
         [self.view layoutIfNeeded];
