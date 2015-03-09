@@ -261,7 +261,6 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     _isLooping = self.loopWithoutComposition ? YES : loop;
     
     self.player.actionAtItemEnd = loop ? AVPlayerActionAtItemEndNone : AVPlayerActionAtItemEndPause;
-    
     const BOOL shouldLoopWithComposition = loop && !self.loopWithoutComposition;
     [self.videoUtils createPlayerItemWithURL:itemURL loop:shouldLoopWithComposition
                                readyCallback:^(AVPlayerItem *playerItem, CMTime duration)
