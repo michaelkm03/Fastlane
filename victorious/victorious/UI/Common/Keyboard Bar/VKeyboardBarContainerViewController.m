@@ -85,6 +85,7 @@
 {
     [super viewDidAppear:animated];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardFrameChanged:) name:UIKeyboardWillChangeFrameNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardFrameChanged:) name:UIKeyboardWillHideNotification object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -126,14 +127,43 @@
     [userInfo[UIKeyboardAnimationDurationUserInfoKey] getValue:&animationDuration];
     [userInfo[UIKeyboardFrameEndUserInfoKey] getValue:&keyboardEndFrame];
 
+    
     [UIView animateWithDuration:animationDuration
                           delay:0
                         options:(animationCurve << 16)
                      animations:^
     {
-        self.bottomConstraint.constant = -(CGRectGetHeight(self.view.bounds)-CGRectGetMinY(keyboardEndFrame));
+        CGFloat keyboardHeight = CGRectGetHeight(keyboardEndFrame);
         UITableView *tableView = self.conversationTableViewController.tableView;
-        tableView.contentOffset = CGPointMake(0, tableView.contentOffset.y - self.bottomConstraint.constant);
+        CGFloat offset = tableView.contentOffset.y + keyboardHeight;
+        if ( CGRectGetMinY(keyboardEndFrame) <= CGRectGetMaxY(self.view.bounds) )
+        {
+            //Keyboard is overlapping the table, adjust
+            self.bottomConstraint.constant = -keyboardHeight;
+            CGFloat tableHeight = CGRectGetHeight(tableView.bounds);
+            CGFloat contentHeight = tableView.contentSize.height;
+            if ( contentHeight < tableHeight && keyboardHeight != 0 )
+            {
+                //Can't just move up content by constraint amount as we don't have enough content to fill out the whole table
+                if ( contentHeight > tableHeight - keyboardHeight - self.keyboardBarHeightConstraint.constant )
+                {
+                    //We need to scroll up to keep the bottom message on screen.
+                    offset = contentHeight + keyboardHeight + self.keyboardBarHeightConstraint.constant - tableHeight;
+                }
+                else
+                {
+                    //We have so little content that we don't need to scroll up to keep the bottom message onscreen
+                    offset = 0;
+                }
+            }
+        }
+        else
+        {
+            //Keyboard is hidden, need to pin the inputView down to the bottom again
+            self.bottomConstraint.constant = 0;
+            offset = MIN(0, offset);
+        }
+        tableView.contentOffset = CGPointMake(0, offset);
         [self.view layoutIfNeeded];
     }
                      completion:nil];
