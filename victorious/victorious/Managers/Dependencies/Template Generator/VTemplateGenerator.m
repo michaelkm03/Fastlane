@@ -21,6 +21,7 @@
 #import "VDependencyManager+VNavigationMenuItem.h"
 
 #define BOTTOM_NAV_ENABLED 1
+#define ROUNDED_TOP_NAV_ENABLED 0
 
 static NSString * const kIDKey = @"id";
 static NSString * const kReferenceIDKey = @"referenceID";
@@ -180,7 +181,19 @@ static NSString * const kVideoMuted = @"videoMuted";
                                    VDependencyManagerBackgroundColorKey: self.accentColor,
                                    };
     
-    if ( self.templateCEnabled )
+    if ( ROUNDED_TOP_NAV_ENABLED )
+    {
+        kSelectorKey =  @{
+                          kClassNameKey: @"rounded.multiScreenSelector",
+                          VDependencyManagerBackgroundColorKey:@{
+                                  kRedKey: @255,
+                                  kBlueKey: @255,
+                                  kGreenKey: @255,
+                                  kAlphaKey: @1
+                                  }
+                          };
+    }
+    else if ( self.templateCEnabled )
     {
         kSelectorKey =  @{
                           kClassNameKey: @"textbar.multiScreenSelector",

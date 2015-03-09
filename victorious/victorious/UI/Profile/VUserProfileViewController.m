@@ -21,6 +21,7 @@
 #import "UIImageView+Blurring.h"
 #import "VThemeManager.h"
 #import "VObjectManager+Login.h"
+#import <UIImageView+WebCache.h>
 #import "VStream+Fetcher.h"
 
 #import "VObjectManager+ContentCreation.h"
@@ -186,7 +187,7 @@ static NSString * const kUserKey = @"user";
                                                                                  target:self
                                                                                  action:@selector(composeMessage:)];
     }
-
+    
     UIImage    *defaultBackgroundImage;
     if (self.backgroundImageView.image)
     {
@@ -196,14 +197,11 @@ static NSString * const kUserKey = @"user";
     {
         defaultBackgroundImage = [[[VThemeManager sharedThemeManager] themedBackgroundImageForDevice] applyLightEffect];
     }
-    
-    [self.backgroundImageView removeFromSuperview];
     self.backgroundImageView = [[UIImageView alloc] initWithFrame:self.view.frame];
     self.backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
     [self.backgroundImageView setBlurredImageWithURL:[NSURL URLWithString:self.profile.pictureUrl]
                                     placeholderImage:defaultBackgroundImage
                                            tintColor:[UIColor colorWithWhite:0.0 alpha:0.5]];
-    
     self.view.backgroundColor = [[VThemeManager sharedThemeManager] preferredBackgroundColor];
     
     if (![[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
@@ -213,6 +211,14 @@ static NSString * const kUserKey = @"user";
     else
     {
         [self.profileHeaderView insertSubview:self.backgroundImageView atIndex:0];
+    }
+    
+    NSURL *pictureURL = [NSURL URLWithString:self.profile.pictureUrl];
+    if (![self.backgroundImageView.sd_imageURL isEqual:pictureURL])
+    {
+        [self.backgroundImageView setBlurredImageWithURL:pictureURL
+                                        placeholderImage:self.backgroundImageView.image
+                                               tintColor:[UIColor colorWithWhite:0.0 alpha:0.5]];
     }
     
     if ( self.streamDataSource.count != 0 )
