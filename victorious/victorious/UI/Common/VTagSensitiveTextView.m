@@ -19,6 +19,7 @@
 @property (nonatomic, assign) CGPoint touchDownLocation;
 @property (nonatomic, assign) NSRange highlightRange;
 @property (nonatomic, strong) VTag *selectedTag;
+@property (nonatomic, readwrite) NSDictionary *tagStringAttributes;
 
 @end
 

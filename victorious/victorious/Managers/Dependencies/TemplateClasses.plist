@@ -52,6 +52,8 @@
 	<string>VSegmentedSelectorView</string>
 	<key>textbar.multiScreenSelector</key>
 	<string>VTextbarSelectorView</string>
+	<key>rounded.multiScreenSelector</key>
+	<string>VRoundedSegmentedSelectorView</string>
 	<key>inbox.screen</key>
 	<string>VInboxContainerViewController</string>
 	<key>currentUserProfile.screen</key>

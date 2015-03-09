@@ -8,8 +8,11 @@
 
 #import "VDefaultProfileImageView.h"
 
+// Utilities
 #import "VThemeManager.h"
 #import "VSettingManager.h"
+
+// Categories
 #import <SDWebImage/UIImageView+WebCache.h>
 
 @implementation VDefaultProfileImageView
