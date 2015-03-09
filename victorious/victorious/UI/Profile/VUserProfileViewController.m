@@ -201,8 +201,8 @@ static NSString * const kUserKey = @"user";
     self.backgroundImageView = [[UIImageView alloc] initWithFrame:self.view.frame];
     self.backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
     [self.backgroundImageView setBlurredImageWithURL:[NSURL URLWithString:self.profile.pictureUrl]
-                           placeholderImage:defaultBackgroundImage
-                                  tintColor:[UIColor colorWithWhite:0.0 alpha:0.5]];
+                                    placeholderImage:defaultBackgroundImage
+                                           tintColor:[UIColor colorWithWhite:0.0 alpha:0.5]];
     
     self.view.backgroundColor = [[VThemeManager sharedThemeManager] preferredBackgroundColor];
     
@@ -472,20 +472,31 @@ static NSString * const kUserKey = @"user";
 
 - (void)refreshWithCompletion:(void (^)(void))completionBlock
 {
-    if ( self.profile != nil )
+    if (self.collectionView.dataSource == self.notLoggedInDataSource)
     {
-        void (^fullCompletionBlock)(void) = ^void(void)
+        if (completionBlock)
         {
-            if (self.streamDataSource.count)
+            completionBlock();
+        }
+        return;
+    }
+    else
+    {
+        if ( self.profile != nil )
+        {
+            void (^fullCompletionBlock)(void) = ^void(void)
             {
-                [self shrinkHeaderAnimated:YES];
-            }
-            if (completionBlock)
-            {
-                completionBlock();
-            }
-        };
-        [super refreshWithCompletion:fullCompletionBlock];
+                if (self.streamDataSource.count)
+                {
+                    [self shrinkHeaderAnimated:YES];
+                }
+                if (completionBlock)
+                {
+                    completionBlock();
+                }
+            };
+            [super refreshWithCompletion:fullCompletionBlock];
+        }
     }
 }
 
@@ -660,11 +671,7 @@ static NSString * const kUserKey = @"user";
 
 - (void)updateCollectionViewDataSource
 {
-    if ([[VObjectManager sharedManager] mainUserLoggedIn])
-    {
-        self.collectionView.dataSource = self.streamDataSource;
-    }
-    else
+    if (![[VObjectManager sharedManager] mainUserLoggedIn] && self.representsMainUser)
     {
         self.notLoggedInDataSource = [[VNotAuthorizedDataSource alloc] initWithCollectionView:self.collectionView];
         self.collectionView.dataSource = self.notLoggedInDataSource;
@@ -672,13 +679,21 @@ static NSString * const kUserKey = @"user";
                                                placeholderImage:nil
                                                       tintColor:[[UIColor whiteColor] colorWithAlphaComponent:0.5f]];
     }
+    else
+    {
+        self.collectionView.dataSource = self.streamDataSource;
+    }
 }
 
 #pragma mark - Notification
 
 - (void)loginStatusChanged:(NSNotification *)notification
 {
-    [self updateCollectionViewDataSource];
+    if (self.representsMainUser)
+    {
+        self.profile = [VObjectManager sharedManager].mainUser;
+        [self updateCollectionViewDataSource];
+    }
 }
 
 #pragma mark - KVO
@@ -709,6 +724,20 @@ static NSString * const kUserKey = @"user";
     
     [self.currentStream removeObserver:self
                             forKeyPath:NSStringFromSelector(@selector(streamItems))];
+}
+
+#pragma mark - VAbstractStreamCollectionViewController
+
+- (void)refresh:(UIRefreshControl *)sender
+{
+    if (self.collectionView.dataSource == self.notLoggedInDataSource)
+    {
+        return;
+    }
+    else
+    {
+        [super refresh:nil];
+    }
 }
 
 @end
