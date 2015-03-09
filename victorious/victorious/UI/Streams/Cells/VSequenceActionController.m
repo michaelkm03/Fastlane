@@ -46,7 +46,7 @@
 #import "VWorkspaceFlowController.h"
 #import "VImageToolController.h"
 #import "VVideoToolController.h"
-#import "VAuthorization.h"
+#import "VAuthorizedAction.h"
 
 @interface VSequenceActionController () <VWorkspaceFlowControllerDelegate>
 
@@ -96,9 +96,9 @@
 {
     NSAssert( ![sequence isPoll], @"You cannot remix polls." );
     
-    VAuthorization *authorization = [[VAuthorization alloc] initWithObjectManager:[VObjectManager sharedManager]
+    VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                 dependencyManager:self.dependencyManager];
-    [authorization performAuthorizedActionFromViewController:viewController withContext:VLoginContextRemix withSuccess:^
+    [authorization performFromViewController:viewController withContext:VLoginContextRemix withSuccess:^
      {
          NSMutableDictionary *addedDependencies = [[NSMutableDictionary alloc] init];
          if (sequence)

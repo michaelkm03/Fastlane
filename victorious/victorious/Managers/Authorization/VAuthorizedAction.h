@@ -1,5 +1,5 @@
 //
-//  VAuthorization.h
+//  VAuthorizedAction.h
 //  victorious
 //
 //  Created by Patrick Lynch on 3/3/15.
@@ -12,14 +12,14 @@
 
 @class VObjectManager, VDependencyManager;
 
-@interface VAuthorization : NSObject
+@interface VAuthorizedAction : NSObject
 
 @property (nonatomic, weak) VObjectManager *objectManager;
 
 - (instancetype)initWithObjectManager:(VObjectManager *)objectManager
                     dependencyManager:(VDependencyManager *)dependencyManager;
 
-- (BOOL)performAuthorizedActionFromViewController:(UIViewController *)presentingViewController
+- (BOOL)performFromViewController:(UIViewController *)presentingViewController
                                       withContext:(VLoginContextType)loginContext
                                       withSuccess:(void(^)())successActionBlock;
 

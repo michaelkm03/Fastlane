@@ -16,7 +16,7 @@
 #import "VObjectManager+Sequence.h"
 #import "VStream+Fetcher.h"
 #import "VNoContentView.h"
-#import "VAuthorization.h"
+#import "VAuthorizedAction.h"
 
 @interface VHashtagStreamCollectionViewController ()
 
@@ -129,9 +129,9 @@
 
 - (void)toggleFollowHashtag
 {
-    VAuthorization *authorization = [[VAuthorization alloc] initWithObjectManager:[VObjectManager sharedManager]
+    VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                 dependencyManager:self.dependencyManager];
-    [authorization performAuthorizedActionFromViewController:self
+    [authorization performFromViewController:self
                                                  withContext:VLoginContextFollowHashtag
                                                  withSuccess:^void
      {

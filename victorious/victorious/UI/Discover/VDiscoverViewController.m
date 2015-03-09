@@ -26,7 +26,7 @@
 #import "VConstants.h"
 #import "VHashtagStreamCollectionViewController.h"
 #import "VDependencyManager.h"
-#import "VAuthorization.h"
+#import "VAuthorizedAction.h"
 
 
 static NSString * const kVSuggestedPeopleIdentifier = @"VSuggestedPeopleCell";
@@ -315,9 +315,9 @@ static CGFloat const kTopInset = 22.0f; ///< The space between the top of the vi
                 }
                 
                 // Check for authorization first
-                VAuthorization *authorization = [[VAuthorization alloc] initWithObjectManager:[VObjectManager sharedManager]
+                VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                             dependencyManager:nil];
-                [authorization performAuthorizedActionFromViewController:self
+                [authorization performFromViewController:self
                                                              withContext:VLoginContextFollowHashtag
                                                              withSuccess:^
                  {

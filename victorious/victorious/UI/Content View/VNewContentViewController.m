@@ -98,7 +98,7 @@
 #import "VUserTag.h"
 #import "VHashtagStreamCollectionViewController.h"
 #import "VNavigationController.h"
-#import "VAuthorization.h"
+#import "VAuthorizedAction.h"
 
 #define HANDOFFENABLED 0
 static const CGFloat kMaxInputBarHeight = 200.0f;
@@ -151,7 +151,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 @property (nonatomic, weak) IBOutlet VScrollPaginator *scrollPaginator;
 @property (nonatomic, weak, readwrite) IBOutlet VSequenceActionController *sequenceActionController;
 
-@property (nonatomic, strong, readwrite) VAuthorization *authorizationHelper;
+@property (nonatomic, strong, readwrite) VAuthorizedAction *authorizedAction;
 
 @property (nonatomic, weak) UIView *snapshotView;
 @property (nonatomic, assign) CGPoint offsetBeforeRemoval;
@@ -370,7 +370,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 {
     [super viewDidLoad];
     
-    self.authorizationHelper = [[VAuthorization alloc] initWithObjectManager:[VObjectManager sharedManager]
+    self.authorizedAction = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                            dependencyManager:self.dependencyManager];
     
     self.commentHighlighter = [[VCommentHighlighter alloc] initWithCollectionView:self.contentCollectionView];
@@ -661,7 +661,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 
 - (void)experienceEnhancerDidRequireLogin:(NSNotification *)notification
 {
-    [self.authorizationHelper performAuthorizedActionFromViewController:self withContext:VLoginContextVoteBallistic withSuccess:^
+    [self.authorizedAction performFromViewController:self withContext:VLoginContextVoteBallistic withSuccess:^
      {
          // Use the provided index path of the selected emotive ballistic that trigger the notificiation
          // to perform the authorized action once authorization is successful
@@ -1008,7 +1008,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
                 __weak typeof(self) welf = self;
                 self.ballotCell.answerASelectionHandler = ^(void)
                 {
-                    [welf.authorizationHelper performAuthorizedActionFromViewController:welf withContext:VLoginContextVotePoll withSuccess:^
+                    [welf.authorizedAction performFromViewController:welf withContext:VLoginContextVotePoll withSuccess:^
                     {
                         [welf.viewModel answerPollWithAnswer:VPollAnswerA
                                                   completion:^(BOOL succeeded, NSError *error)
@@ -1020,7 +1020,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
                 };
                 self.ballotCell.answerBSelectionHandler = ^(void)
                 {
-                    [welf.authorizationHelper performAuthorizedActionFromViewController:welf withContext:VLoginContextVotePoll withSuccess:^
+                    [welf.authorizedAction performFromViewController:welf withContext:VLoginContextVotePoll withSuccess:^
                      {
                          [welf.viewModel answerPollWithAnswer:VPollAnswerB
                                                    completion:^(BOOL succeeded, NSError *error)
@@ -1412,7 +1412,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
         [self.videoCell pause];
     }
     
-    [self.authorizationHelper performAuthorizedActionFromViewController:self withContext:VLoginContextAddComment withSuccess:^
+    [self.authorizedAction performFromViewController:self withContext:VLoginContextAddComment withSuccess:^
      {
          self.enteringRealTimeComment = YES;
          self.realtimeCommentBeganTime = self.videoCell.currentTime;

@@ -11,7 +11,7 @@
 #import "VObjectManager+Pagination.h"
 #import "VObjectManager+Users.h"
 #import "VObjectManager+Login.h"
-#import "VAuthorization.h"
+#import "VAuthorizedAction.h"
 #import "VUser.h"
 #import "VUserProfileViewController.h"
 #import "VNoContentView.h"
@@ -227,9 +227,9 @@ static NSString * const kVFollowerCellName = @"followerCell";
     cell.followButtonAction = ^(void)
     {
         // Check for authorization first
-        VAuthorization *authorization = [[VAuthorization alloc] initWithObjectManager:[VObjectManager sharedManager]
+        VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                     dependencyManager:nil];
-        [authorization performAuthorizedActionFromViewController:self
+        [authorization performFromViewController:self
                                                      withContext:VLoginContextFollowUser
                                                      withSuccess:^
          {

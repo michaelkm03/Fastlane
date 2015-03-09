@@ -60,7 +60,7 @@
 
 @implementation VLoginViewController
 
-@synthesize authorizationCompletionAction; //< VAuthorizationViewController
+@synthesize authorizedAction; //< VAuthorizationViewController
 
 + (VLoginViewController *)loginViewControllerWithDependencyManager:(VDependencyManager *)dependencyManager
 {
@@ -83,9 +83,9 @@
     
     [self.navigationController dismissViewControllerAnimated:YES completion:^void
      {
-         if ( success && self.authorizationCompletionAction != nil )
+         if ( success && self.authorizedAction != nil )
          {
-             self.authorizationCompletionAction();
+             self.authorizedAction();
          }
      }];
 }

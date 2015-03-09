@@ -38,7 +38,7 @@
 #import "VStreamCollectionViewController.h"
 #import "VSequenceActionController.h"
 #import "VHashtagStreamCollectionViewController.h"
-#import "VAuthorization.h"
+#import "VAuthorizedAction.h"
 
 @interface VNewContentViewController ()
 
@@ -97,7 +97,7 @@
                                                                   enabled:!self.viewModel.hasReposted];
         repostItem.selectionHandler = ^(VActionItem *item)
         {
-            [self.authorizationHelper performAuthorizedActionFromViewController:actionSheetViewController withContext:VLoginContextRepost withSuccess:^
+            [self.authorizedAction performFromViewController:actionSheetViewController withContext:VLoginContextRepost withSuccess:^
              {
                  if ( !contentViewController.viewModel.hasReposted)
                  {
@@ -223,7 +223,7 @@
         {
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRemix];
             
-            [self.authorizationHelper performAuthorizedActionFromViewController:actionSheetViewController withContext:VLoginContextRepost withSuccess:^
+            [self.authorizedAction performFromViewController:actionSheetViewController withContext:VLoginContextRepost withSuccess:^
              {
                  [contentViewController dismissViewControllerAnimated:YES
                                                            completion:^

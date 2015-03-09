@@ -8,7 +8,7 @@
 
 #import "NSURL+VPathHelper.h"
 #import "UIStoryboard+VMainStoryboard.h"
-#import "VAuthorization.h"
+#import "VAuthorizedAction.h"
 #import "VConversation.h"
 #import "VDependencyManager+VObjectManager.h"
 #import "VInboxContainerViewController.h"

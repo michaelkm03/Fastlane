@@ -21,7 +21,7 @@
 #import "VTracking.h"
 #import "VWebBrowserViewController.h"
 #import "VNavigationController.h"
-#import "VAuthorization.h"
+#import "VAuthorizedAction.h"
 
 #import <MBProgressHUD.h>
 
@@ -34,7 +34,7 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
 
 @interface VScaffoldViewController () <VNewContentViewControllerDelegate>
 
-@property (nonatomic, strong) VAuthorization *authorization;
+@property (nonatomic, strong) VAuthorizedAction *authorization;
 
 @end
 
@@ -47,7 +47,7 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
     {
         _dependencyManager = dependencyManager;
         _menuViewController = [dependencyManager viewControllerForKey:VScaffoldViewControllerMenuComponentKey];
-        _authorization = [[VAuthorization alloc] initWithObjectManager:[VObjectManager sharedManager]
+        _authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                      dependencyManager:self.dependencyManager];
     }
     return self;
@@ -248,7 +248,7 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
     
     if ([navigationDestination respondsToSelector:@selector(requiresAuthorization)] && [navigationDestination requiresAuthorization] )
     {
-        [self.authorization performAuthorizedActionFromViewController:self withContext:VLoginContextDefault withSuccess:^
+        [self.authorization performFromViewController:self withContext:VLoginContextDefault withSuccess:^
          {
             performNavigation(navigationDestination);
         }];

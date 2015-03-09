@@ -67,7 +67,7 @@
 
 @synthesize registrationStepDelegate; //< VRegistrationStep
 
-@synthesize authorizationCompletionAction; //< VAuthorizationViewController
+@synthesize authorizedAction; //< VAuthorizationViewController
 
 - (void)dealloc
 {
@@ -502,9 +502,9 @@ static inline UIViewAnimationOptions animationOptionsWithCurve(UIViewAnimationCu
     {
         [self dismissViewControllerAnimated:YES completion:^
          {  
-            if ( self.authorizationCompletionAction != nil && success )
+            if ( self.authorizedAction != nil && success )
             {
-                self.authorizationCompletionAction();
+                self.authorizedAction();
             }
         }];
     }

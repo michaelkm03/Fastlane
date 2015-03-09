@@ -1,12 +1,12 @@
 //
-//  VAuthorization.m
+//  VAuthorizedAction.m
 //  victorious
 //
 //  Created by Patrick Lynch on 3/3/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VAuthorization.h"
+#import "VAuthorizedAction.h"
 #import "VObjectManager+Login.h"
 #import "VLoginViewController.h"
 #import "VProfileCreateViewController.h"
@@ -14,14 +14,14 @@
 #import "VTransitionDelegate.h"
 #import "VDependencyManager.h"
 
-@interface VAuthorization()
+@interface VAuthorizedAction()
 
 @property (nonatomic, strong) VTransitionDelegate *transition;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end
 
-@implementation VAuthorization
+@implementation VAuthorizedAction
 
 - (instancetype)initWithObjectManager:(VObjectManager *)objectManager
                     dependencyManager:(VDependencyManager *)dependencyManager
@@ -39,7 +39,7 @@
     return self;
 }
 
-- (BOOL)performAuthorizedActionFromViewController:(UIViewController *)presentingViewController
+- (BOOL)performFromViewController:(UIViewController *)presentingViewController
                                       withContext:(VLoginContextType)loginContext
                                       withSuccess:(void(^)())successActionBlock
 {
@@ -51,7 +51,7 @@
     if ( self.objectManager.mainUserLoggedIn && !self.objectManager.mainUserProfileComplete )
     {
         VProfileCreateViewController *viewController = [VProfileCreateViewController profileCreateViewController];
-        [viewController setAuthorizationCompletionAction:successActionBlock];
+        [viewController setAuthorizedAction:successActionBlock];
         viewController.profile = [VObjectManager sharedManager].mainUser;
         viewController.registrationModel = [[VRegistrationModel alloc] init];
         [presentingViewController presentViewController:viewController animated:YES completion:nil];
@@ -61,7 +61,7 @@
     {
         VLoginViewController *viewController = [VLoginViewController loginViewControllerWithDependencyManager:self.dependencyManager];
         viewController.loginContextType = loginContext;
-        [viewController setAuthorizationCompletionAction:successActionBlock];
+        [viewController setAuthorizedAction:successActionBlock];
         
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
         viewController.transitionDelegate = self.transition;

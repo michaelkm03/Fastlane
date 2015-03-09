@@ -10,7 +10,7 @@
 
 #import "VContentViewViewModel.h"
 
-@class VDependencyManager, VSequenceActionController, VNewContentViewController, VAuthorization;
+@class VDependencyManager, VSequenceActionController, VNewContentViewController, VAuthorizedAction;
 
 @protocol VNewContentViewControllerDelegate  <NSObject>
 
@@ -62,6 +62,6 @@
 
 @property (nonatomic, weak, readonly) IBOutlet VSequenceActionController *sequenceActionController;
 
-@property (nonatomic, strong, readonly) VAuthorization *authorizationHelper;
+@property (nonatomic, strong, readonly) VAuthorizedAction *authorizedAction;
 
 @end

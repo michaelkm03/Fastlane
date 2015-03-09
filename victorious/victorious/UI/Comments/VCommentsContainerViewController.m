@@ -21,7 +21,7 @@
 #import "UIImageView+Blurring.h"
 #import "UIImage+ImageCreation.h"
 #import "UIStoryboard+VMainStoryboard.h"
-#import "VAuthorization.h"
+#import "VAuthorizedAction.h"
 #import "VThemeManager.h"
 #import "UIImage+ImageCreation.h"
 
@@ -148,8 +148,8 @@
 
 - (BOOL)canPerformAuthorizedAction
 {
-    VAuthorization *authorization = [[VAuthorization alloc] initWithObjectManager:[VObjectManager sharedManager] dependencyManager:nil];
-    return [authorization performAuthorizedActionFromViewController:self withContext:VLoginContextAddComment withSuccess:^{}];
+    VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager] dependencyManager:nil];
+    return [authorization performFromViewController:self withContext:VLoginContextAddComment withSuccess:^{}];
 }
 
 - (IBAction)pressedBackButton:(id)sender

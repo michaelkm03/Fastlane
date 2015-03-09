@@ -36,7 +36,7 @@
 
 #import "MBProgressHUD.h"
 
-#import "VAuthorization.h"
+#import "VAuthorizedAction.h"
 #import "VNavigationController.h"
 #import "VObjectManager+Login.h"
 #import "UIStoryboard+VMainStoryboard.h"
@@ -210,9 +210,9 @@ static const NSInteger kSearchResultLimit = 100;
 {
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectUserFromSearchRecipient];
     
-    VAuthorization *authorization = [[VAuthorization alloc] initWithObjectManager:[VObjectManager sharedManager]
+    VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                 dependencyManager:self.dependencyManager];
-    [authorization performAuthorizedActionFromViewController:self withContext:VLoginContextInbox withSuccess:^
+    [authorization performFromViewController:self withContext:VLoginContextInbox withSuccess:^
     {
         VMessageContainerViewController *composeController = [VMessageContainerViewController messageViewControllerForUser:profile];
         [self.navigationController pushViewController:composeController animated:YES];
@@ -430,9 +430,9 @@ static const NSInteger kSearchResultLimit = 100;
     // Tell the button what to do when it's tapped
     cell.followButtonAction = ^(void)
     {
-        VAuthorization *authorization = [[VAuthorization alloc] initWithObjectManager:[VObjectManager sharedManager]
+        VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                     dependencyManager:self.dependencyManager];
-        [authorization performAuthorizedActionFromViewController:self
+        [authorization performFromViewController:self
          
                                                      withContext:VLoginContextFollowUser withSuccess:^
          {

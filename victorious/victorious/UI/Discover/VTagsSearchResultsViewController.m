@@ -16,7 +16,7 @@
 #import "VHashtagStreamCollectionViewController.h"
 #import "VConstants.h"
 #import "VDependencyManager.h"
-#import "VAuthorization.h"
+#import "VAuthorizedAction.h"
 #import "VTrendingTagCell.h"
 #import "VNoContentView.h"
 #import <MBProgressHUD.h>
@@ -181,9 +181,9 @@ static NSString * const kVTagResultIdentifier = @"VTrendingTagCell";
         }
         weakCell.shouldCellRespond = NO;
         
-        VAuthorization *authorization = [[VAuthorization alloc] initWithObjectManager:[VObjectManager sharedManager]
+        VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                     dependencyManager:self.dependencyManager];
-        [authorization performAuthorizedActionFromViewController:self withContext:VLoginContextInbox withSuccess:^
+        [authorization performFromViewController:self withContext:VLoginContextInbox withSuccess:^
          {
              // Check if already subscribed to hashtag then subscribe or unsubscribe accordingly
              if (weakCell.isSubscribedToTag)

@@ -19,7 +19,7 @@
 
 #import "VFollowUserControl.h"
 
-#import "VAuthorization.h"
+#import "VAuthorizedAction.h"
 
 @interface VReposterTableViewController ()
 
@@ -105,9 +105,9 @@
 
 - (void)followActionForCell:(VInviteFriendTableViewCell *)cell
 {
-    VAuthorization *authorization = [[VAuthorization alloc] initWithObjectManager:[VObjectManager sharedManager]
+    VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                 dependencyManager:self.dependencyManager];
-    [authorization performAuthorizedActionFromViewController:self withContext:VLoginContextFollowUser withSuccess:^
+    [authorization performFromViewController:self withContext:VLoginContextFollowUser withSuccess:^
      {
          VUser *mainUser = [[VObjectManager sharedManager] mainUser];
          if ([mainUser.following containsObject:cell.profile])

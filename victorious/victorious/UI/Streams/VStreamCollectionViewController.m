@@ -64,7 +64,7 @@
 #import "VConstants.h"
 #import "VTracking.h"
 #import "VHashtagStreamCollectionViewController.h"
-#import "VAuthorization.h"
+#import "VAuthorizedAction.h"
 
 #import <SDWebImage/UIImageView+WebCache.h>
 
@@ -284,9 +284,9 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
 {
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectCreatePost];
     
-    VAuthorization *authorization = [[VAuthorization alloc] initWithObjectManager:[VObjectManager sharedManager]
+    VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                 dependencyManager:self.dependencyManager];
-    [authorization performAuthorizedActionFromViewController:self
+    [authorization performFromViewController:self
                                                  withContext:VLoginContextCreatePost
                                                  withSuccess:^void
      {

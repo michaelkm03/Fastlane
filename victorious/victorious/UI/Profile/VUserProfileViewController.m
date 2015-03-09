@@ -31,7 +31,7 @@
 #import "VUserProfileHeaderView.h"
 #import "VProfileHeaderCell.h"
 
-#import "VAuthorization.h"
+#import "VAuthorizedAction.h"
 #import "VFindFriendsViewController.h"
 #import "VSettingManager.h"
 #import <FBKVOController.h>
@@ -344,9 +344,9 @@ static NSString * const kUserKey = @"user";
 {
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectFindFriends];
     
-    VAuthorization *authorization = [[VAuthorization alloc] initWithObjectManager:[VObjectManager sharedManager]
+    VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                 dependencyManager:self.dependencyManager];
-    [authorization performAuthorizedActionFromViewController:self withContext:VLoginContextInbox withSuccess:^
+    [authorization performFromViewController:self withContext:VLoginContextInbox withSuccess:^
      {
          VFindFriendsViewController *ffvc = [VFindFriendsViewController newFindFriendsViewController];
          [ffvc setShouldAutoselectNewFriends:NO];
@@ -464,9 +464,9 @@ static NSString * const kUserKey = @"user";
 
 - (IBAction)composeMessage:(id)sender
 {
-    VAuthorization *authorization = [[VAuthorization alloc] initWithObjectManager:[VObjectManager sharedManager]
+    VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                 dependencyManager:self.dependencyManager];
-    [authorization performAuthorizedActionFromViewController:self withContext:VLoginContextInbox withSuccess:^
+    [authorization performFromViewController:self withContext:VLoginContextInbox withSuccess:^
      {
          VMessageContainerViewController *composeController = [VMessageContainerViewController messageViewControllerForUser:self.profile];
          composeController.presentingFromProfile = YES;
@@ -487,9 +487,9 @@ static NSString * const kUserKey = @"user";
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectEditProfile];
     
     VLoginContextType context = self.isMe ? VLoginContextDefault : VLoginContextFollowUser;
-    VAuthorization *authorization = [[VAuthorization alloc] initWithObjectManager:[VObjectManager sharedManager]
+    VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                 dependencyManager:self.dependencyManager];
-    [authorization performAuthorizedActionFromViewController:self withContext:context withSuccess:^
+    [authorization performFromViewController:self withContext:context withSuccess:^
      {
          if ( self.isMe )
          {

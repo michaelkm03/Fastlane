@@ -14,7 +14,7 @@
 #import "VUserProfileViewController.h"
 #import "VDependencyManager.h"
 #import "VConstants.h"
-#import "VAuthorization.h"
+#import "VAuthorizedAction.h"
 #import "VFollowerTableViewCell.h"
 #import "VNoContentView.h"
 #import "UIVIew+AutoLayout.h"
@@ -185,9 +185,9 @@ static NSString * const kVUserResultIdentifier = @"followerCell";
     // Tell the button what to do when it's tapped
     cell.followButtonAction = ^(void)
     {
-        VAuthorization *authorization = [[VAuthorization alloc] initWithObjectManager:[VObjectManager sharedManager]
+        VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                     dependencyManager:self.dependencyManager];
-        [authorization performAuthorizedActionFromViewController:self withContext:VLoginContextFollowUser withSuccess:^
+        [authorization performFromViewController:self withContext:VLoginContextFollowUser withSuccess:^
          {
              
              if ([mainUser.following containsObject:profile])
