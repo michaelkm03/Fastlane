@@ -6,21 +6,25 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VNotLoggedInProfileDataSource.h"
-#import "VNotLoggedInProfileCollectionViewCell.h"
+#import "VNotAuthorizedDataSource.h"
+#import "VNotAuthorizedProfileCollectionViewCell.h"
 
-@implementation VNotLoggedInProfileDataSource
+@implementation VNotAuthorizedDataSource
 
 - (instancetype)initWithCollectionView:(UICollectionView *)collectionView
 {
     self = [super init];
     if (self)
     {
-        [collectionView registerNib:[VNotLoggedInProfileCollectionViewCell nibForCell]
-         forCellWithReuseIdentifier:[VNotLoggedInProfileCollectionViewCell suggestedReuseIdentifier]];
+        [collectionView registerNib:[VNotAuthorizedProfileCollectionViewCell nibForCell]
+         forCellWithReuseIdentifier:[VNotAuthorizedProfileCollectionViewCell suggestedReuseIdentifier]];
     }
     return self;
 }
+
+#pragma mark - Property Accessors
+
+
 
 #pragma mark - UICollectionViewDataSource
 
@@ -32,7 +36,7 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    return [collectionView dequeueReusableCellWithReuseIdentifier:[VNotLoggedInProfileCollectionViewCell suggestedReuseIdentifier]
+    return [collectionView dequeueReusableCellWithReuseIdentifier:[VNotAuthorizedProfileCollectionViewCell suggestedReuseIdentifier]
                                                      forIndexPath:indexPath];
 }
 

@@ -39,7 +39,7 @@
 #import <FBKVOController.h>
 #import <MBProgressHUD.h>
 
-#import "VNotLoggedInProfileDataSource.h"
+#import "VNotAuthorizedDataSource.h"
 
 static const CGFloat kVSmallUserHeaderHeight = 319.0f;
 
@@ -72,7 +72,7 @@ static NSString * const kUserKey = @"user";
 
 @property (nonatomic, assign) CGFloat defaultMBProgressHUDMargin;
 
-@property (nonatomic, strong) VNotLoggedInProfileDataSource *notLoggedInDataSource;
+@property (nonatomic, strong) VNotAuthorizedDataSource *notLoggedInDataSource;
 
 @end
 
@@ -640,15 +640,7 @@ static NSString * const kUserKey = @"user";
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (collectionView.dataSource == self.notLoggedInDataSource)
-    {
-        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]]
-                           animated:YES
-                         completion:NULL];
-        return;
-    }
-    
+{    
     if (self.streamDataSource.hasHeaderCell && indexPath.section == 0)
     {
         return;
@@ -664,7 +656,7 @@ static NSString * const kUserKey = @"user";
     }
     else
     {
-        self.notLoggedInDataSource = [[VNotLoggedInProfileDataSource alloc] initWithCollectionView:self.collectionView];
+        self.notLoggedInDataSource = [[VNotAuthorizedDataSource alloc] initWithCollectionView:self.collectionView];
         self.collectionView.dataSource = self.notLoggedInDataSource;
     }
 }
@@ -674,6 +666,9 @@ static NSString * const kUserKey = @"user";
 - (void)loginStatusChanged:(NSNotification *)notification
 {
     [self updateCollectionViewDataSource];
+    [self.backgroundImageView setBlurredImageWithClearImage:[UIImage imageNamed:@"Default"]
+                                           placeholderImage:nil
+                                                  tintColor:nil];
 }
 
 #pragma mark - KVO
