@@ -6,43 +6,47 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-/*
- GOAL: get rid of timer-related crashes caused by timer calling on objects that would otherwise be deallocated
- 
- HOW: create an object that we could interact with much like a timer but would have a weak reference to the target. The weak reference to the target allows the target to be deallocated whenever needed and allows us to ensure the target exists before calling the function on it.
- 
- CONCERNS:
-    - Threading: if timers must be removed from the same thread that they were created on. If we're creating this manager from various threads, we need to make sure it's calling invalidate on timers from the proper threads to remove it from the run loop. (NOTE: not an issue, the timer fires on the same thread that it was created on, so as long as we don't jump onto the main thread, we're good to invalidate it)
-    - Retain cycles: make damn sure this manager doesn't retain the target unnecessarily as it would defeat the whole purpose.
-    - Support for all needed timer methods: find which ones are currently used and build for those, allow expansion on this class later.
- 
- TESTING:
-    - Thread safety (no need to test since we're just invalidating on the thread that the timer fires on)
-    - Proper weak reference to target
- */
-
 #import <Foundation/Foundation.h>
 
 @interface VTimerManager : NSObject
 
 /**
-
+ Equivalent to NSTimer's scheduleTimerWithTimeInterval:target:selector:userInfo:repeats: function but with a weak reference to the target instead of strong reference.
+ 
+ @param timeInterval The number of seconds between firings of the timer. If seconds is less than or equal to 0.0, this method chooses the nonnegative value of 0.1 milliseconds instead.
+ @param aTarget The object to which to send the message specified by aSelector when the timer fires. The timer manager maintains a weak reference to target.
+ @param aSelector The message to send to target when the internal timer fires. The selector should have one of the following signatures: timerFired, timerFired: . All other signatures are invalid and will cause an assertion failure.
+ @param Custom user info for the internal timer. The internal timer maintains a strong reference to this object until the internal timer is invalidated (which occurs after the provided selector is called on the provided target). This parameter may be nil.
+ @param repeats If YES, the internal timer will repeatedly reschedule itself until invalidated. If NO, the timer will be invalidated after it fires.
+ 
+ @return A new timerManager instance containing a scheduled NSTimer and a weak reference to the supplied target.
  */
 + (VTimerManager *)scheduledTimerManagerWithTimeInterval:(NSTimeInterval)timeInterval
                                                   target:(id)aTarget
                                                 selector:(SEL)aSelector
                                                 userInfo:(id)userInfo
-                                                 repeats:(BOOL)yesOrNo;
+                                                 repeats:(BOOL)repeats;
 /**
+ Equivalent to NSTimer's scheduleTimerWithTimeInterval:target:selector:userInfo:repeats: function but with a weak reference to the target instead of strong reference.
  
+ @param timeInterval The number of seconds between firings of the timer. If seconds is less than or equal to 0.0, this method chooses the nonnegative value of 0.1 milliseconds instead.
+ @param aTarget The object to which to send the message specified by aSelector when the timer fires. The timer manager maintains a weak reference to target.
+ @param aSelector The message to send to target when the internal timer fires. The selector should have one of the following signatures: timerFired, timerFired: . All other signatures are invalid and will cause an assertion failure.
+ @param Custom user info for the internal timer. The internal timer maintains a strong reference to this object until the internal timer is invalidated (which occurs after the provided selector is called on the provided target). This parameter may be nil.
+ @param repeats If YES, the internal timer will repeatedly reschedule itself until invalidated. If NO, the timer will be invalidated after it fires.
+ @param runLoop The runLoop that should have the timer added to it
+ @param runMode The runMode The mode in which to add aTimer. You may specify a custom mode or use one of the modes listed in Run Loop Modes.
+ 
+ @return A new timerManager instance containing an NSTimer that has been added to the provided runLoop in the provided runMode and a weak reference to the supplied target.
  */
 + (VTimerManager *)addTimerManagerWithTimeInterval:(NSTimeInterval)timeInterval
                                             target:(id)aTarget
                                           selector:(SEL)aSelector
                                           userInfo:(id)userInfo
-                                           repeats:(BOOL)yesOrNo
+                                           repeats:(BOOL)repeats
                                          toRunLoop:(NSRunLoop *)runLoop
                                        withRunMode:(NSString *)runMode;
-- (void)invalidate;
+
+@property (nonatomic, readonly) NSTimer *timer; ///< The timer that will be setup according to the parameters passed in through the class methods
 
 @end

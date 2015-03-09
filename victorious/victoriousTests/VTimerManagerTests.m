@@ -141,22 +141,22 @@
                                                        withRunMode:NSRunLoopCommonModes], "should throw error for selector with more than one parameter");
     
     XCTAssertThrows([VTimerManager addTimerManagerWithTimeInterval:0.0f
-                                                            target:nil
+                                                            target:self
                                                           selector:@selector(testBadUnscheduledInitParameters)
                                                           userInfo:userInfo
                                                            repeats:NO
                                                          toRunLoop:nil
                                                        withRunMode:NSRunLoopCommonModes], @"should throw error for nil runLoop");
     
+    XCTAssertNoThrow([VTimerManager addTimerManagerWithTimeInterval:0.0f
+                                                             target:self
+                                                           selector:@selector(testBadUnscheduledInitParameters)
+                                                           userInfo:userInfo
+                                                            repeats:NO
+                                                          toRunLoop:[NSRunLoop currentRunLoop]
+                                                        withRunMode:@"custom"], @"should not throw error for custom runMode");
     XCTAssertThrows([VTimerManager addTimerManagerWithTimeInterval:0.0f
-                                                            target:nil
-                                                          selector:@selector(testBadUnscheduledInitParameters)
-                                                          userInfo:userInfo
-                                                           repeats:NO
-                                                         toRunLoop:[NSRunLoop currentRunLoop]
-                                                       withRunMode:@"invalid"], @"should throw error for invalid runMode");
-    XCTAssertThrows([VTimerManager addTimerManagerWithTimeInterval:0.0f
-                                                            target:nil
+                                                            target:self
                                                           selector:@selector(testBadUnscheduledInitParameters)
                                                           userInfo:userInfo
                                                            repeats:NO

@@ -110,7 +110,7 @@ static const CGFloat kMarqueeBufferHeight = 3;
 - (void)prepareForReuse
 {
     [super prepareForReuse];
-    [self.marquee.autoScrollTimer invalidate];
+    [self.marquee.autoScrollTimerManager.timer invalidate];
 }
 
 - (void)restartAutoScroll
