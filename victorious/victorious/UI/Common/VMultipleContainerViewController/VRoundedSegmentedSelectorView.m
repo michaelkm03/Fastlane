@@ -297,7 +297,6 @@ static CGFloat const kVSelectionAnimationDuration = 0.35f;
     [self setupWithCurrentViewControllers];
 }
 
-
 #pragma mark - selectionView updating
 
 - (CGFloat)selectionViewOffsetForIndex:(NSUInteger)index
