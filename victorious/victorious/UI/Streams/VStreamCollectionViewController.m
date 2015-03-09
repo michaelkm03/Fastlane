@@ -190,16 +190,15 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
 {
     [super viewWillAppear:animated];
 
-    if (!self.streamDataSource.count)
+    if ( self.streamDataSource.count == 0 )
     {
         [self refresh:self.refreshControl];
     }
-    
-    if ( self.marquee != nil )
+    else
     {
         /*
-         Need to restart the timer to make sure the marquee continues to rotate after it's timer
-         has been invalidated by the presentation of another view controller
+         We already have marquee content so we need to restart the timer to make sure the marquee continues
+         to rotate in case it's timer has been invalidated by the presentation of another viewController
          */
         [self.marquee enableTimer];
     }

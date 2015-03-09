@@ -51,6 +51,7 @@
         self.streamDataSource.collectionView = self.collectionView;
         self.collectionView.dataSource = self.streamDataSource;
         self.currentPage = 0;
+        self.marqueeCells = [[NSMutableDictionary alloc] init];
     }
     return self;
 }
@@ -195,19 +196,6 @@
     [self.marqueeCells setObject:cell forKey:@(indexPath.row)];
     
     return cell;
-}
-
-#pragma mark - lazy inits
-
-- (NSMutableDictionary *)marqueeCells
-{
-    if ( _marqueeCells != nil )
-    {
-        return _marqueeCells;
-    }
-    
-    _marqueeCells = [[NSMutableDictionary alloc] init];
-    return _marqueeCells;
 }
 
 @end
