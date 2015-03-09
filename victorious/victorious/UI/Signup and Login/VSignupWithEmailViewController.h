@@ -8,6 +8,10 @@
 
 #import "VRegistration.h"
 
+@class VDependencyManager;
+
 @interface VSignupWithEmailViewController : UIViewController <VRegistrationStep, VRegistrationStepDelegate>
+
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end

@@ -23,7 +23,7 @@ typedef NS_ENUM(NSUInteger, VLoginType)
 
 @interface VLoginViewController : UIViewController <VAuthorizationViewController, VPresentWithBlurViewController>
 
-+ (VLoginViewController *)loginViewControllerWithDependencyManager:(VDependencyManager *)dependencyManager;
++ (VLoginViewController *)newWithDependencyManager:(VDependencyManager *)dependencyManager;
 
 @property (nonatomic, strong) VTransitionDelegate *transitionDelegate;
 

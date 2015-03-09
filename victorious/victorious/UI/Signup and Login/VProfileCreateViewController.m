@@ -12,7 +12,7 @@
 
 #import "VUser.h"
 #import "TTTAttributedLabel.h"
-#import "VThemeManager.h"
+#import "VDependencyManager.h"
 #import "VSettingManager.h"
 #import "VUserManager.h"
 #import <MBProgressHUD/MBProgressHUD.h>
@@ -23,8 +23,6 @@
 #import "VObjectManager+Websites.h"
 
 #import "VConstants.h"
-#import "UIImageView+Blurring.h"
-#import "UIImage+ImageEffects.h"
 #import "UIImageView+WebCache.h"
 
 #import "VTOSViewController.h"
@@ -74,10 +72,11 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-+ (VProfileCreateViewController *)profileCreateViewController
++ (VProfileCreateViewController *)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"login" bundle:nil];
     VProfileCreateViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:kProfileCreateStoryboardID];
+    viewController.dependencyManager = dependencyManager;
     return viewController;
 }
 
@@ -88,8 +87,6 @@
     [super viewDidLoad];
     
     [self updateWithRegistrationModel];
-    
-    self.view.layer.contents = (id)[[[VThemeManager sharedThemeManager] themedBackgroundImageForDevice] applyBlurWithRadius:25 tintColor:[UIColor colorWithWhite:1.0 alpha:0.7] saturationDeltaFactor:1.8 maskImage:nil].CGImage;
     
     self.profileImageView.layer.masksToBounds = YES;
     self.profileImageView.layer.cornerRadius = CGRectGetHeight(self.profileImageView.bounds)/2;
@@ -102,7 +99,7 @@
                           placeholderImage:self.profileImageView.image];
     
     self.usernameTextField.delegate = self;
-    self.usernameTextField.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
+    self.usernameTextField.font = [self.dependencyManager fontForKey:@"font.header"];
     
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
@@ -111,12 +108,12 @@
         self.usernameTextField.text = self.profile.name;
     }
 #pragma clang diagnostic pop
-    self.usernameTextField.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    self.usernameTextField.tintColor = [self.dependencyManager colorForKey:@"color.link"];
     self.usernameTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.usernameTextField.placeholder attributes:@{NSForegroundColorAttributeName :[UIColor colorWithWhite:0.355 alpha:1.000]}];
     
     self.locationTextField.delegate = self;
-    self.locationTextField.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-    self.locationTextField.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
+    self.locationTextField.tintColor = [self.dependencyManager colorForKey:@"color.link"];
+    self.locationTextField.font = [self.dependencyManager fontForKey:@"font.header"];
     if (self.profile.location)
     {
         self.locationTextField.text = self.profile.location;
@@ -155,12 +152,12 @@
         [self.locationManager.locationManager requestWhenInUseAuthorization];
     }
     
-    self.tagLinePlaceholderLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
+    self.tagLinePlaceholderLabel.font = [self.dependencyManager fontForKey:@"font.header"];
     [self.tagLinePlaceholderLabel setTextColor:[UIColor colorWithWhite:0.355 alpha:1.000]];
 
-    self.taglineTextView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    self.taglineTextView.tintColor = [self.dependencyManager colorForKey:@"color.link"];
     self.taglineTextView.delegate = self;
-    self.taglineTextView.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
+    self.taglineTextView.font = [self.dependencyManager fontForKey:@"font.header"];
     if (self.profile.tagline)
     {
         self.taglineTextView.text = self.profile.tagline;
@@ -174,7 +171,7 @@
     [self createInputAccessoryView];
     
     self.agreementText.delegate = self;
-    self.agreementText.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel2Font];
+    self.agreementText.font = [self.dependencyManager fontForKey:@"font.label2"];
     [self.agreementText setText:NSLocalizedString(@"ToSAgreement", @"")];
     NSRange linkRange = [self.agreementText.text rangeOfString:NSLocalizedString(@"ToSText", @"")];
     if (linkRange.length > 0)
@@ -185,12 +182,12 @@
         [self.agreementText addLinkToURL:url withRange:linkRange];
     }
     
-    self.doneButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
+    self.doneButton.titleLabel.font = [self.dependencyManager fontForKey:@"font.header"];
     [self.doneButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    self.doneButton.primaryColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    self.doneButton.primaryColor = [self.dependencyManager colorForKey:@"color.link"];
     self.doneButton.style = VButtonStylePrimary;
     
-    self.agreeSwitch.onTintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    self.agreeSwitch.onTintColor = [self.dependencyManager colorForKey:@"color.link"];
     
     // Accessibility IDs
     self.doneButton.accessibilityIdentifier = VAutomationIdentifierProfileDone;

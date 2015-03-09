@@ -10,7 +10,7 @@
 
 #import "VConstants.h"
 #import "UIImage+ImageEffects.h"
-#import "VThemeManager.h"
+#import "VDependencyManager.h"
 
 #import "VObjectManager+Login.h"
 #import "VResetPasswordViewController.h"
@@ -45,19 +45,17 @@
 {
     [super viewDidLoad];
     
-    self.view.layer.contents = (id)[[[VThemeManager sharedThemeManager] themedBackgroundImageForDevice] applyBlurWithRadius:25 tintColor:[UIColor colorWithWhite:1.0 alpha:0.7] saturationDeltaFactor:1.8 maskImage:nil].CGImage;
-    
     self.titleLabel.text = NSLocalizedString(@"Thanks", @"");
-    self.titleLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
-    self.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading1Font];
+    self.titleLabel.textColor = [self.dependencyManager colorForKey:@"color.text.content"];
+    self.titleLabel.font = [self.dependencyManager fontForKey:@"font.heading1"];
     
     self.messageLabel.text = NSLocalizedString(@"EnterResetCodeMessage", @"");
-    self.messageLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
-    self.messageLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
+    self.messageLabel.textColor = [self.dependencyManager colorForKey:@"color.text.content"];
+    self.messageLabel.font = [self.dependencyManager fontForKey:@"font.header"];
     
     self.enterCodeLabel.text = NSLocalizedString(@"EnterCodeTitle", @"");
-    self.enterCodeLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
-    self.enterCodeLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
+    self.enterCodeLabel.textColor = [self.dependencyManager colorForKey:@"color.text.content"];
+    self.enterCodeLabel.font = [self.dependencyManager fontForKey:@"font.header"];
 
     self.codeField.tintColor = [UIColor blueColor];
     

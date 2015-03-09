@@ -15,10 +15,11 @@
 
 @interface VProfileCreateViewController : UIViewController <VAuthorizationViewController, VRegistrationStep>
 
-@property (nonatomic, assign)   VLoginType      loginType;
-@property (nonatomic, strong)   VUser          *profile;
-@property (nonatomic, strong)   VRegistrationModel *registrationModel;
+@property (nonatomic, assign) VLoginType loginType;
+@property (nonatomic, strong) VUser *profile;
+@property (nonatomic, strong) VRegistrationModel *registrationModel;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
-+ (VProfileCreateViewController *)profileCreateViewController;
++ (VProfileCreateViewController *)newWithDependencyManager:(VDependencyManager *)dependencyManager;
 
 @end

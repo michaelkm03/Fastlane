@@ -383,7 +383,7 @@ We promise that your information is safe with us!</string>
                         <viewControllerLayoutGuide type="top" id="m9A-17-Z9F"/>
                         <viewControllerLayoutGuide type="bottom" id="B4e-QP-VY3"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="o5F-eL-L3m">
+                    <view key="view" contentMode="scaleToFill" id="o5F-eL-L3m" customClass="VTemplateBackgroundView">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
@@ -492,7 +492,7 @@ We promise that your information is safe with us!</string>
                         <viewControllerLayoutGuide type="top" id="NqE-Ur-2Nw"/>
                         <viewControllerLayoutGuide type="bottom" id="YrE-kb-O2F"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="WzA-sY-SPH">
+                    <view key="view" contentMode="scaleToFill" id="WzA-sY-SPH" customClass="VTemplateBackgroundView">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
@@ -666,7 +666,7 @@ We promise that your information is safe with us!</string>
                         <viewControllerLayoutGuide type="top" id="0Qb-od-62n"/>
                         <viewControllerLayoutGuide type="bottom" id="ODj-p8-reU"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="a09-Lh-XcA">
+                    <view key="view" contentMode="scaleToFill" id="a09-Lh-XcA" customClass="VTemplateBackgroundView">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
@@ -806,7 +806,7 @@ We promise that your information is safe with us!</string>
                         <viewControllerLayoutGuide type="top" id="Oa0-XC-rQE"/>
                         <viewControllerLayoutGuide type="bottom" id="v0J-bn-tge"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="4VT-qs-8Hr">
+                    <view key="view" contentMode="scaleToFill" id="4VT-qs-8Hr" customClass="VTemplateBackgroundView">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
@@ -961,6 +961,6 @@ We promise that your information is safe with us!</string>
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="L0J-p9-vsT"/>
+        <segue reference="671-FK-1wm"/>
     </inferredMetricsTieBreakers>
 </document>

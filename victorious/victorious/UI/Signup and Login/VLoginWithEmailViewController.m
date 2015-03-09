@@ -16,7 +16,7 @@
 #import "VObjectManager+Login.h"
 #import "VUser.h"
 #import "VUserManager.h"
-#import "VThemeManager.h"
+#import "VDependencyManager.h"
 #import "UIImage+ImageEffects.h"
 #import "UIAlertView+VBlocks.h"
 #import "VPasswordValidator.h"
@@ -68,8 +68,6 @@
 {
     [super viewDidLoad];
 
-    self.view.layer.contents = (id)[[[VThemeManager sharedThemeManager] themedBackgroundImageForDevice] applyBlurWithRadius:25 tintColor:[UIColor colorWithWhite:1.0 alpha:0.7] saturationDeltaFactor:1.8 maskImage:nil].CGImage;
-
     self.emailValidator = [[VEmailValidator alloc] init];
     self.passwordValidator = [[VPasswordValidator alloc] init];
     
@@ -88,12 +86,12 @@
                                                                                attributes:@{NSForegroundColorAttributeName : activePlaceholderColor}];
     self.passwordTextField.delegate = self;
     
-    self.cancelButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
-    self.cancelButton.primaryColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    self.cancelButton.titleLabel.font = [self.dependencyManager fontForKey:@"font.header"];
+    self.cancelButton.primaryColor = [self.dependencyManager colorForKey:@"color.link"];
     self.cancelButton.style = VButtonStyleSecondary;
 
-    self.loginButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
-    self.loginButton.primaryColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    self.loginButton.titleLabel.font = [self.dependencyManager fontForKey:@"font.header"];
+    self.loginButton.primaryColor = [self.dependencyManager colorForKey:@"color.link"];
     self.loginButton.style = VButtonStylePrimary;
     
     self.usernameTextField.delegate = self;
@@ -111,7 +109,7 @@
     NSString *normalText = NSLocalizedString( @"Forgot Password?", @"" );
     NSString *text = [NSString stringWithFormat:NSLocalizedString( @"%@ %@", @""), normalText, linkText];
     NSRange range = [text rangeOfString:linkText];
-    self.forgotPasswordTextView.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
+    self.forgotPasswordTextView.textColor = [self.dependencyManager colorForKey:@"color.text.content"];
     [self.linkTextHelper setupLinkTextView:self.forgotPasswordTextView withText:text range:range];
     self.forgotPasswordTextView.linkDelegate = self;
     self.forgotPasswordTextView.accessibilityIdentifier = VAutomationIdentifierLoginForgotPassword;

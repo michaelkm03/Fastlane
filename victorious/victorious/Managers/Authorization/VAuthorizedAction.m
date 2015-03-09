@@ -50,7 +50,7 @@
     
     if ( self.objectManager.mainUserLoggedIn && !self.objectManager.mainUserProfileComplete )
     {
-        VProfileCreateViewController *viewController = [VProfileCreateViewController profileCreateViewController];
+        VProfileCreateViewController *viewController = [VProfileCreateViewController newWithDependencyManager:self.dependencyManager];
         [viewController setAuthorizedAction:successActionBlock];
         viewController.profile = [VObjectManager sharedManager].mainUser;
         viewController.registrationModel = [[VRegistrationModel alloc] init];
@@ -59,7 +59,7 @@
     }
     else if ( !self.objectManager.mainUserLoggedIn && !self.objectManager.mainUserProfileComplete )
     {
-        VLoginViewController *viewController = [VLoginViewController loginViewControllerWithDependencyManager:self.dependencyManager];
+        VLoginViewController *viewController = [VLoginViewController newWithDependencyManager:self.dependencyManager];
         viewController.loginContextType = loginContext;
         [viewController setAuthorizedAction:successActionBlock];
         

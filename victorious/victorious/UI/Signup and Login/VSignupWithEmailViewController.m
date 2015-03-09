@@ -10,7 +10,7 @@
 #import "VProfileCreateViewController.h"
 #import "VUser.h"
 #import "TTTAttributedLabel.h"
-#import "VThemeManager.h"
+#import "VDependencyManager.h"
 #import "VUserManager.h"
 #import "VConstants.h"
 #import "UIImage+ImageEffects.h"
@@ -28,10 +28,10 @@
 @property (nonatomic, weak) IBOutlet VInlineValidationTextField *emailTextField;
 @property (nonatomic, weak) IBOutlet VInlineValidationTextField *passwordTextField;
 @property (nonatomic, weak) IBOutlet VInlineValidationTextField *confirmPasswordTextField;
-@property (nonatomic, weak) IBOutlet    VButton       *cancelButton;
-@property (nonatomic, weak) IBOutlet    VButton       *signupButton;
-@property (nonatomic, strong)   VUser  *profile;
-@property (nonatomic, strong)   VRegistrationModel *registrationModel;
+@property (nonatomic, weak) IBOutlet VButton *cancelButton;
+@property (nonatomic, weak) IBOutlet VButton *signupButton;
+@property (nonatomic, strong) VUser *profile;
+@property (nonatomic, strong) VRegistrationModel *registrationModel;
 
 @property (nonatomic, strong) VEmailValidator *emailValidator;
 @property (nonatomic, strong) VPasswordValidator *passwordValidator;
@@ -57,19 +57,17 @@
 {
     [super viewDidLoad];
 
-    self.view.layer.contents = (id)[[[VThemeManager sharedThemeManager] themedBackgroundImageForDevice] applyBlurWithRadius:25 tintColor:[UIColor colorWithWhite:1.0 alpha:0.7] saturationDeltaFactor:1.8 maskImage:nil].CGImage;
-
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:self.emailTextField];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:self.passwordTextField];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:self.confirmPasswordTextField];
 
     self.cancelButton.style = VButtonStyleSecondary;
-    self.cancelButton.primaryColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-    self.cancelButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
+    self.cancelButton.primaryColor = [self.dependencyManager colorForKey:@"color.link"];
+    self.cancelButton.titleLabel.font = [self.dependencyManager fontForKey:@"font.header"];
     
     self.signupButton.style = VButtonStylePrimary;
-    self.signupButton.primaryColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-    self.signupButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
+    self.signupButton.primaryColor = [self.dependencyManager colorForKey:@"color.link"];
+    self.signupButton.titleLabel.font = [self.dependencyManager fontForKey:@"font.header"];
     
     self.emailValidator = [[VEmailValidator alloc] init];
     self.passwordValidator = [[VPasswordValidator alloc] init];
@@ -322,6 +320,7 @@
     if ([segue.identifier isEqualToString:@"toProfileWithEmail"])
     {
         VProfileCreateViewController *profileViewController = (VProfileCreateViewController *)segue.destinationViewController;
+        profileViewController.dependencyManager = self.dependencyManager;
         profileViewController.registrationStepDelegate = self;
         profileViewController.profile = self.profile;
         profileViewController.loginType = kVLoginTypeEmail;

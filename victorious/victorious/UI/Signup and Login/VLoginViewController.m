@@ -9,7 +9,6 @@
 #import "VLoginViewController.h"
 #import "VConstants.h"
 #import "VUser.h"
-#import "VThemeManager.h"
 #import "UIImage+ImageEffects.h"
 #import "VProfileCreateViewController.h"
 #import "VUserManager.h"
@@ -62,7 +61,7 @@
 
 @synthesize authorizedAction; //< VAuthorizationViewController
 
-+ (VLoginViewController *)loginViewControllerWithDependencyManager:(VDependencyManager *)dependencyManager
++ (VLoginViewController *)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"login" bundle:nil];
     VLoginViewController *viewController = (VLoginViewController *)[storyboard instantiateInitialViewController];
@@ -94,15 +93,15 @@
 {
     [super viewDidLoad];
     
-    [self.facebookButton setFont:[[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont]];
+    [self.facebookButton setFont:[self.dependencyManager fontForKey:@"font.header"]];
     [self.facebookButton setTextColor:[UIColor whiteColor]];
     self.facebookButton.accessibilityIdentifier = VAutomationIdentifierLoginFacebook;
     
-    [self.signupWithEmailButton setFont:[[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont]];
+    [self.signupWithEmailButton setFont:[self.dependencyManager fontForKey:@"font.header"]];
     [self.signupWithEmailButton setTextColor:[UIColor whiteColor]];
     self.signupWithEmailButton.accessibilityIdentifier = VAutomationIdentifierLoginSignUp;
     
-    [self.twitterButton setFont:[[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont]];
+    [self.twitterButton setFont:[self.dependencyManager fontForKey:@"font.header"]];
     [self.twitterButton setTextColor:[UIColor whiteColor]];
     self.twitterButton.accessibilityIdentifier = VAutomationIdentifierLoginTwitter;
     
@@ -427,7 +426,8 @@
 {
     if ([segue.identifier isEqualToString:@"toProfileWithFacebook"])
     {
-        VProfileCreateViewController   *profileViewController = (VProfileCreateViewController *)segue.destinationViewController;
+        VProfileCreateViewController *profileViewController = (VProfileCreateViewController *)segue.destinationViewController;
+        profileViewController.dependencyManager = self.dependencyManager;
         profileViewController.loginType = kVLoginTypeFaceBook;
         profileViewController.registrationModel = [[VRegistrationModel alloc] init];
         
@@ -435,7 +435,8 @@
     }
     else if ([segue.identifier isEqualToString:@"toProfileWithTwitter"])
     {
-        VProfileCreateViewController   *profileViewController = (VProfileCreateViewController *)segue.destinationViewController;
+        VProfileCreateViewController *profileViewController = (VProfileCreateViewController *)segue.destinationViewController;
+        profileViewController.dependencyManager = self.dependencyManager;
         profileViewController.loginType = kVLoginTypeTwitter;
         profileViewController.profile = self.profile;
         profileViewController.registrationModel = [[VRegistrationModel alloc] init];
@@ -443,6 +444,7 @@
     else if ([segue.identifier isEqualToString:@"toProfileWithEmail"])
     {
         VProfileCreateViewController *profileViewController = (VProfileCreateViewController *)segue.destinationViewController;
+        profileViewController.dependencyManager = self.dependencyManager;
         profileViewController.loginType = kVLoginTypeEmail;
         profileViewController.profile = self.profile;
     }
