@@ -14,7 +14,6 @@
 #import "VUserManager.h"
 #import "VConstants.h"
 #import "UIImage+ImageEffects.h"
-#import "VSignupTransitionAnimator.h"
 #import "VRegistrationModel.h"
 #import "MBProgressHUD.h"
 #import "VPasswordValidator.h"
