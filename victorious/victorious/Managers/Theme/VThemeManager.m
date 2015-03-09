@@ -14,8 +14,8 @@
 
 NSString * const   kVCreatorName                       =   @"creator.name";
 
-NSString * const   kVMenuBackgroundImage               =   @"Default";
-NSString * const   kVMenuBackgroundImage5              =   @"Default-568h";
+NSString * const   kVMenuBackgroundImage               =   @"LaunchImage";
+NSString * const   kVMenuBackgroundImage5              =   @"LaunchImage";
 NSString * const   VThemeManagerHomeHeaderImageKey     =   @"homeHeaderImage";
 
 #pragma mark - Fonts

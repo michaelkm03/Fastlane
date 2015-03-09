@@ -22,8 +22,6 @@
 		0314D07319B4670A00FA363C /* UIImageView+Blurring.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D06E19B4670A00FA363C /* UIImageView+Blurring.m */; };
 		0314D07619B467A100FA363C /* VSequence+Fetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D07519B467A100FA363C /* VSequence+Fetcher.m */; };
 		0314D07919B4685C00FA363C /* VConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D07819B4685C00FA363C /* VConstants.m */; };
-		0314D08219B4688E00FA363C /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0314D07A19B4688E00FA363C /* Default-568h@2x.png */; };
-		0314D08319B4688E00FA363C /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0314D07B19B4688E00FA363C /* Default@2x.png */; };
 		0314D08419B4688E00FA363C /* defaultSettings.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0314D07C19B4688E00FA363C /* defaultSettings.plist */; };
 		0314D08619B4688E00FA363C /* Icon-29@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0314D07E19B4688E00FA363C /* Icon-29@2x.png */; };
 		0314D08719B4688E00FA363C /* Icon-40@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0314D07F19B4688E00FA363C /* Icon-40@2x.png */; };
@@ -785,8 +783,6 @@
 		0314D07519B467A100FA363C /* VSequence+Fetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VSequence+Fetcher.m"; sourceTree = "<group>"; };
 		0314D07719B4685C00FA363C /* VConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VConstants.h; sourceTree = "<group>"; };
 		0314D07819B4685C00FA363C /* VConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VConstants.m; sourceTree = "<group>"; };
-		0314D07A19B4688E00FA363C /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
-		0314D07B19B4688E00FA363C /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		0314D07C19B4688E00FA363C /* defaultSettings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = defaultSettings.plist; sourceTree = "<group>"; };
 		0314D07D19B4688E00FA363C /* defaultTheme.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = defaultTheme.plist; sourceTree = "<group>"; };
 		0314D07E19B4688E00FA363C /* Icon-29@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-29@2x.png"; sourceTree = "<group>"; };
@@ -4248,8 +4244,6 @@
 			children = (
 				A7E3985D1A34F6E1000E4CAC /* creator-avatar.png */,
 				A7E3985E1A34F6E1000E4CAC /* creator-avatar@2x.png */,
-				0314D07A19B4688E00FA363C /* Default-568h@2x.png */,
-				0314D07B19B4688E00FA363C /* Default@2x.png */,
 				0314D07C19B4688E00FA363C /* defaultSettings.plist */,
 				0314D07D19B4688E00FA363C /* defaultTheme.plist */,
 				D811BBBD19B92F75007398BF /* homeHeaderImage.png */,
@@ -4816,7 +4810,6 @@
 				03C1858319B42C9100E27D05 /* Roboto-Bold.ttf in Resources */,
 				DB2A491F19DF43F900CB687B /* VForceUpgradeViewController.xib in Resources */,
 				03C1858A19B42C9100E27D05 /* Roboto-Regular.ttf in Resources */,
-				0314D08219B4688E00FA363C /* Default-568h@2x.png in Resources */,
 				D82E76E019F5BFF900FFB722 /* VContentPollQuestionCell.xib in Resources */,
 				DB2A491B19DF437D00CB687B /* VNoContentView.xib in Resources */,
 				DB2A494F19DF451600CB687B /* FindFriendsTableView.xib in Resources */,
@@ -4841,7 +4834,6 @@
 				03FD87D519F96F6900D93BAA /* VNoContentTableViewCell.xib in Resources */,
 				D8E7EBCC19CCA540007DA693 /* VSectionHandleReusableView.xib in Resources */,
 				D811BBBF19B92F75007398BF /* homeHeaderImage.png in Resources */,
-				0314D08319B4688E00FA363C /* Default@2x.png in Resources */,
 				0314D08419B4688E00FA363C /* defaultSettings.plist in Resources */,
 				036F38791A0C4DEA0014DF66 /* LeagueGothic-Regular.otf in Resources */,
 				A7E398601A34F6E1000E4CAC /* creator-avatar@2x.png in Resources */,

@@ -30,6 +30,6 @@
         </view>
     </objects>
     <resources>
-        <image name="LaunchImage.png" width="298" height="530"/>
+        <image name="LaunchImage.png" width="320" height="568"/>
     </resources>
 </document>
