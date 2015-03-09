@@ -73,8 +73,8 @@ NSString * const kFTUSequenceURLPath = @"sequenceUrlPath";
     [self.getStartedButton setTitle:NSLocalizedString(@"Get Started", @"") forState:UIControlStateNormal];
     self.getStartedButton.style = VButtonStyleSecondary;
     
-    // Set Background Blur Effect
-    self.backgroundBlurredView.backgroundColor = [UIColor clearColor];
+    // Set Background Color
+    self.view.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
     
     // Setup Player UI
     [self setupVideoUI];
