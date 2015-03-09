@@ -1261,15 +1261,9 @@
                     </view>
                     <connections>
                         <outlet property="collectionView" destination="3gV-4r-uQR" id="FLq-6U-GNB"/>
-                        <outlet property="scrollPaginator" destination="AKQ-uZ-10q" id="mhi-Y7-hHm"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dyH-3f-cPf" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <customObject id="AKQ-uZ-10q" customClass="VScrollPaginator">
-                    <connections>
-                        <outlet property="delegate" destination="0lV-IO-icq" id="R4r-uS-C6M"/>
-                    </connections>
-                </customObject>
             </objects>
             <point key="canvasLocation" x="-3071" y="-233"/>
         </scene>

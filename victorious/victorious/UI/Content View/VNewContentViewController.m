@@ -193,7 +193,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 
 - (void)didUpdateCommentsWithPageType:(VPageType)pageType
 {
-    if (self.viewModel.comments.count > 0)
+    if (self.viewModel.comments.count > 0 && self.contentCollectionView.numberOfSections > VContentViewSectionAllComments)
     {
         if ([self.contentCollectionView numberOfItemsInSection:VContentViewSectionAllComments] > 0)
         {
@@ -471,10 +471,6 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
                                                  name:VInputAccessoryViewKeyboardFrameDidChangeNotification
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(loginStatusDidChange:)
-                                                 name:kLoggedInChangedNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(showLoginViewController:)
                                                  name:VExperienceEnhancerBarDidRequireLoginNotification
                                                object:nil];
@@ -684,11 +680,6 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
         self.bottomKeyboardToContainerBottomConstraint.constant = newBottomKeyboardBarToContainerConstraintHeight;
         [self.view layoutIfNeeded];
     }
-}
-
-- (void)loginStatusDidChange:(NSNotification *)notification
-{
-    [self.viewModel reloadData];
 }
 
 #pragma mark - IBActions
@@ -1063,7 +1054,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
             {
                 if (selectedEnhancer.isBallistic)
                 {
-                    CGRect animationFrameSize = CGRectMake(0, 0, selectedEnhancer.desiredSize.width, selectedEnhancer.desiredSize.height);
+                    CGRect animationFrameSize = CGRectMake(0, 0, selectedEnhancer.flightImage.size.width, selectedEnhancer.flightImage.size.height);
                     UIImageView *animationImageView = [[UIImageView alloc] initWithFrame:animationFrameSize];
                     animationImageView.contentMode = UIViewContentModeScaleAspectFit;
                     

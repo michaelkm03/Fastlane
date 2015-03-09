@@ -12,6 +12,8 @@
 #import "VObjectManager.h"
 #import "VThemeManager.h"
 #import "VUser.h"
+#import "VPaginationManager.h"
+#import "NSCharacterSet+VURLParts.h"
 
 static NSString * const kVSequenceContentType = @"sequence";
 static NSString * const kVStreamContentTypeContent = @"content";
@@ -41,70 +43,30 @@ NSString * const VStreamFilterTypePopular = @"popular";
 
 + (VStream *)remixStreamForSequence:(VSequence *)sequence
 {
-    NSString *apiPath = [@"/api/sequence/remixes_by_sequence/" stringByAppendingString: sequence.remoteId ?: @"0"];
+    NSString *escapedRemoteId = [(sequence.remoteId ?: @"0") stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet v_pathPartCharacterSet]];
+    NSString *apiPath = [NSString stringWithFormat:@"/api/sequence/remixes_by_sequence/%@/%@/%@",
+                         escapedRemoteId, VPaginationManagerPageNumberMacro, VPaginationManagerItemsPerPageMacro];
     return [self streamForPath:apiPath inContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
 }
 
 + (VStream *)streamForUser:(VUser *)user
 {
-    NSString *apiPath = [@"/api/sequence/detail_list_by_user/" stringByAppendingString: user.remoteId.stringValue ?: @"0"];
+    NSString *escapedRemoteId = [(user.remoteId.stringValue ?: @"0") stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet v_pathPartCharacterSet]];
+    NSString *apiPath = [NSString stringWithFormat:@"/api/sequence/detail_list_by_user/%@/%@/%@",
+                         escapedRemoteId, VPaginationManagerPageNumberMacro, VPaginationManagerItemsPerPageMacro];
     return [self streamForPath:apiPath inContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
-}
-
-+ (VStream *)streamForCategories:(NSArray *)categories
-{
-    NSAssert([NSThread isMainThread], @"Filters should be created on the main thread");
-    NSString *categoryString = [categories componentsJoinedByString:@","];
-    NSString *apiPath = [@"/api/sequence/detail_list_by_category/" stringByAppendingString: categoryString ?: @"0"];
-    VStream *stream = [self streamForPath:apiPath inContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
-    stream.name = NSLocalizedString(@"Recent", nil);
-    return stream;
-}
-
-+ (VStream *)hotSteamForSteamName:(NSString *)streamName
-{
-    NSAssert([NSThread isMainThread], @"Filters should be created on the main thread");
-    NSString *apiPath = [@"/api/sequence/hot_detail_list_by_stream/" stringByAppendingString: streamName];
-    VStream *stream = [self streamForPath:apiPath inContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
-    stream.name = NSLocalizedString(@"Featured", nil);
-    return stream;
 }
 
 + (VStream *)streamForHashTag:(NSString *)hashTag
 {
-    NSAssert([NSThread isMainThread], @"Filters should be created on the main thread");
-    NSString *apiPath = [@"/api/sequence/detail_list_by_hashtag/" stringByAppendingString: hashTag];
+    NSString *escapedHashtag = [hashTag stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet v_pathPartCharacterSet]];
+    NSString *apiPath = [NSString stringWithFormat:@"/api/sequence/detail_list_by_hashtag/%@/%@/%@",
+                         escapedHashtag, VPaginationManagerPageNumberMacro, VPaginationManagerItemsPerPageMacro];
     NSManagedObjectContext *context = [[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext];
     VStream *stream = [self streamForPath:apiPath inContext:context];
     stream.hashtag = hashTag;
     stream.name = [@"#" stringByAppendingString:hashTag];
     return stream;
-}
-
-+ (VStream *)followerStreamForStreamName:(NSString *)streamName user:(VUser *)user
-{
-    NSAssert([NSThread isMainThread], @"Filters should be created on the main thread");
-
-    user = user ?: [VObjectManager sharedManager].mainUser;
-    
-    NSString *apiPath = [@"/api/sequence/follows_detail_list_by_stream/" stringByAppendingString: user.remoteId.stringValue ?: @"0"];
-    apiPath = [apiPath stringByAppendingPathComponent:streamName];
-    VStream *stream = [self streamForPath:apiPath inContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
-    stream.name = NSLocalizedString(@"Following", nil);
-    return stream;
-}
-
-+ (VStream *)streamForChannelsDirectory
-{
-    NSAssert([NSThread isMainThread], @"Filters should be created on the main thread");
-    
-    VStream *directory =  [self streamForRemoteId:@"directory"
-                                       filterName:nil
-                             managedObjectContext:[[VObjectManager sharedManager].managedObjectStore mainQueueManagedObjectContext]];
-    
-    directory.name = NSLocalizedString(@"Channels", nil);
-    [directory.managedObjectContext saveToPersistentStore:nil];
-    return directory;
 }
 
 + (VStream *)streamForMarqueeInContext:(NSManagedObjectContext *)context

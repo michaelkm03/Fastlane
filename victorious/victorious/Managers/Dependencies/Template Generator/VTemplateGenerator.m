@@ -25,6 +25,7 @@
 static NSString * const kIDKey = @"id";
 static NSString * const kReferenceIDKey = @"referenceID";
 static NSString * const kAppearanceKey = @"appearance";
+static NSString * const kExperimentsKey = @"experiments";
 static NSString * const kClassNameKey = @"name";
 
 // Menu properties
@@ -129,6 +130,13 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
                  self.accentColor = accentColor;
              }
          }
+         else if ( [key isEqual:kExperimentsKey] )
+         {
+             if ( [obj isKindOfClass:[NSDictionary class]] )
+             {
+                 [template addEntriesFromDictionary:obj];
+             }
+         }
          else
          {
              template[key] = obj;
@@ -143,6 +151,7 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
                                                                   VScaffoldViewControllerUserProfileViewComponentKey: [self profileScreen],
                                                                   kSelectorKey: [self kSelectorKeyFromInitDictionary:self.dataFromInitCall],
                                                                   VScaffoldViewControllerWelcomeUserViewComponentKey: [self firstTimeVideoComponent],
+                                                                  kSelectorKey: [self multiScreenSelectorKey],
                                                                   VTabMenuViewControllerMenuAppearanceKey: @{
                                                                           VDependencyManagerBackgroundKey: [self solidWhiteBackground],
                                                                           },
@@ -160,6 +169,7 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
                                                                    VScaffoldViewControllerUserProfileViewComponentKey: [self profileScreen],
                                                                    kSelectorKey: [self kSelectorKeyFromInitDictionary:self.dataFromInitCall],
                                                                    VScaffoldViewControllerWelcomeUserViewComponentKey: [self firstTimeVideoComponent],
+                                                                   kSelectorKey: [self multiScreenSelectorKey],
                                                                    };
     }
 
@@ -169,14 +179,14 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
     return template;
 }
 
-- (NSDictionary *)kSelectorKeyFromInitDictionary:(NSDictionary *)initDictionary
+- (NSDictionary *)multiScreenSelectorKey
 {
     NSDictionary *kSelectorKey = @{
                                    kClassNameKey: @"basic.multiScreenSelector",
                                    VDependencyManagerBackgroundColorKey: self.accentColor,
                                    };
 
-    if ( [[(NSDictionary *)[initDictionary objectForKey:@"experiments"] objectForKey:@"template_c_enabled"] boolValue] )
+    if ( self.templateCEnabled )
     {
         kSelectorKey =  @{
                           kClassNameKey: @"textbar.multiScreenSelector",

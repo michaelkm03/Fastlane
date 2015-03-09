@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 Victorious, Inc. All rights reserved.
 //
 
+#import "NSURL+MediaType.h"
 #import "VInteraction.h"
 #import "VNode+Fetcher.h"
 
@@ -51,7 +52,7 @@ static NSString * const kmp4MimeType = @"video/mp4";
     
     [self.assets enumerateObjectsUsingBlock:^(VAsset *asset, NSUInteger idx, BOOL *stop)
     {
-        if ([[asset.data pathExtension] isEqualToString:@"jpg"])
+        if ( [asset.data v_hasImageExtension] )
         {
             imageAsset = asset;
             *stop = YES;
