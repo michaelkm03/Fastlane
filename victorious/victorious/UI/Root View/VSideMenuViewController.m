@@ -112,10 +112,9 @@
     
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.backgroundImageView = ({
-        UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
+        UIImageView *imageView = [[UIImageView alloc] init];
         imageView.image = self.backgroundImage;
-        imageView.contentMode = UIViewContentModeScaleAspectFill;
-        imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        imageView.contentMode = UIViewContentModeScaleToFill;
         imageView;
     });
     self.contentButton = ({
@@ -125,6 +124,25 @@
     });
     
     [self.view addSubview:self.backgroundImageView];
+    self.backgroundImageView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.backgroundImageView addConstraint:[NSLayoutConstraint constraintWithItem:self.backgroundImageView
+                                                                        attribute:NSLayoutAttributeHeight
+                                                                        relatedBy:NSLayoutRelationEqual
+                                                                           toItem:self.backgroundImageView
+                                                                        attribute:NSLayoutAttributeWidth
+                                                                       multiplier:(16.0f / 9.0f)
+                                                                         constant:0.0f]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[backgroundImageView]|"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:@{ @"backgroundImageView": self.backgroundImageView }]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.backgroundImageView
+                                                          attribute:NSLayoutAttributeTop
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.view
+                                                          attribute:NSLayoutAttributeTop
+                                                         multiplier:1.0f
+                                                           constant:0.0f]];
     
     [self addChildViewController:self.menuViewController];
     self.menuViewController.view.frame = self.view.bounds;
@@ -213,7 +231,6 @@
     if (self.scaleBackgroundImageView)
     {
         self.backgroundImageView.transform = CGAffineTransformIdentity;
-        self.backgroundImageView.frame = self.view.bounds;
     }
     self.menuViewController.view.frame = self.view.bounds;
     self.menuViewController.view.transform = CGAffineTransformMakeScale(1.5f, 1.5f);
