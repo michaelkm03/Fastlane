@@ -611,7 +611,7 @@ static NSString * const kVideoMuted = @"videoMuted";
                                          kDestinationKey: @{
                                                  kClassNameKey: @"groupedStream.screen",
                                                  kTitleKey: NSLocalizedString(@"Channels", nil),
-                                                 VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/detail_list_by_stream/directory/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%"
+                                                 VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/detail_list_by_stream/directory/0/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%"
                                                  }
                                          };
         NSMutableDictionary *completeComponent = [[NSMutableDictionary alloc] initWithDictionary:componentBase];
@@ -628,7 +628,7 @@ static NSString * const kVideoMuted = @"videoMuted";
                   kDestinationKey: @{
                           kClassNameKey: @"directory.screen",
                           kTitleKey: NSLocalizedString(@"Channels", nil),
-                          VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/detail_list_by_stream/directory/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%"
+                          VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/detail_list_by_stream/directory/0/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%"
                           },
                   kBackgroundColor: @{
                           kRedKey: @0,
