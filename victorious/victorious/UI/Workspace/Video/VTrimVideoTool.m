@@ -247,7 +247,6 @@ static NSString * const kVideoMuted = @"videoMuted";
       didPlayToTime:(CMTime)time
 {
     self.trimViewController.currentPlayTime = time;
-    VLog(@"%@", [NSValue valueWithCMTime:time]);
 }
 
 - (void)videoPlayerReadyToPlay:(VCVideoPlayerViewController *)videoPlayer
