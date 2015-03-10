@@ -44,23 +44,23 @@
     self = [super init];
     if (self)
     {
-        self.stream = stream;
-        self.streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:stream];
-        self.streamDataSource.delegate = self;
-        self.streamDataSource.collectionView = self.collectionView;
-        self.collectionView.dataSource = self.streamDataSource;
-        self.currentPage = 0;
+        _stream = stream;
+        _streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:stream];
+        _streamDataSource.delegate = self;
+        _streamDataSource.collectionView = self.collectionView;
+        _collectionView.dataSource = self.streamDataSource;
+        _currentPage = 0;
     }
     return self;
 }
 
 - (void)dealloc
 {
-    if (self.collectionView.delegate == self)
+    if (_collectionView.delegate == self)
     {
-        self.collectionView.delegate = nil;
+        _collectionView.delegate = nil;
     }
-    [self.autoScrollTimer invalidate];
+    [_autoScrollTimer invalidate];
 }
 
 - (void)setCollectionView:(UICollectionView *)collectionView
