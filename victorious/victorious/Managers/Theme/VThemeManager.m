@@ -15,7 +15,6 @@
 NSString * const   kVCreatorName                       =   @"creator.name";
 
 NSString * const   kVMenuBackgroundImage               =   @"LaunchImage";
-NSString * const   kVMenuBackgroundImage5              =   @"LaunchImage";
 NSString * const   VThemeManagerHomeHeaderImageKey     =   @"homeHeaderImage";
 
 #pragma mark - Fonts
@@ -147,15 +146,7 @@ static CGFloat const kGreyBackgroundColor = 0.94509803921;
 
 - (UIImage *)themedBackgroundImageForDevice
 {
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone &&
-        [[UIScreen mainScreen] bounds].size.height == 568.0f)
-    {
-        return [self themedImageForKey:kVMenuBackgroundImage5];
-    }
-    else
-    {
-        return [self themedImageForKey:kVMenuBackgroundImage];
-    }
+    return [self themedImageForKey:kVMenuBackgroundImage];
 }
 
 - (UIColor *)themedColorForKey:(NSString *)key
