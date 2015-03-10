@@ -9,8 +9,14 @@
 #import <UIKit/UIKit.h>
 #import "VWorkspaceFlowController.h"
 
+/**
+ *  A category UIViewController offering a convenience method for presenting the creation action sheet.
+ */
 @interface UIViewController (VContentCreationActionSheet) <VWorkspaceFlowControllerDelegate>
 
+/**
+ *  Presents the create action sheet on this view controller.
+ */
 - (void)showContentTypeSelection;
 
 @end
