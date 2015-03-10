@@ -72,6 +72,7 @@ NSString * const VDependencyManagerInitialViewControllerKey = @"initialScreen";
 NSString * const VDependencyManagerWorkspaceFlowKey = @"workspaceFlow";
 NSString * const VDependencyManagerImageWorkspaceKey = @"imageWorkspace";
 NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
+NSString * const VDependencyManagerTextOnlyWorkspaceKey = @"textOnlyWorkspace";
 
 @interface VDependencyManager ()
 

@@ -50,6 +50,7 @@ extern NSString * const VDependencyManagerInitialViewControllerKey; ///< The vie
 extern NSString * const VDependencyManagerWorkspaceFlowKey;
 extern NSString * const VDependencyManagerImageWorkspaceKey;
 extern NSString * const VDependencyManagerVideoWorkspaceKey;
+extern NSString * const VDependencyManagerTextOnlyWorkspaceKey;
 
 /**
  Provides loose coupling between components.

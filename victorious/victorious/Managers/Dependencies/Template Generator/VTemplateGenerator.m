@@ -222,7 +222,8 @@ static NSString * const kVideoMuted = @"videoMuted";
     return @{
              kClassNameKey: @"workspace",
              VDependencyManagerImageWorkspaceKey: [self imageWorkspaceComponent],
-             VDependencyManagerVideoWorkspaceKey: [self videoWorkspaceComponent]
+             VDependencyManagerVideoWorkspaceKey: [self videoWorkspaceComponent],
+             VDependencyManagerTextOnlyWorkspaceKey: [self textOnlyWorkspaceComponent]
              };
 }
 
@@ -269,6 +270,30 @@ static NSString * const kVideoMuted = @"videoMuted";
                      [self textTool],
                      [self filterTool],
                      [self cropTool],
+                     ]
+             };
+}
+
+- (NSDictionary *)textOnlyWorkspaceComponent
+{
+    return @{
+             kClassNameKey: @"workspace.screen",
+             kToolsKey: [self trendingHashtagTool]
+             };
+}
+
+- (NSDictionary *)trendingHashtagTool
+{
+    return @{
+             kClassNameKey: @"filter.tool",
+             kTitleKey: @"trendingHashtag",
+             kFilterIndexKey: @0,
+             kPickerKey:
+                 @{
+                     kClassNameKey: @"vertical.picker",
+                     },
+             kToolsKey:
+                 @[
                      ]
              };
 }
