@@ -14,7 +14,7 @@
 #import "VStreamCollectionViewDataSource.h"
 #import "VMarqueeStreamItemCell.h"
 
-#import "VDirectoryViewController.h"
+#import "VGroupedStreamCollectionViewController.h"
 #import "VMarqueeTabIndicatorView.h"
 
 #import "VThemeManager.h"

@@ -15,6 +15,7 @@
 @dynamic name;
 @dynamic previewImagesObject;
 @dynamic remoteId;
+@dynamic streamContentType;
 @dynamic streams;
 
 @end
