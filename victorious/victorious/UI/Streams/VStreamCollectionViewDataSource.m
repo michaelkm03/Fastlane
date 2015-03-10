@@ -130,7 +130,7 @@ NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamColl
 
 - (BOOL)canLoadNextPage
 {
-    VAbstractFilter *filter = (VAbstractFilter *)[[VObjectManager sharedManager] filterForStream:self.stream];
+    VAbstractFilter *filter = [[VObjectManager sharedManager] filterForStream:self.stream];
     return [filter canLoadPageType:VPageTypeNext];
 }
 
