@@ -8,6 +8,8 @@
 
 #import "UIViewController+VContentCreationActionSheet.h"
 
+#import "VObjectManager+Users.h"
+
 // Creation UI
 #import "VWorkspaceFlowController.h"
 #import "VImageToolController.h"
@@ -20,10 +22,21 @@
 // Tracking
 #import "VTrackingManager.h"
 
+// Login
+#import "VAuthorizationViewControllerFactory.h"
+#import "VRootViewController.h"
+
 @implementation UIViewController (VContentCreationActionSheet)
 
 - (void)showContentTypeSelection
 {
+    UIViewController *loginViewController = [VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]];
+    if (loginViewController != nil)
+    {
+        [[VRootViewController rootViewController] presentViewController:loginViewController animated:YES completion:nil];
+        return;
+    }
+    
     VAlertController *alertControler = [VAlertController actionSheetWithTitle:nil message:nil];
     [alertControler addAction:[VAlertAction cancelButtonWithTitle:NSLocalizedString(@"CancelButton", @"Cancel button") handler:^(VAlertAction *action)
                                {
@@ -93,6 +106,13 @@
                capturedMediaURL:(NSURL *)capturedMediaURL
 {
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - VLoginRequest
+
+- (NSString *)localizedExplanation
+{
+    return NSLocalizedString(@"User wants to create content", @"");
 }
 
 @end
