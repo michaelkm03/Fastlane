@@ -27,6 +27,7 @@
 @property (nonatomic, strong) VStream *stream;
 @property (nonatomic, strong) VStreamCollectionViewDataSource *streamDataSource;
 @property (nonatomic, strong) VStreamItem *currentStreamItem;
+@property (nonatomic, assign) NSInteger currentPage;
 
 @property (nonatomic, strong) VTimerManager *autoScrollTimerManager;
 
@@ -44,22 +45,23 @@
     self = [super init];
     if (self)
     {
-        self.stream = stream;
-        self.streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:stream];
-        self.streamDataSource.delegate = self;
-        self.streamDataSource.collectionView = self.collectionView;
-        self.collectionView.dataSource = self.streamDataSource;
+        _stream = stream;
+        _streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:stream];
+        _streamDataSource.delegate = self;
+        _streamDataSource.collectionView = _collectionView;
+        _collectionView.dataSource = _streamDataSource;
+        _currentPage = 0;
     }
     return self;
 }
 
 - (void)dealloc
 {
-    if (self.collectionView.delegate == self)
+    if (_collectionView.delegate == self)
     {
-        self.collectionView.delegate = nil;
+        _collectionView.delegate = nil;
     }
-    [self.autoScrollTimerManager invalidate];
+    [_autoScrollTimerManager invalidate];
 }
 
 - (void)setCollectionView:(UICollectionView *)collectionView
@@ -135,10 +137,14 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     CGFloat pageWidth = self.collectionView.frame.size.width;
-    NSUInteger currentPage = self.collectionView.contentOffset.x / pageWidth;
-    if (currentPage < self.streamDataSource.count)
+    NSInteger currentPage = self.collectionView.contentOffset.x / pageWidth;
+    if ( currentPage != self.currentPage )
     {
-        [self scrolledToPage:currentPage];
+        self.currentPage = currentPage;
+        if ( (NSUInteger) self.currentPage < self.streamDataSource.count )
+        {
+            [self scrolledToPage:self.currentPage];
+        }
     }
 }
 
@@ -152,10 +158,23 @@
 {
     [self.autoScrollTimerManager invalidate];
     self.autoScrollTimerManager = [VTimerManager scheduledTimerManagerWithTimeInterval:kVDetailVisibilityDuration + kVDetailHideDuration
-                                                                         target:self
-                                                                       selector:@selector(selectNextTab)
-                                                                       userInfo:nil
-                                                                        repeats:NO];
+                                                                                target:self
+                                                                              selector:@selector(selectNextTab)
+                                                                              userInfo:nil
+                                                                               repeats:NO];
+    NSInteger currentPage = self.currentPage;
+    if ( currentPage < [[self streamDataSource] collectionView:self.collectionView numberOfItemsInSection:0] )
+    {
+        [self.collectionView.visibleCells enumerateObjectsUsingBlock:^(VMarqueeStreamItemCell *cell, NSUInteger idx, BOOL *stop)
+         {
+             if ( [self.collectionView indexPathForCell:cell].row == currentPage )
+             {
+                 [cell setDetailsContainerVisible:YES animated:NO];
+                 [cell restartHideTimer];
+                 *stop = YES;
+             }
+         }];
+    }
 }
 
 #pragma mark - VMarqueeCellDelegate
