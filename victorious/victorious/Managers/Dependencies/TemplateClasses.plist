@@ -42,7 +42,9 @@
 	<string>VStreamCollectionViewController</string>
 	<key>followingStream.screen</key>
 	<string>VFollowingStreamCollectionViewController</string>
-	<key>streamDirectory.screen</key>
+	<key>groupedStream.screen</key>
+	<string>VGroupedStreamCollectionViewController</string>
+	<key>directory.screen</key>
 	<string>VDirectoryViewController</string>
 	<key>basic.multiScreen</key>
 	<string>VMultipleContainerViewController</string>
@@ -50,6 +52,8 @@
 	<string>VSegmentedSelectorView</string>
 	<key>textbar.multiScreenSelector</key>
 	<string>VTextbarSelectorView</string>
+	<key>rounded.multiScreenSelector</key>
+	<string>VRoundedSegmentedSelectorView</string>
 	<key>inbox.screen</key>
 	<string>VInboxContainerViewController</string>
 	<key>currentUserProfile.screen</key>

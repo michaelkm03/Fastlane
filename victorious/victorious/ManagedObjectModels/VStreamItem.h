@@ -16,6 +16,7 @@
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) id previewImagesObject;
 @property (nonatomic, retain) NSString * remoteId;
+@property (nonatomic, retain) NSString * streamContentType;
 @property (nonatomic, retain) NSSet *streams;
 @end
 

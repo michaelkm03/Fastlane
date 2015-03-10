@@ -15,7 +15,6 @@
 @dynamic apiPath;
 @dynamic count;
 @dynamic filterName;
-@dynamic streamContentType;
 @dynamic streamItems;
 @dynamic hashtag;
 @dynamic trackingIdentifier;

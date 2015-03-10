@@ -28,7 +28,7 @@
 #import "VInboxContainerViewController.h"
 #import "VUserProfileNavigationDestination.h"
 #import "VAuthorizationViewControllerFactory.h"
-#import "VDirectoryViewController.h"
+#import "VGroupedStreamCollectionViewController.h"
 #import "VDiscoverContainerViewController.h"
 
 #import "VStreamCollectionViewController.h"
