@@ -139,6 +139,7 @@
 		03484BFE192E9D2100403FB1 /* NSLayoutConstraint+CenterConstraints.m in Sources */ = {isa = PBXBuildFile; fileRef = 03484BFD192E9D2100403FB1 /* NSLayoutConstraint+CenterConstraints.m */; };
 		03484C071930294D00403FB1 /* NSURL+MediaType.m in Sources */ = {isa = PBXBuildFile; fileRef = 03484C061930294D00403FB1 /* NSURL+MediaType.m */; };
 		034BCC3F19F5CF5D00114F6C /* MuseoSans-500.otf in Resources */ = {isa = PBXBuildFile; fileRef = 03C1859019B42CEA00E27D05 /* MuseoSans-500.otf */; };
+		034D1A6A1AAF5A8B00EB7B2D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 034D1A6C1AAF5A8B00EB7B2D /* Localizable.strings */; };
 		0350426A194F711A008D78A3 /* NSIndexSet+Map.m in Sources */ = {isa = PBXBuildFile; fileRef = 03504269194F711A008D78A3 /* NSIndexSet+Map.m */; };
 		0358FCEE1A65E785004DD7A1 /* VScaffoldViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0358FCED1A65E785004DD7A1 /* VScaffoldViewController.m */; };
 		03610584194140AA0069D49E /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 03610583194140AA0069D49E /* libsqlite3.dylib */; };
@@ -1017,6 +1018,22 @@
 		03484BFD192E9D2100403FB1 /* NSLayoutConstraint+CenterConstraints.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSLayoutConstraint+CenterConstraints.m"; sourceTree = "<group>"; };
 		03484C051930294D00403FB1 /* NSURL+MediaType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+MediaType.h"; sourceTree = "<group>"; };
 		03484C061930294D00403FB1 /* NSURL+MediaType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+MediaType.m"; sourceTree = "<group>"; };
+		034D1A541AAF5A8500EB7B2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Profile.strings; sourceTree = "<group>"; };
+		034D1A551AAF5A8600EB7B2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/VKeyboardInputAccessoryView.strings; sourceTree = "<group>"; };
+		034D1A561AAF5A8600EB7B2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/ActionSheet.strings; sourceTree = "<group>"; };
+		034D1A571AAF5A8600EB7B2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/FindFriendsTableView.strings; sourceTree = "<group>"; };
+		034D1A581AAF5A8700EB7B2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/VUserProfileHeaderView.strings; sourceTree = "<group>"; };
+		034D1A591AAF5A8700EB7B2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/VEphemeralTimerView.strings; sourceTree = "<group>"; };
+		034D1A5F1AAF5A8800EB7B2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/VForceUpgradeViewController.strings; sourceTree = "<group>"; };
+		034D1A601AAF5A8800EB7B2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		034D1A611AAF5A8900EB7B2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		034D1A621AAF5A8900EB7B2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Discover.strings; sourceTree = "<group>"; };
+		034D1A631AAF5A8900EB7B2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Camera.strings; sourceTree = "<group>"; };
+		034D1A641AAF5A8A00EB7B2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/VNoContentView.strings; sourceTree = "<group>"; };
+		034D1A651AAF5A8A00EB7B2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/login.strings; sourceTree = "<group>"; };
+		034D1A661AAF5A8A00EB7B2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Main.strings; sourceTree = "<group>"; };
+		034D1A671AAF5A8B00EB7B2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/settings.strings; sourceTree = "<group>"; };
+		034D1A6B1AAF5A8B00EB7B2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		03504268194F711A008D78A3 /* NSIndexSet+Map.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSIndexSet+Map.h"; sourceTree = "<group>"; };
 		03504269194F711A008D78A3 /* NSIndexSet+Map.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSIndexSet+Map.m"; sourceTree = "<group>"; };
 		0358FCEC1A65E785004DD7A1 /* VScaffoldViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VScaffoldViewController.h; sourceTree = "<group>"; };
@@ -4017,6 +4034,7 @@
 		BE171D9F1868BE64004E5202 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				034D1A6C1AAF5A8B00EB7B2D /* Localizable.strings */,
 				BE171DA11868BE64004E5202 /* InfoPlist.strings */,
 				BE171DA01868BE64004E5202 /* victoriousTests-Info.plist */,
 			);
@@ -5006,6 +5024,7 @@
 				039D02B91A10946300DB9236 /* init.json in Resources */,
 				A7CFC1BB19FAF6BF00726772 /* landscape_right.m4v in Resources */,
 				BE171DA31868BE64004E5202 /* InfoPlist.strings in Resources */,
+				034D1A6A1AAF5A8B00EB7B2D /* Localizable.strings in Resources */,
 				A7CFC1BC19FAF6BF00726772 /* portrait_upsidedown.m4v in Resources */,
 				A7CFC1CC19FEE24300726772 /* front_portrait.m4v in Resources */,
 				039D2FD6197D93C600DFBE60 /* filters.xml in Resources */,
@@ -5701,11 +5720,20 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		034D1A6C1AAF5A8B00EB7B2D /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				034D1A6B1AAF5A8B00EB7B2D /* fr */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 		0390084819F37B1E00FD7EDF /* Camera.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				0390084719F37B1E00FD7EDF /* Base */,
 				0390084A19F37B2800FD7EDF /* es */,
+				034D1A631AAF5A8900EB7B2D /* fr */,
 			);
 			name = Camera.storyboard;
 			sourceTree = "<group>";
@@ -5715,6 +5743,7 @@
 			children = (
 				0390085519F38BC600FD7EDF /* Base */,
 				0390085819F38BC800FD7EDF /* es */,
+				034D1A561AAF5A8600EB7B2D /* fr */,
 			);
 			name = ActionSheet.storyboard;
 			sourceTree = "<group>";
@@ -5724,6 +5753,7 @@
 			children = (
 				0390085E19F38D5C00FD7EDF /* Base */,
 				0390086119F38D5F00FD7EDF /* es */,
+				034D1A551AAF5A8600EB7B2D /* fr */,
 			);
 			name = VKeyboardInputAccessoryView.xib;
 			sourceTree = "<group>";
@@ -5733,6 +5763,7 @@
 			children = (
 				0390086319F38FD700FD7EDF /* Base */,
 				0390086619F38FDB00FD7EDF /* es */,
+				034D1A621AAF5A8900EB7B2D /* fr */,
 			);
 			name = Discover.storyboard;
 			sourceTree = "<group>";
@@ -5741,6 +5772,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				BE171DA21868BE64004E5202 /* en */,
+				034D1A601AAF5A8800EB7B2D /* fr */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -5750,6 +5782,7 @@
 			children = (
 				DB2A48FA19DF2D9D00CB687B /* es */,
 				0390084B19F386E200FD7EDF /* Base */,
+				034D1A611AAF5A8900EB7B2D /* fr */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -5759,6 +5792,7 @@
 			children = (
 				0390086719F39DFD00FD7EDF /* Base */,
 				0390086819F39E0B00FD7EDF /* es */,
+				034D1A661AAF5A8A00EB7B2D /* fr */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -5768,6 +5802,7 @@
 			children = (
 				0390085B19F38C9500FD7EDF /* Base */,
 				0390085C19F38C9F00FD7EDF /* es */,
+				034D1A641AAF5A8A00EB7B2D /* fr */,
 			);
 			name = VNoContentView.xib;
 			sourceTree = "<group>";
@@ -5777,6 +5812,7 @@
 			children = (
 				0390086919F39EB700FD7EDF /* Base */,
 				0390086A19F39EC200FD7EDF /* es */,
+				034D1A5F1AAF5A8800EB7B2D /* fr */,
 			);
 			name = VForceUpgradeViewController.xib;
 			sourceTree = "<group>";
@@ -5786,6 +5822,7 @@
 			children = (
 				0390087719F3A14500FD7EDF /* Base */,
 				0390087819F3A14E00FD7EDF /* es */,
+				034D1A541AAF5A8500EB7B2D /* fr */,
 			);
 			name = Profile.storyboard;
 			sourceTree = "<group>";
@@ -5795,6 +5832,7 @@
 			children = (
 				0390087919F3A2A000FD7EDF /* Base */,
 				0390087A19F3A2AA00FD7EDF /* es */,
+				034D1A581AAF5A8700EB7B2D /* fr */,
 			);
 			name = VUserProfileHeaderView.xib;
 			sourceTree = "<group>";
@@ -5804,6 +5842,7 @@
 			children = (
 				0390087D19F3A4A900FD7EDF /* Base */,
 				0390087E19F3A4B400FD7EDF /* es */,
+				034D1A671AAF5A8B00EB7B2D /* fr */,
 			);
 			name = settings.storyboard;
 			sourceTree = "<group>";
@@ -5813,6 +5852,7 @@
 			children = (
 				0390087F19F3A53C00FD7EDF /* Base */,
 				0390088019F3A54A00FD7EDF /* es */,
+				034D1A651AAF5A8A00EB7B2D /* fr */,
 			);
 			name = login.storyboard;
 			sourceTree = "<group>";
@@ -5822,6 +5862,7 @@
 			children = (
 				0390088319F3A63C00FD7EDF /* Base */,
 				0390088419F3A64600FD7EDF /* es */,
+				034D1A571AAF5A8600EB7B2D /* fr */,
 			);
 			name = FindFriendsTableView.xib;
 			sourceTree = "<group>";
@@ -5831,6 +5872,7 @@
 			children = (
 				0390088F19F3A99100FD7EDF /* Base */,
 				03F28F4919F4459D008BB3F7 /* es */,
+				034D1A591AAF5A8700EB7B2D /* fr */,
 			);
 			name = VEphemeralTimerView.xib;
 			sourceTree = "<group>";
