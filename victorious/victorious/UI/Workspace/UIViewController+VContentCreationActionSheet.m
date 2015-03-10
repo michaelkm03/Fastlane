@@ -108,11 +108,4 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-#pragma mark - VLoginRequest
-
-- (NSString *)localizedExplanation
-{
-    return NSLocalizedString(@"User wants to create content", @"");
-}
-
 @end

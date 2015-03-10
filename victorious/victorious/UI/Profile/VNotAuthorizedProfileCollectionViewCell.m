@@ -55,13 +55,6 @@
     [self requestLogin];
 }
 
-#pragma mark - VLoginRequest
-
-- (NSString *)localizedExplanation
-{
-    return NSLocalizedString(@"User requested login from profile", nil);
-}
-
 #pragma mark - Private Methods
 
 - (void)requestLogin
