@@ -18,7 +18,7 @@
 /**
  *  Informs the receiver that the user would like to login.
  */
-- (void)notAuthorizedProfileCellwantsLogin:(VNotAuthorizedProfileCollectionViewCell *)cell;
+- (void)notAuthorizedProfileCellWantsLogin:(VNotAuthorizedProfileCollectionViewCell *)cell;
 
 @end
 

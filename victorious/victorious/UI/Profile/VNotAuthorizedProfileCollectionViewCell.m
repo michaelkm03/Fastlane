@@ -59,7 +59,7 @@
 
 - (void)requestLogin
 {
-    [self.delegate notAuthorizedProfileCellwantsLogin:self];
+    [self.delegate notAuthorizedProfileCellWantsLogin:self];
 }
 
 @end

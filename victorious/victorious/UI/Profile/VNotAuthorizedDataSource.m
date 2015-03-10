@@ -44,7 +44,7 @@
 
 #pragma mark - VNotAuthorizedProfileCollectionViewCellDelegate
 
-- (void)notAuthorizedProfileCellwantsLogin:(VNotAuthorizedProfileCollectionViewCell *)cell
+- (void)notAuthorizedProfileCellWantsLogin:(VNotAuthorizedProfileCollectionViewCell *)cell
 {
     [self.delegate dataSourceWantsAuthorization:self];
 }
