@@ -10,9 +10,9 @@
 #import "NSArray+VMap.h"
 #import "VDependencyManager.h"
 
-static CGFloat const kVBarHeight = 40;
-static CGFloat const kVTrackLineHeight = 1;
-static CGFloat const kVLineHeight = 3;
+static CGFloat const kVBarHeight = 40.0f;
+static CGFloat const kVTrackLineHeight = 1.0f;
+static CGFloat const kVLineHeight = 3.0f;
 static CGFloat const kVLineAnimationDuration = 0.25f;
 
 @interface VTextbarSelectorView ()
@@ -45,7 +45,7 @@ static CGFloat const kVLineAnimationDuration = 0.25f;
 
 - (CGSize)intrinsicContentSize
 {
-    return CGSizeMake(UIViewNoIntrinsicMetric, 40.0f);
+    return CGSizeMake(UIViewNoIntrinsicMetric, kVBarHeight);
 }
 
 #pragma mark - activeViewControllerIndex updating
@@ -144,7 +144,7 @@ static CGFloat const kVLineAnimationDuration = 0.25f;
             return;
         }
         
-        //Create a label, set it's text to the title, give it constraints that fit it to it's spot in the view
+        //Create a button, set it's text to the title, give it constraints that fit it to it's spot in the view
         UIButton *button = [[UIButton alloc] init];
         [button setTranslatesAutoresizingMaskIntoConstraints:NO];
         [button setTitle:viewController.title forState:UIControlStateNormal];
