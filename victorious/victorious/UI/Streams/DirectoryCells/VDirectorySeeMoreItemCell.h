@@ -27,10 +27,4 @@
  */
 @property (nonatomic, weak) IBOutlet UILabel *seeMoreLabel;
 
-/**
- Allows calling code to update a constant that controls how far from the
- bottom edge of the cell's content view the background view extend.
- */
-- (void)updateBottomConstraintToConstant:(CGFloat)constant;
-
 @end

@@ -36,22 +36,13 @@ extern CGFloat const kStreamDirectoryGroupCellInset;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 /**
- *  The VStreamItem used to populate fields on the cell.
- */
-@property (nonatomic, strong) VStreamItem *streamItem;
-
-/**
     The item cell delegate that will respond to selections made within the collectionView contained in this cell
  */
 @property (nonatomic, weak) id <VDirectoryGroupCellDelegate> delegate;
 
 /**
- A convenient flag for checking if this row is of stream of stream cells or just a row of stream cells
+ *  The VStream used to populate fields on the cell.
  */
-@property (nonatomic, readonly) BOOL isStreamOfStreamsRow;
-
-@property (nonatomic, weak, readonly) VStream *stream;
-
-@property (nonatomic, weak, readonly) VSequence *sequence;
+@property (nonatomic, strong) VStream *stream;
 
 @end
