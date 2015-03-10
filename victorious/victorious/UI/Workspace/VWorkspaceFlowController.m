@@ -290,15 +290,20 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
             {
                 self.cameraViewController = [VCameraViewController cameraViewControllerLimitedToPhotos];
             }
+            self.cameraViewController.shouldSkipPreview = YES;
+            self.cameraViewController.completionBlock = [self mediaCaptureCompletion];
+            [self.flowNavigationController pushViewController:self.cameraViewController animated:NO];
             break;
         case VWorkspaceFlowControllerInitialCaptureStateVideo:
             self.cameraViewController = [VCameraViewController cameraViewControllerStartingWithVideoCapture];
+            self.cameraViewController.shouldSkipPreview = YES;
+            self.cameraViewController.completionBlock = [self mediaCaptureCompletion];
+            [self.flowNavigationController pushViewController:self.cameraViewController animated:NO];
+            break;
+        case VWorkspaceFlowControllerInitialCaptureStateNone:
+            [self toEditState];
             break;
     }
-    self.cameraViewController.shouldSkipPreview = YES;
-    self.cameraViewController.completionBlock = [self mediaCaptureCompletion];
-    [self.flowNavigationController pushViewController:self.cameraViewController
-                                             animated:NO];
 }
 
 - (VMediaCaptureCompletion)mediaCaptureCompletion
@@ -335,8 +340,6 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
 
 - (void)toEditState
 {
-    NSAssert(self.capturedMediaURL != nil, @"We need a captured media url to begin editing!");
-    
     __weak typeof(self) welf = self;
     VWorkspaceViewController *workspaceViewController;
     if ([self.capturedMediaURL v_hasImageExtension])
@@ -354,7 +357,8 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
     }
     else
     {
-        NSAssert(false, @"Media type not supported!");
+        workspaceViewController = (VWorkspaceViewController *)[self.dependencyManager viewControllerForKey:VDependencyManagerTextWorkspaceKey];
+        workspaceViewController.text = @"Here is my sample text!";
     }
     
     UIImage *preloadedImage = [self.dependencyManager imageForKey:VWorkspaceFlowControllerPreloadedImageKey];

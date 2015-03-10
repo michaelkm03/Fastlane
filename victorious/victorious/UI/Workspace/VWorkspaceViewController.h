@@ -30,6 +30,7 @@ typedef void (^VWorkspaceCompletion)(BOOL finished, UIImage *previewImage, NSURL
 
 @property (nonatomic, strong) UIImage *previewImage; ///< An image to use in the canvas.
 @property (nonatomic, strong) NSURL *mediaURL; ///< The image or video to use in this workspace.
+@property (nonatomic, strong) NSString *text; ///< The text to use in this workspace for text posts.
 
 @property (nonatomic, readonly) VToolController *toolController; ///< The toolController
 

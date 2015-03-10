@@ -31,6 +31,7 @@
 // ToolControllers
 #import "VImageToolController.h"
 #import "VVideoToolController.h"
+#import "VTextToolController.h"
 
 // Video
 #import "VVideoWorkspaceTool.h"
@@ -208,6 +209,7 @@
     [super viewWillAppear:animated];
     
     [self.toolController setupDefaultTool];
+    
     [self setSelectedBarButtonItem:[self.barButtonItemForToolMap objectForKey:[self.toolController.selectedTool description]]];
     
     self.keyboardManager.stopCallingHandlerBlocks = NO;
@@ -244,11 +246,21 @@
         }
         self.toolController = videoToolController;
     }
+    
     __weak typeof(self) welf = self;
     self.toolController.canRenderAndExportChangeBlock = ^void(BOOL canRenderAndExport)
     {
         welf.continueButton.enabled = canRenderAndExport;
     };
+    self.toolController.delegate = self;
+}
+
+- (void)setText:(NSString *)text
+{
+    _text = text;
+    
+    VTextToolController *toolController = [[VTextToolController alloc] initWithTools:[self.dependencyManager workspaceTools]];
+    self.toolController = toolController;
     self.toolController.delegate = self;
 }
 

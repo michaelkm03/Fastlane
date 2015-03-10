@@ -223,7 +223,7 @@ static NSString * const kVideoMuted = @"videoMuted";
              kClassNameKey: @"workspace",
              VDependencyManagerImageWorkspaceKey: [self imageWorkspaceComponent],
              VDependencyManagerVideoWorkspaceKey: [self videoWorkspaceComponent],
-             VDependencyManagerTextOnlyWorkspaceKey: [self textOnlyWorkspaceComponent]
+             VDependencyManagerTextWorkspaceKey: [self textWorkspaceComponent]
              };
 }
 
@@ -274,27 +274,40 @@ static NSString * const kVideoMuted = @"videoMuted";
              };
 }
 
-- (NSDictionary *)textOnlyWorkspaceComponent
+- (NSDictionary *)textWorkspaceComponent
 {
     return @{
              kClassNameKey: @"workspace.screen",
-             kToolsKey: [self trendingHashtagTool]
+             kToolsKey: @[
+                     [self hashtagTool],
+                     [self colorTool]
+                     ]
              };
 }
 
-- (NSDictionary *)trendingHashtagTool
+- (NSDictionary *)hashtagTool
 {
     return @{
-             kClassNameKey: @"filter.tool",
-             kTitleKey: @"trendingHashtag",
+             kClassNameKey: @"hashtag.tool",
+             kTitleKey: @"hashtag",
              kFilterIndexKey: @0,
              kPickerKey:
                  @{
                      kClassNameKey: @"vertical.picker",
-                     },
-             kToolsKey:
-                 @[
-                     ]
+                     }
+             };
+}
+
+- (NSDictionary *)colorTool
+{
+    return @{
+             kClassNameKey: @"color.tool",
+             kTitleKey: @"color",
+             kFilterIndexKey: @1,
+             kPickerKey:
+                 @{
+                     kClassNameKey: @"vertical.picker",
+                     }
              };
 }
 

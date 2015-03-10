@@ -379,6 +379,7 @@
 		A73EAEC01A4134C10021BB31 /* NSString+Unicode_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = A73EAEBF1A4134C10021BB31 /* NSString+Unicode_Tests.m */; };
 		A73EAEC31A41453C0021BB31 /* NSString+Unicode.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73EAEC21A41453C0021BB31 /* NSString+Unicode.swift */; };
 		A73EAEC51A41F7BD0021BB31 /* NSString+Unicode.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73EAEC21A41453C0021BB31 /* NSString+Unicode.swift */; };
+		A74293981AAF906700532948 /* VTextToolController.m in Sources */ = {isa = PBXBuildFile; fileRef = A74293971AAF906700532948 /* VTextToolController.m */; };
 		A743E7DF1A08160300339CB3 /* VFileCache+VVoteType.m in Sources */ = {isa = PBXBuildFile; fileRef = A743E7DC1A08160300339CB3 /* VFileCache+VVoteType.m */; };
 		A743E7E01A08160300339CB3 /* VFileCache.m in Sources */ = {isa = PBXBuildFile; fileRef = A743E7DE1A08160300339CB3 /* VFileCache.m */; };
 		A743E7E41A0816D500339CB3 /* VPasswordValidator.m in Sources */ = {isa = PBXBuildFile; fileRef = A743E7E31A0816D500339CB3 /* VPasswordValidator.m */; };
@@ -1375,6 +1376,8 @@
 		A73AFB7B19F573AB0005A9EA /* VVideoTrackingTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVideoTrackingTests.m; sourceTree = "<group>"; };
 		A73EAEBF1A4134C10021BB31 /* NSString+Unicode_Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Unicode_Tests.m"; sourceTree = "<group>"; };
 		A73EAEC21A41453C0021BB31 /* NSString+Unicode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSString+Unicode.swift"; sourceTree = "<group>"; };
+		A74293961AAF906700532948 /* VTextToolController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextToolController.h; sourceTree = "<group>"; };
+		A74293971AAF906700532948 /* VTextToolController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextToolController.m; sourceTree = "<group>"; };
 		A743E7DB1A08160300339CB3 /* VFileCache+VVoteType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VFileCache+VVoteType.h"; sourceTree = "<group>"; };
 		A743E7DC1A08160300339CB3 /* VFileCache+VVoteType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VFileCache+VVoteType.m"; sourceTree = "<group>"; };
 		A743E7DD1A08160300339CB3 /* VFileCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFileCache.h; sourceTree = "<group>"; };
@@ -4479,6 +4482,8 @@
 				D86BF3481A42234500C9F420 /* VPublishViewController.h */,
 				D86BF3491A42234500C9F420 /* VPublishViewController.m */,
 				D86BF3501A4245CB00C9F420 /* VPublishViewController.xib */,
+				A74293961AAF906700532948 /* VTextToolController.h */,
+				A74293971AAF906700532948 /* VTextToolController.m */,
 				D8C1FD031A69C0F60072892B /* VToolController.h */,
 				D8C1FD041A69C0F60072892B /* VToolController.m */,
 				D8C1FD0C1A69DF1D0072892B /* VVideoToolController.h */,
@@ -5562,6 +5567,7 @@
 				03CE66F619B47B590011BB9E /* VFacebookManager.m in Sources */,
 				A761C9D71A48CB9800F0D0F9 /* VSwipeView.m in Sources */,
 				0314D4E619B46B5E00FA363C /* VInviteFriendTableViewCell.m in Sources */,
+				A74293981AAF906700532948 /* VTextToolController.m in Sources */,
 				A769C3EB1A13176700698D0C /* VWebBrowserViewController.m in Sources */,
 				DB2D6F9F1A802B080050F963 /* VSearchResultsTransition.m in Sources */,
 				D80C615B19D0F692006AE41A /* VProgressBarView.m in Sources */,
