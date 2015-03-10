@@ -1284,7 +1284,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
         // bar should be enabled.
         self.experienceEnhancerCell.experienceEnhancerBar.enabled = YES;
         
-        NSTimeInterval videoLoadTime = [[NSDate date] timeIntervalSinceDate:self.videoLoadedDate];
+        NSUInteger videoLoadTime = [[NSDate date] timeIntervalSinceDate:self.videoLoadedDate] * 1000;
         NSDictionary *params = @{ VTrackingKeyTimeStamp : [NSDate date],
                                   VTrackingKeySequenceId : self.viewModel.sequence.remoteId,
                                   VTrackingKeyUrls : self.viewModel.sequence.tracking.viewStart ?: @[],
