@@ -11,6 +11,7 @@
 #import <OCMock/OCMock.h>
 
 #import "VMarqueeController.h"
+#import "VTimerManager.h"
 #import "VStreamCollectionViewDataSource.h"
 
 @interface VMarqueeControllerTests : XCTestCase
@@ -37,15 +38,15 @@
 - (void)testEnableTimer
 {
     [self.marquee enableTimer];
-    XCTAssert(self.marquee.autoScrollTimer, @"There should be a timer in the autoScrollTimer property after calling enableTimer");
-    XCTAssert(self.marquee.autoScrollTimer.isValid, @"The timer should be valid after it is enabled");
+    XCTAssert(self.marquee.autoScrollTimerManager, @"There should be a timer in the autoScrollTimer property after calling enableTimer");
+    XCTAssert([self.marquee.autoScrollTimerManager isValid], @"The timer should be valid after it is enabled");
 }
 
 - (void)testDisableTimer
 {
     [self.marquee enableTimer];
     [self.marquee disableTimer];
-    XCTAssert(!self.marquee.autoScrollTimer.isValid, @"The timer should be invalid after it is disabled.");
+    XCTAssert(![self.marquee.autoScrollTimerManager isValid], @"The timer should be invalid after it is disabled.");
 }
 
 - (void)testSetCollectionView
