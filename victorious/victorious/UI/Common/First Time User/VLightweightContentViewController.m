@@ -27,7 +27,6 @@
 @property (nonatomic, weak) IBOutlet UIView *containerView;
 @property (nonatomic, weak) IBOutlet UIView *backgroundBlurredView;
 
-@property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VCVideoPlayerViewController *videoPlayerViewController;
 
 @end
@@ -147,6 +146,45 @@
                                                                                  views:@{@"videoPlayerView":self.videoPlayerViewController.view}]];
     
     self.videoPlayerViewController.view.hidden = NO;
+}
+
+#pragma mark - Dependency Manager Setter
+
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    _dependencyManager = dependencyManager;
+    
+    if (_dependencyManager != nil)
+    {
+        [self fetchMediaSequenceObject];
+    }
+}
+
+#pragma mark - Select media sequence
+
+- (void)fetchMediaSequenceObject
+{
+    NSString *sequenceId = [[self.dependencyManager stringForKey:kFTUSequenceURLPath] lastPathComponent];
+    [[VObjectManager sharedManager] fetchSequenceByID:sequenceId
+                                         successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+     {
+         VSequence *sequence = (VSequence *)resultObjects.firstObject;
+         VNode *node = (VNode *)[sequence firstNode];
+         VAsset *asset = [node mp4Asset];
+         if (asset.dataURL != nil)
+         {
+             self.mediaUrl = asset.dataURL;
+         }
+         else
+         {
+             self.mediaUrl = nil;
+         }
+         
+     }
+                                            failBlock:^(NSOperation *operation, NSError *error)
+     {
+         self.mediaUrl = nil;
+     }];
 }
 
 #pragma mark - VCVideoPlayerDelegate

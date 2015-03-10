@@ -2578,9 +2578,9 @@
 			isa = PBXGroup;
 			children = (
 				030931871A18425B004E9781 /* Menu */,
-				D87D70911A97C9EC002D4FED /* VTabMenuViewController.h */,
-				D87D70921A97C9EC002D4FED /* VTabMenuViewController.m */,
 				037FCF0B1A8B182A00E8ABFC /* VDeeplinkHandler.h */,
+				DB94976E1AAE66C600CCEFD0 /* VFirstTimeInstallHelper.h */,
+				DB94976F1AAE66C600CCEFD0 /* VFirstTimeInstallHelper.m */,
 				037FCF111A8DAF0E00E8ABFC /* VHamburgerButton.h */,
 				037FCF121A8DAF0E00E8ABFC /* VHamburgerButton.m */,
 				037FCF131A8DAF0E00E8ABFC /* VHamburgerButton.xib */,
@@ -2600,8 +2600,8 @@
 				0358FCED1A65E785004DD7A1 /* VScaffoldViewController.m */,
 				0314D3ED19B46B5E00FA363C /* VSideMenuViewController.h */,
 				0314D3EE19B46B5E00FA363C /* VSideMenuViewController.m */,
-				DB94976E1AAE66C600CCEFD0 /* VFirstTimeInstallHelper.h */,
-				DB94976F1AAE66C600CCEFD0 /* VFirstTimeInstallHelper.m */,
+				D87D70911A97C9EC002D4FED /* VTabMenuViewController.h */,
+				D87D70921A97C9EC002D4FED /* VTabMenuViewController.m */,
 			);
 			path = "Root View";
 			sourceTree = "<group>";

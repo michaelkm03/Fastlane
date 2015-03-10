@@ -63,8 +63,9 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
     VLightweightContentViewController *lightweightContentVC = [self.dependencyManager templateValueOfType:[VLightweightContentViewController class]
                                                                                                    forKey:VScaffoldViewControllerLightweightContentViewComponentKey];
     
-    self.firstTimeInstallHelper = [VFirstTimeInstallHelper sharedInstance];
-    self.firstTimeInstallHelper.dependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:vcDictionary];
+    self.firstTimeInstallHelper = [[VFirstTimeInstallHelper alloc] init];
+    VDependencyManager *childDependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:vcDictionary];
+    lightweightContentVC.dependencyManager = childDependencyManager;
     
     if ( ![self.firstTimeInstallHelper hasBeenShown] )
     {
@@ -74,10 +75,9 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
         dispatch_after(showTime, dispatch_get_main_queue(), ^(void)
                        {
                            // Present the first-time user video view controller
-                           if ( [self.firstTimeInstallHelper hasMediaUrl] )
+                           if ( lightweightContentVC.mediaUrl != nil )
                            {
                                lightweightContentVC.firstTimeInstallHelper = self.firstTimeInstallHelper;
-                               lightweightContentVC.mediaUrl = self.firstTimeInstallHelper.mediaUrl;
                                [self presentViewController:lightweightContentVC animated:YES completion:nil];
                            }
                        });

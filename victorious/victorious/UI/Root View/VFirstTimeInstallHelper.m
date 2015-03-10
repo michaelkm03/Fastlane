@@ -22,20 +22,6 @@ NSString * const kFTUSequenceURLPath = @"sequenceUrlPath";
 
 @implementation VFirstTimeInstallHelper
 
-+ (instancetype)sharedInstance
-{
-    static  VFirstTimeInstallHelper  *sharedInstance;
-    static  dispatch_once_t onceToken;
-    
-    dispatch_once(&onceToken,
-                  ^{
-                      sharedInstance = [[self alloc] init];
-                      
-                  });
-    
-    return sharedInstance;
-}
-
 - (instancetype)init
 {
     self = [super init];
@@ -52,54 +38,6 @@ NSString * const kFTUSequenceURLPath = @"sequenceUrlPath";
 - (BOOL)hasBeenShown
 {
     return [[[NSUserDefaults standardUserDefaults] valueForKey:VDidPlayFirstTimeUserVideo] boolValue];
-}
-
-- (BOOL)hasMediaUrl
-{
-    if (self.mediaUrl != nil)
-    {
-        return YES;
-    }
-    return NO;
-}
-
-#pragma mark - Dependency Manager Setter
-
-- (void)setDependencyManager:(VDependencyManager *)dependencyManager
-{
-    _dependencyManager = dependencyManager;
-    
-    if (_dependencyManager != nil)
-    {
-        [self fetchMediaSequenceObject];
-    }
-}
-
-#pragma mark - Select media sequence
-
-- (void)fetchMediaSequenceObject
-{
-    NSString *sequenceId = [[self.dependencyManager stringForKey:kFTUSequenceURLPath] lastPathComponent];
-    [[VObjectManager sharedManager] fetchSequenceByID:sequenceId
-                                         successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-     {
-         self.sequence = (VSequence *)resultObjects.firstObject;
-         VNode *node = (VNode *)[self.sequence firstNode];
-         VAsset *asset = [node mp4Asset];
-         if (asset.dataURL != nil)
-         {
-             self.mediaUrl = asset.dataURL;
-         }
-         else
-         {
-             self.mediaUrl = nil;
-         }
-
-     }
-                                            failBlock:^(NSOperation *operation, NSError *error)
-     {
-         self.mediaUrl = nil;
-     }];
 }
 
 #pragma mark - Save to NSUserDefaults

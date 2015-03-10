@@ -42,4 +42,9 @@
  */
 @property (nonatomic, strong) NSURL *mediaUrl;
 
+/**
+ Dependency manager used to access app components
+ */
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
+
 @end
