@@ -22,6 +22,8 @@
 #import "VThemeManager.h"
 #import "VSettingManager.h"
 
+#import "VTimerManager.h"
+
 static CGFloat const kVTabSpacingRatio = 0.357;//From spec file, 25/640
 static CGFloat const kVTabSpacingRatioC = 1.285;//From spec file, 25/640
 static const CGFloat kMarqueeBufferHeight = 3;
@@ -108,7 +110,7 @@ static const CGFloat kMarqueeBufferHeight = 3;
 - (void)prepareForReuse
 {
     [super prepareForReuse];
-    [self.marquee.autoScrollTimer invalidate];
+    [self.marquee.autoScrollTimerManager invalidate];
 }
 
 - (void)restartAutoScroll

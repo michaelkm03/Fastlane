@@ -18,6 +18,7 @@
 #import "VMarqueeTabIndicatorView.h"
 
 #import "VThemeManager.h"
+#import "VTimerManager.h"
 
 @interface VMarqueeController () <VStreamCollectionDataDelegate, VMarqueeCellDelegate>
 
@@ -28,7 +29,7 @@
 @property (nonatomic, strong) VStreamItem *currentStreamItem;
 @property (nonatomic, assign) NSInteger currentPage;
 
-@property (nonatomic, strong) NSTimer *autoScrollTimer;
+@property (nonatomic, strong) VTimerManager *autoScrollTimerManager;
 
 @end
 
@@ -60,7 +61,7 @@
     {
         _collectionView.delegate = nil;
     }
-    [_autoScrollTimer invalidate];
+    [_autoScrollTimerManager invalidate];
 }
 
 - (void)setCollectionView:(UICollectionView *)collectionView
@@ -128,7 +129,7 @@
     }
     
     [self.delegate marquee:self selectedItem:item atIndexPath:indexPath previewImage:previewImage];
-    [self.autoScrollTimer invalidate];
+    [self.autoScrollTimerManager invalidate];
 }
 
 #pragma mark - UIScrollViewDelegate
@@ -149,17 +150,18 @@
 
 - (void)disableTimer
 {
-    [self.autoScrollTimer invalidate];
+    [self.autoScrollTimerManager invalidate];
+    //Hide all detail boxes here
 }
 
 - (void)enableTimer
 {
-    [self.autoScrollTimer invalidate];
-    self.autoScrollTimer = [NSTimer scheduledTimerWithTimeInterval:kVDetailVisibilityDuration + kVDetailHideDuration
-                                                            target:self
-                                                          selector:@selector(selectNextTab)
-                                                          userInfo:nil
-                                                           repeats:NO];
+    [self.autoScrollTimerManager invalidate];
+    self.autoScrollTimerManager = [VTimerManager scheduledTimerManagerWithTimeInterval:kVDetailVisibilityDuration + kVDetailHideDuration
+                                                                                target:self
+                                                                              selector:@selector(selectNextTab)
+                                                                              userInfo:nil
+                                                                               repeats:NO];
     NSInteger currentPage = self.currentPage;
     if ( currentPage < [[self streamDataSource] collectionView:self.collectionView numberOfItemsInSection:0] )
     {
@@ -180,7 +182,7 @@
 - (void)cell:(VMarqueeStreamItemCell *)cell selectedUser:(VUser *)user
 {
     [self.delegate marquee:self selectedUser:user atIndexPath:[self.collectionView indexPathForCell:cell]];
-    [self.autoScrollTimer invalidate];
+    [self.autoScrollTimerManager invalidate];
 }
 
 #pragma mark - VStreamCollectionDataDelegate
