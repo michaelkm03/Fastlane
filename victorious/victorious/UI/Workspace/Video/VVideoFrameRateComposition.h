@@ -9,7 +9,7 @@
 @import AVFoundation;
 
 /**
- VVideoFrameRateTool provides a convenient interface for displaying and exporting a video with a custom frame rate.
+ VVideoFrameRateComposition provides a convenient interface for displaying and exporting a video with a custom frame rate.
  */
 @interface VVideoFrameRateComposition : NSObject
 
