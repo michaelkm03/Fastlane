@@ -47,8 +47,8 @@
         _stream = stream;
         _streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:stream];
         _streamDataSource.delegate = self;
-        _streamDataSource.collectionView = self.collectionView;
-        _collectionView.dataSource = self.streamDataSource;
+        _streamDataSource.collectionView = _collectionView;
+        _collectionView.dataSource = _streamDataSource;
         _currentPage = 0;
     }
     return self;
