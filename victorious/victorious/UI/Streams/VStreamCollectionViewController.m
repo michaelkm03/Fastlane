@@ -61,6 +61,7 @@
 #import "UIImageView+Blurring.h"
 #import "UIStoryboard+VMainStoryboard.h"
 #import "UIViewController+VLayoutInsets.h"
+#import "UIViewController+VContentCreationActionSheet.h"
 
 #import "VConstants.h"
 #import "VTracking.h"
@@ -291,68 +292,6 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
     }
     
     [self showContentTypeSelection];
-}
-
-- (void)showContentTypeSelection
-{
-    VAlertController *alertControler = [VAlertController actionSheetWithTitle:nil message:nil];
-    [alertControler addAction:[VAlertAction cancelButtonWithTitle:NSLocalizedString(@"CancelButton", @"Cancel button") handler:^(VAlertAction *action)
-                               {
-                                   [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateCancelSelected];
-                               }]];
-    [alertControler addAction:[VAlertAction buttonWithTitle:NSLocalizedString(@"Create a Video Post", @"") handler:^(VAlertAction *action)
-                               {
-                                   [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateVideoPostSelected];
-                                   [self presentCreateFlowWithInitialCaptureState:VWorkspaceFlowControllerInitialCaptureStateVideo];
-                               }]];
-    [alertControler addAction:[VAlertAction buttonWithTitle:NSLocalizedString(@"Create an Image Post", @"") handler:^(VAlertAction *action)
-                               {
-                                   [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateImagePostSelected];
-                                   [self presentCreateFlowWithInitialCaptureState:VWorkspaceFlowControllerInitialCaptureStateImage];
-                               }]];
-    [alertControler addAction:[VAlertAction buttonWithTitle:NSLocalizedString(@"Create a GIF", @"Create a gif action button.")
-                                                    handler:^(VAlertAction *action)
-                               {
-                                   [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateGIFPostSelected];
-                                   [self presentCreateFlowWithInitialCaptureState:VWorkspaceFlowControllerInitialCaptureStateVideo
-                                                            initialImageEditState:VImageToolControllerInitialImageEditStateText
-                                                         andInitialVideoEditState:VVideoToolControllerInitialVideoEditStateGIF];
-                               }]];
-    [alertControler addAction:[VAlertAction buttonWithTitle:NSLocalizedString(@"Create a Poll", @"") handler:^(VAlertAction *action)
-                               {
-                                   [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreatePollSelected];
-                                   VCreatePollViewController *createViewController = [VCreatePollViewController newCreatePollViewController];
-                                   [self.navigationController pushViewController:createViewController animated:YES];
-                               }]];
-    [alertControler presentInViewController:self animated:YES completion:nil];
-}
-
-- (void)presentCreateFlowWithInitialCaptureState:(VWorkspaceFlowControllerInitialCaptureState)initialCaptureState
-                           initialImageEditState:(VImageToolControllerInitialImageEditState)initialImageEdit
-                        andInitialVideoEditState:(VVideoToolControllerInitialVideoEditState)initialVideoEdit
-{
-    [[VTrackingManager sharedInstance] setValue:VTrackingValueCreatePost forSessionParameterWithKey:VTrackingKeyContext];
-    
-    VDependencyManager *dependencyManager = [(id)self dependencyManager];
-    
-    VWorkspaceFlowController *workspaceFlowController = [dependencyManager templateValueOfType:[VWorkspaceFlowController class]
-                                                                                        forKey:VDependencyManagerWorkspaceFlowKey
-                                                                         withAddedDependencies:@{VWorkspaceFlowControllerInitialCaptureStateKey:@(initialCaptureState),
-                                                                                                 VImageToolControllerInitialImageEditStateKey:@(initialImageEdit),
-                                                                                                 VVideoToolControllerInitalVideoEditStateKey:@(initialVideoEdit)}];
-    workspaceFlowController.videoEnabled = YES;
-    workspaceFlowController.delegate = self;
-    
-    [self presentViewController:workspaceFlowController.flowRootViewController
-                       animated:YES
-                     completion:nil];
-}
-
-- (void)presentCreateFlowWithInitialCaptureState:(VWorkspaceFlowControllerInitialCaptureState)initialCaptureState
-{
-    [self presentCreateFlowWithInitialCaptureState:initialCaptureState
-                             initialImageEditState:VImageToolControllerInitialImageEditStateText
-                          andInitialVideoEditState:VVideoToolControllerInitialVideoEditStateVideo];
 }
 
 #pragma mark - VMarqueeDelegate
@@ -847,20 +786,6 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
     {
         [self.streamTrackingHelper onStreamCellDidBecomeVisibleWithStream:self.currentStream sequence:cell.sequence];
     }
-}
-
-#pragma mark - VWorkspaceFlowControllerDelegate
-
-- (void)workspaceFlowControllerDidCancel:(VWorkspaceFlowController *)workspaceFlowController
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (void)workspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
-       finishedWithPreviewImage:(UIImage *)previewImage
-               capturedMediaURL:(NSURL *)capturedMediaURL
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

@@ -64,6 +64,12 @@
                                {
                                    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreatePollSelected];
                                    VCreatePollViewController *createViewController = [VCreatePollViewController newCreatePollViewController];
+                                   __weak typeof(self) welf = self;
+                                   createViewController.completionHandler = ^void(VCreatePollViewControllerResult result)
+                                   {
+                                       [welf dismissViewControllerAnimated:YES
+                                                                completion:nil];
+                                   };
                                    UINavigationController *wrapperNavStack = [[UINavigationController alloc] initWithRootViewController:createViewController];
                                    [self presentViewController:wrapperNavStack animated:YES completion:nil];
                                }]];
