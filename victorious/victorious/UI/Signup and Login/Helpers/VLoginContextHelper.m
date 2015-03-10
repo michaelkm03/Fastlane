@@ -15,31 +15,31 @@
     switch ( context )
     {
         case VLoginContextCreatePost:
-            return @"Come join our community.\nWe promise that your information is safe with us!  And here's some extra text that is testing how the textview will expand with its constrains.  Pretty sweet, ain't it?  We could keep going, line after line, adding more and more text until BAM—the app just explodes!";
+            return NSLocalizedString( @"LoginContextCreatePost", nil );
             
         case VLoginContextVoteBallistic:
-            return @"These emojis are amazing, right?  Create an account first and then send some love!";
+            return NSLocalizedString( @"LoginContextVoteBallistic", nil );
             
         case VLoginContextVotePoll:
-            return @"Want to weigh in and see result of this poll?  Simple create an account and join the conversation!";
+            return NSLocalizedString( @"LoginContextVotePoll", nil );
             
         case VLoginContextFollowHashtag:
-            return @"You can follow this hashtag and other trending hashtags in the app.  Simply create an account!";
+            return NSLocalizedString( @"LoginContextFollowHashtag", nil );
             
         case VLoginContextFollowUser:
-            return @"You can follow this user and see all of their latest posts.  Simply create an account!";
+            return NSLocalizedString( @"LoginContextFollowUser", nil );
             
         case VLoginContextAddComment:
-            return @"You can tell the community what you think about this content.  Simple create an account and join the conversation!";
+            return NSLocalizedString( @"LoginContextAddComment", nil );
             
         case VLoginContextViewProfile:
-            return @"Let other users in the community know who you are!  Sign up below to create an account.";
+            return NSLocalizedString( @"LoginContextViewProfile", nil );
             
         case VLoginContextInbox:
-            return @"You always can keep in touch with other community members.  Simply create an account an start chatting!";
+            return NSLocalizedString( @"LoginContextInbox", nil );
             
         default:
-            return @"You must log in to perform this action.  Don't have an account? Create one below!";
+            return NSLocalizedString( @"LoginContextDefault", nil );
     }
 }
 
