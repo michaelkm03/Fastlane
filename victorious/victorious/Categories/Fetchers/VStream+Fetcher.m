@@ -7,6 +7,7 @@
 //
 
 #import "VStream+Fetcher.h"
+#import "VStream+RestKit.h"
 
 #import "VSequence.h"
 #import "VObjectManager.h"
@@ -15,26 +16,12 @@
 #import "VPaginationManager.h"
 #import "NSCharacterSet+VURLParts.h"
 
-static NSString * const kVSequenceContentType = @"sequence";
-static NSString * const kVStreamContentTypeContent = @"content";
-static NSString * const kVStreamContentTypeStream = @"stream";
-
 NSString * const VStreamFollowerStreamPath = @"/api/sequence/follows_detail_list_by_stream/";
 
 NSString * const VStreamFilterTypeRecent = @"recent";
 NSString * const VStreamFilterTypePopular = @"popular";
 
 @implementation VStream (Fetcher)
-
-- (BOOL)onlyContainsSequences
-{
-    return [self.streamContentType isEqualToString:kVStreamContentTypeContent];
-}
-
-- (BOOL)isStreamOfStreams
-{
-    return [self.streamContentType isEqualToString:kVStreamContentTypeStream];
-}
 
 - (BOOL)isHashtagStream
 {
@@ -118,7 +105,7 @@ NSString * const VStreamFilterTypePopular = @"popular";
         }
     }
     
-    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:NSStringFromClass([VStream class])];
+    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:[VStream entityName]];
     NSPredicate *idFilter = [NSPredicate predicateWithFormat:@"%K == %@", @"apiPath", apiPath];
     [request setPredicate:idFilter];
     NSError *error = nil;
@@ -135,7 +122,7 @@ NSString * const VStreamFilterTypePopular = @"popular";
     else
     {
         //Create a new one if it doesn't exist
-        object = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([VStream class])
+        object = [NSEntityDescription insertNewObjectForEntityForName:[VStream entityName]
                                                inManagedObjectContext:context];
         object.apiPath = apiPath;
         object.name = @"";

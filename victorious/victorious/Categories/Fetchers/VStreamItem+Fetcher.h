@@ -10,6 +10,12 @@
 
 @interface VStreamItem (Fetcher)
 
+@property (nonatomic, readonly) BOOL isSingleStream;
+
+@property (nonatomic, readonly) BOOL isStreamOfStreams;
+
+@property (nonatomic, readonly) BOOL isContent;
+
 /**
  *  Returns URL Paths of all the preview images in self.previewImageObject
  *
