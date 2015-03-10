@@ -27,7 +27,6 @@
 @property (nonatomic, strong) VStreamCollectionViewDataSource *streamDataSource;
 @property (nonatomic, strong) VStreamItem *currentStreamItem;
 @property (nonatomic, assign) NSInteger currentPage;
-@property (nonatomic, strong) NSMutableDictionary *marqueeCells;
 
 @property (nonatomic, strong) NSTimer *autoScrollTimer;
 
@@ -51,7 +50,6 @@
         self.streamDataSource.collectionView = self.collectionView;
         self.collectionView.dataSource = self.streamDataSource;
         self.currentPage = 0;
-        self.marqueeCells = [[NSMutableDictionary alloc] init];
     }
     return self;
 }
@@ -162,14 +160,18 @@
                                                           selector:@selector(selectNextTab)
                                                           userInfo:nil
                                                            repeats:NO];
-    if ( self.currentPage < [[self streamDataSource] collectionView:self.collectionView numberOfItemsInSection:0] )
+    NSInteger currentPage = self.currentPage;
+    if ( currentPage < [[self streamDataSource] collectionView:self.collectionView numberOfItemsInSection:0] )
     {
-        VMarqueeStreamItemCell *marqueeCell = [self.marqueeCells objectForKey:@(self.currentPage)];
-        if ( marqueeCell != nil )
-        {
-            [marqueeCell setDetailsContainerVisible:YES animated:NO];
-            [marqueeCell restartHideTimer];
-        }
+        [self.collectionView.visibleCells enumerateObjectsUsingBlock:^(VMarqueeStreamItemCell *cell, NSUInteger idx, BOOL *stop)
+         {
+             if ( [self.collectionView indexPathForCell:cell].row == currentPage )
+             {
+                 [cell setDetailsContainerVisible:YES animated:NO];
+                 [cell restartHideTimer];
+                 *stop = YES;
+             }
+         }];
     }
 }
 
@@ -193,7 +195,6 @@
     cell.bounds = CGRectMake(0, 0, size.width, size.height);
     cell.streamItem = item;
     cell.delegate = self;
-    [self.marqueeCells setObject:cell forKey:@(indexPath.row)];
     
     return cell;
 }
