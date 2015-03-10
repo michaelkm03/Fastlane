@@ -22,9 +22,6 @@
 #import "VWebBrowserViewController.h"
 #import "VNavigationController.h"
 
-#import "VLoginRequest.h"
-#import "VAuthorizationViewControllerFactory.h"
-
 #import <MBProgressHUD.h>
 
 NSString * const VScaffoldViewControllerMenuComponentKey = @"menu";
@@ -34,7 +31,7 @@ NSString * const VScaffoldViewControllerUserProfileViewComponentKey = @"userProf
 static NSString * const kContentDeeplinkURLHostComponent = @"content";
 static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
 
-@interface VScaffoldViewController () <VNewContentViewControllerDelegate, VLoginRequestHandler>
+@interface VScaffoldViewController () <VNewContentViewControllerDelegate>
 
 @end
 
@@ -253,17 +250,6 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
 - (void)displayResultOfNavigation:(UIViewController *)viewController
 {
     VLog(@"WARNING: %@ does not override -displayResultOfNavigation:", NSStringFromClass([self class]));
-}
-
-#pragma mark - VLoginRequestHandler
-
-- (void)showLogin:(id <VLoginRequest>)sender
-{
-//    NSString *localizedDescription = [sender localizedDescription];
-    UIViewController *authorizationViewController = [VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]];
-    [self presentViewController:authorizationViewController
-                       animated:YES
-                     completion:NULL];
 }
 
 #pragma mark - VNewContentViewControllerDelegate methods

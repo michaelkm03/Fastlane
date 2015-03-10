@@ -1888,7 +1888,6 @@
 		D8BB61951AAA8BF0007565BD /* VNotAuthorizedProfileCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VNotAuthorizedProfileCollectionViewCell.xib; sourceTree = "<group>"; };
 		D8BB61981AAA8F95007565BD /* VNotAuthorizedDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNotAuthorizedDataSource.h; sourceTree = "<group>"; };
 		D8BB61991AAA8F95007565BD /* VNotAuthorizedDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNotAuthorizedDataSource.m; sourceTree = "<group>"; };
-		D8BB619B1AAD4721007565BD /* VLoginRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLoginRequest.h; sourceTree = "<group>"; };
 		D8C1FD031A69C0F60072892B /* VToolController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VToolController.h; sourceTree = "<group>"; };
 		D8C1FD041A69C0F60072892B /* VToolController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VToolController.m; sourceTree = "<group>"; };
 		D8C1FD061A69C2E40072892B /* VKeyboardNotificationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VKeyboardNotificationManager.h; sourceTree = "<group>"; };
@@ -3307,7 +3306,6 @@
 			isa = PBXGroup;
 			children = (
 				03C185CE19B4308400E27D05 /* VAnimation.h */,
-				D8BB619B1AAD4721007565BD /* VLoginRequest.h */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";

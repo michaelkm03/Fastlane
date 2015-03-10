@@ -8,6 +8,20 @@
 
 #import "VBaseCollectionViewCell.h"
 
+@class VNotAuthorizedProfileCollectionViewCell;
+
+/**
+ *  A delegate to inform about login requests.
+ */
+@protocol VNotAuthorizedProfileCollectionViewCellDelegate <NSObject>
+
+/**
+ *  Informs the receiver that the user would like to login.
+ */
+- (void)notAuthorizedProfileCellwantsLogin:(VNotAuthorizedProfileCollectionViewCell *)cell;
+
+@end
+
 /**
  *  A VNotAuthorizedProfileCollectionViewCell infroms the user
  *  that they are not currently logged in and provides a call
@@ -18,5 +32,10 @@
  *  authorization up the responder chain.
  */
 @interface VNotAuthorizedProfileCollectionViewCell : VBaseCollectionViewCell
+
+/**
+ *  A delegate conforming to VNotAuthorizedProfileCollectionViewCellDelegate.
+ */
+@property (nonatomic, weak) id <VNotAuthorizedProfileCollectionViewCellDelegate> delegate;
 
 @end

@@ -11,10 +11,9 @@
 #import "UIView+AutoLayout.h"
 #import "VNoContentView.h"
 #import "VButton.h"
-#import "VLoginRequest.h"
 #import "VThemeManager.h"
 
-@interface VNotAuthorizedProfileCollectionViewCell () <VLoginRequest>
+@interface VNotAuthorizedProfileCollectionViewCell ()
 
 @property (weak, nonatomic) IBOutlet UIView *noContentViewContainer;
 @property (weak, nonatomic) IBOutlet VButton *loginButton;
@@ -67,11 +66,7 @@
 
 - (void)requestLogin
 {
-    id loginHandler = [self targetForAction:@selector(showLogin:)
-                                 withSender:self];
-    [loginHandler performSelector:@selector(showLogin:)
-                       withObject:self
-                       afterDelay:0];
+    [self.delegate notAuthorizedProfileCellwantsLogin:self];
 }
 
 @end

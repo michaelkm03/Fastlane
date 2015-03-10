@@ -40,8 +40,10 @@
 #import <FBKVOController.h>
 #import <MBProgressHUD.h>
 
+// Authorization
 #import "VNotAuthorizedDataSource.h"
 #import "VNotAuthorizedProfileCollectionViewCell.h"
+#import "VAuthorizationViewControllerFactory.h"
 
 static const CGFloat kVSmallUserHeaderHeight = 319.0f;
 
@@ -53,7 +55,7 @@ static void * VUserProfileAttributesContext =  &VUserProfileAttributesContext;
 static const CGFloat MBProgressHUDCustomViewSide = 37.0f;
 static NSString * const kUserKey = @"user";
 
-@interface VUserProfileViewController () <VUserProfileHeaderDelegate, MBProgressHUDDelegate>
+@interface VUserProfileViewController () <VUserProfileHeaderDelegate, MBProgressHUDDelegate, VNotAuthorizedDataSourceDelegate>
 
 @property   (nonatomic, strong) VUser                  *profile;
 @property (nonatomic, strong) NSNumber *remoteId;
@@ -680,6 +682,7 @@ static NSString * const kUserKey = @"user";
     if (![[VObjectManager sharedManager] mainUserLoggedIn] && self.representsMainUser)
     {
         self.notLoggedInDataSource = [[VNotAuthorizedDataSource alloc] initWithCollectionView:self.collectionView];
+        self.notLoggedInDataSource.delegate = self;
         self.collectionView.dataSource = self.notLoggedInDataSource;
         [self.backgroundImageView setBlurredImageWithClearImage:[UIImage imageNamed:@"Default"]
                                                placeholderImage:nil
@@ -744,6 +747,14 @@ static NSString * const kUserKey = @"user";
     {
         [super refresh:nil];
     }
+}
+
+#pragma mark - VNotAuthorizedDataSourceDelegate
+
+- (void)dataSourceWantsAuthorization:(VNotAuthorizedDataSource *)dataSource
+{
+    UIViewController *loginViewController = [VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]];
+    [self presentViewController:loginViewController animated:YES completion:nil];
 }
 
 @end
