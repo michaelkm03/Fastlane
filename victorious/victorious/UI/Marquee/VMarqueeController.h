@@ -10,7 +10,7 @@
 
 #import <UIKit/UIKit.h>
 
-@class VStream, VUser, VStreamItem, VStreamCollectionViewDataSource, VMarqueeController, VMarqueeTabIndicatorView;
+@class VStream, VUser, VStreamItem, VStreamCollectionViewDataSource, VMarqueeController, VMarqueeTabIndicatorView, VTimerManager;
 
 @protocol VMarqueeDelegate <NSObject>
 
@@ -30,7 +30,7 @@
 @property (strong, nonatomic, readonly) VStreamCollectionViewDataSource *streamDataSource;///<The VStreamCollectionViewDataSource for the object.
 @property (weak, nonatomic) UICollectionView *collectionView;///<The colletion view used to display the streamItems
 @property (weak, nonatomic) VMarqueeTabIndicatorView *tabView;///<The Marquee tab view to update
-@property (nonatomic, readonly) NSTimer *autoScrollTimer;///<The timer in control of auto scroll
+@property (nonatomic, readonly) VTimerManager *autoScrollTimerManager;///<The timer in control of auto scroll
 
 - (instancetype)initWithStream:(VStream *)stream;
 - (void)disableTimer;
