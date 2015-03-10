@@ -667,29 +667,29 @@ static NSString * const kVideoMuted = @"videoMuted";
     }
     else
     {
-        return @{
-            kIdentifierKey: @"Menu Channel",
-            kTitleKey: NSLocalizedString(@"Channel", @""),
-            kIconKey: @{
-                    VDependencyManagerImageURLKey:@"channels",
-                    },
-            kDestinationKey: @{
-                kClassNameKey: @"basic.multiScreen",
-                kTitleKey: NSLocalizedString(@"Owner", @""),
-                kScreensKey: @[
-                    @{
-                        kClassNameKey: @"stream.screen",
-                        kTitleKey: NSLocalizedString(@"Featured", @""),
-                        VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/hot_detail_list_by_stream/owner/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%"
-                    },
-                    @{
-                        kClassNameKey: @"stream.screen",
-                        kInitialKey: @YES,
-                        kTitleKey: NSLocalizedString(@"Recent", @""),
-                        VStreamCollectionViewControllerStreamURLPathKey: [self urlPathForStreamCategories:VOwnerCategories()],
-                    }
-                ]
-            }
+        return @{ kIdentifierKey: @"Menu Channel",
+                  kTitleKey: NSLocalizedString(@"Channel", @""),
+                  kIconKey: @{
+                          VDependencyManagerImageURLKey: @"channels",
+                          },
+                  kCellComponentDirectoryItem: [self directoryCellComponentLight],
+                  kDestinationKey: @{
+                          kClassNameKey: @"basic.multiScreen",
+                          kTitleKey: NSLocalizedString(@"Owner", @""),
+                          kScreensKey: @[
+                                  @{
+                                      kClassNameKey: @"stream.screen",
+                                      kTitleKey: NSLocalizedString(@"Featured", @""),
+                                      VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/hot_detail_list_by_stream/owner/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%"
+                                      },
+                                  @{
+                                      kClassNameKey: @"stream.screen",
+                                      kInitialKey: @YES,
+                                      kTitleKey: NSLocalizedString(@"Recent", @""),
+                                      VStreamCollectionViewControllerStreamURLPathKey: [self urlPathForStreamCategories:VOwnerCategories()],
+                                      }
+                                  ]
+                          }
         };
     }
 }
