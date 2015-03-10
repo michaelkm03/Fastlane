@@ -14,6 +14,7 @@ UserDidSelectStream,"User selected a tab or segmented control to change streams 
 UserDidSelectCreatePost,"User tapped (+) button, displaying the content type selection; Params: CurrentSection (template driven value)"
 CreatePollSelected,
 CreateImagePostSelected,
+CreateTextOnlyPostSelected,
 CreateVideoPostSelected,
 CreateGIFPostSelected,
 CreateCancelSelected,User selected cancel from create post content type selection; Params: CurrentSection (template driven value)

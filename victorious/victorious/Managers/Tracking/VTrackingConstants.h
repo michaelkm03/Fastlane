@@ -2,7 +2,7 @@
 // victorious/victorious/Managers/Tracking/VTrackingConstants.h 
 // victorious 
 // 
-// Generated from CSV using script "tracking_generate_constants.sh" on 02/25/15. 
+// Generated from CSV using script "tracking_generate_constants.sh" on 03/10/15. 
 // Copyright (c) 2015 Victorious. All rights reserved. 
 // 
 
@@ -24,6 +24,7 @@ extern NSString * const VTrackingEventUserDidSelectStream; //< "User selected a 
 extern NSString * const VTrackingEventUserDidSelectCreatePost; //< "User tapped (+) button, displaying the content type selection; Params: CurrentSection (template driven value)"
 extern NSString * const VTrackingEventCreatePollSelected; 
 extern NSString * const VTrackingEventCreateImagePostSelected; 
+extern NSString * const VTrackingEventCreateTextOnlyPostSelected; 
 extern NSString * const VTrackingEventCreateVideoPostSelected; 
 extern NSString * const VTrackingEventCreateGIFPostSelected; 
 extern NSString * const VTrackingEventCreateCancelSelected; //< User selected cancel from create post content type selection; Params: CurrentSection (template driven value)

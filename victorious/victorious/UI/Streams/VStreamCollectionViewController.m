@@ -313,10 +313,17 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
                                    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateVideoPostSelected];
                                    [self presentCreateFlowWithInitialCaptureState:VWorkspaceFlowControllerInitialCaptureStateVideo];
                                }]];
+    [alertControler addAction:[VAlertAction buttonWithTitle:NSLocalizedString(@"Create a Text Post", @"") handler:^(VAlertAction *action)
+                               {
+                                   [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateTextOnlyPostSelected];
+                                   [self presentCreateFlowWithTextOnly];
+                               }]];
     [alertControler addAction:[VAlertAction buttonWithTitle:NSLocalizedString(@"Create an Image Post", @"") handler:^(VAlertAction *action)
                                {
                                    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateImagePostSelected];
-                                   [self presentCreateFlowWithInitialCaptureState:VWorkspaceFlowControllerInitialCaptureStateImage];
+                                   [self presentCreateFlowWithInitialCaptureState:VWorkspaceFlowControllerInitialCaptureStateVideo
+                                                            initialImageEditState:VImageToolControllerInitialImageEditStateText
+                                                         andInitialVideoEditState:VVideoToolControllerInitialVideoEditStateVideo];
                                }]];
     [alertControler addAction:[VAlertAction buttonWithTitle:NSLocalizedString(@"Create a GIF", @"Create a gif action button.")
                                                     handler:^(VAlertAction *action)
@@ -335,19 +342,34 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
     [alertControler presentInViewController:self animated:YES completion:nil];
 }
 
+- (void)presentCreateFlowWithTextOnly
+{
+    [[VTrackingManager sharedInstance] setValue:VTrackingValueCreatePost forSessionParameterWithKey:VTrackingKeyContext];
+    
+    NSDictionary *dependencies = @{ VWorkspaceFlowControllerInitialCaptureStateKey : @(VWorkspaceFlowControllerInitialCaptureStateNone) };
+    VWorkspaceFlowController *workspaceFlowController = [self.dependencyManager templateValueOfType:[VWorkspaceFlowController class]
+                                                                                             forKey:VDependencyManagerWorkspaceFlowKey
+                                                                              withAddedDependencies:dependencies];
+    workspaceFlowController.videoEnabled = YES;
+    workspaceFlowController.delegate = self;
+    
+    [self presentViewController:workspaceFlowController.flowRootViewController
+                       animated:YES
+                     completion:nil];
+}
+
 - (void)presentCreateFlowWithInitialCaptureState:(VWorkspaceFlowControllerInitialCaptureState)initialCaptureState
                            initialImageEditState:(VImageToolControllerInitialImageEditState)initialImageEdit
                         andInitialVideoEditState:(VVideoToolControllerInitialVideoEditState)initialVideoEdit
 {
     [[VTrackingManager sharedInstance] setValue:VTrackingValueCreatePost forSessionParameterWithKey:VTrackingKeyContext];
     
-    VDependencyManager *dependencyManager = [(id)self dependencyManager];
-    
-    VWorkspaceFlowController *workspaceFlowController = [dependencyManager templateValueOfType:[VWorkspaceFlowController class]
-                                                                                        forKey:VDependencyManagerWorkspaceFlowKey
-                                                                         withAddedDependencies:@{VWorkspaceFlowControllerInitialCaptureStateKey:@(initialCaptureState),
-                                                                                                 VImageToolControllerInitialImageEditStateKey:@(initialImageEdit),
-                                                                                                 VVideoToolControllerInitalVideoEditStateKey:@(initialVideoEdit)}];
+    NSDictionary *dependencies = @{ VWorkspaceFlowControllerInitialCaptureStateKey:@(initialCaptureState),
+                                    VImageToolControllerInitialImageEditStateKey:@(initialImageEdit),
+                                    VVideoToolControllerInitalVideoEditStateKey:@(initialVideoEdit) };
+    VWorkspaceFlowController *workspaceFlowController = [self.dependencyManager templateValueOfType:[VWorkspaceFlowController class]
+                                                                                             forKey:VDependencyManagerWorkspaceFlowKey
+                                                                              withAddedDependencies:dependencies];
     workspaceFlowController.videoEnabled = YES;
     workspaceFlowController.delegate = self;
     

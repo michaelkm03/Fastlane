@@ -2,7 +2,7 @@
 // victorious/victorious/Managers/Tracking/VTrackingConstants.m 
 // victorious 
 // 
-// Generated from CSV using script "tracking_generate_constants.sh" on 02/25/15. 
+// Generated from CSV using script "tracking_generate_constants.sh" on 03/10/15. 
 // Copyright (c) 2015 Victorious. All rights reserved. 
 // 
 
@@ -24,6 +24,7 @@ NSString * const VTrackingEventUserDidSelectStream = @"UserDidSelectStream";
 NSString * const VTrackingEventUserDidSelectCreatePost = @"UserDidSelectCreatePost";
 NSString * const VTrackingEventCreatePollSelected = @"CreatePollSelected";
 NSString * const VTrackingEventCreateImagePostSelected = @"CreateImagePostSelected";
+NSString * const VTrackingEventCreateTextOnlyPostSelected = @"CreateTextOnlyPostSelected";
 NSString * const VTrackingEventCreateVideoPostSelected = @"CreateVideoPostSelected";
 NSString * const VTrackingEventCreateGIFPostSelected = @"CreateGIFPostSelected";
 NSString * const VTrackingEventCreateCancelSelected = @"CreateCancelSelected";
