@@ -18,7 +18,7 @@
 #import "VTranslucentBackground.h"
 #import "VSolidColorBackground.h"
 #import "VTabMenuViewController.h"
-#import "VLightweightContentViewController.h"
+#import "VFirstTimeInstallHelper.h"
 
 #define BOTTOM_NAV_ENABLED 0
 #define ROUNDED_TOP_NAV_ENABLED 0
@@ -150,7 +150,7 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
                                                                   kClassNameKey: @"tabMenu.scaffold",
                                                                   kItemsKey:[self bottomNavMenuItems],
                                                                   VScaffoldViewControllerUserProfileViewComponentKey: [self profileScreen],
-                                                                  VScaffoldViewControllerFirstTimeUserViewComponentKey: [self firstTimeVideoComponent],
+                                                                  VScaffoldViewControllerLightweightContentViewComponentKey: [self lightweightContentViewComponent],
                                                                   kSelectorKey: [self multiScreenSelectorKey],
                                                                   VTabMenuViewControllerMenuAppearanceKey: @{
                                                                           VDependencyManagerBackgroundKey: [self solidWhiteBackground],
@@ -167,7 +167,7 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
                                                                    VScaffoldViewControllerMenuComponentKey: [self menuComponent],
                                                                    VStreamCollectionViewControllerCreateSequenceIconKey: (self.templateCEnabled ? [UIImage imageNamed:@"createContentButtonC"] : [UIImage imageNamed:@"createContentButton"]),
                                                                    VScaffoldViewControllerUserProfileViewComponentKey: [self profileScreen],
-                                                                   VScaffoldViewControllerFirstTimeUserViewComponentKey: [self firstTimeVideoComponent],
+                                                                   VScaffoldViewControllerLightweightContentViewComponentKey: [self lightweightContentViewComponent],
                                                                    kSelectorKey: [self multiScreenSelectorKey],
                                                                    };
     }
@@ -391,7 +391,7 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
     }
 }
 
-- (NSDictionary *)firstTimeVideoComponent
+- (NSDictionary *)lightweightContentViewComponent
 {
     NSString *sequenceID = self.dataFromInitCall[@"experiments"][@"ftue_welcome_sequence_id"];
     return @{

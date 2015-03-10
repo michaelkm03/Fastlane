@@ -22,17 +22,20 @@
 #import "VWebBrowserViewController.h"
 #import "VLightweightContentViewController.h"
 #import "VNavigationController.h"
+#import "VFirstTimeInstallHelper.h"
 #import <MBProgressHUD.h>
 
 NSString * const VScaffoldViewControllerMenuComponentKey = @"menu";
 NSString * const VScaffoldViewControllerContentViewComponentKey = @"contentView";
 NSString * const VScaffoldViewControllerUserProfileViewComponentKey = @"userProfileView";
-NSString * const VScaffoldViewControllerFirstTimeUserViewComponentKey = @"firstTimeVideoView";
+NSString * const VScaffoldViewControllerLightweightContentViewComponentKey = @"lightweightContentView";
 
 static NSString * const kContentDeeplinkURLHostComponent = @"content";
 static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
 
 @interface VScaffoldViewController () <VNewContentViewControllerDelegate, VLightweightContentViewControllerDelegate>
+
+@property (nonatomic, strong) VFirstTimeInstallHelper *firstTimeInstallHelper;
 
 @end
 
@@ -56,9 +59,14 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
     [super viewDidAppear:animated];
 
     // Show the First Time User Video if it hasn't been shown yet
+    NSDictionary *vcDictionary = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:VScaffoldViewControllerLightweightContentViewComponentKey];
     VLightweightContentViewController *lightweightContentVC = [self.dependencyManager templateValueOfType:[VLightweightContentViewController class]
-                                                                                                   forKey:VScaffoldViewControllerFirstTimeUserViewComponentKey];
-    if ( ![lightweightContentVC hasBeenShown] )
+                                                                                                   forKey:VScaffoldViewControllerLightweightContentViewComponentKey];
+    
+    self.firstTimeInstallHelper = [VFirstTimeInstallHelper sharedInstance];
+    self.firstTimeInstallHelper.dependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:vcDictionary];
+    
+    if ( ![self.firstTimeInstallHelper hasBeenShown] )
     {
         lightweightContentVC.delegate = self;
         double delayInSeconds = 1.0;
@@ -66,8 +74,10 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
         dispatch_after(showTime, dispatch_get_main_queue(), ^(void)
                        {
                            // Present the first-time user video view controller
-                           if ( [lightweightContentVC hasMediaUrl] )
+                           if ( [self.firstTimeInstallHelper hasMediaUrl] )
                            {
+                               lightweightContentVC.firstTimeInstallHelper = self.firstTimeInstallHelper;
+                               lightweightContentVC.mediaUrl = self.firstTimeInstallHelper.mediaUrl;
                                [self presentViewController:lightweightContentVC animated:YES completion:nil];
                            }
                        });

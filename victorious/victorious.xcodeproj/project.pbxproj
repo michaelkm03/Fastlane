@@ -702,6 +702,7 @@
 		DB7460381A93A5BE006C2245 /* VInlineUserTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB7460361A93A5BE006C2245 /* VInlineUserTableViewCell.xib */; };
 		DB82857A19F6DD3D006C6E2F /* VAdPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = DB82857919F6DD3C006C6E2F /* VAdPlayerView.m */; };
 		DB8D3A1319803A03005DD36D /* VHashTags.m in Sources */ = {isa = PBXBuildFile; fileRef = DB8D3A1219803A03005DD36D /* VHashTags.m */; };
+		DB9497701AAE66C600CCEFD0 /* VFirstTimeInstallHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = DB94976F1AAE66C600CCEFD0 /* VFirstTimeInstallHelper.m */; };
 		DBAD6C9C1A2FD67F00AB5A4B /* libTremorVideoAd.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DBAD6C9A1A2FD67F00AB5A4B /* libTremorVideoAd.a */; };
 		DBAD6C9F1A2FD7B700AB5A4B /* VTremorAdViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBAD6C9E1A2FD7B700AB5A4B /* VTremorAdViewController.m */; };
 		DBAD776719F7752D00B6A939 /* VAdBreak+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = DBAD776619F7752D00B6A939 /* VAdBreak+RestKit.m */; };
@@ -1974,6 +1975,8 @@
 		DB82857919F6DD3C006C6E2F /* VAdPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAdPlayerView.m; sourceTree = "<group>"; };
 		DB8D3A1119803A03005DD36D /* VHashTags.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHashTags.h; sourceTree = "<group>"; };
 		DB8D3A1219803A03005DD36D /* VHashTags.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHashTags.m; sourceTree = "<group>"; };
+		DB94976E1AAE66C600CCEFD0 /* VFirstTimeInstallHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFirstTimeInstallHelper.h; sourceTree = "<group>"; };
+		DB94976F1AAE66C600CCEFD0 /* VFirstTimeInstallHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFirstTimeInstallHelper.m; sourceTree = "<group>"; };
 		DBAD6C9A1A2FD67F00AB5A4B /* libTremorVideoAd.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libTremorVideoAd.a; sourceTree = "<group>"; };
 		DBAD6C9B1A2FD67F00AB5A4B /* TremorVideoAd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TremorVideoAd.h; sourceTree = "<group>"; };
 		DBAD6C9D1A2FD7B700AB5A4B /* VTremorAdViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTremorAdViewController.h; sourceTree = "<group>"; };
@@ -2574,6 +2577,8 @@
 				0358FCED1A65E785004DD7A1 /* VScaffoldViewController.m */,
 				0314D3ED19B46B5E00FA363C /* VSideMenuViewController.h */,
 				0314D3EE19B46B5E00FA363C /* VSideMenuViewController.m */,
+				DB94976E1AAE66C600CCEFD0 /* VFirstTimeInstallHelper.h */,
+				DB94976F1AAE66C600CCEFD0 /* VFirstTimeInstallHelper.m */,
 			);
 			path = "Root View";
 			sourceTree = "<group>";
@@ -5526,6 +5531,7 @@
 				F0B390C31A88502D00EE70C7 /* VTagDictionary.m in Sources */,
 				0386E1F71A8DDA7F00FC9BDF /* VFollowingStreamCollectionViewController.m in Sources */,
 				D8332DC01A7C72EB00C3FEE0 /* VVCameraShutterOverAnimator.m in Sources */,
+				DB9497701AAE66C600CCEFD0 /* VFirstTimeInstallHelper.m in Sources */,
 				032954A51A9FF4E000698119 /* VURLMacroReplacement.m in Sources */,
 				037FCF1E1A8DAF2A00E8ABFC /* UIViewController+VLayoutInsets.m in Sources */,
 				D89AC2BD19F1FD6B00921131 /* VHistogramBarView.m in Sources */,
