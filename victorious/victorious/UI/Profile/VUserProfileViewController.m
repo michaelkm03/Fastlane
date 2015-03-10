@@ -141,12 +141,8 @@ static NSString * const kUserKey = @"user";
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginStatusChanged:) name:kLoggedInChangedNotification object:nil];
 
-    NSArray *menuItems = [self.dependencyManager menuItems];
-    if ( menuItems != nil )
-    {
-        [self.dependencyManager addPropertiesToNavigationItem:self.navigationItem
-                                     pushAccessoryMenuItemsOn:self.navigationController];
-    }
+    [self.dependencyManager addPropertiesToNavigationItem:self.navigationItem
+                                 pushAccessoryMenuItemsOn:self.navigationController];
     
     self.streamDataSource.hasHeaderCell = YES;
     self.collectionView.alwaysBounceVertical = YES;
