@@ -14,8 +14,6 @@
 
 @property (nonatomic, assign) BOOL fired;
 @property (nonatomic, assign) NSTimeInterval timerInterval;
-@property (nonatomic, strong) NSCondition *condition;
-@property (nonatomic, strong) NSRunLoop *backgroundRunLoop;
 
 @end
 
@@ -26,11 +24,13 @@
     [super setUp];
     
     //Arbitrarily small value
-    self.timerInterval = 0.0000002f;
+    self.timerInterval = 0.000002f;
+    self.fired = NO;
 }
 
 - (void)tearDown
 {
+    self.fired = NO;
     [super tearDown];
 }
 
@@ -275,6 +275,47 @@
 {
     XCTAssertNotNil(timer, @"timer retured from firing should not be nil");
     ((VTimerManagerTests *)timer.userInfo).fired = YES;
+}
+
+- (void)testInvalidate
+{
+    VTimerManager *timerManager = [VTimerManager scheduledTimerManagerWithTimeInterval:self.timerInterval
+                                                                                target:self
+                                                                              selector:@selector(selectorWithNoParams)
+                                                                              userInfo:nil
+                                                                               repeats:NO];
+    [timerManager invalidate];
+    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:self.timerInterval]];
+    XCTAssertFalse(self.fired, @"timer should not have fired");
+}
+
+- (void)testBackgroundInvalidate
+{
+    //Add some extra time so that the background thread can fire off before we test
+    double extendedTimeInterval = self.timerInterval + 0.1f;
+    VTimerManager *timerManager = [VTimerManager scheduledTimerManagerWithTimeInterval:extendedTimeInterval
+                                                                                target:self
+                                                                              selector:@selector(selectorWithNoParams)
+                                                                              userInfo:nil
+                                                                               repeats:NO];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^
+    {
+        [timerManager invalidate];
+    });
+    
+    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:extendedTimeInterval]];
+    XCTAssertFalse(self.fired, @"timer should not have fired");
+    XCTAssertFalse([timerManager isValid], @"timer should be invalidated");
+}
+
+- (void)testIsValid
+{
+    VTimerManager *timerManager = [VTimerManager scheduledTimerManagerWithTimeInterval:self.timerInterval
+                                                                                target:self
+                                                                              selector:@selector(selectorWithNoParams)
+                                                                              userInfo:nil
+                                                                               repeats:NO];
+    XCTAssertTrue([timerManager isValid], @"timer should be valid");
 }
 
 @end

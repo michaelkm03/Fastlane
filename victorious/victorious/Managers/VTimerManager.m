@@ -17,6 +17,7 @@ static const NSUInteger VMaxArgs = 3; //3 is the 1 maximum parameter + the selec
 @property (nonatomic, assign) SEL selector;
 @property (nonatomic, assign) BOOL expectsTimer;
 @property (nonatomic, assign) BOOL repeats;
+@property (nonatomic, strong) NSThread *timerThread;
 
 @end
 
@@ -42,6 +43,7 @@ static const NSUInteger VMaxArgs = 3; //3 is the 1 maximum parameter + the selec
     timerManager.selector = aSelector;
     timerManager.expectsTimer = numberOfArgs == VMaxArgs;
     timerManager.repeats = repeats;
+    timerManager.timerThread = [NSThread currentThread];
     timerManager.timer = [NSTimer scheduledTimerWithTimeInterval:timeInterval target:timerManager selector:@selector(timerFired:) userInfo:userInfo repeats:repeats];
     return timerManager;
     
@@ -70,6 +72,7 @@ static const NSUInteger VMaxArgs = 3; //3 is the 1 maximum parameter + the selec
     timerManager.selector = aSelector;
     timerManager.expectsTimer = numberOfArgs == VMaxArgs;
     timerManager.repeats = repeats;
+    timerManager.timerThread = [NSThread currentThread];
     timerManager.timer = [NSTimer timerWithTimeInterval:timeInterval target:timerManager selector:@selector(timerFired:) userInfo:userInfo repeats:repeats];
     [runLoop addTimer:timerManager.timer forMode:runMode];
     return timerManager;
@@ -100,8 +103,26 @@ static const NSUInteger VMaxArgs = 3; //3 is the 1 maximum parameter + the selec
     //By this time the target has either already been deallocated or we've already called our timer callback function on the target, so we're safe to invalidate the timer if it's not repeating
     if ( !self.repeats )
     {
+        [self invalidate];
+    }
+}
+
+- (void)invalidate
+{
+    //Since invalidate must be called on the thread that created it and this function could be called from any thread, tell the timer to invalidate on the thread we created it on
+    if ( ![[NSThread currentThread] isEqual:self.timerThread] )
+    {
+        [self.timer performSelector:@selector(invalidate) onThread:self.timerThread withObject:nil waitUntilDone:NO];
+    }
+    else
+    {
         [self.timer invalidate];
     }
+}
+
+- (BOOL)isValid
+{
+    return [self.timer isValid];
 }
 
 @end

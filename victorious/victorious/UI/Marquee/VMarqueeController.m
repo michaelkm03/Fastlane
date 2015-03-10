@@ -59,7 +59,7 @@
     {
         self.collectionView.delegate = nil;
     }
-    [self.autoScrollTimerManager.timer invalidate];
+    [self.autoScrollTimerManager invalidate];
 }
 
 - (void)setCollectionView:(UICollectionView *)collectionView
@@ -127,7 +127,7 @@
     }
     
     [self.delegate marquee:self selectedItem:item atIndexPath:indexPath previewImage:previewImage];
-    [self.autoScrollTimerManager.timer invalidate];
+    [self.autoScrollTimerManager invalidate];
 }
 
 #pragma mark - UIScrollViewDelegate
@@ -144,13 +144,13 @@
 
 - (void)disableTimer
 {
-    [self.autoScrollTimerManager.timer invalidate];
+    [self.autoScrollTimerManager invalidate];
     //Hide all detail boxes here
 }
 
 - (void)enableTimer
 {
-    [self.autoScrollTimerManager.timer invalidate];
+    [self.autoScrollTimerManager invalidate];
     self.autoScrollTimerManager = [VTimerManager scheduledTimerManagerWithTimeInterval:kVDetailVisibilityDuration + kVDetailHideDuration
                                                                          target:self
                                                                        selector:@selector(selectNextTab)
@@ -163,7 +163,7 @@
 - (void)cell:(VMarqueeStreamItemCell *)cell selectedUser:(VUser *)user
 {
     [self.delegate marquee:self selectedUser:user atIndexPath:[self.collectionView indexPathForCell:cell]];
-    [self.autoScrollTimerManager.timer invalidate];
+    [self.autoScrollTimerManager invalidate];
 }
 
 #pragma mark - VStreamCollectionDataDelegate

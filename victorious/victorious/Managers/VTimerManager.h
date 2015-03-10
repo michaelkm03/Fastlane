@@ -46,7 +46,14 @@
                                            repeats:(BOOL)repeats
                                          toRunLoop:(NSRunLoop *)runLoop
                                        withRunMode:(NSString *)runMode;
+/**
+ Stops the receiver from ever firing again and requests its removal from its run loop. This function always calls invalidate on the thread that created the timer, which allows it to be properly removed from the run loop.
+ */
+- (void)invalidate;
 
-@property (nonatomic, readonly) NSTimer *timer; ///< The timer that will be setup according to the parameters passed in through the class methods
+/**
+ Equivalent to calling -isValid on an NSTimer, indicates if the timer is valid or not
+ */
+- (BOOL)isValid;
 
 @end
