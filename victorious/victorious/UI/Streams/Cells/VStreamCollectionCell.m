@@ -51,6 +51,12 @@
 @property (nonatomic, weak) IBOutlet VVideoView *videoPlayerView;
 @property (nonatomic, weak) IBOutlet UIView *contentContainer;
 
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *commentsLeftConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *commentHeightConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *commentLabelBottomConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *interLabelSpaceConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *captionTextViewTopConstraint;
+
 @property (nonatomic, strong) VAsset *videoAsset;
 @property (nonatomic, assign) BOOL isPlayButtonVisible;
 
@@ -58,19 +64,27 @@
 
 @end
 
-static const CGFloat kTemplateCYRatio = 1.3079470199; // 395/302
-static const CGFloat kTemplateCXRatio = 0.94375; // 320/302
-static const CGFloat kDescriptionBuffer = 18.0;
-static const CGFloat kTextViewInset = 20.0f; //Needs to be sum of textview inset from left and right
-static const CGFloat kTextViewLineFragmentPadding = 5.0f; //Since we don't update linefragment padding on the uitextview, this is the default 5.0
+//IMPORTANT: these template C constants much match up with the heights of values from the VStreamCollectionCell-C xib
+static const CGFloat kTemplateCXRatio = 0.94375f; // 320/302
+static const CGFloat kTemplateCHeaderHeight = 50.0f;
+static const CGFloat kTemplateCActionViewHeight = 41.0f;
+static const CGFloat kTemplateCTextViewInset = 22.0f; //Needs to be sum of textview inset from left and right
+
+static const CGFloat kTemplateCTextViewLineFragmentPadding = 0.0f; //This value will be used to update the lineFragmentPadding of the captionTextView and serve as reference in size calculations
+
+//Use these 2 constants to adjust the spacing between the caption and comment count as well as the distance between the caption and the view above it and the comment label and the view below it
+const CGFloat kTemplateCTextNeighboringViewSeparatorHeight = 10.0f; //This represents the space between the comment label and the view below it and the distance between the caption textView and the view above it
+const CGFloat kTemplateCTextSeparatorHeight = 6.0f; //This represents the space between the label and textView. It's slightly smaller than the those separating the label and textview from their respective bottom and top to neighboring views so that the centers of words are better aligned
 
 @implementation VStreamCollectionCell
 
 - (void)awakeFromNib
 {
     [super awakeFromNib];
-
+    
     BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
+    
+    self.captionTextView.layer.masksToBounds = NO;
     
     self.backgroundColor = isTemplateC ? [UIColor whiteColor] : [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
     
@@ -89,7 +103,15 @@ static const CGFloat kTextViewLineFragmentPadding = 5.0f; //Since we don't updat
                                                                  options:0
                                                                  metrics:@{ @"height":@(height) }
                                                                    views:views]];
+    self.commentsLabel.font = [[VStreamCollectionCell sequenceCommentCountAttributes] objectForKey:NSFontAttributeName];
+    self.captionTextView.textContainer.lineFragmentPadding = kTemplateCTextViewLineFragmentPadding;
+    self.commentsLeftConstraint.constant = - kTemplateCTextViewLineFragmentPadding;
+    
+    self.captionTextView.textContainerInset = UIEdgeInsetsZero;
     self.streamCellHeaderView.delegate = self;
+    
+    self.commentLabelBottomConstraint.constant = kTemplateCTextNeighboringViewSeparatorHeight;
+    self.captionTextViewTopConstraint.constant = kTemplateCTextNeighboringViewSeparatorHeight;
 }
 
 - (void)text:(NSString *)text tappedInTextView:(UITextView *)textView
@@ -109,7 +131,8 @@ static const CGFloat kTextViewLineFragmentPadding = 5.0f; //Since we don't updat
 - (void)setDescriptionText:(NSString *)text
 {
     BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
-    if (self.sequence.nameEmbeddedInContent.boolValue == NO)
+    BOOL hasText = !self.sequence.nameEmbeddedInContent.boolValue;
+    if ( hasText )
     {
         NSMutableAttributedString *newAttributedCellText = [[NSMutableAttributedString alloc] initWithString:(text ?: @"")
                                                                                                   attributes:[VStreamCollectionCell sequenceDescriptionAttributes]];
@@ -125,6 +148,15 @@ static const CGFloat kTextViewLineFragmentPadding = 5.0f; //Since we don't updat
     {
         self.captionTextView.attributedText = [[NSAttributedString alloc] initWithString:@""];
     }
+    
+    //Remove the space between label and textView if the textView is empty
+    self.interLabelSpaceConstraint.constant = !(hasText && text.length > 0) ? 0 : kTemplateCTextSeparatorHeight;
+}
+
+- (void)setCommentsCountText:(NSString *)text
+{
+    [self.commentsLabel setText:text];
+    self.commentHeightConstraint.constant = [text sizeWithAttributes:@{ NSFontAttributeName : self.commentsLabel.font }].height;
 }
 
 - (void)prepareForReuse
@@ -134,6 +166,8 @@ static const CGFloat kTextViewLineFragmentPadding = 5.0f; //Since we don't updat
     [self pauseVideo];
     
     self.videoPlayerView.alpha = 0.0f;
+    
+    self.interLabelSpaceConstraint.constant = kTemplateCTextSeparatorHeight;
     
     self.videoAsset = nil;
 }
@@ -155,7 +189,14 @@ static const CGFloat kTextViewLineFragmentPadding = 5.0f; //Since we don't updat
     [self.previewImageView fadeInImageAtURL:[NSURL URLWithString:[_sequence.previewImagePaths firstObject]]
                            placeholderImage:[UIImage resizeableImageWithColor:
                                              [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]]];
+    
+    NSString *commentsString = [NSString stringWithFormat:@"%@ %@", [sequence.commentCount stringValue], sequence.commentCount.integerValue == 1 ? NSLocalizedString(@"Comment", @"") : NSLocalizedString(@"Comments", @"")];
 
+    if ( [VStreamCollectionCell isTemplateC] )
+    {
+        [self setCommentsCountText:commentsString];
+    }
+    
     [self setDescriptionText:self.sequence.name];
     
     self.captionTextView.hidden = self.sequence.nameEmbeddedInContent.boolValue || self.sequence.name.length == 0;
@@ -313,35 +354,55 @@ static const CGFloat kTextViewLineFragmentPadding = 5.0f; //Since we don't updat
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {
     BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
-    CGFloat yRatio = isTemplateC ? kTemplateCYRatio : 1;
-    CGFloat xRatio = isTemplateC ? kTemplateCXRatio : 1;
-    CGFloat width = CGRectGetWidth(bounds) * xRatio;
-    return CGSizeMake(width, width * yRatio);
+    CGFloat width = CGRectGetWidth(bounds);
+    if ( !isTemplateC )
+    {
+        return CGSizeMake(width, width);
+    }
+    
+    width *= kTemplateCXRatio;
+    CGFloat height = width + kTemplateCHeaderHeight + kTemplateCActionViewHeight + kTemplateCTextNeighboringViewSeparatorHeight * 2.0f + kTemplateCTextSeparatorHeight; //Width represents the desired media height, there are 2 neighboring separators (top to textview and bottom to comment label) in addition to one constraint between the comment count label and the textview.
+    return CGSizeMake(width, height);
 }
 
 + (CGSize)actualSizeWithCollectionViewBounds:(CGRect)bounds sequence:(VSequence *)sequence
 {
     CGSize actual = [self desiredSizeWithCollectionViewBounds:bounds];
     
-    if (![[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
+    if ( ![self isTemplateC] )
     {
         return actual;
     }
     
+    CGFloat width = actual.width - kTemplateCTextViewInset - kTemplateCTextViewLineFragmentPadding * 2;
     if ( !sequence.nameEmbeddedInContent.boolValue && sequence.name.length > 0 )
     {
         //Subtract insets and line fragment padding that is padding text in textview BEFORE calculating size
-        CGSize textSize = [sequence.name frameSizeForWidth:actual.width - kTextViewInset - kTextViewLineFragmentPadding * 2
+        CGSize textSize = [sequence.name frameSizeForWidth:width
                                              andAttributes:[self sequenceDescriptionAttributes]];
-        actual.height += textSize.height + kDescriptionBuffer;
+        actual.height += textSize.height;
     }
+    else
+    {
+        //We have no text to display, remove the separator height from our calculation
+        actual.height -= kTemplateCTextSeparatorHeight;
+    }
+    
+    CGSize textSize = [[sequence.commentCount stringValue] frameSizeForWidth:width
+                                                               andAttributes:[self sequenceCommentCountAttributes]];
+    actual.height += textSize.height;
     
     return actual;
 }
 
++ (NSDictionary *)sequenceCommentCountAttributes
+{
+    return @{ NSFontAttributeName : [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font] };
+}
+
 + (NSDictionary *)sequenceDescriptionAttributes
 {
-    const BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
+    const BOOL isTemplateC = [self isTemplateC];
     
     NSMutableDictionary *attributes = [[NSMutableDictionary alloc] init];
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
@@ -370,6 +431,11 @@ static const CGFloat kTextViewLineFragmentPadding = 5.0f; //Since we don't updat
     attributes[ NSParagraphStyleAttributeName ] = paragraphStyle;
     
     return [NSDictionary dictionaryWithDictionary:attributes];
+}
+
++ (BOOL)isTemplateC
+{
+    return [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
 }
 
 #pragma mark - CCHLinkTextViewDelegate

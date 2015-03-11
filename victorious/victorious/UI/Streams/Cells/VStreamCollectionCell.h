@@ -12,6 +12,9 @@
 #import "VSequenceActionsDelegate.h"
 #import "VBaseCollectionViewCell.h"
 
+extern const CGFloat kTemplateCTextNeighboringViewSeparatorHeight;
+extern const CGFloat kTemplateCTextSeparatorHeight;
+
 @class VSequence, VStreamCellHeaderView, VStreamCollectionCell;
 
 @interface VStreamCollectionCell : VBaseCollectionViewCell <VSharedCollectionReusableViewMethods>
@@ -21,6 +24,7 @@
 @property (nonatomic, weak) IBOutlet UIView                 *overlayView;
 @property (nonatomic, weak) IBOutlet UIView                 *shadeView;
 @property (nonatomic, weak) IBOutlet VStreamCellHeaderView  *streamCellHeaderView;
+@property (nonatomic, weak) IBOutlet UILabel                *commentsLabel;
 
 @property (nonatomic, weak) VSequence                       *sequence;
 

@@ -23,9 +23,13 @@
 #import "VThemeManager.h"
 #import "VSettingManager.h"
 
-static const CGFloat kPollCellHeightRatio = 0.66875; //from spec, 214 height for 320 width
-static const CGFloat kPollCellHeightRatioC = 1.016; //from spec, 307 height for 302 width
-static const CGFloat kPollCellWidthRatioC = 0.94375;
+//IMPORTANT: these template C constants much match up with the heights of values from the VStreamCollectionCellPoll-C xib
+static const CGFloat kTemplateCPollCellWidthRatio = 0.94375f; // 320/302
+static const CGFloat kTemplateCPollContentRatio = 0.6688741722f; // 202/302
+static const CGFloat kTemplateCHeaderHeight = 50.0f;
+static const CGFloat kTemplateCActionViewHeight = 41.0f;
+
+static const CGFloat kPollCellHeightRatio = 0.66875f; //from spec, 214 height for 320 width
 
 @interface VStreamCollectionCellPoll ()
 
@@ -70,15 +74,22 @@ static const CGFloat kPollCellWidthRatioC = 0.94375;
     
     [self.previewImageTwo fadeInImageAtURL:self.secondAssetUrl
                           placeholderImage:placeholderImage];
+    
+    
 }
 
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {
     BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
-    CGFloat yRatio = isTemplateC ? kPollCellHeightRatioC : kPollCellHeightRatio;
-    CGFloat xRatio = isTemplateC ? kPollCellWidthRatioC : 1;
-    CGFloat width = CGRectGetWidth(bounds) * xRatio;
-    return CGSizeMake(width, width * yRatio);
+    CGFloat width = CGRectGetWidth(bounds);
+    if ( !isTemplateC )
+    {
+        return CGSizeMake(width, width * kPollCellHeightRatio);
+    }
+    
+    width = floorf(width * kTemplateCPollCellWidthRatio);
+    CGFloat height = floorf(width * kTemplateCPollContentRatio + kTemplateCHeaderHeight + kTemplateCTextNeighboringViewSeparatorHeight * 2.0f + kTemplateCTextSeparatorHeight + kTemplateCActionViewHeight); //width * kTemplateCPollContentRatio represents the desired media height
+    return CGSizeMake(width, height);
 }
 
 @end
