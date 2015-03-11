@@ -20,7 +20,7 @@
 #import "VTabMenuViewController.h"
 #import "VDependencyManager+VNavigationMenuItem.h"
 
-#define BOTTOM_NAV_ENABLED 0
+#define BOTTOM_NAV_ENABLED 1
 #define CHANNELS_WITH_GROUP_STREAM_ENABLED 0
 #define ROUNDED_TOP_NAV_ENABLED 0
 
@@ -483,19 +483,35 @@ static NSString * const kVideoMuted = @"videoMuted";
 
 - (NSDictionary *)profileMenuItem
 {
-    return @{
-             kIdentifierKey: @"Menu Profile",
-             kTitleKey: NSLocalizedString(@"Profile", @""),
-             kDestinationKey: @{
-                     kClassNameKey: @"currentUserProfile.screen"
-                     },
-             kIconKey: @{
-                     VDependencyManagerImageURLKey: @"profile",
-                     },
-             VDependencyManagerAccessoryScreensKey: @[
-                     [self settingsMenuItem],
-                     ],
-             };
+    if (BOTTOM_NAV_ENABLED)
+    {
+        return @{
+                 kIdentifierKey: @"Menu Profile",
+                 kTitleKey: NSLocalizedString(@"Profile", @""),
+                 kDestinationKey: @{
+                         kClassNameKey: @"currentUserProfile.screen"
+                         },
+                 kIconKey: @{
+                         VDependencyManagerImageURLKey: @"profile",
+                         },
+                 VDependencyManagerAccessoryScreensKey: @[
+                         [self settingsMenuItem],
+                         ],
+                 };
+    }
+    else
+    {
+        return @{
+                 kIdentifierKey: @"Menu Profile",
+                 kTitleKey: NSLocalizedString(@"Profile", @""),
+                 kDestinationKey: @{
+                         kClassNameKey: @"currentUserProfile.screen"
+                         },
+                 kIconKey: @{
+                         VDependencyManagerImageURLKey: @"profile",
+                         },
+                 };
+    }
 }
 
 - (NSDictionary *)inboxMenuItem
@@ -534,15 +550,6 @@ static NSString * const kVideoMuted = @"videoMuted";
 
 - (NSDictionary *)currentUserProfileScreen
 {
-    if (BOTTOM_NAV_ENABLED)
-    {
-        return @{ kClassNameKey: @"currentUserProfile.screen",
-                  kIdentifierKey: @"Menu Current User.",
-                  VDependencyManagerAccessoryScreensKey: @[
-                          [self settingsMenuItem],
-                          ]
-                  };
-    }
     return @{ kClassNameKey: @"currentUserProfile.screen" };
 }
 
