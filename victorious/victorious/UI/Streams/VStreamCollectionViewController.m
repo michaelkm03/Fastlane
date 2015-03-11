@@ -61,8 +61,8 @@
 #import "UIImageView+Blurring.h"
 #import "UIStoryboard+VMainStoryboard.h"
 #import "UIViewController+VLayoutInsets.h"
-#import "UIViewController+VContentCreationActionSheet.h"
 
+#import "VWorkspacePresenter.h"
 #import "VConstants.h"
 #import "VTracking.h"
 #import "VHashtagStreamCollectionViewController.h"
@@ -92,6 +92,8 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
 
 @property (nonatomic, assign) BOOL hasRefreshed;
 @property (nonatomic, assign) BOOL canAddContent;
+
+@property (nonatomic, strong) VWorkspacePresenter *workspacePresenter;
 
 @end
 
@@ -299,7 +301,8 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
         return;
     }
     
-    [self showContentTypeSelection];
+    self.workspacePresenter = [VWorkspacePresenter workspacePresenterWithViewControllerToPresentOn:self];
+    [self.workspacePresenter present];
 }
 
 #pragma mark - VMarqueeDelegate

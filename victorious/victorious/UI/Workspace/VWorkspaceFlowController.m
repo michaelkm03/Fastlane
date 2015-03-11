@@ -25,7 +25,7 @@
 // Category
 #import "NSURL+MediaType.h"
 #import "UIActionSheet+VBlocks.h"
-#import "UIViewController+VContentCreationActionSheet.h"
+#import "VWorkspacePresenter.h"
 
 // ViewControllers
 #import "VCameraViewController.h"
@@ -77,6 +77,8 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
 @property (nonatomic, strong) VPublishBlurOverAnimator *transitionAnimator;
 
 @property (nonatomic, readonly) VDependencyManager *dependencyManager;
+
+@property (nonatomic, strong) VWorkspacePresenter *workspacePresenter;
 
 @end
 
@@ -245,7 +247,8 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
 
 - (BOOL)shouldNavigateWithAlternateDestination:(UIViewController *__autoreleasing *)alternateViewController
 {
-    [[VRootViewController rootViewController] showContentTypeSelection];
+    self.workspacePresenter = [VWorkspacePresenter workspacePresenterWithViewControllerToPresentOn:[VRootViewController rootViewController]];
+    [self.workspacePresenter present];
     return NO;
 }
 

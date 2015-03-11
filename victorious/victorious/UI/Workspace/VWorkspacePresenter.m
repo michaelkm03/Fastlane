@@ -1,12 +1,12 @@
 //
-//  UIViewController+VContentCreationActionSheet.m
+//  VWorkspacePresenter.m
 //  victorious
 //
-//  Created by Michael Sena on 3/4/15.
+//  Created by Michael Sena on 3/10/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "UIViewController+VContentCreationActionSheet.h"
+#import "VWorkspacePresenter.h"
 
 #import "VObjectManager+Users.h"
 
@@ -26,14 +26,27 @@
 #import "VAuthorizationViewControllerFactory.h"
 #import "VRootViewController.h"
 
-@implementation UIViewController (VContentCreationActionSheet)
+@interface VWorkspacePresenter () <VWorkspaceFlowControllerDelegate>
 
-- (void)showContentTypeSelection
+@property (nonatomic, weak) UIViewController *viewControllerToPresentOn;
+
+@end
+
+@implementation VWorkspacePresenter
+
++ (instancetype)workspacePresenterWithViewControllerToPresentOn:(UIViewController *)viewControllerToPresentOn
+{
+    VWorkspacePresenter *workspacePresenter = [[self alloc] init];
+    workspacePresenter.viewControllerToPresentOn = viewControllerToPresentOn;
+    return workspacePresenter;
+}
+
+- (void)present
 {
     UIViewController *loginViewController = [VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]];
     if (loginViewController != nil)
     {
-        [[VRootViewController rootViewController] presentViewController:loginViewController animated:YES completion:nil];
+        [self.viewControllerToPresentOn presentViewController:loginViewController animated:YES completion:nil];
         return;
     }
     
@@ -67,13 +80,13 @@
                                    __weak typeof(self) welf = self;
                                    createViewController.completionHandler = ^void(VCreatePollViewControllerResult result)
                                    {
-                                       [welf dismissViewControllerAnimated:YES
+                                       [welf.viewControllerToPresentOn dismissViewControllerAnimated:YES
                                                                 completion:nil];
                                    };
                                    UINavigationController *wrapperNavStack = [[UINavigationController alloc] initWithRootViewController:createViewController];
-                                   [self presentViewController:wrapperNavStack animated:YES completion:nil];
+                                   [self.viewControllerToPresentOn presentViewController:wrapperNavStack animated:YES completion:nil];
                                }]];
-    [alertControler presentInViewController:self animated:YES completion:nil];
+    [alertControler presentInViewController:self.viewControllerToPresentOn animated:YES completion:nil];
 }
 
 - (void)presentCreateFlowWithInitialCaptureState:(VWorkspaceFlowControllerInitialCaptureState)initialCaptureState
@@ -88,7 +101,7 @@
     workspaceFlowController.videoEnabled = YES;
     workspaceFlowController.delegate = self;
     
-    [self presentViewController:workspaceFlowController.flowRootViewController
+    [self.viewControllerToPresentOn presentViewController:workspaceFlowController.flowRootViewController
                        animated:YES
                      completion:nil];
 }
@@ -104,14 +117,14 @@
 
 - (void)workspaceFlowControllerDidCancel:(VWorkspaceFlowController *)workspaceFlowController
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self.viewControllerToPresentOn dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)workspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
        finishedWithPreviewImage:(UIImage *)previewImage
                capturedMediaURL:(NSURL *)capturedMediaURL
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self.viewControllerToPresentOn dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end
