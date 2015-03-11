@@ -114,21 +114,21 @@
 	<key>font.header</key>
 	<dict>
 		<key>fontName</key>
-		<string>DroidSans</string>
+		<string>DroidSans-Regular</string>
 		<key>fontSize</key>
 		<integer>18</integer>
 	</dict>
 	<key>font.heading1</key>
 	<dict>
 		<key>fontName</key>
-		<string>DroidSans</string>
+		<string>DroidSans-Regular</string>
 		<key>fontSize</key>
 		<integer>24</integer>
 	</dict>
 	<key>font.heading2</key>
 	<dict>
 		<key>fontName</key>
-		<string>DroidSans</string>
+		<string>DroidSans-Regular</string>
 		<key>fontSize</key>
 		<integer>20</integer>
 	</dict>
@@ -142,14 +142,14 @@
 	<key>font.heading4</key>
 	<dict>
 		<key>fontName</key>
-		<string>DroidSans</string>
+		<string>DroidSans-Regular</string>
 		<key>fontSize</key>
 		<integer>15</integer>
 	</dict>
 	<key>font.paragraph</key>
 	<dict>
 		<key>fontName</key>
-		<string>DroidSans</string>
+		<string>DroidSans-Regular</string>
 		<key>fontSize</key>
 		<integer>13</integer>
 	</dict>
@@ -163,21 +163,21 @@
 	<key>font.label2</key>
 	<dict>
 		<key>fontName</key>
-		<string>DroidSans</string>
+		<string>DroidSans-Regular</string>
 		<key>fontSize</key>
 		<integer>12</integer>
 	</dict>
 	<key>font.label3</key>
 	<dict>
 		<key>fontName</key>
-		<string>DroidSans</string>
+		<string>DroidSans-Regular</string>
 		<key>fontSize</key>
 		<integer>11</integer>
 	</dict>
 	<key>font.label4</key>
 	<dict>
 		<key>fontName</key>
-		<string>DroidSans</string>
+		<string>DroidSans-Regular</string>
 		<key>fontSize</key>
 		<integer>10</integer>
 	</dict>
