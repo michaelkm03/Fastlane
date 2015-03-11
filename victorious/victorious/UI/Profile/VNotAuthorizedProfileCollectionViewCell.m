@@ -11,7 +11,8 @@
 #import "UIView+AutoLayout.h"
 #import "VNoContentView.h"
 #import "VButton.h"
-#import "VThemeManager.h"
+#import "VDependencyManager.h"
+#import "VRootViewController.h"
 
 @interface VNotAuthorizedProfileCollectionViewCell ()
 
@@ -38,14 +39,14 @@
     [self.noContentViewContainer addSubview:noContentView];
     [self.noContentViewContainer v_addFitToParentConstraintsToSubview:noContentView];
     noContentView.iconImageView.image = [[UIImage imageNamed:@"profileGenericUser"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    noContentView.iconImageView.tintColor = [UIColor lightGrayColor];
+    noContentView.iconImageView.tintColor = [[[VRootViewController rootViewController] dependencyManager] colorForKey:VDependencyManagerLinkColorKey];
     noContentView.titleLabel.text = NSLocalizedString(@"You're not logged in!", @"");
     noContentView.messageLabel.text = NSLocalizedString(@"Join me and together we can rule the galaxy as father and son. All the cool kids are doing it.", @"");
     
     [self.loginButton setStyle:VButtonStylePrimary];
     [self.loginButton setTitle:NSLocalizedString(@"Login", @"") forState:UIControlStateNormal];
-    self.loginButton.primaryColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-    self.loginButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
+    self.loginButton.primaryColor = [[[VRootViewController rootViewController] dependencyManager] colorForKey:VDependencyManagerLinkColorKey];
+    self.loginButton.titleLabel.font = [[[VRootViewController rootViewController] dependencyManager] fontForKey:VDependencyManagerHeading2FontKey];
 }
 
 #pragma mark - Target/Action
