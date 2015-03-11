@@ -3,28 +3,30 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDisplayName</key>
-	<string>${ProductPrefix}BeautyLiciousInsider</string>
+	<string>${ProductPrefix}AwesomenessTV</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.getvictorious.${ProductPrefix}beautyliciousinsider</string>
+	<string>com.getvictorious.${ProductPrefix}awesomenesstv</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fb1620694648150736</string>
+				<string>fb802820286459743</string>
 			</array>
 		</dict>
 	</array>
 	<key>FacebookAppID</key>
-	<string>1620694648150736</string>
-	<key>FacebookDisplayName</key>
-	<string>VictoriousApp Dev</string>
+	<string>802820286459743</string>
+	<key>TWITTER_CONSUMER_KEY</key>
+	<string>n2q6KQUBCzMjRvwHdJXmFNQzR</string>
+	<key>TWITTER_CONSUMER_SECRET</key>
+	<string>KqYkU6RMMXCX6Xd3eUyaDJTjgDr8swrIll6WFc72S7ophZXlHF</string>
 	<key>VictoriousAppID</key>
-	<integer>30</integer>
+	<integer>27</integer>
 	<key>StagingAppID</key>
-	<integer>44</integer>
+	<integer>41</integer>
 	<key>QAAppID</key>
-	<integer>28</integer>
+	<integer>25</integer>
 	<key>GAID</key>
 	<string></string>
 	<key>CreatorSalutation</key>
