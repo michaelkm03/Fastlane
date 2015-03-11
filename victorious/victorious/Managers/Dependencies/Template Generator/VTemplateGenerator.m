@@ -20,6 +20,7 @@
 #import "VTabMenuViewController.h"
 
 #define BOTTOM_NAV_ENABLED 0
+#define CHANNELS_WITH_GROUP_STREAM_ENABLED 0
 #define ROUNDED_TOP_NAV_ENABLED 0
 
 static NSString * const kIDKey = @"id";
@@ -42,6 +43,16 @@ static NSString * const kCanAddContentKey = @"canAddContent";
 static NSString * const kStreamsKey = @"streams";
 static NSString * const kInitialKey = @"initial";
 static NSString * const kUserSpecificKey = @"isUserSpecific";
+
+// Directory Components
+static NSString * const kBackgroundColor = @"color.background";
+static NSString * const kAccentColor = @"color.accent";
+static NSString * const kSecondaryAccentColor = @"color.accent.secondary";
+static NSString * const kTextColor = @"color.text";
+static NSString * const kTextContentColor = @"color.text.content";
+static NSString * const kTextAccentColor = @"color.text.accent";
+static NSString * const kCellComponentDirectoryGroup = @"cell.directory.group";
+static NSString * const kCellComponentDirectoryItem = @"cell.directory.item";
 
 static NSString * const kRedKey = @"red";
 static NSString * const kGreenKey = @"green";
@@ -587,62 +598,210 @@ static NSString * const kVideoMuted = @"videoMuted";
 
 - (NSDictionary *)ownerStreamMenuItem
 {
-    NSNumber *channelsEnabled = [self.dataFromInitCall valueForKeyPath:@"experiments.channels_enabled"];
-    if ([channelsEnabled isKindOfClass:[NSNumber class]] && [channelsEnabled boolValue])
+    NSNumber *channelsEnabledObject = [self.dataFromInitCall valueForKeyPath:@"experiments.channels_enabled"];
+    const BOOL channelsEnabled = [channelsEnabledObject isKindOfClass:[NSNumber class]] && [channelsEnabledObject boolValue];
+    
+    if ( CHANNELS_WITH_GROUP_STREAM_ENABLED && channelsEnabled )
     {
-        return @{
-            kIdentifierKey: @"Menu Channels",
-            kTitleKey: NSLocalizedString(@"Channels", @""),
-            kIconKey: @{
-                    VDependencyManagerImageURLKey:@"channels",
-                    },
-            kDestinationKey: @{
-                kClassNameKey: @"streamDirectory.screen",
-                kTitleKey: NSLocalizedString(@"Channels", nil),
-                VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/detail_list_by_stream/directory/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%"
-            }
-        };
+        NSDictionary *componentBase = @{ kIdentifierKey: @"Menu Channels",
+                                         kTitleKey: NSLocalizedString(@"Channels", @""),
+                                         kIconKey: @{
+                                                 VDependencyManagerImageURLKey: @"channels",
+                                                 },
+                                         kDestinationKey: @{
+                                                 kClassNameKey: @"groupedStream.screen",
+                                                 kTitleKey: NSLocalizedString(@"Channels", nil),
+                                                 VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/detail_list_by_stream/directory/0/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%"
+                                                 }
+                                         };
+        NSMutableDictionary *completeComponent = [[NSMutableDictionary alloc] initWithDictionary:componentBase];
+        [completeComponent addEntriesFromDictionary:[self directoryComponentLight]];
+        return [NSDictionary dictionaryWithDictionary:completeComponent];
+    }
+    else if ( channelsEnabled )
+    {
+        return @{ kIdentifierKey: @"Menu Channels",
+                  kTitleKey: NSLocalizedString(@"Channels", @""),
+                  kIconKey: @{
+                          VDependencyManagerImageURLKey: @"channels",
+                          },
+                  kDestinationKey: @{
+                          kClassNameKey: @"directory.screen",
+                          kTitleKey: NSLocalizedString(@"Channels", nil),
+                          VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/detail_list_by_stream/directory/0/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%"
+                          },
+                  kBackgroundColor: @{
+                          kRedKey: @0,
+                          kGreenKey: @0,
+                          kBlueKey: @0,
+                          kAlphaKey: @1
+                          },
+                  kCellComponentDirectoryItem: [self directoryCellComponentDark]
+                  };
     }
     else
     {
-        return @{
-            kIdentifierKey: @"Menu Channel",
-            kTitleKey: NSLocalizedString(@"Channel", @""),
-            kIconKey: @"channels",
-            kDestinationKey: @{
-                kClassNameKey: @"basic.multiScreen",
-                kTitleKey: NSLocalizedString(@"Owner", @""),
-                kScreensKey: @[
-                    @{
-                        kClassNameKey: @"stream.screen",
-                        kTitleKey: NSLocalizedString(@"Featured", @""),
-                        VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/hot_detail_list_by_stream/owner/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%"
-                    },
-                    @{
-                        kClassNameKey: @"stream.screen",
-                        kInitialKey: @YES,
-                        kTitleKey: NSLocalizedString(@"Recent", @""),
-                        VStreamCollectionViewControllerStreamURLPathKey: [self urlPathForStreamCategories:VOwnerCategories()],
-                    }
-                ]
-            }
+        return @{ kIdentifierKey: @"Menu Channel",
+                  kTitleKey: NSLocalizedString(@"Channel", @""),
+                  kIconKey: @{
+                          VDependencyManagerImageURLKey: @"channels",
+                          },
+                  kCellComponentDirectoryItem: [self directoryCellComponentLight],
+                  kDestinationKey: @{
+                          kClassNameKey: @"basic.multiScreen",
+                          kTitleKey: NSLocalizedString(@"Owner", @""),
+                          kScreensKey: @[
+                                  @{
+                                      kClassNameKey: @"stream.screen",
+                                      kTitleKey: NSLocalizedString(@"Featured", @""),
+                                      VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/hot_detail_list_by_stream/owner/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%"
+                                      },
+                                  @{
+                                      kClassNameKey: @"stream.screen",
+                                      kInitialKey: @YES,
+                                      kTitleKey: NSLocalizedString(@"Recent", @""),
+                                      VStreamCollectionViewControllerStreamURLPathKey: [self urlPathForStreamCategories:VOwnerCategories()],
+                                      }
+                                  ]
+                          }
         };
     }
+}
+
+- (NSDictionary *)directoryComponentLight
+{
+    return @{ kBackgroundColor: @{
+                      kRedKey: @238,
+                      kGreenKey: @238,
+                      kBlueKey: @238,
+                      kAlphaKey: @1
+                      },
+              kCellComponentDirectoryGroup: @{
+                      kTextColor: @{
+                              kRedKey: @128,
+                              kGreenKey: @128,
+                              kBlueKey: @128,
+                              kAlphaKey: @1
+                              },
+                      kCellComponentDirectoryItem: [self directoryCellComponentLight]
+                      }
+              };
+}
+
+- (NSDictionary *)directoryComponentDark
+{
+    return @{ kBackgroundColor: @{
+                      kRedKey: @20,
+                      kGreenKey: @20,
+                      kBlueKey: @20,
+                      kAlphaKey: @1
+                      },
+              kCellComponentDirectoryGroup: @{
+                      kTextColor: @{
+                              kRedKey: @128,
+                              kGreenKey: @128,
+                              kBlueKey: @128,
+                              kAlphaKey: @1
+                              },
+                      kCellComponentDirectoryItem: [self directoryCellComponentLight]
+                      }
+              };
+}
+
+- (NSDictionary *)directoryCellComponentLight
+{
+    return @{ kSecondaryAccentColor: @{ //< see more arrow
+                      kRedKey: @200,
+                      kGreenKey: @200,
+                      kBlueKey: @200,
+                      kAlphaKey: @1
+                      },
+              kTextContentColor: @{ //< see more text
+                      kRedKey: @160,
+                      kGreenKey: @160,
+                      kBlueKey: @160,
+                      kAlphaKey: @1
+                      },
+              kTextAccentColor: @{ //< quantity labe
+                      kRedKey: @153,
+                      kGreenKey: @153,
+                      kBlueKey: @153,
+                      kAlphaKey: @1
+                      },
+              kTextColor: @{ //< name label
+                      kRedKey: @51,
+                      kGreenKey: @51,
+                      kBlueKey: @51,
+                      kAlphaKey: @1
+                      },
+              kAccentColor: @{ //< border color
+                      kRedKey: @204,
+                      kGreenKey: @204,
+                      kBlueKey: @204,
+                      kAlphaKey: @1
+                      },
+              kBackgroundColor: @{ // stacked background
+                      kRedKey: @255,
+                      kGreenKey: @255,
+                      kBlueKey: @255,
+                      kAlphaKey: @1
+                      },
+              };
+}
+
+- (NSDictionary *)directoryCellComponentDark
+{
+    return  @{ kSecondaryAccentColor: @{ //< see more arrow
+                       kRedKey: @95,
+                       kGreenKey: @95,
+                       kBlueKey: @95,
+                       kAlphaKey: @1
+                       },
+               kTextContentColor: @{ //< see more text
+                       kRedKey: @170,
+                       kGreenKey: @170,
+                       kBlueKey: @170,
+                       kAlphaKey: @1
+                       },
+               kTextAccentColor: @{ //< quantity label
+                       kRedKey: @150,
+                       kGreenKey: @150,
+                       kBlueKey: @150,
+                       kAlphaKey: @1
+                       },
+               kTextColor: @{ //< name label
+                       kRedKey: @255,
+                       kGreenKey: @255,
+                       kBlueKey: @255,
+                       kAlphaKey: @1
+                       },
+               kAccentColor: @{ //< border color
+                       kRedKey: @0,
+                       kGreenKey: @0,
+                       kBlueKey: @0,
+                       kAlphaKey: @1
+                       },
+               kBackgroundColor: @{ // stacked background
+                       kRedKey: @40,
+                       kGreenKey: @40,
+                       kBlueKey: @40,
+                       kAlphaKey: @1
+                       },
+               };
 }
 
 #pragma mark - Background
 
 - (NSDictionary *)solidWhiteBackground
 {
-    return @{
-             kClassNameKey:@"solidColor.background",
-             VSolidColorBackgroundColorKey: @{
-                     kRedKey: @255,
-                     kGreenKey: @255,
-                     kBlueKey: @255,
-                     kAlphaKey: @1
-                     },
-             };
+    return @{ kClassNameKey:@"solidColor.background",
+              VSolidColorBackgroundColorKey: @{
+                      kRedKey: @255,
+                      kGreenKey: @255,
+                      kBlueKey: @255,
+                      kAlphaKey: @1
+                      },
+              };
 }
 
 @end

@@ -12,4 +12,6 @@
 
 + (NSArray *)descriptors;
 
++ (NSString *)entityName;
+
 @end

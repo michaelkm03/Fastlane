@@ -28,6 +28,7 @@
 #import "VInboxContainerViewController.h"
 #import "VUserProfileNavigationDestination.h"
 #import "VDirectoryViewController.h"
+#import "VGroupedStreamCollectionViewController.h"
 #import "VDiscoverContainerViewController.h"
 
 #import "VStreamCollectionViewController.h"
@@ -110,7 +111,7 @@ static char kKVOContext;
     return YES;
 }
 
-#pragma mark - VNavigationDestinationsProvider methods
+#pragma mark - VNavigationDestinationsProvider methodsm
 
 - (NSArray *)navigationDestinations
 {
