@@ -99,7 +99,7 @@
 "NotFollowingMessage"   =   "Follow other people to see their content in your stream. It's a great way to find new content or make new friends.";
 
 "ProfileNoFollowersTitle"      =   "BE THE FIRST TO FOLLOW THIS USER";
-"ProfileNoFollowersMessage"    =   "Build your community by following other users. You’ll be alerted when they post new content.";
+"ProfileNoFollowersMessage"    =   "Build your community by following other users. You'll be alerted when they post new content.";
 
 "ProfileNotFollowingTitle"     =   "UH-OH! THIS PERSON ISN'T FOLLOWING ANYONE YET";
 "ProfileNotFollowingMessage"   =   "Create a community by following other users and encouraging them to follow you.";
@@ -465,14 +465,14 @@
 "SettingsRestorePurchases"              = "Restore Purchases";
 "SettingsRestorePurchasesPrompt"        = "You haven't purchased anything on this device.\nIf you've made purchases on another device, tap Restore Purchases to restore them.";
 
-"LoginContextDefault"                   = "We are so excited to have you join our community! Create an account and you’ll be able to create, post, and share!";
-"LoginContextCreatePost"                = "Yay! We can’t wait to see your first post. Just create an account and start sharing your lovely creation with the community!";
+"LoginContextDefault"                   = "We are so excited to have you join our community! Create an account and you'll be able to create, post, and share!";
+"LoginContextCreatePost"                = "Yay! We can't wait to see your first post. Just create an account and start sharing your lovely creation with the community!";
 "LoginContextFollowHashtag"             = "Hashtags are the best. Create your account then follow some of the amazing conversations happening here!";
 "LoginContextFollowUser"                = "We are so excited to have you join our community and follow content from other fans. Make your profile so users can follow you back!";
 "LoginContextVoteBallistic"             = "These emojis are amazing, right? Create your account first, then send some love. ";
 "LoginContextVotePoll"                  = "We want to see your vote! Create an account first and start casting your votes!";
 "LoginContextRepost"                    = "That post is pretty great. Create your account first and repost away! ";
-"LoginContextRemix"                     = "We’re so excited to see what you’re creating. Create an account so we can keep it in your profile. ";
+"LoginContextRemix"                     = "We're so excited to see what you're creating. Create an account so we can keep it in your profile. ";
 "LoginContextViewProfile"               = "Nothing to see here yet! We are so excited to have you join our community. Create an account to show everyone how unique you are. ";
-"LoginContextAddComment"                = "Join in on the conversation! We want to hear what you have to say. Create an account and you’ll be on your way!";
+"LoginContextAddComment"                = "Join in on the conversation! We want to hear what you have to say. Create an account and you'll be on your way!";
 "LoginContextInbox"                     = "We are so excited to have you join our community and message fans. Just create an account so you can send and receive messages!";
