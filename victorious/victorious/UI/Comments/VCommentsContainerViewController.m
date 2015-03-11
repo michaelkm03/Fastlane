@@ -31,6 +31,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 
 @property (strong, nonatomic) IBOutlet UIImageView *backgroundImage;
+@property (strong, nonatomic) IBOutlet VDependencyManager *dependencyManager;
 
 @end
 
@@ -38,10 +39,11 @@
 
 @synthesize conversationTableViewController = _conversationTableViewController;
 
-+ (instancetype)commentsContainerView
++ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    VCommentsContainerViewController *commentsContainerViewController = (VCommentsContainerViewController *)[[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier:kCommentsContainerStoryboardID];
-    return commentsContainerViewController;
+    VCommentsContainerViewController *viewController = (VCommentsContainerViewController *)[[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier:kCommentsContainerStoryboardID];
+    viewController.dependencyManager = dependencyManager;
+    return viewController;
 }
 
 - (void)setSequence:(VSequence *)sequence
@@ -148,8 +150,9 @@
 
 - (BOOL)canPerformAuthorizedAction
 {
-    VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager] dependencyManager:nil];
-    return [authorization performFromViewController:self withContext:VLoginContextAddComment withSuccess:^{}];
+    VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
+                                                                      dependencyManager:self.dependencyManager];
+    return [authorization performFromViewController:self withContext:VAuthorizationContextAddComment withSuccess:^{}];
 }
 
 - (IBAction)pressedBackButton:(id)sender

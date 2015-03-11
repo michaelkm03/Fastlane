@@ -60,7 +60,7 @@
 
 - (void)showCommentsFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence
 {
-    VCommentsContainerViewController *commentsTable = [VCommentsContainerViewController commentsContainerView];
+    VCommentsContainerViewController *commentsTable = [VCommentsContainerViewController newWithDependencyManager:self.dependencyManager];
     commentsTable.sequence = sequence;
     [viewController.navigationController pushViewController:commentsTable animated:YES];
 }
@@ -90,7 +90,6 @@
 
 - (void)showRemixOnViewController:(UIViewController *)viewController
                      withSequence:(VSequence *)sequence
-             andDependencyManager:(VDependencyManager *)dependencyManager
                    preloadedImage:(UIImage *)preloadedImage
                        completion:(void(^)(BOOL))completion
 {
@@ -98,7 +97,7 @@
     
     VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                 dependencyManager:self.dependencyManager];
-    [authorization performFromViewController:viewController withContext:VLoginContextRemix withSuccess:^
+    [authorization performFromViewController:viewController withContext:VAuthorizationContextRemix withSuccess:^
      {
          NSMutableDictionary *addedDependencies = [[NSMutableDictionary alloc] init];
          if (sequence)
@@ -112,9 +111,9 @@
          [addedDependencies setObject:@(VImageToolControllerInitialImageEditStateText) forKey:VImageToolControllerInitialImageEditStateKey];
          [addedDependencies setObject:@(VVideoToolControllerInitialVideoEditStateGIF) forKey:VVideoToolControllerInitalVideoEditStateKey];
          
-         VWorkspaceFlowController *workspaceFlowController = [dependencyManager templateValueOfType:[VWorkspaceFlowController class]
-                                                                                             forKey:VDependencyManagerWorkspaceFlowKey
-                                                                              withAddedDependencies:addedDependencies];
+         VWorkspaceFlowController *workspaceFlowController = [self.dependencyManager templateValueOfType:[VWorkspaceFlowController class]
+                                                                                                  forKey:VDependencyManagerWorkspaceFlowKey
+                                                                                   withAddedDependencies:addedDependencies];
          
          workspaceFlowController.delegate = self;
          self.viewControllerPresentingWorkspace = viewController;
@@ -126,25 +125,23 @@
 
 - (void)showRemixOnViewController:(UIViewController *)viewController
                      withSequence:(VSequence *)sequence
-             andDependencyManager:(VDependencyManager *)dependencyManager
                        completion:(void(^)(BOOL))completion
 {
-    [self showRemixOnViewController:viewController withSequence:sequence andDependencyManager:dependencyManager preloadedImage:nil completion:nil];
+    [self showRemixOnViewController:viewController withSequence:sequence preloadedImage:nil completion:nil];
 }
 
 - (void)showRemixOnViewController:(UIViewController *)viewController
                      withSequence:(VSequence *)sequence
-             andDependencyManager:(VDependencyManager *)dependencyManager
 {
-    [self showRemixOnViewController:viewController withSequence:sequence andDependencyManager:dependencyManager completion:nil];
+    [self showRemixOnViewController:viewController withSequence:sequence completion:nil];
 }
 
-- (void)showRemixStreamFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence andDependencyManager:(VDependencyManager *)dependencyManager
+- (void)showRemixStreamFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence
 {
     VStream *stream = [VStream remixStreamForSequence:sequence];
     stream.name = NSLocalizedString(@"Remixes", nil);
     VStreamCollectionViewController  *streamCollection = [VStreamCollectionViewController streamViewControllerForStream:stream];
-    streamCollection.dependencyManager = dependencyManager;
+    streamCollection.dependencyManager = self.dependencyManager;
     
     VNoContentView *noRemixView = [VNoContentView noContentViewWithFrame:streamCollection.view.bounds];
     noRemixView.titleLabel.text = NSLocalizedString(@"NoRemixersTitle", @"");
@@ -174,30 +171,35 @@
 
 - (void)repostActionFromViewController:(UIViewController *)viewController node:(VNode *)node completion:(void(^)(BOOL))completion
 {
-    [[VObjectManager sharedManager] repostNode:node
-                                      withName:nil
-                                  successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+    VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
+                                                                      dependencyManager:self.dependencyManager];
+    [authorization performFromViewController:viewController withContext:VAuthorizationContextRepost withSuccess:^
      {
-         node.sequence.repostCount = @( node.sequence.repostCount.integerValue + 1 );
-         
-         [self updateRespostsForUser:[VObjectManager sharedManager].mainUser withSequence:node.sequence];
-         
-         if ( completion != nil )
-         {
-             completion( YES );
-         }
-     }
-                                     failBlock:^(NSOperation *operation, NSError *error)
-     {
-         if ( error.code == kVSequenceAlreadyReposted )
-         {
-             [self updateRespostsForUser:[VObjectManager sharedManager].mainUser withSequence:node.sequence];
-         }
-         
-         if ( completion != nil )
-         {
-             completion( NO );
-         }
+         [[VObjectManager sharedManager] repostNode:node
+                                           withName:nil
+                                       successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+          {
+              node.sequence.repostCount = @( node.sequence.repostCount.integerValue + 1 );
+              
+              [self updateRespostsForUser:[VObjectManager sharedManager].mainUser withSequence:node.sequence];
+              
+              if ( completion != nil )
+              {
+                  completion( YES );
+              }
+          }
+                                          failBlock:^(NSOperation *operation, NSError *error)
+          {
+              if ( error.code == kVSequenceAlreadyReposted )
+              {
+                  [self updateRespostsForUser:[VObjectManager sharedManager].mainUser withSequence:node.sequence];
+              }
+              
+              if ( completion != nil )
+              {
+                  completion( NO );
+              }
+          }];
      }];
 }
 

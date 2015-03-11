@@ -27,6 +27,8 @@ static NSString * const VStoryboardViewControllerIndentifier    = @"suggestedPeo
 
 @implementation VSuggestedPeopleCollectionViewController
 
+@synthesize dependencyManager; //< VDiscoverViewControllerProtocol
+
 + (VSuggestedPeopleCollectionViewController *)instantiateFromStoryboard:(NSString *)storyboardName
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:storyboardName bundle:[NSBundle bundleForClass:[self class]]];
@@ -209,9 +211,9 @@ static NSString * const VStoryboardViewControllerIndentifier    = @"suggestedPeo
     [[VTrackingManager sharedInstance] setValue:VTrackingValueSuggestedPeople forSessionParameterWithKey:VTrackingKeyContext];
     
     VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
-                                                                dependencyManager:nil];
+                                                                dependencyManager:self.dependencyManager];
     [authorization performFromViewController:[self.delegate componentRootViewController]
-                                                 withContext:VLoginContextFollowUser withSuccess:^
+                                                 withContext:VAuthorizationContextFollowUser withSuccess:^
      {
          [[VObjectManager sharedManager] unfollowUser:user successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
           {
@@ -229,9 +231,9 @@ static NSString * const VStoryboardViewControllerIndentifier    = @"suggestedPeo
     [[VTrackingManager sharedInstance] setValue:VTrackingValueSuggestedPeople forSessionParameterWithKey:VTrackingKeyContext];
     
     VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
-                                                                dependencyManager:nil];
+                                                                dependencyManager:self.dependencyManager];
     [authorization performFromViewController:[self.delegate componentRootViewController]
-                                                 withContext:VLoginContextFollowUser withSuccess:^
+                                                 withContext:VAuthorizationContextFollowUser withSuccess:^
      {
          [[VObjectManager sharedManager] followUser:user successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
           {

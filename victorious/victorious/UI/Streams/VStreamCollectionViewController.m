@@ -156,6 +156,7 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
     
     self.hasRefreshed = NO;
     self.sequenceActionController = [[VSequenceActionController alloc] init];
+    self.sequenceActionController.dependencyManager = self.dependencyManager;
     
     [self.collectionView registerNib:[VMarqueeCollectionCell nibForCell]
           forCellWithReuseIdentifier:[VMarqueeCollectionCell suggestedReuseIdentifier]];
@@ -287,7 +288,7 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
     VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                 dependencyManager:self.dependencyManager];
     [authorization performFromViewController:self
-                                                 withContext:VLoginContextCreatePost
+                                                 withContext:VAuthorizationContextCreatePost
                                                  withSuccess:^void
      {
          [self showContentTypeSelection];
@@ -542,10 +543,7 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
 
 - (void)willRemixSequence:(VSequence *)sequence fromView:(UIView *)view
 {
-#warning Hacktastic
-    [self.sequenceActionController showRemixOnViewController:self
-                                                withSequence:sequence
-                                        andDependencyManager:[VRootViewController rootViewController].dependencyManager];
+    [self.sequenceActionController showRemixOnViewController:self withSequence:sequence];
 }
 
 - (void)willShareSequence:(VSequence *)sequence fromView:(UIView *)view
@@ -570,8 +568,7 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
 
 - (BOOL)hasRepostedSequence:(VSequence *)sequence
 {
-    const BOOL userHasRepostedSequence = [[VObjectManager sharedManager].mainUser.repostedSequences containsObject:sequence];
-    return userHasRepostedSequence;
+    return [[VObjectManager sharedManager].mainUser.repostedSequences containsObject:sequence];;
 }
 
 - (void)hashTag:(NSString *)hashtag tappedFromSequence:(VSequence *)sequence fromView:(UIView *)view

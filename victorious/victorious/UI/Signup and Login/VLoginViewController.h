@@ -9,7 +9,7 @@
 #import "VAuthorizationViewController.h"
 #import "VTransitionDelegate.h"
 #import "VPresentWithBlurTransition.h"
-#import "VLoginContextHelper.h"
+#import "VAuthorizationContextHelper.h"
 
 typedef NS_ENUM(NSUInteger, VLoginType)
 {
@@ -37,6 +37,6 @@ typedef NS_ENUM(NSUInteger, VLoginType)
  */
 @property (nonatomic, strong) NSOrderedSet *stackedElements;
 
-@property (nonatomic, assign) VLoginContextType loginContextType;
+@property (nonatomic, assign) VAuthorizationContext authorizationContextType;
 
 @end

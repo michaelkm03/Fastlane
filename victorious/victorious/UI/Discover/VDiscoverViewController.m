@@ -48,6 +48,8 @@ static CGFloat const kTopInset = 22.0f; ///< The space between the top of the vi
 
 @implementation VDiscoverViewController
 
+@synthesize dependencyManager; //< VDiscoverViewControllerProtocol
+
 #pragma mark - View controller life cycle
 
 - (void)loadView
@@ -55,6 +57,7 @@ static CGFloat const kTopInset = 22.0f; ///< The space between the top of the vi
     [super loadView];
     
     self.suggestedPeopleViewController = [VSuggestedPeopleCollectionViewController instantiateFromStoryboard:@"Discover"];
+    self.suggestedPeopleViewController.dependencyManager = self.dependencyManager;
     self.suggestedPeopleViewController.delegate = self;
     
     [self addChildViewController:self.suggestedPeopleViewController];
@@ -316,9 +319,9 @@ static CGFloat const kTopInset = 22.0f; ///< The space between the top of the vi
                 
                 // Check for authorization first
                 VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
-                                                                            dependencyManager:nil];
+                                                                            dependencyManager:self.dependencyManager];
                 [authorization performFromViewController:self
-                                                             withContext:VLoginContextFollowHashtag
+                                                             withContext:VAuthorizationContextFollowHashtag
                                                              withSuccess:^
                  {
                      weakCell.shouldCellRespond = NO;

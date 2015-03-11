@@ -242,9 +242,9 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
 
 #pragma mark - VNavigationDestination
 
-- (BOOL)requiresAuthorization
+- (VAuthorizationContext)authorizationContext
 {
-    return YES;
+    return VAuthorizationContextCreatePost;
 }
 
 #pragma mark - Property Accessors

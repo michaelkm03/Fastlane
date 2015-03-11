@@ -18,6 +18,7 @@
 #import "VThemeManager.h"
 #import "VConstants.h"
 #import "VAuthorizedAction.h"
+#import "VDependencyManager.h"
 
 @interface VFindFriendsTableViewController () <UITableViewDataSource, UITableViewDelegate>
 
@@ -564,9 +565,9 @@
     {
         // Check for authorization first
         VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
-                                                                    dependencyManager:nil];
+                                                                    dependencyManager:self.dependencyManager];
         [authorization performFromViewController:self
-                                                     withContext:VLoginContextFollowUser
+                                                     withContext:VAuthorizationContextFollowUser
                                                      withSuccess:^
          {
              if ([mainUser.following containsObject:profile])

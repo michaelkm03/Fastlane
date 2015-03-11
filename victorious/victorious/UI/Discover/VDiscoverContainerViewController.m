@@ -172,6 +172,7 @@
     if ( [segue.destinationViewController conformsToProtocol:@protocol(VDiscoverViewControllerProtocol)] )
     {
         self.childViewController = (id<VDiscoverViewControllerProtocol>)segue.destinationViewController;
+        self.childViewController.dependencyManager = self.dependencyManager;
     }
 
     if ( [[segue identifier] isEqualToString:@"usersTagsSearchSegue"] )

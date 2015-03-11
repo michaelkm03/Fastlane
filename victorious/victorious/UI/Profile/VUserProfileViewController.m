@@ -351,9 +351,9 @@ static NSString * const kUserKey = @"user";
     
     VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                 dependencyManager:self.dependencyManager];
-    [authorization performFromViewController:self withContext:VLoginContextInbox withSuccess:^
+    [authorization performFromViewController:self withContext:VAuthorizationContextInbox withSuccess:^
      {
-         VFindFriendsViewController *ffvc = [VFindFriendsViewController newFindFriendsViewController];
+         VFindFriendsViewController *ffvc = [VFindFriendsViewController newWithDependencyManager:self.dependencyManager];
          [ffvc setShouldAutoselectNewFriends:NO];
          [self.navigationController pushViewController:ffvc animated:YES];
      }];
@@ -471,7 +471,7 @@ static NSString * const kUserKey = @"user";
 {
     VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                 dependencyManager:self.dependencyManager];
-    [authorization performFromViewController:self withContext:VLoginContextInbox withSuccess:^
+    [authorization performFromViewController:self withContext:VAuthorizationContextInbox withSuccess:^
      {
          VMessageContainerViewController *composeController = [VMessageContainerViewController messageViewControllerForUser:self.profile];
          composeController.presentingFromProfile = YES;
@@ -491,7 +491,7 @@ static NSString * const kUserKey = @"user";
 {
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectEditProfile];
     
-    VLoginContextType context = self.isMe ? VLoginContextDefault : VLoginContextFollowUser;
+    VAuthorizationContext context = self.isMe ? VAuthorizationContextDefault : VAuthorizationContextFollowUser;
     VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                 dependencyManager:self.dependencyManager];
     [authorization performFromViewController:self withContext:context withSuccess:^
@@ -555,6 +555,16 @@ static NSString * const kUserKey = @"user";
 - (void)followerHandler
 {
     [self performSegueWithIdentifier:@"toFollowers" sender:self];
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    [super prepareForSegue:segue sender:sender];
+    
+    if ( [segue.destinationViewController respondsToSelector:@selector(setDependencyManager:)] )
+    {
+        [segue.destinationViewController setDependencyManager:self.dependencyManager];
+    }
 }
 
 - (void)followingHandler

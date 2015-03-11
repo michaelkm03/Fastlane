@@ -62,9 +62,9 @@ static NSString * const kProfileDeeplinkHostComponent = @"profile";
     return YES;
 }
 
-- (BOOL)requiresAuthorization
+- (VAuthorizationContext)authorizationContext
 {
-    return YES;
+    return VAuthorizationContextUserProfile;
 }
 
 #pragma mark - VDeeplinkHandler methods

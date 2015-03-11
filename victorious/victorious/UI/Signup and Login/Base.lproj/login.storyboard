@@ -227,13 +227,13 @@ We promise that your information is safe with us!</string>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
                     <nil key="simulatedTopBarMetrics"/>
                     <connections>
+                        <outlet property="authorizationContextHelper" destination="jOc-o6-Jtn" id="kqs-Ef-ege"/>
+                        <outlet property="authorizationContextTextView" destination="lga-od-5AW" id="rqa-Lm-BF0"/>
                         <outlet property="contentContainer" destination="0KZ-2K-j2Q" id="f3Z-BV-D4y"/>
                         <outlet property="creatorAvatarImageView" destination="Lq5-ni-jN5" id="4vT-QZ-oik"/>
                         <outlet property="creatorNameLabel" destination="ehP-K7-WBr" id="d3n-n4-0eD"/>
                         <outlet property="facebookButton" destination="QtN-F1-Fqv" id="mqr-R0-Ab8"/>
                         <outlet property="linkTextHelper" destination="guI-vW-pY8" id="sJZ-dv-Q0J"/>
-                        <outlet property="loginContextHelper" destination="jOc-o6-Jtn" id="kqs-Ef-ege"/>
-                        <outlet property="loginContextTextView" destination="lga-od-5AW" id="rqa-Lm-BF0"/>
                         <outlet property="loginTextView" destination="5M9-eq-LWT" id="inP-7v-uOj"/>
                         <outlet property="signupWithEmailButton" destination="wh7-OI-pHo" id="n74-jB-5vQ"/>
                         <outlet property="twitterButton" destination="2XQ-0V-UlZ" id="ERT-cY-JfD"/>
@@ -245,7 +245,7 @@ We promise that your information is safe with us!</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Yr7-SB-k6z" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <customObject id="guI-vW-pY8" customClass="VLinkTextViewHelper"/>
-                <customObject id="jOc-o6-Jtn" customClass="VLoginContextHelper"/>
+                <customObject id="jOc-o6-Jtn" customClass="VAuthorizationContextHelper"/>
             </objects>
             <point key="canvasLocation" x="161" y="9"/>
         </scene>

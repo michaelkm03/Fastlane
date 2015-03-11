@@ -325,7 +325,7 @@
 		A70FC1251A31207400F5BBDE /* VVoteSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = A70FC1241A31207400F5BBDE /* VVoteSettings.m */; };
 		A716FC2A1AAE0EF50032AA40 /* VAuthorizedActionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A716FC291AAE0EF50032AA40 /* VAuthorizedActionTests.m */; };
 		A716FC3C1AAE2DDB0032AA40 /* VLinkTextViewHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A716FC311AAE2DDB0032AA40 /* VLinkTextViewHelper.m */; };
-		A716FC3D1AAE2DDB0032AA40 /* VLoginContextHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A716FC331AAE2DDB0032AA40 /* VLoginContextHelper.m */; };
+		A716FC3D1AAE2DDB0032AA40 /* VAuthorizationContextHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A716FC331AAE2DDB0032AA40 /* VAuthorizationContextHelper.m */; };
 		A716FC3E1AAE2DDB0032AA40 /* VRegistrationModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A716FC361AAE2DDB0032AA40 /* VRegistrationModel.m */; };
 		A716FC451AAE2E4D0032AA40 /* VLoginButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A716FC421AAE2E4D0032AA40 /* VLoginButton.m */; };
 		A716FC461AAE2E4D0032AA40 /* VTemplateBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = A716FC441AAE2E4D0032AA40 /* VTemplateBackgroundView.m */; };
@@ -1323,8 +1323,8 @@
 		A716FC291AAE0EF50032AA40 /* VAuthorizedActionTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAuthorizedActionTests.m; sourceTree = "<group>"; };
 		A716FC301AAE2DDB0032AA40 /* VLinkTextViewHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLinkTextViewHelper.h; sourceTree = "<group>"; };
 		A716FC311AAE2DDB0032AA40 /* VLinkTextViewHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VLinkTextViewHelper.m; sourceTree = "<group>"; };
-		A716FC321AAE2DDB0032AA40 /* VLoginContextHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLoginContextHelper.h; sourceTree = "<group>"; };
-		A716FC331AAE2DDB0032AA40 /* VLoginContextHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VLoginContextHelper.m; sourceTree = "<group>"; };
+		A716FC321AAE2DDB0032AA40 /* VAuthorizationContextHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAuthorizationContextHelper.h; sourceTree = "<group>"; };
+		A716FC331AAE2DDB0032AA40 /* VAuthorizationContextHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAuthorizationContextHelper.m; sourceTree = "<group>"; };
 		A716FC341AAE2DDB0032AA40 /* VRegistration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VRegistration.h; sourceTree = "<group>"; };
 		A716FC351AAE2DDB0032AA40 /* VRegistrationModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VRegistrationModel.h; sourceTree = "<group>"; };
 		A716FC361AAE2DDB0032AA40 /* VRegistrationModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VRegistrationModel.m; sourceTree = "<group>"; };
@@ -1361,6 +1361,7 @@
 		A73AFB7B19F573AB0005A9EA /* VVideoTrackingTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVideoTrackingTests.m; sourceTree = "<group>"; };
 		A73EAEBF1A4134C10021BB31 /* NSString+Unicode_Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Unicode_Tests.m"; sourceTree = "<group>"; };
 		A73EAEC21A41453C0021BB31 /* NSString+Unicode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSString+Unicode.swift"; sourceTree = "<group>"; };
+		A74293991AAFE4A400532948 /* VAuthorizationContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAuthorizationContext.h; sourceTree = "<group>"; };
 		A743E7DB1A08160300339CB3 /* VFileCache+VVoteType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VFileCache+VVoteType.h"; sourceTree = "<group>"; };
 		A743E7DC1A08160300339CB3 /* VFileCache+VVoteType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VFileCache+VVoteType.m"; sourceTree = "<group>"; };
 		A743E7DD1A08160300339CB3 /* VFileCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFileCache.h; sourceTree = "<group>"; };
@@ -3268,6 +3269,7 @@
 			isa = PBXGroup;
 			children = (
 				03C185CE19B4308400E27D05 /* VAnimation.h */,
+				A74293991AAFE4A400532948 /* VAuthorizationContext.h */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -3421,8 +3423,8 @@
 			children = (
 				A716FC301AAE2DDB0032AA40 /* VLinkTextViewHelper.h */,
 				A716FC311AAE2DDB0032AA40 /* VLinkTextViewHelper.m */,
-				A716FC321AAE2DDB0032AA40 /* VLoginContextHelper.h */,
-				A716FC331AAE2DDB0032AA40 /* VLoginContextHelper.m */,
+				A716FC321AAE2DDB0032AA40 /* VAuthorizationContextHelper.h */,
+				A716FC331AAE2DDB0032AA40 /* VAuthorizationContextHelper.m */,
 				A716FC341AAE2DDB0032AA40 /* VRegistration.h */,
 				A716FC351AAE2DDB0032AA40 /* VRegistrationModel.h */,
 				A716FC361AAE2DDB0032AA40 /* VRegistrationModel.m */,
@@ -5463,7 +5465,7 @@
 				A7672B981A1BF6E50063AF46 /* VFirstInstallManager.m in Sources */,
 				0314D4EF19B46B5E00FA363C /* VLoginWithEmailViewController.m in Sources */,
 				A75FAF1719E8AC1E00EB87C1 /* VSuggestedPeopleCell.m in Sources */,
-				A716FC3D1AAE2DDB0032AA40 /* VLoginContextHelper.m in Sources */,
+				A716FC3D1AAE2DDB0032AA40 /* VAuthorizationContextHelper.m in Sources */,
 				BE5DE3FC18DA730B0047B67E /* VVoteType+RestKit.m in Sources */,
 				0314D4B319B46B5E00FA363C /* VImageLightboxViewController.m in Sources */,
 				BE88FF981A0006710064AB28 /* VProfileHeaderCell.m in Sources */,

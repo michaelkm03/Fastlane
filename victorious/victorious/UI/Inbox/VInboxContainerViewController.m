@@ -148,11 +148,11 @@ NSString * const VInboxContainerViewControllerInboxPushReceivedNotification = @"
     }
 }
 
-#pragma mark - VNavigationDestination methods
+#pragma mark - VNavigationDestination
 
-- (BOOL)requiresAuthorization
+- (VAuthorizationContext)authorizationContext
 {
-    return YES;
+    return VAuthorizationContextInbox;
 }
 
 #pragma mark - VDeeplinkHandler methods

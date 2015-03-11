@@ -97,7 +97,7 @@
                                                                   enabled:!self.viewModel.hasReposted];
         repostItem.selectionHandler = ^(VActionItem *item)
         {
-            [self.authorizedAction performFromViewController:actionSheetViewController withContext:VLoginContextRepost withSuccess:^
+            [self.authorizedAction performFromViewController:actionSheetViewController withContext:VAuthorizationContextRepost withSuccess:^
              {
                  if ( !contentViewController.viewModel.hasReposted)
                  {
@@ -223,7 +223,7 @@
         {
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRemix];
             
-            [self.authorizedAction performFromViewController:actionSheetViewController withContext:VLoginContextRepost withSuccess:^
+            [self.authorizedAction performFromViewController:actionSheetViewController withContext:VAuthorizationContextRepost withSuccess:^
              {
                  [contentViewController dismissViewControllerAnimated:YES
                                                            completion:^
@@ -232,14 +232,12 @@
                       if ([sequence isVideo])
                       {
                           [self.sequenceActionController showRemixOnViewController:contentViewController
-                                                                      withSequence:self.viewModel.sequence
-                                                              andDependencyManager:self.dependencyManagerForHistogramExperiment];
+                                                                      withSequence:self.viewModel.sequence];
                       }
                       else
                       {
                           [self.sequenceActionController showRemixOnViewController:self
                                                                       withSequence:sequence
-                                                              andDependencyManager:self.dependencyManagerForHistogramExperiment
                                                                     preloadedImage:self.placeholderImage
                                                                         completion:nil];
                       }
@@ -253,7 +251,7 @@
             [contentViewController dismissViewControllerAnimated:YES
                                                       completion:^
              {
-                 [self.sequenceActionController showRemixStreamFromViewController:contentViewController sequence:self.viewModel.sequence andDependencyManager:self.dependencyManagerForHistogramExperiment];
+                 [self.sequenceActionController showRemixStreamFromViewController:contentViewController sequence:self.viewModel.sequence];
              }];
         };
         [actionItems addObject:remixItem];

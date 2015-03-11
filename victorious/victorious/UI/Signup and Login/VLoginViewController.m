@@ -47,9 +47,9 @@
 
 @property (nonatomic, assign) VLoginType loginType;
 @property (nonatomic, weak) IBOutlet VLinkTextViewHelper *linkTextHelper;
-@property (nonatomic, weak) IBOutlet VLoginContextHelper *loginContextHelper;
+@property (nonatomic, weak) IBOutlet VAuthorizationContextHelper *authorizationContextHelper;
 
-@property (nonatomic, weak) IBOutlet UITextView *loginContextTextView;
+@property (nonatomic, weak) IBOutlet UITextView *authorizationContextTextView;
 @property (nonatomic, weak) IBOutlet UILabel *creatorNameLabel;
 @property (nonatomic, weak) IBOutlet UIView *contentContainer;
 @property (nonatomic, weak) IBOutlet UIImageView *creatorAvatarImageView;
@@ -125,11 +125,11 @@
                                 self.loginTextView ];
     self.stackedElements = [NSOrderedSet orderedSetWithArray:elementsArray];
     
-    NSString *loginContextText = [self.loginContextHelper textForContext:self.loginContextType];
+    NSString *authorizationContextText = [self.authorizationContextHelper textForContext:self.authorizationContextType];
     NSDictionary *attributes = [self stringAttributesWithFont:[self.dependencyManager fontForKey:@"font.heading3"]
                                                         color:[UIColor whiteColor]
                                                    lineHeight:23.0f];
-    self.loginContextTextView.attributedText = [[NSAttributedString alloc] initWithString:loginContextText attributes:attributes];
+    self.authorizationContextTextView.attributedText = [[NSAttributedString alloc] initWithString:authorizationContextText attributes:attributes];
     
     NSDictionary *creatorInfo = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:@"owner"];
     

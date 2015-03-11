@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+#import "VAuthorizationContext.h"
+
 /**
  Objects (usually but not always UIViewController subclasses) conforming
  to this protocol can be specified as a destination for navigation,
@@ -35,9 +37,10 @@
 - (BOOL)shouldNavigateWithAlternateDestination:(UIViewController *__autoreleasing *)alternateViewController;
 
 /***
- Asks the receiver if displaying the destination requires authorization, i.e.
- a logged in user.  Return YES and the scaffold will display the login prompt.
+ Lets calling code know about any associated authorization context that is required
+ in order to navigate to this desination.  Leave this method unimplemented, or return
+ VAuthorizationContextNone to skip authorization for this destination.
  */
-- (BOOL)requiresAuthorization;
+- (VAuthorizationContext)authorizationContext;
 
 @end

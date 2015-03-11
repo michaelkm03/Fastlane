@@ -34,8 +34,6 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
 
 @interface VScaffoldViewController () <VNewContentViewControllerDelegate>
 
-@property (nonatomic, strong) VAuthorizedAction *authorization;
-
 @end
 
 @implementation VScaffoldViewController
@@ -47,8 +45,6 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
     {
         _dependencyManager = dependencyManager;
         _menuViewController = [dependencyManager viewControllerForKey:VScaffoldViewControllerMenuComponentKey];
-        _authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
-                                                     dependencyManager:self.dependencyManager];
     }
     return self;
 }
@@ -72,7 +68,6 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
     contentViewModel.deepLinkCommentId = commentId;
     VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel
                                                                                                    dependencyManager:self.dependencyManager];
-    contentViewController.dependencyManagerForHistogramExperiment = self.dependencyManager;
     contentViewController.placeholderImage = placeHolderImage;
     contentViewController.delegate = self;
     
@@ -246,9 +241,12 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
         }
     };
     
-    if ([navigationDestination respondsToSelector:@selector(requiresAuthorization)] && [navigationDestination requiresAuthorization] )
+    if ([navigationDestination respondsToSelector:@selector(authorizationContext)] )
     {
-        [self.authorization performFromViewController:self withContext:VLoginContextDefault withSuccess:^
+        VAuthorizationContext context = [navigationDestination authorizationContext];
+        VAuthorizedAction *authorizedAction = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
+                                                        dependencyManager:self.dependencyManager];
+        [authorizedAction performFromViewController:self withContext:context withSuccess:^
          {
             performNavigation(navigationDestination);
         }];

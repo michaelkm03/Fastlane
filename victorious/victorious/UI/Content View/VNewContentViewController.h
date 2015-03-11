@@ -55,11 +55,6 @@
 
 @property (nonatomic, strong) UIImage *placeholderImage;
 
-/**
- *  Need a reference to this for determining whether or not to show the histogram.
- */
-@property (nonatomic, weak) VDependencyManager *dependencyManagerForHistogramExperiment;
-
 @property (nonatomic, weak, readonly) IBOutlet VSequenceActionController *sequenceActionController;
 
 @property (nonatomic, strong, readonly) VAuthorizedAction *authorizedAction;
