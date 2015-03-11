@@ -3,32 +3,32 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDisplayName</key>
-	<string>${ProductPrefix}Michelle Phan</string>
+	<string>${ProductPrefix}PaulsHappyPlace</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.getvictorious.${ProductPrefix}michellephan</string>
+	<string>com.getvictorious.${ProductPrefix}paulshappyplace</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fb370784706439907</string>
+				<string>fb758493307598287</string>
 			</array>
 		</dict>
 	</array>
 	<key>FacebookAppID</key>
-	<string>370784706439907</string>
+	<string>758493307598287</string>
 	<key>TWITTER_CONSUMER_KEY</key>
-	<string>qvYqf5wJ5hGI5O9Yu9Ilj4VoW</string>
+	<string>pV7wzX2XIZQCrk2mNR8TLp7OM</string>
 	<key>TWITTER_CONSUMER_SECRET</key>
-	<string>l2kmVN9mHisdUw6OLL0628xoYa1xEAQdZyrcBGOEpizItN9lp6</string>
+	<string>vWHaQWF26JkXSZhu9k3FMFuQVIpeZj3DU0pJtpb8QC5hqEOhwC</string>
 	<key>VictoriousAppID</key>
-	<integer>29</integer>
+	<integer>28</integer>
 	<key>StagingAppID</key>
-	<integer>43</integer>
+	<integer>42</integer>
 	<key>QAAppID</key>
-	<integer>27</integer>
+	<integer>26</integer>
 	<key>GAID</key>
-	<string>UA-51702806-6</string>
+	<string></string>
 	<key>CreatorSalutation</key>
 	<string>Paul Pow</string>
 	<key>FlurryAPIKey</key>
