@@ -114,9 +114,12 @@
     
     self.toolController.canvasView = self.canvasView;
     
-    [self.blurredBackgroundImageView setBlurredImageWithClearImage:self.previewImage
-                                                  placeholderImage:nil
-                                                         tintColor:[[UIColor blackColor] colorWithAlphaComponent:0.5f]];
+    if (self.previewImage != nil)
+    {
+        [self.blurredBackgroundImageView setBlurredImageWithClearImage:self.previewImage
+                                                      placeholderImage:nil
+                                                             tintColor:[[UIColor blackColor] colorWithAlphaComponent:0.5f]];
+    }
     
     NSMutableArray *toolBarItems = [[NSMutableArray alloc] init];
     [toolBarItems addObject:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
@@ -176,10 +179,6 @@
     
     if ([self.toolController isKindOfClass:[VImageToolController class]])
     {
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(canvasViewDidUpdateAsset:)
-                                                     name:VCanvasViewAssetSizeBecameAvailableNotification
-                                                   object:self.canvasView];
         [self.canvasView setSourceURL:self.mediaURL
                    withPreloadedImage:self.previewImage];
     }
@@ -249,6 +248,19 @@
     {
         welf.continueButton.enabled = canRenderAndExport;
     };
+    self.toolController.snapshotImageBecameAvailable = ^void(UIImage *snapshotImage)
+    {
+        if (welf.blurredBackgroundImageView.image != nil)
+        {
+            return;
+        }
+        welf.previewImage = snapshotImage;
+        [welf.blurredBackgroundImageView setBlurredImageWithClearImage:snapshotImage
+                                                      placeholderImage:nil
+                                                             tintColor:[[UIColor blackColor] colorWithAlphaComponent:0.5f]
+                                                               animate:YES];
+    };
+    self.toolController.mediaURL = mediaURL;
     self.toolController.delegate = self;
 }
 
@@ -315,16 +327,6 @@
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectWorkspaceTool parameters:params];
 }
 
-#pragma mark - Notification Handlers
-
-- (void)canvasViewDidUpdateAsset:(NSNotification *)notification
-{
-    [self.blurredBackgroundImageView setBlurredImageWithClearImage:self.canvasView.asset
-                                                  placeholderImage:nil
-                                                         tintColor:[[UIColor blackColor] colorWithAlphaComponent:0.5f]
-                                                           animate:YES];
-}
-
 #pragma mark - VWorkspaceToolControllerDelegate
 
 - (void)addCanvasViewController:(UIViewController *)canvasViewController
@@ -388,6 +390,12 @@
     self.verticalSpaceTopBarToContainer.constant = 0.0f;
     self.verticalSpaceBottomBarToContainer.constant = 0.0f;
 
+    // We are returning from being below the top of the nav stack show the image view
+    if (self.blurredBackgroundImageView.image != nil)
+    {
+        self.blurredBackgroundImageView.alpha = 1.0f;
+    }
+    
     [self.view layoutIfNeeded];
 }
 

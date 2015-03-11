@@ -231,17 +231,24 @@ static NSString * const kVideoMuted = @"videoMuted";
     return @[
              @{
                  kClassNameKey: @"trim.video.tool",
-                 kTitleKey: @"video",
+                 kTitleKey: NSLocalizedString(@"VIDEO MODE", @"Title informing the user they have selected the video tool."),
+                 kIconKey:@{
+                         VDependencyManagerImageURLKey:@"video_btn"
+                         },
                  kVideoFrameDurationValue: @1,
                  kVideoFrameDurationTimescale: @24,
                  kVideoMuted: @NO
                  },
              @{
                  kClassNameKey: @"trim.video.tool",
-                 kTitleKey: @"gif",
+                 kTitleKey: NSLocalizedString(@"GIF MODE", @"Title informing the user they have selected the GIF tool."),
+                 kIconKey:@{
+                         VDependencyManagerImageURLKey:@"gif_btn"
+                         },
                  kVideoFrameDurationValue: @1,
                  kVideoFrameDurationTimescale: @4,
-                 kVideoMuted: @YES
+                 kVideoMuted: @YES,
+                 @"isGIF": @YES,
                  },
              @{
                  kClassNameKey: @"snapshot.video.tool",

@@ -24,6 +24,7 @@ static NSString * const kVideoFrameDurationTimescale = @"frameDurationTimescale"
 static NSString * const kVideoMaxDuration = @"videoMaxDuration";
 static NSString * const kVideoMinDuration = @"videoMinDuration";
 static NSString * const kVideoMuted = @"videoMuted";
+static NSString * const kIconKey = @"icon";
 
 @interface VTrimVideoTool () <VTrimmerViewControllerDelegate, VCVideoPlayerDelegate>
 
@@ -61,9 +62,9 @@ static NSString * const kVideoMuted = @"videoMuted";
         
         _title = [dependencyManager stringForKey:kTitleKey];
         
-        _isGIF = [_title isEqualToString:@"gif"];
+        _isGIF = [[dependencyManager numberForKey:@"isGIF"] boolValue];
         
-        _icon = _isGIF ? [UIImage imageNamed:@"gif_btn"] : [UIImage imageNamed:@"video_btn"];
+        _icon = [dependencyManager imageForKey:kIconKey];
         
         _minDuration = [dependencyManager numberForKey:kVideoMinDuration];
         _maxDuration = [dependencyManager numberForKey:kVideoMaxDuration];
@@ -75,6 +76,7 @@ static NSString * const kVideoMuted = @"videoMuted";
         _frameDuration = CMTimeMake((int)[frameDurationValue unsignedIntegerValue], (int)[frameDurationTimescale unsignedIntegerValue]);
         
         _trimViewController = [[VTrimmerViewController alloc] initWithNibName:nil bundle:nil];
+        _trimViewController.title = _title;
         _trimViewController.delegate = self;
         
         _videoPlayerController = [[VCVideoPlayerViewController alloc] initWithNibName:nil bundle:nil];

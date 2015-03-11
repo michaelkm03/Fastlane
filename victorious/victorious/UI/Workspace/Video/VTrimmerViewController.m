@@ -15,7 +15,9 @@
 #import "VThumbnailCell.h"
 #import "VTrimControl.h"
 
-#import "VThemeManager.h"
+// Dependencies
+#import "VRootViewController.h"
+#import "VDependencyManager.h"
 
 static NSString *const emptyCellIdentifier = @"emptyCell";
 
@@ -28,6 +30,8 @@ static const CGFloat kTimelineDarkeningAlpha = 0.5f;
 @property (nonatomic, strong) UICollectionView *thumbnailCollecitonView;
 
 @property (nonatomic, strong) VTrimControl *trimControl;
+
+@property (nonatomic, strong) UILabel *titleLabel;
 
 @property (nonatomic, strong) UIView *trimDimmingView;
 @property (nonatomic, strong) NSLayoutConstraint *dimmingViewWidthConstraint;
@@ -45,7 +49,7 @@ static const CGFloat kTimelineDarkeningAlpha = 0.5f;
 {
     [super viewDidLoad];
 
-    [self prepareThumbnailCollectionView];
+    [self prepareThumbnailCollectionViewAndTitleLabel];
     [self prepareDimmingView];
     [self preparePlaybackOverlay];
     [self prepareTrimControl];
@@ -96,6 +100,12 @@ static const CGFloat kTimelineDarkeningAlpha = 0.5f;
     _thumbnailDataSource = thumbnailDataSource;
     
     [self.thumbnailCollecitonView reloadData];
+}
+
+- (void)setTitle:(NSString *)title
+{
+    [super setTitle:title];
+    self.titleLabel.text = title;
 }
 
 #pragma mark - Target/Action
@@ -271,7 +281,7 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
 {
     NSString *title = [NSString stringWithFormat:@"%@", [NSString stringWithFormat:@"%.2f", CMTimeGetSeconds(time)]];
     self.trimControl.attributedTitle = [[NSAttributedString alloc] initWithString:title
-                                                                       attributes:@{NSFontAttributeName: [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font]}];
+                                                                       attributes:@{NSFontAttributeName: [[[VRootViewController rootViewController] dependencyManager] fontForKey:VDependencyManagerHeading2FontKey]}];
 }
 
 - (CGFloat)timelineWidthPerSecond
@@ -291,7 +301,7 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
 
 #pragma mark View Hierarcy Setup
 
-- (void)prepareThumbnailCollectionView
+- (void)prepareThumbnailCollectionViewAndTitleLabel
 {
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
     layout.itemSize = CGSizeMake(CGRectGetHeight(self.view.frame), CGRectGetHeight(self.view.frame));
@@ -307,15 +317,29 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
     self.thumbnailCollecitonView.alwaysBounceHorizontal = NO;
     self.thumbnailCollecitonView.bounces = NO;
     self.thumbnailCollecitonView.backgroundColor = [UIColor clearColor];
-    [self.view addSubview:self.thumbnailCollecitonView];
     self.thumbnailCollecitonView.translatesAutoresizingMaskIntoConstraints = NO;
-    NSDictionary *viewMap = @{@"collectionView": self.thumbnailCollecitonView};
+    [self.view addSubview:self.thumbnailCollecitonView];
 
+    self.titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+    self.titleLabel.text = self.title;
+    self.titleLabel.textAlignment = NSTextAlignmentCenter;
+    self.titleLabel.font = [[[VRootViewController rootViewController] dependencyManager] fontForKey:VDependencyManagerHeading2FontKey];
+    self.titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    self.titleLabel.textColor = [UIColor whiteColor];
+    [self.view addSubview:self.titleLabel];
+
+    NSDictionary *viewMap = @{@"collectionView": self.thumbnailCollecitonView,
+                              @"titleLabel": self.titleLabel};
+    
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[collectionView]|"
                                                                       options:kNilOptions
                                                                       metrics:nil
                                                                         views:viewMap]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-kTimelineTopPadding-[collectionView]-trimSpacingToBottom-|"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[titleLabel]|"
+                                                                      options:kNilOptions
+                                                                      metrics:nil
+                                                                        views:viewMap]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-kTimelineTopPadding-[collectionView]-20-[titleLabel]-20-|"
                                                                       options:kNilOptions
                                                                       metrics:@{@"kTimelineTopPadding":@(kTimelineTopPadding),
                                                                                 @"trimSpacingToBottom":@(kTimelineBottomPadding)}
@@ -329,10 +353,13 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
     self.trimDimmingView.userInteractionEnabled = NO;
     [self.view addSubview:self.trimDimmingView];
     self.trimDimmingView.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    NSDictionary *viewMap = @{@"trimDimmingView":self.trimDimmingView};
+    
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[trimDimmingView]|"
                                                                       options:kNilOptions
                                                                       metrics:nil
-                                                                        views:@{@"trimDimmingView":self.trimDimmingView}]];
+                                                                        views:viewMap]];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.trimDimmingView
                                                           attribute:NSLayoutAttributeTop
                                                           relatedBy:NSLayoutRelationEqual
@@ -365,15 +392,28 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
                          action:@selector(trimSelectionChanged:)
                forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:self.trimControl];
-    NSDictionary *viewMap = @{@"trimControl": self.trimControl};
+    
+    NSDictionary *viewMap = @{@"trimControl": self.trimControl,
+                              @"titleLabel": self.titleLabel};
+
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[trimControl]|"
                                                                       options:kNilOptions
                                                                       metrics:nil
                                                                         views:viewMap]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[trimControl]-kTimelineBottomPadding-|"
-                                                                      options:kNilOptions
-                                                                      metrics:@{@"kTimelineBottomPadding":@(kTimelineBottomPadding)}
-                                                                        views:viewMap]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.trimControl
+                                                          attribute:NSLayoutAttributeTop
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.view
+                                                          attribute:NSLayoutAttributeTop
+                                                         multiplier:1.0f
+                                                           constant:0.0f]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.trimControl
+                                                          attribute:NSLayoutAttributeBottom
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.thumbnailCollecitonView
+                                                          attribute:NSLayoutAttributeBottom
+                                                         multiplier:1.0f
+                                                           constant:0.0f]];
 }
 
 - (void)preparePlaybackOverlay
