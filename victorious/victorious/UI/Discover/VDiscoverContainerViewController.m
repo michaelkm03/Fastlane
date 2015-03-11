@@ -129,7 +129,7 @@
         return;
     }
 
-    VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithUser:user];
+    VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithUser:user andDependencyManager:self.dependencyManager];
     if ( self.navigationController != nil )
     {
         [self.navigationController pushViewController:profileViewController animated:YES];

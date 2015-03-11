@@ -152,6 +152,11 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
     self.parentLabel.attributedText = attributedString;
 }
 
+- (void)refreshParentLabelAttributes
+{
+    [self setParentText:self.parentLabel.text];
+}
+
 - (void)setSequence:(VSequence *)sequence
 {
     if (_sequence == sequence)
@@ -227,6 +232,19 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
     else
     {
         self.userInfoViewHeightConstraint.constant = self.usernameLabel.intrinsicContentSize.height;
+    }
+}
+
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    _dependencyManager = dependencyManager;
+    UIColor *tintColor = [_dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
+    if ( tintColor != nil )
+    {
+        self.dateLabel.textColor = tintColor;
+        self.parentLabel.textColor = tintColor;
+        self.dateImageView.tintColor = tintColor;
+        [self refreshParentLabelAttributes];
     }
 }
 

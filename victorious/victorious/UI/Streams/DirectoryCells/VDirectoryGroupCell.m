@@ -70,13 +70,13 @@ static CGFloat const kStreamSubdirectoryItemCellBaseHeight = 206.0f;
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
-    _dependencyManager = dependencyManager;
+    [super setDependencyManager:dependencyManager];
     
-    self.nameLabel.font = [_dependencyManager fontForKey:@"font.header"];
-    self.nameLabel.textColor = [_dependencyManager colorForKey:@"color.text"];
+    self.nameLabel.font = [self.dependencyManager fontForKey:@"font.header"];
+    self.nameLabel.textColor = [self.dependencyManager colorForKey:@"color.text"];
     
-    NSDictionary *component = [_dependencyManager templateValueOfType:[NSDictionary class] forKey:@"cell.directory.item"];
-    self.itemCellDependencyManager = [_dependencyManager childDependencyManagerWithAddedConfiguration:component];
+    NSDictionary *component = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:@"cell.directory.item"];
+    self.itemCellDependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:component];
     
     [self.collectionView reloadData];
 }

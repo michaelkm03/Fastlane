@@ -15,8 +15,8 @@
 
 @property   (nonatomic, readonly) VUser                  *profile;
 
-+ (instancetype)userProfileWithRemoteId:(NSNumber *)remoteId;
-+ (instancetype)userProfileWithUser:(VUser *)aUser;
++ (instancetype)userProfileWithRemoteId:(NSNumber *)remoteId andDependencyManager:(VDependencyManager *)dependencyManager;
++ (instancetype)userProfileWithUser:(VUser *)aUser andDependencyManager:(VDependencyManager *)dependencyManager;
 
 @end
 

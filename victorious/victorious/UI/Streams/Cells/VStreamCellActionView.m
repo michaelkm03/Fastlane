@@ -13,6 +13,8 @@
 
 #import "VConstants.h"
 
+#import "VDependencyManager.h"
+
 static CGFloat const kGreyBackgroundColor       = 0.94509803921;
 static CGFloat const kActionButtonBuffer        = 15;
 static CGFloat const kScaleActive               = 1.0f;
@@ -71,6 +73,25 @@ static CGFloat const kRepostedDisabledAlpha     = 0.3f;
             frame.origin.x = kActionButtonBuffer + (leftoversPerButton + CGRectGetWidth(button.bounds)) * i;
         }
         button.frame = frame;
+    }
+}
+
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    _dependencyManager = dependencyManager;
+    UIColor *borderColor = [_dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
+    if ( borderColor != nil )
+    {
+        self.layer.borderColor = borderColor.CGColor;
+    }
+    
+    UIColor *textColor = [_dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
+    if ( textColor != nil )
+    {
+        for ( UIButton *button in self.actionButtons )
+        {
+            [button setTintColor:textColor];
+        }
     }
 }
 

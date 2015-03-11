@@ -108,11 +108,22 @@ static const CGFloat kTextViewLineFragmentPadding = 5.0f; //Since we don't updat
 
 - (void)setDescriptionText:(NSString *)text
 {
-    BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
     if (self.sequence.nameEmbeddedInContent.boolValue == NO)
     {
+        BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
+        NSMutableDictionary *attributes = [[VStreamCollectionCell sequenceDescriptionAttributes] mutableCopy];
+        if ( self.dependencyManager != nil )
+        {
+            attributes[NSForegroundColorAttributeName] = [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
+        }
+        else
+        {
+            NSString *colorKey = isTemplateC ? kVContentTextColor : kVMainTextColor;
+            attributes[NSForegroundColorAttributeName] = [[VThemeManager sharedThemeManager] themedColorForKey:colorKey];
+        }
+        
         NSMutableAttributedString *newAttributedCellText = [[NSMutableAttributedString alloc] initWithString:(text ?: @"")
-                                                                                                  attributes:[VStreamCollectionCell sequenceDescriptionAttributes]];
+                                                                                                  attributes:attributes];
         self.captionTextView.linkDelegate = self;
         if ( !isTemplateC )
         {
@@ -125,6 +136,11 @@ static const CGFloat kTextViewLineFragmentPadding = 5.0f; //Since we don't updat
     {
         self.captionTextView.attributedText = [[NSAttributedString alloc] initWithString:@""];
     }
+}
+
+- (void)refreshDescriptionAttributes
+{
+    [self setDescriptionText:self.captionTextView.text];
 }
 
 - (void)prepareForReuse
@@ -183,6 +199,20 @@ static const CGFloat kTextViewLineFragmentPadding = 5.0f; //Since we don't updat
     else
     {
         self.isPlayButtonVisible = NO;
+    }
+}
+
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    [super setDependencyManager:dependencyManager];
+    self.actionView.dependencyManager = dependencyManager;
+    self.streamCellHeaderView.dependencyManager = dependencyManager;
+
+    UIColor *backgroundColor = [dependencyManager colorForKey:VDependencyManagerSecondaryBackgroundColorKey];
+    if ( backgroundColor != nil )
+    {
+        self.contentView.backgroundColor = backgroundColor;
+        [self refreshDescriptionAttributes];
     }
 }
 
@@ -345,9 +375,6 @@ static const CGFloat kTextViewLineFragmentPadding = 5.0f; //Since we don't updat
     
     NSMutableDictionary *attributes = [[NSMutableDictionary alloc] init];
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    
-    NSString *colorKey = isTemplateC ? kVContentTextColor : kVMainTextColor;
-    attributes[ NSForegroundColorAttributeName ] = [[VThemeManager sharedThemeManager] themedColorForKey:colorKey];
     
     if ( isTemplateC )
     {
