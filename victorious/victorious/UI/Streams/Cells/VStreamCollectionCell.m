@@ -82,10 +82,7 @@ const CGFloat kTemplateCTextSeparatorHeight = 6.0f; //This represents the space 
 {
     [super awakeFromNib];
     
-    BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
-    
-    self.captionTextView.layer.masksToBounds = NO;
-    
+    BOOL isTemplateC = [VStreamCollectionCell isTemplateC];
     self.backgroundColor = isTemplateC ? [UIColor whiteColor] : [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
     
     NSString *headerNibName = isTemplateC ? @"VStreamCellHeaderView-C" : @"VStreamCellHeaderView";
@@ -153,10 +150,19 @@ const CGFloat kTemplateCTextSeparatorHeight = 6.0f; //This represents the space 
     self.interLabelSpaceConstraint.constant = !(hasText && text.length > 0) ? 0 : kTemplateCTextSeparatorHeight;
 }
 
-- (void)setCommentsCountText:(NSString *)text
+- (void)reloadCommentsCount
 {
-    [self.commentsLabel setText:text];
-    self.commentHeightConstraint.constant = [text sizeWithAttributes:@{ NSFontAttributeName : self.commentsLabel.font }].height;
+    if ( [VStreamCollectionCell isTemplateC] )
+    {
+        NSNumber *commentCount = [self.sequence commentCount];
+        NSString *commentsString = [NSString stringWithFormat:@"%@ %@", [commentCount stringValue], [commentCount integerValue] == 1 ? NSLocalizedString(@"Comment", @"") : NSLocalizedString(@"Comments", @"")];
+        [self.commentsLabel setText:commentsString];
+        self.commentHeightConstraint.constant = [commentsString sizeWithAttributes:@{ NSFontAttributeName : self.commentsLabel.font }].height;
+    }
+    else
+    {
+        [self.streamCellHeaderView reloadCommentsCount];
+    }
 }
 
 - (void)prepareForReuse
@@ -190,11 +196,9 @@ const CGFloat kTemplateCTextSeparatorHeight = 6.0f; //This represents the space 
                            placeholderImage:[UIImage resizeableImageWithColor:
                                              [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]]];
     
-    NSString *commentsString = [NSString stringWithFormat:@"%@ %@", [sequence.commentCount stringValue], sequence.commentCount.integerValue == 1 ? NSLocalizedString(@"Comment", @"") : NSLocalizedString(@"Comments", @"")];
-
     if ( [VStreamCollectionCell isTemplateC] )
     {
-        [self setCommentsCountText:commentsString];
+        [self reloadCommentsCount];
     }
     
     [self setDescriptionText:self.sequence.name];

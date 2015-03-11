@@ -45,4 +45,6 @@ extern const CGFloat kTemplateCTextSeparatorHeight;
 - (void)playVideo;
 - (void)pauseVideo;
 
+- (void)reloadCommentsCount;
+
 @end

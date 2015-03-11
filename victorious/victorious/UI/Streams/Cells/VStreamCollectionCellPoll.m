@@ -74,8 +74,6 @@ static const CGFloat kPollCellHeightRatio = 0.66875f; //from spec, 214 height fo
     
     [self.previewImageTwo fadeInImageAtURL:self.secondAssetUrl
                           placeholderImage:placeholderImage];
-    
-    
 }
 
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
