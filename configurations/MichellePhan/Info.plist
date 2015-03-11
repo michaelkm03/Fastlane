@@ -22,15 +22,15 @@
 	<key>TWITTER_CONSUMER_SECRET</key>
 	<string>l2kmVN9mHisdUw6OLL0628xoYa1xEAQdZyrcBGOEpizItN9lp6</string>
 	<key>VictoriousAppID</key>
-	<integer>29</integer>
+	<integer>2</integer>
 	<key>StagingAppID</key>
-	<integer>43</integer>
+	<integer>2</integer>
 	<key>QAAppID</key>
-	<integer>27</integer>
+	<integer>2</integer>
 	<key>GAID</key>
 	<string>UA-51702806-6</string>
 	<key>CreatorSalutation</key>
-	<string>Paul Pow</string>
+	<string>Michelle Phan</string>
 	<key>FlurryAPIKey</key>
 	<string>XXXXXXXXXX</string>
 </dict>
