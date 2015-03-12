@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="2yS-vh-N7a">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1510" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="2yS-vh-N7a">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
@@ -426,7 +426,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchImage.png" translatesAutoresizingMaskIntoConstraints="NO" id="o05-KB-ddg" userLabel="Background Image">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="569"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <constraints>
                                     <constraint firstAttribute="height" secondItem="o05-KB-ddg" secondAttribute="width" multiplier="16:9" id="1zV-Fp-KVi"/>
                                 </constraints>
@@ -447,8 +447,10 @@
                             <constraint firstItem="9lr-kw-Rjm" firstAttribute="leading" secondItem="eLu-Xq-owQ" secondAttribute="leading" id="2Cj-um-GQE"/>
                             <constraint firstItem="9lr-kw-Rjm" firstAttribute="top" secondItem="eLu-Xq-owQ" secondAttribute="bottom" id="7Fh-rp-XbZ"/>
                             <constraint firstAttribute="trailing" secondItem="9lr-kw-Rjm" secondAttribute="trailing" id="TKa-7M-X9u"/>
-                            <constraint firstItem="o05-KB-ddg" firstAttribute="leading" secondItem="eLu-Xq-owQ" secondAttribute="leading" id="VQX-jy-0ox"/>
-                            <constraint firstAttribute="trailing" secondItem="o05-KB-ddg" secondAttribute="trailing" id="sub-ga-Znw"/>
+                            <constraint firstItem="o05-KB-ddg" firstAttribute="leading" secondItem="eLu-Xq-owQ" secondAttribute="leading" priority="750" id="VQX-jy-0ox"/>
+                            <constraint firstAttribute="centerX" secondItem="o05-KB-ddg" secondAttribute="centerX" id="a8l-9H-b5s"/>
+                            <constraint firstAttribute="bottomMargin" relation="lessThanOrEqual" secondItem="o05-KB-ddg" secondAttribute="bottom" id="mhe-dI-NGH"/>
+                            <constraint firstAttribute="trailing" secondItem="o05-KB-ddg" secondAttribute="trailing" priority="750" id="sub-ga-Znw"/>
                             <constraint firstItem="o05-KB-ddg" firstAttribute="top" secondItem="eLu-Xq-owQ" secondAttribute="top" id="yQd-sz-ySf"/>
                         </constraints>
                     </view>

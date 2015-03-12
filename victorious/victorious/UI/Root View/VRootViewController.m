@@ -243,6 +243,7 @@ static NSString * const kNotificationIDKey = @"notification_id";
         
         if (animated)
         {
+            viewController.view.clipsToBounds = YES;
             viewController.view.center = CGPointMake(CGRectGetWidth(self.view.bounds) * 1.5f, CGRectGetMidY(self.view.bounds));
             [UIView animateWithDuration:kAnimationDuration
                                   delay:0
