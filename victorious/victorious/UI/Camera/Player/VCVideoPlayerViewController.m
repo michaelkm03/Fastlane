@@ -140,18 +140,21 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     self.playerLayer.backgroundColor = [UIColor clearColor].CGColor;
     [self.view.layer addSublayer:self.playerLayer];
     
-    VCVideoPlayerToolbarView *toolbarView = [VCVideoPlayerToolbarView toolbarFromNibWithOwner:self];
-    toolbarView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.view addSubview:toolbarView];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[toolbarView(==toolbarHeight)]|"
-                                                                      options:0
-                                                                      metrics:@{ @"toolbarHeight": @(kToolbarHeight) }
-                                                                        views:NSDictionaryOfVariableBindings(toolbarView)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[toolbarView]|"
-                                                                      options:0
-                                                                      metrics:nil
-                                                                        views:NSDictionaryOfVariableBindings(toolbarView)]];
-    self.toolbarView = toolbarView;
+    if (self.shouldShowToolbar)
+    {
+        VCVideoPlayerToolbarView *toolbarView = [VCVideoPlayerToolbarView toolbarFromNibWithOwner:self];
+        toolbarView.translatesAutoresizingMaskIntoConstraints = NO;
+        [self.view addSubview:toolbarView];
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[toolbarView(==toolbarHeight)]|"
+                                                                          options:0
+                                                                          metrics:@{ @"toolbarHeight": @(kToolbarHeight) }
+                                                                            views:NSDictionaryOfVariableBindings(toolbarView)]];
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[toolbarView]|"
+                                                                          options:0
+                                                                          metrics:nil
+                                                                            views:NSDictionaryOfVariableBindings(toolbarView)]];
+        self.toolbarView = toolbarView;
+    }
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(videoFrameTapped:)];
     tap.numberOfTapsRequired = 1;
@@ -334,7 +337,14 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     }
     _overlayView = overlayView;
     _overlayView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.view insertSubview:_overlayView belowSubview:self.toolbarView];
+    if ([self.view.subviews containsObject:self.toolbarView])
+    {
+        [self.view insertSubview:_overlayView belowSubview:self.toolbarView];
+    }
+    else
+    {
+        [self.view addSubview:_overlayView];
+    }
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[overlayView]|"
                                                                       options:0
                                                                       metrics:nil
