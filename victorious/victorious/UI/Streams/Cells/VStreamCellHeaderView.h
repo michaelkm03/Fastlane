@@ -35,5 +35,6 @@
 @property (nonatomic, strong) NSMutableArray *commentViews;
 
 - (void)hideCommentsButton;
+- (void)reloadCommentsCount;
 
 @end
