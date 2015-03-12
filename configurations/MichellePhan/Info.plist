@@ -11,28 +11,16 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fb1374328719478033</string>
-			</array>
-		</dict>
-		<dict>
-			<key>CFBundleURLName</key>
-			<string>com.getvictorious.deeplinking.scheme</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>${ProductPrefix}michellephan</string>
+				<string>fb370784706439907</string>
 			</array>
 		</dict>
 	</array>
 	<key>FacebookAppID</key>
-	<string>1374328719478033</string>
-	<key>FacebookDisplayName</key>
-	<string>VictoriousApp Dev</string>
-	<key>TestflightReleaseAppToken</key>
-	<string>7bc4e136-ad35-4a65-9401-baffa40a1eb6</string>
-	<key>TestflightQAAppToken</key>
-	<string>63971c21-d2bc-4ca3-80cc-31e75d05bbc7</string>
-	<key>TestflightStagingAppToken</key>
-	<string>49051cf7-348c-48c7-8bee-6fa1e72ff0b3</string>
+	<string>370784706439907</string>
+	<key>TWITTER_CONSUMER_KEY</key>
+	<string>qvYqf5wJ5hGI5O9Yu9Ilj4VoW</string>
+	<key>TWITTER_CONSUMER_SECRET</key>
+	<string>l2kmVN9mHisdUw6OLL0628xoYa1xEAQdZyrcBGOEpizItN9lp6</string>
 	<key>VictoriousAppID</key>
 	<integer>2</integer>
 	<key>StagingAppID</key>
@@ -41,5 +29,9 @@
 	<integer>2</integer>
 	<key>GAID</key>
 	<string>UA-51702806-6</string>
+	<key>CreatorSalutation</key>
+	<string>Michelle Phan</string>
+	<key>FlurryAPIKey</key>
+	<string>XXXXXXXXXX</string>
 </dict>
 </plist>

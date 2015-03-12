@@ -82,7 +82,7 @@
     
     NSString *linkText = NSLocalizedString( @"Log in here", @"" );
     NSString *normalText = NSLocalizedString( @"Already Registered?", @"" );
-    NSString *text = [NSString stringWithFormat:NSLocalizedString( @"%@ %@", @""), normalText, linkText];
+    NSString *text = [NSString stringWithFormat:@"%@ %@", normalText, linkText];
     NSRange range = [text rangeOfString:linkText];
     [self.linkTextHelper setupLinkTextView:self.loginTextView withText:text range:range];
     self.loginTextView.linkDelegate = self;

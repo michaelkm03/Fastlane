@@ -16,10 +16,20 @@ static NSString * const kTestViewControllerInitMethodTemplateName = @"testInitMe
 static NSString * const kTestViewControllerNewMethodTemplateName = @"testNewMethod";
 static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
 
+#pragma mark - VTestProtocol
+
+@protocol VTestProtocol <NSObject>
+
+@required
+- (void)testMethod;
+
+@end
+
 #pragma mark - VTestViewControllerWithInitMethod
 
-@interface VTestViewControllerWithInitMethod : UIViewController <VHasManagedDependancies>
+@interface VTestViewControllerWithInitMethod : UIViewController <VHasManagedDependancies, VTestProtocol>
 
+@property (nonatomic, readonly) VDependencyManager *dependencyManager;
 @property (nonatomic) BOOL calledInitMethod;
 
 @end
@@ -32,8 +42,13 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
     if (self)
     {
         _calledInitMethod = YES;
+        _dependencyManager = dependencyManager;
     }
     return self;
+}
+
+- (void)testMethod
+{
 }
 
 @end
@@ -187,6 +202,34 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
     XCTAssertNotNil(obj.dependencyManager);
 }
 
+#pragma mark - Protocols
+
+- (void)testValueConformingToProtocol
+{
+    id<VTestProtocol> viewController = [self.dependencyManager templateValueConformingToProtocol:@protocol(VTestProtocol) forKey:@"ivc"];
+    XCTAssert([viewController isKindOfClass:[VTestViewControllerWithInitMethod class]]);
+    XCTAssert([(VTestViewControllerWithInitMethod *)viewController calledInitMethod]);
+}
+
+- (void)testValueDoesNotConformToProtocol
+{
+    id viewController = [self.dependencyManager templateValueConformingToProtocol:@protocol(VTestProtocol) forKey:@"nvc"];
+    XCTAssertNil(viewController);
+}
+
+- (void)testValueConformingToProtocolWithExtraDependencies
+{
+    id<VTestProtocol> viewController = [self.dependencyManager templateValueConformingToProtocol:@protocol(VTestProtocol) forKey:@"ivc" withAddedDependencies:@{ @"hi": @"world" }];
+    XCTAssert([viewController isKindOfClass:[VTestViewControllerWithInitMethod class]]);
+    XCTAssertEqualObjects([[(VTestViewControllerWithInitMethod *)viewController dependencyManager] stringForKey:@"hi"], @"world");
+}
+
+- (void)testValueDoesNotConformToProtocolWithExtraDependencies
+{
+    id<VTestProtocol> viewController = [self.dependencyManager templateValueConformingToProtocol:@protocol(VTestProtocol) forKey:@"nvc" withAddedDependencies:@{ @"hi": @"world" }];
+    XCTAssertNil(viewController);
+}
+
 #pragma mark - Objects
 
 - (void)testNSObjectInstantiation
@@ -216,23 +259,25 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
 - (void)testArraysOfNSObjects
 {
     NSArray *array = [self.dependencyManager arrayOfValuesOfType:[NSObject class] forKey:@"arrayOfObjects"];
-    XCTAssertEqual(array.count, 4u);
+    XCTAssertEqual(array.count, 5u);
     
     XCTAssert([array[0] isKindOfClass:[VTestViewControllerWithNewMethod class]]);
     XCTAssert([array[1] isKindOfClass:[VTestViewControllerWithNewMethod class]]);
     XCTAssert([array[2] isKindOfClass:[VTestViewControllerWithInitMethod class]]);
     XCTAssert([array[3] isKindOfClass:[VTestViewControllerWithNewMethod class]]);
+    XCTAssert([array[4] isKindOfClass:[VTestViewControllerWithInitMethod class]]);
 }
 
 - (void)testArraysOfSingletonNSObjects
 {
     NSArray *array = [self.dependencyManager arrayOfSingletonValuesOfType:[NSObject class] forKey:@"arrayOfObjects"];
-    XCTAssertEqual(array.count, 4u);
+    XCTAssertEqual(array.count, 5u);
     
     XCTAssert([array[0] isKindOfClass:[VTestViewControllerWithNewMethod class]]);
     XCTAssert([array[1] isKindOfClass:[VTestViewControllerWithNewMethod class]]);
     XCTAssert([array[2] isKindOfClass:[VTestViewControllerWithInitMethod class]]);
     XCTAssert([array[3] isKindOfClass:[VTestViewControllerWithNewMethod class]]);
+    XCTAssert([array[4] isKindOfClass:[VTestViewControllerWithInitMethod class]]);
 }
 
 #pragma mark - Strings, numbers, arrays
@@ -319,6 +364,27 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
     
     VTestViewControllerWithNewMethod *otherSingletonReference = (VTestViewControllerWithNewMethod *)[self.dependencyManager singletonViewControllerForKey:@"otherNVC"];
     XCTAssertEqual(otherArray[2], otherSingletonReference);
+}
+
+- (void)testArrayOfProtocols
+{
+    NSArray *array = [self.dependencyManager arrayOfValuesConformingToProtocol:@protocol(VTestProtocol) forKey:@"arrayOfObjects"];
+    XCTAssertEqual(array.count, 2u);
+    XCTAssert([array[0] conformsToProtocol:@protocol(VTestProtocol)]);
+    XCTAssert([array[1] conformsToProtocol:@protocol(VTestProtocol)]);
+}
+
+- (void)testSingletonArrayOfProtocols
+{
+    NSArray *array = [self.dependencyManager arrayOfSingletonValuesConformingToProtocol:@protocol(VTestProtocol) forKey:@"arrayOfObjects"];
+    XCTAssertEqual(array.count, 2u);
+    XCTAssert([array[0] conformsToProtocol:@protocol(VTestProtocol)]);
+    XCTAssert([array[1] conformsToProtocol:@protocol(VTestProtocol)]);
+
+    NSArray *otherArray = [self.dependencyManager arrayOfSingletonValuesConformingToProtocol:@protocol(VTestProtocol) forKey:@"arrayOfObjects"];
+    XCTAssertEqual(otherArray.count, 2u);
+    XCTAssertEqual(array[0], otherArray[0]);
+    XCTAssertEqual(array[1], otherArray[1]);
 }
 
 #pragma mark - Images

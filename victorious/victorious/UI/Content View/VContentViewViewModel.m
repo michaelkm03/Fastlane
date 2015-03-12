@@ -851,7 +851,6 @@
      }
                                      failBlock:^(NSOperation *operation, NSError *error)
      {
-         //
          completion(NO, error);
      }];
 }
