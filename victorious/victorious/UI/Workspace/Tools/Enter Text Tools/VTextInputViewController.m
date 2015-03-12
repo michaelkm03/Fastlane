@@ -8,6 +8,8 @@
 
 #import "VTextInputViewController.h"
 #import "VTextLayoutHelper.h"
+#import "VTextBackgroundView.h"
+#import "VDependencyManager.h"
 
 @interface VTextInputViewController ()
 
@@ -15,7 +17,8 @@
 
 @property (nonatomic, weak) IBOutlet VTextLayoutHelper *textLayoutHelper;
 
-@property (nonatomic, weak) IBOutlet UIView *textContainerView;
+@property (nonatomic, weak) IBOutlet UITextView *textView;
+@property (nonatomic, weak) IBOutlet VTextBackgroundView *backgroundView;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *textContainerViewHeightConstraint;
 
 @end
@@ -31,45 +34,52 @@
     return viewController;
 }
 
-- (void)viewDidLoad
+- (void)setText:(NSString *)text
 {
-    [super viewDidLoad];
+    _text = text;
     
-    self.text = @"Always plan a backup outfit for important events in your life.";
+    NSDictionary *attributes = [self.textLayoutHelper textAttributesWithDependencyManager:self.dependencyManager];
     
-    [self updateLayout];
+    self.textView.attributedText = [[NSAttributedString alloc] initWithString:text attributes:attributes];
+    
+    NSArray *textLines = [self.textLayoutHelper textLinesFromText:text
+                                                   withAttributes:attributes
+                                                         maxWidth:CGRectGetWidth(self.view.frame)-20];
+    
+    NSMutableArray *backgroundFrames = [[NSMutableArray alloc] init];
+    NSUInteger y = 0;
+    for ( NSString *line in textLines )
+    {
+        CGSize size = [line sizeWithAttributes:attributes];
+        CGRect rect = CGRectMake( 0, 6 + (y++) * (size.height + 2), CGRectGetWidth(self.view.frame)-20, size.height );
+        [backgroundFrames addObject:[NSValue valueWithCGRect:rect]];
+    }
+    
+    self.backgroundView.backgroundFrames = backgroundFrames;
 }
 
-- (void)updateLayout
+#pragma mark - Text Attributes
+
+- (NSDictionary *)textAttributesWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    if ( self.textContainerView == nil )
-    {
-        return;
-    }
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    paragraphStyle.alignment = NSTextAlignmentLeft;
+    paragraphStyle.lineSpacing = 60.0f;
     
-    NSDictionary *textAttributes = [self.textLayoutHelper textAttributesWithDependencyManager:self.dependencyManager];
+    return @{ NSFontAttributeName: [dependencyManager fontForKey:@"font.heading2"],
+              NSForegroundColorAttributeName: [dependencyManager colorForKey:@"color.text.content"],
+              NSParagraphStyleAttributeName : paragraphStyle };
+}
+
+- (NSDictionary *)hashtagTextAttributesWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    paragraphStyle.alignment = NSTextAlignmentLeft;
+    paragraphStyle.lineSpacing = 60.0f;
     
-    NSString *quotedText = [NSString stringWithFormat:@"\"%@\"", self.text];
-    [self.textLayoutHelper textLinesFromText:quotedText withAttributes:textAttributes inSuperview:self.textContainerView];
-    
-    NSArray *textLines = [self.textLayoutHelper textLinesFromText:self.text
-                                                   withAttributes:textAttributes
-                                                      inSuperview:self.textContainerView];
-    
-    [self.textLayoutHelper createTextFieldsFromTextLines:textLines
-                                              attributes:textAttributes
-                                               superview:self.textContainerView];
-    
-    if ( self.textContainerView.subviews.count > 0 )
-    {
-        NSArray *subviews = [self.textContainerView.subviews sortedArrayUsingComparator:^NSComparisonResult(UIView *viewA, UIView *viewB)
-                             {
-                                 return [@(CGRectGetMaxY( viewA.frame )) compare:@(CGRectGetMaxY( viewB.frame ))];
-                             }];
-        self.textContainerViewHeightConstraint.constant = CGRectGetMaxY(((UIView *)subviews.lastObject).frame);
-    }
-    
-    [self.view layoutIfNeeded];
+    return @{ NSFontAttributeName: [dependencyManager fontForKey:@"font.heading2"],
+              NSForegroundColorAttributeName: [dependencyManager colorForKey:@"color.link"],
+              NSParagraphStyleAttributeName : paragraphStyle };
 }
 
 @end

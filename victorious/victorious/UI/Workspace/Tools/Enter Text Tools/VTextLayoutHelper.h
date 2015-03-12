@@ -14,7 +14,7 @@
 
 - (NSArray *)textLinesFromText:(NSString *)text
                 withAttributes:(NSDictionary *)attributes
-                   inSuperview:(UIView *)superview;
+                      maxWidth:(CGFloat)maxWidth;
 
 - (NSArray *)createTextFieldsFromTextLines:(NSArray *)lines
                                 attributes:(NSDictionary *)attributes

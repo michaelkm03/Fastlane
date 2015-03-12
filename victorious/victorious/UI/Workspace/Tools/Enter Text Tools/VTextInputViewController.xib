@@ -6,10 +6,10 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="VTextInputViewController">
             <connections>
-                <outlet property="textContainerView" destination="MLE-l2-NY2" id="Wem-gK-Vhk"/>
-                <outlet property="textContainerViewHeightConstraint" destination="s9E-no-lD2" id="I3v-Oh-JGH"/>
+                <outlet property="backgroundView" destination="Iit-g5-QVM" id="dIM-vc-IcG"/>
                 <outlet property="textLayoutHelper" destination="DgL-W4-teC" id="ebL-61-Eqm"/>
-                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+                <outlet property="textView" destination="EdJ-vJ-rzg" id="CvN-ia-c6B"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="HSK-lU-PKi"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -17,20 +17,33 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MLE-l2-NY2" userLabel="Text Container">
-                    <rect key="frame" x="10" y="234" width="580" height="131"/>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Iit-g5-QVM" customClass="VTextBackgroundView">
+                    <rect key="frame" x="11" y="220" width="580" height="160"/>
+                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.089999999999999997" colorSpace="calibratedRGB"/>
+                </view>
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EdJ-vJ-rzg">
+                    <rect key="frame" x="10" y="220" width="580" height="160"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="131" id="s9E-no-lD2"/>
+                        <constraint firstAttribute="height" priority="1" constant="183" id="IwX-mm-Xrb"/>
                     </constraints>
-                </view>
+                    <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</string>
+                    <color key="textColor" red="0.51911695079999998" green="0.51911695079999998" blue="0.51911695079999998" alpha="1" colorSpace="calibratedRGB"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences" keyboardAppearance="alert" returnKeyType="done"/>
+                </textView>
             </subviews>
-            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+            <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="MLE-l2-NY2" secondAttribute="trailing" constant="10" id="LNa-wb-tzA"/>
-                <constraint firstItem="MLE-l2-NY2" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="10" id="kzi-vH-qsk"/>
-                <constraint firstAttribute="centerY" secondItem="MLE-l2-NY2" secondAttribute="centerY" constant="0.5" id="y5P-Z1-cAh"/>
+                <constraint firstItem="EdJ-vJ-rzg" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="10" id="5Wx-6U-aDk"/>
+                <constraint firstItem="EdJ-vJ-rzg" firstAttribute="centerX" secondItem="Iit-g5-QVM" secondAttribute="centerX" constant="-1" id="FQD-Bv-0x0"/>
+                <constraint firstItem="EdJ-vJ-rzg" firstAttribute="centerY" secondItem="Iit-g5-QVM" secondAttribute="centerY" id="Kiu-v6-wpk"/>
+                <constraint firstAttribute="trailing" secondItem="EdJ-vJ-rzg" secondAttribute="trailing" constant="10" id="Qrn-yo-Oy4"/>
+                <constraint firstAttribute="centerY" secondItem="EdJ-vJ-rzg" secondAttribute="centerY" constant="0.5" id="dem-nw-x8e"/>
+                <constraint firstItem="EdJ-vJ-rzg" firstAttribute="width" secondItem="Iit-g5-QVM" secondAttribute="width" id="eew-Dk-ngH"/>
+                <constraint firstItem="EdJ-vJ-rzg" firstAttribute="height" secondItem="Iit-g5-QVM" secondAttribute="height" id="kBc-rY-gfU"/>
             </constraints>
+            <point key="canvasLocation" x="774" y="689"/>
         </view>
         <customObject id="DgL-W4-teC" customClass="VTextLayoutHelper"/>
     </objects>

@@ -16,10 +16,9 @@ static const CGFloat kTextSpacingVertical = 2;
 
 - (NSArray *)textLinesFromText:(NSString *)text
                 withAttributes:(NSDictionary *)attributes
-                   inSuperview:(UIView *)superview
+                      maxWidth:(CGFloat)maxWidth
 {
     NSMutableArray *lines = [[NSMutableArray alloc] init];
-    CGFloat maxWidth = (superview.frame.size.width - 10);
     NSMutableArray *allWords = [NSMutableArray arrayWithArray:[text componentsSeparatedByString:@" "]];
     
     while ( allWords.count > 0 )

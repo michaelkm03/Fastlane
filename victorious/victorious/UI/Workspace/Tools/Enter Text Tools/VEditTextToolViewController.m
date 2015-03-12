@@ -71,11 +71,12 @@
     NSDictionary *textAttributes = [self.textLayoutHelper textAttributesWithDependencyManager:self.dependencyManager];
     
     NSString *quotedText = [NSString stringWithFormat:@"\"%@\"", self.text];
-    [self.textLayoutHelper textLinesFromText:quotedText withAttributes:textAttributes inSuperview:self.textContainerView];
+    [self.textLayoutHelper textLinesFromText:quotedText withAttributes:textAttributes
+                                    maxWidth:CGRectGetWidth(self.textContainerView.frame)];
     
     NSArray *textLines = [self.textLayoutHelper textLinesFromText:self.text
-                                      withAttributes:textAttributes
-                                     inSuperview:self.textContainerView];
+                                                   withAttributes:textAttributes
+                                                         maxWidth:CGRectGetWidth(self.textContainerView.frame)];
     
     NSArray *textViews = [self.textLayoutHelper createTextFieldsFromTextLines:textLines
                                                                    attributes:textAttributes
