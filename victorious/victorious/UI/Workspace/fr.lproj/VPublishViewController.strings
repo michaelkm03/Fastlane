@@ -1,0 +1,9 @@
+/* Class = "UIButton"; normalTitle = "PUBLISH"; ObjectID = "13Q-pZ-iXL"; */
+"13Q-pZ-iXL.normalTitle" = "PUBLIER";
+
+/* Class = "UIButton"; normalTitle = "Cancel"; ObjectID = "92r-ti-u3W"; */
+"92r-ti-u3W.normalTitle" = "Annuler";
+
+/* Class = "UILabel"; text = "Save To Camera Roll"; ObjectID = "Qtd-ov-hcL"; */
+"Qtd-ov-hcL.text" = "Enregistrer dans la galerie";
+

@@ -39,6 +39,8 @@
 "Following"             =   "Following";
 "FOLLOWERS"             =   "FOLLOWERS";
 "FOLLOWING"             =   "FOLLOWING";
+"NumStreams"            =   "%@ STREAMS";
+"NumItems"              =   "%@ ITEMS";
 
 "TimeSeparator"         =   ":";
 "InvalidTimePlaceholder"=   "-:--";
