@@ -120,36 +120,31 @@
                                                          tintColor:[[UIColor blackColor] colorWithAlphaComponent:0.5f]];
     
     NSMutableArray *toolBarItems = [[NSMutableArray alloc] init];
-    [toolBarItems addObject:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-                                                                          target:nil
-                                                                          action:nil]];
+    UIBarButtonItem *spaceLeft = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    spaceLeft.tag = -1;
+    [toolBarItems addObject:spaceLeft];
     
     NSMutableDictionary *barButtonItemForToolMap = [[NSMutableDictionary alloc] init];
     NSMutableDictionary *toolForBarButtonItemMap = [[NSMutableDictionary alloc] init];
     [self.toolController.tools enumerateObjectsUsingBlock:^(id <VWorkspaceTool> tool, NSUInteger idx, BOOL *stop)
     {
         UIBarButtonItem *itemForTool;
-        if (![tool respondsToSelector:@selector(icon)])
+        if (![tool respondsToSelector:@selector(icon)] || tool.icon == nil)
         {
             itemForTool = [[UIBarButtonItem alloc] initWithTitle:tool.title
-                                                           style:UIBarButtonItemStylePlain
-                                                          target:self
-                                                          action:@selector(selectedBarButtonItem:)];
-        }
-        else if ([tool icon] != nil)
-        {
-            itemForTool = [[UIBarButtonItem alloc] initWithImage:[tool icon]
                                                            style:UIBarButtonItemStylePlain
                                                           target:self
                                                           action:@selector(selectedBarButtonItem:)];
         }
         else
         {
-            itemForTool = [[UIBarButtonItem alloc] initWithTitle:tool.title
+            itemForTool = [[UIBarButtonItem alloc] initWithImage:[tool icon]
                                                            style:UIBarButtonItemStylePlain
                                                           target:self
                                                           action:@selector(selectedBarButtonItem:)];
+            [itemForTool setBackButtonBackgroundImage:[tool icon] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
         }
+        itemForTool.tag = idx;
         
         itemForTool.tintColor = [UIColor whiteColor];
         [toolBarItems addObject:itemForTool];
@@ -172,7 +167,9 @@
     self.toolForBarButtonItemMap = toolForBarButtonItemMap;
     self.barButtonItemForToolMap = barButtonItemForToolMap;
     
-    [toolBarItems addObject:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil]];
+    UIBarButtonItem *spaceRight = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    spaceRight.tag = -1;
+    [toolBarItems addObject:spaceRight];
     self.bottomToolbar.items = toolBarItems;
     
     if ([self.toolController isKindOfClass:[VImageToolController class]])
@@ -260,6 +257,8 @@
     _text = text;
     
     VTextToolController *toolController = [[VTextToolController alloc] initWithTools:[self.dependencyManager workspaceTools]];
+    toolController.text = text;
+    toolController.dependencyManager = self.dependencyManager;
     self.toolController = toolController;
     self.toolController.delegate = self;
 }
@@ -469,13 +468,33 @@
                      completion:nil];
 }
 
-- (void)setSelectedBarButtonItem:(UIBarButtonItem *)item
+- (void)setSelectedBarButtonItem:(UIBarButtonItem *)selectedItem
 {
     [self.bottomToolbar.items enumerateObjectsUsingBlock:^(UIBarButtonItem *item, NSUInteger idx, BOOL *stop)
-    {
-        item.tintColor = [UIColor whiteColor];
-    }];
-    item.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+     {
+         if ( item.tag >= 0 )
+         {
+             id<VWorkspaceTool> tool = self.toolController.tools[ item.tag ];
+             
+             if ( [item isEqual:selectedItem] )
+             {
+                 item.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+                 if ( tool.iconSelected != nil )
+                 {
+                     item.image = tool.iconSelected;
+                 }
+             }
+             else
+             {
+                 item.tintColor = [UIColor whiteColor];
+                 if ( tool.icon != nil )
+                 {
+                     item.image = tool.icon;
+                 }
+             }
+         }
+     }];
+    
 }
 
 - (void)removeToolViewController:(UIViewController *)toolViewController

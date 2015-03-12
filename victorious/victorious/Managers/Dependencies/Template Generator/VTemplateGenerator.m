@@ -301,7 +301,7 @@ static NSString * const kVideoMuted = @"videoMuted";
 - (NSDictionary *)colorTool
 {
     return @{
-             kClassNameKey: @"color.tool",
+             kClassNameKey: @"textColor.tool",
              kTitleKey: @"color",
              kFilterIndexKey: @1,
              kPickerKey:

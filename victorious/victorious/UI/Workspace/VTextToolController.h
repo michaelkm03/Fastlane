@@ -8,6 +8,19 @@
 
 #import "VToolController.h"
 
+@class VDependencyManager;
+
 @interface VTextToolController : VToolController
+
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
+
+/**
+ *  The default text tool.
+ */
+@property (nonatomic, assign) NSUInteger defaultTool;
+
+@property (nonatomic, strong) NSString *text;
+
+@property (nonatomic, strong) NSString *hashtagText;
 
 @end

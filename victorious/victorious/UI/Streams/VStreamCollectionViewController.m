@@ -210,6 +210,10 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
     [self.collectionView flashScrollIndicators];
     [self updateCellVisibilityTracking];
     [self updateCurrentlyPlayingMediaAsset];
+    
+#warning TESTING ONLY: Jumpts right to text workspace
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateTextOnlyPostSelected];
+    [self presentCreateFlowWithTextOnly];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
