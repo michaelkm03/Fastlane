@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0308B0C91AB0DA1D00144E53 /* VSideMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0308B0C81AB0DA1D00144E53 /* VSideMenuViewController.xib */; };
+		0308B1061AB2374A00144E53 /* VSideMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0308B1051AB2374A00144E53 /* VSideMenuViewController.xib */; };
 		0309318D1A18425B004E9781 /* VMenuCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 030931891A18425B004E9781 /* VMenuCollectionViewCell.m */; };
 		0309318E1A18425B004E9781 /* VMenuCollectionViewDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 0309318B1A18425B004E9781 /* VMenuCollectionViewDataSource.m */; };
 		030931901A18426E004E9781 /* VMenuCollectionViewDataSourceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0309318F1A18426E004E9781 /* VMenuCollectionViewDataSourceTests.m */; };
@@ -781,6 +781,7 @@
 		0308B1001AB20B3100144E53 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/VNoContentView.strings; sourceTree = "<group>"; };
 		0308B1011AB20B3100144E53 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Main.strings; sourceTree = "<group>"; };
 		0308B1021AB20B3200144E53 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		0308B1051AB2374A00144E53 /* VSideMenuViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VSideMenuViewController.xib; sourceTree = "<group>"; };
 		030931881A18425B004E9781 /* VMenuCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMenuCollectionViewCell.h; sourceTree = "<group>"; };
 		030931891A18425B004E9781 /* VMenuCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMenuCollectionViewCell.m; sourceTree = "<group>"; };
 		0309318A1A18425B004E9781 /* VMenuCollectionViewDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMenuCollectionViewDataSource.h; sourceTree = "<group>"; };
@@ -2617,7 +2618,7 @@
 				0358FCED1A65E785004DD7A1 /* VScaffoldViewController.m */,
 				0314D3ED19B46B5E00FA363C /* VSideMenuViewController.h */,
 				0314D3EE19B46B5E00FA363C /* VSideMenuViewController.m */,
-				0308B0C81AB0DA1D00144E53 /* VSideMenuViewController.xib */,
+				0308B1051AB2374A00144E53 /* VSideMenuViewController.xib */,
 				D87D70911A97C9EC002D4FED /* VTabMenuViewController.h */,
 				D87D70921A97C9EC002D4FED /* VTabMenuViewController.m */,
 			);
@@ -4997,7 +4998,7 @@
 				036F38671A0C4DEA0014DF66 /* Bitter-Bold.ttf in Resources */,
 				D8D8958B19E88D5500632663 /* VExperienceEnhancerBarCell.xib in Resources */,
 				0390086E19F39F9900FD7EDF /* VMessageCell.xib in Resources */,
-				0308B0C91AB0DA1D00144E53 /* VSideMenuViewController.xib in Resources */,
+				0308B1061AB2374A00144E53 /* VSideMenuViewController.xib in Resources */,
 				034D1A921AAFF04500EB7B2D /* Workspace.storyboard in Resources */,
 				A7A390CA1A3257A300709812 /* ContentView.storyboard in Resources */,
 				A7D707A21A7C145E00D9993F /* EndCard.storyboard in Resources */,
