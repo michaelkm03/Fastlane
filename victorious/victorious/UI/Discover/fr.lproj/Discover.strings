@@ -1,0 +1,15 @@
+/* Class = "UITextField"; placeholder = "Search people"; ObjectID = "RxD-Py-mcF"; */
+"RxD-Py-mcF.placeholder" = "Rechercher des personnes";
+
+/* Class = "UIViewController"; title = "Discover"; ObjectID = "Uac-Xm-78P"; */
+"Uac-Xm-78P.title" = "Découvrir";
+
+/* Class = "UITextField"; placeholder = "Search people"; ObjectID = "VBj-A0-3vt"; */
+"VBj-A0-3vt.placeholder" = "Rechercher des personnes";
+
+/* Class = "UISegmentedControl"; mmk-k6-a7m.segmentTitles[0] = "People"; ObjectID = "mmk-k6-a7m"; */
+"mmk-k6-a7m.segmentTitles[0]" = "Personnes";
+
+/* Class = "UISegmentedControl"; mmk-k6-a7m.segmentTitles[1] = "Hashtags"; ObjectID = "mmk-k6-a7m"; */
+"mmk-k6-a7m.segmentTitles[1]" = "Mots dièse";
+
