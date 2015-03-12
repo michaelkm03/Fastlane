@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0308B0C91AB0DA1D00144E53 /* VSideMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0308B0C81AB0DA1D00144E53 /* VSideMenuViewController.xib */; };
 		0309318D1A18425B004E9781 /* VMenuCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 030931891A18425B004E9781 /* VMenuCollectionViewCell.m */; };
 		0309318E1A18425B004E9781 /* VMenuCollectionViewDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 0309318B1A18425B004E9781 /* VMenuCollectionViewDataSource.m */; };
 		030931901A18426E004E9781 /* VMenuCollectionViewDataSourceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0309318F1A18426E004E9781 /* VMenuCollectionViewDataSourceTests.m */; };
@@ -763,6 +764,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0308B0C81AB0DA1D00144E53 /* VSideMenuViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VSideMenuViewController.xib; sourceTree = "<group>"; };
 		030931881A18425B004E9781 /* VMenuCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMenuCollectionViewCell.h; sourceTree = "<group>"; };
 		030931891A18425B004E9781 /* VMenuCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMenuCollectionViewCell.m; sourceTree = "<group>"; };
 		0309318A1A18425B004E9781 /* VMenuCollectionViewDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMenuCollectionViewDataSource.h; sourceTree = "<group>"; };
@@ -2561,8 +2563,6 @@
 			isa = PBXGroup;
 			children = (
 				030931871A18425B004E9781 /* Menu */,
-				D87D70911A97C9EC002D4FED /* VTabMenuViewController.h */,
-				D87D70921A97C9EC002D4FED /* VTabMenuViewController.m */,
 				037FCF0B1A8B182A00E8ABFC /* VDeeplinkHandler.h */,
 				037FCF111A8DAF0E00E8ABFC /* VHamburgerButton.h */,
 				037FCF121A8DAF0E00E8ABFC /* VHamburgerButton.m */,
@@ -2583,6 +2583,9 @@
 				0358FCED1A65E785004DD7A1 /* VScaffoldViewController.m */,
 				0314D3ED19B46B5E00FA363C /* VSideMenuViewController.h */,
 				0314D3EE19B46B5E00FA363C /* VSideMenuViewController.m */,
+				0308B0C81AB0DA1D00144E53 /* VSideMenuViewController.xib */,
+				D87D70911A97C9EC002D4FED /* VTabMenuViewController.h */,
+				D87D70921A97C9EC002D4FED /* VTabMenuViewController.m */,
 			);
 			path = "Root View";
 			sourceTree = "<group>";
@@ -4959,6 +4962,7 @@
 				036F38671A0C4DEA0014DF66 /* Bitter-Bold.ttf in Resources */,
 				D8D8958B19E88D5500632663 /* VExperienceEnhancerBarCell.xib in Resources */,
 				0390086E19F39F9900FD7EDF /* VMessageCell.xib in Resources */,
+				0308B0C91AB0DA1D00144E53 /* VSideMenuViewController.xib in Resources */,
 				D8D945F31A2E88510089D271 /* Workspace.storyboard in Resources */,
 				A7A390CA1A3257A300709812 /* ContentView.storyboard in Resources */,
 				A7D707A21A7C145E00D9993F /* EndCard.storyboard in Resources */,

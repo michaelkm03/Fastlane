@@ -37,15 +37,20 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
 
 @implementation VScaffoldViewController
 
-- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
+- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager nibName:(NSString *)nibName
 {
-    self = [super initWithNibName:nil bundle:nil];
+    self = [super initWithNibName:nibName bundle:nil];
     if ( self != nil )
     {
         _dependencyManager = dependencyManager;
         _menuViewController = [dependencyManager viewControllerForKey:VScaffoldViewControllerMenuComponentKey];
     }
     return self;
+}
+
+- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    return [self initWithDependencyManager:dependencyManager nibName:nil];
 }
 
 #pragma mark - Content View

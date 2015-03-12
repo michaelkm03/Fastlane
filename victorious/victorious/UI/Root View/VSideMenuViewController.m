@@ -24,7 +24,7 @@
 @interface VSideMenuViewController ()
 
 @property (strong, readwrite, nonatomic) VDependencyManager *dependencyManager;
-@property (strong, readwrite, nonatomic) UIImageView *backgroundImageView;
+@property (strong, readwrite, nonatomic) IBOutlet UIImageView *backgroundImageView;
 @property (assign, readwrite, nonatomic) BOOL visible;
 @property (assign, readwrite, nonatomic) CGPoint originalPoint;
 @property (strong, readwrite, nonatomic) UIButton *contentButton;
@@ -36,9 +36,9 @@
 
 #pragma mark - Initializers
 
-- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
+- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager nibName:(NSString *)nibName
 {
-    self = [super initWithDependencyManager:dependencyManager];
+    self = [super initWithDependencyManager:dependencyManager nibName:nibName];
     if ( self != nil )
     {
         _animationDuration = 0.35f;
@@ -82,17 +82,21 @@
     }
 }
 
+- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    return [self initWithDependencyManager:dependencyManager nibName:NSStringFromClass([VSideMenuViewController class])];
+}
+
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)loadView
+- (void)viewDidLoad
 {
-    self.view = [[UIView alloc] init];
-
     self.backgroundImage = [[[VThemeManager sharedThemeManager] themedBackgroundImageForDevice]
                             applyBlurWithRadius:25 tintColor:[UIColor colorWithWhite:0.0 alpha:0.75] saturationDeltaFactor:1.8 maskImage:nil];
+    self.backgroundImageView.image = self.backgroundImage;
     
     self.contentViewController = [[VNavigationController alloc] initWithDependencyManager:self.dependencyManager];
     
@@ -110,39 +114,11 @@
         _contentViewInPortraitOffsetCenterX  = CGRectGetWidth(self.view.frame) + 30.f;
     }
     
-    self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    self.backgroundImageView = ({
-        UIImageView *imageView = [[UIImageView alloc] init];
-        imageView.image = self.backgroundImage;
-        imageView.contentMode = UIViewContentModeScaleToFill;
-        imageView;
-    });
     self.contentButton = ({
         UIButton *button = [[UIButton alloc] initWithFrame:CGRectNull];
         [button addTarget:self action:@selector(hideMenuViewController) forControlEvents:UIControlEventTouchUpInside];
         button;
     });
-    
-    [self.view addSubview:self.backgroundImageView];
-    self.backgroundImageView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.backgroundImageView addConstraint:[NSLayoutConstraint constraintWithItem:self.backgroundImageView
-                                                                        attribute:NSLayoutAttributeHeight
-                                                                        relatedBy:NSLayoutRelationEqual
-                                                                           toItem:self.backgroundImageView
-                                                                        attribute:NSLayoutAttributeWidth
-                                                                       multiplier:(16.0f / 9.0f)
-                                                                         constant:0.0f]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[backgroundImageView]|"
-                                                                      options:0
-                                                                      metrics:nil
-                                                                        views:@{ @"backgroundImageView": self.backgroundImageView }]];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.backgroundImageView
-                                                          attribute:NSLayoutAttributeTop
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.view
-                                                          attribute:NSLayoutAttributeTop
-                                                         multiplier:1.0f
-                                                           constant:0.0f]];
     
     [self addChildViewController:self.menuViewController];
     self.menuViewController.view.frame = self.view.bounds;
