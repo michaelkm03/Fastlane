@@ -13,9 +13,6 @@
 /* No Filter filter name. */
 "#nofilter" = "#nofilter";
 
-/* No comment provided by engineer. */
-"%@ %@" = "%1$@ %2$@";
-
 /* Number and symbol meaning \"more than\", e.g. \"99+ items\". (%ld is a placeholder for a number) */
 "%ld+" = "%ld+";
 
@@ -268,9 +265,6 @@
 /* No comment provided by engineer. */
 "HoursAgo" = "%dh";
 
-/* (No Commment) */
-"ITEMS" = "ARTICLES";
-
 /* No comment provided by engineer. */
 "ImageDownloadFailed" = "Échec de téléchargement de l'image.";
 
@@ -477,6 +471,12 @@
 
 /* No comment provided by engineer. */
 "Now" = "Maintenant";
+
+/* No comment provided by engineer. */
+"NumItems" = "%@ ARTICLES";
+
+/* No comment provided by engineer. */
+"NumStreams" = "%@ FLUX";
 
 /* No comment provided by engineer. */
 "OK" = "OK";
@@ -908,6 +908,9 @@
 "multipleRepostedByFormat" = "Republié par %@ + %lu autres";
 
 /* No comment provided by engineer. */
+"no results" = "aucun résultat";
+
+/* No comment provided by engineer. */
 "ok" = "OK";
 
 /* No comment provided by engineer. */
@@ -915,4 +918,10 @@
 
 /* No comment provided by engineer. */
 "repostedByFormat" = "Republié par %@";
+
+/* No comment provided by engineer. */
+"search for users" = "rechercher des utilisateurs";
+
+/* No comment provided by engineer. */
+"searching" = "recherche en cours";
 
