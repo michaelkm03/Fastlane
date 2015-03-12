@@ -94,6 +94,8 @@
 
 - (void)viewDidLoad
 {
+    [super viewDidLoad];
+    
     self.backgroundImage = [[[VThemeManager sharedThemeManager] themedBackgroundImageForDevice]
                             applyBlurWithRadius:25 tintColor:[UIColor colorWithWhite:0.0 alpha:0.75] saturationDeltaFactor:1.8 maskImage:nil];
     self.backgroundImageView.image = self.backgroundImage;
