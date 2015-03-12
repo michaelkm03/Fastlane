@@ -16,7 +16,7 @@ static NSString * const kToolsKey = @"tools";
 
 - (NSArray /* VWorkspaceTool */ *)workspaceTools
 {
-    return [self arrayOfValuesOfType:[NSObject class] forKey:kToolsKey];
+    return [self arrayOfValuesConformingToProtocol:@protocol(VWorkspaceTool) forKey:kToolsKey];
 }
 
 @end
