@@ -60,7 +60,7 @@
     
     UIView *tableView = self.conversationTableViewController.view;
     id topConstraintView = (id)self.topConstraintView ?: self.topLayoutGuide;
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[topConstraintView][tableView]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(topConstraintView, tableView, keyboardView)]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[topConstraintView][tableView]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(topConstraintView, tableView)]];
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[tableView]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(tableView)]];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:tableView
                                                           attribute:NSLayoutAttributeHeight
@@ -81,9 +81,9 @@
     self.automaticallyAdjustsScrollViewInsets = NO;
 }
 
-- (void)viewDidAppear:(BOOL)animated
+- (void)viewWillAppear:(BOOL)animated
 {
-    [super viewDidAppear:animated];
+    [super viewWillAppear:animated];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardFrameChanged:) name:UIKeyboardWillChangeFrameNotification object:nil];
 }
 
@@ -132,7 +132,7 @@
                         options:(animationCurve << 16)
                      animations:^
     {
-        CGFloat keyboardHeight = CGRectGetHeight(keyboardEndFrame);
+        CGFloat keyboardHeight = CGRectGetHeight(self.view.bounds) - CGRectGetMinY(keyboardEndFrame);
         UITableView *tableView = self.conversationTableViewController.tableView;
         CGFloat offset = tableView.contentOffset.y + keyboardHeight;
         CGFloat tableHeight = CGRectGetHeight(tableView.bounds);

@@ -61,6 +61,7 @@
 {
     [super viewWillAppear:animated];
     VMessageViewController *messageVC = (VMessageViewController *)self.conversationTableViewController;
+    [self setEdgesForExtendedLayout:UIRectEdgeAll];
     NSString *name =  messageVC.otherUser.name ?: @"Message";
     if ( !self.presentingFromProfile )
     {
