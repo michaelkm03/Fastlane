@@ -10,6 +10,7 @@
 
 @interface VTextBackgroundView : UITextView
 
+@property (nonatomic, strong) UIColor *backgroundFrameColor;
 @property (nonatomic, strong) NSArray *backgroundFrames;
 
 @end

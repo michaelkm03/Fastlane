@@ -25,7 +25,7 @@
     {
         CGRect frame = [value CGRectValue];
         CGContextAddRect( context, frame );
-        CGContextSetFillColorWithColor( context, [UIColor redColor].CGColor );
+        CGContextSetFillColorWithColor( context, self.backgroundFrameColor.CGColor );
         CGContextFillRect( context, frame );
     }
 }

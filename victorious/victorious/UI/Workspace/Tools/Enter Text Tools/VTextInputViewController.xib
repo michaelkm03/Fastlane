@@ -17,31 +17,32 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Iit-g5-QVM" customClass="VTextBackgroundView">
-                    <rect key="frame" x="11" y="220" width="580" height="160"/>
-                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.089999999999999997" colorSpace="calibratedRGB"/>
-                </view>
-                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EdJ-vJ-rzg">
+                <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Iit-g5-QVM" customClass="VTextBackgroundView">
                     <rect key="frame" x="10" y="220" width="580" height="160"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    <constraints>
-                        <constraint firstAttribute="height" priority="1" constant="183" id="IwX-mm-Xrb"/>
-                    </constraints>
-                    <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</string>
-                    <color key="textColor" red="0.51911695079999998" green="0.51911695079999998" blue="0.51911695079999998" alpha="1" colorSpace="calibratedRGB"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="30"/>
-                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences" keyboardAppearance="alert" returnKeyType="done"/>
-                </textView>
+                    <subviews>
+                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EdJ-vJ-rzg">
+                            <rect key="frame" x="0.0" y="0.0" width="580" height="160"/>
+                            <color key="backgroundColor" white="1" alpha="0.089999999999999997" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="height" priority="1" constant="160" id="wNN-c2-9ki"/>
+                            </constraints>
+                            <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</string>
+                            <color key="textColor" red="0.51911695079999998" green="0.51911695079999998" blue="0.51911695079999998" alpha="1" colorSpace="calibratedRGB"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences" keyboardAppearance="alert" returnKeyType="next"/>
+                            <connections>
+                                <outlet property="delegate" destination="-1" id="qvi-UH-K6A"/>
+                            </connections>
+                        </textView>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="0.089999999999999997" colorSpace="calibratedWhite"/>
+                </view>
             </subviews>
-            <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="EdJ-vJ-rzg" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="10" id="5Wx-6U-aDk"/>
-                <constraint firstItem="EdJ-vJ-rzg" firstAttribute="centerX" secondItem="Iit-g5-QVM" secondAttribute="centerX" constant="-1" id="FQD-Bv-0x0"/>
-                <constraint firstItem="EdJ-vJ-rzg" firstAttribute="centerY" secondItem="Iit-g5-QVM" secondAttribute="centerY" id="Kiu-v6-wpk"/>
-                <constraint firstAttribute="trailing" secondItem="EdJ-vJ-rzg" secondAttribute="trailing" constant="10" id="Qrn-yo-Oy4"/>
-                <constraint firstAttribute="centerY" secondItem="EdJ-vJ-rzg" secondAttribute="centerY" constant="0.5" id="dem-nw-x8e"/>
-                <constraint firstItem="EdJ-vJ-rzg" firstAttribute="width" secondItem="Iit-g5-QVM" secondAttribute="width" id="eew-Dk-ngH"/>
-                <constraint firstItem="EdJ-vJ-rzg" firstAttribute="height" secondItem="Iit-g5-QVM" secondAttribute="height" id="kBc-rY-gfU"/>
+                <constraint firstAttribute="centerY" secondItem="Iit-g5-QVM" secondAttribute="centerY" id="FOb-w5-kAJ"/>
+                <constraint firstItem="Iit-g5-QVM" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="10" id="QB8-wH-aH0"/>
+                <constraint firstAttribute="trailing" secondItem="Iit-g5-QVM" secondAttribute="trailing" constant="10" id="aB5-V4-o0L"/>
             </constraints>
             <point key="canvasLocation" x="774" y="689"/>
         </view>

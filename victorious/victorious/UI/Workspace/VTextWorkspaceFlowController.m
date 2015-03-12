@@ -44,10 +44,7 @@
 
 - (NSString *)randomSampleText
 {
-    NSArray *randomText = @[ @"Here is my sample text!  222 ",
-                             @"Here is my sample text that should span onto two lines. 2 2 2",
-                             @"Here is my sample text that is quite long and is intended to span onto at least three lines so we can see how it looks." ];
-    return randomText[ arc4random() % randomText.count ];
+    return @"Here is my sample text that is quite long and is intended to span onto at least three lines so we can see how it looks.";
 }
 
 #pragma mark - Property Accessors

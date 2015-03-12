@@ -11,11 +11,15 @@
 #import "VTextBackgroundView.h"
 #import "VDependencyManager.h"
 
-@interface VTextInputViewController ()
+static const CGFloat kTextLineHeight = 35.0f;
+static const CGFloat kTextBaselineOffsetMultiplier = 0.371f;
+static const NSUInteger kMaxTextLength = 200;
+
+@interface VTextInputViewController () <UITextViewDelegate>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
-@property (nonatomic, weak) IBOutlet VTextLayoutHelper *textLayoutHelper;
+@property (nonatomic, strong) IBOutlet VTextLayoutHelper *textLayoutHelper;
 
 @property (nonatomic, weak) IBOutlet UITextView *textView;
 @property (nonatomic, weak) IBOutlet VTextBackgroundView *backgroundView;
@@ -38,23 +42,35 @@
 {
     _text = text;
     
-    NSDictionary *attributes = [self.textLayoutHelper textAttributesWithDependencyManager:self.dependencyManager];
-    
+    NSDictionary *attributes = [self textAttributesWithDependencyManager:self.dependencyManager];
     self.textView.attributedText = [[NSAttributedString alloc] initWithString:text attributes:attributes];
     
-    NSArray *textLines = [self.textLayoutHelper textLinesFromText:text
+    [self updateTextBackground];
+}
+
+- (void)updateTextBackground
+{
+    NSLog( @"%@", self.textLayoutHelper );
+    
+    NSDictionary *attributes = [self textAttributesWithDependencyManager:self.dependencyManager];
+    
+    [self.textView layoutIfNeeded];
+    NSArray *textLines = [self.textLayoutHelper textLinesFromText:self.textView.attributedText.string
                                                    withAttributes:attributes
-                                                         maxWidth:CGRectGetWidth(self.view.frame)-20];
+                                                         maxWidth:CGRectGetWidth(self.textView.frame)];
     
     NSMutableArray *backgroundFrames = [[NSMutableArray alloc] init];
+    CGFloat offset = kTextBaselineOffsetMultiplier * kTextLineHeight;
     NSUInteger y = 0;
     for ( NSString *line in textLines )
     {
         CGSize size = [line sizeWithAttributes:attributes];
-        CGRect rect = CGRectMake( 0, 6 + (y++) * (size.height + 2), CGRectGetWidth(self.view.frame)-20, size.height );
+        CGFloat width = [line isEqual:textLines.lastObject] ? size.width : CGRectGetWidth(self.view.frame);
+        CGRect rect = CGRectMake( 0, offset + (y++) * (size.height + 2), width, size.height );
         [backgroundFrames addObject:[NSValue valueWithCGRect:rect]];
     }
     
+    self.backgroundView.backgroundFrameColor = [UIColor whiteColor];
     self.backgroundView.backgroundFrames = backgroundFrames;
 }
 
@@ -64,22 +80,38 @@
 {
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     paragraphStyle.alignment = NSTextAlignmentLeft;
-    paragraphStyle.lineSpacing = 60.0f;
+    paragraphStyle.minimumLineHeight = paragraphStyle.maximumLineHeight = kTextLineHeight;
     
     return @{ NSFontAttributeName: [dependencyManager fontForKey:@"font.heading2"],
               NSForegroundColorAttributeName: [dependencyManager colorForKey:@"color.text.content"],
-              NSParagraphStyleAttributeName : paragraphStyle };
+              NSParagraphStyleAttributeName: paragraphStyle };
 }
 
 - (NSDictionary *)hashtagTextAttributesWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     paragraphStyle.alignment = NSTextAlignmentLeft;
-    paragraphStyle.lineSpacing = 60.0f;
+    paragraphStyle.minimumLineHeight = paragraphStyle.maximumLineHeight = kTextLineHeight;
     
     return @{ NSFontAttributeName: [dependencyManager fontForKey:@"font.heading2"],
               NSForegroundColorAttributeName: [dependencyManager colorForKey:@"color.link"],
-              NSParagraphStyleAttributeName : paragraphStyle };
+              NSParagraphStyleAttributeName: paragraphStyle };
+}
+
+#pragma mark - UITextViewDelegate
+
+- (void)textViewDidChange:(UITextView *)textView
+{
+    [self updateTextBackground];
+}
+
+- (void)textViewDidEndEditing:(UITextView *)textView
+{
+}
+
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    return ![text isEqualToString:@"\n"] && textView.text.length + text.length < kMaxTextLength;
 }
 
 @end
