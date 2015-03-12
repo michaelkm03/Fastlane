@@ -5,39 +5,31 @@
 	<key>CFBundleDisplayName</key>
 	<string>${ProductPrefix}BeautyLiciousInsider</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.getvictorious.${ProductPrefix}BeautyLiciousInsider</string>
+	<string>com.getvictorious.${ProductPrefix}beautyliciousinsider</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
-			<key>CFBundleURLName</key>
-			<string>com.getvictorious.deeplinking.scheme</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>${ProductPrefix}beautyliciousinsider</string>
-			</array>
-		</dict>
-		<dict>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>fb1374328719478033</string>
+				<string>fb1620694648150736</string>
 			</array>
 		</dict>
 	</array>
 	<key>FacebookAppID</key>
-	<string>1374328719478033</string>
+	<string>1620694648150736</string>
 	<key>FacebookDisplayName</key>
 	<string>VictoriousApp Dev</string>
-	<key>TestflightReleaseAppToken</key>
-	<string>2e93ee23-5bd0-4f14-916f-433c4617bf0b</string>
-	<key>TestflightQAAppToken</key>
-	<string>3ed23edd-4d74-4b55-bfd4-a045100e4ebb</string>
-	<key>TestflightStagingAppToken</key>
-	<string>d3a88616-27ed-4b49-9511-ce65599ca590</string>
 	<key>VictoriousAppID</key>
-	<integer>7</integer>
+	<integer>30</integer>
 	<key>StagingAppID</key>
-	<integer>22</integer>
+	<integer>44</integer>
 	<key>QAAppID</key>
-	<integer>0</integer>
+	<integer>28</integer>
+	<key>GAID</key>
+	<string></string>
+	<key>CreatorSalutation</key>
+	<string>TBD</string>
+	<key>FlurryAPIKey</key>
+	<string>XXXXXXXXXX</string>
 </dict>
 </plist>
