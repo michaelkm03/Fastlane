@@ -131,6 +131,22 @@ extern NSString * const VDependencyManagerVideoWorkspaceKey;
 - (NSArray *)arrayOfSingletonValuesOfType:(Class)expectedType forKey:(NSString *)key;
 
 /**
+ Returns an NSArray with the specified key. The array
+ will be filtered for objects conforming to the
+ specified protocol.
+ */
+- (NSArray *)arrayOfValuesConformingToProtocol:(Protocol *)protocol forKey:(NSString *)key;
+
+/**
+ Returns an NSArray with the specified key. The array
+ will be filtered for objects conforming to the
+ specified protocol. If any of the array elements have
+ been previously returned, the previous value will
+ be returned again.
+ */
+- (NSArray *)arrayOfSingletonValuesConformingToProtocol:(Protocol *)protocol forKey:(NSString *)key;
+
+/**
  Returns the value stored for the specified key in the configuration
  dictionary of this instance, if present, or the closest ancestor.
  

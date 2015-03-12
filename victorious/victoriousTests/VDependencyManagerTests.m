@@ -259,23 +259,25 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
 - (void)testArraysOfNSObjects
 {
     NSArray *array = [self.dependencyManager arrayOfValuesOfType:[NSObject class] forKey:@"arrayOfObjects"];
-    XCTAssertEqual(array.count, 4u);
+    XCTAssertEqual(array.count, 5u);
     
     XCTAssert([array[0] isKindOfClass:[VTestViewControllerWithNewMethod class]]);
     XCTAssert([array[1] isKindOfClass:[VTestViewControllerWithNewMethod class]]);
     XCTAssert([array[2] isKindOfClass:[VTestViewControllerWithInitMethod class]]);
     XCTAssert([array[3] isKindOfClass:[VTestViewControllerWithNewMethod class]]);
+    XCTAssert([array[4] isKindOfClass:[VTestViewControllerWithInitMethod class]]);
 }
 
 - (void)testArraysOfSingletonNSObjects
 {
     NSArray *array = [self.dependencyManager arrayOfSingletonValuesOfType:[NSObject class] forKey:@"arrayOfObjects"];
-    XCTAssertEqual(array.count, 4u);
+    XCTAssertEqual(array.count, 5u);
     
     XCTAssert([array[0] isKindOfClass:[VTestViewControllerWithNewMethod class]]);
     XCTAssert([array[1] isKindOfClass:[VTestViewControllerWithNewMethod class]]);
     XCTAssert([array[2] isKindOfClass:[VTestViewControllerWithInitMethod class]]);
     XCTAssert([array[3] isKindOfClass:[VTestViewControllerWithNewMethod class]]);
+    XCTAssert([array[4] isKindOfClass:[VTestViewControllerWithInitMethod class]]);
 }
 
 #pragma mark - Strings, numbers, arrays
@@ -362,6 +364,27 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
     
     VTestViewControllerWithNewMethod *otherSingletonReference = (VTestViewControllerWithNewMethod *)[self.dependencyManager singletonViewControllerForKey:@"otherNVC"];
     XCTAssertEqual(otherArray[2], otherSingletonReference);
+}
+
+- (void)testArrayOfProtocols
+{
+    NSArray *array = [self.dependencyManager arrayOfValuesConformingToProtocol:@protocol(VTestProtocol) forKey:@"arrayOfObjects"];
+    XCTAssertEqual(array.count, 2u);
+    XCTAssert([array[0] conformsToProtocol:@protocol(VTestProtocol)]);
+    XCTAssert([array[1] conformsToProtocol:@protocol(VTestProtocol)]);
+}
+
+- (void)testSingletonArrayOfProtocols
+{
+    NSArray *array = [self.dependencyManager arrayOfSingletonValuesConformingToProtocol:@protocol(VTestProtocol) forKey:@"arrayOfObjects"];
+    XCTAssertEqual(array.count, 2u);
+    XCTAssert([array[0] conformsToProtocol:@protocol(VTestProtocol)]);
+    XCTAssert([array[1] conformsToProtocol:@protocol(VTestProtocol)]);
+
+    NSArray *otherArray = [self.dependencyManager arrayOfSingletonValuesConformingToProtocol:@protocol(VTestProtocol) forKey:@"arrayOfObjects"];
+    XCTAssertEqual(otherArray.count, 2u);
+    XCTAssertEqual(array[0], otherArray[0]);
+    XCTAssertEqual(array[1], otherArray[1]);
 }
 
 #pragma mark - Images

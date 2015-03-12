@@ -18,6 +18,7 @@
     "app_store_url": "https:\/\/itunes.apple.com\/us\/app\/id889351747",
     "ivc": {
         "name": "testInitMethod",
+        "id": "508c4beb-bb1a-4384-9f38-6200b32b8485",
         "inner": {
             "name": "testNewMethod",
             "app_store_url": "http:\/\/example.com\/"
@@ -61,6 +62,9 @@
         },
         {
             "referenceID": "ae742d8a-aaea-43db-b99a-707d72b147cb"
+        },
+        {
+            "referenceID": "508c4beb-bb1a-4384-9f38-6200b32b8485"
         }
     ],
     "otherNVC": {
