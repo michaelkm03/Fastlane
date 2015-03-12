@@ -122,7 +122,7 @@
 "OwnerShareImageFormat" =   "Check out this photo by %@!";//Check out this photo by <creator>! <URL>
 "UGCSharePollFormat"    =   "Check out this poll!";       //Check out this poll! <URL>
 "UGCShareVideoFormat"   =   "Check out this video!";      //Check out this video! <URL>
-"UGCShareGIFFormat"     =   "Check out this GIF!";        //Check out this GIF! <URL>
+"UGCShareGIFFormat"     =   "Check out this gif!";        //Check out this gif! <URL>
 "UGCShareImageFormat"   =   "Check out this photo!";      //Check out this photo! <URL>
 "EmailShareSubjectFormat"   =   "Check out this post from the %@ app!"; //Check out this post from the <creator name> app!
 
