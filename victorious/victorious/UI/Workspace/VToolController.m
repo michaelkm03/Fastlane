@@ -112,7 +112,7 @@
                            image = [UIImage imageWithCGImage:imageRef];
                            CGImageRelease(imageRef);
                        }
-                       if (!image)
+                       if (image != nil)
                        {
                            return;
                        }
