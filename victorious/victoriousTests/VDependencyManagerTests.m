@@ -16,10 +16,20 @@ static NSString * const kTestViewControllerInitMethodTemplateName = @"testInitMe
 static NSString * const kTestViewControllerNewMethodTemplateName = @"testNewMethod";
 static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
 
+#pragma mark - VTestProtocol
+
+@protocol VTestProtocol <NSObject>
+
+@required
+- (void)testMethod;
+
+@end
+
 #pragma mark - VTestViewControllerWithInitMethod
 
-@interface VTestViewControllerWithInitMethod : UIViewController <VHasManagedDependancies>
+@interface VTestViewControllerWithInitMethod : UIViewController <VHasManagedDependancies, VTestProtocol>
 
+@property (nonatomic, readonly) VDependencyManager *dependencyManager;
 @property (nonatomic) BOOL calledInitMethod;
 
 @end
@@ -32,8 +42,13 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
     if (self)
     {
         _calledInitMethod = YES;
+        _dependencyManager = dependencyManager;
     }
     return self;
+}
+
+- (void)testMethod
+{
 }
 
 @end
@@ -185,6 +200,34 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
     VTestObjectWithProperty *obj = [self.dependencyManager templateValueOfType:[VTestObjectWithProperty class] forKey:@"testProp"];
     XCTAssert([obj isKindOfClass:[VTestObjectWithProperty class]]);
     XCTAssertNotNil(obj.dependencyManager);
+}
+
+#pragma mark - Protocols
+
+- (void)testValueConformingToProtocol
+{
+    id<VTestProtocol> viewController = [self.dependencyManager templateValueConformingToProtocol:@protocol(VTestProtocol) forKey:@"ivc"];
+    XCTAssert([viewController isKindOfClass:[VTestViewControllerWithInitMethod class]]);
+    XCTAssert([(VTestViewControllerWithInitMethod *)viewController calledInitMethod]);
+}
+
+- (void)testValueDoesNotConformToProtocol
+{
+    id viewController = [self.dependencyManager templateValueConformingToProtocol:@protocol(VTestProtocol) forKey:@"nvc"];
+    XCTAssertNil(viewController);
+}
+
+- (void)testValueConformingToProtocolWithExtraDependencies
+{
+    id<VTestProtocol> viewController = [self.dependencyManager templateValueConformingToProtocol:@protocol(VTestProtocol) forKey:@"ivc" withAddedDependencies:@{ @"hi": @"world" }];
+    XCTAssert([viewController isKindOfClass:[VTestViewControllerWithInitMethod class]]);
+    XCTAssertEqualObjects([[(VTestViewControllerWithInitMethod *)viewController dependencyManager] stringForKey:@"hi"], @"world");
+}
+
+- (void)testValueDoesNotConformToProtocolWithExtraDependencies
+{
+    id<VTestProtocol> viewController = [self.dependencyManager templateValueConformingToProtocol:@protocol(VTestProtocol) forKey:@"nvc" withAddedDependencies:@{ @"hi": @"world" }];
+    XCTAssertNil(viewController);
 }
 
 #pragma mark - Objects

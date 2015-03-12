@@ -152,6 +152,26 @@ extern NSString * const VDependencyManagerVideoWorkspaceKey;
 - (id)templateValueOfType:(Class)expectedType forKey:(NSString *)key withAddedDependencies:(NSDictionary *)dependencies;
 
 /**
+ Returns the value stored for the specified key in the configuration
+ dictionary of this instance, if present, or the closest ancestor.
+ 
+ @param expectedType if the value found at key does not conform 
+                     to this protocol, of class, we return nil.
+ */
+- (id)templateValueConformingToProtocol:(Protocol *)protocol forKey:(NSString *)key;
+
+/**
+ Returns the value stored for the specified key in the configuration
+ dictionary of this instance, if present, or the closest ancestor.
+ 
+ @param protocol If the value found at key does not conform to this protocol, we return nil.
+ @param dependencies If the returned object conforms to VHasManagedDependencies,
+                     a new instance of VDependencyManager will be provided to it, and these
+                     extra dependencies will be added to it.
+ */
+- (id)templateValueConformingToProtocol:(Protocol *)protocol forKey:(NSString *)key withAddedDependencies:(NSDictionary *)dependencies;
+
+/**
  Returns a singleton object stored for the specified key in the configuration
  dictionary of this instance, if present, or the closest ancestor.
  

@@ -389,28 +389,48 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
 
 - (id)templateValueOfType:(Class)expectedType forKey:(NSString *)key withAddedDependencies:(NSDictionary *)dependencies
 {
+    return [self templateValueWhereTypePassesTest:[self typeTestForType:expectedType]
+                                           forKey:key
+                            withAddedDependencies:dependencies];
+}
+
+- (id)templateValueConformingToProtocol:(Protocol *)protocol forKey:(NSString *)key
+{
+    return [self templateValueConformingToProtocol:protocol forKey:key withAddedDependencies:nil];
+}
+
+- (id)templateValueConformingToProtocol:(Protocol *)protocol forKey:(NSString *)key withAddedDependencies:(NSDictionary *)dependencies
+{
+    return [self templateValueWhereTypePassesTest:^(Class type) { return [type conformsToProtocol:protocol]; }
+                                           forKey:key
+                            withAddedDependencies:dependencies];
+}
+
+- (id)templateValueWhereTypePassesTest:(BOOL(^)(Class))typeTest forKey:(NSString *)key withAddedDependencies:(NSDictionary *)dependencies
+{
+    NSParameterAssert(typeTest != nil);
     id value = self.configuration[key];
     
     if (value == nil)
     {
-        return [self.parentManager templateValueOfType:expectedType forKey:key withAddedDependencies:dependencies];
+        return [self.parentManager templateValueWhereTypePassesTest:typeTest forKey:key withAddedDependencies:dependencies];
     }
     
     if ( [value isKindOfClass:[NSDictionary class]] && [(NSDictionary *)value objectForKey:kReferenceIDKey] != nil )
     {
         VDependencyManager *dependencyManager = [self childDependencyManagerForID:[(NSDictionary *)value objectForKey:kReferenceIDKey]];
-        return [self objectOfType:expectedType withDependencyManager:dependencyManager];
+        return [self objectWhereTypePassesTest:typeTest withDependencyManager:dependencyManager];
     }
-    else if ( [value isKindOfClass:[NSDictionary class]] && ![expectedType isSubclassOfClass:[NSDictionary class]] )
+    else if ( [value isKindOfClass:[NSDictionary class]] && !typeTest([NSDictionary class]) )
     {
         VDependencyManager *dependencyManager = [self childDependencyManagerForID:[value valueForKey:kIDKey]];
         if ( dependencies != nil )
         {
             dependencyManager = [dependencyManager childDependencyManagerWithAddedConfiguration:dependencies];
         }
-        return [self objectOfType:expectedType withDependencyManager:dependencyManager];
+        return [self objectWhereTypePassesTest:typeTest withDependencyManager:dependencyManager];
     }
-    else if ( [value isKindOfClass:expectedType] )
+    else if ( typeTest([value class]) )
     {
         return value;
     }
@@ -420,9 +440,15 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
 
 - (id)objectOfType:(Class)expectedType withDependencyManager:(VDependencyManager *)dependencyManager
 {
+    return [self objectWhereTypePassesTest:[self typeTestForType:expectedType] withDependencyManager:dependencyManager];
+}
+
+- (id)objectWhereTypePassesTest:(BOOL(^)(Class))typeTest withDependencyManager:(VDependencyManager *)dependencyManager
+{
+    NSParameterAssert(typeTest != nil);
     Class templateClass = [self classWithTemplateName:[dependencyManager stringForKey:kClassNameKey]];
     
-    if ([templateClass isSubclassOfClass:expectedType])
+    if (typeTest(templateClass))
     {
         id object;
         
@@ -447,6 +473,26 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
     }
     
     return nil;
+}
+
+/**
+ Returns a block that accepts a type and returns 
+ YES if that type matches an expected type
+ */
+- (BOOL(^)(Class))typeTestForType:(Class)expectedType
+{
+    return ^BOOL(Class type)
+    {
+        if ( [type isSubclassOfClass:[NSDictionary class]] )
+        {
+            // NSDictionary should only pass the test if it's explicitly asked for (i.e. if expectedType is NSObject and type is NSDictionary, we want to return NO)
+            return [expectedType isSubclassOfClass:[NSDictionary class]];
+        }
+        else
+        {
+            return [type isSubclassOfClass:expectedType];
+        }
+    };
 }
 
 #pragma mark - Helpers
