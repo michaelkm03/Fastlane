@@ -1,6 +1,6 @@
-/* Class = "IBUIButton"; normalTitle = "Send"; ObjectID = "Sf4-eg-OpA"; */
+/* Class = "UIButton"; normalTitle = "Send"; ObjectID = "Sf4-eg-OpA"; */
 "Sf4-eg-OpA.normalTitle" = "Enviar";
 
-/* Class = "IBUILabel"; text = "Placeholder"; ObjectID = "YZC-40-a60"; */
+/* Class = "UILabel"; text = "Placeholder"; ObjectID = "YZC-40-a60"; */
 "YZC-40-a60.text" = "Marcador de posición";
 

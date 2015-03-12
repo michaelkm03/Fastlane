@@ -780,6 +780,7 @@
 		0308B1001AB20B3100144E53 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/VNoContentView.strings; sourceTree = "<group>"; };
 		0308B1011AB20B3100144E53 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Main.strings; sourceTree = "<group>"; };
 		0308B1021AB20B3200144E53 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		0308B1111AB23A2B00144E53 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		030931881A18425B004E9781 /* VMenuCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMenuCollectionViewCell.h; sourceTree = "<group>"; };
 		030931891A18425B004E9781 /* VMenuCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMenuCollectionViewCell.m; sourceTree = "<group>"; };
 		0309318A1A18425B004E9781 /* VMenuCollectionViewDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMenuCollectionViewDataSource.h; sourceTree = "<group>"; };
@@ -5738,6 +5739,7 @@
 			children = (
 				034D1A6B1AAF5A8B00EB7B2D /* fr */,
 				0308B1021AB20B3200144E53 /* de */,
+				0308B1111AB23A2B00144E53 /* es */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
