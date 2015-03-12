@@ -10,6 +10,7 @@
                 <outlet property="buttonImageSearch" destination="Efv-dp-XtU" id="kkC-PE-HKa"/>
                 <outlet property="textContainerView" destination="pEp-Rf-r0e" id="gu5-c4-hxD"/>
                 <outlet property="textContainerViewHeightConstraint" destination="OYU-5A-Sv1" id="bBQ-HO-vfF"/>
+                <outlet property="textLayoutHelper" destination="Xgp-au-Bd8" id="QPJ-cC-vCu"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -61,6 +62,7 @@
             <nil key="simulatedStatusBarMetrics"/>
             <nil key="simulatedTopBarMetrics"/>
         </view>
+        <customObject id="Xgp-au-Bd8" customClass="VTextLayoutHelper"/>
     </objects>
     <resources>
         <image name="textCamera" width="21" height="17"/>

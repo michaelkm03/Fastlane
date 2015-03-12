@@ -33,6 +33,7 @@ static NSString * const kClassNameKey = @"name";
 static NSString * const kItemsKey = @"items";
 static NSString * const kTitleKey = @"title";
 static NSString * const kIconKey = @"icon";
+static NSString * const kIconSelectedKey = @"iconSelected";
 static NSString * const kIdentifierKey = @"identifier";
 static NSString * const kDestinationKey = @"destination";
 
@@ -231,7 +232,21 @@ static NSString * const kVideoMuted = @"videoMuted";
 {
     return @{
              kClassNameKey: @"workspaceText",
-             VDependencyManagerTextWorkspaceKey: [self textWorkspaceComponent]
+             VDependencyManagerEnterTextWorkspaceKey: @{
+                     kClassNameKey: @"workspace.screen",
+                     kToolsKey: @[
+                             @{
+                                 kClassNameKey: @"enterText.tool"
+                                 }
+                             ]
+                     },
+             VDependencyManagerEditTextWorkspaceKey: @{
+                     kClassNameKey: @"workspace.screen",
+                     kToolsKey: @[
+                             [self hashtagTool],
+                             [self colorTool]
+                             ]
+                     },
              };
 }
 
@@ -282,23 +297,18 @@ static NSString * const kVideoMuted = @"videoMuted";
              };
 }
 
-- (NSDictionary *)textWorkspaceComponent
-{
-    return @{
-             kClassNameKey: @"workspace.screen",
-             kToolsKey: @[
-                     [self hashtagTool],
-                     [self colorTool]
-                     ]
-             };
-}
-
 - (NSDictionary *)hashtagTool
 {
     return @{
              kClassNameKey: @"hashtag.tool",
              kTitleKey: @"hashtag",
              kFilterIndexKey: @0,
+             kIconKey: @{
+                     VDependencyManagerImageURLKey: @"hashtagIcon",
+                     },
+             kIconSelectedKey: @{
+                     VDependencyManagerImageURLKey: @"hashtagIcon_selected",
+                     },
              kPickerKey:
                  @{
                      kClassNameKey: @"vertical.picker",
@@ -312,6 +322,12 @@ static NSString * const kVideoMuted = @"videoMuted";
              kClassNameKey: @"textColor.tool",
              kTitleKey: @"color",
              kFilterIndexKey: @1,
+             kIconKey: @{
+                     VDependencyManagerImageURLKey: @"textColorIcon",
+                     },
+             kIconSelectedKey: @{
+                     VDependencyManagerImageURLKey: @"textColorIcon_selected",
+                     },
              kPickerKey:
                  @{
                      kClassNameKey: @"vertical.picker",

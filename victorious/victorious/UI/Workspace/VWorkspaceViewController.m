@@ -119,24 +119,14 @@
                                                   placeholderImage:nil
                                                          tintColor:[[UIColor blackColor] colorWithAlphaComponent:0.5f]];
     
-    NSMutableArray *toolBarItems = [[NSMutableArray alloc] init];
-    UIBarButtonItem *spaceLeft = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-    spaceLeft.tag = -1;
-    [toolBarItems addObject:spaceLeft];
+    NSMutableArray *barButtonItemsForTools = [[NSMutableArray alloc] init];
     
     NSMutableDictionary *barButtonItemForToolMap = [[NSMutableDictionary alloc] init];
     NSMutableDictionary *toolForBarButtonItemMap = [[NSMutableDictionary alloc] init];
     [self.toolController.tools enumerateObjectsUsingBlock:^(id <VWorkspaceTool> tool, NSUInteger idx, BOOL *stop)
     {
         UIBarButtonItem *itemForTool;
-        if (![tool respondsToSelector:@selector(icon)] || tool.icon == nil)
-        {
-            itemForTool = [[UIBarButtonItem alloc] initWithTitle:tool.title
-                                                           style:UIBarButtonItemStylePlain
-                                                          target:self
-                                                          action:@selector(selectedBarButtonItem:)];
-        }
-        else
+        if ( [tool respondsToSelector:@selector(icon)] && tool.icon != nil )
         {
             itemForTool = [[UIBarButtonItem alloc] initWithImage:[tool icon]
                                                            style:UIBarButtonItemStylePlain
@@ -144,33 +134,63 @@
                                                           action:@selector(selectedBarButtonItem:)];
             [itemForTool setBackButtonBackgroundImage:[tool icon] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
         }
-        itemForTool.tag = idx;
-        
-        itemForTool.tintColor = [UIColor whiteColor];
-        [toolBarItems addObject:itemForTool];
-        itemForTool.tag = idx;
-        
-        [barButtonItemForToolMap setObject:itemForTool
-                                    forKey:[tool description]];
-        [toolForBarButtonItemMap setObject:tool
-                                    forKey:[itemForTool description]];
-        
-        if (tool != self.toolController.tools.lastObject)
+        if ( [tool respondsToSelector:@selector(title)] && tool.title != nil )
         {
-            UIBarButtonItem *fixedSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
-                                                                                        target:nil
-                                                                                        action:nil];
-            fixedSpace.width = 20.0f;
-            [toolBarItems addObject:fixedSpace];
+            itemForTool = [[UIBarButtonItem alloc] initWithTitle:tool.title
+                                                           style:UIBarButtonItemStylePlain
+                                                          target:self
+                                                          action:@selector(selectedBarButtonItem:)];
+        }
+        
+        if ( itemForTool != nil )
+        {
+            itemForTool.tag = idx;
+            
+            itemForTool.tintColor = [UIColor whiteColor];
+            [barButtonItemsForTools addObject:itemForTool];
+            itemForTool.tag = idx;
+            
+            [barButtonItemForToolMap setObject:itemForTool
+                                        forKey:[tool description]];
+            [toolForBarButtonItemMap setObject:tool
+                                        forKey:[itemForTool description]];
+            
+            if (tool != self.toolController.tools.lastObject)
+            {
+                UIBarButtonItem *fixedSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
+                                                                                            target:nil
+                                                                                            action:nil];
+                fixedSpace.width = 20.0f;
+                [barButtonItemsForTools addObject:fixedSpace];
+            }
         }
     }];
-    self.toolForBarButtonItemMap = toolForBarButtonItemMap;
-    self.barButtonItemForToolMap = barButtonItemForToolMap;
     
-    UIBarButtonItem *spaceRight = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-    spaceRight.tag = -1;
-    [toolBarItems addObject:spaceRight];
-    self.bottomToolbar.items = toolBarItems;
+    if ( barButtonItemsForTools.count > 0 )
+    {
+        self.toolForBarButtonItemMap = toolForBarButtonItemMap;
+        self.barButtonItemForToolMap = barButtonItemForToolMap;
+        
+        NSMutableArray *toolBarItems = [[NSMutableArray alloc] init];
+        UIBarButtonItem *spaceLeft = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+        spaceLeft.tag = -1;
+        [toolBarItems addObject:spaceLeft];
+        
+        [barButtonItemsForTools enumerateObjectsUsingBlock:^(UIBarButtonItem *item, NSUInteger idx, BOOL *stop)
+         {
+             [toolBarItems addObject:item];
+         }];
+        
+        UIBarButtonItem *spaceRight = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+        spaceRight.tag = -1;
+        [toolBarItems addObject:spaceRight];
+        
+        self.bottomToolbar.items = toolBarItems;
+    }
+    else
+    {
+        self.bottomToolbar.hidden = YES;
+    }
     
     if ([self.toolController isKindOfClass:[VImageToolController class]])
     {
@@ -479,7 +499,7 @@
              if ( [item isEqual:selectedItem] )
              {
                  item.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
-                 if ( tool.iconSelected != nil )
+                 if ( [tool respondsToSelector:@selector(iconSelected)] && tool.iconSelected != nil )
                  {
                      item.image = tool.iconSelected;
                  }

@@ -8,14 +8,11 @@
 
 #import "VEnterTextTool.h"
 #import "VDependencyManager.h"
-
-static NSString * const kTitleKey = @"title";
-static NSString * const kIconKey = @"icon";
+#import "VTextInputViewController.h"
 
 @interface VEnterTextTool ()
 
-@property (nonatomic, copy) NSString *title;
-@property (nonatomic, strong) UIImage *icon;
+@property (nonatomic, strong) VTextInputViewController *canvasToolViewController;
 
 @end
 
@@ -28,8 +25,7 @@ static NSString * const kIconKey = @"icon";
     self = [super init];
     if (self)
     {
-        _title = [dependencyManager stringForKey:kTitleKey];
-        _icon = [UIImage imageNamed:@"textIcon"];
+        _canvasToolViewController = [VTextInputViewController newWithDependencyManager:dependencyManager];
     }
     return self;
 }

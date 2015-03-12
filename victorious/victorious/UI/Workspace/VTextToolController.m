@@ -52,7 +52,7 @@
 {
     VEditTextToolViewController *canvasViewController = (VEditTextToolViewController *)self.selectedTool.canvasToolViewController;
     canvasViewController.text = self.text;
-    canvasViewController.hashtagText = self.hashtagText;
+    //canvasViewController.hashtagText = self.hashtagText;
 }
 
 - (void)setText:(NSString *)text
@@ -67,6 +67,11 @@
     _hashtagText = hashtagText;
     
     [self updateSelectedTool];
+}
+
+- (void)exportWithSourceAsset:(NSURL *)source withCompletion:(void (^)(BOOL, NSURL *, UIImage *, NSError *))completion
+{
+    completion( YES, nil, nil, nil );
 }
 
 @end

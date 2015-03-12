@@ -12,6 +12,8 @@
 
 static NSString * const kTitleKey = @"title";
 static NSString * const kIconKey = @"icon";
+static NSString * const kIconSelectedKey = @"iconSelected";
+static NSString * const kImageURLKey = @"imageURL";
 
 @interface VHashtagTool ()
 
@@ -31,8 +33,8 @@ static NSString * const kIconKey = @"icon";
     self = [super init];
     if (self)
     {
-        _icon = [UIImage imageNamed:@"hashtagIcon"];
-        _iconSelected = [UIImage imageNamed:@"hashtagIcon_selected"];
+        _icon = [UIImage imageNamed:[dependencyManager templateValueOfType:[NSDictionary class] forKey:kIconKey][kImageURLKey]];
+        _iconSelected = [UIImage imageNamed:[dependencyManager templateValueOfType:[NSDictionary class] forKey:kIconSelectedKey][kImageURLKey]];
         _canvasToolViewController = [VEditTextToolViewController newWithDependencyManager:dependencyManager];
     }
     return self;

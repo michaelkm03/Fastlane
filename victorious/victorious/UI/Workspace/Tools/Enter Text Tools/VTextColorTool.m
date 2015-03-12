@@ -12,6 +12,8 @@
 
 static NSString * const kTitleKey = @"title";
 static NSString * const kIconKey = @"icon";
+static NSString * const kIconSelectedKey = @"iconSelected";
+static NSString * const kImageURLKey = @"imageURL";
 
 @interface VTextColorTool ()
 
@@ -32,8 +34,8 @@ static NSString * const kIconKey = @"icon";
     if (self)
     {
         _title = [dependencyManager stringForKey:kTitleKey];
-        _icon = [UIImage imageNamed:@"textColorIcon"];
-        _iconSelected = [UIImage imageNamed:@"textColorIcon_selected"];
+        _icon = [UIImage imageNamed:[dependencyManager templateValueOfType:[NSDictionary class] forKey:kIconKey][kImageURLKey]];
+        _iconSelected = [UIImage imageNamed:[dependencyManager templateValueOfType:[NSDictionary class] forKey:kIconSelectedKey][kImageURLKey]];
         _canvasToolViewController = [VEditTextToolViewController newWithDependencyManager:dependencyManager];
     }
     return self;

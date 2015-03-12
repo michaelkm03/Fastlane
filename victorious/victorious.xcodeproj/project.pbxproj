@@ -393,12 +393,15 @@
 		A75ED0041AB0B6B400C35063 /* VTextTypeTool.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ECFF81AB0B6B400C35063 /* VTextTypeTool.m */; };
 		A75ED00C1AB0B6D100C35063 /* VFilterTool.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ED0091AB0B6D100C35063 /* VFilterTool.m */; };
 		A75ED00D1AB0B6D100C35063 /* VFilterTypeTool.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ED00B1AB0B6D100C35063 /* VFilterTypeTool.m */; };
-		A75ED0101AB0B6E600C35063 /* VEnterTextTool.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ED00F1AB0B6E600C35063 /* VEnterTextTool.m */; };
-		A75ED0161AB0B77000C35063 /* VHashtagTool.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ED0151AB0B77000C35063 /* VHashtagTool.m */; };
-		A75ED01E1AB0BB1300C35063 /* VTextColorTool.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ED01B1AB0BB1300C35063 /* VTextColorTool.m */; };
-		A75ED0251AB0CBB700C35063 /* VEditTextToolViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ED0231AB0CBB700C35063 /* VEditTextToolViewController.m */; };
-		A75ED0261AB0CBB700C35063 /* VEditTextToolViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A75ED0241AB0CBB700C35063 /* VEditTextToolViewController.xib */; };
 		A75ED0421AB1FEA300C35063 /* VTextWorkspaceFlowController.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ED0411AB1FEA300C35063 /* VTextWorkspaceFlowController.m */; };
+		A75ED0521AB20B4F00C35063 /* VEditTextToolViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ED0451AB20B4F00C35063 /* VEditTextToolViewController.m */; };
+		A75ED0531AB20B4F00C35063 /* VEditTextToolViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A75ED0461AB20B4F00C35063 /* VEditTextToolViewController.xib */; };
+		A75ED0541AB20B4F00C35063 /* VEnterTextTool.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ED0481AB20B4F00C35063 /* VEnterTextTool.m */; };
+		A75ED0551AB20B4F00C35063 /* VHashtagTool.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ED04A1AB20B4F00C35063 /* VHashtagTool.m */; };
+		A75ED0561AB20B4F00C35063 /* VTextColorTool.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ED04C1AB20B4F00C35063 /* VTextColorTool.m */; };
+		A75ED0571AB20B4F00C35063 /* VTextInputViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ED04E1AB20B4F00C35063 /* VTextInputViewController.m */; };
+		A75ED0581AB20B4F00C35063 /* VTextInputViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A75ED04F1AB20B4F00C35063 /* VTextInputViewController.xib */; };
+		A75ED0591AB20B4F00C35063 /* VTextLayoutHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ED0511AB20B4F00C35063 /* VTextLayoutHelper.m */; };
 		A75FAF1719E8AC1E00EB87C1 /* VSuggestedPeopleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAF0319E8AC1E00EB87C1 /* VSuggestedPeopleCell.m */; };
 		A75FAF1919E8AC1E00EB87C1 /* VSuggestedPersonCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAF0619E8AC1E00EB87C1 /* VSuggestedPersonCollectionViewCell.m */; };
 		A75FAF1B19E8AC1E00EB87C1 /* VTrendingTagCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAF0919E8AC1E00EB87C1 /* VTrendingTagCell.m */; };
@@ -1409,17 +1412,22 @@
 		A75ED0091AB0B6D100C35063 /* VFilterTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFilterTool.m; sourceTree = "<group>"; };
 		A75ED00A1AB0B6D100C35063 /* VFilterTypeTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFilterTypeTool.h; sourceTree = "<group>"; };
 		A75ED00B1AB0B6D100C35063 /* VFilterTypeTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFilterTypeTool.m; sourceTree = "<group>"; };
-		A75ED00E1AB0B6E600C35063 /* VEnterTextTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEnterTextTool.h; sourceTree = "<group>"; };
-		A75ED00F1AB0B6E600C35063 /* VEnterTextTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEnterTextTool.m; sourceTree = "<group>"; };
-		A75ED0141AB0B77000C35063 /* VHashtagTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHashtagTool.h; sourceTree = "<group>"; };
-		A75ED0151AB0B77000C35063 /* VHashtagTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHashtagTool.m; sourceTree = "<group>"; };
-		A75ED01A1AB0BB1300C35063 /* VTextColorTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextColorTool.h; sourceTree = "<group>"; };
-		A75ED01B1AB0BB1300C35063 /* VTextColorTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextColorTool.m; sourceTree = "<group>"; };
-		A75ED0221AB0CBB700C35063 /* VEditTextToolViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEditTextToolViewController.h; sourceTree = "<group>"; };
-		A75ED0231AB0CBB700C35063 /* VEditTextToolViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEditTextToolViewController.m; sourceTree = "<group>"; };
-		A75ED0241AB0CBB700C35063 /* VEditTextToolViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VEditTextToolViewController.xib; sourceTree = "<group>"; };
 		A75ED0401AB1FEA300C35063 /* VTextWorkspaceFlowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextWorkspaceFlowController.h; sourceTree = "<group>"; };
 		A75ED0411AB1FEA300C35063 /* VTextWorkspaceFlowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextWorkspaceFlowController.m; sourceTree = "<group>"; };
+		A75ED0441AB20B4F00C35063 /* VEditTextToolViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEditTextToolViewController.h; sourceTree = "<group>"; };
+		A75ED0451AB20B4F00C35063 /* VEditTextToolViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEditTextToolViewController.m; sourceTree = "<group>"; };
+		A75ED0461AB20B4F00C35063 /* VEditTextToolViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VEditTextToolViewController.xib; sourceTree = "<group>"; };
+		A75ED0471AB20B4F00C35063 /* VEnterTextTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEnterTextTool.h; sourceTree = "<group>"; };
+		A75ED0481AB20B4F00C35063 /* VEnterTextTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEnterTextTool.m; sourceTree = "<group>"; };
+		A75ED0491AB20B4F00C35063 /* VHashtagTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHashtagTool.h; sourceTree = "<group>"; };
+		A75ED04A1AB20B4F00C35063 /* VHashtagTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHashtagTool.m; sourceTree = "<group>"; };
+		A75ED04B1AB20B4F00C35063 /* VTextColorTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextColorTool.h; sourceTree = "<group>"; };
+		A75ED04C1AB20B4F00C35063 /* VTextColorTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextColorTool.m; sourceTree = "<group>"; };
+		A75ED04D1AB20B4F00C35063 /* VTextInputViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextInputViewController.h; sourceTree = "<group>"; };
+		A75ED04E1AB20B4F00C35063 /* VTextInputViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextInputViewController.m; sourceTree = "<group>"; };
+		A75ED04F1AB20B4F00C35063 /* VTextInputViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VTextInputViewController.xib; sourceTree = "<group>"; };
+		A75ED0501AB20B4F00C35063 /* VTextLayoutHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextLayoutHelper.h; sourceTree = "<group>"; };
+		A75ED0511AB20B4F00C35063 /* VTextLayoutHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextLayoutHelper.m; sourceTree = "<group>"; };
 		A75FAEFA19E8A6D600EB87C1 /* VVoteSettingManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVoteSettingManagerTests.m; sourceTree = "<group>"; };
 		A75FAEFD19E8AB2C00EB87C1 /* VDummyModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDummyModels.h; sourceTree = "<group>"; };
 		A75FAEFE19E8AB2C00EB87C1 /* VDummyModels.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDummyModels.m; sourceTree = "<group>"; };
@@ -3512,22 +3520,6 @@
 			path = Validation;
 			sourceTree = "<group>";
 		};
-		A75ECFE71AB0B6B400C35063 /* Enter Text Tools */ = {
-			isa = PBXGroup;
-			children = (
-				A75ED01A1AB0BB1300C35063 /* VTextColorTool.h */,
-				A75ED01B1AB0BB1300C35063 /* VTextColorTool.m */,
-				A75ED00E1AB0B6E600C35063 /* VEnterTextTool.h */,
-				A75ED00F1AB0B6E600C35063 /* VEnterTextTool.m */,
-				A75ED0141AB0B77000C35063 /* VHashtagTool.h */,
-				A75ED0151AB0B77000C35063 /* VHashtagTool.m */,
-				A75ED0221AB0CBB700C35063 /* VEditTextToolViewController.h */,
-				A75ED0231AB0CBB700C35063 /* VEditTextToolViewController.m */,
-				A75ED0241AB0CBB700C35063 /* VEditTextToolViewController.xib */,
-			);
-			path = "Enter Text Tools";
-			sourceTree = "<group>";
-		};
 		A75ECFE81AB0B6B400C35063 /* Image Crop Tool */ = {
 			isa = PBXGroup;
 			children = (
@@ -3565,6 +3557,27 @@
 				A75ED00B1AB0B6D100C35063 /* VFilterTypeTool.m */,
 			);
 			path = "Image Fiter Tools";
+			sourceTree = "<group>";
+		};
+		A75ED0431AB20B4F00C35063 /* Enter Text Tools */ = {
+			isa = PBXGroup;
+			children = (
+				A75ED0441AB20B4F00C35063 /* VEditTextToolViewController.h */,
+				A75ED0451AB20B4F00C35063 /* VEditTextToolViewController.m */,
+				A75ED0461AB20B4F00C35063 /* VEditTextToolViewController.xib */,
+				A75ED0471AB20B4F00C35063 /* VEnterTextTool.h */,
+				A75ED0481AB20B4F00C35063 /* VEnterTextTool.m */,
+				A75ED0491AB20B4F00C35063 /* VHashtagTool.h */,
+				A75ED04A1AB20B4F00C35063 /* VHashtagTool.m */,
+				A75ED04B1AB20B4F00C35063 /* VTextColorTool.h */,
+				A75ED04C1AB20B4F00C35063 /* VTextColorTool.m */,
+				A75ED04D1AB20B4F00C35063 /* VTextInputViewController.h */,
+				A75ED04E1AB20B4F00C35063 /* VTextInputViewController.m */,
+				A75ED04F1AB20B4F00C35063 /* VTextInputViewController.xib */,
+				A75ED0501AB20B4F00C35063 /* VTextLayoutHelper.h */,
+				A75ED0511AB20B4F00C35063 /* VTextLayoutHelper.m */,
+			);
+			path = "Enter Text Tools";
 			sourceTree = "<group>";
 		};
 		A75FAEFC19E8AB2C00EB87C1 /* DummyModels */ = {
@@ -4609,7 +4622,7 @@
 		D8D945F71A2EA51D0089D271 /* Tools */ = {
 			isa = PBXGroup;
 			children = (
-				A75ECFE71AB0B6B400C35063 /* Enter Text Tools */,
+				A75ED0431AB20B4F00C35063 /* Enter Text Tools */,
 				A75ECFE81AB0B6B400C35063 /* Image Crop Tool */,
 				A75ED0071AB0B6D100C35063 /* Image Fiter Tools */,
 				A75ECFF01AB0B6B400C35063 /* Image Text Tools */,
@@ -4941,6 +4954,7 @@
 				A7AEF9AA1A83F1C300A3D3A0 /* VStreamCollectionCellPoll-C.xib in Resources */,
 				03C1858719B42C9100E27D05 /* Roboto-LightItalic.ttf in Resources */,
 				0314D08819B4688E00FA363C /* Icon-60@2x.png in Resources */,
+				A75ED0531AB20B4F00C35063 /* VEditTextToolViewController.xib in Resources */,
 				A7299E931AA5331000B6BC1F /* VDirectoryItemCell.xib in Resources */,
 				03FD87D919F96FB700D93BAA /* VSuggestedPersonCollectionViewCell.xib in Resources */,
 				036F38931A0C4DEA0014DF66 /* SourceSansPro-Regular.ttf in Resources */,
@@ -4983,7 +4997,6 @@
 				036F38651A0C4DEA0014DF66 /* Arvo-Bold.ttf in Resources */,
 				036F386B1A0C4DEA0014DF66 /* DroidSans-Bold.ttf in Resources */,
 				D8C7CF5F19DCCD0D00BA33E5 /* VExperienceEnhancerCell.xib in Resources */,
-				A75ED0261AB0CBB700C35063 /* VEditTextToolViewController.xib in Resources */,
 				036F387B1A0C4DEA0014DF66 /* MavenPro-Regular.ttf in Resources */,
 				A7D7079B1A7C144C00D9993F /* VEndCardActionCell.xib in Resources */,
 				0326C36019F8226200DBC341 /* Images.xcassets in Resources */,
@@ -4995,6 +5008,7 @@
 				D8C7CF6119DCD23D00BA33E5 /* VExperienceEnhancerBar.xib in Resources */,
 				A7B514581A464E770074282F /* VUtilityButtonCell.xib in Resources */,
 				036F38721A0C4DEA0014DF66 /* Junction-regular.otf in Resources */,
+				A75ED0581AB20B4F00C35063 /* VTextInputViewController.xib in Resources */,
 				D8E39BE219CB7C80007FD86A /* VTickerCell.xib in Resources */,
 				0390085D19F38D5C00FD7EDF /* VKeyboardInputAccessoryView.xib in Resources */,
 				A7A2E00C1A38E47400F8C705 /* Purchases.storyboard in Resources */,
@@ -5197,6 +5211,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A75ED0561AB20B4F00C35063 /* VTextColorTool.m in Sources */,
 				A7F593701A39436000B5E3A2 /* VPurchaseStringMaker.m in Sources */,
 				03484C071930294D00403FB1 /* NSURL+MediaType.m in Sources */,
 				BE171E0F1868C211004E5202 /* VAsset+RestKit.m in Sources */,
@@ -5214,6 +5229,7 @@
 				BE799BB519C8DF5B0023CE88 /* VSequence+OrderedSet.m in Sources */,
 				0395575A19C14439005E32FB /* VCameraCaptureController.m in Sources */,
 				037FCF1A1A8DAF0E00E8ABFC /* VNavigationController.m in Sources */,
+				A75ED0551AB20B4F00C35063 /* VHashtagTool.m in Sources */,
 				03AFF99219CBB99B004B8CD9 /* NSNotificationCenter+VNotificationDebugger.m in Sources */,
 				F098D8151A9D29EA0003B6D4 /* VTagSensitiveTextView.m in Sources */,
 				0314D0B619B4698800FA363C /* VObjectManager+Sequence.m in Sources */,
@@ -5231,6 +5247,7 @@
 				03B83B5519E066AF00DC04E4 /* VUploadTaskSerializer.m in Sources */,
 				03B83B5D19E0990E00DC04E4 /* VUploadProgressView.m in Sources */,
 				039ED29A19C908F400305987 /* VCVideoPlayerToolbarView.m in Sources */,
+				A75ED0521AB20B4F00C35063 /* VEditTextToolViewController.m in Sources */,
 				0314D07019B4670A00FA363C /* UIImage+ImageCreation.m in Sources */,
 				A7299EAB1AA7854600B6BC1F /* VDirectoryCellDecorator.m in Sources */,
 				D8CA63B319D51CB7002046E5 /* VActionSheetViewController.m in Sources */,
@@ -5329,6 +5346,7 @@
 				0314D48719B46B5E00FA363C /* VActivityIndicatorView.m in Sources */,
 				037D2D591A196B9800947A22 /* VUserProfileNavigationDestination.m in Sources */,
 				030931931A184285004E9781 /* VNavigationMenuItem.m in Sources */,
+				A75ED0541AB20B4F00C35063 /* VEnterTextTool.m in Sources */,
 				DBB1A0501A00AF4500E16D62 /* VOpenXAdViewController.m in Sources */,
 				D8E39BDA19CB7C80007FD86A /* VContentImageCell.m in Sources */,
 				D87351881A3120F5006D97B2 /* VCanvasView.m in Sources */,
@@ -5433,7 +5451,6 @@
 				0314D4C119B46B5E00FA363C /* VProfileEditViewController.m in Sources */,
 				A7AEF9C71A83F2AD00A3D3A0 /* VLargeNumberFormatter.m in Sources */,
 				BE799BB419C8DF5B0023CE88 /* VAsset+OrderedSet.m in Sources */,
-				A75ED0101AB0B6E600C35063 /* VEnterTextTool.m in Sources */,
 				037FCF1B1A8DAF0E00E8ABFC /* VNavigationControllerScrollDelegate.m in Sources */,
 				BE171D8C1868BE64004E5202 /* VAppDelegate.m in Sources */,
 				039ED29919C908F400305987 /* VCVideoPlayerToolbarSlider.m in Sources */,
@@ -5475,15 +5492,16 @@
 				669EBBE41A30239100DE317D /* VBasicToolPickerCell.m in Sources */,
 				0314D4B119B46B5E00FA363C /* VInboxContainerViewController.m in Sources */,
 				DB82857A19F6DD3D006C6E2F /* VAdPlayerView.m in Sources */,
-				A75ED0161AB0B77000C35063 /* VHashtagTool.m in Sources */,
 				0314D0B519B4698800FA363C /* VObjectManager+Pagination.m in Sources */,
 				0386E2001A8DECF900FC9BDF /* VDependencyManager+VNavigationItem.m in Sources */,
 				D8C8F5761A0403D4006BE3E8 /* VStream.m in Sources */,
 				BE46F02A19D0C4B700CD7EF6 /* VMessage.m in Sources */,
 				D87D70931A97C9EC002D4FED /* VTabMenuViewController.m in Sources */,
 				BE5C7382187E37C700A3340D /* VMessage+RestKit.m in Sources */,
+				A75ED0571AB20B4F00C35063 /* VTextInputViewController.m in Sources */,
 				0314D48319B46B5E00FA363C /* VCommentsTableViewController.m in Sources */,
 				03CE66F719B47B590011BB9E /* VTwitterManager.m in Sources */,
+				A75ED0591AB20B4F00C35063 /* VTextLayoutHelper.m in Sources */,
 				A70FC1251A31207400F5BBDE /* VVoteSettings.m in Sources */,
 				A70FC0F71A2D012E00F5BBDE /* VNotificationSettingsTableRow.m in Sources */,
 				A7B514531A4517A80074282F /* VSwipeCollectionViewCell.m in Sources */,
@@ -5518,7 +5536,6 @@
 				BE799B9219C8A91C0023CE88 /* VNode.m in Sources */,
 				BE5C7379187E36E800A3340D /* VNodeAction.m in Sources */,
 				0314D4B719B46B5E00FA363C /* VLightboxViewController.m in Sources */,
-				A75ED01E1AB0BB1300C35063 /* VTextColorTool.m in Sources */,
 				D8F12A6D1A6F093900E99B3D /* VPublishParameters.m in Sources */,
 				0314D2E219B46AF300FA363C /* VThemeManager.m in Sources */,
 				D80BAB5A1A688D83003A3068 /* VWorkspaceFlowController.m in Sources */,
@@ -5675,7 +5692,6 @@
 				BEC833BB19D3646E00341EA9 /* VComment.m in Sources */,
 				A7A343DB1A8A8452000F0BCF /* VContentViewAlertHelper.m in Sources */,
 				0314D07619B467A100FA363C /* VSequence+Fetcher.m in Sources */,
-				A75ED0251AB0CBB700C35063 /* VEditTextToolViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

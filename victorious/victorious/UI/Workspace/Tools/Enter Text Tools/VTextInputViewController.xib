@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="VTextInputViewController">
+            <connections>
+                <outlet property="textContainerView" destination="MLE-l2-NY2" id="Wem-gK-Vhk"/>
+                <outlet property="textContainerViewHeightConstraint" destination="s9E-no-lD2" id="I3v-Oh-JGH"/>
+                <outlet property="textLayoutHelper" destination="DgL-W4-teC" id="ebL-61-Eqm"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MLE-l2-NY2" userLabel="Text Container">
+                    <rect key="frame" x="10" y="234" width="580" height="131"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="131" id="s9E-no-lD2"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="MLE-l2-NY2" secondAttribute="trailing" constant="10" id="LNa-wb-tzA"/>
+                <constraint firstItem="MLE-l2-NY2" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="10" id="kzi-vH-qsk"/>
+                <constraint firstAttribute="centerY" secondItem="MLE-l2-NY2" secondAttribute="centerY" constant="0.5" id="y5P-Z1-cAh"/>
+            </constraints>
+        </view>
+        <customObject id="DgL-W4-teC" customClass="VTextLayoutHelper"/>
+    </objects>
+</document>

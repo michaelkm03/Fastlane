@@ -29,11 +29,15 @@
         _flowNavigationController.navigationBarHidden = YES;
         //_flowNavigationController.delegate = self;
         
-        VWorkspaceViewController *workspaceViewController = (VWorkspaceViewController *)[self.dependencyManager viewControllerForKey:VDependencyManagerTextWorkspaceKey];
-#warning Testing with random text
-        workspaceViewController.text = [self randomSampleText];
-        workspaceViewController.continueText = NSLocalizedString( @"Next", @"" );
-        [self.flowNavigationController pushViewController:workspaceViewController animated:NO];
+        VWorkspaceViewController *enterTextWorkspaceViewController = (VWorkspaceViewController *)[self.dependencyManager viewControllerForKey:VDependencyManagerEnterTextWorkspaceKey];
+        enterTextWorkspaceViewController.text = [self randomSampleText];
+        enterTextWorkspaceViewController.continueText = NSLocalizedString( @"Next", @"" );
+        
+        VWorkspaceViewController *editTextWorkspaceViewController = (VWorkspaceViewController *)[self.dependencyManager viewControllerForKey:VDependencyManagerEditTextWorkspaceKey];
+        editTextWorkspaceViewController.text = [self randomSampleText];
+        editTextWorkspaceViewController.continueText = NSLocalizedString( @"Publish", @"" );
+        
+        [self.flowNavigationController pushViewController:enterTextWorkspaceViewController animated:NO];
     }
     return self;
 }

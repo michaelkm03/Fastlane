@@ -51,7 +51,8 @@ extern NSString * const VDependencyManagerWorkspaceFlowKey;
 extern NSString * const VDependencyManagerTextWorkspaceFlowKey;
 extern NSString * const VDependencyManagerImageWorkspaceKey;
 extern NSString * const VDependencyManagerVideoWorkspaceKey;
-extern NSString * const VDependencyManagerTextWorkspaceKey;
+extern NSString * const VDependencyManagerEnterTextWorkspaceKey;
+extern NSString * const VDependencyManagerEditTextWorkspaceKey;
 
 /**
  Provides loose coupling between components.
