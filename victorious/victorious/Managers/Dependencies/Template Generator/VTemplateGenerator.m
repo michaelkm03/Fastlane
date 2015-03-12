@@ -178,6 +178,7 @@ static NSString * const kVideoMuted = @"videoMuted";
     }
     
     template[VDependencyManagerWorkspaceFlowKey] = [self workspaceFlowComponent];
+    template[VDependencyManagerTextWorkspaceFlowKey] = [self textWorkspaceFlowComponent];
     template[VScaffoldViewControllerNavigationBarAppearanceKey] = [self navigationBarAppearance];
     
     return template;
@@ -222,7 +223,14 @@ static NSString * const kVideoMuted = @"videoMuted";
     return @{
              kClassNameKey: @"workspace",
              VDependencyManagerImageWorkspaceKey: [self imageWorkspaceComponent],
-             VDependencyManagerVideoWorkspaceKey: [self videoWorkspaceComponent],
+             VDependencyManagerVideoWorkspaceKey: [self videoWorkspaceComponent]
+             };
+}
+
+- (NSDictionary *)textWorkspaceFlowComponent
+{
+    return @{
+             kClassNameKey: @"workspaceText",
              VDependencyManagerTextWorkspaceKey: [self textWorkspaceComponent]
              };
 }

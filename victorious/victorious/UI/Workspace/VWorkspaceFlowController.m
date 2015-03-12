@@ -357,7 +357,7 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
     }
     else
     {
-        workspaceViewController = (VWorkspaceViewController *)[self.dependencyManager viewControllerForKey:VDependencyManagerTextWorkspaceKey];
+        workspaceViewController = (VWorkspaceViewController *)[self.dependencyManager viewControllerForKey:VDependencyManagerTextWorkspaceFlowKey];
         NSArray *randomText = @[ @"Here is my sample text!",
                                  @"Here is my sample text that should span onto two lines.",
                                  @"Here is my sample text that is quite long and is intended to span onto at least three lines so we can see how it looks." ];

@@ -48,6 +48,7 @@ extern NSString * const VDependencyManagerInitialViewControllerKey; ///< The vie
 
 // Keys for Workspace
 extern NSString * const VDependencyManagerWorkspaceFlowKey;
+extern NSString * const VDependencyManagerTextWorkspaceFlowKey;
 extern NSString * const VDependencyManagerImageWorkspaceKey;
 extern NSString * const VDependencyManagerVideoWorkspaceKey;
 extern NSString * const VDependencyManagerTextWorkspaceKey;

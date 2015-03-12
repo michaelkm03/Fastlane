@@ -35,6 +35,7 @@
 #import "VWorkspaceFlowController.h"
 #import "VImageToolController.h"
 #import "VVideoToolController.h"
+#import "VTextWorkspaceFlowController.h"
 
 //Views
 #import "VNoContentView.h"
@@ -212,7 +213,6 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
     [self updateCurrentlyPlayingMediaAsset];
     
 #warning TESTING ONLY: Jumpts right to text workspace
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateTextOnlyPostSelected];
     [self presentCreateFlowWithTextOnly];
 }
 
@@ -347,6 +347,18 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
 }
 
 - (void)presentCreateFlowWithTextOnly
+{
+    [[VTrackingManager sharedInstance] setValue:VTrackingValueCreatePost forSessionParameterWithKey:VTrackingKeyContext];
+    
+    NSDictionary *dependencies = @{};
+    VTextWorkspaceFlowController *workspaceFlowController = [self.dependencyManager templateValueOfType:[VTextWorkspaceFlowController class]
+                                                                                             forKey:VDependencyManagerTextWorkspaceFlowKey
+                                                                              withAddedDependencies:dependencies];
+    
+    [self presentViewController:workspaceFlowController.flowRootViewController animated:YES completion:nil];
+}
+
+- (void)presentCreateTextOnlyFlow
 {
     [[VTrackingManager sharedInstance] setValue:VTrackingValueCreatePost forSessionParameterWithKey:VTrackingKeyContext];
     

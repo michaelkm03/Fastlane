@@ -70,9 +70,10 @@ NSString * const VDependencyManagerInitialViewControllerKey = @"initialScreen";
 
 // Keys for Workspace
 NSString * const VDependencyManagerWorkspaceFlowKey = @"workspaceFlow";
+NSString * const VDependencyManagerTextWorkspaceFlowKey = @"workspaceFlowText";
 NSString * const VDependencyManagerImageWorkspaceKey = @"imageWorkspace";
-NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
 NSString * const VDependencyManagerTextWorkspaceKey = @"textWorkspace";
+NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
 
 @interface VDependencyManager ()
 

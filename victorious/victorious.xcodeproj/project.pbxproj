@@ -398,6 +398,7 @@
 		A75ED01E1AB0BB1300C35063 /* VTextColorTool.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ED01B1AB0BB1300C35063 /* VTextColorTool.m */; };
 		A75ED0251AB0CBB700C35063 /* VEditTextToolViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ED0231AB0CBB700C35063 /* VEditTextToolViewController.m */; };
 		A75ED0261AB0CBB700C35063 /* VEditTextToolViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A75ED0241AB0CBB700C35063 /* VEditTextToolViewController.xib */; };
+		A75ED0421AB1FEA300C35063 /* VTextWorkspaceFlowController.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ED0411AB1FEA300C35063 /* VTextWorkspaceFlowController.m */; };
 		A75FAF1719E8AC1E00EB87C1 /* VSuggestedPeopleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAF0319E8AC1E00EB87C1 /* VSuggestedPeopleCell.m */; };
 		A75FAF1919E8AC1E00EB87C1 /* VSuggestedPersonCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAF0619E8AC1E00EB87C1 /* VSuggestedPersonCollectionViewCell.m */; };
 		A75FAF1B19E8AC1E00EB87C1 /* VTrendingTagCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAF0919E8AC1E00EB87C1 /* VTrendingTagCell.m */; };
@@ -1417,6 +1418,8 @@
 		A75ED0221AB0CBB700C35063 /* VEditTextToolViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEditTextToolViewController.h; sourceTree = "<group>"; };
 		A75ED0231AB0CBB700C35063 /* VEditTextToolViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEditTextToolViewController.m; sourceTree = "<group>"; };
 		A75ED0241AB0CBB700C35063 /* VEditTextToolViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VEditTextToolViewController.xib; sourceTree = "<group>"; };
+		A75ED0401AB1FEA300C35063 /* VTextWorkspaceFlowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextWorkspaceFlowController.h; sourceTree = "<group>"; };
+		A75ED0411AB1FEA300C35063 /* VTextWorkspaceFlowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextWorkspaceFlowController.m; sourceTree = "<group>"; };
 		A75FAEFA19E8A6D600EB87C1 /* VVoteSettingManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVoteSettingManagerTests.m; sourceTree = "<group>"; };
 		A75FAEFD19E8AB2C00EB87C1 /* VDummyModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDummyModels.h; sourceTree = "<group>"; };
 		A75FAEFE19E8AB2C00EB87C1 /* VDummyModels.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDummyModels.m; sourceTree = "<group>"; };
@@ -4546,6 +4549,8 @@
 				D80BAB591A688D83003A3068 /* VWorkspaceFlowController.m */,
 				D8D945F41A2E8A760089D271 /* VWorkspaceViewController.h */,
 				D8D945F51A2E8A760089D271 /* VWorkspaceViewController.m */,
+				A75ED0401AB1FEA300C35063 /* VTextWorkspaceFlowController.h */,
+				A75ED0411AB1FEA300C35063 /* VTextWorkspaceFlowController.m */,
 				D8D945F21A2E88510089D271 /* Workspace.storyboard */,
 			);
 			path = Workspace;
@@ -5605,6 +5610,7 @@
 				A7B514561A4517A80074282F /* VUtilityButtonCell.m in Sources */,
 				A7D288141A23F6CF006CF0EC /* VNotificationSettings+Fetcher.m in Sources */,
 				0314D0AF19B4698800FA363C /* VObjectManager+ContentCreation.m in Sources */,
+				A75ED0421AB1FEA300C35063 /* VTextWorkspaceFlowController.m in Sources */,
 				03C185BB19B42E5D00E27D05 /* TWAPIManager.m in Sources */,
 				BE171E3A1868C266004E5202 /* NSString+VParseHelp.m in Sources */,
 				03C185C819B42FD600E27D05 /* main.m in Sources */,

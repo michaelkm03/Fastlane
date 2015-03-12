@@ -38,6 +38,8 @@
 	<string>VWorkspaceViewController</string>
 	<key>workspace</key>
 	<string>VWorkspaceFlowController</string>
+	<key>workspaceText</key>
+	<string>VTextWorkspaceFlowController</string>
 	<key>sideMenu.scaffold</key>
 	<string>VSideMenuViewController</string>
 	<key>tabMenu.scaffold</key>
