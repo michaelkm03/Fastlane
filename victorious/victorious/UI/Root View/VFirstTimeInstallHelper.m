@@ -15,23 +15,9 @@
 
 static NSString * const VDidPlayFirstTimeUserVideo = @"com.getvictorious.settings.didPlayFirstTimeUserVideo";
 NSString * const kFTUSequenceURLPath = @"sequenceUrlPath";
-
-@interface VFirstTimeInstallHelper ()
-
-@end
+NSString * const kFTUTrackingURLGroup = @"ftueTrackingUrlPath";
 
 @implementation VFirstTimeInstallHelper
-
-- (instancetype)init
-{
-    self = [super init];
-    if (self)
-    {
-        
-    }
-    
-    return self;
-}
 
 #pragma mark - Accessors
 

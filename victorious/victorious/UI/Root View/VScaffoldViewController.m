@@ -67,6 +67,7 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
     VDependencyManager *childDependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:vcDictionary];
     lightweightContentVC.dependencyManager = childDependencyManager;
     
+    // Present the first-time user video view controller if hasn't been shown
     if ( ![self.firstTimeInstallHelper hasBeenShown] )
     {
         lightweightContentVC.delegate = self;
@@ -74,7 +75,6 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
         dispatch_time_t showTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
         dispatch_after(showTime, dispatch_get_main_queue(), ^(void)
                        {
-                           // Present the first-time user video view controller
                            if ( lightweightContentVC.mediaUrl != nil )
                            {
                                lightweightContentVC.firstTimeInstallHelper = self.firstTimeInstallHelper;

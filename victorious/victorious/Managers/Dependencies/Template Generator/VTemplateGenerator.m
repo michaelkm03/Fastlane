@@ -405,9 +405,11 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
 - (NSDictionary *)lightweightContentViewComponent
 {
     NSString *sequenceID = self.dataFromInitCall[@"experiments"][@"ftue_welcome_sequence_id"];
+    NSArray *trackingArray = self.dataFromInitCall[@"experiments"][@"ftue_welcome_tracking"][@"start"];
     return @{
              kClassNameKey: @"lightweight.contentView",
-             kFTUSequenceURLPath: [NSString stringWithFormat:@"/api/sequence/fetch/%@", sequenceID]
+             kFTUSequenceURLPath: [NSString stringWithFormat:@"/api/sequence/fetch/%@", sequenceID],
+             kFTUTrackingURLGroup:  trackingArray ?: @[]
              };
 }
 

@@ -12,6 +12,7 @@
 #import "VSequence+Fetcher.h"
 #import "VCVideoPlayerViewController.h"
 #import "VTemplateGenerator.h"
+#import "VObjectManager+Private.h"
 #import "VObjectManager+Sequence.h"
 #import "VAsset+Fetcher.h"
 #import "VNode+Fetcher.h"
@@ -69,6 +70,20 @@
     [super viewDidAppear:animated];
     
     [self.firstTimeInstallHelper savePlaybackDefaults];
+    
+    // Tracking
+    NSArray *trackingArray = [self.dependencyManager arrayForKey:kFTUTrackingURLGroup];
+    if ( trackingArray != nil )
+    {
+        [trackingArray enumerateObjectsUsingBlock:^(NSString *trackingUrl, NSUInteger idx, BOOL *stop)
+         {
+             [[VObjectManager sharedManager] GET:trackingUrl
+                                          object:nil
+                                      parameters:nil
+                                    successBlock:nil
+                                       failBlock:nil];
+         }];
+    }
     
     // Play the video
     [self showVideo];
