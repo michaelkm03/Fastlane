@@ -133,7 +133,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 {
     self.view = [[UIView alloc] init];
     self.view.clipsToBounds = YES;
-    self.view.backgroundColor = [[VSettingManager sharedManager] settingEnabledForKey:VExperimentsClearVideoBackground] ? [UIColor clearColor] : [UIColor blackColor];
+    self.view.backgroundColor = [UIColor clearColor];
     
     self.playerLayer = [AVPlayerLayer playerLayerWithPlayer:self.player];
     self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspect;
@@ -464,6 +464,11 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 {
     int currentLoop = 0;
     CMTime compareTime = time;
+    
+    if (!CMTIME_IS_VALID(self.originalAssetDuration))
+    {
+        return time;
+    }
     
     while ( CMTIME_COMPARE_INLINE( compareTime, >, self.originalAssetDuration) )
     {

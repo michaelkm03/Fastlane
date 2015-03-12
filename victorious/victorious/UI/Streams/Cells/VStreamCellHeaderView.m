@@ -103,6 +103,16 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
     [self.commentButton setHidden:YES];
 }
 
+- (void)reloadCommentsCount
+{
+    if ( ![[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled] )
+    {
+        // Get comment count (if any)
+        NSString *commentCount = self.sequence.commentCount.integerValue ? [largeNumberFormatter stringForInteger:self.sequence.commentCount.integerValue] : @"";
+        [self.commentButton setTitle:commentCount forState:UIControlStateNormal];
+    }
+}
+
 - (void)setParentText:(NSString *)text
 {
     // Format repost / remix string
@@ -199,9 +209,7 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
     
     self.dateLabel.text = [self.sequence.releasedAt timeSince];
     
-    // Get comment count (if any)
-    NSString *commentCount = self.sequence.commentCount.integerValue ? [largeNumberFormatter stringForInteger:self.sequence.commentCount.integerValue] : @"";
-    [self.commentButton setTitle:commentCount forState:UIControlStateNormal];
+    [self reloadCommentsCount];
     
     NSString *parentText = @"";
     CGFloat usernameBottomConstant = self.usernameLabelTopConstraint.constant;

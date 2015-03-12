@@ -50,8 +50,7 @@ copyFile(){
     fi
 }
 
-copyFile "Default-568h@2x.png"
-copyFile "Default@2x.png"
+copyFile "LaunchImage@2x.png"
 copyFile "defaultTheme.plist"
 copyFile "Icon-29@2x.png"
 copyFile "Icon-40@2x.png"

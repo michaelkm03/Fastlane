@@ -311,9 +311,10 @@ const CGFloat kVLoadNextPagePoint = .75f;
 
 - (BOOL)shouldDisplayActivityViewFooterForCollectionView:(UICollectionView *)collectionView inSection:(NSInteger)section
 {
+    const BOOL canLoadNextPage = [self.streamDataSource canLoadNextPage];
     const BOOL isLastSection = section == MAX( [self.collectionView numberOfSections] - 1, 0);
     const BOOL hasOneOrMoreItems = [collectionView numberOfItemsInSection:section] > 1;
-    return isLastSection && hasOneOrMoreItems && [self.streamDataSource filterCanLoadNextPage];
+    return canLoadNextPage && isLastSection && hasOneOrMoreItems;
 }
 
 - (BOOL)shouldAnimateActivityViewFooter
@@ -374,7 +375,7 @@ const CGFloat kVLoadNextPagePoint = .75f;
 
 - (void)shouldLoadNextPage
 {
-    if (self.streamDataSource.count == 0 || self.streamDataSource.isFilterLoading || !self.streamDataSource.filterCanLoadNextPage)
+    if (self.streamDataSource.count == 0 || self.streamDataSource.isFilterLoading || !self.streamDataSource.canLoadNextPage)
     {
         return;
     }

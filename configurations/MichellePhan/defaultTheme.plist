@@ -70,11 +70,11 @@
 	<key>color.link</key>
 	<dict>
 		<key>red</key>
-		<integer>236</integer>
+		<integer>0</integer>
 		<key>green</key>
-		<integer>52</integer>
+		<integer>0</integer>
 		<key>blue</key>
-		<integer>112</integer>
+		<integer>0</integer>
 		<key>alpha</key>
 		<integer>1</integer>
 	</dict>
@@ -92,11 +92,11 @@
 	<key>color.accent</key>
 	<dict>
 		<key>red</key>
-		<integer>161</integer>
+		<integer>134</integer>
 		<key>green</key>
-		<integer>132</integer>
+		<integer>213</integer>
 		<key>blue</key>
-		<integer>114</integer>
+		<integer>209</integer>
 		<key>alpha</key>
 		<integer>1</integer>
 	</dict>
@@ -114,84 +114,84 @@
 	<key>font.header</key>
 	<dict>
 		<key>fontName</key>
-		<string>STHeitiSC-Light</string>
+		<string>Raleway-Medium</string>
 		<key>fontSize</key>
 		<integer>18</integer>
 	</dict>
 	<key>font.heading1</key>
 	<dict>
 		<key>fontName</key>
-		<string>STHeitiSC-Light</string>
+		<string>Raleway-Medium</string>
 		<key>fontSize</key>
 		<integer>24</integer>
 	</dict>
 	<key>font.heading2</key>
 	<dict>
 		<key>fontName</key>
-		<string>STHeitiSC-Light</string>
+		<string>Raleway-Medium</string>
 		<key>fontSize</key>
 		<integer>20</integer>
 	</dict>
 	<key>font.heading3</key>
 	<dict>
 		<key>fontName</key>
-		<string>STHeitiSC-Medium</string>
+		<string>Raleway-SemiBold</string>
 		<key>fontSize</key>
 		<integer>17</integer>
 	</dict>
 	<key>font.heading4</key>
 	<dict>
 		<key>fontName</key>
-		<string>STHeitiSC-Light</string>
+		<string>Raleway-Medium</string>
 		<key>fontSize</key>
 		<integer>15</integer>
 	</dict>
 	<key>font.paragraph</key>
 	<dict>
 		<key>fontName</key>
-		<string>STHeitiSC-Light</string>
+		<string>Raleway-Medium</string>
 		<key>fontSize</key>
 		<integer>13</integer>
 	</dict>
 	<key>font.label1</key>
 	<dict>
 		<key>fontName</key>
-		<string>STHeitiSC-Medium</string>
+		<string>Raleway-SemiBold</string>
 		<key>fontSize</key>
 		<integer>13</integer>
 	</dict>
 	<key>font.label2</key>
 	<dict>
 		<key>fontName</key>
-		<string>STHeitiSC-Light</string>
+		<string>Raleway-Medium</string>
 		<key>fontSize</key>
 		<integer>12</integer>
 	</dict>
 	<key>font.label3</key>
 	<dict>
 		<key>fontName</key>
-		<string>STHeitiSC-Light</string>
+		<string>Raleway-Medium</string>
 		<key>fontSize</key>
 		<integer>11</integer>
 	</dict>
 	<key>font.label4</key>
 	<dict>
 		<key>fontName</key>
-		<string>STHeitiSC-Light</string>
+		<string>Raleway-Medium</string>
 		<key>fontSize</key>
 		<integer>10</integer>
 	</dict>
 	<key>font.button1</key>
 	<dict>
 		<key>fontName</key>
-		<string>STHeitiSC-Medium</string>
+		<string>Raleway-SemiBold</string>
 		<key>fontSize</key>
 		<integer>25</integer>
 	</dict>
 	<key>font.button2</key>
 	<dict>
 		<key>fontName</key>
-		<string>STHeitiSC-Medium</string>
+		<string>Raleway-SemiBold</string>
 		<key>fontSize</key>
 		<integer>17</integer>
 	</dict>
