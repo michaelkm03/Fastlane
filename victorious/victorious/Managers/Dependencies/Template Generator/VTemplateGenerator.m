@@ -246,7 +246,7 @@ static NSString * const kVideoMuted = @"videoMuted";
                          VDependencyManagerImageURLKey:@"gif_btn"
                          },
                  kVideoFrameDurationValue: @1,
-                 kVideoFrameDurationTimescale: @4,
+                 kVideoFrameDurationTimescale: @8,
                  kVideoMuted: @YES,
                  @"isGIF": @YES,
                  },
