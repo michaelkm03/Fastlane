@@ -659,6 +659,8 @@
 		D8CA63BE19D5DB06002046E5 /* VActionSheetTransitioningDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D8CA63BD19D5DB06002046E5 /* VActionSheetTransitioningDelegate.m */; };
 		D8CA63C119D5DEE2002046E5 /* UIView+MotionEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = D8CA63C019D5DEE2002046E5 /* UIView+MotionEffects.m */; };
 		D8D3B7181AB20E6600CF966C /* VTrimLoopingPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D3B7171AB20E6600CF966C /* VTrimLoopingPlayerViewController.m */; };
+		D8D3B7211AB2643500CF966C /* AVComposition+VMutedAudioMix.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D3B7201AB2643500CF966C /* AVComposition+VMutedAudioMix.m */; };
+		D8D3B7241AB264D400CF966C /* AVAsset+VVideoCompositionWithFrameDuration.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D3B7231AB264D400CF966C /* AVAsset+VVideoCompositionWithFrameDuration.m */; };
 		D8D8958919E88C2100632663 /* VExperienceEnhancerBarCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D8958819E88C2100632663 /* VExperienceEnhancerBarCell.m */; };
 		D8D8958B19E88D5500632663 /* VExperienceEnhancerBarCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8D8958A19E88D5500632663 /* VExperienceEnhancerBarCell.xib */; };
 		D8D945F31A2E88510089D271 /* Workspace.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D8D945F21A2E88510089D271 /* Workspace.storyboard */; };
@@ -1917,6 +1919,10 @@
 		D8CA63C019D5DEE2002046E5 /* UIView+MotionEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+MotionEffects.m"; sourceTree = "<group>"; };
 		D8D3B7161AB20E6600CF966C /* VTrimLoopingPlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTrimLoopingPlayerViewController.h; sourceTree = "<group>"; };
 		D8D3B7171AB20E6600CF966C /* VTrimLoopingPlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTrimLoopingPlayerViewController.m; sourceTree = "<group>"; };
+		D8D3B71F1AB2643500CF966C /* AVComposition+VMutedAudioMix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AVComposition+VMutedAudioMix.h"; sourceTree = "<group>"; };
+		D8D3B7201AB2643500CF966C /* AVComposition+VMutedAudioMix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AVComposition+VMutedAudioMix.m"; sourceTree = "<group>"; };
+		D8D3B7221AB264D400CF966C /* AVAsset+VVideoCompositionWithFrameDuration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AVAsset+VVideoCompositionWithFrameDuration.h"; sourceTree = "<group>"; };
+		D8D3B7231AB264D400CF966C /* AVAsset+VVideoCompositionWithFrameDuration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AVAsset+VVideoCompositionWithFrameDuration.m"; sourceTree = "<group>"; };
 		D8D8958719E88C2100632663 /* VExperienceEnhancerBarCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VExperienceEnhancerBarCell.h; sourceTree = "<group>"; };
 		D8D8958819E88C2100632663 /* VExperienceEnhancerBarCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VExperienceEnhancerBarCell.m; sourceTree = "<group>"; };
 		D8D8958A19E88D5500632663 /* VExperienceEnhancerBarCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VExperienceEnhancerBarCell.xib; sourceTree = "<group>"; };
@@ -4371,8 +4377,16 @@
 		D80A94D31A535DFA0035D788 /* Video */ = {
 			isa = PBXGroup;
 			children = (
+				D8D3B7221AB264D400CF966C /* AVAsset+VVideoCompositionWithFrameDuration.h */,
+				D8D3B7231AB264D400CF966C /* AVAsset+VVideoCompositionWithFrameDuration.m */,
+				D8D3B71F1AB2643500CF966C /* AVComposition+VMutedAudioMix.h */,
+				D8D3B7201AB2643500CF966C /* AVComposition+VMutedAudioMix.m */,
 				D80A94E41A546DF90035D788 /* VAssetThumbnailDataSource.h */,
 				D80A94E51A546DF90035D788 /* VAssetThumbnailDataSource.m */,
+				D80BE58A1AB203E300219803 /* VLoopingAssetGenerator.h */,
+				D80BE58B1AB203E300219803 /* VLoopingAssetGenerator.m */,
+				D83AC7A81AB201A600F63603 /* VPlayerView.h */,
+				D83AC7A91AB201A600F63603 /* VPlayerView.m */,
 				D88CEAE51A92EEED00F5A837 /* VSnapshotViewController.h */,
 				D88CEAE61A92EEED00F5A837 /* VSnapshotViewController.m */,
 				D88CEAE71A92EEED00F5A837 /* VSnapshotViewController.xib */,
@@ -4381,6 +4395,8 @@
 				D80A94EA1A546E680035D788 /* VThumbnailCell.xib */,
 				D80A94DC1A53941D0035D788 /* VTrimControl.h */,
 				D80A94DD1A53941D0035D788 /* VTrimControl.m */,
+				D8D3B7161AB20E6600CF966C /* VTrimLoopingPlayerViewController.h */,
+				D8D3B7171AB20E6600CF966C /* VTrimLoopingPlayerViewController.m */,
 				D80A94D91A536C8C0035D788 /* VTrimmerViewController.h */,
 				D80A94DA1A536C8C0035D788 /* VTrimmerViewController.m */,
 				D80A94EC1A5472FB0035D788 /* VTrimVideoTool.h */,
@@ -4390,12 +4406,6 @@
 				D88CEAE21A92E17C00F5A837 /* VVideoSnapshotTool.h */,
 				D88CEAE31A92E17C00F5A837 /* VVideoSnapshotTool.m */,
 				D8ECB8F11A5C7CD200C8F67A /* VVideoWorkspaceTool.h */,
-				D83AC7A81AB201A600F63603 /* VPlayerView.h */,
-				D83AC7A91AB201A600F63603 /* VPlayerView.m */,
-				D80BE58A1AB203E300219803 /* VLoopingAssetGenerator.h */,
-				D80BE58B1AB203E300219803 /* VLoopingAssetGenerator.m */,
-				D8D3B7161AB20E6600CF966C /* VTrimLoopingPlayerViewController.h */,
-				D8D3B7171AB20E6600CF966C /* VTrimLoopingPlayerViewController.m */,
 			);
 			path = Video;
 			sourceTree = "<group>";
@@ -5491,6 +5501,7 @@
 				037D2D5C1A1A588D00947A22 /* VDependencyManager+VObjectManager.m in Sources */,
 				D8E39BDD19CB7C80007FD86A /* VContentVideoCell.m in Sources */,
 				A780ED591A933D9300A8CD5D /* CIFilter+VPhotoFilterComponentConformance.m in Sources */,
+				D8D3B7211AB2643500CF966C /* AVComposition+VMutedAudioMix.m in Sources */,
 				03C185B919B42E5D00E27D05 /* OAuth+Additions.m in Sources */,
 				0309318E1A18425B004E9781 /* VMenuCollectionViewDataSource.m in Sources */,
 				BE42842919DDC19100AEDBA6 /* VDefaultProfileButton.m in Sources */,
@@ -5526,6 +5537,7 @@
 				D888B52B1A86FC7800B34149 /* VRadialGradientView.m in Sources */,
 				0314D4BD19B46B5E00FA363C /* VFollowerTableViewCell.m in Sources */,
 				0314D4C219B46B5E00FA363C /* VUserProfileHeaderView.m in Sources */,
+				D8D3B7241AB264D400CF966C /* AVAsset+VVideoCompositionWithFrameDuration.m in Sources */,
 				D8C1FD0B1A69DF0B0072892B /* VImageToolController.m in Sources */,
 				037FCF271A8DAF5400E8ABFC /* VMultipleContainerViewController.m in Sources */,
 				0314D4B019B46B5E00FA363C /* VFetchedResultsTableViewController.m in Sources */,

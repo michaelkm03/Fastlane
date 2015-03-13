@@ -82,6 +82,8 @@ static NSString * const kIconKey = @"icon";
         _trimViewController.delegate = self;
         
         _trimLoopingViewController = [[VTrimLoopingPlayerViewController alloc] initWithNibName:nil bundle:nil];
+        _trimLoopingViewController.muted = _muteAudio;
+        _trimLoopingViewController.frameDuration = _frameDuration;
         
 //        _videoPlayerController = [[VCVideoPlayerViewController alloc] initWithNibName:nil bundle:nil];
 //        _videoPlayerController.shouldFireAnalytics = NO;
@@ -239,7 +241,7 @@ static NSString * const kIconKey = @"icon";
 - (void)trimmerViewControllerEndedSeeking:(VTrimmerViewController *)trimmerViewController
 {
     __weak typeof(self) welf = self;
-    
+    self.trimLoopingViewController.trimRange = trimmerViewController.selectedTimeRange;
 //    [self.videoPlayerController.player prerollAtRate:1.0f
 //                                   completionHandler:^(BOOL finished)
 //    {

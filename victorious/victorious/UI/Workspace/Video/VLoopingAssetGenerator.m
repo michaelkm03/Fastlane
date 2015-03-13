@@ -10,21 +10,15 @@
 
 @import AVFoundation;
 
-typedef NS_ENUM(NSInteger, VLoopingCompositionState)
-{
-    VLoopingCompositionStateUnkown,
-    VLoopingCompositionStateLoading,
-    VLoopingCompositionStateGeneratingComposition,
-    VLoopingCompositionStateLoaded,
-    VLoopingCompositionStateFailed,
-};
-
 @interface VLoopingAssetGenerator ()
 
-@property (nonatomic, assign) VLoopingCompositionState state;
+@property (nonatomic, assign, readwrite) VLoopingCompositionState state;
 @property (nonatomic, strong) AVURLAsset *asset;
 @property (nonatomic, strong) AVComposition *tenMinuteLoopedComposition;
 @property (nonatomic, assign) CMTimeRange trimRange;
+
+@property (nonatomic, strong) dispatch_queue_t compositionCreationQueue;
+@property (nonatomic, assign) BOOL wantsNewCompositionAfterCurrentFinishes;
 
 @end
 
@@ -40,9 +34,7 @@ typedef NS_ENUM(NSInteger, VLoopingCompositionState)
         _asset = [AVURLAsset URLAssetWithURL:assetURL
                                      options:@{AVURLAssetPreferPreciseDurationAndTimingKey:@YES,
                                                AVURLAssetReferenceRestrictionsKey:@(AVAssetReferenceRestrictionForbidAll)}];
-
-        
-        
+        _compositionCreationQueue = dispatch_queue_create("com.getVictorious.compositionCreateQueue", DISPATCH_QUEUE_SERIAL);
     }
     return self;
 }
@@ -75,11 +67,16 @@ typedef NS_ENUM(NSInteger, VLoopingCompositionState)
 
 - (void)transitionToState:(VLoopingCompositionState)newState
 {
-    if (_state == newState)
+    if (self.state == newState)
     {
-        VLog(@"already in newState: %@, trimRange: %@", @(newState), [NSValue valueWithCMTimeRange:self.trimRange]);
-//        return;
+        VLog(@"already in newState: %@", @(newState));
+        if (newState == VLoopingCompositionStateGeneratingComposition)
+        {
+            self.wantsNewCompositionAfterCurrentFinishes = YES;
+        }
+        return;
     }
+    self.state = newState;
     
     switch (newState)
     {
@@ -122,39 +119,58 @@ typedef NS_ENUM(NSInteger, VLoopingCompositionState)
              break;
         case VLoopingCompositionStateGeneratingComposition:
         {
-            AVMutableComposition *composition = [[AVMutableComposition alloc] init];
-            CMTimeRange assetRange = kCMTimeRangeInvalid;
-            CMTime startingOffset = CMTimeMake(200, 600);
-            if (CMTIMERANGE_IS_VALID(self.trimRange))
+            void (^createComposition)(CMTimeRange trimRange) = ^void(CMTimeRange trimRange)
             {
-                assetRange = self.trimRange;
-            }
-            else
-            {
-                assetRange = CMTimeRangeMake(startingOffset, CMTimeSubtract(self.asset.duration, startingOffset));
-            }
-            
-            // Ensure we are within the asset's time range
-            assetRange = CMTimeRangeGetIntersection(CMTimeRangeMake(kCMTimeZero, self.asset.duration), assetRange);
-            
-            NSError *compositionError = nil;
-            BOOL initialInsertSucceeded = [composition insertTimeRange:assetRange
-                                                               ofAsset:self.asset
-                                                                atTime:composition.duration
-                                                                 error:&compositionError];
-            if (initialInsertSucceeded)
-            {
-                CMTime tenMinutes = CMTimeMake(10 * 60 * 600, 600);
-                while (CMTIME_COMPARE_INLINE(composition.duration, <, tenMinutes))
+                AVMutableComposition *composition = [[AVMutableComposition alloc] init];
+                CMTimeRange assetRange = kCMTimeRangeInvalid;
+                if (CMTIMERANGE_IS_VALID(trimRange))
                 {
-                    [composition insertTimeRange:assetRange
-                                         ofAsset:self.asset
-                                          atTime:composition.duration
-                                           error:&compositionError];
+                    assetRange = trimRange;
                 }
-            }
-            self.tenMinuteLoopedComposition = [composition copy];
-            [self transitionToState:VLoopingCompositionStateLoaded];
+                else
+                {
+                    assetRange = CMTimeRangeMake(kCMTimeZero, self.asset.duration);
+                }
+                
+                // Ensure we are within the asset's time range
+                assetRange = CMTimeRangeGetIntersection(CMTimeRangeMake(kCMTimeZero, self.asset.duration), assetRange);
+                
+                NSError *compositionError = nil;
+                BOOL initialInsertSucceeded = [composition insertTimeRange:assetRange
+                                                                   ofAsset:self.asset
+                                                                    atTime:composition.duration
+                                                                     error:&compositionError];
+                if (initialInsertSucceeded)
+                {
+                    CMTime tenMinutes = CMTimeMake(2 * 60 * 600, 600);
+                    while (CMTIME_COMPARE_INLINE(composition.duration, <, tenMinutes))
+                    {
+                        [composition insertTimeRange:assetRange
+                                             ofAsset:self.asset
+                                              atTime:composition.duration
+                                               error:&compositionError];
+                    }
+                }
+                
+                dispatch_async(dispatch_get_main_queue(), ^
+                {
+                    if (self.wantsNewCompositionAfterCurrentFinishes)
+                    {
+                        self.wantsNewCompositionAfterCurrentFinishes = NO;
+                        self.state = VLoopingCompositionStateLoading;
+                        [self transitionToState:VLoopingCompositionStateGeneratingComposition];
+                        return;
+                    }
+                    self.tenMinuteLoopedComposition = [composition copy];
+                    [self transitionToState:VLoopingCompositionStateLoaded];
+                });
+            };
+            
+            CMTimeRange trimRange = self.trimRange;
+            dispatch_async(self.compositionCreationQueue, ^
+            {
+                createComposition(trimRange);
+            });
         }
             break;
         case VLoopingCompositionStateLoaded:
@@ -168,8 +184,16 @@ typedef NS_ENUM(NSInteger, VLoopingCompositionState)
         case VLoopingCompositionStateFailed:
             break;
     }
-    
-    _state = newState;
+}
+
+- (void)setState:(VLoopingCompositionState)state
+{
+    VLog(@"%@", @(state));
+    if (state == VLoopingCompositionStateGeneratingComposition)
+    {
+        
+    }
+    _state = state;
 }
 
 @end

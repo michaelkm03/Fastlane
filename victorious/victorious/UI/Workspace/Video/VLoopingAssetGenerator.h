@@ -9,6 +9,15 @@
 @class AVAsset;
 @import CoreMedia;
 
+typedef NS_ENUM(NSInteger, VLoopingCompositionState)
+{
+    VLoopingCompositionStateUnkown,
+    VLoopingCompositionStateLoading,
+    VLoopingCompositionStateGeneratingComposition,
+    VLoopingCompositionStateLoaded,
+    VLoopingCompositionStateFailed,
+};
+
 @interface VLoopingAssetGenerator : NSObject
 
 - (instancetype)initWithURL:(NSURL *)assetURL;
@@ -21,5 +30,10 @@
 @property (nonatomic, readonly) CMTime assetOriginalDuration;
 
 @property (nonatomic, copy) void (^loopedAssetBecameAvailable)(AVAsset *loopedAsset);
+
+// KVO-able
+@property (nonatomic, assign, readonly) VLoopingCompositionState state;
+
+@property (nonatomic, readonly) NSError *error;
 
 @end

@@ -16,4 +16,8 @@
 
 @property (nonatomic, assign) CMTimeRange trimRange;
 
+@property (nonatomic, assign, getter=isMuted) BOOL muted;
+
+@property (nonatomic, assign) CMTime frameDuration;
+
 @end
