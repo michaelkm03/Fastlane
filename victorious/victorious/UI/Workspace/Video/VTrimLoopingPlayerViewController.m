@@ -30,6 +30,13 @@
 
 @implementation VTrimLoopingPlayerViewController
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:AVPlayerItemDidPlayToEndTimeNotification
+                                                  object:self.player.currentItem];
+}
+
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nil bundle:nil];
@@ -173,12 +180,36 @@
      }];
 }
 
+#pragma mark - Notification Handlers
+
+- (void)playerReachedEnd:(NSNotification *)notification
+{
+    __weak typeof(self) welf = self;
+    [self.player pause];
+    [self.player seekToTime:kCMTimeZero completionHandler:^(BOOL finished)
+    {
+        if (finished)
+        {
+            [welf playIfUserAllowed];
+        }
+    }];
+}
+
 #pragma mark - Private Methods
 
 - (void)playWithNewAsset:(AVAsset *)asset
 {
-    AVComposition *composition = (AVComposition *)asset;
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:AVPlayerItemDidPlayToEndTimeNotification object:self.player.currentItem];
+    [self.player replaceCurrentItemWithPlayerItem:[self playerItemWithAsset:asset]];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playerReachedEnd:) name:AVPlayerItemDidPlayToEndTimeNotification object:self.player.currentItem];
 
+    [self playIfUserAllowed];
+}
+
+- (AVPlayerItem *)playerItemWithAsset:(AVAsset *)asset
+{
+    AVComposition *composition = (AVComposition *)asset;
+    
     AVPlayerItem *playerItemWithAsset = [AVPlayerItem playerItemWithAsset:composition];
     if (self.isMuted)
     {
@@ -186,8 +217,7 @@
     }
     playerItemWithAsset.videoComposition = [composition videoCompositionWithFrameDuration:self.frameDuration];
     
-    [self.player replaceCurrentItemWithPlayerItem:playerItemWithAsset];
-    [self playIfUserAllowed];
+    return playerItemWithAsset;
 }
 
 - (void)playIfUserAllowed

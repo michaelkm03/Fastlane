@@ -142,7 +142,8 @@
                                                                      error:&compositionError];
                 if (initialInsertSucceeded)
                 {
-                    CMTime tenMinutes = CMTimeMake(2 * 60 * 600, 600);
+                    // 20 seconds
+                    CMTime tenMinutes = CMTimeMake( 20 * 600, 600);
                     while (CMTIME_COMPARE_INLINE(composition.duration, <, tenMinutes))
                     {
                         [composition insertTimeRange:assetRange
