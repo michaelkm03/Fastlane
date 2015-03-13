@@ -1523,11 +1523,6 @@ referenceSizeForHeaderInSection:(NSInteger)section
     [self presentViewController:editViewController animated:YES completion:nil];
 }
 
-- (void)didSelectActionRequiringLogin
-{
-    
-}
-
 #pragma mark - VEditCommentViewControllerDelegate
 
 - (void)didFinishEditingComment:(VComment *)comment
