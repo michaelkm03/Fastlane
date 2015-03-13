@@ -33,8 +33,9 @@ static const NSInteger kSettingsSectionIndex         = 0;
 static const NSInteger kChangePasswordIndex          = 0;
 static const NSInteger kChromecastButtonIndex        = 2;
 static const NSInteger kPushNotificationsButtonIndex = 3;
-static const NSInteger kServerEnvironmentButtonIndex = 4;
-static const NSInteger kResetPurchasesButtonIndex    = 5;
+static const NSInteger kResetPurchasesButtonIndex    = 4;
+static const NSInteger kServerEnvironmentButtonIndex = 5;
+static const NSInteger kTrackingButtonIndex          = 6;
 
 static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
 
@@ -48,6 +49,7 @@ static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
 
 @property (nonatomic, assign) BOOL showChromeCastButton;
 @property (nonatomic, assign) BOOL showEnvironmentSetting;
+@property (nonatomic, assign) BOOL showTrackingAlertSetting;
 @property (nonatomic, assign) BOOL showPushNotificationSettings;
 @property (nonatomic, assign) BOOL showPurchaseSettings;
 
@@ -117,6 +119,12 @@ static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
     self.showEnvironmentSetting = NO;
 #else
     self.showEnvironmentSetting = YES;
+#endif
+    
+#ifdef V_NO_TRACKING_ALERTS
+    self.showTrackingAlertSetting = NO;
+#else
+    self.showTrackingAlertSetting = YES;
 #endif
     
     self.showPurchaseSettings = [VPurchaseManager sharedInstance].isPurchasingEnabled;
@@ -295,6 +303,17 @@ static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
             return 0;
         }
     }
+    else if (kSettingsSectionIndex == indexPath.section && kTrackingButtonIndex == indexPath.row)
+    {
+        if (self.showEnvironmentSetting)
+        {
+            return self.tableView.rowHeight;
+        }
+        else
+        {
+            return 0;
+        }
+    }
     
     return self.tableView.rowHeight;
 }
@@ -378,6 +397,13 @@ static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
     }
     
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - VNavigationDestination
+
+- (BOOL)shouldNavigateWithAlternateDestination:(UIViewController *__autoreleasing *)alternateViewController
+{
+    return YES;
 }
 
 @end

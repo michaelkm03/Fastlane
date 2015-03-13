@@ -32,10 +32,16 @@
 #import "VProfileHeaderCell.h"
 
 #import "VAuthorizedAction.h"
+#import "VDependencyManager+VNavigationItem.h"
+#import "VDependencyManager+VNavigationMenuItem.h"
 #import "VFindFriendsViewController.h"
 #import "VSettingManager.h"
 #import <FBKVOController.h>
 #import <MBProgressHUD.h>
+
+// Authorization
+#import "VNotAuthorizedDataSource.h"
+#import "VNotAuthorizedProfileCollectionViewCell.h"
 
 static const CGFloat kVSmallUserHeaderHeight = 319.0f;
 
@@ -47,7 +53,7 @@ static void * VUserProfileAttributesContext =  &VUserProfileAttributesContext;
 static const CGFloat MBProgressHUDCustomViewSide = 37.0f;
 static NSString * const kUserKey = @"user";
 
-@interface VUserProfileViewController () <VUserProfileHeaderDelegate, MBProgressHUDDelegate>
+@interface VUserProfileViewController () <VUserProfileHeaderDelegate, MBProgressHUDDelegate, VNotAuthorizedDataSourceDelegate>
 
 @property   (nonatomic, strong) VUser                  *profile;
 @property (nonatomic, strong) NSNumber *remoteId;
@@ -67,6 +73,8 @@ static NSString * const kUserKey = @"user";
 @property (nonatomic, assign) BOOL didEndViewWillAppear;
 
 @property (nonatomic, assign) CGFloat defaultMBProgressHUDMargin;
+
+@property (nonatomic, strong) VNotAuthorizedDataSource *notLoggedInDataSource;
 
 @end
 
@@ -128,7 +136,12 @@ static NSString * const kUserKey = @"user";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginStatusChanged:) name:kLoggedInChangedNotification object:nil];
 
+    [self.dependencyManager addPropertiesToNavigationItem:self.navigationItem
+                                 pushAccessoryMenuItemsOn:self.navigationController];
+    
     self.streamDataSource.hasHeaderCell = YES;
     self.collectionView.alwaysBounceVertical = YES;
     
@@ -139,7 +152,10 @@ static NSString * const kUserKey = @"user";
     
     if (![VObjectManager sharedManager].mainUser)
     {
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginStateDidChange:) name:kLoggedInChangedNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(loginStateDidChange:)
+                                                     name:kLoggedInChangedNotification
+                                                   object:nil];
     }
     
     [self.KVOController observe:self.currentStream
@@ -148,6 +164,25 @@ static NSString * const kUserKey = @"user";
                         context:VUserProfileViewContext];
     
     [self.collectionView registerClass:[VProfileHeaderCell class] forCellWithReuseIdentifier:NSStringFromClass([VProfileHeaderCell class])];
+    
+    [self updateCollectionViewDataSource];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
+    if (self.isMe)
+    {
+        [self addFriendsButton];
+    }
+    else if (!self.isMe && !self.profile.isDirectMessagingDisabled.boolValue)
+    {
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"profileCompose"]
+                                                                                  style:UIBarButtonItemStylePlain
+                                                                                 target:self
+                                                                                 action:@selector(composeMessage:)];
+    }
     
     UIImage    *defaultBackgroundImage;
     if (self.backgroundImageView.image)
@@ -173,24 +208,7 @@ static NSString * const kUserKey = @"user";
     {
         [self.profileHeaderView insertSubview:self.backgroundImageView atIndex:0];
     }
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-
-    if (self.isMe)
-    {
-        [self addFriendsButton];
-    }
-    else if (!self.isMe && !self.profile.isDirectMessagingDisabled.boolValue)
-    {
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"profileCompose"]
-                                                                                  style:UIBarButtonItemStylePlain
-                                                                                 target:self
-                                                                                 action:@selector(composeMessage:)];
-    }
-
+    
     NSURL *pictureURL = [NSURL URLWithString:self.profile.pictureUrl];
     if (![self.backgroundImageView.sd_imageURL isEqual:pictureURL])
     {
@@ -311,7 +329,12 @@ static NSString * const kUserKey = @"user";
 
 - (void)dealloc
 {
-    [self.KVOController unobserve:self.currentStream keyPath:@"sequences"];
+    if (self.currentStream != nil)
+    {
+        [self.KVOController unobserve:self.currentStream keyPath:@"sequences"];
+    }
+    
+
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kLoggedInChangedNotification object:nil];
     if (self.profile != nil)
     {
@@ -450,20 +473,31 @@ static NSString * const kUserKey = @"user";
 
 - (void)refreshWithCompletion:(void (^)(void))completionBlock
 {
-    if ( self.profile != nil )
+    if (self.collectionView.dataSource == self.notLoggedInDataSource)
     {
-        void (^fullCompletionBlock)(void) = ^void(void)
+        if (completionBlock)
         {
-            if (self.streamDataSource.count)
+            completionBlock();
+        }
+        return;
+    }
+    else
+    {
+        if ( self.profile != nil )
+        {
+            void (^fullCompletionBlock)(void) = ^void(void)
             {
-                [self shrinkHeaderAnimated:YES];
-            }
-            if (completionBlock)
-            {
-                completionBlock();
-            }
-        };
-        [super refreshWithCompletion:fullCompletionBlock];
+                if (self.streamDataSource.count)
+                {
+                    [self shrinkHeaderAnimated:YES];
+                }
+                if (completionBlock)
+                {
+                    completionBlock();
+                }
+            };
+            [super refreshWithCompletion:fullCompletionBlock];
+        }
     }
 }
 
@@ -629,6 +663,10 @@ static NSString * const kUserKey = @"user";
                   layout:(UICollectionViewLayout *)collectionViewLayout
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (self.collectionView.dataSource == self.notLoggedInDataSource)
+    {
+        return [VNotAuthorizedProfileCollectionViewCell desiredSizeWithCollectionViewBounds:collectionView.bounds];
+    }
     if (self.streamDataSource.hasHeaderCell && indexPath.section == 0)
     {
         return self.currentProfileSize;
@@ -637,12 +675,42 @@ static NSString * const kUserKey = @"user";
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
-{
+{    
     if (self.streamDataSource.hasHeaderCell && indexPath.section == 0)
     {
         return;
     }
     [super collectionView:collectionView didSelectItemAtIndexPath:indexPath];
+}
+
+- (void)updateCollectionViewDataSource
+{
+    if (![[VObjectManager sharedManager] mainUserLoggedIn] && self.representsMainUser)
+    {
+        self.notLoggedInDataSource = [[VNotAuthorizedDataSource alloc] initWithCollectionView:self.collectionView];
+        self.notLoggedInDataSource.delegate = self;
+        self.collectionView.dataSource = self.notLoggedInDataSource;
+        [self.backgroundImageView setBlurredImageWithClearImage:[UIImage imageNamed:@"Default"]
+                                               placeholderImage:nil
+                                                      tintColor:[[UIColor whiteColor] colorWithAlphaComponent:0.5f]];
+        [self.refreshControl removeFromSuperview];
+    }
+    else
+    {
+        self.collectionView.dataSource = self.streamDataSource;
+        [self.collectionView addSubview:self.refreshControl];
+    }
+}
+
+#pragma mark - Notification
+
+- (void)loginStatusChanged:(NSNotification *)notification
+{
+    if (self.representsMainUser)
+    {
+        self.profile = [VObjectManager sharedManager].mainUser;
+        [self updateCollectionViewDataSource];
+    }
 }
 
 #pragma mark - KVO
@@ -675,6 +743,30 @@ static NSString * const kUserKey = @"user";
                             forKeyPath:NSStringFromSelector(@selector(streamItems))];
 }
 
+#pragma mark - VAbstractStreamCollectionViewController
+
+- (void)refresh:(UIRefreshControl *)sender
+{
+    if (self.collectionView.dataSource == self.notLoggedInDataSource)
+    {
+        return;
+    }
+    else
+    {
+        [super refresh:sender];
+    }
+}
+
+#pragma mark - VNotAuthorizedDataSourceDelegate
+
+- (void)dataSourceWantsAuthorization:(VNotAuthorizedDataSource *)dataSource
+{
+    VLoginViewController *viewController = [VLoginViewController newWithDependencyManager:self.dependencyManager];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+    viewController.transitionDelegate = [[VTransitionDelegate alloc] initWithTransition:[[VPresentWithBlurTransition alloc] init]];
+    [self presentViewController:navigationController animated:YES completion:nil];
+}
+
 @end
 
 #pragma mark -
@@ -683,7 +775,7 @@ static NSString * const kUserKey = @"user";
 
 - (VUserProfileViewController *)userProfileViewControllerWithUser:(VUser *)user forKey:(NSString *)key
 {
-    NSAssert(user != nil, @"user can't be nil");
+    NSAssert(user != nil, @"user cannot be nil");
     return [self templateValueOfType:[VUserProfileViewController class] forKey:key withAddedDependencies:@{ kUserKey: user }];
 }
 

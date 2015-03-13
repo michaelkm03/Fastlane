@@ -25,6 +25,7 @@
 // Category
 #import "NSURL+MediaType.h"
 #import "UIActionSheet+VBlocks.h"
+#import "VWorkspacePresenter.h"
 
 // ViewControllers
 #import "VCameraViewController.h"
@@ -76,6 +77,8 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
 @property (nonatomic, strong) VPublishBlurOverAnimator *transitionAnimator;
 
 @property (nonatomic, readonly) VDependencyManager *dependencyManager;
+
+@property (nonatomic, strong) VWorkspacePresenter *workspacePresenter;
 
 @end
 
@@ -245,6 +248,13 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
 - (VAuthorizationContext)authorizationContext
 {
     return VAuthorizationContextCreatePost;
+}
+
+- (BOOL)shouldNavigateWithAlternateDestination:(UIViewController *__autoreleasing *)alternateViewController
+{
+    self.workspacePresenter = [VWorkspacePresenter workspacePresenterWithViewControllerToPresentOn:[VRootViewController rootViewController]];
+    [self.workspacePresenter present];
+    return NO;
 }
 
 #pragma mark - Property Accessors

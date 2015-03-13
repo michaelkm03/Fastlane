@@ -8,7 +8,6 @@
 
 #import "VDependencyManager.h"
 #import "VHasManagedDependencies.h"
-
 #import <UIKit/UIKit.h>
 
 @class VSequence, VAuthorization;

@@ -57,8 +57,6 @@
 
 @property (nonatomic, weak, readonly) IBOutlet VSequenceActionController *sequenceActionController;
 
-@property (nonatomic, strong, readonly) VAuthorizedAction *authorizedAction;
-
 @property (nonatomic, strong, readonly) VDependencyManager *dependencyManager;
 
 @end

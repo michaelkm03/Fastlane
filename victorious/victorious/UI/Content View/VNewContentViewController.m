@@ -151,6 +151,8 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 @property (nonatomic, weak) IBOutlet VScrollPaginator *scrollPaginator;
 @property (nonatomic, weak, readwrite) IBOutlet VSequenceActionController *sequenceActionController;
 
+@property (nonatomic, strong) VAuthorizedAction *authorizedAction;
+
 @property (nonatomic, weak) UIView *snapshotView;
 @property (nonatomic, assign) CGPoint offsetBeforeRemoval;
 
@@ -368,6 +370,9 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.authorizedAction = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
+                                                           dependencyManager:self.dependencyManager];
     
     self.commentHighlighter = [[VCommentHighlighter alloc] initWithCollectionView:self.contentCollectionView];
     
@@ -657,14 +662,15 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 
 - (void)experienceEnhancerDidRequireLogin:(NSNotification *)notification
 {
-    [self.authorizedAction performFromViewController:self context:VAuthorizationContextVoteBallistic completion:^
+    __weak typeof(self) welf = self;
+    [welf.authorizedAction performFromViewController:self context:VAuthorizationContextVoteBallistic completion:^
      {
          // Use the provided index path of the selected emotive ballistic that trigger the notificiation
          // to perform the authorized action once authorization is successful
          NSIndexPath *experienceEnhancerIndexPath = notification.userInfo[ @"experienceEnhancerIndexPath" ];
          if ( experienceEnhancerIndexPath != nil )
          {
-             [self.experienceEnhancerCell.experienceEnhancerBar selectExperienceEnhancerAtIndex:experienceEnhancerIndexPath];
+             [welf.experienceEnhancerCell.experienceEnhancerBar selectExperienceEnhancerAtIndex:experienceEnhancerIndexPath];
          }
      }];
 }
@@ -1310,16 +1316,17 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)pressedSendOnKeyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView
 {
+    __weak typeof(self) welf = self;
     [self.authorizedAction performFromViewController:self context:VAuthorizationContextAddComment completion:^
      {
-         [self submitCommentWithText:inputAccessoryView.composedText];
+         [welf submitCommentWithText:inputAccessoryView.composedText];
          
          [inputAccessoryView clearTextAndResign];
-         self.mediaURL = nil;
+         welf.mediaURL = nil;
          
          if ([[VSettingManager sharedManager] settingEnabledForKey:VExperimentsPauseVideoWhenCommenting])
          {
-             [self.videoCell play];
+             [welf.videoCell play];
          }
      }];
 }
@@ -1334,9 +1341,10 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)pressedAttachmentOnKeyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView
 {
+    __weak typeof(self) welf = self;
     [self.authorizedAction performFromViewController:self context:VAuthorizationContextAddComment completion:^
      {
-         [self addMediaToComment];
+         [welf addMediaToComment];
      }];
 }
 
@@ -1361,10 +1369,11 @@ referenceSizeForHeaderInSection:(NSInteger)section
         [self.videoCell pause];
     }
     
+    __weak typeof(self) welf = self;
     [self.authorizedAction performFromViewController:self context:VAuthorizationContextAddComment completion:^
      {
-         self.enteringRealTimeComment = YES;
-         self.realtimeCommentBeganTime = self.videoCell.currentTime;
+         welf.enteringRealTimeComment = YES;
+         welf.realtimeCommentBeganTime = welf.videoCell.currentTime;
      }];
 }
 

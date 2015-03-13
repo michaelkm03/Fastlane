@@ -227,7 +227,7 @@
             
             VAuthorizedAction *authorizedAction = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                                  dependencyManager:self.dependencyManager];
-            [authorizedAction performFromViewController:actionSheetViewController context:VAuthorizationContextRepost completion:^
+            [authorizedAction performFromViewController:actionSheetViewController context:VAuthorizationContextRemix completion:^
              {
                  [contentViewController dismissViewControllerAnimated:YES
                                                            completion:^
