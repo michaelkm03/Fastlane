@@ -192,16 +192,25 @@
         self.bottomToolbar.hidden = YES;
     }
     
+    [self setupCanvasNotification];
+    
+    [self setupKeyboardManager];
+}
+
+- (void)setupCanvasNotification
+{
     if ([self.toolController isKindOfClass:[VImageToolController class]])
     {
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(canvasViewDidUpdateAsset:)
                                                      name:VCanvasViewAssetSizeBecameAvailableNotification
                                                    object:self.canvasView];
-        [self.canvasView setSourceURL:self.mediaURL
-                   withPreloadedImage:self.previewImage];
+        [self.canvasView setSourceURL:self.mediaURL withPreloadedImage:self.previewImage];
     }
-    
+}
+
+- (void)setupKeyboardManager
+{
     __weak typeof(self) welf = self;
     self.keyboardManager = [[VKeyboardNotificationManager alloc] initWithKeyboardWillShowBlock:^(CGRect keyboardFrameBegin, CGRect keyboardFrameEnd, NSTimeInterval animationDuration, UIViewAnimationCurve animationCurve)
     {
@@ -239,6 +248,7 @@
     self.keyboardManager.stopCallingHandlerBlocks = YES;
 }
 
+#warning MOVE THIS SHIT TO WORKSPACE FLOW CONTROLLER!!
 - (void)setMediaURL:(NSURL *)mediaURL
 {
     _mediaURL = mediaURL;
@@ -287,54 +297,12 @@
 
 - (IBAction)close:(id)sender
 {
-    if (self.shouldConfirmCancels)
-    {
-        __weak typeof(self) welf = self;
-        UIActionSheet *confirmExitActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"This will discard any content from the camera", @"")
-                                                                   cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
-                                                                      onCancelButton:nil
-                                                              destructiveButtonTitle:NSLocalizedString(@"Discard", nil)
-                                                                 onDestructiveButton:^
-                                                 {
-                                                     welf.completionBlock(NO, nil, nil);
-                                                 }
-                                                          otherButtonTitlesAndBlocks:nil, nil];
-        [confirmExitActionSheet showInView:self.view];
-        return;
-    }
-    self.completionBlock(NO, nil, nil);
+    [self.delegate workspaceDidClose:self];
 }
 
 - (IBAction)publish:(id)sender
 {
-    MBProgressHUD *hudForView = [MBProgressHUD showHUDAddedTo:self.view
-                                                     animated:YES];
-    hudForView.labelText = NSLocalizedString(@"Rendering...", @"");
-    
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidFinishWorkspaceEdits];
-    
-    __weak typeof(self) welf = self;
-    [self.toolController exportWithSourceAsset:self.mediaURL
-                                withCompletion:^(BOOL finished, NSURL *renderedMediaURL, UIImage *previewImage, NSError *error)
-     {
-         [hudForView hide:YES];
-         if (error != nil)
-         {
-             UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Render failure", @"")
-                                                                  message:error.localizedDescription
-                                                        cancelButtonTitle:NSLocalizedString(@"ok", @"")
-                                                           onCancelButton:nil
-                                               otherButtonTitlesAndBlocks:nil, nil];
-             [errorAlert show];
-         }
-         else
-         {
-             if (welf.completionBlock != nil)
-             {
-                 welf.completionBlock(YES, previewImage, renderedMediaURL);
-             }
-         }
-     }];
+    [self.delegate workspaceDidPublish:self];
 }
 
 - (void)selectedBarButtonItem:(UIBarButtonItem *)sender
@@ -445,10 +413,14 @@
         self.verticalSpaceCanvasToTopOfContainerConstraint.constant = -CGRectGetHeight(overlap) + CGRectGetHeight(self.topToolbar.frame);
         self.inspectorToolViewController.view.translatesAutoresizingMaskIntoConstraints = YES;
         self.inspectorToolViewController.view.frame = inspectorFrame;
-        [self.topToolbar.items enumerateObjectsUsingBlock:^(UIBarButtonItem *item, NSUInteger idx, BOOL *stop)
+        
+        if ( self.disabledToolbarWhileKeyboardIsVisible )
          {
-             [item setEnabled:NO];
-         }];
+             [self.topToolbar.items enumerateObjectsUsingBlock:^(UIBarButtonItem *item, NSUInteger idx, BOOL *stop)
+              {
+                  [item setEnabled:NO];
+              }];
+         }
         [self.view layoutIfNeeded];
     };
     
@@ -474,11 +446,15 @@
     void (^animations)() = ^()
     {
         self.verticalSpaceCanvasToTopOfContainerConstraint.constant = CGRectGetHeight(self.topToolbar.frame);
+        
+        if ( self.disabledToolbarWhileKeyboardIsVisible )
+        {
+            [self.topToolbar.items enumerateObjectsUsingBlock:^(UIBarButtonItem *item, NSUInteger idx, BOOL *stop)
+             {
+                 [item setEnabled:YES];
+             }];
+        }
         [self.view layoutIfNeeded];
-        [self.topToolbar.items enumerateObjectsUsingBlock:^(UIBarButtonItem *item, NSUInteger idx, BOOL *stop)
-         {
-             [item setEnabled:YES];
-         }];
     };
     
     [UIView animateWithDuration:animationDuration

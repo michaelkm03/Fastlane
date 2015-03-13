@@ -213,7 +213,7 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
     [self updateCurrentlyPlayingMediaAsset];
     
 #warning TESTING ONLY: Jumpts right to text workspace
-    [self presentCreateFlowWithTextOnly];
+    //[self presentCreateFlowWithTextOnly];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -362,7 +362,7 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
 {
     [[VTrackingManager sharedInstance] setValue:VTrackingValueCreatePost forSessionParameterWithKey:VTrackingKeyContext];
     
-    NSDictionary *dependencies = @{ VWorkspaceFlowControllerInitialCaptureStateKey : @(VWorkspaceFlowControllerInitialCaptureStateNone) };
+    NSDictionary *dependencies = @{};
     VWorkspaceFlowController *workspaceFlowController = [self.dependencyManager templateValueOfType:[VWorkspaceFlowController class]
                                                                                              forKey:VDependencyManagerWorkspaceFlowKey
                                                                               withAddedDependencies:dependencies];

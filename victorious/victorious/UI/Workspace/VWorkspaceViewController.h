@@ -10,9 +10,15 @@
 
 #import "VHasManagedDependencies.h"
 
-@class VToolController, VCanvasView;
+@class VToolController, VCanvasView, VWorkspaceViewController;
 
-typedef void (^VWorkspaceCompletion)(BOOL finished, UIImage *previewImage, NSURL *renderedMediaURL);
+@protocol VWorkspaceDelegate
+
+- (void)workspaceDidPublish:(VWorkspaceViewController *)workspaceViewController;
+
+- (void)workspaceDidClose:(VWorkspaceViewController *)workspaceViewController;
+
+@end
 
 /**
  
@@ -26,7 +32,6 @@ typedef void (^VWorkspaceCompletion)(BOOL finished, UIImage *previewImage, NSURL
 @interface VWorkspaceViewController : UIViewController <VHasManagedDependancies>
 
 @property (nonatomic, copy) NSString *continueText;
-@property (nonatomic, copy) VWorkspaceCompletion completionBlock; ///< Called upon completion. PreviewImage and RenderedMediaURL will be nil if unsuccessful.
 
 @property (nonatomic, strong) UIImage *previewImage; ///< An image to use in the canvas.
 @property (nonatomic, strong) NSURL *mediaURL; ///< The image or video to use in this workspace.
@@ -34,9 +39,13 @@ typedef void (^VWorkspaceCompletion)(BOOL finished, UIImage *previewImage, NSURL
 
 @property (nonatomic, readonly) VToolController *toolController; ///< The toolController
 
+@property (nonatomic, assign) BOOL disabledToolbarWhileKeyboardIsVisible;
+
 @property (nonatomic, assign) BOOL shouldConfirmCancels; ///< The workspace will show a "discard" action sheet before calling it's completion block
 
 @property (nonatomic, weak, readonly) VCanvasView *canvasView;
+
+@property (nonatomic, strong) id<VWorkspaceDelegate> delegate;
 
 - (void)bringTopChromeOutOfView;
 - (void)bringBottomChromeOutOfView;

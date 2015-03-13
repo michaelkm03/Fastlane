@@ -50,8 +50,6 @@ static const NSUInteger kMaxTextLength = 200;
 
 - (void)updateTextBackground
 {
-    NSLog( @"%@", self.textLayoutHelper );
-    
     NSDictionary *attributes = [self textAttributesWithDependencyManager:self.dependencyManager];
     
     [self.textView layoutIfNeeded];

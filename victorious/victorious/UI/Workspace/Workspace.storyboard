@@ -95,7 +95,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="29c-Qz-2Z5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-121" y="-336"/>
+            <point key="canvasLocation" x="-115.5" y="-361"/>
         </scene>
         <!--Ticker Picker View Controller-->
         <scene sceneID="4nq-PE-ZjB">

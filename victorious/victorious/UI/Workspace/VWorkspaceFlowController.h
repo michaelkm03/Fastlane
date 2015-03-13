@@ -51,8 +51,7 @@ extern NSString * const VWorkspaceFlowControllerInitialCaptureStateKey;
 typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerInitialCaptureState)
 {
     VWorkspaceFlowControllerInitialCaptureStateImage, // Default
-    VWorkspaceFlowControllerInitialCaptureStateVideo, // Default
-    VWorkspaceFlowControllerInitialCaptureStateNone // e.g. Text only
+    VWorkspaceFlowControllerInitialCaptureStateVideo,
 };
 
 // Remix
