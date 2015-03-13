@@ -212,8 +212,7 @@ static NSString * const VStoryboardViewControllerIndentifier    = @"suggestedPeo
     
     VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                 dependencyManager:self.dependencyManager];
-    [authorization performFromViewController:[self.delegate componentRootViewController]
-                                                 withContext:VAuthorizationContextFollowUser withSuccess:^
+    [authorization performFromViewController:[self.delegate componentRootViewController] context:VAuthorizationContextFollowUser completion:^
      {
          [[VObjectManager sharedManager] unfollowUser:user successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
           {
@@ -232,8 +231,7 @@ static NSString * const VStoryboardViewControllerIndentifier    = @"suggestedPeo
     
     VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                 dependencyManager:self.dependencyManager];
-    [authorization performFromViewController:[self.delegate componentRootViewController]
-                                                 withContext:VAuthorizationContextFollowUser withSuccess:^
+    [authorization performFromViewController:[self.delegate componentRootViewController] context:VAuthorizationContextFollowUser completion:^
      {
          [[VObjectManager sharedManager] followUser:user successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
           {

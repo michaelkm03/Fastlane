@@ -212,7 +212,7 @@ static const NSInteger kSearchResultLimit = 100;
     
     VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                 dependencyManager:self.dependencyManager];
-    [authorization performFromViewController:self withContext:VAuthorizationContextInbox withSuccess:^
+    [authorization performFromViewController:self context:VAuthorizationContextInbox completion:^
     {
         VMessageContainerViewController *composeController = [VMessageContainerViewController messageViewControllerForUser:profile];
         [self.navigationController pushViewController:composeController animated:YES];
@@ -432,9 +432,7 @@ static const NSInteger kSearchResultLimit = 100;
     {
         VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                     dependencyManager:self.dependencyManager];
-        [authorization performFromViewController:self
-         
-                                                     withContext:VAuthorizationContextFollowUser withSuccess:^
+        [authorization performFromViewController:self context:VAuthorizationContextFollowUser completion:^
          {
              if ([mainUser.following containsObject:profile])
              {

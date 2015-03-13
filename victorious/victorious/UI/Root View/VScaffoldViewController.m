@@ -246,7 +246,7 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
         VAuthorizationContext context = [navigationDestination authorizationContext];
         VAuthorizedAction *authorizedAction = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                         dependencyManager:self.dependencyManager];
-        [authorizedAction performFromViewController:self withContext:context withSuccess:^
+        [authorizedAction performFromViewController:self context:context completion:^
          {
             performNavigation(navigationDestination);
         }];

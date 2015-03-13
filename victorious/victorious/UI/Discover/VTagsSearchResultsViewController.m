@@ -183,7 +183,7 @@ static NSString * const kVTagResultIdentifier = @"VTrendingTagCell";
         
         VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                     dependencyManager:self.dependencyManager];
-        [authorization performFromViewController:self withContext:VAuthorizationContextInbox withSuccess:^
+        [authorization performFromViewController:self context:VAuthorizationContextInbox completion:^
          {
              // Check if already subscribed to hashtag then subscribe or unsubscribe accordingly
              if (weakCell.isSubscribedToTag)

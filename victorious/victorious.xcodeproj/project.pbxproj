@@ -366,13 +366,13 @@
 		A720055F1A030E4700285A9C /* VFlurryTracking.m in Sources */ = {isa = PBXBuildFile; fileRef = A720055B1A030E4700285A9C /* VFlurryTracking.m */; };
 		A72005601A030E4700285A9C /* VGoogleAnalyticsTracking.m in Sources */ = {isa = PBXBuildFile; fileRef = A720055D1A030E4700285A9C /* VGoogleAnalyticsTracking.m */; };
 		A72005701A03ECDC00285A9C /* VTrackingURLRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = A720056F1A03ECDC00285A9C /* VTrackingURLRequest.m */; };
-		A7299EA31AA69C1600B6BC1F /* VAuthorizedAction.m in Sources */ = {isa = PBXBuildFile; fileRef = A7299EA21AA69C1600B6BC1F /* VAuthorizedAction.m */; };
 		A7299E901AA5331000B6BC1F /* VDirectoryGroupCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7299E881AA5331000B6BC1F /* VDirectoryGroupCell.m */; };
 		A7299E911AA5331000B6BC1F /* VDirectoryGroupCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7299E891AA5331000B6BC1F /* VDirectoryGroupCell.xib */; };
 		A7299E921AA5331000B6BC1F /* VDirectoryItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7299E8B1AA5331000B6BC1F /* VDirectoryItemCell.m */; };
 		A7299E931AA5331000B6BC1F /* VDirectoryItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7299E8C1AA5331000B6BC1F /* VDirectoryItemCell.xib */; };
 		A7299E941AA5331000B6BC1F /* VDirectorySeeMoreItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7299E8E1AA5331000B6BC1F /* VDirectorySeeMoreItemCell.m */; };
 		A7299E951AA5331000B6BC1F /* VDirectorySeeMoreItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7299E8F1AA5331000B6BC1F /* VDirectorySeeMoreItemCell.xib */; };
+		A7299EA31AA69C1600B6BC1F /* VAuthorizedAction.m in Sources */ = {isa = PBXBuildFile; fileRef = A7299EA21AA69C1600B6BC1F /* VAuthorizedAction.m */; };
 		A7299EA71AA7842100B6BC1F /* VDirectoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7299EA51AA7842100B6BC1F /* VDirectoryViewController.m */; };
 		A7299EA81AA7842100B6BC1F /* VDirectoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7299EA61AA7842100B6BC1F /* VDirectoryViewController.xib */; };
 		A7299EAB1AA7854600B6BC1F /* VDirectoryCellDecorator.m in Sources */ = {isa = PBXBuildFile; fileRef = A7299EAA1AA7854600B6BC1F /* VDirectoryCellDecorator.m */; };
@@ -1391,9 +1391,6 @@
 		A72005611A030EB100285A9C /* VTrackingDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VTrackingDelegate.h; sourceTree = "<group>"; };
 		A720056E1A03ECDC00285A9C /* VTrackingURLRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTrackingURLRequest.h; sourceTree = "<group>"; };
 		A720056F1A03ECDC00285A9C /* VTrackingURLRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTrackingURLRequest.m; sourceTree = "<group>"; };
-		A7299EA01AA69C0200B6BC1F /* VAuthorizationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VAuthorizationViewController.h; path = Authorization/VAuthorizationViewController.h; sourceTree = "<group>"; };
-		A7299EA11AA69C1600B6BC1F /* VAuthorizedAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VAuthorizedAction.h; path = Authorization/VAuthorizedAction.h; sourceTree = "<group>"; };
-		A7299EA21AA69C1600B6BC1F /* VAuthorizedAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VAuthorizedAction.m; path = Authorization/VAuthorizedAction.m; sourceTree = "<group>"; };
 		A7299E871AA5331000B6BC1F /* VDirectoryGroupCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDirectoryGroupCell.h; sourceTree = "<group>"; };
 		A7299E881AA5331000B6BC1F /* VDirectoryGroupCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDirectoryGroupCell.m; sourceTree = "<group>"; };
 		A7299E891AA5331000B6BC1F /* VDirectoryGroupCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VDirectoryGroupCell.xib; sourceTree = "<group>"; };
@@ -1403,6 +1400,9 @@
 		A7299E8D1AA5331000B6BC1F /* VDirectorySeeMoreItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDirectorySeeMoreItemCell.h; sourceTree = "<group>"; };
 		A7299E8E1AA5331000B6BC1F /* VDirectorySeeMoreItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDirectorySeeMoreItemCell.m; sourceTree = "<group>"; };
 		A7299E8F1AA5331000B6BC1F /* VDirectorySeeMoreItemCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VDirectorySeeMoreItemCell.xib; sourceTree = "<group>"; };
+		A7299EA01AA69C0200B6BC1F /* VAuthorizationProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VAuthorizationProvider.h; path = Authorization/VAuthorizationProvider.h; sourceTree = "<group>"; };
+		A7299EA11AA69C1600B6BC1F /* VAuthorizedAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VAuthorizedAction.h; path = Authorization/VAuthorizedAction.h; sourceTree = "<group>"; };
+		A7299EA21AA69C1600B6BC1F /* VAuthorizedAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VAuthorizedAction.m; path = Authorization/VAuthorizedAction.m; sourceTree = "<group>"; };
 		A7299EA41AA7842100B6BC1F /* VDirectoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDirectoryViewController.h; sourceTree = "<group>"; };
 		A7299EA51AA7842100B6BC1F /* VDirectoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDirectoryViewController.m; sourceTree = "<group>"; };
 		A7299EA61AA7842100B6BC1F /* VDirectoryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VDirectoryViewController.xib; sourceTree = "<group>"; };
@@ -3527,16 +3527,6 @@
 			path = Delegates;
 			sourceTree = "<group>";
 		};
-		A7299E9C1AA699EE00B6BC1F /* Authorization */ = {
-			isa = PBXGroup;
-			children = (
-				A7299EA11AA69C1600B6BC1F /* VAuthorizedAction.h */,
-				A7299EA21AA69C1600B6BC1F /* VAuthorizedAction.m */,
-				A7299EA01AA69C0200B6BC1F /* VAuthorizationViewController.h */,
-			);
-			name = Authorization;
-			sourceTree = "<group>";
-		};
 		A7299E6E1AA1099800B6BC1F /* DirectoryCells */ = {
 			isa = PBXGroup;
 			children = (
@@ -3553,6 +3543,16 @@
 				A7299EAA1AA7854600B6BC1F /* VDirectoryCellDecorator.m */,
 			);
 			path = DirectoryCells;
+			sourceTree = "<group>";
+		};
+		A7299E9C1AA699EE00B6BC1F /* Authorization */ = {
+			isa = PBXGroup;
+			children = (
+				A7299EA11AA69C1600B6BC1F /* VAuthorizedAction.h */,
+				A7299EA21AA69C1600B6BC1F /* VAuthorizedAction.m */,
+				A7299EA01AA69C0200B6BC1F /* VAuthorizationProvider.h */,
+			);
+			name = Authorization;
 			sourceTree = "<group>";
 		};
 		A743E7DA1A08160300339CB3 /* FileCache */ = {
@@ -5607,7 +5607,6 @@
 				DB531B561A425A7200B4ADC8 /* VHashtag.m in Sources */,
 				0314D4B519B46B5E00FA363C /* VLightboxDisplayAnimator.m in Sources */,
 				A7299E901AA5331000B6BC1F /* VDirectoryGroupCell.m in Sources */,
-				0314D4C019B46B5E00FA363C /* VProfileCreateViewController.m in Sources */,
 				D8C5CFE81A68835100EC819F /* VAsset+Fetcher.m in Sources */,
 				03FDA09F197A0AEC00405361 /* CIImage+VImage.m in Sources */,
 				F0B390C61A8850CF00EE70C7 /* VTagStringFormatter.m in Sources */,
@@ -5615,7 +5614,6 @@
 				D8E178A81A2F8BCE00C3572B /* VCropTool.m in Sources */,
 				A790C82A1A01980F00C4F208 /* VTrackingManager.m in Sources */,
 				A790C8291A01980F00C4F208 /* VTrackingEvent.m in Sources */,
-				0314D4F019B46B5E00FA363C /* VRegistrationModel.m in Sources */,
 				F0B390C31A88502D00EE70C7 /* VTagDictionary.m in Sources */,
 				0386E1F71A8DDA7F00FC9BDF /* VFollowingStreamCollectionViewController.m in Sources */,
 				D8332DC01A7C72EB00C3FEE0 /* VVCameraShutterOverAnimator.m in Sources */,

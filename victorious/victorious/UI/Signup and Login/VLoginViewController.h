@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VAuthorizationViewController.h"
+#import "VAuthorizationProvider.h"
 #import "VTransitionDelegate.h"
 #import "VPresentWithBlurTransition.h"
 #import "VAuthorizationContextHelper.h"
@@ -21,7 +21,7 @@ typedef NS_ENUM(NSUInteger, VLoginType)
 
 @class VDependencyManager;
 
-@interface VLoginViewController : UIViewController <VAuthorizationViewController, VPresentWithBlurViewController>
+@interface VLoginViewController : UIViewController <VAuthorizationProvider, VPresentWithBlurViewController>
 
 + (VLoginViewController *)newWithDependencyManager:(VDependencyManager *)dependencyManager;
 

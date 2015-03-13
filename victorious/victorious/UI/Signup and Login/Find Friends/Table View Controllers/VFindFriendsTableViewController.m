@@ -566,9 +566,7 @@
         // Check for authorization first
         VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                     dependencyManager:self.dependencyManager];
-        [authorization performFromViewController:self
-                                                     withContext:VAuthorizationContextFollowUser
-                                                     withSuccess:^
+        [authorization performFromViewController:self context:VAuthorizationContextFollowUser completion:^
          {
              if ([mainUser.following containsObject:profile])
              {

@@ -31,7 +31,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 
 @property (strong, nonatomic) IBOutlet UIImageView *backgroundImage;
-@property (strong, nonatomic) IBOutlet VDependencyManager *dependencyManager;
+@property (strong, nonatomic) VDependencyManager *dependencyManager;
 
 @end
 
@@ -152,7 +152,7 @@
 {
     VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                       dependencyManager:self.dependencyManager];
-    return [authorization performFromViewController:self withContext:VAuthorizationContextAddComment withSuccess:^{}];
+    return [authorization performFromViewController:self context:VAuthorizationContextAddComment completion:^{}];
 }
 
 - (IBAction)pressedBackButton:(id)sender

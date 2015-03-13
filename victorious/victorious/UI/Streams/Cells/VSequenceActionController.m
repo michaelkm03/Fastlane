@@ -97,7 +97,7 @@
     
     VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                 dependencyManager:self.dependencyManager];
-    [authorization performFromViewController:viewController withContext:VAuthorizationContextRemix withSuccess:^
+    [authorization performFromViewController:viewController context:VAuthorizationContextRemix completion:^
      {
          NSMutableDictionary *addedDependencies = [[NSMutableDictionary alloc] init];
          if (sequence)
@@ -173,7 +173,7 @@
 {
     VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                       dependencyManager:self.dependencyManager];
-    [authorization performFromViewController:viewController withContext:VAuthorizationContextRepost withSuccess:^
+    [authorization performFromViewController:viewController context:VAuthorizationContextRepost completion:^
      {
          [[VObjectManager sharedManager] repostNode:node
                                            withName:nil

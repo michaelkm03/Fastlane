@@ -97,7 +97,9 @@
                                                                   enabled:!self.viewModel.hasReposted];
         repostItem.selectionHandler = ^(VActionItem *item)
         {
-            [self.authorizedAction performFromViewController:actionSheetViewController withContext:VAuthorizationContextRepost withSuccess:^
+            VAuthorizedAction *authorizedAction = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
+                                                                                 dependencyManager:self.dependencyManager];
+            [authorizedAction performFromViewController:actionSheetViewController context:VAuthorizationContextRepost completion:^
              {
                  if ( !contentViewController.viewModel.hasReposted)
                  {
@@ -223,7 +225,9 @@
         {
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRemix];
             
-            [self.authorizedAction performFromViewController:actionSheetViewController withContext:VAuthorizationContextRepost withSuccess:^
+            VAuthorizedAction *authorizedAction = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
+                                                                                 dependencyManager:self.dependencyManager];
+            [authorizedAction performFromViewController:actionSheetViewController context:VAuthorizationContextRepost completion:^
              {
                  [contentViewController dismissViewControllerAnimated:YES
                                                            completion:^

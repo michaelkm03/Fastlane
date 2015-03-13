@@ -65,7 +65,7 @@
 
 @synthesize registrationStepDelegate; //< VRegistrationStep
 
-@synthesize authorizedAction; //< VAuthorizationViewController
+@synthesize authorizedAction; //< VAuthorizationProvider
 
 - (void)dealloc
 {

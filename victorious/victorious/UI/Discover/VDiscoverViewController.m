@@ -320,9 +320,7 @@ static CGFloat const kTopInset = 22.0f; ///< The space between the top of the vi
                 // Check for authorization first
                 VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                             dependencyManager:self.dependencyManager];
-                [authorization performFromViewController:self
-                                                             withContext:VAuthorizationContextFollowHashtag
-                                                             withSuccess:^
+                [authorization performFromViewController:self context:VAuthorizationContextFollowHashtag completion:^
                  {
                      weakCell.shouldCellRespond = NO;
                      

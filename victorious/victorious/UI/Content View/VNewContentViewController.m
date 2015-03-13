@@ -144,14 +144,12 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 
 @property (nonatomic, strong) VCommentHighlighter *commentHighlighter;
 
-@property (nonatomic, weak) VDependencyManager *dependencyManager;
+@property (nonatomic, strong, readwrite) VDependencyManager *dependencyManager;
 
 @property (nonatomic, weak) IBOutlet VContentViewAlertHelper *alertHelper;
 @property (nonatomic, weak) IBOutlet VContentViewRotationHelper *rotationHelper;
 @property (nonatomic, weak) IBOutlet VScrollPaginator *scrollPaginator;
 @property (nonatomic, weak, readwrite) IBOutlet VSequenceActionController *sequenceActionController;
-
-@property (nonatomic, strong, readwrite) VAuthorizedAction *authorizedAction;
 
 @property (nonatomic, weak) UIView *snapshotView;
 @property (nonatomic, assign) CGPoint offsetBeforeRemoval;
@@ -370,9 +368,6 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    self.authorizedAction = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
-                                                           dependencyManager:self.dependencyManager];
     
     self.commentHighlighter = [[VCommentHighlighter alloc] initWithCollectionView:self.contentCollectionView];
     
@@ -662,7 +657,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 
 - (void)experienceEnhancerDidRequireLogin:(NSNotification *)notification
 {
-    [self.authorizedAction performFromViewController:self withContext:VAuthorizationContextVoteBallistic withSuccess:^
+    [self.authorizedAction performFromViewController:self context:VAuthorizationContextVoteBallistic completion:^
      {
          // Use the provided index path of the selected emotive ballistic that trigger the notificiation
          // to perform the authorized action once authorization is successful
@@ -1009,7 +1004,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
                 __weak typeof(self) welf = self;
                 self.ballotCell.answerASelectionHandler = ^(void)
                 {
-                    [welf.authorizedAction performFromViewController:welf withContext:VAuthorizationContextVotePoll withSuccess:^
+                    [welf.authorizedAction performFromViewController:welf context:VAuthorizationContextVotePoll completion:^
                     {
                         [welf.viewModel answerPollWithAnswer:VPollAnswerA
                                                   completion:^(BOOL succeeded, NSError *error)
@@ -1021,7 +1016,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
                 };
                 self.ballotCell.answerBSelectionHandler = ^(void)
                 {
-                    [welf.authorizedAction performFromViewController:welf withContext:VAuthorizationContextVotePoll withSuccess:^
+                    [welf.authorizedAction performFromViewController:welf context:VAuthorizationContextVotePoll completion:^
                      {
                          [welf.viewModel answerPollWithAnswer:VPollAnswerB
                                                    completion:^(BOOL succeeded, NSError *error)
@@ -1315,7 +1310,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)pressedSendOnKeyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView
 {
-    [self.authorizedAction performFromViewController:self withContext:VAuthorizationContextAddComment withSuccess:^
+    [self.authorizedAction performFromViewController:self context:VAuthorizationContextAddComment completion:^
      {
          [self submitCommentWithText:inputAccessoryView.composedText];
          
@@ -1339,7 +1334,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)pressedAttachmentOnKeyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView
 {
-    [self.authorizedAction performFromViewController:self withContext:VAuthorizationContextAddComment withSuccess:^
+    [self.authorizedAction performFromViewController:self context:VAuthorizationContextAddComment completion:^
      {
          [self addMediaToComment];
      }];
@@ -1366,7 +1361,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
         [self.videoCell pause];
     }
     
-    [self.authorizedAction performFromViewController:self withContext:VAuthorizationContextAddComment withSuccess:^
+    [self.authorizedAction performFromViewController:self context:VAuthorizationContextAddComment completion:^
      {
          self.enteringRealTimeComment = YES;
          self.realtimeCommentBeganTime = self.videoCell.currentTime;

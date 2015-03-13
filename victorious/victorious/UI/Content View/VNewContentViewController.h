@@ -59,4 +59,6 @@
 
 @property (nonatomic, strong, readonly) VAuthorizedAction *authorizedAction;
 
+@property (nonatomic, strong, readonly) VDependencyManager *dependencyManager;
+
 @end

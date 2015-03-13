@@ -351,7 +351,7 @@ static NSString * const kUserKey = @"user";
     
     VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                 dependencyManager:self.dependencyManager];
-    [authorization performFromViewController:self withContext:VAuthorizationContextInbox withSuccess:^
+    [authorization performFromViewController:self context:VAuthorizationContextInbox completion:^
      {
          VFindFriendsViewController *ffvc = [VFindFriendsViewController newWithDependencyManager:self.dependencyManager];
          [ffvc setShouldAutoselectNewFriends:NO];
@@ -471,7 +471,7 @@ static NSString * const kUserKey = @"user";
 {
     VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                 dependencyManager:self.dependencyManager];
-    [authorization performFromViewController:self withContext:VAuthorizationContextInbox withSuccess:^
+    [authorization performFromViewController:self context:VAuthorizationContextInbox completion:^
      {
          VMessageContainerViewController *composeController = [VMessageContainerViewController messageViewControllerForUser:self.profile];
          composeController.presentingFromProfile = YES;
@@ -494,7 +494,7 @@ static NSString * const kUserKey = @"user";
     VAuthorizationContext context = self.isMe ? VAuthorizationContextDefault : VAuthorizationContextFollowUser;
     VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                 dependencyManager:self.dependencyManager];
-    [authorization performFromViewController:self withContext:context withSuccess:^
+    [authorization performFromViewController:self context:context completion:^
      {
          if ( self.isMe )
          {

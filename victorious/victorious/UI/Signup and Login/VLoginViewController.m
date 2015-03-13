@@ -58,7 +58,7 @@
 
 @implementation VLoginViewController
 
-@synthesize authorizedAction; //< VAuthorizationViewController
+@synthesize authorizedAction; //< VAuthorizationProvider
 
 + (VLoginViewController *)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {

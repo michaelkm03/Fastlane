@@ -18,6 +18,7 @@
 
 @property (nonatomic, strong) VTransitionDelegate *transition;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
+@property (nonatomic, weak) VObjectManager *objectManager;
 
 @end
 
@@ -40,10 +41,10 @@
 }
 
 - (BOOL)performFromViewController:(UIViewController *)presentingViewController
-                                      withContext:(VAuthorizationContext)authorizationContext
-                                      withSuccess:(void(^)())successActionBlock
+                                      context:(VAuthorizationContext)authorizationContext
+                                      completion:(void(^)())completionActionBlock
 {
-    NSParameterAssert( successActionBlock != nil );
+    NSParameterAssert( completionActionBlock != nil );
     NSParameterAssert( presentingViewController != nil );
     
     NSAssert( self.objectManager != nil, @"Before calling, the `objectManager` property should be set directly or through `initWithObjectManager`." );
@@ -51,7 +52,7 @@
     if ( self.objectManager.mainUserLoggedIn && !self.objectManager.mainUserProfileComplete )
     {
         VProfileCreateViewController *viewController = [VProfileCreateViewController newWithDependencyManager:self.dependencyManager];
-        [viewController setAuthorizedAction:successActionBlock];
+        [viewController setAuthorizedAction:completionActionBlock];
         viewController.profile = [VObjectManager sharedManager].mainUser;
         viewController.registrationModel = [[VRegistrationModel alloc] init];
         [presentingViewController presentViewController:viewController animated:YES completion:nil];
@@ -61,7 +62,7 @@
     {
         VLoginViewController *viewController = [VLoginViewController newWithDependencyManager:self.dependencyManager];
         viewController.authorizationContextType = authorizationContext;
-        [viewController setAuthorizedAction:successActionBlock];
+        [viewController setAuthorizedAction:completionActionBlock];
         
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
         viewController.transitionDelegate = self.transition;
@@ -70,7 +71,7 @@
     }
     else
     {
-        successActionBlock();
+        completionActionBlock();
         return YES;
     }
 }

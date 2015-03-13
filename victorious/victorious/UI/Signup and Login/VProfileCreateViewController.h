@@ -8,12 +8,12 @@
 
 #import "VLoginViewController.h"
 #import "VRegistrationModel.h"
-#import "VAuthorizationViewController.h"
+#import "VAuthorizationProvider.h"
 #import "VRegistration.h"
 
 @class VUser;
 
-@interface VProfileCreateViewController : UIViewController <VAuthorizationViewController, VRegistrationStep>
+@interface VProfileCreateViewController : UIViewController <VAuthorizationProvider, VRegistrationStep>
 
 @property (nonatomic, assign) VLoginType loginType;
 @property (nonatomic, strong) VUser *profile;

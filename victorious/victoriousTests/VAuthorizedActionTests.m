@@ -25,7 +25,7 @@
 @end
 
 
-@interface VMockViewController : UIViewController <VAuthorizationViewController>
+@interface VMockViewController : UIViewController <VAuthorizationProvider>
 
 @property (nonatomic, assign) BOOL didPresentViewController;
 
