@@ -373,4 +373,11 @@ static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+#pragma mark - VNavigationDestination
+
+- (BOOL)shouldNavigateWithAlternateDestination:(UIViewController *__autoreleasing *)alternateViewController
+{
+    return YES;
+}
+
 @end
