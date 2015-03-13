@@ -53,7 +53,7 @@
     {
         return;
     }
-    if (!CMTimeRangeContainsTimeRange(CMTimeRangeMake(kCMTimeZero, self.tenMinuteLoopedComposition.duration), trimRange))
+    if (!CMTimeRangeContainsTimeRange(CMTimeRangeMake(kCMTimeZero, self.asset.duration), trimRange))
     {
         return;
     }

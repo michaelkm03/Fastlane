@@ -24,6 +24,7 @@
 @property (nonatomic, strong) AVPlayer *player;
 @property (nonatomic, strong) VLoopingAssetGenerator *loopingAssetGenerator;
 @property (nonatomic, weak) UIActivityIndicatorView *acitivityIndicator;
+@property (nonatomic, assign) BOOL userWantsPause;
 
 @end
 
@@ -51,6 +52,10 @@
     [self.view addSubview:activityIndicator];
     [self.view v_addCenterToParentContraintsToSubview:activityIndicator];
     self.acitivityIndicator = activityIndicator;
+    
+    UITapGestureRecognizer *tapGestureRecognzier = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                                            action:@selector(playerViewTapped:)];
+    [self.view addGestureRecognizer:tapGestureRecognzier];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -71,7 +76,7 @@
          {
              if (finished)
              {
-                 [self.player play];
+                 [self playIfUserAllowed];
              }
          }];
     }];
@@ -82,7 +87,7 @@
                           block:^(id observer, id object, NSDictionary *change)
      {
          AVPlayer *player = (AVPlayer *)object;
-         if (player.rate > 0.0f)
+         if ((player.rate > 0.0f) || self.userWantsPause)
          {
              [welf.acitivityIndicator stopAnimating];
          }
@@ -103,6 +108,28 @@
 {
     [super viewWillAppear:animated];
     [self.player play];
+}
+
+#pragma mark - Target/Action
+
+- (void)playerViewTapped:(UITapGestureRecognizer *)tapGesture
+{
+    self.userWantsPause = !self.userWantsPause;
+}
+
+#pragma mark - Property Accessors
+
+- (void)setUserWantsPause:(BOOL)userWantsPause
+{
+    _userWantsPause = userWantsPause;
+    if (userWantsPause)
+    {
+        [self.player pause];
+    }
+    else
+    {
+        [self playIfUserAllowed];
+    }
 }
 
 #pragma mark - Public Methods
@@ -160,6 +187,15 @@
     playerItemWithAsset.videoComposition = [composition videoCompositionWithFrameDuration:self.frameDuration];
     
     [self.player replaceCurrentItemWithPlayerItem:playerItemWithAsset];
+    [self playIfUserAllowed];
+}
+
+- (void)playIfUserAllowed
+{
+    if (self.userWantsPause)
+    {
+        return;
+    }
     [self.player play];
 }
 
