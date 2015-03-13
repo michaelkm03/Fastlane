@@ -1,78 +1,123 @@
-/* Class = "IBUINavigationItem"; title = "Terms of Service"; ObjectID = "4Bo-2y-3qa"; */
-"4Bo-2y-3qa.title" = "Términos del Servicio";
+/* Class = "UITableViewController"; title = "Server Environment"; ObjectID = "0nf-aa-3V6"; */
+"0nf-aa-3V6.title" = "Entorno de servidor";
 
-/* Class = "IBUILabel"; text = "Chromecast"; ObjectID = "4KJ-ZF-Avs"; */
+/* Class = "UITableViewController"; title = "Push Notifications"; ObjectID = "2cC-vU-QEc"; */
+"2cC-vU-QEc.title" = "Sacar publicaciones";
+
+/* Class = "UINavigationItem"; title = "Terms of Service"; ObjectID = "4Bo-2y-3qa"; */
+"4Bo-2y-3qa.title" = "Términos del servicio";
+
+/* Class = "UILabel"; text = "Chromecast"; ObjectID = "4KJ-ZF-Avs"; */
 "4KJ-ZF-Avs.text" = "Chromecast";
 
-/* Class = "IBUITableViewController"; title = "Server Environment"; ObjectID = "6fa-Sd-wUR"; */
-"6fa-Sd-wUR.title" = "Ambiente del servidor";
+/* Class = "UINavigationItem"; title = "In-App Purchases"; ObjectID = "5FP-jo-7Mh"; */
+"5FP-jo-7Mh.title" = "Compras en la app";
 
-/* Class = "IBUITextField"; placeholder = "At least 8 characters"; ObjectID = "AVA-KF-9I3"; */
-"AVA-KF-9I3.placeholder" = "Por lo menos 8 caracteres";
+/* Class = "UITableViewController"; title = "Server Environment"; ObjectID = "6fa-Sd-wUR"; */
+"6fa-Sd-wUR.title" = "Entorno de servidor";
 
-/* Class = "IBUILabel"; text = "New"; ObjectID = "Fjl-zb-Wox"; */
-"Fjl-zb-Wox.text" = "Nueva";
+/* Class = "UILabel"; text = "TITLE"; ObjectID = "8Fn-0A-Ctn"; */
+"8Fn-0A-Ctn.text" = "TÍTULO";
 
-/* Class = "IBUINavigationItem"; title = "Change Password"; ObjectID = "LKP-Bv-quY"; */
+/* Class = "UILabel"; text = "In-App Purchases"; ObjectID = "16U-jQ-75p"; */
+"16U-jQ-75p.text" = "Compras en la app";
+
+/* Class = "UITableViewSection"; headerTitle = "Video"; ObjectID = "32G-4D-L9h"; */
+"32G-4D-L9h.headerTitle" = "Video";
+
+/* Class = "UITextField"; placeholder = "At least 8 characters"; ObjectID = "AVA-KF-9I3"; */
+"AVA-KF-9I3.placeholder" = "Al menos 8 caracteres";
+
+/* Class = "UILabel"; text = "New"; ObjectID = "Fjl-zb-Wox"; */
+"Fjl-zb-Wox.text" = "Nuevo";
+
+/* Class = "UILabel"; text = "Product"; ObjectID = "IJf-ZD-6J8"; */
+"IJf-ZD-6J8.text" = "Producto";
+
+/* Class = "UINavigationItem"; title = "Change Password"; ObjectID = "LKP-Bv-quY"; */
 "LKP-Bv-quY.title" = "Cambiar contraseña";
 
-/* Class = "IBUIButton"; normalTitle = "Log out"; ObjectID = "LM5-sK-eej"; */
-"LM5-sK-eej.normalTitle" = "Cerrar sesión";
+/* Class = "UIButton"; normalTitle = "Log out"; ObjectID = "LM5-sK-eej"; */
+"LM5-sK-eej.normalTitle" = "Salir";
 
-/* Class = "IBUILabel"; text = "Label"; ObjectID = "OZa-mN-lgJ"; */
+/* Class = "UINavigationItem"; title = "Autoplay"; ObjectID = "MMO-h3-iOL"; */
+"MMO-h3-iOL.title" = "Reproducción automática";
+
+/* Class = "UIButton"; normalTitle = "Action"; ObjectID = "N5S-6f-jb6"; */
+"N5S-6f-jb6.normalTitle" = "Acción";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "OZa-mN-lgJ"; */
 "OZa-mN-lgJ.text" = "Etiqueta";
 
-/* Class = "IBUINavigationItem"; title = "Server Environment"; ObjectID = "Pog-vT-DdP"; */
-"Pog-vT-DdP.title" = "Ambiente del servidor";
+/* Class = "UINavigationItem"; title = "Server Environment"; ObjectID = "Pog-vT-DdP"; */
+"Pog-vT-DdP.title" = "Entorno de servidor";
 
-/* Class = "IBUIViewController"; title = "Change Password"; ObjectID = "Tch-Qc-dzd"; */
+/* Class = "UIViewController"; title = "Change Password"; ObjectID = "Tch-Qc-dzd"; */
 "Tch-Qc-dzd.title" = "Cambiar contraseña";
 
-/* Class = "IBUILabel"; text = "Subtitle"; ObjectID = "U7G-Km-0yw"; */
-"U7G-Km-0yw.text" = "Subtítulo";
+/* Class = "UILabel"; text = "Subtitle"; ObjectID = "U7G-Km-0yw"; */
+"U7G-Km-0yw.text" = "Subtitulo";
 
-/* Class = "IBUITextField"; placeholder = "Confirm new password"; ObjectID = "YiX-cN-FLE"; */
-"YiX-cN-FLE.placeholder" = "Confirmar la nueva contraseña";
+/* Class = "UINavigationItem"; title = "Push Notifications"; ObjectID = "WVz-KR-Hhr"; */
+"WVz-KR-Hhr.title" = "Sacar notificaciones";
 
-/* Class = "IBUILabel"; text = "Feedback/Help"; ObjectID = "Ywp-Nm-FQ2"; */
-"Ywp-Nm-FQ2.text" = "Retroalimentación/Ayuda";
+/* Class = "UITextField"; placeholder = "Confirm new password"; ObjectID = "YiX-cN-FLE"; */
+"YiX-cN-FLE.placeholder" = "Confirmar nueva contraseña";
 
-/* Class = "IBUILabel"; text = "Confirm"; ObjectID = "b6b-sA-Tu6"; */
+/* Class = "UILabel"; text = "Feedback/Help"; ObjectID = "Ywp-Nm-FQ2"; */
+"Ywp-Nm-FQ2.text" = "Comentarios/ayuda";
+
+/* Class = "UILabel"; text = "Confirm"; ObjectID = "b6b-sA-Tu6"; */
 "b6b-sA-Tu6.text" = "Confirmar";
 
-/* Class = "IBUINavigationItem"; title = "Privacy Policy"; ObjectID = "dAg-zH-vd2"; */
-"dAg-zH-vd2.title" = "Política de Privacidad";
+/* Class = "UITableViewController"; title = "Server Environment"; ObjectID = "bDt-FM-3G4"; */
+"bDt-FM-3G4.title" = "Entorno de servidor";
 
-/* Class = "IBUILabel"; text = "Server Environment"; ObjectID = "jjo-ti-snK"; */
-"jjo-ti-snK.text" = "Ambiente del servidor";
+/* Class = "UILabel"; text = "Push Notifications"; ObjectID = "c84-Tn-JWi"; */
+"c84-Tn-JWi.text" = "Sacar notificaciones";
 
-/* Class = "IBUILabel"; text = "Not Connected"; ObjectID = "krN-Xu-bYv"; */
-"krN-Xu-bYv.text" = "No hay conexión";
+/* Class = "UINavigationItem"; title = "Privacy Policy"; ObjectID = "dAg-zH-vd2"; */
+"dAg-zH-vd2.title" = "Política de privacidad";
 
-/* Class = "IBUIViewController"; title = "Privacy Policy"; ObjectID = "lSu-os-HMa"; */
-"lSu-os-HMa.title" = "Política de Privacidad";
+/* Class = "UILabel"; text = "Always"; ObjectID = "iA5-m7-nZ8"; */
+"iA5-m7-nZ8.text" = "Siempre";
 
-/* Class = "IBUILabel"; text = "Terms of Service"; ObjectID = "mrn-LJ-NES"; */
-"mrn-LJ-NES.text" = "Términos del Servicio";
+/* Class = "UILabel"; text = "Server Environment"; ObjectID = "jjo-ti-snK"; */
+"jjo-ti-snK.text" = "Entorno de servidor";
 
-/* Class = "IBUITextField"; placeholder = "Your current password"; ObjectID = "oCZ-Jb-QHR"; */
+/* Class = "UITableViewController"; title = "Settings"; ObjectID = "kYh-dZ-t7J"; */
+"kYh-dZ-t7J.title" = "Configuración";
+
+/* Class = "UILabel"; text = "Not Connected"; ObjectID = "krN-Xu-bYv"; */
+"krN-Xu-bYv.text" = "No estás conectado";
+
+/* Class = "UIViewController"; title = "Privacy Policy"; ObjectID = "lSu-os-HMa"; */
+"lSu-os-HMa.title" = "Política de privacidad";
+
+/* Class = "UILabel"; text = "Terms of Service"; ObjectID = "mrn-LJ-NES"; */
+"mrn-LJ-NES.text" = "Términos del servicio";
+
+/* Class = "UILabel"; text = "#"; ObjectID = "mv4-9Z-Mit"; */
+"mv4-9Z-Mit.text" = "#";
+
+/* Class = "UITextField"; placeholder = "Your current password"; ObjectID = "oCZ-Jb-QHR"; */
 "oCZ-Jb-QHR.placeholder" = "Tu contraseña actual";
 
-/* Class = "IBUITableViewSection"; headerTitle = "About"; ObjectID = "pML-Pk-7g5"; */
-"pML-Pk-7g5.headerTitle" = "Acerca de";
+/* Class = "UITableViewSection"; headerTitle = "About"; ObjectID = "pML-Pk-7g5"; */
+"pML-Pk-7g5.headerTitle" = "Nosotros";
 
-/* Class = "IBUIViewController"; title = "Server Environment"; ObjectID = "qhc-hG-PIv"; */
-"qhc-hG-PIv.title" = "Ambiente del Servidor";
-
-/* Class = "IBUILabel"; text = "Current"; ObjectID = "trt-hC-hUf"; */
+/* Class = "UILabel"; text = "Current"; ObjectID = "trt-hC-hUf"; */
 "trt-hC-hUf.text" = "Actual";
 
-/* Class = "IBUINavigationItem"; title = "Settings"; ObjectID = "udt-VU-0Rh"; */
+/* Class = "UINavigationItem"; title = "Settings"; ObjectID = "udt-VU-0Rh"; */
 "udt-VU-0Rh.title" = "Configuración";
 
-/* Class = "IBUILabel"; text = "Privacy Policy"; ObjectID = "vRt-M4-9nW"; */
-"vRt-M4-9nW.text" = "Política de Privacidad";
+/* Class = "UILabel"; text = "Privacy Policy"; ObjectID = "vRt-M4-9nW"; */
+"vRt-M4-9nW.text" = "Política de privacidad";
 
-/* Class = "IBUILabel"; text = "Change Password"; ObjectID = "xmy-by-M88"; */
+/* Class = "UILabel"; text = "Change Password"; ObjectID = "xmy-by-M88"; */
 "xmy-by-M88.text" = "Cambiar contraseña";
+
+/* Class = "UILabel"; text = "Autoplay Next Video"; ObjectID = "yLq-Ze-kTh"; */
+"yLq-Ze-kTh.text" = "Reproducir el siguiente video";
 
