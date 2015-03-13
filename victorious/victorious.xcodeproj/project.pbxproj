@@ -387,6 +387,7 @@
 		A743E7EA1A081FFF00339CB3 /* VStringValidator.m in Sources */ = {isa = PBXBuildFile; fileRef = A743E7E91A081FFF00339CB3 /* VStringValidator.m */; };
 		A743E7EC1A082AD200339CB3 /* VEmailValidatorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A743E7EB1A082AD200339CB3 /* VEmailValidatorTests.m */; };
 		A75C10341A65DE6F00439809 /* VCommentHighlighter.m in Sources */ = {isa = PBXBuildFile; fileRef = A75C10331A65DE6F00439809 /* VCommentHighlighter.m */; };
+		A75ED0651AB382A800C35063 /* VTrackingSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ED0641AB382A800C35063 /* VTrackingSettingsViewController.m */; };
 		A75FAF1719E8AC1E00EB87C1 /* VSuggestedPeopleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAF0319E8AC1E00EB87C1 /* VSuggestedPeopleCell.m */; };
 		A75FAF1919E8AC1E00EB87C1 /* VSuggestedPersonCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAF0619E8AC1E00EB87C1 /* VSuggestedPersonCollectionViewCell.m */; };
 		A75FAF1B19E8AC1E00EB87C1 /* VTrendingTagCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAF0919E8AC1E00EB87C1 /* VTrendingTagCell.m */; };
@@ -1424,6 +1425,8 @@
 		A743E7EB1A082AD200339CB3 /* VEmailValidatorTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEmailValidatorTests.m; sourceTree = "<group>"; };
 		A75C10321A65DE6F00439809 /* VCommentHighlighter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCommentHighlighter.h; sourceTree = "<group>"; };
 		A75C10331A65DE6F00439809 /* VCommentHighlighter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCommentHighlighter.m; sourceTree = "<group>"; };
+		A75ED0631AB382A800C35063 /* VTrackingSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTrackingSettingsViewController.h; sourceTree = "<group>"; };
+		A75ED0641AB382A800C35063 /* VTrackingSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTrackingSettingsViewController.m; sourceTree = "<group>"; };
 		A75FAEFA19E8A6D600EB87C1 /* VVoteSettingManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVoteSettingManagerTests.m; sourceTree = "<group>"; };
 		A75FAEFD19E8AB2C00EB87C1 /* VDummyModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDummyModels.h; sourceTree = "<group>"; };
 		A75FAEFE19E8AB2C00EB87C1 /* VDummyModels.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDummyModels.m; sourceTree = "<group>"; };
@@ -2654,6 +2657,8 @@
 				0314D3FD19B46B5E00FA363C /* VSettingsViewController.m */,
 				0314D3FE19B46B5E00FA363C /* VTOSViewController.h */,
 				0314D3FF19B46B5E00FA363C /* VTOSViewController.m */,
+				A75ED0631AB382A800C35063 /* VTrackingSettingsViewController.h */,
+				A75ED0641AB382A800C35063 /* VTrackingSettingsViewController.m */,
 				A7D707711A797B8A00D9993F /* VVideoSettings.h */,
 				A7D707721A797B8A00D9993F /* VVideoSettings.m */,
 			);
@@ -5411,6 +5416,7 @@
 				A7AEF9C71A83F2AD00A3D3A0 /* VLargeNumberFormatter.m in Sources */,
 				BE799BB419C8DF5B0023CE88 /* VAsset+OrderedSet.m in Sources */,
 				037FCF1B1A8DAF0E00E8ABFC /* VNavigationControllerScrollDelegate.m in Sources */,
+				A75ED0651AB382A800C35063 /* VTrackingSettingsViewController.m in Sources */,
 				BE171D8C1868BE64004E5202 /* VAppDelegate.m in Sources */,
 				039ED29919C908F400305987 /* VCVideoPlayerToolbarSlider.m in Sources */,
 				D88CEAE81A92EEED00F5A837 /* VSnapshotViewController.m in Sources */,
@@ -6198,6 +6204,7 @@
 					"$(inherited)",
 					"COCOAPODS=1",
 					"V_NO_RESET_PURCHASES=1",
+					"V_NO_TRACKING_ALERTS=1",
 				);
 				INFOPLIST_FILE = AppSpecific/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
