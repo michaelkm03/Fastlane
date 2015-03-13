@@ -8,7 +8,6 @@
 
 #import "VDependencyManager.h"
 #import "VNotificationSettingCell.h"
-#import "VThemeManager.h"
 
 @interface VNotificationSettingCell()
 
