@@ -247,7 +247,7 @@ static NSString * const kUserKey = @"user";
                                     failBlock:^(NSOperation *operation, NSError *error)
      {
          //Handle profile load failure by changing navigationItem title and showing a retry button in the indicator
-         self.navigationItem.title = @"Profile load failed!";
+         self.navigationItem.title = NSLocalizedString(@"Profile load failed!", @"");
          self.retryHUD.mode = MBProgressHUDModeCustomView;
          self.retryHUD.customView = self.retryProfileLoadButton;
          self.retryHUD.margin = 0.0f;

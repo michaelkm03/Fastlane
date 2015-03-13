@@ -22,7 +22,7 @@
     if ( [self.navigationController viewControllers].count == 1 )
     {
         //Need to create a fake "back" button so that we can get off of this screen
-        UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:@selector(pressedBack)];
+        UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"BackButton", @"") style:UIBarButtonItemStylePlain target:self action:@selector(pressedBack)];
         [backButton setTintColor:[UIColor blackColor]];
         [self.navigationItem setLeftBarButtonItem:backButton];
     }

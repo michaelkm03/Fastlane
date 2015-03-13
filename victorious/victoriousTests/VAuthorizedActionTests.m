@@ -80,9 +80,9 @@
     VAuthorizedAction *authroizedAction = [[VAuthorizedAction alloc] initWithObjectManager:self.objectManager
                                                                          dependencyManager:self.dependencyManager];
     
-    XCTAssertThrows( [authroizedAction performFromViewController:self.viewController withContext:VLoginContextDefault withSuccess:nil]);
-    XCTAssertThrows( [authroizedAction performFromViewController:nil withContext:VLoginContextDefault withSuccess:^{}]);
-    XCTAssertThrows( [authroizedAction performFromViewController:nil withContext:VLoginContextDefault withSuccess:nil]);
+    XCTAssertThrows( [authroizedAction performFromViewController:self.viewController withContext:VAuthorizationContextDefault withSuccess:nil]);
+    XCTAssertThrows( [authroizedAction performFromViewController:nil withContext:VAuthorizationContextDefault withSuccess:^{}]);
+    XCTAssertThrows( [authroizedAction performFromViewController:nil withContext:VAuthorizationContextDefault withSuccess:nil]);
 }
 
 - (void)testPerformAction1
@@ -91,7 +91,7 @@
     self.objectManager.mainUserProfileComplete = YES;
     __block BOOL didPerformAction = NO;
     BOOL result = [self.authroizedAction performFromViewController:self.viewController
-                                                       withContext:VLoginContextDefault
+                                                       withContext:VAuthorizationContextDefault
                                                        withSuccess:^
                    {
                        didPerformAction = YES;
@@ -106,7 +106,7 @@
     self.objectManager.mainUserProfileComplete = NO;
     __block BOOL didPerformAction = NO;
     BOOL result = [self.authroizedAction performFromViewController:self.viewController
-                                                       withContext:VLoginContextDefault
+                                                       withContext:VAuthorizationContextDefault
                                                        withSuccess:^
                    {
                        didPerformAction = YES;
@@ -121,7 +121,7 @@
     self.objectManager.mainUserProfileComplete = NO;
     __block BOOL didPerformAction = NO;
     BOOL result = [self.authroizedAction performFromViewController:self.viewController
-                                                       withContext:VLoginContextDefault
+                                                       withContext:VAuthorizationContextDefault
                                                        withSuccess:^
                    {
                        didPerformAction = YES;

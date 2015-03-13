@@ -203,6 +203,14 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
          */
         [self.marquee enableTimer];
     }
+
+    for (VBaseCollectionViewCell *cell in self.collectionView.visibleCells)
+    {
+        if ( [cell isKindOfClass:[VStreamCollectionCell class]] )
+        {
+            [(VStreamCollectionCell *)cell reloadCommentsCount];
+        }
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated

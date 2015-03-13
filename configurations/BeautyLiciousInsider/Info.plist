@@ -17,8 +17,10 @@
 	</array>
 	<key>FacebookAppID</key>
 	<string>1620694648150736</string>
-	<key>FacebookDisplayName</key>
-	<string>VictoriousApp Dev</string>
+	<key>TWITTER_CONSUMER_KEY</key>
+	<string>IjPoW6imBavSlG6ilYGmBEkvc</string>
+	<key>TWITTER_CONSUMER_SECRET</key>
+	<string>TgJvzxvp8jn9GnC9BRXUGrbai4BJYt64cOFzWf6Mb2tb7Rkyzx</string>
 	<key>VictoriousAppID</key>
 	<integer>30</integer>
 	<key>StagingAppID</key>

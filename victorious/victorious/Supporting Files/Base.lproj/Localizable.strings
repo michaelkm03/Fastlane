@@ -39,6 +39,8 @@
 "Following"             =   "Following";
 "FOLLOWERS"             =   "FOLLOWERS";
 "FOLLOWING"             =   "FOLLOWING";
+"NumStreams"            =   "%@ STREAMS";
+"NumItems"              =   "%@ ITEMS";
 
 "TimeSeparator"         =   ":";
 "InvalidTimePlaceholder"=   "-:--";
@@ -120,6 +122,7 @@
 "OwnerShareImageFormat" =   "Check out this photo by %@!";//Check out this photo by <creator>! <URL>
 "UGCSharePollFormat"    =   "Check out this poll!";       //Check out this poll! <URL>
 "UGCShareVideoFormat"   =   "Check out this video!";      //Check out this video! <URL>
+"UGCShareGIFFormat"     =   "Check out this gif!";        //Check out this gif! <URL>
 "UGCShareImageFormat"   =   "Check out this photo!";      //Check out this photo! <URL>
 "EmailShareSubjectFormat"   =   "Check out this post from the %@ app!"; //Check out this post from the <creator name> app!
 
@@ -348,7 +351,7 @@
 "Login"                 =   "Log In";
 
 "UserBannedTitle"       =   "Ruh Roh!";
-"UserBannedMessage"     =   "Unfortunately, you're a banned community member. You'll still be able to view content, but will not be able to post or interact with others.";
+"UserBannedMessage"     =   "Unfortunately, your account has been deactivated. You'll still be able to view content, but will not be able to post or interact with others.";
 
 "AddDescription"        =   "Add a description... and don't forget #hashtags";
 "AddDescriptionAnchor"  =   "#hashtags";
