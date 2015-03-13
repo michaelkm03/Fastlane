@@ -41,7 +41,7 @@
     noContentView.iconImageView.image = [[UIImage imageNamed:@"profileGenericUser"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     noContentView.iconImageView.tintColor = [[[VRootViewController rootViewController] dependencyManager] colorForKey:VDependencyManagerLinkColorKey];
     noContentView.titleLabel.text = NSLocalizedString(@"You're not logged in!", @"");
-    noContentView.messageLabel.text = NSLocalizedString(@"Join me and together we can rule the galaxy as father and son. All the cool kids are doing it.", @"");
+    noContentView.messageLabel.text = NSLocalizedString(@"Nothing to see here yet! We are so excited to have you join our community. Create an account to show everyone how unique you are.", @"User is not logged in message.");
     
     [self.loginButton setStyle:VButtonStylePrimary];
     [self.loginButton setTitle:NSLocalizedString(@"Login", @"") forState:UIControlStateNormal];

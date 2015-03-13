@@ -465,7 +465,7 @@ static NSString * const kVideoMuted = @"videoMuted";
              kTitleKey: NSLocalizedString(@"Home", @""),
              kDestinationKey: [self homeScreen],
              kIconKey: @{
-                     VDependencyManagerImageURLKey: @"home",
+                     VDependencyManagerImageURLKey: @"D_home",
                      }
              };
 }
@@ -475,7 +475,7 @@ static NSString * const kVideoMuted = @"videoMuted";
     return @{
              kTitleKey: NSLocalizedString(@"Create", @""),
              kIconKey: @{
-                     VDependencyManagerImageURLKey: @"create",
+                     VDependencyManagerImageURLKey: @"D_create",
                      },
              kDestinationKey: [self workspaceFlowComponent],
              };
@@ -492,7 +492,7 @@ static NSString * const kVideoMuted = @"videoMuted";
                          kClassNameKey: @"currentUserProfile.screen"
                          },
                  kIconKey: @{
-                         VDependencyManagerImageURLKey: @"profile",
+                         VDependencyManagerImageURLKey: @"D_profile",
                          },
                  VDependencyManagerAccessoryScreensKey: @[
                          [self settingsMenuItem],
@@ -508,7 +508,7 @@ static NSString * const kVideoMuted = @"videoMuted";
                          kClassNameKey: @"currentUserProfile.screen"
                          },
                  kIconKey: @{
-                         VDependencyManagerImageURLKey: @"profile",
+                         VDependencyManagerImageURLKey: @"D_profile",
                          },
                  };
     }
@@ -520,7 +520,7 @@ static NSString * const kVideoMuted = @"videoMuted";
              kIdentifierKey: @"Menu Inbox",
              kTitleKey: NSLocalizedString(@"Inbox", @""),
              kIconKey: @{
-                     VDependencyManagerImageURLKey: @"inbox",
+                     VDependencyManagerImageURLKey: @"D_inbox",
                      },
              kDestinationKey: @{
                      kClassNameKey: @"inbox.screen"
@@ -537,7 +537,7 @@ static NSString * const kVideoMuted = @"videoMuted";
                      kClassNameKey: @"settings.screen"
                      },
              kIconKey: @{
-                     VDependencyManagerImageURLKey: @"settings",
+                     VDependencyManagerImageURLKey: @"D_settings",
                      },
              };
 }
@@ -639,7 +639,7 @@ static NSString * const kVideoMuted = @"videoMuted";
         NSDictionary *componentBase = @{ kIdentifierKey: @"Menu Channels",
                                          kTitleKey: NSLocalizedString(@"Channels", @""),
                                          kIconKey: @{
-                                                 VDependencyManagerImageURLKey: @"channels",
+                                                 VDependencyManagerImageURLKey: @"D_channels",
                                                  },
                                          kDestinationKey: @{
                                                  kClassNameKey: @"groupedStream.screen",
@@ -656,7 +656,7 @@ static NSString * const kVideoMuted = @"videoMuted";
         return @{ kIdentifierKey: @"Menu Channels",
                   kTitleKey: NSLocalizedString(@"Channels", @""),
                   kIconKey: @{
-                          VDependencyManagerImageURLKey: @"channels",
+                          VDependencyManagerImageURLKey: @"D_channels",
                           },
                   kDestinationKey: @{
                           kClassNameKey: @"directory.screen",
