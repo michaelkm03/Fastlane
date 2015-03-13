@@ -107,7 +107,7 @@
     
     NSString *linkText = NSLocalizedString( @"Reset here", @"" );
     NSString *normalText = NSLocalizedString( @"Forgot Password?", @"" );
-    NSString *text = [NSString stringWithFormat:NSLocalizedString( @"%@ %@", @""), normalText, linkText];
+    NSString *text = [NSString stringWithFormat:@"%@ %@", normalText, linkText];
     NSRange range = [text rangeOfString:linkText];
     self.forgotPasswordTextView.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
     [self.linkTextHelper setupLinkTextView:self.forgotPasswordTextView withText:text range:range];

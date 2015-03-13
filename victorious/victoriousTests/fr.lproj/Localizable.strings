@@ -1,0 +1,51 @@
+/* No comment provided by engineer. */
+"DaysAgo" = "%dd";
+
+/* No comment provided by engineer. */
+"EmailValidation" = "Adresse e-mail non valide";
+
+/* No comment provided by engineer. */
+"HourAgo" = "1h";
+
+/* No comment provided by engineer. */
+"HoursAgo" = "%dh";
+
+/* No comment provided by engineer. */
+"LastMonth" = "1mois";
+
+/* No comment provided by engineer. */
+"LastWeek" = "1sem.";
+
+/* No comment provided by engineer. */
+"LastYear" = "1an";
+
+/* No comment provided by engineer. */
+"MinuteAgo" = "1min";
+
+/* No comment provided by engineer. */
+"MinutesAgo" = "%dm";
+
+/* No comment provided by engineer. */
+"MonthsAgo" = "%dmo";
+
+/* No comment provided by engineer. */
+"Now" = "Maintenant";
+
+/* No comment provided by engineer. */
+"PasswordNotMatching" = "Les mots de passe ne correspondent pas";
+
+/* No comment provided by engineer. */
+"PasswordValidation" = "Le mot de passe comporte moins de 8 caractères";
+
+/* No comment provided by engineer. */
+"ResetPasswordNewEqualsCurrentMessage" = "Veuillez saisir un mot de passe différent de votre mot de passe actuel.";
+
+/* No comment provided by engineer. */
+"WeeksAgo" = "%dw";
+
+/* No comment provided by engineer. */
+"YearsAgo" = "%dy";
+
+/* No comment provided by engineer. */
+"Yesterday" = "1j";
+

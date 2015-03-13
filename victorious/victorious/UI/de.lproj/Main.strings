@@ -1,0 +1,60 @@
+/* Class = "UITextField"; placeholder = "Search people"; ObjectID = "5Iu-Sq-opf"; */
+"5Iu-Sq-opf.placeholder" = "Leute suchen";
+
+/* Class = "UILabel"; text = "No Results"; ObjectID = "5uI-FR-NGs"; */
+"5uI-FR-NGs.text" = "Keine Ergebnisse";
+
+/* Class = "UILabel"; text = "We weren't able to find that user. You can try again or go to that user's profile and send a message from there!"; ObjectID = "9Sb-ui-Qjq"; */
+"9Sb-ui-Qjq.text" = "Wir konnten diesen Benutzer nicht finden. Du kannst es erneut versuchen oder zum Profil dieses Benutzers gehen und von dort eine Nachricht senden.";
+
+/* Class = "UILabel"; text = "No Internet Connection."; ObjectID = "9lr-kw-Rjm"; */
+"9lr-kw-Rjm.text" = "Keine Internetverbindung.";
+
+/* Class = "UINavigationItem"; title = "New Poll"; ObjectID = "18V-Wp-b3G"; */
+"18V-Wp-b3G.title" = "Neue Umfrage";
+
+/* Class = "UILabel"; text = "Vote this"; ObjectID = "83v-Xs-Bp8"; */
+"83v-Xs-Bp8.text" = "Wähle für dieses";
+
+/* Class = "UINavigationItem"; title = "Messages"; ObjectID = "AHd-Fh-04G"; */
+"AHd-Fh-04G.title" = "Nachrichten";
+
+/* Class = "UITextField"; placeholder = "Search for an image"; ObjectID = "GSS-PO-98I"; */
+"GSS-PO-98I.placeholder" = "Nach einem Bild suchen";
+
+/* Class = "UILabel"; text = "Lorem Ipsum"; ObjectID = "LPw-0B-19t"; */
+"LPw-0B-19t.text" = "Lorem Ipsum";
+
+/* Class = "UILabel"; text = "Pull up for more..."; ObjectID = "O7q-AE-sOJ"; */
+"O7q-AE-sOJ.text" = "Für mehr hochziehen...";
+
+/* Class = "UILabel"; text = "Type a reply..."; ObjectID = "SNG-eg-mA3"; */
+"SNG-eg-mA3.text" = "Tippe eine Antwort...";
+
+/* Class = "UINavigationItem"; title = "Messages"; ObjectID = "YF4-gT-XTx"; */
+"YF4-gT-XTx.title" = "Nachrichten";
+
+/* Class = "UIButton"; normalTitle = "Create Poll"; ObjectID = "ZZw-Pe-VXw"; */
+"ZZw-Pe-VXw.normalTitle" = "Umfrage erstellen";
+
+/* Class = "UILabel"; text = "NO USERS FOUND"; ObjectID = "a8q-j6-UKa"; */
+"a8q-j6-UKa.text" = "KEINE BENUTZER GEFUNDEN";
+
+/* Class = "UILabel"; text = "Vote that"; ObjectID = "aHa-OF-GOS"; */
+"aHa-OF-GOS.text" = "Wähle für das";
+
+/* Class = "UINavigationItem"; title = "Inbox"; ObjectID = "gHQ-c1-wpe"; */
+"gHQ-c1-wpe.title" = "Posteingang";
+
+/* Class = "UILabel"; text = "Type a reply..."; ObjectID = "gwv-3A-zYK"; */
+"gwv-3A-zYK.text" = "Tippe eine Antwort...";
+
+/* Class = "UILabel"; text = "Ask a question..."; ObjectID = "hOL-9P-6fa"; */
+"hOL-9P-6fa.text" = "Stelle eine Frage...";
+
+/* Class = "UILabel"; text = "COMMENTS"; ObjectID = "kYy-hF-Nue"; */
+"kYy-hF-Nue.text" = "KOMMENTARE";
+
+/* Class = "UIButton"; normalTitle = "Send"; ObjectID = "vPi-i8-4bG"; */
+"vPi-i8-4bG.normalTitle" = "Senden";
+

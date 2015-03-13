@@ -1,96 +1,90 @@
-/* Class = "IBUIButton"; normalTitle = "Cancel"; ObjectID = "3e0-qS-x7b"; */
+/* Class = "UIButton"; normalTitle = "Cancel"; ObjectID = "3e0-qS-x7b"; */
 "3e0-qS-x7b.normalTitle" = "Cancelar";
 
-/* Class = "IBUITextField"; placeholder = "Password"; ObjectID = "3pO-cP-eTE"; */
+/* Class = "UITextField"; placeholder = "Password"; ObjectID = "3pO-cP-eTE"; */
 "3pO-cP-eTE.placeholder" = "Contraseña";
 
-/* Class = "IBUILabel"; text = "Log in With Twitter"; ObjectID = "3q4-yP-lYm"; */
-"3q4-yP-lYm.text" = "Iniciar sesión con Twitter";
+/* Class = "UILabel"; text = "Connect with Twitter"; ObjectID = "3q4-yP-lYm"; */
+"3q4-yP-lYm.text" = "Conecar con Twitter";
 
-/* Class = "IBUIButton"; normalTitle = "Log In"; ObjectID = "5AW-ID-rMK"; */
-"5AW-ID-rMK.normalTitle" = "Iniciar sesión";
+/* Class = "UIButton"; normalTitle = "Log In"; ObjectID = "5AW-ID-rMK"; */
+"5AW-ID-rMK.normalTitle" = "Ingresar";
 
-/* Class = "IBUIButton"; normalTitle = "Cancel"; ObjectID = "7P1-3N-TQ4"; */
+/* Class = "UITextView"; text = "Already Registered? Log in here"; ObjectID = "5M9-eq-LWT"; */
+"5M9-eq-LWT.text" = "¿Ya estás registrado? Ingresa aquí";
+
+/* Class = "UIButton"; normalTitle = "Cancel"; ObjectID = "7P1-3N-TQ4"; */
 "7P1-3N-TQ4.normalTitle" = "Cancelar";
 
-/* Class = "IBUIButton"; normalTitle = "Done"; ObjectID = "9Wi-As-OwD"; */
+/* Class = "UIButton"; normalTitle = "Done"; ObjectID = "9Wi-As-OwD"; */
 "9Wi-As-OwD.normalTitle" = "Hecho";
 
-/* Class = "IBUITextField"; placeholder = "E-mail"; ObjectID = "A3z-ra-4Af"; */
-"A3z-ra-4Af.placeholder" = "E-mail";
+/* Class = "UITextField"; placeholder = "E-mail"; ObjectID = "A3z-ra-4Af"; */
+"A3z-ra-4Af.placeholder" = "Email";
 
-/* Class = "IBUILabel"; text = "Create Profile"; ObjectID = "A8K-lD-yg5"; */
+/* Class = "UILabel"; text = "Create Profile"; ObjectID = "A8K-lD-yg5"; */
 "A8K-lD-yg5.text" = "Crear perfil";
 
-/* Class = "IBUILabel"; text = "ENTER CODE"; ObjectID = "CGW-Kx-wFZ"; */
-"CGW-Kx-wFZ.text" = "INGRESAR CÓDIGO";
+/* Class = "UILabel"; text = "ENTER CODE"; ObjectID = "CGW-Kx-wFZ"; */
+"CGW-Kx-wFZ.text" = "INTRODUCIR CÓDIGO";
 
-/* Class = "IBUILabel"; text = "I'm at least 13 years old and agree to the Terms of Service"; ObjectID = "EGg-eb-7Dm"; */
-"EGg-eb-7Dm.text" = "Tengo al menos 13 años y acepto los Términos del Servicio";
+/* Class = "UILabel"; text = "I'm at least 13 years old and agree to the Terms of Service"; ObjectID = "EGg-eb-7Dm"; */
+"EGg-eb-7Dm.text" = "Soy mayor de 13 años de edad y estoy de acuerdo con los términos del servicio";
 
-/* Class = "IBUITextField"; placeholder = "E-mail"; ObjectID = "Jbh-n4-soS"; */
-"Jbh-n4-soS.placeholder" = "E-mail";
+/* Class = "UITextField"; placeholder = "E-mail"; ObjectID = "Jbh-n4-soS"; */
+"Jbh-n4-soS.placeholder" = "Email";
 
-/* Class = "IBUIButton"; normalTitle = "Sign Up"; ObjectID = "KC8-6n-wgW"; */
-"KC8-6n-wgW.normalTitle" = "Registrar";
+/* Class = "UIButton"; normalTitle = "Sign Up"; ObjectID = "KC8-6n-wgW"; */
+"KC8-6n-wgW.normalTitle" = "Ingresar";
 
-/* Class = "IBUILabel"; text = "Thanks!"; ObjectID = "Lji-XP-yck"; */
+/* Class = "UILabel"; text = "Thanks!"; ObjectID = "Lji-XP-yck"; */
 "Lji-XP-yck.text" = "¡Gracias!";
 
-/* Class = "IBUILabel"; text = "E-mail"; ObjectID = "PBd-jN-jOQ"; */
-"PBd-jN-jOQ.text" = "E-mail";
-
-/* Class = "IBUITextField"; placeholder = "Password"; ObjectID = "UDE-m8-fBQ"; */
+/* Class = "UITextField"; placeholder = "Password"; ObjectID = "UDE-m8-fBQ"; */
 "UDE-m8-fBQ.placeholder" = "Contraseña";
 
-/* Class = "IBUIButton"; normalTitle = "Forgot password?"; ObjectID = "URc-Hp-jLm"; */
-"URc-Hp-jLm.normalTitle" = "¿Olvidaste la contraseña?";
-
-/* Class = "IBUITextField"; placeholder = "New Password"; ObjectID = "aDr-Jw-10s"; */
+/* Class = "UITextField"; placeholder = "New Password"; ObjectID = "aDr-Jw-10s"; */
 "aDr-Jw-10s.placeholder" = "Nueva contraseña";
 
-/* Class = "IBUINavigationItem"; title = "Login with E-mail"; ObjectID = "d29-FA-lll"; */
-"d29-FA-lll.title" = "Iniciar sesión con E-mail";
+/* Class = "UITextView"; text = "Forgot Password? Reset here"; ObjectID = "bMr-K0-Coy"; */
+"bMr-K0-Coy.text" = "¿Olvidaste tu contraseña? Configura aquí";
 
-/* Class = "IBUILabel"; text = "Password"; ObjectID = "dbc-B9-jGE"; */
-"dbc-B9-jGE.text" = "Contraseña";
+/* Class = "UINavigationItem"; title = "Login with E-mail"; ObjectID = "d29-FA-lll"; */
+"d29-FA-lll.title" = "Ingresar con email";
 
-/* Class = "IBUITextField"; placeholder = "Confirm Password"; ObjectID = "g23-E6-rHp"; */
+/* Class = "UITextField"; placeholder = "Confirm Password"; ObjectID = "g23-E6-rHp"; */
 "g23-E6-rHp.placeholder" = "Confirmar contraseña";
 
-/* Class = "IBUILabel"; text = "Terms of Service"; ObjectID = "jg3-Xt-dBE"; */
-"jg3-Xt-dBE.text" = "Términos del Servicio";
+/* Class = "UILabel"; text = "Sign up with Email"; ObjectID = "gWK-fr-OZX"; */
+"gWK-fr-OZX.text" = "Registrarse con email";
 
-/* Class = "IBUIButton"; normalTitle = "Cancel"; ObjectID = "jhx-0Z-CyE"; */
+/* Class = "UIButton"; normalTitle = "Cancel"; ObjectID = "jhx-0Z-CyE"; */
 "jhx-0Z-CyE.normalTitle" = "Cancelar";
 
-/* Class = "IBUILabel"; text = "Tell us about yourself..."; ObjectID = "kzi-75-z6l"; */
-"kzi-75-z6l.text" = "Nos dicen algo acerca de ti...";
+/* Class = "UILabel"; text = "Tell us about yourself..."; ObjectID = "kzi-75-z6l"; */
+"kzi-75-z6l.text" = "Cuéntanos sobre ti";
 
-/* Class = "IBUITextField"; placeholder = "Location"; ObjectID = "pDv-b6-X4m"; */
+/* Class = "UITextField"; placeholder = "Location"; ObjectID = "pDv-b6-X4m"; */
 "pDv-b6-X4m.placeholder" = "Ubicación";
 
-/* Class = "IBUIButton"; normalTitle = "Update"; ObjectID = "pg3-qh-eDX"; */
+/* Class = "UIButton"; normalTitle = "Update"; ObjectID = "pg3-qh-eDX"; */
 "pg3-qh-eDX.normalTitle" = "Actualizar";
 
-/* Class = "IBUITextField"; placeholder = "Name"; ObjectID = "qGa-ti-Owy"; */
+/* Class = "UITextField"; placeholder = "Name"; ObjectID = "qGa-ti-Owy"; */
 "qGa-ti-Owy.placeholder" = "Nombre";
 
-/* Class = "IBUIViewController"; title = "Find Friends"; ObjectID = "qXP-WV-BMp"; */
+/* Class = "UIViewController"; title = "Find Friends"; ObjectID = "qXP-WV-BMp"; */
 "qXP-WV-BMp.title" = "Encontrar amigos";
 
-/* Class = "IBUIButton"; normalTitle = "Resend Email"; ObjectID = "ssT-3o-lsn"; */
-"ssT-3o-lsn.normalTitle" = "Reenviar E-mail";
+/* Class = "UILabel"; text = "An email was sent to this address containing a code to verify your account"; ObjectID = "sxb-gV-KJX"; */
+"sxb-gV-KJX.text" = "Se envió este correo con un código para verificar tu cuenta";
 
-/* Class = "IBUILabel"; text = "An email was sent to this address containing a code to verify your account"; ObjectID = "sxb-gV-KJX"; */
-"sxb-gV-KJX.text" = "Se envió un email a esta dirección con el código para verificar tu cuenta";
-
-/* Class = "IBUITextField"; placeholder = "Confirm Password"; ObjectID = "tdl-Dc-Ep6"; */
+/* Class = "UITextField"; placeholder = "Confirm Password"; ObjectID = "tdl-Dc-Ep6"; */
 "tdl-Dc-Ep6.placeholder" = "Confirmar contraseña";
 
-/* Class = "IBUILabel"; text = "Log in With Facebook"; ObjectID = "tgS-Dw-MLG"; */
-"tgS-Dw-MLG.text" = "Iniciar sesión con Facebook";
+/* Class = "UILabel"; text = "Connect with Facebook"; ObjectID = "tgS-Dw-MLG"; */
+"tgS-Dw-MLG.text" = "Conectarse con Facebook";
 
-/* Class = "IBUIButton"; normalTitle = "Sign up with your email"; ObjectID = "yeM-Dh-LIB"; */
-"yeM-Dh-LIB.normalTitle" = "Registrarte con tu email";
+/* Class = "UITextView"; text = "Resend Email"; ObjectID = "ucd-V3-oVY"; */
+"ucd-V3-oVY.text" = "Reenviar email";
 
