@@ -683,10 +683,12 @@ static NSString * const kUserKey = @"user";
         [self.backgroundImageView setBlurredImageWithClearImage:[UIImage imageNamed:@"Default"]
                                                placeholderImage:nil
                                                       tintColor:[[UIColor whiteColor] colorWithAlphaComponent:0.5f]];
+        [self.refreshControl removeFromSuperview];
     }
     else
     {
         self.collectionView.dataSource = self.streamDataSource;
+        [self.collectionView addSubview:self.refreshControl];
     }
 }
 
@@ -741,7 +743,7 @@ static NSString * const kUserKey = @"user";
     }
     else
     {
-        [super refresh:nil];
+        [super refresh:sender];
     }
 }
 
