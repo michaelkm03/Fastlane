@@ -50,6 +50,7 @@
 @property (nonatomic, weak) IBOutlet UIImageView *blurredBackgroundImageView;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *verticalSpaceCanvasToTopOfContainerConstraint;
 @property (nonatomic, weak) IBOutlet UIBarButtonItem *continueButton;
+@property (nonatomic, weak) IBOutlet UIBarButtonItem *backButton;
 @property (nonatomic, strong) NSMutableArray *inspectorConstraints;
 
 @property (nonatomic, strong) UIViewController *inspectorToolViewController;
@@ -110,6 +111,9 @@
     [super viewDidLoad];
     
     [self.continueButton setTitle:self.continueText];
+    
+    NSString *imageName = self.showCloseButton ? @"cameraButtonClose" : @"cameraButtonBack";
+    [self.backButton setImage:[UIImage imageNamed:imageName]];
     
     self.view.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     
@@ -362,6 +366,11 @@
     _continueText = [continueText copy];
     
     [self.continueButton setTitle:continueText];
+}
+
+- (void)setShowCloseButton:(BOOL)showCloseButton
+{
+    _showCloseButton = showCloseButton;
 }
 
 #pragma mark - Public Methods

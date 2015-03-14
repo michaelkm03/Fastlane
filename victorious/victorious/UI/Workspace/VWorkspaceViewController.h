@@ -32,6 +32,7 @@
 @interface VWorkspaceViewController : UIViewController <VHasManagedDependancies>
 
 @property (nonatomic, copy) NSString *continueText;
+@property (nonatomic, assign) BOOL showCloseButton;
 
 @property (nonatomic, strong) UIImage *previewImage; ///< An image to use in the canvas.
 @property (nonatomic, strong) NSURL *mediaURL; ///< The image or video to use in this workspace.
