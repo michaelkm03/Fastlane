@@ -188,7 +188,6 @@ static NSString * const kVideoMuted = @"videoMuted";
 {
     NSDictionary *kSelectorKey = @{
                                    kClassNameKey: @"basic.multiScreenSelector",
-                                   VDependencyManagerBackgroundColorKey: self.accentColor,
                                    };
     
     if ( ROUNDED_TOP_NAV_ENABLED )

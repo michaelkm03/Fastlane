@@ -8,6 +8,7 @@
 
 @import MessageUI;
 
+#import "VDependencyManager.h"
 #import "VDeviceInfo.h"
 #import "VSettingsViewController.h"
 #import "VWebContentViewController.h"
@@ -57,6 +58,7 @@ static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *rightLabels;
 
 @property (nonatomic, weak) IBOutlet VVideoSettings *videoSettings;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end
 
@@ -66,7 +68,9 @@ static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    return [[UIStoryboard storyboardWithName:@"settings" bundle:nil] instantiateInitialViewController];
+    VSettingsViewController *settingsViewController = (VSettingsViewController *)[[UIStoryboard storyboardWithName:@"settings" bundle:nil] instantiateInitialViewController];
+    settingsViewController.dependencyManager = dependencyManager;
+    return settingsViewController;
 }
 
 - (void)dealloc
@@ -82,11 +86,11 @@ static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
     
     [self.labels enumerateObjectsUsingBlock:^(UILabel *label, NSUInteger idx, BOOL *stop)
      {
-         label.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
+         label.font = [self.dependencyManager fontForKey:VDependencyManagerHeading3FontKey];
      }];
     [self.rightLabels enumerateObjectsUsingBlock:^(UILabel *label, NSUInteger idx, BOOL *stop)
      {
-         label.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont];
+         label.font = [self.dependencyManager fontForKey:VDependencyManagerParagraphFontKey];
      }];
     
     NSString *appVersionString = [NSString stringWithFormat:NSLocalizedString(@"Version", @""), [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]];
@@ -96,7 +100,7 @@ static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
 #endif
     
     self.versionString.text = appVersionString;
-    self.versionString.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font];
+    self.versionString.font = [self.dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -189,8 +193,8 @@ static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
 
 - (void)updateLogoutButtonState
 {
-    self.logoutButton.primaryColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-    self.logoutButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
+    self.logoutButton.primaryColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+    self.logoutButton.titleLabel.font = [self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
     
     if ([VObjectManager sharedManager].mainUserLoggedIn)
     {
@@ -231,11 +235,15 @@ static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    VWebContentViewController  *viewController = segue.destinationViewController;
+    UIViewController *viewController = segue.destinationViewController;
     
     if ([segue.identifier isEqualToString:@"toAboutUs"])
     {
         viewController.title = NSLocalizedString(@"ToSText", @"");
+    }
+    if ( [viewController respondsToSelector:@selector(setDependencyManager:)] )
+    {
+        [(id<VHasManagedDependancies>)viewController setDependencyManager:self.dependencyManager];
     }
 }
 
