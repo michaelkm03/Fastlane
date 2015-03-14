@@ -72,8 +72,11 @@ static const CGFloat kTimelineDarkeningAlpha = 0.5f;
     if (CMTIME_COMPARE_INLINE(maximumEndTime, <, self.maximumTrimDuration))
     {
         self.maximumTrimDuration = maximumEndTime;
-        [self.delegate trimmerViewController:self
-                  didUpdateSelectedTimeRange:self.selectedTimeRange];
+        if ([self.delegate respondsToSelector:@selector(trimmerViewController:didUpdateSelectedTimeRange:)])
+        {
+            [self.delegate trimmerViewController:self
+                      didUpdateSelectedTimeRange:self.selectedTimeRange];
+        }
     }
     [self.thumbnailCollecitonView.collectionViewLayout invalidateLayout];
 }
@@ -228,7 +231,10 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
 {
     if (scrollView.isDecelerating)
     {
-        [self.delegate trimmerViewControllerEndedSeeking:self];
+        if ([self.delegate respondsToSelector:@selector(trimmerViewControllerEndedSeeking:)])
+        {
+            [self.delegate trimmerViewControllerEndedSeeking:self];
+        }
     }
 }
 
@@ -238,8 +244,11 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
     
     if (!CMTimeRangeContainsTime(self.selectedTimeRange, self.currentPlayTime))
     {
-        [self.delegate trimmerViewControllerBeganSeeking:self
-                                                  toTime:self.selectedTimeRange.start];
+        if ([self.delegate respondsToSelector:@selector(trimmerViewControllerBeganSeeking:toTime:)])
+        {
+            [self.delegate trimmerViewControllerBeganSeeking:self
+                                                      toTime:self.selectedTimeRange.start];
+        }
     }
 }
 
@@ -247,13 +256,19 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
 {
     if (!decelerate)
     {
-        [self.delegate trimmerViewControllerEndedSeeking:self];
+        if ([self.delegate respondsToSelector:@selector(trimmerViewControllerEndedSeeking:)])
+        {
+            [self.delegate trimmerViewControllerEndedSeeking:self];
+        }
     }
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-    [self.delegate trimmerViewControllerEndedSeeking:self];
+    if ([self.delegate respondsToSelector:@selector(trimmerViewControllerEndedSeeking:)])
+    {
+        [self.delegate trimmerViewControllerEndedSeeking:self];
+    }
 }
 
 #pragma mark - Private Methods

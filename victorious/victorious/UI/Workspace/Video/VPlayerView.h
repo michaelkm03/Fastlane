@@ -12,6 +12,9 @@
 
 @interface VPlayerView : UIView
 
-- (instancetype)initWithPlayer:(AVPlayer *)player;
+/**
+ *  The designated initializer for this VPlayerView. Player must not be nil.
+ */
+- (instancetype)initWithPlayer:(AVPlayer *)player NS_DESIGNATED_INITIALIZER;
 
 @end

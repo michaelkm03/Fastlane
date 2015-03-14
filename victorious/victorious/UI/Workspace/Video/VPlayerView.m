@@ -25,6 +25,8 @@
 
 - (instancetype)initWithPlayer:(AVPlayer *)player
 {
+    NSParameterAssert(player != nil);
+    
     self = [super initWithFrame:CGRectZero];
     if (self)
     {

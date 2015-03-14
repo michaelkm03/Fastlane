@@ -12,7 +12,7 @@
 #import <KVOController/FBKVOController.h>
 
 // Video
-#import "VLoopingAssetGenerator.h"
+#import "VLoopingCompositionGenerator.h"
 #import "VPlayerView.h"
 #import "AVAsset+VVideoCompositionWithFrameDuration.h"
 #import "AVComposition+VMutedAudioMix.h"
@@ -22,7 +22,7 @@
 @interface VTrimLoopingPlayerViewController ()
 
 @property (nonatomic, strong) AVPlayer *player;
-@property (nonatomic, strong) VLoopingAssetGenerator *loopingAssetGenerator;
+@property (nonatomic, strong) VLoopingCompositionGenerator *loopingAssetGenerator;
 @property (nonatomic, weak) UIActivityIndicatorView *acitivityIndicator;
 @property (nonatomic, assign) BOOL userWantsPause;
 
@@ -117,6 +117,11 @@
     [self.player play];
 }
 
+- (VPlayerView *)playerView
+{
+    return (VPlayerView *)self.view;
+}
+
 #pragma mark - Target/Action
 
 - (void)playerViewTapped:(UITapGestureRecognizer *)tapGesture
@@ -145,17 +150,7 @@
 {
     _mediaURL = [mediaURL copy];
     
-    self.loopingAssetGenerator = [[VLoopingAssetGenerator alloc] initWithURL:mediaURL];
-    __weak typeof(self) welf = self;
-    self.loopingAssetGenerator.loopedAssetBecameAvailable = ^void(AVAsset *loopedAsset)
-    {
-        __strong typeof(welf) strongSelf = welf;
-        if (strongSelf == nil)
-        {
-            return;
-        }
-        [strongSelf playWithNewAsset:loopedAsset];
-    };;
+    self.loopingAssetGenerator = [[VLoopingCompositionGenerator alloc] initWithURL:mediaURL];
     [self.loopingAssetGenerator startLoading];
 }
 
@@ -169,15 +164,20 @@
     __weak typeof(self) welf = self;
     [self.player pause];
     [self.loopingAssetGenerator setTrimRange:trimRange
-                              withCompletion:^(AVAsset *loopedAsset)
-     {
-         __strong typeof(welf) strongSelf = welf;
-         if (strongSelf == nil)
-         {
-             return;
-         }
-         [strongSelf playWithNewAsset:loopedAsset];
-     }];
+                                      CMTime:CMTimeMake(2 * 60 * 600, 600) // 2 minutes
+                              withCompletion:^(NSError *error, AVComposition *loopedComposition)
+    {
+        if (error)
+        {
+#warning Handle ME!
+        }
+        __strong typeof(welf) strongSelf = welf;
+        if (strongSelf == nil)
+        {
+            return;
+        }
+        [strongSelf playWithNewComposition:loopedComposition];
+    }];
 }
 
 #pragma mark - Notification Handlers
@@ -197,19 +197,17 @@
 
 #pragma mark - Private Methods
 
-- (void)playWithNewAsset:(AVAsset *)asset
+- (void)playWithNewComposition:(AVComposition *)composition
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:AVPlayerItemDidPlayToEndTimeNotification object:self.player.currentItem];
-    [self.player replaceCurrentItemWithPlayerItem:[self playerItemWithAsset:asset]];
+    [self.player replaceCurrentItemWithPlayerItem:[self playerItemWithAsset:composition]];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playerReachedEnd:) name:AVPlayerItemDidPlayToEndTimeNotification object:self.player.currentItem];
 
     [self playIfUserAllowed];
 }
 
-- (AVPlayerItem *)playerItemWithAsset:(AVAsset *)asset
+- (AVPlayerItem *)playerItemWithAsset:(AVComposition *)composition
 {
-    AVComposition *composition = (AVComposition *)asset;
-    
     AVPlayerItem *playerItemWithAsset = [AVPlayerItem playerItemWithAsset:composition];
     if (self.isMuted)
     {

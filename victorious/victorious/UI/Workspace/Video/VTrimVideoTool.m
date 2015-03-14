@@ -14,8 +14,6 @@
 
 #import "VDependencyManager.h"
 
-#import <KVOController/FBKVOController.h>
-
 static const int32_t kDefaultTimeScale = 600;
 
 // Dependency Manager Keys
@@ -31,7 +29,6 @@ static NSString * const kIconKey = @"icon";
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VTrimmerViewController *trimViewController;
-//@property (nonatomic, strong) VCVideoPlayerViewController *videoPlayerController;
 @property (nonatomic, strong) VTrimLoopingPlayerViewController *trimLoopingViewController;
 
 @property (nonatomic, strong, readwrite) AVPlayerItem *playerItem;
@@ -92,6 +89,11 @@ static NSString * const kIconKey = @"icon";
 
 - (void)setMediaURL:(NSURL *)mediaURL
 {
+    if ([_mediaURL isEqual:mediaURL])
+    {
+        return;
+    }
+    
     _mediaURL = [mediaURL copy];
     
     self.frameRateComposition = [[VVideoFrameRateComposition alloc] initWithVideoURL:mediaURL
@@ -124,6 +126,11 @@ static NSString * const kIconKey = @"icon";
 
 - (void)setSelected:(BOOL)selected
 {
+    if (_selected == selected)
+    {
+        return;
+    }
+    
     _selected = selected;
     if (selected)
     {
@@ -188,20 +195,9 @@ static NSString * const kIconKey = @"icon";
     self.trimLoopingViewController.trimRange = selectedTimeRange;
 }
 
-- (void)trimmerViewControllerBeganSeeking:(VTrimmerViewController *)trimmerViewController
-                                   toTime:(CMTime)time
-{
-}
-
 - (void)trimmerViewControllerEndedSeeking:(VTrimmerViewController *)trimmerViewController
 {
     self.trimLoopingViewController.trimRange = trimmerViewController.selectedTimeRange;
-}
-
-#pragma mark - Private Methods
-
-- (void)updateStartEndTimesOnVideoPlayer
-{
 }
 
 @end

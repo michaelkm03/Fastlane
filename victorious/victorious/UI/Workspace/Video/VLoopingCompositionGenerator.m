@@ -6,23 +6,30 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VLoopingAssetGenerator.h"
+#import "VLoopingCompositionGenerator.h"
 
 @import AVFoundation;
 
-@interface VLoopingAssetGenerator ()
+@interface VLoopingCompositionGenerator ()
+
+@property (nonatomic, assign, readwrite) CMTime assetOriginalDuration;
+@property (nonatomic, strong, readwrite) NSError *error;
 
 @property (nonatomic, assign, readwrite) VLoopingCompositionState state;
 @property (nonatomic, strong) AVURLAsset *asset;
-@property (nonatomic, strong) AVComposition *tenMinuteLoopedComposition;
+@property (nonatomic, strong) AVComposition *loopedComposition;
 @property (nonatomic, assign) CMTimeRange trimRange;
 
 @property (nonatomic, strong) dispatch_queue_t compositionCreationQueue;
 @property (nonatomic, assign) BOOL wantsNewCompositionAfterCurrentFinishes;
 
+@property (nonatomic, copy) VLoopingCompositionCompletionBlock completionBlock;
+
+@property (nonatomic, assign) CMTime minDuration;
+
 @end
 
-@implementation VLoopingAssetGenerator
+@implementation VLoopingCompositionGenerator
 
 - (instancetype)initWithURL:(NSURL *)assetURL
 {
@@ -30,6 +37,8 @@
     self = [super init];
     if (self)
     {
+        _assetOriginalDuration = kCMTimeZero;
+        _error = nil;
         _state = VLoopingCompositionStateUnkown;
         _asset = [AVURLAsset URLAssetWithURL:assetURL
                                      options:@{AVURLAssetPreferPreciseDurationAndTimingKey:@YES,
@@ -47,20 +56,31 @@
 }
 
 - (void)setTrimRange:(CMTimeRange)trimRange
-      withCompletion:(void (^)(AVAsset *loopedAsset))completion
+              CMTime:(CMTime)minimumDuration
+      withCompletion:(VLoopingCompositionCompletionBlock)completion
 {
+    NSParameterAssert(completion != nil);
     if (!CMTIMERANGE_IS_VALID(trimRange))
     {
         return;
     }
-    if (!CMTimeRangeContainsTimeRange(CMTimeRangeMake(kCMTimeZero, self.asset.duration), trimRange))
+    trimRange = CMTimeRangeGetIntersection(CMTimeRangeMake(kCMTimeZero, self.assetOriginalDuration), trimRange);
+    
+    self.minDuration = minimumDuration;
+    self.completionBlock = completion;
+    self.trimRange = trimRange;
+    if ((self.state == VLoopingCompositionStateUnkown) ||
+        (self.state == VLoopingCompositionStateLoading) ||
+        (self.state == VLoopingCompositionStateGeneratingComposition))
     {
-        return;
+        [self startLoading];
+        self.wantsNewCompositionAfterCurrentFinishes = YES;
+    }
+    else
+    {
+        [self transitionToState:VLoopingCompositionStateGeneratingComposition];
     }
     
-    self.trimRange = trimRange;
-    self.loopedAssetBecameAvailable = completion;
-    [self transitionToState:VLoopingCompositionStateGeneratingComposition];
 }
 
 #pragma mark - State Management
@@ -69,7 +89,6 @@
 {
     if (self.state == newState)
     {
-        VLog(@"already in newState: %@", @(newState));
         if (newState == VLoopingCompositionStateGeneratingComposition)
         {
             self.wantsNewCompositionAfterCurrentFinishes = YES;
@@ -96,10 +115,11 @@
                      return;
                  }
                  NSError *error = nil;
-                 AVKeyValueStatus durationStatus = [welf.asset statusOfValueForKey:NSStringFromSelector(@selector(duration))
+                 AVKeyValueStatus durationStatus = [strongSelf.asset statusOfValueForKey:NSStringFromSelector(@selector(duration))
                                                                              error:&error];
                  if (error != nil)
                  {
+                     strongSelf.error = error;
                      [strongSelf transitionToState:VLoopingCompositionStateFailed];
                  }
                  switch (durationStatus)
@@ -111,6 +131,7 @@
                          [strongSelf transitionToState:VLoopingCompositionStateUnkown];
                          break;
                      case AVKeyValueStatusLoaded:
+                         strongSelf.assetOriginalDuration = strongSelf.asset.duration;
                          [strongSelf transitionToState:VLoopingCompositionStateGeneratingComposition];
                          break;
                  }
@@ -162,7 +183,7 @@
                         [self transitionToState:VLoopingCompositionStateGeneratingComposition];
                         return;
                     }
-                    self.tenMinuteLoopedComposition = [composition copy];
+                    self.loopedComposition = [composition copy];
                     [self transitionToState:VLoopingCompositionStateLoaded];
                 });
             };
@@ -176,25 +197,15 @@
             break;
         case VLoopingCompositionStateLoaded:
         {
-            NSAssert(self.tenMinuteLoopedComposition != nil, @"We should have our composition here!");
-            if (self.loopedAssetBecameAvailable != nil)
+            NSAssert(self.loopedComposition != nil, @"We should have our composition here!");
+            if (self.completionBlock)
             {
-                self.loopedAssetBecameAvailable(self.tenMinuteLoopedComposition);
+                self.completionBlock(nil,self.loopedComposition);
             }
         }
         case VLoopingCompositionStateFailed:
             break;
     }
-}
-
-- (void)setState:(VLoopingCompositionState)state
-{
-    VLog(@"%@", @(state));
-    if (state == VLoopingCompositionStateGeneratingComposition)
-    {
-        
-    }
-    _state = state;
 }
 
 @end

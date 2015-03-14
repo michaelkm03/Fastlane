@@ -588,7 +588,7 @@
 		D80A94EE1A5472FB0035D788 /* VTrimVideoTool.m in Sources */ = {isa = PBXBuildFile; fileRef = D80A94ED1A5472FB0035D788 /* VTrimVideoTool.m */; };
 		D80BAB571A688673003A3068 /* VNodeFetcherTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D80BAB561A688673003A3068 /* VNodeFetcherTests.m */; };
 		D80BAB5A1A688D83003A3068 /* VWorkspaceFlowController.m in Sources */ = {isa = PBXBuildFile; fileRef = D80BAB591A688D83003A3068 /* VWorkspaceFlowController.m */; };
-		D80BE58C1AB203E300219803 /* VLoopingAssetGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = D80BE58B1AB203E300219803 /* VLoopingAssetGenerator.m */; };
+		D80BE58C1AB203E300219803 /* VLoopingCompositionGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = D80BE58B1AB203E300219803 /* VLoopingCompositionGenerator.m */; };
 		D80C615B19D0F692006AE41A /* VProgressBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = D80C615A19D0F692006AE41A /* VProgressBarView.m */; };
 		D811BBBF19B92F75007398BF /* homeHeaderImage.png in Resources */ = {isa = PBXBuildFile; fileRef = D811BBBD19B92F75007398BF /* homeHeaderImage.png */; };
 		D816F7E41A966A0B00120798 /* UIScrollView+VCenterContent.m in Sources */ = {isa = PBXBuildFile; fileRef = D816F7E31A966A0B00120798 /* UIScrollView+VCenterContent.m */; };
@@ -1786,8 +1786,8 @@
 		D80BAB561A688673003A3068 /* VNodeFetcherTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNodeFetcherTests.m; sourceTree = "<group>"; };
 		D80BAB581A688D83003A3068 /* VWorkspaceFlowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VWorkspaceFlowController.h; sourceTree = "<group>"; };
 		D80BAB591A688D83003A3068 /* VWorkspaceFlowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VWorkspaceFlowController.m; sourceTree = "<group>"; };
-		D80BE58A1AB203E300219803 /* VLoopingAssetGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLoopingAssetGenerator.h; sourceTree = "<group>"; };
-		D80BE58B1AB203E300219803 /* VLoopingAssetGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VLoopingAssetGenerator.m; sourceTree = "<group>"; };
+		D80BE58A1AB203E300219803 /* VLoopingCompositionGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLoopingCompositionGenerator.h; sourceTree = "<group>"; };
+		D80BE58B1AB203E300219803 /* VLoopingCompositionGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VLoopingCompositionGenerator.m; sourceTree = "<group>"; };
 		D80C615919D0F692006AE41A /* VProgressBarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VProgressBarView.h; sourceTree = "<group>"; };
 		D80C615A19D0F692006AE41A /* VProgressBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VProgressBarView.m; sourceTree = "<group>"; };
 		D811BBBD19B92F75007398BF /* homeHeaderImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = homeHeaderImage.png; sourceTree = "<group>"; };
@@ -4383,8 +4383,8 @@
 				D8D3B7201AB2643500CF966C /* AVComposition+VMutedAudioMix.m */,
 				D80A94E41A546DF90035D788 /* VAssetThumbnailDataSource.h */,
 				D80A94E51A546DF90035D788 /* VAssetThumbnailDataSource.m */,
-				D80BE58A1AB203E300219803 /* VLoopingAssetGenerator.h */,
-				D80BE58B1AB203E300219803 /* VLoopingAssetGenerator.m */,
+				D80BE58A1AB203E300219803 /* VLoopingCompositionGenerator.h */,
+				D80BE58B1AB203E300219803 /* VLoopingCompositionGenerator.m */,
 				D83AC7A81AB201A600F63603 /* VPlayerView.h */,
 				D83AC7A91AB201A600F63603 /* VPlayerView.m */,
 				D88CEAE51A92EEED00F5A837 /* VSnapshotViewController.h */,
@@ -5372,7 +5372,7 @@
 				0314D06419B466C100FA363C /* UIActivityViewController+VStatusBarHandling.m in Sources */,
 				0314D2E919B46B2200FA363C /* VErrorMessage.m in Sources */,
 				A780ED5B1A933D9300A8CD5D /* VCompositeImageFilter.m in Sources */,
-				D80BE58C1AB203E300219803 /* VLoopingAssetGenerator.m in Sources */,
+				D80BE58C1AB203E300219803 /* VLoopingCompositionGenerator.m in Sources */,
 				D8B827DA19D5FD8900CCD6D9 /* VActionItemTableViewCell.m in Sources */,
 				0314D0BD19B469C100FA363C /* VSettingManager.m in Sources */,
 				0314D4A919B46B5E00FA363C /* VMessageCell.m in Sources */,
