@@ -7,6 +7,8 @@
 //
 
 #import "VStreamCollectionCellPoll.h"
+#import "VStreamCollectionCellPollD.h"
+#import "VStreamCollectionCellPollC.h"
 
 #import "VSequence+Fetcher.h"
 #import "VNode+Fetcher.h"
@@ -22,12 +24,6 @@
 
 #import "VThemeManager.h"
 #import "VSettingManager.h"
-
-//IMPORTANT: these template C constants much match up with the heights of values from the VStreamCollectionCellPoll-C xib
-static const CGFloat kTemplateCPollCellWidthRatio = 0.94375f; // 320/302
-static const CGFloat kTemplateCPollContentRatio = 0.6688741722f; // 202/302
-static const CGFloat kTemplateCHeaderHeight = 50.0f;
-static const CGFloat kTemplateCActionViewHeight = 41.0f;
 
 static const CGFloat kPollCellHeightRatio = 0.66875f; //from spec, 214 height for 320 width
 
@@ -46,6 +42,20 @@ static const CGFloat kPollCellHeightRatio = 0.66875f; //from spec, 214 height fo
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
++ (Class)appropriateCollectionCellClass
+{
+    Class collectionCellClass = [VStreamCollectionCellPoll class];
+    if ( [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateDEnabled] )
+    {
+        collectionCellClass = [VStreamCollectionCellPollD class];
+    }
+    else if ( [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled] )
+    {
+        collectionCellClass = [VStreamCollectionCellPollC class];
+    }
+    return collectionCellClass;
 }
 
 - (void)setSequence:(VSequence *)sequence
@@ -78,16 +88,13 @@ static const CGFloat kPollCellHeightRatio = 0.66875f; //from spec, 214 height fo
 
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {
-    BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
     CGFloat width = CGRectGetWidth(bounds);
-    if ( !isTemplateC )
-    {
-        return CGSizeMake(width, width * kPollCellHeightRatio);
-    }
-    
-    width = floorf(width * kTemplateCPollCellWidthRatio);
-    CGFloat height = floorf(width * kTemplateCPollContentRatio + kTemplateCHeaderHeight + kTemplateCTextNeighboringViewSeparatorHeight * 2.0f + kTemplateCTextSeparatorHeight + kTemplateCActionViewHeight); //width * kTemplateCPollContentRatio represents the desired media height
-    return CGSizeMake(width, height);
+    return CGSizeMake(width, width * kPollCellHeightRatio);
+}
+
++ (CGSize)actualSizeWithCollectionViewBounds:(CGRect)bounds sequence:(VSequence *)sequence
+{
+    return [self desiredSizeWithCollectionViewBounds:bounds];
 }
 
 @end

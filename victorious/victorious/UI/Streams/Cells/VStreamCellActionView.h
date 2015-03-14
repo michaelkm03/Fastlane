@@ -17,10 +17,14 @@
 @property (nonatomic, strong) VSequence *sequence;
 @property (nonatomic, weak) id<VSequenceActionsDelegate> delegate;
 
+- (UIButton *)addButtonWithImage:(UIImage *)image;
+
 - (void)clearButtons;
 - (void)addShareButton;
 - (void)addRemixButton;
 - (void)addRepostButton;
 - (void)addMoreButton;
+
+@property (nonatomic, readonly) NSMutableArray *actionButtons;
 
 @end

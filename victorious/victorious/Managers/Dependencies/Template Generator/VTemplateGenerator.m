@@ -22,6 +22,7 @@
 #define BOTTOM_NAV_ENABLED 0
 #define CHANNELS_WITH_GROUP_STREAM_ENABLED 0
 #define ROUNDED_TOP_NAV_ENABLED 0
+#define TEMPLATE_D_ENABLED 1
 
 static NSString * const kIDKey = @"id";
 static NSString * const kReferenceIDKey = @"referenceID";
@@ -109,6 +110,9 @@ static NSString * const kVideoMuted = @"videoMuted";
         _homeRecentID = [[NSUUID UUID] UUIDString];
         _communityRecentID = [[NSUUID UUID] UUIDString];
         _templateCEnabled = [[_dataFromInitCall valueForKeyPath:@"experiments.template_c_enabled"] boolValue];
+        
+#warning HACK TO ENABLE TEMPLATE D CELLS UNTIL TEMPLATE STUFF IS FINISHED
+        [[VSettingManager sharedManager] updateSettingsWithDictionary:@{ VSettingsTemplateDEnabled : @(TEMPLATE_D_ENABLED) }];
     }
     return self;
 }

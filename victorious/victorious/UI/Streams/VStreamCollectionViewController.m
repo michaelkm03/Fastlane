@@ -159,10 +159,11 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
     
     [self.collectionView registerNib:[VMarqueeCollectionCell nibForCell]
           forCellWithReuseIdentifier:[VMarqueeCollectionCell suggestedReuseIdentifier]];
-    [self.collectionView registerNib:[VStreamCollectionCell nibForCell]
-          forCellWithReuseIdentifier:[VStreamCollectionCell suggestedReuseIdentifier]];
-    [self.collectionView registerNib:[VStreamCollectionCellPoll nibForCell]
-          forCellWithReuseIdentifier:[VStreamCollectionCellPoll suggestedReuseIdentifier]];
+    
+    [self.collectionView registerNib:[[VStreamCollectionCell appropriateCollectionCellClass] nibForCell]
+          forCellWithReuseIdentifier:[[VStreamCollectionCell appropriateCollectionCellClass] suggestedReuseIdentifier]];
+    [self.collectionView registerNib:[[VStreamCollectionCellPoll appropriateCollectionCellClass] nibForCell]
+          forCellWithReuseIdentifier:[[VStreamCollectionCellPoll appropriateCollectionCellClass] suggestedReuseIdentifier]];
     [self.collectionView registerNib:[VStreamCollectionCellWebContent nibForCell]
           forCellWithReuseIdentifier:[VStreamCollectionCellWebContent suggestedReuseIdentifier]];
     
@@ -449,17 +450,17 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
     if ([(VSequence *)[self.currentStream.streamItems objectAtIndex:indexPath.row] isPoll]
         &&[[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
     {
-        return [VStreamCollectionCellPoll actualSizeWithCollectionViewBounds:self.collectionView.bounds sequence:sequence];
+        return [[VStreamCollectionCellPoll appropriateCollectionCellClass] actualSizeWithCollectionViewBounds:self.collectionView.bounds sequence:sequence];
     }
     else if ([(VSequence *)[self.currentStream.streamItems objectAtIndex:indexPath.row] isPoll])
     {
-        return [VStreamCollectionCellPoll desiredSizeWithCollectionViewBounds:self.collectionView.bounds];
+        return [[VStreamCollectionCellPoll appropriateCollectionCellClass] desiredSizeWithCollectionViewBounds:self.collectionView.bounds];
     }
     else if ([[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
     {
-        return [VStreamCollectionCell actualSizeWithCollectionViewBounds:self.collectionView.bounds sequence:sequence];
+        return [[VStreamCollectionCell appropriateCollectionCellClass] actualSizeWithCollectionViewBounds:self.collectionView.bounds sequence:sequence];
     }
-    return [VStreamCollectionCell desiredSizeWithCollectionViewBounds:self.collectionView.bounds];
+    return [[VStreamCollectionCell appropriateCollectionCellClass] desiredSizeWithCollectionViewBounds:self.collectionView.bounds];
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section
@@ -502,7 +503,7 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
     
     if ([sequence isPoll])
     {
-        cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:[VStreamCollectionCellPoll suggestedReuseIdentifier]
+        cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:[[VStreamCollectionCellPoll appropriateCollectionCellClass] suggestedReuseIdentifier]
                                                               forIndexPath:indexPath];
     }
     else if ([sequence isPreviewWebContent])
@@ -515,7 +516,7 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
     }
     else
     {
-        cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:[VStreamCollectionCell suggestedReuseIdentifier]
+        cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:[[VStreamCollectionCell appropriateCollectionCellClass] suggestedReuseIdentifier]
                                                               forIndexPath:indexPath];
     }
     cell.delegate = self.actionDelegate ?: self;

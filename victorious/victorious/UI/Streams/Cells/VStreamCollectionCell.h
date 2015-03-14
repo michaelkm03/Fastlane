@@ -12,19 +12,24 @@
 #import "VSequenceActionsDelegate.h"
 #import "VBaseCollectionViewCell.h"
 
-extern const CGFloat kTemplateCTextNeighboringViewSeparatorHeight;
-extern const CGFloat kTemplateCTextSeparatorHeight;
+extern const CGFloat kCaptionTextViewLineFragmentPadding;
 
-@class VSequence, VStreamCellHeaderView, VStreamCollectionCell;
+@class VSequence, VStreamCellHeaderView, VStreamCollectionCell, CCHLinkTextView;
 
 @interface VStreamCollectionCell : VBaseCollectionViewCell <VSharedCollectionReusableViewMethods>
+
++ (Class)appropriateCollectionCellClass;
 
 @property (nonatomic, weak) IBOutlet UIImageView            *previewImageView;
 @property (nonatomic, weak) IBOutlet UIImageView            *lowerGradientView;
 @property (nonatomic, weak) IBOutlet UIView                 *overlayView;
 @property (nonatomic, weak) IBOutlet UIView                 *shadeView;
 @property (nonatomic, weak) IBOutlet VStreamCellHeaderView  *streamCellHeaderView;
-@property (nonatomic, weak) IBOutlet UILabel                *commentsLabel;
+
+@property (nonatomic, weak) IBOutlet CCHLinkTextView        *captionTextView;
+
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint     *captionTextViewBottomConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint     *captionTextViewTopConstraint;
 
 @property (nonatomic, weak) VSequence                       *sequence;
 
@@ -46,5 +51,9 @@ extern const CGFloat kTemplateCTextSeparatorHeight;
 - (void)pauseVideo;
 
 - (void)reloadCommentsCount;
+
+- (void)setDescriptionText:(NSString *)text;
+
+- (NSUInteger)maxCaptionLines;
 
 @end

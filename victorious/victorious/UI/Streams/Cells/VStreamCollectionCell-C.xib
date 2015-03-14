@@ -7,7 +7,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="4JO-Ba-PyN" customClass="VStreamCollectionCell">
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="4JO-Ba-PyN" customClass="VStreamCollectionCellC">
             <rect key="frame" x="0.0" y="0.0" width="302" height="455"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -86,7 +86,7 @@
                 <constraint firstItem="QyC-HK-x2o" firstAttribute="leading" secondItem="cW4-bM-sNC" secondAttribute="leading" id="9KD-hj-9El"/>
                 <constraint firstItem="QyC-HK-x2o" firstAttribute="top" secondItem="N8i-0p-V1f" secondAttribute="bottom" constant="8" id="A3e-xE-iUM"/>
                 <constraint firstAttribute="trailing" secondItem="Yqk-3U-Cvu" secondAttribute="trailing" priority="999" id="Cl1-zq-K2h"/>
-                <constraint firstItem="Yqk-3U-Cvu" firstAttribute="top" secondItem="W6W-Ju-9kU" secondAttribute="top" priority="999" constant="50" id="Fec-M2-Pi0"/>
+                <constraint firstItem="Yqk-3U-Cvu" firstAttribute="top" secondItem="W6W-Ju-9kU" secondAttribute="top" constant="50" id="Fec-M2-Pi0"/>
                 <constraint firstItem="LDv-jo-7gZ" firstAttribute="leading" secondItem="4JO-Ba-PyN" secondAttribute="leading" constant="-1" id="GHg-5D-n1d"/>
                 <constraint firstItem="IRG-lN-Zwl" firstAttribute="centerX" secondItem="Yqk-3U-Cvu" secondAttribute="centerX" id="NF1-1Q-vSi"/>
                 <constraint firstAttribute="bottom" secondItem="LDv-jo-7gZ" secondAttribute="bottom" id="NgO-Wi-bMH"/>
@@ -104,13 +104,13 @@
             <connections>
                 <outlet property="actionView" destination="LDv-jo-7gZ" id="1oO-81-IEN"/>
                 <outlet property="captionTextView" destination="QyC-HK-x2o" id="cMd-VE-Gge"/>
+                <outlet property="captionTextViewBottomConstraint" destination="u0E-OZ-gY2" id="zUj-rx-H7e"/>
                 <outlet property="captionTextViewTopConstraint" destination="A3e-xE-iUM" id="OUm-Pz-YPf"/>
                 <outlet property="commentHeightConstraint" destination="NDj-86-whc" id="JEg-AB-qBh"/>
                 <outlet property="commentLabelBottomConstraint" destination="rXC-pD-yT2" id="Hqm-PP-cMD"/>
                 <outlet property="commentsLabel" destination="cW4-bM-sNC" id="luq-a5-YM5"/>
                 <outlet property="commentsLeftConstraint" destination="9KD-hj-9El" id="GtG-Hl-072"/>
                 <outlet property="contentContainer" destination="Yqk-3U-Cvu" id="WaC-5x-TYc"/>
-                <outlet property="interLabelSpaceConstraint" destination="u0E-OZ-gY2" id="oif-Q0-pxX"/>
                 <outlet property="playBackgroundImageView" destination="IRG-lN-Zwl" id="xkg-6p-V7g"/>
                 <outlet property="playImageView" destination="EYB-Sg-RQg" id="eFi-Uc-FSE"/>
                 <outlet property="previewImageView" destination="De6-Pn-uJH" id="Ypz-2a-uiA"/>
