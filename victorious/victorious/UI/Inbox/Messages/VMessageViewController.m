@@ -182,7 +182,7 @@
     }
     cell.onProfileImageTapped = ^(void)
     {
-        VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithUser:message.sender];
+        VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithUser:message.sender andDependencyManager:nil];
         [self.navigationController pushViewController:profileViewController animated:YES];
     };
     cell.selectionStyle = UITableViewCellSelectionStyleNone;

@@ -57,6 +57,12 @@ const CGFloat kTemplateDTextNeighboringViewSeparatorHeight = 10.0f; //This repre
     self.actionView.delegate = delegate;
 }
 
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    [super setDependencyManager:dependencyManager];
+    self.actionView.dependencyManager = dependencyManager;
+}
+
 - (void)setDescriptionText:(NSString *)text
 {
     [super setDescriptionText:text];

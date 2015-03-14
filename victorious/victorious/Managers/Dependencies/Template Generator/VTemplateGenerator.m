@@ -22,7 +22,8 @@
 #define BOTTOM_NAV_ENABLED 0
 #define CHANNELS_WITH_GROUP_STREAM_ENABLED 0
 #define ROUNDED_TOP_NAV_ENABLED 0
-#define TEMPLATE_D_ENABLED 1
+#define STREAM_CELLS_TEMPLATE_D_ENABLED 0
+#define PROFILE_TEMPLATE_D_ENABLED 1
 
 static NSString * const kIDKey = @"id";
 static NSString * const kReferenceIDKey = @"referenceID";
@@ -87,6 +88,9 @@ static NSString * const kVideoMaxDuration = @"videoMaxDuration";
 static NSString * const kVideoMinDuration = @"videoMinDuration";
 static NSString * const kVideoMuted = @"videoMuted";
 
+// Profile properties
+static NSString * const kProfileShowEditButtonPill = @"showEditButtonPill";
+
 @interface VTemplateGenerator ()
 
 @property (nonatomic, strong) NSDictionary *dataFromInitCall;
@@ -112,7 +116,7 @@ static NSString * const kVideoMuted = @"videoMuted";
         _templateCEnabled = [[_dataFromInitCall valueForKeyPath:@"experiments.template_c_enabled"] boolValue];
         
 #warning HACK TO ENABLE TEMPLATE D CELLS UNTIL TEMPLATE STUFF IS FINISHED
-        [[VSettingManager sharedManager] updateSettingsWithDictionary:@{ VSettingsTemplateDEnabled : @(TEMPLATE_D_ENABLED) }];
+        [[VSettingManager sharedManager] updateSettingsWithDictionary:@{ VSettingsTemplateDEnabled : @(STREAM_CELLS_TEMPLATE_D_ENABLED) }];
     }
     return self;
 }
@@ -498,9 +502,7 @@ static NSString * const kVideoMuted = @"videoMuted";
              kIconKey: @{
                      VDependencyManagerImageURLKey: @"profile",
                      },
-             kDestinationKey: @{
-                     kClassNameKey: @"currentUserProfile.screen"
-                     }
+             kDestinationKey: [self profileDetails]
              };
 }
 
@@ -524,11 +526,69 @@ static NSString * const kVideoMuted = @"videoMuted";
     return [NSString stringWithFormat:@"/api/sequence/detail_list_by_category/%@/%%%%PAGE_NUM%%%%/%%%%ITEMS_PER_PAGE%%%%", categoryString];
 }
 
+//MAKE TICKET FOR BACKEND TO PASS EXPECTED FIELD VALUE IN PROFILE COMPONENT
+//Expecting a Bool from backend for key "showEditButtonPill"
+
+- (NSDictionary *)profileDetails
+{
+    NSMutableDictionary *profileDetails = [[NSMutableDictionary alloc] initWithDictionary:@{
+                                                                                            kClassNameKey: @"currentUserProfile.screen",
+                                                                                            kProfileShowEditButtonPill: @(NO),
+                                                                                            VDependencyManagerBackgroundColorKey: @{
+                                                                                                    kRedKey: @241,
+                                                                                                    kGreenKey: @241,
+                                                                                                    kBlueKey: @241,
+                                                                                                    kAlphaKey: @1
+                                                                                                    },
+                                                                                            VDependencyManagerAccentColorKey: @{
+                                                                                                    kRedKey: @51,
+                                                                                                    kGreenKey: @51,
+                                                                                                    kBlueKey: @51,
+                                                                                                    kAlphaKey: @1
+                                                                                                    },
+                                                                                            VDependencyManagerContentTextColorKey: @{
+                                                                                                    kRedKey: @0,
+                                                                                                    kGreenKey: @0,
+                                                                                                    kBlueKey: @0,
+                                                                                                    kAlphaKey: @1
+                                                                                                    }
+                                                                                            }];
+    if ( PROFILE_TEMPLATE_D_ENABLED )
+    {
+        profileDetails[kProfileShowEditButtonPill] = @(YES);
+        profileDetails[VDependencyManagerBackgroundColorKey] = @{
+                                                                 kRedKey: @20,
+                                                                 kGreenKey: @20,
+                                                                 kBlueKey: @20,
+                                                                 kAlphaKey: @1
+                                                                 };
+        profileDetails[VDependencyManagerAccentColorKey] = @{
+                                                             kRedKey: @255,
+                                                             kGreenKey: @255,
+                                                             kBlueKey: @255,
+                                                             kAlphaKey: @1
+                                                             };
+        profileDetails[VDependencyManagerSecondaryBackgroundColorKey] = @{
+                                                                          kRedKey: @38,
+                                                                          kGreenKey: @39,
+                                                                          kBlueKey: @42,
+                                                                          kAlphaKey: @1
+                                                                          };
+        profileDetails[VDependencyManagerContentTextColorKey] = @{
+                                                                  kRedKey: @204,
+                                                                  kGreenKey: @204,
+                                                                  kBlueKey: @204,
+                                                                  kAlphaKey: @1
+                                                                  };
+    }
+    return [profileDetails copy];
+}
+
 - (NSDictionary *)profileScreen
 {
     return @{ kClassNameKey: @"userProfile.screen" };
 }
-                
+
 - (NSDictionary *)homeScreen
 {
     NSMutableDictionary *homeScreen = [@{

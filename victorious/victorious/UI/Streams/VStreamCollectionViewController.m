@@ -407,7 +407,7 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
         return;
     }
     
-    VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithUser:user];
+    VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithUser:user andDependencyManager:self.dependencyManager];
     [self.navigationController pushViewController:profileViewController animated:YES];
 }
 

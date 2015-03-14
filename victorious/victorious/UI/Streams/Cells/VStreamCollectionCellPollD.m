@@ -123,6 +123,12 @@
     self.captionContainerHeightConstraint.constant = constraintValue * 2 + textSize.height;
 }
 
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    [super setDependencyManager:dependencyManager];
+    self.actionView.dependencyManager = dependencyManager;
+}
+
 - (NSUInteger)maxCaptionLines
 {
     return 0;

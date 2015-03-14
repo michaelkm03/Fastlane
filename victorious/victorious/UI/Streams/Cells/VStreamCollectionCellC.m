@@ -76,6 +76,12 @@ const CGFloat kTemplateCTextSeparatorHeight = 6.0f; //This represents the space 
     self.actionView.delegate = delegate;
 }
 
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    [super setDependencyManager:dependencyManager];
+    self.actionView.dependencyManager = dependencyManager;
+}
+
 - (void)setDescriptionText:(NSString *)text
 {
     [super setDescriptionText:text];

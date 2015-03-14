@@ -126,8 +126,19 @@ const CGFloat kCaptionTextViewLineFragmentPadding = 0.0f; //This value will be u
     BOOL hasText = !self.sequence.nameEmbeddedInContent.boolValue;
     if ( hasText )
     {
+        NSMutableDictionary *attributes = [[[self class] sequenceDescriptionAttributes] mutableCopy];
+        if ( self.dependencyManager != nil )
+        {
+            attributes[NSForegroundColorAttributeName] = [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
+        }
+        else
+        {
+            NSString *colorKey = kVMainTextColor;
+            attributes[NSForegroundColorAttributeName] = [[VThemeManager sharedThemeManager] themedColorForKey:colorKey];
+        }
+        
         NSMutableAttributedString *newAttributedCellText = [[NSMutableAttributedString alloc] initWithString:(text ?: @"")
-                                                                                                  attributes:[[self class] sequenceDescriptionAttributes]];
+                                                                                                  attributes:attributes];
         self.captionTextView.linkDelegate = self;
         self.captionTextView.textContainer.maximumNumberOfLines = [self maxCaptionLines];
         self.captionTextView.textContainer.lineBreakMode = NSLineBreakByTruncatingTail;
@@ -148,6 +159,10 @@ const CGFloat kCaptionTextViewLineFragmentPadding = 0.0f; //This value will be u
 - (void)reloadCommentsCount
 {
     [self.streamCellHeaderView reloadCommentsCount];
+}
+- (void)refreshDescriptionAttributes
+{
+    [self setDescriptionText:self.captionTextView.text];
 }
 
 - (void)prepareForReuse
@@ -202,6 +217,19 @@ const CGFloat kCaptionTextViewLineFragmentPadding = 0.0f; //This value will be u
     else
     {
         self.isPlayButtonVisible = NO;
+    }
+}
+
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    [super setDependencyManager:dependencyManager];
+    self.streamCellHeaderView.dependencyManager = dependencyManager;
+
+    UIColor *backgroundColor = [dependencyManager colorForKey:VDependencyManagerSecondaryBackgroundColorKey];
+    if ( backgroundColor != nil )
+    {
+        self.contentView.backgroundColor = backgroundColor;
+        [self refreshDescriptionAttributes];
     }
 }
 

@@ -85,6 +85,12 @@ static const CGFloat kTemplateCActionViewHeight = 41.0f;
     self.actionView.delegate = delegate;
 }
 
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    [super setDependencyManager:dependencyManager];
+    self.actionView.dependencyManager = dependencyManager;
+}
+
 - (void)setupMedia
 {
     self.firstAssetUrl = [NSURL URLWithString: self.firstAnswer.thumbnailUrl];

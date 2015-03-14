@@ -61,12 +61,9 @@ static NSString * const kProfileDeeplinkHostComponent = @"profile";
     }
     else if (alternateViewController != nil)
     {
-        VUserProfileViewController *userProfileViewController = [self.dependencyManager userProfileViewControllerWithUser:self.objectManager.mainUser forKey:VScaffoldViewControllerUserProfileViewComponentKey];
-        if ( [userProfileViewController respondsToSelector:@selector(setDependencyManager:)] )
-        {
-            [userProfileViewController setDependencyManager:self.dependencyManager];
-        }
-        *alternateViewController = userProfileViewController;
+        VUserProfileViewController *viewController = [self.dependencyManager userProfileViewControllerWithUser:self.objectManager.mainUser forKey:VScaffoldViewControllerUserProfileViewComponentKey];
+        viewController.dependencyManager = self.dependencyManager;
+        *alternateViewController = viewController;
         return YES;
     }
     return NO;

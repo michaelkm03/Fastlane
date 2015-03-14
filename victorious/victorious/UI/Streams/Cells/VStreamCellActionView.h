@@ -10,12 +10,13 @@
 
 #import "VSequenceActionsDelegate.h"
 
-@class VSequence;
+@class VSequence, VDependencyManager;
 
 @interface VStreamCellActionView : UIView
 
 @property (nonatomic, strong) VSequence *sequence;
 @property (nonatomic, weak) id<VSequenceActionsDelegate> delegate;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 - (UIButton *)addButtonWithImage:(UIImage *)image;
 
