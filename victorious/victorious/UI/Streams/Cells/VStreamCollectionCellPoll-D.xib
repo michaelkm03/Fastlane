@@ -90,7 +90,7 @@
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="R7e-A2-yzh" customClass="VStreamCellActionViewD">
                         <rect key="frame" x="-1" y="370" width="322" height="41"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="41" id="wog-YW-4Rx"/>
                         </constraints>

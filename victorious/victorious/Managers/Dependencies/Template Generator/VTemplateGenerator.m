@@ -23,7 +23,7 @@
 #define CHANNELS_WITH_GROUP_STREAM_ENABLED 0
 #define ROUNDED_TOP_NAV_ENABLED 0
 #define STREAM_CELLS_TEMPLATE_D_ENABLED 0
-#define PROFILE_TEMPLATE_D_ENABLED 1
+#define PROFILE_TEMPLATE_D_ENABLED 0
 
 static NSString * const kIDKey = @"id";
 static NSString * const kReferenceIDKey = @"referenceID";

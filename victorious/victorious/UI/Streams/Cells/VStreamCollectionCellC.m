@@ -80,6 +80,7 @@ const CGFloat kTemplateCTextSeparatorHeight = 6.0f; //This represents the space 
 {
     [super setDependencyManager:dependencyManager];
     self.actionView.dependencyManager = dependencyManager;
+    [self.commentsLabel setTextColor:[self textColor]];
 }
 
 - (void)setDescriptionText:(NSString *)text

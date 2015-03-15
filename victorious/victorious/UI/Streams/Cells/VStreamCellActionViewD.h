@@ -14,6 +14,4 @@
 
 - (void)addCommentsButton;
 
-@property (nonatomic, strong) UIColor *buttonBackgroundColor;
-
 @end

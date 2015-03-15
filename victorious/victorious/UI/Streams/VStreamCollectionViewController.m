@@ -71,6 +71,7 @@
 static NSString * const kCanAddContentKey = @"canAddContent";
 static NSString * const kMarqueeKey = @"marquee";
 static NSString * const kStreamCollectionStoryboardId = @"StreamCollection";
+static CGFloat const kTemplateDLineSpacing = 1.0f;
 static CGFloat const kTemplateCLineSpacing = 8.0f;
 static CGFloat const kExtraPaddingForTemplateC = 10.0f;
 
@@ -465,7 +466,16 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section
 {
-    return [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled] ? kTemplateCLineSpacing : 0;
+    CGFloat spacing = 0.0f;
+    if ( [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateDEnabled] )
+    {
+        spacing = kTemplateDLineSpacing;
+    }
+    else if ( [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled] )
+    {
+        spacing = kTemplateCLineSpacing;
+    }
+    return spacing;
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
@@ -521,6 +531,7 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
     }
     cell.delegate = self.actionDelegate ?: self;
     cell.sequence = sequence;
+    cell.dependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:@{ VDependencyManagerBackgroundColorKey : self.collectionView.backgroundColor }];
     
     [self preloadSequencesAfterIndexPath:indexPath forDataSource:dataSource];
     

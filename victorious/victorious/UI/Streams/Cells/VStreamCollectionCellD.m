@@ -61,6 +61,7 @@ const CGFloat kTemplateDTextNeighboringViewSeparatorHeight = 10.0f; //This repre
 {
     [super setDependencyManager:dependencyManager];
     self.actionView.dependencyManager = dependencyManager;
+    self.actionView.layer.borderColor = [UIColor clearColor].CGColor;
 }
 
 - (void)setDescriptionText:(NSString *)text
@@ -81,8 +82,8 @@ const CGFloat kTemplateDTextNeighboringViewSeparatorHeight = 10.0f; //This repre
 {
     [super setSequence:sequence];
     self.actionView.sequence = sequence;
-    [self reloadCommentsCount];
     [self setupActionBar];
+    [self reloadCommentsCount];
 }
 
 - (void)setupActionBar

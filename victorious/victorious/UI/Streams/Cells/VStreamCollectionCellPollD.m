@@ -18,6 +18,7 @@
 #import "VStreamCollectionCellD.h"
 #import "NSString+VParseHelp.h"
 #import <CCHLinkTextView.h>
+#import "VDependencyManager.h"
 
 @interface VStreamCollectionCellPollD ()
 
@@ -66,7 +67,13 @@
     }
     
     [self setupActionBar];
+    [self reloadCommentsCount];
     [self setupMedia];
+}
+
+- (void)reloadCommentsCount
+{
+    [(VStreamCellActionViewD *)self.actionView updateCommentsCount:[self.sequence commentCount]];
 }
 
 - (void)setupActionBar
@@ -127,6 +134,7 @@
 {
     [super setDependencyManager:dependencyManager];
     self.actionView.dependencyManager = dependencyManager;
+    self.actionView.layer.borderColor = [UIColor clearColor].CGColor;
 }
 
 - (NSUInteger)maxCaptionLines
@@ -142,7 +150,7 @@
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {
     CGFloat width = CGRectGetWidth(bounds);
-    CGFloat height = floorf(width + kTemplateDHeaderHeight + kTemplateDActionViewHeight + kTemplateDActionViewBottomConstraintHeight); //width * kTemplateCPollContentRatio represents the desired media height
+    CGFloat height = floorf(width + kTemplateDHeaderHeight + kTemplateDActionViewHeight + kTemplateDActionViewBottomConstraintHeight);
     return CGSizeMake(width, height);
 }
 
@@ -160,8 +168,8 @@
 + (NSDictionary *)sequenceDescriptionAttributes
 {
     NSMutableDictionary *attributes = [[NSMutableDictionary alloc] init];
-    attributes[ NSFontAttributeName ] = [[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont];
-    attributes[ NSForegroundColorAttributeName ] = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
+    attributes[ NSFontAttributeName ] = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
+    attributes[ NSForegroundColorAttributeName ] = [UIColor whiteColor];
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     paragraphStyle.alignment = NSTextAlignmentCenter;
     attributes[ NSParagraphStyleAttributeName ] = paragraphStyle;

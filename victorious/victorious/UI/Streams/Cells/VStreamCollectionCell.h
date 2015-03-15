@@ -54,6 +54,8 @@ extern const CGFloat kCaptionTextViewLineFragmentPadding;
 
 - (void)setDescriptionText:(NSString *)text;
 
+- (UIColor *)textColor;
+
 - (NSUInteger)maxCaptionLines;
 
 @end

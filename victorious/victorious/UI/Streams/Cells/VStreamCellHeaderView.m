@@ -164,7 +164,7 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
 
 - (void)refreshParentLabelAttributes
 {
-    [self setParentText:self.parentLabel.text];
+    [self setParentText:self.sequence.parentUser.name];
 }
 
 - (void)setSequence:(VSequence *)sequence
@@ -246,7 +246,7 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
     _dependencyManager = dependencyManager;
-    UIColor *tintColor = [_dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
+    UIColor *tintColor = [UIColor whiteColor];
     if ( tintColor != nil )
     {
         self.dateLabel.textColor = tintColor;

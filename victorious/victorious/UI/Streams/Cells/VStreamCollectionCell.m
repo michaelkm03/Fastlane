@@ -127,18 +127,10 @@ const CGFloat kCaptionTextViewLineFragmentPadding = 0.0f; //This value will be u
     if ( hasText )
     {
         NSMutableDictionary *attributes = [[[self class] sequenceDescriptionAttributes] mutableCopy];
-        if ( self.dependencyManager != nil )
-        {
-            attributes[NSForegroundColorAttributeName] = [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
-        }
-        else
-        {
-            NSString *colorKey = kVMainTextColor;
-            attributes[NSForegroundColorAttributeName] = [[VThemeManager sharedThemeManager] themedColorForKey:colorKey];
-        }
+        attributes[NSForegroundColorAttributeName] = [self textColor];
         
-        NSMutableAttributedString *newAttributedCellText = [[NSMutableAttributedString alloc] initWithString:(text ?: @"")
-                                                                                                  attributes:attributes];
+        NSAttributedString *newAttributedCellText = [[NSAttributedString alloc] initWithString:(text ?: @"")
+                                                                                    attributes:attributes];
         self.captionTextView.linkDelegate = self;
         self.captionTextView.textContainer.maximumNumberOfLines = [self maxCaptionLines];
         self.captionTextView.textContainer.lineBreakMode = NSLineBreakByTruncatingTail;
@@ -148,6 +140,16 @@ const CGFloat kCaptionTextViewLineFragmentPadding = 0.0f; //This value will be u
     {
         self.captionTextView.attributedText = [[NSAttributedString alloc] initWithString:@""];
     }
+}
+
+- (UIColor *)textColor
+{
+    if ( !( [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled] || [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateDEnabled] ) )
+    {
+        //Hack for white text in template A
+        return [UIColor whiteColor];
+    }
+    return self.dependencyManager != nil && [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey] != nil ? [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey] : [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
 }
 
 //Subclass this to allow for more lines in caption, 0 for infinite lines
@@ -160,6 +162,7 @@ const CGFloat kCaptionTextViewLineFragmentPadding = 0.0f; //This value will be u
 {
     [self.streamCellHeaderView reloadCommentsCount];
 }
+
 - (void)refreshDescriptionAttributes
 {
     [self setDescriptionText:self.captionTextView.text];
@@ -224,13 +227,9 @@ const CGFloat kCaptionTextViewLineFragmentPadding = 0.0f; //This value will be u
 {
     [super setDependencyManager:dependencyManager];
     self.streamCellHeaderView.dependencyManager = dependencyManager;
-
-    UIColor *backgroundColor = [dependencyManager colorForKey:VDependencyManagerSecondaryBackgroundColorKey];
-    if ( backgroundColor != nil )
-    {
-        self.contentView.backgroundColor = backgroundColor;
-        [self refreshDescriptionAttributes];
-    }
+    
+    self.contentView.backgroundColor = [dependencyManager colorForKey:VDependencyManagerSecondaryBackgroundColorKey];
+    [self refreshDescriptionAttributes];
 }
 
 - (BOOL)canPlayVideo

@@ -43,6 +43,19 @@ static const CGFloat kTemplateCActionViewHeight = 41.0f;
 
 @implementation VStreamCollectionCellPollC
 
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    
+    self.backgroundColor = [UIColor whiteColor];
+    
+    self.commentsLabel.font = [[[self class] sequenceCommentCountAttributes] objectForKey:NSFontAttributeName];
+    self.commentsLeftConstraint.constant = - kCaptionTextViewLineFragmentPadding;
+    
+    self.commentLabelBottomConstraint.constant = kTemplateCTextNeighboringViewSeparatorHeight;
+    self.captionTextViewTopConstraint.constant = kTemplateCTextNeighboringViewSeparatorHeight;
+}
+
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -60,6 +73,7 @@ static const CGFloat kTemplateCActionViewHeight = 41.0f;
     }
     
     [self setupActionBar];
+    [self reloadCommentsCount];
     [self setupMedia];
 }
 
@@ -89,6 +103,7 @@ static const CGFloat kTemplateCActionViewHeight = 41.0f;
 {
     [super setDependencyManager:dependencyManager];
     self.actionView.dependencyManager = dependencyManager;
+    [self.commentsLabel setTextColor:[self textColor]];
 }
 
 - (void)setupMedia
@@ -105,6 +120,24 @@ static const CGFloat kTemplateCActionViewHeight = 41.0f;
                           placeholderImage:placeholderImage];
 }
 
+- (void)setDescriptionText:(NSString *)text
+{
+    [super setDescriptionText:text];
+    
+    BOOL zeroConstraints = !(!self.sequence.nameEmbeddedInContent.boolValue && text.length > 0);
+    
+    //Remove the space between label and textView if the textView is empty
+    self.captionTextViewBottomConstraint.constant = zeroConstraints ? 0.0f : kTemplateCTextSeparatorHeight;
+}
+
+- (void)reloadCommentsCount
+{
+    NSNumber *commentCount = [self.sequence commentCount];
+    NSString *commentsString = [NSString stringWithFormat:@"%@ %@", [commentCount stringValue], [commentCount integerValue] == 1 ? NSLocalizedString(@"Comment", @"") : NSLocalizedString(@"Comments", @"")];
+    [self.commentsLabel setText:commentsString];
+    self.commentHeightConstraint.constant = [commentsString sizeWithAttributes:@{ NSFontAttributeName : self.commentsLabel.font }].height;
+}
+
 - (NSString *)headerNibName
 {
     return @"VStreamCellHeaderView-C";
@@ -114,7 +147,7 @@ static const CGFloat kTemplateCActionViewHeight = 41.0f;
 {
     CGFloat width = CGRectGetWidth(bounds);
     width = floorf(width * kTemplateCPollCellWidthRatio);
-    CGFloat height = floorf(width * kTemplateCPollContentRatio + kTemplateCHeaderHeight + kTemplateCTextNeighboringViewSeparatorHeight * 2.0f + kTemplateCTextSeparatorHeight + kTemplateCActionViewHeight); //width * kTemplateCPollContentRatio represents the desired media height
+    CGFloat height = floorf(width * kTemplateCPollContentRatio + kTemplateCHeaderHeight + kTemplateCTextNeighboringViewSeparatorHeight * 2.0f + kTemplateCActionViewHeight); //width * kTemplateCPollContentRatio represents the desired media height
     return CGSizeMake(width, height);
 }
 

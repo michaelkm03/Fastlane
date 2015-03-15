@@ -51,6 +51,14 @@ static CGFloat const kRepostedDisabledAlpha     = 0.3f;
         return;
     }
 
+    CGFloat totalButtonWidths = 0.0f;
+    for ( UIButton *button in self.actionButtons )
+    {
+        totalButtonWidths += CGRectGetWidth(button.bounds);
+    }
+    
+    CGFloat separatorSpace = ( CGRectGetWidth(self.bounds) - totalButtonWidths - kActionButtonBuffer * 2 ) / ( self.actionButtons.count - 1 );
+    
     for (NSUInteger i = 0; i < self.actionButtons.count; i++)
     {
         UIButton *button = self.actionButtons[i];
@@ -65,12 +73,8 @@ static CGFloat const kRepostedDisabledAlpha     = 0.3f;
         }
         else
         {
-            //Count up all the available space (minus buttons and the buffers)
-            CGFloat leftOvers = CGRectGetWidth(self.bounds) - CGRectGetWidth(button.bounds) * self.actionButtons.count - kActionButtonBuffer * 2;
-            //Left overs per button. 
-            CGFloat leftoversPerButton = leftOvers / (self.actionButtons.count - 1);
-            
-            frame.origin.x = kActionButtonBuffer + (leftoversPerButton + CGRectGetWidth(button.bounds)) * i;
+            UIButton *lastButton = self.actionButtons[i - 1];
+            frame.origin.x = CGRectGetMaxX(lastButton.frame) + separatorSpace;
         }
         button.frame = frame;
     }
