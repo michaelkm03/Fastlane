@@ -409,6 +409,9 @@
 		A75ED0BA1AB78C7400C35063 /* VHashtagPickerDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ED0AE1AB78C7400C35063 /* VHashtagPickerDataSource.m */; };
 		A75ED0BB1AB78C7400C35063 /* VHashtagTool.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ED0B01AB78C7400C35063 /* VHashtagTool.m */; };
 		A75ED0BE1AB7927A00C35063 /* VTextTypePickerDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ED0BD1AB7927A00C35063 /* VTextTypePickerDataSource.m */; };
+		A75ED0C71AB7971400C35063 /* VColorOptionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ED0C51AB7971400C35063 /* VColorOptionCell.m */; };
+		A75ED0C81AB7971400C35063 /* VColorOptionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A75ED0C61AB7971400C35063 /* VColorOptionCell.xib */; };
+		A75ED0CB1AB798F100C35063 /* VColorPickerDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ED0CA1AB798F100C35063 /* VColorPickerDataSource.m */; };
 		A75FAF1719E8AC1E00EB87C1 /* VSuggestedPeopleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAF0319E8AC1E00EB87C1 /* VSuggestedPeopleCell.m */; };
 		A75FAF1919E8AC1E00EB87C1 /* VSuggestedPersonCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAF0619E8AC1E00EB87C1 /* VSuggestedPersonCollectionViewCell.m */; };
 		A75FAF1B19E8AC1E00EB87C1 /* VTrendingTagCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAF0919E8AC1E00EB87C1 /* VTrendingTagCell.m */; };
@@ -1448,6 +1451,11 @@
 		A75ED0B01AB78C7400C35063 /* VHashtagTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHashtagTool.m; sourceTree = "<group>"; };
 		A75ED0BC1AB7927A00C35063 /* VTextTypePickerDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextTypePickerDataSource.h; sourceTree = "<group>"; };
 		A75ED0BD1AB7927A00C35063 /* VTextTypePickerDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextTypePickerDataSource.m; sourceTree = "<group>"; };
+		A75ED0C41AB7971400C35063 /* VColorOptionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VColorOptionCell.h; sourceTree = "<group>"; };
+		A75ED0C51AB7971400C35063 /* VColorOptionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VColorOptionCell.m; sourceTree = "<group>"; };
+		A75ED0C61AB7971400C35063 /* VColorOptionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VColorOptionCell.xib; sourceTree = "<group>"; };
+		A75ED0C91AB798F100C35063 /* VColorPickerDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VColorPickerDataSource.h; sourceTree = "<group>"; };
+		A75ED0CA1AB798F100C35063 /* VColorPickerDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VColorPickerDataSource.m; sourceTree = "<group>"; };
 		A75FAEFA19E8A6D600EB87C1 /* VVoteSettingManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVoteSettingManagerTests.m; sourceTree = "<group>"; };
 		A75FAEFD19E8AB2C00EB87C1 /* VDummyModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDummyModels.h; sourceTree = "<group>"; };
 		A75FAEFE19E8AB2C00EB87C1 /* VDummyModels.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDummyModels.m; sourceTree = "<group>"; };
@@ -3601,6 +3609,11 @@
 			children = (
 				A75ED09B1AB78C7400C35063 /* VTextColorTool.h */,
 				A75ED09C1AB78C7400C35063 /* VTextColorTool.m */,
+				A75ED0C41AB7971400C35063 /* VColorOptionCell.h */,
+				A75ED0C51AB7971400C35063 /* VColorOptionCell.m */,
+				A75ED0C61AB7971400C35063 /* VColorOptionCell.xib */,
+				A75ED0C91AB798F100C35063 /* VColorPickerDataSource.h */,
+				A75ED0CA1AB798F100C35063 /* VColorPickerDataSource.m */,
 			);
 			path = "Text Color Tools";
 			sourceTree = "<group>";
@@ -5108,6 +5121,7 @@
 				039B614A19F2166900CB2796 /* homeHeaderImage@2x.png in Resources */,
 				036F38731A0C4DEA0014DF66 /* Jura-DemiBold.ttf in Resources */,
 				03FD87E819FAC19300D93BAA /* VLightboxViewController.xib in Resources */,
+				A75ED0C81AB7971400C35063 /* VColorOptionCell.xib in Resources */,
 				036F38741A0C4DEA0014DF66 /* Jura-Medium.ttf in Resources */,
 				03C1858C19B42C9100E27D05 /* Roboto-ThinItalic.ttf in Resources */,
 				03C1858519B42C9100E27D05 /* Roboto-Italic.ttf in Resources */,
@@ -5337,6 +5351,7 @@
 				0314D4A319B46B5E00FA363C /* VCreatePollViewController.m in Sources */,
 				A7EECAD51A377FA000A8BAE1 /* VPurchaseSettingsViewController.m in Sources */,
 				A72005701A03ECDC00285A9C /* VTrackingURLRequest.m in Sources */,
+				A75ED0C71AB7971400C35063 /* VColorOptionCell.m in Sources */,
 				D8E39BD819CB7C80007FD86A /* VContentCommentsCell.m in Sources */,
 				D836884119C370C400070F22 /* VBaseCollectionViewCell.m in Sources */,
 				0358FCEE1A65E785004DD7A1 /* VScaffoldViewController.m in Sources */,
@@ -5406,6 +5421,7 @@
 				037D2D591A196B9800947A22 /* VUserProfileNavigationDestination.m in Sources */,
 				030931931A184285004E9781 /* VNavigationMenuItem.m in Sources */,
 				DBB1A0501A00AF4500E16D62 /* VOpenXAdViewController.m in Sources */,
+				A75ED0CB1AB798F100C35063 /* VColorPickerDataSource.m in Sources */,
 				D8E39BDA19CB7C80007FD86A /* VContentImageCell.m in Sources */,
 				D87351881A3120F5006D97B2 /* VCanvasView.m in Sources */,
 				A72005601A030E4700285A9C /* VGoogleAnalyticsTracking.m in Sources */,
