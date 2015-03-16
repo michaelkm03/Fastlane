@@ -180,8 +180,25 @@ static NSString * const kVideoMuted = @"videoMuted";
     
     template[VDependencyManagerWorkspaceFlowKey] = [self workspaceFlowComponent];
     template[VScaffoldViewControllerNavigationBarAppearanceKey] = [self navigationBarAppearance];
+    template[VStreamCollectionViewControllerCellComponentKey] = [self cellComponent];
     
     return template;
+}
+
+- (NSDictionary *)cellComponent
+{
+    if ( [self templateCEnabled] )
+    {
+        return @{
+                 kClassNameKey: @"inset.streamCell"
+                 };
+    }
+    else
+    {
+        return @{
+                 kClassNameKey: @"titleOverlay.streamCell"
+                 };
+    }
 }
 
 - (NSDictionary *)multiScreenSelectorKey
@@ -271,6 +288,18 @@ static NSString * const kVideoMuted = @"videoMuted";
                      [self cropTool],
                      ]
              };
+}
+
+- (NSDictionary *)preferredBackgroundColor
+{
+    if ( [self templateCEnabled] )
+    {
+        return @{ kRedKey: @241, kGreenKey: @241, kBlueKey: @241, kAlphaKey: @1 };
+    }
+    else
+    {
+        return self.dataFromInitCall[@"appearance"][@"color.accent.secondary"];
+    }
 }
 
 - (NSDictionary *)textTool
@@ -562,6 +591,7 @@ static NSString * const kVideoMuted = @"videoMuted";
     NSMutableDictionary *homeScreen = [@{
         kIDKey: self.firstMenuItemID,
         kClassNameKey: @"basic.multiScreen",
+        VDependencyManagerBackgroundColorKey: [self preferredBackgroundColor],
         kScreensKey: @[
                 @{
                     kClassNameKey: @"stream.screen",

@@ -11,7 +11,6 @@
 #import "VStreamCellHeaderView.h"
 #import "VSequence.h"
 #import "VObjectManager+Sequence.h"
-#import "VThemeManager.h"
 #import "NSDate+timeSince.h"
 #import "VUser.h"
 
@@ -43,19 +42,11 @@
 @property (nonatomic, weak) IBOutlet UIImageView *playImageView;
 @property (nonatomic, weak) IBOutlet UIImageView *playBackgroundImageView;
 
-@property (nonatomic, weak) IBOutlet CCHLinkTextView *captionTextView;
-
 @property (nonatomic, weak) IBOutlet VStreamCellActionView *actionView;
 @property (nonatomic, weak) IBOutlet UIImageView *bottomGradient;
 
 @property (nonatomic, weak) IBOutlet VVideoView *videoPlayerView;
 @property (nonatomic, weak) IBOutlet UIView *contentContainer;
-
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *commentsLeftConstraint;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *commentHeightConstraint;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *commentLabelBottomConstraint;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *interLabelSpaceConstraint;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *captionTextViewTopConstraint;
 
 @property (nonatomic, strong) VAsset *videoAsset;
 @property (nonatomic, assign) BOOL isPlayButtonVisible;
@@ -64,17 +55,7 @@
 
 @end
 
-//IMPORTANT: these template C constants much match up with the heights of values from the VStreamCollectionCell-C xib
-static const CGFloat kTemplateCXRatio = 0.94375f; // 320/302
-static const CGFloat kTemplateCHeaderHeight = 50.0f;
-static const CGFloat kTemplateCActionViewHeight = 41.0f;
-static const CGFloat kTemplateCTextViewInset = 22.0f; //Needs to be sum of textview inset from left and right
-
-static const CGFloat kTemplateCTextViewLineFragmentPadding = 0.0f; //This value will be used to update the lineFragmentPadding of the captionTextView and serve as reference in size calculations
-
-//Use these 2 constants to adjust the spacing between the caption and comment count as well as the distance between the caption and the view above it and the comment label and the view below it
-const CGFloat kTemplateCTextNeighboringViewSeparatorHeight = 10.0f; //This represents the space between the comment label and the view below it and the distance between the caption textView and the view above it
-const CGFloat kTemplateCTextSeparatorHeight = 6.0f; //This represents the space between the label and textView. It's slightly smaller than the those separating the label and textview from their respective bottom and top to neighboring views so that the centers of words are better aligned
+const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
 
 @implementation VStreamCollectionCell
 
@@ -82,15 +63,11 @@ const CGFloat kTemplateCTextSeparatorHeight = 6.0f; //This represents the space 
 {
     [super awakeFromNib];
     
-    BOOL isTemplateC = [VStreamCollectionCell isTemplateC];
-    self.backgroundColor = isTemplateC ? [UIColor whiteColor] : [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
-    
-    NSString *headerNibName = isTemplateC ? @"VStreamCellHeaderView-C" : @"VStreamCellHeaderView";
-    self.streamCellHeaderView = [[[NSBundle mainBundle] loadNibNamed:headerNibName owner:self options:nil] objectAtIndex:0];
+    self.streamCellHeaderView = [[[NSBundle mainBundle] loadNibNamed:self.headerViewNibName owner:self options:nil] objectAtIndex:0];
     [self.streamCellHeaderView setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self.streamCellHeaderView setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
     [self addSubview:self.streamCellHeaderView];
-    NSDictionary *views = @{ @"header":self.streamCellHeaderView };
+    NSDictionary *views = @{ @"header": self.streamCellHeaderView };
     CGFloat height = CGRectGetHeight(self.streamCellHeaderView.bounds);
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[header]|"
                                                                  options:0
@@ -100,15 +77,10 @@ const CGFloat kTemplateCTextSeparatorHeight = 6.0f; //This represents the space 
                                                                  options:0
                                                                  metrics:@{ @"height":@(height) }
                                                                    views:views]];
-    self.commentsLabel.font = [[VStreamCollectionCell sequenceCommentCountAttributes] objectForKey:NSFontAttributeName];
-    self.captionTextView.textContainer.lineFragmentPadding = kTemplateCTextViewLineFragmentPadding;
-    self.commentsLeftConstraint.constant = - kTemplateCTextViewLineFragmentPadding;
-    
+
+    self.captionTextView.textContainer.lineFragmentPadding = VStreamCollectionCellTextViewLineFragmentPadding;
     self.captionTextView.textContainerInset = UIEdgeInsetsZero;
     self.streamCellHeaderView.delegate = self;
-    
-    self.commentLabelBottomConstraint.constant = kTemplateCTextNeighboringViewSeparatorHeight;
-    self.captionTextViewTopConstraint.constant = kTemplateCTextNeighboringViewSeparatorHeight;
 }
 
 - (void)text:(NSString *)text tappedInTextView:(UITextView *)textView
@@ -119,25 +91,41 @@ const CGFloat kTemplateCTextSeparatorHeight = 6.0f; //This represents the space 
     }
 }
 
+- (NSString *)headerViewNibName
+{
+    return @"VStreamCellHeaderView";
+}
+
 - (void)setDelegate:(id<VSequenceActionsDelegate>)delegate
 {
     _delegate = delegate;
     self.actionView.delegate = delegate;
 }
 
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    if ( dependencyManager == _dependencyManager )
+    {
+        return;
+    }
+    _dependencyManager = dependencyManager;
+    
+    if ( dependencyManager != nil )
+    {
+        self.backgroundColor = [dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
+        self.commentsLabel.font = [[VStreamCollectionCell sequenceCommentCountAttributesWithDependencyManager:dependencyManager] objectForKey:NSFontAttributeName];
+    }
+}
+
 - (void)setDescriptionText:(NSString *)text
 {
-    BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
     BOOL hasText = !self.sequence.nameEmbeddedInContent.boolValue;
     if ( hasText )
     {
         NSMutableAttributedString *newAttributedCellText = [[NSMutableAttributedString alloc] initWithString:(text ?: @"")
-                                                                                                  attributes:[VStreamCollectionCell sequenceDescriptionAttributes]];
+                                                                                                  attributes:[VStreamCollectionCell sequenceDescriptionAttributesWithDependencyManager:self.dependencyManager]];
         self.captionTextView.linkDelegate = self;
-        if ( !isTemplateC )
-        {
-            self.captionTextView.textContainer.maximumNumberOfLines = 3;
-        }
+        self.captionTextView.textContainer.maximumNumberOfLines = 3;
         self.captionTextView.textContainer.lineBreakMode = NSLineBreakByTruncatingTail;
         self.captionTextView.attributedText = newAttributedCellText;
     }
@@ -145,36 +133,18 @@ const CGFloat kTemplateCTextSeparatorHeight = 6.0f; //This represents the space 
     {
         self.captionTextView.attributedText = [[NSAttributedString alloc] initWithString:@""];
     }
-    
-    //Remove the space between label and textView if the textView is empty
-    self.interLabelSpaceConstraint.constant = !(hasText && text.length > 0) ? 0 : kTemplateCTextSeparatorHeight;
 }
 
 - (void)reloadCommentsCount
 {
-    if ( [VStreamCollectionCell isTemplateC] )
-    {
-        NSNumber *commentCount = [self.sequence commentCount];
-        NSString *commentsString = [NSString stringWithFormat:@"%@ %@", [commentCount stringValue], [commentCount integerValue] == 1 ? NSLocalizedString(@"Comment", @"") : NSLocalizedString(@"Comments", @"")];
-        [self.commentsLabel setText:commentsString];
-        self.commentHeightConstraint.constant = [commentsString sizeWithAttributes:@{ NSFontAttributeName : self.commentsLabel.font }].height;
-    }
-    else
-    {
-        [self.streamCellHeaderView reloadCommentsCount];
-    }
+    [self.streamCellHeaderView reloadCommentsCount];
 }
 
 - (void)prepareForReuse
 {
     [super prepareForReuse];
-    
     [self pauseVideo];
-    
     self.videoPlayerView.alpha = 0.0f;
-    
-    self.interLabelSpaceConstraint.constant = kTemplateCTextSeparatorHeight;
-    
     self.videoAsset = nil;
 }
 
@@ -193,13 +163,7 @@ const CGFloat kTemplateCTextSeparatorHeight = 6.0f; //This represents the space 
     [self.streamCellHeaderView setParentViewController:self.parentViewController];
     
     [self.previewImageView fadeInImageAtURL:[NSURL URLWithString:[_sequence.previewImagePaths firstObject]]
-                           placeholderImage:[UIImage resizeableImageWithColor:
-                                             [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]]];
-    
-    if ( [VStreamCollectionCell isTemplateC] )
-    {
-        [self reloadCommentsCount];
-    }
+                           placeholderImage:[UIImage resizeableImageWithColor:[self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey]]];
     
     [self setDescriptionText:self.sequence.name];
     
@@ -341,12 +305,7 @@ const CGFloat kTemplateCTextSeparatorHeight = 6.0f; //This represents the space 
 
 + (NSString *)suggestedReuseIdentifier
 {
-    NSString *reuseID = NSStringFromClass([self class]);
-    if ([[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
-    {
-        reuseID = [reuseID stringByAppendingString:@"-C"];
-    }
-    return reuseID;
+    return NSStringFromClass([self class]);
 }
 
 + (UINib *)nibForCell
@@ -357,89 +316,40 @@ const CGFloat kTemplateCTextSeparatorHeight = 6.0f; //This represents the space 
 
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {
-    BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
     CGFloat width = CGRectGetWidth(bounds);
-    if ( !isTemplateC )
-    {
-        return CGSizeMake(width, width);
-    }
-    
-    width *= kTemplateCXRatio;
-    CGFloat height = width + kTemplateCHeaderHeight + kTemplateCActionViewHeight + kTemplateCTextNeighboringViewSeparatorHeight * 2.0f + kTemplateCTextSeparatorHeight; //Width represents the desired media height, there are 2 neighboring separators (top to textview and bottom to comment label) in addition to one constraint between the comment count label and the textview.
-    return CGSizeMake(width, height);
+    return CGSizeMake(width, width);
 }
 
-+ (CGSize)actualSizeWithCollectionViewBounds:(CGRect)bounds sequence:(VSequence *)sequence
++ (CGSize)actualSizeWithCollectionViewBounds:(CGRect)bounds sequence:(VSequence *)sequence dependencyManager:(VDependencyManager *)dependencyManager
 {
-    CGSize actual = [self desiredSizeWithCollectionViewBounds:bounds];
-    
-    if ( ![self isTemplateC] )
-    {
-        return actual;
-    }
-    
-    CGFloat width = actual.width - kTemplateCTextViewInset - kTemplateCTextViewLineFragmentPadding * 2;
-    if ( !sequence.nameEmbeddedInContent.boolValue && sequence.name.length > 0 )
-    {
-        //Subtract insets and line fragment padding that is padding text in textview BEFORE calculating size
-        CGSize textSize = [sequence.name frameSizeForWidth:width
-                                             andAttributes:[self sequenceDescriptionAttributes]];
-        actual.height += textSize.height;
-    }
-    else
-    {
-        //We have no text to display, remove the separator height from our calculation
-        actual.height -= kTemplateCTextSeparatorHeight;
-    }
-    
-    CGSize textSize = [[sequence.commentCount stringValue] frameSizeForWidth:width
-                                                               andAttributes:[self sequenceCommentCountAttributes]];
-    actual.height += textSize.height;
-    
-    return actual;
+    return [self desiredSizeWithCollectionViewBounds:bounds];
 }
 
-+ (NSDictionary *)sequenceCommentCountAttributes
++ (NSDictionary *)sequenceCommentCountAttributesWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    return @{ NSFontAttributeName : [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font] };
+    return @{ NSFontAttributeName : [dependencyManager fontForKey:VDependencyManagerLabel3FontKey] };
 }
 
-+ (NSDictionary *)sequenceDescriptionAttributes
++ (NSDictionary *)sequenceDescriptionAttributesWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    const BOOL isTemplateC = [self isTemplateC];
-    
     NSMutableDictionary *attributes = [[NSMutableDictionary alloc] init];
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     
-    NSString *colorKey = isTemplateC ? kVContentTextColor : kVMainTextColor;
-    attributes[ NSForegroundColorAttributeName ] = [[VThemeManager sharedThemeManager] themedColorForKey:colorKey];
+    attributes[ NSForegroundColorAttributeName ] = [dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+    attributes[ NSFontAttributeName ] = [[dependencyManager fontForKey:VDependencyManagerHeading2FontKey] fontWithSize:19];
     
-    if ( isTemplateC )
-    {
-        attributes[ NSFontAttributeName ] = [[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont];
-    }
-    else
-    {
-        attributes[ NSFontAttributeName ] = [[[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font] fontWithSize:19];
-        
-        paragraphStyle.maximumLineHeight = 25;
-        paragraphStyle.minimumLineHeight = 25;
-        
-        NSShadow *shadow = [NSShadow new];
-        [shadow setShadowBlurRadius:4.0f];
-        [shadow setShadowColor:[[UIColor blackColor] colorWithAlphaComponent:0.3f]];
-        [shadow setShadowOffset:CGSizeMake(0, 0)];
-        attributes[NSShadowAttributeName] = shadow;
-    }
+    paragraphStyle.maximumLineHeight = 25;
+    paragraphStyle.minimumLineHeight = 25;
+    
+    NSShadow *shadow = [NSShadow new];
+    [shadow setShadowBlurRadius:4.0f];
+    [shadow setShadowColor:[[UIColor blackColor] colorWithAlphaComponent:0.3f]];
+    [shadow setShadowOffset:CGSizeMake(0, 0)];
+    attributes[NSShadowAttributeName] = shadow;
     
     attributes[ NSParagraphStyleAttributeName ] = paragraphStyle;
     
     return [NSDictionary dictionaryWithDictionary:attributes];
-}
-
-+ (BOOL)isTemplateC
-{
-    return [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
 }
 
 #pragma mark - CCHLinkTextViewDelegate

@@ -86,7 +86,7 @@ static const CGFloat kPollCellHeightRatio = 0.66875f; //from spec, 214 height fo
     }
     
     width = floorf(width * kTemplateCPollCellWidthRatio);
-    CGFloat height = floorf(width * kTemplateCPollContentRatio + kTemplateCHeaderHeight + kTemplateCTextNeighboringViewSeparatorHeight * 2.0f + kTemplateCTextSeparatorHeight + kTemplateCActionViewHeight); //width * kTemplateCPollContentRatio represents the desired media height
+    CGFloat height = 100; // floorf(width * kTemplateCPollContentRatio + kTemplateCHeaderHeight + kTemplateCTextNeighboringViewSeparatorHeight * 2.0f + kTemplateCTextSeparatorHeight + kTemplateCActionViewHeight); //width * kTemplateCPollContentRatio represents the desired media height
     return CGSizeMake(width, height);
 }
 
