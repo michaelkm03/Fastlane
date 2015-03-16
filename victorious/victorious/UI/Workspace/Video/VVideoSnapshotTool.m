@@ -48,6 +48,9 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
     {
         _title = [dependencyManager stringForKey:@"title"];
         
+        _snapshotToolViewController = [[VSnapshotViewController alloc] initWithNibName:nil bundle:nil];
+        _snapshotToolViewController.delegate = self;
+        
         _videoPlayerViewController = [[VCVideoPlayerViewController alloc] initWithNibName:nil bundle:nil];
         _videoPlayerViewController.shouldFireAnalytics = NO;
         _videoPlayerViewController.loopWithoutComposition = YES;
@@ -55,10 +58,6 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
         _videoPlayerViewController.shouldChangeVideoGravityOnDoubleTap = NO;
         _videoPlayerViewController.videoPlayerLayerVideoGravity = AVLayerVideoGravityResizeAspectFill;
         _videoPlayerViewController.shouldRestorePlaybackAfterSeeking = NO;
-        [_videoPlayerViewController.view layoutIfNeeded];
-        
-        _snapshotToolViewController = [[VSnapshotViewController alloc] initWithNibName:nil bundle:nil];
-        _snapshotToolViewController.delegate = self;
     }
     return self;
 }

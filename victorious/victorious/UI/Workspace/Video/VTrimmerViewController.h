@@ -55,6 +55,12 @@
 @interface VTrimmerViewController : UIViewController
 
 /**
+ *  Yes if the trimmer is currently changing the trim range 
+ *  (due to scrolling or tracking of the user's touches).
+ */
+@property (nonatomic, readonly) BOOL isInteracting;
+
+/**
  *  The minimum start time.
  */
 @property (nonatomic, assign) CMTime minimumStartTime;

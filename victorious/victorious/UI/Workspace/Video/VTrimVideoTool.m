@@ -192,11 +192,19 @@ static NSString * const kIconKey = @"icon";
    didUpdateSelectedTimeRange:(CMTimeRange)selectedTimeRange
 {
     self.didTrim = YES;
+    if (trimmerViewController.isInteracting)
+    {
+        return;
+    }
     self.trimLoopingViewController.trimRange = selectedTimeRange;
 }
 
 - (void)trimmerViewControllerEndedSeeking:(VTrimmerViewController *)trimmerViewController
 {
+    if (trimmerViewController.isInteracting)
+    {
+        return;
+    }
     self.trimLoopingViewController.trimRange = trimmerViewController.selectedTimeRange;
 }
 

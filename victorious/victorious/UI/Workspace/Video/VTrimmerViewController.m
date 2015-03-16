@@ -111,6 +111,11 @@ static const CGFloat kTimelineDarkeningAlpha = 0.5f;
     self.titleLabel.text = title;
 }
 
+- (BOOL)isInteracting
+{
+    return (self.thumbnailCollecitonView.tracking || self.thumbnailCollecitonView.decelerating || self.trimControl.highlighted);
+}
+
 #pragma mark - Target/Action
 
 - (void)trimSelectionChanged:(VTrimControl *)trimControl
