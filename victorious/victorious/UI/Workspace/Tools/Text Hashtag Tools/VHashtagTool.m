@@ -9,11 +9,16 @@
 #import "VHashtagTool.h"
 #import "VDependencyManager.h"
 #import "VEditTextToolViewController.h"
+#import "VToolPicker.h"
+#import "VHashtagOptionTool.h"
+#import "NSArray+VMap.h"
+#import "VHashtagPickerDataSource.h"
 
 static NSString * const kTitleKey = @"title";
 static NSString * const kIconKey = @"icon";
 static NSString * const kIconSelectedKey = @"iconSelected";
 static NSString * const kImageURLKey = @"imageURL";
+static NSString * const kPickerKey = @"picker";
 
 @interface VHashtagTool ()
 
@@ -21,6 +26,7 @@ static NSString * const kImageURLKey = @"imageURL";
 @property (nonatomic, strong) UIImage *icon;
 @property (nonatomic, strong) UIImage *iconSelected;
 @property (nonatomic, strong) VEditTextToolViewController *canvasToolViewController;
+@property (nonatomic, strong) UIViewController <VToolPicker> *toolPicker;
 
 @end
 
@@ -35,6 +41,18 @@ static NSString * const kImageURLKey = @"imageURL";
     {
         _icon = [UIImage imageNamed:[dependencyManager templateValueOfType:[NSDictionary class] forKey:kIconKey][kImageURLKey]];
         _iconSelected = [UIImage imageNamed:[dependencyManager templateValueOfType:[NSDictionary class] forKey:kIconSelectedKey][kImageURLKey]];
+        
+        _toolPicker = (UIViewController<VToolPicker> *)[dependencyManager viewControllerForKey:kPickerKey];
+        
+#warning TESTING ONLY
+        NSArray *testHashtags = @[ @"(None)", @"#Fungus", @"#Dogs", @"#cats", @"#IHateMondays" ];
+        NSArray *hashtagOptionTools = [testHashtags v_map:^id(NSString *hashtag)
+                                       {
+                                           VHashtagOptionTool *hashtagOptionTool = [[VHashtagOptionTool alloc] init];
+                                           hashtagOptionTool.hashtag = hashtag;
+                                           return hashtagOptionTool;
+                                       }];
+        _toolPicker.dataSource = [[VHashtagPickerDataSource alloc] initWithDependencyManager:dependencyManager tools:hashtagOptionTools];
     }
     return self;
 }
@@ -42,6 +60,11 @@ static NSString * const kImageURLKey = @"imageURL";
 - (void)setSharedCanvasToolViewController:(UIViewController *)viewController
 {
     _canvasToolViewController = (VEditTextToolViewController *)viewController;
+}
+
+- (UIViewController *)inspectorToolViewController
+{
+    return (UIViewController *)self.toolPicker;
 }
 
 @end

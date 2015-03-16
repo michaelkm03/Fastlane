@@ -7,13 +7,16 @@
 //
 
 #import <Foundation/Foundation.h>
-
 #import "VWorkspaceTool.h"
+
+@protocol VToolPickerDataSource;
 
 /**
  *  VToolPicker describes a generalized protocol that can be used by tool picker classes.
  */
 @protocol VToolPicker <NSObject>
+
+- (void)setDataSource:(id<VToolPickerDataSource>)dataSource;
 
 - (void)setTools:(NSArray /* That implement VWorkspaceTool */ *)tools; ///< The tools to chose from. Retains a copy of the array.
 

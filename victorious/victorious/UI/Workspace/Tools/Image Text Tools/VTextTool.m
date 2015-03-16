@@ -21,6 +21,8 @@
 // Rendering
 #import "CIImage+VImage.h"
 
+#import "VFilterPickerDataSource.h"
+
 static NSString * const kTitleKey = @"title";
 static NSString * const kIconKey = @"icon";
 static NSString * const kSubtoolsKey = @"subtools";
@@ -56,17 +58,7 @@ static NSString * const kFilterIndexKey = @"filterIndex";
         
         _renderIndex = [[dependencyManager numberForKey:kFilterIndexKey] integerValue];
         _toolPicker = (VTickerPickerViewController *)[dependencyManager viewControllerForKey:kPickerKey];
-        if ([_toolPicker respondsToSelector:@selector(setConfigureItemLabel:)])
-        {
-            _toolPicker.configureItemLabel = ^void(UILabel *label, VTextTypeTool *textToolType)
-            {
-                UIFont *adjustedFont = [(UIFont *)textToolType.attributes[NSFontAttributeName] fontWithSize:label.font.pointSize];
-                NSMutableDictionary *mutableAttributes = [[NSMutableDictionary alloc] initWithDictionary:textToolType.attributes];
-                mutableAttributes[NSFontAttributeName] = adjustedFont;
-                label.attributedText = [[NSAttributedString alloc] initWithString:[textToolType.title uppercaseString]
-                                                                       attributes:mutableAttributes];
-            };
-        }
+        _toolPicker.dataSource = [[VFilterPickerDataSource alloc] initWithDependencyManager:dependencyManager tools:_subTools];
         _canvasToolViewController = [VTextToolViewController textToolViewController];
         _icon = [UIImage imageNamed:@"textIcon"];
         [_toolPicker setTools:_subTools];

@@ -6,15 +6,13 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VFilterTypeTool.h"
+#import "VHashtagOptionTool.h"
 
-@implementation VFilterTypeTool
+@implementation VHashtagOptionTool
 
 - (NSString *)title
 {
-    return self.filter.name;
+    return self.hashtag;
 }
 
 @end
-
-

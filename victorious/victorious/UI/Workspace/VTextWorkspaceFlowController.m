@@ -106,14 +106,4 @@ typedef NS_ENUM( NSInteger, VTextWorkspaceFlowStateType)
     [self.flowNavigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)workspaceKeyboardWillHide:(VWorkspaceViewController *)workspaceViewController
-{
-    [self.editTextToolViewController setImageControlsVisible:YES animated:YES];
-}
-
-- (void)workspaceKeyboardWillShow:(VWorkspaceViewController *)workspaceViewController
-{
-    [self.editTextToolViewController setImageControlsVisible:NO animated:YES];
-}
-
 @end

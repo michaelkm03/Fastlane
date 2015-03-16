@@ -49,7 +49,7 @@
     self.buttonImageSearch.alpha = 0.0f;
     self.buttonCamera.alpha = 0.0f;
     
-    [self.textPostViewController startEditingText];
+    [self.textPostViewController performSelector:@selector(startEditingText) withObject:nil afterDelay:0.0f];
 }
 
 - (void)setHashtagText:(NSString *)hashtagText

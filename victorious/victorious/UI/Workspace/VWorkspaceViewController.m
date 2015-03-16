@@ -393,8 +393,6 @@
                      animationDuration:(NSTimeInterval)animationDuration
                         animationCurve:(UIViewAnimationCurve)animationCurve
 {
-    [self.delegate workspaceKeyboardWillShow:self];
-    
     CGRect keyboardEndFrame = [self.view convertRect:endFrame
                                             fromView:nil];
     CGRect overlap = CGRectIntersection(self.canvasView.frame, keyboardEndFrame);
@@ -434,8 +432,6 @@
                      animationDuration:(NSTimeInterval)animationDuration
                         animationCurve:(UIViewAnimationCurve)animationCurve
 {
-    [self.delegate workspaceKeyboardWillHide:self];
-    
     // Undo removing inspector constraints we did in willShowBlock
     self.inspectorToolViewController.view.translatesAutoresizingMaskIntoConstraints = NO;
     [self.inspectorConstraints enumerateObjectsUsingBlock:^(NSLayoutConstraint *constraint, NSUInteger idx, BOOL *stop)

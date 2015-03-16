@@ -19,10 +19,6 @@
 - (void)workspaceDidPublish:(VWorkspaceViewController *)workspaceViewController;
 - (void)workspaceDidClose:(VWorkspaceViewController *)workspaceViewController;
 
-@optional
-- (void)workspaceKeyboardWillHide:(VWorkspaceViewController *)workspaceViewController;
-- (void)workspaceKeyboardWillShow:(VWorkspaceViewController *)workspaceViewController;
-
 @end
 
 /**

@@ -18,6 +18,8 @@
 @property (nonatomic, strong) UIColor *accentColor;
 @property (nonatomic, strong) NSIndexPath *blockScrollingSelectionUntilReached;
 
+@property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
+
 @end
 
 @implementation VTickerPickerViewController
@@ -30,7 +32,8 @@
                                                                   bundle:nil];
     VTickerPickerViewController *toolPicker = [workspaceStoryboard instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
     toolPicker.dependencyManager = dependencyManager;
-    toolPicker.clearsSelectionOnViewWillAppear = NO;
+#warning FIX THIS
+    //toolPicker.clearsSelectionOnViewWillAppear = NO;
     toolPicker.accentColor = [dependencyManager colorForKey:VDependencyManagerAccentColorKey];
     return toolPicker;
 }
@@ -52,6 +55,12 @@
     
     self.collectionView.allowsMultipleSelection = NO;
     self.collectionView.decelerationRate = UIScrollViewDecelerationRateFast;
+    
+    NSAssert( self.dataSource != nil, @"A VTickerPickerViewController must have a VToolPickerDataSource property set." );
+    
+    self.collectionView.dataSource = self.dataSource;
+    [self.dataSource registerCellsWithCollectionView:_collectionView];
+    [self.collectionView reloadData];
     
     self.selectionIndicatorView =
     ({
@@ -87,34 +96,6 @@
     layout.sectionInset = UIEdgeInsetsMake(0, 0, CGRectGetHeight(self.collectionView.bounds) - singleCellHeight, 0);
 }
 
-#pragma mark - UICollectionViewDataSource
-
-- (NSInteger)collectionView:(UICollectionView *)collectionView
-     numberOfItemsInSection:(NSInteger)section
-{
-    return (NSInteger)self.tools.count;
-}
-
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
-                  cellForItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    VBasicToolPickerCell *pickerCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VBasicToolPickerCell suggestedReuseIdentifier]
-                                                                                 forIndexPath:indexPath];
-    id <VWorkspaceTool> toolForIndexPath = self.tools[indexPath.row];
-    
-    if (self.configureItemLabel != nil)
-    {
-        self.configureItemLabel(pickerCell.label, toolForIndexPath);
-    }
-    else
-    {
-        pickerCell.label.text = toolForIndexPath.title;
-        pickerCell.label.font = [self.dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
-    }
-    
-    return pickerCell;
-}
-
 #pragma mark - UICollectionViewDelegateFlowLayout
 
 - (CGSize)collectionView:(UICollectionView *)collectionView
@@ -139,8 +120,7 @@
     return YES;
 }
 
-- (void)collectionView:(UICollectionView *)collectionView
-didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     [collectionView scrollToItemAtIndexPath:indexPath
                            atScrollPosition:UICollectionViewScrollPositionTop
