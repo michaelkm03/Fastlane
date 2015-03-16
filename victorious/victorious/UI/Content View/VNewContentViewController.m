@@ -153,6 +153,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 
 @property (nonatomic, weak) UIView *snapshotView;
 @property (nonatomic, assign) CGPoint offsetBeforeRemoval;
+@property (nonatomic, strong) NSDate *videoLoadedDate;
 
 @end
 
@@ -261,6 +262,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 
 - (void)didUpdateContent
 {
+    self.videoLoadedDate = [NSDate date];
     self.videoCell.viewModel = self.viewModel.videoViewModel;
 }
 
@@ -1282,9 +1284,11 @@ referenceSizeForHeaderInSection:(NSInteger)section
         // bar should be enabled.
         self.experienceEnhancerCell.experienceEnhancerBar.enabled = YES;
         
+        NSUInteger videoLoadTime = [[NSDate date] timeIntervalSinceDate:self.videoLoadedDate] * 1000;
         NSDictionary *params = @{ VTrackingKeyTimeStamp : [NSDate date],
                                   VTrackingKeySequenceId : self.viewModel.sequence.remoteId,
-                                  VTrackingKeyUrls : self.viewModel.sequence.tracking.viewStart ?: @[] };
+                                  VTrackingKeyUrls : self.viewModel.sequence.tracking.viewStart ?: @[],
+                                  VTrackingKeyLoadTime : @(videoLoadTime) };
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
     }
 }

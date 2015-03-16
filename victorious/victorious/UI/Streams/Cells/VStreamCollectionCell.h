@@ -43,8 +43,6 @@ extern const CGFloat kCaptionTextViewLineFragmentPadding;
  */
 @property (nonatomic, assign, readonly) CGRect mediaContentFrame;
 
-- (void)hideOverlays;
-- (void)showOverlays;
 + (CGSize)actualSizeWithCollectionViewBounds:(CGRect)bounds sequence:(VSequence *)sequence;
 
 - (void)playVideo;

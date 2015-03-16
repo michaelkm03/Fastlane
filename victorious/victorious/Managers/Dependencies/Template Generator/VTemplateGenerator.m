@@ -18,12 +18,13 @@
 #import "VTranslucentBackground.h"
 #import "VSolidColorBackground.h"
 #import "VTabMenuViewController.h"
+#import "VDependencyManager+VNavigationMenuItem.h"
 
 #define BOTTOM_NAV_ENABLED 0
 #define CHANNELS_WITH_GROUP_STREAM_ENABLED 0
 #define ROUNDED_TOP_NAV_ENABLED 0
 #define STREAM_CELLS_TEMPLATE_D_ENABLED 0
-#define PROFILE_TEMPLATE_D_ENABLED 0
+#define PROFILE_TEMPLATE_D_ENABLED 1
 
 static NSString * const kIDKey = @"id";
 static NSString * const kReferenceIDKey = @"referenceID";
@@ -195,7 +196,6 @@ static NSString * const kProfileShowEditButtonPill = @"showEditButtonPill";
 {
     NSDictionary *kSelectorKey = @{
                                    kClassNameKey: @"basic.multiScreenSelector",
-                                   VDependencyManagerBackgroundColorKey: self.accentColor,
                                    };
     
     if ( ROUNDED_TOP_NAV_ENABLED )
@@ -448,13 +448,7 @@ static NSString * const kProfileShowEditButtonPill = @"showEditButtonPill";
             @[
                 [self inboxMenuItem],
                 [self profileMenuItem],
-                @{
-                    kIdentifierKey: @"Menu Settings",
-                    kTitleKey: NSLocalizedString(@"Settings", @""),
-                    kDestinationKey: @{
-                        kClassNameKey: @"settings.screen"
-                    }
-                }
+                [self settingsMenuItem],
             ]
         ]
     };
@@ -478,7 +472,7 @@ static NSString * const kProfileShowEditButtonPill = @"showEditButtonPill";
              kTitleKey: NSLocalizedString(@"Home", @""),
              kDestinationKey: [self homeScreen],
              kIconKey: @{
-                     VDependencyManagerImageURLKey: @"home",
+                     VDependencyManagerImageURLKey: @"D_home",
                      }
              };
 }
@@ -488,7 +482,7 @@ static NSString * const kProfileShowEditButtonPill = @"showEditButtonPill";
     return @{
              kTitleKey: NSLocalizedString(@"Create", @""),
              kIconKey: @{
-                     VDependencyManagerImageURLKey: @"create",
+                     VDependencyManagerImageURLKey: @"D_create",
                      },
              kDestinationKey: [self workspaceFlowComponent],
              };
@@ -496,14 +490,19 @@ static NSString * const kProfileShowEditButtonPill = @"showEditButtonPill";
 
 - (NSDictionary *)profileMenuItem
 {
-    return @{
-             kIdentifierKey: @"Menu Profile",
-             kTitleKey: NSLocalizedString(@"Profile", @""),
-             kIconKey: @{
-                     VDependencyManagerImageURLKey: @"profile",
-                     },
-             kDestinationKey: [self profileDetails]
-             };
+    NSMutableDictionary *profileItem = [[NSMutableDictionary alloc] initWithDictionary:@{
+                                                                                         kIdentifierKey: @"Menu Profile",
+                                                                                         kTitleKey: NSLocalizedString(@"Profile", @""),
+                                                                                         kIconKey: @{
+                                                                                                 VDependencyManagerImageURLKey: @"D_profile",
+                                                                                                 }
+                                                                                         }];
+    profileItem[kDestinationKey] = [self profileDetails];
+    if (BOTTOM_NAV_ENABLED)
+    {
+        profileItem[VDependencyManagerAccessoryScreensKey] = [self settingsMenuItem];
+    }
+    return [NSDictionary dictionaryWithDictionary:profileItem];
 }
 
 - (NSDictionary *)inboxMenuItem
@@ -512,11 +511,25 @@ static NSString * const kProfileShowEditButtonPill = @"showEditButtonPill";
              kIdentifierKey: @"Menu Inbox",
              kTitleKey: NSLocalizedString(@"Inbox", @""),
              kIconKey: @{
-                     VDependencyManagerImageURLKey: @"inbox",
+                     VDependencyManagerImageURLKey: @"D_inbox",
                      },
              kDestinationKey: @{
                      kClassNameKey: @"inbox.screen"
                      }
+             };
+}
+
+- (NSDictionary *)settingsMenuItem
+{
+    return @{
+             kIdentifierKey: @"Menu Settings",
+             kTitleKey: NSLocalizedString(@"Settings", @""),
+             kDestinationKey: @{
+                     kClassNameKey: @"settings.screen"
+                     },
+             kIconKey: @{
+                     VDependencyManagerImageURLKey: @"D_settings",
+                     },
              };
 }
 
@@ -526,7 +539,7 @@ static NSString * const kProfileShowEditButtonPill = @"showEditButtonPill";
     return [NSString stringWithFormat:@"/api/sequence/detail_list_by_category/%@/%%%%PAGE_NUM%%%%/%%%%ITEMS_PER_PAGE%%%%", categoryString];
 }
 
-//MAKE TICKET FOR BACKEND TO PASS EXPECTED FIELD VALUE IN PROFILE COMPONENT
+#warning MAKE TICKET FOR BACKEND TO PASS EXPECTED FIELD VALUE IN PROFILE COMPONENT
 //Expecting a Bool from backend for key "showEditButtonPill"
 
 - (NSDictionary *)profileDetails
@@ -582,6 +595,11 @@ static NSString * const kProfileShowEditButtonPill = @"showEditButtonPill";
                                                                   };
     }
     return [profileDetails copy];
+}
+
+- (NSDictionary *)currentUserProfileScreen
+{
+    return @{ kClassNameKey: @"currentUserProfile.screen" };
 }
 
 - (NSDictionary *)profileScreen
@@ -670,7 +688,7 @@ static NSString * const kProfileShowEditButtonPill = @"showEditButtonPill";
         NSDictionary *componentBase = @{ kIdentifierKey: @"Menu Channels",
                                          kTitleKey: NSLocalizedString(@"Channels", @""),
                                          kIconKey: @{
-                                                 VDependencyManagerImageURLKey: @"channels",
+                                                 VDependencyManagerImageURLKey: @"D_channels",
                                                  },
                                          kDestinationKey: @{
                                                  kClassNameKey: @"groupedStream.screen",
@@ -687,7 +705,7 @@ static NSString * const kProfileShowEditButtonPill = @"showEditButtonPill";
         return @{ kIdentifierKey: @"Menu Channels",
                   kTitleKey: NSLocalizedString(@"Channels", @""),
                   kIconKey: @{
-                          VDependencyManagerImageURLKey: @"channels",
+                          VDependencyManagerImageURLKey: @"D_channels",
                           },
                   kDestinationKey: @{
                           kClassNameKey: @"directory.screen",

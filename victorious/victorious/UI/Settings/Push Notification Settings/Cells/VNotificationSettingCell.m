@@ -6,24 +6,25 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "VDependencyManager.h"
 #import "VNotificationSettingCell.h"
-#import "VThemeManager.h"
 
 @interface VNotificationSettingCell()
 
 @property (nonatomic, strong) IBOutlet UISwitch *settingSwitch;
 @property (nonatomic, strong) IBOutlet UILabel *settingLabel;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end
 
 @implementation VNotificationSettingCell
 
-- (void)awakeFromNib
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
-    [super awakeFromNib];
+    _dependencyManager = dependencyManager;
     
-    self.settingLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
-    self.settingSwitch.onTintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    self.settingLabel.font = [dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
+    self.settingSwitch.onTintColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
 }
 
 - (void)setTitle:(NSString *)title value:(BOOL)value

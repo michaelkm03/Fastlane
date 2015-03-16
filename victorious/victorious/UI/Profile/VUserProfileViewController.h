@@ -18,6 +18,13 @@
 + (instancetype)userProfileWithRemoteId:(NSNumber *)remoteId andDependencyManager:(VDependencyManager *)dependencyManager;
 + (instancetype)userProfileWithUser:(VUser *)aUser andDependencyManager:(VDependencyManager *)dependencyManager;
 
+/**
+ *  While this property is YES, the viewController will listen for
+ *  login status changes and reload itself with the main user. Will also
+ *  display a "logged out" version of its UI.
+ */
+@property (nonatomic, assign) BOOL representsMainUser;
+
 @end
 
 #pragma mark -
