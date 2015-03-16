@@ -10,6 +10,11 @@
 
 @interface AVComposition (VMutedAudioMix)
 
+/**
+ *  Provide a muted audio mix from a given composition. Assumes a single audio track.
+ *
+ *  @return An audio mix without any audio.
+ */
 - (AVAudioMix *)mutedAudioMix;
 
 @end

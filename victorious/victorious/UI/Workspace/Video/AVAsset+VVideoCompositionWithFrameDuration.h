@@ -10,6 +10,15 @@
 
 @interface AVAsset (VVideoCompositionWithFrameDuration)
 
+/**
+ *  Create a video composition with a specific frame duration.
+ *  Can lower the frame duration but not raise it.
+ *  Also ensures that the video is rendered to a multiple of 16.
+ *
+ *  @param frameDuration The desired frame duration.
+ *
+ *  @return An AVVideoComposition with the given frame duration.
+ */
 - (AVVideoComposition *)videoCompositionWithFrameDuration:(CMTime)frameDuration;
 
 @end
