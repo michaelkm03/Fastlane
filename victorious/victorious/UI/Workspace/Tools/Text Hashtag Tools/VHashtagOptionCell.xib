@@ -18,31 +18,38 @@
                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="suq-XK-mUo">
-                        <rect key="frame" x="14" y="18" width="20" height="20"/>
+                    <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="x80-xj-37d">
+                        <rect key="frame" x="14" y="17" width="22" height="22"/>
                         <color key="backgroundColor" red="1" green="0.035351606610000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="20" id="250-0g-qrM"/>
-                            <constraint firstAttribute="height" constant="20" id="OHY-ct-gkq"/>
+                            <constraint firstAttribute="width" constant="22" id="OnY-MX-voa"/>
+                            <constraint firstAttribute="height" constant="22" id="fsD-yu-bnj"/>
                         </constraints>
-                    </view>
+                        <state key="normal" image="hashtag_option_check">
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                    </button>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="suq-XK-mUo" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="14" id="HhP-cz-DPY"/>
-                <constraint firstItem="cjG-dj-y07" firstAttribute="leading" secondItem="suq-XK-mUo" secondAttribute="trailing" constant="12" id="Td6-zW-gYO"/>
-                <constraint firstAttribute="bottom" secondItem="cjG-dj-y07" secondAttribute="bottom" id="fNF-xX-W4u"/>
-                <constraint firstAttribute="trailing" secondItem="cjG-dj-y07" secondAttribute="trailing" id="fvg-X0-dRj"/>
-                <constraint firstItem="cjG-dj-y07" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="hwE-Gw-9Vl"/>
-                <constraint firstAttribute="centerY" secondItem="suq-XK-mUo" secondAttribute="centerY" id="uSO-FS-07m"/>
+                <constraint firstAttribute="centerY" secondItem="x80-xj-37d" secondAttribute="centerY" id="WoE-Dc-c9r"/>
+                <constraint firstAttribute="bottom" secondItem="cjG-dj-y07" secondAttribute="bottom" id="Y4T-vy-K1F"/>
+                <constraint firstAttribute="trailing" secondItem="cjG-dj-y07" secondAttribute="trailing" id="gqh-nK-69k"/>
+                <constraint firstItem="x80-xj-37d" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="14" id="lMc-5J-hgV"/>
+                <constraint firstItem="cjG-dj-y07" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="mfc-4h-aWG"/>
+                <constraint firstItem="cjG-dj-y07" firstAttribute="leading" secondItem="x80-xj-37d" secondAttribute="trailing" constant="10" id="vrZ-xo-jAR"/>
             </constraints>
             <size key="customSize" width="425" height="56"/>
             <connections>
+                <outlet property="checkBox" destination="x80-xj-37d" id="sLL-Wr-KJF"/>
                 <outlet property="labelTitle" destination="cjG-dj-y07" id="T0H-0Z-bw8"/>
             </connections>
             <point key="canvasLocation" x="269.5" y="435"/>
         </collectionViewCell>
     </objects>
+    <resources>
+        <image name="hashtag_option_check" width="9" height="7"/>
+    </resources>
 </document>

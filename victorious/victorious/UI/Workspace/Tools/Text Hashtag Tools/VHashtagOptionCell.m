@@ -11,6 +11,7 @@
 @interface VHashtagOptionCell()
 
 @property (weak, nonatomic) IBOutlet UILabel *labelTitle;
+@property (weak, nonatomic) IBOutlet UIButton *checkBox; //< This is a button, but it is never enabled, just for show
 
 @end
 
@@ -19,20 +20,54 @@
 - (void)awakeFromNib
 {
     [super awakeFromNib];
+    
+    self.checkBox.layer.cornerRadius = CGRectGetMidX( self.checkBox.bounds );
+    
+    [self updateSelectedState];
+}
+
+- (void)setSelectedColor:(UIColor *)selectedColor
+{
+    _selectedColor = selectedColor;
+    
+    [self updateSelectedState];
 }
 
 - (void)setTitle:(NSString *)title
 {
     _title = title;
-    
     self.labelTitle.text = title;
 }
 
 - (void)setFont:(UIFont *)font
 {
     _font = font;
-    
     self.labelTitle.font = font;
+}
+
+- (void)setSelected:(BOOL)selected
+{
+    [super setSelected:selected];
+    
+    [self updateSelectedState];
+}
+
+- (void)updateSelectedState
+{
+    if ( self.selected )
+    {
+        self.checkBox.layer.borderWidth = 0.0f;
+        self.checkBox.layer.borderColor = [UIColor clearColor].CGColor;
+        self.checkBox.backgroundColor = self.selectedColor;
+        self.checkBox.imageView.alpha = 1.0f;
+    }
+    else
+    {
+        self.checkBox.layer.borderWidth = 1.0f;
+        self.checkBox.layer.borderColor = [[UIColor whiteColor] colorWithAlphaComponent:0.5f].CGColor;
+        self.checkBox.backgroundColor = [UIColor clearColor];
+        self.checkBox.imageView.alpha = 0.0f;
+    }
 }
 
 @end

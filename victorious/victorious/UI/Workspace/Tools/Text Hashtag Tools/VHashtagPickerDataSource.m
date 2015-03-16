@@ -49,6 +49,7 @@
     NSString *identifier = [VHashtagOptionCell suggestedReuseIdentifier];
     VHashtagOptionCell *hashtagCell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
     hashtagCell.font = [self.dependencyManager fontForKey:@"font.button"];
+    hashtagCell.selectedColor = [self.dependencyManager colorForKey:@"color.link"];
     hashtagCell.title = self.hashtags[ indexPath.row ];
     
     return hashtagCell;

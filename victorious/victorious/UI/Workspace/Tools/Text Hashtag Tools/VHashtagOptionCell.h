@@ -12,7 +12,7 @@
 @interface VHashtagOptionCell : VBaseCollectionViewCell
 
 @property (nonatomic, copy) NSString *title;
-
+@property (nonatomic, strong) UIColor *selectedColor;
 @property (nonatomic, copy) UIFont *font;
 
 @end
