@@ -406,7 +406,6 @@
 		A75ED0B61AB78C7400C35063 /* VTextLayoutHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ED0A61AB78C7400C35063 /* VTextLayoutHelper.m */; };
 		A75ED0B71AB78C7400C35063 /* VHashtagOptionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ED0A91AB78C7400C35063 /* VHashtagOptionCell.m */; };
 		A75ED0B81AB78C7400C35063 /* VHashtagOptionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A75ED0AA1AB78C7400C35063 /* VHashtagOptionCell.xib */; };
-		A75ED0B91AB78C7400C35063 /* VHashtagOptionTool.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ED0AC1AB78C7400C35063 /* VHashtagOptionTool.m */; };
 		A75ED0BA1AB78C7400C35063 /* VHashtagPickerDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ED0AE1AB78C7400C35063 /* VHashtagPickerDataSource.m */; };
 		A75ED0BB1AB78C7400C35063 /* VHashtagTool.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ED0B01AB78C7400C35063 /* VHashtagTool.m */; };
 		A75FAF1719E8AC1E00EB87C1 /* VSuggestedPeopleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAF0319E8AC1E00EB87C1 /* VSuggestedPeopleCell.m */; };
@@ -1442,8 +1441,6 @@
 		A75ED0A81AB78C7400C35063 /* VHashtagOptionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHashtagOptionCell.h; sourceTree = "<group>"; };
 		A75ED0A91AB78C7400C35063 /* VHashtagOptionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHashtagOptionCell.m; sourceTree = "<group>"; };
 		A75ED0AA1AB78C7400C35063 /* VHashtagOptionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VHashtagOptionCell.xib; sourceTree = "<group>"; };
-		A75ED0AB1AB78C7400C35063 /* VHashtagOptionTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHashtagOptionTool.h; sourceTree = "<group>"; };
-		A75ED0AC1AB78C7400C35063 /* VHashtagOptionTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHashtagOptionTool.m; sourceTree = "<group>"; };
 		A75ED0AD1AB78C7400C35063 /* VHashtagPickerDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHashtagPickerDataSource.h; sourceTree = "<group>"; };
 		A75ED0AE1AB78C7400C35063 /* VHashtagPickerDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHashtagPickerDataSource.m; sourceTree = "<group>"; };
 		A75ED0AF1AB78C7400C35063 /* VHashtagTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHashtagTool.h; sourceTree = "<group>"; };
@@ -3625,8 +3622,6 @@
 				A75ED0A81AB78C7400C35063 /* VHashtagOptionCell.h */,
 				A75ED0A91AB78C7400C35063 /* VHashtagOptionCell.m */,
 				A75ED0AA1AB78C7400C35063 /* VHashtagOptionCell.xib */,
-				A75ED0AB1AB78C7400C35063 /* VHashtagOptionTool.h */,
-				A75ED0AC1AB78C7400C35063 /* VHashtagOptionTool.m */,
 				A75ED0AD1AB78C7400C35063 /* VHashtagPickerDataSource.h */,
 				A75ED0AE1AB78C7400C35063 /* VHashtagPickerDataSource.m */,
 				A75ED0AF1AB78C7400C35063 /* VHashtagTool.h */,
@@ -5692,7 +5687,6 @@
 				0314D0AF19B4698800FA363C /* VObjectManager+ContentCreation.m in Sources */,
 				A75ED0421AB1FEA300C35063 /* VTextWorkspaceFlowController.m in Sources */,
 				03C185BB19B42E5D00E27D05 /* TWAPIManager.m in Sources */,
-				A75ED0B91AB78C7400C35063 /* VHashtagOptionTool.m in Sources */,
 				BE171E3A1868C266004E5202 /* NSString+VParseHelp.m in Sources */,
 				03C185C819B42FD600E27D05 /* main.m in Sources */,
 				0314D0B219B4698800FA363C /* VObjectManager+Environment.m in Sources */,

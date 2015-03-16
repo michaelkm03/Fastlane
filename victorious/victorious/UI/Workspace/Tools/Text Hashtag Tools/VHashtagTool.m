@@ -10,7 +10,6 @@
 #import "VDependencyManager.h"
 #import "VEditTextToolViewController.h"
 #import "VToolPicker.h"
-#import "VHashtagOptionTool.h"
 #import "NSArray+VMap.h"
 #import "VHashtagPickerDataSource.h"
 
@@ -46,13 +45,8 @@ static NSString * const kPickerKey = @"picker";
         
 #warning TESTING ONLY
         NSArray *testHashtags = @[ @"(None)", @"#Fungus", @"#Dogs", @"#cats", @"#IHateMondays" ];
-        NSArray *hashtagOptionTools = [testHashtags v_map:^id(NSString *hashtag)
-                                       {
-                                           VHashtagOptionTool *hashtagOptionTool = [[VHashtagOptionTool alloc] init];
-                                           hashtagOptionTool.hashtag = hashtag;
-                                           return hashtagOptionTool;
-                                       }];
-        _toolPicker.dataSource = [[VHashtagPickerDataSource alloc] initWithDependencyManager:dependencyManager tools:hashtagOptionTools];
+        _toolPicker.dataSource = [[VHashtagPickerDataSource alloc] initWithDependencyManager:dependencyManager
+                                                                                       hashtags:testHashtags];
     }
     return self;
 }
