@@ -33,6 +33,7 @@
         _player = player;
         [self playerLayer].player = _player;
         self.backgroundColor = [UIColor blackColor];
+        [self playerLayer].videoGravity = AVLayerVideoGravityResizeAspectFill;
     }
     return self;
 }
