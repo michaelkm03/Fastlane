@@ -12,7 +12,8 @@
 #import <KVOController/FBKVOController.h>
 
 // Video
-#import "VLoopingCompositionGenerator.h"
+#import "VAssetLoader.h"
+#import "AVComposition+VTrimmedLoopingComposition.h"
 #import "VPlayerView.h"
 #import "AVAsset+VVideoCompositionWithFrameDuration.h"
 #import "AVComposition+VMutedAudioMix.h"
@@ -22,9 +23,12 @@
 @interface VTrimLoopingPlayerViewController ()
 
 @property (nonatomic, strong) AVPlayer *player;
-@property (nonatomic, strong) VLoopingCompositionGenerator *loopingAssetGenerator;
+@property (nonatomic, strong) VAssetLoader *assetLoader;
 @property (nonatomic, weak) UIActivityIndicatorView *acitivityIndicator;
 @property (nonatomic, assign) BOOL userWantsPause;
+@property (nonatomic, strong) dispatch_queue_t loopedCompositionQueue;
+
+@property (nonatomic, strong) AVVideoComposition *cachedVideoCompostion;
 
 @end
 
@@ -52,6 +56,8 @@
 
 - (void)loadView
 {
+    self.loopedCompositionQueue = dispatch_queue_create("com.getVictorious.loopedCompositionCreation", DISPATCH_QUEUE_SERIAL);
+    
     self.view = [[VPlayerView alloc] initWithPlayer:self.player];
     
     UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
@@ -148,10 +154,29 @@
 
 - (void)setMediaURL:(NSURL *)mediaURL
 {
+    if ([_mediaURL isEqual:mediaURL])
+    {
+        return;
+    }
     _mediaURL = [mediaURL copy];
-    
-    self.loopingAssetGenerator = [[VLoopingCompositionGenerator alloc] initWithURL:mediaURL];
-    [self.loopingAssetGenerator startLoading];
+    __weak typeof(self) welf = self;
+    self.assetLoader = [[VAssetLoader alloc] initWithAssetURL:mediaURL
+                                                   keysToLoad:@[NSStringFromSelector(@selector(duration)), NSStringFromSelector(@selector(tracks))]
+                                       prefersPreciseDuration:YES
+                                                   completion:^(NSError *error, AVAsset *loadedAsset)
+                        {
+                            if (error)
+                            {
+                                return;
+                            }
+                            
+                            __strong typeof(self) strongSelf = welf;
+                            if (strongSelf == nil)
+                            {
+                                return;
+                            }
+                            [strongSelf generateLoopedCompositionWithAsset:loadedAsset];
+                        }];
 }
 
 - (void)setTrimRange:(CMTimeRange)trimRange
@@ -161,28 +186,16 @@
         return;
     }
     _trimRange = trimRange;
-    __weak typeof(self) welf = self;
     [self.player pause];
-    [self.loopingAssetGenerator setTrimRange:trimRange
-                                      CMTime:CMTimeMake(2 * 60 * 600, 600) // 2 minutes
-                              withCompletion:^(NSError *error, AVComposition *loopedComposition)
+    if (self.assetLoader.state == VAssetLoaderStateAllKeysLoaded)
     {
-        if (error)
-        {
-#warning Handle ME!
-        }
-        __strong typeof(welf) strongSelf = welf;
-        if (strongSelf == nil)
-        {
-            return;
-        }
-        [strongSelf playWithNewComposition:loopedComposition];
-    }];
+        [self generateLoopedCompositionWithAsset:self.assetLoader.loadedAsset];
+    }
 }
 
 #pragma mark - Notification Handlers
 
-- (void)playerReachedEnd:(NSNotification *)notification
+- (void)playerItemPlayedToEnd:(NSNotification *)notification
 {
     __weak typeof(self) welf = self;
     [self.player pause];
@@ -197,11 +210,27 @@
 
 #pragma mark - Private Methods
 
+- (void)generateLoopedCompositionWithAsset:(AVAsset *)asset
+{
+    __weak typeof(self) welf = self;
+    dispatch_async(self.loopedCompositionQueue, ^
+    {
+        AVComposition *composition = [AVComposition trimmedLoopingCompostionWithAsset:asset
+                                                                            trimRange:welf.trimRange
+                                                                      minimumDuration:CMTimeMake(2 * 60 * 600, 600)]; // 2 minutes
+        dispatch_async(dispatch_get_main_queue(), ^
+        {
+            __strong typeof(welf) strongSelf = welf;
+            [strongSelf playWithNewComposition:composition];
+        });
+    });
+}
+
 - (void)playWithNewComposition:(AVComposition *)composition
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:AVPlayerItemDidPlayToEndTimeNotification object:self.player.currentItem];
     [self.player replaceCurrentItemWithPlayerItem:[self playerItemWithAsset:composition]];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playerReachedEnd:) name:AVPlayerItemDidPlayToEndTimeNotification object:self.player.currentItem];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playerItemPlayedToEnd:) name:AVPlayerItemDidPlayToEndTimeNotification object:self.player.currentItem];
 
     [self playIfUserAllowed];
 }
@@ -213,7 +242,9 @@
     {
         playerItemWithAsset.audioMix = [composition mutedAudioMix];
     }
-    playerItemWithAsset.videoComposition = [composition videoCompositionWithFrameDuration:self.frameDuration];
+    
+    playerItemWithAsset.videoComposition = self.cachedVideoCompostion ?: [composition videoCompositionWithFrameDuration:self.frameDuration];
+    self.cachedVideoCompostion = playerItemWithAsset.videoComposition;
     
     return playerItemWithAsset;
 }

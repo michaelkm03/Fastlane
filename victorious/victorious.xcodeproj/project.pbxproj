@@ -684,6 +684,8 @@
 		D8E39BF119CB9D58007FD86A /* UIView+VShadows.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E39BF019CB9D58007FD86A /* UIView+VShadows.m */; };
 		D8E7EBCB19CCA540007DA693 /* VSectionHandleReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E7EBC919CCA540007DA693 /* VSectionHandleReusableView.m */; };
 		D8E7EBCC19CCA540007DA693 /* VSectionHandleReusableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8E7EBCA19CCA540007DA693 /* VSectionHandleReusableView.xib */; };
+		D8EC36E91AB3EC7600FB0CEB /* VAssetLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = D8EC36E81AB3EC7600FB0CEB /* VAssetLoader.m */; };
+		D8EC36EC1AB3F96700FB0CEB /* AVComposition+VTrimmedLoopingComposition.m in Sources */ = {isa = PBXBuildFile; fileRef = D8EC36EB1AB3F96700FB0CEB /* AVComposition+VTrimmedLoopingComposition.m */; };
 		D8F12A6D1A6F093900E99B3D /* VPublishParameters.m in Sources */ = {isa = PBXBuildFile; fileRef = D8F12A6C1A6F093900E99B3D /* VPublishParameters.m */; };
 		D8FC09071A51DBC100E5FBE4 /* VPlaceholderTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = D8FC09061A51DBC100E5FBE4 /* VPlaceholderTextView.m */; };
 		DB2A48F719DF2D1000CB687B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = DB2A48F919DF2D1000CB687B /* Localizable.strings */; };
@@ -1965,6 +1967,10 @@
 		D8E7EBC819CCA540007DA693 /* VSectionHandleReusableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSectionHandleReusableView.h; sourceTree = "<group>"; };
 		D8E7EBC919CCA540007DA693 /* VSectionHandleReusableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSectionHandleReusableView.m; sourceTree = "<group>"; };
 		D8E7EBCA19CCA540007DA693 /* VSectionHandleReusableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VSectionHandleReusableView.xib; sourceTree = "<group>"; };
+		D8EC36E71AB3EC7600FB0CEB /* VAssetLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAssetLoader.h; sourceTree = "<group>"; };
+		D8EC36E81AB3EC7600FB0CEB /* VAssetLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAssetLoader.m; sourceTree = "<group>"; };
+		D8EC36EA1AB3F96700FB0CEB /* AVComposition+VTrimmedLoopingComposition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AVComposition+VTrimmedLoopingComposition.h"; sourceTree = "<group>"; };
+		D8EC36EB1AB3F96700FB0CEB /* AVComposition+VTrimmedLoopingComposition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AVComposition+VTrimmedLoopingComposition.m"; sourceTree = "<group>"; };
 		D8ECB8F11A5C7CD200C8F67A /* VVideoWorkspaceTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VVideoWorkspaceTool.h; sourceTree = "<group>"; };
 		D8F12A6B1A6F093900E99B3D /* VPublishParameters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPublishParameters.h; sourceTree = "<group>"; };
 		D8F12A6C1A6F093900E99B3D /* VPublishParameters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPublishParameters.m; sourceTree = "<group>"; };
@@ -4406,6 +4412,10 @@
 				D88CEAE21A92E17C00F5A837 /* VVideoSnapshotTool.h */,
 				D88CEAE31A92E17C00F5A837 /* VVideoSnapshotTool.m */,
 				D8ECB8F11A5C7CD200C8F67A /* VVideoWorkspaceTool.h */,
+				D8EC36E71AB3EC7600FB0CEB /* VAssetLoader.h */,
+				D8EC36E81AB3EC7600FB0CEB /* VAssetLoader.m */,
+				D8EC36EA1AB3F96700FB0CEB /* AVComposition+VTrimmedLoopingComposition.h */,
+				D8EC36EB1AB3F96700FB0CEB /* AVComposition+VTrimmedLoopingComposition.m */,
 			);
 			path = Video;
 			sourceTree = "<group>";
@@ -5239,6 +5249,7 @@
 				03B3D3D01A3BBCE900F0634A /* VBadgeBackgroundView.m in Sources */,
 				D876E2021A9DA6DD002CAA29 /* VBlurredImageBackground.m in Sources */,
 				DBAD776719F7752D00B6A939 /* VAdBreak+RestKit.m in Sources */,
+				D8EC36EC1AB3F96700FB0CEB /* AVComposition+VTrimmedLoopingComposition.m in Sources */,
 				03F9D286191D77B000576AEE /* UIImage+VSolidColor.m in Sources */,
 				D8C7CF5D19DCCD0200BA33E5 /* VExperienceEnhancerCell.m in Sources */,
 				BE5C7388187E37E500A3340D /* VConversation+RestKit.m in Sources */,
@@ -5399,6 +5410,7 @@
 				0350426A194F711A008D78A3 /* NSIndexSet+Map.m in Sources */,
 				BE11447E19D4ADCC006A6D65 /* UIImageView+VLoadingAnimations.m in Sources */,
 				0314D4C119B46B5E00FA363C /* VProfileEditViewController.m in Sources */,
+				D8EC36E91AB3EC7600FB0CEB /* VAssetLoader.m in Sources */,
 				A7AEF9C71A83F2AD00A3D3A0 /* VLargeNumberFormatter.m in Sources */,
 				BE799BB419C8DF5B0023CE88 /* VAsset+OrderedSet.m in Sources */,
 				037FCF1B1A8DAF0E00E8ABFC /* VNavigationControllerScrollDelegate.m in Sources */,
