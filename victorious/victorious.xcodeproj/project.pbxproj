@@ -408,6 +408,7 @@
 		A75ED0B81AB78C7400C35063 /* VHashtagOptionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A75ED0AA1AB78C7400C35063 /* VHashtagOptionCell.xib */; };
 		A75ED0BA1AB78C7400C35063 /* VHashtagPickerDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ED0AE1AB78C7400C35063 /* VHashtagPickerDataSource.m */; };
 		A75ED0BB1AB78C7400C35063 /* VHashtagTool.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ED0B01AB78C7400C35063 /* VHashtagTool.m */; };
+		A75ED0BE1AB7927A00C35063 /* VTextTypePickerDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ED0BD1AB7927A00C35063 /* VTextTypePickerDataSource.m */; };
 		A75FAF1719E8AC1E00EB87C1 /* VSuggestedPeopleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAF0319E8AC1E00EB87C1 /* VSuggestedPeopleCell.m */; };
 		A75FAF1919E8AC1E00EB87C1 /* VSuggestedPersonCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAF0619E8AC1E00EB87C1 /* VSuggestedPersonCollectionViewCell.m */; };
 		A75FAF1B19E8AC1E00EB87C1 /* VTrendingTagCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAF0919E8AC1E00EB87C1 /* VTrendingTagCell.m */; };
@@ -1445,6 +1446,8 @@
 		A75ED0AE1AB78C7400C35063 /* VHashtagPickerDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHashtagPickerDataSource.m; sourceTree = "<group>"; };
 		A75ED0AF1AB78C7400C35063 /* VHashtagTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHashtagTool.h; sourceTree = "<group>"; };
 		A75ED0B01AB78C7400C35063 /* VHashtagTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHashtagTool.m; sourceTree = "<group>"; };
+		A75ED0BC1AB7927A00C35063 /* VTextTypePickerDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextTypePickerDataSource.h; sourceTree = "<group>"; };
+		A75ED0BD1AB7927A00C35063 /* VTextTypePickerDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextTypePickerDataSource.m; sourceTree = "<group>"; };
 		A75FAEFA19E8A6D600EB87C1 /* VVoteSettingManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVoteSettingManagerTests.m; sourceTree = "<group>"; };
 		A75FAEFD19E8AB2C00EB87C1 /* VDummyModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDummyModels.h; sourceTree = "<group>"; };
 		A75FAEFE19E8AB2C00EB87C1 /* VDummyModels.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDummyModels.m; sourceTree = "<group>"; };
@@ -3562,6 +3565,8 @@
 				A75ECFF41AB0B6B400C35063 /* VTextTool.m */,
 				A75ECFF51AB0B6B400C35063 /* VTextToolViewController.h */,
 				A75ECFF61AB0B6B400C35063 /* VTextToolViewController.m */,
+				A75ED0BC1AB7927A00C35063 /* VTextTypePickerDataSource.h */,
+				A75ED0BD1AB7927A00C35063 /* VTextTypePickerDataSource.m */,
 				A75ECFF71AB0B6B400C35063 /* VTextTypeTool.h */,
 				A75ECFF81AB0B6B400C35063 /* VTextTypeTool.m */,
 			);
@@ -3571,12 +3576,12 @@
 		A75ED0071AB0B6D100C35063 /* Image Fiter Tools */ = {
 			isa = PBXGroup;
 			children = (
+				A75ED08E1AB77E3300C35063 /* VFilterPickerDataSource.h */,
+				A75ED08F1AB77E3300C35063 /* VFilterPickerDataSource.m */,
 				A75ED0081AB0B6D100C35063 /* VFilterTool.h */,
 				A75ED0091AB0B6D100C35063 /* VFilterTool.m */,
 				A75ED00A1AB0B6D100C35063 /* VFilterTypeTool.h */,
 				A75ED00B1AB0B6D100C35063 /* VFilterTypeTool.m */,
-				A75ED08E1AB77E3300C35063 /* VFilterPickerDataSource.h */,
-				A75ED08F1AB77E3300C35063 /* VFilterPickerDataSource.m */,
 			);
 			path = "Image Fiter Tools";
 			sourceTree = "<group>";
@@ -4672,12 +4677,12 @@
 		D8D945F71A2EA51D0089D271 /* Tools */ = {
 			isa = PBXGroup;
 			children = (
-				A75ED09A1AB78C7400C35063 /* Text Color Tools */,
-				A75ED09D1AB78C7400C35063 /* Text Entry Tools */,
-				A75ED0A71AB78C7400C35063 /* Text Hashtag Tools */,
 				A75ECFE81AB0B6B400C35063 /* Image Crop Tool */,
 				A75ED0071AB0B6D100C35063 /* Image Fiter Tools */,
 				A75ECFF01AB0B6B400C35063 /* Image Text Tools */,
+				A75ED09A1AB78C7400C35063 /* Text Color Tools */,
+				A75ED09D1AB78C7400C35063 /* Text Entry Tools */,
+				A75ED0A71AB78C7400C35063 /* Text Hashtag Tools */,
 				D8D946011A2EBC120089D271 /* VWorkspaceTool.h */,
 			);
 			path = Tools;
@@ -5675,6 +5680,7 @@
 				A790C8291A01980F00C4F208 /* VTrackingEvent.m in Sources */,
 				0314D4F019B46B5E00FA363C /* VRegistrationModel.m in Sources */,
 				F0B390C31A88502D00EE70C7 /* VTagDictionary.m in Sources */,
+				A75ED0BE1AB7927A00C35063 /* VTextTypePickerDataSource.m in Sources */,
 				0386E1F71A8DDA7F00FC9BDF /* VFollowingStreamCollectionViewController.m in Sources */,
 				D8332DC01A7C72EB00C3FEE0 /* VVCameraShutterOverAnimator.m in Sources */,
 				032954A51A9FF4E000698119 /* VURLMacroReplacement.m in Sources */,

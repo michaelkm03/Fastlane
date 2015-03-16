@@ -7,13 +7,16 @@
 //
 
 #import "VTickerPickerViewController.h"
-#import "VBasicToolPickerCell.h"
 #import "VDependencyManager.h"
+
+#warning Remove all uses of this cell here for something generic 
+#import "VBasicToolPickerCell.h"
 
 @interface VTickerPickerViewController () <UICollectionViewDelegateFlowLayout>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) UIView *selectionIndicatorView;
+#warning TODO: REmove tools property, use dataSource to get what you need
 @property (nonatomic, copy) NSArray *tools;
 @property (nonatomic, strong) UIColor *accentColor;
 @property (nonatomic, strong) NSIndexPath *blockScrollingSelectionUntilReached;
@@ -179,11 +182,6 @@
 - (void)setOnToolSelection:(void (^)(id<VWorkspaceTool>))onToolSelection
 {
     _onToolSelection = [onToolSelection copy];
-}
-
-- (void)setTools:(NSArray *)tools
-{
-    _tools = [tools copy];
 }
 
 - (id <VWorkspaceTool>)selectedTool

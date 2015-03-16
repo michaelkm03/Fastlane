@@ -213,7 +213,7 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
     [self updateCurrentlyPlayingMediaAsset];
     
 #warning TESTING ONLY: Jumpts right to text workspace
-    [self presentCreateFlowWithTextOnly];
+    //[self presentCreateFlowWithTextOnly];
 }
 
 - (void)viewWillDisappear:(BOOL)animated

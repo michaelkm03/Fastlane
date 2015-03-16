@@ -21,7 +21,7 @@
 // Rendering
 #import "CIImage+VImage.h"
 
-#import "VFilterPickerDataSource.h"
+#import "VTextTypePickerDataSource.h"
 
 static NSString * const kTitleKey = @"title";
 static NSString * const kIconKey = @"icon";
@@ -58,10 +58,9 @@ static NSString * const kFilterIndexKey = @"filterIndex";
         
         _renderIndex = [[dependencyManager numberForKey:kFilterIndexKey] integerValue];
         _toolPicker = (VTickerPickerViewController *)[dependencyManager viewControllerForKey:kPickerKey];
-        _toolPicker.dataSource = [[VFilterPickerDataSource alloc] initWithDependencyManager:dependencyManager tools:_subTools];
+        _toolPicker.dataSource = [[VTextTypePickerDataSource alloc] initWithDependencyManager:dependencyManager tools:_subTools];
         _canvasToolViewController = [VTextToolViewController textToolViewController];
         _icon = [UIImage imageNamed:@"textIcon"];
-        [_toolPicker setTools:_subTools];
     }
     return self;
 }

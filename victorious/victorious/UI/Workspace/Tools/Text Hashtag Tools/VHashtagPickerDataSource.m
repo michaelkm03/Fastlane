@@ -9,7 +9,6 @@
 #import "VHashtagPickerDataSource.h"
 #import "VHashtagOptionCell.h"
 #import "VWorkspaceTool.h"
-#import "VTextTypeTool.h"
 #import "VDependencyManager.h"
 
 @interface VHashtagPickerDataSource ()

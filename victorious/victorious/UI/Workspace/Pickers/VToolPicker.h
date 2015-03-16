@@ -16,8 +16,9 @@
  */
 @protocol VToolPicker <NSObject>
 
-- (void)setDataSource:(id<VToolPickerDataSource>)dataSource;
+@property (nonatomic, strong) id<VToolPickerDataSource> dataSource;
 
+#warning remove this in favor of data source property above:
 - (void)setTools:(NSArray /* That implement VWorkspaceTool */ *)tools; ///< The tools to chose from. Retains a copy of the array.
 
 @property (nonatomic, readonly) id <VWorkspaceTool> selectedTool; ///< The currently selected tool, if any.

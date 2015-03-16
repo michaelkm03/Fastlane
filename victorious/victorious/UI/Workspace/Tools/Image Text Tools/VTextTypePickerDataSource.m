@@ -1,25 +1,24 @@
 //
-//  VFilterPickerDataSource.m
+//  VTextTypePickerDataSource.m
 //  victorious
 //
 //  Created by Patrick Lynch on 3/16/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VFilterPickerDataSource.h"
+#import "VTextTypePickerDataSource.h"
 #import "VBasicToolPickerCell.h"
-#import "VWorkspaceTool.h"
-#import "VFilterTypeTool.h"
+#import "VTextTypeTool.h"
 #import "VDependencyManager.h"
 
-@interface VFilterPickerDataSource ()
+@interface VTextTypePickerDataSource ()
 
 @property (nonatomic, strong) NSArray *tools;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end
 
-@implementation VFilterPickerDataSource
+@implementation VTextTypePickerDataSource
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager tools:(NSArray *)tools
 {
@@ -48,9 +47,13 @@
 {
     NSString *identifier = [VBasicToolPickerCell suggestedReuseIdentifier];
     VBasicToolPickerCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
-    VFilterTypeTool *filterType = (VFilterTypeTool *)self.tools[ indexPath.row ];
-    cell.label.text = filterType.title;
-    cell.label.font = [self.dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
+    VTextTypeTool *textToolType = (VTextTypeTool *)self.tools[ indexPath.row ];
+    
+    UIFont *adjustedFont = [(UIFont *)textToolType.attributes[NSFontAttributeName] fontWithSize:cell.label.font.pointSize];
+    NSMutableDictionary *mutableAttributes = [[NSMutableDictionary alloc] initWithDictionary:textToolType.attributes];
+    mutableAttributes[NSFontAttributeName] = adjustedFont;
+    cell.label.attributedText = [[NSAttributedString alloc] initWithString:[textToolType.title uppercaseString]
+                                                                      attributes:mutableAttributes];
     return cell;
 }
 

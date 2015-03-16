@@ -19,6 +19,8 @@
 // Filters
 #import "VPhotoFilterSerialization.h"
 
+#import "VFilterPickerDataSource.h"
+
 static NSString * const kTitleKey = @"title";
 static NSString * const kPickerKey = @"picker";
 static NSString * const kFilterIndexKey = @"filterIndex";
@@ -73,7 +75,8 @@ static NSString * const kFilterIndexKey = @"filterIndex";
             return imageFilter;
         }];
         
-        [_toolPicker setTools:filterTools];
+        _toolPicker.dataSource = [[VFilterPickerDataSource alloc] initWithDependencyManager:dependencyManager
+                                                                                      tools:filterTools];
     }
     return self;
 }
