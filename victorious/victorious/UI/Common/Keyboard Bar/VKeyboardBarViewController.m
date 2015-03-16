@@ -250,6 +250,11 @@ static const NSInteger VDefaultKeyboardHeight = 51;
     }
 }
 
+- (BOOL)isFirstResponder
+{
+    return [self.textView isFirstResponder];
+}
+
 - (BOOL)becomeFirstResponder
 {
     return [self.textView becomeFirstResponder];
