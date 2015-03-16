@@ -1,0 +1,18 @@
+/* Class = "UILabel"; text = "Bacon ipsum dolor sit amet capicola fatback tongue tail pig sausage ribeye, bacon pancetta rump t-bone hamburger flank pork loin beef. Pork chop bacon t-bone pork loin ground round leberkas. Sirloin sausage doner, turducken pork belly capicola brisket. Cow ground round swine t-bone, ball tip meatball pastrami sausage strip steak. Bresaola doner venison, short ribs tail meatloaf pork ribeye."; ObjectID = "BwN-vC-fs2"; */
+"BwN-vC-fs2.text" = "Bacon ipsum dolor sit amet capicola graisse dorsale langue queue porc saucisse rôti, lard pancetta croupion t-bone hamburger flanc porc longe bœuf. Côtelette de porc bacon t-bone longe de porc hachis leberkäse. Aloyau saucisse doner, turducken poitrine de porc capicola poitrine. Hachis de bœuf t-bone de porc, boulettes pastrami saucisse faux-filet steak. Bresaola doner gibier, côtelettes queue pain de viande rôti de porc.";
+
+/* Class = "UILabel"; text = "Following"; ObjectID = "FfM-Pc-jJD"; */
+"FfM-Pc-jJD.text" = "Abonnements";
+
+/* Class = "UILabel"; text = "Followers"; ObjectID = "M55-46-8vZ"; */
+"M55-46-8vZ.text" = "Abonnés";
+
+/* Class = "UILabel"; text = "Location Label"; ObjectID = "S4j-eS-daM"; */
+"S4j-eS-daM.text" = "Label d'emplacement";
+
+/* Class = "UILabel"; text = "Some really long user name"; ObjectID = "hml-7T-io9"; */
+"hml-7T-io9.text" = "Un nom d'utilisateur vraiment long";
+
+/* Class = "UIButton"; normalTitle = "Edit Button"; ObjectID = "sNC-Lw-hXp"; */
+"sNC-Lw-hXp.normalTitle" = "Modifier le bouton";
+

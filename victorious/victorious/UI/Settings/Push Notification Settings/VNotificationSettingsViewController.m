@@ -47,8 +47,8 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
     [self.stateManager reset];
+    NSAssert(self.dependencyManager != nil, @"VNotificationSettingsViewController doesn't have an instance of dependency manager.");
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -261,6 +261,7 @@
         VNotificationSettingsTableSection *section = self.sections[ indexPath.section ];
         VNotificationSettingsTableRow *row = [section rowAtIndex:indexPath.row];
         cell.delegate = self;
+        cell.dependencyManager = self.dependencyManager;
         [cell setTitle:row.title value:row.isEnabled];
         return cell;
     }
