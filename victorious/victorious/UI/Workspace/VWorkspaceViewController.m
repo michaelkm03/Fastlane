@@ -38,11 +38,11 @@
 
 @import AVFoundation;
 
-@interface VWorkspaceViewController () <VToolControllerDelegate>
+@interface VWorkspaceViewController ()
 
 @property (nonatomic, strong, readwrite) NSURL *renderedMediaURL;
 
-@property (nonatomic, strong) VDependencyManager *dependencyManager;
+@property (nonatomic, readwrite) VDependencyManager *dependencyManager;
 
 @property (nonatomic, weak) IBOutlet UIToolbar *topToolbar;
 @property (nonatomic, weak) IBOutlet UIToolbar *bottomToolbar;
@@ -56,8 +56,6 @@
 @property (nonatomic, strong) UIViewController *inspectorToolViewController;
 
 @property (nonatomic, strong) VKeyboardNotificationManager *keyboardManager;
-
-@property (nonatomic, strong, readwrite) VToolController *toolController;
 
 @property (nonatomic, strong) NSDictionary *toolForBarButtonItemMap;
 @property (nonatomic, strong) NSDictionary *barButtonItemForToolMap;
@@ -286,17 +284,6 @@
     self.toolController.delegate = self;
 }
 
-- (void)setText:(NSString *)text
-{
-    _text = text;
-    
-    VTextToolController *toolController = [[VTextToolController alloc] initWithTools:[self.dependencyManager workspaceTools]];
-    toolController.text = text;
-    toolController.dependencyManager = self.dependencyManager;
-    self.toolController = toolController;
-    self.toolController.delegate = self;
-}
-
 #pragma mark - Target/Action
 
 - (IBAction)close:(id)sender
@@ -406,6 +393,8 @@
                      animationDuration:(NSTimeInterval)animationDuration
                         animationCurve:(UIViewAnimationCurve)animationCurve
 {
+    [self.delegate workspaceKeyboardWillShow:self];
+    
     CGRect keyboardEndFrame = [self.view convertRect:endFrame
                                             fromView:nil];
     CGRect overlap = CGRectIntersection(self.canvasView.frame, keyboardEndFrame);
@@ -445,6 +434,8 @@
                      animationDuration:(NSTimeInterval)animationDuration
                         animationCurve:(UIViewAnimationCurve)animationCurve
 {
+    [self.delegate workspaceKeyboardWillHide:self];
+    
     // Undo removing inspector constraints we did in willShowBlock
     self.inspectorToolViewController.view.translatesAutoresizingMaskIntoConstraints = NO;
     [self.inspectorConstraints enumerateObjectsUsingBlock:^(NSLayoutConstraint *constraint, NSUInteger idx, BOOL *stop)

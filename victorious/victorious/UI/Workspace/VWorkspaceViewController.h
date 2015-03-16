@@ -9,14 +9,19 @@
 #import <UIKit/UIKit.h>
 
 #import "VHasManagedDependencies.h"
+#import "VToolController.h"
 
 @class VToolController, VCanvasView, VWorkspaceViewController;
 
-@protocol VWorkspaceDelegate
+@protocol VWorkspaceDelegate <NSObject>
 
+@required
 - (void)workspaceDidPublish:(VWorkspaceViewController *)workspaceViewController;
-
 - (void)workspaceDidClose:(VWorkspaceViewController *)workspaceViewController;
+
+@optional
+- (void)workspaceKeyboardWillHide:(VWorkspaceViewController *)workspaceViewController;
+- (void)workspaceKeyboardWillShow:(VWorkspaceViewController *)workspaceViewController;
 
 @end
 
@@ -29,16 +34,17 @@
  A toolbar - Representing the currently selected top level tool. For images these are: Text, Filters, and crop.
  
  */
-@interface VWorkspaceViewController : UIViewController <VHasManagedDependancies>
+@interface VWorkspaceViewController : UIViewController <VHasManagedDependancies, VToolControllerDelegate>
 
 @property (nonatomic, copy) NSString *continueText;
 @property (nonatomic, assign) BOOL showCloseButton;
 
+@property (nonatomic, readonly) VDependencyManager *dependencyManager;
+
 @property (nonatomic, strong) UIImage *previewImage; ///< An image to use in the canvas.
 @property (nonatomic, strong) NSURL *mediaURL; ///< The image or video to use in this workspace.
-@property (nonatomic, strong) NSString *text; ///< The text to use in this workspace for text posts.
 
-@property (nonatomic, readonly) VToolController *toolController; ///< The toolController
+@property (nonatomic, strong) VToolController *toolController; ///< The toolController
 
 @property (nonatomic, assign) BOOL disabledToolbarWhileKeyboardIsVisible;
 

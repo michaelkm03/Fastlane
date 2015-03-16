@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "VWorkspaceTool.h"
+#import "VEditTextToolViewController.h"
 
 @interface VHashtagTool : NSObject <VWorkspaceTool>
 

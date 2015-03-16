@@ -8,19 +8,17 @@
 
 #import "VEditTextToolViewController.h"
 #import "VDependencyManager.h"
-#import "VTextLayoutHelper.h"
+#import "VTextPostViewController.h"
+#import "UIView+AutoLayout.h"
 
-@interface VEditTextToolViewController ()
+@interface VEditTextToolViewController () <UITextViewDelegate>
 
-@property (nonatomic, weak) IBOutlet UIView *textContainerView;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *textContainerViewHeightConstraint;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @property (nonatomic, weak) IBOutlet UIButton *buttonImageSearch;
 @property (nonatomic, weak) IBOutlet UIButton *buttonCamera;
 
-@property (nonatomic, weak) IBOutlet VTextLayoutHelper *textLayoutHelper;
-
-@property (nonatomic, strong) VDependencyManager *dependencyManager;
+@property (nonatomic, strong) VTextPostViewController *textPostViewController;
 
 @end
 
@@ -44,63 +42,38 @@
     self.buttonImageSearch.layer.cornerRadius = CGRectGetWidth(self.buttonImageSearch.frame) * 0.5;
     self.buttonImageSearch.backgroundColor = [self.dependencyManager colorForKey:@"color.link"];
     
-    [self updateLayout];
-}
-
-- (void)setText:(NSString *)text
-{    _text = text;
+    self.textPostViewController = [VTextPostViewController newWithDependencyManager:self.dependencyManager];
+    [self.view insertSubview:self.textPostViewController.view atIndex:0];
+    [self.view v_addFitToParentConstraintsToSubview:self.textPostViewController.view];
     
-
-    [self updateLayout];
+    self.buttonImageSearch.alpha = 0.0f;
+    self.buttonCamera.alpha = 0.0f;
+    
+    [self.textPostViewController startEditingText];
 }
 
 - (void)setHashtagText:(NSString *)hashtagText
 {
     _hashtagText = hashtagText;
-    
-    [self updateLayout];
 }
 
-- (void)updateLayout
+- (void)setText:(NSString *)text
 {
-    if ( self.textContainerView == nil )
-    {
-        return;
-    }
-    
-    NSDictionary *textAttributes = [self.textLayoutHelper textAttributesWithDependencyManager:self.dependencyManager];
-    
-    NSString *quotedText = [NSString stringWithFormat:@"\"%@\"", self.text];
-    [self.textLayoutHelper textLinesFromText:quotedText withAttributes:textAttributes
-                                    maxWidth:CGRectGetWidth(self.textContainerView.frame)];
-    
-    NSArray *textLines = [self.textLayoutHelper textLinesFromText:self.text
-                                                   withAttributes:textAttributes
-                                                         maxWidth:CGRectGetWidth(self.textContainerView.frame)];
-    
-    NSArray *textViews = [self.textLayoutHelper createTextFieldsFromTextLines:textLines
-                                                                   attributes:textAttributes
-                                                                    superview:self.textContainerView];
-    
-    if ( self.hashtagText != nil )
-    {
-        NSString *taggedText = [NSString stringWithFormat:@"#%@", self.hashtagText];
-        NSDictionary *hashtagTextAttributes = [self.textLayoutHelper hashtagTextAttributesWithDependencyManager:self.dependencyManager];
-        [self.textLayoutHelper updateHashtagLayoutWithText:taggedText
-                                superview:self.textContainerView
-                        bottmLineTextView:textViews.lastObject
-                               attributes:hashtagTextAttributes];
-    }
-    
-    if ( self.textContainerView.subviews.count > 0 )
-    {
-        NSArray *subviews = [self.textContainerView.subviews sortedArrayUsingComparator:^NSComparisonResult(UIView *viewA, UIView *viewB)
-        {
-            return [@(CGRectGetMaxY( viewA.frame )) compare:@(CGRectGetMaxY( viewB.frame ))];
-        }];
-        self.textContainerViewHeightConstraint.constant = CGRectGetMaxY(((UIView *)subviews.lastObject).frame);
-    }
-    [self.view layoutIfNeeded];
+    _text = text;
+}
+
+- (void)setImageControlsVisible:(BOOL)visible animated:(BOOL)animated
+{
+    [UIView animateWithDuration:1.5f
+                          delay:0.0f
+         usingSpringWithDamping:0.5f
+          initialSpringVelocity:0.5f
+                        options:kNilOptions animations:^
+     {
+         self.buttonImageSearch.alpha = visible ? 1.0f : 0.0f;
+         self.buttonCamera.alpha = visible ? 1.0f : 0.0f;
+     }
+                     completion:nil];
 }
 
 @end

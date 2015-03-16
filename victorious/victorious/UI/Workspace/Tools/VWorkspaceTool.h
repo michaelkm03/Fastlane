@@ -37,6 +37,8 @@
 
 - (void)setCanvasView:(VCanvasView *)canvasView;
 
+- (void)setSharedCanvasToolViewController:(UIViewController *)viewController;
+
 @property (nonatomic, strong, readonly) UIViewController *canvasToolViewController; ///< The tool to display in the canvas if any.
 @property (nonatomic, strong, readonly) UIViewController *inspectorToolViewController; ///< The tool to display in the inspector if any.
 

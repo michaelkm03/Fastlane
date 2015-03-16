@@ -51,7 +51,6 @@ extern NSString * const VDependencyManagerWorkspaceFlowKey;
 extern NSString * const VDependencyManagerTextWorkspaceFlowKey;
 extern NSString * const VDependencyManagerImageWorkspaceKey;
 extern NSString * const VDependencyManagerVideoWorkspaceKey;
-extern NSString * const VDependencyManagerEnterTextWorkspaceKey;
 extern NSString * const VDependencyManagerEditTextWorkspaceKey;
 
 /**

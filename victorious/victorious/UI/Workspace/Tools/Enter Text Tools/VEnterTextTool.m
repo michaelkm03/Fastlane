@@ -8,11 +8,11 @@
 
 #import "VEnterTextTool.h"
 #import "VDependencyManager.h"
-#import "VTextInputViewController.h"
+#import "VEditTextToolViewController.h"
 
 @interface VEnterTextTool ()
 
-@property (nonatomic, strong) VTextInputViewController *canvasToolViewController;
+@property (nonatomic, strong) VEditTextToolViewController *canvasToolViewController;
 
 @end
 
@@ -25,7 +25,7 @@
     self = [super init];
     if (self)
     {
-        _canvasToolViewController = [VTextInputViewController newWithDependencyManager:dependencyManager];
+        _canvasToolViewController = [VEditTextToolViewController newWithDependencyManager:dependencyManager];
     }
     return self;
 }

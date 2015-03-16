@@ -232,14 +232,6 @@ static NSString * const kVideoMuted = @"videoMuted";
 {
     return @{
              kClassNameKey: @"workspaceText",
-             VDependencyManagerEnterTextWorkspaceKey: @{
-                     kClassNameKey: @"workspace.screen",
-                     kToolsKey: @[
-                             @{
-                                 kClassNameKey: @"enterText.tool"
-                                 }
-                             ]
-                     },
              VDependencyManagerEditTextWorkspaceKey: @{
                      kClassNameKey: @"workspace.screen",
                      kToolsKey: @[

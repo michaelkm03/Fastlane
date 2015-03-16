@@ -7,8 +7,12 @@
 //
 
 #import "VTextWorkspaceFlowController.h"
-#import "VDependencyManager.h"
+#import "VDependencyManager+VWorkspaceTool.h"
 #import "VWorkspaceViewController.h"
+#import "VTextToolController.h"
+#import "VRootViewController.h"
+#import "VEditTextToolViewController.h"
+#import "VWorkspaceTool.h"
 
 typedef NS_ENUM( NSInteger, VTextWorkspaceFlowStateType)
 {
@@ -22,9 +26,8 @@ typedef NS_ENUM( NSInteger, VTextWorkspaceFlowStateType)
 
 @property (nonatomic, strong) UINavigationController *flowNavigationController;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
-
-@property (nonatomic, assign) NSInteger currentWorkspaceIndex;
-@property (nonatomic, strong) NSArray *workspaceViewControllers;
+@property (nonatomic, strong) VWorkspaceViewController *editTextWorkspaceViewController;
+@property (nonatomic, strong) VEditTextToolViewController *editTextToolViewController;
 
 @end
 
@@ -35,27 +38,36 @@ typedef NS_ENUM( NSInteger, VTextWorkspaceFlowStateType)
     self = [super init];
     if ( self )
     {
-        _dependencyManager = dependencyManager;
+        VDependencyManager *globalDependencyManager = [[VRootViewController rootViewController] dependencyManager];
+        NSDictionary *dictionary = [globalDependencyManager templateValueOfType:[NSDictionary class] forKey:@"workspaceFlowText"];
+        _dependencyManager = [globalDependencyManager childDependencyManagerWithAddedConfiguration:dictionary];
         _flowNavigationController = [[UINavigationController alloc] init];
         _flowNavigationController.navigationBarHidden = YES;
         //_flowNavigationController.delegate = self;
         
-        VWorkspaceViewController *enterTextWorkspaceViewController = (VWorkspaceViewController *)[self.dependencyManager viewControllerForKey:VDependencyManagerEnterTextWorkspaceKey];
-        enterTextWorkspaceViewController.text = [self randomSampleText];
-        enterTextWorkspaceViewController.continueText = NSLocalizedString( @"Next", @"" );
-        enterTextWorkspaceViewController.showCloseButton = YES;
-        enterTextWorkspaceViewController.delegate = self;
+        _editTextWorkspaceViewController = (VWorkspaceViewController *)[self.dependencyManager viewControllerForKey:VDependencyManagerEditTextWorkspaceKey];
+        _editTextWorkspaceViewController.continueText = NSLocalizedString( @"Publish", @"" );
+        _editTextWorkspaceViewController.showCloseButton = YES;
+        _editTextWorkspaceViewController.delegate = self;
         
-        VWorkspaceViewController *editTextWorkspaceViewController = (VWorkspaceViewController *)[self.dependencyManager viewControllerForKey:VDependencyManagerEditTextWorkspaceKey];
-        editTextWorkspaceViewController.text = [self randomSampleText];
-        editTextWorkspaceViewController.continueText = NSLocalizedString( @"Publish", @"" );
-        editTextWorkspaceViewController.delegate = self;
+        _editTextToolViewController = [VEditTextToolViewController newWithDependencyManager:dependencyManager];
+        NSDictionary *editTextWorkspace = [dependencyManager templateValueOfType:[NSDictionary class] forKey:@"editTextWorkspace"];
+        VDependencyManager *workspaceDependency = [dependencyManager childDependencyManagerWithAddedConfiguration:editTextWorkspace];
+        NSArray *workspaceTools = [workspaceDependency workspaceTools];
+        VTextToolController *toolController = [[VTextToolController alloc] initWithTools:workspaceTools];
+        toolController.delegate = _editTextWorkspaceViewController;
+        [toolController.tools enumerateObjectsUsingBlock:^(id<VWorkspaceTool> tool, NSUInteger idx, BOOL *stop)
+         {
+             if ( [tool respondsToSelector:@selector(setSharedCanvasToolViewController:)] )
+             {
+                 [tool setSharedCanvasToolViewController:_editTextToolViewController];
+             }
+        }];
+        toolController.text = [self randomSampleText];
+        toolController.dependencyManager = _editTextWorkspaceViewController.dependencyManager;
+        _editTextWorkspaceViewController.toolController = toolController;
         
-        self.workspaceViewControllers = @[ enterTextWorkspaceViewController, editTextWorkspaceViewController ];
-        
-        self.currentWorkspaceIndex = -1;
-        
-        [self showNextWorkspace];
+        [self.flowNavigationController pushViewController:_editTextWorkspaceViewController animated:NO];
     }
     return self;
 }
@@ -63,37 +75,6 @@ typedef NS_ENUM( NSInteger, VTextWorkspaceFlowStateType)
 - (NSString *)randomSampleText
 {
     return @"Here is my sample text that is quite long and is intended to span onto at least three lines so we can see how it looks.";
-}
-
-#pragma mark - Nvigation/State management
-
-- (void)showNextWorkspace
-{
-    if ( self.currentWorkspaceIndex + 1 < (NSInteger)self.workspaceViewControllers.count )
-    {
-        self.currentWorkspaceIndex++;
-        VWorkspaceViewController *workspaceToShow = self.workspaceViewControllers[ self.currentWorkspaceIndex ];
-        [self.flowNavigationController pushViewController:workspaceToShow animated:NO];
-    }
-    else
-    {
-        // Publish
-        NSLog( @"Publish" );
-    }
-}
-
-- (void)showPreviousWorkspace
-{
-    if ( self.currentWorkspaceIndex - 1 >= (NSInteger)0 )
-    {
-        self.currentWorkspaceIndex--;
-        VWorkspaceViewController *workspaceToShow = self.workspaceViewControllers[ self.currentWorkspaceIndex ];
-        [self.flowNavigationController popToViewController:workspaceToShow animated:NO];
-    }
-    else
-    {
-        [self.flowNavigationController dismissViewControllerAnimated:YES completion:nil];
-    }
 }
 
 #pragma mark - Property Accessors
@@ -117,12 +98,22 @@ typedef NS_ENUM( NSInteger, VTextWorkspaceFlowStateType)
 
 - (void)workspaceDidPublish:(VWorkspaceViewController *)workspaceViewController
 {
-    [self showNextWorkspace];
+    NSLog( @"Publish" );
 }
 
 - (void)workspaceDidClose:(VWorkspaceViewController *)workspaceViewController
 {
-    [self showPreviousWorkspace];
+    [self.flowNavigationController dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)workspaceKeyboardWillHide:(VWorkspaceViewController *)workspaceViewController
+{
+    [self.editTextToolViewController setImageControlsVisible:YES animated:YES];
+}
+
+- (void)workspaceKeyboardWillShow:(VWorkspaceViewController *)workspaceViewController
+{
+    [self.editTextToolViewController setImageControlsVisible:NO animated:YES];
 }
 
 @end

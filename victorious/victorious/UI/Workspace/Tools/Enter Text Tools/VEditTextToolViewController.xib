@@ -6,12 +6,9 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="VEditTextToolViewController">
             <connections>
-                <outlet property="buttonCamera" destination="dLi-o0-Las" id="NJH-T3-u2p"/>
-                <outlet property="buttonImageSearch" destination="Efv-dp-XtU" id="kkC-PE-HKa"/>
-                <outlet property="textContainerView" destination="pEp-Rf-r0e" id="gu5-c4-hxD"/>
-                <outlet property="textContainerViewHeightConstraint" destination="OYU-5A-Sv1" id="bBQ-HO-vfF"/>
-                <outlet property="textLayoutHelper" destination="Xgp-au-Bd8" id="QPJ-cC-vCu"/>
-                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+                <outlet property="buttonCamera" destination="S56-qz-eG1" id="cjl-sC-24c"/>
+                <outlet property="buttonImageSearch" destination="SbT-qW-4bj" id="n1z-RJ-RpN"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="oxH-em-0tZ"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -19,50 +16,38 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Efv-dp-XtU" userLabel="Button Image Search">
-                    <rect key="frame" x="496" y="549" width="36" height="36"/>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="S56-qz-eG1" userLabel="Button Camera">
+                    <rect key="frame" x="552" y="553" width="36" height="36"/>
                     <color key="backgroundColor" red="1" green="0.035351606610000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="36" id="Fkb-gU-Zq6"/>
-                        <constraint firstAttribute="height" constant="36" id="HRT-zg-ccS"/>
-                    </constraints>
-                    <state key="normal" image="textImageSearch">
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                </button>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pEp-Rf-r0e" userLabel="Text Container">
-                    <rect key="frame" x="10" y="275" width="580" height="50"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="50" id="OYU-5A-Sv1"/>
-                    </constraints>
-                </view>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dLi-o0-Las" userLabel="Button Camera">
-                    <rect key="frame" x="549" y="549" width="36" height="36"/>
-                    <color key="backgroundColor" red="1" green="0.035351606610000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="36" id="ZJt-Np-XUd"/>
-                        <constraint firstAttribute="width" constant="36" id="tIu-p6-hfu"/>
+                        <constraint firstAttribute="height" constant="36" id="Djo-As-n6h"/>
+                        <constraint firstAttribute="width" constant="36" id="NEp-QT-kpa"/>
                     </constraints>
                     <state key="normal" image="textCamera">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                 </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SbT-qW-4bj" userLabel="Button Image Search">
+                    <rect key="frame" x="504" y="553" width="36" height="36"/>
+                    <color key="backgroundColor" red="1" green="0.035351606610000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="36" id="sUe-Ob-gfw"/>
+                        <constraint firstAttribute="height" constant="36" id="uwg-gn-PZt"/>
+                    </constraints>
+                    <state key="normal" image="textImageSearch">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                </button>
             </subviews>
-            <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="dLi-o0-Las" secondAttribute="trailing" constant="15" id="2cV-UY-iMh"/>
-                <constraint firstAttribute="centerY" secondItem="pEp-Rf-r0e" secondAttribute="centerY" id="AUa-dY-eVx"/>
-                <constraint firstItem="dLi-o0-Las" firstAttribute="centerY" secondItem="Efv-dp-XtU" secondAttribute="centerY" id="ELu-v4-v3f"/>
-                <constraint firstAttribute="trailing" secondItem="pEp-Rf-r0e" secondAttribute="trailing" constant="10" id="Ila-ch-8jA"/>
-                <constraint firstItem="dLi-o0-Las" firstAttribute="leading" secondItem="Efv-dp-XtU" secondAttribute="trailing" constant="17" id="efg-4A-CzG"/>
-                <constraint firstItem="pEp-Rf-r0e" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="10" id="hPx-2c-Kfy"/>
-                <constraint firstAttribute="bottom" secondItem="dLi-o0-Las" secondAttribute="bottom" constant="15" id="ywj-5F-jeA"/>
+                <constraint firstItem="SbT-qW-4bj" firstAttribute="top" secondItem="S56-qz-eG1" secondAttribute="bottom" constant="-36" id="AxH-2a-Guc"/>
+                <constraint firstItem="S56-qz-eG1" firstAttribute="leading" secondItem="SbT-qW-4bj" secondAttribute="trailing" constant="12" id="gVp-NO-aRX"/>
+                <constraint firstAttribute="bottom" secondItem="S56-qz-eG1" secondAttribute="bottom" constant="11" id="tGF-1b-Bgv"/>
+                <constraint firstAttribute="trailing" secondItem="S56-qz-eG1" secondAttribute="trailing" constant="12" id="xQU-mN-4lS"/>
             </constraints>
-            <nil key="simulatedStatusBarMetrics"/>
-            <nil key="simulatedTopBarMetrics"/>
+            <point key="canvasLocation" x="774" y="689"/>
         </view>
-        <customObject id="Xgp-au-Bd8" customClass="VTextLayoutHelper"/>
     </objects>
     <resources>
         <image name="textCamera" width="21" height="17"/>

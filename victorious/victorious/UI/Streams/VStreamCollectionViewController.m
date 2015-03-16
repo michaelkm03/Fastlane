@@ -213,7 +213,7 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
     [self updateCurrentlyPlayingMediaAsset];
     
 #warning TESTING ONLY: Jumpts right to text workspace
-    //[self presentCreateFlowWithTextOnly];
+    [self presentCreateFlowWithTextOnly];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -350,28 +350,12 @@ NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"create
 {
     [[VTrackingManager sharedInstance] setValue:VTrackingValueCreatePost forSessionParameterWithKey:VTrackingKeyContext];
     
-    NSDictionary *dependencies = @{};
+    NSDictionary *dependencies;// = self.dependencyManager templateValueOfType:[NSDictionary class] forKey:<#(NSString *)#>
     VTextWorkspaceFlowController *workspaceFlowController = [self.dependencyManager templateValueOfType:[VTextWorkspaceFlowController class]
                                                                                              forKey:VDependencyManagerTextWorkspaceFlowKey
                                                                               withAddedDependencies:dependencies];
     
     [self presentViewController:workspaceFlowController.flowRootViewController animated:YES completion:nil];
-}
-
-- (void)presentCreateTextOnlyFlow
-{
-    [[VTrackingManager sharedInstance] setValue:VTrackingValueCreatePost forSessionParameterWithKey:VTrackingKeyContext];
-    
-    NSDictionary *dependencies = @{};
-    VWorkspaceFlowController *workspaceFlowController = [self.dependencyManager templateValueOfType:[VWorkspaceFlowController class]
-                                                                                             forKey:VDependencyManagerWorkspaceFlowKey
-                                                                              withAddedDependencies:dependencies];
-    workspaceFlowController.videoEnabled = YES;
-    workspaceFlowController.delegate = self;
-    
-    [self presentViewController:workspaceFlowController.flowRootViewController
-                       animated:YES
-                     completion:nil];
 }
 
 - (void)presentCreateFlowWithInitialCaptureState:(VWorkspaceFlowControllerInitialCaptureState)initialCaptureState

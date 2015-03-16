@@ -36,9 +36,13 @@ static NSString * const kImageURLKey = @"imageURL";
         _title = [dependencyManager stringForKey:kTitleKey];
         _icon = [UIImage imageNamed:[dependencyManager templateValueOfType:[NSDictionary class] forKey:kIconKey][kImageURLKey]];
         _iconSelected = [UIImage imageNamed:[dependencyManager templateValueOfType:[NSDictionary class] forKey:kIconSelectedKey][kImageURLKey]];
-        _canvasToolViewController = [VEditTextToolViewController newWithDependencyManager:dependencyManager];
     }
     return self;
+}
+
+- (void)setSharedCanvasToolViewController:(UIViewController *)viewController
+{
+    _canvasToolViewController = (VEditTextToolViewController *)viewController;
 }
 
 @end

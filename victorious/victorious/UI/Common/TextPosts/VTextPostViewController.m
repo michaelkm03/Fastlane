@@ -1,12 +1,12 @@
 //
-//  VTextInputViewController.m
+//  VTextPostViewController.m
 //  victorious
 //
 //  Created by Patrick Lynch on 3/11/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VTextInputViewController.h"
+#import "VTextPostViewController.h"
 #import "VTextLayoutHelper.h"
 #import "VTextBackgroundView.h"
 #import "VDependencyManager.h"
@@ -15,7 +15,7 @@ static const CGFloat kTextLineHeight = 35.0f;
 static const CGFloat kTextBaselineOffsetMultiplier = 0.371f;
 static const NSUInteger kMaxTextLength = 200;
 
-@interface VTextInputViewController () <UITextViewDelegate>
+@interface VTextPostViewController () <UITextViewDelegate>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
@@ -23,19 +23,37 @@ static const NSUInteger kMaxTextLength = 200;
 
 @property (nonatomic, weak) IBOutlet UITextView *textView;
 @property (nonatomic, weak) IBOutlet VTextBackgroundView *backgroundView;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *textContainerViewHeightConstraint;
 
 @end
 
-@implementation VTextInputViewController
+@implementation VTextPostViewController
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     NSString *nibName = NSStringFromClass([self class]);
     NSBundle *bundle = [NSBundle bundleForClass:[self class]];
-    VTextInputViewController *viewController = [[VTextInputViewController alloc] initWithNibName:nibName bundle:bundle];
+    VTextPostViewController *viewController = [[VTextPostViewController alloc] initWithNibName:nibName bundle:bundle];
     viewController.dependencyManager = dependencyManager;
     return viewController;
+}
+
+- (void)startEditingText
+{
+    [self.textView becomeFirstResponder];
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    self.text = @"Enter your text!";
+}
+
+- (void)setHashtagText:(NSString *)hashtagText
+{
+    _hashtagText = hashtagText;
+    
+    [self updateTextBackground];
 }
 
 - (void)setText:(NSString *)text
@@ -109,7 +127,13 @@ static const NSUInteger kMaxTextLength = 200;
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
-    return ![text isEqualToString:@"\n"] && textView.text.length + text.length < kMaxTextLength;
+    if ( [text isEqualToString:@"\n"] )
+    {
+        [textView resignFirstResponder];
+        return NO;
+    }
+    
+    return textView.text.length + text.length < kMaxTextLength;
 }
 
 @end
