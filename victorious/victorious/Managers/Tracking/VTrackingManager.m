@@ -10,7 +10,8 @@
 #import "VTrackingEvent.h"
 
 #define TRACKING_LOGGING_ENABLED 0
-#define TRACKING_ALERTS_ENABLED 0
+#define TRACKING_EVENT_ALERTS_ENABLED 0
+#define TRACKING_START_END_ALERTS_ENABLED 0
 #define TRACKING_QUEUE_LOGGING_ENABLED 0
 #define TRACKING_SESSION_PARAMETER_LOGGING_ENABLED 0
 #define TRACKING_VIEW_SESSION_LOGGING_ENABLED 0
@@ -76,6 +77,22 @@
     return output;
 }
 
+- (BOOL)showTrackingEventAlerts
+{
+#if TRACKING_EVENT_ALERTS_ENABLED
+    return YES;
+#endif
+    return _showTrackingEventAlerts;
+}
+
+- (BOOL)showTrackingStartEndAlerts
+{
+#if TRACKING_START_END_ALERTS_ENABLED
+    return YES;
+#endif
+    return _showTrackingStartEndAlerts;
+}
+
 #pragma mark - Session Parameters
 
 - (void)setValue:(id)value forSessionParameterWithKey:(NSString *)key
@@ -113,17 +130,18 @@
     NSLog( @"*** TRACKING (%lu delegates) ***\n>>> %@ <<< %@\n", (unsigned long)self.delegates.count, eventName, [self stringFromDictionary:completeParams] );
 #endif
     
-#if TRACKING_ALERTS_ENABLED
-    NSString *message = @"";
-    for ( NSString *key in completeParams )
+    if ( self.showTrackingEventAlerts )
     {
-        message = [message stringByAppendingFormat:@"\n%@: %@", key, completeParams[key]];
+        NSString *message = @"";
+        for ( NSString *key in completeParams )
+        {
+            message = [message stringByAppendingFormat:@"\n%@: %@", key, completeParams[key]];
+        }
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+                       {
+                           [[[UIAlertView alloc] initWithTitle:eventName message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+                       });
     }
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
-                   {
-                       [[[UIAlertView alloc] initWithTitle:eventName message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
-                   });
-#endif
     
     [self.delegates enumerateObjectsUsingBlock:^(id<VTrackingDelegate> delegate, NSUInteger idx, BOOL *stop)
      {
@@ -201,9 +219,14 @@
 {
     [self endEvent:eventName];
     
-#if TRACKING_VIEW_SESSION_LOGGING_ENABLED
-    NSLog( @"Event Started: %@ to %lu delegates", eventName, (unsigned long)self.delegates.count);
-#endif
+    if ( self.showTrackingStartEndAlerts )
+    {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+                       {
+                           [[[UIAlertView alloc] initWithTitle:@"Event Started" message:eventName delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+                       });
+        NSLog( @"Event Started: %@ to %lu delegates", eventName, (unsigned long)self.delegates.count);
+    }
     
     VTrackingEvent *event = [[VTrackingEvent alloc] initWithName:eventName parameters:parameters eventId:nil];
     self.durationEvents[ eventName ] = event;
@@ -222,9 +245,15 @@
     __block VTrackingEvent *event = self.durationEvents[ eventName ];
     if ( event )
     {
-#if TRACKING_VIEW_SESSION_LOGGING_ENABLED
-        NSLog( @"Event Ended: %@ to %lu delegates", eventName, (unsigned long)self.delegates.count);
-#endif
+        if ( self.showTrackingStartEndAlerts )
+        {
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+                           {
+                               [[[UIAlertView alloc] initWithTitle:@"Event Ended" message:eventName delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+                           });
+            NSLog( @"Event Ended: %@ to %lu delegates", eventName, (unsigned long)self.delegates.count);
+        }
+        
         __block NSTimeInterval duration = abs( [event.dateCreated timeIntervalSinceNow] );
         [self.delegates enumerateObjectsUsingBlock:^(id<VTrackingDelegate> delegate, NSUInteger idx, BOOL *stop)
          {

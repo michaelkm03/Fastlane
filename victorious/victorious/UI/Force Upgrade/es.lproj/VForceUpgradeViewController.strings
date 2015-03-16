@@ -1,6 +1,6 @@
-/* Class = "IBUIButton"; normalTitle = "Upgrade Now"; ObjectID = "Oqk-xD-qdg"; */
+/* Class = "UIButton"; normalTitle = "Upgrade Now"; ObjectID = "Oqk-xD-qdg"; */
 "Oqk-xD-qdg.normalTitle" = "Actualizar ahora";
 
-/* Class = "IBUILabel"; text = "TAKE ADVANTAGE OF MORE AWESOME FEATURES IN THE NEWEST VERSION."; ObjectID = "goh-WL-wbz"; */
-"goh-WL-wbz.text" = "APROVECHA MÁS CARACTERÍSTICAS ASOMBROSAS EN LA VERSIÓN MÁS RECIENTE";
+/* Class = "UILabel"; text = "TAKE ADVANTAGE OF MORE AWESOME FEATURES IN THE NEWEST VERSION."; ObjectID = "goh-WL-wbz"; */
+"goh-WL-wbz.text" = "APROVECHA MÁS OPCIONES INCREÍBLES EN LA NUEVA VERSIÓN.";
 

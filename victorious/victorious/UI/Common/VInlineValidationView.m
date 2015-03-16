@@ -64,7 +64,7 @@
     self.inlineValidaitonLabel = [[UILabel alloc] initWithFrame:self.bounds];
     self.inlineValidaitonLabel.translatesAutoresizingMaskIntoConstraints = NO;
     self.inlineValidaitonLabel.textAlignment = NSTextAlignmentLeft;
-    self.inlineValidaitonLabel.text = @"Invalid email";
+    self.inlineValidaitonLabel.text = NSLocalizedString(@"Invalid email address", @"");
     self.inlineValidaitonLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel4Font];
     self.inlineValidaitonLabel.textColor = [UIColor redColor];
     [self addSubview:self.inlineValidaitonLabel];

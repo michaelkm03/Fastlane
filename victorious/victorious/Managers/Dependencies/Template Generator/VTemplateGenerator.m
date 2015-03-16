@@ -18,6 +18,7 @@
 #import "VTranslucentBackground.h"
 #import "VSolidColorBackground.h"
 #import "VTabMenuViewController.h"
+#import "VDependencyManager+VNavigationMenuItem.h"
 
 #define BOTTOM_NAV_ENABLED 0
 #define CHANNELS_WITH_GROUP_STREAM_ENABLED 0
@@ -187,7 +188,6 @@ static NSString * const kVideoMuted = @"videoMuted";
 {
     NSDictionary *kSelectorKey = @{
                                    kClassNameKey: @"basic.multiScreenSelector",
-                                   VDependencyManagerBackgroundColorKey: self.accentColor,
                                    };
     
     if ( ROUNDED_TOP_NAV_ENABLED )
@@ -447,13 +447,7 @@ static NSString * const kVideoMuted = @"videoMuted";
             @[
                 [self inboxMenuItem],
                 [self profileMenuItem],
-                @{
-                    kIdentifierKey: @"Menu Settings",
-                    kTitleKey: NSLocalizedString(@"Settings", @""),
-                    kDestinationKey: @{
-                        kClassNameKey: @"settings.screen"
-                    }
-                }
+                [self settingsMenuItem],
             ]
         ]
     };
@@ -477,7 +471,7 @@ static NSString * const kVideoMuted = @"videoMuted";
              kTitleKey: NSLocalizedString(@"Home", @""),
              kDestinationKey: [self homeScreen],
              kIconKey: @{
-                     VDependencyManagerImageURLKey: @"home",
+                     VDependencyManagerImageURLKey: @"D_home",
                      }
              };
 }
@@ -487,7 +481,7 @@ static NSString * const kVideoMuted = @"videoMuted";
     return @{
              kTitleKey: NSLocalizedString(@"Create", @""),
              kIconKey: @{
-                     VDependencyManagerImageURLKey: @"create",
+                     VDependencyManagerImageURLKey: @"D_create",
                      },
              kDestinationKey: [self workspaceFlowComponent],
              };
@@ -495,16 +489,35 @@ static NSString * const kVideoMuted = @"videoMuted";
 
 - (NSDictionary *)profileMenuItem
 {
-    return @{
-             kIdentifierKey: @"Menu Profile",
-             kTitleKey: NSLocalizedString(@"Profile", @""),
-             kIconKey: @{
-                     VDependencyManagerImageURLKey: @"profile",
-                     },
-             kDestinationKey: @{
-                     kClassNameKey: @"currentUserProfile.screen"
-                     }
-             };
+    if (BOTTOM_NAV_ENABLED)
+    {
+        return @{
+                 kIdentifierKey: @"Menu Profile",
+                 kTitleKey: NSLocalizedString(@"Profile", @""),
+                 kDestinationKey: @{
+                         kClassNameKey: @"currentUserProfile.screen"
+                         },
+                 kIconKey: @{
+                         VDependencyManagerImageURLKey: @"D_profile",
+                         },
+                 VDependencyManagerAccessoryScreensKey: @[
+                         [self settingsMenuItem],
+                         ],
+                 };
+    }
+    else
+    {
+        return @{
+                 kIdentifierKey: @"Menu Profile",
+                 kTitleKey: NSLocalizedString(@"Profile", @""),
+                 kDestinationKey: @{
+                         kClassNameKey: @"currentUserProfile.screen"
+                         },
+                 kIconKey: @{
+                         VDependencyManagerImageURLKey: @"D_profile",
+                         },
+                 };
+    }
 }
 
 - (NSDictionary *)inboxMenuItem
@@ -513,7 +526,7 @@ static NSString * const kVideoMuted = @"videoMuted";
              kIdentifierKey: @"Menu Inbox",
              kTitleKey: NSLocalizedString(@"Inbox", @""),
              kIconKey: @{
-                     VDependencyManagerImageURLKey: @"inbox",
+                     VDependencyManagerImageURLKey: @"D_inbox",
                      },
              kDestinationKey: @{
                      kClassNameKey: @"inbox.screen"
@@ -521,10 +534,29 @@ static NSString * const kVideoMuted = @"videoMuted";
              };
 }
 
+- (NSDictionary *)settingsMenuItem
+{
+    return @{
+             kIdentifierKey: @"Menu Settings",
+             kTitleKey: NSLocalizedString(@"Settings", @""),
+             kDestinationKey: @{
+                     kClassNameKey: @"settings.screen"
+                     },
+             kIconKey: @{
+                     VDependencyManagerImageURLKey: @"D_settings",
+                     },
+             };
+}
+
 - (NSString *)urlPathForStreamCategories:(NSArray *)categories
 {
     NSString *categoryString = [categories componentsJoinedByString:@","] ?: @"0";
     return [NSString stringWithFormat:@"/api/sequence/detail_list_by_category/%@/%%%%PAGE_NUM%%%%/%%%%ITEMS_PER_PAGE%%%%", categoryString];
+}
+
+- (NSDictionary *)currentUserProfileScreen
+{
+    return @{ kClassNameKey: @"currentUserProfile.screen" };
 }
 
 - (NSDictionary *)profileScreen
@@ -613,7 +645,7 @@ static NSString * const kVideoMuted = @"videoMuted";
         NSDictionary *componentBase = @{ kIdentifierKey: @"Menu Channels",
                                          kTitleKey: NSLocalizedString(@"Channels", @""),
                                          kIconKey: @{
-                                                 VDependencyManagerImageURLKey: @"channels",
+                                                 VDependencyManagerImageURLKey: @"D_channels",
                                                  },
                                          kDestinationKey: @{
                                                  kClassNameKey: @"groupedStream.screen",
@@ -630,7 +662,7 @@ static NSString * const kVideoMuted = @"videoMuted";
         return @{ kIdentifierKey: @"Menu Channels",
                   kTitleKey: NSLocalizedString(@"Channels", @""),
                   kIconKey: @{
-                          VDependencyManagerImageURLKey: @"channels",
+                          VDependencyManagerImageURLKey: @"D_channels",
                           },
                   kDestinationKey: @{
                           kClassNameKey: @"directory.screen",

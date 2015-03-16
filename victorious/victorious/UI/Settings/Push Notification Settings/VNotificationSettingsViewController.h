@@ -6,8 +6,12 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "VHasManagedDependencies.h"
+
 #import <UIKit/UIKit.h>
 
-@interface VNotificationSettingsViewController : UITableViewController
+@interface VNotificationSettingsViewController : UITableViewController <VHasManagedDependancies>
+
+@property (nonatomic, strong) VDependencyManager *dependencyManager; ///< Must be set prior to display
 
 @end

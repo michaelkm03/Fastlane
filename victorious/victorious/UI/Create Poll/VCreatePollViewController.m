@@ -174,6 +174,8 @@ static char KVOContext;
     [self.postButton setEnabled:YES];
 
     [self updateViewState];
+    
+#warning configure cancle button
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -394,9 +396,14 @@ static char KVOContext;
     
     self.didPublish = YES;
     
-    [self.navigationController popViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
     [[NSFileManager defaultManager] removeItemAtURL:self.firstMediaURL error:nil];
     [[NSFileManager defaultManager] removeItemAtURL:self.secondMediaURL error:nil];
+    if (self.completionHandler)
+    {
+        self.completionHandler(VCreatePollViewControllerResultDone);
+        self.completionHandler = nil;
+    }
 }
 
 - (IBAction)searchImageAction:(id)sender
@@ -449,6 +456,18 @@ static char KVOContext;
     contentInputAccessory.textInputView = textView;
     contentInputAccessory.tintColor = [UIColor colorWithRed:0.85f green:0.86f blue:0.87f alpha:1.0f];
     return contentInputAccessory;
+}
+
+- (IBAction)cancel:(id)sender
+{
+    if (self.completionHandler)
+    {
+        self.completionHandler(VCreatePollViewControllerResultCancelled);
+    }
+    else
+    {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
 }
 
 #pragma mark - UITextViewDelegate

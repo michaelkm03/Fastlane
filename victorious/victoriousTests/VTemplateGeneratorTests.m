@@ -40,9 +40,18 @@
 {
     NSDictionary *scaffold = self.template[@"scaffold"];
     
-    NSString *expectedName = @"sideMenu.scaffold";
+    NSArray *expectedNames = @[@"sideMenu.scaffold", @"tabMenu.scaffold"];
     NSString *actualName = scaffold[@"name"];
-    XCTAssertEqualObjects(expectedName, actualName);
+    __block BOOL foundName = NO;
+    [expectedNames enumerateObjectsUsingBlock:^(NSString *expectedName, NSUInteger idx, BOOL *stop)
+    {
+        foundName = [expectedName isEqualToString:actualName];
+        if (foundName)
+        {
+            *stop = YES;
+        };
+    }];
+    XCTAssertTrue(foundName);
 }
 
 - (void)testMiscPropertyFromInitData

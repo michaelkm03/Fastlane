@@ -15,6 +15,8 @@
 #define CGFLOAT_VALUE floatValue
 #endif
 
+typedef BOOL (^TypeTest)(Class);
+
 static NSString * const kTemplateClassesFilename = @"TemplateClasses";
 static NSString * const kPlistFileExtension = @"plist";
 
@@ -214,21 +216,45 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
 
 - (NSArray *)arrayOfValuesOfType:(Class)expectedType forKey:(NSString *)key
 {
-    return [self arrayOfValuesOfType:expectedType
-                              forKey:key
-                withTranslationBlock:^id(__unsafe_unretained Class expectedType, VDependencyManager *dependencyManager)
+    TypeTest typeTest = [self typeTestForType:expectedType];
+    return [self arrayOfValuesWhereTypePassesTest:typeTest
+                                           forKey:key
+                             withTranslationBlock:^id(VDependencyManager *dependencyManager)
     {
-        return [self objectOfType:expectedType withDependencyManager:dependencyManager];
+        return [self objectWhereTypePassesTest:typeTest withDependencyManager:dependencyManager];
     }];
 }
 
 - (NSArray *)arrayOfSingletonValuesOfType:(Class)expectedType forKey:(NSString *)key
 {
-    return [self arrayOfValuesOfType:expectedType
-                              forKey:key
-                withTranslationBlock:^id(__unsafe_unretained Class expectedType, VDependencyManager *dependencyManager)
+    TypeTest typeTest = [self typeTestForType:expectedType];
+    return [self arrayOfValuesWhereTypePassesTest:typeTest
+                                           forKey:key
+                             withTranslationBlock:^id(VDependencyManager *dependencyManager)
     {
-        return [self singletonObjectOfType:expectedType withDependencyManager:dependencyManager];
+        return [self singletonObjectWhereTypePassesTest:typeTest withDependencyManager:dependencyManager];
+    }];
+}
+
+- (NSArray *)arrayOfValuesConformingToProtocol:(Protocol *)protocol forKey:(NSString *)key
+{
+    TypeTest typeTest = ^(Class type) { return [type conformsToProtocol:protocol]; };
+    return [self arrayOfValuesWhereTypePassesTest:typeTest
+                                           forKey:key
+                             withTranslationBlock:^id(VDependencyManager *dependencyManager)
+    {
+        return [self objectWhereTypePassesTest:typeTest withDependencyManager:dependencyManager];
+    }];
+}
+
+- (NSArray *)arrayOfSingletonValuesConformingToProtocol:(Protocol *)protocol forKey:(NSString *)key
+{
+    TypeTest typeTest = ^(Class type) { return [type conformsToProtocol:protocol]; };
+    return [self arrayOfValuesWhereTypePassesTest:typeTest
+                                           forKey:key
+                             withTranslationBlock:^id(VDependencyManager *dependencyManager)
+    {
+        return [self singletonObjectWhereTypePassesTest:typeTest withDependencyManager:dependencyManager];
     }];
 }
 
@@ -236,10 +262,11 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
  Returns an array of dependent objects created from a JSON array
  
  @param array An array pulled straight from within the template configuration
- @param translation A block that, given an expected type and a dependency manager instance, will return an object generated with that dependency manager
+ @param translation A block that, given a dependency manager instance, will return an object generated with that dependency manager
  */
-- (NSArray *)arrayOfValuesOfType:(Class)expectedType forKey:(NSString *)key withTranslationBlock:(id(^)(Class, VDependencyManager *))translation
+- (NSArray *)arrayOfValuesWhereTypePassesTest:(TypeTest)typeTest forKey:(NSString *)key withTranslationBlock:(id(^)(VDependencyManager *))translation
 {
+    NSParameterAssert(typeTest != nil);
     NSParameterAssert(translation != nil);
     NSArray *templateArray = [self arrayForKey:key];
     
@@ -257,11 +284,11 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
         {
             dependencyManager = [self childDependencyManagerForID:[(NSDictionary *)templateObject objectForKey:kReferenceIDKey]];
         }
-        else if ( ![expectedType isSubclassOfClass:[NSDictionary class]] && [templateObject isKindOfClass:[NSDictionary class]] )
+        else if ( !typeTest([NSDictionary class]) && [templateObject isKindOfClass:[NSDictionary class]] )
         {
             dependencyManager = [self childDependencyManagerForID:[(NSDictionary *)templateObject objectForKey:kIDKey]];
         }
-        else if ( [templateObject isKindOfClass:expectedType] )
+        else if ( typeTest([templateObject class]) )
         {
             [returnValue addObject:templateObject];
             continue;
@@ -269,7 +296,7 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
         
         if ( dependencyManager != nil )
         {
-            id realObject = translation(expectedType, dependencyManager);
+            id realObject = translation(dependencyManager);
             if ( realObject != nil )
             {
                 [returnValue addObject:realObject];
@@ -283,24 +310,29 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
 
 - (id)singletonObjectOfType:(Class)expectedType forKey:(NSString *)key
 {
+    return [self singletonObjectWhereTypePassesTest:[self typeTestForType:expectedType] forKey:key];
+}
+
+- (id)singletonObjectWhereTypePassesTest:(TypeTest)typeTest forKey:(NSString *)key
+{
     id value = self.configuration[key];
     
     if (value == nil)
     {
-        return [self.parentManager singletonObjectOfType:expectedType forKey:key];
+        return [self.parentManager singletonObjectWhereTypePassesTest:typeTest forKey:key];
     }
     
     if ( [value isKindOfClass:[NSDictionary class]] && [(NSDictionary *)value objectForKey:kReferenceIDKey] != nil )
     {
         VDependencyManager *dependencyManager = [self childDependencyManagerForID:[(NSDictionary *)value objectForKey:kReferenceIDKey]];
-        return [self singletonObjectOfType:expectedType withDependencyManager:dependencyManager];
+        return [self singletonObjectWhereTypePassesTest:typeTest withDependencyManager:dependencyManager];
     }
-    else if ( ![expectedType isSubclassOfClass:[NSDictionary class]] && [value isKindOfClass:[NSDictionary class]] )
+    else if ( !typeTest([NSDictionary class]) && [value isKindOfClass:[NSDictionary class]] )
     {
         VDependencyManager *dependencyManager = [self childDependencyManagerForID:[(NSDictionary *)value valueForKey:kIDKey]];
-        return [self singletonObjectOfType:expectedType withDependencyManager:dependencyManager];
+        return [self singletonObjectWhereTypePassesTest:typeTest withDependencyManager:dependencyManager];
     }
-    else if ([value isKindOfClass:expectedType])
+    else if ( typeTest([value class]) )
     {
         return value;
     }
@@ -312,7 +344,7 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
  
  @seealso -singletonObjectForID:
  */
-- (id)singletonObjectOfType:(Class)expectedType withDependencyManager:(VDependencyManager *)dependencyManager
+- (id)singletonObjectWhereTypePassesTest:(TypeTest)typeTest withDependencyManager:(VDependencyManager *)dependencyManager
 {
     NSString *objectID = [dependencyManager stringForKey:kIDKey];
     if ( objectID == nil )
@@ -323,7 +355,7 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
     
     if ( singleton == nil )
     {
-        singleton = [self objectOfType:expectedType withDependencyManager:dependencyManager];
+        singleton = [self objectWhereTypePassesTest:typeTest withDependencyManager:dependencyManager];
         if ( singleton != nil )
         {
             [self setSingletonObject:singleton forID:objectID];
@@ -389,28 +421,48 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
 
 - (id)templateValueOfType:(Class)expectedType forKey:(NSString *)key withAddedDependencies:(NSDictionary *)dependencies
 {
+    return [self templateValueWhereTypePassesTest:[self typeTestForType:expectedType]
+                                           forKey:key
+                            withAddedDependencies:dependencies];
+}
+
+- (id)templateValueConformingToProtocol:(Protocol *)protocol forKey:(NSString *)key
+{
+    return [self templateValueConformingToProtocol:protocol forKey:key withAddedDependencies:nil];
+}
+
+- (id)templateValueConformingToProtocol:(Protocol *)protocol forKey:(NSString *)key withAddedDependencies:(NSDictionary *)dependencies
+{
+    return [self templateValueWhereTypePassesTest:^(Class type) { return [type conformsToProtocol:protocol]; }
+                                           forKey:key
+                            withAddedDependencies:dependencies];
+}
+
+- (id)templateValueWhereTypePassesTest:(TypeTest)typeTest forKey:(NSString *)key withAddedDependencies:(NSDictionary *)dependencies
+{
+    NSParameterAssert(typeTest != nil);
     id value = self.configuration[key];
     
     if (value == nil)
     {
-        return [self.parentManager templateValueOfType:expectedType forKey:key withAddedDependencies:dependencies];
+        return [self.parentManager templateValueWhereTypePassesTest:typeTest forKey:key withAddedDependencies:dependencies];
     }
     
     if ( [value isKindOfClass:[NSDictionary class]] && [(NSDictionary *)value objectForKey:kReferenceIDKey] != nil )
     {
         VDependencyManager *dependencyManager = [self childDependencyManagerForID:[(NSDictionary *)value objectForKey:kReferenceIDKey]];
-        return [self objectOfType:expectedType withDependencyManager:dependencyManager];
+        return [self objectWhereTypePassesTest:typeTest withDependencyManager:dependencyManager];
     }
-    else if ( [value isKindOfClass:[NSDictionary class]] && ![expectedType isSubclassOfClass:[NSDictionary class]] )
+    else if ( [value isKindOfClass:[NSDictionary class]] && !typeTest([NSDictionary class]) )
     {
         VDependencyManager *dependencyManager = [self childDependencyManagerForID:[value valueForKey:kIDKey]];
         if ( dependencies != nil )
         {
             dependencyManager = [dependencyManager childDependencyManagerWithAddedConfiguration:dependencies];
         }
-        return [self objectOfType:expectedType withDependencyManager:dependencyManager];
+        return [self objectWhereTypePassesTest:typeTest withDependencyManager:dependencyManager];
     }
-    else if ( [value isKindOfClass:expectedType] )
+    else if ( typeTest([value class]) )
     {
         return value;
     }
@@ -420,9 +472,15 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
 
 - (id)objectOfType:(Class)expectedType withDependencyManager:(VDependencyManager *)dependencyManager
 {
+    return [self objectWhereTypePassesTest:[self typeTestForType:expectedType] withDependencyManager:dependencyManager];
+}
+
+- (id)objectWhereTypePassesTest:(TypeTest)typeTest withDependencyManager:(VDependencyManager *)dependencyManager
+{
+    NSParameterAssert(typeTest != nil);
     Class templateClass = [self classWithTemplateName:[dependencyManager stringForKey:kClassNameKey]];
     
-    if ([templateClass isSubclassOfClass:expectedType])
+    if (typeTest(templateClass))
     {
         id object;
         
@@ -447,6 +505,26 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
     }
     
     return nil;
+}
+
+/**
+ Returns a block that accepts a type and returns 
+ YES if that type matches an expected type
+ */
+- (BOOL(^)(Class))typeTestForType:(Class)expectedType
+{
+    return ^BOOL(Class type)
+    {
+        if ( [type isSubclassOfClass:[NSDictionary class]] )
+        {
+            // NSDictionary should only pass the test if it's explicitly asked for (i.e. if expectedType is NSObject and type is NSDictionary, we want to return NO)
+            return [expectedType isSubclassOfClass:[NSDictionary class]];
+        }
+        else
+        {
+            return [type isSubclassOfClass:expectedType];
+        }
+    };
 }
 
 #pragma mark - Helpers

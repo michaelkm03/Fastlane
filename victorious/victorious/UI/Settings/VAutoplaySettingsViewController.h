@@ -12,6 +12,6 @@
  View controller for a table view in the settings section that
  offers UI for changing video settings.
  */
-@interface VAutoplaySettingsViewController : UIViewController
+@interface VAutoplaySettingsViewController : UITableViewController
 
 @end
