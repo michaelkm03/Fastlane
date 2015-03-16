@@ -74,53 +74,20 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
-    [self.KVOController observe:self.player
-                        keyPath:NSStringFromSelector(@selector(status))
-                        options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
-                          block:^(id observer, id object, NSDictionary *change)
-    {
-        if (self.player.status != AVPlayerStatusReadyToPlay)
-        {
-            return;
-        }
-        [self.player seekToTime:kCMTimeZero
-              completionHandler:^(BOOL finished)
-         {
-             if (finished)
-             {
-                 [self playIfUserAllowed];
-             }
-         }];
-    }];
-    __weak typeof(self) welf = self;
-    [self.KVOController observe:self.player
-                        keyPath:NSStringFromSelector(@selector(rate))
-                        options:NSKeyValueObservingOptionNew
-                          block:^(id observer, id object, NSDictionary *change)
-     {
-         AVPlayer *player = (AVPlayer *)object;
-         if ((player.rate > 0.0f) || self.userWantsPause)
-         {
-             [welf.acitivityIndicator stopAnimating];
-         }
-         else
-         {
-             [welf.acitivityIndicator startAnimating];
-         }
-     }];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     [self.player pause];
+    [self teardownKVO];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     [self.player play];
+    [self setupKVO];
 }
 
 - (VPlayerView *)playerView
@@ -256,6 +223,60 @@
         return;
     }
     [self.player play];
+}
+
+- (void)setupKVO
+{
+    __weak typeof(self) welf = self;
+    [self.KVOControllerNonRetaining observe:self.player
+                                    keyPath:NSStringFromSelector(@selector(status))
+                                    options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
+                                      block:^(id observer, id object, NSDictionary *change)
+     {
+         __strong typeof(welf) strongSelf = welf;
+         if (strongSelf == nil)
+         {
+             return;
+         }
+         if (strongSelf.player.status != AVPlayerStatusReadyToPlay)
+         {
+             return;
+         }
+         [strongSelf.player seekToTime:kCMTimeZero
+               completionHandler:^(BOOL finished)
+          {
+              if (finished)
+              {
+                  [strongSelf playIfUserAllowed];
+              }
+          }];
+     }];
+    [self.KVOControllerNonRetaining observe:self.player
+                                    keyPath:NSStringFromSelector(@selector(rate))
+                                    options:NSKeyValueObservingOptionNew
+                                      block:^(id observer, id object, NSDictionary *change)
+     {
+         __strong typeof(welf) strongSelf = welf;
+         if (strongSelf == nil)
+         {
+             return;
+         }
+         AVPlayer *player = (AVPlayer *)object;
+         if ((player.rate > 0.0f) || strongSelf.userWantsPause)
+         {
+             [strongSelf.acitivityIndicator stopAnimating];
+         }
+         else
+         {
+             [strongSelf.acitivityIndicator startAnimating];
+         }
+     }];
+}
+
+- (void)teardownKVO
+{
+    [self.KVOControllerNonRetaining unobserve:self.player keyPath:NSStringFromSelector(@selector(status))];
+    [self.KVOControllerNonRetaining unobserve:self.player keyPath:NSStringFromSelector(@selector(rate))];
 }
 
 @end

@@ -15,7 +15,7 @@ static const CGFloat kTrimHeadHeight = 44.0f;
 static const CGFloat kTrimHeadWidth = 60.0f;
 static const CGFloat kTrimBodyWidth = 5.0f;
 
-@interface VTrimControl () <UICollisionBehaviorDelegate>
+@interface VTrimControl () <UICollisionBehaviorDelegate, UIDynamicAnimatorDelegate>
 
 @property (nonatomic, readwrite) CMTime selectedDuration;
 
@@ -26,6 +26,7 @@ static const CGFloat kTrimBodyWidth = 5.0f;
 
 @property (nonatomic, strong) UIPanGestureRecognizer *headGestureRecognizer;
 @property (nonatomic, strong) UIPanGestureRecognizer *bodyGestureRecognizer;
+@property (nonatomic, strong) NSArray *trimGestureRecognziers;
 
 @property (nonatomic, strong) UIDynamicAnimator *animator;
 @property (nonatomic, strong) UIPushBehavior *pushBehavior;
@@ -99,6 +100,36 @@ static inline CGPoint ClampX(CGPoint point, CGFloat xMin, CGFloat xMax)
     [self.trimThumbBody addGestureRecognizer:self.bodyGestureRecognizer];
     self.thumbLabel = [[UILabel alloc] initWithFrame:self.trimThumbHead.bounds];
     [self.trimThumbHead addSubview:self.thumbLabel];
+    
+    self.trimGestureRecognziers = @[self.headGestureRecognizer, self.bodyGestureRecognizer];
+}
+
+#pragma mark - UIControl
+
+- (BOOL)isTracking
+{
+    __block BOOL isTracking = NO;
+    [self.trimGestureRecognziers enumerateObjectsUsingBlock:^(UIGestureRecognizer *gestureRecognizer, NSUInteger idx, BOOL *stop)
+    {
+        switch (gestureRecognizer.state)
+        {
+            case UIGestureRecognizerStateBegan:
+            case UIGestureRecognizerStateChanged:
+                isTracking = YES;
+                *stop = YES;
+                break;
+            case UIGestureRecognizerStatePossible:
+            case UIGestureRecognizerStateEnded:
+            case UIGestureRecognizerStateCancelled:
+            case UIGestureRecognizerStateFailed:
+                break;
+        }
+    }];
+    if (!isTracking)
+    {
+        isTracking = self.animator.isRunning;
+    }
+    return isTracking;
 }
 
 #pragma mark - UIView
@@ -122,6 +153,7 @@ static inline CGPoint ClampX(CGPoint point, CGFloat xMin, CGFloat xMax)
         self.hasPerformedInitialLayout = YES;
         
         self.animator = [[UIDynamicAnimator alloc] initWithReferenceView:self];
+        self.animator.delegate = self;
         self.pushBehavior = [[UIPushBehavior alloc] initWithItems:@[self.trimThumbHead] mode:UIPushBehaviorModeInstantaneous];
         self.collisionBehavior = [[UICollisionBehavior alloc] initWithItems:@[self.trimThumbHead]];
         self.collisionBehavior.translatesReferenceBoundsIntoBoundary = YES;
@@ -277,6 +309,15 @@ static inline CGPoint ClampX(CGPoint point, CGFloat xMin, CGFloat xMax)
     self.clampingBehavior.length = 0.0f;
     [self.animator addBehavior:self.clampingBehavior];
 }
+
+#pragma mark - UIDynamicAnimatorDelegate
+
+- (void)dynamicAnimatorDidPause:(UIDynamicAnimator *)animator
+{
+    [self sendActionsForControlEvents:UIControlEventValueChanged];
+}
+
+#pragma mark - UIControl
 
 - (void)sendActionsForControlEvents:(UIControlEvents)controlEvents
 {

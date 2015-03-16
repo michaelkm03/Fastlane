@@ -113,7 +113,7 @@ static const CGFloat kTimelineDarkeningAlpha = 0.5f;
 
 - (BOOL)isInteracting
 {
-    return (self.thumbnailCollecitonView.tracking || self.thumbnailCollecitonView.decelerating || self.trimControl.highlighted);
+    return (self.thumbnailCollecitonView.dragging || self.thumbnailCollecitonView.decelerating || self.trimControl.isTracking);
 }
 
 #pragma mark - Target/Action
@@ -284,7 +284,6 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
     {
         return;
     }
-    
     [self updateTrimControlTitleWithTime:self.trimControl.selectedDuration];
     
     if ([self.delegate respondsToSelector:@selector(trimmerViewController:didUpdateSelectedTimeRange:)])
