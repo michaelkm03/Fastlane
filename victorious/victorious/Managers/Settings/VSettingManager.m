@@ -70,11 +70,6 @@ NSString * const kVPrivacyUrl = @"url.privacy";
     return self;
 }
 
-- (void)updateSettingsWithAppTracking:(VTracking *)tracking
-{
-    _applicationTracking = tracking;
-}
-
 - (void)updateSettingsWithDictionary:(NSDictionary *)dictionary
 {
     [dictionary enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop)
