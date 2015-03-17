@@ -242,6 +242,7 @@
 		0390088219F3A5D500FD7EDF /* VInviteFriendTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0390088119F3A5D500FD7EDF /* VInviteFriendTableViewCell.xib */; };
 		0394203C1AB7A4F20087ADFA /* VInsetStreamCellFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 0394203B1AB7A4F20087ADFA /* VInsetStreamCellFactory.m */; };
 		0394203F1AB7AAB90087ADFA /* VInsetStreamCollectionCellPoll.m in Sources */ = {isa = PBXBuildFile; fileRef = 0394203E1AB7AAB90087ADFA /* VInsetStreamCollectionCellPoll.m */; };
+		039420431AB7D1A70087ADFA /* VDependencyManager+VTracking.m in Sources */ = {isa = PBXBuildFile; fileRef = 039420421AB7D1A70087ADFA /* VDependencyManager+VTracking.m */; };
 		0395575A19C14439005E32FB /* VCameraCaptureController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0395575919C14439005E32FB /* VCameraCaptureController.m */; };
 		039B614A19F2166900CB2796 /* homeHeaderImage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D811BBBE19B92F75007398BF /* homeHeaderImage@2x.png */; };
 		039D02AC1A1043D300DB9236 /* TemplateClasses.plist in Resources */ = {isa = PBXBuildFile; fileRef = 039D02A81A1043D300DB9236 /* TemplateClasses.plist */; };
@@ -1214,6 +1215,8 @@
 		0394203D1AB7AAB90087ADFA /* VInsetStreamCollectionCellPoll.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInsetStreamCollectionCellPoll.h; sourceTree = "<group>"; };
 		0394203E1AB7AAB90087ADFA /* VInsetStreamCollectionCellPoll.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInsetStreamCollectionCellPoll.m; sourceTree = "<group>"; };
 		039420401AB7C5CF0087ADFA /* VSequenceActionsSender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSequenceActionsSender.h; sourceTree = "<group>"; };
+		039420411AB7D1A70087ADFA /* VDependencyManager+VTracking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VDependencyManager+VTracking.h"; sourceTree = "<group>"; };
+		039420421AB7D1A70087ADFA /* VDependencyManager+VTracking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VDependencyManager+VTracking.m"; sourceTree = "<group>"; };
 		0395575819C14439005E32FB /* VCameraCaptureController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCameraCaptureController.h; sourceTree = "<group>"; };
 		0395575919C14439005E32FB /* VCameraCaptureController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCameraCaptureController.m; sourceTree = "<group>"; };
 		039D02A81A1043D300DB9236 /* TemplateClasses.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = TemplateClasses.plist; sourceTree = "<group>"; };
@@ -3178,6 +3181,8 @@
 				037D2D5B1A1A588D00947A22 /* VDependencyManager+VObjectManager.m */,
 				037FCF291A8DAF7600E8ABFC /* VDependencyManager+VScaffoldViewController.h */,
 				037FCF2A1A8DAF7600E8ABFC /* VDependencyManager+VScaffoldViewController.m */,
+				039420411AB7D1A70087ADFA /* VDependencyManager+VTracking.h */,
+				039420421AB7D1A70087ADFA /* VDependencyManager+VTracking.m */,
 				D8D945FB1A2EA9940089D271 /* VDependencyManager+VWorkspaceTool.h */,
 				D8D945FC1A2EA9940089D271 /* VDependencyManager+VWorkspaceTool.m */,
 				039D02AB1A1043D300DB9236 /* VHasManagedDependencies.h */,
@@ -5587,6 +5592,7 @@
 				A7D7079E1A7C144C00D9993F /* VEndCardBannerViewController.m in Sources */,
 				D87351991A3260AC006D97B2 /* VFilterTypeTool.m in Sources */,
 				A720055E1A030E4700285A9C /* VApplicationTracking.m in Sources */,
+				039420431AB7D1A70087ADFA /* VDependencyManager+VTracking.m in Sources */,
 				A77AD4F21A1FD8B600142F24 /* VAlertControllerBasic.m in Sources */,
 				D8E39BEB19CB7D92007FD86A /* VKeyboardInputAccessoryView.m in Sources */,
 				0314D4A519B46B5E00FA363C /* VForceUpgradeViewController.m in Sources */,
