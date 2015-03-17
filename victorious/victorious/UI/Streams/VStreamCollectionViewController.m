@@ -426,8 +426,11 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCellC
     
     VSequence *sequence = (VSequence *)[self.currentStream.streamItems objectAtIndex:indexPath.row];
     VStreamCollectionCell *cell = (VStreamCollectionCell *)[self.streamCellFactory collectionView:self.collectionView cellForSequence:sequence atIndexPath:indexPath];
-    cell.delegate = self.actionDelegate ?: self;
     
+    if ( [cell conformsToProtocol:@protocol(VSequenceActionsSender)] )
+    {
+        cell.sequenceActionsDelegate = self.actionDelegate ?: self;
+    }
     [self preloadSequencesAfterIndexPath:indexPath forDataSource:dataSource];
     
     return cell;

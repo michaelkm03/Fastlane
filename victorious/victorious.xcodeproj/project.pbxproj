@@ -1213,6 +1213,7 @@
 		0394203B1AB7A4F20087ADFA /* VInsetStreamCellFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInsetStreamCellFactory.m; sourceTree = "<group>"; };
 		0394203D1AB7AAB90087ADFA /* VInsetStreamCollectionCellPoll.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInsetStreamCollectionCellPoll.h; sourceTree = "<group>"; };
 		0394203E1AB7AAB90087ADFA /* VInsetStreamCollectionCellPoll.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInsetStreamCollectionCellPoll.m; sourceTree = "<group>"; };
+		039420401AB7C5CF0087ADFA /* VSequenceActionsSender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSequenceActionsSender.h; sourceTree = "<group>"; };
 		0395575819C14439005E32FB /* VCameraCaptureController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCameraCaptureController.h; sourceTree = "<group>"; };
 		0395575919C14439005E32FB /* VCameraCaptureController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCameraCaptureController.m; sourceTree = "<group>"; };
 		039D02A81A1043D300DB9236 /* TemplateClasses.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = TemplateClasses.plist; sourceTree = "<group>"; };
@@ -2810,6 +2811,7 @@
 				A7A343E31A8D896C000F0BCF /* VHashtagStreamCollectionViewController.h */,
 				A7A343E41A8D896C000F0BCF /* VHashtagStreamCollectionViewController.m */,
 				A7AEF9981A83F1C300A3D3A0 /* VSequenceActionsDelegate.h */,
+				039420401AB7C5CF0087ADFA /* VSequenceActionsSender.h */,
 				A7AEF9991A83F1C300A3D3A0 /* VStreamCollectionViewController.h */,
 				A7AEF99A1A83F1C300A3D3A0 /* VStreamCollectionViewController.m */,
 				A7AEF99B1A83F1C300A3D3A0 /* VStreamCollectionViewDataSource.h */,

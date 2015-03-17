@@ -10,7 +10,7 @@
 
 #import "VHasManagedDependencies.h"
 #import "VSharedCollectionReusableViewMethods.h"
-#import "VSequenceActionsDelegate.h"
+#import "VSequenceActionsSender.h"
 #import "VBaseCollectionViewCell.h"
 
 /**
@@ -21,7 +21,7 @@ extern const CGFloat VStreamCollectionCellTextViewLineFragmentPadding;
 
 @class CCHLinkTextView, VDependencyManager, VSequence, VStreamCellHeaderView, VStreamCollectionCell;
 
-@interface VStreamCollectionCell : VBaseCollectionViewCell <VSharedCollectionReusableViewMethods, VHasManagedDependancies>
+@interface VStreamCollectionCell : VBaseCollectionViewCell <VSequenceActionsSender, VSharedCollectionReusableViewMethods, VHasManagedDependancies>
 
 @property (nonatomic, weak) IBOutlet UIImageView            *previewImageView;
 @property (nonatomic, weak) IBOutlet UIImageView            *lowerGradientView;
@@ -33,7 +33,7 @@ extern const CGFloat VStreamCollectionCellTextViewLineFragmentPadding;
 
 @property (nonatomic, weak) VSequence                       *sequence;
 
-@property (nonatomic, weak) id<VSequenceActionsDelegate> delegate;
+@property (nonatomic, weak) id<VSequenceActionsDelegate> sequenceActionsDelegate;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, weak) UIViewController *parentViewController;
 

@@ -83,9 +83,9 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
 
 - (void)text:(NSString *)text tappedInTextView:(UITextView *)textView
 {
-    if ([self.delegate respondsToSelector:@selector(hashTag:tappedFromSequence:fromView:)])
+    if ([self.sequenceActionsDelegate respondsToSelector:@selector(hashTag:tappedFromSequence:fromView:)])
     {
-        [self.delegate hashTag:text tappedFromSequence:self.sequence fromView:self];
+        [self.sequenceActionsDelegate hashTag:text tappedFromSequence:self.sequence fromView:self];
     }
 }
 
@@ -94,10 +94,10 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
     return @"VStreamCellHeaderView";
 }
 
-- (void)setDelegate:(id<VSequenceActionsDelegate>)delegate
+- (void)setSequenceActionsDelegate:(id<VSequenceActionsDelegate>)sequenceActionsDelegate
 {
-    _delegate = delegate;
-    self.actionView.delegate = delegate;
+    _sequenceActionsDelegate = sequenceActionsDelegate;
+    self.actionView.sequenceActionsDelegate = sequenceActionsDelegate;
 }
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
@@ -285,17 +285,17 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
 
 - (void)willCommentOnSequence:(VSequence *)sequence fromView:(UIView *)view
 {
-    if ([self.delegate respondsToSelector:@selector(willCommentOnSequence:fromView:)])
+    if ([self.sequenceActionsDelegate respondsToSelector:@selector(willCommentOnSequence:fromView:)])
     {
-        [self.delegate willCommentOnSequence:self.sequence fromView:self];
+        [self.sequenceActionsDelegate willCommentOnSequence:self.sequence fromView:self];
     }
 }
 
 - (void)selectedUserOnSequence:(VSequence *)sequence fromView:(UIView *)view
 {
-    if ([self.delegate respondsToSelector:@selector(selectedUserOnSequence:fromView:)])
+    if ([self.sequenceActionsDelegate respondsToSelector:@selector(selectedUserOnSequence:fromView:)])
     {
-        [self.delegate selectedUserOnSequence:self.sequence fromView:self];
+        [self.sequenceActionsDelegate selectedUserOnSequence:self.sequence fromView:self];
     }
 }
 
@@ -354,11 +354,11 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
 
 - (void)linkTextView:(CCHLinkTextView *)linkTextView didTapLinkWithValue:(id)value
 {
-    if ([self.delegate respondsToSelector:@selector(hashTag:tappedFromSequence:fromView:)])
+    if ([self.sequenceActionsDelegate respondsToSelector:@selector(hashTag:tappedFromSequence:fromView:)])
     {
-        [self.delegate hashTag:value
-            tappedFromSequence:self.sequence
-                      fromView:self];
+        [self.sequenceActionsDelegate hashTag:value
+                           tappedFromSequence:self.sequence
+                                     fromView:self];
     }
 }
 
