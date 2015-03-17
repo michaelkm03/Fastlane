@@ -128,11 +128,7 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCellC
         streamCollectionVC.shouldDisplayMarquee = YES;
     }
     
-    if ( [[dependencyManager numberForKey:kCanAddContentKey] boolValue] )
-    {
-        [streamCollectionVC addCreateSequenceButton];
-        [streamCollectionVC addUploadProgressView];
-    }
+    [streamCollectionVC addCreateSequenceButtonIfAllowed];
     
     NSNumber *cellVisibilityRatio = [dependencyManager numberForKey:@"stream_atf_view_threshold"];
     if ( cellVisibilityRatio != nil )
@@ -286,6 +282,18 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCellC
 }
 
 #pragma mark - Sequence Creation
+
+- (void)addCreateSequenceButtonIfAllowed
+{
+    const BOOL isUserPostAllowedByTemplate = [[self.dependencyManager numberForKey:kCanAddContentKey] boolValue];
+    const BOOL isUserPostAllowedByStream = self.currentStream.isUserPostAllowed.boolValue;
+    
+    if ( isUserPostAllowedByTemplate || isUserPostAllowedByStream )
+    {
+        [self addCreateSequenceButton];
+        [self addUploadProgressView];
+    }
+}
 
 - (void)addCreateSequenceButton
 {

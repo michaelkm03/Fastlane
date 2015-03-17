@@ -24,6 +24,7 @@
              @"stream_content_type" :   VSelectorName(streamContentType),
              @"name"                :   VSelectorName(name),
              @"preview_image"       :   VSelectorName(previewImagesObject),
+             @"ugc_post_allowed"    :   VSelectorName(isUserPostAllowed),
              @"count"               :   VSelectorName(count),
              };
 }
