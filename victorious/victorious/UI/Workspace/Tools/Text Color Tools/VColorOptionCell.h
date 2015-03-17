@@ -11,7 +11,7 @@
 
 @interface VColorOptionCell : VBaseCollectionViewCell
 
-@property (nonatomic, strong) UIFont* font;
+@property (nonatomic, strong) UIFont *font;
 
 - (void)setColor:(UIColor *)color withTitle:(NSString *)title;
 

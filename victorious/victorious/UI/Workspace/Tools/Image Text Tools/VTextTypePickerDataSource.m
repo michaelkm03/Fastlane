@@ -57,4 +57,9 @@
     return cell;
 }
 
+- (id)toolAtIndex:(NSInteger)index
+{
+    return self.tools[ index ];
+}
+
 @end

@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "VColorPickerDataSource.h"
-#import "VToolPickerDataSource.h"
+#import "VToolPicker.h"
 
 @class VDependencyManager;
 

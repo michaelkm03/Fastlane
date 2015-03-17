@@ -56,6 +56,10 @@ typedef NS_ENUM( NSInteger, VTextWorkspaceFlowStateType)
         NSArray *workspaceTools = [workspaceDependency workspaceTools];
         VTextToolController *toolController = [[VTextToolController alloc] initWithTools:workspaceTools];
         toolController.delegate = _editTextWorkspaceViewController;
+        toolController.text = [self randomSampleText];
+        toolController.dependencyManager = _editTextWorkspaceViewController.dependencyManager;
+        _editTextWorkspaceViewController.toolController = toolController;
+        
         [toolController.tools enumerateObjectsUsingBlock:^(id<VWorkspaceTool> tool, NSUInteger idx, BOOL *stop)
          {
              if ( [tool respondsToSelector:@selector(setSharedCanvasToolViewController:)] )
@@ -63,9 +67,6 @@ typedef NS_ENUM( NSInteger, VTextWorkspaceFlowStateType)
                  [tool setSharedCanvasToolViewController:_editTextToolViewController];
              }
         }];
-        toolController.text = [self randomSampleText];
-        toolController.dependencyManager = _editTextWorkspaceViewController.dependencyManager;
-        _editTextWorkspaceViewController.toolController = toolController;
         
         [self.flowNavigationController pushViewController:_editTextWorkspaceViewController animated:NO];
     }

@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "VToolPickerDataSource.h"
+#import "VToolPicker.h"
 
 @class VDependencyManager;
 

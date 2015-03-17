@@ -10,13 +10,12 @@
 
 #import "VHasManagedDependencies.h"
 #import "VToolPicker.h"
-#import "VToolPickerDataSource.h"
 
 /**
- *  VTickerPickerViewController is a tool picker via conformance to the VToolPicker protocol. The ticker picker presents a list of items in a collection view with the item underneath the top position being the currently selected item.
+ *  VTickerPickerViewController is a tool picker via conformance to the VToolPicker protocol.
+ *  The ticker picker presents a list of items in a collection view with the item underneath the
+ *  top position being the currently selected item.
  */
 @interface VTickerPickerViewController : UIViewController <VHasManagedDependancies, VToolPicker>
-
-@property (nonatomic, strong) id<VToolPickerDataSource> dataSource;
 
 @end

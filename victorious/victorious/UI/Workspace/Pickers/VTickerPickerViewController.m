@@ -29,6 +29,9 @@
 
 @synthesize onToolSelection = _onToolSelection;
 
+@synthesize delegate;
+@synthesize dataSource;
+
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     UIStoryboard *workspaceStoryboard = [UIStoryboard storyboardWithName:@"Workspace"
@@ -77,7 +80,8 @@
     [self.collectionView selectItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]
                                       animated:NO
                                 scrollPosition:UICollectionViewScrollPositionNone];
-    [self notifyNewSelection];
+    
+    [self.delegate toolPicker:self didSelectItemAtIndex:0];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -129,7 +133,7 @@
                            atScrollPosition:UICollectionViewScrollPositionTop
                                    animated:YES];
     self.blockScrollingSelectionUntilReached = indexPath;
-    [self notifyNewSelection];
+    [self.delegate toolPicker:self didSelectItemAtIndex:indexPath.row];
 }
 
 #pragma mark - UIScrollViewDelegate
@@ -159,7 +163,7 @@
     [self.collectionView selectItemAtIndexPath:indexPathForPoint
                                       animated:YES
                                 scrollPosition:UICollectionViewScrollPositionNone];
-    [self notifyNewSelection];
+    [self.delegate toolPicker:self didSelectItemAtIndex:indexPathForPoint.row];
 }
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
@@ -196,14 +200,6 @@
 }
 
 #pragma mark - Internal Methods
-
-- (void)notifyNewSelection
-{
-    if (self.onToolSelection)
-    {
-        self.onToolSelection([self selectedTool]);
-    }
-}
 
 - (CGRect)selectionFrame
 {

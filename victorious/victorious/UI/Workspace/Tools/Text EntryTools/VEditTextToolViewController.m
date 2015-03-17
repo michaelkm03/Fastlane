@@ -8,7 +8,6 @@
 
 #import "VEditTextToolViewController.h"
 #import "VDependencyManager.h"
-#import "VTextPostViewController.h"
 #import "UIView+AutoLayout.h"
 
 @interface VEditTextToolViewController () <UITextViewDelegate>
@@ -18,7 +17,7 @@
 @property (nonatomic, weak) IBOutlet UIButton *buttonImageSearch;
 @property (nonatomic, weak) IBOutlet UIButton *buttonCamera;
 
-@property (nonatomic, strong) VTextPostViewController *textPostViewController;
+@property (nonatomic, strong, readwrite) VTextPostViewController *textPostViewController;
 
 @end
 
@@ -50,16 +49,8 @@
     self.buttonCamera.alpha = 0.0f;
     
     [self.textPostViewController performSelector:@selector(startEditingText) withObject:nil afterDelay:0.0f];
-}
-
-- (void)setHashtagText:(NSString *)hashtagText
-{
-    _hashtagText = hashtagText;
-}
-
-- (void)setText:(NSString *)text
-{
-    _text = text;
+    
+    self.textPostViewController.supplementaryHashtagText = @"#SampleHashtag";
 }
 
 - (void)setImageControlsVisible:(BOOL)visible animated:(BOOL)animated

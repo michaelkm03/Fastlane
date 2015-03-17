@@ -49,9 +49,9 @@ static const NSUInteger kMaxTextLength = 200;
     self.text = @"Enter your text!";
 }
 
-- (void)setHashtagText:(NSString *)hashtagText
+- (void)setSupplementaryHashtagText:(NSString *)supplementaryHashtagText
 {
-    _hashtagText = hashtagText;
+    _supplementaryHashtagText = supplementaryHashtagText;
     
     [self updateTextBackground];
 }

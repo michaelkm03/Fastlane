@@ -1430,7 +1430,6 @@
 		A75ED08C1AB77C1800C35063 /* VBasicToolPickerCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VBasicToolPickerCell.xib; sourceTree = "<group>"; };
 		A75ED08E1AB77E3300C35063 /* VFilterPickerDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFilterPickerDataSource.h; sourceTree = "<group>"; };
 		A75ED08F1AB77E3300C35063 /* VFilterPickerDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFilterPickerDataSource.m; sourceTree = "<group>"; };
-		A75ED0911AB782B700C35063 /* VToolPickerDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VToolPickerDataSource.h; sourceTree = "<group>"; };
 		A75ED09B1AB78C7400C35063 /* VTextColorTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextColorTool.h; sourceTree = "<group>"; };
 		A75ED09C1AB78C7400C35063 /* VTextColorTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextColorTool.m; sourceTree = "<group>"; };
 		A75ED0A81AB78C7400C35063 /* VHashtagOptionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHashtagOptionCell.h; sourceTree = "<group>"; };
@@ -3453,7 +3452,6 @@
 				669EBBDF1A30239100DE317D /* VBasicToolPickerCell.h */,
 				669EBBE01A30239100DE317D /* VBasicToolPickerCell.m */,
 				A75ED08C1AB77C1800C35063 /* VBasicToolPickerCell.xib */,
-				A75ED0911AB782B700C35063 /* VToolPickerDataSource.h */,
 				669EBBE21A30239100DE317D /* VTickerPickerViewController.h */,
 				669EBBE31A30239100DE317D /* VTickerPickerViewController.m */,
 				669EBBE11A30239100DE317D /* VToolPicker.h */,

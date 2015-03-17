@@ -1,5 +1,5 @@
 //
-//  VWorkspaceToolController.m
+//  VToolController.m
 //  victorious
 //
 //  Created by Michael Sena on 1/16/15.

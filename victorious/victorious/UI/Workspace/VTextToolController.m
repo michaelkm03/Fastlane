@@ -8,10 +8,10 @@
 
 #import "VTextToolController.h"
 #import "VEditTextToolViewController.h"
-#import "UIView+AutoLayout.h"
 #import "VCanvasView.h"
+#import "VToolPicker.h"
 
-@interface VTextToolController()
+@interface VTextToolController() <VToolPickerDelegate>
 
 @end
 
@@ -33,8 +33,6 @@
 {
     [super setSelectedTool:selectedTool];
     
-    [self setHashtagText:@"TipOfTheDay"];
-    
     [self updateSelectedTool];
 }
 
@@ -50,28 +48,46 @@
 
 - (void)updateSelectedTool
 {
-    VEditTextToolViewController *canvasViewController = (VEditTextToolViewController *)self.selectedTool.canvasToolViewController;
-    canvasViewController.text = self.text;
-    //canvasViewController.hashtagText = self.hashtagText;
-}
-
-- (void)setText:(NSString *)text
-{
-    _text = text;
-    
-    [self updateSelectedTool];
-}
-
-- (void)setHashtagText:(NSString *)hashtagText
-{
-    _hashtagText = hashtagText;
-    
-    [self updateSelectedTool];
+    VEditTextToolViewController *editTextViewController = (VEditTextToolViewController *)self.selectedTool.canvasToolViewController;
+    editTextViewController.text = self.text;
 }
 
 - (void)exportWithSourceAsset:(NSURL *)source withCompletion:(void (^)(BOOL, NSURL *, UIImage *, NSError *))completion
 {
     completion( YES, nil, nil, nil );
+}
+
+- (void)setPickerDelegate:(id<VToolPickerDelegate>)delegate forSubtools:(NSArray *)subtools
+{
+    [subtools enumerateObjectsUsingBlock:^(id<VWorkspaceTool> tool, NSUInteger idx, BOOL *stop)
+     {
+         if ( [tool respondsToSelector:@selector(inspectorToolViewController)] &&
+             tool.inspectorToolViewController != nil &&
+             [tool.inspectorToolViewController conformsToProtocol:@protocol(VToolPicker)] )
+         {
+             id<VToolPicker> toolPicker = (id<VToolPicker>)tool.inspectorToolViewController;
+             toolPicker.delegate = delegate;
+         }
+     }];
+}
+
+#pragma mark - VToolPickerDelegate
+
+- (void)toolPicker:(id<VToolPicker>)toolPicker didSelectItemAtIndex:(NSInteger)index
+{
+    VEditTextToolViewController *editTextViewController = (VEditTextToolViewController *)self.selectedTool.canvasToolViewController;
+    
+    id selectedToolValue = [toolPicker.dataSource toolAtIndex:index];
+    if ( [selectedToolValue isKindOfClass:[NSString class]] )
+    {
+        NSString *hashtag = (NSString *)selectedToolValue;
+        editTextViewController.textPostViewController.supplementaryHashtagText = hashtag;
+    }
+    else if ( [selectedToolValue isKindOfClass:[UIColor class]] )
+    {
+        UIColor *color = (UIColor *)selectedToolValue;
+        editTextViewController.textPostViewController.view.backgroundColor = color;
+    }
 }
 
 @end

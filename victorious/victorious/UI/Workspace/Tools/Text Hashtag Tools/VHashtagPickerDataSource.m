@@ -43,16 +43,19 @@
     return self.hashtags.count;
 }
 
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
-                  cellForItemAtIndexPath:(NSIndexPath *)indexPath
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     NSString *identifier = [VHashtagOptionCell suggestedReuseIdentifier];
     VHashtagOptionCell *hashtagCell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
     hashtagCell.font = [self.dependencyManager fontForKey:@"font.button"];
     hashtagCell.selectedColor = [self.dependencyManager colorForKey:@"color.link"];
     hashtagCell.title = self.hashtags[ indexPath.row ];
-    
     return hashtagCell;
+}
+
+- (id)toolAtIndex:(NSInteger)index
+{
+    return self.hashtags[ index ];
 }
 
 @end

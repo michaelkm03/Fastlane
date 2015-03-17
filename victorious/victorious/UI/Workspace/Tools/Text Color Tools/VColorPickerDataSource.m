@@ -56,4 +56,10 @@
     return cell;
 }
 
+- (id)toolAtIndex:(NSInteger)index
+{
+    NSDictionary *colorObject = self.colors[ index ];
+    return colorObject[ @"color" ];
+}
+
 @end

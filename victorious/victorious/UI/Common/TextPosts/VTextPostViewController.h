@@ -12,7 +12,7 @@
 @interface VTextPostViewController : UIViewController <VHasManagedDependancies>
 
 @property (nonatomic, strong) NSString *text;
-@property (nonatomic, strong) NSString *hashtagText;
+@property (nonatomic, strong) NSString *supplementaryHashtagText;
 
 - (void)startEditingText;
 

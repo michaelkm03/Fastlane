@@ -8,8 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "VHasManagedDependencies.h"
+#import "VTextPostViewController.h"
 
 @interface VEditTextToolViewController : UIViewController <VHasManagedDependancies>
+
+@property (nonatomic, strong, readonly) VTextPostViewController *textPostViewController;
 
 @property (nonatomic, strong) NSString *text;
 @property (nonatomic, strong) NSString *hashtagText;
