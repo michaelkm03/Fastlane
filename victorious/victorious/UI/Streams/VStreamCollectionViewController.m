@@ -385,7 +385,7 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCellC
     else
     {
         VSequence *sequence = (VSequence *)[self.streamDataSource itemAtIndexPath:indexPath];
-        return [self.streamCellFactory sizeWithCollectionViewBounds:collectionView.bounds ofCellForSequence:sequence];
+        return [self.streamCellFactory sizeWithCollectionViewBounds:collectionView.bounds ofCellForStreamItem:sequence];
     }
 }
 
@@ -425,7 +425,7 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCellC
     }
     
     VSequence *sequence = (VSequence *)[self.currentStream.streamItems objectAtIndex:indexPath.row];
-    VStreamCollectionCell *cell = (VStreamCollectionCell *)[self.streamCellFactory collectionView:self.collectionView cellForSequence:sequence atIndexPath:indexPath];
+    VStreamCollectionCell *cell = (VStreamCollectionCell *)[self.streamCellFactory collectionView:self.collectionView cellForStreamItem:sequence atIndexPath:indexPath];
     
     if ( [cell conformsToProtocol:@protocol(VSequenceActionsSender)] )
     {

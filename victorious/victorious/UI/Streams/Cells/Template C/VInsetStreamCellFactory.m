@@ -37,8 +37,11 @@
     [collectionView registerNib:[VStreamCollectionCellWebContent nibForCell] forCellWithReuseIdentifier:[VStreamCollectionCellWebContent suggestedReuseIdentifier]];
 }
 
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForSequence:(VSequence *)sequence atIndexPath:(NSIndexPath *)indexPath
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForStreamItem:(VStreamItem *)streamItem atIndexPath:(NSIndexPath *)indexPath
 {
+    NSAssert( [streamItem isKindOfClass:[VSequence class]], @"This factory can only handle VSequence objects" );
+
+    VSequence *sequence = (VSequence *)streamItem;
     VStreamCollectionCell *cell;
     
     if ( [sequence isPoll] )
@@ -64,8 +67,11 @@
     return cell;
 }
 
-- (CGSize)sizeWithCollectionViewBounds:(CGRect)bounds ofCellForSequence:(VSequence *)sequence
+- (CGSize)sizeWithCollectionViewBounds:(CGRect)bounds ofCellForStreamItem:(VStreamItem *)streamItem
 {
+    NSAssert( [streamItem isKindOfClass:[VSequence class]], @"This factory can only handle VSequence objects" );
+    VSequence *sequence = (VSequence *)streamItem;
+
     if ( [sequence isPoll] )
     {
         return [VInsetStreamCollectionCellPoll actualSizeWithCollectionViewBounds:bounds sequence:sequence dependencyManager:self.dependencyManager];

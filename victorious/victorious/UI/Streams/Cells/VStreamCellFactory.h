@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-@class VSequence;
+@class VStreamItem;
 
 /**
  Objects conforming to this protocol create and
@@ -27,14 +27,14 @@
 - (void)registerCellsWithCollectionView:(UICollectionView *)collectionView;
 
 /**
- Returns a cell configured to display a sequence
+ Returns a cell configured to display a stream item
  */
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForSequence:(VSequence *)sequence atIndexPath:(NSIndexPath *)indexPath;
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForStreamItem:(VStreamItem *)streamItem atIndexPath:(NSIndexPath *)indexPath;
 
 /**
- Returns the size of a cell for a specific sequence
+ Returns the size of a cell for a specific stream item
  */
-- (CGSize)sizeWithCollectionViewBounds:(CGRect)bounds ofCellForSequence:(VSequence *)sequence;
+- (CGSize)sizeWithCollectionViewBounds:(CGRect)bounds ofCellForStreamItem:(VStreamItem *)streamItem;
 
 /**
  Returns the desired line spacing for cells from this factory
