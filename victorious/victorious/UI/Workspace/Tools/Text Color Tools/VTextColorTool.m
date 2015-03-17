@@ -11,6 +11,8 @@
 #import "VEditTextToolViewController.h"
 #import "VTickerPickerViewController.h"
 #import "VColorPickerDataSource.h"
+#import "NSArray+VMap.h"
+#import "VColorType.h"
 
 static NSString * const kTitleKey = @"title";
 static NSString * const kIconKey = @"icon";
@@ -50,8 +52,14 @@ static NSString * const kPickerKey = @"picker";
                                  @{ @"title" : @"PURPLE",    @"color" : [UIColor purpleColor] },
                                  @{ @"title" : @"GRAY",      @"color" : [UIColor grayColor] } ];
         
+        NSArray *colorTypes = [testColors v_map:^VColorType *(NSDictionary *dictionary)
+        {
+            return [[VColorType alloc] initWithColor:dictionary[ @"color" ] title:dictionary[ @"title" ]];
+        }];
+        id<VToolPickerDataSource> dataSource = [[VColorPickerDataSource alloc] initWithDependencyManager:dependencyManager];
+        dataSource.tools = colorTypes;
         _toolPicker = (VTickerPickerViewController *)[dependencyManager viewControllerForKey:kPickerKey];
-        _toolPicker.dataSource = [[VColorPickerDataSource alloc] initWithDependencyManager:dependencyManager colors:testColors];
+        _toolPicker.dataSource = dataSource;
     }
     return self;
 }

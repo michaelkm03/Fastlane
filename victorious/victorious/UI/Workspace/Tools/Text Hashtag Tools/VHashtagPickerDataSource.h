@@ -13,6 +13,6 @@
 
 @interface VHashtagPickerDataSource : NSObject <VToolPickerDataSource>
 
-- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager hashtags:(NSArray *)hashtags;
+- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager;
 
 @end

@@ -27,9 +27,9 @@
  */
 @protocol VToolPickerDataSource <UICollectionViewDataSource>
 
-- (void)registerCellsWithCollectionView:(UICollectionView *)collectionView;
+@property (nonatomic, strong) NSArray *tools;
 
-- (id)toolAtIndex:(NSInteger)index;
+- (void)registerCellsWithCollectionView:(UICollectionView *)collectionView;
 
 @end
 
@@ -42,5 +42,7 @@
 @property (nonatomic, strong) id<VToolPickerDelegate> delegate;
 @property (nonatomic, readonly) id <VWorkspaceTool> selectedTool; ///< The currently selected tool, if any.
 @property (nonatomic, copy) void (^onToolSelection)(id <VWorkspaceTool> selectedTool); ///< A block that is called whenever a new tool has been selected.
+
+- (void)reloadData;
 
 @end

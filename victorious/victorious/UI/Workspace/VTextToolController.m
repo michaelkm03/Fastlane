@@ -10,6 +10,8 @@
 #import "VEditTextToolViewController.h"
 #import "VCanvasView.h"
 #import "VToolPicker.h"
+#import "VHashtagType.h"
+#import "VColorType.h"
 
 @interface VTextToolController() <VToolPickerDelegate>
 
@@ -42,6 +44,8 @@
     {
         NSAssert( NO, @"Cannot set up default tool because there are no tools." );
     }
+    
+    [self setPickerDelegate:self forSubtools:self.tools];
     
     [self setSelectedTool:self.tools.firstObject];
 }
@@ -77,16 +81,16 @@
 {
     VEditTextToolViewController *editTextViewController = (VEditTextToolViewController *)self.selectedTool.canvasToolViewController;
     
-    id selectedToolValue = [toolPicker.dataSource toolAtIndex:index];
-    if ( [selectedToolValue isKindOfClass:[NSString class]] )
+    id selectedTool = toolPicker.dataSource.tools[ index ];
+    if ( [selectedTool isKindOfClass:[VHashtagType class]] )
     {
-        NSString *hashtag = (NSString *)selectedToolValue;
-        editTextViewController.textPostViewController.supplementaryHashtagText = hashtag;
+        VHashtagType *hashtagType = (VHashtagType *)selectedTool;
+        editTextViewController.textPostViewController.supplementaryHashtagText = hashtagType.isDefault ? @"" : hashtagType.hashtagText;
     }
-    else if ( [selectedToolValue isKindOfClass:[UIColor class]] )
+    else if ( [selectedTool isKindOfClass:[VColorType class]] )
     {
-        UIColor *color = (UIColor *)selectedToolValue;
-        editTextViewController.textPostViewController.view.backgroundColor = color;
+        VColorType *colorType = (VColorType *)selectedTool;
+        editTextViewController.textPostViewController.view.backgroundColor = colorType.color;
     }
 }
 

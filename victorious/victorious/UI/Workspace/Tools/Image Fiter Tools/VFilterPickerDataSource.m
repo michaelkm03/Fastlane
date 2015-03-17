@@ -14,19 +14,19 @@
 
 @interface VFilterPickerDataSource ()
 
-@property (nonatomic, strong) NSArray *tools;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end
 
 @implementation VFilterPickerDataSource
 
-- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager tools:(NSArray *)tools
+@synthesize tools;
+
+- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     self = [super init];
     if (self)
     {
-        _tools = tools;
         _dependencyManager = dependencyManager;
     }
     return self;
@@ -52,11 +52,6 @@
     cell.label.text = filterType.title;
     cell.label.font = [self.dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
     return cell;
-}
-
-- (id)toolAtIndex:(NSInteger)index
-{
-    return self.tools[ index ];
 }
 
 @end

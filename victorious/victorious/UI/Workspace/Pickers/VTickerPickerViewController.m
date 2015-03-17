@@ -178,7 +178,10 @@
     // Always land on a cell
     NSIndexPath *indexPathForTargetOffset = [self.collectionView indexPathForItemAtPoint:CGPointMake(targetContentOffset->x + CGRectGetMidX([self selectionFrame]) - CGRectGetMinX([self selectionFrame]),
                                                                                                      targetContentOffset->y + CGRectGetMidY([self selectionFrame]) - CGRectGetMinY([self selectionFrame]))];
-    *targetContentOffset = [self.collectionView layoutAttributesForItemAtIndexPath:indexPathForTargetOffset].frame.origin;
+    if ( indexPathForTargetOffset != nil )
+    {
+        *targetContentOffset = [self.collectionView layoutAttributesForItemAtIndexPath:indexPathForTargetOffset].frame.origin;
+    }
 }
 
 #pragma mark - VToolPicker
@@ -197,6 +200,11 @@
     }
     
     return self.tools[selectedIndexPath.row];
+}
+
+- (void)reloadData
+{
+    [self.collectionView reloadData];
 }
 
 #pragma mark - Internal Methods

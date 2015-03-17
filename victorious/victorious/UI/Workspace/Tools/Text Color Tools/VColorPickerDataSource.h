@@ -14,6 +14,6 @@
 
 @interface VColorPickerDataSource : NSObject <VToolPickerDataSource>
 
-- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager colors:(NSArray *)colors;
+- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager;
 
 @end

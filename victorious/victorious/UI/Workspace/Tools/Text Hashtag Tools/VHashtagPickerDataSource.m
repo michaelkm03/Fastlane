@@ -10,22 +10,23 @@
 #import "VHashtagOptionCell.h"
 #import "VWorkspaceTool.h"
 #import "VDependencyManager.h"
+#import "VHashtagType.h"
 
 @interface VHashtagPickerDataSource ()
 
-@property (nonatomic, strong) NSArray *hashtags;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end
 
 @implementation VHashtagPickerDataSource
 
-- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager hashtags:(NSArray *)hashtags
+@synthesize tools;
+
+- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     self = [super init];
     if (self)
     {
-        _hashtags = hashtags;
         _dependencyManager = dependencyManager;
     }
     return self;
@@ -40,22 +41,18 @@
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return self.hashtags.count;
+    return self.tools.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     NSString *identifier = [VHashtagOptionCell suggestedReuseIdentifier];
+    VHashtagType *hashtagType = self.tools[ indexPath.row ];
     VHashtagOptionCell *hashtagCell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
     hashtagCell.font = [self.dependencyManager fontForKey:@"font.button"];
     hashtagCell.selectedColor = [self.dependencyManager colorForKey:@"color.link"];
-    hashtagCell.title = self.hashtags[ indexPath.row ];
+    hashtagCell.title = hashtagType.hashtagText;
     return hashtagCell;
-}
-
-- (id)toolAtIndex:(NSInteger)index
-{
-    return self.hashtags[ index ];
 }
 
 @end

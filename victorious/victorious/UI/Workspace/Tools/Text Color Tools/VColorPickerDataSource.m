@@ -9,22 +9,23 @@
 #import "VColorPickerDataSource.h"
 #import "VDependencyManager.h"
 #import "VColorOptionCell.h"
+#import "VColorType.h"
 
 @interface VColorPickerDataSource ()
 
-@property (nonatomic, strong) NSArray *colors;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end
 
 @implementation VColorPickerDataSource
 
-- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager colors:(NSArray *)colors
+@synthesize tools;
+
+- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     self = [super init];
     if (self)
     {
-        _colors = colors;
         _dependencyManager = dependencyManager;
     }
     return self;
@@ -39,27 +40,18 @@
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return self.colors.count;
+    return self.tools.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     NSString *identifier = [VColorOptionCell suggestedReuseIdentifier];
     VColorOptionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
-    cell.font = [self.dependencyManager fontForKey:@"font.button"];
-    
-    NSDictionary *colorObject = self.colors[ indexPath.row ];
-    UIColor *color = colorObject[ @"color" ];
-    NSString *title = colorObject[ @"title" ];
-    [cell setColor:color withTitle:title];
+    VColorType *colorType = self.tools[ indexPath.row ];
+    cell.font = [self.dependencyManager fontForKey:@"font.button2"];
+    [cell setColor:colorType.color withTitle:colorType.title];
     
     return cell;
-}
-
-- (id)toolAtIndex:(NSInteger)index
-{
-    NSDictionary *colorObject = self.colors[ index ];
-    return colorObject[ @"color" ];
 }
 
 @end

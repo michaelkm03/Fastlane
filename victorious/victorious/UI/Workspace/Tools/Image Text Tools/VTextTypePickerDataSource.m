@@ -13,19 +13,19 @@
 
 @interface VTextTypePickerDataSource ()
 
-@property (nonatomic, strong) NSArray *tools;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end
 
 @implementation VTextTypePickerDataSource
 
-- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager tools:(NSArray *)tools
+@synthesize tools;
+
+- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     self = [super init];
     if (self)
     {
-        _tools = tools;
         _dependencyManager = dependencyManager;
     }
     return self;
@@ -55,11 +55,6 @@
     cell.label.attributedText = [[NSAttributedString alloc] initWithString:[textToolType.title uppercaseString]
                                                                       attributes:mutableAttributes];
     return cell;
-}
-
-- (id)toolAtIndex:(NSInteger)index
-{
-    return self.tools[ index ];
 }
 
 @end

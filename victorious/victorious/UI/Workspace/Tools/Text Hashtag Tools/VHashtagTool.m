@@ -12,6 +12,10 @@
 #import "VToolPicker.h"
 #import "NSArray+VMap.h"
 #import "VHashtagPickerDataSource.h"
+#import "VObjectManager+Discover.h"
+#import "NSArray+VMap.h"
+#import "VHashtag.h"
+#import "VHashtagType.h"
 
 static NSString * const kTitleKey = @"title";
 static NSString * const kIconKey = @"icon";
@@ -42,11 +46,9 @@ static NSString * const kPickerKey = @"picker";
         _iconSelected = [UIImage imageNamed:[dependencyManager templateValueOfType:[NSDictionary class] forKey:kIconSelectedKey][kImageURLKey]];
         
         _toolPicker = (UIViewController<VToolPicker> *)[dependencyManager viewControllerForKey:kPickerKey];
+        _toolPicker.dataSource = [[VHashtagPickerDataSource alloc] initWithDependencyManager:dependencyManager];
         
-#warning TESTING ONLY
-        NSArray *testHashtags = @[ @"(None)", @"#Fungus", @"#Dogs", @"#cats", @"#IHateMondays" ];
-        _toolPicker.dataSource = [[VHashtagPickerDataSource alloc] initWithDependencyManager:dependencyManager
-                                                                                       hashtags:testHashtags];
+        [self loadTrendingHashtags];
     }
     return self;
 }
@@ -59,6 +61,39 @@ static NSString * const kPickerKey = @"picker";
 - (UIViewController *)inspectorToolViewController
 {
     return (UIViewController *)self.toolPicker;
+}
+
+- (void)updateTools:(NSArray *)hashtagTools
+{
+    VHashtagType *defaultNoHashtag = [[VHashtagType alloc] initWithHashtagText:@"(None)" isDefault:YES];
+    NSArray *toolsWithDefault = [@[defaultNoHashtag] arrayByAddingObjectsFromArray:hashtagTools];
+    
+    _toolPicker.dataSource.tools = toolsWithDefault;
+    [_toolPicker reloadData];
+}
+
+#pragma mark - Loading Remote Data
+
+- (void)loadTrendingHashtags
+{
+    [[VObjectManager sharedManager] getSuggestedHashtags:^(NSOperation *operation, id result, NSArray *resultObjects)
+     {
+         NSArray *hashtagTools = [resultObjects v_map:^VHashtagType *(VHashtag *hashtag)
+         {
+             if ( [hashtag isKindOfClass:[VHashtag class]] )
+             {
+                 VHashtagType *hashtagType = [[VHashtagType alloc] initWithHashtagText:hashtag.tag isDefault:NO];
+                 return hashtagType;
+             }
+             else
+             {
+                 return nil;
+             }
+         }];
+         
+         [self updateTools:hashtagTools];
+     }
+                                               failBlock:nil];
 }
 
 @end

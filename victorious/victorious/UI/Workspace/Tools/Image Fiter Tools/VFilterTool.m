@@ -75,8 +75,9 @@ static NSString * const kFilterIndexKey = @"filterIndex";
             return imageFilter;
         }];
         
-        _toolPicker.dataSource = [[VFilterPickerDataSource alloc] initWithDependencyManager:dependencyManager
-                                                                                      tools:filterTools];
+        id<VToolPickerDataSource> dataSource = [[VFilterPickerDataSource alloc] initWithDependencyManager:dependencyManager];
+        dataSource.tools = filterTools;
+        _toolPicker.dataSource = dataSource;
     }
     return self;
 }

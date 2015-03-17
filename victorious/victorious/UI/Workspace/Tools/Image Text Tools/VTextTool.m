@@ -58,7 +58,9 @@ static NSString * const kFilterIndexKey = @"filterIndex";
         
         _renderIndex = [[dependencyManager numberForKey:kFilterIndexKey] integerValue];
         _toolPicker = (VTickerPickerViewController *)[dependencyManager viewControllerForKey:kPickerKey];
-        _toolPicker.dataSource = [[VTextTypePickerDataSource alloc] initWithDependencyManager:dependencyManager tools:_subTools];
+        id<VToolPickerDataSource> dataSource = [[VTextTypePickerDataSource alloc] initWithDependencyManager:dependencyManager];
+        dataSource.tools = _subTools;
+        _toolPicker.dataSource = dataSource;
         _canvasToolViewController = [VTextToolViewController textToolViewController];
         _icon = [UIImage imageNamed:@"textIcon"];
     }

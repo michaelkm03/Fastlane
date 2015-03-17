@@ -13,6 +13,6 @@
 
 @interface VTextTypePickerDataSource : NSObject <VToolPickerDataSource>
 
-- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager tools:(NSArray *)tools;
+- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager;
 
 @end
