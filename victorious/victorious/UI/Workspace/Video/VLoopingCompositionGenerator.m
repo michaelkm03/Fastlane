@@ -39,7 +39,7 @@
     {
         _assetOriginalDuration = kCMTimeZero;
         _error = nil;
-        _state = VLoopingCompositionStateUnkown;
+        _state = VLoopingCompositionStateUnknown;
         _asset = [AVURLAsset URLAssetWithURL:assetURL
                                      options:@{AVURLAssetPreferPreciseDurationAndTimingKey:@YES,
                                                AVURLAssetReferenceRestrictionsKey:@(AVAssetReferenceRestrictionForbidAll)}];
@@ -69,16 +69,19 @@
     self.minDuration = minimumDuration;
     self.completionBlock = completion;
     self.trimRange = trimRange;
-    if ((self.state == VLoopingCompositionStateUnkown) ||
-        (self.state == VLoopingCompositionStateLoading) ||
-        (self.state == VLoopingCompositionStateGeneratingComposition))
+    
+    switch (self.state)
     {
-        [self startLoading];
-        self.wantsNewCompositionAfterCurrentFinishes = YES;
-    }
-    else
-    {
-        [self transitionToState:VLoopingCompositionStateGeneratingComposition];
+        case VLoopingCompositionStateUnknown:
+        case VLoopingCompositionStateLoading:
+        case VLoopingCompositionStateGeneratingComposition:
+            [self startLoading];
+            self.wantsNewCompositionAfterCurrentFinishes = YES;
+            break;
+        case VLoopingCompositionStateLoaded:
+        case VLoopingCompositionStateFailed:
+            [self transitionToState:VLoopingCompositionStateGeneratingComposition];
+            break;
     }
     
 }
@@ -99,7 +102,7 @@
     
     switch (newState)
     {
-        case VLoopingCompositionStateUnkown:
+        case VLoopingCompositionStateUnknown:
             break;
         case VLoopingCompositionStateLoading:
         {
@@ -128,7 +131,7 @@
                      case AVKeyValueStatusFailed:
                      case AVKeyValueStatusLoading:
                      case AVKeyValueStatusUnknown:
-                         [strongSelf transitionToState:VLoopingCompositionStateUnkown];
+                         [strongSelf transitionToState:VLoopingCompositionStateUnknown];
                          break;
                      case AVKeyValueStatusLoaded:
                          strongSelf.assetOriginalDuration = strongSelf.asset.duration;
@@ -163,9 +166,7 @@
                                                                      error:&compositionError];
                 if (initialInsertSucceeded)
                 {
-                    // 20 seconds
-                    CMTime tenMinutes = CMTimeMake( 20 * 600, 600);
-                    while (CMTIME_COMPARE_INLINE(composition.duration, <, tenMinutes))
+                    while (CMTIME_COMPARE_INLINE(composition.duration, <, self.minDuration))
                     {
                         [composition insertTimeRange:assetRange
                                              ofAsset:self.asset
@@ -200,7 +201,7 @@
             NSAssert(self.loopedComposition != nil, @"We should have our composition here!");
             if (self.completionBlock)
             {
-                self.completionBlock(nil,self.loopedComposition);
+                self.completionBlock(nil, self.loopedComposition);
             }
         }
         case VLoopingCompositionStateFailed:

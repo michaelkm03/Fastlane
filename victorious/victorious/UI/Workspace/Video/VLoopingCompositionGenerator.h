@@ -14,7 +14,7 @@ typedef void (^VLoopingCompositionCompletionBlock)(NSError *error, AVComposition
 
 typedef NS_ENUM(NSInteger, VLoopingCompositionState)
 {
-    VLoopingCompositionStateUnkown,
+    VLoopingCompositionStateUnknown,
     VLoopingCompositionStateLoading,
     VLoopingCompositionStateGeneratingComposition,
     VLoopingCompositionStateLoaded,
