@@ -8,6 +8,9 @@
 
 #import "VWorkspaceToolButton.h"
 
+static const CGFloat kHighlightedAlpha = 0.7f;
+static const CGFloat kHighlightedScale = 0.8f;
+
 @interface VWorkspaceToolButton ()
 
 @property (nonatomic, strong) CAShapeLayer *circleLayer;
@@ -46,6 +49,14 @@
     [super setSelected:selected];
     
     self.circleLayer.fillColor = selected ? self.selectedColor.CGColor : self.unselectedColor.CGColor;
+}
+
+- (void)setHighlighted:(BOOL)highlighted
+{
+    [super setHighlighted:highlighted];
+    
+    self.alpha = highlighted ? kHighlightedAlpha : 1.0f;
+    self.circleLayer.affineTransform = highlighted ? CGAffineTransformMakeScale(kHighlightedScale, kHighlightedScale) : CGAffineTransformIdentity;
 }
 
 @end
