@@ -20,12 +20,6 @@
 #import "VTabMenuViewController.h"
 #import "VDependencyManager+VNavigationMenuItem.h"
 
-#define BOTTOM_NAV_ENABLED 0
-#define CHANNELS_WITH_GROUP_STREAM_ENABLED 0
-#define ROUNDED_TOP_NAV_ENABLED 0
-#define STREAM_CELLS_TEMPLATE_D_ENABLED 0
-#define PROFILE_TEMPLATE_D_ENABLED 1
-
 static NSString * const kIDKey = @"id";
 static NSString * const kReferenceIDKey = @"referenceID";
 static NSString * const kAppearanceKey = @"appearance";
@@ -92,10 +86,17 @@ static NSString * const kVideoMuted = @"videoMuted";
 // Profile properties
 static NSString * const kProfileShowEditButtonPill = @"showEditButtonPill";
 
+typedef NS_ENUM(NSUInteger, VTemplateType)
+{
+    VTemplateTypeA,
+    VTemplateTypeC,
+    VTemplateTypeD
+};
+
 @interface VTemplateGenerator ()
 
 @property (nonatomic, strong) NSDictionary *dataFromInitCall;
-@property (nonatomic) BOOL templateCEnabled;
+@property (nonatomic) VTemplateType enabledTemplate;
 @property (nonatomic, strong) NSString *firstMenuItemID;
 @property (nonatomic, strong) NSString *homeRecentID;
 @property (nonatomic, strong) NSString *communityRecentID;
@@ -114,10 +115,16 @@ static NSString * const kProfileShowEditButtonPill = @"showEditButtonPill";
         _firstMenuItemID = [[NSUUID UUID] UUIDString];
         _homeRecentID = [[NSUUID UUID] UUIDString];
         _communityRecentID = [[NSUUID UUID] UUIDString];
-        _templateCEnabled = [[_dataFromInitCall valueForKeyPath:@"experiments.template_c_enabled"] boolValue];
         
-#warning HACK TO ENABLE TEMPLATE D CELLS UNTIL TEMPLATE STUFF IS FINISHED
-        [[VSettingManager sharedManager] updateSettingsWithDictionary:@{ VSettingsTemplateDEnabled : @(STREAM_CELLS_TEMPLATE_D_ENABLED) }];
+        //Adjust templateType (between C and D on dev) here
+        self.enabledTemplate = VTemplateTypeD;
+        
+        if ( ![[_dataFromInitCall valueForKeyPath:@"experiments.template_c_enabled"] boolValue] )
+        {
+            //On qa, set to A
+            self.enabledTemplate = VTemplateTypeA;
+        }
+
     }
     return self;
 }
@@ -160,7 +167,7 @@ static NSString * const kProfileShowEditButtonPill = @"showEditButtonPill";
          }
      }];
     
-    if (BOTTOM_NAV_ENABLED)
+    if ( self.enabledTemplate == VTemplateTypeD )
     {
         template[VDependencyManagerScaffoldViewControllerKey] = @{
                                                                   kClassNameKey: @"tabMenu.scaffold",
@@ -176,11 +183,11 @@ static NSString * const kProfileShowEditButtonPill = @"showEditButtonPill";
     {
         template[VDependencyManagerScaffoldViewControllerKey] = @{ kClassNameKey: @"sideMenu.scaffold",
                                                                    VHamburgerButtonIconKey: @{
-                                                                           VDependencyManagerImageURLKey:(self.templateCEnabled ? @"menuC":@"Menu"),
+                                                                           VDependencyManagerImageURLKey:(self.enabledTemplate == VTemplateTypeC ? @"menuC":@"Menu"),
                                                                            },
                                                                    VDependencyManagerInitialViewControllerKey: @{ kReferenceIDKey: self.firstMenuItemID },
                                                                    VScaffoldViewControllerMenuComponentKey: [self menuComponent],
-                                                                   VStreamCollectionViewControllerCreateSequenceIconKey: (self.templateCEnabled ? [UIImage imageNamed:@"createContentButtonC"] : [UIImage imageNamed:@"createContentButton"]),
+                                                                   VStreamCollectionViewControllerCreateSequenceIconKey: (self.enabledTemplate == VTemplateTypeC ? [UIImage imageNamed:@"createContentButtonC"] : [UIImage imageNamed:@"createContentButton"]),
                                                                    VScaffoldViewControllerUserProfileViewComponentKey: [self profileScreen],
                                                                    kSelectorKey: [self multiScreenSelectorKey],
                                                                    };
@@ -192,13 +199,30 @@ static NSString * const kProfileShowEditButtonPill = @"showEditButtonPill";
     return template;
 }
 
+- (NSDictionary *)cellComponent
+{
+    NSString *className = @"titleOverlay.streamCell";
+    if ( self.enabledTemplate == VTemplateTypeD )
+    {
+        className = @"sleek.streamCell";
+    }
+    else if ( self.enabledTemplate == VTemplateTypeC )
+    {
+        className = @"inset.streamCell";
+    }
+    
+    return @{
+             kClassNameKey: className
+             };
+}
+
 - (NSDictionary *)multiScreenSelectorKey
 {
     NSDictionary *kSelectorKey = @{
                                    kClassNameKey: @"basic.multiScreenSelector",
                                    };
     
-    if ( ROUNDED_TOP_NAV_ENABLED )
+    if ( self.enabledTemplate == VTemplateTypeD )
     {
         kSelectorKey =  @{
                           kClassNameKey: @"rounded.multiScreenSelector",
@@ -210,7 +234,7 @@ static NSString * const kProfileShowEditButtonPill = @"showEditButtonPill";
                                   }
                           };
     }
-    else if ( self.templateCEnabled )
+    else if ( self.enabledTemplate == VTemplateTypeC )
     {
         kSelectorKey =  @{
                           kClassNameKey: @"textbar.multiScreenSelector",
@@ -279,6 +303,18 @@ static NSString * const kProfileShowEditButtonPill = @"showEditButtonPill";
                      [self cropTool],
                      ]
              };
+}
+
+- (NSDictionary *)preferredBackgroundColor
+{
+    if ( self.enabledTemplate != VTemplateTypeA )
+    {
+        return @{ kRedKey: @241, kGreenKey: @241, kBlueKey: @241, kAlphaKey: @1 };
+    }
+    else
+    {
+        return self.dataFromInitCall[@"appearance"][@"color.accent.secondary"];
+    }
 }
 
 - (NSDictionary *)textTool
@@ -379,7 +415,7 @@ static NSString * const kProfileShowEditButtonPill = @"showEditButtonPill";
 
 - (NSDictionary *)navigationBarAppearance
 {
-    if ( self.templateCEnabled )
+    if ( self.enabledTemplate != VTemplateTypeA )
     {
         return @{
                  VDependencyManagerBackgroundColorKey: @{
@@ -426,6 +462,7 @@ static NSString * const kProfileShowEditButtonPill = @"showEditButtonPill";
                                 kTitleKey: NSLocalizedString(@"Featured", @""),
                                 VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/hot_detail_list_by_stream/ugc/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%",
                                 kCanAddContentKey: @YES,
+                                VStreamCollectionViewControllerCellComponentKey: [self cellComponent]
                             },
                             @{
                                 kClassNameKey: @"stream.screen",
@@ -433,6 +470,7 @@ static NSString * const kProfileShowEditButtonPill = @"showEditButtonPill";
                                 kTitleKey: NSLocalizedString(@"Recent", @""),
                                 VStreamCollectionViewControllerStreamURLPathKey: [self urlPathForStreamCategories:VUGCCategories()],
                                 kCanAddContentKey: @YES,
+                                VStreamCollectionViewControllerCellComponentKey: [self cellComponent]
                             },
                         ]
                     }
@@ -498,10 +536,11 @@ static NSString * const kProfileShowEditButtonPill = @"showEditButtonPill";
                                                                                                  }
                                                                                          }];
     profileItem[kDestinationKey] = [self profileDetails];
-    if (BOTTOM_NAV_ENABLED)
+    if ( self.enabledTemplate == VTemplateTypeD )
     {
         profileItem[VDependencyManagerAccessoryScreensKey] = [self settingsMenuItem];
     }
+    
     return [NSDictionary dictionaryWithDictionary:profileItem];
 }
 
@@ -539,9 +578,6 @@ static NSString * const kProfileShowEditButtonPill = @"showEditButtonPill";
     return [NSString stringWithFormat:@"/api/sequence/detail_list_by_category/%@/%%%%PAGE_NUM%%%%/%%%%ITEMS_PER_PAGE%%%%", categoryString];
 }
 
-#warning MAKE TICKET FOR BACKEND TO PASS EXPECTED FIELD VALUE IN PROFILE COMPONENT
-//Expecting a Bool from backend for key "showEditButtonPill"
-
 - (NSDictionary *)profileDetails
 {
     NSMutableDictionary *profileDetails = [[NSMutableDictionary alloc] initWithDictionary:@{
@@ -554,9 +590,9 @@ static NSString * const kProfileShowEditButtonPill = @"showEditButtonPill";
                                                                                                     kAlphaKey: @1
                                                                                                     },
                                                                                             VDependencyManagerAccentColorKey: @{
-                                                                                                    kRedKey: @51,
-                                                                                                    kGreenKey: @51,
-                                                                                                    kBlueKey: @51,
+                                                                                                    kRedKey: @288,
+                                                                                                    kGreenKey: @65,
+                                                                                                    kBlueKey: @66,
                                                                                                     kAlphaKey: @1
                                                                                                     },
                                                                                             VDependencyManagerContentTextColorKey: @{
@@ -566,7 +602,17 @@ static NSString * const kProfileShowEditButtonPill = @"showEditButtonPill";
                                                                                                     kAlphaKey: @1
                                                                                                     }
                                                                                             }];
-    if ( PROFILE_TEMPLATE_D_ENABLED )
+    if ( self.enabledTemplate == VTemplateTypeD )
+    {
+        profileDetails[VDependencyManagerLinkColorKey] = @{
+                                                           kRedKey: @30,
+                                                           kGreenKey: @173,
+                                                           kBlueKey: @217,
+                                                           kAlphaKey: @1
+                                                           };
+    }
+    
+    if ( self.enabledTemplate == VTemplateTypeD )
     {
         profileDetails[kProfileShowEditButtonPill] = @(YES);
         profileDetails[VDependencyManagerBackgroundColorKey] = @{
@@ -575,12 +621,6 @@ static NSString * const kProfileShowEditButtonPill = @"showEditButtonPill";
                                                                  kBlueKey: @20,
                                                                  kAlphaKey: @1
                                                                  };
-        profileDetails[VDependencyManagerAccentColorKey] = @{
-                                                             kRedKey: @255,
-                                                             kGreenKey: @255,
-                                                             kBlueKey: @255,
-                                                             kAlphaKey: @1
-                                                             };
         profileDetails[VDependencyManagerSecondaryBackgroundColorKey] = @{
                                                                           kRedKey: @38,
                                                                           kGreenKey: @39,
@@ -594,17 +634,22 @@ static NSString * const kProfileShowEditButtonPill = @"showEditButtonPill";
                                                                   kAlphaKey: @1
                                                                   };
     }
+    profileDetails[VStreamCollectionViewControllerCellComponentKey] = [self cellComponent];
     return [profileDetails copy];
 }
 
 - (NSDictionary *)currentUserProfileScreen
 {
-    return @{ kClassNameKey: @"currentUserProfile.screen" };
+    return @{
+             kClassNameKey: @"currentUserProfile.screen"
+             };
 }
 
 - (NSDictionary *)profileScreen
 {
-    return @{ kClassNameKey: @"userProfile.screen" };
+    return @{
+             kClassNameKey: @"userProfile.screen"
+             };
 }
 
 - (NSDictionary *)homeScreen
@@ -612,6 +657,7 @@ static NSString * const kProfileShowEditButtonPill = @"showEditButtonPill";
     NSMutableDictionary *homeScreen = [@{
         kIDKey: self.firstMenuItemID,
         kClassNameKey: @"basic.multiScreen",
+        VDependencyManagerBackgroundColorKey: [self preferredBackgroundColor],
         kScreensKey: @[
                 @{
                     kClassNameKey: @"stream.screen",
@@ -638,12 +684,37 @@ static NSString * const kProfileShowEditButtonPill = @"showEditButtonPill";
         kInitialKey: @{
                 kReferenceIDKey: self.homeRecentID,
                 },
+        VStreamCollectionViewControllerCellComponentKey: [self cellComponent]
         } mutableCopy];
+    
     
     UIImage *headerImage = [self homeHeaderImage];
     if ( headerImage != nil )
     {
         homeScreen[kTitleImageKey] = headerImage;
+    }
+    
+    if ( self.enabledTemplate == VTemplateTypeA )
+    {
+        //Add lots of white for template A
+        homeScreen[VDependencyManagerLinkColorKey] = @{
+                                                       kRedKey: @255,
+                                                       kGreenKey: @255,
+                                                       kBlueKey: @255,
+                                                       kAlphaKey: @1
+                                                       };
+        homeScreen[VDependencyManagerContentTextColorKey] = @{
+                                                              kRedKey: @255,
+                                                              kGreenKey: @255,
+                                                              kBlueKey: @255,
+                                                              kAlphaKey: @1
+                                                              };
+        homeScreen[VDependencyManagerBackgroundColorKey] = @{
+                                                             kRedKey: @255,
+                                                             kGreenKey: @255,
+                                                             kBlueKey: @255,
+                                                             kAlphaKey: @1
+                                                             };
     }
     
     return homeScreen;
@@ -683,7 +754,7 @@ static NSString * const kProfileShowEditButtonPill = @"showEditButtonPill";
     NSNumber *channelsEnabledObject = [self.dataFromInitCall valueForKeyPath:@"experiments.channels_enabled"];
     const BOOL channelsEnabled = [channelsEnabledObject isKindOfClass:[NSNumber class]] && [channelsEnabledObject boolValue];
     
-    if ( CHANNELS_WITH_GROUP_STREAM_ENABLED && channelsEnabled )
+    if ( self.enabledTemplate == VTemplateTypeD && channelsEnabled )
     {
         NSDictionary *componentBase = @{ kIdentifierKey: @"Menu Channels",
                                          kTitleKey: NSLocalizedString(@"Channels", @""),
@@ -736,13 +807,15 @@ static NSString * const kProfileShowEditButtonPill = @"showEditButtonPill";
                                   @{
                                       kClassNameKey: @"stream.screen",
                                       kTitleKey: NSLocalizedString(@"Featured", @""),
-                                      VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/hot_detail_list_by_stream/owner/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%"
+                                      VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/hot_detail_list_by_stream/owner/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%",
+                                      VStreamCollectionViewControllerCellComponentKey: [self cellComponent]
                                       },
                                   @{
                                       kClassNameKey: @"stream.screen",
                                       kInitialKey: @YES,
                                       kTitleKey: NSLocalizedString(@"Recent", @""),
                                       VStreamCollectionViewControllerStreamURLPathKey: [self urlPathForStreamCategories:VOwnerCategories()],
+                                      VStreamCollectionViewControllerCellComponentKey: [self cellComponent]
                                       }
                                   ]
                           }

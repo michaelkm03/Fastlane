@@ -212,7 +212,7 @@
         linkColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     }
     
-    UIColor *accentColor = [_dependencyManager colorForKey:VDependencyManagerAccentColorKey];
+    UIColor *accentColor = [_dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
     
     self.profileImageView.layer.borderColor = linkColor.CGColor;
     

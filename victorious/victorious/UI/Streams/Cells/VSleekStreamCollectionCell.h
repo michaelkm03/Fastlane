@@ -9,7 +9,7 @@
 #import "VStreamCollectionCell.h"
 #import "VSequenceActionsDelegate.h"
 
-@class VStreamCellActionViewD;
+@class VSleekStreamCellActionView;
 
 extern const CGFloat kTemplateDHeaderHeight;
 extern const CGFloat kTemplateDActionViewHeight;
@@ -17,6 +17,10 @@ extern const CGFloat kTemplateDActionViewBottomConstraintHeight;
 
 extern const CGFloat kTemplateDTextNeighboringViewSeparatorHeight;
 
-@interface VStreamCollectionCellD : VStreamCollectionCell
+@interface VSleekStreamCollectionCell : VStreamCollectionCell
+
+@property (nonatomic, weak) IBOutlet VSleekStreamCellActionView *actionView;
+
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *actionViewBottomConstraint;
 
 @end

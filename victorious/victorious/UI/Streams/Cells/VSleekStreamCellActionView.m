@@ -6,14 +6,15 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VStreamCellActionViewD.h"
+#import "VSleekStreamCellActionView.h"
 #import "VDependencyManager.h"
 #import "VLargeNumberFormatter.h"
+#import "VSequenceActionsDelegate.h"
 
 static const CGFloat VCommentButtonContentInset = 6.0f;
 static const CGFloat VCommentButtonHeight = 32.0f;
 
-@interface VStreamCellActionViewD ()
+@interface VSleekStreamCellActionView ()
 
 @property (nonatomic, strong) UIButton *commentsButton;
 @property (nonatomic, assign) CGFloat commentButtonYOrigin;
@@ -21,7 +22,7 @@ static const CGFloat VCommentButtonHeight = 32.0f;
 
 @end
 
-@implementation VStreamCellActionViewD
+@implementation VSleekStreamCellActionView
 
 - (void)awakeFromNib
 {
@@ -55,29 +56,30 @@ static const CGFloat VCommentButtonHeight = 32.0f;
     [self.commentsButton setFrame:revisedFrame];
     self.commentsButton.layer.cornerRadius = CGRectGetHeight(self.commentsButton.bounds) / 2.0f;
 
-    UIColor *backgroundColor = [self commentButtonColor];
-    if ( backgroundColor != nil )
-    {
-        [self.commentsButton setBackgroundColor:backgroundColor];
-    }
+    [self refreshCommentsButtonAppearance];
+}
+
+- (void)refreshCommentsButtonAppearance
+{
+    [self.commentsButton setBackgroundColor:[self commentButtonColor]];
+    [[self.commentsButton titleLabel] setFont:[self.dependencyManager fontForKey:VDependencyManagerParagraphFontKey]];
+    
+    //Override the default tint color to always have white text in the comment label
+    [self.commentsButton setTintColor:[UIColor whiteColor]];
 }
 
 - (void)commentsAction:(id)sender
 {    
-    if ([self.delegate respondsToSelector:@selector(willCommentOnSequence:fromView:)])
+    if ([self.sequenceActionsDelegate respondsToSelector:@selector(willCommentOnSequence:fromView:)])
     {
-        [self.delegate willCommentOnSequence:self.sequence fromView:self];
+        [self.sequenceActionsDelegate willCommentOnSequence:self.sequence fromView:self];
     }
 }
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
     [super setDependencyManager:dependencyManager];
-    [self.commentsButton setBackgroundColor:[self commentButtonColor]];
-    [[self.commentsButton titleLabel] setFont:[self.dependencyManager fontForKey:VDependencyManagerParagraphFontKey]];
-    
-    //Override the default tint color to always have white text in the comment label
-    [self.commentsButton setTintColor:[UIColor whiteColor]];
+    [self refreshCommentsButtonAppearance];
 }
 
 - (UIColor *)commentButtonColor

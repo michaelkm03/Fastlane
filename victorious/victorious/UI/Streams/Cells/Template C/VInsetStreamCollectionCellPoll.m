@@ -1,31 +1,28 @@
 //
-//  VStreamCollectionCellPoll.m
+//  VInsetStreamCollectionCellPoll.m
 //  victorious
 //
-//  Created by Will Long on 10/8/14.
-//  Copyright (c) 2014 Victorious. All rights reserved.
+//  Created by Josh Hinman on 3/16/15.
+//  Copyright (c) 2015 Victorious. All rights reserved.
 //
-
-#import "VStreamCollectionCellPoll.h"
-
-#import "VDependencyManager.h"
-#import "VSequence+Fetcher.h"
-#import "VNode+Fetcher.h"
-#import "VAnswer.h"
-#import "VAsset.h"
-#import "VPollResult.h"
-#import "VUser.h"
 
 #import "UIImage+ImageCreation.h"
 #import "UIImageView+VLoadingAnimations.h"
+#import "VAnswer.h"
+#import "VDependencyManager.h"
+#import "VInsetStreamCollectionCellPoll.h"
+#import "VNode+Fetcher.h"
+#import "VSequence+Fetcher.h"
+#import "VStreamCellActionView.h"
 
-#import "NSString+VParseHelp.h"
+// IMPORTANT: these constants much match up with the heights of values from the VInsetStreamCollectionCellPoll.xib
+static const CGFloat kPollCellWidthRatio = 0.94375f; // 320/302
+static const CGFloat kPollContentRatio = 0.6688741722f; // 202/302
+static const CGFloat kHeaderHeight = 50.0f;
+static const CGFloat kActionViewHeight = 41.0f;
+static const CGFloat kTextNeighboringViewSeparatorHeight = 10.0f; // This represents the space between the comment label and the view below it and the distance between the caption textView and the view above it
 
-#import "VSettingManager.h"
-
-static const CGFloat kPollCellHeightRatio = 0.66875f; //from spec, 214 height for 320 width
-
-@interface VStreamCollectionCellPoll ()
+@interface VInsetStreamCollectionCellPoll ()
 
 @property (nonatomic, weak) VAnswer *firstAnswer;
 @property (nonatomic, weak) VAnswer *secondAnswer;
@@ -35,7 +32,7 @@ static const CGFloat kPollCellHeightRatio = 0.66875f; //from spec, 214 height fo
 
 @end
 
-@implementation VStreamCollectionCellPoll
+@implementation VInsetStreamCollectionCellPoll
 
 - (void)dealloc
 {
@@ -72,13 +69,9 @@ static const CGFloat kPollCellHeightRatio = 0.66875f; //from spec, 214 height fo
 
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {
-    CGFloat width = CGRectGetWidth(bounds);
-    return CGSizeMake(width, width * kPollCellHeightRatio);
-}
-
-+ (CGSize)actualSizeWithCollectionViewBounds:(CGRect)bounds sequence:(VSequence *)sequence
-{
-    return [self desiredSizeWithCollectionViewBounds:bounds];
+    CGFloat width = floorf(CGRectGetWidth(bounds) * kPollCellWidthRatio);
+    CGFloat height = floorf(width * kPollContentRatio + kHeaderHeight + kTextNeighboringViewSeparatorHeight * 2.0f + kActionViewHeight); // width * kTemplateCPollContentRatio represents the desired media height
+    return CGSizeMake(width, height);
 }
 
 @end

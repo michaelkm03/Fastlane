@@ -6,21 +6,20 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VStreamCollectionCellPollD.h"
+#import "VSleekStreamCollectionCellPoll.h"
 #import "VAnswer.h"
 #import "VSequence+Fetcher.h"
 #import "VNode+Fetcher.h"
 #import "VThemeManager.h"
 #import "UIImage+ImageCreation.h"
 #import "UIImageView+VLoadingAnimations.h"
-#import "VThemeManager.h"
-#import "VStreamCellActionViewD.h"
-#import "VStreamCollectionCellD.h"
+#import "VSleekStreamCellActionView.h"
+#import "VSleekStreamCollectionCell.h"
 #import "NSString+VParseHelp.h"
 #import <CCHLinkTextView.h>
 #import "VDependencyManager.h"
 
-@interface VStreamCollectionCellPollD ()
+@interface VSleekStreamCollectionCellPoll ()
 
 @property (nonatomic, weak) VAnswer *firstAnswer;
 @property (nonatomic, weak) VAnswer *secondAnswer;
@@ -29,15 +28,11 @@
 @property (nonatomic, copy) NSURL *secondAssetUrl;
 
 @property (nonatomic, weak) IBOutlet UIView *captionContainerView;
-
-@property (nonatomic, weak) IBOutlet VStreamCellActionViewD *actionView;
-
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *actionViewBottomConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *captionContainerHeightConstraint;
 
 @end
 
-@implementation VStreamCollectionCellPollD
+@implementation VSleekStreamCollectionCellPoll
 
 - (void)awakeFromNib
 {
@@ -45,8 +40,6 @@
     
     self.backgroundColor = [UIColor whiteColor];
     
-    self.captionContainerView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
-
     self.actionViewBottomConstraint.constant = kTemplateDActionViewBottomConstraintHeight;
 }
 
@@ -66,39 +59,12 @@
         self.secondAnswer = answers[1];
     }
     
-    [self setupActionBar];
-    [self reloadCommentsCount];
     [self setupMedia];
 }
 
 - (void)reloadCommentsCount
 {
-    [(VStreamCellActionViewD *)self.actionView updateCommentsCount:[self.sequence commentCount]];
-}
-
-- (void)setupActionBar
-{
-    [self.actionView clearButtons];
-    
-    //Add the "comments" button
-    [(VStreamCellActionViewD *)self.actionView addCommentsButton];
-    
-    [self.actionView addShareButton];
-    if ( [self.sequence canRemix] )
-    {
-        [self.actionView addRemixButton];
-    }
-    if ( [self.sequence canRepost] )
-    {
-        [self.actionView addRepostButton];
-    }
-    [self.actionView addMoreButton];
-}
-
-- (void)setDelegate:(id<VSequenceActionsDelegate>)delegate
-{
-    [super setDelegate:delegate];
-    self.actionView.delegate = delegate;
+    [(VSleekStreamCellActionView *)self.actionView updateCommentsCount:[self.sequence commentCount]];
 }
 
 - (void)setupMedia
@@ -121,30 +87,21 @@
     
     BOOL zeroConstraints = !(!self.sequence.nameEmbeddedInContent.boolValue && text.length > 0);
     CGFloat constraintValue = zeroConstraints ? 0.0f : kTemplateDTextNeighboringViewSeparatorHeight;
-    self.captionTextViewTopConstraint.constant = constraintValue;
-    self.captionTextViewBottomConstraint.constant = constraintValue;
     
     CGSize textSize = [text frameSizeForWidth:CGRectGetWidth(self.captionTextView.bounds)
-                                andAttributes:[[self class] sequenceDescriptionAttributes]];
+                                andAttributes:[[self class] sequenceDescriptionAttributesWithDependencyManager:self.dependencyManager]];
     
     self.captionContainerHeightConstraint.constant = constraintValue * 2 + textSize.height;
+    self.captionTextViewTopConstraint.constant = constraintValue;
+    self.captionTextViewBottomConstraint.constant = constraintValue;
 }
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
     [super setDependencyManager:dependencyManager];
+    self.captionContainerView.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
     self.actionView.dependencyManager = dependencyManager;
     self.actionView.layer.borderColor = [UIColor clearColor].CGColor;
-}
-
-- (NSUInteger)maxCaptionLines
-{
-    return 0;
-}
-
-- (NSString *)headerNibName
-{
-    return @"VStreamCellHeaderView-C";
 }
 
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
@@ -154,21 +111,15 @@
     return CGSizeMake(width, height);
 }
 
-+ (CGSize)actualSizeWithCollectionViewBounds:(CGRect)bounds sequence:(VSequence *)sequence
++ (CGSize)actualSizeWithCollectionViewBounds:(CGRect)bounds sequence:(VSequence *)sequence dependencyManager:(VDependencyManager *)dependencyManager
 {
     return [self desiredSizeWithCollectionViewBounds:bounds];
 }
 
-+ (UINib *)nibForCell
-{
-    return [UINib nibWithNibName:@"VStreamCollectionCellPoll-D"
-                          bundle:nil];
-}
-
-+ (NSDictionary *)sequenceDescriptionAttributes
++ (NSDictionary *)sequenceDescriptionAttributesWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     NSMutableDictionary *attributes = [[NSMutableDictionary alloc] init];
-    attributes[ NSFontAttributeName ] = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
+    attributes[ NSFontAttributeName ] = [dependencyManager fontForKey:VDependencyManagerHeading3FontKey];
     attributes[ NSForegroundColorAttributeName ] = [UIColor whiteColor];
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     paragraphStyle.alignment = NSTextAlignmentCenter;

@@ -8,17 +8,18 @@
 
 #import <UIKit/UIKit.h>
 
-#import "VSequenceActionsDelegate.h"
+#import "VSequenceActionsSender.h"
 
 @class VSequence, VDependencyManager;
 
-@interface VStreamCellActionView : UIView
+@interface VStreamCellActionView : UIView <VSequenceActionsSender>
 
 @property (nonatomic, strong) VSequence *sequence;
-@property (nonatomic, weak) id<VSequenceActionsDelegate> delegate;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 - (UIButton *)addButtonWithImage:(UIImage *)image;
+
+@property (nonatomic, weak) id<VSequenceActionsDelegate> sequenceActionsDelegate;
 
 - (void)clearButtons;
 - (void)addShareButton;

@@ -7,13 +7,10 @@
 //
 
 #import "VStreamCollectionCell.h"
-#import "VStreamCollectionCellC.h"
-#import "VStreamCollectionCellD.h"
 
 #import "VStreamCellHeaderView.h"
 #import "VSequence.h"
 #import "VObjectManager+Sequence.h"
-#import "VThemeManager.h"
 #import "NSDate+timeSince.h"
 #import "VUser.h"
 
@@ -29,12 +26,10 @@
 
 #import "VCommentCell.h"
 #import "VStreamCellActionView.h"
-#import "VStreamCellActionViewD.h"
+#import "VSleekStreamCellActionView.h"
 
 #import "UIImageView+VLoadingAnimations.h"
 #import "NSString+VParseHelp.h"
-
-#import "VSettingManager.h"
 
 #import "CCHLinkTextView.h"
 #import "CCHLinkTextViewDelegate.h"
@@ -45,6 +40,7 @@
 
 @property (nonatomic, weak) IBOutlet UIImageView *playImageView;
 @property (nonatomic, weak) IBOutlet UIImageView *playBackgroundImageView;
+
 @property (nonatomic, weak) IBOutlet UIImageView *bottomGradient;
 
 @property (nonatomic, weak) IBOutlet VVideoView *videoPlayerView;
@@ -57,24 +53,20 @@
 
 @end
 
-const CGFloat kCaptionTextViewLineFragmentPadding = 0.0f; //This value will be used to update the lineFragmentPadding of the captionTextView and serve as reference in size calculations
-
+const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
 
 @implementation VStreamCollectionCell
 
 - (void)awakeFromNib
 {
     [super awakeFromNib];
-        
-    self.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
+    
+    self.streamCellHeaderView = [[[NSBundle mainBundle] loadNibNamed:self.headerViewNibName owner:self options:nil] objectAtIndex:0];
 
-    NSString *headerNibName = [self headerNibName];
-        
-    self.streamCellHeaderView = [[[NSBundle mainBundle] loadNibNamed:headerNibName owner:self options:nil] objectAtIndex:0];
     [self.streamCellHeaderView setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self.streamCellHeaderView setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
     [self addSubview:self.streamCellHeaderView];
-    NSDictionary *views = @{ @"header":self.streamCellHeaderView };
+    NSDictionary *views = @{ @"header": self.streamCellHeaderView };
     CGFloat height = CGRectGetHeight(self.streamCellHeaderView.bounds);
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[header]|"
                                                                  options:0
@@ -84,41 +76,20 @@ const CGFloat kCaptionTextViewLineFragmentPadding = 0.0f; //This value will be u
                                                                  options:0
                                                                  metrics:@{ @"height":@(height) }
                                                                    views:views]];
-    self.captionTextView.textContainer.lineFragmentPadding = kCaptionTextViewLineFragmentPadding;
+    self.captionTextView.textContainer.lineFragmentPadding = VStreamCollectionCellTextViewLineFragmentPadding;
     self.captionTextView.textContainerInset = UIEdgeInsetsZero;
     self.streamCellHeaderView.delegate = self;
 }
 
-+ (Class)appropriateCollectionCellClass
-{
-    Class collectionCellClass = [VStreamCollectionCell class];
-    if ( [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateDEnabled] )
-    {
-        collectionCellClass = [VStreamCollectionCellD class];
-    }
-    else if ( [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled] )
-    {
-        collectionCellClass = [VStreamCollectionCellC class];
-    }
-    return collectionCellClass;
-}
-
-- (NSString *)headerNibName
+- (NSString *)headerViewNibName
 {
     return @"VStreamCellHeaderView";
 }
 
-- (void)text:(NSString *)text tappedInTextView:(UITextView *)textView
+- (void)setSequenceActionsDelegate:(id<VSequenceActionsDelegate>)sequenceActionsDelegate
 {
-    if ([self.delegate respondsToSelector:@selector(hashTag:tappedFromSequence:fromView:)])
-    {
-        [self.delegate hashTag:text tappedFromSequence:self.sequence fromView:self];
-    }
-}
-
-- (void)setDelegate:(id<VSequenceActionsDelegate>)delegate
-{
-    _delegate = delegate;
+    _sequenceActionsDelegate = sequenceActionsDelegate;
+    self.streamCellHeaderView.delegate = sequenceActionsDelegate;
 }
 
 - (void)setDescriptionText:(NSString *)text
@@ -126,11 +97,8 @@ const CGFloat kCaptionTextViewLineFragmentPadding = 0.0f; //This value will be u
     BOOL hasText = !self.sequence.nameEmbeddedInContent.boolValue;
     if ( hasText )
     {
-        NSMutableDictionary *attributes = [[[self class] sequenceDescriptionAttributes] mutableCopy];
-        attributes[NSForegroundColorAttributeName] = [self textColor];
-        
-        NSAttributedString *newAttributedCellText = [[NSAttributedString alloc] initWithString:(text ?: @"")
-                                                                                    attributes:attributes];
+        NSMutableAttributedString *newAttributedCellText = [[NSMutableAttributedString alloc] initWithString:(text ?: @"")
+                                                                                                  attributes:[[self class] sequenceDescriptionAttributesWithDependencyManager:self.dependencyManager]];
         self.captionTextView.linkDelegate = self;
         self.captionTextView.textContainer.maximumNumberOfLines = [self maxCaptionLines];
         self.captionTextView.textContainer.lineBreakMode = NSLineBreakByTruncatingTail;
@@ -140,16 +108,6 @@ const CGFloat kCaptionTextViewLineFragmentPadding = 0.0f; //This value will be u
     {
         self.captionTextView.attributedText = [[NSAttributedString alloc] initWithString:@""];
     }
-}
-
-- (UIColor *)textColor
-{
-    if ( !( [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled] || [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateDEnabled] ) )
-    {
-        //Hack for white text in template A
-        return [UIColor whiteColor];
-    }
-    return self.dependencyManager != nil && [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey] != nil ? [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey] : [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
 }
 
 //Subclass this to allow for more lines in caption, 0 for infinite lines
@@ -171,11 +129,8 @@ const CGFloat kCaptionTextViewLineFragmentPadding = 0.0f; //This value will be u
 - (void)prepareForReuse
 {
     [super prepareForReuse];
-    
     [self pauseVideo];
-    
     self.videoPlayerView.alpha = 0.0f;
-        
     self.videoAsset = nil;
 }
 
@@ -192,8 +147,7 @@ const CGFloat kCaptionTextViewLineFragmentPadding = 0.0f; //This value will be u
     [self.streamCellHeaderView setParentViewController:self.parentViewController];
     
     [self.previewImageView fadeInImageAtURL:[NSURL URLWithString:[_sequence.previewImagePaths firstObject]]
-                           placeholderImage:[UIImage resizeableImageWithColor:
-                                             [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]]];
+                           placeholderImage:[UIImage resizeableImageWithColor:[self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey]]];
     
     [self setDescriptionText:self.sequence.name];
     
@@ -225,11 +179,20 @@ const CGFloat kCaptionTextViewLineFragmentPadding = 0.0f; //This value will be u
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
+    if ( dependencyManager == self.dependencyManager )
+    {
+        return;
+    }
     [super setDependencyManager:dependencyManager];
-    self.streamCellHeaderView.dependencyManager = dependencyManager;
     
-    self.contentView.backgroundColor = [dependencyManager colorForKey:VDependencyManagerSecondaryBackgroundColorKey];
-    [self refreshDescriptionAttributes];
+    if ( dependencyManager != nil )
+    {
+        self.streamCellHeaderView.dependencyManager = dependencyManager;
+        
+        self.contentView.backgroundColor = [dependencyManager colorForKey:VDependencyManagerSecondaryBackgroundColorKey];
+        self.commentsLabel.font = [[VStreamCollectionCell sequenceCommentCountAttributesWithDependencyManager:dependencyManager] objectForKey:NSFontAttributeName];
+        [self refreshDescriptionAttributes];
+    }
 }
 
 - (BOOL)canPlayVideo
@@ -309,17 +272,17 @@ const CGFloat kCaptionTextViewLineFragmentPadding = 0.0f; //This value will be u
 
 - (void)willCommentOnSequence:(VSequence *)sequence fromView:(UIView *)view
 {
-    if ([self.delegate respondsToSelector:@selector(willCommentOnSequence:fromView:)])
+    if ([self.sequenceActionsDelegate respondsToSelector:@selector(willCommentOnSequence:fromView:)])
     {
-        [self.delegate willCommentOnSequence:self.sequence fromView:self];
+        [self.sequenceActionsDelegate willCommentOnSequence:self.sequence fromView:self];
     }
 }
 
 - (void)selectedUserOnSequence:(VSequence *)sequence fromView:(UIView *)view
 {
-    if ([self.delegate respondsToSelector:@selector(selectedUserOnSequence:fromView:)])
+    if ([self.sequenceActionsDelegate respondsToSelector:@selector(selectedUserOnSequence:fromView:)])
     {
-        [self.delegate selectedUserOnSequence:self.sequence fromView:self];
+        [self.sequenceActionsDelegate selectedUserOnSequence:self.sequence fromView:self];
     }
 }
 
@@ -342,17 +305,23 @@ const CGFloat kCaptionTextViewLineFragmentPadding = 0.0f; //This value will be u
     return CGSizeMake(width, width);
 }
 
-+ (CGSize)actualSizeWithCollectionViewBounds:(CGRect)bounds sequence:(VSequence *)sequence
++ (CGSize)actualSizeWithCollectionViewBounds:(CGRect)bounds sequence:(VSequence *)sequence dependencyManager:(VDependencyManager *)dependencyManager
 {
     return [self desiredSizeWithCollectionViewBounds:bounds];
 }
 
-+ (NSDictionary *)sequenceDescriptionAttributes
++ (NSDictionary *)sequenceCommentCountAttributesWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    return @{ NSFontAttributeName : [dependencyManager fontForKey:VDependencyManagerLabel3FontKey] };
+}
+
++ (NSDictionary *)sequenceDescriptionAttributesWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     NSMutableDictionary *attributes = [[NSMutableDictionary alloc] init];
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     
-    attributes[ NSFontAttributeName ] = [[[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font] fontWithSize:19];
+    attributes[ NSForegroundColorAttributeName ] = [dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+    attributes[ NSFontAttributeName ] = [[dependencyManager fontForKey:VDependencyManagerHeading2FontKey] fontWithSize:19];
     
     paragraphStyle.maximumLineHeight = 25;
     paragraphStyle.minimumLineHeight = 25;
@@ -363,7 +332,6 @@ const CGFloat kCaptionTextViewLineFragmentPadding = 0.0f; //This value will be u
     [shadow setShadowOffset:CGSizeMake(0, 0)];
     attributes[NSShadowAttributeName] = shadow;
     
-    attributes[ NSForegroundColorAttributeName ] = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
     attributes[ NSParagraphStyleAttributeName ] = paragraphStyle;
     
     return [NSDictionary dictionaryWithDictionary:attributes];
@@ -373,11 +341,11 @@ const CGFloat kCaptionTextViewLineFragmentPadding = 0.0f; //This value will be u
 
 - (void)linkTextView:(CCHLinkTextView *)linkTextView didTapLinkWithValue:(id)value
 {
-    if ([self.delegate respondsToSelector:@selector(hashTag:tappedFromSequence:fromView:)])
+    if ([self.sequenceActionsDelegate respondsToSelector:@selector(hashTag:tappedFromSequence:fromView:)])
     {
-        [self.delegate hashTag:value
-            tappedFromSequence:self.sequence
-                      fromView:self];
+        [self.sequenceActionsDelegate hashTag:value
+                           tappedFromSequence:self.sequence
+                                     fromView:self];
     }
 }
 

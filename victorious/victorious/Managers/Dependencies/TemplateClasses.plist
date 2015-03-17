@@ -64,5 +64,11 @@
 	<string>VSettingsViewController</string>
 	<key>discover.screen</key>
 	<string>VDiscoverContainerViewController</string>
+	<key>inset.streamCell</key>
+	<string>VInsetStreamCellFactory</string>
+	<key>sleek.streamCell</key>
+	<string>VSleekStreamCellFactory</string>
+	<key>titleOverlay.streamCell</key>
+	<string>VTitleOverlayStreamCellFactory</string>
 </dict>
 </plist>

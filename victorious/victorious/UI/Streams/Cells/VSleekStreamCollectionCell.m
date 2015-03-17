@@ -6,11 +6,11 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VStreamCollectionCellD.h"
-#import "VStreamCellActionViewD.h"
+#import "VSleekStreamCollectionCell.h"
+#import "VSleekStreamCellActionView.h"
 #import "VSequence+Fetcher.h"
-#import "VThemeManager.h"
 #import "NSString+VParseHelp.h"
+#import "VDependencyManager.h"
 
 const CGFloat kTemplateDHeaderHeight = 50.0f;
 const CGFloat kTemplateDActionViewHeight = 41.0f;
@@ -21,15 +21,7 @@ const CGFloat kTemplateDActionViewBottomConstraintHeight = 28.0f; //This represe
 //Use these 2 constants to adjust the spacing between the caption and comment count as well as the distance between the caption and the view above it and the comment label and the view below it
 const CGFloat kTemplateDTextNeighboringViewSeparatorHeight = 10.0f; //This represents the space between the comment label and the view below it and the distance between the caption textView and the view above it
 
-@interface VStreamCollectionCellD ()
-
-@property (nonatomic, weak) IBOutlet VStreamCellActionViewD *actionView;
-
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *actionViewBottomConstraint;
-
-@end
-
-@implementation VStreamCollectionCellD
+@implementation VSleekStreamCollectionCell
 
 - (void)awakeFromNib
 {
@@ -40,21 +32,15 @@ const CGFloat kTemplateDTextNeighboringViewSeparatorHeight = 10.0f; //This repre
     self.actionViewBottomConstraint.constant = kTemplateDActionViewBottomConstraintHeight;
 }
 
-+ (UINib *)nibForCell
+- (NSString *)headerViewNibName
 {
-    return [UINib nibWithNibName:@"VStreamCollectionCell-D"
-                          bundle:nil];
+    return @"VInsetStreamCellHeaderView";
 }
 
-- (NSString *)headerNibName
+- (void)setSequenceActionsDelegate:(id<VSequenceActionsDelegate>)sequenceActionsDelegate
 {
-    return @"VStreamCellHeaderView-C";
-}
-
-- (void)setDelegate:(id<VSequenceActionsDelegate>)delegate
-{
-    [super setDelegate:delegate];
-    self.actionView.delegate = delegate;
+    [super setSequenceActionsDelegate:sequenceActionsDelegate];
+    self.actionView.sequenceActionsDelegate = sequenceActionsDelegate;
 }
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
@@ -75,7 +61,7 @@ const CGFloat kTemplateDTextNeighboringViewSeparatorHeight = 10.0f; //This repre
 
 - (void)reloadCommentsCount
 {
-    [(VStreamCellActionViewD *)self.actionView updateCommentsCount:[self.sequence commentCount]];
+    [(VSleekStreamCellActionView *)self.actionView updateCommentsCount:[self.sequence commentCount]];
 }
 
 - (void)setSequence:(VSequence *)sequence
@@ -91,7 +77,7 @@ const CGFloat kTemplateDTextNeighboringViewSeparatorHeight = 10.0f; //This repre
     [self.actionView clearButtons];
     
     //Add the "comments" button
-    [(VStreamCellActionViewD *)self.actionView addCommentsButton];
+    [(VSleekStreamCellActionView *)self.actionView addCommentsButton];
     
     [self.actionView addShareButton];
     if ( [self.sequence canRemix] )
@@ -105,6 +91,11 @@ const CGFloat kTemplateDTextNeighboringViewSeparatorHeight = 10.0f; //This repre
     [self.actionView addMoreButton];
 }
 
+- (NSUInteger)maxCaptionLines
+{
+    return 0;
+}
+
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {
     CGFloat width = CGRectGetWidth(bounds);
@@ -112,31 +103,26 @@ const CGFloat kTemplateDTextNeighboringViewSeparatorHeight = 10.0f; //This repre
     return CGSizeMake(width, height);
 }
 
-- (NSUInteger)maxCaptionLines
-{
-    return 0;
-}
-
-+ (CGSize)actualSizeWithCollectionViewBounds:(CGRect)bounds sequence:(VSequence *)sequence
++ (CGSize)actualSizeWithCollectionViewBounds:(CGRect)bounds sequence:(VSequence *)sequence dependencyManager:(VDependencyManager *)dependencyManager
 {
     CGSize actual = [self desiredSizeWithCollectionViewBounds:bounds];
 
-    CGFloat width = actual.width - kTextViewInset - kCaptionTextViewLineFragmentPadding * 2;
+    CGFloat width = actual.width - kTextViewInset - VStreamCollectionCellTextViewLineFragmentPadding * 2;
     if ( !sequence.nameEmbeddedInContent.boolValue && sequence.name.length > 0 )
     {
         //Subtract insets and line fragment padding that is padding text in textview BEFORE calculating size
         CGSize textSize = [sequence.name frameSizeForWidth:width
-                                             andAttributes:[self sequenceDescriptionAttributes]];
+                                             andAttributes:[self sequenceDescriptionAttributesWithDependencyManager:dependencyManager]];
         actual.height += textSize.height + kTemplateDTextNeighboringViewSeparatorHeight; //Neighboring space adds space BELOW the captionTextView
     }
     return actual;
 }
 
-+ (NSDictionary *)sequenceDescriptionAttributes
++ (NSDictionary *)sequenceDescriptionAttributesWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     NSMutableDictionary *attributes = [[NSMutableDictionary alloc] init];
-    attributes[ NSFontAttributeName ] = [[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont];
-    attributes[ NSForegroundColorAttributeName ] = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
+    attributes[ NSFontAttributeName ] = [dependencyManager fontForKey:VDependencyManagerParagraphFontKey];
+    attributes[ NSForegroundColorAttributeName ] = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
     attributes[ NSParagraphStyleAttributeName ] = [[NSMutableParagraphStyle alloc] init];
     return [NSDictionary dictionaryWithDictionary:attributes];
 }

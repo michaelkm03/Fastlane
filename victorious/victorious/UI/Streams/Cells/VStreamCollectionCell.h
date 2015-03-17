@@ -8,17 +8,21 @@
 
 #import <UIKit/UIKit.h>
 
+#import "VHasManagedDependencies.h"
 #import "VSharedCollectionReusableViewMethods.h"
-#import "VSequenceActionsDelegate.h"
+#import "VSequenceActionsSender.h"
 #import "VBaseCollectionViewCell.h"
 
-extern const CGFloat kCaptionTextViewLineFragmentPadding;
-
 @class VSequence, VStreamCellHeaderView, VStreamCollectionCell, CCHLinkTextView;
+/**
+ This value will be used to update the lineFragmentPadding of the
+ captionTextView and serve as reference in size calculations
+ */
+extern const CGFloat VStreamCollectionCellTextViewLineFragmentPadding;
 
-@interface VStreamCollectionCell : VBaseCollectionViewCell <VSharedCollectionReusableViewMethods>
+@class CCHLinkTextView, VDependencyManager, VSequence, VStreamCellHeaderView, VStreamCollectionCell;
 
-+ (Class)appropriateCollectionCellClass;
+@interface VStreamCollectionCell : VBaseCollectionViewCell <VSequenceActionsSender, VSharedCollectionReusableViewMethods, VHasManagedDependancies>
 
 @property (nonatomic, weak) IBOutlet UIImageView            *previewImageView;
 @property (nonatomic, weak) IBOutlet UIImageView            *lowerGradientView;
@@ -30,10 +34,11 @@ extern const CGFloat kCaptionTextViewLineFragmentPadding;
 
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint     *captionTextViewBottomConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint     *captionTextViewTopConstraint;
+@property (nonatomic, weak) IBOutlet UILabel                *commentsLabel;
 
 @property (nonatomic, weak) VSequence                       *sequence;
 
-@property (nonatomic, weak) id<VSequenceActionsDelegate> delegate;
+@property (nonatomic, weak) id<VSequenceActionsDelegate> sequenceActionsDelegate;
 
 @property (nonatomic, weak) UIViewController *parentViewController;
 
@@ -43,7 +48,26 @@ extern const CGFloat kCaptionTextViewLineFragmentPadding;
  */
 @property (nonatomic, assign, readonly) CGRect mediaContentFrame;
 
-+ (CGSize)actualSizeWithCollectionViewBounds:(CGRect)bounds sequence:(VSequence *)sequence;
+/**
+ The name of the nib file for the cell's header view
+ */
+@property (nonatomic, readonly) NSString *headerViewNibName;
+
++ (CGSize)actualSizeWithCollectionViewBounds:(CGRect)bounds sequence:(VSequence *)sequence dependencyManager:(VDependencyManager *)dependencyManager;
+
+/**
+ The attributes that will be used to display the comment count
+
+ @param dependencyManager An instance of VDependencyManager used to determine which font choice
+*/
++ (NSDictionary *)sequenceCommentCountAttributesWithDependencyManager:(VDependencyManager *)dependencyManager;
+
+/**
+ The attributes that will be used to display the sequence description (a.k.a. the caption)
+ 
+ @param dependencyManager An instance of VDependencyManager used to determine which font choice
+ */
++ (NSDictionary *)sequenceDescriptionAttributesWithDependencyManager:(VDependencyManager *)dependencyManager;
 
 - (void)playVideo;
 - (void)pauseVideo;
@@ -51,8 +75,6 @@ extern const CGFloat kCaptionTextViewLineFragmentPadding;
 - (void)reloadCommentsCount;
 
 - (void)setDescriptionText:(NSString *)text;
-
-- (UIColor *)textColor;
 
 - (NSUInteger)maxCaptionLines;
 

@@ -8,7 +8,7 @@
 
 #import "VStreamCellActionView.h"
 
-@interface VStreamCellActionViewD : VStreamCellActionView
+@interface VSleekStreamCellActionView : VStreamCellActionView
 
 - (void)updateCommentsCount:(NSNumber *)commentsCount;
 
