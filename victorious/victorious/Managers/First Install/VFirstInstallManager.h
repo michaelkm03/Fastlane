@@ -18,6 +18,6 @@ extern NSString * const VAppInstalledDefaultsKey;
 /**
  Check if this is the first time the app has been installed and track the event.
  */
-- (void)reportFirstInstallWithTracking:(VTracking *)applicationTracking;
+- (void)reportFirstInstallWithTrackingURLs:(NSArray *)applicationTrackingURLs;
 
 @end
