@@ -30,8 +30,6 @@
 #import "UIImageView+VLoadingAnimations.h"
 #import "NSString+VParseHelp.h"
 
-#import "VSettingManager.h"
-
 #import "CCHLinkTextView.h"
 #import "CCHLinkTextViewDelegate.h"
 #import "UIView+Autolayout.h"
@@ -123,7 +121,7 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
     if ( hasText )
     {
         NSMutableAttributedString *newAttributedCellText = [[NSMutableAttributedString alloc] initWithString:(text ?: @"")
-                                                                                                  attributes:[VStreamCollectionCell sequenceDescriptionAttributesWithDependencyManager:self.dependencyManager]];
+                                                                                                  attributes:[[self class] sequenceDescriptionAttributesWithDependencyManager:self.dependencyManager]];
         self.captionTextView.linkDelegate = self;
         self.captionTextView.textContainer.maximumNumberOfLines = 3;
         self.captionTextView.textContainer.lineBreakMode = NSLineBreakByTruncatingTail;

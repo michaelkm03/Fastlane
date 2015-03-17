@@ -42,11 +42,6 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
     self.captionTextViewTopConstraint.constant = kTextNeighboringViewSeparatorHeight;
 }
 
-+ (NSString *)suggestedReuseIdentifier
-{
-    return NSStringFromClass([VInsetStreamCollectionCell class]);
-}
-
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {
     CGFloat width = CGRectGetWidth(bounds);

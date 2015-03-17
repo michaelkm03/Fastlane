@@ -1,24 +1,24 @@
 //
-//  VTitleOverlayStreamCellFactory.m
+//  VInsetStreamCellFactory.m
 //  victorious
 //
-//  Created by Josh Hinman on 3/12/15.
+//  Created by Josh Hinman on 3/16/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
+#import "VInsetStreamCellFactory.h"
+#import "VInsetStreamCollectionCell.h"
+#import "VInsetStreamCollectionCellPoll.h"
 #import "VSequence+Fetcher.h"
-#import "VStreamCollectionCell.h"
-#import "VStreamCollectionCellPoll.h"
 #import "VStreamCollectionCellWebContent.h"
-#import "VTitleOverlayStreamCellFactory.h"
 
-@interface VTitleOverlayStreamCellFactory ()
+@interface VInsetStreamCellFactory ()
 
 @property (nonatomic, readonly) VDependencyManager *dependencyManager;
 
 @end
 
-@implementation VTitleOverlayStreamCellFactory
+@implementation VInsetStreamCellFactory
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
@@ -32,8 +32,8 @@
 
 - (void)registerCellsWithCollectionView:(UICollectionView *)collectionView
 {
-    [collectionView registerNib:[VStreamCollectionCell nibForCell] forCellWithReuseIdentifier:[VStreamCollectionCell suggestedReuseIdentifier]];
-    [collectionView registerNib:[VStreamCollectionCellPoll nibForCell] forCellWithReuseIdentifier:[VStreamCollectionCellPoll suggestedReuseIdentifier]];
+    [collectionView registerNib:[VInsetStreamCollectionCell nibForCell] forCellWithReuseIdentifier:[VInsetStreamCollectionCell suggestedReuseIdentifier]];
+    [collectionView registerNib:[VInsetStreamCollectionCellPoll nibForCell] forCellWithReuseIdentifier:[VInsetStreamCollectionCellPoll suggestedReuseIdentifier]];
     [collectionView registerNib:[VStreamCollectionCellWebContent nibForCell] forCellWithReuseIdentifier:[VStreamCollectionCellWebContent suggestedReuseIdentifier]];
 }
 
@@ -43,7 +43,7 @@
     
     if ( [sequence isPoll] )
     {
-        cell = [collectionView dequeueReusableCellWithReuseIdentifier:[VStreamCollectionCellPoll suggestedReuseIdentifier]
+        cell = [collectionView dequeueReusableCellWithReuseIdentifier:[VInsetStreamCollectionCellPoll suggestedReuseIdentifier]
                                                          forIndexPath:indexPath];
     }
     else if ([sequence isPreviewWebContent])
@@ -56,7 +56,7 @@
     }
     else
     {
-        cell = [collectionView dequeueReusableCellWithReuseIdentifier:[VStreamCollectionCell suggestedReuseIdentifier]
+        cell = [collectionView dequeueReusableCellWithReuseIdentifier:[VInsetStreamCollectionCell suggestedReuseIdentifier]
                                                          forIndexPath:indexPath];
     }
     cell.dependencyManager = self.dependencyManager;
@@ -66,24 +66,24 @@
 
 - (CGSize)sizeWithCollectionViewBounds:(CGRect)bounds ofCellForSequence:(VSequence *)sequence
 {
-    if ([sequence isPoll])
+    if ( [sequence isPoll] )
     {
-        return [VStreamCollectionCellPoll desiredSizeWithCollectionViewBounds:bounds];
+        return [VInsetStreamCollectionCellPoll actualSizeWithCollectionViewBounds:bounds sequence:sequence dependencyManager:self.dependencyManager];
     }
     else
     {
-        return [VStreamCollectionCell desiredSizeWithCollectionViewBounds:bounds];
+        return [VInsetStreamCollectionCell actualSizeWithCollectionViewBounds:bounds sequence:sequence dependencyManager:self.dependencyManager];
     }
 }
 
 - (CGFloat)minimumLineSpacing
 {
-    return 0;
+    return 8.0f;
 }
 
 - (UIEdgeInsets)sectionInsets
 {
-    return UIEdgeInsetsZero;
+    return UIEdgeInsetsMake(10.0f, 0.0f, 10.0f, 0.0f);
 }
 
 @end

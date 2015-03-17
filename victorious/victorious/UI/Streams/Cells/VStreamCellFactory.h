@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+@class VSequence;
+
 /**
  Objects conforming to this protocol create and
  configure collection view cells for streams
@@ -35,9 +37,9 @@
 - (CGSize)sizeWithCollectionViewBounds:(CGRect)bounds ofCellForSequence:(VSequence *)sequence;
 
 /**
- Returns the desired space between cells
+ Returns the desired line spacing for cells from this factory
  */
-- (CGFloat)minimumInteritemSpacing;
+- (CGFloat)minimumLineSpacing;
 
 /**
  Returns the desired insets for sections containing cells from this factory
