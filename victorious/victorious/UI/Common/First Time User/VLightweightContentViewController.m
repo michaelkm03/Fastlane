@@ -17,6 +17,8 @@
 #import "VAsset+Fetcher.h"
 #import "VNode+Fetcher.h"
 #import "VFirstTimeInstallHelper.h"
+#import "VScaffoldViewController.h"
+#import "VTrackingConstants.h"
 
 @interface VLightweightContentViewController () <VCVideoPlayerDelegate>
 
@@ -29,6 +31,7 @@
 @property (nonatomic, weak) IBOutlet UIView *backgroundBlurredView;
 
 @property (nonatomic, strong) VCVideoPlayerViewController *videoPlayerViewController;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end
 
@@ -55,6 +58,10 @@
 {
     [super viewDidLoad];
     
+    NSDictionary *vcDictionary = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:VScaffoldViewControllerLightweightContentViewComponentKey];
+    VDependencyManager *childDependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:vcDictionary];
+    self.dependencyManager = childDependencyManager;
+
     // Set the Get Started button style
     self.getStartedButton.secondaryColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     self.getStartedButton.titleLabel.font = [self.dependencyManager fontForKey:VDependencyManagerParagraphFontKey];
@@ -69,20 +76,12 @@
 {
     [super viewDidAppear:animated];
     
-    [self.firstTimeInstallHelper savePlaybackDefaults];
-    
     // Tracking
-    NSArray *trackingArray = [self.dependencyManager arrayForKey:kFTUTrackingURLGroup];
-    if ( trackingArray != nil )
+    NSArray *trackingUrlArray = [self.dependencyManager arrayForKey:kFTUTrackingURLGroup];
+    if ( trackingUrlArray != nil )
     {
-        [trackingArray enumerateObjectsUsingBlock:^(NSString *trackingUrl, NSUInteger idx, BOOL *stop)
-         {
-             [[VObjectManager sharedManager] GET:trackingUrl
-                                          object:nil
-                                      parameters:nil
-                                    successBlock:nil
-                                       failBlock:nil];
-         }];
+        NSDictionary *params = @{ VTrackingKeyUrls: trackingUrlArray };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventFirstTimeUserVideoPlayed parameters:params];
     }
     
     // Play the video
@@ -180,26 +179,33 @@
 - (void)fetchMediaSequenceObject
 {
     NSString *sequenceId = [[self.dependencyManager stringForKey:kFTUSequenceURLPath] lastPathComponent];
-    [[VObjectManager sharedManager] fetchSequenceByID:sequenceId
-                                         successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-     {
-         VSequence *sequence = (VSequence *)resultObjects.firstObject;
-         VNode *node = (VNode *)[sequence firstNode];
-         VAsset *asset = [node mp4Asset];
-         if (asset.dataURL != nil)
+    if (sequenceId != nil)
+    {
+        [[VObjectManager sharedManager] fetchSequenceByID:sequenceId
+                                             successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
          {
-             self.mediaUrl = asset.dataURL;
+             VSequence *sequence = (VSequence *)resultObjects.firstObject;
+             VNode *node = (VNode *)[sequence firstNode];
+             VAsset *asset = [node mp4Asset];
+             if (asset.dataURL != nil)
+             {
+                 self.mediaUrl = asset.dataURL;
+             }
+             else
+             {
+                 self.mediaUrl = nil;
+             }
+             
          }
-         else
+                                                failBlock:^(NSOperation *operation, NSError *error)
          {
              self.mediaUrl = nil;
-         }
-         
-     }
-                                            failBlock:^(NSOperation *operation, NSError *error)
-     {
-         self.mediaUrl = nil;
-     }];
+         }];
+    }
+    else
+    {
+        self.mediaUrl = nil;
+    }
 }
 
 #pragma mark - VCVideoPlayerDelegate

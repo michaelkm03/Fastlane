@@ -28,7 +28,7 @@
 NSString * const VScaffoldViewControllerMenuComponentKey = @"menu";
 NSString * const VScaffoldViewControllerContentViewComponentKey = @"contentView";
 NSString * const VScaffoldViewControllerUserProfileViewComponentKey = @"userProfileView";
-NSString * const VScaffoldViewControllerLightweightContentViewComponentKey = @"lightweightContentView";
+NSString * const VScaffoldViewControllerLightweightContentViewComponentKey = @"firstTimeContent";
 
 static NSString * const kContentDeeplinkURLHostComponent = @"content";
 static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
@@ -58,14 +58,18 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
 {
     [super viewDidAppear:animated];
 
+    [self showFirstTimeUserExperience];
+}
+
+#pragma mark - First Time User Experience
+
+- (void)showFirstTimeUserExperience
+{
     // Show the First Time User Video if it hasn't been shown yet
-    NSDictionary *vcDictionary = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:VScaffoldViewControllerLightweightContentViewComponentKey];
     VLightweightContentViewController *lightweightContentVC = [self.dependencyManager templateValueOfType:[VLightweightContentViewController class]
                                                                                                    forKey:VScaffoldViewControllerLightweightContentViewComponentKey];
     
     self.firstTimeInstallHelper = [[VFirstTimeInstallHelper alloc] init];
-    VDependencyManager *childDependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:vcDictionary];
-    lightweightContentVC.dependencyManager = childDependencyManager;
     
     // Present the first-time user video view controller if hasn't been shown
     if ( ![self.firstTimeInstallHelper hasBeenShown] )
@@ -77,8 +81,10 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
                        {
                            if ( lightweightContentVC.mediaUrl != nil )
                            {
-                               lightweightContentVC.firstTimeInstallHelper = self.firstTimeInstallHelper;
-                               [self presentViewController:lightweightContentVC animated:YES completion:nil];
+                               [self presentViewController:lightweightContentVC animated:YES completion:^
+                               {
+                                   [self.firstTimeInstallHelper savePlaybackDefaults];
+                               }];
                            }
                        });
     }
@@ -138,7 +144,7 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
     }
 }
 
-#pragma mark - VFirstTimeUserVideoViewControllerDelegate
+#pragma mark - VLightweightContentViewControllerDelegate
 
 - (void)videoHasCompleted:(VLightweightContentViewController *)firstTimeUserVideoViewController
 {
