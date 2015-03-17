@@ -319,7 +319,6 @@
              {
                  self.deviceToken = resultObjects[0];
                  [self performSegueWithIdentifier:@"toEnterResetToken" sender:self];
-                 [[VTrackingManager sharedInstance] trackEvent:VTrackingEventResetPasswordDidSucceed];
              }
                                                                failBlock:^(NSOperation *operation, NSError *error)
              {

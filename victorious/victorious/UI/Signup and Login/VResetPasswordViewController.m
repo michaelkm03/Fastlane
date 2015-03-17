@@ -83,6 +83,7 @@
                                                        newPassword:newPassword
                                                       successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
          {
+             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventResetPasswordDidSucceed];
              [self dismissViewControllerAnimated:YES completion:nil];
          }
                                                          failBlock:^(NSOperation *operation, NSError *error)
