@@ -71,6 +71,7 @@
 static NSString * const kCanAddContentKey = @"canAddContent";
 static NSString * const kMarqueeKey = @"marquee";
 static NSString * const kStreamCollectionStoryboardId = @"StreamCollection";
+static NSString * const kStreamATFThresholdKey = @"stream_atf_view_threshold";
 
 NSString * const VStreamCollectionViewControllerStreamURLPathKey = @"streamUrlPath";
 NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"createSequenceIcon";
@@ -128,9 +129,7 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCellC
         streamCollectionVC.shouldDisplayMarquee = YES;
     }
     
-    [streamCollectionVC addCreateSequenceButtonIfAllowed];
-    
-    NSNumber *cellVisibilityRatio = [dependencyManager numberForKey:@"stream_atf_view_threshold"];
+    NSNumber *cellVisibilityRatio = [dependencyManager numberForKey:kStreamATFThresholdKey];
     if ( cellVisibilityRatio != nil )
     {
         streamCollectionVC.trackingMinRequiredCellVisibilityRatio = cellVisibilityRatio.floatValue;
@@ -267,6 +266,8 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCellC
     self.title = currentStream.name;
     self.navigationItem.title = currentStream.name;
     [super setCurrentStream:currentStream];
+    
+    [self updateUserPostAllowed];
 }
 
 - (void)setShouldDisplayMarquee:(BOOL)shouldDisplayMarquee
@@ -283,16 +284,21 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCellC
 
 #pragma mark - Sequence Creation
 
-- (void)addCreateSequenceButtonIfAllowed
+- (void)updateUserPostAllowed
 {
-    const BOOL isUserPostAllowedByTemplate = [[self.dependencyManager numberForKey:kCanAddContentKey] boolValue];
-    const BOOL isUserPostAllowedByStream = self.currentStream.isUserPostAllowed.boolValue;
-    
-    if ( isUserPostAllowedByTemplate || isUserPostAllowedByStream )
+    if ( [self isUserPostAllowedInStream:self.currentStream withDependencyManager:self.dependencyManager] )
     {
         [self addCreateSequenceButton];
         [self addUploadProgressView];
     }
+}
+
+- (BOOL)isUserPostAllowedInStream:(VStream *)stream withDependencyManager:(VDependencyManager *)dependencyManager
+{
+    const BOOL isUserPostAllowedByTemplate = [[dependencyManager numberForKey:kCanAddContentKey] boolValue];
+    const BOOL isUserPostAllowedByStream = stream.isUserPostAllowed.boolValue;
+    
+    return isUserPostAllowedByTemplate || isUserPostAllowedByStream;
 }
 
 - (void)addCreateSequenceButton
@@ -561,6 +567,11 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCellC
 
 - (void)addUploadProgressView
 {
+    if ( self.uploadProgressViewController != nil )
+    {
+        return;
+    }
+    
     self.uploadProgressViewController = [VUploadProgressViewController viewControllerForUploadManager:[[VObjectManager sharedManager] uploadManager]];
     self.uploadProgressViewController.delegate = self;
     [self addChildViewController:self.uploadProgressViewController];
