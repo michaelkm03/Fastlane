@@ -91,7 +91,7 @@
 {
     [super viewWillDisappear:animated];
     [self.keyboardBarViewController resignFirstResponder];
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillChangeFrameNotification object:nil];
 }
 
 - (BOOL)shouldAutorotate
@@ -117,7 +117,8 @@
 
 - (void)keyboardFrameChanged:(NSNotification *)notification
 {
-    CGRect keyboardEndFrame, keyboardStartFrame;
+    CGRect keyboardEndFrame;
+    CGRect keyboardStartFrame;
     NSTimeInterval animationDuration;
     UIViewAnimationCurve animationCurve;
     NSDictionary *userInfo = [notification userInfo];
