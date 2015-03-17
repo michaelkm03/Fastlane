@@ -2,11 +2,13 @@
   "images" : [
     {
       "idiom" : "universal",
-      "scale" : "1x"
+      "scale" : "1x",
+      "filename" : "GIF_icon_selected.png"
     },
     {
       "idiom" : "universal",
-      "scale" : "2x"
+      "scale" : "2x",
+      "filename" : "GIF_icon_selected@2x.png"
     },
     {
       "idiom" : "universal",
