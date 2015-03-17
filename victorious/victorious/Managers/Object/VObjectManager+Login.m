@@ -16,7 +16,7 @@
 
 #import "VConversation.h"
 #import "VPollResult+RestKit.h"
-
+#import "VDependencyManager.h"
 #import "VThemeManager.h"
 #import "VSettingManager.h"
 #import "VVoteType.h"
@@ -56,6 +56,40 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
         successBlock:fullSuccess
            failBlock:failed];
 }
+
+- (RKManagedObjectRequestOperation *)templateWithDependencyManager:(VDependencyManager *)parentDependencyManager
+                                                      successBlock:(VTemplateSuccessBlock)success
+                                                         failBlock:(VFailBlock)failed
+{
+    VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    {
+        if ( success == nil )
+        {
+            return;
+        }
+        if ( ![fullResponse isKindOfClass:[NSDictionary class]] )
+        {
+            if ( failed != nil )
+            {
+                failed(operation, nil);
+            }
+        }
+        
+        NSDictionary *template = (NSDictionary *)fullResponse;
+        VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:parentDependencyManager
+                                                                                    configuration:template
+                                                                dictionaryOfClassesByTemplateName:nil];
+        success(operation, fullResponse, dependencyManager);
+    };
+    
+    return [self GET:@"/api/template"
+              object:nil
+          parameters:nil
+        successBlock:fullSuccess
+           failBlock:failed];
+}
+
+
 
 - (void)updateTheme:(VThemeManager *)themeManager withResponsePayload:(NSDictionary *)payload
 {
