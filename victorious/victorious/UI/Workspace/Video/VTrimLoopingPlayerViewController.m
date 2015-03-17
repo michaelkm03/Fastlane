@@ -264,13 +264,18 @@
          {
              return;
          }
+         [strongSelf.player pause];
          [strongSelf.player seekToTime:kCMTimeZero
                      completionHandler:^(BOOL finished)
           {
-              if (finished)
-              {
-                  [strongSelf playIfUserAllowed];
-              }
+              [strongSelf.player prerollAtRate:1.0f
+                             completionHandler:^(BOOL finished)
+               {
+                   if (finished)
+                   {
+                       [strongSelf playIfUserAllowed];
+                   }
+               }];
           }];
      }];
     [self.KVOControllerNonRetaining observe:self.player
