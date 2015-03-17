@@ -149,15 +149,15 @@ typedef NS_ENUM(NSInteger, VInlineSearchState)
         switch (self.searchState)
         {
             case VInlineSearchStateNoResults:
-                buttonText = @"no results";
+                buttonText = NSLocalizedString(@"no results", @"");
                 break;
 
             case VInlineSearchStateNoSearch:
-                buttonText = @"search for users";
+                buttonText = NSLocalizedString(@"search for users", @"");
                 break;
 
             case VInlineSearchStateSearching:
-                buttonText = @"searching";
+                buttonText = NSLocalizedString(@"searching", @"");
                 break;
 
             default:

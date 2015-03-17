@@ -627,6 +627,8 @@
                 shareText = NSLocalizedString(@"UGCShareImageFormat", nil);
                 break;
             case VContentViewTypeGIFVideo:
+                shareText = NSLocalizedString(@"UGCShareGIFFormat", nil);
+                break;
             case VContentViewTypeVideo:
                 shareText = NSLocalizedString(@"UGCShareVideoFormat", nil);
                 break;
@@ -851,7 +853,6 @@
      }
                                      failBlock:^(NSOperation *operation, NSError *error)
      {
-         //
          completion(NO, error);
      }];
 }

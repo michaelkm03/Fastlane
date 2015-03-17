@@ -59,7 +59,7 @@
 
     self.codeField.tintColor = [UIColor blueColor];
     
-    NSString *text = NSLocalizedString( @"Resent Email", @"" );
+    NSString *text = NSLocalizedString( @"Resend Email", @"" );
     [self.linkTextHelper setupLinkTextView:self.resendEmailTextView withText:text range:[text rangeOfString:text]];
     self.resendEmailTextView.linkDelegate = self;
 }

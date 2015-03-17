@@ -66,5 +66,9 @@
 	<string>VDiscoverContainerViewController</string>
 	<key>lightweight.contentView</key>
 	<string>VLightweightContentViewController</string>
+	<key>inset.streamCell</key>
+	<string>VInsetStreamCellFactory</string>
+	<key>titleOverlay.streamCell</key>
+	<string>VTitleOverlayStreamCellFactory</string>
 </dict>
 </plist>

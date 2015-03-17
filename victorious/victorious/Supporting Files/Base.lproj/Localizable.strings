@@ -39,6 +39,8 @@
 "Following"             =   "Following";
 "FOLLOWERS"             =   "FOLLOWERS";
 "FOLLOWING"             =   "FOLLOWING";
+"NumStreams"            =   "%@ STREAMS";
+"NumItems"              =   "%@ ITEMS";
 
 "TimeSeparator"         =   ":";
 "InvalidTimePlaceholder"=   "-:--";
@@ -121,6 +123,7 @@
 "OwnerShareImageFormat" =   "Check out this photo by %@!";//Check out this photo by <creator>! <URL>
 "UGCSharePollFormat"    =   "Check out this poll!";       //Check out this poll! <URL>
 "UGCShareVideoFormat"   =   "Check out this video!";      //Check out this video! <URL>
+"UGCShareGIFFormat"     =   "Check out this gif!";        //Check out this gif! <URL>
 "UGCShareImageFormat"   =   "Check out this photo!";      //Check out this photo! <URL>
 "EmailShareSubjectFormat"   =   "Check out this post from the %@ app!"; //Check out this post from the <creator name> app!
 
@@ -302,7 +305,7 @@
 
 "EnterResetCodeMessage" =   "An email was sent to this address containing reset password instructions.";
 "EnterCodeTitle"        =   "ENTER CODE";
-"ResendEmail"           =   "Resend Email";
+"Resend Email"           =   "Resend Email";
 
 "EmailNotFound"         =   "The email provided was not found. Please enter the email used to create this account.";
 "EmailNotValid"         =   "Please enter the email used to create this account.";

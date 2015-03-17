@@ -134,6 +134,11 @@ static const NSInteger kSearchResultLimit = 100;
 
     // SET CHAR COUNTER
     self.charCount = 0;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
     
     // SET THE SEARCH FIELD ACTIVE
     [self.searchField becomeFirstResponder];
@@ -149,6 +154,7 @@ static const NSInteger kSearchResultLimit = 100;
 {
     [super viewWillDisappear:animated];
     [[VTrackingManager sharedInstance] endEvent:VTrackingEventSearchDidAppear];
+    [self.searchField resignFirstResponder];
 }
 
 - (void)didReceiveMemoryWarning

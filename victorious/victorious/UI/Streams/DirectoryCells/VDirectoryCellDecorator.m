@@ -29,12 +29,12 @@
         VStream *stream = (VStream *)streamItem;
         if ( stream.isStreamOfStreams )
         {
-            cell.countLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ STREAMS", @""), stream.count];
+            cell.countLabel.text = [NSString stringWithFormat:NSLocalizedString(@"NumStreams", @""), stream.count];
             cell.showStackedBackground = YES;
         }
         else
         {
-            cell.countLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ITEMS", @""), stream.count];
+            cell.countLabel.text = [NSString stringWithFormat:NSLocalizedString(@"NumItems", @""), stream.count];
             cell.showStackedBackground = NO;
         }
         cell.nameLabel.textAlignment = NSTextAlignmentCenter;

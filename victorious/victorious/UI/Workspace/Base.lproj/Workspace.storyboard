@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="63Q-Vo-LWD">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <scenes>
+        <!--Workspace View Controller-->
+        <scene sceneID="8UX-Af-L1N">
+            <objects>
+                <viewController storyboardIdentifier="VWorkspaceViewController" id="63Q-Vo-LWD" customClass="VWorkspaceViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="9wC-ZN-KU8"/>
+                        <viewControllerLayoutGuide type="bottom" id="jpg-hF-EPF"/>
+                    </layoutGuides>
+                    <view key="view" clipsSubviews="YES" contentMode="scaleToFill" id="i4i-d2-DXm">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="rB7-pY-luZ" userLabel="Blurred Image Background">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="600"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </imageView>
+                            <view contentMode="scaleToFill" horizontalHuggingPriority="249" verticalHuggingPriority="249" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="8c5-o3-ehb" userLabel="Canvas Container" customClass="VCanvasView">
+                                <rect key="frame" x="0.0" y="44" width="375" height="375"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="8c5-o3-ehb" secondAttribute="height" multiplier="1:1" id="O18-Ux-5Zy"/>
+                                </constraints>
+                            </view>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uLJ-ZJ-TSs" userLabel="Top Toolbar">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="u6w-gn-U2Y"/>
+                                </constraints>
+                                <items>
+                                    <barButtonItem image="cameraButtonBack" id="by5-os-pzS">
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <action selector="close:" destination="63Q-Vo-LWD" id="6Lb-w0-Gu9"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="9tq-gs-IN4">
+                                        <color key="tintColor" red="0.5" green="0.0" blue="0.5" alpha="1" colorSpace="calibratedRGB"/>
+                                    </barButtonItem>
+                                    <barButtonItem title="Continue" id="wbF-Jm-Fnh">
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <action selector="publish:" destination="63Q-Vo-LWD" id="1Q5-i3-8b5"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                                <color key="barTintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            </toolbar>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tla-hc-Ct5" userLabel="Bottom Toolbar">
+                                <rect key="frame" x="0.0" y="556" width="375" height="44"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <items/>
+                                <color key="barTintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            </toolbar>
+                        </subviews>
+                        <color key="backgroundColor" red="0.1176470588" green="0.1176470588" blue="0.1176470588" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="uLJ-ZJ-TSs" secondAttribute="trailing" id="7Ye-Dk-Lgz"/>
+                            <constraint firstAttribute="trailing" secondItem="tla-hc-Ct5" secondAttribute="trailing" id="9HD-AO-jIy"/>
+                            <constraint firstAttribute="trailing" secondItem="rB7-pY-luZ" secondAttribute="trailing" id="AHv-Vk-wIg"/>
+                            <constraint firstItem="8c5-o3-ehb" firstAttribute="leading" secondItem="i4i-d2-DXm" secondAttribute="leading" id="IrH-KS-hgs"/>
+                            <constraint firstItem="8c5-o3-ehb" firstAttribute="top" secondItem="9wC-ZN-KU8" secondAttribute="bottom" constant="44" id="Uz7-kB-w8t"/>
+                            <constraint firstItem="uLJ-ZJ-TSs" firstAttribute="top" secondItem="9wC-ZN-KU8" secondAttribute="bottom" id="Wch-on-DA4"/>
+                            <constraint firstItem="rB7-pY-luZ" firstAttribute="leading" secondItem="i4i-d2-DXm" secondAttribute="leading" id="bTn-W9-qxk"/>
+                            <constraint firstItem="uLJ-ZJ-TSs" firstAttribute="leading" secondItem="i4i-d2-DXm" secondAttribute="leading" id="dhy-kg-bS3"/>
+                            <constraint firstAttribute="trailing" secondItem="8c5-o3-ehb" secondAttribute="trailing" id="mnj-S4-eXt"/>
+                            <constraint firstItem="tla-hc-Ct5" firstAttribute="leading" secondItem="i4i-d2-DXm" secondAttribute="leading" id="pdG-8B-6bD"/>
+                            <constraint firstItem="jpg-hF-EPF" firstAttribute="top" secondItem="tla-hc-Ct5" secondAttribute="bottom" id="pnB-hJ-LMB"/>
+                            <constraint firstItem="rB7-pY-luZ" firstAttribute="top" secondItem="9wC-ZN-KU8" secondAttribute="bottom" id="t5H-Iv-3np"/>
+                            <constraint firstItem="jpg-hF-EPF" firstAttribute="top" relation="greaterThanOrEqual" secondItem="8c5-o3-ehb" secondAttribute="bottom" constant="44" id="vtj-8b-Y1E"/>
+                            <constraint firstItem="jpg-hF-EPF" firstAttribute="top" secondItem="rB7-pY-luZ" secondAttribute="bottom" id="wke-BM-e98"/>
+                        </constraints>
+                    </view>
+                    <nil key="simulatedStatusBarMetrics"/>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="375" height="600"/>
+                    <connections>
+                        <outlet property="blurredBackgroundImageView" destination="rB7-pY-luZ" id="Gwp-ON-jBt"/>
+                        <outlet property="bottomToolbar" destination="tla-hc-Ct5" id="QiO-Fi-Arc"/>
+                        <outlet property="canvasView" destination="8c5-o3-ehb" id="DSZ-xC-dlK"/>
+                        <outlet property="continueButton" destination="wbF-Jm-Fnh" id="7bj-Dh-hVf"/>
+                        <outlet property="topToolbar" destination="uLJ-ZJ-TSs" id="VtT-RG-Hlb"/>
+                        <outlet property="verticalSpaceBottomBarToContainer" destination="pnB-hJ-LMB" id="LEH-SF-w5l"/>
+                        <outlet property="verticalSpaceCanvasToTopOfContainerConstraint" destination="Uz7-kB-w8t" id="Yca-9A-jZ7"/>
+                        <outlet property="verticalSpaceTopBarToContainer" destination="Wch-on-DA4" id="u8E-hq-mUE"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="29c-Qz-2Z5" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-121" y="-336"/>
+        </scene>
+        <!--Ticker Picker View Controller-->
+        <scene sceneID="4nq-PE-ZjB">
+            <objects>
+                <collectionViewController storyboardIdentifier="VTickerPickerViewController" id="ANa-cl-9mG" customClass="VTickerPickerViewController" sceneMemberID="viewController">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" id="pi5-F3-QKh">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="D59-AO-FIm">
+                            <size key="itemSize" width="300" height="44"/>
+                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        </collectionViewFlowLayout>
+                        <cells>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="VBasicToolPickerCell" id="xpu-Iq-Llo" customClass="VBasicToolPickerCell">
+                                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                    <rect key="frame" x="0.0" y="0.0" width="300" height="44"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EYL-wr-dlh">
+                                            <rect key="frame" x="8" y="12" width="42" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </view>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="EYL-wr-dlh" secondAttribute="trailing" id="0zu-rG-hmg"/>
+                                    <constraint firstAttribute="centerY" secondItem="EYL-wr-dlh" secondAttribute="centerY" id="KxO-yI-UDJ"/>
+                                    <constraint firstItem="EYL-wr-dlh" firstAttribute="leading" secondItem="xpu-Iq-Llo" secondAttribute="leadingMargin" id="egW-rx-r6q"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="label" destination="EYL-wr-dlh" id="at4-xr-yO4"/>
+                                </connections>
+                            </collectionViewCell>
+                        </cells>
+                        <connections>
+                            <outlet property="dataSource" destination="ANa-cl-9mG" id="EJ8-wH-WfR"/>
+                            <outlet property="delegate" destination="ANa-cl-9mG" id="aiL-mG-K7z"/>
+                        </connections>
+                    </collectionView>
+                    <nil key="simulatedStatusBarMetrics"/>
+                </collectionViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="noe-Zt-QpP" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-121" y="343"/>
+        </scene>
+        <!--Crop Tool View Controller-->
+        <scene sceneID="3yx-bR-QwV">
+            <objects>
+                <viewController storyboardIdentifier="VCropToolViewController" id="68P-kQ-eWn" customClass="VCropToolViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="k23-nw-3wG"/>
+                        <viewControllerLayoutGuide type="bottom" id="ZAx-4g-MB6"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="FDL-Lx-k9b">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" alwaysBounceHorizontal="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eSH-vN-sA1">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outlet property="delegate" destination="68P-kQ-eWn" id="nhM-bn-rbQ"/>
+                                    <outletCollection property="gestureRecognizers" destination="Spf-LD-f2e" appends="YES" id="RzH-P3-3co"/>
+                                </connections>
+                            </scrollView>
+                            <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iTp-H1-xI3" customClass="VCropOverlayView">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="eSH-vN-sA1" firstAttribute="top" secondItem="k23-nw-3wG" secondAttribute="bottom" id="033-tB-VcO"/>
+                            <constraint firstItem="iTp-H1-xI3" firstAttribute="leading" secondItem="FDL-Lx-k9b" secondAttribute="leading" id="ANw-cH-IUH"/>
+                            <constraint firstItem="eSH-vN-sA1" firstAttribute="leading" secondItem="FDL-Lx-k9b" secondAttribute="leading" id="FDX-V2-rKV"/>
+                            <constraint firstAttribute="trailing" secondItem="iTp-H1-xI3" secondAttribute="trailing" id="FU1-th-Z2O"/>
+                            <constraint firstItem="ZAx-4g-MB6" firstAttribute="top" secondItem="iTp-H1-xI3" secondAttribute="bottom" id="FiI-wN-P4A"/>
+                            <constraint firstAttribute="trailing" secondItem="eSH-vN-sA1" secondAttribute="trailing" id="p0i-Dp-oS6"/>
+                            <constraint firstItem="ZAx-4g-MB6" firstAttribute="top" secondItem="eSH-vN-sA1" secondAttribute="bottom" id="qEy-jf-xv8"/>
+                            <constraint firstItem="iTp-H1-xI3" firstAttribute="top" secondItem="k23-nw-3wG" secondAttribute="bottom" id="uYz-h2-ovl"/>
+                        </constraints>
+                    </view>
+                    <nil key="simulatedStatusBarMetrics"/>
+                    <connections>
+                        <outlet property="croppingScrollView" destination="eSH-vN-sA1" id="Sbe-62-D03"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="aij-9r-rg5" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer numberOfTapsRequired="2" id="Spf-LD-f2e">
+                    <connections>
+                        <action selector="doubleTapCrop:" destination="68P-kQ-eWn" id="kOQ-UJ-O9Y"/>
+                    </connections>
+                </tapGestureRecognizer>
+            </objects>
+            <point key="canvasLocation" x="550" y="343"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="cameraButtonBack" width="22" height="17"/>
+    </resources>
+</document>
