@@ -71,11 +71,6 @@
     [self.view addGestureRecognizer:tapGestureRecognzier];
 }
 
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-}
-
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
@@ -132,7 +127,7 @@
                                        prefersPreciseDuration:YES
                                                    completion:^(NSError *error, AVAsset *loadedAsset)
                         {
-                            if (error)
+                            if (error != nil)
                             {
                                 return;
                             }
@@ -164,13 +159,12 @@
 
 - (void)playerItemPlayedToEnd:(NSNotification *)notification
 {
-    __weak typeof(self) welf = self;
     [self.player pause];
     [self.player seekToTime:kCMTimeZero completionHandler:^(BOOL finished)
     {
         if (finished)
         {
-            [welf playIfUserAllowed];
+            [self playIfUserAllowed];
         }
     }];
 }
@@ -187,8 +181,7 @@
                                                                       minimumDuration:CMTimeMake(2 * 60 * 600, 600)]; // 2 minutes
         dispatch_async(dispatch_get_main_queue(), ^
         {
-            __strong typeof(welf) strongSelf = welf;
-            [strongSelf playWithNewComposition:composition];
+            [welf playWithNewComposition:composition];
         });
     });
 }
@@ -243,7 +236,7 @@
              return;
          }
          [strongSelf.player seekToTime:kCMTimeZero
-               completionHandler:^(BOOL finished)
+                     completionHandler:^(BOOL finished)
           {
               if (finished)
               {

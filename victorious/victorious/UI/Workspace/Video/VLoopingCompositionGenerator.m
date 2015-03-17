@@ -113,7 +113,7 @@
                                   completionHandler:^
              {
                  __strong typeof(welf) strongSelf = welf;
-                 if (!strongSelf)
+                 if (strongSelf == nil)
                  {
                      return;
                  }
@@ -199,7 +199,7 @@
         case VLoopingCompositionStateLoaded:
         {
             NSAssert(self.loopedComposition != nil, @"We should have our composition here!");
-            if (self.completionBlock)
+            if (self.completionBlock != nil)
             {
                 self.completionBlock(nil, self.loopedComposition);
             }

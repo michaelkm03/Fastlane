@@ -84,14 +84,14 @@
                 }
                 self.error = error;
             };
-            if (self.completion)
+            if (self.completion != nil)
             {
                 self.completion(self.error, self.loadedAsset);
             }
         }
             break;
         case VAssetLoaderStateFailed:
-            if (self.completion)
+            if (self.completion != nil)
             {
                 self.completion(self.error, nil);
             }

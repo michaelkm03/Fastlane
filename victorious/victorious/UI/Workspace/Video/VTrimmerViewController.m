@@ -22,12 +22,11 @@
 static NSString *const emptyCellIdentifier = @"emptyCell";
 
 static const CGFloat kTimelineTopPadding = 48.0f;
-static const CGFloat kTimelineBottomPadding = 30.0f;
 static const CGFloat kTimelineDarkeningAlpha = 0.5f;
 
 @interface VTrimmerViewController () <UICollectionViewDelegateFlowLayout, UICollectionViewDataSource>
 
-@property (nonatomic, strong) UICollectionView *thumbnailCollecitonView;
+@property (nonatomic, strong) UICollectionView *thumbnailCollectionView;
 
 @property (nonatomic, strong) VTrimControl *trimControl;
 
@@ -62,7 +61,7 @@ static const CGFloat kTimelineDarkeningAlpha = 0.5f;
     _maximumTrimDuration = maximumTrimDuration;
     self.trimControl.maxDuration = maximumTrimDuration;
     [self updateTrimControlTitleWithTime:self.trimControl.selectedDuration];
-    [self.thumbnailCollecitonView.collectionViewLayout invalidateLayout];
+    [self.thumbnailCollectionView.collectionViewLayout invalidateLayout];
 }
 
 - (void)setMaximumEndTime:(CMTime)maximumEndTime
@@ -78,7 +77,7 @@ static const CGFloat kTimelineDarkeningAlpha = 0.5f;
                       didUpdateSelectedTimeRange:self.selectedTimeRange];
         }
     }
-    [self.thumbnailCollecitonView.collectionViewLayout invalidateLayout];
+    [self.thumbnailCollectionView.collectionViewLayout invalidateLayout];
 }
 
 - (CMTimeRange)selectedTimeRange
@@ -102,7 +101,7 @@ static const CGFloat kTimelineDarkeningAlpha = 0.5f;
 {
     _thumbnailDataSource = thumbnailDataSource;
     
-    [self.thumbnailCollecitonView reloadData];
+    [self.thumbnailCollectionView reloadData];
 }
 
 - (void)setTitle:(NSString *)title
@@ -113,7 +112,7 @@ static const CGFloat kTimelineDarkeningAlpha = 0.5f;
 
 - (BOOL)isInteracting
 {
-    return (self.thumbnailCollecitonView.dragging || self.thumbnailCollecitonView.decelerating || self.trimControl.isTracking);
+    return (self.thumbnailCollectionView.dragging || self.thumbnailCollectionView.decelerating || self.trimControl.isTracking);
 }
 
 #pragma mark - Target/Action
@@ -163,7 +162,7 @@ static const CGFloat kTimelineDarkeningAlpha = 0.5f;
     
     VThumbnailCell *thumnailCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VThumbnailCell suggestedReuseIdentifier]
                                                                              forIndexPath:indexPath];
-    CGPoint center = [self.thumbnailCollecitonView.collectionViewLayout layoutAttributesForItemAtIndexPath:indexPath].center;
+    CGPoint center = [self.thumbnailCollectionView.collectionViewLayout layoutAttributesForItemAtIndexPath:indexPath].center;
     CGFloat percentThrough = center.x / [self timelineWidthForFullTrack];
     CMTime timeForCell = CMTimeMake(self.maximumEndTime.value * percentThrough, self.maximumEndTime.timescale);
     thumnailCell.valueForThumbnail = [NSValue valueWithCMTime:timeForCell];
@@ -305,7 +304,7 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
 
 - (CGFloat)timelineWidthPerSecond
 {
-    return CGRectGetWidth(self.thumbnailCollecitonView.bounds) / CMTimeGetSeconds(self.maximumTrimDuration);
+    return CGRectGetWidth(self.thumbnailCollectionView.bounds) / CMTimeGetSeconds(self.maximumTrimDuration);
 }
 
 - (CGFloat)timelineWidthForFullTrack
@@ -315,7 +314,7 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
 
 - (CMTime)currentTimeOffset
 {
-    return CMTimeMake(self.thumbnailCollecitonView.contentOffset.x, [self timelineWidthPerSecond]);
+    return CMTimeMake(self.thumbnailCollectionView.contentOffset.x, [self timelineWidthPerSecond]);
 }
 
 #pragma mark View Hierarcy Setup
@@ -325,19 +324,19 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
     layout.itemSize = CGSizeMake(CGRectGetHeight(self.view.frame), CGRectGetHeight(self.view.frame));
     layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-    self.thumbnailCollecitonView = [[UICollectionView alloc] initWithFrame:self.view.bounds
+    self.thumbnailCollectionView = [[UICollectionView alloc] initWithFrame:self.view.bounds
                                                       collectionViewLayout:layout];
-    [self.thumbnailCollecitonView registerNib:[VThumbnailCell nibForCell]
+    [self.thumbnailCollectionView registerNib:[VThumbnailCell nibForCell]
                    forCellWithReuseIdentifier:[VThumbnailCell suggestedReuseIdentifier]];
-    [self.thumbnailCollecitonView registerClass:[UICollectionViewCell class]
+    [self.thumbnailCollectionView registerClass:[UICollectionViewCell class]
                      forCellWithReuseIdentifier:emptyCellIdentifier];
-    self.thumbnailCollecitonView.dataSource = self;
-    self.thumbnailCollecitonView.delegate = self;
-    self.thumbnailCollecitonView.alwaysBounceHorizontal = NO;
-    self.thumbnailCollecitonView.bounces = NO;
-    self.thumbnailCollecitonView.backgroundColor = [UIColor clearColor];
-    self.thumbnailCollecitonView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.view addSubview:self.thumbnailCollecitonView];
+    self.thumbnailCollectionView.dataSource = self;
+    self.thumbnailCollectionView.delegate = self;
+    self.thumbnailCollectionView.alwaysBounceHorizontal = NO;
+    self.thumbnailCollectionView.bounces = NO;
+    self.thumbnailCollectionView.backgroundColor = [UIColor clearColor];
+    self.thumbnailCollectionView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:self.thumbnailCollectionView];
 
     self.titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     self.titleLabel.text = self.title;
@@ -347,7 +346,7 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
     self.titleLabel.textColor = [UIColor whiteColor];
     [self.view addSubview:self.titleLabel];
 
-    NSDictionary *viewMap = @{@"collectionView": self.thumbnailCollecitonView,
+    NSDictionary *viewMap = @{@"collectionView": self.thumbnailCollectionView,
                               @"titleLabel": self.titleLabel};
     
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[collectionView]|"
@@ -360,8 +359,7 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
                                                                         views:viewMap]];
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-kTimelineTopPadding-[collectionView]-20-[titleLabel]-20-|"
                                                                       options:kNilOptions
-                                                                      metrics:@{@"kTimelineTopPadding":@(kTimelineTopPadding),
-                                                                                @"trimSpacingToBottom":@(kTimelineBottomPadding)}
+                                                                      metrics:@{@"kTimelineTopPadding":@(kTimelineTopPadding)}
                                                                         views:viewMap]];
 }
 
@@ -382,14 +380,14 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.trimDimmingView
                                                           attribute:NSLayoutAttributeTop
                                                           relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.thumbnailCollecitonView
+                                                             toItem:self.thumbnailCollectionView
                                                           attribute:NSLayoutAttributeTop
                                                          multiplier:1.0
                                                            constant:0.0f]];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.trimDimmingView
                                                           attribute:NSLayoutAttributeBottom
                                                           relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.thumbnailCollecitonView
+                                                             toItem:self.thumbnailCollectionView
                                                           attribute:NSLayoutAttributeBottom
                                                          multiplier:1.0f
                                                            constant:0.0f]];
@@ -429,7 +427,7 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.trimControl
                                                           attribute:NSLayoutAttributeBottom
                                                           relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.thumbnailCollecitonView
+                                                             toItem:self.thumbnailCollectionView
                                                           attribute:NSLayoutAttributeBottom
                                                          multiplier:1.0f
                                                            constant:0.0f]];
@@ -449,14 +447,14 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.currentPlayBackOverlayView
                                                           attribute:NSLayoutAttributeTop
                                                           relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.thumbnailCollecitonView
+                                                             toItem:self.thumbnailCollectionView
                                                           attribute:NSLayoutAttributeTop
                                                          multiplier:1.0f
                                                            constant:0.0f]];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.currentPlayBackOverlayView
                                                           attribute:NSLayoutAttributeBottom
                                                           relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.thumbnailCollecitonView
+                                                             toItem:self.thumbnailCollectionView
                                                           attribute:NSLayoutAttributeBottom
                                                          multiplier:1.0f
                                                            constant:0.0f]];

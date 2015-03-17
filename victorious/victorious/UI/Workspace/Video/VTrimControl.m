@@ -14,6 +14,7 @@
 static const CGFloat kTrimHeadHeight = 44.0f;
 static const CGFloat kTrimHeadWidth = 60.0f;
 static const CGFloat kTrimBodyWidth = 5.0f;
+static const CGFloat kTrimHeadTopInset = 2.0f;
 
 @interface VTrimControl () <UICollisionBehaviorDelegate, UIDynamicAnimatorDelegate>
 
@@ -81,7 +82,7 @@ static inline CGPoint ClampX(CGPoint point, CGFloat xMin, CGFloat xMax)
 
 - (void)sharedInit
 {
-    self.trimThumbHead = [[UIView alloc] initWithFrame:CGRectMake(0, 2.0f, kTrimHeadWidth, kTrimHeadHeight)];
+    self.trimThumbHead = [[UIView alloc] initWithFrame:CGRectMake(0, kTrimHeadTopInset, kTrimHeadWidth, kTrimHeadHeight)];
     self.trimThumbHead.backgroundColor = [UIColor whiteColor];
     self.trimThumbHead.layer.cornerRadius = kTrimHeadHeight * 0.5f;
     [self addSubview:self.trimThumbHead];
