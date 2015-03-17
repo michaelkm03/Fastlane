@@ -85,6 +85,24 @@ static CGFloat const kTopInset = 22.0f; ///< The space between the top of the vi
                                                object:nil];
 }
 
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    _dependencyManager = dependencyManager;
+    self.tableView.backgroundColor = [dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
+    self.suggestedPeopleViewController.dependencyManager = dependencyManager;
+    for ( UITableViewCell *cell in self.tableView.visibleCells )
+    {
+        if ( [cell isKindOfClass:[VTrendingTagCell class]] )
+        {
+            ((VTrendingTagCell *)cell).dependencyManager = self.dependencyManager;
+        }
+        else if ( [cell isKindOfClass:[VSuggestedPeopleCell class]] )
+        {
+            [cell.contentView setBackgroundColor:[self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey]];
+        }
+    }
+}
+
 - (void)dealloc
 {
     // Kill the login notification
@@ -277,6 +295,7 @@ static CGFloat const kTopInset = 22.0f; ///< The space between the top of the vi
                 self.suggestedPeopleViewController.collectionView.frame = customCell.bounds;
             }
             
+            cell.contentView.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
             cell = customCell;
             self.suggestedPeopleViewController.hasLoadedOnce = YES;
         }
@@ -332,6 +351,7 @@ static CGFloat const kTopInset = 22.0f; ///< The space between the top of the vi
                     [self subscribeToTagAction:hashtag];
                 }
             };
+            customCell.dependencyManager = self.dependencyManager;
             cell = customCell;
         }
     }

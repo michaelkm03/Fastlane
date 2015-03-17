@@ -14,6 +14,7 @@
 #import "VObjectManager+Discover.h"
 #import "VUser+RestKit.h"
 #import "VDiscoverConstants.h"
+#import "VDependencyManager.h"
 
 static NSString * const kSuggestedPersonCellIdentifier          = @"VSuggestedPersonCollectionViewCell";
 static NSString * const VStoryboardViewControllerIndentifier    = @"suggestedPeople";
@@ -45,6 +46,16 @@ static NSString * const VStoryboardViewControllerIndentifier    = @"suggestedPeo
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(followingDidUpdate:) name:VMainUserDidChangeFollowingUserNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginStatusDidChange:) name:kLoggedInChangedNotification object:nil];
+}
+
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    _dependencyManager = dependencyManager;
+    self.collectionView.backgroundColor = [_dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
+    for ( VSuggestedPersonCollectionViewCell *cell in self.collectionView.visibleCells )
+    {
+        cell.dependencyManager = _dependencyManager;
+    }
 }
 
 - (void)dealloc
@@ -262,7 +273,9 @@ static NSString * const VStoryboardViewControllerIndentifier    = @"suggestedPeo
     {
         self.userToAnimate = nil;
     }
+    cell.dependencyManager = self.dependencyManager;
     cell.delegate = self;
+    cell.backgroundColor = [UIColor clearColor];
     return cell;
 }
 

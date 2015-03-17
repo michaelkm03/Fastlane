@@ -161,6 +161,7 @@
     
     //Add gradient to new view with constraints so that the graidnt adjusts to new constraint changes on passed in view
     UIView *subview = [[UIView alloc] initWithFrame:gradient.frame];
+    subview.translatesAutoresizingMaskIntoConstraints = NO;
     [subview setBackgroundColor:[UIColor clearColor]];
     [view addSubview:subview];
     [view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[subview]|"

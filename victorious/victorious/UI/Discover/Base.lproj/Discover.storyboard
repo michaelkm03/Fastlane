@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="Uac-Xm-78P">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="Uac-Xm-78P">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -82,7 +82,7 @@
                                         </state>
                                     </button>
                                 </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="centerY" secondItem="tcb-RO-Azu" secondAttribute="centerY" constant="0.5" id="0uI-ug-Dcf"/>
                                     <constraint firstItem="YDu-Qa-a39" firstAttribute="leading" secondItem="J1F-4E-CYS" secondAttribute="leading" id="CCj-JC-CI5"/>
@@ -101,7 +101,7 @@
                                 </constraints>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" red="0.97254901959999995" green="0.97254901959999995" blue="0.97254901959999995" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="EwB-Hd-HRW" firstAttribute="leading" secondItem="00k-Lh-ofH" secondAttribute="leading" id="Di4-2i-6JX"/>
                             <constraint firstItem="J1F-4E-CYS" firstAttribute="leading" secondItem="00k-Lh-ofH" secondAttribute="leading" id="E2C-qz-Luq"/>
@@ -113,6 +113,8 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="horizontalRuleBottom" destination="Yw3-DS-7gm" id="6Vn-Wb-0bh"/>
+                        <outlet property="horizontalRuleTop" destination="YDu-Qa-a39" id="0UO-3a-8us"/>
                         <outlet property="searchBarContainer" destination="J1F-4E-CYS" id="aWz-o5-Syx"/>
                         <outlet property="searchBarHeightConstraint" destination="kyv-Ne-LMK" id="Ogb-9H-fsw"/>
                         <outlet property="searchField" destination="RxD-Py-mcF" id="def-r2-cZo"/>

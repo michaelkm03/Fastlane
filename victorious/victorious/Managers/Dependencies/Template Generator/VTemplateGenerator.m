@@ -20,6 +20,7 @@
 #import "VTabMenuViewController.h"
 #import "VDependencyManager+VNavigationMenuItem.h"
 
+#define DISCOVER_TEMPLATE_D_ENABLED 1
 #define BOTTOM_NAV_ENABLED 0
 #define CHANNELS_WITH_GROUP_STREAM_ENABLED 0
 #define ROUNDED_TOP_NAV_ENABLED 0
@@ -429,13 +430,7 @@ static NSString * const kVideoMuted = @"videoMuted";
                         ]
                     }
                 },
-                @{
-                    kIdentifierKey: @"Menu Discover",
-                    kTitleKey: NSLocalizedString(@"Discover", @""),
-                    kDestinationKey: @{
-                        kClassNameKey: @"discover.screen"
-                    }
-                }
+                [self discoverComponent]
             ],
             @[
                 [self inboxMenuItem],
@@ -820,6 +815,79 @@ static NSString * const kVideoMuted = @"videoMuted";
                        kAlphaKey: @1
                        },
                };
+}
+
+- (NSDictionary *)discoverComponent
+{
+    NSMutableDictionary *component =  [[NSMutableDictionary alloc] initWithDictionary:@{
+                                        kIdentifierKey: @"Menu Discover",
+                                        kTitleKey: NSLocalizedString(@"Discover", @""),
+                                        kDestinationKey: @{
+                                                kClassNameKey: @"discover.screen"
+                                                }
+                                        }];
+    
+    NSDictionary *theme = DISCOVER_TEMPLATE_D_ENABLED ? [self discoverDarkTheme] : [self discoverLightTheme];
+    [component addEntriesFromDictionary:theme];
+    return component;
+}
+
+- (NSDictionary *)discoverLightTheme
+{
+    return @{ kBackgroundColor: @{ //< background of cells, container, etc
+                      kRedKey: @255,
+                      kGreenKey: @255,
+                      kBlueKey: @255,
+                      kAlphaKey: @1
+                      },
+              VDependencyManagerSecondaryBackgroundColorKey: @{ //< color of horizontal lines above and below search
+                      kRedKey: @208,
+                      kGreenKey: @209,
+                      kBlueKey: @214,
+                      kAlphaKey: @1
+                      },
+              VDependencyManagerContentTextColorKey: @{ //< color of cell text and button icon tints
+                      kRedKey: @0,
+                      kGreenKey: @0,
+                      kBlueKey: @0,
+                      kAlphaKey: @1
+                      },
+              VDependencyManagerLinkColorKey: @{ //< background color of buttons
+                      kRedKey: @236,
+                      kGreenKey: @52,
+                      kBlueKey: @112,
+                      kAlphaKey: @1
+                      }
+              };
+}
+
+- (NSDictionary *)discoverDarkTheme
+{
+    return @{ kBackgroundColor: @{ //< background of cells, container, etc
+                      kRedKey: @0,
+                      kGreenKey: @0,
+                      kBlueKey: @0,
+                      kAlphaKey: @1
+                      },
+              VDependencyManagerSecondaryBackgroundColorKey: @{ //< color of horizontal lines above and below search
+                      kRedKey: @38,
+                      kGreenKey: @39,
+                      kBlueKey: @43,
+                      kAlphaKey: @1
+                      },
+              VDependencyManagerContentTextColorKey: @{ //< color of cell text and button icon tints
+                      kRedKey: @255,
+                      kGreenKey: @255,
+                      kBlueKey: @255,
+                      kAlphaKey: @1
+                      },
+              VDependencyManagerLinkColorKey: @{ //< background color of buttons
+                      kRedKey: @33,
+                      kGreenKey: @170,
+                      kBlueKey: @212,
+                      kAlphaKey: @1
+                      }
+              };
 }
 
 #pragma mark - Background

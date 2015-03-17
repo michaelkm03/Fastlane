@@ -31,6 +31,8 @@
 
 @property (nonatomic, weak) IBOutlet UITextField *searchField;
 @property (nonatomic, weak) IBOutlet UIButton *searchIconButton;
+@property (nonatomic, weak) IBOutlet UIView *horizontalRuleTop;
+@property (nonatomic, weak) IBOutlet UIView *horizontalRuleBottom;
 @property (nonatomic, weak) id<VDiscoverViewControllerProtocol> childViewController;
 
 @property (nonatomic, strong) UINavigationController *searchNavigationController;
@@ -66,10 +68,18 @@
 
     self.searchField.placeholder = NSLocalizedString(@"Search people and hashtags", @"");
     self.searchField.delegate = self;
+    
+    UIColor *backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
+    
+    self.view.backgroundColor = backgroundColor;
+    self.horizontalRuleBottom.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryBackgroundColorKey];
+    self.horizontalRuleTop.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryBackgroundColorKey];
+    
+    //Set up search bar coloring here
+    self.searchBarContainer.backgroundColor = backgroundColor;
 
     VSearchResultsTransition *viewTransition = [[VSearchResultsTransition alloc] init];
     self.transitionDelegate = [[VTransitionDelegate alloc] initWithTransition:viewTransition];
-
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -181,7 +191,9 @@
 {
     if ( [segue.destinationViewController conformsToProtocol:@protocol(VDiscoverViewControllerProtocol)] )
     {
-        self.childViewController = (id<VDiscoverViewControllerProtocol>)segue.destinationViewController;
+        UIViewController <VDiscoverViewControllerProtocol> *discoverViewController = segue.destinationViewController;
+        [self addChildViewController:discoverViewController];
+        discoverViewController.dependencyManager = self.dependencyManager;
     }
 
     if ( [[segue identifier] isEqualToString:@"usersTagsSearchSegue"] )

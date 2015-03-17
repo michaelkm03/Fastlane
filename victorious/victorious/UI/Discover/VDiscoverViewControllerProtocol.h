@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+@class VDependencyManager;
+
 /**
  A protocol that defines some properties required to effictively manage state
  in data-driven table view controllers.
@@ -31,6 +33,8 @@
  has occurred -- whether it was successful or not.
  */
 @property (nonatomic, assign) BOOL hasLoadedOnce;
+
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 /**
  Requests that the view controller reload its data from the server.
