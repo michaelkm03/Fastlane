@@ -34,6 +34,7 @@ static NSString * const kClassNameKey = @"name";
 static NSString * const kItemsKey = @"items";
 static NSString * const kTitleKey = @"title";
 static NSString * const kIconKey = @"icon";
+static NSString * const kSelectedIconKey = @"selectedIcon";
 static NSString * const kIdentifierKey = @"identifier";
 static NSString * const kDestinationKey = @"destination";
 
@@ -233,7 +234,10 @@ static NSString * const kVideoMuted = @"videoMuted";
                  kClassNameKey: @"trim.video.tool",
                  kTitleKey: NSLocalizedString(@"VIDEO MODE", @"Title informing the user they have selected the video tool."),
                  kIconKey:@{
-                         VDependencyManagerImageURLKey:@"video_btn"
+                         VDependencyManagerImageURLKey:@"video"
+                         },
+                 kSelectedIconKey:@{
+                         VDependencyManagerImageURLKey:@"videoSelected",
                          },
                  kVideoFrameDurationValue: @1,
                  kVideoFrameDurationTimescale: @24,
@@ -243,7 +247,10 @@ static NSString * const kVideoMuted = @"videoMuted";
                  kClassNameKey: @"trim.video.tool",
                  kTitleKey: NSLocalizedString(@"GIF MODE", @"Title informing the user they have selected the GIF tool."),
                  kIconKey:@{
-                         VDependencyManagerImageURLKey:@"gif_btn"
+                         VDependencyManagerImageURLKey:@"GIF"
+                         },
+                 kSelectedIconKey:@{
+                         VDependencyManagerImageURLKey:@"GIFSelected"
                          },
                  kVideoFrameDurationValue: @1,
                  kVideoFrameDurationTimescale: @8,
@@ -253,7 +260,13 @@ static NSString * const kVideoMuted = @"videoMuted";
              @{
                  kClassNameKey: @"snapshot.video.tool",
                  kTitleKey: @"meme",
-                 }
+                 kIconKey:@{
+                         VDependencyManagerImageURLKey:@"meme",
+                         },
+                 kSelectedIconKey:@{
+                         VDependencyManagerImageURLKey:@"memeSelected",
+                         },
+                 },
              ];
 }
 
@@ -286,6 +299,12 @@ static NSString * const kVideoMuted = @"videoMuted";
              kClassNameKey: @"text.tool",
              kTitleKey: @"text",
              kFilterIndexKey: @2,
+             kIconKey:@{
+                     VDependencyManagerImageURLKey:@"text",
+                     },
+             kSelectedIconKey:@{
+                     VDependencyManagerImageURLKey:@"textSelected",
+                     },
              kPickerKey:
                  @{
                      kClassNameKey: @"vertical.picker",
@@ -357,6 +376,12 @@ static NSString * const kVideoMuted = @"videoMuted";
              kClassNameKey: @"filter.tool",
              kTitleKey: @"filters",
              kFilterIndexKey: @0,
+             kIconKey:@{
+                     VDependencyManagerImageURLKey:@"filter",
+                     },
+             kSelectedIconKey:@{
+                     VDependencyManagerImageURLKey:@"filterSelected",
+                     },
              kPickerKey:
                  @{
                      kClassNameKey: @"vertical.picker",
@@ -372,6 +397,12 @@ static NSString * const kVideoMuted = @"videoMuted";
     return @{
              kClassNameKey: @"crop.tool",
              kTitleKey: @"crop",
+             kIconKey:@{
+                     VDependencyManagerImageURLKey:@"crop",
+                     },
+             kSelectedIconKey:@{
+                     VDependencyManagerImageURLKey:@"cropSelected",
+                     },
              kFilterIndexKey: @1,
              };
 }

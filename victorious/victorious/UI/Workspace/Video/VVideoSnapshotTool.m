@@ -21,6 +21,9 @@
 #import "VCVideoPlayerViewController.h"
 #import "VSnapshotViewController.h"
 
+static NSString * const kIconKey = @"icon";
+static NSString * const kSelectedIconKey = @"selectedIcon";
+
 static const CGFloat kJPEGCompressionQuality    = 0.8f;
 
 @interface VVideoSnapshotTool () <VCVideoPlayerDelegate, VSnapshotViewControllerDelegate>
@@ -40,6 +43,8 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
 @implementation VVideoSnapshotTool
 
 @synthesize selected = _selected;
+@synthesize selectedIcon = _selectedIcon;
+@synthesize icon = _icon;
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
@@ -47,6 +52,9 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
     if (self)
     {
         _title = [dependencyManager stringForKey:@"title"];
+        
+        _icon = [dependencyManager imageForKey:kIconKey];
+        _selectedIcon = [dependencyManager imageForKey:kSelectedIconKey];
         
         _snapshotToolViewController = [[VSnapshotViewController alloc] initWithNibName:nil bundle:nil];
         _snapshotToolViewController.delegate = self;
@@ -110,11 +118,6 @@ static const CGFloat kJPEGCompressionQuality    = 0.8f;
 - (UIViewController *)inspectorToolViewController
 {
     return self.snapshotToolViewController;
-}
-
-- (UIImage *)icon
-{
-    return [UIImage imageNamed:@"meme_btn"];
 }
 
 #pragma mark - VCVideoPlayerDelegate

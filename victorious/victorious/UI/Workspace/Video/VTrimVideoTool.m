@@ -24,6 +24,7 @@ static NSString * const kVideoMaxDuration = @"videoMaxDuration";
 static NSString * const kVideoMinDuration = @"videoMinDuration";
 static NSString * const kVideoMuted = @"videoMuted";
 static NSString * const kIconKey = @"icon";
+static NSString * const kSelectedIconKey = @"selectedIcon";
 
 @interface VTrimVideoTool () <VTrimmerViewControllerDelegate, VTrimLoopingPlayerViewControllerDelegate>
 
@@ -51,6 +52,7 @@ static NSString * const kIconKey = @"icon";
 @synthesize selected = _selected;
 @synthesize mediaURL = _mediaURL;
 @synthesize icon = _icon;
+@synthesize selectedIcon = _selectedIcon;
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
@@ -64,6 +66,7 @@ static NSString * const kIconKey = @"icon";
         _isGIF = [[dependencyManager numberForKey:@"isGIF"] boolValue];
         
         _icon = [dependencyManager imageForKey:kIconKey];
+        _selectedIcon = [dependencyManager imageForKey:kSelectedIconKey];
         
         _minDuration = [dependencyManager numberForKey:kVideoMinDuration];
         _maxDuration = [dependencyManager numberForKey:kVideoMaxDuration];

@@ -21,6 +21,7 @@
     _tool = tool;
     
     [self setImage:[tool icon] forState:UIControlStateNormal];
+    [self setImage:[tool selectedIcon] forState:UIControlStateSelected];
 }
 
 - (void)layoutSubviews
