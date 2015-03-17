@@ -30,6 +30,8 @@
 
 @property (nonatomic, strong) AVVideoComposition *cachedVideoCompostion;
 
+@property (nonatomic, strong) id playerTimeObserver;
+
 @end
 
 @implementation VTrimLoopingPlayerViewController
@@ -39,6 +41,10 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:AVPlayerItemDidPlayToEndTimeNotification
                                                   object:self.player.currentItem];
+    if (self.playerTimeObserver != nil)
+    {
+        [self.playerTimeObserver removeTimeObserver:self.playerTimeObserver];
+    }
 }
 
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -188,10 +194,33 @@
 
 - (void)playWithNewComposition:(AVComposition *)composition
 {
+    if (self.playerTimeObserver != nil)
+    {
+        [self.player removeTimeObserver:self.playerTimeObserver];
+    }
     [[NSNotificationCenter defaultCenter] removeObserver:self name:AVPlayerItemDidPlayToEndTimeNotification object:self.player.currentItem];
     [self.player replaceCurrentItemWithPlayerItem:[self playerItemWithAsset:composition]];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playerItemPlayedToEnd:) name:AVPlayerItemDidPlayToEndTimeNotification object:self.player.currentItem];
-
+    
+    __weak typeof(self) welf = self;
+    [self.player addPeriodicTimeObserverForInterval:CMTIME_IS_VALID(self.frameDuration) ? self.frameDuration : CMTimeMake( 20, 600)
+                                              queue:dispatch_get_main_queue()
+                                         usingBlock:^(CMTime time)
+    {
+        if (!CMTIME_IS_VALID(time))
+        {
+            return;
+        }
+        CMTime timeGreaterThanDuration = time;
+        while (CMTIME_COMPARE_INLINE(timeGreaterThanDuration, >, welf.trimRange.duration))
+        {
+            timeGreaterThanDuration = CMTimeSubtract(timeGreaterThanDuration, welf.trimRange.duration);
+        }
+        
+        CMTime currentTime = CMTimeAdd(welf.trimRange.start, timeGreaterThanDuration);
+        [welf.delegate trimLoopingPlayerDidPlayToTime:currentTime];
+    }];
+    
     [self playIfUserAllowed];
 }
 

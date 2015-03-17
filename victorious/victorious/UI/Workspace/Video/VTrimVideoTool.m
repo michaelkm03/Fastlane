@@ -25,7 +25,7 @@ static NSString * const kVideoMinDuration = @"videoMinDuration";
 static NSString * const kVideoMuted = @"videoMuted";
 static NSString * const kIconKey = @"icon";
 
-@interface VTrimVideoTool () <VTrimmerViewControllerDelegate>
+@interface VTrimVideoTool () <VTrimmerViewControllerDelegate, VTrimLoopingPlayerViewControllerDelegate>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VTrimmerViewController *trimViewController;
@@ -81,6 +81,7 @@ static NSString * const kIconKey = @"icon";
         _trimLoopingViewController = [[VTrimLoopingPlayerViewController alloc] initWithNibName:nil bundle:nil];
         _trimLoopingViewController.muted = _muteAudio;
         _trimLoopingViewController.frameDuration = _frameDuration;
+        _trimLoopingViewController.delegate = self;
     }
     return self;
 }
@@ -206,6 +207,13 @@ static NSString * const kIconKey = @"icon";
         return;
     }
     self.trimLoopingViewController.trimRange = trimmerViewController.selectedTimeRange;
+}
+
+#pragma mark - VVTrimLoopingPlayerViewControllerDelegate
+
+- (void)trimLoopingPlayerDidPlayToTime:(CMTime)currentTime
+{
+    self.trimViewController.currentPlayTime = currentTime;
 }
 
 @end
