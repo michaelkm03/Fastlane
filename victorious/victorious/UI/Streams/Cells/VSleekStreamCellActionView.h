@@ -13,5 +13,7 @@
 - (void)updateCommentsCount:(NSNumber *)commentsCount;
 
 - (void)addCommentsButton;
+- (void)addGifButton;
+- (void)addMemeButton;
 
 @end

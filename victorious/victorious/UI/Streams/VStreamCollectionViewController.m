@@ -466,7 +466,7 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCellC
     [self.sequenceActionController showPosterProfileFromViewController:self sequence:sequence];
 }
 
-- (void)willRemixSequence:(VSequence *)sequence fromView:(UIView *)view
+- (void)willRemixSequence:(VSequence *)sequence fromView:(UIView *)view asGif:(BOOL)gif
 {
 #warning Hacktastic
     [self.sequenceActionController showRemixOnViewController:self

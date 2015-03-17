@@ -91,6 +91,7 @@
 - (void)showRemixOnViewController:(UIViewController *)viewController
                      withSequence:(VSequence *)sequence
              andDependencyManager:(VDependencyManager *)dependencyManager
+                            asGif:(BOOL)asGif
                    preloadedImage:(UIImage *)preloadedImage
                        completion:(void(^)(BOOL))completion
 {
@@ -111,7 +112,8 @@
         [addedDependencies setObject:preloadedImage forKey:VWorkspaceFlowControllerPreloadedImageKey];
     }
     [addedDependencies setObject:@(VImageToolControllerInitialImageEditStateText) forKey:VImageToolControllerInitialImageEditStateKey];
-    [addedDependencies setObject:@(VVideoToolControllerInitialVideoEditStateGIF) forKey:VVideoToolControllerInitalVideoEditStateKey];
+    VVideoToolControllerInitialVideoEditState editState = asGif ? VVideoToolControllerInitialVideoEditStateGIF : VVideoToolControllerInitialVideoEditStateMeme;
+    [addedDependencies setObject:@(editState) forKey:VVideoToolControllerInitalVideoEditStateKey];
     
     VWorkspaceFlowController *workspaceFlowController = [dependencyManager templateValueOfType:[VWorkspaceFlowController class]
                                                                                         forKey:VDependencyManagerWorkspaceFlowKey
@@ -122,6 +124,11 @@
     [viewController presentViewController:workspaceFlowController.flowRootViewController
                                  animated:YES
                                completion:nil];
+}
+
+- (void)showRemixOnViewController:(UIViewController *)viewController withSequence:(VSequence *)sequence andDependencyManager:(VDependencyManager *)dependencyManager preloadedImage:(UIImage *)preloadedImage completion:(void (^)(BOOL))completion
+{
+    [self showRemixOnViewController:viewController withSequence:sequence andDependencyManager:dependencyManager asGif:YES preloadedImage:preloadedImage completion:completion];
 }
 
 - (void)showRemixOnViewController:(UIViewController *)viewController
@@ -136,10 +143,18 @@
                      withSequence:(VSequence *)sequence
              andDependencyManager:(VDependencyManager *)dependencyManager
 {
-    [self showRemixOnViewController:viewController withSequence:sequence andDependencyManager:dependencyManager completion:nil];
+    [self showRemixOnViewController:viewController withSequence:sequence andDependencyManager:dependencyManager asGif:YES];
 }
 
-- (void)showRemixStreamFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence andDependencyManager:(VDependencyManager *)dependencyManager
+- (void)showRemixOnViewController:(UIViewController *)viewController
+                     withSequence:(VSequence *)sequence
+             andDependencyManager:(VDependencyManager *)dependencyManager
+                            asGif:(BOOL)asGif
+{
+    [self showRemixOnViewController:viewController withSequence:sequence andDependencyManager:dependencyManager asGif:asGif preloadedImage:nil completion:nil];
+}
+
+- (void)showRemixOnViewController:(UIViewController *)viewController sequence:(VSequence *)sequence andDependencyManager:(VDependencyManager *)dependencyManager
 {
     VStream *stream = [VStream remixStreamForSequence:sequence];
     stream.name = NSLocalizedString(@"Remixes", nil);

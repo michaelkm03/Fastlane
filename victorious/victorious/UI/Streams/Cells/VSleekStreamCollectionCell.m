@@ -80,15 +80,23 @@ const CGFloat kTemplateDTextNeighboringViewSeparatorHeight = 10.0f; //This repre
     [(VSleekStreamCellActionView *)self.actionView addCommentsButton];
     
     [self.actionView addShareButton];
-    if ( [self.sequence canRemix] )
-    {
-        [self.actionView addRemixButton];
-    }
     if ( [self.sequence canRepost] )
     {
         [self.actionView addRepostButton];
     }
-    [self.actionView addMoreButton];
+    
+    if ( [self.sequence canRemix] )
+    {
+        BOOL isVideo = [self.sequence isVideo];
+        if ( [self.sequence isImage] || isVideo )
+        {
+            [self.actionView addMemeButton];
+        }
+        if ( isVideo )
+        {
+            [self.actionView addGifButton];
+        }
+    }
 }
 
 - (NSUInteger)maxCaptionLines

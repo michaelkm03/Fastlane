@@ -45,7 +45,21 @@
                    preloadedImage:(UIImage *)preloadedImage
                        completion:(void(^)(BOOL))completion;
 
-- (void)showRemixStreamFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence andDependencyManager:(VDependencyManager *)dependencyManager;
+- (void)showRemixOnViewController:(UIViewController *)viewController
+                         sequence:(VSequence *)sequence
+             andDependencyManager:(VDependencyManager *)dependencyManager;
+
+- (void)showRemixOnViewController:(UIViewController *)viewController
+                     withSequence:(VSequence *)sequence
+             andDependencyManager:(VDependencyManager *)dependencyManager
+                            asGif:(BOOL)asGif
+                   preloadedImage:(UIImage *)preloadedImage
+                       completion:(void(^)(BOOL))completion;
+
+- (void)showRemixOnViewController:(UIViewController *)viewController
+                         sequence:(VSequence *)sequence
+             andDependencyManager:(VDependencyManager *)dependencyManager
+                            asGif:(BOOL)asGif;
 
 - (void)repostActionFromViewController:(UIViewController *)viewController node:(VNode *)node;
 

@@ -59,6 +59,42 @@ static const CGFloat VCommentButtonHeight = 32.0f;
     [self refreshCommentsButtonAppearance];
 }
 
+- (void)commentsAction:(id)sender
+{
+    if ([self.sequenceActionsDelegate respondsToSelector:@selector(willCommentOnSequence:fromView:)])
+    {
+        [self.sequenceActionsDelegate willCommentOnSequence:self.sequence fromView:self];
+    }
+}
+
+- (void)addGifButton
+{
+    UIButton *button = [self addButtonWithImage:[UIImage imageNamed:@"stream_gif"]];
+    [button addTarget:self action:@selector(gifAction:) forControlEvents:UIControlEventTouchUpInside];
+}
+
+- (void)gifAction:(id)sender
+{
+    if ([self.sequenceActionsDelegate respondsToSelector:@selector(willRemixSequence:fromView:asGif:)])
+    {
+        [self.sequenceActionsDelegate willRemixSequence:self.sequence fromView:self asGif:YES];
+    }
+}
+
+- (void)addMemeButton
+{
+    UIButton *button = [self addButtonWithImage:[UIImage imageNamed:@"stream_meme"]];
+    [button addTarget:self action:@selector(memeAction:) forControlEvents:UIControlEventTouchUpInside];
+}
+
+- (void)memeAction:(id)sender
+{
+    if ([self.sequenceActionsDelegate respondsToSelector:@selector(willRemixSequence:fromView:asGif:)])
+    {
+        [self.sequenceActionsDelegate willRemixSequence:self.sequence fromView:self asGif:NO];
+    }
+}
+
 - (void)refreshCommentsButtonAppearance
 {
     [self.commentsButton setBackgroundColor:[self commentButtonColor]];
@@ -66,14 +102,6 @@ static const CGFloat VCommentButtonHeight = 32.0f;
     
     //Override the default tint color to always have white text in the comment label
     [self.commentsButton setTintColor:[UIColor whiteColor]];
-}
-
-- (void)commentsAction:(id)sender
-{    
-    if ([self.sequenceActionsDelegate respondsToSelector:@selector(willCommentOnSequence:fromView:)])
-    {
-        [self.sequenceActionsDelegate willCommentOnSequence:self.sequence fromView:self];
-    }
 }
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager

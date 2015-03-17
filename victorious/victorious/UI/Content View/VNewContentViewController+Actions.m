@@ -247,7 +247,7 @@
             [contentViewController dismissViewControllerAnimated:YES
                                                       completion:^
              {
-                 [self.sequenceActionController showRemixStreamFromViewController:contentViewController sequence:self.viewModel.sequence andDependencyManager:self.dependencyManagerForHistogramExperiment];
+                 [self.sequenceActionController showRemixOnViewController:contentViewController sequence:self.viewModel.sequence andDependencyManager:self.dependencyManagerForHistogramExperiment];
              }];
         };
         [actionItems addObject:remixItem];

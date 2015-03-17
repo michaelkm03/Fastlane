@@ -35,7 +35,7 @@
 
 - (void)selectedUserOnSequence:(VSequence *)sequence fromView:(UIView *)view;
 
-- (void)willRemixSequence:(VSequence *)sequence fromView:(UIView *)view;
+- (void)willRemixSequence:(VSequence *)sequence fromView:(UIView *)view asGif:(BOOL)gif;
 
 - (void)willShareSequence:(VSequence *)sequence fromView:(UIView *)view;
 
