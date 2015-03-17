@@ -16,8 +16,6 @@
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) UIView *selectionIndicatorView;
-#warning TODO: REmove tools property, use dataSource to get what you need
-@property (nonatomic, copy) NSArray *tools;
 @property (nonatomic, strong) UIColor *accentColor;
 @property (nonatomic, strong) NSIndexPath *blockScrollingSelectionUntilReached;
 
@@ -38,8 +36,6 @@
                                                                   bundle:nil];
     VTickerPickerViewController *toolPicker = [workspaceStoryboard instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
     toolPicker.dependencyManager = dependencyManager;
-#warning FIX THIS
-    //toolPicker.clearsSelectionOnViewWillAppear = NO;
     toolPicker.accentColor = [dependencyManager colorForKey:VDependencyManagerAccentColorKey];
     return toolPicker;
 }
@@ -189,17 +185,6 @@
 - (void)setOnToolSelection:(void (^)(id<VWorkspaceTool>))onToolSelection
 {
     _onToolSelection = [onToolSelection copy];
-}
-
-- (id <VWorkspaceTool>)selectedTool
-{
-    NSIndexPath *selectedIndexPath = [[self.collectionView indexPathsForSelectedItems] firstObject];
-    if (selectedIndexPath == nil)
-    {
-        return nil;
-    }
-    
-    return self.tools[selectedIndexPath.row];
 }
 
 - (void)reloadData

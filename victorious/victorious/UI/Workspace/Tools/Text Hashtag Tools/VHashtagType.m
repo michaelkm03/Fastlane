@@ -20,7 +20,8 @@
 - (instancetype)initWithHashtagText:(NSString *)hashtagText isDefault:(BOOL)isDefault
 {
     self = [super init];
-    if (self) {
+    if (self)
+    {
         _isDefault = isDefault;
         _hashtagText = hashtagText;
     }
