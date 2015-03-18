@@ -76,13 +76,7 @@
 {
     [super viewDidAppear:animated];
     
-    // Tracking
-    NSArray *trackingUrlArray = [self.dependencyManager arrayForKey:kFTUTrackingURLGroup];
-    if ( trackingUrlArray != nil )
-    {
-        NSDictionary *params = @{ VTrackingKeyUrls: trackingUrlArray };
-        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventFirstTimeUserVideoPlayed parameters:params];
-    }
+    [self.delegate videoHasStarted:self];
     
     // Play the video
     [self showVideo];

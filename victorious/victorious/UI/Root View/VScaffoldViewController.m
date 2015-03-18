@@ -151,6 +151,20 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
     [firstTimeUserVideoViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
+- (void)videoHasStarted:(VLightweightContentViewController *)lightweightContentVideoViewController
+{
+    // Tracking
+    NSDictionary *vcDictionary = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:VScaffoldViewControllerLightweightContentViewComponentKey];
+    VDependencyManager *childDependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:vcDictionary];
+
+    NSArray *trackingUrlArray = [childDependencyManager arrayForKey:kFTUTrackingURLGroup];
+    if ( trackingUrlArray != nil )
+    {
+        NSDictionary *params = @{ VTrackingKeyUrls: trackingUrlArray };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventFirstTimeUserVideoPlayed parameters:params];
+    }
+}
+
 #pragma mark - Deeplinks
 
 - (void)navigateToDeeplinkURL:(NSURL *)url

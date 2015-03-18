@@ -13,6 +13,7 @@
 @protocol VLightweightContentViewControllerDelegate <NSObject>
 
 - (void)videoHasCompleted:(VLightweightContentViewController *)lightweightContentVideoViewController;
+- (void)videoHasStarted:(VLightweightContentViewController *)lightweightContentVideoViewController;
 
 @end
 
