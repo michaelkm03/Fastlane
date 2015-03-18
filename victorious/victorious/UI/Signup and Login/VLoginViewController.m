@@ -131,12 +131,16 @@
                                                    lineHeight:23.0f];
     self.authorizationContextTextView.attributedText = [[NSAttributedString alloc] initWithString:authorizationContextText attributes:attributes];
     
-    NSDictionary *creatorInfo = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:@"owner"];
-    
-#warning Testing only until backend populates the `owner` field of the init response
-    NSArray *tempNames = @[ @"Short", @"Medium Length", @"Very long name with many characters" ];
-    creatorInfo = @{ @"name" : tempNames[ arc4random() % (NSUInteger)tempNames.count ],
-                     @"profile_image" : @"http://media-dev-public.s3-website-us-west-1.amazonaws.com/29a1e9ba45c9651ac78891e477d0bf73/80x80.jpg" };
+    // TODO: Set creator info when returned from backend (also see VPurchaseManagerViewController to apply same backend-driven update)
+    //[self setCreatorInfo:nil];
+}
+
+- (void)setCreatorInfo:(NSDictionary *)creatorInfo
+{
+    if ( creatorInfo == nil )
+    {
+        return;
+    }
     
     NSString *creatorName = creatorInfo[ @"name" ];
     self.creatorNameLabel.text = creatorName;
