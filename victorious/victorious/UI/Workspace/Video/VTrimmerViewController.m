@@ -23,6 +23,7 @@ static NSString *const emptyCellIdentifier = @"emptyCell";
 
 static const CGFloat kTimelineTopPadding = 48.0f;
 static const CGFloat kTimelineDarkeningAlpha = 0.5f;
+static const CGFloat kTimelineLabelPadding = 20.0f;
 
 @interface VTrimmerViewController () <UICollectionViewDelegateFlowLayout, UICollectionViewDataSource>
 
@@ -357,9 +358,10 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
                                                                       options:kNilOptions
                                                                       metrics:nil
                                                                         views:viewMap]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-kTimelineTopPadding-[collectionView]-20-[titleLabel]-20-|"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-kTimelineTopPadding-[collectionView]-kTimelineLabelPadding-[titleLabel]-kTimelineLabelPadding-|"
                                                                       options:kNilOptions
-                                                                      metrics:@{@"kTimelineTopPadding":@(kTimelineTopPadding)}
+                                                                      metrics:@{@"kTimelineTopPadding":@(kTimelineTopPadding),
+                                                                                @"kTimelineLabelPadding":@(kTimelineLabelPadding)}
                                                                         views:viewMap]];
 }
 
