@@ -88,7 +88,7 @@ static CGFloat const kTopInset = 22.0f; ///< The space between the top of the vi
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
     _dependencyManager = dependencyManager;
-    self.tableView.backgroundColor = [dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
+    self.tableView.backgroundColor = [UIColor clearColor];
     self.suggestedPeopleViewController.dependencyManager = dependencyManager;
     for ( UITableViewCell *cell in self.tableView.visibleCells )
     {
@@ -295,7 +295,7 @@ static CGFloat const kTopInset = 22.0f; ///< The space between the top of the vi
                 self.suggestedPeopleViewController.collectionView.frame = customCell.bounds;
             }
             
-            cell.contentView.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
+            cell.contentView.backgroundColor = [UIColor clearColor];
             cell = customCell;
             self.suggestedPeopleViewController.hasLoadedOnce = YES;
         }

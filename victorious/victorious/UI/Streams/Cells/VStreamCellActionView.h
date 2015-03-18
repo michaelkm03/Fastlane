@@ -8,14 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
-#import "VSequenceActionsDelegate.h"
+#import "VSequenceActionsSender.h"
 
 @class VSequence;
 
-@interface VStreamCellActionView : UIView
+@interface VStreamCellActionView : UIView <VSequenceActionsSender>
 
 @property (nonatomic, strong) VSequence *sequence;
-@property (nonatomic, weak) id<VSequenceActionsDelegate> delegate;
+@property (nonatomic, weak) id<VSequenceActionsDelegate> sequenceActionsDelegate;
 
 - (void)clearButtons;
 - (void)addShareButton;

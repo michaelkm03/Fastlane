@@ -67,7 +67,7 @@
          }
                              executeBlock:^void
          {
-             [[[VFirstInstallManager alloc] init] reportFirstInstallWithTracking:self.tracking];
+             [[[VFirstInstallManager alloc] init] reportFirstInstallWithTrackingURLs:self.tracking.appInstall];
              id defaultsValue = [[NSUserDefaults standardUserDefaults] valueForKey:VAppInstalledDefaultsKey];
              XCTAssertEqualObjects( defaultsValue, @YES );
              
@@ -96,7 +96,7 @@
      }
                          executeBlock:^void
      {
-         [[[VFirstInstallManager alloc] init] reportFirstInstallWithTracking:nil];
+         [[[VFirstInstallManager alloc] init] reportFirstInstallWithTrackingURLs:nil];
          XCTAssertFalse( wasTrackingEventCalled );
      }];
 }

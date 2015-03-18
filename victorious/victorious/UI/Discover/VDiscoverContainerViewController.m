@@ -31,6 +31,7 @@
 
 @property (nonatomic, weak) IBOutlet UITextField *searchField;
 @property (nonatomic, weak) IBOutlet UIButton *searchIconButton;
+@property (nonatomic, weak) IBOutlet UIImageView *searchIconImageView;
 @property (nonatomic, weak) IBOutlet UIView *horizontalRuleTop;
 @property (nonatomic, weak) IBOutlet UIView *horizontalRuleBottom;
 @property (nonatomic, weak) id<VDiscoverViewControllerProtocol> childViewController;
@@ -65,9 +66,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    self.searchField.placeholder = NSLocalizedString(@"Search people and hashtags", @"");
-    self.searchField.delegate = self;
     
     UIColor *backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     
@@ -76,7 +74,16 @@
     self.horizontalRuleTop.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryBackgroundColorKey];
     
     //Set up search bar coloring here
+    self.searchField.delegate = self;
     self.searchBarContainer.backgroundColor = backgroundColor;
+    NSString *searchPlaceholderText = NSLocalizedString(@"Search people and hashtags", @"");
+    UIColor *placeholderTextColor = [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
+    NSDictionary *searchPlaholderAttributes = @{ NSForegroundColorAttributeName : placeholderTextColor ?: [UIColor grayColor] };
+    self.searchField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:searchPlaceholderText
+                                                                             attributes:searchPlaholderAttributes];
+    UIImage *templateImage = [self.searchIconImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    self.searchIconImageView.image = templateImage;
+    self.searchIconImageView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
 
     VSearchResultsTransition *viewTransition = [[VSearchResultsTransition alloc] init];
     self.transitionDelegate = [[VTransitionDelegate alloc] initWithTransition:viewTransition];

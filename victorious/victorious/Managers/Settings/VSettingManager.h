@@ -48,11 +48,8 @@ extern NSString * const kVSupportEmail;
 - (NSString *)exportVideoQuality;
 - (NSString *)captureVideoQuality;
 
-- (void)updateSettingsWithAppTracking:(VTracking *)tracking;
-
 - (NSString *)fetchMonetizationItemByKey:(NSString *)key;
 
-@property (nonatomic, readonly) VTracking *applicationTracking;
 @property (nonatomic, readonly) VVoteSettings *voteSettings;
 
 @end

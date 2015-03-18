@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0308B1151AB2A98E00144E53 /* VTitleOverlayStreamCellFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 0308B1141AB2A98E00144E53 /* VTitleOverlayStreamCellFactory.m */; };
+		0308B1191AB2B00100144E53 /* VInsetStreamCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0308B1181AB2B00100144E53 /* VInsetStreamCollectionCell.m */; };
 		0309318D1A18425B004E9781 /* VMenuCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 030931891A18425B004E9781 /* VMenuCollectionViewCell.m */; };
 		0309318E1A18425B004E9781 /* VMenuCollectionViewDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 0309318B1A18425B004E9781 /* VMenuCollectionViewDataSource.m */; };
 		030931901A18426E004E9781 /* VMenuCollectionViewDataSourceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0309318F1A18426E004E9781 /* VMenuCollectionViewDataSourceTests.m */; };
@@ -238,6 +240,9 @@
 		0390087419F3A0CF00FD7EDF /* VMarqueeStreamItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0390087319F3A0CF00FD7EDF /* VMarqueeStreamItemCell.xib */; };
 		0390087619F3A11A00FD7EDF /* followerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0390087519F3A11A00FD7EDF /* followerCell.xib */; };
 		0390088219F3A5D500FD7EDF /* VInviteFriendTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0390088119F3A5D500FD7EDF /* VInviteFriendTableViewCell.xib */; };
+		0394203C1AB7A4F20087ADFA /* VInsetStreamCellFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 0394203B1AB7A4F20087ADFA /* VInsetStreamCellFactory.m */; };
+		0394203F1AB7AAB90087ADFA /* VInsetStreamCollectionCellPoll.m in Sources */ = {isa = PBXBuildFile; fileRef = 0394203E1AB7AAB90087ADFA /* VInsetStreamCollectionCellPoll.m */; };
+		039420431AB7D1A70087ADFA /* VDependencyManager+VTracking.m in Sources */ = {isa = PBXBuildFile; fileRef = 039420421AB7D1A70087ADFA /* VDependencyManager+VTracking.m */; };
 		0395575A19C14439005E32FB /* VCameraCaptureController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0395575919C14439005E32FB /* VCameraCaptureController.m */; };
 		039B614A19F2166900CB2796 /* homeHeaderImage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D811BBBE19B92F75007398BF /* homeHeaderImage@2x.png */; };
 		039D02AC1A1043D300DB9236 /* TemplateClasses.plist in Resources */ = {isa = PBXBuildFile; fileRef = 039D02A81A1043D300DB9236 /* TemplateClasses.plist */; };
@@ -452,13 +457,13 @@
 		A7AA647D19E78EAA0068D2B1 /* victoriOS.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A7AA647B19E78EAA0068D2B1 /* victoriOS.xcdatamodeld */; };
 		A7AEF9A21A83F1C300A3D3A0 /* VSequenceActionController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7AEF9741A83F1C300A3D3A0 /* VSequenceActionController.m */; };
 		A7AEF9A31A83F1C300A3D3A0 /* VStreamCellActionView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7AEF9761A83F1C300A3D3A0 /* VStreamCellActionView.m */; };
-		A7AEF9A41A83F1C300A3D3A0 /* VStreamCellHeaderView-C.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7AEF9771A83F1C300A3D3A0 /* VStreamCellHeaderView-C.xib */; };
+		A7AEF9A41A83F1C300A3D3A0 /* VInsetStreamCellHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7AEF9771A83F1C300A3D3A0 /* VInsetStreamCellHeaderView.xib */; };
 		A7AEF9A51A83F1C300A3D3A0 /* VStreamCellHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7AEF9791A83F1C300A3D3A0 /* VStreamCellHeaderView.m */; };
 		A7AEF9A61A83F1C300A3D3A0 /* VStreamCellHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7AEF97A1A83F1C300A3D3A0 /* VStreamCellHeaderView.xib */; };
-		A7AEF9A71A83F1C300A3D3A0 /* VStreamCollectionCell-C.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7AEF97B1A83F1C300A3D3A0 /* VStreamCollectionCell-C.xib */; };
+		A7AEF9A71A83F1C300A3D3A0 /* VInsetStreamCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7AEF97B1A83F1C300A3D3A0 /* VInsetStreamCollectionCell.xib */; };
 		A7AEF9A81A83F1C300A3D3A0 /* VStreamCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7AEF97D1A83F1C300A3D3A0 /* VStreamCollectionCell.m */; };
 		A7AEF9A91A83F1C300A3D3A0 /* VStreamCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7AEF97E1A83F1C300A3D3A0 /* VStreamCollectionCell.xib */; };
-		A7AEF9AA1A83F1C300A3D3A0 /* VStreamCollectionCellPoll-C.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7AEF97F1A83F1C300A3D3A0 /* VStreamCollectionCellPoll-C.xib */; };
+		A7AEF9AA1A83F1C300A3D3A0 /* VInsetStreamCollectionCellPoll.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7AEF97F1A83F1C300A3D3A0 /* VInsetStreamCollectionCellPoll.xib */; };
 		A7AEF9AB1A83F1C300A3D3A0 /* VStreamCollectionCellPoll.m in Sources */ = {isa = PBXBuildFile; fileRef = A7AEF9811A83F1C300A3D3A0 /* VStreamCollectionCellPoll.m */; };
 		A7AEF9AC1A83F1C300A3D3A0 /* VStreamCollectionCellPoll.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7AEF9821A83F1C300A3D3A0 /* VStreamCollectionCellPoll.xib */; };
 		A7AEF9AD1A83F1C300A3D3A0 /* VStreamCollectionCellWebContent.m in Sources */ = {isa = PBXBuildFile; fileRef = A7AEF9841A83F1C300A3D3A0 /* VStreamCollectionCellWebContent.m */; };
@@ -786,6 +791,11 @@
 		0308B1011AB20B3100144E53 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Main.strings; sourceTree = "<group>"; };
 		0308B1021AB20B3200144E53 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		0308B1111AB23A2B00144E53 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
+		0308B1121AB2A80900144E53 /* VStreamCellFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamCellFactory.h; sourceTree = "<group>"; };
+		0308B1131AB2A98E00144E53 /* VTitleOverlayStreamCellFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTitleOverlayStreamCellFactory.h; sourceTree = "<group>"; };
+		0308B1141AB2A98E00144E53 /* VTitleOverlayStreamCellFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTitleOverlayStreamCellFactory.m; sourceTree = "<group>"; };
+		0308B1171AB2B00100144E53 /* VInsetStreamCollectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInsetStreamCollectionCell.h; sourceTree = "<group>"; };
+		0308B1181AB2B00100144E53 /* VInsetStreamCollectionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInsetStreamCollectionCell.m; sourceTree = "<group>"; };
 		030931881A18425B004E9781 /* VMenuCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMenuCollectionViewCell.h; sourceTree = "<group>"; };
 		030931891A18425B004E9781 /* VMenuCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMenuCollectionViewCell.m; sourceTree = "<group>"; };
 		0309318A1A18425B004E9781 /* VMenuCollectionViewDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMenuCollectionViewDataSource.h; sourceTree = "<group>"; };
@@ -1200,6 +1210,13 @@
 		0390088319F3A63C00FD7EDF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/FindFriendsTableView.xib; sourceTree = "<group>"; };
 		0390088419F3A64600FD7EDF /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/FindFriendsTableView.strings; sourceTree = "<group>"; };
 		0390088F19F3A99100FD7EDF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/VEphemeralTimerView.xib; sourceTree = "<group>"; };
+		0394203A1AB7A4F20087ADFA /* VInsetStreamCellFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInsetStreamCellFactory.h; sourceTree = "<group>"; };
+		0394203B1AB7A4F20087ADFA /* VInsetStreamCellFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInsetStreamCellFactory.m; sourceTree = "<group>"; };
+		0394203D1AB7AAB90087ADFA /* VInsetStreamCollectionCellPoll.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInsetStreamCollectionCellPoll.h; sourceTree = "<group>"; };
+		0394203E1AB7AAB90087ADFA /* VInsetStreamCollectionCellPoll.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInsetStreamCollectionCellPoll.m; sourceTree = "<group>"; };
+		039420401AB7C5CF0087ADFA /* VSequenceActionsSender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSequenceActionsSender.h; sourceTree = "<group>"; };
+		039420411AB7D1A70087ADFA /* VDependencyManager+VTracking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VDependencyManager+VTracking.h"; sourceTree = "<group>"; };
+		039420421AB7D1A70087ADFA /* VDependencyManager+VTracking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VDependencyManager+VTracking.m"; sourceTree = "<group>"; };
 		0395575819C14439005E32FB /* VCameraCaptureController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCameraCaptureController.h; sourceTree = "<group>"; };
 		0395575919C14439005E32FB /* VCameraCaptureController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCameraCaptureController.m; sourceTree = "<group>"; };
 		039D02A81A1043D300DB9236 /* TemplateClasses.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = TemplateClasses.plist; sourceTree = "<group>"; };
@@ -1555,15 +1572,15 @@
 		A7AEF9741A83F1C300A3D3A0 /* VSequenceActionController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSequenceActionController.m; sourceTree = "<group>"; };
 		A7AEF9751A83F1C300A3D3A0 /* VStreamCellActionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamCellActionView.h; sourceTree = "<group>"; };
 		A7AEF9761A83F1C300A3D3A0 /* VStreamCellActionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamCellActionView.m; sourceTree = "<group>"; };
-		A7AEF9771A83F1C300A3D3A0 /* VStreamCellHeaderView-C.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "VStreamCellHeaderView-C.xib"; sourceTree = "<group>"; };
+		A7AEF9771A83F1C300A3D3A0 /* VInsetStreamCellHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VInsetStreamCellHeaderView.xib; sourceTree = "<group>"; };
 		A7AEF9781A83F1C300A3D3A0 /* VStreamCellHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamCellHeaderView.h; sourceTree = "<group>"; };
 		A7AEF9791A83F1C300A3D3A0 /* VStreamCellHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamCellHeaderView.m; sourceTree = "<group>"; };
 		A7AEF97A1A83F1C300A3D3A0 /* VStreamCellHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VStreamCellHeaderView.xib; sourceTree = "<group>"; };
-		A7AEF97B1A83F1C300A3D3A0 /* VStreamCollectionCell-C.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "VStreamCollectionCell-C.xib"; sourceTree = "<group>"; };
+		A7AEF97B1A83F1C300A3D3A0 /* VInsetStreamCollectionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VInsetStreamCollectionCell.xib; sourceTree = "<group>"; };
 		A7AEF97C1A83F1C300A3D3A0 /* VStreamCollectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamCollectionCell.h; sourceTree = "<group>"; };
 		A7AEF97D1A83F1C300A3D3A0 /* VStreamCollectionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamCollectionCell.m; sourceTree = "<group>"; };
 		A7AEF97E1A83F1C300A3D3A0 /* VStreamCollectionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VStreamCollectionCell.xib; sourceTree = "<group>"; };
-		A7AEF97F1A83F1C300A3D3A0 /* VStreamCollectionCellPoll-C.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "VStreamCollectionCellPoll-C.xib"; sourceTree = "<group>"; };
+		A7AEF97F1A83F1C300A3D3A0 /* VInsetStreamCollectionCellPoll.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VInsetStreamCollectionCellPoll.xib; sourceTree = "<group>"; };
 		A7AEF9801A83F1C300A3D3A0 /* VStreamCollectionCellPoll.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamCollectionCellPoll.h; sourceTree = "<group>"; };
 		A7AEF9811A83F1C300A3D3A0 /* VStreamCollectionCellPoll.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamCollectionCellPoll.m; sourceTree = "<group>"; };
 		A7AEF9821A83F1C300A3D3A0 /* VStreamCollectionCellPoll.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VStreamCollectionCellPoll.xib; sourceTree = "<group>"; };
@@ -2177,6 +2194,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0308B1161AB2AE9700144E53 /* Template C */ = {
+			isa = PBXGroup;
+			children = (
+				0394203A1AB7A4F20087ADFA /* VInsetStreamCellFactory.h */,
+				0394203B1AB7A4F20087ADFA /* VInsetStreamCellFactory.m */,
+				A7AEF9771A83F1C300A3D3A0 /* VInsetStreamCellHeaderView.xib */,
+				0308B1171AB2B00100144E53 /* VInsetStreamCollectionCell.h */,
+				0308B1181AB2B00100144E53 /* VInsetStreamCollectionCell.m */,
+				A7AEF97B1A83F1C300A3D3A0 /* VInsetStreamCollectionCell.xib */,
+				0394203D1AB7AAB90087ADFA /* VInsetStreamCollectionCellPoll.h */,
+				0394203E1AB7AAB90087ADFA /* VInsetStreamCollectionCellPoll.m */,
+				A7AEF97F1A83F1C300A3D3A0 /* VInsetStreamCollectionCellPoll.xib */,
+			);
+			path = "Template C";
+			sourceTree = "<group>";
+		};
 		030931871A18425B004E9781 /* Menu */ = {
 			isa = PBXGroup;
 			children = (
@@ -2616,8 +2649,6 @@
 			isa = PBXGroup;
 			children = (
 				030931871A18425B004E9781 /* Menu */,
-				D87D70911A97C9EC002D4FED /* VTabMenuViewController.h */,
-				D87D70921A97C9EC002D4FED /* VTabMenuViewController.m */,
 				037FCF0B1A8B182A00E8ABFC /* VDeeplinkHandler.h */,
 				037FCF111A8DAF0E00E8ABFC /* VHamburgerButton.h */,
 				037FCF121A8DAF0E00E8ABFC /* VHamburgerButton.m */,
@@ -2638,6 +2669,8 @@
 				0358FCED1A65E785004DD7A1 /* VScaffoldViewController.m */,
 				0314D3ED19B46B5E00FA363C /* VSideMenuViewController.h */,
 				0314D3EE19B46B5E00FA363C /* VSideMenuViewController.m */,
+				D87D70911A97C9EC002D4FED /* VTabMenuViewController.h */,
+				D87D70921A97C9EC002D4FED /* VTabMenuViewController.m */,
 			);
 			path = "Root View";
 			sourceTree = "<group>";
@@ -2767,9 +2800,6 @@
 				03B83B5819E0988200DC04E4 /* Upload Progress View */,
 				A7AEF9931A83F1C300A3D3A0 /* VAbstractStreamCollectionViewController.h */,
 				A7AEF9941A83F1C300A3D3A0 /* VAbstractStreamCollectionViewController.m */,
-				F028CF4C1A97A6B0005EE2B5 /* VGroupedStreamCollectionViewController.h */,
-				F028CF4D1A97A6B0005EE2B5 /* VGroupedStreamCollectionViewController.m */,
-				F028CF581A97C3EE005EE2B5 /* VGroupedStreamCollectionViewController.xib */,
 				A7299EA41AA7842100B6BC1F /* VDirectoryViewController.h */,
 				A7299EA51AA7842100B6BC1F /* VDirectoryViewController.m */,
 				A7299EA61AA7842100B6BC1F /* VDirectoryViewController.xib */,
@@ -2778,9 +2808,13 @@
 				DB2A495919DF455D00CB687B /* VEphemeralTimerView.xib */,
 				A7A343E01A8D6AE1000F0BCF /* VFollowingStreamCollectionViewController.h */,
 				A7A343E11A8D6AE1000F0BCF /* VFollowingStreamCollectionViewController.m */,
+				F028CF4C1A97A6B0005EE2B5 /* VGroupedStreamCollectionViewController.h */,
+				F028CF4D1A97A6B0005EE2B5 /* VGroupedStreamCollectionViewController.m */,
+				F028CF581A97C3EE005EE2B5 /* VGroupedStreamCollectionViewController.xib */,
 				A7A343E31A8D896C000F0BCF /* VHashtagStreamCollectionViewController.h */,
 				A7A343E41A8D896C000F0BCF /* VHashtagStreamCollectionViewController.m */,
 				A7AEF9981A83F1C300A3D3A0 /* VSequenceActionsDelegate.h */,
+				039420401AB7C5CF0087ADFA /* VSequenceActionsSender.h */,
 				A7AEF9991A83F1C300A3D3A0 /* VStreamCollectionViewController.h */,
 				A7AEF99A1A83F1C300A3D3A0 /* VStreamCollectionViewController.m */,
 				A7AEF99B1A83F1C300A3D3A0 /* VStreamCollectionViewDataSource.h */,
@@ -3147,6 +3181,8 @@
 				037D2D5B1A1A588D00947A22 /* VDependencyManager+VObjectManager.m */,
 				037FCF291A8DAF7600E8ABFC /* VDependencyManager+VScaffoldViewController.h */,
 				037FCF2A1A8DAF7600E8ABFC /* VDependencyManager+VScaffoldViewController.m */,
+				039420411AB7D1A70087ADFA /* VDependencyManager+VTracking.h */,
+				039420421AB7D1A70087ADFA /* VDependencyManager+VTracking.m */,
 				D8D945FB1A2EA9940089D271 /* VDependencyManager+VWorkspaceTool.h */,
 				D8D945FC1A2EA9940089D271 /* VDependencyManager+VWorkspaceTool.m */,
 				039D02AB1A1043D300DB9236 /* VHasManagedDependencies.h */,
@@ -3762,25 +3798,26 @@
 		A7AEF96C1A83F1C300A3D3A0 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				0308B1161AB2AE9700144E53 /* Template C */,
 				A7AEF9731A83F1C300A3D3A0 /* VSequenceActionController.h */,
 				A7AEF9741A83F1C300A3D3A0 /* VSequenceActionController.m */,
 				A7AEF9751A83F1C300A3D3A0 /* VStreamCellActionView.h */,
 				A7AEF9761A83F1C300A3D3A0 /* VStreamCellActionView.m */,
-				A7AEF9771A83F1C300A3D3A0 /* VStreamCellHeaderView-C.xib */,
+				0308B1121AB2A80900144E53 /* VStreamCellFactory.h */,
 				A7AEF9781A83F1C300A3D3A0 /* VStreamCellHeaderView.h */,
 				A7AEF9791A83F1C300A3D3A0 /* VStreamCellHeaderView.m */,
 				A7AEF97A1A83F1C300A3D3A0 /* VStreamCellHeaderView.xib */,
-				A7AEF97B1A83F1C300A3D3A0 /* VStreamCollectionCell-C.xib */,
 				A7AEF97C1A83F1C300A3D3A0 /* VStreamCollectionCell.h */,
 				A7AEF97D1A83F1C300A3D3A0 /* VStreamCollectionCell.m */,
 				A7AEF97E1A83F1C300A3D3A0 /* VStreamCollectionCell.xib */,
-				A7AEF97F1A83F1C300A3D3A0 /* VStreamCollectionCellPoll-C.xib */,
 				A7AEF9801A83F1C300A3D3A0 /* VStreamCollectionCellPoll.h */,
 				A7AEF9811A83F1C300A3D3A0 /* VStreamCollectionCellPoll.m */,
 				A7AEF9821A83F1C300A3D3A0 /* VStreamCollectionCellPoll.xib */,
 				A7AEF9831A83F1C300A3D3A0 /* VStreamCollectionCellWebContent.h */,
 				A7AEF9841A83F1C300A3D3A0 /* VStreamCollectionCellWebContent.m */,
 				A7AEF9851A83F1C300A3D3A0 /* VStreamCollectionCellWebContent.xib */,
+				0308B1131AB2A98E00144E53 /* VTitleOverlayStreamCellFactory.h */,
+				0308B1141AB2A98E00144E53 /* VTitleOverlayStreamCellFactory.m */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -4937,7 +4974,7 @@
 				03C1859119B42CEA00E27D05 /* MuseoSans-100.otf in Resources */,
 				036F387D1A0C4DEA0014DF66 /* Merriweather-Regular.ttf in Resources */,
 				036F38641A0C4DEA0014DF66 /* Arimo-Regular.ttf in Resources */,
-				A7AEF9AA1A83F1C300A3D3A0 /* VStreamCollectionCellPoll-C.xib in Resources */,
+				A7AEF9AA1A83F1C300A3D3A0 /* VInsetStreamCollectionCellPoll.xib in Resources */,
 				DB81FB631AAE49FE00EA4E3C /* LaunchImage@2x.png in Resources */,
 				03C1858719B42C9100E27D05 /* Roboto-LightItalic.ttf in Resources */,
 				0314D08819B4688E00FA363C /* Icon-60@2x.png in Resources */,
@@ -4945,7 +4982,7 @@
 				03FD87D919F96FB700D93BAA /* VSuggestedPersonCollectionViewCell.xib in Resources */,
 				036F38931A0C4DEA0014DF66 /* SourceSansPro-Regular.ttf in Resources */,
 				03C1858619B42C9100E27D05 /* Roboto-Light.ttf in Resources */,
-				A7AEF9A41A83F1C300A3D3A0 /* VStreamCellHeaderView-C.xib in Resources */,
+				A7AEF9A41A83F1C300A3D3A0 /* VInsetStreamCellHeaderView.xib in Resources */,
 				DBAD88FE19F5B83B00D678A0 /* OpenXMSDKResources.bundle in Resources */,
 				0390086C19F39F6A00FD7EDF /* VConversationCell.xib in Resources */,
 				03C1857A19B42C9100E27D05 /* Impact.ttf in Resources */,
@@ -5024,7 +5061,7 @@
 				A7A390CA1A3257A300709812 /* ContentView.storyboard in Resources */,
 				A7D707A21A7C145E00D9993F /* EndCard.storyboard in Resources */,
 				036F386F1A0C4DEA0014DF66 /* JosefinSlab-Bold.ttf in Resources */,
-				A7AEF9A71A83F1C300A3D3A0 /* VStreamCollectionCell-C.xib in Resources */,
+				A7AEF9A71A83F1C300A3D3A0 /* VInsetStreamCollectionCell.xib in Resources */,
 				036F38711A0C4DEA0014DF66 /* Junction-bold.otf in Resources */,
 				A769C3F71A13D69500698D0C /* WebBrowser.storyboard in Resources */,
 				036F38801A0C4DEA0014DF66 /* OpenSans-Bold.ttf in Resources */,
@@ -5218,6 +5255,7 @@
 				F098D8151A9D29EA0003B6D4 /* VTagSensitiveTextView.m in Sources */,
 				0314D0B619B4698800FA363C /* VObjectManager+Sequence.m in Sources */,
 				A7B98A3E1A264D0900C58335 /* VNotificationSettingsTableSection.m in Sources */,
+				0394203F1AB7AAB90087ADFA /* VInsetStreamCollectionCellPoll.m in Sources */,
 				A7F529531A9E66E000F7E41F /* VStreamTrackingHelper.m in Sources */,
 				D80A94EE1A5472FB0035D788 /* VTrimVideoTool.m in Sources */,
 				0314D4DB19B46B5E00FA363C /* VTOSViewController.m in Sources */,
@@ -5309,6 +5347,7 @@
 				DB51C54219F86971005AA7B6 /* VAdBreakFallback+RestKit.m in Sources */,
 				A7738B041A4A35DF008EA973 /* VSimpleModalTransition.m in Sources */,
 				D8AF00EF1A128A7200B147C4 /* VHashTagTextView.m in Sources */,
+				0394203C1AB7A4F20087ADFA /* VInsetStreamCellFactory.m in Sources */,
 				0314D4D919B46B5E00FA363C /* VServerEnvironmentTableViewController.m in Sources */,
 				D8E7EBCB19CCA540007DA693 /* VSectionHandleReusableView.m in Sources */,
 				D8332DBD1A7C275800C3FEE0 /* VCameraControl.m in Sources */,
@@ -5356,6 +5395,7 @@
 				0314D4DE19B46B5E00FA363C /* VFindContactsTableViewController.m in Sources */,
 				D8D8958919E88C2100632663 /* VExperienceEnhancerBarCell.m in Sources */,
 				D8360CF019E3768300D7E260 /* VExperienceEnhancerController.m in Sources */,
+				0308B1191AB2B00100144E53 /* VInsetStreamCollectionCell.m in Sources */,
 				F05AA9821A83F6E3002F8917 /* VInlineSearchTableViewController.m in Sources */,
 				BEC833BE19D364A500341EA9 /* VPollResult.m in Sources */,
 				0314D4FE19B46B5E00FA363C /* VEphemeralTimerView.m in Sources */,
@@ -5437,6 +5477,7 @@
 				0314D4C119B46B5E00FA363C /* VProfileEditViewController.m in Sources */,
 				A7AEF9C71A83F2AD00A3D3A0 /* VLargeNumberFormatter.m in Sources */,
 				BE799BB419C8DF5B0023CE88 /* VAsset+OrderedSet.m in Sources */,
+				0308B1151AB2A98E00144E53 /* VTitleOverlayStreamCellFactory.m in Sources */,
 				037FCF1B1A8DAF0E00E8ABFC /* VNavigationControllerScrollDelegate.m in Sources */,
 				A75ED0651AB382A800C35063 /* VTrackingSettingsViewController.m in Sources */,
 				BE171D8C1868BE64004E5202 /* VAppDelegate.m in Sources */,
@@ -5551,6 +5592,7 @@
 				A7D7079E1A7C144C00D9993F /* VEndCardBannerViewController.m in Sources */,
 				D87351991A3260AC006D97B2 /* VFilterTypeTool.m in Sources */,
 				A720055E1A030E4700285A9C /* VApplicationTracking.m in Sources */,
+				039420431AB7D1A70087ADFA /* VDependencyManager+VTracking.m in Sources */,
 				A77AD4F21A1FD8B600142F24 /* VAlertControllerBasic.m in Sources */,
 				D8E39BEB19CB7D92007FD86A /* VKeyboardInputAccessoryView.m in Sources */,
 				0314D4A519B46B5E00FA363C /* VForceUpgradeViewController.m in Sources */,

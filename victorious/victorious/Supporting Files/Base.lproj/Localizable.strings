@@ -304,7 +304,7 @@
 
 "EnterResetCodeMessage" =   "An email was sent to this address containing reset password instructions.";
 "EnterCodeTitle"        =   "ENTER CODE";
-"ResendEmail"           =   "Resend Email";
+"Resend Email"           =   "Resend Email";
 
 "EmailNotFound"         =   "The email provided was not found. Please enter the email used to create this account.";
 "EmailNotValid"         =   "Please enter the email used to create this account.";
