@@ -30,6 +30,7 @@
 #import "VObjectManager.h"
 #import "VSettingManager.h"
 #import "VDirectoryCellDecorator.h"
+#import "NSString+VParseHelp.h"
 
 static NSString * const kStreamDirectoryStoryboardId = @"kStreamDirectory";
 static NSString * const kStreamURLPathKey = @"streamUrlPath";
@@ -64,7 +65,7 @@ static CGFloat const kDirectoryInset = 10.0f;
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     NSAssert([NSThread isMainThread], @"This method must be called on the main thread");
-    VStream *stream = [VStream streamForPath:[dependencyManager stringForKey:kStreamURLPathKey] inContext:dependencyManager.objectManager.managedObjectStore.mainQueueManagedObjectContext];
+    VStream *stream = [VStream streamForPath:[[dependencyManager stringForKey:kStreamURLPathKey] v_pathComponent] inContext:dependencyManager.objectManager.managedObjectStore.mainQueueManagedObjectContext];
     stream.name = [dependencyManager stringForKey:VDependencyManagerTitleKey];
     return [self streamDirectoryForStream:stream dependencyManager:dependencyManager];
 }
