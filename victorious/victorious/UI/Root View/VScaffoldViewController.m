@@ -290,7 +290,6 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
         if ([navigationDestination respondsToSelector:@selector(shouldNavigateWithAlternateDestination:)])
         {
             shouldNavigateToAlternateDestination = [navigationDestination shouldNavigateWithAlternateDestination:&alternateDestination];
-
             if (!shouldNavigateToAlternateDestination)
             {
                 if (completion != nil)
