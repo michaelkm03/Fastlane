@@ -585,44 +585,16 @@ typedef NS_ENUM(NSUInteger, VTemplateType)
                                                                                          kIdentifierKey: @"Menu Profile",
                                                                                          kTitleKey: NSLocalizedString(@"Profile", @""),
                                                                                          kIconKey: @{
-                                                                                                 VDependencyManagerImageURLKey: @"D_profile",
+                                                                                                 VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@profile", TEMPLATE_ICON_PREFIX],
+                                                                                                 },
+                                                                                         kSelectedIconKey: @{
+                                                                                                 VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@profile%@", TEMPLATE_ICON_PREFIX, SELECTED_ICON_SUFFIX],
                                                                                                  }
                                                                                          }];
     profileItem[kDestinationKey] = [self profileDetails];
     if ( self.enabledTemplate == VTemplateTypeD )
     {
-        return @{
-                 kIdentifierKey: @"Menu Profile",
-                 kTitleKey: NSLocalizedString(@"Profile", @""),
-                 kDestinationKey: @{
-                         kClassNameKey: @"currentUserProfile.screen"
-                         },
-                 kIconKey: @{
-                         VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@profile", TEMPLATE_ICON_PREFIX],
-                         },
-                 kSelectedIconKey: @{
-                         VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@profile%@", TEMPLATE_ICON_PREFIX, SELECTED_ICON_SUFFIX],
-                         },
-                 VDependencyManagerAccessoryScreensKey: @[
-                         [self settingsMenuItem],
-                         ],
-                 };
-    }
-    else
-    {
-        return @{
-                 kIdentifierKey: @"Menu Profile",
-                 kTitleKey: NSLocalizedString(@"Profile", @""),
-                 kDestinationKey: @{
-                         kClassNameKey: @"currentUserProfile.screen"
-                         },
-                 kIconKey: @{
-                         VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@profile", TEMPLATE_ICON_PREFIX],
-                         },
-                 kSelectedIconKey: @{
-                         VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@profile%@", TEMPLATE_ICON_PREFIX, SELECTED_ICON_SUFFIX],
-                         },
-                 };
+        profileItem[VDependencyManagerAccessoryScreensKey] = [self settingsMenuItem];
     }
     profileItem[kProfileShowEditButtonPill] = @(self.enabledTemplate == VTemplateTypeD);
     
@@ -673,24 +645,6 @@ typedef NS_ENUM(NSUInteger, VTemplateType)
 {
     NSMutableDictionary *profileDetails = [[NSMutableDictionary alloc] initWithDictionary:@{
                                                                                             kClassNameKey: @"currentUserProfile.screen",
-                                                                                            VDependencyManagerBackgroundColorKey: @{
-                                                                                                    kRedKey: @241,
-                                                                                                    kGreenKey: @241,
-                                                                                                    kBlueKey: @241,
-                                                                                                    kAlphaKey: @1
-                                                                                                    },
-                                                                                            VDependencyManagerAccentColorKey: @{
-                                                                                                    kRedKey: @288,
-                                                                                                    kGreenKey: @65,
-                                                                                                    kBlueKey: @66,
-                                                                                                    kAlphaKey: @1
-                                                                                                    },
-                                                                                            VDependencyManagerContentTextColorKey: @{
-                                                                                                    kRedKey: @0,
-                                                                                                    kGreenKey: @0,
-                                                                                                    kBlueKey: @0,
-                                                                                                    kAlphaKey: @1
-                                                                                                    }
                                                                                             }];
     if ( self.enabledTemplate == VTemplateTypeD )
     {
@@ -700,31 +654,60 @@ typedef NS_ENUM(NSUInteger, VTemplateType)
                                                            kBlueKey: @217,
                                                            kAlphaKey: @1
                                                            };
+        [profileDetails addEntriesFromDictionary:[self lightProfileDetails]];
     }
-    
-    if ( self.enabledTemplate == VTemplateTypeD )
+    else
     {
-        profileDetails[VDependencyManagerBackgroundColorKey] = @{
-                                                                 kRedKey: @20,
-                                                                 kGreenKey: @20,
-                                                                 kBlueKey: @20,
-                                                                 kAlphaKey: @1
-                                                                 };
-        profileDetails[VDependencyManagerSecondaryBackgroundColorKey] = @{
-                                                                          kRedKey: @38,
-                                                                          kGreenKey: @39,
-                                                                          kBlueKey: @42,
-                                                                          kAlphaKey: @1
-                                                                          };
-        profileDetails[VDependencyManagerContentTextColorKey] = @{
-                                                                  kRedKey: @204,
-                                                                  kGreenKey: @204,
-                                                                  kBlueKey: @204,
-                                                                  kAlphaKey: @1
-                                                                  };
+        [profileDetails addEntriesFromDictionary:[self lightProfileDetails]];
     }
     profileDetails[VStreamCollectionViewControllerCellComponentKey] = [self cellComponent];
     return [profileDetails copy];
+}
+
+- (NSDictionary *)darkProfileDetails
+{
+    return @{ VDependencyManagerBackgroundColorKey : @{
+                                                             kRedKey: @20,
+                                                             kGreenKey: @20,
+                                                             kBlueKey: @20,
+                                                             kAlphaKey: @1
+                                                             },
+              VDependencyManagerSecondaryBackgroundColorKey : @{
+                                                                      kRedKey: @38,
+                                                                      kGreenKey: @39,
+                                                                      kBlueKey: @42,
+                                                                      kAlphaKey: @1
+                                                                      },
+              VDependencyManagerContentTextColorKey : @{
+                                                              kRedKey: @204,
+                                                              kGreenKey: @204,
+                                                              kBlueKey: @204,
+                                                              kAlphaKey: @1
+                                                              }
+              };
+}
+
+- (NSDictionary *)lightProfileDetails
+{
+    return @{ VDependencyManagerBackgroundColorKey: @{
+                      kRedKey: @241,
+                      kGreenKey: @241,
+                      kBlueKey: @241,
+                      kAlphaKey: @1
+                      },
+              VDependencyManagerAccentColorKey: @{
+                      kRedKey: @288,
+                      kGreenKey: @65,
+                      kBlueKey: @66,
+                      kAlphaKey: @1
+                      },
+              VDependencyManagerContentTextColorKey: @{
+                      kRedKey: @0,
+                      kGreenKey: @0,
+                      kBlueKey: @0,
+                      kAlphaKey: @1
+                      }
+              };
 }
 
 - (NSDictionary *)currentUserProfileScreen
