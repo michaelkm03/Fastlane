@@ -12,10 +12,10 @@
 #import "VMultipleContainerViewController.h"
 #import "VNavigationController.h"
 #import "VSelectorViewBase.h"
-#import "VMultipleContainerViewControllerChild.h"
-#import "VMultipleContainerViewControllerChild.h"
+#import "VMultipleContainerChild.h"
+#import "VMultipleContainerChild.h"
 
-@interface VMultipleContainerViewController () <UICollectionViewDataSource, UICollectionViewDelegate, VSelectorViewDelegate, VMultipleContainerViewcontrollerChildDelegate>
+@interface VMultipleContainerViewController () <UICollectionViewDataSource, UICollectionViewDelegate, VSelectorViewDelegate, VMultipleContainerChildDelegate>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, weak) UICollectionView *collectionView;
@@ -137,9 +137,9 @@ static NSString * const kInitialKey = @"initial";
     [super viewDidAppear:animated];
     
     UIViewController *viewController = self.viewControllers[ self.selector.activeViewControllerIndex ];
-    if ( [viewController conformsToProtocol:@protocol(VMultipleContainerViewControllerChild)] )
+    if ( [viewController conformsToProtocol:@protocol(VMultipleContainerChild)] )
     {
-        [((id<VMultipleContainerViewControllerChild>)viewController) viewControllerSelected:YES];
+        [((id<VMultipleContainerChild>)viewController) viewControllerSelected:YES];
     }
 }
 
@@ -162,9 +162,9 @@ static NSString * const kInitialKey = @"initial";
     [viewControllers enumerateObjectsUsingBlock:^(UIViewController *viewController, NSUInteger idx, BOOL *stop)
      {
          NSParameterAssert( [viewController isKindOfClass:[UIViewController class]] );
-         NSParameterAssert( [viewController conformsToProtocol:@protocol(VMultipleContainerViewControllerChild)] );
+         NSParameterAssert( [viewController conformsToProtocol:@protocol(VMultipleContainerChild)] );
          
-         id<VMultipleContainerViewControllerChild> child = (id<VMultipleContainerViewControllerChild>)viewController;
+         id<VMultipleContainerChild> child = (id<VMultipleContainerChild>)viewController;
          child.multipleViewControllerChildDelegate = self;
     }];
     
@@ -186,7 +186,7 @@ static NSString * const kInitialKey = @"initial";
     }];
 }
 
-#pragma mark - VMultipleContainerViewcontrollerChildDelegate
+#pragma mark - VMultipleContainerChildDelegate
 
 - (UINavigationItem *)parentNavigationItem
 {
@@ -208,9 +208,9 @@ static NSString * const kInitialKey = @"initial";
     
     UIViewController *viewController = self.viewControllers[index];
     
-    if ( [viewController conformsToProtocol:@protocol(VMultipleContainerViewControllerChild)] )
+    if ( [viewController conformsToProtocol:@protocol(VMultipleContainerChild)] )
     {
-        [((id<VMultipleContainerViewControllerChild>)viewController) viewControllerSelected:isDefaultSelection];
+        [((id<VMultipleContainerChild>)viewController) viewControllerSelected:isDefaultSelection];
     }
 }
 

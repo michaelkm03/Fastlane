@@ -10,11 +10,11 @@
 
 #import "VStreamCollectionViewDataSource.h"
 #import "VStreamTrackingHelper.h"
-#import "VMultipleContainerViewControllerChild.h"
+#import "VMultipleContainerChild.h"
 
 @class VStream, VNavigationHeaderView, VCollectionRefreshControl;
 
-@interface VAbstractStreamCollectionViewController : UIViewController <VStreamCollectionDataDelegate, UIScrollViewDelegate, UICollectionViewDelegateFlowLayout, VMultipleContainerViewControllerChild>
+@interface VAbstractStreamCollectionViewController : UIViewController <VStreamCollectionDataDelegate, UIScrollViewDelegate, UICollectionViewDelegateFlowLayout, VMultipleContainerChild>
 
 @property (nonatomic, strong) UIRefreshControl *refreshControl;///<Refresh control for the collectionview
 @property (nonatomic, strong) VStream *currentStream;///<The stream to display

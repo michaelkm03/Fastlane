@@ -180,7 +180,7 @@ const CGFloat kVLoadNextPagePoint = .75f;
     // Nothing to do here, provided to override in subclasses
 }
 
-#pragma mark - VMultipleContainerViewControllerChild protocol
+#pragma mark - VMultipleContainerChild protocol
 
 - (void)viewControllerSelected:(BOOL)isDefault
 {

@@ -1,5 +1,5 @@
 //
-//  VMultipleContainerViewControllerChild.h
+//  VMultipleContainerChild.h
 //  victorious
 //
 //  Created by Patrick Lynch on 2/20/15.
@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@protocol VMultipleContainerViewcontrollerChildDelegate <NSObject>
+@protocol VMultipleContainerChildDelegate <NSObject>
 
 /**
  A conforming object should return the navigtation item of the view controller that is
@@ -21,7 +21,7 @@
 @end
 
 
-@protocol VMultipleContainerViewControllerChild <NSObject>
+@protocol VMultipleContainerChild <NSObject>
 
 /**
  Called by VMultipleContainerViewController on its child view controllers when
@@ -33,6 +33,6 @@
  */
 - (void)viewControllerSelected:(BOOL)isDefault;
 
-@property (nonatomic, weak) id<VMultipleContainerViewcontrollerChildDelegate> multipleViewControllerChildDelegate;
+@property (nonatomic, weak) id<VMultipleContainerChildDelegate> multipleViewControllerChildDelegate;
 
 @end
