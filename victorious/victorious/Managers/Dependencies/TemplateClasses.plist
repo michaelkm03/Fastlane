@@ -48,7 +48,7 @@
 	<string>VFollowingStreamCollectionViewController</string>
 	<key>groupedStream.screen</key>
 	<string>VGroupedStreamCollectionViewController</string>
-	<key>directory.screen</key>
+	<key>streamDirectory.screen</key>
 	<string>VDirectoryViewController</string>
 	<key>basic.multiScreen</key>
 	<string>VMultipleContainerViewController</string>

@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@class VLoadingViewController;
+@class VDependencyManager, VLoadingViewController;
 
 @protocol VLoadingViewControllerDelegate <NSObject>
 
@@ -17,13 +17,14 @@
 /**
  Notifies the delegate that the init call has completed
  */
-- (void)loadingViewController:(VLoadingViewController *)loadingViewController didFinishLoadingWithInitResponse:(NSDictionary *)initResponse;
+- (void)loadingViewController:(VLoadingViewController *)loadingViewController didFinishLoadingWithDependencyManager:(VDependencyManager *)dependencyManager;
 
 @end
 
 @interface VLoadingViewController : UIViewController
 
 @property (nonatomic, weak) id<VLoadingViewControllerDelegate> delegate;
+@property (nonatomic, strong) VDependencyManager *parentDependencyManager; ///< This VDependencyManager instance will be the parent of the one returned from the server
 
 + (VLoadingViewController *)loadingViewController; ///< Instantiates VLoadingViewController from the storyboard
 
