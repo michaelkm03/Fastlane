@@ -12,7 +12,7 @@
 #import "VDependencyManager.h"
 #import "VHasManagedDependencies.h"
 
-@class VDependencyManager, VSequenceActionController, VNewContentViewController;
+@class VDependencyManager, VSequenceActionController, VNewContentViewController, VAuthorizedAction;
 
 @protocol VNewContentViewControllerDelegate  <NSObject>
 
@@ -59,7 +59,7 @@
 
 @property (nonatomic, strong) UIImage *placeholderImage;
 
-@property (nonatomic, strong, readonly) IBOutlet VSequenceActionController *sequenceActionController;
+@property (nonatomic, weak, readonly) IBOutlet VSequenceActionController *sequenceActionController;
 
 @end
 

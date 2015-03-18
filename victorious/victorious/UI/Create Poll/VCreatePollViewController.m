@@ -174,8 +174,6 @@ static char KVOContext;
     [self.postButton setEnabled:YES];
 
     [self updateViewState];
-    
-#warning configure cancle button
 }
 
 - (void)viewWillAppear:(BOOL)animated

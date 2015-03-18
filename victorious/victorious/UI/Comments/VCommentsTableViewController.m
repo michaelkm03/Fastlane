@@ -367,11 +367,6 @@
     [self presentViewController:editViewController animated:YES completion:nil];
 }
 
-- (void)didSelectActionRequiringLogin
-{
-    [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
-}
-
 #pragma mark - VEditCommentViewControllerDelegate
 
 - (void)didFinishEditingComment:(VComment *)comment

@@ -6,10 +6,11 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-@class VUser;
+@class VUser, VDependencyManager;
 
 @interface VFollowingTableViewController : UITableViewController
 
-@property (nonatomic, strong)   VUser      *profile;
+@property (nonatomic, strong) VUser *profile;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end

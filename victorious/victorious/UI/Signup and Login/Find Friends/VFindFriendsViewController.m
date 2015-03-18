@@ -19,6 +19,7 @@
 #import "VTabInfo.h"
 #import "VThemeManager.h"
 #import "VSettingManager.h"
+#import "VDependencyManager.h"
 
 @import MessageUI;
 
@@ -32,15 +33,18 @@
 @property (nonatomic, strong) VFindFriendsTableViewController *twitterInnerViewController;
 @property (nonatomic) BOOL shouldShowInvite;
 @property (nonatomic, strong) NSString *appStoreLink;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end
 
 @implementation VFindFriendsViewController
 
-+ (VFindFriendsViewController *)newFindFriendsViewController
++ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"login" bundle:nil];
-    return [storyboard instantiateViewControllerWithIdentifier:@"VFindFriendsViewController"];
+    VFindFriendsViewController *viewController = (VFindFriendsViewController *)[storyboard instantiateViewControllerWithIdentifier:@"VFindFriendsViewController"];
+    viewController.dependencyManager = dependencyManager;
+    return viewController;
 }
 
 #pragma mark - View Lifecycle
@@ -112,10 +116,15 @@
     
     self.contactsInnerViewController.shouldAutoselectNewFriends = self.shouldAutoselectNewFriends;
     self.contactsInnerViewController.shouldDisplayInviteButton = self.shouldShowInvite;
+    self.contactsInnerViewController.dependencyManager = self.dependencyManager;
+    
     self.facebookInnerViewController.shouldAutoselectNewFriends = self.shouldAutoselectNewFriends;
     self.facebookInnerViewController.shouldDisplayInviteButton = self.shouldShowInvite;
+    self.facebookInnerViewController.dependencyManager = self.dependencyManager;
+    
     self.twitterInnerViewController.shouldAutoselectNewFriends = self.shouldAutoselectNewFriends;
     self.twitterInnerViewController.shouldDisplayInviteButton = self.shouldShowInvite;
+    self.twitterInnerViewController.dependencyManager = self.dependencyManager;
     
     tabViewController.viewControllers = @[v_newTab(self.contactsInnerViewController, [UIImage imageNamed:@"inviteContacts"]),
                                           v_newTab(self.facebookInnerViewController, [UIImage imageNamed:@"inviteFacebook"]),

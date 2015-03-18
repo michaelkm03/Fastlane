@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+#import "VAuthorizationContext.h"
+
 /**
  Objects (usually but not always UIViewController subclasses) conforming
  to this protocol can be specified as a destination for navigation,
@@ -33,5 +35,12 @@
  @return YES if all systems are GO for navigation, or NO to cancel navigation.
  */
 - (BOOL)shouldNavigateWithAlternateDestination:(UIViewController *__autoreleasing *)alternateViewController;
+
+/***
+ Lets calling code know about any associated authorization context that is required
+ in order to navigate to this desination.  Leave this method unimplemented, or return
+ VAuthorizationContextNone to skip authorization for this destination.
+ */
+- (VAuthorizationContext)authorizationContext;
 
 @end
