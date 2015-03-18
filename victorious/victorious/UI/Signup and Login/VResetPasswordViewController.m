@@ -8,7 +8,7 @@
 
 #import "VResetPasswordViewController.h"
 #import "VObjectManager+Login.h"
-#import "VThemeManager.h"
+#import "VDependencyManager.h"
 #import "UIImage+ImageEffects.h"
 #import "VConstants.h"
 #import "VPasswordValidator.h"
@@ -28,25 +28,25 @@
 
 @implementation VResetPasswordViewController
 
+@synthesize registrationStepDelegate; //< VRegistrationStep
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    self.view.layer.contents = (id)[[[VThemeManager sharedThemeManager] themedBackgroundImageForDevice] applyBlurWithRadius:25 tintColor:[UIColor colorWithWhite:1.0 alpha:0.7] saturationDeltaFactor:1.8 maskImage:nil].CGImage;
-    
-    self.passwordTextField.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
+    self.passwordTextField.font = [self.dependencyManager fontForKey:@"font.header"];
     self.passwordTextField.textColor = [UIColor colorWithWhite:0.14 alpha:1.0];
     self.passwordTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.passwordTextField.placeholder attributes:@{NSForegroundColorAttributeName : [UIColor colorWithWhite:0.14 alpha:1.0]}];
-    self.confirmPasswordTextField.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
+    self.confirmPasswordTextField.font = [self.dependencyManager fontForKey:@"font.header"];
     self.confirmPasswordTextField.textColor = [UIColor colorWithWhite:0.14 alpha:1.0];
     self.confirmPasswordTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.confirmPasswordTextField.placeholder attributes:@{NSForegroundColorAttributeName : [UIColor colorWithWhite:0.14 alpha:1.0]}];
     
-    self.cancelButton.primaryColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-    self.cancelButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
+    self.cancelButton.primaryColor = [self.dependencyManager colorForKey:@"color.link"];
+    self.cancelButton.titleLabel.font = [self.dependencyManager fontForKey:@"font.header"];
     self.cancelButton.style = VButtonStyleSecondary;
     
-    self.updateButton.primaryColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-    self.updateButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
+    self.updateButton.primaryColor = [self.dependencyManager colorForKey:@"color.link"];
+    self.updateButton.titleLabel.font = [self.dependencyManager fontForKey:@"font.header"];
     self.updateButton.style = VButtonStylePrimary;
     
     self.passwordTextField.delegate  =   self;
@@ -83,11 +83,17 @@
                                                        newPassword:newPassword
                                                       successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
          {
-             [self dismissViewControllerAnimated:YES completion:nil];
+             // This will always be NO for success because resetting password does not complete the login/registraiton process
+             [self.registrationStepDelegate didFinishRegistrationStepWithSuccess:NO];
+    
          }
                                                          failBlock:^(NSOperation *operation, NSError *error)
          {
-             [self dismissViewControllerAnimated:YES completion:nil];
+             NSString *title = NSLocalizedString( @"Error Resetting Password", @"" );
+             NSString *message = NSLocalizedString( @"Please check your network connection or try agian later.", @"" );
+             UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
+             [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString( @"OK", nil) style:UIAlertActionStyleCancel handler:nil]];
+             [self presentViewController:alertController animated:YES completion:nil];
          }];
     }
     else
@@ -98,7 +104,7 @@
 
 - (IBAction)cancel:(id)sender
 {
-    [self.navigationController popViewControllerAnimated:YES];
+    [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
 #pragma mark - UITextFieldDelegate

@@ -23,7 +23,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Iq4-PT-v1o" userLabel="Gradient Container">
                                         <rect key="frame" x="0.0" y="86" width="320" height="222"/>
                                         <subviews>
-                                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="dX5-Jj-M61" userLabel="Action Items Table View">
+                                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="dX5-Jj-M61" userLabel="Action Items Table View">
                                                 <rect key="frame" x="0.0" y="0.0" width="320" height="222"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <constraints>
@@ -31,7 +31,7 @@
                                                 </constraints>
                                                 <color key="separatorColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <prototypes>
-                                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="VDescriptionTableViewCell" id="FSC-rs-9Yh" userLabel="Detail Description Cell" customClass="VDescriptionTableViewCell">
+                                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="VDescriptionTableViewCell" id="FSC-rs-9Yh" userLabel="Detail Description Cell" customClass="VDescriptionTableViewCell">
                                                         <rect key="frame" x="0.0" y="22" width="320" height="44"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="FSC-rs-9Yh" id="qz3-cU-K2f">
@@ -69,7 +69,7 @@
                                                             <outlet property="descriptionTextView" destination="d3F-e5-MDb" id="CZj-xk-Tku"/>
                                                         </connections>
                                                     </tableViewCell>
-                                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="VActionItemTableViewCell" id="ARF-MW-YZe" userLabel="Default Action Item Cell" customClass="VActionItemTableViewCell">
+                                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="VActionItemTableViewCell" id="ARF-MW-YZe" userLabel="Default Action Item Cell" customClass="VActionItemTableViewCell">
                                                         <rect key="frame" x="0.0" y="66" width="320" height="44"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ARF-MW-YZe" id="GHC-ke-dj2">

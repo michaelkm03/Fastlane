@@ -12,11 +12,11 @@
 #import "VObjectManager+Login.h"
 #import "VUser.h"
 #import "VHashtag.h"
-#import "VAuthorizationViewControllerFactory.h"
 #import "MBProgressHUD.h"
 #import "VObjectManager+Sequence.h"
 #import "VStream+Fetcher.h"
 #import "VNoContentView.h"
+#import "VAuthorizedAction.h"
 
 @interface VHashtagStreamCollectionViewController ()
 
@@ -129,21 +129,19 @@
 
 - (void)toggleFollowHashtag
 {
-    // Check if logged in before attempting to subscribe / unsubscribe
-    if (![VObjectManager sharedManager].authorized)
-    {
-        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
-        return;
-    }
-    
-    if ( self.isFollowingSelectedHashtag )
-    {
-        [self unfollowHashtag];
-    }
-    else
-    {
-        [self followHashtag];
-    }
+    VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
+                                                                dependencyManager:self.dependencyManager];
+    [authorization performFromViewController:self context:VAuthorizationContextFollowHashtag completion:^void
+     {
+         if ( self.isFollowingSelectedHashtag )
+         {
+             [self unfollowHashtag];
+         }
+         else
+         {
+             [self followHashtag];
+         }
+     }];
 }
 
 - (void)followHashtag

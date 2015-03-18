@@ -10,7 +10,7 @@
 #import "VHasManagedDependencies.h"
 #import <UIKit/UIKit.h>
 
-@class VSequence;
+@class VSequence, VAuthorization;
 
 /**
  The key that identifies the menu component in VDependencyManager

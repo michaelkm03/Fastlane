@@ -20,7 +20,6 @@
 
 //View Controllers
 #import "VFindFriendsViewController.h"
-#import "VAuthorizationViewControllerFactory.h"
 #import "VWorkspaceFlowController.h"
 #import "VNavigationController.h"
 
