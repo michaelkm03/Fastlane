@@ -37,7 +37,7 @@ static NSString * const kAdSystemsKey = @"ad_systems";
 typedef NS_ENUM(NSInteger, VAppLaunchState)
 {
     VAppLaunchStateWaiting, ///< The app is waiting for a response from the server
-    VAppLaunchStateLaunching, ///< The app has received it's initial data from the server and is waiting for the scaffold to be displayed
+    VAppLaunchStateLaunching, ///< The app has received its initial data from the server and is waiting for the scaffold to be displayed
     VAppLaunchStateLaunched ///< The scaffold is displayed and we're fully launched
 };
 
