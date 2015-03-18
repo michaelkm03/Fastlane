@@ -731,6 +731,7 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
         [profileDetails addEntriesFromDictionary:[self lightProfileDetails]];
     }
     profileDetails[VStreamCollectionViewControllerCellComponentKey] = [self cellComponent];
+    profileDetails[VDependencyManagerAccessoryScreensKey] = @[[self settingsMenuItem]];
     return [profileDetails copy];
 }
 
