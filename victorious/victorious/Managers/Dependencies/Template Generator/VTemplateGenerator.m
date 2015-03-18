@@ -584,7 +584,6 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
                                 kTitleKey: NSLocalizedString(@"Recent", @""),
                                 VStreamCollectionViewControllerStreamURLPathKey: [self urlPathForStreamCategories:VUGCCategories()],
                                 kCanAddContentKey: @YES,
-                                VStreamCollectionViewControllerCellComponentKey: [self cellComponent]
                             },
                         ]
                     }

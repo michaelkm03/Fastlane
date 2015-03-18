@@ -72,6 +72,7 @@
 static NSString * const kCanAddContentKey = @"canAddContent";
 static NSString * const kMarqueeKey = @"marquee";
 static NSString * const kStreamCollectionStoryboardId = @"StreamCollection";
+static NSString * const kStreamATFThresholdKey = @"stream_atf_view_threshold";
 
 NSString * const VStreamCollectionViewControllerStreamURLPathKey = @"streamUrlPath";
 NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"createSequenceIcon";
@@ -131,13 +132,7 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCell"
         streamCollectionVC.shouldDisplayMarquee = YES;
     }
     
-    if ( [[dependencyManager numberForKey:kCanAddContentKey] boolValue] )
-    {
-        [streamCollectionVC addCreateSequenceButton];
-        [streamCollectionVC addUploadProgressView];
-    }
-    
-    NSNumber *cellVisibilityRatio = [dependencyManager numberForKey:@"stream_atf_view_threshold"];
+    NSNumber *cellVisibilityRatio = [dependencyManager numberForKey:kStreamATFThresholdKey];
     if ( cellVisibilityRatio != nil )
     {
         streamCollectionVC.trackingMinRequiredCellVisibilityRatio = cellVisibilityRatio.floatValue;
@@ -291,12 +286,52 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCell"
 
 #pragma mark - Sequence Creation
 
+- (BOOL)isUserPostAllowedInStream:(VStream *)stream withDependencyManager:(VDependencyManager *)dependencyManager
+{
+    const BOOL isUserPostAllowedByTemplate = [[dependencyManager numberForKey:kCanAddContentKey] boolValue];
+    const BOOL isUserPostAllowedByStream = stream.isUserPostAllowed.boolValue;
+    
+    return isUserPostAllowedByTemplate || isUserPostAllowedByStream;
+}
+
+- (void)updateUserPostAllowed
+{
+    [super updateUserPostAllowed];
+    
+    if ( [self isUserPostAllowedInStream:self.currentStream withDependencyManager:self.dependencyManager] )
+    {
+        [self addCreateSequenceButton];
+        [self addUploadProgressView];
+    }
+    else
+    {
+        [self removeCreateSequenceButton];
+        // Don't remove upload bar, we'll probably be navigating back here
+        // and should keep in memory isntead of completeion re-instantiating
+    }
+}
+
 - (void)addCreateSequenceButton
 {
+    UINavigationItem *navigationItem = self.navigationItem;
+    if ( self.multipleViewControllerChildDelegate != nil )
+    {
+        navigationItem = [self.multipleViewControllerChildDelegate parentNavigationItem];
+    }
     UIImage *image = [self.dependencyManager imageForKey:VStreamCollectionViewControllerCreateSequenceIconKey];
     UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(createSequenceAction:)];
     barButton.accessibilityIdentifier = VAutomationIdentifierAddPost;
-    self.navigationItem.rightBarButtonItem = barButton;
+    [navigationItem setRightBarButtonItem:barButton animated:YES];
+}
+
+- (void)removeCreateSequenceButton
+{
+    UINavigationItem *navigationItem = self.navigationItem;
+    if ( self.multipleViewControllerChildDelegate != nil )
+    {
+        navigationItem = [self.multipleViewControllerChildDelegate parentNavigationItem];
+    }
+    [navigationItem setRightBarButtonItem:nil animated:YES];
 }
 
 - (IBAction)createSequenceAction:(id)sender
@@ -559,6 +594,11 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCell"
 
 - (void)addUploadProgressView
 {
+    if ( self.uploadProgressViewController != nil )
+    {
+        return;
+    }
+    
     self.uploadProgressViewController = [VUploadProgressViewController viewControllerForUploadManager:[[VObjectManager sharedManager] uploadManager]];
     self.uploadProgressViewController.delegate = self;
     [self addChildViewController:self.uploadProgressViewController];

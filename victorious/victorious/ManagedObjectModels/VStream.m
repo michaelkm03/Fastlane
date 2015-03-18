@@ -18,5 +18,6 @@
 @dynamic streamItems;
 @dynamic hashtag;
 @dynamic trackingIdentifier;
+@dynamic isUserPostAllowed;
 
 @end

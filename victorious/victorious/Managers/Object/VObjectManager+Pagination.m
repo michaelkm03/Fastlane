@@ -423,7 +423,9 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
         }
         stream.streamItems = streamItems;
         
+        // Any extra parameters from the top-level of the response (i.e. above the "payload" field)
         stream.trackingIdentifier = fullResponse[ @"stream_id" ];
+        stream.isUserPostAllowed = fullResponse[ @"ugc_post_allowed" ];
         
         if (success)
         {
