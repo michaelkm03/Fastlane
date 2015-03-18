@@ -284,6 +284,12 @@
         <element name="PollResult" positionX="1582" positionY="-36" width="128" height="118"/>
         <element name="Rule" positionX="567" positionY="99" width="128" height="75"/>
         <element name="Sequence" positionX="1078" positionY="-540" width="128" height="493"/>
+        <element name="Stream" positionX="1069" positionY="-792" width="128" height="150"/>
+        <element name="StreamItem" positionX="871" positionY="-765" width="128" height="118"/>
+        <element name="Tracking" positionX="828" positionY="-630" width="128" height="315"/>
+        <element name="User" positionX="1321" positionY="-324" width="128" height="420"/>
+        <element name="VoteResult" positionX="864" positionY="164" width="128" height="90"/>
+        <element name="VoteType" positionX="538" positionY="-738" width="128" height="270"/>
         <element name="Stream" positionX="1069" positionY="-792" width="128" height="133"/>
         <element name="StreamItem" positionX="871" positionY="-765" width="128" height="118"/>
         <element name="Tracking" positionX="828" positionY="-630" width="128" height="300"/>
