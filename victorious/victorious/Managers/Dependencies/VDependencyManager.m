@@ -149,8 +149,6 @@ static NSString * const kMacroReplacement = @"XXXXX";
     NSNumber *blue = colorDictionary[kBlueKey];
     NSNumber *alpha = colorDictionary[kAlphaKey];
     
-    if ( [alpha isEqual:@(1)] ) alpha = @(255);
-    
     if (![red isKindOfClass:[NSNumber class]] ||
         ![green isKindOfClass:[NSNumber class]] ||
         ![blue isKindOfClass:[NSNumber class]] ||
