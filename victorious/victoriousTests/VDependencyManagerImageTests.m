@@ -35,22 +35,23 @@
 {
     NSArray *images = [self.dependencyManager arrayOfImageURLsForKey:@"myImages"];
     XCTAssertEqual(images.count, 5u);
-    XCTAssertEqualObjects(images[0], @"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/tomato_00001.png");
-    XCTAssertEqualObjects(images[1], @"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/tomato_00002.png");
-    XCTAssertEqualObjects(images[2], @"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/tomato_00003.png");
-    XCTAssertEqualObjects(images[3], @"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/tomato_00004.png");
-    XCTAssertEqualObjects(images[4], @"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/tomato_00005.png");
+    XCTAssertEqualObjects(images[0], @"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/tomato_00000.png");
+    XCTAssertEqualObjects(images[1], @"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/tomato_00001.png");
+    XCTAssertEqualObjects(images[2], @"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/tomato_00002.png");
+    XCTAssertEqualObjects(images[3], @"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/tomato_00003.png");
+    XCTAssertEqualObjects(images[4], @"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/tomato_00004.png");
 }
 
 - (void)testAllImageURLs
 {
     NSArray *images = [self.dependencyManager arrayOfAllImageURLs];
     XCTAssertEqual(images.count, 18u);
+    XCTAssert([images containsObject:@"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/tomato_00000.png"]);
     XCTAssert([images containsObject:@"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/tomato_00001.png"]);
     XCTAssert([images containsObject:@"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/tomato_00002.png"]);
     XCTAssert([images containsObject:@"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/tomato_00003.png"]);
     XCTAssert([images containsObject:@"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/tomato_00004.png"]);
-    XCTAssert([images containsObject:@"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/tomato_00005.png"]);
+    XCTAssert([images containsObject:@"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/heart_00000.png"]);
     XCTAssert([images containsObject:@"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/heart_00001.png"]);
     XCTAssert([images containsObject:@"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/heart_00002.png"]);
     XCTAssert([images containsObject:@"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/heart_00003.png"]);
@@ -63,7 +64,6 @@
     XCTAssert([images containsObject:@"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/heart_00010.png"]);
     XCTAssert([images containsObject:@"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/heart_00011.png"]);
     XCTAssert([images containsObject:@"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/heart_00012.png"]);
-    XCTAssert([images containsObject:@"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/heart_00013.png"]);
 }
 
 @end

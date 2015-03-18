@@ -344,7 +344,7 @@ static NSString * const kMacroReplacement = @"XXXXX";
     
     NSMutableArray *imageURLs = [[NSMutableArray alloc] initWithCapacity:[imageCount unsignedIntegerValue]];
     VURLMacroReplacement *macroReplacement = [[VURLMacroReplacement alloc] init];
-    for (NSUInteger n = 1; n <= [imageCount unsignedIntegerValue]; n++)
+    for (NSUInteger n = 0; n < [imageCount unsignedIntegerValue]; n++)
     {
         NSString *macroReplacementString = [NSString stringWithFormat:@"%.5lu", (unsigned long)n];
         [imageURLs addObject:[macroReplacement urlByReplacingMacrosFromDictionary:@{ kMacroReplacement: macroReplacementString}
