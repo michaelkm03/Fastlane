@@ -235,14 +235,19 @@
                       VSequence *sequence = self.viewModel.sequence;
                       if ([sequence isVideo])
                       {
-                          [self.sequenceActionController showRemixOnViewController:contentViewController
-                                                                      withSequence:self.viewModel.sequence];
+                          [self.sequenceActionController showRemixOnViewController:self
+                                                                      withSequence:sequence
+                                                              andDependencyManager:self.dependencyManager
+                                                                    preloadedImage:nil
+                                                                  defaultVideoEdit:VDefaultVideoEditGIF
+                                                                        completion:nil];
                       }
                       else
                       {
                           [self.sequenceActionController showRemixOnViewController:self
                                                                       withSequence:sequence
-                                                                    preloadedImage:self.placeholderImage
+                                                              andDependencyManager:self.dependencyManager
+                                                                    preloadedImage:nil
                                                                         completion:nil];
                       }
                   }];
@@ -255,7 +260,9 @@
             [contentViewController dismissViewControllerAnimated:YES
                                                       completion:^
              {
-                 [self.sequenceActionController showRemixStreamFromViewController:contentViewController sequence:self.viewModel.sequence];
+                 [self.sequenceActionController showRemixersOnNavigationController:contentViewController.navigationController
+                                                                          sequence:self.viewModel.sequence
+                                                              andDependencyManager:self.dependencyManager];
              }];
         };
         [actionItems addObject:remixItem];

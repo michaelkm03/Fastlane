@@ -101,7 +101,7 @@ static CGFloat const kVSelectionAnimationDuration = 0.35f;
     __weak VRoundedSegmentedSelectorView *wSelf = self;
     __block UIButton *priorButton = nil;
     CGFloat cornerRadius = self.pillView.cornerRadius;
-    UIColor *buttonSelectionColor = [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
+    UIColor *buttonSelectionColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     NSDictionary *buttonHorizontalInsetMetrics = @{ @"inset" : @(cornerRadius) };
     [self.viewControllers enumerateObjectsUsingBlock:^(UIViewController *viewController, NSUInteger idx, BOOL *stop)
     {
@@ -138,6 +138,7 @@ static CGFloat const kVSelectionAnimationDuration = 0.35f;
     {
         [button setTitleColor:self.pillColor forState:UIControlStateNormal];
         [[button titleLabel] setFont:[self.dependencyManager fontForKey:VDependencyManagerHeading4FontKey]];
+        [button setTitleColor:[self.pillColor colorWithAlphaComponent:0.5f] forState:UIControlStateHighlighted];
     }
     
     [self addHighlightViewWithSnapshot:barScreenShot];
@@ -355,7 +356,7 @@ static CGFloat const kVSelectionAnimationDuration = 0.35f;
     {
         return _pillColor;
     }
-    _pillColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+    _pillColor = [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
     return _pillColor;
 }
 
@@ -418,7 +419,6 @@ static CGFloat const kVSelectionAnimationDuration = 0.35f;
     [button setTitleColor:color forState:UIControlStateNormal];
     [button setBackgroundColor:[UIColor clearColor]];
     [[button titleLabel] setFont:font];
-    [button setTitleColor:color forState:UIControlStateHighlighted];
     return button;
 }
 
