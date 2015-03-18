@@ -18,11 +18,14 @@
 #import "VTranslucentBackground.h"
 #import "VSolidColorBackground.h"
 #import "VTabMenuViewController.h"
+#import "VFirstTimeInstallHelper.h"
 #import "VDependencyManager+VNavigationMenuItem.h"
 
 #define BOTTOM_NAV_ENABLED 0
 #define CHANNELS_WITH_GROUP_STREAM_ENABLED 0
 #define ROUNDED_TOP_NAV_ENABLED 0
+#define TEMPLATE_ICON_PREFIX @"D_"
+#define SELECTED_ICON_SUFFIX @"_selected"
 
 static NSString * const kIDKey = @"id";
 static NSString * const kReferenceIDKey = @"referenceID";
@@ -34,6 +37,7 @@ static NSString * const kClassNameKey = @"name";
 static NSString * const kItemsKey = @"items";
 static NSString * const kTitleKey = @"title";
 static NSString * const kIconKey = @"icon";
+static NSString * const kSelectedIconKey = @"selectedIcon";
 static NSString * const kIdentifierKey = @"identifier";
 static NSString * const kDestinationKey = @"destination";
 
@@ -87,6 +91,9 @@ static NSString * const kVideoMaxDuration = @"videoMaxDuration";
 static NSString * const kVideoMinDuration = @"videoMinDuration";
 static NSString * const kVideoMuted = @"videoMuted";
 
+// First-time User Video
+static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
+
 @interface VTemplateGenerator ()
 
 @property (nonatomic, strong) NSDictionary *dataFromInitCall;
@@ -124,9 +131,9 @@ static NSString * const kVideoMuted = @"videoMuted";
              if ([obj isKindOfClass:[NSDictionary class]])
              {
                  [template addEntriesFromDictionary:obj];
-                 
+
                  NSDictionary *accentColor = obj[VDependencyManagerAccentColorKey];
-                 
+
                  if ( accentColor == nil )
                  {
                      accentColor = @{
@@ -151,17 +158,19 @@ static NSString * const kVideoMuted = @"videoMuted";
              template[key] = obj;
          }
      }];
-    
+
     if (BOTTOM_NAV_ENABLED)
     {
         template[VDependencyManagerScaffoldViewControllerKey] = @{
                                                                   kClassNameKey: @"tabMenu.scaffold",
                                                                   kItemsKey:[self bottomNavMenuItems],
                                                                   VScaffoldViewControllerUserProfileViewComponentKey: [self profileScreen],
+                                                                  VScaffoldViewControllerLightweightContentViewComponentKey: [self lightweightContentViewComponent],
                                                                   kSelectorKey: [self multiScreenSelectorKey],
                                                                   VTabMenuViewControllerMenuAppearanceKey: @{
                                                                           VDependencyManagerBackgroundKey: [self solidWhiteBackground],
                                                                           },
+                                                                  VScaffoldViewControllerContentViewComponentKey: [self contentViewComponent],
                                                                   };
     }
     else
@@ -174,14 +183,34 @@ static NSString * const kVideoMuted = @"videoMuted";
                                                                    VScaffoldViewControllerMenuComponentKey: [self menuComponent],
                                                                    VStreamCollectionViewControllerCreateSequenceIconKey: (self.templateCEnabled ? [UIImage imageNamed:@"createContentButtonC"] : [UIImage imageNamed:@"createContentButton"]),
                                                                    VScaffoldViewControllerUserProfileViewComponentKey: [self profileScreen],
+                                                                   VScaffoldViewControllerLightweightContentViewComponentKey: [self lightweightContentViewComponent],
                                                                    kSelectorKey: [self multiScreenSelectorKey],
+                                                                   VScaffoldViewControllerContentViewComponentKey: [self contentViewComponent],
                                                                    };
     }
-    
+
     template[VDependencyManagerWorkspaceFlowKey] = [self workspaceFlowComponent];
     template[VScaffoldViewControllerNavigationBarAppearanceKey] = [self navigationBarAppearance];
+    template[VStreamCollectionViewControllerCellComponentKey] = [self cellComponent];
+    template[@"vote_types"] = [self voteTypes];
     
     return template;
+}
+
+- (NSDictionary *)cellComponent
+{
+    if ( [self templateCEnabled] )
+    {
+        return @{
+                 kClassNameKey: @"inset.streamCell"
+                 };
+    }
+    else
+    {
+        return @{
+                 kClassNameKey: @"titleOverlay.streamCell"
+                 };
+    }
 }
 
 - (NSDictionary *)multiScreenSelectorKey
@@ -189,7 +218,7 @@ static NSString * const kVideoMuted = @"videoMuted";
     NSDictionary *kSelectorKey = @{
                                    kClassNameKey: @"basic.multiScreenSelector",
                                    };
-    
+
     if ( ROUNDED_TOP_NAV_ENABLED )
     {
         kSelectorKey =  @{
@@ -226,27 +255,89 @@ static NSString * const kVideoMuted = @"videoMuted";
              };
 }
 
+- (NSDictionary *)contentViewComponent
+{
+    return @{
+             kClassNameKey: @"standard.contentView",
+             @"histogram_enabled": @NO,
+             };
+}
+
+- (NSArray *)voteTypes
+{
+    NSMutableArray *voteTypes = [[NSMutableArray alloc] init];
+    for ( NSDictionary *voteType in self.dataFromInitCall[@"votetypes"] )
+    {
+        NSMutableDictionary *templateVoteType = [@{
+                               kClassNameKey: @"animated.voteType",
+                               @"voteTypeID": voteType[@"id"],
+                               @"voteTypeName": voteType[@"name"],
+                               @"value": voteType[@"value"],
+                               @"images": @{
+                                       @"imageCount": @([voteType[@"frames"] integerValue]),
+                                       @"imageMacro": voteType[@"image_macro"],
+                                       @"scale": @([voteType[@"scale_factor"] integerValue]),
+                                       },
+                               @"animationDuration": @([voteType[@"animation_duration"] integerValue]),
+                               @"displayOrder": @([voteType[@"display_order"] integerValue]),
+                               @"flightDuration": @([voteType[@"flight_duration"] integerValue]),
+                               @"icon": voteType[@"icon"],
+                               @"isPaid": voteType[@"is_paid"],
+                               @"appleProductId": voteType[@"apple_product_id"],
+                               @"viewContentMode": voteType[@"view_content_mode"],
+                               @"tracking": voteType[@"tracking"],
+                               } mutableCopy];
+        
+        NSString *iconLarge = voteType[@"icon_large"];
+        if ( [iconLarge isKindOfClass:[NSString class]] )
+        {
+            templateVoteType[@"iconLarge"] = iconLarge;
+        }
+        [voteTypes addObject:templateVoteType];
+    }
+    return voteTypes;
+}
+
 - (NSArray *)videoTools
 {
     return @[
              @{
                  kClassNameKey: @"trim.video.tool",
-                 kTitleKey: @"video",
+                 kTitleKey: NSLocalizedString(@"VIDEO MODE", @"Title informing the user they have selected the video tool."),
+                 kIconKey:@{
+                         VDependencyManagerImageURLKey:@"video"
+                         },
+                 kSelectedIconKey:@{
+                         VDependencyManagerImageURLKey:@"videoSelected",
+                         },
                  kVideoFrameDurationValue: @1,
                  kVideoFrameDurationTimescale: @24,
                  kVideoMuted: @NO
                  },
              @{
                  kClassNameKey: @"trim.video.tool",
-                 kTitleKey: @"gif",
+                 kTitleKey: NSLocalizedString(@"GIF MODE", @"Title informing the user they have selected the GIF tool."),
+                 kIconKey:@{
+                         VDependencyManagerImageURLKey:@"GIF"
+                         },
+                 kSelectedIconKey:@{
+                         VDependencyManagerImageURLKey:@"GIFSelected"
+                         },
                  kVideoFrameDurationValue: @1,
-                 kVideoFrameDurationTimescale: @4,
-                 kVideoMuted: @YES
+                 kVideoFrameDurationTimescale: @8,
+                 kVideoMuted: @YES,
+                 @"isGIF": @YES,
                  },
              @{
                  kClassNameKey: @"snapshot.video.tool",
                  kTitleKey: @"meme",
-                 }
+                 kIconKey:@{
+                         VDependencyManagerImageURLKey:@"meme",
+                         },
+                 kSelectedIconKey:@{
+                         VDependencyManagerImageURLKey:@"memeSelected",
+                         },
+                 },
              ];
 }
 
@@ -273,12 +364,30 @@ static NSString * const kVideoMuted = @"videoMuted";
              };
 }
 
+- (NSDictionary *)preferredBackgroundColor
+{
+    if ( [self templateCEnabled] )
+    {
+        return @{ kRedKey: @241, kGreenKey: @241, kBlueKey: @241, kAlphaKey: @1 };
+    }
+    else
+    {
+        return self.dataFromInitCall[@"appearance"][@"color.accent.secondary"];
+    }
+}
+
 - (NSDictionary *)textTool
 {
     return @{
              kClassNameKey: @"text.tool",
              kTitleKey: @"text",
              kFilterIndexKey: @2,
+             kIconKey:@{
+                     VDependencyManagerImageURLKey:@"text",
+                     },
+             kSelectedIconKey:@{
+                     VDependencyManagerImageURLKey:@"textSelected",
+                     },
              kPickerKey:
                  @{
                      kClassNameKey: @"vertical.picker",
@@ -350,6 +459,12 @@ static NSString * const kVideoMuted = @"videoMuted";
              kClassNameKey: @"filter.tool",
              kTitleKey: @"filters",
              kFilterIndexKey: @0,
+             kIconKey:@{
+                     VDependencyManagerImageURLKey:@"filter",
+                     },
+             kSelectedIconKey:@{
+                     VDependencyManagerImageURLKey:@"filterSelected",
+                     },
              kPickerKey:
                  @{
                      kClassNameKey: @"vertical.picker",
@@ -365,6 +480,12 @@ static NSString * const kVideoMuted = @"videoMuted";
     return @{
              kClassNameKey: @"crop.tool",
              kTitleKey: @"crop",
+             kIconKey:@{
+                     VDependencyManagerImageURLKey:@"crop",
+                     },
+             kSelectedIconKey:@{
+                     VDependencyManagerImageURLKey:@"cropSelected",
+                     },
              kFilterIndexKey: @1,
              };
 }
@@ -394,6 +515,17 @@ static NSString * const kVideoMuted = @"videoMuted";
                  VDependencyManagerBackgroundColorKey: self.dataFromInitCall[@"appearance"][@"color.accent"]
                  };
     }
+}
+
+- (NSDictionary *)lightweightContentViewComponent
+{
+    NSString *sequenceID = self.dataFromInitCall[@"experiments"][@"ftue_welcome_sequence_id"];
+    NSArray *trackingArray = self.dataFromInitCall[@"experiments"][@"ftue_welcome_tracking"][@"start"];
+    return @{
+             kClassNameKey: @"lightweight.contentView",
+             kFTUSequenceURLPath: [NSString stringWithFormat:@"/api/sequence/fetch/%@", sequenceID],
+             kFTUTrackingURLGroup:  trackingArray ?: @[]
+             };
 }
 
 - (NSDictionary *)menuComponent
@@ -464,7 +596,10 @@ static NSString * const kVideoMuted = @"videoMuted";
              kTitleKey: NSLocalizedString(@"Home", @""),
              kDestinationKey: [self homeScreen],
              kIconKey: @{
-                     VDependencyManagerImageURLKey: @"D_home",
+                     VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@home", TEMPLATE_ICON_PREFIX],
+                     },
+             kSelectedIconKey: @{
+                     VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@home%@", TEMPLATE_ICON_PREFIX, SELECTED_ICON_SUFFIX],
                      }
              };
 }
@@ -474,7 +609,10 @@ static NSString * const kVideoMuted = @"videoMuted";
     return @{
              kTitleKey: NSLocalizedString(@"Create", @""),
              kIconKey: @{
-                     VDependencyManagerImageURLKey: @"D_create",
+                     VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@create", TEMPLATE_ICON_PREFIX],
+                     },
+             kSelectedIconKey: @{
+                     VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@create%@", TEMPLATE_ICON_PREFIX, SELECTED_ICON_SUFFIX],
                      },
              kDestinationKey: [self workspaceFlowComponent],
              };
@@ -491,7 +629,10 @@ static NSString * const kVideoMuted = @"videoMuted";
                          kClassNameKey: @"currentUserProfile.screen"
                          },
                  kIconKey: @{
-                         VDependencyManagerImageURLKey: @"D_profile",
+                         VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@profile", TEMPLATE_ICON_PREFIX],
+                         },
+                 kSelectedIconKey: @{
+                         VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@profile%@", TEMPLATE_ICON_PREFIX, SELECTED_ICON_SUFFIX],
                          },
                  VDependencyManagerAccessoryScreensKey: @[
                          [self settingsMenuItem],
@@ -507,7 +648,10 @@ static NSString * const kVideoMuted = @"videoMuted";
                          kClassNameKey: @"currentUserProfile.screen"
                          },
                  kIconKey: @{
-                         VDependencyManagerImageURLKey: @"D_profile",
+                         VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@profile", TEMPLATE_ICON_PREFIX],
+                         },
+                 kSelectedIconKey: @{
+                         VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@profile%@", TEMPLATE_ICON_PREFIX, SELECTED_ICON_SUFFIX],
                          },
                  };
     }
@@ -519,7 +663,10 @@ static NSString * const kVideoMuted = @"videoMuted";
              kIdentifierKey: @"Menu Inbox",
              kTitleKey: NSLocalizedString(@"Inbox", @""),
              kIconKey: @{
-                     VDependencyManagerImageURLKey: @"D_inbox",
+                     VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@inbox", TEMPLATE_ICON_PREFIX],
+                     },
+             kSelectedIconKey: @{
+                     VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@inbox%@", TEMPLATE_ICON_PREFIX, SELECTED_ICON_SUFFIX],
                      },
              kDestinationKey: @{
                      kClassNameKey: @"inbox.screen"
@@ -536,7 +683,10 @@ static NSString * const kVideoMuted = @"videoMuted";
                      kClassNameKey: @"settings.screen"
                      },
              kIconKey: @{
-                     VDependencyManagerImageURLKey: @"D_settings",
+                     VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@settings", TEMPLATE_ICON_PREFIX],
+                     },
+             kSelectedIconKey: @{
+                     VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@settings%@", TEMPLATE_ICON_PREFIX, SELECTED_ICON_SUFFIX],
                      },
              };
 }
@@ -556,12 +706,13 @@ static NSString * const kVideoMuted = @"videoMuted";
 {
     return @{ kClassNameKey: @"userProfile.screen" };
 }
-                
+
 - (NSDictionary *)homeScreen
 {
     NSMutableDictionary *homeScreen = [@{
         kIDKey: self.firstMenuItemID,
         kClassNameKey: @"basic.multiScreen",
+        VDependencyManagerBackgroundColorKey: [self preferredBackgroundColor],
         kScreensKey: @[
                 @{
                     kClassNameKey: @"stream.screen",
@@ -589,13 +740,13 @@ static NSString * const kVideoMuted = @"videoMuted";
                 kReferenceIDKey: self.homeRecentID,
                 },
         } mutableCopy];
-    
+
     UIImage *headerImage = [self homeHeaderImage];
     if ( headerImage != nil )
     {
         homeScreen[kTitleImageKey] = headerImage;
     }
-    
+
     return homeScreen;
 }
 
@@ -617,7 +768,7 @@ static NSString * const kVideoMuted = @"videoMuted";
       kInitialKey: @YES,
       VStreamCollectionViewControllerStreamURLPathKey: [self urlPathForStreamCategories:[VUGCCategories() arrayByAddingObjectsFromArray:VOwnerCategories()]]
     };
-    
+
     NSNumber *marqueeEnabled = [self.dataFromInitCall valueForKeyPath:@"experiments.marquee_enabled"];
     if ( [marqueeEnabled isKindOfClass:[NSNumber class]] && [marqueeEnabled boolValue] )
     {
@@ -632,13 +783,16 @@ static NSString * const kVideoMuted = @"videoMuted";
 {
     NSNumber *channelsEnabledObject = [self.dataFromInitCall valueForKeyPath:@"experiments.channels_enabled"];
     const BOOL channelsEnabled = [channelsEnabledObject isKindOfClass:[NSNumber class]] && [channelsEnabledObject boolValue];
-    
+
     if ( CHANNELS_WITH_GROUP_STREAM_ENABLED && channelsEnabled )
     {
         NSDictionary *componentBase = @{ kIdentifierKey: @"Menu Channels",
                                          kTitleKey: NSLocalizedString(@"Channels", @""),
                                          kIconKey: @{
-                                                 VDependencyManagerImageURLKey: @"D_channels",
+                                                 VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@channels", TEMPLATE_ICON_PREFIX],
+                                                 },
+                                         kSelectedIconKey: @{
+                                                 VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@channels%@", TEMPLATE_ICON_PREFIX, SELECTED_ICON_SUFFIX],
                                                  },
                                          kDestinationKey: @{
                                                  kClassNameKey: @"groupedStream.screen",
@@ -655,10 +809,13 @@ static NSString * const kVideoMuted = @"videoMuted";
         return @{ kIdentifierKey: @"Menu Channels",
                   kTitleKey: NSLocalizedString(@"Channels", @""),
                   kIconKey: @{
-                          VDependencyManagerImageURLKey: @"D_channels",
+                          VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@channels", TEMPLATE_ICON_PREFIX],
+                          },
+                  kSelectedIconKey: @{
+                          VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@channels%@", TEMPLATE_ICON_PREFIX, SELECTED_ICON_SUFFIX],
                           },
                   kDestinationKey: @{
-                          kClassNameKey: @"directory.screen",
+                          kClassNameKey: @"streamDirectory.screen",
                           kTitleKey: NSLocalizedString(@"Channels", nil),
                           VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/detail_list_by_stream/directory/0/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%"
                           },
@@ -676,7 +833,10 @@ static NSString * const kVideoMuted = @"videoMuted";
         return @{ kIdentifierKey: @"Menu Channel",
                   kTitleKey: NSLocalizedString(@"Channel", @""),
                   kIconKey: @{
-                          VDependencyManagerImageURLKey: @"channels",
+                          VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@channels", TEMPLATE_ICON_PREFIX]
+                          },
+                  kSelectedIconKey: @{
+                          VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@channels%@", TEMPLATE_ICON_PREFIX, SELECTED_ICON_SUFFIX]
                           },
                   kCellComponentDirectoryItem: [self directoryCellComponentLight],
                   kDestinationKey: @{
@@ -834,6 +994,14 @@ static NSString * const kVideoMuted = @"videoMuted";
                       kAlphaKey: @1
                       },
               };
+}
+
+- (NSDictionary *)translucentDarkBackground
+{
+    return @{
+             kClassNameKey:@"translucent.background",
+             VTranslucentBackgroundBlurStyleKey: VTranslucentBackgroundBlurStyleDark,
+             };
 }
 
 @end

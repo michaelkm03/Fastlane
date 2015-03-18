@@ -13,6 +13,9 @@
 #import "NSObject+VMethodSwizzling.h"
 #import "VFileCache.h"
 
+// TODO
+#if 0
+
 @interface VVoteSettings()
 
 - (void)cacheVoteTypeImagesWithFileCache:(VFileCache *)fileCache;
@@ -85,3 +88,5 @@
 }
 
 @end
+
+#endif

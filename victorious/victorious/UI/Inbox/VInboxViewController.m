@@ -25,8 +25,6 @@
 #import "VThemeManager.h"
 #import "VNoContentView.h"
 #import "VUser.h"
-
-#import "VAuthorizationViewControllerFactory.h"
 #import "VObjectManager+Login.h"
 
 NS_ENUM(NSUInteger, VModeSelect)
@@ -47,11 +45,6 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
 @end
 
 @implementation VInboxViewController
-
-+ (instancetype)inboxViewController
-{
-    return [[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier:@"inbox"];
-}
 
 - (void)dealloc
 {
@@ -92,22 +85,6 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
     [super viewWillDisappear:animated];
     [[VTrackingManager sharedInstance] endEvent:@"Inbox"];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
-}
-
-#pragma mark - Segmented Control
-
-- (void)toggleFilterControl:(NSInteger)idx
-{
-    VModeSelect = idx;
-    NSLog(@"\n\n-----\nSelected Index = %lu\n-----\n\n", (unsigned long)VModeSelect);
-    
-    if (![VObjectManager sharedManager].authorized)
-    {
-        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
-    }
-    
-    self.fetchedResultsController = nil;
-    [self performFetch];
 }
 
 #pragma mark - Overrides
@@ -353,7 +330,7 @@ static NSString * const kNewsCellViewIdentifier    = @"VNewsCell";
 {
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectCreateMessage];
     
-    VUserSearchViewController *userSearch = [VUserSearchViewController newFromStoryboard];
+    VUserSearchViewController *userSearch = [VUserSearchViewController newWithDependencyManager:self.dependencyManager];
     userSearch.searchContext = VObjectManagerSearchContextMessage;
     [self.navigationController pushViewController:userSearch animated:YES];
 }

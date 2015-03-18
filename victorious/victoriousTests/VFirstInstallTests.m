@@ -37,13 +37,42 @@
 
 - (void)testFirstInstal
 {
-    XCTAssertFalse( self.firstInstallManager.hasFirstInstallBeenTracked );
-    [self.firstInstallManager reportFirstInstall];
-    XCTAssert( self.firstInstallManager.hasFirstInstallBeenTracked );
-    
-    VFirstInstallManager *anotherFirstInstallManager = [[VFirstInstallManager alloc] init];
-    XCTAssert( anotherFirstInstallManager.hasFirstInstallBeenTracked );
-}
+    for ( NSUInteger i = 0; i < 2; i++ )
+    {
+        BOOL isFirstTimeCalled = i == 0;
+        
+        __block BOOL wasTrackingEventCalled = NO;
+        [VTrackingManager v_swizzleMethod:@selector(trackEvent:parameters:) withBlock:^void (VTrackingManager *trackingManager,
+                                                                                             NSString *eventName,
+                                                                                             NSDictionary *parameters)
+         {
+             NSArray *urls = parameters[ VTrackingKeyUrls ];
+             NSArray *expectedUrls = (NSArray *)self.tracking.appInstall;
+             XCTAssertNotNil( urls );
+             XCTAssert( [urls isKindOfClass:[NSArray class]] );
+             XCTAssertEqual( urls.count, expectedUrls.count );
+             for ( NSUInteger i = 0; i < expectedUrls.count; i++ )
+             {
+                 XCTAssertEqualObjects( urls[i], expectedUrls[i] );
+             }
+             wasTrackingEventCalled = YES;
+         }
+                             executeBlock:^void
+         {
+             [[[VFirstInstallManager alloc] init] reportFirstInstallWithTrackingURLs:self.tracking.appInstall];
+             id defaultsValue = [[NSUserDefaults standardUserDefaults] valueForKey:VAppInstalledDefaultsKey];
+             XCTAssertEqualObjects( defaultsValue, @YES );
+             
+             if ( isFirstTimeCalled )
+             {
+                 XCTAssert( wasTrackingEventCalled );
+             }
+             else
+             {
+                 XCTAssertFalse( wasTrackingEventCalled );
+             }
+         }];
+    }
 
 - (void)testFirstInstallWithOldKey
 {
@@ -51,7 +80,17 @@
     
     [[NSUserDefaults standardUserDefaults] setValue:@YES forKey:VAppInstalledOldTrackingDefaultsKey];
     
-    XCTAssert( self.firstInstallManager.hasFirstInstallBeenTracked );
+    // Now report first install with the new key and make sure it doesn't call the tracking method
+    __block BOOL wasTrackingEventCalled = NO;
+    [VTrackingManager v_swizzleMethod:@selector(trackEvent:parameters:) withBlock:^void
+     {
+         wasTrackingEventCalled = YES;
+     }
+                         executeBlock:^void
+     {
+         [[[VFirstInstallManager alloc] init] reportFirstInstallWithTrackingURLs:nil];
+         XCTAssertFalse( wasTrackingEventCalled );
+     }];
 }
 
 @end

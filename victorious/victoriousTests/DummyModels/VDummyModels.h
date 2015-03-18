@@ -35,7 +35,7 @@
 
 + (NSArray *)createHashtags:(NSInteger)count;
 
-+ (NSArray *)createVoteTypes:(NSInteger)count;
+//+ (NSArray *)createVoteTypes:(NSInteger)count; // TODO
 
 + (NSArray *)createVoteResults:(NSInteger)count;
 

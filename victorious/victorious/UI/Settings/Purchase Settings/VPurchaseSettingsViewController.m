@@ -10,6 +10,7 @@
 #import "VPurchaseManager.h"
 #import "VPurchaseCell.h"
 #import "VPurchaseActionCell.h"
+#import "VVoteType.h"
 #import "VFileCache.h"
 #import "VFileCache+VVoteType.h"
 #import "VSettingManager.h"
@@ -138,7 +139,7 @@ static const CGFloat kPurchasedItemCellRowHeight    = 60.0f;
             VPurchaseCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
             NSString *productIdentifier = [self.purchaseManager.purchasedProductIdentifiers.allObjects objectAtIndex:indexPath.row];
             VProduct *product = [self.purchaseManager purchaseableProductForProductIdentifier:productIdentifier];
-            VVoteType *voteType = [[VSettingManager sharedManager].voteSettings voteTypeWithProductIdentifier:productIdentifier];
+            VVoteType *voteType = [self.dependencyManager voteTypeWithProductIdentifier:productIdentifier];
             UIImage *image = [self.fileCache getImageWithName:VVoteTypeIconName forVoteType:voteType];
             [cell setProductImage:image withTitle:product.localizedTitle];
             return cell;

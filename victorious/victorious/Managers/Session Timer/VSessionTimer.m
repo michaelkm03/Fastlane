@@ -7,6 +7,7 @@
 //
 
 #import "NSArray+VMap.h"
+#import "VDependencyManager+VTracking.h"
 #import "VObjectManager+Analytics.h"
 #import "VSessionTimer.h"
 #import "VSettingManager.h"
@@ -35,10 +36,8 @@ static NSTimeInterval const kMinimumTimeBetweenSessions = 1800.0; // 30 minutes
 @property (nonatomic, readwrite) NSTimeInterval previousBackgroundTime;
 @property (nonatomic) BOOL firstLaunch;
 @property (nonatomic) BOOL transitioningFromBackgroundToForeground;
+@property (nonatomic, readwrite) BOOL started;
 @property (nonatomic, strong) NSDate *sessionStartTime;
-@property (nonatomic, strong) VSettingManager *settingsManager;
-@property (nonatomic, strong) NSMutableArray *queuedEventNames;
-@property (nonatomic, strong) VFirstInstallManager *firstInstallManager;
 
 @end
 
@@ -50,22 +49,25 @@ static NSTimeInterval const kMinimumTimeBetweenSessions = 1800.0; // 30 minutes
     if (self)
     {
         _previousBackgroundTime = kVFirstLaunch;
-        _queuedEventNames = [[NSMutableArray alloc] init];
-        _firstInstallManager = [[VFirstInstallManager alloc] init];
     }
     return self;
 }
 
 - (void)start
 {
+    if ( self.started )
+    {
+        return;
+    }
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground:)  name:UIApplicationDidEnterBackgroundNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:)     name:UIApplicationDidBecomeActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive:)    name:UIApplicationWillResignActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillEnterForeground:) name:UIApplicationWillEnterForegroundNotification object:nil];
     
     self.transitioningFromBackgroundToForeground = YES;
-    
+    self.started = YES;
     self.firstLaunch = YES;
+    [self sessionDidStart];
 }
 
 - (void)dealloc
@@ -85,7 +87,7 @@ static NSTimeInterval const kMinimumTimeBetweenSessions = 1800.0; // 30 minutes
     self.sessionStartTime = [NSDate date];
     
     NSDate *lastSessionEnd = [[NSUserDefaults standardUserDefaults] objectForKey:kSessionEndTimeDefaultsKey];
-    if ( lastSessionEnd )
+    if (lastSessionEnd)
     {
         self.previousBackgroundTime = -[lastSessionEnd timeIntervalSinceNow];
     }
@@ -94,25 +96,13 @@ static NSTimeInterval const kMinimumTimeBetweenSessions = 1800.0; // 30 minutes
     {
         [[NSNotificationCenter defaultCenter] postNotificationName:VSessionTimerNewSessionShouldStart object:self];
     }
-    
-    [self trackEventsForSessionDidStart];
-}
-
-- (void)trackEventsForSessionDidStart
-{
     if ( self.firstLaunch )
     {
-        // Set a default until the user logs in, either manually or automatically from saved info
-        [[VTrackingManager sharedInstance] setValue:@(NO) forSessionParameterWithKey:VTrackingKeyUserLoggedIn];
-        
-        [self.queuedEventNames addObject:VTrackingEventApplicationDidLaunch];
-        [self.queuedEventNames addObject:VTrackingEventApplicationFirstInstall];
-        [self trackEventsInQueue];
+        [self trackApplicationLaunch];
     }
     else
     {
-        [self.queuedEventNames addObject:VTrackingEventApplicationDidEnterForeground];
-        [self trackEventsInQueue];
+        [self trackApplicationForeground];
     }
     self.firstLaunch = NO;
 }
@@ -123,65 +113,38 @@ static NSTimeInterval const kMinimumTimeBetweenSessions = 1800.0; // 30 minutes
     [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:kSessionEndTimeDefaultsKey];
 }
 
-- (void)appInitDidCompleteWithSettingsManager:(VSettingManager *)settingsManager
-{
-    self.settingsManager = settingsManager;
-    
-    [self trackEventsInQueue];
-}
-
 #pragma mark - Tracking
 
-- (void)trackEventsInQueue
+- (void)trackApplicationForeground
 {
-    if ( self.settingsManager == nil )
-    {
-        return;
-    }
+    NSArray *trackingURLs = [self.dependencyManager trackingURLsForKey:VTrackingURLAppStartKey] ?: @[];
+    NSDictionary *params = @{ VTrackingKeyUrls : trackingURLs };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventApplicationDidEnterForeground parameters:params];
+}
+
+- (void)trackApplicationBackground
+{
+    NSDate *startDate = self.sessionStartTime;
+    NSDate *endDate = [[NSUserDefaults standardUserDefaults] objectForKey:kSessionEndTimeDefaultsKey];
+    NSTimeInterval sessionDuration = [endDate timeIntervalSinceDate:startDate] * 1000;  // Backend requires milliseconds
     
-    VTracking *applicationTracking = self.settingsManager.applicationTracking;
+    NSArray *trackingURLs = [self.dependencyManager trackingURLsForKey:VTrackingURLAppStopKey] ?: @[];
+    NSDictionary *params = @{ VTrackingKeyUrls : trackingURLs, VTrackingKeySessionTime : [NSNumber numberWithUnsignedInteger:sessionDuration] };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventApplicationDidEnterBackground parameters:params];
+}
+
+- (void)trackApplicationLaunch
+{
+    // Track first install
+    [[[VFirstInstallManager alloc] init] reportFirstInstallWithTrackingURLs:[self.dependencyManager trackingURLsForKey:VTrackingURLInstallKey]];
     
-    [self.queuedEventNames enumerateObjectsUsingBlock:^(NSString *eventName, NSUInteger idx, BOOL *stop)
-     {
-         if ( [eventName isEqualToString:VTrackingEventApplicationDidEnterForeground] )
-         {
-             NSArray* trackingURLs = applicationTracking != nil ? applicationTracking.appEnterForeground : @[];
-             NSDictionary *params = @{ VTrackingKeyUrls : trackingURLs };
-             [[VTrackingManager sharedInstance] trackEvent:eventName parameters:params];
-         }
-         else if ( [eventName isEqualToString:VTrackingEventApplicationDidEnterBackground] )
-         {
-             NSDate *startDate = self.sessionStartTime;
-             NSDate *endDate = [[NSUserDefaults standardUserDefaults] objectForKey:kSessionEndTimeDefaultsKey];
-             NSTimeInterval sessionDuration = [endDate timeIntervalSinceDate:startDate] * 1000;  // Backend requires milliseconds
-             
-             NSArray* trackingURLs = applicationTracking != nil ? applicationTracking.appEnterBackground : @[];
-             NSDictionary *params = @{ VTrackingKeyUrls : trackingURLs, VTrackingKeySessionTime : [NSNumber numberWithUnsignedInteger:sessionDuration] };
-             [[VTrackingManager sharedInstance] trackEvent:eventName parameters:params];
-         }
-         else if ( [eventName isEqualToString:VTrackingEventApplicationDidLaunch] )
-         {
-             // Tracking init (cold start)
-             NSArray* trackingURLs = applicationTracking != nil ? applicationTracking.appLaunch : @[];
-             NSDictionary *params = @{ VTrackingKeyUrls : trackingURLs };
-             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventApplicationDidLaunch parameters:params];
-         }
-         else if ( [eventName isEqualToString:VTrackingEventApplicationFirstInstall] )
-         {
-             if ( ![self.firstInstallManager hasFirstInstallBeenTracked] )
-             {
-                 // Resport the install event
-                 NSDate *installDate = [NSDate date];
-                 NSArray *urls = applicationTracking.appInstall ?: @[];
-                 NSDictionary *params = @{ VTrackingKeyTimeStamp : installDate , VTrackingKeyUrls : urls };
-                 [[VTrackingManager sharedInstance] trackEvent:eventName parameters:params];
-                 
-                 [self.firstInstallManager reportFirstInstall];
-             }
-         }
-    }];
+    // Tracking init (cold start)
+    NSArray *trackingURLs = [self.dependencyManager trackingURLsForKey:VTrackingURLInitKey] ?: @[];
+    NSDictionary *params = @{ VTrackingKeyUrls : trackingURLs };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventApplicationDidLaunch parameters:params];
     
-    [self.queuedEventNames removeAllObjects];
+    // Set a default until the user logs in, either manually or automatically from saved info
+    [[VTrackingManager sharedInstance] setValue:@(NO) forSessionParameterWithKey:VTrackingKeyUserLoggedIn];
 }
 
 #pragma mark - NSNotification handlers
@@ -189,9 +152,7 @@ static NSTimeInterval const kMinimumTimeBetweenSessions = 1800.0; // 30 minutes
 - (void)applicationDidEnterBackground:(NSNotification *)notification
 {
     [self sessionDidEnd];
-    
-    [self.queuedEventNames addObject:VTrackingEventApplicationDidEnterBackground];
-    [self trackEventsInQueue];
+    [self trackApplicationBackground];
 }
 
 - (void)applicationDidBecomeActive:(NSNotification *)notification

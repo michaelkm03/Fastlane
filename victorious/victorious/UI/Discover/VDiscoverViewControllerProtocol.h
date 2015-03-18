@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+@class VDependencyManager;
+
 /**
  A protocol that defines some properties required to effictively manage state
  in data-driven table view controllers.
@@ -16,6 +18,8 @@
 @protocol VDiscoverViewControllerProtocol <NSObject>
 
 @required
+
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 /**
  View Controllers should return YES if an error has occured while loading data or the
