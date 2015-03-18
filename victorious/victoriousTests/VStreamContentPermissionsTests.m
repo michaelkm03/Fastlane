@@ -34,17 +34,6 @@ static NSString * const kCanAddContentKey = @"canAddContent";
 
 @implementation VStreamContentPermissionsTests
 
-- (void)setUp
-{
-    [super setUp];
-    
-}
-
-- (void)tearDown
-{
-    [super tearDown];
-}
-
 - (void)testCanPostContent
 {
     VDependencyManager *depenendecyManager = [[VDependencyManager alloc] initWithParentManager:nil
