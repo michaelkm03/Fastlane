@@ -64,7 +64,8 @@ static const NSUInteger kMaxTextLength = 200;
         self.hashtagTextview = [[UITextView alloc] init];
         NSDictionary *attribtues = [self hashtagTextAttributesWithDependencyManager:self.dependencyManager];
         self.hashtagTextview.attributedText = [[NSAttributedString alloc] initWithString:supplementaryHashtagText
-                                                                                           attributes:attribtues];
+                                                                              attributes:attribtues];
+        [self.hashtagTextview sizeToFit];
         [self.view addSubview:self.hashtagTextview];
     }
     
@@ -116,24 +117,24 @@ static const NSUInteger kMaxTextLength = 200;
 
 - (NSDictionary *)textAttributesWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    paragraphStyle.alignment = NSTextAlignmentLeft;
-    paragraphStyle.minimumLineHeight = paragraphStyle.maximumLineHeight = kTextLineHeight;
-    
     return @{ NSFontAttributeName: [dependencyManager fontForKey:@"font.heading2"],
               NSForegroundColorAttributeName: [dependencyManager colorForKey:@"color.text.content"],
-              NSParagraphStyleAttributeName: paragraphStyle };
+              NSParagraphStyleAttributeName: [self paragraphStyle] };
 }
 
 - (NSDictionary *)hashtagTextAttributesWithDependencyManager:(VDependencyManager *)dependencyManager
 {
+    return @{ NSFontAttributeName: [dependencyManager fontForKey:@"font.heading2"],
+              NSForegroundColorAttributeName: [dependencyManager colorForKey:@"color.link"],
+              NSParagraphStyleAttributeName: [self paragraphStyle] };
+}
+
+- (NSParagraphStyle *)paragraphStyle
+{
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     paragraphStyle.alignment = NSTextAlignmentLeft;
     paragraphStyle.minimumLineHeight = paragraphStyle.maximumLineHeight = kTextLineHeight;
-    
-    return @{ NSFontAttributeName: [dependencyManager fontForKey:@"font.heading2"],
-              NSForegroundColorAttributeName: [dependencyManager colorForKey:@"color.link"],
-              NSParagraphStyleAttributeName: paragraphStyle };
+    return paragraphStyle;
 }
 
 #pragma mark - UITextViewDelegate
