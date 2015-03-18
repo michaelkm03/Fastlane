@@ -43,8 +43,7 @@
     NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(VVoteType *voteType, NSDictionary *bindings)
                               {
                                   return [voteType isMemberOfClass:[VVoteType class]] &&
-                                  voteType.containsRequiredData &&
-                                  voteType.hasValidTrackingData;
+                                  voteType.containsRequiredData;
                               }];
     _voteTypes = [(_voteTypes ?: @[]) arrayByAddingObjectsFromArray:voteTypes];
     _voteTypes = [voteTypes filteredArrayUsingPredicate:predicate];

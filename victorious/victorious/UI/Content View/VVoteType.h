@@ -31,7 +31,6 @@ extern NSString * const VDependencyManagerVoteTypesKey; ///< The key for retriev
 
 @property (nonatomic, readonly) UIViewContentMode contentMode;
 @property (nonatomic, readonly) BOOL containsRequiredData;
-@property (nonatomic, readonly) BOOL hasValidTrackingData;
 @property (nonatomic, readonly) BOOL mustBePurchased;
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager NS_DESIGNATED_INITIALIZER;
