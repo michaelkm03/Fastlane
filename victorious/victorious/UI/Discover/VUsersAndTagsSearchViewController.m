@@ -214,7 +214,10 @@ static NSInteger const kVMaxSearchResults = 1000;
     }
     else if ( self.segmentControl.selectedSegmentIndex == 1 )
     {
-        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectDiscoverSearchHashtag];
+        
+        NSDictionary *params = @{ VTrackingKeyContext : @"HashtagSearch" };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectDiscoverSearchHashtag
+                                           parameters:params];
         
         self.userSearchResultsVC.view.alpha = 0;
         self.tagsSearchResultsVC.view.alpha = 1.0f;
