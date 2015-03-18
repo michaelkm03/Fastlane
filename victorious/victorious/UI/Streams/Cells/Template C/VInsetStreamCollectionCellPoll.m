@@ -67,7 +67,7 @@ static const CGFloat kPollContentRatio = 0.6688741722f; // 202/302
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {
     CGFloat width = floorf(CGRectGetWidth(bounds) * kPollCellWidthRatio);
-    CGFloat height = floorf(width * kPollContentRatio + kHeaderHeight + kTextNeighboringViewSeparatorHeight * 2.0f + kActionViewHeight); // width * kPollContentRatio represents the desired media height
+    CGFloat height = floorf(width * kPollContentRatio + kInsetCellHeaderHeight + kInsetCellTextNeighboringViewSeparatorHeight * 2.0f + kInsetCellActionViewHeight); // width * kInsetCellPollContentRatio represents the desired media height
     return CGSizeMake(width, height);
 }
 

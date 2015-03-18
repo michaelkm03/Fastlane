@@ -26,22 +26,6 @@ typedef NS_ENUM(NSInteger, VDefaultVideoEdit)
 - (BOOL)showPosterProfileFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence;
 
 /**
- *  Internally calls -showRemixOnViewController:withSequence:preloadedImage:completion: with nil for completion.
- */
-- (void)showRemixOnViewController:(UIViewController *)viewController
-                     withSequence:(VSequence *)sequence
-             andDependencyManager:(VDependencyManager *)dependencyManager;
-
-/**
- *  Internally calls -showRemixOnViewController:withSequence:preloadedImage:completion:
- * with nil for completion and preloadedImage.
- */
-- (void)showRemixOnViewController:(UIViewController *)viewController
-                     withSequence:(VSequence *)sequence
-             andDependencyManager:(VDependencyManager *)dependencyManager
-                       completion:(void(^)(BOOL))completion;
-
-/**
  *  Presents remix UI on a viewcontroller with a given sequence to remix.
  *  Will present a UIViewController for the remix UI on the pased in viewController.
  *

@@ -666,7 +666,7 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
     profileItem[kDestinationKey] = fullProfileDetails;
     if ( self.enabledTemplate == VTemplateTypeD )
     {
-        profileItem[VDependencyManagerAccessoryScreensKey] = [self settingsMenuItem];
+        profileItem[VDependencyManagerAccessoryScreensKey] = @[[self settingsMenuItem]];
     }
     profileItem[kProfileShowEditButtonPill] = @(self.enabledTemplate == VTemplateTypeD);
     

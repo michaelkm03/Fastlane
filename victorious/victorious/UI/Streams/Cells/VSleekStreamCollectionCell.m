@@ -16,10 +16,10 @@ const CGFloat kSleekCellHeaderHeight = 50.0f;
 const CGFloat kSleekCellActionViewHeight = 41.0f;
 static const CGFloat kTextViewInset = 58.0f; //Needs to be sum of textview inset from left and right
 
-const CGFloat kSleekCellTemplateDActionViewBottomConstraintHeight = 28.0f; //This represents the space between the bottom of the cell and the actionView
+const CGFloat kSleekCellActionViewBottomConstraintHeight = 28.0f; //This represents the space between the bottom of the cell and the actionView
 
 //Use these 2 constants to adjust the spacing between the caption and comment count as well as the distance between the caption and the view above it and the comment label and the view below it
-const CGFloat kSleekCellTemplateDTextNeighboringViewSeparatorHeight = 10.0f; //This represents the space between the comment label and the view below it and the distance between the caption textView and the view above it
+const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This represents the space between the comment label and the view below it and the distance between the caption textView and the view above it
 
 @implementation VSleekStreamCollectionCell
 
@@ -29,7 +29,7 @@ const CGFloat kSleekCellTemplateDTextNeighboringViewSeparatorHeight = 10.0f; //T
     
     self.backgroundColor = [UIColor whiteColor];
     
-    self.actionViewBottomConstraint.constant = kSleekCellTemplateDActionViewBottomConstraintHeight;
+    self.actionViewBottomConstraint.constant = kSleekCellActionViewBottomConstraintHeight;
 }
 
 - (NSString *)headerViewNibName
@@ -59,7 +59,7 @@ const CGFloat kSleekCellTemplateDTextNeighboringViewSeparatorHeight = 10.0f; //T
     
     BOOL zeroConstraints = !(!self.sequence.nameEmbeddedInContent.boolValue && text.length > 0);
     
-    self.captionTextViewBottomConstraint.constant = zeroConstraints ? 0.0f : kSleekCellTemplateDTextNeighboringViewSeparatorHeight;
+    self.captionTextViewBottomConstraint.constant = zeroConstraints ? 0.0f : kSleekCellTextNeighboringViewSeparatorHeight;
 }
 
 - (void)reloadCommentsCount
