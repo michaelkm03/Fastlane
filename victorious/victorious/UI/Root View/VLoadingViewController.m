@@ -10,7 +10,7 @@
 
 #import "UIStoryboard+VMainStoryboard.h"
 #import "VConstants.h"
-#import "VPushNotificationManager.h"
+#import "VDependencyManager.h"
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Users.h"
@@ -18,10 +18,6 @@
 #import "VReachability.h"
 #import "VThemeManager.h"
 #import "VUserManager.h"
-
-// Monetization Networks
-#import "VAdViewController.h"
-#import "TremorVideoAd.h"
 
 #import "MBProgressHUD.h"
 
@@ -81,7 +77,7 @@ static const NSUInteger kRetryAttempts = 5;
     }
     else
     {
-        [self loadInitData];
+        [self loadTemplate];
     }
 }
 
@@ -146,48 +142,38 @@ static const NSUInteger kRetryAttempts = 5;
     else
     {
         [self hideReachabilityNotice];
-        [self loadInitData];
+        [self loadTemplate];
     }
 }
 
 #pragma mark - Loading
 
-- (void)loadInitData
+- (void)loadTemplate
 {
-    [[VObjectManager sharedManager] appInitWithSuccessBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    [[VObjectManager sharedManager] templateWithDependencyManager:self.parentDependencyManager
+                                                     successBlock:^(NSOperation *operation, id result, VDependencyManager *resultObject)
     {
         [[VUserManager sharedInstance] loginViaSavedCredentialsOnCompletion:^(VUser *user, BOOL created)
         {
-            [self onDoneLoadingWithInitData:fullResponse[kVPayloadKey]];
+            [self onDoneLoadingWithDependencyManager:resultObject];
         }
-                                                                    onError:^(NSError *error)
+                                                                 onError:^(NSError *error)
         {
-            [self onDoneLoadingWithInitData:fullResponse[kVPayloadKey]];
+            [self onDoneLoadingWithDependencyManager:resultObject];
         }];
     }
-                                                  failBlock:^(NSOperation *operation, NSError *error)
+                                                        failBlock:^(NSOperation *operation, NSError *error)
     {
         self.failCount++;
         [self scheduleRetry];
     }];
 }
 
-- (void)onDoneLoadingWithInitData:(id)initData
+- (void)onDoneLoadingWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    NSDictionary *initDictionary = nil;
-    if ([initData isKindOfClass:[NSDictionary class]])
+    if ([self.delegate respondsToSelector:@selector(loadingViewController:didFinishLoadingWithDependencyManager:)])
     {
-        initDictionary = initData;
-    }
-    
-    [[VPushNotificationManager sharedPushNotificationManager] startPushNotificationManager];
-    
-    // Pre-load any monetization networks (if needed)
-    [self seedMonetizationNetworks:initDictionary];
-    
-    if ([self.delegate respondsToSelector:@selector(loadingViewController:didFinishLoadingWithInitResponse:)])
-    {
-        [self.delegate loadingViewController:self didFinishLoadingWithInitResponse:initDictionary];
+        [self.delegate loadingViewController:self didFinishLoadingWithDependencyManager:dependencyManager];
     }
 }
 
@@ -218,40 +204,7 @@ static const NSUInteger kRetryAttempts = 5;
     
     if ([[VReachability reachabilityForInternetConnection] currentReachabilityStatus] != VNetworkStatusNotReachable)
     {
-        [self loadInitData];
-    }
-}
-
-- (void)seedMonetizationNetworks:(NSDictionary *)initDictionary
-{
-    NSArray *adSystems = [initDictionary valueForKey:@"ad_systems"];
-    if (adSystems)
-    {
-        NSUInteger i;
-        NSString *appID;
-        
-        for (i = 0; i < adSystems.count; i++)
-        {
-            NSDictionary *item = adSystems[i];
-            NSInteger adSystem = [[item valueForKey:@"ad_system"] integerValue];
-            
-            switch (adSystem)
-            {
-                case VMonetizationPartnerTremor:
-                    appID = [item valueForKey:@"tremor_app_id"];
-                    
-                    // If we have an appID, seed the Tremor Ad Network
-                    if (appID && (appID != nil && ![appID isKindOfClass:[NSNull class]]))
-                    {
-                        [TremorVideoAd initWithAppID:appID];
-                        [TremorVideoAd start];
-                    }
-                    break;
-                    
-                default:
-                    break;
-            }
-        }
+        [self loadTemplate];
     }
 }
 

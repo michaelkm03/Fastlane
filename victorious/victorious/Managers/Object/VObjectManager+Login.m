@@ -40,10 +40,6 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
 {
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        [self updateTheme:[VThemeManager sharedThemeManager] withResponsePayload:fullResponse[kVPayloadKey]];
-
-        [self updateSettings:[VSettingManager sharedManager] withResponsePayload:fullResponse[kVPayloadKey]];
-        
         if (success)
         {
             success(operation, fullResponse, resultObjects);
@@ -75,7 +71,7 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
             }
         }
         
-        NSDictionary *template = (NSDictionary *)fullResponse;
+        NSDictionary *template = ((NSDictionary *)fullResponse)[kVPayloadKey];
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:parentDependencyManager
                                                                                     configuration:template
                                                                 dictionaryOfClassesByTemplateName:nil];
@@ -87,39 +83,6 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
           parameters:nil
         successBlock:fullSuccess
            failBlock:failed];
-}
-
-
-
-- (void)updateTheme:(VThemeManager *)themeManager withResponsePayload:(NSDictionary *)payload
-{
-    NSDictionary *newTheme = payload[kVAppearanceKey];
-    if (newTheme && [newTheme isKindOfClass:[NSDictionary class]])
-    {
-        [themeManager setTheme:newTheme];
-    }
-}
-
-- (void)updateSettings:(VSettingManager *)settingsManager withResponsePayload:(NSDictionary *)payload
-{
-    NSDictionary *videoQuality = payload[kVVideoQualityKey];
-    if ([videoQuality isKindOfClass:[NSDictionary class]])
-    {
-        [settingsManager updateSettingsWithDictionary:videoQuality];
-    }
-    
-    NSString *app_store_url = payload[@"app_store_url"];
-    if (app_store_url)
-    {
-        NSDictionary *dict = @{@"url.appstore": app_store_url};
-        [settingsManager updateSettingsWithDictionary:dict];
-    }
-    
-    NSDictionary *experiments = payload[kVExperimentsKey];
-    if ([experiments isKindOfClass:[NSDictionary class]])
-    {
-        [settingsManager updateSettingsWithDictionary:experiments];
-    }
 }
 
 - (NSArray *)filteredArrayFromArray:(NSArray *)array withObjectsOfClass:(Class)class

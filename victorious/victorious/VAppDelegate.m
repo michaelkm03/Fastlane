@@ -120,7 +120,6 @@ static BOOL isRunningTests(void) __attribute__((const));
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
-    [[VThemeManager sharedThemeManager] updateToNewTheme];
     [[VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext saveToPersistentStore:nil];
 }
 
@@ -135,7 +134,6 @@ static BOOL isRunningTests(void) __attribute__((const));
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
-    [[VThemeManager sharedThemeManager] updateToNewTheme];
     [[VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext saveToPersistentStore:nil];
 }
 
