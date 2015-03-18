@@ -348,7 +348,7 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCell"
         return;
     }
     
-    VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithUser:user];
+    VUserProfileViewController *profileViewController = [VUserProfileViewController rootDependencyProfileWithUser:user];
     [self.navigationController pushViewController:profileViewController animated:YES];
 }
 
@@ -431,6 +431,7 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCell"
     VSequence *sequence = (VSequence *)[self.currentStream.streamItems objectAtIndex:indexPath.row];
     VStreamCollectionCell *cell = (VStreamCollectionCell *)[self.streamCellFactory collectionView:self.collectionView cellForStreamItem:sequence atIndexPath:indexPath];
     
+
     if ( [cell conformsToProtocol:@protocol(VSequenceActionsSender)] )
     {
         cell.sequenceActionsDelegate = self.actionDelegate ?: self;
@@ -469,9 +470,14 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCell"
     [self.sequenceActionController showPosterProfileFromViewController:self sequence:sequence];
 }
 
-- (void)willRemixSequence:(VSequence *)sequence fromView:(UIView *)view
+- (void)willRemixSequence:(VSequence *)sequence fromView:(UIView *)view videoEdit:(VDefaultVideoEdit)defaultEdit
 {
-    [self.sequenceActionController showRemixOnViewController:self withSequence:sequence];
+    [self.sequenceActionController showRemixOnViewController:self
+                                                withSequence:sequence
+                                        andDependencyManager:[VRootViewController rootViewController].dependencyManager
+                                              preloadedImage:nil
+                                            defaultVideoEdit:defaultEdit
+                                                  completion:nil];
 }
 
 - (void)willShareSequence:(VSequence *)sequence fromView:(UIView *)view

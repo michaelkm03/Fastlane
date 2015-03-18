@@ -784,7 +784,7 @@ static NSString * const kViewModelKey = @"contentViewViewModel";
     };
     commentCell.onUserProfileTapped = ^(void)
     {
-        VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithUser:wCommentCell.comment.user];
+        VUserProfileViewController *profileViewController = [VUserProfileViewController rootDependencyProfileWithUser:wCommentCell.comment.user];
         [welf.navigationController pushViewController:profileViewController animated:YES];
     };
 }
@@ -794,7 +794,7 @@ static NSString * const kViewModelKey = @"contentViewViewModel";
     if ( [tag isKindOfClass:[VUserTag class]] )
     {
         //Tapped a user tag, show a profile view controller
-        VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithRemoteId:((VUserTag *)tag).remoteId];
+        VUserProfileViewController *profileViewController = [VUserProfileViewController rootDependencyProfileWithRemoteId:((VUserTag *)tag).remoteId];
         [self.navigationController pushViewController:profileViewController animated:YES];
     }
     else
@@ -1634,7 +1634,9 @@ referenceSizeForHeaderInSection:(NSInteger)section
     {
         [self.sequenceActionController showRemixOnViewController:self.navigationController
                                                     withSequence:self.viewModel.sequence
+                                            andDependencyManager:self.dependencyManager
                                                   preloadedImage:nil
+                                                defaultVideoEdit:VDefaultVideoEditGIF
                                                       completion:^(BOOL finished)
          {
              [[VTrackingManager sharedInstance] setValue:VTrackingValueContentView

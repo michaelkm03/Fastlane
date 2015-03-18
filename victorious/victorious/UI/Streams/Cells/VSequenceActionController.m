@@ -80,7 +80,7 @@
         return NO;
     }
     
-    VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithUser:sequence.user];
+    VUserProfileViewController *profileViewController = [VUserProfileViewController rootDependencyProfileWithUser:sequence.user];
     [viewController.navigationController pushViewController:profileViewController animated:YES];
     
     return YES;
@@ -90,27 +90,41 @@
 
 - (void)showRemixOnViewController:(UIViewController *)viewController
                      withSequence:(VSequence *)sequence
+             andDependencyManager:(VDependencyManager *)dependencyManager
                    preloadedImage:(UIImage *)preloadedImage
+                 defaultVideoEdit:(VDefaultVideoEdit)defaultVideoEdit
                        completion:(void(^)(BOOL))completion
 {
     NSAssert( ![sequence isPoll], @"You cannot remix polls." );
+    NSMutableDictionary *addedDependencies = [[NSMutableDictionary alloc] init];
+    if (sequence)
+    {
+        [addedDependencies setObject:sequence forKey:VWorkspaceFlowControllerSequenceToRemixKey];
+    }
+    if (preloadedImage)
+    {
+        [addedDependencies setObject:preloadedImage forKey:VWorkspaceFlowControllerPreloadedImageKey];
+    }
+    [addedDependencies setObject:@(VImageToolControllerInitialImageEditStateText) forKey:VImageToolControllerInitialImageEditStateKey];
+    VVideoToolControllerInitialVideoEditState editState;
+    switch (defaultVideoEdit)
+    {
+        case VDefaultVideoEditVideo:
+            editState = VVideoToolControllerInitialVideoEditStateVideo;
+            break;
+        case VDefaultVideoEditGIF:
+            editState = VVideoToolControllerInitialVideoEditStateGIF;
+            break;
+        case VDefaultVideoEditSnapshot:
+            editState = VVideoToolControllerInitialVideoEditStateMeme;
+            break;
+    }
+    [addedDependencies setObject:@(editState) forKey:VVideoToolControllerInitalVideoEditStateKey];
     
     VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                 dependencyManager:self.dependencyManager];
     [authorization performFromViewController:viewController context:VAuthorizationContextRemix completion:^
      {
-         NSMutableDictionary *addedDependencies = [[NSMutableDictionary alloc] init];
-         if (sequence)
-         {
-             [addedDependencies setObject:sequence forKey:VWorkspaceFlowControllerSequenceToRemixKey];
-         }
-         if (preloadedImage)
-         {
-             [addedDependencies setObject:preloadedImage forKey:VWorkspaceFlowControllerPreloadedImageKey];
-         }
-         [addedDependencies setObject:@(VImageToolControllerInitialImageEditStateText) forKey:VImageToolControllerInitialImageEditStateKey];
-         [addedDependencies setObject:@(VVideoToolControllerInitialVideoEditStateGIF) forKey:VVideoToolControllerInitalVideoEditStateKey];
-         
          VWorkspaceFlowController *workspaceFlowController = [self.dependencyManager templateValueOfType:[VWorkspaceFlowController class]
                                                                                                   forKey:VDependencyManagerWorkspaceFlowKey
                                                                                    withAddedDependencies:addedDependencies];
@@ -125,19 +139,23 @@
 
 - (void)showRemixOnViewController:(UIViewController *)viewController
                      withSequence:(VSequence *)sequence
-                       completion:(void(^)(BOOL))completion
+             andDependencyManager:(VDependencyManager *)dependencyManager
+                   preloadedImage:(UIImage *)preloadedImage
+                       completion:(void (^)(BOOL))completion
 {
-    [self showRemixOnViewController:viewController withSequence:sequence preloadedImage:nil completion:nil];
+    [self showRemixOnViewController:viewController
+                       withSequence:sequence
+               andDependencyManager:dependencyManager
+                     preloadedImage:preloadedImage
+                   defaultVideoEdit:VDefaultVideoEditGIF
+                         completion:completion];
 }
 
-- (void)showRemixOnViewController:(UIViewController *)viewController
-                     withSequence:(VSequence *)sequence
+- (void)showRemixersOnNavigationController:(UINavigationController *)navigationController
+                                   sequence:(VSequence *)sequence
+                       andDependencyManager:(VDependencyManager *)dependencyManager
 {
-    [self showRemixOnViewController:viewController withSequence:sequence completion:nil];
-}
-
-- (void)showRemixStreamFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence
-{
+    NSParameterAssert(sequence != nil);
     VStream *stream = [VStream remixStreamForSequence:sequence];
     stream.name = NSLocalizedString(@"Remixes", nil);
     VStreamCollectionViewController  *streamCollection = [VStreamCollectionViewController streamViewControllerForStream:stream];
@@ -149,7 +167,7 @@
     noRemixView.iconImageView.image = [UIImage imageNamed:@"noRemixIcon"];
     streamCollection.noContentView = noRemixView;
     
-    [viewController.navigationController pushViewController:streamCollection animated:YES];
+    [navigationController pushViewController:streamCollection animated:YES];
 }
 
 #pragma mark - Repost

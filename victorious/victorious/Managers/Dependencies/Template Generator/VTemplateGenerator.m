@@ -91,13 +91,24 @@ static NSString * const kVideoMaxDuration = @"videoMaxDuration";
 static NSString * const kVideoMinDuration = @"videoMinDuration";
 static NSString * const kVideoMuted = @"videoMuted";
 
+// Profile properties
+static NSString * const kProfileShowEditButtonPill = @"editButtonRoundedStyle";
+
+typedef NS_ENUM(NSUInteger, VTemplateType)
+{
+    VTemplateTypeA,
+    VTemplateTypeC,
+    VTemplateTypeD
+};
+
 // First-time User Video
 static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
+
 
 @interface VTemplateGenerator ()
 
 @property (nonatomic, strong) NSDictionary *dataFromInitCall;
-@property (nonatomic) BOOL templateCEnabled;
+@property (nonatomic) VTemplateType enabledTemplate;
 @property (nonatomic, strong) NSString *firstMenuItemID;
 @property (nonatomic, strong) NSString *homeRecentID;
 @property (nonatomic, strong) NSString *communityRecentID;
@@ -116,7 +127,16 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
         _firstMenuItemID = [[NSUUID UUID] UUIDString];
         _homeRecentID = [[NSUUID UUID] UUIDString];
         _communityRecentID = [[NSUUID UUID] UUIDString];
-        _templateCEnabled = [[_dataFromInitCall valueForKeyPath:@"experiments.template_c_enabled"] boolValue];
+        
+        //Adjust templateType (between C and D on dev) here
+        self.enabledTemplate = VTemplateTypeD;
+        
+        if ( ![[_dataFromInitCall valueForKeyPath:@"experiments.template_c_enabled"] boolValue] )
+        {
+            //On qa, set to A
+            self.enabledTemplate = VTemplateTypeA;
+        }
+
     }
     return self;
 }
@@ -158,8 +178,7 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
              template[key] = obj;
          }
      }];
-
-    if (BOTTOM_NAV_ENABLED)
+    if ( self.enabledTemplate == VTemplateTypeD )
     {
         template[VDependencyManagerScaffoldViewControllerKey] = @{
                                                                   kClassNameKey: @"tabMenu.scaffold",
@@ -170,6 +189,12 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
                                                                   VTabMenuViewControllerMenuAppearanceKey: @{
                                                                           VDependencyManagerBackgroundKey: [self solidWhiteBackground],
                                                                           },
+                                                                  VDependencyManagerAccentColorKey: @{
+                                                                          kRedKey: @228,
+                                                                          kGreenKey: @65,
+                                                                          kBlueKey: @66,
+                                                                          kAlphaKey: @1
+                                                                          },
                                                                   VScaffoldViewControllerContentViewComponentKey: [self contentViewComponent],
                                                                   };
     }
@@ -177,11 +202,11 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
     {
         template[VDependencyManagerScaffoldViewControllerKey] = @{ kClassNameKey: @"sideMenu.scaffold",
                                                                    VHamburgerButtonIconKey: @{
-                                                                           VDependencyManagerImageURLKey:(self.templateCEnabled ? @"menuC":@"Menu"),
+                                                                           VDependencyManagerImageURLKey:(self.enabledTemplate == VTemplateTypeC ? @"menuC":@"Menu"),
                                                                            },
                                                                    VDependencyManagerInitialViewControllerKey: @{ kReferenceIDKey: self.firstMenuItemID },
                                                                    VScaffoldViewControllerMenuComponentKey: [self menuComponent],
-                                                                   VStreamCollectionViewControllerCreateSequenceIconKey: (self.templateCEnabled ? [UIImage imageNamed:@"createContentButtonC"] : [UIImage imageNamed:@"createContentButton"]),
+                                                                   VStreamCollectionViewControllerCreateSequenceIconKey: (self.enabledTemplate == VTemplateTypeC ? [UIImage imageNamed:@"createContentButtonC"] : [UIImage imageNamed:@"createContentButton"]),
                                                                    VScaffoldViewControllerUserProfileViewComponentKey: [self profileScreen],
                                                                    VScaffoldViewControllerLightweightContentViewComponentKey: [self lightweightContentViewComponent],
                                                                    kSelectorKey: [self multiScreenSelectorKey],
@@ -199,18 +224,19 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
 
 - (NSDictionary *)cellComponent
 {
-    if ( [self templateCEnabled] )
+    NSString *className = @"titleOverlay.streamCell";
+    if ( self.enabledTemplate == VTemplateTypeD )
     {
-        return @{
-                 kClassNameKey: @"inset.streamCell"
-                 };
+        className = @"sleek.streamCell";
     }
-    else
+    else if ( self.enabledTemplate == VTemplateTypeC )
     {
-        return @{
-                 kClassNameKey: @"titleOverlay.streamCell"
-                 };
+        className = @"inset.streamCell";
     }
+    
+    return @{
+             kClassNameKey: className
+             };
 }
 
 - (NSDictionary *)multiScreenSelectorKey
@@ -219,7 +245,7 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
                                    kClassNameKey: @"basic.multiScreenSelector",
                                    };
 
-    if ( ROUNDED_TOP_NAV_ENABLED )
+    if ( self.enabledTemplate == VTemplateTypeD )
     {
         kSelectorKey =  @{
                           kClassNameKey: @"rounded.multiScreenSelector",
@@ -231,7 +257,7 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
                                   }
                           };
     }
-    else if ( self.templateCEnabled )
+    else if ( self.enabledTemplate == VTemplateTypeC )
     {
         kSelectorKey =  @{
                           kClassNameKey: @"textbar.multiScreenSelector",
@@ -366,7 +392,7 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
 
 - (NSDictionary *)preferredBackgroundColor
 {
-    if ( [self templateCEnabled] )
+    if ( self.enabledTemplate != VTemplateTypeA )
     {
         return @{ kRedKey: @241, kGreenKey: @241, kBlueKey: @241, kAlphaKey: @1 };
     }
@@ -492,7 +518,7 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
 
 - (NSDictionary *)navigationBarAppearance
 {
-    if ( self.templateCEnabled )
+    if ( self.enabledTemplate != VTemplateTypeA )
     {
         return @{
                  VDependencyManagerBackgroundColorKey: @{
@@ -550,6 +576,7 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
                                 kTitleKey: NSLocalizedString(@"Featured", @""),
                                 VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/hot_detail_list_by_stream/ugc/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%",
                                 kCanAddContentKey: @YES,
+                                VStreamCollectionViewControllerCellComponentKey: [self cellComponent]
                             },
                             @{
                                 kClassNameKey: @"stream.screen",
@@ -557,6 +584,7 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
                                 kTitleKey: NSLocalizedString(@"Recent", @""),
                                 VStreamCollectionViewControllerStreamURLPathKey: [self urlPathForStreamCategories:VUGCCategories()],
                                 kCanAddContentKey: @YES,
+                                VStreamCollectionViewControllerCellComponentKey: [self cellComponent]
                             },
                         ]
                     }
@@ -620,41 +648,29 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
 
 - (NSDictionary *)profileMenuItem
 {
-    if (BOTTOM_NAV_ENABLED)
+    NSMutableDictionary *profileItem = [[NSMutableDictionary alloc] initWithDictionary:@{
+                                                                                         kIdentifierKey: @"Menu Profile",
+                                                                                         kTitleKey: NSLocalizedString(@"Profile", @""),
+                                                                                         kIconKey: @{
+                                                                                                 VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@profile", TEMPLATE_ICON_PREFIX],
+                                                                                                 },
+                                                                                         kSelectedIconKey: @{
+                                                                                                 VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@profile%@", TEMPLATE_ICON_PREFIX, SELECTED_ICON_SUFFIX],
+                                                                                                 }
+                              
+                                                                                         }];
+    NSMutableDictionary *fullProfileDetails = [[NSMutableDictionary alloc] initWithDictionary:@{
+                                                                                            kClassNameKey: @"currentUserProfile.screen",
+                                                                                            }];
+    [fullProfileDetails addEntriesFromDictionary:[self profileConfiguration]];
+    profileItem[kDestinationKey] = fullProfileDetails;
+    if ( self.enabledTemplate == VTemplateTypeD )
     {
-        return @{
-                 kIdentifierKey: @"Menu Profile",
-                 kTitleKey: NSLocalizedString(@"Profile", @""),
-                 kDestinationKey: @{
-                         kClassNameKey: @"currentUserProfile.screen"
-                         },
-                 kIconKey: @{
-                         VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@profile", TEMPLATE_ICON_PREFIX],
-                         },
-                 kSelectedIconKey: @{
-                         VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@profile%@", TEMPLATE_ICON_PREFIX, SELECTED_ICON_SUFFIX],
-                         },
-                 VDependencyManagerAccessoryScreensKey: @[
-                         [self settingsMenuItem],
-                         ],
-                 };
+        profileItem[VDependencyManagerAccessoryScreensKey] = @[[self settingsMenuItem]];
     }
-    else
-    {
-        return @{
-                 kIdentifierKey: @"Menu Profile",
-                 kTitleKey: NSLocalizedString(@"Profile", @""),
-                 kDestinationKey: @{
-                         kClassNameKey: @"currentUserProfile.screen"
-                         },
-                 kIconKey: @{
-                         VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@profile", TEMPLATE_ICON_PREFIX],
-                         },
-                 kSelectedIconKey: @{
-                         VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@profile%@", TEMPLATE_ICON_PREFIX, SELECTED_ICON_SUFFIX],
-                         },
-                 };
-    }
+    profileItem[kProfileShowEditButtonPill] = @(self.enabledTemplate == VTemplateTypeD);
+    
+    return [NSDictionary dictionaryWithDictionary:profileItem];
 }
 
 - (NSDictionary *)inboxMenuItem
@@ -697,14 +713,83 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
     return [NSString stringWithFormat:@"/api/sequence/detail_list_by_category/%@/%%%%PAGE_NUM%%%%/%%%%ITEMS_PER_PAGE%%%%", categoryString];
 }
 
-- (NSDictionary *)currentUserProfileScreen
+- (NSDictionary *)profileConfiguration
 {
-    return @{ kClassNameKey: @"currentUserProfile.screen" };
+    NSMutableDictionary *profileConfiguration = [[NSMutableDictionary alloc] init];
+    if ( self.enabledTemplate == VTemplateTypeD )
+    {
+        profileConfiguration[VDependencyManagerLinkColorKey] = @{
+                                                                 kRedKey: @30,
+                                                                 kGreenKey: @173,
+                                                                 kBlueKey: @217,
+                                                                 kAlphaKey: @1
+                                                                 };
+        [profileConfiguration addEntriesFromDictionary:[self lightProfileDetails]];
+    }
+    else
+    {
+        [profileConfiguration addEntriesFromDictionary:[self lightProfileDetails]];
+    }
+    profileConfiguration[VStreamCollectionViewControllerCellComponentKey] = [self cellComponent];
+    profileConfiguration[VDependencyManagerAccessoryScreensKey] = @[[self settingsMenuItem]];
+    return [profileConfiguration copy];
 }
+
+- (NSDictionary *)darkProfileDetails
+{
+    return @{ VDependencyManagerBackgroundColorKey : @{
+                                                             kRedKey: @20,
+                                                             kGreenKey: @20,
+                                                             kBlueKey: @20,
+                                                             kAlphaKey: @1
+                                                             },
+              VDependencyManagerSecondaryBackgroundColorKey : @{
+                                                                      kRedKey: @38,
+                                                                      kGreenKey: @39,
+                                                                      kBlueKey: @42,
+                                                                      kAlphaKey: @1
+                                                                      },
+              VDependencyManagerContentTextColorKey : @{
+                                                              kRedKey: @204,
+                                                              kGreenKey: @204,
+                                                              kBlueKey: @204,
+                                                              kAlphaKey: @1
+                                                              }
+              };
+}
+
+- (NSDictionary *)lightProfileDetails
+{
+    return @{ VDependencyManagerBackgroundColorKey: @{
+                      kRedKey: @241,
+                      kGreenKey: @241,
+                      kBlueKey: @241,
+                      kAlphaKey: @1
+                      },
+              VDependencyManagerAccentColorKey: @{
+                      kRedKey: @228,
+                      kGreenKey: @65,
+                      kBlueKey: @66,
+                      kAlphaKey: @1
+                      },
+              VDependencyManagerContentTextColorKey: @{
+                      kRedKey: @0,
+                      kGreenKey: @0,
+                      kBlueKey: @0,
+                      kAlphaKey: @1
+                      }
+              };
+}
+
 
 - (NSDictionary *)profileScreen
 {
-    return @{ kClassNameKey: @"userProfile.screen" };
+    NSMutableDictionary *fullProfileDetails = [[NSMutableDictionary alloc] initWithDictionary:@{
+                                                                                                kClassNameKey: @"userProfile.screen",
+                                                                                                }];
+    [fullProfileDetails addEntriesFromDictionary:[self profileConfiguration]];
+    
+    return [NSDictionary dictionaryWithDictionary:fullProfileDetails];
 }
 
 - (NSDictionary *)homeScreen
@@ -739,12 +824,35 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
         kInitialKey: @{
                 kReferenceIDKey: self.homeRecentID,
                 },
+        VStreamCollectionViewControllerCellComponentKey: [self cellComponent]
         } mutableCopy];
-
     UIImage *headerImage = [self homeHeaderImage];
     if ( headerImage != nil )
     {
         homeScreen[kTitleImageKey] = headerImage;
+    }
+    
+    if ( self.enabledTemplate == VTemplateTypeA )
+    {
+        //Add lots of white for template A
+        homeScreen[VDependencyManagerLinkColorKey] = @{
+                                                       kRedKey: @255,
+                                                       kGreenKey: @255,
+                                                       kBlueKey: @255,
+                                                       kAlphaKey: @1
+                                                       };
+        homeScreen[VDependencyManagerContentTextColorKey] = @{
+                                                              kRedKey: @255,
+                                                              kGreenKey: @255,
+                                                              kBlueKey: @255,
+                                                              kAlphaKey: @1
+                                                              };
+        homeScreen[VDependencyManagerBackgroundColorKey] = @{
+                                                             kRedKey: @255,
+                                                             kGreenKey: @255,
+                                                             kBlueKey: @255,
+                                                             kAlphaKey: @1
+                                                             };
     }
 
     return homeScreen;
@@ -783,8 +891,8 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
 {
     NSNumber *channelsEnabledObject = [self.dataFromInitCall valueForKeyPath:@"experiments.channels_enabled"];
     const BOOL channelsEnabled = [channelsEnabledObject isKindOfClass:[NSNumber class]] && [channelsEnabledObject boolValue];
-
-    if ( CHANNELS_WITH_GROUP_STREAM_ENABLED && channelsEnabled )
+    
+    if ( self.enabledTemplate == VTemplateTypeD && channelsEnabled )
     {
         NSDictionary *componentBase = @{ kIdentifierKey: @"Menu Channels",
                                          kTitleKey: NSLocalizedString(@"Channels", @""),
@@ -795,7 +903,7 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
                                                  VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@channels%@", TEMPLATE_ICON_PREFIX, SELECTED_ICON_SUFFIX],
                                                  },
                                          kDestinationKey: @{
-                                                 kClassNameKey: @"groupedStream.screen",
+                                                 kClassNameKey: @"showcase.screen",
                                                  kTitleKey: NSLocalizedString(@"Channels", nil),
                                                  VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/detail_list_by_stream/directory/0/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%"
                                                  }
@@ -846,13 +954,15 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
                                   @{
                                       kClassNameKey: @"stream.screen",
                                       kTitleKey: NSLocalizedString(@"Featured", @""),
-                                      VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/hot_detail_list_by_stream/owner/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%"
+                                      VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/hot_detail_list_by_stream/owner/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%",
+                                      VStreamCollectionViewControllerCellComponentKey: [self cellComponent]
                                       },
                                   @{
                                       kClassNameKey: @"stream.screen",
                                       kInitialKey: @YES,
                                       kTitleKey: NSLocalizedString(@"Recent", @""),
                                       VStreamCollectionViewControllerStreamURLPathKey: [self urlPathForStreamCategories:VOwnerCategories()],
+                                      VStreamCollectionViewControllerCellComponentKey: [self cellComponent]
                                       }
                                   ]
                           }

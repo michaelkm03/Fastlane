@@ -13,6 +13,7 @@ typedef NS_ENUM(NSInteger, VVideoToolControllerInitialVideoEditState)
 {
     VVideoToolControllerInitialVideoEditStateVideo,
     VVideoToolControllerInitialVideoEditStateGIF, // Default
+    VVideoToolControllerInitialVideoEditStateMeme
 };
 
 @class VVideoToolController;

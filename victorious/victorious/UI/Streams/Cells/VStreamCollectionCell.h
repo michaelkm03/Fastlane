@@ -13,6 +13,7 @@
 #import "VSequenceActionsSender.h"
 #import "VBaseCollectionViewCell.h"
 
+@class VSequence, VStreamCellHeaderView, VStreamCollectionCell, CCHLinkTextView;
 /**
  This value will be used to update the lineFragmentPadding of the
  captionTextView and serve as reference in size calculations
@@ -28,13 +29,17 @@ extern const CGFloat VStreamCollectionCellTextViewLineFragmentPadding;
 @property (nonatomic, weak) IBOutlet UIView                 *overlayView;
 @property (nonatomic, weak) IBOutlet UIView                 *shadeView;
 @property (nonatomic, weak) IBOutlet VStreamCellHeaderView  *streamCellHeaderView;
-@property (nonatomic, weak) IBOutlet UILabel                *commentsLabel;
+
 @property (nonatomic, weak) IBOutlet CCHLinkTextView        *captionTextView;
+
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint     *captionTextViewBottomConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint     *captionTextViewTopConstraint;
+@property (nonatomic, weak) IBOutlet UILabel                *commentsLabel;
 
 @property (nonatomic, weak) VSequence                       *sequence;
 
 @property (nonatomic, weak) id<VSequenceActionsDelegate> sequenceActionsDelegate;
-@property (nonatomic, strong) VDependencyManager *dependencyManager;
+
 @property (nonatomic, weak) UIViewController *parentViewController;
 
 /**
@@ -48,8 +53,6 @@ extern const CGFloat VStreamCollectionCellTextViewLineFragmentPadding;
  */
 @property (nonatomic, readonly) NSString *headerViewNibName;
 
-- (void)hideOverlays;
-- (void)showOverlays;
 + (CGSize)actualSizeWithCollectionViewBounds:(CGRect)bounds sequence:(VSequence *)sequence dependencyManager:(VDependencyManager *)dependencyManager;
 
 /**
@@ -70,5 +73,9 @@ extern const CGFloat VStreamCollectionCellTextViewLineFragmentPadding;
 - (void)pauseVideo;
 
 - (void)reloadCommentsCount;
+
+- (void)setDescriptionText:(NSString *)text;
+
+- (NSUInteger)maxCaptionLines;
 
 @end

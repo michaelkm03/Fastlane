@@ -38,6 +38,10 @@
 #import "VSettingManager.h"
 #import <FBKVOController.h>
 #import <MBProgressHUD.h>
+#import "VDependencyManager.h"
+#import "VBaseCollectionViewCell.h"
+
+#import "VDependencyManager+VScaffoldViewController.h"
 
 // Authorization
 #import "VNotAuthorizedDataSource.h"
@@ -52,6 +56,7 @@ static void * VUserProfileAttributesContext =  &VUserProfileAttributesContext;
  */
 static const CGFloat MBProgressHUDCustomViewSide = 37.0f;
 static NSString * const kUserKey = @"user";
+static NSString * const kUserRemoteIdKey = @"remoteId";
 
 @interface VUserProfileViewController () <VUserProfileHeaderDelegate, MBProgressHUDDelegate, VNotAuthorizedDataSourceDelegate>
 
@@ -80,11 +85,20 @@ static NSString * const kUserKey = @"user";
 
 @implementation VUserProfileViewController
 
-+ (instancetype)userProfileWithRemoteId:(NSNumber *)remoteId
+#warning Incredibly hacky
++ (instancetype)rootDependencyProfileWithRemoteId:(NSNumber *)remoteId
+{
+    return [[[[[VRootViewController rootViewController] dependencyManager] scaffoldViewController] dependencyManager] userProfileViewControllerWithRemoteId:remoteId];
+}
+
++ (instancetype)rootDependencyProfileWithUser:(VUser *)user
+{
+    return [[[[[VRootViewController rootViewController] dependencyManager] scaffoldViewController] dependencyManager] userProfileViewControllerWithUser:user];
+}
+
++ (instancetype)userProfileWithRemoteId:(NSNumber *)remoteId andDependencyManager:(VDependencyManager *)dependencyManager
 {
     VUserProfileViewController   *viewController  =   [[UIStoryboard storyboardWithName:@"Profile" bundle:nil] instantiateInitialViewController];
-    
-    viewController.dependencyManager = [[VRootViewController rootViewController] dependencyManager];
     
     VUser *mainUser = [VObjectManager sharedManager].mainUser;
     BOOL isMe = (remoteId.integerValue == mainUser.remoteId.integerValue);
@@ -98,10 +112,11 @@ static NSString * const kUserKey = @"user";
         viewController.profile = mainUser;
     }
     
+    viewController.dependencyManager = dependencyManager != nil ? dependencyManager : [[VRootViewController rootViewController] dependencyManager];
     return viewController;
 }
 
-+ (instancetype)userProfileWithUser:(VUser *)aUser
++ (instancetype)userProfileWithUser:(VUser *)aUser andDependencyManager:(VDependencyManager *)dependencyManager
 {
     VUserProfileViewController   *viewController  =   [[UIStoryboard storyboardWithName:@"Profile" bundle:nil] instantiateInitialViewController];
     viewController.profile = aUser;
@@ -117,17 +132,24 @@ static NSString * const kUserKey = @"user";
         viewController.title = aUser.name ?: @"Profile";
     }
     
-    viewController.dependencyManager = [[VRootViewController rootViewController] dependencyManager];
+    viewController.dependencyManager = dependencyManager != nil ? dependencyManager : [[VRootViewController rootViewController] dependencyManager];
     return viewController;
 }
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     VUser *user = [dependencyManager templateValueOfType:[VUser class] forKey:kUserKey];
-    if (user != nil)
+    if ( user != nil )
     {
-        return [self userProfileWithUser:user];
+        return [self userProfileWithUser:user andDependencyManager:dependencyManager];
     }
+    
+    NSNumber *remoteId = [dependencyManager templateValueOfType:[NSNumber class] forKey:kUserRemoteIdKey];
+    if ( remoteId != nil )
+    {
+        return [self userProfileWithRemoteId:remoteId andDependencyManager:dependencyManager];
+    }
+    
     return nil;
 }
 
@@ -147,7 +169,7 @@ static NSString * const kUserKey = @"user";
     
     self.isMe = (self.profile.remoteId.integerValue == [VObjectManager sharedManager].mainUser.remoteId.integerValue);
     
-    UIColor *backgroundColor = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled] ? [UIColor clearColor] : [[VThemeManager sharedThemeManager] preferredBackgroundColor];
+    UIColor *backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     self.collectionView.backgroundColor = backgroundColor;
     
     if (![VObjectManager sharedManager].mainUser)
@@ -198,7 +220,8 @@ static NSString * const kUserKey = @"user";
     [self.backgroundImageView setBlurredImageWithURL:[NSURL URLWithString:self.profile.pictureUrl]
                                     placeholderImage:defaultBackgroundImage
                                            tintColor:[UIColor colorWithWhite:0.0 alpha:0.5]];
-    self.view.backgroundColor = [[VThemeManager sharedThemeManager] preferredBackgroundColor];
+    UIColor *backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
+    self.view.backgroundColor = backgroundColor;
     
     if (![[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
     {
@@ -309,6 +332,7 @@ static NSString * const kUserKey = @"user";
     VUserProfileHeaderView *headerView =  [VUserProfileHeaderView newView];
     headerView.user = self.profile;
     headerView.delegate = self;
+    headerView.dependencyManager = self.dependencyManager;
     _profileHeaderView = headerView;
     return _profileHeaderView;
 }
@@ -656,7 +680,9 @@ static NSString * const kUserKey = @"user";
         self.currentProfileCell.hidden = self.profile == nil;
         return self.currentProfileCell;
     }
-    return [super dataSource:dataSource cellForIndexPath:indexPath];
+    VBaseCollectionViewCell *cell = (VBaseCollectionViewCell *)[super dataSource:dataSource cellForIndexPath:indexPath];
+    cell.dependencyManager = self.dependencyManager;
+    return cell;
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView
@@ -773,10 +799,16 @@ static NSString * const kUserKey = @"user";
 
 @implementation VDependencyManager (VUserProfileViewControllerAdditions)
 
-- (VUserProfileViewController *)userProfileViewControllerWithUser:(VUser *)user forKey:(NSString *)key
+- (VUserProfileViewController *)userProfileViewControllerWithUser:(VUser *)user
 {
     NSAssert(user != nil, @"user cannot be nil");
-    return [self templateValueOfType:[VUserProfileViewController class] forKey:key withAddedDependencies:@{ kUserKey: user }];
+    return [self templateValueOfType:[VUserProfileViewController class] forKey:VScaffoldViewControllerUserProfileViewComponentKey withAddedDependencies:@{ kUserKey: user }];
+}
+
+- (VUserProfileViewController *)userProfileViewControllerWithRemoteId:(NSNumber *)remoteId
+{
+    NSAssert(remoteId != nil, @"remoteId cannot be nil");
+    return [self templateValueOfType:[VUserProfileViewController class] forKey:VScaffoldViewControllerUserProfileViewComponentKey withAddedDependencies:@{ kUserRemoteIdKey: remoteId }];
 }
 
 @end

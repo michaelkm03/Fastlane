@@ -10,11 +10,12 @@
 
 #import "VUser.h"
 
-#import "VThemeManager.h"
+#import "VDependencyManager.h"
 #import "VObjectManager+Users.h"
 #import "VLargeNumberFormatter.h"
 #import "VDefaultProfileImageView.h"
 #import "VSettingManager.h"
+#import "VThemeManager.h"
 
 #import <KVOController/FBKVOController.h>
 
@@ -32,32 +33,16 @@
     [super awakeFromNib];
     
     self.profileImageView.layer.borderWidth = 2.0;
-    self.profileImageView.layer.borderColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor].CGColor;
-    
-    self.nameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
-    self.nameLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
-    
-    self.locationLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont];
-    
-    self.taglineLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
-    self.taglineLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
-    
+
+    self.followersHeader.text = NSLocalizedString(@"FOLLOWERS", @"");
+
     self.followersLabel.userInteractionEnabled = YES;
     [self.followersLabel addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(pressedFollowers:)]];
-    self.followersLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
-    
-    self.followersHeader.text = NSLocalizedString(@"FOLLOWERS", @"");
-    self.followersHeader.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel4Font];
+
+    self.followingHeader.text = NSLocalizedString(@"FOLLOWING", @"");
     
     self.followingLabel.userInteractionEnabled = YES;
     [self.followingLabel addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(pressedFollowering:)]];
-    self.followingLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
-    
-    self.followingHeader.text = NSLocalizedString(@"FOLLOWING", @"");
-    self.followingHeader.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel4Font];
-    
-    self.userStatsBar.backgroundColor = [[VThemeManager sharedThemeManager] preferredBackgroundColor];
-    [self applyEditProfileButtonStyle];
 }
 
 - (void)setIsFollowingUser:(BOOL)isFollowingUser
@@ -69,7 +54,7 @@
 
 - (void)applyEditProfileButtonStyle
 {
-    if ( self.user == nil )
+    if ( self.user == nil || self.dependencyManager == nil )
     {
         return;
     }
@@ -77,10 +62,18 @@
     const VUser *loggedInUser = [VObjectManager sharedManager].mainUser;
     const BOOL isCurrentUser = loggedInUser != nil && [self.user.remoteId isEqualToNumber:loggedInUser.remoteId];
 
-    UIColor *linkColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-    
-    self.editProfileButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
+    UIColor *linkColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+    if ( linkColor == nil )
+    {
+        linkColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    }
+    self.editProfileButton.titleLabel.font = [self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
 
+    if ( [[self.dependencyManager numberForKey:@"editButtonRoundedStyle"] boolValue] )
+    {
+        self.editProfileButton.cornerRadius = CGRectGetHeight(self.editProfileButton.bounds) / 2.0f;
+    }
+    
     // Set the text
     if ( isCurrentUser )
     {
@@ -207,6 +200,45 @@
 {
     _numberOfFollowing = numberOfFollowing;
     self.followingLabel.text = [[[VLargeNumberFormatter alloc] init] stringForInteger:numberOfFollowing];
+}
+
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    _dependencyManager = dependencyManager;
+    
+    UIColor *linkColor = [_dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+    if ( linkColor == nil )
+    {
+        linkColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    }
+    
+    UIColor *accentColor = [_dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
+    
+    self.profileImageView.layer.borderColor = linkColor.CGColor;
+    
+    self.nameLabel.font = [_dependencyManager fontForKey:VDependencyManagerHeading2FontKey];
+    self.nameLabel.textColor = [_dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+    
+    self.locationLabel.font = [_dependencyManager fontForKey:VDependencyManagerParagraphFontKey];
+    
+    self.taglineLabel.font = [_dependencyManager fontForKey:VDependencyManagerHeading4FontKey];
+    self.taglineLabel.textColor = [_dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+        
+    self.followersLabel.font = [_dependencyManager fontForKey:VDependencyManagerHeading3FontKey];
+    self.followersLabel.textColor = accentColor;
+    
+    self.followersHeader.font = [_dependencyManager fontForKey:VDependencyManagerLabel4FontKey];
+    self.followersHeader.textColor = accentColor;
+
+    self.followingLabel.font = [_dependencyManager fontForKey:VDependencyManagerHeading3FontKey];
+    self.followingLabel.textColor = accentColor;
+
+    self.followingHeader.font = [_dependencyManager fontForKey:VDependencyManagerLabel4FontKey];
+    self.followingHeader.textColor = accentColor;
+
+    UIColor *backgroundColor = [_dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
+    self.userStatsBar.backgroundColor = backgroundColor;
+    [self applyEditProfileButtonStyle];
 }
 
 - (IBAction)pressedEditProfile:(id)sender
