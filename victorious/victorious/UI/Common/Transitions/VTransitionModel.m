@@ -36,10 +36,17 @@
                             [fromNavigationVC.viewControllers containsObject:_fromViewController];
         }
         _animationDuration = _isPresenting ? transition.transitionInDuration : transition.transitionOutDuration;
-        if ( [transition requiresImageViewFromOriginViewController] )
+        
+        if ( [transition respondsToSelector:@selector(requiresImageViewFromOriginViewController)] && [transition requiresImageViewFromOriginViewController] )
         {
             _snapshotOfOriginView = [_fromViewController.view snapshotViewAfterScreenUpdates:NO];
         }
+        
+        if ( [transition respondsToSelector:@selector(requiresImageViewFromWindow)] && [transition requiresImageViewFromWindow] )
+        {
+            _snapshotOfOriginView = [[[[UIApplication sharedApplication] windows] firstObject] snapshotViewAfterScreenUpdates:NO];
+        }
+        
     }
     return self;
 }

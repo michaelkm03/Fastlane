@@ -7,10 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "VRegistration.h"
 
-@interface VResetPasswordViewController : UIViewController
+@class VDependencyManager;
+
+@interface VResetPasswordViewController : UIViewController <VRegistrationStep>
 
 @property (nonatomic, strong) NSString *deviceToken;
 @property (nonatomic, strong) NSString *userToken;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end

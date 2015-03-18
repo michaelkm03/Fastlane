@@ -109,6 +109,11 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
 {
     [super viewWillAppear:animated];
     
+    self.view.userInteractionEnabled = YES;
+    
+    NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+    [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
+    
     [self setupTitleTextView];
 }
 
@@ -147,11 +152,26 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
 {
     if (self.userItem.selectionHandler)
     {
-        self.userItem.selectionHandler();
+        self.userItem.selectionHandler( self.userItem );
     }
 }
 
 #pragma mark - Public Methods
+
+- (void)setLoading:(BOOL)loading forItem:(VActionItem *)item
+{
+    [self.tableView.visibleCells enumerateObjectsUsingBlock:^(VActionItemTableViewCell *cell, NSUInteger index, BOOL *stop)
+    {
+        if ( [cell.title isEqualToString:item.title] )
+        {
+            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+            VActionItemTableViewCell *cell = (VActionItemTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+            [cell setLoading:YES animated:YES];
+            
+            *stop = YES;
+        }
+    }];
+}
 
 - (void)addActionItems:(NSArray *)actionItems
 {
@@ -213,7 +233,7 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
     {
         if (itemForCell.detailSelectionHandler)
         {
-            itemForCell.detailSelectionHandler();
+            itemForCell.detailSelectionHandler( itemForCell );
         }
     };
     
@@ -244,7 +264,7 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
     self.view.userInteractionEnabled = NO;
     if (actionItem.selectionHandler)
     {
-        actionItem.selectionHandler();
+        actionItem.selectionHandler( actionItem );
     }
 }
 

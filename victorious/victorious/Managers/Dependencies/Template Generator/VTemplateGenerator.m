@@ -24,6 +24,8 @@
 #define BOTTOM_NAV_ENABLED 0
 #define CHANNELS_WITH_GROUP_STREAM_ENABLED 0
 #define ROUNDED_TOP_NAV_ENABLED 0
+#define TEMPLATE_ICON_PREFIX @"D_"
+#define SELECTED_ICON_SUFFIX @"_selected"
 
 static NSString * const kIDKey = @"id";
 static NSString * const kReferenceIDKey = @"referenceID";
@@ -35,6 +37,7 @@ static NSString * const kClassNameKey = @"name";
 static NSString * const kItemsKey = @"items";
 static NSString * const kTitleKey = @"title";
 static NSString * const kIconKey = @"icon";
+static NSString * const kSelectedIconKey = @"selectedIcon";
 static NSString * const kIdentifierKey = @"identifier";
 static NSString * const kDestinationKey = @"destination";
 
@@ -254,22 +257,41 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
     return @[
              @{
                  kClassNameKey: @"trim.video.tool",
-                 kTitleKey: @"video",
+                 kTitleKey: NSLocalizedString(@"VIDEO MODE", @"Title informing the user they have selected the video tool."),
+                 kIconKey:@{
+                         VDependencyManagerImageURLKey:@"video"
+                         },
+                 kSelectedIconKey:@{
+                         VDependencyManagerImageURLKey:@"videoSelected",
+                         },
                  kVideoFrameDurationValue: @1,
                  kVideoFrameDurationTimescale: @24,
                  kVideoMuted: @NO
                  },
              @{
                  kClassNameKey: @"trim.video.tool",
-                 kTitleKey: @"gif",
+                 kTitleKey: NSLocalizedString(@"GIF MODE", @"Title informing the user they have selected the GIF tool."),
+                 kIconKey:@{
+                         VDependencyManagerImageURLKey:@"GIF"
+                         },
+                 kSelectedIconKey:@{
+                         VDependencyManagerImageURLKey:@"GIFSelected"
+                         },
                  kVideoFrameDurationValue: @1,
-                 kVideoFrameDurationTimescale: @4,
-                 kVideoMuted: @YES
+                 kVideoFrameDurationTimescale: @8,
+                 kVideoMuted: @YES,
+                 @"isGIF": @YES,
                  },
              @{
                  kClassNameKey: @"snapshot.video.tool",
                  kTitleKey: @"meme",
-                 }
+                 kIconKey:@{
+                         VDependencyManagerImageURLKey:@"meme",
+                         },
+                 kSelectedIconKey:@{
+                         VDependencyManagerImageURLKey:@"memeSelected",
+                         },
+                 },
              ];
 }
 
@@ -314,6 +336,12 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
              kClassNameKey: @"text.tool",
              kTitleKey: @"text",
              kFilterIndexKey: @2,
+             kIconKey:@{
+                     VDependencyManagerImageURLKey:@"text",
+                     },
+             kSelectedIconKey:@{
+                     VDependencyManagerImageURLKey:@"textSelected",
+                     },
              kPickerKey:
                  @{
                      kClassNameKey: @"vertical.picker",
@@ -385,6 +413,12 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
              kClassNameKey: @"filter.tool",
              kTitleKey: @"filters",
              kFilterIndexKey: @0,
+             kIconKey:@{
+                     VDependencyManagerImageURLKey:@"filter",
+                     },
+             kSelectedIconKey:@{
+                     VDependencyManagerImageURLKey:@"filterSelected",
+                     },
              kPickerKey:
                  @{
                      kClassNameKey: @"vertical.picker",
@@ -400,6 +434,12 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
     return @{
              kClassNameKey: @"crop.tool",
              kTitleKey: @"crop",
+             kIconKey:@{
+                     VDependencyManagerImageURLKey:@"crop",
+                     },
+             kSelectedIconKey:@{
+                     VDependencyManagerImageURLKey:@"cropSelected",
+                     },
              kFilterIndexKey: @1,
              };
 }
@@ -510,7 +550,10 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
              kTitleKey: NSLocalizedString(@"Home", @""),
              kDestinationKey: [self homeScreen],
              kIconKey: @{
-                     VDependencyManagerImageURLKey: @"D_home",
+                     VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@home", TEMPLATE_ICON_PREFIX],
+                     },
+             kSelectedIconKey: @{
+                     VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@home%@", TEMPLATE_ICON_PREFIX, SELECTED_ICON_SUFFIX],
                      }
              };
 }
@@ -520,7 +563,10 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
     return @{
              kTitleKey: NSLocalizedString(@"Create", @""),
              kIconKey: @{
-                     VDependencyManagerImageURLKey: @"D_create",
+                     VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@create", TEMPLATE_ICON_PREFIX],
+                     },
+             kSelectedIconKey: @{
+                     VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@create%@", TEMPLATE_ICON_PREFIX, SELECTED_ICON_SUFFIX],
                      },
              kDestinationKey: [self workspaceFlowComponent],
              };
@@ -537,7 +583,10 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
                          kClassNameKey: @"currentUserProfile.screen"
                          },
                  kIconKey: @{
-                         VDependencyManagerImageURLKey: @"D_profile",
+                         VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@profile", TEMPLATE_ICON_PREFIX],
+                         },
+                 kSelectedIconKey: @{
+                         VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@profile%@", TEMPLATE_ICON_PREFIX, SELECTED_ICON_SUFFIX],
                          },
                  VDependencyManagerAccessoryScreensKey: @[
                          [self settingsMenuItem],
@@ -553,7 +602,10 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
                          kClassNameKey: @"currentUserProfile.screen"
                          },
                  kIconKey: @{
-                         VDependencyManagerImageURLKey: @"D_profile",
+                         VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@profile", TEMPLATE_ICON_PREFIX],
+                         },
+                 kSelectedIconKey: @{
+                         VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@profile%@", TEMPLATE_ICON_PREFIX, SELECTED_ICON_SUFFIX],
                          },
                  };
     }
@@ -565,7 +617,10 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
              kIdentifierKey: @"Menu Inbox",
              kTitleKey: NSLocalizedString(@"Inbox", @""),
              kIconKey: @{
-                     VDependencyManagerImageURLKey: @"D_inbox",
+                     VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@inbox", TEMPLATE_ICON_PREFIX],
+                     },
+             kSelectedIconKey: @{
+                     VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@inbox%@", TEMPLATE_ICON_PREFIX, SELECTED_ICON_SUFFIX],
                      },
              kDestinationKey: @{
                      kClassNameKey: @"inbox.screen"
@@ -582,7 +637,10 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
                      kClassNameKey: @"settings.screen"
                      },
              kIconKey: @{
-                     VDependencyManagerImageURLKey: @"D_settings",
+                     VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@settings", TEMPLATE_ICON_PREFIX],
+                     },
+             kSelectedIconKey: @{
+                     VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@settings%@", TEMPLATE_ICON_PREFIX, SELECTED_ICON_SUFFIX],
                      },
              };
 }
@@ -685,7 +743,10 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
         NSDictionary *componentBase = @{ kIdentifierKey: @"Menu Channels",
                                          kTitleKey: NSLocalizedString(@"Channels", @""),
                                          kIconKey: @{
-                                                 VDependencyManagerImageURLKey: @"D_channels",
+                                                 VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@channels", TEMPLATE_ICON_PREFIX],
+                                                 },
+                                         kSelectedIconKey: @{
+                                                 VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@channels%@", TEMPLATE_ICON_PREFIX, SELECTED_ICON_SUFFIX],
                                                  },
                                          kDestinationKey: @{
                                                  kClassNameKey: @"groupedStream.screen",
@@ -702,7 +763,10 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
         return @{ kIdentifierKey: @"Menu Channels",
                   kTitleKey: NSLocalizedString(@"Channels", @""),
                   kIconKey: @{
-                          VDependencyManagerImageURLKey: @"D_channels",
+                          VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@channels", TEMPLATE_ICON_PREFIX],
+                          },
+                  kSelectedIconKey: @{
+                          VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@channels%@", TEMPLATE_ICON_PREFIX, SELECTED_ICON_SUFFIX],
                           },
                   kDestinationKey: @{
                           kClassNameKey: @"directory.screen",
@@ -723,7 +787,10 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
         return @{ kIdentifierKey: @"Menu Channel",
                   kTitleKey: NSLocalizedString(@"Channel", @""),
                   kIconKey: @{
-                          VDependencyManagerImageURLKey: @"channels",
+                          VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@channels", TEMPLATE_ICON_PREFIX]
+                          },
+                  kSelectedIconKey: @{
+                          VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@channels%@", TEMPLATE_ICON_PREFIX, SELECTED_ICON_SUFFIX]
                           },
                   kCellComponentDirectoryItem: [self directoryCellComponentLight],
                   kDestinationKey: @{

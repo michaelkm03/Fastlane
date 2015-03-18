@@ -17,6 +17,7 @@
 
 static NSString * const kTitleKey = @"title";
 static NSString * const kIconKey = @"icon";
+static NSString * const kSelectedIconKey = @"selectedIcon";
 static NSString * const kFilterIndexKey = @"filterIndex";
 
 @interface VCropTool ()
@@ -24,6 +25,7 @@ static NSString * const kFilterIndexKey = @"filterIndex";
 @property (nonatomic, assign) CGSize assetSize;
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, strong) UIImage *icon;
+@property (nonatomic, strong) UIImage *selectedIcon;
 @property (nonatomic, strong) NSNumber *filterIndexNumber;
 @property (nonatomic, strong, readwrite) VCropToolViewController *cropViewController;
 @property (nonatomic, weak) VCanvasView *canvasView;
@@ -48,7 +50,8 @@ static NSString * const kFilterIndexKey = @"filterIndex";
         _title = [dependencyManager stringForKey:kTitleKey];
         _filterIndexNumber = [dependencyManager numberForKey:kFilterIndexKey];
         _cropViewController = [VCropToolViewController cropViewController];
-        _icon = [UIImage imageNamed:@"cropIcon"];
+        _icon = [dependencyManager imageForKey:kIconKey];
+        _selectedIcon = [dependencyManager imageForKey:kSelectedIconKey];
     }
     return self;
 }

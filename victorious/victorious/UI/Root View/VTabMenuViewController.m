@@ -151,7 +151,7 @@ shouldSelectViewController:(VNavigationDestinationContainerViewController *)view
         
         shimViewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:nil
                                                                       image:menuItem.icon
-                                                              selectedImage:menuItem.icon];
+                                                              selectedImage:menuItem.selectedIcon];
         shimViewController.tabBarItem.imageInsets = UIEdgeInsetsMake(6, 0, -6, 0);
         [wrappedMenuItems addObject:shimViewController];
     }

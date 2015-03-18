@@ -23,6 +23,8 @@
 #import "VLightweightContentViewController.h"
 #import "VNavigationController.h"
 #import "VFirstTimeInstallHelper.h"
+#import "VAuthorizedAction.h"
+
 #import <MBProgressHUD.h>
 
 NSString * const VScaffoldViewControllerMenuComponentKey = @"menu";
@@ -68,9 +70,9 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
     // Show the First Time User Video if it hasn't been shown yet
     VLightweightContentViewController *lightweightContentVC = [self.dependencyManager templateValueOfType:[VLightweightContentViewController class]
                                                                                                    forKey:VScaffoldViewControllerLightweightContentViewComponentKey];
-    
+
     self.firstTimeInstallHelper = [[VFirstTimeInstallHelper alloc] init];
-    
+
     // Present the first-time user video view controller if hasn't been shown
     if ( ![self.firstTimeInstallHelper hasBeenShown] )
     {
@@ -109,7 +111,6 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
     contentViewModel.deepLinkCommentId = commentId;
     VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel
                                                                                                    dependencyManager:self.dependencyManager];
-    contentViewController.dependencyManagerForHistogramExperiment = self.dependencyManager;
     contentViewController.placeholderImage = placeHolderImage;
     contentViewController.delegate = self;
 
@@ -278,35 +279,45 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
 
 - (void)navigateToDestination:(id)navigationDestination completion:(void(^)())completion
 {
-    void (^goTo)(UIViewController *) = ^(UIViewController *viewController)
+    void (^performNavigation)(UIViewController *) = ^(UIViewController *viewController)
     {
-        NSAssert([viewController isKindOfClass:[UIViewController class]], @"non-UIViewController specified as destination for navigation");
-        [self displayResultOfNavigation:viewController];
+        UIViewController *alternateDestination = nil;
+        BOOL shouldNavigateToAlternateDestination = NO;
 
-        if ( completion != nil )
+        if ([navigationDestination respondsToSelector:@selector(shouldNavigateWithAlternateDestination:)])
         {
-            completion();
+            shouldNavigateToAlternateDestination = [navigationDestination shouldNavigateWithAlternateDestination:&alternateDestination];
+        }
+
+        if ( shouldNavigateToAlternateDestination && alternateDestination != nil )
+        {
+            [self navigateToDestination:alternateDestination completion:completion];
+        }
+        else
+        {
+            NSAssert([viewController isKindOfClass:[UIViewController class]], @"non-UIViewController specified as destination for navigation");
+            [self displayResultOfNavigation:viewController];
+
+            if ( completion != nil )
+            {
+                completion();
+            }
         }
     };
 
-    if ([navigationDestination respondsToSelector:@selector(shouldNavigateWithAlternateDestination:)])
+    if ([navigationDestination respondsToSelector:@selector(authorizationContext)] )
     {
-        UIViewController *alternateDestination = nil;
-        if ( [navigationDestination shouldNavigateWithAlternateDestination:&alternateDestination] )
-        {
-            if ( alternateDestination == nil )
-            {
-                goTo(navigationDestination);
-            }
-            else
-            {
-                [self navigateToDestination:alternateDestination completion:completion];
-            }
-        }
+        VAuthorizationContext context = [navigationDestination authorizationContext];
+        VAuthorizedAction *authorizedAction = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
+                                                        dependencyManager:self.dependencyManager];
+        [authorizedAction performFromViewController:self context:context completion:^
+         {
+            performNavigation(navigationDestination);
+        }];
     }
     else
     {
-        goTo(navigationDestination);
+        performNavigation(navigationDestination);
     }
 }
 

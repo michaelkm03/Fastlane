@@ -60,9 +60,4 @@
     [self.commentsUtilitiesDelegate editComment:comment];
 }
 
-- (void)didSelectActionRequiringLogin
-{
-    [self.commentsUtilitiesDelegate didSelectActionRequiringLogin];
-}
-
 @end

@@ -23,7 +23,6 @@
 #import "VTrackingManager.h"
 
 // Login
-#import "VAuthorizationViewControllerFactory.h"
 #import "VRootViewController.h"
 
 @interface VWorkspacePresenter () <VWorkspaceFlowControllerDelegate>
@@ -43,13 +42,6 @@
 
 - (void)present
 {
-    UIViewController *loginViewController = [VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]];
-    if (loginViewController != nil)
-    {
-        [self.viewControllerToPresentOn presentViewController:loginViewController animated:YES completion:nil];
-        return;
-    }
-    
     VAlertController *alertControler = [VAlertController actionSheetWithTitle:nil message:nil];
     [alertControler addAction:[VAlertAction cancelButtonWithTitle:NSLocalizedString(@"CancelButton", @"Cancel button") handler:^(VAlertAction *action)
                                {
