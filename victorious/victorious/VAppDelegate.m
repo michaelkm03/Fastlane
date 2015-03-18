@@ -30,7 +30,6 @@
 #import "VApplicationTracking.h"
 #import "VFlurryTracking.h"
 #import "VGoogleAnalyticsTracking.h"
-#import "VFirstInstallManager.h"
 #import "VPurchaseManager.h"
 
 @import AVFoundation;

@@ -203,6 +203,8 @@ static NSString * const kNotificationIDKey = @"notification_id";
         [scaffold navigateToDeeplinkURL:self.queuedURL];
         self.queuedURL = nil;
     }
+    
+    [self.sessionTimer appInitDidCompleteWithSettingsManager:[VSettingManager sharedManager]];
 }
 
 - (void)showViewController:(UIViewController *)viewController animated:(BOOL)animated completion:(void(^)(void))completion
