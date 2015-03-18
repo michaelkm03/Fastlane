@@ -23,6 +23,7 @@ static const NSUInteger kMaxTextLength = 200;
 
 @property (nonatomic, weak) IBOutlet UITextView *textView;
 @property (nonatomic, weak) IBOutlet VTextBackgroundView *backgroundView;
+@property (nonatomic, strong) UITextView *hashtagTextview;
 
 @end
 
@@ -53,6 +54,20 @@ static const NSUInteger kMaxTextLength = 200;
 {
     _supplementaryHashtagText = supplementaryHashtagText;
     
+    if ( self.hashtagTextview != nil )
+    {
+        [self.hashtagTextview removeFromSuperview];
+        self.hashtagTextview = nil;
+    }
+    else
+    {
+        self.hashtagTextview = [[UITextView alloc] init];
+        NSDictionary *attribtues = [self hashtagTextAttributesWithDependencyManager:self.dependencyManager];
+        self.hashtagTextview.attributedText = [[NSAttributedString alloc] initWithString:supplementaryHashtagText
+                                                                                           attributes:attribtues];
+        [self.view addSubview:self.hashtagTextview];
+    }
+    
     [self updateTextBackground];
 }
 
@@ -69,21 +84,28 @@ static const NSUInteger kMaxTextLength = 200;
 - (void)updateTextBackground
 {
     NSDictionary *attributes = [self textAttributesWithDependencyManager:self.dependencyManager];
-    
-    [self.textView layoutIfNeeded];
-    NSArray *textLines = [self.textLayoutHelper textLinesFromText:self.textView.attributedText.string
-                                                   withAttributes:attributes
-                                                         maxWidth:CGRectGetWidth(self.textView.frame)];
-    
     NSMutableArray *backgroundFrames = [[NSMutableArray alloc] init];
-    CGFloat offset = kTextBaselineOffsetMultiplier * kTextLineHeight;
-    NSUInteger y = 0;
-    for ( NSString *line in textLines )
+    
+    for ( UITextView *textView in @[ self.textView, self.supplementaryHashtagText ?: [NSNull null] ] )
     {
-        CGSize size = [line sizeWithAttributes:attributes];
-        CGFloat width = [line isEqual:textLines.lastObject] ? size.width : CGRectGetWidth(self.view.frame);
-        CGRect rect = CGRectMake( 0, offset + (y++) * (size.height + 2), width, size.height );
-        [backgroundFrames addObject:[NSValue valueWithCGRect:rect]];
+        if ( ![textView isKindOfClass:[UITextView class]] )
+        {
+            continue;
+        }
+        [textView layoutIfNeeded];
+        NSArray *textLines = [self.textLayoutHelper textLinesFromText:textView.attributedText.string
+                                                       withAttributes:attributes
+                                                             maxWidth:CGRectGetWidth(textView.frame)];
+        
+        CGFloat offset = kTextBaselineOffsetMultiplier * kTextLineHeight;
+        NSUInteger y = 0;
+        for ( NSString *line in textLines )
+        {
+            CGSize size = [line sizeWithAttributes:attributes];
+            CGFloat width = [line isEqual:textLines.lastObject] ? size.width : CGRectGetWidth(self.view.frame);
+            CGRect rect = CGRectMake( 0, offset + (y++) * (size.height + 2), width, size.height );
+            [backgroundFrames addObject:[NSValue valueWithCGRect:rect]];
+        }
     }
     
     self.backgroundView.backgroundFrameColor = [UIColor whiteColor];
