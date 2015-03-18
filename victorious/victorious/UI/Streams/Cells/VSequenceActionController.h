@@ -59,9 +59,9 @@ typedef NS_ENUM(NSInteger, VDefaultVideoEdit)
  *  @param sequence             A valid sequence. Can't be nil.
  *  @param dependencyManager    A valid dependency manager.
  */
-- (void)showRemixersOnnNavigationController:(UINavigationController *)navigationController
-                                   sequence:(VSequence *)sequence
-                       andDependencyManager:(VDependencyManager *)dependencyManager;
+- (void)showRemixersOnNavigationController:(UINavigationController *)navigationController
+                                  sequence:(VSequence *)sequence
+                      andDependencyManager:(VDependencyManager *)dependencyManager;
 
 - (void)repostActionFromViewController:(UIViewController *)viewController
                                   node:(VNode *)node;

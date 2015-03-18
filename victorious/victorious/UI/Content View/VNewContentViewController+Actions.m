@@ -260,9 +260,9 @@
             [contentViewController dismissViewControllerAnimated:YES
                                                       completion:^
              {
-                 [self.sequenceActionController showRemixersOnnNavigationController:contentViewController.navigationController
-                                                                           sequence:self.viewModel.sequence
-                                                               andDependencyManager:self.dependencyManager];
+                 [self.sequenceActionController showRemixersOnNavigationController:contentViewController.navigationController
+                                                                          sequence:self.viewModel.sequence
+                                                              andDependencyManager:self.dependencyManager];
              }];
         };
         [actionItems addObject:remixItem];

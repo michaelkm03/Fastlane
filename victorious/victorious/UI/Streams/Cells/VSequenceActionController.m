@@ -151,7 +151,7 @@
                          completion:completion];
 }
 
-- (void)showRemixersOnnNavigationController:(UINavigationController *)navigationController
+- (void)showRemixersOnNavigationController:(UINavigationController *)navigationController
                                    sequence:(VSequence *)sequence
                        andDependencyManager:(VDependencyManager *)dependencyManager
 {
