@@ -530,16 +530,6 @@ static inline UIViewAnimationOptions animationOptionsWithCurve(UIViewAnimationCu
 - (IBAction)done:(id)sender
 {
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    
-#warning Hardcoded for testing only:
-    if ( YES )
-    {
-        self.registrationModel.profileImageURL = [NSURL URLWithString:@""];
-        self.registrationModel.locationText = @"LOCATION";
-        self.registrationModel.taglineText = @"TAG LING";
-        [self performProfileCreationWithRegistrationModel:self.registrationModel];
-        return;
-    }
 
     if ([self shouldCreateProfile])
     {

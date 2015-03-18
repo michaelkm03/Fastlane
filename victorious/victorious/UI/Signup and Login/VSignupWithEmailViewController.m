@@ -226,11 +226,6 @@
 {
     [[self view] endEditing:YES];
     
-#warning Skipping validation for testing only:
-    [self performSignupWithEmail:[NSString stringWithFormat:@"user_%@@user.com", @( arc4random() % 10000000000 )]
-                        password:[NSString stringWithFormat:@"%@", @( 10000000000 + arc4random() % 10000000000 )]];
-    return;
-    
     if ([self shouldSignUp])
     {
         // Let the User Know Something Is Happening

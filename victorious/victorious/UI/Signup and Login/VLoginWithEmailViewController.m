@@ -241,10 +241,6 @@
 - (IBAction)login:(id)sender
 {
     [[self view] endEditing:YES];
-    
-#warning Hardocded test with existing user on dev-victorious
-    [self performLoginWithUsername:@"user@user.com" password:@"password"];
-    return;
 
     if ([self shouldLogin])
     {
