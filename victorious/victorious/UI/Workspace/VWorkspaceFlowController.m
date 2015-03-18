@@ -245,6 +245,11 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
 
 #pragma mark - VNavigationDestination
 
+- (VAuthorizationContext)authorizationContext
+{
+    return VAuthorizationContextCreatePost;
+}
+
 - (BOOL)shouldNavigateWithAlternateDestination:(UIViewController *__autoreleasing *)alternateViewController
 {
     self.workspacePresenter = [VWorkspacePresenter workspacePresenterWithViewControllerToPresentOn:[VRootViewController rootViewController]];

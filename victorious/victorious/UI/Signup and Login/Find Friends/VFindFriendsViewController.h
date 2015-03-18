@@ -8,11 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
+@class VDependencyManager;
 
 @interface VFindFriendsViewController : UIViewController
 
 @property (nonatomic) BOOL shouldAutoselectNewFriends; ///< If YES, new friends will be automatically selected as they're displayed
 
-+ (VFindFriendsViewController *)newFindFriendsViewController;
++ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager;
 
 @end

@@ -40,8 +40,13 @@ extern NSString * const VExperienceEnhancerBarDidRequireLoginNotification;
 
 @property (nonatomic, assign) BOOL enabled;
 
+@property (nonatomic, copy) void (^selectionBlock)(VExperienceEnhancer *selectedEnhancer, CGPoint selectionCenter);
+
 - (void)reloadData;
 
-@property (nonatomic, copy) void (^selectionBlock)(VExperienceEnhancer *selectedEnhancer, CGPoint selectionCenter);
+/**
+ Allows calling code to simulate the throwing of an emotive ballistc/experience enhancer.
+ */
+- (void)selectExperienceEnhancerAtIndex:(NSIndexPath *)indexPath;
 
 @end

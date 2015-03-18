@@ -7,11 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "VRegistration.h"
 
-@interface VEnterResetTokenViewController : UIViewController
+@class VDependencyManager;
 
-@property (nonatomic, strong)           NSString       *deviceToken;
-@property (nonatomic, strong)           NSString       *userToken;
+@interface VEnterResetTokenViewController : UIViewController <VRegistrationStep, VRegistrationStepDelegate>
+
+@property (nonatomic, strong) NSString *deviceToken;
+@property (nonatomic, strong) NSString *userToken;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 + (instancetype)enterResetTokenViewController;
 

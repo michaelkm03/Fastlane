@@ -25,9 +25,4 @@
  */
 - (void)editComment:(VComment *)comment;
 
-/**
- Calling code should show login prompt
- */
-- (void)didSelectActionRequiringLogin;
-
 @end
