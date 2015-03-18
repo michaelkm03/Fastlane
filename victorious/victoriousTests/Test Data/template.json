@@ -5,7 +5,7 @@
         "red": 51,
         "green": 153,
         "blue": 102,
-        "alpha": 1
+        "alpha": 255
     },
     "font.header": {
         "fontName": "STHeitiSC-Light",

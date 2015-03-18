@@ -85,21 +85,6 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
            failBlock:failed];
 }
 
-- (NSArray *)filteredArrayFromArray:(NSArray *)array withObjectsOfClass:(Class)class
-{
-    NSParameterAssert( class != nil );
-    if ( ![array isKindOfClass:[NSArray class]] || array == nil || array.count == 0 )
-    {
-        return @[];
-    }
-    
-    NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(id obj, NSDictionary *bindings)
-                              {
-                                  return [obj isKindOfClass:class];
-                              }];
-    return [array filteredArrayUsingPredicate:predicate];
-}
-
 #pragma mark - Login and status
 
 - (BOOL)mainUserProfileComplete

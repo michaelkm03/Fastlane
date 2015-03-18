@@ -129,7 +129,6 @@
 		032954AB1AA0FDB800698119 /* NSCharacterSet+VURLParts.m in Sources */ = {isa = PBXBuildFile; fileRef = 032954AA1AA0FDB800698119 /* NSCharacterSet+VURLParts.m */; };
 		0330D42B1A6F5BAE007EEEE4 /* NSURL+VPathHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 0330D42A1A6F5BAE007EEEE4 /* NSURL+VPathHelper.m */; };
 		033F77101A2D6B8A00E6A13A /* VUnreadMessageCountCoordinator.m in Sources */ = {isa = PBXBuildFile; fileRef = 033F770F1A2D6B8A00E6A13A /* VUnreadMessageCountCoordinator.m */; };
-		0343AF801A143E6D0025B9F8 /* VObjectManager+LoginTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0343AF7F1A143E6D0025B9F8 /* VObjectManager+LoginTests.m */; };
 		0343AF831A143F550025B9F8 /* AVAsset+OrientationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7976D0819FAE94300B5A145 /* AVAsset+OrientationTests.m */; };
 		0343AF841A143FD20025B9F8 /* NSDate+timeSinceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BE49323519E338CE00C0912E /* NSDate+timeSinceTests.m */; };
 		03449FE51A0C7EBB0070EC80 /* VSessionTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 03449FE41A0C7EBB0070EC80 /* VSessionTimer.m */; };
@@ -1047,7 +1046,6 @@
 		0330D42A1A6F5BAE007EEEE4 /* NSURL+VPathHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+VPathHelper.m"; sourceTree = "<group>"; };
 		033F770E1A2D6B8A00E6A13A /* VUnreadMessageCountCoordinator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUnreadMessageCountCoordinator.h; sourceTree = "<group>"; };
 		033F770F1A2D6B8A00E6A13A /* VUnreadMessageCountCoordinator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUnreadMessageCountCoordinator.m; sourceTree = "<group>"; };
-		0343AF7F1A143E6D0025B9F8 /* VObjectManager+LoginTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VObjectManager+LoginTests.m"; sourceTree = "<group>"; };
 		03449FE31A0C7EBB0070EC80 /* VSessionTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSessionTimer.h; sourceTree = "<group>"; };
 		03449FE41A0C7EBB0070EC80 /* VSessionTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSessionTimer.m; sourceTree = "<group>"; };
 		03484BFC192E9D2100403FB1 /* NSLayoutConstraint+CenterConstraints.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSLayoutConstraint+CenterConstraints.h"; sourceTree = "<group>"; };
@@ -4157,7 +4155,6 @@
 				D80BAB561A688673003A3068 /* VNodeFetcherTests.m */,
 				A7B98A431A267AAA00C58335 /* VNotificationSettingsStateManagerTests.m */,
 				A7D2881F1A2507A0006CF0EC /* VNotificationSettingsViewControllerTests.m */,
-				0343AF7F1A143E6D0025B9F8 /* VObjectManager+LoginTests.m */,
 				BE9674FB19E335060072E87A /* VObjectManagerStringTest.m */,
 				A7814A0919E5FD0600D89B90 /* VPasswordValidationTests.m */,
 				BE9674FC19E335060072E87A /* VPhotoFilterSerializationTests.m */,
@@ -5871,7 +5868,6 @@
 				A72005451A03073B00285A9C /* VFollowUserControlTests.m in Sources */,
 				A7672B9A1A1BFF150063AF46 /* VFirstInstallTests.m in Sources */,
 				A720053B1A03073B00285A9C /* VPasswordValidationTests.m in Sources */,
-				0343AF801A143E6D0025B9F8 /* VObjectManager+LoginTests.m in Sources */,
 				A72005411A03073B00285A9C /* VApplicationTrackingTests.m in Sources */,
 				A720053F1A03073B00285A9C /* VDiscoverViewControllerTests.m in Sources */,
 				A72005441A03073B00285A9C /* VExperienceEnhancerTests.m in Sources */,
