@@ -55,6 +55,27 @@ static const CGFloat kTimelineLabelPadding = 20.0f;
     [self prepareTrimControl];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    self.titleLabel.alpha = 1.0f;
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [UIView animateWithDuration:1.5f
+                          delay:2.0f
+         usingSpringWithDamping:1.0f
+          initialSpringVelocity:0.0f
+                        options:kNilOptions
+                     animations:^
+     {
+         self.titleLabel.alpha = 0.0f;
+     }
+                     completion:nil];
+}
+
 #pragma mark - Property Accessors
 
 - (void)setMaximumTrimDuration:(CMTime)maximumTrimDuration
