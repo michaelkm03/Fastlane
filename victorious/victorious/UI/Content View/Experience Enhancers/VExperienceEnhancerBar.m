@@ -12,7 +12,7 @@
 #import "VLargeNumberFormatter.h"
 #import "VObjectManager+Login.h"
 #import "VPurchaseManager.h"
-#import "VVoteType+Fetcher.h"
+#import "VVoteType.h"
 
 NSString * const VExperienceEnhancerBarDidRequireLoginNotification = @"VExperienceEnhancerBarDidRequiredLoginNotification";
 NSString * const VExperienceEnhancerBarDidRequirePurchasePrompt = @"VExperienceEnhancerBarDidRequirePurchasePrompt";

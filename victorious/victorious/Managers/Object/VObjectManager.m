@@ -31,7 +31,6 @@
 #import "VImageSearchResult.h"
 #import "VPollResult+RestKit.h"
 #import "VMessage+RestKit.h"
-#import "VVoteType+RestKit.h"
 #import "VNotification+RestKit.h"
 #import "VStream+RestKit.h"
 #import "VNotificationSettings+RestKit.h"
@@ -125,7 +124,6 @@
                                              [VPollResult descriptor],
                                              [VPollResult createPollResultDescriptor],
                                              [VPollResult byUserDescriptor],
-                                             [VVoteType descriptor],
                                              [VTracking descriptor],
                                              [VImageSearchResult descriptor]
                                              ]];

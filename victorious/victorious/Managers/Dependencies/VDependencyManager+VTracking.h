@@ -12,6 +12,7 @@ extern NSString * const VTrackingURLAppStartKey;
 extern NSString * const VTrackingURLAppStopKey;
 extern NSString * const VTrackingURLInitKey;
 extern NSString * const VTrackingURLInstallKey;
+extern NSString * const VTrackingURLBallisticCountKey;
 
 @interface VDependencyManager (VTracking)
 

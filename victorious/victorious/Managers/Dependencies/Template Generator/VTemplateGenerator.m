@@ -170,6 +170,7 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
                                                                   VTabMenuViewControllerMenuAppearanceKey: @{
                                                                           VDependencyManagerBackgroundKey: [self solidWhiteBackground],
                                                                           },
+                                                                  VScaffoldViewControllerContentViewComponentKey: [self contentViewComponent],
                                                                   };
     }
     else
@@ -184,13 +185,15 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
                                                                    VScaffoldViewControllerUserProfileViewComponentKey: [self profileScreen],
                                                                    VScaffoldViewControllerLightweightContentViewComponentKey: [self lightweightContentViewComponent],
                                                                    kSelectorKey: [self multiScreenSelectorKey],
+                                                                   VScaffoldViewControllerContentViewComponentKey: [self contentViewComponent],
                                                                    };
     }
 
     template[VDependencyManagerWorkspaceFlowKey] = [self workspaceFlowComponent];
     template[VScaffoldViewControllerNavigationBarAppearanceKey] = [self navigationBarAppearance];
     template[VStreamCollectionViewControllerCellComponentKey] = [self cellComponent];
-
+    template[@"vote_types"] = [self voteTypes];
+    
     return template;
 }
 
@@ -250,6 +253,49 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
              VDependencyManagerImageWorkspaceKey: [self imageWorkspaceComponent],
              VDependencyManagerVideoWorkspaceKey: [self videoWorkspaceComponent]
              };
+}
+
+- (NSDictionary *)contentViewComponent
+{
+    return @{
+             kClassNameKey: @"standard.contentView",
+             @"histogram_enabled": @NO,
+             };
+}
+
+- (NSArray *)voteTypes
+{
+    NSMutableArray *voteTypes = [[NSMutableArray alloc] init];
+    for ( NSDictionary *voteType in self.dataFromInitCall[@"votetypes"] )
+    {
+        NSMutableDictionary *templateVoteType = [@{
+                               kClassNameKey: @"animated.voteType",
+                               @"voteTypeID": voteType[@"id"],
+                               @"voteTypeName": voteType[@"name"],
+                               @"value": voteType[@"value"],
+                               @"images": @{
+                                       @"imageCount": @([voteType[@"frames"] integerValue]),
+                                       @"imageMacro": voteType[@"image_macro"],
+                                       @"scale": @([voteType[@"scale_factor"] integerValue]),
+                                       },
+                               @"animationDuration": @([voteType[@"animation_duration"] integerValue]),
+                               @"displayOrder": @([voteType[@"display_order"] integerValue]),
+                               @"flightDuration": @([voteType[@"flight_duration"] integerValue]),
+                               @"icon": voteType[@"icon"],
+                               @"isPaid": voteType[@"is_paid"],
+                               @"appleProductId": voteType[@"apple_product_id"],
+                               @"viewContentMode": voteType[@"view_content_mode"],
+                               @"tracking": voteType[@"tracking"],
+                               } mutableCopy];
+        
+        NSString *iconLarge = voteType[@"icon_large"];
+        if ( [iconLarge isKindOfClass:[NSString class]] )
+        {
+            templateVoteType[@"iconLarge"] = iconLarge;
+        }
+        [voteTypes addObject:templateVoteType];
+    }
+    return voteTypes;
 }
 
 - (NSArray *)videoTools

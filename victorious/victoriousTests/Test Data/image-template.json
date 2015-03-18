@@ -1,0 +1,18 @@
+{
+    "someComponent":
+    {
+        "name": "my.component",
+        "images":
+        {
+            "imageCount": 13,
+            "imageMacro": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/_static\/ballistics\/6\/images\/heart_XXXXX.png",
+            "scale": 1
+        }
+    },
+    "myImages":
+    {
+        "imageCount": 5,
+        "imageMacro": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/_static\/ballistics\/6\/images\/tomato_XXXXX.png",
+        "scale": 2
+    }
+}

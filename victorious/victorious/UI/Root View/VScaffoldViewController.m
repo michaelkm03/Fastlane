@@ -109,11 +109,14 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
 
     VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithSequence:sequence depenencyManager:self.dependencyManager];
     contentViewModel.deepLinkCommentId = commentId;
-    VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel
-                                                                                                   dependencyManager:self.dependencyManager];
+    VNewContentViewController *contentViewController = [self.dependencyManager contentViewControllerForKey:VScaffoldViewControllerContentViewComponentKey withViewModel:contentViewModel];
     contentViewController.placeholderImage = placeHolderImage;
     contentViewController.delegate = self;
-
+    
+    if ( contentViewController == nil )
+    {
+        return;
+    }
     VNavigationController *contentNav = [[VNavigationController alloc] initWithDependencyManager:self.dependencyManager];
     contentNav.innerNavigationController.viewControllers = @[contentViewController];
     contentNav.innerNavigationController.navigationBarHidden = YES;
