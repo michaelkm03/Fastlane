@@ -227,20 +227,18 @@
     if ([mediaURL v_hasImageExtension])
     {
         VImageToolController *imageToolController = [[VImageToolController alloc] initWithTools:[self.dependencyManager workspaceTools]];
-        NSNumber *initialImageEditStateNumber = [self.dependencyManager templateValueOfType:[NSNumber class] forKey:VImageToolControllerInitialImageEditStateKey];
-        if (initialImageEditStateNumber != nil)
+        if (self.initalEditState != nil)
         {
-             imageToolController.defaultImageTool = [initialImageEditStateNumber integerValue];
+             imageToolController.defaultImageTool = [self.initalEditState integerValue];
         }
         self.toolController = imageToolController;
     }
     else if ([mediaURL v_hasVideoExtension])
     {
         VVideoToolController *videoToolController = [[VVideoToolController alloc] initWithTools:[self.dependencyManager workspaceTools]];
-        NSNumber *initialVideoEditStateValue = [self.dependencyManager numberForKey:VVideoToolControllerInitalVideoEditStateKey];
-        if (initialVideoEditStateValue != nil)
+        if (self.initalEditState != nil)
         {
-            videoToolController.defaultVideoTool = [initialVideoEditStateValue integerValue];
+            videoToolController.defaultVideoTool = [self.initalEditState integerValue];
         }
         self.toolController = videoToolController;
     }

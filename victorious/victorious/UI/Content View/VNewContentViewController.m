@@ -1629,6 +1629,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
                                                     withSequence:self.viewModel.sequence
                                             andDependencyManager:self.dependencyManager
                                                   preloadedImage:nil
+                                                defaultVideoEdit:VDefaultVideoEditGIF
                                                       completion:^(BOOL finished)
          {
              [[VTrackingManager sharedInstance] setValue:VTrackingValueContentView

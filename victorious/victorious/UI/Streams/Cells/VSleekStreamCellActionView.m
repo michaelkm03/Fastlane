@@ -75,9 +75,9 @@ static const CGFloat VCommentButtonHeight = 32.0f;
 
 - (void)gifAction:(id)sender
 {
-    if ([self.sequenceActionsDelegate respondsToSelector:@selector(willRemixSequence:fromView:asGif:)])
+    if ([self.sequenceActionsDelegate respondsToSelector:@selector(willRemixSequence:fromView:videoEdit:)])
     {
-        [self.sequenceActionsDelegate willRemixSequence:self.sequence fromView:self asGif:YES];
+        [self.sequenceActionsDelegate willRemixSequence:self.sequence fromView:self videoEdit:VDefaultVideoEditGIF];
     }
 }
 
@@ -89,9 +89,9 @@ static const CGFloat VCommentButtonHeight = 32.0f;
 
 - (void)memeAction:(id)sender
 {
-    if ([self.sequenceActionsDelegate respondsToSelector:@selector(willRemixSequence:fromView:asGif:)])
+    if ([self.sequenceActionsDelegate respondsToSelector:@selector(willRemixSequence:fromView:videoEdit:)])
     {
-        [self.sequenceActionsDelegate willRemixSequence:self.sequence fromView:self asGif:NO];
+        [self.sequenceActionsDelegate willRemixSequence:self.sequence fromView:self videoEdit:VDefaultVideoEditSnapshot];
     }
 }
 
