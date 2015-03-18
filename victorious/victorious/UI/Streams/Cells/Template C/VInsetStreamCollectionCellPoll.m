@@ -13,14 +13,11 @@
 #import "VInsetStreamCollectionCellPoll.h"
 #import "VNode+Fetcher.h"
 #import "VSequence+Fetcher.h"
+#import "VStreamCellActionView.h"
 
 // IMPORTANT: these constants much match up with the heights of values from the VInsetStreamCollectionCellPoll.xib
 static const CGFloat kPollCellWidthRatio = 0.94375f; // 320/302
 static const CGFloat kPollContentRatio = 0.6688741722f; // 202/302
-static const CGFloat kHeaderHeight = 50.0f;
-static const CGFloat kActionViewHeight = 41.0f;
-static const CGFloat kTextNeighboringViewSeparatorHeight = 10.0f; // This represents the space between the comment label and the view below it and the distance between the caption textView and the view above it
-static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space between the label and textView. It's slightly smaller than the those separating the label and textview from their respective bottom and top to neighboring views so that the centers of words are better aligned
 
 @interface VInsetStreamCollectionCellPoll ()
 
@@ -70,7 +67,7 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {
     CGFloat width = floorf(CGRectGetWidth(bounds) * kPollCellWidthRatio);
-    CGFloat height = floorf(width * kPollContentRatio + kHeaderHeight + kTextNeighboringViewSeparatorHeight * 2.0f + kTextSeparatorHeight + kActionViewHeight); // width * kTemplateCPollContentRatio represents the desired media height
+    CGFloat height = floorf(width * kPollContentRatio + kInsetCellHeaderHeight + kInsetCellTextNeighboringViewSeparatorHeight * 2.0f + kInsetCellActionViewHeight); // width * kInsetCellPollContentRatio represents the desired media height
     return CGSizeMake(width, height);
 }
 

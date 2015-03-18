@@ -350,12 +350,15 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
     if ([self.capturedMediaURL v_hasImageExtension])
     {
         workspaceViewController = (VWorkspaceViewController *)[self.dependencyManager viewControllerForKey:VDependencyManagerImageWorkspaceKey];
+        workspaceViewController.initalEditState = [self.dependencyManager templateValueOfType:[NSNumber class] forKey:VImageToolControllerInitialImageEditStateKey];
         workspaceViewController.mediaURL = self.capturedMediaURL;
     }
     else if ([self.capturedMediaURL v_hasVideoExtension])
     {
         workspaceViewController = (VWorkspaceViewController *)[self.dependencyManager viewControllerForKey:VDependencyManagerVideoWorkspaceKey];
+        workspaceViewController.initalEditState = [self.dependencyManager templateValueOfType:[NSNumber class] forKey:VVideoToolControllerInitalVideoEditStateKey];
         workspaceViewController.mediaURL = self.capturedMediaURL;
+        
         VVideoToolController *videoToolController = (VVideoToolController *)workspaceViewController.toolController;
         videoToolController.videoToolControllerDelegate = self;
         videoToolController.mediaURL = self.capturedMediaURL;

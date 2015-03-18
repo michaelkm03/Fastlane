@@ -10,11 +10,15 @@
 
 #import "VSequenceActionsSender.h"
 
-@class VSequence;
+@class VSequence, VDependencyManager;
 
 @interface VStreamCellActionView : UIView <VSequenceActionsSender>
 
 @property (nonatomic, strong) VSequence *sequence;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
+
+- (UIButton *)addButtonWithImage:(UIImage *)image;
+
 @property (nonatomic, weak) id<VSequenceActionsDelegate> sequenceActionsDelegate;
 
 - (void)clearButtons;
@@ -22,5 +26,7 @@
 - (void)addRemixButton;
 - (void)addRepostButton;
 - (void)addMoreButton;
+
+@property (nonatomic, readonly) NSMutableArray *actionButtons;
 
 @end

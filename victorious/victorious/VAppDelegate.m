@@ -32,6 +32,7 @@
 #import "VGoogleAnalyticsTracking.h"
 #import "VFirstInstallManager.h"
 #import "VPurchaseManager.h"
+#import "UIStoryboard+VMainStoryboard.h"
 
 @import AVFoundation;
 @import MediaPlayer;
@@ -71,6 +72,11 @@ static BOOL isRunningTests(void) __attribute__((const));
     flurryTracking.unwantedParameterKeys = @[ VTrackingKeySequenceId, VTrackingKeyStreamId, VTrackingKeyTimeStamp ];
     [[VTrackingManager sharedInstance] addDelegate:flurryTracking];
 
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:kMainStoryboardName bundle:nil];
+    self.window.rootViewController = [storyboard instantiateInitialViewController];
+    [self.window makeKeyAndVisible];
+    
     return YES;
 }
 
@@ -120,7 +126,6 @@ static BOOL isRunningTests(void) __attribute__((const));
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
-    [[VThemeManager sharedThemeManager] updateToNewTheme];
     [[VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext saveToPersistentStore:nil];
 }
 
@@ -135,7 +140,6 @@ static BOOL isRunningTests(void) __attribute__((const));
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
-    [[VThemeManager sharedThemeManager] updateToNewTheme];
     [[VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext saveToPersistentStore:nil];
 }
 

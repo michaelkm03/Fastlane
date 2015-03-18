@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "VVoteSettings.h"
 
+@class VDependencyManager;
+
 //Settings
 extern NSString * const kVCaptureVideoQuality;
 extern NSString * const kVExportVideoQuality;
@@ -17,6 +19,8 @@ extern NSString * const kVMemeAndQuoteEnabled;
 extern NSString * const VSettingsChannelsEnabled;
 extern NSString * const VSettingsMarqueeEnabled;
 extern NSString * const VSettingsTemplateCEnabled;
+extern NSString * const VSettingsTemplateDEnabled;
+
 //Experiments
 extern NSString * const VExperimentsRequireProfileImage;
 extern NSString * const VExperimentsPauseVideoWhenCommenting;
@@ -37,17 +41,12 @@ extern NSString * const kVSupportEmail;
 
 @interface VSettingManager : NSObject
 
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
+
 + (instancetype)sharedManager;
 
-- (void)updateSettingsWithDictionary:(NSDictionary *)dictionary;
-- (NSInteger)variantForExperiment:(NSString *)experimentKey;
 - (BOOL)settingEnabledForKey:(NSString *)settingKey;
 
 - (NSURL *)urlForKey:(NSString *)key;
-
-- (NSString *)exportVideoQuality;
-- (NSString *)captureVideoQuality;
-
-- (NSString *)fetchMonetizationItemByKey:(NSString *)key;
 
 @end

@@ -55,6 +55,7 @@
 
 //Categories
 #import "NSArray+VMap.h"
+#import "NSString+VParseHelp.h"
 #import "UIImage+ImageCreation.h"
 #import "UIImageView+Blurring.h"
 #import "UIStoryboard+VMainStoryboard.h"
@@ -115,8 +116,10 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCell"
 {
     NSAssert([NSThread isMainThread], @"This method must be called on the main thread");
     
-    NSString *urlPathKey = [dependencyManager stringForKey:VStreamCollectionViewControllerStreamURLPathKey];
-    VStream *stream = [VStream streamForPath:urlPathKey inContext:dependencyManager.objectManager.managedObjectStore.mainQueueManagedObjectContext];
+    NSString *url = [dependencyManager stringForKey:VStreamCollectionViewControllerStreamURLPathKey];
+    NSString *path = [url v_pathComponent];
+    
+    VStream *stream = [VStream streamForPath:path inContext:dependencyManager.objectManager.managedObjectStore.mainQueueManagedObjectContext];
     stream.name = [dependencyManager stringForKey:VDependencyManagerTitleKey];
     
     VStreamCollectionViewController *streamCollectionVC = [self streamViewControllerForStream:stream];
@@ -380,7 +383,7 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCell"
         return;
     }
     
-    VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithUser:user];
+    VUserProfileViewController *profileViewController = [VUserProfileViewController rootDependencyProfileWithUser:user];
     [self.navigationController pushViewController:profileViewController animated:YES];
 }
 
@@ -463,6 +466,7 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCell"
     VSequence *sequence = (VSequence *)[self.currentStream.streamItems objectAtIndex:indexPath.row];
     VStreamCollectionCell *cell = (VStreamCollectionCell *)[self.streamCellFactory collectionView:self.collectionView cellForStreamItem:sequence atIndexPath:indexPath];
     
+
     if ( [cell conformsToProtocol:@protocol(VSequenceActionsSender)] )
     {
         cell.sequenceActionsDelegate = self.actionDelegate ?: self;
@@ -501,9 +505,14 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCell"
     [self.sequenceActionController showPosterProfileFromViewController:self sequence:sequence];
 }
 
-- (void)willRemixSequence:(VSequence *)sequence fromView:(UIView *)view
+- (void)willRemixSequence:(VSequence *)sequence fromView:(UIView *)view videoEdit:(VDefaultVideoEdit)defaultEdit
 {
-    [self.sequenceActionController showRemixOnViewController:self withSequence:sequence];
+    [self.sequenceActionController showRemixOnViewController:self
+                                                withSequence:sequence
+                                        andDependencyManager:[VRootViewController rootViewController].dependencyManager
+                                              preloadedImage:nil
+                                            defaultVideoEdit:defaultEdit
+                                                  completion:nil];
 }
 
 - (void)willShareSequence:(VSequence *)sequence fromView:(UIView *)view
