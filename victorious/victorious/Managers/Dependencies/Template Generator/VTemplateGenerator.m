@@ -20,7 +20,7 @@
 #import "VTabMenuViewController.h"
 #import "VDependencyManager+VNavigationMenuItem.h"
 
-#define BOTTOM_NAV_ENABLED 1
+#define BOTTOM_NAV_ENABLED 0
 #define CHANNELS_WITH_GROUP_STREAM_ENABLED 0
 #define ROUNDED_TOP_NAV_ENABLED 0
 #define TEMPLATE_ICON_PREFIX @"D_"
@@ -262,7 +262,7 @@ static NSString * const kVideoMuted = @"videoMuted";
     NSMutableArray *voteTypes = [[NSMutableArray alloc] init];
     for ( NSDictionary *voteType in self.dataFromInitCall[@"votetypes"] )
     {
-        [voteTypes addObject:@{
+        NSMutableDictionary *templateVoteType = [@{
                                kClassNameKey: @"animated.voteType",
                                @"voteTypeID": voteType[@"id"],
                                @"voteTypeName": voteType[@"name"],
@@ -277,9 +277,17 @@ static NSString * const kVideoMuted = @"videoMuted";
                                @"flightDuration": @([voteType[@"flight_duration"] integerValue]),
                                @"icon": voteType[@"icon"],
                                @"isPaid": voteType[@"is_paid"],
+                               @"appleProductId": voteType[@"apple_product_id"],
                                @"viewContentMode": voteType[@"view_content_mode"],
                                @"tracking": voteType[@"tracking"],
-                               }];
+                               } mutableCopy];
+        
+        NSString *iconLarge = voteType[@"icon_large"];
+        if ( [iconLarge isKindOfClass:[NSString class]] )
+        {
+            templateVoteType[@"iconLarge"] = iconLarge;
+        }
+        [voteTypes addObject:templateVoteType];
     }
     return voteTypes;
 }
