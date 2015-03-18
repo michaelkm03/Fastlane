@@ -114,8 +114,10 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCell"
 {
     NSAssert([NSThread isMainThread], @"This method must be called on the main thread");
     
-    NSString *urlPathKey = [dependencyManager stringForKey:VStreamCollectionViewControllerStreamURLPathKey];
-    VStream *stream = [VStream streamForPath:urlPathKey inContext:dependencyManager.objectManager.managedObjectStore.mainQueueManagedObjectContext];
+    NSString *url = [dependencyManager stringForKey:VStreamCollectionViewControllerStreamURLPathKey];
+    NSString *path = [self pathFromURL:url];
+    
+    VStream *stream = [VStream streamForPath:path inContext:dependencyManager.objectManager.managedObjectStore.mainQueueManagedObjectContext];
     stream.name = [dependencyManager stringForKey:VDependencyManagerTitleKey];
     
     VStreamCollectionViewController *streamCollectionVC = [self streamViewControllerForStream:stream];
@@ -141,6 +143,18 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCell"
     }
     
     return streamCollectionVC;
+}
+
++ (NSString *)pathFromURL:(NSString *)url
+{
+    NSRegularExpression *regex = [[NSRegularExpression alloc] initWithPattern:@"\\w+:\\/\\/[\\w\\.]+(\\/.*)$" options:0 error:nil];
+    NSTextCheckingResult *match = [regex firstMatchInString:url options:0 range:NSMakeRange(0, url.length)];
+    
+    if ( match == nil || [match numberOfRanges] == 0 )
+    {
+        return url;
+    }
+    return [url substringWithRange:[match rangeAtIndex:1]];
 }
 
 #pragma mark - View Heirarchy

@@ -18,6 +18,7 @@
 #import "VScaffoldViewController.h"
 #import "VSessionTimer.h"
 #import "VSettingManager.h"
+#import "VThemeManager.h"
 #import "VTracking.h"
 #import "TremorVideoAd.h"
 #import "VConstants.h"
@@ -205,6 +206,8 @@ static NSString * const kAdSystemsKey = @"ad_systems";
     
     self.dependencyManager = dependencyManager;
     self.sessionTimer.dependencyManager = self.dependencyManager;
+    [[VThemeManager sharedThemeManager] setDependencyManager:self.dependencyManager];
+    [[VSettingManager sharedManager] setDependencyManager:self.dependencyManager];
     [self.sessionTimer start];
     
     self.voteSettings = [[VVoteSettings alloc] init];
