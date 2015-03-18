@@ -190,7 +190,7 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
                                                                           VDependencyManagerBackgroundKey: [self solidWhiteBackground],
                                                                           },
                                                                   VDependencyManagerAccentColorKey: @{
-                                                                          kRedKey: @288,
+                                                                          kRedKey: @228,
                                                                           kGreenKey: @65,
                                                                           kBlueKey: @66,
                                                                           kAlphaKey: @1
@@ -662,7 +662,7 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
     NSMutableDictionary *fullProfileDetails = [[NSMutableDictionary alloc] initWithDictionary:@{
                                                                                             kClassNameKey: @"currentUserProfile.screen",
                                                                                             }];
-    [fullProfileDetails addEntriesFromDictionary:[self profileDetails]];
+    [fullProfileDetails addEntriesFromDictionary:[self profileConfiguration]];
     profileItem[kDestinationKey] = fullProfileDetails;
     if ( self.enabledTemplate == VTemplateTypeD )
     {
@@ -713,26 +713,26 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
     return [NSString stringWithFormat:@"/api/sequence/detail_list_by_category/%@/%%%%PAGE_NUM%%%%/%%%%ITEMS_PER_PAGE%%%%", categoryString];
 }
 
-- (NSDictionary *)profileDetails
+- (NSDictionary *)profileConfiguration
 {
-    NSMutableDictionary *profileDetails = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary *profileConfiguration = [[NSMutableDictionary alloc] init];
     if ( self.enabledTemplate == VTemplateTypeD )
     {
-        profileDetails[VDependencyManagerLinkColorKey] = @{
-                                                           kRedKey: @30,
-                                                           kGreenKey: @173,
-                                                           kBlueKey: @217,
-                                                           kAlphaKey: @1
-                                                           };
-        [profileDetails addEntriesFromDictionary:[self lightProfileDetails]];
+        profileConfiguration[VDependencyManagerLinkColorKey] = @{
+                                                                 kRedKey: @30,
+                                                                 kGreenKey: @173,
+                                                                 kBlueKey: @217,
+                                                                 kAlphaKey: @1
+                                                                 };
+        [profileConfiguration addEntriesFromDictionary:[self lightProfileDetails]];
     }
     else
     {
-        [profileDetails addEntriesFromDictionary:[self lightProfileDetails]];
+        [profileConfiguration addEntriesFromDictionary:[self lightProfileDetails]];
     }
-    profileDetails[VStreamCollectionViewControllerCellComponentKey] = [self cellComponent];
-    profileDetails[VDependencyManagerAccessoryScreensKey] = @[[self settingsMenuItem]];
-    return [profileDetails copy];
+    profileConfiguration[VStreamCollectionViewControllerCellComponentKey] = [self cellComponent];
+    profileConfiguration[VDependencyManagerAccessoryScreensKey] = @[[self settingsMenuItem]];
+    return [profileConfiguration copy];
 }
 
 - (NSDictionary *)darkProfileDetails
@@ -767,7 +767,7 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
                       kAlphaKey: @1
                       },
               VDependencyManagerAccentColorKey: @{
-                      kRedKey: @288,
+                      kRedKey: @228,
                       kGreenKey: @65,
                       kBlueKey: @66,
                       kAlphaKey: @1
@@ -787,7 +787,7 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
     NSMutableDictionary *fullProfileDetails = [[NSMutableDictionary alloc] initWithDictionary:@{
                                                                                                 kClassNameKey: @"userProfile.screen",
                                                                                                 }];
-    [fullProfileDetails addEntriesFromDictionary:[self profileDetails]];
+    [fullProfileDetails addEntriesFromDictionary:[self profileConfiguration]];
     
     return [NSDictionary dictionaryWithDictionary:fullProfileDetails];
 }

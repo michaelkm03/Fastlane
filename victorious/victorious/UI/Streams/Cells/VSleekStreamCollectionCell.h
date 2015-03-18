@@ -11,11 +11,12 @@
 
 @class VSleekStreamCellActionView;
 
-extern const CGFloat kTemplateDHeaderHeight;
-extern const CGFloat kTemplateDActionViewHeight;
-extern const CGFloat kTemplateDActionViewBottomConstraintHeight;
+//Subviews should use the following cell subview height values to determine desired and actual cell height
+extern const CGFloat kSleekCellHeaderHeight;
+extern const CGFloat kSleekCellActionViewHeight;
+extern const CGFloat kSleekCellActionViewBottomConstraintHeight; ///< The space between bottom of actionView and bottom of cell
 
-extern const CGFloat kTemplateDTextNeighboringViewSeparatorHeight;
+extern const CGFloat kSleekCellTextNeighboringViewSeparatorHeight; ///< The space between the top of the textView and the content and between the bottom of the comment label and the actionView
 
 @interface VSleekStreamCollectionCell : VStreamCollectionCell
 

@@ -86,7 +86,7 @@ static const CGFloat kActivityIndicatorShowDuration = 0.4f;
 {
     self.primaryColor = [UIColor grayColor];
     self.secondaryColor = [[self class] defaultSecondaryColor];
-    _cornerRadius = kCornderRadius;
+    self.layer.cornerRadius = kCornderRadius;
     [self updateAppearance];
 }
 
@@ -126,8 +126,6 @@ static const CGFloat kActivityIndicatorShowDuration = 0.4f;
             self.backgroundColor = [UIColor clearColor];
             break;
     }
-    
-    self.layer.cornerRadius = self.cornerRadius;
     
     self.transform = CGAffineTransformMakeScale( kStartScale, kStartScale );
     
@@ -175,8 +173,13 @@ static const CGFloat kActivityIndicatorShowDuration = 0.4f;
 
 - (void)setCornerRadius:(CGFloat)cornerRadius
 {
-    _cornerRadius = cornerRadius;
+    self.layer.cornerRadius = self.cornerRadius;
     [self updateAppearance];
+}
+
+- (CGFloat)cornerRadius
+{
+    return self.layer.cornerRadius;
 }
 
 - (void)applyAnimatedHighlight:(BOOL)highlighted

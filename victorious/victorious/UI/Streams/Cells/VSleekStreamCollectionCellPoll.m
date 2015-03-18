@@ -21,13 +21,14 @@
 
 @interface VSleekStreamCollectionCellPoll ()
 
+//Poll-specific datas
 @property (nonatomic, weak) VAnswer *firstAnswer;
 @property (nonatomic, weak) VAnswer *secondAnswer;
 
 @property (nonatomic, copy) NSURL *firstAssetUrl;
 @property (nonatomic, copy) NSURL *secondAssetUrl;
 
-@property (nonatomic, weak) IBOutlet UIView *captionContainerView;
+@property (nonatomic, weak) IBOutlet UIView *captionContainerView; ///< A view that will enclose the caption text view and expand to accomodate the cell text
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *captionContainerHeightConstraint;
 
 @end
@@ -40,7 +41,7 @@
     
     self.backgroundColor = [UIColor whiteColor];
     
-    self.actionViewBottomConstraint.constant = kTemplateDActionViewBottomConstraintHeight;
+    self.actionViewBottomConstraint.constant = kSleekCellActionViewBottomConstraintHeight;
 }
 
 - (void)dealloc
@@ -62,11 +63,7 @@
     [self setupMedia];
 }
 
-- (void)reloadCommentsCount
-{
-    [(VSleekStreamCellActionView *)self.actionView updateCommentsCount:[self.sequence commentCount]];
-}
-
+//Sets up poll content
 - (void)setupMedia
 {
     self.firstAssetUrl = [NSURL URLWithString: self.firstAnswer.thumbnailUrl];
@@ -85,12 +82,14 @@
 {
     [super setDescriptionText:text];
     
+    //Update constraints to accomodate newly passed in text
     BOOL zeroConstraints = !(!self.sequence.nameEmbeddedInContent.boolValue && text.length > 0);
-    CGFloat constraintValue = zeroConstraints ? 0.0f : kTemplateDTextNeighboringViewSeparatorHeight;
+    CGFloat constraintValue = zeroConstraints ? 0.0f : kSleekCellTextNeighboringViewSeparatorHeight;
     
     CGSize textSize = [text frameSizeForWidth:CGRectGetWidth(self.captionTextView.bounds)
                                 andAttributes:[[self class] sequenceDescriptionAttributesWithDependencyManager:self.dependencyManager]];
     
+    //Adjust container height to be textHeight + textView top and bottom inset. This will expand over the top of the poll images.
     self.captionContainerHeightConstraint.constant = constraintValue * 2 + textSize.height;
     self.captionTextViewTopConstraint.constant = constraintValue;
     self.captionTextViewBottomConstraint.constant = constraintValue;
@@ -98,16 +97,18 @@
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
-    [super setDependencyManager:dependencyManager];
-    self.captionContainerView.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
-    self.actionView.dependencyManager = dependencyManager;
-    self.actionView.layer.borderColor = [UIColor clearColor].CGColor;
+    if ( dependencyManager )
+    {
+        //Superclass method will take care of passing dependencyManager down to actionView
+        [super setDependencyManager:dependencyManager];
+        self.captionContainerView.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
+    }
 }
 
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {
     CGFloat width = CGRectGetWidth(bounds);
-    CGFloat height = floorf(width + kTemplateDHeaderHeight + kTemplateDActionViewHeight + kTemplateDActionViewBottomConstraintHeight);
+    CGFloat height = floorf(width + kSleekCellHeaderHeight + kSleekCellActionViewHeight + kSleekCellActionViewBottomConstraintHeight);
     return CGSizeMake(width, height);
 }
 
@@ -119,7 +120,10 @@
 + (NSDictionary *)sequenceDescriptionAttributesWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     NSMutableDictionary *attributes = [[NSMutableDictionary alloc] init];
-    attributes[ NSFontAttributeName ] = [dependencyManager fontForKey:VDependencyManagerHeading3FontKey];
+    if ( dependencyManager )
+    {
+        attributes[ NSFontAttributeName ] = [dependencyManager fontForKey:VDependencyManagerHeading3FontKey];
+    }
     attributes[ NSForegroundColorAttributeName ] = [UIColor whiteColor];
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     paragraphStyle.alignment = NSTextAlignmentCenter;

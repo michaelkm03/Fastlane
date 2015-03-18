@@ -14,12 +14,12 @@
 
 // IMPORTANT: these template C constants much match up with the heights of values from the VStreamCollectionCell-C xib
 static const CGFloat kAspectRatio = 0.94375f; // 320/302
-static const CGFloat kHeaderHeight = 50.0f;
-static const CGFloat kActionViewHeight = 41.0f;
+const CGFloat kInsetCellHeaderHeight = 50.0f;
+const CGFloat kInsetCellActionViewHeight = 41.0f;
 static const CGFloat kTextViewInset = 22.0f; // Needs to be sum of textview inset from left and right
 
 // Use these 2 constants to adjust the spacing between the caption and comment count as well as the distance between the caption and the view above it and the comment label and the view below it
-static const CGFloat kTextNeighboringViewSeparatorHeight = 10.0f; // This represents the space between the comment label and the view below it and the distance between the caption textView and the view above it
+const CGFloat kInsetCellTextNeighboringViewSeparatorHeight = 10.0f; // This represents the space between the comment label and the view below it and the distance between the caption textView and the view above it
 static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space between the label and textView. It's slightly smaller than the those separating the label and textview from their respective bottom and top to neighboring views so that the centers of words are better aligned
 
 @implementation VInsetStreamCollectionCell
@@ -31,8 +31,8 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
     self.backgroundColor = [UIColor whiteColor];
         
     self.commentsLeftConstraint.constant = -VStreamCollectionCellTextViewLineFragmentPadding;
-    self.commentLabelBottomConstraint.constant = kTextNeighboringViewSeparatorHeight;
-    self.captionTextViewTopConstraint.constant = kTextNeighboringViewSeparatorHeight;
+    self.commentLabelBottomConstraint.constant = kInsetCellTextNeighboringViewSeparatorHeight;
+    self.captionTextViewTopConstraint.constant = kInsetCellTextNeighboringViewSeparatorHeight;
 }
 
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
@@ -40,7 +40,7 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
     CGFloat width = CGRectGetWidth(bounds);
     
     width *= kAspectRatio;
-    CGFloat height = width + kHeaderHeight + kActionViewHeight + kTextNeighboringViewSeparatorHeight * 2.0f; // Width represents the desired media height, there are 2 neighboring separators (top to textview and bottom to comment label)
+    CGFloat height = width + kInsetCellHeaderHeight + kInsetCellActionViewHeight + kInsetCellTextNeighboringViewSeparatorHeight * 2.0f; // Width represents the desired media height, there are 2 neighboring separators (top to textview and bottom to comment label)
     return CGSizeMake(width, height);
 }
 
