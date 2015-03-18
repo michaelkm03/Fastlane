@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "VSequenceActionController.h" // for VDefaultVideoEdit
 
 @class VSequence, VHashtag;
 
@@ -35,7 +36,7 @@
 
 - (void)selectedUserOnSequence:(VSequence *)sequence fromView:(UIView *)view;
 
-- (void)willRemixSequence:(VSequence *)sequence fromView:(UIView *)view asGif:(BOOL)gif;
+- (void)willRemixSequence:(VSequence *)sequence fromView:(UIView *)view videoEdit:(VDefaultVideoEdit)defaultEdit;
 
 - (void)willShareSequence:(VSequence *)sequence fromView:(UIView *)view;
 

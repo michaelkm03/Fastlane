@@ -466,12 +466,14 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCellC
     [self.sequenceActionController showPosterProfileFromViewController:self sequence:sequence];
 }
 
-- (void)willRemixSequence:(VSequence *)sequence fromView:(UIView *)view asGif:(BOOL)gif
+- (void)willRemixSequence:(VSequence *)sequence fromView:(UIView *)view videoEdit:(VDefaultVideoEdit)defaultEdit
 {
-#warning Hacktastic
     [self.sequenceActionController showRemixOnViewController:self
                                                 withSequence:sequence
-                                        andDependencyManager:[VRootViewController rootViewController].dependencyManager];
+                                        andDependencyManager:[VRootViewController rootViewController].dependencyManager
+                                              preloadedImage:nil
+                                            defaultVideoEdit:defaultEdit
+                                                  completion:nil];
 }
 
 - (void)willShareSequence:(VSequence *)sequence fromView:(UIView *)view

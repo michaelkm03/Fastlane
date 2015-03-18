@@ -132,9 +132,9 @@ static CGFloat const kRepostedDisabledAlpha     = 0.3f;
 {
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRemix];
     
-    if ([self.sequenceActionsDelegate respondsToSelector:@selector(willRemixSequence:fromView:asGif:)])
+    if ([self.sequenceActionsDelegate respondsToSelector:@selector(willRemixSequence:fromView:videoEdit:)])
     {
-        [self.sequenceActionsDelegate willRemixSequence:self.sequence fromView:self asGif:YES];
+        [self.sequenceActionsDelegate willRemixSequence:self.sequence fromView:self videoEdit:VDefaultVideoEditGIF];
     }
 }
 
