@@ -44,8 +44,6 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
 
         [self updateSettings:[VSettingManager sharedManager] withResponsePayload:fullResponse[kVPayloadKey]];
         
-        [self updateSettings:[VSettingManager sharedManager] withResultObjects:resultObjects];
-        
         if (success)
         {
             success(operation, fullResponse, resultObjects);
@@ -88,17 +86,6 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
     {
         [settingsManager updateSettingsWithDictionary:experiments];
     }
-}
-
-- (void)updateSettings:(VSettingManager *)settingsManager withResultObjects:(NSArray *)resultObjects
-{
-    if ( ![resultObjects isKindOfClass:[NSArray class]] || resultObjects == nil || resultObjects.count == 0 )
-    {
-        return;
-    }
-    
-    NSArray *voteTypes = [self filteredArrayFromArray:resultObjects withObjectsOfClass:[VVoteType class]];
-    settingsManager.voteSettings.voteTypes = voteTypes;
 }
 
 - (NSArray *)filteredArrayFromArray:(NSArray *)array withObjectsOfClass:(Class)class

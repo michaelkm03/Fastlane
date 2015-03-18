@@ -186,6 +186,7 @@ static NSString * const kVideoMuted = @"videoMuted";
     template[VDependencyManagerWorkspaceFlowKey] = [self workspaceFlowComponent];
     template[VScaffoldViewControllerNavigationBarAppearanceKey] = [self navigationBarAppearance];
     template[VStreamCollectionViewControllerCellComponentKey] = [self cellComponent];
+    template[@"vote_types"] = [self voteTypes];
     
     return template;
 }
@@ -253,7 +254,6 @@ static NSString * const kVideoMuted = @"videoMuted";
     return @{
              kClassNameKey: @"standard.contentView",
              @"histogram_enabled": @NO,
-             @"vote_types": [self voteTypes],
              };
 }
 
@@ -263,6 +263,7 @@ static NSString * const kVideoMuted = @"videoMuted";
     for ( NSDictionary *voteType in self.dataFromInitCall[@"votetypes"] )
     {
         [voteTypes addObject:@{
+                               kClassNameKey: @"animated.voteType",
                                @"voteTypeID": voteType[@"id"],
                                @"voteTypeName": voteType[@"name"],
                                @"value": voteType[@"value"],
@@ -277,6 +278,7 @@ static NSString * const kVideoMuted = @"videoMuted";
                                @"icon": voteType[@"icon"],
                                @"isPaid": voteType[@"is_paid"],
                                @"viewContentMode": voteType[@"view_content_mode"],
+                               @"tracking": voteType[@"tracking"],
                                }];
     }
     return voteTypes;

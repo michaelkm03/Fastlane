@@ -14,6 +14,7 @@
 #import "VAsset.h"
 #import "VAnswer.h"
 #import "VPollResult.h"
+#import "VVoteType.h"
 #import "VNode+Fetcher.h"
 
 // Model Categories
@@ -112,7 +113,7 @@
             _type = VContentViewTypeImage;
         }
         
-        _experienceEnhancerController = [[VExperienceEnhancerController alloc] initWithSequence:sequence];
+        _experienceEnhancerController = [[VExperienceEnhancerController alloc] initWithSequence:sequence voteTypes:[dependencyManager voteTypes]];
 
         _currentNode = [sequence firstNode];
         
@@ -131,7 +132,7 @@
 
 - (id)init
 {
-    NSAssert(false, @"-init is not allowed. Use the designate initializer: \"-initWithSequence:\"");
+    NSAssert(false, @"-init is not allowed. Use the designated initializer: \"-initWithSequence:\"");
     return nil;
 }
 

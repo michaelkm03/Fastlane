@@ -7,7 +7,7 @@
 //
 
 #import "VExperienceEnhancer.h"
-#import "VVoteType+Fetcher.h"
+#import "VVoteType.h"
 #import "VTracking.h"
 
 @interface VExperienceEnhancer()
@@ -81,11 +81,7 @@
 
 - (NSArray *)trackingUrls
 {
-    if ( self.voteType.tracking.ballisticCount != nil )
-    {
-        return self.voteType.tracking.ballisticCount;
-    }
-    return @[];
+    return self.voteType.trackingURLs ?: @[];
 }
 
 @end
