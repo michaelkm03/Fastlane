@@ -77,4 +77,14 @@
 
 - (void)removeAllDelegates;
 
+/**
+ Shows alerts track events sent with `trackEvent:parameters:` method.  ** NON-PRODUCTION BUILDS ONLY **
+ */
+@property (nonatomic, assign) BOOL showTrackingEventAlerts;
+
+/**
+ Shows alerts track events sent with `startEvent:parameters:` and `endEvent:` methods.  ** NON-PRODUCTION BUILDS ONLY **
+ */
+@property (nonatomic, assign) BOOL showTrackingStartEndAlerts;
+
 @end

@@ -1,21 +1,21 @@
-/* Class = "IBUILabel"; text = "Find friends from your contacts"; ObjectID = "7dw-z9-qes"; */
-"7dw-z9-qes.text" = "Encuentra amigos entre tus contactos";
+/* Class = "UILabel"; text = "Find friends from your contacts"; ObjectID = "7dw-z9-qes"; */
+"7dw-z9-qes.text" = "Encuentra amigos en tus contactos";
 
-/* Class = "IBUIButton"; normalTitle = "Retry"; ObjectID = "F5x-Zn-Qdu"; */
-"F5x-Zn-Qdu.normalTitle" = "Reintentar";
+/* Class = "UIButton"; normalTitle = "Retry"; ObjectID = "F5x-Zn-Qdu"; */
+"F5x-Zn-Qdu.normalTitle" = "Vuelve a intentar";
 
-/* Class = "IBUIButton"; normalTitle = "Invite Your Friends"; ObjectID = "STB-yT-Q8k"; */
+/* Class = "UIButton"; normalTitle = "Invite Your Friends"; ObjectID = "STB-yT-Q8k"; */
 "STB-yT-Q8k.normalTitle" = "Invita a tus amigos";
 
-/* Class = "IBUIButton"; normalTitle = "Add All"; ObjectID = "hcw-4q-StV"; */
-"hcw-4q-StV.normalTitle" = "Agregar todo";
+/* Class = "UIButton"; normalTitle = "Add All"; ObjectID = "hcw-4q-StV"; */
+"hcw-4q-StV.normalTitle" = "Añadir todos";
 
-/* Class = "IBUILabel"; text = "Your Contacts Are safe with us! In order to find your friends, we need to send your contacts information to our servers using a secure connection."; ObjectID = "hgn-BR-Oom"; */
-"hgn-BR-Oom.text" = "¡Tus contactos están seguros con nosotros! Para poder encontrar a tus amigos, necesitamos enviar la información de tus contactos a nuestros servidores usando una conexión segura.";
+/* Class = "UILabel"; text = "Your Contacts Are safe with us! In order to find your friends, we need to send your contacts information to our servers using a secure connection."; ObjectID = "hgn-BR-Oom"; */
+"hgn-BR-Oom.text" = "¡Tus contactos están seguros con nosotros! Para encontrar a tus amigos, tenemos que enviar tu información de contacto a nuestros servidores usando una conexión segura";
 
-/* Class = "IBUILabel"; text = "Sorry, there was a problem accessing your friends list!"; ObjectID = "mIW-p6-1ZK"; */
-"mIW-p6-1ZK.text" = "¡Lo sentimos, hubo un problema al accesar a tu lista de amigos!";
+/* Class = "UILabel"; text = "Sorry, there was a problem accessing your friends list!"; ObjectID = "mIW-p6-1ZK"; */
+"mIW-p6-1ZK.text" = "Lo sentimos, ¡hubo un problema de acceso a tu lista de amigos!";
 
-/* Class = "IBUIButton"; normalTitle = "Access Your Contacts"; ObjectID = "tbC-61-nna"; */
-"tbC-61-nna.normalTitle" = "Ten acceso a tus contactos";
+/* Class = "UIButton"; normalTitle = "Access Your Contacts"; ObjectID = "tbC-61-nna"; */
+"tbC-61-nna.normalTitle" = "Acceder a tus contactos";
 

@@ -1,6 +1,6 @@
-
 /* Class = "UILabel"; text = "Label"; ObjectID = "EYL-wr-dlh"; */
-"EYL-wr-dlh.text" = "Label";
+"EYL-wr-dlh.text" = "Etiqueta";
 
 /* Class = "UIBarButtonItem"; title = "Continue"; ObjectID = "wbF-Jm-Fnh"; */
-"wbF-Jm-Fnh.title" = "Continue";
+"wbF-Jm-Fnh.title" = "Continuar";
+

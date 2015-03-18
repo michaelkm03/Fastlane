@@ -8,6 +8,7 @@
 
 #import "VStreamCellActionView.h"
 
+#import "VSequenceActionsDelegate.h"
 #import "VSequence+Fetcher.h"
 #import "VThemeManager.h"
 
@@ -91,9 +92,9 @@ static CGFloat const kRepostedDisabledAlpha     = 0.3f;
 
 - (void)shareAction:(id)sender
 {
-    if ([self.delegate respondsToSelector:@selector(willShareSequence:fromView:)])
+    if ([self.sequenceActionsDelegate respondsToSelector:@selector(willShareSequence:fromView:)])
     {
-        [self.delegate willShareSequence:self.sequence fromView:self];
+        [self.sequenceActionsDelegate willShareSequence:self.sequence fromView:self];
     }
 }
 
@@ -107,9 +108,9 @@ static CGFloat const kRepostedDisabledAlpha     = 0.3f;
 {
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRemix];
     
-    if ([self.delegate respondsToSelector:@selector(willRemixSequence:fromView:)])
+    if ([self.sequenceActionsDelegate respondsToSelector:@selector(willRemixSequence:fromView:)])
     {
-        [self.delegate willRemixSequence:self.sequence fromView:self];
+        [self.sequenceActionsDelegate willRemixSequence:self.sequence fromView:self];
     }
 }
 
@@ -119,9 +120,9 @@ static CGFloat const kRepostedDisabledAlpha     = 0.3f;
     [self.repostButton addTarget:self action:@selector(repostAction:) forControlEvents:UIControlEventTouchUpInside];
     
     BOOL hasRespoted = NO;
-    if ( [self.delegate respondsToSelector:@selector(hasRepostedSequence:)] )
+    if ( [self.sequenceActionsDelegate respondsToSelector:@selector(hasRepostedSequence:)] )
     {
-        hasRespoted = [self.delegate hasRepostedSequence:self.sequence];
+        hasRespoted = [self.sequenceActionsDelegate hasRepostedSequence:self.sequence];
     }
     
     self.repostButton.alpha = hasRespoted ? kRepostedDisabledAlpha : 1.0f;
@@ -131,20 +132,20 @@ static CGFloat const kRepostedDisabledAlpha     = 0.3f;
 
 - (void)repostAction:(id)sender
 {
-    if ( ![self.delegate respondsToSelector:@selector(willRepostSequence:fromView:completion:)] ||
-         ![self.delegate respondsToSelector:@selector(hasRepostedSequence:)] )
+    if ( ![self.sequenceActionsDelegate respondsToSelector:@selector(willRepostSequence:fromView:completion:)] ||
+         ![self.sequenceActionsDelegate respondsToSelector:@selector(hasRepostedSequence:)] )
     {
         return;
     }
     
-    if ( [self.delegate hasRepostedSequence:self.sequence] )
+    if ( [self.sequenceActionsDelegate hasRepostedSequence:self.sequence] )
     {
         return;
     }
     
     self.repostButton.alpha = kRepostedDisabledAlpha;
     
-    [self.delegate willRepostSequence:self.sequence fromView:self completion:^(BOOL didSucceed)
+    [self.sequenceActionsDelegate willRepostSequence:self.sequence fromView:self completion:^(BOOL didSucceed)
      {
          self.isAnimatingButton = YES;
          [self.repostButton setImage:[UIImage imageNamed:@"repostIcon-success-C"] forState:UIControlStateNormal];
@@ -188,9 +189,9 @@ static CGFloat const kRepostedDisabledAlpha     = 0.3f;
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectMoreActions parameters:nil];
     
     // TODO: Currently, this "More" button is just skipping ahead to the "Flag" actionsheet confirmation.  This may need to be sorted out in the future.
-    if ([self.delegate respondsToSelector:@selector(willFlagSequence:fromView:)])
+    if ([self.sequenceActionsDelegate respondsToSelector:@selector(willFlagSequence:fromView:)])
     {
-        [self.delegate willFlagSequence:self.sequence fromView:self];
+        [self.sequenceActionsDelegate willFlagSequence:self.sequence fromView:self];
     }
 }
 
