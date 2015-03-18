@@ -74,7 +74,7 @@ static CGFloat const kDirectoryInset = 5.0f;
 {
     [super viewDidLoad];
     
-    self.view.backgroundColor = [self.dependencyManager colorForKey:@"color.background"];
+    self.view.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     self.collectionView.backgroundColor = [UIColor clearColor];
     
     NSString *identifier = [VDirectoryGroupCell suggestedReuseIdentifier];
