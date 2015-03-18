@@ -299,7 +299,7 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
                 return;
             }
         }
-        
+
         if ( shouldNavigateToAlternateDestination && alternateDestination != nil )
         {
             [self navigateToDestination:alternateDestination completion:completion];
