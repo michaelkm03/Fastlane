@@ -68,6 +68,8 @@ static NSString * const kStoryboardName = @"EndCard";
 {
     [super viewDidLoad];
     
+    self.replayButton.titleLabel.numberOfLines = 3;
+    
     self.nextVideoBannerViewBottomMax = self.nextVideoBannerViewBottomConstraint.constant;
     [self.nextVideoBannerViewController configureWithDependencyManager:self.dependencyManager];
     
