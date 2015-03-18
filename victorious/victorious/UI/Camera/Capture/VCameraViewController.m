@@ -145,7 +145,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
     self.allowPhotos = YES;
     self.allowVideo = YES;
     self.videoEnabled = YES;
-    self.videoQuality = [[VSettingManager sharedManager] captureVideoQuality];
+    self.videoQuality = AVCaptureSessionPresetMedium;
     self.initialCaptureMode = self.videoQuality;
     self.state = VCameraViewControllerStateDefault;
     self.captureAnimationQueue = dispatch_queue_create("capture animation queue, waits for animation to transition to capture state", DISPATCH_QUEUE_SERIAL);

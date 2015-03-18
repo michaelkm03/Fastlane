@@ -160,7 +160,7 @@ static NSString * const kMacroReplacement = @"XXXXX";
     UIColor *color = [UIColor colorWithRed:[red CGFLOAT_VALUE] / 255.0f
                                      green:[green CGFLOAT_VALUE] / 255.0f
                                       blue:[blue CGFLOAT_VALUE] / 255.0f
-                                     alpha:[alpha CGFLOAT_VALUE]];
+                                     alpha:[alpha CGFLOAT_VALUE] / 255.0f];
     return color;
 }
 

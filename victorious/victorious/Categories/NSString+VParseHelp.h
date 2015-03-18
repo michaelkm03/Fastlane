@@ -18,4 +18,9 @@
 - (BOOL)isEmpty;
 - (BOOL)isEmptyWithCleanWhiteSpace:(BOOL)cleanWhileSpace;
 
+/**
+ If the string is a URL, this method returns the path component of that URL.
+ */
+- (NSString *)v_pathComponent;
+
 @end
