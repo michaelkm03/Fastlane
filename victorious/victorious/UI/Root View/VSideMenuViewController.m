@@ -50,7 +50,7 @@ static const CGFloat kContentParallaxMagnitude = 15;
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager nibName:(NSString *)nibName
 {
-    self = [super initWithDependencyManager:dependencyManager nibName:nibName];
+    self = [super initWithDependencyManager:dependencyManager];
     if ( self != nil )
     {
         _animationDuration = 0.35f;

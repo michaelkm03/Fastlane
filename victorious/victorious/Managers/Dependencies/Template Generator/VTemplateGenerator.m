@@ -18,6 +18,7 @@
 #import "VTranslucentBackground.h"
 #import "VSolidColorBackground.h"
 #import "VTabMenuViewController.h"
+#import "VFirstTimeInstallHelper.h"
 #import "VDependencyManager+VNavigationMenuItem.h"
 
 #define BOTTOM_NAV_ENABLED 0
@@ -90,6 +91,9 @@ static NSString * const kVideoMaxDuration = @"videoMaxDuration";
 static NSString * const kVideoMinDuration = @"videoMinDuration";
 static NSString * const kVideoMuted = @"videoMuted";
 
+// First-time User Video
+static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
+
 @interface VTemplateGenerator ()
 
 @property (nonatomic, strong) NSDictionary *dataFromInitCall;
@@ -127,9 +131,9 @@ static NSString * const kVideoMuted = @"videoMuted";
              if ([obj isKindOfClass:[NSDictionary class]])
              {
                  [template addEntriesFromDictionary:obj];
-                 
+
                  NSDictionary *accentColor = obj[VDependencyManagerAccentColorKey];
-                 
+
                  if ( accentColor == nil )
                  {
                      accentColor = @{
@@ -154,17 +158,19 @@ static NSString * const kVideoMuted = @"videoMuted";
              template[key] = obj;
          }
      }];
-    
+
     if (BOTTOM_NAV_ENABLED)
     {
         template[VDependencyManagerScaffoldViewControllerKey] = @{
                                                                   kClassNameKey: @"tabMenu.scaffold",
                                                                   kItemsKey:[self bottomNavMenuItems],
                                                                   VScaffoldViewControllerUserProfileViewComponentKey: [self profileScreen],
+                                                                  VScaffoldViewControllerLightweightContentViewComponentKey: [self lightweightContentViewComponent],
                                                                   kSelectorKey: [self multiScreenSelectorKey],
                                                                   VTabMenuViewControllerMenuAppearanceKey: @{
                                                                           VDependencyManagerBackgroundKey: [self solidWhiteBackground],
                                                                           },
+                                                                  VScaffoldViewControllerContentViewComponentKey: [self contentViewComponent],
                                                                   };
     }
     else
@@ -177,13 +183,16 @@ static NSString * const kVideoMuted = @"videoMuted";
                                                                    VScaffoldViewControllerMenuComponentKey: [self menuComponent],
                                                                    VStreamCollectionViewControllerCreateSequenceIconKey: (self.templateCEnabled ? [UIImage imageNamed:@"createContentButtonC"] : [UIImage imageNamed:@"createContentButton"]),
                                                                    VScaffoldViewControllerUserProfileViewComponentKey: [self profileScreen],
+                                                                   VScaffoldViewControllerLightweightContentViewComponentKey: [self lightweightContentViewComponent],
                                                                    kSelectorKey: [self multiScreenSelectorKey],
+                                                                   VScaffoldViewControllerContentViewComponentKey: [self contentViewComponent],
                                                                    };
     }
-    
+
     template[VDependencyManagerWorkspaceFlowKey] = [self workspaceFlowComponent];
     template[VScaffoldViewControllerNavigationBarAppearanceKey] = [self navigationBarAppearance];
     template[VStreamCollectionViewControllerCellComponentKey] = [self cellComponent];
+    template[@"vote_types"] = [self voteTypes];
     
     return template;
 }
@@ -209,7 +218,7 @@ static NSString * const kVideoMuted = @"videoMuted";
     NSDictionary *kSelectorKey = @{
                                    kClassNameKey: @"basic.multiScreenSelector",
                                    };
-    
+
     if ( ROUNDED_TOP_NAV_ENABLED )
     {
         kSelectorKey =  @{
@@ -244,6 +253,49 @@ static NSString * const kVideoMuted = @"videoMuted";
              VDependencyManagerImageWorkspaceKey: [self imageWorkspaceComponent],
              VDependencyManagerVideoWorkspaceKey: [self videoWorkspaceComponent]
              };
+}
+
+- (NSDictionary *)contentViewComponent
+{
+    return @{
+             kClassNameKey: @"standard.contentView",
+             @"histogram_enabled": @NO,
+             };
+}
+
+- (NSArray *)voteTypes
+{
+    NSMutableArray *voteTypes = [[NSMutableArray alloc] init];
+    for ( NSDictionary *voteType in self.dataFromInitCall[@"votetypes"] )
+    {
+        NSMutableDictionary *templateVoteType = [@{
+                               kClassNameKey: @"animated.voteType",
+                               @"voteTypeID": voteType[@"id"],
+                               @"voteTypeName": voteType[@"name"],
+                               @"value": voteType[@"value"],
+                               @"images": @{
+                                       @"imageCount": @([voteType[@"frames"] integerValue]),
+                                       @"imageMacro": voteType[@"image_macro"],
+                                       @"scale": @([voteType[@"scale_factor"] integerValue]),
+                                       },
+                               @"animationDuration": @([voteType[@"animation_duration"] integerValue]),
+                               @"displayOrder": @([voteType[@"display_order"] integerValue]),
+                               @"flightDuration": @([voteType[@"flight_duration"] integerValue]),
+                               @"icon": voteType[@"icon"],
+                               @"isPaid": voteType[@"is_paid"],
+                               @"appleProductId": voteType[@"apple_product_id"],
+                               @"viewContentMode": voteType[@"view_content_mode"],
+                               @"tracking": voteType[@"tracking"],
+                               } mutableCopy];
+        
+        NSString *iconLarge = voteType[@"icon_large"];
+        if ( [iconLarge isKindOfClass:[NSString class]] )
+        {
+            templateVoteType[@"iconLarge"] = iconLarge;
+        }
+        [voteTypes addObject:templateVoteType];
+    }
+    return voteTypes;
 }
 
 - (NSArray *)videoTools
@@ -465,6 +517,17 @@ static NSString * const kVideoMuted = @"videoMuted";
     }
 }
 
+- (NSDictionary *)lightweightContentViewComponent
+{
+    NSString *sequenceID = self.dataFromInitCall[@"experiments"][@"ftue_welcome_sequence_id"];
+    NSArray *trackingArray = self.dataFromInitCall[@"experiments"][@"ftue_welcome_tracking"][@"start"];
+    return @{
+             kClassNameKey: @"lightweight.contentView",
+             kFTUSequenceURLPath: [NSString stringWithFormat:@"/api/sequence/fetch/%@", sequenceID],
+             kFTUTrackingURLGroup:  trackingArray ?: @[]
+             };
+}
+
 - (NSDictionary *)menuComponent
 {
     return @{
@@ -643,7 +706,7 @@ static NSString * const kVideoMuted = @"videoMuted";
 {
     return @{ kClassNameKey: @"userProfile.screen" };
 }
-                
+
 - (NSDictionary *)homeScreen
 {
     NSMutableDictionary *homeScreen = [@{
@@ -677,13 +740,13 @@ static NSString * const kVideoMuted = @"videoMuted";
                 kReferenceIDKey: self.homeRecentID,
                 },
         } mutableCopy];
-    
+
     UIImage *headerImage = [self homeHeaderImage];
     if ( headerImage != nil )
     {
         homeScreen[kTitleImageKey] = headerImage;
     }
-    
+
     return homeScreen;
 }
 
@@ -705,7 +768,7 @@ static NSString * const kVideoMuted = @"videoMuted";
       kInitialKey: @YES,
       VStreamCollectionViewControllerStreamURLPathKey: [self urlPathForStreamCategories:[VUGCCategories() arrayByAddingObjectsFromArray:VOwnerCategories()]]
     };
-    
+
     NSNumber *marqueeEnabled = [self.dataFromInitCall valueForKeyPath:@"experiments.marquee_enabled"];
     if ( [marqueeEnabled isKindOfClass:[NSNumber class]] && [marqueeEnabled boolValue] )
     {
@@ -720,7 +783,7 @@ static NSString * const kVideoMuted = @"videoMuted";
 {
     NSNumber *channelsEnabledObject = [self.dataFromInitCall valueForKeyPath:@"experiments.channels_enabled"];
     const BOOL channelsEnabled = [channelsEnabledObject isKindOfClass:[NSNumber class]] && [channelsEnabledObject boolValue];
-    
+
     if ( CHANNELS_WITH_GROUP_STREAM_ENABLED && channelsEnabled )
     {
         NSDictionary *componentBase = @{ kIdentifierKey: @"Menu Channels",
@@ -752,7 +815,7 @@ static NSString * const kVideoMuted = @"videoMuted";
                           VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@channels%@", TEMPLATE_ICON_PREFIX, SELECTED_ICON_SUFFIX],
                           },
                   kDestinationKey: @{
-                          kClassNameKey: @"directory.screen",
+                          kClassNameKey: @"streamDirectory.screen",
                           kTitleKey: NSLocalizedString(@"Channels", nil),
                           VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/detail_list_by_stream/directory/0/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%"
                           },
@@ -931,6 +994,14 @@ static NSString * const kVideoMuted = @"videoMuted";
                       kAlphaKey: @1
                       },
               };
+}
+
+- (NSDictionary *)translucentDarkBackground
+{
+    return @{
+             kClassNameKey:@"translucent.background",
+             VTranslucentBackgroundBlurStyleKey: VTranslucentBackgroundBlurStyleDark,
+             };
 }
 
 @end

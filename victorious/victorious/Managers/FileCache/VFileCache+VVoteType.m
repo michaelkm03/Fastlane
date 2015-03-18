@@ -8,7 +8,7 @@
 
 #import "VVoteType.h"
 #import "VFileCache.h"
-#import "VVoteType+Fetcher.h"
+#import "VVoteType.h"
 
 NSString * const VVoteTypeFilepathFormat     = @"com.getvictorious.vote_types/%@";
 NSString * const VVoteTypeSpriteNameFormat   = @"sprite_%lu.png";
@@ -161,13 +161,13 @@ NSString * const VVoteTypeIconLargeName      = @"icon-large.png";
 
 - (NSString *)savePathForImage:(NSString *)imageName forVote:(VVoteType *)voteType
 {
-    NSString *localRootPath = [NSString stringWithFormat:VVoteTypeFilepathFormat, voteType.name];
+    NSString *localRootPath = [NSString stringWithFormat:VVoteTypeFilepathFormat, voteType.voteTypeName];
     return [localRootPath stringByAppendingPathComponent:imageName];
 }
 
 - (NSString *)savePathForVoteTypeSprite:(VVoteType *)voteType atFrameIndex:(NSUInteger)index
 {
-    NSString *localRootPath = [NSString stringWithFormat:VVoteTypeFilepathFormat, voteType.name];
+    NSString *localRootPath = [NSString stringWithFormat:VVoteTypeFilepathFormat, voteType.voteTypeName];
     NSString *fileName = [NSString stringWithFormat:VVoteTypeSpriteNameFormat, (unsigned long)index];
     return [localRootPath stringByAppendingPathComponent:fileName];
 }

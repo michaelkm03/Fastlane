@@ -16,7 +16,7 @@
 
 #import "VConversation.h"
 #import "VPollResult+RestKit.h"
-
+#import "VDependencyManager.h"
 #import "VThemeManager.h"
 #import "VSettingManager.h"
 #import "VVoteType.h"
@@ -40,12 +40,6 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
 {
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        [self updateTheme:[VThemeManager sharedThemeManager] withResponsePayload:fullResponse[kVPayloadKey]];
-
-        [self updateSettings:[VSettingManager sharedManager] withResponsePayload:fullResponse[kVPayloadKey]];
-        
-        [self updateSettings:[VSettingManager sharedManager] withResultObjects:resultObjects];
-        
         if (success)
         {
             success(operation, fullResponse, resultObjects);
@@ -59,46 +53,36 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
            failBlock:failed];
 }
 
-- (void)updateTheme:(VThemeManager *)themeManager withResponsePayload:(NSDictionary *)payload
+- (RKManagedObjectRequestOperation *)templateWithDependencyManager:(VDependencyManager *)parentDependencyManager
+                                                      successBlock:(VTemplateSuccessBlock)success
+                                                         failBlock:(VFailBlock)failed
 {
-    NSDictionary *newTheme = payload[kVAppearanceKey];
-    if (newTheme && [newTheme isKindOfClass:[NSDictionary class]])
+    VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        [themeManager setTheme:newTheme];
-    }
-}
-
-- (void)updateSettings:(VSettingManager *)settingsManager withResponsePayload:(NSDictionary *)payload
-{
-    NSDictionary *videoQuality = payload[kVVideoQualityKey];
-    if ([videoQuality isKindOfClass:[NSDictionary class]])
-    {
-        [settingsManager updateSettingsWithDictionary:videoQuality];
-    }
+        if ( success == nil )
+        {
+            return;
+        }
+        if ( ![fullResponse isKindOfClass:[NSDictionary class]] )
+        {
+            if ( failed != nil )
+            {
+                failed(operation, nil);
+            }
+        }
+        
+        NSDictionary *template = ((NSDictionary *)fullResponse)[kVPayloadKey];
+        VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:parentDependencyManager
+                                                                                    configuration:template
+                                                                dictionaryOfClassesByTemplateName:nil];
+        success(operation, fullResponse, dependencyManager);
+    };
     
-    NSString *app_store_url = payload[@"app_store_url"];
-    if (app_store_url)
-    {
-        NSDictionary *dict = @{@"url.appstore": app_store_url};
-        [settingsManager updateSettingsWithDictionary:dict];
-    }
-    
-    NSDictionary *experiments = payload[kVExperimentsKey];
-    if ([experiments isKindOfClass:[NSDictionary class]])
-    {
-        [settingsManager updateSettingsWithDictionary:experiments];
-    }
-}
-
-- (void)updateSettings:(VSettingManager *)settingsManager withResultObjects:(NSArray *)resultObjects
-{
-    if ( ![resultObjects isKindOfClass:[NSArray class]] || resultObjects == nil || resultObjects.count == 0 )
-    {
-        return;
-    }
-    
-    NSArray *voteTypes = [self filteredArrayFromArray:resultObjects withObjectsOfClass:[VVoteType class]];
-    settingsManager.voteSettings.voteTypes = voteTypes;
+    return [self GET:@"/api/template"
+              object:nil
+          parameters:nil
+        successBlock:fullSuccess
+           failBlock:failed];
 }
 
 - (NSArray *)filteredArrayFromArray:(NSArray *)array withObjectsOfClass:(Class)class

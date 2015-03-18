@@ -55,6 +55,7 @@
 
 //Categories
 #import "NSArray+VMap.h"
+#import "NSString+VParseHelp.h"
 #import "UIImage+ImageCreation.h"
 #import "UIImageView+Blurring.h"
 #import "UIStoryboard+VMainStoryboard.h"
@@ -74,7 +75,7 @@ static NSString * const kStreamCollectionStoryboardId = @"StreamCollection";
 
 NSString * const VStreamCollectionViewControllerStreamURLPathKey = @"streamUrlPath";
 NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"createSequenceIcon";
-NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCellComponent";
+NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCell";
 
 @interface VStreamCollectionViewController () <VMarqueeDelegate, VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout>
 
@@ -114,8 +115,10 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCellC
 {
     NSAssert([NSThread isMainThread], @"This method must be called on the main thread");
     
-    NSString *urlPathKey = [dependencyManager stringForKey:VStreamCollectionViewControllerStreamURLPathKey];
-    VStream *stream = [VStream streamForPath:urlPathKey inContext:dependencyManager.objectManager.managedObjectStore.mainQueueManagedObjectContext];
+    NSString *url = [dependencyManager stringForKey:VStreamCollectionViewControllerStreamURLPathKey];
+    NSString *path = [url v_pathComponent];
+    
+    VStream *stream = [VStream streamForPath:path inContext:dependencyManager.objectManager.managedObjectStore.mainQueueManagedObjectContext];
     stream.name = [dependencyManager stringForKey:VDependencyManagerTitleKey];
     
     VStreamCollectionViewController *streamCollectionVC = [self streamViewControllerForStream:stream];

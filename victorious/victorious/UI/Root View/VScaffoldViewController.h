@@ -28,6 +28,11 @@ extern NSString * const VScaffoldViewControllerContentViewComponentKey;
 extern NSString * const VScaffoldViewControllerUserProfileViewComponentKey;
 
 /**
+ The key that identifies the welcome view component in the VDependencyManager
+ */
+extern NSString * const VScaffoldViewControllerLightweightContentViewComponentKey;
+
+/**
  Abstract base class for view controllers that act as "scaffolding",
  meaning a root-level view controller that contains the other
  important component parts of the app: at minimum, a menu and a
@@ -54,7 +59,7 @@ extern NSString * const VScaffoldViewControllerUserProfileViewComponentKey;
 /**
  Initializes the receiver with a nib name and an instance of VDependencyManager
  */
-- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager nibName:(NSString *)nibName NS_DESIGNATED_INITIALIZER;
+//- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager nibName:(NSString *)nibName NS_DESIGNATED_INITIALIZER;
 
 /**
  Presents a content view for the specified VSequence object.
