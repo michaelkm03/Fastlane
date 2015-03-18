@@ -35,7 +35,7 @@
 {
     NSParameterAssert(assetURL != nil);
     self = [super init];
-    if (self)
+    if (self != nil)
     {
         _assetOriginalDuration = kCMTimeZero;
         _error = nil;

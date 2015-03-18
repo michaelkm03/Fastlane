@@ -28,7 +28,7 @@
     NSParameterAssert(player != nil);
     
     self = [super initWithFrame:CGRectZero];
-    if (self)
+    if (self != nil)
     {
         _player = player;
         [self playerLayer].player = _player;

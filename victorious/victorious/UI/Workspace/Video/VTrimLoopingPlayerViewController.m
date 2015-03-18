@@ -50,7 +50,7 @@
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nil bundle:nil];
-    if (self)
+    if (self != nil)
     {
         _player = [[AVPlayer alloc] init];
         _frameDuration = CMTimeMake(20, 600); // Default 30fps

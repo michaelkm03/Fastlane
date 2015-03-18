@@ -28,7 +28,7 @@
                       completion:(VAssetLoaderCompletion)completion
 {
     self = [super init];
-    if (self)
+    if (self != nil)
     {
         _completion = completion;
         _loadedAsset = nil;
