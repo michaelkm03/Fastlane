@@ -12,12 +12,12 @@
 
 @interface VInboxViewController : VFetchedResultsTableViewController
 
-@property (nonatomic, strong) VUnreadMessageCountCoordinator *messageCountCoordinator;
+//@property (nonatomic, strong) VUnreadMessageCountCoordinator *messageCountCoordinator;
 
 + (instancetype)inboxViewController;
 
 - (void)displayConversationForUser:(VUser *)user; ///< Pushes the conversation view for the given user onto the navigation controller
-- (void)toggleFilterControl:(NSInteger)idx;
+//- (void)toggleFilterControl:(NSInteger)idx;
 - (IBAction)userSearchAction:(id)sender;
 
 @end

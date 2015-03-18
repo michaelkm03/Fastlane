@@ -184,7 +184,8 @@ extern NSString * const VTrackingEventUserDidInviteFiendsWithSMS;
 extern NSString * const VTrackingEventUserDidSelectCreateMessage; 
 extern NSString * const VTrackingEventUserDidSendMessage; //< "Params: TextLength, MediaType"
 extern NSString * const VTrackingEventUserDidSelectMessage; 
-extern NSString * const VTrackingEventUserDidSelectUserFromSearchRecipient; 
+extern NSString * const VTrackingEventUserDidSelectNotification;
+extern NSString * const VTrackingEventUserDidSelectUserFromSearchRecipient;
 extern NSString * const VTrackingEventUserDidFlagConversation; 
 
 // Discover

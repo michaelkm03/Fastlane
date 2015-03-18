@@ -8,6 +8,8 @@
 
 #import "VTableViewCell.h"
 
+extern CGFloat const kVNotificationCellHeight;
+
 @class VNotification;
 
 @interface VNotificationCell : VTableViewCell
@@ -16,6 +18,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *notificationType;
-@property (strong, nonatomic) VNotification *notifcation;
+@property (strong, nonatomic) VNotification *notification;
 
 @end

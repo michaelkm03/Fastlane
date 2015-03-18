@@ -184,6 +184,7 @@ NSString * const VTrackingEventUserDidInviteFiendsWithSMS = @"UserDidInviteFiend
 NSString * const VTrackingEventUserDidSelectCreateMessage = @"UserDidSelectCreateMessage";
 NSString * const VTrackingEventUserDidSendMessage = @"UserDidSendMessage";
 NSString * const VTrackingEventUserDidSelectMessage = @"UserDidSelectMessage";
+NSString * const VTrackingEventUserDidSelectNotification = @"UserDidSelectNotification";
 NSString * const VTrackingEventUserDidSelectUserFromSearchRecipient = @"UserDidSelectUserFromSearchRecipient";
 NSString * const VTrackingEventUserDidFlagConversation = @"UserDidFlagConversation";
 

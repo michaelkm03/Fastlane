@@ -307,6 +307,7 @@
 		03FD87D919F96FB700D93BAA /* VSuggestedPersonCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03FD87D819F96FB700D93BAA /* VSuggestedPersonCollectionViewCell.xib */; };
 		03FD87E819FAC19300D93BAA /* VLightboxViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03FD87E719FAC19300D93BAA /* VLightboxViewController.xib */; };
 		03FDA09F197A0AEC00405361 /* CIImage+VImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 03FDA09E197A0AEC00405361 /* CIImage+VImage.m */; };
+		2B6B3F9A1AB8F1EB00AA32D7 /* VNotificationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B6B3F991AB8F1EB00AA32D7 /* VNotificationsViewController.m */; };
 		3F9B6657187F80780046F826 /* NSDate+timeSince.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F9B6656187F80780046F826 /* NSDate+timeSince.m */; };
 		6617DB3A19F3EB53008C1FF5 /* VContentPollCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6617DB3919F3EB53008C1FF5 /* VContentPollCell.xib */; };
 		669D07CA1A3CB8FA00491878 /* VTextToolViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 669D07C71A3CB8FA00491878 /* VTextToolViewController.m */; };
@@ -1338,6 +1339,8 @@
 		03FDA09E197A0AEC00405361 /* CIImage+VImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CIImage+VImage.m"; sourceTree = "<group>"; };
 		138B5A4A675BB6176F7DA761 /* Pods-victorious.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious.release.xcconfig"; path = "Pods/Target Support Files/Pods-victorious/Pods-victorious.release.xcconfig"; sourceTree = "<group>"; };
 		173ED609974346F850624A73 /* Pods-test.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-test.release.xcconfig"; path = "Pods/Target Support Files/Pods-test/Pods-test.release.xcconfig"; sourceTree = "<group>"; };
+		2B6B3F981AB8F1EB00AA32D7 /* VNotificationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNotificationsViewController.h; sourceTree = "<group>"; };
+		2B6B3F991AB8F1EB00AA32D7 /* VNotificationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNotificationsViewController.m; sourceTree = "<group>"; };
 		3F9B6655187F80780046F826 /* NSDate+timeSince.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+timeSince.h"; sourceTree = "<group>"; };
 		3F9B6656187F80780046F826 /* NSDate+timeSince.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+timeSince.m"; sourceTree = "<group>"; };
 		55FAA5574E7F158AB4EF865B /* Pods-victorious.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious.staging.xcconfig"; path = "Pods/Target Support Files/Pods-victorious/Pods-victorious.staging.xcconfig"; sourceTree = "<group>"; };
@@ -2548,6 +2551,8 @@
 				0314D3AB19B46B5E00FA363C /* VInboxContainerViewController.m */,
 				0314D3AC19B46B5E00FA363C /* VInboxViewController.h */,
 				0314D3AD19B46B5E00FA363C /* VInboxViewController.m */,
+				2B6B3F981AB8F1EB00AA32D7 /* VNotificationsViewController.h */,
+				2B6B3F991AB8F1EB00AA32D7 /* VNotificationsViewController.m */,
 				033F770E1A2D6B8A00E6A13A /* VUnreadMessageCountCoordinator.h */,
 				033F770F1A2D6B8A00E6A13A /* VUnreadMessageCountCoordinator.m */,
 			);
@@ -5300,6 +5305,7 @@
 				0358FCEE1A65E785004DD7A1 /* VScaffoldViewController.m in Sources */,
 				0314D4B819B46B5E00FA363C /* VVideoLightboxViewController.m in Sources */,
 				0314D4E319B46B5E00FA363C /* VFindTwitterFriendsTableViewController.m in Sources */,
+				2B6B3F9A1AB8F1EB00AA32D7 /* VNotificationsViewController.m in Sources */,
 				0314D07119B4670A00FA363C /* UIImage+Masking.m in Sources */,
 				A709642419F0A13800CE6633 /* VTracking+RestKit.m in Sources */,
 				A708C95B1A8067B9000EE1EE /* VContentRepopulateTransition.m in Sources */,

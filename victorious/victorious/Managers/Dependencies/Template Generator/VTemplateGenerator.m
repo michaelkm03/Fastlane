@@ -93,6 +93,7 @@ static NSString * const kVideoMuted = @"videoMuted";
 @property (nonatomic) BOOL templateCEnabled;
 @property (nonatomic, strong) NSString *firstMenuItemID;
 @property (nonatomic, strong) NSString *homeRecentID;
+@property (nonatomic, strong) NSString *inboxRecentID;
 @property (nonatomic, strong) NSString *communityRecentID;
 @property (nonatomic, strong) NSDictionary *accentColor;
 
@@ -108,6 +109,7 @@ static NSString * const kVideoMuted = @"videoMuted";
         _dataFromInitCall = initData;
         _firstMenuItemID = [[NSUUID UUID] UUIDString];
         _homeRecentID = [[NSUUID UUID] UUIDString];
+        _inboxRecentID = [[NSUUID UUID] UUIDString];
         _communityRecentID = [[NSUUID UUID] UUIDString];
         _templateCEnabled = [[_dataFromInitCall valueForKeyPath:@"experiments.template_c_enabled"] boolValue];
     }
@@ -544,6 +546,46 @@ static NSString * const kVideoMuted = @"videoMuted";
 
 - (NSDictionary *)inboxMenuItem
 {
+    
+    return @{ kIdentifierKey: @"Menu Inbox",
+              kTitleKey: NSLocalizedString(@"Inbox", @""),
+              kIconKey: @{
+                      VDependencyManagerImageURLKey: @"D_inbox",
+                      },
+              kCellComponentDirectoryItem: [self directoryCellComponentLight],
+              kDestinationKey: @{
+                      kClassNameKey: @"basic.multiScreen",
+                      kTitleKey: NSLocalizedString(@"Inbox", @""),
+                      kScreensKey: @[
+                              @{
+//                                  kIDKey: self.inboxRecentID,
+                                  kClassNameKey: @"inbox.screen",
+                                  kTitleKey: NSLocalizedString(@"Messages", @""),
+                                  },
+                              @{
+                                  kClassNameKey: @"notifications.screen",
+                                  kTitleKey: NSLocalizedString(@"Notifications", @""),
+                                  }
+                              ]
+                      },
+//              kInitialKey: @{
+//                      kReferenceIDKey: self.inboxRecentID,
+//                      },
+              };
+
+    
+  
+  
+    
+    /*
+    UIImage *headerImage = [self homeHeaderImage];
+    if ( headerImage != nil )
+    {
+        inboxScreen[kTitleImageKey] = headerImage;
+    }
+     */
+    
+    
     return @{
              kIdentifierKey: @"Menu Inbox",
              kTitleKey: NSLocalizedString(@"Inbox", @""),

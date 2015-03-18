@@ -129,7 +129,7 @@ NSString * const VInboxContainerViewControllerInboxPushReceivedNotification = @"
 
     if ( [inboxViewController isKindOfClass:[VInboxViewController class]] )
     {
-        inboxViewController.messageCountCoordinator = self.messageCountCoordinator;
+//        inboxViewController.messageCountCoordinator = self.messageCountCoordinator;
     }
 }
 

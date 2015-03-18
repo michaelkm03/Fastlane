@@ -12,6 +12,7 @@
 #import "VNotification+RestKit.h"
 #import "VUser+RestKit.h"
 
+CGFloat const kVNotificationCellHeight = 72;
 
 @implementation VNotificationCell
 
@@ -38,16 +39,16 @@
     self.selectionStyle = UITableViewCellSelectionStyleNone;
 }
 
-- (void)setNotifcation:(VNotification *)notifcation
+- (void)setNotifcation:(VNotification *)notification
 {
-    _notifcation = notifcation;
+    _notification = notification;
     
-    self.usernameLabel.text  = notifcation.user.name;
+    self.usernameLabel.text  = notification.user.name;
     
     [self.notificationType setImage:[UIImage imageNamed:@"user-icon"]];
     
     self.messageLabel.text = @"notification message goes here";
-    self.dateLabel.text = [notifcation.postedAt timeSince];
+    self.dateLabel.text = [notification.postedAt timeSince];
 }
 
 @end
