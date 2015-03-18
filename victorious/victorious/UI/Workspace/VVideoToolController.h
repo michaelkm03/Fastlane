@@ -44,11 +44,6 @@ typedef NS_ENUM(NSInteger, VVideoToolControllerInitialVideoEditState)
 @property (nonatomic, weak) id<VVideoToolControllerDelegate> videoToolControllerDelegate;
 
 /**
- *  The media URL to use for editing.
- */
-@property (nonatomic, strong) NSURL *mediaURL;
-
-/**
  *  The default video tool.
  */
 @property (nonatomic, assign) VVideoToolControllerInitialVideoEditState defaultVideoTool;

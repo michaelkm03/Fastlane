@@ -43,7 +43,9 @@ NSString * const VVideoToolControllerInitalVideoEditStateKey = @"VVideoToolContr
         __weak typeof(self) welf = self;
         snapshotTool.capturedSnapshotBlock = ^void(UIImage *previewImage, NSURL *capturedMediaURL)
         {
-            [welf.videoToolControllerDelegate videoToolController:self selectedSnapshotForEditing:previewImage renderedSnapshotURL:capturedMediaURL];
+            [welf.videoToolControllerDelegate videoToolController:self
+                                       selectedSnapshotForEditing:previewImage
+                                              renderedSnapshotURL:capturedMediaURL];
         };
     }
 }
@@ -95,7 +97,7 @@ NSString * const VVideoToolControllerInitalVideoEditStateKey = @"VVideoToolContr
     
     [self.tools enumerateObjectsUsingBlock:^(id <VWorkspaceTool> obj, NSUInteger idx, BOOL *stop)
      {
-         switch (self.defaultVideoTool)
+         if ([obj isKindOfClass:[VTrimVideoTool class]])
          {
              case VVideoToolControllerInitialVideoEditStateGIF:
                  if ([obj isKindOfClass:[VTrimVideoTool class]])
