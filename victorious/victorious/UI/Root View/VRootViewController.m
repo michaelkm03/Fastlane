@@ -34,6 +34,13 @@ static NSString * const kDeeplinkURLKey = @"deeplink";
 static NSString * const kNotificationIDKey = @"notification_id";
 static NSString * const kAdSystemsKey = @"ad_systems";
 
+typedef NS_ENUM(NSInteger, VAppLaunchState)
+{
+    VAppLaunchStateWaiting, ///< The app is waiting for a response from the server
+    VAppLaunchStateLaunching, ///< The app has received it's initial data from the server and is waiting for the scaffold to be displayed
+    VAppLaunchStateLaunched ///< The scaffold is displayed and we're fully launched
+};
+
 @interface VRootViewController () <VLoadingViewControllerDelegate>
 
 #warning Temporary
@@ -45,8 +52,7 @@ static NSString * const kAdSystemsKey = @"ad_systems";
 @property (nonatomic, strong) VSessionTimer *sessionTimer;
 @property (nonatomic, strong) NSURL *queuedURL; ///< A deeplink URL that came in before we were ready for it
 @property (nonatomic, strong) NSString *queuedNotificationID; ///< A notificationID that came in before we were ready for it
-@property (nonatomic) BOOL appLaunched; ///< YES when the app is fully initialized
-@property (nonatomic) BOOL appLaunching; ///< YES when VLoadingViewController has finished its job but the app hasn't fully initialized yet
+@property (nonatomic) VAppLaunchState launchState; ///< At what point in the launch lifecycle are we?
 
 @end
 
@@ -191,8 +197,7 @@ static NSString * const kAdSystemsKey = @"ad_systems";
 
 - (void)showLoadingViewController
 {
-    self.appLaunched = NO;
-    self.appLaunching = NO;
+    self.launchState = VAppLaunchStateWaiting;
     VLoadingViewController *loadingViewController = [VLoadingViewController loadingViewController];
     loadingViewController.delegate = self;
     loadingViewController.parentDependencyManager = [self parentDependencyManager];
@@ -216,7 +221,7 @@ static NSString * const kAdSystemsKey = @"ad_systems";
     VScaffoldViewController *scaffold = [self.dependencyManager scaffoldViewController];
     [self showViewController:scaffold animated:YES completion:^(void)
     {
-        self.appLaunched = YES;
+        self.launchState = VAppLaunchStateLaunched;
     }];
     
     if ( self.queuedURL != nil )
@@ -371,7 +376,7 @@ static NSString * const kAdSystemsKey = @"ad_systems";
 
 - (void)newSessionShouldStart:(NSNotification *)notification
 {
-    if ( !self.appLaunched )
+    if ( self.launchState != VAppLaunchStateLaunched )
     {
         return;
     }
@@ -410,9 +415,9 @@ static NSString * const kAdSystemsKey = @"ad_systems";
 
 - (void)loadingViewController:(VLoadingViewController *)loadingViewController didFinishLoadingWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    if ( loadingViewController == self.currentViewController && !self.appLaunching )
+    if ( loadingViewController == self.currentViewController && self.launchState == VAppLaunchStateWaiting )
     {
-        self.appLaunching = YES;
+        self.launchState = VAppLaunchStateLaunching;
         [self startAppWithDependencyManager:dependencyManager];
     }
 }
