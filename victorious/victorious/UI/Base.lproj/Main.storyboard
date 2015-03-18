@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1510" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="2yS-vh-N7a">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
@@ -353,7 +352,7 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <view opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" placeholderIntrinsicWidth="0.0" placeholderIntrinsicHeight="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="LDl-eN-NHa" userLabel="Numerical Badge" customClass="VNumericalBadgeView">
+                                                <view opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" misplaced="YES" placeholderIntrinsicWidth="0.0" placeholderIntrinsicHeight="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="LDl-eN-NHa" userLabel="Numerical Badge" customClass="VNumericalBadgeView">
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 </view>
                                             </subviews>
@@ -424,12 +423,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchImage.png" translatesAutoresizingMaskIntoConstraints="NO" id="o05-KB-ddg" userLabel="Background Image">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6O3-MC-OHv" userLabel="Background Container">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" secondItem="o05-KB-ddg" secondAttribute="width" multiplier="16:9" id="1zV-Fp-KVi"/>
-                                </constraints>
-                            </imageView>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
                             <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Internet Connection." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9lr-kw-Rjm">
                                 <rect key="frame" x="0.0" y="568" width="320" height="32"/>
                                 <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -444,18 +441,18 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="9lr-kw-Rjm" firstAttribute="leading" secondItem="eLu-Xq-owQ" secondAttribute="leading" id="2Cj-um-GQE"/>
+                            <constraint firstItem="6O3-MC-OHv" firstAttribute="top" secondItem="plz-61-Lg9" secondAttribute="top" id="2wG-p5-w5V"/>
                             <constraint firstItem="9lr-kw-Rjm" firstAttribute="top" secondItem="eLu-Xq-owQ" secondAttribute="bottom" id="7Fh-rp-XbZ"/>
                             <constraint firstAttribute="trailing" secondItem="9lr-kw-Rjm" secondAttribute="trailing" id="TKa-7M-X9u"/>
-                            <constraint firstItem="o05-KB-ddg" firstAttribute="leading" secondItem="eLu-Xq-owQ" secondAttribute="leading" priority="750" id="VQX-jy-0ox"/>
-                            <constraint firstAttribute="centerX" secondItem="o05-KB-ddg" secondAttribute="centerX" id="a8l-9H-b5s"/>
-                            <constraint firstAttribute="bottomMargin" relation="lessThanOrEqual" secondItem="o05-KB-ddg" secondAttribute="bottom" id="mhe-dI-NGH"/>
-                            <constraint firstAttribute="trailing" secondItem="o05-KB-ddg" secondAttribute="trailing" priority="750" id="sub-ga-Znw"/>
-                            <constraint firstItem="o05-KB-ddg" firstAttribute="top" secondItem="eLu-Xq-owQ" secondAttribute="top" id="yQd-sz-ySf"/>
+                            <constraint firstAttribute="trailing" secondItem="6O3-MC-OHv" secondAttribute="trailing" id="b9x-EX-zvc"/>
+                            <constraint firstItem="6O3-MC-OHv" firstAttribute="leading" secondItem="eLu-Xq-owQ" secondAttribute="leading" id="rQY-af-poU"/>
+                            <constraint firstItem="eWz-iW-3nF" firstAttribute="top" secondItem="6O3-MC-OHv" secondAttribute="bottom" id="rrS-lH-TBS"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="H23-6d-eXe"/>
+                    <nil key="simulatedStatusBarMetrics"/>
                     <connections>
-                        <outlet property="backgroundImageView" destination="o05-KB-ddg" id="qpx-45-A3v"/>
+                        <outlet property="backgroundContainer" destination="6O3-MC-OHv" id="iEn-7u-ZUI"/>
                         <outlet property="reachabilityLabel" destination="9lr-kw-Rjm" id="y8c-tl-kVF"/>
                         <outlet property="reachabilityLabelHeightConstraint" destination="kJt-2K-vfE" id="PI6-kz-5gC"/>
                         <outlet property="reachabilityLabelPositionConstraint" destination="7Fh-rp-XbZ" id="w6f-Ci-Jav"/>
@@ -1367,7 +1364,6 @@
     </scenes>
     <resources>
         <image name="Close" width="17" height="17"/>
-        <image name="LaunchImage.png" width="320" height="568"/>
         <image name="MessageCamera" width="22" height="23"/>
         <image name="PollCreateOr" width="48" height="52"/>
         <image name="PostCamera" width="34" height="26"/>

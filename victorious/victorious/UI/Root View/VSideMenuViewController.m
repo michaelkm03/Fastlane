@@ -20,6 +20,7 @@
 #import "VThemeManager.h"
 #import "UIImage+ImageEffects.h"
 #import "UIStoryboard+VMainStoryboard.h"
+#import "UIView+AutoLayout.h"
 
 @interface VSideMenuViewController ()
 
@@ -84,7 +85,7 @@
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    return [self initWithDependencyManager:dependencyManager nibName:NSStringFromClass([VSideMenuViewController class])];
+    return [self initWithDependencyManager:dependencyManager nibName:nil];
 }
 
 - (void)dealloc

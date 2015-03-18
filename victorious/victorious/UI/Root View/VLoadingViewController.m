@@ -18,6 +18,7 @@
 #import "VReachability.h"
 #import "VThemeManager.h"
 #import "VUserManager.h"
+#import "UIView+autolayout.h"
 
 // Monetization Networks
 #import "VAdViewController.h"
@@ -30,7 +31,7 @@ static const NSUInteger kRetryAttempts = 5;
 
 @interface VLoadingViewController()
 
-@property (nonatomic, weak) IBOutlet UIImageView *backgroundImageView;
+@property (weak, nonatomic) IBOutlet UIView *backgroundContainer;
 @property (nonatomic, weak) IBOutlet UILabel *reachabilityLabel;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *reachabilityLabelPositionConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *reachabilityLabelHeightConstraint;
@@ -60,7 +61,11 @@ static const NSUInteger kRetryAttempts = 5;
 {
     [super viewDidLoad];
     
-    self.backgroundImageView.image = [[VThemeManager sharedThemeManager] themedBackgroundImageForDevice];
+    UINib *launScreenNib = [UINib nibWithNibName:@"Launch Screen" bundle:nil];
+    UIView *launchScreenView = [[launScreenNib instantiateWithOwner:nil options:nil] firstObject];
+    launchScreenView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.backgroundContainer addSubview:launchScreenView];
+    [self.backgroundContainer v_addFitToParentConstraintsToSubview:launchScreenView];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kVReachabilityChangedNotification object:nil];
 }
