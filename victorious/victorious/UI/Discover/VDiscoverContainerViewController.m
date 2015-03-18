@@ -15,7 +15,6 @@
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Users.h"
 #import "VUser.h"
-#import "VAuthorizationViewControllerFactory.h"
 
 // Dependency Manager
 #import "VDependencyManager.h"
@@ -152,15 +151,6 @@
     [self.searchField becomeFirstResponder];
 }
 
-#pragma mark - VNavigationDestination
-
-- (BOOL)shouldNavigateWithAlternateDestination:(UIViewController *__autoreleasing *)alternateViewController
-{
-    [self.childViewController refresh:YES];
-
-    return YES;
-}
-
 #pragma mark - UITextFieldDelegate
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
@@ -182,6 +172,7 @@
     if ( [segue.destinationViewController conformsToProtocol:@protocol(VDiscoverViewControllerProtocol)] )
     {
         self.childViewController = (id<VDiscoverViewControllerProtocol>)segue.destinationViewController;
+        self.childViewController.dependencyManager = self.dependencyManager;
     }
 
     if ( [[segue identifier] isEqualToString:@"usersTagsSearchSegue"] )

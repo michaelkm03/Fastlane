@@ -34,12 +34,11 @@
 #import "VActionSheetViewController.h"
 #import "VActionSheetTransitioningDelegate.h"
 #import "VUserProfileViewController.h"
-#import "VReposterTableViewController.h"
 #import "VLoginViewController.h"
 #import "VStreamCollectionViewController.h"
-#import "VAuthorizationViewControllerFactory.h"
 #import "VSequenceActionController.h"
 #import "VHashtagStreamCollectionViewController.h"
+#import "VAuthorizedAction.h"
 
 @interface VNewContentViewController ()
 
@@ -65,7 +64,7 @@
     VActionItem *userItem = [VActionItem userActionItemUserWithTitle:self.viewModel.authorName
                                                            avatarURL:self.viewModel.avatarForAuthor
                                                           detailText:self.viewModel.authorCaption];
-    userItem.selectionHandler = ^(void)
+    userItem.selectionHandler = ^(VActionItem *item)
     {
         [contentViewController dismissViewControllerAnimated:YES completion:^
          {
@@ -87,8 +86,7 @@
 
     [actionItems addObject:descriptionItem];
     
-    [self addRemixToActionItems:actionItems
-          contentViewController:contentViewController];
+    [self addRemixToActionItems:actionItems contentViewController:contentViewController actionSheetViewController:actionSheetViewController];
     
     if (self.viewModel.sequence.canRepost)
     {
@@ -97,25 +95,31 @@
                                                                actionIcon:[UIImage imageNamed:@"icon_repost"]
                                                                detailText:self.viewModel.repostCountText
                                                                   enabled:!self.viewModel.hasReposted];
-        repostItem.selectionHandler = ^(void)
+        repostItem.selectionHandler = ^(VActionItem *item)
         {
-            [contentViewController dismissViewControllerAnimated:YES
-                                                      completion:^
+            VAuthorizedAction *authorizedAction = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
+                                                                                 dependencyManager:self.dependencyManager];
+            [authorizedAction performFromViewController:actionSheetViewController context:VAuthorizationContextRepost completion:^
              {
                  if ( !contentViewController.viewModel.hasReposted)
                  {
+                     [actionSheetViewController setLoading:YES forItem:item];
+                     
                      [self.sequenceActionController repostActionFromViewController:contentViewController
-                                                                              node:contentViewController.viewModel.currentNode completion:^(BOOL didSucceed)
+                                                                              node:contentViewController.viewModel.currentNode
+                                                                        completion:^(BOOL didSucceed)
                       {
                           if ( didSucceed )
                           {
                               contentViewController.viewModel.hasReposted = YES;
                           }
+                          
+                          [contentViewController dismissViewControllerAnimated:YES completion:nil];
                       }];
                  }
              }];
         };
-        repostItem.detailSelectionHandler = ^(void)
+        repostItem.detailSelectionHandler = ^(VActionItem *item)
         {
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectShowReposters];
             
@@ -132,7 +136,7 @@
                                                           actionIcon:[UIImage imageNamed:@"icon_share"]
                                                           detailText:self.viewModel.shareCountText];
     
-    void (^shareHandler)(void) = ^void(void)
+    void (^shareHandler)(VActionItem *item) = ^void(VActionItem *item)
     {
         [contentViewController dismissViewControllerAnimated:YES
                                  completion:^
@@ -152,7 +156,7 @@
                                                                actionIcon:[UIImage imageNamed:@"delete-icon"]
                                                                detailText:nil];
         
-        deleteItem.selectionHandler = ^(void)
+        deleteItem.selectionHandler = ^(VActionItem *item)
         {
             [self dismissViewControllerAnimated:YES
                                      completion:^
@@ -186,7 +190,7 @@
         VActionItem *flagItem = [VActionItem defaultActionItemWithTitle:NSLocalizedString(@"Report/Flag", @"")
                                                              actionIcon:[UIImage imageNamed:@"icon_flag"]
                                                              detailText:nil];
-        flagItem.selectionHandler = ^(void)
+        flagItem.selectionHandler = ^(VActionItem *item)
         {
             
             [contentViewController dismissViewControllerAnimated:YES
@@ -205,6 +209,7 @@
 
 - (void)addRemixToActionItems:(NSMutableArray *)actionItems
         contentViewController:(UIViewController *)contentViewController
+    actionSheetViewController:(VActionSheetViewController *)actionSheetViewController
 {
     if ([self.viewModel.sequence canRemix])
     {
@@ -216,31 +221,37 @@
         VActionItem *remixItem = [VActionItem defaultActionItemWithTitle:remixActionTitle
                                                               actionIcon:[UIImage imageNamed:@"icon_remix"]
                                                               detailText:self.viewModel.remixCountText];
-        remixItem.selectionHandler = ^(void)
+        remixItem.selectionHandler = ^(VActionItem *item)
         {
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRemix];
             
-            [contentViewController dismissViewControllerAnimated:YES
-                                                      completion:^
+            VAuthorizedAction *authorizedAction = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
+                                                                                 dependencyManager:self.dependencyManager];
+            [authorizedAction performFromViewController:actionSheetViewController context:VAuthorizationContextRemix completion:^
              {
-                 VSequence *sequence = self.viewModel.sequence;
-                 if ([sequence isVideo])
-                 {
-                     [self.sequenceActionController showRemixOnViewController:contentViewController
-                                                                 withSequence:self.viewModel.sequence
-                                                         andDependencyManager:self.dependencyManagerForHistogramExperiment];
-                 }
-                 else
-                 {
-                     [self.sequenceActionController showRemixOnViewController:self
-                                                                 withSequence:sequence
-                                                         andDependencyManager:self.dependencyManagerForHistogramExperiment
-                                                               preloadedImage:self.placeholderImage
-                                                                   completion:nil];
-                 }
+                 [contentViewController dismissViewControllerAnimated:YES
+                                                           completion:^
+                  {
+                      VSequence *sequence = self.viewModel.sequence;
+                      if ([sequence isVideo])
+                      {
+                          [self.sequenceActionController showRemixOnViewController:self
+                                                                      withSequence:sequence
+                                                              andDependencyManager:self.dependencyManager
+                                                                    preloadedImage:nil
+                                                                  defaultVideoEdit:VDefaultVideoEditGIF
+                                                                        completion:nil];
+                      }
+                      else
+                      {
+                          [self.sequenceActionController showRemixOnViewController:self
+                                                                      withSequence:sequence
+                                                              andDependencyManager:self.dependencyManager];
+                      }
+                  }];
              }];
         };
-        remixItem.detailSelectionHandler = ^(void)
+        remixItem.detailSelectionHandler = ^(VActionItem *item)
         {
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectShowRemixes];
             
@@ -249,7 +260,7 @@
              {
                  [self.sequenceActionController showRemixersOnnNavigationController:contentViewController.navigationController
                                                                            sequence:self.viewModel.sequence
-                                                               andDependencyManager:self.dependencyManagerForHistogramExperiment];
+                                                               andDependencyManager:self.dependencyManager];
              }];
         };
         [actionItems addObject:remixItem];

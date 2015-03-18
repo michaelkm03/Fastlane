@@ -12,7 +12,7 @@
 
 #import "VUser.h"
 #import "TTTAttributedLabel.h"
-#import "VThemeManager.h"
+#import "VDependencyManager.h"
 #import "VSettingManager.h"
 #import "VUserManager.h"
 #import <MBProgressHUD/MBProgressHUD.h>
@@ -23,8 +23,6 @@
 #import "VObjectManager+Websites.h"
 
 #import "VConstants.h"
-#import "UIImageView+Blurring.h"
-#import "UIImage+ImageEffects.h"
 #import "UIImageView+WebCache.h"
 
 #import "VTOSViewController.h"
@@ -35,31 +33,27 @@
 
 #import "VLocationManager.h"
 
-NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreateProfileAborted";
-
 @import CoreLocation;
 @import AddressBookUI;
 
 @interface VProfileCreateViewController () <UITextFieldDelegate, UITextViewDelegate, TTTAttributedLabelDelegate, VWorkspaceFlowControllerDelegate, VLocationManagerDelegate>
 
-@property (weak, nonatomic) IBOutlet UIButton *backButton;
+@property (nonatomic, weak) IBOutlet UITextField *usernameTextField;
+@property (nonatomic, weak) IBOutlet UITextField *locationTextField;
+@property (nonatomic, weak) IBOutlet UITextView *taglineTextView;
+@property (nonatomic, weak) IBOutlet UILabel *tagLinePlaceholderLabel;
 
-@property (nonatomic, weak) IBOutlet UITextField           *usernameTextField;
-@property (nonatomic, weak) IBOutlet UITextField           *locationTextField;
-@property (nonatomic, weak) IBOutlet UITextView            *taglineTextView;
-@property (nonatomic, weak) IBOutlet UILabel               *tagLinePlaceholderLabel;
+@property (nonatomic, weak) IBOutlet UIImageView *profileImageView;
 
-@property (nonatomic, weak) IBOutlet UIImageView           *profileImageView;
-
-@property (nonatomic, strong) VLocationManager                *locationManager;
+@property (nonatomic, strong) VLocationManager *locationManager;
 @property (nonatomic, strong) CLGeocoder *geoCoder;
 
-@property (nonatomic, weak) IBOutlet    UISwitch           *agreeSwitch;
-@property (nonatomic, weak) IBOutlet    TTTAttributedLabel *agreementText;
-@property (nonatomic, weak) IBOutlet    VButton           *doneButton;
+@property (nonatomic, weak) IBOutlet UISwitch *agreeSwitch;
+@property (nonatomic, weak) IBOutlet TTTAttributedLabel *agreementText;
+@property (nonatomic, weak) IBOutlet VButton *doneButton;
 
-@property (nonatomic, strong)   UIBarButtonItem            *countDownLabel;
-@property (nonatomic, strong)   UIBarButtonItem            *usernameCountDownLabel;
+@property (nonatomic, strong) UIBarButtonItem *countDownLabel;
+@property (nonatomic, strong) UIBarButtonItem *usernameCountDownLabel;
 
 @property (nonatomic, assign) BOOL addedAccessoryView;
 
@@ -69,15 +63,20 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
 
 @implementation VProfileCreateViewController
 
+@synthesize registrationStepDelegate; //< VRegistrationStep
+
+@synthesize authorizedAction; //< VAuthorizationProvider
+
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-+ (VProfileCreateViewController *)profileCreateViewController
++ (VProfileCreateViewController *)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"login" bundle:nil];
     VProfileCreateViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:kProfileCreateStoryboardID];
+    viewController.dependencyManager = dependencyManager;
     return viewController;
 }
 
@@ -88,8 +87,6 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
     [super viewDidLoad];
     
     [self updateWithRegistrationModel];
-    
-    self.view.layer.contents = (id)[[[VThemeManager sharedThemeManager] themedBackgroundImageForDevice] applyBlurWithRadius:25 tintColor:[UIColor colorWithWhite:1.0 alpha:0.7] saturationDeltaFactor:1.8 maskImage:nil].CGImage;
     
     self.profileImageView.layer.masksToBounds = YES;
     self.profileImageView.layer.cornerRadius = CGRectGetHeight(self.profileImageView.bounds)/2;
@@ -102,7 +99,7 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
                           placeholderImage:self.profileImageView.image];
     
     self.usernameTextField.delegate = self;
-    self.usernameTextField.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
+    self.usernameTextField.font = [self.dependencyManager fontForKey:@"font.header"];
     
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
@@ -111,12 +108,12 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
         self.usernameTextField.text = self.profile.name;
     }
 #pragma clang diagnostic pop
-    self.usernameTextField.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    self.usernameTextField.tintColor = [self.dependencyManager colorForKey:@"color.link"];
     self.usernameTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.usernameTextField.placeholder attributes:@{NSForegroundColorAttributeName :[UIColor colorWithWhite:0.355 alpha:1.000]}];
     
     self.locationTextField.delegate = self;
-    self.locationTextField.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-    self.locationTextField.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
+    self.locationTextField.tintColor = [self.dependencyManager colorForKey:@"color.link"];
+    self.locationTextField.font = [self.dependencyManager fontForKey:@"font.header"];
     if (self.profile.location)
     {
         self.locationTextField.text = self.profile.location;
@@ -155,12 +152,12 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
         [self.locationManager.locationManager requestWhenInUseAuthorization];
     }
     
-    self.tagLinePlaceholderLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
+    self.tagLinePlaceholderLabel.font = [self.dependencyManager fontForKey:@"font.header"];
     [self.tagLinePlaceholderLabel setTextColor:[UIColor colorWithWhite:0.355 alpha:1.000]];
 
-    self.taglineTextView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    self.taglineTextView.tintColor = [self.dependencyManager colorForKey:@"color.link"];
     self.taglineTextView.delegate = self;
-    self.taglineTextView.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
+    self.taglineTextView.font = [self.dependencyManager fontForKey:@"font.header"];
     if (self.profile.tagline)
     {
         self.taglineTextView.text = self.profile.tagline;
@@ -174,7 +171,7 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
     [self createInputAccessoryView];
     
     self.agreementText.delegate = self;
-    self.agreementText.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel2Font];
+    self.agreementText.font = [self.dependencyManager fontForKey:@"font.label2"];
     [self.agreementText setText:NSLocalizedString(@"ToSAgreement", @"")];
     NSRange linkRange = [self.agreementText.text rangeOfString:NSLocalizedString(@"ToSText", @"")];
     if (linkRange.length > 0)
@@ -185,14 +182,12 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
         [self.agreementText addLinkToURL:url withRange:linkRange];
     }
     
-    self.doneButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
+    self.doneButton.titleLabel.font = [self.dependencyManager fontForKey:@"font.header"];
     [self.doneButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    self.doneButton.primaryColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    self.doneButton.primaryColor = [self.dependencyManager colorForKey:@"color.link"];
     self.doneButton.style = VButtonStylePrimary;
     
-    self.agreeSwitch.onTintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-    
-    self.backButton.imageView.image = [self.backButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    self.agreeSwitch.onTintColor = [self.dependencyManager colorForKey:@"color.link"];
     
     // Accessibility IDs
     self.doneButton.accessibilityIdentifier = VAutomationIdentifierProfileDone;
@@ -268,7 +263,7 @@ NSString * const VProfileCreateViewControllerWasAbortedNotification = @"CreatePr
 
 - (BOOL)prefersStatusBarHidden
 {
-    return YES;
+    return NO;
 }
 
 #pragma mark - Format Location Data
@@ -492,11 +487,28 @@ static inline UIViewAnimationOptions animationOptionsWithCurve(UIViewAnimationCu
 {
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateProfileDidSucceed];
     
-    [MBProgressHUD hideHUDForView:self.view
-                         animated:YES];
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
     
-    [self dismissViewControllerAnimated:YES
-                             completion:nil];
+    [self exitWithSuccess:YES];
+}
+
+- (void)exitWithSuccess:(BOOL)success
+{
+    BOOL wasPresentedStandalone = self.navigationController == nil;
+    if ( wasPresentedStandalone )
+    {
+        [self dismissViewControllerAnimated:YES completion:^
+         {  
+            if ( self.authorizedAction != nil && success )
+            {
+                self.authorizedAction();
+            }
+        }];
+    }
+    else if ( self.registrationStepDelegate != nil )
+    {
+        [self.registrationStepDelegate didFinishRegistrationStepWithSuccess:success];
+    }
 }
 
 - (void)didFailWithError:(NSError *)error
@@ -517,9 +529,7 @@ static inline UIViewAnimationOptions animationOptionsWithCurve(UIViewAnimationCu
 
 - (IBAction)done:(id)sender
 {
-    // Let the User Know Something Is Happening
-    [MBProgressHUD showHUDAddedTo:self.view
-                         animated:YES];
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
 
     if ([self shouldCreateProfile])
     {
@@ -532,21 +542,26 @@ static inline UIViewAnimationOptions animationOptionsWithCurve(UIViewAnimationCu
             return;
         }
         
-        [[VObjectManager sharedManager] updateVictoriousWithEmail:nil
-                                                         password:nil
-                                                             name:self.registrationModel.username
-                                                  profileImageURL:self.registrationModel.profileImageURL
-                                                         location:self.registrationModel.locationText
-                                                          tagline:self.registrationModel.taglineText
-                                                     successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-         {
-             [self didCreateProfile];
-         }
-                                                         failBlock:^(NSOperation *operation, NSError *error)
-         {
-             [self didFailWithError:error];
-         }];
+        [self performProfileCreationWithRegistrationModel:self.registrationModel];
     }
+}
+
+- (void)performProfileCreationWithRegistrationModel:(VRegistrationModel *)registrationModel
+{
+    [[VObjectManager sharedManager] updateVictoriousWithEmail:nil
+                                                     password:nil
+                                                         name:registrationModel.username
+                                              profileImageURL:registrationModel.profileImageURL
+                                                     location:registrationModel.locationText
+                                                      tagline:registrationModel.taglineText
+                                                 successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+     {
+         [self didCreateProfile];
+     }
+                                                    failBlock:^(NSOperation *operation, NSError *error)
+     {
+         [self didFailWithError:error];
+     }];
 }
 
 - (IBAction)takePicture:(id)sender
@@ -559,7 +574,7 @@ static inline UIViewAnimationOptions animationOptionsWithCurve(UIViewAnimationCu
                      completion:nil];
 }
 
-- (IBAction)back:(id)sender
+- (IBAction)exit:(id)sender
 {
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectExitCreateProfile];
     
@@ -574,17 +589,8 @@ static inline UIViewAnimationOptions animationOptionsWithCurve(UIViewAnimationCu
         
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidConfirmExitCreateProfile];
         
-        BOOL wasPushedFromViewControllerInLoginFlow = self.navigationController != nil;
-        if ( wasPushedFromViewControllerInLoginFlow )
-        {
-            // The root of this login flow (VLoginViewController) should receive this and dismiss itself
-            [[NSNotificationCenter defaultCenter] postNotificationName:VProfileCreateViewControllerWasAbortedNotification object:nil];
-        }
-        else
-        {
-            // We're a standalone view controller, so we'll dismiss ourselves
-            [self dismissViewControllerAnimated:YES completion:nil];
-        }
+        [self exitWithSuccess:NO];
+        
     }];
     
     [alert show];

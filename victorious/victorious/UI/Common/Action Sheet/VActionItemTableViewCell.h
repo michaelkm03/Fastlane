@@ -22,4 +22,9 @@
 
 @property (nonatomic, assign) BOOL enabled;
 
+/**
+ Sets the cell in a loading state.
+ */
+- (void)setLoading:(BOOL)loading animated:(BOOL)animated;
+
 @end

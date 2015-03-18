@@ -8,9 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@class VSequence;
+@class VSequence, VDependencyManager;
 
 @interface VReposterTableViewController : UITableViewController
+
+- (id)initWithDependencyManager:(VDependencyManager *)dependencyManager;
 
 @property (nonatomic, strong) VSequence *sequence;
 

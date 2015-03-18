@@ -15,6 +15,9 @@ extern NSString * const VTrackingEventApplicationDidLaunch; //< Backend mapping:
 extern NSString * const VTrackingEventApplicationDidEnterBackground; //< Backend mapping: app-stop; Params: SessionTime
 extern NSString * const VTrackingEventApplicationDidEnterForeground; //< Backend mapping: app-start
 
+// First-Time User Experience
+extern NSString * const VTrackingEventFirstTimeUserVideoPlayed; //< The app has just been installed & opened for the first time and the app intro video has played
+
 // Navigation
 extern NSString * const VTrackingEventUserDidSelectMainMenu; //< User opened the main menu with the hamburger button; Params: CurrentSection (template driven value)
 extern NSString * const VTrackingEventUserDidSelectMainSection; //< "User selected a section from the main menu.  Params: MenuType, Section  (template driven value)"

@@ -18,8 +18,12 @@
 #import "VTranslucentBackground.h"
 #import "VSolidColorBackground.h"
 #import "VTabMenuViewController.h"
+#import "VFirstTimeInstallHelper.h"
 #import "VDependencyManager+VNavigationMenuItem.h"
 
+#define BOTTOM_NAV_ENABLED 0
+#define CHANNELS_WITH_GROUP_STREAM_ENABLED 0
+#define ROUNDED_TOP_NAV_ENABLED 0
 #define TEMPLATE_ICON_PREFIX @"D_"
 #define SELECTED_ICON_SUFFIX @"_selected"
 
@@ -97,6 +101,10 @@ typedef NS_ENUM(NSUInteger, VTemplateType)
     VTemplateTypeD
 };
 
+// First-time User Video
+static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
+
+
 @interface VTemplateGenerator ()
 
 @property (nonatomic, strong) NSDictionary *dataFromInitCall;
@@ -143,9 +151,9 @@ typedef NS_ENUM(NSUInteger, VTemplateType)
              if ([obj isKindOfClass:[NSDictionary class]])
              {
                  [template addEntriesFromDictionary:obj];
-                 
+
                  NSDictionary *accentColor = obj[VDependencyManagerAccentColorKey];
-                 
+
                  if ( accentColor == nil )
                  {
                      accentColor = @{
@@ -170,13 +178,13 @@ typedef NS_ENUM(NSUInteger, VTemplateType)
              template[key] = obj;
          }
      }];
-    
     if ( self.enabledTemplate == VTemplateTypeD )
     {
         template[VDependencyManagerScaffoldViewControllerKey] = @{
                                                                   kClassNameKey: @"tabMenu.scaffold",
                                                                   kItemsKey:[self bottomNavMenuItems],
                                                                   VScaffoldViewControllerUserProfileViewComponentKey: [self profileScreen],
+                                                                  VScaffoldViewControllerLightweightContentViewComponentKey: [self lightweightContentViewComponent],
                                                                   kSelectorKey: [self multiScreenSelectorKey],
                                                                   VTabMenuViewControllerMenuAppearanceKey: @{
                                                                           VDependencyManagerBackgroundKey: [self solidWhiteBackground],
@@ -199,13 +207,15 @@ typedef NS_ENUM(NSUInteger, VTemplateType)
                                                                    VScaffoldViewControllerMenuComponentKey: [self menuComponent],
                                                                    VStreamCollectionViewControllerCreateSequenceIconKey: (self.enabledTemplate == VTemplateTypeC ? [UIImage imageNamed:@"createContentButtonC"] : [UIImage imageNamed:@"createContentButton"]),
                                                                    VScaffoldViewControllerUserProfileViewComponentKey: [self profileScreen],
+                                                                   VScaffoldViewControllerLightweightContentViewComponentKey: [self lightweightContentViewComponent],
                                                                    kSelectorKey: [self multiScreenSelectorKey],
                                                                    };
     }
-    
+
     template[VDependencyManagerWorkspaceFlowKey] = [self workspaceFlowComponent];
     template[VScaffoldViewControllerNavigationBarAppearanceKey] = [self navigationBarAppearance];
-    
+    template[VStreamCollectionViewControllerCellComponentKey] = [self cellComponent];
+
     return template;
 }
 
@@ -231,7 +241,7 @@ typedef NS_ENUM(NSUInteger, VTemplateType)
     NSDictionary *kSelectorKey = @{
                                    kClassNameKey: @"basic.multiScreenSelector",
                                    };
-    
+
     if ( self.enabledTemplate == VTemplateTypeD )
     {
         kSelectorKey =  @{
@@ -485,6 +495,17 @@ typedef NS_ENUM(NSUInteger, VTemplateType)
                  VDependencyManagerBackgroundColorKey: self.dataFromInitCall[@"appearance"][@"color.accent"]
                  };
     }
+}
+
+- (NSDictionary *)lightweightContentViewComponent
+{
+    NSString *sequenceID = self.dataFromInitCall[@"experiments"][@"ftue_welcome_sequence_id"];
+    NSArray *trackingArray = self.dataFromInitCall[@"experiments"][@"ftue_welcome_tracking"][@"start"];
+    return @{
+             kClassNameKey: @"lightweight.contentView",
+             kFTUSequenceURLPath: [NSString stringWithFormat:@"/api/sequence/fetch/%@", sequenceID],
+             kFTUTrackingURLGroup:  trackingArray ?: @[]
+             };
 }
 
 - (NSDictionary *)menuComponent
@@ -758,8 +779,6 @@ typedef NS_ENUM(NSUInteger, VTemplateType)
                 },
         VStreamCollectionViewControllerCellComponentKey: [self cellComponent]
         } mutableCopy];
-    
-    
     UIImage *headerImage = [self homeHeaderImage];
     if ( headerImage != nil )
     {
@@ -788,7 +807,7 @@ typedef NS_ENUM(NSUInteger, VTemplateType)
                                                              kAlphaKey: @1
                                                              };
     }
-    
+
     return homeScreen;
 }
 
@@ -810,7 +829,7 @@ typedef NS_ENUM(NSUInteger, VTemplateType)
       kInitialKey: @YES,
       VStreamCollectionViewControllerStreamURLPathKey: [self urlPathForStreamCategories:[VUGCCategories() arrayByAddingObjectsFromArray:VOwnerCategories()]]
     };
-    
+
     NSNumber *marqueeEnabled = [self.dataFromInitCall valueForKeyPath:@"experiments.marquee_enabled"];
     if ( [marqueeEnabled isKindOfClass:[NSNumber class]] && [marqueeEnabled boolValue] )
     {
@@ -1038,6 +1057,14 @@ typedef NS_ENUM(NSUInteger, VTemplateType)
                       kAlphaKey: @1
                       },
               };
+}
+
+- (NSDictionary *)translucentDarkBackground
+{
+    return @{
+             kClassNameKey:@"translucent.background",
+             VTranslucentBackgroundBlurStyleKey: VTranslucentBackgroundBlurStyleDark,
+             };
 }
 
 @end

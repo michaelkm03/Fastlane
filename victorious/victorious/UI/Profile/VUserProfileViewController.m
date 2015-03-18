@@ -31,10 +31,9 @@
 #import "VUserProfileHeaderView.h"
 #import "VProfileHeaderCell.h"
 
+#import "VAuthorizedAction.h"
 #import "VDependencyManager+VNavigationItem.h"
 #import "VDependencyManager+VNavigationMenuItem.h"
-
-#import "VAuthorizationViewControllerFactory.h"
 #import "VFindFriendsViewController.h"
 #import "VSettingManager.h"
 #import <FBKVOController.h>
@@ -47,7 +46,6 @@
 // Authorization
 #import "VNotAuthorizedDataSource.h"
 #import "VNotAuthorizedProfileCollectionViewCell.h"
-#import "VAuthorizationViewControllerFactory.h"
 
 static const CGFloat kVSmallUserHeaderHeight = 319.0f;
 
@@ -396,17 +394,16 @@ static NSString * const kUserRemoteIdKey = @"remoteId";
 
 - (IBAction)findFriendsAction:(id)sender
 {
-    if (![VObjectManager sharedManager].authorized)
-    {
-        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
-        return;
-    }
-
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectFindFriends];
     
-    VFindFriendsViewController *ffvc = [VFindFriendsViewController newFindFriendsViewController];
-    [ffvc setShouldAutoselectNewFriends:NO];
-    [self.navigationController pushViewController:ffvc animated:YES];
+    VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
+                                                                dependencyManager:self.dependencyManager];
+    [authorization performFromViewController:self context:VAuthorizationContextInbox completion:^
+     {
+         VFindFriendsViewController *ffvc = [VFindFriendsViewController newWithDependencyManager:self.dependencyManager];
+         [ffvc setShouldAutoselectNewFriends:NO];
+         [self.navigationController pushViewController:ffvc animated:YES];
+     }];
 }
 
 #pragma mark - Accessors
@@ -530,43 +527,46 @@ static NSString * const kUserRemoteIdKey = @"remoteId";
 
 - (IBAction)composeMessage:(id)sender
 {
-    if (![VObjectManager sharedManager].authorized)
-    {
-        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]]
-                           animated:YES
-                         completion:NULL];
-        return;
-    }
-
-    VMessageContainerViewController    *composeController   = [VMessageContainerViewController messageViewControllerForUser:self.profile];
-    composeController.presentingFromProfile = YES;
-    
-    if ([self.navigationController.viewControllers containsObject:composeController])
-    {
-        [self.navigationController popToViewController:composeController animated:YES];
-    }
-    else
-    {
-        [self.navigationController pushViewController:composeController animated:YES];
-    }
+    VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
+                                                                dependencyManager:self.dependencyManager];
+    [authorization performFromViewController:self context:VAuthorizationContextInbox completion:^
+     {
+         VMessageContainerViewController *composeController = [VMessageContainerViewController messageViewControllerForUser:self.profile];
+         composeController.presentingFromProfile = YES;
+         
+         if ([self.navigationController.viewControllers containsObject:composeController])
+         {
+             [self.navigationController popToViewController:composeController animated:YES];
+         }
+         else
+         {
+             [self.navigationController pushViewController:composeController animated:YES];
+         }
+     }];
 }
 
 - (void)editProfileHandler
 {
-    if (![VObjectManager sharedManager].authorized)
-    {
-        [self presentViewController:[VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]] animated:YES completion:NULL];
-        return;
-    }
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectEditProfile];
     
-    if (self.isMe)
-    {
-        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectEditProfile];
-        
-        [self performSegueWithIdentifier:@"toEditProfile" sender:self];
-        return;
-    }
-    
+    VAuthorizationContext context = self.isMe ? VAuthorizationContextDefault : VAuthorizationContextFollowUser;
+    VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
+                                                                dependencyManager:self.dependencyManager];
+    [authorization performFromViewController:self context:context completion:^
+     {
+         if ( self.isMe )
+         {
+             [self performSegueWithIdentifier:@"toEditProfile" sender:self];
+         }
+         else
+         {
+             [self toggleFollowUser];
+         }
+     }];
+}
+
+- (void)toggleFollowUser
+{
     VUserProfileHeaderView *header = self.profileHeaderView;
     header.editProfileButton.enabled = NO;
     
@@ -613,6 +613,16 @@ static NSString * const kUserRemoteIdKey = @"remoteId";
 - (void)followerHandler
 {
     [self performSegueWithIdentifier:@"toFollowers" sender:self];
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    [super prepareForSegue:segue sender:sender];
+    
+    if ( [segue.destinationViewController respondsToSelector:@selector(setDependencyManager:)] )
+    {
+        [segue.destinationViewController setDependencyManager:self.dependencyManager];
+    }
 }
 
 - (void)followingHandler
@@ -777,8 +787,10 @@ static NSString * const kUserRemoteIdKey = @"remoteId";
 
 - (void)dataSourceWantsAuthorization:(VNotAuthorizedDataSource *)dataSource
 {
-    UIViewController *loginViewController = [VAuthorizationViewControllerFactory requiredViewControllerWithObjectManager:[VObjectManager sharedManager]];
-    [self presentViewController:loginViewController animated:YES completion:nil];
+    VLoginViewController *viewController = [VLoginViewController newWithDependencyManager:self.dependencyManager];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+    viewController.transitionDelegate = [[VTransitionDelegate alloc] initWithTransition:[[VPresentWithBlurTransition alloc] init]];
+    [self presentViewController:navigationController animated:YES completion:nil];
 }
 
 @end

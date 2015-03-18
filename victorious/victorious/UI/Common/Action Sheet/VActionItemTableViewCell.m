@@ -40,6 +40,9 @@
                             forState:UIControlStateNormal];
     
     self.separatorHeightConstaint.constant = 1 / [UIScreen mainScreen].scale;
+    
+    self.activityIndicator.alpha = 0.0f;
+    [self.activityIndicator stopAnimating];
 }
 
 #pragma mark - UITableViewCell
@@ -78,12 +81,38 @@
     self.actionIcon = nil;
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
+- (void)setLoading:(BOOL)loading animated:(BOOL)animated
 {
-    [super setSelected:selected animated:animated];
-    if (selected)
+    if ( loading )
     {
         [self.activityIndicator startAnimating];
+    }
+    
+    void (^completion)(BOOL) = ^void (BOOL finished)
+    {
+        if ( !loading )
+        {
+            [self.activityIndicator stopAnimating];
+        }
+    };
+    
+    void (^animations)() = ^void
+    {
+        self.activityIndicator.alpha = loading ? 1.0f : 0.0f;
+    };
+    
+    if ( animated )
+    {
+        [UIView animateWithDuration:0.3f
+                              delay:0.0f
+                            options:UIViewAnimationOptionCurveEaseInOut
+                         animations:animations
+                         completion:completion];
+    }
+    else
+    {
+        animations();
+        completion( YES );
     }
 }
 
