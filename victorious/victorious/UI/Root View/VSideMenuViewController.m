@@ -23,7 +23,7 @@
 #import "UIView+AutoLayout.h"
 
 static const CGFloat kBackgroundParallaxMagnitude = 30;
-static const CGFloat kContentParallaxMagnitude = 30;
+static const CGFloat kContentParallaxMagnitude = 15;
 
 @interface VSideMenuViewController ()
 
@@ -157,6 +157,7 @@ static const CGFloat kContentParallaxMagnitude = 30;
         self.backgroundView.transform = CGAffineTransformMakeScale(1.7f, 1.7f);
         [self addBackgroundMotionEffects];
     }
+    [self addMenuViewControllerMotionEffects];
     
     UIViewController *initialVC = [self.dependencyManager singletonViewControllerForKey:VDependencyManagerInitialViewControllerKey];
     if (initialVC != nil)
@@ -231,7 +232,6 @@ static const CGFloat kContentParallaxMagnitude = 30;
 {
     [self.view.window endEditing:YES];
     [self addContentButton];
-    
     self.visible = YES;
     [UIView animateWithDuration:self.animationDuration
                      animations:^
@@ -250,6 +250,7 @@ static const CGFloat kContentParallaxMagnitude = 30;
                      completion:^(BOOL finished)
      {
          [self addContentViewControllerMotionEffects];
+         [self addMenuViewControllerMotionEffects];
      }];
     
     [self updateStatusBar];
@@ -270,6 +271,10 @@ static const CGFloat kContentParallaxMagnitude = 30;
             for (UIMotionEffect *effect in self.contentViewController.view.motionEffects)
             {
                 [self.contentViewController.view removeMotionEffect:effect];
+            }
+            for (UIMotionEffect *effect in self.menuViewController.view.motionEffects)
+            {
+                [self.menuViewController.view removeMotionEffect:effect];
             }
         }
         self.visible = NO;
@@ -314,6 +319,23 @@ static const CGFloat kContentParallaxMagnitude = 30;
 }
 
 #pragma mark - Motion effects
+
+- (void)addMenuViewControllerMotionEffects
+{
+    if (self.parallaxEnabled)
+    {
+        for (UIMotionEffect *effect in self.menuViewController.view.motionEffects)
+        {
+            [self.menuViewController.view removeMotionEffect:effect];
+        }
+        
+        UIInterpolatingMotionEffect *interpolationVertical = [[UIInterpolatingMotionEffect alloc]initWithKeyPath:@"center.y" type:UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis];
+        interpolationVertical.minimumRelativeValue = @(kContentParallaxMagnitude);
+        interpolationVertical.maximumRelativeValue = @(-kContentParallaxMagnitude);
+        
+        [self.menuViewController.view addMotionEffect:interpolationVertical];
+    }
+}
 
 - (void)addContentViewControllerMotionEffects
 {
