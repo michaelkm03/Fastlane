@@ -253,7 +253,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     VUser  *user = self.followers[indexPath.row];
-    VUserProfileViewController *profileVC   =   [VUserProfileViewController userProfileWithUser:user andDependencyManager:nil];
+    VUserProfileViewController *profileVC   =   [VUserProfileViewController rootDependencyProfileWithUser:user];
     [self.navigationController pushViewController:profileVC animated:YES];
 }
 

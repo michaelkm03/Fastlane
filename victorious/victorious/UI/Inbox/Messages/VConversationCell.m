@@ -60,7 +60,7 @@ CGFloat const kVConversationCellHeight = 72;
 
 - (IBAction)profileButtonAction:(id)sender
 {
-    VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithUser:self.conversation.user andDependencyManager:nil];
+    VUserProfileViewController *profileViewController = [VUserProfileViewController rootDependencyProfileWithUser:self.conversation.user];
     [self.parentTableViewController.navigationController pushViewController:profileViewController animated:YES];
 }
 

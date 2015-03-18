@@ -344,7 +344,7 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCellC
         return;
     }
     
-    VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithUser:user andDependencyManager:self.dependencyManager];
+    VUserProfileViewController *profileViewController = [VUserProfileViewController rootDependencyProfileWithUser:user];
     [self.navigationController pushViewController:profileViewController animated:YES];
 }
 

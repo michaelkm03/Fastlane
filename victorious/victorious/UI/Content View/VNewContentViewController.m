@@ -767,7 +767,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     };
     commentCell.onUserProfileTapped = ^(void)
     {
-        VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithUser:wCommentCell.comment.user andDependencyManager:self.dependencyManager];
+        VUserProfileViewController *profileViewController = [VUserProfileViewController rootDependencyProfileWithUser:wCommentCell.comment.user];
         [welf.navigationController pushViewController:profileViewController animated:YES];
     };
 }
@@ -777,7 +777,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
     if ( [tag isKindOfClass:[VUserTag class]] )
     {
         //Tapped a user tag, show a profile view controller
-        VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithRemoteId:((VUserTag *)tag).remoteId andDependencyManager:self.dependencyManager];
+        VUserProfileViewController *profileViewController = [VUserProfileViewController rootDependencyProfileWithRemoteId:((VUserTag *)tag).remoteId];
         [self.navigationController pushViewController:profileViewController animated:YES];
     }
     else

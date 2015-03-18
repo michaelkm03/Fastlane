@@ -590,8 +590,13 @@ typedef NS_ENUM(NSUInteger, VTemplateType)
                                                                                          kSelectedIconKey: @{
                                                                                                  VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@profile%@", TEMPLATE_ICON_PREFIX, SELECTED_ICON_SUFFIX],
                                                                                                  }
+                              
                                                                                          }];
-    profileItem[kDestinationKey] = [self profileDetails];
+    NSMutableDictionary *fullProfileDetails = [[NSMutableDictionary alloc] initWithDictionary:@{
+                                                                                            kClassNameKey: @"currentUserProfile.screen",
+                                                                                            }];
+    [fullProfileDetails addEntriesFromDictionary:[self profileDetails]];
+    profileItem[kDestinationKey] = fullProfileDetails;
     if ( self.enabledTemplate == VTemplateTypeD )
     {
         profileItem[VDependencyManagerAccessoryScreensKey] = [self settingsMenuItem];
@@ -643,9 +648,7 @@ typedef NS_ENUM(NSUInteger, VTemplateType)
 
 - (NSDictionary *)profileDetails
 {
-    NSMutableDictionary *profileDetails = [[NSMutableDictionary alloc] initWithDictionary:@{
-                                                                                            kClassNameKey: @"currentUserProfile.screen",
-                                                                                            }];
+    NSMutableDictionary *profileDetails = [[NSMutableDictionary alloc] init];
     if ( self.enabledTemplate == VTemplateTypeD )
     {
         profileDetails[VDependencyManagerLinkColorKey] = @{
@@ -710,18 +713,15 @@ typedef NS_ENUM(NSUInteger, VTemplateType)
               };
 }
 
-- (NSDictionary *)currentUserProfileScreen
-{
-    return @{
-             kClassNameKey: @"currentUserProfile.screen"
-             };
-}
 
 - (NSDictionary *)profileScreen
 {
-    return @{
-             kClassNameKey: @"userProfile.screen"
-             };
+    NSMutableDictionary *fullProfileDetails = [[NSMutableDictionary alloc] initWithDictionary:@{
+                                                                                                kClassNameKey: @"userProfile.screen",
+                                                                                                }];
+    [fullProfileDetails addEntriesFromDictionary:[self profileDetails]];
+    
+    return [NSDictionary dictionaryWithDictionary:fullProfileDetails];
 }
 
 - (NSDictionary *)homeScreen

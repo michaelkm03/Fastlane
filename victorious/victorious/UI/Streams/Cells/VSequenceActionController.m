@@ -80,7 +80,7 @@
         return NO;
     }
     
-    VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithUser:sequence.user andDependencyManager:nil];
+    VUserProfileViewController *profileViewController = [VUserProfileViewController rootDependencyProfileWithUser:sequence.user];
     [viewController.navigationController pushViewController:profileViewController animated:YES];
     
     return YES;

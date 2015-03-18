@@ -278,7 +278,7 @@
     [cell.profileImageView setProfileImageURL:[NSURL URLWithString:comment.user.pictureUrl]];
     cell.onProfileImageTapped = ^(void)
     {
-        VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithUser:comment.user andDependencyManager:nil];
+        VUserProfileViewController *profileViewController = [VUserProfileViewController rootDependencyProfileWithUser:comment.user];
         [self.navigationController pushViewController:profileViewController animated:YES];
     };
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -297,7 +297,7 @@
     if ( [tag isKindOfClass:[VUserTag class]] )
     {
         //Tapped a user tag, show a profile view controller
-        VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithRemoteId:((VUserTag *)tag).remoteId andDependencyManager:nil];
+        VUserProfileViewController *profileViewController = [VUserProfileViewController rootDependencyProfileWithRemoteId:((VUserTag *)tag).remoteId];
         [self.navigationController pushViewController:profileViewController animated:YES];
     }
     else

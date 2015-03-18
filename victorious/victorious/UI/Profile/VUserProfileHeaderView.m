@@ -69,7 +69,7 @@
     }
     self.editProfileButton.titleLabel.font = [self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
 
-    if ( [[self.dependencyManager numberForKey:@"showEditButtonPill"] boolValue] )
+    if ( [[self.dependencyManager numberForKey:@"editButtonRoundedStyle"] boolValue] )
     {
         self.editProfileButton.cornerRadius = CGRectGetHeight(self.editProfileButton.bounds) / 2.0f;
     }

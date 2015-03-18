@@ -54,12 +54,8 @@ static NSString * const kProfileDeeplinkHostComponent = @"profile";
 
 - (BOOL)shouldNavigateWithAlternateDestination:(UIViewController *__autoreleasing *)alternateViewController
 {
-    VUserProfileViewController *userProfileViewController = [VUserProfileViewController userProfileWithRemoteId:self.objectManager.mainUser.remoteId andDependencyManager:self.dependencyManager];
+    VUserProfileViewController *userProfileViewController = [VUserProfileViewController rootDependencyProfileWithRemoteId:self.objectManager.mainUser.remoteId];
     userProfileViewController.representsMainUser = YES;
-    if ( [userProfileViewController respondsToSelector:@selector(setDependencyManager:)] )
-    {
-        [userProfileViewController setDependencyManager:self.dependencyManager];
-    }
     *alternateViewController = userProfileViewController;
     return YES;
 }
@@ -89,7 +85,7 @@ static NSString * const kProfileDeeplinkHostComponent = @"profile";
                 }
                 else
                 {
-                    VUserProfileViewController *profileVC = [self.dependencyManager userProfileViewControllerWithUser:user forKey:VScaffoldViewControllerUserProfileViewComponentKey];
+                    VUserProfileViewController *profileVC = [VUserProfileViewController rootDependencyProfileWithUser:user];
                     completion(profileVC);
                 }
             }

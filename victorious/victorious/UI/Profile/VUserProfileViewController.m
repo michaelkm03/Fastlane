@@ -42,6 +42,8 @@
 #import "VDependencyManager.h"
 #import "VBaseCollectionViewCell.h"
 
+#import "VDependencyManager+VScaffoldViewController.h"
+
 // Authorization
 #import "VNotAuthorizedDataSource.h"
 #import "VNotAuthorizedProfileCollectionViewCell.h"
@@ -56,6 +58,7 @@ static void * VUserProfileAttributesContext =  &VUserProfileAttributesContext;
  */
 static const CGFloat MBProgressHUDCustomViewSide = 37.0f;
 static NSString * const kUserKey = @"user";
+static NSString * const kUserRemoteIdKey = @"remoteId";
 
 @interface VUserProfileViewController () <VUserProfileHeaderDelegate, MBProgressHUDDelegate, VNotAuthorizedDataSourceDelegate>
 
@@ -83,6 +86,17 @@ static NSString * const kUserKey = @"user";
 @end
 
 @implementation VUserProfileViewController
+
+#warning Incredibly hacky
++ (instancetype)rootDependencyProfileWithRemoteId:(NSNumber *)remoteId
+{
+    return [[[[[VRootViewController rootViewController] dependencyManager] scaffoldViewController] dependencyManager] userProfileViewControllerWithRemoteId:remoteId];
+}
+
++ (instancetype)rootDependencyProfileWithUser:(VUser *)user
+{
+    return [[[[[VRootViewController rootViewController] dependencyManager] scaffoldViewController] dependencyManager] userProfileViewControllerWithUser:user];
+}
 
 + (instancetype)userProfileWithRemoteId:(NSNumber *)remoteId andDependencyManager:(VDependencyManager *)dependencyManager
 {
@@ -127,10 +141,17 @@ static NSString * const kUserKey = @"user";
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     VUser *user = [dependencyManager templateValueOfType:[VUser class] forKey:kUserKey];
-    if (user != nil)
+    if ( user != nil )
     {
         return [self userProfileWithUser:user andDependencyManager:dependencyManager];
     }
+    
+    NSNumber *remoteId = [dependencyManager templateValueOfType:[NSNumber class] forKey:kUserRemoteIdKey];
+    if ( remoteId != nil )
+    {
+        return [self userProfileWithRemoteId:remoteId andDependencyManager:dependencyManager];
+    }
+    
     return nil;
 }
 
@@ -766,10 +787,16 @@ static NSString * const kUserKey = @"user";
 
 @implementation VDependencyManager (VUserProfileViewControllerAdditions)
 
-- (VUserProfileViewController *)userProfileViewControllerWithUser:(VUser *)user forKey:(NSString *)key
+- (VUserProfileViewController *)userProfileViewControllerWithUser:(VUser *)user
 {
     NSAssert(user != nil, @"user cannot be nil");
-    return [self templateValueOfType:[VUserProfileViewController class] forKey:key withAddedDependencies:@{ kUserKey: user }];
+    return [self templateValueOfType:[VUserProfileViewController class] forKey:VScaffoldViewControllerUserProfileViewComponentKey withAddedDependencies:@{ kUserKey: user }];
+}
+
+- (VUserProfileViewController *)userProfileViewControllerWithRemoteId:(NSNumber *)remoteId
+{
+    NSAssert(remoteId != nil, @"remoteId cannot be nil");
+    return [self templateValueOfType:[VUserProfileViewController class] forKey:VScaffoldViewControllerUserProfileViewComponentKey withAddedDependencies:@{ kUserRemoteIdKey: remoteId }];
 }
 
 @end
