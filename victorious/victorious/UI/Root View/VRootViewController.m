@@ -21,6 +21,8 @@
 #import "VConstants.h"
 #import "VTemplateGenerator.h"
 #import "VLocationManager.h"
+#import "VVoteSettings.h"
+#import "VVoteType.h"
 
 static const NSTimeInterval kAnimationDuration = 0.2;
 
@@ -31,6 +33,7 @@ static NSString * const kNotificationIDKey = @"notification_id";
 
 #warning Temporary
 @property (nonatomic, strong, readwrite) VDependencyManager *dependencyManager;
+@property (nonatomic, strong) VVoteSettings *voteSettings;
 @property (nonatomic) BOOL appearing;
 @property (nonatomic) BOOL shouldPresentForceUpgradeScreenOnNextAppearance;
 @property (nonatomic, strong, readwrite) UIViewController *currentViewController;
@@ -94,7 +97,6 @@ static NSString * const kNotificationIDKey = @"notification_id";
     [super viewDidLoad];
 
     self.sessionTimer = [[VSessionTimer alloc] init];
-    [self.sessionTimer start];
     
     // Check if we have location services and start getting locations if we do
     if ( [VLocationManager haveLocationServicesPermission] )
@@ -191,6 +193,11 @@ static NSString * const kNotificationIDKey = @"notification_id";
     self.dependencyManager = [[VDependencyManager alloc] initWithParentManager:basicDependencies
                                                                  configuration:[templateGenerator configurationDict]
                                              dictionaryOfClassesByTemplateName:nil];
+    self.sessionTimer.dependencyManager = self.dependencyManager;
+    [self.sessionTimer start];
+    
+    self.voteSettings = [[VVoteSettings alloc] init];
+    [self.voteSettings setVoteTypes:[self.dependencyManager voteTypes]];
     
     VScaffoldViewController *scaffold = [self.dependencyManager scaffoldViewController];
     [self showViewController:scaffold animated:YES completion:^(void)

@@ -27,7 +27,7 @@
 @interface VObjectManager_LoginTests : XCTestCase
 
 @property (nonatomic, strong) VSettingManager *settingsManager;
-@property (nonatomic, strong) VObjectManager *obejctManager;
+@property (nonatomic, strong) VObjectManager *objectManager;
 @property (nonatomic, strong) VThemeManager *themeManager;
 
 @end
@@ -39,42 +39,13 @@
     [super setUp];
     
     self.settingsManager = [[VSettingManager alloc] init];
-    self.obejctManager = [[VObjectManager alloc] init];
+    self.objectManager = [[VObjectManager alloc] init];
     self.themeManager = [[VThemeManager alloc] init];
 }
 
 - (void)tearDown
 {
     [super tearDown];
-}
-
-- (void)testUpdateTracking
-{
-    VTracking *tracking1 = [VDummyModels objectWithEntityName:@"Tracking" subclass:[VTracking class]];
-    VTracking *tracking2 = [VDummyModels objectWithEntityName:@"Tracking" subclass:[VTracking class]];
-    
-    [self.obejctManager updateSettings:self.settingsManager withResultObjects:@[ tracking1 ]];
-    XCTAssertNotNil( self.settingsManager.applicationTracking );
-    
-    [self.obejctManager updateSettings:self.settingsManager withResultObjects:@[ tracking2, tracking1 ]];
-    XCTAssertNotNil( self.settingsManager.applicationTracking );
-    XCTAssertEqualObjects( self.settingsManager.applicationTracking, tracking2 );
-    
-    [self.obejctManager updateSettings:self.settingsManager withResultObjects:@[ tracking1, [NSNull null], [NSObject new] ]];
-    XCTAssertNotNil( self.settingsManager.applicationTracking );
-    XCTAssertEqualObjects( self.settingsManager.applicationTracking, tracking1 );
-}
-
-- (void)testUpdateSettingsInvalid
-{
-    [self.obejctManager updateSettings:self.settingsManager withResultObjects:@[]];
-    XCTAssertNil( self.settingsManager.applicationTracking );
-    
-    [self.obejctManager updateSettings:self.settingsManager withResultObjects:nil];
-    XCTAssertNil( self.settingsManager.applicationTracking );
-    
-    [self.obejctManager updateSettings:self.settingsManager withResultObjects:(NSArray *)@{}];
-    XCTAssertNil( self.settingsManager.applicationTracking );
 }
 
 - (void)testUpdateTheme
@@ -90,7 +61,7 @@
                 }];
     
     NSDictionary *payload = @{ @"appearance" : @{ key : value } };
-    [self.obejctManager updateTheme:self.themeManager withResponsePayload:payload];
+    [self.objectManager updateTheme:self.themeManager withResponsePayload:payload];
     XCTAssert( wasMethodCalled );
     
     [VThemeManager v_restoreOriginalImplementation:orig forMethod:@selector(setTheme:)];
@@ -102,30 +73,30 @@
     NSArray *input = nil;
     
     input = @[ @1, @2, [NSNull new], [[NSString alloc] init] ];
-    output = [self.obejctManager filteredArrayFromArray:input withObjectsOfClass:[NSNumber class]];
+    output = [self.objectManager filteredArrayFromArray:input withObjectsOfClass:[NSNumber class]];
     XCTAssertEqual( output.count, (NSUInteger)2 );
     [output enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         XCTAssert( [obj isKindOfClass:[NSNumber class]] );
     }];
     
-    output = [self.obejctManager filteredArrayFromArray:input withObjectsOfClass:[NSString class]];
+    output = [self.objectManager filteredArrayFromArray:input withObjectsOfClass:[NSString class]];
     XCTAssertEqual( output.count, (NSUInteger)1 );
     [output enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         XCTAssert( [obj isKindOfClass:[NSString class]] );
     }];
     
-    output = [self.obejctManager filteredArrayFromArray:input withObjectsOfClass:[NSDictionary class]];
+    output = [self.objectManager filteredArrayFromArray:input withObjectsOfClass:[NSDictionary class]];
     XCTAssertEqual( output.count, (NSUInteger)0, @"Should not return results for class not in input array." );
     
-    XCTAssertThrows( [self.obejctManager filteredArrayFromArray:input withObjectsOfClass:nil] );
+    XCTAssertThrows( [self.objectManager filteredArrayFromArray:input withObjectsOfClass:nil] );
     
-    output = [self.obejctManager filteredArrayFromArray:@[] withObjectsOfClass:[NSObject class]];
+    output = [self.objectManager filteredArrayFromArray:@[] withObjectsOfClass:[NSObject class]];
     XCTAssertEqual( output.count, (NSUInteger)0 );
     
-    output = [self.obejctManager filteredArrayFromArray:nil withObjectsOfClass:[NSObject class]];
+    output = [self.objectManager filteredArrayFromArray:nil withObjectsOfClass:[NSObject class]];
     XCTAssertEqual( output.count, (NSUInteger)0 );
     
-    output = [self.obejctManager filteredArrayFromArray:(NSArray *)@{} withObjectsOfClass:[NSObject class]];
+    output = [self.objectManager filteredArrayFromArray:(NSArray *)@{} withObjectsOfClass:[NSObject class]];
     XCTAssertEqual( output.count, (NSUInteger)0 );
 }
 

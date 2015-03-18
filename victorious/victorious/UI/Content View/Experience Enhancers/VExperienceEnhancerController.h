@@ -24,7 +24,7 @@
 
 @interface VExperienceEnhancerController : NSObject <VExperienceEnhancerBarDataSource, VExperienceEnhancerBarDelegate>
 
-- (instancetype)initWithSequence:(VSequence *)sequence;
+- (instancetype)initWithSequence:(VSequence *)sequence voteTypes:(NSArray *)voteTypes NS_DESIGNATED_INITIALIZER;
 
 - (void)updateData;
 

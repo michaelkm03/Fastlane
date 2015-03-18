@@ -10,7 +10,7 @@
 #import "VHasManagedDependencies.h"
 #import <UIKit/UIKit.h>
 
-@class VSequence;
+@class VSequence, VAuthorization;
 
 /**
  The key that identifies the menu component in VDependencyManager
@@ -26,6 +26,11 @@ extern NSString * const VScaffoldViewControllerContentViewComponentKey;
  The key that identifies the profile view component in VDependencyManager
  */
 extern NSString * const VScaffoldViewControllerUserProfileViewComponentKey;
+
+/**
+ The key that identifies the welcome view component in the VDependencyManager
+ */
+extern NSString * const VScaffoldViewControllerLightweightContentViewComponentKey;
 
 /**
  Abstract base class for view controllers that act as "scaffolding",

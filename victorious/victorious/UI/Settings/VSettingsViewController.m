@@ -224,7 +224,10 @@ static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
     }
     else
     {
-        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+        VLoginViewController *viewController = [VLoginViewController newWithDependencyManager:self.dependencyManager];
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+        viewController.transitionDelegate = [[VTransitionDelegate alloc] initWithTransition:[[VPresentWithBlurTransition alloc] init]];
+        [self presentViewController:navigationController animated:YES completion:nil];
     }
     
     [self.tableView beginUpdates];

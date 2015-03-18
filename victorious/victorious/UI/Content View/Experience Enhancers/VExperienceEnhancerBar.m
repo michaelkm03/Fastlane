@@ -12,7 +12,7 @@
 #import "VLargeNumberFormatter.h"
 #import "VObjectManager+Login.h"
 #import "VPurchaseManager.h"
-#import "VVoteType+Fetcher.h"
+#import "VVoteType.h"
 
 NSString * const VExperienceEnhancerBarDidRequireLoginNotification = @"VExperienceEnhancerBarDidRequiredLoginNotification";
 NSString * const VExperienceEnhancerBarDidRequirePurchasePrompt = @"VExperienceEnhancerBarDidRequirePurchasePrompt";
@@ -159,9 +159,18 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
     // Check if the user is logged in first
     if ( ![VObjectManager sharedManager].authorized )
     {
-        [[NSNotificationCenter defaultCenter] postNotificationName:VExperienceEnhancerBarDidRequireLoginNotification object:nil];
+        NSDictionary *userInfo = @{ @"experienceEnhancerIndexPath" : indexPath };
+        [[NSNotificationCenter defaultCenter] postNotificationName:VExperienceEnhancerBarDidRequireLoginNotification object:nil userInfo:userInfo];
         return;
     }
+    
+    [self selectExperienceEnhancerAtIndex:indexPath];
+}
+
+- (void)selectExperienceEnhancerAtIndex:(NSIndexPath *)indexPath
+{
+    VExperienceEnhancer *enhancerForIndexPath = [self.enhancers objectAtIndex:indexPath.row];
+    VExperienceEnhancerCell *experienceEnhancerCell = (VExperienceEnhancerCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
     
     // Incrememnt the vote count
     [enhancerForIndexPath vote];

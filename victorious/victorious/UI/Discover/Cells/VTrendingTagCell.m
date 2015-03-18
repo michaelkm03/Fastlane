@@ -141,10 +141,6 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
     }
     else
     {
-        // Disable the control
-        self.followHashtagControl.userInteractionEnabled = NO;
-        [self disableSubscriptionIcon:nil];
-
         self.shouldAnimateSubscription = YES;
         if (self.subscribeToTagAction != nil)
         {
