@@ -552,6 +552,10 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
                                   VTrackingKeyUrls : self.viewModel.sequence.tracking.viewStart ?: @[] };
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
     }
+    else
+    {
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart];
+    }
     
     [self.contentCollectionView flashScrollIndicators];
 }
