@@ -19,6 +19,7 @@
 @property (nonatomic, copy, readonly) NSString *title; ///< The text to display in the menu
 @property (nonatomic, copy, readonly) NSString *identifier; ///< Identifier used for automation, accessibility and other non-user-facing purposes
 @property (nonatomic, strong, readonly) UIImage *icon; ///< An icon to display next to the label in the menu
+@property (nonatomic, strong, readonly) UIImage *selectedIcon; ///< An icon to display when selected
 @property (nonatomic, strong, readonly) id destination; ///< This menu item's destination. Should be either a UIViewController subclass or an implementation of VNavigationDestination
 
 /**
@@ -27,6 +28,7 @@
 - (instancetype)initWithTitle:(NSString *)title
                    identifier:(NSString *)identifier
                          icon:(UIImage *)icon
+                 selectedIcon:(UIImage *)selectedIcon
                   destination:(id)destination NS_DESIGNATED_INITIALIZER;
 
 /**

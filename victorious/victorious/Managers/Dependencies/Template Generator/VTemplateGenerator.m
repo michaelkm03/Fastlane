@@ -20,6 +20,9 @@
 #import "VTabMenuViewController.h"
 #import "VDependencyManager+VNavigationMenuItem.h"
 
+#define TEMPLATE_ICON_PREFIX @"D_"
+#define SELECTED_ICON_SUFFIX @"_selected"
+
 static NSString * const kIDKey = @"id";
 static NSString * const kReferenceIDKey = @"referenceID";
 static NSString * const kAppearanceKey = @"appearance";
@@ -30,6 +33,7 @@ static NSString * const kClassNameKey = @"name";
 static NSString * const kItemsKey = @"items";
 static NSString * const kTitleKey = @"title";
 static NSString * const kIconKey = @"icon";
+static NSString * const kSelectedIconKey = @"selectedIcon";
 static NSString * const kIdentifierKey = @"identifier";
 static NSString * const kDestinationKey = @"destination";
 
@@ -516,7 +520,10 @@ typedef NS_ENUM(NSUInteger, VTemplateType)
              kTitleKey: NSLocalizedString(@"Home", @""),
              kDestinationKey: [self homeScreen],
              kIconKey: @{
-                     VDependencyManagerImageURLKey: @"D_home",
+                     VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@home", TEMPLATE_ICON_PREFIX],
+                     },
+             kSelectedIconKey: @{
+                     VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@home%@", TEMPLATE_ICON_PREFIX, SELECTED_ICON_SUFFIX],
                      }
              };
 }
@@ -526,7 +533,10 @@ typedef NS_ENUM(NSUInteger, VTemplateType)
     return @{
              kTitleKey: NSLocalizedString(@"Create", @""),
              kIconKey: @{
-                     VDependencyManagerImageURLKey: @"D_create",
+                     VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@create", TEMPLATE_ICON_PREFIX],
+                     },
+             kSelectedIconKey: @{
+                     VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@create%@", TEMPLATE_ICON_PREFIX, SELECTED_ICON_SUFFIX],
                      },
              kDestinationKey: [self workspaceFlowComponent],
              };
@@ -544,7 +554,38 @@ typedef NS_ENUM(NSUInteger, VTemplateType)
     profileItem[kDestinationKey] = [self profileDetails];
     if ( self.enabledTemplate == VTemplateTypeD )
     {
-        profileItem[VDependencyManagerAccessoryScreensKey] = [self settingsMenuItem];
+        return @{
+                 kIdentifierKey: @"Menu Profile",
+                 kTitleKey: NSLocalizedString(@"Profile", @""),
+                 kDestinationKey: @{
+                         kClassNameKey: @"currentUserProfile.screen"
+                         },
+                 kIconKey: @{
+                         VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@profile", TEMPLATE_ICON_PREFIX],
+                         },
+                 kSelectedIconKey: @{
+                         VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@profile%@", TEMPLATE_ICON_PREFIX, SELECTED_ICON_SUFFIX],
+                         },
+                 VDependencyManagerAccessoryScreensKey: @[
+                         [self settingsMenuItem],
+                         ],
+                 };
+    }
+    else
+    {
+        return @{
+                 kIdentifierKey: @"Menu Profile",
+                 kTitleKey: NSLocalizedString(@"Profile", @""),
+                 kDestinationKey: @{
+                         kClassNameKey: @"currentUserProfile.screen"
+                         },
+                 kIconKey: @{
+                         VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@profile", TEMPLATE_ICON_PREFIX],
+                         },
+                 kSelectedIconKey: @{
+                         VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@profile%@", TEMPLATE_ICON_PREFIX, SELECTED_ICON_SUFFIX],
+                         },
+                 };
     }
     profileItem[kProfileShowEditButtonPill] = @(self.enabledTemplate == VTemplateTypeD);
     
@@ -557,7 +598,10 @@ typedef NS_ENUM(NSUInteger, VTemplateType)
              kIdentifierKey: @"Menu Inbox",
              kTitleKey: NSLocalizedString(@"Inbox", @""),
              kIconKey: @{
-                     VDependencyManagerImageURLKey: @"D_inbox",
+                     VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@inbox", TEMPLATE_ICON_PREFIX],
+                     },
+             kSelectedIconKey: @{
+                     VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@inbox%@", TEMPLATE_ICON_PREFIX, SELECTED_ICON_SUFFIX],
                      },
              kDestinationKey: @{
                      kClassNameKey: @"inbox.screen"
@@ -574,7 +618,10 @@ typedef NS_ENUM(NSUInteger, VTemplateType)
                      kClassNameKey: @"settings.screen"
                      },
              kIconKey: @{
-                     VDependencyManagerImageURLKey: @"D_settings",
+                     VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@settings", TEMPLATE_ICON_PREFIX],
+                     },
+             kSelectedIconKey: @{
+                     VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@settings%@", TEMPLATE_ICON_PREFIX, SELECTED_ICON_SUFFIX],
                      },
              };
 }
@@ -764,7 +811,10 @@ typedef NS_ENUM(NSUInteger, VTemplateType)
         NSDictionary *componentBase = @{ kIdentifierKey: @"Menu Channels",
                                          kTitleKey: NSLocalizedString(@"Channels", @""),
                                          kIconKey: @{
-                                                 VDependencyManagerImageURLKey: @"D_channels",
+                                                 VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@channels", TEMPLATE_ICON_PREFIX],
+                                                 },
+                                         kSelectedIconKey: @{
+                                                 VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@channels%@", TEMPLATE_ICON_PREFIX, SELECTED_ICON_SUFFIX],
                                                  },
                                          kDestinationKey: @{
                                                  kClassNameKey: @"groupedStream.screen",
@@ -781,7 +831,10 @@ typedef NS_ENUM(NSUInteger, VTemplateType)
         return @{ kIdentifierKey: @"Menu Channels",
                   kTitleKey: NSLocalizedString(@"Channels", @""),
                   kIconKey: @{
-                          VDependencyManagerImageURLKey: @"D_channels",
+                          VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@channels", TEMPLATE_ICON_PREFIX],
+                          },
+                  kSelectedIconKey: @{
+                          VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@channels%@", TEMPLATE_ICON_PREFIX, SELECTED_ICON_SUFFIX],
                           },
                   kDestinationKey: @{
                           kClassNameKey: @"directory.screen",
@@ -802,7 +855,10 @@ typedef NS_ENUM(NSUInteger, VTemplateType)
         return @{ kIdentifierKey: @"Menu Channel",
                   kTitleKey: NSLocalizedString(@"Channel", @""),
                   kIconKey: @{
-                          VDependencyManagerImageURLKey: @"channels",
+                          VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@channels", TEMPLATE_ICON_PREFIX]
+                          },
+                  kSelectedIconKey: @{
+                          VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@channels%@", TEMPLATE_ICON_PREFIX, SELECTED_ICON_SUFFIX]
                           },
                   kCellComponentDirectoryItem: [self directoryCellComponentLight],
                   kDestinationKey: @{
