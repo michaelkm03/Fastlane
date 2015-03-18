@@ -280,7 +280,7 @@
     }
     
     VEndCardModel *endCardModel = [[VEndCardModel alloc] init];
-    endCardModel.videoTitle = self.sequence.sequenceDescription;
+    endCardModel.videoTitle = self.sequence.name;
     endCardModel.nextSequenceId = nextSequence.remoteId;
     endCardModel.nextVideoTitle = nextSequence.sequenceDescription;
     endCardModel.nextVideoThumbailImageURL = [NSURL URLWithString:(NSString *)nextSequence.previewImagesObject];

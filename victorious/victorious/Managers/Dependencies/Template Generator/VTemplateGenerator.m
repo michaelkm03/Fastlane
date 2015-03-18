@@ -18,6 +18,7 @@
 #import "VTranslucentBackground.h"
 #import "VSolidColorBackground.h"
 #import "VTabMenuViewController.h"
+#import "VFirstTimeInstallHelper.h"
 #import "VDependencyManager+VNavigationMenuItem.h"
 
 #define BOTTOM_NAV_ENABLED 0
@@ -90,6 +91,9 @@ static NSString * const kVideoMaxDuration = @"videoMaxDuration";
 static NSString * const kVideoMinDuration = @"videoMinDuration";
 static NSString * const kVideoMuted = @"videoMuted";
 
+// First-time User Video
+static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
+
 @interface VTemplateGenerator ()
 
 @property (nonatomic, strong) NSDictionary *dataFromInitCall;
@@ -127,9 +131,9 @@ static NSString * const kVideoMuted = @"videoMuted";
              if ([obj isKindOfClass:[NSDictionary class]])
              {
                  [template addEntriesFromDictionary:obj];
-                 
+
                  NSDictionary *accentColor = obj[VDependencyManagerAccentColorKey];
-                 
+
                  if ( accentColor == nil )
                  {
                      accentColor = @{
@@ -154,13 +158,14 @@ static NSString * const kVideoMuted = @"videoMuted";
              template[key] = obj;
          }
      }];
-    
+
     if (BOTTOM_NAV_ENABLED)
     {
         template[VDependencyManagerScaffoldViewControllerKey] = @{
                                                                   kClassNameKey: @"tabMenu.scaffold",
                                                                   kItemsKey:[self bottomNavMenuItems],
                                                                   VScaffoldViewControllerUserProfileViewComponentKey: [self profileScreen],
+                                                                  VScaffoldViewControllerLightweightContentViewComponentKey: [self lightweightContentViewComponent],
                                                                   kSelectorKey: [self multiScreenSelectorKey],
                                                                   VTabMenuViewControllerMenuAppearanceKey: @{
                                                                           VDependencyManagerBackgroundKey: [self solidWhiteBackground],
@@ -178,11 +183,12 @@ static NSString * const kVideoMuted = @"videoMuted";
                                                                    VScaffoldViewControllerMenuComponentKey: [self menuComponent],
                                                                    VStreamCollectionViewControllerCreateSequenceIconKey: (self.templateCEnabled ? [UIImage imageNamed:@"createContentButtonC"] : [UIImage imageNamed:@"createContentButton"]),
                                                                    VScaffoldViewControllerUserProfileViewComponentKey: [self profileScreen],
+                                                                   VScaffoldViewControllerLightweightContentViewComponentKey: [self lightweightContentViewComponent],
                                                                    kSelectorKey: [self multiScreenSelectorKey],
                                                                    VScaffoldViewControllerContentViewComponentKey: [self contentViewComponent],
                                                                    };
     }
-    
+
     template[VDependencyManagerWorkspaceFlowKey] = [self workspaceFlowComponent];
     template[VScaffoldViewControllerNavigationBarAppearanceKey] = [self navigationBarAppearance];
     template[VStreamCollectionViewControllerCellComponentKey] = [self cellComponent];
@@ -212,7 +218,7 @@ static NSString * const kVideoMuted = @"videoMuted";
     NSDictionary *kSelectorKey = @{
                                    kClassNameKey: @"basic.multiScreenSelector",
                                    };
-    
+
     if ( ROUNDED_TOP_NAV_ENABLED )
     {
         kSelectorKey =  @{
@@ -511,6 +517,17 @@ static NSString * const kVideoMuted = @"videoMuted";
     }
 }
 
+- (NSDictionary *)lightweightContentViewComponent
+{
+    NSString *sequenceID = self.dataFromInitCall[@"experiments"][@"ftue_welcome_sequence_id"];
+    NSArray *trackingArray = self.dataFromInitCall[@"experiments"][@"ftue_welcome_tracking"][@"start"];
+    return @{
+             kClassNameKey: @"lightweight.contentView",
+             kFTUSequenceURLPath: [NSString stringWithFormat:@"/api/sequence/fetch/%@", sequenceID],
+             kFTUTrackingURLGroup:  trackingArray ?: @[]
+             };
+}
+
 - (NSDictionary *)menuComponent
 {
     return @{
@@ -689,7 +706,7 @@ static NSString * const kVideoMuted = @"videoMuted";
 {
     return @{ kClassNameKey: @"userProfile.screen" };
 }
-                
+
 - (NSDictionary *)homeScreen
 {
     NSMutableDictionary *homeScreen = [@{
@@ -723,13 +740,13 @@ static NSString * const kVideoMuted = @"videoMuted";
                 kReferenceIDKey: self.homeRecentID,
                 },
         } mutableCopy];
-    
+
     UIImage *headerImage = [self homeHeaderImage];
     if ( headerImage != nil )
     {
         homeScreen[kTitleImageKey] = headerImage;
     }
-    
+
     return homeScreen;
 }
 
@@ -751,7 +768,7 @@ static NSString * const kVideoMuted = @"videoMuted";
       kInitialKey: @YES,
       VStreamCollectionViewControllerStreamURLPathKey: [self urlPathForStreamCategories:[VUGCCategories() arrayByAddingObjectsFromArray:VOwnerCategories()]]
     };
-    
+
     NSNumber *marqueeEnabled = [self.dataFromInitCall valueForKeyPath:@"experiments.marquee_enabled"];
     if ( [marqueeEnabled isKindOfClass:[NSNumber class]] && [marqueeEnabled boolValue] )
     {
@@ -766,7 +783,7 @@ static NSString * const kVideoMuted = @"videoMuted";
 {
     NSNumber *channelsEnabledObject = [self.dataFromInitCall valueForKeyPath:@"experiments.channels_enabled"];
     const BOOL channelsEnabled = [channelsEnabledObject isKindOfClass:[NSNumber class]] && [channelsEnabledObject boolValue];
-    
+
     if ( CHANNELS_WITH_GROUP_STREAM_ENABLED && channelsEnabled )
     {
         NSDictionary *componentBase = @{ kIdentifierKey: @"Menu Channels",
@@ -977,6 +994,14 @@ static NSString * const kVideoMuted = @"videoMuted";
                       kAlphaKey: @1
                       },
               };
+}
+
+- (NSDictionary *)translucentDarkBackground
+{
+    return @{
+             kClassNameKey:@"translucent.background",
+             VTranslucentBackgroundBlurStyleKey: VTranslucentBackgroundBlurStyleDark,
+             };
 }
 
 @end
