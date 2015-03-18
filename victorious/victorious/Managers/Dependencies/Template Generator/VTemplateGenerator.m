@@ -84,7 +84,7 @@ static NSString * const kVideoMinDuration = @"videoMinDuration";
 static NSString * const kVideoMuted = @"videoMuted";
 
 // Profile properties
-static NSString * const kProfileShowEditButtonPill = @"showEditButtonPill";
+static NSString * const kProfileShowEditButtonPill = @"editButtonRoundedStyle";
 
 typedef NS_ENUM(NSUInteger, VTemplateType)
 {
@@ -177,6 +177,12 @@ typedef NS_ENUM(NSUInteger, VTemplateType)
                                                                   VTabMenuViewControllerMenuAppearanceKey: @{
                                                                           VDependencyManagerBackgroundKey: [self solidWhiteBackground],
                                                                           },
+                                                                  VDependencyManagerAccentColorKey: @{
+                                                                          kRedKey: @288,
+                                                                          kGreenKey: @65,
+                                                                          kBlueKey: @66,
+                                                                          kAlphaKey: @1
+                                                                          }
                                                                   };
     }
     else
@@ -540,6 +546,7 @@ typedef NS_ENUM(NSUInteger, VTemplateType)
     {
         profileItem[VDependencyManagerAccessoryScreensKey] = [self settingsMenuItem];
     }
+    profileItem[kProfileShowEditButtonPill] = @(self.enabledTemplate == VTemplateTypeD);
     
     return [NSDictionary dictionaryWithDictionary:profileItem];
 }
@@ -582,7 +589,6 @@ typedef NS_ENUM(NSUInteger, VTemplateType)
 {
     NSMutableDictionary *profileDetails = [[NSMutableDictionary alloc] initWithDictionary:@{
                                                                                             kClassNameKey: @"currentUserProfile.screen",
-                                                                                            kProfileShowEditButtonPill: @(NO),
                                                                                             VDependencyManagerBackgroundColorKey: @{
                                                                                                     kRedKey: @241,
                                                                                                     kGreenKey: @241,
@@ -614,7 +620,6 @@ typedef NS_ENUM(NSUInteger, VTemplateType)
     
     if ( self.enabledTemplate == VTemplateTypeD )
     {
-        profileDetails[kProfileShowEditButtonPill] = @(YES);
         profileDetails[VDependencyManagerBackgroundColorKey] = @{
                                                                  kRedKey: @20,
                                                                  kGreenKey: @20,
