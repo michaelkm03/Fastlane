@@ -43,7 +43,9 @@ NSString * const VVideoToolControllerInitalVideoEditStateKey = @"VVideoToolContr
         __weak typeof(self) welf = self;
         snapshotTool.capturedSnapshotBlock = ^void(UIImage *previewImage, NSURL *capturedMediaURL)
         {
-            [welf.videoToolControllerDelegate videoToolController:self selectedSnapshotForEditing:previewImage renderedSnapshotURL:capturedMediaURL];
+            [welf.videoToolControllerDelegate videoToolController:self
+                                       selectedSnapshotForEditing:previewImage
+                                              renderedSnapshotURL:capturedMediaURL];
         };
     }
 }
@@ -68,13 +70,11 @@ NSString * const VVideoToolControllerInitalVideoEditStateKey = @"VVideoToolContr
 
 - (BOOL)isGIF
 {
-//TODO: Can't always assume this
     return ((VTrimVideoTool *)self.selectedTool).isGIF;
 }
 
 - (BOOL)didTrim
 {
-//TODO: Can't always assume this
     return ((VTrimVideoTool *)self.selectedTool).didTrim;
 }
 
@@ -91,32 +91,21 @@ NSString * const VVideoToolControllerInitalVideoEditStateKey = @"VVideoToolContr
         NSAssert(false, @"Tools not set yet!");
     }
     
-//TODO: Should refactor this to not rely on the title string
     [self.tools enumerateObjectsUsingBlock:^(id <VWorkspaceTool> obj, NSUInteger idx, BOOL *stop)
      {
-         switch (self.defaultVideoTool)
+         if ([obj isKindOfClass:[VTrimVideoTool class]])
          {
-             case VVideoToolControllerInitialVideoEditStateGIF:
-                 if ([obj respondsToSelector:@selector(title)])
-                 {
-                     if ([[obj title] isEqualToString:@"gif"])
-                     {
-                         [self setSelectedTool:obj];
-                         *stop = YES;
-                     }
-                 }
-                 break;
-             case VVideoToolControllerInitialVideoEditStateVideo:
-             default:
-                 if ([obj respondsToSelector:@selector(title)])
-                 {
-                     if ([[obj title] isEqualToString:@"video"])
-                     {
-                         [self setSelectedTool:obj];
-                         *stop = YES;
-                     }
-                 }
-                 break;
+             VTrimVideoTool *trimTool = (VTrimVideoTool *)obj;
+             if (trimTool.isGIF && (self.defaultVideoTool == VVideoToolControllerInitialVideoEditStateGIF))
+             {
+                 [self setSelectedTool:obj];
+                 
+             }
+             else if (!trimTool.isGIF && (self.defaultVideoTool == VVideoToolControllerInitialVideoEditStateVideo))
+             {
+                 [self setSelectedTool:obj];
+             }
+             *stop = YES;
          }
      }];
 }

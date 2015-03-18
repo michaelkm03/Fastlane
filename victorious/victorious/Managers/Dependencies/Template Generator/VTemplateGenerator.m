@@ -251,22 +251,41 @@ static NSString * const kVideoMuted = @"videoMuted";
     return @[
              @{
                  kClassNameKey: @"trim.video.tool",
-                 kTitleKey: @"video",
+                 kTitleKey: NSLocalizedString(@"VIDEO MODE", @"Title informing the user they have selected the video tool."),
+                 kIconKey:@{
+                         VDependencyManagerImageURLKey:@"video"
+                         },
+                 kSelectedIconKey:@{
+                         VDependencyManagerImageURLKey:@"videoSelected",
+                         },
                  kVideoFrameDurationValue: @1,
                  kVideoFrameDurationTimescale: @24,
                  kVideoMuted: @NO
                  },
              @{
                  kClassNameKey: @"trim.video.tool",
-                 kTitleKey: @"gif",
+                 kTitleKey: NSLocalizedString(@"GIF MODE", @"Title informing the user they have selected the GIF tool."),
+                 kIconKey:@{
+                         VDependencyManagerImageURLKey:@"GIF"
+                         },
+                 kSelectedIconKey:@{
+                         VDependencyManagerImageURLKey:@"GIFSelected"
+                         },
                  kVideoFrameDurationValue: @1,
-                 kVideoFrameDurationTimescale: @4,
-                 kVideoMuted: @YES
+                 kVideoFrameDurationTimescale: @8,
+                 kVideoMuted: @YES,
+                 @"isGIF": @YES,
                  },
              @{
                  kClassNameKey: @"snapshot.video.tool",
                  kTitleKey: @"meme",
-                 }
+                 kIconKey:@{
+                         VDependencyManagerImageURLKey:@"meme",
+                         },
+                 kSelectedIconKey:@{
+                         VDependencyManagerImageURLKey:@"memeSelected",
+                         },
+                 },
              ];
 }
 
@@ -311,6 +330,12 @@ static NSString * const kVideoMuted = @"videoMuted";
              kClassNameKey: @"text.tool",
              kTitleKey: @"text",
              kFilterIndexKey: @2,
+             kIconKey:@{
+                     VDependencyManagerImageURLKey:@"text",
+                     },
+             kSelectedIconKey:@{
+                     VDependencyManagerImageURLKey:@"textSelected",
+                     },
              kPickerKey:
                  @{
                      kClassNameKey: @"vertical.picker",
@@ -382,6 +407,12 @@ static NSString * const kVideoMuted = @"videoMuted";
              kClassNameKey: @"filter.tool",
              kTitleKey: @"filters",
              kFilterIndexKey: @0,
+             kIconKey:@{
+                     VDependencyManagerImageURLKey:@"filter",
+                     },
+             kSelectedIconKey:@{
+                     VDependencyManagerImageURLKey:@"filterSelected",
+                     },
              kPickerKey:
                  @{
                      kClassNameKey: @"vertical.picker",
@@ -397,6 +428,12 @@ static NSString * const kVideoMuted = @"videoMuted";
     return @{
              kClassNameKey: @"crop.tool",
              kTitleKey: @"crop",
+             kIconKey:@{
+                     VDependencyManagerImageURLKey:@"crop",
+                     },
+             kSelectedIconKey:@{
+                     VDependencyManagerImageURLKey:@"cropSelected",
+                     },
              kFilterIndexKey: @1,
              };
 }
