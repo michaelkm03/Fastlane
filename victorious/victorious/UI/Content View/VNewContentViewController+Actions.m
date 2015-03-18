@@ -228,13 +228,13 @@
                  {
                      [self.sequenceActionController showRemixOnViewController:contentViewController
                                                                  withSequence:self.viewModel.sequence
-                                                         andDependencyManager:self.dependencyManagerForHistogramExperiment];
+                                                         andDependencyManager:self.dependencyManager];
                  }
                  else
                  {
                      [self.sequenceActionController showRemixOnViewController:self
                                                                  withSequence:sequence
-                                                         andDependencyManager:self.dependencyManagerForHistogramExperiment
+                                                         andDependencyManager:self.dependencyManager
                                                                preloadedImage:self.placeholderImage
                                                                    completion:nil];
                  }
@@ -247,7 +247,7 @@
             [contentViewController dismissViewControllerAnimated:YES
                                                       completion:^
              {
-                 [self.sequenceActionController showRemixStreamFromViewController:contentViewController sequence:self.viewModel.sequence andDependencyManager:self.dependencyManagerForHistogramExperiment];
+                 [self.sequenceActionController showRemixStreamFromViewController:contentViewController sequence:self.viewModel.sequence andDependencyManager:self.dependencyManager];
              }];
         };
         [actionItems addObject:remixItem];

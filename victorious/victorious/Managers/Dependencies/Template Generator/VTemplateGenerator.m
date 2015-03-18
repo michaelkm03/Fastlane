@@ -165,6 +165,7 @@ static NSString * const kVideoMuted = @"videoMuted";
                                                                   VTabMenuViewControllerMenuAppearanceKey: @{
                                                                           VDependencyManagerBackgroundKey: [self solidWhiteBackground],
                                                                           },
+                                                                  VScaffoldViewControllerContentViewComponentKey: [self contentViewComponent],
                                                                   };
     }
     else
@@ -178,6 +179,7 @@ static NSString * const kVideoMuted = @"videoMuted";
                                                                    VStreamCollectionViewControllerCreateSequenceIconKey: (self.templateCEnabled ? [UIImage imageNamed:@"createContentButtonC"] : [UIImage imageNamed:@"createContentButton"]),
                                                                    VScaffoldViewControllerUserProfileViewComponentKey: [self profileScreen],
                                                                    kSelectorKey: [self multiScreenSelectorKey],
+                                                                   VScaffoldViewControllerContentViewComponentKey: [self contentViewComponent],
                                                                    };
     }
     
@@ -244,6 +246,40 @@ static NSString * const kVideoMuted = @"videoMuted";
              VDependencyManagerImageWorkspaceKey: [self imageWorkspaceComponent],
              VDependencyManagerVideoWorkspaceKey: [self videoWorkspaceComponent]
              };
+}
+
+- (NSDictionary *)contentViewComponent
+{
+    return @{
+             kClassNameKey: @"standard.contentView",
+             @"histogram_enabled": @NO,
+             @"vote_types": [self voteTypes],
+             };
+}
+
+- (NSArray *)voteTypes
+{
+    NSMutableArray *voteTypes = [[NSMutableArray alloc] init];
+    for ( NSDictionary *voteType in self.dataFromInitCall[@"votetypes"] )
+    {
+        [voteTypes addObject:@{
+                               @"voteTypeID": voteType[@"id"],
+                               @"voteTypeName": voteType[@"name"],
+                               @"value": voteType[@"value"],
+                               @"images": @{
+                                       @"imageCount": @([voteType[@"frames"] integerValue]),
+                                       @"imageMacro": voteType[@"image_macro"],
+                                       @"scale": @([voteType[@"scale_factor"] integerValue]),
+                                       },
+                               @"animationDuration": @([voteType[@"animation_duration"] integerValue]),
+                               @"displayOrder": @([voteType[@"display_order"] integerValue]),
+                               @"flightDuration": @([voteType[@"flight_duration"] integerValue]),
+                               @"icon": voteType[@"icon"],
+                               @"isPaid": voteType[@"is_paid"],
+                               @"viewContentMode": voteType[@"view_content_mode"],
+                               }];
+    }
+    return voteTypes;
 }
 
 - (NSArray *)videoTools

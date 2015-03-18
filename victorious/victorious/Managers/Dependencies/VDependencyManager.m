@@ -337,7 +337,7 @@ static NSString * const kMacroReplacement = @"XXXXX";
     NSNumber *imageCount = imageDictionary[kImageCountKey];
     NSString *macro = imageDictionary[kImageMacroKey];
     
-    if ( imageCount == nil || macro == nil )
+    if ( ![imageCount isKindOfClass:[NSNumber class]] || ![macro isKindOfClass:[NSString class]] )
     {
         return nil;
     }

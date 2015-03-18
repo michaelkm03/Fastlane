@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 
 #import "VContentViewViewModel.h"
+#import "VDependencyManager.h"
+#import "VHasManagedDependencies.h"
 
 @class VDependencyManager, VSequenceActionController, VNewContentViewController;
 
@@ -29,12 +31,14 @@
 /**
  *  The content view controller.
  */
-@interface VNewContentViewController : UIViewController
+@interface VNewContentViewController : UIViewController <VHasManagedDependancies>
 
 /**
  *  VNewContentViewController informs its delegate when it is ready to be dismissed or performed a deletion action.
  */
 @property (nonatomic, weak) id <VNewContentViewControllerDelegate> delegate;
+
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 /**
  *  Designated factory method for the content viewcontroller.
@@ -55,11 +59,12 @@
 
 @property (nonatomic, strong) UIImage *placeholderImage;
 
-/**
- *  Need a reference to this for determining whether or not to show the histogram.
- */
-@property (nonatomic, weak) VDependencyManager *dependencyManagerForHistogramExperiment;
-
 @property (nonatomic, strong, readonly) IBOutlet VSequenceActionController *sequenceActionController;
+
+@end
+
+@interface VDependencyManager (VNewContentViewController)
+
+- (VNewContentViewController *)contentViewControllerForKey:(NSString *)key withViewModel:(VContentViewViewModel *)viewModel;
 
 @end

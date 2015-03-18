@@ -74,7 +74,7 @@ static NSString * const kStreamCollectionStoryboardId = @"StreamCollection";
 
 NSString * const VStreamCollectionViewControllerStreamURLPathKey = @"streamUrlPath";
 NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"createSequenceIcon";
-NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCellComponent";
+NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCell";
 
 @interface VStreamCollectionViewController () <VMarqueeDelegate, VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout>
 
