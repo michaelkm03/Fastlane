@@ -54,7 +54,12 @@ extern NSString * const VScaffoldViewControllerLightweightContentViewComponentKe
 /**
  Initializes the receiver with an instance of VDependencyManager
  */
-- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager;
+
+/**
+ Initializes the receiver with a nib name and an instance of VDependencyManager
+ */
+//- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager nibName:(NSString *)nibName NS_DESIGNATED_INITIALIZER;
 
 /**
  Presents a content view for the specified VSequence object.
