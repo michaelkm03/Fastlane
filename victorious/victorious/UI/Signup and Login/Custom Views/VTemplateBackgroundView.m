@@ -9,6 +9,7 @@
 #import "VTemplateBackgroundView.h"
 #import "UIImageView+Blurring.h"
 #import "UIImage+ImageEffects.h"
+#import "VThemeManager.h"
 
 @implementation VTemplateBackgroundView
 
@@ -35,7 +36,7 @@
 - (void)commonInit
 {
     UIColor *tintColor = [UIColor colorWithWhite:1.0 alpha:0.7];
-    UIImage *image = [UIImage imageNamed:@"Default"];
+    UIImage *image = [UIImage imageNamed:kVMenuBackgroundImage];
     self.contentMode = UIViewContentModeScaleAspectFill;
     self.image = [image applyBlurWithRadius:25
                                   tintColor:tintColor
