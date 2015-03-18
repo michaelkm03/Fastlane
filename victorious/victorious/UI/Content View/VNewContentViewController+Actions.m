@@ -246,7 +246,9 @@
                       {
                           [self.sequenceActionController showRemixOnViewController:self
                                                                       withSequence:sequence
-                                                              andDependencyManager:self.dependencyManager];
+                                                              andDependencyManager:self.dependencyManager
+                                                                    preloadedImage:nil
+                                                                        completion:nil];
                       }
                   }];
              }];
