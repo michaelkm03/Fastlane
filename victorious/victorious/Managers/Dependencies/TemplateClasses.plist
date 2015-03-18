@@ -46,7 +46,7 @@
 	<string>VVoteType</string>
 	<key>followingStream.screen</key>
 	<string>VFollowingStreamCollectionViewController</string>
-	<key>groupedStream.screen</key>
+	<key>showcase.screen</key>
 	<string>VGroupedStreamCollectionViewController</string>
 	<key>streamDirectory.screen</key>
 	<string>VDirectoryViewController</string>

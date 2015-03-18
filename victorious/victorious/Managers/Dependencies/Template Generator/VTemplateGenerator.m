@@ -903,7 +903,7 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
                                                  VDependencyManagerImageURLKey: [NSString stringWithFormat:@"%@channels%@", TEMPLATE_ICON_PREFIX, SELECTED_ICON_SUFFIX],
                                                  },
                                          kDestinationKey: @{
-                                                 kClassNameKey: @"groupedStream.screen",
+                                                 kClassNameKey: @"showcase.screen",
                                                  kTitleKey: NSLocalizedString(@"Channels", nil),
                                                  VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/detail_list_by_stream/directory/0/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%"
                                                  }
