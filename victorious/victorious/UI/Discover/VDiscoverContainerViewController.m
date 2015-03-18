@@ -15,7 +15,6 @@
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Users.h"
 #import "VUser.h"
-#import "VAuthorizationViewControllerFactory.h"
 
 // Dependency Manager
 #import "VDependencyManager.h"
@@ -31,9 +30,6 @@
 
 @property (nonatomic, weak) IBOutlet UITextField *searchField;
 @property (nonatomic, weak) IBOutlet UIButton *searchIconButton;
-@property (nonatomic, weak) IBOutlet UIImageView *searchIconImageView;
-@property (nonatomic, weak) IBOutlet UIView *horizontalRuleTop;
-@property (nonatomic, weak) IBOutlet UIView *horizontalRuleBottom;
 @property (nonatomic, weak) id<VDiscoverViewControllerProtocol> childViewController;
 
 @property (nonatomic, strong) UINavigationController *searchNavigationController;
@@ -66,27 +62,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    UIColor *backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
-    
-    self.view.backgroundColor = backgroundColor;
-    self.horizontalRuleBottom.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryBackgroundColorKey];
-    self.horizontalRuleTop.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryBackgroundColorKey];
-    
-    //Set up search bar coloring here
+
+    self.searchField.placeholder = NSLocalizedString(@"Search people and hashtags", @"");
     self.searchField.delegate = self;
-    self.searchBarContainer.backgroundColor = backgroundColor;
-    NSString *searchPlaceholderText = NSLocalizedString(@"Search people and hashtags", @"");
-    UIColor *placeholderTextColor = [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
-    NSDictionary *searchPlaholderAttributes = @{ NSForegroundColorAttributeName : placeholderTextColor ?: [UIColor grayColor] };
-    self.searchField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:searchPlaceholderText
-                                                                             attributes:searchPlaholderAttributes];
-    UIImage *templateImage = [self.searchIconImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    self.searchIconImageView.image = templateImage;
-    self.searchIconImageView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
 
     VSearchResultsTransition *viewTransition = [[VSearchResultsTransition alloc] init];
     self.transitionDelegate = [[VTransitionDelegate alloc] initWithTransition:viewTransition];
+
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -169,15 +151,6 @@
     [self.searchField becomeFirstResponder];
 }
 
-#pragma mark - VNavigationDestination
-
-- (BOOL)shouldNavigateWithAlternateDestination:(UIViewController *__autoreleasing *)alternateViewController
-{
-    [self.childViewController refresh:YES];
-
-    return YES;
-}
-
 #pragma mark - UITextFieldDelegate
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
@@ -198,9 +171,8 @@
 {
     if ( [segue.destinationViewController conformsToProtocol:@protocol(VDiscoverViewControllerProtocol)] )
     {
-        UIViewController <VDiscoverViewControllerProtocol> *discoverViewController = segue.destinationViewController;
-        [self addChildViewController:discoverViewController];
-        discoverViewController.dependencyManager = self.dependencyManager;
+        self.childViewController = (id<VDiscoverViewControllerProtocol>)segue.destinationViewController;
+        self.childViewController.dependencyManager = self.dependencyManager;
     }
 
     if ( [[segue identifier] isEqualToString:@"usersTagsSearchSegue"] )

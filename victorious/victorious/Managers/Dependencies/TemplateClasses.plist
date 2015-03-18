@@ -40,6 +40,10 @@
 	<string>VMenuController</string>
 	<key>stream.screen</key>
 	<string>VStreamCollectionViewController</string>
+	<key>standard.contentView</key>
+	<string>VNewContentViewController</string>
+	<key>animated.voteType</key>
+	<string>VVoteType</string>
 	<key>followingStream.screen</key>
 	<string>VFollowingStreamCollectionViewController</string>
 	<key>groupedStream.screen</key>
@@ -64,6 +68,8 @@
 	<string>VSettingsViewController</string>
 	<key>discover.screen</key>
 	<string>VDiscoverContainerViewController</string>
+	<key>lightweight.contentView</key>
+	<string>VLightweightContentViewController</string>
 	<key>inset.streamCell</key>
 	<string>VInsetStreamCellFactory</string>
 	<key>titleOverlay.streamCell</key>

@@ -8,6 +8,11 @@
 
 #import "VToolController.h"
 
+// Image Blurring
+#import "NSURL+MediaType.h"
+#import "UIImage+ImageEffects.h"
+@import AVFoundation;
+
 @interface VToolController ()
 
 @property (nonatomic, strong, readwrite) NSArray *tools;
@@ -85,6 +90,40 @@
     }
     
     _selectedTool = selectedTool;
+}
+
+- (void)setMediaURL:(NSURL *)mediaURL
+{
+    _mediaURL = mediaURL;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
+                   {
+                       UIImage *image;
+                       if ([mediaURL v_hasImageExtension])
+                       {
+                           image = [UIImage imageWithData:[NSData dataWithContentsOfURL:mediaURL]];
+                       }
+                       else if ([mediaURL v_hasVideoExtension])
+                       {
+                           AVAsset *assetWithURL = [AVAsset assetWithURL:mediaURL];
+                           AVAssetImageGenerator *imageGenrator = [AVAssetImageGenerator assetImageGeneratorWithAsset:assetWithURL];
+                           CGImageRef imageRef = [imageGenrator copyCGImageAtTime:kCMTimeZero
+                                                                       actualTime:NULL
+                                                                            error:nil];
+                           image = [UIImage imageWithCGImage:imageRef];
+                           CGImageRelease(imageRef);
+                       }
+                       if (image == nil)
+                       {
+                           return;
+                       }
+                       dispatch_async(dispatch_get_main_queue(), ^
+                       {
+                           if (self.snapshotImageBecameAvailable != nil)
+                           {
+                               self.snapshotImageBecameAvailable(image);
+                           }
+                       });
+                   });
 }
 
 #pragma mark - Public Methods

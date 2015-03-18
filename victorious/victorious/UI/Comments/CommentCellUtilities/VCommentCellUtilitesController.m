@@ -70,14 +70,7 @@ static const CGFloat kVCommentCellUtilityButtonWidth = 55.0f;
 #pragma mark - Server actions
 
 - (void)flagComment
-{
-    
-    if ( ![VObjectManager sharedManager].authorized )
-    {
-        [self.delegate didSelectActionRequiringLogin];
-        return;
-    }
-    
+{   
     [[VObjectManager sharedManager] flagComment:self.comment
                                    successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
      {

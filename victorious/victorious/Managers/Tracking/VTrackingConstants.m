@@ -15,6 +15,9 @@ NSString * const VTrackingEventApplicationDidLaunch = @"ApplicationDidLaunch";
 NSString * const VTrackingEventApplicationDidEnterBackground = @"ApplicationDidEnterBackground";
 NSString * const VTrackingEventApplicationDidEnterForeground = @"ApplicationDidEnterForeground";
 
+// First-Time User Experience
+NSString * const VTrackingEventFirstTimeUserVideoPlayed = @"FirstTimeUserVideoPlayed";
+
 // Navigation
 NSString * const VTrackingEventUserDidSelectMainMenu = @"UserDidSelectMainMenu";
 NSString * const VTrackingEventUserDidSelectMainSection = @"UserDidSelectMainSection";

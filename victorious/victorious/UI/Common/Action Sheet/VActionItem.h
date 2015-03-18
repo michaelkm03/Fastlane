@@ -65,12 +65,12 @@ typedef NS_ENUM(NSInteger, VActionItemType)
 /**
  *  Called when the item is selected.
  */
-@property (nonatomic, copy) void (^selectionHandler)(void);
+@property (nonatomic, copy) void (^selectionHandler)(VActionItem *);
 
 /**
  *  Called when the item's accessory is selected. For default this will correspond to the detail text being selected.
  */
-@property (nonatomic, copy) void (^detailSelectionHandler)(void);
+@property (nonatomic, copy) void (^detailSelectionHandler)(VActionItem *);
 
 @property (nonatomic, copy) void (^hashTagSelectionHandler)(NSString *hashTag);
 

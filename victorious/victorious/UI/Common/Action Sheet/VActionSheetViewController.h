@@ -29,4 +29,9 @@
 @property (nonatomic, readonly) CGFloat totalHeight;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *topAlignmentAvatarViewToBlurredContainerConstraint;
 
+/**
+ Sets the cell for the supplied item into a loading state.
+ */
+- (void)setLoading:(BOOL)loading forItem:(VActionItem *)item;
+
 @end

@@ -19,6 +19,8 @@
 
 @required
 
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
+
 /**
  View Controllers should return YES if an error has occured while loading data or the
  response returned with no results.  In either case, it will be handled in such a way
@@ -33,8 +35,6 @@
  has occurred -- whether it was successful or not.
  */
 @property (nonatomic, assign) BOOL hasLoadedOnce;
-
-@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 /**
  Requests that the view controller reload its data from the server.

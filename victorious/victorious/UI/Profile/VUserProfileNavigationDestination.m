@@ -7,7 +7,6 @@
 //
 
 #import "NSURL+VPathHelper.h"
-#import "VAuthorizationViewControllerFactory.h"
 #import "VDependencyManager+VObjectManager.h"
 #import "VObjectManager+Users.h"
 #import "VRootViewController.h"
@@ -56,12 +55,19 @@ static NSString * const kProfileDeeplinkHostComponent = @"profile";
 {
     VUserProfileViewController *userProfileViewController = [VUserProfileViewController userProfileWithRemoteId:self.objectManager.mainUser.remoteId];
     userProfileViewController.representsMainUser = YES;
+    
     if ( [userProfileViewController respondsToSelector:@selector(setDependencyManager:)] )
     {
         [userProfileViewController setDependencyManager:self.dependencyManager];
     }
     *alternateViewController = userProfileViewController;
+    
     return YES;
+}
+
+- (VAuthorizationContext)authorizationContext
+{
+    return VAuthorizationContextUserProfile;
 }
 
 #pragma mark - VDeeplinkHandler methods

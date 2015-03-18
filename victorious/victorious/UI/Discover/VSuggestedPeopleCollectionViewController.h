@@ -15,7 +15,7 @@
 
 - (void)suggestedPeopleDidFailToLoad;
 - (void)suggestedPeopleDidFinishLoading;
-- (void)didAttemptActionThatRequiresLogin;
+- (UIViewController *)componentRootViewController;
 
 @end
 
