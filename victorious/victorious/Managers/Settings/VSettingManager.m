@@ -63,8 +63,6 @@ NSString * const kVPrivacyUrl = @"url.privacy";
     {
         NSURL  *defaultExperimentsURL =   [[NSBundle mainBundle] URLForResource:@"defaultSettings" withExtension:@"plist"];
         [[NSUserDefaults standardUserDefaults] registerDefaults:[NSDictionary dictionaryWithContentsOfURL:defaultExperimentsURL]];
-        
-        _voteSettings = [[VVoteSettings alloc] init];
     }
     
     return self;

@@ -40,6 +40,10 @@
 	<string>VMenuController</string>
 	<key>stream.screen</key>
 	<string>VStreamCollectionViewController</string>
+	<key>standard.contentView</key>
+	<string>VNewContentViewController</string>
+	<key>animated.voteType</key>
+	<string>VVoteType</string>
 	<key>followingStream.screen</key>
 	<string>VFollowingStreamCollectionViewController</string>
 	<key>groupedStream.screen</key>

@@ -52,6 +52,4 @@ extern NSString * const kVSupportEmail;
 
 - (NSString *)fetchMonetizationItemByKey:(NSString *)key;
 
-@property (nonatomic, readonly) VVoteSettings *voteSettings;
-
 @end

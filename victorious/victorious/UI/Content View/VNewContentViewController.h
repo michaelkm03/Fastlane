@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 
 #import "VContentViewViewModel.h"
+#import "VDependencyManager.h"
+#import "VHasManagedDependencies.h"
 
 @class VDependencyManager, VSequenceActionController, VNewContentViewController, VAuthorizedAction;
 
@@ -29,12 +31,14 @@
 /**
  *  The content view controller.
  */
-@interface VNewContentViewController : UIViewController
+@interface VNewContentViewController : UIViewController <VHasManagedDependancies>
 
 /**
  *  VNewContentViewController informs its delegate when it is ready to be dismissed or performed a deletion action.
  */
 @property (nonatomic, weak) id <VNewContentViewControllerDelegate> delegate;
+
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 /**
  *  Designated factory method for the content viewcontroller.
@@ -57,6 +61,10 @@
 
 @property (nonatomic, weak, readonly) IBOutlet VSequenceActionController *sequenceActionController;
 
-@property (nonatomic, strong, readonly) VDependencyManager *dependencyManager;
+@end
+
+@interface VDependencyManager (VNewContentViewController)
+
+- (VNewContentViewController *)contentViewControllerForKey:(NSString *)key withViewModel:(VContentViewViewModel *)viewModel;
 
 @end

@@ -53,6 +53,8 @@ NSString * const kMacroBallisticsCount = @"%%COUNT%%";
     return [NSArray arrayWithArray:models];
 }
 
+// TODO
+#if 0
 + (NSArray *)createVoteTypes:(NSInteger)count
 {
     NSMutableArray *models = [[NSMutableArray alloc] init];
@@ -74,6 +76,7 @@ NSString * const kMacroBallisticsCount = @"%%COUNT%%";
     }
     return [NSArray arrayWithArray:models];
 }
+#endif
 
 + (NSArray *)createUsers:(NSInteger)count
 {

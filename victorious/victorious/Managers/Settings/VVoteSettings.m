@@ -9,7 +9,7 @@
 #import "VVoteSettings.h"
 #import "VFileCache.h"
 #import "VFileCache+VVoteType.h"
-#import "VVoteType+Fetcher.h"
+#import "VVoteType.h"
 #import "VPurchaseManager.h"
 
 #define OVERWRITE_WITH_PAID_BALLISTICS 0
@@ -43,8 +43,7 @@
     NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(VVoteType *voteType, NSDictionary *bindings)
                               {
                                   return [voteType isMemberOfClass:[VVoteType class]] &&
-                                  voteType.containsRequiredData &&
-                                  voteType.hasValidTrackingData;
+                                  voteType.containsRequiredData;
                               }];
     _voteTypes = [(_voteTypes ?: @[]) arrayByAddingObjectsFromArray:voteTypes];
     _voteTypes = [voteTypes filteredArrayUsingPredicate:predicate];

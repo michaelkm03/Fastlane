@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "VVoteType+Fetcher.h"
+#import "VVoteType.h"
 #import "VSimpleModalTransition.h"
 
 @protocol VPurchaseViewControllerDelegate <NSObject>
