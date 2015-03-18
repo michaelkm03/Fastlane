@@ -28,22 +28,7 @@ static NSString * const kCanAddContentKey = @"canAddContent";
 
 @end
 
-@interface VStreamContentPermissionsTests : XCTestCase
-
-@end
-
 @implementation VStreamContentPermissionsTests
-
-- (void)setUp
-{
-    [super setUp];
-    
-}
-
-- (void)tearDown
-{
-    [super tearDown];
-}
 
 - (void)testCanPostContent
 {
