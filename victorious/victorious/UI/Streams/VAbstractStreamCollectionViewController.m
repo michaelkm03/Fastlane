@@ -266,7 +266,12 @@ const CGFloat kVLoadNextPagePoint = .75f;
      ^{
          [self.refreshControl endRefreshing];
          [self.streamTrackingHelper streamDidLoad:self.currentStream];
-         [self updateUserPostAllowed];
+         
+         BOOL viewIsVisible = self.parentViewController != nil;
+         if ( viewIsVisible )
+         {
+             [self updateUserPostAllowed];
+         }
          
          if (completionBlock)
          {
