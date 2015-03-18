@@ -333,8 +333,8 @@ static const CGFloat kContentParallaxMagnitude = 15;
         }
         
         UIInterpolatingMotionEffect *interpolationVertical = [[UIInterpolatingMotionEffect alloc]initWithKeyPath:@"center.y" type:UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis];
-        interpolationVertical.minimumRelativeValue = @(kContentParallaxMagnitude);
-        interpolationVertical.maximumRelativeValue = @(-kContentParallaxMagnitude);
+        interpolationVertical.minimumRelativeValue = @(-kContentParallaxMagnitude);
+        interpolationVertical.maximumRelativeValue = @(kContentParallaxMagnitude);
         
         [self.menuViewController.view addMotionEffect:interpolationVertical];
     }
@@ -351,12 +351,12 @@ static const CGFloat kContentParallaxMagnitude = 15;
 
         [UIView animateWithDuration:0.2 animations:^{
             UIInterpolatingMotionEffect *interpolationHorizontal = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.x" type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
-            interpolationHorizontal.minimumRelativeValue = @(kContentParallaxMagnitude);
-            interpolationHorizontal.maximumRelativeValue = @(-kContentParallaxMagnitude);
+            interpolationHorizontal.minimumRelativeValue = @(-kContentParallaxMagnitude);
+            interpolationHorizontal.maximumRelativeValue = @(kContentParallaxMagnitude);
             
             UIInterpolatingMotionEffect *interpolationVertical = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.y" type:UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis];
-            interpolationVertical.minimumRelativeValue = @(kContentParallaxMagnitude);
-            interpolationVertical.maximumRelativeValue = @(-kContentParallaxMagnitude);
+            interpolationVertical.minimumRelativeValue = @(-kContentParallaxMagnitude);
+            interpolationVertical.maximumRelativeValue = @(kContentParallaxMagnitude);
             
             [self.contentViewController.view addMotionEffect:interpolationHorizontal];
             [self.contentViewController.view addMotionEffect:interpolationVertical];
@@ -375,12 +375,12 @@ static const CGFloat kContentParallaxMagnitude = 15;
         
         [UIView animateWithDuration:0.2 animations:^{
             UIInterpolatingMotionEffect *interpolationHorizontal = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.x" type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
-            interpolationHorizontal.minimumRelativeValue = @(-kBackgroundParallaxMagnitude);
-            interpolationHorizontal.maximumRelativeValue = @(kBackgroundParallaxMagnitude);
+            interpolationHorizontal.minimumRelativeValue = @(kBackgroundParallaxMagnitude);
+            interpolationHorizontal.maximumRelativeValue = @(-kBackgroundParallaxMagnitude);
             
             UIInterpolatingMotionEffect *interpolationVertical = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.y" type:UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis];
-            interpolationVertical.minimumRelativeValue = @(-kBackgroundParallaxMagnitude);
-            interpolationVertical.maximumRelativeValue = @(kBackgroundParallaxMagnitude);
+            interpolationVertical.minimumRelativeValue = @(kBackgroundParallaxMagnitude);
+            interpolationVertical.maximumRelativeValue = @(-kBackgroundParallaxMagnitude);
             
             [self.backgroundView addMotionEffect:interpolationHorizontal];
             [self.backgroundView addMotionEffect:interpolationVertical];
