@@ -453,7 +453,7 @@ static NSString * const kVideoMuted = @"videoMuted";
                                 kIDKey: self.communityRecentID,
                                 kTitleKey: NSLocalizedString(@"Recent", @""),
                                 VStreamCollectionViewControllerStreamURLPathKey: [self urlPathForStreamCategories:VUGCCategories()],
-                                kCanAddContentKey: @YES,
+                                kCanAddContentKey: @NO,
                             },
                         ]
                     }
@@ -612,7 +612,7 @@ static NSString * const kVideoMuted = @"videoMuted";
                     kClassNameKey: @"followingStream.screen",
                     kTitleKey: NSLocalizedString(@"Following", @""),
                     VStreamCollectionViewControllerStreamURLPathKey: @"/api/sequence/follows_detail_list_by_stream/0/home/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%",
-                    kCanAddContentKey: @YES,
+                    kCanAddContentKey: @NO,
                     }
                 ],
         kInitialKey: @{

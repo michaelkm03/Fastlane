@@ -10,10 +10,11 @@
 
 #import "VStreamCollectionViewDataSource.h"
 #import "VStreamTrackingHelper.h"
+#import "VMultipleContainerViewControllerChild.h"
 
 @class VStream, VNavigationHeaderView, VCollectionRefreshControl;
 
-@interface VAbstractStreamCollectionViewController : UIViewController <VStreamCollectionDataDelegate, UIScrollViewDelegate, UICollectionViewDelegateFlowLayout>
+@interface VAbstractStreamCollectionViewController : UIViewController <VStreamCollectionDataDelegate, UIScrollViewDelegate, UICollectionViewDelegateFlowLayout, VMultipleContainerViewControllerChild>
 
 @property (nonatomic, strong) UIRefreshControl *refreshControl;///<Refresh control for the collectionview
 @property (nonatomic, strong) VStream *currentStream;///<The stream to display
@@ -45,5 +46,11 @@
 - (void)animateNewlyPopulatedCell:(UICollectionViewCell *)cell
                  inCollectionView:(UICollectionView *)collectionView
                       atIndexPath:(NSIndexPath *)indexPath;
+
+/**
+ Called when a condition that affects UGC permissions may have changed for the stream
+ and a the presennce of the create content button should be updated.
+ */
+- (void)updateUserPostAllowed;
 
 @end

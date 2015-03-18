@@ -266,8 +266,6 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCellC
     self.title = currentStream.name;
     self.navigationItem.title = currentStream.name;
     [super setCurrentStream:currentStream];
-    
-    [self updateUserPostAllowed];
 }
 
 - (void)setShouldDisplayMarquee:(BOOL)shouldDisplayMarquee
@@ -284,15 +282,6 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCellC
 
 #pragma mark - Sequence Creation
 
-- (void)updateUserPostAllowed
-{
-    if ( [self isUserPostAllowedInStream:self.currentStream withDependencyManager:self.dependencyManager] )
-    {
-        [self addCreateSequenceButton];
-        [self addUploadProgressView];
-    }
-}
-
 - (BOOL)isUserPostAllowedInStream:(VStream *)stream withDependencyManager:(VDependencyManager *)dependencyManager
 {
     const BOOL isUserPostAllowedByTemplate = [[dependencyManager numberForKey:kCanAddContentKey] boolValue];
@@ -301,12 +290,44 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCellC
     return isUserPostAllowedByTemplate || isUserPostAllowedByStream;
 }
 
+- (void)updateUserPostAllowed
+{
+    [super updateUserPostAllowed];
+    
+    if ( [self isUserPostAllowedInStream:self.currentStream withDependencyManager:self.dependencyManager] )
+    {
+        [self addCreateSequenceButton];
+        [self addUploadProgressView];
+    }
+    else
+    {
+        [self removeCreateSequenceButton];
+        // Don't remove upload bar, we'll probably be navigating back here
+        // and should keep in memory isntead of completeion re-instantiating
+    }
+}
+
 - (void)addCreateSequenceButton
 {
+    UINavigationItem *navigationItem = self.navigationItem;
+    if ( self.multipleViewControllerChildDelegate != nil )
+    {
+        navigationItem = [self.multipleViewControllerChildDelegate parentNavigationItem];
+    }
     UIImage *image = [self.dependencyManager imageForKey:VStreamCollectionViewControllerCreateSequenceIconKey];
     UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(createSequenceAction:)];
     barButton.accessibilityIdentifier = VAutomationIdentifierAddPost;
-    self.navigationItem.rightBarButtonItem = barButton;
+    [navigationItem setRightBarButtonItem:barButton animated:YES];
+}
+
+- (void)removeCreateSequenceButton
+{
+    UINavigationItem *navigationItem = self.navigationItem;
+    if ( self.multipleViewControllerChildDelegate != nil )
+    {
+        navigationItem = [self.multipleViewControllerChildDelegate parentNavigationItem];
+    }
+    [navigationItem setRightBarButtonItem:nil animated:YES];
 }
 
 - (IBAction)createSequenceAction:(id)sender
