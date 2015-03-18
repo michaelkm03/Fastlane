@@ -99,35 +99,38 @@ NSString * const VVideoToolControllerInitalVideoEditStateKey = @"VVideoToolContr
      {
          if ([obj isKindOfClass:[VTrimVideoTool class]])
          {
-             case VVideoToolControllerInitialVideoEditStateGIF:
-                 if ([obj isKindOfClass:[VTrimVideoTool class]])
-                 {
-                     VTrimVideoTool *trimTool = (VTrimVideoTool *)obj;
-                     if (trimTool.isGIF)
+             switch (self.defaultVideoTool)
+             {
+                 case VVideoToolControllerInitialVideoEditStateVideo:
+                     if ([obj isKindOfClass:[VTrimVideoTool class]])
+                     {
+                         VTrimVideoTool *trimTool = (VTrimVideoTool *)obj;
+                         if (!trimTool.isGIF)
+                         {
+                             [self setSelectedTool:obj];
+                             *stop = YES;
+                         }
+                     }
+                     break;
+                 case VVideoToolControllerInitialVideoEditStateGIF:
+                     if ([obj isKindOfClass:[VTrimVideoTool class]])
+                     {
+                         VTrimVideoTool *trimTool = (VTrimVideoTool *)obj;
+                         if (trimTool.isGIF)
+                         {
+                             [self setSelectedTool:obj];
+                             *stop = YES;
+                         }
+                     }
+                     break;
+                 case VVideoToolControllerInitialVideoEditStateMeme:
+                     if ([obj isKindOfClass:[VVideoSnapshotTool class]])
                      {
                          [self setSelectedTool:obj];
                          *stop = YES;
                      }
-                 }
-                 break;
-             case VVideoToolControllerInitialVideoEditStateVideo:
-                 if ([obj isKindOfClass:[VTrimVideoTool class]])
-                 {
-                     VTrimVideoTool *trimTool = (VTrimVideoTool *)obj;
-                     if (!trimTool.isGIF)
-                     {
-                         [self setSelectedTool:obj];
-                         *stop = YES;
-                     }
-                 }
-                 break;
-            case VVideoToolControllerInitialVideoEditStateMeme:
-                 if ([obj isKindOfClass:[VVideoSnapshotTool class]])
-                 {
-                     [self setSelectedTool:obj];
-                     *stop = YES;
-                 }
-                 break;
+                     break;
+             }
          }
      }];
 }
