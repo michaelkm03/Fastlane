@@ -10,7 +10,7 @@
 #import "VDependencyManager+VTracking.h"
 #import "VVoteType.h"
 
-NSString * const VDependencyManagerVoteTypesKey = @"vote_types";
+NSString * const VDependencyManagerVoteTypesKey = @"voteTypes";
 
 @interface VVoteType ()
 
