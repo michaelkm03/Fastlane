@@ -33,7 +33,7 @@
 #import "NSString+VParseHelp.h"
 
 static NSString * const kStreamDirectoryStoryboardId = @"kStreamDirectory";
-static NSString * const kStreamURLPathKey = @"streamUrlPath";
+static NSString * const kStreamURLPathKey = @"streamURL";
 
 static CGFloat const kDirectoryInset = 10.0f;
 

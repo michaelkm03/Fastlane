@@ -14,7 +14,7 @@
 #import "VDependencyManager.h"
 
 static NSString * const VDidPlayFirstTimeUserVideo = @"com.getvictorious.settings.didPlayFirstTimeUserVideo";
-NSString * const kFTUSequenceURLPath = @"sequenceUrlPath";
+NSString * const kFTUSequenceURL = @"sequenceURL";
 NSString * const kFTUTrackingURLGroup = @"ftueTrackingUrlPath";
 
 @implementation VFirstTimeInstallHelper
