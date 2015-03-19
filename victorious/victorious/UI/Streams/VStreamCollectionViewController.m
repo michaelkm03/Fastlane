@@ -69,6 +69,8 @@
 
 #import <SDWebImage/UIImageView+WebCache.h>
 
+static const CGFloat kCreateButtonHeight = 44.0f;
+
 static NSString * const kCanAddContentKey = @"canAddContent";
 static NSString * const kMarqueeKey = @"marquee";
 static NSString * const kStreamCollectionStoryboardId = @"StreamCollection";
@@ -298,40 +300,48 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCell"
 {
     [super updateUserPostAllowed];
     
-    if ( [self isUserPostAllowedInStream:self.currentStream withDependencyManager:self.dependencyManager] )
+    BOOL userPostAllowed = [self isUserPostAllowedInStream:self.currentStream withDependencyManager:self.dependencyManager];
+    if ( userPostAllowed )
     {
-        [self addCreateSequenceButton];
         [self addUploadProgressView];
     }
-    else
-    {
-        [self removeCreateSequenceButton];
-        // Don't remove upload bar, we'll probably be navigating back here
-        // and should keep in memory isntead of completeion re-instantiating
-    }
-}
-
-- (void)addCreateSequenceButton
-{
+    
     UINavigationItem *navigationItem = self.navigationItem;
     if ( self.multipleViewControllerChildDelegate != nil )
     {
         navigationItem = [self.multipleViewControllerChildDelegate parentNavigationItem];
     }
-    UIImage *image = [self.dependencyManager imageForKey:VStreamCollectionViewControllerCreateSequenceIconKey];
-    UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(createSequenceAction:)];
-    barButton.accessibilityIdentifier = VAutomationIdentifierAddPost;
-    [navigationItem setRightBarButtonItem:barButton animated:YES];
+    [self installCreateButtonOnNavigationItem:navigationItem
+                             initiallyVisible:userPostAllowed];
+    
+    [UIView animateKeyframesWithDuration:0.5f
+                                   delay:0.0f
+                                 options:kNilOptions
+                              animations:^
+     {
+         ((UIButton *)navigationItem.rightBarButtonItem.customView).imageView.alpha = userPostAllowed ? 1.0f : 0.0f;
+     }
+                              completion:nil];
 }
 
-- (void)removeCreateSequenceButton
+- (void)installCreateButtonOnNavigationItem:(UINavigationItem *)navigationItem
+                           initiallyVisible:(BOOL)initiallyVisible
 {
-    UINavigationItem *navigationItem = self.navigationItem;
-    if ( self.multipleViewControllerChildDelegate != nil )
+    if (navigationItem.rightBarButtonItem.customView == nil)
     {
-        navigationItem = [self.multipleViewControllerChildDelegate parentNavigationItem];
+        UIImage *image = [self.dependencyManager imageForKey:VStreamCollectionViewControllerCreateSequenceIconKey];
+        UIButton *createbutton = [UIButton buttonWithType:UIButtonTypeSystem];
+        createbutton.frame = CGRectMake(0, 0, kCreateButtonHeight, kCreateButtonHeight);
+        [createbutton setImage:image forState:UIControlStateNormal];
+        [createbutton addTarget:self action:@selector(createSequenceAction:) forControlEvents:UIControlEventTouchUpInside];
+        
+        UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithCustomView:createbutton];
+        barButton.accessibilityIdentifier = VAutomationIdentifierAddPost;
+        [navigationItem setRightBarButtonItem:barButton animated:NO];
+        
+        // Have to do this after installing in the navigation item or it starts out at full opacity
+        createbutton.imageView.alpha = initiallyVisible ? 1.0f : 0.0f;
     }
-    [navigationItem setRightBarButtonItem:nil animated:YES];
 }
 
 - (IBAction)createSequenceAction:(id)sender
