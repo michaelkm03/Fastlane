@@ -10,21 +10,16 @@
 
 @implementation NSDictionary (VJSONLogging)
 
-static void VPrintTemplate( NSDictionary *templateComponent, NSString *componentTitle )
+- (void)logJSONStringWithTitle:(NSString *)title
 {
     NSError *jsonError = nil;
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:templateComponent options:NSJSONWritingPrettyPrinted error:&jsonError];
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:self options:NSJSONWritingPrettyPrinted error:&jsonError];
     if ( jsonData == nil )
     {
         NSLog( @"Unable to print template JSON data: %@", [jsonError localizedDescription] );
     }
     NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-    NSLog( @"\n\n***** %@ *****\n%@\n\n", componentTitle, jsonString );
-};
-
-- (void)logJSONStringWithTitle:(NSString *)title
-{
-    VPrintTemplate(self, title);
+    NSLog( @"\n\n***** %@ *****\n%@\n\n", self, jsonString );
 }
 
 @end
