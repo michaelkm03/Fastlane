@@ -11,10 +11,20 @@
 
 @class VBackground;
 
+/**
+ *  VTabMenuShim is used in conjunction with UITabBarController as a menu component.
+ */
 @interface VTabMenuShim : NSObject <VHasManagedDependancies>
 
+/**
+ *  An array of VNavigationDestinationContainerViewController wrapping the 
+ *  navigation destinations of the items property for this menu.
+ */
 - (NSArray *)wrappedNavigationDesinations;
 
+/**
+ *  A Background to use for this tab menu.
+ */
 @property (nonatomic, readonly) VBackground *background;
 
 @end
