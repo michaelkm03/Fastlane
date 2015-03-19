@@ -108,8 +108,9 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
                                                 @"solidColor.background": @"VSolidColorBackground",
                                             };
     
-    // The presence of this "base" dependency manager (with an empty configuration dictionary) exposed a bug in a previous iteration of VDependencyManager.
-    VDependencyManager *baseDependencyManager = [[VDependencyManager alloc] initWithParentManager:nil configuration:@{} dictionaryOfClassesByTemplateName:self.dictionaryOfClassesByTemplateName];
+    VDependencyManager *baseDependencyManager = [[VDependencyManager alloc] initWithParentManager:nil
+                                                                                    configuration:@{ @"rootComponent": @{ @"name": @"testNewMethod" } }
+                                                                dictionaryOfClassesByTemplateName:self.dictionaryOfClassesByTemplateName];
     
     NSData *testData = [NSData dataWithContentsOfURL:[[NSBundle bundleForClass:[self class]] URLForResource:@"template" withExtension:@"json"]];
     NSDictionary *configuration = [NSJSONSerialization JSONObjectWithData:testData options:0 error:nil];
@@ -286,6 +287,13 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
     XCTAssert([array[2] isKindOfClass:[VTestViewControllerWithInitMethod class]]);
     XCTAssert([array[3] isKindOfClass:[VTestViewControllerWithNewMethod class]]);
     XCTAssert([array[4] isKindOfClass:[VTestViewControllerWithInitMethod class]]);
+}
+
+- (void)testRootObject
+{
+    id viewController = [self.dependencyManager viewControllerForKey:@"rootComponent"];
+    XCTAssert([viewController isKindOfClass:[VTestViewControllerWithNewMethod class]]);
+    XCTAssert([viewController calledNewMethod]);
 }
 
 #pragma mark - Strings, numbers, arrays
