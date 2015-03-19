@@ -82,6 +82,11 @@ static NSString * const kImageMacroKey = @"imageMacro";
 static NSString * const kScaleKey = @"scale";
 static NSString * const kMacroReplacement = @"XXXXX";
 
+// Owner info
+NSString * const VDependencyManagerOwnerProfileImageKey = @"profile_image";
+NSString * const VDependencyManagerOwnerNameKey = @"name";
+NSString * const VDependencyManagerOwnerInfoKey = @"owner";
+
 @interface VDependencyManager ()
 
 @property (nonatomic, strong) VDependencyManager *parentManager;
@@ -148,6 +153,8 @@ static NSString * const kMacroReplacement = @"XXXXX";
     NSNumber *green = colorDictionary[kGreenKey];
     NSNumber *blue = colorDictionary[kBlueKey];
     NSNumber *alpha = colorDictionary[kAlphaKey];
+    
+    if ( [alpha isEqual:@(1)] || [alpha isEqual:@(0)] ) alpha = @(255);
     
     if (![red isKindOfClass:[NSNumber class]] ||
         ![green isKindOfClass:[NSNumber class]] ||

@@ -30,6 +30,8 @@
 #import "UIView+AutoLayout.h"
 #import "VDependencyManager.h"
 
+#import <SDWebImage/UIImageView+WebCache.h>
+
 @import Accounts;
 @import Social;
 
@@ -92,15 +94,15 @@
 {
     [super viewDidLoad];
     
-    [self.facebookButton setFont:[self.dependencyManager fontForKey:@"font.header"]];
+    [self.facebookButton setFont:[self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey]];
     [self.facebookButton setTextColor:[UIColor whiteColor]];
     self.facebookButton.accessibilityIdentifier = VAutomationIdentifierLoginFacebook;
     
-    [self.signupWithEmailButton setFont:[self.dependencyManager fontForKey:@"font.header"]];
+    [self.signupWithEmailButton setFont:[self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey]];
     [self.signupWithEmailButton setTextColor:[UIColor whiteColor]];
     self.signupWithEmailButton.accessibilityIdentifier = VAutomationIdentifierLoginSignUp;
     
-    [self.twitterButton setFont:[self.dependencyManager fontForKey:@"font.header"]];
+    [self.twitterButton setFont:[self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey]];
     [self.twitterButton setTextColor:[UIColor whiteColor]];
     self.twitterButton.accessibilityIdentifier = VAutomationIdentifierLoginTwitter;
     
@@ -126,13 +128,13 @@
     self.stackedElements = [NSOrderedSet orderedSetWithArray:elementsArray];
     
     NSString *authorizationContextText = [self.authorizationContextHelper textForContext:self.authorizationContextType];
-    NSDictionary *attributes = [self stringAttributesWithFont:[self.dependencyManager fontForKey:@"font.heading3"]
+    NSDictionary *attributes = [self stringAttributesWithFont:[self.dependencyManager fontForKey:VDependencyManagerHeading3FontKey]
                                                         color:[UIColor whiteColor]
                                                    lineHeight:23.0f];
     self.authorizationContextTextView.attributedText = [[NSAttributedString alloc] initWithString:authorizationContextText attributes:attributes];
     
     // TODO: Set creator info when returned from backend (also see VPurchaseManagerViewController to apply same backend-driven update)
-    //[self setCreatorInfo:nil];
+    [self setCreatorInfo:[self.dependencyManager templateValueOfType:[NSDictionary class] forKey:VDependencyManagerOwnerInfoKey]];
 }
 
 - (void)setCreatorInfo:(NSDictionary *)creatorInfo
@@ -142,16 +144,18 @@
         return;
     }
     
-    NSString *creatorName = creatorInfo[ @"name" ];
+    NSString *creatorName = creatorInfo[ VDependencyManagerOwnerNameKey ];
     self.creatorNameLabel.text = creatorName;
-    self.creatorNameLabel.font = [self.dependencyManager fontForKey:@"font.label1"];
+    self.creatorNameLabel.font = [self.dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
     
-    NSString *creatorUrl = creatorInfo[ @"profile_image" ];
+    NSString *creatorUrl = creatorInfo[ VDependencyManagerOwnerProfileImageKey ];
     self.creatorAvatarImageView.layer.cornerRadius = 17.0f; // Enough to make it a circle
     self.creatorAvatarImageView.layer.borderWidth = 1.0f;
-    self.creatorAvatarImageView.layer.borderColor = [self.dependencyManager colorForKey:@"color.link"].CGColor;
+    self.creatorAvatarImageView.layer.borderColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey].CGColor;
     self.creatorAvatarImageView.layer.masksToBounds = YES;
-    self.creatorAvatarImageView.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:creatorUrl]]];
+    
+    [self.creatorAvatarImageView sd_setImageWithURL:[NSURL URLWithString:creatorUrl] placeholderImage:nil];
+    
     [self.creatorAvatarImageView setNeedsDisplay];
 }
 
