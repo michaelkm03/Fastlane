@@ -60,6 +60,11 @@ NSString * const kVPrivacyUrl = @"url.privacy";
     
     NSURL *url;
     
+    if ( path == nil )
+    {
+        return nil;
+    }
+    
     //If it contains :// its a valid URL
     if ([path rangeOfString:@"://"].length)
     {

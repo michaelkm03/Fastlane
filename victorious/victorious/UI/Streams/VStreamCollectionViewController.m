@@ -72,7 +72,7 @@
 static NSString * const kCanAddContentKey = @"canAddContent";
 static NSString * const kMarqueeKey = @"marquee";
 static NSString * const kStreamCollectionStoryboardId = @"StreamCollection";
-static NSString * const kStreamATFThresholdKey = @"stream_atf_view_threshold";
+static NSString * const kStreamATFThresholdKey = @"streamAtfViewThreshold";
 
 NSString * const VStreamCollectionViewControllerStreamURLPathKey = @"streamUrlPath";
 NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"createSequenceIcon";
