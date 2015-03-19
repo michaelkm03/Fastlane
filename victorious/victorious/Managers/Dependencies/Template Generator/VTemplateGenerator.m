@@ -316,7 +316,7 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
                                @"flightDuration": @([voteType[@"flight_duration"] integerValue]),
                                @"icon": voteType[@"icon"],
                                @"isPaid": voteType[@"is_paid"],
-                               @"appleProductId": voteType[@"apple_product_id"],
+                               @"appleProductID": voteType[@"apple_product_id"],
                                @"viewContentMode": voteType[@"view_content_mode"],
                                @"tracking": voteType[@"tracking"],
                                } mutableCopy];

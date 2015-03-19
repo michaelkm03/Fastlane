@@ -77,7 +77,7 @@ NSString * const VDependencyManagerVoteTypesKey = @"voteTypes";
 
 - (NSString *)productIdentifier
 {
-    return [self.dependencyManager stringForKey:@"appleProductId"];
+    return [self.dependencyManager stringForKey:@"appleProductID"];
 }
 
 - (NSArray *)trackingURLs
