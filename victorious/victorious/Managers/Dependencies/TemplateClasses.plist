@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>hiddenWorkspace</key>
+	<string>VWorkspaceFlowController</string>
 	<key>translucent.background</key>
 	<string>VTranslucentBackground</string>
 	<key>blurredImage.background</key>
@@ -31,7 +33,7 @@
 	<key>workspace.screen</key>
 	<string>VWorkspaceViewController</string>
 	<key>workspace</key>
-	<string>VWorkspaceFlowController</string>
+	<string>VWorkspaceShimDestination</string>
 	<key>sideMenu.scaffold</key>
 	<string>VSideMenuViewController</string>
 	<key>tabMenu.scaffold</key>

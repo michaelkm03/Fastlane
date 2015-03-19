@@ -187,7 +187,7 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
                                                                   VScaffoldViewControllerUserProfileViewComponentKey: [self profileScreen],
                                                                   VScaffoldViewControllerLightweightContentViewComponentKey: [self lightweightContentViewComponent],
                                                                   kSelectorKey: [self multiScreenSelectorKey],
-                                                                  VTabMenuViewControllerMenuAppearanceKey: @{
+                                                                  @"appearance": @{
                                                                           VDependencyManagerBackgroundKey: [self solidWhiteBackground],
                                                                           },
                                                                   VDependencyManagerAccentColorKey: @{

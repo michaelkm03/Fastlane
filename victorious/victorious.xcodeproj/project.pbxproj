@@ -649,6 +649,7 @@
 		D8B827DA19D5FD8900CCD6D9 /* VActionItemTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B827D919D5FD8900CCD6D9 /* VActionItemTableViewCell.m */; };
 		D8B827DD19D5FDFE00CCD6D9 /* VDescriptionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B827DC19D5FDFE00CCD6D9 /* VDescriptionTableViewCell.m */; };
 		D8B88F941ABA821600DBAEA0 /* defaultTemplate.json in Resources */ = {isa = PBXBuildFile; fileRef = D8B88F931ABA821600DBAEA0 /* defaultTemplate.json */; };
+		D8B88F971ABA85F700DBAEA0 /* VWorkspaceShimDestination.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B88F961ABA85F700DBAEA0 /* VWorkspaceShimDestination.m */; };
 		D8C1FD051A69C0F60072892B /* VToolController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8C1FD041A69C0F60072892B /* VToolController.m */; };
 		D8C1FD081A69C2E40072892B /* VKeyboardNotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D8C1FD071A69C2E40072892B /* VKeyboardNotificationManager.m */; };
 		D8C1FD0B1A69DF0B0072892B /* VImageToolController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8C1FD0A1A69DF0B0072892B /* VImageToolController.m */; };
@@ -1969,6 +1970,8 @@
 		D8B827DB19D5FDFE00CCD6D9 /* VDescriptionTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDescriptionTableViewCell.h; sourceTree = "<group>"; };
 		D8B827DC19D5FDFE00CCD6D9 /* VDescriptionTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDescriptionTableViewCell.m; sourceTree = "<group>"; };
 		D8B88F931ABA821600DBAEA0 /* defaultTemplate.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = defaultTemplate.json; sourceTree = "<group>"; };
+		D8B88F951ABA85F700DBAEA0 /* VWorkspaceShimDestination.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VWorkspaceShimDestination.h; sourceTree = "<group>"; };
+		D8B88F961ABA85F700DBAEA0 /* VWorkspaceShimDestination.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VWorkspaceShimDestination.m; sourceTree = "<group>"; };
 		D8C1FD031A69C0F60072892B /* VToolController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VToolController.h; sourceTree = "<group>"; };
 		D8C1FD041A69C0F60072892B /* VToolController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VToolController.m; sourceTree = "<group>"; };
 		D8C1FD061A69C2E40072892B /* VKeyboardNotificationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VKeyboardNotificationManager.h; sourceTree = "<group>"; };
@@ -4694,6 +4697,8 @@
 				D8D945F51A2E8A760089D271 /* VWorkspaceViewController.m */,
 				D8524B031AB75A670036A52E /* VWorkspaceToolButton.h */,
 				D8524B041AB75A670036A52E /* VWorkspaceToolButton.m */,
+				D8B88F951ABA85F700DBAEA0 /* VWorkspaceShimDestination.h */,
+				D8B88F961ABA85F700DBAEA0 /* VWorkspaceShimDestination.m */,
 			);
 			path = Workspace;
 			sourceTree = "<group>";
@@ -5427,6 +5432,7 @@
 				037FCF281A8DAF5400E8ABFC /* VSelectorViewBase.m in Sources */,
 				A70564C719E7820A004A8387 /* VHashtag+RestKit.m in Sources */,
 				A780ED5E1A933D9300A8CD5D /* VPhotoFilterCollectionViewDataSource.m in Sources */,
+				D8B88F971ABA85F700DBAEA0 /* VWorkspaceShimDestination.m in Sources */,
 				03B83B5519E066AF00DC04E4 /* VUploadTaskSerializer.m in Sources */,
 				03B83B5D19E0990E00DC04E4 /* VUploadProgressView.m in Sources */,
 				039ED29A19C908F400305987 /* VCVideoPlayerToolbarView.m in Sources */,

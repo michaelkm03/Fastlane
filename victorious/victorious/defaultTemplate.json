@@ -1,6 +1,6 @@
 {
-    "destination" : {
-        "name" : "workspace",
+    "defaultWorkspaceDestination" : {
+        "name" : "hiddenWorkspace",
         "imageWorkspace" : {
             "name" : "workspace.screen",
             "tools" : [
