@@ -25,4 +25,6 @@
  */
 - (NSDictionary *)configurationDict;
 
++ (void)logExampleTemplate;
+
 @end

@@ -20,11 +20,9 @@
 #import "VTabMenuViewController.h"
 #import "VFirstTimeInstallHelper.h"
 #import "VDependencyManager+VNavigationMenuItem.h"
+#import "VObjectManager+Login.h"
+#import "NSDictionary+VJSONLogging.h"
 
-#define DISCOVER_TEMPLATE_D_ENABLED 1
-#define BOTTOM_NAV_ENABLED 0
-#define CHANNELS_WITH_GROUP_STREAM_ENABLED 0
-#define ROUNDED_TOP_NAV_ENABLED 0
 #define TEMPLATE_ICON_PREFIX @"D_"
 #define SELECTED_ICON_SUFFIX @"_selected"
 
@@ -93,7 +91,7 @@ static NSString * const kVideoMinDuration = @"videoMinDuration";
 static NSString * const kVideoMuted = @"videoMuted";
 
 // Profile properties
-static NSString * const kProfileShowEditButtonPill = @"editButtonRoundedStyle";
+static NSString * const kProfileEditButtonStyle = @"editButtonStyle";
 
 typedef NS_ENUM(NSUInteger, VTemplateType)
 {
@@ -131,15 +129,23 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
         
         //Adjust templateType (between C and D on dev) here
         self.enabledTemplate = VTemplateTypeD;
-        
-        if ( ![[_dataFromInitCall valueForKeyPath:@"experiments.template_c_enabled"] boolValue] )
-        {
-            //On qa, set to A
-            self.enabledTemplate = VTemplateTypeA;
-        }
-
     }
+
     return self;
+}
+
+//Fetches from the (deprecated) api/init call and creates a templateGenerator from it
++ (void)logExampleTemplate
+{
+    [[VObjectManager sharedManager] appInitWithSuccessBlock:^(NSOperation *operation, id result, NSArray *resultObjects) {
+        
+        VTemplateGenerator *templateGen = [[VTemplateGenerator alloc] initWithInitData:result[@"payload"]];
+        [templateGen.configurationDict logJSONStringWithTitle:@"FROM TEMPLATE GEN"];
+        
+    } failBlock:^(NSOperation *operation, NSError *error) {
+        
+        
+    }];
 }
 
 - (NSDictionary *)configurationDict
@@ -668,7 +674,7 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
     {
         profileItem[VDependencyManagerAccessoryScreensKey] = @[[self settingsMenuItem]];
     }
-    profileItem[kProfileShowEditButtonPill] = @(self.enabledTemplate == VTemplateTypeD);
+    profileItem[kProfileEditButtonStyle] = self.enabledTemplate == VTemplateTypeD ? @"rounded" : @"default";
     
     return [NSDictionary dictionaryWithDictionary:profileItem];
 }
