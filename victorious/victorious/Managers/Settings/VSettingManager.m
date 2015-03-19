@@ -58,6 +58,11 @@ NSString * const kVPrivacyUrl = @"privacyUrl";
 {
     NSString *path = [self.dependencyManager stringForKey:key];
     
+    if (path == nil)
+    {
+        return nil;
+    }
+    
     NSURL *url;
     
     if (path == nil)

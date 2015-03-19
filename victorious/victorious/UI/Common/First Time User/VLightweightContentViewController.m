@@ -172,7 +172,7 @@
 
 - (void)fetchMediaSequenceObject
 {
-    NSString *sequenceId = [[self.dependencyManager stringForKey:kFTUSequenceURLPath] lastPathComponent];
+    NSString *sequenceId = [[self.dependencyManager stringForKey:kFTUSequenceURL] lastPathComponent];
     if (sequenceId != nil)
     {
         [[VObjectManager sharedManager] fetchSequenceByID:sequenceId

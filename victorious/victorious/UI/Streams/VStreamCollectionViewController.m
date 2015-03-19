@@ -74,7 +74,7 @@ static NSString * const kMarqueeKey = @"marquee";
 static NSString * const kStreamCollectionStoryboardId = @"StreamCollection";
 static NSString * const kStreamATFThresholdKey = @"streamAtfViewThreshold";
 
-NSString * const VStreamCollectionViewControllerStreamURLPathKey = @"streamUrlPath";
+NSString * const VStreamCollectionViewControllerStreamURLKey = @"streamURL";
 NSString * const VStreamCollectionViewControllerCreateSequenceIconKey = @"createSequenceIcon";
 NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCell";
 
@@ -116,7 +116,7 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCell"
 {
     NSAssert([NSThread isMainThread], @"This method must be called on the main thread");
     
-    NSString *url = [dependencyManager stringForKey:VStreamCollectionViewControllerStreamURLPathKey];
+    NSString *url = [dependencyManager stringForKey:VStreamCollectionViewControllerStreamURLKey];
     NSString *path = [url v_pathComponent];
     
     VStream *stream = [VStream streamForPath:path inContext:dependencyManager.objectManager.managedObjectStore.mainQueueManagedObjectContext];

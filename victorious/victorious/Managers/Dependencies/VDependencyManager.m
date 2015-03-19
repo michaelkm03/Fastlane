@@ -107,7 +107,6 @@ static NSString * const kMacroReplacement = @"XXXXX";
         _parentManager = parentManager;
         _configuration = [self preparedConfigurationWithUnpreparedDictionary:configuration];
         _privateQueue = dispatch_queue_create("com.getvictorious.VDependencyManager", DISPATCH_QUEUE_CONCURRENT);
-        [self scanConfiguration:_configuration];
         
         if (_parentManager == nil)
         {
@@ -115,6 +114,7 @@ static NSString * const kMacroReplacement = @"XXXXX";
             _childDependencyManagersByID = [[NSMutableDictionary alloc] init];
             _imageURLs = [[NSMutableArray alloc] init];
         }
+        [self scanConfiguration:_configuration];
         
         if (classesByTemplateName == nil)
         {
