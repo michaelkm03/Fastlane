@@ -19,6 +19,9 @@
 
 #import <KVOController/FBKVOController.h>
 
+static NSString * const kEditButtonStyleKey = @"editButtonStyle";
+static NSString * const kEditButtonStylePill = @"rounded";
+
 @implementation VUserProfileHeaderView
 
 + (instancetype)newView
@@ -69,7 +72,7 @@
     }
     self.editProfileButton.titleLabel.font = [self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
 
-    if ( [[self.dependencyManager numberForKey:@"editButtonRoundedStyle"] boolValue] )
+    if ( [[self.dependencyManager stringForKey:kEditButtonStyleKey] isEqualToString:kEditButtonStylePill] )
     {
         self.editProfileButton.cornerRadius = CGRectGetHeight(self.editProfileButton.bounds) / 2.0f;
     }
