@@ -6,6 +6,8 @@
 //  Copyright (c) 2013 Victorious, Inc. All rights reserved.
 //
 
+#define LOG_API_RESPONSES 0
+
 #import "VObjectManager+Private.h"
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Sequence.h"
@@ -24,6 +26,10 @@
 #import "MBProgressHUD.h"
 
 #import "VUserManager.h"
+
+//Imported to log out the payload from the database and the payload we would have gotten from the (deprecated) api/init and the VTemplateGenerator
+#import "VTemplateGenerator.h"
+#import "NSDictionary+VJSONLogging.h"
 
 @implementation VObjectManager (Login)
 
@@ -70,6 +76,11 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
                 failed(operation, nil);
             }
         }
+        
+#if LOG_API_RESPONSES
+        [(NSDictionary *)fullResponse[@"payload"] logJSONStringWithTitle:@"FROM DB"];
+        [VTemplateGenerator logExampleTemplate];
+#endif
         
         NSDictionary *template = ((NSDictionary *)fullResponse)[kVPayloadKey];
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:parentDependencyManager
