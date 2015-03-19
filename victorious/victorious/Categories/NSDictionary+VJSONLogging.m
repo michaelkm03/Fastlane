@@ -19,7 +19,7 @@
         NSLog( @"Unable to print template JSON data: %@", [jsonError localizedDescription] );
     }
     NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-    NSLog( @"\n\n***** %@ *****\n%@\n\n", self, jsonString );
+    NSLog( @"\n\n***** %@ *****\n%@\n\n", title, jsonString );
 }
 
 @end
