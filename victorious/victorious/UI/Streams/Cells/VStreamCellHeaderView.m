@@ -98,13 +98,6 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
 {
     // Format repost / remix string
     NSString *parentUserString;
-    
-    UIColor *updatedColor = [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
-    if ( updatedColor != nil )
-    {
-        self.parentLabel.textColor = [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
-    }
-    
     if (self.sequence.isRepost.boolValue && self.sequence.parentUser != nil)
     {
         NSUInteger repostCount = [self.sequence.repostCount unsignedIntegerValue];
