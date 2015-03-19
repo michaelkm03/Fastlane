@@ -38,6 +38,8 @@
 	<string>VTabMenuViewController</string>
 	<key>simple.menu</key>
 	<string>VMenuController</string>
+	<key>tab.menu</key>
+	<string>VTabMenuShim</string>
 	<key>stream.screen</key>
 	<string>VStreamCollectionViewController</string>
 	<key>standard.contentView</key>
