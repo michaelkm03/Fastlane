@@ -78,6 +78,7 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
         }
         
 #if LOG_API_RESPONSES
+#warning API LOGGING IS ENABLED!
         [(NSDictionary *)fullResponse[@"payload"] logJSONStringWithTitle:@"FROM DB"];
         [VTemplateGenerator logExampleTemplate];
 #endif
