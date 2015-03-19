@@ -21,6 +21,7 @@
 #import "VFirstTimeInstallHelper.h"
 #import "VDependencyManager+VNavigationMenuItem.h"
 
+#define DISCOVER_TEMPLATE_D_ENABLED 1
 #define BOTTOM_NAV_ENABLED 0
 #define CHANNELS_WITH_GROUP_STREAM_ENABLED 0
 #define ROUNDED_TOP_NAV_ENABLED 0
