@@ -26,6 +26,7 @@
 
 #import "VCommentCell.h"
 #import "VStreamCellActionView.h"
+#import "VSleekStreamCellActionView.h"
 
 #import "UIImageView+VLoadingAnimations.h"
 #import "NSString+VParseHelp.h"
@@ -40,7 +41,6 @@
 @property (nonatomic, weak) IBOutlet UIImageView *playImageView;
 @property (nonatomic, weak) IBOutlet UIImageView *playBackgroundImageView;
 
-@property (nonatomic, weak) IBOutlet VStreamCellActionView *actionView;
 @property (nonatomic, weak) IBOutlet UIImageView *bottomGradient;
 
 @property (nonatomic, weak) IBOutlet VVideoView *videoPlayerView;
@@ -62,6 +62,7 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
     [super awakeFromNib];
     
     self.streamCellHeaderView = [[[NSBundle mainBundle] loadNibNamed:self.headerViewNibName owner:self options:nil] objectAtIndex:0];
+
     [self.streamCellHeaderView setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self.streamCellHeaderView setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
     [self addSubview:self.streamCellHeaderView];
@@ -75,18 +76,9 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
                                                                  options:0
                                                                  metrics:@{ @"height":@(height) }
                                                                    views:views]];
-
     self.captionTextView.textContainer.lineFragmentPadding = VStreamCollectionCellTextViewLineFragmentPadding;
     self.captionTextView.textContainerInset = UIEdgeInsetsZero;
     self.streamCellHeaderView.delegate = self;
-}
-
-- (void)text:(NSString *)text tappedInTextView:(UITextView *)textView
-{
-    if ([self.sequenceActionsDelegate respondsToSelector:@selector(hashTag:tappedFromSequence:fromView:)])
-    {
-        [self.sequenceActionsDelegate hashTag:text tappedFromSequence:self.sequence fromView:self];
-    }
 }
 
 - (NSString *)headerViewNibName
@@ -97,22 +89,7 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
 - (void)setSequenceActionsDelegate:(id<VSequenceActionsDelegate>)sequenceActionsDelegate
 {
     _sequenceActionsDelegate = sequenceActionsDelegate;
-    self.actionView.sequenceActionsDelegate = sequenceActionsDelegate;
-}
-
-- (void)setDependencyManager:(VDependencyManager *)dependencyManager
-{
-    if ( dependencyManager == _dependencyManager )
-    {
-        return;
-    }
-    _dependencyManager = dependencyManager;
-    
-    if ( dependencyManager != nil )
-    {
-        self.backgroundColor = [dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
-        self.commentsLabel.font = [[VStreamCollectionCell sequenceCommentCountAttributesWithDependencyManager:dependencyManager] objectForKey:NSFontAttributeName];
-    }
+    self.streamCellHeaderView.delegate = sequenceActionsDelegate;
 }
 
 - (void)setDescriptionText:(NSString *)text
@@ -123,7 +100,7 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
         NSMutableAttributedString *newAttributedCellText = [[NSMutableAttributedString alloc] initWithString:(text ?: @"")
                                                                                                   attributes:[[self class] sequenceDescriptionAttributesWithDependencyManager:self.dependencyManager]];
         self.captionTextView.linkDelegate = self;
-        self.captionTextView.textContainer.maximumNumberOfLines = 3;
+        self.captionTextView.textContainer.maximumNumberOfLines = [self maxCaptionLines];
         self.captionTextView.textContainer.lineBreakMode = NSLineBreakByTruncatingTail;
         self.captionTextView.attributedText = newAttributedCellText;
     }
@@ -133,9 +110,20 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
     }
 }
 
+//Subclass this to allow for more lines in caption, 0 for infinite lines
+- (NSUInteger)maxCaptionLines
+{
+    return 3;
+}
+
 - (void)reloadCommentsCount
 {
     [self.streamCellHeaderView reloadCommentsCount];
+}
+
+- (void)refreshDescriptionAttributes
+{
+    [self setDescriptionText:self.captionTextView.text];
 }
 
 - (void)prepareForReuse
@@ -155,8 +143,6 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
 {
     _sequence = sequence;
     
-    self.actionView.sequence = sequence;
-    
     [self.streamCellHeaderView setSequence:self.sequence];
     [self.streamCellHeaderView setParentViewController:self.parentViewController];
     
@@ -166,9 +152,7 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
     [self setDescriptionText:self.sequence.name];
     
     self.captionTextView.hidden = self.sequence.nameEmbeddedInContent.boolValue || self.sequence.name.length == 0;
-    
-    [self setupActionBar];
-    
+        
     self.bottomGradient.hidden = (sequence.nameEmbeddedInContent != nil) ? [sequence.nameEmbeddedInContent boolValue] : NO;
     
     if ( [sequence isVideo] )
@@ -190,6 +174,24 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
     else
     {
         self.isPlayButtonVisible = NO;
+    }
+}
+
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    if ( dependencyManager == self.dependencyManager )
+    {
+        return;
+    }
+    [super setDependencyManager:dependencyManager];
+    
+    if ( dependencyManager != nil )
+    {
+        self.streamCellHeaderView.dependencyManager = dependencyManager;
+        
+        self.contentView.backgroundColor = [dependencyManager colorForKey:VDependencyManagerSecondaryBackgroundColorKey];
+        self.commentsLabel.font = [[VStreamCollectionCell sequenceCommentCountAttributesWithDependencyManager:dependencyManager] objectForKey:NSFontAttributeName];
+        [self refreshDescriptionAttributes];
     }
 }
 
@@ -236,21 +238,6 @@ const CGFloat VStreamCollectionCellTextViewLineFragmentPadding = 0.0f;
 {
     _isPlayButtonVisible = isPlayButtonVisible;
     self.playImageView.hidden = self.playBackgroundImageView.hidden = !isPlayButtonVisible;
-}
-
-- (void)setupActionBar
-{
-    [self.actionView clearButtons];
-    [self.actionView addShareButton];
-    if ( [self.sequence canRemix] )
-    {
-        [self.actionView addRemixButton];
-    }
-    if ( [self.sequence canRepost] )
-    {
-        [self.actionView addRepostButton];
-    }
-    [self.actionView addMoreButton];
 }
 
 - (void)setHeight:(CGFloat)height

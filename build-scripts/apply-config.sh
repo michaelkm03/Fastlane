@@ -51,7 +51,6 @@ copyFile(){
 }
 
 copyFile "LaunchImage@2x.png"
-copyFile "defaultTheme.plist"
 copyFile "Icon-29@2x.png"
 copyFile "Icon-40@2x.png"
 copyFile "Icon-60@2x.png"

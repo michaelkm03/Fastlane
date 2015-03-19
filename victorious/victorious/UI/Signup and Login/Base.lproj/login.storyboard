@@ -38,14 +38,14 @@
                             <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0KZ-2K-j2Q" userLabel="Content Container">
                                 <rect key="frame" x="34" y="20" width="252" height="329"/>
                                 <subviews>
-                                    <imageView hidden="YES" userInteractionEnabled="NO" alpha="0.5" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="quote" translatesAutoresizingMaskIntoConstraints="NO" id="PD3-vC-Laa" userLabel="Quote">
+                                    <imageView userInteractionEnabled="NO" alpha="0.5" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="quote" translatesAutoresizingMaskIntoConstraints="NO" id="PD3-vC-Laa" userLabel="Quote">
                                         <rect key="frame" x="0.0" y="35" width="31" height="23"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="31" id="tlm-zK-jxN"/>
                                             <constraint firstAttribute="height" constant="23" id="vMp-39-ZO1"/>
                                         </constraints>
                                     </imageView>
-                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="erY-Y7-sam" userLabel="Salutation Container">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="erY-Y7-sam" userLabel="Salutation Container">
                                         <rect key="frame" x="0.0" y="270" width="252" height="55"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1" text="Creator Salutation (Could be this long)" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ehP-K7-WBr" userLabel="Creator Name">
@@ -243,8 +243,7 @@ We promise that your information is safe with us!</string>
                         <outlet property="authorizationContextHelper" destination="jOc-o6-Jtn" id="kqs-Ef-ege"/>
                         <outlet property="authorizationContextTextView" destination="lga-od-5AW" id="rqa-Lm-BF0"/>
                         <outlet property="contentContainer" destination="0KZ-2K-j2Q" id="f3Z-BV-D4y"/>
-                        <outlet property="creatorAvatarImageView" destination="Lq5-ni-jN5" id="4vT-QZ-oik"/>
-                        <outlet property="creatorNameLabel" destination="ehP-K7-WBr" id="d3n-n4-0eD"/>
+                        <outlet property="creatorInfoHelper" destination="adJ-S2-rCN" id="bzQ-WS-DM6"/>
                         <outlet property="facebookButton" destination="QtN-F1-Fqv" id="mqr-R0-Ab8"/>
                         <outlet property="linkTextHelper" destination="guI-vW-pY8" id="sJZ-dv-Q0J"/>
                         <outlet property="loginTextView" destination="5M9-eq-LWT" id="inP-7v-uOj"/>
@@ -259,6 +258,12 @@ We promise that your information is safe with us!</string>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Yr7-SB-k6z" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <customObject id="guI-vW-pY8" customClass="VLinkTextViewHelper"/>
                 <customObject id="jOc-o6-Jtn" customClass="VAuthorizationContextHelper"/>
+                <customObject id="adJ-S2-rCN" customClass="VCreatorInfoHelper">
+                    <connections>
+                        <outlet property="creatorAvatarImageView" destination="Lq5-ni-jN5" id="9Mt-bS-jBE"/>
+                        <outlet property="creatorNameLabel" destination="ehP-K7-WBr" id="VTD-7b-e3M"/>
+                    </connections>
+                </customObject>
             </objects>
             <point key="canvasLocation" x="161" y="9"/>
         </scene>

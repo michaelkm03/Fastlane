@@ -10,7 +10,7 @@
 #import "VDependencyManager+VTracking.h"
 #import "VVoteType.h"
 
-NSString * const VDependencyManagerVoteTypesKey = @"vote_types";
+NSString * const VDependencyManagerVoteTypesKey = @"voteTypes";
 
 @interface VVoteType ()
 
@@ -77,7 +77,7 @@ NSString * const VDependencyManagerVoteTypesKey = @"vote_types";
 
 - (NSString *)productIdentifier
 {
-    return [self.dependencyManager stringForKey:@"appleProductId"];
+    return [self.dependencyManager stringForKey:@"appleProductID"];
 }
 
 - (NSArray *)trackingURLs

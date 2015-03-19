@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@class VHashtag, VFollowHashtagControl;
+@class VHashtag, VFollowHashtagControl, VDependencyManager;
 
 @interface VTrendingTagCell : UITableViewCell
 
@@ -41,6 +41,11 @@
  Set to NO to disable any action
  */
 @property (nonatomic, assign) BOOL shouldCellRespond;
+
+/**
+ Set this to adjust font, font color, and background color
+ */
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 /**
  Returns an integer value for the height of the cell

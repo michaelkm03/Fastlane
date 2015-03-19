@@ -667,7 +667,8 @@ static NSString * const kViewModelKey = @"contentViewViewModel";
     NSDictionary *params = @{ VTrackingKeyProductIdentifier : experienceEnhander.voteType.productIdentifier ?: @"" };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectLockedVoteType parameters:params];
     
-    VPurchaseViewController *viewController = [VPurchaseViewController purchaseViewControllerWithVoteType:experienceEnhander.voteType];
+    VPurchaseViewController *viewController = [VPurchaseViewController newWithDependencyManager:self.dependencyManager];
+    viewController.voteType = experienceEnhander.voteType;
     viewController.transitioningDelegate = self.modalTransitionDelegate;
     viewController.delegate = self;
     [self presentViewController:viewController animated:YES completion:nil];
@@ -788,7 +789,7 @@ static NSString * const kViewModelKey = @"contentViewViewModel";
     };
     commentCell.onUserProfileTapped = ^(void)
     {
-        VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithUser:wCommentCell.comment.user];
+        VUserProfileViewController *profileViewController = [VUserProfileViewController rootDependencyProfileWithUser:wCommentCell.comment.user];
         [welf.navigationController pushViewController:profileViewController animated:YES];
     };
 }
@@ -798,7 +799,7 @@ static NSString * const kViewModelKey = @"contentViewViewModel";
     if ( [tag isKindOfClass:[VUserTag class]] )
     {
         //Tapped a user tag, show a profile view controller
-        VUserProfileViewController *profileViewController = [VUserProfileViewController userProfileWithRemoteId:((VUserTag *)tag).remoteId];
+        VUserProfileViewController *profileViewController = [VUserProfileViewController rootDependencyProfileWithRemoteId:((VUserTag *)tag).remoteId];
         [self.navigationController pushViewController:profileViewController animated:YES];
     }
     else
@@ -1638,7 +1639,9 @@ referenceSizeForHeaderInSection:(NSInteger)section
     {
         [self.sequenceActionController showRemixOnViewController:self.navigationController
                                                     withSequence:self.viewModel.sequence
+                                            andDependencyManager:self.dependencyManager
                                                   preloadedImage:nil
+                                                defaultVideoEdit:VDefaultVideoEditGIF
                                                       completion:^(BOOL finished)
          {
              [[VTrackingManager sharedInstance] setValue:VTrackingValueContentView

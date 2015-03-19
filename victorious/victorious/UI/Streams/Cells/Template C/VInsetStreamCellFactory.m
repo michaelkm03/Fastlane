@@ -11,6 +11,7 @@
 #import "VInsetStreamCollectionCellPoll.h"
 #import "VSequence+Fetcher.h"
 #import "VStreamCollectionCellWebContent.h"
+#import "VDependencyManager.h"
 
 @interface VInsetStreamCellFactory ()
 

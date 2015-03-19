@@ -79,7 +79,7 @@ static CGFloat const kDirectoryInset = 10.0f;
     NSDictionary *component = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:@"cell.directory.item"];
     self.itemCellDependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:component];
     
-    self.view.backgroundColor = [self.dependencyManager colorForKey:@"color.background"];
+    self.view.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     self.collectionView.backgroundColor = [UIColor clearColor];
     
     self.cellDecorator = [[VDirectoryCellDecorator alloc] init];

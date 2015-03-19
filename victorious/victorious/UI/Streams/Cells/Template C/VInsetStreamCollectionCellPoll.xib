@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1510" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
@@ -68,13 +68,13 @@
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5hj-dg-nbn" customClass="VStreamCellActionView">
                         <rect key="frame" x="-1" y="306" width="304" height="41"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="41" id="dzW-QM-hwj"/>
                         </constraints>
                     </view>
-                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2qV-rt-BGZ" customClass="VHashTagTextView">
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2qV-rt-BGZ" customClass="VHashTagTextView">
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                     </textView>
@@ -120,12 +120,12 @@
             <connections>
                 <outlet property="actionView" destination="5hj-dg-nbn" id="0dp-IR-bke"/>
                 <outlet property="captionTextView" destination="2qV-rt-BGZ" id="df9-Wt-hPG"/>
+                <outlet property="captionTextViewBottomConstraint" destination="JAG-QQ-ijc" id="8ia-qC-GMX"/>
                 <outlet property="captionTextViewTopConstraint" destination="KgH-Vm-tWb" id="EqT-3D-nVM"/>
                 <outlet property="commentHeightConstraint" destination="6vN-fS-UbQ" id="iZf-Zv-gCD"/>
                 <outlet property="commentLabelBottomConstraint" destination="94C-gP-RsR" id="auf-38-7UF"/>
                 <outlet property="commentsLabel" destination="2I4-YY-QY7" id="5lr-hl-IfK"/>
                 <outlet property="commentsLeftConstraint" destination="KoS-bo-F34" id="WDj-zN-HP2"/>
-                <outlet property="interLabelSpaceConstraint" destination="JAG-QQ-ijc" id="pIf-ED-cWI"/>
                 <outlet property="lowerGradientView" destination="gza-QN-Veo" id="hsn-cS-K5e"/>
                 <outlet property="previewImageTwo" destination="JTX-77-BzI" id="cfM-uu-BJ7"/>
                 <outlet property="previewImageView" destination="cHq-pN-LVg" id="dTw-88-PxD"/>

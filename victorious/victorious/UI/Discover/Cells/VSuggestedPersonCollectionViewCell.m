@@ -1,4 +1,4 @@
-    //
+//
 //  VSuggestedPersonCollectionViewCell.m
 //  victorious
 //
@@ -11,6 +11,7 @@
 #import "VDefaultProfileImageView.h"
 #import "VFollowUserControl.h"
 #import "VFollowersTextFormatter.h"
+#import "VDependencyManager.h"
 
 @interface VSuggestedPersonCollectionViewCell()
 
@@ -55,10 +56,14 @@
     self.profileImageView.layer.cornerRadius = radius;
 }
 
-- (void)applyTheme
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
-    self.usernameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel4Font];
+    _dependencyManager = dependencyManager;
+    self.usernameLabel.font = [_dependencyManager fontForKey:VDependencyManagerLabel4FontKey];
     self.descriptionLabel.font = [UIFont fontWithName:@"MuseoSans-300" size:9.0f];
+    self.usernameLabel.textColor = [_dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+    self.descriptionLabel.textColor = [_dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+    self.followButton.tintColor = [_dependencyManager colorForKey:VDependencyManagerLinkColorKey];
 }
 
 - (void)setUser:(VUser *)user
@@ -92,8 +97,6 @@
     {
         [self.profileImageView setProfileImageURL:[NSURL URLWithString:self.user.pictureUrl]];
     }
-    
-    [self applyTheme];
 }
 
 - (void)updateFollowingAnimated:(BOOL)animated

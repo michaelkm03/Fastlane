@@ -48,7 +48,7 @@ static CGFloat const kTopInset = 22.0f; ///< The space between the top of the vi
 
 @implementation VDiscoverViewController
 
-@synthesize dependencyManager; //< VDiscoverViewControllerProtocol
+@synthesize dependencyManager = _dependencyManager; //< VDiscoverViewControllerProtocol
 
 #pragma mark - View controller life cycle
 
@@ -86,6 +86,24 @@ static CGFloat const kTopInset = 22.0f; ///< The space between the top of the vi
                                              selector:@selector(viewStatusChanged:)
                                                  name:kHashtagStatusChangedNotification
                                                object:nil];
+}
+
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    _dependencyManager = dependencyManager;
+    self.tableView.backgroundColor = [UIColor clearColor];
+    self.suggestedPeopleViewController.dependencyManager = dependencyManager;
+    for ( UITableViewCell *cell in self.tableView.visibleCells )
+    {
+        if ( [cell isKindOfClass:[VTrendingTagCell class]] )
+        {
+            ((VTrendingTagCell *)cell).dependencyManager = self.dependencyManager;
+        }
+        else if ( [cell isKindOfClass:[VSuggestedPeopleCell class]] )
+        {
+            [cell.contentView setBackgroundColor:[self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey]];
+        }
+    }
 }
 
 - (void)dealloc
@@ -280,6 +298,7 @@ static CGFloat const kTopInset = 22.0f; ///< The space between the top of the vi
                 self.suggestedPeopleViewController.collectionView.frame = customCell.bounds;
             }
             
+            cell.contentView.backgroundColor = [UIColor clearColor];
             cell = customCell;
             self.suggestedPeopleViewController.hasLoadedOnce = YES;
         }
@@ -335,6 +354,7 @@ static CGFloat const kTopInset = 22.0f; ///< The space between the top of the vi
                      }
                  }];
             };
+            customCell.dependencyManager = self.dependencyManager;
             cell = customCell;
         }
     }

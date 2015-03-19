@@ -10,6 +10,8 @@
 #import "VVoteType.h"
 #import "VSimpleModalTransition.h"
 
+@class VDependencyManager;
+
 @protocol VPurchaseViewControllerDelegate <NSObject>
 
 /**
@@ -21,9 +23,7 @@
 
 @end
 
-@interface VPurchaseViewController : UIViewController <VSimpleModalTransitionPresentedViewController>
-
-+ (VPurchaseViewController *)purchaseViewControllerWithVoteType:(VVoteType *)voteType;
+@interface VPurchaseViewController : UIViewController <VSimpleModalTransitionPresentedViewController, VHasManagedDependancies>
 
 @property (nonatomic, strong) id<VPurchaseViewControllerDelegate> delegate;
 
