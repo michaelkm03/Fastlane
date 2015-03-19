@@ -14,8 +14,6 @@
 //Settings
 extern NSString * const kVCaptureVideoQuality;
 extern NSString * const kVExportVideoQuality;
-extern NSString * const kVRealtimeCommentsEnabled;
-extern NSString * const kVMemeAndQuoteEnabled;
 extern NSString * const VSettingsChannelsEnabled;
 extern NSString * const VSettingsMarqueeEnabled;
 extern NSString * const VSettingsTemplateCEnabled;

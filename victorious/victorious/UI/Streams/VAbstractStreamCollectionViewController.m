@@ -32,11 +32,11 @@
 #import "VScrollPaginator.h"
 #import "VImageSearchResultsFooterView.h"
 #import "VFooterActivityIndicatorView.h"
-#import "VMultipleContainerViewControllerChild.h"
+#import "VDependencyManager.h"
 
 const CGFloat kVLoadNextPagePoint = .75f;
 
-@interface VAbstractStreamCollectionViewController () <VMultipleContainerViewControllerChild, VScrollPaginatorDelegate>
+@interface VAbstractStreamCollectionViewController () <VScrollPaginatorDelegate>
 
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, strong) VScrollPaginator *scrollPaginator;
@@ -54,6 +54,8 @@ const CGFloat kVLoadNextPagePoint = .75f;
 @end
 
 @implementation VAbstractStreamCollectionViewController
+
+@synthesize multipleViewControllerChildDelegate;
 
 #pragma mark - Init & Dealloc
 
@@ -172,16 +174,25 @@ const CGFloat kVLoadNextPagePoint = .75f;
     self.navigationControllerScrollDelegate = [[VNavigationControllerScrollDelegate alloc] initWithNavigationController:[self v_navigationController]];
 }
 
-#pragma mark - VMultipleContainerViewControllerChild protocol
-
-- (void)viewControllerSelected
+- (void)updateUserPostAllowed
 {
-    [self.streamTrackingHelper viewControllerSelected:self.currentStream];
+    // Nothing to do here, provided to override in subclasses
 }
 
-- (void)viewControllerAppearedAsInitial
+#pragma mark - VMultipleContainerChild protocol
+
+- (void)viewControllerSelected:(BOOL)isDefault
 {
-    [self.streamTrackingHelper viewControllerAppearedAsInitial:self.currentStream];
+    if ( isDefault )
+    {
+        [self.streamTrackingHelper viewControllerAppearedAsInitial:self.currentStream];
+    }
+    else
+    {
+        [self.streamTrackingHelper viewControllerSelected:self.currentStream];
+    }
+    
+    [self updateUserPostAllowed];
 }
 
 #pragma mark - Tracking helper
@@ -253,9 +264,15 @@ const CGFloat kVLoadNextPagePoint = .75f;
     
     [self.streamDataSource loadPage:VPageTypeFirst withSuccess:
      ^{
+         [self.refreshControl endRefreshing];
          [self.streamTrackingHelper streamDidLoad:self.currentStream];
          
-         [self.refreshControl endRefreshing];
+         BOOL viewIsVisible = self.parentViewController != nil;
+         if ( viewIsVisible )
+         {
+             [self updateUserPostAllowed];
+         }
+         
          if (completionBlock)
          {
              completionBlock();

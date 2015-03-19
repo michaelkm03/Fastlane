@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "VUser.h"
 
+@class VDependencyManager;
+
 @protocol VSuggestedPersonCollectionViewCellDelegate
 
 @required
@@ -28,5 +30,7 @@
 + (UIImage *)followImage;
 
 @property (nonatomic, weak) id<VSuggestedPersonCollectionViewCellDelegate> delegate;
+
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end

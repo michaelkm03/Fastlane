@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+@class VDependencyManager;
+
 enum
 {
     VDiscoverViewControllerSectionSuggestedPeople,
@@ -16,5 +18,7 @@ enum
 };
 
 @interface VDiscoverViewController : UITableViewController
+
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end
