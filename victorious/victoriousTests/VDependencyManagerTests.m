@@ -104,7 +104,8 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
     
     self.dictionaryOfClassesByTemplateName = @{ kTestViewControllerInitMethodTemplateName: @"VTestViewControllerWithInitMethod",
                                                 kTestViewControllerNewMethodTemplateName: @"VTestViewControllerWithNewMethod",
-                                                kTestObjectWithPropertyTemplateName: @"VTestObjectWithProperty"
+                                                kTestObjectWithPropertyTemplateName: @"VTestObjectWithProperty",
+                                                @"solidColor.background": @"VSolidColorBackground",
                                             };
     
     // The presence of this "base" dependency manager (with an empty configuration dictionary) exposed a bug in a previous iteration of VDependencyManager.
@@ -121,13 +122,20 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
 - (void)testColor
 {
     UIColor *expected = [UIColor colorWithRed:0.2 green:0.6 blue:0.4 alpha:1];
-    UIColor *actual = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
+    UIColor *actual = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     XCTAssertEqualObjects(expected, actual);
 }
 
 - (void)testParentColor
 {
     UIColor *expected = [UIColor colorWithRed:0.2 green:0.6 blue:0.4 alpha:1];
+    UIColor *actual = [self.childDependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+    XCTAssertEqualObjects(expected, actual);
+}
+
+- (void)testBackgroundColor
+{
+    UIColor *expected = [UIColor colorWithRed:0.6 green:0.2 blue:0.4 alpha:1];
     UIColor *actual = [self.childDependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     XCTAssertEqualObjects(expected, actual);
 }
