@@ -565,10 +565,6 @@ static NSString * const kViewModelKey = @"contentViewViewModel";
                                   VTrackingKeyUrls : self.viewModel.sequence.tracking.viewStart ?: @[] };
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
     }
-    else
-    {
-        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart];
-    }
     
     [self.contentCollectionView flashScrollIndicators];
 }
