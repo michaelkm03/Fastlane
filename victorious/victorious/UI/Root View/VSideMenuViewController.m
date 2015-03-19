@@ -233,15 +233,9 @@ static const CGFloat kContentParallaxMagnitude = 15;
     [self.view.window endEditing:YES];
     [self addContentButton];
     self.visible = YES;
-    self.menuViewController.view.transform = CGAffineTransformMakeScale(0.8f, 0.8f);
-    [UIView animateWithDuration:0.45
-                          delay:0.0f
-         usingSpringWithDamping:0.8f
-          initialSpringVelocity:0.0f
-                        options:UIViewAnimationOptionAllowUserInteraction
+    [UIView animateWithDuration:self.animationDuration
                      animations:^
     {
-        self.menuViewController.view.transform = CGAffineTransformIdentity;
         if (self.scaleContentView)
         {
             self.contentViewController.view.transform = CGAffineTransformMakeScale(self.contentViewScaleValue, self.contentViewScaleValue);
@@ -266,12 +260,7 @@ static const CGFloat kContentParallaxMagnitude = 15;
 {
     [self.contentButton removeFromSuperview];
     
-    [UIView animateWithDuration:self.animationDuration
-                          delay:0.0f
-         usingSpringWithDamping:1.0f
-          initialSpringVelocity:0.0f
-                        options:kNilOptions
-                     animations:^
+    [UIView animateWithDuration:self.animationDuration animations:^
     {
         self.contentViewController.view.transform = CGAffineTransformIdentity;
         self.contentViewController.view.frame = self.view.bounds;
