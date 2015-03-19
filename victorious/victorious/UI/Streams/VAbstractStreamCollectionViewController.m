@@ -195,13 +195,6 @@ const CGFloat kVLoadNextPagePoint = .75f;
     [self updateUserPostAllowed];
 }
 
-#pragma mark - Tracking helper
-
-- (void)trackStreamDidAppear
-{
-    // Override in subclasses
-}
-
 #pragma mark - Property Setters
 
 - (void)setCurrentStream:(VStream *)currentStream

@@ -150,16 +150,18 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
 {
     self.didTrackViewDidAppear = YES;
     
-    NSDictionary *params = @{ VTrackingKeyStreamName : stream.name ?: @"",
-                              VTrackingKeyStreamId : stream.trackingIdentifier ?: @""};
-    
     if (stream.isHashtagStream)
     {
-        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidViewStream parameters:params];
+        NSDictionary *params = @{ VTrackingKeyStreamName : stream.name ?: @"",
+                                  VTrackingKeyStreamId : stream.trackingIdentifier ?: @"",
+                                  VTrackingKeyHashtag : stream.hashtag ?: @"" };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidViewHashtagStream parameters:params];
     }
     else
     {
-        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidViewHashtagStream parameters:params];
+        NSDictionary *params = @{ VTrackingKeyStreamName : stream.name ?: @"",
+                                  VTrackingKeyStreamId : stream.trackingIdentifier ?: @"" };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidViewStream parameters:params];
     }
 }
 
