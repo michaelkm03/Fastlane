@@ -4187,7 +4187,6 @@
 				F098D8191A9E39380003B6D4 /* VTagSensitiveTextViewTests.m */,
 				F0804A6C1A892A5800A0E1A1 /* VTagStringFormatterTests.m */,
 				F0B390BC1A8535E300EE70C7 /* VTagTests.m */,
-				039D02BA1A109CA800DB9236 /* VTemplateGeneratorTests.m */,
 				F0140BC31AA9468500B95642 /* VTimerManagerTests.m */,
 				A771D0231A043AE8007CB0A5 /* VTrackingManagerTests.m */,
 				BE9674FD19E335060072E87A /* VUIAlertView+VBlocksTests.m */,

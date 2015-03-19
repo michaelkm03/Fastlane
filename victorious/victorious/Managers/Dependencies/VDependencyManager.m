@@ -165,8 +165,6 @@ NSString * const VDependencyManagerOwnerInfoKey = @"owner";
     NSNumber *blue = colorDictionary[kBlueKey];
     NSNumber *alpha = colorDictionary[kAlphaKey];
     
-    if ( [alpha isEqual:@(1)] || [alpha isEqual:@(0)] ) alpha = @(255);
-    
     if (![red isKindOfClass:[NSNumber class]] ||
         ![green isKindOfClass:[NSNumber class]] ||
         ![blue isKindOfClass:[NSNumber class]] ||

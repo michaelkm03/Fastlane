@@ -94,7 +94,7 @@
     self.restoreButton.titleLabel.font = [UIFont fontWithName:fontNameRegular size:15.0f];
     self.restoreButton.style = VButtonStyleSecondary;
     
-    self.productDescriptionTextView.font = [UIFont fontWithName:fontNameRegular size:17.0f];
+    self.productDescriptionTextView.font = [UIFont fontWithName:fontNameRegular size:16.0f];
     
     self.productTitleLabel.font = [UIFont fontWithName:fontNameRegular size:20.0f];
 }
