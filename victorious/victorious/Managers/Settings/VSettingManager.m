@@ -35,9 +35,9 @@ NSString * const kLiveRailPublisherId = @"monetization.LiveRailsPublisherID";
 NSString * const kOpenXVastTag = @"monetization.OpenXVastTag";
 
 //URLs
-NSString * const kVTermsOfServiceURL = @"url.tos";
-NSString * const kVAppStoreURL = @"url.appstore";
-NSString * const kVPrivacyUrl = @"url.privacy";
+NSString * const kVTermsOfServiceURL = @"tosUrl";
+NSString * const kVAppStoreURL = @"appStoreUrl";
+NSString * const kVPrivacyUrl = @"privacyUrl";
 
 @implementation VSettingManager
 
@@ -58,7 +58,17 @@ NSString * const kVPrivacyUrl = @"url.privacy";
 {
     NSString *path = [self.dependencyManager stringForKey:key];
     
+    if (path == nil)
+    {
+        return nil;
+    }
+    
     NSURL *url;
+    
+    if (path == nil)
+    {
+        return nil;
+    }
     
     //If it contains :// its a valid URL
     if ([path rangeOfString:@"://"].length)

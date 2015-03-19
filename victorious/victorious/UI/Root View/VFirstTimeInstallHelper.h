@@ -10,7 +10,7 @@
 
 @class VDependencyManager, VSequence, VFirstTimeInstallHelper;
 
-extern NSString * const kFTUSequenceURLPath;
+extern NSString * const kFTUSequenceURL;
 extern NSString * const kFTUTrackingURLGroup;
 
 @interface VFirstTimeInstallHelper : NSObject
