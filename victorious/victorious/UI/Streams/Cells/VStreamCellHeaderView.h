@@ -35,6 +35,7 @@
 @property (nonatomic, strong) NSMutableArray *commentViews;
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
+@property (nonatomic, strong) UIColor *colorForParentSequenceAuthorName; ///< applied to the "remix from..." username (only the username portion)
 
 - (void)hideCommentsButton;
 - (void)reloadCommentsCount;

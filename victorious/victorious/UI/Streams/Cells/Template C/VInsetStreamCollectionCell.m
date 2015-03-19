@@ -11,6 +11,7 @@
 #import "VInsetStreamCollectionCell.h"
 #import "VSequence+Fetcher.h"
 #import "VStreamCellActionView.h"
+#import "VStreamCellHeaderView.h"
 
 // IMPORTANT: these template C constants much match up with the heights of values from the VStreamCollectionCell-C xib
 static const CGFloat kAspectRatio = 0.94375f; // 320/302
@@ -92,7 +93,17 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
 {
     [super setDependencyManager:dependencyManager];
     self.actionView.dependencyManager = dependencyManager;
-    [self.commentsLabel setTextColor:[self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey]];
+    
+    if ( dependencyManager != nil )
+    {
+        self.commentsLabel.textColor = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
+        self.streamCellHeaderView.usernameLabel.textColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+        self.streamCellHeaderView.parentLabel.textColor = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
+        self.streamCellHeaderView.dateLabel.textColor = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
+        self.streamCellHeaderView.dateImageView.tintColor = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
+        self.streamCellHeaderView.commentButton.tintColor = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
+        self.streamCellHeaderView.colorForParentSequenceAuthorName = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+    }
 }
 
 - (void)setSequence:(VSequence *)sequence

@@ -98,13 +98,6 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
 {
     // Format repost / remix string
     NSString *parentUserString;
-    
-    UIColor *updatedColor = [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
-    if ( updatedColor != nil )
-    {
-        self.parentLabel.textColor = [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
-    }
-    
     if (self.sequence.isRepost.boolValue && self.sequence.parentUser != nil)
     {
         NSUInteger repostCount = [self.sequence.repostCount unsignedIntegerValue];
@@ -138,12 +131,12 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
                                  };
     NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:parentUserString ?: @""
                                                                                          attributes:attributes];
-    if ( parentUserString != nil )
+    if ( parentUserString != nil && self.colorForParentSequenceAuthorName != nil )
     {
         NSRange range = [parentUserString rangeOfString:text];
         
         [attributedString addAttribute:NSForegroundColorAttributeName
-                                 value:[self.dependencyManager colorForKey:VDependencyManagerLinkColorKey]
+                                 value:self.colorForParentSequenceAuthorName
                                  range:range];
     }
     
@@ -252,11 +245,8 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
     [self.commentButton.titleLabel setFont:[self.dependencyManager fontForKey:VDependencyManagerLabel3FontKey]];
     self.dateLabel.font = [self.dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
     
-    self.usernameLabel.textColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
-    
-    self.dateLabel.textColor = [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
-    self.dateImageView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
-    self.commentButton.tintColor = [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
+    self.dateImageView.tintColor = self.dateLabel.textColor;
+    self.commentButton.tintColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
 }
 
 #pragma mark - Button Actions
