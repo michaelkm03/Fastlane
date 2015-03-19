@@ -29,8 +29,7 @@
 #import "MBProgressHUD.h"
 #import "UIView+AutoLayout.h"
 #import "VDependencyManager.h"
-
-#import <SDWebImage/UIImageView+WebCache.h>
+#import "VCreatorInfoHelper.h"
 
 @import Accounts;
 @import Social;
@@ -52,9 +51,8 @@
 @property (nonatomic, weak) IBOutlet VAuthorizationContextHelper *authorizationContextHelper;
 
 @property (nonatomic, weak) IBOutlet UITextView *authorizationContextTextView;
-@property (nonatomic, weak) IBOutlet UILabel *creatorNameLabel;
+@property (nonatomic, weak) IBOutlet VCreatorInfoHelper *creatorInfoHelper;
 @property (nonatomic, weak) IBOutlet UIView *contentContainer;
-@property (nonatomic, weak) IBOutlet UIImageView *creatorAvatarImageView;
 
 @end
 
@@ -133,30 +131,7 @@
                                                    lineHeight:23.0f];
     self.authorizationContextTextView.attributedText = [[NSAttributedString alloc] initWithString:authorizationContextText attributes:attributes];
     
-    // TODO: Set creator info when returned from backend (also see VPurchaseManagerViewController to apply same backend-driven update)
-    [self setCreatorInfo:[self.dependencyManager templateValueOfType:[NSDictionary class] forKey:VDependencyManagerOwnerInfoKey]];
-}
-
-- (void)setCreatorInfo:(NSDictionary *)creatorInfo
-{
-    if ( creatorInfo == nil )
-    {
-        return;
-    }
-    
-    NSString *creatorName = creatorInfo[ VDependencyManagerOwnerNameKey ];
-    self.creatorNameLabel.text = creatorName;
-    self.creatorNameLabel.font = [self.dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
-    
-    NSString *creatorUrl = creatorInfo[ VDependencyManagerOwnerProfileImageKey ];
-    self.creatorAvatarImageView.layer.cornerRadius = 17.0f; // Enough to make it a circle
-    self.creatorAvatarImageView.layer.borderWidth = 1.0f;
-    self.creatorAvatarImageView.layer.borderColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey].CGColor;
-    self.creatorAvatarImageView.layer.masksToBounds = YES;
-    
-    [self.creatorAvatarImageView sd_setImageWithURL:[NSURL URLWithString:creatorUrl] placeholderImage:nil];
-    
-    [self.creatorAvatarImageView setNeedsDisplay];
+    [self.creatorInfoHelper populateViewsWithDependencyManager:self.dependencyManager];
 }
 
 - (void)dealloc
