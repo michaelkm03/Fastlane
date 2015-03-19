@@ -206,7 +206,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     {
         return nil;
     }
-    NSDictionary *defaultTemplate = [NSJSONSerialization JSONObjectWithData:defaultTemplateData options:kNilOptions error:&error];// [NSJSONSerialization JSONObjectWithData:defaultTemplateData];
+    NSDictionary *defaultTemplate = [NSJSONSerialization JSONObjectWithData:defaultTemplateData options:kNilOptions error:&error];
     if (error != nil)
     {
         return nil;
