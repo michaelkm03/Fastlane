@@ -31,7 +31,7 @@
 #import "VStreamItem+Fetcher.h"
 #import "UIColor+VBrightness.h"
 
-static NSString * const kStreamURLPathKey = @"streamUrlPath";
+static NSString * const kStreamURLKey = @"streamURL";
 static NSString * const kItemColor = @"itemColor";
 static NSString * const kBackgroundColor = @"backgroundColor";
 
@@ -63,7 +63,7 @@ static CGFloat const kDirectoryInset = 5.0f;
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     NSAssert([NSThread isMainThread], @"This method must be called on the main thread");
-    VStream *stream = [VStream streamForPath:[dependencyManager stringForKey:kStreamURLPathKey] inContext:dependencyManager.objectManager.managedObjectStore.mainQueueManagedObjectContext];
+    VStream *stream = [VStream streamForPath:[dependencyManager stringForKey:kStreamURLKey] inContext:dependencyManager.objectManager.managedObjectStore.mainQueueManagedObjectContext];
     stream.name = [dependencyManager stringForKey:VDependencyManagerTitleKey];
     return [self streamDirectoryForStream:stream dependencyManager:dependencyManager];
 }
