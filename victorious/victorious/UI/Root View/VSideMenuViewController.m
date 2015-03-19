@@ -22,25 +22,14 @@
 #import "UIStoryboard+VMainStoryboard.h"
 #import "UIView+AutoLayout.h"
 
-static const CGFloat kBackgroundParallaxMagnitude = 30;
-static const CGFloat kContentParallaxMagnitude = 30;
-
 @interface VSideMenuViewController ()
 
-@property (assign, readwrite, nonatomic) NSTimeInterval animationDuration;
-@property (assign, readwrite, nonatomic) BOOL scaleContentView;
-@property (assign, readwrite, nonatomic) BOOL scaleBackgroundImageView;
-@property (assign, readwrite, nonatomic) CGFloat contentViewScaleValue;
-@property (assign, readwrite, nonatomic) CGFloat contentViewInLandscapeOffsetCenterX;
-@property (assign, readwrite, nonatomic) CGFloat contentViewInPortraitOffsetCenterX;
-@property (assign, readwrite, nonatomic) BOOL parallaxEnabled;
-@property (assign, readwrite, nonatomic) BOOL bouncesHorizontally;
 @property (strong, readwrite, nonatomic) VDependencyManager *dependencyManager;
+@property (strong, readwrite, nonatomic) IBOutlet UIImageView *backgroundImageView;
 @property (assign, readwrite, nonatomic) BOOL visible;
 @property (assign, readwrite, nonatomic) CGPoint originalPoint;
 @property (strong, readwrite, nonatomic) UIButton *contentButton;
 @property (strong, readwrite, nonatomic) VHamburgerButton *hamburgerButton;
-@property (strong, nonatomic) UIView *backgroundView;
 
 @end
 
@@ -60,6 +49,12 @@ static const CGFloat kContentParallaxMagnitude = 30;
         _scaleBackgroundImageView = YES;
         
         _parallaxEnabled = YES;
+        _parallaxMenuMinimumRelativeValue = @(-15);
+        _parallaxMenuMaximumRelativeValue = @(15);
+        
+        _parallaxContentMinimumRelativeValue = @(-25);
+        _parallaxContentMaximumRelativeValue = @(25);
+        
         _bouncesHorizontally = YES;
         
         [self registerBadgeUpdateBlock];
@@ -102,18 +97,9 @@ static const CGFloat kContentParallaxMagnitude = 30;
 {
     [super viewDidLoad];
     
-    UINib *launchScreenNib = [UINib nibWithNibName:@"Launch Screen" bundle:nil];
-    UIView *launchScreenView = [[launchScreenNib instantiateWithOwner:nil options:nil] firstObject];
-    launchScreenView.frame = self.view.bounds;
-    launchScreenView.center = CGPointMake(CGRectGetMidX(self.view.bounds), CGRectGetMidY(self.view.bounds));
-    [self.view addSubview:launchScreenView];
-    self.backgroundView = launchScreenView;
-    
-    UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
-    UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
-    blurEffectView.translatesAutoresizingMaskIntoConstraints = NO;
-    blurEffectView.frame = self.view.bounds;
-    [self.view addSubview:blurEffectView];
+    self.backgroundImage = [[[VThemeManager sharedThemeManager] themedBackgroundImageForDevice]
+                            applyBlurWithRadius:25 tintColor:[UIColor colorWithWhite:0.0 alpha:0.75] saturationDeltaFactor:1.8 maskImage:nil];
+    self.backgroundImageView.image = self.backgroundImage;
     
     self.contentViewController = [[VNavigationController alloc] initWithDependencyManager:self.dependencyManager];
     
@@ -143,7 +129,7 @@ static const CGFloat kContentParallaxMagnitude = 30;
     self.menuViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self.view addSubview:self.menuViewController.view];
     [self.menuViewController didMoveToParentViewController:self];
-    
+
     [self addChildViewController:self.contentViewController];
     self.contentViewController.view.frame = self.view.bounds;
     self.contentViewController.view.translatesAutoresizingMaskIntoConstraints = YES;
@@ -154,10 +140,11 @@ static const CGFloat kContentParallaxMagnitude = 30;
     self.menuViewController.view.alpha = 0;
     if (self.scaleBackgroundImageView)
     {
-        self.backgroundView.transform = CGAffineTransformMakeScale(1.7f, 1.7f);
-        [self addBackgroundMotionEffects];
+        self.backgroundImageView.transform = CGAffineTransformMakeScale(1.7f, 1.7f);
     }
     
+    [self addMenuViewControllerMotionEffects];
+
     UIViewController *initialVC = [self.dependencyManager singletonViewControllerForKey:VDependencyManagerInitialViewControllerKey];
     if (initialVC != nil)
     {
@@ -219,8 +206,18 @@ static const CGFloat kContentParallaxMagnitude = 30;
 
 - (void)presentMenuViewController
 {
+    self.menuViewController.view.transform = CGAffineTransformIdentity;
+    if (self.scaleBackgroundImageView)
+    {
+        self.backgroundImageView.transform = CGAffineTransformIdentity;
+    }
     self.menuViewController.view.frame = self.view.bounds;
+    self.menuViewController.view.transform = CGAffineTransformMakeScale(1.5f, 1.5f);
     self.menuViewController.view.alpha = 0;
+    if (self.scaleBackgroundImageView)
+    {
+        self.backgroundImageView.transform = CGAffineTransformMakeScale(1.7f, 1.7f);
+    }
     
     [self showMenuViewController];
     
@@ -233,9 +230,7 @@ static const CGFloat kContentParallaxMagnitude = 30;
     [self addContentButton];
     
     self.visible = YES;
-    [UIView animateWithDuration:self.animationDuration
-                     animations:^
-    {
+    [UIView animateWithDuration:self.animationDuration animations:^{
         if (self.scaleContentView)
         {
             self.contentViewController.view.transform = CGAffineTransformMakeScale(self.contentViewScaleValue, self.contentViewScaleValue);
@@ -246,11 +241,16 @@ static const CGFloat kContentParallaxMagnitude = 30;
         self.contentViewController.view.center = CGPointMake(contentViewOffsetCenterX, self.contentViewController.view.center.y);
         
         self.menuViewController.view.alpha = 1.0f;
+        self.menuViewController.view.transform = CGAffineTransformIdentity;
+        if (self.scaleBackgroundImageView)
+        {
+            self.backgroundImageView.transform = CGAffineTransformIdentity;
+        }
     }
-                     completion:^(BOOL finished)
-     {
-         [self addContentViewControllerMotionEffects];
-     }];
+    completion:^(BOOL finished)
+    {
+        [self addContentViewControllerMotionEffects];
+    }];
     
     [self updateStatusBar];
 }
@@ -259,23 +259,31 @@ static const CGFloat kContentParallaxMagnitude = 30;
 {
     [self.contentButton removeFromSuperview];
     
-    [UIView animateWithDuration:self.animationDuration animations:^
-    {
+    [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
+
+    [UIView animateWithDuration:self.animationDuration animations:^{
         self.contentViewController.view.transform = CGAffineTransformIdentity;
         self.contentViewController.view.frame = self.view.bounds;
         self.menuViewController.view.alpha = 0;
-        
+        if (self.scaleBackgroundImageView)
+        {
+            self.backgroundImageView.transform = CGAffineTransformMakeScale(1.7f, 1.7f);
+        }
+
         if (self.parallaxEnabled)
         {
             for (UIMotionEffect *effect in self.contentViewController.view.motionEffects)
             {
-                [self.contentViewController.view removeMotionEffect:effect];
+               [self.contentViewController.view removeMotionEffect:effect];
             }
         }
         self.visible = NO;
         [self setNeedsStatusBarAppearanceUpdate];
     }
-                     completion:nil];
+    completion:^(BOOL finished)
+    {
+        [[UIApplication sharedApplication] endIgnoringInteractionEvents];
+    }];
 }
 
 - (void)addContentButton
@@ -318,6 +326,28 @@ static const CGFloat kContentParallaxMagnitude = 30;
 
 #pragma mark - Motion effects
 
+- (void)addMenuViewControllerMotionEffects
+{
+    if (self.parallaxEnabled)
+    {
+       for (UIMotionEffect *effect in self.menuViewController.view.motionEffects)
+       {
+           [self.menuViewController.view removeMotionEffect:effect];
+       }
+
+       UIInterpolatingMotionEffect *interpolationHorizontal = [[UIInterpolatingMotionEffect alloc]initWithKeyPath:@"center.x" type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
+       interpolationHorizontal.minimumRelativeValue = self.parallaxMenuMinimumRelativeValue;
+       interpolationHorizontal.maximumRelativeValue = self.parallaxMenuMaximumRelativeValue;
+       
+       UIInterpolatingMotionEffect *interpolationVertical = [[UIInterpolatingMotionEffect alloc]initWithKeyPath:@"center.y" type:UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis];
+       interpolationVertical.minimumRelativeValue = self.parallaxMenuMinimumRelativeValue;
+       interpolationVertical.maximumRelativeValue = self.parallaxMenuMaximumRelativeValue;
+       
+       [self.menuViewController.view addMotionEffect:interpolationHorizontal];
+       [self.menuViewController.view addMotionEffect:interpolationVertical];
+    }
+}
+
 - (void)addContentViewControllerMotionEffects
 {
     if (self.parallaxEnabled)
@@ -326,15 +356,15 @@ static const CGFloat kContentParallaxMagnitude = 30;
         {
             [self.contentViewController.view removeMotionEffect:effect];
         }
-        
+
         [UIView animateWithDuration:0.2 animations:^{
             UIInterpolatingMotionEffect *interpolationHorizontal = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.x" type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
-            interpolationHorizontal.minimumRelativeValue = @(kContentParallaxMagnitude);
-            interpolationHorizontal.maximumRelativeValue = @(-kContentParallaxMagnitude);
+            interpolationHorizontal.minimumRelativeValue = self.parallaxContentMinimumRelativeValue;
+            interpolationHorizontal.maximumRelativeValue = self.parallaxContentMaximumRelativeValue;
             
             UIInterpolatingMotionEffect *interpolationVertical = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.y" type:UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis];
-            interpolationVertical.minimumRelativeValue = @(kContentParallaxMagnitude);
-            interpolationVertical.maximumRelativeValue = @(-kContentParallaxMagnitude);
+            interpolationVertical.minimumRelativeValue = self.parallaxContentMinimumRelativeValue;
+            interpolationVertical.maximumRelativeValue = self.parallaxContentMaximumRelativeValue;
             
             [self.contentViewController.view addMotionEffect:interpolationHorizontal];
             [self.contentViewController.view addMotionEffect:interpolationVertical];
@@ -342,31 +372,16 @@ static const CGFloat kContentParallaxMagnitude = 30;
     }
 }
 
-- (void)addBackgroundMotionEffects
+#pragma mark - Setters
+
+- (void)setBackgroundImage:(UIImage *)backgroundImage
 {
-    if (self.parallaxEnabled)
+    _backgroundImage = backgroundImage;
+    if (self.backgroundImageView)
     {
-        for (UIMotionEffect *effect in self.backgroundView.motionEffects)
-        {
-            [self.backgroundView removeMotionEffect:effect];
-        }
-        
-        [UIView animateWithDuration:0.2 animations:^{
-            UIInterpolatingMotionEffect *interpolationHorizontal = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.x" type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
-            interpolationHorizontal.minimumRelativeValue = @(-kBackgroundParallaxMagnitude);
-            interpolationHorizontal.maximumRelativeValue = @(kBackgroundParallaxMagnitude);
-            
-            UIInterpolatingMotionEffect *interpolationVertical = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.y" type:UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis];
-            interpolationVertical.minimumRelativeValue = @(-kBackgroundParallaxMagnitude);
-            interpolationVertical.maximumRelativeValue = @(kBackgroundParallaxMagnitude);
-            
-            [self.backgroundView addMotionEffect:interpolationHorizontal];
-            [self.backgroundView addMotionEffect:interpolationVertical];
-        }];
+        self.backgroundImageView.image = backgroundImage;
     }
 }
-
-#pragma mark - Setters
 
 - (void)setContentViewController:(VNavigationController *)contentViewController
 {
