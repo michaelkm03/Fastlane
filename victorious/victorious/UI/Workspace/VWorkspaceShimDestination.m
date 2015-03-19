@@ -22,7 +22,7 @@
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     self = [super init];
-    if (self)
+    if (self != nil)
     {
         _dependencyManager = dependencyManager;
         _workspaceDestination = [dependencyManager templateValueOfType:[VWorkspaceFlowController class] forKey:@"defaultWorkspaceDestination"];
