@@ -648,6 +648,7 @@
 		D8B70FEA1A805CC800090C5E /* VInlineValidationView.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B70FE91A805CC800090C5E /* VInlineValidationView.m */; };
 		D8B827DA19D5FD8900CCD6D9 /* VActionItemTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B827D919D5FD8900CCD6D9 /* VActionItemTableViewCell.m */; };
 		D8B827DD19D5FDFE00CCD6D9 /* VDescriptionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B827DC19D5FDFE00CCD6D9 /* VDescriptionTableViewCell.m */; };
+		D8B88F941ABA821600DBAEA0 /* defaultTemplate.json in Resources */ = {isa = PBXBuildFile; fileRef = D8B88F931ABA821600DBAEA0 /* defaultTemplate.json */; };
 		D8C1FD051A69C0F60072892B /* VToolController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8C1FD041A69C0F60072892B /* VToolController.m */; };
 		D8C1FD081A69C2E40072892B /* VKeyboardNotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D8C1FD071A69C2E40072892B /* VKeyboardNotificationManager.m */; };
 		D8C1FD0B1A69DF0B0072892B /* VImageToolController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8C1FD0A1A69DF0B0072892B /* VImageToolController.m */; };
@@ -1967,6 +1968,7 @@
 		D8B827D919D5FD8900CCD6D9 /* VActionItemTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VActionItemTableViewCell.m; sourceTree = "<group>"; };
 		D8B827DB19D5FDFE00CCD6D9 /* VDescriptionTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDescriptionTableViewCell.h; sourceTree = "<group>"; };
 		D8B827DC19D5FDFE00CCD6D9 /* VDescriptionTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDescriptionTableViewCell.m; sourceTree = "<group>"; };
+		D8B88F931ABA821600DBAEA0 /* defaultTemplate.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = defaultTemplate.json; sourceTree = "<group>"; };
 		D8C1FD031A69C0F60072892B /* VToolController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VToolController.h; sourceTree = "<group>"; };
 		D8C1FD041A69C0F60072892B /* VToolController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VToolController.m; sourceTree = "<group>"; };
 		D8C1FD061A69C2E40072892B /* VKeyboardNotificationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VKeyboardNotificationManager.h; sourceTree = "<group>"; };
@@ -4104,6 +4106,7 @@
 		BE171D811868BE64004E5202 /* victorious */ = {
 			isa = PBXGroup;
 			children = (
+				D8B88F931ABA821600DBAEA0 /* defaultTemplate.json */,
 				BE171DAE1868C211004E5202 /* Categories */,
 				0326C35F19F8226200DBC341 /* Images.xcassets */,
 				BE171DE91868C211004E5202 /* ManagedObjectModels */,
@@ -5189,6 +5192,7 @@
 				A7A2E00C1A38E47400F8C705 /* Purchases.storyboard in Resources */,
 				0390084619F37B1E00FD7EDF /* Camera.storyboard in Resources */,
 				0390087619F3A11A00FD7EDF /* followerCell.xib in Resources */,
+				D8B88F941ABA821600DBAEA0 /* defaultTemplate.json in Resources */,
 				03C1858119B42C9100E27D05 /* Roboto-Black.ttf in Resources */,
 				A75FAF1C19E8AC1E00EB87C1 /* VTrendingTagCell.xib in Resources */,
 				03C1858219B42C9100E27D05 /* Roboto-BlackItalic.ttf in Resources */,

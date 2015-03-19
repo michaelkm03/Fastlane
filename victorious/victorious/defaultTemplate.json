@@ -1,0 +1,147 @@
+{
+    "destination" : {
+        "name" : "workspace",
+        "imageWorkspace" : {
+            "name" : "workspace.screen",
+            "tools" : [
+                       {
+                       "selectedIcon" : {
+                       "imageURL" : "textSelected"
+                       },
+                       "picker" : {
+                       "name" : "vertical.picker"
+                       },
+                       "filterIndex" : 2,
+                       "title" : "text",
+                       "tools" : [
+                                  {
+                                  "verticalAlignment" : "bottom",
+                                  "shouldForceUppercase" : true,
+                                  "font.paragraph" : {
+                                  "fontSize" : 50,
+                                  "fontName" : "Impact"
+                                  },
+                                  "title" : "meme",
+                                  "horizontalAlignment" : "center",
+                                  "color.text" : {
+                                  "red" : 255,
+                                  "alpha" : 1,
+                                  "blue" : 255,
+                                  "green" : 255
+                                  },
+                                  "placeholderText" : "create a meme",
+                                  "strokeColor" : {
+                                  "red" : 0,
+                                  "alpha" : 1,
+                                  "blue" : 0,
+                                  "green" : 0
+                                  },
+                                  "strokeWidth" : -5,
+                                  "name" : "textType.tool"
+                                  },
+                                  {
+                                  "verticalAlignment" : "center",
+                                  "font.paragraph" : {
+                                  "fontSize" : 23,
+                                  "fontName" : "PTSans-Narrow"
+                                  },
+                                  "title" : "quote",
+                                  "horizontalAlignment" : "center",
+                                  "color.text" : {
+                                  "red" : 255,
+                                  "alpha" : 1,
+                                  "blue" : 255,
+                                  "green" : 255
+                                  },
+                                  "placeholderText" : "create a quote",
+                                  "strokeColor" : {
+                                  "red" : 255,
+                                  "alpha" : 1,
+                                  "blue" : 255,
+                                  "green" : 255
+                                  },
+                                  "strokeWidth" : 0,
+                                  "name" : "textType.tool"
+                                  }
+                                  ],
+                       "name" : "text.tool",
+                       "icon" : {
+                       "imageURL" : "text"
+                       }
+                       },
+                       {
+                       "selectedIcon" : {
+                       "imageURL" : "filterSelected"
+                       },
+                       "picker" : {
+                       "name" : "vertical.picker"
+                       },
+                       "filterIndex" : 0,
+                       "title" : "filters",
+                       "tools" : [
+                       
+                       ],
+                       "name" : "filter.tool",
+                       "icon" : {
+                       "imageURL" : "filter"
+                       }
+                       },
+                       {
+                       "filterIndex" : 1,
+                       "title" : "crop",
+                       "icon" : {
+                       "imageURL" : "crop"
+                       },
+                       "name" : "crop.tool",
+                       "selectedIcon" : {
+                       "imageURL" : "cropSelected"
+                       }
+                       }
+                       ]
+        },
+        "videoWorkspace" : {
+            "videoMaxDuration" : 15,
+            "name" : "workspace.screen",
+            "tools" : [
+                       {
+                       "selectedIcon" : {
+                       "imageURL" : "videoSelected"
+                       },
+                       "videoMuted" : false,
+                       "frameDurationValue" : 1,
+                       "title" : "VIDEO MODE",
+                       "frameDurationTimescale" : 24,
+                       "name" : "trim.video.tool",
+                       "icon" : {
+                       "imageURL" : "video"
+                       }
+                       },
+                       {
+                       "selectedIcon" : {
+                       "imageURL" : "GIFSelected"
+                       },
+                       "isGIF" : true,
+                       "videoMuted" : true,
+                       "frameDurationValue" : 1,
+                       "title" : "GIF MODE",
+                       "frameDurationTimescale" : 8,
+                       "name" : "trim.video.tool",
+                       "icon" : {
+                       "imageURL" : "GIF"
+                       }
+                       },
+                       {
+                       "title" : "meme",
+                       "icon" : {
+                       "imageURL" : "meme"
+                       },
+                       "name" : "snapshot.video.tool",
+                       "selectedIcon" : {
+                       "imageURL" : "memeSelected"
+                       }
+                       }
+                       ],
+            "videoMinDuration" : 3
+        }
+    }
+}
