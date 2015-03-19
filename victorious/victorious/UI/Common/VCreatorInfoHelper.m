@@ -9,6 +9,11 @@
 #import "VDependencyManager.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 
+// Owner info
+NSString * const VDependencyManagerOwnerProfileImageKey = @"profile_image";
+NSString * const VDependencyManagerOwnerNameKey = @"name";
+NSString * const VDependencyManagerOwnerInfoKey = @"owner";
+
 @interface VCreatorInfoHelper ()
 
 @property (nonatomic, weak) IBOutlet UILabel *creatorNameLabel;

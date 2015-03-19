@@ -83,11 +83,6 @@ static NSString * const kImageMacroKey = @"imageMacro";
 static NSString * const kScaleKey = @"scale";
 static NSString * const kMacroReplacement = @"XXXXX";
 
-// Owner info
-NSString * const VDependencyManagerOwnerProfileImageKey = @"profile_image";
-NSString * const VDependencyManagerOwnerNameKey = @"name";
-NSString * const VDependencyManagerOwnerInfoKey = @"owner";
-
 @interface VDependencyManager ()
 
 @property (nonatomic, strong) VDependencyManager *parentManager;
