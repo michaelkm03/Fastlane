@@ -25,11 +25,11 @@
 @interface VSideMenuViewController ()
 
 @property (strong, readwrite, nonatomic) VDependencyManager *dependencyManager;
+@property (strong, readwrite, nonatomic) UIImageView *backgroundImageView;
 @property (assign, readwrite, nonatomic) BOOL visible;
 @property (assign, readwrite, nonatomic) CGPoint originalPoint;
 @property (strong, readwrite, nonatomic) UIButton *contentButton;
 @property (strong, readwrite, nonatomic) VHamburgerButton *hamburgerButton;
-@property (strong, nonatomic) UIView *backgroundView;
 
 @end
 
@@ -93,22 +93,15 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)viewDidLoad
+- (void)loadView
 {
-    [super viewDidLoad];
+    self.view = [[UIView alloc] init];
     
     UINib *launchScreenNib = [UINib nibWithNibName:@"Launch Screen" bundle:nil];
     UIView *launchScreenView = [[launchScreenNib instantiateWithOwner:nil options:nil] firstObject];
     launchScreenView.frame = self.view.bounds;
     launchScreenView.center = CGPointMake(CGRectGetMidX(self.view.bounds), CGRectGetMidY(self.view.bounds));
     [self.view addSubview:launchScreenView];
-    self.backgroundView = launchScreenView;
-    
-    UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
-    UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
-    blurEffectView.translatesAutoresizingMaskIntoConstraints = NO;
-    blurEffectView.frame = self.view.bounds;
-    [self.view addSubview:blurEffectView];
     
     self.contentViewController = [[VNavigationController alloc] initWithDependencyManager:self.dependencyManager];
     
@@ -125,6 +118,20 @@
     {
         _contentViewInPortraitOffsetCenterX  = CGRectGetWidth(self.view.frame) + 30.f;
     }
+    
+    dispatch_async(dispatch_get_main_queue(), ^(void)
+    {
+        self.backgroundImage = [self blurredSnapshotOfView:launchScreenView];
+        self.backgroundImageView = ({
+            UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
+            imageView.image = self.backgroundImage;
+            imageView.contentMode = UIViewContentModeScaleAspectFill;
+            imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+            imageView;
+        });
+        [self.view insertSubview:self.backgroundImageView atIndex:0];
+        [launchScreenView removeFromSuperview];
+    });
     
     self.contentButton = ({
         UIButton *button = [[UIButton alloc] initWithFrame:CGRectNull];
@@ -149,7 +156,7 @@
     self.menuViewController.view.alpha = 0;
     if (self.scaleBackgroundImageView)
     {
-        self.backgroundView.transform = CGAffineTransformMakeScale(1.7f, 1.7f);
+        self.backgroundImageView.transform = CGAffineTransformMakeScale(1.7f, 1.7f);
     }
     
     [self addMenuViewControllerMotionEffects];
@@ -213,19 +220,28 @@
 
 #pragma mark -
 
+- (UIImage *)blurredSnapshotOfView:(UIView *)view
+{
+    UIGraphicsBeginImageContext(view.bounds.size);
+    [view drawViewHierarchyInRect:view.bounds afterScreenUpdates:YES];
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return [image applyBlurWithRadius:25 tintColor:[UIColor colorWithWhite:0.0 alpha:0.75] saturationDeltaFactor:1.8 maskImage:nil];
+}
+
 - (void)presentMenuViewController
 {
     self.menuViewController.view.transform = CGAffineTransformIdentity;
     if (self.scaleBackgroundImageView)
     {
-        self.backgroundView.transform = CGAffineTransformIdentity;
+        self.backgroundImageView.transform = CGAffineTransformIdentity;
     }
     self.menuViewController.view.frame = self.view.bounds;
     self.menuViewController.view.transform = CGAffineTransformMakeScale(1.5f, 1.5f);
     self.menuViewController.view.alpha = 0;
     if (self.scaleBackgroundImageView)
     {
-        self.backgroundView.transform = CGAffineTransformMakeScale(1.7f, 1.7f);
+        self.backgroundImageView.transform = CGAffineTransformMakeScale(1.7f, 1.7f);
     }
     
     [self showMenuViewController];
@@ -253,7 +269,7 @@
         self.menuViewController.view.transform = CGAffineTransformIdentity;
         if (self.scaleBackgroundImageView)
         {
-            self.backgroundView.transform = CGAffineTransformIdentity;
+            self.backgroundImageView.transform = CGAffineTransformIdentity;
         }
     }
     completion:^(BOOL finished)
@@ -276,7 +292,7 @@
         self.menuViewController.view.alpha = 0;
         if (self.scaleBackgroundImageView)
         {
-            self.backgroundView.transform = CGAffineTransformMakeScale(1.7f, 1.7f);
+            self.backgroundImageView.transform = CGAffineTransformMakeScale(1.7f, 1.7f);
         }
 
         if (self.parallaxEnabled)
