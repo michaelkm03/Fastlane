@@ -136,7 +136,7 @@ static const CGFloat kContentParallaxMagnitude = 15;
         [button addTarget:self action:@selector(hideMenuViewController) forControlEvents:UIControlEventTouchUpInside];
         button;
     });
-
+    
     [self addChildViewController:self.menuViewController];
     self.menuViewController.view.frame = self.view.bounds;
     self.menuViewController.view.translatesAutoresizingMaskIntoConstraints = YES;
@@ -348,7 +348,7 @@ static const CGFloat kContentParallaxMagnitude = 15;
         {
             [self.contentViewController.view removeMotionEffect:effect];
         }
-
+        
         [UIView animateWithDuration:0.2 animations:^{
             UIInterpolatingMotionEffect *interpolationHorizontal = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.x" type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
             interpolationHorizontal.minimumRelativeValue = @(kContentParallaxMagnitude);
