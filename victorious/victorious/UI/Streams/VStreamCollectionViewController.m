@@ -69,6 +69,8 @@
 
 #import <SDWebImage/UIImageView+WebCache.h>
 
+static const CGFloat kCreateButtonHeight = 44.0f;
+
 static NSString * const kCanAddContentKey = @"canAddContent";
 static NSString * const kMarqueeKey = @"marquee";
 static NSString * const kStreamCollectionStoryboardId = @"StreamCollection";
@@ -329,7 +331,7 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCell"
     {
         UIImage *image = [self.dependencyManager imageForKey:VStreamCollectionViewControllerCreateSequenceIconKey];
         UIButton *createbutton = [UIButton buttonWithType:UIButtonTypeSystem];
-        createbutton.frame = CGRectMake(0, 0, 44, 44);
+        createbutton.frame = CGRectMake(0, 0, kCreateButtonHeight, kCreateButtonHeight);
         [createbutton setImage:image forState:UIControlStateNormal];
         [createbutton addTarget:self action:@selector(createSequenceAction:) forControlEvents:UIControlEventTouchUpInside];
         
