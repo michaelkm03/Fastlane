@@ -115,7 +115,7 @@ static NSString * const kMacroReplacement = @"XXXXX";
             _imageURLs = [[NSMutableArray alloc] init];
         }
         [self scanConfiguration:_configuration];
-
+        
         if (classesByTemplateName == nil)
         {
             if ( _parentManager == nil )

@@ -663,7 +663,8 @@ static NSString * const kViewModelKey = @"contentViewViewModel";
     NSDictionary *params = @{ VTrackingKeyProductIdentifier : experienceEnhander.voteType.productIdentifier ?: @"" };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectLockedVoteType parameters:params];
     
-    VPurchaseViewController *viewController = [VPurchaseViewController purchaseViewControllerWithVoteType:experienceEnhander.voteType];
+    VPurchaseViewController *viewController = [VPurchaseViewController newWithDependencyManager:self.dependencyManager];
+    viewController.voteType = experienceEnhander.voteType;
     viewController.transitioningDelegate = self.modalTransitionDelegate;
     viewController.delegate = self;
     [self presentViewController:viewController animated:YES completion:nil];
