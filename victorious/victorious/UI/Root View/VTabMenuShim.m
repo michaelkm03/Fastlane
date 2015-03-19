@@ -32,7 +32,7 @@
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     self = [super init];
-    if (self)
+    if (self != nil)
     {
         _dependencyManager = dependencyManager;
         _background = [dependencyManager templateValueOfType:[VBackground class] forKey:@"background"];
