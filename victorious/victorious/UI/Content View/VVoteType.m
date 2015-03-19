@@ -82,7 +82,7 @@ NSString * const VDependencyManagerVoteTypesKey = @"voteTypes";
 
 - (NSArray *)trackingURLs
 {
-    return [self.dependencyManager trackingURLsForKey:VTrackingURLBallisticCountKey];
+    return [self.dependencyManager trackingURLsForKey:VTrackingBallisticCountKey];
 }
 
 - (NSNumber *)scaleFactor
