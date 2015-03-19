@@ -91,7 +91,7 @@ static NSString * const kVideoMinDuration = @"videoMinDuration";
 static NSString * const kVideoMuted = @"videoMuted";
 
 // Profile properties
-static NSString * const kProfileShowEditButtonPill = @"editButtonRoundedStyle";
+static NSString * const kProfileEditButtonStyle = @"editButtonStyle";
 
 typedef NS_ENUM(NSUInteger, VTemplateType)
 {
@@ -674,7 +674,7 @@ static NSString * const kFirstTimeVideoView = @"firstTimeVideoView";
     {
         profileItem[VDependencyManagerAccessoryScreensKey] = @[[self settingsMenuItem]];
     }
-    profileItem[kProfileShowEditButtonPill] = @(self.enabledTemplate == VTemplateTypeD);
+    profileItem[kProfileEditButtonStyle] = self.enabledTemplate == VTemplateTypeD ? @"rounded" : @"default";
     
     return [NSDictionary dictionaryWithDictionary:profileItem];
 }
