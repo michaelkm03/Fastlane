@@ -352,7 +352,7 @@
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <view opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" misplaced="YES" placeholderIntrinsicWidth="0.0" placeholderIntrinsicHeight="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="LDl-eN-NHa" userLabel="Numerical Badge" customClass="VNumericalBadgeView">
+                                                <view opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" placeholderIntrinsicWidth="0.0" placeholderIntrinsicHeight="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="LDl-eN-NHa" userLabel="Numerical Badge" customClass="VNumericalBadgeView">
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 </view>
                                             </subviews>
@@ -423,9 +423,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="o2U-YO-l8L" userLabel="BackgroundContainer">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="M0X-mM-b2n" userLabel="Background Container">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </view>
                             <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Internet Connection." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9lr-kw-Rjm">
                                 <rect key="frame" x="0.0" y="568" width="320" height="32"/>
@@ -440,19 +440,18 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="o2U-YO-l8L" secondAttribute="trailing" id="0Ns-5a-UpH"/>
                             <constraint firstItem="9lr-kw-Rjm" firstAttribute="leading" secondItem="eLu-Xq-owQ" secondAttribute="leading" id="2Cj-um-GQE"/>
                             <constraint firstItem="9lr-kw-Rjm" firstAttribute="top" secondItem="eLu-Xq-owQ" secondAttribute="bottom" id="7Fh-rp-XbZ"/>
-                            <constraint firstItem="o2U-YO-l8L" firstAttribute="leading" secondItem="eLu-Xq-owQ" secondAttribute="leading" id="9cX-Oa-sBn"/>
+                            <constraint firstItem="M0X-mM-b2n" firstAttribute="leading" secondItem="eLu-Xq-owQ" secondAttribute="leading" id="GYA-xI-rDi"/>
                             <constraint firstAttribute="trailing" secondItem="9lr-kw-Rjm" secondAttribute="trailing" id="TKa-7M-X9u"/>
-                            <constraint firstItem="o2U-YO-l8L" firstAttribute="top" secondItem="plz-61-Lg9" secondAttribute="top" id="igJ-yq-nci"/>
-                            <constraint firstItem="eWz-iW-3nF" firstAttribute="top" secondItem="o2U-YO-l8L" secondAttribute="bottom" id="k1W-1e-f9y"/>
+                            <constraint firstAttribute="trailing" secondItem="M0X-mM-b2n" secondAttribute="trailing" id="etU-L8-eiR"/>
+                            <constraint firstItem="M0X-mM-b2n" firstAttribute="bottom" secondItem="eLu-Xq-owQ" secondAttribute="bottomMargin" id="p15-9k-kmy"/>
+                            <constraint firstItem="M0X-mM-b2n" firstAttribute="top" secondItem="eLu-Xq-owQ" secondAttribute="topMargin" id="voy-Ip-00F"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="H23-6d-eXe"/>
-                    <nil key="simulatedStatusBarMetrics"/>
                     <connections>
-                        <outlet property="backgroundContainer" destination="o2U-YO-l8L" id="wUh-Vf-bXV"/>
+                        <outlet property="backgroundContainer" destination="M0X-mM-b2n" id="hPH-Bd-gmY"/>
                         <outlet property="reachabilityLabel" destination="9lr-kw-Rjm" id="y8c-tl-kVF"/>
                         <outlet property="reachabilityLabelHeightConstraint" destination="kJt-2K-vfE" id="PI6-kz-5gC"/>
                         <outlet property="reachabilityLabelPositionConstraint" destination="7Fh-rp-XbZ" id="w6f-Ci-Jav"/>
