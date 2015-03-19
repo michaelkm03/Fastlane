@@ -59,11 +59,14 @@
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
     _dependencyManager = dependencyManager;
-    self.usernameLabel.font = [_dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
-    self.descriptionLabel.font = [UIFont fontWithName:@"MuseoSans-300" size:9.0f];
-    self.usernameLabel.textColor = [_dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
-    self.descriptionLabel.textColor = [_dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
-    self.followButton.tintColor = [_dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+    if ( _dependencyManager != nil )
+    {
+        self.usernameLabel.font = [_dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
+        self.descriptionLabel.font = [UIFont fontWithName:@"MuseoSans-300" size:9.0f];
+        self.usernameLabel.textColor = [_dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
+        self.descriptionLabel.textColor = [_dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
+        self.followButton.tintColor = [_dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+    }
 }
 
 - (void)setUser:(VUser *)user
