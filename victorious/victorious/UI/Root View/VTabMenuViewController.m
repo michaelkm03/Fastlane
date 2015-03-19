@@ -22,7 +22,7 @@
 // Backgrounds
 #import "VSolidColorBackground.h"
 
-NSString * const kVTabMenuMenuKey = @"menu";
+NSString * const kMenuKey = @"menu";
 
 @interface VTabMenuViewController () <UITabBarControllerDelegate>
 
@@ -45,7 +45,7 @@ NSString * const kVTabMenuMenuKey = @"menu";
     self = [super initWithDependencyManager:dependencyManager];
     if (self != nil)
     {
-        _tabShim = [dependencyManager templateValueOfType:[VTabMenuShim class] forKey:kVTabMenuMenuKey];
+        _tabShim = [dependencyManager templateValueOfType:[VTabMenuShim class] forKey:kMenuKey];
     }
     return self;
 }
