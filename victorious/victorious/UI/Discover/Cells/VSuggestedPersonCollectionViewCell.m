@@ -54,6 +54,7 @@
     
     CGFloat radius = self.profileImageView.bounds.size.width * 0.5f;
     self.profileImageView.layer.cornerRadius = radius;
+    self.descriptionLabel.font = [UIFont fontWithName:@"MuseoSans-300" size:9.0f];
 }
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
@@ -62,7 +63,6 @@
     if ( _dependencyManager != nil )
     {
         self.usernameLabel.font = [_dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
-        self.descriptionLabel.font = [UIFont fontWithName:@"MuseoSans-300" size:9.0f];
         self.usernameLabel.textColor = [_dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
         self.descriptionLabel.textColor = [_dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
         self.followButton.tintColor = [_dependencyManager colorForKey:VDependencyManagerLinkColorKey];

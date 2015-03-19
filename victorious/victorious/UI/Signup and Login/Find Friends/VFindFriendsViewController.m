@@ -20,7 +20,6 @@
 #import "VThemeManager.h"
 #import "VSettingManager.h"
 #import "VDependencyManager.h"
-#import "NSString+VDisplayCheck.h"
 
 @import MessageUI;
 
@@ -61,7 +60,7 @@
 {
     [super viewDidLoad];
 
-    self.shouldShowInvite = ([MFMailComposeViewController canSendMail] || [MFMessageComposeViewController canSendText]) && [self.appName isValidForDisplay] && [self.appStoreLink isValidForDisplay];
+    self.shouldShowInvite = ([MFMailComposeViewController canSendMail] || [MFMessageComposeViewController canSendText]) && [self stringIsValidForDisplay:self.appName] && [self stringIsValidForDisplay:self.appStoreLink];
     
     if ( self.shouldShowInvite )
     {
@@ -81,6 +80,11 @@
     self.appStoreLink = appStoreUrl.absoluteString;
     
     self.appName = [[VThemeManager sharedThemeManager] themedStringForKey:kVCreatorName];
+}
+
+- (BOOL)stringIsValidForDisplay:(NSString *)string
+{
+    return string != nil && ![string isEqualToString:@""];
 }
 
 - (BOOL)prefersStatusBarHidden

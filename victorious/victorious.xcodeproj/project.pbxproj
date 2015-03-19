@@ -759,7 +759,6 @@
 		F028CF4E1A97A6B0005EE2B5 /* VGroupedStreamCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F028CF4D1A97A6B0005EE2B5 /* VGroupedStreamCollectionViewController.m */; };
 		F028CF591A97C3EE005EE2B5 /* VGroupedStreamCollectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F028CF581A97C3EE005EE2B5 /* VGroupedStreamCollectionViewController.xib */; };
 		F028F3BE1ABA20A000ABFDDC /* NSDictionary+VJSONLogging.m in Sources */ = {isa = PBXBuildFile; fileRef = F028F3BD1ABA20A000ABFDDC /* NSDictionary+VJSONLogging.m */; };
-		F028F3D71ABB5BFD00ABFDDC /* NSString+VDisplayCheck.m in Sources */ = {isa = PBXBuildFile; fileRef = F028F3D61ABB5BFD00ABFDDC /* NSString+VDisplayCheck.m */; };
 		F04A7C8B1AB36AFB0092A374 /* VSleekStreamCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F04A7C8A1AB36AFB0092A374 /* VSleekStreamCollectionCell.xib */; };
 		F04A7C8E1AB37E440092A374 /* VSleekStreamCellActionView.m in Sources */ = {isa = PBXBuildFile; fileRef = F04A7C8D1AB37E440092A374 /* VSleekStreamCellActionView.m */; };
 		F04A7C911AB38EA80092A374 /* VSleekStreamCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F04A7C901AB38EA80092A374 /* VSleekStreamCollectionCell.m */; };
@@ -2167,8 +2166,6 @@
 		F028CF581A97C3EE005EE2B5 /* VGroupedStreamCollectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VGroupedStreamCollectionViewController.xib; sourceTree = "<group>"; };
 		F028F3BC1ABA20A000ABFDDC /* NSDictionary+VJSONLogging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+VJSONLogging.h"; sourceTree = "<group>"; };
 		F028F3BD1ABA20A000ABFDDC /* NSDictionary+VJSONLogging.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+VJSONLogging.m"; sourceTree = "<group>"; };
-		F028F3D51ABB5BFD00ABFDDC /* NSString+VDisplayCheck.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+VDisplayCheck.h"; sourceTree = "<group>"; };
-		F028F3D61ABB5BFD00ABFDDC /* NSString+VDisplayCheck.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+VDisplayCheck.m"; sourceTree = "<group>"; };
 		F04A7C8A1AB36AFB0092A374 /* VSleekStreamCollectionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VSleekStreamCollectionCell.xib; sourceTree = "<group>"; };
 		F04A7C8C1AB37E440092A374 /* VSleekStreamCellActionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSleekStreamCellActionView.h; sourceTree = "<group>"; };
 		F04A7C8D1AB37E440092A374 /* VSleekStreamCellActionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSleekStreamCellActionView.m; sourceTree = "<group>"; };
@@ -4253,8 +4250,6 @@
 				BE171E381868C266004E5202 /* NSString+VParseHelp.m */,
 				0310DC491989A6AB0092DF50 /* NSString+VStringWithData.h */,
 				0310DC4A1989A6AB0092DF50 /* NSString+VStringWithData.m */,
-				F028F3D51ABB5BFD00ABFDDC /* NSString+VDisplayCheck.h */,
-				F028F3D61ABB5BFD00ABFDDC /* NSString+VDisplayCheck.m */,
 				F028F3BC1ABA20A000ABFDDC /* NSDictionary+VJSONLogging.h */,
 				F028F3BD1ABA20A000ABFDDC /* NSDictionary+VJSONLogging.m */,
 				03484C051930294D00403FB1 /* NSURL+MediaType.h */,
@@ -5590,7 +5585,6 @@
 				0314D07319B4670A00FA363C /* UIImageView+Blurring.m in Sources */,
 				A70FC10A1A2D558200F5BBDE /* VPurchase.m in Sources */,
 				D814040B1AB372320099EC4B /* VWorkspacePresenter.m in Sources */,
-				F028F3D71ABB5BFD00ABFDDC /* NSString+VDisplayCheck.m in Sources */,
 				DB34DC5C1A09B5AF001EC711 /* VLiveRailAdViewController.m in Sources */,
 				0309318D1A18425B004E9781 /* VMenuCollectionViewCell.m in Sources */,
 				0314D07919B4685C00FA363C /* VConstants.m in Sources */,

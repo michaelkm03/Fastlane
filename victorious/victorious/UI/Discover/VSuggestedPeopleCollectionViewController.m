@@ -267,10 +267,12 @@ static NSString * const VStoryboardViewControllerIndentifier    = @"suggestedPeo
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
     _dependencyManager = dependencyManager;
-    for (VSuggestedPersonCollectionViewCell *cell in self.collectionView.visibleCells)
+    [self.collectionView.visibleCells enumerateObjectsUsingBlock:^(VSuggestedPersonCollectionViewCell *cell, NSUInteger idx, BOOL *stop)
     {
+        
         cell.dependencyManager = dependencyManager;
-    }
+        
+    }];
 }
 
 #pragma mark - UICollectionViewDelegate
