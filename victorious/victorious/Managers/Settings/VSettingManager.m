@@ -58,6 +58,11 @@ NSString * const kVPrivacyUrl = @"url.privacy";
 {
     NSString *path = [self.dependencyManager stringForKey:key];
     
+    if (path == nil)
+    {
+        return nil;
+    }
+    
     NSURL *url;
     
     //If it contains :// its a valid URL

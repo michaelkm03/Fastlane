@@ -13,7 +13,7 @@
 #import "VNavigationDestination.h"
 
 // DependencyManager Helpers
-#import "VDependencyManager+VNavigationMenuItem.h"
+#import "VTabMenuShim.h"
 
 // ViewControllers
 #import "VNavigationController.h"
@@ -22,7 +22,7 @@
 // Backgrounds
 #import "VSolidColorBackground.h"
 
-NSString * const VTabMenuViewControllerMenuAppearanceKey = @"menuAppearance";
+NSString * const kMenuKey = @"menu";
 
 @interface VTabMenuViewController () <UITabBarControllerDelegate>
 
@@ -31,6 +31,8 @@ NSString * const VTabMenuViewControllerMenuAppearanceKey = @"menuAppearance";
 @property (nonatomic, strong) UITabBarController *internalTabBarViewController;
 
 @property (nonatomic, strong) VNavigationDestinationContainerViewController *willSelectContainerViewController;
+
+@property (nonatomic, strong) VTabMenuShim *tabShim;
 
 @end
 
@@ -43,6 +45,7 @@ NSString * const VTabMenuViewControllerMenuAppearanceKey = @"menuAppearance";
     self = [super initWithDependencyManager:dependencyManager];
     if (self != nil)
     {
+        _tabShim = [dependencyManager templateValueOfType:[VTabMenuShim class] forKey:kMenuKey];
     }
     return self;
 }
@@ -63,8 +66,7 @@ NSString * const VTabMenuViewControllerMenuAppearanceKey = @"menuAppearance";
     
     // Configure Tab Bar
     [self.internalTabBarViewController.tabBar setTintColor:[self.dependencyManager colorForKey:VDependencyManagerLinkColorKey]];
-    NSDictionary *tabBarAppearanceDictionary = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:VTabMenuViewControllerMenuAppearanceKey];
-    VBackground *backgroundForTabBar = [[self.dependencyManager childDependencyManagerWithAddedConfiguration:tabBarAppearanceDictionary] templateValueOfType:[VBackground class] forKey:VDependencyManagerBackgroundKey];
+    VBackground *backgroundForTabBar = self.tabShim.background;
     if ([backgroundForTabBar isKindOfClass:[VSolidColorBackground class]])
     {
         VSolidColorBackground *solidColorBackground = (VSolidColorBackground *)backgroundForTabBar;
@@ -75,7 +77,7 @@ NSString * const VTabMenuViewControllerMenuAppearanceKey = @"menuAppearance";
     [self.view addSubview:self.internalTabBarViewController.view];
     [self.internalTabBarViewController didMoveToParentViewController:self];
     
-    self.internalTabBarViewController.viewControllers = [self wrappedNavigationDesinations];
+    self.internalTabBarViewController.viewControllers = [self.tabShim wrappedNavigationDesinations];
 }
 
 - (NSUInteger)supportedInterfaceOrientations
@@ -129,33 +131,6 @@ shouldSelectViewController:(VNavigationDestinationContainerViewController *)view
         self.willSelectContainerViewController = nil;
         return;
     }
-}
-
-#pragma mark - Private Methods
-
-- (NSArray *)wrappedNavigationDesinations
-{
-    NSMutableArray *wrappedMenuItems = [[NSMutableArray alloc] init];
-    NSArray *menuItems = [self.dependencyManager menuItems];
-    for (VNavigationMenuItem *menuItem in menuItems)
-    {
-        VNavigationDestinationContainerViewController *shimViewController = [[VNavigationDestinationContainerViewController alloc] initWithNavigationDestination:menuItem.destination];
-        VNavigationController *containedNavigationController = [[VNavigationController alloc] initWithDependencyManager:self.dependencyManager];
-        
-        if ([menuItem.destination isKindOfClass:[UIViewController class]])
-        {
-            [containedNavigationController.innerNavigationController pushViewController:(UIViewController *)menuItem.destination
-                                                                               animated:NO];
-            shimViewController.containedViewController = containedNavigationController;
-        }
-        
-        shimViewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:nil
-                                                                      image:menuItem.icon
-                                                              selectedImage:menuItem.selectedIcon];
-        shimViewController.tabBarItem.imageInsets = UIEdgeInsetsMake(6, 0, -6, 0);
-        [wrappedMenuItems addObject:shimViewController];
-    }
-    return wrappedMenuItems;
 }
 
 @end
