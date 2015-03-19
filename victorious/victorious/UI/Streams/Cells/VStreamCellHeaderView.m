@@ -131,12 +131,12 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
                                  };
     NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:parentUserString ?: @""
                                                                                          attributes:attributes];
-    if ( parentUserString != nil )
+    if ( parentUserString != nil && self.colorForParentSequenceAuthorName != nil )
     {
         NSRange range = [parentUserString rangeOfString:text];
         
         [attributedString addAttribute:NSForegroundColorAttributeName
-                                 value:[self.dependencyManager colorForKey:VDependencyManagerLinkColorKey]
+                                 value:self.colorForParentSequenceAuthorName
                                  range:range];
     }
     
