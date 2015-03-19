@@ -252,11 +252,8 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
     [self.commentButton.titleLabel setFont:[self.dependencyManager fontForKey:VDependencyManagerLabel3FontKey]];
     self.dateLabel.font = [self.dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
     
-    self.usernameLabel.textColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
-    
-    self.dateLabel.textColor = [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
-    self.dateImageView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
-    self.commentButton.tintColor = [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
+    self.dateImageView.tintColor = self.dateLabel.textColor;
+    self.commentButton.tintColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
 }
 
 #pragma mark - Button Actions
