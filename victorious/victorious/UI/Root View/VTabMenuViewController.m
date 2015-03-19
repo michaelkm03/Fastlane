@@ -22,7 +22,6 @@
 // Backgrounds
 #import "VSolidColorBackground.h"
 
-NSString * const VTabMenuViewControllerMenuAppearanceKey = @"menuAppearance";
 NSString * const kVTabMenuMenuKey = @"menu";
 
 @interface VTabMenuViewController () <UITabBarControllerDelegate>
@@ -47,7 +46,6 @@ NSString * const kVTabMenuMenuKey = @"menu";
     if (self != nil)
     {
         _tabShim = [dependencyManager templateValueOfType:[VTabMenuShim class] forKey:kVTabMenuMenuKey];
-        
     }
     return self;
 }
@@ -68,8 +66,7 @@ NSString * const kVTabMenuMenuKey = @"menu";
     
     // Configure Tab Bar
     [self.internalTabBarViewController.tabBar setTintColor:[self.dependencyManager colorForKey:VDependencyManagerLinkColorKey]];
-    NSDictionary *tabBarAppearanceDictionary = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:VTabMenuViewControllerMenuAppearanceKey];
-    VBackground *backgroundForTabBar = [[self.dependencyManager childDependencyManagerWithAddedConfiguration:tabBarAppearanceDictionary] templateValueOfType:[VBackground class] forKey:VDependencyManagerBackgroundKey];
+    VBackground *backgroundForTabBar = self.tabShim.background;
     if ([backgroundForTabBar isKindOfClass:[VSolidColorBackground class]])
     {
         VSolidColorBackground *solidColorBackground = (VSolidColorBackground *)backgroundForTabBar;

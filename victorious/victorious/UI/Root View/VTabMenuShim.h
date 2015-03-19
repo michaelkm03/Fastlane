@@ -9,8 +9,12 @@
 #import <Foundation/Foundation.h>
 #import "VHasManagedDependencies.h"
 
+@class VBackground;
+
 @interface VTabMenuShim : NSObject <VHasManagedDependancies>
 
 - (NSArray *)wrappedNavigationDesinations;
+
+@property (nonatomic, readonly) VBackground *background;
 
 @end

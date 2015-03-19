@@ -15,12 +15,15 @@
 #import "VNavigationMenuItem.h"
 #import "VNavigationDestination.h"
 
+// UI
 #import "VNavigationController.h"
 #import "VNavigationDestinationContainerViewController.h"
+#import "VBackground.h"
 
 @interface VTabMenuShim ()
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
+@property (nonatomic, strong, readwrite) VBackground *background;
 
 @end
 
@@ -32,6 +35,7 @@
     if (self)
     {
         _dependencyManager = dependencyManager;
+        _background = [dependencyManager templateValueOfType:[VBackground class] forKey:@"background"];
     }
     return self;
 }
