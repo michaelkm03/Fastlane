@@ -2,7 +2,7 @@
 // victorious/victorious/Managers/Tracking/VTrackingConstants.h 
 // victorious 
 // 
-// Generated from CSV using script "tracking_generate_constants.sh" on 03/09/15. 
+// Generated from CSV using script "tracking_generate_constants.sh" on 03/19/15. 
 // Copyright (c) 2015 Victorious. All rights reserved. 
 // 
 
@@ -15,9 +15,6 @@ extern NSString * const VTrackingEventApplicationDidLaunch; //< Backend mapping:
 extern NSString * const VTrackingEventApplicationDidEnterBackground; //< Backend mapping: app-stop; Params: SessionTime
 extern NSString * const VTrackingEventApplicationDidEnterForeground; //< Backend mapping: app-start
 
-// First-Time User Experience
-extern NSString * const VTrackingEventFirstTimeUserVideoPlayed; //< The app has just been installed & opened for the first time and the app intro video has played
-
 // Navigation
 extern NSString * const VTrackingEventUserDidSelectMainMenu; //< User opened the main menu with the hamburger button; Params: CurrentSection (template driven value)
 extern NSString * const VTrackingEventUserDidSelectMainSection; //< "User selected a section from the main menu.  Params: MenuType, Section  (template driven value)"
@@ -27,6 +24,7 @@ extern NSString * const VTrackingEventUserDidSelectStream; //< "User selected a 
 extern NSString * const VTrackingEventUserDidSelectCreatePost; //< "User tapped (+) button, displaying the content type selection; Params: CurrentSection (template driven value)"
 extern NSString * const VTrackingEventCreatePollSelected; 
 extern NSString * const VTrackingEventCreateImagePostSelected; 
+extern NSString * const VTrackingEventCreateTextOnlyPostSelected; 
 extern NSString * const VTrackingEventCreateVideoPostSelected; 
 extern NSString * const VTrackingEventCreateGIFPostSelected; 
 extern NSString * const VTrackingEventCreateCancelSelected; //< User selected cancel from create post content type selection; Params: CurrentSection (template driven value)
@@ -134,6 +132,7 @@ extern NSString * const VTrackingEventUserDidSelectItemFromStream; //< Backend m
 extern NSString * const VTrackingEventUserDidSelectItemFromMarquee; //< Backend mapping: cell-click
 extern NSString * const VTrackingEventUserDidViewHashtagStream; //< Params: Hashtag
 extern NSString * const VTrackingEventUserDidViewStream; //< "Params: StreamName, Context, StreamId, CurrentSection"
+extern NSString * const VTrackingEventFirstTimeUserVideoPlayed; 
 
 extern NSString * const VTrackingEventUserDidVoteSequence; 
 extern NSString * const VTrackingEventUserDidRepost; //< "Params: SequenceId, TimeCurrent"
@@ -270,7 +269,8 @@ extern NSString * const VTrackingValuePoll;
 // Context values (to differentiate the source of similar actions)
 extern NSString * const VTrackingValueDiscoverSearch; //< Event triggered from discover section's search results
 extern NSString * const VTrackingValueTrendingHashtags; //< Listed in Discover section
-extern NSString * const VTrackingValueUserSearch; //< "In Find Friends, Inbox, User tagging"
+extern NSString * const VTrackingValueUserSearch; //< "Indicates subsequent actions ocurred from a user search, such as following, viewing profile, etc."
+extern NSString * const VTrackingValueHashtagSearch; //< "Indicates subsequent actions ocurred from a hashtag search search, such as following, viewing stream, etc."
 extern NSString * const VTrackingValueEndCard; //< Event triggered from the end card
 extern NSString * const VTrackingValueUserProfile; //< While viewing a user's profile (including your own)
 extern NSString * const VTrackingValueContentView; //< Event occurred in content view

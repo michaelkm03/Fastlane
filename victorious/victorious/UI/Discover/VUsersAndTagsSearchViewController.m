@@ -161,7 +161,10 @@ static NSInteger const kVMaxSearchResults = 1000;
     // Remove NSNotification Observers
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
     
-    [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContext];
+    if ( self.isBeingDismissed )
+    {
+        [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContext];
+    }
 }
 
 - (BOOL)v_prefersNavigationBarHidden
@@ -214,10 +217,7 @@ static NSInteger const kVMaxSearchResults = 1000;
     }
     else if ( self.segmentControl.selectedSegmentIndex == 1 )
     {
-        
-        NSDictionary *params = @{ VTrackingKeyContext : @"HashtagSearch" };
-        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectDiscoverSearchHashtag
-                                           parameters:params];
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectDiscoverSearchHashtag];
         
         self.userSearchResultsVC.view.alpha = 0;
         self.tagsSearchResultsVC.view.alpha = 1.0f;
