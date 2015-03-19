@@ -34,7 +34,7 @@
  
  @return YES if all systems are GO for navigation, or NO to cancel navigation.
  */
-- (BOOL)shouldNavigateWithAlternateDestination:(UIViewController *__autoreleasing *)alternateViewController;
+- (BOOL)shouldNavigateWithAlternateDestination:(id __autoreleasing *)alternateViewController;
 
 /***
  Lets calling code know about any associated authorization context that is required
