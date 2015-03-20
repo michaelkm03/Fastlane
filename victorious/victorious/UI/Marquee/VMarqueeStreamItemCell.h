@@ -13,7 +13,7 @@
 extern CGFloat const kVDetailVisibilityDuration;
 extern CGFloat const kVDetailHideDuration;
 
-@class VStreamItem, VUser, VMarqueeStreamItemCell, VDefaultProfileButton;
+@class VStreamItem, VUser, VMarqueeStreamItemCell, VDefaultProfileButton, VDependencyManager;
 
 /**
  *  Delegate for a VMarqueeStreamItemCell
@@ -47,5 +47,6 @@ extern CGFloat const kVDetailHideDuration;
 @property (nonatomic, weak) id<VMarqueeCellDelegate> delegate;
 @property (nonatomic, weak, readonly) UIImageView *previewImageView;
 @property (nonatomic, assign) BOOL isTemplateC;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end

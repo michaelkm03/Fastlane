@@ -22,6 +22,8 @@
 #import "VStreamWebViewController.h"
 #import "UIView+Autolayout.h"
 
+#import "VDependencyManager.h"
+
 CGFloat const kVDetailVisibilityDuration = 3.0f;
 CGFloat const kVDetailHideDuration = 2.0f;
 static CGFloat const kVDetailHideTime = 0.3f;
@@ -58,24 +60,9 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
 {
     [super awakeFromNib];
     
-    self.profileImageButton.layer.borderColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor].CGColor;
     self.profileImageButton.layer.borderWidth = 4;
     
-    //Was main text color for A and D
-    NSString *textColorKey = kVLinkColor;
-    self.nameLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:textColorKey];
-    
     self.nameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
-}
-
-- (void)setIsTemplateC:(BOOL)isTemplateC
-{
-    _isTemplateC = isTemplateC;
-    if ( self.isTemplateC )
-    {
-        self.labelTopLayoutConstraint.constant -= kTitleOffsetForTemplateC;
-        self.labelBottomLayoutConstraint.constant += kTitleOffsetForTemplateC;
-    }
 }
 
 - (void)setStreamItem:(VStreamItem *)streamItem
@@ -123,6 +110,27 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
     //Timer for marquee details auto-hiding
     [self setDetailsContainerVisible:YES animated:NO];
     [self restartHideTimer];
+}
+
+- (void)setIsTemplateC:(BOOL)isTemplateC
+{
+    _isTemplateC = isTemplateC;
+    if ( self.isTemplateC )
+    {
+        self.labelTopLayoutConstraint.constant -= kTitleOffsetForTemplateC;
+        self.labelBottomLayoutConstraint.constant += kTitleOffsetForTemplateC;
+    }
+}
+
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    _dependencyManager = dependencyManager;
+    if ( _dependencyManager != nil )
+    {
+        self.detailsBackgroundView.backgroundColor = [_dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
+        self.nameLabel.textColor = [_dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+        self.profileImageButton.layer.borderColor = [_dependencyManager colorForKey:VDependencyManagerMainTextColorKey].CGColor;
+    }
 }
 
 - (void)restartHideTimer

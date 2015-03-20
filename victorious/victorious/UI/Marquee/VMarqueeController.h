@@ -10,7 +10,7 @@
 
 #import <UIKit/UIKit.h>
 
-@class VStream, VUser, VStreamItem, VStreamCollectionViewDataSource, VMarqueeController, VMarqueeTabIndicatorView, VTimerManager;
+@class VStream, VUser, VStreamItem, VStreamCollectionViewDataSource, VMarqueeController, VMarqueeTabIndicatorView, VTimerManager, VDependencyManager;
 
 @protocol VMarqueeDelegate <NSObject>
 
@@ -32,6 +32,7 @@
 @property (weak, nonatomic) VMarqueeTabIndicatorView *tabView;///<The Marquee tab view to update
 @property (nonatomic, readonly) VTimerManager *autoScrollTimerManager;///<The timer in control of auto scroll
 @property (nonatomic, assign) BOOL isTemplateC;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 - (instancetype)initWithStream:(VStream *)stream;
 - (void)disableTimer;

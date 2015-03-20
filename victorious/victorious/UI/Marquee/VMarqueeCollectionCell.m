@@ -80,6 +80,13 @@ static const CGFloat kMarqueeBufferHeight = 3;
         
         self.backgroundColor = [UIColor clearColor];
     }
+    self.marquee.isTemplateC = isTemplateC;
+}
+
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    _dependencyManager = dependencyManager;
+    self.marquee.dependencyManager = dependencyManager;
 }
 
 - (void)setMarquee:(VMarqueeController *)marquee
@@ -96,8 +103,7 @@ static const CGFloat kMarqueeBufferHeight = 3;
          self.tabView.numberOfTabs = self.marquee.streamDataSource.count;
          [self.marquee enableTimer];
          [self.collectionView reloadData];
-     }
-                                              failure:nil];
+     } failure:nil];
 }
 
 - (VStreamItem *)currentItem

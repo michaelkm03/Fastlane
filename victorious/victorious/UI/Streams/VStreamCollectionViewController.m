@@ -131,10 +131,7 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCell"
     streamCollectionVC.streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:stream];
     streamCollectionVC.streamDataSource.delegate = streamCollectionVC;
     
-    if ( [[dependencyManager numberForKey:kMarqueeKey] boolValue] )
-    {
-        streamCollectionVC.shouldDisplayMarquee = YES;
-    }
+    streamCollectionVC.shouldDisplayMarquee = [streamCollectionVC.title isEqualToString:@"Recent"];
     
     NSNumber *cellVisibilityRatio = [dependencyManager numberForKey:kStreamATFThresholdKey];
     if ( cellVisibilityRatio != nil )
@@ -283,10 +280,23 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCell"
         _marquee = [[VMarqueeController alloc] initWithStream:marquee];
         
         //The top of the template C hack
-        _marquee.isTemplateC = [self.streamCellFactory isKindOfClass:[VInsetStreamCellFactory class]];
+        _marquee.isTemplateC = [self isTemplateC];
+        _marquee.dependencyManager = self.dependencyManager;
         _marquee.delegate = self;
     }
     return _marquee;
+}
+
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    _dependencyManager = dependencyManager;
+    [self.collectionView.visibleCells enumerateObjectsUsingBlock:^(VBaseCollectionViewCell *baseCollectionViewCell, NSUInteger idx, BOOL *stop)
+    {
+        if ( [baseCollectionViewCell isKindOfClass:[VMarqueeCollectionCell class]] )
+        {
+            ((VMarqueeCollectionCell *)baseCollectionViewCell).dependencyManager = dependencyManager;
+        }
+    }];
 }
 
 - (NSCache *)preloadImageCache
@@ -493,6 +503,7 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCell"
         cell.marquee = self.marquee;
         CGSize desiredSize = [VMarqueeCollectionCell desiredSizeWithCollectionViewBounds:self.view.bounds];
         cell.bounds = CGRectMake(0, 0, desiredSize.width, desiredSize.height);
+        cell.isTemplateC = [self isTemplateC];
         [cell restartAutoScroll];
         return cell;
     }
@@ -508,6 +519,11 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCell"
     [self preloadSequencesAfterIndexPath:indexPath forDataSource:dataSource];
     
     return cell;
+}
+
+- (BOOL)isTemplateC
+{
+    return [self.streamCellFactory isKindOfClass:[VInsetStreamCellFactory class]];
 }
 
 - (void)preloadSequencesAfterIndexPath:(NSIndexPath *)indexPath forDataSource:(VStreamCollectionViewDataSource *)dataSource

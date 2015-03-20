@@ -13,6 +13,7 @@
 
 #import "VStreamCollectionViewDataSource.h"
 #import "VMarqueeStreamItemCell.h"
+#import "VMarqueeCollectionCell.h"
 
 #import "VGroupedStreamCollectionViewController.h"
 #import "VMarqueeTabIndicatorView.h"
@@ -122,7 +123,6 @@
 {
     VStreamItem *item = [self.streamDataSource itemAtIndexPath:indexPath];
     VMarqueeStreamItemCell *cell = (VMarqueeStreamItemCell *)[collectionView cellForItemAtIndexPath:indexPath];
-    cell.isTemplateC = self.isTemplateC;
     UIImage *previewImage = nil;
     if ( [cell isKindOfClass:[VMarqueeStreamItemCell class]] )
     {
@@ -136,11 +136,19 @@
 - (void)setIsTemplateC:(BOOL)isTemplateC
 {
     _isTemplateC = isTemplateC;
-    [self.collectionView.visibleCells enumerateObjectsUsingBlock:^(VMarqueeStreamItemCell *marqueeItemCell, NSUInteger idx, BOOL *stop)
+    [self.collectionView.visibleCells enumerateObjectsUsingBlock:^(VMarqueeStreamItemCell *marqueeCell, NSUInteger idx, BOOL *stop)
     {
-        marqueeItemCell.isTemplateC = isTemplateC;
-        
+        marqueeCell.isTemplateC = isTemplateC;
     }];
+}
+
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    _dependencyManager = dependencyManager;
+    [self.collectionView.visibleCells enumerateObjectsUsingBlock:^(VMarqueeStreamItemCell *marqueeItemCell, NSUInteger idx, BOOL *stop)
+     {
+         marqueeItemCell.dependencyManager = dependencyManager;
+     }];
 }
 
 #pragma mark - UIScrollViewDelegate
@@ -207,6 +215,8 @@
     CGSize size = [VMarqueeStreamItemCell desiredSizeWithCollectionViewBounds:self.collectionView.bounds];
     cell.bounds = CGRectMake(0, 0, size.width, size.height);
     cell.streamItem = item;
+    cell.isTemplateC = self.isTemplateC;
+    cell.dependencyManager = self.dependencyManager;
     cell.delegate = self;
     
     return cell;
