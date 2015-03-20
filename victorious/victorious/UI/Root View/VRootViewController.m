@@ -30,8 +30,6 @@
 
 static const NSTimeInterval kAnimationDuration = 0.2;
 
-static NSString * const kDefaultTemplateName = @"defaultTemplate";
-static NSString * const kJSONType = @"json";
 static NSString * const kDeeplinkURLKey = @"deeplink";
 static NSString * const kNotificationIDKey = @"notification_id";
 static NSString * const kAdSystemsKey = @"ad_systems";
@@ -191,29 +189,10 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 
 - (VDependencyManager *)parentDependencyManager
 {
-    VDependencyManager *basicDependencies = [[VDependencyManager alloc] initWithParentManager:[self defaultDependencyManager]
+    VDependencyManager *basicDependencies = [[VDependencyManager alloc] initWithParentManager:nil
                                                                                 configuration:@{ VDependencyManagerObjectManagerKey:[VObjectManager sharedManager] }
                                                             dictionaryOfClassesByTemplateName:nil];
     return basicDependencies;
-}
-
-- (VDependencyManager *)defaultDependencyManager
-{
-    NSString *defaultTemplatePath = [[NSBundle bundleForClass:[self class]] pathForResource:kDefaultTemplateName ofType:kJSONType];
-    NSError *error = nil;
-    NSData *defaultTemplateData = [NSData dataWithContentsOfFile:defaultTemplatePath options:kNilOptions error:&error];
-    if (error != nil)
-    {
-        return nil;
-    }
-    NSDictionary *defaultTemplate = [NSJSONSerialization JSONObjectWithData:defaultTemplateData options:kNilOptions error:&error];
-    if (error != nil)
-    {
-        return nil;
-    }
-    return [[VDependencyManager alloc] initWithParentManager:nil
-                                               configuration:defaultTemplate
-                           dictionaryOfClassesByTemplateName:nil];
 }
 
 - (void)showLoadingViewController
