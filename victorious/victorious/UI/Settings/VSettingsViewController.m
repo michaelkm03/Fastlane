@@ -405,7 +405,7 @@ static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
 
 #pragma mark - VNavigationDestination
 
-- (BOOL)shouldNavigateWithAlternateDestination:(UIViewController *__autoreleasing *)alternateViewController
+- (BOOL)shouldNavigateWithAlternateDestination:(id __autoreleasing *)alternateViewController
 {
     return YES;
 }

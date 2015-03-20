@@ -23,16 +23,9 @@ static NSString * const VDidPlayFirstTimeUserVideo = @"com.getvictorious.setting
     [super setUp];
     [[NSUserDefaults standardUserDefaults] setValue:@NO forKey:VDidPlayFirstTimeUserVideo];
     [[NSUserDefaults standardUserDefaults] synchronize];
-
 }
 
-- (void)tearDown
-{
-    // Put teardown code here. This method is called after the invocation of each test method in the class.
-    [super tearDown];
-}
-
-- (void)testExample
+- (void)testFirstTimeHelper
 {
     VFirstTimeInstallHelper *ftInstallHelper = [[VFirstTimeInstallHelper alloc] init];
     XCTAssertFalse([ftInstallHelper hasBeenShown]);
