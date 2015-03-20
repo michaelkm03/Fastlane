@@ -67,8 +67,8 @@ static const CGFloat kLayoutChangeAnimationSpringVelocity    = 0.1f;
 
 - (void)applyTheme
 {
-    BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
-    NSString *tintColorKey = isTemplateC ? kVContentTextColor : kVMainTextColor;
+    //Used to be content text color for template C
+    NSString *tintColorKey = kVMainTextColor;
     
     UIColor *progressColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     [self.progressBar setProgressColor:progressColor];
@@ -81,10 +81,12 @@ static const CGFloat kLayoutChangeAnimationSpringVelocity    = 0.1f;
         button.tintColor = tintColor;
     }
     
-    self.view.backgroundColor = isTemplateC ? [UIColor whiteColor] : [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+    //Used to be whiteColor for template C
+    self.view.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
     self.labelTitle.textColor = tintColor;
     
-    NSString *headerFontKey = isTemplateC ? kVHeading2Font : kVHeaderFont;
+    //Was heading2font on template C
+    NSString *headerFontKey = kVHeaderFont;
     self.labelTitle.font = [[VThemeManager sharedThemeManager] themedFontForKey:headerFontKey];
 }
 

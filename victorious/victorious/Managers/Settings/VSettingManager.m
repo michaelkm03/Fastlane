@@ -19,7 +19,7 @@
 //Experiments
 NSString * const VExperimentsRequireProfileImage = @"requireProfileImage";
 NSString * const VExperimentsPauseVideoWhenCommenting = @"pauseVideoWhenCommenting";
-NSString * const VExperimentsClearVideoBackground = @"clearVideoBackgorund";
+NSString * const VExperimentsClearVideoBackground = @"clearVideoBackground";
 
 //URLs
 NSString * const kVTermsOfServiceURL = @"tosUrl";

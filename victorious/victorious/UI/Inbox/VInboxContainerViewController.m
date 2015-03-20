@@ -98,12 +98,6 @@ NSString * const VInboxContainerViewControllerInboxPushReceivedNotification = @"
     return UIInterfaceOrientationMaskPortrait;
 }
 
-- (UIStatusBarStyle)preferredStatusBarStyle
-{
-    BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
-    return isTemplateC ? UIStatusBarStyleDefault : UIStatusBarStyleLightContent;
-}
-
 - (void)setMessageCountCoordinator:(VUnreadMessageCountCoordinator *)messageCountCoordinator
 {
     if (_messageCountCoordinator)

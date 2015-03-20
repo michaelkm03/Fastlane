@@ -377,8 +377,8 @@ static NSString * const kUserRemoteIdKey = @"remoteId";
 
 - (void)addFriendsButton
 {
-    BOOL isTemplateC = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
-    UIImage *findFriendsIcon = isTemplateC ? [UIImage imageNamed:@"C_findFriendsIcon"] : [UIImage imageNamed:@"A_findFriendsIcon"];
+    //Previously was C_findFriendsIcon in template C
+    UIImage *findFriendsIcon = [UIImage imageNamed:@"A_findFriendsIcon"];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:findFriendsIcon
                                                                               style:UIBarButtonItemStylePlain
                                                                              target:self

@@ -45,7 +45,7 @@ static const CGFloat kMarqueeBufferHeight = 3;
     self.tabView = [[VMarqueeTabIndicatorView alloc] initWithFrame:self.tabContainerView.bounds];
     self.tabView.translatesAutoresizingMaskIntoConstraints = NO;
     
-    if (![[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
+    if ( !self.isTemplateC )
     {
         self.tabView.selectedColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
         self.tabView.deselectedColor = [[[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor] colorWithAlphaComponent:.3f];
@@ -78,11 +78,36 @@ static const CGFloat kMarqueeBufferHeight = 3;
                                                                           views:tabView]];
 }
 
+- (void)setIsTemplateC:(BOOL)isTemplateC
+{
+    _isTemplateC = isTemplateC;
+    if ( !self.isTemplateC )
+    {
+        self.tabView.selectedColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
+        self.tabView.deselectedColor = [[[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor] colorWithAlphaComponent:.3f];
+        self.tabView.tabImage = [UIImage imageNamed:@"tabIndicator"];
+        self.tabView.spacingBetweenTabs = self.tabView.tabImage.size.width * kVTabSpacingRatio;
+        
+        self.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+        self.collectionView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor];
+    }
+    else
+    {
+        self.tabView.selectedColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+        self.tabView.deselectedColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
+        self.tabView.tabImage = [UIImage imageNamed:@"tabIndicatorDot"];
+        self.tabView.spacingBetweenTabs = self.tabView.tabImage.size.width * kVTabSpacingRatioC;
+        
+        self.backgroundColor = [UIColor clearColor];
+    }
+}
+
 - (void)setMarquee:(VMarqueeController *)marquee
 {
     _marquee = marquee;
     marquee.collectionView = self.collectionView;
     marquee.tabView = self.tabView;
+    self.isTemplateC = marquee.isTemplateC;
     
     self.tabView.numberOfTabs = self.marquee.streamDataSource.count;
     
@@ -104,6 +129,7 @@ static const CGFloat kMarqueeBufferHeight = 3;
 {
     NSIndexPath *path = [self.marquee.streamDataSource indexPathForItem:[self currentItem]];
     VMarqueeStreamItemCell *cell = (VMarqueeStreamItemCell *)[self.collectionView cellForItemAtIndexPath:path];
+    cell.isTemplateC = self.isTemplateC;
     return cell.previewImageView;
 }
 

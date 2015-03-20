@@ -122,6 +122,7 @@
 {
     VStreamItem *item = [self.streamDataSource itemAtIndexPath:indexPath];
     VMarqueeStreamItemCell *cell = (VMarqueeStreamItemCell *)[collectionView cellForItemAtIndexPath:indexPath];
+    cell.isTemplateC = self.isTemplateC;
     UIImage *previewImage = nil;
     if ( [cell isKindOfClass:[VMarqueeStreamItemCell class]] )
     {
@@ -130,6 +131,16 @@
     
     [self.delegate marquee:self selectedItem:item atIndexPath:indexPath previewImage:previewImage];
     [self.autoScrollTimerManager invalidate];
+}
+
+- (void)setIsTemplateC:(BOOL)isTemplateC
+{
+    _isTemplateC = isTemplateC;
+    [self.collectionView.visibleCells enumerateObjectsUsingBlock:^(VMarqueeStreamItemCell *marqueeItemCell, NSUInteger idx, BOOL *stop)
+    {
+        marqueeItemCell.isTemplateC = isTemplateC;
+        
+    }];
 }
 
 #pragma mark - UIScrollViewDelegate
