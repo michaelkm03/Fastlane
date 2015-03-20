@@ -379,7 +379,6 @@
 		A7299EA71AA7842100B6BC1F /* VDirectoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7299EA51AA7842100B6BC1F /* VDirectoryViewController.m */; };
 		A7299EA81AA7842100B6BC1F /* VDirectoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7299EA61AA7842100B6BC1F /* VDirectoryViewController.xib */; };
 		A7299EAB1AA7854600B6BC1F /* VDirectoryCellDecorator.m in Sources */ = {isa = PBXBuildFile; fileRef = A7299EAA1AA7854600B6BC1F /* VDirectoryCellDecorator.m */; };
-		A72D15381AB9712A00BDF3EB /* VSessionTimerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A72D15371AB9712A00BDF3EB /* VSessionTimerTests.m */; };
 		A72D15421AB9EAD700BDF3EB /* VFirstInstallTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A72D15411AB9EAD700BDF3EB /* VFirstInstallTests.m */; };
 		A733D8FC1A23D0980053E9F1 /* VNotificationSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = A733D8FB1A23D0980053E9F1 /* VNotificationSettings.m */; };
 		A733D8FF1A23D0C70053E9F1 /* VNotificationSettings+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A733D8FE1A23D0C70053E9F1 /* VNotificationSettings+RestKit.m */; };
@@ -1451,7 +1450,6 @@
 		A7299EA61AA7842100B6BC1F /* VDirectoryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VDirectoryViewController.xib; sourceTree = "<group>"; };
 		A7299EA91AA7854600B6BC1F /* VDirectoryCellDecorator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDirectoryCellDecorator.h; sourceTree = "<group>"; };
 		A7299EAA1AA7854600B6BC1F /* VDirectoryCellDecorator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDirectoryCellDecorator.m; sourceTree = "<group>"; };
-		A72D15371AB9712A00BDF3EB /* VSessionTimerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSessionTimerTests.m; sourceTree = "<group>"; };
 		A72D15411AB9EAD700BDF3EB /* VFirstInstallTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFirstInstallTests.m; sourceTree = "<group>"; };
 		A733D8FA1A23D0980053E9F1 /* VNotificationSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNotificationSettings.h; sourceTree = "<group>"; };
 		A733D8FB1A23D0980053E9F1 /* VNotificationSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNotificationSettings.m; sourceTree = "<group>"; };
@@ -4196,7 +4194,6 @@
 				A70417621A365EE80042CABD /* VPurchaseRecordTests.m */,
 				A7F8DD641A0BF55900F82256 /* VSequenceActionControllerTests.m */,
 				A769C3F81A13E7A400698D0C /* VSequenceWebContentTests.m */,
-				A72D15371AB9712A00BDF3EB /* VSessionTimerTests.m */,
 				A75ED0E81AB8CC0A00C35063 /* VStreamContentPermissionsTests.m */,
 				A7696A5219F7287F003017E6 /* VSuggestedPeopleTests.m */,
 				F0804A6A1A8916BC00A0E1A1 /* VTagDictionaryTests.m */,
@@ -5957,7 +5954,6 @@
 				F0B390BD1A8535E300EE70C7 /* VTagTests.m in Sources */,
 				A70AFE641A1684880027549F /* VFlurryTrackingTests.m in Sources */,
 				030931901A18426E004E9781 /* VMenuCollectionViewDataSourceTests.m in Sources */,
-				A72D15381AB9712A00BDF3EB /* VSessionTimerTests.m in Sources */,
 				A72005481A03074800285A9C /* VDummyModels.m in Sources */,
 				A72D15421AB9EAD700BDF3EB /* VFirstInstallTests.m in Sources */,
 				A72005361A03073B00285A9C /* VUploadTaskSerializerTests.m in Sources */,
