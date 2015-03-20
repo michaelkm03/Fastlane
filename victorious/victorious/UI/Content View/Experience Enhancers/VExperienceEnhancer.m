@@ -12,9 +12,7 @@
 
 @interface VExperienceEnhancer()
 
-@property (nonatomic, assign) NSUInteger startingVoteCount;
 @property (nonatomic, readwrite) VVoteType *voteType;
-@property (nonatomic, readwrite) NSUInteger sessionVoteCount;
 
 @end
 
@@ -44,12 +42,12 @@
     self = [super init];
     if (self)
     {
-        self.voteType = voteType;
-        self.startingVoteCount = voteCount;
+        _voteType = voteType;
+        _voteCount = voteCount;
         
-        self.contentMode = voteType.contentMode;
-        self.flightDuration = (float)voteType.flightDuration.unsignedIntegerValue / 1000.0f;
-        self.animationDuration = (float)voteType.animationDuration.unsignedIntegerValue / 1000.0f;
+        _contentMode = voteType.contentMode;
+        _flightDuration = (float)voteType.flightDuration.unsignedIntegerValue / 1000.0f;
+        _animationDuration = (float)voteType.animationDuration.unsignedIntegerValue / 1000.0f;
     }
     return self;
 }
@@ -61,22 +59,7 @@
 
 - (void)vote
 {
-    self.sessionVoteCount++;
-}
-
-- (NSUInteger)totalVoteCount
-{
-    return self.sessionVoteCount + self.startingVoteCount;
-}
-
-- (void)resetSessionVoteCount
-{
-    self.sessionVoteCount = 0;
-}
-
-- (void)resetStartingVoteCount:(NSUInteger)voteCount
-{
-    self.startingVoteCount = voteCount;
+    self.voteCount++;
 }
 
 - (NSArray *)trackingUrls
