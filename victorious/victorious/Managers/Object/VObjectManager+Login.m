@@ -35,6 +35,9 @@
 
 NSString * const kLoggedInChangedNotification          = @"com.getvictorious.LoggedInChangedNotification";
 
+static NSString * const kDefaultTemplateName = @"defaultTemplate";
+static NSString * const kJSONType = @"json";
+
 static NSString * const kVExperimentsKey        = @"experiments";
 static NSString * const kVAppearanceKey         = @"appearance";
 static NSString * const kVVideoQualityKey       = @"video_quality";
@@ -84,6 +87,8 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
 #endif
         
         NSDictionary *template = ((NSDictionary *)fullResponse)[kVPayloadKey];
+        template = [self concatenateTemplateWithDefaultTemplate:template];
+        
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:parentDependencyManager
                                                                                     configuration:template
                                                                 dictionaryOfClassesByTemplateName:nil];
@@ -95,6 +100,30 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
           parameters:nil
         successBlock:fullSuccess
            failBlock:failed];
+}
+
+- (NSDictionary *)concatenateTemplateWithDefaultTemplate:(NSDictionary *)originalTemplate
+{
+    // Load a default template
+    NSString *defaultTemplatePath = [[NSBundle bundleForClass:[self class]] pathForResource:kDefaultTemplateName ofType:kJSONType];
+    NSError *error = nil;
+    NSData *defaultTemplateData = [NSData dataWithContentsOfFile:defaultTemplatePath options:kNilOptions error:&error];
+    if (error != nil)
+    {
+        return originalTemplate;
+    }
+    NSDictionary *defaultTemplate = [NSJSONSerialization JSONObjectWithData:defaultTemplateData options:kNilOptions error:&error];
+    if (error != nil)
+    {
+        return originalTemplate;
+    }
+    
+    // Combine templates
+    NSMutableDictionary *combinedDictionary = [[NSMutableDictionary alloc] init];
+    [combinedDictionary addEntriesFromDictionary:defaultTemplate];
+    [combinedDictionary addEntriesFromDictionary:originalTemplate];
+    
+    return [NSDictionary dictionaryWithDictionary:combinedDictionary];
 }
 
 #pragma mark - Login and status

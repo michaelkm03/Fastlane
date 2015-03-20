@@ -51,7 +51,7 @@ static NSString * const kProfileDeeplinkHostComponent = @"profile";
 
 #pragma mark - VNavigationDestination conformance
 
-- (BOOL)shouldNavigateWithAlternateDestination:(UIViewController *__autoreleasing *)alternateViewController
+- (BOOL)shouldNavigateWithAlternateDestination:(id __autoreleasing *)alternateViewController
 {
     VUserProfileViewController *userProfileViewController = [VUserProfileViewController rootDependencyProfileWithRemoteId:self.objectManager.mainUser.remoteId];
     userProfileViewController.representsMainUser = YES;
