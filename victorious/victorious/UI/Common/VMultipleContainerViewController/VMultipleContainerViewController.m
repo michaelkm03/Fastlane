@@ -162,10 +162,12 @@ static NSString * const kInitialKey = @"initial";
     [viewControllers enumerateObjectsUsingBlock:^(UIViewController *viewController, NSUInteger idx, BOOL *stop)
      {
          NSParameterAssert( [viewController isKindOfClass:[UIViewController class]] );
-         NSParameterAssert( [viewController conformsToProtocol:@protocol(VMultipleContainerChild)] );
          
-         id<VMultipleContainerChild> child = (id<VMultipleContainerChild>)viewController;
-         child.multipleViewControllerChildDelegate = self;
+         if ( [viewController conformsToProtocol:@protocol(VMultipleContainerChild)] )
+         {
+             id<VMultipleContainerChild> child = (id<VMultipleContainerChild>)viewController;
+             child.multipleViewControllerChildDelegate = self;
+         }
     }];
     
     _viewControllers = [viewControllers copy];
