@@ -38,9 +38,6 @@
 @property (nonatomic, strong) VUser *user;
 @property (nonatomic, weak) id<VUserProfileHeaderDelegate> delegate;
 
-@property (nonatomic) NSInteger numberOfFollowers;
-@property (nonatomic) NSInteger numberOfFollowing;
-
 @property (nonatomic, assign) BOOL isFollowingUser;
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;

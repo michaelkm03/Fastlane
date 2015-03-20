@@ -607,7 +607,6 @@ NSString * const VUserProfileFindFriendsIconKey = @"findFriendsIcon";
          {
              header.editProfileButton.enabled = YES;
              header.isFollowingUser = NO;
-             header.numberOfFollowers--;
          }
                                            failBlock:fail];
     }
@@ -618,7 +617,6 @@ NSString * const VUserProfileFindFriendsIconKey = @"findFriendsIcon";
          {
              header.editProfileButton.enabled = YES;
              header.isFollowingUser = YES;
-             header.numberOfFollowers++;
          }
                                          failBlock:fail];
     }

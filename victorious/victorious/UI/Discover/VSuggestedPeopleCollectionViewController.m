@@ -216,7 +216,6 @@ static NSString * const VStoryboardViewControllerIndentifier    = @"suggestedPeo
           {
               [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContext];
               
-              user.numberOfFollowers = [NSNumber numberWithUnsignedInteger:user.numberOfFollowers.unsignedIntegerValue - 1];
               self.userToAnimate = user;
               [self.collectionView reloadData];
           } failBlock:nil];
@@ -235,7 +234,6 @@ static NSString * const VStoryboardViewControllerIndentifier    = @"suggestedPeo
           {
               [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContext];
               
-              user.numberOfFollowers = [NSNumber numberWithUnsignedInteger:user.numberOfFollowers.unsignedIntegerValue + 1];
               self.userToAnimate = user;
               [self.collectionView reloadData];
           } failBlock:nil];
