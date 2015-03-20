@@ -53,7 +53,7 @@ static NSString * const kProfileDeeplinkHostComponent = @"profile";
 
 - (BOOL)shouldNavigateWithAlternateDestination:(id __autoreleasing *)alternateViewController
 {
-    VUserProfileViewController *userProfileViewController = [VUserProfileViewController userProfileWithRemoteId:nil andDependencyManager:self.dependencyManager];
+    VUserProfileViewController *userProfileViewController = [VUserProfileViewController userProfileWithRemoteId:self.objectManager.mainUser.remoteId andDependencyManager:self.dependencyManager];
     userProfileViewController.representsMainUser = YES;
     if ( [userProfileViewController respondsToSelector:@selector(setDependencyManager:)] )
     {
