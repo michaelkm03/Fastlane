@@ -47,7 +47,7 @@
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    VLightweightContentViewController *firstTimeVC = [self instantiateFromStoryboard:@"FirstTimeVideo"];
+    VLightweightContentViewController *firstTimeVC = [self instantiateFromStoryboard:@"LightweightContentView"];
     firstTimeVC.dependencyManager = dependencyManager;
     return firstTimeVC;
 }
