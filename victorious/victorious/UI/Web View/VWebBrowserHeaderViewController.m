@@ -69,13 +69,12 @@ static const CGFloat kLayoutChangeAnimationSpringVelocity    = 0.1f;
 
 - (void)applyTheme
 {
-    //Used to be content text color for template C
-    NSString *tintColorKey = kVMainTextColor;
+    VDependencyManager *dependencyManager = [[[[[VRootViewController rootViewController] dependencyManager] scaffoldViewController] dependencyManager] dependencyManagerForNavigationBar];
     
-    UIColor *progressColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    UIColor *progressColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     [self.progressBar setProgressColor:progressColor];
     
-    UIColor *tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:tintColorKey];
+    UIColor *tintColor = [dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     for ( UIButton *button in @[ self.buttonBack, self.buttonExit, self.buttonOpenURL ])
     {
         [button setImage:[button.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
@@ -83,12 +82,11 @@ static const CGFloat kLayoutChangeAnimationSpringVelocity    = 0.1f;
         button.tintColor = tintColor;
     }
     
-    self.view.backgroundColor = [[[[VRootViewController rootViewController] dependencyManager] dependencyManagerForNavigationBar] colorForKey:VDependencyManagerBackgroundColorKey];
+    self.view.backgroundColor = [dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     self.labelTitle.textColor = tintColor;
     
     //Was heading2font on template C
-    NSString *headerFontKey = kVHeaderFont;
-    self.labelTitle.font = [[VThemeManager sharedThemeManager] themedFontForKey:headerFontKey];
+    self.labelTitle.font = [dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
 }
 
 - (void)updateHeaderState
