@@ -143,6 +143,33 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCell"
     return streamCollectionVC;
 }
 
+#pragma mark - Init
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if (self)
+    {
+        [self sharedInit];
+    }
+    return self;
+}
+
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self)
+    {
+        [self sharedInit];
+    }
+    return self;
+}
+
+- (void)sharedInit
+{
+    self.canShowContent = YES;
+}
+
 #pragma mark - View Heirarchy
 
 - (void)dealloc
@@ -320,6 +347,10 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCell"
 - (void)installCreateButtonOnNavigationItem:(UINavigationItem *)navigationItem
                            initiallyVisible:(BOOL)initiallyVisible
 {
+    if (!self.canShowContent)
+    {
+        return;
+    }
     UIImage *image = [self.dependencyManager imageForKey:VStreamCollectionViewControllerCreateSequenceIconKey];
     UIButton *createbutton = [UIButton buttonWithType:UIButtonTypeSystem];
     createbutton.frame = CGRectMake(0, 0, kCreateButtonHeight, kCreateButtonHeight);
