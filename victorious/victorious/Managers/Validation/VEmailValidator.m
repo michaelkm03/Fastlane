@@ -35,7 +35,7 @@ static NSString * const kVEmailValidateRegEx =
     }
     
     NSPredicate *emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", kVEmailValidateRegEx];
-    if ( ![emailTest evaluateWithObject:string] )
+    if ( ![emailTest evaluateWithObject:[string lowercaseString]] )
     {
         if (error != nil)
         {
