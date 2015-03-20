@@ -6,16 +6,17 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-@class VUser;
+@class VUser, VDependencyManager;
 
 @interface VFollowerTableViewCell : UITableViewCell
 
-@property (nonatomic, strong)   VUser  *profile;
-@property (nonatomic, strong)   VUser  *owner;
-@property (nonatomic)           BOOL    showButton;
-@property (nonatomic)           BOOL    haveRelationship;
+@property (nonatomic, strong) VUser *profile;
+@property (nonatomic, strong) VUser *owner;
+@property (nonatomic) BOOL showButton;
+@property (nonatomic) BOOL haveRelationship;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
-@property (nonatomic, weak)     IBOutlet UIButton *followButton;
+@property (nonatomic, weak) IBOutlet UIButton *followButton;
 
 @property (nonatomic, copy) void (^followButtonAction)(void);
 

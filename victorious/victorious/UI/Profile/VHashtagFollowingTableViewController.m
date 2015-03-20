@@ -15,12 +15,12 @@
 #import "VUser.h"
 #import "VHashtag.h"
 #import "VConstants.h"
-#import "VThemeManager.h"
 #import "VStream+Fetcher.h"
 #import "VStreamCollectionViewController.h"
 #import "VNoContentView.h"
 #import <MBProgressHUD.h>
 #import "VHashtagStreamCollectionViewController.h"
+#import "VDependencyManager.h"
 
 static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
 
@@ -31,10 +31,21 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
 @property (nonatomic, strong) NSError *error;
 
 @property (nonatomic, weak) MBProgressHUD *failureHud;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end
 
 @implementation VHashtagFollowingTableViewController
+
+- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    self = [super init];
+    if ( self != nil )
+    {
+        _dependencyManager = dependencyManager;
+    }
+    return self;
+}
 
 - (void)viewDidLoad
 {
@@ -91,15 +102,10 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
         [self updateUserHashtags:resultObjects];
     };
     
-    VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
-    {
-        VLog(@"%@\n%@", operation, error);
-    };
-    
     [[VObjectManager sharedManager] getHashtagsSubscribedToWithPageType:VPageTypeNext
                                                            perPageLimit:1000
                                                            successBlock:successBlock
-                                                              failBlock:failureBlock];
+                                                              failBlock:nil];
 }
 
 - (void)updateUserHashtags:(NSArray *)hashtags
@@ -121,7 +127,7 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
         notFollowingView.titleLabel.text = NSLocalizedString( @"NoFollowingHashtagsTitle", @"");;
         notFollowingView.messageLabel.text = NSLocalizedString( @"NoFollowingHashtagsMessage", @"");;
         notFollowingView.iconImageView.image = [[UIImage imageNamed:@"tabIconHashtag"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-        notFollowingView.iconImageView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryLinkColor];
+        notFollowingView.iconImageView.tintColor = [self.dependencyManager colorForKey: @"color.link.secondary"];
         self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     }
 }
@@ -178,6 +184,7 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
     VHashtag *hashtag = self.userTags[ indexPath.row ];
     [customCell setHashtag:hashtag];
     customCell.shouldCellRespond = YES;
+    customCell.dependencyManager = self.dependencyManager;
     
     __weak typeof(customCell) weakCell = customCell;
     customCell.subscribeToTagAction = ^(void)

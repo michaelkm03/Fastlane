@@ -15,7 +15,6 @@
 #import "VRootViewController.h"
 #import "VFollowerTableViewController.h"
 #import "VFollowingTableViewController.h"
-#import "VProfileFollowingContainerViewController.h"
 #import "VMessageContainerViewController.h"
 #import "UIImage+ImageEffects.h"
 #import "UIImageView+Blurring.h"
@@ -70,8 +69,6 @@ NSString * const VUserProfileFindFriendsIconKey = @"findFriendsIcon";
 
 @property (nonatomic, strong) UIImageView              *backgroundImageView;
 @property (nonatomic) BOOL                            isMe;
-
-@property (nonatomic, strong) VProfileFollowingContainerViewController *followingAndHashtagsVC;
 
 @property (nonatomic, strong) MBProgressHUD *retryHUD;
 @property (nonatomic, strong) UIButton *retryProfileLoadButton;

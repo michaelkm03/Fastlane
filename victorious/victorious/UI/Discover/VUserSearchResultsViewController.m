@@ -172,6 +172,7 @@ static NSString * const kVUserResultIdentifier = @"followerCell";
     
     cell.profile = profile;
     cell.haveRelationship = haveRelationship;
+    cell.dependencyManager = self.dependencyManager;
     
     // Tell the button what to do when it's tapped
     cell.followButtonAction = ^(void)
