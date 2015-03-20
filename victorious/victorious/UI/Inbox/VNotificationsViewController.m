@@ -18,6 +18,8 @@
 
 #import "UIViewController+VLayoutInsets.h"
 #import "VDependencyManager+VObjectManager.h"
+#import "VAppDelegate.h"
+#import "VRootViewController.h"
 
 static NSString * const kNotificationCellViewIdentifier = @"VNotificationCell";
 
@@ -124,7 +126,6 @@ static NSString * const kNotificationCellViewIdentifier = @"VNotificationCell";
     [self.tableView registerNib:[UINib nibWithNibName:kNotificationCellViewIdentifier bundle:nil] forCellReuseIdentifier:kNotificationCellViewIdentifier];
 }
 
-
 #pragma mark - UITableViewDataSource
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
@@ -184,11 +185,12 @@ static NSString * const kNotificationCellViewIdentifier = @"VNotificationCell";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     VNotification *notification = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    if (notification.user)
+    if ([notification.deeplink length] > 0)
     {
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectNotification];
         
-//        [self displayConversationForUser:notification.user];
+        [[VRootViewController rootViewController] handleDeeplinkURL:[NSURL URLWithString:notification.deeplink]];
+        
     }
 }
 

@@ -21,5 +21,6 @@
 @dynamic user;
 @dynamic message;
 @dynamic comment;
+@dynamic deeplink;
 
 @end

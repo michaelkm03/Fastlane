@@ -20,5 +20,6 @@
 @property (nonatomic, retain) VUser *user;
 @property (nonatomic, retain) VMessage *message;
 @property (nonatomic, retain) VComment *comment;
+@property (nonatomic, retain) NSString * deeplink;
 
 @end

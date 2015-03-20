@@ -26,7 +26,8 @@
                                   @"user" : VSelectorName(user),
                                   @"message" : VSelectorName(message),
                                   @"comment" : VSelectorName(comment),
-                                  @"posted_at" : VSelectorName(postedAt)
+                                  @"posted_at" : VSelectorName(postedAt),
+                                  @"deeplink" : VSelectorName(deeplink)
                                   };
     
     RKEntityMapping *mapping = [RKEntityMapping

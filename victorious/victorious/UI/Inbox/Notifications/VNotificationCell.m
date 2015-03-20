@@ -50,8 +50,17 @@ CGFloat const kVNotificationCellHeight = 72;
     
     [self.notificationType setImage:[UIImage imageNamed:@"user-icon"]];
     
-    self.messageLabel.text = @"notification message goes here";
+    self.messageLabel.text = @"notification message goes here and now it's really long to wrap onto 2 lines.";
     self.dateLabel.text = [notification.postedAt timeSince];
+    
+    if ([notification.deeplink length] > 0)
+    {
+        self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    }
+    else
+    {
+        self.accessoryType = UITableViewCellAccessoryNone;
+    }
 }
 
 @end
