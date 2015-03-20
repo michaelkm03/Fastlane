@@ -280,7 +280,7 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCell"
         _marquee = [[VMarqueeController alloc] initWithStream:marquee];
         
         //The top of the template C hack
-        _marquee.isTemplateC = [self isTemplateC];
+        _marquee.hideMarqueePosterImage = [self hideMarqueePosterImage];
         _marquee.dependencyManager = self.dependencyManager;
         _marquee.delegate = self;
     }
@@ -500,10 +500,10 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCell"
     {
         VMarqueeCollectionCell *cell = [dataSource.collectionView dequeueReusableCellWithReuseIdentifier:[VMarqueeCollectionCell suggestedReuseIdentifier]
                                                                                             forIndexPath:indexPath];
+        cell.hideMarqueePosterImage = [self hideMarqueePosterImage];
         cell.marquee = self.marquee;
         CGSize desiredSize = [VMarqueeCollectionCell desiredSizeWithCollectionViewBounds:self.view.bounds];
         cell.bounds = CGRectMake(0, 0, desiredSize.width, desiredSize.height);
-        cell.isTemplateC = [self isTemplateC];
         [cell restartAutoScroll];
         return cell;
     }
@@ -521,9 +521,10 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCell"
     return cell;
 }
 
-- (BOOL)isTemplateC
+//According to design we could have the poster's profile images added back to marquee content at a later day, but for now it should be hidden at all times.
+- (BOOL)hideMarqueePosterImage
 {
-    return [self.streamCellFactory isKindOfClass:[VInsetStreamCellFactory class]];
+    return YES;
 }
 
 - (void)preloadSequencesAfterIndexPath:(NSIndexPath *)indexPath forDataSource:(VStreamCollectionViewDataSource *)dataSource

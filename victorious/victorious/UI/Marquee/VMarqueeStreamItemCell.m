@@ -91,7 +91,6 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
         
         [self.profileImageButton setProfileImageURL:[NSURL URLWithString:sequence.user.pictureUrl]
                                            forState:UIControlStateNormal];
-        self.profileImageButton.hidden = self.isTemplateC; //Was previously hidden on tempalte C
         
         if ( [sequence isWebContent] )
         {
@@ -112,13 +111,20 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
     [self restartHideTimer];
 }
 
-- (void)setIsTemplateC:(BOOL)isTemplateC
+- (void)setHideMarqueePosterImage:(BOOL)hideMarqueePosterImage
 {
-    _isTemplateC = isTemplateC;
-    if ( self.isTemplateC )
+    if ( self.hideMarqueePosterImage == hideMarqueePosterImage )
+    {
+        return;
+    }
+    
+    _hideMarqueePosterImage = hideMarqueePosterImage;
+    self.profileImageButton.hidden = self.hideMarqueePosterImage;
+    if ( self.hideMarqueePosterImage )
     {
         self.labelTopLayoutConstraint.constant -= kTitleOffsetForTemplateC;
         self.labelBottomLayoutConstraint.constant += kTitleOffsetForTemplateC;
+        [self layoutIfNeeded];
     }
 }
 

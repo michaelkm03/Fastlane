@@ -133,12 +133,12 @@
     [self.autoScrollTimerManager invalidate];
 }
 
-- (void)setIsTemplateC:(BOOL)isTemplateC
+- (void)setHideMarqueePosterImage:(BOOL)hideMarqueePosterImage
 {
-    _isTemplateC = isTemplateC;
+    _hideMarqueePosterImage = hideMarqueePosterImage;
     [self.collectionView.visibleCells enumerateObjectsUsingBlock:^(VMarqueeStreamItemCell *marqueeCell, NSUInteger idx, BOOL *stop)
     {
-        marqueeCell.isTemplateC = isTemplateC;
+        marqueeCell.hideMarqueePosterImage = hideMarqueePosterImage;
     }];
 }
 
@@ -215,7 +215,7 @@
     CGSize size = [VMarqueeStreamItemCell desiredSizeWithCollectionViewBounds:self.collectionView.bounds];
     cell.bounds = CGRectMake(0, 0, size.width, size.height);
     cell.streamItem = item;
-    cell.isTemplateC = self.isTemplateC;
+    cell.hideMarqueePosterImage = self.hideMarqueePosterImage;
     cell.dependencyManager = self.dependencyManager;
     cell.delegate = self;
     
