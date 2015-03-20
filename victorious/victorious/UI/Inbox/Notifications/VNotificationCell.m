@@ -22,13 +22,16 @@ CGFloat const kVNotificationCellHeight = 72;
     
     self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
-    self.dateLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont];
-    self.dateLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
+//    self.dateLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont];
+//    self.dateLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
+    self.dateLabel.font = [UIFont fontWithName:@"MuseoSans-100" size:11.0f];
     
     self.messageLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel2Font];
-    self.messageLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
+//    self.messageLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
     
-    self.usernameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel2Font];
+//    self.usernameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel2Font];
+//    self.usernameLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    self.usernameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel1Font];
     self.usernameLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     
     self.notificationType.clipsToBounds = YES;
@@ -39,7 +42,7 @@ CGFloat const kVNotificationCellHeight = 72;
     self.selectionStyle = UITableViewCellSelectionStyleNone;
 }
 
-- (void)setNotifcation:(VNotification *)notification
+- (void)setNotification:(VNotification *)notification
 {
     _notification = notification;
     
