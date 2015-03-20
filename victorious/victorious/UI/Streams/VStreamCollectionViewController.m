@@ -148,7 +148,7 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCell"
 - (instancetype)initWithCoder:(NSCoder *)aDecoder
 {
     self = [super initWithCoder:aDecoder];
-    if (self)
+    if (self != nil)
     {
         [self sharedInit];
     }
@@ -158,7 +158,7 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCell"
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self)
+    if (self != nil)
     {
         [self sharedInit];
     }

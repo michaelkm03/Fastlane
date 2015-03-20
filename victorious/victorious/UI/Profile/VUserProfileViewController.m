@@ -158,7 +158,7 @@ static NSString * const kUserRemoteIdKey = @"remoteId";
     self = [super initWithCoder:aDecoder];
     if (self != nil)
     {
-        [self sharedInit];
+        [self userProfileSharedInit];
     }
     return self;
 }
@@ -168,12 +168,12 @@ static NSString * const kUserRemoteIdKey = @"remoteId";
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self != nil)
     {
-        [self sharedInit];
+        [self userProfileSharedInit];
     }
     return self;
 }
 
-- (void)sharedInit
+- (void)userProfileSharedInit
 {
     self.canShowContent = NO;
 }
