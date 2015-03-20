@@ -119,11 +119,7 @@ static NSString * const kMacroLoadTime               = @"%%LOAD_TIME%%";
     
     
     VObjectManager *objManager = [self applicationObjectManager];
-    
-    NSURLComponents *URLCompontents = [NSURLComponents componentsWithString:urlWithMacrosReplaced];
-    URLCompontents.path = [URLCompontents.path stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet v_pathPartCharacterSet]];
-    NSString *escapedURLWithMacrosReplace = [URLCompontents string];
-    VTrackingURLRequest *request = [self requestWithUrl:escapedURLWithMacrosReplace objectManager:objManager];
+    VTrackingURLRequest *request = [self requestWithUrl:urlWithMacrosReplaced objectManager:objManager];
     if ( request == nil )
     {
         return NO;
