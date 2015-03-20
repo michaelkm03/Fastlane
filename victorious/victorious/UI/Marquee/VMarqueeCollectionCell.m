@@ -45,26 +45,6 @@ static const CGFloat kMarqueeBufferHeight = 3;
     self.tabView = [[VMarqueeTabIndicatorView alloc] initWithFrame:self.tabContainerView.bounds];
     self.tabView.translatesAutoresizingMaskIntoConstraints = NO;
     
-    if ( !self.isTemplateC )
-    {
-        self.tabView.selectedColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
-        self.tabView.deselectedColor = [[[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor] colorWithAlphaComponent:.3f];
-        self.tabView.tabImage = [UIImage imageNamed:@"tabIndicator"];
-        self.tabView.spacingBetweenTabs = self.tabView.tabImage.size.width * kVTabSpacingRatio;
-        
-        self.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
-        self.collectionView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor];
-    }
-    else
-    {
-        self.tabView.selectedColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-        self.tabView.deselectedColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
-        self.tabView.tabImage = [UIImage imageNamed:@"tabIndicatorDot"];
-        self.tabView.spacingBetweenTabs = self.tabView.tabImage.size.width * kVTabSpacingRatioC;
-
-        self.backgroundColor = [UIColor clearColor];
-    }
-    
     [self.tabContainerView addSubview:self.tabView];
     
     NSDictionary *tabView = @{ @"tabView":self.tabView };

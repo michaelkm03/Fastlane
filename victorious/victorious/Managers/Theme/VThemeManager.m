@@ -88,7 +88,7 @@ static CGFloat const kGreyBackgroundColor = 0.94509803921;
 
 - (UIColor *)preferredBackgroundColor
 {
-    return [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
+    return [self themedColorForKey:kVBackgroundColor];
 }
 
 - (UIImage *)themedBackgroundImageForDevice

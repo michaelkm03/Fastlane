@@ -10,6 +10,8 @@
 #import "VSettingManager.h"
 #import "VThemeManager.h"
 #import "VConstants.h"
+#import "VDependencyManager+VScaffoldViewController.h"
+#import "VRootViewController.h"
 
 static const NSTimeInterval kLayoutChangeAnimationDuration  = 0.5f;
 static const CGFloat kLayoutChangeAnimationSpringDampening  = 0.8f;
@@ -81,8 +83,7 @@ static const CGFloat kLayoutChangeAnimationSpringVelocity    = 0.1f;
         button.tintColor = tintColor;
     }
     
-    //Used to be whiteColor for template C
-    self.view.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+    self.view.backgroundColor = [[[[VRootViewController rootViewController] dependencyManager] dependencyManagerForNavigationBar] colorForKey:VDependencyManagerBackgroundColorKey];
     self.labelTitle.textColor = tintColor;
     
     //Was heading2font on template C

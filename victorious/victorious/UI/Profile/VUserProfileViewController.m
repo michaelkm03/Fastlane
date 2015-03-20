@@ -57,6 +57,7 @@ static void * VUserProfileAttributesContext =  &VUserProfileAttributesContext;
 static const CGFloat MBProgressHUDCustomViewSide = 37.0f;
 static NSString * const kUserKey = @"user";
 static NSString * const kUserRemoteIdKey = @"remoteId";
+NSString * const VUserProfileFindFriendsIconKey = @"findFriendsIcon";
 
 @interface VUserProfileViewController () <VUserProfileHeaderDelegate, MBProgressHUDDelegate, VNotAuthorizedDataSourceDelegate>
 
@@ -378,7 +379,7 @@ static NSString * const kUserRemoteIdKey = @"remoteId";
 - (void)addFriendsButton
 {
     //Previously was C_findFriendsIcon in template C
-    UIImage *findFriendsIcon = [UIImage imageNamed:@"A_findFriendsIcon"];
+    UIImage *findFriendsIcon = [self.dependencyManager imageForKey:@"profile.findFriendsIcon"];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:findFriendsIcon
                                                                               style:UIBarButtonItemStylePlain
                                                                              target:self

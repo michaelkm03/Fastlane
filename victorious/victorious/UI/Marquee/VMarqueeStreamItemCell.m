@@ -104,7 +104,7 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
         
         [self.profileImageButton setProfileImageURL:[NSURL URLWithString:sequence.user.pictureUrl]
                                            forState:UIControlStateNormal];
-        self.profileImageButton.hidden = NO; //Was previously hidden on tempalte C
+        self.profileImageButton.hidden = self.isTemplateC; //Was previously hidden on tempalte C
         
         if ( [sequence isWebContent] )
         {
