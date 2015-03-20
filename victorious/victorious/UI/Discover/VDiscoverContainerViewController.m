@@ -15,6 +15,7 @@
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Users.h"
 #import "VUser.h"
+#import "UIViewController+VLayoutInsets.h"
 
 // Dependency Manager
 #import "VDependencyManager.h"
@@ -84,10 +85,11 @@
     NSLayoutConstraint *searchTopConstraint = [NSLayoutConstraint constraintWithItem:self.searchBarContainer
                                                                            attribute:NSLayoutAttributeTop
                                                                            relatedBy:NSLayoutRelationEqual
-                                                                              toItem:self.topLayoutGuide
-                                                                           attribute:NSLayoutAttributeBottom
+                                                                              toItem:self.view
+                                                                           attribute:NSLayoutAttributeTop
                                                                           multiplier:1.0
                                                                             constant:0];
+    searchTopConstraint.constant = self.v_layoutInsets.top;
     [self.view addConstraint:searchTopConstraint];
     [self.view layoutIfNeeded];
 }

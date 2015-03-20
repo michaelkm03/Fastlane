@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="Uac-Xm-78P">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1510" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="Uac-Xm-78P">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -108,11 +108,12 @@
                             <constraint firstAttribute="trailing" secondItem="J1F-4E-CYS" secondAttribute="trailing" id="N1F-Oh-Bhh"/>
                             <constraint firstAttribute="trailing" secondItem="EwB-Hd-HRW" secondAttribute="trailing" id="Xmc-bp-l9c"/>
                             <constraint firstItem="EwB-Hd-HRW" firstAttribute="top" secondItem="J1F-4E-CYS" secondAttribute="bottom" id="eWC-if-DCv"/>
-                            <constraint firstItem="J1F-4E-CYS" firstAttribute="top" secondItem="2Uc-gO-ISV" secondAttribute="bottom" constant="-20" placeholder="YES" id="f0K-c7-FvG"/>
+                            <constraint firstItem="J1F-4E-CYS" firstAttribute="top" secondItem="2Uc-gO-ISV" secondAttribute="bottom" placeholder="YES" id="f0K-c7-FvG"/>
                             <constraint firstItem="Qyw-ZJ-fmq" firstAttribute="top" secondItem="EwB-Hd-HRW" secondAttribute="bottom" id="k5Z-Zc-79N"/>
                         </constraints>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
+                    <nil key="simulatedStatusBarMetrics"/>
                     <connections>
                         <outlet property="searchBarContainer" destination="J1F-4E-CYS" id="aWz-o5-Syx"/>
                         <outlet property="searchBarHeightConstraint" destination="kyv-Ne-LMK" id="Ogb-9H-fsw"/>
