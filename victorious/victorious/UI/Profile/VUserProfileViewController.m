@@ -379,7 +379,7 @@ NSString * const VUserProfileFindFriendsIconKey = @"findFriendsIcon";
 - (void)addFriendsButton
 {
     //Previously was C_findFriendsIcon in template C
-    UIImage *findFriendsIcon = [self.dependencyManager imageForKey:@"profile.findFriendsIcon"];
+    UIImage *findFriendsIcon = [self.dependencyManager imageForKey:VUserProfileFindFriendsIconKey];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:findFriendsIcon
                                                                               style:UIBarButtonItemStylePlain
                                                                              target:self
