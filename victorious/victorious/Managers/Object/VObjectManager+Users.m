@@ -378,17 +378,17 @@ static NSString * const kVAPIParamContext = @"context";
             success(operation, fullResponse, resultObjects);
         }
     };
-    NSString *userSearchURL = [NSString stringWithFormat:@"/api/userinfo/search/%@/%ld", search_string, (long)pageLimit];
+    NSString *escapedSearchString = [search_string stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet v_pathPartCharacterSet]];
+    NSString *userSearchURL = [NSString stringWithFormat:@"/api/userinfo/search/%@/%ld", escapedSearchString, (long)pageLimit];
     if (context != nil)
     {
         userSearchURL = [NSString stringWithFormat:@"%@/%@", userSearchURL, context];
     }
-    NSString *escapedUserSearchURL = [userSearchURL stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet v_pathPartCharacterSet]];
-    return [self GET:escapedUserSearchURL
-               object:nil
-           parameters:nil
-         successBlock:fullSuccess
-            failBlock:fail];
+    return [self GET:userSearchURL
+              object:nil
+          parameters:nil
+        successBlock:fullSuccess
+           failBlock:fail];
 }
 
 - (RKManagedObjectRequestOperation *)findFriendsBySocial:(VSocialSelector)selector

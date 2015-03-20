@@ -123,7 +123,6 @@ static NSString * const kMacroLoadTime               = @"%%LOAD_TIME%%";
     NSURLComponents *URLCompontents = [NSURLComponents componentsWithString:urlWithMacrosReplaced];
     URLCompontents.path = [URLCompontents.path stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet v_pathPartCharacterSet]];
     NSString *escapedURLWithMacrosReplace = [URLCompontents string];
-    
     VTrackingURLRequest *request = [self requestWithUrl:escapedURLWithMacrosReplace objectManager:objManager];
     if ( request == nil )
     {
