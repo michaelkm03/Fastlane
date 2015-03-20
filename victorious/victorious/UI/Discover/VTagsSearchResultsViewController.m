@@ -170,6 +170,7 @@ static NSString * const kVTagResultIdentifier = @"VTrendingTagCell";
     VHashtag *hashtag = self.searchResults[ indexPath.row ];
     [customCell setHashtag:hashtag];
     customCell.shouldCellRespond = YES;
+    customCell.dependencyManager = self.dependencyManager;
     
     __weak typeof(customCell) weakCell = customCell;
     customCell.subscribeToTagAction = ^(void)
