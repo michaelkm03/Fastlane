@@ -19,6 +19,7 @@
 @interface VProfileEditViewController ()
 
 @property (nonatomic, weak) IBOutlet UILabel *nameLabel;
+@property (nonatomic, assign) BOOL isProfileBeingSaved;
 
 @end
 
@@ -62,6 +63,11 @@
 {
     [super viewWillDisappear:animated];
     [[VTrackingManager sharedInstance] endEvent:VTrackingEventProfileEditDidAppear];
+    
+    if (![self.navigationController.viewControllers containsObject:self] && !self.isProfileBeingSaved)
+    {
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidExitEditProfile];
+    }
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -73,6 +79,8 @@
 
 - (IBAction)done:(UIBarButtonItem *)sender
 {
+    self.isProfileBeingSaved = YES;
+    
     [[self view] endEditing:YES];
     
     if (![self validateInputs])

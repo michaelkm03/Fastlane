@@ -185,7 +185,8 @@
 
 - (IBAction)close:(id)sender
 {
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidCancelPurchase];
+    NSDictionary *params = @{ VTrackingKeyProductIdentifier : self.voteType.productIdentifier ?: @"" };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidCancelPurchase parameters:params];
     
     [self.delegate purchaseDidFinish:NO];
 }

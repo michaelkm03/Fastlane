@@ -56,15 +56,6 @@
     [self fetchHashtagsForLoggedInUser];
 }
 
-#pragma mark - Tracking
-
-// This method is called by super class
-- (void)trackStreamDidAppear
-{
-    NSDictionary *params = @{ VTrackingKeyHashtag : self.selectedHashtag ?: @"" };
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidViewHashtagStream parameters:params];
-}
-
 #pragma mark - Fetch Users Tags
 
 - (void)fetchHashtagsForLoggedInUser

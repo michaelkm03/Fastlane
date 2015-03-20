@@ -84,8 +84,8 @@
                                                       successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
          {
              // This will always be NO for success because resetting password does not complete the login/registraiton process
+             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventResetPasswordDidSucceed];
              [self.registrationStepDelegate didFinishRegistrationStepWithSuccess:NO];
-    
          }
                                                          failBlock:^(NSOperation *operation, NSError *error)
          {

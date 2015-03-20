@@ -277,7 +277,7 @@
                        {
                            if ( created )
                            {
-                               [[VTrackingManager sharedInstance] trackEvent:VTrackingEventSignupWithFacebookDidSucceed];
+                               [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithFacebookDidSucceed];
                            }
                            
                            self.profile = user;
@@ -468,8 +468,7 @@
      {
          [MBProgressHUD hideHUDForView:self.navigationController.view animated:YES];
          
-         NSString *eventName = created ? VTrackingEventSignupWithTwitterDidSucceed : VTrackingEventLoginWithTwitterDidSucceed;
-         [[VTrackingManager sharedInstance] trackEvent:eventName];
+         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithTwitterDidSucceed];
          
          self.profile = user;
          if ( [self.profile.status isEqualToString:kUserStatusIncomplete] )

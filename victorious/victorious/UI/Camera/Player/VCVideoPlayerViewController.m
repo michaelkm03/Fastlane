@@ -13,7 +13,7 @@
 static const CGFloat kToolbarHeight = 41.0f;
 static const NSTimeInterval kToolbarHideDelay =  2.0;
 static const NSTimeInterval kToolbarAnimationDuration =  0.2;
-static const NSTimeInterval kTimeDifferenceLimitForSkipEvent = 1.0;
+static const NSTimeInterval kTimeDifferenceLimitForSkipEvent = 3.0;
 
 static NSString * const kPlaybackBufferEmpty = @"playbackBufferEmpty";
 static NSString * const kPlaybackLikelyToKeepUp = @"playbackLikelyToKeepUp";

@@ -395,6 +395,7 @@
 		A743E7EA1A081FFF00339CB3 /* VStringValidator.m in Sources */ = {isa = PBXBuildFile; fileRef = A743E7E91A081FFF00339CB3 /* VStringValidator.m */; };
 		A743E7EC1A082AD200339CB3 /* VEmailValidatorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A743E7EB1A082AD200339CB3 /* VEmailValidatorTests.m */; };
 		A74C87FA1ABA5859004D2E16 /* VCreatorInfoHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A74C87F91ABA5859004D2E16 /* VCreatorInfoHelper.m */; };
+		A758DC421ABA09F800EB4604 /* VFirstInstallManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A758DC411ABA09F800EB4604 /* VFirstInstallManager.m */; };
 		A75C10341A65DE6F00439809 /* VCommentHighlighter.m in Sources */ = {isa = PBXBuildFile; fileRef = A75C10331A65DE6F00439809 /* VCommentHighlighter.m */; };
 		A75ED0651AB382A800C35063 /* VTrackingSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ED0641AB382A800C35063 /* VTrackingSettingsViewController.m */; };
 		A75ED0E91AB8CC0A00C35063 /* VStreamContentPermissionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ED0E81AB8CC0A00C35063 /* VStreamContentPermissionsTests.m */; };
@@ -410,8 +411,6 @@
 		A761C9D11A48A97C00F0D0F9 /* VUtilityButtonsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A761C9D01A48A97C00F0D0F9 /* VUtilityButtonsViewController.m */; };
 		A761C9D41A48B1E500F0D0F9 /* UIView+AutoLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = A761C9D31A48B1E500F0D0F9 /* UIView+AutoLayout.m */; };
 		A761C9D71A48CB9800F0D0F9 /* VSwipeView.m in Sources */ = {isa = PBXBuildFile; fileRef = A761C9D61A48CB9800F0D0F9 /* VSwipeView.m */; };
-		A7672B981A1BF6E50063AF46 /* VFirstInstallManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A7672B971A1BF6E50063AF46 /* VFirstInstallManager.m */; };
-		A7672B9A1A1BFF150063AF46 /* VFirstInstallTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7672B991A1BFF150063AF46 /* VFirstInstallTests.m */; };
 		A769C3D71A12DD5000698D0C /* VUserManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A769C3D61A12DD5000698D0C /* VUserManagerTests.m */; };
 		A769C3E91A13176700698D0C /* VWebBrowserActions.m in Sources */ = {isa = PBXBuildFile; fileRef = A769C3DA1A13176700698D0C /* VWebBrowserActions.m */; };
 		A769C3EA1A13176700698D0C /* VWebBrowserHeaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A769C3DC1A13176700698D0C /* VWebBrowserHeaderViewController.m */; };
@@ -420,6 +419,7 @@
 		A769C3F31A131D8C00698D0C /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F8DD621A0B1A8B00F82256 /* WebKit.framework */; };
 		A769C3F71A13D69500698D0C /* WebBrowser.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A769C3F61A13D69500698D0C /* WebBrowser.storyboard */; };
 		A769C3F91A13E7A400698D0C /* VSequenceWebContentTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A769C3F81A13E7A400698D0C /* VSequenceWebContentTests.m */; };
+		A769FE411ABC17C200888ED8 /* VFirstInstallTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A769FE401ABC17C200888ED8 /* VFirstInstallTests.m */; };
 		A771D0241A043AE8007CB0A5 /* VTrackingManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A771D0231A043AE8007CB0A5 /* VTrackingManagerTests.m */; };
 		A7738B041A4A35DF008EA973 /* VSimpleModalTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = A7738B011A4A35DF008EA973 /* VSimpleModalTransition.m */; };
 		A7738B051A4A35DF008EA973 /* VTransitionDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A7738B031A4A35DF008EA973 /* VTransitionDelegate.m */; };
@@ -1479,6 +1479,8 @@
 		A743E7EB1A082AD200339CB3 /* VEmailValidatorTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEmailValidatorTests.m; sourceTree = "<group>"; };
 		A74C87F81ABA5859004D2E16 /* VCreatorInfoHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCreatorInfoHelper.h; sourceTree = "<group>"; };
 		A74C87F91ABA5859004D2E16 /* VCreatorInfoHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCreatorInfoHelper.m; sourceTree = "<group>"; };
+		A758DC401ABA09F800EB4604 /* VFirstInstallManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VFirstInstallManager.h; path = "First Install/VFirstInstallManager.h"; sourceTree = "<group>"; };
+		A758DC411ABA09F800EB4604 /* VFirstInstallManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VFirstInstallManager.m; path = "First Install/VFirstInstallManager.m"; sourceTree = "<group>"; };
 		A75C10321A65DE6F00439809 /* VCommentHighlighter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCommentHighlighter.h; sourceTree = "<group>"; };
 		A75C10331A65DE6F00439809 /* VCommentHighlighter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCommentHighlighter.m; sourceTree = "<group>"; };
 		A75ED0631AB382A800C35063 /* VTrackingSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTrackingSettingsViewController.h; sourceTree = "<group>"; };
@@ -1511,9 +1513,6 @@
 		A761C9D31A48B1E500F0D0F9 /* UIView+AutoLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+AutoLayout.m"; sourceTree = "<group>"; };
 		A761C9D51A48CB9800F0D0F9 /* VSwipeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSwipeView.h; sourceTree = "<group>"; };
 		A761C9D61A48CB9800F0D0F9 /* VSwipeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSwipeView.m; sourceTree = "<group>"; };
-		A7672B961A1BF6E50063AF46 /* VFirstInstallManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VFirstInstallManager.h; path = "First Install/VFirstInstallManager.h"; sourceTree = "<group>"; };
-		A7672B971A1BF6E50063AF46 /* VFirstInstallManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VFirstInstallManager.m; path = "First Install/VFirstInstallManager.m"; sourceTree = "<group>"; };
-		A7672B991A1BFF150063AF46 /* VFirstInstallTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFirstInstallTests.m; sourceTree = "<group>"; };
 		A7696A5219F7287F003017E6 /* VSuggestedPeopleTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSuggestedPeopleTests.m; sourceTree = "<group>"; };
 		A769C3D61A12DD5000698D0C /* VUserManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUserManagerTests.m; sourceTree = "<group>"; };
 		A769C3D91A13176700698D0C /* VWebBrowserActions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VWebBrowserActions.h; sourceTree = "<group>"; };
@@ -1526,6 +1525,7 @@
 		A769C3E11A13176700698D0C /* VWebContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VWebContentViewController.m; sourceTree = "<group>"; };
 		A769C3F61A13D69500698D0C /* WebBrowser.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = WebBrowser.storyboard; sourceTree = "<group>"; };
 		A769C3F81A13E7A400698D0C /* VSequenceWebContentTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSequenceWebContentTests.m; sourceTree = "<group>"; };
+		A769FE401ABC17C200888ED8 /* VFirstInstallTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFirstInstallTests.m; sourceTree = "<group>"; };
 		A771D0231A043AE8007CB0A5 /* VTrackingManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTrackingManagerTests.m; sourceTree = "<group>"; };
 		A7738B001A4A35DF008EA973 /* VSimpleModalTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSimpleModalTransition.h; sourceTree = "<group>"; };
 		A7738B011A4A35DF008EA973 /* VSimpleModalTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSimpleModalTransition.m; sourceTree = "<group>"; };
@@ -3768,8 +3768,8 @@
 		A7672B921A1BF6B40063AF46 /* First Install */ = {
 			isa = PBXGroup;
 			children = (
-				A7672B961A1BF6E50063AF46 /* VFirstInstallManager.h */,
-				A7672B971A1BF6E50063AF46 /* VFirstInstallManager.m */,
+				A758DC401ABA09F800EB4604 /* VFirstInstallManager.h */,
+				A758DC411ABA09F800EB4604 /* VFirstInstallManager.m */,
 			);
 			name = "First Install";
 			sourceTree = "<group>";
@@ -4183,7 +4183,7 @@
 				A7EF97BB19F889F800972E74 /* VExperienceEnhancerTests.m */,
 				A709635719EEE87300CE6633 /* VFileCache+VoteTypeTests.m */,
 				A7FE8C3F19EDF14700B91EF2 /* VFileCacheTests.m */,
-				A7672B991A1BFF150063AF46 /* VFirstInstallTests.m */,
+				A769FE401ABC17C200888ED8 /* VFirstInstallTests.m */,
 				DB61811B1AB206D700DED29F /* VFirstTimeInstallHelperTests.m */,
 				A70AFE631A1684880027549F /* VFlurryTrackingTests.m */,
 				A77AD4C61A1EFDB400142F24 /* VFollowersTextFormatterTests.m */,
@@ -5452,6 +5452,7 @@
 				A7B98A3D1A264D0900C58335 /* VNotificationSettingCell.m in Sources */,
 				BEA31EE9192292F300A90A10 /* VComment+Fetcher.m in Sources */,
 				0314D48219B46B5E00FA363C /* VCommentsContainerViewController.m in Sources */,
+				A758DC421ABA09F800EB4604 /* VFirstInstallManager.m in Sources */,
 				D80A94E91A546E5E0035D788 /* VThumbnailCell.m in Sources */,
 				A7AEF9B11A83F1C300A3D3A0 /* VFooterActivityIndicatorView.m in Sources */,
 				033F77101A2D6B8A00E6A13A /* VUnreadMessageCountCoordinator.m in Sources */,
@@ -5773,7 +5774,6 @@
 				03C185B919B42E5D00E27D05 /* OAuth+Additions.m in Sources */,
 				0309318E1A18425B004E9781 /* VMenuCollectionViewDataSource.m in Sources */,
 				BE42842919DDC19100AEDBA6 /* VDefaultProfileButton.m in Sources */,
-				A7672B981A1BF6E50063AF46 /* VFirstInstallManager.m in Sources */,
 				0314D4EF19B46B5E00FA363C /* VLoginWithEmailViewController.m in Sources */,
 				A75FAF1719E8AC1E00EB87C1 /* VSuggestedPeopleCell.m in Sources */,
 				A716FC3D1AAE2DDB0032AA40 /* VAuthorizationContextHelper.m in Sources */,
@@ -5929,7 +5929,6 @@
 				A72005371A03073B00285A9C /* VVoteSettingManagerTests.m in Sources */,
 				F0804A6B1A8916BC00A0E1A1 /* VTagDictionaryTests.m in Sources */,
 				A72005451A03073B00285A9C /* VFollowUserControlTests.m in Sources */,
-				A7672B9A1A1BFF150063AF46 /* VFirstInstallTests.m in Sources */,
 				A720053B1A03073B00285A9C /* VPasswordValidationTests.m in Sources */,
 				A72005411A03073B00285A9C /* VApplicationTrackingTests.m in Sources */,
 				A720053F1A03073B00285A9C /* VDiscoverViewControllerTests.m in Sources */,
@@ -5960,6 +5959,7 @@
 				A72005361A03073B00285A9C /* VUploadTaskSerializerTests.m in Sources */,
 				A72005491A03074800285A9C /* NSObject+VMethodSwizzling.m in Sources */,
 				A72005251A03073B00285A9C /* NSStringVCryptoTests.m in Sources */,
+				A769FE411ABC17C200888ED8 /* VFirstInstallTests.m in Sources */,
 				A72005281A03073B00285A9C /* VHashTagsTest.m in Sources */,
 				A72005461A03074800285A9C /* VFileSystemTestHelpers.m in Sources */,
 				F0140BC41AA9468500B95642 /* VTimerManagerTests.m in Sources */,
@@ -6294,7 +6294,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
-				VALIDATE_TRACKING = YES;
+				VALIDATE_TRACKING = NO;
 				WRAPPER_EXTENSION = xctest;
 			};
 			name = Staging;
@@ -6510,7 +6510,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
-				VALIDATE_TRACKING = YES;
+				VALIDATE_TRACKING = NO;
 				WRAPPER_EXTENSION = xctest;
 			};
 			name = Debug;
@@ -6537,7 +6537,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
-				VALIDATE_TRACKING = YES;
+				VALIDATE_TRACKING = NO;
 				WRAPPER_EXTENSION = xctest;
 			};
 			name = Release;
@@ -6656,7 +6656,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
-				VALIDATE_TRACKING = YES;
+				VALIDATE_TRACKING = NO;
 				WRAPPER_EXTENSION = xctest;
 			};
 			name = QA;
