@@ -16,23 +16,10 @@
 #import "VVoteType.h"
 #import "VTracking.h"
 
-//Settings
-NSString * const kVCaptureVideoQuality =   @"capture";
-NSString * const kVExportVideoQuality =   @"remix";
-
-NSString * const VSettingsTemplateCEnabled = @"template_c_enabled";
-NSString * const VSettingsTemplateDEnabled = @"template_d_enabled";
-NSString * const VSettingsChannelsEnabled = @"channels_enabled";
-NSString * const VSettingsMarqueeEnabled = @"marqueeEnabled";
-
 //Experiments
-NSString * const VExperimentsRequireProfileImage = @"require_profile_image";
-NSString * const VExperimentsPauseVideoWhenCommenting = @"pause_video_when_commenting";
-NSString * const VExperimentsClearVideoBackground = @"clear_video_background";
-
-//Monetization
-NSString * const kLiveRailPublisherId = @"monetization.LiveRailsPublisherID";
-NSString * const kOpenXVastTag = @"monetization.OpenXVastTag";
+NSString * const VExperimentsRequireProfileImage = @"requireProfileImage";
+NSString * const VExperimentsPauseVideoWhenCommenting = @"pauseVideoWhenCommenting";
+NSString * const VExperimentsClearVideoBackground = @"clearVideoBackgorund";
 
 //URLs
 NSString * const kVTermsOfServiceURL = @"tosUrl";
