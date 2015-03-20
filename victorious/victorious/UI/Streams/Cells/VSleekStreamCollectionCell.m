@@ -11,6 +11,7 @@
 #import "VSequence+Fetcher.h"
 #import "NSString+VParseHelp.h"
 #import "VDependencyManager.h"
+#import "VStreamCellHeaderView.h"
 
 const CGFloat kSleekCellHeaderHeight = 50.0f;
 const CGFloat kSleekCellActionViewHeight = 41.0f;
@@ -45,10 +46,17 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
-    if ( dependencyManager )
+    if ( dependencyManager != nil )
     {
         [super setDependencyManager:dependencyManager];
         self.actionView.dependencyManager = dependencyManager;
+        self.commentsLabel.textColor = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
+        self.streamCellHeaderView.usernameLabel.textColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+        self.streamCellHeaderView.dateLabel.textColor = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
+        self.streamCellHeaderView.dateImageView.tintColor = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
+        self.streamCellHeaderView.commentButton.tintColor = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
+        self.streamCellHeaderView.colorForParentSequenceAuthorName = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+        self.streamCellHeaderView.colorForParentSequenceText = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
     }
     self.actionView.layer.borderColor = [UIColor clearColor].CGColor;
 }
