@@ -59,30 +59,22 @@
 {
     CMTime current;
     CMTime previous;
-    int32_t scale = 10;
+    int32_t scale = 1;
     
-    current = CMTimeMake( 15, scale );
+    current = CMTimeMake( 8, scale );
     previous = CMTimeMake( 4, scale );
     XCTAssert( [self.videoPlayer didSkipFromPreviousTime:previous toCurrentTime:current] );
     
     current = CMTimeMake( 4, scale );
-    previous = CMTimeMake( 15, scale );
+    previous = CMTimeMake( 8, scale );
     XCTAssert( [self.videoPlayer didSkipFromPreviousTime:previous toCurrentTime:current] );
-    
-    current = CMTimeMake( 15, scale );
-    previous = CMTimeMake( 5, scale );
-    XCTAssert( [self.videoPlayer didSkipFromPreviousTime:previous toCurrentTime:current] );
-    
-    current = CMTimeMake( 5, scale );
-    previous = CMTimeMake( 15, scale );
-    XCTAssert( [self.videoPlayer didSkipFromPreviousTime:previous toCurrentTime:current] );
-    
-    current = CMTimeMake( 15, scale );
-    previous = CMTimeMake( 6, scale );
-    XCTAssertFalse( [self.videoPlayer didSkipFromPreviousTime:previous toCurrentTime:current] );
     
     current = CMTimeMake( 6, scale );
-    previous = CMTimeMake( 15, scale );
+    previous = CMTimeMake( 8, scale );
+    XCTAssertFalse( [self.videoPlayer didSkipFromPreviousTime:previous toCurrentTime:current] );
+    
+    current = CMTimeMake( 8, scale );
+    previous = CMTimeMake( 6, scale );
     XCTAssertFalse( [self.videoPlayer didSkipFromPreviousTime:previous toCurrentTime:current] );
 }
 
