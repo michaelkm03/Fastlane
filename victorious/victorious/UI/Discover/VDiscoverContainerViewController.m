@@ -15,6 +15,7 @@
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Users.h"
 #import "VUser.h"
+#import "UIViewController+VLayoutInsets.h"
 
 // Dependency Manager
 #import "VDependencyManager.h"
@@ -35,6 +36,8 @@
 @property (nonatomic, strong) UINavigationController *searchNavigationController;
 @property (nonatomic, strong) VUsersAndTagsSearchViewController *usersAndTagsSearchViewController;
 @property (nonatomic, strong) VTransitionDelegate *transitionDelegate;
+
+@property (nonatomic, strong) NSLayoutConstraint *searchTopConstraint;
 
 @end
 
@@ -69,6 +72,8 @@
     VSearchResultsTransition *viewTransition = [[VSearchResultsTransition alloc] init];
     self.transitionDelegate = [[VTransitionDelegate alloc] initWithTransition:viewTransition];
 
+    self.extendedLayoutIncludesOpaqueBars = YES;
+    self.edgesForExtendedLayout = UIRectEdgeAll;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -81,15 +86,15 @@
                                                  name:kVDiscoverUserProfileSelectedNotification
                                                object:nil];
 
-    NSLayoutConstraint *searchTopConstraint = [NSLayoutConstraint constraintWithItem:self.searchBarContainer
+    self.searchTopConstraint = [NSLayoutConstraint constraintWithItem:self.searchBarContainer
                                                                            attribute:NSLayoutAttributeTop
                                                                            relatedBy:NSLayoutRelationEqual
-                                                                              toItem:self.topLayoutGuide
-                                                                           attribute:NSLayoutAttributeBottom
+                                                                              toItem:self.view
+                                                                           attribute:NSLayoutAttributeTop
                                                                           multiplier:1.0
                                                                             constant:0];
-    [self.view addConstraint:searchTopConstraint];
-    [self.view layoutIfNeeded];
+    self.searchTopConstraint.constant = self.v_layoutInsets.top;
+    [self.view addConstraint:self.searchTopConstraint];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -166,6 +171,13 @@
 }
 
 #pragma mark - Navigation
+
+- (void)v_setLayoutInsets:(UIEdgeInsets)v_layoutInsets
+{
+    [super v_setLayoutInsets:v_layoutInsets];
+    
+    self.searchTopConstraint.constant = self.v_layoutInsets.top;
+}
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {

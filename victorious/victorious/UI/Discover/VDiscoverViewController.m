@@ -28,10 +28,8 @@
 #import "VDependencyManager.h"
 #import "VAuthorizedAction.h"
 
-
 static NSString * const kVSuggestedPeopleIdentifier = @"VSuggestedPeopleCell";
 static NSString * const kVTrendingTagIdentifier = @"VTrendingTagCell";
-static CGFloat const kTopInset = 22.0f; ///< The space between the top of the view controller and the top of the table view contents
 
 @interface VDiscoverViewController () <VDiscoverViewControllerProtocol, VSuggestedPeopleCollectionViewControllerDelegate>
 
@@ -73,8 +71,6 @@ static CGFloat const kTopInset = 22.0f; ///< The space between the top of the vi
     
     [self registerCells];
     [self refresh:YES];
-    
-    self.tableView.contentInset = UIEdgeInsetsMake(kTopInset, 0.0f, 0.0f, 0.0f);
     
     // Watch for a change in the login status
     [[NSNotificationCenter defaultCenter] addObserver:self
