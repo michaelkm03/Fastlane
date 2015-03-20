@@ -8,6 +8,7 @@
 
 #import "VObjectManager+ImageSearch.h"
 #import "VObjectManager+Private.h"
+#import "NSCharacterSet+VURLParts.h"
 
 @implementation VObjectManager (ImageSearch)
 
@@ -21,7 +22,8 @@
                         RKPercentEscapedQueryStringFromStringWithEncoding(keyword, NSUTF8StringEncoding),
                         (long)page,
                         (long)perPage];
-    return [self GET:path
+    NSString *escapedPath = [path stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet v_pathPartCharacterSet]];
+    return [self GET:escapedPath
               object:nil
           parameters:nil
         successBlock:success
