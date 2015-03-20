@@ -7,11 +7,16 @@
 //
 
 #import <XCTest/XCTest.h>
+#import "VTrackingManager.h"
 #import "VFirstInstallManager.h"
+#import "VObjectManager+Analytics.h"
+#import "NSObject+VMethodSwizzling.h"
+#import "VDummyModels.h"
+#import "VTracking.h"
 
 @interface VFirstInstallTests : XCTestCase
 
-@property (nonatomic, strong) VFirstInstallManager *firstInstallManager;
+@property (nonatomic, strong) VTracking *tracking;
 
 @end
 
@@ -21,13 +26,16 @@
 {
     [super setUp];
     
+    self.tracking = [VDummyModels objectWithEntityName:@"Tracking" subclass:[VTracking class]];
+    self.tracking.appInstall = @[ @"url1", @"url2" ];
+    
+    [VObjectManager setSharedManager:[[VObjectManager alloc] init]];
+    
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:VAppInstalledDefaultsKey];
     XCTAssertNil( [[NSUserDefaults standardUserDefaults] valueForKey:VAppInstalledDefaultsKey] );
     
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:VAppInstalledOldTrackingDefaultsKey];
     XCTAssertNil( [[NSUserDefaults standardUserDefaults] valueForKey:VAppInstalledOldTrackingDefaultsKey] );
-    
-    self.firstInstallManager = [[VFirstInstallManager alloc] init];
 }
 
 - (void)tearDown
@@ -35,7 +43,7 @@
     [super tearDown];
 }
 
-- (void)testFirstInstal
+- (void)testFirstInstall
 {
     for ( NSUInteger i = 0; i < 2; i++ )
     {
@@ -73,11 +81,11 @@
              }
          }];
     }
+}
 
 - (void)testFirstInstallWithOldKey
 {
-    XCTAssertFalse( self.firstInstallManager.hasFirstInstallBeenTracked );
-    
+    // Simulate a previous version of the app markign first install using the old key
     [[NSUserDefaults standardUserDefaults] setValue:@YES forKey:VAppInstalledOldTrackingDefaultsKey];
     
     // Now report first install with the new key and make sure it doesn't call the tracking method
