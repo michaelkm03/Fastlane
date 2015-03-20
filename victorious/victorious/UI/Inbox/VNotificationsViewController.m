@@ -218,21 +218,13 @@ static NSString * const kNotificationCellViewIdentifier = @"VNotificationCell";
 //        [self.messageCountCoordinator updateUnreadMessageCount];
     };
     
-    //    if (VModeSelect == kMessageModeSelect)
-    //    {
-    [[VObjectManager sharedManager] loadConversationListWithPageType:VPageTypeFirst
+    [[VObjectManager sharedManager] loadNotificationsListWithPageType:VPageTypeFirst
                                                         successBlock:success failBlock:fail];
-    //    }
-    //    else if (VModeSelect == kNotificationModeSelect)
-    //    {
-    //        [[VObjectManager sharedManager] loadNotificationsListWithPageType:VPageTypeFirst
-    //                                                             successBlock:success failBlock:fail];
-    //    }
 }
 
 - (void)loadNextPageAction
 {
-    [[VObjectManager sharedManager] loadConversationListWithPageType:VPageTypeNext
+    [[VObjectManager sharedManager] loadNotificationsListWithPageType:VPageTypeNext
                                                         successBlock:nil failBlock:nil];
 }
 
