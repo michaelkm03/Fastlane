@@ -95,7 +95,6 @@
                                                                             constant:0];
     self.searchTopConstraint.constant = self.v_layoutInsets.top;
     [self.view addConstraint:self.searchTopConstraint];
-    [self.view layoutIfNeeded];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -178,7 +177,6 @@
     [super v_setLayoutInsets:v_layoutInsets];
     
     self.searchTopConstraint.constant = self.v_layoutInsets.top;
-    [self.view layoutIfNeeded];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
