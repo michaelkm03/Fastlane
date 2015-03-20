@@ -18,6 +18,7 @@
 @property (nonatomic, readonly) UIImageView *currentPreviewImageView;
 @property (nonatomic, readonly) VStreamItem *currentItem;
 @property (nonatomic, strong) VMarqueeController *marquee;
+@property (nonatomic, assign) BOOL isTemplateC;
 
 - (void)restartAutoScroll;
 

@@ -67,6 +67,8 @@
 #import "VHashtagStreamCollectionViewController.h"
 #import "VAuthorizedAction.h"
 
+#import "VInsetStreamCellFactory.h"
+
 #import <SDWebImage/UIImageView+WebCache.h>
 
 static const CGFloat kCreateButtonHeight = 44.0f;
@@ -252,6 +254,9 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCell"
     {
         VStream *marquee = [VStream streamForMarqueeInContext:[VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext];
         _marquee = [[VMarqueeController alloc] initWithStream:marquee];
+        
+        //The top of the template C hack
+        _marquee.isTemplateC = [self.streamCellFactory isKindOfClass:[VInsetStreamCellFactory class]];
         _marquee.delegate = self;
     }
     return _marquee;
@@ -564,13 +569,7 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCell"
 #pragma mark - Actions
 
 - (void)setBackgroundImageWithURL:(NSURL *)url
-{
-    //Don't set the background image for template c
-    if ([[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
-    {
-        return;
-    }
-    
+{    
     UIImageView *newBackgroundView = [[UIImageView alloc] initWithFrame:self.collectionView.backgroundView.frame];
     
     UIImage *placeholderImage = [UIImage resizeableImageWithColor:[[UIColor whiteColor] colorWithAlphaComponent:0.7f]];
