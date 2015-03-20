@@ -154,6 +154,31 @@ NSString * const VUserProfileFindFriendsIconKey = @"findFriendsIcon";
     return nil;
 }
 
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if (self != nil)
+    {
+        [self userProfileSharedInit];
+    }
+    return self;
+}
+
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self != nil)
+    {
+        [self userProfileSharedInit];
+    }
+    return self;
+}
+
+- (void)userProfileSharedInit
+{
+    self.canShowContent = NO;
+}
+
 #pragma mark - LifeCycle
 
 - (void)viewDidLoad
