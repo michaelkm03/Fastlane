@@ -314,37 +314,25 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCell"
     [self installCreateButtonOnNavigationItem:navigationItem
                              initiallyVisible:userPostAllowed];
     
-    [UIView animateKeyframesWithDuration:0.5f
-                                   delay:0.0f
-                                 options:kNilOptions
-                              animations:^
-     {
-         ((UIButton *)navigationItem.rightBarButtonItem.customView).imageView.alpha = userPostAllowed ? 1.0f : 0.0f;
-     }
-                              completion:nil];
+    navigationItem.rightBarButtonItem.customView.hidden = !userPostAllowed;
 }
 
 - (void)installCreateButtonOnNavigationItem:(UINavigationItem *)navigationItem
                            initiallyVisible:(BOOL)initiallyVisible
 {
-    if (navigationItem.rightBarButtonItem.customView == nil)
-    {
-        UIImage *image = [self.dependencyManager imageForKey:VStreamCollectionViewControllerCreateSequenceIconKey];
-        UIButton *createbutton = [UIButton buttonWithType:UIButtonTypeSystem];
-        createbutton.frame = CGRectMake(0, 0, kCreateButtonHeight, kCreateButtonHeight);
-        [createbutton setImage:image forState:UIControlStateNormal];
-        [createbutton addTarget:self action:@selector(createSequenceAction:) forControlEvents:UIControlEventTouchUpInside];
-        
-        UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithCustomView:createbutton];
-        barButton.accessibilityIdentifier = VAutomationIdentifierAddPost;
-        [navigationItem setRightBarButtonItem:barButton animated:NO];
-        
-        // Have to do this after installing in the navigation item or it starts out at full opacity
-        createbutton.imageView.alpha = initiallyVisible ? 1.0f : 0.0f;
-    }
+    UIImage *image = [self.dependencyManager imageForKey:VStreamCollectionViewControllerCreateSequenceIconKey];
+    UIButton *createbutton = [UIButton buttonWithType:UIButtonTypeSystem];
+    createbutton.frame = CGRectMake(0, 0, kCreateButtonHeight, kCreateButtonHeight);
+    [createbutton setImage:image forState:UIControlStateNormal];
+    [createbutton addTarget:self action:@selector(createSequenceAction:) forControlEvents:UIControlEventTouchUpInside];
+    createbutton.hidden = !initiallyVisible;
+    
+    UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithCustomView:createbutton];
+    barButton.accessibilityIdentifier = VAutomationIdentifierAddPost;
+    [navigationItem setRightBarButtonItem:barButton animated:NO];
 }
 
-- (IBAction)createSequenceAction:(id)sender
+- (void)createSequenceAction:(id)sender
 {
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectCreatePost];
     
