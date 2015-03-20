@@ -45,7 +45,23 @@ static const CGFloat kMarqueeBufferHeight = 3;
     self.tabView = [[VMarqueeTabIndicatorView alloc] initWithFrame:self.tabContainerView.bounds];
     self.tabView.translatesAutoresizingMaskIntoConstraints = NO;
     
-    if (![[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
+    [self.tabContainerView addSubview:self.tabView];
+    
+    NSDictionary *tabView = @{ @"tabView":self.tabView };
+    [self.tabContainerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[tabView]|"
+                                                                        options:0
+                                                                        metrics:nil
+                                                                          views:tabView]];
+    [self.tabContainerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[tabView]|"
+                                                                        options:0
+                                                                        metrics:nil
+                                                                          views:tabView]];
+}
+
+- (void)setIsTemplateC:(BOOL)isTemplateC
+{
+    _isTemplateC = isTemplateC;
+    if ( !self.isTemplateC )
     {
         self.tabView.selectedColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
         self.tabView.deselectedColor = [[[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor] colorWithAlphaComponent:.3f];
@@ -61,21 +77,9 @@ static const CGFloat kMarqueeBufferHeight = 3;
         self.tabView.deselectedColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
         self.tabView.tabImage = [UIImage imageNamed:@"tabIndicatorDot"];
         self.tabView.spacingBetweenTabs = self.tabView.tabImage.size.width * kVTabSpacingRatioC;
-
+        
         self.backgroundColor = [UIColor clearColor];
     }
-    
-    [self.tabContainerView addSubview:self.tabView];
-    
-    NSDictionary *tabView = @{ @"tabView":self.tabView };
-    [self.tabContainerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[tabView]|"
-                                                                        options:0
-                                                                        metrics:nil
-                                                                          views:tabView]];
-    [self.tabContainerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[tabView]|"
-                                                                        options:0
-                                                                        metrics:nil
-                                                                          views:tabView]];
 }
 
 - (void)setMarquee:(VMarqueeController *)marquee
@@ -83,6 +87,7 @@ static const CGFloat kMarqueeBufferHeight = 3;
     _marquee = marquee;
     marquee.collectionView = self.collectionView;
     marquee.tabView = self.tabView;
+    self.isTemplateC = marquee.isTemplateC;
     
     self.tabView.numberOfTabs = self.marquee.streamDataSource.count;
     
@@ -104,6 +109,7 @@ static const CGFloat kMarqueeBufferHeight = 3;
 {
     NSIndexPath *path = [self.marquee.streamDataSource indexPathForItem:[self currentItem]];
     VMarqueeStreamItemCell *cell = (VMarqueeStreamItemCell *)[self.collectionView cellForItemAtIndexPath:path];
+    cell.isTemplateC = self.isTemplateC;
     return cell.previewImageView;
 }
 
