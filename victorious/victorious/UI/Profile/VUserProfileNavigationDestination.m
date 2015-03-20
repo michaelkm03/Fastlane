@@ -51,9 +51,9 @@ static NSString * const kProfileDeeplinkHostComponent = @"profile";
 
 #pragma mark - VNavigationDestination conformance
 
-- (BOOL)shouldNavigateWithAlternateDestination:(UIViewController *__autoreleasing *)alternateViewController
+- (BOOL)shouldNavigateWithAlternateDestination:(id __autoreleasing *)alternateViewController
 {
-    VUserProfileViewController *userProfileViewController = [VUserProfileViewController rootDependencyProfileWithRemoteId:self.objectManager.mainUser.remoteId];
+    VUserProfileViewController *userProfileViewController = [VUserProfileViewController userProfileWithUser:self.objectManager.mainUser andDependencyManager:self.dependencyManager];
     userProfileViewController.representsMainUser = YES;
     if ( [userProfileViewController respondsToSelector:@selector(setDependencyManager:)] )
     {
@@ -62,11 +62,6 @@ static NSString * const kProfileDeeplinkHostComponent = @"profile";
     *alternateViewController = userProfileViewController;
     
     return YES;
-}
-
-- (VAuthorizationContext)authorizationContext
-{
-    return VAuthorizationContextUserProfile;
 }
 
 #pragma mark - VDeeplinkHandler methods

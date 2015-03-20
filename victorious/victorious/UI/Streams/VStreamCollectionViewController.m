@@ -67,6 +67,8 @@
 #import "VHashtagStreamCollectionViewController.h"
 #import "VAuthorizedAction.h"
 
+#import "VInsetStreamCellFactory.h"
+
 #import <SDWebImage/UIImageView+WebCache.h>
 
 static const CGFloat kCreateButtonHeight = 44.0f;
@@ -141,6 +143,33 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCell"
     }
     
     return streamCollectionVC;
+}
+
+#pragma mark - Init
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if (self != nil)
+    {
+        [self sharedInit];
+    }
+    return self;
+}
+
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self != nil)
+    {
+        [self sharedInit];
+    }
+    return self;
+}
+
+- (void)sharedInit
+{
+    self.canShowContent = YES;
 }
 
 #pragma mark - View Heirarchy
@@ -252,6 +281,9 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCell"
     {
         VStream *marquee = [VStream streamForMarqueeInContext:[VObjectManager sharedManager].managedObjectStore.mainQueueManagedObjectContext];
         _marquee = [[VMarqueeController alloc] initWithStream:marquee];
+        
+        //The top of the template C hack
+        _marquee.isTemplateC = [self.streamCellFactory isKindOfClass:[VInsetStreamCellFactory class]];
         _marquee.delegate = self;
     }
     return _marquee;
@@ -314,37 +346,29 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCell"
     [self installCreateButtonOnNavigationItem:navigationItem
                              initiallyVisible:userPostAllowed];
     
-    [UIView animateKeyframesWithDuration:0.5f
-                                   delay:0.0f
-                                 options:kNilOptions
-                              animations:^
-     {
-         ((UIButton *)navigationItem.rightBarButtonItem.customView).imageView.alpha = userPostAllowed ? 1.0f : 0.0f;
-     }
-                              completion:nil];
+    navigationItem.rightBarButtonItem.customView.hidden = !userPostAllowed;
 }
 
 - (void)installCreateButtonOnNavigationItem:(UINavigationItem *)navigationItem
                            initiallyVisible:(BOOL)initiallyVisible
 {
-    if (navigationItem.rightBarButtonItem.customView == nil)
+    if (!self.canShowContent)
     {
-        UIImage *image = [self.dependencyManager imageForKey:VStreamCollectionViewControllerCreateSequenceIconKey];
-        UIButton *createbutton = [UIButton buttonWithType:UIButtonTypeSystem];
-        createbutton.frame = CGRectMake(0, 0, kCreateButtonHeight, kCreateButtonHeight);
-        [createbutton setImage:image forState:UIControlStateNormal];
-        [createbutton addTarget:self action:@selector(createSequenceAction:) forControlEvents:UIControlEventTouchUpInside];
-        
-        UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithCustomView:createbutton];
-        barButton.accessibilityIdentifier = VAutomationIdentifierAddPost;
-        [navigationItem setRightBarButtonItem:barButton animated:NO];
-        
-        // Have to do this after installing in the navigation item or it starts out at full opacity
-        createbutton.imageView.alpha = initiallyVisible ? 1.0f : 0.0f;
+        return;
     }
+    UIImage *image = [self.dependencyManager imageForKey:VStreamCollectionViewControllerCreateSequenceIconKey];
+    UIButton *createbutton = [UIButton buttonWithType:UIButtonTypeSystem];
+    createbutton.frame = CGRectMake(0, 0, kCreateButtonHeight, kCreateButtonHeight);
+    [createbutton setImage:image forState:UIControlStateNormal];
+    [createbutton addTarget:self action:@selector(createSequenceAction:) forControlEvents:UIControlEventTouchUpInside];
+    createbutton.hidden = !initiallyVisible;
+    
+    UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithCustomView:createbutton];
+    barButton.accessibilityIdentifier = VAutomationIdentifierAddPost;
+    [navigationItem setRightBarButtonItem:barButton animated:NO];
 }
 
-- (IBAction)createSequenceAction:(id)sender
+- (void)createSequenceAction:(id)sender
 {
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectCreatePost];
     
@@ -576,13 +600,7 @@ NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCell"
 #pragma mark - Actions
 
 - (void)setBackgroundImageWithURL:(NSURL *)url
-{
-    //Don't set the background image for template c
-    if ([[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled])
-    {
-        return;
-    }
-    
+{    
     UIImageView *newBackgroundView = [[UIImageView alloc] initWithFrame:self.collectionView.backgroundView.frame];
     
     UIImage *placeholderImage = [UIImage resizeableImageWithColor:[[UIColor whiteColor] colorWithAlphaComponent:0.7f]];

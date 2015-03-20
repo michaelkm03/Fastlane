@@ -18,12 +18,12 @@
                                                successBlock:(VSuccessBlock)success
                                                   failBlock:(VFailBlock)fail
 {
+    NSString *escapedKeyword = [keyword stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet v_pathPartCharacterSet]];
     NSString *path = [NSString stringWithFormat:@"/api/image/search/%@/%lu/%lu",
-                        RKPercentEscapedQueryStringFromStringWithEncoding(keyword, NSUTF8StringEncoding),
+                        escapedKeyword,
                         (long)page,
                         (long)perPage];
-    NSString *escapedPath = [path stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet v_pathPartCharacterSet]];
-    return [self GET:escapedPath
+    return [self GET:path
               object:nil
           parameters:nil
         successBlock:success

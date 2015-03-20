@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1510" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
@@ -51,15 +51,15 @@
                         <constraints>
                             <constraint firstItem="sOS-ge-ov7" firstAttribute="leading" secondItem="lnt-Ok-t9O" secondAttribute="leading" id="2Da-7F-rzq"/>
                             <constraint firstItem="mT9-B7-VTY" firstAttribute="top" secondItem="iGR-lx-Wig" secondAttribute="bottom" id="5kV-KG-xb9"/>
-                            <constraint firstAttribute="centerY" secondItem="rg4-dB-97K" secondAttribute="centerY" id="aET-8a-rD1"/>
                             <constraint firstItem="sOS-ge-ov7" firstAttribute="top" secondItem="RlJ-HE-p9L" secondAttribute="bottom" id="bBQ-lG-8io"/>
                             <constraint firstAttribute="trailingMargin" secondItem="iGR-lx-Wig" secondAttribute="trailing" constant="-16" id="gGI-Sh-LZ7"/>
+                            <constraint firstItem="rg4-dB-97K" firstAttribute="centerX" secondItem="sOS-ge-ov7" secondAttribute="centerX" constant="0.5" id="ga8-u4-oSI"/>
                             <constraint firstItem="mT9-B7-VTY" firstAttribute="top" secondItem="sOS-ge-ov7" secondAttribute="bottom" id="hZe-nW-RQ9"/>
                             <constraint firstItem="iGR-lx-Wig" firstAttribute="top" secondItem="RlJ-HE-p9L" secondAttribute="bottom" id="jWp-Si-n7c"/>
                             <constraint firstItem="iGR-lx-Wig" firstAttribute="leading" secondItem="lnt-Ok-t9O" secondAttribute="leadingMargin" constant="-16" id="jo2-pd-K8Y"/>
                             <constraint firstAttribute="trailing" secondItem="sOS-ge-ov7" secondAttribute="trailing" id="lfe-YK-gPa"/>
+                            <constraint firstItem="rg4-dB-97K" firstAttribute="centerY" secondItem="sOS-ge-ov7" secondAttribute="centerY" constant="19.5" id="rP8-rf-Q6t"/>
                             <constraint firstAttribute="centerX" secondItem="oJA-97-ssS" secondAttribute="centerX" id="rR4-0J-01m"/>
-                            <constraint firstAttribute="centerX" secondItem="rg4-dB-97K" secondAttribute="centerX" id="wn9-ts-YBf"/>
                             <constraint firstAttribute="centerY" secondItem="sOS-ge-ov7" secondAttribute="centerY" constant="20" id="wx3-hg-d0N"/>
                             <constraint firstItem="mT9-B7-VTY" firstAttribute="top" secondItem="oJA-97-ssS" secondAttribute="bottom" constant="47" id="z6C-Re-3Mg"/>
                         </constraints>

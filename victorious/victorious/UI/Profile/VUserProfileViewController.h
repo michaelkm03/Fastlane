@@ -11,6 +11,8 @@
 
 @class VUser;
 
+extern NSString * const VUserProfileFindFriendsIconKey;
+
 @interface VUserProfileViewController : VStreamCollectionViewController
 
 @property   (nonatomic, readonly) VUser                  *profile;

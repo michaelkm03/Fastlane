@@ -117,7 +117,7 @@ static NSTimeInterval const kMinimumTimeBetweenSessions = 1800.0; // 30 minutes
 
 - (void)trackApplicationForeground
 {
-    NSArray *trackingURLs = [self.dependencyManager trackingURLsForKey:VTrackingURLAppStartKey] ?: @[];
+    NSArray *trackingURLs = [self.dependencyManager trackingURLsForKey:VTrackingStartKey] ?: @[];
     NSDictionary *params = @{ VTrackingKeyUrls : trackingURLs };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventApplicationDidEnterForeground parameters:params];
 }
@@ -128,7 +128,7 @@ static NSTimeInterval const kMinimumTimeBetweenSessions = 1800.0; // 30 minutes
     NSDate *endDate = [[NSUserDefaults standardUserDefaults] objectForKey:kSessionEndTimeDefaultsKey];
     NSTimeInterval sessionDuration = [endDate timeIntervalSinceDate:startDate] * 1000;  // Backend requires milliseconds
     
-    NSArray *trackingURLs = [self.dependencyManager trackingURLsForKey:VTrackingURLAppStopKey] ?: @[];
+    NSArray *trackingURLs = [self.dependencyManager trackingURLsForKey:VTrackingStopKey] ?: @[];
     NSDictionary *params = @{ VTrackingKeyUrls : trackingURLs, VTrackingKeySessionTime : [NSNumber numberWithUnsignedInteger:sessionDuration] };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventApplicationDidEnterBackground parameters:params];
 }
@@ -136,10 +136,10 @@ static NSTimeInterval const kMinimumTimeBetweenSessions = 1800.0; // 30 minutes
 - (void)trackApplicationLaunch
 {
     // Track first install
-    [[[VFirstInstallManager alloc] init] reportFirstInstallWithTrackingURLs:[self.dependencyManager trackingURLsForKey:VTrackingURLInstallKey]];
+    [[[VFirstInstallManager alloc] init] reportFirstInstallWithTrackingURLs:[self.dependencyManager trackingURLsForKey:VTrackingInstallKey]];
     
     // Tracking init (cold start)
-    NSArray *trackingURLs = [self.dependencyManager trackingURLsForKey:VTrackingURLInitKey] ?: @[];
+    NSArray *trackingURLs = [self.dependencyManager trackingURLsForKey:VTrackingInitKey] ?: @[];
     NSDictionary *params = @{ VTrackingKeyUrls : trackingURLs };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventApplicationDidLaunch parameters:params];
     

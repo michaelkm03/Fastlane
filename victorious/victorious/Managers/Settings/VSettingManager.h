@@ -11,22 +11,10 @@
 
 @class VDependencyManager;
 
-//Settings
-extern NSString * const kVCaptureVideoQuality;
-extern NSString * const kVExportVideoQuality;
-extern NSString * const VSettingsChannelsEnabled;
-extern NSString * const VSettingsMarqueeEnabled;
-extern NSString * const VSettingsTemplateCEnabled;
-extern NSString * const VSettingsTemplateDEnabled;
-
 //Experiments
 extern NSString * const VExperimentsRequireProfileImage;
 extern NSString * const VExperimentsPauseVideoWhenCommenting;
 extern NSString * const VExperimentsClearVideoBackground;
-
-//Monetization
-extern NSString * const kLiveRailPublisherId;
-extern NSString * const kOpenXVastTag;
 
 //URLs
 extern NSString * const kVTermsOfServiceURL;

@@ -409,6 +409,7 @@
         profileViewController.loginType = kVLoginTypeEmail;
         profileViewController.registrationModel = [[VRegistrationModel alloc] init];
         profileViewController.dependencyManager = self.dependencyManager;
+        profileViewController.registrationStepDelegate = self;
     }
     else if ([segue.identifier isEqualToString:@"toEnterResetToken"])
     {

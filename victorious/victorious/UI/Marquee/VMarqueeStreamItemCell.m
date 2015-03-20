@@ -61,12 +61,17 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
     self.profileImageButton.layer.borderColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor].CGColor;
     self.profileImageButton.layer.borderWidth = 4;
     
-    NSString *textColorKey = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled] ? kVLinkColor : kVMainTextColor;
+    //Was main text color for A and D
+    NSString *textColorKey = kVLinkColor;
     self.nameLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:textColorKey];
     
     self.nameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
-    
-    if ( [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled] )
+}
+
+- (void)setIsTemplateC:(BOOL)isTemplateC
+{
+    _isTemplateC = isTemplateC;
+    if ( self.isTemplateC )
     {
         self.labelTopLayoutConstraint.constant -= kTitleOffsetForTemplateC;
         self.labelBottomLayoutConstraint.constant += kTitleOffsetForTemplateC;
@@ -99,7 +104,7 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
         
         [self.profileImageButton setProfileImageURL:[NSURL URLWithString:sequence.user.pictureUrl]
                                            forState:UIControlStateNormal];
-        self.profileImageButton.hidden = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled];
+        self.profileImageButton.hidden = self.isTemplateC; //Was previously hidden on tempalte C
         
         if ( [sequence isWebContent] )
         {

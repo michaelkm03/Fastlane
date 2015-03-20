@@ -25,7 +25,7 @@
     if (self != nil)
     {
         _dependencyManager = dependencyManager;
-        _workspaceDestination = [dependencyManager templateValueOfType:[VWorkspaceFlowController class] forKey:@"defaultWorkspaceDestination"];
+        _workspaceDestination = [dependencyManager templateValueOfType:[VWorkspaceFlowController class] forKey:VDependencyManagerWorkspaceFlowKey];
     }
     return self;
 }

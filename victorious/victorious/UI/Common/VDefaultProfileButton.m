@@ -36,7 +36,8 @@
     UIImage *defaultImage = [[UIImage imageNamed:@"profile_thumb"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     
     [self setImage:defaultImage forState:UIControlStateNormal];
-    NSString *colorKey = [[VSettingManager sharedManager] settingEnabledForKey:VSettingsTemplateCEnabled] ? kVLinkColor : kVAccentColor;
+    //Was previously accent color for A and D
+    NSString *colorKey = kVLinkColor;
     self.tintColor = [[[VThemeManager sharedThemeManager] themedColorForKey:colorKey] colorWithAlphaComponent:.3f];
     
     CGFloat radius = CGRectGetHeight(self.bounds)/2;

@@ -412,7 +412,7 @@
         profileViewController.dependencyManager = self.dependencyManager;
         profileViewController.loginType = kVLoginTypeFaceBook;
         profileViewController.registrationModel = [[VRegistrationModel alloc] init];
-        
+        profileViewController.registrationStepDelegate = self;
         profileViewController.profile = self.profile;
     }
     else if ([segue.identifier isEqualToString:@"toProfileWithTwitter"])
@@ -421,6 +421,7 @@
         profileViewController.dependencyManager = self.dependencyManager;
         profileViewController.loginType = kVLoginTypeTwitter;
         profileViewController.profile = self.profile;
+        profileViewController.registrationStepDelegate = self;
         profileViewController.registrationModel = [[VRegistrationModel alloc] init];
     }
     else if ([segue.identifier isEqualToString:@"toProfileWithEmail"])
@@ -428,6 +429,7 @@
         VProfileCreateViewController *profileViewController = (VProfileCreateViewController *)segue.destinationViewController;
         profileViewController.dependencyManager = self.dependencyManager;
         profileViewController.loginType = kVLoginTypeEmail;
+        profileViewController.registrationStepDelegate = self;
         profileViewController.profile = self.profile;
     }
     else if ([segue.identifier isEqualToString:@"toEmailLogin"])
