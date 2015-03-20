@@ -169,7 +169,8 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
     __block RKManagedObjectRequestOperation *requestOperation = nil;
     [context performBlockAndWait:^(void)
     {
-        NSString *apiPath = [NSString stringWithFormat:@"/api/message/notification_list/%@/%@", VPaginationManagerPageNumberMacro, VPaginationManagerItemsPerPageMacro];
+//        NSString *apiPath = [NSString stringWithFormat:@"/api/message/notification_list/%@/%@", VPaginationManagerPageNumberMacro, VPaginationManagerItemsPerPageMacro];
+        NSString *apiPath = [NSString stringWithFormat:@"/api/notification/notifications_list/%@/%@", VPaginationManagerPageNumberMacro, VPaginationManagerItemsPerPageMacro];
         VAbstractFilter *listFilter = [self.paginationManager filterForPath:apiPath
                                                                  entityName:[VAbstractFilter entityName]
                                                        managedObjectContext:context];
