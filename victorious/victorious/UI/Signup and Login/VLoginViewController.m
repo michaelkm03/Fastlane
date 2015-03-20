@@ -391,12 +391,14 @@
 - (IBAction)signup:(id)sender
 {
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectSignupWithEmail];
+    
     [self performSegueWithIdentifier:@"toSignup" sender:self];
 }
 
 - (IBAction)onDismiss:(id)sender
 {
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidCancelLogin];
+    
     [self loginDidFinishWithSuccess:NO];
 }
 
