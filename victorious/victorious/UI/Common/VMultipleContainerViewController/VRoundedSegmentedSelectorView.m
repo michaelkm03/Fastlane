@@ -16,6 +16,8 @@ static CGFloat const kVBarHeight = 40.0f;
 static CGFloat const kVPillHeight = 29.0f;
 static CGFloat const kVHorizontalInset = 10.0f;
 static CGFloat const kVSelectionAnimationDuration = 0.35f;
+static CGFloat const kVBoldFontPointSize = 14.0f;
+static CGFloat const kVRegularFontPointSizeSubtractor = 1.0f;
 
 @interface VRoundedSegmentedSelectorView ()
 
@@ -100,28 +102,28 @@ static CGFloat const kVSelectionAnimationDuration = 0.35f;
     //Setup the buttons that will allow users to select different streams
     __weak VRoundedSegmentedSelectorView *wSelf = self;
     __block UIButton *priorButton = nil;
-    CGFloat cornerRadius = self.pillView.cornerRadius;
+    CGFloat cornerRadius = [self pillButtonInset];
     UIColor *buttonSelectionColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     NSDictionary *buttonHorizontalInsetMetrics = @{ @"inset" : @(cornerRadius) };
     [self.viewControllers enumerateObjectsUsingBlock:^(UIViewController *viewController, NSUInteger idx, BOOL *stop)
-    {
-        VRoundedSegmentedSelectorView *sSelf = wSelf;
-        if ( sSelf == nil )
-        {
-            return;
-        }
-        
-        //Note: Setting the button's text color to the "highlighted" color here so that it appears that way in the snapshot below
-        UIButton *button = [self newButtonWithCornerRadius:cornerRadius title:viewController.title font:[self.dependencyManager fontForKey:VDependencyManagerHeading3FontKey] andTextColor:buttonSelectionColor];
-        button.tag = idx;
-        [button addTarget:sSelf action:@selector(pressedHeaderButton:) forControlEvents:UIControlEventTouchUpInside];
-        
-        [sSelf addButton:button toContainer:sSelf.pillView afterPriorButton:priorButton withMetrics:buttonHorizontalInsetMetrics isLast:idx == sSelf.viewControllers.count - 1];
-        
-        priorButton = button;
-        
-        [sSelf.buttons addObject:button];
-    }];
+     {
+         VRoundedSegmentedSelectorView *sSelf = wSelf;
+         if ( sSelf == nil )
+         {
+             return;
+         }
+         
+         //Note: Setting the button's text color to the "highlighted" color here so that it appears that way in the snapshot below
+         UIButton *button = [self newButtonWithTitle:viewController.title font:[[self.dependencyManager fontForKey:VDependencyManagerHeading3FontKey] fontWithSize:kVBoldFontPointSize] andTextColor:buttonSelectionColor];
+         button.tag = idx;
+         [button addTarget:sSelf action:@selector(pressedHeaderButton:) forControlEvents:UIControlEventTouchUpInside];
+         
+         [sSelf addButton:button toContainer:sSelf.pillView afterPriorButton:priorButton withMetrics:buttonHorizontalInsetMetrics isLast:idx == sSelf.viewControllers.count - 1];
+         
+         priorButton = button;
+         
+         [sSelf.buttons addObject:button];
+     }];
     
     [self.pillView layoutIfNeeded];
     
@@ -137,7 +139,7 @@ static CGFloat const kVSelectionAnimationDuration = 0.35f;
     for (UIButton *button in self.buttons)
     {
         [button setTitleColor:self.pillColor forState:UIControlStateNormal];
-        [[button titleLabel] setFont:[self.dependencyManager fontForKey:VDependencyManagerHeading4FontKey]];
+        [[button titleLabel] setFont:[[self.dependencyManager fontForKey:VDependencyManagerHeading4FontKey] fontWithSize:kVBoldFontPointSize - kVRegularFontPointSizeSubtractor]];
         [button setTitleColor:[self.pillColor colorWithAlphaComponent:0.5f] forState:UIControlStateHighlighted];
     }
     
@@ -231,7 +233,7 @@ static CGFloat const kVSelectionAnimationDuration = 0.35f;
                                                                           options:0
                                                                           metrics:nil
                                                                             views:selectionViews]];
-    CGFloat selectionViewWidth = ( ( CGRectGetWidth(self.bounds) - kVHorizontalInset * 2 - self.pillView.cornerRadius * 2 ) / self.viewControllers.count ) + self.pillView.cornerRadius * 2;
+    CGFloat selectionViewWidth = ( ( CGRectGetWidth(self.bounds) - kVHorizontalInset * 2 - [self pillButtonInset] * 2 ) / self.viewControllers.count ) + [self pillButtonInset] * 2;
     self.selectionViewWidthConstraint = [NSLayoutConstraint constraintWithItem:self.selectionView
                                                                      attribute:NSLayoutAttributeWidth
                                                                      relatedBy:NSLayoutRelationEqual
@@ -310,12 +312,12 @@ static CGFloat const kVSelectionAnimationDuration = 0.35f;
     
     if ( index > 0 )
     {
-        offset -= self.pillView.cornerRadius;
+        offset -= [self pillButtonInset];
     }
     
     if ( index == self.viewControllers.count - 1)
     {
-        offset -= self.pillView.cornerRadius;
+        offset -= [self pillButtonInset];
     }
     
     return offset;
@@ -330,7 +332,7 @@ static CGFloat const kVSelectionAnimationDuration = 0.35f;
         if ( index == 0 || index == self.viewControllers.count - 1 )
         {
             //At an edge, add the corner radius so that the pill fits nicely into the edges
-            width += self.pillView.cornerRadius * 2;
+            width += [self pillButtonInset] * 2;
         }
         return width;
     }
@@ -375,6 +377,11 @@ static CGFloat const kVSelectionAnimationDuration = 0.35f;
     return _pillView;
 }
 
+- (CGFloat)pillButtonInset
+{
+    return self.pillView.cornerRadius / 4.0f;
+}
+
 - (UIImageView *)selectionView
 {
     if ( _selectionView )
@@ -409,12 +416,11 @@ static CGFloat const kVSelectionAnimationDuration = 0.35f;
     return imageView;
 }
 
-- (UIButton *)newButtonWithCornerRadius:(CGFloat)cornerRadius title:(NSString *)title font:(UIFont *)font andTextColor:(UIColor *)color
+- (UIButton *)newButtonWithTitle:(NSString *)title font:(UIFont *)font andTextColor:(UIColor *)color
 {
     //Create a label, set it's text to the title, give it constraints that fit it to it's spot in the view
     UIButton *button = [[UIButton alloc] init];
     [button setTranslatesAutoresizingMaskIntoConstraints:NO];
-    button.imageView.layer.cornerRadius = cornerRadius;
     [button setTitle:title forState:UIControlStateNormal];
     [button setTitleColor:color forState:UIControlStateNormal];
     [button setBackgroundColor:[UIColor clearColor]];
