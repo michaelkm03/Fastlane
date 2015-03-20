@@ -391,7 +391,6 @@
 - (IBAction)signup:(id)sender
 {
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectSignupWithEmail];
-    
     [self performSegueWithIdentifier:@"toSignup" sender:self];
 }
 
