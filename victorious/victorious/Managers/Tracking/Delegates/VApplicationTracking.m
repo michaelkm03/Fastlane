@@ -10,6 +10,7 @@
 #import "VObjectManager+Private.h"
 #import "VTrackingURLRequest.h"
 #import "VURLMacroReplacement.h"
+#import "NSCharacterSet+VURLParts.h"
 
 static NSString * const kMacroFromTime               = @"%%FROM_TIME%%";
 static NSString * const kMacroToTime                 = @"%%TO_TIME%%";
@@ -118,7 +119,12 @@ static NSString * const kMacroLoadTime               = @"%%LOAD_TIME%%";
     
     
     VObjectManager *objManager = [self applicationObjectManager];
-    VTrackingURLRequest *request = [self requestWithUrl:urlWithMacrosReplaced objectManager:objManager];
+    
+    NSURLComponents *URLCompontents = [NSURLComponents componentsWithString:urlWithMacrosReplaced];
+    URLCompontents.path = [URLCompontents.path stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet v_pathPartCharacterSet]];
+    NSString *escapedURLWithMacrosReplace = [URLCompontents string];
+    
+    VTrackingURLRequest *request = [self requestWithUrl:escapedURLWithMacrosReplace objectManager:objManager];
     if ( request == nil )
     {
         return NO;
