@@ -31,6 +31,8 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
 
 @interface VStreamCellHeaderView ()
 
+@property (nonatomic, weak) IBOutlet UILabel *parentLabel;
+
 @property (nonatomic, assign) NSInteger defaultUsernameBottomConstraintValue;
 
 @end
@@ -98,6 +100,11 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
 {
     // Format repost / remix string
     NSString *parentUserString;
+    if ( self.colorForParentSequenceText != nil )
+    {
+        self.parentLabel.textColor = self.colorForParentSequenceText;
+    }
+    
     if (self.sequence.isRepost.boolValue && self.sequence.parentUser != nil)
     {
         NSUInteger repostCount = [self.sequence.repostCount unsignedIntegerValue];
@@ -145,7 +152,7 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
 
 - (void)refreshParentLabelAttributes
 {
-    [self setParentText:self.sequence.parentUser.name];
+    [self setParentText:[self parentUser].name];
 }
 
 - (void)setSequence:(VSequence *)sequence
@@ -181,14 +188,8 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
         return;
     }
     
-    VUser *originalPoster = self.sequence.user;
-    VUser *parentUser = self.sequence.parentUser;
-    
-    if ( [self.sequence.isRepost boolValue] )
-    {
-        originalPoster = self.sequence.parentUser;
-        parentUser = self.sequence.user;
-    }
+    VUser *originalPoster = [self originalPoster];
+    VUser *parentUser = [self parentUser];
     
     [self.profileImageButton setProfileImageURL:[NSURL URLWithString:originalPoster.pictureUrl]
                                        forState:UIControlStateNormal];
@@ -224,6 +225,16 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
     }
 }
 
+- (VUser *)originalPoster
+{
+    return [self.sequence.isRepost boolValue] ? self.sequence.parentUser : self.sequence.user;
+}
+
+- (VUser *)parentUser
+{
+    return [self.sequence.isRepost boolValue] ? self.sequence.user : self.sequence.parentUser;
+}
+
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
     _dependencyManager = dependencyManager;
@@ -231,16 +242,27 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
     [self refreshParentLabelAttributes];
 }
 
+- (void)setColorForParentSequenceAuthorName:(UIColor *)colorForParentSequenceAuthorName
+{
+    _colorForParentSequenceAuthorName = colorForParentSequenceAuthorName;
+    [self refreshParentLabelAttributes];
+}
+
+- (void)setColorForParentSequenceText:(UIColor *)colorForParentSequenceText
+{
+    _colorForParentSequenceText = colorForParentSequenceText;
+    [self refreshParentLabelAttributes];
+}
+
 - (void)refreshAppearanceAttributes
 {
-    if ( !self.dependencyManager )
+    if ( self.dependencyManager == nil )
     {
         return;
     }
     
     // Style the ui
     self.usernameLabel.font = [self.dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
-    
     self.parentLabel.font = [self.dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
     [self.commentButton.titleLabel setFont:[self.dependencyManager fontForKey:VDependencyManagerLabel3FontKey]];
     self.dateLabel.font = [self.dependencyManager fontForKey:VDependencyManagerLabel3FontKey];

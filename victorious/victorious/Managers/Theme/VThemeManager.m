@@ -55,8 +55,6 @@ NSString * const   kVNewThemeKey                       =   @"kVNewTheme";
 
 NSString * const   kVSupportEmail                      =   @"email.support";
 
-static CGFloat const kGreyBackgroundColor = 0.94509803921;
-
 @implementation VThemeManager
 
 + (VThemeManager *)sharedThemeManager

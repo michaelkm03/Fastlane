@@ -17,7 +17,6 @@
 
 @property (nonatomic, weak) IBOutlet UILabel *usernameLabel;
 @property (nonatomic, weak) IBOutlet UILabel *dateLabel;
-@property (nonatomic, weak) IBOutlet UILabel *parentLabel;
 @property (nonatomic, weak) IBOutlet UIImageView *dateImageView;
 @property (nonatomic, weak) IBOutlet UIView *userInfoView;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *userInfoViewHeightConstraint;
@@ -36,8 +35,11 @@
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) UIColor *colorForParentSequenceAuthorName; ///< applied to the "remix from..." username (only the username portion)
+@property (nonatomic, strong) UIColor *colorForParentSequenceText; ///< applied to the "remix from..." portion of the subtitle (only the "remix from" or "repost from" portion)
 
 - (void)hideCommentsButton;
 - (void)reloadCommentsCount;
+- (void)refreshAppearanceAttributes;
+- (void)refreshParentLabelAttributes;
 
 @end
