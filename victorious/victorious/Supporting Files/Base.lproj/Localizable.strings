@@ -401,7 +401,8 @@
 "contentIsntPublished"  =   "Your content hasn't been published yet! If you exit now, all changes will be lost.";
 "captionIsntPublished"  =   "Your content hasn't been published yet! If you go back, your caption will be lost.";
 
-"SupportEmailSubject"   =   "Feedback on";
+"SupportEmailSubject"   =   "Feedback";
+"SupportEmailSubjectWithName" = "Feedback on";
 
 "DiscoverSuggestedPeopleError"  = "Sorry, unable to load suggested people.";
 "DiscoverTrendingTagsError"     = "Sorry, unable to load trending tags.";
